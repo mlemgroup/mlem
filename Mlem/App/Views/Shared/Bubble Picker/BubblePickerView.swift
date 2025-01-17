@@ -49,7 +49,7 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
         self.dividers = withDividers
         self.label = label
         self.value = value
-        self._sizes = .init(wrappedValue: .init(repeating: .init(width: .zero, offset: .zero), count: tabs.indices.count))
+        self._sizes = .init(wrappedValue: .init(repeating: .init(width: .zero, offset: .zero), count: tabs.count))
     }
     
     var body: some View {
@@ -103,7 +103,7 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
     ) -> some View {
         // Use negative spacing as well as padding the HStack's children so that scrollTo leaves extra space around each tab
         HStack(spacing: -Constants.main.doubleSpacing) {
-            ForEach(Array(zip(tabs.indices, tabs)), id: \.0) { index, tab in
+            ForEach(Array(tabs.enumerated()), id: \.offset) { index, tab in
                 if let scrollProxy {
                     ChildSizeReader(sizes: $sizes, index: index, spaceName: spaceName) {
                         bubbleButton(

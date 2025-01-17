@@ -2,58 +2,144 @@
 //  MediaView.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-09-26.
+//  Created by Eric Andrews on 2025-01-15.
 //
 
-import SDWebImageSwiftUI
 import SwiftUI
-import UIKit
 
 struct MediaView: View {
-    let media: MediaType
+    @Environment(NavigationLayer.self) var navigation
+    @Environment(Palette.self) var palette
     
-    let playing: Bool
+    @Setting(\.bypassImageProxyShown) var bypassImageProxyShown
+    @Setting(\.autoplayMedia) var autoplayMedia
+    @Setting(\.developerMode) var developerMode
     
-    var body: some View {
-        if media.isAnimated {
-            image
-                .overlay {
-                    // overlay to prevent visual hitch when swapping views and to implicitly preserve frame/cropping
-                    if playing {
-                        animatedContent
-                            .background {
-                                ProgressView()
-                            }
-                    }
-                }
-        } else {
-            image
-        }
+    @State var loader: MediaLoader
+    @State var playing: Bool
+    @State var quickLookUrl: URL?
+    @State var blurred: Bool
+    
+    // appearance
+    let aspectRatio_: CGSize?
+    var aspectRatio: CGSize { aspectRatio_ ?? loader.mediaType.image.validSize(fallback: .init(width: 4, height: 3)) }
+    let contentMode: ContentMode
+    let cornerRadius: CGFloat
+    
+    // interaction
+    let enableContextMenu: Bool
+    let enableImageViewer: Bool
+    let enableNsfwBlur: Bool
+    let onTapActions: (() -> Void)?
+    
+    var uiImage: UIImage { loader.mediaType.image }
+    var fullSizeUrl: URL? { Mlem.fullSizeUrl(url: loader.url) }
+
+    /// Creates a new MediaView. This view is simple by default; if no complex behaviors are specified, it will
+    /// return a plain image that fits the bounds of its parent frame.
+    /// - Parameters:
+    ///   - url: url of the media to render
+    ///   - verticalAspectRatioBounds: tallest allowable aspect ratio
+    ///   - contentMode: content resizing mode
+    ///   - cornerRadius: corner radius to apply to the image
+    ///   - enableContextMenu: true if the default context menu (save/share/quick look) should appear
+    ///   - enableImageViewer: true if tapping the image should open the image viewer
+    ///   - playImmediately: true if animated media should play without user interaction
+    ///   - onTapActions: actions to perform when the image is tapped. If `enableImageViewer: true`, tapping the image will both execute
+    ///     the specified actions and open the image viewer
+    ///  - Warning: Changing the following parameters may cause unexpected view identity changes: `enableContextMenu`, `contentMode`
+    init(url: URL,
+         verticalAspectRatioBounds: CGSize? = nil,
+         contentMode: ContentMode = .fit,
+         cornerRadius: CGFloat = 0,
+         enableContextMenu: Bool = false,
+         enableImageViewer: Bool = false,
+         enableNsfwBlur: Bool = false,
+         playImmediately: Bool = false,
+         onTapActions: (() -> Void)? = nil
+    ) {
+        self.aspectRatio_ = verticalAspectRatioBounds
+        self.contentMode = contentMode
+        self.cornerRadius = cornerRadius
+        
+        self.enableContextMenu = enableContextMenu
+        self.enableImageViewer = enableImageViewer
+        self.enableNsfwBlur = enableNsfwBlur
+        self.onTapActions = onTapActions
+        
+        self._loader = .init(wrappedValue: .init(url: url))
+        self._playing = .init(wrappedValue: playImmediately)
+        self._blurred = .init(wrappedValue: enableNsfwBlur)
     }
     
-    var image: some View {
-        Image(uiImage: media.image)
-            .resizable()
-            .aspectRatio(media.image.validSize(fallback: .init(width: 4, height: 3)), contentMode: .fit)
+    var body: some View {
+        content
+            .dynamicBlur(blurred: blurred)
+            .overlay(animationControlOverlay)
+            .overlay(nsfwOverlay)
+            .overlay(developerOverlay)
+            .overlay(errorOverlay)
+            .clipShape(.rect(cornerRadius: cornerRadius))
+            .withContextMenu(menuContent: contextMenuContent, isEnabled: enableContextMenu)
+            .gesture(TapGesture().onEnded(tapActions), isEnabled: (onTapActions != nil) || enableImageViewer)
+            .frame(maxWidth: .infinity)
+            .onChange(of: blurred) {
+                if !blurred { playing = true }
+            }
+            .onAppear {
+                Task {
+                    await loader.load()
+                }
+            }
+            .environment(\.blurred, blurred)
     }
     
     @ViewBuilder
-    var animatedContent: some View {
-        switch media {
-        case let .video(_, animated):
-            VideoView(asset: animated)
-        case let .gif(_, animated):
-            GifView(data: animated)
-        case let .webp(_, animated):
-            WebpView(data: animated)
-        default:
-            EmptyView()
+    var content: some View {
+        Group {
+            if #available(iOS 18.0, *) {
+                image
+                    .onScrollVisibilityChange(threshold: 0.5) { isVisible in
+                        if isVisible, autoplayMedia {
+                            playing = isVisible
+                        }
+                        if !isVisible {
+                            playing = false
+                        }
+                    }
+            } else {
+                image
+                    .onDisappear {
+                        playing = false
+                    }
+            }
         }
     }
 }
 
-private extension UIImage {
-    func validSize(fallback: CGSize) -> CGSize {
-        size == .zero ? fallback : size
+private struct MediaViewWithContextMenu<MenuItems: View>: ViewModifier {
+    let menuContent: () -> MenuItems
+    let isEnabled: Bool
+    
+    // This sort of conditional view modifier is generally considered bad form because it can cause unexpected view identity updates.
+    // Since `enableContextMenu` is unlikely to be a dynamic value it's acceptable here; nevertheless I have put a warning
+    // in the function doc making that behavior explicit. [ Eric 2025-01-16 ]
+    func body(content: Content) -> some View {
+        if isEnabled {
+            content
+                .contextMenu {
+                    menuContent()
+                }
+        } else {
+            content
+        }
+    }
+}
+
+private extension View {
+    /// This view modifier ensures that the context menu is only applied if enabled. If the context menu is instead always applied
+    /// but only populated if enabled, it will disable parent context menus (e.g., in `WebsitePreviewView`).
+    func withContextMenu(menuContent: @escaping () -> some View, isEnabled: Bool) -> some View {
+        return modifier(MediaViewWithContextMenu(menuContent: menuContent, isEnabled: isEnabled))
     }
 }

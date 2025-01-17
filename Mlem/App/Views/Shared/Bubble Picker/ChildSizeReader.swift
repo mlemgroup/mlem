@@ -28,7 +28,13 @@ struct ChildSizeReader<Content: View>: View {
                 )
         }
         .onPreferenceChange(SizePreferenceKey.self) { preferences in
-            sizes[index] = preferences
+            // This *should* never fail. But somehow it happened one time and
+            // we got a TF crash, so there's an `if` statement now.
+            if index < sizes.count {
+                sizes[index] = preferences
+            } else {
+                assertionFailure()
+            }
         }
     }
 }
