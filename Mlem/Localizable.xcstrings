@@ -569,6 +569,9 @@
     "Click on the link in the email to continue." : {
 
     },
+    "Close" : {
+
+    },
     "Closed" : {
 
     },
@@ -1478,6 +1481,9 @@
     "Quick Look" : {
 
     },
+    "QuickLook" : {
+
+    },
     "Quote" : {
 
     },
@@ -1747,6 +1753,9 @@
 
     },
     "Settings" : {
+
+    },
+    "Share" : {
 
     },
     "Share Image" : {

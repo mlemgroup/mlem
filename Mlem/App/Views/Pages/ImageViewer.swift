@@ -22,6 +22,7 @@ struct ImageViewer: View {
     @State var offset: CGFloat = 0
     @State var isDismissing: Bool = false
     @State var opacity: CGFloat = 0
+    @State var showingControlLayer: Bool = true
     
     init(url: URL) {
         var components = URLComponents(url: url, resolvingAgainstBaseURL: false)!
@@ -36,21 +37,14 @@ struct ImageViewer: View {
         .offset(y: offset)
         .background(.black)
         .opacity(opacity)
-        .overlay(alignment: .topTrailing) {
-            if offset == 0 {
-                Button {
-                    fadeDismiss()
-                } label: {
-                    Image(systemName: Icons.close)
-                        .resizable()
-                        .frame(width: 15, height: 15)
-                        .foregroundStyle(.white)
-                        .padding([.top, .trailing], Constants.main.standardSpacing)
-                        .padding([.bottom, .leading], Constants.main.doubleSpacing)
-                        .contentShape(.rect)
-                }
-                .padding(Constants.main.standardSpacing)
+        .overlay {
+            if showingControlLayer {
+                controlLayer
+                    .opacity(opacity)
             }
+        }
+        .onTapGesture {
+            showingControlLayer = !showingControlLayer
         }
         .simultaneousGesture(DragGesture(minimumDistance: 1.0)
             .onChanged { value in
@@ -77,6 +71,59 @@ struct ImageViewer: View {
             }
         }
         .background(ClearBackgroundView())
+    }
+    
+    @ViewBuilder
+    var controlLayer: some View {
+        VStack {
+            HStack {
+                Spacer()
+  
+                Button {
+                    fadeDismiss()
+                } label: {
+                    Label("Close", systemImage: Icons.close)
+                }
+                .padding(Constants.main.standardSpacing)
+                .contentShape(.rect)
+                .padding(.trailing, Constants.main.standardSpacing)
+            }
+            .offset(y: -abs(offset))
+            
+            Spacer()
+            
+            HStack {
+                Button {
+                    print("Save")
+                } label: {
+                    Label("Save", systemImage: Icons.import)
+                }
+                .padding(Constants.main.standardSpacing)
+                .contentShape(.rect)
+                
+                Button {
+                    print("Share")
+                } label: {
+                    Label("Share", systemImage: Icons.share)
+                }
+                .padding(Constants.main.standardSpacing)
+                .contentShape(.rect)
+                
+                Button {
+                    print("QuickLook")
+                } label: {
+                    Label("QuickLook", systemImage: Icons.imageDetails)
+                }
+                .padding(Constants.main.standardSpacing)
+                .contentShape(.rect)
+            }
+            .offset(y: abs(offset))
+        }
+        .font(.title)
+        .fontWeight(.light)
+        .foregroundStyle(.white)
+        .labelStyle(.iconOnly)
+        .shadow(color: .black, radius: 2)
     }
     
     private func fadeDismiss() {
