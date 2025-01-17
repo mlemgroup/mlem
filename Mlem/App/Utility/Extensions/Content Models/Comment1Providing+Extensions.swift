@@ -56,6 +56,7 @@ extension Comment1Providing {
     func allMenuActions(
         expanded: Bool = false,
         feedback: Set<FeedbackType> = [.haptic, .toast],
+        showAllActions: Bool = true,
         commentTreeTracker: CommentTreeTracker? = nil,
         report: Report? = nil
     ) -> [any Action] {
@@ -65,7 +66,7 @@ extension Comment1Providing {
                 appearance: .init(label: "Moderation...", color: Palette.main.moderation, icon: Icons.moderation),
                 displayMode: Settings.main.moderatorActionGrouping == .divider || expanded ? .section : .disclosure
             ) {
-                moderatorMenuActions(feedback: feedback, report: report)
+                moderatorMenuActions(feedback: feedback, showAllActions: showAllActions, report: report)
             }
         }
     }
@@ -100,9 +101,10 @@ extension Comment1Providing {
     @ActionBuilder
     func moderatorMenuActions(
         feedback: Set<FeedbackType> = [.haptic, .toast],
+        showAllActions: Bool = true,
         report: Report? = nil
     ) -> [any Action] {
-        if api.isAdmin || (api.fetchedVersion ?? .infinity) > .v19_4 {
+        if api.isAdmin || (api.fetchedVersion ?? .infinity) > .v19_4, showAllActions || Settings.main.showAllModActions {
             viewVotesAction()
         }
         if let self2, !isOwnComment {

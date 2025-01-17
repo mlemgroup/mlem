@@ -143,7 +143,7 @@ extension Post1Providing {
                 appearance: .init(label: "Moderation...", color: Palette.main.moderation, icon: Icons.moderation),
                 displayMode: Settings.main.moderatorActionGrouping == .divider || expanded ? .section : .disclosure
             ) {
-                moderatorMenuActions(feedback: feedback, navigation: navigation, report: report, showAllActions: showAllActions)
+                moderatorMenuActions(feedback: feedback, showAllActions: showAllActions, navigation: navigation, report: report)
             }
         }
     }
@@ -184,9 +184,9 @@ extension Post1Providing {
     @ActionBuilder
     func moderatorMenuActions(
         feedback: Set<FeedbackType> = [.haptic, .toast],
+        showAllActions: Bool = true,
         navigation: NavigationLayer?,
-        report: Report? = nil,
-        showAllActions: Bool = true
+        report: Report? = nil
     ) -> [any Action] {
         if showAllActions || Settings.main.showAllModActions {
             pinToCommunityAction(feedback: feedback, verboseTitle: api.isAdmin)

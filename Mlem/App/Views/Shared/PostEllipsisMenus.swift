@@ -28,7 +28,7 @@ struct PostEllipsisMenus: View {
             if moderatorActionGrouping == .separateMenu {
                 if post.canModerate {
                     EllipsisMenu(systemImage: Icons.moderation, size: 24) {
-                        post.moderatorMenuActions(navigation: navigation, report: reportContext, showAllActions: false)
+                        post.moderatorMenuActions(showAllActions: false, navigation: navigation, report: reportContext)
                     }
                 }
                 EllipsisMenu(size: 24) {
