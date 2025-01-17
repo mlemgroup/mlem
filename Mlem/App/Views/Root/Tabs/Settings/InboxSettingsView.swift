@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct InboxSettingsView: View {
+    @Setting(\.tabInboxBadgeIncludedTypes) var tabInboxBadgeIncludedTypes
+    
     var body: some View {
         Form {
             Section {
@@ -15,6 +17,14 @@ struct InboxSettingsView: View {
                     "Customize Interaction Bar",
                     systemImage: "square.and.line.vertical.and.square.fill",
                     destination: .settings(.replyInteractionBar)
+                )
+            }
+            Section {
+                NavigationLink(
+                    "Notification Badge",
+                    value: tabInboxBadgeIncludedTypes.label(accountType: AccountsTracker.main.highestLevelAccountType),
+                    fallbackValue: .init(localized: "Some"),
+                    destination: .settings(.inboxBadge)
                 )
             }
         }

@@ -51,6 +51,7 @@ enum Icons {
     static let demoteModerator: String = "shield.slash"
     static let demoteModeratorFill: String = "shield.slash.fill"
     static let moderationReport: String = "flag"
+    static let registrationApplication: String = "list.clipboard"
     static let modlog: String = "book.pages"
     static let transferCommunity: String = "arrow.right"
     static let removeAdministrator: String = "arrowshape.down"

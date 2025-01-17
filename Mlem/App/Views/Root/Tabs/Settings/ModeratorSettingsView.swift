@@ -10,6 +10,7 @@ import SwiftUI
 struct ModeratorSettingsView: View {
     @Setting(\.moderatorActionGrouping) var moderatorActionGrouping
     @Setting(\.showAllModActions) var showAllModActions
+    @Setting(\.tabInboxBadgeIncludedTypes) var tabInboxBadgeIncludedTypes
     
     var body: some View {
         Form {
@@ -32,6 +33,14 @@ struct ModeratorSettingsView: View {
                 Toggle("Show All Actions in Feed", isOn: $showAllModActions)
             } footer: {
                 Text("When disabled, some moderator actions will only be accessible from the post page.")
+            }
+            Section {
+                NavigationLink(
+                    "Notification Badge",
+                    value: tabInboxBadgeIncludedTypes.label(accountType: AccountsTracker.main.highestLevelAccountType),
+                    fallbackValue: .init(localized: "Some"),
+                    destination: .settings(.inboxBadge)
+                )
             }
         }
         .navigationTitle("Moderation")

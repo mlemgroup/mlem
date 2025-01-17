@@ -9,17 +9,19 @@ import SwiftUI
 
 struct TabBarSettingsView: View {
     @Environment(AppState.self) var appState
+    @Environment(Palette.self) var palette
     
     @Setting(\.tabProfileLabelType) var profileTabLabel: ProfileTabLabel
     @Setting(\.tabProfileShowAvatar) var showUserAvatar: Bool
-    
+    @Setting(\.tabInboxBadgeIncludedTypes) var tabInboxBadgeIncludedTypes
+
     var account: any Account {
         appState.firstAccount
     }
     
     var body: some View {
         Form {
-            Section {
+            Section("Profile Tab") {
                 HStack {
                     ForEach(ProfileTabLabel.allCases, id: \.self) { item in
                         VStack(spacing: 10) {
@@ -50,9 +52,15 @@ struct TabBarSettingsView: View {
                         }
                     }
                 }
+                Toggle("Show Avatar", isOn: $showUserAvatar)
             }
             Section {
-                Toggle("Show Avatar", isOn: $showUserAvatar)
+                NavigationLink(
+                    "Notification Badge",
+                    value: tabInboxBadgeIncludedTypes.label(accountType: AccountsTracker.main.highestLevelAccountType),
+                    fallbackValue: .init(localized: "Some"),
+                    destination: .settings(.inboxBadge)
+                )
             }
         }
         .navigationTitle("Tab Bar")
