@@ -81,7 +81,7 @@ struct MediaView: View {
             .overlay(errorOverlay)
             .clipShape(.rect(cornerRadius: cornerRadius))
             .withContextMenu(menuContent: contextMenuContent, isEnabled: enableContextMenu)
-            .gesture(TapGesture().onEnded(tapActions), isEnabled: onTapActions != nil)
+            .gesture(TapGesture().onEnded(tapActions), isEnabled: (onTapActions != nil) || enableImageViewer)
             .frame(maxWidth: .infinity)
             .onAppear {
                 Task {
