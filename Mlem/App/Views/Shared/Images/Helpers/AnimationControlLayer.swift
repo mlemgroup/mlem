@@ -17,13 +17,12 @@ private struct AnimationControlLayer: ViewModifier {
     @Binding var animating: Bool
     var muted: Binding<Bool>?
     
-    // decouple play button state from blurred because the blur animation and material don't get along
-    @State var showControls: Bool
+    // decouple controls state from blurred because the blur animation and material/ProgressView don't get along
+    @State var showControls: Bool = true
     
     init(animating: Binding<Bool>, muted: Binding<Bool>?) {
         self._animating = animating
         self.muted = muted
-        self.showControls = !animating.wrappedValue
     }
     
     func body(content: Content) -> some View {
@@ -63,7 +62,7 @@ private struct AnimationControlLayer: ViewModifier {
                         }
                 }
             }
-            .onChange(of: blurred) {
+            .onChange(of: blurred, initial: true) {
                 if blurred {
                     showControls = false
                 } else {

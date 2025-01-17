@@ -157,7 +157,7 @@ extension MediaView {
                         .fill(.regularMaterial)
                 }
                 .padding(4)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
         }
     }
     
