@@ -44,7 +44,18 @@ extension InboxView {
                 BubblePicker(
                     ModTab.allCases,
                     selected: $selectedModTab,
-                    label: \.label
+                    label: \.label,
+                    value: { tab in
+                        if let unreadCount = (appState.firstSession as? UserSession)?.unreadCount {
+                            switch tab {
+                            case .reports:
+                                return unreadCount.reportTotal
+                            case .applications:
+                                return unreadCount.registrationApplications
+                            }
+                        }
+                        return 0
+                    }
                 )
             }
             switch selectedModTab {
@@ -182,7 +193,7 @@ extension InboxView {
                     iconNameFill: selectedFeed.systemImageFill,
                     iconScaleFactor: 0.5
                 ),
-                dropdownStyle: availableFeeds.count > 1 ? .enabled(showBadge: false) : .disabled
+                dropdownStyle: availableFeeds.count > 1 ? .enabled(showBadge: showBadge) : .disabled
             )
         }
     }
@@ -263,6 +274,14 @@ extension InboxView {
                     handleError(error)
                 }
             }
+        }
+    }
+    
+    var showBadge: Bool {
+        guard let unreadCount = (appState.firstSession as? UserSession)?.unreadCount else { return false }
+        switch selectedFeed {
+        case .inbox: return unreadCount.moderationTotal > 0
+        case .modMail: return unreadCount.personalTotal > 0
         }
     }
 }

@@ -36,7 +36,7 @@ struct SettingsView: View {
                     .tint(palette.colorfulAccent(5))
                 NavigationLink("Filters", systemImage: "line.3.horizontal.decrease", destination: .settings(.filters))
                     .tint(palette.colorfulAccent(4))
-                if !(appState.firstApi.myPerson?.moderatedCommunities.isEmpty ?? true) || appState.firstApi.isAdmin {
+                if AccountsTracker.main.highestLevelAccountType >= .moderator {
                     NavigationLink("Moderation", systemImage: Icons.moderationFill, destination: .settings(.moderation))
                         .tint(palette.moderation)
                 }

@@ -9,6 +9,7 @@ import MlemMiddleware
 
 extension UnreadCount {
     var badgeLabel: String? {
-        total <= 0 ? nil : String(total)
+        let total = Settings.main.tabInboxBadgeIncludedTypes.reduce(0) { $0 + self[$1] }
+        return total <= 0 ? nil : String(total)
     }
 }

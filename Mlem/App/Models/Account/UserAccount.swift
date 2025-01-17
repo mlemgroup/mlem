@@ -111,11 +111,16 @@ class UserAccount: Account, CommunityOrPersonStub {
             cachedSiteVersion = instance.version
             shouldSave = true
         }
-        if accountType == .user, !person.moderatedCommunities.isEmpty {
-            accountType = .moderator
-            shouldSave = true
-        } else if accountType == .moderator, person.moderatedCommunities.isEmpty {
-            accountType = .user
+        let newAccountType: AccountType
+        if person.isAdmin {
+            newAccountType = .admin
+        } else if !person.moderatedCommunities.isEmpty {
+            newAccountType = .moderator
+        } else {
+            newAccountType = .user
+        }
+        if accountType != newAccountType {
+            accountType = newAccountType
             shouldSave = true
         }
         if shouldSave {
