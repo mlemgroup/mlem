@@ -71,6 +71,7 @@ private func imageView(_ inlineImage: InlineImage, shouldBlur: Bool) -> AnyView 
         MediaView(
             url: inlineImage.url,
             verticalAspectRatioBounds: .init(width: 4, height: 5),
+            cornerRadius: Constants.main.mediumItemCornerRadius,
             enableContextMenu: true,
             enableImageViewer: true,
             enableNsfwBlur: shouldBlur)
