@@ -35,14 +35,18 @@ private struct AnimationControlLayer: ViewModifier {
             .overlay {
                 if animating {
                     Color.clear.contentShape(.rect)
-                        .onTapGesture {
-                            animating = false
-                        }
+                        .highPriorityGesture(TapGesture()
+                            .onEnded {
+                                animating = false
+                            }
+                        )
                 } else if showControls {
                     PlayButton(postSize: .large)
-                        .onTapGesture {
-                            animating = true
-                        }
+                        .highPriorityGesture(TapGesture()
+                            .onEnded {
+                                animating = true
+                            }
+                        )
                 }
             }
             .overlay(alignment: .bottomTrailing) {
