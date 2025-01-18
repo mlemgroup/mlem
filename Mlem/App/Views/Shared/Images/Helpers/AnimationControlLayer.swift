@@ -17,7 +17,7 @@ private struct AnimationControlLayer: ViewModifier {
     @Binding var animating: Bool
     var muted: Binding<Bool>?
     
-    // decouple controls state from blurred because the blur animation and material/ProgressView don't get along
+    // decouple controls state from blurred because the blur animation and material don't get along
     @State var showControls: Bool = true
     
     init(animating: Binding<Bool>, muted: Binding<Bool>?) {
@@ -27,22 +27,21 @@ private struct AnimationControlLayer: ViewModifier {
     
     func body(content: Content) -> some View {
         content
-            .background {
-                if showControls {
-                    ProgressView()
-                }
-            }
             .overlay {
                 if animating {
                     Color.clear.contentShape(.rect)
-                        .onTapGesture {
-                            animating = false
-                        }
+                        .highPriorityGesture(TapGesture()
+                            .onEnded {
+                                animating = false
+                            }
+                        )
                 } else if showControls {
                     PlayButton(postSize: .large)
-                        .onTapGesture {
-                            animating = true
-                        }
+                        .highPriorityGesture(TapGesture()
+                            .onEnded {
+                                animating = true
+                            }
+                        )
                 }
             }
             .overlay(alignment: .bottomTrailing) {
