@@ -35,10 +35,13 @@ struct PostSubscriptionIndicatorSettingsView: View {
                 HStack {
                     CircleCroppedImageView(url: nil, frame: 30, fallback: .person)
                         .opacity(0.8)
-                    Circle()
-                        .fill(palette.secondary)
-                        .frame(width: 10, height: 10)
-                        .padding(.leading, 5)
+                    if showSubscribedStatus {
+                        Circle()
+                            .fill(palette.secondary)
+                            .frame(width: 10, height: 10)
+                            .padding(.leading, 5)
+                            .transition(.scale.combined(with: .opacity))
+                    }
                     Text(
                         "community\(Text(verbatim: "@\(String(localized: "instance.com"))").foregroundColor(palette.tertiary))"
                     )
@@ -53,6 +56,7 @@ struct PostSubscriptionIndicatorSettingsView: View {
                     .offset(y: -1)
                 }
                 .padding([.top, .leading], 20)
+                .animation(.bouncy, value: showSubscribedStatus)
             }
             .padding([.top, .leading], 20)
             .listRowInsets(.init())
