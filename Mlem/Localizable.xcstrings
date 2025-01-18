@@ -304,6 +304,9 @@
     "Alien" : {
 
     },
+    "Alignment" : {
+
+    },
     "All" : {
 
     },
@@ -317,6 +320,9 @@
 
     },
     "Always Allow Direct Loading" : {
+
+    },
+    "Always Show Usernames" : {
 
     },
     "An endorsement signifies that an instance approves of another instance. It is completely subjective, and a reason does not have to be given." : {
@@ -612,6 +618,9 @@
 
     },
     "Community" : {
+
+    },
+    "Community Avatar" : {
 
     },
     "Community Creation" : {
@@ -1304,6 +1313,9 @@
     "New Post" : {
 
     },
+    "news%@" : {
+
+    },
     "Next" : {
 
     },
@@ -1848,9 +1860,6 @@
     "Show Bot Accounts" : {
 
     },
-    "Show Community Avatar" : {
-
-    },
     "Show content flagged as Not Safe For Work." : {
 
     },
@@ -1872,16 +1881,10 @@
     "Show Parent" : {
 
     },
-    "Show Post Creator in Feed" : {
-
-    },
     "Show Sidebar on App Launch" : {
 
     },
-    "Show Subscribed Status" : {
-
-    },
-    "Show User Avatar" : {
+    "Show Thumbnails" : {
 
     },
     "Shown" : {
@@ -1967,6 +1970,9 @@
 
     },
     "Subscript" : {
+
+    },
+    "Subscription Indicator" : {
 
     },
     "Subscription List" : {
@@ -2203,7 +2209,7 @@
     "This will permanently remove it from %@, not just Mlem!" : {
 
     },
-    "Thumbnail Location" : {
+    "Thumbnail" : {
 
     },
     "Tiled" : {
@@ -2375,6 +2381,9 @@
 
     },
     "User" : {
+
+    },
+    "User Avatar" : {
 
     },
     "User Link" : {

@@ -33,6 +33,8 @@ extension InteractionBarConfiguration {
             readouts: readouts.compactMap { .init(rawValue: $0.rawValue) }
         )
     }
+    
+    var all: [Item] { leading + trailing }
 }
 
 enum InteractionConfigurationItem<ActionType: ActionTypeProviding, CounterType: CounterTypeProviding>: Codable, Hashable {
