@@ -49,6 +49,7 @@ struct PostThumbnailSettingsView: View {
         }
         .frame(maxWidth: .infinity)
         .onTapGesture {
+            HapticManager.main.play(haptic: .gentleInfo, priority: .low)
             thumbnailLocation = location
         }
     }

@@ -34,7 +34,12 @@ struct PostSettingsView: View {
                 NavigationLink(.settings(.postInteractionBar)) {
                     SettingsInteractionBarSummaryView(configuration: InteractionBarTracker.main.postInteractionBar)
                 }
-                NavigationLink("Subscription Indicator", value: "On", fallbackValue: "", destination: .inbox)
+                NavigationLink(
+                    "Subscription Indicator",
+                    value: "On",
+                    fallbackValue: "",
+                    destination: .settings(.postSubscriptionIndicator)
+                )
             }
             
             if postSize != .tile, postSize != .compact {
