@@ -157,6 +157,9 @@
 		037658DF2BE7D9EF00F4DD4D /* Community1Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037658DE2BE7D9EF00F4DD4D /* Community1Providing+Extensions.swift */; };
 		037DE0752CE023E3007F7B92 /* BlockListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DE0742CE023E3007F7B92 /* BlockListView.swift */; };
 		037DE07A2CE108D9007F7B92 /* FooterLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DE0792CE108D9007F7B92 /* FooterLinkView.swift */; };
+		037F77ED2D3B064B00D4E180 /* SettingsDeviceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037F77EC2D3B064B00D4E180 /* SettingsDeviceView.swift */; };
+		037F783F2D3BD05500D4E180 /* PostSettingsView+PostSizePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037F783E2D3BD05500D4E180 /* PostSettingsView+PostSizePicker.swift */; };
+		037F78412D3C00E600D4E180 /* SettingsInteractionBarSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037F78402D3C00E600D4E180 /* SettingsInteractionBarSummaryView.swift */; };
 		038028D32CAB3D2D0091A8A2 /* ShareActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038028D22CAB3D2D0091A8A2 /* ShareActivity.swift */; };
 		038028D52CAB479D0091A8A2 /* PostEditorView+Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038028D42CAB479D0091A8A2 /* PostEditorView+Views.swift */; };
 		038028D82CACAB960091A8A2 /* ModeratorSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038028D72CACAB960091A8A2 /* ModeratorSettingsView.swift */; };
@@ -628,6 +631,9 @@
 		037658DE2BE7D9EF00F4DD4D /* Community1Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Community1Providing+Extensions.swift"; sourceTree = "<group>"; };
 		037DE0742CE023E3007F7B92 /* BlockListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockListView.swift; sourceTree = "<group>"; };
 		037DE0792CE108D9007F7B92 /* FooterLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterLinkView.swift; sourceTree = "<group>"; };
+		037F77EC2D3B064B00D4E180 /* SettingsDeviceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDeviceView.swift; sourceTree = "<group>"; };
+		037F783E2D3BD05500D4E180 /* PostSettingsView+PostSizePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostSettingsView+PostSizePicker.swift"; sourceTree = "<group>"; };
+		037F78402D3C00E600D4E180 /* SettingsInteractionBarSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsInteractionBarSummaryView.swift; sourceTree = "<group>"; };
 		038028D22CAB3D2D0091A8A2 /* ShareActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareActivity.swift; sourceTree = "<group>"; };
 		038028D42CAB479D0091A8A2 /* PostEditorView+Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostEditorView+Views.swift"; sourceTree = "<group>"; };
 		038028D72CACAB960091A8A2 /* ModeratorSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeratorSettingsView.swift; sourceTree = "<group>"; };
@@ -1023,6 +1029,7 @@
 				03D284052D2AEE3A00A6659B /* TabBarSettingsView.swift */,
 				0325B9392D3A9E8100E28B97 /* InboxBadgeSettingsView.swift */,
 				CDBFCB692C04EFFE008CD468 /* PostSettingsView.swift */,
+				037F783E2D3BD05500D4E180 /* PostSettingsView+PostSizePicker.swift */,
 				039F58922C7B616600C61658 /* CommentSettingsView.swift */,
 				039F58942C7B618F00C61658 /* InboxSettingsView.swift */,
 				03531EEB2C2D81DC004A3464 /* LinkSettingsView.swift */,
@@ -1298,6 +1305,8 @@
 				039F58872C7B531800C61658 /* SquircleLabelStyle.swift */,
 				039F588E2C7B599800C61658 /* ThemeLabel.swift */,
 				0325B93D2D3AAE9E00E28B97 /* SettingsHeaderView.swift */,
+				037F77EC2D3B064B00D4E180 /* SettingsDeviceView.swift */,
+				037F78402D3C00E600D4E180 /* SettingsInteractionBarSummaryView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2312,6 +2321,7 @@
 				03DAEA772C64074E0064DE64 /* SubscriptionListItemView.swift in Sources */,
 				0324FA772C1F0AE100F6247D /* Readout.swift in Sources */,
 				035E85B02C999BC4002A2A29 /* PanGesture.swift in Sources */,
+				037F783F2D3BD05500D4E180 /* PostSettingsView+PostSizePicker.swift in Sources */,
 				0389DDCF2C39CB0E0005B808 /* SearchView.swift in Sources */,
 				CD1DF63E2D387E8500F7851E /* MediaView+Views.swift in Sources */,
 				0397D4742C680FFC002C6CDC /* MediaLoader.swift in Sources */,
@@ -2433,6 +2443,7 @@
 				CD4E386D2C836F8C009B24F2 /* UIUserInterfaceStyle+Extensions.swift in Sources */,
 				0355F9492C16406E00605248 /* Line.swift in Sources */,
 				CD4D58A52B86BD1B00B82964 /* PersistenceRepository.swift in Sources */,
+				037F78412D3C00E600D4E180 /* SettingsInteractionBarSummaryView.swift in Sources */,
 				035394862C9CDC1100795AA5 /* SubscriptionListNavigationButton.swift in Sources */,
 				039F58842C7A7F2C00C61658 /* CommentJumpButtonLocation.swift in Sources */,
 				CD1B2E212C7F84160075C7EA /* View+MarkReadOnScroll.swift in Sources */,
@@ -2704,6 +2715,7 @@
 				0391E0F92CFF17AE0040CCA8 /* ProfileSettingsView.swift in Sources */,
 				03E614E72C0BCDC200F692A4 /* FullyQualifiedLinkView.swift in Sources */,
 				B1B78D642A51D53900F72485 /* AppDelegate.swift in Sources */,
+				037F77ED2D3B064B00D4E180 /* SettingsDeviceView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
