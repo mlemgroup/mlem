@@ -17,12 +17,6 @@ extension MediaView {
         }
     }
     
-    func shareImage(url: URL) async {
-        if let fileUrl = await downloadImageToFileSystem(url: url) {
-            navigation.shareInfo = .init(url: fileUrl)
-        }
-    }
-    
     func showQuickLook(url: URL) async {
         if let fileUrl = await downloadImageToFileSystem(url: url) {
             quickLookUrl = fileUrl
