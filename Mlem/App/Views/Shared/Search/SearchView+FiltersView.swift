@@ -23,6 +23,8 @@ extension SearchView {
                         instanceFiltersView
                     case .posts:
                         postFiltersView
+                    case .comments:
+                        commentFiltersView
                     }
                 }
                 .padding(.bottom, 12)
@@ -87,6 +89,14 @@ extension SearchView {
             isOn: postFilters.creator != nil,
             systemImage: postFilters.creator == nil ? Icons.dropDownCircleFill : Icons.closeCircleFill
         ))
+    }
+    
+    @ViewBuilder
+    private var commentFiltersView: some View {
+        FeedSortPicker(sort: $commentFilters.sort)
+            .buttonStyle(.feedFilter(isOn: commentFilters.sort != .topAll))
+        LocationPicker(filter: $commentFilters.location)
+            .buttonStyle(.feedFilter(isOn: commentFilters.location != .any))
     }
     
     @ViewBuilder
