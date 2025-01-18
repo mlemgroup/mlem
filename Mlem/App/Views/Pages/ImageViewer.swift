@@ -13,7 +13,7 @@ struct ImageViewer: View {
     @Environment(\.dismiss) var dismiss
     
     let url: URL
-    
+
     let duration: CGFloat = 0.25
     let screenHeight: CGFloat = UIScreen.main.bounds.height
     
@@ -31,11 +31,15 @@ struct ImageViewer: View {
     /// Opacity of the viewer
     @State var opacity: CGFloat = 0
     
-    /// Whether the controls should be shown/hidden
-    @State var showControls: Bool = true
+    // Whether the controls should be shown/hidden
+    // @State var controlsShown: Bool = true
+    var controlsShown: Bool { controlOffset == 0 && controlOpacity == 1 }
     
     /// Vertical offset for the control overlay
     @State var controlOffset: CGFloat = 0
+    
+    /// Opacity for the control overlay
+    @State var controlOpacity: CGFloat = 1
     
     /// When true, enables tapping to show/hide controls
     @State var enableControlTap: Bool = true
@@ -57,21 +61,36 @@ struct ImageViewer: View {
         .opacity(opacity)
         .overlay {
             controlLayer
+                .opacity(controlOpacity)
                 .opacity(opacity)
         }
-        .onChange(of: showControls) {
-            withAnimation(.easeOut(duration: duration)) {
-                controlOffset = showControls ? 0 : 100
-            }
-        }
+//        .onChange(of: controlsShown) {
+//            if controlsShown {
+//                showControls()
+//            } else {
+//                hideControls()
+//            }
+////            withAnimation(.easeOut(duration: duration)) {
+////                controlOffset = controlsShown ? 0 : 100
+////            }
+//        }
         .onChange(of: isZoomed) {
             if isZoomed {
-                showControls = false
+                hideControls(withSlide: true)
+                // hideControls(fade: false)
+                // controlsShown = false
+            } else {
+                showControls()
             }
         }
         .onTapGesture {
             if enableControlTap {
-                showControls = !showControls
+                if controlsShown {
+                    hideControls()
+                } else {
+                    showControls()
+                }
+                // controlsShown = !controlsShown
             }
         }
         .simultaneousGesture(DragGesture(minimumDistance: 1.0)
@@ -188,6 +207,38 @@ struct ImageViewer: View {
         }
     }
     
+    private func hideControls(withSlide: Bool = false) {
+        withAnimation(.easeOut(duration: duration)) {
+            if withSlide {
+                controlOffset = 50
+            }
+            controlOpacity = 0
+        }
+//        if fade {
+//            withAnimation(.easeOut(duration: duration)) {
+//                controlOpacity = 0
+//            }
+//        } else {
+//            withAnimation(.easeOut(duration: duration)) {
+//                controlOffset = 100
+//            }
+//        }
+    }
+    
+    /// Returns controls to a visible state
+    private func showControls() {
+        if controlOffset > 0 {
+            controlOpacity = 1
+            withAnimation(.easeOut(duration: duration)) {
+                controlOffset = 0
+            }
+        } else if controlOpacity < 1 {
+            withAnimation(.easeOut(duration: duration)) {
+                controlOpacity = 1
+            }
+        }
+    }
+    
     private func animateOpacityUpdate(_ newOpacity: CGFloat, callback: (() -> Void)? = nil) {
         withAnimation(.easeOut(duration: duration)) {
             opacity = newOpacity
@@ -219,7 +270,7 @@ struct ImageViewer: View {
     private func handleOffsetUpdate(_ newOffset: CGFloat) {
         let absOffset = abs(newOffset)
         offset = newOffset
-        if showControls {
+        if controlsShown {
             controlOffset = absOffset
         }
         opacity = 1.0 - (absOffset / screenHeight)
