@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PostSubscriptionIndicatorSettingsView: View {
     @Environment(Palette.self) var palette
+    @Environment(\.colorScheme) var colorScheme
     
     @Setting(\.showSubscribedStatus) var showSubscribedStatus
     
@@ -27,9 +28,10 @@ struct PostSubscriptionIndicatorSettingsView: View {
     var previewSection: some View {
         Section {
             UnevenRoundedRectangle(
-                cornerRadii: .init(topLeading: 20, bottomLeading: 0, bottomTrailing: 0, topTrailing: 0)
+                cornerRadii: .init(topLeading: 16, bottomLeading: 0, bottomTrailing: 10, topTrailing: 0)
             )
             .fill(palette.tertiaryGroupedBackground)
+            .strokeBorder(colorScheme == .light ? palette.secondaryGroupedBackground : .clear, lineWidth: 2)
             .frame(height: 100)
             .overlay(alignment: .topLeading) {
                 HStack {
@@ -43,7 +45,7 @@ struct PostSubscriptionIndicatorSettingsView: View {
                             .transition(.scale.combined(with: .opacity))
                     }
                     Text(
-                        "community\(Text(verbatim: "@\(String(localized: "instance.com"))").foregroundColor(palette.tertiary))"
+                        "news\(Text(verbatim: "@\(String(localized: "example.com"))").foregroundColor(palette.tertiary))"
                     )
                     .lineLimit(1)
                     .fixedSize(horizontal: false, vertical: true)

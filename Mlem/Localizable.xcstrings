@@ -654,9 +654,6 @@
         }
       }
     },
-    "community%@" : {
-
-    },
     "Compact" : {
 
     },
@@ -1103,9 +1100,6 @@
     "Instance Link" : {
 
     },
-    "instance.com" : {
-
-    },
     "Instances" : {
 
     },
@@ -1314,6 +1308,9 @@
 
     },
     "New Post" : {
+
+    },
+    "news%@" : {
 
     },
     "Next" : {
