@@ -91,6 +91,8 @@ struct ImageViewer: View {
             animateOpacityUpdate(1.0)
         }
         .onChange(of: dragState) {
+            guard !isZoomed else { return }
+            
             if dragState {
                 // drag gesture conflicts with control tap, so we disable it for a brief window after detecting a drag
                 enableControlTap = false
@@ -181,8 +183,8 @@ struct ImageViewer: View {
     private func handleOffsetUpdate(_ newOffset: CGFloat) {
         let absOffset = abs(newOffset)
         offset = newOffset
-        controlOffset = absOffset
-        controlOpacity = 1.0 - (absOffset / maxControlOffset)
+        controlOffset = absOffset / 3
+        controlOpacity = 1.0 - (controlOffset / maxControlOffset)
         opacity = 1.0 - (absOffset / screenHeight)
     }
     
