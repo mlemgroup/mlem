@@ -34,24 +34,45 @@ struct SettingsDeviceView<ScreenContent: View>: View {
     
     var body: some View {
         frameView
-            .aspectRatio(9 / 19, contentMode: .fit)
-            .frame(width: 40)
+            .aspectRatio(aspectRatio, contentMode: .fit)
+            .frame(maxWidth: UIDevice.isPad ? 100 : 40)
             .compositingGroup()
             .opacity(colorScheme == .dark && !selected ? 0.6 : 1)
     }
     
+    var aspectRatio: CGFloat {
+        if UIDevice.isPad {
+            return 3 / 4
+        }
+        if UIDevice.frameType == .noNotch {
+            return 9 / 16
+        }
+        return 9 / 19
+    }
+    
+    var frameCornerRadiusScaleFactor: CGFloat {
+        if UIDevice.isPad {
+            return 1 / 12
+        }
+        if UIDevice.frameType == .noNotch {
+            return 1 / 8
+        }
+        return 1 / 6
+    }
+    
     var frameView: some View {
         GeometryReader { geometry in
-            RoundedRectangle(cornerRadius: geometry.size.width / 6)
+            RoundedRectangle(cornerRadius: geometry.size.width * frameCornerRadiusScaleFactor)
                 .fill(accentColor.opacity(0.1))
                 .strokeBorder(accentColor, lineWidth: 2)
                 .overlay(alignment: .top) {
-                    notchView(geometry: geometry)
-                        .padding(.top, 2)
-                        .padding(.horizontal, geometry.size.width / 4)
+                    if UIDevice.frameType != .noNotch {
+                        notchView(geometry: geometry)
+                            .padding(.top, 2)
+                    }
                 }
                 .background {
-                    let radius = geometry.size.width / 6 - 4
+                    let radius = geometry.size.width * frameCornerRadiusScaleFactor - 4
                     Color.clear
                         .background(alignment: .top) {
                             VStack {
@@ -78,14 +99,19 @@ struct SettingsDeviceView<ScreenContent: View>: View {
     
     @ViewBuilder
     func notchView(geometry: GeometryProxy) -> some View {
-        UnevenRoundedRectangle(
-            cornerRadii: .init(topLeading: 0, bottomLeading: 1, bottomTrailing: 1, topTrailing: 0)
-        )
-        .fill(accentColor)
-        .frame(height: geometry.size.height / 15 - 2)
+        if UIDevice.frameType == .dynamicIsland {
+            Capsule()
+                .fill(accentColor)
+                .frame(height: geometry.size.height / 25)
+                .padding(.horizontal, geometry.size.width / 2.8)
+                .padding(.top, 3)
+        } else {
+            UnevenRoundedRectangle(
+                cornerRadii: .init(topLeading: 0, bottomLeading: 1, bottomTrailing: 1, topTrailing: 0)
+            )
+            .fill(accentColor)
+            .frame(height: geometry.size.height / 15 - 2)
+            .padding(.horizontal, geometry.size.width / (UIDevice.frameType == .thinNotch ? 3 : 4))
+        }
     }
-}
-
-private enum DeviceFrameType {
-    case noNotch, wideNotch, thinNotch, dynamicIsland
 }
