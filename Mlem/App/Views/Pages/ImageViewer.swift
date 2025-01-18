@@ -15,6 +15,7 @@ struct ImageViewer: View {
     let url: URL
 
     let duration: CGFloat = 0.25
+    let maxControlOffset: CGFloat = 50
     let screenHeight: CGFloat = UIScreen.main.bounds.height
     
     @GestureState var dragState: Bool = false
@@ -31,10 +32,6 @@ struct ImageViewer: View {
     /// Opacity of the viewer
     @State var opacity: CGFloat = 0
     
-    // Whether the controls should be shown/hidden
-    // @State var controlsShown: Bool = true
-    var controlsShown: Bool { controlOffset == 0 && controlOpacity == 1 }
-    
     /// Vertical offset for the control overlay
     @State var controlOffset: CGFloat = 0
     
@@ -45,6 +42,9 @@ struct ImageViewer: View {
     @State var enableControlTap: Bool = true
     
     @State var quickLookUrl: URL?
+    
+    // Whether the controls are currently visible
+    var controlsShown: Bool { controlOpacity == 1 }
     
     init(url: URL) {
         var components = URLComponents(url: url, resolvingAgainstBaseURL: false)!
@@ -58,29 +58,13 @@ struct ImageViewer: View {
         }
         .offset(y: offset)
         .background(.black)
+        .overlay(controlOverlay)
         .opacity(opacity)
-        .overlay {
-            controlLayer
-                .opacity(controlOpacity)
-                .opacity(opacity)
-        }
-//        .onChange(of: controlsShown) {
-//            if controlsShown {
-//                showControls()
-//            } else {
-//                hideControls()
-//            }
-////            withAnimation(.easeOut(duration: duration)) {
-////                controlOffset = controlsShown ? 0 : 100
-////            }
-//        }
         .onChange(of: isZoomed) {
             if isZoomed {
                 hideControls(withSlide: true)
-                // hideControls(fade: false)
-                // controlsShown = false
             } else {
-                showControls()
+                showControls(withSlide: true)
             }
         }
         .onTapGesture {
@@ -90,7 +74,6 @@ struct ImageViewer: View {
                 } else {
                     showControls()
                 }
-                // controlsShown = !controlsShown
             }
         }
         .simultaneousGesture(DragGesture(minimumDistance: 1.0)
@@ -126,70 +109,7 @@ struct ImageViewer: View {
         .background(ClearBackgroundView())
     }
     
-    @ViewBuilder
-    var controlLayer: some View {
-        VStack {
-            HStack {
-                Spacer()
-  
-                Button {
-                    fadeDismiss()
-                } label: {
-                    Label("Close", systemImage: Icons.close)
-                }
-                .padding(Constants.main.standardSpacing)
-                .contentShape(.rect)
-                .background {
-                    Circle().fill(.ultraThinMaterial)
-                        .environment(\.colorScheme, .dark)
-                }
-                .padding(.trailing, Constants.main.standardSpacing)
-            }
-            .offset(y: -controlOffset)
-            
-            Spacer()
-            
-            HStack {
-                Button {
-                    Task { await saveImage(url: url) }
-                } label: {
-                    Label("Save", systemImage: Icons.import)
-                }
-                .padding(Constants.main.standardSpacing)
-                .contentShape(.rect)
-                .offset(y: -2)
-                
-                Button {
-                    Task { await shareImage(url: url, navigation: navigation) }
-                } label: {
-                    Label("Share", systemImage: Icons.share)
-                }
-                .padding(Constants.main.standardSpacing)
-                .contentShape(.rect)
-                .offset(y: -2)
-                
-                Button {
-                    Task { await showQuickLook(url: url) }
-                } label: {
-                    Label("QuickLook", systemImage: Icons.menuCircle)
-                }
-                .padding(Constants.main.standardSpacing)
-                .contentShape(.rect)
-            }
-            .padding(.horizontal, Constants.main.halfSpacing)
-            .background {
-                Capsule().fill(.ultraThinMaterial)
-                    .environment(\.colorScheme, .dark)
-            }
-            .offset(y: controlOffset)
-        }
-        .font(.title2)
-        .fontWeight(.light)
-        .foregroundStyle(.white)
-        .labelStyle(.iconOnly)
-    }
-    
-    private func fadeDismiss() {
+    func fadeDismiss() {
         isDismissing = true
         animateOpacityUpdate(0) {
             withoutAnimation {
@@ -210,31 +130,22 @@ struct ImageViewer: View {
     private func hideControls(withSlide: Bool = false) {
         withAnimation(.easeOut(duration: duration)) {
             if withSlide {
-                controlOffset = 50
+                controlOffset = maxControlOffset
             }
             controlOpacity = 0
         }
-//        if fade {
-//            withAnimation(.easeOut(duration: duration)) {
-//                controlOpacity = 0
-//            }
-//        } else {
-//            withAnimation(.easeOut(duration: duration)) {
-//                controlOffset = 100
-//            }
-//        }
     }
     
     /// Returns controls to a visible state
-    private func showControls() {
-        if controlOffset > 0 {
+    private func showControls(withSlide: Bool = false) {
+        guard !controlsShown else { return }
+
+        controlOffset = withSlide ? maxControlOffset : 0
+
+        withAnimation(.easeIn(duration: duration)) {
             controlOpacity = 1
-            withAnimation(.easeOut(duration: duration)) {
+            if withSlide {
                 controlOffset = 0
-            }
-        } else if controlOpacity < 1 {
-            withAnimation(.easeOut(duration: duration)) {
-                controlOpacity = 1
             }
         }
     }
@@ -270,13 +181,11 @@ struct ImageViewer: View {
     private func handleOffsetUpdate(_ newOffset: CGFloat) {
         let absOffset = abs(newOffset)
         offset = newOffset
-        if controlsShown {
-            controlOffset = absOffset
-        }
+        controlOffset = absOffset
         opacity = 1.0 - (absOffset / screenHeight)
     }
     
-    private func showQuickLook(url: URL) async {
+    func showQuickLook(url: URL) async {
         if let fileUrl = await downloadImageToFileSystem(url: url) {
             quickLookUrl = fileUrl
         }
