@@ -85,3 +85,7 @@ struct SettingsDeviceView<ScreenContent: View>: View {
         .frame(height: geometry.size.height / 15 - 2)
     }
 }
+
+private enum DeviceFrameType {
+    case noNotch, wideNotch, thinNotch, dynamicIsland
+}

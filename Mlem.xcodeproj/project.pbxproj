@@ -160,6 +160,7 @@
 		037F77ED2D3B064B00D4E180 /* SettingsDeviceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037F77EC2D3B064B00D4E180 /* SettingsDeviceView.swift */; };
 		037F783F2D3BD05500D4E180 /* PostSettingsView+PostSizePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037F783E2D3BD05500D4E180 /* PostSettingsView+PostSizePicker.swift */; };
 		037F78412D3C00E600D4E180 /* SettingsInteractionBarSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037F78402D3C00E600D4E180 /* SettingsInteractionBarSummaryView.swift */; };
+		037F78432D3C129B00D4E180 /* PostThumbnailSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037F78422D3C129B00D4E180 /* PostThumbnailSettingsView.swift */; };
 		038028D32CAB3D2D0091A8A2 /* ShareActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038028D22CAB3D2D0091A8A2 /* ShareActivity.swift */; };
 		038028D52CAB479D0091A8A2 /* PostEditorView+Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038028D42CAB479D0091A8A2 /* PostEditorView+Views.swift */; };
 		038028D82CACAB960091A8A2 /* ModeratorSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038028D72CACAB960091A8A2 /* ModeratorSettingsView.swift */; };
@@ -634,6 +635,7 @@
 		037F77EC2D3B064B00D4E180 /* SettingsDeviceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDeviceView.swift; sourceTree = "<group>"; };
 		037F783E2D3BD05500D4E180 /* PostSettingsView+PostSizePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostSettingsView+PostSizePicker.swift"; sourceTree = "<group>"; };
 		037F78402D3C00E600D4E180 /* SettingsInteractionBarSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsInteractionBarSummaryView.swift; sourceTree = "<group>"; };
+		037F78422D3C129B00D4E180 /* PostThumbnailSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostThumbnailSettingsView.swift; sourceTree = "<group>"; };
 		038028D22CAB3D2D0091A8A2 /* ShareActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareActivity.swift; sourceTree = "<group>"; };
 		038028D42CAB479D0091A8A2 /* PostEditorView+Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostEditorView+Views.swift"; sourceTree = "<group>"; };
 		038028D72CACAB960091A8A2 /* ModeratorSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeratorSettingsView.swift; sourceTree = "<group>"; };
@@ -1029,6 +1031,7 @@
 				03D284052D2AEE3A00A6659B /* TabBarSettingsView.swift */,
 				0325B9392D3A9E8100E28B97 /* InboxBadgeSettingsView.swift */,
 				CDBFCB692C04EFFE008CD468 /* PostSettingsView.swift */,
+				037F78422D3C129B00D4E180 /* PostThumbnailSettingsView.swift */,
 				037F783E2D3BD05500D4E180 /* PostSettingsView+PostSizePicker.swift */,
 				039F58922C7B616600C61658 /* CommentSettingsView.swift */,
 				039F58942C7B618F00C61658 /* InboxSettingsView.swift */,
@@ -2379,6 +2382,7 @@
 				034B94832C09340A00039AF4 /* MarkdownConfiguration+Extensions.swift in Sources */,
 				034CC0302D22C5BE00C557D3 /* WarningOverlayView.swift in Sources */,
 				034690932D0F4D720073E664 /* RemovableProviding+Extensions.swift in Sources */,
+				037F78432D3C129B00D4E180 /* PostThumbnailSettingsView.swift in Sources */,
 				039F58952C7B618F00C61658 /* InboxSettingsView.swift in Sources */,
 				CD4D58CF2B86DDEC00B82964 /* AccountSortMode.swift in Sources */,
 				CDE1F18F2C63D75A008AF042 /* Settings.swift in Sources */,
