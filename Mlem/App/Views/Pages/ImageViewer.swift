@@ -182,6 +182,7 @@ struct ImageViewer: View {
         let absOffset = abs(newOffset)
         offset = newOffset
         controlOffset = absOffset
+        controlOpacity = 1.0 - (absOffset / maxControlOffset)
         opacity = 1.0 - (absOffset / screenHeight)
     }
     
