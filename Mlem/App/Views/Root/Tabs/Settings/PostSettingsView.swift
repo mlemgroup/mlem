@@ -10,6 +10,8 @@ import SwiftUI
 
 // note: this is a very lazy categorization of "properties that affect posts"
 struct PostSettingsView: View {
+    @Environment(Palette.self) var palette
+    
     @Setting(\.postSize) var postSize
     @Setting(\.thumbnailLocation) var thumbnailLocation
     @Setting(\.showPostCreator) var showCreator
@@ -19,37 +21,41 @@ struct PostSettingsView: View {
     
     var body: some View {
         Form {
+            PostSizePicker()
             Section {
-                Picker("Post Size", selection: $postSize) {
-                    ForEach(PostSize.allCases, id: \.rawValue) { item in
-                        Text(item.label).tag(item)
-                    }
+                if postSize == .headline || postSize == .compact {
+                    NavigationLink(
+                        "Thumbnail",
+                        value: .init(localized: thumbnailLocation.label),
+                        fallbackValue: "",
+                        destination: .settings(.postThumbnail)
+                    )
                 }
-            }
-            Section {
+                NavigationLink(.settings(.postInteractionBar)) {
+                    SettingsInteractionBarSummaryView(configuration: InteractionBarTracker.main.postInteractionBar)
+                }
                 NavigationLink(
-                    "Customize Interaction Bar",
-                    systemImage: "square.and.line.vertical.and.square.fill",
-                    destination: .settings(.postInteractionBar)
+                    "Subscription Indicator",
+                    value: "On",
+                    fallbackValue: "",
+                    destination: .settings(.postSubscriptionIndicator)
                 )
             }
-            Section {
-                Picker("Thumbnail Location", selection: $thumbnailLocation) {
-                    ForEach(ThumbnailLocation.allCases, id: \.rawValue) { item in
-                        Text(item.label).tag(item)
+            
+            if postSize != .tile, postSize != .compact {
+                Section {
+                    Toggle(isOn: $showCreator) {
+                        Text("Always Show Usernames")
                     }
                 }
-                Toggle(isOn: $showCreator) {
-                    Text("Show Post Creator in Feed")
-                }
+            }
+            
+            Section {
                 Toggle(isOn: $showPersonAvatar) {
-                    Text("Show User Avatar")
+                    Text("User Avatar")
                 }
                 Toggle(isOn: $showCommunityAvatar) {
-                    Text("Show Community Avatar")
-                }
-                Toggle(isOn: $showSubscribedStatus) {
-                    Text("Show Subscribed Status")
+                    Text("Community Avatar")
                 }
             }
         }

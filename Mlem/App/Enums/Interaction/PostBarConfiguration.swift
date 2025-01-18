@@ -90,8 +90,6 @@ struct PostBarConfiguration: InteractionBarConfiguration {
     var trailing: [Item]
     var readouts: [ReadoutType]
     
-    var all: [Item] { leading + trailing }
-    
     static var `default`: Self {
         .init(
             leading: [.counter(.score)],
