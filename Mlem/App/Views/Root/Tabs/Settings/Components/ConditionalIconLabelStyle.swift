@@ -13,14 +13,12 @@ struct ConditionalIconLabelStyle: LabelStyle {
     @Setting(\.showSettingsIcons) var showSettingsIcons
     
     func makeBody(configuration: Configuration) -> some View {
-        if showSettingsIcons {
-            HStack {
+        Label {
+            configuration.title
+        } icon: {
+            if showSettingsIcons {
                 configuration.icon.foregroundStyle(palette.accent)
-                configuration.title
             }
-        } else {
-            Label(configuration)
-                .labelStyle(.titleOnly)
         }
     }
 }

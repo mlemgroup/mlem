@@ -37,53 +37,51 @@ struct GeneralSettingsView: View {
     var body: some View {
         Form {
             Section {
-                Picker(selection: $blurNsfw) {
+                Picker("Blur NSFW", systemImage: Icons.blurNsfw, selection: $blurNsfw) {
                     ForEach(NsfwBlurBehavior.allCases, id: \.self) { behavior in
                         Text(behavior.label)
                     }
-                } label: {
-                    Text("Blur NSFW")
                 }
-                Toggle("Warn When Opening NSFW Community", isOn: $showNsfwCommunityWarning)
-                Toggle("Warn When Opening Modlog", isOn: $showModlogWarning)
+                Toggle("Warn When Opening NSFW Community", systemImage: Icons.warning, isOn: $showNsfwCommunityWarning)
+                Toggle("Warn When Opening Modlog", systemImage: Icons.warning, isOn: $showModlogWarning)
             } header: {
                 Text("Safety")
             }
             
             Section {
-                Toggle("Auto-Bypass Image Proxy", isOn: $bypassImageProxy)
+                Toggle("Auto-Bypass Image Proxy", systemImage: Icons.proxy, isOn: $bypassImageProxy)
             } header: {
                 Text("Privacy")
             }
             
             Section {
-                Picker("Default Feed", selection: $defaultFeed) {
+                Picker("Default Feed", systemImage: Icons.feeds, selection: $defaultFeed) {
                     ForEach(FeedSelection.allCases, id: \.self) { item in
                         Text(item.rawValue.capitalized)
                     }
                 }
                 if UIDevice.isPad {
-                    Toggle("Show Sidebar on App Launch", isOn: $sidebarVisibleByDefault)
+                    Toggle("Show Sidebar on App Launch", systemImage: Icons.sidebar, isOn: $sidebarVisibleByDefault)
                 }
                 if #available(iOS 18.0, *) {
-                    Toggle("Autoplay Media", isOn: $autoplayMedia)
+                    Toggle("Autoplay Media", systemImage: Icons.playCircle, isOn: $autoplayMedia)
                 }
-                Toggle("Mute Videos", isOn: $muteVideos)
-                Toggle("Mark Read on Scroll", isOn: $markReadOnScroll)
-                Toggle("Infinite Scroll", isOn: $infiniteScroll)
-                Toggle("Upvote on Save", isOn: $upvoteOnSave)
-                Picker("Jump Button", selection: $jumpButton) {
+                Toggle("Mute Videos", systemImage: Icons.muted, isOn: $muteVideos)
+                Toggle("Mark Read on Scroll", systemImage: Icons.read, isOn: $markReadOnScroll)
+                Toggle("Infinite Scroll", systemImage: Icons.infiniteScroll, isOn: $infiniteScroll)
+                Toggle("Upvote on Save", systemImage: Icons.upvoteOnSave, isOn: $upvoteOnSave)
+                Picker("Jump Button", systemImage: Icons.jumpButtonCircle, selection: $jumpButton) {
                     ForEach(CommentJumpButtonLocation.allCases, id: \.self) { item in
                         Text(item.label)
                     }
                 }
-                Toggle("Confirm Image Uploads", isOn: $confirmImageUploads)
-                Picker("Haptic Level", selection: $hapticLevel) {
+                Toggle("Confirm Image Uploads", systemImage: Icons.confirmImageUploads, isOn: $confirmImageUploads)
+                Picker("Haptic Level", systemImage: Icons.haptics, selection: $hapticLevel) {
                     ForEach(HapticPriority.allCases, id: \.self) { item in
                         Text(item.label)
                     }
                 }
-                Toggle("Wrap Code Block Lines", isOn: $wrapCodeBlockLines)
+                Toggle("Wrap Code Block Lines", systemImage: Icons.inlineCode, isOn: $wrapCodeBlockLines)
             } header: {
                 Text("Behavior")
             }
@@ -91,6 +89,7 @@ struct GeneralSettingsView: View {
             Section("Gestures") {
                 Toggle(
                     "Swipe Actions",
+                    systemImage: Icons.swipeActions,
                     isOn: .init(
                         get: { swipeActionsEnabled },
                         set: {
@@ -103,6 +102,7 @@ struct GeneralSettingsView: View {
                 )
                 Toggle(
                     "Swipe Anywhere to Navigate",
+                    systemImage: Icons.swipeAnywhere,
                     isOn: .init(
                         get: { swipeAnywhereToNavigate },
                         set: {
@@ -115,8 +115,9 @@ struct GeneralSettingsView: View {
                 )
             }
             
-            NavigationLink("Import/Export Settings", destination: .settings(.importExportSettings))
+            NavigationLink("Import/Export Settings", systemImage: Icons.importSettings, destination: .settings(.importExportSettings))
         }
+        .labelStyle(ConditionalIconLabelStyle())
         .navigationTitle("General")
     }
 }

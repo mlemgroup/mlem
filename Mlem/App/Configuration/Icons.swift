@@ -285,6 +285,12 @@ enum Icons {
     static let unbanFromCommunity: String = "checkmark.shield"
     static let logIn: String = "person.text.rectangle"
     static let signUp: String = "pencil.and.list.clipboard"
+    static let sidebar: String = "sidebar.left"
+    static let infiniteScroll: String = "infinity"
+    static let confirmImageUploads: String = "photo.badge.checkmark"
+    static let swipeActions: String = "inset.filled.leadinghalf.rectangle"
+    static let swipeAnywhere: String = "arrow.left"
+    static let importSettings: String = "folder.badge.gearshape"
     
     // fediseer
     static let fediseer: String = "shield.checkered"
@@ -296,6 +302,7 @@ enum Icons {
     
     // media
     static let play: String = "play.fill"
+    static let playCircle: String = "play.circle"
     static let muted: String = "speaker.slash.fill"
     static let unmuted: String = "speaker.wave.2.fill"
     
