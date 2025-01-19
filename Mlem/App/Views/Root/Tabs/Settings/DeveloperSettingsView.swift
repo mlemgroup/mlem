@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 22/09/2024.
 //
 
+import Dependencies
 import MlemMiddleware
 import SwiftUI
 
@@ -12,8 +13,12 @@ import SwiftUI
 // be burdening translators with these when they'll never be used
 
 struct DeveloperSettingsView: View {
+    @Dependency(\.persistenceRepository) var persistenceRepository
+
     @Setting(\.showFeedWelcomePrompt) var showFeedWelcomePrompt
     @Setting(\.developerMode) var developerMode
+    
+    @AppStorage("status.firstAppearance") var firstAppearance: Bool = true
     
     var body: some View {
         Form {
@@ -35,6 +40,14 @@ struct DeveloperSettingsView: View {
                     Text(verbatim: "Debug Tools")
                 }
             #endif
+            Button(String("Reset Settings State")) {
+                do {
+                    try persistenceRepository.deleteAllSystemSettings()
+                    firstAppearance = true
+                } catch {
+                    handleError(error)
+                }
+            }
         }
         .navigationTitle("Developer")
     }
