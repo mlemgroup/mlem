@@ -57,7 +57,6 @@ private struct AnimationControlLayer: ViewModifier {
             }
     }
     
-    
     @ViewBuilder
     var muteButton: some View {
         if let muted {
