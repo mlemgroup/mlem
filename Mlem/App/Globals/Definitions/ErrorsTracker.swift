@@ -22,7 +22,7 @@ class ErrorsTracker {
         var ret = ""
         
         for details in errors {
-            let description = details.error?.localizedDescription ?? "No Description"
+            let description = String(describing: details.error)
             ret += "\(details.when.formatted(.iso8601))\t\(details.title ?? "Error")\t\(description)\n"
         }
         

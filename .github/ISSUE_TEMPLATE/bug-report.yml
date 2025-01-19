@@ -1,0 +1,20 @@
+name: Bug Report
+description: Report unexpected behavior.
+labels: ["bug"]
+
+body:
+- type: checkboxes
+  attributes:
+    label: Requirements
+    description: Please check whether an issue already exists for the bug you encountered.
+    options:
+    - label: There are no existing issues for this bug report.
+      required: true
+- type: textarea
+  attributes:
+    label: "Description"
+    description: "Please describe the issue. If possible, give step-by-step instructions to reproduce the bug."
+- type: input
+  attributes:
+    label: "Mlem Version"
+    description: "You can find this under `Settings` -> `About Mlem`. Example: `Mlem 2.0 (184)`."

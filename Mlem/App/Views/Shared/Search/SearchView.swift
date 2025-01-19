@@ -14,7 +14,7 @@ struct SearchView: View {
     }
     
     enum Tab: CaseIterable, Identifiable {
-        case communities, people, instances, posts
+        case communities, people, instances, posts, comments
         
         var id: Self { self }
         
@@ -24,6 +24,7 @@ struct SearchView: View {
             case .people: "Users"
             case .instances: "Instances"
             case .posts: "Posts"
+            case .comments: "Comments"
             }
         }
     }
@@ -32,6 +33,8 @@ struct SearchView: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(Palette.self) var palette
     @Environment(FiltersTracker.self) var filtersTracker
+    
+    @Setting(\.compactComments) var compactComments
     
     @State var searchBarFocused: Bool = false
     @State var isSearching: Bool = false
@@ -44,6 +47,7 @@ struct SearchView: View {
     @State var personFilters: PersonFilters = .init()
     @State var instanceFilters: InstanceFilters = .init()
     @State var postFilters: PostFilters = .init()
+    @State var commentFilters: CommentFilters = .init()
     
     @State var selectedTab: Tab = .communities
     @State var resultsScrollToTopTrigger: Bool = false
@@ -56,6 +60,7 @@ struct SearchView: View {
         prefetchingConfiguration: .forPostSize(Settings.main.postSize),
         urlCache: Constants.main.urlCache
     )
+    @State var commentLoader: SearchCommentFeedLoader = .init(api: AppState.main.firstApi)
     
     @State var editingRecentSearches: Bool = false
     
@@ -70,7 +75,7 @@ struct SearchView: View {
                     text: $query,
                     isEditing: $isSearching,
                     onCommit: {
-                        if selectedTab == .posts {
+                        if selectedTab == .posts || selectedTab == .comments {
                             Task { @MainActor in
                                 await refresh(clearBeforeRefresh: true)
                             }
@@ -103,11 +108,17 @@ struct SearchView: View {
             .onChange(of: query, initial: true) { oldValue, newValue in
                 editingRecentSearches = false
                 Task { @MainActor in
-                    if selectedTab == .posts {
-                        if oldValue != newValue {
+                    if oldValue != newValue {
+                        switch selectedTab {
+                        case .posts:
                             await postLoader.clear()
+                            return
+                        case .comments:
+                            await commentLoader.clear()
+                            return
+                        default:
+                            break
                         }
-                        return
                     }
                     guard !hasAppeared || searchBarFocused else { return }
                     hasAppeared = true
@@ -121,7 +132,7 @@ struct SearchView: View {
             }
             .onChange(of: selectedTab) {
                 editingRecentSearches = false
-                if selectedTab == .posts {
+                if selectedTab == .posts || selectedTab == .comments {
                     if page != .results {
                         searchBarFocused = true
                     }
@@ -133,7 +144,7 @@ struct SearchView: View {
             }
             .onChange(of: filterRefreshHashValue) {
                 Task {
-                    await refresh(clearBeforeRefresh: selectedTab == .posts)
+                    await refresh(clearBeforeRefresh: selectedTab == .posts || selectedTab == .comments)
                 }
             }
             .onChange(of: postFilters.location.instanceStub) {

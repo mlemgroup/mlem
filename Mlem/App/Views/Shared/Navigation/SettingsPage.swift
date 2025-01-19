@@ -16,7 +16,7 @@ enum SettingsPage: Hashable {
     case importExportSettings
     case theme, icon
     case post, comment, inbox, subscriptionList, tabBar
-    case postThumbnail, postSubscriptionIndicator
+    case postThumbnail, postSubscriptionIndicator, postReadIndicator
     case inboxBadge
     case about, advanced, developer, errorLog
     case postInteractionBar, commentInteractionBar, replyInteractionBar
@@ -29,8 +29,6 @@ enum SettingsPage: Hashable {
         switch self {
         case .root:
             SettingsView()
-        case .accessibility:
-            AccessibilitySettingsView()
         case .account:
             AccountSettingsView()
         case .profile:
@@ -53,6 +51,8 @@ enum SettingsPage: Hashable {
             AccountListSettingsView()
         case .general:
             GeneralSettingsView()
+        case .accessibility:
+            AccessibilitySettingsView()
         case .importExportSettings:
             ImportExportSettingsPage()
         case .advanced:
@@ -73,6 +73,8 @@ enum SettingsPage: Hashable {
             PostThumbnailSettingsView()
         case .postSubscriptionIndicator:
             PostSubscriptionIndicatorSettingsView()
+        case .postReadIndicator:
+            PostReadIndicatorSettingsView()
         case .comment:
             CommentSettingsView()
         case .inbox:

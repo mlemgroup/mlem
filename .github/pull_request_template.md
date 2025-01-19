@@ -6,21 +6,22 @@ We assume you have read CONTRIBUTING.md. If you have not, do not be surprised if
 Please note that if your PR does not address an issue that was assigned to you, you are still welcome to open it; however, it will not receive merge priority and may be rejected for scope reasons.
 -->
 
-# Checklist
-- [ ] I have read CONTRIBUTING.md
-- [ ] I have described what this PR contains
-- [ ] If this PR alters the UI, I have attached pictures/videos
-- [ ] This PR addresses one or more open issues that were assigned to me:
-      - closes #issue
-      - progress towards #issue
+## Issues
 
-# Pull Request Information
+- closes #issue
+- progress towards #issue
 
-## About this Pull Request
-**Describe what this PR contains in as much detail as possible**
+## MlemMiddleware
 
-## Screenshots and Videos
-**In case this PR changes something in the UI, please include screenshots or videos of this new feature**
+<!-- Delete this section if no MlemMiddleware PR is needed -->
 
-## Additional Context
-**Any additional context you'd like to add to help us review this PR**
+>[!NOTE] 
+> This PR relies on the following MlemMiddleware PR: **LINK**
+
+## Description
+
+<!-- Describe what this PR does at a high level (e.g., "adds a toggle to do <thing>") -->
+
+## Implementation Notes
+
+<!-- Any information about the code that would be helpful for reviewing -->

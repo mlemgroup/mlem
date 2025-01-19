@@ -260,6 +260,9 @@
 		03B62C402CE811CB0077E9C8 /* PersonBanEditorView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B62C3F2CE811CB0077E9C8 /* PersonBanEditorView+Logic.swift */; };
 		03B72B672C2888EE0023A6C4 /* View+ContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B72B662C2888EE0023A6C4 /* View+ContextMenu.swift */; };
 		03B72B6B2C28A0190023A6C4 /* SubscriptionListSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B72B6A2C28A0190023A6C4 /* SubscriptionListSettingsView.swift */; };
+		03BF11C52D3D3AFB00CC1F66 /* PostReadIndicatorSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BF11C42D3D3AFB00CC1F66 /* PostReadIndicatorSettingsView.swift */; };
+		03BF11C72D3D634A00CC1F66 /* AccessibilitySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BF11C62D3D634A00CC1F66 /* AccessibilitySettingsView.swift */; };
+		03BF11C32D3D135D00CC1F66 /* SearchView+CreatorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BF11C22D3D135D00CC1F66 /* SearchView+CreatorPicker.swift */; };
 		03C0EAEF2CA8288A00B4B2A5 /* CapsuleButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C0EAEE2CA8288A00B4B2A5 /* CapsuleButtonStyle.swift */; };
 		03C93CF02BEFFB1A00327BFE /* LoginCredentialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C93CEF2BEFFB1A00327BFE /* LoginCredentialsView.swift */; };
 		03CBD18D2C6120F600E870BC /* PersonFlair.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CBD18C2C6120F600E870BC /* PersonFlair.swift */; };
@@ -428,7 +431,6 @@
 		CDBFCB6A2C04EFFE008CD468 /* PostSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDBFCB692C04EFFE008CD468 /* PostSettingsView.swift */; };
 		CDBFCB6C2C054AA7008CD468 /* TilePostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDBFCB6B2C054AA7008CD468 /* TilePostView.swift */; };
 		CDC199EA2BE449790077B4F1 /* Interactable1Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC199E92BE449790077B4F1 /* Interactable1Providing+Extensions.swift */; };
-		CDC44A342D1CBBD30030F01C /* AccessibilitySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC44A332D1CBBCC0030F01C /* AccessibilitySettingsView.swift */; };
 		CDC44A362D1CBC280030F01C /* ReadPostIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC44A352D1CBC200030F01C /* ReadPostIndicator.swift */; };
 		CDCA44952C17658000C092B3 /* View+QuickSwipes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCA44942C17658000C092B3 /* View+QuickSwipes.swift */; };
 		CDCA44972C17666C00C092B3 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCA44962C17666C00C092B3 /* HapticManager.swift */; };
@@ -737,6 +739,9 @@
 		03B62C3F2CE811CB0077E9C8 /* PersonBanEditorView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PersonBanEditorView+Logic.swift"; sourceTree = "<group>"; };
 		03B72B662C2888EE0023A6C4 /* View+ContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ContextMenu.swift"; sourceTree = "<group>"; };
 		03B72B6A2C28A0190023A6C4 /* SubscriptionListSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionListSettingsView.swift; sourceTree = "<group>"; };
+		03BF11C42D3D3AFB00CC1F66 /* PostReadIndicatorSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostReadIndicatorSettingsView.swift; sourceTree = "<group>"; };
+		03BF11C62D3D634A00CC1F66 /* AccessibilitySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilitySettingsView.swift; sourceTree = "<group>"; };
+		03BF11C22D3D135D00CC1F66 /* SearchView+CreatorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchView+CreatorPicker.swift"; sourceTree = "<group>"; };
 		03C0EAEE2CA8288A00B4B2A5 /* CapsuleButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleButtonStyle.swift; sourceTree = "<group>"; };
 		03C93CEF2BEFFB1A00327BFE /* LoginCredentialsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCredentialsView.swift; sourceTree = "<group>"; };
 		03CBD18C2C6120F600E870BC /* PersonFlair.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonFlair.swift; sourceTree = "<group>"; };
@@ -901,7 +906,6 @@
 		CDBFCB692C04EFFE008CD468 /* PostSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSettingsView.swift; sourceTree = "<group>"; };
 		CDBFCB6B2C054AA7008CD468 /* TilePostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TilePostView.swift; sourceTree = "<group>"; };
 		CDC199E92BE449790077B4F1 /* Interactable1Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Interactable1Providing+Extensions.swift"; sourceTree = "<group>"; };
-		CDC44A332D1CBBCC0030F01C /* AccessibilitySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilitySettingsView.swift; sourceTree = "<group>"; };
 		CDC44A352D1CBC200030F01C /* ReadPostIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadPostIndicator.swift; sourceTree = "<group>"; };
 		CDCA44942C17658000C092B3 /* View+QuickSwipes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+QuickSwipes.swift"; sourceTree = "<group>"; };
 		CDCA44962C17666C00C092B3 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
@@ -1010,7 +1014,6 @@
 			isa = PBXGroup;
 			children = (
 				CDEE15532D22364500EB9D7B /* ErrorLogView.swift */,
-				CDC44A332D1CBBCC0030F01C /* AccessibilitySettingsView.swift */,
 				CD45CB0C2D1880E3008BC729 /* FiltersSettingsView.swift */,
 				0397D4982C6EA68A002C6CDC /* InteractionBarEditor */,
 				031E2D5C2BEFCC630003BC45 /* SettingsView.swift */,
@@ -1036,6 +1039,8 @@
 				0325B9392D3A9E8100E28B97 /* InboxBadgeSettingsView.swift */,
 				CDBFCB692C04EFFE008CD468 /* PostSettingsView.swift */,
 				037F78442D3C25AB00D4E180 /* PostSubscriptionIndicatorSettingsView.swift */,
+				03BF11C42D3D3AFB00CC1F66 /* PostReadIndicatorSettingsView.swift */,
+				03BF11C62D3D634A00CC1F66 /* AccessibilitySettingsView.swift */,
 				037F78422D3C129B00D4E180 /* PostThumbnailSettingsView.swift */,
 				037F783E2D3BD05500D4E180 /* PostSettingsView+PostSizePicker.swift */,
 				039F58922C7B616600C61658 /* CommentSettingsView.swift */,
@@ -1163,6 +1168,7 @@
 				0389DDCE2C39CB0E0005B808 /* SearchView.swift */,
 				03D283FD2D25EEC500A6659B /* SearchView+Views.swift */,
 				0320B6602C8DFCF100D38548 /* SearchView+FiltersView.swift */,
+				03BF11C22D3D135D00CC1F66 /* SearchView+CreatorPicker.swift */,
 				038028F72CB097A10091A8A2 /* SearchView+InstancePicker.swift */,
 				038028F92CB097CB0091A8A2 /* SearchView+LocationPicker.swift */,
 				038028F52CB096960091A8A2 /* SearchView+FilterModels.swift */,
@@ -2396,7 +2402,7 @@
 				03D2A6372C00F92400ED4FF2 /* Session.swift in Sources */,
 				03AF91DD2C1B23E500E56644 /* ImageViewer.swift in Sources */,
 				CD13CC592C583C7A001AF428 /* WebsitePreviewView.swift in Sources */,
-				CDC44A342D1CBBD30030F01C /* AccessibilitySettingsView.swift in Sources */,
+				03BF11C52D3D3AFB00CC1F66 /* PostReadIndicatorSettingsView.swift in Sources */,
 				CD869FCE2C15F90C00FC8B5B /* ChildSizeReader.swift in Sources */,
 				035EDEF12C2DE94B00F51144 /* DefaultTextInputType.swift in Sources */,
 				039F588C2C7B574E00C61658 /* AdvancedSettingsView.swift in Sources */,
@@ -2671,6 +2677,7 @@
 				CDAA02E32C821C9100D75633 /* Divider.swift in Sources */,
 				CDCA44972C17666C00C092B3 /* HapticManager.swift in Sources */,
 				03D284002D26F09500A6659B /* Instance3+Extensions.swift in Sources */,
+				03BF11C72D3D634A00CC1F66 /* AccessibilitySettingsView.swift in Sources */,
 				033FCAEC2C57DCCD007B7CD1 /* ApiListingType+Extensions.swift in Sources */,
 				033FCB272C5E3933007B7CD1 /* AlternateIconLabel.swift in Sources */,
 				033FCB282C5E3933007B7CD1 /* AlternateIcon.swift in Sources */,
@@ -2692,6 +2699,7 @@
 				0382A7F02C09F0F800C79DDA /* PersonView.swift in Sources */,
 				CDBFCB6C2C054AA7008CD468 /* TilePostView.swift in Sources */,
 				0380965F2C10AA80003ED1D8 /* AppState+Transition.swift in Sources */,
+				03BF11C32D3D135D00CC1F66 /* SearchView+CreatorPicker.swift in Sources */,
 				0315B1C62C754802006D4F82 /* PostEditorView+Logic.swift in Sources */,
 				CD4D58932B86BA5C00B82964 /* StandardPalette.swift in Sources */,
 				CDE1F1942C63DF44008AF042 /* PlatformConstants.swift in Sources */,
@@ -3163,7 +3171,7 @@
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware";
 			requirement = {
 				kind = upToNextMinorVersion;
-				minimumVersion = 0.66.0;
+				minimumVersion = 0.67.0;
 			};
 		};
 		CD64A9182CA37D63007CA7E6 /* XCRemoteSwiftPackageReference "Gifu" */ = {

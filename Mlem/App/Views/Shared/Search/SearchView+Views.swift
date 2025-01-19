@@ -96,6 +96,25 @@ extension SearchView {
             } else {
                 PostGridView(postFeedLoader: postLoader)
             }
+        case .comments:
+            if commentLoader.loadingState == .idle, commentLoader.items.isEmpty {
+                searchPlaceholder
+            } else {
+                LazyVStack(spacing: compactComments ? Constants.main.halfSpacing : Constants.main.standardSpacing) {
+                    ForEach(commentLoader.items, id: \.actorId) { comment in
+                        FeedCommentView(comment: comment)
+                            .onAppear {
+                                do {
+                                    try commentLoader.loadIfThreshold(comment)
+                                } catch {
+                                    handleError(error)
+                                }
+                            }
+                    }
+                    EndOfFeedView(loadingState: commentLoader.loadingState, loadMore: nil, viewType: .hobbit)
+                }
+                .padding(.horizontal, Constants.main.standardSpacing)
+            }
         }
     }
     
@@ -215,6 +234,7 @@ extension SearchView {
         case .instances: "Search for Lemmy instances"
         case .people: "Search for users"
         case .posts: "Search for posts"
+        case .comments: "Search for comments"
         }
     }
 
