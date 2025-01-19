@@ -73,22 +73,10 @@ extension SearchView {
             .buttonStyle(.feedFilter(isOn: postFilters.sort != .topAll))
         LocationPicker(filter: $postFilters.location)
             .buttonStyle(.feedFilter(isOn: postFilters.location != .any))
-        Button(postFilters.creator?.name ?? .init(localized: "Anyone"), systemImage: Icons.person) {
-            if postFilters.creator == nil {
-                navigation.openSheet(.personPicker(
-                    api: postFilters.location.instanceStub?.api ?? appState.firstApi,
-                    callback: { person in
-                        postFilters.creator = person
-                    }
-                ))
-            } else {
-                postFilters.creator = nil
-            }
-        }
-        .buttonStyle(FeedFilterButtonStyle(
-            isOn: postFilters.creator != nil,
-            systemImage: postFilters.creator == nil ? Icons.dropDownCircleFill : Icons.closeCircleFill
-        ))
+        CreatorPicker(
+            api: postFilters.location.instanceStub?.api ?? appState.firstApi,
+            creator: $postFilters.creator
+        )
     }
     
     @ViewBuilder
@@ -103,6 +91,10 @@ extension SearchView {
         .buttonStyle(.feedFilter(isOn: personFilters.sort != .topAll))
         LocationPicker(filter: $commentFilters.location)
             .buttonStyle(.feedFilter(isOn: commentFilters.location != .any))
+        CreatorPicker(
+            api: commentFilters.location.instanceStub?.api ?? appState.firstApi,
+            creator: $commentFilters.creator
+        )
     }
     
     @ViewBuilder

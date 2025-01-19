@@ -144,7 +144,7 @@ struct SearchView: View {
             }
             .onChange(of: filterRefreshHashValue) {
                 Task {
-                    await refresh(clearBeforeRefresh: selectedTab == .posts)
+                    await refresh(clearBeforeRefresh: selectedTab == .posts || selectedTab == .comments)
                 }
             }
             .onChange(of: postFilters.location.instanceStub) {

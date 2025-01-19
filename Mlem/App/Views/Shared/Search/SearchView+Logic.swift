@@ -10,7 +10,7 @@ import SwiftUI
 
 extension SearchView {
     func returnToHome() {
-        if selectedTab == .posts {
+        if selectedTab == .posts || selectedTab == .comments {
             selectedTab = .communities
         }
         page = .home
