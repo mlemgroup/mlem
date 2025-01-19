@@ -90,20 +90,6 @@ struct ImportExportSettingsPage: View {
                     importingSettingsFile = true
                 }
             }
-            
-            #if DEBUG
-                // clears saved system settings and resets the firstAppearance flag
-                Button("Reset Settings State") {
-                    do {
-                        try persistenceRepository.deleteAllSystemSettings()
-                        firstAppearance = true
-                        v1SettingsExist = persistenceRepository.systemSettingsExists(.v1)
-                        v2SettingsExist = persistenceRepository.systemSettingsExists(.v2)
-                    } catch {
-                        handleError(error)
-                    }
-                }
-            #endif
         }
     }
     
