@@ -45,6 +45,7 @@ extension ApiSortType: @retroactive CaseIterable {
     
     static let communitySearchCases: [Self] = [.controversial, .new, .old]
     static let personSearchCases: [Self] = [.new, .old, .topAll]
+    static let commentSearchCases: [Self] = [.hot, .new, .old, .topAll]
     
     var minimumVersion: SiteVersion {
         switch self {
