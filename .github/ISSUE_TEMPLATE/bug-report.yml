@@ -5,10 +5,10 @@ labels: ["bug"]
 body:
 - type: checkboxes
   attributes:
-    label: Is there an existing issue for this?
+    label: Requirements
     description: Please search to see if an issue already exists for the bug you encountered.
     options:
-    - label: I have searched the existing issues
+    - label: There are no existing issues for this bug report.
       required: true
 - type: textarea
   attributes:
