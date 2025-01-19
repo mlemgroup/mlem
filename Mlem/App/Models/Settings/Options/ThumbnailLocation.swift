@@ -14,7 +14,7 @@ enum ThumbnailLocation: String, CaseIterable, Codable {
         switch self {
         case .left: "Left"
         case .right: "Right"
-        case .none: "None"
+        case .none: "Hidden"
         }
     }
 }
