@@ -197,9 +197,9 @@ struct CodableSettings: Codable {
     // swiftlint:enable line_length
     
     init(from settings: Settings, filteredKeywords: Set<String>) {
-        self.a11y_readPostIndicator = .checkmark
-        self.a11y_readOutlineThickness = 3
-        self.a11y_websiteThumbnailIcon = false
+        self.a11y_readPostIndicator = settings.readPostIndicator
+        self.a11y_readOutlineThickness = settings.readOutlineThickness
+        self.a11y_websiteThumbnailIcon = settings.websiteThumbnailIcon
         self.accounts_defaultId = nil
         self.accounts_grouped = settings.groupAccountSort
         self.accounts_sort = settings.accountSort

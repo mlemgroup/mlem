@@ -20,6 +20,7 @@ class Settings: ObservableObject {
 
     @AppStorage("a11y.readPostIndicator") var readPostIndicator: ReadPostIndicator = .checkmark
     @AppStorage("a11y.readOutlineThickness") var readOutlineThickness: Int = 3
+    @AppStorage("a11y.websiteThumbnailIcon") var websiteThumbnailIcon: Bool = false
 
     @AppStorage("post.size") var postSize: PostSize = .compact
     @AppStorage("post.defaultSort") var defaultPostSort: ApiSortType = .hot
@@ -176,6 +177,7 @@ class Settings: ObservableObject {
         tabProfileLabelType = settings.tab_profile_labelType
         tabProfileShowAvatar = settings.tab_profile_showAvatar
         tabInboxBadgeIncludedTypes = settings.tab_inbox_badgeIncludedTypes
+        websiteThumbnailIcon = settings.a11y_websiteThumbnailIcon
         
         Task {
             await FiltersTracker.main.resetFilteredKeywords(to: settings.filteredKeywords)
