@@ -40,7 +40,7 @@ struct DeveloperSettingsView: View {
                     Text(verbatim: "Debug Tools")
                 }
             #endif
-            Button("Reset Settings State") {
+            Button(String("Reset Settings State")) {
                 do {
                     try persistenceRepository.deleteAllSystemSettings()
                     firstAppearance = true
