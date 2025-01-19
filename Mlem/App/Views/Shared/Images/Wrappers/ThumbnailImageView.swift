@@ -15,6 +15,8 @@ struct ThumbnailImageView: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.openURL) var openURL
     
+    @Setting(\.websiteThumbnailIcon) var websiteThumbnailIcon
+    
     @State var loading: MediaLoadingState?
     @State var quickLookUrl: URL?
     
@@ -74,6 +76,18 @@ struct ThumbnailImageView: View {
                     .quickLookPreview($quickLookUrl)
             case let .link(link):
                 content
+                    .overlay {
+                        if websiteThumbnailIcon {
+                            Image(systemName: Icons.browser)
+                                .frame(width: 16, height: 16)
+                                .foregroundStyle(.white)
+                                .background {
+                                    Circle().fill(.ultraThinMaterial)
+                                }
+                                .padding(4)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                        }
+                    }
                     .onTapGesture {
                         post.markRead()
                         openURL(link.content)
