@@ -18,11 +18,7 @@ struct PostThumbnailSettingsView: View {
                 "Show Thumbnails",
                 isOn: .init(
                     get: { thumbnailLocation != .none },
-                    set: { newValue in
-                        withAnimation {
-                            thumbnailLocation = newValue ? .left : .none
-                        }
-                    }
+                    set: { thumbnailLocation = $0 ? .left : .none }
                 )
             )
             if thumbnailLocation != .none {
@@ -34,6 +30,7 @@ struct PostThumbnailSettingsView: View {
                 }
             }
         }
+        .animation(.easeOut(duration: 0.1), value: thumbnailLocation)
         .navigationTitle("Thumbnail")
     }
     

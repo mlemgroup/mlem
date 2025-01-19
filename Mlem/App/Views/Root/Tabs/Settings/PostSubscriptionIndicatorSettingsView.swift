@@ -34,16 +34,15 @@ struct PostSubscriptionIndicatorSettingsView: View {
             .strokeBorder(colorScheme == .light ? palette.secondaryGroupedBackground : .clear, lineWidth: 2)
             .frame(height: 100)
             .overlay(alignment: .topLeading) {
-                HStack {
+                HStack(spacing: 0) {
                     CircleCroppedImageView(url: nil, frame: 30, fallback: .person)
                         .opacity(0.8)
-                    if showSubscribedStatus {
-                        Circle()
-                            .fill(palette.secondary)
-                            .frame(width: 10, height: 10)
-                            .padding(.leading, 5)
-                            .transition(.scale.combined(with: .opacity))
-                    }
+                    Circle()
+                        .fill(palette.secondary)
+                        .frame(width: showSubscribedStatus ? 10 : 0, height: 10)
+                        .opacity(showSubscribedStatus ? 10 : 0)
+                        .padding(.leading, showSubscribedStatus ? 12 : 5)
+                        .padding(.trailing, showSubscribedStatus ? 10 : 5)
                     Text(
                         "news\(Text(verbatim: "@\(String(localized: "example.com"))").foregroundColor(palette.tertiary))"
                     )

@@ -2071,9 +2071,6 @@
     "The number of child comments that are shown in a chain before the \"More Replies\" button is shown." : {
 
     },
-    "The title of a post is dimmed slightly to show that you've read it. If you like, you can choose an additional way of showing read status." : {
-
-    },
     "Theme" : {
 
     },
@@ -2456,6 +2453,9 @@
 
     },
     "When disabled, some moderator actions will only be accessible from the post page." : {
+
+    },
+    "When you've read a post already, its title will appear dimmed. If you like, you can choose an additional way of indicating read status." : {
 
     },
     "Wrap Code Block Lines" : {
