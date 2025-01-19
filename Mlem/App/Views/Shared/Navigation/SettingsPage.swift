@@ -12,7 +12,7 @@ enum SettingsPage: Hashable {
     case root
     case accounts, account
     case profile, accountGeneral, accountAdvanced, accountSignIn, accountChangeEmail, accountLocal
-    case general, links, sorting, filters
+    case general, accessibility, links, sorting, filters
     case importExportSettings
     case theme, icon
     case post, comment, inbox, subscriptionList, tabBar
@@ -51,6 +51,8 @@ enum SettingsPage: Hashable {
             AccountListSettingsView()
         case .general:
             GeneralSettingsView()
+        case .accessibility:
+            AccessibilitySettingsView()
         case .importExportSettings:
             ImportExportSettingsPage()
         case .advanced:
