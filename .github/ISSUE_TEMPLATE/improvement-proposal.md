@@ -7,14 +7,4 @@ assignees: ''
 
 ---
 
-## Introduction
-Brief history
-
-## Requirements
-What needs to be done?
-
-## Discussion
-Go more in depth about the proposal
-
-## What I Need
-What I need it to do
+Describe your idea here. Please check that this issue doesn't already exist, and include no more than one idea per issue.

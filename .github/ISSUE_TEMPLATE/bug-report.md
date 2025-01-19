@@ -7,21 +7,7 @@ assignees: ''
 
 ---
 
-**Describe the bug**
-What did you do to trigger the bug?
-
-**Expected Behavior**
-What did you expect to happen?
-
-**Actual Behavior**
-What actually happened?
-
-**To Reproduce**
-What steps do I need to take to trigger the bug?
+*What did you do to trigger the bug? If possible, give step-by-step instructions to reproduce the bug.*
 
 **Mlem Information:**
-Version + Build number
-If this started happening recently, write which version introduced the bug
-
-**Additional Context**
-Any other relevant information
+Version + Build number (you can find this under Settings -> About Mlem)
