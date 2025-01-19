@@ -30,7 +30,7 @@ struct SettingsHeaderView<Icon: View>: View {
     
     var body: some View {
         Section {
-            VStack(spacing: 15) {
+            VStack(spacing: 12) {
                 icon
                 Text(title)
                     .font(.title2)

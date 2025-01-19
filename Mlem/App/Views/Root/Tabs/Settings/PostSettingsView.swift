@@ -11,6 +11,7 @@ import SwiftUI
 // note: this is a very lazy categorization of "properties that affect posts"
 struct PostSettingsView: View {
     @Environment(Palette.self) var palette
+    @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor: Bool
     
     @Setting(\.postSize) var postSize
     @Setting(\.thumbnailLocation) var thumbnailLocation
@@ -18,6 +19,8 @@ struct PostSettingsView: View {
     @Setting(\.showPersonAvatar) var showPersonAvatar
     @Setting(\.showCommunityAvatar) var showCommunityAvatar
     @Setting(\.showSubscribedStatus) var showSubscribedStatus
+    
+    @Setting(\.readPostIndicator) var readPostIndicator
     
     var body: some View {
         Form {
@@ -36,10 +39,18 @@ struct PostSettingsView: View {
                 }
                 NavigationLink(
                     "Subscription Indicator",
-                    value: "On",
+                    value: showSubscribedStatus ? "On" : "Off",
                     fallbackValue: "",
                     destination: .settings(.postSubscriptionIndicator)
                 )
+                if differentiateWithoutColor {
+                    NavigationLink(
+                        "Read Indicator",
+                        value: .init(localized: readPostIndicator.label),
+                        fallbackValue: "",
+                        destination: .settings(.postReadIndicator)
+                    )
+                }
             }
             
             if postSize != .tile, postSize != .compact {
