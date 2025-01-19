@@ -213,7 +213,7 @@ class PersistenceRepository {
     
     // MARK: Loading methods
     
-    func load<T: Decodable>(_ model: T.Type, from path: URL) -> T? {
+    func load<T: Decodable>(_ model: T.Type, from path: URL, ignoringError: Bool = false) -> T? {
         do {
             let data = try read(path)
             

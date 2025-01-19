@@ -67,7 +67,7 @@ struct ErrorDetails: Hashable {
         if let error = error as? ApiClientError {
             output = error.description
         } else {
-            output = error?.localizedDescription ?? ""
+            output = String(describing: error)
         }
         for account in AccountsTracker.main.userAccounts {
             if let token = account.api.token {
