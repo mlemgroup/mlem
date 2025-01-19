@@ -23,6 +23,8 @@ extension SearchView {
                         instanceFiltersView
                     case .posts:
                         postFiltersView
+                    case .comments:
+                        commentFiltersView
                     }
                 }
                 .padding(.bottom, 12)
@@ -71,22 +73,28 @@ extension SearchView {
             .buttonStyle(.feedFilter(isOn: postFilters.sort != .topAll))
         LocationPicker(filter: $postFilters.location)
             .buttonStyle(.feedFilter(isOn: postFilters.location != .any))
-        Button(postFilters.creator?.name ?? .init(localized: "Anyone"), systemImage: Icons.person) {
-            if postFilters.creator == nil {
-                navigation.openSheet(.personPicker(
-                    api: postFilters.location.instanceStub?.api ?? appState.firstApi,
-                    callback: { person in
-                        postFilters.creator = person
-                    }
-                ))
-            } else {
-                postFilters.creator = nil
+        CreatorPicker(
+            api: postFilters.location.instanceStub?.api ?? appState.firstApi,
+            creator: $postFilters.creator
+        )
+    }
+    
+    @ViewBuilder
+    private var commentFiltersView: some View {
+        Menu(commentFilters.sort.label(topFormat: .topOnly), systemImage: commentFilters.sort.systemImage) {
+            Picker("Sort", selection: $commentFilters.sort) {
+                ForEach(ApiSortType.commentSearchCases, id: \.self) { item in
+                    Label(item.label(topFormat: .topOnly), systemImage: item.systemImage)
+                }
             }
         }
-        .buttonStyle(FeedFilterButtonStyle(
-            isOn: postFilters.creator != nil,
-            systemImage: postFilters.creator == nil ? Icons.dropDownCircleFill : Icons.closeCircleFill
-        ))
+        .buttonStyle(.feedFilter(isOn: personFilters.sort != .topAll))
+        LocationPicker(filter: $commentFilters.location)
+            .buttonStyle(.feedFilter(isOn: commentFilters.location != .any))
+        CreatorPicker(
+            api: commentFilters.location.instanceStub?.api ?? appState.firstApi,
+            creator: $commentFilters.creator
+        )
     }
     
     @ViewBuilder

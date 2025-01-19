@@ -103,4 +103,11 @@ extension SearchView {
         var creator: Person2?
         var location: LocationFilter = .any
     }
+    
+    @Observable
+    class CommentFilters {
+        var sort: ApiSortType = .topAll
+        var creator: Person2?
+        var location: LocationFilter = .any
+    }
 }

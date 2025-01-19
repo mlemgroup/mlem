@@ -10,7 +10,7 @@ import SwiftUI
 
 extension SearchView {
     func returnToHome() {
-        if selectedTab == .posts {
+        if selectedTab == .posts || selectedTab == .comments {
             selectedTab = .communities
         }
         page = .home
@@ -21,6 +21,7 @@ extension SearchView {
         resultsScrollToTopTrigger.toggle()
     }
     
+    // swiftlint:disable:next cyclomatic_complexity
     func refresh(clearBeforeRefresh: Bool, onlyRefreshIfEmpty: Bool = false) async {
         do {
             if !query.isEmpty {
@@ -44,6 +45,8 @@ extension SearchView {
                 ))
             case .posts:
                 try await refreshPosts(clearBeforeRefresh: clearBeforeRefresh)
+            case .comments:
+                try await refreshComments(clearBeforeRefresh: clearBeforeRefresh)
             }
         } catch {
             handleError(error)
@@ -100,6 +103,34 @@ extension SearchView {
             break
         }
         try await postLoader.refresh(clearBeforeRefresh: clearBeforeRefresh)
+    }
+    
+    public func refreshComments(clearBeforeRefresh: Bool) async throws {
+        guard !query.isEmpty else { return }
+        await commentLoader.searchCommentFetcher.changeApi(
+            to: getRefreshApi(for: commentFilters.location)
+        )
+        var listing: ApiListingType = .all
+        commentLoader.searchCommentFetcher.communityId = nil
+        commentLoader.searchCommentFetcher.creatorId = commentFilters.creator?.id
+        switch commentFilters.location {
+        case .subscribed:
+            listing = .subscribed
+        case .moderated:
+            listing = .moderatorView
+        case .localInstance, .instance:
+            listing = .local
+        case let .community(community):
+            commentLoader.searchCommentFetcher.communityId = community.id
+        default:
+            break
+        }
+        try await commentLoader.refresh(
+            query: query,
+            listing: listing,
+            sort: commentFilters.sort,
+            clearBeforeRefresh: clearBeforeRefresh
+        )
     }
     
     private func getRefreshApi(for filter: InstanceFilter) -> ApiClient {
@@ -168,6 +199,9 @@ extension SearchView {
         hasher.combine(postFilters.sort)
         hasher.combine(postFilters.creator?.actorId)
         hasher.combine(postFilters.location)
+        hasher.combine(commentFilters.sort)
+        hasher.combine(commentFilters.creator?.actorId)
+        hasher.combine(commentFilters.location)
         return hasher.finalize()
     }
 }
