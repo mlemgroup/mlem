@@ -1,7 +1,6 @@
 name: Bug Report
 description: Report unexpected behavior.
 labels: ["bug"]
-assignees:
 
 body:
 - type: checkboxes
@@ -19,4 +18,3 @@ body:
   attributes:
     label: "Mlem Version"
     description: "You can find this under `Settings` -> `About Mlem`. Example: `Mlem 2.0 (184)`."
-    
