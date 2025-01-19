@@ -1,6 +1,6 @@
 name: Improvement Proposal
 description: Propose an improvement for Mlem.
-labels: ["bug"]
+labels: ["enhancement"]
 
 body:
 - type: checkboxes
