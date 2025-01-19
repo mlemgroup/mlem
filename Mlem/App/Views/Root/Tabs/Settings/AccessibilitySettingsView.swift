@@ -11,6 +11,7 @@ struct AccessibilitySettingsView: View {
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor: Bool
 
     @Setting(\.readPostIndicator) var readPostIndicator
+    @Setting(\.websiteThumbnailIcon) var websiteThumbnailIcon
     
     var body: some View {
         Form {
@@ -21,6 +22,10 @@ struct AccessibilitySettingsView: View {
                     fallbackValue: "",
                     destination: .settings(.postReadIndicator)
                 )
+            }
+            
+            Section {
+                Toggle("Website Thumbnail Indicator", isOn: $websiteThumbnailIcon)
             }
         }
         .navigationTitle("Accessibility")
