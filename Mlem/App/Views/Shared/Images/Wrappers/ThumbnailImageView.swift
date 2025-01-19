@@ -81,9 +81,7 @@ struct ThumbnailImageView: View {
                             Image(systemName: Icons.browser)
                                 .frame(width: 16, height: 16)
                                 .foregroundStyle(.white)
-                                .background {
-                                    Circle().fill(.ultraThinMaterial)
-                                }
+                                .background(.ultraThinMaterial, in: .circle)
                                 .padding(4)
                                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                         }
