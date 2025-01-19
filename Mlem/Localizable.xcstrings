@@ -250,9 +250,6 @@
     "Abuse" : {
 
     },
-    "Accessibility" : {
-
-    },
     "Account" : {
 
     },
@@ -284,6 +281,9 @@
 
     },
     "Add Moderator" : {
+
+    },
+    "Additional Read Indicator" : {
 
     },
     "Administration" : {
@@ -784,9 +784,6 @@
 
     },
     "Diagnosing..." : {
-
-    },
-    "Differentiate Without Color" : {
 
     },
     "Disabled" : {
@@ -1565,7 +1562,7 @@
     "Ranks posts based on the post score and creation time." : {
 
     },
-    "Read Post Indicator" : {
+    "Read Indicator" : {
 
     },
     "Readouts:" : {
@@ -2074,6 +2071,9 @@
     "The number of child comments that are shown in a chain before the \"More Replies\" button is shown." : {
 
     },
+    "The title of a post is dimmed slightly to show that you've read it. If you like, you can choose an additional way of showing read status." : {
+
+    },
     "Theme" : {
 
     },
@@ -2121,9 +2121,6 @@
 
     },
     "These options are stored locally in Mlem and not on your Lemmy account." : {
-
-    },
-    "These settings control how Mlem behaves when the system-wide \"Differentiate Without Color\" option is enabled." : {
 
     },
     "This account has %lld favorite communities." : {
@@ -2195,6 +2192,9 @@
 
     },
     "This instance is viewed very negatively by one or more trusted instances." : {
+
+    },
+    "This is turned on by default because Differentiate Without Color is enabled in System Settings." : {
 
     },
     "This probably contains foul language." : {

@@ -12,11 +12,11 @@ enum SettingsPage: Hashable {
     case root
     case accounts, account
     case profile, accountGeneral, accountAdvanced, accountSignIn, accountChangeEmail, accountLocal
-    case general, accessibility, links, sorting, filters
+    case general, links, sorting, filters
     case importExportSettings
     case theme, icon
     case post, comment, inbox, subscriptionList, tabBar
-    case postThumbnail, postSubscriptionIndicator
+    case postThumbnail, postSubscriptionIndicator, postReadIndicator
     case inboxBadge
     case about, advanced, developer, errorLog
     case postInteractionBar, commentInteractionBar, replyInteractionBar
@@ -29,8 +29,6 @@ enum SettingsPage: Hashable {
         switch self {
         case .root:
             SettingsView()
-        case .accessibility:
-            AccessibilitySettingsView()
         case .account:
             AccountSettingsView()
         case .profile:
@@ -73,6 +71,8 @@ enum SettingsPage: Hashable {
             PostThumbnailSettingsView()
         case .postSubscriptionIndicator:
             PostSubscriptionIndicatorSettingsView()
+        case .postReadIndicator:
+            PostReadIndicatorSettingsView()
         case .comment:
             CommentSettingsView()
         case .inbox:
