@@ -183,8 +183,10 @@ struct ImageViewer: View {
     private func handleOffsetUpdate(_ newOffset: CGFloat) {
         let absOffset = abs(newOffset)
         offset = newOffset
-        controlOffset = absOffset / 3
-        controlOpacity = 1.0 - (controlOffset / maxControlOffset)
+        if controlsShown {
+            controlOffset = absOffset / 3
+            controlOpacity = 1.0 - (controlOffset / maxControlOffset)
+        }
         opacity = 1.0 - (absOffset / screenHeight)
     }
     
