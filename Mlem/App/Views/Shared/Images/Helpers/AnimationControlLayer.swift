@@ -45,21 +45,7 @@ private struct AnimationControlLayer: ViewModifier {
                 }
             }
             .overlay(alignment: .bottomTrailing) {
-                if let muted {
-                    Image(systemName: muted.wrappedValue ? Icons.muted : Icons.unmuted)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 15, height: 15)
-                        .padding(5)
-                        .background(.ultraThinMaterial, in: .circle)
-                        .foregroundStyle(.white)
-                        .padding([.top, .trailing], 5)
-                        .padding([.bottom, .leading], 15)
-                        .contentShape(.rect)
-                        .onTapGesture {
-                            muted.wrappedValue = !muted.wrappedValue
-                        }
-                }
+                muteButton
             }
             .onChange(of: blurred, initial: true) {
                 if blurred {
@@ -69,6 +55,25 @@ private struct AnimationControlLayer: ViewModifier {
                     showControls = true
                 }
             }
+    }
+    
+    @ViewBuilder
+    var muteButton: some View {
+        if let muted {
+            Image(systemName: muted.wrappedValue ? Icons.muted : Icons.unmuted)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 15, height: 15)
+                .padding(5)
+                .background(.ultraThinMaterial, in: .circle)
+                .foregroundStyle(.white)
+                .padding([.bottom, .trailing], 5)
+                .padding([.top, .leading], 15)
+                .contentShape(.rect)
+                .highPriorityGesture(TapGesture().onEnded {
+                    muted.wrappedValue = !muted.wrappedValue
+                })
+        }
     }
 }
 
