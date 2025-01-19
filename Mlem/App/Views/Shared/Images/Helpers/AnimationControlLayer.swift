@@ -56,9 +56,9 @@ private struct AnimationControlLayer: ViewModifier {
                         .padding([.top, .trailing], 5)
                         .padding([.bottom, .leading], 15)
                         .contentShape(.rect)
-                        .onTapGesture {
+                        .highPriorityGesture(TapGesture().onEnded {
                             muted.wrappedValue = !muted.wrappedValue
-                        }
+                        })
                 }
             }
             .onChange(of: blurred, initial: true) {
