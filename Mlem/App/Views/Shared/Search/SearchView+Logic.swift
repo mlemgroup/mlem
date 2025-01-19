@@ -108,8 +108,7 @@ extension SearchView {
     public func refreshComments(clearBeforeRefresh: Bool) async throws {
         guard !query.isEmpty else { return }
         await commentLoader.searchCommentFetcher.changeApi(
-            to: getRefreshApi(for: commentFilters.location),
-            context: filtersTracker.filterContext
+            to: getRefreshApi(for: commentFilters.location)
         )
         var listing: ApiListingType = .all
         commentLoader.searchCommentFetcher.communityId = nil
