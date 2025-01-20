@@ -13,12 +13,22 @@ struct CompactPostView: View {
     @Setting(\.thumbnailLocation) var thumbnailLocation
     @Setting(\.blurNsfw) var blurNsfw
     @Setting(\.readPostIndicator) var readPostIndicator
+    @Setting(\.showDownvotesCompact) var showDownvotesCompact
     
     @Environment(\.communityContext) var communityContext: (any Community1Providing)?
     @Environment(Palette.self) var palette: Palette
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
     
     let post: any Post1Providing
+    
+    var readouts: [PostBarConfiguration.ReadoutType?] {
+        let saved: PostBarConfiguration.ReadoutType? = post.saved_ ?? false ? .saved : nil
+        if showDownvotesCompact {
+            return [.created, .upvote, .downvote, .comment, saved]
+        } else {
+            return [.created, .score, .comment, saved]
+        }
+    }
     
     var blurred: Bool {
         switch blurNsfw {
@@ -80,7 +90,7 @@ struct CompactPostView: View {
                         .font(.caption)
                 }
                 
-                InfoStackView(post: post, readouts: [.created, .score, .comment, post.saved_ ?? false ? .saved : nil], showColor: true)
+                InfoStackView(post: post, readouts: readouts, showColor: true)
             }
             .frame(maxWidth: .infinity)
             

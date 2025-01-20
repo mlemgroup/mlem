@@ -65,6 +65,7 @@ struct CodableSettings: Codable {
     var post_thumbnailLocation: ThumbnailLocation
     var post_webPreview_showHost: Bool
     var post_webPreview_showIcon: Bool
+    var post_showDownvotesCompact: Bool
     var profile_showBanner: Bool
     var privacy_autoBypassImageProxy: Bool
     var safety_blurNsfw: NsfwBlurBehavior
@@ -169,6 +170,7 @@ struct CodableSettings: Codable {
         self.post_showCreatorInstance = try container.decodeIfPresent(Bool.self, forKey: .post_showCreatorInstance) ?? true
         self.post_showSubscribedStatus = try container.decodeIfPresent(Bool.self, forKey: .post_showSubscribedStatus) ?? false
         self.post_showWebsitePreview = try container.decodeIfPresent(Bool.self, forKey: .post_showWebsitePreview) ?? true
+        self.post_showDownvotesCompact = try container.decodeIfPresent(Bool.self, forKey: .post_showDownvotesCompact) ?? false
         self.post_size = try container.decodeIfPresent(PostSize.self, forKey: .post_size) ?? .large
         self.post_thumbnailLocation = try container.decodeIfPresent(ThumbnailLocation.self, forKey: .post_thumbnailLocation) ?? .left
         self.post_webPreview_showHost = try container.decodeIfPresent(Bool.self, forKey: .post_webPreview_showHost) ?? true
@@ -249,6 +251,7 @@ struct CodableSettings: Codable {
         self.post_thumbnailLocation = settings.thumbnailLocation
         self.post_webPreview_showHost = true
         self.post_webPreview_showIcon = true
+        self.post_showDownvotesCompact = settings.showDownvotesCompact
         self.profile_showBanner = true
         self.safety_blurNsfw = settings.blurNsfw
         self.safety_enableNsfwCommunityWarning = settings.showNsfwCommunityWarning
