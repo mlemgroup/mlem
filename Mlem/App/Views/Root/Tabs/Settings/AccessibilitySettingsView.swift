@@ -14,8 +14,6 @@ struct AccessibilitySettingsView: View {
     @Setting(\.websiteThumbnailIcon) var websiteThumbnailIcon
     @Setting(\.showSettingsIcons) var showSettingsIcons
     
-    // var labelStyle: any LabelStyle { showSettingsIcons ? .titleAndIcon : .titleOnly }
-    
     var body: some View {
         Form {
             if differentiateWithoutColor {
