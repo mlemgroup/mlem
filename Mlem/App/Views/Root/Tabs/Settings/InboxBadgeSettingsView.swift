@@ -32,7 +32,7 @@ struct InboxBadgeSettingsView: View {
             }
         }
         .contentMargins(.top, 16, for: .scrollContent)
-        .labelStyle(ConditionalIconLabelStyle())
+        .labelStyle(.conditional)
     }
     
     @ViewBuilder

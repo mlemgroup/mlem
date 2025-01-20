@@ -18,7 +18,7 @@ struct SubscriptionListSettingsView: View {
                 }
             }
         }
-        .labelStyle(ConditionalIconLabelStyle())
+        .labelStyle(.conditional)
         .navigationTitle("Subscription List")
     }
 }

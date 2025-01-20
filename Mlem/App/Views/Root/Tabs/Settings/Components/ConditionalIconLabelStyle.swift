@@ -22,3 +22,7 @@ struct ConditionalIconLabelStyle: LabelStyle {
         }
     }
 }
+
+extension LabelStyle where Self == ConditionalIconLabelStyle {
+    static var conditional: ConditionalIconLabelStyle { .init() }
+}

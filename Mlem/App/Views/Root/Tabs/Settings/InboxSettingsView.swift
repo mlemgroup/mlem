@@ -29,7 +29,7 @@ struct InboxSettingsView: View {
                 )
             }
         }
-        .labelStyle(ConditionalIconLabelStyle())
+        .labelStyle(.conditional)
         .navigationTitle("Inbox")
     }
 }

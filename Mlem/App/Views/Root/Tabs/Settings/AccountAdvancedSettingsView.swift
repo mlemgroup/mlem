@@ -37,7 +37,7 @@ struct AccountAdvancedSettingsView: View {
                 Text("Bot accounts are unable to vote.")
             }
         }
-        .labelStyle(ConditionalIconLabelStyle())
+        .labelStyle(.conditional)
         .navigationTitle("Advanced")
     }
 }

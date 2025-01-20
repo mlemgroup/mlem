@@ -29,7 +29,7 @@ struct CommentSettingsView: View {
             }
             maxDepthSection
         }
-        .labelStyle(ConditionalIconLabelStyle())
+        .labelStyle(.conditional)
         .navigationTitle("Comments")
     }
     

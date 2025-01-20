@@ -117,7 +117,7 @@ struct GeneralSettingsView: View {
             
             NavigationLink("Import/Export Settings", systemImage: Icons.importSettings, destination: .settings(.importExportSettings))
         }
-        .labelStyle(ConditionalIconLabelStyle())
+        .labelStyle(.conditional)
         .navigationTitle("General")
     }
 }

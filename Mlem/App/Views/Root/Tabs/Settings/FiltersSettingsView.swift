@@ -35,8 +35,8 @@ struct FiltersSettingsView: View {
                 Text("Posts with these keywords in their titles will be hidden. If you are a moderator or administrator of a matching post, it will appear in your feed but require you to tap to view its content.")
             }
         }
+        .labelStyle(.conditional)
         .navigationTitle("Filters")
-        .labelStyle(ConditionalIconLabelStyle())
     }
     
     @ViewBuilder

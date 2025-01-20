@@ -23,7 +23,7 @@ struct AccountListSettingsView: View {
                 Toggle("Reload on Switch", systemImage: Icons.accountSwitchReload, isOn: $keepPlace.invert())
             }
         }
-        .labelStyle(ConditionalIconLabelStyle())
+        .labelStyle(.conditional)
     }
     
     @ViewBuilder

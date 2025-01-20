@@ -74,7 +74,7 @@ struct AccountGeneralSettingsView: View {
                 }
             }
         }
-        .labelStyle(ConditionalIconLabelStyle())
+        .labelStyle(.conditional)
         .navigationTitle("Content & Notifications")
     }
 }

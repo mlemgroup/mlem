@@ -64,7 +64,7 @@ struct TabBarSettingsView: View {
                 )
             }
         }
-        .labelStyle(ConditionalIconLabelStyle())
+        .labelStyle(.conditional)
         .navigationTitle("Tab Bar")
     }
 }

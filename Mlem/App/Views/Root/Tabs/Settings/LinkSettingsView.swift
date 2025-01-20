@@ -58,7 +58,7 @@ struct LinkSettingsView: View {
                 }
             }
         }
+        .labelStyle(.conditional)
         .navigationTitle("Links")
-        .labelStyle(ConditionalIconLabelStyle())
     }
 }

@@ -39,8 +39,8 @@ struct ModeratorSettingsView: View {
                 )
             }
         }
+        .labelStyle(.conditional)
         .navigationTitle("Moderation")
-        .labelStyle(ConditionalIconLabelStyle())
     }
 }
 

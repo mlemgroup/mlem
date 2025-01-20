@@ -29,8 +29,8 @@ struct AccessibilitySettingsView: View {
                 Toggle("Website Thumbnail Indicator", systemImage: Icons.browser, isOn: $websiteThumbnailIcon)
                 Toggle("Settings Icons", systemImage: Icons.icon, isOn: $showSettingsIcons)
             }
-            .labelStyle(ConditionalIconLabelStyle())
         }
+        .labelStyle(.conditional)
         .navigationTitle("Accessibility")
     }
 }

@@ -322,7 +322,7 @@
     "Always Allow Direct Loading" : {
 
     },
-    "Always show Usernames" : {
+    "Always Show Usernames" : {
 
     },
     "An endorsement signifies that an instance approves of another instance. It is completely subjective, and a reason does not have to be given." : {
@@ -1088,7 +1088,7 @@
     "Incidents" : {
 
     },
-    "Indicate link thumbnails with an icon" : {
+    "Indicate link thumbnails with an icon." : {
 
     },
     "Infinite Scroll" : {
