@@ -33,7 +33,7 @@ struct PostThumbnailSettingsView: View {
             Section {
                 Toggle("Website Icon", isOn: $websiteThumbnailIcon)
             } footer: {
-                Text("Indicate link thumbnails with an icon")
+                Text("Indicate link thumbnails with an icon.")
             }
         }
         .navigationTitle("Thumbnail")
