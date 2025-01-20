@@ -58,15 +58,15 @@ struct PostSettingsView: View {
                 }
             }
             
+            Section {
+                Toggle("User Avatar", systemImage: Icons.personCircle, isOn: $showPersonAvatar)
+                Toggle("Community Avatar", systemImage: Icons.communityCircle, isOn: $showCommunityAvatar)
+            }
+            
             if postSize != .tile, postSize != .compact {
                 Section {
                     Toggle("Always show Usernames", systemImage: Icons.author, isOn: $showCreator)
                 }
-            }
-            
-            Section {
-                Toggle("User Avatar", systemImage: Icons.personCircle, isOn: $showPersonAvatar)
-                Toggle("Community Avatar", systemImage: Icons.communityCircle, isOn: $showCommunityAvatar)
             }
         }
         .navigationTitle("Posts")
