@@ -34,13 +34,11 @@ struct PostSettingsView: View {
             
             Section {
                 if postSize == .headline || postSize == .compact {
-                    NavigationLink(
-                        "Thumbnail",
-                        value: .init(localized: thumbnailLocation.label),
-                        fallbackValue: "",
-                        systemImage: Icons.thumbnail,
-                        destination: .settings(.postThumbnail)
-                    )
+                    DisclosureGroup {
+                        PostThumbnailSettingsView()
+                    } label: {
+                        Label("Thumbnail", systemImage: Icons.thumbnail)
+                    }
                 }
                 NavigationLink(
                     "Subscription Indicator",

@@ -13,23 +13,20 @@ struct PostThumbnailSettingsView: View {
     @Setting(\.thumbnailLocation) var thumbnailLocation
     
     var body: some View {
-        Form {
-            VStack(spacing: Constants.main.doubleSpacing) {
-                ForEach(ThumbnailLocation.allCases, id: \.self) { location in
-                    alignmentPickerItem(location: location)
-                }
+        VStack {
+            ForEach(ThumbnailLocation.allCases, id: \.self) { location in
+                alignmentPickerItem(location: location)
             }
-            .padding(Constants.main.doubleSpacing)
-            .listRowInsets(EdgeInsets())
         }
-        .animation(.easeOut(duration: 0.1), value: thumbnailLocation)
-        .navigationTitle("Thumbnail")
+        .frame(maxWidth: 300)
     }
     
     @ViewBuilder
     func alignmentPickerItem(location: ThumbnailLocation) -> some View {
-        alignmentPreview(location: location)
-        
+        HStack(spacing: Constants.main.doubleSpacing) {
+            Checkbox(isOn: location == thumbnailLocation)
+            alignmentPreview(location: location)
+        }
         .frame(maxWidth: .infinity)
         .onTapGesture {
             HapticManager.main.play(haptic: .gentleInfo, priority: .low)
