@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SwiftUICore
 
 extension UIUserInterfaceStyle: Codable {
     var label: String {
@@ -19,6 +20,15 @@ extension UIUserInterfaceStyle: Codable {
             "Dark"
         default:
             "Unknown"
+        }
+    }
+    
+    var systemImage: String {
+        switch self {
+        case .unspecified: "circle.lefthalf.filled"
+        case .light: "circle"
+        case .dark: "circle.fill"
+        default: "circle.lefthalf.filled"
         }
     }
     
