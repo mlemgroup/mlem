@@ -1088,6 +1088,9 @@
     "Incidents" : {
 
     },
+    "Indicate link thumbnails with an icon" : {
+
+    },
     "Infinite Scroll" : {
 
     },
@@ -2215,6 +2218,9 @@
     "Thumbnail" : {
 
     },
+    "Thumbnail Location" : {
+
+    },
     "Tiled" : {
 
     },
@@ -2444,6 +2450,9 @@
 
     },
     "Website" : {
+
+    },
+    "Website Icon" : {
 
     },
     "Website Thumbnail Indicator" : {

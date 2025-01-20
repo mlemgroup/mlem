@@ -11,36 +11,39 @@ struct PostThumbnailSettingsView: View {
     @Environment(Palette.self) var palette
     
     @Setting(\.thumbnailLocation) var thumbnailLocation
+    @Setting(\.websiteThumbnailIcon) var websiteThumbnailIcon
     
     var body: some View {
-        VStack {
-            ForEach(ThumbnailLocation.allCases, id: \.self) { location in
-                alignmentPickerItem(location: location)
+        Form {
+            Section {
+                alignmentPreview(location: thumbnailLocation)
+                    .animation(.easeInOut(duration: 0.2), value: thumbnailLocation)
+            }
+            
+            Section {
+                Picker("Thumbnail Location", selection: $thumbnailLocation) {
+                    ForEach(ThumbnailLocation.allCases, id: \.self) { location in
+                        Text(location.label).tag(location)
+                    }
+                }
+                .labelsHidden()
+                .pickerStyle(.inline)
+            }
+            
+            Section {
+                Toggle("Website Icon", isOn: $websiteThumbnailIcon)
+            } footer: {
+                Text("Indicate link thumbnails with an icon")
             }
         }
-        .frame(maxWidth: 300)
-    }
-    
-    @ViewBuilder
-    func alignmentPickerItem(location: ThumbnailLocation) -> some View {
-        HStack(spacing: Constants.main.doubleSpacing) {
-            Checkbox(isOn: location == thumbnailLocation)
-            alignmentPreview(location: location)
-        }
-        .frame(maxWidth: .infinity)
-        .onTapGesture {
-            HapticManager.main.play(haptic: .gentleInfo, priority: .low)
-            thumbnailLocation = location
-        }
+        .navigationTitle("Thumbnail")
     }
     
     @ViewBuilder
     func alignmentPreview(location: ThumbnailLocation) -> some View {
-        let color: Color = location == thumbnailLocation ? palette.accent : palette.secondary
-        HStack(spacing: 6) {
-            if location == .left {
-                thumbnailView(color)
-            }
+        HStack(spacing: 8) {
+            thumbnailView(active: location == .left)
+            
             GeometryReader { geometry in
                 VStack(alignment: .leading, spacing: 5) {
                     Capsule()
@@ -52,29 +55,37 @@ struct PostThumbnailSettingsView: View {
                         .fill(.opacity(0.7))
                         .frame(width: geometry.size.width / 3, height: geometry.size.height / 6)
                 }
-                .foregroundStyle(color)
+                .foregroundStyle(palette.secondary)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.top, 2)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            if location == .right {
-                thumbnailView(color)
-            }
+            .padding(.leading, location == .left ? 0 : -8)
+            
+            thumbnailView(active: location == .right)
         }
         .aspectRatio(8 / 2, contentMode: .fit)
-        .padding(6)
+        .padding(8)
         .background(palette.tertiaryGroupedBackground, in: .rect(cornerRadius: Constants.main.mediumItemCornerRadius))
-        .overlay {
-            RoundedRectangle(cornerRadius: Constants.main.mediumItemCornerRadius)
-                .stroke(location == thumbnailLocation ? palette.accent : .clear, lineWidth: 3)
-        }
     }
     
     @ViewBuilder
-    func thumbnailView(_ color: Color) -> some View {
+    func thumbnailView(active: Bool) -> some View {
         RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius)
-            .fill(color.opacity(0.3))
+            .fill(palette.accent.opacity(0.4))
             .frame(maxHeight: .infinity)
-            .aspectRatio(1, contentMode: .fit)
+            .aspectRatio(.init(width: active ? 1 : 0, height: 1), contentMode: .fit)
+            .overlay {
+                Image(systemName: Icons.browser)
+                    .resizable()
+                    .frame(width: 20, height: 20)
+                    .foregroundStyle(.white)
+                    .background(.ultraThinMaterial, in: .circle)
+                    .padding(6)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                    .opacity(websiteThumbnailIcon ? 1 : 0)
+                    .opacity(active ? 1 : 0)
+                    .animation(.easeIn(duration: 0.2), value: websiteThumbnailIcon)
+            }
     }
 }

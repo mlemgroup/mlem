@@ -12,7 +12,7 @@ enum ThumbnailLocation: String, CaseIterable, Codable {
     
     var label: LocalizedStringResource {
         switch self {
-        case .none: "Hidden"
+        case .none: "None"
         case .left: "Left"
         case .right: "Right"
         }
