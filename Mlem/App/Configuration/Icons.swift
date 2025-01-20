@@ -278,7 +278,6 @@ enum Icons {
     static let developerMode: String = "wrench.adjustable.fill"
     static let limitImageHeightSetting: String = "rectangle.compress.vertical"
     static let appLockSettings: String = "lock.app.dashed"
-    static let collapseComments: String = "arrow.down.and.line.horizontal.and.arrow.up"
     static let banFromInstance: String = "xmark.circle"
     static let unbanFromInstance: String = "checkmark.circle"
     static let banFromCommunity: String = "xmark.shield"
@@ -300,6 +299,10 @@ enum Icons {
     static let systemMode: String = "circle.lefthalf.filled"
     static let lightMode: String = "sun.max"
     static let darkMode: String = "moon"
+    static let compactComments: String = "rectangle.compress.vertical"
+    static let interactionBar: String = "square.and.line.vertical.and.square.fill"
+    static let commentDepth: String = "text.append"
+    static let qualifiedLabel: String = "at"
     
     // fediseer
     static let fediseer: String = "shield.checkered"

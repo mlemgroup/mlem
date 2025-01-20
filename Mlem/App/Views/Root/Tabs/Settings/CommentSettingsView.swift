@@ -17,18 +17,19 @@ struct CommentSettingsView: View {
     var body: some View {
         Form {
             Section {
-                Toggle("Compact Comments", isOn: $compactComments)
-                Toggle("Tap to Collapse", isOn: $tapCommentsToCollapse)
+                Toggle("Compact Comments", systemImage: Icons.compactComments, isOn: $compactComments)
+                Toggle("Tap to Collapse", systemImage: Icons.collapseComment, isOn: $tapCommentsToCollapse)
             }
             Section {
                 NavigationLink(
                     "Customize Interaction Bar",
-                    systemImage: "square.and.line.vertical.and.square.fill",
+                    systemImage: Icons.interactionBar,
                     destination: .settings(.commentInteractionBar)
                 )
             }
             maxDepthSection
         }
+        .labelStyle(ConditionalIconLabelStyle())
         .navigationTitle("Comments")
     }
     
@@ -36,7 +37,7 @@ struct CommentSettingsView: View {
     var maxDepthSection: some View {
         Section {
             HStack {
-                Text("Maximum Comment Depth")
+                Label("Maximum Comment Depth", systemImage: Icons.commentDepth)
                 Spacer()
                 Text(String(maxCommentDepth))
                     .foregroundStyle(palette.secondary)

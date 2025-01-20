@@ -21,7 +21,7 @@ struct AccountAdvancedSettingsView: View {
     var body: some View {
         Form {
             Section {
-                Toggle("Bot Account", isOn: $isBot)
+                Toggle("Bot Account", systemImage: Icons.botFlair, isOn: $isBot)
                     .tint(palette.colorfulAccent(5))
                     .onChange(of: isBot) {
                         Task {
@@ -37,6 +37,7 @@ struct AccountAdvancedSettingsView: View {
                 Text("Bot accounts are unable to vote.")
             }
         }
+        .labelStyle(ConditionalIconLabelStyle())
         .navigationTitle("Advanced")
     }
 }

@@ -100,6 +100,7 @@ struct AccountListView: View {
         Section {
             Button { isShowingAddAccountDialogue = true } label: {
                 Label("Add Account", systemImage: Icons.add)
+                    .labelStyle(.titleAndIcon)
             }
             .confirmationDialog("Choose Account Type", isPresented: $isShowingAddAccountDialogue) {
                 Button("Log In") {

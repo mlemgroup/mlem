@@ -20,9 +20,10 @@ struct AccountListSettingsView: View {
             headerView
             AccountListView()
             Section {
-                Toggle("Reload on Switch", isOn: $keepPlace.invert())
+                Toggle("Reload on Switch", systemImage: Icons.accountSwitchReload, isOn: $keepPlace.invert())
             }
         }
+        .labelStyle(ConditionalIconLabelStyle())
     }
     
     @ViewBuilder

@@ -39,6 +39,7 @@ struct ThemeSettingsView: View {
                     ThemeLabel(palette: item)
                         .tag(item)
                 }
+                .labelStyle(.titleAndIcon)
             }
             .labelsHidden()
             .pickerStyle(.inline)
