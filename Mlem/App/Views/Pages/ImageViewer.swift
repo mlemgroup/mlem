@@ -44,7 +44,7 @@ struct ImageViewer: View {
     @State var quickLookUrl: URL?
     
     // Whether the controls are currently visible
-    var controlsShown: Bool { controlOpacity == 1 }
+    var controlsShown: Bool { controlOpacity > 0 }
     
     init(url: URL) {
         var components = URLComponents(url: url, resolvingAgainstBaseURL: false)!
@@ -183,8 +183,10 @@ struct ImageViewer: View {
     private func handleOffsetUpdate(_ newOffset: CGFloat) {
         let absOffset = abs(newOffset)
         offset = newOffset
-        controlOffset = absOffset / 3
-        controlOpacity = 1.0 - (controlOffset / maxControlOffset)
+        if controlsShown {
+            controlOffset = absOffset / 3
+            controlOpacity = 1.0 - (controlOffset / maxControlOffset)
+        }
         opacity = 1.0 - (absOffset / screenHeight)
     }
     
