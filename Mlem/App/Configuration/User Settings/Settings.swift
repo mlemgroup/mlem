@@ -29,6 +29,7 @@ class Settings: ObservableObject {
     @AppStorage("post.thumbnailLocation") var thumbnailLocation: ThumbnailLocation = .left
     @AppStorage("post.showCreator") var showPostCreator: Bool = false
     @AppStorage("post.showSubscribedStatus") var showSubscribedStatus: Bool = true
+    @AppStorage("post.showDownvotesCompact") var showDownvotesCompact: Bool = false
     
     @AppStorage("quickSwipes.enabled") var quickSwipesEnabled: Bool = true
     

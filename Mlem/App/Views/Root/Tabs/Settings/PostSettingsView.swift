@@ -19,6 +19,7 @@ struct PostSettingsView: View {
     @Setting(\.showPersonAvatar) var showPersonAvatar
     @Setting(\.showCommunityAvatar) var showCommunityAvatar
     @Setting(\.showSubscribedStatus) var showSubscribedStatus
+    @Setting(\.showDownvotesCompact) var showDownvotesCompact
     
     @Setting(\.readPostIndicator) var readPostIndicator
     
@@ -33,6 +34,14 @@ struct PostSettingsView: View {
             }
             
             Section {
+                NavigationLink(
+                    "Subscription Indicator",
+                    value: showSubscribedStatus ? "On" : "Off",
+                    fallbackValue: "",
+                    systemImage: Icons.subscribedFeed,
+                    destination: .settings(.postSubscriptionIndicator)
+                )
+                
                 if postSize == .headline || postSize == .compact {
                     NavigationLink(
                         "Thumbnail",
@@ -43,13 +52,9 @@ struct PostSettingsView: View {
                     )
                 }
                 
-                NavigationLink(
-                    "Subscription Indicator",
-                    value: showSubscribedStatus ? "On" : "Off",
-                    fallbackValue: "",
-                    systemImage: Icons.subscribedFeed,
-                    destination: .settings(.postSubscriptionIndicator)
-                )
+                if postSize == .compact {
+                    Toggle("Show Downvotes Separately", systemImage: Icons.votes, isOn: $showDownvotesCompact)
+                }
                 
                 if differentiateWithoutColor {
                     NavigationLink(
