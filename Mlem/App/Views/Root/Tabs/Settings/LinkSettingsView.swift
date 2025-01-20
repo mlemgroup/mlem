@@ -17,15 +17,15 @@ struct LinkSettingsView: View {
         Form {
             Section("Open External Links") {
                 Picker("Open External Links", selection: $openLinksInBrowser) {
-                    Text("In-App").tag(false)
-                    Text("In Default Browser").tag(true)
+                    Label("In-App", systemImage: Icons.inApp).tag(false)
+                    Label("In Default Browser", systemImage: Icons.browser).tag(true)
                 }
                 .pickerStyle(.inline)
                 .labelsHidden()
             }
             
             Section {
-                Toggle("Open in Reader", isOn: $openLinksInReaderMode)
+                Toggle("Open in Reader", systemImage: Icons.reader, isOn: $openLinksInReaderMode)
                     .disabled(openLinksInBrowser)
             } footer: {
                 Text("Automatically enable Reader for supported webpages. You can only enable this when using the in-app browser.")
@@ -34,6 +34,7 @@ struct LinkSettingsView: View {
             Section {
                 Toggle(
                     "Tappable Links",
+                    systemImage: Icons.websiteAddress,
                     isOn: Binding(
                         get: { tappableLinksDisplayMode != .disabled },
                         set: { newValue in
@@ -44,7 +45,7 @@ struct LinkSettingsView: View {
                     )
                 )
                 if tappableLinksDisplayMode != .disabled {
-                    Picker("Show Full URL", selection: $tappableLinksDisplayMode) {
+                    Picker("Show Full URL", systemImage: Icons.inlineCode, selection: $tappableLinksDisplayMode) {
                         Text("Automatic").tag(TappableLinksDisplayMode.contextual)
                         Text("Always").tag(TappableLinksDisplayMode.large)
                         Text("Never").tag(TappableLinksDisplayMode.compact)
@@ -58,5 +59,6 @@ struct LinkSettingsView: View {
             }
         }
         .navigationTitle("Links")
+        .labelStyle(ConditionalIconLabelStyle())
     }
 }

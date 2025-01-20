@@ -291,6 +291,9 @@ enum Icons {
     static let swipeActions: String = "inset.filled.leadinghalf.rectangle"
     static let swipeAnywhere: String = "arrow.left"
     static let importSettings: String = "folder.badge.gearshape"
+    static let inApp: String = "house"
+    static let reader: String = "text.page"
+    static let keywordFilter: String = "rectangle.and.text.magnifyingglass"
     
     // fediseer
     static let fediseer: String = "shield.checkered"

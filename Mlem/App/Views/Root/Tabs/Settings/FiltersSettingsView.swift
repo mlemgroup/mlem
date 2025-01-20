@@ -25,7 +25,7 @@ struct FiltersSettingsView: View {
     var body: some View {
         Form {
             Section {
-                Toggle("Enable Keyword Filters", isOn: $keywordFilterEnabled)
+                Toggle("Enable Keyword Filters", systemImage: Icons.keywordFilter, isOn: $keywordFilterEnabled)
             }
             
             Section {
@@ -36,6 +36,7 @@ struct FiltersSettingsView: View {
             }
         }
         .navigationTitle("Filters")
+        .labelStyle(ConditionalIconLabelStyle())
     }
     
     @ViewBuilder
