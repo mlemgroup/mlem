@@ -69,7 +69,7 @@ struct PostSettingsView: View {
             
             if postSize != .tile, postSize != .compact {
                 Section {
-                    Toggle("Always show Usernames", systemImage: Icons.author, isOn: $showCreator)
+                    Toggle("Always Show Usernames", systemImage: Icons.author, isOn: $showCreator)
                 }
             }
         }
