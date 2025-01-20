@@ -20,13 +20,15 @@ extension NavigationLink where Destination == Never {
         _ titleKey: LocalizedStringResource,
         value: String,
         fallbackValue: String,
+        systemImage: String? = nil,
         destination: NavigationPage
     ) where Label == NavigationLinkPickerLabelView {
         self.init(destination) {
             NavigationLinkPickerLabelView(
                 title: .init(localized: titleKey),
                 value: value,
-                fallbackValue: fallbackValue
+                fallbackValue: fallbackValue,
+                systemImage: systemImage
             )
         }
     }
@@ -51,11 +53,19 @@ struct NavigationLinkPickerLabelView: View {
     let title: String
     let value: String
     let fallbackValue: String
+    let systemImage: String?
     
     var body: some View {
         HStack {
-            Text(title)
-                .frame(maxWidth: .infinity, alignment: .leading)
+            Group {
+                if let systemImage {
+                    Label(title, systemImage: systemImage)
+                } else {
+                    Text(title)
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
             ViewThatFits {
                 Text(value)
                 Text(fallbackValue)

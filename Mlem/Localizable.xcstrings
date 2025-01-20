@@ -998,9 +998,6 @@
     "Green" : {
 
     },
-    "Group actions using" : {
-
-    },
     "Grouped" : {
 
     },
@@ -1743,9 +1740,6 @@
     "Reset" : {
 
     },
-    "Reset Settings State" : {
-
-    },
     "Resolve" : {
 
     },
@@ -1776,10 +1770,16 @@
     "Save" : {
 
     },
+    "Save and Restore" : {
+
+    },
     "Save Image" : {
 
     },
     "Save Settings" : {
+
+    },
+    "Save the current settings and restore them later." : {
 
     },
     "Save V1 Settings" : {
@@ -1836,10 +1836,10 @@
     "Sent %@" : {
 
     },
-    "Separate Menu" : {
+    "Separate Actions Using" : {
 
     },
-    "Separate moderator actions using..." : {
+    "Separate Menu" : {
 
     },
     "Settings" : {

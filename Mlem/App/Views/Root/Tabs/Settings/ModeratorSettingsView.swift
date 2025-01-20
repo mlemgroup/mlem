@@ -15,7 +15,7 @@ struct ModeratorSettingsView: View {
     var body: some View {
         Form {
             Section {
-                Picker("Group actions using", selection: $moderatorActionGrouping) {
+                Picker("Separate Actions Using", systemImage: Icons.menuItems, selection: $moderatorActionGrouping) {
                     Text("Divider")
                         .tag(ModeratorActionGrouping.divider)
                     Text("Disclosure Group")
@@ -23,14 +23,9 @@ struct ModeratorSettingsView: View {
                     Text("Separate Menu")
                         .tag(ModeratorActionGrouping.separateMenu)
                 }
-                .pickerStyle(.inline)
-                .labelsHidden()
-            } header: {
-                Text("Separate moderator actions using...")
-                    .textCase(nil)
             }
             Section {
-                Toggle("Show All Actions in Feed", isOn: $showAllModActions)
+                Toggle("Show All Actions in Feed", systemImage: Icons.menuCircle, isOn: $showAllModActions)
             } footer: {
                 Text("When disabled, some moderator actions will only be accessible from the post page.")
             }
@@ -39,11 +34,13 @@ struct ModeratorSettingsView: View {
                     "Notification Badge",
                     value: tabInboxBadgeIncludedTypes.label(accountType: AccountsTracker.main.highestLevelAccountType),
                     fallbackValue: .init(localized: "Some"),
+                    systemImage: Icons.unreadBadge,
                     destination: .settings(.inboxBadge)
                 )
             }
         }
         .navigationTitle("Moderation")
+        .labelStyle(ConditionalIconLabelStyle())
     }
 }
 

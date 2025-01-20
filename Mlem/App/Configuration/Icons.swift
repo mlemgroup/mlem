@@ -294,6 +294,9 @@ enum Icons {
     static let inApp: String = "house"
     static let reader: String = "text.page"
     static let keywordFilter: String = "rectangle.and.text.magnifyingglass"
+    static let saveSettings: String = "document.badge.gearshape"
+    static let restoreSettings: String = "gearshape.arrow.trianglehead.2.clockwise.rotate.90"
+    static let menuItems: String = "filemenu.and.selection"
     
     // fediseer
     static let fediseer: String = "shield.checkered"

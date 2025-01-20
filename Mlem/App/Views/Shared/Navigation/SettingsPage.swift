@@ -54,7 +54,7 @@ enum SettingsPage: Hashable {
         case .accessibility:
             AccessibilitySettingsView()
         case .importExportSettings:
-            ImportExportSettingsPage()
+            ImportExportSettingsView()
         case .advanced:
             AdvancedSettingsView()
         case .developer:
