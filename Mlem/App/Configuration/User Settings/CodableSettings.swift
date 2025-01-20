@@ -15,6 +15,7 @@ struct CodableSettings: Codable {
 
     var a11y_readPostIndicator: ReadPostIndicator
     var a11y_readOutlineThickness: Int
+    var a11y_showSettingsIcons: Bool
     var a11y_websiteThumbnailIcon: Bool
     var accounts_defaultId: Int?
     var accounts_grouped: Bool
@@ -22,7 +23,6 @@ struct CodableSettings: Codable {
     var accounts_keepPlace: Bool
     var appearance_interfaceStyle: UIUserInterfaceStyle
     var appearance_palette: PaletteOption
-    var appearance_showSettingsIcons: Bool
     var markdown_wrapCodeBlockLines: Bool
     var behavior_biometricUnlock: Bool
     var behavior_confirmImageUploads: Bool
@@ -100,6 +100,7 @@ struct CodableSettings: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.a11y_readPostIndicator = try container.decodeIfPresent(ReadPostIndicator.self, forKey: .a11y_readPostIndicator) ?? .checkmark
         self.a11y_readOutlineThickness = try container.decodeIfPresent(Int.self, forKey: .a11y_readOutlineThickness) ?? 3
+        self.a11y_showSettingsIcons = try container.decodeIfPresent(Bool.self, forKey: .a11y_showSettingsIcons) ?? true
         self.a11y_websiteThumbnailIcon = try container.decodeIfPresent(Bool.self, forKey: .a11y_websiteThumbnailIcon) ?? false
         self.accounts_defaultId = try container.decodeIfPresent(Int?.self, forKey: .accounts_defaultId) ?? nil
         self.accounts_grouped = try container.decodeIfPresent(Bool.self, forKey: .accounts_grouped) ?? false
@@ -107,7 +108,6 @@ struct CodableSettings: Codable {
         self.accounts_keepPlace = try container.decodeIfPresent(Bool.self, forKey: .accounts_keepPlace) ?? false
         self.appearance_interfaceStyle = try container.decodeIfPresent(UIUserInterfaceStyle.self, forKey: .appearance_interfaceStyle) ?? .unspecified
         self.appearance_palette = try container.decodeIfPresent(PaletteOption.self, forKey: .appearance_palette) ?? .standard
-        self.appearance_showSettingsIcons = try container.decodeIfPresent(Bool.self, forKey: .appearance_showSettingsIcons) ?? true
         self.markdown_wrapCodeBlockLines = try container.decodeIfPresent(Bool.self, forKey: .markdown_wrapCodeBlockLines) ?? true
         self.behavior_biometricUnlock = try container.decodeIfPresent(Bool.self, forKey: .behavior_biometricUnlock) ?? false
         self.behavior_confirmImageUploads = try container.decodeIfPresent(Bool.self, forKey: .behavior_confirmImageUploads) ?? true
@@ -199,6 +199,7 @@ struct CodableSettings: Codable {
     init(from settings: Settings, filteredKeywords: Set<String>) {
         self.a11y_readPostIndicator = settings.readPostIndicator
         self.a11y_readOutlineThickness = settings.readOutlineThickness
+        self.a11y_showSettingsIcons = true
         self.a11y_websiteThumbnailIcon = settings.websiteThumbnailIcon
         self.accounts_defaultId = nil
         self.accounts_grouped = settings.groupAccountSort
@@ -206,7 +207,6 @@ struct CodableSettings: Codable {
         self.accounts_keepPlace = settings.keepPlaceOnAccountSwitch
         self.appearance_interfaceStyle = settings.interfaceStyle
         self.appearance_palette = settings.colorPalette
-        self.appearance_showSettingsIcons = true
         self.markdown_wrapCodeBlockLines = settings.wrapCodeBlockLines
         self.behavior_biometricUnlock = false
         self.behavior_confirmImageUploads = settings.confirmImageUploads

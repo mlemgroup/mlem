@@ -15,7 +15,7 @@ struct InboxSettingsView: View {
             Section {
                 NavigationLink(
                     "Customize Interaction Bar",
-                    systemImage: "square.and.line.vertical.and.square.fill",
+                    systemImage: Icons.interactionBar,
                     destination: .settings(.replyInteractionBar)
                 )
             }
@@ -24,10 +24,12 @@ struct InboxSettingsView: View {
                     "Notification Badge",
                     value: tabInboxBadgeIncludedTypes.label(accountType: AccountsTracker.main.highestLevelAccountType),
                     fallbackValue: .init(localized: "Some"),
+                    systemImage: Icons.unreadBadge,
                     destination: .settings(.inboxBadge)
                 )
             }
         }
+        .labelStyle(.conditional)
         .navigationTitle("Inbox")
     }
 }

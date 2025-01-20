@@ -12,12 +12,13 @@ struct SubscriptionListSettingsView: View {
     
     var body: some View {
         Form {
-            Picker("Label Style", selection: $instanceLocation) {
+            Picker("Label Style", systemImage: Icons.qualifiedLabel, selection: $instanceLocation) {
                 ForEach(InstanceLocation.allCases, id: \.self) { item in
                     Text(item.label)
                 }
             }
         }
+        .labelStyle(.conditional)
         .navigationTitle("Subscription List")
     }
 }

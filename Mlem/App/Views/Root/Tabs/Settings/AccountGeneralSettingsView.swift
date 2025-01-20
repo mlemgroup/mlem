@@ -25,7 +25,7 @@ struct AccountGeneralSettingsView: View {
     var body: some View {
         Form {
             Section {
-                Toggle("Show NSFW Content", isOn: $showNsfw)
+                Toggle("Show NSFW Content", systemImage: Icons.blurNsfw, isOn: $showNsfw)
                     .tint(palette.warning)
                     .onChange(of: showNsfw) {
                         Task {
@@ -41,7 +41,7 @@ struct AccountGeneralSettingsView: View {
                 Text("Show content flagged as Not Safe For Work.")
             }
             Section {
-                Toggle("Show Bot Accounts", isOn: $showBotAccounts)
+                Toggle("Show Bot Accounts", systemImage: Icons.botFlair, isOn: $showBotAccounts)
                     .onChange(of: showBotAccounts) {
                         Task {
                             do {
@@ -54,7 +54,7 @@ struct AccountGeneralSettingsView: View {
                     }
             }
             Section {
-                Toggle("Send Notifications to Email", isOn: $sendNotificationsToEmail)
+                Toggle("Send Notifications to Email", systemImage: Icons.email, isOn: $sendNotificationsToEmail)
                     .onChange(of: sendNotificationsToEmail) {
                         Task {
                             do {
@@ -74,6 +74,7 @@ struct AccountGeneralSettingsView: View {
                 }
             }
         }
+        .labelStyle(.conditional)
         .navigationTitle("Content & Notifications")
     }
 }

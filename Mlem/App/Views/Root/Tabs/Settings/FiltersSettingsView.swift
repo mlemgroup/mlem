@@ -25,7 +25,7 @@ struct FiltersSettingsView: View {
     var body: some View {
         Form {
             Section {
-                Toggle("Enable Keyword Filters", isOn: $keywordFilterEnabled)
+                Toggle("Enable Keyword Filters", systemImage: Icons.keywordFilter, isOn: $keywordFilterEnabled)
             }
             
             Section {
@@ -35,6 +35,7 @@ struct FiltersSettingsView: View {
                 Text("Posts with these keywords in their titles will be hidden. If you are a moderator or administrator of a matching post, it will appear in your feed but require you to tap to view its content.")
             }
         }
+        .labelStyle(.conditional)
         .navigationTitle("Filters")
     }
     

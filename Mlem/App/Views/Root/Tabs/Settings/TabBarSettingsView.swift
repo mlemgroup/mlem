@@ -52,17 +52,19 @@ struct TabBarSettingsView: View {
                         }
                     }
                 }
-                Toggle("Show Avatar", isOn: $showUserAvatar)
+                Toggle("Show Avatar", systemImage: Icons.personCircle, isOn: $showUserAvatar)
             }
             Section {
                 NavigationLink(
                     "Notification Badge",
                     value: tabInboxBadgeIncludedTypes.label(accountType: AccountsTracker.main.highestLevelAccountType),
                     fallbackValue: .init(localized: "Some"),
+                    systemImage: Icons.unreadBadge,
                     destination: .settings(.inboxBadge)
                 )
             }
         }
+        .labelStyle(.conditional)
         .navigationTitle("Tab Bar")
     }
 }

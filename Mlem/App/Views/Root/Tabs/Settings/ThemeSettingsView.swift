@@ -23,12 +23,7 @@ struct ThemeSettingsView: View {
                 // so that it reverts the the actual settings value when a multi-mode theme is selected
                 Picker("Style", selection: supportedModes == .unspecified ? $interfaceStyle : .constant(supportedModes)) {
                     ForEach(UIUserInterfaceStyle.optionCases, id: \.self) { style in
-                        Text(style.label)
-                            .foregroundStyle(
-                                supportedModes == .unspecified || supportedModes == style
-                                    ? palette.primary
-                                    : palette.secondary
-                            )
+                        interfaceStyleLabel(for: style)
                     }
                 }
                 .labelsHidden()
@@ -44,10 +39,22 @@ struct ThemeSettingsView: View {
                     ThemeLabel(palette: item)
                         .tag(item)
                 }
+                .labelStyle(.titleAndIcon)
             }
             .labelsHidden()
             .pickerStyle(.inline)
         }
+        .labelStyle(.conditional)
         .navigationTitle("Theme")
+    }
+    
+    @ViewBuilder
+    func interfaceStyleLabel(for style: UIUserInterfaceStyle) -> some View {
+        Label(style.label, systemImage: style.systemImage)
+            .foregroundStyle(
+                supportedModes == .unspecified || supportedModes == style
+                    ? palette.primary
+                    : palette.secondary
+            )
     }
 }

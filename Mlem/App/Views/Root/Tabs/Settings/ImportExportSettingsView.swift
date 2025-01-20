@@ -10,7 +10,7 @@ import Foundation
 import SwiftUI
 
 // DO NOT use Picker in this page! It refuses to change the theme until it gets re-rendered. All other components pick up theme changes correctly.
-struct ImportExportSettingsPage: View {
+struct ImportExportSettingsView: View {
     @Dependency(\.persistenceRepository) var persistenceRepository
     
     @Environment(NavigationLayer.self) var navigation
@@ -25,6 +25,7 @@ struct ImportExportSettingsPage: View {
     
     var body: some View {
         content
+            .labelStyle(.conditional)
             .onAppear {
                 v1SettingsExist = persistenceRepository.systemSettingsExists(.v1)
                 v2SettingsExist = persistenceRepository.systemSettingsExists(.v2)
@@ -51,33 +52,26 @@ struct ImportExportSettingsPage: View {
     
     var content: some View {
         Form {
-            Section {
-                Button("Save Settings") {
+            Section("Save and Restore") {
+                Button("Save Settings", systemImage: Icons.saveSettings) {
                     Task {
                         await Settings.main.save(to: .v2)
                         v2SettingsExist = persistenceRepository.systemSettingsExists(.v2)
                     }
                 }
                 
-                // dev use only: saves the current settings under v1 to easily test migration behavior
-                #if DEBUG
-                    Button("Save V1 Settings") {
-                        Task {
-                            await Settings.main.save(to: .v1)
-                        }
-                    }
-                #endif
-                
-                Button("Restore Settings") {
+                Button("Restore Settings", systemImage: Icons.restoreSettings) {
                     Task { @MainActor in
                         Settings.main.restore(from: .v2)
                     }
                 }
                 .disabled(!v2SettingsExist)
+            } footer: {
+                Text("Save the current settings and restore them later.")
             }
             
             Section {
-                Button("Export Settings") {
+                Button("Export Settings", systemImage: Icons.share) {
                     Task {
                         let data = try JSONEncoder().encode(Settings.main.codable)
                         let fileUrl = FileManager.default.temporaryDirectory.appending(path: "settings.json")
@@ -86,10 +80,20 @@ struct ImportExportSettingsPage: View {
                     }
                 }
                 
-                Button("Import Settings") {
+                Button("Import Settings", systemImage: Icons.import) {
                     importingSettingsFile = true
                 }
             }
+            
+            #if DEBUG
+            Section("Debug") {
+                Button("Save V1 Settings", systemImage: Icons.saveSettings) {
+                    Task {
+                        await Settings.main.save(to: .v1)
+                    }
+                }
+            }
+            #endif
         }
     }
     

@@ -32,6 +32,7 @@ struct InboxBadgeSettingsView: View {
             }
         }
         .contentMargins(.top, 16, for: .scrollContent)
+        .labelStyle(.conditional)
     }
     
     @ViewBuilder
@@ -59,7 +60,7 @@ struct InboxBadgeSettingsView: View {
     
     @ViewBuilder
     func toggle(forType type: InboxItemType) -> some View {
-        Toggle(isOn: .init(
+        Toggle(String(localized: type.label), systemImage: type.systemImage, isOn: .init(
             get: { tabInboxBadgeIncludedTypes.contains(type) },
             set: {
                 if $0 {
@@ -68,13 +69,6 @@ struct InboxBadgeSettingsView: View {
                     tabInboxBadgeIncludedTypes.remove(type)
                 }
             }
-        )) {
-            Label {
-                Text(type.label)
-            } icon: {
-                Image(systemName: type.systemImage)
-                    .foregroundStyle(palette.secondary)
-            }
-        }
+        ))
     }
 }

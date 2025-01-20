@@ -307,9 +307,6 @@
     "Alien" : {
 
     },
-    "Alignment" : {
-
-    },
     "All" : {
 
     },
@@ -998,9 +995,6 @@
     "Green" : {
 
     },
-    "Group actions using" : {
-
-    },
     "Grouped" : {
 
     },
@@ -1092,6 +1086,9 @@
 
     },
     "Incidents" : {
+
+    },
+    "Indicate link thumbnails with an icon." : {
 
     },
     "Infinite Scroll" : {
@@ -1773,10 +1770,16 @@
     "Save" : {
 
     },
+    "Save and Restore" : {
+
+    },
     "Save Image" : {
 
     },
     "Save Settings" : {
+
+    },
+    "Save the current settings and restore them later." : {
 
     },
     "Save V1 Settings" : {
@@ -1833,13 +1836,16 @@
     "Sent %@" : {
 
     },
+    "Separate Actions Using" : {
+
+    },
     "Separate Menu" : {
 
     },
-    "Separate moderator actions using..." : {
+    "Settings" : {
 
     },
-    "Settings" : {
+    "Settings Icons" : {
 
     },
     "Share" : {
@@ -1885,9 +1891,6 @@
 
     },
     "Show Sidebar on App Launch" : {
-
-    },
-    "Show Thumbnails" : {
 
     },
     "Shown" : {
@@ -2215,6 +2218,9 @@
     "Thumbnail" : {
 
     },
+    "Thumbnail Location" : {
+
+    },
     "Tiled" : {
 
     },
@@ -2444,6 +2450,9 @@
 
     },
     "Website" : {
+
+    },
+    "Website Icon" : {
 
     },
     "Website Thumbnail Indicator" : {
