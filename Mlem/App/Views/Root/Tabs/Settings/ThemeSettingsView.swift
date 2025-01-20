@@ -24,13 +24,6 @@ struct ThemeSettingsView: View {
                 Picker("Style", selection: supportedModes == .unspecified ? $interfaceStyle : .constant(supportedModes)) {
                     ForEach(UIUserInterfaceStyle.optionCases, id: \.self) { style in
                         interfaceStyleLabel(for: style)
-                        // Text(style.label)
-//                        ThemeLabel(title: String(localized: style.label), color1: style.labelColor1, color2: style.labelColor2)
-//                            .foregroundStyle(
-//                                supportedModes == .unspecified || supportedModes == style
-//                                    ? palette.primary
-//                                    : palette.secondary
-//                            )
                     }
                 }
                 .labelsHidden()
@@ -51,6 +44,7 @@ struct ThemeSettingsView: View {
             .pickerStyle(.inline)
         }
         .navigationTitle("Theme")
+        .labelStyle(ConditionalIconLabelStyle())
     }
     
     @ViewBuilder

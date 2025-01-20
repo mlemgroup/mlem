@@ -297,6 +297,9 @@ enum Icons {
     static let saveSettings: String = "document.badge.gearshape"
     static let restoreSettings: String = "gearshape.arrow.trianglehead.2.clockwise.rotate.90"
     static let menuItems: String = "filemenu.and.selection"
+    static let systemMode: String = "circle.lefthalf.filled"
+    static let lightMode: String = "sun.max"
+    static let darkMode: String = "moon"
     
     // fediseer
     static let fediseer: String = "shield.checkered"

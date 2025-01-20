@@ -25,10 +25,10 @@ extension UIUserInterfaceStyle: Codable {
     
     var systemImage: String {
         switch self {
-        case .unspecified: "circle.lefthalf.filled"
-        case .light: "circle"
-        case .dark: "circle.fill"
-        default: "circle.lefthalf.filled"
+        case .unspecified: Icons.systemMode
+        case .light: Icons.lightMode
+        case .dark: Icons.darkMode
+        default: Icons.systemMode
         }
     }
     

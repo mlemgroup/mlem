@@ -60,15 +60,6 @@ struct ImportExportSettingsView: View {
                     }
                 }
                 
-                // dev use only: saves the current settings under v1 to easily test migration behavior
-                #if DEBUG
-                Button("Save V1 Settings", systemImage: Icons.saveSettings) {
-                    Task {
-                        await Settings.main.save(to: .v1)
-                    }
-                }
-                #endif
-                
                 Button("Restore Settings", systemImage: Icons.restoreSettings) {
                     Task { @MainActor in
                         Settings.main.restore(from: .v2)
@@ -93,6 +84,16 @@ struct ImportExportSettingsView: View {
                     importingSettingsFile = true
                 }
             }
+            
+            #if DEBUG
+            Section("Debug") {
+                Button("Save V1 Settings", systemImage: Icons.saveSettings) {
+                    Task {
+                        await Settings.main.save(to: .v1)
+                    }
+                }
+            }
+            #endif
         }
     }
     

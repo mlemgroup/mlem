@@ -25,22 +25,28 @@ struct PostSettingsView: View {
     var body: some View {
         Form {
             PostSizePicker()
+            
+            Section {
+                NavigationLink(.settings(.postInteractionBar)) {
+                    SettingsInteractionBarSummaryView(configuration: InteractionBarTracker.main.postInteractionBar)
+                }
+            }
+            
             Section {
                 if postSize == .headline || postSize == .compact {
                     NavigationLink(
                         "Thumbnail",
                         value: .init(localized: thumbnailLocation.label),
                         fallbackValue: "",
+                        systemImage: Icons.thumbnail,
                         destination: .settings(.postThumbnail)
                     )
-                }
-                NavigationLink(.settings(.postInteractionBar)) {
-                    SettingsInteractionBarSummaryView(configuration: InteractionBarTracker.main.postInteractionBar)
                 }
                 NavigationLink(
                     "Subscription Indicator",
                     value: showSubscribedStatus ? "On" : "Off",
                     fallbackValue: "",
+                    systemImage: Icons.subscribedFeed,
                     destination: .settings(.postSubscriptionIndicator)
                 )
                 if differentiateWithoutColor {
@@ -48,6 +54,7 @@ struct PostSettingsView: View {
                         "Read Indicator",
                         value: .init(localized: readPostIndicator.label),
                         fallbackValue: "",
+                        systemImage: Icons.readIndicatorSetting,
                         destination: .settings(.postReadIndicator)
                     )
                 }
@@ -55,21 +62,16 @@ struct PostSettingsView: View {
             
             if postSize != .tile, postSize != .compact {
                 Section {
-                    Toggle(isOn: $showCreator) {
-                        Text("Always Show Usernames")
-                    }
+                    Toggle("Always show Usernames", systemImage: Icons.author, isOn: $showCreator)
                 }
             }
             
             Section {
-                Toggle(isOn: $showPersonAvatar) {
-                    Text("User Avatar")
-                }
-                Toggle(isOn: $showCommunityAvatar) {
-                    Text("Community Avatar")
-                }
+                Toggle("User Avatar", systemImage: Icons.personCircle, isOn: $showPersonAvatar)
+                Toggle("Community Avatar", systemImage: Icons.communityCircle, isOn: $showCommunityAvatar)
             }
         }
         .navigationTitle("Posts")
+        .labelStyle(ConditionalIconLabelStyle())
     }
 }
