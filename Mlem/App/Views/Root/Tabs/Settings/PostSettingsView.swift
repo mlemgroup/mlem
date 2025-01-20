@@ -32,17 +32,17 @@ struct PostSettingsView: View {
                 }
             }
             
-            if postSize == .headline || postSize == .compact {
-                NavigationLink(
-                    "Thumbnail",
-                    value: .init(localized: thumbnailLocation.label),
-                    fallbackValue: "",
-                    systemImage: Icons.thumbnail,
-                    destination: .settings(.postThumbnail)
-                )
-            }
-            
             Section {
+                if postSize == .headline || postSize == .compact {
+                    NavigationLink(
+                        "Thumbnail",
+                        value: .init(localized: thumbnailLocation.label),
+                        fallbackValue: "",
+                        systemImage: Icons.thumbnail,
+                        destination: .settings(.postThumbnail)
+                    )
+                }
+                
                 NavigationLink(
                     "Subscription Indicator",
                     value: showSubscribedStatus ? "On" : "Off",
@@ -50,6 +50,7 @@ struct PostSettingsView: View {
                     systemImage: Icons.subscribedFeed,
                     destination: .settings(.postSubscriptionIndicator)
                 )
+                
                 if differentiateWithoutColor {
                     NavigationLink(
                         "Read Indicator",
