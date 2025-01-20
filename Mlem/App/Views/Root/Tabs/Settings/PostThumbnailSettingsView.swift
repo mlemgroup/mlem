@@ -14,21 +14,13 @@ struct PostThumbnailSettingsView: View {
     
     var body: some View {
         Form {
-            Toggle(
-                "Show Thumbnails",
-                isOn: .init(
-                    get: { thumbnailLocation != .none },
-                    set: { thumbnailLocation = $0 ? .left : .none }
-                )
-            )
-            if thumbnailLocation != .none {
-                Section("Alignment") {
-                    HStack {
-                        alignmentPickerItem(location: .left)
-                        alignmentPickerItem(location: .right)
-                    }
+            VStack(spacing: Constants.main.doubleSpacing) {
+                ForEach(ThumbnailLocation.allCases, id: \.self) { location in
+                    alignmentPickerItem(location: location)
                 }
             }
+            .padding(Constants.main.doubleSpacing)
+            .listRowInsets(EdgeInsets())
         }
         .animation(.easeOut(duration: 0.1), value: thumbnailLocation)
         .navigationTitle("Thumbnail")
@@ -36,14 +28,8 @@ struct PostThumbnailSettingsView: View {
     
     @ViewBuilder
     func alignmentPickerItem(location: ThumbnailLocation) -> some View {
-        VStack(spacing: Constants.main.standardSpacing) {
-            alignmentPreview(location: location)
-                .padding(.horizontal, Constants.main.standardSpacing)
-            HStack {
-                Text(location.label)
-                Checkbox(isOn: thumbnailLocation == location)
-            }
-        }
+        alignmentPreview(location: location)
+        
         .frame(maxWidth: .infinity)
         .onTapGesture {
             HapticManager.main.play(haptic: .gentleInfo, priority: .low)
@@ -53,12 +39,13 @@ struct PostThumbnailSettingsView: View {
     
     @ViewBuilder
     func alignmentPreview(location: ThumbnailLocation) -> some View {
-        HStack(spacing: 5) {
+        let color: Color = location == thumbnailLocation ? palette.accent : palette.secondary
+        HStack(spacing: 6) {
             if location == .left {
-                thumbnailView
+                thumbnailView(color)
             }
             GeometryReader { geometry in
-                VStack(alignment: .leading, spacing: 4) {
+                VStack(alignment: .leading, spacing: 5) {
                     Capsule()
                         .fill(.opacity(0.7))
                         .frame(width: geometry.size.width / 2, height: geometry.size.height / 6)
@@ -68,25 +55,28 @@ struct PostThumbnailSettingsView: View {
                         .fill(.opacity(0.7))
                         .frame(width: geometry.size.width / 3, height: geometry.size.height / 6)
                 }
-                .foregroundStyle(palette.secondary)
+                .foregroundStyle(color)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.top, 2)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             if location == .right {
-                thumbnailView
+                thumbnailView(color)
             }
         }
         .aspectRatio(8 / 2, contentMode: .fit)
-        .frame(maxWidth: 300)
-        .padding(5)
-        .background(palette.tertiaryGroupedBackground, in: .rect(cornerRadius: 7))
+        .padding(6)
+        .background(palette.tertiaryGroupedBackground, in: .rect(cornerRadius: Constants.main.mediumItemCornerRadius))
+        .overlay {
+            RoundedRectangle(cornerRadius: Constants.main.mediumItemCornerRadius)
+                .stroke(location == thumbnailLocation ? palette.accent : .clear, lineWidth: 3)
+        }
     }
     
     @ViewBuilder
-    var thumbnailView: some View {
-        RoundedRectangle(cornerRadius: 5)
-            .fill(palette.secondary.opacity(0.3))
+    func thumbnailView(_ color: Color) -> some View {
+        RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius)
+            .fill(color.opacity(0.3))
             .frame(maxHeight: .infinity)
             .aspectRatio(1, contentMode: .fit)
     }
