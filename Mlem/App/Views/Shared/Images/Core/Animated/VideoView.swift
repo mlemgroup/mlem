@@ -33,13 +33,6 @@ struct VideoView: View {
         // set up AVQueuePlayer and AVPlayerLooper to loop the video
         let playerItem: AVPlayerItem = .init(asset: asset)
         
-        // https://stackoverflow.com/questions/73611770/avplayerview-adds-brightness-to-videos-with-hdr-turned-on
-//        let videoComposition = AVMutableVideoComposition(propertiesOf: asset)
-//        videoComposition.colorPrimaries = AVVideoColorPrimaries_SMPTE_C
-//        videoComposition.colorTransferFunction = AVVideoTransferFunction_SMPTE_ST_2084_PQ
-//        videoComposition.colorYCbCrMatrix = AVVideoYCbCrMatrix_ITU_R_601_4
-//        playerItem.videoComposition = videoComposition
-        
         self.player = .init(playerItem: playerItem)
         self.playerLooper = .init(player: player, templateItem: playerItem)
 

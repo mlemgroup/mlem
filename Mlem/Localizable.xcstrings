@@ -837,6 +837,9 @@
     "Email Verification" : {
 
     },
+    "Embeddings" : {
+
+    },
     "Enable Keyword Filters" : {
 
     },
@@ -969,6 +972,9 @@
 
     },
     "Feeds" : {
+
+    },
+    "Fetch linked media from supported hosts and display it in-app instead of as a link." : {
 
     },
     "Files" : {
@@ -1191,6 +1197,9 @@
 
     },
     "Log in or sign up to view your subscriptions." : {
+
+    },
+    "loops.video" : {
 
     },
     "Mark Read" : {
@@ -2426,6 +2435,9 @@
 
     },
     "View All" : {
+
+    },
+    "View on %@" : {
 
     },
     "View Votes" : {

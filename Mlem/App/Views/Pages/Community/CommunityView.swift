@@ -34,6 +34,7 @@ struct CommunityView: View {
     
     @Setting(\.postSize) var postSize
     @Setting(\.showNsfwCommunityWarning) var showNsfwCommunityWarning
+    @Setting(\.embedLoops) var embedLoops
     
     @ObservationIgnored @Dependency(\.persistenceRepository) private var persistenceRepository
     

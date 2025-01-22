@@ -168,7 +168,7 @@ struct TilePostView: View {
                     .foregroundStyle(palette.secondary)
                     .frame(width: Constants.main.thumbnailSize, height: Constants.main.thumbnailSize)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-            case .image, .loop:
+            case .media, .embedded:
                 ThumbnailImageView(
                     post: post,
                     blurred: blurred,

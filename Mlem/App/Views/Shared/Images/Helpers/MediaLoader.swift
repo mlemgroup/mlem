@@ -73,25 +73,8 @@ class MediaLoader {
         self.loading = url == nil ? .failed : .loading
     }
     
-    func load() async {
-        guard var url else { return }
-        
-        if url.host() == "loops.video" {
-            do {
-                let urlRegex = /video-src="(?<url>.*)"/
-                let request: URLRequest = .init(url: url)
-                let (websiteContent, _) = try await URLSession.shared.data(for: request)
-                if let str = String(data: websiteContent, encoding: .utf8),
-                   let match = str.firstMatch(of: urlRegex),
-                   let loopUrl: URL = .init(string: .init(match.url)) {
-                    url = loopUrl
-                }
-            } catch {
-                print(error)
-            }
-        }
-        
-        guard loading == .loading else { return }
+    func load() async { 
+        guard let url, loading == .loading else { return }
         
         do {
             let imageTask = ImagePipeline.shared.imageTask(with: url)

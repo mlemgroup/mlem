@@ -61,6 +61,7 @@ class Settings: ObservableObject {
     @AppStorage("links.openInBrowser") var openLinksInBrowser = false
     @AppStorage("links.readerMode") var openLinksInReaderMode = false
     @AppStorage("links.displayMode") var tappableLinksDisplayMode: TappableLinksDisplayMode = .contextual
+    @AppStorage("links.embedLoops") var embedLoops: Bool = true
     
     @AppStorage("feed.markReadOnScroll") var markReadOnScroll: Bool = false
     @AppStorage("feed.showRead") var showReadInFeed: Bool = true
@@ -181,6 +182,7 @@ class Settings: ObservableObject {
         tabInboxBadgeIncludedTypes = settings.tab_inbox_badgeIncludedTypes
         websiteThumbnailIcon = settings.a11y_websiteThumbnailIcon
         showSettingsIcons = settings.a11y_showSettingsIcons
+        embedLoops = settings.links_embedLoops
         
         Task {
             await FiltersTracker.main.resetFilteredKeywords(to: settings.filteredKeywords)
