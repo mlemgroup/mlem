@@ -24,10 +24,8 @@ struct CommentSettingsView: View {
                 }
             }
             Section {
-                if !compactComments {
-                    NavigationLink(.settings(.commentInteractionBar)) {
-                        SettingsInteractionBarSummaryView(configuration: InteractionBarTracker.main.commentInteractionBar)
-                    }
+                NavigationLink(.settings(.commentInteractionBar)) {
+                    SettingsInteractionBarSummaryView(configuration: InteractionBarTracker.main.commentInteractionBar)
                 }
             }
             Section {
