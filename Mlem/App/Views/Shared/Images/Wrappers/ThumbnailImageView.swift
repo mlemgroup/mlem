@@ -31,7 +31,7 @@ struct ThumbnailImageView: View {
     
     var url: URL? {
         switch post.type {
-        case let .image(url): url
+        case let .image(url), let .loop(url): url
         case let .link(link): link.thumbnail
         default: nil
         }

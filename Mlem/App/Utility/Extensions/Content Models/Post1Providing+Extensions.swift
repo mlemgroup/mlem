@@ -292,6 +292,7 @@ extension Post1Providing {
         switch type {
         case .text: Icons.textPost
         case .image: Icons.photo
+        case .loop: "frying.pan" // TODO: NOW
         case .link: Icons.websiteIcon
         case .titleOnly: Icons.titleOnlyPost
         }

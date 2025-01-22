@@ -25,7 +25,7 @@ struct LargePostBodyView: View {
                 .imageScale(.small)
             
             switch post.type {
-            case let .image(url):
+            case let .image(url), let .loop(url):
                 MediaView(
                     url: url,
                     verticalAspectRatioBounds: .init(width: 4, height: 5),
