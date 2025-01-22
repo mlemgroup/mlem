@@ -36,10 +36,13 @@ struct LargePostBodyView: View {
                 VStack(spacing: Constants.main.standardSpacing) {
                     mediaView(url)
                     
-                    Button("View on \(originalLink.host() ?? "original host")") {
-                        openURL(originalLink)
+                    
+                    if isPostPage {
+                        Button("View on \(originalLink.host() ?? "original host")") {
+                            openURL(originalLink)
+                        }
+                        .buttonStyle(.bordered)
                     }
-                    .buttonStyle(.bordered)
                 }
             case let .link(link):
                 WebsitePreviewView(link: link, shouldBlur: shouldBlur) {
