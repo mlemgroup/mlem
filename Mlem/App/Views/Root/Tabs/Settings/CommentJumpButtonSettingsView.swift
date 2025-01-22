@@ -24,7 +24,7 @@ struct CommentJumpButtonSettingsView: View {
                     .fontWeight(.semibold)
                     .foregroundStyle(palette.secondary)
                     .aspectRatio(contentMode: .fill)
-                    .padding(30)
+                    .padding(25)
                     .background(
                         Circle()
                             .stroke(palette.tertiary.opacity(0.3), lineWidth: 3)
