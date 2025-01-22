@@ -307,6 +307,9 @@
     "Alien" : {
 
     },
+    "Alignment" : {
+
+    },
     "All" : {
 
     },
@@ -658,9 +661,6 @@
       }
     },
     "Compact" : {
-
-    },
-    "Compact Comments" : {
 
     },
     "Configure which types of notification should be included in the notification badge." : {
@@ -1206,6 +1206,9 @@
 
     },
     "Maximum Comment Depth" : {
+
+    },
+    "Maximum Depth" : {
 
     },
     "Medium" : {
@@ -1914,6 +1917,9 @@
     "Silver" : {
 
     },
+    "Size" : {
+
+    },
     "Slow" : {
 
     },
@@ -2014,6 +2020,9 @@
     "Tap and hold items to add, remove or rearrange them." : {
 
     },
+    "Tap on the Jump Button of a post to scroll to the next post." : {
+
+    },
     "Tap to Collapse" : {
 
     },
@@ -2080,7 +2089,7 @@
     "The name that is displayed on your profile. This is not the same as your username, which cannot be changed." : {
 
     },
-    "The number of child comments that are shown in a chain before the \"More Replies\" button is shown." : {
+    "The number of child comments that can appear in a chain before the \"More Replies\" button is shown." : {
 
     },
     "Theme" : {

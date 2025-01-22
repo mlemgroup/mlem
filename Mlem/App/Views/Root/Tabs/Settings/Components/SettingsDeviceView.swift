@@ -14,6 +14,7 @@ struct SettingsDeviceView<ScreenContent: View>: View {
     var screenContent: ScreenContent
     var selected: Bool
     var screenPadding: Bool
+    var scale: CGFloat
     
     var accentColor: AnyShapeStyle {
         if selected {
@@ -25,17 +26,19 @@ struct SettingsDeviceView<ScreenContent: View>: View {
     init(
         selected: Bool = false,
         screenPadding: Bool = true,
+        scale: CGFloat = 1.0,
         @ViewBuilder screenContent: @escaping () -> ScreenContent
     ) {
         self.selected = selected
         self.screenPadding = screenPadding
         self.screenContent = screenContent()
+        self.scale = scale
     }
     
     var body: some View {
         frameView
             .aspectRatio(aspectRatio, contentMode: .fit)
-            .frame(maxWidth: UIDevice.isPad ? 100 : 40)
+            .frame(maxWidth: (UIDevice.isPad ? 100 : 40) * scale)
             .compositingGroup()
             .opacity(colorScheme == .dark && !selected ? 0.6 : 1)
     }
@@ -60,6 +63,10 @@ struct SettingsDeviceView<ScreenContent: View>: View {
         return 1 / 6
     }
     
+    var generalPadding: CGFloat {
+        scale * 3
+    }
+    
     var frameView: some View {
         GeometryReader { geometry in
             RoundedRectangle(cornerRadius: geometry.size.width * frameCornerRadiusScaleFactor)
@@ -75,7 +82,7 @@ struct SettingsDeviceView<ScreenContent: View>: View {
                     let radius = geometry.size.width * frameCornerRadiusScaleFactor - 4
                     Color.clear
                         .background(alignment: .top) {
-                            VStack {
+                            VStack(spacing: generalPadding) {
                                 screenContent
                                     .foregroundStyle(accentColor)
                                     .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -91,7 +98,7 @@ struct SettingsDeviceView<ScreenContent: View>: View {
                                 startPoint: .top, endPoint: .bottom
                             )
                         }
-                        .padding(screenPadding ? 5 : 2)
+                        .padding(screenPadding ? 2 + generalPadding : 2)
                         .padding(.top, geometry.size.height / 15 - 2)
                 }
         }
@@ -104,10 +111,15 @@ struct SettingsDeviceView<ScreenContent: View>: View {
                 .fill(accentColor)
                 .frame(height: geometry.size.height / 25)
                 .padding(.horizontal, geometry.size.width / 2.8)
-                .padding(.top, 3)
+                .padding(.top, 40 / 3 * scale)
         } else {
             UnevenRoundedRectangle(
-                cornerRadii: .init(topLeading: 0, bottomLeading: 1, bottomTrailing: 1, topTrailing: 0)
+                cornerRadii: .init(
+                    topLeading: 0,
+                    bottomLeading: geometry.size.width * frameCornerRadiusScaleFactor / 5,
+                    bottomTrailing: geometry.size.width * frameCornerRadiusScaleFactor / 5,
+                    topTrailing: 0
+                )
             )
             .fill(accentColor)
             .frame(height: geometry.size.height / 15 - 2)

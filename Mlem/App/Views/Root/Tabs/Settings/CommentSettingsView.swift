@@ -13,46 +13,62 @@ struct CommentSettingsView: View {
     @Setting(\.compactComments) var compactComments
     @Setting(\.tapCommentsToCollapse) var tapCommentsToCollapse
     @Setting(\.maxCommentDepth) var maxCommentDepth
-    
+    @Setting(\.jumpButton) var jumpButton
+
     var body: some View {
         Form {
+            Section("Size") {
+                HStack {
+                    sizePickerItem("Large", isOn: false)
+                    sizePickerItem("Compact", isOn: true)
+                }
+            }
             Section {
-                Toggle("Compact Comments", systemImage: Icons.compactComments, isOn: $compactComments)
-                Toggle("Tap to Collapse", systemImage: Icons.collapseComment, isOn: $tapCommentsToCollapse)
+                if !compactComments {
+                    NavigationLink(.settings(.commentInteractionBar)) {
+                        SettingsInteractionBarSummaryView(configuration: InteractionBarTracker.main.commentInteractionBar)
+                    }
+                }
             }
             Section {
                 NavigationLink(
-                    "Customize Interaction Bar",
-                    systemImage: Icons.interactionBar,
-                    destination: .settings(.commentInteractionBar)
+                    "Jump Button",
+                    value: .init(localized: jumpButton.label),
+                    fallbackValue: "",
+                    systemImage: Icons.jumpButtonCircle,
+                    destination: .settings(.commentJumpButton)
+                )
+                NavigationLink(
+                    "Maximum Depth",
+                    value: String(maxCommentDepth),
+                    fallbackValue: "",
+                    systemImage: Icons.commentDepth,
+                    destination: .settings(.commentMaximumDepth)
                 )
             }
-            maxDepthSection
+            Section {
+                Toggle("Tap to Collapse", systemImage: Icons.collapseComment, isOn: $tapCommentsToCollapse)
+            }
         }
         .labelStyle(.conditional)
         .navigationTitle("Comments")
     }
     
+    var sizePickerCommentPreviewDepths: [CGFloat] {
+        [0, 1, 2, 1, 2, 3, 2, 1, 2, 2]
+    }
+    
     @ViewBuilder
-    var maxDepthSection: some View {
-        Section {
-            HStack {
-                Label("Maximum Comment Depth", systemImage: Icons.commentDepth)
-                Spacer()
-                Text(String(maxCommentDepth))
-                    .foregroundStyle(palette.secondary)
-                    .monospaced()
+    func sizePickerItem(_ titleKey: LocalizedStringResource, isOn: Bool) -> some View {
+        DevicePickerItem(titleKey, item: isOn, selected: $compactComments, scale: 1.2) {
+            VStack(spacing: 3) {
+                ForEach(Array(sizePickerCommentPreviewDepths.enumerated()), id: \.offset) { _, depth in
+                    RoundedRectangle(cornerRadius: 2)
+                        .frame(height: isOn ? 10 : 15)
+                        .padding(.leading, depth * 4)
+                }
             }
-            Slider(
-                value: .init(
-                    get: { Double(maxCommentDepth) },
-                    set: { maxCommentDepth = Int($0) }
-                ),
-                in: 1.0 ... 12.0,
-                step: 1
-            )
-        } footer: {
-            Text("The number of child comments that are shown in a chain before the \"More Replies\" button is shown.")
+            .padding(.top, 4)
         }
     }
 }
