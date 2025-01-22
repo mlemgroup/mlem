@@ -54,12 +54,10 @@ struct LargePostBodyView: View {
                         post.markRead()
                     }
                     
-                    if let linkUrl = post.linkUrl {
-                        Button("View on \(originalLink.host() ?? "original host")") {
-                            openURL(originalLink)
-                        }
-                        .buttonStyle(.bordered)
+                    Button("View on \(originalLink.host() ?? "original host")") {
+                        openURL(originalLink)
                     }
+                    .buttonStyle(.bordered)
                 }
             case let .link(link):
                 WebsitePreviewView(link: link, shouldBlur: shouldBlur) {
