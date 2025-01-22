@@ -31,28 +31,10 @@ struct LargePostBodyView: View {
 
             switch post.type {
             case let .media(url):
-                MediaView(
-                    url: url,
-                    verticalAspectRatioBounds: .init(width: 4, height: 5),
-                    cornerRadius: Constants.main.mediumItemCornerRadius,
-                    enableContextMenu: true,
-                    enableImageViewer: true,
-                    enableNsfwBlur: shouldBlur
-                ) {
-                    post.markRead()
-                }
+                mediaView(url)
             case let .embedded(url, originalLink):
                 VStack(spacing: Constants.main.standardSpacing) {
-                    MediaView(
-                        url: url,
-                        verticalAspectRatioBounds: .init(width: 4, height: 5),
-                        cornerRadius: Constants.main.mediumItemCornerRadius,
-                        enableContextMenu: true,
-                        enableImageViewer: true,
-                        enableNsfwBlur: shouldBlur
-                    ) {
-                        post.markRead()
-                    }
+                    mediaView(url)
                     
                     Button("View on \(originalLink.host() ?? "original host")") {
                         openURL(originalLink)
@@ -80,5 +62,19 @@ struct LargePostBodyView: View {
             }
         }
         .environment(\.postContext, post)
+    }
+    
+    @ViewBuilder
+    func mediaView(_ url: URL) -> some View {
+        MediaView(
+            url: url,
+            verticalAspectRatioBounds: .init(width: 4, height: 5),
+            cornerRadius: Constants.main.mediumItemCornerRadius,
+            enableContextMenu: true,
+            enableImageViewer: true,
+            enableNsfwBlur: shouldBlur
+        ) {
+            post.markRead()
+        }
     }
 }
