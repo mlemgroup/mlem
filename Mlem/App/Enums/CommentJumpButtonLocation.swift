@@ -30,9 +30,9 @@ enum CommentJumpButtonLocation: String, CaseIterable, Codable {
     
     var systemImage: String {
         switch self {
-        case .bottomLeading: "arrow.left.circle"
-        case .bottomTrailing: "arrow.right.circle"
-        default: "dot.circle"
+        case .bottomLeading: Icons.left
+        case .bottomTrailing: Icons.right
+        default: Icons.center
         }
     }
 }
