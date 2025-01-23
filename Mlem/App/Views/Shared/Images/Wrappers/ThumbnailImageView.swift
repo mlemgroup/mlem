@@ -63,7 +63,7 @@ struct ThumbnailImageView: View {
                     .contextMenu {
                         if let url = fullSizeUrl(url: url) {
                             Button("Save Image", systemImage: Icons.import) {
-                                Task { await saveImage(url: url) }
+                                Task { await saveMedia(url: url) }
                             }
                             Button("Share Image", systemImage: Icons.share) {
                                 Task { await shareImage(url: url) }

@@ -72,7 +72,7 @@ extension ImageViewer {
     @ViewBuilder
     var saveButton: some View {
         Button {
-            Task { await saveImage(url: url) }
+            Task { await saveMedia(url: url) }
         } label: {
             Label("Save", systemImage: Icons.import)
         }

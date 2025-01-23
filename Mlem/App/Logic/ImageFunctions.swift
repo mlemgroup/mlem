@@ -10,19 +10,20 @@ import Nuke
 import SwiftUI
 import Photos
 
-func saveImage(url: URL) async {
+func saveMedia(url: URL) async {
     do {
         let (data, _) = try await ImagePipeline.shared.data(for: .init(url: url))
         let imageSaver = ImageSaver()
         if url.pathExtension.isMovieExtension {
             try await imageSaver.writeVideoToPhotoAlbum(url: url)
+            ToastModel.main.add(.success("Video Saved"))
         } else {
             try await imageSaver.writeImageToPhotoAlbum(imageData: data)
+            ToastModel.main.add(.success("Image Saved"))
         }
-        ToastModel.main.add(.success("Image Saved"))
     } catch {
         ToastModel.main.add(.basic(
-            "Failed to Save Image",
+            "Failed to Save Media",
             subtitle: "You may need to allow Mlem to access your Photo Library in System Settings.",
             color: Palette.main.negative,
             duration: 5

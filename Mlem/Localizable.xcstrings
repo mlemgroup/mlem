@@ -798,6 +798,9 @@
     "Dismiss" : {
 
     },
+    "Display linked media from supported hosts in-app rather than as a link." : {
+
+    },
     "Display Name" : {
 
     },
@@ -903,7 +906,7 @@
     "Failed to resolve post. Try another account." : {
 
     },
-    "Failed to Save Image" : {
+    "Failed to Save Media" : {
 
     },
     "Failed to unlock post" : {
@@ -972,9 +975,6 @@
 
     },
     "Feeds" : {
-
-    },
-    "Fetch linked media from supported hosts and display it in-app instead of as a link." : {
 
     },
     "Files" : {
@@ -1197,9 +1197,6 @@
 
     },
     "Log in or sign up to view your subscriptions." : {
-
-    },
-    "loops.video" : {
 
     },
     "Mark Read" : {
@@ -2432,6 +2429,9 @@
 
     },
     "Version" : {
+
+    },
+    "Video Saved" : {
 
     },
     "View All" : {
