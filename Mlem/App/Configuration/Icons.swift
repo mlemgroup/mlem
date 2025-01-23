@@ -303,6 +303,9 @@ enum Icons {
     static let interactionBar: String = "square.and.line.vertical.and.square.fill"
     static let commentDepth: String = "text.append"
     static let qualifiedLabel: String = "at"
+    static let right: String = "arrow.right.circle"
+    static let left: String = "arrow.left.circle"
+    static let center: String = "dot.circle"
     
     // fediseer
     static let fediseer: String = "shield.checkered"

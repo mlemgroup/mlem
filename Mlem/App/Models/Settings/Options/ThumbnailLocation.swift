@@ -17,4 +17,12 @@ enum ThumbnailLocation: String, CaseIterable, Codable {
         case .right: "Right"
         }
     }
+    
+    var systemImage: String {
+        switch self {
+        case .left: Icons.left
+        case .right: Icons.right
+        case .none: Icons.hide
+        }
+    }
 }

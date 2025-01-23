@@ -27,7 +27,7 @@ struct PostThumbnailSettingsView: View {
             Section {
                 Picker("Thumbnail Location", selection: $thumbnailLocation) {
                     ForEach(ThumbnailLocation.allCases, id: \.self) { location in
-                        Text(location.label).tag(location)
+                        Label(String(localized: location.label), systemImage: location.systemImage).tag(location)
                     }
                 }
                 .labelsHidden()
@@ -35,11 +35,12 @@ struct PostThumbnailSettingsView: View {
             }
             
             Section {
-                Toggle("Website Icon", isOn: $websiteThumbnailIcon)
+                Toggle("Website Icon", systemImage: Icons.browser, isOn: $websiteThumbnailIcon)
             } footer: {
                 Text("Indicate link thumbnails with an icon.")
             }
         }
+        .labelStyle(.conditional)
         .navigationTitle("Thumbnail")
     }
     
@@ -89,7 +90,7 @@ struct PostThumbnailSettingsView: View {
     @ViewBuilder
     func thumbnailView(active: Bool) -> some View {
         RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius)
-            .fill(palette.accent.opacity(0.5))
+            .fill(palette.accent.opacity(0.6))
             .frame(maxHeight: .infinity)
             .aspectRatio(.init(width: active ? 1 : 0, height: 1), contentMode: .fit)
             .overlay {
@@ -111,9 +112,4 @@ struct PostThumbnailSettingsView: View {
                     .animation(.easeIn(duration: 0.2), value: websiteThumbnailIcon)
             }
     }
-}
-
-#Preview {
-    PostThumbnailSettingsView()
-        .environment(Palette.main)
 }
