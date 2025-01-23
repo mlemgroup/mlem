@@ -1,0 +1,40 @@
+//
+//  CommentMaximumDepthSettingsView.swift
+//  Mlem
+//
+//  Created by Sjmarf on 2025-01-21.
+//
+
+import SwiftUI
+
+struct CommentMaximumDepthSettingsView: View {
+    @Environment(Palette.self) var palette
+    
+    @Setting(\.maxCommentDepth) var maxCommentDepth
+    
+    var body: some View {
+        Form {
+            Section {
+                HStack {
+                    Label("Maximum Comment Depth", systemImage: Icons.commentDepth)
+                    Spacer()
+                    Text(String(maxCommentDepth))
+                        .foregroundStyle(palette.secondary)
+                        .monospaced()
+                }
+                Slider(
+                    value: .init(
+                        get: { Double(maxCommentDepth) },
+                        set: { maxCommentDepth = Int($0) }
+                    ),
+                    in: 1.0 ... 12.0,
+                    step: 1
+                )
+            } footer: {
+                Text("The number of child comments that can appear in a chain before the \"More Replies\" button is shown.")
+            }
+        }
+        .navigationTitle("Maximum Depth")
+        .labelStyle(.conditional)
+    }
+}

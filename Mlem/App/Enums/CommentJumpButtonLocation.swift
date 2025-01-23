@@ -27,4 +27,12 @@ enum CommentJumpButtonLocation: String, CaseIterable, Codable {
         case .none: "Hidden"
         }
     }
+    
+    var systemImage: String {
+        switch self {
+        case .bottomLeading: "arrow.left.circle"
+        case .bottomTrailing: "arrow.right.circle"
+        default: "dot.circle"
+        }
+    }
 }
