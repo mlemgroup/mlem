@@ -96,7 +96,7 @@ struct PostThumbnailSettingsView: View {
                 Image(systemName: "mountain.2.fill")
                     .font(.system(size: 30))
                     .foregroundStyle(.white)
-                    .opacity(active ? 0.85 : 0)
+                    .opacity(active ? 0.9 : 0)
             }
             .overlay {
                 Image(systemName: Icons.browser)
