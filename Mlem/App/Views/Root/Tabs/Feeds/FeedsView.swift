@@ -15,6 +15,7 @@ struct FeedsView: View {
     @Setting(\.showReadInFeed) var showRead
     @Setting(\.showFeedWelcomePrompt) var showWelcomePrompt
     @Setting(\.internetSpeed) var internetSpeed
+    @Setting(\.embedLoops) var embedLoops
     
     @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette

@@ -10,7 +10,18 @@ import Foundation
 import Photos
 
 class ImageSaver: NSObject {
-    func writeToPhotoAlbum(imageData: Data) async throws {
+    func writeVideoToPhotoAlbum(url: URL) async throws {
+        guard let tempFile = await downloadImageToFileSystem(url: url) else {
+            ToastModel.main.add(.error(.init(title: "Failed to save video")))
+            return
+        }
+        
+        try await PHPhotoLibrary.shared().performChanges {
+            _ = PHAssetCreationRequest.creationRequestForAssetFromVideo(atFileURL: tempFile)
+        }
+    }
+    
+    func writeImageToPhotoAlbum(imageData: Data) async throws {
         try await PHPhotoLibrary.shared().performChanges {
             let creationRequest = PHAssetCreationRequest.forAsset()
             creationRequest.addResource(with: .photo, data: imageData, options: nil)

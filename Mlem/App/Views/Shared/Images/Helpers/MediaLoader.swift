@@ -73,8 +73,9 @@ class MediaLoader {
         self.loading = url == nil ? .failed : .loading
     }
     
-    func load() async {
+    func load() async { 
         guard let url, loading == .loading else { return }
+        
         do {
             let imageTask = ImagePipeline.shared.imageTask(with: url)
             imageTask.priority = .veryHigh

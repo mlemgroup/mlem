@@ -291,7 +291,7 @@ extension Post1Providing {
     var placeholderImageName: String {
         switch type {
         case .text: Icons.textPost
-        case .image: Icons.photo
+        case .media, .embedded: Icons.photo
         case .link: Icons.websiteIcon
         case .titleOnly: Icons.titleOnlyPost
         }
