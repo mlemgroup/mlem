@@ -26,7 +26,7 @@ struct EmbeddingSettingsView: View {
             }
             
             // TODO: use loops.video logo directly (hence why this is not in Icons)
-            Toggle("loops.video", systemImage: "repeat", isOn: $embedLoops)
+            Toggle(String("loops.video"), systemImage: "repeat", isOn: $embedLoops)
         }
         .labelStyle(.conditional)
     }
