@@ -13,6 +13,10 @@ struct PostThumbnailSettingsView: View {
     @Setting(\.thumbnailLocation) var thumbnailLocation
     @Setting(\.websiteThumbnailIcon) var websiteThumbnailIcon
     
+    // capsule color gradient configuration
+    let gradientBegin: CGFloat = 0.55
+    let gradientEnd: CGFloat = 0.45
+    
     var body: some View {
         Form {
             Section {
@@ -23,7 +27,7 @@ struct PostThumbnailSettingsView: View {
             Section {
                 Picker("Thumbnail Location", selection: $thumbnailLocation) {
                     ForEach(ThumbnailLocation.allCases, id: \.self) { location in
-                        Text(location.label).tag(location)
+                        Label(String(localized: location.label), systemImage: location.systemImage).tag(location)
                     }
                 }
                 .labelsHidden()
@@ -31,11 +35,12 @@ struct PostThumbnailSettingsView: View {
             }
             
             Section {
-                Toggle("Website Icon", isOn: $websiteThumbnailIcon)
+                Toggle("Website Icon", systemImage: Icons.browser, isOn: $websiteThumbnailIcon)
             } footer: {
                 Text("Indicate link thumbnails with an icon.")
             }
         }
+        .labelStyle(.conditional)
         .navigationTitle("Thumbnail")
     }
     
@@ -47,12 +52,25 @@ struct PostThumbnailSettingsView: View {
             GeometryReader { geometry in
                 VStack(alignment: .leading, spacing: 5) {
                     Capsule()
-                        .fill(.opacity(0.7))
+                        .fill(LinearGradient(
+                            colors: [palette.secondary.opacity(gradientBegin), palette.secondary.opacity(gradientEnd)],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        ))
                         .frame(width: geometry.size.width / 2, height: geometry.size.height / 6)
                     Capsule()
+                        .fill(LinearGradient(
+                            colors: [palette.secondary.opacity(0.65), palette.secondary.opacity(0.55)],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        ))
                         .frame(width: geometry.size.width * 4 / 5, height: geometry.size.height / 4)
                     Capsule()
-                        .fill(.opacity(0.7))
+                        .fill(LinearGradient(
+                            colors: [palette.secondary.opacity(gradientBegin), palette.secondary.opacity(gradientEnd)],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        ))
                         .frame(width: geometry.size.width / 3, height: geometry.size.height / 6)
                 }
                 .foregroundStyle(palette.secondary)
@@ -72,9 +90,15 @@ struct PostThumbnailSettingsView: View {
     @ViewBuilder
     func thumbnailView(active: Bool) -> some View {
         RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius)
-            .fill(palette.accent.opacity(0.4))
+            .fill(palette.accent.opacity(0.6))
             .frame(maxHeight: .infinity)
             .aspectRatio(.init(width: active ? 1 : 0, height: 1), contentMode: .fit)
+            .overlay {
+                Image(systemName: "mountain.2.fill")
+                    .font(.system(size: 30))
+                    .foregroundStyle(.white)
+                    .opacity(active ? 0.9 : 0)
+            }
             .overlay {
                 Image(systemName: Icons.browser)
                     .resizable()
