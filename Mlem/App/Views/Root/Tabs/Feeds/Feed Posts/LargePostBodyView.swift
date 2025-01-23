@@ -13,7 +13,7 @@ struct LargePostBodyView: View {
     @Environment(Palette.self) var palette
     @Environment(\.communityContext) private var communityContext:
         (any Community1Providing)?
-    @Environment(\.openURL) private var openURL
+    // @Environment(\.openURL) private var openURL
 
     let post: any Post1Providing
     let isPostPage: Bool
@@ -37,10 +37,7 @@ struct LargePostBodyView: View {
                     mediaView(url)
                     
                     if isPostPage {
-                        Button(String(localized: loopsButtonText(originalLink: originalLink))) {
-                            openURL(originalLink)
-                        }
-                        .buttonStyle(.bordered)
+                        OpenInLoopsButton(url: originalLink)
                     }
                 }
             case let .link(link):
@@ -80,11 +77,26 @@ struct LargePostBodyView: View {
         }
     }
     
-    func loopsButtonText(originalLink: URL) -> LocalizedStringResource {
-        if let host = originalLink.host() {
-            return "View on \(host)"
-        } else {
-            return "View on original host"
+    // @Environment(\.openURL) combined with the conditionally displayed url in .embedded causes significant lag
+    // due to openURL-based redraws, so we pull this into its own view to isolate openURL
+    private struct OpenInLoopsButton: View {
+        @Environment(\.openURL) private var openURL
+        
+        let url: URL
+        
+        var body: some View {
+            Button(String(localized: loopsButtonText(originalLink: url))) {
+                openURL(url)
+            }
+            .buttonStyle(.bordered)
+        }
+        
+        func loopsButtonText(originalLink: URL) -> LocalizedStringResource {
+            if let host = originalLink.host() {
+                return "View on \(host)"
+            } else {
+                return "View on original host"
+            }
         }
     }
 }
