@@ -13,6 +13,10 @@ struct PostThumbnailSettingsView: View {
     @Setting(\.thumbnailLocation) var thumbnailLocation
     @Setting(\.websiteThumbnailIcon) var websiteThumbnailIcon
     
+    // capsule color gradient configuration
+    let gradientBegin: CGFloat = 0.55
+    let gradientEnd: CGFloat = 0.45
+    
     var body: some View {
         Form {
             Section {
@@ -47,12 +51,25 @@ struct PostThumbnailSettingsView: View {
             GeometryReader { geometry in
                 VStack(alignment: .leading, spacing: 5) {
                     Capsule()
-                        .fill(.opacity(0.7))
+                        .fill(LinearGradient(
+                            colors: [palette.secondary.opacity(gradientBegin), palette.secondary.opacity(gradientEnd)],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        ))
                         .frame(width: geometry.size.width / 2, height: geometry.size.height / 6)
                     Capsule()
+                        .fill(LinearGradient(
+                            colors: [palette.secondary.opacity(0.65), palette.secondary.opacity(0.55)],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        ))
                         .frame(width: geometry.size.width * 4 / 5, height: geometry.size.height / 4)
                     Capsule()
-                        .fill(.opacity(0.7))
+                        .fill(LinearGradient(
+                            colors: [palette.secondary.opacity(gradientBegin), palette.secondary.opacity(gradientEnd)],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        ))
                         .frame(width: geometry.size.width / 3, height: geometry.size.height / 6)
                 }
                 .foregroundStyle(palette.secondary)
@@ -72,9 +89,15 @@ struct PostThumbnailSettingsView: View {
     @ViewBuilder
     func thumbnailView(active: Bool) -> some View {
         RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius)
-            .fill(palette.accent.opacity(0.4))
+            .fill(palette.accent.opacity(0.5))
             .frame(maxHeight: .infinity)
             .aspectRatio(.init(width: active ? 1 : 0, height: 1), contentMode: .fit)
+            .overlay {
+                Image(systemName: "mountain.2.fill")
+                    .font(.system(size: 30))
+                    .foregroundStyle(.white)
+                    .opacity(active ? 0.85 : 0)
+            }
             .overlay {
                 Image(systemName: Icons.browser)
                     .resizable()
@@ -88,4 +111,9 @@ struct PostThumbnailSettingsView: View {
                     .animation(.easeIn(duration: 0.2), value: websiteThumbnailIcon)
             }
     }
+}
+
+#Preview {
+    PostThumbnailSettingsView()
+        .environment(Palette.main)
 }
