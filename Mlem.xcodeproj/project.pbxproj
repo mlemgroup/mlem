@@ -344,7 +344,6 @@
 		CD17B24B2C19109A001E174B /* SwipeConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD17B24A2C19108B001E174B /* SwipeConfiguration.swift */; };
 		CD1B2E212C7F84160075C7EA /* View+MarkReadOnScroll.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1B2E202C7F84160075C7EA /* View+MarkReadOnScroll.swift */; };
 		CD1C64152D3428710006B3C1 /* CommunityView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1C64142D34286E0006B3C1 /* CommunityView+Logic.swift */; };
-		CD1CEDD22D35D157006BB0BB /* MlemMiddleware in Frameworks */ = {isa = PBXBuildFile; productRef = CD1CEDD12D35D157006BB0BB /* MlemMiddleware */; };
 		CD1D31832C56D742001B434B /* View+WidthReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1D31822C56D742001B434B /* View+WidthReader.swift */; };
 		CD1DF6382D38357500F7851E /* MediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1DF6372D38357100F7851E /* MediaView.swift */; };
 		CD1DF63E2D387E8500F7851E /* MediaView+Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1DF63D2D387E8300F7851E /* MediaView+Views.swift */; };
@@ -356,6 +355,7 @@
 		CD332D7C2CA71E6F00A53988 /* GifView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD332D7B2CA71E6E00A53988 /* GifView.swift */; };
 		CD332D7E2CA7486000A53988 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD332D7D2CA7485D00A53988 /* String+Extensions.swift */; };
 		CD33CA522D3C18BF00106C8C /* ImageViewer+Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD33CA512D3C18AE00106C8C /* ImageViewer+Views.swift */; };
+		CD383BBD2D41B91E00F9F247 /* MlemMiddleware in Frameworks */ = {isa = PBXBuildFile; productRef = CD383BBC2D41B91E00F9F247 /* MlemMiddleware */; };
 		CD4368C12AE23FD400BD8BD1 /* Semaphore in Frameworks */ = {isa = PBXBuildFile; productRef = CD4368C02AE23FD400BD8BD1 /* Semaphore */; };
 		CD43E8B32BF2C24E007C3D71 /* ContentLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD43E8B22BF2C24E007C3D71 /* ContentLoader.swift */; };
 		CD45CB0D2D1880E8008BC729 /* FiltersSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD45CB0C2D1880E3008BC729 /* FiltersSettingsView.swift */; };
@@ -386,6 +386,7 @@
 		CD5581DE2C7B8B820043FAC3 /* ImageFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5581DD2C7B8B820043FAC3 /* ImageFunctions.swift */; };
 		CD57AFA32D03761500AB3956 /* WebpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57AFA22D03761300AB3956 /* WebpView.swift */; };
 		CD57AFA52D0377EB00AB3956 /* AnimationControlLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57AFA42D0377E400AB3956 /* AnimationControlLayer.swift */; };
+		CD5CAA0C2D41AE57008E20F2 /* EmbeddingSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5CAA0B2D41AE52008E20F2 /* EmbeddingSettingsView.swift */; };
 		CD635E1B2C94DACD00864F75 /* BypassProxyWarningSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD635E1A2C94DACD00864F75 /* BypassProxyWarningSheet.swift */; };
 		CD64A91A2CA37E8D007CA7E6 /* Gifu in Frameworks */ = {isa = PBXBuildFile; productRef = CD64A9192CA37E8D007CA7E6 /* Gifu */; };
 		CD64A91C2CA38DBA007CA7E6 /* NukeWebpBridgeDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD64A91B2CA38DA7007CA7E6 /* NukeWebpBridgeDecoder.swift */; };
@@ -861,6 +862,7 @@
 		CD5581DD2C7B8B820043FAC3 /* ImageFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFunctions.swift; sourceTree = "<group>"; };
 		CD57AFA22D03761300AB3956 /* WebpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebpView.swift; sourceTree = "<group>"; };
 		CD57AFA42D0377E400AB3956 /* AnimationControlLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationControlLayer.swift; sourceTree = "<group>"; };
+		CD5CAA0B2D41AE52008E20F2 /* EmbeddingSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmbeddingSettingsView.swift; sourceTree = "<group>"; };
 		CD635E1A2C94DACD00864F75 /* BypassProxyWarningSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BypassProxyWarningSheet.swift; sourceTree = "<group>"; };
 		CD64A91B2CA38DA7007CA7E6 /* NukeWebpBridgeDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NukeWebpBridgeDecoder.swift; sourceTree = "<group>"; };
 		CD77437E2C1BA5CE0085BB43 /* MultiplatformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiplatformView.swift; sourceTree = "<group>"; };
@@ -958,7 +960,7 @@
 				636250DC2A18111400FC59B4 /* KeychainAccess in Frameworks */,
 				CDE4AC452CA370E000981010 /* SDWebImageSwiftUI in Frameworks */,
 				CD4368C12AE23FD400BD8BD1 /* Semaphore in Frameworks */,
-				CD1CEDD22D35D157006BB0BB /* MlemMiddleware in Frameworks */,
+				CD383BBD2D41B91E00F9F247 /* MlemMiddleware in Frameworks */,
 				B104A6DE2A59BF3C00B3E725 /* NukeVideo in Frameworks */,
 				CDE4AC472CA372B600981010 /* SDWebImageWebPCoder in Frameworks */,
 				B104A6DC2A59BF3C00B3E725 /* NukeUI in Frameworks */,
@@ -1029,6 +1031,7 @@
 				037DE0742CE023E3007F7B92 /* BlockListView.swift */,
 				039F58922C7B616600C61658 /* CommentSettingsView.swift */,
 				0353948E2CA088E600795AA5 /* DeveloperSettingsView.swift */,
+				CD5CAA0B2D41AE52008E20F2 /* EmbeddingSettingsView.swift */,
 				CDEE15532D22364500EB9D7B /* ErrorLogView.swift */,
 				CD45CB0C2D1880E3008BC729 /* FiltersSettingsView.swift */,
 				039F58892C7B54FE00C61658 /* GeneralSettingsView.swift */,
@@ -2143,7 +2146,7 @@
 				CDE4AC442CA370E000981010 /* SDWebImageSwiftUI */,
 				CDE4AC462CA372B600981010 /* SDWebImageWebPCoder */,
 				CD64A9192CA37E8D007CA7E6 /* Gifu */,
-				CD1CEDD12D35D157006BB0BB /* MlemMiddleware */,
+				CD383BBC2D41B91E00F9F247 /* MlemMiddleware */,
 			);
 			productName = Mlem;
 			productReference = 6363D5C127EE196700E34822 /* Mlem.app */;
@@ -2231,7 +2234,7 @@
 				CDE4AC402CA3706400981010 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
 				CDE4AC412CA3706F00981010 /* XCRemoteSwiftPackageReference "SDWebImageWebPCoder" */,
 				CD64A9182CA37D63007CA7E6 /* XCRemoteSwiftPackageReference "Gifu" */,
-				CD5F8A9E2D35D0E7007FAB56 /* XCRemoteSwiftPackageReference "MlemMiddleware" */,
+				CD5CAA0D2D41B8FF008E20F2 /* XCRemoteSwiftPackageReference "MlemMiddleware" */,
 			);
 			productRefGroup = 6363D5C227EE196700E34822 /* Products */;
 			projectDirPath = "";
@@ -2621,6 +2624,7 @@
 				03134A502BEAD245002662CC /* NavigationLink+NavigationPage.swift in Sources */,
 				03B431BC2C455838001A1EB5 /* LargePostBodyView.swift in Sources */,
 				CDFB8C692C7796020070845F /* View+DynamicBlur.swift in Sources */,
+				CD5CAA0C2D41AE57008E20F2 /* EmbeddingSettingsView.swift in Sources */,
 				03B25B372CC4478600EB6DF5 /* FediseerInfoView.swift in Sources */,
 				03B62B772CE295530077E9C8 /* RulesListView.swift in Sources */,
 				CDC199EA2BE449790077B4F1 /* Interactable1Providing+Extensions.swift in Sources */,
@@ -3170,12 +3174,12 @@
 				minimumVersion = 0.0.8;
 			};
 		};
-		CD5F8A9E2D35D0E7007FAB56 /* XCRemoteSwiftPackageReference "MlemMiddleware" */ = {
+		CD5CAA0D2D41B8FF008E20F2 /* XCRemoteSwiftPackageReference "MlemMiddleware" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware";
 			requirement = {
-				kind = upToNextMinorVersion;
-				minimumVersion = 0.67.0;
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.68.0;
 			};
 		};
 		CD64A9182CA37D63007CA7E6 /* XCRemoteSwiftPackageReference "Gifu" */ = {
@@ -3250,9 +3254,9 @@
 			package = B104A6D62A59BF3C00B3E725 /* XCRemoteSwiftPackageReference "Nuke" */;
 			productName = NukeVideo;
 		};
-		CD1CEDD12D35D157006BB0BB /* MlemMiddleware */ = {
+		CD383BBC2D41B91E00F9F247 /* MlemMiddleware */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CD5F8A9E2D35D0E7007FAB56 /* XCRemoteSwiftPackageReference "MlemMiddleware" */;
+			package = CD5CAA0D2D41B8FF008E20F2 /* XCRemoteSwiftPackageReference "MlemMiddleware" */;
 			productName = MlemMiddleware;
 		};
 		CD4368C02AE23FD400BD8BD1 /* Semaphore */ = {

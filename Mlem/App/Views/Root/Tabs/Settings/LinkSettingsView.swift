@@ -12,6 +12,7 @@ struct LinkSettingsView: View {
     @Setting(\.openLinksInReaderMode) var openLinksInReaderMode
     @Setting(\.compactComments) var compactComments
     @Setting(\.tappableLinksDisplayMode) var tappableLinksDisplayMode
+    @Setting(\.embedLoops) var embedLoops
     
     var body: some View {
         Form {
@@ -57,6 +58,8 @@ struct LinkSettingsView: View {
                     Text("If set to \"Automatic\", the full URL will be hidden in compact comments.")
                 }
             }
+  
+            NavigationLink("Embeddings", systemImage: Icons.embedding, destination: .settings(.embedding))
         }
         .labelStyle(.conditional)
         .navigationTitle("Links")

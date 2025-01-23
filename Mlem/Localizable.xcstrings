@@ -798,6 +798,9 @@
     "Dismiss" : {
 
     },
+    "Display linked media from supported hosts in-app rather than as a link." : {
+
+    },
     "Display Name" : {
 
     },
@@ -835,6 +838,9 @@
 
     },
     "Email Verification" : {
+
+    },
+    "Embeddings" : {
 
     },
     "Enable Keyword Filters" : {
@@ -900,7 +906,7 @@
     "Failed to resolve post. Try another account." : {
 
     },
-    "Failed to Save Image" : {
+    "Failed to Save Media" : {
 
     },
     "Failed to unlock post" : {
@@ -2425,7 +2431,16 @@
     "Version" : {
 
     },
+    "Video Saved" : {
+
+    },
     "View All" : {
+
+    },
+    "View on %@" : {
+
+    },
+    "View on original host" : {
 
     },
     "View Votes" : {

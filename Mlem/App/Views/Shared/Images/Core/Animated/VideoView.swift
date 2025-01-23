@@ -32,6 +32,7 @@ struct VideoView: View {
     init(asset: AVAsset) {
         // set up AVQueuePlayer and AVPlayerLooper to loop the video
         let playerItem: AVPlayerItem = .init(asset: asset)
+        
         self.player = .init(playerItem: playerItem)
         self.playerLooper = .init(player: player, templateItem: playerItem)
 

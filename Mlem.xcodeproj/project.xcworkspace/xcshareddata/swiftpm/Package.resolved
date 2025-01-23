@@ -2,6 +2,15 @@
   "originHash" : "e91c2cec61691543665fad5843f30eafc5288bb40fc3a60d50c7d7e9194f3135",
   "pins" : [
     {
+      "identity" : "collectionconcurrencykit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/JohnSundell/CollectionConcurrencyKit.git",
+      "state" : {
+        "revision" : "b4f23e24b5a1bff301efc5e70871083ca029ff95",
+        "version" : "0.2.0"
+      }
+    },
+    {
       "identity" : "combine-schedulers",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/combine-schedulers",
@@ -51,8 +60,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mlemgroup/MlemMiddleware",
       "state" : {
-        "revision" : "b219e3f07142ccea2b1cc2cf9cb24860013ced8a",
-        "version" : "0.67.0"
+        "revision" : "ad3773fbd53ee0095944e6076141e6dc9ede4661",
+        "version" : "0.68.0"
       }
     },
     {
