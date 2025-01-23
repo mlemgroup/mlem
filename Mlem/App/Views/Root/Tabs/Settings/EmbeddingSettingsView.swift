@@ -14,7 +14,7 @@ struct EmbeddingSettingsView: View {
         Form {
             SettingsHeaderView(
                 title: "Embeddings",
-                description: "Fetch linked media from supported hosts and display it in-app instead of as a link."
+                description: "Display linked media from supported hosts in-app rather than as a link."
             ) {
                 // TODO: more descriptive image
                 Image(systemName: Icons.embedding)
