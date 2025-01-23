@@ -11,9 +11,7 @@ import SwiftUI
 
 struct LargePostBodyView: View {
     @Environment(Palette.self) var palette
-    @Environment(\.communityContext) private var communityContext:
-        (any Community1Providing)?
-    // @Environment(\.openURL) private var openURL
+    @Environment(\.communityContext) private var communityContext: (any Community1Providing)?
 
     let post: any Post1Providing
     let isPostPage: Bool
