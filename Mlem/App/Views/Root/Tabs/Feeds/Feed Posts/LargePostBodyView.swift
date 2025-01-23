@@ -37,7 +37,7 @@ struct LargePostBodyView: View {
                     mediaView(url)
                     
                     if isPostPage {
-                        Button("View on \(originalLink.host() ?? "original host")") {
+                        Button(String(localized: loopsButtonText(originalLink: originalLink))) {
                             openURL(originalLink)
                         }
                         .buttonStyle(.bordered)
@@ -77,6 +77,14 @@ struct LargePostBodyView: View {
             enableNsfwBlur: shouldBlur
         ) {
             post.markRead()
+        }
+    }
+    
+    func loopsButtonText(originalLink: URL) -> LocalizedStringResource {
+        if let host = originalLink.host() {
+            return "View on \(host)"
+        } else {
+            return "View on original host"
         }
     }
 }
