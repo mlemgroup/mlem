@@ -2020,15 +2020,8 @@
     "Tap and hold items to add, remove or rearrange them." : {
 
     },
-    "Tap on the Jump Button while viewing a comment thread to scroll to the next comment." : {
-      "localizations" : {
-        "en-GB" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tap on the Jump Button whilst viewing a comment thread to scroll to the next comment."
-          }
-        }
-      }
+    "Tap on the Jump Button whilst viewing a comment thread to scroll to the next comment." : {
+
     },
     "Tap to Collapse" : {
 
