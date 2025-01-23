@@ -8,12 +8,17 @@
 import Foundation
 import Nuke
 import SwiftUI
+import Photos
 
 func saveImage(url: URL) async {
     do {
         let (data, _) = try await ImagePipeline.shared.data(for: .init(url: url))
         let imageSaver = ImageSaver()
-        try await imageSaver.writeToPhotoAlbum(imageData: data)
+        if url.pathExtension.isMovieExtension {
+            try await imageSaver.writeVideoToPhotoAlbum(url: url)
+        } else {
+            try await imageSaver.writeImageToPhotoAlbum(imageData: data)
+        }
         ToastModel.main.add(.success("Image Saved"))
     } catch {
         ToastModel.main.add(.basic(

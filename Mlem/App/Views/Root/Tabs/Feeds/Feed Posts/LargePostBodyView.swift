@@ -36,7 +36,6 @@ struct LargePostBodyView: View {
                 VStack(spacing: Constants.main.standardSpacing) {
                     mediaView(url)
                     
-                    
                     if isPostPage {
                         Button("View on \(originalLink.host() ?? "original host")") {
                             openURL(originalLink)
