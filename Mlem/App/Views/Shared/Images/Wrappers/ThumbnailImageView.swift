@@ -31,7 +31,7 @@ struct ThumbnailImageView: View {
     
     var url: URL? {
         switch post.type {
-        case let .image(url): url
+        case let .media(url), let .embedded(url, _): url
         case let .link(link): link.thumbnail
         default: nil
         }
@@ -52,7 +52,7 @@ struct ThumbnailImageView: View {
     var body: some View {
         Group {
             switch post.type {
-            case let .image(url):
+            case let .media(url), let .embedded(url, _):
                 content
                     .onTapGesture {
                         if let loading, loading == .done || loading == .proxyFailed {
@@ -63,7 +63,7 @@ struct ThumbnailImageView: View {
                     .contextMenu {
                         if let url = fullSizeUrl(url: url) {
                             Button("Save Image", systemImage: Icons.import) {
-                                Task { await saveImage(url: url) }
+                                Task { await saveMedia(url: url) }
                             }
                             Button("Share Image", systemImage: Icons.share) {
                                 Task { await shareImage(url: url) }

@@ -13,6 +13,7 @@ extension PrefetchingConfiguration {
         .init(
             prefetcher: .init(pipeline: .shared, destination: .memoryCache, maxConcurrentRequestCount: 40),
             imageSize: .unlimited,
+            embedLoops: Settings.main.embedLoops,
             avatarSize: postSize.avatarSize
         )
     }

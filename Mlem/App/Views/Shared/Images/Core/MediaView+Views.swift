@@ -165,7 +165,7 @@ extension MediaView {
     func contextMenuContent() -> some View {
         if let url = fullSizeUrl ?? loader.url {
             Button("Save Image", systemImage: Icons.import) {
-                Task { await saveImage(url: url) }
+                Task { await saveMedia(url: url) }
             }
             Button("Share Image", systemImage: Icons.share) {
                 Task { await shareImage(url: url, navigation: navigation) }

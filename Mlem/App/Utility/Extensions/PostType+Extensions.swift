@@ -11,7 +11,7 @@ extension PostType {
     var lineLimit: Int {
         switch self {
         case .text, .titleOnly: 4
-        case .image, .link: 2
+        case .media, .embedded, .link: 2
         }
     }
 }

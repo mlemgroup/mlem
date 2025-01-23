@@ -10,7 +10,7 @@ import MlemMiddleware
 import UIKit
 
 /// Mirror of Settings but without any AppStorage complexity and fully optionalized.
-struct CodableSettings: Codable {
+struct CodableSettings: Codable { // swiftlint:disable:this type_body_length
     // MARK: Settings saved in AppStorage
 
     var a11y_readPostIndicator: ReadPostIndicator
@@ -51,6 +51,7 @@ struct CodableSettings: Codable {
     var links_displayMode: String // TODO: pending easy-tap links
     var links_openInBrowser: Bool
     var links_readerMode: Bool
+    var links_embedLoops: Bool
     var links_tappableLinksDisplayMode: TappableLinksDisplayMode
     var menus_allModActions: Bool
     var menus_modActionGrouping: ModeratorActionGrouping
@@ -161,6 +162,7 @@ struct CodableSettings: Codable {
         self.links_openInBrowser = try container.decodeIfPresent(Bool.self, forKey: .links_openInBrowser) ?? false
         self.links_readerMode = try container.decodeIfPresent(Bool.self, forKey: .links_readerMode) ?? false
         self.links_tappableLinksDisplayMode = try container.decodeIfPresent(TappableLinksDisplayMode.self, forKey: .links_tappableLinksDisplayMode) ?? .contextual
+        self.links_embedLoops = try container.decodeIfPresent(Bool.self, forKey: .links_embedLoops) ?? true
         self.menus_allModActions = try container.decodeIfPresent(Bool.self, forKey: .menus_allModActions) ?? false
         self.menus_modActionGrouping = try container.decodeIfPresent(ModeratorActionGrouping.self, forKey: .menus_modActionGrouping) ?? .divider
         self.post_defaultSort = try container.decodeIfPresent(ApiSortType.self, forKey: .post_defaultSort) ?? .hot
@@ -238,6 +240,7 @@ struct CodableSettings: Codable {
         self.links_openInBrowser = settings.openLinksInBrowser
         self.links_readerMode = settings.openLinksInReaderMode
         self.links_tappableLinksDisplayMode = settings.tappableLinksDisplayMode
+        self.links_embedLoops = settings.embedLoops
         self.menus_allModActions = settings.showAllModActions
         self.menus_modActionGrouping = settings.moderatorActionGrouping
         self.post_defaultSort = settings.defaultPostSort
