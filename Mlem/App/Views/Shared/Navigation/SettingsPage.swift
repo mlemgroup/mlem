@@ -18,6 +18,7 @@ enum SettingsPage: Hashable {
     case theme, icon
     case post, comment, inbox, subscriptionList, tabBar
     case postThumbnail, postSubscriptionIndicator, postReadIndicator
+    case commentMaximumDepth, commentJumpButton
     case inboxBadge
     case about, advanced, developer, errorLog
     case postInteractionBar, commentInteractionBar, replyInteractionBar
@@ -78,6 +79,10 @@ enum SettingsPage: Hashable {
             PostReadIndicatorSettingsView()
         case .comment:
             CommentSettingsView()
+        case .commentMaximumDepth:
+            CommentMaximumDepthSettingsView()
+        case .commentJumpButton:
+            CommentJumpButtonSettingsView()
         case .inbox:
             InboxSettingsView()
         case .links:

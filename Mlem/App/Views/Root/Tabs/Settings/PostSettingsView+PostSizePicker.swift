@@ -15,7 +15,7 @@ extension PostSettingsView {
         @Setting(\.postSize) var postSize
         
         var body: some View {
-            Section("Post Size") {
+            Section("Size") {
                 ViewThatFits {
                     HStack(spacing: 0) {
                         largeItem
@@ -30,11 +30,10 @@ extension PostSettingsView {
                 }
                 .listRowInsets(.init(top: 16, leading: 5, bottom: 16, trailing: 5))
             }
-            .font(.footnote)
         }
         
         @ViewBuilder var largeItem: some View {
-            pickerItem(type: .large) {
+            DevicePickerItem(PostSize.large.label, item: .large, selected: $postSize) {
                 VStack(spacing: 3) {
                     ForEach(0 ..< 2) { _ in
                         RoundedRectangle(cornerRadius: 2)
@@ -55,7 +54,7 @@ extension PostSettingsView {
         }
         
         @ViewBuilder var headlineItem: some View {
-            pickerItem(type: .headline) {
+            DevicePickerItem(PostSize.headline.label, item: .headline, selected: $postSize) {
                 VStack(spacing: 3) {
                     ForEach(0 ..< 7) { _ in
                         RoundedRectangle(cornerRadius: 2)
@@ -76,7 +75,7 @@ extension PostSettingsView {
         }
         
         @ViewBuilder var tiledItem: some View {
-            pickerItem(type: .tile) {
+            DevicePickerItem(PostSize.tile.label, item: .tile, selected: $postSize) {
                 VStack(spacing: 3) {
                     ForEach(0 ..< 5) { _ in
                         HStack(spacing: 3) {
@@ -99,7 +98,7 @@ extension PostSettingsView {
         }
         
         @ViewBuilder var compactItem: some View {
-            pickerItem(type: .compact) {
+            DevicePickerItem(PostSize.compact.label, item: .compact, selected: $postSize) {
                 VStack(spacing: 3) {
                     ForEach(0 ..< 7) { _ in
                         RoundedRectangle(cornerRadius: 2)
@@ -116,29 +115,6 @@ extension PostSettingsView {
                 }
                 .padding(.top, 4)
             }
-        }
-        
-        @ViewBuilder
-        func pickerItem(
-            type: PostSize,
-            @ViewBuilder screenContent: @escaping () -> some View
-        ) -> some View {
-            VStack {
-                SettingsDeviceView(selected: postSize == type, screenContent: screenContent)
-                Text(type.label)
-                    .lineLimit(1)
-                    .foregroundStyle(postSize == type ? palette.selectedInteractionBarItem : palette.primary)
-                    .padding(.vertical, 5)
-                    .padding(.horizontal, 10)
-                    .background(postSize == type ? palette.accent : .clear, in: .capsule)
-            }
-            .onTapGesture {
-                HapticManager.main.play(haptic: .gentleInfo, priority: .low)
-                withAnimation(.easeOut(duration: 0.1)) {
-                    postSize = type
-                }
-            }
-            .frame(maxWidth: .infinity)
         }
     }
 }

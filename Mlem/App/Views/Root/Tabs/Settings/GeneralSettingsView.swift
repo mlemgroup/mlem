@@ -19,7 +19,6 @@ struct GeneralSettingsView: View {
     
     // behavior
     @Setting(\.upvoteOnSave) var upvoteOnSave
-    @Setting(\.jumpButton) var jumpButton
     @Setting(\.markReadOnScroll) var markReadOnScroll
     @Setting(\.infiniteScroll) var infiniteScroll
     @Setting(\.autoplayMedia) var autoplayMedia
@@ -70,11 +69,6 @@ struct GeneralSettingsView: View {
                 Toggle("Mark Read on Scroll", systemImage: Icons.read, isOn: $markReadOnScroll)
                 Toggle("Infinite Scroll", systemImage: Icons.infiniteScroll, isOn: $infiniteScroll)
                 Toggle("Upvote on Save", systemImage: Icons.upvoteOnSave, isOn: $upvoteOnSave)
-                Picker("Jump Button", systemImage: Icons.jumpButtonCircle, selection: $jumpButton) {
-                    ForEach(CommentJumpButtonLocation.allCases, id: \.self) { item in
-                        Text(item.label)
-                    }
-                }
                 Toggle("Confirm Image Uploads", systemImage: Icons.confirmImageUploads, isOn: $confirmImageUploads)
                 Picker("Haptic Level", systemImage: Icons.haptics, selection: $hapticLevel) {
                     ForEach(HapticPriority.allCases, id: \.self) { item in
