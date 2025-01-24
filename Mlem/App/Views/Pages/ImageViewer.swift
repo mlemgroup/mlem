@@ -109,6 +109,7 @@ struct ImageViewer: View {
         }
         .quickLookPreview($quickLookUrl)
         .background(ClearBackgroundView())
+        .statusBarHidden()
     }
     
     func fadeDismiss() {
