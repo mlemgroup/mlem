@@ -172,8 +172,10 @@ struct CommunityView: View {
                 MediaView(
                     url: banner,
                     verticalAspectRatioBounds: .init(width: 4, height: 5),
+                    cornerRadius: Constants.main.standardSpacing,
                     enableContextMenu: true,
-                    enableImageViewer: true)
+                    enableImageViewer: true
+                )
             }
             if let description = community.description {
                 Markdown(description, configuration: .default)
