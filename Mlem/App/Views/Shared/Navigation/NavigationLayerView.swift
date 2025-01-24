@@ -57,7 +57,7 @@ struct NavigationLayerView: View {
                 location: .top
             )
             .padding(.top, 8)
-            .ignoresSafeArea(edges: .top)
+            .ignoresSafeArea(edges: layer.isFullScreenCover ? [] : .top)
         }
         .overlay(alignment: .bottom) {
             ToastOverlayView(
