@@ -17,4 +17,12 @@ enum NsfwBlurBehavior: String, CaseIterable, Codable {
         case .never: "Never"
         }
     }
+    
+    var systemImage: String {
+        switch self {
+        case .always: Icons.successCircle
+        case .outsideCommunity: Icons.communityCircle
+        case .never: Icons.failureCircle
+        }
+    }
 }

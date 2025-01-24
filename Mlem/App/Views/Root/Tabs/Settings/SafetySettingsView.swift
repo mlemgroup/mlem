@@ -9,43 +9,47 @@ import SwiftUI
 
 struct SafetySettingsView: View {
     @Environment(Palette.self) var palette
-    
+    @Environment(FiltersTracker.self) var filtersTracker
+
+    @Setting(\.blurNsfw) var blurNsfw
+    @Setting(\.keywordFilterEnabled) var keywordFilterEnabled
+
     var body: some View {
         Form {
             SettingsHeaderView(
                 title: "Safety & Filtering",
                 // swiftlint:disable:next line_length
-                description: "Customize how content is displayed in your feed. Choose which types of content are blurred, and apply filters to hide posts from the feed altogether."
-            ) {
-                Image(systemName: "shield.lefthalf.filled")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(height: 70)
-                    .foregroundStyle(palette.colorfulAccent(3))
-            }
+                description: "Customize how content is displayed in your feed. Choose which types of content are blurred, and apply filters to hide posts from the feed altogether.",
+                systemImage: "shield.lefthalf.filled"
+            )
+            .tint(palette.colorfulAccent(3))
             Section {
                 NavigationLink(
                     "Blur NSFW Content",
-                    value: "Always",
+                    value: .init(localized: blurNsfw.label),
                     fallbackValue: "",
-                    destination: .settings(.general)
+                    systemImage: Icons.blurNsfw,
+                    destination: .settings(.safetyBlurNsfw)
                 )
                 NavigationLink(
                     "Content Warnings",
                     value: "All",
                     fallbackValue: "",
-                    destination: .settings(.general)
+                    systemImage: Icons.warning,
+                    destination: .settings(.safetyWarnings)
                 )
             }
             Section {
                 NavigationLink(
                     "Keyword Filters",
-                    value: "Enabled",
+                    value: (keywordFilterEnabled && !filtersTracker.filteredKeywords.isEmpty) ? "On" : "Off",
                     fallbackValue: "",
-                    destination: .settings(.general)
+                    systemImage: Icons.keywordFilter,
+                    destination: .settings(.filters)
                 )
             }
         }
         .contentMargins(.top, 16)
+        .labelStyle(.conditional)
     }
 }

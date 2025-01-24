@@ -493,9 +493,6 @@
     "Blocking..." : {
 
     },
-    "Blur NSFW" : {
-
-    },
     "Blur NSFW Content" : {
 
     },
@@ -564,6 +561,12 @@
 
     },
     "Choose Instance..." : {
+
+    },
+    "Choose whether to show a warning when opening a page that is likely to contain sensitive content." : {
+
+    },
+    "Choose which contexts \"Not Safe For Work\" content should be blurred in." : {
 
     },
     "Choose wisely - you cannot change this later." : {
@@ -1289,6 +1292,9 @@
     "Modlog" : {
 
     },
+    "Modlogs" : {
+
+    },
     "Monochrome" : {
 
     },
@@ -1365,6 +1371,9 @@
 
     },
     "NSFW" : {
+
+    },
+    "NSFW Communities" : {
 
     },
     "NSFW Content" : {
@@ -1785,9 +1794,6 @@
     "Right" : {
 
     },
-    "Safety" : {
-
-    },
     "Safety & Filtering" : {
 
     },
@@ -1918,6 +1924,9 @@
 
     },
     "Show Sidebar on App Launch" : {
+
+    },
+    "Show warnings when opening..." : {
 
     },
     "Shown" : {
@@ -2480,12 +2489,6 @@
 
     },
     "Votes" : {
-
-    },
-    "Warn When Opening Modlog" : {
-
-    },
-    "Warn When Opening NSFW Community" : {
 
     },
     "We sent an email to %@ to verify your email address and activate your account." : {
