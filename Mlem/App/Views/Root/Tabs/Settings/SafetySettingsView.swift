@@ -42,7 +42,7 @@ struct SafetySettingsView: View {
             Section {
                 NavigationLink(
                     "Keyword Filters",
-                    value: (keywordFilterEnabled && !filtersTracker.filteredKeywords.isEmpty) ? "On" : "Off",
+                    value: .init(localized: keywordFiltersNavigationLinkValue),
                     fallbackValue: "",
                     systemImage: Icons.keywordFilter,
                     destination: .settings(.filters)
@@ -51,5 +51,10 @@ struct SafetySettingsView: View {
         }
         .contentMargins(.top, 16)
         .labelStyle(.conditional)
+    }
+    
+    var keywordFiltersNavigationLinkValue: LocalizedStringResource {
+        if filtersTracker.filteredKeywords.isEmpty { return "None" }
+        return keywordFilterEnabled ? "On" : "Off"
     }
 }
