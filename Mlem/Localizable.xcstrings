@@ -496,6 +496,9 @@
     "Blur NSFW" : {
 
     },
+    "Blur NSFW Content" : {
+
+    },
     "Bold" : {
 
     },
@@ -681,6 +684,9 @@
     "Content & Notifications" : {
 
     },
+    "Content Warnings" : {
+
+    },
     "Continue" : {
 
     },
@@ -709,6 +715,9 @@
 
     },
     "Crossposted from %@" : {
+
+    },
+    "Customize how content is displayed in your feed. Choose which types of content are blurred, and apply filters to hide posts from the feed altogether." : {
 
     },
     "Customize Interaction Bar" : {
@@ -1134,6 +1143,9 @@
 
     },
     "Keep Place" : {
+
+    },
+    "Keyword Filters" : {
 
     },
     "Label Style" : {
@@ -1774,6 +1786,9 @@
 
     },
     "Safety" : {
+
+    },
+    "Safety & Filtering" : {
 
     },
     "Save" : {
