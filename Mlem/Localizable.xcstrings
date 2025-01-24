@@ -566,7 +566,7 @@
     "Choose whether to show a warning when opening a page that is likely to contain sensitive content." : {
 
     },
-    "Choose which contexts \"Not Safe For Work\" content should be blurred in." : {
+    "Choose which contexts Not Safe For Work content should be blurred in." : {
 
     },
     "Choose wisely - you cannot change this later." : {
@@ -721,7 +721,14 @@
 
     },
     "Customize how content is displayed in your feed. Choose which types of content are blurred, and apply filters to hide posts from the feed altogether." : {
-
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customise how content is displayed in your feed. Choose which types of content are blurred, and apply filters to hide posts from the feed altogether."
+          }
+        }
+      }
     },
     "Customize Interaction Bar" : {
       "localizations" : {
