@@ -22,7 +22,6 @@ struct ContentView: View {
     
     @Dependency(\.persistenceRepository) var persistenceRepository
     
-    @Setting(\.interfaceStyle) var interfaceStyle
     @Setting(\.colorPalette) var colorPalette
     @Setting(\.tabProfileLabelType) var tabProfileLabelType
     @Setting(\.tabProfileShowAvatar) var tabProfileShowAvatar
@@ -91,19 +90,10 @@ struct ContentView: View {
                     // TODO: when Observation adds continous observation monitoring, move this into FiltersTracker
                     filtersTracker.moderatedCommunityActorIds = appState.firstPerson?.moderatedCommunityActorIds ?? .init()
                 }
-                .onChange(of: interfaceStyle, initial: true) {
-                    let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-                    windowScene?.windows.first?.overrideUserInterfaceStyle = interfaceStyle
-                }
                 .onChange(of: colorPalette) {
                     withAnimation {
                         palette.changePalette(to: colorPalette)
                     }
-                }
-                .onChange(of: palette.supportedModes, initial: true) {
-                    let newStyle: UIUserInterfaceStyle = palette.supportedModes != .unspecified ? palette.supportedModes : interfaceStyle
-                    let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-                    windowScene?.windows.first?.overrideUserInterfaceStyle = newStyle
                 }
                 .onChange(of: scenePhase, initial: false) {
                     if AppState.main.firstAccount is UserAccount, scenePhase != .active {

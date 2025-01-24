@@ -191,4 +191,11 @@ class NavigationLayer: Identifiable {
     
     // Can be used inside of an `.onDisappear` to determine whether the disappearance was caused by the sheet closing
     var isAlive: Bool { model != nil }
+    
+    var isImageViewer: Bool {
+        switch root {
+        case .imageViewer: true
+        default: false
+        }
+    }
 }

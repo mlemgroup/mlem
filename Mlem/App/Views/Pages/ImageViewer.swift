@@ -11,7 +11,8 @@ struct ImageViewer: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(Palette.self) var palette
     @Environment(\.dismiss) var dismiss
-    
+    @Environment(\.colorScheme) var colorScheme
+
     let url: URL
 
     let duration: CGFloat = 0.25
@@ -109,6 +110,7 @@ struct ImageViewer: View {
         }
         .quickLookPreview($quickLookUrl)
         .background(ClearBackgroundView())
+        .statusBarHidden(!isDismissing)
     }
     
     func fadeDismiss() {

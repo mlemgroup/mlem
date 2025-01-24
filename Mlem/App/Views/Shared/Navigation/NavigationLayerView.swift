@@ -10,6 +10,9 @@ import SwiftUIIntrospect
 import UIKit
 
 struct NavigationLayerView: View {
+    @Environment(Palette.self) var palette
+    @Setting(\.interfaceStyle) var interfaceStyle
+
     @Bindable var layer: NavigationLayer
     let hasSheetModifiers: Bool
     
@@ -54,7 +57,7 @@ struct NavigationLayerView: View {
                 location: .top
             )
             .padding(.top, 8)
-            .ignoresSafeArea(edges: .top)
+            .ignoresSafeArea(edges: layer.isFullScreenCover ? [] : .top)
         }
         .overlay(alignment: .bottom) {
             ToastOverlayView(
@@ -83,6 +86,7 @@ struct NavigationLayerView: View {
         })
         .modifier(HandleLemmyLinksModifier())
         .environment(layer)
+        .preferredColorScheme(preferredColorScheme)
     }
     
     @ViewBuilder
@@ -92,6 +96,18 @@ struct NavigationLayerView: View {
         } else {
             layer.root.view()
         }
+    }
+    
+    private var preferredColorScheme: ColorScheme? {
+        let newStyle: UIUserInterfaceStyle = palette.supportedModes != .unspecified ? palette.supportedModes : interfaceStyle
+        
+        // The image viewer relies on having a concrete color scheme for the status bar color.
+        // Otherwise the status bar will "flash" when the sheet is dismissed
+        if layer.isImageViewer, newStyle == .unspecified {
+            return UIScreen.main.traitCollection.userInterfaceStyle == .dark ? .dark : .light
+        }
+        
+        return newStyle.colorScheme
     }
 }
 
