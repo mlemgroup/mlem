@@ -67,10 +67,12 @@ struct InteractionBarView: View {
     var body: some View {
         HStack(spacing: Constants.main.doubleSpacing) {
             ForEach(leading, id: \.viewId, content: widgetView)
+                .fixedSize(horizontal: true, vertical: false)
             InfoStackView(readouts: readouts, showColor: false)
                 .frame(maxWidth: .infinity, alignment: infoStackAlignment)
                 .padding(infoStackPaddingEdges, -Constants.main.doubleSpacing)
             ForEach(trailing, id: \.viewId, content: widgetView)
+                .fixedSize(horizontal: true, vertical: false)
         }
         .frame(height: Constants.main.barIconSize)
         .geometryGroup()
