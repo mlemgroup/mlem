@@ -6,8 +6,8 @@
 //
 
 import Foundation
-import UIKit
 import SwiftUICore
+import UIKit
 
 extension UIUserInterfaceStyle: Codable {
     var label: String {
@@ -29,6 +29,14 @@ extension UIUserInterfaceStyle: Codable {
         case .light: Icons.lightMode
         case .dark: Icons.darkMode
         default: Icons.systemMode
+        }
+    }
+    
+    var colorScheme: ColorScheme? {
+        switch self {
+        case .light: .light
+        case .dark: .dark
+        default: nil
         }
     }
     

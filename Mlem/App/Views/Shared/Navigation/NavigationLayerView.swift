@@ -107,11 +107,7 @@ struct NavigationLayerView: View {
             return UIScreen.main.traitCollection.userInterfaceStyle == .dark ? .dark : .light
         }
         
-        switch newStyle {
-        case .light: return .light
-        case .dark: return .dark
-        default: return nil
-        }
+        return newStyle.colorScheme
     }
 }
 
