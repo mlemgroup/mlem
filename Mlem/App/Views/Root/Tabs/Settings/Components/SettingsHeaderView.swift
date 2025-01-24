@@ -32,6 +32,7 @@ struct SettingsHeaderView<Icon: View>: View {
         Section {
             VStack(spacing: 12) {
                 icon
+                    .padding(.bottom, 5)
                 Text(title)
                     .font(.title2)
                     .fontWeight(.bold)
@@ -43,6 +44,31 @@ struct SettingsHeaderView<Icon: View>: View {
                 }
             }
             .padding(.vertical, Constants.main.standardSpacing)
+        }
+    }
+}
+
+struct SettingsHeaderIconView: View {
+    let systemName: String
+    
+    var body: some View {
+        Image(systemName: systemName)
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .symbolRenderingMode(.hierarchical)
+            .frame(height: 70)
+            .foregroundStyle(.tint)
+    }
+}
+
+extension SettingsHeaderView {
+    init(
+        title: LocalizedStringResource,
+        description: LocalizedStringResource?,
+        systemImage: String
+    ) where Icon == SettingsHeaderIconView {
+        self.init(title: title, description: description) {
+            SettingsHeaderIconView(systemName: systemImage)
         }
     }
 }

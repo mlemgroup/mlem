@@ -9,11 +9,6 @@ import Dependencies
 import SwiftUI
 
 struct GeneralSettingsView: View {
-    // safety
-    @Setting(\.blurNsfw) var blurNsfw
-    @Setting(\.showNsfwCommunityWarning) var showNsfwCommunityWarning
-    @Setting(\.showModlogWarning) var showModlogWarning
-    
     // privacy
     @Setting(\.autoBypassImageProxy) var bypassImageProxy
     
@@ -35,18 +30,6 @@ struct GeneralSettingsView: View {
     
     var body: some View {
         Form {
-            Section {
-                Picker("Blur NSFW", systemImage: Icons.blurNsfw, selection: $blurNsfw) {
-                    ForEach(NsfwBlurBehavior.allCases, id: \.self) { behavior in
-                        Text(behavior.label)
-                    }
-                }
-                Toggle("Warn When Opening NSFW Community", systemImage: Icons.warning, isOn: $showNsfwCommunityWarning)
-                Toggle("Warn When Opening Modlog", systemImage: Icons.warning, isOn: $showModlogWarning)
-            } header: {
-                Text("Safety")
-            }
-            
             Section {
                 Toggle("Auto-Bypass Image Proxy", systemImage: Icons.proxy, isOn: $bypassImageProxy)
             } header: {

@@ -33,7 +33,6 @@ struct CommentJumpButtonSettingsView: View {
                     )
                     .compositingGroup()
                     .shadow(color: colorScheme == .dark ? .black.opacity(0.5) : .clear, radius: 10, y: 5)
-                    .padding(.bottom, 5)
             }
             Section {
                 Toggle(

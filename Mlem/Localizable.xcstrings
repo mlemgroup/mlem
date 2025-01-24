@@ -493,7 +493,7 @@
     "Blocking..." : {
 
     },
-    "Blur NSFW" : {
+    "Blur NSFW Content" : {
 
     },
     "Bold" : {
@@ -561,6 +561,12 @@
 
     },
     "Choose Instance..." : {
+
+    },
+    "Choose when Not Safe For Work content should be blurred." : {
+
+    },
+    "Choose whether to show a warning when opening a page that is likely to contain sensitive content." : {
 
     },
     "Choose wisely - you cannot change this later." : {
@@ -681,6 +687,9 @@
     "Content & Notifications" : {
 
     },
+    "Content Warnings" : {
+
+    },
     "Continue" : {
 
     },
@@ -710,6 +719,16 @@
     },
     "Crossposted from %@" : {
 
+    },
+    "Customize how content is displayed in your feed. Choose which types of content are blurred, and apply filters to hide posts from the feed altogether." : {
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customise how content is displayed in your feed. Choose which types of content are blurred, and apply filters to hide posts from the feed altogether."
+          }
+        }
+      }
     },
     "Customize Interaction Bar" : {
       "localizations" : {
@@ -1136,6 +1155,9 @@
     "Keep Place" : {
 
     },
+    "Keyword Filters" : {
+
+    },
     "Label Style" : {
 
     },
@@ -1277,6 +1299,9 @@
     "Modlog" : {
 
     },
+    "Modlogs" : {
+
+    },
     "Monochrome" : {
 
     },
@@ -1355,6 +1380,9 @@
     "NSFW" : {
 
     },
+    "NSFW Communities" : {
+
+    },
     "NSFW Content" : {
 
     },
@@ -1364,10 +1392,16 @@
     "Ocean" : {
 
     },
+    "Off" : {
+
+    },
     "Old" : {
 
     },
     "OLED" : {
+
+    },
+    "On" : {
 
     },
     "Once approved, you'll be able to log in to your account from the Settings tab." : {
@@ -1577,6 +1611,9 @@
     "Read Indicator" : {
 
     },
+    "Read posts are shown with dimmed title text. If you like, you can choose an additional way of indicating read status." : {
+
+    },
     "Readouts:" : {
 
     },
@@ -1773,7 +1810,7 @@
     "Right" : {
 
     },
-    "Safety" : {
+    "Safety & Filtering" : {
 
     },
     "Save" : {
@@ -1903,6 +1940,9 @@
 
     },
     "Show Sidebar on App Launch" : {
+
+    },
+    "Show warnings when opening..." : {
 
     },
     "Shown" : {
@@ -2467,12 +2507,6 @@
     "Votes" : {
 
     },
-    "Warn When Opening Modlog" : {
-
-    },
-    "Warn When Opening NSFW Community" : {
-
-    },
     "We sent an email to %@ to verify your email address and activate your account." : {
 
     },
@@ -2498,9 +2532,6 @@
 
     },
     "When disabled, some moderator actions will only be accessible from the post page." : {
-
-    },
-    "When you've read a post already, its title will appear dimmed. If you like, you can choose an additional way of indicating read status." : {
 
     },
     "Wrap Code Block Lines" : {

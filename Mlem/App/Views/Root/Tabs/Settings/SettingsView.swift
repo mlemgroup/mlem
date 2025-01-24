@@ -26,19 +26,43 @@ struct SettingsView: View {
                 accountListLink
             }
             Section {
-                NavigationLink("General", systemImage: "gear", destination: .settings(.general))
-                    .tint(palette.neutralAccent)
-                NavigationLink("Accessibility", systemImage: "hand.point.up.braille.fill", destination: .settings(.accessibility))
-                    .tint(palette.colorfulAccent(2))
-                NavigationLink("Links", systemImage: Icons.websiteAddress, destination: .settings(.links))
-                    .tint(palette.colorfulAccent(6))
-                NavigationLink("Sorting", systemImage: "arrow.up.and.down.text.horizontal", destination: .settings(.sorting))
-                    .tint(palette.colorfulAccent(5))
-                NavigationLink("Filters", systemImage: "line.3.horizontal.decrease", destination: .settings(.filters))
-                    .tint(palette.colorfulAccent(4))
+                NavigationLink(
+                    "General",
+                    systemImage: "gear",
+                    destination: .settings(.general)
+                )
+                .tint(palette.neutralAccent)
+                NavigationLink(
+                    "Safety & Filtering",
+                    systemImage: "shield.lefthalf.filled",
+                    destination: .settings(.safety)
+                )
+                .tint(palette.colorfulAccent(3))
+                NavigationLink(
+                    "Accessibility",
+                    systemImage: "hand.point.up.braille.fill",
+                    destination: .settings(.accessibility)
+                )
+                .tint(palette.colorfulAccent(2))
+                NavigationLink(
+                    "Links",
+                    systemImage: Icons.websiteAddress,
+                    destination: .settings(.links)
+                )
+                .tint(palette.colorfulAccent(6))
+                NavigationLink(
+                    "Sorting",
+                    systemImage: "arrow.up.and.down.text.horizontal",
+                    destination: .settings(.sorting)
+                )
+                .tint(palette.colorfulAccent(5))
                 if AccountsTracker.main.highestLevelAccountType >= .moderator {
-                    NavigationLink("Moderation", systemImage: Icons.moderationFill, destination: .settings(.moderation))
-                        .tint(palette.moderation)
+                    NavigationLink(
+                        "Moderation",
+                        systemImage: Icons.moderationFill,
+                        destination: .settings(.moderation)
+                    )
+                    .tint(palette.moderation)
                 }
             }
             
