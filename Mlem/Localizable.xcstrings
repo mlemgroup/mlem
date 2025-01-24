@@ -563,10 +563,10 @@
     "Choose Instance..." : {
 
     },
-    "Choose whether to show a warning when opening a page that is likely to contain sensitive content." : {
+    "Choose when Not Safe For Work content should be blurred." : {
 
     },
-    "Choose which contexts Not Safe For Work content should be blurred in." : {
+    "Choose whether to show a warning when opening a page that is likely to contain sensitive content." : {
 
     },
     "Choose wisely - you cannot change this later." : {
@@ -1392,10 +1392,16 @@
     "Ocean" : {
 
     },
+    "Off" : {
+
+    },
     "Old" : {
 
     },
     "OLED" : {
+
+    },
+    "On" : {
 
     },
     "Once approved, you'll be able to log in to your account from the Settings tab." : {
@@ -1603,6 +1609,9 @@
 
     },
     "Read Indicator" : {
+
+    },
+    "Read posts are shown with dimmed title text. If you like, you can choose an additional way of indicating read status." : {
 
     },
     "Readouts:" : {
@@ -2523,9 +2532,6 @@
 
     },
     "When disabled, some moderator actions will only be accessible from the post page." : {
-
-    },
-    "When you've read a post already, its title will appear dimmed. If you like, you can choose an additional way of indicating read status." : {
 
     },
     "Wrap Code Block Lines" : {
