@@ -25,7 +25,7 @@ struct PostReadIndicatorSettingsView: View {
             SettingsHeaderView(
                 title: "Read Indicator",
                 // swiftlint:disable:next line_length
-                description: "When you've read a post already, its title will appear dimmed. If you like, you can choose an additional way of indicating read status.",
+                description: "Read posts are indicated with dimmed title text. If you like, you can choose an additional way of indicating read status.",
                 systemImage: Icons.read
             )
             .tint(palette.secondary)
