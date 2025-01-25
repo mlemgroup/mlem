@@ -402,6 +402,9 @@
         }
       }
     },
+    "Ask First" : {
+
+    },
     "Ask to confirm every time" : {
 
     },
@@ -411,10 +414,10 @@
     "Authentication code is incorrect." : {
 
     },
-    "Auto-Bypass Image Proxy" : {
+    "Automatic" : {
 
     },
-    "Automatic" : {
+    "Automatically" : {
 
     },
     "Automatically enable Reader for supported webpages. You can only enable this when using the in-app browser." : {
@@ -511,7 +514,13 @@
     "by %@" : {
 
     },
+    "Bypass Image Proxy" : {
+
+    },
     "Bypass Image Proxy?" : {
+
+    },
+    "Bypass Image Proxy..." : {
 
     },
     "Cache" : {
@@ -1221,6 +1230,9 @@
     "Log in or sign up to view your subscriptions." : {
 
     },
+    "Manage how Mlem interacts with Lemmy instances and other websites." : {
+
+    },
     "Mark Read" : {
 
     },
@@ -1267,6 +1279,9 @@
 
     },
     "Mlem Developer" : {
+
+    },
+    "Mlem Privacy Policy" : {
 
     },
     "Mlem will always try to load from the proxy first." : {
@@ -2532,6 +2547,9 @@
 
     },
     "When disabled, some moderator actions will only be accessible from the post page." : {
+
+    },
+    "When enabled, Mlem will ask you to confirm your choice before uploading an image to your instance." : {
 
     },
     "Wrap Code Block Lines" : {

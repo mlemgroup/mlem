@@ -33,6 +33,12 @@ struct SettingsView: View {
                 )
                 .tint(palette.neutralAccent)
                 NavigationLink(
+                    "Privacy",
+                    systemImage: Icons.privacy,
+                    destination: .settings(.privacy)
+                )
+                .tint(palette.colorfulAccent(2))
+                NavigationLink(
                     "Safety & Filtering",
                     systemImage: "shield.lefthalf.filled",
                     destination: .settings(.safety)

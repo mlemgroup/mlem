@@ -42,7 +42,7 @@ struct AboutMlemView: View {
                 .tint(.black) // non-palette because white tint turns this into white square
             }
             Section {
-                NavigationLink("Privacy Policy", systemImage: "hand.raised.fill", destination: .settings(.document(.privacyPolicy)))
+                NavigationLink("Privacy Policy", systemImage: Icons.privacy, destination: .settings(.document(.privacyPolicy)))
                     .tint(palette.colorfulAccent(2))
                 NavigationLink("EULA", systemImage: "doc.plaintext.fill", destination: .settings(.document(.eula)))
                     .tint(palette.colorfulAccent(0))

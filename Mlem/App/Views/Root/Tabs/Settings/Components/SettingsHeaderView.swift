@@ -43,21 +43,23 @@ struct SettingsHeaderView<Icon: View>: View {
                         .frame(maxWidth: .infinity)
                 }
             }
+            .frame(maxWidth: .infinity)
             .padding(.vertical, Constants.main.standardSpacing)
         }
     }
 }
 
 struct SettingsHeaderIconView: View {
+    @Environment(Palette.self) var palette
     let systemName: String
     
     var body: some View {
         Image(systemName: systemName)
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .symbolRenderingMode(.hierarchical)
-            .frame(height: 70)
-            .foregroundStyle(.tint)
+            .font(.title)
+            .imageScale(.large)
+            .foregroundStyle(palette.selectedInteractionBarItem)
+            .frame(width: 60, height: 60)
+            .background(.tint, in: .rect(cornerRadius: 15))
     }
 }
 
