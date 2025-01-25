@@ -49,12 +49,8 @@ struct CrossPostListView: View {
                     Grid(alignment: .leading) {
                         ForEach(post.crossPosts) { crossPost in
                             GridRow {
-                                FullyQualifiedLabelView(
-                                    entity: crossPost.community,
-                                    labelStyle: .medium,
-                                    blurred: crossPost.nsfw
-                                )
-                                .frame(maxWidth: .infinity, alignment: .leading)
+                                FullyQualifiedLabelView(crossPost.community, labelStyle: .medium, blurred: crossPost.nsfw)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
                                 ReadoutView(readout: crossPost.createdReadout, showColor: true)
                                 ReadoutView(readout: crossPost.scoreReadout, showColor: true)
                                 ReadoutView(readout: crossPost.commentReadout, showColor: true)

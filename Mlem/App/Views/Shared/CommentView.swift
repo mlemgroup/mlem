@@ -70,11 +70,7 @@ struct CommentView<EmbeddedContent: View>: View {
             }
             VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
                 HStack(spacing: 0) {
-                    FullyQualifiedLinkView(
-                        entity: comment.creator_,
-                        labelStyle: .small,
-                        showAvatar: true
-                    )
+                    FullyQualifiedLinkView(comment.creator_, labelStyle: .small)
                     Spacer()
                     if compactComments {
                         InfoStackView(

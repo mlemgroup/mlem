@@ -13,12 +13,8 @@ extension PostEditorView {
         let showWarning = !targets.allSatisfy { $0.sendState != .failed }
         VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
             if let postToEdit {
-                FullyQualifiedLinkView(
-                    entity: postToEdit.community,
-                    labelStyle: .medium,
-                    showAvatar: true
-                )
-                .padding(.horizontal, Constants.main.standardSpacing)
+                FullyQualifiedLinkView(postToEdit.community, labelStyle: .medium)
+                    .padding(.horizontal, Constants.main.standardSpacing)
             } else {
                 ForEach(Array(targets.enumerated()), id: \.element.id) { index, target in
                     HStack(spacing: Constants.main.standardSpacing) {
