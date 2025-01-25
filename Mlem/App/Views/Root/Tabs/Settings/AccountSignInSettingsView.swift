@@ -9,6 +9,7 @@ import SwiftUI
 
 struct AccountSignInSettingsView: View {
     @Environment(AppState.self) var appState
+    @Environment(NavigationLayer.self) var navigation
     @Environment(Palette.self) var palette
     
     var body: some View {
@@ -23,7 +24,13 @@ struct AccountSignInSettingsView: View {
                     }
                 }
             }
+            Section {
+                Button("Change Password", systemImage: "key") {
+                    navigation.openSheet(.settings(.accountChangePassword))
+                }
+            }
         }
+        .labelStyle(.conditional)
         .navigationTitle("Sign-In & Security")
     }
 }

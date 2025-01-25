@@ -545,6 +545,9 @@
         }
       }
     },
+    "Change Password" : {
+
+    },
     "Checkmark" : {
 
     },
@@ -678,6 +681,9 @@
     "Confirm Image Uploads" : {
 
     },
+    "Confirm New Password" : {
+
+    },
     "Confirm Password" : {
 
     },
@@ -718,6 +724,9 @@
 
     },
     "Crossposted from %@" : {
+
+    },
+    "Current Password" : {
 
     },
     "Customize how content is displayed in your feed. Choose which types of content are blurred, and apply filters to hide posts from the feed altogether." : {
@@ -1339,6 +1348,9 @@
 
     },
     "New Keyword..." : {
+
+    },
+    "New Password" : {
 
     },
     "New Post" : {
