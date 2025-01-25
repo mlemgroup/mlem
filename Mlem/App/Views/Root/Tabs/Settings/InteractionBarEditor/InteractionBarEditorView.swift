@@ -83,11 +83,9 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     @ViewBuilder
     var activeBar: some View {
         HStack(spacing: 0) {
-            widgetStack(items: configuration.leading)
+            widgetStack(items: items)
             
-            readoutStack
-            
-            widgetStack(items: configuration.trailing, precedingItems: configuration.leading.count)
+            dropIndicator(index: items.count)
         }
         .padding(.horizontal, -Constants.main.standardSpacing)
     }
@@ -122,9 +120,9 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
         GeometryReader { geometry in
             Capsule()
                 .fill(hoveredDropLocation == .bar(index: index) ? palette.accent : .clear)
-                .frame(width: dropIndicatorWidth)
-                .padding(.horizontal, -2)
-                .frame(height: Constants.main.barIconSize + 24)
+                // .frame(width: dropIndicatorWidth)
+                .padding(.horizontal, -dropIndicatorWidth)
+                // .frame(height: Constants.main.barIconSize + 24)
                 .contentShape(.rect)
                 .onChange(of: dragLocation) {
                     let frame = geometry.frame(in: .named("editor"))
@@ -160,7 +158,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
                     }
                 }
         }
-        .frame(width: 0)
+        .frame(width: hoveredDropLocation == .bar(index: index) ? Constants.main.barIconHitbox : 0)
         .frame(height: Constants.main.barIconSize + 24)
         .transaction { $0.animation = nil }
     }
@@ -221,7 +219,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     }
     
     @ViewBuilder
-    func itemLabel(_ item: Configuration.Item) -> some View {
+    func itemLabel(_ item: Configuration.Item?) -> some View {
         Group {
             switch item {
             case let .action(action):
@@ -229,6 +227,9 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
             case let .counter(counter):
                 InteractionBarCounterLabelView(counter.appearance)
                     .fixedSize()
+            default:
+                readoutStack
+                    .frame(maxWidth: .infinity)
             }
         }
         .padding(Constants.main.standardSpacing)
@@ -236,13 +237,12 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     }
     
     @ViewBuilder
-    func widgetStack(items: [Configuration.Item], precedingItems: Int = 0) -> some View {
+    func widgetStack(items: [Configuration.Item?]) -> some View {
         ForEach(Array(items.enumerated()), id: \.offset) { index, item in
-            let adjustedIndex = index + precedingItems
-            let selected = barPickedUpIndex == adjustedIndex
+            let selected = barPickedUpIndex == index
             HStack(spacing: 0) {
+                dropIndicator(index: index)
                 itemLabel(item)
-                    // .padding(Constants.main.standardSpacing)
                     .background {
                         Capsule().fill(palette.background)
                     }
@@ -255,9 +255,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
                                 .stroke(palette.accent)
                         }
                     }
-                    .gesture(barItemDragGesture(index: adjustedIndex))
-                
-                dropIndicator(index: adjustedIndex)
+                    .gesture(barItemDragGesture(index: index))
             }
         }
     }
