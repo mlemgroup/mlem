@@ -45,25 +45,36 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     
     var body: some View {
         VStack {
-            activeBar
-                .zIndex(barPickedUpIndex == nil ? 0 : 1)
+            SettingsHeaderView(
+                title: "Interaction Bar",
+                description: "Tap and hold items to add, remove, or rearrange them") {
+                    Image(systemName: Icons.votesSquare)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 64)
+                        .foregroundStyle(palette.accent)
+                        .padding([.horizontal, .top], 20)
+                }
+                .background(palette.background, in: .rect(cornerRadius: Constants.main.largeItemCornerRadius))
+                .padding(.bottom, Constants.main.doubleSpacing)
+            
+            postPreview
+                .padding(.bottom, Constants.main.doubleSpacing)
+            
             Divider()
-            infoText
+            
+            trayInfoItems
+            
             Divider()
-            HFlow(spacing: Constants.main.standardSpacing) {
+            
+            HFlow(horizontalAlignment: .center, verticalAlignment: .center, distributeItemsEvenly: true) {
                 ForEach(Array(Configuration.Item.allCases.enumerated()), id: \.offset) { trayItem($1) }
             }
-            .frame(maxWidth: .infinity)
-            .zIndex(trayPickedUpItem == nil ? 0 : 1)
+            
             Spacer()
-            readoutsSection
-            Spacer()
-            bottomBarActions
         }
         .frame(maxWidth: .infinity)
         .padding(Constants.main.standardSpacing)
-        .navigationTitle("Interaction Bar")
-        .navigationBarTitleDisplayMode(.inline)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(palette.groupedBackground)
         .coordinateSpace(.named("editor"))
@@ -71,33 +82,14 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     
     @ViewBuilder
     var activeBar: some View {
-        HStack(spacing: (Constants.main.standardSpacing - dropIndicatorWidth) / 2) {
-            dropIndicator(index: 0)
-            ForEach(Array(items.enumerated()), id: \.element) { index, item in
-                cell { itemLabel(item) }
-                    .offset(barPickedUpIndex == index ? dragTranslation : .zero)
-                    .background(
-                        RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius)
-                            .fill(barPickedUpIndex == index && dragTranslation != .zero ? palette.accent.opacity(0.2) : Color.clear)
-                            .transaction { $0.animation = nil }
-                    )
-                    .zIndex(barPickedUpIndex == index ? 1 : 0)
-                    .gesture(barItemDragGesture(index: index))
-                dropIndicator(index: index + 1)
-            }
+        HStack(spacing: 0) {
+            widgetStack(items: configuration.leading)
+            
+            readoutStack
+            
+            widgetStack(items: configuration.trailing, precedingItems: configuration.leading.count)
         }
-    }
-    
-    @ViewBuilder
-    var infoText: some View {
-        Text(
-            allowNewItemInsertion ? "Tap and hold items to add, remove or rearrange them." : "Too many items!"
-        )
-        .lineLimit(2, reservesSpace: true)
-        .font(.callout)
-        .multilineTextAlignment(.center)
-        .foregroundStyle(allowNewItemInsertion ? palette.secondary : palette.negative)
-        .padding()
+        .padding(.horizontal, -Constants.main.standardSpacing)
     }
     
     @ViewBuilder
@@ -131,6 +123,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
             Capsule()
                 .fill(hoveredDropLocation == .bar(index: index) ? palette.accent : .clear)
                 .frame(width: dropIndicatorWidth)
+                .padding(.horizontal, -2)
                 .frame(height: Constants.main.barIconSize + 24)
                 .contentShape(.rect)
                 .onChange(of: dragLocation) {
@@ -152,7 +145,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
                     if hoveredDropLocation == .tray { hoveredDropLocation = nil }
                     
                     guard allowNewItemInsertion else { return }
-
+                    
                     if barPickedUpIndex != nil || trayPickedUpItem != nil {
                         if abs(frame.minX - dragLocation.x) < Constants.main.barIconSize + 12 + 4 {
                             if hoveredDropLocation == nil {
@@ -167,38 +160,24 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
                     }
                 }
         }
-        .frame(width: dropIndicatorWidth)
+        .frame(width: 0)
         .frame(height: Constants.main.barIconSize + 24)
         .transaction { $0.animation = nil }
     }
     
     @ViewBuilder
     func trayItem(_ item: Configuration.Item) -> some View {
-        cell { itemLabel(item) }
-            .opacity(items.contains(item) ? 0 : 1)
-            .transaction { $0.animation = nil }
-            .offset(trayPickedUpItem == item ? dragTranslation : .zero)
+        itemLabel(item)
+            // .padding(10)
             .background {
-                RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius)
-                    .strokeBorder(trayItemOutlineColor(item), lineWidth: 2)
+                Capsule().fill(palette.background)
             }
+            .opacity(items.contains(item) ? 0 : 1)
+            .geometryGroup()
+            .offset(trayPickedUpItem == item ? dragTranslation : .zero)
+            .background(Capsule().stroke(palette.secondary).fill(trayItemOutlineColor(item)))
             .gesture(trayItemDragGesture(item: item))
             .zIndex(trayPickedUpItem == item ? 1 : 0)
-    }
-    
-    @ViewBuilder
-    var readoutsSection: some View {
-        VStack {
-            Text("Readouts:")
-                .font(.callout)
-                .foregroundStyle(palette.secondary)
-            trayInfoItems
-        }
-        .padding()
-        .background(
-            RoundedRectangle(cornerRadius: Constants.main.largeItemCornerRadius)
-                .strokeBorder(palette.accent.opacity(0.5), lineWidth: 2)
-        )
     }
     
     @ViewBuilder
@@ -230,10 +209,9 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
                     .foregroundStyle(isActive ? palette.selectedInteractionBarItem : color)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 8)
-                    .background(
-                        isActive ? color : color.opacity(0.2),
-                        in: .rect(cornerRadius: Constants.main.smallItemCornerRadius)
-                    )
+                    .background {
+                        Capsule().fill(isActive ? color : color.opacity(0.2)).stroke(color)
+                    }
                     .transaction { $0.animation = nil }
                 }
                 .buttonStyle(.plain)
@@ -243,26 +221,125 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     }
     
     @ViewBuilder
-    func itemLabel(_ item: Configuration.Item?) -> some View {
-        switch item {
-        case let .action(action):
-            InteractionBarActionLabelView(action.appearance)
-                .frame(width: Constants.main.barIconSize)
-        case let .counter(counter):
-            InteractionBarCounterLabelView(counter.appearance)
-                .fixedSize()
-        default:
-            Spacer()
+    func itemLabel(_ item: Configuration.Item) -> some View {
+        Group {
+            switch item {
+            case let .action(action):
+                InteractionBarActionLabelView(action.appearance)
+            case let .counter(counter):
+                InteractionBarCounterLabelView(counter.appearance)
+                    .fixedSize()
+            }
+        }
+        .padding(Constants.main.standardSpacing)
+        .geometryGroup()
+    }
+    
+    @ViewBuilder
+    func widgetStack(items: [Configuration.Item], precedingItems: Int = 0) -> some View {
+        ForEach(Array(items.enumerated()), id: \.offset) { index, item in
+            let adjustedIndex = index + precedingItems
+            let selected = barPickedUpIndex == adjustedIndex
+            HStack(spacing: 0) {
+                itemLabel(item)
+                    // .padding(Constants.main.standardSpacing)
+                    .background {
+                        Capsule().fill(palette.background)
+                    }
+                    .zIndex(selected ? 1 : 0)
+                    .offset(selected ? dragTranslation : .zero)
+                    .background {
+                        if selected && dragTranslation != .zero {
+                            Capsule()
+                                .fill(palette.accent.opacity(0.2))
+                                .stroke(palette.accent)
+                        }
+                    }
+                    .gesture(barItemDragGesture(index: adjustedIndex))
+                
+                dropIndicator(index: adjustedIndex)
+            }
         }
     }
     
     @ViewBuilder
-    func cell(@ViewBuilder _ view: () -> some View) -> some View {
-        view()
-            .frame(height: Constants.main.barIconSize)
-            .padding(12)
-            .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.smallItemCornerRadius))
-            .paletteBorder(cornerRadius: Constants.main.smallItemCornerRadius)
+    var readoutStack: some View {
+        HStack(spacing: 12) {
+            ForEach(configuration.readouts, id: \.hashValue) { readout in
+                HStack(spacing: 2) {
+                    Image(systemName: readout.appearance.icon)
+                    Text(readout.appearance.label)
+                }
+                .font(.footnote)
+            }
+        }
+        .foregroundStyle(palette.secondary)
+        .frame(maxWidth: .infinity)
+    }
+    
+    @ViewBuilder
+    var postPreview: some View {
+        // capsule color gradient configuration
+        let gradientBegin: CGFloat = 0.45
+        let gradientEnd: CGFloat = 0.35
+        
+        VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
+            Capsule()
+                .fill(LinearGradient(
+                    colors: [palette.secondary.opacity(gradientBegin), palette.secondary.opacity(gradientEnd)],
+                    startPoint: .leading,
+                    endPoint: .trailing
+                ))
+                .frame(width: 200, height: 13)
+            
+            HStack(alignment: .top, spacing: 8) {
+                RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius)
+                    .fill(palette.accent.opacity(0.4))
+                    .frame(width: Constants.main.thumbnailSize, height: Constants.main.thumbnailSize)
+                    .overlay {
+                        Image(systemName: "mountain.2.fill")
+                            .font(.system(size: 23))
+                            .foregroundStyle(.white)
+                            .opacity(0.9)
+                    }
+                
+                VStack(alignment: .leading, spacing: 5) {
+                    Capsule()
+                        .fill(LinearGradient(
+                            colors: [palette.secondary.opacity(gradientBegin), palette.secondary.opacity(gradientEnd)],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        ))
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 15)
+                    
+                    Capsule()
+                        .fill(LinearGradient(
+                            colors: [palette.secondary.opacity(gradientBegin), palette.secondary.opacity(gradientEnd)],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        ))
+                        .frame(maxWidth: 200)
+                        .frame(height: 15)
+                }
+            }
+            
+            Capsule()
+                .fill(LinearGradient(
+                    colors: [palette.secondary.opacity(gradientBegin), palette.secondary.opacity(gradientEnd)],
+                    startPoint: .leading,
+                    endPoint: .trailing
+                ))
+                .frame(width: 200, height: 13)
+            
+            activeBar
+                .frame(height: Constants.main.barIconSize)
+                .padding(.horizontal, 2) // TODO: NOW wtf?
+                .padding(.vertical, Constants.main.barIconPadding)
+                .zIndex(barPickedUpIndex == nil ? 0 : 1)
+        }
+        .padding(Constants.main.standardSpacing)
+        .background(palette.background, in: .rect(cornerRadius: Constants.main.mediumItemCornerRadius))
     }
 }
 

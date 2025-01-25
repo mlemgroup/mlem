@@ -73,6 +73,10 @@ extension InteractionBarEditorView {
             self.hoveredDropLocation = nil
             self.trayPickedUpItem = nil
         }
+        
+        print("DEBUG \(barPickedUpIndex)")
+        print("DEBUG \(hoveredDropLocation)")
+        
         guard let hoveredDropLocation else { return }
         
         if let barPickedUpIndex {
@@ -101,6 +105,7 @@ extension InteractionBarEditorView {
         if let barPickedUpIndex, hoveredDropLocation == .tray, barPickedUpIndex < items.count, items[barPickedUpIndex] == item {
             return palette.accent
         }
-        return palette.secondaryGroupedBackground
+        return palette.tertiary.opacity(0.6)
+        // return palette.secondaryGroupedBackground
     }
 }
