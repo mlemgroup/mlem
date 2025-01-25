@@ -63,7 +63,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
             
             Divider()
             
-            trayInfoItems
+            readoutSelectors
             
             Divider()
             
@@ -119,16 +119,19 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     func dropIndicator(index: Int) -> some View {
         GeometryReader { geometry in
             Capsule()
-                .fill(hoveredDropLocation == .bar(index: index) ? palette.accent : .clear)
-                // .frame(width: dropIndicatorWidth)
-                .padding(.horizontal, -dropIndicatorWidth)
-                // .frame(height: Constants.main.barIconSize + 24)
+                .fill(.clear)
+                .background {
+                    Capsule()
+                        .fill(hoveredDropLocation == .bar(index: index) ? palette.accent.opacity(0.2) : .clear)
+                        .stroke(hoveredDropLocation == .bar(index: index) ? palette.accent : .clear)
+                        .frame(maxWidth: 36, maxHeight: 36)
+                }
                 .contentShape(.rect)
                 .onChange(of: dragLocation) {
                     let frame = geometry.frame(in: .named("editor"))
                     if let barPickedUpIndex, barPickedUpIndex == index || barPickedUpIndex == index - 1 { return }
                     
-                    if dragLocation.y > frame.maxY + 60 {
+                    if dragLocation.y > frame.maxY + 30 {
                         if let barPickedUpIndex, items[barPickedUpIndex] != nil {
                             if hoveredDropLocation != .tray {
                                 hoveredDropLocation = .tray
@@ -145,12 +148,15 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
                     guard allowNewItemInsertion else { return }
                     
                     if barPickedUpIndex != nil || trayPickedUpItem != nil {
-                        if abs(frame.minX - dragLocation.x) < Constants.main.barIconSize + 12 + 4 {
+                        // 18 = half of width plus wiggle room
+                        if abs(frame.minX - dragLocation.x) < 18 || abs(frame.maxX - dragLocation.x) < 18 {
+                            // if dragged item is within 22 (half of socket width) of this socket, update hoveredDropLocation to be this socket
                             if hoveredDropLocation == nil {
                                 hoveredDropLocation = .bar(index: index)
                                 HapticManager.main.play(haptic: .gentleInfo, priority: .low)
                             }
                         } else {
+                            // if dragged item is outside of the drop range for this socket, reset hoverDropLocation to nil
                             if hoveredDropLocation == .bar(index: index) {
                                 hoveredDropLocation = nil
                             }
@@ -158,28 +164,30 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
                     }
                 }
         }
-        .frame(width: hoveredDropLocation == .bar(index: index) ? Constants.main.barIconHitbox : 0)
-        .frame(height: Constants.main.barIconSize + 24)
+        .frame(width: hoveredDropLocation == .bar(index: index) ? 44 : 0, height: 44)
         .transaction { $0.animation = nil }
     }
     
     @ViewBuilder
     func trayItem(_ item: Configuration.Item) -> some View {
         itemLabel(item)
-            // .padding(10)
             .background {
                 Capsule().fill(palette.background)
             }
             .opacity(items.contains(item) ? 0 : 1)
             .geometryGroup()
             .offset(trayPickedUpItem == item ? dragTranslation : .zero)
-            .background(Capsule().stroke(palette.secondary).fill(trayItemOutlineColor(item)))
+            .background {
+                Capsule()
+                    .fill(trayItemOutlineColor(item).opacity(0.2))
+                    .stroke(trayItemOutlineColor(item))
+            }
             .gesture(trayItemDragGesture(item: item))
             .zIndex(trayPickedUpItem == item ? 1 : 0)
     }
     
     @ViewBuilder
-    var trayInfoItems: some View {
+    var readoutSelectors: some View {
         HFlow(spacing: Constants.main.standardSpacing) {
             ForEach(Array(Configuration.ReadoutType.allCases.enumerated()), id: \.offset) { _, readout in
                 let isActive = configuration.readouts.contains(readout)
@@ -244,7 +252,8 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
                 dropIndicator(index: index)
                 itemLabel(item)
                     .background {
-                        Capsule().fill(palette.background)
+                        Capsule()
+                            .fill(palette.background)
                     }
                     .zIndex(selected ? 1 : 0)
                     .offset(selected ? dragTranslation : .zero)
@@ -253,6 +262,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
                             Capsule()
                                 .fill(palette.accent.opacity(0.2))
                                 .stroke(palette.accent)
+                                .padding(4)
                         }
                     }
                     .gesture(barItemDragGesture(index: index))
