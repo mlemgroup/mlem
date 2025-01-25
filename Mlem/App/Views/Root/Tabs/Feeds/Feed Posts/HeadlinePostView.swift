@@ -84,7 +84,6 @@ struct HeadlinePostView<EmbeddedContent: View>: View {
             )
             .padding(.horizontal, 2)
             .padding(.vertical, Constants.main.barIconPadding)
-            .border(.green)
         }
     }
     

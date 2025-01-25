@@ -58,18 +58,46 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
                 .background(palette.background, in: .rect(cornerRadius: Constants.main.largeItemCornerRadius))
                 .padding(.bottom, Constants.main.doubleSpacing)
             
+            Group {
+                if !allowNewItemInsertion {
+                    Text("Too many!")
+                } else if let trayPickedUpItem {
+                    switch trayPickedUpItem {
+                    case let .action(action):
+                        HStack {
+                            Image(systemName: action.appearance.barIcon)
+                            Text(action.appearance.label)
+                        }
+                    case let .counter(counter):
+                        HStack {
+                            InteractionBarCounterLabelView(counter.appearance)
+                                .fixedSize()
+                            Text(counter.appearance.label)
+                        }
+                    }
+                } else {
+                    Color.clear
+                }
+            }
+            .frame(height: 20)
+            
             postPreview
                 .padding(.bottom, Constants.main.doubleSpacing)
+                .zIndex(barPickedUpIndex == nil ? -1 : 1)
             
             Divider()
             
             readoutSelectors
+                .zIndex(-2)
             
             Divider()
             
             HFlow(horizontalAlignment: .center, verticalAlignment: .center, distributeItemsEvenly: true) {
-                ForEach(Array(Configuration.Item.allCases.enumerated()), id: \.offset) { trayItem($1) }
+                ForEach(Array(Configuration.Item.allCases.enumerated()), id: \.offset) {
+                    trayItem($1)
+                }
             }
+            .zIndex(trayPickedUpItem == nil ? -1 : 1)
             
             Spacer()
         }
@@ -78,211 +106,6 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(palette.groupedBackground)
         .coordinateSpace(.named("editor"))
-    }
-    
-    @ViewBuilder
-    var activeBar: some View {
-        HStack(spacing: 0) {
-            widgetStack(items: items)
-            
-            dropIndicator(index: items.count)
-        }
-        .padding(.horizontal, -Constants.main.standardSpacing)
-    }
-    
-    @ViewBuilder
-    var bottomBarActions: some View {
-        HStack {
-            Button("Apply to All Interaction Bars") { showingApplyToAllConfirmation = true }
-                .confirmationDialog(
-                    "Really apply configuration to all?",
-                    isPresented: $showingApplyToAllConfirmation,
-                    titleVisibility: .visible
-                ) {
-                    Button("Yes") {
-                        InteractionBarTracker.main.interactionBarConfigurations = .init(
-                            post: configuration.convert(),
-                            comment: configuration.convert(),
-                            reply: configuration.convert()
-                        )
-                    }
-                }
-            Spacer()
-            Button("Reset") { configuration = .default }
-                .buttonStyle(.plain)
-                .foregroundStyle(.secondary)
-        }
-        .padding(.horizontal)
-    }
-    
-    @ViewBuilder
-    func dropIndicator(index: Int) -> some View {
-        GeometryReader { geometry in
-            Capsule()
-                .fill(.clear)
-                .background {
-                    Capsule()
-                        .fill(hoveredDropLocation == .bar(index: index) ? palette.accent.opacity(0.2) : .clear)
-                        .stroke(hoveredDropLocation == .bar(index: index) ? palette.accent : .clear)
-                        .frame(maxWidth: 36, maxHeight: 36)
-                }
-                .contentShape(.rect)
-                .onChange(of: dragLocation) {
-                    let frame = geometry.frame(in: .named("editor"))
-                    if let barPickedUpIndex, barPickedUpIndex == index || barPickedUpIndex == index - 1 { return }
-                    
-                    if dragLocation.y > frame.maxY + 30 {
-                        if let barPickedUpIndex, items[barPickedUpIndex] != nil {
-                            if hoveredDropLocation != .tray {
-                                hoveredDropLocation = .tray
-                                HapticManager.main.play(haptic: .gentleInfo, priority: .low)
-                            }
-                            return
-                        } else {
-                            hoveredDropLocation = nil
-                            return
-                        }
-                    }
-                    if hoveredDropLocation == .tray { hoveredDropLocation = nil }
-                    
-                    guard allowNewItemInsertion else { return }
-                    
-                    if barPickedUpIndex != nil || trayPickedUpItem != nil {
-                        // 18 = half of width plus wiggle room
-                        if abs(frame.minX - dragLocation.x) < 18 || abs(frame.maxX - dragLocation.x) < 18 {
-                            // if dragged item is within 22 (half of socket width) of this socket, update hoveredDropLocation to be this socket
-                            if hoveredDropLocation == nil {
-                                hoveredDropLocation = .bar(index: index)
-                                HapticManager.main.play(haptic: .gentleInfo, priority: .low)
-                            }
-                        } else {
-                            // if dragged item is outside of the drop range for this socket, reset hoverDropLocation to nil
-                            if hoveredDropLocation == .bar(index: index) {
-                                hoveredDropLocation = nil
-                            }
-                        }
-                    }
-                }
-        }
-        .frame(width: hoveredDropLocation == .bar(index: index) ? 44 : 0, height: 44)
-        .transaction { $0.animation = nil }
-    }
-    
-    @ViewBuilder
-    func trayItem(_ item: Configuration.Item) -> some View {
-        itemLabel(item)
-            .background {
-                Capsule().fill(palette.background)
-            }
-            .opacity(items.contains(item) ? 0 : 1)
-            .geometryGroup()
-            .offset(trayPickedUpItem == item ? dragTranslation : .zero)
-            .background {
-                Capsule()
-                    .fill(trayItemOutlineColor(item).opacity(0.2))
-                    .stroke(trayItemOutlineColor(item))
-            }
-            .gesture(trayItemDragGesture(item: item))
-            .zIndex(trayPickedUpItem == item ? 1 : 0)
-    }
-    
-    @ViewBuilder
-    var readoutSelectors: some View {
-        HFlow(spacing: Constants.main.standardSpacing) {
-            ForEach(Array(Configuration.ReadoutType.allCases.enumerated()), id: \.offset) { _, readout in
-                let isActive = configuration.readouts.contains(readout)
-                let disabled = !readout.compatibleWith(otherReadouts: Set(configuration.readouts))
-                Button {
-                    if isActive {
-                        if let index = configuration.readouts.firstIndex(of: readout) {
-                            configuration.readouts.remove(at: index)
-                        }
-                    } else {
-                        // Insert and sort the new `ReadoutType`. In future these could be re-arrangable too
-                        // but I need to think about how the UI would work
-                        configuration.readouts = Configuration.ReadoutType.allCases.filter {
-                            configuration.readouts.contains($0) || $0 == readout
-                        }
-                    }
-                    HapticManager.main.play(haptic: .gentleInfo, priority: .low)
-                } label: {
-                    let color = disabled ? palette.primary : palette.accent
-                    HStack(spacing: 2) {
-                        Image(systemName: readout.appearance.icon)
-                        Text(readout.appearance.label)
-                    }
-                    .font(.footnote)
-                    .foregroundStyle(isActive ? palette.selectedInteractionBarItem : color)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 8)
-                    .background {
-                        Capsule().fill(isActive ? color : color.opacity(0.2)).stroke(color)
-                    }
-                    .transaction { $0.animation = nil }
-                }
-                .buttonStyle(.plain)
-                .disabled(disabled)
-            }
-        }
-    }
-    
-    @ViewBuilder
-    func itemLabel(_ item: Configuration.Item?) -> some View {
-        Group {
-            switch item {
-            case let .action(action):
-                InteractionBarActionLabelView(action.appearance)
-            case let .counter(counter):
-                InteractionBarCounterLabelView(counter.appearance)
-                    .fixedSize()
-            default:
-                readoutStack
-                    .frame(maxWidth: .infinity)
-            }
-        }
-        .padding(Constants.main.standardSpacing)
-        .geometryGroup()
-    }
-    
-    @ViewBuilder
-    func widgetStack(items: [Configuration.Item?]) -> some View {
-        ForEach(Array(items.enumerated()), id: \.offset) { index, item in
-            let selected = barPickedUpIndex == index
-            HStack(spacing: 0) {
-                dropIndicator(index: index)
-                itemLabel(item)
-                    .background {
-                        Capsule()
-                            .fill(palette.background)
-                    }
-                    .zIndex(selected ? 1 : 0)
-                    .offset(selected ? dragTranslation : .zero)
-                    .background {
-                        if selected && dragTranslation != .zero {
-                            Capsule()
-                                .fill(palette.accent.opacity(0.2))
-                                .stroke(palette.accent)
-                                .padding(4)
-                        }
-                    }
-                    .gesture(barItemDragGesture(index: index))
-            }
-        }
-    }
-    
-    @ViewBuilder
-    var readoutStack: some View {
-        HStack(spacing: 12) {
-            ForEach(configuration.readouts, id: \.hashValue) { readout in
-                HStack(spacing: 2) {
-                    Image(systemName: readout.appearance.icon)
-                    Text(readout.appearance.label)
-                }
-                .font(.footnote)
-            }
-        }
-        .foregroundStyle(palette.secondary)
-        .frame(maxWidth: .infinity)
     }
     
     @ViewBuilder
@@ -340,14 +163,210 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
                 ))
                 .frame(width: 200, height: 13)
             
-            activeBar
+            interactionBar
                 .frame(height: Constants.main.barIconSize)
                 .padding(.horizontal, 2) // TODO: NOW wtf?
                 .padding(.vertical, Constants.main.barIconPadding)
-                .zIndex(barPickedUpIndex == nil ? 0 : 1)
         }
         .padding(Constants.main.standardSpacing)
         .background(palette.background, in: .rect(cornerRadius: Constants.main.mediumItemCornerRadius))
+    }
+    
+    @ViewBuilder
+    var interactionBar: some View {
+        HStack(spacing: 0) {
+            ForEach(Array(items.enumerated()), id: \.offset) { index, item in
+                dropIndicator(index: index)
+                barItem(item, index: index)
+            }
+            
+            dropIndicator(index: items.count)
+        }
+        .padding(.horizontal, -Constants.main.standardSpacing)
+    }
+    
+    @ViewBuilder
+    func barItem(_ item: Configuration.Item?, index: Int) -> some View {
+        itemLabel(item)
+            .offset(barPickedUpIndex == index ? dragTranslation : .zero)
+            .background {
+                if barPickedUpIndex == index && dragTranslation != .zero {
+                    Capsule()
+                        .fill(palette.accent.opacity(0.2))
+                        .stroke(palette.accent)
+                        .padding(4)
+                }
+            }
+            .gesture(barItemDragGesture(index: index))
+            .zIndex(barPickedUpIndex == index ? 1 : 0)
+    }
+    
+    @ViewBuilder
+    var infoStack: some View {
+        HStack(spacing: 12) {
+            ForEach(configuration.readouts, id: \.hashValue) { readout in
+                HStack(spacing: 2) {
+                    Image(systemName: readout.appearance.icon)
+                    Text(readout.appearance.label)
+                }
+                .font(.footnote)
+            }
+        }
+        .foregroundStyle(palette.secondary)
+        .frame(maxWidth: .infinity)
+    }
+    
+    @ViewBuilder
+    func dropIndicator(index: Int) -> some View {
+        GeometryReader { geometry in
+            Capsule()
+                .fill(hoveredDropLocation == .bar(index: index) ? palette.accent : .clear)
+                .frame(width: 1.5)
+                .padding(-1.5)
+                .contentShape(.rect)
+                .onChange(of: dragLocation) {
+                    let frame = geometry.frame(in: .named("editor"))
+                    if let barPickedUpIndex, barPickedUpIndex == index || barPickedUpIndex == index - 1 { return }
+                    
+                    if dragLocation.y > frame.maxY + 30 {
+                        if let barPickedUpIndex, items[barPickedUpIndex] != nil {
+                            if hoveredDropLocation != .tray {
+                                hoveredDropLocation = .tray
+                                HapticManager.main.play(haptic: .gentleInfo, priority: .low)
+                            }
+                            return
+                        } else {
+                            hoveredDropLocation = nil
+                            return
+                        }
+                    }
+                    if hoveredDropLocation == .tray { hoveredDropLocation = nil }
+                    
+                    guard allowNewItemInsertion else { return }
+                    
+                    if barPickedUpIndex != nil || trayPickedUpItem != nil {
+                        // 18 = half of width plus wiggle room
+                        // if abs(frame.minX - dragLocation.x) < 18 || abs(frame.maxX - dragLocation.x) < 18 {
+                            // if dragged item is within 22 (half of socket width) of this socket, update hoveredDropLocation to be this socket
+                        if abs(frame.minX - dragLocation.x) < 22 {
+                            if hoveredDropLocation == nil {
+                                hoveredDropLocation = .bar(index: index)
+                                HapticManager.main.play(haptic: .gentleInfo, priority: .low)
+                            }
+                        } else {
+                            // if dragged item is outside of the drop range for this socket, reset hoverDropLocation to nil
+                            if hoveredDropLocation == .bar(index: index) {
+                                hoveredDropLocation = nil
+                            }
+                        }
+                    }
+                }
+        }
+        .frame(width: 0)
+        .transaction { $0.animation = nil }
+    }
+    
+    @ViewBuilder
+    func trayItem(_ item: Configuration.Item) -> some View {
+        itemLabel(item)
+            .opacity(items.contains(item) ? 0 : 1)
+            .geometryGroup()
+            .offset(trayPickedUpItem == item ? dragTranslation : .zero)
+            .background {
+                Capsule()
+                    .fill(trayItemOutlineColor(item).opacity(0.2))
+                    .stroke(trayItemOutlineColor(item))
+                    .background(palette.background, in: .capsule)
+            }
+            .gesture(trayItemDragGesture(item: item))
+            .zIndex(trayPickedUpItem == item ? 1 : 0)
+    }
+    
+    @ViewBuilder
+    func itemLabel(_ item: Configuration.Item?) -> some View {
+        Group {
+            switch item {
+            case let .action(action):
+                InteractionBarActionLabelView(action.appearance)
+            case let .counter(counter):
+                InteractionBarCounterLabelView(counter.appearance)
+                    .fixedSize()
+            default:
+                infoStack
+                    .frame(maxWidth: .infinity)
+            }
+        }
+        .padding(Constants.main.standardSpacing)
+        .background {
+            Capsule()
+                .fill(palette.background.opacity(0.85))
+        }
+        .geometryGroup()
+    }
+    
+    @ViewBuilder
+    var readoutSelectors: some View {
+        HFlow(spacing: Constants.main.standardSpacing) {
+            ForEach(Array(Configuration.ReadoutType.allCases.enumerated()), id: \.offset) { _, readout in
+                let isActive = configuration.readouts.contains(readout)
+                let disabled = !readout.compatibleWith(otherReadouts: Set(configuration.readouts))
+                Button {
+                    if isActive {
+                        if let index = configuration.readouts.firstIndex(of: readout) {
+                            configuration.readouts.remove(at: index)
+                        }
+                    } else {
+                        // Insert and sort the new `ReadoutType`. In future these could be re-arrangable too
+                        // but I need to think about how the UI would work
+                        configuration.readouts = Configuration.ReadoutType.allCases.filter {
+                            configuration.readouts.contains($0) || $0 == readout
+                        }
+                    }
+                    HapticManager.main.play(haptic: .gentleInfo, priority: .low)
+                } label: {
+                    let color = disabled ? palette.primary : palette.accent
+                    HStack(spacing: 2) {
+                        Image(systemName: readout.appearance.icon)
+                        Text(readout.appearance.label)
+                    }
+                    .font(.footnote)
+                    .foregroundStyle(isActive ? palette.selectedInteractionBarItem : color)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 8)
+                    .background {
+                        Capsule().fill(isActive ? color : color.opacity(0.2)).stroke(color)
+                    }
+                    .transaction { $0.animation = nil }
+                }
+                .buttonStyle(.plain)
+                .disabled(disabled)
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var bottomBarActions: some View {
+        HStack {
+            Button("Apply to All Interaction Bars") { showingApplyToAllConfirmation = true }
+                .confirmationDialog(
+                    "Really apply configuration to all?",
+                    isPresented: $showingApplyToAllConfirmation,
+                    titleVisibility: .visible
+                ) {
+                    Button("Yes") {
+                        InteractionBarTracker.main.interactionBarConfigurations = .init(
+                            post: configuration.convert(),
+                            comment: configuration.convert(),
+                            reply: configuration.convert()
+                        )
+                    }
+                }
+            Spacer()
+            Button("Reset") { configuration = .default }
+                .buttonStyle(.plain)
+                .foregroundStyle(.secondary)
+        }
+        .padding(.horizontal)
     }
 }
 
