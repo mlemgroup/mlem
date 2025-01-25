@@ -80,16 +80,35 @@ extension AdvancedSortView {
                             .foregroundStyle(.secondary) // No palette!
                     }
                     .popover(isPresented: $showingExplanation) {
-                        Text(explanation)
-                            .fixedSize(horizontal: false, vertical: true)
-                            .font(.footnote)
-                            .frame(maxWidth: 200)
-                            .padding(10)
-                            .presentationCompactAdaptation(.popover)
+                        PopoverContainer {
+                            Text(explanation)
+                                .frame(maxWidth: 200)
+                                .fixedSize(horizontal: false, vertical: true)
+                                .font(.footnote)
+                                .padding(10)
+                                .foregroundStyle(palette.primary)
+                        }
+                        .presentationCompactAdaptation(.none)
                     }
                     .environment(\.isEnabled, true) // Janky fix to override the higher-level `.disabled` modifier.
                 }
             }
         }
+    }
+}
+
+// https://stackoverflow.com/a/77556014/17629371
+private struct PopoverContainer: Layout {
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        guard subviews.count == 1 else { fatalError() }
+        var newProposal = ProposedViewSize(
+            width: proposal.width ?? UIScreen.main.bounds.width,
+            height: proposal.height ?? UIScreen.main.bounds.height
+        )
+        return subviews[0].sizeThatFits(newProposal)
+    }
+    
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        // entrusts default
     }
 }
