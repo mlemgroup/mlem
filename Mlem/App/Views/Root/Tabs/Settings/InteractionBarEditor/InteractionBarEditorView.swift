@@ -8,6 +8,7 @@
 import Flow
 import SwiftUI
 
+// swiftlint:disable:next type_body_length
 struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: View {
     @Environment(Palette.self) var palette
     
@@ -18,14 +19,20 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     @State var configuration: Configuration {
         didSet {
             onSet(configuration)
-            trayItems.forEach { item in
-                var item = item
-                item.value = configuration.all.contains(item.key)
+
+            let newTrayItems: [TrayItem] = Configuration.Item.allCases.reduce(into: []) { result, item in
+                result.append(.init(item: item, selected: configuration.all.contains(item)))
             }
+            
+//            withAnimation {
+//                barItems = configuration.leading + [nil] + configuration.trailing
+//            }
+            trayItems = newTrayItems
         }
     }
     
-    @State var trayItems: [Configuration.Item: Bool] = .init()
+    @State var trayItems: [TrayItem] = .init()
+    @State var barItems: [BarItem] = .init()
     
     @State var barPickedUpIndex: Int?
     @State var trayPickedUpItem: Configuration.Item?
@@ -38,6 +45,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     let onSet: (Configuration) -> Void
     
     let dropIndicatorWidth: CGFloat = 2
+    let barAnimationDuration: CGFloat = 0.2
     
     @ScaledMetric(relativeTo: .body) var baseInfoCapsuleHeight: CGFloat = 22
     var infoCapsuleHeight: CGFloat { baseInfoCapsuleHeight + Constants.main.doubleSpacing }
@@ -45,6 +53,12 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     init(configuration: Configuration, onSet: @escaping (Configuration) -> Void) {
         self.configuration = configuration
         self.onSet = onSet
+        self._trayItems = .init(wrappedValue: Configuration.Item.allCases.reduce(into: []) { result, item in
+            result.append(.init(item: item, selected: configuration.all.contains(item)))
+        })
+        self._barItems = .init(wrappedValue: (configuration.leading + [nil] + configuration.trailing).map { item in
+                .init(item: item, active: true, visible: true)
+        })
     }
     
     init(setting: WritableKeyPath<InteractionBarTracker, Configuration>) {
@@ -83,8 +97,8 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
             Divider()
             
             HFlow(horizontalAlignment: .center, verticalAlignment: .center, distributeItemsEvenly: true) {
-                ForEach(Array(Configuration.Item.allCases.enumerated()), id: \.offset) {
-                    trayItem($1)
+                ForEach(trayItems, id: \.item) { item in
+                    trayItem(item.item, selected: item.selected)
                 }
             }
             .zIndex(trayPickedUpItem == nil ? -1 : 1)
@@ -208,7 +222,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     @ViewBuilder
     var interactionBar: some View {
         HStack(spacing: 0) {
-            ForEach(Array(items.enumerated()), id: \.offset) { index, item in
+            ForEach(Array(barItems.enumerated()), id: \.offset) { index, item in
                 dropIndicator(index: index)
                 barItem(item, index: index)
             }
@@ -219,8 +233,10 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     }
     
     @ViewBuilder
-    func barItem(_ item: Configuration.Item?, index: Int) -> some View {
-        itemLabel(item)
+    func barItem(_ item: BarItem, index: Int) -> some View {
+        itemLabel(item.item)
+            .frame(maxWidth: item.active ? nil : 0)
+            .opacity(item.visible ? 1 : 0)
             .offset(barPickedUpIndex == index ? dragTranslation : .zero)
             .background {
                 if barPickedUpIndex == index && dragTranslation != .zero {
@@ -300,9 +316,9 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     }
     
     @ViewBuilder
-    func trayItem(_ item: Configuration.Item) -> some View {
+    func trayItem(_ item: Configuration.Item, selected: Bool) -> some View {
         itemLabel(item)
-            .opacity(items.contains(item) ? 0 : 1)
+            .opacity(selected ? 0 : 1)
             .geometryGroup()
             .offset(trayPickedUpItem == item ? dragTranslation : .zero)
             .background {
