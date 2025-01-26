@@ -62,30 +62,35 @@ class CommentTreeTracker: Hashable {
         loadingState = .loading
         do {
             var newComments = try await fetchComments(page: 1)
-            if let ensuredComment, !commentsKeyedByActorId.keys.contains(ensuredComment.actorId) {
+            if let ensuredComment {
                 let comment: any Comment
                 let api = root.wrappedValue.api
                 if let ensuredComment = ensuredComment as? any Comment, ensuredComment.api == api {
                     comment = ensuredComment
-                } else {
+                } else if let ensuredComment = ensuredComment as? CommentStub {
                     print("CommentTreeTracker: Resolving comment...")
-                    comment = try await api.getComment(url: ensuredComment.actorId.url)
+                    comment = try await api.getComment(url: ensuredComment.resolvableUrl)
+                } else {
+                    assertionFailure()
+                    return
                 }
-                // Find the first parent of the ensured comment that isn't in `newComments`.
-                // This will be the starting point for the second page of comments to load.
-                let idsToSearch = comment.parentCommentIds + [comment.id]
-                let firstAbsentParentId = idsToSearch.first(
-                    where: { id in !newComments.contains(where: { $0.id == id }) }
-                )
-                if let firstAbsentParentId {
-                    let extraComments = try await api.getComments(
-                        parentId: firstAbsentParentId,
-                        sort: sort,
-                        page: 1,
-                        maxDepth: 8,
-                        limit: 999
+                if !commentsKeyedByActorId.keys.contains(comment.actorId) {
+                    // Find the first parent of the ensured comment that isn't in `newComments`.
+                    // This will be the starting point for the second page of comments to load.
+                    let idsToSearch = comment.parentCommentIds + [comment.id]
+                    let firstAbsentParentId = idsToSearch.first(
+                        where: { id in !newComments.contains(where: { $0.id == id }) }
                     )
-                    newComments.append(contentsOf: extraComments)
+                    if let firstAbsentParentId {
+                        let extraComments = try await api.getComments(
+                            parentId: firstAbsentParentId,
+                            sort: sort,
+                            page: 1,
+                            maxDepth: 8,
+                            limit: 999
+                        )
+                        newComments.append(contentsOf: extraComments)
+                    }
                 }
             }
             if let first = newComments.first, first.api != root.wrappedValue.api {

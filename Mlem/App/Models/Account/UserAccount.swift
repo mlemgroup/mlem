@@ -69,9 +69,10 @@ class UserAccount: Account, CommunityOrPersonStub {
         components.path = "/"
         guard let instanceLink = components.url else { throw DecodingError.cannotModifyPathComponents }
         
-        guard let host = instanceLink.host else { throw DecodingError.invalidHost }
-        // parse actor id
-        let actorId: ActorIdentifier = .person(host: host, name: name)
+        guard let host = instanceLink.host,
+              let actorId = ActorIdentifier(url: instanceLink.appendingPathComponent("u/\(name)")) else {
+            throw DecodingError.invalidHost
+        }
         self.actorId = actorId
         
         // retrive token and initialize ApiClient
