@@ -15,7 +15,7 @@ class FiltersTracker {
     @ObservationIgnored @Dependency(\.persistenceRepository) var persistenceRepository
     
     var isAdmin: Bool
-    var moderatedCommunityActorIds: Set<URL>
+    var moderatedCommunityActorIds: Set<ActorIdentifier>
     private(set) var filteredKeywords: Set<String>
     var keywordFilterEnabled: Bool
     

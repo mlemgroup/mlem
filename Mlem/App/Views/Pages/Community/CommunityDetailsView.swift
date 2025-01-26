@@ -55,9 +55,6 @@ struct CommunityDetailsView: View {
     
     var localSubscriberCountText: String {
         guard let count = community.localSubscriberCount_ else { return "" }
-        if let host = community.api.host {
-            return String(localized: "\(count) on \(host)")
-        }
-        return String(localized: "\(count) on your instance")
+        return String(localized: "\(count) on \(community.api.host)")
     }
 }

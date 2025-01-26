@@ -30,7 +30,7 @@ class CommentTreeTracker: Hashable {
     }
     
     private(set) var comments: [CommentWrapper] = []
-    private(set) var commentsKeyedByActorId: [URL: CommentWrapper] = [:]
+    private(set) var commentsKeyedByActorId: [ActorIdentifier: CommentWrapper] = [:]
     
     var loadingState: LoadingState = .idle
     var errorDetails: ErrorDetails?
@@ -69,7 +69,7 @@ class CommentTreeTracker: Hashable {
                     comment = ensuredComment
                 } else {
                     print("CommentTreeTracker: Resolving comment...")
-                    comment = try await api.getComment(actorId: ensuredComment.actorId)
+                    comment = try await api.getComment(url: ensuredComment.actorId.url)
                 }
                 // Find the first parent of the ensured comment that isn't in `newComments`.
                 // This will be the starting point for the second page of comments to load.
@@ -164,7 +164,7 @@ class CommentTreeTracker: Hashable {
     private func buildCommentTree(comments newComments: [Comment2], clear: Bool = true) async {
         var output: [CommentWrapper] = clear ? [] : comments
         var commentsKeyedById: [Int: CommentWrapper] = [:]
-        var commentsKeyedByActorId: [URL: CommentWrapper] = clear ? [:] : commentsKeyedByActorId
+        var commentsKeyedByActorId: [ActorIdentifier: CommentWrapper] = clear ? [:] : commentsKeyedByActorId
         
         // From 0.19.0 onwards, a comment's parent is guaranteed to precede it in the array.
         //

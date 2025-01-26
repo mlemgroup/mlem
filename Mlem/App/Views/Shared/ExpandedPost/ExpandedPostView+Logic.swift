@@ -13,9 +13,9 @@ extension ExpandedPostView {
         !(scrollTargetedComment == nil || (post is any Post3Providing && scrolledToscrollTargetedComment))
     }
     
-    func topCommentRow(of anchors: AnchorsKey.Value, in proxy: GeometryProxy) -> URL? {
+    func topCommentRow(of anchors: AnchorsKey.Value, in proxy: GeometryProxy) -> ActorIdentifier? {
         var yBest = CGFloat.infinity
-        var ret: URL?
+        var ret: ActorIdentifier?
         for (row, anchor) in anchors {
             let y = proxy[anchor].y
             guard y >= 0, y < yBest else { continue }

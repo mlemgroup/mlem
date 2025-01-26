@@ -11,7 +11,7 @@ import SwiftUI
 struct ExpandedPostView<Content: View>: View {
     struct AnchorsKey: PreferenceKey {
         // swiftlint:disable:next nesting
-        typealias Value = [URL?: Anchor<CGPoint>]
+        typealias Value = [ActorIdentifier?: Anchor<CGPoint>]
 
         static var defaultValue: Value { [:] }
 
@@ -37,8 +37,8 @@ struct ExpandedPostView<Content: View>: View {
     @State var scrollTargetedComment: (any CommentStubProviding)?
 
     @State var scrolledToscrollTargetedComment: Bool = false
-    @State var jumpButtonTarget: URL?
-    @State var topVisibleItem: URL?
+    @State var jumpButtonTarget: ActorIdentifier?
+    @State var topVisibleItem: ActorIdentifier?
     @State var postCollapsed: Bool = false
     
     init(

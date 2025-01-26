@@ -175,7 +175,7 @@ extension Community1Providing {
     func subscribeAction(feedback: Set<FeedbackType> = []) -> BasicAction {
         let isOn: Bool = self2?.subscribed ?? false
         return .init(
-            id: "subscribe\(actorId.absoluteString)",
+            id: "subscribe\(actorId.description)",
             appearance: .init(
                 label: isOn ? "Unsubscribe" : "Subscribe",
                 isOn: isOn,
@@ -192,7 +192,7 @@ extension Community1Providing {
     func favoriteAction(feedback: Set<FeedbackType> = []) -> BasicAction {
         let isOn: Bool = self2?.favorited ?? false
         return .init(
-            id: "favorite\(actorId.absoluteString)",
+            id: "favorite\(actorId.description)",
             appearance: .init(
                 label: isOn ? "Unfavorite" : "Favorite",
                 isOn: isOn,

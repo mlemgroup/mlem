@@ -14,7 +14,7 @@ class UserAccount: Account, CommunityOrPersonStub {
     static var identifierPrefix: String = "@"
     static var tierNumber: Int = 5
     
-    let actorId: URL
+    let actorId: ActorIdentifier
     let id: Int
     let api: ApiClient
     let name: String
@@ -45,7 +45,7 @@ class UserAccount: Account, CommunityOrPersonStub {
         case id, username, storedNickname, instanceLink, siteVersion, avatarUrl, lastUsed, favorites, accountType, visitHistoryEnabled
     }
     
-    enum DecodingError: Error { case cannotModifyPathComponents }
+    enum DecodingError: Error { case cannotModifyPathComponents, invalidHost }
     
     required init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
@@ -69,8 +69,9 @@ class UserAccount: Account, CommunityOrPersonStub {
         components.path = "/"
         guard let instanceLink = components.url else { throw DecodingError.cannotModifyPathComponents }
         
+        guard let host = instanceLink.host else { throw DecodingError.invalidHost }
         // parse actor id
-        let actorId = parseActorId(instanceLink: instanceLink, name: name)
+        let actorId: ActorIdentifier = .person(host: host, name: name)
         self.actorId = actorId
         
         // retrive token and initialize ApiClient
@@ -143,23 +144,17 @@ class UserAccount: Account, CommunityOrPersonStub {
     
     var isActive: Bool { AppState.main.activeSessions.contains(where: { $0 === self }) }
     
-    var nicknameSortKey: String { nickname + (actorId.host() ?? "") }
-    var instanceSortKey: String { (actorId.host() ?? "") + nickname }
+    var nicknameSortKey: String { nickname + actorId.host }
+    var instanceSortKey: String { actorId.host + nickname }
     
     var uniqueStringId: String {
         assert(fullName != nil)
         return fullName ?? ""
     }
     
-    var fullName: String? {
-        guard let host else { return nil }
-        return "\(name)@\(host)"
-    }
+    var fullName: String? { "\(name)@\(host)" }
     
-    var fullNameWithPrefix: String? {
-        guard let host else { return nil }
-        return "@\(name)@\(host)"
-    }
+    var fullNameWithPrefix: String? { "@\(name)@\(host)" }
     
     func setNickname(_ newValue: String) {
         storedNickname = newValue.isEmpty ? nil : newValue
@@ -167,12 +162,12 @@ class UserAccount: Account, CommunityOrPersonStub {
     }
 }
 
-private func getKeychainId(actorId: URL) -> String {
+private func getKeychainId(actorId: ActorIdentifier) -> String {
     // localhost sometimes has url "http://localhost:PORT" and sometimes "https://lemmy-alpha/beta/etc" [1], so replace any of that with simple "localhost"
     //
     // [1](https://join-lemmy.org/docs/contributors/02-local-development.html#tests)
 
-    let keychainActorId = actorId.absoluteString.replacing(
+    let keychainActorId = actorId.description.replacing(
         /https?:\/\/(lemmy-(alpha|beta|gamma|delta|epsilon)|localhost:\d{4})/,
         with: "localhost"
     )
@@ -181,10 +176,4 @@ private func getKeychainId(actorId: URL) -> String {
 
 private func getKeychainId(id: Int) -> String {
     "\(id)_accessToken"
-}
-
-private func parseActorId(instanceLink: URL, name: String) -> URL {
-    var actorComponents = URLComponents(url: instanceLink, resolvingAgainstBaseURL: false)!
-    actorComponents.path = "/u/\(name)"
-    return actorComponents.url!
 }

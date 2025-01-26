@@ -29,7 +29,7 @@ struct InstanceSummary: Codable, Hashable {
     
     var instanceStub: InstanceStub? {
         if let url {
-            return .init(api: AppState.main.firstApi, actorId: url)
+            return .init(api: AppState.main.firstApi, actorId: .instance(host: host))
         }
         return nil
     }

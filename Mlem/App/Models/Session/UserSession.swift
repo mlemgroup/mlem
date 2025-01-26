@@ -21,7 +21,7 @@ class UserSession: Session {
     private(set) var blocks: BlockList?
     private(set) var unreadCount: UnreadCount?
     /// This **only** includes requests made by calling `toggleInstanceBlock` on this `UserSession`.
-    private(set) var ongoingInstanceBlockRequests: Set<URL> = []
+    private(set) var ongoingInstanceBlockRequests: Set<ActorIdentifier> = []
     private(set) var visitHistory: VisitHistory?
 
     init(account: UserAccount) {
@@ -83,7 +83,7 @@ class UserSession: Session {
         }
     }
 
-    func toggleInstanceBlock(actorId: URL) {
+    func toggleInstanceBlock(actorId: ActorIdentifier) {
         guard !ongoingInstanceBlockRequests.contains(actorId) else { return }
         ongoingInstanceBlockRequests.insert(actorId)
         Task(priority: .userInitiated) { @MainActor in
@@ -101,7 +101,7 @@ class UserSession: Session {
                     instanceId = try await stub.upgrade().instanceId
                     shouldBlock = true
                 }
-                try await api.blockInstance(actorId: actorId, instanceId: instanceId, block: shouldBlock)
+                try await api.blockInstance(url: actorId.url, instanceId: instanceId, block: shouldBlock)
                 if let toastId {
                     ToastModel.main.removeToast(id: toastId)
                 }
