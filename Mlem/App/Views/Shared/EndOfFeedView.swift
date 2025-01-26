@@ -10,7 +10,9 @@ import MlemMiddleware
 import SwiftUI
 
 struct EndOfFeedViewContent {
-    let icon: String
+    // This is a `LocalizedStringResource` because different languages
+    // may want to change this icon in order to have it match the locale-specific idiom
+    let icon: LocalizedStringResource
     let message: LocalizedStringResource
 }
 
@@ -20,11 +22,20 @@ enum EndOfFeedViewType {
     var viewContent: EndOfFeedViewContent {
         switch self {
         case .hobbit:
-            return EndOfFeedViewContent(icon: Icons.endOfFeedHobbit, message: "I think I've found the bottom!")
+            return EndOfFeedViewContent(
+                icon: .init("end.of.feed.icon.1", defaultValue: .init(Icons.endOfFeedHobbit)),
+                message: "I think I've found the bottom!"
+            )
         case .cartoon:
-            return EndOfFeedViewContent(icon: Icons.endOfFeedCartoon, message: "That's all, folks!")
+            return EndOfFeedViewContent(
+                icon: .init("end.of.feed.icon.2", defaultValue: .init(Icons.endOfFeedCartoon)),
+                message: "That's all, folks!"
+            )
         case .turtle:
-            return EndOfFeedViewContent(icon: Icons.endOfFeedTurtle, message: "It's turtles all the way down")
+            return EndOfFeedViewContent(
+                icon: .init("end.of.feed.icon.3", defaultValue: .init(Icons.endOfFeedTurtle)),
+                message: "It's turtles all the way down"
+            )
         }
     }
 }
@@ -57,7 +68,7 @@ struct EndOfFeedView: View {
                 ProgressView()
             case .done:
                 HStack {
-                    Image(systemName: viewType.viewContent.icon)
+                    Image(systemName: .init(localized: viewType.viewContent.icon))
                     Text(viewType.viewContent.message)
                 }
                 .foregroundColor(palette.secondary)

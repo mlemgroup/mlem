@@ -24,13 +24,17 @@ struct BasicAction: Action {
     init(
         id: String,
         appearance: ActionAppearance,
-        confirmationPrompt: String? = nil,
+        confirmationPrompt: LocalizedStringResource? = nil,
         enabled: Bool = true,
         callback: (@MainActor () -> Void)? = nil
     ) {
         self.id = id
         self.appearance = appearance
-        self.confirmationPrompt = confirmationPrompt
+        if let confirmationPrompt {
+            self.confirmationPrompt = .init(localized: confirmationPrompt)
+        } else {
+            self.confirmationPrompt = nil
+        }
         self.callback = enabled ? callback : nil
     }
     

@@ -414,19 +414,19 @@ extension Post1Providing {
         showConfirmation: Bool = true
     ) -> BasicAction {
         let isOn = self2?.pinnedCommunity ?? false
-        let prompt: String?
+        let prompt: LocalizedStringResource?
         if showConfirmation {
             if let communityName = community_?.name {
                 if isOn {
-                    prompt = .init(localized: "Really unpin this post from \(communityName)?")
+                    prompt = "Really unpin this post from \(communityName)?"
                 } else {
-                    prompt = .init(localized: "Really pin this post to \(communityName)?")
+                    prompt = "Really pin this post to \(communityName)?"
                 }
             } else {
                 if isOn {
-                    prompt = .init(localized: "Really unpin this post from the community?")
+                    prompt = "Really unpin this post from the community?"
                 } else {
-                    prompt = .init(localized: "Really pin this post to the community?")
+                    prompt = "Really pin this post to the community?"
                 }
             }
         } else {
@@ -446,12 +446,12 @@ extension Post1Providing {
     
     func pinToInstanceAction(feedback: Set<FeedbackType> = [], showConfirmation: Bool = true) -> BasicAction {
         let isOn = self2?.pinnedInstance ?? false
-        let prompt: String?
+        let prompt: LocalizedStringResource?
         if showConfirmation {
             if isOn {
-                prompt = .init(localized: "Really unpin this post from \(host ?? "")?")
+                prompt = "Really unpin this post from \(host ?? "")?"
             } else {
-                prompt = .init(localized: "Really pin this post to \(host ?? "")?")
+                prompt = "Really pin this post to \(host ?? "")?"
             }
         } else {
             prompt = nil
