@@ -139,7 +139,7 @@ extension SearchView {
         } else {
             switch filter {
             case let .other(instance):
-                instance.instanceStub?.asLocal().api ?? appState.firstApi
+                instance.instanceStub.asLocal().api
             default:
                 appState.firstApi
             }
@@ -152,7 +152,7 @@ extension SearchView {
         } else {
             switch filter {
             case let .instance(instance):
-                instance.instanceStub?.asLocal().api ?? appState.firstApi
+                instance.instanceStub.asLocal().api
             default:
                 appState.firstApi
             }

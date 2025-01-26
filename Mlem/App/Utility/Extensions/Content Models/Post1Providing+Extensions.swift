@@ -449,9 +449,9 @@ extension Post1Providing {
         let prompt: LocalizedStringResource?
         if showConfirmation {
             if isOn {
-                prompt = "Really unpin this post from \(host ?? "")?"
+                prompt = "Really unpin this post from \(host)?"
             } else {
-                prompt = "Really pin this post to \(host ?? "")?"
+                prompt = "Really pin this post to \(host)?"
             }
         } else {
             prompt = nil

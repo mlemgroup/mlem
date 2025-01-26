@@ -183,10 +183,8 @@ enum NavigationPage: Hashable {
     
     static func signUp() -> NavigationPage {
         .instancePicker(callback: { instance, navigation in
-            if let stub = instance.instanceStub {
-                Task { @MainActor in
-                    navigation.push(.signUp(stub))
-                }
+            Task { @MainActor in
+                navigation.push(.signUp(instance.instanceStub))
             }
         })
     }

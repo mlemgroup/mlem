@@ -27,10 +27,7 @@ struct InstanceSummary: Codable, Hashable {
     var host: String { name }
     var url: URL? { URL(string: "https://\(host)/") }
     
-    var instanceStub: InstanceStub? {
-        if let url {
-            return .init(api: AppState.main.firstApi, actorId: .instance(host: host))
-        }
-        return nil
+    var instanceStub: InstanceStub {
+        .init(api: AppState.main.firstApi, actorId: .instance(host: host))
     }
 }

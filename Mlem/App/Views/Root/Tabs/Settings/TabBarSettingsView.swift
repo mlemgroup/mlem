@@ -37,7 +37,7 @@ struct TabBarSettingsView: View {
                                 case .nickname:
                                     Text(account.nickname)
                                 case .instance:
-                                    Text(account.host ?? "Instance")
+                                    Text(account.host)
                                 case .anonymous:
                                     Text("Profile")
                                 }

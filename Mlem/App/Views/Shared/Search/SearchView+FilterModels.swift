@@ -15,7 +15,7 @@ extension SearchView {
         var label: String {
             switch self {
             case .any: .init(localized: "Any Instance")
-            case .local: AppState.main.firstApi.host ?? .init(localized: "Local")
+            case .local: AppState.main.firstApi.host
             case let .other(instance): instance.host
             }
         }
@@ -40,7 +40,7 @@ extension SearchView {
             case .moderated:
                 .init(localized: "Moderated")
             case .localInstance:
-                AppState.main.firstApi.host ?? "Local"
+                AppState.main.firstApi.host
             case let .instance(instance):
                 instance.host
             case let .community(community):
@@ -67,7 +67,7 @@ extension SearchView {
         
         var instanceStub: InstanceStub? {
             if case let .instance(instance) = self {
-                return instance.instanceStub?.asLocal()
+                return instance.instanceStub.asLocal()
             }
             return nil
         }

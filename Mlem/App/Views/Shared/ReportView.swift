@@ -145,7 +145,7 @@ struct ReportView: View {
                 in: .rect(cornerRadius: Constants.main.standardSpacing)
             )
             if report.resolved, let resolver = report.resolver {
-                Text("by \(resolver.fullName ?? "")")
+                Text("by \(resolver.fullName)")
                     .foregroundStyle(palette.positive)
             }
         }

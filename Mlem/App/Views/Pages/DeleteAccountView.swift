@@ -42,7 +42,7 @@ struct DeleteAccountView: View {
             
             WarningView(
                 iconName: Icons.warning,
-                text: "This will permanently remove it from \(account.host ?? "the instance"), not just Mlem!",
+                text: "This will permanently remove it from \(account.host), not just Mlem!",
                 inList: false
             )
             
