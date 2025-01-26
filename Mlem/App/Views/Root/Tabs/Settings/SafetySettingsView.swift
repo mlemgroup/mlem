@@ -13,6 +13,8 @@ struct SafetySettingsView: View {
 
     @Setting(\.blurNsfw) var blurNsfw
     @Setting(\.keywordFilterEnabled) var keywordFilterEnabled
+    @Setting(\.showNsfwCommunityWarning) var showNsfwCommunityWarning
+    @Setting(\.showModlogWarning) var showModlogWarning
 
     var body: some View {
         Form {
@@ -33,7 +35,7 @@ struct SafetySettingsView: View {
                 )
                 NavigationLink(
                     "Content Warnings",
-                    value: "All",
+                    value: String(localized: contentWarningsNavigationLinkValue),
                     fallbackValue: "",
                     systemImage: Icons.warning,
                     destination: .settings(.safetyWarnings)
@@ -51,6 +53,15 @@ struct SafetySettingsView: View {
         }
         .contentMargins(.top, 16)
         .labelStyle(.conditional)
+    }
+    
+    var contentWarningsNavigationLinkValue: LocalizedStringResource {
+        switch (showNsfwCommunityWarning, showModlogWarning) {
+        case (true, true): "All"
+        case (true, false): "NSFW Communities"
+        case (false, true): "Modlogs"
+        case (false, false): "None"
+        }
     }
     
     var keywordFiltersNavigationLinkValue: LocalizedStringResource {
