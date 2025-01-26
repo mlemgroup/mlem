@@ -16,8 +16,16 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     }
     
     @State var configuration: Configuration {
-        didSet { onSet(configuration) }
+        didSet {
+            onSet(configuration)
+            trayItems.forEach { item in
+                var item = item
+                item.value = configuration.all.contains(item.key)
+            }
+        }
     }
+    
+    @State var trayItems: [Configuration.Item: Bool] = .init()
     
     @State var barPickedUpIndex: Int?
     @State var trayPickedUpItem: Configuration.Item?
@@ -30,6 +38,9 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     let onSet: (Configuration) -> Void
     
     let dropIndicatorWidth: CGFloat = 2
+    
+    @ScaledMetric(relativeTo: .body) var baseInfoCapsuleHeight: CGFloat = 22
+    var infoCapsuleHeight: CGFloat { baseInfoCapsuleHeight + Constants.main.doubleSpacing }
     
     init(configuration: Configuration, onSet: @escaping (Configuration) -> Void) {
         self.configuration = configuration
@@ -56,30 +67,9 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
                         .padding([.horizontal, .top], 20)
                 }
                 .background(palette.background, in: .rect(cornerRadius: Constants.main.largeItemCornerRadius))
-                .padding(.bottom, Constants.main.doubleSpacing)
             
-            Group {
-                if !allowNewItemInsertion {
-                    Text("Too many!")
-                } else if let trayPickedUpItem {
-                    switch trayPickedUpItem {
-                    case let .action(action):
-                        HStack {
-                            Image(systemName: action.appearance.barIcon)
-                            Text(action.appearance.label)
-                        }
-                    case let .counter(counter):
-                        HStack {
-                            InteractionBarCounterLabelView(counter.appearance)
-                                .fixedSize()
-                            Text(counter.appearance.label)
-                        }
-                    }
-                } else {
-                    Color.clear
-                }
-            }
-            .frame(height: 20)
+            infoCapsule
+                .padding(.vertical, 15)
             
             postPreview
                 .padding(.bottom, Constants.main.doubleSpacing)
@@ -106,6 +96,49 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(palette.groupedBackground)
         .coordinateSpace(.named("editor"))
+    }
+    
+    @ViewBuilder
+    var infoCapsule: some View {
+        if !allowNewItemInsertion {
+            Text("Too many items")
+                .padding(Constants.main.standardSpacing)
+                .padding(.horizontal, Constants.main.halfSpacing)
+                .foregroundStyle(palette.negative)
+                .background {
+                    Capsule()
+                        .fill(palette.negative.opacity(0.2))
+                        .stroke(palette.negative)
+                        .background(palette.background, in: .capsule)
+                }
+                .frame(height: infoCapsuleHeight)
+        } else if let trayPickedUpItem {
+            Group {
+                switch trayPickedUpItem {
+                case let .action(action):
+                    HStack {
+                        Image(systemName: action.appearance.barIcon)
+                        Text(action.appearance.label)
+                    }
+                case let .counter(counter):
+                    HStack {
+                        InteractionBarCounterLabelView(counter.appearance)
+                            .fixedSize()
+                        Text(counter.appearance.label)
+                    }
+                }
+            }
+            .padding(Constants.main.standardSpacing)
+            .padding(.horizontal, Constants.main.halfSpacing)
+            .background {
+                Capsule()
+                    .fill(palette.background)
+                    .stroke(palette.tertiary)
+            }
+            .frame(height: infoCapsuleHeight)
+        } else {
+            Color.clear.frame(height: infoCapsuleHeight)
+        }
     }
     
     @ViewBuilder

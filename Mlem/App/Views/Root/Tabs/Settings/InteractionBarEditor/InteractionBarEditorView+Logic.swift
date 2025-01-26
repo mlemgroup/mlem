@@ -37,6 +37,8 @@ extension InteractionBarEditorView {
         items.reduce(0) { $0 + ($1?.score ?? 0) }
     }
     
+    var showInfoCapsule: Bool { !allowNewItemInsertion || trayPickedUpItem != nil }
+    
     func barItemDragGesture(index: Int) -> some Gesture {
         DragGesture(minimumDistance: 0, coordinateSpace: .named("editor"))
             .onChanged { gesture in
@@ -45,10 +47,7 @@ extension InteractionBarEditorView {
                 dragTranslation = gesture.translation
             }
             .onEnded { _ in
-                withAnimation(.easeOut(duration: 0.1)) {
-                    completeDrag()
-                    dragTranslation = .zero
-                }
+                completeDrag()
             }
     }
     
@@ -60,10 +59,7 @@ extension InteractionBarEditorView {
                 dragTranslation = gesture.translation
             }
             .onEnded { _ in
-                withAnimation(.easeOut(duration: 0.1)) {
-                    completeDrag()
-                    dragTranslation = .zero
-                }
+                completeDrag()
             }
     }
     
@@ -72,6 +68,7 @@ extension InteractionBarEditorView {
             self.barPickedUpIndex = nil
             self.hoveredDropLocation = nil
             self.trayPickedUpItem = nil
+            dragTranslation = .zero
         }
         
         guard let hoveredDropLocation else { return }
@@ -83,7 +80,10 @@ extension InteractionBarEditorView {
                 let item = newItems.remove(at: barPickedUpIndex)
                 let newIndex = dropIndex > barPickedUpIndex ? dropIndex - 1 : dropIndex
                 newItems.insert(item, at: newIndex)
-                items = newItems
+                
+                // withAnimation(.easeOut(duration: 0.1)) {
+                    items = newItems
+                // }
             case .tray:
                 if items[barPickedUpIndex] != nil {
                     items.remove(at: barPickedUpIndex)
@@ -92,7 +92,9 @@ extension InteractionBarEditorView {
         } else if let trayPickedUpItem {
             switch hoveredDropLocation {
             case let .bar(index: dropIndex):
-                items.insert(trayPickedUpItem, at: dropIndex)
+                // withAnimation(.easeOut(duration: 0.1)) {
+                    items.insert(trayPickedUpItem, at: dropIndex)
+                // }
             default: break
             }
         }
