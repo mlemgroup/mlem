@@ -32,11 +32,6 @@ extension InteractionBarEditorView {
             self.active = active
             self.visible = visible
         }
-
-//        static func == (lhs: BarItem, rhs: BarItem) -> Bool {
-//            lhs.uuid == rhs.uuid
-//            // lhs.item == rhs.item
-//        }
     }
     
     var allowNewItemInsertion: Bool {

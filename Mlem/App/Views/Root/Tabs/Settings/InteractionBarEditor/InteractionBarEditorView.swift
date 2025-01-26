@@ -24,9 +24,6 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
                 result.append(.init(item: item, selected: configuration.all.contains(item)))
             }
             
-//            withAnimation {
-//                barItems = configuration.leading + [nil] + configuration.trailing
-//            }
             trayItems = newTrayItems
         }
     }
@@ -270,8 +267,8 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
         GeometryReader { geometry in
             Capsule()
                 .fill(hoveredDropLocation == .bar(index: index) ? palette.accent : .clear)
-                .frame(width: 1.5)
-                .padding(-1.5)
+                .frame(width: 2)
+                .padding(-2)
                 .contentShape(.rect)
                 .onChange(of: dragLocation) {
                     let frame = geometry.frame(in: .named("editor"))
@@ -311,7 +308,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
                     }
                 }
         }
-        .frame(width: 0)
+        .frame(width: 0, height: Constants.main.barIconHitbox)
         .transaction { $0.animation = nil }
     }
     
