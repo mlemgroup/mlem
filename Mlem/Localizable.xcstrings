@@ -865,6 +865,15 @@
     "Enable Keyword Filters" : {
 
     },
+    "end.of.feed.icon.1" : {
+
+    },
+    "end.of.feed.icon.2" : {
+
+    },
+    "end.of.feed.icon.3" : {
+
+    },
     "Endorsements" : {
 
     },
@@ -1646,13 +1655,48 @@
     "Really appoint this user as an administrator of %@?" : {
 
     },
+    "Really block this community?" : {
+
+    },
+    "Really block this instance?" : {
+
+    },
+    "Really block this user?" : {
+
+    },
     "Really delete %@?" : {
+
+    },
+    "Really delete?" : {
 
     },
     "Really pin this post to %@?" : {
 
     },
     "Really pin this post to the community?" : {
+
+    },
+    "Really remove administrator %@ from %@?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Really remove administrator %1$@ from %2$@?"
+          }
+        }
+      }
+    },
+    "Really remove moderator %@ from %@?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Really remove moderator %1$@ from %2$@?"
+          }
+        }
+      }
+    },
+    "Really unlock this post?" : {
 
     },
     "Really unpin this post from %@?" : {
