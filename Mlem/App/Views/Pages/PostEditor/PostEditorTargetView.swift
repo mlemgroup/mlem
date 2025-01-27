@@ -53,12 +53,8 @@ struct PostEditorTargetView: View {
             let singleAccount = AccountsTracker.main.userAccounts.count == 1
             HStack(spacing: 0) {
                 if let community = target.community as? any Community {
-                    FullyQualifiedLabelView(
-                        entity: community,
-                        labelStyle: singleAccount ? .medium : .large,
-                        blurred: false
-                    )
-                    .id(community.hashValue)
+                    FullyQualifiedLabelView(community, labelStyle: singleAccount ? .medium : .large)
+                        .id(community.hashValue)
                 } else if let community = target.community {
                     FullyQualifiedNameView(name: community.name, instance: community.host, instanceLocation: .trailing)
                         .task {
@@ -98,15 +94,11 @@ struct PostEditorTargetView: View {
     var accountPicker: some View {
         HStack {
             AccountPickerMenu(account: $target.account) {
-                FullyQualifiedLabelView(
-                    entity: target.account,
-                    labelStyle: .large,
-                    blurred: false
-                )
-                .id(target.account.hashValue)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.vertical, 6)
-                .padding(.horizontal, 8)
+                FullyQualifiedLabelView(target.account, labelStyle: .large)
+                    .id(target.account.hashValue)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.vertical, 6)
+                    .padding(.horizontal, 8)
             }
             switch target.resolutionState {
             case .notFound, .error:

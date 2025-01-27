@@ -402,6 +402,9 @@
         }
       }
     },
+    "Ask First" : {
+
+    },
     "Ask to confirm every time" : {
 
     },
@@ -411,10 +414,10 @@
     "Authentication code is incorrect." : {
 
     },
-    "Auto-Bypass Image Proxy" : {
+    "Automatic" : {
 
     },
-    "Automatic" : {
+    "Automatically" : {
 
     },
     "Automatically enable Reader for supported webpages. You can only enable this when using the in-app browser." : {
@@ -511,7 +514,13 @@
     "by %@" : {
 
     },
+    "Bypass Image Proxy" : {
+
+    },
     "Bypass Image Proxy?" : {
+
+    },
+    "Bypass Image Proxy..." : {
 
     },
     "Cache" : {
@@ -877,6 +886,15 @@
     "Enable Keyword Filters" : {
 
     },
+    "end.of.feed.icon.1" : {
+
+    },
+    "end.of.feed.icon.2" : {
+
+    },
+    "end.of.feed.icon.3" : {
+
+    },
     "Endorsements" : {
 
     },
@@ -1233,6 +1251,9 @@
     "Log in or sign up to view your subscriptions." : {
 
     },
+    "Manage how Mlem interacts with Lemmy instances and other websites." : {
+
+    },
     "Mark Read" : {
 
     },
@@ -1279,6 +1300,9 @@
 
     },
     "Mlem Developer" : {
+
+    },
+    "Mlem Privacy Policy" : {
 
     },
     "Mlem will always try to load from the proxy first." : {
@@ -1674,13 +1698,48 @@
     "Really appoint this user as an administrator of %@?" : {
 
     },
+    "Really block this community?" : {
+
+    },
+    "Really block this instance?" : {
+
+    },
+    "Really block this user?" : {
+
+    },
     "Really delete %@?" : {
+
+    },
+    "Really delete?" : {
 
     },
     "Really pin this post to %@?" : {
 
     },
     "Really pin this post to the community?" : {
+
+    },
+    "Really remove administrator %@ from %@?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Really remove administrator %1$@ from %2$@?"
+          }
+        }
+      }
+    },
+    "Really remove moderator %@ from %@?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Really remove moderator %1$@ from %2$@?"
+          }
+        }
+      }
+    },
+    "Really unlock this post?" : {
 
     },
     "Really unpin this post from %@?" : {
@@ -2560,6 +2619,9 @@
 
     },
     "When disabled, some moderator actions will only be accessible from the post page." : {
+
+    },
+    "When enabled, Mlem will ask you to confirm your choice before uploading an image to your instance." : {
 
     },
     "Wrap Code Block Lines" : {

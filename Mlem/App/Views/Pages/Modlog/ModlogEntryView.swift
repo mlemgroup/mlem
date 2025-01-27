@@ -84,12 +84,12 @@ struct ModlogEntryView: View {
             reasonView(reason)
         case let .removeCommunity(community, removed: _, reason: reason):
             reasonView(reason)
-            FullyQualifiedLinkView(entity: community, labelStyle: .medium, showAvatar: true)
+            FullyQualifiedLinkView(community, labelStyle: .medium)
         case let .purgeCommunity(reason: reason):
             reasonView(reason)
         case let .hideCommunity(community, hidden: _, reason: reason):
             reasonView(reason)
-            FullyQualifiedLinkView(entity: community, labelStyle: .medium, showAvatar: true)
+            FullyQualifiedLinkView(community, labelStyle: .medium)
         case let .transferCommunityOwnership(person: person, community: community):
             transferCommunityView(person: person, community: community)
         case let .updatePersonModeratorStatus(person: person, community: community, appointed: appointed):

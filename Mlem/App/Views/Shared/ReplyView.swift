@@ -18,7 +18,7 @@ struct ReplyView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
             HStack {
-                FullyQualifiedLinkView(entity: reply.creator_, labelStyle: .small, showAvatar: true)
+                FullyQualifiedLinkView(reply.creator_, labelStyle: .small)
                 Spacer()
                 Image(systemName: reply.isMention ? Icons.mention : Icons.reply)
                     .symbolVariant(reply.read ? .none : .fill)
