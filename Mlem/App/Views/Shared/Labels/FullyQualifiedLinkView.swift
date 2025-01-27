@@ -11,7 +11,7 @@ import SwiftUI
 struct FullyQualifiedLinkView: View {
     @Environment(NavigationLayer.self) private var navigation
     
-    let entity: (any CommunityOrPersonStub & Profile2Providing)?
+    let entity: (any CommunityOrPerson & Profile2Providing)?
     let labelStyle: FullyQualifiedLabelStyle
     let showAvatar: Bool
     let showInstance: Bool
@@ -20,7 +20,7 @@ struct FullyQualifiedLinkView: View {
     @State private var id = UUID()
     
     init(
-        entity: (any CommunityOrPersonStub & Profile2Providing)?,
+        entity: (any CommunityOrPerson & Profile2Providing)?,
         labelStyle: FullyQualifiedLabelStyle,
         showAvatar: Bool,
         showInstance: Bool = true,

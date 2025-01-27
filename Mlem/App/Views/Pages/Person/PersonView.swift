@@ -148,7 +148,7 @@ struct PersonView: View {
             
             upgraded = true
         }
-        .navigationTitle(isAtTop ? "" : (person.wrappedValue.displayName_ ?? person.wrappedValue.name))
+        .navigationTitle(isAtTop ? "" : (person.wrappedValue.displayName_ ?? ""))
         .navigationBarTitleDisplayMode(.inline)
     }
     

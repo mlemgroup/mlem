@@ -50,7 +50,7 @@ struct FullyQualifiedLabelView: View {
 
     @Setting(\.showSubscribedStatus) var showSubscribedStatus
     
-    let entity: (any CommunityOrPersonStub & Profile1Providing)?
+    let entity: (any CommunityOrPerson & Profile1Providing)?
     let labelStyle: FullyQualifiedLabelStyle
     var showAvatar: Bool = true
     var showInstance: Bool = true
