@@ -51,11 +51,11 @@ struct SettingsView: View {
                 )
                 .tint(palette.colorfulAccent(2))
                 NavigationLink(
-                    "Links",
-                    systemImage: Icons.websiteAddress,
+                    "Media & Links",
+                    systemImage: "photo.on.rectangle.angled.fill",
                     destination: .settings(.links)
                 )
-                .tint(palette.colorfulAccent(6))
+                .tint(palette.colorfulAccent(4))
                 NavigationLink(
                     "Sorting",
                     systemImage: "arrow.up.and.down.text.horizontal",

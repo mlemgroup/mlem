@@ -414,16 +414,13 @@
     "Authentication code is incorrect." : {
 
     },
-    "Automatic" : {
-
-    },
     "Automatically" : {
 
     },
-    "Automatically enable Reader for supported webpages. You can only enable this when using the in-app browser." : {
+    "Automatically refreshes every %lld seconds." : {
 
     },
-    "Automatically refreshes every %lld seconds." : {
+    "Autoplay" : {
 
     },
     "Autoplay Media" : {
@@ -868,6 +865,9 @@
     "Email Verification" : {
 
     },
+    "Embedded Content" : {
+
+    },
     "Embeddings" : {
 
     },
@@ -1095,9 +1095,6 @@
     "If an instance is \"guaranteed\", it is known as definitely not spam. Unguaranteed instances are not necessarily spam; rather, it is unknown whether a non-guaranteed instance is spam or not.\n\nAn instance can be guaranteed by any other guaranteed instance. This forms a chain of guaranteed instances known as the \"Chain of Trust\". The Chain of Trust starts at the Fediseer itself, which guarantees several of the largest instances.\n\nA guarantee can be revoked by the guarantor at any time. If an instance's guarantee is revoked, it returns to a \"not guaranteed\" state along with any instances it guarantees.\n\nOnce an instance has been guaranteed, it is able to express its approval or disapproval of other instances using endorsements, hesitations and censures." : {
 
     },
-    "If set to \"Automatic\", the full URL will be hidden in compact comments." : {
-
-    },
     "Image" : {
 
     },
@@ -1114,12 +1111,6 @@
 
     },
     "Imported Settings" : {
-
-    },
-    "In Default Browser" : {
-
-    },
-    "In-App" : {
 
     },
     "Inbox" : {
@@ -1200,9 +1191,6 @@
     "Link" : {
 
     },
-    "Links" : {
-
-    },
     "Load directly from %@" : {
 
     },
@@ -1242,6 +1230,9 @@
     "Manage how Mlem interacts with Lemmy instances and other websites." : {
 
     },
+    "Manage how Mlem manages links and control how images and videos are displayed." : {
+
+    },
     "Mark Read" : {
 
     },
@@ -1258,6 +1249,9 @@
 
     },
     "Maximum Depth" : {
+
+    },
+    "Media & Links" : {
 
     },
     "Medium" : {
@@ -1444,9 +1438,6 @@
 
     },
     "Open in Browser" : {
-
-    },
-    "Open in Reader" : {
 
     },
     "Open URL from Clipboard" : {
@@ -1981,9 +1972,6 @@
 
     },
     "Show Downvotes Separately" : {
-
-    },
-    "Show Full URL" : {
 
     },
     "Show Mod Names in Modlog" : {
