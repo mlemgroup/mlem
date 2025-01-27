@@ -9,9 +9,6 @@ import Dependencies
 import SwiftUI
 
 struct GeneralSettingsView: View {
-    // privacy
-    @Setting(\.autoBypassImageProxy) var bypassImageProxy
-    
     // behavior
     @Setting(\.upvoteOnSave) var upvoteOnSave
     @Setting(\.markReadOnScroll) var markReadOnScroll
@@ -20,7 +17,6 @@ struct GeneralSettingsView: View {
     @Setting(\.muteVideos) var muteVideos
     @Setting(\.defaultFeed) var defaultFeed
     @Setting(\.sidebarVisibleByDefault) var sidebarVisibleByDefault
-    @Setting(\.confirmImageUploads) var confirmImageUploads
     @Setting(\.hapticLevel) var hapticLevel
     @Setting(\.wrapCodeBlockLines) var wrapCodeBlockLines
     
@@ -30,12 +26,6 @@ struct GeneralSettingsView: View {
     
     var body: some View {
         Form {
-            Section {
-                Toggle("Auto-Bypass Image Proxy", systemImage: Icons.proxy, isOn: $bypassImageProxy)
-            } header: {
-                Text("Privacy")
-            }
-            
             Section {
                 Picker("Default Feed", systemImage: Icons.feeds, selection: $defaultFeed) {
                     ForEach(FeedSelection.allCases, id: \.self) { item in
@@ -52,7 +42,6 @@ struct GeneralSettingsView: View {
                 Toggle("Mark Read on Scroll", systemImage: Icons.read, isOn: $markReadOnScroll)
                 Toggle("Infinite Scroll", systemImage: Icons.infiniteScroll, isOn: $infiniteScroll)
                 Toggle("Upvote on Save", systemImage: Icons.upvoteOnSave, isOn: $upvoteOnSave)
-                Toggle("Confirm Image Uploads", systemImage: Icons.confirmImageUploads, isOn: $confirmImageUploads)
                 Picker("Haptic Level", systemImage: Icons.haptics, selection: $hapticLevel) {
                     ForEach(HapticPriority.allCases, id: \.self) { item in
                         Text(item.label)

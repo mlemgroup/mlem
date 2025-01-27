@@ -101,7 +101,7 @@ struct ReportView: View {
     func legacyPostView(post: Post1, community: Community1, creator: Person1) -> some View {
         NavigationLink(.post(post)) {
             VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
-                FullyQualifiedLinkView(entity: creator, labelStyle: .medium, showAvatar: true)
+                FullyQualifiedLinkView(creator, labelStyle: .medium)
                 HeadlinePostBodyView(post: post)
                 reportDetailsView
                 resolveButton
@@ -116,7 +116,7 @@ struct ReportView: View {
     func legacyCommentView(comment: Comment1, community: Community1, creator: Person1) -> some View {
         NavigationLink(.comment(comment)) {
             VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
-                FullyQualifiedLinkView(entity: creator, labelStyle: .medium, showAvatar: true)
+                FullyQualifiedLinkView(creator, labelStyle: .medium)
                 Markdown(comment.content, configuration: .default)
                 reportDetailsView
                 resolveButton

@@ -102,14 +102,17 @@ extension SearchView {
             } else {
                 LazyVStack(spacing: compactComments ? Constants.main.halfSpacing : Constants.main.standardSpacing) {
                     ForEach(commentLoader.items, id: \.actorId) { comment in
-                        FeedCommentView(comment: comment)
-                            .onAppear {
-                                do {
-                                    try commentLoader.loadIfThreshold(comment)
-                                } catch {
-                                    handleError(error)
-                                }
+                        NavigationLink(.comment(comment)) {
+                            FeedCommentView(comment: comment)
+                        }
+                        .buttonStyle(.empty)
+                        .onAppear {
+                            do {
+                                try commentLoader.loadIfThreshold(comment)
+                            } catch {
+                                handleError(error)
                             }
+                        }
                     }
                     EndOfFeedView(loadingState: commentLoader.loadingState, loadMore: nil, viewType: .hobbit)
                 }

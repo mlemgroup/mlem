@@ -54,7 +54,7 @@ struct VotesListView: View {
                 ForEach(votes, id: \.creator.id) { (vote: PersonVote) in
                     NavigationLink(.person(vote.creator)) {
                         HStack {
-                            FullyQualifiedLinkView(entity: vote.creator, labelStyle: .medium, showAvatar: true)
+                            FullyQualifiedLinkView(vote.creator, labelStyle: .medium)
                             Spacer()
                             Image(systemName: vote.vote.systemImage)
                                 .imageScale(.large)

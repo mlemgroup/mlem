@@ -34,7 +34,7 @@ struct MessageView<EmbeddedContent: View>: View {
     var body: some View {
         VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
             HStack {
-                FullyQualifiedLinkView(entity: message.creator_, labelStyle: .small, showAvatar: true)
+                FullyQualifiedLinkView(message.creator_, labelStyle: .small)
                 Spacer()
                 if isInInbox {
                     Image(systemName: message.isOwnMessage ? Icons.send : Icons.message)
