@@ -8,6 +8,7 @@
 import Flow
 import SwiftUI
 
+// swiftlint:disable:this file_length
 // swiftlint:disable:next type_body_length
 struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: View {
     @Environment(Palette.self) var palette
@@ -31,7 +32,11 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     @State var trayItems: [TrayItem] = .init()
     @State var barItems: [BarItem] = .init()
     
-    @State var barPickedUpIndex: Int?
+    @State var barPickedUpItem: BarItem?
+    @State var barDropIndex: Int?
+    
+    @State var newHoveredDropLocation: NewDropLocation?
+    
     @State var trayPickedUpItem: Configuration.Item?
     @State var dragLocation: CGPoint = .zero
     @State var dragTranslation: CGSize = .zero
@@ -84,7 +89,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
             
             postPreview
                 .padding(.bottom, Constants.main.doubleSpacing)
-                .zIndex(barPickedUpIndex == nil ? -1 : 1)
+                .zIndex(barPickedUpItem == nil ? -1 : 1)
             
             Divider()
             
@@ -219,32 +224,92 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     @ViewBuilder
     var interactionBar: some View {
         HStack(spacing: 0) {
-            ForEach(Array(barItems.enumerated()), id: \.offset) { index, item in
-                dropIndicator(index: index)
-                barItem(item, index: index)
+            ForEach(barItems, id: \.uuid) { item in
+                barItem(item)
+                    .offset(barPickedUpItem == item ? dragTranslation : .zero)
+                    .background {
+                        if barPickedUpItem == item && dragTranslation != .zero {
+                            Capsule()
+                                .fill(palette.accent.opacity(0.2))
+                                .stroke(palette.accent)
+                                .padding(4)
+                        }
+                    }
+                    .zIndex(barPickedUpItem === item ? 1 : 0)
+                    .overlay {
+                        GeometryReader { geometry in
+                            Color.clear
+                                .contentShape(.rect)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                .onChange(of: dragLocation) {
+                                    guard allowNewItemInsertion else { return }
+                                    
+                                    let frame = geometry.frame(in: .named("editor"))
+                                    
+                                    // if outside of bar zone, reset newHoveredDropLocation
+                                    guard dragLocation.y <= frame.maxY + 30 else {
+                                        newHoveredDropLocation = nil
+                                        return
+                                    }
+                                    
+                                    // check if within this item's hitbox
+                                    if dragLocation.x > frame.minX,
+                                       dragLocation.x < frame.maxX {
+                                        // pick left/right side and update hoveredDropLocation, item.hover appropriately
+                                        if dragLocation.x < frame.midX {
+                                            // item.hover = .left
+                                            newHoveredDropLocation = .left(item)
+                                        } else {
+                                            // item.hover = .right
+                                            newHoveredDropLocation = .right(item)
+                                        }
+                                    }
+                                }
+                        }
+                    }
+                    .gesture(barItemDragGesture(item: item))
             }
-            
-            dropIndicator(index: items.count)
         }
         .padding(.horizontal, -Constants.main.standardSpacing)
     }
     
     @ViewBuilder
-    func barItem(_ item: BarItem, index: Int) -> some View {
-        itemLabel(item.item)
-            .frame(maxWidth: item.active ? nil : 0)
-            .opacity(item.visible ? 1 : 0)
-            .offset(barPickedUpIndex == index ? dragTranslation : .zero)
-            .background {
-                if barPickedUpIndex == index && dragTranslation != .zero {
-                    Capsule()
-                        .fill(palette.accent.opacity(0.2))
-                        .stroke(palette.accent)
-                        .padding(4)
-                }
+    func barItem(_ barItem: BarItem) -> some View {
+        HStack(spacing: 0) {
+            if case let .left(hoveredItem) = newHoveredDropLocation,
+               hoveredItem == barItem,
+               barPickedUpItem != barItem {
+                Capsule()
+                    .fill(palette.accent)
+                    .frame(width: 2, height: 40)
+                    .padding(-2)
+                    .frame(width: 0)
             }
-            .gesture(barItemDragGesture(index: index))
-            .zIndex(barPickedUpIndex == index ? 1 : 0)
+            
+            itemLabel(barItem.item)
+                .onAppear {
+                    withAnimation(.easeInOut(duration: barAnimationDuration)) {
+                        print("DEBUG \(barItem.uuid) appeared")
+                        if let ancestor = barItem.ancestor {
+                            print("DEBUG \(barItem.uuid) deactivating ancestor \(ancestor.uuid)")
+                        }
+                        barItem.ancestor?.active = false
+                        barItem.active = true
+                    }
+                }
+                .frame(maxWidth: barItem.active ? nil : 0)
+                .opacity(barItem.visible ? 1 : 0)
+  
+            if case let .right(hoveredItem) = newHoveredDropLocation,
+               hoveredItem == barItem,
+               barPickedUpItem != barItem {
+                Capsule()
+                    .fill(palette.accent)
+                    .frame(width: 2, height: 40)
+                    .padding(-2)
+                    .frame(width: 0)
+            }
+        }
     }
     
     @ViewBuilder
@@ -262,57 +327,55 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
         .frame(maxWidth: .infinity)
     }
     
-    @ViewBuilder
-    func dropIndicator(index: Int) -> some View {
-        GeometryReader { geometry in
-            Capsule()
-                .fill(hoveredDropLocation == .bar(index: index) ? palette.accent : .clear)
-                .frame(width: 2)
-                .padding(-2)
-                .contentShape(.rect)
-                .onChange(of: dragLocation) {
-                    let frame = geometry.frame(in: .named("editor"))
-                    if let barPickedUpIndex, barPickedUpIndex == index || barPickedUpIndex == index - 1 { return }
-                    
-                    if dragLocation.y > frame.maxY + 30 {
-                        print("DEBUG \(barPickedUpIndex)")
-                        print("DEBUG \(items[safeIndex: barPickedUpIndex ?? 0])")
-                        if let barPickedUpIndex, items[safeIndex: barPickedUpIndex] != nil {
-                            if hoveredDropLocation != .tray {
-                                hoveredDropLocation = .tray
-                                HapticManager.main.play(haptic: .gentleInfo, priority: .low)
-                            }
-                            return
-                        } else {
-                            hoveredDropLocation = nil
-                            return
-                        }
-                    }
-                    if hoveredDropLocation == .tray { hoveredDropLocation = nil }
-                    
-                    guard allowNewItemInsertion else { return }
-                    
-                    if barPickedUpIndex != nil || trayPickedUpItem != nil {
-                        let hitboxWidth: CGFloat = ((index == 0 && configuration.leading.isEmpty) ||
-                                                    (index == items.count && configuration.trailing.isEmpty)) ? 160 : 22
-                            // if dragged item is within 22 (half of socket width) of this socket, update hoveredDropLocation to be this socket
-                        if abs(frame.minX - dragLocation.x) < hitboxWidth {
-                            if hoveredDropLocation == nil {
-                                hoveredDropLocation = .bar(index: index)
-                                HapticManager.main.play(haptic: .gentleInfo, priority: .low)
-                            }
-                        } else {
-                            // if dragged item is outside of the drop range for this socket, reset hoverDropLocation to nil
-                            if hoveredDropLocation == .bar(index: index) {
-                                hoveredDropLocation = nil
-                            }
-                        }
-                    }
-                }
-        }
-        .frame(width: 0, height: Constants.main.barIconHitbox - 4)
-        .transaction { $0.animation = nil }
-    }
+//    @ViewBuilder
+//    func dropIndicator(index: Int) -> some View {
+//        GeometryReader { geometry in
+//            Capsule()
+//                .fill(hoveredDropLocation == .bar(index: index) ? palette.accent : .clear)
+//                .frame(width: 2)
+//                .padding(-2)
+//                .contentShape(.rect)
+//                .onChange(of: dragLocation) {
+//                    let frame = geometry.frame(in: .named("editor"))
+//                    if let barPickedUpIndex, barPickedUpIndex == index || barPickedUpIndex == index - 1 { return }
+//                    
+//                    if dragLocation.y > frame.maxY + 30 {
+//                        if let barPickedUpIndex, barItems[safeIndex: barPickedUpIndex] != nil {
+//                            if hoveredDropLocation != .tray {
+//                                hoveredDropLocation = .tray
+//                                HapticManager.main.play(haptic: .gentleInfo, priority: .low)
+//                            }
+//                            return
+//                        } else {
+//                            hoveredDropLocation = nil
+//                            return
+//                        }
+//                    }
+//                    if hoveredDropLocation == .tray { hoveredDropLocation = nil }
+//                    
+//                    guard allowNewItemInsertion else { return }
+//                    
+//                    if barPickedUpIndex != nil || trayPickedUpItem != nil {
+//                        let hitboxWidth: CGFloat = ((index == 0 && configuration.leading.isEmpty) ||
+//                                                    (index == barItems.count && configuration.trailing.isEmpty)) ? 160 : 22
+//                            // if dragged item is within 22 (half of socket width) of this socket, update hoveredDropLocation to be this socket
+//                        if abs(frame.minX - dragLocation.x) < hitboxWidth {
+//                            if hoveredDropLocation == nil {
+//                                hoveredDropLocation = .bar(index: index)
+//                                HapticManager.main.play(haptic: .gentleInfo, priority: .low)
+//                            }
+//                        } else {
+//                            // if dragged item is outside of the drop range for this socket, reset hoverDropLocation to nil
+//                            if hoveredDropLocation == .bar(index: index) {
+//                                hoveredDropLocation = nil
+//                            }
+//                        }
+//                    }
+//                }
+//        }
+//        .frame(width: 0, height: Constants.main.barIconHitbox - 4)
+//        .transaction { $0.animation = nil }
+//    }
     
     @ViewBuilder
     func trayItem(_ item: Configuration.Item, selected: Bool) -> some View {
@@ -415,6 +478,47 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
                 .foregroundStyle(.secondary)
         }
         .padding(.horizontal)
+    }
+    
+    struct BarItemView: View {
+        @Environment(Palette.self) var palette
+        
+        let barItem: BarItem
+        
+        var body: some View {
+            content
+                .onAppear {
+                    barItem.active = true
+                }
+                .onChange(of: barItem.active) {
+                    print("Active changed: \(barItem.active)")
+                }
+                .border(barItem.active ? .blue : .red)
+                .frame(maxWidth: barItem.active ? nil : 0)
+                .opacity(barItem.visible ? 1 : 0)
+        }
+        
+        var content: some View {
+            Group {
+                switch barItem.item {
+                case let .action(action):
+                    InteractionBarActionLabelView(action.appearance)
+                case let .counter(counter):
+                    InteractionBarCounterLabelView(counter.appearance)
+                        .fixedSize()
+                default:
+                    Text("Info stack")
+//                    infoStack
+//                        .frame(maxWidth: .infinity)
+                }
+            }
+            .padding(Constants.main.standardSpacing)
+            .background {
+                Capsule()
+                    .fill(palette.background.opacity(0.85))
+            }
+            .geometryGroup()
+        }
     }
 }
 
