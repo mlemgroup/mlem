@@ -41,6 +41,8 @@ enum FullyQualifiedLabelStyle {
 
 /// View for rendering fully qualified labels (i.e., user or community names)
 struct FullyQualifiedLabelView: View {
+    typealias Entity = CommunityOrPersonStub & Profile1Providing
+    
     @Environment(Palette.self) var palette
     @Environment(AppState.self) var appState
     @Environment(\.postContext) var postContext: (any Post1Providing)?
@@ -50,11 +52,12 @@ struct FullyQualifiedLabelView: View {
 
     @Setting(\.showSubscribedStatus) var showSubscribedStatus
     
-    let entity: (any CommunityOrPersonStub & Profile1Providing)?
+    let entity: (any Entity)?
+    let avatarFallback: FixedImageView.Fallback
     let labelStyle: FullyQualifiedLabelStyle
     var showAvatar: Bool = true
     var showInstance: Bool = true
-    let blurred: Bool
+    var blurred: Bool = false
     
     var showSubscriptionIndicator: Bool {
         guard showSubscribedStatus,
@@ -72,23 +75,13 @@ struct FullyQualifiedLabelView: View {
     
     @ScaledMetric(relativeTo: .body) var subscriptionIndicatorSize: CGFloat = 8.0
     
-    var fallback: FixedImageView.Fallback {
-        if entity is any CommunityStubProviding {
-            return .community
-        }
-        if entity is any PersonStubProviding || entity is UserAccount {
-            return .person
-        }
-        return .image
-    }
-    
     var body: some View {
         HStack(spacing: 7) {
             if showAvatar {
                 CircleCroppedImageView(
                     url: entity?.avatar?.withIconSize(labelStyle.avatarResolution),
                     frame: labelStyle.avatarSize,
-                    fallback: fallback,
+                    fallback: avatarFallback,
                     showProgress: false,
                     blurred: blurred
                 )
@@ -142,5 +135,58 @@ struct FullyQualifiedLabelView: View {
             return "\(fullName), " + flairs.map { String(localized: $0.label) }.joined(separator: ", ")
         }
         return fullName
+    }
+}
+
+extension FullyQualifiedLabelView {
+    init(
+        _ entity: (any Person)?,
+        labelStyle: FullyQualifiedLabelStyle,
+        showAvatar: Bool = true,
+        showInstance: Bool = true,
+        blurred: Bool = false
+    ) {
+        self.init(
+            entity: entity,
+            avatarFallback: .person,
+            labelStyle: labelStyle,
+            showAvatar: showAvatar,
+            showInstance: showInstance,
+            blurred: blurred
+        )
+    }
+    
+    init(
+        _ entity: (any Community)?,
+        labelStyle: FullyQualifiedLabelStyle,
+        showAvatar: Bool = true,
+        showInstance: Bool = true,
+        blurred: Bool = false
+    ) {
+        self.init(
+            entity: entity,
+            avatarFallback: .community,
+            labelStyle: labelStyle,
+            showAvatar: showAvatar,
+            showInstance: showInstance,
+            blurred: blurred
+        )
+    }
+    
+    init(
+        _ entity: UserAccount?,
+        labelStyle: FullyQualifiedLabelStyle,
+        showAvatar: Bool = true,
+        showInstance: Bool = true,
+        blurred: Bool = false
+    ) {
+        self.init(
+            entity: entity,
+            avatarFallback: .person,
+            labelStyle: labelStyle,
+            showAvatar: showAvatar,
+            showInstance: showInstance,
+            blurred: blurred
+        )
     }
 }
