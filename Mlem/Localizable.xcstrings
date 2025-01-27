@@ -1086,6 +1086,9 @@
     "Hide Read" : {
 
     },
+    "Hide Website Icons" : {
+
+    },
     "Hot" : {
 
     },
@@ -1291,6 +1294,9 @@
 
     },
     "Mlem Privacy Policy" : {
+
+    },
+    "Mlem uses a Google API to fetch website icon URLs. If you'd prefer not to use this, you can choose to hide favicons." : {
 
     },
     "Mlem will always try to load from the proxy first." : {

@@ -13,6 +13,8 @@ struct WebsitePreviewView: View {
     @Environment(Palette.self) var palette
     @Environment(\.openURL) private var openURL
     
+    @Setting(\.showFavicons) var showFavicons
+
     let shouldBlur: Bool
     
     let link: PostLink
@@ -61,11 +63,12 @@ struct WebsitePreviewView: View {
                     url: thumbnailUrl,
                     verticalAspectRatioBounds: .init(width: 1, height: 1),
                     contentMode: .fill,
-                    enableNsfwBlur: shouldBlur)
+                    enableNsfwBlur: shouldBlur
+                )
                 .overlay(alignment: .bottomLeading) {
                     linkHost
                         .padding(Constants.main.halfSpacing)
-                        .padding(.trailing, 3)
+                        .padding(showFavicons ? .trailing : .horizontal, 3)
                         .background {
                             Capsule()
                                 .fill(.regularMaterial)
@@ -88,7 +91,9 @@ struct WebsitePreviewView: View {
     
     var linkHost: some View {
         HStack(spacing: Constants.main.halfSpacing) {
-            CircleCroppedImageView(url: link.favicon, frame: Constants.main.smallAvatarSize, fallback: .favicon)
+            if showFavicons {
+                CircleCroppedImageView(url: link.favicon, frame: Constants.main.smallAvatarSize, fallback: .favicon)
+            }
             
             Text(link.host)
                 .foregroundStyle(palette.secondary)
