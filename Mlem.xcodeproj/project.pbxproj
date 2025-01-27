@@ -142,6 +142,7 @@
 		035EDEFB2C2DF98700F51144 /* CommunityListRowBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035EDEFA2C2DF98700F51144 /* CommunityListRowBody.swift */; };
 		035EDF012C2ECFE000F51144 /* Searchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035EDF002C2ECFE000F51144 /* Searchable.swift */; };
 		035EDF032C2ED0DE00F51144 /* PersonListRowBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035EDF022C2ED0DE00F51144 /* PersonListRowBody.swift */; };
+		03600D932D4531DF00C704CB /* PrivacyBypassImageProxySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03600D922D4531DF00C704CB /* PrivacyBypassImageProxySettingsView.swift */; };
 		0369B3532BFA514B001EFEDF /* ToastLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0369B3522BFA514B001EFEDF /* ToastLocation.swift */; };
 		0369B3562BFA6824001EFEDF /* InboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0369B3552BFA6824001EFEDF /* InboxView.swift */; };
 		0369B35D2BFB86E3001EFEDF /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0369B35A2BFB86E3001EFEDF /* Account.swift */; };
@@ -151,6 +152,7 @@
 		036ED67D2D0B006C0018E5EA /* TopSortPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036ED67C2D0B006C0018E5EA /* TopSortPicker.swift */; };
 		036ED67F2D0B9A520018E5EA /* CommunitySearchSortPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036ED67E2D0B9A520018E5EA /* CommunitySearchSortPicker.swift */; };
 		036ED6832D0C483B0018E5EA /* Profile2Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036ED6822D0C483B0018E5EA /* Profile2Providing+Extensions.swift */; };
+		036FFA2F2D45197300998D8A /* PrivacySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036FFA2E2D45197300998D8A /* PrivacySettingsView.swift */; };
 		0372EBCE2D36FBCF00257095 /* RegistrationApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0372EBCD2D36FBCF00257095 /* RegistrationApplication+Extensions.swift */; };
 		0372EC202D370F0200257095 /* RegistrationApplicationDenialEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0372EC1F2D370F0200257095 /* RegistrationApplicationDenialEditorView.swift */; };
 		037331A42C9CB12D00C826E1 /* EnvironmentValues+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037331A32C9CB12D00C826E1 /* EnvironmentValues+Extensions.swift */; };
@@ -630,6 +632,7 @@
 		035EDF002C2ECFE000F51144 /* Searchable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Searchable.swift; sourceTree = "<group>"; };
 		035EDF022C2ED0DE00F51144 /* PersonListRowBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonListRowBody.swift; sourceTree = "<group>"; };
 		035EDF042C2ED35500F51144 /* Person1Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Person1Providing+Extensions.swift"; sourceTree = "<group>"; };
+		03600D922D4531DF00C704CB /* PrivacyBypassImageProxySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyBypassImageProxySettingsView.swift; sourceTree = "<group>"; };
 		0369B3522BFA514B001EFEDF /* ToastLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastLocation.swift; sourceTree = "<group>"; };
 		0369B3552BFA6824001EFEDF /* InboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxView.swift; sourceTree = "<group>"; };
 		0369B35A2BFB86E3001EFEDF /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
@@ -639,6 +642,7 @@
 		036ED67C2D0B006C0018E5EA /* TopSortPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopSortPicker.swift; sourceTree = "<group>"; };
 		036ED67E2D0B9A520018E5EA /* CommunitySearchSortPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunitySearchSortPicker.swift; sourceTree = "<group>"; };
 		036ED6822D0C483B0018E5EA /* Profile2Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Profile2Providing+Extensions.swift"; sourceTree = "<group>"; };
+		036FFA2E2D45197300998D8A /* PrivacySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacySettingsView.swift; sourceTree = "<group>"; };
 		0372EBCD2D36FBCF00257095 /* RegistrationApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RegistrationApplication+Extensions.swift"; sourceTree = "<group>"; };
 		0372EC1F2D370F0200257095 /* RegistrationApplicationDenialEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationApplicationDenialEditorView.swift; sourceTree = "<group>"; };
 		037331A32C9CB12D00C826E1 /* EnvironmentValues+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+Extensions.swift"; sourceTree = "<group>"; };
@@ -1049,7 +1053,9 @@
 				CDEE15532D22364500EB9D7B /* ErrorLogView.swift */,
 				CD45CB0C2D1880E3008BC729 /* FiltersSettingsView.swift */,
 				039F58892C7B54FE00C61658 /* GeneralSettingsView.swift */,
+				036FFA2E2D45197300998D8A /* PrivacySettingsView.swift */,
 				038188982D43E0F30073E88D /* SafetySettingsView.swift */,
+				03600D922D4531DF00C704CB /* PrivacyBypassImageProxySettingsView.swift */,
 				0381889A2D4412A40073E88D /* SafetyBlurNsfwSettingsView.swift */,
 				033819272D4424D9000AFC55 /* SafetyWarningsSettingsView.swift */,
 				CDD4A09F2C8B985D0001AD1A /* ImportExportSettingsView.swift */,
@@ -2339,6 +2345,7 @@
 				03AD0A822CFDBFA0001EF9F7 /* AccountLocalSettingsView.swift in Sources */,
 				039F58992C7B697D00C61658 /* Bundle+Extensions.swift in Sources */,
 				033F84D92C2B61FB002E3EDF /* ToastType.swift in Sources */,
+				03600D932D4531DF00C704CB /* PrivacyBypassImageProxySettingsView.swift in Sources */,
 				03A82FA12C0D1E8500D01A5C /* ApiClient+Extensions.swift in Sources */,
 				0397D47A2C693444002C6CDC /* ReportEditorView.swift in Sources */,
 				CDA683F82C77E577000C4486 /* NsfwBlurBehavior.swift in Sources */,
@@ -2447,6 +2454,7 @@
 				036ED67F2D0B9A520018E5EA /* CommunitySearchSortPicker.swift in Sources */,
 				038028FA2CB097CB0091A8A2 /* SearchView+LocationPicker.swift in Sources */,
 				CDD8B94C2C8234BC00510EBB /* Form.swift in Sources */,
+				036FFA2F2D45197300998D8A /* PrivacySettingsView.swift in Sources */,
 				0320B6652C91DBD500D38548 /* NavigationPage+View.swift in Sources */,
 				03B25B332CC440A600EB6DF5 /* FediseerOpinionView.swift in Sources */,
 				03E46AD42D130728002589DB /* ScoringOperation+Extensions.swift in Sources */,
@@ -3147,7 +3155,7 @@
 			repositoryURL = "https://github.com/mlemgroup/LemmyMarkdownUI";
 			requirement = {
 				kind = upToNextMinorVersion;
-				minimumVersion = 0.5.2;
+				minimumVersion = 0.6.0;
 			};
 		};
 		0392826E2BC84E480097F91A /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {

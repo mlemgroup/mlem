@@ -12,7 +12,8 @@ enum SettingsPage: Hashable {
     case root
     case accounts, account
     case profile, accountGeneral, accountAdvanced, accountSignIn, accountChangeEmail, accountLocal
-    case general, safety, accessibility, sorting, filters
+    case general, privacy, safety, accessibility, sorting, filters
+    case privacyBypassImageProxy
     case safetyBlurNsfw, safetyWarnings
     case links, embedding
     case importExportSettings
@@ -54,6 +55,10 @@ enum SettingsPage: Hashable {
             AccountListSettingsView()
         case .general:
             GeneralSettingsView()
+        case .privacy:
+            PrivacySettingsView()
+        case .privacyBypassImageProxy:
+            PrivacyBypassImageProxySettingsView()
         case .safety:
             SafetySettingsView()
         case .safetyBlurNsfw:

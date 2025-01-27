@@ -107,9 +107,6 @@ struct CommentEditorView: View {
             }
             .task(id: account) { await resolveContext() }
         }
-        .onAppear {
-            textView.becomeFirstResponder()
-        }
         .onDisappear {
             // If we didn't have the `isAlive` check here, the images would
             // get deleted when you click on a link in the reply context
@@ -120,6 +117,11 @@ struct CommentEditorView: View {
         }
         .onChange(of: presentationSelection) {
             if presentationSelection == .large {
+                textView.becomeFirstResponder()
+            }
+        }
+        .onChange(of: navigation.isTopSheet) {
+            if navigation.isTopSheet, navigation.model != nil {
                 textView.becomeFirstResponder()
             }
         }
@@ -230,6 +232,9 @@ struct CommentEditorView: View {
     @ViewBuilder
     var selectTextButton: some View {
         Button("Select Text", systemImage: Icons.select) {
+            Task { @MainActor in
+                textView.resignFirstResponder()
+            }
             originalContext?.item.showTextSelectionSheet()
         }
         .labelStyle(.iconOnly)
