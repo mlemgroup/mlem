@@ -72,8 +72,13 @@ extension InteractionBarEditorView {
         let adjustedSourceIndex: Int = sourceIndex > targetIndex ? sourceIndex + 1 : sourceIndex
         let item = barItems[sourceIndex]
         let newItem: BarItem = .init(item: item.item, active: false, visible: true)
-        
-        barItems.insert(newItem, at: targetIndex)
+
+        assert(targetIndex < (barItems.count + 1), "invalid index : \(targetIndex) (barItems: \(barItems.count)")
+        if targetIndex == barItems.count {
+            barItems.append(newItem)
+        } else {
+            barItems.insert(newItem, at: targetIndex)
+        }
         item.visible = false
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.005) {
@@ -85,13 +90,12 @@ extension InteractionBarEditorView {
 
         DispatchQueue.main.asyncAfter(deadline: .now() + barAnimationDuration) {
             barItems.remove(at: adjustedSourceIndex)
+            items = barItems.map(\.item)
         }
-        
-        items = barItems.map(\.item)
     }
     
     func removeFromBar(at index: Int) {
-        guard index < barItems.count else { return }
+        guard let barItem = barItems[safeIndex: index], barItem.item != nil else { return }
                 
         // set un-selected on tray
         let trayItem = trayItems.first(where: { $0.item == barItems[index].item })
@@ -99,9 +103,9 @@ extension InteractionBarEditorView {
         trayItem?.selected = false
         
         // hide on the bar
-        barItems[index].visible = false
+        barItem.visible = false
         withAnimation(.easeInOut(duration: barAnimationDuration)) {
-            barItems[index].active = false
+            barItem.active = false
         }
         
         // remove from bar and update items

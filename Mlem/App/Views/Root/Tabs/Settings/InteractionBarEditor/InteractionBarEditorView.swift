@@ -42,7 +42,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     let onSet: (Configuration) -> Void
     
     let dropIndicatorWidth: CGFloat = 2
-    let barAnimationDuration: CGFloat = 0.2
+    let barAnimationDuration: CGFloat = 0.1
     
     @ScaledMetric(relativeTo: .body) var baseInfoCapsuleHeight: CGFloat = 22
     var infoCapsuleHeight: CGFloat { baseInfoCapsuleHeight + Constants.main.doubleSpacing }
@@ -275,7 +275,9 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
                     if let barPickedUpIndex, barPickedUpIndex == index || barPickedUpIndex == index - 1 { return }
                     
                     if dragLocation.y > frame.maxY + 30 {
-                        if let barPickedUpIndex, items[barPickedUpIndex] != nil {
+                        print("DEBUG \(barPickedUpIndex)")
+                        print("DEBUG \(items[safeIndex: barPickedUpIndex ?? 0])")
+                        if let barPickedUpIndex, items[safeIndex: barPickedUpIndex] != nil {
                             if hoveredDropLocation != .tray {
                                 hoveredDropLocation = .tray
                                 HapticManager.main.play(haptic: .gentleInfo, priority: .low)
@@ -291,10 +293,10 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
                     guard allowNewItemInsertion else { return }
                     
                     if barPickedUpIndex != nil || trayPickedUpItem != nil {
-                        // 18 = half of width plus wiggle room
-                        // if abs(frame.minX - dragLocation.x) < 18 || abs(frame.maxX - dragLocation.x) < 18 {
+                        let hitboxWidth: CGFloat = ((index == 0 && configuration.leading.isEmpty) ||
+                                                    (index == items.count && configuration.trailing.isEmpty)) ? 160 : 22
                             // if dragged item is within 22 (half of socket width) of this socket, update hoveredDropLocation to be this socket
-                        if abs(frame.minX - dragLocation.x) < 22 {
+                        if abs(frame.minX - dragLocation.x) < hitboxWidth {
                             if hoveredDropLocation == nil {
                                 hoveredDropLocation = .bar(index: index)
                                 HapticManager.main.play(haptic: .gentleInfo, priority: .low)
@@ -308,7 +310,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
                     }
                 }
         }
-        .frame(width: 0, height: Constants.main.barIconHitbox)
+        .frame(width: 0, height: Constants.main.barIconHitbox - 4)
         .transaction { $0.animation = nil }
     }
     
