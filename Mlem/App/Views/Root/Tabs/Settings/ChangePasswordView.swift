@@ -83,7 +83,7 @@ struct ChangePasswordView: View {
                         if newPassword != confirmNewPassword {
                             Text("Passwords don't match.")
                         } else if !(10 ... 60 ~= newPassword.count) {
-                            Text("New must be between \(10) and \(60) characters long.")
+                            Text("New password must be between \(10) and \(60) characters long.")
                         }
                     }
                 }
