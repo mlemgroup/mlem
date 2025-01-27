@@ -109,6 +109,9 @@ extension InteractionBarEditorView {
     }
     
     func removeFromBar(item: BarItem) {
+        // no removing the info stack
+        guard item.item != nil else { return }
+        
         // hide on the bar
         item.visible = false
          withAnimation(.easeInOut(duration: barAnimationDuration)) {
@@ -124,7 +127,7 @@ extension InteractionBarEditorView {
     
     func updateConfiguration() {
         guard let infoStackIndex = barItems.firstIndex(where: { $0.item == nil }) else {
-            assertionFailure()
+            assertionFailure("Could not find info stack in barItems")
             return
         }
         configuration = .init(

@@ -41,7 +41,26 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     @State var barPickedUpItem: BarItem?
     @State var trayPickedUpItem: Configuration.Item?
     
-    @State var hoveredDropLocation: NewDropLocation?
+    @State var hoveredDropLocation: NewDropLocation? {
+        didSet {
+            guard case let .bar(side, barItem) = hoveredDropLocation,
+                  barItem != barPickedUpItem else { return }
+            
+            switch oldValue {
+            case .tray:
+                // moving from tray to bar
+                HapticManager.main.play(haptic: .firmInfo, priority: .low)
+            case let .bar(oldSide, oldBarItem):
+                // moving from left side to right side on the same bar item--this prevents double taps
+                // when moving from one bar item to another
+                if oldSide != side && oldBarItem == barItem {
+                    HapticManager.main.play(haptic: .firmInfo, priority: .low)
+                }
+            default:
+                return
+            }
+        }
+    }
     @State var dragLocation: CGPoint = .zero
     @State var dragTranslation: CGSize = .zero
     
