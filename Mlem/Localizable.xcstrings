@@ -1377,21 +1377,21 @@
     "New Keyword..." : {
 
     },
-    "New must be between %lld and %lld characters long." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "New must be between %1$lld and %2$lld characters long."
-          }
-        }
-      }
-    },
     "New Password" : {
 
     },
     "New password is invalid" : {
 
+    },
+    "New password must be between %lld and %lld characters long." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "New password must be between %1$lld and %2$lld characters long."
+          }
+        }
+      }
     },
     "New Post" : {
 
