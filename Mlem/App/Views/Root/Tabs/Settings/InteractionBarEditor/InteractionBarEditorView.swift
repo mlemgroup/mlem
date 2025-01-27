@@ -257,10 +257,8 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
                                        dragLocation.x < frame.maxX {
                                         // pick left/right side and update hoveredDropLocation, item.hover appropriately
                                         if dragLocation.x < frame.midX {
-                                            // item.hover = .left
                                             newHoveredDropLocation = .left(item)
                                         } else {
-                                            // item.hover = .right
                                             newHoveredDropLocation = .right(item)
                                         }
                                     }

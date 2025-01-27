@@ -8,19 +8,24 @@
 import SwiftUI
 
 extension InteractionBarEditorView {
+    enum Side {
+        case left, right
+    }
+    
     enum NewDropLocation: Equatable {
-        case left(BarItem)
-        case right(BarItem)
+        case bar(Side, of: BarItem)
+//        case left(BarItem)
+//        case right(BarItem)
         case tray
         
-        var item: BarItem? {
-            switch self {
-            case let .left(barItem), let .right(barItem):
-                barItem
-            default:
-                nil
-            }
-        }
+//        var item: BarItem? {
+//            switch self {
+//            case let .left(barItem), let .right(barItem):
+//                barItem
+//            default:
+//                nil
+//            }
+//        }
     }
     
     @Observable
@@ -85,7 +90,12 @@ extension InteractionBarEditorView {
         // updateConfiguration()
     }
   
-    func moveOnBar(item: BarItem, to targetIndex: Int) {
+    func moveOnBar(item: BarItem, from sourceIndex: Int, to targetIndex: Int) {
+        guard sourceIndex != targetIndex, sourceIndex != targetIndex - 1 else {
+            print("noop")
+            return
+        }
+        
         let newItem: BarItem = .init(item: item.item, active: false, visible: true, ancestor: item)
         item.visible = false
         
@@ -107,22 +117,22 @@ extension InteractionBarEditorView {
         guard let barItem = barItems[safeIndex: index], barItem.item != nil else { return }
                 
         // set un-selected on tray
-        let trayItem = trayItems.first(where: { $0.item == barItems[index].item })
-        assert(trayItem != nil, "Tray item is nil!")
-        trayItem?.selected = false
+//        let trayItem = trayItems.first(where: { $0.item == barItems[index].item })
+//        assert(trayItem != nil, "Tray item is nil!")
+//        trayItem?.selected = false
         
         // hide on the bar
         barItem.visible = false
-//         withAnimation(.easeInOut(duration: barAnimationDuration)) {
+         withAnimation(.easeInOut(duration: barAnimationDuration)) {
             barItem.active = false
-//        }
+        }
         
         // remove from bar and update items
-//        DispatchQueue.main.asyncAfter(deadline: .now() + barAnimationDuration) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + barAnimationDuration) {
             barItems.remove(at: index)
-//        }
+        }
         
-        updateConfiguration()
+        // updateConfiguration()
     }
     
     func updateConfiguration() {
@@ -189,7 +199,7 @@ extension InteractionBarEditorView {
             guard let newHoveredDropLocation,
                   let barItem = newHoveredDropLocation.item,
                   let baseIndex = barItems.firstIndex(of: barItem) else {
-                print("DEBUG no valid target available")
+                print("DEBUG could not find drop target")
                 return
             }
             
@@ -199,59 +209,31 @@ extension InteractionBarEditorView {
             default: break
             }
         } else if let barPickedUpItem {
-            guard let newHoveredDropLocation,
-                  let barItem = newHoveredDropLocation.item,
-                  let baseTargetIndex = barItems.firstIndex(of: barItem) else {
-                print("DEBUG no valid target available")
-                return
-            }
-            
             guard let sourceIndex = barItems.firstIndex(of: barPickedUpItem) else {
                 assertionFailure("Could not find source item in barItems")
                 return
             }
             
-            let targetIndex: Int?
-            switch newHoveredDropLocation {
-            case .left: targetIndex = baseTargetIndex
-            case .right: targetIndex = baseTargetIndex + 1
-            default: targetIndex = nil
+            // if hovering over bar, move item, otherwise drop to tray
+            if let dropItem = newHoveredDropLocation?.item {
+                guard let baseTargetIndex = barItems.firstIndex(of: dropItem) else {
+                    print("DEBUG no valid target available")
+                    return
+                }
+                
+                switch newHoveredDropLocation {
+                case .left:
+                    moveOnBar(item: barPickedUpItem, from: sourceIndex, to: baseTargetIndex)
+                case .right:
+                    moveOnBar(item: barPickedUpItem, from: sourceIndex, to: baseTargetIndex + 1)
+                default:
+                    assertionFailure("Unreachable code")
+                    return
+                }
+            } else {
+                removeFromBar(at: sourceIndex)
             }
-            
-            guard let targetIndex else {
-                print("Going to tray")
-                return
-            }
-            
-            guard sourceIndex != targetIndex, sourceIndex != targetIndex - 1 else {
-                print("noop")
-                return
-            }
-            
-            moveOnBar(item: barPickedUpItem, to: targetIndex)
         }
-        
-//        if let trayPickedUpItem {
-//            switch hoveredDropLocation {
-//            case let .bar(index: dropIndex):
-//                addToBar(trayPickedUpItem, at: dropIndex)
-//            default: break
-//            }
-//        }
-//        if let barPickedUpIndex {
-//            switch hoveredDropLocation {
-//            case let .bar(index: dropIndex):
-//                moveOnBar(from: barPickedUpIndex, to: dropIndex)
-//            case .tray:
-//                removeFromBar(at: barPickedUpIndex)
-//            }
-//        } else if let trayPickedUpItem {
-//            switch hoveredDropLocation {
-//            case let .bar(index: dropIndex):
-//                addToBar(trayPickedUpItem, at: dropIndex)
-//            default: break
-//            }
-//        }
     }
     
     func trayItemOutlineColor(_ item: Configuration.Item) -> Color {
