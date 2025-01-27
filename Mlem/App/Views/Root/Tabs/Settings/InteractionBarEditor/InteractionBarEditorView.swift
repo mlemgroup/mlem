@@ -49,12 +49,12 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
             switch oldValue {
             case .tray:
                 // moving from tray to bar
-                HapticManager.main.play(haptic: .firmInfo, priority: .low)
+                HapticManager.main.play(haptic: .gentleInfo, priority: .low)
             case let .bar(oldSide, oldBarItem):
                 // moving from left side to right side on the same bar item--this prevents double taps
                 // when moving from one bar item to another
                 if oldSide != side && oldBarItem == barItem {
-                    HapticManager.main.play(haptic: .firmInfo, priority: .low)
+                    HapticManager.main.play(haptic: .gentleInfo, priority: .low)
                 }
             default:
                 return

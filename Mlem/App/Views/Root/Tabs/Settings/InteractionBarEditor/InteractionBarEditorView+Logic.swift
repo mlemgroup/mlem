@@ -77,6 +77,8 @@ extension InteractionBarEditorView {
     func addToBar(_ item: Configuration.Item, at index: Int) {
         guard allowNewItemInsertion else { return }
         
+        HapticManager.main.play(haptic: .firmInfo, priority: .high)
+        
         // remove from tray if present
         let trayItem = trayItems.first(where: { $0.item == item })
         assert(trayItem != nil, "Tray item is nil!")
@@ -91,6 +93,8 @@ extension InteractionBarEditorView {
     func moveOnBar(item: BarItem, from sourceIndex: Int, to targetIndex: Int) {
         // noop on move to current location or immediately after current location
         guard targetIndex != sourceIndex, targetIndex != sourceIndex + 1 else { return }
+        
+        HapticManager.main.play(haptic: .firmInfo, priority: .high)
         
         let newItem: BarItem = .init(item: item.item, active: false, visible: true, ancestor: item)
         item.visible = false
@@ -111,6 +115,8 @@ extension InteractionBarEditorView {
     func removeFromBar(item: BarItem) {
         // no removing the info stack
         guard item.item != nil else { return }
+        
+        HapticManager.main.play(haptic: .firmInfo, priority: .high)
         
         // hide on the bar
         item.visible = false
@@ -141,6 +147,7 @@ extension InteractionBarEditorView {
         DragGesture(minimumDistance: 0, coordinateSpace: .named("editor"))
             .onChanged { gesture in
                 if barPickedUpItem == nil {
+                    HapticManager.main.play(haptic: .firmInfo, priority: .low)
                     barPickedUpItem = item
                 }
                 dragLocation = gesture.location
@@ -155,6 +162,7 @@ extension InteractionBarEditorView {
         DragGesture(minimumDistance: 0, coordinateSpace: .named("editor"))
             .onChanged { gesture in
                 if trayPickedUpItem == nil, !barItems.contains(where: { $0.item == item }) {
+                    HapticManager.main.play(haptic: .firmInfo, priority: .low)
                     trayPickedUpItem = item
                 }
                 dragLocation = gesture.location
