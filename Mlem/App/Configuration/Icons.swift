@@ -194,7 +194,7 @@ enum Icons {
     static let hide: String = "eye.slash"
     static let hideFill: String = "eye.slash.fill"
     static let block: String = "hand.raised"
-    static let blockFill: String = "hand.raised.fill"
+    static let blockFill: String = Icons.privacy
     static let unblock: String = "hand.raised.slash"
     static let unblockFill: String = "hand.raised.slash.fill"
     static let nsfwTag: String = "nsfw"
@@ -348,6 +348,7 @@ enum Icons {
     static let imageDetails: String = "doc.badge.ellipsis"
     static let accountSwitchReload: String = "arrow.2.circlepath"
     static let accountSwitchKeepPlace: String = "checkmark.diamond"
+    static let privacy: String = "hand.raised.fill"
 }
 
 // swiftlint:enable type_body_length
