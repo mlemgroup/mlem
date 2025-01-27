@@ -60,8 +60,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mlemgroup/MlemMiddleware",
       "state" : {
-        "branch" : "sjmarf/change-password",
-        "revision" : "a98fc08170e55b1315bff255069310fc03288fa0"
+        "revision" : "1ecbf648a2ce5879f7a8ac488a974158fe646c62",
+        "version" : "0.69.0"
       }
     },
     {

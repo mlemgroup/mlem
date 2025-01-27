@@ -348,6 +348,8 @@ enum Icons {
     static let imageDetails: String = "doc.badge.ellipsis"
     static let accountSwitchReload: String = "arrow.2.circlepath"
     static let accountSwitchKeepPlace: String = "checkmark.diamond"
+    static let security: String = "key"
+    static let securityFill: String = "key.fill"
 }
 
 // swiftlint:enable type_body_length

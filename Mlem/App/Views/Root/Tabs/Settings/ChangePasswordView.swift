@@ -30,7 +30,10 @@ struct ChangePasswordView: View {
     @FocusState private var focusedField: FocusedField?
     
     var canSave: Bool {
-        !currentPassword.isEmpty && !newPassword.isEmpty && newPassword == confirmNewPassword
+        !currentPassword.isEmpty
+            && !newPassword.isEmpty
+            && newPassword == confirmNewPassword
+            && (10 ... 60 ~= newPassword.count)
     }
     
     var body: some View {
@@ -75,10 +78,16 @@ struct ChangePasswordView: View {
                 .frame(maxWidth: .infinity)
                 .disabled(viewState != .initial)
             } footer: {
-                if newPassword != confirmNewPassword {
-                    Text("Passwords don't match.")
-                        .foregroundStyle(palette.warning)
+                Group {
+                    if !newPassword.isEmpty {
+                        if newPassword != confirmNewPassword {
+                            Text("Passwords don't match.")
+                        } else if !(10 ... 60 ~= newPassword.count) {
+                            Text("New must be between \(10) and \(60) characters long.")
+                        }
+                    }
                 }
+                .foregroundStyle(palette.warning)
             }
         }
         .onAppear {
@@ -103,6 +112,10 @@ struct ChangePasswordView: View {
                     dismiss()
                     // Catch separately to prevent the token expiry sheet opening in this view
                 } catch ApiClientError.invalidSession {
+                    ToastModel.main.add(.failure("Current password is incorrect"))
+                    viewState = .initial
+                } catch let ApiClientError.response(response, _) where response.error == "invalid_password" {
+                    ToastModel.main.add(.failure("New password is invalid"))
                     viewState = .initial
                 } catch {
                     handleError(error)

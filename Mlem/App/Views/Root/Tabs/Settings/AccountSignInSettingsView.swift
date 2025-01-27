@@ -25,7 +25,7 @@ struct AccountSignInSettingsView: View {
                 }
             }
             Section {
-                Button("Change Password", systemImage: "key") {
+                Button("Change Password", systemImage: Icons.security) {
                     navigation.openSheet(.settings(.accountChangePassword))
                 }
             }
