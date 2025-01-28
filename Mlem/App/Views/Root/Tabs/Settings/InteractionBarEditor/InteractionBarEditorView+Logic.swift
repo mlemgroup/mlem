@@ -84,12 +84,7 @@ extension InteractionBarEditorView {
         }
         
         HapticManager.main.play(haptic: .firmInfo, priority: .high)
-        
-        // remove from tray if present
-        let trayItem = trayItems.first(where: { $0.item == item })
-        assert(trayItem != nil, "Tray item is nil!")
-        trayItem?.selected = true
-        
+
         let newItem: BarItem = .init(item: item, active: false, visible: true)
         barItems.insert(newItem, at: index)
         

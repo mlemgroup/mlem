@@ -118,7 +118,7 @@ extension InteractionBarEditorView {
     // MARK: - Palette
     
     @ViewBuilder
-    func trayItem(_ item: Configuration.Item, selected: Bool) -> some View {
+    func trayItem(_ item: Configuration.Item) -> some View {
         itemLabel(item)
             .opacity(barItems.contains(where: { $0.item == item }) ? 0 : 1)
             .geometryGroup()

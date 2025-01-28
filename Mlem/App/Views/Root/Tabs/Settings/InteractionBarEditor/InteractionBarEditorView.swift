@@ -22,16 +22,10 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     @State var configuration: Configuration {
         didSet {
             onSet(configuration)
-
-//            let newTrayItems: [TrayItem] = Configuration.Item.allCases.reduce(into: []) { result, item in
-//                result.append(.init(item: item, selected: configuration.all.contains(item)))
-//            }
-            
-            // trayItems = newTrayItems
         }
     }
     
-    @State var trayItems: [TrayItem] = .init()
+    @State var trayItems: [Configuration.Item] = Configuration.Item.allCases
     @State var barItems: [BarItem] = .init()
     
     @State var barPickedUpItem: BarItem?
@@ -72,9 +66,6 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     init(configuration: Configuration, onSet: @escaping (Configuration) -> Void) {
         self.configuration = configuration
         self.onSet = onSet
-        self._trayItems = .init(wrappedValue: Configuration.Item.allCases.reduce(into: []) { result, item in
-            result.append(.init(item: item, selected: configuration.all.contains(item)))
-        })
         self._barItems = .init(wrappedValue: (configuration.leading + [nil] + configuration.trailing).map { item in
                 .init(item: item, active: true, visible: true)
         })
@@ -115,9 +106,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
             Divider()
             
             HFlow(horizontalAlignment: .center, verticalAlignment: .center, distributeItemsEvenly: true) {
-                ForEach(trayItems, id: \.item) { item in
-                    trayItem(item.item, selected: item.selected)
-                }
+                ForEach(trayItems, id: \.self) { trayItem($0) }
             }
             .zIndex(trayPickedUpItem == nil ? 0 : 1)
             
