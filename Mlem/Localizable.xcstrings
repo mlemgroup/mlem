@@ -551,6 +551,9 @@
         }
       }
     },
+    "Change Password" : {
+
+    },
     "Checkmark" : {
 
     },
@@ -684,6 +687,9 @@
     "Confirm Image Uploads" : {
 
     },
+    "Confirm New Password" : {
+
+    },
     "Confirm Password" : {
 
     },
@@ -724,6 +730,12 @@
 
     },
     "Crossposted from %@" : {
+
+    },
+    "Current Password" : {
+
+    },
+    "Current password is incorrect" : {
 
     },
     "Customize how content is displayed in your feed. Choose which types of content are blurred, and apply filters to hide posts from the feed altogether." : {
@@ -1086,6 +1098,9 @@
     "Hide Read" : {
 
     },
+    "Hide Website Icons" : {
+
+    },
     "Hot" : {
 
     },
@@ -1287,6 +1302,9 @@
     "Mlem Privacy Policy" : {
 
     },
+    "Mlem uses a Google API to fetch website icon URLs. If you'd prefer not to use this, you can choose to hide favicons." : {
+
+    },
     "Mlem will always try to load from the proxy first." : {
 
     },
@@ -1358,6 +1376,22 @@
     },
     "New Keyword..." : {
 
+    },
+    "New Password" : {
+
+    },
+    "New password is invalid" : {
+
+    },
+    "New password must be between %lld and %lld characters long." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "New password must be between %1$lld and %2$lld characters long."
+          }
+        }
+      }
     },
     "New Post" : {
 
