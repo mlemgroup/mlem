@@ -8,6 +8,9 @@
 import SwiftUI
 
 extension InteractionBarEditorView {
+    
+    // MARK: - Structs
+     
     @Observable
     class BarItem: Equatable {
         let item: Configuration.Item?
@@ -50,6 +53,8 @@ extension InteractionBarEditorView {
         }
     }
     
+    // MARK: - Helper Computed Vars
+    
     var allowNewItemInsertion: Bool {
         if let trayPickedUpItem {
             let currentScore = barItems.reduce(0) { $0 + ($1.item?.score ?? 0) }
@@ -63,6 +68,61 @@ extension InteractionBarEditorView {
     var isDraggingItem: Bool { trayPickedUpItem != nil || barPickedUpItem != nil }
     
     var barPickedUpIndex: Int? { barPickedUpItem?.index }
+    
+    // MARK: - Drag Gestures
+    
+    func barItemDragGesture(item: BarItem, index: Int) -> some Gesture {
+        DragGesture(minimumDistance: 0, coordinateSpace: .named("editor"))
+            .onChanged { gesture in
+                if barPickedUpItem == nil {
+                    HapticManager.main.play(haptic: .firmInfo, priority: .low)
+                    barPickedUpItem = (item, index)
+                }
+                dragLocation = gesture.location
+                dragTranslation = gesture.translation
+            }
+            .onEnded { _ in
+                completeDrag()
+            }
+    }
+    
+    func trayItemDragGesture(item: Configuration.Item) -> some Gesture {
+        DragGesture(minimumDistance: 0, coordinateSpace: .named("editor"))
+            .onChanged { gesture in
+                if trayPickedUpItem == nil, !barItems.contains(where: { $0.item == item }) {
+                    HapticManager.main.play(haptic: .firmInfo, priority: .low)
+                    trayPickedUpItem = item
+                }
+                dragLocation = gesture.location
+                dragTranslation = gesture.translation
+            }
+            .onEnded { _ in
+                completeDrag()
+            }
+    }
+    
+    func completeDrag() {
+        defer {
+            self.barPickedUpItem = nil
+            self.hoveredDropIndex = nil
+            self.trayPickedUpItem = nil
+        }
+        
+        guard let hoveredDropIndex else { return }
+  
+        if let trayPickedUpItem {
+            guard hoveredDropIndex >= 0 else { return }
+            addToBar(trayPickedUpItem, at: hoveredDropIndex)
+        } else if let barPickedUpItem {
+            if hoveredDropIndex < 0 {
+                removeFromBar(item: barPickedUpItem.item)
+            } else {
+                moveOnBar(item: barPickedUpItem.item, from: barPickedUpItem.index, to: hoveredDropIndex)
+            }
+        }
+    }
+    
+    // MARK: - State Updates
     
     func addToBar(_ item: Configuration.Item, at index: Int) {
         guard allowNewItemInsertion,
@@ -131,57 +191,8 @@ extension InteractionBarEditorView {
             readouts: configuration.readouts
         )
     }
-  
-    func barItemDragGesture(item: BarItem, index: Int) -> some Gesture {
-        DragGesture(minimumDistance: 0, coordinateSpace: .named("editor"))
-            .onChanged { gesture in
-                if barPickedUpItem == nil {
-                    HapticManager.main.play(haptic: .firmInfo, priority: .low)
-                    barPickedUpItem = (item, index)
-                }
-                dragLocation = gesture.location
-                dragTranslation = gesture.translation
-            }
-            .onEnded { _ in
-                completeDrag()
-            }
-    }
     
-    func trayItemDragGesture(item: Configuration.Item) -> some Gesture {
-        DragGesture(minimumDistance: 0, coordinateSpace: .named("editor"))
-            .onChanged { gesture in
-                if trayPickedUpItem == nil, !barItems.contains(where: { $0.item == item }) {
-                    HapticManager.main.play(haptic: .firmInfo, priority: .low)
-                    trayPickedUpItem = item
-                }
-                dragLocation = gesture.location
-                dragTranslation = gesture.translation
-            }
-            .onEnded { _ in
-                completeDrag()
-            }
-    }
-    
-    func completeDrag() {
-        defer {
-            self.barPickedUpItem = nil
-            self.hoveredDropIndex = nil
-            self.trayPickedUpItem = nil
-        }
-        
-        guard let hoveredDropIndex else { return }
-  
-        if let trayPickedUpItem {
-            guard hoveredDropIndex >= 0 else { return }
-            addToBar(trayPickedUpItem, at: hoveredDropIndex)
-        } else if let barPickedUpItem {
-            if hoveredDropIndex < 0 {
-                removeFromBar(item: barPickedUpItem.item)
-            } else {
-                moveOnBar(item: barPickedUpItem.item, from: barPickedUpItem.index, to: hoveredDropIndex)
-            }
-        }
-    }
+    // MARK: - Helpers
     
     func trayItemOutlineColor(_ item: Configuration.Item) -> Color {
         return trayPickedUpItem == item ||
