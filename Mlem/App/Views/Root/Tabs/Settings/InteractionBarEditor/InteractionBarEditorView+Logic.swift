@@ -183,15 +183,6 @@ extension InteractionBarEditorView {
         }
     }
     
-    /// Helper function to find the given item in barItems and assertionFailure if not found
-    func barIndex(of item: BarItem) -> Int? {
-        guard let ret = barItems.firstIndex(of: item) else {
-            assertionFailure("Could not find \(item.uuid) in barItems")
-            return nil
-        }
-        return ret
-    }
-    
     func trayItemOutlineColor(_ item: Configuration.Item) -> Color {
         return trayPickedUpItem == item ||
         (barPickedUpItem?.item.item == item && (hoveredDropIndex ?? 1) < 0) ?
