@@ -8,13 +8,6 @@
 import Flow
 import SwiftUI
 
-// NOTE: zIndex
-// This view relies on the careful arrangement of z-indexes:
-// 0: inactive components
-// 1: active block (e.g., interaction bar or tray)
-// 2: drop indicators
-// 3: currently dragged item
-
 struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: View {
     @Environment(Palette.self) var palette
     

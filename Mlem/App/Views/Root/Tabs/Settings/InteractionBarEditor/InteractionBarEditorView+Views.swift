@@ -42,23 +42,24 @@ extension InteractionBarEditorView {
                 .frame(height: Constants.main.barIconSize)
                 .padding(.horizontal, 2)
                 .padding(.vertical, Constants.main.barIconPadding)
+                .zIndex(barPickedUpItem == nil ? 0 : 1)
         }
         .padding(Constants.main.standardSpacing)
         .background(palette.background, in: .rect(cornerRadius: Constants.main.mediumItemCornerRadius))
+        .zIndex(barPickedUpItem == nil ? 0 : 1)
     }
     
     @ViewBuilder
     var interactionBar: some View {
         HStack(spacing: 0) {
             ForEach(Array(barItems.enumerated()), id: \.element.uuid) { index, item in
-                HStack(spacing: 0) {
-                    if hoveredDropIndex == index,
-                       barPickedUpIndex != index,
-                       barPickedUpIndex != index - 1 {
-                        dropIndicator(index: index)
-                    }
-                    barItem(item, index: index)
+                if hoveredDropIndex == index,
+                   barPickedUpIndex != index,
+                   barPickedUpIndex != index - 1 {
+                    dropIndicator(index: index)
                 }
+                
+                barItem(item, index: index)
             }
             
             if hoveredDropIndex == barItems.count,

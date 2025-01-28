@@ -107,7 +107,7 @@ extension InteractionBarEditorView {
         
         HapticManager.main.play(haptic: .firmInfo, priority: .high)
         
-        // smoothly animate off the bar
+        // smoothly animate away
         item.hide()
          withAnimation(.easeInOut(duration: barAnimationDuration)) {
              item.collapse()
