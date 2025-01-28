@@ -42,11 +42,9 @@ extension InteractionBarEditorView {
                 .frame(height: Constants.main.barIconSize)
                 .padding(.horizontal, 2)
                 .padding(.vertical, Constants.main.barIconPadding)
-                .zIndex(barPickedUpItem == nil ? 0 : 1)
         }
         .padding(Constants.main.standardSpacing)
         .background(palette.background, in: .rect(cornerRadius: Constants.main.mediumItemCornerRadius))
-        .zIndex(barPickedUpItem == nil ? 0 : 1)
     }
     
     @ViewBuilder
@@ -116,7 +114,7 @@ extension InteractionBarEditorView {
             }
             .frame(maxWidth: barItem.maxWidth)
             .opacity(barItem.opacity)
-            .zIndex(barPickedUpIndex == index ? 3 : 0)
+            .zIndex(barPickedUpIndex == index ? 2 : 0)
     }
     
     // MARK: - Palette
@@ -141,7 +139,7 @@ extension InteractionBarEditorView {
                     .background(palette.background, in: .capsule)
             }
             .gesture(trayItemDragGesture(item: item))
-            .zIndex(trayPickedUpItem == item ? 1 : 0)
+            .zIndex(trayPickedUpItem == item ? 2 : 0)
     }
     
     @ViewBuilder
@@ -324,7 +322,6 @@ extension InteractionBarEditorView {
             .frame(width: 2, height: 40)
             .padding(-2)
             .frame(width: 0)
-            .zIndex(2)
             .onAppear {
                 HapticManager.main.play(haptic: .gentleInfo, priority: .low)
             }
