@@ -3215,7 +3215,7 @@
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware";
 			requirement = {
 				kind = upToNextMinorVersion;
-				minimumVersion = 0.69.0;
+				minimumVersion = 0.70.0;
 			};
 		};
 		CD64A9182CA37D63007CA7E6 /* XCRemoteSwiftPackageReference "Gifu" */ = {

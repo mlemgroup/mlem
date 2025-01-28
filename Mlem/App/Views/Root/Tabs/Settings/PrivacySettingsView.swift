@@ -12,6 +12,7 @@ struct PrivacySettingsView: View {
     
     @Setting(\.autoBypassImageProxy) var bypassImageProxy
     @Setting(\.confirmImageUploads) var confirmImageUploads
+    @Setting(\.showFavicons) var showFavicons
 
     var body: some View {
         Form {
@@ -34,6 +35,11 @@ struct PrivacySettingsView: View {
                     systemImage: Icons.proxy,
                     destination: .settings(.privacyBypassImageProxy)
                 )
+            }
+            Section {
+                Toggle("Hide Website Icons", systemImage: "camera.macro.circle", isOn: $showFavicons.invert())
+            } footer: {
+                Text("Mlem uses a Google API to fetch website icon URLs. If you'd prefer not to use this, you can choose to hide favicons.")
             }
             Section {
                 NavigationLink(
