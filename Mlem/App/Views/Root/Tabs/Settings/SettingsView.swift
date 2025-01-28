@@ -52,7 +52,7 @@ struct SettingsView: View {
                 .tint(palette.colorfulAccent(2))
                 NavigationLink(
                     "Media & Links",
-                    systemImage: "photo.on.rectangle.angled.fill",
+                    systemImage: "photo.fill",
                     destination: .settings(.links)
                 )
                 .tint(palette.colorfulAccent(4))

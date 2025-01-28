@@ -21,5 +21,6 @@ struct EmbeddingSettingsView: View {
             Toggle(String("loops.video"), systemImage: "repeat", isOn: $embedLoops)
         }
         .labelStyle(.conditional)
+        .contentMargins(.top, 16)
     }
 }

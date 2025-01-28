@@ -11,8 +11,8 @@ struct LinkSettingsView: View {
     @Environment(Palette.self) var palette
     @Setting(\.openLinksInBrowser) var openLinksInBrowser
     @Setting(\.openLinksInReaderMode) var openLinksInReaderMode
-    @Setting(\.compactComments) var compactComments
     @Setting(\.tappableLinksDisplayMode) var tappableLinksDisplayMode
+    @Setting(\.compactComments) var compactComments
     @Setting(\.embedLoops) var embedLoops
     @Setting(\.autoplayMedia) var autoplayMedia
     @Setting(\.muteVideos) var muteVideos
@@ -22,83 +22,52 @@ struct LinkSettingsView: View {
             SettingsHeaderView(
                 title: "Media & Links",
                 description: "Manage how Mlem handles links and control how images and videos are displayed.",
-                systemImage: "photo.on.rectangle.angled.fill"
+                systemImage: "photo.fill"
             )
             .tint(palette.colorfulAccent(4))
             Section {
                 NavigationLink(
                     "Open External Links",
-                    value: "In Browser",
+                    value: .init(localized: externalLinksNavigationLinkValue),
                     fallbackValue: "",
-                    destination: .settings(.links)
+                    systemImage: "arrow.up.right",
+                    destination: .settings(.externalLinks)
                 )
                 NavigationLink(
                     "Tappable Links",
-                    value: "On",
+                    value: tappableLinksDisplayMode == .disabled ? "Off" : "On",
                     fallbackValue: "",
-                    destination: .settings(.links)
+                    systemImage: "hand.tap",
+                    destination: .settings(.tappableLinks)
                 )
             }
             
             Section {
-                Toggle("Autoplay", systemImage: Icons.playCircle, isOn: $autoplayMedia)
+                if #available(iOS 18, *) {
+                    Toggle("Autoplay", systemImage: Icons.playCircle, isOn: $autoplayMedia)
+                }
                 Toggle("Mute Videos", systemImage: Icons.muted, isOn: $muteVideos)
             }
             
             Section {
                 NavigationLink(
                     "Embedded Content",
-                    value: "On",
+                    value: embedLoops ? "On" : "Off",
                     fallbackValue: "",
-                    destination: .settings(.links)
+                    systemImage: Icons.embedding,
+                    destination: .settings(.embedding)
                 )
             }
-//            Section("Open External Links") {
-//                Picker("Open External Links", selection: $openLinksInBrowser) {
-//                    Label("In-App", systemImage: Icons.inApp).tag(false)
-//                    Label("In Default Browser", systemImage: Icons.browser).tag(true)
-//                }
-//                .pickerStyle(.inline)
-//                .labelsHidden()
-//            }
-//
-//            Section {
-//                Toggle("Open in Reader", systemImage: Icons.reader, isOn: $openLinksInReaderMode)
-//                    .disabled(openLinksInBrowser)
-//            } footer: {
-//                Text("Automatically enable Reader for supported webpages. You can only enable this when using the in-app browser.")
-//            }
-//
-//            Section {
-//                Toggle(
-//                    "Tappable Links",
-//                    systemImage: Icons.websiteAddress,
-//                    isOn: Binding(
-//                        get: { tappableLinksDisplayMode != .disabled },
-//                        set: { newValue in
-//                            withAnimation(.easeOut(duration: 0.1)) {
-//                                tappableLinksDisplayMode = newValue ? .large : .disabled
-//                            }
-//                        }
-//                    )
-//                )
-//                if tappableLinksDisplayMode != .disabled {
-//                    Picker("Show Full URL", systemImage: Icons.inlineCode, selection: $tappableLinksDisplayMode) {
-//                        Text("Automatic").tag(TappableLinksDisplayMode.contextual)
-//                        Text("Always").tag(TappableLinksDisplayMode.large)
-//                        Text("Never").tag(TappableLinksDisplayMode.compact)
-//                    }
-//                    .pickerStyle(.menu)
-//                }
-//            } footer: {
-//                if tappableLinksDisplayMode != .disabled {
-//                    Text("If set to \"Automatic\", the full URL will be hidden in compact comments.")
-//                }
-//            }
-//
-//            NavigationLink("Embeddings", systemImage: Icons.embedding, destination: .settings(.embedding))
         }
         .labelStyle(.conditional)
         .contentMargins(.top, 16)
+    }
+    
+    var externalLinksNavigationLinkValue: LocalizedStringResource {
+        if openLinksInBrowser {
+            "In Browser"
+        } else {
+            openLinksInReaderMode ? "In Reader" : "In-App"
+        }
     }
 }

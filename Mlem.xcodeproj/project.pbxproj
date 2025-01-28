@@ -226,6 +226,8 @@
 		039F58972C7B68F100C61658 /* AboutMlemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039F58962C7B68F100C61658 /* AboutMlemView.swift */; };
 		039F58992C7B697D00C61658 /* Bundle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039F58982C7B697D00C61658 /* Bundle+Extensions.swift */; };
 		039F589D2C7B6C0A00C61658 /* FormChevron.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039F589C2C7B6C0A00C61658 /* FormChevron.swift */; };
+		03A630ED2D497005009A47A6 /* ExternalLinkSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A630EC2D497005009A47A6 /* ExternalLinkSettingsView.swift */; };
+		03A630EF2D497143009A47A6 /* TappableLinksSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A630EE2D497143009A47A6 /* TappableLinksSettingsView.swift */; };
 		03A82FA12C0D1E8500D01A5C /* ApiClient+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A82FA02C0D1E8500D01A5C /* ApiClient+Extensions.swift */; };
 		03A82FA32C0D1F2400D01A5C /* View+ExternalApiWarning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A82FA22C0D1F2400D01A5C /* View+ExternalApiWarning.swift */; };
 		03AB484F2CBAE33500567FF9 /* MarkdownWithLinkList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AB484E2CBAE33500567FF9 /* MarkdownWithLinkList.swift */; };
@@ -715,6 +717,8 @@
 		039F58962C7B68F100C61658 /* AboutMlemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutMlemView.swift; sourceTree = "<group>"; };
 		039F58982C7B697D00C61658 /* Bundle+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extensions.swift"; sourceTree = "<group>"; };
 		039F589C2C7B6C0A00C61658 /* FormChevron.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormChevron.swift; sourceTree = "<group>"; };
+		03A630EC2D497005009A47A6 /* ExternalLinkSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalLinkSettingsView.swift; sourceTree = "<group>"; };
+		03A630EE2D497143009A47A6 /* TappableLinksSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TappableLinksSettingsView.swift; sourceTree = "<group>"; };
 		03A82FA02C0D1E8500D01A5C /* ApiClient+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ApiClient+Extensions.swift"; sourceTree = "<group>"; };
 		03A82FA22C0D1F2400D01A5C /* View+ExternalApiWarning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ExternalApiWarning.swift"; sourceTree = "<group>"; };
 		03AB484E2CBAE33500567FF9 /* MarkdownWithLinkList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownWithLinkList.swift; sourceTree = "<group>"; };
@@ -1064,6 +1068,8 @@
 				0325B9392D3A9E8100E28B97 /* InboxBadgeSettingsView.swift */,
 				039F58942C7B618F00C61658 /* InboxSettingsView.swift */,
 				03531EEB2C2D81DC004A3464 /* LinkSettingsView.swift */,
+				03A630EE2D497143009A47A6 /* TappableLinksSettingsView.swift */,
+				03A630EC2D497005009A47A6 /* ExternalLinkSettingsView.swift */,
 				038028D72CACAB960091A8A2 /* ModeratorSettingsView.swift */,
 				03BF11C42D3D3AFB00CC1F66 /* PostReadIndicatorSettingsView.swift */,
 				CDBFCB692C04EFFE008CD468 /* PostSettingsView.swift */,
@@ -2406,6 +2412,7 @@
 				03B04FC02C5FC32300824128 /* SimpleAvatarView.swift in Sources */,
 				035BE08D2BDE88EC00F77D73 /* NavigationLayerView.swift in Sources */,
 				035BE0872BDD8DA000F77D73 /* NavigationRootView.swift in Sources */,
+				03A630EF2D497143009A47A6 /* TappableLinksSettingsView.swift in Sources */,
 				0315B1BE2C74C3D6006D4F82 /* CommentEditorView+Logic.swift in Sources */,
 				CDB2EC7F2BFADACC00DBC0EF /* HeadlinePostView.swift in Sources */,
 				032C32162C36F65500595286 /* ReplyView.swift in Sources */,
@@ -2622,6 +2629,7 @@
 				03B62B792CE2A2C00077E9C8 /* RulesPickerView.swift in Sources */,
 				0389DDD52C39F1290005B808 /* CommunityListRow.swift in Sources */,
 				CD4BAD352B4B2C0B00A1E726 /* FeedsView.swift in Sources */,
+				03A630ED2D497005009A47A6 /* ExternalLinkSettingsView.swift in Sources */,
 				03049A1E2C6508F400FF6889 /* ApiRegistrationMode+Extensions.swift in Sources */,
 				037DE0752CE023E3007F7B92 /* BlockListView.swift in Sources */,
 				038028D52CAB479D0091A8A2 /* PostEditorView+Views.swift in Sources */,
