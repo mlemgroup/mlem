@@ -107,7 +107,7 @@ extension InteractionBarEditorView {
         
         HapticManager.main.play(haptic: .firmInfo, priority: .high)
         
-        // hide on the bar
+        // smoothly animate off the bar
         item.hide()
          withAnimation(.easeInOut(duration: barAnimationDuration)) {
              item.collapse()
@@ -178,8 +178,6 @@ extension InteractionBarEditorView {
             if hoveredDropIndex < 0 {
                 removeFromBar(item: barPickedUpItem.item)
             } else {
-                // guard let sourceIndex = barIndex(of: barPickedUpItem) else { return }
-                // guard let barPickedUpItem else { return }
                 moveOnBar(item: barPickedUpItem.item, from: barPickedUpItem.index, to: hoveredDropIndex)
             }
         }
