@@ -67,16 +67,28 @@ extension MarkdownConfiguration {
 }
 
 private func imageView(_ inlineImage: InlineImage, shouldBlur: Bool) -> AnyView {
-    AnyView(
-        MediaView(
-            url: inlineImage.url,
-            verticalAspectRatioBounds: .init(width: 4, height: 5),
-            cornerRadius: Constants.main.mediumItemCornerRadius,
-            enableContextMenu: true,
-            enableImageViewer: true,
-            enableNsfwBlur: shouldBlur
+    if inlineImage.url.absoluteString == "https://ko-fi.com/img/githubbutton_sm.svg" {
+        return AnyView(ShieldsBadgeView(label: "KoFi", message: nil))
+    }
+    switch inlineImage.url.host() {
+    case "img.shields.io":
+        return AnyView(ShieldsBadgeView(shieldsUrl: inlineImage.url))
+    case "fediseer.com":
+        return AnyView(ShieldsBadgeView(label: "Fediseer", message: nil))
+    case "lemmy-status.org":
+        return AnyView(ShieldsBadgeView(label: .init(localized: "Uptime"), message: nil))
+    default:
+        return AnyView(
+            MediaView(
+                url: inlineImage.url,
+                verticalAspectRatioBounds: .init(width: 4, height: 5),
+                cornerRadius: Constants.main.mediumItemCornerRadius,
+                enableContextMenu: true,
+                enableImageViewer: true,
+                enableNsfwBlur: shouldBlur
+            )
         )
-    )
+    }
 }
 
 private func loadInlineImage(inlineImage: InlineImage) async {
