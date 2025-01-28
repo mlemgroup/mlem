@@ -26,8 +26,8 @@ struct TappableLinksSettingsView: View {
                     )
                 )
             }
-            Section("Show Full URL") {
-                if tappableLinksDisplayMode != .disabled {
+            if tappableLinksDisplayMode != .disabled {
+                Section("Show Full URL") {
                     Picker("Show Full URL", systemImage: Icons.inlineCode, selection: $tappableLinksDisplayMode) {
                         Text("Automatic").tag(TappableLinksDisplayMode.contextual)
                         Text("Always").tag(TappableLinksDisplayMode.large)
@@ -35,10 +35,10 @@ struct TappableLinksSettingsView: View {
                     }
                     .pickerStyle(.inline)
                     .labelsHidden()
-                }
-            } footer: {
-                if tappableLinksDisplayMode != .disabled {
-                    Text("If set to \"Automatic\", the full URL will be hidden in compact comments.")
+                } footer: {
+                    if tappableLinksDisplayMode != .disabled {
+                        Text("If set to \"Automatic\", the full URL will be hidden in compact comments.")
+                    }
                 }
             }
         }
