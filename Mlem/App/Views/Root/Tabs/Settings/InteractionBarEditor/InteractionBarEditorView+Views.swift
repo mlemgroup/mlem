@@ -16,9 +16,6 @@ extension InteractionBarEditorView {
     var postPreview: some View {
         VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
             Group {
-                MockTextView()
-                    .frame(width: 200, height: 13)
-                
                 HStack(alignment: .top, spacing: 8) {
                     RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius)
                         .fill(palette.accent.opacity(0.6))
@@ -38,9 +35,6 @@ extension InteractionBarEditorView {
                             .frame(height: 15)
                     }
                 }
-                
-                MockTextView()
-                    .frame(width: 200, height: 13)
             }
             .opacity(0.75)
             
@@ -106,7 +100,7 @@ extension InteractionBarEditorView {
                 }
                 .gesture(barItemDragGesture(item: barItem))
                 .onAppear {
-                    withAnimation(.easeInOut(duration: barAnimationDuration)) {
+                    withAnimation(.easeOut(duration: barAnimationDuration)) {
                         barItem.ancestor?.active = false
                         barItem.active = true
                     }
@@ -162,7 +156,9 @@ extension InteractionBarEditorView {
                     let color = disabled ? palette.primary : palette.accent
                     HStack(spacing: 2) {
                         Image(systemName: readout.appearance.icon)
-                        Text(readout.appearance.label)
+                        if readout.appearance.label != "" {
+                            Text(readout.appearance.label)
+                        }
                     }
                     .font(.footnote)
                     .foregroundStyle(isActive ? palette.selectedInteractionBarItem : color)
@@ -185,8 +181,8 @@ extension InteractionBarEditorView {
     var infoCapsule: some View {
         if !allowNewItemInsertion {
             Text("Too many items")
-                .padding(Constants.main.standardSpacing)
-                .padding(.horizontal, Constants.main.halfSpacing)
+                .padding(7.5)
+                .padding(.horizontal, 5)
                 .foregroundStyle(palette.negative)
                 .background {
                     Capsule()
@@ -211,8 +207,8 @@ extension InteractionBarEditorView {
                     }
                 }
             }
-            .padding(Constants.main.standardSpacing)
-            .padding(.horizontal, Constants.main.halfSpacing)
+            .padding(7.5)
+            .padding(.horizontal, 5)
             .background {
                 Capsule()
                     .fill(palette.background)
@@ -222,6 +218,38 @@ extension InteractionBarEditorView {
         } else {
             Color.clear.frame(height: infoCapsuleHeight)
         }
+    }
+    
+    @ViewBuilder
+    var bottomBarActions: some View {
+        HStack {
+            Button("Reset") {
+                configuration = .default
+                barItems = (configuration.leading + [nil] + configuration.trailing).map { item in
+                        .init(item: item, active: true, visible: true)
+                }
+            }
+            .buttonStyle(.plain)
+            .foregroundStyle(.secondary)
+
+            Spacer()
+            
+            Button("Apply to All") { showingApplyToAllConfirmation = true }
+                .confirmationDialog(
+                    "Really apply this configuration to all interaction bars?",
+                    isPresented: $showingApplyToAllConfirmation,
+                    titleVisibility: .visible
+                ) {
+                    Button("Yes") {
+                        InteractionBarTracker.main.interactionBarConfigurations = .init(
+                            post: configuration.convert(),
+                            comment: configuration.convert(),
+                            reply: configuration.convert()
+                        )
+                    }
+                }
+        }
+        .padding(.horizontal)
     }
     
     // MARK: - Helpers

@@ -19,7 +19,7 @@ extension InteractionBarEditorView {
         }
     }
     
-    enum NewDropLocation: Equatable {
+    enum DropLocation: Equatable {
         // swiftlint:disable:next identifier_name
         case bar(Side, of: BarItem)
         case tray
@@ -75,7 +75,13 @@ extension InteractionBarEditorView {
     var isDraggingItem: Bool { trayPickedUpItem != nil || barPickedUpItem != nil }
     
     func addToBar(_ item: Configuration.Item, at index: Int) {
-        guard allowNewItemInsertion else { return }
+        guard allowNewItemInsertion,
+              !barItems.contains(where: { $0.item == item }) else {
+            assertionFailure(
+                !allowNewItemInsertion ? "Item insertion disabled" : "Item already in bar"
+            )
+            return
+        }
         
         HapticManager.main.play(haptic: .firmInfo, priority: .high)
         

@@ -19,19 +19,15 @@ import SwiftUI
 struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: View {
     @Environment(Palette.self) var palette
     
-    enum DropLocation: Equatable {
-        case bar(index: Int), tray
-    }
-    
     @State var configuration: Configuration {
         didSet {
             onSet(configuration)
 
-            let newTrayItems: [TrayItem] = Configuration.Item.allCases.reduce(into: []) { result, item in
-                result.append(.init(item: item, selected: configuration.all.contains(item)))
-            }
+//            let newTrayItems: [TrayItem] = Configuration.Item.allCases.reduce(into: []) { result, item in
+//                result.append(.init(item: item, selected: configuration.all.contains(item)))
+//            }
             
-            trayItems = newTrayItems
+            // trayItems = newTrayItems
         }
     }
     
@@ -41,7 +37,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     @State var barPickedUpItem: BarItem?
     @State var trayPickedUpItem: Configuration.Item?
     
-    @State var hoveredDropLocation: NewDropLocation? {
+    @State var hoveredDropLocation: DropLocation? {
         didSet {
             guard case let .bar(side, barItem) = hoveredDropLocation,
                   barItem != barPickedUpItem else { return }
@@ -92,7 +88,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     }
     
     var body: some View {
-        VStack {
+        VStack(spacing: Constants.main.standardSpacing) {
             SettingsHeaderView(
                 title: "Interaction Bar",
                 description: "Tap and hold items to add, remove, or rearrange them") {
@@ -105,11 +101,11 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
                 }
                 .background(palette.background, in: .rect(cornerRadius: Constants.main.largeItemCornerRadius))
             
+            bottomBarActions
+            
             infoCapsule
-                .padding(.vertical, 15)
             
             postPreview
-                .padding(.bottom, Constants.main.doubleSpacing)
                 .zIndex(barPickedUpItem == nil ? 0 : 1)
             
             Divider()
@@ -129,34 +125,8 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
         }
         .frame(maxWidth: .infinity)
         .padding(Constants.main.standardSpacing)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(palette.groupedBackground)
         .coordinateSpace(.named("editor"))
-    }
-    
-    @ViewBuilder
-    var bottomBarActions: some View {
-        HStack {
-            Button("Apply to All Interaction Bars") { showingApplyToAllConfirmation = true }
-                .confirmationDialog(
-                    "Really apply configuration to all?",
-                    isPresented: $showingApplyToAllConfirmation,
-                    titleVisibility: .visible
-                ) {
-                    Button("Yes") {
-                        InteractionBarTracker.main.interactionBarConfigurations = .init(
-                            post: configuration.convert(),
-                            comment: configuration.convert(),
-                            reply: configuration.convert()
-                        )
-                    }
-                }
-            Spacer()
-            Button("Reset") { configuration = .default }
-                .buttonStyle(.plain)
-                .foregroundStyle(.secondary)
-        }
-        .padding(.horizontal)
     }
 }
 

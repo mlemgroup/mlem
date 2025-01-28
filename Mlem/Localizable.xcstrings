@@ -364,7 +364,7 @@
     "Applications Only" : {
 
     },
-    "Apply to All Interaction Bars" : {
+    "Apply to All" : {
 
     },
     "Appoint Administrator" : {
@@ -1577,7 +1577,7 @@
     "Read Indicator" : {
 
     },
-    "Really apply configuration to all?" : {
+    "Really apply this configuration to all interaction bars?" : {
 
     },
     "Really appoint %@ as a moderator of %@?" : {
