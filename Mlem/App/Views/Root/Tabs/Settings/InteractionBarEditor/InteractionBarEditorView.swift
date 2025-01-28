@@ -31,26 +31,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     @State var barPickedUpItem: BarItem?
     @State var trayPickedUpItem: Configuration.Item?
     
-    @State var hoveredDropLocation: DropLocation? {
-        didSet {
-            guard case let .bar(side, barItem) = hoveredDropLocation,
-                  barItem != barPickedUpItem else { return }
-            
-            switch oldValue {
-            case .tray:
-                // moving from tray to bar
-                HapticManager.main.play(haptic: .gentleInfo, priority: .low)
-            case let .bar(oldSide, oldBarItem):
-                // moving from left side to right side on the same bar item--this prevents double taps
-                // when moving from one bar item to another
-                if oldSide != side && oldBarItem == barItem {
-                    HapticManager.main.play(haptic: .gentleInfo, priority: .low)
-                }
-            default:
-                return
-            }
-        }
-    }
+    @State var hoveredDropLocation: DropLocation?
     @State var dragLocation: CGPoint = .zero
     @State var dragTranslation: CGSize = .zero
     
@@ -116,6 +97,24 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
         .padding(Constants.main.standardSpacing)
         .background(palette.groupedBackground)
         .coordinateSpace(.named("editor"))
+        .onChange(of: hoveredDropLocation) { oldValue, newValue in
+            guard case let .bar(side, barItem) = newValue,
+                  barItem != barPickedUpItem else { return }
+            
+            switch oldValue {
+            case .tray:
+                // moving from tray to bar
+                HapticManager.main.play(haptic: .gentleInfo, priority: .low)
+            case let .bar(oldSide, oldBarItem):
+                // moving from left side to right side on the same bar item--this prevents double taps
+                // when moving from one bar item to another
+                if oldSide != side && oldBarItem == barItem {
+                    HapticManager.main.play(haptic: .gentleInfo, priority: .low)
+                }
+            default:
+                return
+            }
+        }
     }
 }
 

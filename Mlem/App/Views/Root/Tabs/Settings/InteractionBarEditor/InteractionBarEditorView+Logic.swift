@@ -59,9 +59,7 @@ extension InteractionBarEditorView {
     
     var allowNewItemInsertion: Bool {
         if let trayPickedUpItem {
-            if itemsTotalScore + trayPickedUpItem.score > 6 {
-                return false
-            }
+            return itemsTotalScore + trayPickedUpItem.score <= 6
         }
         return true
     }
@@ -77,6 +75,7 @@ extension InteractionBarEditorView {
     func addToBar(_ item: Configuration.Item, at index: Int) {
         guard allowNewItemInsertion,
               !barItems.contains(where: { $0.item == item }) else {
+            // TODO: this triggers if you keep trying to add things to a full bar
             assertionFailure(
                 !allowNewItemInsertion ? "Item insertion disabled" : "Item already in bar"
             )
