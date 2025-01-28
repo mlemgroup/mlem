@@ -87,7 +87,7 @@ extension InteractionBarEditorView {
                         .contentShape(.rect)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .onChange(of: dragLocation) {
-                            guard allowNewItemInsertion else { return }
+                            guard allowNewItemInsertion, isDraggingItem else { return }
                             
                             let frame = geometry.frame(in: .named("editor"))
                             
@@ -109,16 +109,23 @@ extension InteractionBarEditorView {
             .gesture(barItemDragGesture(item: barItem, index: index))
             .onAppear {
                 withAnimation(.easeOut(duration: barAnimationDuration)) {
-                    barItem.ancestor?.active = false
-                    barItem.active = true
+                    barItem.ancestor?.collapse()
+                    barItem.expand()
                 }
             }
-            .frame(maxWidth: barItem.active ? nil : 0)
-            .opacity(barItem.visible ? 1 : 0)
-            .zIndex(barPickedUpIndex == index ? 4 : 0)
+            .frame(maxWidth: barItem.maxWidth)
+            .opacity(barItem.opacity)
+            .zIndex(barPickedUpIndex == index ? 3 : 0)
     }
     
     // MARK: - Palette
+    
+    @ViewBuilder
+    var tray: some View {
+        HFlow(horizontalAlignment: .center, verticalAlignment: .center, distributeItemsEvenly: true) {
+            ForEach(trayItems, id: \.self) { trayItem($0) }
+        }
+    }
     
     @ViewBuilder
     func trayItem(_ item: Configuration.Item) -> some View {
@@ -181,6 +188,21 @@ extension InteractionBarEditorView {
     // MARK: - General Page Views
     
     @ViewBuilder
+    var header: some View {
+        SettingsHeaderView(
+            title: "Interaction Bar",
+            description: "Tap and hold items to add, remove, or rearrange them") {
+                Image(systemName: Icons.votesSquare)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 64)
+                    .foregroundStyle(palette.accent)
+                    .padding([.horizontal, .top], 20)
+            }
+            .background(palette.background, in: .rect(cornerRadius: Constants.main.largeItemCornerRadius))
+    }
+    
+    @ViewBuilder
     var infoCapsule: some View {
         if !allowNewItemInsertion {
             Text("Too many items")
@@ -229,7 +251,7 @@ extension InteractionBarEditorView {
             Button("Reset") {
                 configuration = .default
                 barItems = (configuration.leading + [nil] + configuration.trailing).map { item in
-                        .init(item: item, active: true, visible: true)
+                        .init(item: item, expanded: true, visible: true)
                 }
             }
             .buttonStyle(.plain)

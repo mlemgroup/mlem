@@ -13,8 +13,7 @@ import SwiftUI
 // 0: inactive components
 // 1: active block (e.g., interaction bar or tray)
 // 2: drop indicators
-// 3: drop indicator masks
-// 4: currently dragged item
+// 3: currently dragged item
 
 struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: View {
     @Environment(Palette.self) var palette
@@ -48,7 +47,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
         self.configuration = configuration
         self.onSet = onSet
         self._barItems = .init(wrappedValue: (configuration.leading + [nil] + configuration.trailing).map { item in
-                .init(item: item, active: true, visible: true)
+                .init(item: item, expanded: true, visible: true)
         })
     }
     
@@ -61,24 +60,13 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     
     var body: some View {
         VStack(spacing: Constants.main.standardSpacing) {
-            SettingsHeaderView(
-                title: "Interaction Bar",
-                description: "Tap and hold items to add, remove, or rearrange them") {
-                    Image(systemName: Icons.votesSquare)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 64)
-                        .foregroundStyle(palette.accent)
-                        .padding([.horizontal, .top], 20)
-                }
-                .background(palette.background, in: .rect(cornerRadius: Constants.main.largeItemCornerRadius))
+            header
             
             bottomBarActions
             
             infoCapsule
             
-            postPreview
-                .zIndex(barPickedUpItem == nil ? 0 : 1)
+            postPreview.zIndex(barPickedUpItem == nil ? 0 : 1)
             
             Divider()
             
@@ -86,10 +74,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
             
             Divider()
             
-            HFlow(horizontalAlignment: .center, verticalAlignment: .center, distributeItemsEvenly: true) {
-                ForEach(trayItems, id: \.self) { trayItem($0) }
-            }
-            .zIndex(trayPickedUpItem == nil ? 0 : 1)
+            tray.zIndex(trayPickedUpItem == nil ? 0 : 1)
             
             Spacer()
         }
@@ -97,12 +82,6 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
         .padding(Constants.main.standardSpacing)
         .background(palette.groupedBackground)
         .coordinateSpace(.named("editor"))
-//        .onChange(of: hoveredDropIndex) { oldValue, newValue in
-//            // detect when moving from tray to bar or vice versa
-//            if let oldValue, let newValue, (oldValue * newValue) < 0 {
-//                HapticManager.main.play(haptic: .firmInfo, priority: .low)
-//            }
-//        }
     }
 }
 

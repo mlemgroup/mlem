@@ -8,38 +8,42 @@
 import SwiftUI
 
 extension InteractionBarEditorView {
-    enum Side {
-        case left, right
-        
-        var offset: Int {
-            switch self {
-            case .left: 0
-            case .right: 1
-            }
-        }
-    }
-    
-    enum DropLocation: Equatable {
-        // swiftlint:disable:next identifier_name
-        case bar(Side, of: BarItem)
-        case tray
-    }
-    
     @Observable
     class BarItem: Equatable {
         let item: Configuration.Item?
-        var active: Bool
-        var visible: Bool
+        
+        /// Controls the width of the barItem view
+        private(set) var maxWidth: CGFloat?
+        
+        /// Controls the opacity of the barItem view
+        private(set) var opacity: CGFloat
+        
+        /// If this BarItem is replacing another one (i.e., when moving a widget on the bar), this points to the old
+        /// BarItem, allowing the barItem view to smoothly animate the ancestor out when it appears.
         weak var ancestor: BarItem?
         
+        /// Uniquely identifies this BarItem. This is needed to allow two `BarItem`s with the same `item`
+        /// to exist at once on the bar (used when moving bar items) without relying on index-based identification
         let uuid: UUID = .init()
         
-        init(item: Configuration.Item?, active: Bool, visible: Bool, ancestor: BarItem? = nil) {
+        init(item: Configuration.Item?, expanded: Bool, visible: Bool, ancestor: BarItem? = nil) {
             self.item = item
-            self.active = active
-            self.visible = visible
+            self.maxWidth = expanded ? nil : 0
+            self.opacity = visible ? 1 : 0
             self.ancestor = ancestor
         }
+        
+        /// Expands maxWidth to default
+        func expand() { maxWidth = nil }
+        
+        /// Reduces maxWidth to 0
+        func collapse() { maxWidth = 0 }
+        
+        /// Toggles opacity to 1
+        func show() { opacity = 1 }
+        
+        /// Toggles opacity to 0
+        func hide() { opacity = 0 }
         
         static func == (lhs: BarItem, rhs: BarItem) -> Bool {
             lhs.uuid == rhs.uuid
@@ -48,13 +52,10 @@ extension InteractionBarEditorView {
     
     var allowNewItemInsertion: Bool {
         if let trayPickedUpItem {
-            return itemsTotalScore + trayPickedUpItem.score <= 6
+            let currentScore = barItems.reduce(0) { $0 + ($1.item?.score ?? 0) }
+            return currentScore + trayPickedUpItem.score <= 6
         }
         return true
-    }
-    
-    var itemsTotalScore: Int {
-        barItems.reduce(0) { $0 + ($1.item?.score ?? 0) }
     }
     
     var showInfoCapsule: Bool { !allowNewItemInsertion || trayPickedUpItem != nil }
@@ -66,16 +67,13 @@ extension InteractionBarEditorView {
     func addToBar(_ item: Configuration.Item, at index: Int) {
         guard allowNewItemInsertion,
               !barItems.contains(where: { $0.item == item }) else {
-            // TODO: this triggers if you keep trying to add things to a full bar
-            assertionFailure(
-                !allowNewItemInsertion ? "Item insertion disabled" : "Item already in bar"
-            )
+            assertionFailure(!allowNewItemInsertion ? "Item insertion disabled" : "Item already in bar")
             return
         }
         
         HapticManager.main.play(haptic: .firmInfo, priority: .high)
 
-        let newItem: BarItem = .init(item: item, active: false, visible: true)
+        let newItem: BarItem = .init(item: item, expanded: false, visible: true)
         barItems.insert(newItem, at: index)
         
         updateConfiguration()
@@ -87,8 +85,8 @@ extension InteractionBarEditorView {
         
         HapticManager.main.play(haptic: .firmInfo, priority: .high)
         
-        let newItem: BarItem = .init(item: item.item, active: false, visible: true, ancestor: item)
-        item.visible = false
+        let newItem: BarItem = .init(item: item.item, expanded: false, visible: true, ancestor: item)
+        item.hide()
         
         if targetIndex == barItems.count {
             barItems.append(newItem)
@@ -110,9 +108,9 @@ extension InteractionBarEditorView {
         HapticManager.main.play(haptic: .firmInfo, priority: .high)
         
         // hide on the bar
-        item.visible = false
+        item.hide()
          withAnimation(.easeInOut(duration: barAnimationDuration)) {
-             item.active = false
+             item.collapse()
         }
         
         // wait for animation to complete, then remove from barItems
