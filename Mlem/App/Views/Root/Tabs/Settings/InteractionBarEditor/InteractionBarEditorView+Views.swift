@@ -190,7 +190,7 @@ extension InteractionBarEditorView {
     var header: some View {
         SettingsHeaderView(
             title: "Interaction Bar",
-            description: "Tap and hold items to add, remove, or rearrange them") {
+            description: "Tap and hold items to add, remove, or rearrange them.") {
                 Image(systemName: Icons.votesSquare)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
