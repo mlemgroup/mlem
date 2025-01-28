@@ -11,7 +11,7 @@ import SwiftUI
 enum SettingsPage: Hashable {
     case root
     case accounts, account
-    case profile, accountGeneral, accountAdvanced, accountSignIn, accountChangeEmail, accountLocal
+    case profile, accountGeneral, accountAdvanced, accountSignIn, accountChangeEmail, accountLocal, accountChangePassword
     case general, privacy, safety, accessibility, sorting, filters
     case privacyBypassImageProxy
     case safetyBlurNsfw, safetyWarnings
@@ -49,6 +49,8 @@ enum SettingsPage: Hashable {
             AccountAdvancedSettingsView()
         case .accountChangeEmail:
             AccountEmailSettingsView()
+        case .accountChangePassword:
+            ChangePasswordView()
         case .accountLocal:
             AccountLocalSettingsView()
         case .accounts:
