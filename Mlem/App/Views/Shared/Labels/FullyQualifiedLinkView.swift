@@ -11,27 +11,14 @@ import SwiftUI
 struct FullyQualifiedLinkView: View {
     @Environment(NavigationLayer.self) private var navigation
     
-    let entity: (any CommunityOrPersonStub & Profile2Providing)?
+    let entity: (any FullyQualifiedLabelView.Entity)?
+    let avatarFallback: FixedImageView.Fallback
     let labelStyle: FullyQualifiedLabelStyle
-    let showAvatar: Bool
-    let showInstance: Bool
-    let blurred: Bool
+    var showAvatar: Bool = true
+    var showInstance: Bool = true
+    var blurred: Bool = false
     
     @State private var id = UUID()
-    
-    init(
-        entity: (any CommunityOrPersonStub & Profile2Providing)?,
-        labelStyle: FullyQualifiedLabelStyle,
-        showAvatar: Bool,
-        showInstance: Bool = true,
-        blurred: Bool = false
-    ) {
-        self.entity = entity
-        self.labelStyle = labelStyle
-        self.showAvatar = showAvatar
-        self.showInstance = showInstance
-        self.blurred = blurred
-    }
     
     var body: some View {
         Button {
@@ -43,6 +30,7 @@ struct FullyQualifiedLinkView: View {
         } label: {
             FullyQualifiedLabelView(
                 entity: entity,
+                avatarFallback: avatarFallback,
                 labelStyle: labelStyle,
                 showAvatar: showAvatar,
                 showInstance: showInstance,
@@ -51,5 +39,58 @@ struct FullyQualifiedLinkView: View {
         }
         .buttonStyle(.plain)
         .id(id)
+    }
+}
+
+extension FullyQualifiedLinkView {
+    init(
+        _ entity: (any Person)?,
+        labelStyle: FullyQualifiedLabelStyle,
+        showAvatar: Bool = true,
+        showInstance: Bool = true,
+        blurred: Bool = false
+    ) {
+        self.init(
+            entity: entity,
+            avatarFallback: .person,
+            labelStyle: labelStyle,
+            showAvatar: showAvatar,
+            showInstance: showInstance,
+            blurred: blurred
+        )
+    }
+    
+    init(
+        _ entity: (any Community)?,
+        labelStyle: FullyQualifiedLabelStyle,
+        showAvatar: Bool = true,
+        showInstance: Bool = true,
+        blurred: Bool = false
+    ) {
+        self.init(
+            entity: entity,
+            avatarFallback: .community,
+            labelStyle: labelStyle,
+            showAvatar: showAvatar,
+            showInstance: showInstance,
+            blurred: blurred
+        )
+    }
+    
+    init(
+        _ entity: UserAccount?,
+        labelStyle: FullyQualifiedLabelStyle,
+        showAvatar: Bool = true,
+        showInstance: Bool = true,
+        blurred: Bool = false
+    ) {
+        self.init(
+            entity: entity,
+            avatarFallback: .person,
+            labelStyle: labelStyle,
+            showAvatar: showAvatar,
+            showInstance: showInstance,
+            blurred: blurred
+        )
     }
 }

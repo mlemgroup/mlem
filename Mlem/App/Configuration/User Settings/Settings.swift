@@ -57,6 +57,7 @@ class Settings: ObservableObject {
     @AppStorage("safety.showModlogWarning") var showModlogWarning: Bool = true
     
     @AppStorage("privacy.autoBypassImageProxy") var autoBypassImageProxy: Bool = false
+    @AppStorage("privacy.showFavicons") var showFavicons: Bool = true
     
     @AppStorage("links.openInBrowser") var openLinksInBrowser = false
     @AppStorage("links.readerMode") var openLinksInReaderMode = false

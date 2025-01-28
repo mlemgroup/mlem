@@ -79,7 +79,7 @@ struct CommentEditorView: View {
                             if AccountsTracker.main.userAccounts.count > 1, commentToEdit == nil {
                                 AccountPickerMenu(account: $account) {
                                     HStack(spacing: 3) {
-                                        FullyQualifiedLabelView(entity: account, labelStyle: .medium, showAvatar: false, blurred: false)
+                                        FullyQualifiedLabelView(account, labelStyle: .medium)
                                         Image(systemName: Icons.dropDownCircleFill)
                                             .symbolRenderingMode(.hierarchical)
                                             .tint(palette.secondary)
@@ -107,9 +107,6 @@ struct CommentEditorView: View {
             }
             .task(id: account) { await resolveContext() }
         }
-        .onAppear {
-            textView.becomeFirstResponder()
-        }
         .onDisappear {
             // If we didn't have the `isAlive` check here, the images would
             // get deleted when you click on a link in the reply context
@@ -120,6 +117,11 @@ struct CommentEditorView: View {
         }
         .onChange(of: presentationSelection) {
             if presentationSelection == .large {
+                textView.becomeFirstResponder()
+            }
+        }
+        .onChange(of: navigation.isTopSheet) {
+            if navigation.isTopSheet, navigation.model != nil {
                 textView.becomeFirstResponder()
             }
         }
@@ -179,7 +181,7 @@ struct CommentEditorView: View {
             VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
                 HStack {
                     FullyQualifiedLinkView(
-                        entity: post.community_,
+                        post.community_,
                         labelStyle: .medium,
                         showAvatar: showPersonAvatar,
                         blurred: post.nsfw
@@ -189,7 +191,7 @@ struct CommentEditorView: View {
                 }
                 LargePostBodyView(post: post, isPostPage: true, shouldBlur: false)
                 FullyQualifiedLinkView(
-                    entity: post.creator_,
+                    post.creator_,
                     labelStyle: .medium,
                     showAvatar: showPersonAvatar,
                     blurred: post.nsfw
@@ -206,10 +208,9 @@ struct CommentEditorView: View {
             VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
                 HStack {
                     FullyQualifiedLinkView(
-                        entity: comment.creator_,
+                        comment.creator_,
                         labelStyle: .small,
-                        showAvatar: showPersonAvatar,
-                        blurred: false
+                        showAvatar: showPersonAvatar
                     )
                     Spacer()
                     selectTextButton
@@ -231,6 +232,9 @@ struct CommentEditorView: View {
     @ViewBuilder
     var selectTextButton: some View {
         Button("Select Text", systemImage: Icons.select) {
+            Task { @MainActor in
+                textView.resignFirstResponder()
+            }
             originalContext?.item.showTextSelectionSheet()
         }
         .labelStyle(.iconOnly)

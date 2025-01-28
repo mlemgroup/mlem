@@ -107,11 +107,11 @@ struct LargePostView: View {
     
     @ViewBuilder
     var personLink: some View {
-        FullyQualifiedLinkView(entity: post.creator_, labelStyle: .medium, showAvatar: showPersonAvatar, blurred: shouldBlur)
+        FullyQualifiedLinkView(post.creator_, labelStyle: .medium, showAvatar: showPersonAvatar, blurred: shouldBlur)
     }
     
     @ViewBuilder
     var communityLink: some View {
-        FullyQualifiedLinkView(entity: post.community_, labelStyle: .medium, showAvatar: showCommunityAvatar, blurred: shouldBlur)
+        FullyQualifiedLinkView(post.community_, labelStyle: .medium, showAvatar: showCommunityAvatar, blurred: shouldBlur)
     }
 }

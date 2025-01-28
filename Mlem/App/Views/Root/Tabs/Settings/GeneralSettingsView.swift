@@ -9,14 +9,6 @@ import Dependencies
 import SwiftUI
 
 struct GeneralSettingsView: View {
-    // safety
-    @Setting(\.blurNsfw) var blurNsfw
-    @Setting(\.showNsfwCommunityWarning) var showNsfwCommunityWarning
-    @Setting(\.showModlogWarning) var showModlogWarning
-    
-    // privacy
-    @Setting(\.autoBypassImageProxy) var bypassImageProxy
-    
     // behavior
     @Setting(\.upvoteOnSave) var upvoteOnSave
     @Setting(\.markReadOnScroll) var markReadOnScroll
@@ -25,7 +17,6 @@ struct GeneralSettingsView: View {
     @Setting(\.muteVideos) var muteVideos
     @Setting(\.defaultFeed) var defaultFeed
     @Setting(\.sidebarVisibleByDefault) var sidebarVisibleByDefault
-    @Setting(\.confirmImageUploads) var confirmImageUploads
     @Setting(\.hapticLevel) var hapticLevel
     @Setting(\.wrapCodeBlockLines) var wrapCodeBlockLines
     
@@ -35,24 +26,6 @@ struct GeneralSettingsView: View {
     
     var body: some View {
         Form {
-            Section {
-                Picker("Blur NSFW", systemImage: Icons.blurNsfw, selection: $blurNsfw) {
-                    ForEach(NsfwBlurBehavior.allCases, id: \.self) { behavior in
-                        Text(behavior.label)
-                    }
-                }
-                Toggle("Warn When Opening NSFW Community", systemImage: Icons.warning, isOn: $showNsfwCommunityWarning)
-                Toggle("Warn When Opening Modlog", systemImage: Icons.warning, isOn: $showModlogWarning)
-            } header: {
-                Text("Safety")
-            }
-            
-            Section {
-                Toggle("Auto-Bypass Image Proxy", systemImage: Icons.proxy, isOn: $bypassImageProxy)
-            } header: {
-                Text("Privacy")
-            }
-            
             Section {
                 Picker("Default Feed", systemImage: Icons.feeds, selection: $defaultFeed) {
                     ForEach(FeedSelection.allCases, id: \.self) { item in
@@ -69,7 +42,6 @@ struct GeneralSettingsView: View {
                 Toggle("Mark Read on Scroll", systemImage: Icons.read, isOn: $markReadOnScroll)
                 Toggle("Infinite Scroll", systemImage: Icons.infiniteScroll, isOn: $infiniteScroll)
                 Toggle("Upvote on Save", systemImage: Icons.upvoteOnSave, isOn: $upvoteOnSave)
-                Toggle("Confirm Image Uploads", systemImage: Icons.confirmImageUploads, isOn: $confirmImageUploads)
                 Picker("Haptic Level", systemImage: Icons.haptics, selection: $hapticLevel) {
                     ForEach(HapticPriority.allCases, id: \.self) { item in
                         Text(item.label)

@@ -11,8 +11,10 @@ import SwiftUI
 enum SettingsPage: Hashable {
     case root
     case accounts, account
-    case profile, accountGeneral, accountAdvanced, accountSignIn, accountChangeEmail, accountLocal
-    case general, accessibility, sorting, filters
+    case profile, accountGeneral, accountAdvanced, accountSignIn, accountChangeEmail, accountLocal, accountChangePassword
+    case general, privacy, safety, accessibility, sorting, filters
+    case privacyBypassImageProxy
+    case safetyBlurNsfw, safetyWarnings
     case links, embedding
     case importExportSettings
     case theme, icon
@@ -47,12 +49,24 @@ enum SettingsPage: Hashable {
             AccountAdvancedSettingsView()
         case .accountChangeEmail:
             AccountEmailSettingsView()
+        case .accountChangePassword:
+            ChangePasswordView()
         case .accountLocal:
             AccountLocalSettingsView()
         case .accounts:
             AccountListSettingsView()
         case .general:
             GeneralSettingsView()
+        case .privacy:
+            PrivacySettingsView()
+        case .privacyBypassImageProxy:
+            PrivacyBypassImageProxySettingsView()
+        case .safety:
+            SafetySettingsView()
+        case .safetyBlurNsfw:
+            SafetyBlurNsfwSettingsView()
+        case .safetyWarnings:
+            SafetyWarningsSettingsView()
         case .accessibility:
             AccessibilitySettingsView()
         case .importExportSettings:

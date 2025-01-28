@@ -402,6 +402,9 @@
         }
       }
     },
+    "Ask First" : {
+
+    },
     "Ask to confirm every time" : {
 
     },
@@ -411,10 +414,10 @@
     "Authentication code is incorrect." : {
 
     },
-    "Auto-Bypass Image Proxy" : {
+    "Automatic" : {
 
     },
-    "Automatic" : {
+    "Automatically" : {
 
     },
     "Automatically enable Reader for supported webpages. You can only enable this when using the in-app browser." : {
@@ -493,7 +496,7 @@
     "Blocking..." : {
 
     },
-    "Blur NSFW" : {
+    "Blur NSFW Content" : {
 
     },
     "Bold" : {
@@ -511,7 +514,13 @@
     "by %@" : {
 
     },
+    "Bypass Image Proxy" : {
+
+    },
     "Bypass Image Proxy?" : {
+
+    },
+    "Bypass Image Proxy..." : {
 
     },
     "Cache" : {
@@ -545,6 +554,9 @@
         }
       }
     },
+    "Change Password" : {
+
+    },
     "Checkmark" : {
 
     },
@@ -561,6 +573,12 @@
 
     },
     "Choose Instance..." : {
+
+    },
+    "Choose when Not Safe For Work content should be blurred." : {
+
+    },
+    "Choose whether to show a warning when opening a page that is likely to contain sensitive content." : {
 
     },
     "Choose wisely - you cannot change this later." : {
@@ -672,6 +690,9 @@
     "Confirm Image Uploads" : {
 
     },
+    "Confirm New Password" : {
+
+    },
     "Confirm Password" : {
 
     },
@@ -679,6 +700,9 @@
 
     },
     "Content & Notifications" : {
+
+    },
+    "Content Warnings" : {
 
     },
     "Continue" : {
@@ -710,6 +734,22 @@
     },
     "Crossposted from %@" : {
 
+    },
+    "Current Password" : {
+
+    },
+    "Current password is incorrect" : {
+
+    },
+    "Customize how content is displayed in your feed. Choose which types of content are blurred, and apply filters to hide posts from the feed altogether." : {
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customise how content is displayed in your feed. Choose which types of content are blurred, and apply filters to hide posts from the feed altogether."
+          }
+        }
+      }
     },
     "Customize Interaction Bar" : {
       "localizations" : {
@@ -844,6 +884,15 @@
 
     },
     "Enable Keyword Filters" : {
+
+    },
+    "end.of.feed.icon.1" : {
+
+    },
+    "end.of.feed.icon.2" : {
+
+    },
+    "end.of.feed.icon.3" : {
 
     },
     "Endorsements" : {
@@ -1049,6 +1098,9 @@
     "Hide Read" : {
 
     },
+    "Hide Website Icons" : {
+
+    },
     "Hot" : {
 
     },
@@ -1136,6 +1188,9 @@
     "Keep Place" : {
 
     },
+    "Keyword Filters" : {
+
+    },
     "Label Style" : {
 
     },
@@ -1199,6 +1254,9 @@
     "Log in or sign up to view your subscriptions." : {
 
     },
+    "Manage how Mlem interacts with Lemmy instances and other websites." : {
+
+    },
     "Mark Read" : {
 
     },
@@ -1247,6 +1305,12 @@
     "Mlem Developer" : {
 
     },
+    "Mlem Privacy Policy" : {
+
+    },
+    "Mlem uses a Google API to fetch website icon URLs. If you'd prefer not to use this, you can choose to hide favicons." : {
+
+    },
     "Mlem will always try to load from the proxy first." : {
 
     },
@@ -1275,6 +1339,9 @@
 
     },
     "Modlog" : {
+
+    },
+    "Modlogs" : {
 
     },
     "Monochrome" : {
@@ -1316,6 +1383,22 @@
     "New Keyword..." : {
 
     },
+    "New Password" : {
+
+    },
+    "New password is invalid" : {
+
+    },
+    "New password must be between %lld and %lld characters long." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "New password must be between %1$lld and %2$lld characters long."
+          }
+        }
+      }
+    },
     "New Post" : {
 
     },
@@ -1355,6 +1438,9 @@
     "NSFW" : {
 
     },
+    "NSFW Communities" : {
+
+    },
     "NSFW Content" : {
 
     },
@@ -1364,10 +1450,16 @@
     "Ocean" : {
 
     },
+    "Off" : {
+
+    },
     "Old" : {
 
     },
     "OLED" : {
+
+    },
+    "On" : {
 
     },
     "Once approved, you'll be able to log in to your account from the Settings tab." : {
@@ -1577,6 +1669,9 @@
     "Read Indicator" : {
 
     },
+    "Read posts are shown with dimmed title text. If you like, you can choose an additional way of indicating read status." : {
+
+    },
     "Really apply this configuration to all interaction bars?" : {
 
     },
@@ -1606,13 +1701,48 @@
     "Really appoint this user as an administrator of %@?" : {
 
     },
+    "Really block this community?" : {
+
+    },
+    "Really block this instance?" : {
+
+    },
+    "Really block this user?" : {
+
+    },
     "Really delete %@?" : {
+
+    },
+    "Really delete?" : {
 
     },
     "Really pin this post to %@?" : {
 
     },
     "Really pin this post to the community?" : {
+
+    },
+    "Really remove administrator %@ from %@?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Really remove administrator %1$@ from %2$@?"
+          }
+        }
+      }
+    },
+    "Really remove moderator %@ from %@?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Really remove moderator %1$@ from %2$@?"
+          }
+        }
+      }
+    },
+    "Really unlock this post?" : {
 
     },
     "Really unpin this post from %@?" : {
@@ -1770,7 +1900,7 @@
     "Right" : {
 
     },
-    "Safety" : {
+    "Safety & Filtering" : {
 
     },
     "Save" : {
@@ -1900,6 +2030,9 @@
 
     },
     "Show Sidebar on App Launch" : {
+
+    },
+    "Show warnings when opening..." : {
 
     },
     "Shown" : {
@@ -2464,12 +2597,6 @@
     "Votes" : {
 
     },
-    "Warn When Opening Modlog" : {
-
-    },
-    "Warn When Opening NSFW Community" : {
-
-    },
     "We sent an email to %@ to verify your email address and activate your account." : {
 
     },
@@ -2497,7 +2624,7 @@
     "When disabled, some moderator actions will only be accessible from the post page." : {
 
     },
-    "When you've read a post already, its title will appear dimmed. If you like, you can choose an additional way of indicating read status." : {
+    "When enabled, Mlem will ask you to confirm your choice before uploading an image to your instance." : {
 
     },
     "Wrap Code Block Lines" : {

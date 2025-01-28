@@ -36,7 +36,7 @@ struct PostSettingsView: View {
             Section {
                 NavigationLink(
                     "Subscription Indicator",
-                    value: showSubscribedStatus ? "On" : "Off",
+                    value: showSubscribedStatus ? .init(localized: "On") : .init(localized: "Off"),
                     fallbackValue: "",
                     systemImage: Icons.subscribedFeed,
                     destination: .settings(.postSubscriptionIndicator)

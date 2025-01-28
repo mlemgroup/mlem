@@ -41,7 +41,7 @@ struct AccountSettingsView: View {
                     .tint(palette.colorfulAccent(5))
                     NavigationLink(
                         "Sign-In & Security",
-                        systemImage: "key.fill",
+                        systemImage: Icons.securityFill,
                         destination: .settings(.accountSignIn)
                     )
                     .tint(palette.colorfulAccent(2))

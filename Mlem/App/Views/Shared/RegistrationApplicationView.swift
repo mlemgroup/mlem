@@ -17,7 +17,7 @@ struct RegistrationApplicationView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
             HStack {
-                FullyQualifiedLinkView(entity: application.creator, labelStyle: .medium, showAvatar: true)
+                FullyQualifiedLinkView(application.creator, labelStyle: .medium)
                 Spacer()
                 EllipsisMenu(size: 24) {
                     application.menuActions()
