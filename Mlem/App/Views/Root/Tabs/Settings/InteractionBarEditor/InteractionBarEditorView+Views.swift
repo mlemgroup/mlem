@@ -51,7 +51,7 @@ extension InteractionBarEditorView {
     var interactionBar: some View {
         HStack(spacing: 0) {
             ForEach(Array(barItems.enumerated()), id: \.element.uuid) { index, item in
-                if hoveredDropIndex == index,
+                if dropLocation?.index == index,
                    barPickedUpIndex != index,
                    barPickedUpIndex != index - 1 {
                     dropIndicator(index: index)
@@ -60,7 +60,7 @@ extension InteractionBarEditorView {
                 barItem(item, index: index)
             }
             
-            if hoveredDropIndex == barItems.count,
+            if dropLocation?.index == barItems.count,
                barPickedUpIndex != barItems.count {
                 dropIndicator(index: barItems.count)
             }
@@ -92,7 +92,7 @@ extension InteractionBarEditorView {
                             
                             // if outside of bar zone, reset newHoveredDropLocation
                             guard dragLocation.y <= frame.maxY + 30 else {
-                                hoveredDropIndex = -1
+                                dropLocation = .tray
                                 return
                             }
                             
@@ -100,7 +100,7 @@ extension InteractionBarEditorView {
                             if dragLocation.x > frame.minX,
                                dragLocation.x < frame.maxX {
                                 // determine whether hovered over the left or the right side, update hoveredDropIndex accordingly
-                                hoveredDropIndex = dragLocation.x < frame.midX ? index : index + 1
+                                dropLocation = .bar(dragLocation.x < frame.midX ? index : index + 1)
                             }
                         }
                 }

@@ -23,7 +23,8 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     @State var barPickedUpItem: (item: BarItem, index: Int)?
     @State var trayPickedUpItem: Configuration.Item?
     
-    @State var hoveredDropIndex: Int?
+    /// Current entity the dragged item is hovered over. -1 indicates the tray.
+    @State var dropLocation: DropLocation?
     @State var dragLocation: CGPoint = .zero
     @State var dragTranslation: CGSize = .zero
     
@@ -31,7 +32,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     
     let onSet: (Configuration) -> Void
     
-    let barAnimationDuration: CGFloat = 0.1
+    let barAnimationDuration: CGFloat = 0.15
     
     @ScaledMetric(relativeTo: .body) var baseInfoCapsuleHeight: CGFloat = 22
     var infoCapsuleHeight: CGFloat { baseInfoCapsuleHeight + Constants.main.doubleSpacing }

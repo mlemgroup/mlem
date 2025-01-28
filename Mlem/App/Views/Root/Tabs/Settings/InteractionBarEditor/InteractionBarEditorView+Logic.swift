@@ -9,7 +9,26 @@ import SwiftUI
 
 extension InteractionBarEditorView {
     
-    // MARK: - Structs
+    // MARK: - Definitions
+    
+    enum DropLocation {
+        case bar(Int)
+        case tray
+        
+        var isTray: Bool {
+            switch self {
+            case .tray: true
+            default: false
+            }
+        }
+        
+        var index: Int? {
+            switch self {
+            case let .bar(index): index
+            default: nil
+            }
+        }
+    }
      
     @Observable
     class BarItem: Equatable {
@@ -104,20 +123,21 @@ extension InteractionBarEditorView {
     func completeDrag() {
         defer {
             self.barPickedUpItem = nil
-            self.hoveredDropIndex = nil
+            self.dropLocation = nil
             self.trayPickedUpItem = nil
         }
         
-        guard let hoveredDropIndex else { return }
+        guard let dropLocation else { return }
   
         if let trayPickedUpItem {
-            guard hoveredDropIndex >= 0 else { return }
-            addToBar(trayPickedUpItem, at: hoveredDropIndex)
+            guard case let .bar(targetIndex) = dropLocation else { return }
+            addToBar(trayPickedUpItem, at: targetIndex)
         } else if let barPickedUpItem {
-            if hoveredDropIndex < 0 {
+            switch dropLocation {
+            case .bar(let targetIndex):
+                moveOnBar(item: barPickedUpItem.item, from: barPickedUpItem.index, to: targetIndex)
+            case .tray:
                 removeFromBar(item: barPickedUpItem.item)
-            } else {
-                moveOnBar(item: barPickedUpItem.item, from: barPickedUpItem.index, to: hoveredDropIndex)
             }
         }
     }
@@ -196,7 +216,7 @@ extension InteractionBarEditorView {
     
     func trayItemOutlineColor(_ item: Configuration.Item) -> Color {
         return trayPickedUpItem == item ||
-        (barPickedUpItem?.item.item == item && (hoveredDropIndex ?? 1) < 0) ?
+        (barPickedUpItem?.item.item == item && dropLocation?.isTray ?? false) ?
         palette.accent : palette.tertiary
     }
 }
