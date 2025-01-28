@@ -28,10 +28,10 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     @State var trayItems: [Configuration.Item] = Configuration.Item.allCases
     @State var barItems: [BarItem] = .init()
     
-    @State var barPickedUpItem: BarItem?
+    @State var barPickedUpItem: (item: BarItem, index: Int)?
     @State var trayPickedUpItem: Configuration.Item?
     
-    @State var hoveredDropLocation: DropLocation?
+    @State var hoveredDropIndex: Int?
     @State var dragLocation: CGPoint = .zero
     @State var dragTranslation: CGSize = .zero
     
@@ -97,24 +97,12 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
         .padding(Constants.main.standardSpacing)
         .background(palette.groupedBackground)
         .coordinateSpace(.named("editor"))
-        .onChange(of: hoveredDropLocation) { oldValue, newValue in
-            guard case let .bar(side, barItem) = newValue,
-                  barItem != barPickedUpItem else { return }
-            
-            switch oldValue {
-            case .tray:
-                // moving from tray to bar
-                HapticManager.main.play(haptic: .gentleInfo, priority: .low)
-            case let .bar(oldSide, oldBarItem):
-                // moving from left side to right side on the same bar item--this prevents double taps
-                // when moving from one bar item to another
-                if oldSide != side && oldBarItem == barItem {
-                    HapticManager.main.play(haptic: .gentleInfo, priority: .low)
-                }
-            default:
-                return
-            }
-        }
+//        .onChange(of: hoveredDropIndex) { oldValue, newValue in
+//            // detect when moving from tray to bar or vice versa
+//            if let oldValue, let newValue, (oldValue * newValue) < 0 {
+//                HapticManager.main.play(haptic: .firmInfo, priority: .low)
+//            }
+//        }
     }
 }
 

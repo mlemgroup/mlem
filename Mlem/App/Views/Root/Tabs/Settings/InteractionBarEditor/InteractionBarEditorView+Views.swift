@@ -50,69 +50,72 @@ extension InteractionBarEditorView {
     @ViewBuilder
     var interactionBar: some View {
         HStack(spacing: 0) {
-            ForEach(barItems, id: \.uuid) { item in
-                barItem(item)
+            ForEach(Array(barItems.enumerated()), id: \.element.uuid) { index, item in
+                HStack(spacing: 0) {
+                    if hoveredDropIndex == index,
+                       barPickedUpIndex != index,
+                       barPickedUpIndex != index - 1 {
+                        dropIndicator(index: index)
+                    }
+                    barItem(item, index: index)
+                }
+            }
+            
+            if hoveredDropIndex == barItems.count,
+               barPickedUpIndex != barItems.count {
+                dropIndicator(index: barItems.count)
             }
         }
         .padding(.horizontal, -Constants.main.standardSpacing)
     }
     
     @ViewBuilder
-    func barItem(_ barItem: BarItem) -> some View {
-        HStack(spacing: 0) {
-            dropIndicator(barItem: barItem, side: .left)
-            indicatorMask(barItem: barItem)
-            
-            itemLabel(barItem.item)
-                .offset(barPickedUpItem == barItem ? dragTranslation : .zero)
-                .background {
-                    if barPickedUpItem == barItem && dragTranslation != .zero {
-                        Capsule()
-                            .fill(palette.accent.opacity(0.2))
-                            .stroke(palette.accent)
-                            .padding(4)
-                    }
+    func barItem(_ barItem: BarItem, index: Int) -> some View {
+        itemLabel(barItem.item)
+            .offset(barPickedUpIndex == index ? dragTranslation : .zero)
+            .background {
+                if barPickedUpIndex == index && dragTranslation != .zero {
+                    Capsule()
+                        .fill(palette.accent.opacity(0.2))
+                        .stroke(palette.accent)
+                        .padding(4)
                 }
-                .overlay {
-                    GeometryReader { geometry in
-                        Color.clear
-                            .contentShape(.rect)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .onChange(of: dragLocation) {
-                                guard allowNewItemInsertion else { return }
-                                
-                                let frame = geometry.frame(in: .named("editor"))
-                                
-                                // if outside of bar zone, reset newHoveredDropLocation
-                                guard dragLocation.y <= frame.maxY + 30 else {
-                                    hoveredDropLocation = .tray
-                                    return
-                                }
-                                
-                                // check if within this item's hitbox
-                                if dragLocation.x > frame.minX,
-                                   dragLocation.x < frame.maxX {
-                                    // pick left/right side and update hoveredDropLocation, item.hover appropriately
-                                    hoveredDropLocation = .bar(dragLocation.x < frame.midX ? .left : .right, of: barItem)
-                                }
+            }
+            .overlay {
+                GeometryReader { geometry in
+                    Color.clear
+                        .contentShape(.rect)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .onChange(of: dragLocation) {
+                            guard allowNewItemInsertion else { return }
+                            
+                            let frame = geometry.frame(in: .named("editor"))
+                            
+                            // if outside of bar zone, reset newHoveredDropLocation
+                            guard dragLocation.y <= frame.maxY + 30 else {
+                                hoveredDropIndex = -1
+                                return
                             }
-                    }
+                            
+                            // check if within this item's hitbox
+                            if dragLocation.x > frame.minX,
+                               dragLocation.x < frame.maxX {
+                                // determine whether hovered over the left or the right side, update hoveredDropIndex accordingly
+                                hoveredDropIndex = dragLocation.x < frame.midX ? index : index + 1
+                            }
+                        }
                 }
-                .gesture(barItemDragGesture(item: barItem))
-                .onAppear {
-                    withAnimation(.easeOut(duration: barAnimationDuration)) {
-                        barItem.ancestor?.active = false
-                        barItem.active = true
-                    }
+            }
+            .gesture(barItemDragGesture(item: barItem, index: index))
+            .onAppear {
+                withAnimation(.easeOut(duration: barAnimationDuration)) {
+                    barItem.ancestor?.active = false
+                    barItem.active = true
                 }
-                .frame(maxWidth: barItem.active ? nil : 0)
-                .opacity(barItem.visible ? 1 : 0)
-                .zIndex(barPickedUpItem == barItem ? 4 : 0)
-            
-            indicatorMask(barItem: barItem)
-            dropIndicator(barItem: barItem, side: .right)
-        }
-        .zIndex(barPickedUpItem === barItem ? 4 : 0)
+            }
+            .frame(maxWidth: barItem.active ? nil : 0)
+            .opacity(barItem.visible ? 1 : 0)
+            .zIndex(barPickedUpIndex == index ? 4 : 0)
     }
     
     // MARK: - Palette
@@ -292,32 +295,15 @@ extension InteractionBarEditorView {
     }
     
     @ViewBuilder
-    func dropIndicator(barItem: BarItem, side: Side) -> some View {
-        if case let .bar(hoverSide, of: hoveredItem) = hoveredDropLocation,
-           hoverSide == side,
-           hoveredItem == barItem,
-           barPickedUpItem != barItem,
-           isDraggingItem {
-            Capsule()
-                .fill(palette.accent)
-                .frame(width: 2, height: 40)
-                .padding(-2)
-                .frame(width: 0)
-                .zIndex(2)
-        }
-    }
-    
-    /// Masks the drop indicators to either side of the given barItem
-    /// This isn't as beautiful as simply disabling the indicators but it works with no indexing logic
-    @ViewBuilder
-    func indicatorMask(barItem: BarItem) -> some View {
-        if barPickedUpItem == barItem {
-            Rectangle()
-                .fill(palette.background)
-                .frame(width: 2, height: 40)
-                .padding(-2)
-                .frame(width: 0)
-                .zIndex(3)
-        }
+    func dropIndicator(index: Int) -> some View {
+        Capsule()
+            .fill(palette.accent)
+            .frame(width: 2, height: 40)
+            .padding(-2)
+            .frame(width: 0)
+            .zIndex(2)
+            .onAppear {
+                HapticManager.main.play(haptic: .gentleInfo, priority: .low)
+            }
     }
 }

@@ -26,17 +26,6 @@ extension InteractionBarEditorView {
     }
     
     @Observable
-    class TrayItem {
-        let item: Configuration.Item
-        var selected: Bool
-        
-        init(item: Configuration.Item, selected: Bool) {
-            self.item = item
-            self.selected = selected
-        }
-    }
-    
-    @Observable
     class BarItem: Equatable {
         let item: Configuration.Item?
         var active: Bool
@@ -71,6 +60,8 @@ extension InteractionBarEditorView {
     var showInfoCapsule: Bool { !allowNewItemInsertion || trayPickedUpItem != nil }
     
     var isDraggingItem: Bool { trayPickedUpItem != nil || barPickedUpItem != nil }
+    
+    var barPickedUpIndex: Int? { barPickedUpItem?.index }
     
     func addToBar(_ item: Configuration.Item, at index: Int) {
         guard allowNewItemInsertion,
@@ -143,12 +134,12 @@ extension InteractionBarEditorView {
         )
     }
   
-    func barItemDragGesture(item: BarItem) -> some Gesture {
+    func barItemDragGesture(item: BarItem, index: Int) -> some Gesture {
         DragGesture(minimumDistance: 0, coordinateSpace: .named("editor"))
             .onChanged { gesture in
                 if barPickedUpItem == nil {
                     HapticManager.main.play(haptic: .firmInfo, priority: .low)
-                    barPickedUpItem = item
+                    barPickedUpItem = (item, index)
                 }
                 dragLocation = gesture.location
                 dragTranslation = gesture.translation
@@ -176,29 +167,22 @@ extension InteractionBarEditorView {
     func completeDrag() {
         defer {
             self.barPickedUpItem = nil
-            self.hoveredDropLocation = nil
+            self.hoveredDropIndex = nil
             self.trayPickedUpItem = nil
         }
         
-        guard let hoveredDropLocation else { return }
+        guard let hoveredDropIndex else { return }
   
         if let trayPickedUpItem {
-            // if picked up tray item, can only drop on bar
-            guard case let .bar(side, of: hoveredItem) = hoveredDropLocation,
-                  let baseTargetIndex = barItems.firstIndex(of: hoveredItem) else {
-                return
-            }
-            
-            addToBar(trayPickedUpItem, at: baseTargetIndex + side.offset)
+            guard hoveredDropIndex >= 0 else { return }
+            addToBar(trayPickedUpItem, at: hoveredDropIndex)
         } else if let barPickedUpItem {
-            // if hovering over bar, move item, otherwise drop to tray
-            switch hoveredDropLocation {
-            case .bar(let side, let hoveredItem):
-                guard let sourceIndex = barIndex(of: barPickedUpItem),
-                      let baseTargetIndex = barIndex(of: hoveredItem) else { return }
-                moveOnBar(item: barPickedUpItem, from: sourceIndex, to: baseTargetIndex + side.offset)
-            case .tray:
-                removeFromBar(item: barPickedUpItem)
+            if hoveredDropIndex < 0 {
+                removeFromBar(item: barPickedUpItem.item)
+            } else {
+                // guard let sourceIndex = barIndex(of: barPickedUpItem) else { return }
+                // guard let barPickedUpItem else { return }
+                moveOnBar(item: barPickedUpItem.item, from: barPickedUpItem.index, to: hoveredDropIndex)
             }
         }
     }
@@ -214,7 +198,7 @@ extension InteractionBarEditorView {
     
     func trayItemOutlineColor(_ item: Configuration.Item) -> Color {
         return trayPickedUpItem == item ||
-        (barPickedUpItem?.item == item && hoveredDropLocation == .tray) ?
+        (barPickedUpItem?.item.item == item && (hoveredDropIndex ?? 1) < 0) ?
         palette.accent : palette.tertiary
     }
 }
