@@ -55,7 +55,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
         VStack(spacing: Constants.main.standardSpacing) {
             header
             
-            bottomBarActions
+            buttons
             
             infoCapsule
             

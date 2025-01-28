@@ -245,7 +245,7 @@ extension InteractionBarEditorView {
     }
     
     @ViewBuilder
-    var bottomBarActions: some View {
+    var buttons: some View {
         HStack {
             Button("Reset") {
                 configuration = .default
