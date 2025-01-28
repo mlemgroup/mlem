@@ -97,7 +97,7 @@ struct LargePostView: View {
                 communityContext: communityContext
             )
             .padding(.horizontal, 12)
-            .padding(.vertical, Constants.main.barIconPadding)
+            .padding(.vertical, 5)
         }
     }
     

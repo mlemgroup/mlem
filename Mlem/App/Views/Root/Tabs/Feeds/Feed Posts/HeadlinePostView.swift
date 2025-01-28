@@ -83,7 +83,7 @@ struct HeadlinePostView<EmbeddedContent: View>: View {
                 communityContext: communityContext
             )
             .padding(.horizontal, 2)
-            .padding(.vertical, Constants.main.barIconPadding)
+            .padding(.vertical, 5)
         }
     }
     
