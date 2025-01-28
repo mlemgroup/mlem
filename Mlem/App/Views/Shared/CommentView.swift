@@ -110,7 +110,7 @@ struct CommentView<EmbeddedContent: View>: View {
                             communityContext: communityContext
                         )
                         .padding(.horizontal, 2)
-                        .padding(.bottom, 5)
+                        .padding(.bottom, Constants.main.barIconPadding)
                         .padding(.top, 1)
                     }
                 }
