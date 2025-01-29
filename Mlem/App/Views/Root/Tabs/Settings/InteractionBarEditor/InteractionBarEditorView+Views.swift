@@ -44,7 +44,7 @@ extension InteractionBarEditorView {
                 .padding(.vertical, Constants.main.barIconPadding)
         }
         .padding(Constants.main.standardSpacing)
-        .background(palette.background, in: .rect(cornerRadius: Constants.main.mediumItemCornerRadius))
+        .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.mediumItemCornerRadius))
     }
     
     @ViewBuilder
