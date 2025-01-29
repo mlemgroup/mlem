@@ -22,6 +22,28 @@ extension InteractionBarEditorView {
             }
         }
     }
+    
+    @Observable
+    class TrayItem: Equatable {
+        let item: Configuration.Item
+        
+        private(set) var opacity: CGFloat
+        
+        init(item: Configuration.Item, visible: Bool) {
+            self.item = item
+            self.opacity = visible ? 1 : 0
+        }
+        
+        /// Toggles opacity to 1
+        func show() { opacity = 1 }
+        
+        /// Toggles opacity to 0
+        func hide() { opacity = 0 }
+        
+        static func == (lhs: TrayItem, rhs: TrayItem) -> Bool {
+            lhs.item == rhs.item
+        }
+    }
      
     @Observable
     class BarItem: Equatable {
@@ -70,7 +92,7 @@ extension InteractionBarEditorView {
     var allowNewItemInsertion: Bool {
         if let trayPickedUpItem {
             let currentScore = barItems.reduce(0) { $0 + ($1.item?.score ?? 0) }
-            return currentScore + trayPickedUpItem.score <= 6
+            return currentScore + trayPickedUpItem.item.score <= 6
         }
         return true
     }
@@ -98,12 +120,12 @@ extension InteractionBarEditorView {
             }
     }
     
-    func trayItemDragGesture(item: Configuration.Item) -> some Gesture {
+    func trayItemDragGesture(trayItem: TrayItem) -> some Gesture {
         DragGesture(minimumDistance: 0, coordinateSpace: .named("editor"))
             .onChanged { gesture in
-                if trayPickedUpItem == nil, !barItems.contains(where: { $0.item == item }) {
+                if trayPickedUpItem == nil, !barItems.contains(where: { $0.item == trayItem.item }) {
                     HapticManager.main.play(haptic: .firmInfo, priority: .low)
-                    trayPickedUpItem = item
+                    trayPickedUpItem = trayItem
                 }
                 dragLocation = gesture.location
                 dragTranslation = gesture.translation
@@ -128,38 +150,39 @@ extension InteractionBarEditorView {
         } else if let barPickedUpItem {
             switch dropLocation {
             case .bar(let targetIndex):
-                moveOnBar(item: barPickedUpItem.item, from: barPickedUpItem.index, to: targetIndex)
+                moveOnBar(barItem: barPickedUpItem.barItem, from: barPickedUpItem.index, to: targetIndex)
             case .tray:
-                removeFromBar(item: barPickedUpItem.item)
+                removeFromBar(barItem: barPickedUpItem.barItem)
             }
         }
     }
     
     // MARK: - State Updates
     
-    func addToBar(_ item: Configuration.Item, at index: Int) {
+    func addToBar(_ trayItem: TrayItem, at index: Int) {
         guard allowNewItemInsertion,
-              !barItems.contains(where: { $0.item == item }) else {
+              !barItems.contains(where: { $0.item == trayItem.item }) else {
             assertionFailure(!allowNewItemInsertion ? "Item insertion disabled" : "Item already in bar")
             return
         }
         
         HapticManager.main.play(haptic: .firmInfo, priority: .high)
 
-        let newItem: BarItem = .init(item: item, expanded: false, visible: true)
+        let newItem: BarItem = .init(item: trayItem.item, expanded: false, visible: true)
         barItems.insert(newItem, at: index)
+        trayItem.hide()
         
         updateConfiguration()
     }
   
-    func moveOnBar(item: BarItem, from sourceIndex: Int, to targetIndex: Int) {
+    func moveOnBar(barItem: BarItem, from sourceIndex: Int, to targetIndex: Int) {
         // noop on move to current location or immediately after current location
         guard targetIndex != sourceIndex, targetIndex != sourceIndex + 1 else { return }
         
         HapticManager.main.play(haptic: .firmInfo, priority: .high)
         
-        let newItem: BarItem = .init(item: item.item, expanded: false, visible: true, ancestor: item)
-        item.hide()
+        let newItem: BarItem = .init(item: barItem.item, expanded: false, visible: true, ancestor: barItem)
+        barItem.hide()
         
         if targetIndex == barItems.count {
             barItems.append(newItem)
@@ -169,26 +192,31 @@ extension InteractionBarEditorView {
         
         // wait for animation to complete, then remove original item from barItems
         DispatchQueue.main.asyncAfter(deadline: .now() + barAnimationDuration) {
-            barItems.removeAll(where: { $0 == item })
+            barItems.removeAll(where: { $0 == barItem })
             updateConfiguration()
         }
     }
     
-    func removeFromBar(item: BarItem) {
+    func removeFromBar(barItem: BarItem) {
         // no removing the info stack
-        guard item.item != nil else { return }
+        guard let item = barItem.item else { return }
+        guard let trayItem = trayItems.first(where: { $0.item == item }) else {
+            assertionFailure("Could not find \(item) in tray!")
+            return
+        }
         
         HapticManager.main.play(haptic: .firmInfo, priority: .high)
         
         // smoothly animate away
-        item.hide()
-         withAnimation(.easeInOut(duration: barAnimationDuration)) {
-             item.collapse()
+        barItem.hide()
+        withAnimation(.easeInOut(duration: barAnimationDuration)) {
+            trayItem.show()
+            barItem.collapse()
         }
         
         // wait for animation to complete, then remove from barItems
         DispatchQueue.main.asyncAfter(deadline: .now() + barAnimationDuration) {
-            barItems.removeAll(where: { $0 == item })
+            barItems.removeAll(where: { $0 == barItem })
             updateConfiguration()
         }
     }
@@ -207,9 +235,9 @@ extension InteractionBarEditorView {
     
     // MARK: - Helpers
     
-    func trayItemOutlineColor(_ item: Configuration.Item) -> Color {
+    func trayItemOutlineColor(_ trayItem: TrayItem) -> Color {
         if let dropLocation,
-           trayPickedUpItem == item || (barPickedUpItem?.item.item == item && dropLocation == .tray) {
+           trayPickedUpItem == trayItem || (barPickedUpItem?.barItem.item == trayItem.item && dropLocation == .tray) {
             return palette.accent
         }
         return palette.tertiary

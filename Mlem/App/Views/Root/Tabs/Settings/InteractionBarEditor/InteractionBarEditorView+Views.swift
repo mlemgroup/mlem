@@ -122,24 +122,24 @@ extension InteractionBarEditorView {
     @ViewBuilder
     var tray: some View {
         HFlow(horizontalAlignment: .center, verticalAlignment: .center, distributeItemsEvenly: true) {
-            ForEach(trayItems, id: \.self) { trayItem($0) }
+            ForEach(trayItems, id: \.item) { trayItem($0) }
         }
     }
     
     @ViewBuilder
-    func trayItem(_ item: Configuration.Item) -> some View {
-        itemLabel(item)
-            .opacity(barItems.contains(where: { $0.item == item }) ? 0 : 1)
+    func trayItem(_ trayItem: TrayItem) -> some View {
+        itemLabel(trayItem.item)
+            .opacity(trayItem.opacity)
             .geometryGroup()
-            .offset(trayPickedUpItem == item ? dragTranslation : .zero)
+            .offset(trayPickedUpItem == trayItem ? dragTranslation : .zero)
             .background {
                 Capsule()
-                    .fill(trayItemOutlineColor(item).opacity(0.2))
-                    .stroke(trayItemOutlineColor(item))
+                    .fill(trayItemOutlineColor(trayItem).opacity(0.2))
+                    .stroke(trayItemOutlineColor(trayItem))
                     .background(palette.background, in: .capsule)
             }
-            .gesture(trayItemDragGesture(item: item))
-            .zIndex(trayPickedUpItem == item ? 2 : 0)
+            .gesture(trayItemDragGesture(trayItem: trayItem))
+            .zIndex(trayPickedUpItem == trayItem ? 2 : 0)
     }
     
     @ViewBuilder
@@ -210,7 +210,7 @@ extension InteractionBarEditorView {
                 .frame(height: infoCapsuleHeight)
         } else if let trayPickedUpItem {
             Group {
-                switch trayPickedUpItem {
+                switch trayPickedUpItem.item {
                 case let .action(action):
                     HStack {
                         Image(systemName: action.appearance.barIcon)

@@ -17,11 +17,11 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
         }
     }
     
-    @State var trayItems: [Configuration.Item] = Configuration.Item.allCases
+    @State var trayItems: [TrayItem]
     @State var barItems: [BarItem] = .init()
     
-    @State var barPickedUpItem: (item: BarItem, index: Int)?
-    @State var trayPickedUpItem: Configuration.Item?
+    @State var barPickedUpItem: (barItem: BarItem, index: Int)?
+    @State var trayPickedUpItem: TrayItem?
     
     /// Current entity the dragged item is hovered over. -1 indicates the tray.
     @State var dropLocation: DropLocation?
@@ -40,8 +40,12 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     init(configuration: Configuration, onSet: @escaping (Configuration) -> Void) {
         self.configuration = configuration
         self.onSet = onSet
-        self._barItems = .init(wrappedValue: (configuration.leading + [nil] + configuration.trailing).map { item in
+        let configurationItems: [Configuration.Item?] = configuration.leading + [nil] + configuration.trailing
+        self._barItems = .init(wrappedValue: configurationItems.map { item in
                 .init(item: item, expanded: true, visible: true)
+        })
+        self._trayItems = .init(wrappedValue: Configuration.Item.allCases.map { item in
+            TrayItem(item: item, visible: !configurationItems.contains(item))
         })
     }
     
