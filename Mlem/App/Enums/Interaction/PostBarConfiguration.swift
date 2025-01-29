@@ -50,15 +50,10 @@ struct PostBarConfiguration: InteractionBarConfiguration {
         
         var appearance: CounterAppearance {
             switch self {
-            case .score: .init(
-                value: 7,
-                leading: .upvote(isOn: false),
-                trailing: .downvote(isOn: false),
-                label: "Score counter"
-            )
-            case .upvote: .init(value: 9, leading: .upvote(isOn: false), trailing: nil, label: "Upvote counter")
-            case .downvote: .init(value: 2, leading: .downvote(isOn: false), trailing: nil, label: "Downvote counter")
-            case .reply: .init(value: 1, leading: .reply(), trailing: nil, label: "Reply counter")
+            case .score: .score()
+            case .upvote: .upvote()
+            case .downvote: .downvote()
+            case .reply: .reply()
             }
         }
     }
