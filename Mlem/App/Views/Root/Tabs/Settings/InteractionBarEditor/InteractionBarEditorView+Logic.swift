@@ -11,16 +11,9 @@ extension InteractionBarEditorView {
     
     // MARK: - Definitions
     
-    enum DropLocation {
+    enum DropLocation: Equatable {
         case bar(Int)
         case tray
-        
-        var isTray: Bool {
-            switch self {
-            case .tray: true
-            default: false
-            }
-        }
         
         var index: Int? {
             switch self {
@@ -215,8 +208,10 @@ extension InteractionBarEditorView {
     // MARK: - Helpers
     
     func trayItemOutlineColor(_ item: Configuration.Item) -> Color {
-        return trayPickedUpItem == item ||
-        (barPickedUpItem?.item.item == item && dropLocation?.isTray ?? false) ?
-        palette.accent : palette.tertiary
+        if let dropLocation,
+           trayPickedUpItem == item || (barPickedUpItem?.item.item == item && dropLocation == .tray) {
+            return palette.accent
+        }
+        return palette.tertiary
     }
 }
