@@ -56,16 +56,17 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
         VStack(spacing: Constants.main.standardSpacing) {
             header
             buttons
+            Spacer()
             infoCapsule
             postPreview.zIndex(barPickedUpItem == nil ? 0 : 1)
             Divider()
             readoutSelectors
             Divider()
             tray.zIndex(trayPickedUpItem == nil ? 0 : 1)
-            Spacer()
         }
         .frame(maxWidth: .infinity)
         .padding(Constants.main.standardSpacing)
+        .padding(.bottom, Constants.main.standardSpacing)
         .background(palette.groupedBackground)
         .coordinateSpace(.named("editor"))
     }

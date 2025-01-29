@@ -859,6 +859,9 @@
     "Downvote" : {
 
     },
+    "Downvote counter" : {
+
+    },
     "Downvotes" : {
 
     },
@@ -1842,6 +1845,9 @@
     "Reply" : {
 
     },
+    "Reply counter" : {
+
+    },
     "Report" : {
 
     },
@@ -1931,6 +1937,9 @@
 
     },
     "Score" : {
+
+    },
+    "Score counter" : {
 
     },
     "Search" : {
@@ -2532,6 +2541,9 @@
 
     },
     "Upvote" : {
+
+    },
+    "Upvote counter" : {
 
     },
     "Upvote on Save" : {
