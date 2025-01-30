@@ -136,7 +136,7 @@ extension InteractionBarEditorView {
                 Capsule()
                     .fill(trayItemOutlineColor(trayItem).opacity(0.2))
                     .stroke(trayItemOutlineColor(trayItem))
-                    .background(palette.background, in: .capsule)
+                    .background(palette.secondaryGroupedBackground, in: .capsule)
             }
             .gesture(trayItemDragGesture(trayItem: trayItem))
             .zIndex(trayPickedUpItem == trayItem ? 2 : 0)
