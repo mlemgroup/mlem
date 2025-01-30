@@ -206,7 +206,7 @@ extension InteractionBarEditorView {
                     Capsule()
                         .fill(palette.negative.opacity(0.2))
                         .stroke(palette.negative)
-                        .background(palette.background, in: .capsule)
+                        .background(palette.secondaryGroupedBackground, in: .capsule)
                 }
                 .frame(height: infoCapsuleHeight)
         } else if let trayPickedUpItem {
