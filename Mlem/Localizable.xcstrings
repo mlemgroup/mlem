@@ -426,7 +426,7 @@
     "Automatically refreshes every %lld seconds." : {
 
     },
-    "Autoplay Media" : {
+    "Autoplay" : {
 
     },
     "Avatar" : {
@@ -883,6 +883,9 @@
     "Email Verification" : {
 
     },
+    "Embedded Content" : {
+
+    },
     "Embeddings" : {
 
     },
@@ -935,6 +938,9 @@
 
     },
     "Export Settings" : {
+
+    },
+    "External Links" : {
 
     },
     "Failed to connect to %@" : {
@@ -1134,7 +1140,13 @@
     "Imported Settings" : {
 
     },
+    "In Browser" : {
+
+    },
     "In Default Browser" : {
+
+    },
+    "In Reader" : {
 
     },
     "In-App" : {
@@ -1218,9 +1230,6 @@
     "Link" : {
 
     },
-    "Links" : {
-
-    },
     "Load directly from %@" : {
 
     },
@@ -1257,6 +1266,9 @@
     "Log in or sign up to view your subscriptions." : {
 
     },
+    "Manage how Mlem handles links and control how images and videos are displayed." : {
+
+    },
     "Manage how Mlem interacts with Lemmy instances and other websites." : {
 
     },
@@ -1276,6 +1288,9 @@
 
     },
     "Maximum Depth" : {
+
+    },
+    "Media & Links" : {
 
     },
     "Medium" : {

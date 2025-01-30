@@ -13,8 +13,6 @@ struct GeneralSettingsView: View {
     @Setting(\.upvoteOnSave) var upvoteOnSave
     @Setting(\.markReadOnScroll) var markReadOnScroll
     @Setting(\.infiniteScroll) var infiniteScroll
-    @Setting(\.autoplayMedia) var autoplayMedia
-    @Setting(\.muteVideos) var muteVideos
     @Setting(\.defaultFeed) var defaultFeed
     @Setting(\.sidebarVisibleByDefault) var sidebarVisibleByDefault
     @Setting(\.hapticLevel) var hapticLevel
@@ -35,10 +33,6 @@ struct GeneralSettingsView: View {
                 if UIDevice.isPad {
                     Toggle("Show Sidebar on App Launch", systemImage: Icons.sidebar, isOn: $sidebarVisibleByDefault)
                 }
-                if #available(iOS 18.0, *) {
-                    Toggle("Autoplay Media", systemImage: Icons.playCircle, isOn: $autoplayMedia)
-                }
-                Toggle("Mute Videos", systemImage: Icons.muted, isOn: $muteVideos)
                 Toggle("Mark Read on Scroll", systemImage: Icons.read, isOn: $markReadOnScroll)
                 Toggle("Infinite Scroll", systemImage: Icons.infiniteScroll, isOn: $infiniteScroll)
                 Toggle("Upvote on Save", systemImage: Icons.upvoteOnSave, isOn: $upvoteOnSave)
