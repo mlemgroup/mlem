@@ -51,26 +51,11 @@ struct PostThumbnailSettingsView: View {
             
             GeometryReader { geometry in
                 VStack(alignment: .leading, spacing: 5) {
-                    Capsule()
-                        .fill(LinearGradient(
-                            colors: [palette.secondary.opacity(gradientBegin), palette.secondary.opacity(gradientEnd)],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        ))
+                    MockTextView()
                         .frame(width: geometry.size.width / 2, height: geometry.size.height / 6)
-                    Capsule()
-                        .fill(LinearGradient(
-                            colors: [palette.secondary.opacity(0.65), palette.secondary.opacity(0.55)],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        ))
+                    MockTextView(beginOpacity: 0.65, endOpacity: 0.55)
                         .frame(width: geometry.size.width * 4 / 5, height: geometry.size.height / 4)
-                    Capsule()
-                        .fill(LinearGradient(
-                            colors: [palette.secondary.opacity(gradientBegin), palette.secondary.opacity(gradientEnd)],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        ))
+                    MockTextView()
                         .frame(width: geometry.size.width / 3, height: geometry.size.height / 6)
                 }
                 .foregroundStyle(palette.secondary)
