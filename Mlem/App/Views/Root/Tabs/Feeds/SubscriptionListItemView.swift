@@ -40,7 +40,7 @@ struct SubscriptionListItemView: View {
                 CircleCroppedImageView(community, frame: 28)
                 (
                     Text(community.name)
-                        + Text(verbatim: "@\(community.host ?? "unknown")")
+                        + Text(verbatim: "@\(community.host)")
                         .foregroundStyle(.secondary)
                         .font(.footnote)
                 )
@@ -50,7 +50,7 @@ struct SubscriptionListItemView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     Text(community.name)
                         .lineLimit(1)
-                    Text(verbatim: "@\(community.host ?? "")")
+                    Text(verbatim: "@\(community.host)")
                         .foregroundStyle(.secondary)
                         .font(.footnote)
                 }

@@ -135,18 +135,14 @@ struct MarkdownEditorToolbarView: View {
                     .padding(.top, 2)
                 Button("Community Link", systemImage: Icons.community) {
                     navigation.openSheet(.communityPicker { community in
-                        if let prefix = community.fullNameWithPrefix {
-                            textView.insertText(prefix)
-                        }
+                        textView.insertText(community.fullNameWithPrefix)
                     })
                 }
                 Button("User Link", systemImage: Icons.person) {
                     navigation.openSheet(.personPicker { person in
-                        if let prefix = person.fullNameWithPrefix {
-                            // lemmy-ui doesn't recognize the @user@example.com format, so we have to do this instead :(
-                            // See this issue https://github.com/LemmyNet/lemmy-ui/issues/2579
-                            textView.insertText("[\(prefix)](\(person.actorId))")
-                        }
+                        // lemmy-ui doesn't recognize the @user@example.com format, so we have to do this instead :(
+                        // See this issue https://github.com/LemmyNet/lemmy-ui/issues/2579
+                        textView.insertText("[\(person.fullNameWithPrefix)](\(person.actorId))")
                     })
                 }
                 Button("Instance Link", systemImage: Icons.instance) {

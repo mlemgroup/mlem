@@ -21,13 +21,13 @@ extension CommentEditorView {
                 }
                 switch originalContext {
                 case let .post(post):
-                    let post = try await account.api.getPost(actorId: post.actorId)
+                    let post = try await account.api.getPost(url: post.actorId.url)
                     Task { @MainActor in
                         resolutionState = .success
                         resolvedContext = .post(post)
                     }
                 case let .comment(comment):
-                    let comment = try await account.api.getComment(actorId: comment.actorId)
+                    let comment = try await account.api.getComment(url: comment.actorId.url)
                     Task { @MainActor in
                         resolutionState = .success
                         resolvedContext = .comment(comment)

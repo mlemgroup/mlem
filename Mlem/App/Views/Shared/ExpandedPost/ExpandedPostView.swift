@@ -11,7 +11,7 @@ import SwiftUI
 struct ExpandedPostView<Content: View>: View {
     struct AnchorsKey: PreferenceKey {
         // swiftlint:disable:next nesting
-        typealias Value = [URL?: Anchor<CGPoint>]
+        typealias Value = [ActorIdentifier?: Anchor<CGPoint>]
 
         static var defaultValue: Value { [:] }
 
@@ -37,8 +37,8 @@ struct ExpandedPostView<Content: View>: View {
     @State var scrollTargetedComment: (any CommentStubProviding)?
 
     @State var scrolledToscrollTargetedComment: Bool = false
-    @State var jumpButtonTarget: URL?
-    @State var topVisibleItem: URL?
+    @State var jumpButtonTarget: ActorIdentifier?
+    @State var topVisibleItem: ActorIdentifier?
     @State var postCollapsed: Bool = false
     
     init(
@@ -130,7 +130,7 @@ struct ExpandedPostView<Content: View>: View {
                     }
                     .animation(.easeInOut(duration: 0.1), value: (tracker?.loadingState ?? .loading) == .loading)
                     .animation(.easeInOut(duration: 0.1), value: tracker?.errorDetails == nil)
-                    .animation(.easeInOut(duration: 0.4), value: scrollTargetedComment?.actorId)
+                    .animation(.easeInOut(duration: 0.4), value: scrollTargetedComment?.actorId_)
                     .padding(.bottom, 80)
                     .id(tracker?.proposedDepthOffset ?? 0)
                     .transition(.opacity)
@@ -140,7 +140,7 @@ struct ExpandedPostView<Content: View>: View {
                     if tracker?.loadingState == .done, let scrollTargetedComment {
                         // Without a slight delay here, `scrollTo` can sometimes fail. I'm not sure why this is.
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                            proxy.scrollTo(scrollTargetedComment.actorId, anchor: .center)
+                            proxy.scrollTo(scrollTargetedComment.actorId_, anchor: .center)
                             scrolledToscrollTargetedComment = true
                         }
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {

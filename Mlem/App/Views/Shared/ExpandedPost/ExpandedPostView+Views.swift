@@ -31,7 +31,9 @@ extension ExpandedPostView {
                 case let .comment(comment):
                     CommentView(
                         comment: comment,
-                        highlight: [scrollTargetedComment?.actorId, highlightedComment?.actorId].contains(comment.actorId),
+                        // TODO: This could theoretically fail to highlight the comment if `highlightedComment` is a `CommentStub`
+                        // with a non-actorId URL. We should implement additional logic of some sort to handle this.
+                        highlight: [scrollTargetedComment?.actorId_, highlightedComment?.actorId_].contains(comment.actorId),
                         depthOffset: tracker.proposedDepthOffset
                     )
                     .quickSwipes(comment.swipeActions(behavior: .standard, commentTreeTracker: tracker))

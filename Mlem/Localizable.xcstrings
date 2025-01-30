@@ -192,9 +192,6 @@
         }
       }
     },
-    "%lld on your instance" : {
-
-    },
     "%lld years ago today!" : {
       "localizations" : {
         "en" : {
@@ -1624,9 +1621,6 @@
     "Posts from communities you subscribe to" : {
 
     },
-    "Posts from your instance's communities" : {
-
-    },
     "Posts with these keywords in their titles will be hidden. If you are a moderator or administrator of a matching post, it will appear in your feed but require you to tap to view its content." : {
 
     },
@@ -2102,9 +2096,6 @@
     "Some instances proxy images to protect your privacy. In certain cases, this causes image loading to fail. You can bypass the image proxy and load directly, but this will expose your IP address to the image host." : {
 
     },
-    "Something went wrong" : {
-
-    },
     "Sort" : {
 
     },
@@ -2193,9 +2184,6 @@
 
     },
     "Temporary" : {
-
-    },
-    "Test" : {
 
     },
     "That's all, folks!" : {
@@ -2613,9 +2601,6 @@
 
     },
     "Viewing %@ as guest" : {
-
-    },
-    "Viewing page as guest" : {
 
     },
     "Visit" : {

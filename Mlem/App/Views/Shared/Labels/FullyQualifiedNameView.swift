@@ -80,7 +80,7 @@ struct FullyQualifiedNameView: View {
 }
 
 extension FullyQualifiedNameView {
-    init(_ entity: any CommunityOrPersonStub, instanceLocation: InstanceLocation) {
-        self.init(name: entity.name, instance: entity.host ?? "unknown", instanceLocation: instanceLocation)
+    init(_ entity: any CommunityOrPerson, instanceLocation: InstanceLocation) {
+        self.init(name: entity.name, instance: entity.host, instanceLocation: instanceLocation)
     }
 }
