@@ -133,7 +133,7 @@ struct CommentEditorView: View {
             VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
                 if resolutionState == .notFound {
                     resolutionWarning
-                        .padding([.horizontal, .bottom], 10)
+                        .padding(.horizontal, 10)
                 }
                 MarkdownTextEditor(
                     onChange: {
