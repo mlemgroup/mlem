@@ -229,7 +229,7 @@ extension InteractionBarEditorView {
             .padding(.horizontal, 5)
             .background {
                 Capsule()
-                    .fill(palette.background)
+                    .fill(palette.secondaryGroupedBackground)
                     .stroke(palette.tertiary)
             }
             .frame(height: infoCapsuleHeight)
