@@ -27,9 +27,10 @@ struct PostGridView: View {
     
     @Environment(\.communityContext) var communityContext
     
-    @State var columns: [GridItem] = [GridItem(.flexible())]
     @State var frameWidth: CGFloat = .zero
     @State var bottomAppearedPostIndex: Int = -1
+    
+    @State var isWideEnoughForTwoColumns: Bool = false
     
     @Namespace var navigationNamespace
     
@@ -55,23 +56,6 @@ struct PostGridView: View {
                     handleError(error)
                 }
             }
-            .onChange(of: postSize, initial: true) { _, newValue in
-                if newValue.tiled {
-                    // leading/trailing alignment makes them want to stick to each other, allowing the Constants.main.halfSpacing padding applied below
-                    // to push them apart by a sum of Constants.main.standardSpacing
-                    
-                    // Avoid causing unnecessary view update
-                    if columns.count == 1 {
-                        columns = [
-                            GridItem(.flexible(), spacing: 0, alignment: .trailing),
-                            GridItem(.flexible(), spacing: 0, alignment: .leading)
-                        ]
-                    }
-                } else if columns.count > 1 {
-                    // Only trigger if not already 1 column to avoid causing unnecessary view update
-                    columns = [GridItem(.flexible())]
-                }
-            }
             .toolbar {
                 ToolbarItemGroup(placement: .secondaryAction) {
                     SwiftUI.Section {
@@ -83,15 +67,27 @@ struct PostGridView: View {
     
     var content: some View {
         VStack(spacing: 0) {
+            GeometryReader { geometry in
+                Spacer()
+                    .onChange(of: geometry.size.width, initial: true) {
+                        print(geometry.size.width)
+                        let newVal = geometry.size.width > 700
+                        if isWideEnoughForTwoColumns != newVal { // Avoid unnecessary view update
+                            isWideEnoughForTwoColumns = newVal
+                        }
+                    }
+            }
+            .frame(height: 0)
+            let columns = columns
             LazyVGrid(columns: columns, spacing: postSize.sectionSpacing) {
                 ForEach(Array(postFeedLoader.items.enumerated()), id: \.element.hashValue) { index, post in
                     if !post.shouldHideInFeed {
                         NavigationLink(.post(post, communityContext: communityContext, navigationNamespace: navigationNamespace)) {
-                            FeedPostView(post: post)
+                            FeedPostView(post: post, requireConsistentHeight: columns.count != 1)
                                 .matchedTransitionSource_(id: "post\(post.actorId)", in: navigationNamespace)
                         }
                         .buttonStyle(.empty)
-                        .padding(.horizontal, postSize.tiled ? Constants.main.halfSpacing : 10)
+                        .padding(.horizontal, postInnerPadding)
                         .markReadOnScroll(
                             index: index,
                             post: post,
@@ -110,8 +106,31 @@ struct PostGridView: View {
                     }
                 }
             }
-        
             EndOfFeedView(loadingState: postFeedLoader.loadingState, loadMore: loadMore, viewType: .hobbit)
+        }
+    }
+    
+    var postInnerPadding: CGFloat {
+        if columns.count == 1 {
+            Constants.main.standardSpacing
+        } else {
+            Constants.main.standardSpacing / (postSize == .compact ? 4 : 2)
+        }
+    }
+    
+    var columns: [GridItem] {
+        if postSize.tiled || (postSize != .large && isWideEnoughForTwoColumns) {
+            // leading/trailing alignment makes them want to stick to each other, allowing the Constants.main.halfSpacing padding applied below
+            // to push them apart by a sum of Constants.main.standardSpacing
+            
+            // Avoid causing unnecessary view update
+            return [
+                GridItem(.flexible(), spacing: 0, alignment: .trailing),
+                GridItem(.flexible(), spacing: 0, alignment: .leading)
+            ]
+        } else {
+            // Only trigger if not already 1 column to avoid causing unnecessary view update
+            return [GridItem(.flexible())]
         }
     }
     
