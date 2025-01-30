@@ -11,7 +11,7 @@ extension CounterAppearance {
             value: value,
             leading: .upvote(isOn: upvoteOn),
             trailing: .downvote(isOn: downvoteOn),
-            label: "Score counter"
+            label: "Score Counter"
         )
     }
     
