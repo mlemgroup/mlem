@@ -1,4 +1,5 @@
 {
+  "originHash" : "e91c2cec61691543665fad5843f30eafc5288bb40fc3a60d50c7d7e9194f3135",
   "pins" : [
     {
       "identity" : "collectionconcurrencykit",
@@ -34,6 +35,15 @@
       "state" : {
         "branch" : "master",
         "revision" : "e0c7eebc5a4465a3c4680764f26b7a61f567cdaf"
+      }
+    },
+    {
+      "identity" : "lemmymarkdownui",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mlemgroup/LemmyMarkdownUI",
+      "state" : {
+        "revision" : "ab579f496b1acaa3230dcc5ae16fa804f53ed504",
+        "version" : "0.6.0"
       }
     },
     {
@@ -163,5 +173,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }
