@@ -75,7 +75,12 @@ struct InstanceView: View {
             upgradeState = .loading
             do {
                 if !(instance is any Instance3Providing) {
-                    let instance3 = try await instance.upgradeLocal()
+                    let instance3: Instance3
+                    if let myInstance = appState.firstSession.instance, instance.host == myInstance.host {
+                        instance3 = myInstance
+                    } else {
+                        instance3 = try await instance.upgradeLocal()
+                    }
                     instance = instance3
                     logVisit(instance3)
                 }
@@ -83,24 +88,6 @@ struct InstanceView: View {
             } catch {
                 upgradeState = .idle
                 handleError(error)
-            }
-        }
-        .task {
-            if instance.local {
-                do {
-                    let myInstance: Instance3
-                    if let apiInstance = appState.firstApi.myInstance {
-                        myInstance = apiInstance
-                    } else {
-                        myInstance = try await appState.firstApi.getMyInstance()
-                    }
-                    
-                    Task { @MainActor in
-                        instance = myInstance
-                    }
-                } catch {
-                    handleError(error)
-                }
             }
         }
         .isAtTopSubscriber(isAtTop: $isAtTop)

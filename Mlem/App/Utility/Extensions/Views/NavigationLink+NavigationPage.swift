@@ -56,7 +56,7 @@ struct NavigationLinkPickerLabelView: View {
     let systemImage: String?
     
     var body: some View {
-        HStack {
+        HStack(spacing: 10) {
             Group {
                 if let systemImage {
                     Label(title, systemImage: systemImage)

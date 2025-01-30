@@ -133,6 +133,7 @@ extension SearchView {
                     SearchResultsView(results: items) { community in
                         HStack {
                             CommunityListRow(community, readout: .subscribers)
+                                .disabled(editingRecentSearches)
                             deleteRecentSearchButton(session: session) {
                                 visitHistory.removeCommunity(community, context: .search)
                             }
@@ -148,6 +149,7 @@ extension SearchView {
                     SearchResultsView(results: items) { person in
                         HStack {
                             PersonListRow(person, readout: .postsAndComments)
+                                .disabled(editingRecentSearches)
                             deleteRecentSearchButton(session: session) {
                                 visitHistory.removePerson(person, context: .search)
                             }
@@ -163,6 +165,7 @@ extension SearchView {
                     SearchResultsView(results: items) { instance in
                         HStack {
                             InstanceListRow(instance, readout: .users)
+                                .disabled(editingRecentSearches)
                             deleteRecentSearchButton(session: session) {
                                 visitHistory.removeInstance(instance, context: .search)
                             }
@@ -183,11 +186,7 @@ extension SearchView {
     var recentSearchesHeader: some View {
         HStack {
             if editingRecentSearches {
-                Button("Done") {
-                    withAnimation {
-                        editingRecentSearches = false
-                    }
-                }
+                ClearRecentSearchesButton()
             } else {
                 Text("Recently Searched")
                     .foregroundStyle(palette.primary)
@@ -196,7 +195,11 @@ extension SearchView {
             Spacer()
             
             if editingRecentSearches {
-                ClearRecentSearchesButton()
+                Button("Done") {
+                    withAnimation {
+                        editingRecentSearches = false
+                    }
+                }
             } else {
                 Button("Edit") {
                     withAnimation {

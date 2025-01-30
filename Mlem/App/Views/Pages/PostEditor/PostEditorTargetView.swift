@@ -27,17 +27,19 @@ struct PostEditorTargetView: View {
                     communityPicker
                 }
             }
-            switch target.sendState {
-            case .unsent:
-                EmptyView()
-            case .sent:
-                Image(systemName: Icons.successCircleFill)
-                    .symbolRenderingMode(.hierarchical)
-                    .foregroundStyle(palette.positive)
-            case .failed:
-                Image(systemName: Icons.errorCircleFill)
-                    .symbolRenderingMode(.hierarchical)
-                    .foregroundStyle(palette.negative)
+            if isMoreThanOneTarget {
+                switch target.sendState {
+                case .unsent:
+                    EmptyView()
+                case .sent:
+                    Image(systemName: Icons.successCircleFill)
+                        .symbolRenderingMode(.hierarchical)
+                        .foregroundStyle(palette.positive)
+                case .failed:
+                    Image(systemName: Icons.errorCircleFill)
+                        .symbolRenderingMode(.hierarchical)
+                        .foregroundStyle(palette.negative)
+                }
             }
         }
     }

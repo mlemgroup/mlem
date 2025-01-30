@@ -36,10 +36,6 @@ struct FullyQualifiedNameView: View {
     @ScaledMetric(relativeTo: .footnote) var capsuleHeight: CGFloat = 13
     @ScaledMetric(relativeTo: .footnote) var capsuleSpacing: CGFloat = 5
     
-    // capsule color gradient configuration
-    let gradientBegin: CGFloat = 0.55
-    let gradientEnd: CGFloat = 0.45
-    
     var body: some View {
         if let name, let instance {
             (prependedText + nameText(name: name) + instanceText(instance: instance))
@@ -71,21 +67,11 @@ struct FullyQualifiedNameView: View {
     
     var placeholder: some View {
         VStack(alignment: .leading, spacing: capsuleSpacing) {
-            Capsule()
-                .fill(LinearGradient(
-                    colors: [palette.secondary.opacity(gradientBegin), palette.secondary.opacity(gradientEnd)],
-                    startPoint: .leading,
-                    endPoint: .trailing
-                ))
+            MockTextView()
                 .frame(width: instanceLocation == .bottom ? 100 : 160, height: capsuleHeight)
             
             if instanceLocation == .bottom {
-                Capsule()
-                    .fill(LinearGradient(
-                        colors: [palette.tertiary.opacity(gradientBegin), palette.tertiary.opacity(gradientEnd)],
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    ))
+                MockTextView()
                     .frame(width: 60, height: capsuleHeight * 0.8)
                     .padding(.vertical, capsuleHeight * 0.2)
             }
