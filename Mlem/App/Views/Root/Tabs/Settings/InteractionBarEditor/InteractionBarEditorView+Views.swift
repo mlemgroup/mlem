@@ -45,6 +45,7 @@ extension InteractionBarEditorView {
         }
         .padding(Constants.main.standardSpacing)
         .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.mediumItemCornerRadius))
+        .paletteBorder(cornerRadius: Constants.main.mediumItemCornerRadius)
     }
     
     @ViewBuilder
@@ -289,7 +290,7 @@ extension InteractionBarEditorView {
         .padding(Constants.main.standardSpacing)
         .background {
             Capsule()
-                .fill(palette.background.opacity(0.85))
+                .fill(palette.secondaryGroupedBackground.opacity(0.85))
         }
         .geometryGroup()
     }
