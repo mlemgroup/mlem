@@ -25,6 +25,7 @@ struct FeedPostView<EmbeddedContent: View>: View {
     
     let post: any Post1Providing
     let favoredLink: PostViewNavigationLink?
+    let requireConsistentHeight: Bool
     let overridePostSize: PostSize?
     
     var postSize: PostSize {
@@ -37,11 +38,13 @@ struct FeedPostView<EmbeddedContent: View>: View {
         post: any Post1Providing,
         overridePostSize: PostSize? = nil,
         favoredLink: PostViewNavigationLink? = nil,
+        requireConsistentHeight: Bool = false,
         @ViewBuilder embeddedContent: @escaping () -> EmbeddedContent = { EmptyView() }
     ) {
         self.post = post
         self.overridePostSize = overridePostSize
         self.favoredLink = favoredLink
+        self.requireConsistentHeight = requireConsistentHeight
         self.embeddedContent = embeddedContent
         self._obscured = .init(wrappedValue: FiltersTracker.main.postWouldBeFiltered(post))
     }
@@ -95,11 +98,16 @@ struct FeedPostView<EmbeddedContent: View>: View {
     var content: some View {
         switch postSize {
         case .compact:
-            CompactPostView(post: post)
+            CompactPostView(post: post, requireConsistentHeight: requireConsistentHeight)
         case .tile:
             TilePostView(post: post)
         case .headline:
-            HeadlinePostView(post: post, favoredLink: favoredLink, embeddedContent: embeddedContent)
+            HeadlinePostView(
+                post: post,
+                favoredLink: favoredLink,
+                requireConsistentHeight: requireConsistentHeight,
+                embeddedContent: embeddedContent
+            )
         case .large:
             LargePostView(post: post, favoredLink: favoredLink)
         }
