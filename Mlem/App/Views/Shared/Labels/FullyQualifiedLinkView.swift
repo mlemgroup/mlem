@@ -14,7 +14,7 @@ struct FullyQualifiedLinkView: View {
     let entity: (any FullyQualifiedLabelView.Entity)?
     let avatarFallback: FixedImageView.Fallback
     let labelStyle: FullyQualifiedLabelStyle
-    var showAvatar: Bool = true
+    var showAvatar: Bool?
     var showInstance: Bool = true
     var blurred: Bool = false
     
@@ -46,7 +46,7 @@ extension FullyQualifiedLinkView {
     init(
         _ entity: (any Person)?,
         labelStyle: FullyQualifiedLabelStyle,
-        showAvatar: Bool = true,
+        showAvatar: Bool? = nil,
         showInstance: Bool = true,
         blurred: Bool = false
     ) {
@@ -63,7 +63,7 @@ extension FullyQualifiedLinkView {
     init(
         _ entity: (any Community)?,
         labelStyle: FullyQualifiedLabelStyle,
-        showAvatar: Bool = true,
+        showAvatar: Bool? = nil,
         showInstance: Bool = true,
         blurred: Bool = false
     ) {
@@ -80,7 +80,7 @@ extension FullyQualifiedLinkView {
     init(
         _ entity: UserAccount?,
         labelStyle: FullyQualifiedLabelStyle,
-        showAvatar: Bool = true,
+        showAvatar: Bool? = nil,
         showInstance: Bool = true,
         blurred: Bool = false
     ) {

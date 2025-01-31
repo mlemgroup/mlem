@@ -51,13 +51,25 @@ struct FullyQualifiedLabelView: View {
     @Environment(\.feedContext) var feedContext: FeedContext?
 
     @Setting(\.showSubscribedStatus) var showSubscribedStatus
+    @Setting(\.showPersonAvatar) var showPersonAvatar
+    @Setting(\.showCommunityAvatar) var showCommunityAvatar
     
     let entity: (any Entity)?
     let avatarFallback: FixedImageView.Fallback
     let labelStyle: FullyQualifiedLabelStyle
-    var showAvatar: Bool = true
+    var showAvatar: Bool?
     var showInstance: Bool = true
     var blurred: Bool = false
+    
+    var shouldShowAvatar: Bool {
+        if let showAvatar { return showAvatar }
+        
+        if entity is any CommunityStubProviding {
+            return showCommunityAvatar
+        } else {
+            return showPersonAvatar
+        }
+    }
     
     var showSubscriptionIndicator: Bool {
         guard showSubscribedStatus,
@@ -77,7 +89,7 @@ struct FullyQualifiedLabelView: View {
     
     var body: some View {
         HStack(spacing: 7) {
-            if showAvatar {
+            if shouldShowAvatar {
                 CircleCroppedImageView(
                     url: entity?.avatar?.withIconSize(labelStyle.avatarResolution),
                     frame: labelStyle.avatarSize,
@@ -142,7 +154,7 @@ extension FullyQualifiedLabelView {
     init(
         _ entity: (any Person)?,
         labelStyle: FullyQualifiedLabelStyle,
-        showAvatar: Bool = true,
+        showAvatar: Bool? = nil,
         showInstance: Bool = true,
         blurred: Bool = false
     ) {
@@ -159,7 +171,7 @@ extension FullyQualifiedLabelView {
     init(
         _ entity: (any Community)?,
         labelStyle: FullyQualifiedLabelStyle,
-        showAvatar: Bool = true,
+        showAvatar: Bool? = nil,
         showInstance: Bool = true,
         blurred: Bool = false
     ) {
@@ -176,7 +188,7 @@ extension FullyQualifiedLabelView {
     init(
         _ entity: UserAccount?,
         labelStyle: FullyQualifiedLabelStyle,
-        showAvatar: Bool = true,
+        showAvatar: Bool? = nil,
         showInstance: Bool = true,
         blurred: Bool = false
     ) {

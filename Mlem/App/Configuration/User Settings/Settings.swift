@@ -24,6 +24,7 @@ class Settings: ObservableObject {
     @AppStorage("a11y.websiteThumbnailIcon") var websiteThumbnailIcon: Bool = false
 
     @AppStorage("post.size") var postSize: PostSize = .compact
+    @AppStorage("post.allowMultipleColumns") var allowMultiplePostColumns: Bool = true
     @AppStorage("post.defaultSort") var defaultPostSort: ApiSortType = .hot
     @AppStorage("post.fallbackSort") var fallbackPostSort: ApiSortType = .hot
     @AppStorage("post.thumbnailLocation") var thumbnailLocation: ThumbnailLocation = .left
@@ -130,6 +131,7 @@ class Settings: ObservableObject {
     // swiftlint:disable:next function_body_length
     func reinit(from settings: CodableSettings) {
         postSize = settings.post_size
+        allowMultiplePostColumns = settings.post_allowMultipleColumns
         defaultPostSort = settings.post_defaultSort
         fallbackPostSort = settings.post_fallbackSort
         thumbnailLocation = settings.post_thumbnailLocation

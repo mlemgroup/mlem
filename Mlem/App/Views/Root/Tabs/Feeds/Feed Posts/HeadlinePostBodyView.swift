@@ -14,8 +14,11 @@ struct HeadlinePostBodyView: View {
     
     @Setting(\.thumbnailLocation) var thumbnailLocation
     @Setting(\.blurNsfw) var blurNsfw
+    
+    @ScaledMetric(relativeTo: .headline) var titleHostHeightLimit: CGFloat = 75
 
     let post: any Post
+    var requireConsistentHeight: Bool = false
     
     var blurred: Bool {
         switch blurNsfw {
@@ -32,21 +35,15 @@ struct HeadlinePostBodyView: View {
                     post: post,
                     blurred: blurred,
                     size: .standard,
-                    frame: .init(width: Constants.main.thumbnailSize, height: Constants.main.thumbnailSize)
+                    frame: .init(width: thumbnailSize, height: thumbnailSize)
                 )
             }
 
-            VStack(alignment: .leading, spacing: Constants.main.halfSpacing) {
-                post.taggedTitle(communityContext: communityContext)
-                    .multilineTextAlignment(.leading)
-                    .foregroundStyle((post.read_ ?? false) ? palette.secondary : palette.primary)
-                    .font(.headline)
-                    .imageScale(.small)
-                
-                if let host = post.linkHost {
-                    PostLinkHostView(host: host)
-                        .font(.subheadline)
-                }
+            if requireConsistentHeight {
+                titleAndHostView
+                    .frame(height: titleHostHeightLimit, alignment: .top)
+            } else {
+                titleAndHostView
             }
             
             if thumbnailLocation == .right {
@@ -55,9 +52,37 @@ struct HeadlinePostBodyView: View {
                     post: post,
                     blurred: blurred,
                     size: .standard,
-                    frame: .init(width: Constants.main.thumbnailSize, height: Constants.main.thumbnailSize)
+                    frame: .init(width: thumbnailSize, height: thumbnailSize)
                 )
             }
         }
+    }
+    
+    var thumbnailSize: CGFloat {
+        if requireConsistentHeight, titleHostHeightLimit < Constants.main.thumbnailSize * 1.5 {
+            titleHostHeightLimit
+        } else {
+            Constants.main.thumbnailSize
+        }
+    }
+    
+    @ViewBuilder
+    var titleAndHostView: some View {
+        VStack(alignment: .leading, spacing: Constants.main.halfSpacing) {
+            titleView
+            if let host = post.linkHost {
+                PostLinkHostView(host: host)
+                    .font(.subheadline)
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var titleView: some View {
+        post.taggedTitle(communityContext: communityContext)
+            .multilineTextAlignment(.leading)
+            .foregroundStyle((post.read_ ?? false) ? palette.secondary : palette.primary)
+            .font(.headline)
+            .imageScale(.small)
     }
 }
