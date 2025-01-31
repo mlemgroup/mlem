@@ -62,9 +62,9 @@ struct CompactPostView: View {
             VStack(alignment: .leading, spacing: Constants.main.compactSpacing) {
                 HStack(spacing: 4) {
                     if communityContext != nil {
-                        FullyQualifiedLinkView(post.creator_, labelStyle: .small)
+                        FullyQualifiedLinkView(post.creator_, labelStyle: .small, showAvatar: false)
                     } else {
-                        FullyQualifiedLinkView(post.community_, labelStyle: .small)
+                        FullyQualifiedLinkView(post.community_, labelStyle: .small, showAvatar: false)
                     }
                     Spacer()
 
