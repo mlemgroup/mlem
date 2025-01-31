@@ -12,6 +12,7 @@ import SwiftUI
 struct FeedSortPicker: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
+    @Environment(Palette.self) var palette
     
     @Binding var sort: ApiSortType
     
@@ -46,7 +47,7 @@ struct FeedSortPicker: View {
     }
     
     var body: some View {
-        Menu(sort.label(topFormat: topSortTypes.count == 1 ? .topOnly : .topAndTimescale), systemImage: sort.systemImage) {
+        Menu {
             Section {
                 ForEach(nonTopSortTypes, id: \.self) { type in
                     Toggle(
@@ -77,6 +78,26 @@ struct FeedSortPicker: View {
                     navigation.openSheet(.advancedSorting($sort))
                 }
             }
+        } label: {
+            if ApiSortType.topCases.contains(sort) {
+                HStack {
+                    Image(systemName: Icons.topSort)
+                        .imageScale(.small)
+                    Text(sort.label(topFormat: .timescaleAbbreviated))
+                        .font(.footnote)
+                        .fontDesign(.rounded)
+                }
+                .padding(.horizontal, 10)
+                .padding(.vertical, 5)
+                .background {
+                    Capsule()
+                        // 1.51 is intentional - iOS doesn't render it quite right at 1.5 (iPhone 12)
+                        .strokeBorder(palette.accent, lineWidth: 1.51)
+                }
+                .accessibilityLabel(sort.label(topFormat: .topAndTimescale))
+            } else {
+                Label(sort.label(topFormat: topSortTypes.count == 1 ? .topOnly : .topAndTimescale), systemImage: sort.systemImage)
+            }
         }
         .disabled(appState.firstApi.fetchedVersion == nil)
         .popover(isPresented: $topSortPopupPresented) {
@@ -87,5 +108,12 @@ struct FeedSortPicker: View {
                 .presentationCornerRadius(18)
                 .presentationCompactAdaptation(.popover)
         }
+    }
+    
+    var formatter: DateComponentsFormatter {
+        let formatter = DateComponentsFormatter()
+        formatter.unitsStyle = .abbreviated
+        formatter.maximumUnitCount = 1
+        return formatter
     }
 }

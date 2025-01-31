@@ -66,7 +66,8 @@ extension ApiSortType: @retroactive CaseIterable {
         case .old:
             .init(localized: "Old")
         case .topAll:
-            .init(localized: "All Time")
+            // swiftlint:disable:next void_function_in_ternary
+            abbreviateUnits ? .init(localized: "All") : .init(localized: "All Time")
         case .mostComments:
             .init(localized: "Most Comments")
         case .newComments:
@@ -76,7 +77,15 @@ extension ApiSortType: @retroactive CaseIterable {
         case .scaled:
             .init(localized: "Scaled")
         default:
-            formatter(unitsStyle: abbreviateUnits ? .abbreviated : .full)
+            dateComponentsLabel(abbreviateUnits: abbreviateUnits)
+        }
+    }
+    
+    private func dateComponentsLabel(abbreviateUnits: Bool) -> String {
+        if abbreviateUnits {
+            formatter(unitsStyle: .abbreviated).string(for: dateComponents) ?? ""
+        } else {
+            formatter(unitsStyle: .full)
                 .string(for: dateComponents)?
                 .capitalized ?? ""
         }
@@ -88,7 +97,7 @@ extension ApiSortType: @retroactive CaseIterable {
             case .topOnly:
                 return String(localized: "Top")
             case .topAndTimescale:
-                return String(localized: "Top: \(basicLabel(abbreviateUnits: true))")
+                return String(localized: "Top: \(basicLabel(abbreviateUnits: false))")
             default: break
             }
         }
@@ -136,7 +145,7 @@ extension ApiSortType: @retroactive CaseIterable {
     
     private func formatter(unitsStyle: DateComponentsFormatter.UnitsStyle) -> DateComponentsFormatter {
         let formatter = DateComponentsFormatter()
-        formatter.unitsStyle = .full
+        formatter.unitsStyle = unitsStyle
         formatter.maximumUnitCount = 1
         return formatter
     }
