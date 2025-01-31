@@ -12,6 +12,7 @@ import SwiftUI
 struct FeedSortPicker: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
+    @Environment(Palette.self) var palette
     
     @Binding var sort: ApiSortType
     
@@ -90,7 +91,8 @@ struct FeedSortPicker: View {
                 .padding(.vertical, 5)
                 .background {
                     Capsule()
-                        .strokeBorder(.blue, lineWidth: 1)
+                        // 1.51 is intentional - iOS doesn't render it quite right at 1.5 (iPhone 12)
+                        .strokeBorder(palette.accent, lineWidth: 1.51)
                 }
                 .accessibilityLabel(sort.label(topFormat: .topAndTimescale))
             } else {
