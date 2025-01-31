@@ -20,7 +20,7 @@ struct AccessibilitySettingsView: View {
             SettingsHeaderView(
                 title: "Accessibility",
                 // swiftlint:disable:next line_length
-                description: "Personalize Mlem in ways that work best for you. Some features are tied to system-wide accessibility settings.",
+                description: "Customize Mlem to work best for you. Some features are tied to system-wide accessibility settings.",
                 systemImage: "hand.point.up.braille.fill"
             )
             .tint(palette.colorfulAccent(2))
