@@ -17,6 +17,12 @@ struct SortingSettingsView: View {
     
     var body: some View {
         Form {
+            SettingsHeaderView(
+                title: "Sorting",
+                description: "Choose the default sort mode for posts and comments.",
+                systemImage: "arrow.up.and.down.text.horizontal"
+            )
+            .tint(palette.colorfulAccent(5))
             Section {
                 HStack {
                     Text("Posts")
@@ -60,6 +66,6 @@ struct SortingSettingsView: View {
                 }
             }
         }
-        .navigationTitle("Sorting")
+        .contentMargins(.top, 16)
     }
 }

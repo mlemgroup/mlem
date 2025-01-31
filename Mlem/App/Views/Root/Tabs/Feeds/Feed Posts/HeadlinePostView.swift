@@ -23,14 +23,17 @@ struct HeadlinePostView<EmbeddedContent: View>: View {
     let post: any Post1Providing
     let embeddedContent: EmbeddedContent
     let favoredLink: PostViewNavigationLink?
-    
+    let requireConsistentHeight: Bool
+
     init(
         post: any Post1Providing,
         favoredLink: PostViewNavigationLink? = nil,
+        requireConsistentHeight: Bool = false,
         @ViewBuilder embeddedContent: () -> EmbeddedContent = { EmptyView() }
     ) {
         self.post = post
         self.favoredLink = favoredLink
+        self.requireConsistentHeight = requireConsistentHeight
         self.embeddedContent = embeddedContent()
     }
     
@@ -68,7 +71,7 @@ struct HeadlinePostView<EmbeddedContent: View>: View {
                 PostEllipsisMenus(post: post)
             }
             
-            HeadlinePostBodyView(post: post)
+            HeadlinePostBodyView(post: post, requireConsistentHeight: requireConsistentHeight)
             
             if alwaysShowCreator, communityContext == nil {
                 personLink
@@ -89,11 +92,11 @@ struct HeadlinePostView<EmbeddedContent: View>: View {
     
     @ViewBuilder
     var personLink: some View {
-        FullyQualifiedLinkView(post.creator_, labelStyle: .medium, showAvatar: showPersonAvatar)
+        FullyQualifiedLinkView(post.creator_, labelStyle: .medium)
     }
     
     @ViewBuilder
     var communityLink: some View {
-        FullyQualifiedLinkView(post.community_, labelStyle: .medium, showAvatar: showCommunityAvatar)
+        FullyQualifiedLinkView(post.community_, labelStyle: .medium)
     }
 }

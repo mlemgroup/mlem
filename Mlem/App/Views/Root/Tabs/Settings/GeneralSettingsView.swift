@@ -9,6 +9,8 @@ import Dependencies
 import SwiftUI
 
 struct GeneralSettingsView: View {
+    @Environment(Palette.self) var palette
+    
     // behavior
     @Setting(\.upvoteOnSave) var upvoteOnSave
     @Setting(\.markReadOnScroll) var markReadOnScroll
@@ -18,35 +20,48 @@ struct GeneralSettingsView: View {
     @Setting(\.hapticLevel) var hapticLevel
     @Setting(\.wrapCodeBlockLines) var wrapCodeBlockLines
     
-    // Gestures
+    // gestures
     @Setting(\.quickSwipesEnabled) var swipeActionsEnabled
     @Setting(\.swipeAnywhereToNavigate) var swipeAnywhereToNavigate
     
+    // avatars
+    @Setting(\.showPersonAvatar) var showPersonAvatar
+    @Setting(\.showCommunityAvatar) var showCommunityAvatar
+    
     var body: some View {
         Form {
+            SettingsHeaderView(
+                title: "General",
+                description: "Manage your overall setup for Mlem.",
+                systemImage: "gear"
+            )
+            .tint(palette.neutralAccent)
             Section {
-                Picker("Default Feed", systemImage: Icons.feeds, selection: $defaultFeed) {
-                    ForEach(FeedSelection.allCases, id: \.self) { item in
-                        Text(item.rawValue.capitalized)
-                    }
-                }
+                NavigationLink(
+                    "Default Feed",
+                    value: .init(localized: defaultFeed.label),
+                    fallbackValue: "",
+                    systemImage: Icons.feeds,
+                    destination: .settings(.defaultFeed)
+                )
+                NavigationLink(
+                    "Haptics",
+                    value: .init(localized: hapticLevel.label),
+                    fallbackValue: "",
+                    systemImage: Icons.haptics,
+                    destination: .settings(.haptics)
+                )
+            }
+            Section {
+                Toggle("Upvote on Save", systemImage: Icons.upvoteOnSave, isOn: $upvoteOnSave)
+                Toggle("Mark Read on Scroll", systemImage: Icons.read, isOn: $markReadOnScroll)
+                Toggle("Infinite Scroll", systemImage: Icons.infiniteScroll, isOn: $infiniteScroll)
+                Toggle("Wrap Code Block Lines", systemImage: Icons.inlineCode, isOn: $wrapCodeBlockLines)
                 if UIDevice.isPad {
                     Toggle("Show Sidebar on App Launch", systemImage: Icons.sidebar, isOn: $sidebarVisibleByDefault)
                 }
-                Toggle("Mark Read on Scroll", systemImage: Icons.read, isOn: $markReadOnScroll)
-                Toggle("Infinite Scroll", systemImage: Icons.infiniteScroll, isOn: $infiniteScroll)
-                Toggle("Upvote on Save", systemImage: Icons.upvoteOnSave, isOn: $upvoteOnSave)
-                Picker("Haptic Level", systemImage: Icons.haptics, selection: $hapticLevel) {
-                    ForEach(HapticPriority.allCases, id: \.self) { item in
-                        Text(item.label)
-                    }
-                }
-                Toggle("Wrap Code Block Lines", systemImage: Icons.inlineCode, isOn: $wrapCodeBlockLines)
-            } header: {
-                Text("Behavior")
             }
-            
-            Section("Gestures") {
+            Section {
                 Toggle(
                     "Swipe Actions",
                     systemImage: Icons.swipeActions,
@@ -75,9 +90,14 @@ struct GeneralSettingsView: View {
                 )
             }
             
+            Section {
+                Toggle("User Avatar", systemImage: Icons.personCircle, isOn: $showPersonAvatar)
+                Toggle("Community Avatar", systemImage: Icons.communityCircle, isOn: $showCommunityAvatar)
+            }
+            
             NavigationLink("Import/Export Settings", systemImage: Icons.importSettings, destination: .settings(.importExportSettings))
         }
         .labelStyle(.conditional)
-        .navigationTitle("General")
+        .contentMargins(.top, 16)
     }
 }

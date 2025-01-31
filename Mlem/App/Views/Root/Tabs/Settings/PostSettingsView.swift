@@ -14,10 +14,9 @@ struct PostSettingsView: View {
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor: Bool
     
     @Setting(\.postSize) var postSize
+    @Setting(\.allowMultiplePostColumns) var allowMultipleColumns
     @Setting(\.thumbnailLocation) var thumbnailLocation
     @Setting(\.showPostCreator) var showCreator
-    @Setting(\.showPersonAvatar) var showPersonAvatar
-    @Setting(\.showCommunityAvatar) var showCommunityAvatar
     @Setting(\.showSubscribedStatus) var showSubscribedStatus
     @Setting(\.showDownvotesCompact) var showDownvotesCompact
     
@@ -26,6 +25,9 @@ struct PostSettingsView: View {
     var body: some View {
         Form {
             PostSizePicker()
+            if UIDevice.isPad {
+                Toggle("Multiple Columns", systemImage: "square.grid.2x2", isOn: $allowMultipleColumns)
+            }
             
             Section {
                 NavigationLink(.settings(.postInteractionBar)) {
@@ -65,11 +67,6 @@ struct PostSettingsView: View {
                         destination: .settings(.postReadIndicator)
                     )
                 }
-            }
-            
-            Section {
-                Toggle("User Avatar", systemImage: Icons.personCircle, isOn: $showPersonAvatar)
-                Toggle("Community Avatar", systemImage: Icons.communityCircle, isOn: $showCommunityAvatar)
             }
             
             if postSize != .tile, postSize != .compact {

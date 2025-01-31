@@ -19,8 +19,11 @@ struct CompactPostView: View {
     @Environment(Palette.self) var palette: Palette
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
     
-    let post: any Post1Providing
+    @ScaledMetric(relativeTo: .caption) var titleHostHeightLimit: CGFloat = 40
     
+    let post: any Post1Providing
+    var requireConsistentHeight: Bool = false
+
     var readouts: [PostBarConfiguration.ReadoutType?] {
         let saved: PostBarConfiguration.ReadoutType? = post.saved_ ?? false ? .saved : nil
         if showDownvotesCompact {
@@ -59,9 +62,9 @@ struct CompactPostView: View {
             VStack(alignment: .leading, spacing: Constants.main.compactSpacing) {
                 HStack(spacing: 4) {
                     if communityContext != nil {
-                        FullyQualifiedLinkView(post.creator_, labelStyle: .small)
+                        FullyQualifiedLinkView(post.creator_, labelStyle: .small, showAvatar: false)
                     } else {
-                        FullyQualifiedLinkView(post.community_, labelStyle: .small)
+                        FullyQualifiedLinkView(post.community_, labelStyle: .small, showAvatar: false)
                     }
                     Spacer()
 
@@ -78,18 +81,12 @@ struct CompactPostView: View {
                     PostEllipsisMenus(post: post, size: 18)
                 }
                 .padding(.bottom, -2)
-  
-                post.taggedTitle(communityContext: communityContext)
-                    .multilineTextAlignment(.leading)
-                    .imageScale(.small)
-                    .foregroundStyle(post.read_ ?? false ? palette.secondary : palette.primary)
-                    .font(.subheadline)
-                
-                if let host = post.linkHost {
-                    PostLinkHostView(host: host)
-                        .font(.caption)
+                if requireConsistentHeight {
+                    titleAndHostView
+                        .frame(height: titleHostHeightLimit, alignment: .top)
+                } else {
+                    titleAndHostView
                 }
-                
                 InfoStackView(post: post, readouts: readouts, showColor: true)
             }
             .frame(maxWidth: .infinity)
@@ -104,5 +101,25 @@ struct CompactPostView: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+    }
+    
+    @ViewBuilder
+    var titleAndHostView: some View {
+        VStack(alignment: .leading, spacing: Constants.main.compactSpacing) {
+            titleView
+            if let host = post.linkHost {
+                PostLinkHostView(host: host)
+                    .font(.caption)
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var titleView: some View {
+        post.taggedTitle(communityContext: communityContext)
+            .multilineTextAlignment(.leading)
+            .imageScale(.small)
+            .foregroundStyle(post.read_ ?? false ? palette.secondary : palette.primary)
+            .font(.subheadline)
     }
 }
