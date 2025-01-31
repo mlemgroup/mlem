@@ -107,6 +107,7 @@ struct PostGridView: View {
                     }
                 }
             }
+            .padding(.horizontal, postSize.tiled || columns.count == 1 ? 0 : Constants.main.halfSpacing)
             EndOfFeedView(loadingState: postFeedLoader.loadingState, loadMore: loadMore, viewType: .hobbit)
         }
     }
