@@ -19,7 +19,6 @@ struct AccessibilitySettingsView: View {
         Form {
             SettingsHeaderView(
                 title: "Accessibility",
-                // swiftlint:disable:next line_length
                 description: "Customize Mlem to work best for you. Some features are tied to system-wide accessibility settings.",
                 systemImage: "hand.point.up.braille.fill"
             )

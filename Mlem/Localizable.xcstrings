@@ -771,6 +771,16 @@
         }
       }
     },
+    "Customize Mlem to work best for you. Some features are tied to system-wide accessibility settings." : {
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customise Mlem to work best for you. Some features are tied to system-wide accessibility settings."
+          }
+        }
+      }
+    },
     "Days:" : {
 
     },
@@ -1570,16 +1580,6 @@
     },
     "Personal Only" : {
 
-    },
-    "Personalize Mlem in ways that work best for you. Some features are tied to system-wide accessibility settings." : {
-      "localizations" : {
-        "en-GB" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Personalise Mlem in ways that work best for you. Some features are tied to system-wide accessibility settings."
-          }
-        }
-      }
     },
     "Photo Library" : {
 
