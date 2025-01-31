@@ -330,7 +330,7 @@ enum Icons {
     static let switchUser: String = "person.crop.circle.badge.plus"
     static let missing: String = "questionmark.square.dashed"
     static let connection: String = "antenna.radiowaves.left.and.right"
-    static let haptics: String = "hand.tap"
+    static let haptics: String = "circle.dotted.and.circle"
     static let transparency: String = "square.on.square.intersection.dashed"
     static let icon: String = "fleuron"
     static let banner: String = "flag"

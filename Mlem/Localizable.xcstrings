@@ -429,9 +429,6 @@
     "Avatar" : {
 
     },
-    "Avatars" : {
-
-    },
     "Average: %@" : {
 
     },
@@ -467,9 +464,6 @@
       }
     },
     "Banner" : {
-
-    },
-    "Behavior" : {
 
     },
     "Biography" : {
@@ -575,10 +569,16 @@
     "Choose Instance..." : {
 
     },
+    "Choose the default sort mode for posts and comments." : {
+
+    },
     "Choose when Not Safe For Work content should be blurred." : {
 
     },
     "Choose whether to show a warning when opening a page that is likely to contain sensitive content." : {
+
+    },
+    "Choose which feed is shown when the app opens." : {
 
     },
     "Choose wisely - you cannot change this later." : {
@@ -751,12 +751,32 @@
         }
       }
     },
+    "Customize how often Mlem plays haptic feedback." : {
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customise how often Mlem plays haptic feedback."
+          }
+        }
+      }
+    },
     "Customize Interaction Bar" : {
       "localizations" : {
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Customise Interaction Bar"
+          }
+        }
+      }
+    },
+    "Customize Mlem to work best for you. Some features are tied to system-wide accessibility settings." : {
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customise Mlem to work best for you. Some features are tied to system-wide accessibility settings."
           }
         }
       }
@@ -884,9 +904,6 @@
 
     },
     "Embedded Content" : {
-
-    },
-    "Embeddings" : {
 
     },
     "Enable Keyword Filters" : {
@@ -1050,9 +1067,6 @@
     "General" : {
 
     },
-    "Gestures" : {
-
-    },
     "GitHub Repository" : {
 
     },
@@ -1075,6 +1089,9 @@
 
     },
     "Haptic Level" : {
+
+    },
+    "Haptics" : {
 
     },
     "Hard" : {
@@ -1281,6 +1298,9 @@
     "Manage how Mlem interacts with Lemmy instances and other websites." : {
 
     },
+    "Manage your overall setup for Mlem." : {
+
+    },
     "Mark Read" : {
 
     },
@@ -1389,10 +1409,10 @@
     "Most Comments" : {
 
     },
-    "Multiple Columns" : {
+    "Mozilla Observatory" : {
 
     },
-    "Mozilla Observatory" : {
+    "Multiple Columns" : {
 
     },
     "Mute Videos" : {

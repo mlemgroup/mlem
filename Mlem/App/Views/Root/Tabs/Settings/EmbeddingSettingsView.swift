@@ -13,7 +13,7 @@ struct EmbeddingSettingsView: View {
     var body: some View {
         Form {
             SettingsHeaderView(
-                title: "Embeddings",
+                title: "Embedded Content",
                 description: "Display linked media from supported hosts in-app rather than as a link.",
                 systemImage: Icons.embedding
             )

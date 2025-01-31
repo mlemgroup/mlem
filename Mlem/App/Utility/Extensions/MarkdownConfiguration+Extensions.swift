@@ -33,7 +33,8 @@ extension MarkdownConfiguration {
     ) }
     
     static var dimmed: MarkdownConfiguration { .init(
-        inlineImageLoader: { _ in },
+        imagePresentationMode: .inline,
+        inlineImageLoader: { _ in }, // Don't load inline images; they will remain as placeholders
         imageBlockView: { imageView($0, shouldBlur: false) },
         wrapCodeBlockLines: Settings.main.wrapCodeBlockLines,
         primaryColor: Palette.main.secondary,
