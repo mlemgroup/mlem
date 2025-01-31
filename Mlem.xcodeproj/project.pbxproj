@@ -230,6 +230,8 @@
 		03A630EF2D497143009A47A6 /* TappableLinksSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A630EE2D497143009A47A6 /* TappableLinksSettingsView.swift */; };
 		03A630F12D497674009A47A6 /* ShieldsBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A630F02D497674009A47A6 /* ShieldsBadgeView.swift */; };
 		03A630F42D4976EB009A47A6 /* ShieldsBadgeView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A630F32D4976EB009A47A6 /* ShieldsBadgeView+Logic.swift */; };
+		03A6315E2D4D1A1B009A47A6 /* DefaultFeedSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A6315D2D4D1A1B009A47A6 /* DefaultFeedSettingsView.swift */; };
+		03A631602D4D1CBB009A47A6 /* HapticSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A6315F2D4D1CBB009A47A6 /* HapticSettingsView.swift */; };
 		03A82FA12C0D1E8500D01A5C /* ApiClient+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A82FA02C0D1E8500D01A5C /* ApiClient+Extensions.swift */; };
 		03A82FA32C0D1F2400D01A5C /* View+ExternalApiWarning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A82FA22C0D1F2400D01A5C /* View+ExternalApiWarning.swift */; };
 		03AB484F2CBAE33500567FF9 /* MarkdownWithLinkList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AB484E2CBAE33500567FF9 /* MarkdownWithLinkList.swift */; };
@@ -726,6 +728,8 @@
 		03A630EE2D497143009A47A6 /* TappableLinksSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TappableLinksSettingsView.swift; sourceTree = "<group>"; };
 		03A630F02D497674009A47A6 /* ShieldsBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShieldsBadgeView.swift; sourceTree = "<group>"; };
 		03A630F32D4976EB009A47A6 /* ShieldsBadgeView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShieldsBadgeView+Logic.swift"; sourceTree = "<group>"; };
+		03A6315D2D4D1A1B009A47A6 /* DefaultFeedSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultFeedSettingsView.swift; sourceTree = "<group>"; };
+		03A6315F2D4D1CBB009A47A6 /* HapticSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticSettingsView.swift; sourceTree = "<group>"; };
 		03A6315C2D4D15F1009A47A6 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		03A82FA02C0D1E8500D01A5C /* ApiClient+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ApiClient+Extensions.swift"; sourceTree = "<group>"; };
 		03A82FA22C0D1F2400D01A5C /* View+ExternalApiWarning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ExternalApiWarning.swift"; sourceTree = "<group>"; };
@@ -1070,6 +1074,8 @@
 				CDEE15532D22364500EB9D7B /* ErrorLogView.swift */,
 				CD45CB0C2D1880E3008BC729 /* FiltersSettingsView.swift */,
 				039F58892C7B54FE00C61658 /* GeneralSettingsView.swift */,
+				03A6315F2D4D1CBB009A47A6 /* HapticSettingsView.swift */,
+				03A6315D2D4D1A1B009A47A6 /* DefaultFeedSettingsView.swift */,
 				036FFA2E2D45197300998D8A /* PrivacySettingsView.swift */,
 				038188982D43E0F30073E88D /* SafetySettingsView.swift */,
 				03600D922D4531DF00C704CB /* PrivacyBypassImageProxySettingsView.swift */,
@@ -2398,6 +2404,7 @@
 				0315B1C12C74C71A006D4F82 /* CommentEditorView+Context.swift in Sources */,
 				03D283FE2D25EEC500A6659B /* SearchView+Views.swift in Sources */,
 				03AFD0DF2C3B2E000054B8AD /* PersonListRow.swift in Sources */,
+				03A6315E2D4D1A1B009A47A6 /* DefaultFeedSettingsView.swift in Sources */,
 				0315B1CA2C767847006D4F82 /* InteractionBarTracker.swift in Sources */,
 				03DAEA772C64074E0064DE64 /* SubscriptionListItemView.swift in Sources */,
 				0324FA772C1F0AE100F6247D /* Readout.swift in Sources */,
@@ -2799,6 +2806,7 @@
 				0397D4642C676CA8002C6CDC /* FeedSortPicker.swift in Sources */,
 				0355F9462C150B2300605248 /* ExternalApiInfoView.swift in Sources */,
 				03D0273C2CD3BA5100984519 /* PersonContent+Extensions.swift in Sources */,
+				03A631602D4D1CBB009A47A6 /* HapticSettingsView.swift in Sources */,
 				03F9672B2CE221220081C9A3 /* Label+Profile1.swift in Sources */,
 				CD13CC612C5D262E001AF428 /* MediaLoadingState.swift in Sources */,
 				03CBD1932C61369A00E870BC /* Interactable2Providing+Extensions.swift in Sources */,
