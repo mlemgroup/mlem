@@ -16,6 +16,7 @@ struct FeedPostView<EmbeddedContent: View>: View {
     @Environment(Palette.self) private var palette
     @Environment(FiltersTracker.self) var filtersTracker
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
+    @Environment(\.communityContext) var communityContext
     
     @State var obscured: Bool
     
@@ -26,11 +27,9 @@ struct FeedPostView<EmbeddedContent: View>: View {
     let post: any Post1Providing
     let favoredLink: PostViewNavigationLink?
     let requireConsistentHeight: Bool
-    let overridePostSize: PostSize?
+    @State var overridePostSize: PostSize?
     
-    var postSize: PostSize {
-        overridePostSize ?? settingsPostSize
-    }
+    var postSize: PostSize { overridePostSize ?? settingsPostSize }
     
     @ViewBuilder let embeddedContent: () -> EmbeddedContent
     
@@ -42,11 +41,11 @@ struct FeedPostView<EmbeddedContent: View>: View {
         @ViewBuilder embeddedContent: @escaping () -> EmbeddedContent = { EmptyView() }
     ) {
         self.post = post
-        self.overridePostSize = overridePostSize
         self.favoredLink = favoredLink
         self.requireConsistentHeight = requireConsistentHeight
         self.embeddedContent = embeddedContent
         self._obscured = .init(wrappedValue: FiltersTracker.main.postWouldBeFiltered(post))
+        self._overridePostSize = .init(wrappedValue: overridePostSize)
     }
     
     var body: some View {
@@ -81,6 +80,25 @@ struct FeedPostView<EmbeddedContent: View>: View {
         .onChange(of: filtersTracker.changeHash) {
             obscured = filtersTracker.postWouldBeFiltered(post)
         }
+        .onAppear {
+            if shouldRenderCompact() {
+                overridePostSize = .compact
+            }
+        }
+        .onChange(of: settingsPostSize) {
+            if settingsPostSize == .tile {
+                overridePostSize = nil
+            } else if shouldRenderCompact() {
+                overridePostSize = .compact
+            }
+        }
+        .onChange(of: post.read_) {
+            if shouldRenderCompact() {
+                withAnimation {
+                    overridePostSize = .compact
+                }
+            }
+        }
     }
     
     @ViewBuilder
@@ -111,5 +129,11 @@ struct FeedPostView<EmbeddedContent: View>: View {
         case .large:
             LargePostView(post: post, favoredLink: favoredLink)
         }
+    }
+    
+    func shouldRenderCompact() -> Bool {
+        guard settingsPostSize != .tile, settingsPostSize != .compact else { return false }
+        return post.read_ ?? false &&
+        ((communityContext == nil && post.pinnedInstance) || (communityContext != nil && post.pinnedCommunity))
     }
 }
