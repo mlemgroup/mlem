@@ -226,10 +226,10 @@
 		039F58972C7B68F100C61658 /* AboutMlemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039F58962C7B68F100C61658 /* AboutMlemView.swift */; };
 		039F58992C7B697D00C61658 /* Bundle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039F58982C7B697D00C61658 /* Bundle+Extensions.swift */; };
 		039F589D2C7B6C0A00C61658 /* FormChevron.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039F589C2C7B6C0A00C61658 /* FormChevron.swift */; };
-		03A630F12D497674009A47A6 /* ShieldsBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A630F02D497674009A47A6 /* ShieldsBadgeView.swift */; };
-		03A630F42D4976EB009A47A6 /* ShieldsBadgeView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A630F32D4976EB009A47A6 /* ShieldsBadgeView+Logic.swift */; };
 		03A630ED2D497005009A47A6 /* ExternalLinkSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A630EC2D497005009A47A6 /* ExternalLinkSettingsView.swift */; };
 		03A630EF2D497143009A47A6 /* TappableLinksSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A630EE2D497143009A47A6 /* TappableLinksSettingsView.swift */; };
+		03A630F12D497674009A47A6 /* ShieldsBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A630F02D497674009A47A6 /* ShieldsBadgeView.swift */; };
+		03A630F42D4976EB009A47A6 /* ShieldsBadgeView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A630F32D4976EB009A47A6 /* ShieldsBadgeView+Logic.swift */; };
 		03A82FA12C0D1E8500D01A5C /* ApiClient+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A82FA02C0D1E8500D01A5C /* ApiClient+Extensions.swift */; };
 		03A82FA32C0D1F2400D01A5C /* View+ExternalApiWarning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A82FA22C0D1F2400D01A5C /* View+ExternalApiWarning.swift */; };
 		03AB484F2CBAE33500567FF9 /* MarkdownWithLinkList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AB484E2CBAE33500567FF9 /* MarkdownWithLinkList.swift */; };
@@ -722,10 +722,10 @@
 		039F58962C7B68F100C61658 /* AboutMlemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutMlemView.swift; sourceTree = "<group>"; };
 		039F58982C7B697D00C61658 /* Bundle+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extensions.swift"; sourceTree = "<group>"; };
 		039F589C2C7B6C0A00C61658 /* FormChevron.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormChevron.swift; sourceTree = "<group>"; };
-		03A630F02D497674009A47A6 /* ShieldsBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShieldsBadgeView.swift; sourceTree = "<group>"; };
-		03A630F32D4976EB009A47A6 /* ShieldsBadgeView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShieldsBadgeView+Logic.swift"; sourceTree = "<group>"; };
 		03A630EC2D497005009A47A6 /* ExternalLinkSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalLinkSettingsView.swift; sourceTree = "<group>"; };
 		03A630EE2D497143009A47A6 /* TappableLinksSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TappableLinksSettingsView.swift; sourceTree = "<group>"; };
+		03A630F02D497674009A47A6 /* ShieldsBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShieldsBadgeView.swift; sourceTree = "<group>"; };
+		03A630F32D4976EB009A47A6 /* ShieldsBadgeView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShieldsBadgeView+Logic.swift"; sourceTree = "<group>"; };
 		03A82FA02C0D1E8500D01A5C /* ApiClient+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ApiClient+Extensions.swift"; sourceTree = "<group>"; };
 		03A82FA22C0D1F2400D01A5C /* View+ExternalApiWarning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ExternalApiWarning.swift"; sourceTree = "<group>"; };
 		03AB484E2CBAE33500567FF9 /* MarkdownWithLinkList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownWithLinkList.swift; sourceTree = "<group>"; };
@@ -3195,7 +3195,7 @@
 			repositoryURL = "https://github.com/mlemgroup/LemmyMarkdownUI";
 			requirement = {
 				kind = upToNextMinorVersion;
-				minimumVersion = 0.6.0;
+				minimumVersion = 0.7.0;
 			};
 		};
 		0392826E2BC84E480097F91A /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
