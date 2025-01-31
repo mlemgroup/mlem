@@ -46,7 +46,7 @@ struct FeedSortPicker: View {
     }
     
     var body: some View {
-        Menu(sort.label(topFormat: topSortTypes.count == 1 ? .topOnly : .topAndTimescale), systemImage: sort.systemImage) {
+        Menu {
             Section {
                 ForEach(nonTopSortTypes, id: \.self) { type in
                     Toggle(
@@ -77,6 +77,18 @@ struct FeedSortPicker: View {
                     navigation.openSheet(.advancedSorting($sort))
                 }
             }
+        } label: {
+            if ApiSortType.topCases.contains(sort) {
+                HStack {
+                    Image(systemName: Icons.topSort)
+                    Text(sort.label(topFormat: .timescaleAbbreviated))
+                        .font(.footnote)
+                        .fontDesign(.rounded)
+                }
+                .accessibilityLabel(sort.label(topFormat: .topAndTimescale))
+            } else {
+                Label(sort.label(topFormat: topSortTypes.count == 1 ? .topOnly : .topAndTimescale), systemImage: sort.systemImage)
+            }
         }
         .disabled(appState.firstApi.fetchedVersion == nil)
         .popover(isPresented: $topSortPopupPresented) {
@@ -87,5 +99,12 @@ struct FeedSortPicker: View {
                 .presentationCornerRadius(18)
                 .presentationCompactAdaptation(.popover)
         }
+    }
+    
+    var formatter: DateComponentsFormatter {
+        let formatter = DateComponentsFormatter()
+        formatter.unitsStyle = .abbreviated
+        formatter.maximumUnitCount = 1
+        return formatter
     }
 }

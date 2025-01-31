@@ -49,7 +49,7 @@ struct TopSortPicker: View {
                         Text("All Time")
                     }
                 } else {
-                    Text(formatter.string(from: type.dateComponents ?? .init()) ?? "")
+                    Text(type.label(topFormat: .timescaleAbbreviated))
                 }
             }
             .frame(maxWidth: .infinity)
@@ -68,12 +68,5 @@ struct TopSortPicker: View {
             }
         }
         .foregroundStyle(palette.primary)
-    }
-    
-    var formatter: DateComponentsFormatter {
-        let formatter = DateComponentsFormatter()
-        formatter.unitsStyle = .abbreviated
-        formatter.maximumUnitCount = 1
-        return formatter
     }
 }
