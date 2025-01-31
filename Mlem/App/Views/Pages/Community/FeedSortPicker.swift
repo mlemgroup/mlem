@@ -81,9 +81,16 @@ struct FeedSortPicker: View {
             if ApiSortType.topCases.contains(sort) {
                 HStack {
                     Image(systemName: Icons.topSort)
+                        .imageScale(.small)
                     Text(sort.label(topFormat: .timescaleAbbreviated))
                         .font(.footnote)
                         .fontDesign(.rounded)
+                }
+                .padding(.horizontal, 10)
+                .padding(.vertical, 5)
+                .background {
+                    Capsule()
+                        .strokeBorder(.blue, lineWidth: 1)
                 }
                 .accessibilityLabel(sort.label(topFormat: .topAndTimescale))
             } else {
