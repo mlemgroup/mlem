@@ -51,7 +51,7 @@ extension AccountListView {
         case .instance:
             let dict = Dictionary(
                 grouping: accountsTracker.userAccounts,
-                by: { $0.host ?? "Unknown" }
+                by: \.host
             )
             let uniqueInstances = dict.filter { $1.count == 1 }.values.map { $0.first! }
             var array = dict

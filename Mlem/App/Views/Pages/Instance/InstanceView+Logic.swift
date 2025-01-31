@@ -95,7 +95,8 @@ extension InstanceView {
     }
     
     func attemptToLoadFediseerData() {
-        if fediseerData == nil, let host = instance.host {
+        if fediseerData == nil {
+            let host = instance.host
             Task {
                 do {
                     guard let instanceURL = URL(string: "https://fediseer.com/api/v1/whitelist/\(host)") else { return }

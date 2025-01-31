@@ -116,7 +116,7 @@ class AppState {
     var firstApi: ApiClient { firstSession.api }
     var firstPerson: Person4? { (firstSession as? UserSession)?.person }
     
-    func accountThatModerates(actorId: URL) -> UserSession? {
+    func accountThatModerates(actorId: ActorIdentifier) -> UserSession? {
         activeSessions.first(where: { session in
             session.person?.moderatedCommunities.contains { $0.actorId == actorId } ?? false
         })

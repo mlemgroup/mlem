@@ -27,17 +27,19 @@ struct PostEditorTargetView: View {
                     communityPicker
                 }
             }
-            switch target.sendState {
-            case .unsent:
-                EmptyView()
-            case .sent:
-                Image(systemName: Icons.successCircleFill)
-                    .symbolRenderingMode(.hierarchical)
-                    .foregroundStyle(palette.positive)
-            case .failed:
-                Image(systemName: Icons.errorCircleFill)
-                    .symbolRenderingMode(.hierarchical)
-                    .foregroundStyle(palette.negative)
+            if isMoreThanOneTarget {
+                switch target.sendState {
+                case .unsent:
+                    EmptyView()
+                case .sent:
+                    Image(systemName: Icons.successCircleFill)
+                        .symbolRenderingMode(.hierarchical)
+                        .foregroundStyle(palette.positive)
+                case .failed:
+                    Image(systemName: Icons.errorCircleFill)
+                        .symbolRenderingMode(.hierarchical)
+                        .foregroundStyle(palette.negative)
+                }
             }
         }
     }
@@ -56,7 +58,7 @@ struct PostEditorTargetView: View {
                     FullyQualifiedLabelView(community, labelStyle: singleAccount ? .medium : .large)
                         .id(community.hashValue)
                 } else if let community = target.community {
-                    FullyQualifiedNameView(name: community.name, instance: community.host, instanceLocation: .trailing)
+                    FullyQualifiedNameView(name: nil, instance: nil, instanceLocation: .trailing)
                         .task {
                             do {
                                 target.community = try await community.upgrade()
@@ -120,7 +122,7 @@ struct PostEditorTargetView: View {
         
         target.resolutionState = .resolving
         do {
-            let newCommunity: Community2 = try await target.account.api.getCommunity(actorId: community.actorId)
+            let newCommunity: Community2 = try await target.account.api.getCommunity(url: community.allResolvableUrls[0])
             target.community = newCommunity
             target.resolutionState = .success
         } catch ApiClientError.noEntityFound {
@@ -159,7 +161,7 @@ class PostEditorTarget: Identifiable {
         
         if let community,
            let communityFeedLoader = feedLoader as? CommunityPostFeedLoader,
-           communityFeedLoader.community.actorId == community.actorId {
+           communityFeedLoader.community.actorId == community.actorId_ {
             Task { @MainActor in
                 withAnimation {
                     communityFeedLoader.prependItem(post)

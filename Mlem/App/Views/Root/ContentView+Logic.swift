@@ -51,7 +51,7 @@ extension ContentView {
         case .nickname:
             AppState.main.firstAccount.nickname
         case .instance:
-            AppState.main.firstAccount.host ?? .init(localized: "Profile")
+            AppState.main.firstAccount.host
         case .anonymous:
             .init(localized: "Profile")
         }

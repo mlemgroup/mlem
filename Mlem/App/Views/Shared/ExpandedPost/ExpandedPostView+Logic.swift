@@ -13,9 +13,9 @@ extension ExpandedPostView {
         !(scrollTargetedComment == nil || (post is any Post3Providing && scrolledToscrollTargetedComment))
     }
     
-    func topCommentRow(of anchors: AnchorsKey.Value, in proxy: GeometryProxy) -> URL? {
+    func topCommentRow(of anchors: AnchorsKey.Value, in proxy: GeometryProxy) -> ActorIdentifier? {
         var yBest = CGFloat.infinity
-        var ret: URL?
+        var ret: ActorIdentifier?
         for (row, anchor) in anchors {
             let y = proxy[anchor].y
             guard y >= 0, y < yBest else { continue }
@@ -26,9 +26,9 @@ extension ExpandedPostView {
     }
     
     func scrollToNextComment() {
-        guard let tracker else { return }
+        guard let tracker, let postActorId = post?.actorId_ else { return }
         if let topVisibleItem {
-            if topVisibleItem == post?.actorId, let first = tracker.comments.first {
+            if topVisibleItem == postActorId, let first = tracker.comments.first {
                 jumpButtonTarget = first.actorId
                 return
             }
@@ -42,12 +42,12 @@ extension ExpandedPostView {
     }
     
     func scrollToPreviousComment() {
-        guard let tracker else { return }
-        if let topVisibleItem, topVisibleItem != post?.actorId {
+        guard let tracker, let postActorId = post?.actorId_ else { return }
+        if let topVisibleItem, topVisibleItem != postActorId {
             if let comment = tracker.commentsKeyedByActorId[topVisibleItem] {
                 if var topLevelIndex = tracker.comments.firstIndex(of: comment.topParent) {
                     if topLevelIndex < 0 || comment == tracker.comments.first {
-                        jumpButtonTarget = post?.actorId
+                        jumpButtonTarget = postActorId
                     } else {
                         if comment.parent == nil { topLevelIndex -= 1 }
                         jumpButtonTarget = tracker.comments[topLevelIndex].actorId

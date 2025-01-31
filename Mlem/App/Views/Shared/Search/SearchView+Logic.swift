@@ -139,7 +139,7 @@ extension SearchView {
         } else {
             switch filter {
             case let .other(instance):
-                instance.instanceStub?.asLocal().api ?? appState.firstApi
+                instance.instanceStub.asLocal().api
             default:
                 appState.firstApi
             }
@@ -152,7 +152,7 @@ extension SearchView {
         } else {
             switch filter {
             case let .instance(instance):
-                instance.instanceStub?.asLocal().api ?? appState.firstApi
+                instance.instanceStub.asLocal().api
             default:
                 appState.firstApi
             }
@@ -163,7 +163,7 @@ extension SearchView {
         let api = postFilters.location.instanceStub?.api ?? appState.firstApi
         if let creator = postFilters.creator, api !== creator.api {
             Task {
-                let stub = PersonStub(api: api, actorId: creator.actorId)
+                let stub = PersonStub(api: api, url: creator.actorId.url)
                 do {
                     if let person = try await (stub.upgrade()) as? Person2 {
                         postFilters.creator = person

@@ -30,7 +30,7 @@ enum NavigationPage: Hashable {
     case instanceOpinionList(instance: InstanceHashWrapper, opinionType: FediseerOpinionType, data: FediseerData)
     case messageFeed(_ person: AnyPerson, focusTextField: Bool, editing: MessageHashWrapper?)
     case fediseerInfo
-    case externalApiInfo(api: ApiClient, actorId: URL)
+    case externalApiInfo(api: ApiClient, actorId: ActorIdentifier)
     case imageViewer(_ url: URL)
     case communityPicker(api: ApiClient?, callback: HashWrapper<(Community2, NavigationLayer) -> Void>)
     case personPicker(api: ApiClient?, filter: ApiListingType, callback: HashWrapper<(Person2, NavigationLayer) -> Void>)
@@ -148,7 +148,7 @@ enum NavigationPage: Hashable {
         visitContext: VisitHistory.VisitContext = .other
     ) -> NavigationPage {
         var instance: any InstanceStubProviding = InstanceStub(
-            api: AppState.main.firstApi, actorId: entity.actorId.removingPathComponents()
+            api: AppState.main.firstApi, actorId: entity.actorId
         )
         if let entity = entity as? any Person3Providing {
             instance = entity.instance ?? instance
@@ -183,10 +183,8 @@ enum NavigationPage: Hashable {
     
     static func signUp() -> NavigationPage {
         .instancePicker(callback: { instance, navigation in
-            if let stub = instance.instanceStub {
-                Task { @MainActor in
-                    navigation.push(.signUp(stub))
-                }
+            Task { @MainActor in
+                navigation.push(.signUp(instance.instanceStub))
             }
         })
     }

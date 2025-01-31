@@ -53,16 +53,13 @@ private struct ExternalApiWarningModifier: ViewModifier {
     }
     
     var title: AttributedString {
-        if let host = entity.api.host {
-            var attributedString = AttributedString(localized: "Viewing \(host) as guest")
-            
-            if let range = attributedString.range(of: host) {
-                attributedString[range].font = .body.weight(.semibold)
-            }
-            return attributedString
-        } else {
-            return .init(localized: "Viewing page as guest")
+        let host = entity.api.host
+        var attributedString = AttributedString(localized: "Viewing \(host) as guest")
+        
+        if let range = attributedString.range(of: host) {
+            attributedString[range].font = .body.weight(.semibold)
         }
+        return attributedString
     }
 }
 

@@ -44,21 +44,16 @@ private let uptimeSupportedInstances: Set<String> = [
 ]
 
 extension InstanceStubProviding {
-    var canFetchUptime: Bool {
-        if let host {
-            return uptimeSupportedInstances.contains(host)
-        }
-        return false
-    }
+    var canFetchUptime: Bool { uptimeSupportedInstances.contains(host) }
 
     var uptimeDataUrl: URL? {
-        guard canFetchUptime, let host else { return nil }
+        guard canFetchUptime else { return nil }
         let name = "_\(host.replacingOccurrences(of: ".", with: "-"))"
         return URL(string: "https://lemmy-status.org/api/v1/endpoints/\(name)/statuses?page=1")
     }
     
     var uptimeFrontendUrl: URL? {
-        guard canFetchUptime, let host else { return nil }
+        guard canFetchUptime else { return nil }
         let name = "_\(host.replacingOccurrences(of: ".", with: "-"))"
         return URL(string: "https://lemmy-status.org/endpoints/\(name)")
     }

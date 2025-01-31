@@ -22,7 +22,7 @@ struct FeedWelcomeView: View {
                         .fontWeight(.semibold)
                     Text(
                         // swiftlint:disable:next line_length
-                        "You are browsing \(appState.firstApi.host ?? "") as a guest. If you'd like to vote or reply, you'll need to log in or sign up."
+                        "You are browsing \(appState.firstApi.host) as a guest. If you'd like to vote or reply, you'll need to log in or sign up."
                     )
                     .font(.footnote)
                 }

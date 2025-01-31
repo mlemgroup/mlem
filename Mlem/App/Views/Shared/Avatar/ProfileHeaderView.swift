@@ -38,7 +38,7 @@ struct ProfileHeaderView: View {
         VStack(spacing: Constants.main.standardSpacing) {
             AvatarBannerView(profilable, fallback: fallback)
             Button {
-                (profilable as? any CommunityOrPersonStub)?.copyFullNameWithPrefix()
+                (profilable as? any CommunityOrPerson)?.copyFullNameWithPrefix()
             } label: {
                 VStack(spacing: Constants.main.halfSpacing) {
                     HStack {
@@ -65,8 +65,8 @@ struct ProfileHeaderView: View {
     
     var subtitle: String {
         if let instance = profilable as? any Instance3Providing {
-            return "\(instance.host ?? "") • \(instance.version)"
+            return "\(instance.host) • \(instance.version)"
         }
-        return (profilable as? any CommunityOrPersonStub)?.fullNameWithPrefix ?? profilable?.host ?? ""
+        return (profilable as? any CommunityOrPerson)?.fullNameWithPrefix ?? profilable?.host ?? ""
     }
 }

@@ -108,9 +108,7 @@ struct CommunityListRowBody<Content: View>: View {
                 Group {
                     switch complication {
                     case .instance:
-                        if let host = community.host {
-                            Text(verbatim: "@\(host)")
-                        }
+                        Text(verbatim: "@\(community.host)")
                     case .subscriberCount:
                         if let subscriberCount = community.subscriberCount_ {
                             Image(systemName: Icons.person)

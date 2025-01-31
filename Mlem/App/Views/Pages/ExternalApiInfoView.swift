@@ -19,15 +19,12 @@ struct ExternalApiInfoView: View {
     
     /// The ``ApiClient`` of the model being inspected.
     let fallbackApi: ApiClient
-    /// The `host` of the model being inspected.
-    let entityActorId: URL
     /// The local ``ApiClient`` of the model, created using `entityHost`.
     let entityLocalApi: ApiClient
     
-    init(api: ApiClient, actorId: URL) {
+    init(api: ApiClient, actorId: ActorIdentifier) {
         self.fallbackApi = api
-        self.entityActorId = actorId
-        self.entityLocalApi = .getApiClient(for: actorId.removingPathComponents(), with: nil)
+        self.entityLocalApi = .getApiClient(for: actorId.hostUrl, with: nil)
     }
     
     var body: some View {
@@ -56,7 +53,7 @@ struct ExternalApiInfoView: View {
                 if internalFederationStatus?.isAllowed ?? false, externalFederationStatus?.isAllowed ?? false {
                     Text(
                         // swiftlint:disable:next line_length
-                        "Your instance and **\(entityLocalApi.host ?? "")** federate, but the content could not be loaded. It may not have federated yet, or your instance may have purged it."
+                        "Your instance and **\(entityLocalApi.host)** federate, but the content could not be loaded. It may not have federated yet, or your instance may have purged it."
                     )
                     .padding(.horizontal, Constants.main.standardSpacing)
                 } else {
@@ -68,7 +65,7 @@ struct ExternalApiInfoView: View {
                 }
             }
             box(alignment: .leading) {
-                Text("This content will be loaded from **\(fallbackApi.host ?? "")** instead.")
+                Text("This content will be loaded from **\(fallbackApi.host)** instead.")
                     .padding(.horizontal, Constants.main.standardSpacing)
             }
             box(alignment: .leading, spacing: 6) {
@@ -129,8 +126,8 @@ struct ExternalApiInfoView: View {
     }
     
     var text: LocalizedStringKey {
-        let externalHost = entityLocalApi.host ?? ""
-        let internalHost = appState.firstApi.host ?? ""
+        let externalHost = entityLocalApi.host
+        let internalHost = appState.firstApi.host
         switch (externalFederationStatus?.isAllowed ?? false, internalFederationStatus?.isAllowed ?? false) {
         case (false, false):
             return "**\(internalHost)** and **\(externalHost)** chose to defederate from one another."

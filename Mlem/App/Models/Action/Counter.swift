@@ -18,7 +18,8 @@ struct Counter: Identifiable {
         .init(
             value: value,
             leading: leadingAction?.appearance,
-            trailing: trailingAction?.appearance
+            trailing: trailingAction?.appearance,
+            label: "Unknown"
         )
     }
 }
