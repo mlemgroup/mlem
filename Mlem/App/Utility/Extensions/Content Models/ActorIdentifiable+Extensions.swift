@@ -10,7 +10,7 @@ import MlemMiddleware
 
 extension ActorIdentifiable {
     func shareAction() -> ShareAction {
-        .init(id: "share\(actorId)", url: actorId)
+        .init(id: "share\(actorId)", url: actorId.url)
     }
     
     func openInstanceAction(navigation: NavigationLayer?) -> BasicAction {
@@ -22,7 +22,7 @@ extension ActorIdentifiable {
         }
         return .init(
             id: "instance\(actorId)",
-            appearance: .init(label: host ?? String(localized: "Instance"), color: .gray, icon: Icons.instance),
+            appearance: .init(label: host, color: .gray, icon: Icons.instance),
             callback: callback
         )
     }

@@ -16,6 +16,7 @@ enum SettingsPage: Hashable {
     case privacyBypassImageProxy
     case safetyBlurNsfw, safetyWarnings
     case links, embedding
+    case externalLinks, tappableLinks
     case importExportSettings
     case theme, icon
     case post, comment, inbox, subscriptionList, tabBar
@@ -101,6 +102,10 @@ enum SettingsPage: Hashable {
             InboxSettingsView()
         case .links:
             LinkSettingsView()
+        case .externalLinks:
+            ExternalLinkSettingsView()
+        case .tappableLinks:
+            TappableLinksSettingsView()
         case .embedding:
             EmbeddingSettingsView()
         case .sorting:

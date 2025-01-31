@@ -28,7 +28,7 @@ extension SearchView {
                 if allowActiveAccountLocalInstanceSearch {
                     Toggle(isOn: .init(get: { filter == .local }, set: { _ in filter = .local })) {
                         Label {
-                            Text(AppState.main.firstApi.host ?? String(localized: "Local"))
+                            Text(AppState.main.firstApi.host)
                         } icon: {
                             SimpleAvatarView(url: AppState.main.firstSession.instance?.avatar, type: .instance)
                         }

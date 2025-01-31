@@ -20,15 +20,7 @@ struct UploadConfirmationView: View {
     var uploadApi: ApiClient
     
     @State var isUploading: Bool = false
-    
-    var prompt: String {
-        if let host = uploadApi.host {
-            .init(localized: "Upload this image to \(host)?")
-        } else {
-            .init(localized: "Something went wrong")
-        }
-    }
-    
+
     var body: some View {
         VStack(spacing: 0) {
             ScrollView {
@@ -61,7 +53,7 @@ struct UploadConfirmationView: View {
                         .font(.title3)
                         .padding(.vertical, 100)
                     } else {
-                        Text(prompt)
+                        Text("Upload this image to \(uploadApi.host)?")
                             .font(.largeTitle)
                             .multilineTextAlignment(.center)
                         Toggle("Ask to confirm every time", isOn: $confirmImageUploads)

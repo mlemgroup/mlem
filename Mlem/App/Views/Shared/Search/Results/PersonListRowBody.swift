@@ -112,9 +112,7 @@ struct PersonListRowBody<Content: View>: View {
                 Group {
                     switch complication {
                     case .instance:
-                        if let host = person.host {
-                            Text(verbatim: "@\(host)")
-                        }
+                        Text(verbatim: "@\(person.host)")
                     case .date:
                         Text(dateFormatter.string(from: person.created))
                     }

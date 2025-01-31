@@ -144,8 +144,6 @@ extension ModlogEntryType {
             } else {
                 banned ? "User was banned" : "User was unbanned"
             }
-        default:
-            "Test"
         }
     }
 }
@@ -156,7 +154,7 @@ private func pinLabel(
     pinned: Bool,
     type: ApiPostFeatureType
 ) -> LocalizedStringKey {
-    let target: String = (type == .community ? community.fullName : community.api.host) ?? ""
+    let target: String = (type == .community ? community.fullName : community.api.host)
     if let userText {
         return pinned ? "\(userText) pinned a post to \(target)" : "\(userText) unpinned a post from \(target)"
     } else {

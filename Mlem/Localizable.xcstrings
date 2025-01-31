@@ -192,9 +192,6 @@
         }
       }
     },
-    "%lld on your instance" : {
-
-    },
     "%lld years ago today!" : {
       "localizations" : {
         "en" : {
@@ -364,7 +361,7 @@
     "Applications Only" : {
 
     },
-    "Apply to All Interaction Bars" : {
+    "Apply to All" : {
 
     },
     "Appoint Administrator" : {
@@ -426,7 +423,7 @@
     "Automatically refreshes every %lld seconds." : {
 
     },
-    "Autoplay Media" : {
+    "Autoplay" : {
 
     },
     "Avatar" : {
@@ -859,6 +856,9 @@
     "Downvote" : {
 
     },
+    "Downvote Counter" : {
+
+    },
     "Downvotes" : {
 
     },
@@ -878,6 +878,9 @@
 
     },
     "Email Verification" : {
+
+    },
+    "Embedded Content" : {
 
     },
     "Embeddings" : {
@@ -932,6 +935,9 @@
 
     },
     "Export Settings" : {
+
+    },
+    "External Links" : {
 
     },
     "Failed to connect to %@" : {
@@ -1035,6 +1041,9 @@
     "Filters" : {
 
     },
+    "Follow on Mastodon" : {
+
+    },
     "General" : {
 
     },
@@ -1131,7 +1140,13 @@
     "Imported Settings" : {
 
     },
+    "In Browser" : {
+
+    },
     "In Default Browser" : {
+
+    },
+    "In Reader" : {
 
     },
     "In-App" : {
@@ -1176,6 +1191,12 @@
     "johndoe@example.com" : {
 
     },
+    "Join Discord Server" : {
+
+    },
+    "Join Matrix Room" : {
+
+    },
     "Jump Button" : {
 
     },
@@ -1215,9 +1236,6 @@
     "Link" : {
 
     },
-    "Links" : {
-
-    },
     "Load directly from %@" : {
 
     },
@@ -1254,6 +1272,9 @@
     "Log in or sign up to view your subscriptions." : {
 
     },
+    "Manage how Mlem handles links and control how images and videos are displayed." : {
+
+    },
     "Manage how Mlem interacts with Lemmy instances and other websites." : {
 
     },
@@ -1273,6 +1294,9 @@
 
     },
     "Maximum Depth" : {
+
+    },
+    "Media & Links" : {
 
     },
     "Medium" : {
@@ -1363,6 +1387,9 @@
 
     },
     "Multiple Columns" : {
+
+    },
+    "Mozilla Observatory" : {
 
     },
     "Mute Videos" : {
@@ -1609,9 +1636,6 @@
     "Posts from communities you subscribe to" : {
 
     },
-    "Posts from your instance's communities" : {
-
-    },
     "Posts with these keywords in their titles will be hidden. If you are a moderator or administrator of a matching post, it will appear in your feed but require you to tap to view its content." : {
 
     },
@@ -1675,10 +1699,7 @@
     "Read posts are shown with dimmed title text. If you like, you can choose an additional way of indicating read status." : {
 
     },
-    "Readouts:" : {
-
-    },
-    "Really apply configuration to all?" : {
+    "Really apply this configuration to all interaction bars?" : {
 
     },
     "Really appoint %@ as a moderator of %@?" : {
@@ -1848,6 +1869,9 @@
     "Reply" : {
 
     },
+    "Reply Counter" : {
+
+    },
     "Report" : {
 
     },
@@ -1937,6 +1961,9 @@
 
     },
     "Score" : {
+
+    },
+    "Score Counter" : {
 
     },
     "Search" : {
@@ -2084,9 +2111,6 @@
     "Some instances proxy images to protect your privacy. In certain cases, this causes image loading to fail. You can bypass the image proxy and load directly, but this will expose your IP address to the image host." : {
 
     },
-    "Something went wrong" : {
-
-    },
     "Sort" : {
 
     },
@@ -2159,7 +2183,7 @@
     "Tab Bar" : {
 
     },
-    "Tap and hold items to add, remove or rearrange them." : {
+    "Tap and hold items to add, remove, or rearrange them." : {
 
     },
     "Tap on the Jump Button whilst viewing a comment thread to scroll to the next comment." : {
@@ -2175,9 +2199,6 @@
 
     },
     "Temporary" : {
-
-    },
-    "Test" : {
 
     },
     "That's all, folks!" : {
@@ -2390,7 +2411,7 @@
     "To join this instance, you need to create an application and wait to be accepted." : {
 
     },
-    "Too many items!" : {
+    "Too many items" : {
 
     },
     "Top" : {
@@ -2519,6 +2540,9 @@
     "Unsubscribed" : {
 
     },
+    "Unsupported Badge" : {
+
+    },
     "Upload" : {
 
     },
@@ -2538,6 +2562,9 @@
 
     },
     "Upvote" : {
+
+    },
+    "Upvote Counter" : {
 
     },
     "Upvote on Save" : {
@@ -2592,9 +2619,6 @@
 
     },
     "Viewing %@ as guest" : {
-
-    },
-    "Viewing page as guest" : {
 
     },
     "Visit" : {

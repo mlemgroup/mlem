@@ -58,7 +58,6 @@ extension NavigationPage {
         case let .post(post, scrollTargetedComment, communityContext, navigationNamespace):
             PostPage(post: post, scrollTargetedComment: scrollTargetedComment?.wrappedValue)
                 .environment(\.communityContext, communityContext?.wrappedValue)
-                .navigationTransition_(sourceID: "post\(post.wrappedValue.actorId)", in: navigationNamespace)
         case let .comment(comment, comments: comments, showViewPostButton):
             CommentPage(comment: comment, initialComments: comments, showViewPostButton: showViewPostButton)
         case let .person(person, visitContext):

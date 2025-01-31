@@ -89,7 +89,7 @@ struct CommunityView: View {
             HStack {
                 FeedHeaderView(
                     title: Text(community.displayName),
-                    subtitle: Text(community.fullNameWithPrefix ?? ""),
+                    subtitle: Text(community.fullNameWithPrefix),
                     dropdownStyle: .disabled,
                     image: { CircleCroppedImageView(community, frame: Constants.main.feedHeaderSize) }
                 )

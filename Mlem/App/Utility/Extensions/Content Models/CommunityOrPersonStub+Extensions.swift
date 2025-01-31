@@ -8,7 +8,7 @@
 import MlemMiddleware
 import SwiftUI
 
-extension CommunityOrPersonStub {
+extension CommunityOrPerson {
     func copyFullNameWithPrefix(feedback: Set<FeedbackType> = [.toast]) {
         if feedback.contains(.toast) {
             ToastModel.main.add(.success("Copied"))
@@ -35,7 +35,6 @@ extension CommunityOrPersonStub {
         nameColor: Color? = nil,
         instanceColor: Color? = nil
     ) -> AttributedString? {
-        guard let host else { return nil }
         var outputString = AttributedString(name)
         outputString.foregroundColor = nameColor ?? Palette.main.secondary
         outputString.font = font.bold()
@@ -47,7 +46,7 @@ extension CommunityOrPersonStub {
             outputString += instanceString
         }
         
-        outputString.link = actorId
+        outputString.link = actorId.url
         return outputString
     }
     

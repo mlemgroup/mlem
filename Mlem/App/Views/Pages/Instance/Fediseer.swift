@@ -92,7 +92,7 @@ protocol FediseerOpinion {
 extension FediseerOpinion {
     var instanceStub: InstanceStub? {
         guard let url = URL(string: "https://\(domain)") else { return nil }
-        return .init(api: .getApiClient(for: url, with: nil), actorId: url)
+        return .init(api: .getApiClient(for: url, with: nil), actorId: .instance(host: domain))
     }
     
     var formattedReason: String? {

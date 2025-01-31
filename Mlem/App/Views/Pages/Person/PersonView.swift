@@ -148,7 +148,7 @@ struct PersonView: View {
             
             upgraded = true
         }
-        .navigationTitle(isAtTop ? "" : (person.wrappedValue.displayName_ ?? person.wrappedValue.name))
+        .navigationTitle(isAtTop ? "" : (person.wrappedValue.displayName_ ?? ""))
         .navigationBarTitleDisplayMode(.inline)
     }
     
@@ -218,7 +218,7 @@ struct PersonView: View {
                         .tint(palette.colorfulAccent(4))
                 }
                 if isAdmin {
-                    Label("\(person.host ?? "") Administrator", systemImage: Icons.administrationFill)
+                    Label("\(person.host) Administrator", systemImage: Icons.administrationFill)
                         .tint(palette.administration)
                 }
                 if person.isBot {

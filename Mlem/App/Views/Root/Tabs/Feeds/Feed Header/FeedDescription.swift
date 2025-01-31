@@ -27,15 +27,9 @@ struct FeedDescription {
     )
     
     static var local: FeedDescription {
-        let subtitle: LocalizedStringResource
-        if let host = AppState.main.firstApi.host {
-            subtitle = "Posts from \(host) communities"
-        } else {
-            subtitle = "Posts from your instance's communities"
-        }
-        return .init(
+        .init(
             label: "Local",
-            subtitle: subtitle,
+            subtitle: "Posts from \(AppState.main.firstApi.host) communities",
             color: { $0.localFeed },
             iconName: Icons.instanceFeed,
             iconNameFill: Icons.instanceFeedFill,

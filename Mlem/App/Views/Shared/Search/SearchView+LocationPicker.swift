@@ -61,7 +61,7 @@ extension SearchView {
                 Section {
                     Toggle(isOn: .init(get: { filter == .localInstance }, set: { _ in filter = .localInstance })) {
                         Label {
-                            Text(AppState.main.firstApi.host ?? "Local")
+                            Text(AppState.main.firstApi.host)
                         } icon: {
                             SimpleAvatarView(url: AppState.main.firstSession.instance?.avatar, type: .instance)
                         }

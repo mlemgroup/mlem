@@ -314,7 +314,7 @@ extension Post1Providing {
     
     // Overrides the `ActorIdentifiable+Extensions` implementation
     func shareAction() -> ShareAction {
-        .init(id: "share\(actorId)", url: actorId, actions: [crossPostAction()])
+        .init(id: "share\(actorId)", url: actorId.url, actions: [crossPostAction()])
     }
     
     func crossPostAction() -> BasicAction {
@@ -322,7 +322,7 @@ extension Post1Providing {
             id: "crosspost\(uid)",
             appearance: .crossPost(),
             callback: {
-                var crossPostContent: String = .init(localized: "Crossposted from \(self.actorId.absoluteString)")
+                var crossPostContent: String = .init(localized: "Crossposted from \(self.actorId.description)")
                 if let content = self.content {
                     crossPostContent += "\n-----\n\(content)"
                 }
@@ -367,7 +367,7 @@ extension Post1Providing {
     
     func blockCommunityAction(feedback: Set<FeedbackType> = [], showConfirmation: Bool = true) -> BasicAction {
         .init(
-            id: "blockCommunity\(actorId.absoluteString)",
+            id: "blockCommunity\(actorId.description)",
             appearance: .init(
                 label: "Block Community",
                 isOn: false,
@@ -449,9 +449,9 @@ extension Post1Providing {
         let prompt: LocalizedStringResource?
         if showConfirmation {
             if isOn {
-                prompt = "Really unpin this post from \(host ?? "")?"
+                prompt = "Really unpin this post from \(host)?"
             } else {
-                prompt = "Really pin this post to \(host ?? "")?"
+                prompt = "Really pin this post to \(host)?"
             }
         } else {
             prompt = nil

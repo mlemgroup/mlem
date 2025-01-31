@@ -12,7 +12,7 @@ import Observation
 @Observable
 class GuestAccount: Account {
     static let tierNumber: Int = 1
-    let actorId: URL
+    let actorId: ActorIdentifier
     let api: ApiClient
     var storedNickname: String?
     var cachedSiteVersion: SiteVersion?
@@ -21,12 +21,8 @@ class GuestAccount: Account {
     let accountType: AccountType = .guest
     
     fileprivate init(url: URL) throws {
-        var components = URLComponents(url: url, resolvingAgainstBaseURL: false)!
-        // Adding a slash is important! The API returns instance actor IDs with a trailing slash.
-        components.path = "/"
-        guard let url = components.url else { throw DecodingError.cannotModifyPathComponents }
-                
-        self.actorId = url
+        guard let host = url.host() else { throw DecodingError.invalidHost }
+        self.actorId = .instance(host: host)
         self.api = .getApiClient(for: url, with: nil)
     }
     
@@ -40,7 +36,7 @@ class GuestAccount: Account {
     }
     
     enum DecodingError: Error {
-        case cannotModifyPathComponents, noTokenInKeychain
+        case invalidHost, noTokenInKeychain
     }
     
     required init(from decoder: Decoder) throws {
@@ -51,14 +47,9 @@ class GuestAccount: Account {
         self.avatar = try values.decode(URL?.self, forKey: .avatarUrl)
         self.lastUsed = try values.decode(Date?.self, forKey: .lastUsed)
 
-        let instanceLink = try values.decode(URL.self, forKey: .instanceLink)
-        var components = URLComponents(url: instanceLink, resolvingAgainstBaseURL: false)!
-        // Adding a slash is important! The API returns instance actor IDs with a trailing slash.
-        components.path = "/"
-        guard let instanceLink = components.url else { throw DecodingError.cannotModifyPathComponents }
-        self.actorId = instanceLink
-        
-        self.api = ApiClient.getApiClient(for: instanceLink, with: nil)
+        let actorId = try values.decode(ActorIdentifier.self, forKey: .instanceLink)
+        self.actorId = actorId
+        self.api = ApiClient.getApiClient(for: actorId.url, with: nil)
         GuestAccountCache.main.itemCache.put(self)
     }
     
@@ -87,9 +78,7 @@ class GuestAccount: Account {
         }
     }
     
-    var name: String {
-        actorId.host() ?? "unknown"
-    }
+    var name: String { actorId.host }
     
     var isActive: Bool { AppState.main.guestSession === self }
     
@@ -98,12 +87,9 @@ class GuestAccount: Account {
     }
     
     var nicknameSortKey: String { storedNickname ?? name }
-    var instanceSortKey: String { host ?? "" }
+    var instanceSortKey: String { host }
     
-    var uniqueStringId: String {
-        assert(host != nil)
-        return host ?? ""
-    }
+    var uniqueStringId: String { host }
     
     func resetStoredSettings(withSave: Bool = true) {
         storedNickname = nil

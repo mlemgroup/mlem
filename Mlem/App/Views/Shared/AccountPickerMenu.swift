@@ -26,7 +26,7 @@ struct AccountPickerMenu<Content: View>: View {
                 ForEach(accountsTracker.userAccounts, id: \.actorId) { account in
                     Button {} label: {
                         Label(account)
-                        Text(verbatim: "@\(account.host ?? "unknown")")
+                        Text(verbatim: "@\(account.host)")
                     }
                     .tag(account)
                 }

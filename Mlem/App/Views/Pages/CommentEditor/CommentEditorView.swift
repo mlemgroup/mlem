@@ -79,7 +79,7 @@ struct CommentEditorView: View {
                             if AccountsTracker.main.userAccounts.count > 1, commentToEdit == nil {
                                 AccountPickerMenu(account: $account) {
                                     HStack(spacing: 3) {
-                                        FullyQualifiedLabelView(account, labelStyle: .medium)
+                                        FullyQualifiedLabelView(account, labelStyle: .medium, showAvatar: false)
                                         Image(systemName: Icons.dropDownCircleFill)
                                             .symbolRenderingMode(.hierarchical)
                                             .tint(palette.secondary)
@@ -133,7 +133,7 @@ struct CommentEditorView: View {
             VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
                 if resolutionState == .notFound {
                     resolutionWarning
-                        .padding([.horizontal, .bottom], 10)
+                        .padding(.horizontal, 10)
                 }
                 MarkdownTextEditor(
                     onChange: {

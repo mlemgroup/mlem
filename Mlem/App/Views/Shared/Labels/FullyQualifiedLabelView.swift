@@ -41,7 +41,7 @@ enum FullyQualifiedLabelStyle {
 
 /// View for rendering fully qualified labels (i.e., user or community names)
 struct FullyQualifiedLabelView: View {
-    typealias Entity = CommunityOrPersonStub & Profile1Providing
+    typealias Entity = CommunityOrPerson & Profile1Providing
     
     @Environment(Palette.self) var palette
     @Environment(AppState.self) var appState
@@ -129,12 +129,12 @@ struct FullyQualifiedLabelView: View {
     }
     
     var accessibilityLabel: String {
-        guard let entity, let fullName = entity.fullName else { return String(localized: "Loading...") }
+        guard let entity else { return String(localized: "Loading...") }
         let flairs = flairs
         if !flairs.isEmpty {
-            return "\(fullName), " + flairs.map { String(localized: $0.label) }.joined(separator: ", ")
+            return "\(entity.fullName), " + flairs.map { String(localized: $0.label) }.joined(separator: ", ")
         }
-        return fullName
+        return entity.fullName
     }
 }
 

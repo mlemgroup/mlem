@@ -87,28 +87,28 @@ struct HandleLemmyLinksModifier: ViewModifier {
     
     func interpretLemmyUrlPath(url: URL) -> Bool {
         let components = url.pathComponents.dropFirst()
-        if components.isEmpty {
-            navigation.push(.instance(InstanceStub(api: appState.firstApi, actorId: url)))
+        if components.isEmpty, let host = url.host() {
+            navigation.push(.instance(InstanceStub(api: appState.firstApi, actorId: .instance(host: host))))
             return true
         }
         switch components.first {
         case "u":
-            navigation.push(.person(PersonStub(api: appState.firstApi, actorId: url)))
+            navigation.push(.person(PersonStub(api: appState.firstApi, url: url)))
             return true
         case "c":
-            navigation.push(.community(CommunityStub(api: appState.firstApi, actorId: url)))
+            navigation.push(.community(CommunityStub(api: appState.firstApi, url: url)))
             return true
         case "post":
             if components.count == 2 {
-                navigation.push(.post(PostStub(api: appState.firstApi, actorId: url)))
+                navigation.push(.post(PostStub(api: appState.firstApi, url: url)))
                 return true
             } else if components.count == 3 {
                 let newUrl = url.removingPathComponents().appendingPathComponent("comment/\(url.lastPathComponent)")
-                navigation.push(.comment(CommentStub(api: appState.firstApi, actorId: newUrl)))
+                navigation.push(.comment(CommentStub(api: appState.firstApi, url: newUrl)))
                 return true
             }
         case "comment":
-            navigation.push(.comment(CommentStub(api: appState.firstApi, actorId: url)))
+            navigation.push(.comment(CommentStub(api: appState.firstApi, url: url)))
             return true
         default:
             break
@@ -131,13 +131,13 @@ struct HandleLemmyLinksModifier: ViewModifier {
     
     func showToastAndLoad(url: URL) async {
         let toastId = ToastModel.main.add(.loading())
-        var output = try? await appState.firstApi.resolve(actorId: url)
+        var output = try? await appState.firstApi.resolve(url: url)
         if output == nil {
             // Retry on local instance, which is needed if there is a federation boundary
             output = try? await ApiClient.getApiClient(
                 for: url.removingPathComponents(),
                 with: nil
-            ).resolve(actorId: url)
+            ).resolve(url: url)
         }
 
         if let person = output as? any Person {

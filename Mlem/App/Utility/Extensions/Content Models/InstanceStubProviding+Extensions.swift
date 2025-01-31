@@ -47,7 +47,7 @@ extension InstanceStubProviding {
     
     @MainActor
     func visit() {
-        if let account = try? GuestAccount.getGuestAccount(url: actorId) {
+        if let account = try? GuestAccount.getGuestAccount(url: actorId.url) {
             AppState.main.changeAccount(to: account)
             AppState.main.contentViewTab = .feeds
         }
@@ -137,7 +137,7 @@ extension InstanceStubProviding {
                 icon: Icons.browser
             ),
             callback: {
-                openRegularLink(url: self.actorId)
+                openRegularLink(url: self.actorId.url)
             }
         )
     }
