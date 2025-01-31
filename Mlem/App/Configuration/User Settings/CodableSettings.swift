@@ -63,6 +63,7 @@ struct CodableSettings: Codable { // swiftlint:disable:this type_body_length
     var post_showSubscribedStatus: Bool
     var post_showWebsitePreview: Bool
     var post_size: PostSize
+    var post_allowMultipleColumns: Bool
     var post_thumbnailLocation: ThumbnailLocation
     var post_webPreview_showHost: Bool
     var post_webPreview_showIcon: Bool
@@ -175,6 +176,7 @@ struct CodableSettings: Codable { // swiftlint:disable:this type_body_length
         self.post_showWebsitePreview = try container.decodeIfPresent(Bool.self, forKey: .post_showWebsitePreview) ?? true
         self.post_showDownvotesCompact = try container.decodeIfPresent(Bool.self, forKey: .post_showDownvotesCompact) ?? false
         self.post_size = try container.decodeIfPresent(PostSize.self, forKey: .post_size) ?? .large
+        self.post_allowMultipleColumns = try container.decodeIfPresent(Bool.self, forKey: .post_allowMultipleColumns) ?? true
         self.post_thumbnailLocation = try container.decodeIfPresent(ThumbnailLocation.self, forKey: .post_thumbnailLocation) ?? .left
         self.post_webPreview_showHost = try container.decodeIfPresent(Bool.self, forKey: .post_webPreview_showHost) ?? true
         self.post_webPreview_showIcon = try container.decodeIfPresent(Bool.self, forKey: .post_webPreview_showIcon) ?? true
@@ -253,6 +255,7 @@ struct CodableSettings: Codable { // swiftlint:disable:this type_body_length
         self.post_showSubscribedStatus = settings.showSubscribedStatus
         self.post_showWebsitePreview = true
         self.post_size = settings.postSize
+        self.post_allowMultipleColumns = settings.allowMultiplePostColumns
         self.post_thumbnailLocation = settings.thumbnailLocation
         self.post_webPreview_showHost = true
         self.post_webPreview_showIcon = true
