@@ -58,33 +58,23 @@ extension InboxView {
                     }
                 )
             }
-            switch selectedModTab {
-            case .reports:
+            ForEach(Array(currentModFeedLoader.items.enumerated()), id: \.offset) { _, item in
                 Group {
-                    if let reports {
-                        ForEach(reports, id: \.cacheId) { report in
-                            ReportView(report: report)
-                                .padding([.horizontal, .bottom], Constants.main.standardSpacing)
-                        }
-                    } else {
-                        ProgressView()
-                            .padding(.top)
+                    switch item {
+                    case let .application(application):
+                        RegistrationApplicationView(application: application)
+                    case let .report(report):
+                        ReportView(report: report)
                     }
                 }
-                .onAppear(perform: loadReports)
-            case .applications:
-                Group {
-                    if let applications {
-                        ForEach(applications, id: \.cacheId) { application in
-                            RegistrationApplicationView(application: application)
-                                .padding([.horizontal, .bottom], Constants.main.standardSpacing)
-                        }
-                    } else {
-                        ProgressView()
-                            .padding(.top)
+                .padding([.horizontal, .bottom], Constants.main.standardSpacing)
+                .onAppear {
+                    do {
+                        try currentModFeedLoader.loadIfThreshold(item)
+                    } catch {
+                        handleError(error)
                     }
                 }
-                .onAppear(perform: loadApplications)
             }
         }
         .padding(.top, Constants.main.standardSpacing)
@@ -242,40 +232,40 @@ extension InboxView {
         }
     }
     
-    func loadReports() {
-        if reports == nil {
-            Task { @MainActor in
-                do {
-                    async let postReports = await appState.firstApi.getPostReports()
-                    async let commentReports = await appState.firstApi.getCommentReports()
-                    async let messageReports: [Report] = await {
-                        if await appState.firstApi.isAdmin {
-                            return try await appState.firstApi.getMessageReports()
-                        } else {
-                            return []
-                        }
-                    }()
-                    
-                    let combined = try await (postReports + commentReports + messageReports)
-                    self.reports = combined.sorted { $0.created > $1.created }
-                } catch {
-                    handleError(error)
-                }
-            }
-        }
-    }
-    
-    func loadApplications() {
-        if applications == nil {
-            Task { @MainActor in
-                do {
-                    self.applications = try await appState.firstApi.getRegistrationApplications()
-                } catch {
-                    handleError(error)
-                }
-            }
-        }
-    }
+//    func loadReports() {
+//        if reports == nil {
+//            Task { @MainActor in
+//                do {
+//                    async let postReports = await appState.firstApi.getPostReports()
+//                    async let commentReports = await appState.firstApi.getCommentReports()
+//                    async let messageReports: [Report] = await {
+//                        if await appState.firstApi.isAdmin {
+//                            return try await appState.firstApi.getMessageReports()
+//                        } else {
+//                            return []
+//                        }
+//                    }()
+//                    
+//                    let combined = try await (postReports + commentReports + messageReports)
+//                    self.reports = combined.sorted { $0.created > $1.created }
+//                } catch {
+//                    handleError(error)
+//                }
+//            }
+//        }
+//    }
+//    
+//    func loadApplications() {
+//        if applications == nil {
+//            Task { @MainActor in
+//                do {
+//                    self.applications = try await appState.firstApi.getRegistrationApplications()
+//                } catch {
+//                    handleError(error)
+//                }
+//            }
+//        }
+//    }
     
     var showBadge: Bool {
         guard let unreadCount = (appState.firstSession as? UserSession)?.unreadCount else { return false }

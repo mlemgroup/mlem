@@ -30,10 +30,17 @@ struct InboxView: View {
     @State var messageFeedLoader: MessageChildFeedLoader
     @State var inboxFeedLoader: InboxFeedLoader
     
+    @State var postReportFeedLoader: PostReportChildFeedLoader
+    @State var commentReportFeedLoader: CommentReportChildFeedLoader
+    @State var messageReportFeedLoader: MessageReportChildFeedLoader
+    @State var applicationFeedLoader: ApplicationChildFeedLoader
+    @State var modMailFeedLoader: ModMailFeedLoader
+    
     @State var showRefreshPopup: Bool = false
     @State var waitingOnMarkAllAsRead: Bool = false
     @State var markAllAsReadTrigger: Bool = false
     
+    // swiftlint:disable:next function_body_length
     init() {
         @Setting(\.internetSpeed) var internetSpeed
         @Setting(\.showReadInInbox) var showRead
@@ -69,6 +76,45 @@ struct InboxView: View {
         self._mentionFeedLoader = .init(wrappedValue: mentionFeedLoader)
         self._messageFeedLoader = .init(wrappedValue: messageFeedLoader)
         self._inboxFeedLoader = .init(wrappedValue: inboxFeedLoader)
+        
+        let postReportFeedLoader: PostReportChildFeedLoader = .init(
+            api: AppState.main.firstApi,
+            pageSize: internetSpeed.pageSize,
+            sortType: .new,
+            showRead: showRead
+        )
+        let commentReportFeedLoader: CommentReportChildFeedLoader = .init(
+            api: AppState.main.firstApi,
+            pageSize: internetSpeed.pageSize,
+            sortType: .new,
+            showRead: showRead
+        )
+        let messageReportFeedLoader: MessageReportChildFeedLoader = .init(
+            api: AppState.main.firstApi,
+            pageSize: internetSpeed.pageSize,
+            sortType: .new,
+            showRead: showRead
+        )
+        let applicationFeedLoader: ApplicationChildFeedLoader = .init(
+            api: AppState.main.firstApi,
+            pageSize: internetSpeed.pageSize,
+            sortType: .new,
+            showRead: showRead
+        )
+        
+        let modMailFeedLoader: ModMailFeedLoader = .init(
+            api: AppState.main.firstApi,
+            pageSize: internetSpeed.pageSize,
+            sources: [postReportFeedLoader, commentReportFeedLoader, messageReportFeedLoader, applicationFeedLoader],
+            sortType: .new,
+            showRead: showRead
+        )
+        
+        self._postReportFeedLoader = .init(wrappedValue: postReportFeedLoader)
+        self._commentReportFeedLoader = .init(initialValue: commentReportFeedLoader)
+        self._messageReportFeedLoader = .init(wrappedValue: messageReportFeedLoader)
+        self._applicationFeedLoader = .init(wrappedValue: applicationFeedLoader)
+        self._modMailFeedLoader = .init(wrappedValue: modMailFeedLoader)
     }
     
     var feedLoader: StandardFeedLoader<InboxItem> {
@@ -81,6 +127,13 @@ struct InboxView: View {
             mentionFeedLoader
         case .messages:
             messageFeedLoader
+        }
+    }
+    
+    var currentModFeedLoader: StandardFeedLoader<ModMailItem> {
+        switch selectedModTab {
+        case .applications: applicationFeedLoader
+        case .reports: postReportFeedLoader
         }
     }
     
@@ -100,6 +153,7 @@ struct InboxView: View {
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar { toolbar }
                 .loadFeed(inboxFeedLoader)
+                .loadFeed(modMailFeedLoader)
                 .onChange(of: appState.firstApi, initial: false) {
                     if appState.firstAccount is UserAccount {
                         Task {
