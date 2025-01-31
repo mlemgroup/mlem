@@ -226,6 +226,8 @@
 		039F58972C7B68F100C61658 /* AboutMlemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039F58962C7B68F100C61658 /* AboutMlemView.swift */; };
 		039F58992C7B697D00C61658 /* Bundle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039F58982C7B697D00C61658 /* Bundle+Extensions.swift */; };
 		039F589D2C7B6C0A00C61658 /* FormChevron.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039F589C2C7B6C0A00C61658 /* FormChevron.swift */; };
+		03A630F12D497674009A47A6 /* ShieldsBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A630F02D497674009A47A6 /* ShieldsBadgeView.swift */; };
+		03A630F42D4976EB009A47A6 /* ShieldsBadgeView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A630F32D4976EB009A47A6 /* ShieldsBadgeView+Logic.swift */; };
 		03A630ED2D497005009A47A6 /* ExternalLinkSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A630EC2D497005009A47A6 /* ExternalLinkSettingsView.swift */; };
 		03A630EF2D497143009A47A6 /* TappableLinksSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A630EE2D497143009A47A6 /* TappableLinksSettingsView.swift */; };
 		03A82FA12C0D1E8500D01A5C /* ApiClient+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A82FA02C0D1E8500D01A5C /* ApiClient+Extensions.swift */; };
@@ -720,6 +722,8 @@
 		039F58962C7B68F100C61658 /* AboutMlemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutMlemView.swift; sourceTree = "<group>"; };
 		039F58982C7B697D00C61658 /* Bundle+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extensions.swift"; sourceTree = "<group>"; };
 		039F589C2C7B6C0A00C61658 /* FormChevron.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormChevron.swift; sourceTree = "<group>"; };
+		03A630F02D497674009A47A6 /* ShieldsBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShieldsBadgeView.swift; sourceTree = "<group>"; };
+		03A630F32D4976EB009A47A6 /* ShieldsBadgeView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShieldsBadgeView+Logic.swift"; sourceTree = "<group>"; };
 		03A630EC2D497005009A47A6 /* ExternalLinkSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalLinkSettingsView.swift; sourceTree = "<group>"; };
 		03A630EE2D497143009A47A6 /* TappableLinksSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TappableLinksSettingsView.swift; sourceTree = "<group>"; };
 		03A82FA02C0D1E8500D01A5C /* ApiClient+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ApiClient+Extensions.swift"; sourceTree = "<group>"; };
@@ -1372,6 +1376,15 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
+		03A630F22D4976DE009A47A6 /* ShieldsBadgeView */ = {
+			isa = PBXGroup;
+			children = (
+				03A630F02D497674009A47A6 /* ShieldsBadgeView.swift */,
+				03A630F32D4976EB009A47A6 /* ShieldsBadgeView+Logic.swift */,
+			);
+			path = ShieldsBadgeView;
+			sourceTree = "<group>";
+		};
 		03AF91E62C1C65AE00E56644 /* Interaction */ = {
 			isa = PBXGroup;
 			children = (
@@ -1707,6 +1720,7 @@
 				03D284072D2AF05200A6659B /* Checkbox.swift */,
 				03B431C52C45C09F001A1EB5 /* CollapsibleSheetView.swift */,
 				0397D45F2C66113F002C6CDC /* CommentBodyView.swift */,
+				03A630F22D4976DE009A47A6 /* ShieldsBadgeView */,
 				033F84BA2C2ACB96002E3EDF /* CommentView.swift */,
 				CD43E8B22BF2C24E007C3D71 /* ContentLoader.swift */,
 				030FF67E2BC8544600F6BFAC /* CustomTabBarController.swift */,
@@ -2388,6 +2402,7 @@
 				035E85B02C999BC4002A2A29 /* PanGesture.swift in Sources */,
 				037F783F2D3BD05500D4E180 /* PostSettingsView+PostSizePicker.swift in Sources */,
 				0389DDCF2C39CB0E0005B808 /* SearchView.swift in Sources */,
+				03A630F42D4976EB009A47A6 /* ShieldsBadgeView+Logic.swift in Sources */,
 				CD1DF63E2D387E8500F7851E /* MediaView+Views.swift in Sources */,
 				0397D4742C680FFC002C6CDC /* MediaLoader.swift in Sources */,
 				03FE14042BF93FDD00A8377F /* ErrorDetails.swift in Sources */,
@@ -2566,6 +2581,7 @@
 				CD332D7E2CA7486000A53988 /* String+Extensions.swift in Sources */,
 				037331A42C9CB12D00C826E1 /* EnvironmentValues+Extensions.swift in Sources */,
 				CD4D58B52B86BFFB00B82964 /* PersistenceRepository+Dependency.swift in Sources */,
+				03A630F12D497674009A47A6 /* ShieldsBadgeView.swift in Sources */,
 				CD4D58EB2B86E63300B82964 /* AssociatedColor.swift in Sources */,
 				CD3153072C38421B00BC5FBE /* View+LoadFeed.swift in Sources */,
 				CD317D4C2BE97FED008F63E2 /* Palette.swift in Sources */,

@@ -42,7 +42,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
         self.onSet = onSet
         let configurationItems: [Configuration.Item?] = configuration.leading + [nil] + configuration.trailing
         self._barItems = .init(wrappedValue: configurationItems.map { item in
-                .init(item: item, expanded: true, visible: true)
+            .init(item: item, expanded: true, visible: true)
         })
         self._trayItems = .init(wrappedValue: Configuration.Item.allCases.map { item in
             TrayItem(item: item, visible: !configurationItems.contains(item))

@@ -8,7 +8,6 @@
 import SwiftUI
 
 extension InteractionBarEditorView {
-    
     // MARK: - Definitions
     
     enum DropLocation: Equatable {
@@ -149,7 +148,7 @@ extension InteractionBarEditorView {
             addToBar(trayPickedUpItem, at: targetIndex)
         } else if let barPickedUpItem {
             switch dropLocation {
-            case .bar(let targetIndex):
+            case let .bar(targetIndex):
                 moveOnBar(barItem: barPickedUpItem.barItem, from: barPickedUpItem.index, to: targetIndex)
             case .tray:
                 removeFromBar(barItem: barPickedUpItem.barItem)
@@ -227,8 +226,8 @@ extension InteractionBarEditorView {
             return
         }
         configuration = .init(
-            leading: barItems[..<infoStackIndex].compactMap { $0.item },
-            trailing: barItems[infoStackIndex...].compactMap { $0.item },
+            leading: barItems[..<infoStackIndex].compactMap(\.item),
+            trailing: barItems[infoStackIndex...].compactMap(\.item),
             readouts: configuration.readouts
         )
     }

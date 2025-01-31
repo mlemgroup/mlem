@@ -5,11 +5,10 @@
 //  Created by Eric Andrews on 2025-01-27.
 //
 
-import SwiftUI
 import Flow
+import SwiftUI
 
 extension InteractionBarEditorView {
-    
     // MARK: - Post Preview
     
     @ViewBuilder
@@ -74,7 +73,7 @@ extension InteractionBarEditorView {
         itemLabel(barItem.item)
             .offset(barPickedUpIndex == index ? dragTranslation : .zero)
             .background {
-                if barPickedUpIndex == index && dragTranslation != .zero {
+                if barPickedUpIndex == index, dragTranslation != .zero {
                     Capsule()
                         .fill(palette.accent.opacity(0.2))
                         .stroke(palette.accent)
@@ -193,7 +192,7 @@ extension InteractionBarEditorView {
             title: "Interaction Bar",
             description: "Tap and hold items to add, remove, or rearrange them."
         ) {}
-        .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.largeItemCornerRadius))
+            .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.largeItemCornerRadius))
     }
     
     @ViewBuilder
@@ -245,7 +244,7 @@ extension InteractionBarEditorView {
             Button("Reset") {
                 configuration = .default
                 barItems = (configuration.leading + [nil] + configuration.trailing).map { item in
-                        .init(item: item, expanded: true, visible: true)
+                    .init(item: item, expanded: true, visible: true)
                 }
             }
             .buttonStyle(.plain)

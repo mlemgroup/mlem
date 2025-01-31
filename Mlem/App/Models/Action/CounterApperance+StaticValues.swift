@@ -5,7 +5,7 @@
 //  Created by Eric Andrews on 2025-01-29.
 //
 
-extension CounterAppearance {    
+extension CounterAppearance {
     static func score(value: Int = 7, upvoteOn: Bool = false, downvoteOn: Bool = false) -> CounterAppearance {
         .init(
             value: value,

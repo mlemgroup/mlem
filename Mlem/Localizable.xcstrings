@@ -1041,6 +1041,9 @@
     "Filters" : {
 
     },
+    "Follow on Mastodon" : {
+
+    },
     "General" : {
 
     },
@@ -1186,6 +1189,12 @@
 
     },
     "johndoe@example.com" : {
+
+    },
+    "Join Discord Server" : {
+
+    },
+    "Join Matrix Room" : {
 
     },
     "Jump Button" : {
@@ -1375,6 +1384,9 @@
 
     },
     "Most Comments" : {
+
+    },
+    "Mozilla Observatory" : {
 
     },
     "Mute Videos" : {
@@ -2523,6 +2535,9 @@
 
     },
     "Unsubscribed" : {
+
+    },
+    "Unsupported Badge" : {
 
     },
     "Upload" : {
