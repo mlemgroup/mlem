@@ -466,9 +466,6 @@
     "Banner" : {
 
     },
-    "Behavior" : {
-
-    },
     "Biography" : {
 
     },
@@ -572,10 +569,16 @@
     "Choose Instance..." : {
 
     },
+    "Choose the default sort mode for posts and comments." : {
+
+    },
     "Choose when Not Safe For Work content should be blurred." : {
 
     },
     "Choose whether to show a warning when opening a page that is likely to contain sensitive content." : {
+
+    },
+    "Choose which feed is shown when the app opens." : {
 
     },
     "Choose wisely - you cannot change this later." : {
@@ -748,6 +751,16 @@
         }
       }
     },
+    "Customize how often Mlem plays haptic feedback." : {
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customise how often Mlem plays haptic feedback."
+          }
+        }
+      }
+    },
     "Customize Interaction Bar" : {
       "localizations" : {
         "en-GB" : {
@@ -881,9 +894,6 @@
 
     },
     "Embedded Content" : {
-
-    },
-    "Embeddings" : {
 
     },
     "Enable Keyword Filters" : {
@@ -1047,9 +1057,6 @@
     "General" : {
 
     },
-    "Gestures" : {
-
-    },
     "GitHub Repository" : {
 
     },
@@ -1072,6 +1079,9 @@
 
     },
     "Haptic Level" : {
+
+    },
+    "Haptics" : {
 
     },
     "Hard" : {
@@ -1276,6 +1286,9 @@
 
     },
     "Manage how Mlem interacts with Lemmy instances and other websites." : {
+
+    },
+    "Manage your overall setup for Mlem." : {
 
     },
     "Mark Read" : {
@@ -1557,6 +1570,16 @@
     },
     "Personal Only" : {
 
+    },
+    "Personalize Mlem in ways that work best for you. Some features are tied to system-wide accessibility settings." : {
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personalise Mlem in ways that work best for you. Some features are tied to system-wide accessibility settings."
+          }
+        }
+      }
     },
     "Photo Library" : {
 
