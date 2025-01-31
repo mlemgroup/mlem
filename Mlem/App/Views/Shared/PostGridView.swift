@@ -20,6 +20,7 @@ struct PostGridView: View {
     @Setting(\.postSize) var postSize
     @Setting(\.showReadInFeed) var showRead
     @Setting(\.infiniteScroll) var infiniteScroll
+    @Setting(\.allowMultiplePostColumns) var allowMultipleColumns
     
     @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette
@@ -119,7 +120,7 @@ struct PostGridView: View {
     }
     
     var columns: [GridItem] {
-        if postSize.tiled || (postSize != .large && isWideEnoughForTwoColumns) {
+        if postSize.tiled || (postSize != .large && isWideEnoughForTwoColumns), allowMultipleColumns {
             // leading/trailing alignment makes them want to stick to each other, allowing the Constants.main.halfSpacing padding applied below
             // to push them apart by a sum of Constants.main.standardSpacing
             

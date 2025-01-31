@@ -131,6 +131,7 @@ class Settings: ObservableObject {
     // swiftlint:disable:next function_body_length
     func reinit(from settings: CodableSettings) {
         postSize = settings.post_size
+        allowMultiplePostColumns = settings.post_allowMultipleColumns
         defaultPostSort = settings.post_defaultSort
         fallbackPostSort = settings.post_fallbackSort
         thumbnailLocation = settings.post_thumbnailLocation

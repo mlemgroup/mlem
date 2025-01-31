@@ -48,7 +48,6 @@ struct FeedsView: View {
 
     @State var isAtTop: Bool = true
     @State var scrollToTopTrigger: Bool = false
-    @State var presentingInspector: Bool = true
     
     var feedOptions: [FeedSelection] {
         FeedSelection.cases(for: appState.firstAccount.accountType)
@@ -106,9 +105,6 @@ struct FeedsView: View {
                 if let postFeedLoader, feedSelection != .saved {
                     FeedSortPicker(feedLoader: postFeedLoader)
                 }
-                Button("Toggle", systemImage: "triangle") {
-                    presentingInspector.toggle()
-                }
             }
             .navigationTitle(isAtTop ? "" : String(localized: feedSelection.description.label))
             .navigationBarTitleDisplayMode(.inline)
@@ -137,9 +133,6 @@ struct FeedsView: View {
                 return postFeedLoader
             }())
             .environment(\.feedContext, feedSelection.feedContext)
-            .inspector(isPresented: $presentingInspector) {
-                Text("Hello")
-            }
     }
     
     @ViewBuilder
