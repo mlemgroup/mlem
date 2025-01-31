@@ -14,6 +14,7 @@ struct PostSettingsView: View {
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor: Bool
     
     @Setting(\.postSize) var postSize
+    @Setting(\.allowMultiplePostColumns) var allowMultipleColumns
     @Setting(\.thumbnailLocation) var thumbnailLocation
     @Setting(\.showPostCreator) var showCreator
     @Setting(\.showSubscribedStatus) var showSubscribedStatus
@@ -24,6 +25,9 @@ struct PostSettingsView: View {
     var body: some View {
         Form {
             PostSizePicker()
+            if UIDevice.isPad {
+                Toggle("Multiple Columns", systemImage: "square.grid.2x2", isOn: $allowMultipleColumns)
+            }
             
             Section {
                 NavigationLink(.settings(.postInteractionBar)) {
