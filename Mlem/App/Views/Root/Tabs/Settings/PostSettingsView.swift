@@ -16,8 +16,6 @@ struct PostSettingsView: View {
     @Setting(\.postSize) var postSize
     @Setting(\.thumbnailLocation) var thumbnailLocation
     @Setting(\.showPostCreator) var showCreator
-    @Setting(\.showPersonAvatar) var showPersonAvatar
-    @Setting(\.showCommunityAvatar) var showCommunityAvatar
     @Setting(\.showSubscribedStatus) var showSubscribedStatus
     @Setting(\.showDownvotesCompact) var showDownvotesCompact
     
@@ -65,11 +63,6 @@ struct PostSettingsView: View {
                         destination: .settings(.postReadIndicator)
                     )
                 }
-            }
-            
-            Section {
-                Toggle("User Avatar", systemImage: Icons.personCircle, isOn: $showPersonAvatar)
-                Toggle("Community Avatar", systemImage: Icons.communityCircle, isOn: $showCommunityAvatar)
             }
             
             if postSize != .tile, postSize != .compact {

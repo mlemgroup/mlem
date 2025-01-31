@@ -18,9 +18,13 @@ struct GeneralSettingsView: View {
     @Setting(\.hapticLevel) var hapticLevel
     @Setting(\.wrapCodeBlockLines) var wrapCodeBlockLines
     
-    // Gestures
+    // gestures
     @Setting(\.quickSwipesEnabled) var swipeActionsEnabled
     @Setting(\.swipeAnywhereToNavigate) var swipeAnywhereToNavigate
+    
+    // avatars
+    @Setting(\.showPersonAvatar) var showPersonAvatar
+    @Setting(\.showCommunityAvatar) var showCommunityAvatar
     
     var body: some View {
         Form {
@@ -73,6 +77,11 @@ struct GeneralSettingsView: View {
                         }
                     )
                 )
+            }
+            
+            Section("Avatars") {
+                    Toggle("User Avatar", systemImage: Icons.personCircle, isOn: $showPersonAvatar)
+                    Toggle("Community Avatar", systemImage: Icons.communityCircle, isOn: $showCommunityAvatar)
             }
             
             NavigationLink("Import/Export Settings", systemImage: Icons.importSettings, destination: .settings(.importExportSettings))

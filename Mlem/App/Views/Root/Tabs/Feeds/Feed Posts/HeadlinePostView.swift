@@ -89,11 +89,11 @@ struct HeadlinePostView<EmbeddedContent: View>: View {
     
     @ViewBuilder
     var personLink: some View {
-        FullyQualifiedLinkView(post.creator_, labelStyle: .medium, showAvatar: showPersonAvatar)
+        FullyQualifiedLinkView(post.creator_, labelStyle: .medium)
     }
     
     @ViewBuilder
     var communityLink: some View {
-        FullyQualifiedLinkView(post.community_, labelStyle: .medium, showAvatar: showCommunityAvatar)
+        FullyQualifiedLinkView(post.community_, labelStyle: .medium)
     }
 }

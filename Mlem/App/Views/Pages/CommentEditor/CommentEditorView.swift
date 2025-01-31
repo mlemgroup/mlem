@@ -183,7 +183,6 @@ struct CommentEditorView: View {
                     FullyQualifiedLinkView(
                         post.community_,
                         labelStyle: .medium,
-                        showAvatar: showPersonAvatar,
                         blurred: post.nsfw
                     )
                     Spacer()
@@ -193,7 +192,6 @@ struct CommentEditorView: View {
                 FullyQualifiedLinkView(
                     post.creator_,
                     labelStyle: .medium,
-                    showAvatar: showPersonAvatar,
                     blurred: post.nsfw
                 )
             }
@@ -209,8 +207,7 @@ struct CommentEditorView: View {
                 HStack {
                     FullyQualifiedLinkView(
                         comment.creator_,
-                        labelStyle: .small,
-                        showAvatar: showPersonAvatar
+                        labelStyle: .small
                     )
                     Spacer()
                     selectTextButton
