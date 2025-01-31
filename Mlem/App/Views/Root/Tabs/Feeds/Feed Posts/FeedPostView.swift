@@ -16,6 +16,7 @@ struct FeedPostView<EmbeddedContent: View>: View {
     @Environment(Palette.self) private var palette
     @Environment(FiltersTracker.self) var filtersTracker
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
+    @Environment(\.communityContext) var communityContext
     
     @State var obscured: Bool
     
@@ -29,7 +30,11 @@ struct FeedPostView<EmbeddedContent: View>: View {
     let overridePostSize: PostSize?
     
     var postSize: PostSize {
-        overridePostSize ?? settingsPostSize
+        if post.read_ ?? false,
+           (communityContext == nil && post.pinnedInstance) || (communityContext != nil && post.pinnedCommunity) {
+            return .compact
+        }
+        return overridePostSize ?? settingsPostSize
     }
     
     @ViewBuilder let embeddedContent: () -> EmbeddedContent
