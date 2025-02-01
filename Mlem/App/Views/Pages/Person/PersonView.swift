@@ -201,7 +201,6 @@ struct PersonView: View {
             .padding(Constants.main.standardSpacing)
             .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
             .paletteBorder(cornerRadius: Constants.main.standardSpacing)
-            .padding(.top, Constants.main.halfSpacing)
         } else {
             dateLabel(person: person)
                 .frame(maxWidth: .infinity, alignment: .center)
@@ -228,6 +227,28 @@ struct PersonView: View {
             }
             .labelStyle(FlairLabelStyle())
         }
+        if person.bannedFromInstance {
+            banFlairView(person: person)
+        }
+    }
+    
+    @ViewBuilder
+    func banFlairView(person: any Person) -> some View {
+        HStack {
+            Image(systemName: Icons.banFromInstance)
+                .imageScale(.large)
+                .symbolVariant(.fill)
+            switch person.instanceBan {
+            case let .temporarilyBanned(expires: expires):
+                Text("\(person.name) is banned from \(person.api.host) until \(expires.formatted(date: .numeric, time: .omitted)).")
+            default:
+                Text("\(person.name) is permanently banned from \(person.api.host).")
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .foregroundStyle(palette.negative)
+        .padding(Constants.main.standardSpacing)
+        .background(palette.negative.opacity(0.2), in: .rect(cornerRadius: Constants.main.standardSpacing))
     }
     
     @ViewBuilder
