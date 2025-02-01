@@ -30,9 +30,7 @@ struct InboxView: View {
     @State var messageFeedLoader: MessageChildFeedLoader
     @State var inboxFeedLoader: InboxFeedLoader
     
-    @State var postReportFeedLoader: PostReportChildFeedLoader
-    @State var commentReportFeedLoader: CommentReportChildFeedLoader
-    @State var messageReportFeedLoader: MessageReportChildFeedLoader
+    @State var reportFeedLoader: ReportChildFeedLoader
     @State var applicationFeedLoader: ApplicationChildFeedLoader
     @State var modMailFeedLoader: ModMailFeedLoader
     
@@ -63,9 +61,7 @@ struct InboxView: View {
             showRead: showRead
         )
         
-        self._postReportFeedLoader = .init(wrappedValue: modMailFeedLoaders.postReportFeedLoader)
-        self._commentReportFeedLoader = .init(initialValue: modMailFeedLoaders.commentReportFeedLoader)
-        self._messageReportFeedLoader = .init(wrappedValue: modMailFeedLoaders.messageReportFeedLoader)
+        self._reportFeedLoader = .init(wrappedValue: modMailFeedLoaders.reportFeedLoader)
         self._applicationFeedLoader = .init(wrappedValue: modMailFeedLoaders.applicationFeedLoader)
         self._modMailFeedLoader = .init(wrappedValue: modMailFeedLoaders.modMailFeedLoader)
     }
@@ -86,7 +82,7 @@ struct InboxView: View {
     var currentModFeedLoader: StandardFeedLoader<ModMailItem> {
         switch selectedModTab {
         case .applications: applicationFeedLoader
-        case .reports: postReportFeedLoader
+        case .reports: reportFeedLoader
         }
     }
     
@@ -111,6 +107,7 @@ struct InboxView: View {
                     if appState.firstAccount is UserAccount {
                         Task {
                             await inboxFeedLoader.changeApi(to: appState.firstApi, context: filtersTracker.filterContext)
+                            await modMailFeedLoader.changeApi(to: appState.firstApi, context: filtersTracker.filterContext)
                         }
                         showRefreshPopup = true
                     }
@@ -120,8 +117,10 @@ struct InboxView: View {
                         do {
                             if showRead {
                                 try await inboxFeedLoader.showRead()
+                                try await modMailFeedLoader.showRead()
                             } else {
                                 try await inboxFeedLoader.hideRead()
+                                try await modMailFeedLoader.hideRead()
                             }
                         } catch {
                             handleError(error)
@@ -181,6 +180,7 @@ struct InboxView: View {
     private func refresh() async {
         do {
             try await inboxFeedLoader.refresh(clearBeforeRefresh: true)
+            try await modMailFeedLoader.refresh(clearBeforeRefresh: true)
         } catch {
             handleError(error)
         }
