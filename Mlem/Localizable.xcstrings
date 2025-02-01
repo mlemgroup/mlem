@@ -52,12 +52,32 @@
     "%@ is " : {
 
     },
+    "%@ is banned from %@ until %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ is banned from %2$@ until %3$@."
+          }
+        }
+      }
+    },
     "%@ is guaranteed by %@." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
             "value" : "%1$@ is guaranteed by %2$@."
+          }
+        }
+      }
+    },
+    "%@ is permanently banned from %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ is permanently banned from %2$@."
           }
         }
       }
