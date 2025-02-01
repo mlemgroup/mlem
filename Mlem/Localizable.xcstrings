@@ -751,6 +751,9 @@
         }
       }
     },
+    "Customize how moderator actions are separated from regular actions in context menus." : {
+
+    },
     "Customize how often Mlem plays haptic feedback." : {
       "localizations" : {
         "en-GB" : {
@@ -1298,6 +1301,9 @@
     "Manage how Mlem interacts with Lemmy instances and other websites." : {
 
     },
+    "Manage settings related to content moderation." : {
+
+    },
     "Manage your overall setup for Mlem." : {
 
     },
@@ -1377,6 +1383,9 @@
 
     },
     "Moderator" : {
+
+    },
+    "Moderator Actions" : {
 
     },
     "Moderator was appointed" : {
