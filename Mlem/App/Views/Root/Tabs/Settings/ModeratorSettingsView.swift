@@ -8,21 +8,28 @@
 import SwiftUI
 
 struct ModeratorSettingsView: View {
+    @Environment(Palette.self) var palette
+    
     @Setting(\.moderatorActionGrouping) var moderatorActionGrouping
     @Setting(\.showAllModActions) var showAllModActions
     @Setting(\.tabInboxBadgeIncludedTypes) var tabInboxBadgeIncludedTypes
     
     var body: some View {
         Form {
+            SettingsHeaderView(
+                title: "Moderation",
+                description: "Manage settings related to content moderation.",
+                systemImage: Icons.moderationFill
+            )
+            .tint(palette.moderation)
             Section {
-                Picker("Separate Actions Using", systemImage: Icons.menuItems, selection: $moderatorActionGrouping) {
-                    Text("Divider")
-                        .tag(ModeratorActionGrouping.divider)
-                    Text("Disclosure Group")
-                        .tag(ModeratorActionGrouping.disclosureGroup)
-                    Text("Separate Menu")
-                        .tag(ModeratorActionGrouping.separateMenu)
-                }
+                NavigationLink(
+                    "Moderator Actions",
+                    value: .init(localized: moderatorActionGrouping.label),
+                    fallbackValue: "",
+                    systemImage: Icons.menuItems,
+                    destination: .settings(.separateModeratorActions)
+                )
             }
             Section {
                 Toggle("Show All Actions in Feed", systemImage: Icons.menuCircle, isOn: $showAllModActions)
@@ -40,11 +47,11 @@ struct ModeratorSettingsView: View {
             }
         }
         .labelStyle(.conditional)
-        .navigationTitle("Moderation")
+        .contentMargins(.top, 16)
     }
 }
 
-enum ModeratorActionGrouping: String, Codable {
+enum ModeratorActionGrouping: String, Codable, CaseIterable {
     case divider, disclosureGroup, separateMenu
     
     init?(rawValue: String) {
@@ -58,6 +65,22 @@ enum ModeratorActionGrouping: String, Codable {
             self = .separateMenu
         default:
             return nil
+        }
+    }
+    
+    var label: LocalizedStringResource {
+        switch self {
+        case .divider: "Divider"
+        case .disclosureGroup: "Disclosure Group"
+        case .separateMenu: "Separate Menu"
+        }
+    }
+    
+    var systemImage: String {
+        switch self {
+        case .divider: "minus"
+        case .disclosureGroup: Icons.dropDown
+        case .separateMenu: Icons.moderation
         }
     }
 }
