@@ -40,81 +40,34 @@ struct InboxView: View {
     @State var waitingOnMarkAllAsRead: Bool = false
     @State var markAllAsReadTrigger: Bool = false
     
-    // swiftlint:disable:next function_body_length
     init() {
         @Setting(\.internetSpeed) var internetSpeed
         @Setting(\.showReadInInbox) var showRead
         
-        let replyFeedLoader: ReplyChildFeedLoader = .init(
-            api: AppState.main.firstApi,
-            pageSize: internetSpeed.pageSize,
-            sortType: .new,
-            showRead: showRead
+        let inboxFeedLoaders = InboxFeedLoader.setup(
+                api: AppState.main.firstApi,
+                pageSize: internetSpeed.pageSize,
+                sortType: .new,
+                showRead: showRead
         )
-        let mentionFeedLoader: MentionChildFeedLoader = .init(
-            api: AppState.main.firstApi,
-            pageSize: internetSpeed.pageSize,
-            sortType: .new,
-            showRead: showRead
-        )
-        let messageFeedLoader: MessageChildFeedLoader = .init(
+        
+        self._replyFeedLoader = .init(wrappedValue: inboxFeedLoaders.replyFeedLoader)
+        self._mentionFeedLoader = .init(wrappedValue: inboxFeedLoaders.mentionFeedLoader)
+        self._messageFeedLoader = .init(wrappedValue: inboxFeedLoaders.messageFeedLoader)
+        self._inboxFeedLoader = .init(wrappedValue: inboxFeedLoaders.inboxFeedLoader)
+        
+        let modMailFeedLoaders = ModMailFeedLoader.setup(
             api: AppState.main.firstApi,
             pageSize: internetSpeed.pageSize,
             sortType: .new,
             showRead: showRead
         )
         
-        let inboxFeedLoader: InboxFeedLoader = .init(
-            api: AppState.main.firstApi,
-            pageSize: internetSpeed.pageSize,
-            sources: [replyFeedLoader, mentionFeedLoader, messageFeedLoader],
-            sortType: .new,
-            showRead: showRead
-        )
-        
-        self._replyFeedLoader = .init(wrappedValue: replyFeedLoader)
-        self._mentionFeedLoader = .init(wrappedValue: mentionFeedLoader)
-        self._messageFeedLoader = .init(wrappedValue: messageFeedLoader)
-        self._inboxFeedLoader = .init(wrappedValue: inboxFeedLoader)
-        
-        let postReportFeedLoader: PostReportChildFeedLoader = .init(
-            api: AppState.main.firstApi,
-            pageSize: internetSpeed.pageSize,
-            sortType: .new,
-            showRead: showRead
-        )
-        let commentReportFeedLoader: CommentReportChildFeedLoader = .init(
-            api: AppState.main.firstApi,
-            pageSize: internetSpeed.pageSize,
-            sortType: .new,
-            showRead: showRead
-        )
-        let messageReportFeedLoader: MessageReportChildFeedLoader = .init(
-            api: AppState.main.firstApi,
-            pageSize: internetSpeed.pageSize,
-            sortType: .new,
-            showRead: showRead
-        )
-        let applicationFeedLoader: ApplicationChildFeedLoader = .init(
-            api: AppState.main.firstApi,
-            pageSize: internetSpeed.pageSize,
-            sortType: .new,
-            showRead: showRead
-        )
-        
-        let modMailFeedLoader: ModMailFeedLoader = .init(
-            api: AppState.main.firstApi,
-            pageSize: internetSpeed.pageSize,
-            sources: [postReportFeedLoader, commentReportFeedLoader, messageReportFeedLoader, applicationFeedLoader],
-            sortType: .new,
-            showRead: showRead
-        )
-        
-        self._postReportFeedLoader = .init(wrappedValue: postReportFeedLoader)
-        self._commentReportFeedLoader = .init(initialValue: commentReportFeedLoader)
-        self._messageReportFeedLoader = .init(wrappedValue: messageReportFeedLoader)
-        self._applicationFeedLoader = .init(wrappedValue: applicationFeedLoader)
-        self._modMailFeedLoader = .init(wrappedValue: modMailFeedLoader)
+        self._postReportFeedLoader = .init(wrappedValue: modMailFeedLoaders.postReportFeedLoader)
+        self._commentReportFeedLoader = .init(initialValue: modMailFeedLoaders.commentReportFeedLoader)
+        self._messageReportFeedLoader = .init(wrappedValue: modMailFeedLoaders.messageReportFeedLoader)
+        self._applicationFeedLoader = .init(wrappedValue: modMailFeedLoaders.applicationFeedLoader)
+        self._modMailFeedLoader = .init(wrappedValue: modMailFeedLoaders.modMailFeedLoader)
     }
     
     var feedLoader: StandardFeedLoader<InboxItem> {
