@@ -13,7 +13,7 @@ extension InboxView {
     var inboxFeedView: some View {
         LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
             Section {
-                ForEach(feedLoader.items, id: \.actorId) { item in
+                ForEach(feedLoader.items, id: \.inboxId) { item in
                     Group {
                         switch item {
                         case let .message(message):
@@ -58,7 +58,7 @@ extension InboxView {
                     }
                 )
             }
-            ForEach(Array(currentModFeedLoader.items.enumerated()), id: \.offset) { _, item in
+            ForEach(currentModFeedLoader.items, id: \.inboxId) { item in
                 Group {
                     switch item {
                     case let .application(application):
