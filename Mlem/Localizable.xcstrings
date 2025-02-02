@@ -52,12 +52,32 @@
     "%@ is " : {
 
     },
+    "%@ is banned from %@ until %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ is banned from %2$@ until %3$@."
+          }
+        }
+      }
+    },
     "%@ is guaranteed by %@." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
             "value" : "%1$@ is guaranteed by %2$@."
+          }
+        }
+      }
+    },
+    "%@ is permanently banned from %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ is permanently banned from %2$@."
           }
         }
       }
@@ -751,6 +771,9 @@
         }
       }
     },
+    "Customize how moderator actions are separated from regular actions in context menus." : {
+
+    },
     "Customize how often Mlem plays haptic feedback." : {
       "localizations" : {
         "en-GB" : {
@@ -1298,6 +1321,9 @@
     "Manage how Mlem interacts with Lemmy instances and other websites." : {
 
     },
+    "Manage settings related to content moderation." : {
+
+    },
     "Manage your overall setup for Mlem." : {
 
     },
@@ -1377,6 +1403,9 @@
 
     },
     "Moderator" : {
+
+    },
+    "Moderator Actions" : {
 
     },
     "Moderator was appointed" : {

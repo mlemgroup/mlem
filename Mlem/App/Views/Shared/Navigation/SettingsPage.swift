@@ -27,6 +27,7 @@ enum SettingsPage: Hashable {
     case about, advanced, developer, errorLog
     case postInteractionBar, commentInteractionBar, replyInteractionBar
     case moderation
+    case separateModeratorActions
     case licences, document(Document)
     
     @ViewBuilder
@@ -119,6 +120,8 @@ enum SettingsPage: Hashable {
             FiltersSettingsView()
         case .moderation:
             ModeratorSettingsView()
+        case .separateModeratorActions:
+            ModeratorActionSeparationSettingsView()
         case .subscriptionList:
             SubscriptionListSettingsView()
         case .tabBar:
