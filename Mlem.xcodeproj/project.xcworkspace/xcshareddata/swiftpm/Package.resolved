@@ -60,8 +60,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mlemgroup/MlemMiddleware",
       "state" : {
-        "branch" : "eric/mod-mail-floader",
-        "revision" : "1e6bb8067d0354eb739b3f02e20d01d493541014"
+        "revision" : "80ef290b94ae5bf3b1e83e62d333f45432e2dfe0",
+        "version" : "0.72.0"
       }
     },
     {

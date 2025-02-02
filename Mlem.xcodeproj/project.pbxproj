@@ -3268,8 +3268,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware";
 			requirement = {
-				branch = "eric/mod-mail-floader";
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.72.0;
 			};
 		};
 		CDE4AC402CA3706400981010 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
