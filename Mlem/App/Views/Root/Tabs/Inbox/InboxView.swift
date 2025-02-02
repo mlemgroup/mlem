@@ -43,10 +43,10 @@ struct InboxView: View {
         @Setting(\.showReadInInbox) var showRead
         
         let inboxFeedLoaders = InboxFeedLoader.setup(
-                api: AppState.main.firstApi,
-                pageSize: internetSpeed.pageSize,
-                sortType: .new,
-                showRead: showRead
+            api: AppState.main.firstApi,
+            pageSize: internetSpeed.pageSize,
+            sortType: .new,
+            showRead: showRead
         )
         
         self._replyFeedLoader = .init(wrappedValue: inboxFeedLoaders.replyFeedLoader)
@@ -151,7 +151,7 @@ struct InboxView: View {
     
     @ViewBuilder
     var content: some View {
-        FancyScrollView {
+        FancyScrollView(reselectAction: toggleFeed) {
             VStack(spacing: 0) {
                 headerView
                 GeometryReader { geo in
@@ -184,6 +184,10 @@ struct InboxView: View {
         } catch {
             handleError(error)
         }
+    }
+    
+    private func toggleFeed() {
+        selectedFeed = selectedFeed == .inbox ? .modMail : .inbox
     }
 }
 
