@@ -55,6 +55,13 @@ struct CommunityDetailsView: View {
     
     var localSubscriberCountText: String {
         guard let count = community.localSubscriberCount_ else { return "" }
-        return String(localized: "\(count) on \(community.api.host)")
+        return .init(
+            localized: .init(
+                "local.subscriber.count.text",
+                defaultValue: "\(count) on \(community.api.host)",
+                // swiftlint:disable:next line_length
+                comment: "Used in the \"Details\" tab of a community page to indicate how many local subscribers use the instance. E.g. \"56 on lemmy.world\"."
+            )
+        )
     }
 }
