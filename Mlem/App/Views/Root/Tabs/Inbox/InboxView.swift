@@ -30,6 +30,10 @@ struct InboxView: View {
     @State var messageFeedLoader: MessageChildFeedLoader
     @State var inboxFeedLoader: InboxFeedLoader
     
+    @State var reportFeedLoader: ReportChildFeedLoader
+    @State var applicationFeedLoader: ApplicationChildFeedLoader
+    @State var modMailFeedLoader: ModMailFeedLoader
+    
     @State var showRefreshPopup: Bool = false
     @State var waitingOnMarkAllAsRead: Bool = false
     @State var markAllAsReadTrigger: Bool = false
@@ -38,37 +42,28 @@ struct InboxView: View {
         @Setting(\.internetSpeed) var internetSpeed
         @Setting(\.showReadInInbox) var showRead
         
-        let replyFeedLoader: ReplyChildFeedLoader = .init(
-            api: AppState.main.firstApi,
-            pageSize: internetSpeed.pageSize,
-            sortType: .new,
-            showRead: showRead
+        let inboxFeedLoaders = InboxFeedLoader.setup(
+                api: AppState.main.firstApi,
+                pageSize: internetSpeed.pageSize,
+                sortType: .new,
+                showRead: showRead
         )
-        let mentionFeedLoader: MentionChildFeedLoader = .init(
-            api: AppState.main.firstApi,
-            pageSize: internetSpeed.pageSize,
-            sortType: .new,
-            showRead: showRead
-        )
-        let messageFeedLoader: MessageChildFeedLoader = .init(
+        
+        self._replyFeedLoader = .init(wrappedValue: inboxFeedLoaders.replyFeedLoader)
+        self._mentionFeedLoader = .init(wrappedValue: inboxFeedLoaders.mentionFeedLoader)
+        self._messageFeedLoader = .init(wrappedValue: inboxFeedLoaders.messageFeedLoader)
+        self._inboxFeedLoader = .init(wrappedValue: inboxFeedLoaders.inboxFeedLoader)
+        
+        let modMailFeedLoaders = ModMailFeedLoader.setup(
             api: AppState.main.firstApi,
             pageSize: internetSpeed.pageSize,
             sortType: .new,
             showRead: showRead
         )
         
-        let inboxFeedLoader: InboxFeedLoader = .init(
-            api: AppState.main.firstApi,
-            pageSize: internetSpeed.pageSize,
-            sources: [replyFeedLoader, mentionFeedLoader, messageFeedLoader],
-            sortType: .new,
-            showRead: showRead
-        )
-        
-        self._replyFeedLoader = .init(wrappedValue: replyFeedLoader)
-        self._mentionFeedLoader = .init(wrappedValue: mentionFeedLoader)
-        self._messageFeedLoader = .init(wrappedValue: messageFeedLoader)
-        self._inboxFeedLoader = .init(wrappedValue: inboxFeedLoader)
+        self._reportFeedLoader = .init(wrappedValue: modMailFeedLoaders.reportFeedLoader)
+        self._applicationFeedLoader = .init(wrappedValue: modMailFeedLoaders.applicationFeedLoader)
+        self._modMailFeedLoader = .init(wrappedValue: modMailFeedLoaders.modMailFeedLoader)
     }
     
     var feedLoader: StandardFeedLoader<InboxItem> {
@@ -81,6 +76,13 @@ struct InboxView: View {
             mentionFeedLoader
         case .messages:
             messageFeedLoader
+        }
+    }
+    
+    var currentModFeedLoader: StandardFeedLoader<ModMailItem> {
+        switch selectedModTab {
+        case .applications: applicationFeedLoader
+        case .reports: reportFeedLoader
         }
     }
     
@@ -100,10 +102,12 @@ struct InboxView: View {
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar { toolbar }
                 .loadFeed(inboxFeedLoader)
+                .loadFeed(modMailFeedLoader)
                 .onChange(of: appState.firstApi, initial: false) {
                     if appState.firstAccount is UserAccount {
                         Task {
                             await inboxFeedLoader.changeApi(to: appState.firstApi, context: filtersTracker.filterContext)
+                            await modMailFeedLoader.changeApi(to: appState.firstApi, context: filtersTracker.filterContext)
                         }
                         showRefreshPopup = true
                     }
@@ -113,8 +117,10 @@ struct InboxView: View {
                         do {
                             if showRead {
                                 try await inboxFeedLoader.showRead()
+                                try await modMailFeedLoader.showRead()
                             } else {
                                 try await inboxFeedLoader.hideRead()
+                                try await modMailFeedLoader.hideRead()
                             }
                         } catch {
                             handleError(error)
@@ -174,6 +180,7 @@ struct InboxView: View {
     private func refresh() async {
         do {
             try await inboxFeedLoader.refresh(clearBeforeRefresh: true)
+            try await modMailFeedLoader.refresh(clearBeforeRefresh: true)
         } catch {
             handleError(error)
         }

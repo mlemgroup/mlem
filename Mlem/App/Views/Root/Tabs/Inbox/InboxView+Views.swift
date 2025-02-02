@@ -13,7 +13,7 @@ extension InboxView {
     var inboxFeedView: some View {
         LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
             Section {
-                ForEach(feedLoader.items, id: \.actorId) { item in
+                ForEach(feedLoader.items, id: \.inboxId) { item in
                     Group {
                         switch item {
                         case let .message(message):
@@ -58,33 +58,23 @@ extension InboxView {
                     }
                 )
             }
-            switch selectedModTab {
-            case .reports:
+            ForEach(currentModFeedLoader.items, id: \.inboxId) { item in
                 Group {
-                    if let reports {
-                        ForEach(reports, id: \.cacheId) { report in
-                            ReportView(report: report)
-                                .padding([.horizontal, .bottom], Constants.main.standardSpacing)
-                        }
-                    } else {
-                        ProgressView()
-                            .padding(.top)
+                    switch item {
+                    case let .application(application):
+                        RegistrationApplicationView(application: application)
+                    case let .report(report):
+                        ReportView(report: report)
                     }
                 }
-                .onAppear(perform: loadReports)
-            case .applications:
-                Group {
-                    if let applications {
-                        ForEach(applications, id: \.cacheId) { application in
-                            RegistrationApplicationView(application: application)
-                                .padding([.horizontal, .bottom], Constants.main.standardSpacing)
-                        }
-                    } else {
-                        ProgressView()
-                            .padding(.top)
+                .padding([.horizontal, .bottom], Constants.main.standardSpacing)
+                .onAppear {
+                    do {
+                        try currentModFeedLoader.loadIfThreshold(item)
+                    } catch {
+                        handleError(error)
                     }
                 }
-                .onAppear(perform: loadApplications)
             }
         }
         .padding(.top, Constants.main.standardSpacing)
@@ -239,41 +229,6 @@ extension InboxView {
                 .padding(.vertical, 4)
                 .padding(.horizontal, 8)
                 .frame(minWidth: 100)
-        }
-    }
-    
-    func loadReports() {
-        if reports == nil {
-            Task { @MainActor in
-                do {
-                    async let postReports = await appState.firstApi.getPostReports()
-                    async let commentReports = await appState.firstApi.getCommentReports()
-                    async let messageReports: [Report] = await {
-                        if await appState.firstApi.isAdmin {
-                            return try await appState.firstApi.getMessageReports()
-                        } else {
-                            return []
-                        }
-                    }()
-                    
-                    let combined = try await (postReports + commentReports + messageReports)
-                    self.reports = combined.sorted { $0.created > $1.created }
-                } catch {
-                    handleError(error)
-                }
-            }
-        }
-    }
-    
-    func loadApplications() {
-        if applications == nil {
-            Task { @MainActor in
-                do {
-                    self.applications = try await appState.firstApi.getRegistrationApplications()
-                } catch {
-                    handleError(error)
-                }
-            }
         }
     }
     
