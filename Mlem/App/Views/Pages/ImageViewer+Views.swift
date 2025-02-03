@@ -14,7 +14,7 @@ extension ImageViewer {
         VStack {
             topControlBar
                 .offset(y: -controlOffset)
-
+            
             Spacer()
             
             bottomControlBar
@@ -102,5 +102,66 @@ extension ImageViewer {
         }
         .padding(Constants.main.standardSpacing)
         .contentShape(.rect)
+    }
+    
+    // MARK: Zoom and Scale
+    
+    @ViewBuilder
+    var scaleDisplay: some View {
+        Text(String(format: "%.1fx", currentScale))
+            .foregroundStyle(.white)
+            .padding(Constants.main.standardSpacing)
+            .padding(.horizontal, Constants.main.halfSpacing)
+            .background {
+                Capsule().fill(.ultraThinMaterial)
+                    .environment(\.colorScheme, .dark)
+            }
+            .padding(.leading, Constants.main.standardSpacing)
+            .opacity(scaleDisplayShown ? 1 : 0)
+    }
+    
+    @ViewBuilder
+    var zoomDraggerOverlay: some View {
+        HStack {
+            if zoomDraggerLocation == .left || zoomDraggerLocation == .either {
+                zoomDragger
+            }
+            
+            Spacer()
+            
+            if zoomDraggerLocation == .right || zoomDraggerLocation == .either {
+                zoomDragger
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var zoomDragger: some View {
+        Color.clear
+            .contentShape(.rect)
+            .frame(width: 40)
+            .frame(maxHeight: .infinity)
+            .highPriorityGesture(DragGesture()
+                .onChanged { value in
+                    let baseScale: CGFloat
+                    if let dragStartedScale {
+                        baseScale = dragStartedScale
+                    } else {
+                        baseScale = currentScale
+                        dragStartedScale = currentScale
+                    }
+                    
+                    let newScale = baseScale + (value.translation.height / -60)
+                    if newScale <= 1.0 {
+                        currentScale = 1.0
+                    } else if newScale >= 4.0 {
+                        currentScale = 4.0
+                    } else {
+                        currentScale = newScale
+                    }
+                }
+                .onEnded { _ in
+                    dragStartedScale = nil
+                })
     }
 }

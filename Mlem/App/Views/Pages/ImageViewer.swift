@@ -12,12 +12,17 @@ struct ImageViewer: View {
     @Environment(Palette.self) var palette
     @Environment(\.dismiss) var dismiss
     @Environment(\.colorScheme) var colorScheme
+    @Setting(\.zoomDraggerLocation) var zoomDraggerLocation
 
     let url: URL
 
     let duration: CGFloat = 0.25
     let maxControlOffset: CGFloat = 50
     let screenHeight: CGFloat = UIScreen.main.bounds.height
+    
+    @State var currentScale: CGFloat = 1.0
+    @State var dragStartedScale: CGFloat?
+    @State var scaleDisplayShown: Bool = false
     
     @GestureState var dragState: Bool = false
     
@@ -54,7 +59,7 @@ struct ImageViewer: View {
     }
     
     var body: some View {
-        ZoomableContainer(isZoomed: $isZoomed) {
+        ZoomableContainer(isZoomed: $isZoomed, currentScale: $currentScale) {
             MediaView(url: url, playImmediately: true)
         }
         .offset(y: offset)
@@ -88,6 +93,8 @@ struct ImageViewer: View {
                 state = true
             }
         )
+        .overlay(alignment: .topLeading) { scaleDisplay }
+        .overlay { zoomDraggerOverlay }
         .onAppear {
             animateOpacityUpdate(1.0)
         }
@@ -105,6 +112,21 @@ struct ImageViewer: View {
                         enableControlTap = true
                     }
                     animateOffsetUpdate(0)
+                }
+            }
+        }
+        .onChange(of: currentScale) {
+            if !scaleDisplayShown {
+                withAnimation(.easeIn(duration: 0.1)) {
+                    scaleDisplayShown = true
+                }
+            }
+            let oldScale: CGFloat = currentScale
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                if self.currentScale == oldScale {
+                    withAnimation {
+                        scaleDisplayShown = false
+                    }
                 }
             }
         }

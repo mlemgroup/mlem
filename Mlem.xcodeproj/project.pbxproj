@@ -371,6 +371,8 @@
 		CD332D7C2CA71E6F00A53988 /* GifView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD332D7B2CA71E6E00A53988 /* GifView.swift */; };
 		CD332D7E2CA7486000A53988 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD332D7D2CA7485D00A53988 /* String+Extensions.swift */; };
 		CD33CA522D3C18BF00106C8C /* ImageViewer+Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD33CA512D3C18AE00106C8C /* ImageViewer+Views.swift */; };
+		CD3485BB2D501470006748B8 /* ZoomDraggerLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3485BA2D501463006748B8 /* ZoomDraggerLocation.swift */; };
+		CD3485BD2D501573006748B8 /* ZoomDraggerSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3485BC2D50156E006748B8 /* ZoomDraggerSettingsView.swift */; };
 		CD3FC6802D4A75090088E63B /* CounterApperance+StaticValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3FC67F2D4A75050088E63B /* CounterApperance+StaticValues.swift */; };
 		CD4368C12AE23FD400BD8BD1 /* Semaphore in Frameworks */ = {isa = PBXBuildFile; productRef = CD4368C02AE23FD400BD8BD1 /* Semaphore */; };
 		CD43E8B32BF2C24E007C3D71 /* ContentLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD43E8B22BF2C24E007C3D71 /* ContentLoader.swift */; };
@@ -869,6 +871,8 @@
 		CD332D7B2CA71E6E00A53988 /* GifView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GifView.swift; sourceTree = "<group>"; };
 		CD332D7D2CA7485D00A53988 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		CD33CA512D3C18AE00106C8C /* ImageViewer+Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageViewer+Views.swift"; sourceTree = "<group>"; };
+		CD3485BA2D501463006748B8 /* ZoomDraggerLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomDraggerLocation.swift; sourceTree = "<group>"; };
+		CD3485BC2D50156E006748B8 /* ZoomDraggerSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomDraggerSettingsView.swift; sourceTree = "<group>"; };
 		CD3FC67F2D4A75050088E63B /* CounterApperance+StaticValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CounterApperance+StaticValues.swift"; sourceTree = "<group>"; };
 		CD43E8B22BF2C24E007C3D71 /* ContentLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentLoader.swift; sourceTree = "<group>"; };
 		CD45CB0C2D1880E3008BC729 /* FiltersSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersSettingsView.swift; sourceTree = "<group>"; };
@@ -1056,6 +1060,7 @@
 		03134A492BEACF46002662CC /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				CD3485BC2D50156E006748B8 /* ZoomDraggerSettingsView.swift */,
 				039F58962C7B68F100C61658 /* AboutMlemView.swift */,
 				03BF11C62D3D634A00CC1F66 /* AccessibilitySettingsView.swift */,
 				03AB48542CBC0B8000567FF9 /* AccountAdvancedSettingsView.swift */,
@@ -1844,6 +1849,7 @@
 		CD4D58C62B86DCE500B82964 /* Enums */ = {
 			isa = PBXGroup;
 			children = (
+				CD3485BA2D501463006748B8 /* ZoomDraggerLocation.swift */,
 				CDC44A352D1CBC200030F01C /* ReadPostIndicator.swift */,
 				CD4D58C72B86DCED00B82964 /* AvatarType.swift */,
 				03CBD18C2C6120F600E870BC /* PersonFlair.swift */,
@@ -2519,6 +2525,7 @@
 				033819282D4424D9000AFC55 /* SafetyWarningsSettingsView.swift in Sources */,
 				033F844F2D196AC700D87A9E /* OptimalHeightLayout.swift in Sources */,
 				03ECD7212C8654BA00D48BF6 /* PostEditorView+Toolbar.swift in Sources */,
+				CD3485BD2D501573006748B8 /* ZoomDraggerSettingsView.swift in Sources */,
 				033EF4102CB9AEF7004D8A3F /* ExpandedPostView+Views.swift in Sources */,
 				03FE140C2BF953B000A8377F /* HandleError.swift in Sources */,
 				0320B65A2C8CBB0D00D38548 /* SignUpView+EmailConfirmationView.swift in Sources */,
@@ -2715,6 +2722,7 @@
 				032C32042C3439C600595286 /* ActorIdentifiable+Extensions.swift in Sources */,
 				CD57AFA52D0377EB00AB3956 /* AnimationControlLayer.swift in Sources */,
 				CD6436522D483F2D002668FB /* MockTextView.swift in Sources */,
+				CD3485BB2D501470006748B8 /* ZoomDraggerLocation.swift in Sources */,
 				CD4D59182B87B3B000B82964 /* UIViewController+Extensions.swift in Sources */,
 				034B94812C09306D00039AF4 /* CommunityOrPersonStub+Extensions.swift in Sources */,
 				0320B6692C93506300D38548 /* SearchView+Logic.swift in Sources */,

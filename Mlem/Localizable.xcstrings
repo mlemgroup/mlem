@@ -522,6 +522,9 @@
     "Bot accounts are unable to vote." : {
 
     },
+    "Both" : {
+
+    },
     "Bottom" : {
 
     },
@@ -869,6 +872,9 @@
     "Diagnosing..." : {
 
     },
+    "Differentiate Without Color" : {
+
+    },
     "Disabled" : {
 
     },
@@ -909,6 +915,12 @@
 
     },
     "Dracula" : {
+
+    },
+    "Drag-To-Zoom" : {
+
+    },
+    "Drag-To-Zoom Images" : {
 
     },
     "Easy" : {
@@ -1088,6 +1100,9 @@
 
     },
     "General" : {
+
+    },
+    "Gestures" : {
 
     },
     "GitHub Repository" : {
@@ -1300,6 +1315,9 @@
     "Local Options" : {
 
     },
+    "Location" : {
+
+    },
     "Lock" : {
 
     },
@@ -1500,6 +1518,9 @@
 
     },
     "No reason given" : {
+
+    },
+    "Non-Text Indicators" : {
 
     },
     "None" : {
@@ -2775,6 +2796,9 @@
 
     },
     "Your subscriptions live here." : {
+
+    },
+    "Zoom the image viewer by dragging on the selected side." : {
 
     }
   },

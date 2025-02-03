@@ -22,6 +22,7 @@ class Settings: ObservableObject {
     @AppStorage("a11y.readOutlineThickness") var readOutlineThickness: Int = 3
     @AppStorage("a11y.showSettingsIcons") var showSettingsIcons: Bool = false
     @AppStorage("a11y.websiteThumbnailIcon") var websiteThumbnailIcon: Bool = false
+    @AppStorage("a11y.zoomDraggerLocation") var zoomDraggerLocation: ZoomDraggerLocation = .none
 
     @AppStorage("post.size") var postSize: PostSize = .compact
     @AppStorage("post.allowMultipleColumns") var allowMultiplePostColumns: Bool = true
@@ -186,6 +187,7 @@ class Settings: ObservableObject {
         websiteThumbnailIcon = settings.a11y_websiteThumbnailIcon
         showSettingsIcons = settings.a11y_showSettingsIcons
         embedLoops = settings.links_embedLoops
+        zoomDraggerLocation = settings.a11y_zoomDraggerLocation
         
         Task {
             await FiltersTracker.main.resetFilteredKeywords(to: settings.filteredKeywords)
