@@ -24,22 +24,24 @@ class ToastModel {
             location: location ?? type.location,
             important: important ?? type.important
         )
-        if !newToast.important, let index = toasts.firstIndex(
-            where: { !$0.important && $0.location == newToast.location }
-        ) {
-            toasts.remove(at: index)
-        }
         Task { @MainActor in
+            if !newToast.important, let index = toasts.firstIndex(
+                where: { !$0.important && $0.location == newToast.location }
+            ) {
+                toasts.remove(at: index)
+            }
             toasts.append(newToast)
         }
         return newToast.id
     }
     
     func removeToast(id: UUID) {
-        if let index = toasts.firstIndex(where: { $0.id == id }) {
-            toasts.remove(at: index)
-        } else {
-            print("No Toast Index")
+        Task { @MainActor in
+            if let index = toasts.firstIndex(where: { $0.id == id }) {
+                toasts.remove(at: index)
+            } else {
+                print("No Toast Index")
+            }
         }
     }
 }
