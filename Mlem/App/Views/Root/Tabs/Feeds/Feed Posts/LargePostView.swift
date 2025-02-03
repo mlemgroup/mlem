@@ -115,3 +115,19 @@ struct LargePostView: View {
         FullyQualifiedLinkView(post.community_, labelStyle: .medium, blurred: shouldBlur)
     }
 }
+
+#if DEBUG
+    #Preview {
+        LargePostView(
+            post: Post1.mock(.loremIpsum),
+            isPostPage: true,
+            favoredLink: nil
+        )
+        .padding(.horizontal, Constants.main.standardSpacing)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Palette.main.groupedBackground)
+        .environment(Palette.main)
+        .environment(NavigationLayer(root: .blockList, model: .main))
+        .environment(AppState.main)
+    }
+#endif

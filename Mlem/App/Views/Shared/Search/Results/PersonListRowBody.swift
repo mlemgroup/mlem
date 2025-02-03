@@ -144,3 +144,12 @@ struct PersonListRowBody<Content: View>: View {
         person.flairs(communityContext: communityContext as? any Community3Providing)
     }
 }
+
+#Preview(traits: .sampleEnvironment, .sizeThatFitsLayout) {
+    PersonListRowBody(
+        Person2.mock(.johnDoe),
+        complications: [.instance, .date],
+        readout: .postsAndComments
+    )
+    .padding(.vertical, Constants.main.standardSpacing)
+}
