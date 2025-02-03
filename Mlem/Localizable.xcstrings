@@ -1,6 +1,12 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    " are forbidden by this instance's filters." : {
+
+    },
+    " Filter violation" : {
+
+    },
     "**%@** and **%@** chose to defederate from one another." : {
       "localizations" : {
         "en" : {
@@ -649,6 +655,9 @@
 
     },
     "Comments" : {
+
+    },
+    "Comments containing " : {
 
     },
     "Communities" : {
@@ -1682,6 +1691,9 @@
 
     },
     "Posts" : {
+
+    },
+    "Posts containing " : {
 
     },
     "Posts from %@ communities" : {

@@ -46,6 +46,23 @@ extension PostEditorView {
     }
     
     @ViewBuilder
+    var middleParts: some View {
+        if hasNsfwTag {
+            nsfwTagView
+                .padding(.leading, 10)
+                .transition(attachmentTransition)
+        }
+        if link != .none {
+            linkView
+                .transition(attachmentTransition)
+        }
+        if imageManager != nil || imageUrl != nil {
+            imageView
+                .transition(attachmentTransition)
+        }
+    }
+    
+    @ViewBuilder
     var nsfwTagView: some View {
         Button {
             hasNsfwTag = false

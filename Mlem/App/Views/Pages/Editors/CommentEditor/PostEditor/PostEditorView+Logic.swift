@@ -30,7 +30,10 @@ extension PostEditorView {
     }
     
     var canSubmit: Bool {
-        if !(imageManager?.state.isDone ?? true) || link == .waiting { return false }
+        if !(imageManager?.state.isDone ?? true) ||
+            link == .waiting ||
+            titleSlurMatch != nil ||
+            bodySlurMatch != nil { return false }
         if postToEdit != nil { return true }
         return !titleIsEmpty && targets.allSatisfy { $0.community != nil && $0.resolutionState == .success }
     }
@@ -145,6 +148,20 @@ extension PostEditorView {
             lastFocusedField = .title
         } else {
             lastFocusedField = nil
+        }
+    }
+    
+    /// Checks if the given text fails `slurRegex` and updates the given `String?` binding to the current
+    /// validation state
+    func checkSlurFilter(text: String, slurMatch: Binding<String?>) {
+        do {
+            if let output = try slurRegex?.firstMatch(in: text.lowercased()) {
+                slurMatch.wrappedValue = String(text[output.range])
+            } else {
+                slurMatch.wrappedValue = nil
+            }
+        } catch {
+            print("Failed to parse regex")
         }
     }
 }
