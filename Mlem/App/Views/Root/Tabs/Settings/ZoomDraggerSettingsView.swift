@@ -60,7 +60,7 @@ struct ZoomDraggerSettingsView: View {
             
             Picker("Location", selection: $zoomDraggerLocation) {
                 ForEach(ZoomDraggerLocation.allCases, id: \.self) { location in
-                    Text(String(localized: location.label))
+                    Label(String(localized: location.label), systemImage: location.systemImage)
                         .tag(location)
                 }
             }
@@ -109,9 +109,4 @@ struct ZoomDraggerAnimation: View {
                     .strokeBorder(palette.neutralAccent, lineWidth: 2)
             }
     }
-}
-
-#Preview {
-    ZoomDraggerSettingsView()
-        .environment(Palette.main)
 }

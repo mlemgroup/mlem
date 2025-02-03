@@ -143,6 +143,8 @@ extension ImageViewer {
             .frame(maxHeight: .infinity)
             .highPriorityGesture(DragGesture()
                 .onChanged { value in
+                    guard offset == 0 else { return }
+                    
                     let baseScale: CGFloat
                     if let dragStartedScale {
                         baseScale = dragStartedScale

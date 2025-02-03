@@ -50,7 +50,7 @@ struct AccessibilitySettingsView: View {
                     "Drag-To-Zoom Images",
                     value: .init(localized: zoomDraggerLocation.label),
                     fallbackValue: "",
-                    systemImage: "arrow.up.and.down.and.sparkles",
+                    systemImage: Icons.zoomDragger,
                     destination: .settings(.zoomDragger)
                 )
             } header: {

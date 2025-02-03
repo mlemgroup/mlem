@@ -18,4 +18,13 @@ enum ZoomDraggerLocation: String, CaseIterable, Codable {
         case .none: "Disabled"
         }
     }
+    
+    var systemImage: String {
+        switch self {
+        case .left: Icons.left
+        case .right: Icons.right
+        case .either: Icons.leftAndRightCircle
+        case .none: Icons.absent
+        }
+    }
 }
