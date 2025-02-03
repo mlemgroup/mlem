@@ -307,7 +307,7 @@ enum Icons {
     static let right: String = "arrow.right.circle"
     static let left: String = "arrow.left.circle"
     static let center: String = "dot.circle"
-    static let zoomDragger: String = "arrow.up.and.down.and.sparkles"
+    static let zoomSlider: String = "arrow.up.and.down.and.sparkles"
     
     // fediseer
     static let fediseer: String = "shield.checkered"

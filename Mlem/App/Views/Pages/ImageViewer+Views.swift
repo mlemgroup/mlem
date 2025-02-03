@@ -8,7 +8,6 @@
 import SwiftUI
 
 extension ImageViewer {
-    
     @ViewBuilder
     var controlOverlay: some View {
         VStack {
@@ -98,7 +97,7 @@ extension ImageViewer {
         Button {
             Task { await showQuickLook(url: url) }
         } label: {
-            Label("QuickLook", systemImage: Icons.menuCircle)
+            Label("Quick Look", systemImage: Icons.menuCircle)
         }
         .padding(Constants.main.standardSpacing)
         .contentShape(.rect)
@@ -121,22 +120,22 @@ extension ImageViewer {
     }
     
     @ViewBuilder
-    var zoomDraggerOverlay: some View {
+    var zoomSliderOverlay: some View {
         HStack {
-            if zoomDraggerLocation == .left || zoomDraggerLocation == .either {
-                zoomDragger
+            if zoomSliderLocation == .left || zoomSliderLocation == .either {
+                zoomSlider
             }
             
             Spacer()
             
-            if zoomDraggerLocation == .right || zoomDraggerLocation == .either {
-                zoomDragger
+            if zoomSliderLocation == .right || zoomSliderLocation == .either {
+                zoomSlider
             }
         }
     }
     
     @ViewBuilder
-    var zoomDragger: some View {
+    var zoomSlider: some View {
         Color.clear
             .contentShape(.rect)
             .frame(width: 40)

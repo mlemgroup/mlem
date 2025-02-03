@@ -13,7 +13,7 @@ enum SettingsPage: Hashable {
     case accounts, account
     case profile, accountGeneral, accountAdvanced, accountSignIn, accountChangeEmail, accountLocal, accountChangePassword
     case general, privacy, safety, accessibility, sorting, filters
-    case zoomDragger
+    case zoomSlider
     case defaultFeed, haptics
     case privacyBypassImageProxy
     case safetyBlurNsfw, safetyWarnings
@@ -77,8 +77,8 @@ enum SettingsPage: Hashable {
             SafetyWarningsSettingsView()
         case .accessibility:
             AccessibilitySettingsView()
-        case .zoomDragger:
-            ZoomDraggerSettingsView()
+        case .zoomSlider:
+            ZoomSliderSettingsView()
         case .importExportSettings:
             ImportExportSettingsView()
         case .advanced:

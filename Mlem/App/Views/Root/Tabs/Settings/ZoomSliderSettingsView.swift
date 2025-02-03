@@ -1,5 +1,5 @@
 //
-//  ZoomDraggerSettingsView.swift
+//  ZoomSliderSettingsView.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2025-02-02.
@@ -47,19 +47,19 @@ enum AnimationPhase: CaseIterable {
     }
 }
 
-struct ZoomDraggerSettingsView: View {
-    @Setting(\.zoomDraggerLocation) var zoomDraggerLocation
+struct ZoomSliderSettingsView: View {
+    @Setting(\.zoomSliderLocation) var zoomSliderLocation
     
     var body: some View {
         Form {
             SettingsHeaderView(
                 title: "Slide to Zoom",
                 description: "Zoom the image viewer with a slide gesture on the selected side.") {
-                    ZoomDraggerAnimation()
+                    ZoomSliderAnimation()
                 }
             
-            Picker("Location", selection: $zoomDraggerLocation) {
-                ForEach(ZoomDraggerLocation.allCases, id: \.self) { location in
+            Picker("Location", selection: $zoomSliderLocation) {
+                ForEach(ZoomSliderLocation.allCases, id: \.self) { location in
                     Label(String(localized: location.label), systemImage: location.systemImage)
                         .tag(location)
                 }
@@ -72,7 +72,7 @@ struct ZoomDraggerSettingsView: View {
     }
 }
 
-struct ZoomDraggerAnimation: View {
+struct ZoomSliderAnimation: View {
     @Environment(Palette.self) var palette
     
     var body: some View {

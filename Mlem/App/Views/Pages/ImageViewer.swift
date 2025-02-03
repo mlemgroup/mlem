@@ -12,7 +12,7 @@ struct ImageViewer: View {
     @Environment(Palette.self) var palette
     @Environment(\.dismiss) var dismiss
     @Environment(\.colorScheme) var colorScheme
-    @Setting(\.zoomDraggerLocation) var zoomDraggerLocation
+    @Setting(\.zoomSliderLocation) var zoomSliderLocation
 
     let url: URL
 
@@ -99,7 +99,7 @@ struct ImageViewer: View {
             }
         )
         .overlay(alignment: .topLeading) { scaleDisplay }
-        .overlay { zoomDraggerOverlay }
+        .overlay { zoomSliderOverlay }
         .onAppear {
             animateOpacityUpdate(1.0)
         }

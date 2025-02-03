@@ -173,7 +173,11 @@ struct InstanceDetailsView: View {
     
     var captchaLabel: LocalizedStringResource {
         if let diff = instance.captchaDifficulty_ {
-            return "Yes (\(diff.label))"
+            return .init(
+                "Captcha Difficulty Yes",
+                defaultValue: "Yes (\(diff.label))",
+                comment: "Used to indicate Captcha difficulty. E.g. \"Yes (Hard)\"."
+            )
         }
         return "No"
     }

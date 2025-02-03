@@ -17,7 +17,7 @@ struct CodableSettings: Codable { // swiftlint:disable:this type_body_length
     var a11y_readOutlineThickness: Int
     var a11y_showSettingsIcons: Bool
     var a11y_websiteThumbnailIcon: Bool
-    var a11y_zoomDraggerLocation: ZoomDraggerLocation
+    var a11y_zoomSliderLocation: ZoomSliderLocation
     var accounts_defaultId: Int?
     var accounts_grouped: Bool
     var accounts_sort: AccountSortMode
@@ -107,7 +107,7 @@ struct CodableSettings: Codable { // swiftlint:disable:this type_body_length
         self.a11y_readOutlineThickness = try container.decodeIfPresent(Int.self, forKey: .a11y_readOutlineThickness) ?? 3
         self.a11y_showSettingsIcons = try container.decodeIfPresent(Bool.self, forKey: .a11y_showSettingsIcons) ?? true
         self.a11y_websiteThumbnailIcon = try container.decodeIfPresent(Bool.self, forKey: .a11y_websiteThumbnailIcon) ?? false
-        self.a11y_zoomDraggerLocation = try container.decodeIfPresent(ZoomDraggerLocation.self, forKey: .a11y_zoomDraggerLocation) ?? .none
+        self.a11y_zoomSliderLocation = try container.decodeIfPresent(ZoomSliderLocation.self, forKey: .a11y_zoomSliderLocation) ?? .none
         self.accounts_defaultId = try container.decodeIfPresent(Int?.self, forKey: .accounts_defaultId) ?? nil
         self.accounts_grouped = try container.decodeIfPresent(Bool.self, forKey: .accounts_grouped) ?? false
         self.accounts_sort = try container.decodeIfPresent(AccountSortMode.self, forKey: .accounts_sort) ?? .name
@@ -211,7 +211,7 @@ struct CodableSettings: Codable { // swiftlint:disable:this type_body_length
         self.a11y_readOutlineThickness = settings.readOutlineThickness
         self.a11y_showSettingsIcons = true
         self.a11y_websiteThumbnailIcon = settings.websiteThumbnailIcon
-        self.a11y_zoomDraggerLocation = settings.zoomDraggerLocation
+        self.a11y_zoomSliderLocation = settings.zoomSliderLocation
         self.accounts_defaultId = nil
         self.accounts_grouped = settings.groupAccountSort
         self.accounts_sort = settings.accountSort

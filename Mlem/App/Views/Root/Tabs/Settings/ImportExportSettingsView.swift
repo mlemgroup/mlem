@@ -42,7 +42,7 @@ struct ImportExportSettingsView: View {
                         ToastModel.main.add(.success("Imported Settings"))
                     } else {
                         assertionFailure("Failed to import settings")
-                        ToastModel.main.add(.failure("Failed to Import Settings"))
+                        ToastModel.main.add(.failure("Failed to import settings"))
                     }
                 } catch {
                     handleError(error)
@@ -86,13 +86,13 @@ struct ImportExportSettingsView: View {
             }
             
             #if DEBUG
-            Section("Debug") {
-                Button("Save V1 Settings", systemImage: Icons.saveSettings) {
-                    Task {
-                        await Settings.main.save(to: .v1)
+                Section("Debug") {
+                    Button(String("Save V1 Settings"), systemImage: Icons.saveSettings) {
+                        Task {
+                            await Settings.main.save(to: .v1)
+                        }
                     }
                 }
-            }
             #endif
         }
     }

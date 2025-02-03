@@ -49,9 +49,6 @@
     "%@ hid a community" : {
 
     },
-    "%@ is " : {
-
-    },
     "%@ is banned from %@ until %@." : {
       "localizations" : {
         "en" : {
@@ -105,9 +102,6 @@
 
     },
     "%@ purged a user" : {
-
-    },
-    "%@ Read" : {
 
     },
     "%@ removed a comment" : {
@@ -198,16 +192,6 @@
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "%lld on %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$lld on %2$@"
           }
         }
       }
@@ -312,10 +296,10 @@
     "Administrator" : {
 
     },
-    "Administrator was removed" : {
+    "Administrator was appointed" : {
 
     },
-    "Adminstrator was appointed" : {
+    "Administrator was removed" : {
 
     },
     "Advanced" : {
@@ -369,7 +353,7 @@
     "App Icon" : {
 
     },
-    "Application Submitted!" : {
+    "Application submitted!" : {
 
     },
     "Applications" : {
@@ -551,6 +535,18 @@
     },
     "Captcha" : {
 
+    },
+    "Captcha Difficulty Yes" : {
+      "comment" : "Used to indicate Captcha difficulty. E.g. \"Yes (Hard)\".",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Yes (%@)"
+          }
+        }
+      }
     },
     "Censured" : {
 
@@ -995,7 +991,7 @@
     "Failed to delete post!" : {
 
     },
-    "Failed to Import Settings" : {
+    "Failed to import settings" : {
 
     },
     "Failed to lock post" : {
@@ -1010,7 +1006,7 @@
     "Failed to resolve post. Try another account." : {
 
     },
-    "Failed to Save Media" : {
+    "Failed to save media" : {
 
     },
     "Failed to unlock post" : {
@@ -1058,7 +1054,7 @@
     "Federates" : {
 
     },
-    "Federation Explanation" : {
+    "federation.explanation" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
@@ -1102,7 +1098,7 @@
     "GitHub Repository" : {
 
     },
-    "Go back" : {
+    "Go Back" : {
 
     },
     "Green" : {
@@ -1309,6 +1305,18 @@
     "Local Options" : {
 
     },
+    "local.subscriber.count.text" : {
+      "comment" : "Used in the \"Details\" tab of a community page to indicate how many local subscribers use the instance. E.g. \"56 on lemmy.world\".",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld on %2$@"
+          }
+        }
+      }
+    },
     "Location" : {
 
     },
@@ -1496,7 +1504,7 @@
     "New Post" : {
 
     },
-    "news%@" : {
+    "news@example.com" : {
 
     },
     "Next" : {
@@ -1749,9 +1757,6 @@
 
     },
     "Quick Look" : {
-
-    },
-    "QuickLook" : {
 
     },
     "Quote" : {
@@ -2015,9 +2020,6 @@
     "Save the current settings and restore them later." : {
 
     },
-    "Save V1 Settings" : {
-
-    },
     "Saved" : {
 
     },
@@ -2127,6 +2129,9 @@
 
     },
     "Show Parent" : {
+
+    },
+    "Show Read" : {
 
     },
     "Show Sidebar on App Launch" : {
@@ -2737,9 +2742,6 @@
 
     },
     "Yes" : {
-
-    },
-    "Yes (%@)" : {
 
     },
     "You are browsing %@ as a guest. If you'd like to vote or reply, you'll need to log in or sign up." : {

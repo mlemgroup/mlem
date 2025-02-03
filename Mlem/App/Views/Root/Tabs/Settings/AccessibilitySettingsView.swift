@@ -14,7 +14,7 @@ struct AccessibilitySettingsView: View {
     @Setting(\.readPostIndicator) var readPostIndicator
     @Setting(\.websiteThumbnailIcon) var websiteThumbnailIcon
     @Setting(\.showSettingsIcons) var showSettingsIcons
-    @Setting(\.zoomDraggerLocation) var zoomDraggerLocation
+    @Setting(\.zoomSliderLocation) var zoomSliderLocation
     
     var body: some View {
         Form {
@@ -48,10 +48,10 @@ struct AccessibilitySettingsView: View {
             Section {
                 NavigationLink(
                     "Slide to Zoom Images",
-                    value: .init(localized: zoomDraggerLocation.label),
+                    value: .init(localized: zoomSliderLocation.label),
                     fallbackValue: "",
-                    systemImage: Icons.zoomDragger,
-                    destination: .settings(.zoomDragger)
+                    systemImage: Icons.zoomSlider,
+                    destination: .settings(.zoomSlider)
                 )
             } header: {
                 Text("Gestures")

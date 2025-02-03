@@ -1,5 +1,5 @@
 //
-//  ZoomDraggerLocation.swift
+//  ZoomSliderLocation.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2025-02-02.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum ZoomDraggerLocation: String, CaseIterable, Codable {
+enum ZoomSliderLocation: String, CaseIterable, Codable {
     case left, right, either, none
     
     var label: LocalizedStringResource {
