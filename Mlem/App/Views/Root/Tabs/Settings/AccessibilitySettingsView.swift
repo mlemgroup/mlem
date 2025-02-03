@@ -14,6 +14,7 @@ struct AccessibilitySettingsView: View {
     @Setting(\.readPostIndicator) var readPostIndicator
     @Setting(\.websiteThumbnailIcon) var websiteThumbnailIcon
     @Setting(\.showSettingsIcons) var showSettingsIcons
+    @Setting(\.zoomSliderLocation) var zoomSliderLocation
     
     var body: some View {
         Form {
@@ -32,12 +33,28 @@ struct AccessibilitySettingsView: View {
                         systemImage: Icons.read,
                         destination: .settings(.postReadIndicator)
                     )
+                } header: {
+                    Text("Differentiate Without Color")
                 }
             }
             
             Section {
                 Toggle("Website Thumbnail Indicator", systemImage: Icons.browser, isOn: $websiteThumbnailIcon)
                 Toggle("Settings Icons", systemImage: Icons.icon, isOn: $showSettingsIcons)
+            } header: {
+                Text("Non-Text Indicators")
+            }
+            
+            Section {
+                NavigationLink(
+                    "Slide to Zoom Images",
+                    value: .init(localized: zoomSliderLocation.label),
+                    fallbackValue: "",
+                    systemImage: Icons.zoomSlider,
+                    destination: .settings(.zoomSlider)
+                )
+            } header: {
+                Text("Gestures")
             }
         }
         .labelStyle(.conditional)
