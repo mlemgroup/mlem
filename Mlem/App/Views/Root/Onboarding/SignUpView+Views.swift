@@ -19,7 +19,7 @@ extension SignUpView {
                 .frame(height: 100)
                 .foregroundStyle(palette.accent)
                 .padding(.bottom)
-            Text("Application Submitted!")
+            Text("Application submitted!")
                 .font(.title2)
                 .fontWeight(.semibold)
             if email.isEmpty {

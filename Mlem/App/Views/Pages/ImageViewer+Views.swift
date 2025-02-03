@@ -8,7 +8,6 @@
 import SwiftUI
 
 extension ImageViewer {
-    
     @ViewBuilder
     var controlOverlay: some View {
         VStack {
@@ -98,7 +97,7 @@ extension ImageViewer {
         Button {
             Task { await showQuickLook(url: url) }
         } label: {
-            Label("QuickLook", systemImage: Icons.menuCircle)
+            Label("Quick Look", systemImage: Icons.menuCircle)
         }
         .padding(Constants.main.standardSpacing)
         .contentShape(.rect)

@@ -43,18 +43,16 @@ struct PostSubscriptionIndicatorSettingsView: View {
                         .opacity(showSubscribedStatus ? 10 : 0)
                         .padding(.leading, showSubscribedStatus ? 12 : 5)
                         .padding(.trailing, showSubscribedStatus ? 10 : 5)
-                    Text(
-                        "news\(Text(verbatim: "@\(String(localized: "example.com"))").foregroundColor(palette.tertiary))"
-                    )
-                    .lineLimit(1)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .font(.title2)
-                    .foregroundStyle(palette.secondary)
-                    .opacity(0.8)
-                    .mask {
-                        LinearGradient(colors: [.black, .black.opacity(0.5)], startPoint: .leading, endPoint: .trailing)
-                    }
-                    .offset(y: -1)
+                    labelText
+                        .lineLimit(1)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .font(.title2)
+                        .foregroundStyle(palette.secondary)
+                        .opacity(0.8)
+                        .mask {
+                            LinearGradient(colors: [.black, .black.opacity(0.5)], startPoint: .leading, endPoint: .trailing)
+                        }
+                        .offset(y: -1)
                 }
                 .padding([.top, .leading], 20)
                 .animation(.bouncy, value: showSubscribedStatus)
@@ -62,5 +60,15 @@ struct PostSubscriptionIndicatorSettingsView: View {
             .padding([.top, .leading], 20)
             .listRowInsets(.init())
         }
+    }
+    
+    var labelText: Text {
+        let string = String(localized: "news@example.com")
+        let parts = string.split(separator: "@")
+        guard parts.count == 2 else {
+            assertionFailure()
+            return Text(string)
+        }
+        return Text(parts[0]) + Text(verbatim: "@\(parts[1])").foregroundColor(palette.tertiary)
     }
 }
