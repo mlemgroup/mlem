@@ -68,6 +68,7 @@ struct ZoomDraggerSettingsView: View {
             .pickerStyle(.inline)
         }
         .labelStyle(.conditional)
+        .contentMargins(.top, 16)
     }
 }
 
