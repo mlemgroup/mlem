@@ -522,9 +522,6 @@
     "Bot accounts are unable to vote." : {
 
     },
-    "Both" : {
-
-    },
     "Bottom" : {
 
     },
@@ -930,6 +927,9 @@
 
     },
     "Edited" : {
+
+    },
+    "Either" : {
 
     },
     "Email" : {

@@ -20,10 +20,15 @@ struct ImageViewer: View {
     let maxControlOffset: CGFloat = 50
     let screenHeight: CGFloat = UIScreen.main.bounds.height
     
+    /// Current scale of the ZoomableContainer
     @State var currentScale: CGFloat = 1.0
-    @State var dragStartedScale: CGFloat?
+    
+    /// True when the scale indicator should be visible, false otherwise
     @State var scaleDisplayShown: Bool = false
     
+    @State var dragStartedScale: CGFloat?
+    
+    @GestureState var scaleDragState: Bool = false
     @GestureState var dragState: Bool = false
     
     /// True when the image is zoomed in, false otherwise
@@ -115,6 +120,11 @@ struct ImageViewer: View {
                 }
             }
         }
+        .onChange(of: scaleDragState) {
+            if !scaleDragState {
+                dragStartedScale = nil
+            }
+        }
         .onChange(of: currentScale) {
             if !scaleDisplayShown {
                 withAnimation(.easeIn(duration: 0.1)) {
@@ -122,7 +132,7 @@ struct ImageViewer: View {
                 }
             }
             let oldScale: CGFloat = currentScale
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 if self.currentScale == oldScale {
                     withAnimation {
                         scaleDisplayShown = false
