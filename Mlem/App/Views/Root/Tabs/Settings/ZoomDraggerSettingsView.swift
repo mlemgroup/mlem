@@ -53,8 +53,8 @@ struct ZoomDraggerSettingsView: View {
     var body: some View {
         Form {
             SettingsHeaderView(
-                title: "Drag-To-Zoom",
-                description: "Zoom the image viewer by dragging on the selected side.") {
+                title: "Slide to Zoom",
+                description: "Zoom the image viewer with a slide gesture on the selected side.") {
                     ZoomDraggerAnimation()
                 }
             

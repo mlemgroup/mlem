@@ -47,7 +47,7 @@ struct AccessibilitySettingsView: View {
             
             Section {
                 NavigationLink(
-                    "Drag-To-Zoom Images",
+                    "Slide to Zoom Images",
                     value: .init(localized: zoomDraggerLocation.label),
                     fallbackValue: "",
                     systemImage: Icons.zoomDragger,

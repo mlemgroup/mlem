@@ -914,12 +914,6 @@
     "Dracula" : {
 
     },
-    "Drag-To-Zoom" : {
-
-    },
-    "Drag-To-Zoom Images" : {
-
-    },
     "Easy" : {
 
     },
@@ -2162,6 +2156,12 @@
     "Size" : {
 
     },
+    "Slide to Zoom" : {
+
+    },
+    "Slide to Zoom Images" : {
+
+    },
     "Slow" : {
 
     },
@@ -2798,7 +2798,7 @@
     "Your subscriptions live here." : {
 
     },
-    "Zoom the image viewer by dragging on the selected side." : {
+    "Zoom the image viewer with a slide gesture on the selected side." : {
 
     }
   },
