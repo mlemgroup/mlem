@@ -7,8 +7,8 @@
 
 import Foundation
 import Nuke
-import SwiftUI
 import Photos
+import SwiftUI
 
 func saveMedia(url: URL) async {
     do {
@@ -23,7 +23,7 @@ func saveMedia(url: URL) async {
         }
     } catch {
         ToastModel.main.add(.basic(
-            "Failed to Save Media",
+            "Failed to save media",
             subtitle: "You may need to allow Mlem to access your Photo Library in System Settings.",
             color: Palette.main.negative,
             duration: 5

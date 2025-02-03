@@ -28,7 +28,7 @@ struct WarningOverlayView: View {
                     Button {
                         navigation.pop()
                     } label: {
-                        Text("Go back").frame(maxWidth: .infinity)
+                        Text("Go Back").frame(maxWidth: .infinity)
                     }
                     .buttonStyle(.bordered)
                     

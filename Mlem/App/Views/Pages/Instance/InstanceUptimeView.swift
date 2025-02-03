@@ -115,10 +115,10 @@ struct InstanceUptimeView: View {
         VStack(alignment: .leading) {
             if let mostRecentOutage = uptimeData.downtimes.first {
                 if uptimeData.results.filter(\.success).count < 15 {
-                    summaryHeader(statusText: "unhealthy", systemImage: Icons.uptimeOutage, color: palette.negative)
+                    summaryHeader(isHealthy: false)
                     footnote("\(instance.name) has been unresponsive recently.")
                 } else {
-                    summaryHeader(statusText: "online", systemImage: Icons.uptimeOnline, color: palette.positive)
+                    summaryHeader(isHealthy: true)
                     let relTime = mostRecentOutage.relativeTimeCaption
                     let length = mostRecentOutage.differenceTitle(unitsStyle: .full)
                     footnote("The most recent outage was \(relTime), and lasted for \(length).")
@@ -131,14 +131,32 @@ struct InstanceUptimeView: View {
     }
     
     @ViewBuilder
-    func summaryHeader(statusText: String, systemImage: String, color: Color) -> some View {
+    func summaryHeader(isHealthy: Bool) -> some View {
         HStack(spacing: 5) {
-            (Text("\(instance.name) is ") + Text(statusText).foregroundColor(color))
+            summaryHeaderText(isHealthy: isHealthy)
                 .font(.title2)
-                .fontWeight(.semibold)
-            Image(systemName: systemImage)
-                .foregroundStyle(color)
+            Image(systemName: isHealthy ? Icons.uptimeOnline : Icons.uptimeOutage)
+                .foregroundStyle(isHealthy ? palette.positive : palette.negative)
         }
+        .fontWeight(.semibold)
+    }
+    
+    func summaryHeaderText(isHealthy: Bool) -> some View {
+        let string: String
+        let color: Color
+        if isHealthy {
+            string = "\(instance.name) is {{online}}"
+            color = palette.positive
+        } else {
+            string = "\(instance.name) is {{unhealthy}}"
+            color = palette.negative
+        }
+        let parts = string.split(separator: /\{\{|\}\}/, omittingEmptySubsequences: false)
+        guard parts.count == 3 else {
+            assertionFailure()
+            return Text(string)
+        }
+        return Text(parts[0]) + Text(parts[1]).foregroundColor(color) + Text(parts[2])
     }
     
     @ViewBuilder

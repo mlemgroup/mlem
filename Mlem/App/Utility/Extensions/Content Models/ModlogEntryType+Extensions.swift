@@ -136,7 +136,7 @@ extension ModlogEntryType {
             if let userText {
                 appointed ? "\(userText) appointed an administrator" : "\(userText) removed an administrator"
             } else {
-                appointed ? "Adminstrator was appointed" : "Administrator was removed"
+                appointed ? "Administrator was appointed" : "Administrator was removed"
             }
         case let .banPersonFromCommunity(_, _, banned, _, _), let .banPersonFromInstance(_, banned, _, _):
             if let userText {
