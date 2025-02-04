@@ -14,15 +14,17 @@ struct FeedSortPicker: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(Palette.self) var palette
     
+    let showTopTimescaleInIcon: Bool
     @Binding var sort: ApiSortType
     
     @State var topSortPopupPresented: Bool = false
     
-    init(sort: Binding<ApiSortType>) {
+    init(sort: Binding<ApiSortType>, showTopTimescaleInIcon: Bool = false) {
         self._sort = sort
+        self.showTopTimescaleInIcon = showTopTimescaleInIcon
     }
     
-    init(feedLoader: CorePostFeedLoader) {
+    init(feedLoader: CorePostFeedLoader, showTopTimescaleInIcon: Bool = false) {
         self.init(sort: .init(get: { feedLoader.sortType }, set: { newSort in
             Task { @MainActor in
                 do {
@@ -31,7 +33,7 @@ struct FeedSortPicker: View {
                     handleError(error)
                 }
             }
-        }))
+        }), showTopTimescaleInIcon: showTopTimescaleInIcon)
     }
     
     var nonTopSortTypes: [ApiSortType] {
@@ -79,7 +81,7 @@ struct FeedSortPicker: View {
                 }
             }
         } label: {
-            if ApiSortType.topCases.contains(sort) {
+            if showTopTimescaleInIcon, ApiSortType.topCases.contains(sort) {
                 HStack {
                     Image(systemName: Icons.topSort)
                         .imageScale(.small)
