@@ -43,7 +43,7 @@ struct CommentEditorView: View {
     
     @FocusState var focused: Bool
     
-    let slurRegex: Regex<AnyRegexOutput>?
+    @State var slurRegex: Regex<AnyRegexOutput>?
     
     init?(
         commentToEdit: Comment2? = nil,
@@ -59,7 +59,7 @@ struct CommentEditorView: View {
         } else {
             return nil
         }
-        self.slurRegex = AppState.main.firstApi.myInstance?.slurRegex()
+        self._slurRegex = .init(wrappedValue: AppState.main.firstApi.myInstance?.slurRegex())
         
         textView.text = commentToEdit?.content ?? ""
         textView.backgroundColor = UIColor(Palette.main.background)
@@ -130,6 +130,22 @@ struct CommentEditorView: View {
                 textView.becomeFirstResponder()
             }
         }
+        .onChange(of: account) {
+            if let instance = account.api.myInstance {
+                slurRegex = instance.slurRegex()
+                checkSlurFilter(text: textView.text)
+            } else {
+                Task {
+                    do {
+                        let instance = try await account.api.getMyInstance()
+                        slurRegex = instance.slurRegex()
+                        checkSlurFilter(text: textView.text)
+                    } catch {
+                        handleError(error)
+                    }
+                }
+            }
+        }
     }
     
     @ViewBuilder
@@ -147,15 +163,7 @@ struct CommentEditorView: View {
                             if $0.isEmpty != textIsEmpty {
                                 textIsEmpty = $0.isEmpty
                             }
-                            do {
-                                if let output = try slurRegex?.firstMatch(in: $0.lowercased()) {
-                                    slurMatch = String($0[output.range])
-                                } else {
-                                    slurMatch = nil
-                                }
-                            } catch {
-                                print("Failed to parse regex")
-                            }
+                            checkSlurFilter(text: $0)
                         },
                         prompt: "Start writing...",
                         textView: textView,
@@ -169,7 +177,7 @@ struct CommentEditorView: View {
                     )
                     
                     if let slurMatch {
-                        FilterViolationWarning(failures: [AppState.main.firstApi.host: slurMatch])
+                        FilterViolationWarning(failures: [account.host: slurMatch])
                             .padding(.horizontal, Constants.main.standardSpacing)
                     }
                 }
