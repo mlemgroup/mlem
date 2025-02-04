@@ -207,7 +207,7 @@ extension FullyQualifiedLabelView {
     #Preview("Sizes", traits: .sampleEnvironment, .sizeThatFitsLayout) {
         VStack(alignment: .leading) {
             ForEach(FullyQualifiedLabelStyle.allCases, id: \.self) { style in
-                FullyQualifiedLabelView(Person1.mock(.johnDoe), labelStyle: style)
+                FullyQualifiedLabelView(Person1.mock(.generic), labelStyle: style)
             }
         }
         .padding()

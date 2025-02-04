@@ -147,7 +147,7 @@ struct PersonListRowBody<Content: View>: View {
 
 #Preview(traits: .sampleEnvironment, .sizeThatFitsLayout) {
     PersonListRowBody(
-        Person2.mock(.johnDoe),
+        Person2.mock(.generic),
         complications: [.instance, .date],
         readout: .postsAndComments
     )

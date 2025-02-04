@@ -123,3 +123,9 @@ struct CompactPostView: View {
             .font(.subheadline)
     }
 }
+
+#if DEBUG
+#Preview(traits: .sampleEnvironment, .sizeThatFitsLayout) {
+    CompactPostView(post: Post2.mock(.generic))
+}
+#endif

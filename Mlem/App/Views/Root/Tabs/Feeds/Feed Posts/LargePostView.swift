@@ -117,17 +117,11 @@ struct LargePostView: View {
 }
 
 #if DEBUG
-    #Preview {
+    #Preview(traits: .sampleEnvironment, .sizeThatFitsLayout) {
         LargePostView(
-            post: Post1.mock(.loremIpsum),
+            post: Post2.mock(.generic),
             isPostPage: true,
             favoredLink: nil
         )
-        .padding(.horizontal, Constants.main.standardSpacing)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Palette.main.groupedBackground)
-        .environment(Palette.main)
-        .environment(NavigationLayer(root: .blockList, model: .main))
-        .environment(AppState.main)
     }
 #endif

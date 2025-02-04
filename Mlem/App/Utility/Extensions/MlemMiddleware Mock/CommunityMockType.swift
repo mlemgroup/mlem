@@ -1,14 +1,14 @@
 //
-//  PersonMockType.swift
+//  CommunityMockType.swift
 //  Mlem
 //
-//  Created by Sjmarf on 2025-02-02.
+//  Created by Sjmarf on 2025-02-03.
 //
 
 import Foundation
 import MlemMiddleware
 
-enum PersonMockType: Identifiable {
+enum CommunityMockType {
     case realistic(Realistic)
     case generic
     
@@ -24,21 +24,21 @@ enum PersonMockType: Identifiable {
         case let .realistic(value):
             .mockPerson(name: value.name)
         case .generic:
-            .init(url: URL(string: "https://example.com/u/\(name)")!)!
+            .init(url: URL(string: "https://example.com/c/\(name)")!)!
         }
     }
     
     var name: String {
         switch self {
         case let .realistic(value): value.name
-        case .generic: "user"
+        case .generic: "community"
         }
     }
     
     var displayName: String {
         switch self {
         case let .realistic(value): value.displayName
-        case .generic: "User"
+        case .generic: "Community"
         }
     }
     
@@ -65,33 +65,29 @@ enum PersonMockType: Identifiable {
     
     var created: Date {
         var generator = SeededRandomNumberGenerator(seed: id)
-        let lowerBound = 60 * 5 // 5h
+        let lowerBound = 60 * 60 * 24 * 30 * 3 // 3mo
         let upperBound = 60 * 60 * 24 * 365 * 2 // 2y
         let timeInterval = TimeInterval(Int.random(in: lowerBound ... upperBound, using: &generator))
         return .now.addingTimeInterval(-timeInterval)
     }
     
-    var matrixId: String? {
-        switch self {
-        case let .realistic(value): value.matrixId
-        case .generic: nil
-        }
+    var subscriberCount: Int {
+        var generator = SeededRandomNumberGenerator(seed: id)
+        return Int.random(in: 500 ... 20000, using: &generator)
     }
-    
-    var isBot: Bool {
-        switch self {
-        case let .realistic(value): value.isBot
-        case .generic: false
-        }
+
+    var localSubscriberCount: Int {
+        var generator = SeededRandomNumberGenerator(seed: id)
+        return Int.random(in: 100 ... 1000, using: &generator)
     }
-    
+
     var postCount: Int {
         var generator = SeededRandomNumberGenerator(seed: id)
-        return Int.random(in: 0 ... 100, using: &generator)
+        return Int.random(in: 2000 ... 10000, using: &generator)
     }
     
     var commentCount: Int {
         var generator = SeededRandomNumberGenerator(seed: id)
-        return Int.random(in: 0 ... 700, using: &generator)
+        return Int.random(in: 5000 ... 25000, using: &generator)
     }
 }

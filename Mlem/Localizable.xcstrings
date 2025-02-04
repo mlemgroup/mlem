@@ -1086,6 +1086,9 @@
     "General" : {
 
     },
+    "generic@example.com" : {
+
+    },
     "GitHub Repository" : {
 
     },
@@ -1225,9 +1228,6 @@
 
     },
     "john_doe" : {
-
-    },
-    "johndoe@example.com" : {
 
     },
     "Join Discord Server" : {
