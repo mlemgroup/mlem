@@ -23,6 +23,7 @@ extension PostEditorView {
                         if targets.count > 1 {
                             Button("Remove", systemImage: Icons.closeCircleFill) {
                                 targets.remove(at: index)
+                                checkSlurFilters()
                             }
                             .symbolRenderingMode(.hierarchical)
                             .imageScale(.large)

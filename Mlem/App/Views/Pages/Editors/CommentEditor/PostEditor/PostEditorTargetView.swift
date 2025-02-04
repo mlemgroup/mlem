@@ -144,15 +144,37 @@ class PostEditorTarget: Identifiable {
     }
     
     var community: (any CommunityStubProviding)?
-    var account: UserAccount
+    var account: UserAccount {
+        didSet {
+            self.slurRegex_ = nil
+            onAccountChange()
+        }
+    }
     let id = UUID()
     
     var resolutionState: ResolutionState = .success
     var sendState: SendState = .unsent
     
-    init(community: (any CommunityStubProviding)? = nil, account: UserAccount) {
+    var onAccountChange: () -> Void
+    
+    private var slurRegex_: Regex<AnyRegexOutput>?
+    var slurRegex: Regex<AnyRegexOutput>? {
+        get async throws {
+            if let slurRegex_ { return slurRegex_ }
+            slurRegex_ = try await account.api.getMyInstance().slurRegex()
+            return slurRegex_
+        }
+    }
+    
+    init(
+        community: (any CommunityStubProviding)? = nil,
+        account: UserAccount,
+        onAccountChange: @escaping () -> Void = {}
+    ) {
         self.community = community
         self.account = account
+        self.slurRegex_ = account.api.myInstance?.slurRegex()
+        self.onAccountChange = onAccountChange
     }
     
     /// If this target matches the given feedLoader, prepends the given post

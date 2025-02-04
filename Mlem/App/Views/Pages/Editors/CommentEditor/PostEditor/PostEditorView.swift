@@ -44,9 +44,8 @@ struct PostEditorView: View {
         
     @State var targets: [PostEditorTarget]
     
-    let slurRegex: Regex<AnyRegexOutput>?
-    @State var titleSlurMatch: String?
-    @State var bodySlurMatch: String?
+    @State var titleSlurMatches: [String: String] = .init()
+    @State var bodySlurMatches: [String: String] = .init()
     
     var feedLoader: (any FeedLoading)?
     
@@ -83,7 +82,6 @@ struct PostEditorView: View {
         self.feedLoader = feedLoader
         self.titleTextView = .init()
         self.contentTextView = .init()
-        self.slurRegex = AppState.main.firstApi.myInstance?.slurRegex()
         titleTextView.tag = 0
         titleTextView.backgroundColor = UIColor(Palette.main.background)
         contentTextView.tag = 1
@@ -113,6 +111,9 @@ struct PostEditorView: View {
                 contentTextView.resignFirstResponder()
                 titleTextView.becomeFirstResponder()
             }
+        }
+        .onAppear {
+            targets.first?.onAccountChange = checkSlurFilters
         }
         .onChange(of: imageManager?.image) {
             imageUrl = imageManager?.image?.url
@@ -161,6 +162,7 @@ struct PostEditorView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
                 targetSelectionView
+                
                 if postToEdit == nil {
                     Line()
                         .stroke(style: StrokeStyle(lineWidth: 2, dash: [5]))
@@ -170,6 +172,7 @@ struct PostEditorView: View {
                         .padding(.bottom, -1)
                         .padding(.top, 1)
                 }
+                
                 let hasMiddleParts = hasNsfwTag || link != .none || imageManager != nil || imageUrl != nil
                 VStack(alignment: .leading, spacing: hasMiddleParts ? Constants.main.standardSpacing : 0) {
                     VStack(spacing: Constants.main.standardSpacing) {
@@ -179,7 +182,7 @@ struct PostEditorView: View {
                                 if titleIsEmpty != $0.isEmpty {
                                     titleIsEmpty = $0.isEmpty
                                 }
-                                checkSlurFilter(text: $0, slurMatch: $titleSlurMatch)
+                                checkSlurFilter(text: $0, slurMatches: $titleSlurMatches)
                             },
                             prompt: "Title",
                             textView: titleTextView,
@@ -198,9 +201,9 @@ struct PostEditorView: View {
                             maxHeight: .infinity,
                             alignment: .topLeading
                         )
-                        
-                        if let titleSlurMatch {
-                            FilterViolationWarning(failingText: titleSlurMatch, isPost: true)
+  
+                        if !titleSlurMatches.isEmpty {
+                            FilterViolationWarning(failures: titleSlurMatches)
                                 .padding(.horizontal, Constants.main.standardSpacing)
                                 .padding(.bottom, Constants.main.standardSpacing)
                         }
@@ -230,7 +233,7 @@ struct PostEditorView: View {
                                 if contentIsEmpty != $0.isEmpty {
                                     contentIsEmpty = $0.isEmpty
                                 }
-                                checkSlurFilter(text: $0, slurMatch: $bodySlurMatch)
+                                checkSlurFilter(text: $0, slurMatches: $bodySlurMatches)
                             },
                             prompt: "Optional Description",
                             textView: contentTextView,
@@ -248,9 +251,9 @@ struct PostEditorView: View {
                             maxHeight: .infinity,
                             alignment: .topLeading
                         )
-                        
-                        if let bodySlurMatch {
-                            FilterViolationWarning(failingText: bodySlurMatch, isPost: true)
+  
+                        if !bodySlurMatches.isEmpty {
+                            FilterViolationWarning(failures: bodySlurMatches)
                                 .padding(.horizontal, Constants.main.standardSpacing)
                                 .padding(.bottom, Constants.main.standardSpacing)
                         }

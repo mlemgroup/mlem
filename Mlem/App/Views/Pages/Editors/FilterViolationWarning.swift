@@ -9,13 +9,8 @@ import SwiftUI
 
 struct FilterViolationWarning: View {
     @Environment(Palette.self) var palette
-    
-    let failingText: String
-    let isPost: Bool
-    
-    var context: LocalizedStringResource {
-        isPost ? "Posts containing " : "Comments containing "
-    }
+
+    let failures: [String: String]
     
     var body: some View {
         VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
@@ -30,9 +25,10 @@ struct FilterViolationWarning: View {
                         .stroke(palette.warning)
                 }
             
-            Text(context) +
-            Text(failingText).fontWeight(.semibold) +
-            Text(" are forbidden by this instance's filters.")
+            ForEach(failures.keys.sorted(), id: \.self) { instance in
+                let failingText = Text(failures[instance] ?? "").fontWeight(.semibold)
+                Text("\(instance) disallows \(failingText)")
+            }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }

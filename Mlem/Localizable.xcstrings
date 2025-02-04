@@ -1,12 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    " are forbidden by this instance's filters." : {
-
-    },
-    " Filter violation" : {
-
-    },
     "**%@** and **%@** chose to defederate from one another." : {
       "localizations" : {
         "en" : {
@@ -48,6 +42,16 @@
     },
     "%@ banned a user" : {
 
+    },
+    "%@ disallows %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ disallows %2$@"
+          }
+        }
+      }
     },
     "%@ has been unresponsive recently." : {
 
@@ -657,9 +661,6 @@
     "Comments" : {
 
     },
-    "Comments containing " : {
-
-    },
     "Communities" : {
 
     },
@@ -1084,6 +1085,9 @@
 
     },
     "Filter" : {
+
+    },
+    "Filter violation" : {
 
     },
     "Filters" : {
@@ -1691,9 +1695,6 @@
 
     },
     "Posts" : {
-
-    },
-    "Posts containing " : {
 
     },
     "Posts from %@ communities" : {

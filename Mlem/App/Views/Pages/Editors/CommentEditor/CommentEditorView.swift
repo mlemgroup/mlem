@@ -169,7 +169,7 @@ struct CommentEditorView: View {
                     )
                     
                     if let slurMatch {
-                        FilterViolationWarning(failingText: slurMatch, isPost: false)
+                        FilterViolationWarning(failures: [AppState.main.firstApi.host: slurMatch])
                             .padding(.horizontal, Constants.main.standardSpacing)
                     }
                 }
