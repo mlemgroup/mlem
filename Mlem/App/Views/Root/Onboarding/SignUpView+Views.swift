@@ -110,7 +110,7 @@ extension SignUpView {
             TextField(
                 "Email",
                 text: $email,
-                prompt: Text(String(localized: "generic@example.com")) // Avoids this being rendered as a link
+                prompt: Text(String(localized: "john_doe@example.com")) // Avoids this being rendered as a link
             )
             .focused($focused, equals: .email)
             .onSubmit { focused = .password }
