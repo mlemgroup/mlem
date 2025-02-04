@@ -275,6 +275,7 @@ enum Icons {
     static let author: String = "signature"
     static let websiteAddress: String = "link"
     static let leftRight: String = "arrow.left.arrow.right"
+    static let leftAndRightCircle: String = "arrow.left.and.right.circle"
     static let developerMode: String = "wrench.adjustable.fill"
     static let limitImageHeightSetting: String = "rectangle.compress.vertical"
     static let appLockSettings: String = "lock.app.dashed"
@@ -306,6 +307,7 @@ enum Icons {
     static let right: String = "arrow.right.circle"
     static let left: String = "arrow.left.circle"
     static let center: String = "dot.circle"
+    static let zoomSlider: String = "arrow.up.and.down.and.sparkles"
     
     // fediseer
     static let fediseer: String = "shield.checkered"

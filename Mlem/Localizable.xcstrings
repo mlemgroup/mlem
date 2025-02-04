@@ -875,6 +875,9 @@
     "Diagnosing..." : {
 
     },
+    "Differentiate Without Color" : {
+
+    },
     "Disabled" : {
 
     },
@@ -924,6 +927,9 @@
 
     },
     "Edited" : {
+
+    },
+    "Either" : {
 
     },
     "Email" : {
@@ -1097,6 +1103,9 @@
 
     },
     "General" : {
+
+    },
+    "Gestures" : {
 
     },
     "GitHub Repository" : {
@@ -1321,6 +1330,9 @@
         }
       }
     },
+    "Location" : {
+
+    },
     "Lock" : {
 
     },
@@ -1521,6 +1533,9 @@
 
     },
     "No reason given" : {
+
+    },
+    "Non-Text Indicators" : {
 
     },
     "None" : {
@@ -2159,6 +2174,12 @@
     "Size" : {
 
     },
+    "Slide to Zoom" : {
+
+    },
+    "Slide to Zoom Images" : {
+
+    },
     "Slow" : {
 
     },
@@ -2790,6 +2811,9 @@
 
     },
     "Your subscriptions live here." : {
+
+    },
+    "Zoom the image viewer with a slide gesture on the selected side." : {
 
     }
   },
