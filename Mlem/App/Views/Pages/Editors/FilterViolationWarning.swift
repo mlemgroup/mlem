@@ -20,9 +20,10 @@ struct FilterViolationWarning: View {
     var body: some View {
         VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
             Label("Filter violation", systemImage: Icons.warning)
+                .font(.footnote)
                 .foregroundStyle(palette.warning)
-                .padding(Constants.main.standardSpacing)
-                .padding(.horizontal, Constants.main.halfSpacing)
+                .padding(.vertical, 5)
+                .padding(.horizontal, 7)
                 .background {
                     Capsule()
                         .fill(palette.warning.opacity(0.2))
