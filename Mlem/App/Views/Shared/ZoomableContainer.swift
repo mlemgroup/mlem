@@ -15,7 +15,7 @@ private let maxAllowedScale = 4.0
 @MainActor
 struct ZoomableContainer<Content: View>: View {
     let content: Content
-    @State private var currentScale: CGFloat = 1.0
+    @Binding var currentScale: CGFloat
     @State private var tapLocation: CGPoint = .zero
     
     /// True when currently zooming, false otherwise
@@ -28,8 +28,9 @@ struct ZoomableContainer<Content: View>: View {
     /// value is set immediately instead of waiting for the zoom to complete.
     @Binding var isZoomed: Bool
 
-    init(isZoomed: Binding<Bool> = .constant(false), @ViewBuilder content: () -> Content) {
+    init(isZoomed: Binding<Bool> = .constant(false), currentScale: Binding<CGFloat>, @ViewBuilder content: () -> Content) {
         self.content = content()
+        self._currentScale = currentScale
         self._isZoomed = isZoomed
     }
 
@@ -64,7 +65,7 @@ struct ZoomableContainer<Content: View>: View {
 
     fileprivate struct ZoomableScrollView<ScollContent: View>: UIViewRepresentable {
         private var content: ScollContent
-        @Binding private var currentScale: CGFloat
+        @ObservationIgnored @Binding private var currentScale: CGFloat
         @Binding private var tapLocation: CGPoint
         @Binding private var zooming: Bool
         
@@ -72,12 +73,13 @@ struct ZoomableContainer<Content: View>: View {
             scale: Binding<CGFloat>,
             tapLocation: Binding<CGPoint>,
             zooming: Binding<Bool>,
-            @ViewBuilder content: () -> ScollContent) {
-                _currentScale = scale
-                _tapLocation = tapLocation
-                _zooming = zooming
-                self.content = content()
-            }
+            @ViewBuilder content: () -> ScollContent
+        ) {
+            _currentScale = scale
+            _tapLocation = tapLocation
+            _zooming = zooming
+            self.content = content()
+        }
 
         func makeUIView(context: Context) -> UIScrollView {
             let scrollView = UIScrollView()
@@ -108,10 +110,13 @@ struct ZoomableContainer<Content: View>: View {
         func updateUIView(_ uiView: UIScrollView, context: Context) {
             context.coordinator.hostingController.rootView = content
 
-            if uiView.zoomScale > uiView.minimumZoomScale { // Scale out
-                uiView.setZoomScale(currentScale, animated: true)
-            } else if tapLocation != .zero { // Scale in to a specific point
-                uiView.zoom(to: zoomRect(for: uiView, scale: uiView.maximumZoomScale, center: tapLocation), animated: true)
+            if tapLocation == .zero {
+                if uiView.zoomScale != currentScale {
+                    uiView.setZoomScale(currentScale, animated: false)
+                    DispatchQueue.main.async { zooming = currentScale != 1.0 }
+                }
+            } else {
+                uiView.zoom(to: zoomRect(for: uiView, scale: currentScale, center: tapLocation), animated: true)
                 DispatchQueue.main.async { tapLocation = .zero }
             }
         }
@@ -141,6 +146,10 @@ struct ZoomableContainer<Content: View>: View {
 
             func viewForZooming(in _: UIScrollView) -> UIView? {
                 hostingController.view
+            }
+            
+            func scrollViewDidZoom(_ scrollView: UIScrollView) {
+                DispatchQueue.main.async { self.currentScale = scrollView.zoomScale }
             }
 
             func scrollViewDidEndZooming(_: UIScrollView, with _: UIView?, atScale scale: CGFloat) {

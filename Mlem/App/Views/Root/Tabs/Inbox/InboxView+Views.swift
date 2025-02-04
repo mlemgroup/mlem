@@ -90,7 +90,7 @@ extension InboxView {
                 if let unreadCount = (appState.firstSession as? UserSession)?.unreadCount {
                     switch tab {
                     case .all:
-                        return unreadCount.total
+                        return unreadCount.personalTotal
                     case .replies:
                         return unreadCount.replies
                     case .mentions:
@@ -117,13 +117,15 @@ extension InboxView {
             }
         }
         ToolbarItem(placement: .topBarTrailing) {
-            markAllAsReadButton
+            if selectedFeed == .inbox {
+                markAllAsReadButton
+            }
         }
     }
     
     @ViewBuilder
     var markAllAsReadButton: some View {
-        let newMessagesExist = !waitingOnMarkAllAsRead && ((appState.firstSession as? UserSession)?.unreadCount?.total ?? 0) != 0
+        let newMessagesExist = !waitingOnMarkAllAsRead && ((appState.firstSession as? UserSession)?.unreadCount?.personalTotal ?? 0) != 0
         PhaseAnimator([0, 1], trigger: markAllAsReadTrigger) { value in
             Button {
                 HapticManager.main.play(haptic: .gentleInfo, priority: .low)

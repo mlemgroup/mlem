@@ -12,6 +12,7 @@ struct ImageViewer: View {
     @Environment(Palette.self) var palette
     @Environment(\.dismiss) var dismiss
     @Environment(\.colorScheme) var colorScheme
+    @Setting(\.zoomSliderLocation) var zoomSliderLocation
 
     let url: URL
 
@@ -19,6 +20,15 @@ struct ImageViewer: View {
     let maxControlOffset: CGFloat = 50
     let screenHeight: CGFloat = UIScreen.main.bounds.height
     
+    /// Current scale of the ZoomableContainer
+    @State var currentScale: CGFloat = 1.0
+    
+    /// True when the scale indicator should be visible, false otherwise
+    @State var scaleDisplayShown: Bool = false
+    
+    @State var dragStartedScale: CGFloat?
+    
+    @GestureState var scaleDragState: Bool = false
     @GestureState var dragState: Bool = false
     
     /// True when the image is zoomed in, false otherwise
@@ -54,7 +64,7 @@ struct ImageViewer: View {
     }
     
     var body: some View {
-        ZoomableContainer(isZoomed: $isZoomed) {
+        ZoomableContainer(isZoomed: $isZoomed, currentScale: $currentScale) {
             MediaView(url: url, playImmediately: true)
         }
         .offset(y: offset)
@@ -88,6 +98,8 @@ struct ImageViewer: View {
                 state = true
             }
         )
+        .overlay(alignment: .topLeading) { scaleDisplay }
+        .overlay { zoomSliderOverlay }
         .onAppear {
             animateOpacityUpdate(1.0)
         }
@@ -105,6 +117,26 @@ struct ImageViewer: View {
                         enableControlTap = true
                     }
                     animateOffsetUpdate(0)
+                }
+            }
+        }
+        .onChange(of: scaleDragState) {
+            if !scaleDragState {
+                dragStartedScale = nil
+            }
+        }
+        .onChange(of: currentScale) {
+            if !scaleDisplayShown {
+                withAnimation(.easeIn(duration: 0.1)) {
+                    scaleDisplayShown = true
+                }
+            }
+            let oldScale: CGFloat = currentScale
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                if currentScale == oldScale {
+                    withAnimation {
+                        scaleDisplayShown = false
+                    }
                 }
             }
         }
