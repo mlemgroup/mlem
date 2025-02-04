@@ -125,7 +125,7 @@ struct CompactPostView: View {
 }
 
 #if DEBUG
-#Preview(traits: .sampleEnvironment, .sizeThatFitsLayout) {
-    CompactPostView(post: Post2.mock(.generic))
-}
+    #Preview(traits: .sampleEnvironment, .sizeThatFitsLayout) {
+        CompactPostView(post: Post2.mock(.generic))
+    }
 #endif

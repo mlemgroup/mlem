@@ -3,7 +3,7 @@
 //  Mlem
 //
 //  Created by Sjmarf on 2025-02-04.
-//  
+//
 
 import Foundation
 import MlemMiddleware
@@ -61,4 +61,5 @@ enum PostMockType {
         return Int.random(in: 0 ... 50, using: &generator)
     }
 }
+
 // swiftlint:enable line_length
