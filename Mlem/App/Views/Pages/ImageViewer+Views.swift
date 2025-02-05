@@ -56,7 +56,7 @@ extension ImageViewer {
     
     @ViewBuilder
     var bottomControlBar: some View {
-        ZStack {
+        ZStack(alignment: .bottom) {
             if controlState.animationAvailable {
                 playButton
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -90,10 +90,10 @@ extension ImageViewer {
                 .scaledToFit()
                 .frame(width: 22, height: 22)
                 .contentTransition(.symbolEffect(.replace, options: .speed(2)))
-                .padding(Constants.main.standardSpacing)
+                .padding(Constants.main.standardSpacing + 3) // +3 to match .title2 implicit padding
                 .background(.ultraThinMaterial, in: .circle)
-                .padding(Constants.main.standardSpacing)
-                .padding([.top, .trailing], Constants.main.standardSpacing)
+                .padding(.leading, Constants.main.standardSpacing)
+                .padding([.top, .trailing], Constants.main.doubleSpacing)
                 .contentShape(.rect)
         }
     }
@@ -142,10 +142,10 @@ extension ImageViewer {
                 .scaledToFit()
                 .frame(width: 22, height: 22)
                 .contentTransition(.symbolEffect(.replace, options: .speed(2)))
-                .padding(Constants.main.standardSpacing)
+                .padding(Constants.main.standardSpacing + 3) // +3 to match .title2 implicit padding
                 .background(.ultraThinMaterial, in: .circle)
-                .padding(Constants.main.standardSpacing)
-                .padding([.top, .leading], Constants.main.standardSpacing)
+                .padding(.trailing, Constants.main.standardSpacing)
+                .padding([.top, .leading], Constants.main.doubleSpacing)
                 .contentShape(.rect)
         }
     }
