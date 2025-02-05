@@ -154,7 +154,7 @@ enum NavigationPage: Hashable {
         visitContext: VisitHistory.VisitContext = .other
     ) -> NavigationPage {
         var instance: any InstanceStubProviding = InstanceStub(
-            api: AppState.main.firstApi, actorId: entity.actorId
+            api: AppState.main.firstApi, actorId: .instance(host: entity.actorId.host)
         )
         if let entity = entity as? any Person3Providing {
             instance = entity.instance ?? instance
