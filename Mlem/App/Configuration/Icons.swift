@@ -320,6 +320,7 @@ enum Icons {
     // media
     static let play: String = "play.fill"
     static let playCircle: String = "play.circle"
+    static let pause: String = "pause.fill"
     static let muted: String = "speaker.slash.fill"
     static let unmuted: String = "speaker.wave.2.fill"
     static let embedding: String = "app.connected.to.app.below.fill"

@@ -75,7 +75,7 @@ struct MediaView: View {
         self._blurred = .init(wrappedValue: enableNsfwBlur)
         self._controlState = .init(wrappedValue: controlState ?? .init(
             animating: false,
-            displayMode: .inline)
+            embedControls: true)
         )
     }
     
@@ -97,6 +97,9 @@ struct MediaView: View {
                 Task {
                     await loader.load()
                 }
+            }
+            .onChange(of: loader.mediaType.isAnimated, initial: true) {
+                controlState.animationAvailable = loader.mediaType.isAnimated
             }
             .environment(controlState)
             .environment(\.blurred, blurred)

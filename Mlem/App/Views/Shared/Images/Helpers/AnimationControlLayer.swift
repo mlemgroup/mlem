@@ -19,6 +19,15 @@ private struct AnimationControlLayer: ViewModifier {
     @State var showControls: Bool = true
     
     func body(content: Content) -> some View {
+        if controlState.embedControls {
+            contentWithControls(content: content)
+        } else {
+            content
+        }
+    }
+    
+    @ViewBuilder
+    func contentWithControls(content: Content) -> some View {
         content
             .overlay {
                 if controlState.animating {
@@ -38,9 +47,7 @@ private struct AnimationControlLayer: ViewModifier {
                 }
             }
             .overlay(alignment: .bottomTrailing) {
-                if controlState.displayMode == .inline {
-                    muteButton
-                }
+                muteButton
             }
             .onChange(of: blurred, initial: true) {
                 if blurred {

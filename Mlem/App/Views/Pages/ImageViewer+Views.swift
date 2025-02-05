@@ -57,6 +57,12 @@ extension ImageViewer {
     @ViewBuilder
     var bottomControlBar: some View {
         ZStack {
+            if controlState.animationAvailable {
+                playButton
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.leading, Constants.main.standardSpacing)
+            }
+            
             HStack {
                 saveButton
                 shareButton
@@ -70,12 +76,26 @@ extension ImageViewer {
             
             if controlState.audioAvailable {
                 muteButton
-                    .background(.ultraThinMaterial, in: .circle)
                     .frame(maxWidth: .infinity, alignment: .trailing)
                     .padding(.trailing, Constants.main.standardSpacing)
             }
         }
         .environment(\.colorScheme, .dark)
+    }
+    
+    @ViewBuilder
+    var playButton: some View {
+        Button {
+            controlState.animating.toggle()
+        } label: {
+            Image(systemName: controlState.animating ? Icons.pause : Icons.play)
+                .scaledToFit()
+                .frame(width: 22, height: 22)
+                .contentTransition(.symbolEffect(.replace, options: .speed(2)))
+        }
+        .padding(Constants.main.standardSpacing)
+        .contentShape(.rect)
+        .background(.ultraThinMaterial, in: .circle)
     }
     
     @ViewBuilder
@@ -125,6 +145,7 @@ extension ImageViewer {
         }
         .padding(Constants.main.standardSpacing)
         .contentShape(.rect)
+        .background(.ultraThinMaterial, in: .circle)
     }
     
     // MARK: Zoom and Scale

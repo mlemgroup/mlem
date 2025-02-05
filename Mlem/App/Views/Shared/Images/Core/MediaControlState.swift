@@ -7,10 +7,6 @@
 
 import Observation
 
-enum MediaDisplayMode {
-    case inline, viewer
-}
-
 @Observable
 class MediaControlState {
     /// True if the media, if animated, should be playing
@@ -19,10 +15,15 @@ class MediaControlState {
     /// True if the media, if audio available, should not play audio
     var muted: Bool
     
-    /// Whether the media is displayed inline (e.g., in a large post) or in the image viewer
-    let displayMode: MediaDisplayMode
+    /// True if embedded video controls should be enabled, false otherwise
+    let embedControls: Bool
     
-    /// True when the media has an audio track, false otherwise. This must be set by the child media!
+    /// True if the media is animated.
+    /// - Note: This must be set by MediaView after the media type resolves
+    var animationAvailable: Bool = false
+    
+    /// True when the media has an audio track, false otherwise.
+    /// - Note: This must be set by the relevant nested media view once it has extracted audio data
     var audioAvailable: Bool
     
     /// Creates a new MediaControlState
@@ -31,10 +32,10 @@ class MediaControlState {
     ///   - muted: true if the media should be muted, false otherwise. Defaults to Settings.main.muteVideos.
     ///   - displayMode: whether the media is rendered inline or through the image viewer
     ///   - audioAvailable: true if the media has an audio track, false otherwise. Defaults to false.
-    init(animating: Bool, muted: Bool? = nil, displayMode: MediaDisplayMode, audioAvailable: Bool = false) {
+    init(animating: Bool, muted: Bool? = nil, embedControls: Bool, audioAvailable: Bool = false) {
         self.animating = animating
         self.muted = muted ?? Settings.main.muteVideos
-        self.displayMode = displayMode
+        self.embedControls = embedControls
         self.audioAvailable = audioAvailable
     }
 }
