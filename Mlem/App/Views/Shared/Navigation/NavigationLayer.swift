@@ -64,6 +64,8 @@ class NavigationLayer: Identifiable {
     @MainActor
     func push(_ page: NavigationPage) {
         if hasNavigationStack {
+            // This prevents keyboard animation glitches when navigating whilst the keyboard is open
+            UIApplication.shared.firstKeyWindow?.endEditing(true)
             path.append(page)
         } else {
             openSheet(page)
@@ -98,6 +100,8 @@ class NavigationLayer: Identifiable {
     func popToRoot() {
         path.removeAll()
     }
+    
+    var isAtRoot: Bool { path.isEmpty }
     
     /// Open a new sheet, optionally with navigation enabled. If `nil` is specified for `hasNavigationStack`, the value of `page.hasNavigationStack` will be used.
     @MainActor

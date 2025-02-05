@@ -23,6 +23,7 @@ extension PostEditorView {
                         if targets.count > 1 {
                             Button("Remove", systemImage: Icons.closeCircleFill) {
                                 targets.remove(at: index)
+                                checkSlurFilters()
                             }
                             .symbolRenderingMode(.hierarchical)
                             .imageScale(.large)
@@ -43,6 +44,23 @@ extension PostEditorView {
             }
         }
         .animation(.easeOut(duration: 0.2), value: showWarning)
+    }
+    
+    @ViewBuilder
+    var middleParts: some View {
+        if hasNsfwTag {
+            nsfwTagView
+                .padding(.leading, 10)
+                .transition(attachmentTransition)
+        }
+        if link != .none {
+            linkView
+                .transition(attachmentTransition)
+        }
+        if imageManager != nil || imageUrl != nil {
+            imageView
+                .transition(attachmentTransition)
+        }
     }
     
     @ViewBuilder

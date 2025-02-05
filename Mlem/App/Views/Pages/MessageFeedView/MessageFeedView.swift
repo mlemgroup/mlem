@@ -8,6 +8,7 @@
 import MlemMiddleware
 import SwiftUI
 
+// swiftlint:disable:next type_body_length
 struct MessageFeedView: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
@@ -20,15 +21,18 @@ struct MessageFeedView: View {
     
     let timer = Timer.publish(every: 5, on: .main, in: .common).autoconnect()
     
-    init(person: AnyPerson, focusTextField: Bool, editing: (any Message)?) {
+    init(
+        person: AnyPerson,
+        messageContent: String = "",
+        focusTextField: Bool,
+        editing: (any Message)?
+    ) {
         self.person = person
         self.focusTextField = focusTextField
         self._editing = .init(wrappedValue: editing)
-        if let editing {
-            let textView = UITextView()
-            textView.text = editing.content
-            _textView = .init(wrappedValue: textView)
-        }
+        let textView = UITextView()
+        textView.text = editing?.content ?? messageContent
+        _textView = .init(wrappedValue: textView)
     }
     
     @State var feedLoader: MessageFeedLoader?
@@ -235,7 +239,7 @@ struct MessageFeedView: View {
                 bottom: Constants.main.standardSpacing,
                 right: Constants.main.standardSpacing
             ),
-            firstResponder: focusTextField,
+            firstResponder: focusTextField && !shouldDelayBecomeFirstResponder,
             sizingOffset: 5,
             content: {
                 MarkdownEditorToolbarView(
@@ -249,6 +253,13 @@ struct MessageFeedView: View {
             maxWidth: .infinity,
             minHeight: minTextEditorHeight
         )
+        .onAppear {
+            if focusTextField, shouldDelayBecomeFirstResponder {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+                    textView.becomeFirstResponder()
+                }
+            }
+        }
     }
     
     @ViewBuilder
