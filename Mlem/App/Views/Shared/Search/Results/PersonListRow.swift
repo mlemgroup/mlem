@@ -58,3 +58,17 @@ struct PersonListRow<Content2: View>: View {
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }
 }
+
+#Preview(traits: .sampleEnvironment) {
+    ScrollView {
+        ForEach(PersonMockType.Realistic.allCases) { type in
+            PersonListRow(
+                Person2.mock(.realistic(type)),
+                complications: [.instance, .date],
+                readout: .postsAndComments
+            )
+        }
+    }
+    .contentMargins(.horizontal, Constants.main.standardSpacing)
+    .background(Palette.main.groupedBackground)
+}

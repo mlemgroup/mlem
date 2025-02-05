@@ -115,3 +115,13 @@ struct LargePostView: View {
         FullyQualifiedLinkView(post.community_, labelStyle: .medium, blurred: shouldBlur)
     }
 }
+
+#if DEBUG
+    #Preview(traits: .sampleEnvironment, .sizeThatFitsLayout) {
+        LargePostView(
+            post: Post2.mock(.generic),
+            isPostPage: true,
+            favoredLink: nil
+        )
+    }
+#endif

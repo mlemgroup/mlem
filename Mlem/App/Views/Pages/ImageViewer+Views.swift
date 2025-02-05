@@ -164,7 +164,7 @@ extension ImageViewer {
                 .onEnded { _ in
                     dragStartedScale = nil
                 }
-                .updating($scaleDragState) {  _, state, _ in
+                .updating($scaleDragState) { _, state, _ in
                     state = true
                 })
     }
