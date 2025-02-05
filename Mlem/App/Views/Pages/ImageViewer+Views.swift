@@ -120,12 +120,27 @@ extension ImageViewer {
     }
     
     @ViewBuilder
+    var zoomSliderOverlay: some View {
+        HStack {
+            if zoomSliderLocation == .left || zoomSliderLocation == .either {
+                zoomSlider
+            }
+            
+            Spacer()
+            
+            if zoomSliderLocation == .right || zoomSliderLocation == .either {
+                zoomSlider
+            }
+        }
+    }
+    
+    @ViewBuilder
     var zoomSlider: some View {
         Color.clear
             .contentShape(.rect)
             .frame(width: 40)
             .frame(maxHeight: .infinity)
-            .gesture(DragGesture()
+            .highPriorityGesture(DragGesture()
                 .onChanged { value in
                     guard offset == 0 else { return }
                     
