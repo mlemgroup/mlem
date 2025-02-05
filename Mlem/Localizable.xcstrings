@@ -1092,9 +1092,6 @@
     "General" : {
 
     },
-    "generic@example.com" : {
-
-    },
     "Gestures" : {
 
     },
@@ -1237,6 +1234,9 @@
 
     },
     "john_doe" : {
+
+    },
+    "john_doe@example.com" : {
 
     },
     "Join Discord Server" : {
