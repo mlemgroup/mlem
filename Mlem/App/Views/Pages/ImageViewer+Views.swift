@@ -90,7 +90,7 @@ extension ImageViewer {
                 .scaledToFit()
                 .frame(width: 22, height: 22)
                 .contentTransition(.symbolEffect(.replace, options: .speed(2)))
-                .padding(Constants.main.standardSpacing + 3) // +3 to match .title2 implicit padding
+                .padding(Constants.main.standardSpacing + 4) // +3 to match .title2 implicit padding plus offset
                 .background(.ultraThinMaterial, in: .circle)
                 .padding(.leading, Constants.main.standardSpacing)
                 .padding([.top, .trailing], Constants.main.doubleSpacing)
@@ -142,7 +142,7 @@ extension ImageViewer {
                 .scaledToFit()
                 .frame(width: 22, height: 22)
                 .contentTransition(.symbolEffect(.replace, options: .speed(2)))
-                .padding(Constants.main.standardSpacing + 3) // +3 to match .title2 implicit padding
+                .padding(Constants.main.standardSpacing + 4) // +3 to match .title2 implicit padding plus offset
                 .background(.ultraThinMaterial, in: .circle)
                 .padding(.trailing, Constants.main.standardSpacing)
                 .padding([.top, .leading], Constants.main.doubleSpacing)
