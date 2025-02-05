@@ -48,7 +48,7 @@ extension PostEditorView {
                 if postToEdit == nil {
                     Button("Crosspost", systemImage: "shuffle") {
                         if let account = targets.last?.account {
-                            let newTarget: PostEditorTarget = .init(account: account)
+                            let newTarget: PostEditorTarget = .init(account: account, onAccountChange: checkSlurFilters)
                             targets.append(newTarget)
                             navigation.openSheet(.communityPicker(api: account.api, callback: { community in
                                 newTarget.community = community

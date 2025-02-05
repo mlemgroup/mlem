@@ -43,6 +43,16 @@
     "%@ banned a user" : {
 
     },
+    "%@ disallows %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ disallows %2$@"
+          }
+        }
+      }
+    },
     "%@ has been unresponsive recently." : {
 
     },
@@ -1081,6 +1091,9 @@
 
     },
     "Filter" : {
+
+    },
+    "Filter violation" : {
 
     },
     "Filters" : {

@@ -44,6 +44,9 @@ struct PostEditorView: View {
         
     @State var targets: [PostEditorTarget]
     
+    @State var titleSlurMatches: [String: String] = .init()
+    @State var bodySlurMatches: [String: String] = .init()
+    
     var feedLoader: (any FeedLoading)?
     
     /// Initializer for editing a post
@@ -109,6 +112,9 @@ struct PostEditorView: View {
                 titleTextView.becomeFirstResponder()
             }
         }
+        .onAppear {
+            targets.first?.onAccountChange = checkSlurFilters
+        }
         .onChange(of: imageManager?.image) {
             imageUrl = imageManager?.image?.url
         }
@@ -156,6 +162,7 @@ struct PostEditorView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
                 targetSelectionView
+                
                 if postToEdit == nil {
                     Line()
                         .stroke(style: StrokeStyle(lineWidth: 2, dash: [5]))
@@ -165,32 +172,42 @@ struct PostEditorView: View {
                         .padding(.bottom, -1)
                         .padding(.top, 1)
                 }
+                
                 let hasMiddleParts = hasNsfwTag || link != .none || imageManager != nil || imageUrl != nil
                 VStack(alignment: .leading, spacing: hasMiddleParts ? Constants.main.standardSpacing : 0) {
-                    MarkdownTextEditor(
-                        onChange: {
-                            // Avoid unnecessary view update
-                            if titleIsEmpty != $0.isEmpty {
-                                titleIsEmpty = $0.isEmpty
+                    VStack(spacing: Constants.main.standardSpacing) {
+                        MarkdownTextEditor(
+                            onChange: {
+                                // Avoid unnecessary view update
+                                if titleIsEmpty != $0.isEmpty {
+                                    titleIsEmpty = $0.isEmpty
+                                }
+                                checkSlurFilter(text: $0, slurMatches: $titleSlurMatches)
+                            },
+                            prompt: "Title",
+                            textView: titleTextView,
+                            font: .preferredFont(forTextStyle: .title2),
+                            content: {
+                                MarkdownEditorToolbarView(
+                                    showing: .inlineOnly,
+                                    textView: titleTextView,
+                                    imageUploadApi: nil
+                                )
                             }
-                        },
-                        prompt: "Title",
-                        textView: titleTextView,
-                        font: .preferredFont(forTextStyle: .title2),
-                        content: {
-                            MarkdownEditorToolbarView(
-                                showing: .inlineOnly,
-                                textView: titleTextView,
-                                imageUploadApi: nil
-                            )
+                        )
+                        .frame(
+                            maxWidth: .infinity,
+                            minHeight: minTitleEditorHeight,
+                            maxHeight: .infinity,
+                            alignment: .topLeading
+                        )
+  
+                        if !titleSlurMatches.isEmpty {
+                            FilterViolationWarning(failures: titleSlurMatches)
+                                .padding(.horizontal, Constants.main.standardSpacing)
+                                .padding(.bottom, Constants.main.standardSpacing)
                         }
-                    )
-                    .frame(
-                        maxWidth: .infinity,
-                        minHeight: minTitleEditorHeight,
-                        maxHeight: .infinity,
-                        alignment: .topLeading
-                    )
+                    }
                     .padding(.top, Constants.main.halfSpacing)
                     .background(
                         palette.secondaryGroupedBackground,
@@ -201,47 +218,46 @@ struct PostEditorView: View {
                             topTrailing: Constants.main.standardSpacing
                         ))
                     )
+                    
                     if hasMiddleParts {
-                        if hasNsfwTag {
-                            nsfwTagView
-                                .padding(.leading, 10)
-                                .transition(attachmentTransition)
-                        }
-                        if link != .none {
-                            linkView
-                                .transition(attachmentTransition)
-                        }
-                        if imageManager != nil || imageUrl != nil {
-                            imageView
-                                .transition(attachmentTransition)
-                        }
+                        middleParts
                     } else {
                         Divider()
                             .zIndex(1)
                     }
-                    MarkdownTextEditor(
-                        onChange: {
-                            // Avoid unnecessary view update
-                            if contentIsEmpty != $0.isEmpty {
-                                contentIsEmpty = $0.isEmpty
+                    
+                    VStack {
+                        MarkdownTextEditor(
+                            onChange: {
+                                // Avoid unnecessary view update
+                                if contentIsEmpty != $0.isEmpty {
+                                    contentIsEmpty = $0.isEmpty
+                                }
+                                checkSlurFilter(text: $0, slurMatches: $bodySlurMatches)
+                            },
+                            prompt: "Optional Description",
+                            textView: contentTextView,
+                            content: {
+                                MarkdownEditorToolbarView(
+                                    textView: contentTextView,
+                                    uploadHistory: uploadHistory,
+                                    imageUploadApi: primaryApi
+                                )
                             }
-                        },
-                        prompt: "Optional Description",
-                        textView: contentTextView,
-                        content: {
-                            MarkdownEditorToolbarView(
-                                textView: contentTextView,
-                                uploadHistory: uploadHistory,
-                                imageUploadApi: primaryApi
-                            )
+                        )
+                        .frame(
+                            maxWidth: .infinity,
+                            minHeight: minTextEditorHeight,
+                            maxHeight: .infinity,
+                            alignment: .topLeading
+                        )
+  
+                        if !bodySlurMatches.isEmpty {
+                            FilterViolationWarning(failures: bodySlurMatches)
+                                .padding(.horizontal, Constants.main.standardSpacing)
+                                .padding(.bottom, Constants.main.standardSpacing)
                         }
-                    )
-                    .frame(
-                        maxWidth: .infinity,
-                        minHeight: minTextEditorHeight,
-                        maxHeight: .infinity,
-                        alignment: .topLeading
-                    )
+                    }
                     .padding([.vertical, .bottom], Constants.main.standardSpacing)
                     .background(
                         palette.secondaryGroupedBackground,
