@@ -70,14 +70,8 @@ struct ImageViewer: View {
         .offset(y: offset)
         .background(.black)
         .overlay(controlOverlay)
+        .overlay(alignment: .topLeading) { scaleDisplay }
         .opacity(opacity)
-        .onChange(of: isZoomed) {
-            if isZoomed {
-                hideControls(withSlide: true)
-            } else {
-                showControls(withSlide: true)
-            }
-        }
         .onTapGesture {
             if enableControlTap {
                 if controlsShown {
@@ -87,9 +81,12 @@ struct ImageViewer: View {
                 }
             }
         }
-        .simultaneousGesture(DragGesture(minimumDistance: 1.0)
+        .highPriorityGesture(DragGesture(minimumDistance: 1.0) // simultaneous prevents conflict with pinch zoom
             .onChanged { value in
-                if !isZoomed, !isDismissing {
+                if (zoomSliderLocation.leftEnabled && value.startLocation.x < 40) ||
+                    (zoomSliderLocation.rightEnabled && value.startLocation.x > UIScreen.main.bounds.width - 40) {
+                    handleZoomSlider(translationHeight: value.translation.height)
+                } else if !isZoomed, !isDismissing {
                     handleOffsetUpdate(value.translation.height)
                 }
             }
@@ -98,12 +95,19 @@ struct ImageViewer: View {
                 state = true
             }
         )
-        .overlay(alignment: .topLeading) { scaleDisplay }
-        .overlay { zoomSliderOverlay }
         .onAppear {
             animateOpacityUpdate(1.0)
         }
+        .onChange(of: isZoomed) {
+            if isZoomed {
+                hideControls(withSlide: true)
+            } else {
+                showControls(withSlide: true)
+            }
+        }
         .onChange(of: dragState) {
+            if !dragState { dragStartedScale = nil }
+            
             guard !isZoomed else { return }
             
             if dragState {
@@ -222,6 +226,25 @@ struct ImageViewer: View {
             controlOpacity = 1.0 - (controlOffset / maxControlOffset)
         }
         opacity = 1.0 - (absOffset / screenHeight)
+    }
+    
+    private func handleZoomSlider(translationHeight: CGFloat) {
+        let baseScale: CGFloat
+        if let dragStartedScale {
+            baseScale = dragStartedScale
+        } else {
+            baseScale = currentScale
+            dragStartedScale = currentScale
+        }
+        
+        let newScale = baseScale + (translationHeight / -60)
+        if newScale <= 1.0 {
+            currentScale = 1.0
+        } else if newScale >= 4.0 {
+            currentScale = 4.0
+        } else {
+            currentScale = newScale
+        }
     }
     
     func showQuickLook(url: URL) async {

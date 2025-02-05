@@ -23,9 +23,6 @@ struct VideoView: View {
     /// Whether the video has an audio track. Set post-appearance since this is asynchronously computed.
     @State var audioAvailable: Bool = false
     
-    /// Observer to track external modifications to the `isMuted` status of the player.
-    @State var observer: NSKeyValueObservation?
-
     /// Whether this is the first time this view has appeared
     @State var isFirstAppearance: Bool = true
     
@@ -37,26 +34,13 @@ struct VideoView: View {
         self.playerLooper = .init(player: player, templateItem: playerItem)
 
         @Setting(\.muteVideos) var muteVideos
-        player.isMuted = muteVideos
+        player.volume = muteVideos ? 0 : 1
         self._muted = .init(wrappedValue: muteVideos)
     }
     
     var body: some View {
         VideoPlayer(player: player)
             .disabled(true)
-            .onDisappear {
-                observer = nil
-            }
-            .onAppear {
-                guard observer == nil else { return }
-                
-                // audio is automatically turned on if the user modifies their volume. This listens to that event and updates muted to match.
-                observer = player.observe(\.isMuted, options: [.new]) { _, value in
-                    if let newValue = value.newValue, newValue != muted {
-                        muted = newValue
-                    }
-                }
-            }
             .task {
                 // parse whether the video has audio or not before playing so we can appropriately display audio controls
                 do {
@@ -71,17 +55,15 @@ struct VideoView: View {
                     isFirstAppearance = false
                 }
             }
-            .onChange(of: animating, initial: false) {
+            .onChange(of: animating) {
                 if animating {
                     player.play()
                 } else {
                     player.pause()
                 }
             }
-            .onChange(of: muted, initial: false) {
-                if player.isMuted != muted {
-                    player.isMuted = muted
-                }
+            .onChange(of: muted) {
+                player.volume = muted ? 0 : 1
             }
             .withAnimationControls(animating: $animating, muted: audioAvailable ? $muted : nil)
     }
