@@ -23,14 +23,17 @@ extension PostEditorView {
     
     var canDismiss: Bool {
         titleIsEmpty
-            && contentIsEmpty
-            && targets.count == 1
-            && link == .none
-            && imageManager == nil
+        && contentIsEmpty
+        && targets.count == 1
+        && link == .none
+        && imageManager == nil
     }
     
     var canSubmit: Bool {
-        if !(imageManager?.state.isDone ?? true) || link == .waiting { return false }
+        if !(imageManager?.state.isDone ?? true) ||
+            link == .waiting ||
+            !titleSlurMatches.isEmpty ||
+            !bodySlurMatches.isEmpty { return false }
         if postToEdit != nil { return true }
         return !titleIsEmpty && targets.allSatisfy { $0.community != nil && $0.resolutionState == .success }
     }
@@ -146,5 +149,40 @@ extension PostEditorView {
         } else {
             lastFocusedField = nil
         }
+    }
+    
+    func checkSlurFilter(text: String, slurMatches: Binding<[String: String]>) {
+        Task {
+            let matches = await findSlurFilterMatches(text: text)
+            Task { @MainActor in
+                slurMatches.wrappedValue = matches
+            }
+        }
+    }
+    
+    func checkSlurFilters() {
+        checkSlurFilter(text: contentTextView.text, slurMatches: $bodySlurMatches)
+        checkSlurFilter(text: titleTextView.text, slurMatches: $titleSlurMatches)
+    }
+    
+    /// Checks if the given text fails `slurRegex` and updates the given `String?` binding to the current
+    /// validation state
+    func findSlurFilterMatches(text: String) async -> [String: String] {
+        var newSlurMatches: [String: String] = .init()
+        
+        for target in targets {
+            let host = target.account.host
+            guard newSlurMatches[host] == nil else { continue }
+            
+            do {
+                if let output = try await target.slurRegex?.firstMatch(in: text.lowercased()) {
+                    newSlurMatches[host] = String(text[output.range])
+                }
+            } catch {
+                print("Failed to parse regex")
+            }
+        }
+        
+        return newSlurMatches
     }
 }

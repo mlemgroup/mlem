@@ -10,6 +10,11 @@ import MlemMiddleware
 import SwiftUI
 
 extension MessageFeedView {
+    var shouldDelayBecomeFirstResponder: Bool {
+        // Only delay the keyboard opening if being pushed onto the navigation stack rather than opening in sheet
+        !navigation.isAtRoot
+    }
+    
     func sendMessage(_ scrollProxy: ScrollViewProxy) async {
         do {
             guard let person = person.wrappedValue as? any Person, !textView.text.isEmpty else { return }

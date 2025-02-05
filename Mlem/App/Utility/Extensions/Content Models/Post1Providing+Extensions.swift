@@ -314,7 +314,11 @@ extension Post1Providing {
     
     // Overrides the `ActorIdentifiable+Extensions` implementation
     func shareAction() -> ShareAction {
-        .init(id: "share\(actorId)", url: actorId.url, actions: [crossPostAction()])
+        .init(
+            id: "share\(actorId)",
+            url: actorId.url,
+            actions: [crossPostAction(), sendLinkInPrivateMessageAction()]
+        )
     }
     
     func crossPostAction() -> BasicAction {

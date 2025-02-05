@@ -39,7 +39,11 @@ struct CommentEditorView: View {
     
     @State var uploadHistory: ImageUploadHistoryManager = .init()
     
+    @State var slurMatch: String?
+    
     @FocusState var focused: Bool
+    
+    @State var slurRegex: Regex<AnyRegexOutput>?
     
     init?(
         commentToEdit: Comment2? = nil,
@@ -55,6 +59,7 @@ struct CommentEditorView: View {
         } else {
             return nil
         }
+        self._slurRegex = .init(wrappedValue: AppState.main.firstApi.myInstance?.slurRegex())
         
         textView.text = commentToEdit?.content ?? ""
         textView.backgroundColor = UIColor(Palette.main.background)
@@ -99,7 +104,7 @@ struct CommentEditorView: View {
                                         await send()
                                     }
                                 }
-                                .disabled(resolutionState != .success || textIsEmpty)
+                                .disabled(resolutionState != .success || textIsEmpty || slurMatch != nil)
                             }
                         }
                     }
@@ -125,6 +130,22 @@ struct CommentEditorView: View {
                 textView.becomeFirstResponder()
             }
         }
+        .onChange(of: account) {
+            if let instance = account.api.myInstance {
+                slurRegex = instance.slurRegex()
+                checkSlurFilter(text: textView.text)
+            } else {
+                Task {
+                    do {
+                        let instance = try await account.api.getMyInstance()
+                        slurRegex = instance.slurRegex()
+                        checkSlurFilter(text: textView.text)
+                    } catch {
+                        handleError(error)
+                    }
+                }
+            }
+        }
     }
     
     @ViewBuilder
@@ -135,22 +156,31 @@ struct CommentEditorView: View {
                     resolutionWarning
                         .padding(.horizontal, 10)
                 }
-                MarkdownTextEditor(
-                    onChange: {
-                        if $0.isEmpty != textIsEmpty {
-                            textIsEmpty = $0.isEmpty
+                
+                VStack(spacing: Constants.main.standardSpacing) {
+                    MarkdownTextEditor(
+                        onChange: {
+                            if $0.isEmpty != textIsEmpty {
+                                textIsEmpty = $0.isEmpty
+                            }
+                            checkSlurFilter(text: $0)
+                        },
+                        prompt: "Start writing...",
+                        textView: textView,
+                        content: {
+                            MarkdownEditorToolbarView(
+                                textView: textView,
+                                uploadHistory: uploadHistory,
+                                imageUploadApi: account.api
+                            )
                         }
-                    },
-                    prompt: "Start writing...",
-                    textView: textView,
-                    content: {
-                        MarkdownEditorToolbarView(
-                            textView: textView,
-                            uploadHistory: uploadHistory,
-                            imageUploadApi: account.api
-                        )
+                    )
+                    
+                    if let slurMatch {
+                        FilterViolationWarning(failures: [account.host: slurMatch])
+                            .padding(.horizontal, Constants.main.standardSpacing)
                     }
-                )
+                }
                 .frame(
                     maxWidth: .infinity,
                     minHeight: minTextEditorHeight,
@@ -161,6 +191,7 @@ struct CommentEditorView: View {
                 .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
                 .paletteBorder(cornerRadius: Constants.main.standardSpacing)
                 .padding(.horizontal, Constants.main.standardSpacing)
+                
                 contextView
                     .padding(Constants.main.standardSpacing)
                     .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
