@@ -60,7 +60,6 @@ extension ImageViewer {
             if controlState.animationAvailable {
                 playButton
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.leading, Constants.main.standardSpacing)
             }
             
             HStack {
@@ -77,7 +76,6 @@ extension ImageViewer {
             if controlState.audioAvailable {
                 muteButton
                     .frame(maxWidth: .infinity, alignment: .trailing)
-                    .padding(.trailing, Constants.main.standardSpacing)
             }
         }
         .environment(\.colorScheme, .dark)
@@ -92,10 +90,12 @@ extension ImageViewer {
                 .scaledToFit()
                 .frame(width: 22, height: 22)
                 .contentTransition(.symbolEffect(.replace, options: .speed(2)))
+                .padding(Constants.main.standardSpacing)
+                .background(.ultraThinMaterial, in: .circle)
+                .padding(Constants.main.standardSpacing)
+                .padding([.top, .trailing], Constants.main.standardSpacing)
+                .contentShape(.rect)
         }
-        .padding(Constants.main.standardSpacing)
-        .contentShape(.rect)
-        .background(.ultraThinMaterial, in: .circle)
     }
     
     @ViewBuilder
@@ -104,9 +104,9 @@ extension ImageViewer {
             Task { await saveMedia(url: url) }
         } label: {
             Label("Save", systemImage: Icons.import)
+                .padding(Constants.main.standardSpacing)
+                .contentShape(.rect)
         }
-        .padding(Constants.main.standardSpacing)
-        .contentShape(.rect)
         .offset(y: -2)
     }
     
@@ -116,9 +116,9 @@ extension ImageViewer {
             Task { await shareImage(url: url, navigation: navigation) }
         } label: {
             Label("Share", systemImage: Icons.share)
+                .padding(Constants.main.standardSpacing)
+                .contentShape(.rect)
         }
-        .padding(Constants.main.standardSpacing)
-        .contentShape(.rect)
         .offset(y: -2)
     }
     
@@ -128,9 +128,9 @@ extension ImageViewer {
             Task { await showQuickLook(url: url) }
         } label: {
             Label("Quick Look", systemImage: Icons.menuCircle)
+                .padding(Constants.main.standardSpacing)
+                .contentShape(.rect)
         }
-        .padding(Constants.main.standardSpacing)
-        .contentShape(.rect)
     }
     
     @ViewBuilder
@@ -142,10 +142,12 @@ extension ImageViewer {
                 .scaledToFit()
                 .frame(width: 22, height: 22)
                 .contentTransition(.symbolEffect(.replace, options: .speed(2)))
+                .padding(Constants.main.standardSpacing)
+                .background(.ultraThinMaterial, in: .circle)
+                .padding(Constants.main.standardSpacing)
+                .padding([.top, .leading], Constants.main.standardSpacing)
+                .contentShape(.rect)
         }
-        .padding(Constants.main.standardSpacing)
-        .contentShape(.rect)
-        .background(.ultraThinMaterial, in: .circle)
     }
     
     // MARK: Zoom and Scale
@@ -212,6 +214,6 @@ extension ImageViewer {
                 .updating($scaleDragState) {  _, state, _ in
                     state = true
                 })
-            .padding(.vertical, 50)
+            .padding(.vertical, 70) // avoid conflict with control bars
     }
 }
