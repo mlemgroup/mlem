@@ -161,8 +161,13 @@ extension NavigationPage {
             AdvancedSortView(selectedSort: sort.wrappedValue)
         case let .votesList(target):
             VotesListView(target: target)
-        case let .messageFeed(person, focusTextField: focusTextField, editing: editing):
-            MessageFeedView(person: person, focusTextField: focusTextField, editing: editing?.wrappedValue)
+        case let .messageFeed(person, messageContent: messageContent, focusTextField: focusTextField, editing: editing):
+            MessageFeedView(
+                person: person,
+                messageContent: messageContent,
+                focusTextField: focusTextField,
+                editing: editing?.wrappedValue
+            )
         case let .modlog(target):
             ModlogView(initialTarget: target)
         case let .denyApplication(application):
