@@ -103,7 +103,7 @@ struct FeedsView: View {
             .toolbar {
                 // SwiftUI complains if both this and the menu are in the same toolbar
                 if let postFeedLoader, feedSelection != .saved {
-                    FeedSortPicker(feedLoader: postFeedLoader)
+                    FeedSortPicker(feedLoader: postFeedLoader, showTopTimescaleInIcon: true)
                 }
             }
             .navigationTitle(isAtTop ? "" : String(localized: feedSelection.description.label))
