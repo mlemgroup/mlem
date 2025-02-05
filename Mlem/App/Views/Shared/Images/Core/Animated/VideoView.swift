@@ -16,17 +16,12 @@ struct VideoView: View {
     let player: AVQueuePlayer
     let playerLooper: AVPlayerLooper
     
-    /// Whether this is the first time this view has appeared
-    @State var isFirstAppearance: Bool = true
-    
     init(asset: AVAsset) {
         // set up AVQueuePlayer and AVPlayerLooper to loop the video
         let playerItem: AVPlayerItem = .init(asset: asset)
         
         self.player = .init(playerItem: playerItem)
         self.playerLooper = .init(player: player, templateItem: playerItem)
-
-        player.volume = Settings.main.muteVideos ? 0 : 1
     }
     
     var body: some View {
@@ -39,14 +34,8 @@ struct VideoView: View {
                 } catch {
                     handleError(error)
                 }
-                
-                // if parse fails, assume no audio and play anyway
-                if isFirstAppearance {
-                    controlState.animating = true
-                    isFirstAppearance = false
-                }
             }
-            .onChange(of: controlState.animating) {
+            .onChange(of: controlState.animating, initial: true) {
                 if controlState.animating {
                     player.play()
                 } else {

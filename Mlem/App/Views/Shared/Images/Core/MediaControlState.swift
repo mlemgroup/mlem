@@ -25,9 +25,15 @@ class MediaControlState {
     /// True when the media has an audio track, false otherwise. This must be set by the child media!
     var audioAvailable: Bool
     
-    init(animating: Bool, muted: Bool, displayMode: MediaDisplayMode, audioAvailable: Bool = false) {
+    /// Creates a new MediaControlState
+    /// - Parameters:
+    ///   - animating: true if the media should be animating immediately, false otherwise
+    ///   - muted: true if the media should be muted, false otherwise. Defaults to Settings.main.muteVideos.
+    ///   - displayMode: whether the media is rendered inline or through the image viewer
+    ///   - audioAvailable: true if the media has an audio track, false otherwise. Defaults to false.
+    init(animating: Bool, muted: Bool? = nil, displayMode: MediaDisplayMode, audioAvailable: Bool = false) {
         self.animating = animating
-        self.muted = muted
+        self.muted = muted ?? Settings.main.muteVideos
         self.displayMode = displayMode
         self.audioAvailable = audioAvailable
     }

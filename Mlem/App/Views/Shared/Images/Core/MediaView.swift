@@ -75,7 +75,6 @@ struct MediaView: View {
         self._blurred = .init(wrappedValue: enableNsfwBlur)
         self._controlState = .init(wrappedValue: controlState ?? .init(
             animating: false,
-            muted: Settings.main.muteVideos,
             displayMode: .inline)
         )
     }

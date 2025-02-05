@@ -21,8 +21,7 @@ struct ImageViewer: View {
     let screenHeight: CGFloat = UIScreen.main.bounds.height
     
     @State var controlState: MediaControlState = .init(
-        animating: false,
-        muted: Settings.main.muteVideos,
+        animating: true,
         displayMode: .viewer
     )
     

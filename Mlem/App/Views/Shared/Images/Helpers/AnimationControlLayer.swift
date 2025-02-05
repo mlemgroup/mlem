@@ -68,6 +68,7 @@ private struct AnimationControlLayer: ViewModifier {
                 .highPriorityGesture(TapGesture().onEnded {
                     controlState.muted = !controlState.muted
                 })
+                .contentTransition(.symbolEffect(.replace, options: .speed(2)))
         }
     }
 }
