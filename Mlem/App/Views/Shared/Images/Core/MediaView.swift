@@ -16,6 +16,7 @@ struct MediaView: View {
     @Setting(\.developerMode) var developerMode
     
     @State var loader: MediaLoader
+    @State var controlState: MediaControlState
     @State var playing: Bool
     @State var quickLookUrl: URL?
     @State var blurred: Bool
@@ -39,6 +40,7 @@ struct MediaView: View {
     /// return a plain image that fits the bounds of its parent frame.
     /// - Parameters:
     ///   - url: url of the media to render
+    ///   - controlState: MediaControlState to control this media from a parent view. If not provided, assumes inline rendering mode.
     ///   - verticalAspectRatioBounds: tallest allowable aspect ratio
     ///   - contentMode: content resizing mode
     ///   - cornerRadius: corner radius to apply to the image
@@ -49,6 +51,7 @@ struct MediaView: View {
     ///     the specified actions and open the image viewer
     ///  - Warning: Changing the following parameters may cause unexpected view identity changes: `enableContextMenu`, `contentMode`
     init(url: URL,
+         controlState: MediaControlState? = nil,
          verticalAspectRatioBounds: CGSize? = nil,
          contentMode: ContentMode = .fit,
          cornerRadius: CGFloat = 0,
@@ -70,6 +73,11 @@ struct MediaView: View {
         self._loader = .init(wrappedValue: .init(url: url))
         self._playing = .init(wrappedValue: playImmediately)
         self._blurred = .init(wrappedValue: enableNsfwBlur)
+        self._controlState = .init(wrappedValue: controlState ?? .init(
+            animating: false,
+            muted: Settings.main.muteVideos,
+            displayMode: .inline)
+        )
     }
     
     var body: some View {
@@ -91,6 +99,7 @@ struct MediaView: View {
                     await loader.load()
                 }
             }
+            .environment(controlState)
             .environment(\.blurred, blurred)
     }
     

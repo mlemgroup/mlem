@@ -20,6 +20,12 @@ struct ImageViewer: View {
     let maxControlOffset: CGFloat = 50
     let screenHeight: CGFloat = UIScreen.main.bounds.height
     
+    @State var controlState: MediaControlState = .init(
+        animating: false,
+        muted: Settings.main.muteVideos,
+        displayMode: .viewer
+    )
+    
     /// Current scale of the ZoomableContainer
     @State var currentScale: CGFloat = 1.0
     
@@ -65,7 +71,7 @@ struct ImageViewer: View {
     
     var body: some View {
         ZoomableContainer(isZoomed: $isZoomed, currentScale: $currentScale) {
-            MediaView(url: url, playImmediately: true)
+            MediaView(url: url, controlState: controlState, playImmediately: true)
         }
         .offset(y: offset)
         .background(.black)

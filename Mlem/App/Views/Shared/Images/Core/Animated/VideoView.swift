@@ -11,17 +11,10 @@ import NukeVideo
 import SwiftUI
 
 struct VideoView: View {
+    @Environment(MediaControlState.self) var controlState
+    
     let player: AVQueuePlayer
     let playerLooper: AVPlayerLooper
-    
-    /// Controls the video's animation (true for playing). Defaults to false; video is automatically started once audio is resolved
-    @State var animating: Bool = false
-    
-    /// Controls the video's audio state (true for muted).
-    @State var muted: Bool
-    
-    /// Whether the video has an audio track. Set post-appearance since this is asynchronously computed.
-    @State var audioAvailable: Bool = false
     
     /// Whether this is the first time this view has appeared
     @State var isFirstAppearance: Bool = true
@@ -33,9 +26,7 @@ struct VideoView: View {
         self.player = .init(playerItem: playerItem)
         self.playerLooper = .init(player: player, templateItem: playerItem)
 
-        @Setting(\.muteVideos) var muteVideos
-        player.volume = muteVideos ? 0 : 1
-        self._muted = .init(wrappedValue: muteVideos)
+        player.volume = Settings.main.muteVideos ? 0 : 1
     }
     
     var body: some View {
@@ -44,27 +35,27 @@ struct VideoView: View {
             .task {
                 // parse whether the video has audio or not before playing so we can appropriately display audio controls
                 do {
-                    audioAvailable = try await player.isAudioAvailable() ?? false
+                    controlState.audioAvailable = try await player.isAudioAvailable() ?? false
                 } catch {
                     handleError(error)
                 }
                 
                 // if parse fails, assume no audio and play anyway
                 if isFirstAppearance {
-                    animating = true
+                    controlState.animating = true
                     isFirstAppearance = false
                 }
             }
-            .onChange(of: animating) {
-                if animating {
+            .onChange(of: controlState.animating) {
+                if controlState.animating {
                     player.play()
                 } else {
                     player.pause()
                 }
             }
-            .onChange(of: muted) {
-                player.volume = muted ? 0 : 1
+            .onChange(of: controlState.muted, initial: true) {
+                player.volume = controlState.muted ? 0 : 1
             }
-            .withAnimationControls(animating: $animating, muted: audioAvailable ? $muted : nil)
+            .withAnimationControls()
     }
 }

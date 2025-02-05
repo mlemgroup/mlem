@@ -56,16 +56,26 @@ extension ImageViewer {
     
     @ViewBuilder
     var bottomControlBar: some View {
-        HStack {
-            saveButton
-            shareButton
-            quickLookButton
+        ZStack {
+            HStack {
+                saveButton
+                shareButton
+                quickLookButton
+            }
+            .padding(.horizontal, Constants.main.halfSpacing)
+            .background {
+                Capsule().fill(.ultraThinMaterial)
+            }
+            .frame(maxWidth: .infinity, alignment: .center)
+            
+            if controlState.audioAvailable {
+                muteButton
+                    .background(.ultraThinMaterial, in: .circle)
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+                    .padding(.trailing, Constants.main.standardSpacing)
+            }
         }
-        .padding(.horizontal, Constants.main.halfSpacing)
-        .background {
-            Capsule().fill(.ultraThinMaterial)
-                .environment(\.colorScheme, .dark)
-        }
+        .environment(\.colorScheme, .dark)
     }
     
     @ViewBuilder
@@ -98,6 +108,20 @@ extension ImageViewer {
             Task { await showQuickLook(url: url) }
         } label: {
             Label("Quick Look", systemImage: Icons.menuCircle)
+        }
+        .padding(Constants.main.standardSpacing)
+        .contentShape(.rect)
+    }
+    
+    @ViewBuilder
+    var muteButton: some View {
+        Button {
+            controlState.muted.toggle()
+        } label: {
+            Image(systemName: controlState.muted ? Icons.muted : Icons.unmuted)
+                .scaledToFit()
+                .frame(width: 22, height: 22)
+                .contentTransition(.symbolEffect(.replace, options: .speed(2)))
         }
         .padding(Constants.main.standardSpacing)
         .contentShape(.rect)
@@ -167,5 +191,6 @@ extension ImageViewer {
                 .updating($scaleDragState) {  _, state, _ in
                     state = true
                 })
+            .padding(.vertical, 50)
     }
 }

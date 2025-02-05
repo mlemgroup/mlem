@@ -9,12 +9,13 @@ import Gifu
 import SwiftUI
 
 struct GifView: View {
+    @Environment(MediaControlState.self) var controlState
+    
     let data: Data
-    @State var animating: Bool = true
     
     var body: some View {
-        UIGifView(data: data, animating: animating)
-            .withAnimationControls(animating: $animating)
+        UIGifView(data: data, animating: controlState.animating)
+            .withAnimationControls()
     }
 }
 
