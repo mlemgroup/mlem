@@ -28,7 +28,7 @@ enum NavigationPage: Hashable {
     case person(_ person: AnyPerson, visitContext: VisitHistory.VisitContext)
     case instance(_ instance: InstanceHashWrapper, visitContext: VisitHistory.VisitContext)
     case instanceOpinionList(instance: InstanceHashWrapper, opinionType: FediseerOpinionType, data: FediseerData)
-    case messageFeed(_ person: AnyPerson, focusTextField: Bool, editing: MessageHashWrapper?)
+    case messageFeed(_ person: AnyPerson, messageContent: String, focusTextField: Bool, editing: MessageHashWrapper?)
     case fediseerInfo
     case externalApiInfo(api: ApiClient, actorId: ActorIdentifier)
     case imageViewer(_ url: URL)
@@ -133,6 +133,7 @@ enum NavigationPage: Hashable {
     
     static func messageFeed(
         _ person: any PersonStubProviding,
+        messageContent: String = "",
         focusTextField: Bool = false,
         editing: (any Message1Providing)? = nil
     ) -> NavigationPage {
@@ -140,7 +141,12 @@ enum NavigationPage: Hashable {
         if let editing {
             editingWrapper = .init(wrappedValue: editing)
         }
-        return messageFeed(.init(person), focusTextField: focusTextField, editing: editingWrapper)
+        return messageFeed(
+            .init(person),
+            messageContent: messageContent,
+            focusTextField: focusTextField,
+            editing: editingWrapper
+        )
     }
     
     static func instance(
@@ -148,7 +154,7 @@ enum NavigationPage: Hashable {
         visitContext: VisitHistory.VisitContext = .other
     ) -> NavigationPage {
         var instance: any InstanceStubProviding = InstanceStub(
-            api: AppState.main.firstApi, actorId: entity.actorId
+            api: AppState.main.firstApi, actorId: .instance(host: entity.actorId.host)
         )
         if let entity = entity as? any Person3Providing {
             instance = entity.instance ?? instance

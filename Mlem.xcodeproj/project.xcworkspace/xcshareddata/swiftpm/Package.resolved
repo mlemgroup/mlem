@@ -42,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mlemgroup/LemmyMarkdownUI",
       "state" : {
-        "revision" : "ef959bfe8f20a2ca78ced88e91073b5b5768a18d",
-        "version" : "0.7.0"
+        "revision" : "0c52aef58c09b3929db96741fb7705c6ccf2f701",
+        "version" : "0.8.0"
       }
     },
     {
@@ -60,8 +60,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mlemgroup/MlemMiddleware",
       "state" : {
-        "revision" : "d3752b6176e10f5cef56913915c85d62e9bb6b15",
-        "version" : "0.72.2"
+        "revision" : "404b0f84891fd4a458da3e7760159020d643af60",
+        "version" : "0.73.0"
       }
     },
     {

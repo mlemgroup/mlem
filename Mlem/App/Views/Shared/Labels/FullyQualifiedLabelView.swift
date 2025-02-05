@@ -9,7 +9,7 @@ import Foundation
 import MlemMiddleware
 import SwiftUI
 
-enum FullyQualifiedLabelStyle {
+enum FullyQualifiedLabelStyle: CaseIterable {
     case small
     case medium
     case large
@@ -202,3 +202,14 @@ extension FullyQualifiedLabelView {
         )
     }
 }
+
+#if DEBUG
+    #Preview("Sizes", traits: .sampleEnvironment, .sizeThatFitsLayout) {
+        VStack(alignment: .leading) {
+            ForEach(FullyQualifiedLabelStyle.allCases, id: \.self) { style in
+                FullyQualifiedLabelView(Person1.mock(.generic), labelStyle: style)
+            }
+        }
+        .padding()
+    }
+#endif

@@ -138,7 +138,7 @@ struct ImageViewer: View {
             }
             let oldScale: CGFloat = currentScale
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                if self.currentScale == oldScale {
+                if currentScale == oldScale {
                     withAnimation {
                         scaleDisplayShown = false
                     }

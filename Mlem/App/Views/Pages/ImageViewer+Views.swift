@@ -211,7 +211,7 @@ extension ImageViewer {
                 .onEnded { _ in
                     dragStartedScale = nil
                 }
-                .updating($scaleDragState) {  _, state, _ in
+                .updating($scaleDragState) { _, state, _ in
                     state = true
                 })
             .padding(.vertical, 70) // avoid conflict with control bars

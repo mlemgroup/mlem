@@ -11,13 +11,17 @@ import SwiftUI
 
 struct ShieldsBadgeView: View {
     @Environment(Palette.self) var palette
+    @Environment(\.openURL) var openURL
     
     var label: String
     var message: String?
+    var link: URL?
     
     var logo: LogoType?
     
-    init(shieldsUrl: URL) {
+    init(shieldsUrl: URL, link: URL?) {
+        self.link = link
+        
         self.label = .init(localized: "Unsupported Badge")
         if let host = shieldsUrl.host(), host == "img.shields.io" {
             let path = shieldsUrl.pathComponents
@@ -46,9 +50,10 @@ struct ShieldsBadgeView: View {
         }
     }
     
-    init(label: String, message: String?) {
+    init(label: String, message: String?, link: URL?) {
         self.label = label
         self.message = message
+        self.link = link
     }
     
     var body: some View {
@@ -81,6 +86,11 @@ struct ShieldsBadgeView: View {
         .overlay {
             RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius)
                 .stroke(palette.accent, lineWidth: 1)
+        }
+        .onTapGesture {
+            if let link {
+                openURL(link)
+            }
         }
     }
 }
