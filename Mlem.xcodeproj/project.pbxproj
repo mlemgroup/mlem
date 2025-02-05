@@ -413,6 +413,7 @@
 		CD57AFA32D03761500AB3956 /* WebpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57AFA22D03761300AB3956 /* WebpView.swift */; };
 		CD57AFA52D0377EB00AB3956 /* AnimationControlLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57AFA42D0377E400AB3956 /* AnimationControlLayer.swift */; };
 		CD5CAA0C2D41AE57008E20F2 /* EmbeddingSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5CAA0B2D41AE52008E20F2 /* EmbeddingSettingsView.swift */; };
+		CD605B032D53D6AD00F682AE /* MediaControlState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD605B022D53D6AA00F682AE /* MediaControlState.swift */; };
 		CD635E1B2C94DACD00864F75 /* BypassProxyWarningSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD635E1A2C94DACD00864F75 /* BypassProxyWarningSheet.swift */; };
 		CD6436502D483C96002668FB /* InteractionBarEditorView+Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD64364F2D483C8F002668FB /* InteractionBarEditorView+Views.swift */; };
 		CD6436522D483F2D002668FB /* MockTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6436512D483F23002668FB /* MockTextView.swift */; };
@@ -922,6 +923,7 @@
 		CD57AFA22D03761300AB3956 /* WebpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebpView.swift; sourceTree = "<group>"; };
 		CD57AFA42D0377E400AB3956 /* AnimationControlLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationControlLayer.swift; sourceTree = "<group>"; };
 		CD5CAA0B2D41AE52008E20F2 /* EmbeddingSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmbeddingSettingsView.swift; sourceTree = "<group>"; };
+		CD605B022D53D6AA00F682AE /* MediaControlState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaControlState.swift; sourceTree = "<group>"; };
 		CD635E1A2C94DACD00864F75 /* BypassProxyWarningSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BypassProxyWarningSheet.swift; sourceTree = "<group>"; };
 		CD64364F2D483C8F002668FB /* InteractionBarEditorView+Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InteractionBarEditorView+Views.swift"; sourceTree = "<group>"; };
 		CD6436512D483F23002668FB /* MockTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTextView.swift; sourceTree = "<group>"; };
@@ -1625,6 +1627,7 @@
 		CD13CC672C5D3CBE001AF428 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				CD605B022D53D6AA00F682AE /* MediaControlState.swift */,
 				CD1DF6372D38357100F7851E /* MediaView.swift */,
 				CD1DF63D2D387E8300F7851E /* MediaView+Views.swift */,
 				CD1DF63F2D387EB300F7851E /* MediaView+Functions.swift */,
@@ -2610,6 +2613,7 @@
 				03D284082D2AF05200A6659B /* Checkbox.swift in Sources */,
 				CD9CFA2C2C2E1EF300739BBC /* FeedIconView.swift in Sources */,
 				038188992D43E0F30073E88D /* SafetySettingsView.swift in Sources */,
+				CD605B032D53D6AD00F682AE /* MediaControlState.swift in Sources */,
 				CD1446252A5B357900610EF1 /* Document.swift in Sources */,
 				033F84B12C29907F002E3EDF /* FeedbackType.swift in Sources */,
 				CDB2EC812BFADADF00DBC0EF /* LargePostView.swift in Sources */,

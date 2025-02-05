@@ -9,13 +9,19 @@ import SDWebImageSwiftUI
 import SwiftUI
 
 struct WebpView: View {
+    @Environment(MediaControlState.self) var controlState
+    
     let data: Data
     
-    @State var animating: Bool = true
-    
     var body: some View {
-        AnimatedImage(data: data, isAnimating: $animating)
-            .resizable()
-            .withAnimationControls(animating: $animating)
+        AnimatedImage(
+            data: data,
+            isAnimating: Binding(
+                get: { controlState.animating },
+                set: { controlState.animating = $0 }
+            )
+        )
+        .resizable()
+        .withAnimationControls()
     }
 }

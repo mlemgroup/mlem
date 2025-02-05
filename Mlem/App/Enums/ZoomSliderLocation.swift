@@ -27,4 +27,18 @@ enum ZoomSliderLocation: String, CaseIterable, Codable {
         case .none: Icons.absent
         }
     }
+    
+    var leftEnabled: Bool {
+        switch self {
+        case .left, .either: true
+        default: false
+        }
+    }
+    
+    var rightEnabled: Bool {
+        switch self {
+        case .right, .either: true
+        default: false
+        }
+    }
 }

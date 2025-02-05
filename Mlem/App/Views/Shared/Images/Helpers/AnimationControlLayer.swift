@@ -13,33 +13,35 @@ extension EnvironmentValues {
 
 private struct AnimationControlLayer: ViewModifier {
     @Environment(\.blurred) var blurred
-    
-    @Binding var animating: Bool
-    var muted: Binding<Bool>?
+    @Environment(MediaControlState.self) var controlState
     
     // decouple controls state from blurred because the blur animation and material don't get along
     @State var showControls: Bool = true
     
-    init(animating: Binding<Bool>, muted: Binding<Bool>?) {
-        self._animating = animating
-        self.muted = muted
+    func body(content: Content) -> some View {
+        if controlState.embedControls {
+            contentWithControls(content: content)
+        } else {
+            content
+        }
     }
     
-    func body(content: Content) -> some View {
+    @ViewBuilder
+    func contentWithControls(content: Content) -> some View {
         content
             .overlay {
-                if animating {
+                if controlState.animating {
                     Color.clear.contentShape(.rect)
                         .highPriorityGesture(TapGesture()
                             .onEnded {
-                                animating = false
+                                controlState.animating = false
                             }
                         )
                 } else if showControls {
                     PlayButton(postSize: .large)
                         .highPriorityGesture(TapGesture()
                             .onEnded {
-                                animating = true
+                                controlState.animating = true
                             }
                         )
                 }
@@ -51,7 +53,7 @@ private struct AnimationControlLayer: ViewModifier {
                 if blurred {
                     showControls = false
                 } else {
-                    animating = true
+                    controlState.animating = true
                     showControls = true
                 }
             }
@@ -59,8 +61,8 @@ private struct AnimationControlLayer: ViewModifier {
     
     @ViewBuilder
     var muteButton: some View {
-        if let muted {
-            Image(systemName: muted.wrappedValue ? Icons.muted : Icons.unmuted)
+        if controlState.audioAvailable {
+            Image(systemName: controlState.muted ? Icons.muted : Icons.unmuted)
                 .resizable()
                 .scaledToFit()
                 .frame(width: 15, height: 15)
@@ -71,14 +73,15 @@ private struct AnimationControlLayer: ViewModifier {
                 .padding([.top, .leading], 15)
                 .contentShape(.rect)
                 .highPriorityGesture(TapGesture().onEnded {
-                    muted.wrappedValue = !muted.wrappedValue
+                    controlState.muted = !controlState.muted
                 })
+                .contentTransition(.symbolEffect(.replace, options: .speed(2)))
         }
     }
 }
 
 extension View {
-    func withAnimationControls(animating: Binding<Bool>, muted: Binding<Bool>? = nil) -> some View {
-        modifier(AnimationControlLayer(animating: animating, muted: muted))
+    func withAnimationControls() -> some View {
+        modifier(AnimationControlLayer())
     }
 }

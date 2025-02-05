@@ -56,15 +56,45 @@ extension ImageViewer {
     
     @ViewBuilder
     var bottomControlBar: some View {
-        HStack {
-            saveButton
-            shareButton
-            quickLookButton
+        ZStack(alignment: .bottom) {
+            if controlState.animationAvailable {
+                playButton
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            
+            HStack {
+                saveButton
+                shareButton
+                quickLookButton
+            }
+            .padding(.horizontal, Constants.main.halfSpacing)
+            .background {
+                Capsule().fill(.ultraThinMaterial)
+            }
+            .frame(maxWidth: .infinity, alignment: .center)
+            
+            if controlState.audioAvailable {
+                muteButton
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+            }
         }
-        .padding(.horizontal, Constants.main.halfSpacing)
-        .background {
-            Capsule().fill(.ultraThinMaterial)
-                .environment(\.colorScheme, .dark)
+        .environment(\.colorScheme, .dark)
+    }
+    
+    @ViewBuilder
+    var playButton: some View {
+        Button {
+            controlState.animating.toggle()
+        } label: {
+            Image(systemName: controlState.animating ? Icons.pause : Icons.play)
+                .scaledToFit()
+                .frame(width: 22, height: 22)
+                .contentTransition(.symbolEffect(.replace, options: .speed(2)))
+                .padding(Constants.main.standardSpacing + 3) // +3 to match .title2 implicit padding
+                .background(.ultraThinMaterial, in: .circle)
+                .padding(.leading, Constants.main.standardSpacing)
+                .padding([.top, .trailing], Constants.main.doubleSpacing)
+                .contentShape(.rect)
         }
     }
     
@@ -74,9 +104,9 @@ extension ImageViewer {
             Task { await saveMedia(url: url) }
         } label: {
             Label("Save", systemImage: Icons.import)
+                .padding(Constants.main.standardSpacing)
+                .contentShape(.rect)
         }
-        .padding(Constants.main.standardSpacing)
-        .contentShape(.rect)
         .offset(y: -2)
     }
     
@@ -86,9 +116,9 @@ extension ImageViewer {
             Task { await shareImage(url: url, navigation: navigation) }
         } label: {
             Label("Share", systemImage: Icons.share)
+                .padding(Constants.main.standardSpacing)
+                .contentShape(.rect)
         }
-        .padding(Constants.main.standardSpacing)
-        .contentShape(.rect)
         .offset(y: -2)
     }
     
@@ -98,9 +128,26 @@ extension ImageViewer {
             Task { await showQuickLook(url: url) }
         } label: {
             Label("Quick Look", systemImage: Icons.menuCircle)
+                .padding(Constants.main.standardSpacing)
+                .contentShape(.rect)
         }
-        .padding(Constants.main.standardSpacing)
-        .contentShape(.rect)
+    }
+    
+    @ViewBuilder
+    var muteButton: some View {
+        Button {
+            controlState.muted.toggle()
+        } label: {
+            Image(systemName: controlState.muted ? Icons.muted : Icons.unmuted)
+                .scaledToFit()
+                .frame(width: 22, height: 22)
+                .contentTransition(.symbolEffect(.replace, options: .speed(2)))
+                .padding(Constants.main.standardSpacing + 3) // +3 to match .title2 implicit padding
+                .background(.ultraThinMaterial, in: .circle)
+                .padding(.trailing, Constants.main.standardSpacing)
+                .padding([.top, .leading], Constants.main.doubleSpacing)
+                .contentShape(.rect)
+        }
     }
     
     // MARK: Zoom and Scale
@@ -167,5 +214,6 @@ extension ImageViewer {
                 .updating($scaleDragState) { _, state, _ in
                     state = true
                 })
+            .padding(.vertical, 70) // avoid conflict with control bars
     }
 }

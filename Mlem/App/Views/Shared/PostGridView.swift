@@ -71,7 +71,6 @@ struct PostGridView: View {
             GeometryReader { geometry in
                 Spacer()
                     .onChange(of: geometry.size.width, initial: true) {
-                        print(geometry.size.width)
                         let newVal = geometry.size.width > 700
                         if isWideEnoughForTwoColumns != newVal { // Avoid unnecessary view update
                             isWideEnoughForTwoColumns = newVal
