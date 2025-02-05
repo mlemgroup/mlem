@@ -104,7 +104,6 @@
 		034B947F2C091EDD00039AF4 /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034B947E2C091EDD00039AF4 /* ProfileHeaderView.swift */; };
 		034B94812C09306D00039AF4 /* CommunityOrPersonStub+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034B94802C09306D00039AF4 /* CommunityOrPersonStub+Extensions.swift */; };
 		034B94832C09340A00039AF4 /* MarkdownConfiguration+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034B94822C09340A00039AF4 /* MarkdownConfiguration+Extensions.swift */; };
-		034B94852C09348400039AF4 /* MarkdownImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034B94842C09348400039AF4 /* MarkdownImageView.swift */; };
 		034B94892C09360A00039AF4 /* Int+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034B94882C09360A00039AF4 /* Int+Extensions.swift */; };
 		034B948E2C0937BA00039AF4 /* FancyScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034B948D2C0937BA00039AF4 /* FancyScrollView.swift */; };
 		034CC0302D22C5BE00C557D3 /* WarningOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034CC02F2D22C5BE00C557D3 /* WarningOverlayView.swift */; };
@@ -614,7 +613,6 @@
 		034B947E2C091EDD00039AF4 /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
 		034B94802C09306D00039AF4 /* CommunityOrPersonStub+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommunityOrPersonStub+Extensions.swift"; sourceTree = "<group>"; };
 		034B94822C09340A00039AF4 /* MarkdownConfiguration+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MarkdownConfiguration+Extensions.swift"; sourceTree = "<group>"; };
-		034B94842C09348400039AF4 /* MarkdownImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownImageView.swift; sourceTree = "<group>"; };
 		034B94882C09360A00039AF4 /* Int+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extensions.swift"; sourceTree = "<group>"; };
 		034B948D2C0937BA00039AF4 /* FancyScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyScrollView.swift; sourceTree = "<group>"; };
 		034CC02F2D22C5BE00C557D3 /* WarningOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningOverlayView.swift; sourceTree = "<group>"; };
@@ -1794,7 +1792,6 @@
 				03D2A6402C011F3E00ED4FF2 /* ListRow */,
 				03B431C12C45BA00001A1EB5 /* MarkdownEditorToolbarView.swift */,
 				0391E0FA2D0066240040CCA8 /* ImageUploadMenu.swift */,
-				034B94842C09348400039AF4 /* MarkdownImageView.swift */,
 				03B431B32C4481C3001A1EB5 /* MarkdownTextEditor.swift */,
 				03D3A1EE2BB9CA1D009DE55E /* MenuButton.swift */,
 				0316CD632C382A6A009EA8EA /* MessageView.swift */,
@@ -2505,7 +2502,6 @@
 				039EFEC32BEEBEE0003AC372 /* LoginInstancePickerView.swift in Sources */,
 				03AB484F2CBAE33500567FF9 /* MarkdownWithLinkList.swift in Sources */,
 				03531EF12C2DA298004A3464 /* SearchResultsView.swift in Sources */,
-				034B94852C09348400039AF4 /* MarkdownImageView.swift in Sources */,
 				033F84512D196AFD00D87A9E /* MessageFeedView+Logic.swift in Sources */,
 				CD9CFA2A2C2E1E8400739BBC /* FeedHeaderView.swift in Sources */,
 				CDB41E8E2C84CFA200BD2DE9 /* FixedImageView.swift in Sources */,
@@ -3266,7 +3262,7 @@
 			repositoryURL = "https://github.com/mlemgroup/LemmyMarkdownUI";
 			requirement = {
 				kind = upToNextMinorVersion;
-				minimumVersion = 0.7.0;
+				minimumVersion = 0.8.0;
 			};
 		};
 		0392826E2BC84E480097F91A /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {

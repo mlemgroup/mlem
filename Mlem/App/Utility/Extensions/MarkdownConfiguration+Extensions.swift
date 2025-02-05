@@ -67,21 +67,21 @@ extension MarkdownConfiguration {
     ) }
 }
 
-private func imageView(_ inlineImage: InlineImage, shouldBlur: Bool) -> AnyView {
-    if inlineImage.url.absoluteString == "https://ko-fi.com/img/githubbutton_sm.svg" {
-        return AnyView(ShieldsBadgeView(label: "KoFi", message: nil))
+private func imageView(_ image: MarkdownImage, shouldBlur: Bool) -> AnyView {
+    if image.url.absoluteString == "https://ko-fi.com/img/githubbutton_sm.svg" {
+        return AnyView(ShieldsBadgeView(label: "KoFi", message: nil, link: image.parentLink))
     }
-    switch inlineImage.url.host() {
+    switch image.url.host() {
     case "img.shields.io":
-        return AnyView(ShieldsBadgeView(shieldsUrl: inlineImage.url))
+        return AnyView(ShieldsBadgeView(shieldsUrl: image.url, link: image.parentLink))
     case "fediseer.com":
-        return AnyView(ShieldsBadgeView(label: "Fediseer", message: nil))
+        return AnyView(ShieldsBadgeView(label: "Fediseer", message: nil, link: image.parentLink))
     case "lemmy-status.org":
-        return AnyView(ShieldsBadgeView(label: .init(localized: "Uptime"), message: nil))
+        return AnyView(ShieldsBadgeView(label: .init(localized: "Uptime"), message: nil, link: image.parentLink))
     default:
         return AnyView(
             MediaView(
-                url: inlineImage.url,
+                url: image.url,
                 verticalAspectRatioBounds: .init(width: 4, height: 5),
                 cornerRadius: Constants.main.mediumItemCornerRadius,
                 enableContextMenu: true,
@@ -92,7 +92,7 @@ private func imageView(_ inlineImage: InlineImage, shouldBlur: Bool) -> AnyView 
     }
 }
 
-private func loadInlineImage(inlineImage: InlineImage) async {
+private func loadInlineImage(inlineImage: MarkdownImage) async {
     guard inlineImage.image == nil else { return }
     let imageTask = ImagePipeline.shared.imageTask(with: inlineImage.url)
     guard let image: UIImage = try? await imageTask.image else { return }
