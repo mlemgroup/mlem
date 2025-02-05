@@ -100,3 +100,9 @@ struct HeadlinePostView<EmbeddedContent: View>: View {
         FullyQualifiedLinkView(post.community_, labelStyle: .medium)
     }
 }
+
+#if DEBUG
+    #Preview(traits: .sampleEnvironment, .sizeThatFitsLayout) {
+        HeadlinePostView(post: Post2.mock(.generic))
+    }
+#endif

@@ -73,12 +73,13 @@ struct ZoomableContainer<Content: View>: View {
             scale: Binding<CGFloat>,
             tapLocation: Binding<CGPoint>,
             zooming: Binding<Bool>,
-            @ViewBuilder content: () -> ScollContent) {
-                _currentScale = scale
-                _tapLocation = tapLocation
-                _zooming = zooming
-                self.content = content()
-            }
+            @ViewBuilder content: () -> ScollContent
+        ) {
+            _currentScale = scale
+            _tapLocation = tapLocation
+            _zooming = zooming
+            self.content = content()
+        }
 
         func makeUIView(context: Context) -> UIScrollView {
             let scrollView = UIScrollView()

@@ -152,3 +152,12 @@ struct CommunityListRowBody<Content: View>: View {
         .symbolRenderingMode(.hierarchical)
     }
 }
+
+#Preview(traits: .sampleEnvironment, .sizeThatFitsLayout) {
+    CommunityListRowBody(
+        Community2.mock(.generic),
+        complications: [.instance],
+        readout: .subscribers
+    )
+    .padding(.vertical, Constants.main.standardSpacing)
+}

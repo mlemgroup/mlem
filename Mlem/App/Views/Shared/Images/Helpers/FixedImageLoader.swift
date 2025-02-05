@@ -36,7 +36,9 @@ class FixedImageLoader {
             self.uiImage = nil
             self.loading = .done
             return
-        } else if let url, let container = ImagePipeline.shared.cache.cachedImage(for: .init(
+        }
+        
+        if let url, let container = ImagePipeline.shared.cache.cachedImage(for: .init(
             url: url,
             processors: [.resize(size: size, crop: true)]
         )) {
@@ -45,6 +47,15 @@ class FixedImageLoader {
             self.loading = .done
             return
         }
+        
+        #if DEBUG
+            if let url, url.scheme == "mlempreview" {
+                self.isAnimated = false
+                self.uiImage = .init(named: url.lastPathComponent)
+                self.loading = .done
+                return
+            }
+        #endif
 
         self.isAnimated = false
         self.uiImage = nil

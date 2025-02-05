@@ -97,4 +97,16 @@ extension CommentEditorView {
             }
         }
     }
+    
+    func checkSlurFilter(text: String) {
+        do {
+            if let output = try slurRegex?.firstMatch(in: text.lowercased()) {
+                slurMatch = String(text[output.range])
+            } else {
+                slurMatch = nil
+            }
+        } catch {
+            print("Failed to parse regex")
+        }
+    }
 }

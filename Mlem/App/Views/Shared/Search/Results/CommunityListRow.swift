@@ -58,3 +58,17 @@ struct CommunityListRow<Content2: View>: View {
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }
 }
+
+#Preview(traits: .sampleEnvironment) {
+    ScrollView {
+        ForEach(CommunityMockType.Realistic.allCases) { type in
+            CommunityListRow(
+                Community2.mock(.realistic(type)),
+                complications: [.instance],
+                readout: .subscribers
+            )
+        }
+    }
+    .contentMargins(.horizontal, Constants.main.standardSpacing)
+    .background(Palette.main.groupedBackground)
+}
