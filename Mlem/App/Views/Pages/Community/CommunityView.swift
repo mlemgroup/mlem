@@ -159,7 +159,7 @@ struct CommunityView: View {
             PostGridView(postFeedLoader: postFeedLoader)
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
-                        FeedSortPicker(feedLoader: postFeedLoader)
+                        FeedSortPicker(feedLoader: postFeedLoader, showTopTimescaleInIcon: true)
                     }
                 }
         }
