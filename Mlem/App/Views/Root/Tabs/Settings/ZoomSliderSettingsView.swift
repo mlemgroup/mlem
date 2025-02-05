@@ -54,9 +54,10 @@ struct ZoomSliderSettingsView: View {
         Form {
             SettingsHeaderView(
                 title: "Slide to Zoom",
-                description: "Zoom the image viewer with a slide gesture on the selected side.") {
-                    ZoomSliderAnimation()
-                }
+                description: "Zoom the image viewer with a slide gesture on the selected side."
+            ) {
+                ZoomSliderAnimation()
+            }
             
             Picker("Location", selection: $zoomSliderLocation) {
                 ForEach(ZoomSliderLocation.allCases, id: \.self) { location in
