@@ -66,16 +66,8 @@ struct ErrorDetails: Hashable {
         lhs.hashValue == rhs.hashValue
     }
     
-    var errorDescription: String {
-        if let error = error as? CustomStringConvertible {
-            return error.description
-        } else {
-            return String(describing: error)
-        }
-    }
-    
     var errorText: String {
-        var output = errorDescription
+        var output = String(describing: error)
         if let location {
             output += " (\(location))"
         }

@@ -68,7 +68,7 @@ struct ErrorLogView: View {
                 }
             }
             
-            Text(details.errorDescription)
+            Text(String(describing: details.error))
             
             if let location = details.location {
                 HStack(alignment: .top, spacing: 2) {
