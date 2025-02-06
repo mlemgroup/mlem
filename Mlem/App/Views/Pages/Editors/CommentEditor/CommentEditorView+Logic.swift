@@ -106,7 +106,7 @@ extension CommentEditorView {
                 slurMatch = nil
             }
         } catch {
-            print("Failed to parse regex")
+            handleError(error, silent: true)
         }
     }
 }

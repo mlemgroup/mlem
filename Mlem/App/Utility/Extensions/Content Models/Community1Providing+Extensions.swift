@@ -55,7 +55,6 @@ extension Community1Providing {
     }
     
     func toggleFavorite(feedback: Set<FeedbackType>) {
-        handleError(MlemError.modelError("No self2 found"), silent: true)
         if let self2 {
             if feedback.contains(.haptic) {
                 HapticManager.main.play(haptic: .lightSuccess, priority: .low)

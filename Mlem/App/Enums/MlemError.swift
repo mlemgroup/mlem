@@ -7,6 +7,8 @@
 
 enum MlemError: Error {
     case modelError(String)
+    case navigationError(String)
+    case unexpectedValue
 }
 
 extension MlemError: CustomStringConvertible {
@@ -14,6 +16,10 @@ extension MlemError: CustomStringConvertible {
         switch self {
         case let .modelError(string):
             return "Model Error: \(string)"
+        case let .navigationError(string):
+            return "Navigation Error: \(string)"
+        case .unexpectedValue:
+            return "Encountered unexpected value"
         }
     }
 }
