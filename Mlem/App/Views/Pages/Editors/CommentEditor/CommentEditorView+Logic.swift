@@ -36,7 +36,7 @@ extension CommentEditorView {
             }
             
         } catch ApiClientError.noEntityFound {
-            print("No entity found!")
+            handleError(ApiClientError.noEntityFound, silent: true)
             Task { @MainActor in
                 resolutionState = .notFound
             }

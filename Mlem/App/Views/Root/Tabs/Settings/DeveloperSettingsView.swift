@@ -36,6 +36,10 @@ struct DeveloperSettingsView: View {
                     Button(String("Create Error")) {
                         handleError(ApiClientError.insufficientPermissions)
                     }
+                    
+                    Button(String("Create Silent Error")) {
+                        handleError(ApiClientError.noEntityFound, silent: true)
+                    }
                 } header: {
                     Text(verbatim: "Debug Tools")
                 }

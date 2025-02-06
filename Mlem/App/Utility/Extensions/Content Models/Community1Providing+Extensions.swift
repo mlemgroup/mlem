@@ -50,11 +50,12 @@ extension Community1Providing {
             }
             self2.toggleSubscribe()
         } else {
-            print("DEBUG no self2 found in toggleSubscribe!")
+            handleError(MlemError.modelError("No self2 found"), silent: true)
         }
     }
     
     func toggleFavorite(feedback: Set<FeedbackType>) {
+        handleError(MlemError.modelError("No self2 found"), silent: true)
         if let self2 {
             if feedback.contains(.haptic) {
                 HapticManager.main.play(haptic: .lightSuccess, priority: .low)
@@ -79,7 +80,7 @@ extension Community1Providing {
             }
             self2.toggleFavorite()
         } else {
-            print("DEBUG no self2 found in toggleFavorite!")
+            handleError(MlemError.modelError("No self2 found"), silent: true)
         }
     }
     

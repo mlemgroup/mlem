@@ -10,19 +10,20 @@ import SwiftUI
 
 func handleError(
     _ error: Error,
-    file: StaticString = #fileID,
-    function: StaticString = #function,
+    silent: Bool = false,
+    file: String = #fileID,
+    function: String = #function,
     line: Int = #line
 ) {
-    if !_handleError(error, file: file, function: function, line: line) {
+    if !_handleError(error, file: file, function: function, line: line), !silent {
         ToastModel.main.add(.error(.init(error: error)))
     }
 }
 
 func handleErrorWithDetails(
     _ error: Error,
-    file: StaticString = #fileID,
-    function: StaticString = #function,
+    file: String = #fileID,
+    function: String = #function,
     line: Int = #line
 ) -> ErrorDetails? {
     if !_handleError(error, file: file, function: function, line: line) {
@@ -31,10 +32,11 @@ func handleErrorWithDetails(
     return nil
 }
 
+/// - Returns: true if no further handling is required, false otherwise
 private func _handleError(
     _ error: Error,
-    file: StaticString = #fileID,
-    function: StaticString = #function,
+    file: String = #fileID,
+    function: String = #function,
     line: Int = #line
 ) -> Bool {
     #if DEBUG
@@ -46,8 +48,10 @@ private func _handleError(
         print("📂 -> \(file) | \(function) | line: \(line)")
     #endif
     
+    let location: String = "\(file), \(function):\(line)"
+    
     Task {
-        await ErrorsTracker.main.addError(error)
+        await ErrorsTracker.main.addError(error, location: location)
     }
     
     switch error {

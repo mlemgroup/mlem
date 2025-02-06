@@ -36,7 +36,7 @@ extension Interactable1Providing {
             self2.toggleUpvoted()
             inboxItem?.updateRead(true)
         } else {
-            print("DEBUG no self2 found in toggleUpvote!")
+            handleError(MlemError.modelError("No self2 found"), silent: true)
         }
     }
     
@@ -48,7 +48,7 @@ extension Interactable1Providing {
             self2.toggleDownvoted()
             inboxItem?.updateRead(true)
         } else {
-            print("DEBUG no self2 found in toggleDownvote!")
+            handleError(MlemError.modelError("No self2 found"), silent: true)
         }
     }
     
