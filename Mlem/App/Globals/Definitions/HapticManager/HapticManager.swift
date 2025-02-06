@@ -45,7 +45,7 @@ class HapticManager {
         do {
             try hapticEngine?.start()
         } catch {
-            handleError(error)
+            handleError(error, silent: true)
         }
     }
     
