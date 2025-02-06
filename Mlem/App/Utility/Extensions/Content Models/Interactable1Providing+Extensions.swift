@@ -17,7 +17,7 @@ extension Interactable1Providing {
         if let responseContext {
             NavigationModel.main.openSheet(.createComment(responseContext, commentTreeTracker: commentTreeTracker))
         } else {
-            print("DEBUG showReplySheet: cannot open sheet!")
+            handleError(MlemError.navigationError("Cannot open sheet"), silent: true)
         }
     }
     
@@ -36,7 +36,7 @@ extension Interactable1Providing {
             self2.toggleUpvoted()
             inboxItem?.updateRead(true)
         } else {
-            print("DEBUG no self2 found in toggleUpvote!")
+            handleError(MlemError.modelError("No self2 found"), silent: true)
         }
     }
     
@@ -48,7 +48,7 @@ extension Interactable1Providing {
             self2.toggleDownvoted()
             inboxItem?.updateRead(true)
         } else {
-            print("DEBUG no self2 found in toggleDownvote!")
+            handleError(MlemError.modelError("No self2 found"), silent: true)
         }
     }
     
@@ -65,13 +65,13 @@ extension Interactable1Providing {
             self2.toggleSaved()
             inboxItem?.updateRead(true)
         } else {
-            print("DEBUG no self2 found in toggleSave!")
+            handleError(MlemError.modelError("No self2 found"), silent: true)
         }
     }
     
     func toggleRemoved(reason: String?, feedback: Set<FeedbackType>) {
         guard let self2 else {
-            print("DEBUG no self2 found in toggleRemoved!")
+            handleError(MlemError.modelError("No self2 found"), silent: true)
             return
         }
         Task {

@@ -42,7 +42,7 @@ extension ContentView {
                 }
             }
         } catch {
-            print(error)
+            handleError(error, silent: true)
         }
     }
     

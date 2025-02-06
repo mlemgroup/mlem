@@ -373,6 +373,7 @@
 		CD1DF6382D38357500F7851E /* MediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1DF6372D38357100F7851E /* MediaView.swift */; };
 		CD1DF63E2D387E8500F7851E /* MediaView+Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1DF63D2D387E8300F7851E /* MediaView+Views.swift */; };
 		CD1DF6402D387EB700F7851E /* MediaView+Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1DF63F2D387EB300F7851E /* MediaView+Functions.swift */; };
+		CD2C86542D5556C00034CD8A /* MlemError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2C86532D5556BE0034CD8A /* MlemError.swift */; };
 		CD3153072C38421B00BC5FBE /* View+LoadFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3153062C38421B00BC5FBE /* View+LoadFeed.swift */; };
 		CD317D4C2BE97FED008F63E2 /* Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD317D4B2BE97FED008F63E2 /* Palette.swift */; };
 		CD317D4F2BE983ED008F63E2 /* MonochromePalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD317D4E2BE983ED008F63E2 /* MonochromePalette.swift */; };
@@ -884,6 +885,7 @@
 		CD1DF6372D38357100F7851E /* MediaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaView.swift; sourceTree = "<group>"; };
 		CD1DF63D2D387E8300F7851E /* MediaView+Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MediaView+Views.swift"; sourceTree = "<group>"; };
 		CD1DF63F2D387EB300F7851E /* MediaView+Functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MediaView+Functions.swift"; sourceTree = "<group>"; };
+		CD2C86532D5556BE0034CD8A /* MlemError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MlemError.swift; sourceTree = "<group>"; };
 		CD3153062C38421B00BC5FBE /* View+LoadFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+LoadFeed.swift"; sourceTree = "<group>"; };
 		CD317D4B2BE97FED008F63E2 /* Palette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Palette.swift; sourceTree = "<group>"; };
 		CD317D4E2BE983ED008F63E2 /* MonochromePalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonochromePalette.swift; sourceTree = "<group>"; };
@@ -1880,6 +1882,7 @@
 		CD4D58C62B86DCE500B82964 /* Enums */ = {
 			isa = PBXGroup;
 			children = (
+				CD2C86532D5556BE0034CD8A /* MlemError.swift */,
 				CD3485BA2D501463006748B8 /* ZoomSliderLocation.swift */,
 				CDC44A352D1CBC200030F01C /* ReadPostIndicator.swift */,
 				CD4D58C72B86DCED00B82964 /* AvatarType.swift */,
@@ -2657,6 +2660,7 @@
 				CD3153072C38421B00BC5FBE /* View+LoadFeed.swift in Sources */,
 				CD317D4C2BE97FED008F63E2 /* Palette.swift in Sources */,
 				039F588F2C7B599800C61658 /* ThemeLabel.swift in Sources */,
+				CD2C86542D5556C00034CD8A /* MlemError.swift in Sources */,
 				CD4E386B2C836837009B24F2 /* DraculaPalette.swift in Sources */,
 				CD9857A42C5E7F9D0084C71F /* NsfwOverlayView.swift in Sources */,
 				CD64A91C2CA38DBA007CA7E6 /* NukeWebpBridgeDecoder.swift in Sources */,

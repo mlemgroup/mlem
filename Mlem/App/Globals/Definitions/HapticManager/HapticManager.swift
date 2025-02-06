@@ -47,7 +47,7 @@ class HapticManager {
             try hapticEngine?.start()
             try AVAudioSession.sharedInstance().setActive(true)
         } catch {
-            handleError(error)
+            handleError(error, silent: true)
         }
     }
     
@@ -59,8 +59,7 @@ class HapticManager {
                 try ret.start()
                 return ret
             } catch {
-                // TODO: feed to error handler once we have swift-repositories
-                print("There was an error creating the engine: \(error.localizedDescription)")
+                handleError(error, silent: true)
             }
         }
         return nil
@@ -76,7 +75,7 @@ class HapticManager {
                 do {
                     try hapticEngine.playPattern(from: file)
                 } catch {
-                    print("Failed to play pattern: \(error.localizedDescription). Will not restart engine.")
+                    handleError(error, silent: true)
                 }
             }
         } else {
@@ -88,7 +87,7 @@ class HapticManager {
         do {
             try engine.start()
         } catch {
-            print("Failed to start the engine: \(error)")
+            handleError(error)
         }
     }
     
@@ -108,7 +107,7 @@ class HapticManager {
                     try hapticEngine.playPattern(from: file)
                 } catch {
                     // worst-case scenario--tried to play and no engine!
-                    print("Failed to play pattern: \(error.localizedDescription). Attempting to restart engine.")
+                    handleError(error, silent: true)
                     handleEngineFailure(with: file)
                 }
             } else {

@@ -179,7 +179,7 @@ extension PostEditorView {
                     newSlurMatches[host] = String(text[output.range])
                 }
             } catch {
-                print("Failed to parse regex")
+                handleError(error, silent: true)
             }
         }
         

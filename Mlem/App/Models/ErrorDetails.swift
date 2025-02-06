@@ -14,6 +14,7 @@ struct ErrorDetails: Hashable {
     var title: String?
     var body: String?
     var error: Error?
+    var location: String?
     var systemImage: String?
     var buttonText: String?
     var refresh: (() async -> Bool)?
@@ -24,6 +25,7 @@ struct ErrorDetails: Hashable {
         title: String? = nil,
         body: String? = nil,
         error: Error? = nil,
+        location: String? = nil,
         systemImage: String? = nil,
         buttonText: String? = nil,
         refresh: (() -> Bool)? = nil,
@@ -32,6 +34,7 @@ struct ErrorDetails: Hashable {
         self.title = title
         self.body = body
         self.error = error
+        self.location = location
         self.systemImage = systemImage
         self.buttonText = buttonText
         self.refresh = refresh
@@ -52,6 +55,7 @@ struct ErrorDetails: Hashable {
         hasher.combine(title)
         hasher.combine(body)
         hasher.combine(error?.localizedDescription)
+        hasher.combine(location)
         hasher.combine(systemImage)
         hasher.combine(buttonText)
         hasher.combine(refresh == nil)
@@ -63,11 +67,9 @@ struct ErrorDetails: Hashable {
     }
     
     var errorText: String {
-        var output: String
-        if let error = error as? ApiClientError {
-            output = error.description
-        } else {
-            output = String(describing: error)
+        var output = String(describing: error)
+        if let location {
+            output += " (\(location))"
         }
         for account in AccountsTracker.main.userAccounts {
             if let token = account.api.token {

@@ -50,7 +50,7 @@ extension Community1Providing {
             }
             self2.toggleSubscribe()
         } else {
-            print("DEBUG no self2 found in toggleSubscribe!")
+            handleError(MlemError.modelError("No self2 found"), silent: true)
         }
     }
     
@@ -79,7 +79,7 @@ extension Community1Providing {
             }
             self2.toggleFavorite()
         } else {
-            print("DEBUG no self2 found in toggleFavorite!")
+            handleError(MlemError.modelError("No self2 found"), silent: true)
         }
     }
     
