@@ -100,6 +100,8 @@ class Settings: ObservableObject {
     @AppStorage("menus.moderatorActionGrouping") var moderatorActionGrouping: ModeratorActionGrouping = .divider
     @AppStorage("menus.allModActions") var showAllModActions: Bool = false
     
+    @AppStorage("interactionBar.alternateReportLayout") var alternateInteractionBarLayoutForReports: Bool = false
+    
     @AppStorage("filters.keywordFilterEnabled") var keywordFilterEnabled: Bool = true {
         didSet {
             FiltersTracker.main.keywordFilterEnabled = keywordFilterEnabled
@@ -188,6 +190,7 @@ class Settings: ObservableObject {
         showSettingsIcons = settings.a11y_showSettingsIcons
         embedLoops = settings.links_embedLoops
         zoomSliderLocation = settings.a11y_zoomSliderLocation
+        alternateInteractionBarLayoutForReports = settings.interactionBar_alternateReportLayout
         
         Task {
             await FiltersTracker.main.resetFilteredKeywords(to: settings.filteredKeywords)

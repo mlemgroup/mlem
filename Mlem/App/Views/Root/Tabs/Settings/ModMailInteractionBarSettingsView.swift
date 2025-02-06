@@ -8,12 +8,16 @@
 import SwiftUI
 
 struct ModMailInteractionBarSettingsView: View {
+    @Setting(\.alternateInteractionBarLayoutForReports) var useAlternateLayout
+    
     var body: some View {
         Form {
             SettingsHeaderView(
                 title: "Interaction Bar",
-                description: "If you like, you can choose to use an alternate interaction bar layout for posts and comments in Mod Mail."
-            ) {}
+                description: "Choose whether to use an alternate interaction bar layout for post and comment reports in Mod Mail."
+            ) {
+                Toggle("Use Alternate Layout", isOn: $useAlternateLayout)
+            }
         }
         .labelStyle(.conditional)
         .contentMargins(.top, 16)

@@ -89,6 +89,7 @@ struct CodableSettings: Codable { // swiftlint:disable:this type_body_length
     var navigation_sidebarVisibleByDefault: Bool
     var navigation_swipeAnywhere: Bool
     var filters_keywordFilterEnabled: Bool
+    var interactionBar_alternateReportLayout: Bool
     
     // These are here for the coding keys only
     private var inbox_badge_includeApplications: Bool = false
@@ -202,6 +203,7 @@ struct CodableSettings: Codable { // swiftlint:disable:this type_body_length
         self.navigation_swipeAnywhere = try container.decodeIfPresent(Bool.self, forKey: .navigation_swipeAnywhere) ?? false
         self.filters_keywordFilterEnabled = try container.decodeIfPresent(Bool.self, forKey: .filters_keywordFilterEnabled) ?? true
         self.filteredKeywords = try container.decodeIfPresent(Set<String>.self, forKey: .filteredKeywords) ?? .init()
+        self.interactionBar_alternateReportLayout = try container.decodeIfPresent(Bool.self, forKey: .interactionBar_alternateReportLayout) ?? false
     }
 
     // swiftlint:enable line_length
@@ -285,6 +287,7 @@ struct CodableSettings: Codable { // swiftlint:disable:this type_body_length
         self.filters_keywordFilterEnabled = settings.keywordFilterEnabled
         
         self.filteredKeywords = filteredKeywords
+        self.interactionBar_alternateReportLayout = settings.alternateInteractionBarLayoutForReports
     }
     // swiftlint:enable function_body_length
 }

@@ -604,6 +604,9 @@
     "Choose whether to show a warning when opening a page that is likely to contain sensitive content." : {
 
     },
+    "Choose whether to use an alternate interaction bar layout for post and comment reports in Mod Mail." : {
+
+    },
     "Choose which feed is shown when the app opens." : {
 
     },
@@ -2665,6 +2668,9 @@
 
     },
     "Upvote on Save" : {
+
+    },
+    "Use Alternate Layout" : {
 
     },
     "User" : {
