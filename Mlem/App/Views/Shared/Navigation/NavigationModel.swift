@@ -32,6 +32,11 @@ class NavigationModel {
     
     @MainActor
     private func openSheet(_ page: NavigationPage, hasNavigationStack: Bool? = nil, isFullScreenCover: Bool) {
+        guard Thread.isMainThread else {
+            assertionFailure()
+            ToastModel.main.add(.failure("Failed to open sheet"))
+            return
+        }
         layers.append(
             .init(
                 root: page,

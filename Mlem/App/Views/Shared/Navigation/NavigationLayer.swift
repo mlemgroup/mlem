@@ -173,20 +173,21 @@ class NavigationLayer: Identifiable {
         }
     }
     
+    @MainActor
     func uploadImageFromClipboard(for imageUploadManager: ImageUploadManager, api: ApiClient) {
-        Task { @MainActor in
-            do {
-                if UIPasteboard.general.hasImages, let content = UIPasteboard.general.image {
-                    if let data = content.pngData() {
-                        if Settings.main.confirmImageUploads {
-                            self.openSheet(.confirmUpload(imageData: data, imageManager: imageUploadManager, uploadApi: api))
-                        } else {
+        if UIPasteboard.general.hasImages, let content = UIPasteboard.general.image {
+            if let data = content.pngData() {
+                if Settings.main.confirmImageUploads {
+                    openSheet(.confirmUpload(imageData: data, imageManager: imageUploadManager, uploadApi: api))
+                } else {
+                    Task {
+                        do {
                             try await imageUploadManager.upload(data: data, api: api)
+                        } catch {
+                            handleError(error)
                         }
                     }
                 }
-            } catch {
-                handleError(error)
             }
         }
     }
