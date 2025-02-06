@@ -76,7 +76,7 @@ struct AccountContentSettingsView: View {
             
             Section {
                 NavigationLink("Discussion Languages",
-                               systemImage: "globe",
+                               systemImage: Icons.language,
                                destination: .settings(.accountLanguages)
                 )
             }
