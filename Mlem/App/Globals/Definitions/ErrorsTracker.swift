@@ -12,8 +12,8 @@ class ErrorsTracker {
     private(set) var errors: [ErrorDetails] = .init()
     
     @MainActor
-    func addError(_ error: Error) {
-        errors.prepend(.init(error: error))
+    func addError(_ error: Error, location: String) {
+        errors.prepend(.init(error: error, location: location))
     }
     
     static var main: ErrorsTracker = .init()
@@ -22,8 +22,7 @@ class ErrorsTracker {
         var ret = ""
         
         for details in errors {
-            let description = String(describing: details.error)
-            ret += "\(details.when.formatted(.iso8601))\t\(details.title ?? "Error")\t\(description)\n"
+            ret += "\(details.when.formatted(.iso8601))\t\(details.title ?? "Error")\t\(details.errorText)\n"
         }
         
         return ret

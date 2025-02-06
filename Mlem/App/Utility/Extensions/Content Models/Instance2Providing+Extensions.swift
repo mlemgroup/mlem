@@ -14,7 +14,7 @@ extension Instance2Providing {
                 return try .init(regex)
             }
         } catch {
-            print("Invalid slur filter regex")
+            handleError(error, silent: true)
         }
         return nil
     }

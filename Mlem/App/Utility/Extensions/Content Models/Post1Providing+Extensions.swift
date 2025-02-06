@@ -51,7 +51,7 @@ extension Post1Providing {
             }
             self2.toggleHidden()
         } else {
-            print("DEBUG no self2 found in toggleHidden!")
+            handleError(MlemError.modelError("No self2 found"), silent: true)
         }
     }
     

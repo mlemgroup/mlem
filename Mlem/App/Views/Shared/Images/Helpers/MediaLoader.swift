@@ -144,7 +144,7 @@ private func generateAVThumbnail(asset: AVAsset) -> UIImage {
     do {
         return try .init(cgImage: assetImgGenerate.copyCGImage(at: time, actualTime: nil))
     } catch {
-        print(error)
+        handleError(error, silent: true)
         return .blank
     }
 }
