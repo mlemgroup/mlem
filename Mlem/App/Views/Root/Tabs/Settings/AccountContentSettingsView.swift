@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AccountGeneralSettingsView: View {
+struct AccountContentSettingsView: View {
     @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette
     
@@ -72,6 +72,13 @@ struct AccountGeneralSettingsView: View {
                 } else {
                     Text("You don't have an email attached to this account.")
                 }
+            }
+            
+            Section {
+                NavigationLink("Discussion Languages",
+                               systemImage: "globe",
+                               destination: .settings(.accountLanguages)
+                )
             }
         }
         .labelStyle(.conditional)

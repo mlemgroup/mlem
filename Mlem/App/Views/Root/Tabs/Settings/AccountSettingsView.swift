@@ -48,7 +48,7 @@ struct AccountSettingsView: View {
                     NavigationLink(
                         "Content & Notifications",
                         systemImage: "list.bullet.rectangle.fill",
-                        destination: .settings(.accountGeneral)
+                        destination: .settings(.accountContent)
                     )
                     .tint(palette.colorfulAccent(0))
                     NavigationLink(
