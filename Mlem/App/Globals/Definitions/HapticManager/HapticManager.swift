@@ -53,7 +53,9 @@ class HapticManager {
     func initEngine() -> CHHapticEngine? {
         if CHHapticEngine.capabilitiesForHardware().supportsHaptics {
             do {
-                let ret = try CHHapticEngine(audioSession: nil)
+                let ret = try CHHapticEngine(audioSession: .sharedInstance()) // (audioSession: nil)
+                ret.playsHapticsOnly = true
+                ret.isMutedForAudio = true
                 try ret.start()
                 return ret
             } catch {
@@ -89,6 +91,8 @@ class HapticManager {
             print("Failed to start the engine: \(error)")
         }
     }
+
+    // TODO: players
     
     /// Plays a haptic if the given priority is equal to or lower than the current haptic level
     func play(haptic: Haptic, priority: HapticPriority) {
