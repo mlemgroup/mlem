@@ -3353,8 +3353,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware";
 			requirement = {
-				kind = revision;
-				revision = b8815613497b35ebd1c81bbd4e0faed6d527f18a;
+				branch = "eric/discussion-languages";
+				kind = branch;
 			};
 		};
 		CDE4AC402CA3706400981010 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
