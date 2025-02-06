@@ -50,7 +50,9 @@ class ImageUploadManager: Hashable {
             }
             try await upload(data: data, api: api)
         } catch {
-            state = .idle
+            Task { @MainActor in
+                state = .idle
+            }
             throw error
         }
     }
@@ -66,7 +68,9 @@ class ImageUploadManager: Hashable {
             
         } catch {
             url.stopAccessingSecurityScopedResource()
-            state = .idle
+            Task { @MainActor in
+                state = .idle
+            }
             throw error
         }
     }
@@ -79,19 +83,27 @@ class ImageUploadManager: Hashable {
                 }
             }
         } catch {
-            state = .idle
+            Task { @MainActor in
+                state = .idle
+            }
             throw error
         }
     }
     
     func upload(data: Data, api: ApiClient) async throws {
         do {
-            let image = try await api.uploadImage(data, onProgress: {
-                self.state = .uploading(progress: $0)
+            let image = try await api.uploadImage(data, onProgress: { value in
+                Task { @MainActor in
+                    self.state = .uploading(progress: value)
+                }
             })
-            state = .done(image)
+            Task { @MainActor in
+                state = .done(image)
+            }
         } catch {
-            state = .idle
+            Task { @MainActor in
+                state = .idle
+            }
             throw error
         }
     }
@@ -100,6 +112,7 @@ class ImageUploadManager: Hashable {
         hasher.combine(state)
     }
     
+    @MainActor
     func clear() {
         state = .idle
     }
