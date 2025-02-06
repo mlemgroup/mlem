@@ -19,11 +19,12 @@ class HapticManager {
     let rigidImpactGenerator: UIImpactFeedbackGenerator = .init(style: .rigid)
     let notificationGenerator: UINotificationFeedbackGenerator = .init()
     var hapticEngine: CHHapticEngine?
-    
+
     // singleton to use in app
     static let main: HapticManager = .init()
     
     init() {
+        
         // create and start the engine if this device supports haptics
         print("Initialized haptic engine")
         self.hapticEngine = initEngine()
@@ -44,6 +45,7 @@ class HapticManager {
     func preheat() {
         do {
             try hapticEngine?.start()
+            try AVAudioSession.sharedInstance().setActive(true)
         } catch {
             handleError(error)
         }
@@ -53,11 +55,7 @@ class HapticManager {
     func initEngine() -> CHHapticEngine? {
         if CHHapticEngine.capabilitiesForHardware().supportsHaptics {
             do {
-                let audioSession: AVAudioSession = .init()
-                try audioSession.setCategory(.ambient)
-                let ret = try CHHapticEngine(audioSession: audioSession)
-                ret.playsHapticsOnly = true
-                ret.isMutedForAudio = true
+                let ret = try CHHapticEngine(audioSession: AVAudioSession.sharedInstance())
                 try ret.start()
                 return ret
             } catch {
