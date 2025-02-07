@@ -29,8 +29,7 @@ struct DiscussionLanguageSettingsView: View {
         Form {
             SettingsHeaderView(
                 title: "Discussion Languages",
-                // swiftlint:disable:next line_length
-                description: "Choose which languages appear in your feed. Posts and comments written in other languages will be hidden.",
+                description: "Choose which languages appear in your feed. Posts and comments in other languages will be hidden.",
                 systemImage: Icons.language)
             
             if let languages = person?.discussionLanguages, !languages.contains(0) {

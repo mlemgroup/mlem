@@ -607,6 +607,9 @@
     "Choose which feed is shown when the app opens." : {
 
     },
+    "Choose which languages appear in your feed. Posts and comments in other languages will be hidden." : {
+
+    },
     "Choose wisely - you cannot change this later." : {
 
     },
@@ -2076,9 +2079,6 @@
 
     },
     "Select Text" : {
-
-    },
-    "Select which languages you would like to see content in. This is not a translation feature; Lemmy will only fetch content in the languages you select." : {
 
     },
     "Send" : {
