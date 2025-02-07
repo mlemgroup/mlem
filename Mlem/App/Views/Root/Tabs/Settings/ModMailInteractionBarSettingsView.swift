@@ -13,7 +13,7 @@ struct ModMailInteractionBarSettingsView: View {
     var body: some View {
         Form {
             SettingsHeaderView(
-                title: "Interaction Bar",
+                title: "Mod Mail Interaction Bar",
                 description: "Choose whether to use an alternate interaction bar layout for post and comment reports in Mod Mail."
             ) {}
             Section {
