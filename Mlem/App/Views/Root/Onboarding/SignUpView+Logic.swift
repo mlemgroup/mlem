@@ -38,7 +38,7 @@ extension SignUpView {
             } catch ApiClientError.noEntityFound {
                 usernameValidity = .valid
             } catch {
-                print("Error checking username validity", error)
+                handleError(error, silent: true)
             }
         }
     }

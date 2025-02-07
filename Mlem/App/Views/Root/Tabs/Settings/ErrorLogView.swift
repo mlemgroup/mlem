@@ -68,7 +68,17 @@ struct ErrorLogView: View {
                 }
             }
             
-            Text(details.errorText)
+            Text(String(describing: details.error))
+            
+            if let location = details.location {
+                HStack(alignment: .top, spacing: 2) {
+                    Image(systemName: "arrow.turn.down.right")
+                        .offset(y: 2)
+                    
+                    Text(location)
+                }
+                .font(.subheadline)
+            }
             
             Text(details.when.formatted(date: .abbreviated, time: .standard))
                 .font(.caption)

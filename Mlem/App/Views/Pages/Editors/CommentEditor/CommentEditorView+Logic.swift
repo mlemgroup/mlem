@@ -36,7 +36,7 @@ extension CommentEditorView {
             }
             
         } catch ApiClientError.noEntityFound {
-            print("No entity found!")
+            handleError(ApiClientError.noEntityFound, silent: true)
             Task { @MainActor in
                 resolutionState = .notFound
             }
@@ -106,7 +106,7 @@ extension CommentEditorView {
                 slurMatch = nil
             }
         } catch {
-            print("Failed to parse regex")
+            handleError(error, silent: true)
         }
     }
 }

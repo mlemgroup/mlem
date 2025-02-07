@@ -194,7 +194,7 @@ struct LoginCredentialsView: View {
                     case ApiClientError.invalidSession:
                         failureReason = .incorrectPassword
                     default:
-                        print("LOGIN ERROR", error)
+                        handleError(error, silent: true)
                         failureReason = .other
                     }
                     Task { @MainActor in

@@ -26,7 +26,7 @@ extension DeletableProviding {
                 case .failed:
                     ToastModel.main.add(.failure("Failed to delete post!"))
                 default:
-                    print("Unexpected `toggleDeleted` result type")
+                    handleError(MlemError.unexpectedValue, silent: true)
                 }
             }
         } else {

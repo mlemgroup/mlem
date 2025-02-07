@@ -58,7 +58,7 @@ struct SimpleAvatarView: View {
             uiImage = image.circleMasked
             loading = false
         } catch {
-            print(error)
+            handleError(error, silent: true)
         }
     }
 }
