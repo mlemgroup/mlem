@@ -30,7 +30,7 @@ struct DiscussionLanguageSettingsView: View {
             SettingsHeaderView(
                 title: "Discussion Languages",
                 // swiftlint:disable:next line_length
-                description: "Select which languages you would like to see content in. This is not a translation feature; Lemmy will only fetch content in the languages you select.",
+                description: "Choose which languages appear in your feed. Posts and comments written in other languages will be hidden.",
                 systemImage: Icons.language)
             
             if let languages = person?.discussionLanguages, !languages.contains(0) {
