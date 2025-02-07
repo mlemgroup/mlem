@@ -24,13 +24,13 @@ struct ModMailInteractionBarSettingsView: View {
                     NavigationLink(.settings(.postReportInteractionBar)) {
                         SettingsInteractionBarSummaryView(
                             title: "Post Reports",
-                            configuration: InteractionBarTracker.main.postInteractionBar
+                            configuration: InteractionBarTracker.main.postReportInteractionBar
                         )
                     }
                     NavigationLink(.settings(.commentReportInteractionBar)) {
                         SettingsInteractionBarSummaryView(
                             title: "Comment Reports",
-                            configuration: InteractionBarTracker.main.postInteractionBar
+                            configuration: InteractionBarTracker.main.commentReportInteractionBar
                         )
                     }
                 }
