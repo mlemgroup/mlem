@@ -168,9 +168,7 @@ struct ToastView: View {
                         .frame(maxWidth: .infinity)
                         
                         Button("Copy", systemImage: Icons.copy) {
-                            if let text = details.error?.localizedDescription {
-                                UIPasteboard.general.string = text
-                            }
+                            UIPasteboard.general.string = details.errorText
                         }
                         .font(.caption)
                         .buttonStyle(.borderedProminent)

@@ -23,10 +23,10 @@ extension PostEditorView {
     
     var canDismiss: Bool {
         titleIsEmpty
-        && contentIsEmpty
-        && targets.count == 1
-        && link == .none
-        && imageManager == nil
+            && contentIsEmpty
+            && targets.count == 1
+            && link == .none
+            && imageManager == nil
     }
     
     var canSubmit: Bool {
@@ -63,7 +63,7 @@ extension PostEditorView {
                 altText: post.altText,
                 thumbnail: nil,
                 nsfw: hasNsfwTag,
-                languageId: post.languageId
+                languageId: nil
             )
             HapticManager.main.play(haptic: .success, priority: .low)
             dismiss()
