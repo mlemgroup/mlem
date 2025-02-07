@@ -60,8 +60,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mlemgroup/MlemMiddleware",
       "state" : {
-        "branch" : "eric/discussion-languages",
-        "revision" : "b8815613497b35ebd1c81bbd4e0faed6d527f18a"
+        "revision" : "93f4c71475e7d043273bb8ac6a075b86667f990b",
+        "version" : "0.74.0"
       }
     },
     {
