@@ -262,7 +262,10 @@ extension InteractionBarEditorView {
                         InteractionBarTracker.main.interactionBarConfigurations = .init(
                             post: configuration.convert(),
                             comment: configuration.convert(),
-                            reply: configuration.convert()
+                            reply: configuration.convert(),
+                            // Don't apply to report overrides
+                            postReport: InteractionBarTracker.main.interactionBarConfigurations.postReport,
+                            commentReport: InteractionBarTracker.main.interactionBarConfigurations.commentReport
                         )
                     }
                 }

@@ -18,7 +18,8 @@ struct CommentView<EmbeddedContent: View>: View {
     @Setting(\.compactComments) var compactComments
     @Setting(\.tapCommentsToCollapse) var tapCommentsToCollapse
     @Setting(\.moderatorActionGrouping) var moderatorActionGrouping
-
+    @Setting(\.alternateInteractionBarLayoutForReports) var alternateInteractionBarLayoutForReports
+    
     private let indent: CGFloat = 10
     
     let comment: any Comment1Providing
@@ -105,7 +106,7 @@ struct CommentView<EmbeddedContent: View>: View {
                     if !compactComments {
                         InteractionBarView(
                             comment: comment,
-                            configuration: InteractionBarTracker.main.commentInteractionBar,
+                            configuration: interactionBarConfiguration,
                             commentTreeTracker: commentTreeTracker,
                             communityContext: communityContext
                         )
@@ -148,6 +149,13 @@ struct CommentView<EmbeddedContent: View>: View {
                 }
             }
         }
+    }
+    
+    var interactionBarConfiguration: CommentBarConfiguration {
+        if reportContext != nil, alternateInteractionBarLayoutForReports {
+            return InteractionBarTracker.main.commentReportInteractionBar
+        }
+        return InteractionBarTracker.main.commentInteractionBar
     }
 }
 

@@ -90,9 +90,17 @@ struct InteractionBarConfigurations: Codable {
     var post: PostBarConfiguration
     var comment: CommentBarConfiguration
     var reply: ReplyBarConfiguration
+    var postReport: PostBarConfiguration
+    var commentReport: CommentBarConfiguration
     
     static var `default`: Self {
-        .init(post: .default, comment: .default, reply: .default)
+        .init(
+            post: .default,
+            comment: .default,
+            reply: .default,
+            postReport: .default,
+            commentReport: .default
+        )
     }
 }
 
