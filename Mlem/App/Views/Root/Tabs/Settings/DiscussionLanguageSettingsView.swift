@@ -5,11 +5,12 @@
 //  Created by Eric Andrews on 2025-02-06.
 //
 
-import SwiftUI
 import MlemMiddleware
+import SwiftUI
 
 struct DiscussionLanguageSettingsView: View {
     @Environment(Palette.self) var palette
+    @Environment(\.locale) var userLocale
     
     @State var instance: (any Instance3Providing)?
     @State var person: (any Person4Providing)?
@@ -30,7 +31,8 @@ struct DiscussionLanguageSettingsView: View {
             SettingsHeaderView(
                 title: "Discussion Languages",
                 description: "Choose which languages appear in your feed. Posts and comments in other languages will be hidden.",
-                systemImage: Icons.language)
+                systemImage: Icons.language
+            )
             
             if let languages = person?.discussionLanguages, !languages.contains(0) {
                 Section {
@@ -41,30 +43,8 @@ struct DiscussionLanguageSettingsView: View {
             
             Section {
                 if let instance, let person {
-                    ForEach(instance.allLanguages, id: \.id) { language in
-                        Button {
-                            if submitting == nil {
-                                submitting = language.id
-                                Task {
-                                    await updateDiscussionLanguages(with: language.id)
-                                }
-                            }
-                        } label: {
-                            HStack {
-                                Text(language.name)
-                                
-                                Spacer()
-                                
-                                if submitting == language.id {
-                                    ProgressView()
-                                } else if person.discussionLanguages.contains(language.id) {
-                                    Image(systemName: Icons.success)
-                                        .foregroundStyle(palette.accent)
-                                }
-                            }
-                            .contentShape(.rect)
-                        }
-                        .buttonStyle(.plain)
+                    ForEach(Array(instance.allLanguages.enumerated()), id: \.offset) {
+                        languageButtonView($1, index: $0, person: person)
                     }
                 } else {
                     ProgressView()
@@ -79,6 +59,45 @@ struct DiscussionLanguageSettingsView: View {
             }
         }
         .contentMargins(.top, 16)
+    }
+    
+    @ViewBuilder
+    func languageButtonView(_ language: Language, index: Int, person: any Person4Providing) -> some View {
+        Button {
+            if submitting == nil {
+                submitting = index
+                Task {
+                    await updateDiscussionLanguages(with: index)
+                }
+            }
+        } label: {
+            HStack {
+                languageRowLabelView(language)
+                Spacer()
+                if submitting == index {
+                    ProgressView()
+                } else if person.discussionLanguages.contains(index) {
+                    Image(systemName: Icons.success)
+                        .foregroundStyle(palette.accent)
+                }
+            }
+            .contentShape(.rect)
+        }
+        .buttonStyle(.plain)
+    }
+    
+    @ViewBuilder
+    func languageRowLabelView(_ language: Language) -> some View {
+        switch language {
+        case .undetermined:
+            Text("Undetermined")
+        case let .locale(locale):
+            VStack(alignment: .leading) {
+                Text(locale.localizedString(forIdentifier: locale.identifier) ?? "")
+                Text(userLocale.localizedString(forIdentifier: locale.identifier) ?? "")
+                    .font(.footnote)
+            }
+        }
     }
     
     func updateDiscussionLanguages(with id: Int) async {
