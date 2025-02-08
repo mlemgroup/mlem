@@ -59,16 +59,18 @@ struct CommunityListRow<Content2: View>: View {
     }
 }
 
-#Preview(traits: .sampleEnvironment) {
-    ScrollView {
-        ForEach(CommunityMockType.Realistic.allCases) { type in
-            CommunityListRow(
-                Community2.mock(.realistic(type)),
-                complications: [.instance],
-                readout: .subscribers
-            )
+#if DEBUG
+    #Preview(traits: .sampleEnvironment) {
+        ScrollView {
+            ForEach(CommunityMockType.Realistic.allCases) { type in
+                CommunityListRow(
+                    Community2.mock(.realistic(type)),
+                    complications: [.instance],
+                    readout: .subscribers
+                )
+            }
         }
+        .contentMargins(.horizontal, Constants.main.standardSpacing)
+        .background(Palette.main.groupedBackground)
     }
-    .contentMargins(.horizontal, Constants.main.standardSpacing)
-    .background(Palette.main.groupedBackground)
-}
+#endif
