@@ -342,6 +342,9 @@
     "An endorsement signifies that an instance approves of another instance. It is completely subjective, and a reason does not have to be given." : {
 
     },
+    "Anonymous" : {
+
+    },
     "Answer..." : {
 
     },
@@ -784,7 +787,14 @@
       }
     },
     "Customize how moderator actions are separated from regular actions in context menus." : {
-
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customise how moderator actions are separated from regular actions in context menus."
+          }
+        }
+      }
     },
     "Customize how often Mlem plays haptic feedback." : {
       "localizations" : {
@@ -796,12 +806,12 @@
         }
       }
     },
-    "Customize Interaction Bar" : {
+    "Customize how your subscription list is sorted." : {
       "localizations" : {
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Customise Interaction Bar"
+            "value" : "Customise how your subscription list is sorted."
           }
         }
       }
@@ -812,6 +822,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Customise Mlem to work best for you. Some features are tied to system-wide accessibility settings."
+          }
+        }
+      }
+    },
+    "Customize the appearance of the tab bar." : {
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customise the appearance of the tab bar."
+          }
+        }
+      }
+    },
+    "Customize the interaction bar for inbox items, and choose which types of notification are included in the tab bar badge." : {
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customise the interaction bar for inbox items, and choose which types of notification are included in the tab bar badge."
           }
         }
       }
@@ -1285,9 +1315,6 @@
     "Keyword Filters" : {
 
     },
-    "Label Style" : {
-
-    },
     "Large" : {
 
     },
@@ -1496,6 +1523,9 @@
 
     },
     "My Profile" : {
+
+    },
+    "Name" : {
 
     },
     "Never" : {
@@ -1757,7 +1787,7 @@
     "Profile" : {
 
     },
-    "Profile Tab" : {
+    "Profile Tab Label" : {
 
     },
     "Proxy Failure" : {
@@ -2030,6 +2060,9 @@
     "Right" : {
 
     },
+    "Row Size" : {
+
+    },
     "Safety & Filtering" : {
 
     },
@@ -2224,6 +2257,9 @@
 
     },
     "Sort by: %@" : {
+
+    },
+    "Sort by..." : {
 
     },
     "Sorting" : {
