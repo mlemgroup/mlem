@@ -25,6 +25,7 @@ struct MessageBubbleView: View {
                 Markdown(blocks, configuration: message.isOwnMessage ? .inverted : .default)
             }
         }
+        .tint(message.isOwnMessage ? palette.selectedInteractionBarItem.opacity(0.6) : palette.accent)
         .padding(Constants.main.standardSpacing)
         .padding(message.isOwnMessage ? .trailing : .leading, 7)
         .padding(message.isOwnMessage ? .leading : .trailing, 2)

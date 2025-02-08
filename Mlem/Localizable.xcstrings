@@ -607,6 +607,9 @@
     "Choose which feed is shown when the app opens." : {
 
     },
+    "Choose which languages appear in your feed. Posts and comments in other languages will be hidden." : {
+
+    },
     "Choose wisely - you cannot change this later." : {
 
     },
@@ -882,6 +885,9 @@
 
     },
     "Disclosure Group" : {
+
+    },
+    "Discussion Languages" : {
 
     },
     "Disk Usage" : {
@@ -2779,6 +2785,9 @@
 
     },
     "You may need to allow Mlem to access your Photo Library in System Settings." : {
+
+    },
+    "You will not see most content if Undetermined is not selected." : {
 
     },
     "You'll receive an email once your application has been approved. Once approved, you can log in to your account from the Settings tab." : {
