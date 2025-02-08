@@ -59,16 +59,18 @@ struct PersonListRow<Content2: View>: View {
     }
 }
 
-#Preview(traits: .sampleEnvironment) {
-    ScrollView {
-        ForEach(PersonMockType.Realistic.allCases) { type in
-            PersonListRow(
-                Person2.mock(.realistic(type)),
-                complications: [.instance, .date],
-                readout: .postsAndComments
-            )
+#if DEBUG
+    #Preview(traits: .sampleEnvironment) {
+        ScrollView {
+            ForEach(PersonMockType.Realistic.allCases) { type in
+                PersonListRow(
+                    Person2.mock(.realistic(type)),
+                    complications: [.instance, .date],
+                    readout: .postsAndComments
+                )
+            }
         }
+        .contentMargins(.horizontal, Constants.main.standardSpacing)
+        .background(Palette.main.groupedBackground)
     }
-    .contentMargins(.horizontal, Constants.main.standardSpacing)
-    .background(Palette.main.groupedBackground)
-}
+#endif
