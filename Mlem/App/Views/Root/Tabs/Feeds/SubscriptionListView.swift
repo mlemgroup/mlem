@@ -185,7 +185,7 @@ enum SubscriptionListSort: String, CaseIterable, Codable {
     
     var label: String {
         switch self {
-        case .alphabetical: "Alphabetical"
+        case .alphabetical: "Name"
         case .instance: "Instance"
         }
     }

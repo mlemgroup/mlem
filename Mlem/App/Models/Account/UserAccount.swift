@@ -95,6 +95,7 @@ class UserAccount: Account, CommunityOrPerson {
         try container.encode(lastUsed, forKey: .lastUsed)
         try container.encode(api.baseUrl, forKey: .instanceLink)
         try container.encode(visitHistoryEnabled, forKey: .visitHistoryEnabled)
+        try container.encode(accountType, forKey: .accountType)
         try container.encode(favorites, forKey: .favorites)
     }
     

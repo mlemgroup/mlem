@@ -14,44 +14,32 @@ struct TabBarSettingsView: View {
     @Setting(\.tabProfileLabelType) var profileTabLabel: ProfileTabLabel
     @Setting(\.tabProfileShowAvatar) var showUserAvatar: Bool
     @Setting(\.tabInboxBadgeIncludedTypes) var tabInboxBadgeIncludedTypes
-
+    
     var account: any Account {
         appState.firstAccount
     }
     
     var body: some View {
         Form {
-            Section("Profile Tab") {
-                HStack {
-                    ForEach(ProfileTabLabel.allCases, id: \.self) { item in
-                        VStack(spacing: 10) {
-                            if account.avatar != nil, showUserAvatar {
-                                CircleCroppedImageView(account, frame: 42)
-                            } else {
-                                Image(systemName: Icons.personCircle)
-                                    .resizable()
-                                    .frame(width: 42, height: 42)
-                            }
-                            Group {
-                                switch item {
-                                case .nickname:
-                                    Text(account.nickname)
-                                case .instance:
-                                    Text(account.host)
-                                case .anonymous:
-                                    Text("Profile")
-                                }
-                            }
-                            .font(.footnote)
-                            Checkbox(isOn: profileTabLabel == item)
-                        }
-                        .foregroundStyle(.secondary)
-                        .frame(maxWidth: .infinity)
-                        .onTapGesture {
-                            profileTabLabel = item
-                        }
-                    }
+            SettingsHeaderView(
+                title: "Tab Bar",
+                description: "Customize the appearance of the tab bar.",
+                systemImage: "platter.filled.bottom.iphone"
+            )
+            .tint(palette.colorfulAccent(5))
+            Section("Profile Tab Label") {
+                Picker("Profile Tab Label", selection: $profileTabLabel) {
+                    profileTabLabelItem("Name", value: account.nickname, systemImage: Icons.alphabeticalSort)
+                        .tag(ProfileTabLabel.nickname)
+                    profileTabLabelItem("Instance", value: account.host, systemImage: Icons.qualifiedLabel)
+                        .tag(ProfileTabLabel.instance)
+                    profileTabLabelItem("Anonymous", value: .init(localized: "Profile"), systemImage: "circle")
+                        .tag(ProfileTabLabel.anonymous)
                 }
+                .labelsHidden()
+                .pickerStyle(.inline)
+            }
+            Section {
                 Toggle("Show Avatar", systemImage: Icons.personCircle, isOn: $showUserAvatar)
             }
             Section {
@@ -65,7 +53,21 @@ struct TabBarSettingsView: View {
             }
         }
         .labelStyle(.conditional)
-        .navigationTitle("Tab Bar")
+        .contentMargins(.top, 16)
+    }
+    
+    @ViewBuilder
+    func profileTabLabelItem(_ title: LocalizedStringKey, value: String, systemImage: String) -> some View {
+        Label {
+            VStack(alignment: .leading) {
+                Text(title)
+                Text(value)
+                    .font(.footnote)
+                    .foregroundStyle(palette.secondary)
+            }
+        } icon: {
+            Image(systemName: systemImage)
+        }
     }
 }
 

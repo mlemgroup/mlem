@@ -16,7 +16,6 @@ struct GeneralSettingsView: View {
     @Setting(\.markReadOnScroll) var markReadOnScroll
     @Setting(\.infiniteScroll) var infiniteScroll
     @Setting(\.defaultFeed) var defaultFeed
-    @Setting(\.sidebarVisibleByDefault) var sidebarVisibleByDefault
     @Setting(\.hapticLevel) var hapticLevel
     @Setting(\.wrapCodeBlockLines) var wrapCodeBlockLines
     
@@ -57,9 +56,6 @@ struct GeneralSettingsView: View {
                 Toggle("Mark Read on Scroll", systemImage: Icons.read, isOn: $markReadOnScroll)
                 Toggle("Infinite Scroll", systemImage: Icons.infiniteScroll, isOn: $infiniteScroll)
                 Toggle("Wrap Code Block Lines", systemImage: Icons.inlineCode, isOn: $wrapCodeBlockLines)
-                if UIDevice.isPad {
-                    Toggle("Show Sidebar on App Launch", systemImage: Icons.sidebar, isOn: $sidebarVisibleByDefault)
-                }
             }
             Section {
                 Toggle(

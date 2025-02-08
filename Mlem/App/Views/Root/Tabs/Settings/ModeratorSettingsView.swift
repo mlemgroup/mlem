@@ -46,7 +46,11 @@ struct ModeratorSettingsView: View {
                 )
             }
             Section {
-                NavigationLink("Mod Mail Interaction Bar", destination: .settings(.modMailInteractionBar))
+                NavigationLink(
+                    "Mod Mail Interaction Bar",
+                    systemImage: Icons.interactionBar,
+                    destination: .settings(.modMailInteractionBar)
+                )
             }
         }
         .labelStyle(.conditional)
