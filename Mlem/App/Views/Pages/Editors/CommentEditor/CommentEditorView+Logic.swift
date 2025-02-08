@@ -66,7 +66,7 @@ extension CommentEditorView {
         uploadHistory.deleteWhereNotPresent(in: textView.text)
         do {
             if let commentToEdit {
-                try await commentToEdit.edit(content: textView.text, languageId: commentToEdit.languageId)
+                try await commentToEdit.edit(content: textView.text, languageId: nil)
             } else if let resolvedContext {
                 let result: Comment2
                 let parent: (any Comment1Providing)?
