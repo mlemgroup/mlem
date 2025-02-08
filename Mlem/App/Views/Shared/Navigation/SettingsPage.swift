@@ -26,8 +26,9 @@ enum SettingsPage: Hashable {
     case commentMaximumDepth, commentJumpButton
     case inboxBadge
     case about, advanced, developer, errorLog
-    case postInteractionBar, commentInteractionBar, replyInteractionBar
+    case postInteractionBar, commentInteractionBar, replyInteractionBar, postReportInteractionBar, commentReportInteractionBar
     case moderation
+    case modMailInteractionBar
     case separateModeratorActions
     case licences, document(Document)
     
@@ -125,6 +126,8 @@ enum SettingsPage: Hashable {
             FiltersSettingsView()
         case .moderation:
             ModeratorSettingsView()
+        case .modMailInteractionBar:
+            ModMailInteractionBarSettingsView()
         case .separateModeratorActions:
             ModeratorActionSeparationSettingsView()
         case .subscriptionList:
@@ -139,6 +142,10 @@ enum SettingsPage: Hashable {
             InteractionBarEditorView(setting: \.commentInteractionBar)
         case .replyInteractionBar:
             InteractionBarEditorView(setting: \.replyInteractionBar)
+        case .postReportInteractionBar:
+            InteractionBarEditorView(setting: \.postReportInteractionBar)
+        case .commentReportInteractionBar:
+            InteractionBarEditorView(setting: \.commentReportInteractionBar)
         case let .document(doc):
             SimpleMarkdownPage(doc: doc)
         case .licences:

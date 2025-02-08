@@ -10,11 +10,12 @@ import SwiftUI
 struct SettingsInteractionBarSummaryView<Configuration: InteractionBarConfiguration>: View {
     @Environment(Palette.self) private var palette
     
+    var title: LocalizedStringResource = "Interaction Bar"
     var configuration: Configuration
     
     var body: some View {
         HStack(spacing: 4) {
-            Text("Interaction Bar")
+            Text(title)
                 .frame(maxWidth: .infinity, alignment: .leading)
             ForEach(configuration.all, id: \.self) { item in
                 HStack(spacing: 0) {
