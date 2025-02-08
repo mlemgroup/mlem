@@ -28,6 +28,11 @@ struct InboxSettingsView: View {
                     destination: .settings(.inboxBadge)
                 )
             }
+            if AccountsTracker.main.highestLevelAccountType >= .moderator {
+                Section {
+                    NavigationLink("Mod Mail Interaction Bar", destination: .settings(.modMailInteractionBar))
+                }
+            }
         }
         .labelStyle(.conditional)
         .navigationTitle("Inbox")

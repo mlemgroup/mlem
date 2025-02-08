@@ -14,12 +14,14 @@ struct HeadlinePostView<EmbeddedContent: View>: View {
     @Setting(\.showPersonAvatar) var showPersonAvatar
     @Setting(\.showCommunityAvatar) var showCommunityAvatar
     @Setting(\.readPostIndicator) var readPostIndicator
-    
+    @Setting(\.alternateInteractionBarLayoutForReports) var alternateInteractionBarLayoutForReports
+
     @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?
     @Environment(Palette.self) var palette: Palette
     @Environment(\.communityContext) var communityContext: (any Community1Providing)?
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
-    
+    @Environment(\.reportContext) private var reportContext: Report?
+
     let post: any Post1Providing
     let embeddedContent: EmbeddedContent
     let favoredLink: PostViewNavigationLink?
@@ -81,7 +83,7 @@ struct HeadlinePostView<EmbeddedContent: View>: View {
             
             InteractionBarView(
                 post: post,
-                configuration: InteractionBarTracker.main.postInteractionBar,
+                configuration: interactionBarConfiguration,
                 commentTreeTracker: commentTreeTracker,
                 communityContext: communityContext
             )
@@ -98,6 +100,13 @@ struct HeadlinePostView<EmbeddedContent: View>: View {
     @ViewBuilder
     var communityLink: some View {
         FullyQualifiedLinkView(post.community_, labelStyle: .medium)
+    }
+    
+    var interactionBarConfiguration: PostBarConfiguration {
+        if reportContext != nil, alternateInteractionBarLayoutForReports {
+            return InteractionBarTracker.main.postReportInteractionBar
+        }
+        return InteractionBarTracker.main.postInteractionBar
     }
 }
 

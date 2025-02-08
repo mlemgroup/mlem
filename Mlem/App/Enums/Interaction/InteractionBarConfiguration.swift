@@ -90,9 +90,40 @@ struct InteractionBarConfigurations: Codable {
     var post: PostBarConfiguration
     var comment: CommentBarConfiguration
     var reply: ReplyBarConfiguration
+    var postReport: PostBarConfiguration
+    var commentReport: CommentBarConfiguration
     
     static var `default`: Self {
-        .init(post: .default, comment: .default, reply: .default)
+        .init(
+            post: .default,
+            comment: .default,
+            reply: .default,
+            postReport: .default,
+            commentReport: .default
+        )
+    }
+    
+    init(
+        post: PostBarConfiguration,
+        comment: CommentBarConfiguration,
+        reply: ReplyBarConfiguration,
+        postReport: PostBarConfiguration,
+        commentReport: CommentBarConfiguration
+    ) {
+        self.post = post
+        self.comment = comment
+        self.reply = reply
+        self.postReport = postReport
+        self.commentReport = commentReport
+    }
+    
+    init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.post = try container.decodeIfPresent(PostBarConfiguration.self, forKey: .post) ?? .default
+        self.comment = try container.decodeIfPresent(CommentBarConfiguration.self, forKey: .comment) ?? .default
+        self.reply = try container.decodeIfPresent(ReplyBarConfiguration.self, forKey: .reply) ?? .default
+        self.postReport = try container.decodeIfPresent(PostBarConfiguration.self, forKey: .postReport) ?? .default
+        self.commentReport = try container.decodeIfPresent(CommentBarConfiguration.self, forKey: .commentReport) ?? .default
     }
 }
 
