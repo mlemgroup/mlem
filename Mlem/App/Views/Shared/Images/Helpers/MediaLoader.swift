@@ -13,17 +13,6 @@ import SwiftUI
 enum ImageLoadingError {
     case proxyFailure(proxyBypass: URL)
     case error(error: Error)
-    
-    enum Case {
-        case proxyFailure, error
-    }
-    
-    var `case`: Case {
-        switch self {
-        case .proxyFailure: .proxyFailure
-        case .error: .error
-        }
-    }
 }
 
 enum MediaType {
