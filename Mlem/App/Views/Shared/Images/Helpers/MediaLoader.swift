@@ -14,10 +14,14 @@ enum ImageLoadingError {
     case proxyFailure(proxyBypass: URL)
     case error(error: Error)
     
-    var canBypassProxy: Bool {
+    enum Case {
+        case proxyFailure, error
+    }
+    
+    var `case`: Case {
         switch self {
-        case .proxyFailure: true
-        default: false
+        case .proxyFailure: .proxyFailure
+        case .error: .error
         }
     }
 }

@@ -87,7 +87,7 @@ struct MediaView: View {
             .overlay(developerOverlay)
             .overlay(errorOverlay)
             .clipShape(.rect(cornerRadius: cornerRadius))
-            .withContextMenu(menuContent: contextMenuContent, isEnabled: enableContextMenu)
+            .withContextMenu(menuContent: contextMenuContent, isEnabled: enableContextMenu && loader.error?.case != .proxyFailure)
             .gesture(TapGesture().onEnded(tapActions), isEnabled: (onTapActions != nil) || enableImageViewer)
             .frame(maxWidth: .infinity)
             .onChange(of: blurred) {
