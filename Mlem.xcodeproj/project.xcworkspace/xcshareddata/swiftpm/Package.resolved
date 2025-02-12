@@ -60,8 +60,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mlemgroup/MlemMiddleware",
       "state" : {
-        "branch" : "sjmarf/api-client-refactor",
-        "revision" : "9e0e00b65a8f4d17ddbdbc1b6aaa334a5c35de21"
+        "revision" : "dd5984331a107d7a21e86712f3c364d364a200b6",
+        "version" : "0.75.0"
       }
     },
     {
