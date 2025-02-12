@@ -175,7 +175,7 @@ struct LoginCredentialsView: View {
     
     func attemptToLogin() {
         guard !username.isEmpty, !password.isEmpty else { return }
-        if let client = (instance as? any Instance)?.guestApi ?? account?.api.loggedOut() {
+        if let client = (instance as? any Instance)?.guestApi ?? account?.api.asGuest() {
             authenticating = true
             Task {
                 do {

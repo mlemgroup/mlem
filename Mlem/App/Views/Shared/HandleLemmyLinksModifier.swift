@@ -135,8 +135,8 @@ struct HandleLemmyLinksModifier: ViewModifier {
         if output == nil {
             // Retry on local instance, which is needed if there is a federation boundary
             output = try? await ApiClient.getApiClient(
-                for: url.removingPathComponents(),
-                with: nil
+                url: url.removingPathComponents(),
+                username: nil
             ).resolve(url: url)
         }
 
