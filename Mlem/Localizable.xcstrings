@@ -273,6 +273,9 @@
     "Action Type" : {
 
     },
+    "Actions" : {
+
+    },
     "Active" : {
 
     },
@@ -762,6 +765,9 @@
 
     },
     "Couldn't read URL" : {
+
+    },
+    "Counters" : {
 
     },
     "Crosspost" : {

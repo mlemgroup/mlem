@@ -10,6 +10,7 @@ import SwiftUI
 
 struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: View {
     @Environment(Palette.self) var palette
+    @Environment(NavigationLayer.self) var navigation
     
     @State var configuration: Configuration {
         didSet {
@@ -67,6 +68,10 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
             readoutSelectors
             Divider()
             tray.zIndex(trayPickedUpItem == nil ? 0 : 1)
+            
+            Button("More") {
+                navigation.openSheet(.settings(.postBarWidgetPicker))
+            }
         }
         .frame(maxWidth: .infinity)
         .padding(Constants.main.standardSpacing)

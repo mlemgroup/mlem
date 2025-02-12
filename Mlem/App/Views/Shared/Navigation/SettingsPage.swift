@@ -27,6 +27,7 @@ enum SettingsPage: Hashable {
     case inboxBadge
     case about, advanced, developer, errorLog
     case postInteractionBar, commentInteractionBar, replyInteractionBar, postReportInteractionBar, commentReportInteractionBar
+    case postBarWidgetPicker
     case moderation
     case modMailInteractionBar
     case separateModeratorActions
@@ -138,6 +139,8 @@ enum SettingsPage: Hashable {
             InboxBadgeSettingsView()
         case .postInteractionBar:
             InteractionBarEditorView(setting: \.postInteractionBar)
+        case .postBarWidgetPicker:
+            InteractionBarWidgetPickerView<PostBarConfiguration>()
         case .commentInteractionBar:
             InteractionBarEditorView(setting: \.commentInteractionBar)
         case .replyInteractionBar:
