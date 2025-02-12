@@ -52,7 +52,8 @@ class UserAccount: Account, CommunityOrPerson {
         
         // copy simple values
         self.id = try values.decode(Int.self, forKey: .id)
-        self.name = try values.decode(String.self, forKey: .username)
+        let name = try values.decode(String.self, forKey: .username)
+        self.name = name
         self.storedNickname = try values.decode(String?.self, forKey: .storedNickname)
         self.cachedSiteVersion = try values.decode(SiteVersion?.self, forKey: .siteVersion)
         self.avatar = try values.decode(URL?.self, forKey: .avatarUrl)
@@ -69,7 +70,7 @@ class UserAccount: Account, CommunityOrPerson {
         components.path = "/"
         guard let instanceLink = components.url else { throw DecodingError.cannotModifyPathComponents }
         
-        guard let host = instanceLink.host,
+        guard instanceLink.host != nil,
               let actorId = ActorIdentifier(url: instanceLink.appendingPathComponent("u/\(name)")) else {
             throw DecodingError.invalidHost
         }
@@ -81,7 +82,8 @@ class UserAccount: Account, CommunityOrPerson {
         let token = Constants.main.keychain[getKeychainId(actorId: actorId)]
             ?? Constants.main.keychain[getKeychainId(id: id)]
             ?? "cannotRetrieveFromKeychain"
-        self.api = ApiClient.getApiClient(for: instanceLink, with: token)
+        self.api = ApiClient.getApiClient(url: instanceLink, username: name)
+        api.updateToken(token)
     }
     
     func encode(to encoder: Encoder) throws {

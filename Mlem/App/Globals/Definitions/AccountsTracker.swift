@@ -97,7 +97,7 @@ class AccountsTracker {
         password: String,
         totpToken: String? = nil
     ) async throws -> UserAccount {
-        let response = try await unauthenticatedApi.logIn(
+        let response = try await unauthenticatedApi.getAccountToken(
             username: username,
             password: password,
             totpToken: totpToken
@@ -119,7 +119,8 @@ class AccountsTracker {
         url: URL,
         token: String
     ) async throws -> UserAccount {
-        let authenticatedApiClient = ApiClient.getApiClient(for: url, with: token)
+        let authenticatedApiClient = ApiClient.getApiClient(url: url, username: username)
+        authenticatedApiClient.updateToken(token)
         
         // Check if account exists already
         if let account = userAccounts.first(where: {

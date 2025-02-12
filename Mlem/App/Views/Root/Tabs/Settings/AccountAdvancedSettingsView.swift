@@ -9,6 +9,7 @@ import SwiftUI
 
 struct AccountAdvancedSettingsView: View {
     @Environment(AppState.self) var appState
+    @Environment(NavigationLayer.self) var navigation
     @Environment(Palette.self) var palette
     
     @State var isBot: Bool = false
@@ -35,6 +36,13 @@ struct AccountAdvancedSettingsView: View {
                     }
             } footer: {
                 Text("Bot accounts are unable to vote.")
+            }
+            if let userAccount = appState.firstAccount as? UserAccount {
+                Section {
+                    Button("Refresh Token") {
+                        navigation.openSheet(.logIn(.reauth(userAccount)))
+                    }
+                }
             }
         }
         .labelStyle(.conditional)
