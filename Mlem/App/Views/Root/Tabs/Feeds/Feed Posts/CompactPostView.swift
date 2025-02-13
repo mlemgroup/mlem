@@ -78,7 +78,9 @@ struct CompactPostView: View {
                             .imageScale(.small)
                     }
 
-                    PostEllipsisMenus(post: post, size: 18)
+                    // Allow the tap area to extend outside of the parent HStack a little
+                    PostEllipsisMenus(post: post, size: 22)
+                        .padding(.vertical, -4)
                 }
                 .padding(.bottom, -2)
                 if requireConsistentHeight {
