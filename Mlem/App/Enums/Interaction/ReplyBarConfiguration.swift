@@ -86,7 +86,7 @@ struct ReplyBarConfiguration: InteractionBarConfiguration {
     var trailing: [Item]
     var readouts: [ReadoutType]
     
-    var availableWidgets: [Item]
+    var availableWidgets: Set<Item>
     var widgetPickerPage: SettingsPage { .replyBarWidgetPicker }
     
     static var `default`: Self {
@@ -94,7 +94,7 @@ struct ReplyBarConfiguration: InteractionBarConfiguration {
             leading: [.counter(.score)],
             trailing: [.action(.save), .action(.reply)],
             readouts: [.created, .comment],
-            availableWidgets: CounterType.standardWidgets.map { .counter($0) } + ActionType.standardWidgets.map { .action($0) }
+            availableWidgets: .init(CounterType.standardWidgets.map { .counter($0) } + ActionType.standardWidgets.map { .action($0) })
         )
     }
 }

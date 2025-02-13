@@ -100,7 +100,7 @@ struct PostBarConfiguration: InteractionBarConfiguration {
     var trailing: [Item]
     var readouts: [ReadoutType]
     
-    var availableWidgets: [Item]
+    var availableWidgets: Set<Item>
     var widgetPickerPage: SettingsPage { .postBarWidgetPicker }
     
     // TODO: NOW decoder initializers
@@ -110,7 +110,7 @@ struct PostBarConfiguration: InteractionBarConfiguration {
             leading: [.counter(.score)],
             trailing: [.action(.save), .action(.reply)],
             readouts: [.created, .comment],
-            availableWidgets: CounterType.standardWidgets.map { .counter($0) } + ActionType.standardWidgets.map { .action($0) }
+            availableWidgets: .init(CounterType.standardWidgets.map { .counter($0) } + ActionType.standardWidgets.map { .action($0) })
         )
     }
 }

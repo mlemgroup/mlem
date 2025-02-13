@@ -18,12 +18,12 @@ protocol InteractionBarConfiguration: Codable {
     var trailing: [Item] { get set }
     var readouts: [ReadoutType] { get set }
     
-    var availableWidgets: [Item] { get set }
+    var availableWidgets: Set<Item> { get set }
     var widgetPickerPage: SettingsPage { get }
     
     static var `default`: Self { get }
     
-    init(leading: [Item], trailing: [Item], readouts: [ReadoutType], availableWidgets: [Item])
+    init(leading: [Item], trailing: [Item], readouts: [ReadoutType], availableWidgets: Set<Item>)
 }
 
 extension InteractionBarConfiguration {
@@ -34,7 +34,7 @@ extension InteractionBarConfiguration {
             leading: leading.compactMap { $0.convert() },
             trailing: trailing.compactMap { $0.convert() },
             readouts: readouts.compactMap { .init(rawValue: $0.rawValue) },
-            availableWidgets: availableWidgets.compactMap { $0.convert() }
+            availableWidgets: .init(availableWidgets.compactMap { $0.convert() })
         )
     }
     

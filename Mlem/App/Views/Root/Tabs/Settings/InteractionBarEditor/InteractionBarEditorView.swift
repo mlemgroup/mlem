@@ -45,12 +45,9 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
         self._barItems = .init(wrappedValue: configurationItems.map { item in
             .init(item: item, expanded: true, visible: true)
         })
-        self._trayItems = .init(wrappedValue: configuration.availableWidgets.map { item in
-            TrayItem(item: item, visible: !configurationItems.contains(item))
-        })
-//        self._trayItems = .init(wrappedValue: Configuration.Item.allCases.map { item in
-//            TrayItem(item: item, visible: !configurationItems.contains(item))
-//        })
+        self._trayItems = .init(wrappedValue: Configuration.Item.allCases
+            .filter { configuration.availableWidgets.contains($0) }
+            .map { TrayItem(item: $0, visible: !configurationItems.contains($0)) })
     }
     
     init(setting: WritableKeyPath<InteractionBarTracker, Configuration>) {
@@ -75,6 +72,9 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
             Button("More") {
                 navigation.openSheet(.settings(configuration.widgetPickerPage))
             }
+        }
+        .onChange(of: configuration.availableWidgets) {
+            print("new widgets available")
         }
         .frame(maxWidth: .infinity)
         .padding(Constants.main.standardSpacing)
