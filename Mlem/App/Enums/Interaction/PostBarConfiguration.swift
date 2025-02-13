@@ -23,6 +23,14 @@ struct PostBarConfiguration: InteractionBarConfiguration {
         case pin
         case remove
         
+        static var standardWidgets: [ActionType] {[
+                .upvote,
+                .downvote,
+                .save,
+                .reply,
+                .share
+        ]}
+        
         var appearance: ActionAppearance {
             switch self {
             case .upvote: .upvote(isOn: false)
@@ -47,6 +55,8 @@ struct PostBarConfiguration: InteractionBarConfiguration {
         case upvote
         case downvote
         case reply
+        
+        static var standardWidgets: [CounterType] { Self.allCases }
         
         var appearance: CounterAppearance {
             switch self {
@@ -90,11 +100,17 @@ struct PostBarConfiguration: InteractionBarConfiguration {
     var trailing: [Item]
     var readouts: [ReadoutType]
     
+    var availableWidgets: [Item]
+    var widgetPickerPage: SettingsPage { .postBarWidgetPicker }
+    
+    // TODO: NOW decoder initializers
+    
     static var `default`: Self {
         .init(
             leading: [.counter(.score)],
             trailing: [.action(.save), .action(.reply)],
-            readouts: [.created, .comment]
+            readouts: [.created, .comment],
+            availableWidgets: CounterType.standardWidgets.map { .counter($0) } + ActionType.standardWidgets.map { .action($0) }
         )
     }
 }

@@ -8,6 +8,13 @@
 import SwiftUI
 
 struct InteractionBarWidgetPickerView<Configuration: InteractionBarConfiguration>: View {
+    
+    @State var configuration: Configuration
+    
+    init(configuration: Configuration) {
+        self.configuration = configuration
+    }
+    
     var body: some View {
         Form {
             Section("Actions") {
@@ -47,5 +54,7 @@ struct InteractionBarWidgetPickerView<Configuration: InteractionBarConfiguration
         }
     }
     
-    // TODO: custom inits
+    init(setting: WritableKeyPath<InteractionBarTracker, Configuration>) {
+        self.init(configuration: InteractionBarTracker.main[keyPath: setting])
+    }
 }

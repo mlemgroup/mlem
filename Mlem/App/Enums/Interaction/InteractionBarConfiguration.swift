@@ -18,9 +18,12 @@ protocol InteractionBarConfiguration: Codable {
     var trailing: [Item] { get set }
     var readouts: [ReadoutType] { get set }
     
+    var availableWidgets: [Item] { get set }
+    var widgetPickerPage: SettingsPage { get }
+    
     static var `default`: Self { get }
     
-    init(leading: [Item], trailing: [Item], readouts: [ReadoutType])
+    init(leading: [Item], trailing: [Item], readouts: [ReadoutType], availableWidgets: [Item])
 }
 
 extension InteractionBarConfiguration {
@@ -30,7 +33,8 @@ extension InteractionBarConfiguration {
         .init(
             leading: leading.compactMap { $0.convert() },
             trailing: trailing.compactMap { $0.convert() },
-            readouts: readouts.compactMap { .init(rawValue: $0.rawValue) }
+            readouts: readouts.compactMap { .init(rawValue: $0.rawValue) },
+            availableWidgets: availableWidgets.compactMap { $0.convert() }
         )
     }
     
@@ -74,10 +78,14 @@ enum InteractionConfigurationItem<ActionType: ActionTypeProviding, CounterType: 
 
 protocol ActionTypeProviding: Codable, CaseIterable, Hashable, RawRepresentable where RawValue == String {
     var appearance: ActionAppearance { get }
+    
+    static var standardWidgets: [Self] { get }
 }
 
 protocol CounterTypeProviding: Codable, CaseIterable, Hashable, RawRepresentable where RawValue == String {
     var appearance: CounterAppearance { get }
+    
+    static var standardWidgets: [Self] { get }
 }
 
 protocol ReadoutTypeProviding: Codable, CaseIterable, Hashable, RawRepresentable where RawValue == String {

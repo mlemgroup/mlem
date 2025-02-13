@@ -45,9 +45,12 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
         self._barItems = .init(wrappedValue: configurationItems.map { item in
             .init(item: item, expanded: true, visible: true)
         })
-        self._trayItems = .init(wrappedValue: Configuration.Item.allCases.map { item in
+        self._trayItems = .init(wrappedValue: configuration.availableWidgets.map { item in
             TrayItem(item: item, visible: !configurationItems.contains(item))
         })
+//        self._trayItems = .init(wrappedValue: Configuration.Item.allCases.map { item in
+//            TrayItem(item: item, visible: !configurationItems.contains(item))
+//        })
     }
     
     init(setting: WritableKeyPath<InteractionBarTracker, Configuration>) {
@@ -70,7 +73,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
             tray.zIndex(trayPickedUpItem == nil ? 0 : 1)
             
             Button("More") {
-                navigation.openSheet(.settings(.postBarWidgetPicker))
+                navigation.openSheet(.settings(configuration.widgetPickerPage))
             }
         }
         .frame(maxWidth: .infinity)

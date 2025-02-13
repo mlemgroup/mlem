@@ -27,7 +27,7 @@ enum SettingsPage: Hashable {
     case inboxBadge
     case about, advanced, developer, errorLog
     case postInteractionBar, commentInteractionBar, replyInteractionBar, postReportInteractionBar, commentReportInteractionBar
-    case postBarWidgetPicker
+    case postBarWidgetPicker, commentBarWidgetPicker, replyBarWidgetPicker, postReportBarWidgetPicker, commentReportBarWidgetPicker
     case moderation
     case modMailInteractionBar
     case separateModeratorActions
@@ -140,15 +140,23 @@ enum SettingsPage: Hashable {
         case .postInteractionBar:
             InteractionBarEditorView(setting: \.postInteractionBar)
         case .postBarWidgetPicker:
-            InteractionBarWidgetPickerView<PostBarConfiguration>()
+            InteractionBarWidgetPickerView(setting: \.postInteractionBar)
         case .commentInteractionBar:
             InteractionBarEditorView(setting: \.commentInteractionBar)
+        case.commentBarWidgetPicker:
+            InteractionBarWidgetPickerView(setting: \.commentInteractionBar)
         case .replyInteractionBar:
             InteractionBarEditorView(setting: \.replyInteractionBar)
+        case .replyBarWidgetPicker:
+            InteractionBarWidgetPickerView(setting: \.replyInteractionBar)
         case .postReportInteractionBar:
             InteractionBarEditorView(setting: \.postReportInteractionBar)
+        case .postReportBarWidgetPicker:
+            InteractionBarWidgetPickerView(setting: \.postReportInteractionBar)
         case .commentReportInteractionBar:
             InteractionBarEditorView(setting: \.commentReportInteractionBar)
+        case .commentReportBarWidgetPicker:
+            InteractionBarWidgetPickerView(setting: \.commentReportInteractionBar)
         case let .document(doc):
             SimpleMarkdownPage(doc: doc)
         case .licences:
