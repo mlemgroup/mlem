@@ -22,69 +22,58 @@ struct InteractionBarWidgetPickerView<Configuration: InteractionBarConfiguration
             
             Section("Actions") {
                 ForEach(Array(Configuration.ActionType.allCases), id: \.self) { item in
-                    let selected: Bool = configuration.availableWidgets.contains(.action(item))
-                    Button {
-                        if selected {
-                            configuration.availableWidgets.remove(.action(item))
-                        } else {
-                            configuration.availableWidgets.insert(.action(item))
-                        }
-                    } label: {
-                        HStack {
-                            Label {
-                                Text(item.appearance.label)
-                            } icon: {
-                                Image(systemName: item.appearance.barIcon)
-                                    .foregroundStyle(selected ? palette.accent : palette.secondary)
-                            }
-                            
-                            Spacer()
-                            
-                            if selected {
-                                Image(systemName: Icons.success)
-                                    .foregroundStyle(palette.accent)
-                                    .contentTransition(.symbolEffect(.replace, options: .speed(2)))
-                            }
-                        }
-                        .frame(maxWidth: .infinity)
-                        .contentShape(.rect)
-                    }
-                    .buttonStyle(.plain)
+                    widgetButton(.action(item))
                 }
             }
             
             Section("Counters") {
                 ForEach(Array(Configuration.CounterType.allCases), id: \.self) { item in
-                    let selected: Bool = configuration.availableWidgets.contains(.counter(item))
-                    Button {
-                        if selected {
-                            configuration.availableWidgets.remove(.counter(item))
-                        } else {
-                            configuration.availableWidgets.insert(.counter(item))
-                        }
-                    } label: {
-                        HStack {
-                            Label {
-                                Text(item.appearance.label)
-                            } icon: {
-                                Image(systemName: item.appearance.singleIcon)
-                                    .foregroundStyle(selected ? palette.accent : palette.secondary)
-                            }
-                            
-                            Spacer()
-                            
-                            if selected {
-                                Image(systemName: Icons.success)
-                                    .foregroundStyle(palette.accent)
-                                    .contentTransition(.symbolEffect(.replace, options: .speed(2)))
-                            }
-                        }
-                        .frame(maxWidth: .infinity)
-                        .contentShape(.rect)
-                    }
-                    .buttonStyle(.plain)
+                    widgetButton(.counter(item))
                 }
             }
         }
+    }
+    
+    @ViewBuilder
+    func widgetButton(_ item: Configuration.Item) -> some View {
+        // swiftlint:disable:next large_tuple
+        let (selected, label, icon): (Bool, String, String) = switch item {
+        case let .action(action):
+            (configuration.availableWidgets.contains(.action(action)),
+             action.appearance.label,
+             action.appearance.barIcon)
+        case let .counter(counter):
+            (configuration.availableWidgets.contains(.counter(counter)),
+             .init(localized: counter.appearance.label),
+             counter.appearance.singleIcon)
+        }
+        
+        Button {
+            if selected {
+                configuration.availableWidgets.remove(item)
+            } else {
+                configuration.availableWidgets.insert(item)
+            }
+        } label: {
+            HStack {
+                Label {
+                    Text(label)
+                } icon: {
+                    Image(systemName: icon)
+                        .foregroundStyle(selected ? palette.accent : palette.secondary)
+                }
+                
+                Spacer()
+                
+                if selected {
+                    Image(systemName: Icons.success)
+                        .foregroundStyle(palette.accent)
+                        .contentTransition(.symbolEffect(.replace, options: .speed(2)))
+                }
+            }
+            .frame(maxWidth: .infinity)
+            .contentShape(.rect)
+        }
+        .buttonStyle(.plain)
     }
 }
