@@ -80,13 +80,13 @@ enum InteractionConfigurationItem<ActionType: ActionTypeProviding, CounterType: 
 protocol ActionTypeProviding: Codable, CaseIterable, Hashable, RawRepresentable where RawValue == String {
     var appearance: ActionAppearance { get }
     
-    static var standardWidgets: [Self] { get }
+    static var defaultWidgets: [Self] { get }
 }
 
 protocol CounterTypeProviding: Codable, CaseIterable, Hashable, RawRepresentable where RawValue == String {
     var appearance: CounterAppearance { get }
     
-    static var standardWidgets: [Self] { get }
+    static var defaultWidgets: [Self] { get }
 }
 
 protocol ReadoutTypeProviding: Codable, CaseIterable, Hashable, RawRepresentable where RawValue == String {
@@ -107,8 +107,8 @@ struct InteractionBarConfigurations: Codable {
             post: .default,
             comment: .default,
             reply: .default,
-            postReport: .default,
-            commentReport: .default
+            postReport: .reportDefault,
+            commentReport: .reportDefault
         )
     }
     
@@ -131,8 +131,8 @@ struct InteractionBarConfigurations: Codable {
         self.post = try container.decodeIfPresent(PostBarConfiguration.self, forKey: .post) ?? .default
         self.comment = try container.decodeIfPresent(CommentBarConfiguration.self, forKey: .comment) ?? .default
         self.reply = try container.decodeIfPresent(ReplyBarConfiguration.self, forKey: .reply) ?? .default
-        self.postReport = try container.decodeIfPresent(PostBarConfiguration.self, forKey: .postReport) ?? .default
-        self.commentReport = try container.decodeIfPresent(CommentBarConfiguration.self, forKey: .commentReport) ?? .default
+        self.postReport = try container.decodeIfPresent(PostBarConfiguration.self, forKey: .postReport) ?? .reportDefault
+        self.commentReport = try container.decodeIfPresent(CommentBarConfiguration.self, forKey: .commentReport) ?? .reportDefault
     }
 }
 

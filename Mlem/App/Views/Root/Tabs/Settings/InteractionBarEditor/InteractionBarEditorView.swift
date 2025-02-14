@@ -71,6 +71,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
             }
         }
         .onChange(of: configuration.availableWidgets, initial: true) {
+            onSet(configuration)
             let configurationItems: [Configuration.Item?] = configuration.leading + [nil] + configuration.trailing
             trayItems = Configuration.Item.allCases
                 .filter { configuration.availableWidgets.contains($0) }

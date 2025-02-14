@@ -24,12 +24,20 @@ struct PostBarConfiguration: InteractionBarConfiguration {
         case pin
         case remove
         
-        static var standardWidgets: [ActionType] {[
+        static var defaultWidgets: [ActionType] {[
                 .upvote,
                 .downvote,
                 .save,
                 .reply,
                 .share
+        ]}
+        
+        static var defaultReportWidgets: [ActionType] {[
+            .save,
+            .share,
+            .lock,
+            .pin,
+            .remove
         ]}
         
         var appearance: ActionAppearance {
@@ -57,7 +65,7 @@ struct PostBarConfiguration: InteractionBarConfiguration {
         case downvote
         case reply
         
-        static var standardWidgets: [CounterType] { Self.allCases }
+        static var defaultWidgets: [CounterType] { Self.allCases }
         
         var appearance: CounterAppearance {
             switch self {
@@ -109,7 +117,16 @@ struct PostBarConfiguration: InteractionBarConfiguration {
             leading: [.counter(.score)],
             trailing: [.action(.save), .action(.reply)],
             readouts: [.created, .comment],
-            availableWidgets: .init(CounterType.standardWidgets.map { .counter($0) } + ActionType.standardWidgets.map { .action($0) })
+            availableWidgets: .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) })
+        )
+    }
+    
+    static var reportDefault: Self {
+        .init(
+            leading: [.counter(.score)],
+            trailing: [.action(.save), .action(.reply)],
+            readouts: [.created, .comment],
+            availableWidgets: .init(ActionType.defaultReportWidgets.map { .action($0) })
         )
     }
 }

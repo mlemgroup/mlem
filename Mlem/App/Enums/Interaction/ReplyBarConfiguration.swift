@@ -18,7 +18,7 @@ struct ReplyBarConfiguration: InteractionBarConfiguration {
         case selectText
         case report
         
-        static var standardWidgets: [ActionType] {[
+        static var defaultWidgets: [ActionType] {[
             .upvote,
             .downvote,
             .save,
@@ -45,7 +45,7 @@ struct ReplyBarConfiguration: InteractionBarConfiguration {
         case downvote
         case reply
         
-        static var standardWidgets: [CounterType] { Self.allCases }
+        static var defaultWidgets: [CounterType] { Self.allCases }
         
         var appearance: CounterAppearance {
             switch self {
@@ -95,7 +95,7 @@ struct ReplyBarConfiguration: InteractionBarConfiguration {
             leading: [.counter(.score)],
             trailing: [.action(.save), .action(.reply)],
             readouts: [.created, .comment],
-            availableWidgets: .init(CounterType.standardWidgets.map { .counter($0) } + ActionType.standardWidgets.map { .action($0) })
+            availableWidgets: .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) })
         )
     }
 }
