@@ -776,6 +776,9 @@
     "Current password is incorrect" : {
 
     },
+    "Custom" : {
+
+    },
     "Customize how content is displayed in your feed. Choose which types of content are blurred, and apply filters to hide posts from the feed altogether." : {
       "localizations" : {
         "en-GB" : {
@@ -1318,6 +1321,9 @@
     "Large" : {
 
     },
+    "Last %lld days" : {
+
+    },
     "Learn more..." : {
 
     },
@@ -1617,6 +1623,9 @@
 
     },
     "Old" : {
+
+    },
+    "Older" : {
 
     },
     "OLED" : {
@@ -2557,6 +2566,9 @@
 
     },
     "To join this instance, you need to create an application and wait to be accepted." : {
+
+    },
+    "Today" : {
 
     },
     "Too many items" : {

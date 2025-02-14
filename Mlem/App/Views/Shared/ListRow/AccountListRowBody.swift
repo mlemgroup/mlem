@@ -43,18 +43,18 @@ struct AccountListRowBody: View {
     }
     
     var timeText: String? {
-        if account.actorId == appState.firstSession.actorId {
-            return .init(localized: "Now")
-        }
-        if let time = account.lastUsed {
-            if abs(time.timeIntervalSinceNow) < 5 {
+        switch account.activityState {
+        case let .inactive(lastUsed):
+            guard let lastUsed else { return nil }
+            if abs(lastUsed.timeIntervalSinceNow) < 5 {
                 return .init(localized: "Just Now")
             }
             let formatter = RelativeDateTimeFormatter()
             formatter.unitsStyle = .short
-            return formatter.localizedString(for: time, relativeTo: Date.now)
+            return formatter.localizedString(for: lastUsed, relativeTo: Date.now)
+        case .active:
+            return .init(localized: "Now")
         }
-        return nil
     }
     
     var captionText: String? {
@@ -63,7 +63,7 @@ struct AccountListRowBody: View {
             if account is GuestAccount {
                 output.append(.init(localized: "Guest"))
             } else {
-                output.append("@\(account.api.baseUrl.host ?? "unknown")")
+                output.append("@\(account.api.host)")
             }
         }
         if complications.contains(.lastUsed), let timeText {
