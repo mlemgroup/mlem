@@ -37,15 +37,12 @@ struct InteractionBarWidgetPickerView<Configuration: InteractionBarConfiguration
     @ViewBuilder
     func widgetButton(_ item: Configuration.Item) -> some View {
         // swiftlint:disable:next large_tuple
-        let (selected, label, icon): (Bool, String, String) = switch item {
+        let selected = configuration.availableWidgets.contains(item)
+        let (label, icon): (String, String) = switch item {
         case let .action(action):
-            (configuration.availableWidgets.contains(.action(action)),
-             action.appearance.label,
-             action.appearance.barIcon)
+             (action.appearance.label, action.appearance.barIcon)
         case let .counter(counter):
-            (configuration.availableWidgets.contains(.counter(counter)),
-             .init(localized: counter.appearance.label),
-             counter.appearance.singleIcon)
+             (.init(localized: counter.appearance.label), counter.appearance.singleIcon)
         }
         
         Button {
