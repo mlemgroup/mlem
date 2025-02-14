@@ -15,7 +15,7 @@ struct InteractionBarWidgetPickerView<Configuration: InteractionBarConfiguration
     var body: some View {
         Form {
             Section {
-                Text("Select which widgets to display in your palette")
+                Text("Choose which widgets to display in your palette.")
                     .multilineTextAlignment(.center)
                     .frame(maxWidth: .infinity, alignment: .center)
             }
