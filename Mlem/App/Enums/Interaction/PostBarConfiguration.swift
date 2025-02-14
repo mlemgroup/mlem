@@ -104,8 +104,6 @@ struct PostBarConfiguration: InteractionBarConfiguration {
     var availableWidgets: Set<Item>
     func widgetPickerPage(_ configuration: Binding<Self>) -> SettingsPage { .postBarWidgetPicker(configuration) }
     
-    // TODO: NOW decoder initializers
-    
     static var `default`: Self {
         .init(
             leading: [.counter(.score)],
