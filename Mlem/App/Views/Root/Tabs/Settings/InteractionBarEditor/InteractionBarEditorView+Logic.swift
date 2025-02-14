@@ -199,17 +199,14 @@ extension InteractionBarEditorView {
     func removeFromBar(barItem: BarItem) {
         // no removing the info stack
         guard let item = barItem.item else { return }
-        guard let trayItem = trayItems.first(where: { $0.item == item }) else {
-            assertionFailure("Could not find \(item) in tray!")
-            return
-        }
+        let trayItem = trayItems.first(where: { $0.item == item })
         
         HapticManager.main.play(haptic: .firmInfo, priority: .high)
         
         // smoothly animate away
         barItem.hide()
         withAnimation(.easeInOut(duration: barAnimationDuration)) {
-            trayItem.show()
+            trayItem?.show()
             barItem.collapse()
         }
         

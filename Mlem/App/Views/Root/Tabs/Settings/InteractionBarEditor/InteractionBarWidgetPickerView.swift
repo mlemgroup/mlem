@@ -9,7 +9,6 @@ import SwiftUI
 
 struct InteractionBarWidgetPickerView<Configuration: InteractionBarConfiguration>: View {
     @Environment(Palette.self) var palette
-    @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor: Bool
     
     @Binding var configuration: Configuration
     
@@ -17,6 +16,8 @@ struct InteractionBarWidgetPickerView<Configuration: InteractionBarConfiguration
         Form {
             Section {
                 Text("Select which widgets to display in your palette")
+                    .multilineTextAlignment(.center)
+                    .frame(maxWidth: .infinity, alignment: .center)
             }
             
             Section("Actions") {
@@ -39,11 +40,14 @@ struct InteractionBarWidgetPickerView<Configuration: InteractionBarConfiguration
                             
                             Spacer()
                             
-                            if differentiateWithoutColor, selected {
+                            if selected {
                                 Image(systemName: Icons.success)
                                     .foregroundStyle(palette.accent)
+                                    .contentTransition(.symbolEffect(.replace, options: .speed(2)))
                             }
                         }
+                        .frame(maxWidth: .infinity)
+                        .contentShape(.rect)
                     }
                     .buttonStyle(.plain)
                 }
@@ -51,7 +55,34 @@ struct InteractionBarWidgetPickerView<Configuration: InteractionBarConfiguration
             
             Section("Counters") {
                 ForEach(Array(Configuration.CounterType.allCases), id: \.self) { item in
-                    Label(String(localized: item.appearance.label), systemImage: item.appearance.leading?.barIcon ?? "globe")
+                    let selected: Bool = configuration.availableWidgets.contains(.counter(item))
+                    Button {
+                        if selected {
+                            configuration.availableWidgets.remove(.counter(item))
+                        } else {
+                            configuration.availableWidgets.insert(.counter(item))
+                        }
+                    } label: {
+                        HStack {
+                            Label {
+                                Text(item.appearance.label)
+                            } icon: {
+                                Image(systemName: item.appearance.singleIcon)
+                                    .foregroundStyle(selected ? palette.accent : palette.secondary)
+                            }
+                            
+                            Spacer()
+                            
+                            if selected {
+                                Image(systemName: Icons.success)
+                                    .foregroundStyle(palette.accent)
+                                    .contentTransition(.symbolEffect(.replace, options: .speed(2)))
+                            }
+                        }
+                        .frame(maxWidth: .infinity)
+                        .contentShape(.rect)
+                    }
+                    .buttonStyle(.plain)
                 }
             }
         }
