@@ -23,7 +23,7 @@ class GuestAccount: Account {
     fileprivate init(url: URL) throws {
         guard let host = url.host() else { throw DecodingError.invalidHost }
         self.actorId = .instance(host: host)
-        self.api = .getApiClient(for: url, with: nil)
+        self.api = .getApiClient(url: url, username: nil)
     }
     
     static func getGuestAccount(url: URL) throws -> GuestAccount {
@@ -49,7 +49,7 @@ class GuestAccount: Account {
 
         let actorId = try values.decode(ActorIdentifier.self, forKey: .instanceLink)
         self.actorId = actorId
-        self.api = ApiClient.getApiClient(for: actorId.url, with: nil)
+        self.api = ApiClient.getApiClient(url: actorId.url, username: nil)
         GuestAccountCache.main.itemCache.put(self)
     }
     

@@ -24,7 +24,7 @@ struct ExternalApiInfoView: View {
     
     init(api: ApiClient, actorId: ActorIdentifier) {
         self.fallbackApi = api
-        self.entityLocalApi = .getApiClient(for: actorId.hostUrl, with: nil)
+        self.entityLocalApi = .getApiClient(url: actorId.hostUrl, username: nil)
     }
     
     var body: some View {
