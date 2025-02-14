@@ -18,7 +18,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
         }
     }
     
-    @State var trayItems: [TrayItem]
+    @State var trayItems: [TrayItem] = .init()
     @State var barItems: [BarItem] = .init()
     
     @State var barPickedUpItem: (barItem: BarItem, index: Int)?
@@ -45,9 +45,6 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
         self._barItems = .init(wrappedValue: configurationItems.map { item in
             .init(item: item, expanded: true, visible: true)
         })
-        self._trayItems = .init(wrappedValue: Configuration.Item.allCases
-            .filter { configuration.availableWidgets.contains($0) }
-            .map { TrayItem(item: $0, visible: !configurationItems.contains($0)) })
     }
     
     init(setting: WritableKeyPath<InteractionBarTracker, Configuration>) {
@@ -70,11 +67,14 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
             tray.zIndex(trayPickedUpItem == nil ? 0 : 1)
             
             Button("More") {
-                navigation.openSheet(.settings(configuration.widgetPickerPage))
+                navigation.openSheet(.settings(configuration.widgetPickerPage($configuration)))
             }
         }
-        .onChange(of: configuration.availableWidgets) {
-            print("new widgets available")
+        .onChange(of: configuration.availableWidgets, initial: true) {
+            let configurationItems: [Configuration.Item?] = configuration.leading + [nil] + configuration.trailing
+            trayItems = Configuration.Item.allCases
+                .filter { configuration.availableWidgets.contains($0) }
+                .map { TrayItem(item: $0, visible: !configurationItems.contains($0)) }
         }
         .frame(maxWidth: .infinity)
         .padding(Constants.main.standardSpacing)

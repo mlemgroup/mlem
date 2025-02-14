@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUICore
 
 protocol InteractionBarConfiguration: Codable {
     associatedtype ActionType: ActionTypeProviding
@@ -19,7 +20,7 @@ protocol InteractionBarConfiguration: Codable {
     var readouts: [ReadoutType] { get set }
     
     var availableWidgets: Set<Item> { get set }
-    var widgetPickerPage: SettingsPage { get }
+    func widgetPickerPage(_ configuration: Binding<Self>) -> SettingsPage
     
     static var `default`: Self { get }
     

@@ -27,7 +27,11 @@ enum SettingsPage: Hashable {
     case inboxBadge
     case about, advanced, developer, errorLog
     case postInteractionBar, commentInteractionBar, replyInteractionBar, postReportInteractionBar, commentReportInteractionBar
-    case postBarWidgetPicker, commentBarWidgetPicker, replyBarWidgetPicker, postReportBarWidgetPicker, commentReportBarWidgetPicker
+    case postBarWidgetPicker(HashWrapper<Binding<PostBarConfiguration>>)
+    case commentBarWidgetPicker(HashWrapper<Binding<CommentBarConfiguration>>)
+    case replyBarWidgetPicker(HashWrapper<Binding<ReplyBarConfiguration>>)
+    case postReportBarWidgetPicker(HashWrapper<Binding<PostBarConfiguration>>)
+    case commentReportBarWidgetPicker(HashWrapper<Binding<CommentBarConfiguration>>)
     case moderation
     case modMailInteractionBar
     case separateModeratorActions
@@ -139,24 +143,24 @@ enum SettingsPage: Hashable {
             InboxBadgeSettingsView()
         case .postInteractionBar:
             InteractionBarEditorView(setting: \.postInteractionBar)
-        case .postBarWidgetPicker:
-            InteractionBarWidgetPickerView(setting: \.postInteractionBar)
+        case let .postBarWidgetPicker(configuration):
+            InteractionBarWidgetPickerView<PostBarConfiguration>(configuration: configuration.wrappedValue)
         case .commentInteractionBar:
             InteractionBarEditorView(setting: \.commentInteractionBar)
-        case.commentBarWidgetPicker:
-            InteractionBarWidgetPickerView(setting: \.commentInteractionBar)
+        case let .commentBarWidgetPicker(configuration):
+            InteractionBarWidgetPickerView<CommentBarConfiguration>(configuration: configuration.wrappedValue)
         case .replyInteractionBar:
             InteractionBarEditorView(setting: \.replyInteractionBar)
-        case .replyBarWidgetPicker:
-            InteractionBarWidgetPickerView(setting: \.replyInteractionBar)
+        case let .replyBarWidgetPicker(configuration):
+            InteractionBarWidgetPickerView<ReplyBarConfiguration>(configuration: configuration.wrappedValue)
         case .postReportInteractionBar:
             InteractionBarEditorView(setting: \.postReportInteractionBar)
-        case .postReportBarWidgetPicker:
-            InteractionBarWidgetPickerView(setting: \.postReportInteractionBar)
+        case let .postReportBarWidgetPicker(configuration):
+            InteractionBarWidgetPickerView<PostBarConfiguration>(configuration: configuration.wrappedValue)
         case .commentReportInteractionBar:
             InteractionBarEditorView(setting: \.commentReportInteractionBar)
-        case .commentReportBarWidgetPicker:
-            InteractionBarWidgetPickerView(setting: \.commentReportInteractionBar)
+        case let .commentReportBarWidgetPicker(configuration):
+            InteractionBarWidgetPickerView<CommentBarConfiguration>(configuration: configuration.wrappedValue)
         case let .document(doc):
             SimpleMarkdownPage(doc: doc)
         case .licences:
@@ -166,6 +170,26 @@ enum SettingsPage: Hashable {
                 }
             }
         }
+    }
+    
+    static func postBarWidgetPicker(_ configuration: Binding<PostBarConfiguration>) -> SettingsPage {
+        .postBarWidgetPicker(.init(wrappedValue: configuration))
+    }
+    
+    static func commentBarWidgetPicker(_ configuration: Binding<CommentBarConfiguration>) -> SettingsPage {
+        .commentBarWidgetPicker(.init(wrappedValue: configuration))
+    }
+    
+    static func replyBarWidgetPicker(_ configuration: Binding<ReplyBarConfiguration>) -> SettingsPage {
+        .replyBarWidgetPicker(.init(wrappedValue: configuration))
+    }
+    
+    static func postReportBarWidgetPicker(_ configuration: Binding<PostBarConfiguration>) -> SettingsPage {
+        .postReportBarWidgetPicker(.init(wrappedValue: configuration))
+    }
+    
+    static func commentReportBarWidgetPicker(_ configuration: Binding<CommentBarConfiguration>) -> SettingsPage {
+        .commentReportBarWidgetPicker(.init(wrappedValue: configuration))
     }
 }
 

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUICore
 
 struct ReplyBarConfiguration: InteractionBarConfiguration {
     enum ActionType: String, ActionTypeProviding {
@@ -87,7 +88,7 @@ struct ReplyBarConfiguration: InteractionBarConfiguration {
     var readouts: [ReadoutType]
     
     var availableWidgets: Set<Item>
-    var widgetPickerPage: SettingsPage { .replyBarWidgetPicker }
+    func widgetPickerPage(_ configuration: Binding<Self>) -> SettingsPage { .replyBarWidgetPicker(configuration) }
     
     static var `default`: Self {
         .init(

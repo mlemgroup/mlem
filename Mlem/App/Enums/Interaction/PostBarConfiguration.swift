@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct PostBarConfiguration: InteractionBarConfiguration {
     enum ActionType: String, ActionTypeProviding {
@@ -101,7 +102,7 @@ struct PostBarConfiguration: InteractionBarConfiguration {
     var readouts: [ReadoutType]
     
     var availableWidgets: Set<Item>
-    var widgetPickerPage: SettingsPage { .postBarWidgetPicker }
+    func widgetPickerPage(_ configuration: Binding<Self>) -> SettingsPage { .postBarWidgetPicker(configuration) }
     
     // TODO: NOW decoder initializers
     

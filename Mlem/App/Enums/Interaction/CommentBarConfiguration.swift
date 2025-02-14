@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUICore
 
 struct CommentBarConfiguration: InteractionBarConfiguration {
     enum ActionType: String, ActionTypeProviding {
@@ -89,7 +90,7 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
     var readouts: [ReadoutType]
     
     var availableWidgets: Set<Item>
-    var widgetPickerPage: SettingsPage { .commentBarWidgetPicker }
+    func widgetPickerPage(_ configuration: Binding<Self>) -> SettingsPage { .commentBarWidgetPicker(configuration) }
     
     static var `default`: Self {
         .init(

@@ -11,18 +11,7 @@ struct InteractionBarWidgetPickerView<Configuration: InteractionBarConfiguration
     @Environment(Palette.self) var palette
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor: Bool
     
-    @State var configuration: Configuration {
-        didSet {
-            onSet(configuration)
-        }
-    }
-    
-    let onSet: (Configuration) -> Void
-    
-    init(configuration: Configuration, onSet: @escaping (Configuration) -> Void) {
-        self.configuration = configuration
-        self.onSet = onSet
-    }
+    @Binding var configuration: Configuration
     
     var body: some View {
         Form {
@@ -65,13 +54,6 @@ struct InteractionBarWidgetPickerView<Configuration: InteractionBarConfiguration
                     Label(String(localized: item.appearance.label), systemImage: item.appearance.leading?.barIcon ?? "globe")
                 }
             }
-        }
-    }
-    
-    init(setting: WritableKeyPath<InteractionBarTracker, Configuration>) {
-        self.init(configuration: InteractionBarTracker.main[keyPath: setting]) {
-            var main = InteractionBarTracker.main
-            main[keyPath: setting] = $0
         }
     }
 }
