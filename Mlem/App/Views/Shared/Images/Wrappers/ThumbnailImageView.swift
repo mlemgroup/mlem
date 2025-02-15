@@ -7,8 +7,8 @@
 
 import Foundation
 import MlemMiddleware
-import SwiftUI
 import QuickLook
+import SwiftUI
 
 struct ThumbnailImageView: View {
     @Environment(Palette.self) var palette
@@ -62,14 +62,11 @@ struct ThumbnailImageView: View {
                     }
                     .contextMenu {
                         if let url = fullSizeUrl(url: url) {
-                            Button("Save Image", systemImage: Icons.import) {
+                            Button("Save", systemImage: Icons.import) {
                                 Task { await saveMedia(url: url) }
                             }
-                            Button("Share Image", systemImage: Icons.share) {
+                            Button("Share...", systemImage: Icons.share) {
                                 Task { await shareImage(url: url) }
-                            }
-                            Button("Quick Look", systemImage: Icons.imageDetails) {
-                                Task { await showQuickLook(url: url) }
                             }
                         }
                     }
@@ -153,12 +150,6 @@ struct ThumbnailImageView: View {
     func shareImage(url: URL) async {
         if let fileUrl = await downloadImageToFileSystem(url: url) {
             navigation.shareInfo = .init(url: fileUrl)
-        }
-    }
-    
-    func showQuickLook(url: URL) async {
-        if let fileUrl = await downloadImageToFileSystem(url: url) {
-            quickLookUrl = fileUrl
         }
     }
 }
