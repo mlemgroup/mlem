@@ -12,4 +12,5 @@ struct CounterAppearance {
     let leading: ActionAppearance?
     let trailing: ActionAppearance?
     let label: LocalizedStringResource
+    let singleIcon: String
 }
