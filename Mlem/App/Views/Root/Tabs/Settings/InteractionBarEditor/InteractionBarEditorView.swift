@@ -66,7 +66,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
             Divider()
             tray.zIndex(trayPickedUpItem == nil ? 0 : 1)
             
-            Button("More Widgets") {
+            Button("More Widgets...") {
                 navigation.openSheet(.settings(configuration.widgetPickerPage($configuration)))
             }
         }
