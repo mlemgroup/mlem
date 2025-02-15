@@ -162,7 +162,7 @@ struct ExpandedPostView<Content: View>: View {
                     }
                 }
                 .overlay {
-                    if jumpButton != .none, (tracker?.comments.count ?? 0) > 1 {
+                    if jumpButton != .none, (tracker?.nodes.count ?? 0) > 1 {
                         JumpButtonView(onShortPress: scrollToNextComment, onLongPress: scrollToPreviousComment)
                             .frame(
                                 maxWidth: .infinity,

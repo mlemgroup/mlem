@@ -27,6 +27,17 @@ struct AccountListView: View {
     struct AccountGroup {
         let header: String
         let accounts: [any Account]
+        
+        init(header: LocalizedStringResource, accounts: [any Account]) {
+            self.header = .init(localized: header)
+            self.accounts = accounts
+        }
+        
+        @_disfavoredOverload
+        init(header: String, accounts: [any Account]) {
+            self.header = header
+            self.accounts = accounts
+        }
     }
     
     let isQuickSwitcher: Bool
@@ -173,5 +184,6 @@ struct AccountListView: View {
             .foregroundStyle(palette.accent)
         }
         .textCase(nil)
+        .labelStyle(.titleAndIcon) // Override `.conditional` label style from parent view
     }
 }

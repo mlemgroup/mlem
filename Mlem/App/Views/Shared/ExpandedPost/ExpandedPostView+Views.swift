@@ -25,12 +25,14 @@ extension ExpandedPostView {
     
     @ViewBuilder
     func commentTree(tracker: CommentTreeTracker) -> some View {
-        ForEach(tracker.comments.itemTree(), id: \.hashValue) { item in
+        ForEach(generateViewTree(for: tracker.nodes), id: \.hashValue) { item in
             Group {
                 switch item {
-                case let .comment(comment):
+                case let .comment(node):
+                    let comment = node.comment
                     CommentView(
                         comment: comment,
+                        treeNode: node,
                         // TODO: This could theoretically fail to highlight the comment if `highlightedComment` is a `CommentStub`
                         // with a non-actorId URL. We should implement additional logic of some sort to handle this.
                         highlight: [scrollTargetedComment?.actorId_, highlightedComment?.actorId_].contains(comment.actorId),
@@ -48,7 +50,7 @@ extension ExpandedPostView {
                     .padding(.leading, CGFloat(comment.depth - tracker.proposedDepthOffset) * 10)
                     .id(comment.actorId)
                 case let .unloadedComments(comment, _):
-                    MoreRepliesButton(tracker: tracker, comment: comment)
+                    MoreRepliesButton(tracker: tracker, commentTreeNode: comment)
                 }
             }
             .padding(.horizontal, Constants.main.standardSpacing)
