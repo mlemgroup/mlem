@@ -21,7 +21,7 @@ class UserAccount: Account, CommunityOrPerson {
     var storedNickname: String?
     var cachedSiteVersion: SiteVersion?
     var avatar: URL?
-    var lastUsed: Date?
+    var activityState: AccountActivityState
     var favorites: Set<Int>
     var visitHistoryEnabled: Bool
     var accountType: AccountType
@@ -34,7 +34,7 @@ class UserAccount: Account, CommunityOrPerson {
         self.storedNickname = nil
         self.cachedSiteVersion = instance.version
         self.avatar = person.avatar
-        self.lastUsed = .now
+        self.activityState = .inactive(lastUsed: nil)
         self.favorites = []
         self.visitHistoryEnabled = true
         self.accountType = person.moderatedCommunities.isEmpty ? .user : .moderator
@@ -42,7 +42,8 @@ class UserAccount: Account, CommunityOrPerson {
     
     enum CodingKeys: String, CodingKey {
         // These key names don't match the identifiers of their corresponding properties - this is because these key names must match the property names used in SavedAccount pre-1.3 in order to maintain compatibility
-        case id, username, storedNickname, instanceLink, siteVersion, avatarUrl, lastUsed, favorites, accountType, visitHistoryEnabled
+        case id, username, storedNickname, instanceLink, siteVersion, avatarUrl
+        case lastUsed, favorites, accountType, visitHistoryEnabled, activityState
     }
     
     enum DecodingError: Error { case cannotModifyPathComponents, invalidHost }
@@ -57,7 +58,14 @@ class UserAccount: Account, CommunityOrPerson {
         self.storedNickname = try values.decode(String?.self, forKey: .storedNickname)
         self.cachedSiteVersion = try values.decode(SiteVersion?.self, forKey: .siteVersion)
         self.avatar = try values.decode(URL?.self, forKey: .avatarUrl)
-        self.lastUsed = try values.decode(Date?.self, forKey: .lastUsed)
+        
+        if let activityState = try values.decodeIfPresent(AccountActivityState.self, forKey: .activityState) {
+            self.activityState = activityState
+        } else {
+            let lastUsed = try values.decodeIfPresent(Date?.self, forKey: .lastUsed) ?? nil
+            self.activityState = .inactive(lastUsed: lastUsed)
+        }
+        
         self.favorites = try values.decodeIfPresent(Set<Int>.self, forKey: .favorites) ?? []
         self.visitHistoryEnabled = try values.decodeIfPresent(Bool.self, forKey: .visitHistoryEnabled) ?? true
         self.accountType = try values.decodeIfPresent(AccountType.self, forKey: .accountType) ?? .user
@@ -94,7 +102,7 @@ class UserAccount: Account, CommunityOrPerson {
         try container.encode(storedNickname, forKey: .storedNickname)
         try container.encode(cachedSiteVersion, forKey: .siteVersion)
         try container.encode(avatar, forKey: .avatarUrl)
-        try container.encode(lastUsed, forKey: .lastUsed)
+        try container.encode(activityState, forKey: .activityState)
         try container.encode(api.baseUrl, forKey: .instanceLink)
         try container.encode(visitHistoryEnabled, forKey: .visitHistoryEnabled)
         try container.encode(accountType, forKey: .accountType)

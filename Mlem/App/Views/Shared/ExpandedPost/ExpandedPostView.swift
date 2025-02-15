@@ -29,6 +29,7 @@ struct ExpandedPostView<Content: View>: View {
     @Setting(\.compactComments) var compactComments
     
     var post: (any PostStubProviding)?
+    var contentLoaderError: Error?
     let isLoading: Bool
     let highlightedComment: (any CommentStubProviding)?
     let content: Content
@@ -43,6 +44,7 @@ struct ExpandedPostView<Content: View>: View {
     
     init(
         post: (any PostStubProviding)?,
+        contentLoaderError: Error?,
         isLoading: Bool,
         tracker: Binding<CommentTreeTracker?>,
         highlightedComment: (any CommentStubProviding)? = nil,
@@ -50,6 +52,7 @@ struct ExpandedPostView<Content: View>: View {
         @ViewBuilder content: () -> Content = { EmptyView() }
     ) {
         self.post = post
+        self.contentLoaderError = contentLoaderError
         self.isLoading = isLoading
         self.highlightedComment = highlightedComment
         self.content = content()
@@ -69,6 +72,8 @@ struct ExpandedPostView<Content: View>: View {
                             post.markRead()
                         }
                     }
+            } else if let contentLoaderError {
+                ErrorView(.init(error: contentLoaderError))
             } else {
                 ProgressView()
                     .tint(palette.secondary)

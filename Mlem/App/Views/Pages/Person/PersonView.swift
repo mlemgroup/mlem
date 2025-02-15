@@ -110,6 +110,8 @@ struct PersonView: View {
                         }
                     }
                     .popupAnchor()
+            } else if let error = proxy.error {
+                ErrorView(.init(error: error))
             } else {
                 ProgressView()
                     .tint(palette.secondary)
@@ -150,6 +152,8 @@ struct PersonView: View {
         }
         .navigationTitle(isAtTop ? "" : (person.wrappedValue.displayName_ ?? ""))
         .navigationBarTitleDisplayMode(.inline)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(palette.groupedBackground)
     }
     
     @ViewBuilder
@@ -179,7 +183,6 @@ struct PersonView: View {
             .animation(.easeOut(duration: 0.2), value: person is any Person3Providing)
         }
         .outdatedFeedPopup(feedLoader: feedLoader, showPopup: selectedTab != .communities)
-        .background(palette.groupedBackground)
     }
     
     @ViewBuilder
