@@ -35,9 +35,7 @@ struct InteractionBarWidgetPickerView<Configuration: InteractionBarConfiguration
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                CloseButtonView {
-                    dismiss()
-                }
+                CloseButtonView()
             }
         }
     }
