@@ -139,8 +139,8 @@ struct PostBarConfiguration: InteractionBarConfiguration {
     
     static var reportDefault: Self {
         .init(
-            leading: [.counter(.score)],
-            trailing: [.action(.save), .action(.reply)],
+            leading: [.action(.share), .action(.pin)],
+            trailing: [.action(.lock), .action(.remove)],
             readouts: [.created, .comment],
             availableWidgets: .init(ActionType.defaultReportWidgets.map { .action($0) })
         )

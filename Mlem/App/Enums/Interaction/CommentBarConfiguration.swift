@@ -125,8 +125,8 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
     
     static var reportDefault: Self {
         .init(
-            leading: [.counter(.score)],
-            trailing: [.action(.save), .action(.reply)],
+            leading: [.action(.share)],
+            trailing: [.action(.remove)],
             readouts: [.created, .comment],
             availableWidgets: .init(ActionType.defaultReportWidgets.map { .action($0) })
         )
