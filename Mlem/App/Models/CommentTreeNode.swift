@@ -1,0 +1,56 @@
+//
+//  CommentWrapper.swift
+//  Mlem
+//
+//  Created by Sjmarf on 25/06/2024.
+//
+
+import MlemMiddleware
+import SwiftUI
+
+@Observable
+class CommentTreeNode: Identifiable, Hashable {
+    var comment: Comment2
+    private(set) var children: [CommentTreeNode] = []
+    weak var parent: CommentTreeNode?
+    var collapsed: Bool = false
+    
+    var id: Int { comment.id }
+    
+    init(_ comment: Comment2) {
+        self.comment = comment
+    }
+    
+    func addChild(_ child: CommentTreeNode) {
+        child.parent = self
+        children.append(child)
+    }
+    
+    func tree() -> [CommentTreeNode] {
+        if comment.creator.blocked { return [] }
+        if collapsed { return [self] }
+        return children.reduce([self]) { $0 + $1.tree() }
+    }
+    
+    var recursiveChildCount: Int {
+        children.reduce(0) { $0 + $1.recursiveChildCount + 1 }
+    }
+    
+    var api: ApiClient { comment.api }
+    var actorId: ActorIdentifier { comment.actorId }
+    
+    /// Returns the top-level parent
+    var topParent: CommentTreeNode { parent?.topParent ?? self }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(ObjectIdentifier(self))
+    }
+    
+    static func == (lhs: CommentTreeNode, rhs: CommentTreeNode) -> Bool { lhs === rhs }
+}
+
+extension [CommentTreeNode] {
+    func tree() -> [CommentTreeNode] {
+        reduce([]) { $0 + $1.tree() }
+    }
+}
