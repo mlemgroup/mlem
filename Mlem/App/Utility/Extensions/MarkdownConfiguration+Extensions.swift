@@ -10,61 +10,54 @@ import Nuke
 import SwiftUI
 
 extension MarkdownConfiguration {
-    static var defaultBlurred: MarkdownConfiguration { .init(
-        inlineImageLoader: loadInlineImage,
-        imageBlockView: {
-            imageView($0, shouldBlur: true)
-        },
-        wrapCodeBlockLines: Settings.main.wrapCodeBlockLines,
-        primaryColor: Palette.main.primary,
-        secondaryColor: Palette.main.secondary,
-        codeBackgroundColor: Palette.main.tertiaryGroupedBackground,
-        codeFontScaleFactor: 0.9
-    ) }
-    
     static var `default`: MarkdownConfiguration { .init(
         inlineImageLoader: loadInlineImage,
         imageBlockView: { imageView($0, shouldBlur: false) },
         wrapCodeBlockLines: Settings.main.wrapCodeBlockLines,
+        spoilerLabel: .init(localized: "Spoiler"),
+        tableLabel: .init(localized: "Table"),
+        censorLabel: .init(localized: "Censored"),
         primaryColor: Palette.main.primary,
         secondaryColor: Palette.main.secondary,
         codeBackgroundColor: Palette.main.tertiaryGroupedBackground,
+        censorColor: Palette.main.warning,
         codeFontScaleFactor: 0.9
     ) }
     
-    static var dimmed: MarkdownConfiguration { .init(
-        imagePresentationMode: .inline,
-        inlineImageLoader: { _ in }, // Don't load inline images; they will remain as placeholders
-        imageBlockView: { imageView($0, shouldBlur: false) },
-        wrapCodeBlockLines: Settings.main.wrapCodeBlockLines,
-        primaryColor: Palette.main.secondary,
-        secondaryColor: Palette.main.tertiary,
-        codeBackgroundColor: Palette.main.tertiaryGroupedBackground,
-        codeFontScaleFactor: 0.9
-    ) }
+    static var defaultBlurred: MarkdownConfiguration {
+        var config = Self.default
+        config.imageBlockView = { imageView($0, shouldBlur: true) }
+        return config
+    }
     
-    static var caption: MarkdownConfiguration { .init(
-        inlineImageLoader: { _ in },
-        imageBlockView: { imageView($0, shouldBlur: false) },
-        wrapCodeBlockLines: Settings.main.wrapCodeBlockLines,
-        primaryColor: Palette.main.primary,
-        secondaryColor: Palette.main.secondary,
-        codeBackgroundColor: Palette.main.tertiaryGroupedBackground,
-        font: .caption1,
-        codeFontScaleFactor: 0.9
-    ) }
+    static var dimmed: MarkdownConfiguration {
+        var config = Self.default
+        
+        // Don't load any images; they will remain as placeholders
+        config.imagePresentationMode = .inline
+        config.inlineImageLoader = { _ in }
+        
+        config.primaryColor = Palette.main.secondary
+        config.secondaryColor = Palette.main.tertiary
+        
+        return config
+    }
     
-    static var inverted: MarkdownConfiguration { .init(
-        inlineImageLoader: loadInlineImage,
-        imageBlockView: { imageView($0, shouldBlur: false) },
-        wrapCodeBlockLines: Settings.main.wrapCodeBlockLines,
-        primaryColor: Palette.main.selectedInteractionBarItem,
-        secondaryColor: Palette.main.selectedInteractionBarItem.opacity(0.8),
-        spoilerHeaderBackgroundColor: Palette.main.selectedInteractionBarItem.opacity(0.1),
-        spoilerOutlineColor: Palette.main.selectedInteractionBarItem.opacity(0.5),
-        codeBackgroundColor: Palette.main.selectedInteractionBarItem.opacity(0.1),
-        codeFontScaleFactor: 0.9
-    ) }
+    static var caption: MarkdownConfiguration {
+        var config = Self.default
+        config.font = .preferredFont(forTextStyle: .caption1)
+        return config
+    }
+    
+    static var inverted: MarkdownConfiguration {
+        var config = Self.default
+        config.primaryColor = Palette.main.selectedInteractionBarItem
+        config.secondaryColor = Palette.main.selectedInteractionBarItem.opacity(0.8)
+        config.spoilerHeaderBackgroundColor = Palette.main.selectedInteractionBarItem.opacity(0.1)
+        config.spoilerOutlineColor = Palette.main.selectedInteractionBarItem.opacity(0.5)
+        config.codeBackgroundColor = Palette.main.selectedInteractionBarItem.opacity(0.1)
+        return config
+    }
 }
 
 private func imageView(_ image: MarkdownImage, shouldBlur: Bool) -> AnyView {
