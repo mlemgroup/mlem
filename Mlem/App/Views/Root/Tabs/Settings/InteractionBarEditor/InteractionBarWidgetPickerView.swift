@@ -38,6 +38,7 @@ struct InteractionBarWidgetPickerView<Configuration: InteractionBarConfiguration
                 CloseButtonView()
             }
         }
+        .contentMargins(.top, 0)
     }
     
     @ViewBuilder
