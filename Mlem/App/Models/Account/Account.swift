@@ -17,7 +17,7 @@ protocol Account: AnyObject, Codable, ActorIdentifiable, Profile1Providing, Hash
     var storedNickname: String? { get }
     var cachedSiteVersion: SiteVersion? { get }
     var avatar: URL? { get }
-    var lastUsed: Date? { get set }
+    var activityState: AccountActivityState { get set }
     var accountType: AccountType { get }
     
     // Computed
@@ -28,6 +28,18 @@ protocol Account: AnyObject, Codable, ActorIdentifiable, Profile1Providing, Hash
     var uniqueStringId: String { get }
     
     func setNickname(_ newValue: String)
+}
+
+enum AccountActivityState: Codable, Hashable {
+    case inactive(lastUsed: Date?)
+    case active
+    
+    var lastUsed: Date? {
+        switch self {
+        case let .inactive(lastUsed: lastUsed): lastUsed
+        case .active: nil
+        }
+    }
 }
 
 // Profile1Providing conformance
@@ -50,8 +62,12 @@ extension Account {
         AccountsTracker.main.removeAccount(account: self)
     }
     
-    func logActivity() {
-        lastUsed = .now
+    func activate() {
+        activityState = .active
+    }
+    
+    func deactivate() {
+        activityState = .inactive(lastUsed: .now)
     }
     
     var nickname: String { storedNickname ?? name }
