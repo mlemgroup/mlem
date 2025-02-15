@@ -20,6 +20,7 @@ extension MarkdownConfiguration {
         primaryColor: Palette.main.primary,
         secondaryColor: Palette.main.secondary,
         codeBackgroundColor: Palette.main.tertiaryGroupedBackground,
+        censorColor: Palette.main.warning,
         codeFontScaleFactor: 0.9
     ) }
     
