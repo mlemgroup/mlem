@@ -501,6 +501,7 @@
 		CDEE15522D22190600EB9D7B /* ErrorsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEE15512D22190000EB9D7B /* ErrorsTracker.swift */; };
 		CDEE15542D22364B00EB9D7B /* ErrorLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEE15532D22364500EB9D7B /* ErrorLogView.swift */; };
 		CDF5B7092D4ED47000412DBD /* MlemMiddleware in Frameworks */ = {isa = PBXBuildFile; productRef = CDF5B7082D4ED47000412DBD /* MlemMiddleware */; };
+		CDF8C1912D5D502400295CBA /* InteractionBarWidgetPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF8C1902D5D501E00295CBA /* InteractionBarWidgetPickerView.swift */; };
 		CDF9EF332AB2845C003F885B /* Icons.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF9EF322AB2845C003F885B /* Icons.swift */; };
 		CDFB8C692C7796020070845F /* View+DynamicBlur.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDFB8C682C7796020070845F /* View+DynamicBlur.swift */; };
 		CDFF11712D3D93DC00386B71 /* ConditionalIconLabelStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDFF11702D3D93D900386B71 /* ConditionalIconLabelStyle.swift */; };
@@ -1012,6 +1013,7 @@
 		CDE4AC3E2CA2082F00981010 /* VideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoView.swift; sourceTree = "<group>"; };
 		CDEE15512D22190000EB9D7B /* ErrorsTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorsTracker.swift; sourceTree = "<group>"; };
 		CDEE15532D22364500EB9D7B /* ErrorLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorLogView.swift; sourceTree = "<group>"; };
+		CDF8C1902D5D501E00295CBA /* InteractionBarWidgetPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionBarWidgetPickerView.swift; sourceTree = "<group>"; };
 		CDF9EF322AB2845C003F885B /* Icons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icons.swift; sourceTree = "<group>"; };
 		CDFB8C682C7796020070845F /* View+DynamicBlur.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+DynamicBlur.swift"; sourceTree = "<group>"; };
 		CDFF11702D3D93D900386B71 /* ConditionalIconLabelStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionalIconLabelStyle.swift; sourceTree = "<group>"; };
@@ -1388,6 +1390,7 @@
 		0397D4982C6EA68A002C6CDC /* InteractionBarEditor */ = {
 			isa = PBXGroup;
 			children = (
+				CDF8C1902D5D501E00295CBA /* InteractionBarWidgetPickerView.swift */,
 				CD64364F2D483C8F002668FB /* InteractionBarEditorView+Views.swift */,
 				0397D4992C6EA6EE002C6CDC /* InteractionBarEditorView.swift */,
 				03036C822C727D0500C6DA1D /* InteractionBarEditorView+Logic.swift */,
@@ -2798,6 +2801,7 @@
 				0320B6542C8B65EB00D38548 /* Captcha+Extensions.swift in Sources */,
 				0397D4A42C6FBC04002C6CDC /* ActionAppearance+StaticValues.swift in Sources */,
 				03B431C02C45ABFB001A1EB5 /* UITextView+Extensions.swift in Sources */,
+				CDF8C1912D5D502400295CBA /* InteractionBarWidgetPickerView.swift in Sources */,
 				034B947F2C091EDD00039AF4 /* ProfileHeaderView.swift in Sources */,
 				03E0EF432CA73D7A002CB66C /* PostPage.swift in Sources */,
 				030030A12C416B0B009A65FF /* RefreshPopupView.swift in Sources */,
@@ -3358,7 +3362,7 @@
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware";
 			requirement = {
 				kind = upToNextMinorVersion;
-				minimumVersion = 0.75.0;
+				minimumVersion = 0.76.0;
 			};
 		};
 		CDE4AC402CA3706400981010 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {

@@ -36,6 +36,7 @@ struct CommentPage: View {
             let post: (any Post)? = post ?? proxy.entity?.post_
             ExpandedPostView(
                 post: post,
+                contentLoaderError: proxy.error,
                 isLoading: proxy.isLoading,
                 tracker: $tracker,
                 scrollTargetedComment: proxy.entity

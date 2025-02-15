@@ -99,7 +99,7 @@ extension MediaView {
     @ViewBuilder
     var errorOverlay: some View {
         if let loaderError = loader.error {
-            palette.secondaryBackground.overlay {
+            palette.tertiaryGroupedBackground.overlay {
                 switch loaderError {
                 case let .proxyFailure(proxyBypass):
                     VStack(spacing: Constants.main.standardSpacing) {

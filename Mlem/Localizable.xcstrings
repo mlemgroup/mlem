@@ -273,6 +273,9 @@
     "Action Type" : {
 
     },
+    "Actions" : {
+
+    },
     "Active" : {
 
     },
@@ -616,6 +619,9 @@
     "Choose which languages appear in your feed. Posts and comments in other languages will be hidden." : {
 
     },
+    "Choose which widgets to display in your palette." : {
+
+    },
     "Choose wisely - you cannot change this later." : {
 
     },
@@ -762,6 +768,9 @@
 
     },
     "Couldn't read URL" : {
+
+    },
+    "Counters" : {
 
     },
     "Crosspost" : {
@@ -1204,6 +1213,9 @@
     "Hide Community" : {
 
     },
+    "Hide Details" : {
+
+    },
     "Hide Older Incidents" : {
 
     },
@@ -1505,6 +1517,9 @@
 
     },
     "More Replies" : {
+
+    },
+    "More Widgets..." : {
 
     },
     "More..." : {

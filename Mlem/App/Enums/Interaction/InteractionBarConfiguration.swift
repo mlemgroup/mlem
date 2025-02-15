@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUICore
 
 protocol InteractionBarConfiguration: Codable {
     associatedtype ActionType: ActionTypeProviding
@@ -18,9 +19,12 @@ protocol InteractionBarConfiguration: Codable {
     var trailing: [Item] { get set }
     var readouts: [ReadoutType] { get set }
     
+    var availableWidgets: Set<Item> { get set }
+    func widgetPickerPage(_ configuration: Binding<Self>) -> SettingsPage
+    
     static var `default`: Self { get }
     
-    init(leading: [Item], trailing: [Item], readouts: [ReadoutType])
+    init(leading: [Item], trailing: [Item], readouts: [ReadoutType], availableWidgets: Set<Item>)
 }
 
 extension InteractionBarConfiguration {
@@ -30,7 +34,8 @@ extension InteractionBarConfiguration {
         .init(
             leading: leading.compactMap { $0.convert() },
             trailing: trailing.compactMap { $0.convert() },
-            readouts: readouts.compactMap { .init(rawValue: $0.rawValue) }
+            readouts: readouts.compactMap { .init(rawValue: $0.rawValue) },
+            availableWidgets: .init(availableWidgets.compactMap { $0.convert() })
         )
     }
     
@@ -74,10 +79,14 @@ enum InteractionConfigurationItem<ActionType: ActionTypeProviding, CounterType: 
 
 protocol ActionTypeProviding: Codable, CaseIterable, Hashable, RawRepresentable where RawValue == String {
     var appearance: ActionAppearance { get }
+    
+    static var defaultWidgets: [Self] { get }
 }
 
 protocol CounterTypeProviding: Codable, CaseIterable, Hashable, RawRepresentable where RawValue == String {
     var appearance: CounterAppearance { get }
+    
+    static var defaultWidgets: [Self] { get }
 }
 
 protocol ReadoutTypeProviding: Codable, CaseIterable, Hashable, RawRepresentable where RawValue == String {
@@ -98,8 +107,8 @@ struct InteractionBarConfigurations: Codable {
             post: .default,
             comment: .default,
             reply: .default,
-            postReport: .default,
-            commentReport: .default
+            postReport: .reportDefault,
+            commentReport: .reportDefault
         )
     }
     
@@ -122,8 +131,8 @@ struct InteractionBarConfigurations: Codable {
         self.post = try container.decodeIfPresent(PostBarConfiguration.self, forKey: .post) ?? .default
         self.comment = try container.decodeIfPresent(CommentBarConfiguration.self, forKey: .comment) ?? .default
         self.reply = try container.decodeIfPresent(ReplyBarConfiguration.self, forKey: .reply) ?? .default
-        self.postReport = try container.decodeIfPresent(PostBarConfiguration.self, forKey: .postReport) ?? .default
-        self.commentReport = try container.decodeIfPresent(CommentBarConfiguration.self, forKey: .commentReport) ?? .default
+        self.postReport = try container.decodeIfPresent(PostBarConfiguration.self, forKey: .postReport) ?? .reportDefault
+        self.commentReport = try container.decodeIfPresent(CommentBarConfiguration.self, forKey: .commentReport) ?? .reportDefault
     }
 }
 

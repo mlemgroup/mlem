@@ -29,6 +29,7 @@ struct PostPage: View {
         ContentLoader(model: post) { proxy in
             ExpandedPostView(
                 post: proxy.entity,
+                contentLoaderError: proxy.error,
                 isLoading: proxy.isLoading,
                 tracker: $tracker,
                 scrollTargetedComment: scrollTargetedComment
