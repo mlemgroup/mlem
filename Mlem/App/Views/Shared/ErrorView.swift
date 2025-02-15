@@ -115,6 +115,6 @@ struct ErrorView: View {
         }
         .padding(Constants.main.standardSpacing)
         .background(Color(.secondarySystemGroupedBackground))
-        .clipShape(RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius))
+        .clipShape(RoundedRectangle(cornerRadius: Constants.main.standardSpacing))
     }
 }
