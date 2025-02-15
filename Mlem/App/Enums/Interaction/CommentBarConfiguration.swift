@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUICore
 
 struct CommentBarConfiguration: InteractionBarConfiguration {
     enum ActionType: String, ActionTypeProviding {
@@ -17,6 +18,20 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
         case selectText
         case report
         case remove
+        
+        static var defaultWidgets: [ActionType] {[
+            .upvote,
+            .downvote,
+            .save,
+            .reply,
+            .share
+        ]}
+        
+        static var defaultReportWidgets: [ActionType] {[
+            .save,
+            .share,
+            .remove
+        ]}
         
         var appearance: ActionAppearance {
             switch self {
@@ -37,6 +52,8 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
         case upvote
         case downvote
         case reply
+        
+        static var defaultWidgets: [CounterType] { Self.allCases }
         
         var appearance: CounterAppearance {
             switch self {
@@ -78,11 +95,40 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
     var trailing: [Item]
     var readouts: [ReadoutType]
     
+    var availableWidgets: Set<Item>
+    func widgetPickerPage(_ configuration: Binding<Self>) -> SettingsPage { .commentBarWidgetPicker(configuration) }
+    
+    init(leading: [Item], trailing: [Item], readouts: [ReadoutType], availableWidgets: Set<Item>) {
+        self.leading = leading
+        self.trailing = trailing
+        self.readouts = readouts
+        self.availableWidgets = availableWidgets
+    }
+    
+    init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.leading = try container.decodeIfPresent([Item].self, forKey: .leading) ?? [.counter(.score)]
+        self.trailing = try container.decodeIfPresent([Item].self, forKey: .trailing) ?? [.action(.save), .action(.reply)]
+        self.readouts = try container.decodeIfPresent([ReadoutType].self, forKey: .readouts) ?? [.created, .comment]
+        self.availableWidgets = try container.decodeIfPresent(Set<Item>.self, forKey: .availableWidgets) ??
+            .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) })
+    }
+    
     static var `default`: Self {
         .init(
             leading: [.counter(.score)],
             trailing: [.action(.save), .action(.reply)],
-            readouts: [.created, .comment]
+            readouts: [.created, .comment],
+            availableWidgets: .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) })
+        )
+    }
+    
+    static var reportDefault: Self {
+        .init(
+            leading: [.action(.share)],
+            trailing: [.action(.remove)],
+            readouts: [.created, .comment],
+            availableWidgets: .init(ActionType.defaultReportWidgets.map { .action($0) })
         )
     }
 }
