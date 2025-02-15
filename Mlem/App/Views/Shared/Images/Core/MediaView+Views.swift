@@ -8,11 +8,9 @@
 import SwiftUI
 
 extension MediaView {
-    
     /// Struct to actually render the media.
     /// This is declared as its own struct to prevent state updates from the parent view causing unwanted behavior.
     private struct InternalMediaView: View {
-        
         @Environment(\.blurred) var blurred
         
         let media: MediaType
@@ -77,7 +75,8 @@ extension MediaView {
             media: loader.mediaType,
             playing: playing,
             aspectRatio: uiImage.verticallyBoundedAspectRatio(bounds: aspectRatio),
-            contentMode: contentMode)
+            contentMode: contentMode
+        )
     }
     
     @ViewBuilder
@@ -164,14 +163,11 @@ extension MediaView {
     @ViewBuilder
     func contextMenuContent() -> some View {
         if let url = fullSizeUrl ?? loader.url {
-            Button("Save Image", systemImage: Icons.import) {
+            Button("Save", systemImage: Icons.import) {
                 Task { await saveMedia(url: url) }
             }
-            Button("Share Image", systemImage: Icons.share) {
+            Button("Share...", systemImage: Icons.share) {
                 Task { await shareImage(url: url, navigation: navigation) }
-            }
-            Button("Quick Look", systemImage: Icons.imageDetails) {
-                Task { await showQuickLook(url: url) }
             }
         }
     }
