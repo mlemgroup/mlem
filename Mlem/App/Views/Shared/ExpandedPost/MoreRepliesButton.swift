@@ -12,7 +12,7 @@ struct MoreRepliesButton: View {
     @Environment(Palette.self) var palette
     
     let tracker: CommentTreeTracker
-    let comment: CommentWrapper
+    let commentTreeNode: CommentTreeNode
     
     @State var isLoading: Bool = false
     
@@ -29,7 +29,7 @@ struct MoreRepliesButton: View {
             }
         } label: {
             HStack {
-                CommentBarView(depth: comment.depth + 1)
+                CommentBarView(depth: commentTreeNode.comment.depth + 1)
                 HStack {
                     Text("More Replies")
                     Image(systemName: Icons.forward)
@@ -50,12 +50,12 @@ struct MoreRepliesButton: View {
             )
             .paletteBorder(cornerRadius: Constants.main.standardSpacing)
         }
-        .padding(.leading, CGFloat(comment.depth + 1 - tracker.proposedDepthOffset) * 10)
+        .padding(.leading, CGFloat(commentTreeNode.comment.depth + 1 - tracker.proposedDepthOffset) * 10)
         .buttonStyle(.plain)
     }
     
     func loadComments() async throws {
-        let comments = try await comment.getChildren(
+        let comments = try await commentTreeNode.comment.getChildren(
             sort: tracker.sort,
             includedParentCount: 0,
             page: 1,
@@ -74,10 +74,10 @@ struct MoreRepliesButton: View {
         // the comments that exceed the new maximum width.
         if maxDepth > 12 {
             var comments = comments
-            if let parent = comment.parent {
-                comments.prepend(parent.comment2)
+            if let parent = commentTreeNode.parent {
+                comments.prepend(parent.comment)
             }
-            navigation.push(.comment(comment, comments: comments, showViewPostButton: false))
+            navigation.push(.comment(commentTreeNode.comment, comments: comments, showViewPostButton: false))
         } else {
             await tracker.insertAdditionalComments(comments: comments)
         }

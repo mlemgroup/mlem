@@ -273,6 +273,9 @@
     "Action Type" : {
 
     },
+    "Actions" : {
+
+    },
     "Active" : {
 
     },
@@ -619,6 +622,9 @@
     "Choose which languages appear in your feed. Posts and comments in other languages will be hidden." : {
 
     },
+    "Choose which widgets to display in your palette." : {
+
+    },
     "Choose wisely - you cannot change this later." : {
 
     },
@@ -767,6 +773,9 @@
     "Couldn't read URL" : {
 
     },
+    "Counters" : {
+
+    },
     "Crosspost" : {
 
     },
@@ -777,6 +786,9 @@
 
     },
     "Current password is incorrect" : {
+
+    },
+    "Custom" : {
 
     },
     "Customize how content is displayed in your feed. Choose which types of content are blurred, and apply filters to hide posts from the feed altogether." : {
@@ -1207,6 +1219,9 @@
     "Hide Community" : {
 
     },
+    "Hide Details" : {
+
+    },
     "Hide Older Incidents" : {
 
     },
@@ -1319,6 +1334,9 @@
 
     },
     "Large" : {
+
+    },
+    "Last %lld days" : {
 
     },
     "Learn more..." : {
@@ -1510,6 +1528,9 @@
     "More Replies" : {
 
     },
+    "More Widgets..." : {
+
+    },
     "More..." : {
 
     },
@@ -1620,6 +1641,9 @@
 
     },
     "Old" : {
+
+    },
+    "Older" : {
 
     },
     "OLED" : {
@@ -2078,9 +2102,6 @@
     "Save and Restore" : {
 
     },
-    "Save Image" : {
-
-    },
     "Save Settings" : {
 
     },
@@ -2157,9 +2178,6 @@
 
     },
     "Share" : {
-
-    },
-    "Share Image" : {
 
     },
     "Share..." : {
@@ -2563,6 +2581,9 @@
 
     },
     "To join this instance, you need to create an application and wait to be accepted." : {
+
+    },
+    "Today" : {
 
     },
     "Too many items" : {

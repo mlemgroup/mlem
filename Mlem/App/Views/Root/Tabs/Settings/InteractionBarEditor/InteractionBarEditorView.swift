@@ -10,6 +10,7 @@ import SwiftUI
 
 struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: View {
     @Environment(Palette.self) var palette
+    @Environment(NavigationLayer.self) var navigation
     
     @State var configuration: Configuration {
         didSet {
@@ -17,7 +18,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
         }
     }
     
-    @State var trayItems: [TrayItem]
+    @State var trayItems: [TrayItem] = .init()
     @State var barItems: [BarItem] = .init()
     
     @State var barPickedUpItem: (barItem: BarItem, index: Int)?
@@ -44,9 +45,6 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
         self._barItems = .init(wrappedValue: configurationItems.map { item in
             .init(item: item, expanded: true, visible: true)
         })
-        self._trayItems = .init(wrappedValue: Configuration.Item.allCases.map { item in
-            TrayItem(item: item, visible: !configurationItems.contains(item))
-        })
     }
     
     init(setting: WritableKeyPath<InteractionBarTracker, Configuration>) {
@@ -67,6 +65,17 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
             readoutSelectors
             Divider()
             tray.zIndex(trayPickedUpItem == nil ? 0 : 1)
+            
+            Button("More Widgets...") {
+                navigation.openSheet(.settings(configuration.widgetPickerPage($configuration)))
+            }
+        }
+        .onChange(of: configuration.availableWidgets, initial: true) {
+            onSet(configuration)
+            let configurationItems: [Configuration.Item?] = configuration.leading + [nil] + configuration.trailing
+            trayItems = Configuration.Item.allCases
+                .filter { configuration.availableWidgets.contains($0) }
+                .map { TrayItem(item: $0, visible: !configurationItems.contains($0)) }
         }
         .frame(maxWidth: .infinity)
         .padding(Constants.main.standardSpacing)

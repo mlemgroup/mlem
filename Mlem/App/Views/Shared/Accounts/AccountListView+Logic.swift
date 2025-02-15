@@ -25,7 +25,7 @@ extension AccountListView {
                 } else if appState.firstSession.actorId == right.actorId {
                     return false
                 }
-                return left.lastUsed ?? .distantPast > right.lastUsed ?? .distantPast
+                return left.activityState.lastUsed ?? .distantPast > right.activityState.lastUsed ?? .distantPast
             }
         }
     }
@@ -80,7 +80,7 @@ extension AccountListView {
                 dateComponents.second = 0
                 let todayDate = Calendar.current.date(from: dateComponents) ?? .distantFuture
                 
-                if let date = account.lastUsed {
+                if let date = account.activityState.lastUsed {
                     if date > todayDate {
                         today.append(account)
                     } else if date.timeIntervalSinceNow <= 60 * 60 * 24 * 7 {
@@ -94,7 +94,7 @@ extension AccountListView {
             }
             var groups = [AccountGroup]()
             
-            today.sort { $0.lastUsed ?? .distantPast > $1.lastUsed ?? .distantPast }
+            today.sort { $0.activityState.lastUsed ?? .distantPast > $1.activityState.lastUsed ?? .distantPast }
             today.prepend(appState.firstSession.account)
             
             if !today.isEmpty {
@@ -108,8 +108,10 @@ extension AccountListView {
             if !last30Days.isEmpty {
                 groups.append(
                     AccountGroup(
-                        header: "Last 30 days",
-                        accounts: last30Days.sorted { $0.lastUsed ?? .distantPast > $1.lastUsed ?? .distantPast }
+                        header: "Last \(30) days",
+                        accounts: last30Days.sorted {
+                            $0.activityState.lastUsed ?? .distantPast > $1.activityState.lastUsed ?? .distantPast
+                        }
                     )
                 )
             }
@@ -117,7 +119,9 @@ extension AccountListView {
                 groups.append(
                     AccountGroup(
                         header: "Older",
-                        accounts: older.sorted { $0.lastUsed ?? .distantPast > $1.lastUsed ?? .distantPast }
+                        accounts: older.sorted {
+                            $0.activityState.lastUsed ?? .distantPast > $1.activityState.lastUsed ?? .distantPast
+                        }
                     )
                 )
             }

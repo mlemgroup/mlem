@@ -80,6 +80,10 @@ enum Icons {
     static let restore: String = "arrow.up.bin"
     static let restoreFill: String = "arrow.up.bin.fill"
     static let purge: String = "burn"
+    static let scoreCounter: String = "arrow.up.arrow.down.circle"
+    static let upvoteCounter: String = "arrow.up.circle"
+    static let downvoteCounter: String = "arrow.down.circle"
+    static let replyCounter: String = "arrowshape.turn.up.left.circle"
     
     // post sizes
     static let postSizeSetting: String = "rectangle.expand.vertical"

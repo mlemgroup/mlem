@@ -110,6 +110,7 @@ class ContentLoaderProxy<Model: Upgradable> {
             upgradeState = .idle
         } catch {
             upgradeState = .failed
+            handleError(error, silent: true)
             self.error = error
         }
     }
