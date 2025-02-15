@@ -619,6 +619,9 @@
     "Choose which languages appear in your feed. Posts and comments in other languages will be hidden." : {
 
     },
+    "Choose which widgets to display in your palette." : {
+
+    },
     "Choose wisely - you cannot change this later." : {
 
     },
@@ -1513,7 +1516,7 @@
     "More Replies" : {
 
     },
-    "More Widgets" : {
+    "More Widgets..." : {
 
     },
     "More..." : {
@@ -2130,9 +2133,6 @@
 
     },
     "Select Text" : {
-
-    },
-    "Select which widgets to display in your palette" : {
 
     },
     "Send" : {
