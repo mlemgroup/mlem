@@ -69,6 +69,8 @@ struct CommunityView: View {
                             logVisit(community2)
                         }
                     }
+            } else if let error = proxy.error {
+                ErrorView(.init(error: error))
             } else {
                 ProgressView()
                     .tint(palette.secondary)
@@ -80,6 +82,8 @@ struct CommunityView: View {
             }
         }
         .navigationBarTitleDisplayMode(.inline)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(palette.groupedBackground)
     }
         
     @ViewBuilder
@@ -120,7 +124,6 @@ struct CommunityView: View {
             }
             .environment(\.communityContext, community)
         }
-        .background(palette.groupedBackground)
         // don't show the refresh popup if community api isn't the active api, since that indicates an unresolvable community
         .outdatedFeedPopup(
             feedLoader: postFeedLoader,

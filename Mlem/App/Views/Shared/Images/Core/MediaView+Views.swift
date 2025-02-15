@@ -8,11 +8,9 @@
 import SwiftUI
 
 extension MediaView {
-    
     /// Struct to actually render the media.
     /// This is declared as its own struct to prevent state updates from the parent view causing unwanted behavior.
     private struct InternalMediaView: View {
-        
         @Environment(\.blurred) var blurred
         
         let media: MediaType
@@ -77,7 +75,8 @@ extension MediaView {
             media: loader.mediaType,
             playing: playing,
             aspectRatio: uiImage.verticallyBoundedAspectRatio(bounds: aspectRatio),
-            contentMode: contentMode)
+            contentMode: contentMode
+        )
     }
     
     @ViewBuilder
@@ -100,7 +99,7 @@ extension MediaView {
     @ViewBuilder
     var errorOverlay: some View {
         if let loaderError = loader.error {
-            palette.secondaryBackground.overlay {
+            palette.tertiaryGroupedBackground.overlay {
                 switch loaderError {
                 case let .proxyFailure(proxyBypass):
                     VStack(spacing: Constants.main.standardSpacing) {
