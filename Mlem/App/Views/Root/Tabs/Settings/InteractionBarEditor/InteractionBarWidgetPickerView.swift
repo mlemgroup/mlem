@@ -9,6 +9,7 @@ import SwiftUI
 
 struct InteractionBarWidgetPickerView<Configuration: InteractionBarConfiguration>: View {
     @Environment(Palette.self) var palette
+    @Environment(\.dismiss) var dismiss
     
     @Binding var configuration: Configuration
     
@@ -29,6 +30,13 @@ struct InteractionBarWidgetPickerView<Configuration: InteractionBarConfiguration
             Section("Counters") {
                 ForEach(Array(Configuration.CounterType.allCases), id: \.self) { item in
                     widgetButton(.counter(item))
+                }
+            }
+        }
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                CloseButtonView {
+                    dismiss()
                 }
             }
         }
