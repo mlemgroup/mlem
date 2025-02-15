@@ -70,7 +70,7 @@ struct ErrorView: View {
             }
             
             if errorDetails.error != nil, errorDetails.title == nil || developerMode {
-                Button("Show Details") {
+                Button(showingFullError ? "Hide Details" : "Show Details") {
                     showingFullError.toggle()
                 }
                 .buttonStyle(.plain)
