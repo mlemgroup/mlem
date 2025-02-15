@@ -36,7 +36,7 @@ class AccountsTracker {
         if let lastUsedAccount = sorted.last {
             return lastUsedAccount
         }
-        return defaultGuestAccount
+        return userAccounts.first() ?? defaultGuestAccount
     }
     
     var defaultGuestAccount: GuestAccount {
