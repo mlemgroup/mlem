@@ -561,6 +561,9 @@
         }
       }
     },
+    "Censored" : {
+
+    },
     "Censured" : {
 
     },
@@ -2329,6 +2332,9 @@
 
     },
     "Tab Bar" : {
+
+    },
+    "Table" : {
 
     },
     "Tap and hold items to add, remove, or rearrange them." : {
