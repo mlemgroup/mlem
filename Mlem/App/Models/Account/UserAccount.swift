@@ -91,14 +91,6 @@ class UserAccount: Account, CommunityOrPerson {
         
         self.api = ApiClient.getApiClient(url: instanceLink, username: name)
         api.updateToken(token)
-        
-//        if let token {
-//            api.updateToken(token)
-//        } else {
-//            Task { @MainActor in
-//                NavigationModel.main.openSheet(.logIn(.reauth(self)))
-//            }
-//        }
     }
     
     func encode(to encoder: Encoder) throws {
@@ -181,7 +173,7 @@ class UserAccount: Account, CommunityOrPerson {
     }
 }
 
-func getKeychainId(actorId: ActorIdentifier) -> String {
+private func getKeychainId(actorId: ActorIdentifier) -> String {
     // localhost sometimes has url "http://localhost:PORT" and sometimes "https://lemmy-alpha/beta/etc" [1], so replace any of that with simple "localhost"
     //
     // [1](https://join-lemmy.org/docs/contributors/02-local-development.html#tests)

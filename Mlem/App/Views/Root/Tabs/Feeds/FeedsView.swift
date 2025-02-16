@@ -183,23 +183,19 @@ struct FeedsView: View {
     @MainActor
     func setupFeedLoader() async {
         guard postFeedLoader == nil else { return }
-        
-        print("DEBUG 0 \(appState.firstApi.token)")
-        
+
         @Setting(\.internetSpeed) var internetSpeed
         @Setting(\.showReadInFeed) var showReadPosts
         
         do {
-            let sortType = try await appState.initialFeedSortType
-            
             postFeedLoader = .init(
                 pageSize: internetSpeed.pageSize,
-                sortType: sortType,
+                sortType: try await appState.initialFeedSortType,
                 showReadPosts: showReadPosts,
                 filterContext: filtersTracker.filterContext,
                 prefetchingConfiguration: .forPostSize(postSize),
                 urlCache: Constants.main.urlCache,
-                api: appState.firstApi,
+                api: AppState.main.firstApi,
                 feedType: feedSelection.associatedApiType
             )
         } catch {

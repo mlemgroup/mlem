@@ -15,8 +15,6 @@ import SwiftUI
 struct DeveloperSettingsView: View {
     @Dependency(\.persistenceRepository) var persistenceRepository
     
-    @Environment(AppState.self) var appState
-
     @Setting(\.showFeedWelcomePrompt) var showFeedWelcomePrompt
     @Setting(\.developerMode) var developerMode
     
@@ -41,10 +39,6 @@ struct DeveloperSettingsView: View {
                     
                     Button(String("Create Silent Error")) {
                         handleError(ApiClientError.noEntityFound, silent: true)
-                    }
-                    
-                    Button(String("Wipe Token")) {
-                        Constants.main.keychain[getKeychainId(actorId: appState.firstSession.actorId)] = nil
                     }
                 } header: {
                     Text(verbatim: "Debug Tools")
