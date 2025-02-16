@@ -184,12 +184,13 @@ struct FeedsView: View {
     func setupFeedLoader() async {
         guard postFeedLoader == nil else { return }
         
-        print("DEBUG \(appState.firstApi.token)")
+        print("DEBUG  0 \(appState.firstApi.token)")
         
         @Setting(\.internetSpeed) var internetSpeed
         @Setting(\.showReadInFeed) var showReadPosts
         
         do {
+            print("DEBUG  1 \(appState.firstApi.token)")
             postFeedLoader = try await .init(
                 pageSize: internetSpeed.pageSize,
                 sortType: appState.initialFeedSortType,

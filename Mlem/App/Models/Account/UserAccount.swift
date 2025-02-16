@@ -179,7 +179,7 @@ class UserAccount: Account, CommunityOrPerson {
     }
 }
 
-private func getKeychainId(actorId: ActorIdentifier) -> String {
+func getKeychainId(actorId: ActorIdentifier) -> String {
     // localhost sometimes has url "http://localhost:PORT" and sometimes "https://lemmy-alpha/beta/etc" [1], so replace any of that with simple "localhost"
     //
     // [1](https://join-lemmy.org/docs/contributors/02-local-development.html#tests)
