@@ -195,7 +195,7 @@ struct FeedsView: View {
                 filterContext: filtersTracker.filterContext,
                 prefetchingConfiguration: .forPostSize(postSize),
                 urlCache: Constants.main.urlCache,
-                api: AppState.main.firstApi,
+                api: appState.firstApi,
                 feedType: feedSelection.associatedApiType
             )
         } catch {
