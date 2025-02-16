@@ -14,7 +14,7 @@ import SwiftUI
 
 struct DeveloperSettingsView: View {
     @Dependency(\.persistenceRepository) var persistenceRepository
-
+    
     @Setting(\.showFeedWelcomePrompt) var showFeedWelcomePrompt
     @Setting(\.developerMode) var developerMode
     
