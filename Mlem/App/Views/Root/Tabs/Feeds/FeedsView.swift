@@ -184,6 +184,8 @@ struct FeedsView: View {
     func setupFeedLoader() async {
         guard postFeedLoader == nil else { return }
         
+        print("DEBUG \(appState.firstApi.token)")
+        
         @Setting(\.internetSpeed) var internetSpeed
         @Setting(\.showReadInFeed) var showReadPosts
         
