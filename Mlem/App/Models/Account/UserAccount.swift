@@ -84,14 +84,11 @@ class UserAccount: Account, CommunityOrPerson {
         }
         self.actorId = actorId
         
-        // retrive token and initialize ApiClient
-        // Fallback to "cannotRetrieveFromKeychain" if a token cannot be found,
-        // rather than throwing an error. This will cause Mlem to ask for the user's password again
-        let token = Constants.main.keychain[getKeychainId(actorId: actorId)]
-            ?? Constants.main.keychain[getKeychainId(id: id)]
-            ?? "cannotRetrieveFromKeychain"
+        // initialize ApiClient with token, if present
         self.api = ApiClient.getApiClient(url: instanceLink, username: name)
-        api.updateToken(token)
+        if let token = Constants.main.keychain[getKeychainId(actorId: actorId)] ?? Constants.main.keychain[getKeychainId(id: id)] {
+            api.updateToken(token)
+        }
     }
     
     func encode(to encoder: Encoder) throws {
