@@ -87,6 +87,10 @@ class UserAccount: Account, CommunityOrPerson {
         // retrive token and initialize ApiClient
         // Fallback to "cannotRetrieveFromKeychain" if a token cannot be found,
         // rather than throwing an error. This will cause Mlem to ask for the user's password again
+        
+        print("DEBUG v1 fallback: \(id)_accessToken")
+        print(Constants.main.keychain["\(id)_accessToken"])
+        
         let token = Constants.main.keychain[getKeychainId(actorId: actorId)]
             ?? Constants.main.keychain[getKeychainId(id: id)]
             ?? Constants.main.keychain["\(id)_accessToken"]
