@@ -145,8 +145,10 @@ struct FeedsView: View {
                 }
                 if let savedFeedLoader, feedSelection == .saved {
                     PersonContentGridView(feedLoader: savedFeedLoader, contentType: .constant(.all))
+                        .refreshing(feedLoader: savedFeedLoader)
                 } else if let postFeedLoader {
                     PostGridView(postFeedLoader: postFeedLoader)
+                        .refreshing(feedLoader: postFeedLoader)
                 }
             } header: {
                 Menu {
