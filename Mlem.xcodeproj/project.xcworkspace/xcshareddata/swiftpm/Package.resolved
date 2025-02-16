@@ -60,8 +60,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mlemgroup/MlemMiddleware",
       "state" : {
-        "branch" : "sjmarf/fix-token",
-        "revision" : "3fb6487910fb0c447538b9261af0db6df22767ec"
+        "revision" : "876b2d4f473ca2d51593a982954148e5c3e7c621",
+        "version" : "0.77.0"
       }
     },
     {
