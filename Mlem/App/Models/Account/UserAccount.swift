@@ -87,16 +87,18 @@ class UserAccount: Account, CommunityOrPerson {
         // retrive token and initialize ApiClient
         let token = Constants.main.keychain[getKeychainId(actorId: actorId)]
             ?? Constants.main.keychain[getKeychainId(id: id)]
+            ?? "cannotRetrieveFromKeychain"
         
         self.api = ApiClient.getApiClient(url: instanceLink, username: name)
+        api.updateToken(token)
         
-        if let token {
-            api.updateToken(token)
-        } else {
-            Task { @MainActor in
-                NavigationModel.main.openSheet(.logIn(.reauth(self)))
-            }
-        }
+//        if let token {
+//            api.updateToken(token)
+//        } else {
+//            Task { @MainActor in
+//                NavigationModel.main.openSheet(.logIn(.reauth(self)))
+//            }
+//        }
     }
     
     func encode(to encoder: Encoder) throws {
