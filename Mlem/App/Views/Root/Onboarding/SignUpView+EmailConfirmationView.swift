@@ -58,7 +58,7 @@ extension SignUpView {
         func attemptToLogIn() async {
             do {
                 let response = try await api.getAccountToken(
-                    username: username,
+                    usernameOrEmail: username,
                     password: password,
                     totpToken: nil
                 )

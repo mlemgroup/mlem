@@ -3361,8 +3361,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware";
 			requirement = {
-				kind = upToNextMinorVersion;
-				minimumVersion = 0.76.0;
+				branch = "sjmarf/fix-token";
+				kind = branch;
 			};
 		};
 		CDE4AC402CA3706400981010 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
