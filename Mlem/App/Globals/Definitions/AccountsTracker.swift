@@ -106,18 +106,20 @@ class AccountsTracker {
     @discardableResult
     func logIn(
         client unauthenticatedApi: ApiClient,
-        username: String,
+        usernameOrEmail: String,
         password: String,
         totpToken: String? = nil
     ) async throws -> UserAccount {
         let response = try await unauthenticatedApi.getAccountToken(
-            username: username,
+            usernameOrEmail: usernameOrEmail,
             password: password,
             totpToken: totpToken
         )
         guard let token = response.jwt else {
             throw ApiClientError.unsuccessful
         }
+        
+        let username = try await unauthenticatedApi.getUsernameFromToken(token: token)
         
         return try await logIn(
             username: username,
