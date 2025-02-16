@@ -188,9 +188,9 @@ struct FeedsView: View {
         @Setting(\.showReadInFeed) var showReadPosts
         
         do {
-            postFeedLoader = .init(
+            postFeedLoader = try await .init(
                 pageSize: internetSpeed.pageSize,
-                sortType: try await appState.initialFeedSortType,
+                sortType: appState.initialFeedSortType,
                 showReadPosts: showReadPosts,
                 filterContext: filtersTracker.filterContext,
                 prefetchingConfiguration: .forPostSize(postSize),
