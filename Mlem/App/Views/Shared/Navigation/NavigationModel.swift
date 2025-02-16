@@ -38,11 +38,6 @@ class NavigationModel {
             return
         }
         
-//        // don't show reauth sheet more than once
-//        if case .logIn(.reauth) = page, layers.contains(where: { page == $0.root }) {
-//            return
-//        }
-        
         layers.append(
             .init(
                 root: page,

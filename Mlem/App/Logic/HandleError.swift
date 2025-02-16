@@ -71,23 +71,8 @@ private func _handleError(
 
 @MainActor
 private func showReauthSheet() {
-    if let user = AppState.main.firstSession.account as? UserAccount {
-        guard !NavigationModel.main.layers.contains(where: { $0.root == .logIn(.reauth(user)) }) else {
-            return
-        }
-//        for layer in NavigationModel.main.layers {
-//            switch layer.path.first {
-//            case let .logIn(page):
-//                switch page {
-//                case .reauth:
-//                    return
-//                default:
-//                    break
-//                }
-//            default:
-//                break
-//            }
-//        }
+    if let user = AppState.main.firstSession.account as? UserAccount,
+       !NavigationModel.main.layers.contains(where: { $0.root == .logIn(.reauth(user)) }) {
         NavigationModel.main.openSheet(.logIn(.reauth(user)))
     }
 }
