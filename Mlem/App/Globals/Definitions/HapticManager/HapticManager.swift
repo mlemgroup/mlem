@@ -29,15 +29,7 @@ class HapticManager {
         self.hapticEngine = initEngine()
         
         // load all the haptic files into players to avoid lag on first play caused by slow disk read
-        Haptic.allCases.forEach { haptic in
-            do {
-                guard let file = getFile(for: haptic) else { return }
-                players[haptic] = try hapticEngine?.makePlayer(with: .init(contentsOf: file))
-            } catch {
-                assertionFailure("Failed to initialize haptic player")
-                handleError(error, silent: true)
-            }
-        }
+        loadPlayers()
         
         // if the engine stops, tell us why
         hapticEngine?.stoppedHandler = { reason in
@@ -47,7 +39,7 @@ class HapticManager {
         // if the engine fails, attempt to restart
         hapticEngine?.resetHandler = { [weak self] in
             print("The engine reset")
-            self?.handleEngineFailure()
+            self?.handleFailure()
         }
     }
     
@@ -66,14 +58,13 @@ class HapticManager {
         assert(priority != .sentinel, "Cannot use .sentinel as a haptic priority")
         
         Task(priority: .userInitiated) {
-            if priority <= hapticLevel, let hapticEngine {
+            if priority <= hapticLevel, hapticEngine != nil {
                 do {
                     guard let player = players[haptic] else { throw HapticError.noPlayer(haptic) }
                     try player.start(atTime: .zero)
                 } catch {
-                    // on failure, restart the engine and play the haptic from file
                     handleError(error, silent: true)
-                    handleEngineFailure(with: haptic)
+                    handleFailure(with: haptic, error: error as? HapticError)
                 }
             } else {
                 if priority > hapticLevel {
@@ -99,19 +90,28 @@ class HapticManager {
         return nil
     }
     
-    /// Restarts the engine if it is present, creates it if not, starts the engine, and plays the given haptic from file
-    private func handleEngineFailure(with haptic: Haptic? = nil) {
+    /// Restarts the engine if it is present, creates it if not, starts the engine, and plays the given haptic
+    private func handleFailure(with haptic: Haptic? = nil, error: HapticError? = nil) {
         if hapticEngine == nil {
             hapticEngine = initEngine()
         }
         
-        if let hapticEngine {
+        if let error, case let .noPlayer(failedHaptic) = error {
+            assertionFailure("No player for \(failedHaptic)")
+            loadPlayers()
+        }
+        
+        if hapticEngine != nil {
             startEngine()
             
             // attempt to play the pattern that failed, but don't do anything on failure here
-            if let haptic, let file = getFile(for: haptic) {
+            if let haptic {
                 do {
-                    try hapticEngine.playPattern(from: file)
+                    guard let player = players[haptic] else {
+                        assertionFailure("No player for \(haptic) in failure handler")
+                        throw HapticError.noPlayer(haptic)
+                    }
+                    try player.start(atTime: .zero)
                 } catch {
                     handleError(error, silent: true)
                 }
@@ -119,13 +119,21 @@ class HapticManager {
         }
     }
     
-    private func getFile(for haptic: Haptic) -> URL? {
-        guard let path = Bundle.main.path(forResource: haptic.rawValue, ofType: "ahap") else {
-            assertionFailure("No haptic file found for \(haptic.rawValue)")
-            return nil
+    private func loadPlayers() {
+        // load all the haptic files into players to avoid lag on first play caused by slow disk read
+        Haptic.allCases.forEach { haptic in
+            do {
+                guard let path = Bundle.main.path(forResource: haptic.rawValue, ofType: "ahap") else {
+                    assertionFailure("No haptic file found for \(haptic.rawValue)")
+                    return
+                }
+                let file = URL(filePath: path)
+                players[haptic] = try hapticEngine?.makePlayer(with: .init(contentsOf: file))
+            } catch {
+                assertionFailure("Failed to initialize haptic player")
+                handleError(error, silent: true)
+            }
         }
-    
-        return URL(filePath: path)
     }
 }
 
