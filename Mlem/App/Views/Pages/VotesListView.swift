@@ -73,7 +73,7 @@ struct VotesListView: View {
                     }
                     .padding(.horizontal, Constants.main.standardSpacing)
                 }
-                EndOfFeedView(loadingState: loadingState, loadMore: nil, viewType: .turtle)
+                EndOfFeedView(loadingState: loadingState, viewType: .turtle)
                     .onAppear {
                         loadNextPage()
                     }
