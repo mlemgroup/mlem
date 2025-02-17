@@ -107,7 +107,7 @@ struct ModlogView: View {
                     Array(feedLoader.items(ofType: actionTypeFilter).enumerated()),
                     id: \.offset
                 ) { _, entry in entryView(entry) }
-                EndOfFeedView(loadingState: activeFeedLoader.loadingState, loadMore: nil, viewType: .hobbit)
+                EndOfFeedView(loadingState: activeFeedLoader.loadingState, viewType: .hobbit)
             }
             .padding([.horizontal, .bottom], Constants.main.standardSpacing)
         }
