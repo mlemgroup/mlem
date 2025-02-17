@@ -47,11 +47,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
         self._barItems = .init(wrappedValue: configurationItems.map { item in
             .init(item: item, expanded: true, visible: true)
         })
-        if configuration is PostBarConfiguration {
-            configurationType = .post
-        } else {
-            configurationType = .comment
-        }
+        self.configurationType = configuration is PostBarConfiguration ? .post : .comment
     }
     
     init(setting: WritableKeyPath<InteractionBarTracker, Configuration>) {
