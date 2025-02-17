@@ -68,17 +68,10 @@ class HapticManager {
         Task(priority: .userInitiated) {
             if priority <= hapticLevel, let hapticEngine {
                 do {
-                    // if player available, use it
-                    if let player = players[haptic] {
-                        try player.start(atTime: .zero)
-                        return
-                    }
-                    
-                    // otherwise try to read haptic from file and play it cold
-                    guard let file = getFile(for: haptic) else { return }
-                    try hapticEngine.playPattern(from: file)
+                    guard let player = players[haptic] else { throw HapticError.noPlayer(haptic) }
+                    try player.start(atTime: .zero)
                 } catch {
-                    // on failure, restart the engine and play the haptic cold
+                    // on failure, restart the engine and play the haptic from file
                     handleError(error, silent: true)
                     handleEngineFailure(with: haptic)
                 }
@@ -106,8 +99,12 @@ class HapticManager {
         return nil
     }
     
-    /// Restarts the engine if it is present, creates it if not. Can be passed a pattern to play on start.
+    /// Restarts the engine if it is present, creates it if not, starts the engine, and plays the given haptic from file
     private func handleEngineFailure(with haptic: Haptic? = nil) {
+        if hapticEngine == nil {
+            hapticEngine = initEngine()
+        }
+        
         if let hapticEngine {
             startEngine()
             
@@ -119,8 +116,6 @@ class HapticManager {
                     handleError(error, silent: true)
                 }
             }
-        } else {
-            hapticEngine = initEngine()
         }
     }
     
@@ -131,5 +126,16 @@ class HapticManager {
         }
     
         return URL(filePath: path)
+    }
+}
+
+enum HapticError: Error, CustomStringConvertible {
+    case noPlayer(Haptic)
+    
+    public var description: String {
+        switch self {
+        case let .noPlayer(haptic):
+            "No player available for \(haptic.rawValue)"
+        }
     }
 }
