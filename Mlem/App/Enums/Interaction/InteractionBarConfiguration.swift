@@ -136,7 +136,8 @@ struct InteractionBarConfigurations: Codable {
             self.commentReport = try container.decodeIfPresent(CommentBarConfiguration.self, forKey: .commentReport) ?? .reportDefault
         } catch {
             // legacy decoding
-            let allPostItems = try container.decodeIfPresent([LegacyInterationBarItems].self, forKey: .post)
+            let allPostItems = try container.decode([LegacyInterationBarItems].self, forKey: .post)
+            self.post = .init(legacyItems: allPostItems, moderator: false)
         }
     }
 }
