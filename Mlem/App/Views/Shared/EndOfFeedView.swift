@@ -45,24 +45,16 @@ struct EndOfFeedView: View {
     @Setting(\.developerMode) var developerMode
     
     let loadingState: LoadingState
-    let loadMore: (() -> Void)?
     let viewType: EndOfFeedViewType
     
     var body: some View {
         Group {
             switch loadingState {
             case .idle:
-                if let loadMore {
-                    Button("Load More") {
-                        loadMore()
-                    }
-                    .buttonStyle(.bordered)
+                if developerMode {
+                    Text(verbatim: "IDLE")
                 } else {
-                    if developerMode {
-                        Text(verbatim: "IDLE")
-                    } else {
-                        ProgressView()
-                    }
+                    ProgressView()
                 }
             case .loading:
                 ProgressView()

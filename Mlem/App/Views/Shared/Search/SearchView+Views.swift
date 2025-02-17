@@ -58,7 +58,7 @@ extension SearchView {
                         }
                     }
                 }
-                EndOfFeedView(loadingState: communityLoader.loadingState, loadMore: nil, viewType: .hobbit)
+                EndOfFeedView(loadingState: communityLoader.loadingState, viewType: .hobbit)
             }
         case .people:
             LazyVStack(spacing: 0) {
@@ -77,7 +77,7 @@ extension SearchView {
                         }
                     }
                 }
-                EndOfFeedView(loadingState: personLoader.loadingState, loadMore: nil, viewType: .hobbit)
+                EndOfFeedView(loadingState: personLoader.loadingState, viewType: .hobbit)
             }
         case .instances:
             LazyVStack(spacing: 0) {
@@ -88,7 +88,7 @@ extension SearchView {
                         visitContext: page == .home ? .other : .search
                     )
                 }
-                EndOfFeedView(loadingState: .done, loadMore: nil, viewType: .hobbit)
+                EndOfFeedView(loadingState: .done, viewType: .hobbit)
             }
         case .posts:
             if postLoader.loadingState == .idle, postLoader.items.isEmpty {
@@ -114,7 +114,7 @@ extension SearchView {
                             }
                         }
                     }
-                    EndOfFeedView(loadingState: commentLoader.loadingState, loadMore: nil, viewType: .hobbit)
+                    EndOfFeedView(loadingState: commentLoader.loadingState, viewType: .hobbit)
                 }
                 .padding(.horizontal, Constants.main.standardSpacing)
             }
