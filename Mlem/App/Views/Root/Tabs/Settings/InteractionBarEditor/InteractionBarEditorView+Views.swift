@@ -9,30 +9,15 @@ import Flow
 import SwiftUI
 
 extension InteractionBarEditorView {
-    // MARK: - Post Preview
+    // MARK: - Previews
     
     @ViewBuilder
-    var postPreview: some View {
+    var contentPreview: some View {
         VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
             Group {
-                HStack(alignment: .top, spacing: 8) {
-                    RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius)
-                        .fill(palette.accent.opacity(0.6))
-                        .frame(width: Constants.main.thumbnailSize, height: Constants.main.thumbnailSize)
-                        .overlay {
-                            Image(systemName: "mountain.2.fill")
-                                .font(.system(size: 23))
-                                .foregroundStyle(.white)
-                        }
-                    
-                    VStack(alignment: .leading, spacing: 5) {
-                        MockTextView()
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 15)
-                        MockTextView()
-                            .frame(maxWidth: 200)
-                            .frame(height: 15)
-                    }
+                switch configurationType {
+                case .post: postPreviewBody
+                case .comment: commentPreviewBody
                 }
             }
             .opacity(0.75)
@@ -45,6 +30,54 @@ extension InteractionBarEditorView {
         .padding(Constants.main.standardSpacing)
         .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.mediumItemCornerRadius))
         .paletteBorder(cornerRadius: Constants.main.mediumItemCornerRadius)
+    }
+    
+    @ViewBuilder
+    var postPreviewBody: some View {
+        HStack(alignment: .top, spacing: 8) {
+            RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius)
+                .fill(palette.accent.opacity(0.6))
+                .frame(width: Constants.main.thumbnailSize, height: Constants.main.thumbnailSize)
+                .overlay {
+                    Image(systemName: "mountain.2.fill")
+                        .font(.system(size: 23))
+                        .foregroundStyle(.white)
+                }
+            
+            VStack(alignment: .leading, spacing: 5) {
+                MockTextView()
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 15)
+                MockTextView()
+                    .frame(maxWidth: 200)
+                    .frame(height: 15)
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var commentPreviewBody: some View {
+        HStack(spacing: 7) {
+            Image(systemName: Icons.personCircleFill)
+                .resizable()
+                .scaledToFit()
+                .symbolRenderingMode(.palette)
+                .foregroundStyle(palette.selectedInteractionBarItem, palette.neutralAccent.gradient)
+                .frame(width: Constants.main.smallAvatarSize, height: Constants.main.smallAvatarSize)
+            
+            MockTextView()
+                .frame(maxWidth: 200)
+                .frame(height: 13)
+        }
+        
+        VStack(alignment: .leading, spacing: 5) {
+            MockTextView()
+                .frame(maxWidth: .infinity)
+                .frame(height: 15)
+            MockTextView()
+                .frame(maxWidth: 250)
+                .frame(height: 15)
+        }
     }
     
     @ViewBuilder
