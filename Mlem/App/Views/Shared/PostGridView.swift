@@ -107,7 +107,7 @@ struct PostGridView: View {
                 }
             }
             .padding(.horizontal, postSize.tiled || columns.count == 1 ? 0 : Constants.main.halfSpacing)
-            EndOfFeedView(loadingState: postFeedLoader.loadingState, loadMore: loadMore, viewType: .hobbit)
+            EndOfFeedView(loadingState: postFeedLoader.loadingState, viewType: .hobbit)
         }
     }
     
@@ -149,16 +149,6 @@ struct PostGridView: View {
             }
         } label: {
             Label("Post Size", systemImage: Icons.postSizeSetting)
-        }
-    }
-    
-    func loadMore() {
-        Task {
-            do {
-                try await postFeedLoader.loadMoreItems()
-            } catch {
-                handleError(error)
-            }
         }
     }
 }

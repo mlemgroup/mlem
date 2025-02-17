@@ -32,7 +32,7 @@ extension InboxView {
                     }
                 }
                 
-                EndOfFeedView(loadingState: feedLoader.loadingState, loadMore: nil, viewType: .cartoon)
+                EndOfFeedView(loadingState: feedLoader.loadingState, viewType: .cartoon)
             } header: { sectionHeader }
         }
     }
