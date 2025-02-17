@@ -39,10 +39,6 @@ struct ContentView: View {
 
     @State var avatarImage: UIImage?
     @State var selectedAvatarImage: UIImage?
-  
-    init() {
-        HapticManager.main.preheat()
-    }
     
     var body: some View {
         if appState.appRefreshToggle {
