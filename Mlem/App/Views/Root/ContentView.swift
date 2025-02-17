@@ -105,6 +105,9 @@ struct ContentView: View {
                             }
                         }
                     }
+                    if scenePhase == .active {
+                        HapticManager.main.startEngine()
+                    }
                 }
                 .environment(AppState.main)
         }
