@@ -65,7 +65,7 @@ extension InteractionBarEditorView {
                 .foregroundStyle(palette.selectedInteractionBarItem, palette.neutralAccent.gradient)
                 .frame(width: Constants.main.smallAvatarSize, height: Constants.main.smallAvatarSize)
             
-            MockTextView()
+            MockTextView(beginOpacity: 0.4, endOpacity: 0.3)
                 .frame(maxWidth: 200)
                 .frame(height: 13)
         }
