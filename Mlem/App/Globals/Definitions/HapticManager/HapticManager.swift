@@ -50,10 +50,11 @@ class HapticManager {
         }
     }
 
-    /// Starts the haptic engine, if present; call at app initialization to avoid lag on first haptic
+    /// Starts the haptic engine, if present, and preloads the haptics; call at app initialization to avoid lag on first haptic
     func preheat() {
         do {
             try hapticEngine?.start()
+            // loads all the haptic files into players to avoid lag on first play caused by reading from disk
             Haptic.allCases.forEach { haptic in
                 do {
                     guard let file = getFile(for: haptic) else { return }
@@ -63,7 +64,6 @@ class HapticManager {
                     handleError(error, silent: true)
                 }
             }
-            try AVAudioSession.sharedInstance().setActive(true)
         } catch {
             handleError(error, silent: true)
         }
