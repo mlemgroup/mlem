@@ -128,11 +128,16 @@ struct InteractionBarConfigurations: Codable {
     
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.post = try container.decodeIfPresent(PostBarConfiguration.self, forKey: .post) ?? .default
-        self.comment = try container.decodeIfPresent(CommentBarConfiguration.self, forKey: .comment) ?? .default
-        self.reply = try container.decodeIfPresent(ReplyBarConfiguration.self, forKey: .reply) ?? .default
-        self.postReport = try container.decodeIfPresent(PostBarConfiguration.self, forKey: .postReport) ?? .reportDefault
-        self.commentReport = try container.decodeIfPresent(CommentBarConfiguration.self, forKey: .commentReport) ?? .reportDefault
+        do {
+            self.post = try container.decodeIfPresent(PostBarConfiguration.self, forKey: .post) ?? .default
+            self.comment = try container.decodeIfPresent(CommentBarConfiguration.self, forKey: .comment) ?? .default
+            self.reply = try container.decodeIfPresent(ReplyBarConfiguration.self, forKey: .reply) ?? .default
+            self.postReport = try container.decodeIfPresent(PostBarConfiguration.self, forKey: .postReport) ?? .reportDefault
+            self.commentReport = try container.decodeIfPresent(CommentBarConfiguration.self, forKey: .commentReport) ?? .reportDefault
+        } catch {
+            // legacy decoding
+            let allPostItems = try container.decodeIfPresent([LegacyInterationBarItems].self, forKey: .post)
+        }
     }
 }
 
@@ -141,6 +146,24 @@ struct MockReadoutAppearance {
     let label: String
 }
 
-enum LegacyInterationBarCodingKeys: CodingKey {
+enum LegacyInterationBarItems: Decodable {
     case infoStack, upvote, downvote, save, reply, share, upvoteCounter, downvoteCounter, scoreCounter, resolve, remove, purge, ban
+    
+    func postEquivalent() -> PostBarConfiguration.Item? {
+        switch self {
+        case .infoStack: return nil
+        case .upvote: return .action(.upvote)
+        case .downvote: return .action(.downvote)
+        case .save: return .action(.save)
+        case .reply: return .action(.reply)
+        case .share: return .action(.share)
+        case .upvoteCounter: return .counter(.upvote)
+        case .downvoteCounter: return .counter(.downvote)
+        case .scoreCounter: return .counter(.score)
+        case .resolve: return nil
+        case .remove: return .action(.remove)
+        case .purge: return nil
+        case .ban: return nil
+        }
+    }
 }

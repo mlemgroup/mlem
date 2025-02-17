@@ -119,19 +119,25 @@ struct PostBarConfiguration: InteractionBarConfiguration {
         self.availableWidgets = availableWidgets
     }
     
-    init(from decoder: any Decoder) throws {
-        do {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-            self.leading = try container.decodeIfPresent([Item].self, forKey: .leading) ?? [.counter(.score)]
-            self.trailing = try container.decodeIfPresent([Item].self, forKey: .trailing) ?? [.action(.save), .action(.reply)]
-            self.readouts = try container.decodeIfPresent([ReadoutType].self, forKey: .readouts) ?? [.created, .comment]
-            self.availableWidgets = try container.decodeIfPresent(Set<Item>.self, forKey: .availableWidgets) ??
-                .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) })
-        } catch {
-            // legacy decoding
-            let container = try decoder.container(keyedBy: LegacyInterationBarCodingKeys.self)
-            let allItems = try container.decodeIfPresent(<#T##type: Bool.Type##Bool.Type#>, forKey: <#T##KeyedDecodingContainer<LegacyInterationBarCodingKeys>.Key#>)
+    init(legacyItems: [LegacyInterationBarItems]) {
+        guard legacyItems.count(where: { $0 == .infoStack }) == 1,
+              let infoStackIndex = legacyItems.firstIndex(of: .infoStack) else {
+            assertionFailure("Invalid legacy items")
+            self = .default
+            return
         }
+        
+        self.leading = legacyItems.prefix(upTo: infoStackIndex).compactMap { $0.postEquivalent() }
+        self.trailing = legacyItems.suffix(from: infoStackIndex + 1).compactMap { $0.postEquivalent() }
+    }
+    
+    init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.leading = try container.decodeIfPresent([Item].self, forKey: .leading) ?? [.counter(.score)]
+        self.trailing = try container.decodeIfPresent([Item].self, forKey: .trailing) ?? [.action(.save), .action(.reply)]
+        self.readouts = try container.decodeIfPresent([ReadoutType].self, forKey: .readouts) ?? [.created, .comment]
+        self.availableWidgets = try container.decodeIfPresent(Set<Item>.self, forKey: .availableWidgets) ??
+            .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) })
     }
     
     static var `default`: Self {
