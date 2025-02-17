@@ -38,6 +38,8 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     @ScaledMetric(relativeTo: .body) var baseInfoCapsuleHeight: CGFloat = 22
     var infoCapsuleHeight: CGFloat { baseInfoCapsuleHeight + Constants.main.doubleSpacing }
     
+    let configurationType: ConfigurationType
+    
     init(configuration: Configuration, onSet: @escaping (Configuration) -> Void) {
         self.configuration = configuration
         self.onSet = onSet
@@ -45,6 +47,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
         self._barItems = .init(wrappedValue: configurationItems.map { item in
             .init(item: item, expanded: true, visible: true)
         })
+        self.configurationType = configuration is PostBarConfiguration ? .post : .comment
     }
     
     init(setting: WritableKeyPath<InteractionBarTracker, Configuration>) {
@@ -60,7 +63,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
             buttons
             Spacer()
             infoCapsule
-            postPreview.zIndex(barPickedUpItem == nil ? 0 : 1)
+            contentPreview.zIndex(barPickedUpItem == nil ? 0 : 1)
             Divider()
             readoutSelectors
             Divider()
