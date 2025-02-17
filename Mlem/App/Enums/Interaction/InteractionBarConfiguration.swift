@@ -140,3 +140,7 @@ struct MockReadoutAppearance {
     let icon: String
     let label: String
 }
+
+enum LegacyInterationBarCodingKeys: CodingKey {
+    case infoStack, upvote, downvote, save, reply, share, upvoteCounter, downvoteCounter, scoreCounter, resolve, remove, purge, ban
+}

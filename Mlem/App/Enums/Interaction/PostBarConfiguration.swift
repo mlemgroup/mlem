@@ -120,12 +120,18 @@ struct PostBarConfiguration: InteractionBarConfiguration {
     }
     
     init(from decoder: any Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.leading = try container.decodeIfPresent([Item].self, forKey: .leading) ?? [.counter(.score)]
-        self.trailing = try container.decodeIfPresent([Item].self, forKey: .trailing) ?? [.action(.save), .action(.reply)]
-        self.readouts = try container.decodeIfPresent([ReadoutType].self, forKey: .readouts) ?? [.created, .comment]
-        self.availableWidgets = try container.decodeIfPresent(Set<Item>.self, forKey: .availableWidgets) ??
-            .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) })
+        do {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.leading = try container.decodeIfPresent([Item].self, forKey: .leading) ?? [.counter(.score)]
+            self.trailing = try container.decodeIfPresent([Item].self, forKey: .trailing) ?? [.action(.save), .action(.reply)]
+            self.readouts = try container.decodeIfPresent([ReadoutType].self, forKey: .readouts) ?? [.created, .comment]
+            self.availableWidgets = try container.decodeIfPresent(Set<Item>.self, forKey: .availableWidgets) ??
+                .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) })
+        } catch {
+            // legacy decoding
+            let container = try decoder.container(keyedBy: LegacyInterationBarCodingKeys.self)
+            let allItems = try container.decodeIfPresent(<#T##type: Bool.Type##Bool.Type#>, forKey: <#T##KeyedDecodingContainer<LegacyInterationBarCodingKeys>.Key#>)
+        }
     }
     
     static var `default`: Self {
