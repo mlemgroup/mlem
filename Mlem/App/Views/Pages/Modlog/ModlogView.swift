@@ -64,7 +64,7 @@ struct ModlogView: View {
                         }
                     }
                 }
-            case let .instance(instanceHashWrapper):
+            case .instance:
                 if let communityFilter {
                     content(communityFilter: communityFilter)
                 } else {

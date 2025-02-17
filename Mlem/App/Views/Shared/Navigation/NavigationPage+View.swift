@@ -55,7 +55,7 @@ extension NavigationPage {
             } else {
                 Text(verbatim: "Error")
             }
-        case let .post(post, scrollTargetedComment, communityContext, navigationNamespace):
+        case let .post(post, scrollTargetedComment, communityContext, _):
             PostPage(post: post, scrollTargetedComment: scrollTargetedComment?.wrappedValue)
                 .environment(\.communityContext, communityContext?.wrappedValue)
         case let .comment(comment, comments: comments, showViewPostButton):
