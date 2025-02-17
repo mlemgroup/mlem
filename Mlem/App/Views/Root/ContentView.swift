@@ -39,10 +39,6 @@ struct ContentView: View {
 
     @State var avatarImage: UIImage?
     @State var selectedAvatarImage: UIImage?
-  
-    init() {
-        HapticManager.main.preheat()
-    }
     
     var body: some View {
         if appState.appRefreshToggle {
@@ -104,6 +100,11 @@ struct ContentView: View {
                                 handleError(error)
                             }
                         }
+                    }
+                    if scenePhase == .active {
+                        // When the app moves into the background, the haptic engine stops.
+                        // This ensures the engine is started before a haptic is played to avoid a short lag while the engine starts
+                        HapticManager.main.startEngine()
                     }
                 }
                 .environment(AppState.main)
