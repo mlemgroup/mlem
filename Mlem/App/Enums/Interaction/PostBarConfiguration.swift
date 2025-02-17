@@ -146,7 +146,16 @@ struct PostBarConfiguration: InteractionBarConfiguration {
         )
     }
     
-    init(legacyItems: [LegacyInterationBarItems], moderator: Bool) {
+    init(legacyItems: [LegacyInterationBarItem]?, moderator: Bool) {
+        guard let legacyItems else {
+            if moderator {
+                self = .default
+            } else {
+                self = .reportDefault
+            }
+            return
+        }
+        
         @AppStorage("showDownvotesSeparately") var showPostDownvotesSeparately: Bool = false
         @AppStorage("shouldShowScoreInPostBar") var shouldShowScoreInPostBar: Bool = false
         @AppStorage("shouldShowTimeInPostBar") var shouldShowTimeInPostBar: Bool = true
@@ -167,9 +176,9 @@ struct PostBarConfiguration: InteractionBarConfiguration {
         if shouldShowTimeInPostBar { newReadouts.append(.created) }
         if shouldShowScoreInPostBar {
             if showPostDownvotesSeparately {
-                newReadouts.append(.score)
-            } else {
                 newReadouts.append(contentsOf: [.upvote, .downvote])
+            } else {
+                newReadouts.append(.score)
             }
         }
         if shouldShowRepliesInPostBar { newReadouts.append(.comment) }
