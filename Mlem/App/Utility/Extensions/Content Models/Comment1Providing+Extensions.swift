@@ -164,6 +164,7 @@ extension Comment1Providing {
         case .upvote: upvoteReadout
         case .downvote: api.downvotesEnabled ? downvoteReadout : nil
         case .comment: commentReadout
+        case .saved: savedReadout
         }
     }
     
