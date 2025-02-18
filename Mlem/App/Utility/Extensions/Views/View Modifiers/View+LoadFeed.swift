@@ -18,7 +18,6 @@ private struct LoadFeed: ViewModifier {
         content
             .onChange(of: feedLoader == nil, initial: true) {
                 if let feedLoader, feedLoader.items.isEmpty {
-                    print("LOAD")
                     // wrapping this in a Task instead of using .task prevents cancellation errors from the parent view de-rendering
                     Task {
                         do {
