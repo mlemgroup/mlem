@@ -187,8 +187,7 @@ extension CommentBarConfiguration {
             }
         }
         if shouldShowRepliesInCommentBar { newReadouts.append(.comment) }
-        // TODO: pending #1768
-        // if shouldShowSavedInCommentBar { newReadouts.append(.saved) }
+        if shouldShowSavedInCommentBar { newReadouts.append(.saved) }
         self.readouts = newReadouts
         
         var newAvailableWidgets: Set<Item>
@@ -236,8 +235,7 @@ extension ReplyBarConfiguration {
             }
         }
         if shouldShowRepliesInCommentBar { newReadouts.append(.comment) }
-        // TODO: pending #1768
-        // if shouldShowSavedInCommentBar { newReadouts.append(.saved) }
+        if shouldShowSavedInCommentBar { newReadouts.append(.saved) }
         self.readouts = newReadouts
         
         var newAvailableWidgets: Set<Item> = .init(
