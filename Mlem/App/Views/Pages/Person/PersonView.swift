@@ -182,7 +182,7 @@ struct PersonView: View {
             }
             .animation(.easeOut(duration: 0.2), value: person is any Person3Providing)
         }
-        .outdatedFeedPopup(feedLoader: feedLoader)
+        .outdatedFeedPopup(feedLoader: feedLoader, showPopup: selectedTab != .communities)
     }
     
     @ViewBuilder
@@ -276,7 +276,6 @@ struct PersonView: View {
                         .padding([.horizontal, .bottom], Constants.main.standardSpacing)
                     }
                     PersonContentGridView(feedLoader: feedLoader, contentType: $selectedContentType)
-                        .refreshing(feedLoader: feedLoader, showPopup: selectedTab != .communities)
                 } else {
                     ProgressView()
                 }
