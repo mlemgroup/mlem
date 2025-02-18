@@ -28,7 +28,7 @@ class AccountsTracker {
     
     // Used on startup to determine which account should be made active
     func mostRecentAccount() -> any Account {
-        var allAccounts: [any Account] = userAccounts + guestAccounts
+        let allAccounts: [any Account] = userAccounts + guestAccounts
         if let activeAccount = allAccounts.first(where: { $0.activityState == .active }) {
             return activeAccount
         }

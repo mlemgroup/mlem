@@ -10,6 +10,10 @@ import SwiftUI
 extension InteractionBarEditorView {
     // MARK: - Definitions
     
+    enum ConfigurationType {
+        case post, comment
+    }
+    
     enum DropLocation: Equatable {
         case bar(Int)
         case tray
