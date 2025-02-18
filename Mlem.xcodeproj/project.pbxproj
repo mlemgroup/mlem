@@ -368,6 +368,7 @@
 		CD1446212A5B328E00610EF1 /* Privacy Policy.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1446202A5B328E00610EF1 /* Privacy Policy.swift */; };
 		CD1446252A5B357900610EF1 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1446242A5B357900610EF1 /* Document.swift */; };
 		CD1446272A5B36DA00610EF1 /* EULA.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1446262A5B36DA00610EF1 /* EULA.swift */; };
+		CD1464542D63FE7900202619 /* LegacyInteractionBarConfigurations.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1464532D63FE7300202619 /* LegacyInteractionBarConfigurations.swift */; };
 		CD17B24B2C19109A001E174B /* SwipeConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD17B24A2C19108B001E174B /* SwipeConfiguration.swift */; };
 		CD1B2E212C7F84160075C7EA /* View+MarkReadOnScroll.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1B2E202C7F84160075C7EA /* View+MarkReadOnScroll.swift */; };
 		CD1C64152D3428710006B3C1 /* CommunityView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1C64142D34286E0006B3C1 /* CommunityView+Logic.swift */; };
@@ -884,6 +885,7 @@
 		CD1446202A5B328E00610EF1 /* Privacy Policy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Privacy Policy.swift"; sourceTree = "<group>"; };
 		CD1446242A5B357900610EF1 /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
 		CD1446262A5B36DA00610EF1 /* EULA.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EULA.swift; sourceTree = "<group>"; };
+		CD1464532D63FE7300202619 /* LegacyInteractionBarConfigurations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyInteractionBarConfigurations.swift; sourceTree = "<group>"; };
 		CD17B24A2C19108B001E174B /* SwipeConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeConfiguration.swift; sourceTree = "<group>"; };
 		CD1B2E202C7F84160075C7EA /* View+MarkReadOnScroll.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+MarkReadOnScroll.swift"; sourceTree = "<group>"; };
 		CD1C64142D34286E0006B3C1 /* CommunityView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommunityView+Logic.swift"; sourceTree = "<group>"; };
@@ -1670,6 +1672,14 @@
 			path = Data;
 			sourceTree = "<group>";
 		};
+		CD1464522D63FE6F00202619 /* Legacy */ = {
+			isa = PBXGroup;
+			children = (
+				CD1464532D63FE7300202619 /* LegacyInteractionBarConfigurations.swift */,
+			);
+			path = Legacy;
+			sourceTree = "<group>";
+		};
 		CD17B2492C191073001E174B /* Quick Swipes */ = {
 			isa = PBXGroup;
 			children = (
@@ -1722,6 +1732,7 @@
 		CD4D583B2B867BB300B82964 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				CD1464522D63FE6F00202619 /* Legacy */,
 				CDE1F18D2C63D646008AF042 /* Configuration */,
 				CD14461F2A5B328600610EF1 /* Data */,
 				CD4D58C62B86DCE500B82964 /* Enums */,
@@ -2774,6 +2785,7 @@
 				0320B6612C8DFCF100D38548 /* SearchView+FiltersView.swift in Sources */,
 				034B94892C09360A00039AF4 /* Int+Extensions.swift in Sources */,
 				039D75642C4EEE69004F24C2 /* DeletableProviding+Extensions.swift in Sources */,
+				CD1464542D63FE7900202619 /* LegacyInteractionBarConfigurations.swift in Sources */,
 				0391E0FE2D05B2DF0040CCA8 /* AdvancedSortView.swift in Sources */,
 				0315B1C82C7635D4006D4F82 /* ApiCommentSortType+Extensions.swift in Sources */,
 				035394972CA1AFAF00795AA5 /* InstanceStubProviding+Uptime.swift in Sources */,
