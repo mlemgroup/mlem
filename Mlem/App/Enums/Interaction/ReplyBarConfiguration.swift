@@ -7,7 +7,6 @@
 
 import Foundation
 import SwiftUICore
-import SwiftUI
 
 struct ReplyBarConfiguration: InteractionBarConfiguration {
     enum ActionType: String, ActionTypeProviding {
