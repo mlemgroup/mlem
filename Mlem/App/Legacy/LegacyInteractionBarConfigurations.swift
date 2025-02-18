@@ -30,6 +30,8 @@ struct LegacyInteractionBarConfigurations: Codable {
 enum LegacyInterationBarItem: String, Codable {
     case infoStack, upvote, downvote, save, reply, share, upvoteCounter, downvoteCounter, scoreCounter, resolve, remove, purge, ban
     
+    // TODO: pending #1768 update equivalent() functions to include new types
+    
     // swiftlint:disable:next cyclomatic_complexity
     func postEquivalent() -> PostBarConfiguration.Item? {
         switch self {
@@ -92,6 +94,10 @@ enum LegacyInterationBarItem: String, Codable {
 
 extension InteractionBarConfigurations {
     init(legacyConfiguration: LegacyInteractionBarConfigurations) {
+        if legacyConfiguration.moderator != nil {
+            Settings.main.alternateInteractionBarLayoutForReports = true
+        }
+        
         self.post = .init(legacyItems: legacyConfiguration.post, moderator: false)
         self.comment = .init(legacyItems: legacyConfiguration.comment, moderator: false)
         self.reply = .init(legacyItems: legacyConfiguration.comment)
@@ -103,11 +109,7 @@ extension InteractionBarConfigurations {
 extension PostBarConfiguration {
     init(legacyItems: [LegacyInterationBarItem]?, moderator: Bool) {
         guard let legacyItems else {
-            if moderator {
-                self = .default
-            } else {
-                self = .reportDefault
-            }
+            self = moderator ? .reportDefault : .default
             return
         }
         
@@ -120,7 +122,7 @@ extension PostBarConfiguration {
         guard legacyItems.count(where: { $0 == .infoStack }) == 1,
               let infoStackIndex = legacyItems.firstIndex(of: .infoStack) else {
             assertionFailure("Invalid legacy items")
-            self = .default
+            self = moderator ? .reportDefault : .default
             return
         }
         
@@ -155,11 +157,7 @@ extension PostBarConfiguration {
 extension CommentBarConfiguration {
     init(legacyItems: [LegacyInterationBarItem]?, moderator: Bool) {
         guard let legacyItems else {
-            if moderator {
-                self = .default
-            } else {
-                self = .reportDefault
-            }
+            self = moderator ? .reportDefault : .default
             return
         }
         
@@ -172,7 +170,7 @@ extension CommentBarConfiguration {
         guard legacyItems.count(where: { $0 == .infoStack }) == 1,
               let infoStackIndex = legacyItems.firstIndex(of: .infoStack) else {
             assertionFailure("Invalid legacy items")
-            self = .default
+            self = moderator ? .reportDefault : .default
             return
         }
         
