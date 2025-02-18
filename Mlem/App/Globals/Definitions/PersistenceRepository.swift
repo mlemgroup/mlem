@@ -133,7 +133,23 @@ class PersistenceRepository {
     }
 
     func loadInteractionBarConfigurations() -> InteractionBarConfigurations {
-        load(InteractionBarConfigurations.self, from: PersistencePath.layoutWidgets) ?? .default
+        if let standard = load(InteractionBarConfigurations.self, from: PersistencePath.layoutWidgets, silentError: true) {
+            return standard
+        }
+        // if v2 format decoding fails, try legacy format
+        if let legacy = load(LegacyInteractionBarConfigurations.self, from: PersistencePath.layoutWidgets) {
+            let ret: InteractionBarConfigurations = .init(legacyConfiguration: legacy)
+            Task {
+                // save in v2 format
+                do {
+                    try await saveInteractionBarConfigurations(ret)
+                } catch {
+                    handleError(error)
+                }
+            }
+            return ret
+        }
+        return .default
     }
     
     func saveInteractionBarConfigurations(_ value: InteractionBarConfigurations) async throws {
@@ -213,7 +229,7 @@ class PersistenceRepository {
     
     // MARK: Loading methods
     
-    func load<T: Decodable>(_ model: T.Type, from path: URL) -> T? {
+    func load<T: Decodable>(_ model: T.Type, from path: URL, silentError: Bool = false) -> T? {
         do {
             let data = try read(path)
             
@@ -226,7 +242,7 @@ class PersistenceRepository {
             // Don't show error toast if file not found
             return nil
         } catch {
-            handleError(error)
+            handleError(error, silent: silentError)
             return nil
         }
     }

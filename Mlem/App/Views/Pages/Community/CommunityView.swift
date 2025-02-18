@@ -111,10 +111,6 @@ struct CommunityView: View {
                     if let postFeedLoader {
                         postsTab(community: community, postFeedLoader: postFeedLoader)
                             .padding(.bottom, -4)
-                            .refreshing(
-                                feedLoader: postFeedLoader,
-                                showPopup: selectedTab == .posts && community.api === AppState.main.firstApi
-                            )
                     }
                 case .about:
                     aboutTab(community: community)
@@ -137,7 +133,10 @@ struct CommunityView: View {
             }
         }
         .popupAnchor()
-        .outdatedFeedPopup(feedLoader: postFeedLoader)
+        .outdatedFeedPopup(
+            feedLoader: postFeedLoader,
+            showPopup: selectedTab == .posts && community.api === AppState.main.firstApi
+        )
         .fullScreenCover(isPresented: $warningPresented) {
             WarningOverlayView(
                 text: "This community likely contains graphic or explicit content.",
