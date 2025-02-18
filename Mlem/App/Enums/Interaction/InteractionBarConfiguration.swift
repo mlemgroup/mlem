@@ -134,14 +134,6 @@ struct InteractionBarConfigurations: Codable {
         self.postReport = try container.decodeIfPresent(PostBarConfiguration.self, forKey: .postReport) ?? .reportDefault
         self.commentReport = try container.decodeIfPresent(CommentBarConfiguration.self, forKey: .commentReport) ?? .reportDefault
     }
-    
-    init(legacyConfiguration: LegacyInteractionBarConfigurations) {
-        self.post = .init(legacyItems: legacyConfiguration.post, moderator: false)
-        self.comment = .init(legacyItems: legacyConfiguration.comment, moderator: false)
-        self.reply = .default
-        self.postReport = .init(legacyItems: legacyConfiguration.moderator, moderator: true)
-        self.commentReport = .init(legacyItems: legacyConfiguration.moderator, moderator: true)
-    }
 }
 
 struct MockReadoutAppearance {
