@@ -8,15 +8,15 @@
 import MlemMiddleware
 import SwiftUI
 
-private struct RefreshingFeedLoaderModifier: ViewModifier {
+private struct OutdatedFeedPopupModifier: ViewModifier {
     @Environment(AppState.self) var appState
     @Environment(FiltersTracker.self) var filtersTracker
     
-    let feedLoader: any FeedLoading
+    let feedLoader: (any FeedLoading)?
     
     let canShowPopup: Bool
     
-    init(feedLoader: any FeedLoading, showPopup canShowPopup: Bool) {
+    init(feedLoader: (any FeedLoading)?, showPopup canShowPopup: Bool) {
         self.feedLoader = feedLoader
         self.canShowPopup = canShowPopup
     }
@@ -25,20 +25,34 @@ private struct RefreshingFeedLoaderModifier: ViewModifier {
     
     func body(content: Content) -> some View {
         content
-            .refreshable {
-                await refresh(feedLoader: feedLoader, appState: appState, filtersTracker: filtersTracker)
+            .refreshable(isEnabled: feedLoader != nil) {
+                if let feedLoader {
+                    await refresh(feedLoader)
+                }
             }
-            .preference(key: FeedPopupPreferenceKey.self, value: showRefreshPopup)
             .onChange(of: apiChangeHash) {
-                if let newApi = feedLoader.items.first?.api {
-                    showRefreshPopup = canShowPopup && (newApi !== appState.firstApi && feedLoader.loadingState != .loading)
-                } else {
-                    showRefreshPopup = false
+                if let feedLoader {
+                    if let newApi = feedLoader.items.first?.api {
+                        showRefreshPopup = canShowPopup && (newApi !== appState.firstApi && feedLoader.loadingState != .loading)
+                    } else {
+                        showRefreshPopup = false
+                    }
                 }
             }
             .onChange(of: filtersTracker.changeHash) {
-                if feedLoader.items.count > 0 {
-                    showRefreshPopup = true
+                if let feedLoader {
+                    if feedLoader.items.count > 0 {
+                        showRefreshPopup = true
+                    }
+                }
+            }
+            .overlay(alignment: .bottom) {
+                RefreshPopupView("Feed is outdated", isPresented: $showRefreshPopup) {
+                    Task {
+                        if let feedLoader {
+                            await refresh(feedLoader)
+                        }
+                    }
                 }
             }
     }
@@ -47,66 +61,31 @@ private struct RefreshingFeedLoaderModifier: ViewModifier {
         var hasher = Hasher()
         hasher.combine(canShowPopup)
         hasher.combine(appState.firstApi)
-        hasher.combine(feedLoader.loadingState)
-        hasher.combine(feedLoader.items.first?.api)
+        hasher.combine(feedLoader?.loadingState)
+        hasher.combine(feedLoader?.items.first?.api)
         return hasher.finalize()
     }
-}
-
-private struct OutdatedFeedPopupModifier: ViewModifier {
-    @Environment(AppState.self) var appState
-    @Environment(FiltersTracker.self) var filtersTracker
-
-    let feedLoader: (any FeedLoading)?
-    @State var showRefreshPopup: Bool = false
     
-    func body(content: Content) -> some View {
-        content
-            .overlay(alignment: .bottom) {
-                RefreshPopupView("Feed is outdated", isPresented: $showRefreshPopup) {
-                    Task {
-                        if let feedLoader {
-                            await refresh(feedLoader: feedLoader, appState: appState, filtersTracker: filtersTracker)
-                        }
-                    }
+    func refresh(_ feedLoader: any FeedLoading) async {
+        do {
+            showRefreshPopup = false
+            await feedLoader.changeApi(to: appState.firstApi, context: filtersTracker.filterContext)
+            
+            if let feedLoader = feedLoader as? CorePostFeedLoader {
+                if try await appState.firstApi.version < feedLoader.sortType.minimumVersion {
+                    try await feedLoader.changeSortType(to: appState.initialFeedSortType, forceRefresh: true)
+                    return
                 }
             }
-            .onPreferenceChange(FeedPopupPreferenceKey.self) { value in
-                showRefreshPopup = value
-            }
-    }
-}
-
-private func refresh(feedLoader: any FeedLoading, appState: AppState, filtersTracker: FiltersTracker) async {
-    do {
-        await feedLoader.changeApi(to: appState.firstApi, context: filtersTracker.filterContext)
-        
-        if let feedLoader = feedLoader as? CorePostFeedLoader {
-            if try await appState.firstApi.version < feedLoader.sortType.minimumVersion {
-                try await feedLoader.changeSortType(to: appState.initialFeedSortType, forceRefresh: true)
-                return
-            }
+            try await feedLoader.refresh(clearBeforeRefresh: true)
+        } catch {
+            handleError(error)
         }
-        try await feedLoader.refresh(clearBeforeRefresh: true)
-    } catch {
-        handleError(error)
-    }
-}
-
-private struct FeedPopupPreferenceKey: PreferenceKey {
-    static var defaultValue: Bool = false
-
-    static func reduce(value: inout Bool, nextValue: () -> Bool) {
-        value = value || nextValue()
     }
 }
 
 extension View {
-    func refreshing(feedLoader: any FeedLoading, showPopup: Bool = true) -> some View {
-        modifier(RefreshingFeedLoaderModifier(feedLoader: feedLoader, showPopup: showPopup))
-    }
-    
-    func outdatedFeedPopup(feedLoader: (any FeedLoading)?) -> some View {
-        modifier(OutdatedFeedPopupModifier(feedLoader: feedLoader))
+    func outdatedFeedPopup(feedLoader: (any FeedLoading)?, showPopup: Bool = true) -> some View {
+        modifier(OutdatedFeedPopupModifier(feedLoader: feedLoader, showPopup: showPopup))
     }
 }
