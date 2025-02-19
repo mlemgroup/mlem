@@ -17,7 +17,7 @@ extension Post1Providing {
     var shouldHideInFeed: Bool {
         (creator_?.shouldHideInFeed ?? false) || (community_?.shouldHideInFeed ?? false) || (hidden_ ?? false) || purged
     }
-
+    
     var canModerate: Bool {
         api.myPerson?.moderates(communityId: communityId) ?? false || api.isAdmin
     }
@@ -162,7 +162,7 @@ extension Post1Providing {
                 selectTextAction()
             }
             shareAction()
-
+            
             if isOwnPost {
                 editAction()
                 deleteAction(feedback: feedback)
@@ -241,6 +241,7 @@ extension Post1Providing {
         case .pin: api.isAdmin ? pinAction(feedback: feedback) : pinToCommunityAction(feedback: feedback)
         case .resolve: reportContext?.resolveAction(feedback: feedback)
         case .remove: removeAction(feedback: feedback).disabled(!canModerate)
+        case .ban: contextualBanAction(reportContext: reportContext)
         }
     }
     
@@ -269,17 +270,17 @@ extension Post1Providing {
     
     func taggedTitle(communityContext: (any Community1Providing)?) -> Text {
         let hasTags: Bool = removed
-            || deleted
-            || pinnedInstance
-            || (communityContext != nil && pinnedCommunity)
-            || locked
+        || deleted
+        || pinnedInstance
+        || (communityContext != nil && pinnedCommunity)
+        || locked
         
         return postTag(active: removed, icon: Icons.removeFill, color: Palette.main.negative) +
-            postTag(active: deleted, icon: Icons.delete, color: Palette.main.negative) +
-            postTag(active: pinnedInstance, icon: Icons.pinFill, color: Palette.main.administration) +
-            postTag(active: pinnedCommunity && communityContext != nil, icon: Icons.pinFill, color: Palette.main.moderation) +
-            postTag(active: locked, icon: Icons.lockFill, color: Palette.main.lockAccent) +
-            Text(verbatim: "\(hasTags ? "  " : "")\(title)")
+        postTag(active: deleted, icon: Icons.delete, color: Palette.main.negative) +
+        postTag(active: pinnedInstance, icon: Icons.pinFill, color: Palette.main.administration) +
+        postTag(active: pinnedCommunity && communityContext != nil, icon: Icons.pinFill, color: Palette.main.moderation) +
+        postTag(active: locked, icon: Icons.lockFill, color: Palette.main.lockAccent) +
+        Text(verbatim: "\(hasTags ? "  " : "")\(title)")
     }
     
     /// Host if this is a link post, otherwise nil.
@@ -477,6 +478,16 @@ extension Post1Providing {
             appearance: .viewVotes(),
             callback: enabled ? { @MainActor in navigation.push(.votesList(.post(self))) } : nil
         )
+    }
+    
+    func contextualBanAction(reportContext: Report?) -> BasicAction? {
+        guard let reportContext, let myPerson = reportContext.api.myPerson else { return nil }
+        
+        if let community = reportContext.target.community, myPerson.moderates(communityId: community.id) {
+            return reportContext.target.creator.banFromCommunityAction(community: community)
+        }
+        
+        return reportContext.target.creator.banFromInstanceAction()
     }
     // swiftlint:disable:next file_length
 }

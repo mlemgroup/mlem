@@ -24,7 +24,7 @@ struct PostBarConfiguration: InteractionBarConfiguration {
         case pin
         case resolve
         case remove
-        // case ban
+        case ban
         
         static var defaultWidgets: [ActionType] {[
                 .upvote,
@@ -58,6 +58,7 @@ struct PostBarConfiguration: InteractionBarConfiguration {
             case .pin: .pin(isOn: false)
             case .resolve: .resolve(isOn: false)
             case .remove: .remove(isOn: false)
+            case .ban: .banFromCommunity(isOn: false)
             }
         }
     }
