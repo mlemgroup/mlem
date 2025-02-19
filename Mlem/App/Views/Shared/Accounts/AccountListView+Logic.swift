@@ -131,5 +131,6 @@ extension AccountListView {
     
     func reorderAccount(fromOffsets: IndexSet, toOffset: Int) {
         accountsTracker.userAccounts.move(fromOffsets: fromOffsets, toOffset: toOffset)
+        accountsTracker.saveAccounts(ofType: .user)
     }
 }
