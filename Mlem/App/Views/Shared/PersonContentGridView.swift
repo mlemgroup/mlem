@@ -96,6 +96,7 @@ struct PersonContentGridView: View {
                     }
                 }
             }
+            .animation(.easeOut(duration: 0.1), value: items.isEmpty)
             EndOfFeedView(loadingState: loadingState, viewType: .hobbit)
         }
     }
