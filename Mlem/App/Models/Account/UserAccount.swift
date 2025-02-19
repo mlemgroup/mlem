@@ -84,10 +84,17 @@ class UserAccount: Account, CommunityOrPerson {
         }
         self.actorId = actorId
         
-        // initialize ApiClient with token, if present
         self.api = ApiClient.getApiClient(url: instanceLink, username: name)
-        if let token = Constants.main.keychain[getKeychainId(actorId: actorId)] ?? Constants.main.keychain[getKeychainId(id: id)] {
-            api.updateToken(token)
+        do {
+            let keychain = Constants.main.keychain
+            let token = try keychain.get(getKeychainId(actorId: actorId)) ?? keychain.get(getKeychainId(id: id))
+            if let token {
+                api.updateToken(token)
+            } else {
+                handleError(MlemError.modelError("No token in keychain"))
+            }
+        } catch {
+            handleError(error)
         }
     }
     
