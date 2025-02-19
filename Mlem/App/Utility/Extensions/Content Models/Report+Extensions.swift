@@ -25,12 +25,7 @@ extension Report {
     func resolveAction(feedback: Set<FeedbackType> = []) -> BasicAction {
         .init(
             id: "resolve\(cacheId)",
-            appearance: .init(
-                label: resolved ? "Unresolve" : "Resolve",
-                color: resolved ? Palette.main.negative : Palette.main.positive,
-                icon: resolved ? Icons.failureCircle : Icons.successCircle,
-                swipeIcon2: resolved ? Icons.failureCircleFill : Icons.successCircleFill
-            ),
+            appearance: .resolve(isOn: resolved),
             callback: api.canInteract ? { @MainActor in self.toggleResolved(feedback: feedback) } : nil
         )
     }

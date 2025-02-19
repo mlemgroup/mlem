@@ -17,6 +17,7 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
         case share
         case selectText
         case report
+        case resolve
         case remove
         
         static var defaultWidgets: [ActionType] {[
@@ -42,6 +43,7 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
             case .share: .share()
             case .selectText: .selectText()
             case .report: .report()
+            case .resolve: .resolve(isOn: false)
             case .remove: .remove(isOn: false)
             }
         }

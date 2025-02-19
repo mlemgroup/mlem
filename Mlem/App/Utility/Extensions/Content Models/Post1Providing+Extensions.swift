@@ -220,7 +220,8 @@ extension Post1Providing {
         type: PostBarConfiguration.ActionType,
         feedback: Set<FeedbackType> = [.haptic, .toast],
         commentTreeTracker: CommentTreeTracker? = nil,
-        communityContext: (any CommunityStubProviding)? = nil
+        communityContext: (any CommunityStubProviding)? = nil,
+        reportContext: Report? = nil
     ) -> (any Action)? {
         switch type {
         case .upvote: upvoteAction(feedback: feedback)
@@ -238,6 +239,7 @@ extension Post1Providing {
         // in parenthesis, but the pre-commit hook removed the paranthesis
         // swiftlint:disable:next void_function_in_ternary
         case .pin: api.isAdmin ? pinAction(feedback: feedback) : pinToCommunityAction(feedback: feedback)
+        case .resolve: reportContext?.resolveAction(feedback: feedback)
         case .remove: removeAction(feedback: feedback).disabled(!canModerate)
         }
     }

@@ -22,7 +22,9 @@ struct PostBarConfiguration: InteractionBarConfiguration {
         case crossPost
         case lock
         case pin
+        case resolve
         case remove
+        // case ban
         
         static var defaultWidgets: [ActionType] {[
                 .upvote,
@@ -54,6 +56,7 @@ struct PostBarConfiguration: InteractionBarConfiguration {
             case .crossPost: .crossPost()
             case .lock: .lock(isOn: false)
             case .pin: .pin(isOn: false)
+            case .resolve: .resolve(isOn: false)
             case .remove: .remove(isOn: false)
             }
         }

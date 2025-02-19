@@ -204,6 +204,15 @@ extension ActionAppearance {
         )
     }
     
+    static func resolve(isOn: Bool) -> Self {
+        .init(
+            label: isOn ? "Unresolve" : "Resolve",
+            color: isOn ? Palette.main.negative : Palette.main.positive,
+            icon: isOn ? Icons.failureCircle : Icons.successCircle,
+            swipeIcon2: isOn ? Icons.failureCircleFill : Icons.successCircleFill
+        )
+    }
+    
     /// Adds or removes a user as administrator
     /// - Parameter isOn: true when user is admin, false otherwise
     static func addAdmin(isOn: Bool) -> Self {

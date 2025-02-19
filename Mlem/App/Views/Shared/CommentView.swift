@@ -114,7 +114,8 @@ struct CommentView<EmbeddedContent: View>: View {
                             comment: comment,
                             configuration: interactionBarConfiguration,
                             commentTreeTracker: commentTreeTracker,
-                            communityContext: communityContext
+                            communityContext: communityContext,
+                            reportContext: reportContext
                         )
                         .padding(.horizontal, 2)
                         .padding(.bottom, 5)
