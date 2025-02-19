@@ -150,7 +150,13 @@ class UserAccount: Account, CommunityOrPerson {
     }
     
     func saveTokenToKeychain() {
-        Constants.main.keychain[getKeychainId(actorId: actorId)] = api.token
+        if let token = api.token {
+            do {
+                try Constants.main.keychain.set(token, key: getKeychainId(actorId: actorId))
+            } catch {
+                handleError(error)
+            }
+        }
     }
     
     func deleteTokenFromKeychain() {
