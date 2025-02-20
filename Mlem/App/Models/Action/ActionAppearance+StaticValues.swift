@@ -207,6 +207,7 @@ extension ActionAppearance {
     static func resolve(isOn: Bool) -> Self {
         .init(
             label: isOn ? "Unresolve" : "Resolve",
+            isOn: isOn,
             color: isOn ? Palette.main.negative : Palette.main.positive,
             icon: isOn ? Icons.unresolve : Icons.resolve,
             swipeIcon2: isOn ? Icons.unresolveFill : Icons.resolveFill
