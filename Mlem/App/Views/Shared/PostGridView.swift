@@ -107,6 +107,7 @@ struct PostGridView: View {
                 }
             }
             .padding(.horizontal, postSize.tiled || columns.count == 1 ? 0 : Constants.main.halfSpacing)
+            .animation(.easeOut(duration: 0.1), value: postFeedLoader.items.isEmpty)
             EndOfFeedView(loadingState: postFeedLoader.loadingState, viewType: .hobbit)
         }
     }
