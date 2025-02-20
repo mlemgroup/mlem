@@ -210,6 +210,7 @@ extension ActionAppearance {
             isOn: isOn,
             color: isOn ? Palette.main.negative : Palette.main.positive,
             icon: isOn ? Icons.unresolve : Icons.resolve,
+            barIcon: isOn ? Icons.resolveFill : Icons.resolve,
             swipeIcon2: isOn ? Icons.unresolveFill : Icons.resolveFill
         )
     }
