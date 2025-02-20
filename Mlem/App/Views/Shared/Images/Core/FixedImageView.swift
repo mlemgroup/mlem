@@ -18,13 +18,7 @@ struct FixedImageView: View {
     
     @State var loadingPref: MediaLoadingState? // tracked separately to allow correct propagation of initial value
     
-    // TODO:
-    // FixedImageLoader always defined, initialized with size param
-    // FixedImageLoader `load` now accepts and sets url
-    // Call `load` in `task(id: url)`
-    // This is basically what Nuke does
-    
-    @State var loader: FixedImageLoader?
+    @State var loader: FixedImageLoader
     
     let url: URL?
     let size: CGSize
@@ -63,26 +57,21 @@ struct FixedImageView: View {
         self.size = size
         self.blurred = blurred
         self.showPlayButton = showPlayButton
+        self._loader = .init(wrappedValue: .init(size: size))
     }
     
-    var isMovie: Bool { loader?.url?.proxyAwarePathExtension?.isMovieExtension ?? false }
+    var isMovie: Bool { loader.url?.proxyAwarePathExtension?.isMovieExtension ?? false }
     
     var body: some View {
         Color.clear
             .task(id: url) {
-                print("initializing loader")
-                if let url {
-                    loader = .init(url: url, size: size)
-                    await loader?.load()
-                } else {
-                    loader = nil
-                }
+                await loader.load(url)
             }
             .contentShape(.rect)
             .overlay {
                 content
                     .aspectRatio(1, contentMode: .fill)
-                    .onChange(of: loader?.loading, initial: true) { loadingPref = loader?.loading }
+                    .onChange(of: loader.loading, initial: true) { loadingPref = loader.loading }
                     .preference(key: MediaLoadingPreferenceKey.self, value: loadingPref)
                     .allowsHitTesting(false)
             }
@@ -90,34 +79,31 @@ struct FixedImageView: View {
     
     @ViewBuilder
     var content: some View {
-        if let loader {
-            if loader.loading == .failed
-                || isMovie
-                || loader.loading == .proxyFailed
-                || (loader.loading == .loading && !showProgress) {
-                fallbackImage
+        if loader.loading == .failed
+            || isMovie
+            || loader.loading == .noUrl
+            || loader.loading == .proxyFailed
+            || (loader.loading == .loading && !showProgress) {
+            fallbackImage
+                .overlay {
+                    if loader.isAnimated, showPlayButton {
+                        PlayButton(postSize: postSize)
+                    }
+                }
+        } else {
+            if loader.loading == .loading {
+                ProgressView().tint(.secondary)
+            } else {
+                Image(uiImage: loader.uiImage ?? .blank)
+                    .resizable()
+                    .scaledToFill()
+                    .dynamicBlur(blurred: blurred)
                     .overlay {
                         if loader.isAnimated, showPlayButton {
                             PlayButton(postSize: postSize)
                         }
                     }
-            } else {
-                if loader.loading == .loading {
-                    ProgressView().tint(.secondary)
-                } else {
-                    Image(uiImage: loader.uiImage ?? .blank)
-                        .resizable()
-                        .scaledToFill()
-                        .dynamicBlur(blurred: blurred)
-                        .overlay {
-                            if loader.isAnimated, showPlayButton {
-                                PlayButton(postSize: postSize)
-                            }
-                        }
-                }
             }
-        } else {
-            fallbackImage
         }
     }
     
@@ -134,7 +120,7 @@ struct FixedImageView: View {
             Image(systemName: fallback.icon)
                 .foregroundStyle(palette.secondary)
         case .image, .movie:
-            let icon: String = (loader == nil || loader?.loading == .failed || isMovie) ? fallback.icon : Icons.proxy
+            let icon: String = (loader.loading == .noUrl || loader.loading == .failed || isMovie) ? fallback.icon : Icons.proxy
             Image(systemName: icon)
                 .font(.title)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
