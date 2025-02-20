@@ -7,6 +7,7 @@
 
 import Dependencies
 import SwiftUI
+import MlemMiddleware
 
 struct BasicAction: Action {
     let id: String

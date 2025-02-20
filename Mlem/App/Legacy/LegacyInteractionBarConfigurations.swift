@@ -47,7 +47,7 @@ enum LegacyInterationBarItem: String, Codable {
         case .resolve: return .action(.resolve)
         case .remove: return .action(.remove)
         case .purge: return nil
-        case .ban: return nil
+        case .ban: return .action(.ban)
         }
     }
     
@@ -66,7 +66,7 @@ enum LegacyInterationBarItem: String, Codable {
         case .resolve: return .action(.resolve)
         case .remove: return .action(.remove)
         case .purge: return nil
-        case .ban: return nil
+        case .ban: return .action(.ban)
         }
     }
     

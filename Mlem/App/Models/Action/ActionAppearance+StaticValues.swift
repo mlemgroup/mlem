@@ -208,8 +208,8 @@ extension ActionAppearance {
         .init(
             label: isOn ? "Unresolve" : "Resolve",
             color: isOn ? Palette.main.negative : Palette.main.positive,
-            icon: isOn ? Icons.failureCircle : Icons.successCircle,
-            swipeIcon2: isOn ? Icons.failureCircleFill : Icons.successCircleFill
+            icon: isOn ? Icons.unresolve : Icons.resolve,
+            swipeIcon2: isOn ? Icons.unresolveFill : Icons.resolveFill
         )
     }
     

@@ -35,11 +35,12 @@ struct PostBarConfiguration: InteractionBarConfiguration {
         ]}
         
         static var defaultReportWidgets: [ActionType] {[
-            .save,
             .share,
             .lock,
             .pin,
-            .remove
+            .resolve,
+            .remove,
+            .ban
         ]}
         
         var appearance: ActionAppearance {
@@ -143,9 +144,9 @@ struct PostBarConfiguration: InteractionBarConfiguration {
     
     static var reportDefault: Self {
         .init(
-            leading: [.action(.share), .action(.pin)],
-            trailing: [.action(.lock), .action(.remove)],
-            readouts: [.created, .comment],
+            leading: [.action(.resolve), .action(.lock)],
+            trailing: [.action(.ban), .action(.remove)],
+            readouts: [.upvote, .downvote, .created, .comment],
             availableWidgets: .init(ActionType.defaultReportWidgets.map { .action($0) })
         )
     }

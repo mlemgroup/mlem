@@ -19,6 +19,7 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
         case report
         case resolve
         case remove
+        case ban
         
         static var defaultWidgets: [ActionType] {[
             .upvote,
@@ -29,9 +30,10 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
         ]}
         
         static var defaultReportWidgets: [ActionType] {[
-            .save,
             .share,
-            .remove
+            .resolve,
+            .remove,
+            .ban
         ]}
         
         var appearance: ActionAppearance {
@@ -45,6 +47,7 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
             case .report: .report()
             case .resolve: .resolve(isOn: false)
             case .remove: .remove(isOn: false)
+            case .ban: .banFromCommunity(isOn: false)
             }
         }
     }
@@ -129,9 +132,9 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
     
     static var reportDefault: Self {
         .init(
-            leading: [.action(.share)],
-            trailing: [.action(.remove)],
-            readouts: [.created, .comment],
+            leading: [.action(.resolve), .action(.share)],
+            trailing: [.action(.ban), .action(.remove)],
+            readouts: [.upvote, .downvote, .created, .comment],
             availableWidgets: .init(ActionType.defaultReportWidgets.map { .action($0) })
         )
     }

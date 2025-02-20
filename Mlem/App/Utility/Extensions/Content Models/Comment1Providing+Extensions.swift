@@ -136,7 +136,7 @@ extension Comment1Providing {
     ) -> (any Action)? {
         switch type {
         case .upvote: upvoteAction(feedback: [.haptic])
-        case .downvote: api.downvotesEnabled ? downvoteAction(feedback: [.haptic]) : nil
+        case .downvote:  api.downvotesEnabled ? downvoteAction(feedback: [.haptic]) : nil
         case .save: saveAction(feedback: [.haptic])
         case .reply: replyAction(commentTreeTracker: commentTreeTracker)
         case .share: shareAction()
@@ -144,6 +144,7 @@ extension Comment1Providing {
         case .report: reportAction(communityContext: communityContext)
         case .resolve: reportContext?.resolveAction(feedback: [.haptic])
         case .remove: removeAction().disabled(!canModerate)
+        case .ban: reportContext?.contextualBanAction()
         }
     }
     

@@ -67,6 +67,8 @@ struct CommentView<EmbeddedContent: View>: View {
         }
     }
     
+    var compact: Bool { compactComments && reportContext == nil }
+    
     @ViewBuilder
     var content: some View {
         let collapsed = treeNode?.collapsed ?? false
@@ -79,7 +81,7 @@ struct CommentView<EmbeddedContent: View>: View {
                 HStack(spacing: 0) {
                     FullyQualifiedLinkView(comment.creator_, labelStyle: .small)
                     Spacer()
-                    if compactComments {
+                    if compact {
                         InfoStackView(
                             comment: comment,
                             readouts: InteractionBarTracker.main.commentInteractionBar.readouts,
@@ -109,7 +111,7 @@ struct CommentView<EmbeddedContent: View>: View {
                         .id("\(comment.id)_commment_footer")
                     }
                     embeddedContent
-                    if !compactComments {
+                    if !compact {
                         InteractionBarView(
                             comment: comment,
                             configuration: interactionBarConfiguration,
@@ -124,7 +126,7 @@ struct CommentView<EmbeddedContent: View>: View {
                 }
             }
             .padding(.vertical, Constants.main.standardSpacing)
-            .padding(.top, compactComments || collapsed ? 0 : 3)
+            .padding(.top, compact || collapsed ? 0 : 3)
         }
         .padding(depth == 0 ? .horizontal : .trailing, Constants.main.standardSpacing)
         .background(highlight ? palette.accent.opacity(0.2) : .clear)

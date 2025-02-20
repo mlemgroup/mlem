@@ -29,4 +29,14 @@ extension Report {
             callback: api.canInteract ? { @MainActor in self.toggleResolved(feedback: feedback) } : nil
         )
     }
+    
+    func contextualBanAction() -> BasicAction? {
+        guard let myPerson = api.myPerson else { return nil }
+        
+        if let community = target.community, myPerson.moderates(communityId: community.id) {
+            return target.creator.banFromCommunityAction(community: community)
+        }
+        
+        return target.creator.banFromInstanceAction()
+    }
 }

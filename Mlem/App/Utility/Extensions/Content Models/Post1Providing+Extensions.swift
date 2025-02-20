@@ -241,7 +241,7 @@ extension Post1Providing {
         case .pin: api.isAdmin ? pinAction(feedback: feedback) : pinToCommunityAction(feedback: feedback)
         case .resolve: reportContext?.resolveAction(feedback: feedback)
         case .remove: removeAction(feedback: feedback).disabled(!canModerate)
-        case .ban: contextualBanAction(reportContext: reportContext)
+        case .ban: reportContext?.contextualBanAction()
         }
     }
     
@@ -478,16 +478,6 @@ extension Post1Providing {
             appearance: .viewVotes(),
             callback: enabled ? { @MainActor in navigation.push(.votesList(.post(self))) } : nil
         )
-    }
-    
-    func contextualBanAction(reportContext: Report?) -> BasicAction? {
-        guard let reportContext, let myPerson = reportContext.api.myPerson else { return nil }
-        
-        if let community = reportContext.target.community, myPerson.moderates(communityId: community.id) {
-            return reportContext.target.creator.banFromCommunityAction(community: community)
-        }
-        
-        return reportContext.target.creator.banFromInstanceAction()
     }
     // swiftlint:disable:next file_length
 }
