@@ -131,7 +131,6 @@ struct ProfileSettingsView: View {
         Section {
             HStack(spacing: 15) {
                 CircleCroppedImageView(url: avatarUrl, frame: 48, fallback: .person)
-                    .id(avatarUrl)
                 Text("Avatar")
                 Spacer()
                 CircleImageUploadButton(imageManager: avatarManager, url: $avatarUrl, api: person.api)

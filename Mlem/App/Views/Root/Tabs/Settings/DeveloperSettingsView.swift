@@ -28,21 +28,21 @@ struct DeveloperSettingsView: View {
             }
             
             #if DEBUG
-                Section {
-                    Button(String("Reset Feed Welcome Prompt")) {
-                        showFeedWelcomePrompt = true
-                    }
-                
-                    Button(String("Create Error")) {
-                        handleError(ApiClientError.insufficientPermissions)
-                    }
-                    
-                    Button(String("Create Silent Error")) {
-                        handleError(ApiClientError.noEntityFound, silent: true)
-                    }
-                } header: {
-                    Text(verbatim: "Debug Tools")
+            Section {
+                Button(String("Reset Feed Welcome Prompt")) {
+                    showFeedWelcomePrompt = true
                 }
+                
+                Button(String("Create Error")) {
+                    handleError(ApiClientError.insufficientPermissions)
+                }
+                
+                Button(String("Create Silent Error")) {
+                    handleError(ApiClientError.noEntityFound, silent: true)
+                }
+            } header: {
+                Text(verbatim: "Debug Tools")
+            }
             #endif
             Button(String("Reset Settings State")) {
                 do {
