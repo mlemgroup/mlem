@@ -20,19 +20,22 @@ struct InteractionBarView: View {
         post: any Post1Providing,
         configuration: PostBarConfiguration,
         commentTreeTracker: CommentTreeTracker? = nil,
-        communityContext: (any CommunityStubProviding)? = nil
+        communityContext: (any CommunityStubProviding)? = nil,
+        reportContext: Report? = nil
     ) {
         self.leading = .init(
             post: post,
             items: configuration.leading,
             commentTreeTracker: commentTreeTracker,
-            communityContext: communityContext
+            communityContext: communityContext,
+            reportContext: reportContext
         )
         self.trailing = .init(
             post: post,
             items: configuration.trailing,
             commentTreeTracker: commentTreeTracker,
-            communityContext: communityContext
+            communityContext: communityContext,
+            reportContext: reportContext
         )
         self.readouts = configuration.readouts.compactMap { post.readout(type: $0) }
     }
@@ -41,19 +44,22 @@ struct InteractionBarView: View {
         comment: any Comment1Providing,
         configuration: CommentBarConfiguration,
         commentTreeTracker: CommentTreeTracker? = nil,
-        communityContext: (any CommunityStubProviding)? = nil
+        communityContext: (any CommunityStubProviding)? = nil,
+        reportContext: Report?
     ) {
         self.leading = .init(
             comment: comment,
             items: configuration.leading,
             commentTreeTracker: commentTreeTracker,
-            communityContext: communityContext
+            communityContext: communityContext,
+            reportContext: reportContext
         )
         self.trailing = .init(
             comment: comment,
             items: configuration.trailing,
             commentTreeTracker: commentTreeTracker,
-            communityContext: communityContext
+            communityContext: communityContext,
+            reportContext: reportContext
         )
         self.readouts = configuration.readouts.compactMap { comment.readout(type: $0) }
     }
@@ -213,7 +219,8 @@ extension [EnrichedWidget] {
         post: any Post1Providing,
         items: [PostBarConfiguration.Item],
         commentTreeTracker: CommentTreeTracker?,
-        communityContext: (any CommunityStubProviding)?
+        communityContext: (any CommunityStubProviding)?,
+        reportContext: Report?
     ) {
         self = items.compactMap { item in
             switch item {
@@ -221,7 +228,8 @@ extension [EnrichedWidget] {
                 if let action = post.action(
                     type: action,
                     commentTreeTracker: commentTreeTracker,
-                    communityContext: communityContext
+                    communityContext: communityContext,
+                    reportContext: reportContext
                 ) {
                     return .action(action)
                 }
@@ -238,7 +246,8 @@ extension [EnrichedWidget] {
         comment: any Comment1Providing,
         items: [CommentBarConfiguration.Item],
         commentTreeTracker: CommentTreeTracker?,
-        communityContext: (any CommunityStubProviding)?
+        communityContext: (any CommunityStubProviding)?,
+        reportContext: Report?
     ) {
         self = items.compactMap { item in
             switch item {
@@ -246,7 +255,8 @@ extension [EnrichedWidget] {
                 if let action = comment.action(
                     type: action,
                     commentTreeTracker: commentTreeTracker,
-                    communityContext: communityContext
+                    communityContext: communityContext,
+                    reportContext: reportContext
                 ) {
                     return .action(action)
                 }
