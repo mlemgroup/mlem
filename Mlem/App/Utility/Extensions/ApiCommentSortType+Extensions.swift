@@ -13,7 +13,7 @@ extension ApiCommentSortType {
     
     var minimumVersion: SiteVersion {
         switch self {
-        case .controversial: .v19_0
+        case .controversial: .v0_19_0
         default: .zero
         }
     }
