@@ -8,5 +8,5 @@
 import Foundation
 
 enum MediaLoadingState {
-    case noUrl, loading, done, proxyFailed, failed
+    case loading, done, proxyFailed, failed
 }
