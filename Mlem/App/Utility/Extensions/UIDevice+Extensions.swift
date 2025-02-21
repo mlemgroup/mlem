@@ -36,7 +36,7 @@ extension UIDevice {
 }
 
 enum DeviceFrameType {
-    case noNotch, wideNotch, thinNotch, dynamicIsland
+    case noNotch, wideNotch, narrowNotch, dynamicIsland
     
     init(deviceName: String) {
         // The number in the device name is 1 higher than the commerical number.
@@ -47,10 +47,10 @@ enum DeviceFrameType {
             if deviceName == "iPhone15,2" || deviceName == "iPhone15,3" {
                 self = .dynamicIsland
             } else {
-                self = .thinNotch
+                self = .narrowNotch
             }
         case _ where deviceName.starts(with: "iPhone14"): // iPhone 13
-            self = .thinNotch
+            self = .narrowNotch
         case _ where deviceName.starts(with: /iPhone1[1-3]/): // iPhone X - 12
             self = .wideNotch
         default:
