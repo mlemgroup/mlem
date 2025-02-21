@@ -14,12 +14,12 @@ import NukeUI
 // be burdening translators with these when they'll never be used
 
 struct DeveloperSettingsView: View {
-     @Dependency(\.persistenceRepository) var persistenceRepository
+    @Dependency(\.persistenceRepository) var persistenceRepository
     
-     @Setting(\.showFeedWelcomePrompt) var showFeedWelcomePrompt
-     @Setting(\.developerMode) var developerMode
+    @Setting(\.showFeedWelcomePrompt) var showFeedWelcomePrompt
+    @Setting(\.developerMode) var developerMode
     
-     @AppStorage("status.firstAppearance") var firstAppearance: Bool = true
+    @AppStorage("status.firstAppearance") var firstAppearance: Bool = true
     
     var body: some View {
         Form {
@@ -29,21 +29,21 @@ struct DeveloperSettingsView: View {
             }
             
             #if DEBUG
-                Section {
-                    Button(String("Reset Feed Welcome Prompt")) {
-                        showFeedWelcomePrompt = true
-                    }
-                
-                    Button(String("Create Error")) {
-                        handleError(ApiClientError.insufficientPermissions)
-                    }
-                    
-                    Button(String("Create Silent Error")) {
-                        handleError(ApiClientError.noEntityFound, silent: true)
-                    }
-                } header: {
-                    Text(verbatim: "Debug Tools")
+            Section {
+                Button(String("Reset Feed Welcome Prompt")) {
+                    showFeedWelcomePrompt = true
                 }
+                
+                Button(String("Create Error")) {
+                    handleError(ApiClientError.insufficientPermissions)
+                }
+                
+                Button(String("Create Silent Error")) {
+                    handleError(ApiClientError.noEntityFound, silent: true)
+                }
+            } header: {
+                Text(verbatim: "Debug Tools")
+            }
             #endif
             Button(String("Reset Settings State")) {
                 do {
