@@ -8,7 +8,6 @@
 import Dependencies
 import MlemMiddleware
 import SwiftUI
-import NukeUI
 
 // Strings in this view are intentionally left unlocalized; we shouldn't
 // be burdening translators with these when they'll never be used

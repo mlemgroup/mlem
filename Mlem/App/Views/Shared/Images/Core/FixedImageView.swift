@@ -21,7 +21,6 @@ struct FixedImageView: View {
     @State var loader: FixedImageLoader
     
     let url: URL?
-    let size: CGSize
     let fallback: Fallback
     let showProgress: Bool
     let blurred: Bool
@@ -54,7 +53,6 @@ struct FixedImageView: View {
         self.fallback = fallback
         self.showProgress = showProgress
         self.url = url
-        self.size = size
         self.blurred = blurred
         self.showPlayButton = showPlayButton
         self._loader = .init(wrappedValue: .init(size: size))
