@@ -111,7 +111,7 @@ struct SettingsDeviceView<ScreenContent: View>: View {
                 .fill(accentColor)
                 .frame(height: geometry.size.height / 25)
                 .padding(.horizontal, geometry.size.width / 2.8)
-                .padding(.top, 40 / 3 * scale)
+                .padding(.top, 2 * scale)
         } else {
             UnevenRoundedRectangle(
                 cornerRadii: .init(
@@ -123,7 +123,7 @@ struct SettingsDeviceView<ScreenContent: View>: View {
             )
             .fill(accentColor)
             .frame(height: geometry.size.height / 15 - 2)
-            .padding(.horizontal, geometry.size.width / (UIDevice.frameType == .thinNotch ? 3 : 4))
+            .padding(.horizontal, geometry.size.width / (UIDevice.frameType == .narrowNotch ? 3 : 4))
         }
     }
 }

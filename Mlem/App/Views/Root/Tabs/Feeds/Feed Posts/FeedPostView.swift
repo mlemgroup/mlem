@@ -17,6 +17,7 @@ struct FeedPostView<EmbeddedContent: View>: View {
     @Environment(FiltersTracker.self) var filtersTracker
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
     @Environment(\.communityContext) var communityContext
+    @Environment(\.reportContext) var reportContext
     
     @State var obscured: Bool
     

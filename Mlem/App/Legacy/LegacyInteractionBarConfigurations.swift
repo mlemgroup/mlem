@@ -44,10 +44,10 @@ enum LegacyInterationBarItem: String, Codable {
         case .upvoteCounter: return .counter(.upvote)
         case .downvoteCounter: return .counter(.downvote)
         case .scoreCounter: return .counter(.score)
-        case .resolve: return nil
+        case .resolve: return .action(.resolve)
         case .remove: return .action(.remove)
         case .purge: return nil
-        case .ban: return nil
+        case .ban: return .action(.ban)
         }
     }
     
@@ -63,10 +63,10 @@ enum LegacyInterationBarItem: String, Codable {
         case .upvoteCounter: return .counter(.upvote)
         case .downvoteCounter: return .counter(.downvote)
         case .scoreCounter: return .counter(.score)
-        case .resolve: return nil
+        case .resolve: return .action(.resolve)
         case .remove: return .action(.remove)
         case .purge: return nil
-        case .ban: return nil
+        case .ban: return .action(.ban)
         }
     }
     
@@ -187,8 +187,7 @@ extension CommentBarConfiguration {
             }
         }
         if shouldShowRepliesInCommentBar { newReadouts.append(.comment) }
-        // TODO: pending #1768
-        // if shouldShowSavedInCommentBar { newReadouts.append(.saved) }
+        if shouldShowSavedInCommentBar { newReadouts.append(.saved) }
         self.readouts = newReadouts
         
         var newAvailableWidgets: Set<Item>
@@ -236,8 +235,7 @@ extension ReplyBarConfiguration {
             }
         }
         if shouldShowRepliesInCommentBar { newReadouts.append(.comment) }
-        // TODO: pending #1768
-        // if shouldShowSavedInCommentBar { newReadouts.append(.saved) }
+        if shouldShowSavedInCommentBar { newReadouts.append(.saved) }
         self.readouts = newReadouts
         
         var newAvailableWidgets: Set<Item> = .init(

@@ -131,7 +131,8 @@ extension Comment1Providing {
     func action(
         type: CommentBarConfiguration.ActionType,
         commentTreeTracker: CommentTreeTracker? = nil,
-        communityContext: (any CommunityStubProviding)? = nil
+        communityContext: (any CommunityStubProviding)? = nil,
+        reportContext: Report? = nil
     ) -> (any Action)? {
         switch type {
         case .upvote: upvoteAction(feedback: [.haptic])
@@ -141,7 +142,9 @@ extension Comment1Providing {
         case .share: shareAction()
         case .selectText: selectTextAction()
         case .report: reportAction(communityContext: communityContext)
+        case .resolve: reportContext?.resolveAction(feedback: [.haptic])
         case .remove: removeAction().disabled(!canModerate)
+        case .ban: reportContext?.contextualBanAction()
         }
     }
     
@@ -164,6 +167,7 @@ extension Comment1Providing {
         case .upvote: upvoteReadout
         case .downvote: api.downvotesEnabled ? downvoteReadout : nil
         case .comment: commentReadout
+        case .saved: savedReadout
         }
     }
     
