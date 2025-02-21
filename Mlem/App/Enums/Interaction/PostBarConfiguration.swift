@@ -22,7 +22,9 @@ struct PostBarConfiguration: InteractionBarConfiguration {
         case crossPost
         case lock
         case pin
+        case resolve
         case remove
+        case ban
         
         static var defaultWidgets: [ActionType] {[
                 .upvote,
@@ -33,11 +35,12 @@ struct PostBarConfiguration: InteractionBarConfiguration {
         ]}
         
         static var defaultReportWidgets: [ActionType] {[
-            .save,
             .share,
             .lock,
             .pin,
-            .remove
+            .resolve,
+            .remove,
+            .ban
         ]}
         
         var appearance: ActionAppearance {
@@ -54,7 +57,9 @@ struct PostBarConfiguration: InteractionBarConfiguration {
             case .crossPost: .crossPost()
             case .lock: .lock(isOn: false)
             case .pin: .pin(isOn: false)
+            case .resolve: .resolve(isOn: false)
             case .remove: .remove(isOn: false)
+            case .ban: .banFromCommunity(isOn: false)
             }
         }
     }
@@ -139,9 +144,9 @@ struct PostBarConfiguration: InteractionBarConfiguration {
     
     static var reportDefault: Self {
         .init(
-            leading: [.action(.share), .action(.pin)],
-            trailing: [.action(.lock), .action(.remove)],
-            readouts: [.created, .comment],
+            leading: [.action(.resolve), .action(.lock)],
+            trailing: [.action(.ban), .action(.remove)],
+            readouts: [.upvote, .downvote, .created, .comment],
             availableWidgets: .init(ActionType.defaultReportWidgets.map { .action($0) })
         )
     }

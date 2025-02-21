@@ -96,7 +96,8 @@ struct LargePostView: View {
                 post: post,
                 configuration: interactionBarConfiguration,
                 commentTreeTracker: commentTreeTracker,
-                communityContext: communityContext
+                communityContext: communityContext,
+                reportContext: reportContext
             )
             .padding(.horizontal, 12)
             .padding(.vertical, 5)
