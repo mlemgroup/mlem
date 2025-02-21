@@ -58,7 +58,7 @@ extension SearchView {
                         }
                     }
                 }
-                EndOfFeedView(loadingState: communityLoader.loadingState, viewType: .hobbit)
+                EndOfFeedView(feedLoader: communityLoader, viewType: .hobbit)
             }
             .animation(.easeOut(duration: 0.1), value: communityLoader.items.isEmpty)
         case .people:
@@ -78,7 +78,7 @@ extension SearchView {
                         }
                     }
                 }
-                EndOfFeedView(loadingState: personLoader.loadingState, viewType: .hobbit)
+                EndOfFeedView(feedLoader: personLoader, viewType: .hobbit)
             }
             .animation(.easeOut(duration: 0.1), value: personLoader.items.isEmpty)
         case .instances:
@@ -123,7 +123,7 @@ extension SearchView {
                     }
                     .animation(.easeOut(duration: 0.1), value: commentLoader.items.isEmpty)
                     .padding(.horizontal, Constants.main.standardSpacing)
-                    EndOfFeedView(loadingState: commentLoader.loadingState, viewType: .hobbit)
+                    EndOfFeedView(feedLoader: commentLoader, viewType: .hobbit)
                 }
             }
         }

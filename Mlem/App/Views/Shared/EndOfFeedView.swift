@@ -44,17 +44,42 @@ struct EndOfFeedView: View {
     @Environment(Palette.self) var palette
     @Setting(\.developerMode) var developerMode
     
-    let loadingState: LoadingState
+    @State var idleId: UUID?
+    
+    let loadingState_: LoadingState?
     let viewType: EndOfFeedViewType
+    let feedLoader: (any FeedLoading)?
+    
+    var loadingState: LoadingState {
+        assert(loadingState_ != nil || feedLoader != nil, "either loadingState_ or feedLoader must be defined")
+        return loadingState_ ?? feedLoader?.loadingState ?? .done
+    }
+    
+    init(loadingState: LoadingState, viewType: EndOfFeedViewType) {
+        self.loadingState_ = loadingState
+        self.feedLoader = nil
+        self.viewType = viewType
+    }
+    
+    init(feedLoader: any FeedLoading, viewType: EndOfFeedViewType) {
+        self.loadingState_ = nil
+        self.feedLoader = feedLoader
+        self.viewType = viewType
+    }
     
     var body: some View {
         Group {
             switch loadingState {
             case .idle:
-                if developerMode {
-                    Text(verbatim: "IDLE")
-                } else {
-                    ProgressView()
+                Group {
+                    if developerMode {
+                        Text(verbatim: "IDLE")
+                    } else {
+                        ProgressView()
+                    }
+                }
+                .task {
+                    await fallbackIdleLoad()
                 }
             case .loading:
                 ProgressView()
@@ -67,5 +92,23 @@ struct EndOfFeedView: View {
             }
         }
         .frame(minHeight: 100)
+    }
+    
+    private func fallbackIdleLoad() async {
+        if let feedLoader {
+            let newIdleId = UUID()
+            idleId = newIdleId
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                if loadingState == .idle, idleId == newIdleId {
+                    Task {
+                        do {
+                            try await feedLoader.loadMoreItems()
+                        } catch {
+                            handleError(error)
+                        }
+                    }
+                }
+            }
+        }
     }
 }
