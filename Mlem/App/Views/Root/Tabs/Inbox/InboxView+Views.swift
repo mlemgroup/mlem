@@ -32,7 +32,7 @@ extension InboxView {
                     }
                 }
                 
-                EndOfFeedView(loadingState: feedLoader.loadingState, viewType: .cartoon)
+                EndOfFeedView(feedLoader: feedLoader, viewType: .cartoon)
             } header: { sectionHeader }
         }
         .animation(.easeOut(duration: 0.1), value: feedLoader.items.isEmpty)
