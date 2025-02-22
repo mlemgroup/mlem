@@ -66,9 +66,9 @@ struct ErrorDetails: Hashable {
         lhs.hashValue == rhs.hashValue
     }
     
-    var errorText: String {
+    func errorText(includingLocation: Bool = true) -> String {
         var output = String(describing: error)
-        if let location {
+        if includingLocation, let location {
             output += " (\(location))"
         }
         for account in AccountsTracker.main.userAccounts {
