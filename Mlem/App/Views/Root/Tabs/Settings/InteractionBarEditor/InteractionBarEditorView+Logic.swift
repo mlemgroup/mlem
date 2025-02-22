@@ -155,7 +155,7 @@ extension InteractionBarEditorView {
             case let .bar(targetIndex):
                 moveOnBar(barItem: barPickedUpItem.barItem, from: barPickedUpItem.index, to: targetIndex)
             case .tray:
-                removeFromBar(barItem: barPickedUpItem.barItem)
+                removeFromBar(barItem: barPickedUpItem.barItem, barItemIndex: barPickedUpItem.index)
             }
         }
     }
@@ -172,7 +172,15 @@ extension InteractionBarEditorView {
         HapticManager.main.play(haptic: .firmInfo, priority: .high)
 
         let newItem: BarItem = .init(item: trayItem.item, expanded: false, visible: true)
+        
         barItems.insert(newItem, at: index)
+        // recompute infoStackAlignment with actual barItems, since these animations all play nice
+        withAnimation(.easeInOut(duration: barAnimationDuration)) {
+            infoStackAlignment = computeInfoStackAlignment(
+                infoStackIndex: infoStackIndex(),
+                totalItems: barItems.count
+            )
+        }
         trayItem.hide()
         
         updateConfiguration()
@@ -193,6 +201,36 @@ extension InteractionBarEditorView {
             barItems.insert(newItem, at: targetIndex)
         }
         
+        // recompute infoStackAlignment with projected info stack location
+        let infoStackIndex = infoStackIndex()
+        let newInfoStackAlignment: Alignment?
+        if sourceIndex < infoStackIndex {
+            if targetIndex > infoStackIndex {
+                // moving widget from left to right of info stack, projected infostack index is current - 1
+                newInfoStackAlignment = computeInfoStackAlignment(
+                    infoStackIndex: infoStackIndex - 1,
+                    totalItems: barItems.count
+                )
+            } else {
+                // widget not moving "over" the info stack, no change
+                newInfoStackAlignment = nil
+            }
+        } else {
+            if targetIndex < infoStackIndex {
+                // moving widget from right to left of info stack, projected infostack index is current + 1
+                newInfoStackAlignment = computeInfoStackAlignment(
+                    infoStackIndex: infoStackIndex + 1,
+                    totalItems: barItems.count
+                )
+            } else {
+                // widget not moving "over" the info stack, no change
+                newInfoStackAlignment = nil
+            }
+        }
+        if let newInfoStackAlignment {
+            withAnimation(.easeInOut(duration: barAnimationDuration)) { infoStackAlignment = newInfoStackAlignment }
+        }
+        
         // wait for animation to complete, then remove original item from barItems
         DispatchQueue.main.asyncAfter(deadline: .now() + barAnimationDuration) {
             barItems.removeAll(where: { $0 == barItem })
@@ -200,18 +238,32 @@ extension InteractionBarEditorView {
         }
     }
     
-    func removeFromBar(barItem: BarItem) {
+    func removeFromBar(barItem: BarItem, barItemIndex: Int) {
         // no removing the info stack
         guard let item = barItem.item else { return }
         let trayItem = trayItems.first(where: { $0.item == item })
         
         HapticManager.main.play(haptic: .firmInfo, priority: .high)
         
+        // recompute infoStackAlignment with projected info stack location
+        let infoStackIndex = infoStackIndex()
+        let newInfoStackAlignment: Alignment
+        if barItemIndex < infoStackIndex {
+            // removing item to the left of info stack: shift info stack left
+            newInfoStackAlignment = computeInfoStackAlignment(infoStackIndex: infoStackIndex - 1, totalItems: barItems.count - 1)
+        } else {
+            // removing item to the right of info stack: info stack index unchanged, but barItems.count still decreases
+            newInfoStackAlignment = computeInfoStackAlignment(infoStackIndex: infoStackIndex, totalItems: barItems.count - 1)
+        }
+
         // smoothly animate away
         barItem.hide()
         withAnimation(.easeInOut(duration: barAnimationDuration)) {
             trayItem?.show()
             barItem.collapse()
+            if newInfoStackAlignment != infoStackAlignment {
+                infoStackAlignment = newInfoStackAlignment
+            }
         }
         
         // wait for animation to complete, then remove from barItems
@@ -242,5 +294,23 @@ extension InteractionBarEditorView {
             return palette.accent
         }
         return palette.tertiary
+    }
+    
+    func infoStackIndex() -> Int {
+        guard let ret = barItems.firstIndex(where: { $0.item == nil }) else {
+            assertionFailure("could not find infoStack index")
+            return 0
+        }
+        return ret
+    }
+}
+
+func computeInfoStackAlignment(infoStackIndex: Int, totalItems: Int) -> Alignment {
+    if infoStackIndex == 0 {
+        return totalItems == 1 ? .center : .leading
+    } else if infoStackIndex == totalItems - 1 {
+        return .trailing
+    } else {
+        return .center
     }
 }

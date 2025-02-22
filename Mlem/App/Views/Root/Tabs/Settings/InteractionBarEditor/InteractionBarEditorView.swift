@@ -29,6 +29,8 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     @State var dragLocation: CGPoint = .zero
     @State var dragTranslation: CGSize = .zero
     
+    @State var infoStackAlignment: Alignment
+    
     @State var showingApplyToAllConfirmation: Bool = false
     
     let onSet: (Configuration) -> Void
@@ -44,10 +46,17 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
         self.configuration = configuration
         self.onSet = onSet
         let configurationItems: [Configuration.Item?] = configuration.leading + [nil] + configuration.trailing
-        self._barItems = .init(wrappedValue: configurationItems.map { item in
-            .init(item: item, expanded: true, visible: true)
-        })
         self.configurationType = configuration is PostBarConfiguration ? .post : .comment
+        
+        let newBarItems: [BarItem] = configurationItems.map { .init(item: $0, expanded: true, visible: true) }
+        let newInfoStackIndex = newBarItems.firstIndex(where: { $0.item == nil })
+        assert(newInfoStackIndex != nil, "could not find infoStack index")
+        
+        self._barItems = .init(wrappedValue: newBarItems)
+        self._infoStackAlignment = .init(wrappedValue: computeInfoStackAlignment(
+            infoStackIndex: newInfoStackIndex ?? 0,
+            totalItems: newBarItems.count)
+        )
     }
     
     init(setting: WritableKeyPath<InteractionBarTracker, Configuration>) {

@@ -344,7 +344,7 @@ extension InteractionBarEditorView {
             }
         }
         .foregroundStyle(palette.secondary)
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: .infinity, alignment: infoStackAlignment)
     }
     
     @ViewBuilder
