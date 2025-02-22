@@ -59,7 +59,7 @@ struct ErrorLogView: View {
                 Spacer()
                 
                 Button {
-                    UIPasteboard.general.string = details.errorText
+                    UIPasteboard.general.string = details.errorText()
                     ToastModel.main.add(.success(String("Copied")))
                 } label: {
                     Text(Image(systemName: Icons.copy))
@@ -68,7 +68,7 @@ struct ErrorLogView: View {
                 }
             }
             
-            Text(String(describing: details.error))
+            Text(details.errorText(includingLocation: false))
             
             if let location = details.location {
                 HStack(alignment: .top, spacing: 2) {
