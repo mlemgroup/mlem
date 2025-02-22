@@ -17,13 +17,20 @@ struct SectionIndexTitles: View {
     }
     
     let sections: [Section]
+    @Binding var sectionScroller: Int
+    
+    init(sections: [SubscriptionListSection], sectionScroller: Binding<Int>) {
+        self.sections = sections.map {
+            .init(label: $0.label, systemImage: $0.systemImage)
+        }
+        self._sectionScroller = sectionScroller
+    }
+    
     @GestureState private var dragLocation: CGPoint = .zero
 
     // Track which sidebar label we picked last so we
     // only send a haptic when selecting a new one
     @State var lastSelectedLabel: String = ""
-    
-    @Binding var sectionScroller: Int
 
     var body: some View {
         VStack {
@@ -58,10 +65,7 @@ struct SectionIndexTitles: View {
                                 if sectionLabel != lastSelectedLabel {
                                     Task { @MainActor in
                                         lastSelectedLabel = sectionLabel
-
                                         sectionScroller = sectionIndex
-                                        
-                                        // Play nice tappy taps
                                         HapticManager.main.play(haptic: .rigidInfo, priority: .low)
                                     }
                                 }

@@ -92,8 +92,7 @@ struct SubscriptionListView: View {
         .overlay(alignment: .trailing) {
             if sectionIndicesShown {
                 SectionIndexTitles(
-                    sections: [.init(label: String(localized: "Favorites"), systemImage: "star.fill")]
-                    + "ABCDEFGHIJKLMNOPQRSTUVWXYZ#".map { .init(label: String($0)) },
+                    sections: sections,
                     sectionScroller: $sectionScroller
                 )
             }
