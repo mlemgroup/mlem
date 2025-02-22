@@ -96,7 +96,7 @@ extension InteractionBarEditorView {
             }
             
             if dropLocation?.index == barItems.count,
-               barPickedUpIndex != barItems.count {
+               barPickedUpIndex != barItems.count - 1 {
                 dropIndicator(index: barItems.count)
             }
         }

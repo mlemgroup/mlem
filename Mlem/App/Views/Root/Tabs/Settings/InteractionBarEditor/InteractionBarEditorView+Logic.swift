@@ -204,27 +204,38 @@ extension InteractionBarEditorView {
         // recompute infoStackAlignment with projected info stack location
         let infoStackIndex = infoStackIndex()
         let newInfoStackAlignment: Alignment?
-        if sourceIndex < infoStackIndex {
-            if targetIndex > infoStackIndex {
-                // moving widget from left to right of info stack, projected infostack index is current - 1
-                newInfoStackAlignment = computeInfoStackAlignment(
-                    infoStackIndex: infoStackIndex - 1,
-                    totalItems: barItems.count
-                )
+        if barItem.item == nil {
+            // if moving info stack itself, can compute alignment based on whether moving to beginning or end
+            if targetIndex == 0 {
+                newInfoStackAlignment = barItems.count == 1 ? .center : .leading
+            } else if targetIndex == barItems.count - 1 {
+                newInfoStackAlignment = .trailing
             } else {
-                // widget not moving "over" the info stack, no change
-                newInfoStackAlignment = nil
+                newInfoStackAlignment = .center
             }
         } else {
-            if targetIndex < infoStackIndex {
-                // moving widget from right to left of info stack, projected infostack index is current + 1
-                newInfoStackAlignment = computeInfoStackAlignment(
-                    infoStackIndex: infoStackIndex + 1,
-                    totalItems: barItems.count
-                )
+            if sourceIndex < infoStackIndex {
+                if targetIndex > infoStackIndex {
+                    // moving widget from left to right of info stack, projected infostack index is current - 1
+                    newInfoStackAlignment = computeInfoStackAlignment(
+                        infoStackIndex: infoStackIndex - 1,
+                        totalItems: barItems.count
+                    )
+                } else {
+                    // widget not moving "over" the info stack, no change
+                    newInfoStackAlignment = nil
+                }
             } else {
-                // widget not moving "over" the info stack, no change
-                newInfoStackAlignment = nil
+                if targetIndex < infoStackIndex {
+                    // moving widget from right to left of info stack, projected infostack index is current + 1
+                    newInfoStackAlignment = computeInfoStackAlignment(
+                        infoStackIndex: infoStackIndex + 1,
+                        totalItems: barItems.count
+                    )
+                } else {
+                    // widget not moving "over" the info stack, no change
+                    newInfoStackAlignment = nil
+                }
             }
         }
         if let newInfoStackAlignment {

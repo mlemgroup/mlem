@@ -89,6 +89,9 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
                 .filter { configuration.availableWidgets.contains($0) }
                 .map { TrayItem(item: $0, visible: !configurationItems.contains($0)) }
         }
+        .onChange(of: barPickedUpIndex) {
+            print("DEBUG \(barPickedUpIndex)")
+        }
         .frame(maxWidth: .infinity)
         .padding(Constants.main.standardSpacing)
         .padding(.bottom, Constants.main.standardSpacing)
