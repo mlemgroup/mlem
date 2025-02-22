@@ -114,6 +114,11 @@ extension InteractionBarEditorView {
                 if barPickedUpItem == nil {
                     HapticManager.main.play(haptic: .firmInfo, priority: .low)
                     barPickedUpItem = (item, index)
+                    if let trayItem = trayItems.first(where: { $0.item == item.item }) {
+                        withAnimation(.easeOut(duration: barAnimationDuration)) {
+                            trayItem.hide()
+                        }
+                    }
                 }
                 dragLocation = gesture.location
                 dragTranslation = gesture.translation
@@ -126,7 +131,7 @@ extension InteractionBarEditorView {
     func trayItemDragGesture(trayItem: TrayItem) -> some Gesture {
         DragGesture(minimumDistance: 0, coordinateSpace: .named("editor"))
             .onChanged { gesture in
-                if trayPickedUpItem == nil, !barItems.contains(where: { $0.item == trayItem.item }) {
+                if trayPickedUpItem == nil {
                     HapticManager.main.play(haptic: .firmInfo, priority: .low)
                     trayPickedUpItem = trayItem
                 }
@@ -151,6 +156,12 @@ extension InteractionBarEditorView {
             guard case let .bar(targetIndex) = dropLocation else { return }
             addToBar(trayPickedUpItem, at: targetIndex)
         } else if let barPickedUpItem {
+            if let trayItem = trayItems.first(where: { $0.item == barPickedUpItem.barItem.item }) {
+                withAnimation(.easeOut(duration: barAnimationDuration)) {
+                    trayItem.show()
+                }
+            }
+            
             switch dropLocation {
             case let .bar(targetIndex):
                 moveOnBar(barItem: barPickedUpItem.barItem, from: barPickedUpItem.index, to: targetIndex)
@@ -163,9 +174,8 @@ extension InteractionBarEditorView {
     // MARK: - State Updates
     
     func addToBar(_ trayItem: TrayItem, at index: Int) {
-        guard allowNewItemInsertion,
-              !barItems.contains(where: { $0.item == trayItem.item }) else {
-            assertionFailure(!allowNewItemInsertion ? "Item insertion disabled" : "Item already in bar")
+        guard allowNewItemInsertion else {
+            assertionFailure("Item insertion disabled")
             return
         }
         
@@ -174,6 +184,13 @@ extension InteractionBarEditorView {
         let newItem: BarItem = .init(item: trayItem.item, expanded: false, visible: true)
         
         barItems.insert(newItem, at: index)
+        
+        // gently fade the tray item back in
+        trayItem.hide()
+        withAnimation(.easeOut(duration: trayItemDuration)) {
+            trayItem.show()
+        }
+        
         // recompute infoStackAlignment with actual barItems, since these animations all play nice
         withAnimation(.easeInOut(duration: barAnimationDuration)) {
             infoStackAlignment = computeInfoStackAlignment(
@@ -181,7 +198,6 @@ extension InteractionBarEditorView {
                 totalItems: barItems.count
             )
         }
-        trayItem.hide()
         
         updateConfiguration()
     }
@@ -252,7 +268,6 @@ extension InteractionBarEditorView {
     func removeFromBar(barItem: BarItem, barItemIndex: Int) {
         // no removing the info stack
         guard let item = barItem.item else { return }
-        let trayItem = trayItems.first(where: { $0.item == item })
         
         HapticManager.main.play(haptic: .firmInfo, priority: .high)
         
@@ -270,7 +285,6 @@ extension InteractionBarEditorView {
         // smoothly animate away
         barItem.hide()
         withAnimation(.easeInOut(duration: barAnimationDuration)) {
-            trayItem?.show()
             barItem.collapse()
             if newInfoStackAlignment != infoStackAlignment {
                 infoStackAlignment = newInfoStackAlignment

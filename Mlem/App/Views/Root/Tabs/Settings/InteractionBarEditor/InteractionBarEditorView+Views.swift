@@ -168,10 +168,23 @@ extension InteractionBarEditorView {
             .geometryGroup()
             .offset(trayPickedUpItem == trayItem ? dragTranslation : .zero)
             .background {
-                Capsule()
-                    .fill(trayItemOutlineColor(trayItem).opacity(0.2))
-                    .stroke(trayItemOutlineColor(trayItem))
-                    .background(palette.secondaryGroupedBackground, in: .capsule)
+                Group {
+                    switch trayItem.item {
+                    case let .action(action):
+                        InteractionBarActionLabelView(action.appearance)
+                    case let .counter(counter):
+                        InteractionBarCounterLabelView(counter.appearance)
+                            .fixedSize()
+                    }
+                }
+                .opacity(0.2)
+                .padding(Constants.main.standardSpacing)
+                .background {
+                    Capsule()
+                        .fill(trayItemOutlineColor(trayItem).opacity(0.2))
+                        .stroke(trayItemOutlineColor(trayItem))
+                        .background(palette.secondaryGroupedBackground, in: .capsule)
+                }
             }
             .gesture(trayItemDragGesture(trayItem: trayItem))
             .zIndex(trayPickedUpItem == trayItem ? 2 : 0)

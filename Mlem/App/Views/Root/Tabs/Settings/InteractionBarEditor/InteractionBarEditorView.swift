@@ -36,6 +36,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     let onSet: (Configuration) -> Void
     
     let barAnimationDuration: CGFloat = 0.15
+    let trayItemDuration: CGFloat = 0.5
     
     @ScaledMetric(relativeTo: .body) var baseInfoCapsuleHeight: CGFloat = 22
     var infoCapsuleHeight: CGFloat { baseInfoCapsuleHeight + Constants.main.doubleSpacing }
@@ -87,10 +88,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
             let configurationItems: [Configuration.Item?] = configuration.leading + [nil] + configuration.trailing
             trayItems = Configuration.Item.allCases
                 .filter { configuration.availableWidgets.contains($0) }
-                .map { TrayItem(item: $0, visible: !configurationItems.contains($0)) }
-        }
-        .onChange(of: barPickedUpIndex) {
-            print("DEBUG \(barPickedUpIndex)")
+                .map { TrayItem(item: $0, visible: true) }
         }
         .frame(maxWidth: .infinity)
         .padding(Constants.main.standardSpacing)
