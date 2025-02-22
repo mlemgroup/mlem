@@ -16,13 +16,14 @@ struct SectionIndexTitles: View {
         var id: String { label }
     }
     
-    let proxy: ScrollViewProxy
     let sections: [Section]
     @GestureState private var dragLocation: CGPoint = .zero
 
     // Track which sidebar label we picked last so we
     // only send a haptic when selecting a new one
     @State var lastSelectedLabel: String = ""
+    
+    @Binding var sectionScroller: Int
 
     var body: some View {
         VStack {
@@ -57,8 +58,9 @@ struct SectionIndexTitles: View {
                                 if sectionLabel != lastSelectedLabel {
                                     Task { @MainActor in
                                         lastSelectedLabel = sectionLabel
-                                        proxy.scrollTo(sectionLabel, anchor: .top)
 
+                                        sectionScroller = sectionIndex
+                                        
                                         // Play nice tappy taps
                                         HapticManager.main.play(haptic: .rigidInfo, priority: .low)
                                     }
