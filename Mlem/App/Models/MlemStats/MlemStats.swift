@@ -37,6 +37,7 @@ class MlemStats {
         loadingState = .loading
         do {
             let decoder: JSONDecoder = .defaultDecoder
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
             if let url = URL(string: "https://raw.githubusercontent.com/mlemgroup/mlem-stats/master/output/instances_by_score.json") {
                 if let data = try? await urlSession.data(from: url).0 {
                     let instances = try decoder.decode([InstanceSummary].self, from: data)
