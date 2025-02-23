@@ -56,7 +56,6 @@ struct PostEditorTargetView: View {
             HStack(spacing: 0) {
                 if let community = target.community as? any Community {
                     FullyQualifiedLabelView(community, labelStyle: singleAccount ? .medium : .large)
-                        .id(community.hashValue)
                 } else if let community = target.community {
                     FullyQualifiedNameView(name: nil, instance: nil, instanceLocation: .trailing)
                         .task {
@@ -97,7 +96,6 @@ struct PostEditorTargetView: View {
         HStack {
             AccountPickerMenu(account: $target.account) {
                 FullyQualifiedLabelView(target.account, labelStyle: .large)
-                    .id(target.account.hashValue)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.vertical, 6)
                     .padding(.horizontal, 8)

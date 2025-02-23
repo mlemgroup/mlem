@@ -16,8 +16,16 @@ struct SectionIndexTitles: View {
         var id: String { label }
     }
     
-    let proxy: ScrollViewProxy
     let sections: [Section]
+    @Binding var sectionScroller: Int
+    
+    init(sections: [SubscriptionListSection], sectionScroller: Binding<Int>) {
+        self.sections = sections.map {
+            .init(label: $0.label, systemImage: $0.systemImage)
+        }
+        self._sectionScroller = sectionScroller
+    }
+    
     @GestureState private var dragLocation: CGPoint = .zero
 
     // Track which sidebar label we picked last so we
@@ -57,9 +65,7 @@ struct SectionIndexTitles: View {
                                 if sectionLabel != lastSelectedLabel {
                                     Task { @MainActor in
                                         lastSelectedLabel = sectionLabel
-                                        proxy.scrollTo(sectionLabel, anchor: .top)
-
-                                        // Play nice tappy taps
+                                        sectionScroller = sectionIndex
                                         HapticManager.main.play(haptic: .rigidInfo, priority: .low)
                                     }
                                 }

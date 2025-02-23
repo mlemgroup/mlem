@@ -154,7 +154,6 @@ struct PersonBanEditorView: View {
         if let selectedTarget {
             HStack {
                 CircleCroppedImageView(selectedTarget, frame: 24)
-                    .id(selectedTarget.actorId)
                 Text(selectedTarget.name)
             }
         }

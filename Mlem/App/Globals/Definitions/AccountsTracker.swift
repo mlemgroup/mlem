@@ -142,6 +142,7 @@ class AccountsTracker {
             $0.name.caseInsensitiveCompare(username) == .orderedSame && $0.api.baseUrl == url
         }) {
             account.updateToken(token)
+            saveAccounts(ofType: .user)
             return account
         } else {
             let response = try await authenticatedApiClient.getMyPerson()

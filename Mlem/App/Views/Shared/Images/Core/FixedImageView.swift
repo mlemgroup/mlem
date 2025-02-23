@@ -19,6 +19,8 @@ struct FixedImageView: View {
     @State var loadingPref: MediaLoadingState? // tracked separately to allow correct propagation of initial value
     
     @State var loader: FixedImageLoader
+    
+    let url: URL?
     let fallback: Fallback
     let showProgress: Bool
     let blurred: Bool
@@ -50,21 +52,23 @@ struct FixedImageView: View {
     ) {
         self.fallback = fallback
         self.showProgress = showProgress
-        self._loader = .init(wrappedValue: .init(url: url, size: size))
+        self.url = url
         self.blurred = blurred
         self.showPlayButton = showPlayButton
+        self._loader = .init(wrappedValue: .init(size: size))
     }
-    
-    var isMovie: Bool { loader.url?.proxyAwarePathExtension?.isMovieExtension ?? false }
     
     var body: some View {
         Color.clear
+            .task(id: url) {
+                await loader.load(url)
+            }
             .contentShape(.rect)
             .overlay {
                 content
-                    .onAppear {
-                        Task(priority: .background) {
-                            await loader.load()
+                    .overlay {
+                        if loader.isAnimated, showPlayButton {
+                            PlayButton(postSize: postSize)
                         }
                     }
                     .aspectRatio(1, contentMode: .fill)
@@ -76,30 +80,15 @@ struct FixedImageView: View {
     
     @ViewBuilder
     var content: some View {
-        if loader.loading == .failed
-            || isMovie
-            || loader.loading == .proxyFailed
-            || (loader.loading == .loading && !showProgress) {
-            fallbackImage
-                .overlay {
-                    if loader.isAnimated, showPlayButton {
-                        PlayButton(postSize: postSize)
-                    }
-                }
+        if let uiImage = loader.uiImage {
+            Image(uiImage: uiImage)
+                .resizable()
+                .scaledToFill()
+                .dynamicBlur(blurred: blurred)
+        } else if showProgress, loader.loading == .loading {
+            ProgressView().tint(.secondary)
         } else {
-            if loader.loading == .loading {
-                ProgressView().tint(.secondary)
-            } else {
-                Image(uiImage: loader.uiImage ?? .blank)
-                    .resizable()
-                    .scaledToFill()
-                    .dynamicBlur(blurred: blurred)
-                    .overlay {
-                        if loader.isAnimated, showPlayButton {
-                            PlayButton(postSize: postSize)
-                        }
-                    }
-            }
+            fallbackImage
         }
     }
     
@@ -116,7 +105,7 @@ struct FixedImageView: View {
             Image(systemName: fallback.icon)
                 .foregroundStyle(palette.secondary)
         case .image, .movie:
-            let icon: String = (loader.loading == .failed || isMovie) ? fallback.icon : Icons.proxy
+            let icon: String = loader.loading == .proxyFailed ? Icons.proxy : fallback.icon
             Image(systemName: icon)
                 .font(.title)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
