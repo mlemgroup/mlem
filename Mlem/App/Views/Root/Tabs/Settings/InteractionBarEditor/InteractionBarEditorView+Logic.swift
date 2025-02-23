@@ -267,7 +267,7 @@ extension InteractionBarEditorView {
     
     func removeFromBar(barItem: BarItem, barItemIndex: Int) {
         // no removing the info stack
-        guard let item = barItem.item else { return }
+        guard barItem.item != nil else { return }
         
         HapticManager.main.play(haptic: .firmInfo, priority: .high)
         
