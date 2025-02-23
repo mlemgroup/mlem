@@ -13,6 +13,7 @@ import SwiftUI
 /// Image view that always has a fixed size. The image will be scaled to the given size, but resized to fill its parent frame.
 struct FixedImageView: View {
     @Environment(Palette.self) var palette
+    @Environment(\.loadingTracker) var loadingTracker
     
     @Setting(\.postSize) var postSize
     
@@ -60,10 +61,15 @@ struct FixedImageView: View {
     
     var body: some View {
         Color.clear
-            .task(id: url) {
-                await loader.load(url)
-            }
             .contentShape(.rect)
+            .onChange(of: url, initial: true) {
+                Task {
+                    await loader.load(url)
+                }
+            }
+            .onChange(of: loader.loading, initial: true) {
+                loadingTracker?.loading = loader.loading
+            }
             .overlay {
                 content
                     .overlay {
@@ -72,8 +78,6 @@ struct FixedImageView: View {
                         }
                     }
                     .aspectRatio(1, contentMode: .fill)
-                    .onChange(of: loader.loading, initial: true) { loadingPref = loader.loading }
-                    .preference(key: MediaLoadingPreferenceKey.self, value: loadingPref)
                     .allowsHitTesting(false)
             }
     }
