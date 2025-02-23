@@ -27,6 +27,7 @@ extension ApiModlogActionType {
         case .adminPurgeCommunity: "Purge Community"
         case .adminPurgePost: "Purge Post"
         case .adminPurgeComment: "Purge Comment"
+        default: "Unknown"
         }
     }
     
@@ -43,6 +44,7 @@ extension ApiModlogActionType {
         case .modBan: "Ban from Instance"
         case .modHideCommunity: "Hide"
         case .adminPurgePerson, .adminPurgeCommunity, .adminPurgePost, .adminPurgeComment: "Purge"
+        default: "Unknown"
         }
     }
     
@@ -59,6 +61,7 @@ extension ApiModlogActionType {
         case .modBan: Icons.banFromInstance
         case .modHideCommunity: Icons.hide
         case .adminPurgePerson, .adminPurgeCommunity, .adminPurgePost, .adminPurgeComment: Icons.purge
+        default: Icons.absent
         }
     }
     
@@ -69,7 +72,8 @@ extension ApiModlogActionType {
              .modTransferCommunity, .modHideCommunity: true
         case .modRemoveCommunity, .modAdd, .modBan,
              .adminPurgePerson, .adminPurgeCommunity,
-             .adminPurgePost, .adminPurgeComment: false
+             .adminPurgePost, .adminPurgeComment,
+             .adminAllowInstance, .adminBlockInstance: false
         }
     }
 }

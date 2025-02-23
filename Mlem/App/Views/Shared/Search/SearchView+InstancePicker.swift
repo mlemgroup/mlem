@@ -15,7 +15,7 @@ extension SearchView {
         let isForPersonSearch: Bool
         
         var allowActiveAccountLocalInstanceSearch: Bool {
-            !isForPersonSearch || (AppState.main.firstApi.fetchedVersion ?? .infinity) >= .v19_4
+            !isForPersonSearch || (AppState.main.firstApi.fetchedVersion ?? .infinity) >= .v0_19_4
         }
         
         var body: some View {
@@ -54,7 +54,7 @@ extension SearchView {
                 Button("Choose Instance...", systemImage: Icons.instance) {
                     navigation.openSheet(.instancePicker(callback: { instance in
                         filter = .other(instance)
-                    }, minimumVersion: isForPersonSearch ? .v19_4 : nil))
+                    }, minimumVersion: isForPersonSearch ? .v0_19_4 : nil))
                 }
             }
         }

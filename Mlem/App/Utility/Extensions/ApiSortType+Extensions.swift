@@ -49,8 +49,8 @@ extension ApiSortType: @retroactive CaseIterable {
     
     var minimumVersion: SiteVersion {
         switch self {
-        case .controversial, .scaled: .v19_0
-        case .topThreeMonths, .topSixMonths, .topNineMonths: .v18_1
+        case .controversial, .scaled: .v0_19_0
+        case .topThreeMonths, .topSixMonths, .topNineMonths: .v0_18_1
         default: .zero
         }
     }
