@@ -44,7 +44,7 @@ struct EndOfFeedView: View {
     @Environment(Palette.self) var palette
     @Setting(\.developerMode) var developerMode
     
-    @State var idleId: UUID?
+    @State var showLoadMore: Bool = false
     
     let loadingState_: LoadingState?
     let viewType: EndOfFeedViewType
@@ -72,14 +72,33 @@ struct EndOfFeedView: View {
             switch loadingState {
             case .idle:
                 Group {
-                    if developerMode {
-                        Text(verbatim: "IDLE")
+                    if showLoadMore, let feedLoader {
+                        Button("Load More") {
+                            Task {
+                                do {
+                                    try await feedLoader.loadMoreItems()
+                                } catch {
+                                    handleError(error)
+                                }
+                            }
+                        }
+                        .buttonStyle(.bordered)
                     } else {
-                        ProgressView()
+                        Group {
+                            if developerMode {
+                                Text(verbatim: "IDLE")
+                            } else {
+                                ProgressView()
+                            }
+                        }
+                        .onAppear {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                if loadingState == .idle {
+                                    showLoadMore = true
+                                }
+                            }
+                        }
                     }
-                }
-                .task {
-                    await fallbackIdleLoad()
                 }
             case .loading:
                 ProgressView()
@@ -92,22 +111,9 @@ struct EndOfFeedView: View {
             }
         }
         .frame(minHeight: 100)
-    }
-    
-    private func fallbackIdleLoad() async {
-        if let feedLoader {
-            let newIdleId = UUID()
-            idleId = newIdleId
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                if loadingState == .idle, idleId == newIdleId {
-                    Task {
-                        do {
-                            try await feedLoader.loadMoreItems()
-                        } catch {
-                            handleError(error)
-                        }
-                    }
-                }
+        .onChange(of: loadingState, initial: true) {
+            if loadingState != .idle {
+                showLoadMore = false
             }
         }
     }
