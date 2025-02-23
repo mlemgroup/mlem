@@ -170,7 +170,7 @@ extension Post1Providing {
                 // If no version has been fetched yet, assume they're on <0.19.4 for now.
                 // Once 0.19.4 is widely adopted we could assume they're on >=0.19.4.
                 // See also the identical check within `hideAction` itself.
-                if (api.fetchedVersion ?? .zero) >= .v19_4 {
+                if (api.fetchedVersion ?? .zero) >= .v0_19_4 {
                     hideAction(feedback: feedback)
                 }
                 if !canModerate, !deleted {
@@ -194,7 +194,7 @@ extension Post1Providing {
                 pinToInstanceAction(feedback: feedback)
             }
             lockAction(feedback: feedback)
-            if let navigation, api.isAdmin || (api.fetchedVersion ?? .infinity) > .v19_4 {
+            if let navigation, api.isAdmin || (api.fetchedVersion ?? .infinity) > .v0_19_4 {
                 viewVotesAction(navigation: navigation)
             }
         }
@@ -270,17 +270,17 @@ extension Post1Providing {
     
     func taggedTitle(communityContext: (any Community1Providing)?) -> Text {
         let hasTags: Bool = removed
-        || deleted
-        || pinnedInstance
-        || (communityContext != nil && pinnedCommunity)
-        || locked
+            || deleted
+            || pinnedInstance
+            || (communityContext != nil && pinnedCommunity)
+            || locked
         
         return postTag(active: removed, icon: Icons.removeFill, color: Palette.main.negative) +
-        postTag(active: deleted, icon: Icons.delete, color: Palette.main.negative) +
-        postTag(active: pinnedInstance, icon: Icons.pinFill, color: Palette.main.administration) +
-        postTag(active: pinnedCommunity && communityContext != nil, icon: Icons.pinFill, color: Palette.main.moderation) +
-        postTag(active: locked, icon: Icons.lockFill, color: Palette.main.lockAccent) +
-        Text(verbatim: "\(hasTags ? "  " : "")\(title)")
+            postTag(active: deleted, icon: Icons.delete, color: Palette.main.negative) +
+            postTag(active: pinnedInstance, icon: Icons.pinFill, color: Palette.main.administration) +
+            postTag(active: pinnedCommunity && communityContext != nil, icon: Icons.pinFill, color: Palette.main.moderation) +
+            postTag(active: locked, icon: Icons.lockFill, color: Palette.main.lockAccent) +
+            Text(verbatim: "\(hasTags ? "  " : "")\(title)")
     }
     
     /// Host if this is a link post, otherwise nil.
@@ -347,7 +347,7 @@ extension Post1Providing {
     
     func hideAction(feedback: Set<FeedbackType>) -> BasicAction {
         let hidden = hidden_ ?? false
-        let available = (api.fetchedVersion ?? .zero) >= .v19_4 && api.canInteract
+        let available = (api.fetchedVersion ?? .zero) >= .v0_19_4 && api.canInteract
         return .init(
             id: "hide\(uid)",
             appearance: .hide(isOn: hidden),
@@ -472,7 +472,7 @@ extension Post1Providing {
     }
     
     func viewVotesAction(navigation: NavigationLayer) -> BasicAction {
-        let enabled = canModerate && (api.isAdmin || (api.fetchedVersion ?? .infinity) > .v19_4)
+        let enabled = canModerate && (api.isAdmin || (api.fetchedVersion ?? .infinity) > .v0_19_4)
         return .init(
             id: "viewVotes\(uid)",
             appearance: .viewVotes(),

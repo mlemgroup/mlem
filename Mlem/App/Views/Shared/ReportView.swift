@@ -41,7 +41,7 @@ struct ReportView: View {
         case let .message(message):
             MessageView(message: message) {
                 reportDetailsView
-                if (message.api.fetchedVersion ?? .infinity) < .v19_4 {
+                if (message.api.fetchedVersion ?? .infinity) < .v0_19_4 {
                     resolveButton
                 } else {
                     resolutionInfoView

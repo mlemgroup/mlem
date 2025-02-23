@@ -186,7 +186,7 @@ class CommentTreeTracker: Hashable {
         // broken somehow. Comment example: https://beehaw.org/comment/4033679
         
         var sortedComments: [Comment2]
-        if let version = try? await newComments.first?.api.version, version < .v19_0 {
+        if let version = try? await newComments.first?.api.version, version < .v0_19_0 {
             sortedComments = newComments.sorted { $0.depth < $1.depth }
         } else {
             sortedComments = newComments
