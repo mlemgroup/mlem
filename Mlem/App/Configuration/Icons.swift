@@ -56,6 +56,10 @@ enum Icons {
     static let transferCommunity: String = "arrow.right"
     static let removeAdministrator: String = "arrowshape.down"
     static let removeAdministratorFill: String = "arrowshape.down.fill"
+    static let resolve: String = "checkmark.circle"
+    static let resolveFill: String = "checkmark.circle.fill"
+    static let unresolve: String = "xmark.circle"
+    static let unresolveFill: String = "xmark.circle.fill"
     
     // inbox
     static let mention: String = "quote.bubble"
@@ -80,6 +84,10 @@ enum Icons {
     static let restore: String = "arrow.up.bin"
     static let restoreFill: String = "arrow.up.bin.fill"
     static let purge: String = "burn"
+    static let scoreCounter: String = "arrow.up.arrow.down.circle"
+    static let upvoteCounter: String = "arrow.up.circle"
+    static let downvoteCounter: String = "arrow.down.circle"
+    static let replyCounter: String = "arrowshape.turn.up.left.circle"
     
     // post sizes
     static let postSizeSetting: String = "rectangle.expand.vertical"
@@ -137,7 +145,7 @@ enum Icons {
     static let developerFlair: String = "hammer.fill"
     static let botFlair: String = "terminal.fill"
     static let opFlair: String = "person.fill"
-    static let instanceBannedFlair: String = "xmark.circle.fill"
+    static let instanceBannedFlair: String = "xmark.square.fill"
     static let communityBannedFlair: String = "xmark.shield.fill"
     static let newAccountFlair: String = "leaf.fill"
     
@@ -279,8 +287,8 @@ enum Icons {
     static let developerMode: String = "wrench.adjustable.fill"
     static let limitImageHeightSetting: String = "rectangle.compress.vertical"
     static let appLockSettings: String = "lock.app.dashed"
-    static let banFromInstance: String = "xmark.circle"
-    static let unbanFromInstance: String = "checkmark.circle"
+    static let banFromInstance: String = "xmark.square"
+    static let unbanFromInstance: String = "checkmark.square"
     static let banFromCommunity: String = "xmark.shield"
     static let unbanFromCommunity: String = "checkmark.shield"
     static let logIn: String = "person.text.rectangle"

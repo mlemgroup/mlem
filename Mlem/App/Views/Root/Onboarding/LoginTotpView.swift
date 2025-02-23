@@ -14,7 +14,7 @@ struct LoginTotpView: View {
     @Environment(Palette.self) var palette
     
     let client: ApiClient
-    let username: String
+    let usernameOrEmail: String
     let password: String
     
     @State var totpToken: String = ""
@@ -110,7 +110,7 @@ struct LoginTotpView: View {
             do {
                 let user = try await AccountsTracker.main.logIn(
                     client: client,
-                    username: username,
+                    usernameOrEmail: usernameOrEmail,
                     password: password,
                     totpToken: totpToken
                 )

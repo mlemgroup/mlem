@@ -39,7 +39,7 @@ class AppState {
     
     private init() {
         self.guestSession = .init(account: AccountsTracker.main.defaultGuestAccount)
-        setAccount(to: AccountsTracker.main.defaultAccount)
+        setAccount(to: AccountsTracker.main.mostRecentAccount())
     }
     
     #if DEBUG
@@ -116,7 +116,7 @@ class AppState {
             guard account == guestSession.account else { return }
             guestSession = .init(account: AccountsTracker.main.defaultGuestAccount)
         }
-        changeAccount(to: AccountsTracker.main.defaultAccount)
+        changeAccount(to: AccountsTracker.main.mostRecentAccount())
     }
     
     var firstSession: any Session { activeSessions.first ?? guestSession }

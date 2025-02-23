@@ -36,13 +36,14 @@ struct CommentPage: View {
             let post: (any Post)? = post ?? proxy.entity?.post_
             ExpandedPostView(
                 post: post,
+                contentLoaderError: proxy.error,
                 isLoading: proxy.isLoading,
                 tracker: $tracker,
                 scrollTargetedComment: proxy.entity
             ) {
-                if let post, showViewPostButton || tracker?.comments.first?.depth != 0 {
+                if let post, showViewPostButton || tracker?.nodes.first?.comment.depth != 0 {
                     HStack(spacing: Constants.main.standardSpacing) {
-                        if tracker?.comments.first?.depth != 0 {
+                        if tracker?.nodes.first?.comment.depth != 0 {
                             Button {
                                 if let comment = comment.wrappedValue as? any Comment {
                                     tracker?.root = .comment(comment, parentCount: currentDepth + 1)

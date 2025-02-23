@@ -9,30 +9,15 @@ import Flow
 import SwiftUI
 
 extension InteractionBarEditorView {
-    // MARK: - Post Preview
+    // MARK: - Previews
     
     @ViewBuilder
-    var postPreview: some View {
+    var contentPreview: some View {
         VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
             Group {
-                HStack(alignment: .top, spacing: 8) {
-                    RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius)
-                        .fill(palette.accent.opacity(0.6))
-                        .frame(width: Constants.main.thumbnailSize, height: Constants.main.thumbnailSize)
-                        .overlay {
-                            Image(systemName: "mountain.2.fill")
-                                .font(.system(size: 23))
-                                .foregroundStyle(.white)
-                        }
-                    
-                    VStack(alignment: .leading, spacing: 5) {
-                        MockTextView()
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 15)
-                        MockTextView()
-                            .frame(maxWidth: 200)
-                            .frame(height: 15)
-                    }
+                switch configurationType {
+                case .post: postPreviewBody
+                case .comment: commentPreviewBody
                 }
             }
             .opacity(0.75)
@@ -45,6 +30,56 @@ extension InteractionBarEditorView {
         .padding(Constants.main.standardSpacing)
         .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.mediumItemCornerRadius))
         .paletteBorder(cornerRadius: Constants.main.mediumItemCornerRadius)
+    }
+    
+    @ViewBuilder
+    var postPreviewBody: some View {
+        HStack(alignment: .top, spacing: 8) {
+            RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius)
+                .fill(palette.accent.opacity(0.6))
+                .frame(width: Constants.main.thumbnailSize, height: Constants.main.thumbnailSize)
+                .overlay {
+                    Image(systemName: "mountain.2.fill")
+                        .font(.system(size: 23))
+                        .foregroundStyle(.white)
+                }
+            
+            VStack(alignment: .leading, spacing: 5) {
+                MockTextView()
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 15)
+                MockTextView()
+                    .frame(maxWidth: 200)
+                    .frame(height: 15)
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var commentPreviewBody: some View {
+        HStack(spacing: 7) {
+            Image(systemName: Icons.personCircleFill)
+                .resizable()
+                .scaledToFit()
+                .symbolRenderingMode(.palette)
+                .foregroundStyle(palette.selectedInteractionBarItem, palette.neutralAccent.gradient)
+                .frame(width: Constants.main.smallAvatarSize, height: Constants.main.smallAvatarSize)
+                .compositingGroup()
+                .opacity(0.5)
+            
+            MockTextView(beginOpacity: 0.4, endOpacity: 0.3)
+                .frame(maxWidth: 200)
+                .frame(height: 13)
+        }
+        
+        VStack(alignment: .leading, spacing: 5) {
+            MockTextView()
+                .frame(maxWidth: .infinity)
+                .frame(height: 15)
+            MockTextView()
+                .frame(maxWidth: 250)
+                .frame(height: 15)
+        }
     }
     
     @ViewBuilder
@@ -61,7 +96,7 @@ extension InteractionBarEditorView {
             }
             
             if dropLocation?.index == barItems.count,
-               barPickedUpIndex != barItems.count {
+               barPickedUpIndex != barItems.count - 1 {
                 dropIndicator(index: barItems.count)
             }
         }
@@ -133,10 +168,23 @@ extension InteractionBarEditorView {
             .geometryGroup()
             .offset(trayPickedUpItem == trayItem ? dragTranslation : .zero)
             .background {
-                Capsule()
-                    .fill(trayItemOutlineColor(trayItem).opacity(0.2))
-                    .stroke(trayItemOutlineColor(trayItem))
-                    .background(palette.secondaryGroupedBackground, in: .capsule)
+                Group {
+                    switch trayItem.item {
+                    case let .action(action):
+                        InteractionBarActionLabelView(action.appearance)
+                    case let .counter(counter):
+                        InteractionBarCounterLabelView(counter.appearance)
+                            .fixedSize()
+                    }
+                }
+                .opacity(0.2)
+                .padding(Constants.main.standardSpacing)
+                .background {
+                    Capsule()
+                        .fill(trayItemOutlineColor(trayItem).opacity(0.2))
+                        .stroke(trayItemOutlineColor(trayItem))
+                        .background(palette.secondaryGroupedBackground, in: .capsule)
+                }
             }
             .gesture(trayItemDragGesture(trayItem: trayItem))
             .zIndex(trayPickedUpItem == trayItem ? 2 : 0)
@@ -309,7 +357,7 @@ extension InteractionBarEditorView {
             }
         }
         .foregroundStyle(palette.secondary)
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: .infinity, alignment: infoStackAlignment)
     }
     
     @ViewBuilder

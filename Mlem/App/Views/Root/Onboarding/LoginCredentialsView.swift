@@ -20,13 +20,13 @@ struct LoginCredentialsView: View {
     
     @State var upgradeState: LoadingState = .idle
     
-    @State var username: String
+    @State var usernameOrEmail: String
     @State var password: String = ""
     
     @State var authenticating: Bool = false
     @State private var failureReason: FailureReason?
     
-    enum FocusedField { case username, password }
+    enum FocusedField { case usernameOrEmail, password }
     @FocusState private var focused: FocusedField?
     
     var showUsernameField: Bool { account == nil }
@@ -34,20 +34,20 @@ struct LoginCredentialsView: View {
     init(instance: any InstanceStubProviding) {
         self.instance = instance
         self.account = nil
-        self._username = .init(wrappedValue: "")
+        self._usernameOrEmail = .init(wrappedValue: "")
     }
     
     init(account: UserAccount) {
         self.instance = nil
         self.account = account
-        self._username = .init(wrappedValue: account.name)
+        self._usernameOrEmail = .init(wrappedValue: account.name)
     }
     
     var body: some View {
         content
             .frame(maxWidth: .infinity)
             .background(palette.groupedBackground.ignoresSafeArea())
-            .interactiveDismissDisabled((!username.isEmpty && showUsernameField) || !password.isEmpty)
+            .interactiveDismissDisabled((!usernameOrEmail.isEmpty && showUsernameField) || !password.isEmpty)
             .toolbar {
                 if navigation.isInsideSheet, isRootView {
                     ToolbarItem(placement: .topBarLeading) {
@@ -100,7 +100,6 @@ struct LoginCredentialsView: View {
     @ViewBuilder
     func instanceHeader(_ instance: any InstanceStubProviding) -> some View {
         CircleCroppedImageView(url: instance.avatar_, frame: 50, fallback: .instance)
-            .id(instance.avatar_)
         Text(instance.displayName_ ?? instance.host)
             .font(.title)
             .bold()
@@ -131,8 +130,8 @@ struct LoginCredentialsView: View {
                 GridRow {
                     Text("Username")
                         .padding([.leading, .vertical])
-                    TextField("Username", text: $username, prompt: Text(verbatim: ""))
-                        .focused($focused, equals: .username)
+                    TextField("Username", text: $usernameOrEmail, prompt: Text(verbatim: ""))
+                        .focused($focused, equals: .usernameOrEmail)
                         .onSubmit { focused = .password }
                         .padding(.trailing)
                 }
@@ -155,8 +154,8 @@ struct LoginCredentialsView: View {
                 .fill(palette.secondaryGroupedBackground)
         )
         .paletteBorder(cornerRadius: 16)
-        .onAppear { focused = showUsernameField ? .username : .password }
-        .onChange(of: username) { failureReason = nil }
+        .onAppear { focused = showUsernameField ? .usernameOrEmail : .password }
+        .onChange(of: usernameOrEmail) { failureReason = nil }
         .onChange(of: password) { failureReason = nil }
     }
     
@@ -170,16 +169,20 @@ struct LoginCredentialsView: View {
         }
         .buttonStyle(.borderedProminent)
         .buttonBorderShape(.roundedRectangle(radius: 16))
-        .disabled(username.isEmpty || password.isEmpty || authenticating)
+        .disabled(usernameOrEmail.isEmpty || password.isEmpty || authenticating)
     }
     
     func attemptToLogin() {
-        guard !username.isEmpty, !password.isEmpty else { return }
+        guard !usernameOrEmail.isEmpty, !password.isEmpty else { return }
         if let client = (instance as? any Instance)?.guestApi ?? account?.api.asGuest() {
             authenticating = true
             Task {
                 do {
-                    let user = try await AccountsTracker.main.logIn(client: client, username: username, password: password)
+                    let user = try await AccountsTracker.main.logIn(
+                        client: client,
+                        usernameOrEmail: usernameOrEmail,
+                        password: password
+                    )
                     appState.changeAccount(to: user)
                     if navigation.isTopSheet {
                         navigation.dismissSheet()
@@ -187,7 +190,7 @@ struct LoginCredentialsView: View {
                 } catch {
                     switch error {
                     case let ApiClientError.response(response, _) where response.error == "missing_totp_token":
-                        navigation.push(.logIn(.totp(client: client, username: username, password: password)))
+                        navigation.push(.logIn(.totp(client: client, usernameOrEmail: usernameOrEmail, password: password)))
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                             authenticating = false
                         }

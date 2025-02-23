@@ -96,7 +96,8 @@ struct PersonContentGridView: View {
                     }
                 }
             }
-            EndOfFeedView(loadingState: loadingState, loadMore: loadMore, viewType: .hobbit)
+            .animation(.easeOut(duration: 0.1), value: items.isEmpty)
+            EndOfFeedView(loadingState: loadingState, viewType: .hobbit)
         }
     }
     
@@ -110,16 +111,6 @@ struct PersonContentGridView: View {
         case let .comment(comment):
             NavigationLink(.comment(comment)) {
                 FeedCommentView(comment: comment)
-            }
-        }
-    }
-    
-    func loadMore() {
-        Task {
-            do {
-                try await feedLoader.loadMoreItems()
-            } catch {
-                handleError(error)
             }
         }
     }

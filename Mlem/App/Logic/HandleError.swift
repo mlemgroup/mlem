@@ -56,7 +56,7 @@ private func _handleError(
     
     switch error {
     // TODO: Modify MlemMiddleware to attach the ApiClient throwing the error to ApiClientError.invalidSession, so that we can access the relevant UserStub in a multi-account context
-    case ApiClientError.invalidSession:
+    case ApiClientError.invalidSession, ApiClientError.noToken:
         Task { @MainActor in
             showReauthSheet()
         }
@@ -71,20 +71,8 @@ private func _handleError(
 
 @MainActor
 private func showReauthSheet() {
-    if let user = AppState.main.firstSession.account as? UserAccount {
-        for layer in NavigationModel.main.layers {
-            switch layer.path.first {
-            case let .logIn(page):
-                switch page {
-                case .reauth:
-                    return
-                default:
-                    break
-                }
-            default:
-                break
-            }
-        }
+    if let user = AppState.main.firstSession.account as? UserAccount,
+       !NavigationModel.main.layers.contains(where: { $0.root == .logIn(.reauth(user)) }) {
         NavigationModel.main.openSheet(.logIn(.reauth(user)))
     }
 }

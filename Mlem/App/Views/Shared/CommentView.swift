@@ -23,6 +23,10 @@ struct CommentView<EmbeddedContent: View>: View {
     private let indent: CGFloat = 10
     
     let comment: any Comment1Providing
+    
+    /// If the `CommentView` is rendered in an `ExpandedPostView`, this object can be used to access collapsed state etc.
+    let treeNode: CommentTreeNode?
+    
     let embeddedContent: EmbeddedContent
     let inFeed: Bool
     let highlight: Bool
@@ -30,12 +34,14 @@ struct CommentView<EmbeddedContent: View>: View {
     
     init(
         comment: any Comment1Providing,
+        treeNode: CommentTreeNode? = nil,
         inFeed: Bool = false, // flag to suppress threading/collapsing behavior
         highlight: Bool = false,
         depthOffset: Int = 0,
         @ViewBuilder embeddedContent: () -> EmbeddedContent = { EmptyView() }
     ) {
         self.comment = comment
+        self.treeNode = treeNode
         self.inFeed = inFeed
         self.highlight = highlight
         self.depthOffset = depthOffset
@@ -52,18 +58,20 @@ struct CommentView<EmbeddedContent: View>: View {
         } else {
             content
                 .onTapGesture {
-                    if tapCommentsToCollapse, let comment = comment as? CommentWrapper {
+                    if tapCommentsToCollapse, let treeNode {
                         withAnimation(UIAccessibility.isReduceMotionEnabled ? nil : .default) {
-                            comment.collapsed.toggle()
+                            treeNode.collapsed.toggle()
                         }
                     }
                 }
         }
     }
     
+    var compact: Bool { compactComments && reportContext == nil }
+    
     @ViewBuilder
     var content: some View {
-        let collapsed = (comment as? CommentWrapper)?.collapsed ?? false
+        let collapsed = treeNode?.collapsed ?? false
         
         HStack(spacing: 12) {
             if !inFeed, comment.depth != 0 {
@@ -73,7 +81,7 @@ struct CommentView<EmbeddedContent: View>: View {
                 HStack(spacing: 0) {
                     FullyQualifiedLinkView(comment.creator_, labelStyle: .small)
                     Spacer()
-                    if compactComments {
+                    if compact {
                         InfoStackView(
                             comment: comment,
                             readouts: InteractionBarTracker.main.commentInteractionBar.readouts,
@@ -103,12 +111,13 @@ struct CommentView<EmbeddedContent: View>: View {
                         .id("\(comment.id)_commment_footer")
                     }
                     embeddedContent
-                    if !compactComments {
+                    if !compact {
                         InteractionBarView(
                             comment: comment,
                             configuration: interactionBarConfiguration,
                             commentTreeTracker: commentTreeTracker,
-                            communityContext: communityContext
+                            communityContext: communityContext,
+                            reportContext: reportContext
                         )
                         .padding(.horizontal, 2)
                         .padding(.bottom, 5)
@@ -117,7 +126,7 @@ struct CommentView<EmbeddedContent: View>: View {
                 }
             }
             .padding(.vertical, Constants.main.standardSpacing)
-            .padding(.top, compactComments || collapsed ? 0 : 3)
+            .padding(.top, compact || collapsed ? 0 : 3)
         }
         .padding(depth == 0 ? .horizontal : .trailing, Constants.main.standardSpacing)
         .background(highlight ? palette.accent.opacity(0.2) : .clear)

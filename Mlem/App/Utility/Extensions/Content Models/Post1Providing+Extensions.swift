@@ -17,7 +17,7 @@ extension Post1Providing {
     var shouldHideInFeed: Bool {
         (creator_?.shouldHideInFeed ?? false) || (community_?.shouldHideInFeed ?? false) || (hidden_ ?? false) || purged
     }
-
+    
     var canModerate: Bool {
         api.myPerson?.moderates(communityId: communityId) ?? false || api.isAdmin
     }
@@ -162,7 +162,7 @@ extension Post1Providing {
                 selectTextAction()
             }
             shareAction()
-
+            
             if isOwnPost {
                 editAction()
                 deleteAction(feedback: feedback)
@@ -220,7 +220,8 @@ extension Post1Providing {
         type: PostBarConfiguration.ActionType,
         feedback: Set<FeedbackType> = [.haptic, .toast],
         commentTreeTracker: CommentTreeTracker? = nil,
-        communityContext: (any CommunityStubProviding)? = nil
+        communityContext: (any CommunityStubProviding)? = nil,
+        reportContext: Report? = nil
     ) -> (any Action)? {
         switch type {
         case .upvote: upvoteAction(feedback: feedback)
@@ -238,7 +239,9 @@ extension Post1Providing {
         // in parenthesis, but the pre-commit hook removed the paranthesis
         // swiftlint:disable:next void_function_in_ternary
         case .pin: api.isAdmin ? pinAction(feedback: feedback) : pinToCommunityAction(feedback: feedback)
+        case .resolve: reportContext?.resolveAction(feedback: feedback)
         case .remove: removeAction(feedback: feedback).disabled(!canModerate)
+        case .ban: reportContext?.contextualBanAction()
         }
     }
     
@@ -267,17 +270,17 @@ extension Post1Providing {
     
     func taggedTitle(communityContext: (any Community1Providing)?) -> Text {
         let hasTags: Bool = removed
-            || deleted
-            || pinnedInstance
-            || (communityContext != nil && pinnedCommunity)
-            || locked
+        || deleted
+        || pinnedInstance
+        || (communityContext != nil && pinnedCommunity)
+        || locked
         
         return postTag(active: removed, icon: Icons.removeFill, color: Palette.main.negative) +
-            postTag(active: deleted, icon: Icons.delete, color: Palette.main.negative) +
-            postTag(active: pinnedInstance, icon: Icons.pinFill, color: Palette.main.administration) +
-            postTag(active: pinnedCommunity && communityContext != nil, icon: Icons.pinFill, color: Palette.main.moderation) +
-            postTag(active: locked, icon: Icons.lockFill, color: Palette.main.lockAccent) +
-            Text(verbatim: "\(hasTags ? "  " : "")\(title)")
+        postTag(active: deleted, icon: Icons.delete, color: Palette.main.negative) +
+        postTag(active: pinnedInstance, icon: Icons.pinFill, color: Palette.main.administration) +
+        postTag(active: pinnedCommunity && communityContext != nil, icon: Icons.pinFill, color: Palette.main.moderation) +
+        postTag(active: locked, icon: Icons.lockFill, color: Palette.main.lockAccent) +
+        Text(verbatim: "\(hasTags ? "  " : "")\(title)")
     }
     
     /// Host if this is a link post, otherwise nil.

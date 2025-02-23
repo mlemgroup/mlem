@@ -22,7 +22,7 @@ class ErrorsTracker {
         var ret = ""
         
         for details in errors {
-            ret += "\(details.when.formatted(.iso8601))\t\(details.title ?? "Error")\t\(details.errorText)\n"
+            ret += "\(details.when.formatted(.iso8601))\t\(details.title ?? "Error")\t\(details.errorText())\n"
         }
         
         return ret

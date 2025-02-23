@@ -26,6 +26,7 @@ class UserSession: Session {
 
     init(account: UserAccount) {
         self.account = account
+        account.activate()
         self.subscriptions = api.setupSubscriptionList(
             getFavorites: { account.favorites },
             setFavorites: {
@@ -65,7 +66,7 @@ class UserSession: Session {
     }
     
     func deactivate() {
-        account.logActivity()
+        account.deactivate()
         api.cleanCaches()
     }
     

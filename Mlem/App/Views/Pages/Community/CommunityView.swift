@@ -69,6 +69,8 @@ struct CommunityView: View {
                             logVisit(community2)
                         }
                     }
+            } else if let error = proxy.error {
+                ErrorView(.init(error: error))
             } else {
                 ProgressView()
                     .tint(palette.secondary)
@@ -80,6 +82,8 @@ struct CommunityView: View {
             }
         }
         .navigationBarTitleDisplayMode(.inline)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(palette.groupedBackground)
     }
         
     @ViewBuilder
@@ -120,12 +124,7 @@ struct CommunityView: View {
             }
             .environment(\.communityContext, community)
         }
-        .background(palette.groupedBackground)
         // don't show the refresh popup if community api isn't the active api, since that indicates an unresolvable community
-        .outdatedFeedPopup(
-            feedLoader: postFeedLoader,
-            showPopup: selectedTab == .posts && community.api === AppState.main.firstApi
-        )
         .navigationTitle(isAtTop ? "" : community.name)
         .isAtTopSubscriber(isAtTop: $isAtTop)
         .toolbar {
@@ -134,6 +133,10 @@ struct CommunityView: View {
             }
         }
         .popupAnchor()
+        .outdatedFeedPopup(
+            feedLoader: postFeedLoader,
+            showPopup: selectedTab == .posts && community.api === AppState.main.firstApi
+        )
         .fullScreenCover(isPresented: $warningPresented) {
             WarningOverlayView(
                 text: "This community likely contains graphic or explicit content.",
