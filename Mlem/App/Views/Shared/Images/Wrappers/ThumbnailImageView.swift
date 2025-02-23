@@ -17,7 +17,6 @@ struct ThumbnailImageView: View {
     
     @Setting(\.websiteThumbnailIcon) var websiteThumbnailIcon
     
-    // @State var loading: MediaLoadingState?
     @State var loadingTracker: MediaLoadingTracker = .init()
     @State var quickLookUrl: URL?
     

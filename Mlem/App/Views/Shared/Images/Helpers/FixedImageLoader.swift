@@ -27,7 +27,6 @@ class FixedImageLoader {
     }
     
     func load(_ url: URL?) async {
-        print("DEBUG loading \(url)")
         // reset everything
         loading = .loading
         proxyBypass = nil
@@ -49,7 +48,6 @@ class FixedImageLoader {
         
         // if movie type, can't get a valid uiImage so abort early
         if url.proxyAwarePathExtension?.isMovieExtension ?? false {
-            print("DEBUG \(url) is movie")
             isAnimated = true
             loading = .done
             return
