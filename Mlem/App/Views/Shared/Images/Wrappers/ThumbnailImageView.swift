@@ -10,11 +10,6 @@ import MlemMiddleware
 import QuickLook
 import SwiftUI
 
-@Observable
-class MediaLoadingStateTracker {
-    var loading: MediaLoadingState?
-}
-
 struct ThumbnailImageView: View {
     @Environment(Palette.self) var palette
     @Environment(NavigationLayer.self) var navigation
@@ -23,7 +18,7 @@ struct ThumbnailImageView: View {
     @Setting(\.websiteThumbnailIcon) var websiteThumbnailIcon
     
     // @State var loading: MediaLoadingState?
-    @State var loadingTracker: MediaLoadingStateTracker = .init()
+    @State var loadingTracker: MediaLoadingTracker = .init()
     @State var quickLookUrl: URL?
     
     let post: any Post1Providing
