@@ -3374,8 +3374,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware";
 			requirement = {
-				branch = sjmarf/v4;
-				kind = branch;
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.80.0;
 			};
 		};
 		CDE4AC402CA3706400981010 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
