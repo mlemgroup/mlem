@@ -34,7 +34,7 @@ extension DeletableProviding {
         }
     }
     
-    func deleteAction(feedback: Set<FeedbackType>) -> BasicAction {
+    func deleteAction(appState: AppState, feedback: Set<FeedbackType>) -> BasicAction {
         .init(
             id: "delete\(uid)",
             appearance: .init(
@@ -45,7 +45,7 @@ extension DeletableProviding {
                 icon: deleted ? Icons.undelete : Icons.delete
             ),
             confirmationPrompt: deleted ? nil : "Really delete?",
-            callback: api.canInteract ? { @MainActor in self.toggleDeleted(feedback: feedback) } : nil
+            callback: api.canInteract(appState: appState) ? { @MainActor in self.toggleDeleted(feedback: feedback) } : nil
         )
     }
 }

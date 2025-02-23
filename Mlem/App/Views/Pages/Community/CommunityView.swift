@@ -129,13 +129,13 @@ struct CommunityView: View {
         .isAtTopSubscriber(isAtTop: $isAtTop)
         .toolbar {
             ToolbarItemGroup(placement: .secondaryAction) {
-                MenuButtons { community.menuActions(navigation: navigation, feedLoader: postFeedLoader) }
+                MenuButtons { community.menuActions(appState: appState, navigation: navigation, feedLoader: postFeedLoader) }
             }
         }
         .popupAnchor()
         .outdatedFeedPopup(
             feedLoader: postFeedLoader,
-            showPopup: selectedTab == .posts && community.api === AppState.main.firstApi
+            showPopup: selectedTab == .posts && community.api === appState.firstApi
         )
         .fullScreenCover(isPresented: $warningPresented) {
             WarningOverlayView(
@@ -252,3 +252,23 @@ struct CommunityView: View {
         return output
     }
 }
+
+#if DEBUG
+    #Preview(traits: .sampleEnvironment(api: .realistic)) {
+        NavigationStack(path: .constant([0, 1])) {
+            EmptyView()
+                .navigationDestination(for: Int.self) { value in
+                    switch value {
+                    case 1:
+                        CommunityView(
+                            community: .init(Community2.mock(.realistic(.pics), api: .realistic)),
+                            visitContext: .other
+                        )
+                    default:
+                        EmptyView()
+                    }
+                }
+        }
+        .previewTabBar(selected: .feeds)
+    }
+#endif

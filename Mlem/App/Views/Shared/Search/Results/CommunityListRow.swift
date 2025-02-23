@@ -11,6 +11,7 @@ import SwiftUI
 struct CommunityListRow<Content2: View>: View {
     typealias Content = CommunityListRowBody<Content2>
     
+    @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette
     @Environment(NavigationLayer.self) var navigation
     
@@ -53,8 +54,8 @@ struct CommunityListRow<Content2: View>: View {
         .padding(.vertical, 6)
         .background(palette.secondaryGroupedBackground)
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
-        .contextMenu { community.menuActions(navigation: navigation, feedLoader: nil) }
-        .quickSwipes(community.swipeActions(behavior: .standard))
+        .contextMenu { community.menuActions(appState: appState, navigation: navigation, feedLoader: nil) }
+        .quickSwipes(community.swipeActions(appState: appState, behavior: .standard))
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }
 }

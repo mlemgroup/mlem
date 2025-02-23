@@ -45,15 +45,4 @@ extension ContentView {
             handleError(error, silent: true)
         }
     }
-    
-    var profileTabLabel: String {
-        switch tabProfileLabelType {
-        case .nickname:
-            AppState.main.firstAccount.nickname
-        case .instance:
-            AppState.main.firstAccount.host
-        case .anonymous:
-            .init(localized: "Profile")
-        }
-    }
 }

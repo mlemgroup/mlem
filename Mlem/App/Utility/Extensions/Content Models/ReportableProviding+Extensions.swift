@@ -13,11 +13,11 @@ extension ReportableProviding {
         NavigationModel.main.openSheet(.report(self, community: communityContext))
     }
     
-    func reportAction(communityContext: (any CommunityStubProviding)? = nil) -> BasicAction {
+    func reportAction(appState: AppState, communityContext: (any CommunityStubProviding)? = nil) -> BasicAction {
         .init(
             id: "report\(uid)",
             appearance: .report(),
-            callback: api.canInteract ? { @MainActor in self.showReportSheet(communityContext: communityContext) } : nil
+            callback: api.canInteract(appState: appState) ? { @MainActor in self.showReportSheet(communityContext: communityContext) } : nil
         )
     }
 }

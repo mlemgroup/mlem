@@ -10,6 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct ReplyView: View {
+    @Environment(AppState.self) private var appState
     @Environment(Palette.self) private var palette
     @Environment(NavigationLayer.self) private var navigation
     
@@ -23,7 +24,7 @@ struct ReplyView: View {
                 Image(systemName: reply.isMention ? Icons.mention : Icons.reply)
                     .symbolVariant(reply.read ? .none : .fill)
                     .foregroundStyle(palette.accent)
-                EllipsisMenu(size: 24) { reply.menuActions() }
+                EllipsisMenu(size: 24) { reply.menuActions(appState: appState) }
                     .frame(height: 10)
             }
           
@@ -33,6 +34,7 @@ struct ReplyView: View {
             }
             .id("\(reply.id)_reply_footer")
             InteractionBarView(
+                appState: appState,
                 reply: reply,
                 configuration: InteractionBarTracker.main.replyInteractionBar
             )
@@ -46,10 +48,10 @@ struct ReplyView: View {
         .onTapGesture {
             navigation.push(.comment(reply.comment))
         }
-        .quickSwipes(reply.swipeActions(behavior: .standard))
+        .quickSwipes(reply.swipeActions(appState: appState, behavior: .standard))
         .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
-        .contextMenu { reply.menuActions() }
+        .contextMenu { reply.menuActions(appState: appState) }
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }
 }

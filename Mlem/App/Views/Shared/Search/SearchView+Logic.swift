@@ -90,12 +90,14 @@ extension SearchView {
             to: getRefreshApi(for: communityFilters.instance),
             context: filtersTracker.filterContext
         )
-        try await communityLoader.refresh(
-            query: query,
-            listing: (!filtersActive || communityFilters.instance == .any) ? .all : .local,
-            sort: filtersActive ? communityFilters.sort : .topAll,
-            clearBeforeRefresh: clearBeforeRefresh
-        )
+        if let communityLoader = communityLoader as? CommunityFeedLoader {
+            try await communityLoader.refresh(
+                query: query,
+                listing: (!filtersActive || communityFilters.instance == .any) ? .all : .local,
+                sort: filtersActive ? communityFilters.sort : .topAll,
+                clearBeforeRefresh: clearBeforeRefresh
+            )
+        }
     }
     
     private func refreshPeople(clearBeforeRefresh: Bool) async throws {

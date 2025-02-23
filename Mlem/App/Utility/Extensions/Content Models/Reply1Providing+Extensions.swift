@@ -10,65 +10,65 @@ import MlemMiddleware
 extension Reply1Providing {
     private var self2: (any Reply2Providing)? { self as? any Reply2Providing }
     
-    func swipeActions(behavior: SwipeBehavior) -> SwipeConfiguration {
+    func swipeActions(appState: AppState, behavior: SwipeBehavior) -> SwipeConfiguration {
         .init(
             behavior: behavior,
             leadingActions: {
-                if api.canInteract {
-                    upvoteAction(feedback: [.haptic])
+                if api.canInteract(appState: appState) {
+                    upvoteAction(appState: appState, feedback: [.haptic])
                     if api.downvotesEnabled {
-                        downvoteAction(feedback: [.haptic])
+                        downvoteAction(appState: appState, feedback: [.haptic])
                     }
                 }
             },
             trailingActions: {
-                if api.canInteract {
-                    markReadAction(feedback: [.haptic])
-                    replyAction()
+                if api.canInteract(appState: appState) {
+                    markReadAction(appState: appState, feedback: [.haptic])
+                    replyAction(appState: appState)
                 }
             }
         )
     }
     
     @ActionBuilder
-    func menuActions(feedback: Set<FeedbackType> = [.haptic, .toast]) -> [any Action] {
+    func menuActions(appState: AppState, feedback: Set<FeedbackType> = [.haptic, .toast]) -> [any Action] {
         ActionGroup(displayMode: .compactSection) {
-            upvoteAction(feedback: feedback)
-            downvoteAction(feedback: feedback)
-            saveAction(feedback: feedback)
-            replyAction()
-            markReadAction(feedback: feedback)
+            upvoteAction(appState: appState, feedback: feedback)
+            downvoteAction(appState: appState, feedback: feedback)
+            saveAction(appState: appState, feedback: feedback)
+            replyAction(appState: appState)
+            markReadAction(appState: appState, feedback: feedback)
             if let comment = self2?.comment {
                 if !comment.deleted {
                     comment.selectTextAction()
                 }
                 comment.shareAction()
                 if !comment.deleted {
-                    reportAction()
+                    reportAction(appState: appState)
                 }
             }
-            blockCreatorAction(feedback: feedback)
+            blockCreatorAction(appState: appState, feedback: feedback)
         }
     }
 
-    func action(type: ReplyBarConfiguration.ActionType) -> (any Action)? {
+    func action(appState: AppState, type: ReplyBarConfiguration.ActionType) -> (any Action)? {
         switch type {
-        case .upvote: upvoteAction(feedback: [.haptic])
-        case .downvote: api.downvotesEnabled ? downvoteAction(feedback: [.haptic]) : nil
-        case .save: saveAction(feedback: [.haptic])
-        case .reply: replyAction()
-        case .markRead: markReadAction(feedback: [.haptic])
-        case .report: reportAction()
+        case .upvote: upvoteAction(appState: appState, feedback: [.haptic])
+        case .downvote: api.downvotesEnabled ? downvoteAction(appState: appState, feedback: [.haptic]) : nil
+        case .save: saveAction(appState: appState, feedback: [.haptic])
+        case .reply: replyAction(appState: appState)
+        case .markRead: markReadAction(appState: appState, feedback: [.haptic])
+        case .report: reportAction(appState: appState)
         case .selectText: selectTextAction()
         }
     }
     
-    func counter(type: ReplyBarConfiguration.CounterType) -> Counter? {
+    func counter(appState: AppState, type: ReplyBarConfiguration.CounterType) -> Counter? {
         switch type {
-        case .score: scoreCounter
-        case .upvote: upvoteCounter
-        case .downvote: api.downvotesEnabled ? downvoteCounter : nil
-        case .reply: replyCounter()
+        case .score: scoreCounter(appState: appState)
+        case .upvote: upvoteCounter(appState: appState)
+        case .downvote: api.downvotesEnabled ? downvoteCounter(appState: appState) : nil
+        case .reply: replyCounter(appState: appState)
         }
     }
     

@@ -9,6 +9,7 @@ import MlemMiddleware
 import SwiftUI
 
 private struct ExternalApiWarningModifier: ViewModifier {
+    @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette
     @Environment(NavigationLayer.self) var navigation
     
@@ -18,7 +19,7 @@ private struct ExternalApiWarningModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .safeAreaInset(edge: .top) {
-                if !isLoading, !entity.api.isActive {
+                if !isLoading, !entity.api.isActive(appState: appState) {
                     label
                         .padding(8)
                         .frame(maxWidth: .infinity)

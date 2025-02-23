@@ -116,33 +116,34 @@ extension Community1Providing {
     
     @ActionBuilder
     func menuActions(
+        appState: AppState,
         feedback: Set<FeedbackType> = [.haptic, .toast],
         navigation: NavigationLayer?,
         feedLoader: CommunityPostFeedLoader?
     ) -> [any Action] {
-        newPostAction(feedLoader: feedLoader)
-        subscribeAction(feedback: feedback)
-        favoriteAction(feedback: feedback)
+        newPostAction(appState: appState, feedLoader: feedLoader)
+        subscribeAction(appState: appState, feedback: feedback)
+        favoriteAction(appState: appState, feedback: feedback)
         openInstanceAction(navigation: navigation)
         copyNameAction()
         shareAction()
-        blockAction(feedback: feedback)
+        blockAction(appState: appState, feedback: feedback)
         if api.isAdmin {
             ActionGroup {
-                removeAction()
-                purgeAction()
+                removeAction(appState: appState)
+                purgeAction(appState: appState)
             }
         }
     }
     
-    func swipeActions(behavior: SwipeBehavior) -> SwipeConfiguration {
+    func swipeActions(appState: AppState, behavior: SwipeBehavior) -> SwipeConfiguration {
         .init(
             behavior: behavior,
             leadingActions: {},
             trailingActions: {
-                if api.canInteract {
-                    subscribeAction(feedback: [.haptic])
-                    favoriteAction(feedback: [.haptic])
+                if api.canInteract(appState: appState) {
+                    subscribeAction(appState: appState, feedback: [.haptic])
+                    favoriteAction(appState: appState, feedback: [.haptic])
                 }
             }
         )
@@ -150,9 +151,9 @@ extension Community1Providing {
     
     // MARK: Actions
     
-    func newPostAction(feedLoader: CommunityPostFeedLoader?) -> BasicAction {
+    func newPostAction(appState: AppState, feedLoader: CommunityPostFeedLoader?) -> BasicAction {
         let callback: (@MainActor () -> Void)?
-        if api.canInteract {
+        if api.canInteract(appState: appState) {
             callback = {
                 self.showNewPostSheet(feedLoader: feedLoader)
             }
@@ -172,7 +173,7 @@ extension Community1Providing {
         )
     }
     
-    func subscribeAction(feedback: Set<FeedbackType> = []) -> BasicAction {
+    func subscribeAction(appState: AppState, feedback: Set<FeedbackType> = []) -> BasicAction {
         let isOn: Bool = self2?.subscribed ?? false
         return .init(
             id: "subscribe\(actorId.description)",
@@ -185,11 +186,11 @@ extension Community1Providing {
                 swipeIcon1: isOn ? Icons.unsubscribePerson : Icons.subscribePerson,
                 swipeIcon2: isOn ? Icons.unsubscribePersonFill : Icons.subscribePersonFill
             ),
-            callback: api.canInteract ? { @MainActor in self.self2?.toggleSubscribe(feedback: feedback) } : nil
+            callback: api.canInteract(appState: appState) ? { @MainActor in self.self2?.toggleSubscribe(feedback: feedback) } : nil
         )
     }
     
-    func favoriteAction(feedback: Set<FeedbackType> = []) -> BasicAction {
+    func favoriteAction(appState: AppState, feedback: Set<FeedbackType> = []) -> BasicAction {
         let isOn: Bool = self2?.favorited ?? false
         return .init(
             id: "favorite\(actorId.description)",
@@ -202,16 +203,16 @@ extension Community1Providing {
                 swipeIcon1: isOn ? Icons.unfavorite : Icons.favorite,
                 swipeIcon2: isOn ? Icons.unfavoriteFill : Icons.favoriteFill
             ),
-            callback: api.canInteract ? { @MainActor in self.self2?.toggleFavorite(feedback: feedback) } : nil
+            callback: api.canInteract(appState: appState) ? { @MainActor in self.self2?.toggleFavorite(feedback: feedback) } : nil
         )
     }
     
-    func blockAction(feedback: Set<FeedbackType> = [], showConfirmation: Bool = true) -> BasicAction {
+    func blockAction(appState: AppState, feedback: Set<FeedbackType> = [], showConfirmation: Bool = true) -> BasicAction {
         .init(
             id: "block\(uid)",
             appearance: .block(isOn: blocked),
             confirmationPrompt: (!blocked && showConfirmation) ? "Really block this community?" : nil,
-            callback: api.canInteract ? { @MainActor in self.toggleBlocked(feedback: feedback) } : nil
+            callback: api.canInteract(appState: appState) ? { @MainActor in self.toggleBlocked(feedback: feedback) } : nil
         )
     }
 }

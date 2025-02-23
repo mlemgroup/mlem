@@ -39,6 +39,7 @@ struct VotesListView: View {
         }
     }
     
+    @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
     @Environment(Palette.self) var palette
     
@@ -69,7 +70,7 @@ struct VotesListView: View {
                     .paletteBorder(cornerRadius: Constants.main.standardSpacing)
                     .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
                     .contextMenu {
-                        vote.creator.menuActions(navigation: navigation, community: target.model.community_)
+                        vote.creator.menuActions(appState: appState, navigation: navigation, community: target.model.community_)
                     }
                     .padding(.horizontal, Constants.main.standardSpacing)
                 }

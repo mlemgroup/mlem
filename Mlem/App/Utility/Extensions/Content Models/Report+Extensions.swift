@@ -17,26 +17,27 @@ extension Report {
     
     @ActionBuilder
     func menuActions(
+        appState: AppState,
         feedback: Set<FeedbackType> = [.haptic]
     ) -> [any Action] {
-        resolveAction(feedback: feedback)
+        resolveAction(appState: appState, feedback: feedback)
     }
     
-    func resolveAction(feedback: Set<FeedbackType> = []) -> BasicAction {
+    func resolveAction(appState: AppState, feedback: Set<FeedbackType> = []) -> BasicAction {
         .init(
             id: "resolve\(cacheId)",
             appearance: .resolve(isOn: resolved),
-            callback: api.canInteract ? { @MainActor in self.toggleResolved(feedback: feedback) } : nil
+            callback: api.canInteract(appState: appState) ? { @MainActor in self.toggleResolved(feedback: feedback) } : nil
         )
     }
     
-    func contextualBanAction() -> BasicAction? {
+    func contextualBanAction(appState: AppState) -> BasicAction? {
         guard let myPerson = api.myPerson else { return nil }
         
         if let community = target.community, myPerson.moderates(communityId: community.id) {
-            return target.creator.banFromCommunityAction(community: community)
+            return target.creator.banFromCommunityAction(appState: appState, community: community)
         }
         
-        return target.creator.banFromInstanceAction()
+        return target.creator.banFromInstanceAction(appState: appState)
     }
 }
