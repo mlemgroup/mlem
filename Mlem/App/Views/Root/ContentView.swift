@@ -11,10 +11,6 @@ import Nuke
 import SwiftUI
 
 struct ContentView: View {
-    enum Tab: CaseIterable {
-        case feeds, inbox, profile, search, settings
-    }
-    
     @Environment(\.scenePhase) var scenePhase
     @Environment(\.colorScheme) var colorScheme
     
@@ -118,25 +114,23 @@ struct ContentView: View {
         }, set: {
             appState.contentViewTab = Tab.allCases[$0]
         }), tabs: [
-            CustomTabItem(
-                title: "Feeds",
-                image: UIImage(systemName: Icons.feeds),
-                selectedImage: UIImage(systemName: Icons.feedsFill)
-            ) {
+            CustomTabItem(.feeds, appState: appState, profileLabelType: tabProfileLabelType) {
                 NavigationSplitRootView(sidebar: .subscriptionList, root: .feeds())
             },
             CustomTabItem(
-                title: "Inbox",
-                image: UIImage(systemName: Icons.inbox),
-                selectedImage: UIImage(systemName: Icons.inboxFill),
+                .inbox,
+                appState: appState,
+                profileLabelType: tabProfileLabelType,
                 badge: (appState.firstSession as? UserSession)?.unreadCount?.badgeLabel
             ) {
                 NavigationLayerView(layer: .init(root: .inbox, model: navigationModel), hasSheetModifiers: false)
             },
             CustomTabItem(
-                title: profileTabLabel,
-                image: avatarImage ?? UIImage(systemName: Icons.personCircle),
-                selectedImage: selectedAvatarImage ?? UIImage(systemName: Icons.personCircleFill),
+                .profile,
+                appState: appState,
+                profileLabelType: tabProfileLabelType,
+                imageOverride: avatarImage ?? UIImage(systemName: Icons.personCircle),
+                selectedImageOverride: selectedAvatarImage ?? UIImage(systemName: Icons.personCircleFill),
                 onLongPress: {
                     HapticManager.main.play(haptic: .rigidInfo, priority: .high)
                     NavigationModel.main.openSheet(.quickSwitcher)
@@ -145,17 +139,10 @@ struct ContentView: View {
                     NavigationLayerView(layer: .init(root: .profile, model: navigationModel), hasSheetModifiers: false)
                 }
             ),
-            CustomTabItem(
-                title: "Search",
-                image: UIImage(systemName: Icons.search),
-                selectedImage: UIImage(systemName: Icons.searchActive)
-            ) {
+            CustomTabItem(.search, appState: appState, profileLabelType: tabProfileLabelType) {
                 NavigationLayerView(layer: .init(root: .search, model: navigationModel), hasSheetModifiers: false)
             },
-            CustomTabItem(
-                title: "Settings",
-                image: UIImage(systemName: Icons.settings)
-            ) {
+            CustomTabItem(.settings, appState: appState, profileLabelType: tabProfileLabelType) {
                 NavigationLayerView(layer: .init(root: .settings(), model: navigationModel), hasSheetModifiers: false)
             }
         ], onSwipeUp: {

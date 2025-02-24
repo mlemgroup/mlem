@@ -231,6 +231,28 @@
           }
         }
       }
+    },
+    "post.1.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "The Yorkshire Dales, England"
+          }
+        }
+      }
+    },
+    "post.2.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Meguro River, Matsuno, Japan"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

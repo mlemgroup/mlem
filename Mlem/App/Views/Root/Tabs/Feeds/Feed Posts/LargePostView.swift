@@ -17,6 +17,7 @@ struct LargePostView: View {
     @Setting(\.readPostIndicator) var readPostIndicator
     @Setting(\.alternateInteractionBarLayoutForReports) var alternateInteractionBarLayoutForReports
     
+    @Environment(AppState.self) private var appState
     @Environment(Palette.self) private var palette: Palette
     @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?
     @Environment(\.communityContext) private var communityContext
@@ -93,6 +94,7 @@ struct LargePostView: View {
             if showDivider { Divider() }
             
             InteractionBarView(
+                appState: appState,
                 post: post,
                 configuration: interactionBarConfiguration,
                 commentTreeTracker: commentTreeTracker,

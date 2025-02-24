@@ -10,6 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct CommentView<EmbeddedContent: View>: View {
+    @Environment(AppState.self) var appState
     @Environment(Palette.self) private var palette
     @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?
     @Environment(\.communityContext) var communityContext: (any Community1Providing)?
@@ -113,6 +114,7 @@ struct CommentView<EmbeddedContent: View>: View {
                     embeddedContent
                     if !compact {
                         InteractionBarView(
+                            appState: appState,
                             comment: comment,
                             configuration: interactionBarConfiguration,
                             commentTreeTracker: commentTreeTracker,
@@ -146,15 +148,20 @@ struct CommentView<EmbeddedContent: View>: View {
             if moderatorActionGrouping == .separateMenu {
                 if comment.canModerate {
                     EllipsisMenu(systemImage: Icons.moderation, size: 24) {
-                        comment.moderatorMenuActions(showAllActions: !inFeed, report: reportContext)
+                        comment.moderatorMenuActions(appState: appState, showAllActions: !inFeed, report: reportContext)
                     }
                 }
                 EllipsisMenu(size: 24) {
-                    comment.basicMenuActions(commentTreeTracker: commentTreeTracker)
+                    comment.basicMenuActions(appState: appState, commentTreeTracker: commentTreeTracker)
                 }
             } else {
                 EllipsisMenu(size: 24) {
-                    comment.allMenuActions(showAllActions: !inFeed, commentTreeTracker: commentTreeTracker, report: reportContext)
+                    comment.allMenuActions(
+                        appState: appState,
+                        showAllActions: !inFeed,
+                        commentTreeTracker: commentTreeTracker,
+                        report: reportContext
+                    )
                 }
             }
         }

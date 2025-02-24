@@ -106,23 +106,24 @@ extension Post1Providing {
     }
     
     func swipeActions(
+        appState: AppState,
         behavior: SwipeBehavior,
         commentTreeTracker: CommentTreeTracker? = nil
     ) -> SwipeConfiguration {
         .init(
             behavior: behavior,
             leadingActions: {
-                if api.canInteract {
-                    upvoteAction(feedback: [.haptic])
+                if api.canInteract(appState: appState) {
+                    upvoteAction(appState: appState, feedback: [.haptic])
                     if api.downvotesEnabled {
-                        downvoteAction(feedback: [.haptic])
+                        downvoteAction(appState: appState, feedback: [.haptic])
                     }
                 }
             },
             trailingActions: {
-                if api.canInteract {
-                    saveAction(feedback: [.haptic])
-                    replyAction(commentTreeTracker: commentTreeTracker)
+                if api.canInteract(appState: appState) {
+                    saveAction(appState: appState, feedback: [.haptic])
+                    replyAction(appState: appState, commentTreeTracker: commentTreeTracker)
                 }
             }
         )
@@ -130,6 +131,7 @@ extension Post1Providing {
     
     @ActionBuilder
     func allMenuActions(
+        appState: AppState,
         expanded: Bool = false,
         feedback: Set<FeedbackType> = [.haptic, .toast],
         showAllActions: Bool = true,
@@ -137,86 +139,95 @@ extension Post1Providing {
         report: Report? = nil,
         commentTreeTracker: CommentTreeTracker? = nil
     ) -> [any Action] {
-        basicMenuActions(feedback: feedback, commentTreeTracker: commentTreeTracker)
+        basicMenuActions(appState: appState, feedback: feedback, commentTreeTracker: commentTreeTracker)
         if canModerate {
             ActionGroup(
                 appearance: .init(label: "Moderation...", color: Palette.main.moderation, icon: Icons.moderation),
                 displayMode: Settings.main.moderatorActionGrouping == .divider || expanded ? .section : .disclosure
             ) {
-                moderatorMenuActions(feedback: feedback, showAllActions: showAllActions, navigation: navigation, report: report)
+                moderatorMenuActions(
+                    appState: appState,
+                    feedback: feedback,
+                    showAllActions: showAllActions,
+                    navigation: navigation,
+                    report: report
+                )
             }
         }
     }
     
     @ActionBuilder
     func basicMenuActions(
+        appState: AppState,
         feedback: Set<FeedbackType> = [.haptic, .toast],
         commentTreeTracker: CommentTreeTracker? = nil
     ) -> [any Action] {
         ActionGroup(displayMode: .compactSection) {
-            upvoteAction(feedback: feedback)
-            downvoteAction(feedback: feedback)
-            saveAction(feedback: feedback)
-            replyAction(commentTreeTracker: commentTreeTracker)
+            upvoteAction(appState: appState, feedback: feedback)
+            downvoteAction(appState: appState, feedback: feedback)
+            saveAction(appState: appState, feedback: feedback)
+            replyAction(appState: appState, commentTreeTracker: commentTreeTracker)
             if !deleted {
                 selectTextAction()
             }
             shareAction()
             
             if isOwnPost {
-                editAction()
-                deleteAction(feedback: feedback)
+                editAction(appState: appState)
+                deleteAction(appState: appState, feedback: feedback)
             } else {
                 // If no version has been fetched yet, assume they're on <0.19.4 for now.
                 // Once 0.19.4 is widely adopted we could assume they're on >=0.19.4.
                 // See also the identical check within `hideAction` itself.
                 if (api.fetchedVersion ?? .zero) >= .v0_19_4 {
-                    hideAction(feedback: feedback)
+                    hideAction(appState: appState, feedback: feedback)
                 }
                 if !canModerate, !deleted {
-                    reportAction()
+                    reportAction(appState: appState)
                 }
-                blockAction(feedback: feedback)
+                blockAction(appState: appState, feedback: feedback)
             }
         }
     }
     
     @ActionBuilder
     func moderatorMenuActions(
+        appState: AppState,
         feedback: Set<FeedbackType> = [.haptic, .toast],
         showAllActions: Bool = true,
         navigation: NavigationLayer?,
         report: Report? = nil
     ) -> [any Action] {
         if showAllActions || Settings.main.showAllModActions {
-            pinToCommunityAction(feedback: feedback, verboseTitle: api.isAdmin)
+            pinToCommunityAction(appState: appState, feedback: feedback, verboseTitle: api.isAdmin)
             if api.isAdmin {
-                pinToInstanceAction(feedback: feedback)
+                pinToInstanceAction(appState: appState, feedback: feedback)
             }
-            lockAction(feedback: feedback)
+            lockAction(appState: appState, feedback: feedback)
             if let navigation, api.isAdmin || (api.fetchedVersion ?? .infinity) > .v0_19_4 {
                 viewVotesAction(navigation: navigation)
             }
         }
         if let self2, !isOwnPost {
-            self2.removeAction().disabled(!canModerate)
-            self2.creator.banActions(community: self2.community, withUserLabel: true)
+            self2.removeAction(appState: appState).disabled(!canModerate)
+            self2.creator.banActions(appState: appState, community: self2.community, withUserLabel: true)
         }
         if api.isAdmin {
-            purgeAction()
+            purgeAction(appState: appState)
             if !isOwnPost {
-                purgeCreatorAction()
+                purgeCreatorAction(appState: appState)
             }
         }
         if let report {
             ActionGroup {
-                report.menuActions()
+                report.menuActions(appState: appState)
             }
         }
     }
     
     // swiftlint:disable:next cyclomatic_complexity
     func action(
+        appState: AppState,
         type: PostBarConfiguration.ActionType,
         feedback: Set<FeedbackType> = [.haptic, .toast],
         commentTreeTracker: CommentTreeTracker? = nil,
@@ -224,36 +235,43 @@ extension Post1Providing {
         reportContext: Report? = nil
     ) -> (any Action)? {
         switch type {
-        case .upvote: upvoteAction(feedback: feedback)
-        case .downvote: api.downvotesEnabled ? downvoteAction(feedback: feedback) : nil
-        case .save: saveAction(feedback: feedback)
-        case .reply: replyAction(commentTreeTracker: commentTreeTracker)
+        case .upvote: upvoteAction(appState: appState, feedback: feedback)
+        case .downvote: api.downvotesEnabled ? downvoteAction(appState: appState, feedback: feedback) : nil
+        case .save: saveAction(appState: appState, feedback: feedback)
+        case .reply: replyAction(appState: appState, commentTreeTracker: commentTreeTracker)
         case .share: shareAction()
         case .selectText: selectTextAction()
-        case .hide: hideAction(feedback: feedback)
-        case .block: blockAction(feedback: feedback)
-        case .report: reportAction(communityContext: communityContext)
+        case .hide: hideAction(appState: appState, feedback: feedback)
+        case .block: blockAction(appState: appState, feedback: feedback)
+        case .report: reportAction(appState: appState, communityContext: communityContext)
         case .crossPost: crossPostAction()
-        case .lock: lockAction(feedback: feedback)
+        case .lock: lockAction(appState: appState, feedback: feedback)
         // SwiftLint is erroneously warning here. This could be fixed by wrapping the expression
         // in parenthesis, but the pre-commit hook removed the paranthesis
         // swiftlint:disable:next void_function_in_ternary
-        case .pin: api.isAdmin ? pinAction(feedback: feedback) : pinToCommunityAction(feedback: feedback)
-        case .resolve: reportContext?.resolveAction(feedback: feedback)
-        case .remove: removeAction(feedback: feedback).disabled(!canModerate)
-        case .ban: reportContext?.contextualBanAction()
+        case .pin: api.isAdmin ? pinAction(
+                appState: appState,
+                feedback: feedback
+            ) : pinToCommunityAction(
+                appState: appState,
+                feedback: feedback
+            )
+        case .resolve: reportContext?.resolveAction(appState: appState, feedback: feedback)
+        case .remove: removeAction(appState: appState, feedback: feedback).disabled(!canModerate)
+        case .ban: reportContext?.contextualBanAction(appState: appState)
         }
     }
     
     func counter(
+        appState: AppState,
         type: PostBarConfiguration.CounterType,
         commentTreeTracker: CommentTreeTracker? = nil
     ) -> Counter? {
         switch type {
-        case .score: scoreCounter
-        case .upvote: upvoteCounter
-        case .downvote: api.downvotesEnabled ? downvoteCounter : nil
-        case .reply: replyCounter(commentTreeTracker: commentTreeTracker)
+        case .score: scoreCounter(appState: appState)
+        case .upvote: upvoteCounter(appState: appState)
+        case .downvote: api.downvotesEnabled ? downvoteCounter(appState: appState) : nil
+        case .reply: replyCounter(appState: appState, commentTreeTracker: commentTreeTracker)
         }
     }
     
@@ -345,9 +363,9 @@ extension Post1Providing {
         )
     }
     
-    func hideAction(feedback: Set<FeedbackType>) -> BasicAction {
+    func hideAction(appState: AppState, feedback: Set<FeedbackType>) -> BasicAction {
         let hidden = hidden_ ?? false
-        let available = (api.fetchedVersion ?? .zero) >= .v0_19_4 && api.canInteract
+        let available = (api.fetchedVersion ?? .zero) >= .v0_19_4 && api.canInteract(appState: appState)
         return .init(
             id: "hide\(uid)",
             appearance: .hide(isOn: hidden),
@@ -355,7 +373,7 @@ extension Post1Providing {
         )
     }
     
-    func blockAction(feedback: Set<FeedbackType>) -> ActionGroup {
+    func blockAction(appState: AppState, feedback: Set<FeedbackType>) -> ActionGroup {
         .init(
             appearance: .init(
                 label: "Block...",
@@ -364,15 +382,15 @@ extension Post1Providing {
                 icon: Icons.block
             ),
             prompt: "Block community or user?",
-            disabled: !api.canInteract,
+            disabled: !api.canInteract(appState: appState),
             displayMode: .popup
         ) {
-            blockCreatorAction(feedback: feedback, showConfirmation: false)
-            blockCommunityAction(feedback: feedback, showConfirmation: false)
+            blockCreatorAction(appState: appState, feedback: feedback, showConfirmation: false)
+            blockCommunityAction(appState: appState, feedback: feedback, showConfirmation: false)
         }
     }
     
-    func blockCommunityAction(feedback: Set<FeedbackType> = [], showConfirmation: Bool = true) -> BasicAction {
+    func blockCommunityAction(appState: AppState, feedback: Set<FeedbackType> = [], showConfirmation: Bool = true) -> BasicAction {
         .init(
             id: "blockCommunity\(actorId.description)",
             appearance: .init(
@@ -383,39 +401,42 @@ extension Post1Providing {
                 icon: Icons.block
             ),
             confirmationPrompt: showConfirmation ? "Really block this community?" : nil,
-            callback: api.canInteract ? { @MainActor in self.self2?.community.toggleBlocked(feedback: feedback) } : nil
+            callback: api.canInteract(appState: appState) ? { @MainActor in self.self2?.community.toggleBlocked(feedback: feedback) } : nil
         )
     }
     
-    func editAction() -> BasicAction {
+    func editAction(appState: AppState) -> BasicAction {
         .init(
             id: "edit\(uid)",
             appearance: .edit(),
-            callback: api.canInteract ? showEditSheet : nil
+            callback: api.canInteract(appState: appState) ? showEditSheet : nil
         )
     }
     
-    func lockAction(feedback: Set<FeedbackType> = []) -> BasicAction {
+    func lockAction(appState: AppState, feedback: Set<FeedbackType> = []) -> BasicAction {
         .init(
             id: "lock\(uid)",
             appearance: .lock(isOn: locked, isInProgress: !lockedManager.isInSync),
             confirmationPrompt: locked ? "Really unlock this post?" : "Really lock this post?",
-            callback: api.canInteract && canModerate ? { @MainActor in self.self2?.toggleLocked(feedback: feedback) } : nil
+            callback: api.canInteract(appState: appState) && canModerate ? { @MainActor in
+                self.self2?.toggleLocked(feedback: feedback)
+            } : nil
         )
     }
     
-    func pinAction(feedback: Set<FeedbackType> = []) -> ActionGroup {
+    func pinAction(appState: AppState, feedback: Set<FeedbackType> = []) -> ActionGroup {
         .init(
             appearance: .pin(isOn: false, isInProgress: !(pinnedCommunityManager.isInSync && pinnedInstanceManager.isInSync)),
             prompt: "Pin to Community or Instance?",
             displayMode: .popup
         ) {
-            pinToCommunityAction(feedback: feedback, showConfirmation: false)
-            pinToInstanceAction(feedback: feedback, showConfirmation: false)
+            pinToCommunityAction(appState: appState, feedback: feedback, showConfirmation: false)
+            pinToInstanceAction(appState: appState, feedback: feedback, showConfirmation: false)
         }
     }
     
     func pinToCommunityAction(
+        appState: AppState,
         feedback: Set<FeedbackType> = [],
         verboseTitle: Bool = true,
         showConfirmation: Bool = true
@@ -447,11 +468,13 @@ extension Post1Providing {
                 isOn: isOn, isInProgress: !pinnedCommunityManager.isInSync
             ),
             confirmationPrompt: prompt,
-            callback: api.canInteract && canModerate ? { @MainActor in self.togglePinnedCommunity(feedback: feedback) } : nil
+            callback: api.canInteract(appState: appState) && canModerate ? { @MainActor in
+                self.togglePinnedCommunity(feedback: feedback)
+            } : nil
         )
     }
     
-    func pinToInstanceAction(feedback: Set<FeedbackType> = [], showConfirmation: Bool = true) -> BasicAction {
+    func pinToInstanceAction(appState: AppState, feedback: Set<FeedbackType> = [], showConfirmation: Bool = true) -> BasicAction {
         let isOn = self2?.pinnedInstance ?? false
         let prompt: LocalizedStringResource?
         if showConfirmation {
@@ -467,7 +490,9 @@ extension Post1Providing {
             id: "pinToInstance\(uid)",
             appearance: .pinToInstance(isOn: isOn, isInProgress: !pinnedInstanceManager.isInSync),
             confirmationPrompt: prompt,
-            callback: api.canInteract && api.isAdmin ? { @MainActor in self.togglePinnedInstance(feedback: feedback) } : nil
+            callback: api.canInteract(appState: appState) && api.isAdmin ? { @MainActor in
+                self.togglePinnedInstance(feedback: feedback)
+            } : nil
         )
     }
     

@@ -154,6 +154,10 @@
 		036ED6832D0C483B0018E5EA /* Profile2Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036ED6822D0C483B0018E5EA /* Profile2Providing+Extensions.swift */; };
 		036FFA2D2D45110C00998D8A /* ChangePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036FFA2C2D45110C00998D8A /* ChangePasswordView.swift */; };
 		036FFA2F2D45197300998D8A /* PrivacySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036FFA2E2D45197300998D8A /* PrivacySettingsView.swift */; };
+		0370299D2D6B70F400B749DF /* MockApiClient+Realistic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0370299C2D6B70F400B749DF /* MockApiClient+Realistic.swift */; };
+		0370299F2D6B743B00B749DF /* PostMockType+Realistic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0370299E2D6B743B00B749DF /* PostMockType+Realistic.swift */; };
+		037029A12D6B9A3900B749DF /* View+TabBarPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037029A02D6B9A3900B749DF /* View+TabBarPreview.swift */; };
+		037029A32D6B9B8400B749DF /* ContentView+Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037029A22D6B9B8400B749DF /* ContentView+Tab.swift */; };
 		0372EBCE2D36FBCF00257095 /* RegistrationApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0372EBCD2D36FBCF00257095 /* RegistrationApplication+Extensions.swift */; };
 		0372EC202D370F0200257095 /* RegistrationApplicationDenialEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0372EC1F2D370F0200257095 /* RegistrationApplicationDenialEditorView.swift */; };
 		037331A42C9CB12D00C826E1 /* EnvironmentValues+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037331A32C9CB12D00C826E1 /* EnvironmentValues+Extensions.swift */; };
@@ -675,6 +679,10 @@
 		036ED6822D0C483B0018E5EA /* Profile2Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Profile2Providing+Extensions.swift"; sourceTree = "<group>"; };
 		036FFA2C2D45110C00998D8A /* ChangePasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordView.swift; sourceTree = "<group>"; };
 		036FFA2E2D45197300998D8A /* PrivacySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacySettingsView.swift; sourceTree = "<group>"; };
+		0370299C2D6B70F400B749DF /* MockApiClient+Realistic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockApiClient+Realistic.swift"; sourceTree = "<group>"; };
+		0370299E2D6B743B00B749DF /* PostMockType+Realistic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostMockType+Realistic.swift"; sourceTree = "<group>"; };
+		037029A02D6B9A3900B749DF /* View+TabBarPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+TabBarPreview.swift"; sourceTree = "<group>"; };
+		037029A22D6B9B8400B749DF /* ContentView+Tab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView+Tab.swift"; sourceTree = "<group>"; };
 		0372EBCD2D36FBCF00257095 /* RegistrationApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RegistrationApplication+Extensions.swift"; sourceTree = "<group>"; };
 		0372EC1F2D370F0200257095 /* RegistrationApplicationDenialEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationApplicationDenialEditorView.swift; sourceTree = "<group>"; };
 		037331A32C9CB12D00C826E1 /* EnvironmentValues+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+Extensions.swift"; sourceTree = "<group>"; };
@@ -1447,9 +1455,11 @@
 				03F6BD932D500DED006A425E /* PersonMockType.swift */,
 				03F6BDAE2D516636006A425E /* CommunityMockType.swift */,
 				03F6BDB02D52AA00006A425E /* CommunityMockType+Realistic.swift */,
+				0370299C2D6B70F400B749DF /* MockApiClient+Realistic.swift */,
 				03F6BD972D500E2A006A425E /* PersonMockType+Realistic.swift */,
 				03F6BD9B2D501478006A425E /* ActorIdentifier+Mock.swift */,
 				03F6BDBB2D52B7FE006A425E /* PostMockType.swift */,
+				0370299E2D6B743B00B749DF /* PostMockType+Realistic.swift */,
 			);
 			path = "MlemMiddleware Mock";
 			sourceTree = "<group>";
@@ -1754,6 +1764,7 @@
 			children = (
 				B1B78D632A51D53900F72485 /* AppDelegate.swift */,
 				6363D5C627EE196700E34822 /* ContentView.swift */,
+				037029A22D6B9B8400B749DF /* ContentView+Tab.swift */,
 				039F58902C7B5C7A00C61658 /* ContentView+Logic.swift */,
 				6363D5C427EE196700E34822 /* MlemApp.swift */,
 				038096602C10AAD8003ED1D8 /* TransitionView.swift */,
@@ -2003,6 +2014,7 @@
 				CDFB8C682C7796020070845F /* View+DynamicBlur.swift */,
 				CD1B2E202C7F84160075C7EA /* View+MarkReadOnScroll.swift */,
 				03FD6CAF2C9B719100500FD6 /* View+PopupAnchor.swift */,
+				037029A02D6B9A3900B749DF /* View+TabBarPreview.swift */,
 			);
 			path = "View Modifiers";
 			sourceTree = "<group>";
@@ -2554,6 +2566,7 @@
 				CD9CFA2A2C2E1E8400739BBC /* FeedHeaderView.swift in Sources */,
 				CDB41E8E2C84CFA200BD2DE9 /* FixedImageView.swift in Sources */,
 				03BF11CA2D4027E900CC1F66 /* DevicePickerItem.swift in Sources */,
+				037029A12D6B9A3900B749DF /* View+TabBarPreview.swift in Sources */,
 				033F84C12C2AD072002E3EDF /* CommentTreeNode.swift in Sources */,
 				034B94832C09340A00039AF4 /* MarkdownConfiguration+Extensions.swift in Sources */,
 				034CC0302D22C5BE00C557D3 /* WarningOverlayView.swift in Sources */,
@@ -2688,6 +2701,7 @@
 				CD3153072C38421B00BC5FBE /* View+LoadFeed.swift in Sources */,
 				CD317D4C2BE97FED008F63E2 /* Palette.swift in Sources */,
 				039F588F2C7B599800C61658 /* ThemeLabel.swift in Sources */,
+				037029A32D6B9B8400B749DF /* ContentView+Tab.swift in Sources */,
 				CD2C86542D5556C00034CD8A /* MlemError.swift in Sources */,
 				CD4E386B2C836837009B24F2 /* DraculaPalette.swift in Sources */,
 				CD9857A42C5E7F9D0084C71F /* NsfwOverlayView.swift in Sources */,
@@ -2898,11 +2912,13 @@
 				03BF11C32D3D135D00CC1F66 /* SearchView+CreatorPicker.swift in Sources */,
 				0315B1C62C754802006D4F82 /* PostEditorView+Logic.swift in Sources */,
 				CD4D58932B86BA5C00B82964 /* StandardPalette.swift in Sources */,
+				0370299F2D6B743B00B749DF /* PostMockType+Realistic.swift in Sources */,
 				CDE1F1942C63DF44008AF042 /* PlatformConstants.swift in Sources */,
 				CDCA44952C17658000C092B3 /* View+QuickSwipes.swift in Sources */,
 				0397D4602C66113F002C6CDC /* CommentBodyView.swift in Sources */,
 				CD9CFA372C306DAB00739BBC /* PostGridView.swift in Sources */,
 				0397D46C2C67E583002C6CDC /* SortingSettingsView.swift in Sources */,
+				0370299D2D6B70F400B749DF /* MockApiClient+Realistic.swift in Sources */,
 				03AB48522CBC042E00567FF9 /* AccountContentSettingsView.swift in Sources */,
 				03D2A63F2C010DBF00ED4FF2 /* GuestSession.swift in Sources */,
 				CDD99C3E2C73F4380010367F /* WarningView.swift in Sources */,
@@ -3379,7 +3395,7 @@
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware";
 			requirement = {
 				kind = upToNextMinorVersion;
-				minimumVersion = 0.80.0;
+				minimumVersion = 0.81.0;
 			};
 		};
 		CDE4AC402CA3706400981010 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {

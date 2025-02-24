@@ -25,23 +25,24 @@ extension Comment1Providing {
     }
 
     func swipeActions(
+        appState: AppState,
         behavior: SwipeBehavior,
         commentTreeTracker: CommentTreeTracker? = nil
     ) -> SwipeConfiguration {
         .init(
             behavior: behavior,
             leadingActions: {
-                if api.canInteract {
-                    upvoteAction(feedback: [.haptic])
+                if api.canInteract(appState: appState) {
+                    upvoteAction(appState: appState, feedback: [.haptic])
                     if api.downvotesEnabled {
-                        downvoteAction(feedback: [.haptic])
+                        downvoteAction(appState: appState, feedback: [.haptic])
                     }
                 }
             },
             trailingActions: {
-                if api.canInteract {
-                    saveAction(feedback: [.haptic])
-                    replyAction(commentTreeTracker: commentTreeTracker)
+                if api.canInteract(appState: appState) {
+                    saveAction(appState: appState, feedback: [.haptic])
+                    replyAction(appState: appState, commentTreeTracker: commentTreeTracker)
                 }
             }
         )
@@ -54,52 +55,55 @@ extension Comment1Providing {
 
     @ActionBuilder
     func allMenuActions(
+        appState: AppState,
         expanded: Bool = false,
         feedback: Set<FeedbackType> = [.haptic, .toast],
         showAllActions: Bool = true,
         commentTreeTracker: CommentTreeTracker? = nil,
         report: Report? = nil
     ) -> [any Action] {
-        basicMenuActions(feedback: feedback, commentTreeTracker: commentTreeTracker)
+        basicMenuActions(appState: appState, feedback: feedback, commentTreeTracker: commentTreeTracker)
         if canModerate {
             ActionGroup(
                 appearance: .init(label: "Moderation...", color: Palette.main.moderation, icon: Icons.moderation),
                 displayMode: Settings.main.moderatorActionGrouping == .divider || expanded ? .section : .disclosure
             ) {
-                moderatorMenuActions(feedback: feedback, showAllActions: showAllActions, report: report)
+                moderatorMenuActions(appState: appState, feedback: feedback, showAllActions: showAllActions, report: report)
             }
         }
     }
     
     @ActionBuilder
     func basicMenuActions(
+        appState: AppState,
         feedback: Set<FeedbackType> = [.haptic, .toast],
         commentTreeTracker: CommentTreeTracker? = nil
     ) -> [any Action] {
         ActionGroup(displayMode: .compactSection) {
-            upvoteAction(feedback: feedback)
-            downvoteAction(feedback: feedback)
-            saveAction(feedback: feedback)
-            replyAction(commentTreeTracker: commentTreeTracker)
+            upvoteAction(appState: appState, feedback: feedback)
+            downvoteAction(appState: appState, feedback: feedback)
+            saveAction(appState: appState, feedback: feedback)
+            replyAction(appState: appState, commentTreeTracker: commentTreeTracker)
             if !deleted {
                 selectTextAction()
             }
             shareAction()
             
             if isOwnComment {
-                editAction()
-                deleteAction(feedback: feedback)
+                editAction(appState: appState)
+                deleteAction(appState: appState, feedback: feedback)
             } else {
                 if !canModerate, !deleted {
-                    reportAction()
+                    reportAction(appState: appState)
                 }
-                blockCreatorAction(feedback: feedback)
+                blockCreatorAction(appState: appState, feedback: feedback)
             }
         }
     }
     
     @ActionBuilder
     func moderatorMenuActions(
+        appState: AppState,
         feedback: Set<FeedbackType> = [.haptic, .toast],
         showAllActions: Bool = true,
         report: Report? = nil
@@ -108,18 +112,18 @@ extension Comment1Providing {
             viewVotesAction()
         }
         if let self2, !isOwnComment {
-            self2.removeAction().disabled(!canModerate)
-            self2.creator.banActions(community: self2.community, withUserLabel: true)
+            self2.removeAction(appState: appState).disabled(!canModerate)
+            self2.creator.banActions(appState: appState, community: self2.community, withUserLabel: true)
         }
         if api.isAdmin {
-            purgeAction()
+            purgeAction(appState: appState)
             if !isOwnComment {
-                purgeCreatorAction()
+                purgeCreatorAction(appState: appState)
             }
         }
         if let report {
             ActionGroup {
-                report.menuActions()
+                report.menuActions(appState: appState)
             }
         }
     }
@@ -129,34 +133,36 @@ extension Comment1Providing {
     }
     
     func action(
+        appState: AppState,
         type: CommentBarConfiguration.ActionType,
         commentTreeTracker: CommentTreeTracker? = nil,
         communityContext: (any CommunityStubProviding)? = nil,
         reportContext: Report? = nil
     ) -> (any Action)? {
         switch type {
-        case .upvote: upvoteAction(feedback: [.haptic])
-        case .downvote: api.downvotesEnabled ? downvoteAction(feedback: [.haptic]) : nil
-        case .save: saveAction(feedback: [.haptic])
-        case .reply: replyAction(commentTreeTracker: commentTreeTracker)
+        case .upvote: upvoteAction(appState: appState, feedback: [.haptic])
+        case .downvote: api.downvotesEnabled ? downvoteAction(appState: appState, feedback: [.haptic]) : nil
+        case .save: saveAction(appState: appState, feedback: [.haptic])
+        case .reply: replyAction(appState: appState, commentTreeTracker: commentTreeTracker)
         case .share: shareAction()
         case .selectText: selectTextAction()
-        case .report: reportAction(communityContext: communityContext)
-        case .resolve: reportContext?.resolveAction(feedback: [.haptic])
-        case .remove: removeAction().disabled(!canModerate)
-        case .ban: reportContext?.contextualBanAction()
+        case .report: reportAction(appState: appState, communityContext: communityContext)
+        case .resolve: reportContext?.resolveAction(appState: appState, feedback: [.haptic])
+        case .remove: removeAction(appState: appState).disabled(!canModerate)
+        case .ban: reportContext?.contextualBanAction(appState: appState)
         }
     }
     
     func counter(
+        appState: AppState,
         type: CommentBarConfiguration.CounterType,
         commentTreeTracker: CommentTreeTracker? = nil
     ) -> Counter? {
         switch type {
-        case .score: scoreCounter
-        case .upvote: upvoteCounter
-        case .downvote: api.downvotesEnabled ? downvoteCounter : nil
-        case .reply: replyCounter(commentTreeTracker: commentTreeTracker)
+        case .score: scoreCounter(appState: appState)
+        case .upvote: upvoteCounter(appState: appState)
+        case .downvote: api.downvotesEnabled ? downvoteCounter(appState: appState) : nil
+        case .reply: replyCounter(appState: appState, commentTreeTracker: commentTreeTracker)
         }
     }
     
@@ -173,11 +179,11 @@ extension Comment1Providing {
     
     // MARK: Actions
     
-    func editAction() -> BasicAction {
+    func editAction(appState: AppState) -> BasicAction {
         .init(
             id: "edit\(uid)",
             appearance: .edit(),
-            callback: api.canInteract ? { @MainActor in self.showEditSheet() } : nil
+            callback: api.canInteract(appState: appState) ? { @MainActor in self.showEditSheet() } : nil
         )
     }
     

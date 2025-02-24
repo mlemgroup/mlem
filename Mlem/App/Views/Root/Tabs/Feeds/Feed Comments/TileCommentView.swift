@@ -11,6 +11,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct TileCommentView: View {
+    @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette
     @Environment(\.parentFrameWidth) var parentFrameWidth: CGFloat
     
@@ -99,7 +100,7 @@ struct TileCommentView: View {
     
     var score: some View {
         Menu {
-            ForEach(comment.allMenuActions(), id: \.id) { action in
+            ForEach(comment.allMenuActions(appState: appState), id: \.id) { action in
                 MenuButton(action: action)
             }
         } label: {

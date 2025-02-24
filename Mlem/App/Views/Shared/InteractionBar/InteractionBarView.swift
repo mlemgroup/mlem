@@ -9,6 +9,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct InteractionBarView: View {
+    @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
     @Environment(Palette.self) var palette
     
@@ -17,6 +18,7 @@ struct InteractionBarView: View {
     private let readouts: [Readout]
     
     init(
+        appState: AppState,
         post: any Post1Providing,
         configuration: PostBarConfiguration,
         commentTreeTracker: CommentTreeTracker? = nil,
@@ -24,6 +26,7 @@ struct InteractionBarView: View {
         reportContext: Report? = nil
     ) {
         self.leading = .init(
+            appState: appState,
             post: post,
             items: configuration.leading,
             commentTreeTracker: commentTreeTracker,
@@ -31,6 +34,7 @@ struct InteractionBarView: View {
             reportContext: reportContext
         )
         self.trailing = .init(
+            appState: appState,
             post: post,
             items: configuration.trailing,
             commentTreeTracker: commentTreeTracker,
@@ -41,6 +45,7 @@ struct InteractionBarView: View {
     }
     
     init(
+        appState: AppState,
         comment: any Comment1Providing,
         configuration: CommentBarConfiguration,
         commentTreeTracker: CommentTreeTracker? = nil,
@@ -48,6 +53,7 @@ struct InteractionBarView: View {
         reportContext: Report?
     ) {
         self.leading = .init(
+            appState: appState,
             comment: comment,
             items: configuration.leading,
             commentTreeTracker: commentTreeTracker,
@@ -55,6 +61,7 @@ struct InteractionBarView: View {
             reportContext: reportContext
         )
         self.trailing = .init(
+            appState: appState,
             comment: comment,
             items: configuration.trailing,
             commentTreeTracker: commentTreeTracker,
@@ -64,9 +71,13 @@ struct InteractionBarView: View {
         self.readouts = configuration.readouts.compactMap { comment.readout(type: $0) }
     }
     
-    init(reply: any Reply1Providing, configuration: ReplyBarConfiguration) {
-        self.leading = .init(reply: reply, items: configuration.leading)
-        self.trailing = .init(reply: reply, items: configuration.trailing)
+    init(
+        appState: AppState,
+        reply: any Reply1Providing,
+        configuration: ReplyBarConfiguration
+    ) {
+        self.leading = .init(appState: appState, reply: reply, items: configuration.leading)
+        self.trailing = .init(appState: appState, reply: reply, items: configuration.trailing)
         self.readouts = configuration.readouts.compactMap { reply.readout(type: $0) }
     }
 
@@ -216,6 +227,7 @@ private enum EnrichedWidget {
 
 extension [EnrichedWidget] {
     init(
+        appState: AppState,
         post: any Post1Providing,
         items: [PostBarConfiguration.Item],
         commentTreeTracker: CommentTreeTracker?,
@@ -226,6 +238,7 @@ extension [EnrichedWidget] {
             switch item {
             case let .action(action):
                 if let action = post.action(
+                    appState: appState,
                     type: action,
                     commentTreeTracker: commentTreeTracker,
                     communityContext: communityContext,
@@ -234,7 +247,7 @@ extension [EnrichedWidget] {
                     return .action(action)
                 }
             case let .counter(counter):
-                if let counter = post.counter(type: counter, commentTreeTracker: commentTreeTracker) {
+                if let counter = post.counter(appState: appState, type: counter, commentTreeTracker: commentTreeTracker) {
                     return .counter(counter)
                 }
             }
@@ -243,6 +256,7 @@ extension [EnrichedWidget] {
     }
     
     init(
+        appState: AppState,
         comment: any Comment1Providing,
         items: [CommentBarConfiguration.Item],
         commentTreeTracker: CommentTreeTracker?,
@@ -253,6 +267,7 @@ extension [EnrichedWidget] {
             switch item {
             case let .action(action):
                 if let action = comment.action(
+                    appState: appState,
                     type: action,
                     commentTreeTracker: commentTreeTracker,
                     communityContext: communityContext,
@@ -262,6 +277,7 @@ extension [EnrichedWidget] {
                 }
             case let .counter(counter):
                 if let counter = comment.counter(
+                    appState: appState,
                     type: counter,
                     commentTreeTracker: commentTreeTracker
                 ) {
@@ -273,17 +289,18 @@ extension [EnrichedWidget] {
     }
     
     init(
+        appState: AppState,
         reply: any Reply1Providing,
         items: [ReplyBarConfiguration.Item]
     ) {
         self = items.compactMap { item in
             switch item {
             case let .action(action):
-                if let action = reply.action(type: action) {
+                if let action = reply.action(appState: appState, type: action) {
                     return .action(action)
                 }
             case let .counter(counter):
-                if let counter = reply.counter(type: counter) {
+                if let counter = reply.counter(appState: appState, type: counter) {
                     return .counter(counter)
                 }
             }

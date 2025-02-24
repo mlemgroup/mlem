@@ -67,15 +67,15 @@ struct MessageView<EmbeddedContent: View>: View {
         .clipped()
         .background(palette.secondaryGroupedBackground)
         .contentShape(.rect)
-        .quickSwipes(message.swipeActions(behavior: .standard))
+        .quickSwipes(message.swipeActions(appState: appState, behavior: .standard))
         .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
         .contextMenu {
-            message.allMenuActions(editCallback: editMessage, navigation: navigation, report: reportContext)
+            message.allMenuActions(appState: appState, editCallback: editMessage, navigation: navigation, report: reportContext)
         }
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
         .onTapGesture {
-            if let otherPerson, message.api.canInteract {
+            if let otherPerson, message.api.canInteract(appState: appState) {
                 navigation.push(.messageFeed(otherPerson))
             }
         }
@@ -86,15 +86,15 @@ struct MessageView<EmbeddedContent: View>: View {
             if moderatorActionGrouping == .separateMenu {
                 if message.api.isAdmin {
                     EllipsisMenu(systemImage: Icons.moderation, size: 24) {
-                        message.moderatorMenuActions(report: reportContext)
+                        message.moderatorMenuActions(appState: appState, report: reportContext)
                     }
                 }
                 EllipsisMenu(size: 24) {
-                    message.basicMenuActions(editCallback: editMessage, navigation: navigation)
+                    message.basicMenuActions(appState: appState, editCallback: editMessage, navigation: navigation)
                 }
             } else {
                 EllipsisMenu(size: 24) {
-                    message.allMenuActions(editCallback: editMessage, navigation: navigation, report: reportContext)
+                    message.allMenuActions(appState: appState, editCallback: editMessage, navigation: navigation, report: reportContext)
                 }
             }
         }

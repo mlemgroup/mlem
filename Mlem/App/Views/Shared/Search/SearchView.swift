@@ -52,15 +52,24 @@ struct SearchView: View {
     @State var selectedTab: Tab = .communities
     @State var resultsScrollToTopTrigger: Bool = false
     
-    @State var communityLoader: CommunityFeedLoader = .init(api: AppState.main.firstApi)
-    @State var personLoader: PersonFeedLoader = .init(api: AppState.main.firstApi)
+    @State var communityLoader: CommunityFeedLoader
+    @State var personLoader: PersonFeedLoader
     @State var instances: [InstanceSummary] = []
-    @State var postLoader: SearchPostFeedLoader = .init(
-        api: AppState.main.firstApi,
-        prefetchingConfiguration: .forPostSize(Settings.main.postSize),
-        urlCache: Constants.main.urlCache
-    )
-    @State var commentLoader: SearchCommentFeedLoader = .init(api: AppState.main.firstApi)
+    @State var postLoader: SearchPostFeedLoader
+    @State var commentLoader: SearchCommentFeedLoader
+    
+    init(appState: AppState = .main) {
+        self._communityLoader = .init(wrappedValue: .init(api: appState.firstApi))
+        self._personLoader = .init(wrappedValue: .init(api: appState.firstApi))
+        self._postLoader = .init(
+            wrappedValue: .init(
+                api: appState.firstApi,
+                prefetchingConfiguration: .forPostSize(Settings.main.postSize),
+                urlCache: Constants.main.urlCache
+            )
+        )
+        self._commentLoader = .init(wrappedValue: .init(api: appState.firstApi))
+    }
     
     @State var editingRecentSearches: Bool = false
     
@@ -69,24 +78,7 @@ struct SearchView: View {
             .background(palette.groupedBackground)
             .navigationTitle("Search")
             .navigationBarTitleDisplayMode(.large)
-            .navigationSearchBar {
-                SearchBar(
-                    "Search...",
-                    text: $query,
-                    isEditing: $isSearching,
-                    onCommit: {
-                        if selectedTab == .posts || selectedTab == .comments {
-                            Task { @MainActor in
-                                await refresh(clearBeforeRefresh: true)
-                            }
-                        }
-                    }
-                )
-                .returnKeyType(.search)
-                .showsCancelButton(page != .home)
-                .onCancel(perform: returnToHome)
-                .focused($searchBarFocused)
-            }
+            .navigationSearchBar(searchBar)
             .navigationSearchBarHiddenWhenScrolling(false)
             .toolbar { PasteLinkButtonView() }
             .scrollDismissesKeyboard(.interactively)
@@ -104,49 +96,10 @@ struct SearchView: View {
                     page = .recents
                 }
             }
-            // Don't use `.task` here, because it triggers when navigating back
-            .onChange(of: query, initial: true) { oldValue, newValue in
-                editingRecentSearches = false
-                Task { @MainActor in
-                    if oldValue != newValue {
-                        switch selectedTab {
-                        case .posts:
-                            await postLoader.clear()
-                            return
-                        case .comments:
-                            await commentLoader.clear()
-                            return
-                        default:
-                            break
-                        }
-                    }
-                    guard !hasAppeared || searchBarFocused else { return }
-                    hasAppeared = true
-                    await refresh(clearBeforeRefresh: false)
-                }
-            }
-            .onChange(of: appState.firstApi.actorId) {
-                Task {
-                    await refresh(clearBeforeRefresh: false)
-                }
-            }
-            .onChange(of: selectedTab) {
-                editingRecentSearches = false
-                if selectedTab == .posts || selectedTab == .comments {
-                    if page != .results {
-                        searchBarFocused = true
-                    }
-                } else {
-                    Task {
-                        await refresh(clearBeforeRefresh: false, onlyRefreshIfEmpty: true)
-                    }
-                }
-            }
-            .onChange(of: filterRefreshHashValue) {
-                Task {
-                    await refresh(clearBeforeRefresh: selectedTab == .posts || selectedTab == .comments)
-                }
-            }
+//            // Don't use `.task` here, because it triggers when navigating back
+            .onChange(of: query, initial: true, onQueryChange)
+            .onChange(of: selectedTab, onTabChange)
+            .onChange(of: filterRefreshHashValue, onFilterRefreshHashValueChange)
             .onChange(of: postFilters.location.instanceStub) {
                 resolvePostFilterCreator()
             }
@@ -175,4 +128,32 @@ struct SearchView: View {
         .animation(.easeOut(duration: 0.1), value: filtersActive)
         .animation(.easeOut(duration: 0.2), value: page)
     }
+    
+    func searchBar() -> SearchBar {
+        SearchBar(
+            "Search...",
+            text: $query,
+            isEditing: $isSearching,
+            onCommit: {
+                if selectedTab == .posts || selectedTab == .comments {
+                    Task { @MainActor in
+                        await refresh(clearBeforeRefresh: true)
+                    }
+                }
+            }
+        )
+        .returnKeyType(.search)
+        .showsCancelButton(page != .home)
+        .onCancel(perform: returnToHome)
+        .focused($searchBarFocused)
+    }
 }
+
+#if DEBUG
+    #Preview(traits: .sampleEnvironment(api: .realistic)) {
+        @Previewable @Environment(AppState.self) var appState
+        NavigationStack {
+            SearchView(appState: appState)
+        }
+    }
+#endif

@@ -91,6 +91,7 @@ extension Person1Providing {
     
     @ActionBuilder
     func menuActions(
+        appState: AppState,
         feedback: Set<FeedbackType> = [.haptic, .toast],
         isInMessageFeed: Bool = false,
         navigation: NavigationLayer?,
@@ -104,13 +105,13 @@ extension Person1Providing {
                 if !isInMessageFeed {
                     sendMessageAction()
                 }
-                blockAction(feedback: feedback)
+                blockAction(appState: appState, feedback: feedback)
             }
         }
         ActionGroup {
-            banActions(community: community)
+            banActions(appState: appState, community: community)
             if api.isAdmin {
-                purgeAction()
+                purgeAction(appState: appState)
             }
             
             if let community3 = community as? any Community3Providing,
@@ -129,11 +130,11 @@ extension Person1Providing {
         }
     }
     
-    func blockAction(feedback: Set<FeedbackType> = [], showConfirmation: Bool = true) -> BasicAction {
+    func blockAction(appState: AppState, feedback: Set<FeedbackType> = [], showConfirmation: Bool = true) -> BasicAction {
         .init(
             id: "block\(uid)",
             appearance: .block(isOn: blocked),
-            callback: api.canInteract ? { @MainActor in self.toggleBlocked(feedback: feedback) } : nil
+            callback: api.canInteract(appState: appState) ? { @MainActor in self.toggleBlocked(feedback: feedback) } : nil
         )
     }
     
@@ -145,7 +146,7 @@ extension Person1Providing {
         )
     }
     
-    func banActions(community: (any Community)?, withUserLabel: Bool = false) -> [any Action] {
+    func banActions(appState: AppState, community: (any Community)?, withUserLabel: Bool = false) -> [any Action] {
         let isModerator: Bool
         let showBoth: Bool
         if let myPerson = api.myPerson, let community {
@@ -160,27 +161,27 @@ extension Person1Providing {
         // moderators see community ban action by default, regardless of admin status
         if isModerator {
             if showBoth {
-                output.append(banFromInstanceAction())
+                output.append(banFromInstanceAction(appState: appState))
             }
             if let community {
-                output.append(banFromCommunityAction(community: community, withUserLabel: withUserLabel))
+                output.append(banFromCommunityAction(appState: appState, community: community, withUserLabel: withUserLabel))
             }
         }
         // non-moderator admins see instance ban action by default
         else if api.isAdmin {
-            output.append(banFromInstanceAction())
+            output.append(banFromInstanceAction(appState: appState))
             if showBoth, let community {
-                output.append(banFromCommunityAction(community: community, withUserLabel: withUserLabel))
+                output.append(banFromCommunityAction(appState: appState, community: community, withUserLabel: withUserLabel))
             }
         }
         return output
     }
     
-    func banFromInstanceAction(withUserLabel: Bool = false) -> BasicAction {
+    func banFromInstanceAction(appState: AppState, withUserLabel: Bool = false) -> BasicAction {
         .init(
             id: "banFromInstance\(uid)",
             appearance: .banFromInstance(isOn: bannedFromInstance, withUserLabel: withUserLabel),
-            callback: api.canInteract && api.isAdmin ? { @MainActor in
+            callback: api.canInteract(appState: appState) && api.isAdmin ? { @MainActor in
                 self.showBanSheet(
                     community: nil,
                     isBannedFromCommunity: false,
@@ -190,10 +191,10 @@ extension Person1Providing {
         )
     }
     
-    func banFromCommunityAction(community: any Community, withUserLabel: Bool = false) -> BasicAction {
+    func banFromCommunityAction(appState: AppState, community: any Community, withUserLabel: Bool = false) -> BasicAction {
         let isBanned = isBannedFromCommunity(community)
         let callback: (@MainActor () -> Void)?
-        if let isBanned, api.canInteract, community.canModerate {
+        if let isBanned, api.canInteract(appState: appState), community.canModerate {
             callback = {
                 self.showBanSheet(
                     community: community,

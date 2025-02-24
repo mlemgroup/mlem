@@ -38,8 +38,8 @@ extension ExpandedPostView {
                         highlight: [scrollTargetedComment?.actorId_, highlightedComment?.actorId_].contains(comment.actorId),
                         depthOffset: tracker.proposedDepthOffset
                     )
-                    .quickSwipes(comment.swipeActions(behavior: .standard, commentTreeTracker: tracker))
-                    .contextMenu { comment.allMenuActions() }
+                    .quickSwipes(comment.swipeActions(appState: appState, behavior: .standard, commentTreeTracker: tracker))
+                    .contextMenu { comment.allMenuActions(appState: appState) }
                     .paletteBorder(cornerRadius: Constants.main.standardSpacing)
                     .transition(.move(edge: .top).combined(with: .opacity))
                     .zIndex(1000 - Double(comment.depth))

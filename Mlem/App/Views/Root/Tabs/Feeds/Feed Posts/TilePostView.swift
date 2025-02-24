@@ -14,6 +14,7 @@ import SwiftUI
 struct TilePostView: View {
     @Setting(\.readPostIndicator) var readPostIndicator
     
+    @Environment(AppState.self) private var appState
     @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?
     @Environment(NavigationLayer.self) var navigation
     @Environment(Palette.self) var palette: Palette
@@ -103,6 +104,7 @@ struct TilePostView: View {
     var score: some View {
         Menu {
             ForEach(post.allMenuActions(
+                appState: appState,
                 showAllActions: false,
                 navigation: navigation,
                 commentTreeTracker: commentTreeTracker

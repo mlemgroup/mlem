@@ -69,6 +69,7 @@ extension InstanceStubProviding {
     
     @ActionBuilder
     func menuActions(
+        appState: AppState,
         feedback: Set<FeedbackType> = [.haptic, .toast],
         allowExternalBlocking: Bool = false
     ) -> [any Action] {
@@ -84,6 +85,7 @@ extension InstanceStubProviding {
         if !local || (allowExternalBlocking && actorId != AppState.main.firstApi.actorId) {
             ActionGroup {
                 blockAction(
+                    appState: appState,
                     feedback: feedback,
                     allowExternalBlocking: allowExternalBlocking
                 )
@@ -146,6 +148,7 @@ extension InstanceStubProviding {
     /// will display and update the block status of the instance on the active UserSession. Otherwise, the block
     /// action on those models will be disabled.
     func blockAction(
+        appState: AppState,
         feedback: Set<FeedbackType> = [],
         showConfirmation: Bool = true,
         allowExternalBlocking: Bool = false
@@ -154,7 +157,7 @@ extension InstanceStubProviding {
         let callback: (() -> Void)?
         if let self = self as? any Instance1Providing, api.token != nil {
             blocked = self.blocked
-            callback = api.canInteract ? { self.toggleBlocked(feedback: feedback) } : nil
+            callback = api.canInteract(appState: appState) ? { self.toggleBlocked(feedback: feedback) } : nil
         } else if allowExternalBlocking, let session = (AppState.main.firstSession as? UserSession) {
             blocked = session.blocks?.contains(self) ?? false
             callback = { session.toggleInstanceBlock(actorId: actorId) }

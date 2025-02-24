@@ -62,7 +62,7 @@ struct InstanceListRow<Content2: View>: View {
         .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
         .contextMenu {
-            instanceStub?.menuActions(allowExternalBlocking: true) ?? []
+            instanceStub?.menuActions(appState: appState, allowExternalBlocking: true) ?? []
         }
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }

@@ -16,6 +16,7 @@ struct HeadlinePostView<EmbeddedContent: View>: View {
     @Setting(\.readPostIndicator) var readPostIndicator
     @Setting(\.alternateInteractionBarLayoutForReports) var alternateInteractionBarLayoutForReports
 
+    @Environment(AppState.self) private var appState
     @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?
     @Environment(Palette.self) var palette: Palette
     @Environment(\.communityContext) var communityContext: (any Community1Providing)?
@@ -82,6 +83,7 @@ struct HeadlinePostView<EmbeddedContent: View>: View {
             embeddedContent
             
             InteractionBarView(
+                appState: appState,
                 post: post,
                 configuration: interactionBarConfiguration,
                 commentTreeTracker: commentTreeTracker,

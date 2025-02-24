@@ -10,6 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct FeedCommentView<EmbeddedContent: View>: View {
+    @Environment(AppState.self) private var appState
     @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?
     @Environment(Palette.self) var palette
     @Environment(\.reportContext) var reportContext: Report?
@@ -35,8 +36,9 @@ struct FeedCommentView<EmbeddedContent: View>: View {
     var body: some View {
         content
             .contentShape(.interaction, .rect)
-            .quickSwipes(comment.swipeActions(behavior: postSize.swipeBehavior, commentTreeTracker: commentTreeTracker))
+            .quickSwipes(comment.swipeActions(appState: appState, behavior: postSize.swipeBehavior, commentTreeTracker: commentTreeTracker))
             .contextMenu { comment.allMenuActions(
+                appState: appState,
                 showAllActions: false,
                 commentTreeTracker: commentTreeTracker,
                 report: reportContext

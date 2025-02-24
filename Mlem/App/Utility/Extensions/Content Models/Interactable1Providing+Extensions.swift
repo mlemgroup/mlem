@@ -90,50 +90,50 @@ extension Interactable1Providing {
 
     // MARK: Counters
     
-    var upvoteCounter: Counter {
+    func upvoteCounter(appState: AppState) -> Counter {
         .init(
             value: self2?.votes.upvotes,
-            leadingAction: upvoteAction(feedback: [.haptic]),
+            leadingAction: upvoteAction(appState: appState, feedback: [.haptic]),
             trailingAction: nil
         )
     }
     
-    var downvoteCounter: Counter {
+    func downvoteCounter(appState: AppState) -> Counter {
         .init(
             value: self2?.votes.downvotes,
-            leadingAction: downvoteAction(feedback: [.haptic]),
+            leadingAction: downvoteAction(appState: appState, feedback: [.haptic]),
             trailingAction: nil
         )
     }
     
-    var scoreCounter: Counter {
+    func scoreCounter(appState: AppState) -> Counter {
         .init(
             value: self2?.votes.total,
-            leadingAction: upvoteAction(feedback: [.haptic]),
-            trailingAction: api.downvotesEnabled ? downvoteAction(feedback: [.haptic]) : nil
+            leadingAction: upvoteAction(appState: appState, feedback: [.haptic]),
+            trailingAction: api.downvotesEnabled ? downvoteAction(appState: appState, feedback: [.haptic]) : nil
         )
     }
     
-    func replyCounter(commentTreeTracker: CommentTreeTracker? = nil) -> Counter {
+    func replyCounter(appState: AppState, commentTreeTracker: CommentTreeTracker? = nil) -> Counter {
         .init(
             value: self2?.commentCount,
-            leadingAction: replyAction(commentTreeTracker: commentTreeTracker),
+            leadingAction: replyAction(appState: appState, commentTreeTracker: commentTreeTracker),
             trailingAction: nil
         )
     }
     
     // MARK: Actions
     
-    func upvoteAction(feedback: Set<FeedbackType> = []) -> BasicAction {
+    func upvoteAction(appState: AppState, feedback: Set<FeedbackType> = []) -> BasicAction {
         .init(
             id: "upvote\(uid)",
             appearance: .upvote(isOn: self2?.votes.myVote ?? .none == .upvote),
-            callback: api.canInteract ? { @MainActor in self.self2?.toggleUpvoted(feedback: feedback) } : nil
+            callback: api.canInteract(appState: appState) ? { @MainActor in self.self2?.toggleUpvoted(feedback: feedback) } : nil
         )
     }
     
-    func downvoteAction(feedback: Set<FeedbackType> = []) -> BasicAction {
-        let enabled = api.canInteract && api.downvotesEnabled
+    func downvoteAction(appState: AppState, feedback: Set<FeedbackType> = []) -> BasicAction {
+        let enabled = api.canInteract(appState: appState) && api.downvotesEnabled
         return .init(
             id: "downvote\(uid)",
             appearance: .downvote(isOn: self2?.votes.myVote ?? .none == .downvote),
@@ -141,36 +141,38 @@ extension Interactable1Providing {
         )
     }
     
-    func saveAction(feedback: Set<FeedbackType> = []) -> BasicAction {
+    func saveAction(appState: AppState, feedback: Set<FeedbackType> = []) -> BasicAction {
         .init(
             id: "save\(uid)",
             appearance: .save(isOn: self2?.saved ?? false),
-            callback: api.canInteract ? { @MainActor in self.self2?.toggleSaved(feedback: feedback) } : nil
+            callback: api.canInteract(appState: appState) ? { @MainActor in self.self2?.toggleSaved(feedback: feedback) } : nil
         )
     }
     
-    func replyAction(commentTreeTracker: CommentTreeTracker? = nil) -> BasicAction {
+    func replyAction(appState: AppState, commentTreeTracker: CommentTreeTracker? = nil) -> BasicAction {
         .init(
             id: "reply\(uid)",
             appearance: .reply(),
-            callback: api.canInteract ? { @MainActor in self.showReplySheet(commentTreeTracker: commentTreeTracker) } : nil
+            callback: api.canInteract(appState: appState) ? { @MainActor in
+                self.showReplySheet(commentTreeTracker: commentTreeTracker)
+            } : nil
         )
     }
     
-    func blockCreatorAction(feedback: Set<FeedbackType> = [], showConfirmation: Bool = true) -> BasicAction {
+    func blockCreatorAction(appState: AppState, feedback: Set<FeedbackType> = [], showConfirmation: Bool = true) -> BasicAction {
         .init(
             id: "blockCreator\(uid)",
             appearance: .blockCreator(),
             confirmationPrompt: showConfirmation ? "Really block this user?" : nil,
-            callback: api.canInteract ? { @MainActor in self.self2?.creator.toggleBlocked(feedback: feedback) } : nil
+            callback: api.canInteract(appState: appState) ? { @MainActor in self.self2?.creator.toggleBlocked(feedback: feedback) } : nil
         )
     }
     
-    func purgeCreatorAction() -> BasicAction {
+    func purgeCreatorAction(appState: AppState) -> BasicAction {
         .init(
             id: "purgeCreator\(uid)",
             appearance: .purgePerson(),
-            callback: (api.canInteract && api.isAdmin) ? self2?.creator.showPurgeSheet : nil
+            callback: (api.canInteract(appState: appState) && api.isAdmin) ? self2?.creator.showPurgeSheet : nil
         )
     }
     

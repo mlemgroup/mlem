@@ -27,6 +27,16 @@ class GuestAccount: Account {
         self.api = .getApiClient(url: url, username: nil)
     }
     
+    #if DEBUG
+        private init(api: MockApiClient) {
+            self.actorId = api.actorId
+            self.activityState = .inactive(lastUsed: nil)
+            self.api = api
+        }
+    
+        static func mock(api: MockApiClient) -> GuestAccount { .init(api: api) }
+    #endif
+    
     static func getGuestAccount(url: URL) throws -> GuestAccount {
         try GuestAccountCache.main.getAccount(url: url)
     }

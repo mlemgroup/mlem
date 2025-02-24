@@ -185,6 +185,7 @@ struct ExpandedPostView<Content: View>: View {
             } else {
                 ToolbarEllipsisMenu(
                     post.allMenuActions(
+                        appState: appState,
                         expanded: true,
                         navigation: navigation,
                         commentTreeTracker: tracker
@@ -216,9 +217,10 @@ struct ExpandedPostView<Content: View>: View {
             }
         }
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
-        .quickSwipes(post.swipeActions(behavior: .standard, commentTreeTracker: tracker))
+        .quickSwipes(post.swipeActions(appState: appState, behavior: .standard, commentTreeTracker: tracker))
         .contextMenu {
             post.allMenuActions(
+                appState: appState,
                 showAllActions: false,
                 navigation: navigation,
                 commentTreeTracker: tracker

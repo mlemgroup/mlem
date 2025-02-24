@@ -11,6 +11,7 @@ import MlemMiddleware
 extension Post1 {
     static func mock(
         _ type: PostMockType,
+        api: MockApiClient = .mock,
         deleted: Bool = false,
         pinnedCommunity: Bool = false,
         pinnedInstance: Bool = false,
@@ -19,13 +20,14 @@ extension Post1 {
         removed: Bool = false
     ) -> Post1 {
         .mock(
-            id: 0,
+            api: api,
+            id: type.id,
             creatorId: 0,
             communityId: 0,
             created: type.created,
             title: type.title,
             content: type.content,
-            linkUrl: nil,
+            linkUrl: type.linkUrl,
             deleted: deleted,
             embed: nil,
             pinnedCommunity: pinnedCommunity,
@@ -43,12 +45,14 @@ extension Post1 {
 
 extension Post2 {
     static func mock(
-        _ type: PostMockType
+        _ type: PostMockType,
+        api: MockApiClient = .mock
     ) -> Post2 {
         .mock(
-            post1: .mock(type),
-            creator: type.creator,
-            community: type.community,
+            api: api,
+            post1: .mock(type, api: api),
+            creator: .mock(type.creator, api: api),
+            community: .mock(type.community, api: api),
             votes: type.votes,
             creatorIsModerator: false,
             creatorIsAdmin: false,
