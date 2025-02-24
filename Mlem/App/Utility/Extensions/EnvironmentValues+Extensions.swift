@@ -17,4 +17,6 @@ extension EnvironmentValues {
     
     @Entry var parentFrameWidth: CGFloat = .zero
     @Entry var isRootView: Bool = false
+    
+    @Entry var loadingTracker: MediaLoadingTracker?
 }

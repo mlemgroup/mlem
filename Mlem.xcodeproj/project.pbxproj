@@ -440,6 +440,7 @@
 		CD7DB9712C49C17200DCC542 /* PersonContentGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7DB9702C49C17200DCC542 /* PersonContentGridView.swift */; };
 		CD7DB9732C4AEDDE00DCC542 /* TileCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7DB9722C4AEDDE00DCC542 /* TileCommentView.swift */; };
 		CD7DB9762C4D6C0A00DCC542 /* FeedCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7DB9752C4D6C0A00DCC542 /* FeedCommentView.swift */; };
+		CD7F82762D6BE7BF001748BA /* MediaLoadingTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7F82752D6BE7BC001748BA /* MediaLoadingTracker.swift */; };
 		CD8457142D07576A00CEA2B8 /* AVPlayer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8457132D07576700CEA2B8 /* AVPlayer+Extensions.swift */; };
 		CD848FC42D63E1CB009A7AE7 /* MlemMiddleware in Frameworks */ = {isa = PBXBuildFile; productRef = CD848FC32D63E1CB009A7AE7 /* MlemMiddleware */; };
 		CD869FCC2C15F8AC00FC8B5B /* BubblePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD869FCB2C15F8AC00FC8B5B /* BubblePickerView.swift */; };
@@ -959,6 +960,7 @@
 		CD7DB9702C49C17200DCC542 /* PersonContentGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonContentGridView.swift; sourceTree = "<group>"; };
 		CD7DB9722C4AEDDE00DCC542 /* TileCommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileCommentView.swift; sourceTree = "<group>"; };
 		CD7DB9752C4D6C0A00DCC542 /* FeedCommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCommentView.swift; sourceTree = "<group>"; };
+		CD7F82752D6BE7BC001748BA /* MediaLoadingTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaLoadingTracker.swift; sourceTree = "<group>"; };
 		CD8457132D07576700CEA2B8 /* AVPlayer+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AVPlayer+Extensions.swift"; sourceTree = "<group>"; };
 		CD869FCB2C15F8AC00FC8B5B /* BubblePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubblePickerView.swift; sourceTree = "<group>"; };
 		CD869FCD2C15F90C00FC8B5B /* ChildSizeReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildSizeReader.swift; sourceTree = "<group>"; };
@@ -1652,6 +1654,7 @@
 		CD13CC672C5D3CBE001AF428 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				CD7F82752D6BE7BC001748BA /* MediaLoadingTracker.swift */,
 				CD605B022D53D6AA00F682AE /* MediaControlState.swift */,
 				CD1DF6372D38357100F7851E /* MediaView.swift */,
 				CD1DF63D2D387E8300F7851E /* MediaView+Views.swift */,
@@ -2746,6 +2749,7 @@
 				CD1C64152D3428710006B3C1 /* CommunityView+Logic.swift in Sources */,
 				031E2D512BEF961D0003BC45 /* SubscriptionListView.swift in Sources */,
 				CDD4A09E2C8B69FC0001AD1A /* Button.swift in Sources */,
+				CD7F82762D6BE7BF001748BA /* MediaLoadingTracker.swift in Sources */,
 				038028DA2CACACD30091A8A2 /* PostEllipsisMenus.swift in Sources */,
 				030FF67B2BC8521600F6BFAC /* CustomTabView.swift in Sources */,
 				03531EF52C2DA610004A3464 /* NavigationSearchType.swift in Sources */,

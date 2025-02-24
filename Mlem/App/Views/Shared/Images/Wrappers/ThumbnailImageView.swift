@@ -17,7 +17,7 @@ struct ThumbnailImageView: View {
     
     @Setting(\.websiteThumbnailIcon) var websiteThumbnailIcon
     
-    @State var loading: MediaLoadingState?
+    @State var loadingTracker: MediaLoadingTracker = .init()
     @State var quickLookUrl: URL?
     
     let post: any Post1Providing
@@ -55,7 +55,7 @@ struct ThumbnailImageView: View {
             case let .media(url), let .embedded(url, _):
                 content
                     .onTapGesture {
-                        if let loading, loading == .done || loading == .proxyFailed {
+                        if let loading = loadingTracker.loading, loading == .done || loading == .proxyFailed {
                             post.markRead()
                             navigation.showImageViewer(url: url)
                         }
@@ -110,10 +110,10 @@ struct ThumbnailImageView: View {
                 size: frame,
                 fallback: url.proxyAwarePathExtension?.isMovieExtension ?? false ? .movie : .image,
                 showProgress: true,
-                blurred: blurred && loading == .done
+                blurred: blurred && loadingTracker.loading == .done
             )
             .clipShape(RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius))
-            .onPreferenceChange(MediaLoadingPreferenceKey.self, perform: { loading = $0 })
+            .environment(\.loadingTracker, loadingTracker)
         } else {
             Image(systemName: post.placeholderImageName)
                 .font(.title)
@@ -134,9 +134,9 @@ struct ThumbnailImageView: View {
                 size: frame,
                 fallback: .image,
                 showProgress: true,
-                blurred: blurred && loading == .done
+                blurred: blurred && loadingTracker.loading == .done
             )
-            .onPreferenceChange(MediaLoadingPreferenceKey.self, perform: { loading = $0 })
+            .environment(\.loadingTracker, loadingTracker)
         } else {
             Image(systemName: post.placeholderImageName)
                 .resizable()
