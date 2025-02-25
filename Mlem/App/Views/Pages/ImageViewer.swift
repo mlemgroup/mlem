@@ -69,7 +69,7 @@ struct ImageViewer: View {
     
     var body: some View {
         ZoomableContainer(isZoomed: $isZoomed, currentScale: $currentScale) {
-            MediaView(url: url, controlState: controlState, playImmediately: true)
+            MediaView(url: url, controlState: $controlState, playImmediately: true)
         }
         .offset(y: offset)
         .background(.black)

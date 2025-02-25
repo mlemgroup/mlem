@@ -48,15 +48,23 @@ class MediaLoader {
     private(set) var loading: MediaLoadingState
     private(set) var error: ImageLoadingError?
     
-    init(url: URL?) {
+    private let processors: [any ImageProcessing]
+    
+    init(url: URL?, size: CGSize? = nil) {
         self.url = url
+        if let size {
+            self.processors = [.resize(size: size, crop: true)]
+        } else {
+            self.processors = .init()
+        }
+        // TODO: load(url) architecture
         if let url,
            let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
            let base = components.queryItems?.first(where: { $0.name == "url" })?.value {
             self.proxyBypass = URL(string: base)
         }
         
-        if let url, let container = ImagePipeline.shared.cache.cachedImage(for: .init(url: url)) {
+        if let url, let container = ImagePipeline.shared.cache.cachedImage(for: .init(url: url, processors: processors)) {
             self.mediaType = container.animatedMediaType
             self.loading = .done
             return
@@ -79,7 +87,7 @@ class MediaLoader {
         #endif
         
         do {
-            let imageTask = ImagePipeline.shared.imageTask(with: url)
+            let imageTask = ImagePipeline.shared.imageTask(with: .init(url: url, processors: processors))
             imageTask.priority = .veryHigh
             
             let container = try await imageTask.response.container

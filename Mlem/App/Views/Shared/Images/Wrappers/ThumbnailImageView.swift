@@ -16,7 +16,10 @@ struct ThumbnailImageView: View {
     
     @Setting(\.websiteThumbnailIcon) var websiteThumbnailIcon
     
-    @State var loadingTracker: MediaLoadingTracker = .init()
+    @State var mediaControlState: MediaControlState = .init(
+        animating: true,
+        embedControls: false
+    )
     @State var quickLookUrl: URL?
     
     let post: any Post1Providing
@@ -54,7 +57,7 @@ struct ThumbnailImageView: View {
             case let .media(url), let .embedded(url, _):
                 content
                     .onTapGesture {
-                        if let loading = loadingTracker.loading, loading == .done || loading == .proxyFailed {
+                        if let loading = mediaControlState.loading, loading == .done || loading == .proxyFailed {
                             post.markRead()
                             navigation.showImageViewer(url: url)
                         }
@@ -104,7 +107,18 @@ struct ThumbnailImageView: View {
     @ViewBuilder
     var standardContent: some View {
         if let url {
-            MediaView(url: url, aspectRatioBounds: .absolute(.init(width: 1, height: 1)), contentMode: .fill)
+            MediaView(
+                url: url,
+                controlState: $mediaControlState,
+                aspectRatioBounds: .absolute(.init(width: 1, height: 1)),
+                contentMode: .fill,
+                cornerRadius: Constants.main.smallItemCornerRadius,
+                enableImageViewer: post.type.isMedia,
+                enableNsfwBlur: blurred,
+                playImmediately: false
+            ) {
+                post.markRead()
+            }
 //            FixedImageView(
 //                url: url,
 //                size: frame,
@@ -112,8 +126,6 @@ struct ThumbnailImageView: View {
 //                showProgress: true,
 //                blurred: blurred && loadingTracker.loading == .done
 //            )
-            .clipShape(RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius))
-            .environment(\.loadingTracker, loadingTracker)
         } else {
             Image(systemName: post.placeholderImageName)
                 .font(.title)
@@ -134,9 +146,8 @@ struct ThumbnailImageView: View {
                 size: frame,
                 fallback: .image,
                 showProgress: true,
-                blurred: blurred && loadingTracker.loading == .done
+                blurred: blurred && mediaControlState.loading == .done
             )
-            .environment(\.loadingTracker, loadingTracker)
         } else {
             Image(systemName: post.placeholderImageName)
                 .resizable()
