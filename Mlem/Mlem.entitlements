@@ -10,7 +10,7 @@
 	<true/>
 	<key>keychain-access-groups</key>
 	<array>
-		<string>$(AppIdentifierPrefix)com.hanners.Mlem</string>
+		<string>$(AppIdentifierPrefix)info.pylapp.Mlem</string>
 	</array>
 </dict>
 </plist>
