@@ -51,7 +51,7 @@ extension MediaView {
                         )
                 }
             }
-            .aspectRatio(aspectRatio, contentMode: .fit)
+            .aspectRatio(aspectRatio, contentMode: .fill)
         }
         
         @ViewBuilder
@@ -74,7 +74,7 @@ extension MediaView {
         InternalMediaView(
             media: loader.mediaType,
             playing: playing,
-            aspectRatio: uiImage.verticallyBoundedAspectRatio(bounds: aspectRatio),
+            aspectRatio: uiImage.boundedAspectRatio(bounds: aspectRatio), // uiImage.verticallyBoundedAspectRatio(bounds: aspectRatio),
             contentMode: contentMode
         )
     }

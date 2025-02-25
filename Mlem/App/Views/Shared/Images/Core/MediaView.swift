@@ -22,8 +22,8 @@ struct MediaView: View {
     @State var blurred: Bool
     
     // appearance
-    let aspectRatio_: CGSize?
-    var aspectRatio: CGSize { aspectRatio_ ?? loader.mediaType.image.validSize(fallback: .init(width: 4, height: 3)) }
+    let aspectRatio_: AspectRatioBounds?
+    var aspectRatio: AspectRatioBounds { aspectRatio_ ?? .absolute(loader.mediaType.image.validSize(fallback: .init(width: 4, height: 3))) }
     let contentMode: ContentMode
     let cornerRadius: CGFloat
     
@@ -42,6 +42,7 @@ struct MediaView: View {
     ///   - url: url of the media to render
     ///   - controlState: MediaControlState to control this media from a parent view. If not provided, assumes inline rendering mode.
     ///   - verticalAspectRatioBounds: tallest allowable aspect ratio
+    ///   - horizontalAspectRatioBounds: widest allowable aspect ratio
     ///   - contentMode: content resizing mode
     ///   - cornerRadius: corner radius to apply to the image
     ///   - enableContextMenu: true if the default context menu (save/share/quick look) should appear
@@ -50,19 +51,18 @@ struct MediaView: View {
     ///   - onTapActions: actions to perform when the image is tapped. If `enableImageViewer: true`, tapping the image will both execute
     ///     the specified actions and open the image viewer
     ///  - Warning: Changing the following parameters may cause unexpected view identity changes: `enableContextMenu`, `contentMode`
-    init(
-        url: URL,
-        controlState: MediaControlState? = nil,
-        verticalAspectRatioBounds: CGSize? = nil,
-        contentMode: ContentMode = .fit,
-        cornerRadius: CGFloat = 0,
-        enableContextMenu: Bool = false,
-        enableImageViewer: Bool = false,
-        enableNsfwBlur: Bool = false,
-        playImmediately: Bool = false,
-        onTapActions: (() -> Void)? = nil
+    init(url: URL,
+         controlState: MediaControlState? = nil,
+         aspectRatioBounds: AspectRatioBounds? = nil,
+         contentMode: ContentMode = .fit,
+         cornerRadius: CGFloat = 0,
+         enableContextMenu: Bool = false,
+         enableImageViewer: Bool = false,
+         enableNsfwBlur: Bool = false,
+         playImmediately: Bool = false,
+         onTapActions: (() -> Void)? = nil
     ) {
-        self.aspectRatio_ = verticalAspectRatioBounds
+        self.aspectRatio_ = aspectRatioBounds
         self.contentMode = contentMode
         self.cornerRadius = cornerRadius
         
@@ -77,8 +77,7 @@ struct MediaView: View {
         self._controlState = .init(wrappedValue: controlState ?? .init(
             animating: false,
             embedControls: true
-        )
-        )
+        ))
     }
     
     var body: some View {
@@ -126,6 +125,36 @@ struct MediaView: View {
                         playing = false
                     }
             }
+        }
+    }
+}
+
+enum AspectRatioBounds {
+    /// Specify an aspect ratio not taller than .vertical and not wider than the .horizontal
+    case bounded(vertical: CGSize?, horizontal: CGSize?)
+    /// Specify an exact aspect ratio
+    case absolute(CGSize)
+    
+    var defaultSize: CGSize {
+        switch self {
+        case let .bounded(vertical, horizontal):
+            vertical ?? horizontal ?? .init(width: 1, height: 1)
+        case let .absolute(size):
+            size
+        }
+    }
+    
+    var boundsAreSane: Bool {
+        switch self {
+        case let .bounded(vertical, horizontal):
+            if let vertical, let horizontal {
+                // if both horizontal and vertical bound defined, ensure vertical bound taller than horizontal
+                return vertical.aspectRatio > horizontal.aspectRatio
+            } else {
+                return true
+            }
+        case .absolute:
+            return true
         }
     }
 }

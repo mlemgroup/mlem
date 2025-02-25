@@ -104,13 +104,14 @@ struct ThumbnailImageView: View {
     @ViewBuilder
     var standardContent: some View {
         if let url {
-            FixedImageView(
-                url: url,
-                size: frame,
-                fallback: url.proxyAwarePathExtension?.isMovieExtension ?? false ? .movie : .image,
-                showProgress: true,
-                blurred: blurred && loadingTracker.loading == .done
-            )
+            MediaView(url: url, aspectRatioBounds: .absolute(.init(width: 1, height: 1)), contentMode: .fill)
+//            FixedImageView(
+//                url: url,
+//                size: frame,
+//                fallback: url.proxyAwarePathExtension?.isMovieExtension ?? false ? .movie : .image,
+//                showProgress: true,
+//                blurred: blurred && loadingTracker.loading == .done
+//            )
             .clipShape(RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius))
             .environment(\.loadingTracker, loadingTracker)
         } else {

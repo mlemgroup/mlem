@@ -174,7 +174,7 @@ struct CommunityView: View {
             if let banner = community.banner {
                 MediaView(
                     url: banner,
-                    verticalAspectRatioBounds: .init(width: 4, height: 5),
+                    aspectRatioBounds: .bounded(vertical: .init(width: 4, height: 5), horizontal: nil),
                     cornerRadius: Constants.main.standardSpacing,
                     enableContextMenu: true,
                     enableImageViewer: true

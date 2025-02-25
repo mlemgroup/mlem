@@ -76,7 +76,7 @@ private func imageView(_ image: MarkdownImage, shouldBlur: Bool) -> AnyView {
         return AnyView(
             MediaView(
                 url: image.url,
-                verticalAspectRatioBounds: .init(width: 4, height: 5),
+                aspectRatioBounds: .bounded(vertical: .init(width: 4, height: 5), horizontal: nil),
                 cornerRadius: Constants.main.mediumItemCornerRadius,
                 enableContextMenu: true,
                 enableImageViewer: true,

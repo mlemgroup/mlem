@@ -26,6 +26,9 @@ class MediaControlState {
     /// - Note: This must be set by the relevant nested media view once it has extracted audio data
     var audioAvailable: Bool
     
+    /// Current loading state of the media
+    var loading: MediaLoadingState?
+    
     /// Creates a new MediaControlState
     /// - Parameters:
     ///   - animating: true if the media should be animating immediately, false otherwise

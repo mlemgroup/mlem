@@ -65,7 +65,7 @@ struct LargePostBodyView: View {
     func mediaView(_ url: URL) -> some View {
         MediaView(
             url: url,
-            verticalAspectRatioBounds: .init(width: 4, height: 5),
+            aspectRatioBounds: .bounded(vertical: .init(width: 4, height: 5), horizontal: nil),
             cornerRadius: Constants.main.mediumItemCornerRadius,
             enableContextMenu: true,
             enableImageViewer: true,
