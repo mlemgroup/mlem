@@ -109,7 +109,7 @@ extension InteractionBarConfigurations {
 extension PostBarConfiguration {
     init(legacyItems: [LegacyInterationBarItem]?, moderator: Bool) {
         guard let legacyItems else {
-            self = moderator ? .reportDefault : .default
+            self = moderator ? .reportDefault_ : .default
             return
         }
         
@@ -122,7 +122,7 @@ extension PostBarConfiguration {
         guard legacyItems.count(where: { $0 == .infoStack }) == 1,
               let infoStackIndex = legacyItems.firstIndex(of: .infoStack) else {
             assertionFailure("Invalid legacy items")
-            self = moderator ? .reportDefault : .default
+            self = moderator ? .reportDefault_ : .default
             return
         }
         
@@ -157,7 +157,7 @@ extension PostBarConfiguration {
 extension CommentBarConfiguration {
     init(legacyItems: [LegacyInterationBarItem]?, moderator: Bool) {
         guard let legacyItems else {
-            self = moderator ? .reportDefault : .default
+            self = moderator ? .reportDefault_ : .default
             return
         }
         
@@ -170,7 +170,7 @@ extension CommentBarConfiguration {
         guard legacyItems.count(where: { $0 == .infoStack }) == 1,
               let infoStackIndex = legacyItems.firstIndex(of: .infoStack) else {
             assertionFailure("Invalid legacy items")
-            self = moderator ? .reportDefault : .default
+            self = moderator ? .reportDefault_ : .default
             return
         }
         

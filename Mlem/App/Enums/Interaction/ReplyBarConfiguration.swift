@@ -117,9 +117,5 @@ struct ReplyBarConfiguration: InteractionBarConfiguration {
         )
     }
     
-    static var reportDefault: Self {
-        // this is a slightly degenerate case since these don't go on reports, but it makes the protocol simple
-        assertionFailure("ReplyBarConfiguration cannot apply to reports")
-        return .default
-    }
+    static var reportDefault: Self? { nil }
 }
