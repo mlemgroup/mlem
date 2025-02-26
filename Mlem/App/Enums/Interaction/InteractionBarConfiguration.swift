@@ -23,6 +23,7 @@ protocol InteractionBarConfiguration: Codable {
     func widgetPickerPage(_ configuration: Binding<Self>) -> SettingsPage
     
     static var `default`: Self { get }
+    static var reportDefault: Self { get }
     
     init(leading: [Item], trailing: [Item], readouts: [ReadoutType], availableWidgets: Set<Item>)
 }

@@ -34,6 +34,8 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     @State var showingApplyToAllConfirmation: Bool = false
     
     let onSet: (Configuration) -> Void
+    let configurationType: ConfigurationType
+    let isReport: Bool
     
     let barAnimationDuration: CGFloat = 0.15
     let trayItemDuration: CGFloat = 0.5
@@ -41,11 +43,10 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     @ScaledMetric(relativeTo: .body) var baseInfoCapsuleHeight: CGFloat = 22
     var infoCapsuleHeight: CGFloat { baseInfoCapsuleHeight + Constants.main.doubleSpacing }
     
-    let configurationType: ConfigurationType
-    
-    init(configuration: Configuration, onSet: @escaping (Configuration) -> Void) {
-        self.configuration = configuration
+    init(configuration: Configuration, isReport: Bool, onSet: @escaping (Configuration) -> Void) {
         self.onSet = onSet
+        self.configuration = configuration
+        self.isReport = isReport
         let configurationItems: [Configuration.Item?] = configuration.leading + [nil] + configuration.trailing
         self.configurationType = configuration is PostBarConfiguration ? .post : .comment
         
@@ -60,8 +61,8 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
         )
     }
     
-    init(setting: WritableKeyPath<InteractionBarTracker, Configuration>) {
-        self.init(configuration: InteractionBarTracker.main[keyPath: setting]) {
+    init(setting: WritableKeyPath<InteractionBarTracker, Configuration>, isReport: Bool) {
+        self.init(configuration: InteractionBarTracker.main[keyPath: setting], isReport: isReport) {
             var main = InteractionBarTracker.main
             main[keyPath: setting] = $0
         }
@@ -85,7 +86,6 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
         }
         .onChange(of: configuration.availableWidgets, initial: true) {
             onSet(configuration)
-            let configurationItems: [Configuration.Item?] = configuration.leading + [nil] + configuration.trailing
             trayItems = Configuration.Item.allCases
                 .filter { configuration.availableWidgets.contains($0) }
                 .map { TrayItem(item: $0, visible: true) }
@@ -100,7 +100,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
 
 #Preview {
     NavigationStack {
-        InteractionBarEditorView(configuration: PostBarConfiguration.default, onSet: { _ in })
+        InteractionBarEditorView(configuration: PostBarConfiguration.default, isReport: false, onSet: { _ in })
     }
     .environment(Palette.main)
 }

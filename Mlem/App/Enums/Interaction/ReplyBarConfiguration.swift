@@ -116,4 +116,10 @@ struct ReplyBarConfiguration: InteractionBarConfiguration {
             availableWidgets: .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) })
         )
     }
+    
+    static var reportDefault: Self {
+        // this is a slightly degenerate case since these don't go on reports, but it makes the protocol simple
+        assertionFailure("ReplyBarConfiguration cannot apply to reports")
+        return .default
+    }
 }
