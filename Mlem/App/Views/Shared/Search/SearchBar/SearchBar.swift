@@ -43,7 +43,7 @@ import SwiftUI
             onEditingChanged: @escaping (Bool) -> Void = { _ in },
             onCommit: @escaping () -> Void = {}
         ) {
-            self.placeholder = String(title)
+            self.placeholder = String(title).localized()
             self._text = text
             self.onCommit = onCommit
             self.onEditingChanged = onEditingChanged
