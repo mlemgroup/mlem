@@ -131,7 +131,7 @@ struct SearchView: View {
     
     func searchBar() -> SearchBar {
         SearchBar(
-            "Search...",
+            "Search...".localized(),
             text: $query,
             isEditing: $isSearching,
             onCommit: {
