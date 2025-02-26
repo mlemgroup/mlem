@@ -17,13 +17,13 @@ struct DevicePickerItem<Item: Equatable, ScreenContent: View>: View {
     @ViewBuilder var screenContent: () -> ScreenContent
     
     init(
-        _ titleKey: LocalizedStringResource,
+        _ titleKey: String,
         item: Item,
         selected: Binding<Item>,
         scale: CGFloat = 1.0,
         @ViewBuilder screenContent: @escaping () -> ScreenContent
     ) {
-        self.title = .init(localized: titleKey)
+        self.title = titleKey
         self.item = item
         self.scale = scale
         self._selected = selected

@@ -144,7 +144,11 @@ struct PostGridView: View {
         Menu {
             Picker("Post Size", selection: $postSize) {
                 ForEach(PostSize.allCases, id: \.self) { item in
-                    Label(item.label.key, systemImage: item.icon(filled: postSize == item))
+                    Label {
+                        Text(LocalizedStringResource(stringLiteral: item.label))
+                    } icon: {
+                        Image(systemName: item.icon(filled: postSize == item))
+                    }
                 }
             }
         } label: {

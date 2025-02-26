@@ -3359,6 +3359,7 @@
       }
     },
     "Headline" : {
+      "extractionState" : "manual",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -7535,6 +7536,7 @@
       }
     },
     "Tiled" : {
+      "extractionState" : "manual",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
