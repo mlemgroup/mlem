@@ -786,7 +786,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tout le temps"
+            "value" : "Tout les temps"
           }
         }
       }
@@ -1058,7 +1058,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Demander d'abbord"
+            "value" : "Demander d'abord"
           }
         }
       }
@@ -1254,7 +1254,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bannisseur"
+            "value" : "Bannière"
           }
         }
       }
@@ -1294,7 +1294,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bloquer la liste"
+            "value" : "Liste de blocage"
           }
         }
       }
@@ -1334,7 +1334,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bloquage…"
+            "value" : "Blocage…"
           }
         }
       }
@@ -2064,7 +2064,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Contenu & notifications"
+            "value" : "Contenu et notifications"
           }
         }
       }
@@ -2738,7 +2738,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Contenu emabrqué"
+            "value" : "Contenu embarqué"
           }
         }
       }
@@ -4143,7 +4143,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Médias & liens"
+            "value" : "Médias et liens"
           }
         }
       }
@@ -6229,7 +6229,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sécurité & filtrage"
+            "value" : "Sécurité et filtrage"
           }
         }
       }
@@ -6516,7 +6516,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Paramètres des Icônes"
+            "value" : "Paramètres des icônes"
           }
         }
       }
@@ -6586,7 +6586,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Afficher les contenus étiquetés comme NSFW"
+            "value" : "Afficher les contenus étiquetés comme « Not Safe For Work »."
           }
         }
       }
@@ -6721,6 +6721,23 @@
         }
       }
     },
+    "Sign Out" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign Out"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se déconnecter"
+          }
+        }
+      }
+    },
     "Sign Up" : {
       "localizations" : {
         "fr" : {
@@ -6736,7 +6753,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Connexion & sécurité"
+            "value" : "Connexion et sécurité"
           }
         }
       }
@@ -6849,7 +6866,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Certaines instances utilisent des images proxy pour protéger votre vie privée. Dans certains cas, cela entraîne l'échec du chargement de l'image. Vous pouvez contourner le proxy d'image et charger directement, mais cela exposera votre adresse IP à l'hôte de l'image."
+            "value" : "Certaines instances utilisent des proxy d’images pour protéger votre vie privée. Dans certains cas, cela entraîne l'échec du chargement de l'image. Vous pouvez contourner le proxy d'image et charger directement, mais cela exposera votre adresse IP à l'hôte de l'image."
           }
         }
       }
@@ -7009,7 +7026,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Indicateur d’Abonnement"
+            "value" : "Indicateur d’abonnement"
           }
         }
       }
@@ -7019,7 +7036,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Liste d’Abonnement"
+            "value" : "Liste d’abonnement"
           }
         }
       }
@@ -7760,7 +7777,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Confiance & sécurité"
+            "value" : "Confiance et sécurité"
           }
         }
       }
@@ -8540,7 +8557,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vous ne verrez pas la plupart du contenu si « Indéterminé » n'est pas sélectionné."
+            "value" : "Vous ne verrez pas la plupart du contenu si « Undetermined » n'est pas sélectionné."
           }
         }
       }
