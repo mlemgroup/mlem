@@ -3789,6 +3789,17 @@
         }
       }
     },
+    "Key" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clé"
+          }
+        }
+      }
+    },
     "Keyword Filters" : {
       "localizations" : {
         "fr" : {
@@ -5474,11 +5485,35 @@
       }
     },
     "Ranks posts based on the post score and creation time." : {
+      "extractionState" : "stale",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ranks posts based on the post score and creation time."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Classe les publications en fonction du score de publication et du temps de création."
+          }
+        }
+      }
+    },
+    "Ranks posts based on the post score and the time since the last comment was created." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ranks posts based on the post score and the time since the last comment was created."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Classe les publications en se basant sur son score et la durée écoulée depuis la création du dernier commentaire."
           }
         }
       }
@@ -6712,6 +6747,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Argent"
+          }
+        }
+      }
+    },
+    "Similar to Hot, but ranks posts from smaller communities higher." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Similar to \\\"Hot\\\", but ranks posts from smaller communities higher."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Similaire à « Chaud », mais met davantage en avant les publications des plus petites communautés."
           }
         }
       }
