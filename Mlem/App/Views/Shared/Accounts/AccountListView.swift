@@ -157,7 +157,7 @@ struct AccountListView: View {
         Menu {
             Picker("Sort", selection: $accountSort) {
                 ForEach(AccountSortMode.allCases, id: \.self) { sortMode in
-                    Label(sortMode.label, systemImage: sortMode.systemImage).tag(sortMode)
+                    Label(String(localized: sortMode.label), systemImage: sortMode.systemImage).tag(sortMode)
                 }
             }
             .onChange(of: accountSort) {
