@@ -125,12 +125,6 @@
         }
       }
     },
-    "%@ is {{online}}" : {
-
-    },
-    "%@ is {{unhealthy}}" : {
-
-    },
     "%@ is banned from %@ until %@." : {
       "localizations" : {
         "en" : {
@@ -1169,9 +1163,6 @@
         }
       }
     },
-    "Ban" : {
-
-    },
     "Ban %@" : {
       "localizations" : {
         "fr" : {
@@ -1212,9 +1203,6 @@
         }
       }
     },
-    "Ban from..." : {
-
-    },
     "Ban Target" : {
       "localizations" : {
         "fr" : {
@@ -1224,9 +1212,6 @@
           }
         }
       }
-    },
-    "Ban User" : {
-
     },
     "Banned from Community" : {
       "localizations" : {
@@ -1274,9 +1259,6 @@
         }
       }
     },
-    "Banning from..." : {
-
-    },
     "Biography" : {
       "localizations" : {
         "fr" : {
@@ -1306,9 +1288,6 @@
           }
         }
       }
-    },
-    "Block community or user?" : {
-
     },
     "Block List" : {
       "localizations" : {
@@ -2240,9 +2219,6 @@
         }
       }
     },
-    "Custom Order" : {
-
-    },
     "Customize how content is displayed in your feed. Choose which types of content are blurred, and apply filters to hide posts from the feed altogether." : {
       "localizations" : {
         "en-GB" : {
@@ -2826,9 +2802,6 @@
           }
         }
       }
-    },
-    "Error" : {
-
     },
     "EULA" : {
       "localizations" : {
@@ -4495,9 +4468,6 @@
         }
       }
     },
-    "Most Recent" : {
-
-    },
     "Mozilla Observatory" : {
       "localizations" : {
         "fr" : {
@@ -5143,9 +5113,6 @@
           }
         }
       }
-    },
-    "Pin to Community or Instance?" : {
-
     },
     "Pin to Instance" : {
       "localizations" : {
@@ -7204,9 +7171,6 @@
         }
       }
     },
-    "Tap to Undo" : {
-
-    },
     "Tappable Links" : {
       "localizations" : {
         "fr" : {
@@ -7878,9 +7842,6 @@
         }
       }
     },
-    "Unban" : {
-
-    },
     "Unban %@" : {
       "localizations" : {
         "fr" : {
@@ -7890,12 +7851,6 @@
           }
         }
       }
-    },
-    "Unban from..." : {
-
-    },
-    "Unban User" : {
-
     },
     "Unbanned: %@\nFrom: %@" : {
       "localizations" : {
@@ -7912,9 +7867,6 @@
           }
         }
       }
-    },
-    "Unbanning from..." : {
-
     },
     "Unblock" : {
       "localizations" : {
@@ -7975,9 +7927,6 @@
           }
         }
       }
-    },
-    "Undone!" : {
-
     },
     "Unfavorite" : {
       "localizations" : {
