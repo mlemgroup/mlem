@@ -6349,6 +6349,23 @@
         }
       }
     },
+    "Search..." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recherche…"
+          }
+        }
+      }
+    },
     "See All" : {
       "localizations" : {
         "fr" : {
