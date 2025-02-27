@@ -3604,7 +3604,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Boîte de réception"
+            "value" : "Notifications"
           }
         }
       }
@@ -8487,7 +8487,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Yes"
+            "value" : "Oui"
           }
         }
       }
