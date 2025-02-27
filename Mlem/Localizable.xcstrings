@@ -125,6 +125,26 @@
         }
       }
     },
+    "%@ is {{online}}" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ est {{online}}"
+          }
+        }
+      }
+    },
+    "%@ is {{unhealthy}}" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ est {{unhealthy}}"
+          }
+        }
+      }
+    },
     "%@ is banned from %@ until %@." : {
       "localizations" : {
         "en" : {
@@ -1163,6 +1183,16 @@
         }
       }
     },
+    "Ban" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bannir"
+          }
+        }
+      }
+    },
     "Ban %@" : {
       "localizations" : {
         "fr" : {
@@ -1203,12 +1233,32 @@
         }
       }
     },
+    "Ban from..." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bannir de…"
+          }
+        }
+      }
+    },
     "Ban Target" : {
       "localizations" : {
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cible de bannisement"
+          }
+        }
+      }
+    },
+    "Ban User" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bannir l’utilisateur"
           }
         }
       }
@@ -1259,6 +1309,16 @@
         }
       }
     },
+    "Banning from..." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bannissement de..."
+          }
+        }
+      }
+    },
     "Biography" : {
       "localizations" : {
         "fr" : {
@@ -1285,6 +1345,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bloquer la communauté"
+          }
+        }
+      }
+    },
+    "Block community or user?" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bloquer la communauté ou l’utilisateur ?"
           }
         }
       }
@@ -2219,6 +2289,16 @@
         }
       }
     },
+    "Custom Order" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personnaliser l’ordre"
+          }
+        }
+      }
+    },
     "Customize how content is displayed in your feed. Choose which types of content are blurred, and apply filters to hide posts from the feed altogether." : {
       "localizations" : {
         "en-GB" : {
@@ -2799,6 +2879,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Saisissez le nom de domaine de votre instance ci-dessous."
+          }
+        }
+      }
+    },
+    "Error" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erreur"
           }
         }
       }
@@ -4468,6 +4558,16 @@
         }
       }
     },
+    "Most Recent" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le plus récent"
+          }
+        }
+      }
+    },
     "Mozilla Observatory" : {
       "localizations" : {
         "fr" : {
@@ -5110,6 +5210,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Épingler la Communauté"
+          }
+        }
+      }
+    },
+    "Pin to Community or Instance?" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Épingler dans la communauté ou l’instance ?"
           }
         }
       }
@@ -6120,6 +6230,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nécessite une inscription"
+          }
+        }
+      }
+    },
+    "Requires Lemmy %@ or later" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nécessite Lemmy %@ ou plus récent"
           }
         }
       }
@@ -7171,6 +7291,16 @@
         }
       }
     },
+    "Tap to Undo" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tapper pour annuler"
+          }
+        }
+      }
+    },
     "Tappable Links" : {
       "localizations" : {
         "fr" : {
@@ -7842,12 +7972,42 @@
         }
       }
     },
+    "Unban" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Débannier"
+          }
+        }
+      }
+    },
     "Unban %@" : {
       "localizations" : {
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Débannir %@"
+          }
+        }
+      }
+    },
+    "Unban from..." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Débannir de..."
+          }
+        }
+      }
+    },
+    "Unban User" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Débannir l’utilisateur"
           }
         }
       }
@@ -7864,6 +8024,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Débanni : %1$@\nDe : %2$@"
+          }
+        }
+      }
+    },
+    "Unbanning from..." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Débanissement de…"
           }
         }
       }
@@ -7924,6 +8094,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Annuler vote positif"
+          }
+        }
+      }
+    },
+    "Undone!" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annulé !"
           }
         }
       }
