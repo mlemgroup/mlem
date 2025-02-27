@@ -1,3 +1,15 @@
+Disclaimer
+==========
+
+( ˶°ㅁ°) !! **This is a fork of [mlemgroup/mlem)](https://github.com/mlemgroup/mlem)**
+
+The aim of this project is to submit evolutions.
+This is not the official repository of the app.
+You should not submit bug reports, issues or pull requests to this fork.
+
+Last constributions from here:
+- French localization ([#1124](https://github.com/mlemgroup/mlem/issues/1124) [#1803](https://github.com/mlemgroup/mlem/pull/1803))
+
 # Mlem - the iOS Lemmy Client
 
 Mlem is a client for [Lemmy](https://join-lemmy.org) - a Reddit-esque, open-source link aggregator. With Mlem, you can effortlessly participate in the conversation across all Lemmy servers.
