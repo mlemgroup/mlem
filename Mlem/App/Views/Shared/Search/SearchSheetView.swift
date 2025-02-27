@@ -15,7 +15,8 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
     @Environment(Palette.self) var palette
     
     enum CloseButtonLabel: String {
-        case cancel, done
+        case cancel = "Cancel"
+        case done = "Done"
     }
     
     @ViewBuilder let content: ([Item], NavigationLayer) -> Content
@@ -59,7 +60,7 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
                 }
             }
             ToolbarItem(placement: .topBarTrailing) {
-                Button(closeButtonLabel.rawValue.capitalized) {
+                Button(closeButtonLabel.rawValue.localized()) {
                     navigation.dismissSheet()
                 }
             }
