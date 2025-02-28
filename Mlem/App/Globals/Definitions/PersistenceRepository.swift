@@ -158,7 +158,7 @@ class PersistenceRepository {
     
     func loadVisitHistory(for account: UserAccount) async throws -> VisitHistory {
         let path = PersistencePath.visitHistory(for: account)
-        let data = load(VisitHistory.CodedData.self, from: path) ?? .init()
+        let data = load(VisitHistory.CodedData.self, from: path, silentError: true) ?? .init()
         return try await .init(data: data, api: account.api)
     }
     
