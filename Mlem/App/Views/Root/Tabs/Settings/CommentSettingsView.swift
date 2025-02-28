@@ -58,7 +58,7 @@ struct CommentSettingsView: View {
     
     @ViewBuilder
     func sizePickerItem(_ titleKey: LocalizedStringResource, isOn: Bool) -> some View {
-        DevicePickerItem(.init(localized: titleKey), item: isOn, selected: $compactComments, scale: 1.2) {
+        DevicePickerItem(titleKey, item: isOn, selected: $compactComments, scale: 1.2) {
             VStack(spacing: 3) {
                 ForEach(Array(sizePickerCommentPreviewDepths.enumerated()), id: \.offset) { _, depth in
                     RoundedRectangle(cornerRadius: 2)
