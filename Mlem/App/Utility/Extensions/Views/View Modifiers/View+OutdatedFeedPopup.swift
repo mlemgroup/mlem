@@ -70,13 +70,13 @@ private struct OutdatedFeedPopupModifier: ViewModifier {
         do {
             showRefreshPopup = false
             await feedLoader.changeApi(to: appState.firstApi, context: filtersTracker.filterContext)
-            
-            if let feedLoader = feedLoader as? CorePostFeedLoader {
-                if try await appState.firstApi.version < feedLoader.sortType.minimumVersion {
-                    try await feedLoader.changeSortType(to: appState.initialFeedSortType, forceRefresh: true)
-                    return
-                }
-            }
+//
+//            if let feedLoader = feedLoader as? CorePostFeedLoader {
+//                if try await appState.firstApi.version < feedLoader.sortType.minimumVersion {
+//                    try await feedLoader.changeSortType(to: appState.initialFeedSortType, forceRefresh: true)
+//                    return
+//                }
+//            }
             try await feedLoader.refresh(clearBeforeRefresh: true)
         } catch {
             handleError(error)

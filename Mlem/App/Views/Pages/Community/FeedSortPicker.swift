@@ -15,16 +15,16 @@ struct FeedSortPicker: View {
     @Environment(Palette.self) var palette
     
     let showTopTimescaleInIcon: Bool
-    @Binding var sort: ApiSortType
+    @Binding var sort: PostSortType
     
     @State var topSortPopupPresented: Bool = false
     
-    init(sort: Binding<ApiSortType>, showTopTimescaleInIcon: Bool = false) {
+    init(sort: Binding<PostSortType>, showTopTimescaleInIcon: Bool = false) {
         self._sort = sort
         self.showTopTimescaleInIcon = showTopTimescaleInIcon
     }
     
-    init(feedLoader: CorePostFeedLoader, showTopTimescaleInIcon: Bool = false) {
+    init(feedLoader: CommunityPostFeedLoader, showTopTimescaleInIcon: Bool = false) {
         self.init(sort: .init(get: { feedLoader.sortType }, set: { newSort in
             Task { @MainActor in
                 do {
@@ -35,15 +35,27 @@ struct FeedSortPicker: View {
             }
         }), showTopTimescaleInIcon: showTopTimescaleInIcon)
     }
-    
-    var nonTopSortTypes: [ApiSortType] {
-        ApiSortType.nonTopCases
+
+    init(feedLoader: AggregatePostFeedLoader, showTopTimescaleInIcon: Bool = false) {
+        self.init(sort: .init(get: { feedLoader.sortType }, set: { newSort in
+            Task { @MainActor in
+                do {
+                    try await feedLoader.changeSortType(to: newSort, forceRefresh: false)
+                } catch {
+                    handleError(error)
+                }
+            }
+        }), showTopTimescaleInIcon: showTopTimescaleInIcon)
+    }
+
+    var nonTopSortTypes: [PostSortType] {
+        PostSortType.nonTopCases
             .filter { PinnedSortTracker.main.pinnedSortTypes.contains($0) }
             .filter { (appState.firstApi.fetchedVersion ?? .infinity) >= $0.minimumVersion }
     }
     
-    var topSortTypes: [ApiSortType] {
-        ApiSortType.topCases
+    var topSortTypes: [PostSortType] {
+        PostSortType.legacyTopCases
             .filter { PinnedSortTracker.main.pinnedSortTypes.contains($0) }
             .filter { (appState.firstApi.fetchedVersion ?? .infinity) >= $0.minimumVersion }
     }
@@ -63,7 +75,7 @@ struct FeedSortPicker: View {
                     Toggle(
                         "Top...",
                         systemImage: Icons.topSort,
-                        isOn: .init(get: { ApiSortType.topCases.contains(sort) }, set: { _ in topSortPopupPresented = true })
+                        isOn: .init(get: { PostSortType.legacyTopCases.contains(sort) }, set: { _ in topSortPopupPresented = true })
                     )
                 } else {
                     ForEach(topSortTypes, id: \.self) { type in
@@ -81,7 +93,7 @@ struct FeedSortPicker: View {
                 }
             }
         } label: {
-            if showTopTimescaleInIcon, ApiSortType.topCases.contains(sort) {
+            if showTopTimescaleInIcon, sort.isTop {
                 HStack {
                     Image(systemName: Icons.topSort)
                         .imageScale(.small)

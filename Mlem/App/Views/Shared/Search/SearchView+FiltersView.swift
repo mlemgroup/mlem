@@ -55,24 +55,24 @@ extension SearchView {
     
     @ViewBuilder
     private var personFiltersView: some View {
-        Menu(personFilters.sort.label(topFormat: .topOnly), systemImage: personFilters.sort.systemImage) {
-            Picker("Sort", selection: $personFilters.sort) {
-                ForEach(ApiSortType.personSearchCases, id: \.self) { item in
-                    Label(item.label(topFormat: .topOnly), systemImage: item.systemImage)
-                }
-            }
-        }
-        .buttonStyle(.feedFilter(isOn: personFilters.sort != .topAll))
+//        Menu(personFilters.sort.label(topFormat: .topOnly), systemImage: personFilters.sort.systemImage) {
+//            Picker("Sort", selection: $personFilters.sort) {
+//                ForEach(ApiSortType.personSearchCases, id: \.self) { item in
+//                    Label(item.label(topFormat: .topOnly), systemImage: item.systemImage)
+//                }
+//            }
+//        }
+//        .buttonStyle(.feedFilter(isOn: personFilters.sort != .topAll))
         InstancePicker(filter: $personFilters.instance, isForPersonSearch: true)
             .buttonStyle(.feedFilter(isOn: personFilters.instance != .any))
     }
     
     @ViewBuilder
     private var postFiltersView: some View {
-        FeedSortPicker(sort: $postFilters.sort)
-            .buttonStyle(.feedFilter(isOn: postFilters.sort != .topAll))
-        LocationPicker(filter: $postFilters.location)
-            .buttonStyle(.feedFilter(isOn: postFilters.location != .any))
+//        FeedSortPicker(sort: $postFilters.sort)
+//            .buttonStyle(.feedFilter(isOn: postFilters.sort != .top(nil)))
+//        LocationPicker(filter: $postFilters.location)
+//            .buttonStyle(.feedFilter(isOn: postFilters.location != .any))
         CreatorPicker(
             api: postFilters.location.instanceStub?.api ?? appState.firstApi,
             creator: $postFilters.creator
@@ -81,14 +81,14 @@ extension SearchView {
     
     @ViewBuilder
     private var commentFiltersView: some View {
-        Menu(commentFilters.sort.label(topFormat: .topOnly), systemImage: commentFilters.sort.systemImage) {
-            Picker("Sort", selection: $commentFilters.sort) {
-                ForEach(ApiSortType.commentSearchCases, id: \.self) { item in
-                    Label(item.label(topFormat: .topOnly), systemImage: item.systemImage)
-                }
-            }
-        }
-        .buttonStyle(.feedFilter(isOn: personFilters.sort != .topAll))
+//        Menu(commentFilters.sort.label(topFormat: .topOnly), systemImage: commentFilters.sort.systemImage) {
+//            Picker("Sort", selection: $commentFilters.sort) {
+//                ForEach(ApiSortType.commentSearchCases, id: \.self) { item in
+//                    Label(item.label(topFormat: .topOnly), systemImage: item.systemImage)
+//                }
+//            }
+//        }
+//        .buttonStyle(.feedFilter(isOn: personFilters.sort != .topAll))
         LocationPicker(filter: $commentFilters.location)
             .buttonStyle(.feedFilter(isOn: commentFilters.location != .any))
         CreatorPicker(

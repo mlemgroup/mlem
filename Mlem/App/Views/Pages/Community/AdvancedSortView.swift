@@ -24,7 +24,7 @@ struct AdvancedSortView: View {
     @Environment(Palette.self) var palette
 
     @State var selectedTab: Tab = .sort
-    @Binding var selectedSort: ApiSortType
+    @Binding var selectedSort: PostSortType
     
     var body: some View {
         VStack {
@@ -90,15 +90,15 @@ struct AdvancedSortView: View {
         Text("Filter")
     }
     
-    var nonTopCases: [ApiSortType] {
-        ApiSortType.nonTopCases.filter { (appState.firstApi.fetchedVersion ?? .infinity) >= $0.minimumVersion }
+    var nonTopCases: [PostSortType] {
+        PostSortType.nonTopCases.filter { (appState.firstApi.fetchedVersion ?? .infinity) >= $0.minimumVersion }
     }
     
-    var topCases: [ApiSortType] {
-        ApiSortType.topCases.filter { (appState.firstApi.fetchedVersion ?? .infinity) >= $0.minimumVersion }
+    var topCases: [PostSortType] {
+        PostSortType.legacyTopCases.filter { (appState.firstApi.fetchedVersion ?? .infinity) >= $0.minimumVersion }
     }
     
-    var unavailableCases: [ApiSortType] {
-        ApiSortType.allCases.filter { (appState.firstApi.fetchedVersion ?? .zero) < $0.minimumVersion }
+    var unavailableCases: [PostSortType] {
+        PostSortType.legacyCases.filter { (appState.firstApi.fetchedVersion ?? .zero) < $0.minimumVersion }
     }
 }

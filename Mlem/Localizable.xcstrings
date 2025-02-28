@@ -5606,7 +5606,6 @@
       }
     },
     "Ranks posts based on the post score and creation time." : {
-      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

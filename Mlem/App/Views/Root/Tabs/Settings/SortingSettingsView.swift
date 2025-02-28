@@ -11,9 +11,19 @@ import SwiftUI
 struct SortingSettingsView: View {
     @Environment(Palette.self) var palette
     
-    @Setting(\.defaultPostSort) var defaultPostSort
-    @Setting(\.fallbackPostSort) var fallbackPostSort
+    @Setting(\.defaultPostSort) var legacyDefaultPostSort
+    @Setting(\.fallbackPostSort) var legacyFallbackPostSort
     @Setting(\.commentSort) var commentSort
+    
+    var defaultPostSort: PostSortType {
+        get { .init(legacyDefaultPostSort) }
+        nonmutating set { legacyDefaultPostSort = newValue.legacyApiSortType ?? .hot }
+    }
+    
+    var fallbackPostSort: PostSortType {
+        get { .init(legacyFallbackPostSort) }
+        nonmutating set { legacyFallbackPostSort = newValue.legacyApiSortType ?? .hot }
+    }
     
     var body: some View {
         Form {
@@ -27,19 +37,23 @@ struct SortingSettingsView: View {
                 HStack {
                     Text("Posts")
                     Spacer()
-                    FeedSortPicker(sort: $defaultPostSort)
-                        .foregroundStyle(palette.accent)
-                        .frame(minHeight: 50)
-                        .buttonStyle(.bordered)
+                    FeedSortPicker(sort: .init(
+                        get: { defaultPostSort }, set: { defaultPostSort = $0 }
+                    ))
+                    .foregroundStyle(palette.accent)
+                    .frame(minHeight: 50)
+                    .buttonStyle(.bordered)
                 }
                 if defaultPostSort.minimumVersion != .zero {
                     HStack {
                         Text("Fallback")
                         Spacer()
-                        FeedSortPicker(sort: $fallbackPostSort)
-                            .foregroundStyle(palette.accent)
-                            .frame(minHeight: 50)
-                            .buttonStyle(.bordered)
+                        FeedSortPicker(sort: .init(
+                            get: { defaultPostSort }, set: { defaultPostSort = $0 }
+                        ))
+                        .foregroundStyle(palette.accent)
+                        .frame(minHeight: 50)
+                        .buttonStyle(.bordered)
                     }
                 }
             } footer: {

@@ -14,10 +14,10 @@ extension AdvancedSortView {
         @Environment(Palette.self) var palette
         @Environment(\.dismiss) var dismiss
 
-        let type: ApiSortType
-        var topFormat: ApiSortType.TopSortModeFormatStyle = .timescaleFull
+        let type: PostSortType
+        var topFormat: PostSortType.TopSortModeFormatStyle = .timescaleFull
 
-        @Binding var selectedSort: ApiSortType
+        @Binding var selectedSort: PostSortType
         
         @State var showingExplanation: Bool = false
         
@@ -81,7 +81,7 @@ extension AdvancedSortView {
                     }
                     .popover(isPresented: $showingExplanation) {
                         PopoverContainer {
-                            Text(LocalizedStringKey(explanation))
+                            Text(explanation)
                                 .frame(maxWidth: 200)
                                 .fixedSize(horizontal: false, vertical: true)
                                 .font(.footnote)

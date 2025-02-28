@@ -15,11 +15,11 @@ struct TopSortPicker: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.colorScheme) var colorScheme
     
-    @Binding var selected: ApiSortType
+    @Binding var selected: PostSortType
     var includeAll: Bool = false
     
-    var sortTypes: [ApiSortType] {
-        ApiSortType.topCases
+    var sortTypes: [PostSortType] {
+        PostSortType.legacyTopCases
             .filter { includeAll ? true : PinnedSortTracker.main.pinnedSortTypes.contains($0) }
             .filter { (appState.firstApi.fetchedVersion ?? .infinity) >= $0.minimumVersion }
     }
@@ -36,13 +36,13 @@ struct TopSortPicker: View {
     }
     
     @ViewBuilder
-    func button(_ type: ApiSortType) -> some View {
+    func button(_ type: PostSortType) -> some View {
         Button {
             selected = type
             dismiss()
         } label: {
             Group {
-                if type == .topAll {
+                if type == .top(nil) {
                     if sortTypes.count % 3 == 0 {
                         Text("All")
                     } else {
