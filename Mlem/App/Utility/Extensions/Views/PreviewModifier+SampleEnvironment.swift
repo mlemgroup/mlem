@@ -8,6 +8,7 @@
 import MlemMiddleware
 import SwiftUI
 
+#if DEBUG
 private struct SampleEnvironmentPreviewModifier: PreviewModifier {
     // Kinda unfortunate typealias naming considering we have our own AppState...
     typealias AppState = Void
@@ -45,3 +46,4 @@ extension PreviewTrait where T == Preview.ViewTraits {
         }
     }
 }
+#endif
