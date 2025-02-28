@@ -83,7 +83,7 @@ struct SubscriptionListView: View {
             .scrollTargetLayout()
         }
         .introspect(.form, on: .iOS(.v17, .v18)) { introspectedForm in
-            self.form = introspectedForm
+            form = introspectedForm
         }
         .onChange(of: sectionScroller) {
             form?.scrollToItem(at: .init(row: 0, section: sectionScroller), at: .centeredVertically, animated: false)
@@ -101,7 +101,7 @@ struct SubscriptionListView: View {
             if !(subscriptions?.communities.isEmpty ?? true) {
                 Picker("Sort", selection: $sort) {
                     ForEach(SubscriptionListSort.allCases, id: \.self) { item in
-                        Label(item.label, systemImage: item.systemImage)
+                        Label(item.label.localized(), systemImage: item.systemImage)
                     }
                 }
             }

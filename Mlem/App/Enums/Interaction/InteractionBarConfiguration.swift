@@ -22,7 +22,10 @@ protocol InteractionBarConfiguration: Codable {
     var availableWidgets: Set<Item> { get set }
     func widgetPickerPage(_ configuration: Binding<Self>) -> SettingsPage
     
+    /// Default configuration for this type
     static var `default`: Self { get }
+    /// Default report configuration for this type. `nil` if inapplicable.
+    static var reportDefault: Self? { get }
     
     init(leading: [Item], trailing: [Item], readouts: [ReadoutType], availableWidgets: Set<Item>)
 }
@@ -107,8 +110,8 @@ struct InteractionBarConfigurations: Codable {
             post: .default,
             comment: .default,
             reply: .default,
-            postReport: .reportDefault,
-            commentReport: .reportDefault
+            postReport: .reportDefault_,
+            commentReport: .reportDefault_
         )
     }
     
@@ -131,8 +134,8 @@ struct InteractionBarConfigurations: Codable {
         self.post = try container.decodeIfPresent(PostBarConfiguration.self, forKey: .post) ?? .default
         self.comment = try container.decodeIfPresent(CommentBarConfiguration.self, forKey: .comment) ?? .default
         self.reply = try container.decodeIfPresent(ReplyBarConfiguration.self, forKey: .reply) ?? .default
-        self.postReport = try container.decodeIfPresent(PostBarConfiguration.self, forKey: .postReport) ?? .reportDefault
-        self.commentReport = try container.decodeIfPresent(CommentBarConfiguration.self, forKey: .commentReport) ?? .reportDefault
+        self.postReport = try container.decodeIfPresent(PostBarConfiguration.self, forKey: .postReport) ?? .reportDefault_
+        self.commentReport = try container.decodeIfPresent(CommentBarConfiguration.self, forKey: .commentReport) ?? .reportDefault_
     }
 }
 
