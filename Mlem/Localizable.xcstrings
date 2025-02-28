@@ -126,6 +126,7 @@
       }
     },
     "%@ is {{online}}" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -136,6 +137,7 @@
       }
     },
     "%@ is {{unhealthy}}" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -1184,6 +1186,7 @@
       }
     },
     "Ban" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -1234,6 +1237,7 @@
       }
     },
     "Ban from..." : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -1254,6 +1258,7 @@
       }
     },
     "Ban User" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -1310,6 +1315,7 @@
       }
     },
     "Banning from..." : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -1350,6 +1356,7 @@
       }
     },
     "Block community or user?" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -2290,6 +2297,7 @@
       }
     },
     "Custom Order" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -2884,6 +2892,7 @@
       }
     },
     "Error" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -4559,6 +4568,7 @@
       }
     },
     "Most Recent" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -5215,6 +5225,7 @@
       }
     },
     "Pin to Community or Instance?" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -6235,6 +6246,7 @@
       }
     },
     "Requires Lemmy %@ or later" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -7292,6 +7304,7 @@
       }
     },
     "Tap to Undo" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -7973,6 +7986,7 @@
       }
     },
     "Unban" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -7993,6 +8007,7 @@
       }
     },
     "Unban from..." : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -8003,6 +8018,7 @@
       }
     },
     "Unban User" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -8029,6 +8045,7 @@
       }
     },
     "Unbanning from..." : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -8099,6 +8116,7 @@
       }
     },
     "Undone!" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {

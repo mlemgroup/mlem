@@ -292,6 +292,10 @@ extension InteractionBarEditorView {
             Button("Reset") {
                 assert(!(isReport && Configuration.reportDefault == nil), "isReport is true but no reportDefault found")
                 configuration = isReport ? .reportDefault ?? .default : .default
+                infoStackAlignment = computeInfoStackAlignment(
+                    infoStackIndex: configuration.leading.count,
+                    totalItems: configuration.all.count
+                )
                 barItems = (configuration.leading + [nil] + configuration.trailing).map { item in
                     .init(item: item, expanded: true, visible: true)
                 }
