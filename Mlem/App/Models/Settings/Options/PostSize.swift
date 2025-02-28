@@ -21,7 +21,7 @@ enum PostSize: String, CaseIterable, Codable {
         }
     }
 
-    var label: String {
+    var label: LocalizedStringResource {
         switch self {
         case .compact: "Compact"
         case .headline: "Headline"
