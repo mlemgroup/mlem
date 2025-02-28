@@ -85,11 +85,11 @@ struct AccountSettingsView: View {
                     Button {
                         appState.firstAccount.signOut()
                     } label: {
-                        Text(signOutLabel)
+                        Text(signOutLabel.localized())
                             .frame(maxWidth: .infinity)
                     }
                     .confirmationDialog(signOutPrompt, isPresented: $showingSignOutConfirmation) {
-                        Button(signOutLabel, role: .destructive) {
+                        Button(signOutLabel.localized(), role: .destructive) {
                             appState.firstAccount.signOut()
                         }
                     } message: {

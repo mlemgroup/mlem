@@ -53,7 +53,7 @@ struct AccountListRow: View {
         }
         .swipeActions(edge: .trailing, allowsFullSwipe: false) {
             if (account as? GuestAccount)?.isSaved ?? true {
-                Button(signOutLabel) {
+                Button(signOutLabel.localized()) {
                     showingSignOutConfirmation = true
                 }
                 .buttonStyle(.automatic)

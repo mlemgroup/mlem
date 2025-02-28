@@ -25,7 +25,7 @@ struct SubscriptionListSettingsView: View {
             Section("Sort by...") {
                 Picker("Sort by...", selection: $sort) {
                     ForEach(SubscriptionListSort.allCases, id: \.self) { item in
-                        Label(item.label, systemImage: item.systemImage)
+                        Label(item.label.localized(), systemImage: item.systemImage)
                     }
                 }
                 .labelsHidden()
