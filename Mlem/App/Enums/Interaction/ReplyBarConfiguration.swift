@@ -116,4 +116,6 @@ struct ReplyBarConfiguration: InteractionBarConfiguration {
             availableWidgets: .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) })
         )
     }
+    
+    static var reportDefault: Self? { nil }
 }

@@ -142,23 +142,23 @@ enum SettingsPage: Hashable {
         case .inboxBadge:
             InboxBadgeSettingsView()
         case .postInteractionBar:
-            InteractionBarEditorView(setting: \.postInteractionBar)
+            InteractionBarEditorView(setting: \.postInteractionBar, isReport: false)
         case let .postBarWidgetPicker(configuration):
             InteractionBarWidgetPickerView<PostBarConfiguration>(configuration: configuration.wrappedValue)
         case .commentInteractionBar:
-            InteractionBarEditorView(setting: \.commentInteractionBar)
+            InteractionBarEditorView(setting: \.commentInteractionBar, isReport: false)
         case let .commentBarWidgetPicker(configuration):
             InteractionBarWidgetPickerView<CommentBarConfiguration>(configuration: configuration.wrappedValue)
         case .replyInteractionBar:
-            InteractionBarEditorView(setting: \.replyInteractionBar)
+            InteractionBarEditorView(setting: \.replyInteractionBar, isReport: false)
         case let .replyBarWidgetPicker(configuration):
             InteractionBarWidgetPickerView<ReplyBarConfiguration>(configuration: configuration.wrappedValue)
         case .postReportInteractionBar:
-            InteractionBarEditorView(setting: \.postReportInteractionBar)
+            InteractionBarEditorView(setting: \.postReportInteractionBar, isReport: true)
         case let .postReportBarWidgetPicker(configuration):
             InteractionBarWidgetPickerView<PostBarConfiguration>(configuration: configuration.wrappedValue)
         case .commentReportInteractionBar:
-            InteractionBarEditorView(setting: \.commentReportInteractionBar)
+            InteractionBarEditorView(setting: \.commentReportInteractionBar, isReport: true)
         case let .commentReportBarWidgetPicker(configuration):
             InteractionBarWidgetPickerView<CommentBarConfiguration>(configuration: configuration.wrappedValue)
         case let .document(doc):

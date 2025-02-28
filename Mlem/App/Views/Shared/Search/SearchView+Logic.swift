@@ -9,7 +9,7 @@ import MlemMiddleware
 import SwiftUI
 
 extension SearchView {
-    func onTabChange() {
+    func contentChangeTriggerRefresh(onlyRefreshIfEmpty: Bool) {
         editingRecentSearches = false
         if selectedTab == .posts || selectedTab == .comments {
             if page != .results {
@@ -17,20 +17,7 @@ extension SearchView {
             }
         } else {
             Task {
-                await refresh(clearBeforeRefresh: false, onlyRefreshIfEmpty: true)
-            }
-        }
-    }
-    
-    func onQueryChange(_ oldValue: String, _ newValue: String) {
-        editingRecentSearches = false
-        if selectedTab == .posts || selectedTab == .comments {
-            if page != .results {
-                searchBarFocused = true
-            }
-        } else {
-            Task {
-                await refresh(clearBeforeRefresh: false, onlyRefreshIfEmpty: true)
+                await refresh(clearBeforeRefresh: false)
             }
         }
     }

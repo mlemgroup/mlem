@@ -142,7 +142,7 @@ struct PostBarConfiguration: InteractionBarConfiguration {
         )
     }
     
-    static var reportDefault: Self {
+    static var reportDefault_: Self {
         .init(
             leading: [.action(.resolve), .action(.lock)],
             trailing: [.action(.ban), .action(.remove)],
@@ -150,4 +150,6 @@ struct PostBarConfiguration: InteractionBarConfiguration {
             availableWidgets: .init(ActionType.defaultReportWidgets.map { .action($0) })
         )
     }
+    
+    static var reportDefault: Self? { .reportDefault_ }
 }
