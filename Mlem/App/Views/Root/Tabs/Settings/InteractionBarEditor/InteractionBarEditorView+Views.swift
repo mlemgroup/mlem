@@ -290,7 +290,8 @@ extension InteractionBarEditorView {
     var buttons: some View {
         HStack {
             Button("Reset") {
-                configuration = .default
+                assert(!(isReport && Configuration.reportDefault == nil), "isReport is true but no reportDefault found")
+                configuration = isReport ? .reportDefault ?? .default : .default
                 barItems = (configuration.leading + [nil] + configuration.trailing).map { item in
                     .init(item: item, expanded: true, visible: true)
                 }

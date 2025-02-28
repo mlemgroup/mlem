@@ -130,7 +130,7 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
         )
     }
     
-    static var reportDefault: Self {
+    static var reportDefault_: Self {
         .init(
             leading: [.action(.resolve), .action(.share)],
             trailing: [.action(.ban), .action(.remove)],
@@ -138,4 +138,6 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
             availableWidgets: .init(ActionType.defaultReportWidgets.map { .action($0) })
         )
     }
+    
+    static var reportDefault: Self? { reportDefault_ }
 }
