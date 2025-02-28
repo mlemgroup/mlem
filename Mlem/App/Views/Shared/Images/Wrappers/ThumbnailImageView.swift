@@ -7,8 +7,8 @@
 
 import Foundation
 import MlemMiddleware
-import SwiftUI
 import QuickLook
+import SwiftUI
 
 struct ThumbnailImageView: View {
     @Environment(Palette.self) var palette
@@ -17,7 +17,7 @@ struct ThumbnailImageView: View {
     
     @Setting(\.websiteThumbnailIcon) var websiteThumbnailIcon
     
-    @State var loading: MediaLoadingState?
+    @State var loadingTracker: MediaLoadingTracker = .init()
     @State var quickLookUrl: URL?
     
     let post: any Post1Providing
@@ -55,21 +55,18 @@ struct ThumbnailImageView: View {
             case let .media(url), let .embedded(url, _):
                 content
                     .onTapGesture {
-                        if let loading, loading == .done || loading == .proxyFailed {
+                        if let loading = loadingTracker.loading, loading == .done || loading == .proxyFailed {
                             post.markRead()
                             navigation.showImageViewer(url: url)
                         }
                     }
                     .contextMenu {
                         if let url = fullSizeUrl(url: url) {
-                            Button("Save Image", systemImage: Icons.import) {
+                            Button("Save", systemImage: Icons.import) {
                                 Task { await saveMedia(url: url) }
                             }
-                            Button("Share Image", systemImage: Icons.share) {
+                            Button("Share...", systemImage: Icons.share) {
                                 Task { await shareImage(url: url) }
-                            }
-                            Button("Quick Look", systemImage: Icons.imageDetails) {
-                                Task { await showQuickLook(url: url) }
                             }
                         }
                     }
@@ -113,10 +110,10 @@ struct ThumbnailImageView: View {
                 size: frame,
                 fallback: url.proxyAwarePathExtension?.isMovieExtension ?? false ? .movie : .image,
                 showProgress: true,
-                blurred: blurred && loading == .done
+                blurred: blurred && loadingTracker.loading == .done
             )
             .clipShape(RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius))
-            .onPreferenceChange(MediaLoadingPreferenceKey.self, perform: { loading = $0 })
+            .environment(\.loadingTracker, loadingTracker)
         } else {
             Image(systemName: post.placeholderImageName)
                 .font(.title)
@@ -137,9 +134,9 @@ struct ThumbnailImageView: View {
                 size: frame,
                 fallback: .image,
                 showProgress: true,
-                blurred: blurred && loading == .done
+                blurred: blurred && loadingTracker.loading == .done
             )
-            .onPreferenceChange(MediaLoadingPreferenceKey.self, perform: { loading = $0 })
+            .environment(\.loadingTracker, loadingTracker)
         } else {
             Image(systemName: post.placeholderImageName)
                 .resizable()
@@ -153,12 +150,6 @@ struct ThumbnailImageView: View {
     func shareImage(url: URL) async {
         if let fileUrl = await downloadImageToFileSystem(url: url) {
             navigation.shareInfo = .init(url: fileUrl)
-        }
-    }
-    
-    func showQuickLook(url: URL) async {
-        if let fileUrl = await downloadImageToFileSystem(url: url) {
-            quickLookUrl = fileUrl
         }
     }
 }

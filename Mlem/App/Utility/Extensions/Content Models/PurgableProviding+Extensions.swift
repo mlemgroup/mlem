@@ -14,11 +14,11 @@ extension PurgableProviding {
         NavigationModel.main.openSheet(.purge(self))
     }
     
-    func purgeAction() -> BasicAction {
+    func purgeAction(appState: AppState) -> BasicAction {
         .init(
             id: "purge\(uid)",
             appearance: .purge(),
-            callback: (api.canInteract && api.isAdmin) ? showPurgeSheet : nil
+            callback: (api.canInteract(appState: appState) && api.isAdmin) ? showPurgeSheet : nil
         )
     }
 }

@@ -10,6 +10,7 @@ import SwiftUI
 
 struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: View {
     @Environment(Palette.self) var palette
+    @Environment(NavigationLayer.self) var navigation
     
     @State var configuration: Configuration {
         didSet {
@@ -17,7 +18,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
         }
     }
     
-    @State var trayItems: [TrayItem]
+    @State var trayItems: [TrayItem] = .init()
     @State var barItems: [BarItem] = .init()
     
     @State var barPickedUpItem: (barItem: BarItem, index: Int)?
@@ -28,29 +29,40 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     @State var dragLocation: CGPoint = .zero
     @State var dragTranslation: CGSize = .zero
     
+    @State var infoStackAlignment: Alignment
+    
     @State var showingApplyToAllConfirmation: Bool = false
     
     let onSet: (Configuration) -> Void
+    let configurationType: ConfigurationType
+    let isReport: Bool
     
     let barAnimationDuration: CGFloat = 0.15
+    let trayItemDuration: CGFloat = 0.5
     
     @ScaledMetric(relativeTo: .body) var baseInfoCapsuleHeight: CGFloat = 22
     var infoCapsuleHeight: CGFloat { baseInfoCapsuleHeight + Constants.main.doubleSpacing }
     
-    init(configuration: Configuration, onSet: @escaping (Configuration) -> Void) {
-        self.configuration = configuration
+    init(configuration: Configuration, isReport: Bool, onSet: @escaping (Configuration) -> Void) {
         self.onSet = onSet
+        self.configuration = configuration
+        self.isReport = isReport
         let configurationItems: [Configuration.Item?] = configuration.leading + [nil] + configuration.trailing
-        self._barItems = .init(wrappedValue: configurationItems.map { item in
-            .init(item: item, expanded: true, visible: true)
-        })
-        self._trayItems = .init(wrappedValue: Configuration.Item.allCases.map { item in
-            TrayItem(item: item, visible: !configurationItems.contains(item))
-        })
+        self.configurationType = configuration is PostBarConfiguration ? .post : .comment
+        
+        let newBarItems: [BarItem] = configurationItems.map { .init(item: $0, expanded: true, visible: true) }
+        let newInfoStackIndex = newBarItems.firstIndex(where: { $0.item == nil })
+        assert(newInfoStackIndex != nil, "could not find infoStack index")
+        
+        self._barItems = .init(wrappedValue: newBarItems)
+        self._infoStackAlignment = .init(wrappedValue: computeInfoStackAlignment(
+            infoStackIndex: newInfoStackIndex ?? 0,
+            totalItems: newBarItems.count)
+        )
     }
     
-    init(setting: WritableKeyPath<InteractionBarTracker, Configuration>) {
-        self.init(configuration: InteractionBarTracker.main[keyPath: setting]) {
+    init(setting: WritableKeyPath<InteractionBarTracker, Configuration>, isReport: Bool) {
+        self.init(configuration: InteractionBarTracker.main[keyPath: setting], isReport: isReport) {
             var main = InteractionBarTracker.main
             main[keyPath: setting] = $0
         }
@@ -62,11 +74,21 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
             buttons
             Spacer()
             infoCapsule
-            postPreview.zIndex(barPickedUpItem == nil ? 0 : 1)
+            contentPreview.zIndex(barPickedUpItem == nil ? 0 : 1)
             Divider()
             readoutSelectors
             Divider()
             tray.zIndex(trayPickedUpItem == nil ? 0 : 1)
+            
+            Button("More Widgets...") {
+                navigation.openSheet(.settings(configuration.widgetPickerPage($configuration)))
+            }
+        }
+        .onChange(of: configuration.availableWidgets, initial: true) {
+            onSet(configuration)
+            trayItems = Configuration.Item.allCases
+                .filter { configuration.availableWidgets.contains($0) }
+                .map { TrayItem(item: $0, visible: true) }
         }
         .frame(maxWidth: .infinity)
         .padding(Constants.main.standardSpacing)
@@ -78,7 +100,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
 
 #Preview {
     NavigationStack {
-        InteractionBarEditorView(configuration: PostBarConfiguration.default, onSet: { _ in })
+        InteractionBarEditorView(configuration: PostBarConfiguration.default, isReport: false, onSet: { _ in })
     }
     .environment(Palette.main)
 }

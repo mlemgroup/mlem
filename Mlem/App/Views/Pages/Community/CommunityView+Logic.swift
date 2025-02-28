@@ -49,11 +49,12 @@ extension CommunityView {
     }
     
     func setupFeedLoader(community: any Community) {
+        print("SETUP", postFeedLoader == nil)
         if postFeedLoader == nil {
             Task { @MainActor in
                 @Setting(\.internetSpeed) var internetSpeed
                 @Setting(\.showReadInFeed) var showReadInFeed
-                
+                print("SETUP2")
                 postFeedLoader = try await .init(
                     pageSize: internetSpeed.pageSize,
                     sortType: appState.initialFeedSortType,

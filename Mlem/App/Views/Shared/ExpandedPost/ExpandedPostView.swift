@@ -29,6 +29,7 @@ struct ExpandedPostView<Content: View>: View {
     @Setting(\.compactComments) var compactComments
     
     var post: (any PostStubProviding)?
+    var contentLoaderError: Error?
     let isLoading: Bool
     let highlightedComment: (any CommentStubProviding)?
     let content: Content
@@ -43,6 +44,7 @@ struct ExpandedPostView<Content: View>: View {
     
     init(
         post: (any PostStubProviding)?,
+        contentLoaderError: Error?,
         isLoading: Bool,
         tracker: Binding<CommentTreeTracker?>,
         highlightedComment: (any CommentStubProviding)? = nil,
@@ -50,6 +52,7 @@ struct ExpandedPostView<Content: View>: View {
         @ViewBuilder content: () -> Content = { EmptyView() }
     ) {
         self.post = post
+        self.contentLoaderError = contentLoaderError
         self.isLoading = isLoading
         self.highlightedComment = highlightedComment
         self.content = content()
@@ -69,6 +72,8 @@ struct ExpandedPostView<Content: View>: View {
                             post.markRead()
                         }
                     }
+            } else if let contentLoaderError {
+                ErrorView(.init(error: contentLoaderError))
             } else {
                 ProgressView()
                     .tint(palette.secondary)
@@ -157,7 +162,7 @@ struct ExpandedPostView<Content: View>: View {
                     }
                 }
                 .overlay {
-                    if jumpButton != .none, (tracker?.comments.count ?? 0) > 1 {
+                    if jumpButton != .none, (tracker?.nodes.count ?? 0) > 1 {
                         JumpButtonView(onShortPress: scrollToNextComment, onLongPress: scrollToPreviousComment)
                             .frame(
                                 maxWidth: .infinity,
@@ -180,6 +185,7 @@ struct ExpandedPostView<Content: View>: View {
             } else {
                 ToolbarEllipsisMenu(
                     post.allMenuActions(
+                        appState: appState,
                         expanded: true,
                         navigation: navigation,
                         commentTreeTracker: tracker
@@ -211,9 +217,10 @@ struct ExpandedPostView<Content: View>: View {
             }
         }
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
-        .quickSwipes(post.swipeActions(behavior: .standard, commentTreeTracker: tracker))
+        .quickSwipes(post.swipeActions(appState: appState, behavior: .standard, commentTreeTracker: tracker))
         .contextMenu {
             post.allMenuActions(
+                appState: appState,
                 showAllActions: false,
                 navigation: navigation,
                 commentTreeTracker: tracker

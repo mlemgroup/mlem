@@ -22,7 +22,6 @@ struct PostGridView: View {
     @Setting(\.infiniteScroll) var infiniteScroll
     @Setting(\.allowMultiplePostColumns) var allowMultipleColumns
     
-    @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette
     @Environment(FiltersTracker.self) var filtersTracker
     
@@ -107,7 +106,8 @@ struct PostGridView: View {
                 }
             }
             .padding(.horizontal, postSize.tiled || columns.count == 1 ? 0 : Constants.main.halfSpacing)
-            EndOfFeedView(loadingState: postFeedLoader.loadingState, loadMore: loadMore, viewType: .hobbit)
+            .animation(.easeOut(duration: 0.1), value: postFeedLoader.items.isEmpty)
+            EndOfFeedView(feedLoader: postFeedLoader, viewType: .hobbit)
         }
     }
     
@@ -144,21 +144,15 @@ struct PostGridView: View {
         Menu {
             Picker("Post Size", selection: $postSize) {
                 ForEach(PostSize.allCases, id: \.self) { item in
-                    Label(item.label.key, systemImage: item.icon(filled: postSize == item))
+                    Label {
+                        Text(LocalizedStringResource(stringLiteral: item.label))
+                    } icon: {
+                        Image(systemName: item.icon(filled: postSize == item))
+                    }
                 }
             }
         } label: {
             Label("Post Size", systemImage: Icons.postSizeSetting)
-        }
-    }
-    
-    func loadMore() {
-        Task {
-            do {
-                try await postFeedLoader.loadMoreItems()
-            } catch {
-                handleError(error)
-            }
         }
     }
 }

@@ -26,6 +26,7 @@ runs:
     with:
       project: Mlem.xcodeproj
       scheme: Mlem
+      configuration: Release
       destination: "${{ inputs.xcodebuild_destination }}"
       action: "${{ inputs.xcodebuild_action }}"
       result-bundle-path: build_results.xcresult

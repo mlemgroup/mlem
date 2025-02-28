@@ -7,6 +7,7 @@
 
 import MlemMiddleware
 import SwiftUI
+@_spi(Advanced) import SwiftUIIntrospect
 
 struct SubscriptionListView: View {
     @Environment(AppState.self) private var appState
@@ -22,6 +23,10 @@ struct SubscriptionListView: View {
         FeedSelection.cases(for: appState.firstAccount.accountType)
     }
     
+    @State var sectionScroller: Int = 0
+    
+    @Weak var form: UICollectionView?
+    
     var body: some View {
         content
             .listStyle(.sidebar)
@@ -35,87 +40,88 @@ struct SubscriptionListView: View {
             navigation.path.isEmpty
         }
     }
-
+    
     @ViewBuilder
     var content: some View {
         let sections = subscriptions?.visibleSections(sort: sort) ?? []
         
-        ScrollViewReader { proxy in
-            Form {
-                Section {
-                    ForEach(feedOptions, id: \.hashValue) { feedOption in
-                        SubscriptionListNavigationButton(.feeds(feedOption)) {
-                            HStack(spacing: 15) {
-                                FeedIconView(
-                                    feedDescription: feedOption.description,
-                                    size: appState.firstSession is GuestSession ? 36 : 28
-                                )
-                                VStack(alignment: .leading) {
-                                    Text(feedOption.description.label)
-                                    if appState.firstSession is GuestSession {
-                                        Text(feedOption.description.subtitle)
-                                            .font(.footnote)
-                                            .foregroundStyle(palette.secondary)
-                                    }
+        Form {
+            Section {
+                ForEach(feedOptions, id: \.hashValue) { feedOption in
+                    SubscriptionListNavigationButton(.feeds(feedOption)) {
+                        HStack(spacing: 15) {
+                            FeedIconView(
+                                feedDescription: feedOption.description,
+                                size: appState.firstSession is GuestSession ? 36 : 28
+                            )
+                            VStack(alignment: .leading) {
+                                Text(feedOption.description.label)
+                                if appState.firstSession is GuestSession {
+                                    Text(feedOption.description.subtitle)
+                                        .font(.footnote)
+                                        .foregroundStyle(palette.secondary)
                                 }
                             }
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .contentShape(.rect)
                         }
-                    }
-                }
-                
-                if AccountsTracker.main.isEmpty {
-                    Section {
-                        signedOutInfoView
-                            .listRowBackground(Color.clear)
-                    }
-                }
-                
-                ForEach(sections) { section in
-                    SubscriptionListSectionView(section: section, sectionIndicesShown: sectionIndicesShown)
-                        .id(section.label)
-                }
-                .scrollTargetLayout()
-            }
-            .foregroundStyle(palette.primary)
-            .overlay(alignment: .trailing) {
-                if sectionIndicesShown {
-                    SectionIndexTitles(
-                        proxy: proxy,
-                        sections: [.init(label: String(localized: "Favorites"), systemImage: "star.fill")]
-                            + "ABCDEFGHIJKLMNOPQRSTUVWYZ#".map { .init(label: String($0)) }
-                    )
-                }
-            }
-            .toolbar {
-                if !(subscriptions?.communities.isEmpty ?? true) {
-                    Picker("Sort", selection: $sort) {
-                        ForEach(SubscriptionListSort.allCases, id: \.self) { item in
-                            Label(item.label, systemImage: item.systemImage)
-                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .contentShape(.rect)
                     }
                 }
             }
-            .onChange(of: tabReselectTracker.flag) {
-                // normal reselect tracker does not work here thanks to NavigationSplitView, so we need to implement a custom one
-                if detailDisplayed, tabReselectTracker.flag {
-                    tabReselectTracker.reset()
-                    withAnimation {
-                        proxy.scrollTo(sections.first?.label)
-                    }
+            
+            if AccountsTracker.main.isEmpty {
+                Section {
+                    signedOutInfoView
+                        .listRowBackground(Color.clear)
                 }
             }
-            .scrollIndicators(sectionIndicesShown ? .hidden : .visible)
-            .refreshable {
-                do {
-                    try await subscriptions?.refresh()
-                } catch {
-                    handleError(error)
-                }
+            
+            ForEach(sections) { section in
+                SubscriptionListSectionView(section: section, sectionIndicesShown: sectionIndicesShown)
+                    .id(section.label)
             }
-            .background(palette.background)
+            .scrollTargetLayout()
         }
+        .introspect(.form, on: .iOS(.v17, .v18)) { introspectedForm in
+            form = introspectedForm
+        }
+        .onChange(of: sectionScroller) {
+            form?.scrollToItem(at: .init(row: 0, section: sectionScroller), at: .centeredVertically, animated: false)
+        }
+        .foregroundStyle(palette.primary)
+        .overlay(alignment: .trailing) {
+            if sectionIndicesShown {
+                SectionIndexTitles(
+                    sections: sections,
+                    sectionScroller: $sectionScroller
+                )
+            }
+        }
+        .toolbar {
+            if !(subscriptions?.communities.isEmpty ?? true) {
+                Picker("Sort", selection: $sort) {
+                    ForEach(SubscriptionListSort.allCases, id: \.self) { item in
+                        Label(item.label.localized(), systemImage: item.systemImage)
+                    }
+                }
+            }
+        }
+        .onChange(of: tabReselectTracker.flag) {
+            // normal reselect tracker does not work here thanks to NavigationSplitView, so we need to implement a custom one
+            if detailDisplayed, tabReselectTracker.flag {
+                tabReselectTracker.reset()
+                form?.scrollToItem(at: .init(row: 0, section: 0), at: .bottom, animated: true)
+            }
+        }
+        .scrollIndicators(sectionIndicesShown ? .hidden : .visible)
+        .refreshable {
+            do {
+                try await subscriptions?.refresh()
+            } catch {
+                handleError(error)
+            }
+        }
+        .background(palette.background)
     }
     
     @ViewBuilder
@@ -185,7 +191,7 @@ enum SubscriptionListSort: String, CaseIterable, Codable {
     
     var label: String {
         switch self {
-        case .alphabetical: "Alphabetical"
+        case .alphabetical: "Name"
         case .instance: "Instance"
         }
     }

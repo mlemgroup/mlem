@@ -24,33 +24,37 @@ private struct OutdatedFeedPopupModifier: ViewModifier {
     @State var showRefreshPopup: Bool = false
     
     func body(content: Content) -> some View {
-        if let feedLoader {
-            content
-                .refreshable {
+        content
+            .refreshable(isEnabled: feedLoader != nil) {
+                if let feedLoader {
                     await refresh(feedLoader)
                 }
-                .onChange(of: apiChangeHash) {
+            }
+            .onChange(of: apiChangeHash) {
+                if let feedLoader {
                     if let newApi = feedLoader.items.first?.api {
                         showRefreshPopup = canShowPopup && (newApi !== appState.firstApi && feedLoader.loadingState != .loading)
                     } else {
                         showRefreshPopup = false
                     }
                 }
-                .onChange(of: filtersTracker.changeHash) {
+            }
+            .onChange(of: filtersTracker.changeHash) {
+                if let feedLoader {
                     if feedLoader.items.count > 0 {
                         showRefreshPopup = true
                     }
                 }
-                .overlay(alignment: .bottom) {
-                    RefreshPopupView("Feed is outdated", isPresented: $showRefreshPopup) {
-                        Task {
+            }
+            .overlay(alignment: .bottom) {
+                RefreshPopupView("Feed is outdated", isPresented: $showRefreshPopup) {
+                    Task {
+                        if let feedLoader {
                             await refresh(feedLoader)
                         }
                     }
                 }
-        } else {
-            content
-        }
+            }
     }
     
     var apiChangeHash: Int {

@@ -11,14 +11,11 @@ import PhotosUI
 import SwiftUI
 
 extension ApiClient {
-    var isActive: Bool {
-        if token == nil {
-            return AppState.main.guestSession.api === self
-        }
-        return AppState.main.activeSessions.contains(where: { $0.api === self })
+    func isActive(appState: AppState) -> Bool {
+        appState.guestSession.api === self || appState.activeSessions.contains(where: { $0.api === self })
     }
     
-    var canInteract: Bool { isActive && token != nil }
+    func canInteract(appState: AppState) -> Bool { isActive(appState: appState) && token != nil }
     
     var downvotesEnabled: Bool {
         myInstance?.downvotesEnabled ?? true

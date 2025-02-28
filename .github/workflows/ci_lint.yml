@@ -12,6 +12,7 @@ on:
         - '.github/workflows/swiftlint.yml'
         - '.swiftlint.yml'
         - '**/*.swift'
+        - 'Mlem.xcodeproj/project.pbxproj'
 
 jobs:
   SwiftLint:

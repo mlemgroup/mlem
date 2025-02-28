@@ -45,6 +45,13 @@ struct ModeratorSettingsView: View {
                     destination: .settings(.inboxBadge)
                 )
             }
+            Section {
+                NavigationLink(
+                    "Mod Mail Interaction Bar",
+                    systemImage: Icons.interactionBar,
+                    destination: .settings(.modMailInteractionBar)
+                )
+            }
         }
         .labelStyle(.conditional)
         .contentMargins(.top, 16)

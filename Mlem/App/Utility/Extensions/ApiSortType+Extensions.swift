@@ -49,8 +49,8 @@ extension ApiSortType: @retroactive CaseIterable {
     
     var minimumVersion: SiteVersion {
         switch self {
-        case .controversial, .scaled: .v19_0
-        case .topThreeMonths, .topSixMonths, .topNineMonths: .v18_1
+        case .controversial, .scaled: .v0_19_0
+        case .topThreeMonths, .topSixMonths, .topNineMonths: .v0_18_1
         default: .zero
         }
     }
@@ -134,10 +134,10 @@ extension ApiSortType: @retroactive CaseIterable {
         }
     }
     
-    var explanation: LocalizedStringResource? {
+    var explanation: String? {
         switch self {
         case .hot: "Ranks posts based on the post score and creation time."
-        case .scaled: "Similar to \"Hot\", but ranks posts from smaller communities higher."
+        case .scaled: "Similar to Hot, but ranks posts from smaller communities higher."
         case .active: "Ranks posts based on the post score and the time since the last comment was created."
         default: nil
         }

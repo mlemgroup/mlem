@@ -58,8 +58,9 @@ extension SearchView {
                         }
                     }
                 }
-                EndOfFeedView(loadingState: communityLoader.loadingState, loadMore: nil, viewType: .hobbit)
+                EndOfFeedView(feedLoader: communityLoader, viewType: .hobbit)
             }
+            .animation(.easeOut(duration: 0.1), value: communityLoader.items.isEmpty)
         case .people:
             LazyVStack(spacing: 0) {
                 SearchResultsView(results: personLoader.items) { person in
@@ -77,8 +78,9 @@ extension SearchView {
                         }
                     }
                 }
-                EndOfFeedView(loadingState: personLoader.loadingState, loadMore: nil, viewType: .hobbit)
+                EndOfFeedView(feedLoader: personLoader, viewType: .hobbit)
             }
+            .animation(.easeOut(duration: 0.1), value: personLoader.items.isEmpty)
         case .instances:
             LazyVStack(spacing: 0) {
                 SearchResultsView(results: instances) { instance in
@@ -88,35 +90,41 @@ extension SearchView {
                         visitContext: page == .home ? .other : .search
                     )
                 }
-                EndOfFeedView(loadingState: .done, loadMore: nil, viewType: .hobbit)
+                EndOfFeedView(loadingState: .done, viewType: .hobbit)
             }
         case .posts:
-            if postLoader.loadingState == .idle, postLoader.items.isEmpty {
-                searchPlaceholder
-            } else {
-                PostGridView(postFeedLoader: postLoader)
+            Group {
+                if postLoader.loadingState == .idle, postLoader.items.isEmpty {
+                    searchPlaceholder
+                } else {
+                    PostGridView(postFeedLoader: postLoader)
+                }
             }
+            .animation(.easeOut(duration: 0.1), value: personLoader.items.isEmpty)
         case .comments:
             if commentLoader.loadingState == .idle, commentLoader.items.isEmpty {
                 searchPlaceholder
             } else {
-                LazyVStack(spacing: compactComments ? Constants.main.halfSpacing : Constants.main.standardSpacing) {
-                    ForEach(commentLoader.items, id: \.actorId) { comment in
-                        NavigationLink(.comment(comment)) {
-                            FeedCommentView(comment: comment)
-                        }
-                        .buttonStyle(.empty)
-                        .onAppear {
-                            do {
-                                try commentLoader.loadIfThreshold(comment)
-                            } catch {
-                                handleError(error)
+                VStack(spacing: 0) {
+                    LazyVStack(spacing: compactComments ? Constants.main.halfSpacing : Constants.main.standardSpacing) {
+                        ForEach(commentLoader.items, id: \.actorId) { comment in
+                            NavigationLink(.comment(comment)) {
+                                FeedCommentView(comment: comment)
+                            }
+                            .buttonStyle(.empty)
+                            .onAppear {
+                                do {
+                                    try commentLoader.loadIfThreshold(comment)
+                                } catch {
+                                    handleError(error)
+                                }
                             }
                         }
                     }
-                    EndOfFeedView(loadingState: commentLoader.loadingState, loadMore: nil, viewType: .hobbit)
+                    .animation(.easeOut(duration: 0.1), value: commentLoader.items.isEmpty)
+                    .padding(.horizontal, Constants.main.standardSpacing)
+                    EndOfFeedView(feedLoader: commentLoader, viewType: .hobbit)
                 }
-                .padding(.horizontal, Constants.main.standardSpacing)
             }
         }
     }

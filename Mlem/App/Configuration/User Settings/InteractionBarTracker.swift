@@ -28,6 +28,16 @@ class InteractionBarTracker {
         set { interactionBarConfigurations.reply = newValue }
     }
     
+    var postReportInteractionBar: PostBarConfiguration {
+        get { interactionBarConfigurations.postReport }
+        set { interactionBarConfigurations.postReport = newValue }
+    }
+    
+    var commentReportInteractionBar: CommentBarConfiguration {
+        get { interactionBarConfigurations.commentReport }
+        set { interactionBarConfigurations.commentReport = newValue }
+    }
+    
     var interactionBarConfigurations: InteractionBarConfigurations {
         didSet { Task.detached {
             try await self.persistenceRepository.saveInteractionBarConfigurations(self.interactionBarConfigurations)

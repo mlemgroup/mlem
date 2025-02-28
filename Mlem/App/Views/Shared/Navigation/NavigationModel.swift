@@ -37,6 +37,7 @@ class NavigationModel {
             ToastModel.main.add(.failure("Failed to open sheet"))
             return
         }
+        
         layers.append(
             .init(
                 root: page,

@@ -44,24 +44,60 @@ struct EndOfFeedView: View {
     @Environment(Palette.self) var palette
     @Setting(\.developerMode) var developerMode
     
-    let loadingState: LoadingState
-    let loadMore: (() -> Void)?
+    @State var showLoadMore: Bool = false
+    
+    let loadingState_: LoadingState?
     let viewType: EndOfFeedViewType
+    let feedLoader: (any FeedLoading)?
+    
+    var loadingState: LoadingState {
+        assert(loadingState_ != nil || feedLoader != nil, "either loadingState_ or feedLoader must be defined")
+        return loadingState_ ?? feedLoader?.loadingState ?? .done
+    }
+    
+    init(loadingState: LoadingState, viewType: EndOfFeedViewType) {
+        self.loadingState_ = loadingState
+        self.feedLoader = nil
+        self.viewType = viewType
+    }
+    
+    init(feedLoader: any FeedLoading, viewType: EndOfFeedViewType) {
+        self.loadingState_ = nil
+        self.feedLoader = feedLoader
+        self.viewType = viewType
+    }
     
     var body: some View {
         Group {
             switch loadingState {
             case .idle:
-                if let loadMore {
-                    Button("Load More") {
-                        loadMore()
-                    }
-                    .buttonStyle(.bordered)
-                } else {
-                    if developerMode {
-                        Text(verbatim: "IDLE")
+                Group {
+                    if showLoadMore, let feedLoader {
+                        Button("Load More") {
+                            Task {
+                                do {
+                                    try await feedLoader.loadMoreItems()
+                                } catch {
+                                    handleError(error)
+                                }
+                            }
+                        }
+                        .buttonStyle(.bordered)
                     } else {
-                        ProgressView()
+                        Group {
+                            if developerMode {
+                                Text(verbatim: "IDLE")
+                            } else {
+                                ProgressView()
+                            }
+                        }
+                        .onAppear {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                if loadingState == .idle {
+                                    showLoadMore = true
+                                }
+                            }
+                        }
                     }
                 }
             case .loading:
@@ -75,5 +111,10 @@ struct EndOfFeedView: View {
             }
         }
         .frame(minHeight: 100)
+        .onChange(of: loadingState, initial: true) {
+            if loadingState != .idle {
+                showLoadMore = false
+            }
+        }
     }
 }

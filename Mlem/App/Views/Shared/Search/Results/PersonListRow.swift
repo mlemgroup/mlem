@@ -11,6 +11,7 @@ import SwiftUI
 struct PersonListRow<Content2: View>: View {
     typealias Content = PersonListRowBody<Content2>
     
+    @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.communityContext) var communityContext
@@ -54,7 +55,7 @@ struct PersonListRow<Content2: View>: View {
         .padding(.vertical, 6)
         .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
-        .contextMenu { person.menuActions(navigation: navigation, community: communityContext) }
+        .contextMenu { person.menuActions(appState: appState, navigation: navigation, community: communityContext) }
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }
 }

@@ -29,8 +29,8 @@ class CommentTreeTracker: Hashable {
         }
     }
     
-    private(set) var comments: [CommentWrapper] = []
-    private(set) var commentsKeyedByActorId: [ActorIdentifier: CommentWrapper] = [:]
+    private(set) var nodes: [CommentTreeNode] = []
+    private(set) var nodesKeyedByActorId: [ActorIdentifier: CommentTreeNode] = [:]
     
     var loadingState: LoadingState = .idle
     var errorDetails: ErrorDetails?
@@ -46,8 +46,8 @@ class CommentTreeTracker: Hashable {
     var proposedDepthOffset: Int {
         switch root {
         case .comment:
-            if let first = comments.first, first.depth > 0 {
-                return first.depth - 1
+            if let first = nodes.first, first.comment.depth > 0 {
+                return first.comment.depth - 1
             }
             return 0
         default: return 0
@@ -74,7 +74,7 @@ class CommentTreeTracker: Hashable {
                     assertionFailure()
                     return
                 }
-                if !commentsKeyedByActorId.keys.contains(comment.actorId) {
+                if !nodesKeyedByActorId.keys.contains(comment.actorId) {
                     // Find the first parent of the ensured comment that isn't in `newComments`.
                     // This will be the starting point for the second page of comments to load.
                     let idsToSearch = comment.parentCommentIds + [comment.id]
@@ -144,19 +144,19 @@ class CommentTreeTracker: Hashable {
     }
     
     func clear() {
-        comments.removeAll()
-        commentsKeyedByActorId.removeAll()
+        nodes.removeAll()
+        nodesKeyedByActorId.removeAll()
         loadingState = .idle
     }
     
     func insertCreatedComment(_ comment: Comment2, parent: (any Comment1Providing)? = nil) {
-        let wrapper = CommentWrapper(comment)
+        let wrapper = CommentTreeNode(comment)
         if let parent {
             assert(!comment.parentCommentIds.isEmpty)
-            commentsKeyedByActorId[parent.actorId]?.addChild(wrapper)
+            nodesKeyedByActorId[parent.actorId]?.addChild(wrapper)
         } else {
             assert(comment.parentCommentIds.isEmpty)
-            comments.prepend(wrapper)
+            nodes.prepend(wrapper)
         }
     }
     
@@ -167,9 +167,9 @@ class CommentTreeTracker: Hashable {
     
     @MainActor
     private func buildCommentTree(comments newComments: [Comment2], clear: Bool = true) async {
-        var output: [CommentWrapper] = clear ? [] : comments
-        var commentsKeyedById: [Int: CommentWrapper] = [:]
-        var commentsKeyedByActorId: [ActorIdentifier: CommentWrapper] = clear ? [:] : commentsKeyedByActorId
+        var output: [CommentTreeNode] = clear ? [] : nodes
+        var commentsKeyedById: [Int: CommentTreeNode] = [:]
+        var commentsKeyedByActorId: [ActorIdentifier: CommentTreeNode] = clear ? [:] : nodesKeyedByActorId
         
         // From 0.19.0 onwards, a comment's parent is guaranteed to precede it in the array.
         //
@@ -186,7 +186,7 @@ class CommentTreeTracker: Hashable {
         // broken somehow. Comment example: https://beehaw.org/comment/4033679
         
         var sortedComments: [Comment2]
-        if let version = try? await newComments.first?.api.version, version < .v19_0 {
+        if let version = try? await newComments.first?.api.version, version < .v0_19_0 {
             sortedComments = newComments.sorted { $0.depth < $1.depth }
         } else {
             sortedComments = newComments
@@ -197,7 +197,7 @@ class CommentTreeTracker: Hashable {
                 commentsKeyedById[comment.id] = commentsKeyedByActorId[comment.actorId]
                 continue
             }
-            let wrapper: CommentWrapper = .init(comment)
+            let wrapper: CommentTreeNode = .init(comment)
             commentsKeyedById[comment.id] = wrapper
             commentsKeyedByActorId[comment.actorId] = wrapper
             if let parentId = comment.parentCommentIds.last, comment.depth > root.depth {
@@ -208,21 +208,21 @@ class CommentTreeTracker: Hashable {
                 output.append(wrapper)
             }
         }
-        comments = output
-        self.commentsKeyedByActorId = commentsKeyedByActorId
+        nodes = output
+        nodesKeyedByActorId = commentsKeyedByActorId
     }
     
     private func resolveCommentTree(comments newComments: [Comment2]) {
-        var commentsKeyedById: [Int: CommentWrapper] = [:]
+        var commentsKeyedById: [Int: CommentTreeNode] = [:]
         
         for comment in newComments {
-            if let existing = commentsKeyedByActorId[comment.actorId] {
-                existing.comment2 = comment
+            if let existing = nodesKeyedByActorId[comment.actorId] {
+                existing.comment = comment
                 commentsKeyedById[comment.id] = existing
             } else {
-                let wrapper: CommentWrapper = .init(comment)
+                let wrapper: CommentTreeNode = .init(comment)
                 commentsKeyedById[comment.id] = wrapper
-                commentsKeyedByActorId[comment.actorId] = wrapper
+                nodesKeyedByActorId[comment.actorId] = wrapper
                 if let parentId = comment.parentCommentIds.last {
                     if let parent = commentsKeyedById[parentId] {
                         parent.addChild(wrapper)
@@ -230,7 +230,7 @@ class CommentTreeTracker: Hashable {
                         assertionFailure("This should never happen because the API returns comments in order of depth asc.")
                     }
                 } else {
-                    comments.append(wrapper)
+                    nodes.append(wrapper)
                 }
             }
         }

@@ -14,84 +14,78 @@ import SwiftUI
 class FixedImageLoader {
     @ObservationIgnored @Setting(\.autoBypassImageProxy) var autoBypassImageProxy
     
-    private(set) var url: URL?
     private var proxyBypass: URL?
     private(set) var uiImage: UIImage?
-    private(set) var isAnimated: Bool
-    private(set) var loading: MediaLoadingState
+    private(set) var isAnimated: Bool = false
+    private(set) var loading: MediaLoadingState = .loading // start in .loading state to avoid flickering fallback image
     private(set) var error: Error?
-    private(set) var size: CGSize
     
-    init(url: URL?, size: CGSize) {
-        self.url = url
-        if let url,
-           let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
-           let base = components.queryItems?.first(where: { $0.name == "url" })?.value {
-            self.proxyBypass = URL(string: base)
-        }
-        self.size = size
-        
-        if url?.proxyAwarePathExtension?.isMovieExtension ?? false {
-            self.isAnimated = true
-            self.uiImage = nil
-            self.loading = .done
-            return
-        }
-        
-        if let url, let container = ImagePipeline.shared.cache.cachedImage(for: .init(
-            url: url,
-            processors: [.resize(size: size, crop: true)]
-        )) {
-            self.isAnimated = container.animatedMediaType.isAnimated
-            self.uiImage = container.image
-            self.loading = .done
-            return
-        }
-        
-        #if DEBUG
-            if let url, url.scheme == "mlempreview" {
-                self.isAnimated = false
-                self.uiImage = .init(named: url.lastPathComponent)
-                self.loading = .done
-                return
-            }
-        #endif
-
-        self.isAnimated = false
-        self.uiImage = nil
-        self.loading = url == nil ? .failed : .loading
+    private let processors: [any ImageProcessing]
+    
+    init(size: CGSize) {
+        self.processors = [.resize(size: size, crop: true)]
     }
     
-    func load() async {
-        guard let url, loading == .loading else { return }
+    func load(_ url: URL?) async {
+        // reset everything
+        loading = .loading
+        proxyBypass = nil
+        uiImage = nil
+        isAnimated = false
+        error = nil
+        
+        // easy case: nil url
+        guard let url else {
+            loading = .done
+            return
+        }
+        
+        // parse proxy bypass
+        if let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+           let base = components.queryItems?.first(where: { $0.name == "url" })?.value {
+            proxyBypass = URL(string: base)
+        }
+        
+        // if movie type, can't get a valid uiImage so abort early
+        if url.proxyAwarePathExtension?.isMovieExtension ?? false {
+            isAnimated = true
+            loading = .done
+            return
+        }
+        
+        // handle previews
+        #if DEBUG
+        if url.scheme == "mlempreview" {
+            uiImage = .init(named: url.lastPathComponent)
+            loading = .done
+            return
+        }
+        #endif
+        
+        // if already in cache, just take the cached value
+        if let container = ImagePipeline.shared.cache.cachedImage(for: .init(url: url, processors: processors)) {
+            isAnimated = container.animatedMediaType.isAnimated
+            uiImage = container.image
+            loading = .done
+            return
+        }
+        
+        // otherwise actually load the image
         do {
             if !(url.proxyAwarePathExtension?.isMovieExtension ?? false) {
-                let imageTask = ImagePipeline.shared.imageTask(with: .init(
-                    url: url,
-                    processors: [.resize(size: size, crop: true)]
-                ))
+                let imageTask = ImagePipeline.shared.imageTask(with: .init(url: url, processors: processors))
                 let container = try await imageTask.response.container
                 isAnimated = container.animatedMediaType.isAnimated
                 uiImage = container.image
                 loading = .done
             }
         } catch {
-            if autoBypassImageProxy, proxyBypass != nil {
-                await bypassProxy()
+            if autoBypassImageProxy, let proxyBypass {
+                await load(proxyBypass)
             } else {
                 self.error = error
                 loading = proxyBypass == nil ? .failed : .proxyFailed
             }
         }
-    }
-    
-    @MainActor
-    func bypassProxy() async {
-        error = nil
-        uiImage = nil
-        loading = .loading
-        url = proxyBypass
-        proxyBypass = nil
-        await load()
     }
 }

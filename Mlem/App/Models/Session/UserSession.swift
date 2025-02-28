@@ -26,6 +26,7 @@ class UserSession: Session {
 
     init(account: UserAccount) {
         self.account = account
+        account.activate()
         self.subscriptions = api.setupSubscriptionList(
             getFavorites: { account.favorites },
             setFavorites: {
@@ -58,14 +59,14 @@ class UserSession: Session {
                     self.visitHistory = try await PersistenceRepository.liveValue.loadVisitHistory(for: account)
                 } catch {
                     self.visitHistory = .init()
-                    handleError(error)
+                    handleError(error, silent: true)
                 }
             }
         }
     }
     
     func deactivate() {
-        account.logActivity()
+        account.deactivate()
         api.cleanCaches()
     }
     

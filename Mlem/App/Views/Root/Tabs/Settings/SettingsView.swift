@@ -85,7 +85,7 @@ struct SettingsView: View {
                     .tint(palette.postAccent)
                 NavigationLink("Comments", systemImage: "bubble.fill", destination: .settings(.comment))
                     .tint(palette.commentAccent)
-                NavigationLink("Inbox", systemImage: "envelope.fill", destination: .settings(.inbox))
+                NavigationLink("Inbox", systemImage: Icons.inboxFill, destination: .settings(.inbox))
                     .tint(palette.colorfulAccent(4))
                 NavigationLink("Subscription List", systemImage: "list.bullet", destination: .settings(.subscriptionList))
                     .tint(palette.communityAccent)

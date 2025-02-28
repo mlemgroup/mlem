@@ -11,12 +11,14 @@ import SwiftUI
 
 /// View for rendering posts in feed
 struct FeedPostView<EmbeddedContent: View>: View {
+    @Environment(AppState.self) private var appState: AppState
     @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?
     @Environment(NavigationLayer.self) private var navigation
     @Environment(Palette.self) private var palette
     @Environment(FiltersTracker.self) var filtersTracker
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
     @Environment(\.communityContext) var communityContext
+    @Environment(\.reportContext) var reportContext
     
     @State var obscured: Bool
     
@@ -67,8 +69,9 @@ struct FeedPostView<EmbeddedContent: View>: View {
                         }
                     }
                     .contentShape(.contextMenuPreview, .rect(cornerRadius: postSize.swipeBehavior.cornerRadius))
-                    .quickSwipes(post.swipeActions(behavior: postSize.swipeBehavior))
+                    .quickSwipes(post.swipeActions(appState: appState, behavior: postSize.swipeBehavior))
                     .contextMenu { post.allMenuActions(
+                        appState: appState,
                         showAllActions: false,
                         navigation: navigation,
                         commentTreeTracker: commentTreeTracker
@@ -134,6 +137,6 @@ struct FeedPostView<EmbeddedContent: View>: View {
     func shouldRenderCompact() -> Bool {
         guard settingsPostSize != .tile, settingsPostSize != .compact else { return false }
         return post.read_ ?? false &&
-        ((communityContext == nil && post.pinnedInstance) || (communityContext != nil && post.pinnedCommunity))
+            ((communityContext == nil && post.pinnedInstance) || (communityContext != nil && post.pinnedCommunity))
     }
 }

@@ -11,8 +11,6 @@ import Foundation
 import SwiftUI
 
 class HapticManager {
-    // MARK: Members and init
-    
     @Setting(\.hapticLevel) var hapticLevel
     
     // generators/engines
@@ -23,11 +21,15 @@ class HapticManager {
     // singleton to use in app
     static let main: HapticManager = .init()
     
+    var players: [Haptic: CHHapticPatternPlayer] = .init()
+    
     init() {
-        
         // create and start the engine if this device supports haptics
         print("Initialized haptic engine")
         self.hapticEngine = initEngine()
+        
+        // load all the haptic files into players to avoid lag on first play caused by slow disk read
+        loadPlayers()
         
         // if the engine stops, tell us why
         hapticEngine?.stoppedHandler = { reason in
@@ -37,22 +39,45 @@ class HapticManager {
         // if the engine fails, attempt to restart
         hapticEngine?.resetHandler = { [weak self] in
             print("The engine reset")
-            self?.handleEngineFailure()
+            self?.handleFailure()
         }
     }
-
-    /// Starts the haptic engine, if present; call at app initialization to avoid lag on first haptic
-    func preheat() {
-        do {
-            try hapticEngine?.start()
-            try AVAudioSession.sharedInstance().setActive(true)
-        } catch {
-            handleError(error, silent: true)
+    
+    func startEngine() {
+        if let hapticEngine {
+            do {
+                try hapticEngine.start()
+            } catch {
+                handleError(error)
+            }
+        }
+    }
+    
+    /// Plays a haptic if the given priority is equal to or lower than the current haptic level
+    func play(haptic: Haptic, priority: HapticPriority) {
+        assert(priority != .sentinel, "Cannot use .sentinel as a haptic priority")
+        
+        Task(priority: .userInitiated) {
+            if priority <= hapticLevel, hapticEngine != nil {
+                do {
+                    guard let player = players[haptic] else { throw HapticError.noPlayer(haptic) }
+                    try player.start(atTime: .zero)
+                } catch {
+                    handleError(error, silent: true)
+                    handleFailure(with: haptic, error: error as? HapticError)
+                }
+            } else {
+                if priority > hapticLevel {
+                    print("\(haptic.rawValue) not played (priority \(priority.intValue) > \(hapticLevel.intValue))")
+                } else {
+                    print("\(haptic.rawValue) not played (no engine)")
+                }
+            }
         }
     }
     
     /// If this device supports haptics, creates and returns a CHHaptic engine; otherwise returns nil
-    func initEngine() -> CHHapticEngine? {
+    private func initEngine() -> CHHapticEngine? {
         if CHHapticEngine.capabilitiesForHardware().supportsHaptics {
             do {
                 let ret = try CHHapticEngine(audioSession: AVAudioSession.sharedInstance())
@@ -65,58 +90,60 @@ class HapticManager {
         return nil
     }
     
-    /// Restarts the engine if it is present, creates it if not. Can be passed a pattern to play on start.
-    func handleEngineFailure(with file: URL? = nil) {
-        if let hapticEngine {
-            start(engine: hapticEngine)
-            
-            // attempt to play the pattern that failed, but don't do anything on failure here
-            if let file {
-                do {
-                    try hapticEngine.playPattern(from: file)
-                } catch {
-                    handleError(error, silent: true)
-                }
-            }
-        } else {
+    /// Restarts the engine if it is present, creates it if not, starts the engine, and plays the given haptic
+    private func handleFailure(with haptic: Haptic? = nil, error: HapticError? = nil) {
+        if hapticEngine == nil {
             hapticEngine = initEngine()
         }
-    }
-    
-    func start(engine: CHHapticEngine) {
-        do {
-            try engine.start()
-        } catch {
-            handleError(error)
+        
+        if let error, case let .noPlayer(failedHaptic) = error {
+            assertionFailure("No player for \(failedHaptic)")
+            loadPlayers()
+        }
+        
+        if hapticEngine != nil {
+            startEngine()
+            
+            // attempt to play the pattern that failed, but don't do anything on failure here
+            if let haptic {
+                do {
+                    guard let player = players[haptic] else {
+                        assertionFailure("No player for \(haptic) in failure handler")
+                        throw HapticError.noPlayer(haptic)
+                    }
+                    try player.start(atTime: .zero)
+                } catch {
+                    handleError(error, silent: true)
+                }
+            }
         }
     }
     
-    /// Plays a haptic if the given priority is equal to or lower than the current haptic level
-    func play(haptic: Haptic, priority: HapticPriority) {
-        assert(priority != .sentinel, "Cannot use .sentinel as a haptic priority")
-        
-        Task(priority: .userInitiated) {
-            if priority <= hapticLevel, let hapticEngine {
+    private func loadPlayers() {
+        // load all the haptic files into players to avoid lag on first play caused by slow disk read
+        Haptic.allCases.forEach { haptic in
+            do {
                 guard let path = Bundle.main.path(forResource: haptic.rawValue, ofType: "ahap") else {
-                    assertionFailure("Invalid haptic file: \(haptic.rawValue)")
+                    assertionFailure("No haptic file found for \(haptic.rawValue)")
                     return
                 }
-                
                 let file = URL(filePath: path)
-                do {
-                    try hapticEngine.playPattern(from: file)
-                } catch {
-                    // worst-case scenario--tried to play and no engine!
-                    handleError(error, silent: true)
-                    handleEngineFailure(with: file)
-                }
-            } else {
-                if priority > hapticLevel {
-                    print("\(haptic.rawValue) not played (priority \(priority.intValue) > \(hapticLevel.intValue))")
-                } else {
-                    print("\(haptic.rawValue) not played (no engine)")
-                }
+                players[haptic] = try hapticEngine?.makePlayer(with: .init(contentsOf: file))
+            } catch {
+                assertionFailure("Failed to initialize haptic player")
+                handleError(error, silent: true)
             }
+        }
+    }
+}
+
+enum HapticError: Error, CustomStringConvertible {
+    case noPlayer(Haptic)
+    
+    public var description: String {
+        switch self {
+        case let .noPlayer(haptic):
+            "No player available for \(haptic.rawValue)"
         }
     }
 }

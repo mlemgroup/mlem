@@ -69,6 +69,8 @@ struct CommunityView: View {
                             logVisit(community2)
                         }
                     }
+            } else if let error = proxy.error {
+                ErrorView(.init(error: error))
             } else {
                 ProgressView()
                     .tint(palette.secondary)
@@ -80,6 +82,8 @@ struct CommunityView: View {
             }
         }
         .navigationBarTitleDisplayMode(.inline)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(palette.groupedBackground)
     }
         
     @ViewBuilder
@@ -120,20 +124,19 @@ struct CommunityView: View {
             }
             .environment(\.communityContext, community)
         }
-        .background(palette.groupedBackground)
         // don't show the refresh popup if community api isn't the active api, since that indicates an unresolvable community
-        .outdatedFeedPopup(
-            feedLoader: postFeedLoader,
-            showPopup: selectedTab == .posts && community.api === AppState.main.firstApi
-        )
         .navigationTitle(isAtTop ? "" : community.name)
         .isAtTopSubscriber(isAtTop: $isAtTop)
         .toolbar {
             ToolbarItemGroup(placement: .secondaryAction) {
-                MenuButtons { community.menuActions(navigation: navigation, feedLoader: postFeedLoader) }
+                MenuButtons { community.menuActions(appState: appState, navigation: navigation, feedLoader: postFeedLoader) }
             }
         }
         .popupAnchor()
+        .outdatedFeedPopup(
+            feedLoader: postFeedLoader,
+            showPopup: selectedTab == .posts && community.api === appState.firstApi
+        )
         .fullScreenCover(isPresented: $warningPresented) {
             WarningOverlayView(
                 text: "This community likely contains graphic or explicit content.",
@@ -249,3 +252,23 @@ struct CommunityView: View {
         return output
     }
 }
+
+#if DEBUG
+    #Preview(traits: .sampleEnvironment(api: .realistic)) {
+        NavigationStack(path: .constant([0, 1])) {
+            EmptyView()
+                .navigationDestination(for: Int.self) { value in
+                    switch value {
+                    case 1:
+                        CommunityView(
+                            community: .init(Community2.mock(.realistic(.pics), api: .realistic)),
+                            visitContext: .other
+                        )
+                    default:
+                        EmptyView()
+                    }
+                }
+        }
+        .previewTabBar(selected: .feeds)
+    }
+#endif

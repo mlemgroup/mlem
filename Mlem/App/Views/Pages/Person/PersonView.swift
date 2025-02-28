@@ -46,6 +46,7 @@ struct PersonView: View {
     let isProfileTab: Bool
     
     init(
+        appState: AppState = .main,
         person: AnyPerson,
         isProfileTab: Bool = false,
         visitContext: VisitHistory.VisitContext?
@@ -55,9 +56,9 @@ struct PersonView: View {
         self._isAdmin = .init(wrappedValue: person.wrappedValue.isAdmin_ ?? false)
         self.isProfileTab = isProfileTab
         
-        if let person1 = person.wrappedValue as? any Person1Providing, person1.api === AppState.main.firstApi {
+        if let person1 = person.wrappedValue as? any Person1Providing, person1.api === appState.firstApi {
             self._feedLoader = .init(wrappedValue: .init(
-                api: AppState.main.firstApi,
+                api: appState.firstApi,
                 pageSize: internetSpeed.pageSize,
                 userId: person1.id,
                 sortType: .new,
@@ -104,12 +105,14 @@ struct PersonView: View {
                                 if person is any Person3Providing, proxy.isLoading {
                                     ProgressView()
                                 } else {
-                                    MenuButtons { person.menuActions(navigation: navigation, community: nil) }
+                                    MenuButtons { person.menuActions(appState: appState, navigation: navigation, community: nil) }
                                 }
                             }
                         }
                     }
                     .popupAnchor()
+            } else if let error = proxy.error {
+                ErrorView(.init(error: error))
             } else {
                 ProgressView()
                     .tint(palette.secondary)
@@ -150,6 +153,8 @@ struct PersonView: View {
         }
         .navigationTitle(isAtTop ? "" : (person.wrappedValue.displayName_ ?? ""))
         .navigationBarTitleDisplayMode(.inline)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(palette.groupedBackground)
     }
     
     @ViewBuilder
@@ -179,7 +184,6 @@ struct PersonView: View {
             .animation(.easeOut(duration: 0.2), value: person is any Person3Providing)
         }
         .outdatedFeedPopup(feedLoader: feedLoader, showPopup: selectedTab != .communities)
-        .background(palette.groupedBackground)
     }
     
     @ViewBuilder
@@ -326,3 +330,18 @@ private struct FlairLabelStyle: LabelStyle {
         .background(.tint.opacity(0.2), in: .capsule)
     }
 }
+
+#if DEBUG
+    #Preview(traits: .sampleEnvironment(api: .realistic)) {
+        @Previewable @Environment(AppState.self) var appState
+        NavigationStack {
+            PersonView(
+                appState: appState,
+                person: .init(Person2.mock(.realistic(.anteSocial45), api: .realistic)),
+                isProfileTab: true,
+                visitContext: .other
+            )
+        }
+        .previewTabBar(selected: .profile)
+    }
+#endif

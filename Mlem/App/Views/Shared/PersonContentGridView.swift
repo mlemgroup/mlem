@@ -64,7 +64,11 @@ struct PersonContentGridView: View {
                         Menu {
                             Picker("Post Size", selection: $postSize) {
                                 ForEach(PostSize.allCases, id: \.self) { item in
-                                    Label(item.label.key, systemImage: item.icon(filled: postSize == item))
+                                    Label {
+                                        Text(LocalizedStringResource(stringLiteral: item.label))
+                                    } icon: {
+                                        Image(systemName: item.icon(filled: postSize == item))
+                                    }
                                 }
                             }
                         } label: {
@@ -96,7 +100,8 @@ struct PersonContentGridView: View {
                     }
                 }
             }
-            EndOfFeedView(loadingState: loadingState, loadMore: loadMore, viewType: .hobbit)
+            .animation(.easeOut(duration: 0.1), value: items.isEmpty)
+            EndOfFeedView(loadingState: loadingState, viewType: .hobbit)
         }
     }
     
@@ -110,16 +115,6 @@ struct PersonContentGridView: View {
         case let .comment(comment):
             NavigationLink(.comment(comment)) {
                 FeedCommentView(comment: comment)
-            }
-        }
-    }
-    
-    func loadMore() {
-        Task {
-            do {
-                try await feedLoader.loadMoreItems()
-            } catch {
-                handleError(error)
             }
         }
     }

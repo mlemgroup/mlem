@@ -29,7 +29,7 @@ struct ErrorView: View {
     var body: some View {
         VStack(spacing: 15) {
             if showingFullError {
-                errorDetails(errorDetails.errorText)
+                errorDetails(errorDetails.errorText())
             } else {
                 if let systemImage = errorDetails.systemImage {
                     Image(systemName: systemImage)
@@ -70,7 +70,7 @@ struct ErrorView: View {
             }
             
             if errorDetails.error != nil, errorDetails.title == nil || developerMode {
-                Button("Show Details") {
+                Button(showingFullError ? "Hide Details" : "Show Details") {
                     showingFullError.toggle()
                 }
                 .buttonStyle(.plain)
@@ -115,6 +115,6 @@ struct ErrorView: View {
         }
         .padding(Constants.main.standardSpacing)
         .background(Color(.secondarySystemGroupedBackground))
-        .clipShape(RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius))
+        .clipShape(RoundedRectangle(cornerRadius: Constants.main.standardSpacing))
     }
 }

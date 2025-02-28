@@ -32,9 +32,10 @@ extension InboxView {
                     }
                 }
                 
-                EndOfFeedView(loadingState: feedLoader.loadingState, loadMore: nil, viewType: .cartoon)
+                EndOfFeedView(feedLoader: feedLoader, viewType: .cartoon)
             } header: { sectionHeader }
         }
+        .animation(.easeOut(duration: 0.1), value: feedLoader.items.isEmpty)
     }
     
     @ViewBuilder
@@ -78,6 +79,7 @@ extension InboxView {
             }
         }
         .padding(.top, Constants.main.standardSpacing)
+        .animation(.easeOut(duration: 0.1), value: currentModFeedLoader.items.isEmpty)
     }
     
     @ViewBuilder

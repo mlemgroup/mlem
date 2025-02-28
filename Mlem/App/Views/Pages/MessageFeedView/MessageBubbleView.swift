@@ -10,6 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct MessageBubbleView: View {
+    @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
     @Environment(Palette.self) var palette
     
@@ -25,6 +26,7 @@ struct MessageBubbleView: View {
                 Markdown(blocks, configuration: message.isOwnMessage ? .inverted : .default)
             }
         }
+        .tint(message.isOwnMessage ? palette.selectedInteractionBarItem.opacity(0.6) : palette.accent)
         .padding(Constants.main.standardSpacing)
         .padding(message.isOwnMessage ? .trailing : .leading, 7)
         .padding(message.isOwnMessage ? .leading : .trailing, 2)
@@ -34,7 +36,7 @@ struct MessageBubbleView: View {
         )
         .contentShape(.contextMenuPreview, BubbleShape(myMessage: message.isOwnMessage))
         .contextMenu {
-            message.allMenuActions(isInMessageFeed: true, editCallback: editCallback, navigation: navigation)
+            message.allMenuActions(appState: appState, isInMessageFeed: true, editCallback: editCallback, navigation: navigation)
         }
     }
 }

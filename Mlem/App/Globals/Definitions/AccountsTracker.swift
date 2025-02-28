@@ -25,11 +25,24 @@ class AccountsTracker {
     
     var userAccounts: [UserAccount] = .init()
     var guestAccounts: [GuestAccount] = .init()
-    var defaultAccount: any Account { userAccounts.first ?? defaultGuestAccount }
+    
+    // Used on startup to determine which account should be made active
+    func mostRecentAccount() -> any Account {
+        let allAccounts: [any Account] = userAccounts + guestAccounts
+        if let activeAccount = allAccounts.first(where: { $0.activityState == .active }) {
+            return activeAccount
+        }
+        let sorted = allAccounts.sorted(by: { $0.activityState.lastUsed ?? .distantPast < $1.activityState.lastUsed ?? .distantPast })
+        if let lastUsedAccount = sorted.last {
+            return lastUsedAccount
+        }
+        return userAccounts.first ?? defaultGuestAccount
+    }
+    
     var defaultGuestAccount: GuestAccount {
         // This will never fail because we're passing a literal URL that is known to always succeed
         // swiftlint:disable:next force_try
-        try! (guestAccounts.first ?? .getGuestAccount(url: URL(string: "https://lemmy.world/")!))
+        try! GuestAccount.getGuestAccount(url: URL(string: "https://lemmy.world/")!)
     }
     
     var isEmpty: Bool { userAccounts.isEmpty && guestAccounts.isEmpty }
@@ -93,18 +106,20 @@ class AccountsTracker {
     @discardableResult
     func logIn(
         client unauthenticatedApi: ApiClient,
-        username: String,
+        usernameOrEmail: String,
         password: String,
         totpToken: String? = nil
     ) async throws -> UserAccount {
-        let response = try await unauthenticatedApi.logIn(
-            username: username,
+        let response = try await unauthenticatedApi.getAccountToken(
+            usernameOrEmail: usernameOrEmail,
             password: password,
             totpToken: totpToken
         )
         guard let token = response.jwt else {
             throw ApiClientError.unsuccessful
         }
+        
+        let username = try await unauthenticatedApi.getUsernameFromToken(token: token)
         
         return try await logIn(
             username: username,
@@ -119,13 +134,15 @@ class AccountsTracker {
         url: URL,
         token: String
     ) async throws -> UserAccount {
-        let authenticatedApiClient = ApiClient.getApiClient(for: url, with: token)
+        let authenticatedApiClient = ApiClient.getApiClient(url: url, username: username)
+        authenticatedApiClient.updateToken(token)
         
         // Check if account exists already
         if let account = userAccounts.first(where: {
             $0.name.caseInsensitiveCompare(username) == .orderedSame && $0.api.baseUrl == url
         }) {
             account.updateToken(token)
+            saveAccounts(ofType: .user)
             return account
         } else {
             let response = try await authenticatedApiClient.getMyPerson()

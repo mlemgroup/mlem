@@ -81,7 +81,7 @@ extension AdvancedSortView {
                     }
                     .popover(isPresented: $showingExplanation) {
                         PopoverContainer {
-                            Text(explanation)
+                            Text(LocalizedStringKey(explanation))
                                 .frame(maxWidth: 200)
                                 .fixedSize(horizontal: false, vertical: true)
                                 .font(.footnote)
@@ -101,7 +101,7 @@ extension AdvancedSortView {
 private struct PopoverContainer: Layout {
     func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
         guard subviews.count == 1 else { fatalError() }
-        var newProposal = ProposedViewSize(
+        let newProposal = ProposedViewSize(
             width: proposal.width ?? UIScreen.main.bounds.width,
             height: proposal.height ?? UIScreen.main.bounds.height
         )

@@ -60,6 +60,7 @@ struct MessageFeedView: View {
                                     } else {
                                         MenuButtons {
                                             person.menuActions(
+                                                appState: appState,
                                                 isInMessageFeed: true,
                                                 navigation: navigation,
                                                 community: nil

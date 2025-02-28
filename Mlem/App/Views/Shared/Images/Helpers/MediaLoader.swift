@@ -13,13 +13,6 @@ import SwiftUI
 enum ImageLoadingError {
     case proxyFailure(proxyBypass: URL)
     case error(error: Error)
-    
-    var canBypassProxy: Bool {
-        switch self {
-        case .proxyFailure: true
-        default: false
-        }
-    }
 }
 
 enum MediaType {
@@ -73,8 +66,17 @@ class MediaLoader {
         self.loading = url == nil ? .failed : .loading
     }
     
-    func load() async { 
+    func load() async {
         guard let url, loading == .loading else { return }
+        
+        // handle previews
+        #if DEBUG
+            if url.scheme == "mlempreview" {
+                mediaType = .image(.init(named: url.lastPathComponent)!)
+                loading = .done
+                return
+            }
+        #endif
         
         do {
             let imageTask = ImagePipeline.shared.imageTask(with: url)

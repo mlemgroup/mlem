@@ -9,6 +9,25 @@ import MlemMiddleware
 import SwiftUI
 
 extension SearchView {
+    func contentChangeTriggerRefresh(onlyRefreshIfEmpty: Bool) {
+        editingRecentSearches = false
+        if selectedTab == .posts || selectedTab == .comments {
+            if page != .results {
+                searchBarFocused = true
+            }
+        } else {
+            Task {
+                await refresh(clearBeforeRefresh: false)
+            }
+        }
+    }
+    
+    func onFilterRefreshHashValueChange() {
+        Task {
+            await refresh(clearBeforeRefresh: selectedTab == .posts || selectedTab == .comments)
+        }
+    }
+    
     func returnToHome() {
         if selectedTab == .posts || selectedTab == .comments {
             selectedTab = .communities

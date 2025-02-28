@@ -26,8 +26,14 @@ enum SettingsPage: Hashable {
     case commentMaximumDepth, commentJumpButton
     case inboxBadge
     case about, advanced, developer, errorLog
-    case postInteractionBar, commentInteractionBar, replyInteractionBar
+    case postInteractionBar, commentInteractionBar, replyInteractionBar, postReportInteractionBar, commentReportInteractionBar
+    case postBarWidgetPicker(HashWrapper<Binding<PostBarConfiguration>>)
+    case commentBarWidgetPicker(HashWrapper<Binding<CommentBarConfiguration>>)
+    case replyBarWidgetPicker(HashWrapper<Binding<ReplyBarConfiguration>>)
+    case postReportBarWidgetPicker(HashWrapper<Binding<PostBarConfiguration>>)
+    case commentReportBarWidgetPicker(HashWrapper<Binding<CommentBarConfiguration>>)
     case moderation
+    case modMailInteractionBar
     case separateModeratorActions
     case licences, document(Document)
     
@@ -125,6 +131,8 @@ enum SettingsPage: Hashable {
             FiltersSettingsView()
         case .moderation:
             ModeratorSettingsView()
+        case .modMailInteractionBar:
+            ModMailInteractionBarSettingsView()
         case .separateModeratorActions:
             ModeratorActionSeparationSettingsView()
         case .subscriptionList:
@@ -134,11 +142,25 @@ enum SettingsPage: Hashable {
         case .inboxBadge:
             InboxBadgeSettingsView()
         case .postInteractionBar:
-            InteractionBarEditorView(setting: \.postInteractionBar)
+            InteractionBarEditorView(setting: \.postInteractionBar, isReport: false)
+        case let .postBarWidgetPicker(configuration):
+            InteractionBarWidgetPickerView<PostBarConfiguration>(configuration: configuration.wrappedValue)
         case .commentInteractionBar:
-            InteractionBarEditorView(setting: \.commentInteractionBar)
+            InteractionBarEditorView(setting: \.commentInteractionBar, isReport: false)
+        case let .commentBarWidgetPicker(configuration):
+            InteractionBarWidgetPickerView<CommentBarConfiguration>(configuration: configuration.wrappedValue)
         case .replyInteractionBar:
-            InteractionBarEditorView(setting: \.replyInteractionBar)
+            InteractionBarEditorView(setting: \.replyInteractionBar, isReport: false)
+        case let .replyBarWidgetPicker(configuration):
+            InteractionBarWidgetPickerView<ReplyBarConfiguration>(configuration: configuration.wrappedValue)
+        case .postReportInteractionBar:
+            InteractionBarEditorView(setting: \.postReportInteractionBar, isReport: true)
+        case let .postReportBarWidgetPicker(configuration):
+            InteractionBarWidgetPickerView<PostBarConfiguration>(configuration: configuration.wrappedValue)
+        case .commentReportInteractionBar:
+            InteractionBarEditorView(setting: \.commentReportInteractionBar, isReport: true)
+        case let .commentReportBarWidgetPicker(configuration):
+            InteractionBarWidgetPickerView<CommentBarConfiguration>(configuration: configuration.wrappedValue)
         case let .document(doc):
             SimpleMarkdownPage(doc: doc)
         case .licences:
@@ -148,6 +170,26 @@ enum SettingsPage: Hashable {
                 }
             }
         }
+    }
+    
+    static func postBarWidgetPicker(_ configuration: Binding<PostBarConfiguration>) -> SettingsPage {
+        .postBarWidgetPicker(.init(wrappedValue: configuration))
+    }
+    
+    static func commentBarWidgetPicker(_ configuration: Binding<CommentBarConfiguration>) -> SettingsPage {
+        .commentBarWidgetPicker(.init(wrappedValue: configuration))
+    }
+    
+    static func replyBarWidgetPicker(_ configuration: Binding<ReplyBarConfiguration>) -> SettingsPage {
+        .replyBarWidgetPicker(.init(wrappedValue: configuration))
+    }
+    
+    static func postReportBarWidgetPicker(_ configuration: Binding<PostBarConfiguration>) -> SettingsPage {
+        .postReportBarWidgetPicker(.init(wrappedValue: configuration))
+    }
+    
+    static func commentReportBarWidgetPicker(_ configuration: Binding<CommentBarConfiguration>) -> SettingsPage {
+        .commentReportBarWidgetPicker(.init(wrappedValue: configuration))
     }
 }
 

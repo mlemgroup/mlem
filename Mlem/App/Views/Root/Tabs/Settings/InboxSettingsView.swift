@@ -8,16 +8,32 @@
 import SwiftUI
 
 struct InboxSettingsView: View {
+    @Environment(Palette.self) var palette
+    
     @Setting(\.tabInboxBadgeIncludedTypes) var tabInboxBadgeIncludedTypes
     
     var body: some View {
         Form {
+            SettingsHeaderView(
+                title: "Inbox",
+                // swiftlint:disable:next line_length
+                description: "Customize the interaction bar for inbox items, and choose which types of notification are included in the tab bar badge.",
+                systemImage: Icons.inboxFill
+            )
+            .tint(palette.inbox)
             Section {
-                NavigationLink(
-                    "Customize Interaction Bar",
-                    systemImage: Icons.interactionBar,
-                    destination: .settings(.replyInteractionBar)
-                )
+                NavigationLink(.settings(.replyInteractionBar)) {
+                    SettingsInteractionBarSummaryView(configuration: InteractionBarTracker.main.replyInteractionBar)
+                }
+            }
+            if AccountsTracker.main.highestLevelAccountType >= .moderator {
+                Section {
+                    NavigationLink(
+                        "Mod Mail Interaction Bar",
+                        systemImage: Icons.interactionBar,
+                        destination: .settings(.modMailInteractionBar)
+                    )
+                }
             }
             Section {
                 NavigationLink(
@@ -30,6 +46,6 @@ struct InboxSettingsView: View {
             }
         }
         .labelStyle(.conditional)
-        .navigationTitle("Inbox")
+        .contentMargins(.top, 16)
     }
 }

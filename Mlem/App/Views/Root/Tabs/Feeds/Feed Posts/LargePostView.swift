@@ -15,12 +15,15 @@ struct LargePostView: View {
     @Setting(\.showCommunityAvatar) private var showCommunityAvatar
     @Setting(\.blurNsfw) var blurNsfw
     @Setting(\.readPostIndicator) var readPostIndicator
+    @Setting(\.alternateInteractionBarLayoutForReports) var alternateInteractionBarLayoutForReports
     
+    @Environment(AppState.self) private var appState
     @Environment(Palette.self) private var palette: Palette
     @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?
     @Environment(\.communityContext) private var communityContext
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
-    
+    @Environment(\.reportContext) private var reportContext: Report?
+
     let post: any Post1Providing
     let isPostPage: Bool
     let favoredLink: PostViewNavigationLink?
@@ -91,14 +94,23 @@ struct LargePostView: View {
             if showDivider { Divider() }
             
             InteractionBarView(
+                appState: appState,
                 post: post,
-                configuration: InteractionBarTracker.main.postInteractionBar,
+                configuration: interactionBarConfiguration,
                 commentTreeTracker: commentTreeTracker,
-                communityContext: communityContext
+                communityContext: communityContext,
+                reportContext: reportContext
             )
             .padding(.horizontal, 12)
             .padding(.vertical, 5)
         }
+    }
+    
+    var interactionBarConfiguration: PostBarConfiguration {
+        if reportContext != nil, alternateInteractionBarLayoutForReports {
+            return InteractionBarTracker.main.postReportInteractionBar
+        }
+        return InteractionBarTracker.main.postInteractionBar
     }
     
     var showDivider: Bool {

@@ -160,7 +160,7 @@ struct ToastView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     if isExpanded {
                         ScrollView {
-                            Text(details.errorText)
+                            Text(details.errorText())
                                 .foregroundStyle(.red)
                                 .padding(8)
                                 .multilineTextAlignment(.leading)
@@ -168,9 +168,7 @@ struct ToastView: View {
                         .frame(maxWidth: .infinity)
                         
                         Button("Copy", systemImage: Icons.copy) {
-                            if let text = details.error?.localizedDescription {
-                                UIPasteboard.general.string = text
-                            }
+                            UIPasteboard.general.string = details.errorText()
                         }
                         .font(.caption)
                         .buttonStyle(.borderedProminent)

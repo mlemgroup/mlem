@@ -19,7 +19,8 @@ struct Counter: Identifiable {
             value: value,
             leading: leadingAction?.appearance,
             trailing: trailingAction?.appearance,
-            label: "Unknown"
+            label: "Unknown",
+            singleIcon: ""
         )
     }
 }

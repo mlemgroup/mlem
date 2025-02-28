@@ -18,6 +18,7 @@ class GuestSession: Session {
 
     init(account: GuestAccount) {
         self.account = account
+        account.activate()
         
         Task {
             try await self.api.contextDataManager.getValue(task: Task {
@@ -36,7 +37,7 @@ class GuestSession: Session {
     }
     
     func deactivate() {
-        account.logActivity()
+        account.deactivate()
         api.cleanCaches()
     }
     

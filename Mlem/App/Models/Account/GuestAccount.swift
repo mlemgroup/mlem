@@ -17,14 +17,25 @@ class GuestAccount: Account {
     var storedNickname: String?
     var cachedSiteVersion: SiteVersion?
     var avatar: URL?
-    var lastUsed: Date?
+    var activityState: AccountActivityState
     let accountType: AccountType = .guest
     
     fileprivate init(url: URL) throws {
         guard let host = url.host() else { throw DecodingError.invalidHost }
         self.actorId = .instance(host: host)
-        self.api = .getApiClient(for: url, with: nil)
+        self.activityState = .inactive(lastUsed: nil)
+        self.api = .getApiClient(url: url, username: nil)
     }
+    
+    #if DEBUG
+        private init(api: MockApiClient) {
+            self.actorId = api.actorId
+            self.activityState = .inactive(lastUsed: nil)
+            self.api = api
+        }
+    
+        static func mock(api: MockApiClient) -> GuestAccount { .init(api: api) }
+    #endif
     
     static func getGuestAccount(url: URL) throws -> GuestAccount {
         try GuestAccountCache.main.getAccount(url: url)
@@ -32,7 +43,7 @@ class GuestAccount: Account {
     
     enum CodingKeys: String, CodingKey {
         // Keys are named this way to be consistent with the `UserAccount.CodingKey` cases
-        case storedNickname, instanceLink, siteVersion, avatarUrl, lastUsed
+        case storedNickname, instanceLink, siteVersion, avatarUrl, lastUsed, activityState
     }
     
     enum DecodingError: Error {
@@ -45,11 +56,17 @@ class GuestAccount: Account {
         self.storedNickname = try values.decode(String?.self, forKey: .storedNickname)
         self.cachedSiteVersion = try values.decode(SiteVersion?.self, forKey: .siteVersion)
         self.avatar = try values.decode(URL?.self, forKey: .avatarUrl)
-        self.lastUsed = try values.decode(Date?.self, forKey: .lastUsed)
+        
+        if let activityState = try values.decodeIfPresent(AccountActivityState.self, forKey: .activityState) {
+            self.activityState = activityState
+        } else {
+            let lastUsed = try values.decodeIfPresent(Date?.self, forKey: .lastUsed) ?? nil
+            self.activityState = .inactive(lastUsed: lastUsed)
+        }
 
         let actorId = try values.decode(ActorIdentifier.self, forKey: .instanceLink)
         self.actorId = actorId
-        self.api = ApiClient.getApiClient(for: actorId.url, with: nil)
+        self.api = ApiClient.getApiClient(url: actorId.url, username: nil)
         GuestAccountCache.main.itemCache.put(self)
     }
     
@@ -58,7 +75,7 @@ class GuestAccount: Account {
         try container.encode(storedNickname, forKey: .storedNickname)
         try container.encode(cachedSiteVersion, forKey: .siteVersion)
         try container.encode(avatar, forKey: .avatarUrl)
-        try container.encode(lastUsed, forKey: .lastUsed)
+        try container.encode(activityState, forKey: .activityState)
         try container.encode(api.baseUrl, forKey: .instanceLink)
     }
     

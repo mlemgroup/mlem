@@ -8,17 +8,45 @@
 import SwiftUI
 
 struct SubscriptionListSettingsView: View {
-    @Setting(\.subscriptionInstanceLocation) var instanceLocation
+    @Environment(Palette.self) var palette
     
+    @Setting(\.subscriptionSort) private var sort
+    @Setting(\.subscriptionInstanceLocation) var instanceLocation
+    @Setting(\.sidebarVisibleByDefault) var sidebarVisibleByDefault
+
     var body: some View {
         Form {
-            Picker("Label Style", systemImage: Icons.qualifiedLabel, selection: $instanceLocation) {
-                ForEach(InstanceLocation.allCases, id: \.self) { item in
-                    Text(item.label)
+            SettingsHeaderView(
+                title: "Subscription List",
+                description: "Customize how your subscription list is sorted.",
+                systemImage: "list.bullet"
+            )
+            .tint(palette.communityAccent)
+            Section("Sort by...") {
+                Picker("Sort by...", selection: $sort) {
+                    ForEach(SubscriptionListSort.allCases, id: \.self) { item in
+                        Label(item.label.localized(), systemImage: item.systemImage)
+                    }
+                }
+                .labelsHidden()
+                .pickerStyle(.inline)
+            }
+            if sort == .alphabetical {
+                Section("Row Size") {
+                    Picker("Row Size", systemImage: Icons.qualifiedLabel, selection: $instanceLocation) {
+                        Label("Large", systemImage: "rectangle.expand.vertical").tag(InstanceLocation.bottom)
+                        Label("Compact", systemImage: "rectangle.compress.vertical").tag(InstanceLocation.trailing)
+                    }
+                    .labelsHidden()
+                    .pickerStyle(.inline)
                 }
             }
+            if UIDevice.isPad {
+                Toggle("Show Sidebar on App Launch", systemImage: Icons.sidebar, isOn: $sidebarVisibleByDefault)
+            }
         }
+        .animation(.easeOut(duration: 0.1), value: sort)
         .labelStyle(.conditional)
-        .navigationTitle("Subscription List")
+        .contentMargins(.top, 16)
     }
 }

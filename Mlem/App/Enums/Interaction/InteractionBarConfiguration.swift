@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUICore
 
 protocol InteractionBarConfiguration: Codable {
     associatedtype ActionType: ActionTypeProviding
@@ -18,9 +19,15 @@ protocol InteractionBarConfiguration: Codable {
     var trailing: [Item] { get set }
     var readouts: [ReadoutType] { get set }
     
-    static var `default`: Self { get }
+    var availableWidgets: Set<Item> { get set }
+    func widgetPickerPage(_ configuration: Binding<Self>) -> SettingsPage
     
-    init(leading: [Item], trailing: [Item], readouts: [ReadoutType])
+    /// Default configuration for this type
+    static var `default`: Self { get }
+    /// Default report configuration for this type. `nil` if inapplicable.
+    static var reportDefault: Self? { get }
+    
+    init(leading: [Item], trailing: [Item], readouts: [ReadoutType], availableWidgets: Set<Item>)
 }
 
 extension InteractionBarConfiguration {
@@ -30,7 +37,8 @@ extension InteractionBarConfiguration {
         .init(
             leading: leading.compactMap { $0.convert() },
             trailing: trailing.compactMap { $0.convert() },
-            readouts: readouts.compactMap { .init(rawValue: $0.rawValue) }
+            readouts: readouts.compactMap { .init(rawValue: $0.rawValue) },
+            availableWidgets: .init(availableWidgets.compactMap { $0.convert() })
         )
     }
     
@@ -74,10 +82,14 @@ enum InteractionConfigurationItem<ActionType: ActionTypeProviding, CounterType: 
 
 protocol ActionTypeProviding: Codable, CaseIterable, Hashable, RawRepresentable where RawValue == String {
     var appearance: ActionAppearance { get }
+    
+    static var defaultWidgets: [Self] { get }
 }
 
 protocol CounterTypeProviding: Codable, CaseIterable, Hashable, RawRepresentable where RawValue == String {
     var appearance: CounterAppearance { get }
+    
+    static var defaultWidgets: [Self] { get }
 }
 
 protocol ReadoutTypeProviding: Codable, CaseIterable, Hashable, RawRepresentable where RawValue == String {
@@ -90,9 +102,40 @@ struct InteractionBarConfigurations: Codable {
     var post: PostBarConfiguration
     var comment: CommentBarConfiguration
     var reply: ReplyBarConfiguration
+    var postReport: PostBarConfiguration
+    var commentReport: CommentBarConfiguration
     
     static var `default`: Self {
-        .init(post: .default, comment: .default, reply: .default)
+        .init(
+            post: .default,
+            comment: .default,
+            reply: .default,
+            postReport: .reportDefault_,
+            commentReport: .reportDefault_
+        )
+    }
+    
+    init(
+        post: PostBarConfiguration,
+        comment: CommentBarConfiguration,
+        reply: ReplyBarConfiguration,
+        postReport: PostBarConfiguration,
+        commentReport: CommentBarConfiguration
+    ) {
+        self.post = post
+        self.comment = comment
+        self.reply = reply
+        self.postReport = postReport
+        self.commentReport = commentReport
+    }
+    
+    init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.post = try container.decodeIfPresent(PostBarConfiguration.self, forKey: .post) ?? .default
+        self.comment = try container.decodeIfPresent(CommentBarConfiguration.self, forKey: .comment) ?? .default
+        self.reply = try container.decodeIfPresent(ReplyBarConfiguration.self, forKey: .reply) ?? .default
+        self.postReport = try container.decodeIfPresent(PostBarConfiguration.self, forKey: .postReport) ?? .reportDefault_
+        self.commentReport = try container.decodeIfPresent(CommentBarConfiguration.self, forKey: .commentReport) ?? .reportDefault_
     }
 }
 

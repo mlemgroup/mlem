@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUICore
 
 struct PostBarConfiguration: InteractionBarConfiguration {
     enum ActionType: String, ActionTypeProviding {
@@ -21,7 +22,26 @@ struct PostBarConfiguration: InteractionBarConfiguration {
         case crossPost
         case lock
         case pin
+        case resolve
         case remove
+        case ban
+        
+        static var defaultWidgets: [ActionType] {[
+                .upvote,
+                .downvote,
+                .save,
+                .reply,
+                .share
+        ]}
+        
+        static var defaultReportWidgets: [ActionType] {[
+            .share,
+            .lock,
+            .pin,
+            .resolve,
+            .remove,
+            .ban
+        ]}
         
         var appearance: ActionAppearance {
             switch self {
@@ -37,7 +57,9 @@ struct PostBarConfiguration: InteractionBarConfiguration {
             case .crossPost: .crossPost()
             case .lock: .lock(isOn: false)
             case .pin: .pin(isOn: false)
+            case .resolve: .resolve(isOn: false)
             case .remove: .remove(isOn: false)
+            case .ban: .banFromCommunity(isOn: false)
             }
         }
     }
@@ -47,6 +69,8 @@ struct PostBarConfiguration: InteractionBarConfiguration {
         case upvote
         case downvote
         case reply
+        
+        static var defaultWidgets: [CounterType] { Self.allCases }
         
         var appearance: CounterAppearance {
             switch self {
@@ -90,11 +114,42 @@ struct PostBarConfiguration: InteractionBarConfiguration {
     var trailing: [Item]
     var readouts: [ReadoutType]
     
+    var availableWidgets: Set<Item>
+    func widgetPickerPage(_ configuration: Binding<Self>) -> SettingsPage { .postBarWidgetPicker(configuration) }
+    
+    init(leading: [Item], trailing: [Item], readouts: [ReadoutType], availableWidgets: Set<Item>) {
+        self.leading = leading
+        self.trailing = trailing
+        self.readouts = readouts
+        self.availableWidgets = availableWidgets
+    }
+    
+    init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.leading = try container.decodeIfPresent([Item].self, forKey: .leading) ?? [.counter(.score)]
+        self.trailing = try container.decodeIfPresent([Item].self, forKey: .trailing) ?? [.action(.save), .action(.reply)]
+        self.readouts = try container.decodeIfPresent([ReadoutType].self, forKey: .readouts) ?? [.created, .comment]
+        self.availableWidgets = try container.decodeIfPresent(Set<Item>.self, forKey: .availableWidgets) ??
+            .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) })
+    }
+    
     static var `default`: Self {
         .init(
             leading: [.counter(.score)],
             trailing: [.action(.save), .action(.reply)],
-            readouts: [.created, .comment]
+            readouts: [.created, .comment],
+            availableWidgets: .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) })
         )
     }
+    
+    static var reportDefault_: Self {
+        .init(
+            leading: [.action(.resolve), .action(.lock)],
+            trailing: [.action(.ban), .action(.remove)],
+            readouts: [.upvote, .downvote, .created, .comment],
+            availableWidgets: .init(ActionType.defaultReportWidgets.map { .action($0) })
+        )
+    }
+    
+    static var reportDefault: Self? { .reportDefault_ }
 }

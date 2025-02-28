@@ -9,8 +9,12 @@ import Foundation
 import MlemMiddleware
 
 extension Community1 {
-    static func mock(_ type: CommunityMockType) -> Community1 {
+    static func mock(
+        _ type: CommunityMockType,
+        api: MockApiClient = .mock
+    ) -> Community1 {
         .mock(
+            api: api,
             actorId: type.actorId,
             id: type.id,
             name: type.name,
@@ -33,9 +37,12 @@ extension Community1 {
 }
 
 extension Community2 {
-    static func mock(_ type: CommunityMockType) -> Community2 {
+    static func mock(
+        _ type: CommunityMockType,
+        api: MockApiClient = .mock
+    ) -> Community2 {
         .mock(
-            community1: .mock(type),
+            community1: .mock(type, api: api),
             subscriberCount: type.subscriberCount,
             localSubscriberCount: type.localSubscriberCount,
             subscribed: false,

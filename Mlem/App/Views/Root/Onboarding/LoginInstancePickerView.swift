@@ -168,7 +168,7 @@ struct LoginInstancePickerView: View {
             focused = false
             connecting = true
             let fetchTask = Task {
-                let apiClient = ApiClient.getApiClient(for: url, with: nil)
+                let apiClient = ApiClient.getApiClient(url: url, username: nil)
                 do {
                     let instance = try await apiClient.getMyInstance()
                     Task { @MainActor in
