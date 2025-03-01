@@ -82,7 +82,7 @@ extension ActionAppearance {
         )
     }
     
-    private static func getBanLabel(isOn: Bool, withUserLabel: Bool) -> String {
+    private static func getBanLabel(isOn: Bool, withUserLabel: Bool) -> LocalizedStringResource {
         if withUserLabel {
             isOn ? "Unban User" : "Ban User"
         } else {

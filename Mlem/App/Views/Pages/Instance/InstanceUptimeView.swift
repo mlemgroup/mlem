@@ -142,15 +142,16 @@ struct InstanceUptimeView: View {
     }
     
     func summaryHeaderText(isHealthy: Bool) -> some View {
-        let string: String
+        let resource: LocalizedStringResource
         let color: Color
         if isHealthy {
-            string = "\(instance.name) is {{online}}"
+            resource = "\(instance.name) is {{online}}"
             color = palette.positive
         } else {
-            string = "\(instance.name) is {{unhealthy}}"
+            resource = "\(instance.name) is {{unhealthy}}"
             color = palette.negative
         }
+        let string = String(localized: resource)
         let parts = string.split(separator: /\{\{|\}\}/, omittingEmptySubsequences: false)
         guard parts.count == 3 else {
             assertionFailure()

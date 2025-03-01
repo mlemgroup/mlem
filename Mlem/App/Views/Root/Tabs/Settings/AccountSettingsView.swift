@@ -85,11 +85,11 @@ struct AccountSettingsView: View {
                     Button {
                         appState.firstAccount.signOut()
                     } label: {
-                        Text(signOutLabel.localized())
+                        Text(signOutLabel)
                             .frame(maxWidth: .infinity)
                     }
-                    .confirmationDialog(signOutPrompt, isPresented: $showingSignOutConfirmation) {
-                        Button(signOutLabel.localized(), role: .destructive) {
+                    .confirmationDialog(String(localized: signOutPrompt), isPresented: $showingSignOutConfirmation) {
+                        Button(String(localized: signOutLabel), role: .destructive) {
                             appState.firstAccount.signOut()
                         }
                     } message: {
@@ -129,11 +129,11 @@ struct AccountSettingsView: View {
         return appState.firstSession.instance?.name ?? "Loading..."
     }
     
-    var signOutLabel: String {
+    var signOutLabel: LocalizedStringResource {
         appState.firstAccount is UserAccount ? "Sign Out" : "Remove"
     }
     
-    var signOutPrompt: String {
+    var signOutPrompt: LocalizedStringResource {
         if appState.firstAccount is UserAccount {
             "Really sign out of \(appState.firstAccount.nickname)?"
         } else {
