@@ -10,7 +10,7 @@ import SwiftUI
 enum AccountSortMode: String, CaseIterable, Codable {
     case custom, name, instance, mostRecent
     
-    var label: String {
+    var label: LocalizedStringResource {
         switch self {
         case .name:
             return "Name"

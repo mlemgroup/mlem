@@ -10,7 +10,7 @@ import SwiftUI
 #if (os(iOS) && canImport(CoreTelephony)) || os(macOS) || targetEnvironment(macCatalyst)
 
     /// A specialized view for receiving search-related information from the user.
-    public struct SearchBar: DefaultTextInputType {
+    public struct SearchBar {
         @Binding fileprivate var text: String
     
 //    var customAppKitOrUIKitClass: AppKitOrUIKitSearchBar.Type? // UISearchBar
@@ -38,12 +38,12 @@ import SwiftUI
         #endif
     
         public init(
-            _ title: some StringProtocol,
+            _ title: LocalizedStringResource,
             text: Binding<String>,
             onEditingChanged: @escaping (Bool) -> Void = { _ in },
             onCommit: @escaping () -> Void = {}
         ) {
-            self.placeholder = String(title).localized()
+            self.placeholder = .init(localized: title)
             self._text = text
             self.onCommit = onCommit
             self.onEditingChanged = onEditingChanged

@@ -348,7 +348,6 @@
 		03FE14082BF94FFB00A8377F /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FE14072BF94FFB00A8377F /* ErrorView.swift */; };
 		03FE140C2BF953B000A8377F /* HandleError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FE140B2BF953B000A8377F /* HandleError.swift */; };
 		50C99B562A61D792005D57DD /* Dependencies in Frameworks */ = {isa = PBXBuildFile; productRef = 50C99B552A61D792005D57DD /* Dependencies */; };
-		515B78D82D6F6F4E0027D6D4 /* String+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515B78D72D6F6F480027D6D4 /* String+extension.swift */; };
 		6332FDBD27EFAF7C0009A98A /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6332FDBC27EFAF7B0009A98A /* Settings.bundle */; };
 		636250DC2A18111400FC59B4 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 636250DB2A18111400FC59B4 /* KeychainAccess */; };
 		6363D5C527EE196700E34822 /* MlemApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D5C427EE196700E34822 /* MlemApp.swift */; };
@@ -873,7 +872,6 @@
 		03FE14052BF9445F00A8377F /* CloseButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseButtonView.swift; sourceTree = "<group>"; };
 		03FE14072BF94FFB00A8377F /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		03FE140B2BF953B000A8377F /* HandleError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandleError.swift; sourceTree = "<group>"; };
-		515B78D72D6F6F480027D6D4 /* String+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+extension.swift"; sourceTree = "<group>"; };
 		630D753C27F65E44006E60C9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		6332FDBC27EFAF7B0009A98A /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		6363D5C127EE196700E34822 /* Mlem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mlem.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1911,7 +1909,6 @@
 				0397D4712C68078F002C6CDC /* PrefetchingConfiguration+Extensions.swift */,
 				CD4D59152B87B38C00B82964 /* UIApplication+Extensions.swift */,
 				0343C0472D3AD6DB001CF709 /* Set+Extensions.swift */,
-				515B78D72D6F6F480027D6D4 /* String+extension.swift */,
 				03AF91E02C1B25DE00E56644 /* UIDevice+Extensions.swift */,
 				03B431B52C454D49001A1EB5 /* UIImage+Extensions.swift */,
 				03B431BF2C45ABFB001A1EB5 /* UITextView+Extensions.swift */,
@@ -2717,7 +2714,6 @@
 				CD2C86542D5556C00034CD8A /* MlemError.swift in Sources */,
 				CD4E386B2C836837009B24F2 /* DraculaPalette.swift in Sources */,
 				CD9857A42C5E7F9D0084C71F /* NsfwOverlayView.swift in Sources */,
-				515B78D82D6F6F4E0027D6D4 /* String+extension.swift in Sources */,
 				CD64A91C2CA38DBA007CA7E6 /* NukeWebpBridgeDecoder.swift in Sources */,
 				CD1DF6402D387EB700F7851E /* MediaView+Functions.swift in Sources */,
 				030E95E72C80A20A0045BC2C /* View+NavigationTransition.swift in Sources */,
