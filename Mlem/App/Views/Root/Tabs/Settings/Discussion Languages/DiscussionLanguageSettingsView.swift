@@ -11,7 +11,6 @@ import SwiftUI
 struct DiscussionLanguageSettingsView: View {
     @Environment(Palette.self) var palette
     @Environment(NavigationLayer.self) var navigation
-    @Environment(\.locale) var userLocale
     
     @State var instance: (any Instance3Providing)?
     @State var person: (any Person4Providing)?
@@ -37,11 +36,12 @@ struct DiscussionLanguageSettingsView: View {
             
             if let person, let instance {
                 Section {
-                    ForEach(instance.languages(withIds: person.discussionLanguageIds), id: \.languageCode) { language in
-                        languageRowLabelView(language)
+                    let selectedLanguages = instance.languages(withIds: person.discussionLanguageIds)
+                    ForEach(selectedLanguages, id: \.languageCode) { language in
+                        LanguageListRowBody(language: language)
                     }
                     Button("Add Language...") {
-                        navigation.openSheet(.languagePicker { newLanguage in
+                        navigation.openSheet(.languagePicker(selectedLanguages: Set(selectedLanguages)) { newLanguage in
                             print(newLanguage)
                         })
                     }
@@ -100,17 +100,6 @@ struct DiscussionLanguageSettingsView: View {
 //        .buttonStyle(.plain)
 //    }
 //
-    @ViewBuilder
-    func languageRowLabelView(_ language: Locale.Language) -> some View {
-        let code = language.languageCode?.identifier ?? ""
-        let locale = Locale(languageCode: language.languageCode)
-        VStack(alignment: .leading) {
-            Text(locale.localizedString(forLanguageCode: code)?.capitalized ?? "")
-            Text(userLocale.localizedString(forLanguageCode: code) ?? "")
-                .font(.footnote)
-                .foregroundStyle(.secondary)
-        }
-    }
 //
 //    func updateDiscussionLanguages(with id: Int) async {
 //        defer { submitting = nil }

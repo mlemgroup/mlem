@@ -806,6 +806,9 @@
         }
       }
     },
+    "All Languages" : {
+
+    },
     "All Time" : {
       "localizations" : {
         "fr" : {
@@ -1692,6 +1695,9 @@
           }
         }
       }
+    },
+    "Choose Language" : {
+
     },
     "Choose the default sort mode for posts and comments." : {
       "localizations" : {
@@ -7185,6 +7191,9 @@
           }
         }
       }
+    },
+    "Suggested Languages" : {
+
     },
     "Superscript" : {
       "localizations" : {
