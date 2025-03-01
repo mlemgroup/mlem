@@ -1,5 +1,5 @@
 {
-  "originHash" : "e91c2cec61691543665fad5843f30eafc5288bb40fc3a60d50c7d7e9194f3135",
+  "originHash" : "741161cefb0674ba95c43c14afc8238177d21974f95f4e66fe76b72259069ef1",
   "pins" : [
     {
       "identity" : "collectionconcurrencykit",
@@ -60,8 +60,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mlemgroup/MlemMiddleware",
       "state" : {
-        "revision" : "f4f963bcd08ea105b7dc5fe1059c81137d1b16e8",
-        "version" : "0.81.1"
+        "branch" : "eric/improved-filtering",
+        "revision" : "4ee8252895fab96d270cd694f966fab520197f95"
       }
     },
     {
