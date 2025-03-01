@@ -140,6 +140,8 @@ extension NavigationPage {
                         .padding(.bottom, Constants.main.halfSpacing)
                 }
             }
+        case let .languagePicker(callback: callback):
+            LanguagePickerSheetView(callback: callback.wrappedValue)
         case let .instance(instance, visitContext):
             InstanceView(instance: instance.wrappedValue, visitContext: visitContext)
         case let .instanceOpinionList(instance: instance, opinionType: opinionType, data: data):

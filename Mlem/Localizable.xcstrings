@@ -703,6 +703,9 @@
         }
       }
     },
+    "Add Language..." : {
+
+    },
     "Add Moderator" : {
       "localizations" : {
         "fr" : {
@@ -8751,6 +8754,7 @@
       }
     },
     "You will not see most content if Undetermined is not selected." : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
