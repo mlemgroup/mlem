@@ -80,7 +80,7 @@ struct FeedSortPicker: View {
                 } else {
                     ForEach(topSortTypes, id: \.self) { type in
                         Toggle(
-                            type.label(topFormat: .topAndTimescale),
+                            type.label(timeRangeFormat: .topAndTimescale),
                             systemImage: type.systemImage,
                             isOn: .init(get: { sort == type }, set: { _ in sort = type })
                         )
@@ -97,7 +97,7 @@ struct FeedSortPicker: View {
                 HStack {
                     Image(systemName: Icons.topSort)
                         .imageScale(.small)
-                    Text(sort.label(topFormat: .timescaleAbbreviated))
+                    Text(sort.label(timeRangeFormat: .timescaleAbbreviated))
                         .font(.footnote)
                         .fontDesign(.rounded)
                 }
@@ -108,19 +108,22 @@ struct FeedSortPicker: View {
                         // 1.51 is intentional - iOS doesn't render it quite right at 1.5 (iPhone 12)
                         .strokeBorder(palette.accent, lineWidth: 1.51)
                 }
-                .accessibilityLabel(sort.label(topFormat: .topAndTimescale))
+                .accessibilityLabel(sort.label(timeRangeFormat: .topAndTimescale))
             } else {
-                Label(sort.label(topFormat: topSortTypes.count == 1 ? .topOnly : .topAndTimescale), systemImage: sort.systemImage)
+                Label(sort.label(timeRangeFormat: topSortTypes.count == 1 ? .topOnly : .topAndTimescale), systemImage: sort.systemImage)
             }
         }
         .disabled(appState.firstApi.fetchedVersion == nil)
         .popover(isPresented: $topSortPopupPresented) {
-            TopSortPicker(selected: $sort)
-                // This background is always drawn over a material background unfortunately,
-                // meaning that we can't use thin materials
-                .presentationBackground(.clear)
-                .presentationCornerRadius(18)
-                .presentationCompactAdaptation(.popover)
+            TopSortPicker(
+                action: { sort = .top($0) },
+                filter: { PinnedSortTracker.main.pinnedSortTypes.contains(.top($0)) }
+            )
+            // This background is always drawn over a material background unfortunately,
+            // meaning that we can't use thin materials
+            .presentationBackground(.clear)
+            .presentationCornerRadius(18)
+            .presentationCompactAdaptation(.popover)
         }
     }
     

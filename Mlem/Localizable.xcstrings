@@ -7855,6 +7855,7 @@
       }
     },
     "Top: %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {

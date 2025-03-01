@@ -48,31 +48,31 @@ extension SearchView {
     @ViewBuilder
     private var communityFiltersView: some View {
         CommunitySearchSortPicker(sort: $communityFilters.sort)
-            .buttonStyle(.feedFilter(isOn: communityFilters.sort != .topAll))
+            .buttonStyle(.feedFilter(isOn: communityFilters.sort != .top(.allTime)))
         InstancePicker(filter: $communityFilters.instance, isForPersonSearch: false)
             .buttonStyle(.feedFilter(isOn: communityFilters.instance != .any))
     }
     
     @ViewBuilder
     private var personFiltersView: some View {
-//        Menu(personFilters.sort.label(topFormat: .topOnly), systemImage: personFilters.sort.systemImage) {
-//            Picker("Sort", selection: $personFilters.sort) {
-//                ForEach(ApiSortType.personSearchCases, id: \.self) { item in
-//                    Label(item.label(topFormat: .topOnly), systemImage: item.systemImage)
-//                }
-//            }
-//        }
-//        .buttonStyle(.feedFilter(isOn: personFilters.sort != .topAll))
+        Menu(personFilters.sort.label(timeRangeFormat: .topOnly), systemImage: personFilters.sort.systemImage) {
+            Picker("Sort", selection: $personFilters.sort) {
+                ForEach(SearchSortType.legacyPersonCases, id: \.self) { item in
+                    Label(item.label(timeRangeFormat: .topOnly), systemImage: item.systemImage)
+                }
+            }
+        }
+        .buttonStyle(.feedFilter(isOn: personFilters.sort != .top(.allTime)))
         InstancePicker(filter: $personFilters.instance, isForPersonSearch: true)
             .buttonStyle(.feedFilter(isOn: personFilters.instance != .any))
     }
     
     @ViewBuilder
     private var postFiltersView: some View {
-//        FeedSortPicker(sort: $postFilters.sort)
-//            .buttonStyle(.feedFilter(isOn: postFilters.sort != .top(nil)))
-//        LocationPicker(filter: $postFilters.location)
-//            .buttonStyle(.feedFilter(isOn: postFilters.location != .any))
+        FeedSortPicker(sort: $postFilters.sort)
+            .buttonStyle(.feedFilter(isOn: postFilters.sort != .top(.allTime)))
+        LocationPicker(filter: $postFilters.location)
+            .buttonStyle(.feedFilter(isOn: postFilters.location != .any))
         CreatorPicker(
             api: postFilters.location.instanceStub?.api ?? appState.firstApi,
             creator: $postFilters.creator

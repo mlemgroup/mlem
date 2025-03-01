@@ -68,7 +68,7 @@ struct AdvancedSortView: View {
                 if !unavailableCases.isEmpty {
                     subtitle("Unavailable")
                     ForEach(unavailableCases, id: \.self) { type in
-                        SortButton(type: type, topFormat: .topAndTimescale, selectedSort: $selectedSort)
+                        SortButton(type: type, timeRangeFormat: .topAndTimescale, selectedSort: $selectedSort)
                     }
                 }
             }

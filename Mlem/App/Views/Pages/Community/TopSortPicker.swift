@@ -15,18 +15,18 @@ struct TopSortPicker: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.colorScheme) var colorScheme
     
-    @Binding var selected: PostSortType
-    var includeAll: Bool = false
+    var action: (SortTimeRange) -> Void
+    var filter: (SortTimeRange) -> Bool = { _ in true }
     
-    var sortTypes: [PostSortType] {
-        PostSortType.legacyTopCases
-            .filter { includeAll ? true : PinnedSortTracker.main.pinnedSortTypes.contains($0) }
+    var timeRanges: [SortTimeRange] {
+        SortTimeRange.legacyCases
+            .filter(filter)
             .filter { (appState.firstApi.fetchedVersion ?? .infinity) >= $0.minimumVersion }
     }
     
     var body: some View {
         HFlow(spacing: 10, justification: .stretchItems) {
-            ForEach(sortTypes, id: \.self) { type in
+            ForEach(timeRanges, id: \.self) { type in
                 button(type)
                     .frame(minWidth: 60)
             }
@@ -36,20 +36,20 @@ struct TopSortPicker: View {
     }
     
     @ViewBuilder
-    func button(_ type: PostSortType) -> some View {
+    func button(_ type: SortTimeRange) -> some View {
         Button {
-            selected = type
+            action(type)
             dismiss()
         } label: {
             Group {
-                if type == .top(nil) {
-                    if sortTypes.count % 3 == 0 {
+                if type == .allTime {
+                    if timeRanges.count % 3 == 0 {
                         Text("All")
                     } else {
                         Text("All Time")
                     }
                 } else {
-                    Text(type.label(topFormat: .timescaleAbbreviated))
+                    Text(type.label(prefix: "Top", format: .timescaleAbbreviated))
                 }
             }
             .frame(maxWidth: .infinity)

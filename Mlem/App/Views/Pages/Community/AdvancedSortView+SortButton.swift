@@ -15,7 +15,7 @@ extension AdvancedSortView {
         @Environment(\.dismiss) var dismiss
 
         let type: PostSortType
-        var topFormat: PostSortType.TopSortModeFormatStyle = .timescaleFull
+        var timeRangeFormat: SortTimeRange.FormatStyle = .timescaleFull
 
         @Binding var selectedSort: PostSortType
         
@@ -71,7 +71,7 @@ extension AdvancedSortView {
         @ViewBuilder
         var titleView: some View {
             HStack(spacing: Constants.main.standardSpacing) {
-                Text(type.label(topFormat: topFormat))
+                Text(type.label(timeRangeFormat: timeRangeFormat))
                 if let explanation = type.explanation {
                     Button {
                         showingExplanation.toggle()
