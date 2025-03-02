@@ -428,6 +428,7 @@
 		CD6436522D483F2D002668FB /* MockTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6436512D483F23002668FB /* MockTextView.swift */; };
 		CD64A91A2CA37E8D007CA7E6 /* Gifu in Frameworks */ = {isa = PBXBuildFile; productRef = CD64A9192CA37E8D007CA7E6 /* Gifu */; };
 		CD64A91C2CA38DBA007CA7E6 /* NukeWebpBridgeDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD64A91B2CA38DA7007CA7E6 /* NukeWebpBridgeDecoder.swift */; };
+		CD6524182D729FBD0054F587 /* MlemMiddleware in Frameworks */ = {isa = PBXBuildFile; productRef = CD6524172D729FBD0054F587 /* MlemMiddleware */; };
 		CD77437F2C1BA5CE0085BB43 /* MultiplatformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD77437E2C1BA5CE0085BB43 /* MultiplatformView.swift */; };
 		CD7743892C20EDEE0085BB43 /* VotesModel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7743882C20EDEE0085BB43 /* VotesModel+Extensions.swift */; };
 		CD7882A72BFFD1A3002E1A30 /* ThumbnailLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7882A62BFFD1A3002E1A30 /* ThumbnailLocation.swift */; };
@@ -442,7 +443,6 @@
 		CD7DB9762C4D6C0A00DCC542 /* FeedCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7DB9752C4D6C0A00DCC542 /* FeedCommentView.swift */; };
 		CD7F82762D6BE7BF001748BA /* MediaLoadingTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7F82752D6BE7BC001748BA /* MediaLoadingTracker.swift */; };
 		CD8457142D07576A00CEA2B8 /* AVPlayer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8457132D07576700CEA2B8 /* AVPlayer+Extensions.swift */; };
-		CD848FC42D63E1CB009A7AE7 /* MlemMiddleware in Frameworks */ = {isa = PBXBuildFile; productRef = CD848FC32D63E1CB009A7AE7 /* MlemMiddleware */; };
 		CD869FCC2C15F8AC00FC8B5B /* BubblePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD869FCB2C15F8AC00FC8B5B /* BubblePickerView.swift */; };
 		CD869FCE2C15F90C00FC8B5B /* ChildSizeReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD869FCD2C15F90C00FC8B5B /* ChildSizeReader.swift */; };
 		CD87BEBC2D51257A0099F190 /* Instance2Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD87BEBB2D5125750099F190 /* Instance2Providing+Extensions.swift */; };
@@ -1051,7 +1051,7 @@
 				636250DC2A18111400FC59B4 /* KeychainAccess in Frameworks */,
 				CDE4AC452CA370E000981010 /* SDWebImageSwiftUI in Frameworks */,
 				CD4368C12AE23FD400BD8BD1 /* Semaphore in Frameworks */,
-				CD848FC42D63E1CB009A7AE7 /* MlemMiddleware in Frameworks */,
+				CD6524182D729FBD0054F587 /* MlemMiddleware in Frameworks */,
 				B104A6DE2A59BF3C00B3E725 /* NukeVideo in Frameworks */,
 				CDE4AC472CA372B600981010 /* SDWebImageWebPCoder in Frameworks */,
 				B104A6DC2A59BF3C00B3E725 /* NukeUI in Frameworks */,
@@ -2309,7 +2309,7 @@
 				CDE4AC442CA370E000981010 /* SDWebImageSwiftUI */,
 				CDE4AC462CA372B600981010 /* SDWebImageWebPCoder */,
 				CD64A9192CA37E8D007CA7E6 /* Gifu */,
-				CD848FC32D63E1CB009A7AE7 /* MlemMiddleware */,
+				CD6524172D729FBD0054F587 /* MlemMiddleware */,
 			);
 			productName = Mlem;
 			productReference = 6363D5C127EE196700E34822 /* Mlem.app */;
@@ -2398,7 +2398,7 @@
 				CDE4AC402CA3706400981010 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
 				CDE4AC412CA3706F00981010 /* XCRemoteSwiftPackageReference "SDWebImageWebPCoder" */,
 				CD64A9182CA37D63007CA7E6 /* XCRemoteSwiftPackageReference "Gifu" */,
-				CD848FC22D63E1BF009A7AE7 /* XCRemoteSwiftPackageReference "MlemMiddleware" */,
+				CD6524162D729FB30054F587 /* XCRemoteSwiftPackageReference "MlemMiddleware" */,
 			);
 			productRefGroup = 6363D5C227EE196700E34822 /* Products */;
 			projectDirPath = "";
@@ -3391,12 +3391,12 @@
 				kind = branch;
 			};
 		};
-		CD848FC22D63E1BF009A7AE7 /* XCRemoteSwiftPackageReference "MlemMiddleware" */ = {
+		CD6524162D729FB30054F587 /* XCRemoteSwiftPackageReference "MlemMiddleware" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware";
 			requirement = {
 				kind = upToNextMinorVersion;
-				minimumVersion = 0.81.1;
+				minimumVersion = 0.82.0;
 			};
 		};
 		CDE4AC402CA3706400981010 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
@@ -3473,9 +3473,9 @@
 			package = CD64A9182CA37D63007CA7E6 /* XCRemoteSwiftPackageReference "Gifu" */;
 			productName = Gifu;
 		};
-		CD848FC32D63E1CB009A7AE7 /* MlemMiddleware */ = {
+		CD6524172D729FBD0054F587 /* MlemMiddleware */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CD848FC22D63E1BF009A7AE7 /* XCRemoteSwiftPackageReference "MlemMiddleware" */;
+			package = CD6524162D729FB30054F587 /* XCRemoteSwiftPackageReference "MlemMiddleware" */;
 			productName = MlemMiddleware;
 		};
 		CDE4AC442CA370E000981010 /* SDWebImageSwiftUI */ = {

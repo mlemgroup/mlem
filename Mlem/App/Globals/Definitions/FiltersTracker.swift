@@ -76,7 +76,7 @@ class FiltersTracker {
     }
     
     func postWouldBeFiltered(_ post: any Post) -> Bool {
-        keywordFilterEnabled && post.title.lowercased().containsWordsIn(filteredKeywords)
+        keywordFilterEnabled && post.title.failsKeywordFilter(filteredKeywords)
     }
     
     static var main: FiltersTracker = .init()
