@@ -98,7 +98,7 @@ struct SearchView: View {
             }
 //            // Don't use `.task` here, because it triggers when navigating back
             .onChange(of: query, initial: true) { oldValue, newValue in
-                if oldValue != newValue {
+                if oldValue != newValue || selectedTab == .communities && communityLoader.items.isEmpty && !isSearching {
                     contentChangeTriggerRefresh(onlyRefreshIfEmpty: false)
                 }
             }
