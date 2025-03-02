@@ -14,9 +14,16 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(Palette.self) var palette
     
-    enum CloseButtonLabel: String {
-        case cancel = "Cancel"
-        case done = "Done"
+    enum CloseButtonLabel {
+        case cancel
+        case done
+        
+        var label: LocalizedStringResource {
+            switch self {
+            case .cancel: "Cancel"
+            case .done: "Done"
+            }
+        }
     }
     
     @ViewBuilder let content: ([Item], NavigationLayer) -> Content
@@ -60,7 +67,7 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
                 }
             }
             ToolbarItem(placement: .topBarTrailing) {
-                Button(closeButtonLabel.rawValue.localized()) {
+                Button(String(localized: closeButtonLabel.label)) {
                     navigation.dismissSheet()
                 }
             }

@@ -25,29 +25,37 @@ struct ActionGroup: Action {
     
     init(
         appearance: ActionAppearance = .groupDefault,
-        prompt: String? = nil,
+        prompt: LocalizedStringResource? = nil,
         disabled: Bool? = nil,
         displayMode: DisplayMode = .section,
         @ActionBuilder children: () -> [any Action]
     ) {
+        let stringPrompt: String?
+        if let prompt {
+            stringPrompt = .init(localized: prompt)
+        } else {
+            stringPrompt = nil
+        }
         self.init(
             appearance: appearance,
-            prompt: prompt,
+            prompt: stringPrompt,
             disabled: disabled,
             displayMode: displayMode,
-            children: children()
+            children: children
         )
     }
     
+    @_disfavoredOverload
     init(
         appearance: ActionAppearance = .groupDefault,
         prompt: String? = nil,
         disabled: Bool? = nil,
         displayMode: DisplayMode = .section,
-        children: [any Action]
+        @ActionBuilder children: () -> [any Action]
     ) {
         self.appearance = appearance
         self.prompt = prompt
+        let children = children()
         self.disabled = disabled ?? !children.allSatisfy { action in
             if let action = action as? BasicAction {
                 return !action.disabled

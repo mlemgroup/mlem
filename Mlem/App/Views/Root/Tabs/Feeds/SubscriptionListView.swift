@@ -101,7 +101,7 @@ struct SubscriptionListView: View {
             if !(subscriptions?.communities.isEmpty ?? true) {
                 Picker("Sort", selection: $sort) {
                     ForEach(SubscriptionListSort.allCases, id: \.self) { item in
-                        Label(item.label.localized(), systemImage: item.systemImage)
+                        Label(String(localized: item.label), systemImage: item.systemImage)
                     }
                 }
             }
@@ -189,7 +189,7 @@ enum SubscriptionListSort: String, CaseIterable, Codable {
     case alphabetical
     case instance
     
-    var label: String {
+    var label: LocalizedStringResource {
         switch self {
         case .alphabetical: "Name"
         case .instance: "Instance"

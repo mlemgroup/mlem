@@ -111,7 +111,7 @@ struct PersonBanEditorView: View {
         }
     }
     
-    var scopeSectionTitle: String {
+    var scopeSectionTitle: LocalizedStringResource {
         if community != nil, appState.firstApi.isAdmin {
             shouldBan ? "Ban from..." : "Unban from..."
         } else {
