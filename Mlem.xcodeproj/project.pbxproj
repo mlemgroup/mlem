@@ -3399,8 +3399,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware";
 			requirement = {
-				branch = "eric/improved-filtering";
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.82.0;
 			};
 		};
 		CDE4AC402CA3706400981010 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
