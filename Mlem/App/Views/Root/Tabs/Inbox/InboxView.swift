@@ -30,9 +30,9 @@ struct InboxView: View {
     @State var messageFeedLoader: MessageChildFeedLoader
     @State var inboxFeedLoader: InboxFeedLoader
     
-    @State var reportFeedLoader: ReportChildFeedLoader
-    @State var applicationFeedLoader: ApplicationChildFeedLoader
-    @State var modMailFeedLoader: ModMailFeedLoader
+    @State var reportFeedLoader: ReportChildFeedLoader?
+    @State var applicationFeedLoader: ApplicationChildFeedLoader?
+    @State var modMailFeedLoader: ModMailFeedLoader?
     
     @State var showRefreshPopup: Bool = false
     @State var waitingOnMarkAllAsRead: Bool = false
@@ -54,16 +54,18 @@ struct InboxView: View {
         self._messageFeedLoader = .init(wrappedValue: inboxFeedLoaders.messageFeedLoader)
         self._inboxFeedLoader = .init(wrappedValue: inboxFeedLoaders.inboxFeedLoader)
         
-        let modMailFeedLoaders = ModMailFeedLoader.setup(
-            api: AppState.main.firstApi,
-            pageSize: internetSpeed.pageSize,
-            sortType: .new,
-            showRead: showRead
-        )
-        
-        self._reportFeedLoader = .init(wrappedValue: modMailFeedLoaders.reportFeedLoader)
-        self._applicationFeedLoader = .init(wrappedValue: modMailFeedLoaders.applicationFeedLoader)
-        self._modMailFeedLoader = .init(wrappedValue: modMailFeedLoaders.modMailFeedLoader)
+        if AppState.main.isModOrAdmin {
+            let modMailFeedLoaders = ModMailFeedLoader.setup(
+                api: AppState.main.firstApi,
+                pageSize: internetSpeed.pageSize,
+                sortType: .new,
+                showRead: showRead
+            )
+            
+            self._reportFeedLoader = .init(wrappedValue: modMailFeedLoaders.reportFeedLoader)
+            self._applicationFeedLoader = .init(wrappedValue: modMailFeedLoaders.applicationFeedLoader)
+            self._modMailFeedLoader = .init(wrappedValue: modMailFeedLoaders.modMailFeedLoader)
+        }
     }
     
     var feedLoader: StandardFeedLoader<InboxItem> {
@@ -87,7 +89,7 @@ struct InboxView: View {
     }
     
     var availableFeeds: [Feed] {
-        if appState.firstApi.isAdmin || !(appState.firstPerson?.moderatedCommunities.isEmpty ?? true) {
+        if appState.isModOrAdmin {
             return [.inbox, .modMail]
         }
         return [.inbox]
