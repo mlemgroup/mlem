@@ -39,7 +39,7 @@ extension InboxView {
     }
     
     @ViewBuilder
-    func modMailFeedView(feedLoader: StandardFeedLoader<ModMailItem>) -> some View {
+    var modMailFeedView: some View {
         LazyVStack(spacing: 0) {
             if appState.firstApi.isAdmin {
                 BubblePicker(
@@ -59,7 +59,7 @@ extension InboxView {
                     }
                 )
             }
-            ForEach(feedLoader.items, id: \.inboxId) { item in
+            ForEach(currentModFeedLoader.items, id: \.inboxId) { item in
                 Group {
                     switch item {
                     case let .application(application):
@@ -71,12 +71,13 @@ extension InboxView {
                 .padding([.horizontal, .bottom], Constants.main.standardSpacing)
                 .onAppear {
                     do {
-                        try feedLoader.loadIfThreshold(item)
+                        try currentModFeedLoader.loadIfThreshold(item)
                     } catch {
                         handleError(error)
                     }
                 }
             }
+            EndOfFeedView(feedLoader: currentModFeedLoader, viewType: .cartoon)
         }
         .padding(.top, Constants.main.standardSpacing)
         .animation(.easeOut(duration: 0.1), value: feedLoader.items.isEmpty)

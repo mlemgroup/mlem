@@ -16,6 +16,7 @@ struct InboxView: View {
     @Environment(FiltersTracker.self) var filtersTracker
     
     @Setting(\.showReadInInbox) var showRead
+    @Setting(\.internetSpeed) var internetSpeed
     
     @State var headerPinned: Bool = false
     @State var selectedFeed: Feed = .inbox
@@ -30,9 +31,9 @@ struct InboxView: View {
     @State var messageFeedLoader: MessageChildFeedLoader
     @State var inboxFeedLoader: InboxFeedLoader
     
-    @State var reportFeedLoader: ReportChildFeedLoader?
-    @State var applicationFeedLoader: ApplicationChildFeedLoader?
-    @State var modMailFeedLoader: ModMailFeedLoader?
+    @State var reportFeedLoader: ReportChildFeedLoader
+    @State var applicationFeedLoader: ApplicationChildFeedLoader
+    @State var modMailFeedLoader: ModMailFeedLoader
     
     @State var showRefreshPopup: Bool = false
     @State var waitingOnMarkAllAsRead: Bool = false
@@ -54,18 +55,16 @@ struct InboxView: View {
         self._messageFeedLoader = .init(wrappedValue: inboxFeedLoaders.messageFeedLoader)
         self._inboxFeedLoader = .init(wrappedValue: inboxFeedLoaders.inboxFeedLoader)
         
-        if AppState.main.isModOrAdmin {
-            let modMailFeedLoaders = ModMailFeedLoader.setup(
-                api: AppState.main.firstApi,
-                pageSize: internetSpeed.pageSize,
-                sortType: .new,
-                showRead: showRead
-            )
-            
-            self._reportFeedLoader = .init(wrappedValue: modMailFeedLoaders.reportFeedLoader)
-            self._applicationFeedLoader = .init(wrappedValue: modMailFeedLoaders.applicationFeedLoader)
-            self._modMailFeedLoader = .init(wrappedValue: modMailFeedLoaders.modMailFeedLoader)
-        }
+        let modMailFeedLoaders = ModMailFeedLoader.setup(
+            api: AppState.main.firstApi,
+            pageSize: internetSpeed.pageSize,
+            sortType: .new,
+            showRead: showRead
+        )
+        
+        self._reportFeedLoader = .init(wrappedValue: modMailFeedLoaders.reportFeedLoader)
+        self._applicationFeedLoader = .init(wrappedValue: modMailFeedLoaders.applicationFeedLoader)
+        self._modMailFeedLoader = .init(wrappedValue: modMailFeedLoaders.modMailFeedLoader)
     }
     
     var feedLoader: StandardFeedLoader<InboxItem> {
@@ -81,10 +80,7 @@ struct InboxView: View {
         }
     }
     
-    var currentModFeedLoader: StandardFeedLoader<ModMailItem>? {
-        guard appState.isModOrAdmin else {
-            return nil
-        }
+    var currentModFeedLoader: StandardFeedLoader<ModMailItem> {
         switch selectedModTab {
         case .applications: return applicationFeedLoader
         case .reports: return reportFeedLoader
@@ -112,7 +108,7 @@ struct InboxView: View {
                     if appState.firstAccount is UserAccount {
                         Task {
                             await inboxFeedLoader.changeApi(to: appState.firstApi, context: filtersTracker.filterContext)
-                            await modMailFeedLoader?.changeApi(to: appState.firstApi, context: filtersTracker.filterContext)
+                            await modMailFeedLoader.changeApi(to: appState.firstApi, context: filtersTracker.filterContext)
                         }
                         showRefreshPopup = true
                     }
@@ -122,10 +118,10 @@ struct InboxView: View {
                         do {
                             if showRead {
                                 try await inboxFeedLoader.showRead()
-                                try await modMailFeedLoader?.showRead()
+                                try await modMailFeedLoader.showRead()
                             } else {
                                 try await inboxFeedLoader.hideRead()
-                                try await modMailFeedLoader?.hideRead()
+                                try await modMailFeedLoader.hideRead()
                             }
                         } catch {
                             handleError(error)
@@ -175,9 +171,7 @@ struct InboxView: View {
                 case .inbox:
                     inboxFeedView
                 case .modMail:
-                    if let currentModFeedLoader {
-                        modMailFeedView(feedLoader: currentModFeedLoader)
-                    }
+                    modMailFeedView
                 }
             }
         }
@@ -186,15 +180,18 @@ struct InboxView: View {
     
     private func refresh() async {
         do {
+            if selectedFeed == .modMail, !appState.isModOrAdmin {
+                selectedFeed = .inbox
+            }
             try await inboxFeedLoader.refresh(clearBeforeRefresh: true)
-            try await modMailFeedLoader?.refresh(clearBeforeRefresh: true)
+            try await modMailFeedLoader.refresh(clearBeforeRefresh: true)
         } catch {
             handleError(error)
         }
     }
     
     private func toggleFeed() {
-        selectedFeed = selectedFeed == .inbox ? .modMail : .inbox
+        selectedFeed = selectedFeed == .inbox && appState.isModOrAdmin ? .modMail : .inbox
     }
 }
 
