@@ -65,7 +65,7 @@ private struct NavigationSheetModifier: ViewModifier {
                     get: { nextLayer == nil && (contentPickerTracker?.showingFilePicker ?? false) },
                     set: { contentPickerTracker?.showingFilePicker = $0 }
                 ),
-                allowedContentTypes: [.image],
+                allowedContentTypes: contentPickerTracker?.filePickerContentTypes ?? [],
                 onCompletion: { result in
                     do {
                         try contentPickerTracker?.filePickerCallback?(result.get())

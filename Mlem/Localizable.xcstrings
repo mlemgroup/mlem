@@ -3003,6 +3003,16 @@
         }
       }
     },
+    "Export..." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exporter…"
+          }
+        }
+      }
+    },
     "External Links" : {
       "localizations" : {
         "fr" : {
@@ -3625,6 +3635,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Paramètres d’importation"
+          }
+        }
+      }
+    },
+    "Import..." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importer..."
           }
         }
       }
