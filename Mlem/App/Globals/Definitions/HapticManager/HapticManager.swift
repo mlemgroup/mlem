@@ -12,6 +12,7 @@ import SwiftUI
 
 class HapticManager {
     @Setting(\.hapticLevel) var hapticLevel
+    @Setting(\.developerMode) var developerMode
     
     // generators/engines
     let rigidImpactGenerator: UIImpactFeedbackGenerator = .init(style: .rigid)
@@ -49,7 +50,7 @@ class HapticManager {
                 try engine.start()
             } catch {
                 // silently log error, re-create the engine, and retry
-                handleError(error, silent: true)
+                handleError(error, silent: !developerMode)
                 hapticEngine = initEngine()
                 loadPlayers()
             }
@@ -87,7 +88,7 @@ class HapticManager {
                 try ret.start()
                 return ret
             } catch {
-                handleError(error, silent: true)
+                handleError(error, silent: !developerMode)
             }
         }
         return nil
