@@ -49,7 +49,7 @@ struct FiltersSettingsView: View {
                             ) {
                                 navigation.shareInfo = .init(url: url)
                             } else {
-                                ToastModel.main.add(.failure(String("Failed to share error log")))
+                                ToastModel.main.add(.failure())
                             }
                         }
                     }
