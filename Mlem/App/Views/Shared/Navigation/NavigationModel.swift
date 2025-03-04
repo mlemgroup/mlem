@@ -24,6 +24,7 @@ class NavigationModel {
         // before setting it to `nil`.
         var showingFilePicker: Bool = false
         var filePickerCallback: ((URL) -> Void)?
+        var filePickerContentTypes: [UTType] = []
     }
     
     var contentPickerTracker: ContentPickerTracker = .init()

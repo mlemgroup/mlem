@@ -46,7 +46,7 @@ class FiltersTracker {
     }
     
     @MainActor
-    func setFilteredKeywords(to filteredKeywords: Set<String>) {
+    private func setFilteredKeywords(to filteredKeywords: Set<String>) {
         self.filteredKeywords = filteredKeywords
     }
     
