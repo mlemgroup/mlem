@@ -44,11 +44,14 @@ class HapticManager {
     }
     
     func startEngine() {
-        if let hapticEngine {
+        if let engine = hapticEngine {
             do {
-                try hapticEngine.start()
+                try engine.start()
             } catch {
-                handleError(error)
+                // silently log error, re-create the engine, and retry
+                handleError(error, silent: true)
+                hapticEngine = initEngine()
+                loadPlayers()
             }
         }
     }
