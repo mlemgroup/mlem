@@ -10,7 +10,7 @@ import MlemMiddleware
 import PhotosUI
 import SwiftUI
 
-extension ApiClient {    
+extension ApiClient {
     func isActive(appState: AppState) -> Bool {
         appState.guestSession.api === self || appState.activeSessions.contains(where: { $0.api === self })
     }

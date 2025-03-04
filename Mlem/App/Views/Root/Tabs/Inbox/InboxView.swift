@@ -16,7 +16,6 @@ struct InboxView: View {
     @Environment(FiltersTracker.self) var filtersTracker
     
     @Setting(\.showReadInInbox) var showRead
-    @Setting(\.internetSpeed) var internetSpeed
     
     @State var headerPinned: Bool = false
     @State var selectedFeed: Feed = .inbox
@@ -82,8 +81,8 @@ struct InboxView: View {
     
     var currentModFeedLoader: StandardFeedLoader<ModMailItem> {
         switch selectedModTab {
-        case .applications: return applicationFeedLoader
-        case .reports: return reportFeedLoader
+        case .applications: applicationFeedLoader
+        case .reports: reportFeedLoader
         }
     }
     

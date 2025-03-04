@@ -50,7 +50,7 @@ class UserSession: Session {
                 
                 try await self.api.getSubscriptionList()
                 
-                self.unreadCount = try await account.api.getUnreadCount()
+                self.unreadCount = try await api.getUnreadCount()
             } catch {
                 handleError(error)
             }
