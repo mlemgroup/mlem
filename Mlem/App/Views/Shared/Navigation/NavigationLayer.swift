@@ -7,6 +7,7 @@
 
 import MlemMiddleware
 import SwiftUI
+import UniformTypeIdentifiers
 
 @Observable
 class NavigationLayer: Identifiable {
@@ -152,6 +153,7 @@ class NavigationLayer: Identifiable {
     @MainActor
     func showFilePicker(for imageUploadManager: ImageUploadManager, api: ApiClient) {
         model?.contentPickerTracker.showingFilePicker = true
+        model?.contentPickerTracker.filePickerContentTypes = [.image]
         model?.contentPickerTracker.filePickerCallback = { url in
             Task {
                 do {
@@ -165,6 +167,27 @@ class NavigationLayer: Identifiable {
                     } else {
                         try await imageUploadManager.upload(data: data, api: api)
                     }
+                } catch {
+                    url.stopAccessingSecurityScopedResource()
+                    handleError(error)
+                }
+            }
+        }
+    }
+    
+    @MainActor
+    func showFilePicker(types: [UTType], callback: @escaping (Data) async -> Void) {
+        model?.contentPickerTracker.showingFilePicker = true
+        model?.contentPickerTracker.filePickerContentTypes = types
+        model?.contentPickerTracker.filePickerCallback = { url in
+            Task {
+                do {
+                    guard url.startAccessingSecurityScopedResource() else {
+                        throw ApiClientError.insufficientPermissions
+                    }
+                    let data = try Data(contentsOf: url)
+                    await callback(data)
+                    url.stopAccessingSecurityScopedResource()
                 } catch {
                     url.stopAccessingSecurityScopedResource()
                     handleError(error)
