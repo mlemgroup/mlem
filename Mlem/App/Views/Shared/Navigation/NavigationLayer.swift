@@ -158,7 +158,7 @@ class NavigationLayer: Identifiable {
             Task {
                 do {
                     guard url.startAccessingSecurityScopedResource() else {
-                        throw ApiClientError.insufficientPermissions
+                        throw MlemError.cannotAccessSecurityScopedResource
                     }
                     let data = try Data(contentsOf: url)
                     url.stopAccessingSecurityScopedResource()
@@ -183,7 +183,7 @@ class NavigationLayer: Identifiable {
             Task {
                 do {
                     guard url.startAccessingSecurityScopedResource() else {
-                        throw ApiClientError.insufficientPermissions
+                        throw MlemError.cannotAccessSecurityScopedResource
                     }
                     let data = try Data(contentsOf: url)
                     await callback(data)
