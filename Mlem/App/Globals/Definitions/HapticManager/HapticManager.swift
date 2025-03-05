@@ -12,6 +12,7 @@ import SwiftUI
 
 class HapticManager {
     @Setting(\.hapticLevel) var hapticLevel
+    @Setting(\.developerMode) var developerMode
     
     // generators/engines
     let rigidImpactGenerator: UIImpactFeedbackGenerator = .init(style: .rigid)
@@ -44,11 +45,14 @@ class HapticManager {
     }
     
     func startEngine() {
-        if let hapticEngine {
+        if let engine = hapticEngine {
             do {
-                try hapticEngine.start()
+                try engine.start()
             } catch {
-                handleError(error)
+                // silently log error, re-create the engine, and retry
+                handleError(error, silent: !developerMode)
+                hapticEngine = initEngine()
+                loadPlayers()
             }
         }
     }
@@ -84,7 +88,7 @@ class HapticManager {
                 try ret.start()
                 return ret
             } catch {
-                handleError(error, silent: true)
+                handleError(error, silent: !developerMode)
             }
         }
         return nil
@@ -121,11 +125,11 @@ class HapticManager {
     
     private func loadPlayers() {
         // load all the haptic files into players to avoid lag on first play caused by slow disk read
-        Haptic.allCases.forEach { haptic in
+        for haptic in Haptic.allCases {
             do {
                 guard let path = Bundle.main.path(forResource: haptic.rawValue, ofType: "ahap") else {
                     assertionFailure("No haptic file found for \(haptic.rawValue)")
-                    return
+                    continue
                 }
                 let file = URL(filePath: path)
                 players[haptic] = try hapticEngine?.makePlayer(with: .init(contentsOf: file))

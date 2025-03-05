@@ -97,7 +97,11 @@ struct SearchView: View {
                 }
             }
 //            // Don't use `.task` here, because it triggers when navigating back
-            .onChange(of: query, initial: true) { contentChangeTriggerRefresh(onlyRefreshIfEmpty: false) }
+            .onChange(of: query, initial: true) { oldValue, newValue in
+                if oldValue != newValue || selectedTab == .communities && communityLoader.items.isEmpty && !isSearching {
+                    contentChangeTriggerRefresh(onlyRefreshIfEmpty: false)
+                }
+            }
             .onChange(of: selectedTab) { contentChangeTriggerRefresh(onlyRefreshIfEmpty: true) }
             .onChange(of: filterRefreshHashValue, onFilterRefreshHashValueChange)
             .onChange(of: postFilters.location.instanceStub) {
@@ -131,7 +135,7 @@ struct SearchView: View {
     
     func searchBar() -> SearchBar {
         SearchBar(
-            "Search...".localized(),
+            "Search...",
             text: $query,
             isEditing: $isSearching,
             onCommit: {

@@ -46,7 +46,7 @@ class FiltersTracker {
     }
     
     @MainActor
-    func setFilteredKeywords(to filteredKeywords: Set<String>) {
+    private func setFilteredKeywords(to filteredKeywords: Set<String>) {
         self.filteredKeywords = filteredKeywords
     }
     
@@ -76,7 +76,7 @@ class FiltersTracker {
     }
     
     func postWouldBeFiltered(_ post: any Post) -> Bool {
-        keywordFilterEnabled && post.title.lowercased().containsWordsIn(filteredKeywords)
+        keywordFilterEnabled && post.title.failsKeywordFilter(filteredKeywords)
     }
     
     static var main: FiltersTracker = .init()

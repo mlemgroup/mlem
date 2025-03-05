@@ -51,8 +51,8 @@ struct ToastView: View {
                     }
                 } label: {
                     regularView(
-                        title: title ?? (didUndo ? "Undone!" : "Undo"),
-                        subtitle: title == nil ? nil : (didUndo ? "Undone!" : "Tap to Undo"),
+                        title: title ?? (didUndo ? .init(localized: "Undone!") : .init(localized: "Undo")),
+                        subtitle: title == nil ? nil : (didUndo ? .init(localized: "Undone!") : .init(localized: "Tap to Undo")),
                         systemImage: didUndo ? (successSystemImage ?? Icons.successCircleFill) : (systemImage ?? Icons.undoCircleFill),
                         imageColor: color,
                         subtitleColor: Palette.main.accent
@@ -144,7 +144,7 @@ struct ToastView: View {
                 HStack {
                     image(details.systemImage ?? Icons.errorCircleFill, color: palette.negative)
                     
-                    Text(details.title ?? "Error")
+                    Text(details.title ?? .init(localized: "Error"))
                         .frame(minWidth: 100)
                         .padding(isExpanded ? [] : [.trailing])
                         .frame(maxWidth: isExpanded ? .infinity : nil)

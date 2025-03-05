@@ -6,8 +6,8 @@
 //
 
 import Dependencies
-import SwiftUI
 import MlemMiddleware
+import SwiftUI
 
 struct BasicAction: Action {
     let id: String
@@ -46,13 +46,13 @@ struct BasicAction: Action {
                 popupModel.showPopup(ActionGroup(
                     appearance: .init(label: "Confirm", color: .gray, icon: Icons.success),
                     prompt: confirmationPrompt,
-                    children: [
+                    children: {
                         BasicAction(
                             id: "",
                             appearance: .init(label: "Yes", isOn: false, color: Palette.main.warning, icon: ""),
                             callback: callback
                         )
-                    ]
+                    }
                 ))
             } else {
                 callback()

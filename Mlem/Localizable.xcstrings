@@ -126,7 +126,6 @@
       }
     },
     "%@ is {{online}}" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -137,7 +136,6 @@
       }
     },
     "%@ is {{unhealthy}}" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -1192,7 +1190,6 @@
       }
     },
     "Ban" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -1243,7 +1240,6 @@
       }
     },
     "Ban from..." : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -1264,7 +1260,6 @@
       }
     },
     "Ban User" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -1321,7 +1316,6 @@
       }
     },
     "Banning from..." : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -1362,7 +1356,6 @@
       }
     },
     "Block community or user?" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -2306,7 +2299,6 @@
       }
     },
     "Custom Order" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -2901,7 +2893,6 @@
       }
     },
     "Error" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -3017,6 +3008,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Paramètres d'exportation"
+          }
+        }
+      }
+    },
+    "Export..." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exporter…"
           }
         }
       }
@@ -3643,6 +3644,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Paramètres d’importation"
+          }
+        }
+      }
+    },
+    "Import..." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importer..."
           }
         }
       }
@@ -4577,7 +4588,6 @@
       }
     },
     "Most Recent" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -5234,7 +5244,6 @@
       }
     },
     "Pin to Community or Instance?" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -5615,7 +5624,6 @@
       }
     },
     "Ranks posts based on the post score and creation time." : {
-      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5800,6 +5808,16 @@
         }
       }
     },
+    "Really remove %@?" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voulez-vous vraiment supprimer %@ ?"
+          }
+        }
+      }
+    },
     "Really remove administrator %@ from %@?" : {
       "localizations" : {
         "en" : {
@@ -5828,6 +5846,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Voulez-vous vraiment supprimer le modérateur %1$@ de %2$@ ?"
+          }
+        }
+      }
+    },
+    "Really sign out of %@?" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voulez-vous vraiment vous déconnecter de %@ ?"
           }
         }
       }
@@ -6255,7 +6283,6 @@
       }
     },
     "Requires Lemmy %@ or later" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -7316,7 +7343,6 @@
       }
     },
     "Tap to Undo" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -7998,7 +8024,6 @@
       }
     },
     "Unban" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -8019,7 +8044,6 @@
       }
     },
     "Unban from..." : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -8030,7 +8054,6 @@
       }
     },
     "Unban User" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -8057,7 +8080,6 @@
       }
     },
     "Unbanning from..." : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -8128,7 +8150,6 @@
       }
     },
     "Undone!" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {

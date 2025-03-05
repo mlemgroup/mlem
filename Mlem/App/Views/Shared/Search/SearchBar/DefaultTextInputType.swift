@@ -6,28 +6,11 @@ import Combine
 import Swift
 import SwiftUI
 
-/// A text-input type where `Self.Label == SwiftUI.Text`.
-public protocol DefaultTextInputType {
-    init<S: StringProtocol>(
-        _ title: S,
-        text: Binding<String>,
-        onEditingChanged: @escaping (Bool) -> Void,
-        onCommit: @escaping () -> Void
-    )
-    
-    init<S: StringProtocol>(
-        _ title: S,
-        text: Binding<String>,
-        isEditing: Binding<Bool>,
-        onCommit: @escaping () -> Void
-    )
-}
-
 // MARK: - Extensions
 
-public extension DefaultTextInputType {
+public extension SearchBar {
     init(
-        _ title: some StringProtocol,
+        _ title: LocalizedStringResource,
         text: Binding<String>,
         isEditing: Binding<Bool>,
         onCommit: @escaping () -> Void = {}

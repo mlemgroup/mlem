@@ -77,6 +77,7 @@ extension InboxView {
                     }
                 }
             }
+            EndOfFeedView(feedLoader: currentModFeedLoader, viewType: .cartoon)
         }
         .padding(.top, Constants.main.standardSpacing)
         .animation(.easeOut(duration: 0.1), value: currentModFeedLoader.items.isEmpty)

@@ -35,7 +35,7 @@ extension AdvancedSortView {
                         VStack(alignment: .leading) {
                             titleView
                             if (appState.firstApi.fetchedVersion ?? .infinity) < type.minimumVersion {
-                                Text("Requires Lemmy \(type.minimumVersion) or later")
+                                Text("Requires Lemmy \(String(describing: type.minimumVersion)) or later")
                                     .multilineTextAlignment(.leading)
                                     .foregroundStyle(palette.warning)
                                     .font(.footnote)
@@ -81,7 +81,7 @@ extension AdvancedSortView {
                     }
                     .popover(isPresented: $showingExplanation) {
                         PopoverContainer {
-                            Text(LocalizedStringKey(explanation))
+                            Text(explanation)
                                 .frame(maxWidth: 200)
                                 .fixedSize(horizontal: false, vertical: true)
                                 .font(.footnote)
