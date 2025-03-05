@@ -208,7 +208,7 @@ struct ModlogEntryView: View {
     @ViewBuilder
     func reasonView(_ reason: String?) -> some View {
         if let reason {
-            Text("Reason: ").foregroundStyle(.secondary) + Text(reason)
+            Text("Reason:").foregroundStyle(.secondary) + Text(verbatim: " \(reason)")
         } else {
             Text("No reason given")
                 .foregroundStyle(.secondary)
