@@ -39,10 +39,22 @@ struct DiscussionLanguageSettingsView: View {
                     let selectedLanguages = instance.languages(withIds: person.discussionLanguageIds)
                     ForEach(selectedLanguages, id: \.languageCode) { language in
                         LanguageListRowBody(language: language)
+                            .contextMenu {
+                                Button("Remove", systemImage: Icons.signOut, role: .destructive) {
+                                    Task { await updateDiscussionLanguages(with: language) }
+                                }
+                            }
+                            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                                Button("Remove", role: .destructive) {
+                                    Task { await updateDiscussionLanguages(with: language) }
+                                }
+                                .buttonStyle(.automatic)
+                                .tint(.red)
+                            }
                     }
                     Button("Add Language...") {
                         navigation.openSheet(.languagePicker(selectedLanguages: Set(selectedLanguages)) { newLanguage in
-                            print(newLanguage)
+                            Task { await updateDiscussionLanguages(with: newLanguage) }
                         })
                     }
                 }
@@ -74,51 +86,30 @@ struct DiscussionLanguageSettingsView: View {
         }
         .contentMargins(.top, 16)
     }
-    
-//    @ViewBuilder
-//    func languageButtonView(_ language: ContentLanguage, index: Int, person: any Person4Providing) -> some View {
-//        Button {
-//            if submitting == nil {
-//                submitting = index
-//                Task {
-//                    await updateDiscussionLanguages(with: index)
-//                }
-//            }
-//        } label: {
-//            HStack {
-//                languageRowLabelView(language)
-//                Spacer()
-//                if submitting == index {
-//                    ProgressView()
-//                } else if person.discussionLanguages.contains(index) {
-//                    Image(systemName: Icons.success)
-//                        .foregroundStyle(palette.accent)
-//                }
-//            }
-//            .contentShape(.rect)
-//        }
-//        .buttonStyle(.plain)
-//    }
-//
-//
-//    func updateDiscussionLanguages(with id: Int) async {
-//        defer { submitting = nil }
-//
-//        guard let person else {
-//            assertionFailure("No person found")
-//            return
-//        }
-//
-//        var newLangs = person.discussionLanguages
-//        if newLangs.contains(id) {
-//            newLangs.remove(id)
-//        } else {
-//            newLangs.insert(id)
-//        }
-//        do {
-//            try await person.person4.updateSettings(discussionLanguages: newLangs)
-//        } catch {
-//            handleError(error)
-//        }
-//    }
+
+    func updateDiscussionLanguages(with language: Locale.Language) async {
+        defer { submitting = nil }
+
+        guard let person, let instance else {
+            assertionFailure()
+            return
+        }
+
+        guard let id = instance.getLanguageId(for: language) else {
+            assertionFailure()
+            return
+        }
+        
+        var newLangs = person.discussionLanguageIds
+        if newLangs.contains(id) {
+            newLangs.remove(id)
+        } else {
+            newLangs.insert(id)
+        }
+        do {
+            try await person.person4.updateSettings(discussionLanguageIds: newLangs)
+        } catch {
+            handleError(error)
+        }
+    }
 }
