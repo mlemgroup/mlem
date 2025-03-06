@@ -9,6 +9,7 @@ import Dependencies
 import MlemMiddleware
 import Nuke
 import SwiftUI
+import Theming
 
 struct ContentView: View {
     @Environment(\.scenePhase) var scenePhase
@@ -27,7 +28,6 @@ struct ContentView: View {
     
     // globals
     var appState: AppState { .main }
-    var palette: Palette { .main }
     var tabReselectTracker: TabReselectTracker { .main }
     var navigationModel: NavigationModel { .main }
     var filtersTracker: FiltersTracker { .main }
@@ -35,6 +35,8 @@ struct ContentView: View {
 
     @State var avatarImage: UIImage?
     @State var selectedAvatarImage: UIImage?
+    
+    var palette: Theming.Palette { .default }
     
     var body: some View {
         if appState.appRefreshToggle {
@@ -59,7 +61,7 @@ struct ContentView: View {
                     contentPickerTracker: navigationModel.contentPickerTracker
                 )
                 .tint(palette.accent)
-                .environment(palette)
+                .palette(palette)
                 .environment(tabReselectTracker)
                 .environment(appState)
                 .environment(filtersTracker)
@@ -82,11 +84,11 @@ struct ContentView: View {
                     // TODO: when Observation adds continous observation monitoring, move this into FiltersTracker
                     filtersTracker.moderatedCommunityActorIds = appState.firstPerson?.moderatedCommunityActorIds ?? .init()
                 }
-                .onChange(of: colorPalette) {
-                    withAnimation {
-                        palette.changePalette(to: colorPalette)
-                    }
-                }
+//                .onChange(of: colorPalette) {
+//                    withAnimation {
+//                        palette.changePalette(to: colorPalette)
+//                    }
+//                }
                 .onChange(of: scenePhase, initial: false) {
                     if AppState.main.firstAccount is UserAccount, scenePhase != .active {
                         Task {

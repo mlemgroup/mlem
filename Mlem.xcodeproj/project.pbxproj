@@ -310,6 +310,7 @@
 		03D3A1EF2BB9CA1D009DE55E /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1EE2BB9CA1D009DE55E /* MenuButton.swift */; };
 		03D3A1F12BB9D48E009DE55E /* BasicAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1F02BB9D48E009DE55E /* BasicAction.swift */; };
 		03D3A1F32BB9D49B009DE55E /* ActionGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1F22BB9D49B009DE55E /* ActionGroup.swift */; };
+		03DA26B72D7A2BA100E66267 /* Theming in Frameworks */ = {isa = PBXBuildFile; productRef = 03DA26B62D7A2BA100E66267 /* Theming */; };
 		03DA4FB72CF115FB001C3C77 /* CommentEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B431B12C44409D001A1EB5 /* CommentEditorView.swift */; };
 		03DAEA772C64074E0064DE64 /* SubscriptionListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03DAEA762C64074E0064DE64 /* SubscriptionListItemView.swift */; };
 		03DD69422D4FDE8900F8950D /* Person+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03DD69412D4FDE8900F8950D /* Person+Mock.swift */; };
@@ -1034,6 +1035,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		03DA26AC2D79F29700E66267 /* Packages */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Packages; sourceTree = "<group>"; };
 		03F6BDA12D502382006A425E /* Preview Content */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "Preview Content"; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
@@ -1042,6 +1044,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03DA26B72D7A2BA100E66267 /* Theming in Frameworks */,
 				03FA318C2C6FECAE00D47FA3 /* Flow in Frameworks */,
 				030FF6792BC84F7E00F6BFAC /* SwiftUIIntrospect in Frameworks */,
 				B104A6DA2A59BF3C00B3E725 /* NukeExtensions in Frameworks */,
@@ -1581,6 +1584,7 @@
 		6363D5C327EE196700E34822 /* Mlem */ = {
 			isa = PBXGroup;
 			children = (
+				03DA26AC2D79F29700E66267 /* Packages */,
 				CD4D583B2B867BB300B82964 /* App */,
 				6363D5C827EE196A00E34822 /* Assets.xcassets */,
 				030778EB2C52ED350018E61C /* Localizable.xcstrings */,
@@ -2292,6 +2296,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				03DA26AC2D79F29700E66267 /* Packages */,
 				03F6BDA12D502382006A425E /* Preview Content */,
 			);
 			name = Mlem;
@@ -2310,6 +2315,7 @@
 				CDE4AC462CA372B600981010 /* SDWebImageWebPCoder */,
 				CD64A9192CA37E8D007CA7E6 /* Gifu */,
 				CD2CEF912D7690E30003E53A /* MlemMiddleware */,
+				03DA26B62D7A2BA100E66267 /* Theming */,
 			);
 			productName = Mlem;
 			productReference = 6363D5C127EE196700E34822 /* Mlem.app */;
@@ -3427,6 +3433,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 037386452BDAFE81007492B5 /* XCRemoteSwiftPackageReference "LemmyMarkdownUI" */;
 			productName = LemmyMarkdownUI;
+		};
+		03DA26B62D7A2BA100E66267 /* Theming */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Theming;
 		};
 		03FA318B2C6FECAE00D47FA3 /* Flow */ = {
 			isa = XCSwiftPackageProductDependency;

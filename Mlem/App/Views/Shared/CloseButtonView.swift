@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import Theming
 
 struct CloseButtonView: View {
     @Environment(\.dismiss) var dismiss
@@ -27,7 +28,7 @@ struct CloseButtonView: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(height: size)
                 .symbolRenderingMode(.palette)
-                .foregroundStyle(.secondary, .secondary.opacity(0.2))
+                .foregroundStyle(.themedSecondary, .themedSecondary.opacity(0.2))
         }
         .buttonStyle(.plain)
         .accessibilityLabel("Dismiss")
