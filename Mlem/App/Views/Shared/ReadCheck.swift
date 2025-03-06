@@ -6,9 +6,10 @@
 //
 
 import SwiftUI
+import Theming
 
 struct ReadCheck: View {
-    @Environment(Palette.self) var palette
+    @Environment(\.self) var environment
     
     let dimension: CGFloat
     
@@ -21,6 +22,6 @@ struct ReadCheck: View {
             .resizable()
             .scaledToFit()
             .frame(width: dimension, height: dimension)
-            .foregroundColor(palette.secondary)
+            .foregroundColor(ThemedShapeStyle.themedSecondary.resolve(in: environment))
     }
 }

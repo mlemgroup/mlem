@@ -23,8 +23,8 @@ struct InfoStackView: View {
 }
 
 struct ReadoutView: View {
-    @Environment(Palette.self) private var palette
-
+    @Environment(\.self) var environment
+    
     let readout: Readout
     let showColor: Bool
     
@@ -44,10 +44,10 @@ struct ReadoutView: View {
             if let value = readout.value {
                 Text(value)
                     .monospacedDigit()
-                    .foregroundStyle(readout.valueColor ?? palette.secondary)
+                    .foregroundStyle(readout.valueColor ?? .themedSecondary.resolved(in: environment))
             }
         }
-        .foregroundStyle((showColor ? readout.color : nil) ?? palette.secondary)
+        .foregroundStyle((showColor ? readout.color : nil) ?? .themedSecondary.resolved(in: environment))
         .font(.footnote)
         .lineLimit(1)
     }

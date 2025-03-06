@@ -6,9 +6,10 @@
 //
 
 import SwiftUI
+import Theming
 
 struct MockTextView: View {
-    @Environment(Palette.self) var palette
+    @Environment(\.self) var environment
     
     let beginOpacity: CGFloat
     let endOpacity: CGFloat
@@ -21,7 +22,10 @@ struct MockTextView: View {
     var body: some View {
         Capsule()
             .fill(LinearGradient(
-                colors: [palette.secondary.opacity(beginOpacity), palette.secondary.opacity(endOpacity)],
+                colors: [
+                    ThemedShapeStyle.themedSecondary.resolve(in: environment).opacity(beginOpacity),
+                    ThemedShapeStyle.themedSecondary.resolve(in: environment).opacity(endOpacity)
+                ],
                 startPoint: .leading,
                 endPoint: .trailing
             ))

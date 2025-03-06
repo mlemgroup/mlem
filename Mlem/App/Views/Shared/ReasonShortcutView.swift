@@ -11,7 +11,6 @@ import SwiftUI
 
 struct ReasonShortcutView: View {
     @Environment(NavigationLayer.self) var navigation
-    @Environment(Palette.self) var palette
     @Environment(\.dismiss) var dismiss
     
     @Binding var reason: String
@@ -44,10 +43,10 @@ struct ReasonShortcutView: View {
             if let rulesTarget, ![BlockNode](rulesTarget.description ?? "").rules().isEmpty {
                 Label("\(rulesTarget.name) rules...", systemImage: "book.pages")
                     .labelStyle(.iconOnly)
-                    .foregroundStyle(palette.accent)
+                    .foregroundStyle(.themedAccent)
                     .padding(.vertical, 8)
                     .padding(.horizontal, 12)
-                    .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: 10))
+                    .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: 10))
                     .onTapGesture {
                         navigation.openSheet(.rulesList(rulesTarget, callback: {
                             reason = $0

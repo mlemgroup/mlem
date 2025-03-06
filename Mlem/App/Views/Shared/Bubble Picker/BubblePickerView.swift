@@ -18,8 +18,6 @@ struct BubblePickerItemFrame: Equatable {
 }
 
 struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
-    @Environment(Palette.self) var palette
-    
     @Binding var selected: Value
     
     // currentTabIndex is used to drive the capsule animation; it is tracked separately from selected so that the capsule animations can be triggered independently of any animation (or lack thereof) that is desired on selected
@@ -63,7 +61,7 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
                     buttonStack(scrollProxy: scrollProxy, isSelected: false)
                         .overlay {
                             buttonStack(isSelected: true)
-                                .background(palette.accent)
+                                .background(.themedAccent)
                                 .allowsHitTesting(false)
                                 .mask(alignment: .leading) {
                                     // This `if` statement prevents the size of the capsule animating from 0 to `width` when transitioning in
@@ -147,13 +145,14 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
             Text(label(tab))
                 .font(.subheadline)
                 .fontWeight(.semibold)
-                .foregroundColor(isSelected ? palette.selectedInteractionBarItem : palette.primary)
+                .foregroundStyle(isSelected ? .themedContrastingLabel : .themedPrimary)
             if let value {
                 Text(value.abbreviated)
                     .monospacedDigit()
                     .font(.subheadline)
                     .fontWeight(.medium)
-                    .foregroundColor(isSelected ? palette.selectedInteractionBarItem.opacity(0.8) : palette.secondary)
+                    .foregroundStyle(isSelected ? .themedContrastingLabel : .themedSecondary)
+                    .opacity(isSelected ? 0.8 : 1)
             }
         })
         .padding(.horizontal, 22)

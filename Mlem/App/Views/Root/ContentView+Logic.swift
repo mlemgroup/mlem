@@ -16,7 +16,6 @@ extension ContentView {
     var avatarRefreshHash: Int {
         var hasher = Hasher()
         hasher.combine(appState.firstAccount.avatar)
-        hasher.combine(palette.onChangeTrigger)
         hasher.combine(tabProfileShowAvatar)
         hasher.combine(colorScheme)
         return hasher.finalize()

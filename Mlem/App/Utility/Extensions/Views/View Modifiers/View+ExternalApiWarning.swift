@@ -10,7 +10,6 @@ import SwiftUI
 
 private struct ExternalApiWarningModifier: ViewModifier {
     @Environment(AppState.self) var appState
-    @Environment(Palette.self) var palette
     @Environment(NavigationLayer.self) var navigation
     
     let entity: any ContentModel & ActorIdentifiable
@@ -27,7 +26,7 @@ private struct ExternalApiWarningModifier: ViewModifier {
                         // into the navbar, so use filled rectangles instead
                         .background {
                             Rectangle()
-                                .fill(palette.accent.opacity(0.2))
+                                .fill(.themedAccent.opacity(0.2))
                         }
                         .background {
                             Rectangle()
@@ -41,7 +40,7 @@ private struct ExternalApiWarningModifier: ViewModifier {
     var label: some View {
         HStack {
             Text(title)
-                .foregroundStyle(palette.primary.opacity(0.5))
+                .foregroundStyle(.themedPrimary.opacity(0.5))
             Spacer()
             Button("More Info", systemImage: "questionmark.circle") {
                 navigation.openSheet(.externalApiInfo(

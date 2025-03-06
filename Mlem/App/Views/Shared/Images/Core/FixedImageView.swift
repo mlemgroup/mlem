@@ -12,7 +12,7 @@ import SwiftUI
 
 /// Image view that always has a fixed size. The image will be scaled to the given size, but resized to fill its parent frame.
 struct FixedImageView: View {
-    @Environment(Palette.self) var palette
+    @Environment(\.self) var environment
     @Environment(\.loadingTracker) var loadingTracker
     
     @Setting(\.postSize) var postSize
@@ -102,17 +102,17 @@ struct FixedImageView: View {
                 .resizable()
                 .scaledToFit()
                 .symbolRenderingMode(.palette)
-                .foregroundStyle(palette.selectedInteractionBarItem, palette.neutralAccent.gradient)
+                .foregroundStyle(.themedContrastingLabel, .themedNeutralAccent.resolve(in: environment).gradient)
         case .favicon:
             Image(systemName: fallback.icon)
-                .foregroundStyle(palette.secondary)
+                .foregroundStyle(.themedSecondary)
         case .image, .movie:
             let icon: String = loader.loading == .proxyFailed ? Icons.proxy : fallback.icon
             Image(systemName: icon)
                 .font(.title)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .foregroundStyle(palette.secondary)
-                .background(palette.thumbnailBackground)
+                .foregroundStyle(.themedSecondary)
+                .background(.themedThumbnailBackground)
         }
     }
 }

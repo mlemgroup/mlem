@@ -22,7 +22,6 @@ struct ExpandedPostView<Content: View>: View {
 
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
-    @Environment(Palette.self) var palette
     @Environment(\.dismiss) var dismiss
     
     @Setting(\.jumpButton) var jumpButton
@@ -76,7 +75,7 @@ struct ExpandedPostView<Content: View>: View {
                 ErrorView(.init(error: contentLoaderError))
             } else {
                 ProgressView()
-                    .tint(palette.secondary)
+                    .tint(.themedSecondary)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -84,7 +83,7 @@ struct ExpandedPostView<Content: View>: View {
             VStack {
                 if showLoadingSymbol {
                     ZStack {
-                        palette.background
+                        .themedBackground
                             .ignoresSafeArea()
                         ProgressView()
                             .tint(.secondary)

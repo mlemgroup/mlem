@@ -13,6 +13,7 @@ public struct Palette {
     public var groupedBackground: ColorHierarchy
     
     public var contrastingLabel: Color
+    public var thumbnailBackground: Color
     
     public var accent: Color
     public var neutralAccent: Color

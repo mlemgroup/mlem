@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct FormReadout: View {
-    @Environment(Palette.self) private var palette
-    
     let label: LocalizedStringResource
     let value: Int
     
@@ -22,7 +20,7 @@ struct FormReadout: View {
         FormSection {
             VStack(spacing: Constants.main.halfSpacing) {
                 Text(label)
-                    .foregroundStyle(palette.secondary)
+                    .foregroundStyle(.themedSecondary)
                 Text(value.abbreviated)
                     .font(.title)
                     .fontWeight(.semibold)

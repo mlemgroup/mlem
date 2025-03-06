@@ -9,8 +9,6 @@ import Nuke
 import SwiftUI
 
 struct SimpleAvatarView: View {
-    @Environment(Palette.self) var palette
-
     @State private var uiImage: UIImage
     @State private var loading: Bool
 

@@ -41,7 +41,6 @@ enum EndOfFeedViewType {
 }
 
 struct EndOfFeedView: View {
-    @Environment(Palette.self) var palette
     @Setting(\.developerMode) var developerMode
     
     @State var showLoadMore: Bool = false
@@ -107,7 +106,7 @@ struct EndOfFeedView: View {
                     Image(systemName: .init(localized: viewType.viewContent.icon))
                     Text(viewType.viewContent.message)
                 }
-                .foregroundColor(palette.secondary)
+                .foregroundColor(.themedSecondary)
             }
         }
         .frame(minHeight: 100)

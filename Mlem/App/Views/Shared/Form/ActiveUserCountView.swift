@@ -9,15 +9,13 @@ import MlemMiddleware
 import SwiftUI
 
 struct ActiveUserCountView: View {
-    @Environment(Palette.self) private var palette
-    
     let activeUserCount: ActiveUserCount
     
     var body: some View {
         FormSection {
             VStack(spacing: 8) {
                 Text("Active Users")
-                    .foregroundStyle(palette.secondary)
+                    .foregroundStyle(.themedSecondary)
                 HStack(spacing: 16) {
                     section(.init(month: 6), value: activeUserCount.sixMonths)
                     section(.init(month: 1), value: activeUserCount.month)
@@ -36,7 +34,7 @@ struct ActiveUserCountView: View {
                 .font(.title3)
                 .fontWeight(.semibold)
             Text(formatter.string(from: components) ?? "")
-                .foregroundStyle(palette.secondary)
+                .foregroundStyle(.themedSecondary)
         }
         .frame(maxWidth: .infinity)
     }

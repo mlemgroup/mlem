@@ -24,8 +24,6 @@ enum InstanceLocation: String, CaseIterable, Codable {
 }
 
 struct FullyQualifiedNameView: View {
-    @Environment(Palette.self) private var palette
-    
     // parameters
     let name: String?
     let instance: String?
@@ -51,7 +49,7 @@ struct FullyQualifiedNameView: View {
     func nameText(name: String) -> Text {
         Text(name)
             .bold()
-            .foregroundStyle(palette.secondary)
+            .foregroundStyle(.themedSecondary)
     }
     
     func instanceText(instance: String) -> Text {
@@ -59,7 +57,7 @@ struct FullyQualifiedNameView: View {
             // prepend a newline if location is bottom for easy concatenation
             Text(verbatim: "\(instanceLocation == .bottom ? "\n" : "")@\(instance)")
                 .font(.footnote)
-                .foregroundStyle(palette.tertiary)
+                .foregroundStyle(.themedTertiary)
         } else {
             Text(verbatim: "") // return empty Text for easy concatenation
         }
