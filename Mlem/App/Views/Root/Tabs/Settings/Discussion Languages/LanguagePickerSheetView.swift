@@ -66,8 +66,10 @@ struct LanguagePickerSheetView: View {
     var body: some View {
         Form {
             if query.isEmpty {
-                Section("Suggested Languages") {
-                    ForEach(suggestedLanguages, id: \.languageCode, content: languageRow)
+                if !suggestedLanguages.isEmpty {
+                    Section("Suggested Languages") {
+                        ForEach(suggestedLanguages, id: \.languageCode, content: languageRow)
+                    }
                 }
                 Section("All Languages") {
                     ForEach(allLanguages, id: \.languageCode, content: languageRow)
