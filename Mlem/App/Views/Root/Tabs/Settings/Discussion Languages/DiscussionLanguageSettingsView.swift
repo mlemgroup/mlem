@@ -59,30 +59,6 @@ struct DiscussionLanguageSettingsView: View {
                     }
                 }
             }
-
-//            if let languages = person?.discussionLanguages, !languages.contains(0) {
-//                Section {
-//                    Label("You will not see most content if Undetermined is not selected.", systemImage: Icons.warningFill)
-//                        .foregroundStyle(palette.warning)
-//                }
-//            }
-//
-//            Section {
-//                if let instance, let person {
-//                    ForEach(Array(instance.allLanguages.enumerated()), id: \.offset) {
-//                        languageButtonView($1, index: $0, person: person)
-//                    }
-//                } else {
-//                    ProgressView()
-//                        .task {
-//                            do {
-//                                try await (person, instance, _) = AppState.main.firstApi.getMyPerson()
-//                            } catch {
-//                                handleError(error)
-//                            }
-//                        }
-//                }
-//            }
         }
         .contentMargins(.top, 16)
     }
