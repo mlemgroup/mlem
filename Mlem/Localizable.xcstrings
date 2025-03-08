@@ -701,6 +701,9 @@
         }
       }
     },
+    "Add Language..." : {
+
+    },
     "Add Moderator" : {
       "localizations" : {
         "fr" : {
@@ -800,6 +803,9 @@
           }
         }
       }
+    },
+    "All Languages" : {
+
     },
     "All Time" : {
       "localizations" : {
@@ -1682,6 +1688,9 @@
           }
         }
       }
+    },
+    "Choose Language" : {
+
     },
     "Choose the default sort mode for posts and comments." : {
       "localizations" : {
@@ -7210,6 +7219,9 @@
         }
       }
     },
+    "Suggested Languages" : {
+
+    },
     "Superscript" : {
       "localizations" : {
         "fr" : {
@@ -8772,6 +8784,7 @@
       }
     },
     "You will not see most content if Undetermined is not selected." : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {

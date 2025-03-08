@@ -35,6 +35,7 @@ enum NavigationPage: Hashable {
     case communityPicker(api: ApiClient?, callback: HashWrapper<(Community2, NavigationLayer) -> Void>)
     case personPicker(api: ApiClient?, filter: ApiListingType, callback: HashWrapper<(Person2, NavigationLayer) -> Void>)
     case instancePicker(callback: HashWrapper<(InstanceSummary, NavigationLayer) -> Void>, minimumVersion: SiteVersion? = nil)
+    case languagePicker(selectedLanguages: Set<Locale.Language>, callback: HashWrapper<(Locale.Language) -> Void>)
     case selectText(_ string: String)
     case subscriptionList
     case createComment(_ context: CommentEditorView.Context, commentTreeTracker: CommentTreeTracker? = nil)
@@ -185,6 +186,13 @@ enum NavigationPage: Hashable {
     ) -> NavigationPage {
         assert((minimumVersion ?? .infinity) > Constants.main.minimumLemmyVersion)
         return instancePicker(callback: .init(wrappedValue: callback), minimumVersion: minimumVersion)
+    }
+    
+    static func languagePicker(
+        selectedLanguages: Set<Locale.Language>,
+        callback: @escaping (Locale.Language) -> Void
+    ) -> NavigationPage {
+        languagePicker(selectedLanguages: selectedLanguages, callback: .init(wrappedValue: callback))
     }
     
     static func signUp() -> NavigationPage {

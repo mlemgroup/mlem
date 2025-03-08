@@ -25,7 +25,7 @@
       "location" : "https://github.com/kaishin/Gifu",
       "state" : {
         "branch" : "master",
-        "revision" : "46434cd816f035271beb16d80f7bc91381cbd8e4"
+        "revision" : "639e40d5dbd86dfa94fc61296c270b49af6f8a2a"
       }
     },
     {
@@ -42,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mlemgroup/LemmyMarkdownUI",
       "state" : {
-        "revision" : "7ff10d03da50c6be48169dc30f09c9409e8a0b5b",
-        "version" : "0.10.0"
+        "revision" : "3f9fb02b44f36524a71c35cb745766c9cfdb4ec7",
+        "version" : "0.10.1"
       }
     },
     {
@@ -60,8 +60,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mlemgroup/MlemMiddleware",
       "state" : {
-        "revision" : "7df5e6ce33726fc790ee04954de23bc47403b19a",
-        "version" : "0.82.2"
+        "revision" : "bd13585a4941ef04cad6943a3ed576c9f4904b11",
+        "version" : "0.83.0"
       }
     },
     {
