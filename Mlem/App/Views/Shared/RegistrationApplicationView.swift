@@ -8,9 +8,10 @@
 import LemmyMarkdownUI
 import MlemMiddleware
 import SwiftUI
+import Theming
 
 struct RegistrationApplicationView: View {
-    @Environment(Palette.self) var palette
+    @Environment(\.palette) var palette
     
     let application: RegistrationApplication
     
@@ -23,7 +24,7 @@ struct RegistrationApplicationView: View {
                     application.menuActions()
                 }
             }
-            Markdown(application.questionResponse, configuration: .default)
+            Markdown(application.questionResponse, configuration: .default(palette: palette))
             switch application.resolution {
             case .unresolved:
                 resolutionButtonsView
@@ -32,7 +33,7 @@ struct RegistrationApplicationView: View {
             }
         }
         .padding(Constants.main.standardSpacing)
-        .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+        .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
         .contextMenu {
@@ -43,11 +44,12 @@ struct RegistrationApplicationView: View {
     @ViewBuilder
     var resolutionInfoView: some View {
         if let resolver = application.resolver {
-            let color = application.resolution == .approved ? palette.positive : palette.negative
+            let color: ThemedColor = application.resolution == .approved ? .themedPositive : .themedNegative
             let resolverLabel = resolver.nameTextView(
                 showFlairs: false,
                 showInstance: true,
                 font: .footnote,
+                palette: palette,
                 nameColor: color,
                 instanceColor: color.opacity(0.5)
             )
@@ -79,8 +81,8 @@ struct RegistrationApplicationView: View {
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, Constants.main.standardSpacing)
             }
-            .background(palette.tertiaryGroupedBackground)
-            .foregroundStyle(palette.negative)
+            .background(.themedTertiaryGroupedBackground)
+            .foregroundStyle(.themedNegative)
             .clipShape(.capsule)
             Button {
                 application.approve()
@@ -89,8 +91,8 @@ struct RegistrationApplicationView: View {
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, Constants.main.standardSpacing)
             }
-            .background(palette.tertiaryGroupedBackground)
-            .foregroundStyle(palette.accent)
+            .background(.themedTertiaryGroupedBackground)
+            .foregroundStyle(.themedAccent)
             .clipShape(.capsule)
         }
         .font(.subheadline)

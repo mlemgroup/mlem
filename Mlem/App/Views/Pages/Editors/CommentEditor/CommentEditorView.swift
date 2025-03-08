@@ -62,7 +62,6 @@ struct CommentEditorView: View {
         self._slurRegex = .init(wrappedValue: AppState.main.firstApi.myInstance?.slurRegex())
         
         textView.text = commentToEdit?.content ?? ""
-        textView.backgroundColor = UIColor(Palette.main.background)
     }
         
     var minTextEditorHeight: CGFloat {

@@ -7,6 +7,7 @@
 
 import MlemMiddleware
 import SwiftUI
+import Theming
 
 extension ApiRegistrationMode {
     var label: LocalizedStringResource {
@@ -17,14 +18,11 @@ extension ApiRegistrationMode {
         }
     }
     
-    var color: Color {
+    var color: ThemedColor {
         switch self {
-        case .closed:
-            return Palette.main.negative
-        case .requireApplication:
-            return Palette.main.caution
-        case .open:
-            return Palette.main.positive
+        case .closed: .themedNegative
+        case .requireApplication: .themedCaution
+        case .open: .themedPositive
         }
     }
 }

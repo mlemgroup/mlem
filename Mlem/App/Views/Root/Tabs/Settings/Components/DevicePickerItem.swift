@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct DevicePickerItem<Item: Equatable, ScreenContent: View>: View {
-    @Environment(Palette.self) var palette
-    
     let title: String
     let item: Item
     let scale: CGFloat
@@ -37,10 +35,10 @@ struct DevicePickerItem<Item: Equatable, ScreenContent: View>: View {
             SettingsDeviceView(selected: isSelected, scale: scale, screenContent: screenContent)
             Text(title)
                 .lineLimit(1)
-                .foregroundStyle(isSelected ? palette.selectedInteractionBarItem : palette.primary)
+                .foregroundStyle(isSelected ? .themedContrastingLabel : .themedPrimary)
                 .padding(.vertical, 5)
                 .padding(.horizontal, 10)
-                .background(isSelected ? palette.accent : .clear, in: .capsule)
+                .background(isSelected ? .themedAccent : .clear, in: .capsule)
         }
         .onTapGesture {
             HapticManager.main.play(haptic: .gentleInfo, priority: .low)

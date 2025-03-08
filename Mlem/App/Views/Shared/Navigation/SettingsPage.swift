@@ -194,11 +194,13 @@ enum SettingsPage: Hashable {
 }
 
 private struct SimpleMarkdownPage: View {
+    @Environment(\.palette) var palette
+    
     let doc: Document
     
     var body: some View {
         ScrollView {
-            Markdown(doc.body, configuration: .default)
+            Markdown(doc.body, configuration: .default(palette: palette))
                 .padding(Constants.main.standardSpacing)
         }
         .background(.themedBackground)

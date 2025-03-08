@@ -8,46 +8,46 @@
 import SwiftUI
 
 struct AboutMlemView: View {
-    @Environment(Palette.self) var palette
+    @Environment(\.palette) var palette
     
     var body: some View {
         Form {
             Section {} header: {
                 appHeaderView
-                    .listRowBackground(palette.groupedBackground)
-                    .foregroundStyle(palette.primary)
+                    .listRowBackground(palette.groupedBackground.primary)
+                    .foregroundStyle(.themedPrimary)
             }
             .textCase(nil)
             .listRowInsets(.init(top: 50, leading: 0, bottom: 15, trailing: 0))
             Section {
                 Link(destination: URL(string: "https://mlem.group")!) {
                     FormChevron { Label("Website", systemImage: Icons.websiteIcon) }
-                        .foregroundStyle(palette.primary)
+                        .foregroundStyle(.themedPrimary)
                 }
-                .tint(palette.colorfulAccent(2))
+                .tint(.themedColorfulAccent(2))
                 Link(destination: URL(string: "https://lemmy.ml/c/mlemapp")!) {
                     FormChevron { Label("Lemmy Community", systemImage: Icons.communityFill) }
-                        .foregroundStyle(palette.primary)
+                        .foregroundStyle(.themedPrimary)
                 }
-                .tint(palette.colorfulAccent(3))
+                .tint(.themedColorfulAccent(3))
                 Link(destination: URL(string: "https://matrix.to/#/#mlemappspace:matrix.org")!) {
                     FormChevron { Label("Matrix Room", image: "matrix.logo") }
-                        .foregroundStyle(palette.primary)
+                        .foregroundStyle(.themedPrimary)
                 }
                 .tint(.black) // non-palette because white tint turns this into white square
                 Link(destination: URL(string: "https://github.com/mlemgroup/mlem")!) {
                     FormChevron { Label("GitHub Repository", image: "github.logo") }
-                        .foregroundStyle(palette.primary)
+                        .foregroundStyle(.themedPrimary)
                 }
                 .tint(.black) // non-palette because white tint turns this into white square
             }
             Section {
                 NavigationLink("Privacy Policy", systemImage: Icons.privacy, destination: .settings(.document(.privacyPolicy)))
-                    .tint(palette.colorfulAccent(2))
+                    .tint(.themedColorfulAccent(2))
                 NavigationLink("EULA", systemImage: "doc.plaintext.fill", destination: .settings(.document(.eula)))
-                    .tint(palette.colorfulAccent(0))
+                    .tint(.themedColorfulAccent(0))
                 NavigationLink("Licenses", systemImage: "doc.fill", destination: .settings(.licences))
-                    .tint(palette.colorfulAccent(4))
+                    .tint(.themedColorfulAccent(4))
             }
         }
         .buttonStyle(.plain)
@@ -62,7 +62,7 @@ struct AboutMlemView: View {
                 Spacer()
                 Image(systemName: Icons.forward)
                     .imageScale(.small)
-                    .foregroundStyle(palette.tertiary)
+                    .foregroundStyle(.themedTertiary)
             }
             .contentShape(.rect)
         }
@@ -77,7 +77,7 @@ struct AboutMlemView: View {
                 .clipShape(.circle)
             
             Text("Mlem \(versionString)")
-                .foregroundStyle(palette.secondary)
+                .foregroundStyle(.themedSecondary)
         }
         .frame(maxWidth: .infinity)
     }

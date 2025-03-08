@@ -7,6 +7,7 @@
 
 import MlemMiddleware
 import SwiftUI
+import Theming
 
 extension ScoringOperation {
     var systemImage: String {
@@ -17,11 +18,11 @@ extension ScoringOperation {
         }
     }
     
-    var color: Color {
+    var color: ThemedColor {
         switch self {
-        case .none: Palette.main.secondary
-        case .upvote: Palette.main.upvote
-        case .downvote: Palette.main.downvote
+        case .none: .themedSecondary
+        case .upvote: .themedUpvote
+        case .downvote: .themedDownvote
         }
     }
 }

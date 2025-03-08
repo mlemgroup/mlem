@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct SubscriptionListSettingsView: View {
-    @Environment(Palette.self) var palette
-    
     @Setting(\.subscriptionSort) private var sort
     @Setting(\.subscriptionInstanceLocation) var instanceLocation
     @Setting(\.sidebarVisibleByDefault) var sidebarVisibleByDefault
@@ -21,7 +19,7 @@ struct SubscriptionListSettingsView: View {
                 description: "Customize how your subscription list is sorted.",
                 systemImage: "list.bullet"
             )
-            .tint(palette.communityAccent)
+            .tint(.themedCommunityAccent)
             Section("Sort by...") {
                 Picker("Sort by...", selection: $sort) {
                     ForEach(SubscriptionListSort.allCases, id: \.self) { item in

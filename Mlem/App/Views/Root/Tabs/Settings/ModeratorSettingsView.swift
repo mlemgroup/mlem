@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct ModeratorSettingsView: View {
-    @Environment(Palette.self) var palette
-    
     @Setting(\.moderatorActionGrouping) var moderatorActionGrouping
     @Setting(\.showAllModActions) var showAllModActions
     @Setting(\.tabInboxBadgeIncludedTypes) var tabInboxBadgeIncludedTypes
@@ -21,7 +19,7 @@ struct ModeratorSettingsView: View {
                 description: "Manage settings related to content moderation.",
                 systemImage: Icons.moderationFill
             )
-            .tint(palette.moderation)
+            .tint(.themedModeration)
             Section {
                 NavigationLink(
                     "Moderator Actions",

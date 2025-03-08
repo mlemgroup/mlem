@@ -22,7 +22,7 @@ struct SignUpView: View {
     }
 
     @Environment(NavigationLayer.self) var navigation
-    @Environment(Palette.self) var palette
+    @Environment(\.palette) var palette
     @Environment(\.isRootView) var isRootView
     @Environment(\.scenePhase) var scenePhase
     
@@ -66,13 +66,13 @@ struct SignUpView: View {
                 }
             } else {
                 ProgressView()
-                    .tint(palette.secondary)
+                    .tint(.themedSecondary)
             }
         }
         .animation(.easeOut(duration: 0.1), value: signInResult)
         .animation(.easeOut(duration: 0.1), value: instance is any Instance2Providing)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(palette.groupedBackground)
+        .background(.themedGroupedBackground)
         .task {
             guard upgradeState == .idle else { return }
             upgradeState = .loading
@@ -115,7 +115,7 @@ struct SignUpView: View {
             applicationQuestionSection(instance)
             Section {
                 Toggle("Show NSFW Content", isOn: $showNsfw)
-                    .tint(palette.warning)
+                    .tint(.themedWarning)
             }
             captchaSection(instance)
             Section {

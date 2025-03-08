@@ -9,7 +9,6 @@ import SwiftUI
 
 struct ImageViewer: View {
     @Environment(NavigationLayer.self) var navigation
-    @Environment(Palette.self) var palette
     @Environment(\.dismiss) var dismiss
     @Environment(\.colorScheme) var colorScheme
     @Setting(\.zoomSliderLocation) var zoomSliderLocation

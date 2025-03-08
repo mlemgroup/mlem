@@ -9,8 +9,6 @@ import MlemMiddleware
 import SwiftUI
 
 struct SortingSettingsView: View {
-    @Environment(Palette.self) var palette
-    
     @Setting(\.defaultPostSort) var defaultPostSort
     @Setting(\.fallbackPostSort) var fallbackPostSort
     @Setting(\.commentSort) var commentSort
@@ -22,13 +20,13 @@ struct SortingSettingsView: View {
                 description: "Choose the default sort mode for posts and comments.",
                 systemImage: "arrow.up.and.down.text.horizontal"
             )
-            .tint(palette.colorfulAccent(5))
+            .tint(.themedColorfulAccent(5))
             Section {
                 HStack {
                     Text("Posts")
                     Spacer()
                     FeedSortPicker(sort: $defaultPostSort)
-                        .foregroundStyle(palette.accent)
+                        .foregroundStyle(.themedAccent)
                         .frame(minHeight: 50)
                         .buttonStyle(.bordered)
                 }
@@ -37,7 +35,7 @@ struct SortingSettingsView: View {
                         Text("Fallback")
                         Spacer()
                         FeedSortPicker(sort: $fallbackPostSort)
-                            .foregroundStyle(palette.accent)
+                            .foregroundStyle(.themedAccent)
                             .frame(minHeight: 50)
                             .buttonStyle(.bordered)
                     }
@@ -60,7 +58,7 @@ struct SortingSettingsView: View {
                             }
                         }
                     }
-                    .foregroundStyle(palette.accent)
+                    .foregroundStyle(.themedAccent)
                     .frame(minHeight: 50)
                     .buttonStyle(.bordered)
                 }

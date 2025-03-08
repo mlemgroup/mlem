@@ -18,7 +18,6 @@ struct FeedsView: View {
     @Setting(\.embedLoops) var embedLoops
     
     @Environment(AppState.self) var appState
-    @Environment(Palette.self) var palette
     @Environment(FiltersTracker.self) var filtersTracker
     
     @ObservationIgnored @Dependency(\.persistenceRepository) private var persistenceRepository
@@ -91,7 +90,7 @@ struct FeedsView: View {
     
     var body: some View {
         content
-            .background(palette.groupedBackground)
+            .background(.themedGroupedBackground)
             .scrollContentBackground(.hidden)
             .toolbar {
                 if !isAtTop {

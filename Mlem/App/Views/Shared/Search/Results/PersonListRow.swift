@@ -12,7 +12,6 @@ struct PersonListRow<Content2: View>: View {
     typealias Content = PersonListRowBody<Content2>
     
     @Environment(AppState.self) var appState
-    @Environment(Palette.self) var palette
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.communityContext) var communityContext
     
@@ -53,7 +52,7 @@ struct PersonListRow<Content2: View>: View {
         }
         .buttonStyle(.empty)
         .padding(.vertical, 6)
-        .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+        .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
         .contextMenu { person.menuActions(appState: appState, navigation: navigation, community: communityContext) }
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
@@ -72,6 +71,6 @@ struct PersonListRow<Content2: View>: View {
             }
         }
         .contentMargins(.horizontal, Constants.main.standardSpacing)
-        .background(Palette.main.groupedBackground)
+        .background(.themedGroupedBackground)
     }
 #endif

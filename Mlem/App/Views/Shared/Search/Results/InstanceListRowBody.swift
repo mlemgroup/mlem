@@ -13,7 +13,6 @@ struct InstanceListRowBody<Content: View>: View {
 
     @Setting(\.blurNsfw) var blurNsfw
     
-    @Environment(Palette.self) var palette
     @Environment(\.isEnabled) var isEnabled
     
     let instance: (any Instance)?
@@ -66,12 +65,12 @@ struct InstanceListRowBody<Content: View>: View {
             
             VStack(alignment: .leading, spacing: 2) {
                 Text(host)
-                    .foregroundStyle(isEnabled ? palette.primary : palette.secondary)
+                    .foregroundStyle(isEnabled ? .themedPrimary : .themedSecondary)
                     .lineLimit(1)
                 if let version {
                     Text(version.description)
                         .font(.footnote)
-                        .foregroundStyle(palette.secondary)
+                        .foregroundStyle(.themedSecondary)
                         .lineLimit(1)
                 }
             }
@@ -94,7 +93,7 @@ struct InstanceListRowBody<Content: View>: View {
                 .fontWeight(.semibold)
         }
         .monospacedDigit()
-        .foregroundStyle(palette.secondary)
+        .foregroundStyle(.themedSecondary)
         .symbolRenderingMode(.hierarchical)
     }
 }

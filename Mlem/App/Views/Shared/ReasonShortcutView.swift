@@ -31,7 +31,7 @@ struct ReasonShortcutView: View {
                 Text(item)
                     .padding(.vertical, 8)
                     .frame(maxWidth: .infinity)
-                    .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: 10))
+                    .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: 10))
                     .contentShape(.rect)
                     .onTapGesture {
                         var item = item

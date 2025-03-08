@@ -98,7 +98,8 @@ struct NavigationLayerView: View {
     }
     
     private var preferredColorScheme: ColorScheme? {
-        let newStyle: UIUserInterfaceStyle = palette.supportedModes != .unspecified ? palette.supportedModes : interfaceStyle
+        @Setting(\.colorPalette) var colorPalette
+        let newStyle: UIUserInterfaceStyle = colorPalette.supportedModes != .unspecified ? colorPalette.supportedModes : interfaceStyle
         
         // The image viewer relies on having a concrete color scheme for the status bar color.
         // Otherwise the status bar will "flash" when the sheet is dismissed

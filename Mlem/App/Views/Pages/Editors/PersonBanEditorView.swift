@@ -84,7 +84,7 @@ struct PersonBanEditorView: View {
                     reasonSection
                     Section {
                         Toggle("Permanent", isOn: $isPermanent)
-                            .tint(palette.warning)
+                            .tint(.themedWarning)
                     }
                     .listSectionSpacing(60)
                     durationSection
@@ -134,7 +134,7 @@ struct PersonBanEditorView: View {
                             Spacer()
                             Image(systemName: Icons.dropDown)
                                 .fontWeight(.semibold)
-                                .foregroundStyle(palette.secondary)
+                                .foregroundStyle(.themedSecondary)
                         }
                     }
                     .buttonStyle(.empty)

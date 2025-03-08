@@ -22,7 +22,6 @@ struct PostGridView: View {
     @Setting(\.infiniteScroll) var infiniteScroll
     @Setting(\.allowMultiplePostColumns) var allowMultipleColumns
     
-    @Environment(Palette.self) var palette
     @Environment(FiltersTracker.self) var filtersTracker
     
     @Environment(\.communityContext) var communityContext

@@ -106,7 +106,7 @@ struct EndOfFeedView: View {
                     Image(systemName: .init(localized: viewType.viewContent.icon))
                     Text(viewType.viewContent.message)
                 }
-                .foregroundColor(.themedSecondary)
+                .foregroundStyle(.themedSecondary)
             }
         }
         .frame(minHeight: 100)

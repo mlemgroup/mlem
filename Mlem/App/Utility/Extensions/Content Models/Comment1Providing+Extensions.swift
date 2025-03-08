@@ -65,7 +65,7 @@ extension Comment1Providing {
         basicMenuActions(appState: appState, feedback: feedback, commentTreeTracker: commentTreeTracker)
         if canModerate {
             ActionGroup(
-                appearance: .init(label: "Moderation...", color: Palette.main.moderation, icon: Icons.moderation),
+                appearance: .init(label: "Moderation...", color: .themedModeration, icon: Icons.moderation),
                 displayMode: Settings.main.moderatorActionGrouping == .divider || expanded ? .section : .disclosure
             ) {
                 moderatorMenuActions(appState: appState, feedback: feedback, showAllActions: showAllActions, report: report)

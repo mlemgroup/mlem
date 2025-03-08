@@ -10,8 +10,8 @@ import SwiftUI
 
 struct ProfileSettingsView: View {
     @Environment(NavigationLayer.self) var navigation
-    @Environment(Palette.self) var palette
     
+    @Environment(\.palette) var palette
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.dismiss) var dismiss
     
@@ -150,11 +150,12 @@ struct ProfileSettingsView: View {
                         url: bannerUrl,
                         contentMode: .fill,
                         enableContextMenu: true,
-                        enableImageViewer: true)
-                        .frame(height: 150)
-                        .clipped()
+                        enableImageViewer: true
+                    )
+                    .frame(height: 150)
+                    .clipped()
                 } else {
-                    palette.secondary.opacity(0.5)
+                    palette.label.secondary.opacity(0.5)
                         .frame(height: 150)
                 }
                 HStack(spacing: 15) {

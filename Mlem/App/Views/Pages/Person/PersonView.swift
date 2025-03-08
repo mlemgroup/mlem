@@ -9,6 +9,7 @@ import Flow
 import LemmyMarkdownUI
 import MlemMiddleware
 import SwiftUI
+import Theming
 
 // swiftlint:disable:next type_body_length
 struct PersonView: View {
@@ -32,7 +33,8 @@ struct PersonView: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
     @Environment(FiltersTracker.self) var filtersTracker
-    
+    @Environment(\.palette) var palette
+
     let visitContext: VisitHistory.VisitContext?
     
     @State var person: AnyPerson
@@ -114,7 +116,7 @@ struct PersonView: View {
                 ErrorView(.init(error: error))
             } else {
                 ProgressView()
-                    .tint(ThemedShapeStyle.themedSecondary.resolve(in: environment))
+                    .tint(.themedSecondary)
             }
         } upgradeOperation: { model, api in
             try await model.upgrade(api: api) { entity in
@@ -191,12 +193,12 @@ struct PersonView: View {
             VStack(spacing: Constants.main.standardSpacing) {
                 let blocks: [BlockNode] = .init(bio)
                 if blocks.isSimpleParagraphs, bio.count < 300 {
-                    MarkdownText(blocks, configuration: .default)
+                    MarkdownText(blocks, configuration: .default(palette: palette))
                         .multilineTextAlignment(.center)
                     dateLabel(person: person)
                         .frame(maxWidth: .infinity, alignment: .center)
                 } else {
-                    Markdown(blocks, configuration: .default)
+                    Markdown(blocks, configuration: .default(palette: palette))
                     dateLabel(person: person)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }

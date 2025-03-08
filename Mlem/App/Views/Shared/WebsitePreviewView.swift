@@ -10,7 +10,6 @@ import MlemMiddleware
 import SwiftUI
 
 struct WebsitePreviewView: View {
-    @Environment(Palette.self) var palette
     @Environment(\.openURL) private var openURL
     
     @Setting(\.showFavicons) var showFavicons
@@ -50,7 +49,7 @@ struct WebsitePreviewView: View {
     var content: some View {
         complex
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(palette.tertiaryGroupedBackground)
+            .background(.themedTertiaryGroupedBackground)
             .clipShape(RoundedRectangle(cornerRadius: Constants.main.mediumItemCornerRadius))
             .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.mediumItemCornerRadius))
             .paletteBorder(cornerRadius: Constants.main.mediumItemCornerRadius)
@@ -72,7 +71,7 @@ struct WebsitePreviewView: View {
                         .background {
                             Capsule()
                                 .fill(.regularMaterial)
-                                .overlay(Capsule().fill(palette.background.opacity(0.25)))
+                                .overlay(Capsule().fill(.themedBackground.opacity(0.25)))
                         }
                         .padding(Constants.main.halfSpacing)
                 }
@@ -85,7 +84,7 @@ struct WebsitePreviewView: View {
                 .font(.subheadline)
                 .fontWeight(.semibold)
                 .padding(Constants.main.standardSpacing)
-                .foregroundStyle(palette.primary)
+                .foregroundStyle(.themedPrimary)
         }
     }
     
@@ -96,7 +95,7 @@ struct WebsitePreviewView: View {
             }
             
             Text(link.host)
-                .foregroundStyle(palette.secondary)
+                .foregroundStyle(.themedSecondary)
         }
         .font(.footnote)
     }

@@ -70,5 +70,5 @@ struct ActionGroup: Action {
 }
 
 private extension ActionAppearance {
-    static let groupDefault: Self = .init(label: "More...", color: .gray, icon: Icons.menuCircle)
+    static let groupDefault: Self = .init(label: "More...", color: .themedNeutralAccent, icon: Icons.menuCircle)
 }

@@ -94,7 +94,7 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
             x: insets.left + 5,
             y: insets.top + 1
         )
-        placeholderLabel.textColor = UIColor(Palette.main.tertiary)
+        placeholderLabel.textColor = UIColor(context.environment.palette.label.tertiary)
         placeholderLabel.isHidden = !textView.text.isEmpty
         
         // Makes the text wrap instead of going off-screen

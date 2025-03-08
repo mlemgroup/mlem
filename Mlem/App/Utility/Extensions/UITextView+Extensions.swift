@@ -93,7 +93,7 @@ extension UITextView {
                     title: "No URL Copied",
                     subtitle: "Copy a URL to the clipboard, then try again.",
                     systemImage: nil,
-                    color: Palette.main.accent,
+                    color: .themedAccent,
                     duration: 2
                 )
             )

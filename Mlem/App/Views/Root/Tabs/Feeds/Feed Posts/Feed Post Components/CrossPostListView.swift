@@ -11,7 +11,6 @@ import SwiftUI
 struct CrossPostListView: View {
     @Environment(AppState.self) private var appState
     @Environment(NavigationLayer.self) private var navigation
-    @Environment(Palette.self) private var palette
     
     let post: any Post3Providing
     
@@ -28,7 +27,7 @@ struct CrossPostListView: View {
                 } label: {
                     HStack {
                         Image(systemName: Icons.crossPost)
-                            .foregroundStyle(palette.secondary)
+                            .foregroundStyle(.themedSecondary)
                             .fontWeight(.semibold)
                         Text("\(post.crossPosts.count) Crossposts...")
                         Spacer()
@@ -37,7 +36,7 @@ struct CrossPostListView: View {
                             Text(String(post.crossPosts.reduce(0) { $0 + $1.commentCount }))
                         }
                         .font(.footnote)
-                        .foregroundStyle(palette.secondary)
+                        .foregroundStyle(.themedSecondary)
                     }
                     .padding(.horizontal, Constants.main.standardSpacing)
                     .contentShape(.rect)
@@ -63,11 +62,11 @@ struct CrossPostListView: View {
                     }
                     .padding(.horizontal, Constants.main.standardSpacing)
                     .font(.footnote)
-                    .foregroundStyle(palette.secondary)
+                    .foregroundStyle(.themedSecondary)
                 }
             }
             .padding(.vertical, 8)
-            .background(palette.secondaryGroupedBackground)
+            .background(.themedSecondaryGroupedBackground)
             .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
             .paletteBorder(cornerRadius: Constants.main.standardSpacing)
         }

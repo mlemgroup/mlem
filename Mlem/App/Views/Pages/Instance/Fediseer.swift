@@ -7,6 +7,7 @@
 
 import MlemMiddleware
 import SwiftUI
+import Theming
 
 // https://fediseer.com/api/v1/whitelist/lemmy.world
 
@@ -86,7 +87,7 @@ protocol FediseerOpinion {
     var evidence: String? { get }
     
     static var systemImage: String { get }
-    static var color: Color { get }
+    static var color: ThemedColor { get }
 }
 
 extension FediseerOpinion {
@@ -110,7 +111,7 @@ struct FediseerEndorsement: Codable {
 
 extension FediseerEndorsement: FediseerOpinion, Equatable {
     static var systemImage: String = Icons.fediseerEndorsement
-    static var color: Color { Palette.main.colorfulAccent(7) }
+    static var color: ThemedColor { .themedColorfulAccent(7) }
     
     var reason: String? { endorsementReasons?.first }
     var evidence: String? { nil }
@@ -124,7 +125,7 @@ struct FediseerHesitation: Codable {
 
 extension FediseerHesitation: FediseerOpinion, Equatable {
     static var systemImage: String = Icons.fediseerHesitation
-    static var color: Color { Palette.main.caution }
+    static var color: ThemedColor { .themedCaution }
     
     var reason: String? { hesitationReasons?.first }
     var evidence: String? { hesitationEvidence?.first }
@@ -138,7 +139,7 @@ struct FediseerCensure: Codable {
 
 extension FediseerCensure: FediseerOpinion, Equatable {
     static var systemImage: String = Icons.fediseerCensure
-    static var color: Color { Palette.main.warning }
+    static var color: ThemedColor { .themedWarning }
     
     var reason: String? { censureReasons?.first }
     var evidence: String? { censureEvidence?.first }

@@ -18,7 +18,7 @@ extension ActorIdentifiable {
             id: "sendLinkInPrivateMessage\(actorId)",
             appearance: .init(
                 label: "Send to Lemmy User",
-                color: Palette.main.accent,
+                color: .themedAccent,
                 icon: Icons.personCircle
             ),
             callback: {
@@ -40,7 +40,7 @@ extension ActorIdentifiable {
         }
         return .init(
             id: "instance\(actorId)",
-            appearance: .init(label: host, color: .gray, icon: Icons.instance),
+            appearance: .init(label: host, color: .themedNeutralAccent, icon: Icons.instance),
             callback: callback
         )
     }

@@ -1,12 +1,13 @@
 //
-//  DraculaPalette.swift
+//  Palette+Dracula.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-08-31.
+//  Created by Sjmarf on 2025-03-08.
 //
 
 import Foundation
 import SwiftUI
+import Theming
 
 // source: https://draculatheme.com/contribute#color-palette
 private let _darkBackground: Color = .init(red: 0.07843137255, green: 0.07450980392, blue: 0.1215686275)
@@ -22,19 +23,30 @@ private let _purple: Color = .init(red: 0.7411764705882353, green: 0.57647058823
 private let _red: Color = .init(red: 1.0, green: 0.3333333333333333, blue: 0.3333333333333333)
 private let _yellow: Color = .init(red: 0.9450980392156862, green: 0.9803921568627451, blue: 0.5490196078431373)
 
-extension ColorPalette {
-    static let dracula: ColorPalette = .init(
-        supportedModes: .dark,
-        primary: _primary,
-        secondary: _secondary,
-        tertiary: _secondary,
-        background: _background,
-        secondaryBackground: _secondaryBackground,
-        tertiaryBackground: _secondaryBackground,
-        groupedBackground: _darkBackground,
-        secondaryGroupedBackground: _background,
-        tertiaryGroupedBackground: _secondaryBackground,
+extension Palette {
+    static let dracula: Self = .init(
+        bordered: false,
+        label: .init(
+            primary: _primary,
+            secondary: _secondary,
+            tertiary: _secondary
+        ),
+        background: .init(
+            primary: _background,
+            secondary: _secondaryBackground,
+            tertiary: _secondaryBackground
+        ),
+        groupedBackground: .init(
+            primary: _darkBackground,
+            secondary: _background,
+            tertiary: _secondaryBackground
+        ),
         thumbnailBackground: _secondaryBackground,
+        contrastingLabel: _primary,
+        accent: _purple,
+        neutralAccent: _secondaryBackground,
+        colorfulAccents: [_orange, _pink, _cyan, _green, _purple, _red, _yellow],
+        commentIndentColors: [_cyan, _green, _orange, _pink, _purple, _red],
         positive: _green,
         negative: _red,
         warning: _red,
@@ -44,16 +56,13 @@ extension ColorPalette {
         save: _green,
         read: _purple,
         favorite: _cyan,
-        selectedInteractionBarItem: _primary,
         administration: _purple,
         moderation: _pink,
         federatedFeed: _pink,
         localFeed: _purple,
         subscribedFeed: _red,
-        inbox: _purple,
-        accent: _purple,
-        neutralAccent: _secondaryBackground,
-        colorfulAccents: [_orange, _pink, _cyan, _green, _purple, _red, _yellow],
-        commentIndentColors: [_cyan, _green, _orange, _pink, _purple, _red]
+        moderatedFeed: _pink,
+        savedFeed: _green,
+        inbox: _purple
     )
 }

@@ -5,12 +5,10 @@
 //  Created by Eric Andrews on 2025-02-06.
 //
 
-import SwiftUI
 import MlemMiddleware
+import SwiftUI
 
 struct DiscussionLanguageSettingsView: View {
-    @Environment(Palette.self) var palette
-    
     @State var instance: (any Instance3Providing)?
     @State var person: (any Person4Providing)?
     
@@ -30,12 +28,13 @@ struct DiscussionLanguageSettingsView: View {
             SettingsHeaderView(
                 title: "Discussion Languages",
                 description: "Choose which languages appear in your feed. Posts and comments in other languages will be hidden.",
-                systemImage: Icons.language)
+                systemImage: Icons.language
+            )
             
             if let languages = person?.discussionLanguages, !languages.contains(0) {
                 Section {
                     Label("You will not see most content if Undetermined is not selected.", systemImage: Icons.warningFill)
-                        .foregroundStyle(palette.warning)
+                        .foregroundStyle(.themedWarning)
                 }
             }
             
@@ -59,7 +58,7 @@ struct DiscussionLanguageSettingsView: View {
                                     ProgressView()
                                 } else if person.discussionLanguages.contains(language.id) {
                                     Image(systemName: Icons.success)
-                                        .foregroundStyle(palette.accent)
+                                        .foregroundStyle(.themedAccent)
                                 }
                             }
                             .contentShape(.rect)

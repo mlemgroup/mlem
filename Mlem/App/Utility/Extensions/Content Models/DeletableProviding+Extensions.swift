@@ -20,7 +20,7 @@ extension DeletableProviding {
                             "Deleted",
                             systemImage: Icons.deleteFill,
                             callback: { self.updateDeleted(false) },
-                            color: Palette.main.negative
+                            color: .themedNegative
                         )
                     )
                 case .failed:
@@ -41,7 +41,7 @@ extension DeletableProviding {
                 label: deleted ? "Restore" : "Delete",
                 isOn: deleted,
                 isDestructive: !deleted,
-                color: deleted ? Palette.main.positive : Palette.main.negative,
+                color: deleted ? .themedPositive : .themedNegative,
                 icon: deleted ? Icons.undelete : Icons.delete
             ),
             confirmationPrompt: deleted ? nil : "Really delete?",

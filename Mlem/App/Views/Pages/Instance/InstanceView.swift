@@ -37,6 +37,7 @@ struct InstanceView: View {
     
     @Environment(NavigationLayer.self) var navigation
     @Environment(AppState.self) var appState
+    @Environment(\.palette) var palette
     @Environment(\.colorScheme) var colorScheme
     
     let visitContext: VisitHistory.VisitContext?
@@ -112,7 +113,7 @@ struct InstanceView: View {
             switch selectedTab {
             case .about:
                 if let description = instance.description {
-                    Markdown(description, configuration: .default)
+                    Markdown(description, configuration: .default(palette: palette))
                         .padding(Constants.main.standardSpacing)
                         .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
                         .paletteBorder(cornerRadius: Constants.main.standardSpacing)

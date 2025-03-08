@@ -10,7 +10,6 @@ import SwiftUI
 
 struct ExternalApiInfoView: View {
     @Environment(AppState.self) private var appState
-    @Environment(Palette.self) private var palette
     
     @State private var isLoading: Bool = true
     @State private var internalFederationStatus: FederationStatus?
@@ -40,7 +39,7 @@ struct ExternalApiInfoView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .animation(.easeOut(duration: 0.2), value: isLoading)
-        .background(palette.groupedBackground)
+        .background(.themedGroupedBackground)
         .task { await loadData() }
         .presentationDetents([.medium])
         .presentationBackgroundInteraction(.enabled)
@@ -100,7 +99,7 @@ struct ExternalApiInfoView: View {
         .padding(.vertical, 16)
         .frame(maxWidth: .infinity)
         .background(
-            palette.secondaryGroupedBackground,
+            .themedSecondaryGroupedBackground,
             in: .rect(cornerRadius: Constants.main.mediumItemCornerRadius)
         )
     }
@@ -110,7 +109,7 @@ struct ExternalApiInfoView: View {
         Line()
             .stroke(style: StrokeStyle(lineWidth: 2, lineCap: .round, dash: [5]))
             .frame(height: 2)
-            .foregroundStyle(palette.tertiary)
+            .foregroundStyle(.themedTertiary)
             .frame(width: 150, height: 48)
             .padding(.horizontal)
             .overlay {

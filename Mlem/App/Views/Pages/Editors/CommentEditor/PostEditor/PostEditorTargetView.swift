@@ -37,7 +37,7 @@ struct PostEditorTargetView: View {
                 case .failed:
                     Image(systemName: Icons.errorCircleFill)
                         .symbolRenderingMode(.hierarchical)
-                        .foregroundStyle(.themedne)
+                        .foregroundStyle(.themedNegative)
                 }
             }
         }

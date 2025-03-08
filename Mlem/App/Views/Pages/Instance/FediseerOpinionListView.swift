@@ -9,8 +9,6 @@ import MlemMiddleware
 import SwiftUI
 
 struct FediseerOpinionListView: View {
-    @Environment(Palette.self) var palette
-
     let instance: any InstanceStubProviding
     let opinionType: FediseerOpinionType
     let fediseerData: FediseerData
@@ -28,7 +26,7 @@ struct FediseerOpinionListView: View {
             }
             .padding(16)
         }
-        .background(palette.groupedBackground)
+        .background(.themedGroupedBackground)
         .navigationTitle(opinionType.label)
     }
 }

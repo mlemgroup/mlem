@@ -25,7 +25,7 @@ extension PostEditorView {
         case let .uploading(progress: progress):
             VStack {
                 Text("Uploading...")
-                    .foregroundStyle(palette.accent)
+                    .foregroundStyle(.themedAccent)
                 if progress == 1.0 {
                     ProgressView()
                 } else {
@@ -37,7 +37,7 @@ extension PostEditorView {
             }
             .frame(maxWidth: .infinity)
             .padding(8)
-            .background(palette.accent.opacity(0.2), in: .rect(cornerRadius: 16))
+            .background(.themedAccent.opacity(0.2), in: .rect(cornerRadius: 16))
         case .idle:
             imageWaitingView
         case nil:
@@ -82,12 +82,12 @@ extension PostEditorView {
                 .font(.title2)
                 .labelStyle(.iconOnly)
                 .symbolRenderingMode(.hierarchical)
-                .foregroundStyle(palette.accent)
+                .foregroundStyle(.themedAccent)
                 .fontWeight(.semibold)
                 .font(.title2)
                 .labelStyle(.iconOnly)
             }
-            .foregroundStyle(palette.accent)
+            .foregroundStyle(.themedAccent)
             HVStack {
                 Button("Photos", systemImage: "photo.on.rectangle.angled") {
                     guard let imageManager else { return }
@@ -108,7 +108,7 @@ extension PostEditorView {
         }
         .frame(maxWidth: .infinity)
         .padding(8)
-        .background(palette.accent.opacity(0.2), in: .rect(cornerRadius: Constants.main.standardSpacing))
+        .background(.themedAccent.opacity(0.2), in: .rect(cornerRadius: Constants.main.standardSpacing))
     }
 }
 

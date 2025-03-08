@@ -11,7 +11,7 @@ import SwiftUI
 struct LoginTotpView: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
-    @Environment(Palette.self) var palette
+    @Environment(\.palette) var palette
     
     let client: ApiClient
     let usernameOrEmail: String
@@ -34,7 +34,7 @@ struct LoginTotpView: View {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(height: 50)
-                .foregroundStyle(palette.accent)
+                .foregroundStyle(.themedAccent)
             Text("Two-Factor Authentication")
                 .font(.title)
                 .bold()
@@ -43,20 +43,20 @@ struct LoginTotpView: View {
                 .padding(.bottom, 5)
             if incorrect, totpToken.count == 0 {
                 Text("Authentication code is incorrect.")
-                    .foregroundStyle(palette.negative)
+                    .foregroundStyle(.themedNegative)
             }
             openInAppButton
             if authenticating {
                 ProgressView()
                     .controlSize(.large)
-                    .tint(palette.secondary)
+                    .tint(.themedSecondary)
                     .padding(.top)
             }
             Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(.horizontal)
-        .background(palette.groupedBackground.ignoresSafeArea())
+        .background(palette.groupedBackground.primary.ignoresSafeArea())
     }
     
     @ViewBuilder

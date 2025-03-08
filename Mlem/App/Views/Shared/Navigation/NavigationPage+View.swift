@@ -102,9 +102,9 @@ extension NavigationPage {
                     callback.wrappedValue(community, navigation)
                 } label: {
                     CommunityListRowBody(community, readout: .subscribers)
-                        .tint(Palette.main.primary)
+                        .tint(.themedPrimary)
                         .padding(.vertical, 6)
-                        .background(Palette.main.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+                        .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
                 }
             }
         case let .personPicker(api: api, filter: filter, callback: callback):
@@ -113,9 +113,9 @@ extension NavigationPage {
                     callback.wrappedValue(person, navigation)
                 } label: {
                     PersonListRowBody(person)
-                        .tint(Palette.main.primary)
+                        .tint(.themedPrimary)
                         .padding(.vertical, 6)
-                        .background(Palette.main.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+                        .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
                 }
             }
         case let .instancePicker(callback: callback, minimumVersion: minimumVersion):
@@ -124,9 +124,9 @@ extension NavigationPage {
                     callback.wrappedValue(instance, navigation)
                 } label: {
                     InstanceListRowBody(instance)
-                        .tint(Palette.main.primary)
+                        .tint(.themedPrimary)
                         .padding(.vertical, 6)
-                        .background(Palette.main.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+                        .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
                 }
                 .disabled(instance.version < (minimumVersion ?? .zero))
             } header: {
@@ -134,8 +134,8 @@ extension NavigationPage {
                     Text("This feature is only supported for instances running version \(minimumVersion) or later.")
                         .padding()
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .background(Palette.main.caution.opacity(0.2), in: .rect(cornerRadius: Constants.main.standardSpacing))
-                        .foregroundStyle(Palette.main.caution)
+                        .background(.themedCaution.opacity(0.2), in: .rect(cornerRadius: Constants.main.standardSpacing))
+                        .foregroundStyle(.themedCaution)
                         .padding(.horizontal, Constants.main.standardSpacing)
                         .padding(.bottom, Constants.main.halfSpacing)
                 }

@@ -10,7 +10,6 @@ import SwiftUI
 
 struct BlockListView: View {
     @Environment(AppState.self) var appState
-    @Environment(Palette.self) var palette
     
     enum Tab: CaseIterable, Identifiable {
         case people, communities, instances
@@ -59,7 +58,7 @@ struct BlockListView: View {
                 }
             }
         }
-        .background(palette.groupedBackground)
+        .background(.themedGroupedBackground)
         .onAppear {
             Task { @MainActor in
                 do {

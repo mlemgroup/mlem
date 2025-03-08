@@ -9,7 +9,7 @@ import LemmyMarkdownUI
 import SwiftUI
 
 struct MarkdownWithLinkList: View {
-    @Environment(Palette.self) var palette
+    @Environment(\.palette) var palette
     @Environment(\.openURL) var openURL
     
     @Setting(\.tappableLinksDisplayMode) var tappableLinksDisplayMode
@@ -33,7 +33,7 @@ struct MarkdownWithLinkList: View {
     
     var body: some View {
         VStack(spacing: Constants.main.standardSpacing) {
-            Markdown(blocks, configuration: .default)
+            Markdown(blocks, configuration: .default(palette: palette))
             if tappableLinksDisplayMode != .disabled {
                 ForEach(
                     Array(blocks.links.filter { !$0.insideSpoiler }.enumerated()),

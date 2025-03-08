@@ -9,6 +9,7 @@ import SwiftUI
 
 struct MediaView: View {
     @Environment(NavigationLayer.self) var navigation
+    @Environment(\.palette) var palette
     
     @Setting(\.bypassImageProxyShown) var bypassImageProxyShown
     @Setting(\.autoplayMedia) var autoplayMedia

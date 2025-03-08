@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct CapsuleButtonStyle: ButtonStyle {
+    @Environment(\.palette) var palette
+    
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
             .fontWeight(.semibold)
@@ -17,7 +19,7 @@ struct CapsuleButtonStyle: ButtonStyle {
             .background {
                 Capsule()
                     .fill(.themedSecondaryGroupedBackground)
-                    .stroke(palette.bordered ? palette.divider : .clear, lineWidth: 0.5)
+                    .stroke(palette.bordered ? .themedDivider : .clear, lineWidth: 0.5)
             }
             .opacity(configuration.isPressed ? 0.8 : 1)
             .animation(.easeOut(duration: 0.1), value: configuration.isPressed)

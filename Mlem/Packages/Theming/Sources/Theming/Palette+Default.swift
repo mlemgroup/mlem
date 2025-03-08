@@ -9,6 +9,7 @@ import SwiftUI
 
 public extension Palette {
     static let `default`: Self = .init(
+        bordered: false,
         label: .init(
             primary: .primary,
             secondary: .secondary,
@@ -24,6 +25,7 @@ public extension Palette {
             secondary: .init(uiColor: .secondarySystemGroupedBackground),
             tertiary: .init(uiColor: .tertiarySystemGroupedBackground)
         ),
+        thumbnailBackground: Color(UIColor.systemGray4),
         contrastingLabel: .white,
         accent: .blue,
         neutralAccent: .gray,
@@ -36,12 +38,15 @@ public extension Palette {
         upvote: .blue,
         downvote: .red,
         save: .green,
+        read: .purple,
+        favorite: .blue,
         administration: .teal,
         moderation: .cyan,
         federatedFeed: .blue,
         localFeed: .purple,
         subscribedFeed: .red,
         moderatedFeed: .cyan,
-        savedFeed: .green
+        savedFeed: .green,
+        inbox: .purple
     )
 }

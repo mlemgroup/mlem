@@ -9,7 +9,7 @@ import LemmyMarkdownUI
 import SwiftUI
 
 struct FediseerOpinionView: View {
-    @Environment(Palette.self) var palette
+    @Environment(\.palette) var palette
     
     let opinion: any FediseerOpinion
     
@@ -28,24 +28,24 @@ struct FediseerOpinionView: View {
             .padding(.horizontal)
             divider
             if let reason = opinion.formattedReason {
-                Markdown(reason, configuration: .default)
+                Markdown(reason, configuration: .default(palette: palette))
                     .padding(.horizontal)
             } else {
                 Text("No reason given")
-                    .foregroundStyle(palette.secondary)
+                    .foregroundStyle(.themedSecondary)
                     .italic()
                     .padding(.leading)
             }
             if let evidence = opinion.evidence {
                 divider
-                Markdown(evidence, configuration: .default)
+                Markdown(evidence, configuration: .default(palette: palette))
                     .padding(.horizontal)
             }
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 10)
         .font(.callout)
-        .background(palette.secondaryGroupedBackground)
+        .background(.themedSecondaryGroupedBackground)
         .cornerRadius(Constants.main.standardSpacing)
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }
@@ -64,6 +64,6 @@ struct FediseerOpinionView: View {
         Line()
             .stroke(style: StrokeStyle(lineWidth: 2, dash: [5]))
             .frame(height: 2)
-            .foregroundStyle(palette.groupedBackground)
+            .foregroundStyle(.themedGroupedBackground)
     }
 }

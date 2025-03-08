@@ -11,7 +11,6 @@ import SwiftUI
 struct ModlogView: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
-    @Environment(Palette.self) var palette
     
     @Setting(\.showModlogWarning) var showModlogWarning
     
@@ -111,7 +110,7 @@ struct ModlogView: View {
             }
             .padding([.horizontal, .bottom], Constants.main.standardSpacing)
         }
-        .background(palette.groupedBackground)
+        .background(.themedGroupedBackground)
     }
     
     @ViewBuilder

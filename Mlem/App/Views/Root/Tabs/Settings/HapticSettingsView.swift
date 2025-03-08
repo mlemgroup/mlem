@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct HapticSettingsView: View {
-    @Environment(Palette.self) var palette
     @Setting(\.hapticLevel) var hapticLevel
     
     var body: some View {
@@ -18,7 +17,7 @@ struct HapticSettingsView: View {
                 description: "Customize how often Mlem plays haptic feedback.",
                 systemImage: Icons.haptics
             )
-            .tint(palette.colorfulAccent(1))
+            .tint(.themedColorfulAccent(1))
             Picker("Haptic Level", selection: $hapticLevel) {
                 ForEach(HapticPriority.allCases, id: \.self) { item in
                     Text(item.label)

@@ -8,6 +8,7 @@
 import Foundation
 import MlemMiddleware
 import SwiftUI
+import Theming
 
 extension VotesModel {
     var iconName: String {
@@ -18,11 +19,11 @@ extension VotesModel {
         }
     }
     
-    var iconColor: Color {
+    var iconColor: ThemedColor {
         switch myVote {
-        case .upvote: Palette.main.upvote
-        case .downvote: Palette.main.downvote
-        case .none: Palette.main.secondary
+        case .upvote: .themedUpvote
+        case .downvote: .themedDownvote
+        case .none: .themedSecondary
         }
     }
 }

@@ -26,7 +26,8 @@ struct CustomTabView: UIViewControllerRepresentable {
     ) -> UITabBarController {
         let tabBarController = CustomTabBarController(
             selectedIndex: $selectedIndex,
-            swipeGestureCallback: swipeGestureCallback
+            swipeGestureCallback: swipeGestureCallback,
+            palette: context.environment.palette
         )
         tabBarController.viewControllers = tabs.enumerated().map { CustomTabViewHostingController(item: $1, index: $0) }
         
@@ -45,18 +46,10 @@ struct CustomTabView: UIViewControllerRepresentable {
                     tabBarItem.badgeValue = tabData.badge
                     tabBarItem.image = tabData.image
                     tabBarItem.selectedImage = tabData.selectedImage
-                    tabBarItem.badgeColor = UIColor(ThemedShapeStyle.themedWarning.resolve(in: context.environment))
+                    tabBarItem.badgeColor = UIColor(ThemedColor.themedWarning.resolve(in: context.environment))
                 }
-            }
-        }
-        
-        withObservationTracking {
-            _ = ThemedShapeStyle.themedAccent.resolve(in: context.environment)
-        } onChange: {
-            if let controller = uiViewController as? CustomTabBarController {
-                Task.detached { @MainActor in
-                    controller.tabBar.tintColor = UIColor(ThemedShapeStyle.themedAccent.resolve(in: context.environment))
-                }
+                
+                controller.tabBar.tintColor = UIColor(ThemedColor.themedAccent.resolve(in: context.environment))
             }
         }
         

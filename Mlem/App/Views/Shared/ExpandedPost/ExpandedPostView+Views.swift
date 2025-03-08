@@ -19,7 +19,7 @@ extension ExpandedPostView {
                 .fontWeight(.semibold)
         }
         .multilineTextAlignment(.center)
-        .foregroundStyle(palette.secondary)
+        .foregroundStyle(.themedSecondary)
         .frame(maxWidth: .infinity)
     }
     

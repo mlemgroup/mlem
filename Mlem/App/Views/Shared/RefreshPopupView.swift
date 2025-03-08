@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct RefreshPopupView: View {
-    @Environment(Palette.self) var palette
-    
     let title: LocalizedStringResource
     @Binding var isPresented: Bool
     let callback: () -> Void
@@ -34,16 +32,16 @@ struct RefreshPopupView: View {
                         Text(title)
                             .padding(.horizontal, 10)
                         Label("Refresh", systemImage: Icons.refresh)
-                            .foregroundStyle(palette.selectedInteractionBarItem)
+                            .foregroundStyle(.themedContrastingLabel)
                             .fontWeight(.semibold)
                             .padding(.vertical, 4)
                             .padding(.horizontal, 10)
-                            .background(palette.accent, in: .capsule)
+                            .background(.themedAccent, in: .capsule)
                     }
                 }
                 .buttonStyle(.empty)
                 .padding(4)
-                .background(palette.secondaryBackground, in: .capsule)
+                .background(.themedSecondaryBackground, in: .capsule)
                 .shadow(color: .black.opacity(0.1), radius: 5)
                 .shadow(color: .black.opacity(0.1), radius: 1)
                 .padding()

@@ -9,7 +9,6 @@ import SwiftUI
 
 struct ErrorLogView: View {
     @Environment(ErrorsTracker.self) var errorsTracker
-    @Environment(Palette.self) var palette
     @Environment(NavigationLayer.self) var navigation
     
     var body: some View {
@@ -17,7 +16,7 @@ struct ErrorLogView: View {
             LazyVStack(spacing: Constants.main.standardSpacing) {
                 if errorsTracker.errors.isEmpty {
                     Text(verbatim: "No errors")
-                        .foregroundStyle(palette.secondary)
+                        .foregroundStyle(.themedSecondary)
                 }
                 ForEach(Array(errorsTracker.errors.enumerated()), id: \.offset) { _, errorDetails in
                     errorView(errorDetails)
@@ -25,7 +24,7 @@ struct ErrorLogView: View {
                 .padding(.horizontal, Constants.main.standardSpacing)
             }
         }
-        .background(palette.groupedBackground)
+        .background(.themedGroupedBackground)
         .navigationTitle(String("Error Log"))
         .toolbar {
             if !errorsTracker.errors.isEmpty {
@@ -64,7 +63,7 @@ struct ErrorLogView: View {
                 } label: {
                     Text(Image(systemName: Icons.copy))
                         .font(.subheadline)
-                        .foregroundStyle(palette.accent)
+                        .foregroundStyle(.themedAccent)
                 }
             }
             
@@ -82,10 +81,10 @@ struct ErrorLogView: View {
             
             Text(details.when.formatted(date: .abbreviated, time: .standard))
                 .font(.caption)
-                .foregroundStyle(palette.secondary)
+                .foregroundStyle(.themedSecondary)
         }
         .padding(Constants.main.standardSpacing)
-        .background(palette.secondaryGroupedBackground)
+        .background(.themedSecondaryGroupedBackground)
         .clipShape(.rect(cornerRadius: Constants.main.mediumItemCornerRadius))
     }
 }
