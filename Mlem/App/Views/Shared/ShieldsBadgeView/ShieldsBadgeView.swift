@@ -10,7 +10,7 @@ import SwiftUI
 // https://shields.io/badges
 
 struct ShieldsBadgeView: View {
-    @Environment(\.self) var environment
+    @Environment(\.palette) var palette
     @Environment(\.openURL) var openURL
     
     var label: String
@@ -81,7 +81,7 @@ struct ShieldsBadgeView: View {
         }
         .padding(.leading, 7)
         .padding(.trailing, message == nil ? 7 : 0)
-        .background(message == nil ? .themedSecondary.resolve(in: environment) : .clear)
+        .background(message == nil ? palette.label.secondary : .clear)
         .clipShape(RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius))
         .overlay {
             RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius)

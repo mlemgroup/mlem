@@ -11,7 +11,6 @@ import SwiftUI
 extension AdvancedSortView {
     struct SortButton: View {
         @Environment(AppState.self) var appState
-        @Environment(Palette.self) var palette
         @Environment(\.dismiss) var dismiss
 
         let type: ApiSortType
@@ -37,7 +36,7 @@ extension AdvancedSortView {
                             if (appState.firstApi.fetchedVersion ?? .infinity) < type.minimumVersion {
                                 Text("Requires Lemmy \(String(describing: type.minimumVersion)) or later")
                                     .multilineTextAlignment(.leading)
-                                    .foregroundStyle(palette.warning)
+                                    .foregroundStyle(.themedWarning)
                                     .font(.footnote)
                             }
                         }
@@ -52,14 +51,14 @@ extension AdvancedSortView {
                             }
                         }
                         .labelStyle(.iconOnly)
-                        .foregroundStyle(type == selectedSort ? palette.selectedInteractionBarItem : palette.accent)
+                        .foregroundStyle(type == selectedSort ? .themedContrastingLabel : .themedAccent)
                     }
                     .frame(minHeight: 45)
                     .buttonStyle(.plain)
                     .padding(.horizontal, Constants.main.standardSpacing)
-                    .foregroundStyle(type == selectedSort ? palette.selectedInteractionBarItem : palette.primary)
+                    .foregroundStyle(type == selectedSort ? .themedContrastingLabel : .themedPrimary)
                     .background(
-                        type == selectedSort ? palette.accent : palette.secondaryGroupedBackground,
+                        type == selectedSort ? .themedAccent : .themedSecondaryGroupedBackground,
                         in: .rect(cornerRadius: Constants.main.standardSpacing)
                     )
                     .paletteBorder(cornerRadius: Constants.main.standardSpacing)
@@ -86,7 +85,7 @@ extension AdvancedSortView {
                                 .fixedSize(horizontal: false, vertical: true)
                                 .font(.footnote)
                                 .padding(10)
-                                .foregroundStyle(palette.primary)
+                                .foregroundStyle(.themedPrimary)
                         }
                         .presentationCompactAdaptation(.none)
                     }

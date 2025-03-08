@@ -10,7 +10,6 @@ import SwiftUIIntrospect
 import UIKit
 
 struct NavigationLayerView: View {
-    @Environment(Palette.self) var palette
     @Setting(\.interfaceStyle) var interfaceStyle
 
     @Bindable var layer: NavigationLayer

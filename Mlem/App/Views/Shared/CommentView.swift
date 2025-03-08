@@ -14,7 +14,7 @@ struct CommentView<EmbeddedContent: View>: View {
     @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?
     @Environment(\.communityContext) var communityContext: (any Community1Providing)?
     @Environment(\.reportContext) private var reportContext: Report?
-    @Environment(\.self) private var environment
+    @Environment(\.palette) private var palette
     
     @Setting(\.compactComments) var compactComments
     @Setting(\.tapCommentsToCollapse) var tapCommentsToCollapse
@@ -131,7 +131,7 @@ struct CommentView<EmbeddedContent: View>: View {
             .padding(.top, compact || collapsed ? 0 : 3)
         }
         .padding(depth == 0 ? .horizontal : .trailing, Constants.main.standardSpacing)
-        .background(highlight ? .themedAccent.resolve(in: environment).opacity(0.2) : .clear)
+        .background(highlight ? palette.accent.opacity(0.2) : .clear)
         .background(.themedSecondaryGroupedBackground)
         .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
         .contentShape(.interaction, .rect)

@@ -28,7 +28,6 @@ struct CommunityView: View {
         
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
-    @Environment(Palette.self) var palette
     @Environment(FiltersTracker.self) var filtersTracker
     @Environment(\.dismiss) var dismiss
     
@@ -73,7 +72,7 @@ struct CommunityView: View {
                 ErrorView(.init(error: error))
             } else {
                 ProgressView()
-                    .tint(palette.secondary)
+                    .tint(.themedSecondary)
             }
         } upgradeOperation: { model, api in
             try await model.upgrade(api: api, upgradeOperation: nil)
@@ -83,7 +82,7 @@ struct CommunityView: View {
         }
         .navigationBarTitleDisplayMode(.inline)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(palette.groupedBackground)
+        .background(.themedGroupedBackground)
     }
         
     @ViewBuilder

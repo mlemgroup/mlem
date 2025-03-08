@@ -52,7 +52,8 @@ extension PostEditorView {
         MediaView(
             url: url,
             verticalAspectRatioBounds: .init(width: 4, height: 5),
-            cornerRadius: Constants.main.mediumItemCornerRadius)
+            cornerRadius: Constants.main.mediumItemCornerRadius
+        )
         .overlay(alignment: .topTrailing) {
             Button("Remove", systemImage: Icons.closeCircleFill) {
                 onRemove()
@@ -112,14 +113,12 @@ extension PostEditorView {
 }
 
 private struct ImageSourceButtonStyle: ButtonStyle {
-    @Environment(Palette.self) var palette
-    
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
-            .foregroundStyle(palette.selectedInteractionBarItem)
+            .foregroundStyle(.themedContrastingLabel)
             .padding(.vertical, 2)
             .frame(maxWidth: .infinity)
-            .background(palette.accent, in: .capsule)
+            .background(.themedAccent, in: .capsule)
     }
 }
 

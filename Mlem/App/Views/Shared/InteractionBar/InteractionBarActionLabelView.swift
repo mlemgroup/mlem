@@ -10,8 +10,6 @@ import Theming
 
 struct InteractionBarActionLabelView: View {
     static let unweightedSymbols: Set<String> = [Icons.upvote, Icons.downvote]
-    
-    @Environment(\.self) var environment
         
     let appearance: ActionAppearance
     
@@ -35,7 +33,7 @@ struct InteractionBarActionLabelView: View {
             .overlay {
                 if appearance.isInProgress {
                     ProgressView()
-                        .tint((appearance.isOn ? ThemedShapeStyle.themedContrastingLabel : ThemedShapeStyle.themedPrimary).resolve(in: environment))
+                        .tint(appearance.isOn ? .themedContrastingLabel : .themedPrimary)
                 }
             }
             .transaction { $0.animation = nil }

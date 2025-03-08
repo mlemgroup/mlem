@@ -11,8 +11,6 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct ErrorView: View {
-    @Environment(\.self) var environment
-    
     @Setting(\.developerMode) var developerMode
     
     @State var errorDetails: ErrorDetails
@@ -64,7 +62,7 @@ struct ErrorView: View {
                             }
                         }
                     }
-                    .tint(ThemedShapeStyle.themedSecondary.resolve(in: environment))
+                    .tint(.themedSecondary)
                     .buttonStyle(.bordered)
                     .animation(.default, value: refreshInProgress)
                 }

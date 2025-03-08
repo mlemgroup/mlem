@@ -16,7 +16,6 @@ struct PersonBanEditorView: View {
     
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
-    @Environment(Palette.self) var palette
     @Environment(\.dismiss) var dismiss
     
     let person: any Person
@@ -224,22 +223,20 @@ struct PersonBanEditorView: View {
     var removeContentSection: some View {
         Section {
             Toggle("Remove Content", isOn: $removeContent)
-                .tint(palette.warning)
+                .tint(.themedWarning)
         }
     }
 }
 
 private struct BanFormButtonStyle: ButtonStyle {
-    @Environment(Palette.self) var palette
-    
     let selected: Bool
     
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.callout)
-            .foregroundStyle(selected ? palette.selectedInteractionBarItem : palette.primary)
+            .foregroundStyle(selected ? .themedContrastingLabel : .themedPrimary)
             .padding(.vertical, 4)
             .frame(maxWidth: 150)
-            .background(selected ? palette.accent : palette.groupedBackground, in: .rect(cornerRadius: 6))
+            .background(selected ? .themedAccent : .themedGroupedBackground, in: .rect(cornerRadius: 6))
     }
 }

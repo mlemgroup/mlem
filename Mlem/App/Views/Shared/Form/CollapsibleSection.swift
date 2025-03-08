@@ -9,7 +9,7 @@ import SwiftUI
 import Theming
 
 struct CollapsibleSection<Content: View>: View {
-    @Environment(\.self) var environment
+    @Environment(\.palette) var palette
     
     var header: String?
     var footer: String?
@@ -50,7 +50,7 @@ struct CollapsibleSection<Content: View>: View {
             }
             
             if !collapsed {
-                ThemedShapeStyle.themedGroupedBackground.resolve(in: environment)
+                palette.groupedBackground.primary
                     .frame(height: 1.5)
                 VStack {
                     content()

@@ -8,6 +8,7 @@
 import LemmyMarkdownUI
 import MlemMiddleware
 import SwiftUI
+import Theming
 
 struct InstanceView: View {
     enum Tab: String, CaseIterable, Identifiable {
@@ -35,7 +36,6 @@ struct InstanceView: View {
         .autoconnect()
     
     @Environment(NavigationLayer.self) var navigation
-    @Environment(Palette.self) var palette
     @Environment(AppState.self) var appState
     @Environment(\.colorScheme) var colorScheme
     
@@ -65,7 +65,7 @@ struct InstanceView: View {
                     .navigationTitle(isAtTop ? "" : instance.displayName)
             } else {
                 ProgressView()
-                    .tint(palette.secondary)
+                    .tint(.themedSecondary)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
@@ -92,7 +92,7 @@ struct InstanceView: View {
         }
         .isAtTopSubscriber(isAtTop: $isAtTop)
         .navigationBarTitleDisplayMode(.inline)
-        .background(palette.groupedBackground)
+        .background(.themedGroupedBackground)
     }
     
     @ViewBuilder
@@ -114,7 +114,7 @@ struct InstanceView: View {
                 if let description = instance.description {
                     Markdown(description, configuration: .default)
                         .padding(Constants.main.standardSpacing)
-                        .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+                        .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
                         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
                         .padding([.horizontal, .bottom], Constants.main.standardSpacing)
                 }

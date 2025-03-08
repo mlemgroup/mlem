@@ -24,7 +24,6 @@ struct PostEditorView: View {
     
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
-    @Environment(Palette.self) var palette
     @Environment(\.dismiss) var dismiss
     
     @State var titleTextView: UITextView
@@ -105,7 +104,7 @@ struct PostEditorView: View {
                 contentView
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar { toolbar }
-                    .background(palette.groupedBackground)
+                    .background(.themedGroupedBackground)
             }
             .onAppear {
                 contentTextView.resignFirstResponder()
@@ -167,7 +166,7 @@ struct PostEditorView: View {
                     Line()
                         .stroke(style: StrokeStyle(lineWidth: 2, dash: [5]))
                         .frame(height: 2)
-                        .foregroundStyle(palette.primary.opacity(0.2))
+                        .foregroundStyle(.themedPrimary.opacity(0.2))
                         // The line isn't centered properly due to the way that SwiftUI shapes work; this fixes it
                         .padding(.bottom, -1)
                         .padding(.top, 1)
@@ -210,7 +209,7 @@ struct PostEditorView: View {
                     }
                     .padding(.top, Constants.main.halfSpacing)
                     .background(
-                        palette.secondaryGroupedBackground,
+                        .themedSecondaryGroupedBackground,
                         in: UnevenRoundedRectangle(cornerRadii: .init(
                             topLeading: Constants.main.standardSpacing,
                             bottomLeading: hasMiddleParts ? Constants.main.standardSpacing : 0,
@@ -260,7 +259,7 @@ struct PostEditorView: View {
                     }
                     .padding([.vertical, .bottom], Constants.main.standardSpacing)
                     .background(
-                        palette.secondaryGroupedBackground,
+                        .themedSecondaryGroupedBackground,
                         in: UnevenRoundedRectangle(cornerRadii: .init(
                             topLeading: hasMiddleParts ? Constants.main.standardSpacing : 0,
                             bottomLeading: Constants.main.standardSpacing,

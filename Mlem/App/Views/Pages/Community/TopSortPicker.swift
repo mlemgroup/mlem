@@ -11,7 +11,6 @@ import SwiftUI
 
 struct TopSortPicker: View {
     @Environment(AppState.self) var appState
-    @Environment(Palette.self) var palette
     @Environment(\.dismiss) var dismiss
     @Environment(\.colorScheme) var colorScheme
     
@@ -60,13 +59,13 @@ struct TopSortPicker: View {
         .background {
             if colorScheme == .dark {
                 RoundedRectangle(cornerRadius: 8)
-                    .fill(palette.primary.opacity(0.2))
+                    .fill(.themedPrimary.opacity(0.2))
             } else {
                 RoundedRectangle(cornerRadius: 8)
-                    .fill(palette.background)
+                    .fill(.themedBackground)
                     .shadow(color: .black.opacity(0.05), radius: 3)
             }
         }
-        .foregroundStyle(palette.primary)
+        .foregroundStyle(.themedPrimary)
     }
 }

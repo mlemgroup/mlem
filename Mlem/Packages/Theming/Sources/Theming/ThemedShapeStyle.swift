@@ -50,7 +50,8 @@ public extension ShapeStyle where Self == ThemedShapeStyle {
     static var themedPositive: ThemedShapeStyle { .init(getColor: \.positive) }
     static var themedNegative: ThemedShapeStyle { .init(getColor: \.negative) }
     static var themedWarning: ThemedShapeStyle { .init(getColor: \.warning) }
-    
+    static var themedCaution: ThemedShapeStyle { .init(getColor: \.caution) }
+
     static var themedUpvote: ThemedShapeStyle { .init(getColor: \.upvote) }
     static var themedDownvote: ThemedShapeStyle { .init(getColor: \.downvote) }
     static var themedSave: ThemedShapeStyle { .init(getColor: \.save) }
@@ -62,4 +63,10 @@ public extension ShapeStyle where Self == ThemedShapeStyle {
     static var themedSubscribedFeed: ThemedShapeStyle { .init(getColor: \.subscribedFeed) }
     static var themedModeratedFeed: ThemedShapeStyle { .init(getColor: \.moderatedFeed) }
     static var themedSavedFeed: ThemedShapeStyle { .init(getColor: \.savedFeed) }
+    
+    static var themedCommentAccent: ThemedShapeStyle { themedColorfulAccent(0) }
+    static var themedPostAccent: ThemedShapeStyle { themedColorfulAccent(1) }
+    static var themedPersonAccent: ThemedShapeStyle { themedColorfulAccent(2) }
+    static var themedCommunityAccent: ThemedShapeStyle { themedColorfulAccent(3) }
+    static var themedLockAccent: ThemedShapeStyle { themedColorfulAccent(0) }
 }

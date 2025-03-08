@@ -9,8 +9,6 @@ import MlemMiddleware
 import SwiftUI
 
 struct InstanceDetailsView: View {
-    @Environment(Palette.self) private var palette
-    
     @State private var showingSlurRegex: Bool = false
     
     let instance: any Instance

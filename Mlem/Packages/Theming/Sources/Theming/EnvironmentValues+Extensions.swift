@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-extension EnvironmentValues {
+public extension EnvironmentValues {
     @Entry var palette: Palette = .default
 }
 
