@@ -26,18 +26,6 @@ func computeProxyBypass(for url: URL?) -> URL? {
     return nil
 }
 
-func generateAVThumbnail(asset: AVAsset) -> UIImage {
-    let assetImgGenerate = AVAssetImageGenerator(asset: asset)
-    assetImgGenerate.appliesPreferredTrackTransform = true
-    let time = CMTimeMakeWithSeconds(1.0, preferredTimescale: 600)
-    do {
-        return try .init(cgImage: assetImgGenerate.copyCGImage(at: time, actualTime: nil))
-    } catch {
-        handleError(error, silent: true)
-        return .blank
-    }
-}
-
 // // https://stackoverflow.com/a/31314494
 // func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage? {
 //    let size = image.size

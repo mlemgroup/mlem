@@ -157,7 +157,7 @@ extension ImageContainer {
             }
         case .m4v, .mov, .mp4:
             if let asset = userInfo[.videoAssetKey] as? AVAsset {
-                .video(still: generateAVThumbnail(asset: asset), animated: asset)
+                .video(still: image, animated: asset)
             } else {
                 .image(image)
             }
