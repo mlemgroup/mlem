@@ -372,7 +372,7 @@
 		CD0F280A2C6CEFBE00C1F65B /* View+IsAtTopSubscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0F28092C6CEFBE00C1F65B /* View+IsAtTopSubscriber.swift */; };
 		CD10FA772C7A8622008985AD /* ImageSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD10FA762C7A8622008985AD /* ImageSaver.swift */; };
 		CD12FA082D7DF1F5002DD067 /* MediaFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD12FA072D7DF1ED002DD067 /* MediaFunctions.swift */; };
-		CD12FA0C2D7E1EC7002DD067 /* MlemNukeVideoDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD12FA0B2D7E1EC3002DD067 /* MlemNukeVideoDecoder.swift */; };
+		CD12FA0E2D7E2468002DD067 /* MlemVideoDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD12FA0D2D7E2461002DD067 /* MlemVideoDecoder.swift */; };
 		CD13CC592C583C7A001AF428 /* WebsitePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD13CC582C583C7A001AF428 /* WebsitePreviewView.swift */; };
 		CD13CC5B2C588B34001AF428 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD13CC5A2C588B34001AF428 /* WebView.swift */; };
 		CD13CC612C5D262E001AF428 /* MediaLoadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD13CC602C5D262E001AF428 /* MediaLoadingState.swift */; };
@@ -898,7 +898,7 @@
 		CD0F28092C6CEFBE00C1F65B /* View+IsAtTopSubscriber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+IsAtTopSubscriber.swift"; sourceTree = "<group>"; };
 		CD10FA762C7A8622008985AD /* ImageSaver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSaver.swift; sourceTree = "<group>"; };
 		CD12FA072D7DF1ED002DD067 /* MediaFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaFunctions.swift; sourceTree = "<group>"; };
-		CD12FA0B2D7E1EC3002DD067 /* MlemNukeVideoDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MlemNukeVideoDecoder.swift; sourceTree = "<group>"; };
+		CD12FA0D2D7E2461002DD067 /* MlemVideoDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MlemVideoDecoder.swift; sourceTree = "<group>"; };
 		CD13CC582C583C7A001AF428 /* WebsitePreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebsitePreviewView.swift; sourceTree = "<group>"; };
 		CD13CC5A2C588B34001AF428 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		CD13CC602C5D262E001AF428 /* MediaLoadingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaLoadingState.swift; sourceTree = "<group>"; };
@@ -1662,7 +1662,7 @@
 		CD12FA0A2D7E1EBB002DD067 /* Decoders */ = {
 			isa = PBXGroup;
 			children = (
-				CD12FA0B2D7E1EC3002DD067 /* MlemNukeVideoDecoder.swift */,
+				CD12FA0D2D7E2461002DD067 /* MlemVideoDecoder.swift */,
 				CD64A91B2CA38DA7007CA7E6 /* NukeWebpBridgeDecoder.swift */,
 			);
 			path = Decoders;
@@ -2787,7 +2787,6 @@
 				CD1C64152D3428710006B3C1 /* CommunityView+Logic.swift in Sources */,
 				031E2D512BEF961D0003BC45 /* SubscriptionListView.swift in Sources */,
 				CDD4A09E2C8B69FC0001AD1A /* Button.swift in Sources */,
-				CD12FA0C2D7E1EC7002DD067 /* MlemNukeVideoDecoder.swift in Sources */,
 				CD7F82762D6BE7BF001748BA /* MediaLoadingTracker.swift in Sources */,
 				038028DA2CACACD30091A8A2 /* PostEllipsisMenus.swift in Sources */,
 				030FF67B2BC8521600F6BFAC /* CustomTabView.swift in Sources */,
@@ -2797,6 +2796,7 @@
 				0397D4932C6CE87E002C6CDC /* PostEditorTargetView.swift in Sources */,
 				034690992D105DFD0073E664 /* InboxView+Types.swift in Sources */,
 				03F6BDB12D52AA00006A425E /* CommunityMockType+Realistic.swift in Sources */,
+				CD12FA0E2D7E2468002DD067 /* MlemVideoDecoder.swift in Sources */,
 				033F84492D18D1F400D87A9E /* MessageFeedView.swift in Sources */,
 				030050D52D10AE30002B1E99 /* Report+Extensions.swift in Sources */,
 				CD57AFA32D03761500AB3956 /* WebpView.swift in Sources */,

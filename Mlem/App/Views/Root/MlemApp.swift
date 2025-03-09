@@ -23,7 +23,7 @@ struct MlemApp: App {
         ImagePipeline.shared = ImagePipeline(configuration: imageConfig)
         
         // mp4 handling
-        ImageDecoderRegistry.shared.register(ImageDecoders.MlemVideo.init)
+        ImageDecoderRegistry.shared.register(MlemVideoDecoder.init)
         
         // webp handling
         ImageDecoderRegistry.shared.register(NukeWebpBridgeDecoder.init)
