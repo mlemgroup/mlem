@@ -83,6 +83,8 @@ extension MediaView {
             ProgressView()
         } else {
             fallbackImage
+                .frame(maxWidth: .infinity)
+                .aspectRatio(.init(width: 4, height: 3), contentMode: .fit)
         }
     }
     
@@ -98,14 +100,14 @@ extension MediaView {
         case .favicon:
             Image(systemName: fallback.icon)
                 .foregroundStyle(.themedSecondary)
-        case .image, .movie:
+        case .image, .movie, .link:
             let icon: String = loader.loading == .proxyFailed ? Icons.proxy : fallback.icon
             Image(systemName: icon)
                 .font(.title)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .foregroundStyle(.themedSecondary)
                 .background(.themedThumbnailBackground)
-        case .text, .link, .titleOnly:
+        case .text, .titleOnly:
             Image(systemName: fallback.icon)
                 .font(.title)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -137,7 +139,7 @@ extension MediaView {
     
     @ViewBuilder
     var errorOverlay: some View {
-        if let loaderError = loader.error {
+        if controlState.enableControls, let loaderError = loader.error {
             palette.groupedBackground.tertiary.overlay {
                 switch loaderError {
                 case let .proxyFailure(proxyBypass):

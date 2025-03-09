@@ -60,17 +60,21 @@ class MediaLoader {
         } else {
             processors = .init()
         }
-
-        self.proxyBypass = computeProxyBypass(for: url)
         
-        if let cachedImage = retrieveCachedImage(for: url, with: processors) {
-            self.mediaType = cachedImage
-            loading = .done
-            return
-        }
-        
+        self.proxyBypass = url
         self.mediaType = nil
-        self.loading = url == nil ? .failed : .loading
+        self.loading = .proxyFailed
+
+//        self.proxyBypass = computeProxyBypass(for: url)
+//        
+//        if let cachedImage = retrieveCachedImage(for: url, with: processors) {
+//            self.mediaType = cachedImage
+//            loading = .done
+//            return
+//        }
+//        
+//        self.mediaType = nil
+//        self.loading = url == nil ? .failed : .loading
     }
     
     /// Loads the given url.
@@ -82,10 +86,13 @@ class MediaLoader {
         
         // reset everything
         self.url = url
-        self.proxyBypass = computeProxyBypass(for: url)
+        // self.proxyBypass = computeProxyBypass(for: url)
+        self.proxyBypass = url
         self.mediaType = nil
-        self.loading = .loading
-        self.error = nil
+        self.loading = .proxyFailed // .loading
+        self.error = url == nil ? nil : .proxyFailure(proxyBypass: url!) // nil
+        
+        return
         
         // easy case: nil url
         guard let url else {
