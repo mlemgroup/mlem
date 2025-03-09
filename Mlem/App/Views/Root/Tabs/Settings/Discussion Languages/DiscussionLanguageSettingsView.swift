@@ -9,7 +9,6 @@ import MlemMiddleware
 import SwiftUI
 
 struct DiscussionLanguageSettingsView: View {
-    @Environment(Palette.self) var palette
     @Environment(NavigationLayer.self) var navigation
     
     @State var instance: (any Instance3Providing)?
