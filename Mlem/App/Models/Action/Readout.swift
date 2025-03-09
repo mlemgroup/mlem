@@ -6,12 +6,13 @@
 //
 
 import SwiftUI
+import Theming
 
 struct Readout {
     let id: String
     let label: String?
     let icon: String
-    var color: Color?
+    var color: ThemedColor?
     var value: String?
-    var valueColor: Color?
+    var valueColor: ThemedColor?
 }

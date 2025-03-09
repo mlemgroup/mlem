@@ -70,7 +70,7 @@ extension Person1Providing {
                         callback: {
                             self.updateBlocked(false)
                         },
-                        color: Palette.main.negative
+                        color: .themedNegative
                     )
                 )
             } else {
@@ -81,7 +81,7 @@ extension Person1Providing {
                         callback: {
                             self.updateBlocked(true)
                         },
-                        color: Palette.main.primary
+                        color: .themedPrimary
                     )
                 )
             }
@@ -141,7 +141,7 @@ extension Person1Providing {
     func sendMessageAction() -> BasicAction {
         .init(
             id: "sendMessage\(uid)",
-            appearance: .init(label: "Send Message", color: Palette.main.accent, icon: Icons.message),
+            appearance: .init(label: "Send Message", color: .themedAccent, icon: Icons.message),
             callback: { NavigationModel.main.openSheet(.messageFeed(self, focusTextField: true)) }
         )
     }

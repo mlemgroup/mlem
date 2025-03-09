@@ -9,7 +9,6 @@ import SwiftUI
 
 struct MoreRepliesButton: View {
     @Environment(NavigationLayer.self) var navigation
-    @Environment(Palette.self) var palette
     
     let tracker: CommentTreeTracker
     let commentTreeNode: CommentTreeNode
@@ -42,10 +41,10 @@ struct MoreRepliesButton: View {
                         ProgressView()
                     }
                 }
-                .foregroundStyle(palette.accent)
+                .foregroundStyle(.themedAccent)
             }
             .background(
-                palette.secondaryGroupedBackground,
+                .themedSecondaryGroupedBackground,
                 in: .rect(cornerRadius: Constants.main.standardSpacing)
             )
             .paletteBorder(cornerRadius: Constants.main.standardSpacing)

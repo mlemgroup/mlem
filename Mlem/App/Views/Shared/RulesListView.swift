@@ -10,7 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct RulesListView: View {
-    @Environment(Palette.self) var palette
+    @Environment(\.palette) var palette
     
     let model: any Profile2Providing
     @Binding var reason: String
@@ -22,9 +22,9 @@ struct RulesListView: View {
                 ForEach(Array(rules.enumerated()), id: \.offset) { index, blocks in
                     HStack(spacing: 12) {
                         Image(systemName: "\(index + 1).circle.fill")
-                            .foregroundStyle(palette.secondary)
+                            .foregroundStyle(.themedSecondary)
                             .fontWeight(.semibold)
-                        Markdown(blocks, configuration: .default)
+                        Markdown(blocks, configuration: .default(palette: palette))
                             .frame(maxWidth: .infinity)
                     }
                     .contentShape(.rect)
@@ -46,7 +46,7 @@ struct RulesListView: View {
                 HStack {
                     CircleCroppedImageView(model, frame: 22)
                     Text("\(model.name) rules:")
-                        .foregroundStyle(palette.secondary)
+                        .foregroundStyle(.themedSecondary)
                         .textCase(nil)
                 }
             }

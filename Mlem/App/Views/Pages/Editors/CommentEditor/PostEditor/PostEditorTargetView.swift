@@ -10,7 +10,6 @@ import SwiftUI
 
 struct PostEditorTargetView: View {
     @Environment(NavigationLayer.self) private var navigation
-    @Environment(Palette.self) private var palette
     
     @Bindable var target: PostEditorTarget
     let isMoreThanOneTarget: Bool
@@ -22,7 +21,7 @@ struct PostEditorTargetView: View {
                     communityPicker
                         .frame(maxWidth: .infinity, alignment: .leading)
                     accountPicker
-                        .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+                        .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
                 } else {
                     communityPicker
                 }
@@ -34,11 +33,11 @@ struct PostEditorTargetView: View {
                 case .sent:
                     Image(systemName: Icons.successCircleFill)
                         .symbolRenderingMode(.hierarchical)
-                        .foregroundStyle(palette.positive)
+                        .foregroundStyle(.themedPositive)
                 case .failed:
                     Image(systemName: Icons.errorCircleFill)
                         .symbolRenderingMode(.hierarchical)
-                        .foregroundStyle(palette.negative)
+                        .foregroundStyle(.themedNegative)
                 }
             }
         }
@@ -87,7 +86,7 @@ struct PostEditorTargetView: View {
             }
             .padding(.vertical, 6)
             .padding(.horizontal, 8)
-            .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+            .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
         }
     }
     
@@ -105,7 +104,7 @@ struct PostEditorTargetView: View {
                 Image(systemName: Icons.warningFill)
                     .imageScale(.large)
                     .symbolRenderingMode(.hierarchical)
-                    .foregroundStyle(palette.caution)
+                    .foregroundStyle(.themedCaution)
                     .fontWeight(.semibold)
             default:
                 EmptyView()
@@ -144,10 +143,11 @@ class PostEditorTarget: Identifiable {
     var community: (any CommunityStubProviding)?
     var account: UserAccount {
         didSet {
-            self.slurRegex_ = nil
+            slurRegex_ = nil
             onAccountChange()
         }
     }
+
     let id = UUID()
     
     var resolutionState: ResolutionState = .success

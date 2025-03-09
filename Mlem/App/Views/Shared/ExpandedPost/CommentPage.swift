@@ -10,7 +10,6 @@ import SwiftUI
 
 struct CommentPage: View {
     @Environment(NavigationLayer.self) var navigation
-    @Environment(Palette.self) private var palette
     @Environment(\.dismiss) var dismiss
     
     let comment: AnyComment
@@ -105,7 +104,7 @@ struct CommentPage: View {
                 }
             }
         }
-        .background(palette.groupedBackground)
+        .background(.themedGroupedBackground)
         .onChange(of: comment.wrappedValue.postId_, initial: true) {
             if let postId = comment.wrappedValue.postId_ {
                 Task {

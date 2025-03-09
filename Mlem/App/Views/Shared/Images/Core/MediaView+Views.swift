@@ -99,7 +99,7 @@ extension MediaView {
     @ViewBuilder
     var errorOverlay: some View {
         if let loaderError = loader.error {
-            palette.tertiaryGroupedBackground.overlay {
+            palette.groupedBackground.tertiary.overlay {
                 switch loaderError {
                 case let .proxyFailure(proxyBypass):
                     VStack(spacing: Constants.main.standardSpacing) {
@@ -126,18 +126,18 @@ extension MediaView {
                                 }
                             }
                         }
-                        .foregroundStyle(palette.accent)
+                        .foregroundStyle(.themedAccent)
                         .buttonStyle(.bordered)
                         .padding(.horizontal, Constants.main.standardSpacing)
                     }
-                    .foregroundStyle(palette.tertiary)
+                    .foregroundStyle(.themedTertiary)
                 case .error:
                     Image(systemName: Icons.missing)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(maxWidth: 50)
                         .padding(4)
-                        .foregroundStyle(palette.tertiary)
+                        .foregroundStyle(.themedTertiary)
                 }
             }
         }

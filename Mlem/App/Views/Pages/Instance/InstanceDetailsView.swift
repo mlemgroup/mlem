@@ -7,10 +7,9 @@
 
 import MlemMiddleware
 import SwiftUI
+import Theming
 
 struct InstanceDetailsView: View {
-    @Environment(Palette.self) private var palette
-    
     @State private var showingSlurRegex: Bool = false
     
     let instance: any Instance
@@ -24,17 +23,17 @@ struct InstanceDetailsView: View {
             
             HStack(spacing: 16) {
                 FormReadout("Users", value: instance.userCount_ ?? 0)
-                    .tint(palette.userAccent)
+                    .tint(.themedPersonAccent)
                 FormReadout("Communities", value: instance.communityCount_ ?? 0)
-                    .tint(palette.communityAccent)
+                    .tint(.themedCommunityAccent)
             }
             .frame(maxWidth: .infinity)
             
             HStack(spacing: 16) {
                 FormReadout("Posts", value: instance.postCount_ ?? 0)
-                    .tint(palette.postAccent)
+                    .tint(.themedPostAccent)
                 FormReadout("Comments", value: instance.commentCount_ ?? 0)
-                    .tint(palette.commentAccent)
+                    .tint(.themedCommentAccent)
             }
             .frame(maxWidth: .infinity)
             
@@ -64,7 +63,7 @@ struct InstanceDetailsView: View {
                         "Registration",
                         systemImage: Icons.person,
                         value: instance.registrationMode_?.label ?? "Closed",
-                        color: instance.registrationMode_?.color ?? palette.negative
+                        color: instance.registrationMode_?.color ?? .themedNegative
                     )
                     if instance.registrationMode_ != .closed {
                         Divider()
@@ -78,7 +77,7 @@ struct InstanceDetailsView: View {
                             "Captcha",
                             systemImage: Icons.photo,
                             value: captchaLabel,
-                            color: instance.captchaDifficulty_ == nil ? palette.negative : palette.positive
+                            color: instance.captchaDifficulty_ == nil ? .themedNegative : .themedPositive
                         )
                     }
                 }
@@ -114,7 +113,7 @@ struct InstanceDetailsView: View {
                         VStack(alignment: .leading, spacing: 2) {
                             if showingSlurRegex {
                                 Text(regex)
-                                    .foregroundStyle(palette.secondary)
+                                    .foregroundStyle(.themedSecondary)
                                     .textSelection(.enabled)
                             } else {
                                 Text("Tap to show slur filter regex.")
@@ -122,7 +121,7 @@ struct InstanceDetailsView: View {
                                     "This probably contains foul language.",
                                     systemImage: Icons.warning
                                 )
-                                .foregroundStyle(palette.caution)
+                                .foregroundStyle(.themedCaution)
                             }
                         }
                         .font(.footnote)
@@ -187,16 +186,16 @@ struct InstanceDetailsView: View {
         _ label: LocalizedStringResource,
         systemImage: String,
         value: LocalizedStringResource,
-        color: Color? = nil
+        color: ThemedColor? = nil
     ) -> some View {
         HStack {
             Image(systemName: systemImage)
-                .foregroundStyle(palette.secondary)
+                .foregroundStyle(.themedSecondary)
                 .frame(width: 30)
             Text(label)
             Spacer()
             Text(value)
-                .foregroundStyle(color ?? palette.primary)
+                .foregroundStyle(color ?? .themedPrimary)
         }
         .padding(12)
     }
@@ -207,7 +206,7 @@ struct InstanceDetailsView: View {
             label,
             systemImage: systemImage,
             value: value ? "Yes" : "No",
-            color: value ? palette.positive : palette.negative
+            color: value ? .themedPositive : .themedNegative
         )
     }
 }

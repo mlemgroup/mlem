@@ -10,21 +10,21 @@ import SwiftUI
 
 /// Identical to Form, but respects Palette
 struct Form<Content: View>: View {
-    @Environment(Palette.self) var palette
+    @Environment(\.palette) var palette
     
     @ViewBuilder let content: () -> Content
     
     var body: some View {
         SwiftUI.Form {
             content()
-                .foregroundStyle(palette.primary)
-                .listRowBackground(palette.secondaryGroupedBackground)
-                .tint(palette.accent)
+                .foregroundStyle(.themedPrimary)
+                .listRowBackground(palette.groupedBackground.secondary)
+                .tint(.themedAccent)
                 .buttonStyle(PaletteButton())
         }
         .listStyle(.insetGrouped)
         .scrollContentBackground(.hidden)
-        .background(palette.groupedBackground)
-        .shadow(color: palette.primary.opacity(palette.bordered ? 0.4 : 0.0), radius: 1)
+        .background(.themedGroupedBackground)
+        .shadow(color: palette.label.primary.opacity(palette.bordered ? 0.4 : 0.0), radius: 1)
     }
 }

@@ -10,7 +10,7 @@ import SwiftUI
 // https://shields.io/badges
 
 struct ShieldsBadgeView: View {
-    @Environment(Palette.self) var palette
+    @Environment(\.palette) var palette
     @Environment(\.openURL) var openURL
     
     var label: String
@@ -70,13 +70,13 @@ struct ShieldsBadgeView: View {
                 Text(label)
                     .padding(.vertical, 3)
             }
-            .foregroundStyle(message != nil ? palette.primary : (palette.selectedInteractionBarItem))
+            .foregroundStyle(message != nil ? .themedPrimary : .themedContrastingLabel)
             if let message {
                 Text(message)
                     .padding(.vertical, 3)
                     .padding(.horizontal, 7)
-                    .foregroundStyle(palette.selectedInteractionBarItem)
-                    .background(palette.accent)
+                    .foregroundStyle(.themedContrastingLabel)
+                    .background(.themedAccent)
             }
         }
         .padding(.leading, 7)
@@ -85,7 +85,7 @@ struct ShieldsBadgeView: View {
         .clipShape(RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius))
         .overlay {
             RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius)
-                .stroke(palette.accent, lineWidth: 1)
+                .stroke(.themedAccent, lineWidth: 1)
         }
         .onTapGesture {
             if let link {

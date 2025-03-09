@@ -9,8 +9,6 @@ import Foundation
 import SwiftUI
 
 struct Section<Parent: View, Content: View, Footer: View>: View {
-    @Environment(Palette.self) var palette
-
     @ViewBuilder let header: () -> Parent
     @ViewBuilder let content: () -> Content
     @ViewBuilder let footer: () -> Footer
@@ -49,8 +47,8 @@ struct Section<Parent: View, Content: View, Footer: View>: View {
     var body: some View {
         SwiftUI.Section(
             content: content,
-            header: { header().foregroundStyle(palette.secondary) },
-            footer: { footer().foregroundStyle(palette.secondary) }
+            header: { header().foregroundStyle(.themedSecondary) },
+            footer: { footer().foregroundStyle(.themedSecondary) }
         )
     }
 }

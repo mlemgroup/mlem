@@ -14,7 +14,7 @@ extension PostEditorView {
             Label(linkLabel, systemImage: Icons.websiteAddress)
                 .lineLimit(1)
                 .fontWeight(.semibold)
-                .foregroundStyle(palette.accent)
+                .foregroundStyle(.themedAccent)
                 .padding(.leading, 8)
             Spacer()
             if link == .waiting {
@@ -33,10 +33,10 @@ extension PostEditorView {
                 } label: {
                     Label("Paste", systemImage: Icons.paste)
                         .fontWeight(.semibold)
-                        .foregroundStyle(palette.selectedInteractionBarItem)
+                        .foregroundStyle(.themedContrastingLabel)
                         .padding(.vertical, 6)
                         .padding(.horizontal, 12)
-                        .background(palette.accent, in: .rect(cornerRadius: 8))
+                        .background(.themedAccent, in: .rect(cornerRadius: 8))
                 }
             }
             Button("Remove", systemImage: Icons.closeCircleFill) {
@@ -45,11 +45,11 @@ extension PostEditorView {
             .font(.title2)
             .labelStyle(.iconOnly)
             .symbolRenderingMode(.hierarchical)
-            .foregroundStyle(palette.accent)
+            .foregroundStyle(.themedAccent)
             .fontWeight(.semibold)
         }
         .padding(8)
-        .background(palette.accent.opacity(0.2), in: .rect(cornerRadius: Constants.main.standardSpacing))
+        .background(.themedAccent.opacity(0.2), in: .rect(cornerRadius: Constants.main.standardSpacing))
     }
     
     private var linkLabel: String {

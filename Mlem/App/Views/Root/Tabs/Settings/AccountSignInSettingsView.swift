@@ -10,7 +10,6 @@ import SwiftUI
 struct AccountSignInSettingsView: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
-    @Environment(Palette.self) var palette
     
     var body: some View {
         Form {
@@ -20,7 +19,7 @@ struct AccountSignInSettingsView: View {
                         Text("Email")
                         Spacer()
                         Text(appState.firstPerson?.email ?? "")
-                            .foregroundStyle(palette.secondary)
+                            .foregroundStyle(.themedSecondary)
                     }
                 }
             }

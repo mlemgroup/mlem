@@ -10,7 +10,6 @@ import SwiftUI
 
 struct FeedHeaderView<ImageContent: View>: View {
     @Environment(AppState.self) var appState
-    @Environment(Palette.self) var palette
     
     enum DropdownStyle {
         case disabled
@@ -61,16 +60,16 @@ struct FeedHeaderView<ImageContent: View>: View {
                             .lineLimit(1)
                             .minimumScaleFactor(0.01)
                             .fontWeight(.semibold)
-                            .foregroundStyle(palette.primary)
+                            .foregroundStyle(.themedPrimary)
                         
                         if case let .enabled(showBadge) = dropdownStyle {
                             Image(systemName: Icons.dropDown)
-                                .foregroundStyle(palette.secondary)
+                                .foregroundStyle(.themedSecondary)
                                 .overlay(alignment: .topTrailing) {
                                     if showBadge {
                                         Circle()
                                             .frame(width: 6, height: 6)
-                                            .foregroundStyle(palette.warning)
+                                            .foregroundStyle(.themedWarning)
                                     }
                                 }
                         }
@@ -79,7 +78,7 @@ struct FeedHeaderView<ImageContent: View>: View {
                         
                     subtitle
                         .font(.footnote)
-                        .foregroundStyle(palette.secondary)
+                        .foregroundStyle(.themedSecondary)
                 }
                 .frame(height: Constants.main.feedHeaderSize)
                 .frame(maxWidth: .infinity, alignment: .leading)

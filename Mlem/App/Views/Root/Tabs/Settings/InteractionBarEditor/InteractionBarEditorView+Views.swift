@@ -7,6 +7,7 @@
 
 import Flow
 import SwiftUI
+import Theming
 
 extension InteractionBarEditorView {
     // MARK: - Previews
@@ -28,7 +29,7 @@ extension InteractionBarEditorView {
                 .padding(.vertical, Constants.main.barIconPadding)
         }
         .padding(Constants.main.standardSpacing)
-        .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.mediumItemCornerRadius))
+        .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.mediumItemCornerRadius))
         .paletteBorder(cornerRadius: Constants.main.mediumItemCornerRadius)
     }
     
@@ -36,7 +37,7 @@ extension InteractionBarEditorView {
     var postPreviewBody: some View {
         HStack(alignment: .top, spacing: 8) {
             RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius)
-                .fill(palette.accent.opacity(0.6))
+                .fill(.themedAccent.opacity(0.6))
                 .frame(width: Constants.main.thumbnailSize, height: Constants.main.thumbnailSize)
                 .overlay {
                     Image(systemName: "mountain.2.fill")
@@ -62,7 +63,7 @@ extension InteractionBarEditorView {
                 .resizable()
                 .scaledToFit()
                 .symbolRenderingMode(.palette)
-                .foregroundStyle(palette.selectedInteractionBarItem, palette.neutralAccent.gradient)
+                .foregroundStyle(palette.contrastingLabel, palette.neutralAccent.gradient)
                 .frame(width: Constants.main.smallAvatarSize, height: Constants.main.smallAvatarSize)
                 .compositingGroup()
                 .opacity(0.5)
@@ -110,8 +111,8 @@ extension InteractionBarEditorView {
             .background {
                 if barPickedUpIndex == index, dragTranslation != .zero {
                     Capsule()
-                        .fill(palette.accent.opacity(0.2))
-                        .stroke(palette.accent)
+                        .fill(.themedAccent.opacity(0.2))
+                        .stroke(.themedAccent)
                         .padding(4)
                 }
             }
@@ -183,7 +184,7 @@ extension InteractionBarEditorView {
                     Capsule()
                         .fill(trayItemOutlineColor(trayItem).opacity(0.2))
                         .stroke(trayItemOutlineColor(trayItem))
-                        .background(palette.secondaryGroupedBackground, in: .capsule)
+                        .background(.themedSecondaryGroupedBackground, in: .capsule)
                 }
             }
             .gesture(trayItemDragGesture(trayItem: trayItem))
@@ -210,7 +211,7 @@ extension InteractionBarEditorView {
                     }
                     HapticManager.main.play(haptic: .gentleInfo, priority: .low)
                 } label: {
-                    let color = disabled ? palette.primary : palette.accent
+                    let color: ThemedColor = disabled ? .themedPrimary : .themedAccent
                     HStack(spacing: 2) {
                         Image(systemName: readout.appearance.icon)
                         if readout.appearance.label != "" {
@@ -218,7 +219,7 @@ extension InteractionBarEditorView {
                         }
                     }
                     .font(.footnote)
-                    .foregroundStyle(isActive ? palette.selectedInteractionBarItem : color)
+                    .foregroundStyle(isActive ? .themedContrastingLabel : color)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 8)
                     .background {
@@ -240,7 +241,7 @@ extension InteractionBarEditorView {
             title: "Interaction Bar",
             description: "Tap and hold items to add, remove, or rearrange them."
         ) {}
-            .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.largeItemCornerRadius))
+            .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.largeItemCornerRadius))
     }
     
     @ViewBuilder
@@ -249,12 +250,12 @@ extension InteractionBarEditorView {
             Text("Too many items")
                 .padding(7.5)
                 .padding(.horizontal, 5)
-                .foregroundStyle(palette.negative)
+                .foregroundStyle(.themedNegative)
                 .background {
                     Capsule()
-                        .fill(palette.negative.opacity(0.2))
-                        .stroke(palette.negative)
-                        .background(palette.secondaryGroupedBackground, in: .capsule)
+                        .fill(.themedNegative.opacity(0.2))
+                        .stroke(.themedNegative)
+                        .background(.themedSecondaryGroupedBackground, in: .capsule)
                 }
                 .frame(height: infoCapsuleHeight)
         } else if let trayPickedUpItem {
@@ -277,8 +278,8 @@ extension InteractionBarEditorView {
             .padding(.horizontal, 5)
             .background {
                 Capsule()
-                    .fill(palette.secondaryGroupedBackground)
-                    .stroke(palette.tertiary)
+                    .fill(.themedSecondaryGroupedBackground)
+                    .stroke(.themedTertiary)
             }
             .frame(height: infoCapsuleHeight)
         } else {
@@ -345,7 +346,7 @@ extension InteractionBarEditorView {
         .padding(Constants.main.standardSpacing)
         .background {
             Capsule()
-                .fill(palette.secondaryGroupedBackground.opacity(0.85))
+                .fill(.themedSecondaryGroupedBackground.opacity(0.85))
         }
         .geometryGroup()
     }
@@ -361,14 +362,14 @@ extension InteractionBarEditorView {
                 .font(.footnote)
             }
         }
-        .foregroundStyle(palette.secondary)
+        .foregroundStyle(.themedSecondary)
         .frame(maxWidth: .infinity, alignment: infoStackAlignment)
     }
     
     @ViewBuilder
     func dropIndicator(index: Int) -> some View {
         Capsule()
-            .fill(palette.accent)
+            .fill(.themedAccent)
             .frame(width: 2, height: 40)
             .padding(-2)
             .frame(width: 0)

@@ -9,8 +9,6 @@ import Foundation
 import SwiftUI
 
 struct FeedIconView: View {
-    @Environment(Palette.self) var palette
-    
     let feedDescription: FeedDescription
     let size: CGFloat
     let scaledSize: CGFloat
@@ -23,7 +21,7 @@ struct FeedIconView: View {
     
     var body: some View {
         Circle()
-            .fill(feedDescription.color(palette) ?? palette.accent)
+            .fill(feedDescription.color ?? .themedAccent)
             .frame(width: size, height: size)
             .overlay {
                 Image(systemName: feedDescription.iconNameFill)

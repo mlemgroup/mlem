@@ -10,8 +10,6 @@ import SwiftUI
 
 extension PostSettingsView {
     struct PostSizePicker: View {
-        @Environment(Palette.self) var palette
-        
         @Setting(\.postSize) var postSize
         
         var body: some View {

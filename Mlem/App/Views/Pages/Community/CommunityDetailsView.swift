@@ -7,10 +7,9 @@
 
 import MlemMiddleware
 import SwiftUI
+import Theming
 
 struct CommunityDetailsView: View {
-    @Environment(Palette.self) private var palette
-    
     let community: any Community
     
     var body: some View {
@@ -23,7 +22,7 @@ struct CommunityDetailsView: View {
             FormSection {
                 VStack(spacing: Constants.main.halfSpacing) {
                     Text("Subscribers")
-                        .foregroundStyle(palette.secondary)
+                        .foregroundStyle(.themedSecondary)
                     Text(community.subscriberCount_ ?? 0, format: .number)
                         .font(.title)
                         .fontWeight(.semibold)
@@ -34,7 +33,7 @@ struct CommunityDetailsView: View {
                         Text(localSubscriberCountText)
                             .contentTransition(.numericText(value: Double(localSubscriberCount)))
                             .animation(.default, value: Double(localSubscriberCount))
-                            .foregroundStyle(palette.secondary)
+                            .foregroundStyle(.themedSecondary)
                             .font(.footnote)
                     }
                 }
@@ -44,9 +43,9 @@ struct CommunityDetailsView: View {
             
             HStack(spacing: 16) {
                 FormReadout("Posts", value: community.postCount_ ?? 0)
-                    .tint(palette.postAccent)
+                    .tint(.themedPostAccent)
                 FormReadout("Comments", value: community.commentCount_ ?? 0)
-                    .tint(palette.commentAccent)
+                    .tint(.themedCommentAccent)
             }
             .frame(maxWidth: .infinity)
         }

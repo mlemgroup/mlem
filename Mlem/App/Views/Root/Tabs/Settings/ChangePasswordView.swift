@@ -14,7 +14,6 @@ struct ChangePasswordView: View {
     }
     
     @Environment(AppState.self) var appState
-    @Environment(Palette.self) var palette
     @Environment(\.dismiss) var dismiss
 
     @State private var viewState: ViewState = .initial
@@ -63,7 +62,7 @@ struct ChangePasswordView: View {
                             .transition(.scale(scale: 0.9).combined(with: .opacity))
                     case .success:
                         Image(systemName: Icons.successCircleFill)
-                            .foregroundStyle(palette.positive)
+                            .foregroundStyle(.themedPositive)
                             .transition(.scale(scale: 0.9).combined(with: .opacity))
                     }
                 }
@@ -87,7 +86,7 @@ struct ChangePasswordView: View {
                         }
                     }
                 }
-                .foregroundStyle(palette.warning)
+                .foregroundStyle(.themedWarning)
             }
         }
         .onAppear {

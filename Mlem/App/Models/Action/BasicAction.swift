@@ -44,12 +44,12 @@ struct BasicAction: Action {
         if let callback {
             if let confirmationPrompt {
                 popupModel.showPopup(ActionGroup(
-                    appearance: .init(label: "Confirm", color: .gray, icon: Icons.success),
+                    appearance: .init(label: "Confirm", color: .themedNeutralAccent, icon: Icons.success),
                     prompt: confirmationPrompt,
                     children: {
                         BasicAction(
                             id: "",
-                            appearance: .init(label: "Yes", isOn: false, color: Palette.main.warning, icon: ""),
+                            appearance: .init(label: "Yes", isOn: false, color: .themedWarning, icon: ""),
                             callback: callback
                         )
                     }

@@ -17,7 +17,7 @@ extension SignUpView {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(height: 100)
-                .foregroundStyle(palette.accent)
+                .foregroundStyle(.themedAccent)
                 .padding(.bottom)
             Text("Application submitted!")
                 .font(.title2)
@@ -73,13 +73,13 @@ extension SignUpView {
                     switch usernameValidity {
                     case .checking:
                         ProgressView()
-                            .tint(palette.secondary)
+                            .tint(.themedSecondary)
                     case .valid:
                         Image(systemName: Icons.successCircleFill)
-                            .foregroundStyle(palette.positive)
+                            .foregroundStyle(.themedPositive)
                     case .taken, .tooShort, .invalidCharacters:
                         Image(systemName: Icons.failureCircleFill)
-                            .foregroundStyle(palette.negative)
+                            .foregroundStyle(.themedNegative)
                     }
                 }
             }
@@ -99,7 +99,7 @@ extension SignUpView {
                         Text(verbatim: "")
                     }
                 }
-                .foregroundStyle(palette.warning)
+                .foregroundStyle(.themedWarning)
             }
         }
     }
@@ -140,11 +140,11 @@ extension SignUpView {
         } footer: {
             if !confirmPassword.isEmpty, password != confirmPassword {
                 Text("Passwords don't match.")
-                    .foregroundStyle(palette.warning)
+                    .foregroundStyle(.themedWarning)
             } else if password.count < 10 {
                 // Using interpolation so we don't have to change the localization if this changes
                 Text("Password must be \(10) characters or more.")
-                    .foregroundStyle(confirmPassword.isEmpty ? palette.secondary : palette.warning)
+                    .foregroundStyle(confirmPassword.isEmpty ? .themedSecondary : .themedWarning)
             }
         }
     }
@@ -153,7 +153,7 @@ extension SignUpView {
     func applicationQuestionSection(_ instance: any Instance2Providing) -> some View {
         if let applicationQuestion = instance.applicationQuestion {
             Section {
-                Markdown(applicationQuestion, configuration: .default)
+                Markdown(applicationQuestion, configuration: .default(palette: palette))
                     .padding(.vertical, 8)
                 TextField("Your Answer...", text: $applicationQuestionResponse, axis: .vertical)
                     .focused($focused, equals: .applicationQuestionResponse)
@@ -187,7 +187,7 @@ extension SignUpView {
                         }
                     }
                 }
-                .foregroundStyle(palette.accent)
+                .foregroundStyle(.themedAccent)
                 .font(.footnote)
             }
         }
@@ -202,11 +202,11 @@ extension SignUpView {
                     .imageScale(.large)
                 Text("To join this instance, you need to create an application and wait to be accepted.")
             }
-            .foregroundStyle(palette.caution)
+            .foregroundStyle(.themedCaution)
             .listRowBackground(
                 RoundedRectangle(cornerRadius: 10)
-                    .stroke(palette.caution, lineWidth: 3)
-                    .background(palette.caution.opacity(0.1))
+                    .stroke(.themedCaution, lineWidth: 3)
+                    .background(.themedCaution.opacity(0.1))
                     .clipShape(RoundedRectangle(cornerRadius: 10))
             )
         }
@@ -228,14 +228,14 @@ extension SignUpView {
 }
 
 private struct SubmitButtonStyle: ButtonStyle {
-    @Environment(Palette.self) var palette
     @Environment(\.isEnabled) private var isEnabled: Bool
+    
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .padding(12)
             .frame(maxWidth: .infinity)
-            .foregroundStyle(palette.selectedInteractionBarItem)
-            .background(isEnabled ? palette.accent : palette.secondary, in: .rect(cornerRadius: 10))
+            .foregroundStyle(.themedContrastingLabel)
+            .background(isEnabled ? .themedAccent : .themedSecondary, in: .rect(cornerRadius: 10))
             .opacity(opacity(isPressed: configuration.isPressed))
     }
     

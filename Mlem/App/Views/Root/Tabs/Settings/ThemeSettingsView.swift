@@ -8,13 +8,11 @@
 import SwiftUI
 
 struct ThemeSettingsView: View {
-    @Environment(Palette.self) var palette
-    
     @Setting(\.interfaceStyle) var interfaceStyle
     @Setting(\.colorPalette) var colorPalette
     
     // convenience
-    var supportedModes: UIUserInterfaceStyle { colorPalette.palette.supportedModes }
+    var supportedModes: UIUserInterfaceStyle { colorPalette.supportedModes }
     
     var body: some View {
         Form {
@@ -53,8 +51,8 @@ struct ThemeSettingsView: View {
         Label(style.label, systemImage: style.systemImage)
             .foregroundStyle(
                 supportedModes == .unspecified || supportedModes == style
-                    ? palette.primary
-                    : palette.secondary
+                    ? .themedPrimary
+                    : .themedSecondary
             )
     }
 }

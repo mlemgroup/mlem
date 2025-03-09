@@ -7,6 +7,7 @@
 
 import MlemMiddleware
 import SwiftUI
+import Theming
 
 extension Interactable1Providing {
     private var self2: (any Interactable2Providing)? { self as? any Interactable2Providing }
@@ -188,14 +189,14 @@ extension Interactable1Providing {
     
     var scoreReadout: Readout {
         let icon: String
-        let color: Color?
+        let color: ThemedColor?
         switch self2?.votes.myVote {
         case .upvote:
             icon = Icons.upvoteSquareFill
-            color = Palette.main.upvote
+            color = .themedUpvote
         case .downvote:
             icon = Icons.downvoteSquareFill
-            color = Palette.main.downvote
+            color = .themedDownvote
         default:
             icon = Icons.upvoteSquare
             color = nil
@@ -214,7 +215,7 @@ extension Interactable1Providing {
             id: "upvote\(uid)",
             label: self2?.votes.upvotes.description,
             icon: isOn ? Icons.upvoteSquareFill : Icons.upvoteSquare,
-            color: isOn ? Palette.main.upvote : nil
+            color: isOn ? .themedUpvote : nil
         )
     }
     
@@ -224,7 +225,7 @@ extension Interactable1Providing {
             id: "downvote\(uid)",
             label: self2?.votes.downvotes.description,
             icon: isOn ? Icons.downvoteSquareFill : Icons.downvoteSquare,
-            color: isOn ? Palette.main.downvote : nil
+            color: isOn ? .themedDownvote : nil
         )
     }
     
@@ -242,7 +243,7 @@ extension Interactable1Providing {
             label: self2?.commentCount.description,
             icon: Icons.replies,
             value: value,
-            valueColor: Palette.main.positive
+            valueColor: .themedPositive
         )
     }
     
@@ -252,7 +253,7 @@ extension Interactable1Providing {
             id: "saved\(uid)",
             label: nil,
             icon: isOn ? Icons.saveFill : Icons.save,
-            color: isOn ? Palette.main.save : nil
+            color: isOn ? .themedSave : nil
         )
     }
 }

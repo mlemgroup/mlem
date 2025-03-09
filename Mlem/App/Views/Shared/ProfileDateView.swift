@@ -7,10 +7,9 @@
 
 import MlemMiddleware
 import SwiftUI
+import Theming
 
 struct ProfileDateView: View {
-    @Environment(Palette.self) var palette
-
     var profilable: any Profile2Providing
     
     var body: some View {
@@ -19,13 +18,13 @@ struct ProfileDateView: View {
             .font(.footnote)
     }
     
-    var color: Color {
+    var color: ThemedColor {
         if profilable.createdRecently {
-            palette.colorfulAccent(3)
+            .themedColorfulAccent(3)
         } else if profilable.isCakeDay {
-            palette.colorfulAccent(1)
+            .themedColorfulAccent(1)
         } else {
-            palette.secondary
+            .themedSecondary
         }
     }
     

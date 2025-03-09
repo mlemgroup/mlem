@@ -11,7 +11,6 @@ import QuickLook
 import SwiftUI
 
 struct ThumbnailImageView: View {
-    @Environment(Palette.self) var palette
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.openURL) var openURL
     
@@ -118,11 +117,11 @@ struct ThumbnailImageView: View {
             Image(systemName: post.placeholderImageName)
                 .font(.title)
                 .frame(width: frame.width, height: frame.width)
-                .foregroundStyle(palette.secondary)
-                .background(palette.thumbnailBackground)
+                .foregroundStyle(.themedSecondary)
+                .background(.themedThumbnailBackground)
                 .clipShape(RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius))
                 .overlay(RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius)
-                    .stroke(palette.secondaryBackground, lineWidth: 1))
+                    .stroke(.themedSecondaryBackground, lineWidth: 1))
         }
     }
     
@@ -143,7 +142,7 @@ struct ThumbnailImageView: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(maxWidth: 50)
                 .padding(4)
-                .foregroundStyle(palette.tertiary)
+                .foregroundStyle(.themedTertiary)
         }
     }
     

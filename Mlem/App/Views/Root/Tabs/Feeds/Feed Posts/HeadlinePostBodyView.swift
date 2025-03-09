@@ -9,7 +9,6 @@ import MlemMiddleware
 import SwiftUI
 
 struct HeadlinePostBodyView: View {
-    @Environment(Palette.self) var palette
     @Environment(\.communityContext) var communityContext: (any Community1Providing)?
     
     @Setting(\.thumbnailLocation) var thumbnailLocation
@@ -81,7 +80,7 @@ struct HeadlinePostBodyView: View {
     var titleView: some View {
         post.taggedTitle(communityContext: communityContext)
             .multilineTextAlignment(.leading)
-            .foregroundStyle((post.read_ ?? false) ? palette.secondary : palette.primary)
+            .foregroundStyle((post.read_ ?? false) ? .themedSecondary : .themedPrimary)
             .font(.headline)
             .imageScale(.small)
     }

@@ -9,7 +9,6 @@ import SwiftUI
 
 struct AccountLocalSettingsView: View {
     @Environment(AppState.self) var appState
-    @Environment(Palette.self) var palette
     
     @State var isShowingFavoriteDeletionWarning: Bool = false
     @State var isShowingClearVisitHistoryWarning: Bool = false
@@ -38,7 +37,7 @@ struct AccountLocalSettingsView: View {
                 isShowingFavoriteDeletionWarning = true
             }
             .disabled(session.account.favorites.isEmpty)
-            .tint(palette.warning)
+            .tint(.themedWarning)
             .confirmationDialog(
                 "Delete Community Favorites",
                 isPresented: $isShowingFavoriteDeletionWarning
@@ -103,7 +102,7 @@ struct AccountLocalSettingsView: View {
             Button("Clear Search History", systemImage: Icons.delete, role: .destructive) {
                 isShowingClearVisitHistoryWarning = true
             }
-            .tint(palette.warning)
+            .tint(.themedWarning)
             .confirmationDialog(
                 "Clear search history?",
                 isPresented: $isShowingClearVisitHistoryWarning,

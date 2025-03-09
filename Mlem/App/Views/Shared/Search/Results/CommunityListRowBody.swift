@@ -7,12 +7,12 @@
 
 import MlemMiddleware
 import SwiftUI
+import Theming
 
 struct CommunityListRowBody<Content: View>: View {
     enum Complication { case instance, subscriberCount }
     enum Readout { case subscribers }
     
-    @Environment(Palette.self) var palette
     @Environment(\.isEnabled) var isEnabled
     
     @Setting(\.blurNsfw) var blurNsfw
@@ -84,7 +84,7 @@ struct CommunityListRowBody<Content: View>: View {
                     .foregroundStyle(titleColor)
                 caption
                     .font(.footnote)
-                    .foregroundStyle(palette.secondary)
+                    .foregroundStyle(.themedSecondary)
                     .lineLimit(1)
             }
             Spacer()
@@ -120,26 +120,26 @@ struct CommunityListRowBody<Content: View>: View {
         }
     }
     
-    var titleColor: Color {
+    var titleColor: ThemedColor {
         if community.nsfw {
-            palette.warning
+            .themedWarning
         } else {
-            isEnabled ? palette.primary : palette.secondary
+            isEnabled ? .themedPrimary : .themedSecondary
         }
     }
     
     var subscriberCountReadout: some View {
         let image: String
-        let color: Color
+        let color: ThemedColor
         switch community.subscriptionTier_ {
         case .favorited:
-            color = palette.favorite
+            color = .themedFavorite
             image = Icons.favoriteFill
         case .subscribed:
-            color = palette.positive
+            color = .themedPositive
             image = Icons.successCircleFill
         case .unsubscribed, nil:
-            color = palette.secondary
+            color = .themedSecondary
             image = Icons.personFill
         }
         return HStack {

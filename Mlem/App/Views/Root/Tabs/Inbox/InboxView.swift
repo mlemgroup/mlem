@@ -12,7 +12,6 @@ import SwiftUI
 struct InboxView: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(AppState.self) var appState
-    @Environment(Palette.self) var palette
     @Environment(FiltersTracker.self) var filtersTracker
     
     @Setting(\.showReadInInbox) var showRead
@@ -98,7 +97,7 @@ struct InboxView: View {
             signedOutInfoView
         } else {
             content
-                .background(palette.groupedBackground)
+                .background(.themedGroupedBackground)
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar { toolbar }
                 .loadFeed(inboxFeedLoader)

@@ -10,14 +10,12 @@ import MlemMiddleware
 import SwiftUI
 
 struct TileScoreView: View {
-    @Environment(Palette.self) var palette
-    
     let saved: Bool
     let votes: VotesModel
     
     var body: some View {
         Group {
-            postTag(active: saved, icon: Icons.saveFill, color: palette.save) + // saved status
+            postTag(active: saved, icon: Icons.saveFill, color: .themedSave) + // saved status
                 Text(verbatim: saved ? " " : "") + // spacing after save
                 Text(Image(systemName: votes.iconName)) + // vote status
                 Text(verbatim: " \(votes.total.abbreviated)")

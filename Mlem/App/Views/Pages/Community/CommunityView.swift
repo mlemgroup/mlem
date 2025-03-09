@@ -28,8 +28,8 @@ struct CommunityView: View {
         
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
-    @Environment(Palette.self) var palette
     @Environment(FiltersTracker.self) var filtersTracker
+    @Environment(\.palette) var palette
     @Environment(\.dismiss) var dismiss
     
     @Setting(\.postSize) var postSize
@@ -73,7 +73,7 @@ struct CommunityView: View {
                 ErrorView(.init(error: error))
             } else {
                 ProgressView()
-                    .tint(palette.secondary)
+                    .tint(.themedSecondary)
             }
         } upgradeOperation: { model, api in
             try await model.upgrade(api: api, upgradeOperation: nil)
@@ -83,7 +83,7 @@ struct CommunityView: View {
         }
         .navigationBarTitleDisplayMode(.inline)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(palette.groupedBackground)
+        .background(.themedGroupedBackground)
     }
         
     @ViewBuilder
@@ -156,7 +156,7 @@ struct CommunityView: View {
                 Text("This community has been removed.")
                     .fontWeight(.semibold)
             }
-            .foregroundStyle(palette.warning)
+            .foregroundStyle(.themedWarning)
             .padding(.top, Constants.main.doubleSpacing)
         } else {
             PostGridView(postFeedLoader: postFeedLoader)
@@ -181,9 +181,9 @@ struct CommunityView: View {
                 )
             }
             if let description = community.description {
-                Markdown(description, configuration: .default)
+                Markdown(description, configuration: .default(palette: palette))
                     .padding(Constants.main.standardSpacing)
-                    .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+                    .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
                     .paletteBorder(cornerRadius: Constants.main.standardSpacing)
             }
         }
@@ -237,8 +237,8 @@ struct CommunityView: View {
             .padding(.vertical, 3)
             .padding(.trailing, 6)
             .padding(.leading, 8)
-            .background(subscribed ? palette.accent : palette.secondary.opacity(0.2), in: .capsule)
-            .foregroundStyle(subscribed ? palette.selectedInteractionBarItem : palette.secondary)
+            .background(subscribed ? .themedAccent : .themedSecondary.opacity(0.2), in: .capsule)
+            .foregroundStyle(subscribed ? .themedContrastingLabel : .themedSecondary)
         }
         .padding(.trailing, Constants.main.standardSpacing)
         .padding(.bottom, Constants.main.halfSpacing)

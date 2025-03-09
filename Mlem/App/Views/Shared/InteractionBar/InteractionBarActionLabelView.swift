@@ -6,12 +6,11 @@
 //
 
 import SwiftUI
+import Theming
 
 struct InteractionBarActionLabelView: View {
     static let unweightedSymbols: Set<String> = [Icons.upvote, Icons.downvote]
-    
-    @Environment(Palette.self) private var palette
-    
+        
     let appearance: ActionAppearance
     
     init(_ appearance: ActionAppearance) {
@@ -27,14 +26,14 @@ struct InteractionBarActionLabelView: View {
             .scaledToFit()
             .frame(width: Constants.main.barIconSize, height: Constants.main.barIconSize)
             .padding(Constants.main.barIconPadding)
-            .foregroundColor(appearance.isOn ? palette.selectedInteractionBarItem : palette.primary)
+            .foregroundStyle(appearance.isOn ? .themedContrastingLabel : .themedPrimary)
             .background(appearance.isOn ? appearance.color : .clear, in: .rect(cornerRadius: Constants.main.barIconCornerRadius))
             .contentShape(Rectangle())
             .opacity(appearance.isInProgress ? 0.5 : 1)
             .overlay {
                 if appearance.isInProgress {
                     ProgressView()
-                        .tint(appearance.isOn ? palette.selectedInteractionBarItem : palette.primary)
+                        .tint(appearance.isOn ? .themedContrastingLabel : .themedPrimary)
                 }
             }
             .transaction { $0.animation = nil }

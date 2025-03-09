@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct CommentSettingsView: View {
-    @Environment(Palette.self) var palette
-    
     @Setting(\.compactComments) var compactComments
     @Setting(\.tapCommentsToCollapse) var tapCommentsToCollapse
     @Setting(\.maxCommentDepth) var maxCommentDepth

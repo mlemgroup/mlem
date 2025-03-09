@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Theming
 
 extension InteractionBarEditorView {
     // MARK: - Definitions
@@ -313,12 +314,12 @@ extension InteractionBarEditorView {
     
     // MARK: - Helpers
     
-    func trayItemOutlineColor(_ trayItem: TrayItem) -> Color {
+    func trayItemOutlineColor(_ trayItem: TrayItem) -> ThemedColor {
         if let dropLocation,
            trayPickedUpItem == trayItem || (barPickedUpItem?.barItem.item == trayItem.item && dropLocation == .tray) {
-            return palette.accent
+            return .themedAccent
         }
-        return palette.tertiary
+        return .themedTertiary
     }
     
     func infoStackIndex() -> Int {

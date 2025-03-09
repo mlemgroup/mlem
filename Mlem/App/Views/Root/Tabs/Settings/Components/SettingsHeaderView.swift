@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct SettingsHeaderView<Icon: View>: View {
-    @Environment(Palette.self) var palette
-    
     let title: String
     let description: String?
     let icon: Icon
@@ -50,14 +48,13 @@ struct SettingsHeaderView<Icon: View>: View {
 }
 
 struct SettingsHeaderIconView: View {
-    @Environment(Palette.self) var palette
     let systemName: String
     
     var body: some View {
         Image(systemName: systemName)
             .font(.title)
             .imageScale(.large)
-            .foregroundStyle(palette.selectedInteractionBarItem)
+            .foregroundStyle(.themedContrastingLabel)
             .frame(width: 60, height: 60)
             .background(.tint, in: .rect(cornerRadius: 15))
     }

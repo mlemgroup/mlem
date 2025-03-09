@@ -11,7 +11,7 @@ import Foundation
 import SwiftUI
 
 private struct PaletteBorder: ViewModifier {
-    @Environment(Palette.self) var palette
+    @Environment(\.palette) var palette
     
     var cornerRadius: CGFloat
     
@@ -20,7 +20,7 @@ private struct PaletteBorder: ViewModifier {
             .overlay {
                 if palette.bordered {
                     RoundedRectangle(cornerRadius: cornerRadius)
-                        .stroke(palette.divider, lineWidth: 0.5)
+                        .stroke(.themedDivider, lineWidth: 0.5)
                 }
             }
     }

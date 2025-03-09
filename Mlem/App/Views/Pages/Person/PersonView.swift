@@ -9,6 +9,7 @@ import Flow
 import LemmyMarkdownUI
 import MlemMiddleware
 import SwiftUI
+import Theming
 
 // swiftlint:disable:next type_body_length
 struct PersonView: View {
@@ -30,10 +31,10 @@ struct PersonView: View {
     @Setting(\.internetSpeed) var internetSpeed
     
     @Environment(AppState.self) var appState
-    @Environment(Palette.self) var palette
     @Environment(NavigationLayer.self) var navigation
     @Environment(FiltersTracker.self) var filtersTracker
-    
+    @Environment(\.palette) var palette
+
     let visitContext: VisitHistory.VisitContext?
     
     @State var person: AnyPerson
@@ -115,7 +116,7 @@ struct PersonView: View {
                 ErrorView(.init(error: error))
             } else {
                 ProgressView()
-                    .tint(palette.secondary)
+                    .tint(.themedSecondary)
             }
         } upgradeOperation: { model, api in
             try await model.upgrade(api: api) { entity in
@@ -154,7 +155,7 @@ struct PersonView: View {
         .navigationTitle(isAtTop ? "" : (person.wrappedValue.displayName_ ?? ""))
         .navigationBarTitleDisplayMode(.inline)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(palette.groupedBackground)
+        .background(.themedGroupedBackground)
     }
     
     @ViewBuilder
@@ -192,18 +193,18 @@ struct PersonView: View {
             VStack(spacing: Constants.main.standardSpacing) {
                 let blocks: [BlockNode] = .init(bio)
                 if blocks.isSimpleParagraphs, bio.count < 300 {
-                    MarkdownText(blocks, configuration: .default)
+                    MarkdownText(blocks, configuration: .default(palette: palette))
                         .multilineTextAlignment(.center)
                     dateLabel(person: person)
                         .frame(maxWidth: .infinity, alignment: .center)
                 } else {
-                    Markdown(blocks, configuration: .default)
+                    Markdown(blocks, configuration: .default(palette: palette))
                     dateLabel(person: person)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
             .padding(Constants.main.standardSpacing)
-            .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+            .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
             .paletteBorder(cornerRadius: Constants.main.standardSpacing)
         } else {
             dateLabel(person: person)
@@ -218,15 +219,15 @@ struct PersonView: View {
             HFlow(spacing: Constants.main.halfSpacing) {
                 if person.isMlemDeveloper {
                     Label("Mlem Developer", systemImage: Icons.developerFlair)
-                        .tint(palette.colorfulAccent(4))
+                        .tint(.themedColorfulAccent(4))
                 }
                 if isAdmin {
                     Label("\(person.host) Administrator", systemImage: Icons.administrationFill)
-                        .tint(palette.administration)
+                        .tint(.themedAdministration)
                 }
                 if person.isBot {
                     Label("Bot Account", systemImage: Icons.botFlair)
-                        .tint(palette.colorfulAccent(5))
+                        .tint(.themedColorfulAccent(5))
                 }
             }
             .labelStyle(FlairLabelStyle())
@@ -250,9 +251,9 @@ struct PersonView: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .foregroundStyle(palette.negative)
+        .foregroundStyle(.themedNegative)
         .padding(Constants.main.standardSpacing)
-        .background(palette.negative.opacity(0.2), in: .rect(cornerRadius: Constants.main.standardSpacing))
+        .background(.themedNegative.opacity(0.2), in: .rect(cornerRadius: Constants.main.standardSpacing))
     }
     
     @ViewBuilder
@@ -315,8 +316,6 @@ struct PersonView: View {
 }
 
 private struct FlairLabelStyle: LabelStyle {
-    @Environment(Palette.self) private var palette
-    
     func makeBody(configuration: Configuration) -> some View {
         HStack(spacing: 5) {
             configuration.icon

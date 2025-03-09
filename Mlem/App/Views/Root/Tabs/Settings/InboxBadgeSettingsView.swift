@@ -9,7 +9,6 @@ import MlemMiddleware
 import SwiftUI
 
 struct InboxBadgeSettingsView: View {
-    @Environment(Palette.self) var palette
     @Setting(\.tabInboxBadgeIncludedTypes) var tabInboxBadgeIncludedTypes
     
     var body: some View {
@@ -50,10 +49,10 @@ struct InboxBadgeSettingsView: View {
                 .overlay(alignment: .topTrailing) {
                     Text(verbatim: "1")
                         .font(.title2)
-                        .foregroundStyle(palette.selectedInteractionBarItem)
+                        .foregroundStyle(.themedContrastingLabel)
                         .aspectRatio(1, contentMode: .fit)
                         .padding(10)
-                        .background(palette.warning, in: .circle)
+                        .background(.themedWarning, in: .circle)
                 }
         }
     }

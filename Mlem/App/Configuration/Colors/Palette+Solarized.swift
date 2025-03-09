@@ -1,12 +1,13 @@
 //
-//  SolarizedPalette.swift
+//  Palette+Solarized.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-08-29.
+//  Created by Sjmarf on 2025-03-08.
 //
 
 import Foundation
 import SwiftUI
+import Theming
 
 // See https://ethanschoonover.com/solarized/ for details
 // TODO: I'd love to do this in LAB space, but that involves some ugly manual CGColor work
@@ -27,19 +28,31 @@ private let violet: Color = .init(red: 0.4235294117647059, green: 0.443137254901
 private let blue: Color = .init(red: 0.14901960784313725, green: 0.5450980392156862, blue: 0.8235294117647058)
 private let cyan: Color = .init(red: 0.16470588235294117, green: 0.6313725490196078, blue: 0.596078431372549)
 private let green: Color = .init(red: 0.5215686274509804, green: 0.6, blue: 0.0)
-extension ColorPalette {
-    static let solarized: ColorPalette = .init(
-        supportedModes: .unspecified,
-        primary: .init(light: base00, dark: base0),
-        secondary: .init(light: base0, dark: base01),
-        tertiary: .init(light: base1, dark: base01),
-        background: .init(light: base3, dark: base03),
-        secondaryBackground: .init(light: base2, dark: base02),
-        tertiaryBackground: .init(light: base2, dark: base02),
-        groupedBackground: .init(light: base2, dark: base04),
-        secondaryGroupedBackground: .init(light: base3, dark: base03),
-        tertiaryGroupedBackground: .init(light: base2, dark: base02),
+
+extension Palette {
+    static let solarized: Self = .init(
+        bordered: false,
+        label: .init(
+            primary: .init(light: base00, dark: base0),
+            secondary: .init(light: base0, dark: base01),
+            tertiary: .init(light: base1, dark: base01)
+        ),
+        background: .init(
+            primary: .init(light: base3, dark: base03),
+            secondary: .init(light: base2, dark: base02),
+            tertiary: .init(light: base2, dark: base02)
+        ),
+        groupedBackground: .init(
+            primary: .init(light: base2, dark: base04),
+            secondary: .init(light: base3, dark: base03),
+            tertiary: .init(light: base2, dark: base02)
+        ),
         thumbnailBackground: .init(light: base2, dark: base02),
+        contrastingLabel: base2,
+        accent: blue,
+        neutralAccent: base0,
+        colorfulAccents: [orange, violet, blue, cyan, magenta, green, cyan],
+        commentIndentColors: [red, orange, yellow, cyan, blue, violet],
         positive: cyan,
         negative: red,
         warning: red,
@@ -49,16 +62,13 @@ extension ColorPalette {
         save: cyan,
         read: violet,
         favorite: blue,
-        selectedInteractionBarItem: base2,
         administration: violet,
         moderation: green,
         federatedFeed: blue,
         localFeed: violet,
         subscribedFeed: red,
-        inbox: violet,
-        accent: blue,
-        neutralAccent: base0,
-        colorfulAccents: [orange, violet, blue, cyan, magenta, green, cyan],
-        commentIndentColors: [red, orange, yellow, cyan, blue, violet]
+        moderatedFeed: violet,
+        savedFeed: cyan,
+        inbox: violet
     )
 }

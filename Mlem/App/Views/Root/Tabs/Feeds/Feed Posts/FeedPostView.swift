@@ -14,7 +14,6 @@ struct FeedPostView<EmbeddedContent: View>: View {
     @Environment(AppState.self) private var appState: AppState
     @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?
     @Environment(NavigationLayer.self) private var navigation
-    @Environment(Palette.self) private var palette
     @Environment(FiltersTracker.self) var filtersTracker
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
     @Environment(\.communityContext) var communityContext
@@ -65,7 +64,7 @@ struct FeedPostView<EmbeddedContent: View>: View {
                         if differentiateWithoutColor, !(post.read_ ?? false), readPostIndicator == .outline {
                             RoundedRectangle(cornerRadius: postSize.swipeBehavior.cornerRadius)
                                 .stroke(lineWidth: .init(readOutlineThickness))
-                                .foregroundStyle(palette.secondary)
+                                .foregroundStyle(.themedSecondary)
                         }
                     }
                     .contentShape(.contextMenuPreview, .rect(cornerRadius: postSize.swipeBehavior.cornerRadius))
@@ -108,10 +107,10 @@ struct FeedPostView<EmbeddedContent: View>: View {
     var obscuredContent: some View {
         Text("Hidden by keyword filters")
             .italic()
-            .foregroundStyle(palette.secondary)
+            .foregroundStyle(.themedSecondary)
             .padding(Constants.main.standardSpacing)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-            .background(palette.secondaryGroupedBackground)
+            .background(.themedSecondaryGroupedBackground)
             .clipShape(.rect(cornerRadius: postSize.swipeBehavior.cornerRadius))
     }
     

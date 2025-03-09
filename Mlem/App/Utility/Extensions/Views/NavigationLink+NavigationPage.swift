@@ -48,8 +48,6 @@ extension NavigationLink where Destination == Never {
 }
 
 struct NavigationLinkPickerLabelView: View {
-    @Environment(Palette.self) var palette
-    
     let title: String
     let value: String
     let fallbackValue: String
@@ -70,7 +68,7 @@ struct NavigationLinkPickerLabelView: View {
                 Text(value)
                 Text(fallbackValue)
             }
-            .foregroundStyle(palette.secondary)
+            .foregroundStyle(.themedSecondary)
             .lineLimit(1)
         }
     }

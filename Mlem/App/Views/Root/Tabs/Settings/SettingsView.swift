@@ -11,7 +11,6 @@ import SwiftUI
 struct SettingsView: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
-    @Environment(Palette.self) var palette
     
     @Setting(\.colorPalette) var colorPalette
     
@@ -31,44 +30,44 @@ struct SettingsView: View {
                     systemImage: "gear",
                     destination: .settings(.general)
                 )
-                .tint(palette.neutralAccent)
+                .tint(.themedNeutralAccent)
                 NavigationLink(
                     "Privacy",
                     systemImage: Icons.privacy,
                     destination: .settings(.privacy)
                 )
-                .tint(palette.colorfulAccent(2))
+                .tint(.themedColorfulAccent(2))
                 NavigationLink(
                     "Safety & Filtering",
                     systemImage: "shield.lefthalf.filled",
                     destination: .settings(.safety)
                 )
-                .tint(palette.colorfulAccent(3))
+                .tint(.themedColorfulAccent(3))
                 NavigationLink(
                     "Accessibility",
                     systemImage: "hand.point.up.braille.fill",
                     destination: .settings(.accessibility)
                 )
-                .tint(palette.colorfulAccent(2))
+                .tint(.themedColorfulAccent(2))
                 NavigationLink(
                     "Media & Links",
                     systemImage: "photo.fill",
                     destination: .settings(.links)
                 )
-                .tint(palette.colorfulAccent(4))
+                .tint(.themedColorfulAccent(4))
                 NavigationLink(
                     "Sorting",
                     systemImage: "arrow.up.and.down.text.horizontal",
                     destination: .settings(.sorting)
                 )
-                .tint(palette.colorfulAccent(5))
+                .tint(.themedColorfulAccent(5))
                 if AccountsTracker.main.highestLevelAccountType >= .moderator {
                     NavigationLink(
                         "Moderation",
                         systemImage: Icons.moderationFill,
                         destination: .settings(.moderation)
                     )
-                    .tint(palette.moderation)
+                    .tint(.themedModeration)
                 }
             }
             
@@ -82,22 +81,22 @@ struct SettingsView: View {
             
             Section {
                 NavigationLink("Posts", systemImage: "doc.plaintext.fill", destination: .settings(.post))
-                    .tint(palette.postAccent)
+                    .tint(.themedPostAccent)
                 NavigationLink("Comments", systemImage: "bubble.fill", destination: .settings(.comment))
-                    .tint(palette.commentAccent)
+                    .tint(.themedCommentAccent)
                 NavigationLink("Inbox", systemImage: Icons.inboxFill, destination: .settings(.inbox))
-                    .tint(palette.colorfulAccent(4))
+                    .tint(.themedInbox)
                 NavigationLink("Subscription List", systemImage: "list.bullet", destination: .settings(.subscriptionList))
-                    .tint(palette.communityAccent)
+                    .tint(.themedCommunityAccent)
                 NavigationLink("Tab Bar", systemImage: "platter.filled.bottom.iphone", destination: .settings(.tabBar))
-                    .tint(palette.colorfulAccent(5))
+                    .tint(.themedColorfulAccent(5))
             }
             
             Section {
                 NavigationLink("About Mlem", systemImage: "info.circle.fill", destination: .settings(.about))
-                    .tint(palette.colorfulAccent(2))
+                    .tint(.themedColorfulAccent(2))
                 NavigationLink("Advanced", systemImage: "gearshape.2.fill", destination: .settings(.advanced))
-                    .tint(palette.neutralAccent)
+                    .tint(.themedNeutralAccent)
             }
         }
         .labelStyle(.squircle)

@@ -20,7 +20,7 @@ struct FormChevron<Content: View>: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             Image(systemName: Icons.forward)
                 .imageScale(.small)
-                .foregroundStyle(Palette.main.tertiary)
+                .foregroundStyle(.themedTertiary)
                 .fontWeight(.semibold)
         }
         .contentShape(.rect)

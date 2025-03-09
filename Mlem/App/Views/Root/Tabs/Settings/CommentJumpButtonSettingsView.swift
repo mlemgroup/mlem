@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct CommentJumpButtonSettingsView: View {
-    @Environment(Palette.self) var palette
     @Environment(\.colorScheme) var colorScheme
     
     @Setting(\.jumpButton) var jumpButton
@@ -22,12 +21,12 @@ struct CommentJumpButtonSettingsView: View {
                 Image(systemName: Icons.jumpButton)
                     .font(.title)
                     .fontWeight(.semibold)
-                    .foregroundStyle(palette.secondary)
+                    .foregroundStyle(.themedSecondary)
                     .aspectRatio(contentMode: .fill)
                     .padding(25)
                     .background(
                         Circle()
-                            .stroke(palette.tertiary.opacity(0.3), lineWidth: 3)
+                            .stroke(.themedTertiary.opacity(0.3), lineWidth: 3)
                             .background(.ultraThinMaterial)
                             .clipShape(.circle)
                     )

@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct PrivacySettingsView: View {
-    @Environment(Palette.self) var palette
-    
     @Setting(\.autoBypassImageProxy) var bypassImageProxy
     @Setting(\.confirmImageUploads) var confirmImageUploads
     @Setting(\.showFavicons) var showFavicons
@@ -21,7 +19,7 @@ struct PrivacySettingsView: View {
                 description: "Manage how Mlem interacts with Lemmy instances and other websites.",
                 systemImage: Icons.privacy
             )
-            .tint(palette.colorfulAccent(2))
+            .tint(.themedColorfulAccent(2))
             Section {
                 Toggle("Confirm Image Uploads", systemImage: Icons.confirmImageUploads, isOn: $confirmImageUploads)
             } footer: {

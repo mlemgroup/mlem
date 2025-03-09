@@ -10,7 +10,6 @@ import SwiftUI
 
 // note: this is a very lazy categorization of "properties that affect posts"
 struct PostSettingsView: View {
-    @Environment(Palette.self) var palette
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor: Bool
     
     @Setting(\.postSize) var postSize

@@ -142,7 +142,7 @@ extension Post1Providing {
         basicMenuActions(appState: appState, feedback: feedback, commentTreeTracker: commentTreeTracker)
         if canModerate {
             ActionGroup(
-                appearance: .init(label: "Moderation...", color: Palette.main.moderation, icon: Icons.moderation),
+                appearance: .init(label: "Moderation...", color: .themedModeration, icon: Icons.moderation),
                 displayMode: Settings.main.moderatorActionGrouping == .divider || expanded ? .section : .disclosure
             ) {
                 moderatorMenuActions(
@@ -293,11 +293,11 @@ extension Post1Providing {
             || (communityContext != nil && pinnedCommunity)
             || locked
         
-        return postTag(active: removed, icon: Icons.removeFill, color: Palette.main.negative) +
-            postTag(active: deleted, icon: Icons.delete, color: Palette.main.negative) +
-            postTag(active: pinnedInstance, icon: Icons.pinFill, color: Palette.main.administration) +
-            postTag(active: pinnedCommunity && communityContext != nil, icon: Icons.pinFill, color: Palette.main.moderation) +
-            postTag(active: locked, icon: Icons.lockFill, color: Palette.main.lockAccent) +
+        return postTag(active: removed, icon: Icons.removeFill, color: .themedNegative) +
+            postTag(active: deleted, icon: Icons.delete, color: .themedNegative) +
+            postTag(active: pinnedInstance, icon: Icons.pinFill, color: .themedAdministration) +
+            postTag(active: pinnedCommunity && communityContext != nil, icon: Icons.pinFill, color: .themedModeration) +
+            postTag(active: locked, icon: Icons.lockFill, color: .themedLockAccent) +
             Text(verbatim: "\(hasTags ? "  " : "")\(title)")
     }
     
@@ -378,7 +378,7 @@ extension Post1Providing {
             appearance: .init(
                 label: "Block...",
                 isDestructive: true,
-                color: Palette.main.negative,
+                color: .themedNegative,
                 icon: Icons.block
             ),
             prompt: "Block community or user?",
@@ -397,7 +397,7 @@ extension Post1Providing {
                 label: "Block Community",
                 isOn: false,
                 isDestructive: true,
-                color: Palette.main.negative,
+                color: .themedNegative,
                 icon: Icons.block
             ),
             confirmationPrompt: showConfirmation ? "Really block this community?" : nil,

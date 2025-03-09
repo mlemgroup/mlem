@@ -7,6 +7,7 @@
 
 import MlemMiddleware
 import SwiftUI
+import Theming
 
 extension CommunityOrPerson {
     func copyFullNameWithPrefix(feedback: Set<FeedbackType> = [.toast]) {
@@ -21,7 +22,7 @@ extension CommunityOrPerson {
             id: "copyName\(actorId)",
             appearance: .init(
                 label: "Copy Name",
-                color: .gray,
+                color: .themedNeutralAccent,
                 icon: Icons.copy,
                 swipeIcon2: Icons.copyFill
             ),
@@ -32,16 +33,17 @@ extension CommunityOrPerson {
     func attributedName(
         showInstance: Bool = true,
         font: Font = .body,
-        nameColor: Color? = nil,
-        instanceColor: Color? = nil
+        palette: Theming.Palette,
+        nameColor: ThemedColor = .themedSecondary,
+        instanceColor: ThemedColor = .themedTertiary
     ) -> AttributedString? {
         var outputString = AttributedString(name)
-        outputString.foregroundColor = nameColor ?? Palette.main.secondary
+        outputString.foregroundColor = nameColor.resolve(with: palette)
         outputString.font = font.bold()
         
         if showInstance {
             var instanceString = AttributedString("@\(host)")
-            instanceString.foregroundColor = instanceColor ?? Palette.main.tertiary
+            instanceString.foregroundColor = instanceColor.resolve(with: palette)
             instanceString.font = font
             outputString += instanceString
         }
@@ -55,12 +57,14 @@ extension CommunityOrPerson {
         showInstance: Bool = true,
         communityContext: (any Community)? = nil,
         font: Font = .body,
-        nameColor: Color? = nil,
-        instanceColor: Color? = nil
+        palette: Theming.Palette,
+        nameColor: ThemedColor = .themedSecondary,
+        instanceColor: ThemedColor = .themedTertiary
     ) -> Text {
         let attributedName = attributedName(
             showInstance: showInstance,
             font: font,
+            palette: palette,
             nameColor: nameColor,
             instanceColor: instanceColor
         )

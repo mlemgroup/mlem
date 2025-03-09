@@ -7,6 +7,7 @@
 
 import MlemMiddleware
 import SwiftUI
+import Theming
 
 extension ModlogEntryType {
     var systemImage: String {
@@ -36,28 +37,28 @@ extension ModlogEntryType {
         }
     }
     
-    var color: Color {
+    var color: ThemedColor {
         switch self {
         case let .removePost(_, _, removed, _),
              let .removeComment(_, _, _, _, removed, _),
              let .removeCommunity(_, removed, _):
-            removed ? Palette.main.negative : Palette.main.positive
+            removed ? .themedNegative : .themedPositive
         case .lockPost:
-            Palette.main.lockAccent
+            .themedLockAccent
         case let .pinPost(_, _, _, type):
-            type == .community ? Palette.main.moderation : Palette.main.administration
+            type == .community ? .themedModeration : .themedAdministration
         case .purgePost, .purgeComment, .purgeCommunity, .purgePerson:
-            Palette.main.negative
+            .themedNegative
         case .hideCommunity:
-            Palette.main.colorfulAccent(4)
+            .themedColorfulAccent(4)
         case .transferCommunityOwnership:
-            Palette.main.colorfulAccent(8)
+            .themedColorfulAccent(8)
         case let .updatePersonModeratorStatus(_, _, appointed):
-            appointed ? Palette.main.moderation : Palette.main.negative
+            appointed ? .themedModeration : .themedNegative
         case let .updatePersonAdminStatus(_, appointed):
-            appointed ? Palette.main.administration : Palette.main.negative
+            appointed ? .themedAdministration : .themedNegative
         case let .banPersonFromCommunity(_, _, banned, _, _), let .banPersonFromInstance(_, banned, _, _):
-            banned ? Palette.main.negative : Palette.main.positive
+            banned ? .themedNegative : .themedPositive
         }
     }
     

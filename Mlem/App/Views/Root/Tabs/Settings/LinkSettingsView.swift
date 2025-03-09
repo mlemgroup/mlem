@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct LinkSettingsView: View {
-    @Environment(Palette.self) var palette
     @Setting(\.openLinksInBrowser) var openLinksInBrowser
     @Setting(\.openLinksInReaderMode) var openLinksInReaderMode
     @Setting(\.tappableLinksDisplayMode) var tappableLinksDisplayMode
@@ -24,7 +23,7 @@ struct LinkSettingsView: View {
                 description: "Manage how Mlem handles links and control how images and videos are displayed.",
                 systemImage: "photo.fill"
             )
-            .tint(palette.colorfulAccent(4))
+            .tint(.themedColorfulAccent(4))
             Section {
                 NavigationLink(
                     "Open External Links",

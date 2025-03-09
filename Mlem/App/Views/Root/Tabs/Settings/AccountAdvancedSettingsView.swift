@@ -10,7 +10,6 @@ import SwiftUI
 struct AccountAdvancedSettingsView: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
-    @Environment(Palette.self) var palette
     
     @State var isBot: Bool = false
     
@@ -23,7 +22,7 @@ struct AccountAdvancedSettingsView: View {
         Form {
             Section {
                 Toggle("Bot Account", systemImage: Icons.botFlair, isOn: $isBot)
-                    .tint(palette.colorfulAccent(5))
+                    .tint(.themedColorfulAccent(5))
                     .onChange(of: isBot) {
                         Task {
                             do {

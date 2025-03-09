@@ -39,7 +39,7 @@ extension PostEditorView {
                     .padding(.vertical, 3)
                     .frame(maxWidth: .infinity)
                     .background(.opacity(0.2), in: .capsule)
-                    .foregroundStyle(palette.negative)
+                    .foregroundStyle(.themedNegative)
                     .padding(.horizontal)
             }
         }
@@ -72,14 +72,14 @@ extension PostEditorView {
                 Text("NSFW")
                     .font(.footnote)
                     .fontWeight(.black)
-                    .foregroundStyle(palette.selectedInteractionBarItem)
+                    .foregroundStyle(.themedContrastingLabel)
                 Image(systemName: Icons.close)
                     .foregroundStyle(.opacity(0.8))
             }
             .foregroundStyle(.white)
             .padding(.vertical, 2)
             .padding(.horizontal, 8)
-            .background(palette.warning, in: .capsule)
+            .background(.themedWarning, in: .capsule)
         }
     }
 }

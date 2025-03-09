@@ -9,7 +9,6 @@ import SwiftUI
 
 struct TabBarSettingsView: View {
     @Environment(AppState.self) var appState
-    @Environment(Palette.self) var palette
     
     @Setting(\.tabProfileLabelType) var profileTabLabel: ProfileTabLabel
     @Setting(\.tabProfileShowAvatar) var showUserAvatar: Bool
@@ -26,7 +25,7 @@ struct TabBarSettingsView: View {
                 description: "Customize the appearance of the tab bar.",
                 systemImage: "platter.filled.bottom.iphone"
             )
-            .tint(palette.colorfulAccent(5))
+            .tint(.themedColorfulAccent(5))
             Section("Profile Tab Label") {
                 Picker("Profile Tab Label", selection: $profileTabLabel) {
                     profileTabLabelItem("Name", value: account.nickname, systemImage: Icons.alphabeticalSort)
@@ -63,7 +62,7 @@ struct TabBarSettingsView: View {
                 Text(title)
                 Text(value)
                     .font(.footnote)
-                    .foregroundStyle(palette.secondary)
+                    .foregroundStyle(.themedSecondary)
             }
         } icon: {
             Image(systemName: systemImage)

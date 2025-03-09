@@ -9,7 +9,6 @@ import MlemMiddleware
 import SwiftUI
 
 struct ProfileHeaderView: View {
-    @Environment(Palette.self) var palette
     @Environment(AppState.self) var appState
     
     var profilable: (any Profile1Providing)?
@@ -43,10 +42,10 @@ struct ProfileHeaderView: View {
                 VStack(spacing: Constants.main.halfSpacing) {
                     HStack {
                         Text(profilable?.displayName_ ?? profilable?.name ?? "")
-                            .foregroundStyle(palette.primary)
+                            .foregroundStyle(.themedPrimary)
                         if blockedOverride ?? profilable?.blocked ?? false {
                             Image(systemName: Icons.hide)
-                                .foregroundStyle(palette.secondary)
+                                .foregroundStyle(.themedSecondary)
                         }
                     }
                     .font(.title)
@@ -55,7 +54,7 @@ struct ProfileHeaderView: View {
                     .minimumScaleFactor(0.01)
                     Text(subtitle)
                         .font(.caption)
-                        .foregroundStyle(palette.secondary)
+                        .foregroundStyle(.themedSecondary)
                 }
             }
             .buttonStyle(.plain)

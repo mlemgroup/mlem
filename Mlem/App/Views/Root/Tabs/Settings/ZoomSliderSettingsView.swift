@@ -74,8 +74,6 @@ struct ZoomSliderSettingsView: View {
 }
 
 struct ZoomSliderAnimation: View {
-    @Environment(Palette.self) var palette
-    
     var body: some View {
         RoundedRectangle(cornerRadius: 10)
             .fill(.black)
@@ -93,7 +91,7 @@ struct ZoomSliderAnimation: View {
                     .overlay(alignment: .leading) {
                         Circle()
                             .frame(width: 10, height: 10)
-                            .foregroundStyle(palette.accent)
+                            .foregroundStyle(.themedAccent)
                             .opacity(phase.circleOpacity)
                             .offset(y: phase.circleOffset)
                             .padding(.leading, 4)
@@ -108,7 +106,7 @@ struct ZoomSliderAnimation: View {
             }
             .overlay {
                 RoundedRectangle(cornerRadius: 10)
-                    .strokeBorder(palette.neutralAccent, lineWidth: 2)
+                    .strokeBorder(.themedNeutralAccent, lineWidth: 2)
             }
     }
 }

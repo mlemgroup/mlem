@@ -11,7 +11,6 @@ import SwiftUI
 
 struct ReplyView: View {
     @Environment(AppState.self) private var appState
-    @Environment(Palette.self) private var palette
     @Environment(NavigationLayer.self) private var navigation
     
     let reply: Reply2
@@ -23,7 +22,7 @@ struct ReplyView: View {
                 Spacer()
                 Image(systemName: reply.isMention ? Icons.mention : Icons.reply)
                     .symbolVariant(reply.read ? .none : .fill)
-                    .foregroundStyle(palette.accent)
+                    .foregroundStyle(.themedAccent)
                 EllipsisMenu(size: 24) { reply.menuActions(appState: appState) }
                     .frame(height: 10)
             }
@@ -43,7 +42,7 @@ struct ReplyView: View {
         .padding(.vertical, 2)
         .padding(Constants.main.standardSpacing)
         .clipped()
-        .background(palette.secondaryGroupedBackground)
+        .background(.themedSecondaryGroupedBackground)
         .contentShape(.rect)
         .onTapGesture {
             navigation.push(.comment(reply.comment))

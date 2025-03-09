@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct AccountSettingsView: View {
-    @Environment(Palette.self) var palette
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.dismiss) var dismiss
@@ -26,7 +25,7 @@ struct AccountSettingsView: View {
                         ProfileHeaderView(appState.firstSession.instance)
                     }
                 }
-                .foregroundStyle(palette.primary) // override default .secondary style
+                .foregroundStyle(.themedPrimary) // override default .secondary style
             }
             .textCase(nil) // override default all-caps
             .listRowInsets(.init(top: 10, leading: 0, bottom: 0, trailing: 0))
@@ -38,25 +37,25 @@ struct AccountSettingsView: View {
                         systemImage: Icons.personFill,
                         destination: .settings(.profile)
                     )
-                    .tint(palette.colorfulAccent(5))
+                    .tint(.themedColorfulAccent(5))
                     NavigationLink(
                         "Sign-In & Security",
                         systemImage: Icons.securityFill,
                         destination: .settings(.accountSignIn)
                     )
-                    .tint(palette.colorfulAccent(2))
+                    .tint(.themedColorfulAccent(2))
                     NavigationLink(
                         "Content & Notifications",
                         systemImage: "list.bullet.rectangle.fill",
                         destination: .settings(.accountContent)
                     )
-                    .tint(palette.colorfulAccent(0))
+                    .tint(.themedColorfulAccent(0))
                     NavigationLink(
                         "Advanced",
                         systemImage: "gearshape.2.fill",
                         destination: .settings(.accountAdvanced)
                     )
-                    .tint(palette.neutralAccent)
+                    .tint(.themedNeutralAccent)
                 }
                 Section {
                     NavigationLink(
@@ -64,7 +63,7 @@ struct AccountSettingsView: View {
                         systemImage: Icons.blockFill,
                         destination: .blockList
                     )
-                    .tint(palette.negative)
+                    .tint(.themedNegative)
                 }
                 Section {
                     NavigationLink(
@@ -72,7 +71,7 @@ struct AccountSettingsView: View {
                         systemImage: "iphone",
                         destination: .settings(.accountLocal)
                     )
-                    .tint(palette.colorfulAccent(2))
+                    .tint(.themedColorfulAccent(2))
                 } footer: {
                     Text("These options are stored locally in Mlem and not on your Lemmy account.")
                 }
@@ -108,7 +107,7 @@ struct AccountSettingsView: View {
                     }
                 }
             }
-            .tint(palette.warning)
+            .tint(.themedWarning)
         }
         .labelStyle(.squircle)
         .navigationTitle(Text("Account"))

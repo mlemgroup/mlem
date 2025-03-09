@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Theming
 
 extension InboxView {
     enum Feed: CaseIterable, Identifiable {
@@ -47,10 +48,10 @@ extension InboxView {
             }
         }
         
-        var color: Color {
+        var color: ThemedColor {
             switch self {
-            case .inbox: Palette.main.inbox
-            case .modMail: Palette.main.moderation
+            case .inbox: .themedInbox
+            case .modMail: .themedModeration
             }
         }
     }

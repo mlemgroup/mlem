@@ -9,8 +9,6 @@ import MlemMiddleware
 import SwiftUI
 
 struct PostPage: View {
-    @Environment(Palette.self) private var palette
-    
     let post: AnyPost
     let scrollTargetedComment: (any CommentStubProviding)?
     @State var tracker: CommentTreeTracker?
@@ -63,7 +61,7 @@ struct PostPage: View {
                 }
             }
         }
-        .background(palette.groupedBackground)
+        .background(.themedGroupedBackground)
         .onAppear {
             if post.isUpgraded, let tracker {
                 Task {

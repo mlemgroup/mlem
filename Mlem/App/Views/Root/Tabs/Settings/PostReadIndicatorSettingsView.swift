@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct PostReadIndicatorSettingsView: View {
-    @Environment(Palette.self) var palette
-    
     @Setting(\.readPostIndicator) var readPostIndicator
     @Setting(\.readOutlineThickness) var readOutlineThickness
     
@@ -28,7 +26,7 @@ struct PostReadIndicatorSettingsView: View {
                 description: "Read posts are shown with dimmed title text. If you like, you can choose an additional way of indicating read status.",
                 systemImage: Icons.read
             )
-            .tint(palette.secondary)
+            .tint(.themedSecondary)
             Section {
                 Toggle(
                     "Additional Read Indicator",
@@ -102,13 +100,13 @@ struct PostReadIndicatorSettingsView: View {
         UnevenRoundedRectangle(
             cornerRadii: .init(topLeading: 0, bottomLeading: 0, bottomTrailing: 0, topTrailing: 15)
         )
-        .fill(palette.secondaryGroupedBackground)
-        .stroke(style == .outline ? palette.secondary : .clear, lineWidth: 2)
+        .fill(.themedSecondaryGroupedBackground)
+        .stroke(style == .outline ? .themedSecondary : .clear, lineWidth: 2)
         .overlay(alignment: .topTrailing) {
             HStack {
                 if style == .checkmark {
                     Image(systemName: Icons.success)
-                        .foregroundStyle(palette.secondary)
+                        .foregroundStyle(.themedSecondary)
                 }
                 Image(systemName: Icons.menu)
             }
@@ -119,12 +117,12 @@ struct PostReadIndicatorSettingsView: View {
         }
         .padding([.top, .trailing], 20)
         .padding([.bottom, .leading], -2)
-        .background(palette.groupedBackground)
+        .background(.themedGroupedBackground)
         .frame(width: 120, height: 80)
         .clipShape(.rect(cornerRadius: 10))
         .overlay {
             RoundedRectangle(cornerRadius: 10)
-                .stroke(palette.tertiary, lineWidth: 1)
+                .stroke(.themedTertiary, lineWidth: 1)
         }
     }
 }

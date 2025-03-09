@@ -14,7 +14,6 @@ struct FiltersSettingsView: View {
     @Setting(\.keywordFilterEnabled) var keywordFilterEnabled
     
     @Environment(FiltersTracker.self) var filtersTracker
-    @Environment(Palette.self) var palette
     @Environment(NavigationLayer.self) var navigation
     
     @State var newKeyword: String = ""
@@ -84,7 +83,7 @@ struct FiltersSettingsView: View {
                 
                 // using a Button to do this makes the whole row register tap gestures :/
                 Image(systemName: Icons.delete)
-                    .foregroundStyle(palette.warning)
+                    .foregroundStyle(.themedWarning)
                     .onTapGesture {
                         deleteKeyword(filter)
                     }

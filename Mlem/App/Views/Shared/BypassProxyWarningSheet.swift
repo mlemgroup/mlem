@@ -11,7 +11,6 @@ import SwiftUI
 struct BypassProxyWarningSheet: View {
     @Setting(\.autoBypassImageProxy) var autoBypassImageProxy
     
-    @Environment(Palette.self) var palette
     @Environment(\.dismiss) var dismiss
     
     let callback: () -> Void
@@ -22,7 +21,7 @@ struct BypassProxyWarningSheet: View {
                 iconName: Icons.proxy,
                 text: "Bypass Image Proxy?",
                 inList: false,
-                overrideColor: palette.caution
+                overrideColor: .themedCaution
             )
             
             // swiftlint:disable:next line_length

@@ -10,7 +10,7 @@ import PhotosUI
 import SwiftUI
 
 struct UploadConfirmationView: View {
-    @Environment(Palette.self) var palette
+    @Environment(\.palette) var palette
     @Environment(\.dismiss) var dismiss
     
     @Setting(\.confirmImageUploads) var confirmImageUploads
@@ -36,7 +36,7 @@ struct UploadConfirmationView: View {
             .scrollIndicators(.hidden)
             .overlay(alignment: .bottom) {
                 LinearGradient(
-                    colors: [palette.background, Color.clear],
+                    colors: [palette.background.primary, Color.clear],
                     startPoint: .bottom,
                     endPoint: .top
                 )
@@ -90,7 +90,7 @@ struct UploadConfirmationView: View {
                 }
                 .padding(.top, 15)
                 .padding(.bottom, 20)
-                .background(palette.background)
+                .background(.themedBackground)
             }
             .interactiveDismissDisabled()
             .animation(.easeOut(duration: 0.1), value: isUploading)
