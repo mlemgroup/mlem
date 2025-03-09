@@ -17,15 +17,10 @@ struct ThumbnailImageView: View {
     @Setting(\.websiteThumbnailIcon) var websiteThumbnailIcon
     @Setting(\.postSize) var postSize
     
-    @State var mediaControlState: MediaControlState = .init(
-        animating: false,
-        animationEnabled: false,
-        embedControls: false
-    )
+    @State var mediaControlState: MediaControlState
     @State var quickLookUrl: URL?
     
     let post: any Post1Providing
-    var blurred: Bool = false
     let size: Size
     let frame: CGSize
     
@@ -48,9 +43,15 @@ struct ThumbnailImageView: View {
         frame: CGSize
     ) {
         self.post = post
-        self.blurred = blurred
         self.size = size
         self.frame = frame
+        
+        self._mediaControlState = .init(wrappedValue: .init(
+            blurred: blurred,
+            animating: false,
+            enableAnimation: false,
+            enableControls: false
+        ))
     }
     
     var body: some View {
@@ -81,13 +82,12 @@ struct ThumbnailImageView: View {
         if let url {
             MediaView(
                 url: url,
-                size: .init(width: 10, height: 10),
+                size: frame,
                 controlState: $mediaControlState,
                 aspectRatioBounds: .absoluteSquare,
                 contentMode: .fill,
                 cornerRadius: Constants.main.smallItemCornerRadius,
                 enableImageViewer: post.type.isMedia,
-                enableNsfwBlur: blurred,
                 playImmediately: false
             ) {
                 post.markRead()
@@ -96,8 +96,7 @@ struct ThumbnailImageView: View {
                 }
             }
             .overlay {
-                // movie types don't load into thumbnails properly so override for those
-                if mediaControlState.animationAvailable || url.proxyAwarePathExtension?.isMovieExtension ?? false {
+                if mediaControlState.animationAvailable {
                     PlayButton(postSize: postSize)
                 }
             }
@@ -122,7 +121,7 @@ struct ThumbnailImageView: View {
                 size: frame,
                 fallback: .image,
                 showProgress: true,
-                blurred: blurred && mediaControlState.loading == .done
+                blurred: mediaControlState.blurred && mediaControlState.loading == .done
             )
         } else {
             Image(systemName: post.placeholderImageName)

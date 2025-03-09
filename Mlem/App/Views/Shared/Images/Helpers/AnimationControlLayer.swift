@@ -12,14 +12,13 @@ extension EnvironmentValues {
 }
 
 private struct AnimationControlLayer: ViewModifier {
-    @Environment(\.blurred) var blurred
     @Environment(MediaControlState.self) var controlState
     
     // decouple controls state from blurred because the blur animation and material don't get along
     @State var showControls: Bool = true
     
     func body(content: Content) -> some View {
-        if controlState.embedControls {
+        if controlState.enableControls {
             contentWithControls(content: content)
         } else {
             content
@@ -49,8 +48,8 @@ private struct AnimationControlLayer: ViewModifier {
             .overlay(alignment: .bottomTrailing) {
                 muteButton
             }
-            .onChange(of: blurred, initial: true) {
-                if blurred {
+            .onChange(of: controlState.blurred, initial: true) {
+                if controlState.blurred {
                     showControls = false
                 } else {
                     controlState.animating = true

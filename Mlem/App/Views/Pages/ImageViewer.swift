@@ -20,8 +20,9 @@ struct ImageViewer: View {
     let screenHeight: CGFloat = UIScreen.main.bounds.height
     
     @State var controlState: MediaControlState = .init(
+        blurred: false,
         animating: true,
-        embedControls: false
+        enableControls: false
     )
     
     /// Current scale of the ZoomableContainer

@@ -19,7 +19,6 @@ struct MediaView: View {
     @Binding var controlState: MediaControlState
     @State var playing: Bool
     @State var quickLookUrl: URL?
-    @State var blurred: Bool
     
     let url: URL
     
@@ -32,7 +31,6 @@ struct MediaView: View {
     // interaction
     let enableContextMenu: Bool
     let enableImageViewer: Bool
-    let enableNsfwBlur: Bool
     let onTapActions: (() -> Void)?
     
     var uiImage: UIImage { loader.mediaType.image }
@@ -61,7 +59,7 @@ struct MediaView: View {
          cornerRadius: CGFloat = 0,
          enableContextMenu: Bool = false,
          enableImageViewer: Bool = false,
-         enableNsfwBlur: Bool = false,
+         enableControlss: Bool = false,
          playImmediately: Bool = false,
          onTapActions: (() -> Void)? = nil
     ) {
@@ -73,25 +71,40 @@ struct MediaView: View {
         
         self.enableContextMenu = enableContextMenu
         self.enableImageViewer = enableImageViewer
-        self.enableNsfwBlur = enableNsfwBlur
         self.onTapActions = onTapActions
         
         self._loader = .init(wrappedValue: .init(url: url, size: size))
         self._playing = .init(wrappedValue: playImmediately)
-        self._blurred = .init(wrappedValue: enableNsfwBlur)
         if let controlState {
             self._controlState = controlState
         } else {
             self._controlState = .constant(.init(
+                blurred: false,
                 animating: false,
-                embedControls: true)
+                enableControls: true)
             )
         }
     }
     
+    static func largeImage(url: URL, shouldBlur: Bool, onTapActions: (() -> Void)? = nil) -> MediaView {
+        .init(
+            url: url,
+            controlState: .constant(.init(
+                blurred: shouldBlur,
+                animating: false,
+                enableControls: true
+            )),
+            aspectRatioBounds: .imageDefault,
+            cornerRadius: Constants.main.mediumItemCornerRadius,
+            enableContextMenu: true,
+            enableImageViewer: true,
+            onTapActions: onTapActions
+        )
+    }
+    
     var body: some View {
         content
-            .dynamicBlur(blurred: blurred)
+            .dynamicBlur(blurred: controlState.blurred)
             .overlay(animationControlOverlay)
             .overlay(nsfwOverlay)
             .overlay(developerOverlay)
@@ -100,8 +113,8 @@ struct MediaView: View {
             .withContextMenu(menuContent: contextMenuContent, isEnabled: enableContextMenu && loader.error == nil)
             .gesture(TapGesture().onEnded(tapActions), isEnabled: (onTapActions != nil) || enableImageViewer)
             .frame(maxWidth: .infinity)
-            .onChange(of: blurred) {
-                if !blurred { playing = true }
+            .onChange(of: controlState.blurred) {
+                if !controlState.blurred { playing = true }
             }
             .onChange(of: url, initial: true) {
                 Task {
@@ -112,7 +125,6 @@ struct MediaView: View {
                 controlState.animationAvailable = loader.mediaType.isAnimated
             }
             .environment(controlState)
-            .environment(\.blurred, blurred)
     }
     
     @ViewBuilder

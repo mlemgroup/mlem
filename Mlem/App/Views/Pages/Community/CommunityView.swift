@@ -172,13 +172,7 @@ struct CommunityView: View {
     func aboutTab(community: any Community) -> some View {
         VStack(spacing: Constants.main.standardSpacing) {
             if let banner = community.banner {
-                MediaView(
-                    url: banner,
-                    aspectRatioBounds: .imageDefault,
-                    cornerRadius: Constants.main.standardSpacing,
-                    enableContextMenu: true,
-                    enableImageViewer: true
-                )
+                MediaView.largeImage(url: banner, shouldBlur: false)
             }
             if let description = community.description {
                 Markdown(description, configuration: .default(palette: palette))

@@ -24,7 +24,7 @@ extension MediaView {
         var body: some View {
             image
                 .overlay {
-                    if controlState.animationEnabled, media.isAnimated, playing {
+                    if controlState.enableAnimation, media.isAnimated, playing {
                         animatedContent
                     }
                 }
@@ -82,14 +82,14 @@ extension MediaView {
     
     @ViewBuilder
     var nsfwOverlay: some View {
-        if enableNsfwBlur {
-            NsfwOverlay(blurred: $blurred)
+        if controlState.enableControls {
+            NsfwOverlay()
         }
     }
     
     @ViewBuilder
     var animationControlOverlay: some View {
-        if controlState.animationEnabled, loader.mediaType.isAnimated, !blurred, !playing {
+        if loader.mediaType.isAnimated, controlState.enableAnimation, !controlState.blurred, !playing {
             PlayButton(postSize: .large)
                 .onTapGesture {
                     playing = true

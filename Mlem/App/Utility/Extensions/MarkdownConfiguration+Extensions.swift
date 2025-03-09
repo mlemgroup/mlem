@@ -74,14 +74,7 @@ private func imageView(_ image: MarkdownImage, shouldBlur: Bool) -> AnyView {
         return AnyView(ShieldsBadgeView(label: .init(localized: "Uptime"), message: nil, link: image.parentLink))
     default:
         return AnyView(
-            MediaView(
-                url: image.url,
-                aspectRatioBounds: .imageDefault,
-                cornerRadius: Constants.main.mediumItemCornerRadius,
-                enableContextMenu: true,
-                enableImageViewer: true,
-                enableNsfwBlur: shouldBlur
-            )
+            MediaView.largeImage(url: image.url, shouldBlur: shouldBlur)
         )
     }
 }
