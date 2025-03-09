@@ -25,7 +25,7 @@ func saveMedia(url: URL) async {
         ToastModel.main.add(.basic(
             "Failed to save media",
             subtitle: "You may need to allow Mlem to access your Photo Library in System Settings.",
-            color: Palette.main.negative,
+            color: .themedNegative,
             duration: 5
         ))
     }

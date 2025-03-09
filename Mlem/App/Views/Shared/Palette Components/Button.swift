@@ -9,7 +9,6 @@ import Foundation
 import SwiftUI
 
 struct PaletteButton: ButtonStyle {
-    @Environment(Palette.self) var palette
     @Environment(\.isEnabled) var isEnabled
     
     func makeBody(configuration: Configuration) -> some View {
@@ -19,7 +18,7 @@ struct PaletteButton: ButtonStyle {
                     .foregroundStyle(.tint)
             } else {
                 configuration.label
-                    .foregroundStyle(palette.secondary)
+                    .foregroundStyle(.themedSecondary)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)

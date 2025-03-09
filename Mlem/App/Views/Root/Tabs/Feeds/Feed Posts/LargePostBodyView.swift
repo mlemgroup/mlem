@@ -10,7 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct LargePostBodyView: View {
-    @Environment(Palette.self) var palette
+    @Environment(\.palette) var palette
     @Environment(\.communityContext) private var communityContext: (any Community1Providing)?
 
     let post: any Post1Providing
@@ -22,7 +22,7 @@ struct LargePostBodyView: View {
             post.taggedTitle(communityContext: communityContext)
                 .foregroundStyle(
                     (post.read_ ?? false && !isPostPage)
-                        ? palette.secondary : palette.primary
+                        ? .themedSecondary : .themedPrimary
                 )
                 .font(.headline)
                 .imageScale(.small)
@@ -52,7 +52,7 @@ struct LargePostBodyView: View {
                     // Cut down on compute time for very long text posts by only rendering the first 4 blocks
                     MarkdownText(
                         Array([BlockNode](content).prefix(4)),
-                        configuration: .dimmed
+                        configuration: .dimmed(palette: palette)
                     )
                     .lineLimit(post.linkUrl == nil ? 8 : 4)
                 }

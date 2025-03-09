@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct AccountPickerMenu<Content: View>: View {
-    @Environment(Palette.self) var palette
-    
     var accountsTracker: AccountsTracker { .main }
     
     @Binding var account: UserAccount

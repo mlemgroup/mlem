@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct AlternateIconLabel: View {
-    @Environment(Palette.self) var palette
-    
     let icon: AlternateIcon
     let selected: Bool
 
@@ -26,17 +24,17 @@ struct AlternateIconLabel: View {
                     if selected {
                         ZStack {
                             RoundedRectangle(cornerRadius: Constants.main.appIconCornerRadius)
-                                .stroke(palette.secondaryGroupedBackground, lineWidth: 5)
+                                .stroke(.themedSecondaryGroupedBackground, lineWidth: 5)
                                 .padding(2)
                             RoundedRectangle(cornerRadius: Constants.main.appIconCornerRadius + 2)
-                                .stroke(palette.accent, lineWidth: 3)
+                                .stroke(.themedAccent, lineWidth: 3)
                         }
                     }
                 }
             Text(icon.name)
                 .multilineTextAlignment(.center)
                 .font(.footnote)
-                .foregroundStyle(selected ? palette.accent : palette.secondary)
+                .foregroundStyle(selected ? .themedAccent : .themedSecondary)
         }
     }
     

@@ -11,7 +11,6 @@ import SwiftUI
 struct InteractionBarView: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
-    @Environment(Palette.self) var palette
     
     private let leading: [EnrichedWidget]
     private let trailing: [EnrichedWidget]
@@ -131,7 +130,7 @@ struct InteractionBarView: View {
                 .monospacedDigit()
                 .contentTransition(.numericText(value: Double(counter.value ?? 0)))
                 .animation(.default, value: counter.value)
-                .foregroundStyle(palette.primary)
+                .foregroundStyle(.themedPrimary)
                 
             if let trailingAction = counter.trailingAction {
                 actionView(trailingAction)

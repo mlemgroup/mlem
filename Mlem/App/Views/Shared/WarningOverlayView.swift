@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct WarningOverlayView: View {
-    @Environment(Palette.self) private var palette
     @Environment(NavigationLayer.self) private var navigation
     
     let text: LocalizedStringResource
@@ -49,7 +48,7 @@ struct WarningOverlayView: View {
         .padding(Constants.main.doubleSpacing)
         .background {
             RoundedRectangle(cornerRadius: Constants.main.largeItemCornerRadius)
-                .fill(palette.background.opacity(0.8))
+                .fill(.themedBackground.opacity(0.8))
         }
         .padding(Constants.main.doubleSpacing)
         .presentationBackground(.ultraThinMaterial)

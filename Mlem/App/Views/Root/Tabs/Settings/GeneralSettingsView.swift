@@ -9,8 +9,6 @@ import Dependencies
 import SwiftUI
 
 struct GeneralSettingsView: View {
-    @Environment(Palette.self) var palette
-    
     // behavior
     @Setting(\.upvoteOnSave) var upvoteOnSave
     @Setting(\.markReadOnScroll) var markReadOnScroll
@@ -34,7 +32,7 @@ struct GeneralSettingsView: View {
                 description: "Manage your overall setup for Mlem.",
                 systemImage: "gear"
             )
-            .tint(palette.neutralAccent)
+            .tint(.themedNeutralAccent)
             Section {
                 NavigationLink(
                     "Default Feed",

@@ -12,7 +12,6 @@ import SwiftUI
 struct FeedCommentView<EmbeddedContent: View>: View {
     @Environment(AppState.self) private var appState
     @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?
-    @Environment(Palette.self) var palette
     @Environment(\.reportContext) var reportContext: Report?
     
     @Setting(\.postSize) var settingsPostSize

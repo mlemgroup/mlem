@@ -10,7 +10,7 @@ import SwiftUI
 
 struct InstanceSafetyView: View {
     @Environment(NavigationLayer.self) var navigation
-    @Environment(Palette.self) var palette
+    @Environment(\.palette) var palette
     
     let instance: any Instance
     let fediseerData: FediseerData
@@ -49,20 +49,20 @@ struct InstanceSafetyView: View {
             HStack {
                 if fediseerData.instance.guarantor != nil {
                     Label("Guaranteed", systemImage: Icons.fediseerGuarantee)
-                        .foregroundStyle(palette.positive)
+                        .foregroundStyle(.themedPositive)
                 } else if fediseerData.censures?.isEmpty ?? true {
                     Label("Not Guaranteed", systemImage: Icons.fediseerUnguarantee)
-                        .foregroundStyle(palette.secondary)
+                        .foregroundStyle(.themedSecondary)
                 } else {
                     Label("Censured", systemImage: Icons.fediseerCensure)
-                        .foregroundStyle(palette.negative)
+                        .foregroundStyle(.themedNegative)
                 }
                 Spacer()
             }
             .fontWeight(.semibold)
             .font(.title2)
             Text(summaryCaption)
-                .foregroundColor(palette.secondary)
+                .foregroundStyle(.themedSecondary)
                 .font(.footnote)
         }
         .frame(maxWidth: .infinity)
@@ -119,7 +119,7 @@ struct InstanceSafetyView: View {
                 content()
             }
             .frame(maxWidth: .infinity)
-            .background(palette.secondaryGroupedBackground)
+            .background(.themedSecondaryGroupedBackground)
             .cornerRadius(Constants.main.standardSpacing)
             .paletteBorder(cornerRadius: Constants.main.standardSpacing)
         }
@@ -129,7 +129,7 @@ struct InstanceSafetyView: View {
     func opinionSubheading(title: String, count: Int, destination: NavigationPage? = nil) -> some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(spacing: 0) {
-                (Text(title) + Text(verbatim: " (\(count))").foregroundColor(palette.secondary))
+                (Text(title) + Text(verbatim: " (\(count))").foregroundColor(palette.label.secondary))
                     .font(.title2)
                     .fontWeight(.semibold)
                 Spacer()

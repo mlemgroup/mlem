@@ -12,7 +12,6 @@ struct PersonListRowBody<Content: View>: View {
     enum Complication { case instance, date }
     enum Readout { case postsAndComments }
     
-    @Environment(Palette.self) var palette
     @Environment(\.communityContext) var communityContext
     @Environment(\.isEnabled) var isEnabled
     
@@ -74,12 +73,12 @@ struct PersonListRowBody<Content: View>: View {
             }
             VStack(alignment: .leading, spacing: 4) {
                 (flairs.textView + Text(title))
-                    .foregroundStyle(isEnabled ? palette.primary : palette.secondary)
+                    .foregroundStyle(isEnabled ? .themedPrimary : .themedSecondary)
                     .lineLimit(1)
                     .imageScale(.small)
                 caption
                     .font(.footnote)
-                    .foregroundStyle(palette.secondary)
+                    .foregroundStyle(.themedSecondary)
                     .lineLimit(1)
             }
             Spacer()
@@ -137,7 +136,7 @@ struct PersonListRowBody<Content: View>: View {
             }
             .imageScale(.small)
         }
-        .foregroundStyle(palette.secondary)
+        .foregroundStyle(.themedSecondary)
     }
     
     var flairs: [PersonFlair] {

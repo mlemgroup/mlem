@@ -26,7 +26,7 @@ extension InstanceStubProviding {
                         callback: {
                             self.updateBlocked(false)
                         },
-                        color: Palette.main.negative
+                        color: .themedNegative
                     )
                 )
             } else {
@@ -37,7 +37,7 @@ extension InstanceStubProviding {
                         callback: {
                             self.updateBlocked(true)
                         },
-                        color: Palette.main.primary
+                        color: .themedPrimary
                     )
                 )
             }
@@ -98,7 +98,7 @@ extension InstanceStubProviding {
             id: "visit\(actorId)",
             appearance: .init(
                 label: "Visit",
-                color: .gray,
+                color: .themedNeutralAccent,
                 icon: "arrow.right"
             ),
             callback: isVisiting ? nil : visit
@@ -110,7 +110,7 @@ extension InstanceStubProviding {
             id: "logIn\(actorId)",
             appearance: .init(
                 label: "Log In",
-                color: .gray,
+                color: .themedNeutralAccent,
                 icon: Icons.logIn
             ),
             callback: openLoginSheet
@@ -122,7 +122,7 @@ extension InstanceStubProviding {
             id: "signup\(actorId)",
             appearance: .init(
                 label: "Sign Up",
-                color: .gray,
+                color: .themedNeutralAccent,
                 icon: Icons.signUp
             ),
             callback: openSignUpSheet
@@ -135,7 +135,7 @@ extension InstanceStubProviding {
             appearance: .init(
                 label: "Open in Browser",
                 isOn: false,
-                color: .gray,
+                color: .themedNeutralAccent,
                 icon: Icons.browser
             ),
             callback: {

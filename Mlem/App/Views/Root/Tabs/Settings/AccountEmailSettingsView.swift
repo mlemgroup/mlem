@@ -9,7 +9,6 @@ import SwiftUI
 
 struct AccountEmailSettingsView: View {
     @Environment(AppState.self) var appState
-    @Environment(Palette.self) var palette
     @Environment(\.dismiss) var dismiss
     
     @State var email: String = ""

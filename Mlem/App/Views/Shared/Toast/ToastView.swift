@@ -6,9 +6,9 @@
 //
 
 import SwiftUI
+import Theming
 
 struct ToastView: View {
-    @Environment(Palette.self) var palette
     @Environment(\.colorScheme) var colorScheme
     
     let toast: Toast
@@ -55,7 +55,7 @@ struct ToastView: View {
                         subtitle: title == nil ? nil : (didUndo ? .init(localized: "Undone!") : .init(localized: "Tap to Undo")),
                         systemImage: didUndo ? (successSystemImage ?? Icons.successCircleFill) : (systemImage ?? Icons.undoCircleFill),
                         imageColor: color,
-                        subtitleColor: Palette.main.accent
+                        subtitleColor: .themedAccent
                     )
                     .contentShape(.rect)
                 }
@@ -70,7 +70,7 @@ struct ToastView: View {
         }
         .multilineTextAlignment(.center)
         .frame(maxHeight: isExpanded ? 230 : nil)
-        .background((colorScheme == .dark ? Palette.main.secondaryBackground : Palette.main.background).opacity(0.5))
+        .background((colorScheme == .dark ? ThemedColor.themedSecondaryBackground : ThemedColor.themedBackground).opacity(0.5))
         .background(.regularMaterial)
         .clipShape(.rect(cornerRadius: 25))
         .shadow(color: .black.opacity(0.1), radius: 5)
@@ -83,8 +83,8 @@ struct ToastView: View {
         title: String,
         subtitle: String?,
         systemImage: String?,
-        imageColor: Color,
-        subtitleColor: Color = .secondary
+        imageColor: ThemedColor,
+        subtitleColor: ThemedColor = .themedSecondary
     ) -> some View {
         HStack(spacing: Constants.main.doubleSpacing) {
             if let systemImage {
@@ -142,7 +142,7 @@ struct ToastView: View {
         } label: {
             VStack(spacing: 0) {
                 HStack {
-                    image(details.systemImage ?? Icons.errorCircleFill, color: palette.negative)
+                    image(details.systemImage ?? Icons.errorCircleFill, color: .themedNegative)
                     
                     Text(details.title ?? .init(localized: "Error"))
                         .frame(minWidth: 100)
@@ -173,12 +173,12 @@ struct ToastView: View {
                         .font(.caption)
                         .buttonStyle(.borderedProminent)
                         .buttonBorderShape(.capsule)
-                        .tint(Palette.main.negative)
+                        .tint(.themedNegative)
                         .padding(Constants.main.standardSpacing)
                     }
                 }
                 .frame(maxHeight: isExpanded ? .infinity : 0, alignment: .leading)
-                .background(isExpanded ? Palette.main.negative.opacity(0.15) : .clear)
+                .background(.themedNegative.opacity(isExpanded ? 0.15 : 0))
             }
         }
         .buttonStyle(.empty)
@@ -188,7 +188,7 @@ struct ToastView: View {
     func loadingView(_ title: String) -> some View {
         HStack(spacing: Constants.main.doubleSpacing) {
             ProgressView()
-                .tint(palette.secondary)
+                .tint(.themedSecondary)
                 .frame(width: 22, height: 22)
                 .padding([.vertical, .leading], Constants.main.standardSpacing)
             Text(title)
@@ -199,7 +199,7 @@ struct ToastView: View {
     }
     
     @ViewBuilder
-    func image(_ systemName: String, color: Color) -> some View {
+    func image(_ systemName: String, color: ThemedColor) -> some View {
         Image(systemName: systemName)
             .resizable()
             .aspectRatio(contentMode: .fit)
@@ -229,13 +229,12 @@ extension ToastView {
                 String("Unfavorited Community"),
                 systemImage: "star.slash.fill",
                 callback: {},
-                color: .blue
+                color: .themedFavorite
             )
         )
         ToastView(.error(.init()))
         ToastView(.success(String("Really super long text")))
     }
-    .environment(Palette.main)
     .background {
         VStack(spacing: 0) {
             Color.clear

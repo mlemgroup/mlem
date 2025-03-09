@@ -12,7 +12,7 @@ import SwiftUI
 struct MessageBubbleView: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
-    @Environment(Palette.self) var palette
+    @Environment(\.palette) var palette
     
     let message: any Message
     var editCallback: @MainActor () -> Void
@@ -21,17 +21,21 @@ struct MessageBubbleView: View {
         Group {
             let blocks: [BlockNode] = .init(message.content)
             if blocks.isSimpleParagraphs {
-                MarkdownText(blocks, configuration: message.isOwnMessage ? .inverted : .default)
+                MarkdownText(
+                    blocks, configuration: message.isOwnMessage ? .inverted(palette: palette) : .default(palette: palette)
+                )
             } else {
-                Markdown(blocks, configuration: message.isOwnMessage ? .inverted : .default)
+                Markdown(
+                    blocks, configuration: message.isOwnMessage ? .inverted(palette: palette) : .default(palette: palette)
+                )
             }
         }
-        .tint(message.isOwnMessage ? palette.selectedInteractionBarItem.opacity(0.6) : palette.accent)
+        .tint(message.isOwnMessage ? palette.contrastingLabel.opacity(0.6) : palette.accent)
         .padding(Constants.main.standardSpacing)
         .padding(message.isOwnMessage ? .trailing : .leading, 7)
         .padding(message.isOwnMessage ? .leading : .trailing, 2)
         .background(
-            message.isOwnMessage ? palette.accent : palette.secondaryGroupedBackground,
+            message.isOwnMessage ? .themedAccent : .themedSecondaryGroupedBackground,
             in: BubbleShape(myMessage: message.isOwnMessage)
         )
         .contentShape(.contextMenuPreview, BubbleShape(myMessage: message.isOwnMessage))

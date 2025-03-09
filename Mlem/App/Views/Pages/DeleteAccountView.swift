@@ -12,7 +12,6 @@ import SwiftUI
 
 struct DeleteAccountView: View {
     @Environment(AppState.self) var appState
-    @Environment(Palette.self) var palette
     @Environment(\.dismiss) var dismiss
     
     let account: UserAccount
@@ -65,7 +64,7 @@ struct DeleteAccountView: View {
                 VStack(spacing: Constants.main.standardSpacing) {
                     ProgressView()
                     Text("Loading instance details")
-                        .foregroundStyle(palette.secondary)
+                        .foregroundStyle(.themedSecondary)
                 }
             }
         } else {
@@ -86,7 +85,7 @@ struct DeleteAccountView: View {
         Group {
             SecureField(String(""), text: $password)
                 .padding(4)
-                .background(palette.secondaryBackground)
+                .background(.themedSecondaryBackground)
                 .cornerRadius(Constants.main.smallItemCornerRadius)
                 .textContentType(.password)
                 .submitLabel(.go)

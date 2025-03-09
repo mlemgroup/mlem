@@ -17,7 +17,7 @@ extension SearchView {
             )
             .overlay(alignment: .trailing) {
                 LinearGradient(
-                    colors: [Color.clear, palette.groupedBackground],
+                    colors: [Color.clear, palette.groupedBackground.primary],
                     startPoint: .leading,
                     endPoint: .trailing
                 )
@@ -197,7 +197,7 @@ extension SearchView {
                 ClearRecentSearchesButton()
             } else {
                 Text("Recently Searched")
-                    .foregroundStyle(palette.primary)
+                    .foregroundStyle(.themedPrimary)
             }
             
             Spacer()
@@ -231,11 +231,11 @@ extension SearchView {
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 120)
                 .fontWeight(.thin)
-                .foregroundStyle(palette.tertiary)
+                .foregroundStyle(.themedTertiary)
             Text(searchPlaceholderTitle)
                 .font(.title2)
                 .fontWeight(.semibold)
-                .foregroundStyle(palette.secondary)
+                .foregroundStyle(.themedSecondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 20)
         }

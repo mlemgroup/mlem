@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct InteractionBarWidgetPickerView<Configuration: InteractionBarConfiguration>: View {
-    @Environment(Palette.self) var palette
     @Environment(\.dismiss) var dismiss
     
     @Binding var configuration: Configuration
@@ -46,9 +45,9 @@ struct InteractionBarWidgetPickerView<Configuration: InteractionBarConfiguration
         let selected = configuration.availableWidgets.contains(item)
         let (label, icon): (String, String) = switch item {
         case let .action(action):
-             (action.appearance.label, action.appearance.barIcon)
+            (action.appearance.label, action.appearance.barIcon)
         case let .counter(counter):
-             (.init(localized: counter.appearance.label), counter.appearance.singleIcon)
+            (.init(localized: counter.appearance.label), counter.appearance.singleIcon)
         }
         
         Button {
@@ -63,14 +62,14 @@ struct InteractionBarWidgetPickerView<Configuration: InteractionBarConfiguration
                     Text(label)
                 } icon: {
                     Image(systemName: icon)
-                        .foregroundStyle(selected ? palette.accent : palette.secondary)
+                        .foregroundStyle(selected ? .themedAccent : .themedSecondary)
                 }
                 
                 Spacer()
                 
                 if selected {
                     Image(systemName: Icons.success)
-                        .foregroundStyle(palette.accent)
+                        .foregroundStyle(.themedAccent)
                         .contentTransition(.symbolEffect(.replace, options: .speed(2)))
                 }
             }

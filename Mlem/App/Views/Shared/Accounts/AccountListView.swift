@@ -15,7 +15,6 @@ struct AccountListView: View {
     
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
-    @Environment(Palette.self) var palette
     @Environment(\.dismiss) var dismiss
     
     var accountsTracker: AccountsTracker { .main }
@@ -56,7 +55,7 @@ struct AccountListView: View {
                 groupedUserAccountList
             } else if accounts.isEmpty {
                 Text("You don't have any accounts.")
-                    .foregroundStyle(palette.secondary)
+                    .foregroundStyle(.themedSecondary)
             } else {
                 Section {
                     ForEach(accounts, id: \.actorId) { account in
@@ -181,7 +180,7 @@ struct AccountListView: View {
                     .imageScale(.small)
             }
             .fontWeight(.semibold)
-            .foregroundStyle(palette.accent)
+            .foregroundStyle(.themedAccent)
         }
         .textCase(nil)
         .labelStyle(.titleAndIcon) // Override `.conditional` label style from parent view

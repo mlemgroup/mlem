@@ -8,54 +8,55 @@
 import LemmyMarkdownUI
 import Nuke
 import SwiftUI
+import Theming
 
 extension MarkdownConfiguration {
-    static var `default`: MarkdownConfiguration { .init(
+    static func `default`(palette: Theming.Palette) -> MarkdownConfiguration { .init(
         inlineImageLoader: loadInlineImage,
         imageBlockView: { imageView($0, shouldBlur: false) },
         wrapCodeBlockLines: Settings.main.wrapCodeBlockLines,
         spoilerLabel: .init(localized: "Spoiler"),
         tableLabel: .init(localized: "Table"),
         censorLabel: .init(localized: "Censored"),
-        primaryColor: Palette.main.primary,
-        secondaryColor: Palette.main.secondary,
-        codeBackgroundColor: Palette.main.tertiaryGroupedBackground,
-        censorColor: Palette.main.warning,
+        primaryColor: palette.label.primary,
+        secondaryColor: palette.label.secondary,
+        codeBackgroundColor: palette.groupedBackground.tertiary,
+        censorColor: palette.warning,
         codeFontScaleFactor: 0.9
     ) }
     
-    static var defaultBlurred: MarkdownConfiguration {
-        var config = Self.default
+    static func defaultBlurred(palette: Theming.Palette) -> MarkdownConfiguration {
+        var config = Self.default(palette: palette)
         config.imageBlockView = { imageView($0, shouldBlur: true) }
         return config
     }
     
-    static var dimmed: MarkdownConfiguration {
-        var config = Self.default
+    static func dimmed(palette: Theming.Palette) -> MarkdownConfiguration {
+        var config = Self.default(palette: palette)
         
         // Don't load any images; they will remain as placeholders
         config.imagePresentationMode = .inline
         config.inlineImageLoader = { _ in }
         
-        config.primaryColor = Palette.main.secondary
-        config.secondaryColor = Palette.main.tertiary
+        config.primaryColor = palette.label.secondary
+        config.secondaryColor = palette.label.tertiary
         
         return config
     }
     
-    static var caption: MarkdownConfiguration {
-        var config = Self.default
+    static func caption(palette: Theming.Palette) -> MarkdownConfiguration {
+        var config = Self.default(palette: palette)
         config.font = .preferredFont(forTextStyle: .caption1)
         return config
     }
     
-    static var inverted: MarkdownConfiguration {
-        var config = Self.default
-        config.primaryColor = Palette.main.selectedInteractionBarItem
-        config.secondaryColor = Palette.main.selectedInteractionBarItem.opacity(0.8)
-        config.spoilerHeaderBackgroundColor = Palette.main.selectedInteractionBarItem.opacity(0.1)
-        config.spoilerOutlineColor = Palette.main.selectedInteractionBarItem.opacity(0.5)
-        config.codeBackgroundColor = Palette.main.selectedInteractionBarItem.opacity(0.1)
+    static func inverted(palette: Theming.Palette) -> MarkdownConfiguration {
+        var config = Self.default(palette: palette)
+        config.primaryColor = palette.contrastingLabel
+        config.secondaryColor = palette.contrastingLabel.opacity(0.8)
+        config.spoilerHeaderBackgroundColor = palette.contrastingLabel.opacity(0.1)
+        config.spoilerOutlineColor = palette.contrastingLabel.opacity(0.5)
+        config.codeBackgroundColor = palette.contrastingLabel.opacity(0.1)
         return config
     }
 }

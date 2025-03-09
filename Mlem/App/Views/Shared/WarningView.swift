@@ -7,16 +7,15 @@
 
 import Foundation
 import SwiftUI
+import Theming
 
 struct WarningView: View {
-    @Environment(Palette.self) var palette
-    
     let iconName: String
     let text: String
     let inList: Bool
-    let overrideColor: Color?
+    let overrideColor: ThemedColor?
     
-    init(iconName: String, text: LocalizedStringResource, inList: Bool, overrideColor: Color? = nil) {
+    init(iconName: String, text: LocalizedStringResource, inList: Bool, overrideColor: ThemedColor? = nil) {
         self.iconName = iconName
         self.text = .init(localized: text)
         self.inList = inList
@@ -24,14 +23,14 @@ struct WarningView: View {
     }
     
     @_disfavoredOverload
-    init(iconName: String, text: String, inList: Bool, overrideColor: Color? = nil) {
+    init(iconName: String, text: String, inList: Bool, overrideColor: ThemedColor? = nil) {
         self.iconName = iconName
         self.text = text
         self.inList = inList
         self.overrideColor = overrideColor
     }
     
-    var color: Color { overrideColor ?? palette.warning }
+    var color: ThemedColor { overrideColor ?? .themedWarning }
     
     var body: some View {
         VStack(alignment: .center, spacing: 12) {

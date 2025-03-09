@@ -9,15 +9,13 @@ import Foundation
 import SwiftUI
 
 struct PostLinkHostView: View {
-    @Environment(Palette.self) var palette
-    
     let host: String
     
     var body: some View {
         content
             .lineLimit(1)
             .imageScale(.small)
-            .foregroundStyle(palette.secondary)
+            .foregroundStyle(.themedSecondary)
     }
     
     var content: Text {

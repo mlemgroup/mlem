@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct CollapsibleSheetView<Content: View>: View {
-    @Environment(Palette.self) var palette
-    
     let content: Content
     let canDismiss: Bool
     
@@ -36,7 +34,7 @@ struct CollapsibleSheetView<Content: View>: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(height: 16)
-                        .foregroundStyle(palette.secondary)
+                        .foregroundStyle(.themedSecondary)
                         .frame(maxWidth: .infinity, maxHeight: 62)
                         .contentShape(.rect)
                 }
@@ -48,6 +46,6 @@ struct CollapsibleSheetView<Content: View>: View {
             .presentationCornerRadius(presentationSelection == .large ? nil : 16)
             .presentationBackgroundInteraction(.enabled)
             .presentationDragIndicator(.hidden)
-            .background(palette.background)
+            .background(.themedBackground)
     }
 }

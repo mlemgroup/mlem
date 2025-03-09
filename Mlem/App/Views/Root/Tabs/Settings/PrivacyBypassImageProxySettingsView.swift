@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct PrivacyBypassImageProxySettingsView: View {
-    @Environment(Palette.self) var palette
-    
     @Setting(\.autoBypassImageProxy) var bypassImageProxy
     
     var body: some View {
@@ -20,7 +18,7 @@ struct PrivacyBypassImageProxySettingsView: View {
                 description: "Some instances proxy images to protect your privacy. In certain cases, this causes image loading to fail. You can bypass the image proxy and load directly, but this will expose your IP address to the image host.",
                 systemImage: Icons.proxy
             )
-            .tint(palette.colorfulAccent(4))
+            .tint(.themedColorfulAccent(4))
             Section("Bypass Image Proxy...") {
                 Picker("Bypass Image Proxy", selection: $bypassImageProxy) {
                     Label("Automatically", systemImage: Icons.successCircle)

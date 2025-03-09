@@ -8,6 +8,7 @@
 import LemmyMarkdownUI
 import MlemMiddleware
 import SwiftUI
+import Theming
 
 struct InstanceView: View {
     enum Tab: String, CaseIterable, Identifiable {
@@ -35,8 +36,8 @@ struct InstanceView: View {
         .autoconnect()
     
     @Environment(NavigationLayer.self) var navigation
-    @Environment(Palette.self) var palette
     @Environment(AppState.self) var appState
+    @Environment(\.palette) var palette
     @Environment(\.colorScheme) var colorScheme
     
     let visitContext: VisitHistory.VisitContext?
@@ -65,7 +66,7 @@ struct InstanceView: View {
                     .navigationTitle(isAtTop ? "" : instance.displayName)
             } else {
                 ProgressView()
-                    .tint(palette.secondary)
+                    .tint(.themedSecondary)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
@@ -92,7 +93,7 @@ struct InstanceView: View {
         }
         .isAtTopSubscriber(isAtTop: $isAtTop)
         .navigationBarTitleDisplayMode(.inline)
-        .background(palette.groupedBackground)
+        .background(.themedGroupedBackground)
     }
     
     @ViewBuilder
@@ -112,9 +113,9 @@ struct InstanceView: View {
             switch selectedTab {
             case .about:
                 if let description = instance.description {
-                    Markdown(description, configuration: .default)
+                    Markdown(description, configuration: .default(palette: palette))
                         .padding(Constants.main.standardSpacing)
-                        .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+                        .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
                         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
                         .padding([.horizontal, .bottom], Constants.main.standardSpacing)
                 }

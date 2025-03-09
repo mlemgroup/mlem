@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct SafetyBlurNsfwSettingsView: View {
-    @Environment(Palette.self) var palette
     @Setting(\.blurNsfw) var blurNsfw
     
     var body: some View {
@@ -33,6 +32,6 @@ struct SafetyBlurNsfwSettingsView: View {
             description: "Choose when Not Safe For Work content should be blurred.",
             systemImage: Icons.hide
         )
-        .tint(palette.warning)
+        .tint(.themedWarning)
     }
 }

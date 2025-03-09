@@ -25,7 +25,7 @@ extension PostEditorView {
         case let .uploading(progress: progress):
             VStack {
                 Text("Uploading...")
-                    .foregroundStyle(palette.accent)
+                    .foregroundStyle(.themedAccent)
                 if progress == 1.0 {
                     ProgressView()
                 } else {
@@ -37,7 +37,7 @@ extension PostEditorView {
             }
             .frame(maxWidth: .infinity)
             .padding(8)
-            .background(palette.accent.opacity(0.2), in: .rect(cornerRadius: 16))
+            .background(.themedAccent.opacity(0.2), in: .rect(cornerRadius: 16))
         case .idle:
             imageWaitingView
         case nil:
@@ -52,7 +52,8 @@ extension PostEditorView {
         MediaView(
             url: url,
             verticalAspectRatioBounds: .init(width: 4, height: 5),
-            cornerRadius: Constants.main.mediumItemCornerRadius)
+            cornerRadius: Constants.main.mediumItemCornerRadius
+        )
         .overlay(alignment: .topTrailing) {
             Button("Remove", systemImage: Icons.closeCircleFill) {
                 onRemove()
@@ -81,12 +82,12 @@ extension PostEditorView {
                 .font(.title2)
                 .labelStyle(.iconOnly)
                 .symbolRenderingMode(.hierarchical)
-                .foregroundStyle(palette.accent)
+                .foregroundStyle(.themedAccent)
                 .fontWeight(.semibold)
                 .font(.title2)
                 .labelStyle(.iconOnly)
             }
-            .foregroundStyle(palette.accent)
+            .foregroundStyle(.themedAccent)
             HVStack {
                 Button("Photos", systemImage: "photo.on.rectangle.angled") {
                     guard let imageManager else { return }
@@ -107,19 +108,17 @@ extension PostEditorView {
         }
         .frame(maxWidth: .infinity)
         .padding(8)
-        .background(palette.accent.opacity(0.2), in: .rect(cornerRadius: Constants.main.standardSpacing))
+        .background(.themedAccent.opacity(0.2), in: .rect(cornerRadius: Constants.main.standardSpacing))
     }
 }
 
 private struct ImageSourceButtonStyle: ButtonStyle {
-    @Environment(Palette.self) var palette
-    
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
-            .foregroundStyle(palette.selectedInteractionBarItem)
+            .foregroundStyle(.themedContrastingLabel)
             .padding(.vertical, 2)
             .frame(maxWidth: .infinity)
-            .background(palette.accent, in: .capsule)
+            .background(.themedAccent, in: .capsule)
     }
 }
 

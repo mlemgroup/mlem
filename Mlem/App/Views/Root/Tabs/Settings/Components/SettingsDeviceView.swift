@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct SettingsDeviceView<ScreenContent: View>: View {
-    @Environment(Palette.self) var palette
     @Environment(\.colorScheme) var colorScheme
     
     var screenContent: ScreenContent
@@ -20,7 +19,7 @@ struct SettingsDeviceView<ScreenContent: View>: View {
         if selected {
             return .init(.tint)
         }
-        return .init(palette.neutralAccent)
+        return .init(.themedNeutralAccent)
     }
     
     init(

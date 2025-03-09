@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct ConditionalIconLabelStyle: LabelStyle {
-    @Environment(Palette.self) var palette
-    
     @Setting(\.showSettingsIcons) var showSettingsIcons
     
     func makeBody(configuration: Configuration) -> some View {
@@ -17,7 +15,7 @@ struct ConditionalIconLabelStyle: LabelStyle {
             configuration.title
         } icon: {
             if showSettingsIcons {
-                configuration.icon.foregroundStyle(palette.accent)
+                configuration.icon.foregroundStyle(.themedAccent)
             }
         }
     }

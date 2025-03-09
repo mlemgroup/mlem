@@ -9,8 +9,6 @@ import MlemMiddleware
 import SwiftUI
 
 struct ModlogButtonView: View {
-    @Environment(Palette.self) private var palette
-    
     let target: ModlogView.InitialTarget
     
     init(community: any Community) {
@@ -28,12 +26,12 @@ struct ModlogButtonView: View {
                     Text("Modlog")
                 } icon: {
                     Image(systemName: Icons.modlog)
-                        .foregroundStyle(palette.secondary)
+                        .foregroundStyle(.themedSecondary)
                 }
             }
             .padding(.vertical, Constants.main.halfSpacing)
             .padding(.horizontal, 15)
-            .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+            .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
             .paletteBorder(cornerRadius: Constants.main.standardSpacing)
         }
         .buttonStyle(.empty)

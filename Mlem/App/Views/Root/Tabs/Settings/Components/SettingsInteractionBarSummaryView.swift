@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct SettingsInteractionBarSummaryView<Configuration: InteractionBarConfiguration>: View {
-    @Environment(Palette.self) private var palette
-    
     var title: LocalizedStringResource = "Interaction Bar"
     var configuration: Configuration
     
@@ -37,9 +35,9 @@ struct SettingsInteractionBarSummaryView<Configuration: InteractionBarConfigurat
                 .font(.footnote)
                 .fontDesign(.rounded)
                 .fontWeight(.semibold)
-                .background(palette.tertiaryGroupedBackground, in: .rect(cornerRadius: 5))
+                .background(.themedTertiaryGroupedBackground, in: .rect(cornerRadius: 5))
             }
-            .foregroundStyle(palette.secondary)
+            .foregroundStyle(.themedSecondary)
             .lineLimit(1)
         }
     }

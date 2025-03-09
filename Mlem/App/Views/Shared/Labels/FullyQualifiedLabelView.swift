@@ -43,7 +43,6 @@ enum FullyQualifiedLabelStyle: CaseIterable {
 struct FullyQualifiedLabelView: View {
     typealias Entity = CommunityOrPerson & Profile1Providing
     
-    @Environment(Palette.self) var palette
     @Environment(AppState.self) var appState
     @Environment(\.postContext) var postContext: (any Post1Providing)?
     @Environment(\.commentContext) var commentContext: (any Comment1Providing)?
@@ -103,7 +102,7 @@ struct FullyQualifiedLabelView: View {
                 if showSubscriptionIndicator {
                     Image(systemName: Icons.present)
                         .font(.system(size: subscriptionIndicatorSize))
-                        .foregroundStyle(palette.secondary)
+                        .foregroundStyle(.themedSecondary)
                         .padding(.bottom, 2)
                 }
                 

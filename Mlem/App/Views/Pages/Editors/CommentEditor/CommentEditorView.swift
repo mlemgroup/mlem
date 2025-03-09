@@ -8,11 +8,11 @@
 import LemmyMarkdownUI
 import MlemMiddleware
 import SwiftUI
+import Theming
 
 struct CommentEditorView: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
-    @Environment(Palette.self) var palette
     @Environment(\.dismiss) var dismiss
     
     @Setting(\.showPersonAvatar) private var showPersonAvatar
@@ -62,7 +62,6 @@ struct CommentEditorView: View {
         self._slurRegex = .init(wrappedValue: AppState.main.firstApi.myInstance?.slurRegex())
         
         textView.text = commentToEdit?.content ?? ""
-        textView.backgroundColor = UIColor(Palette.main.background)
     }
         
     var minTextEditorHeight: CGFloat {
@@ -87,7 +86,7 @@ struct CommentEditorView: View {
                                         FullyQualifiedLabelView(account, labelStyle: .medium, showAvatar: false)
                                         Image(systemName: Icons.dropDownCircleFill)
                                             .symbolRenderingMode(.hierarchical)
-                                            .tint(palette.secondary)
+                                            .tint(.themedSecondary)
                                             .imageScale(.small)
                                             .fontWeight(.bold)
                                     }
@@ -108,7 +107,7 @@ struct CommentEditorView: View {
                             }
                         }
                     }
-                    .background(palette.groupedBackground)
+                    .background(.themedGroupedBackground)
             }
             .task(id: account) { await resolveContext() }
         }
@@ -188,13 +187,13 @@ struct CommentEditorView: View {
                     alignment: .topLeading
                 )
                 .padding(.vertical, Constants.main.standardSpacing)
-                .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+                .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
                 .paletteBorder(cornerRadius: Constants.main.standardSpacing)
                 .padding(.horizontal, Constants.main.standardSpacing)
                 
                 contextView
                     .padding(Constants.main.standardSpacing)
-                    .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+                    .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
                     .paletteBorder(cornerRadius: Constants.main.standardSpacing)
                     .padding(.horizontal, Constants.main.standardSpacing)
             }
@@ -274,6 +273,6 @@ struct CommentEditorView: View {
             .padding(.vertical, 3)
             .frame(maxWidth: .infinity)
             .background(.opacity(0.2), in: .capsule)
-            .foregroundStyle(palette.caution)
+            .foregroundStyle(.themedCaution)
     }
 }

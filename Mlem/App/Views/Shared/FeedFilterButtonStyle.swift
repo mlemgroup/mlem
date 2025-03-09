@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct FeedFilterButtonStyle: ButtonStyle {
-    @Environment(Palette.self) var palette
+    @Environment(\.palette) var palette
     
     let isOn: Bool
     var systemImage: String? = Icons.dropDownCircleFill
@@ -25,13 +25,13 @@ struct FeedFilterButtonStyle: ButtonStyle {
             }
         }
         .frame(height: height)
-        .foregroundStyle(isOn ? palette.selectedInteractionBarItem : palette.accent)
+        .foregroundStyle(isOn ? .themedContrastingLabel : .themedAccent)
         .font(.footnote)
         .padding(systemImage == nil ? .horizontal : .leading, 12)
         .background(
             Capsule()
                 .fill(isOn ? palette.accent : .clear)
-                .strokeBorder(palette.accent, lineWidth: isOn ? 0 : 1)
+                .strokeBorder(.themedAccent, lineWidth: isOn ? 0 : 1)
         )
     }
 }

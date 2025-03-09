@@ -13,7 +13,6 @@ struct SubscriptionListView: View {
     @Environment(AppState.self) private var appState
     @Environment(NavigationLayer.self) private var navigation
     @Environment(TabReselectTracker.self) var tabReselectTracker
-    @Environment(Palette.self) var palette
     
     @Setting(\.subscriptionSort) private var sort
     
@@ -59,7 +58,7 @@ struct SubscriptionListView: View {
                                 if appState.firstSession is GuestSession {
                                     Text(feedOption.description.subtitle)
                                         .font(.footnote)
-                                        .foregroundStyle(palette.secondary)
+                                        .foregroundStyle(.themedSecondary)
                                 }
                             }
                         }
@@ -88,7 +87,7 @@ struct SubscriptionListView: View {
         .onChange(of: sectionScroller) {
             form?.scrollToItem(at: .init(row: 0, section: sectionScroller), at: .centeredVertically, animated: false)
         }
-        .foregroundStyle(palette.primary)
+        .foregroundStyle(.themedPrimary)
         .overlay(alignment: .trailing) {
             if sectionIndicesShown {
                 SectionIndexTitles(
@@ -121,7 +120,7 @@ struct SubscriptionListView: View {
                 handleError(error)
             }
         }
-        .background(palette.background)
+        .background(.themedBackground)
     }
     
     @ViewBuilder
@@ -131,7 +130,7 @@ struct SubscriptionListView: View {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(height: 50)
-                .foregroundStyle(palette.tertiary)
+                .foregroundStyle(.themedTertiary)
                 .padding(.bottom, 5)
             Text("Your subscriptions live here.")
                 .font(.title2)
@@ -151,12 +150,12 @@ struct SubscriptionListView: View {
                         .frame(minWidth: 80)
                 }
             }
-            .tint(palette.secondary)
+            .tint(.themedSecondary)
             .buttonStyle(.bordered)
         }
         .multilineTextAlignment(.center)
         .frame(maxWidth: .infinity)
-        .foregroundColor(palette.secondary)
+        .foregroundStyle(.themedSecondary)
     }
     
     var subscriptions: SubscriptionList? {

@@ -7,6 +7,7 @@
 
 import MlemMiddleware
 import SwiftUI
+import Theming
 
 enum PersonFlair: Hashable {
     case admin
@@ -47,24 +48,16 @@ enum PersonFlair: Hashable {
         }
     }
     
-    var color: Color {
+    var color: ThemedColor {
         switch self {
-        case .admin:
-            return Palette.main.administration
-        case .moderator:
-            return Palette.main.moderation
-        case .op:
-            return Palette.main.colorfulAccent(0)
-        case .bot:
-            return Palette.main.colorfulAccent(5)
-        case .bannedFromInstance, .bannedFromCommunity:
-            return Palette.main.negative
-        case .developer:
-            return Palette.main.colorfulAccent(4)
-        case .cakeDay:
-            return Palette.main.colorfulAccent(1)
-        case .new:
-            return Palette.main.colorfulAccent(3)
+        case .admin: .themedAdministration
+        case .moderator: .themedModeration
+        case .op: .themedColorfulAccent(0)
+        case .bot: .themedColorfulAccent(5)
+        case .bannedFromInstance, .bannedFromCommunity: .themedNegative
+        case .developer: .themedColorfulAccent(4)
+        case .cakeDay: .themedColorfulAccent(1)
+        case .new: .themedColorfulAccent(3)
         }
     }
     

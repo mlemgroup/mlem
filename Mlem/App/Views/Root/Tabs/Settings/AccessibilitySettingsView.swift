@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct AccessibilitySettingsView: View {
-    @Environment(Palette.self) var palette
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor: Bool
 
     @Setting(\.readPostIndicator) var readPostIndicator
@@ -23,7 +22,7 @@ struct AccessibilitySettingsView: View {
                 description: "Customize Mlem to work best for you. Some features are tied to system-wide accessibility settings.",
                 systemImage: "hand.point.up.braille.fill"
             )
-            .tint(palette.colorfulAccent(2))
+            .tint(.themedColorfulAccent(2))
             if differentiateWithoutColor {
                 Section {
                     NavigationLink(

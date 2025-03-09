@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct FormSection<Content: View>: View {
-    @Environment(Palette.self) var palette
-    
     let content: Content
     
     init(@ViewBuilder content: () -> Content) {
@@ -19,7 +17,7 @@ struct FormSection<Content: View>: View {
     var body: some View {
         content
             .frame(maxWidth: .infinity)
-            .background(palette.secondaryGroupedBackground)
+            .background(.themedSecondaryGroupedBackground)
             .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
             .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MediaView: View {
     @Environment(NavigationLayer.self) var navigation
-    @Environment(Palette.self) var palette
+    @Environment(\.palette) var palette
     
     @Setting(\.bypassImageProxyShown) var bypassImageProxyShown
     @Setting(\.autoplayMedia) var autoplayMedia
@@ -50,16 +50,17 @@ struct MediaView: View {
     ///   - onTapActions: actions to perform when the image is tapped. If `enableImageViewer: true`, tapping the image will both execute
     ///     the specified actions and open the image viewer
     ///  - Warning: Changing the following parameters may cause unexpected view identity changes: `enableContextMenu`, `contentMode`
-    init(url: URL,
-         controlState: MediaControlState? = nil,
-         verticalAspectRatioBounds: CGSize? = nil,
-         contentMode: ContentMode = .fit,
-         cornerRadius: CGFloat = 0,
-         enableContextMenu: Bool = false,
-         enableImageViewer: Bool = false,
-         enableNsfwBlur: Bool = false,
-         playImmediately: Bool = false,
-         onTapActions: (() -> Void)? = nil
+    init(
+        url: URL,
+        controlState: MediaControlState? = nil,
+        verticalAspectRatioBounds: CGSize? = nil,
+        contentMode: ContentMode = .fit,
+        cornerRadius: CGFloat = 0,
+        enableContextMenu: Bool = false,
+        enableImageViewer: Bool = false,
+        enableNsfwBlur: Bool = false,
+        playImmediately: Bool = false,
+        onTapActions: (() -> Void)? = nil
     ) {
         self.aspectRatio_ = verticalAspectRatioBounds
         self.contentMode = contentMode
@@ -75,7 +76,8 @@ struct MediaView: View {
         self._blurred = .init(wrappedValue: enableNsfwBlur)
         self._controlState = .init(wrappedValue: controlState ?? .init(
             animating: false,
-            embedControls: true)
+            embedControls: true
+        )
         )
     }
     
@@ -151,6 +153,6 @@ private extension View {
     /// This view modifier ensures that the context menu is only applied if enabled. If the context menu is instead always applied
     /// but only populated if enabled, it will disable parent context menus (e.g., in `WebsitePreviewView`).
     func withContextMenu(menuContent: @escaping () -> some View, isEnabled: Bool) -> some View {
-        return modifier(MediaViewWithContextMenu(menuContent: menuContent, isEnabled: isEnabled))
+        modifier(MediaViewWithContextMenu(menuContent: menuContent, isEnabled: isEnabled))
     }
 }
