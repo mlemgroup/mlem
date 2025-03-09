@@ -125,11 +125,11 @@ class HapticManager {
     
     private func loadPlayers() {
         // load all the haptic files into players to avoid lag on first play caused by slow disk read
-        Haptic.allCases.forEach { haptic in
+        for haptic in Haptic.allCases {
             do {
                 guard let path = Bundle.main.path(forResource: haptic.rawValue, ofType: "ahap") else {
                     assertionFailure("No haptic file found for \(haptic.rawValue)")
-                    return
+                    continue
                 }
                 let file = URL(filePath: path)
                 players[haptic] = try hapticEngine?.makePlayer(with: .init(contentsOf: file))
