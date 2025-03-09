@@ -96,7 +96,8 @@ struct ThumbnailImageView: View {
                 }
             }
             .overlay {
-                if mediaControlState.animationAvailable {
+                // movie types don't load into thumbnails properly so override for those
+                if mediaControlState.animationAvailable || url.proxyAwarePathExtension?.isMovieExtension ?? false {
                     PlayButton(postSize: postSize)
                 }
             }

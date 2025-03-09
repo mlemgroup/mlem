@@ -56,7 +56,7 @@ class MediaLoader {
         self.size = size
         
         // let processors: [any ImageProcessing] = createProcessors(size: size)
-        self.processors = createProcessors(size: size)
+        self.processors = createProcessors(url: url, size: size)
 
         self.proxyBypass = computeProxyBypass(for: url)
         
@@ -129,14 +129,14 @@ class MediaLoader {
 }
 
 // private func createProcessors(for url: URL?, size: CGSize?) -> [any ImageProcessing] {
-private func createProcessors(size: CGSize?) -> [any ImageProcessing] {
-    guard let size else {
+private func createProcessors(url: URL?, size: CGSize?) -> [any ImageProcessing] {
+    guard let url, let size else {
         return .init()
     }
     // bypass processors for movies
-//    if url.proxyAwarePathExtension?.isMovieExtension ?? false {
-//        return .init()
-//    }
+    if url.proxyAwarePathExtension?.isMovieExtension ?? false {
+        return .init()
+    }
     return [.resize(size: size, crop: true)]
 }
 
