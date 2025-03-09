@@ -1079,6 +1079,9 @@
         }
       }
     },
+    "Ask Every Time" : {
+
+    },
     "Ask First" : {
       "localizations" : {
         "fr" : {
@@ -1118,6 +1121,9 @@
           }
         }
       }
+    },
+    "Author's Instance" : {
+
     },
     "Automatic" : {
       "localizations" : {
@@ -3698,6 +3704,9 @@
         }
       }
     },
+    "In Mlem" : {
+
+    },
     "In Reader" : {
       "localizations" : {
         "fr" : {
@@ -3709,6 +3718,7 @@
       }
     },
     "In-App" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -4626,6 +4636,9 @@
           }
         }
       }
+    },
+    "My Instance" : {
+
     },
     "My Profile" : {
       "localizations" : {
@@ -6698,6 +6711,12 @@
           }
         }
       }
+    },
+    "Share Links" : {
+
+    },
+    "Share links using..." : {
+
     },
     "Share..." : {
       "localizations" : {

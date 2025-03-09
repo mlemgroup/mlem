@@ -15,14 +15,14 @@ class NavigationLayer: Identifiable {
         let url: URL
         let activities: [ShareActivity]
         
-        init(url: URL, activities: [ShareActivity] = []) {
+        init(url: URL, activities: [ShareActivity]) {
             self.url = url
             self.activities = activities
         }
         
-        init(_ action: ShareAction) {
-            self.url = action.url
-            self.activities = action.actions.compactMap { action in
+        init(url: URL, actions: [BasicAction] = []) {
+            self.url = url
+            self.activities = actions.compactMap { action in
                 if let callback = action.callback {
                     .init(appearance: action.appearance, performAction: callback)
                 } else {

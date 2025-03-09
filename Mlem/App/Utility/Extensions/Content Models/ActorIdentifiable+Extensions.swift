@@ -7,33 +7,12 @@
 
 import Foundation
 import MlemMiddleware
+import SwiftUI
 
 extension ActorIdentifiable {
-    func shareAction() -> ShareAction {
-        .init(id: "share\(actorId)", url: actorId.url, actions: [sendLinkInPrivateMessageAction()])
-    }
-    
-    func sendLinkInPrivateMessageAction() -> BasicAction {
-        .init(
-            id: "sendLinkInPrivateMessage\(actorId)",
-            appearance: .init(
-                label: "Send to Lemmy User",
-                color: .themedAccent,
-                icon: Icons.personCircle
-            ),
-            callback: {
-                NavigationModel.main.openSheet(.personPicker(callback: { person, navigation in
-                    navigation.push(
-                        .messageFeed(person, messageContent: String(describing: actorId), focusTextField: true)
-                    )
-                }))
-            }
-        )
-    }
-    
-    func openInstanceAction(navigation: NavigationLayer?) -> BasicAction {
+    func openInstanceAction(environment: EnvironmentValues) -> BasicAction {
         let callback: (@MainActor () -> Void)?
-        if let navigation {
+        if let navigation = environment[NavigationLayer.self] {
             callback = { navigation.push(.instance(hostOf: self)) }
         } else {
             callback = nil
