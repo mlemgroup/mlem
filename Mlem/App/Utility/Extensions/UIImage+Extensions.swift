@@ -17,8 +17,8 @@ extension UIImage {
     
     static let blank: UIImage = .init()
     
-    func validSize(fallback: CGSize) -> CGSize {
-        size == .zero ? fallback : size
+    func validSize() -> CGSize? {
+        size == .zero ? nil : size
     }
     
     func boundedAspectRatio(bounds: AspectRatioBounds) -> CGSize {

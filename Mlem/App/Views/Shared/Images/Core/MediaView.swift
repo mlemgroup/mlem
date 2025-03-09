@@ -20,20 +20,21 @@ struct MediaView: View {
     @State var playing: Bool
     @State var quickLookUrl: URL?
     
-    let url: URL
+    let url: URL?
     
     // appearance
     let aspectRatio_: AspectRatioBounds?
-    var aspectRatio: AspectRatioBounds { aspectRatio_ ?? .absolute(loader.mediaType.image.validSize(fallback: .init(width: 4, height: 3))) }
+    var aspectRatio: AspectRatioBounds { aspectRatio_ ?? .absolute(loader.mediaType?.image.validSize() ?? .init(width: 4, height: 3)) }
     let contentMode: ContentMode
     let cornerRadius: CGFloat
+    let fallback: Fallback
     
     // interaction
     let enableContextMenu: Bool
     let enableImageViewer: Bool
     let onTapActions: (() -> Void)?
     
-    var uiImage: UIImage { loader.mediaType.image }
+    // var uiImage: UIImage? { loader.mediaType?.image }
     var fullSizeUrl: URL? { Mlem.fullSizeUrl(url: loader.url) }
 
     /// Creates a new MediaView. This view is simple by default; if no complex behaviors are specified, it will
@@ -51,12 +52,13 @@ struct MediaView: View {
     ///   - onTapActions: actions to perform when the image is tapped. If `enableImageViewer: true`, tapping the image will both execute
     ///     the specified actions and open the image viewer
     ///  - Warning: Changing the following parameters may cause unexpected view identity changes: `enableContextMenu`, `contentMode`
-    init(url: URL,
+    init(url: URL?,
          size: CGSize? = nil,
          controlState: Binding<MediaControlState>? = nil,
          aspectRatioBounds: AspectRatioBounds? = nil,
          contentMode: ContentMode = .fit,
          cornerRadius: CGFloat = 0,
+         fallback: Fallback = .image,
          enableContextMenu: Bool = false,
          enableImageViewer: Bool = false,
          enableControlss: Bool = false,
@@ -68,6 +70,7 @@ struct MediaView: View {
         self.aspectRatio_ = aspectRatioBounds
         self.contentMode = contentMode
         self.cornerRadius = cornerRadius
+        self.fallback = fallback
         
         self.enableContextMenu = enableContextMenu
         self.enableImageViewer = enableImageViewer
@@ -121,8 +124,8 @@ struct MediaView: View {
                     await loader.load(url)
                 }
             }
-            .onChange(of: loader.mediaType.isAnimated, initial: true) {
-                controlState.animationAvailable = loader.mediaType.isAnimated
+            .onChange(of: loader.mediaType?.isAnimated, initial: true) {
+                controlState.animationAvailable = loader.mediaType?.isAnimated ?? false
             }
             .environment(controlState)
     }
@@ -146,6 +149,25 @@ struct MediaView: View {
                         playing = false
                     }
             }
+        }
+    }
+}
+
+/// Enumeration of placeholder images to use if image loading fails
+enum Fallback {
+    case person, community, instance, favicon, image, movie, text, link, titleOnly
+    
+    var icon: String {
+        switch self {
+        case .person: Icons.personCircleFill
+        case .community: Icons.communityCircleFill
+        case .instance: Icons.instanceCircleFill
+        case .favicon: Icons.browser
+        case .image: Icons.missing
+        case .movie: "film"
+        case .text: Icons.textPost
+        case .link: Icons.websiteIcon
+        case .titleOnly: Icons.titleOnlyPost
         }
     }
 }

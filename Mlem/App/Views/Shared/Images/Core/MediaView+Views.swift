@@ -72,12 +72,46 @@ extension MediaView {
     
     @ViewBuilder
     var image: some View {
-        InternalMediaView(
-            media: loader.mediaType,
-            playing: playing,
-            aspectRatio: uiImage.boundedAspectRatio(bounds: aspectRatio),
-            contentMode: contentMode
-        )
+        if let media = loader.mediaType {
+            InternalMediaView(
+                media: media,
+                playing: playing,
+                aspectRatio: media.image.boundedAspectRatio(bounds: aspectRatio),
+                contentMode: contentMode
+            )
+        } else if loader.loading == .loading {
+            ProgressView()
+        } else {
+            fallbackImage
+        }
+    }
+    
+    @ViewBuilder
+    var fallbackImage: some View {
+        switch fallback {
+        case .person, .community, .instance:
+            Image(systemName: fallback.icon)
+                .resizable()
+                .scaledToFit()
+                .symbolRenderingMode(.palette)
+                .foregroundStyle(.themedContrastingLabel, palette.neutralAccent.gradient)
+        case .favicon:
+            Image(systemName: fallback.icon)
+                .foregroundStyle(.themedSecondary)
+        case .image, .movie:
+            let icon: String = loader.loading == .proxyFailed ? Icons.proxy : fallback.icon
+            Image(systemName: icon)
+                .font(.title)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .foregroundStyle(.themedSecondary)
+                .background(.themedThumbnailBackground)
+        case .text, .link, .titleOnly:
+            Image(systemName: fallback.icon)
+                .font(.title)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .foregroundStyle(.themedSecondary)
+                .background(.themedThumbnailBackground)
+        }
     }
     
     @ViewBuilder
@@ -89,7 +123,11 @@ extension MediaView {
     
     @ViewBuilder
     var animationControlOverlay: some View {
-        if loader.mediaType.isAnimated, controlState.enableAnimation, !controlState.blurred, !playing {
+        if controlState.enableControls,
+           controlState.enableAnimation,
+           !controlState.blurred,
+           loader.mediaType?.isAnimated ?? false,
+           !playing {
             PlayButton(postSize: .large)
                 .onTapGesture {
                     playing = true

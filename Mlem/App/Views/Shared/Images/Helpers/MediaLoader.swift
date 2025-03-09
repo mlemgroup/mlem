@@ -44,7 +44,7 @@ class MediaLoader {
     
     private(set) var url: URL?
     private var proxyBypass: URL?
-    private(set) var mediaType: MediaType
+    private(set) var mediaType: MediaType?
     private(set) var loading: MediaLoadingState
     private(set) var error: ImageLoadingError?
     
@@ -69,7 +69,7 @@ class MediaLoader {
             return
         }
         
-        self.mediaType = .image(.blank)
+        self.mediaType = nil
         self.loading = url == nil ? .failed : .loading
     }
     
@@ -83,7 +83,7 @@ class MediaLoader {
         // reset everything
         self.url = url
         self.proxyBypass = computeProxyBypass(for: url)
-        self.mediaType = .image(.blank)
+        self.mediaType = nil
         self.loading = .loading
         self.error = nil
         

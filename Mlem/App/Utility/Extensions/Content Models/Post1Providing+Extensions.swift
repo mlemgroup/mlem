@@ -309,12 +309,13 @@ extension Post1Providing {
         return nil
     }
     
-    var placeholderImageName: String {
+    var imageFallback: Fallback {
         switch type {
-        case .text: Icons.textPost
-        case .media, .embedded: Icons.photo
-        case .link: Icons.websiteIcon
-        case .titleOnly: Icons.titleOnlyPost
+        case .text: .text
+        case let .media(url), let .embedded(url, _):
+            url.proxyAwarePathExtension?.isMovieExtension ?? false ? .movie : .image
+        case .link: .link
+        case .titleOnly: .titleOnly
         }
     }
     

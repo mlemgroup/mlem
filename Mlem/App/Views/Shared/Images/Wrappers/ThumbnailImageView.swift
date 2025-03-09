@@ -79,38 +79,27 @@ struct ThumbnailImageView: View {
     
     @ViewBuilder
     var standardContent: some View {
-        if let url {
-            MediaView(
-                url: url,
-                size: frame,
-                controlState: $mediaControlState,
-                aspectRatioBounds: .absoluteSquare,
-                contentMode: .fill,
-                cornerRadius: Constants.main.smallItemCornerRadius,
-                enableImageViewer: post.type.isMedia,
-                playImmediately: false
-            ) {
-                post.markRead()
-                if case let .link(link) = post.type {
-                    openURL(link.content)
-                }
-            }
-            .overlay {
-                if mediaControlState.animationAvailable {
-                    PlayButton(postSize: postSize)
-                }
+        MediaView(
+            url: url,
+            size: frame,
+            controlState: $mediaControlState,
+            aspectRatioBounds: .absoluteSquare,
+            contentMode: .fill,
+            cornerRadius: Constants.main.smallItemCornerRadius,
+            fallback: post.imageFallback,
+            enableImageViewer: post.type.isMedia,
+            playImmediately: false
+        ) {
+            post.markRead()
+            if case let .link(link) = post.type {
+                openURL(link.content)
             }
         }
-//        } else {
-//            Image(systemName: post.placeholderImageName)
-//                .font(.title)
-//                .frame(width: frame.width, height: frame.width)
-//                .foregroundStyle(.themedSecondary)
-//                .background(.themedThumbnailBackground)
-//                .clipShape(RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius))
-//                .overlay(RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius)
-//                    .stroke(.themedSecondaryBackground, lineWidth: 1))
-//        }
+        .overlay {
+            if mediaControlState.animationAvailable {
+                PlayButton(postSize: postSize)
+            }
+        }
     }
     
     @ViewBuilder
@@ -124,7 +113,7 @@ struct ThumbnailImageView: View {
                 blurred: mediaControlState.blurred && mediaControlState.loading == .done
             )
         } else {
-            Image(systemName: post.placeholderImageName)
+            Image(systemName: post.imageFallback.icon)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(maxWidth: 50)

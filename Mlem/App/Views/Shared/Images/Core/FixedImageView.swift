@@ -27,7 +27,7 @@ struct FixedImageView: View {
     
     /// Enumeration of placeholder images to use if image loading fails
     enum Fallback {
-        case person, community, instance, favicon, image, movie
+        case person, community, instance, favicon, image, movie, text, link, titleOnly
         
         var icon: String {
             switch self {
@@ -37,6 +37,9 @@ struct FixedImageView: View {
             case .favicon: Icons.browser
             case .image: Icons.missing
             case .movie: "film"
+            case .text: Icons.textPost
+            case .link: Icons.websiteIcon
+            case .titleOnly: Icons.titleOnlyPost
             }
         }
     }
@@ -113,6 +116,7 @@ struct FixedImageView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .foregroundStyle(.themedSecondary)
                 .background(.themedThumbnailBackground)
+        default: EmptyView()
         }
     }
 }
