@@ -52,7 +52,7 @@ struct InboxBadgeSettingsView: View {
                         .foregroundStyle(.themedContrastingLabel)
                         .aspectRatio(1, contentMode: .fit)
                         .padding(10)
-                        .background(.themedWarning)
+                        .background(.themedWarning, in: .circle)
                 }
         }
     }

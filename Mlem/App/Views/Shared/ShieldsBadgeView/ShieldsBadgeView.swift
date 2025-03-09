@@ -81,7 +81,7 @@ struct ShieldsBadgeView: View {
         }
         .padding(.leading, 7)
         .padding(.trailing, message == nil ? 7 : 0)
-        .background(message == nil ? palette.label.secondary : .clear)
+        .background(message == nil ? palette.accent : .clear)
         .clipShape(RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius))
         .overlay {
             RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius)

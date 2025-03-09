@@ -22,8 +22,8 @@ public struct ThemedColor: ShapeStyle, Hashable {
         getColor(palette).opacity(opacity)
     }
     
-    public func opacity(_ value: CGFloat) -> ThemedColor {
-        .init(hashString: hashString, getColor: getColor, opacity: opacity)
+    public func opacity(_ newOpacity: CGFloat) -> ThemedColor {
+        .init(hashString: hashString, getColor: getColor, opacity: newOpacity)
     }
     
     public func hash(into hasher: inout Hasher) {
