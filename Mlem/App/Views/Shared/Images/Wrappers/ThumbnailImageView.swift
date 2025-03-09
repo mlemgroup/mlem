@@ -15,9 +15,11 @@ struct ThumbnailImageView: View {
     @Environment(\.openURL) var openURL
     
     @Setting(\.websiteThumbnailIcon) var websiteThumbnailIcon
+    @Setting(\.postSize) var postSize
     
     @State var mediaControlState: MediaControlState = .init(
-        animating: true,
+        animating: false,
+        animationEnabled: false,
         embedControls: false
     )
     @State var quickLookUrl: URL?
@@ -52,48 +54,18 @@ struct ThumbnailImageView: View {
     }
     
     var body: some View {
-        Group {
-            switch post.type {
-            case let .media(url), let .embedded(url, _):
-                content
-                    .onTapGesture {
-                        if let loading = mediaControlState.loading, loading == .done || loading == .proxyFailed {
-                            post.markRead()
-                            navigation.showImageViewer(url: url)
-                        }
-                    }
-                    .contextMenu {
-                        if let url = fullSizeUrl(url: url) {
-                            Button("Save", systemImage: Icons.import) {
-                                Task { await saveMedia(url: url) }
-                            }
-                            Button("Share...", systemImage: Icons.share) {
-                                Task { await shareImage(url: url) }
-                            }
-                        }
-                    }
-                    .quickLookPreview($quickLookUrl)
-            case let .link(link):
-                content
-                    .overlay {
-                        if websiteThumbnailIcon {
-                            Image(systemName: Icons.browser)
-                                .frame(width: 16, height: 16)
-                                .foregroundStyle(.white)
-                                .background(.ultraThinMaterial, in: .circle)
-                                .padding(4)
-                                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                        }
-                    }
-                    .onTapGesture {
-                        post.markRead()
-                        openURL(link.content)
-                    }
-            default:
-                content
+        content
+            .overlay {
+                if websiteThumbnailIcon, case .link = post.type {
+                    Image(systemName: Icons.browser)
+                        .frame(width: 16, height: 16)
+                        .foregroundStyle(.white)
+                        .background(.ultraThinMaterial, in: .circle)
+                        .padding(4)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                }
             }
-        }
-        .frame(width: frame.width, height: frame.width)
+            .frame(width: frame.width, height: frame.width)
     }
     
     @ViewBuilder
@@ -109,8 +81,9 @@ struct ThumbnailImageView: View {
         if let url {
             MediaView(
                 url: url,
+                size: .init(width: 10, height: 10),
                 controlState: $mediaControlState,
-                aspectRatioBounds: .absolute(.init(width: 1, height: 1)),
+                aspectRatioBounds: .absoluteSquare,
                 contentMode: .fill,
                 cornerRadius: Constants.main.smallItemCornerRadius,
                 enableImageViewer: post.type.isMedia,
@@ -118,24 +91,26 @@ struct ThumbnailImageView: View {
                 playImmediately: false
             ) {
                 post.markRead()
+                if case let .link(link) = post.type {
+                    openURL(link.content)
+                }
             }
-//            FixedImageView(
-//                url: url,
-//                size: frame,
-//                fallback: url.proxyAwarePathExtension?.isMovieExtension ?? false ? .movie : .image,
-//                showProgress: true,
-//                blurred: blurred && loadingTracker.loading == .done
-//            )
-        } else {
-            Image(systemName: post.placeholderImageName)
-                .font(.title)
-                .frame(width: frame.width, height: frame.width)
-                .foregroundStyle(.themedSecondary)
-                .background(.themedThumbnailBackground)
-                .clipShape(RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius))
-                .overlay(RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius)
-                    .stroke(.themedSecondaryBackground, lineWidth: 1))
+            .overlay {
+                if mediaControlState.animationAvailable {
+                    PlayButton(postSize: postSize)
+                }
+            }
         }
+//        } else {
+//            Image(systemName: post.placeholderImageName)
+//                .font(.title)
+//                .frame(width: frame.width, height: frame.width)
+//                .foregroundStyle(.themedSecondary)
+//                .background(.themedThumbnailBackground)
+//                .clipShape(RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius))
+//                .overlay(RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius)
+//                    .stroke(.themedSecondaryBackground, lineWidth: 1))
+//        }
     }
     
     @ViewBuilder

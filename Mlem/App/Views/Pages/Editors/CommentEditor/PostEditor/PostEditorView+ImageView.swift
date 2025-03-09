@@ -51,7 +51,7 @@ extension PostEditorView {
     private func uploadedImageView(url: URL, onRemove: @escaping () -> Void = {}) -> some View {
         MediaView(
             url: url,
-            aspectRatioBounds: .bounded(vertical: .init(width: 4, height: 5), horizontal: nil),
+            aspectRatioBounds: .imageDefault,
             cornerRadius: Constants.main.mediumItemCornerRadius)
         .overlay(alignment: .topTrailing) {
             Button("Remove", systemImage: Icons.closeCircleFill) {

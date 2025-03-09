@@ -40,7 +40,7 @@ enum MediaType {
 
 @Observable
 class MediaLoader {
-    @ObservationIgnored @Setting(\.autoBypassImageProxy) var bypassImageProxy
+    @ObservationIgnored @Setting(\.autoBypassImageProxy) var autoBypassImageProxy
     
     private(set) var url: URL?
     private var proxyBypass: URL?
@@ -48,25 +48,21 @@ class MediaLoader {
     private(set) var loading: MediaLoadingState
     private(set) var error: ImageLoadingError?
     
+    private let size: CGSize?
     private let processors: [any ImageProcessing]
     
-    init(url: URL?, size: CGSize? = nil) {
+    init(url: URL? = nil, size: CGSize? = nil) {
         self.url = url
-        if let size {
-            self.processors = [.resize(size: size, crop: true)]
-        } else {
-            self.processors = .init()
-        }
-        // TODO: load(url) architecture
-        if let url,
-           let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
-           let base = components.queryItems?.first(where: { $0.name == "url" })?.value {
-            self.proxyBypass = URL(string: base)
-        }
+        self.size = size
         
-        if let url, let container = ImagePipeline.shared.cache.cachedImage(for: .init(url: url, processors: processors)) {
-            self.mediaType = container.animatedMediaType
-            self.loading = .done
+        // let processors: [any ImageProcessing] = createProcessors(size: size)
+        self.processors = createProcessors(size: size)
+
+        self.proxyBypass = computeProxyBypass(for: url)
+        
+        if let cachedImage = retrieveCachedImage(for: url, with: processors) {
+            self.mediaType = cachedImage
+            loading = .done
             return
         }
         
@@ -74,8 +70,26 @@ class MediaLoader {
         self.loading = url == nil ? .failed : .loading
     }
     
-    func load() async {
-        guard let url, loading == .loading else { return }
+    /// Loads the given url.
+    func load(_ url: URL?) async {
+        // noop if url unchanged and loading done
+        guard !(url == self.url && loading == .done) else {
+            return
+        }
+        
+        // reset everything
+        self.url = url
+        self.proxyBypass = computeProxyBypass(for: url)
+        self.mediaType = .image(.blank)
+        self.loading = .loading
+        self.error = nil
+        // self.processors = createProcessors(size: size)
+        
+        // easy case: nil url
+        guard let url else {
+            loading = .failed
+            return
+        }
         
         // handle previews
         #if DEBUG
@@ -86,6 +100,14 @@ class MediaLoader {
             }
         #endif
         
+        // if already in cache, take the cached value
+        if let mediaType = retrieveCachedImage(for: url, with: processors) {
+            self.mediaType = mediaType
+            loading = .done
+            return
+        }
+        
+        // otherwise actually load the image
         do {
             let imageTask = ImagePipeline.shared.imageTask(with: .init(url: url, processors: processors))
             imageTask.priority = .veryHigh
@@ -96,28 +118,26 @@ class MediaLoader {
             loading = .done
             return
         } catch {
-            if let proxyBypass {
-                if bypassImageProxy {
-                    await bypassProxy()
-                } else {
-                    self.error = .proxyFailure(proxyBypass: proxyBypass)
-                    loading = .proxyFailed
-                }
+            if let proxyBypass, autoBypassImageProxy {
+                await load(proxyBypass)
             } else {
                 self.error = .error(error: error)
-                loading = .failed
+                loading = proxyBypass == nil ? .failed : .proxyFailed
             }
         }
     }
-    
-    @MainActor
-    func bypassProxy() async {
-        error = nil
-        loading = .loading
-        url = proxyBypass
-        proxyBypass = nil
-        await load()
+}
+
+// private func createProcessors(for url: URL?, size: CGSize?) -> [any ImageProcessing] {
+private func createProcessors(size: CGSize?) -> [any ImageProcessing] {
+    guard let size else {
+        return .init()
     }
+    // bypass processors for movies
+//    if url.proxyAwarePathExtension?.isMovieExtension ?? false {
+//        return .init()
+//    }
+    return [.resize(size: size, crop: true)]
 }
 
 extension ImageContainer {
@@ -139,22 +159,10 @@ extension ImageContainer {
             if let asset = userInfo[.videoAssetKey] as? AVAsset {
                 .video(still: generateAVThumbnail(asset: asset), animated: asset)
             } else {
-                .image(.blank)
+                .image(image)
             }
         default:
             .image(image)
         }
-    }
-}
-
-private func generateAVThumbnail(asset: AVAsset) -> UIImage {
-    let assetImgGenerate = AVAssetImageGenerator(asset: asset)
-    assetImgGenerate.appliesPreferredTrackTransform = true
-    let time = CMTimeMakeWithSeconds(1.0, preferredTimescale: 600)
-    do {
-        return try .init(cgImage: assetImgGenerate.copyCGImage(at: time, actualTime: nil))
-    } catch {
-        handleError(error, silent: true)
-        return .blank
     }
 }

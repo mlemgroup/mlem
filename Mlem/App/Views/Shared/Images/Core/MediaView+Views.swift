@@ -12,6 +12,7 @@ extension MediaView {
     /// This is declared as its own struct to prevent state updates from the parent view causing unwanted behavior.
     private struct InternalMediaView: View {
         @Environment(\.blurred) var blurred
+        @Environment(MediaControlState.self) var controlState
         
         let media: MediaType
         let playing: Bool
@@ -23,7 +24,7 @@ extension MediaView {
         var body: some View {
             image
                 .overlay {
-                    if media.isAnimated, playing {
+                    if controlState.animationEnabled, media.isAnimated, playing {
                         animatedContent
                     }
                 }
@@ -51,7 +52,7 @@ extension MediaView {
                         )
                 }
             }
-            .aspectRatio(aspectRatio, contentMode: .fill)
+            .aspectRatio(aspectRatio, contentMode: .fit)
         }
         
         @ViewBuilder
@@ -74,7 +75,7 @@ extension MediaView {
         InternalMediaView(
             media: loader.mediaType,
             playing: playing,
-            aspectRatio: uiImage.boundedAspectRatio(bounds: aspectRatio), // uiImage.verticallyBoundedAspectRatio(bounds: aspectRatio),
+            aspectRatio: uiImage.boundedAspectRatio(bounds: aspectRatio),
             contentMode: contentMode
         )
     }
@@ -88,7 +89,7 @@ extension MediaView {
     
     @ViewBuilder
     var animationControlOverlay: some View {
-        if loader.mediaType.isAnimated, !blurred, !playing {
+        if controlState.animationEnabled, loader.mediaType.isAnimated, !blurred, !playing {
             PlayButton(postSize: .large)
                 .onTapGesture {
                     playing = true
@@ -117,12 +118,12 @@ extension MediaView {
                                 bypassImageProxyShown = true
                                 navigation.openSheet(.bypassImageProxyWarning {
                                     Task {
-                                        await loader.bypassProxy()
+                                        await loader.load(proxyBypass)
                                     }
                                 })
                             } else {
                                 Task {
-                                    await loader.bypassProxy()
+                                    await loader.load(proxyBypass)
                                 }
                             }
                         }

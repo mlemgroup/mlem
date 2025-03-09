@@ -21,6 +21,8 @@ struct MediaView: View {
     @State var quickLookUrl: URL?
     @State var blurred: Bool
     
+    let url: URL
+    
     // appearance
     let aspectRatio_: AspectRatioBounds?
     var aspectRatio: AspectRatioBounds { aspectRatio_ ?? .absolute(loader.mediaType.image.validSize(fallback: .init(width: 4, height: 3))) }
@@ -40,6 +42,7 @@ struct MediaView: View {
     /// return a plain image that fits the bounds of its parent frame.
     /// - Parameters:
     ///   - url: url of the media to render
+    ///   - size: target size of the media
     ///   - controlState: MediaControlState to control this media from a parent view. If not provided, assumes inline rendering mode.
     ///   - aspectRatioBounds: specifies the maximum vertical and horizontal aspect ratio for this image
     ///   - contentMode: content resizing mode
@@ -51,6 +54,7 @@ struct MediaView: View {
     ///     the specified actions and open the image viewer
     ///  - Warning: Changing the following parameters may cause unexpected view identity changes: `enableContextMenu`, `contentMode`
     init(url: URL,
+         size: CGSize? = nil,
          controlState: Binding<MediaControlState>? = nil,
          aspectRatioBounds: AspectRatioBounds? = nil,
          contentMode: ContentMode = .fit,
@@ -61,6 +65,8 @@ struct MediaView: View {
          playImmediately: Bool = false,
          onTapActions: (() -> Void)? = nil
     ) {
+        self.url = url
+        
         self.aspectRatio_ = aspectRatioBounds
         self.contentMode = contentMode
         self.cornerRadius = cornerRadius
@@ -70,7 +76,7 @@ struct MediaView: View {
         self.enableNsfwBlur = enableNsfwBlur
         self.onTapActions = onTapActions
         
-        self._loader = .init(wrappedValue: .init(url: url))
+        self._loader = .init(wrappedValue: .init(url: url, size: size))
         self._playing = .init(wrappedValue: playImmediately)
         self._blurred = .init(wrappedValue: enableNsfwBlur)
         if let controlState {
@@ -97,15 +103,14 @@ struct MediaView: View {
             .onChange(of: blurred) {
                 if !blurred { playing = true }
             }
-            .onAppear {
+            .onChange(of: url, initial: true) {
                 Task {
-                    await loader.load()
+                    await loader.load(url)
                 }
             }
             .onChange(of: loader.mediaType.isAnimated, initial: true) {
                 controlState.animationAvailable = loader.mediaType.isAnimated
             }
-            // .onChange(of: loader.loading)
             .environment(controlState)
             .environment(\.blurred, blurred)
     }
@@ -161,6 +166,9 @@ enum AspectRatioBounds {
             return true
         }
     }
+    
+    static var imageDefault: AspectRatioBounds { .bounded(vertical: .init(width: 4, height: 5), horizontal: nil) }
+    static var absoluteSquare: AspectRatioBounds { .absolute(.init(width: 1, height: 1)) }
 }
 
 private struct MediaViewWithContextMenu<MenuItems: View>: ViewModifier {
