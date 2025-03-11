@@ -333,6 +333,7 @@ enum Icons {
     static let muted: String = "speaker.slash.fill"
     static let unmuted: String = "speaker.wave.2.fill"
     static let embedding: String = "app.connected.to.app.below.fill"
+    static let movie: String = "film"
     
     // misc
     static let `private`: String = "lock"

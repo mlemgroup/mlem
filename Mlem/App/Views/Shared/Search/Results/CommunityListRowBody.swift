@@ -73,7 +73,7 @@ struct CommunityListRowBody<Content: View>: View {
                 CircleCroppedImageView(
                     url: community.avatar?.withIconSize(128),
                     frame: Constants.main.listRowAvatarSize,
-                    fallback: .community,
+                    fallback: .communityAvatar,
                     blurred: community.nsfw && (blurNsfw != .never)
                 )
             }

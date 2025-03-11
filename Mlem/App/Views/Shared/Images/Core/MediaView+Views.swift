@@ -79,8 +79,6 @@ extension MediaView {
                 aspectRatio: media.image.boundedAspectRatio(bounds: aspectRatio),
                 contentMode: contentMode
             )
-        } else if loader.loading == .loading {
-            ProgressView()
         } else {
             fallbackImage
                 .frame(maxWidth: .infinity)
@@ -90,27 +88,31 @@ extension MediaView {
     
     @ViewBuilder
     var fallbackImage: some View {
-        switch fallback {
-        case .person, .community, .instance:
+        if loader.loading == .loading {
+            ProgressView()
+        } else {
+            switch fallback.fallbackStyle {
+            case .standard:
+                coreFallbackImage
+                    .foregroundStyle(.themedSecondary)
+                    .background(fallback.background)
+            case .avatar:
+                coreFallbackImage
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(.themedContrastingLabel, palette.neutralAccent.gradient)
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var coreFallbackImage: some View {
+        let fallback: Fallback = loader.loading == .proxyFailed ? .proxyFailure : fallback
+        GeometryReader { geo in
             Image(systemName: fallback.icon)
                 .resizable()
                 .scaledToFit()
-                .symbolRenderingMode(.palette)
-                .foregroundStyle(.themedContrastingLabel, palette.neutralAccent.gradient)
-        case .favicon:
-            Image(systemName: fallback.icon)
-                .foregroundStyle(.themedSecondary)
-        case .image, .movie, .link, .text, .titleOnly:
-            let icon: String = loader.loading == .proxyFailed ? Icons.proxy : fallback.icon
-            GeometryReader { geo in
-                Image(systemName: icon)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: geo.size.width / 3)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .foregroundStyle(.themedSecondary)
-                    .background(.themedThumbnailBackground)
-            }
+                .frame(width: geo.size.width * fallback.scaleFactor)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
     

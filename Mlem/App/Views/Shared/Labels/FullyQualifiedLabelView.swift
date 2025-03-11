@@ -159,7 +159,7 @@ extension FullyQualifiedLabelView {
     ) {
         self.init(
             entity: entity,
-            avatarFallback: .person,
+            avatarFallback: .personAvatar,
             labelStyle: labelStyle,
             showAvatar: showAvatar,
             showInstance: showInstance,
@@ -176,7 +176,7 @@ extension FullyQualifiedLabelView {
     ) {
         self.init(
             entity: entity,
-            avatarFallback: .community,
+            avatarFallback: .communityAvatar,
             labelStyle: labelStyle,
             showAvatar: showAvatar,
             showInstance: showInstance,
@@ -193,7 +193,7 @@ extension FullyQualifiedLabelView {
     ) {
         self.init(
             entity: entity,
-            avatarFallback: .person,
+            avatarFallback: .personAvatar,
             labelStyle: labelStyle,
             showAvatar: showAvatar,
             showInstance: showInstance,
