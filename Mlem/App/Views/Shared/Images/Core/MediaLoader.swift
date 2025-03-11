@@ -47,6 +47,11 @@ enum MediaType {
     }
 }
 
+enum MediaLoadingState {
+    case loading, done, proxyFailed, failed
+}
+
+
 // MARK: Core
 
 @Observable
