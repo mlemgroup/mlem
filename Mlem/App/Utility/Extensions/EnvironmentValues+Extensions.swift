@@ -20,3 +20,7 @@ extension EnvironmentValues {
     
     @Entry var loadingTracker: MediaLoadingTracker?
 }
+
+struct RootLayer {
+    let layer: NavigationLayer
+}

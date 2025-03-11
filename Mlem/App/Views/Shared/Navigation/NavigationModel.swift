@@ -14,6 +14,27 @@ class NavigationModel {
     
     private(set) var layers: [NavigationLayer] = .init()
     
+    struct ShareInfo {
+        let url: URL
+        let activities: [ShareActivity]
+        
+        init(url: URL, activities: [ShareActivity]) {
+            self.url = url
+            self.activities = activities
+        }
+        
+        init(url: URL, actions: [BasicAction] = []) {
+            self.url = url
+            self.activities = actions.compactMap { action in
+                if let callback = action.callback {
+                    .init(appearance: action.appearance, performAction: callback)
+                } else {
+                    nil
+                }
+            }
+        }
+    }
+
     @Observable
     class ContentPickerTracker {
         var photosPickerCallback: ((PhotosPickerItem) -> Void)?
@@ -30,7 +51,8 @@ class NavigationModel {
     var contentPickerTracker: ContentPickerTracker = .init()
     
     var mediaUrl: URL?
-    
+    var shareInfo: ShareInfo?
+
     @MainActor
     private func openSheet(_ page: NavigationPage, hasNavigationStack: Bool? = nil, isFullScreenCover: Bool) {
         guard Thread.isMainThread else {

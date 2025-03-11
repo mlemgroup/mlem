@@ -139,7 +139,12 @@ extension Post1Providing {
         report: Report? = nil,
         commentTreeTracker: CommentTreeTracker? = nil
     ) -> [any Action] {
-        basicMenuActions(appState: appState, feedback: feedback, commentTreeTracker: commentTreeTracker)
+        basicMenuActions(
+            appState: appState,
+            feedback: feedback,
+            navigation: navigation,
+            commentTreeTracker: commentTreeTracker
+        )
         if canModerate {
             ActionGroup(
                 appearance: .init(label: "Moderation...", color: .themedModeration, icon: Icons.moderation),
@@ -160,6 +165,7 @@ extension Post1Providing {
     func basicMenuActions(
         appState: AppState,
         feedback: Set<FeedbackType> = [.haptic, .toast],
+        navigation: NavigationLayer?,
         commentTreeTracker: CommentTreeTracker? = nil
     ) -> [any Action] {
         ActionGroup(displayMode: .compactSection) {
@@ -170,7 +176,7 @@ extension Post1Providing {
             if !deleted {
                 selectTextAction()
             }
-            shareAction()
+            shareAction(navigation: navigation)
             
             if isOwnPost {
                 editAction(appState: appState)
@@ -228,6 +234,7 @@ extension Post1Providing {
     // swiftlint:disable:next cyclomatic_complexity
     func action(
         appState: AppState,
+        navigation: NavigationLayer,
         type: PostBarConfiguration.ActionType,
         feedback: Set<FeedbackType> = [.haptic, .toast],
         commentTreeTracker: CommentTreeTracker? = nil,
@@ -239,7 +246,7 @@ extension Post1Providing {
         case .downvote: api.downvotesEnabled ? downvoteAction(appState: appState, feedback: feedback) : nil
         case .save: saveAction(appState: appState, feedback: feedback)
         case .reply: replyAction(appState: appState, commentTreeTracker: commentTreeTracker)
-        case .share: shareAction()
+        case .share: shareAction(navigation: navigation)
         case .selectText: selectTextAction()
         case .hide: hideAction(appState: appState, feedback: feedback)
         case .block: blockAction(appState: appState, feedback: feedback)
@@ -332,15 +339,6 @@ extension Post1Providing {
     }
     
     // MARK: Actions
-    
-    // Overrides the `ActorIdentifiable+Extensions` implementation
-    func shareAction() -> ShareAction {
-        .init(
-            id: "share\(actorId)",
-            url: actorId.url,
-            actions: [crossPostAction(), sendLinkInPrivateMessageAction()]
-        )
-    }
     
     func crossPostAction() -> BasicAction {
         .init(

@@ -1665,6 +1665,9 @@
         }
       }
     },
+    "Choose another instance..." : {
+
+    },
     "Choose Community..." : {
       "localizations" : {
         "fr" : {
@@ -6345,6 +6348,9 @@
         }
       }
     },
+    "Resolving..." : {
+
+    },
     "Response Time" : {
       "localizations" : {
         "fr" : {
@@ -6716,6 +6722,9 @@
 
     },
     "Share links using..." : {
+
+    },
+    "Share using..." : {
 
     },
     "Share..." : {

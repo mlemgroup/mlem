@@ -13,6 +13,7 @@
 		030050D52D10AE30002B1E99 /* Report+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030050D42D10AE30002B1E99 /* Report+Extensions.swift */; };
 		030056A42D7DB05A00EB0BA3 /* SharingLinksSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030056A32D7DB05A00EB0BA3 /* SharingLinksSettingsView.swift */; };
 		030056A62D7DBD4F00EB0BA3 /* Sharable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030056A52D7DBD4F00EB0BA3 /* Sharable+Extensions.swift */; };
+		030056BB2D7E137800EB0BA3 /* ShareInstancePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030056BA2D7E137800EB0BA3 /* ShareInstancePickerView.swift */; };
 		03036C742C71408700C6DA1D /* CounterAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03036C732C71408700C6DA1D /* CounterAppearance.swift */; };
 		03036C762C71427B00C6DA1D /* InteractionBarCounterLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03036C752C71427B00C6DA1D /* InteractionBarCounterLabelView.swift */; };
 		03036C832C727D0500C6DA1D /* InteractionBarEditorView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03036C822C727D0500C6DA1D /* InteractionBarEditorView+Logic.swift */; };
@@ -539,9 +540,10 @@
 		030030A02C416B0B009A65FF /* RefreshPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshPopupView.swift; sourceTree = "<group>"; };
 		030050D22D109B7E002B1E99 /* ReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportView.swift; sourceTree = "<group>"; };
 		030050D42D10AE30002B1E99 /* Report+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Report+Extensions.swift"; sourceTree = "<group>"; };
-		030056A22D7DACF200EB0BA3 /* MlemMiddleware */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MlemMiddleware; path = ../MlemMiddleware; sourceTree = SOURCE_ROOT; };
 		030056A32D7DB05A00EB0BA3 /* SharingLinksSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharingLinksSettingsView.swift; sourceTree = "<group>"; };
 		030056A52D7DBD4F00EB0BA3 /* Sharable+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sharable+Extensions.swift"; sourceTree = "<group>"; };
+		030056B92D7DF6A000EB0BA3 /* MlemMiddleware */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MlemMiddleware; path = ../MlemMiddleware; sourceTree = SOURCE_ROOT; };
+		030056BA2D7E137800EB0BA3 /* ShareInstancePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareInstancePickerView.swift; sourceTree = "<group>"; };
 		03036C732C71408700C6DA1D /* CounterAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterAppearance.swift; sourceTree = "<group>"; };
 		03036C752C71427B00C6DA1D /* InteractionBarCounterLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionBarCounterLabelView.swift; sourceTree = "<group>"; };
 		03036C822C727D0500C6DA1D /* InteractionBarEditorView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InteractionBarEditorView+Logic.swift"; sourceTree = "<group>"; };
@@ -1577,8 +1579,8 @@
 		6363D5B827EE196700E34822 = {
 			isa = PBXGroup;
 			children = (
+				030056B92D7DF6A000EB0BA3 /* MlemMiddleware */,
 				03A6315C2D4D15F1009A47A6 /* PrivacyInfo.xcprivacy */,
-				030056A22D7DACF200EB0BA3 /* MlemMiddleware */,
 				6363D5C327EE196700E34822 /* Mlem */,
 				6363D5D927EE196A00E34822 /* MlemTests */,
 				6363D5E327EE196A00E34822 /* MlemUITests */,
@@ -1870,6 +1872,7 @@
 				0305EBB12D35C1B70066E5AD /* RegistrationApplicationView.swift */,
 				03531EEF2C2DA291004A3464 /* Search */,
 				032C32092C34495D00595286 /* SelectTextView.swift */,
+				030056BA2D7E137800EB0BA3 /* ShareInstancePickerView.swift */,
 				03500C252BF694A800CAA076 /* Toast */,
 				CD0E07002C12707700445849 /* ToolbarEllipsisMenu.swift */,
 				CDD99C3D2C73F4380010367F /* WarningView.swift */,
@@ -2809,6 +2812,7 @@
 				0320B64F2C8A638A00D38548 /* SignUpView.swift in Sources */,
 				036FFA2D2D45110C00998D8A /* ChangePasswordView.swift in Sources */,
 				03ECD7192C81195000D48BF6 /* PostEditorView+LinkView.swift in Sources */,
+				030056BB2D7E137800EB0BA3 /* ShareInstancePickerView.swift in Sources */,
 				0320B6582C8BB3C400D38548 /* SignUpView+Views.swift in Sources */,
 				CD17B24B2C19109A001E174B /* SwipeConfiguration.swift in Sources */,
 				03036C832C727D0500C6DA1D /* InteractionBarEditorView+Logic.swift in Sources */,

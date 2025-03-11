@@ -10,22 +10,27 @@ import MlemMiddleware
 import SwiftUI
 
 extension Sharable {
-    func shareAction(environment: EnvironmentValues) -> BasicAction {
+    func shareAction(navigation: NavigationLayer?) -> BasicAction {
         .init(id: "share\(actorId)", appearance: .share(), callback: {
-            var shareActions: [BasicAction] = [sendLinkInPrivateMessageAction()]
-            if let post = self as? any Post1Providing {
-                shareActions.prepend(post.crossPostAction())
-            }
-            
             let url: URL? = switch Settings.main.linkSharingMode {
             case .myInstance: self.url()
-            case .authorInstance: actorId.url
+            case .authorInstance: self.actorId.url
             case .askEveryTime: nil
             }
-            if let url {
-                environment[NavigationLayer.self]?.shareInfo = .init(url: url, actions: shareActions)
+            if let url, let navigation {
+                navigation.model?.shareInfo = .init(url: url, actions: self.shareSheetActions())
+            } else {
+                navigation?.openSheet(.shareInstancePicker(self))
             }
         })
+    }
+    
+    func shareSheetActions() -> [BasicAction] {
+        var shareActions: [BasicAction] = [sendLinkInPrivateMessageAction()]
+        if let post = self as? any Post1Providing {
+            shareActions.prepend(post.crossPostAction())
+        }
+        return shareActions
     }
         
     func sendLinkInPrivateMessageAction() -> BasicAction {
@@ -39,7 +44,7 @@ extension Sharable {
             callback: {
                 NavigationModel.main.openSheet(.personPicker(callback: { person, navigation in
                     navigation.push(
-                        .messageFeed(person, messageContent: String(describing: actorId), focusTextField: true)
+                        .messageFeed(person, messageContent: String(describing: self.actorId), focusTextField: true)
                     )
                 }))
             }

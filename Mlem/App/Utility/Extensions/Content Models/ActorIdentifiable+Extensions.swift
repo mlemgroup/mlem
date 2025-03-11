@@ -10,9 +10,9 @@ import MlemMiddleware
 import SwiftUI
 
 extension ActorIdentifiable {
-    func openInstanceAction(environment: EnvironmentValues) -> BasicAction {
+    func openInstanceAction(navigation: NavigationLayer?) -> BasicAction {
         let callback: (@MainActor () -> Void)?
-        if let navigation = environment[NavigationLayer.self] {
+        if let navigation {
             callback = { navigation.push(.instance(hostOf: self)) }
         } else {
             callback = nil

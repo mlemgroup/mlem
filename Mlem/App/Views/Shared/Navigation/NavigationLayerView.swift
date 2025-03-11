@@ -12,7 +12,7 @@ import UIKit
 struct NavigationLayerView: View {
     @Setting(\.interfaceStyle) var interfaceStyle
 
-    @Bindable var layer: NavigationLayer
+    @State var layer: NavigationLayer
     let hasSheetModifiers: Bool
     
     private let fullWidthGestureRecognizerDelegate: FullWidthGestureRecognizerDelegate = .init()
@@ -65,24 +65,6 @@ struct NavigationLayerView: View {
             )
             .padding(.bottom, 8)
         }
-        // https://stackoverflow.com/questions/69693871/how-to-open-share-sheet-from-presented-sheet
-        .background(SharingViewController(
-            isPresenting: Binding(get: { layer.shareInfo != nil }, set: { if !$0 { layer.shareInfo = nil }})
-        ) {
-            let activityView = UIActivityViewController(
-                activityItems: [layer.shareInfo?.url ?? URL(string: "www.apple.com")!],
-                applicationActivities: layer.shareInfo?.activities
-            )
-          
-            if UIDevice.isPad {
-                activityView.popoverPresentationController?.sourceView = UIView()
-            }
-
-            activityView.completionWithItemsHandler = { _, _, _, _ in
-                layer.shareInfo = nil
-            }
-            return activityView
-        })
         .modifier(HandleLemmyLinksModifier())
         .environment(layer)
         .preferredColorScheme(preferredColorScheme)
@@ -108,21 +90,6 @@ struct NavigationLayerView: View {
         }
         
         return newStyle.colorScheme
-    }
-}
-
-private struct SharingViewController: UIViewControllerRepresentable {
-    @Binding var isPresenting: Bool
-    var content: () -> UIViewController
-
-    func makeUIViewController(context: Context) -> UIViewController {
-        UIViewController()
-    }
-
-    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
-        if isPresenting {
-            uiViewController.present(content(), animated: true, completion: { isPresenting = false })
-        }
     }
 }
 

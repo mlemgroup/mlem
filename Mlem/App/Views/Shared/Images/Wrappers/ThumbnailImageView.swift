@@ -148,7 +148,7 @@ struct ThumbnailImageView: View {
     
     func shareImage(url: URL) async {
         if let fileUrl = await downloadImageToFileSystem(url: url) {
-            navigation.shareInfo = .init(url: fileUrl)
+            navigation.model?.shareInfo = .init(url: fileUrl)
         }
     }
 }

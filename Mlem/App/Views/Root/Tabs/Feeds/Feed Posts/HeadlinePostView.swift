@@ -18,6 +18,7 @@ struct HeadlinePostView<EmbeddedContent: View>: View {
 
     @Environment(AppState.self) private var appState
     @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?
+    @Environment(NavigationLayer.self) var navigation
     @Environment(\.communityContext) var communityContext: (any Community1Providing)?
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
     @Environment(\.reportContext) private var reportContext: Report?
@@ -85,6 +86,7 @@ struct HeadlinePostView<EmbeddedContent: View>: View {
                 appState: appState,
                 post: post,
                 configuration: interactionBarConfiguration,
+                navigation: navigation,
                 commentTreeTracker: commentTreeTracker,
                 communityContext: communityContext,
                 reportContext: reportContext

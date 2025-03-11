@@ -19,6 +19,7 @@ struct LargePostView: View {
     
     @Environment(AppState.self) private var appState
     @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?
+    @Environment(NavigationLayer.self) var navigation
     @Environment(\.communityContext) private var communityContext
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
     @Environment(\.reportContext) private var reportContext: Report?
@@ -96,6 +97,7 @@ struct LargePostView: View {
                 appState: appState,
                 post: post,
                 configuration: interactionBarConfiguration,
+                navigation: navigation,
                 commentTreeTracker: commentTreeTracker,
                 communityContext: communityContext,
                 reportContext: reportContext

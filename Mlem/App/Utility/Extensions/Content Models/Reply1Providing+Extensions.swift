@@ -31,7 +31,11 @@ extension Reply1Providing {
     }
     
     @ActionBuilder
-    func menuActions(appState: AppState, feedback: Set<FeedbackType> = [.haptic, .toast]) -> [any Action] {
+    func menuActions(
+        appState: AppState,
+        navigation: NavigationLayer,
+        feedback: Set<FeedbackType> = [.haptic, .toast]
+    ) -> [any Action] {
         ActionGroup(displayMode: .compactSection) {
             upvoteAction(appState: appState, feedback: feedback)
             downvoteAction(appState: appState, feedback: feedback)
@@ -42,7 +46,7 @@ extension Reply1Providing {
                 if !comment.deleted {
                     comment.selectTextAction()
                 }
-                comment.shareAction()
+                comment.shareAction(navigation: navigation)
                 if !comment.deleted {
                     reportAction(appState: appState)
                 }

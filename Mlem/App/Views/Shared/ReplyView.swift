@@ -23,7 +23,7 @@ struct ReplyView: View {
                 Image(systemName: reply.isMention ? Icons.mention : Icons.reply)
                     .symbolVariant(reply.read ? .none : .fill)
                     .foregroundStyle(.themedAccent)
-                EllipsisMenu(size: 24) { reply.menuActions(appState: appState) }
+                EllipsisMenu(size: 24) { reply.menuActions(appState: appState, navigation: navigation) }
                     .frame(height: 10)
             }
           
@@ -50,7 +50,7 @@ struct ReplyView: View {
         .quickSwipes(reply.swipeActions(appState: appState, behavior: .standard))
         .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
-        .contextMenu { reply.menuActions(appState: appState) }
+        .contextMenu { reply.menuActions(appState: appState, navigation: navigation) }
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }
 }
