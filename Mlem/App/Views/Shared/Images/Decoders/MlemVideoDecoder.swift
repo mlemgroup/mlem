@@ -5,6 +5,7 @@
 //  Created by Eric Andrews on 2025-03-09.
 //
 //  Source: https://github.com/kean/Nuke/issues/811
+//  Wraps NukeVideo's decoder to ensure a thumbnail is always generated
 
 import Nuke
 import Foundation
