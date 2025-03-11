@@ -86,7 +86,7 @@ struct ShareInstancePickerView: View {
                 }))
             }
         } label: {
-            Text("Choose another instance...")
+            Text("Choose Another Instance...")
                 .padding(16)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: 16))

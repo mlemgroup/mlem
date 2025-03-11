@@ -55,6 +55,15 @@
       }
     },
     {
+      "identity" : "mlemmiddleware",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mlemgroup/MlemMiddleware",
+      "state" : {
+        "branch" : "sjmarf/sharing",
+        "revision" : "edfba5745c5ddbcd0137afd24687db85e168a32e"
+      }
+    },
+    {
       "identity" : "nuke",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kean/Nuke",
