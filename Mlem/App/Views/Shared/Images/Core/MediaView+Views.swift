@@ -22,12 +22,33 @@ extension MediaView {
         var uiImage: UIImage { media.image }
         
         var body: some View {
-            image
-                .overlay {
-                    if controlState.enableAnimation, media.isAnimated, playing {
-                        animatedContent
-                    }
+//            Color.clear.contentShape(.rect)
+//                .aspectRatio(uiImage.size, contentMode: .fit)
+//                .border(.blue)
+//                .overlay {
+//                    if controlState.enableAnimation, media.isAnimated {
+//                        animatedContent
+//                    } else {
+//                        image
+//                    }
+//                }
+            
+            Group {
+                if controlState.enableAnimation, media.isAnimated {
+                    animatedContent
+                } else {
+                    image
                 }
+            }
+            .aspectRatio(uiImage.size, contentMode: .fit)
+            .aspectRatio(aspectRatio, contentMode: .fit)
+            
+//            image
+//                .overlay {
+//                    if controlState.enableAnimation, media.isAnimated, playing {
+//                        animatedContent
+//                    }
+//                }
         }
 
         @ViewBuilder
@@ -52,7 +73,7 @@ extension MediaView {
                         )
                 }
             }
-            .aspectRatio(aspectRatio, contentMode: .fit)
+            // .aspectRatio(aspectRatio, contentMode: .fit)
         }
         
         @ViewBuilder
