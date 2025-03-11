@@ -18,7 +18,7 @@ private struct AnimationControlLayer: ViewModifier {
     @State var showControls: Bool = true
     
     func body(content: Content) -> some View {
-        if controlState.enableControls {
+        if controlState.enableControlOverlay {
             contentWithControls(content: content)
         } else {
             content

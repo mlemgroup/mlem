@@ -49,8 +49,8 @@ struct ThumbnailImageView: View {
         self._mediaControlState = .init(wrappedValue: .init(
             blurred: blurred,
             animating: false,
-            enableAnimation: false,
-            enableControls: false
+            overlays: .init(),
+            enableAnimation: false
         ))
     }
     
@@ -71,21 +71,13 @@ struct ThumbnailImageView: View {
     
     @ViewBuilder
     var content: some View {
-        switch size {
-        case .standard: standardContent
-        case .tile: tileContent
-        }
-    }
-    
-    @ViewBuilder
-    var standardContent: some View {
         MediaView(
             url: url,
             size: frame,
             controlState: $mediaControlState,
             aspectRatioBounds: .absoluteSquare,
             contentMode: .fill,
-            cornerRadius: Constants.main.smallItemCornerRadius,
+            cornerRadius: size == .tile ? 0 : Constants.main.smallItemCornerRadius,
             fallback: post.imageFallback,
             enableImageViewer: post.type.isMedia,
             playImmediately: false
@@ -99,26 +91,6 @@ struct ThumbnailImageView: View {
             if mediaControlState.animationAvailable {
                 PlayButton(postSize: postSize)
             }
-        }
-    }
-    
-    @ViewBuilder
-    var tileContent: some View {
-        if let url {
-            FixedImageView(
-                url: url,
-                size: frame,
-                fallback: .image,
-                showProgress: true,
-                blurred: mediaControlState.blurred && mediaControlState.loading == .done
-            )
-        } else {
-            Image(systemName: post.imageFallback.icon)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(maxWidth: 50)
-                .padding(4)
-                .foregroundStyle(.themedTertiary)
         }
     }
     

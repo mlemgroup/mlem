@@ -61,7 +61,6 @@ struct MediaView: View {
          fallback: Fallback = .image,
          enableContextMenu: Bool = false,
          enableImageViewer: Bool = false,
-         enableControlss: Bool = false,
          playImmediately: Bool = false,
          onTapActions: (() -> Void)? = nil
     ) {
@@ -84,7 +83,7 @@ struct MediaView: View {
             self._controlState = .constant(.init(
                 blurred: false,
                 animating: false,
-                enableControls: true)
+                overlays: MediaOverlay.all)
             )
         }
     }
@@ -95,7 +94,7 @@ struct MediaView: View {
             controlState: .constant(.init(
                 blurred: shouldBlur,
                 animating: false,
-                enableControls: true
+                overlays: MediaOverlay.all
             )),
             aspectRatioBounds: .imageDefault,
             cornerRadius: Constants.main.mediumItemCornerRadius,

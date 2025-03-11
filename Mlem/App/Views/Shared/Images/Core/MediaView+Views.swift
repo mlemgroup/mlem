@@ -84,7 +84,7 @@ extension MediaView {
         } else {
             fallbackImage
                 .frame(maxWidth: .infinity)
-                .aspectRatio(.init(width: 4, height: 3), contentMode: .fit)
+                .aspectRatio(aspectRatio.defaultSize, contentMode: .fit)
         }
     }
     
@@ -100,32 +100,30 @@ extension MediaView {
         case .favicon:
             Image(systemName: fallback.icon)
                 .foregroundStyle(.themedSecondary)
-        case .image, .movie, .link:
+        case .image, .movie, .link, .text, .titleOnly:
             let icon: String = loader.loading == .proxyFailed ? Icons.proxy : fallback.icon
-            Image(systemName: icon)
-                .font(.title)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .foregroundStyle(.themedSecondary)
-                .background(.themedThumbnailBackground)
-        case .text, .titleOnly:
-            Image(systemName: fallback.icon)
-                .font(.title)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .foregroundStyle(.themedSecondary)
-                .background(.themedThumbnailBackground)
+            GeometryReader { geo in
+                Image(systemName: icon)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: geo.size.width / 3)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .foregroundStyle(.themedSecondary)
+                    .background(.themedThumbnailBackground)
+            }
         }
     }
     
     @ViewBuilder
     var nsfwOverlay: some View {
-        if controlState.enableControls {
+        if controlState.enableNsfwOverlay {
             NsfwOverlay()
         }
     }
     
     @ViewBuilder
     var animationControlOverlay: some View {
-        if controlState.enableControls,
+        if controlState.enableControlOverlay,
            controlState.enableAnimation,
            !controlState.blurred,
            loader.mediaType?.isAnimated ?? false,
@@ -139,7 +137,9 @@ extension MediaView {
     
     @ViewBuilder
     var errorOverlay: some View {
-        if controlState.enableControls, let loaderError = loader.error {
+        if controlState.enableErrorOverlay,
+           let loaderError = loader.error,
+           loaderError.showsErrorOverlay {
             palette.groupedBackground.tertiary.overlay {
                 switch loaderError {
                 case let .proxyFailure(proxyBypass):
@@ -172,13 +172,8 @@ extension MediaView {
                         .padding(.horizontal, Constants.main.standardSpacing)
                     }
                     .foregroundStyle(.themedTertiary)
-                case .error:
-                    Image(systemName: Icons.missing)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(maxWidth: 50)
-                        .padding(4)
-                        .foregroundStyle(.themedTertiary)
+                default:
+                    EmptyView()
                 }
             }
         }

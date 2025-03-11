@@ -13,6 +13,13 @@ import SwiftUI
 enum ImageLoadingError {
     case proxyFailure(proxyBypass: URL)
     case error(error: Error)
+    
+    var showsErrorOverlay: Bool {
+        switch self {
+        case .proxyFailure: true
+        default: false
+        }
+    }
 }
 
 enum MediaType {

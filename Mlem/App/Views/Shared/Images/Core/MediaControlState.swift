@@ -7,6 +7,12 @@
 
 import Observation
 
+enum MediaOverlay {
+    case controls, nsfw, error
+    
+    static var all: Set<MediaOverlay> { [.controls, .nsfw, .error] }
+}
+
 @Observable
 class MediaControlState {
     /// True if the media should be blurred, false otherwise
@@ -21,8 +27,8 @@ class MediaControlState {
     /// True if the media, if audio available, should not play audio
     var muted: Bool
     
-    /// True if the media should show controls, false otherwise
-    let enableControls: Bool
+    /// Which overlays should be enabled
+    let overlays: Set<MediaOverlay>
     
     /// True if the media is animated.
     /// - Note: This must be set by MediaView after the media type resolves
@@ -35,6 +41,10 @@ class MediaControlState {
     /// Current loading state of the media
     var loading: MediaLoadingState?
     
+    var enableNsfwOverlay: Bool { overlays.contains(.nsfw) }
+    var enableControlOverlay: Bool { overlays.contains(.controls) }
+    var enableErrorOverlay: Bool { overlays.contains(.error) }
+    
     /// Creates a new MediaControlState
     /// - Parameters:
     ///   - blurred: true if the media should be blurred
@@ -46,16 +56,16 @@ class MediaControlState {
     init(
         blurred: Bool,
         animating: Bool,
+        overlays: Set<MediaOverlay>,
         enableAnimation: Bool = true,
         muted: Bool? = nil,
-        enableControls: Bool,
         audioAvailable: Bool = false
     ) {
         self.blurred = blurred
         self.animating = animating
+        self.overlays = overlays
         self.enableAnimation = enableAnimation
         self.muted = muted ?? Settings.main.muteVideos
-        self.enableControls = enableControls
         self.audioAvailable = audioAvailable
     }
 }
