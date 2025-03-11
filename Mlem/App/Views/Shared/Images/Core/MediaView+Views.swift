@@ -15,7 +15,6 @@ extension MediaView {
         @Environment(MediaControlState.self) var controlState
         
         let media: MediaType
-        let playing: Bool
         let aspectRatio: CGSize
         let contentMode: ContentMode
         
@@ -74,9 +73,8 @@ extension MediaView {
     var image: some View {
         InternalMediaView(
             media: loader.mediaType ?? .image(.blank),
-            playing: playing,
             aspectRatio: uiImage.boundedAspectRatio(bounds: aspectRatio),
-            contentMode: .fill // contentMode
+            contentMode: .fill
         )
         .overlay {
             if loader.mediaType == nil {
@@ -119,20 +117,6 @@ extension MediaView {
     var nsfwOverlay: some View {
         if controlState.enableNsfwOverlay {
             NsfwOverlay()
-        }
-    }
-    
-    @ViewBuilder
-    var animationControlOverlay: some View {
-        if controlState.enableControlOverlay,
-           controlState.enableAnimation,
-           !controlState.blurred,
-           loader.mediaType?.isAnimated ?? false,
-           !playing {
-            PlayButton(postSize: .large)
-                .onTapGesture {
-                    playing = true
-                }
         }
     }
     

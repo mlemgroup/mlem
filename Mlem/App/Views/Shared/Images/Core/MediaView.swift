@@ -17,7 +17,6 @@ struct MediaView: View {
     
     @State var loader: MediaLoader
     @Binding var controlState: MediaControlState
-    @State var playing: Bool
     @State var quickLookUrl: URL?
     
     let url: URL?
@@ -74,9 +73,8 @@ struct MediaView: View {
         self.enableContextMenu = enableContextMenu
         self.enableImageViewer = enableImageViewer
         self.onTapActions = onTapActions
-        
+
         self._loader = .init(wrappedValue: .init(url: url, size: size))
-        self._playing = .init(wrappedValue: playImmediately)
         if let controlState {
             self._controlState = controlState
         } else {
@@ -107,7 +105,6 @@ struct MediaView: View {
     var body: some View {
         content
             .dynamicBlur(blurred: loader.mediaType != nil && controlState.blurred)
-            .overlay(animationControlOverlay)
             .overlay(nsfwOverlay)
             .overlay(developerOverlay)
             .overlay(errorOverlay)
@@ -115,9 +112,6 @@ struct MediaView: View {
             .withContextMenu(menuContent: contextMenuContent, isEnabled: enableContextMenu && loader.error == nil)
             .gesture(TapGesture().onEnded(tapActions), isEnabled: (onTapActions != nil) || enableImageViewer)
             .frame(maxWidth: .infinity)
-            .onChange(of: controlState.blurred) {
-                if !controlState.blurred { playing = true }
-            }
             .onChange(of: url, initial: true) {
                 Task {
                     await loader.load(url)
@@ -136,16 +130,16 @@ struct MediaView: View {
                 image
                     .onScrollVisibilityChange(threshold: 0.5) { isVisible in
                         if isVisible, autoplayMedia {
-                            playing = isVisible
+                            controlState.animating = true
                         }
                         if !isVisible {
-                            playing = false
+                            controlState.animating = false
                         }
                     }
             } else {
                 image
                     .onDisappear {
-                        playing = false
+                        controlState.animating = false
                     }
             }
         }

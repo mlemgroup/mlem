@@ -49,6 +49,7 @@ private struct AnimationControlLayer: ViewModifier {
                 muteButton
             }
             .onChange(of: controlState.blurred, initial: true) {
+                // TODO: NOW this logic is bugged
                 if controlState.blurred {
                     showControls = false
                 } else {
