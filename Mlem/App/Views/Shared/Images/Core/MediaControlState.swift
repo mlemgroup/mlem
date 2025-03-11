@@ -15,6 +15,8 @@ enum MediaOverlay {
 
 @Observable
 class MediaControlState {
+    
+    // TODO: optional; if not present, don't show overlay
     /// True if the media should be blurred, false otherwise
     var blurred: Bool
     

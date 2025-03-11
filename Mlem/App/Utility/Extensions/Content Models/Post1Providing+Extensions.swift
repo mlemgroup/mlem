@@ -309,7 +309,7 @@ extension Post1Providing {
         return nil
     }
     
-    var imageFallback: Fallback {
+    var imageFallback: MediaView.Fallback {
         switch type {
         case .text: .text
         case let .media(url), let .embedded(url, _):

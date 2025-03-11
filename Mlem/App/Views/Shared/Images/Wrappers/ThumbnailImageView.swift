@@ -79,8 +79,7 @@ struct ThumbnailImageView: View {
             contentMode: .fill,
             cornerRadius: size == .tile ? 0 : Constants.main.smallItemCornerRadius,
             fallback: post.imageFallback,
-            enableImageViewer: post.type.isMedia,
-            playImmediately: false
+            enableImageViewer: post.type.isMedia
         ) {
             post.markRead()
             if case let .link(link) = post.type {

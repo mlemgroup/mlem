@@ -54,7 +54,7 @@ struct FullyQualifiedLabelView: View {
     @Setting(\.showCommunityAvatar) var showCommunityAvatar
     
     let entity: (any Entity)?
-    let avatarFallback: FixedImageView.Fallback
+    let avatarFallback: MediaView.Fallback
     let labelStyle: FullyQualifiedLabelStyle
     var showAvatar: Bool?
     var showInstance: Bool = true

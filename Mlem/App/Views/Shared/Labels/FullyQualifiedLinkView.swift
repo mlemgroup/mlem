@@ -12,7 +12,7 @@ struct FullyQualifiedLinkView: View {
     @Environment(NavigationLayer.self) private var navigation
     
     let entity: (any FullyQualifiedLabelView.Entity)?
-    let avatarFallback: FixedImageView.Fallback
+    let avatarFallback: MediaView.Fallback
     let labelStyle: FullyQualifiedLabelStyle
     var showAvatar: Bool?
     var showInstance: Bool = true

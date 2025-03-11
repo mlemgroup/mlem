@@ -21,7 +21,7 @@ extension UIImage {
         size == .zero ? nil : size
     }
     
-    func boundedAspectRatio(bounds: AspectRatioBounds) -> CGSize {
+    func boundedAspectRatio(bounds: MediaView.AspectRatioBounds) -> CGSize {
         // sanity check: bounds do not conflict
         assert(bounds.boundsAreSane, "bounds are not sane")
         
