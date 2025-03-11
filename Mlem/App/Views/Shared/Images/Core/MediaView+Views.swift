@@ -22,18 +22,19 @@ extension MediaView {
         var uiImage: UIImage { media.image }
         
         var body: some View {
-            Group {
-                if controlState.enableAnimation, media.isAnimated {
-                    // this funky double aspect ratio first forces the view into the preview image's size then bounds that
-                    // frame to the desired aspect ratio--it's basically the same trick as in `image` below, except that we
-                    // need to extract the initial aspect ratio from the uiImage because video types don't provide it nicely
-                    animatedContent
-                        .aspectRatio(uiImage.size, contentMode: contentMode)
-                        .aspectRatio(aspectRatio, contentMode: .fit)
-                } else {
-                    image
-                }
-            }
+            image
+//            Group {
+//                if controlState.enableAnimation, media.isAnimated {
+//                    // this funky double aspect ratio first forces the view into the preview image's size then bounds that
+//                    // frame to the desired aspect ratio--it's basically the same trick as in `image` below, except that we
+//                    // need to extract the initial aspect ratio from the uiImage because video types don't provide it nicely
+//                    animatedContent
+//                        .aspectRatio(uiImage.size, contentMode: contentMode)
+//                        .aspectRatio(aspectRatio, contentMode: .fit)
+//                } else {
+//                    image
+//                }
+//            }
         }
 
         @ViewBuilder
@@ -43,12 +44,14 @@ extension MediaView {
             // More info here: https://alejandromp.com/development/blog/image-aspectratio-without-frames/
             Group {
                 if contentMode == .fit {
-                    Image(uiImage: uiImage)
-                        .resizable()
+//                    Image(uiImage: uiImage)
+//                        .resizable()
+                    generalContent
                         .aspectRatio(contentMode: .fit)
                 } else if contentMode == .fill {
-                    Image(uiImage: uiImage)
-                        .resizable()
+//                    Image(uiImage: uiImage)
+//                        .resizable()
+                    generalContent
                         .aspectRatio(contentMode: .fill)
                         .frame(
                             minWidth: 0,
@@ -60,6 +63,24 @@ extension MediaView {
             }
             .aspectRatio(aspectRatio, contentMode: .fit)
         }
+        
+        @ViewBuilder
+        var generalContent: some View {
+            if controlState.enableAnimation, media.isAnimated {
+                animatedContent
+                    // .frame(width: uiImage.size.width, height: uiImage.size.height)
+                    .aspectRatio(uiImage.validSize() ?? aspectRatio, contentMode: contentMode)
+            } else {
+                Image(uiImage: uiImage)
+                    .resizable()
+            }
+        }
+        
+//        @ViewBuilder
+//        var imageContent: some View {
+//            Image(uiImage: uiImage)
+//                .resizable()
+//        }
         
         @ViewBuilder
         var animatedContent: some View {
