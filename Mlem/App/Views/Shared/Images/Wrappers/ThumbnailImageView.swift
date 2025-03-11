@@ -36,6 +36,20 @@ struct ThumbnailImageView: View {
         }
     }
     
+    var onTapActions: (() -> Void)? {
+        switch post.type {
+        case .media, .embedded:
+            { post.markRead() }
+        case let .link(link):
+            {
+                post.markRead()
+                openURL(link.content)
+            }
+        default:
+            nil
+        }
+    }
+    
     init(
         post: any Post1Providing,
         blurred: Bool,
@@ -79,13 +93,9 @@ struct ThumbnailImageView: View {
             contentMode: .fill,
             cornerRadius: size == .tile ? 0 : Constants.main.smallItemCornerRadius,
             fallback: post.imageFallback,
-            enableImageViewer: post.type.isMedia
-        ) {
-            post.markRead()
-            if case let .link(link) = post.type {
-                openURL(link.content)
-            }
-        }
+            enableImageViewer: post.type.isMedia,
+            onTapActions: onTapActions
+        )
         .overlay {
             if mediaControlState.animationAvailable {
                 PlayButton(postSize: postSize)

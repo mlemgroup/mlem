@@ -34,7 +34,6 @@ struct MediaView: View {
     let enableImageViewer: Bool
     let onTapActions: (() -> Void)?
     
-    // var uiImage: UIImage? { loader.mediaType?.image }
     var fullSizeUrl: URL? { Mlem.fullSizeUrl(url: loader.url) }
 
     /// Creates a new MediaView. This view is simple by default; if no complex behaviors are specified, it will
