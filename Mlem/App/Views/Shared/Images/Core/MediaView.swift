@@ -45,9 +45,9 @@ struct MediaView: View {
     ///   - aspectRatioBounds: specifies the maximum vertical and horizontal aspect ratio for this image
     ///   - contentMode: content resizing mode
     ///   - cornerRadius: corner radius to apply to the image
+    ///   - fallback: fallback to use if image loading fails or URL is not present
     ///   - enableContextMenu: true if the default context menu (save/share/quick look) should appear
     ///   - enableImageViewer: true if tapping the image should open the image viewer
-    ///   - playImmediately: true if animated media should play without user interaction
     ///   - onTapActions: actions to perform when the image is tapped. If `enableImageViewer: true`, tapping the image will both execute
     ///     the specified actions and open the image viewer
     ///  - Warning: Changing the following parameters may cause unexpected view identity changes: `enableContextMenu`, `contentMode`
@@ -60,7 +60,6 @@ struct MediaView: View {
          fallback: Fallback = .image,
          enableContextMenu: Bool = false,
          enableImageViewer: Bool = false,
-         playImmediately: Bool = false,
          onTapActions: (() -> Void)? = nil
     ) {
         self.url = url

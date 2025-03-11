@@ -10,7 +10,6 @@ import Observation
 @Observable
 class MediaControlState {
     
-    // TODO: optional; if not present, don't show overlay
     /// True if the media should be blurred, false otherwise
     var blurred: Bool
     
@@ -45,10 +44,10 @@ class MediaControlState {
     /// - Parameters:
     ///   - blurred: true if the media should be blurred
     ///   - animating: true if the media, if animated, should start animating immediately, false otherwise
+    ///   - overlays: set of overlays to use
     ///   - enableAnimation: true if the media should animate at all, false otherwise
     ///   - muted: true if the media should be muted, false otherwise. Defaults to Settings.main.muteVideos.
     ///   - audioAvailable: true if the media has an audio track, false otherwise. Defaults to false.
-    ///   - enableControls: true if control overlays (NSFW blur, media controls) should be enabled, false otherwise
     init(
         blurred: Bool,
         animating: Bool,
