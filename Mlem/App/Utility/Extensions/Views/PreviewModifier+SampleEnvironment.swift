@@ -21,7 +21,7 @@ import SwiftUI
     
         func body(content: Content, context: AppState) -> some View {
             content
-                .environment(NavigationLayer(root: .blockList, model: .main))
+                .navigationEnvironment(NavigationLayer(root: .blockList, model: .main))
                 .environment(Mlem.AppState.mock(api: api))
                 .environment(FiltersTracker.main)
                 .environment(TabReselectTracker.main)

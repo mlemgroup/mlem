@@ -139,7 +139,8 @@ extension MediaView {
     var errorOverlay: some View {
         if controlState.enableErrorOverlay,
            let loaderError = loader.error,
-           loaderError.showsErrorOverlay {
+           loaderError.showsErrorOverlay,
+           let navigation {
             palette.groupedBackground.tertiary.overlay {
                 switch loaderError {
                 case let .proxyFailure(proxyBypass):
@@ -202,8 +203,10 @@ extension MediaView {
             Button("Save", systemImage: Icons.import) {
                 Task { await saveMedia(url: url) }
             }
-            Button("Share...", systemImage: Icons.share) {
-                Task { await shareImage(url: url, navigation: navigation) }
+            if let navigation {
+                Button("Share...", systemImage: Icons.share) {
+                    Task { await shareImage(url: url, navigation: navigation) }
+                }
             }
         }
     }

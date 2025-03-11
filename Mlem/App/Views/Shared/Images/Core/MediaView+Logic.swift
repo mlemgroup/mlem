@@ -69,7 +69,7 @@ extension MediaView {
         if let onTapActions {
             onTapActions()
         }
-        if enableImageViewer, let viewerUrl = fullSizeUrl ?? loader.url {
+        if enableImageViewer, let navigation, let viewerUrl = fullSizeUrl ?? loader.url {
             navigation.showImageViewer(url: viewerUrl)
         }
     }

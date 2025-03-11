@@ -443,6 +443,7 @@
 		CD7928232C73CBA400FA712D /* TileScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7928222C73CBA400FA712D /* TileScoreView.swift */; };
 		CD7928262C73E73400FA712D /* PersonView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7928252C73E73400FA712D /* PersonView+Logic.swift */; };
 		CD7AC2CC2D7FDFFB00A671B7 /* MediaView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7AC2CB2D7FDFF700A671B7 /* MediaView+Logic.swift */; };
+		CD7AC2CE2D80916700A671B7 /* View+NavigationEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7AC2CD2D80915D00A671B7 /* View+NavigationEnvironment.swift */; };
 		CD7BF9322D18F4ED0020F2C5 /* FiltersTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7BF9312D18F4EB0020F2C5 /* FiltersTracker.swift */; };
 		CD7DB9712C49C17200DCC542 /* PersonContentGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7DB9702C49C17200DCC542 /* PersonContentGridView.swift */; };
 		CD7DB9732C4AEDDE00DCC542 /* TileCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7DB9722C4AEDDE00DCC542 /* TileCommentView.swift */; };
@@ -964,6 +965,7 @@
 		CD7928222C73CBA400FA712D /* TileScoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileScoreView.swift; sourceTree = "<group>"; };
 		CD7928252C73E73400FA712D /* PersonView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PersonView+Logic.swift"; sourceTree = "<group>"; };
 		CD7AC2CB2D7FDFF700A671B7 /* MediaView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MediaView+Logic.swift"; sourceTree = "<group>"; };
+		CD7AC2CD2D80915D00A671B7 /* View+NavigationEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+NavigationEnvironment.swift"; sourceTree = "<group>"; };
 		CD7BF9312D18F4EB0020F2C5 /* FiltersTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersTracker.swift; sourceTree = "<group>"; };
 		CD7DB9702C49C17200DCC542 /* PersonContentGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonContentGridView.swift; sourceTree = "<group>"; };
 		CD7DB9722C4AEDDE00DCC542 /* TileCommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileCommentView.swift; sourceTree = "<group>"; };
@@ -2025,6 +2027,7 @@
 		CD4ED8482BF1112A00EFA0A2 /* View Modifiers */ = {
 			isa = PBXGroup;
 			children = (
+				CD7AC2CD2D80915D00A671B7 /* View+NavigationEnvironment.swift */,
 				CDB738282CB8A69D005B11BB /* View+PaletteBorder.swift */,
 				030EE3032D651A4100D58C2C /* View+Refreshable.swift */,
 				CD17B2492C191073001E174B /* Quick Swipes */,
@@ -2514,6 +2517,7 @@
 				039F58992C7B697D00C61658 /* Bundle+Extensions.swift in Sources */,
 				033F84D92C2B61FB002E3EDF /* ToastType.swift in Sources */,
 				03600D932D4531DF00C704CB /* PrivacyBypassImageProxySettingsView.swift in Sources */,
+				CD7AC2CE2D80916700A671B7 /* View+NavigationEnvironment.swift in Sources */,
 				03A82FA12C0D1E8500D01A5C /* ApiClient+Extensions.swift in Sources */,
 				0397D47A2C693444002C6CDC /* ReportEditorView.swift in Sources */,
 				CDA683F82C77E577000C4486 /* NsfwBlurBehavior.swift in Sources */,

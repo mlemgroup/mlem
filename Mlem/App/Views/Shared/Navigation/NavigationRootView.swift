@@ -42,6 +42,6 @@ struct NavigationSplitRootView: View {
                 .modifier(HandleLemmyLinksModifier())
             }
         )
-        .environment(layer)
+        .navigationEnvironment(layer)
     }
 }
