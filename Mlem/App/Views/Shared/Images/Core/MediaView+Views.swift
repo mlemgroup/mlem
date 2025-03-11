@@ -20,42 +20,16 @@ extension MediaView {
         let contentMode: ContentMode
         
         var uiImage: UIImage { media.image }
-        
-        var body: some View {
-            Group {
-                if controlState.enableAnimation, media.isAnimated {
-                    // this funky double aspect ratio first forces the view into the preview image's size then bounds that
-                    // frame to the desired aspect ratio--it's basically the same trick as in `image` below, except that we
-                    // need to extract the initial aspect ratio from the uiImage because video types don't provide it nicely
-                    animatedContent
-                        .aspectRatio(uiImage.size, contentMode: .fill)
-                        .frame(
-                            minWidth: 0,
-                            maxWidth: .infinity,
-                            minHeight: 0,
-                            maxHeight: .infinity
-                        )
-                        .aspectRatio(aspectRatio, contentMode: .fit)
-                } else {
-                    image
-                }
-            }
-        }
 
-        @ViewBuilder
-        var image: some View {
+        var body: some View {
             // WARNING: the combination of .aspectRatio and .frame modifiers in this view is very precise and
             // breaks easily. If you have to modify it, be sure to thoroughly regression test!
             // More info here: https://alejandromp.com/development/blog/image-aspectratio-without-frames/
             Group {
                 if contentMode == .fit {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
+                    content
                 } else if contentMode == .fill {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
+                    content
                         .frame(
                             minWidth: 0,
                             maxWidth: .infinity,
@@ -68,17 +42,31 @@ extension MediaView {
         }
         
         @ViewBuilder
-        var animatedContent: some View {
-            switch media {
-            case let .video(_, animated):
-                VideoView(asset: animated)
-            case let .gif(_, animated):
-                GifView(data: animated)
-            case let .webp(_, animated):
-                WebpView(data: animated)
-            default:
-                EmptyView()
+        var content: some View {
+            if controlState.enableAnimation, media.isAnimated {
+                animatedContent
+            } else {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .aspectRatio(contentMode: contentMode)
             }
+        }
+        
+        @ViewBuilder
+        var animatedContent: some View {
+            Group {
+                switch media {
+                case let .video(_, animated):
+                    VideoView(asset: animated)
+                case let .gif(_, animated):
+                    GifView(data: animated)
+                case let .webp(_, animated):
+                    WebpView(data: animated)
+                default:
+                    EmptyView()
+                }
+            }
+            .aspectRatio(uiImage.size, contentMode: contentMode)
         }
     }
     
@@ -88,7 +76,7 @@ extension MediaView {
             media: loader.mediaType ?? .image(.blank),
             playing: playing,
             aspectRatio: uiImage.boundedAspectRatio(bounds: aspectRatio),
-            contentMode: contentMode
+            contentMode: .fill // contentMode
         )
         .overlay {
             if loader.mediaType == nil {
