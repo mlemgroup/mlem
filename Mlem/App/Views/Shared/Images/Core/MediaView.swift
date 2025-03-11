@@ -105,7 +105,7 @@ struct MediaView: View {
     
     var body: some View {
         content
-            .dynamicBlur(blurred: controlState.blurred)
+            .dynamicBlur(blurred: loader.mediaType != nil && controlState.blurred)
             .overlay(animationControlOverlay)
             .overlay(nsfwOverlay)
             .overlay(developerOverlay)
