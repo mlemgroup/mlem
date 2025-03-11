@@ -23,9 +23,8 @@ struct WebpView: View {
         )
         // https://github.com/SDWebImage/SDWebImageSwiftUI/issues/114#issuecomment-636737317
         .onViewCreate { view, _ in
-            view.autoPlayAnimatedImage = false
+            view.autoPlayAnimatedImage = controlState.animating
         }
         .resizable()
-        .withAnimationControls()
     }
 }

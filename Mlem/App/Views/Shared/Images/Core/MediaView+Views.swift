@@ -11,7 +11,6 @@ extension MediaView {
     /// Struct to actually render the media.
     /// This is declared as its own struct to prevent state updates from the parent view causing unwanted behavior.
     private struct InternalMediaView: View {
-        @Environment(\.blurred) var blurred
         @Environment(MediaControlState.self) var controlState
         
         let media: MediaType
@@ -74,7 +73,7 @@ extension MediaView {
         InternalMediaView(
             media: loader.mediaType ?? .image(.blank),
             aspectRatio: uiImage.boundedAspectRatio(bounds: aspectRatio),
-            contentMode: .fill
+            contentMode: contentMode
         )
         .overlay {
             if loader.mediaType == nil {
@@ -115,7 +114,7 @@ extension MediaView {
     
     @ViewBuilder
     var nsfwOverlay: some View {
-        if controlState.enableNsfwOverlay {
+        if loader.loading == .done, controlState.enableNsfwOverlay {
             NsfwOverlay()
         }
     }
@@ -167,7 +166,7 @@ extension MediaView {
     
     @ViewBuilder
     var developerOverlay: some View {
-        if developerMode, let ext = loader.url?.proxyAwarePathExtension?.uppercased() {
+        if developerMode, controlState.enableControlOverlay, let ext = loader.url?.proxyAwarePathExtension?.uppercased() {
             Text(ext)
                 .font(.footnote)
                 .fontWeight(.semibold)
@@ -178,7 +177,7 @@ extension MediaView {
                         .fill(.regularMaterial)
                 }
                 .padding(4)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
         }
     }
     

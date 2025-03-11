@@ -7,10 +7,6 @@
 
 import SwiftUI
 
-extension EnvironmentValues {
-    @Entry var blurred: Bool = false
-}
-
 private struct AnimationControlLayer: ViewModifier {
     @Environment(MediaControlState.self) var controlState
     
@@ -18,7 +14,7 @@ private struct AnimationControlLayer: ViewModifier {
     @State var showControls: Bool = true
     
     func body(content: Content) -> some View {
-        if controlState.enableControlOverlay {
+        if controlState.animationAvailable, controlState.enableAnimation, controlState.enableControlOverlay {
             contentWithControls(content: content)
         } else {
             content

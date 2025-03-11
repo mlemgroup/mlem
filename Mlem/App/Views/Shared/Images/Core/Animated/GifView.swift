@@ -15,7 +15,6 @@ struct GifView: View {
     
     var body: some View {
         UIGifView(data: data, animating: controlState.animating)
-            .withAnimationControls()
     }
 }
 
