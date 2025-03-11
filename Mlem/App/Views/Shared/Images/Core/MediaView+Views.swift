@@ -22,33 +22,18 @@ extension MediaView {
         var uiImage: UIImage { media.image }
         
         var body: some View {
-//            Color.clear.contentShape(.rect)
-//                .aspectRatio(uiImage.size, contentMode: .fit)
-//                .border(.blue)
-//                .overlay {
-//                    if controlState.enableAnimation, media.isAnimated {
-//                        animatedContent
-//                    } else {
-//                        image
-//                    }
-//                }
-            
             Group {
                 if controlState.enableAnimation, media.isAnimated {
+                    // this funky double aspect ratio first forces the view into the preview image's size then bounds that
+                    // frame to the desired aspect ratio--it's basically the same trick as in `image` below, except that we
+                    // need to extract the initial aspect ratio from the uiImage because video types don't provide it nicely
                     animatedContent
+                        .aspectRatio(uiImage.size, contentMode: contentMode)
+                        .aspectRatio(aspectRatio, contentMode: .fit)
                 } else {
                     image
                 }
             }
-            .aspectRatio(uiImage.size, contentMode: .fit)
-            .aspectRatio(aspectRatio, contentMode: .fit)
-            
-//            image
-//                .overlay {
-//                    if controlState.enableAnimation, media.isAnimated, playing {
-//                        animatedContent
-//                    }
-//                }
         }
 
         @ViewBuilder
@@ -73,7 +58,7 @@ extension MediaView {
                         )
                 }
             }
-            // .aspectRatio(aspectRatio, contentMode: .fit)
+            .aspectRatio(aspectRatio, contentMode: .fit)
         }
         
         @ViewBuilder
