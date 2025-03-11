@@ -93,6 +93,7 @@ struct ThumbnailImageView: View {
             contentMode: .fill,
             cornerRadius: size == .tile ? 0 : Constants.main.smallItemCornerRadius,
             fallback: post.imageFallback,
+            enableContextMenu: post.type.isMedia,
             enableImageViewer: post.type.isMedia,
             onTapActions: onTapActions
         )

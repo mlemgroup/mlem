@@ -82,7 +82,7 @@ struct MediaView: View {
             self._controlState = .constant(.init(
                 blurred: false,
                 animating: false,
-                overlays: MediaOverlay.all)
+                overlays: [.controls, .error])
             )
         }
     }
@@ -93,7 +93,7 @@ struct MediaView: View {
             controlState: .constant(.init(
                 blurred: shouldBlur,
                 animating: false,
-                overlays: MediaOverlay.all
+                overlays: shouldBlur ? [.controls, .nsfw, .error] : [.controls, .error]
             )),
             aspectRatioBounds: .imageDefault,
             cornerRadius: Constants.main.mediumItemCornerRadius,

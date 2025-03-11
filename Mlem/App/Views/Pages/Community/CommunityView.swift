@@ -34,6 +34,7 @@ struct CommunityView: View {
     
     @Setting(\.postSize) var postSize
     @Setting(\.showNsfwCommunityWarning) var showNsfwCommunityWarning
+    @Setting(\.blurNsfw) var blurNsfw
     
     @ObservationIgnored @Dependency(\.persistenceRepository) private var persistenceRepository
     
@@ -95,7 +96,13 @@ struct CommunityView: View {
                     title: Text(community.displayName),
                     subtitle: Text(community.fullNameWithPrefix),
                     dropdownStyle: .disabled,
-                    image: { CircleCroppedImageView(community, frame: Constants.main.feedHeaderSize) }
+                    image: {
+                        CircleCroppedImageView(
+                            community,
+                            frame: Constants.main.feedHeaderSize,
+                            blurred: community.nsfw && (blurNsfw == .always)
+                        )
+                    }
                 )
                 subscribeButton(community: community)
                     .padding(.top, Constants.main.halfSpacing)

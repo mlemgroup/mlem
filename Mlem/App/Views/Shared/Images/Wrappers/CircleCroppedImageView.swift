@@ -44,14 +44,6 @@ struct CircleCroppedImageView: View {
             contentMode: .fill,
             fallback: fallback
         )
-//        FixedImageView(
-//            url: url,
-//            size: .init(width: frame, height: frame),
-//            fallback: fallback,
-//            showProgress: showProgress,
-//            blurred: blurred,
-//            showPlayButton: false
-//        )
         .clipShape(Circle())
         .geometryGroup()
         .frame(width: frame, height: frame)
@@ -63,24 +55,28 @@ extension CircleCroppedImageView {
     init<T: Profile1Providing>(
         _ model: T?,
         frame: CGFloat,
+        blurred: Bool = false,
         showProgress: Bool = true
     ) {
         self.init(
             url: model?.avatar,
             frame: frame,
-            fallback: T.avatarFallback
+            fallback: T.avatarFallback,
+            blurred: blurred
         )
     }
 
     init(
         _ model: any Profile1Providing,
         frame: CGFloat,
+        blurred: Bool = false,
         showProgress: Bool = true
     ) {
         self.init(
             url: model.avatar,
             frame: frame,
-            fallback: Swift.type(of: model).avatarFallback
+            fallback: Swift.type(of: model).avatarFallback,
+            blurred: blurred
         )
     }
 }

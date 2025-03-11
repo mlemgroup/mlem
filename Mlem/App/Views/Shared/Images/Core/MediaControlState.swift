@@ -7,12 +7,6 @@
 
 import Observation
 
-enum MediaOverlay {
-    case controls, nsfw, error
-    
-    static var all: Set<MediaOverlay> { [.controls, .nsfw, .error] }
-}
-
 @Observable
 class MediaControlState {
     
@@ -30,7 +24,7 @@ class MediaControlState {
     var muted: Bool
     
     /// Which overlays should be enabled
-    let overlays: Set<MediaOverlay>
+    let overlays: Set<MediaView.Overlay>
     
     /// True if the media is animated.
     /// - Note: This must be set by MediaView after the media type resolves
@@ -58,7 +52,7 @@ class MediaControlState {
     init(
         blurred: Bool,
         animating: Bool,
-        overlays: Set<MediaOverlay>,
+        overlays: Set<MediaView.Overlay>,
         enableAnimation: Bool = true,
         muted: Bool? = nil,
         audioAvailable: Bool = false

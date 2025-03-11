@@ -13,6 +13,10 @@ extension MediaView {
     
     // MARK: Types
     
+    enum Overlay {
+        case controls, nsfw, error
+    }
+    
     enum AspectRatioBounds {
         /// Specify an aspect ratio not taller than .vertical and not wider than the .horizontal
         case bounded(vertical: CGSize?, horizontal: CGSize?)
