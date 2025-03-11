@@ -1432,7 +1432,6 @@
 				CD13CC682C5D3CCA001AF428 /* Wrappers */,
 				CD13CC672C5D3CBE001AF428 /* Core */,
 				CD13CC662C5D3CA7001AF428 /* Helpers */,
-				03B04FBF2C5FC32300824128 /* SimpleAvatarView.swift */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -1687,6 +1686,7 @@
 		CD13CC682C5D3CCA001AF428 /* Wrappers */ = {
 			isa = PBXGroup;
 			children = (
+				03B04FBF2C5FC32300824128 /* SimpleAvatarView.swift */,
 				CDB2EC892BFAEFDF00DBC0EF /* ThumbnailImageView.swift */,
 				CD13CC642C5D2B9D001AF428 /* CircleCroppedImageView.swift */,
 			);
