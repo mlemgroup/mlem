@@ -35,6 +35,7 @@ struct MediaView: View {
     let onTapActions: (() -> Void)?
     
     var fullSizeUrl: URL? { Mlem.fullSizeUrl(url: loader.url) }
+    var uiImage: UIImage { loader.mediaType?.image ?? .blank }
 
     /// Creates a new MediaView. This view is simple by default; if no complex behaviors are specified, it will
     /// return a plain image that fits the bounds of its parent frame.
