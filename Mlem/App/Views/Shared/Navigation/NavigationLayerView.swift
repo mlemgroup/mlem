@@ -84,7 +84,7 @@ struct NavigationLayerView: View {
             return activityView
         })
         .modifier(HandleLemmyLinksModifier())
-        .navigationEnvironment(layer)
+        .environment(layer)
         .preferredColorScheme(preferredColorScheme)
     }
     

@@ -19,7 +19,4 @@ extension EnvironmentValues {
     @Entry var isRootView: Bool = false
     
     @Entry var loadingTracker: MediaLoadingTracker?
-    
-    /// Optional NavigationLayer for use in contexts where the environment object may not be present
-    @Entry var navigationContext: NavigationLayer?
 }

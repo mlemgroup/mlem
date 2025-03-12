@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct MediaView: View {    
-    @Environment(\.navigationContext) var navigation
+struct MediaView: View {
+    @Environment(NavigationLayer.self) var navigation: NavigationLayer?
     @Environment(\.palette) var palette
     
     @Setting(\.bypassImageProxyShown) var bypassImageProxyShown
