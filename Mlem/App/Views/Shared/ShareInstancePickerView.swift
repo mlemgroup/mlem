@@ -96,7 +96,6 @@ struct ShareInstancePickerView: View {
     func resolveEntity(url: URL, model: NavigationModel) async {
         let toastId = ToastModel.main.add(.loading("Resolving..."), location: .bottom)
         do {
-            print("START")
             let client = ApiClient.getApiClient(url: url, username: nil)
             let resolvedEntity = try await client.resolve(url: entity.actorId.url)
             NavigationModel.main.shareInfo = .init(
@@ -104,9 +103,7 @@ struct ShareInstancePickerView: View {
                 actions: entity.shareSheetActions()
             )
             ToastModel.main.removeToast(id: toastId)
-            print("END")
         } catch {
-            print("ERROR", error)
             ToastModel.main.removeToast(id: toastId)
             handleError(error)
         }
