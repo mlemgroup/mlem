@@ -7,6 +7,7 @@
 
 import AVFoundation
 import Foundation
+import MlemMiddleware
 import Nuke
 import SwiftUI
 
@@ -55,11 +56,11 @@ class FixedImageLoader {
         
         // handle previews
         #if DEBUG
-        if url.scheme == "mlempreview" {
-            uiImage = .init(named: url.lastPathComponent)
-            loading = .done
-            return
-        }
+            if url.scheme == "mlempreview" {
+                uiImage = .init(named: url.lastPathComponent)
+                loading = .done
+                return
+            }
         #endif
         
         // if already in cache, just take the cached value
@@ -73,7 +74,8 @@ class FixedImageLoader {
         // otherwise actually load the image
         do {
             if !(url.proxyAwarePathExtension?.isMovieExtension ?? false) {
-                let imageTask = ImagePipeline.shared.imageTask(with: .init(url: url, processors: processors))
+                let urlRequest = mlemUrlRequest(url: url)
+                let imageTask = ImagePipeline.shared.imageTask(with: .init(urlRequest: urlRequest, processors: processors))
                 let container = try await imageTask.response.container
                 isAnimated = container.animatedMediaType.isAnimated
                 uiImage = container.image
