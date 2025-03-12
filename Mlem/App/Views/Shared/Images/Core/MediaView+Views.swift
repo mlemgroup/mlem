@@ -123,7 +123,6 @@ extension MediaView {
     var errorOverlay: some View {
         if controlState.enableErrorOverlay,
            let loaderError = loader.error,
-           loaderError.showsErrorOverlay,
            let navigation {
             palette.groupedBackground.tertiary.overlay {
                 switch loaderError {
@@ -158,7 +157,12 @@ extension MediaView {
                     }
                     .foregroundStyle(.themedTertiary)
                 default:
-                    EmptyView()
+                    Image(systemName: Icons.missing)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(maxWidth: 50)
+                        .padding(4)
+                        .foregroundStyle(.themedTertiary)
                 }
             }
         }

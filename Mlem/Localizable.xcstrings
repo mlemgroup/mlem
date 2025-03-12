@@ -4647,9 +4647,6 @@
         }
       }
     },
-    "Navigation present" : {
-
-    },
     "Never" : {
       "localizations" : {
         "fr" : {
@@ -4795,9 +4792,6 @@
           }
         }
       }
-    },
-    "No navigation" : {
-
     },
     "No reason given" : {
       "localizations" : {
