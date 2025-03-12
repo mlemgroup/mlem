@@ -26,12 +26,12 @@ struct SharingLinksSettingsView: View {
 }
 
 enum LinkSharingMode: String, Codable, CaseIterable {
-    case myInstance, authorInstance, askEveryTime
+    case myInstance, hostInstance, askEveryTime
     
     var label: LocalizedStringResource {
         switch self {
         case .myInstance: "My Instance"
-        case .authorInstance: "Author's Instance"
+        case .hostInstance: "Host Instance"
         case .askEveryTime: "Ask Every Time"
         }
     }
