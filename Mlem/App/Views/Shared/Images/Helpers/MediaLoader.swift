@@ -7,6 +7,7 @@
 
 import AVFoundation
 import Foundation
+import MlemMiddleware
 import Nuke
 import SwiftUI
 
@@ -79,7 +80,8 @@ class MediaLoader {
         #endif
         
         do {
-            let imageTask = ImagePipeline.shared.imageTask(with: url)
+            let urlRequest = mlemUrlRequest(url: url)
+            let imageTask = ImagePipeline.shared.imageTask(with: .init(urlRequest: urlRequest))
             imageTask.priority = .veryHigh
             
             let container = try await imageTask.response.container

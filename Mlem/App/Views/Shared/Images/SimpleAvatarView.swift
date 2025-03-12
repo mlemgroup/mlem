@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 15/07/2024.
 //
 
+import MlemMiddleware
 import Nuke
 import SwiftUI
 
@@ -50,7 +51,8 @@ struct SimpleAvatarView: View {
         guard let url else { return }
 
         do {
-            let imageTask = ImagePipeline.shared.imageTask(with: url)
+            let urlRequest = mlemUrlRequest(url: url)
+            let imageTask = ImagePipeline.shared.imageTask(with: .init(urlRequest: urlRequest))
 
             let image = try await imageTask.image
             uiImage = image.circleMasked
