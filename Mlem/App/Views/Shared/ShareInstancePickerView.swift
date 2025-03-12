@@ -76,7 +76,7 @@ struct ShareInstancePickerView: View {
             let model = navigation.model
             navigation.dismissSheet()
             guard let model else { return }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
                 model.openSheet(.instancePicker(callback: { instance in
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
                         Task {
