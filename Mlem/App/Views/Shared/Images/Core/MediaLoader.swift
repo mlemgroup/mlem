@@ -138,8 +138,13 @@ class MediaLoader {
             if let proxyBypass, autoBypassImageProxy {
                 await load(proxyBypass)
             } else {
-                self.error = .error(error: error)
-                loading = proxyBypass == nil ? .failed : .proxyFailed
+                if let proxyBypass {
+                    self.error = .proxyFailure(proxyBypass: proxyBypass)
+                    self.loading = .proxyFailed
+                } else {
+                    self.error = .error(error: error)
+                    loading = .failed
+                }
             }
         }
     }
