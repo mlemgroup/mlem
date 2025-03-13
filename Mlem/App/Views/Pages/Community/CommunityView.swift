@@ -256,20 +256,11 @@ struct CommunityView: View {
 
 #if DEBUG
     #Preview(traits: .sampleEnvironment(api: .realistic)) {
-        NavigationStack(path: .constant([0, 1])) {
-            EmptyView()
-                .navigationDestination(for: Int.self) { value in
-                    switch value {
-                    case 1:
-                        CommunityView(
-                            community: .init(Community2.mock(.realistic(.pics), api: .realistic)),
-                            visitContext: .other
-                        )
-                    default:
-                        EmptyView()
-                    }
-                }
-        }
+        CommunityView(
+            community: .init(Community2.mock(.realistic(.pics), api: .realistic)),
+            visitContext: .other
+        )
+        .previewNavigationStack()
         .previewTabBar(selected: .feeds)
     }
 #endif
