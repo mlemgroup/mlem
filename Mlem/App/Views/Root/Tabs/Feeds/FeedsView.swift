@@ -138,7 +138,7 @@ struct FeedsView: View {
     var content: some View {
         FancyScrollView(scrollToTopTrigger: $scrollToTopTrigger) {
             Section {
-                if AccountsTracker.main.isEmpty, showWelcomePrompt {
+                if AccountsTracker.main.isEmpty, showWelcomePrompt, !appState.firstApi.willSendToken {
                     FeedWelcomeView()
                         .padding([.horizontal, .bottom], Constants.main.standardSpacing)
                 }
@@ -194,7 +194,7 @@ struct FeedsView: View {
                 filterContext: filtersTracker.filterContext,
                 prefetchingConfiguration: .forPostSize(postSize),
                 urlCache: Constants.main.urlCache,
-                api: AppState.main.firstApi,
+                api: appState.firstApi,
                 feedType: feedSelection.associatedApiType
             )
         } catch {
@@ -202,3 +202,11 @@ struct FeedsView: View {
         }
     }
 }
+
+#if DEBUG
+    #Preview(traits: .sampleEnvironment(api: .realistic)) {
+        FeedsView()
+            .previewNavigationStack(backButtonLabel: "Feeds")
+            .previewTabBar(selected: .feeds)
+    }
+#endif
