@@ -57,7 +57,7 @@ extension PostMockType {
         
         var community: CommunityMockType.Realistic {
             switch self {
-            case .yorkshireDales: .pics
+            case .yorkshireDales: .nature
             case .meguroRiver: .pics
             }
         }
