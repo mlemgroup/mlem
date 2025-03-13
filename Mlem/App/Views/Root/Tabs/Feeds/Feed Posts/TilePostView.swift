@@ -163,7 +163,7 @@ struct TilePostView: View {
                     .frame(maxWidth: .infinity, maxHeight: height, alignment: .topLeading)
                     .clipped()
             case .titleOnly:
-                Image(systemName: post.placeholderImageName)
+                Image(systemName: post.imageFallback.icon)
                     .resizable()
                     .scaledToFit()
                     .foregroundStyle(.themedSecondary)

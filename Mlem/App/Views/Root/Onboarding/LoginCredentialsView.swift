@@ -99,7 +99,7 @@ struct LoginCredentialsView: View {
     
     @ViewBuilder
     func instanceHeader(_ instance: any InstanceStubProviding) -> some View {
-        CircleCroppedImageView(url: instance.avatar_, frame: 50, fallback: .instance)
+        CircleCroppedImageView(url: instance.avatar_, frame: 50, fallback: .instanceAvatar)
         Text(instance.displayName_ ?? instance.host)
             .font(.title)
             .bold()

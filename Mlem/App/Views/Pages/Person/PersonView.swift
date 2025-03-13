@@ -163,7 +163,7 @@ struct PersonView: View {
         FancyScrollView {
             VStack(spacing: 0) {
                 VStack(spacing: Constants.main.standardSpacing) {
-                    ProfileHeaderView(person, fallback: .person)
+                    ProfileHeaderView(person, fallback: .personAvatar)
                     flairsView(person: person)
                     bio(person: person)
                 }

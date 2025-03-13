@@ -17,19 +17,32 @@ extension UIImage {
     
     static let blank: UIImage = .init()
     
-    func validSize(fallback: CGSize) -> CGSize {
-        size == .zero ? fallback : size
+    func validSize() -> CGSize? {
+        size == .zero ? nil : size
     }
     
-    /// Returns this image's aspect ratio or the given bounds, whichever is shorter
-    func verticallyBoundedAspectRatio(bounds: CGSize) -> CGSize {
-        guard size != .zero else { return bounds }
-
-        if size.height / size.width > bounds.height / bounds.width {
-            return bounds
-        }
+    func boundedAspectRatio(bounds: MediaView.AspectRatioBounds) -> CGSize {
+        // sanity check: bounds do not conflict
+        assert(bounds.boundsAreSane, "bounds are not sane")
         
-        return size
+        guard size != .zero else { return bounds.defaultSize }
+        
+        switch bounds {
+        case let .bounded(vertical, horizontal):
+            let aspectRatio = size.aspectRatio
+            if let vertical, aspectRatio > vertical.aspectRatio {
+                // if vertically bounded and taller than vertical bounds, clip to vertical bounds
+                return vertical
+            }
+            if let horizontal, aspectRatio < horizontal.aspectRatio {
+                // if horizontally bounded and wider than horizontal bounds, clip to horizontal bounds
+                return horizontal
+            }
+            return size
+        case let .absolute(size):
+            // absolute: just return size
+            return size
+        }
     }
     
     var circleMasked: UIImage {

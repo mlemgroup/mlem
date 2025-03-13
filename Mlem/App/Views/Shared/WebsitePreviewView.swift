@@ -60,9 +60,13 @@ struct WebsitePreviewView: View {
             if let thumbnailUrl = link.thumbnail {
                 MediaView(
                     url: thumbnailUrl,
-                    verticalAspectRatioBounds: .init(width: 1, height: 1),
-                    contentMode: .fill,
-                    enableNsfwBlur: shouldBlur
+                    controlState: .constant(.init(
+                        blurred: shouldBlur,
+                        animating: false,
+                        overlays: shouldBlur ? [.controls, .nsfw, .error] : [.controls, .error]
+                    )),
+                    aspectRatioBounds: .bounded(vertical: .init(width: 1, height: 1), horizontal: nil),
+                    contentMode: .fill
                 )
                 .overlay(alignment: .bottomLeading) {
                     linkHost
