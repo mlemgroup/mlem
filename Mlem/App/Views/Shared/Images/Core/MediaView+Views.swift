@@ -86,7 +86,7 @@ extension MediaView {
     var fallbackImage: some View {
         if loader.loading == .loading {
             ProgressView()
-        } else {
+        } else if !showErrorOverlay {
             switch fallback.fallbackStyle {
             case .standard:
                 coreFallbackImage

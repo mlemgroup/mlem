@@ -35,6 +35,11 @@ struct MediaView: View {
     
     var fullSizeUrl: URL? { Mlem.fullSizeUrl(url: loader.url) }
     var uiImage: UIImage { loader.mediaType?.image ?? .blank }
+    var showErrorOverlay: Bool {
+        controlState.enableErrorOverlay &&
+        loader.error != nil &&
+        navigation != nil
+    }
 
     /// Creates a new MediaView. This view is simple by default; if no complex behaviors are specified, it will
     /// return a plain image that fits the bounds of its parent frame.
@@ -111,7 +116,7 @@ struct MediaView: View {
             .clipShape(.rect(cornerRadius: cornerRadius))
             .withContextMenu(menuContent: contextMenuContent, isEnabled: enableContextMenu && loader.error == nil)
             .gesture(TapGesture().onEnded(tapActions), isEnabled: (onTapActions != nil) || enableImageViewer)
-            .frame(maxWidth: .infinity)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .onChange(of: url, initial: true) {
                 Task {
                     await loader.load(url)

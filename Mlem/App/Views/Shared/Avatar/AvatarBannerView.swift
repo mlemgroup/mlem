@@ -44,7 +44,7 @@ struct AvatarBannerView: View {
             if model?.banner_ != nil || showEmptyBanner, showBanner {
                 ZStack(alignment: .bottom) {
                     VStack {
-                        LazyImage(url: model?.banner_) { state in
+                        LazyImage(request: imageRequest) { state in
                             VStack {
                                 if let image = state.image {
                                     image
@@ -91,6 +91,14 @@ struct AvatarBannerView: View {
                         .padding(.top)
                 }
             }
+        }
+    }
+    
+    var imageRequest: ImageRequest? {
+        if let url = model?.banner_ {
+            .init(urlRequest: mlemUrlRequest(url: url))
+        } else {
+            nil
         }
     }
     
