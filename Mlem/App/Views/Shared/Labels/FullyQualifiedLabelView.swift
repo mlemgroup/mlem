@@ -54,7 +54,7 @@ struct FullyQualifiedLabelView: View {
     @Setting(\.showCommunityAvatar) var showCommunityAvatar
     
     let entity: (any Entity)?
-    let avatarFallback: FixedImageView.Fallback
+    let avatarFallback: MediaView.Fallback
     let labelStyle: FullyQualifiedLabelStyle
     var showAvatar: Bool?
     var showInstance: Bool = true
@@ -159,7 +159,7 @@ extension FullyQualifiedLabelView {
     ) {
         self.init(
             entity: entity,
-            avatarFallback: .person,
+            avatarFallback: .personAvatar,
             labelStyle: labelStyle,
             showAvatar: showAvatar,
             showInstance: showInstance,
@@ -176,7 +176,7 @@ extension FullyQualifiedLabelView {
     ) {
         self.init(
             entity: entity,
-            avatarFallback: .community,
+            avatarFallback: .communityAvatar,
             labelStyle: labelStyle,
             showAvatar: showAvatar,
             showInstance: showInstance,
@@ -193,7 +193,7 @@ extension FullyQualifiedLabelView {
     ) {
         self.init(
             entity: entity,
-            avatarFallback: .person,
+            avatarFallback: .personAvatar,
             labelStyle: labelStyle,
             showAvatar: showAvatar,
             showInstance: showInstance,

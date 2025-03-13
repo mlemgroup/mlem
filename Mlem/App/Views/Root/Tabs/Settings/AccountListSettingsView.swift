@@ -34,7 +34,7 @@ struct AccountListSettingsView: View {
                     if accounts.count >= 2 {
                         AvatarStackView(
                             urls: accounts.map(\.avatar),
-                            fallback: .person,
+                            fallback: .personAvatar,
                             height: 64,
                             spacing: 42,
                             outlineWidth: 1

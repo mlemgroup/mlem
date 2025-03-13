@@ -13,14 +13,14 @@ import SwiftUI
 struct CircleCroppedImageView: View {
     let url: URL?
     let frame: CGFloat // only need one CGFloat because always 1:1 aspect ratio
-    let fallback: FixedImageView.Fallback
+    let fallback: MediaView.Fallback
     let showProgress: Bool
     let blurred: Bool
     
     init(
         url: URL?,
         frame: CGFloat,
-        fallback: FixedImageView.Fallback,
+        fallback: MediaView.Fallback,
         showProgress: Bool = true,
         blurred: Bool = false
     ) {
@@ -32,13 +32,18 @@ struct CircleCroppedImageView: View {
     }
     
     var body: some View {
-        FixedImageView(
+        MediaView(
             url: url,
             size: .init(width: frame, height: frame),
-            fallback: fallback,
-            showProgress: showProgress,
-            blurred: blurred,
-            showPlayButton: false
+            controlState: .constant(.init(
+                blurred: blurred,
+                animating: false,
+                overlays: [],
+                enableAnimation: false
+            )),
+            aspectRatioBounds: .absoluteSquare,
+            contentMode: .fill,
+            fallback: fallback
         )
         .clipShape(Circle())
         .geometryGroup()
@@ -51,24 +56,28 @@ extension CircleCroppedImageView {
     init<T: Profile1Providing>(
         _ model: T?,
         frame: CGFloat,
+        blurred: Bool = false,
         showProgress: Bool = true
     ) {
         self.init(
             url: model?.avatar,
             frame: frame,
-            fallback: T.avatarFallback
+            fallback: T.avatarFallback,
+            blurred: blurred
         )
     }
 
     init(
         _ model: any Profile1Providing,
         frame: CGFloat,
+        blurred: Bool = false,
         showProgress: Bool = true
     ) {
         self.init(
             url: model.avatar,
             frame: frame,
-            fallback: Swift.type(of: model).avatarFallback
+            fallback: Swift.type(of: model).avatarFallback,
+            blurred: blurred
         )
     }
 }

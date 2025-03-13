@@ -12,7 +12,7 @@ struct ProfileHeaderView: View {
     @Environment(AppState.self) var appState
     
     var profilable: (any Profile1Providing)?
-    var fallback: FixedImageView.Fallback
+    var fallback: MediaView.Fallback
     var blockedOverride: Bool?
     
     init<T: Profile1Providing>(_ profilable: T?, blockedOverride: Bool? = nil) {
@@ -27,7 +27,7 @@ struct ProfileHeaderView: View {
         self.blockedOverride = blockedOverride
     }
     
-    init(_ profilable: (any Profile1Providing)?, fallback: FixedImageView.Fallback, blockedOverride: Bool? = nil) {
+    init(_ profilable: (any Profile1Providing)?, fallback: MediaView.Fallback, blockedOverride: Bool? = nil) {
         self.profilable = profilable
         self.fallback = fallback
         self.blockedOverride = blockedOverride

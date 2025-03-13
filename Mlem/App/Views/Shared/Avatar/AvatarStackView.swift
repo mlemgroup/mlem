@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AvatarStackView: View {
     let urls: [URL?]
-    let fallback: FixedImageView.Fallback
+    let fallback: MediaView.Fallback
     
     let height: CGFloat
     let spacing: CGFloat
@@ -68,7 +68,7 @@ struct AvatarStackView: View {
 #Preview {
     AvatarStackView(
         urls: .init(repeating: nil, count: 3),
-        fallback: .person,
+        fallback: .personAvatar,
         height: 64,
         spacing: 48,
         outlineWidth: 1

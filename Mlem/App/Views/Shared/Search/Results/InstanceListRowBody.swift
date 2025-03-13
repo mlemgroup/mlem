@@ -60,7 +60,7 @@ struct InstanceListRowBody<Content: View>: View {
             CircleCroppedImageView(
                 url: avatar?.withIconSize(128),
                 frame: Constants.main.listRowAvatarSize,
-                fallback: .instance
+                fallback: .instanceAvatar
             )
             
             VStack(alignment: .leading, spacing: 2) {

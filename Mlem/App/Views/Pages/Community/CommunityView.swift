@@ -34,6 +34,7 @@ struct CommunityView: View {
     
     @Setting(\.postSize) var postSize
     @Setting(\.showNsfwCommunityWarning) var showNsfwCommunityWarning
+    @Setting(\.blurNsfw) var blurNsfw
     
     @ObservationIgnored @Dependency(\.persistenceRepository) private var persistenceRepository
     
@@ -95,7 +96,13 @@ struct CommunityView: View {
                     title: Text(community.displayName),
                     subtitle: Text(community.fullNameWithPrefix),
                     dropdownStyle: .disabled,
-                    image: { CircleCroppedImageView(community, frame: Constants.main.feedHeaderSize) }
+                    image: {
+                        CircleCroppedImageView(
+                            community,
+                            frame: Constants.main.feedHeaderSize,
+                            blurred: community.nsfw && (blurNsfw == .always)
+                        )
+                    }
                 )
                 subscribeButton(community: community)
                     .padding(.top, Constants.main.halfSpacing)
@@ -172,13 +179,7 @@ struct CommunityView: View {
     func aboutTab(community: any Community) -> some View {
         VStack(spacing: Constants.main.standardSpacing) {
             if let banner = community.banner {
-                MediaView(
-                    url: banner,
-                    verticalAspectRatioBounds: .init(width: 4, height: 5),
-                    cornerRadius: Constants.main.standardSpacing,
-                    enableContextMenu: true,
-                    enableImageViewer: true
-                )
+                MediaView.largeImage(url: banner, shouldBlur: false)
             }
             if let description = community.description {
                 Markdown(description, configuration: .default(palette: palette))

@@ -45,6 +45,5 @@ struct VideoView: View {
             .onChange(of: controlState.muted, initial: true) {
                 player.volume = controlState.muted ? 0 : 1
             }
-            .withAnimationControls()
     }
 }

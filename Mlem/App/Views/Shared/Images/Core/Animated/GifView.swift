@@ -15,7 +15,6 @@ struct GifView: View {
     
     var body: some View {
         UIGifView(data: data, animating: controlState.animating)
-            .withAnimationControls()
     }
 }
 
@@ -27,7 +26,7 @@ private struct UIGifView: UIViewRepresentable {
         let imageView = GIFImageView()
         imageView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         imageView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
-        imageView.animate(withGIFData: data, loopCount: 0)
+        imageView.prepareForAnimation(withGIFData: data)
         return imageView
     }
     
