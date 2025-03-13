@@ -14,11 +14,11 @@ struct SimpleAvatarView: View {
     @State private var loading: Bool
 
     let url: URL?
-    let type: FixedImageView.Fallback
+    let type: MediaView.Fallback
 
     init(
         url: URL?,
-        type: FixedImageView.Fallback
+        type: MediaView.Fallback
     ) {
         self.url = url
         self.type = type

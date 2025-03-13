@@ -30,7 +30,7 @@ extension SearchView {
                         Label {
                             Text(AppState.main.firstApi.host)
                         } icon: {
-                            SimpleAvatarView(url: AppState.main.firstSession.instance?.avatar, type: .instance)
+                            SimpleAvatarView(url: AppState.main.firstSession.instance?.avatar, type: .instanceAvatar)
                         }
                     }
                 }
@@ -41,7 +41,7 @@ extension SearchView {
                             Label {
                                 Text(instance.host)
                             } icon: {
-                                SimpleAvatarView(url: instance.avatar, type: .instance)
+                                SimpleAvatarView(url: instance.avatar, type: .instanceAvatar)
                                     .id(instance.avatar)
                             }
                         }
