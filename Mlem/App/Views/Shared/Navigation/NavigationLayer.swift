@@ -11,27 +11,6 @@ import UniformTypeIdentifiers
 
 @Observable
 class NavigationLayer: Identifiable {
-    struct ShareInfo {
-        let url: URL
-        let activities: [ShareActivity]
-        
-        init(url: URL, activities: [ShareActivity] = []) {
-            self.url = url
-            self.activities = activities
-        }
-        
-        init(_ action: ShareAction) {
-            self.url = action.url
-            self.activities = action.actions.compactMap { action in
-                if let callback = action.callback {
-                    .init(appearance: action.appearance, performAction: callback)
-                } else {
-                    nil
-                }
-            }
-        }
-    }
-    
     var id: ObjectIdentifier { .init(self) }
     
     weak var model: NavigationModel?
@@ -39,7 +18,6 @@ class NavigationLayer: Identifiable {
     
     var root: NavigationPage
     var path: [NavigationPage]
-    var shareInfo: ShareInfo?
     var hasNavigationStack: Bool
     var isFullScreenCover: Bool
     var canDisplayToasts: Bool
@@ -91,6 +69,8 @@ class NavigationLayer: Identifiable {
     var isTopSheet: Bool {
         isInsideSheet && index == (model?.layers.count ?? 0) - 1
     }
+    
+    var isBottomLayer: Bool { index == -1 }
     
     var isToastDisplayer: Bool {
         isInsideSheet

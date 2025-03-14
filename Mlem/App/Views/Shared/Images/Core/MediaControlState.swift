@@ -9,7 +9,6 @@ import Observation
 
 @Observable
 class MediaControlState {
-    
     /// True if the media should be blurred, false otherwise
     var blurred: Bool
     

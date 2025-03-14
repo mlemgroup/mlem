@@ -9,6 +9,7 @@ import AVFoundation
 import Foundation
 import Nuke
 import SwiftUI
+import MlemMiddleware
 
 // MARK: Types
 
@@ -64,16 +65,16 @@ class MediaLoader {
         self.size = size
         
         if let size {
-            processors = [.resize(size: size, crop: true)]
+            self.processors = [.resize(size: size, crop: true)]
         } else {
-            processors = .init()
+            self.processors = .init()
         }
     
         self.proxyBypass = computeProxyBypass(for: url)
         
         if let cachedImage = retrieveCachedImage(for: url, with: processors) {
             self.mediaType = cachedImage
-            loading = .done
+            self.loading = .done
             return
         }
         
@@ -90,10 +91,10 @@ class MediaLoader {
         
         // reset everything
         self.url = url
-        self.proxyBypass = computeProxyBypass(for: url)
-        self.mediaType = nil
-        self.loading = .loading
-        self.error = nil
+        proxyBypass = computeProxyBypass(for: url)
+        mediaType = nil
+        loading = .loading
+        error = nil
         
         // easy case: nil url
         guard let url else {
@@ -119,7 +120,10 @@ class MediaLoader {
         
         // otherwise actually load the image
         do {
-            let imageTask = ImagePipeline.shared.imageTask(with: .init(url: url, processors: processors))
+            let imageTask = ImagePipeline.shared.imageTask(with: .init(
+                urlRequest: mlemUrlRequest(url: url),
+                processors: processors
+            ))
             imageTask.priority = .veryHigh
             
             let container = try await imageTask.response.container
@@ -133,7 +137,7 @@ class MediaLoader {
             } else {
                 if let proxyBypass {
                     self.error = .proxyFailure(proxyBypass: proxyBypass)
-                    self.loading = .proxyFailed
+                    loading = .proxyFailed
                 } else {
                     self.error = .error(error: error)
                     loading = .failed
@@ -146,7 +150,10 @@ class MediaLoader {
 // MARK: Helpers
 
 func retrieveCachedImage(for url: URL?, with processors: [ImageProcessing]) -> MediaType? {
-    if let url, let container = ImagePipeline.shared.cache.cachedImage(for: .init(url: url, processors: processors)) {
+    if let url,
+       let container = ImagePipeline.shared.cache.cachedImage(for: .init(
+        urlRequest: mlemUrlRequest(url: url),
+        processors: processors)) {
         return container.animatedMediaType
     }
     return nil

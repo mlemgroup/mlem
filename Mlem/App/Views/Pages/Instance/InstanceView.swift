@@ -35,8 +35,8 @@ struct InstanceView: View {
     var uptimeRefreshTimer = Timer.publish(every: 30, tolerance: 0.5, on: .main, in: .common)
         .autoconnect()
     
-    @Environment(NavigationLayer.self) var navigation
     @Environment(AppState.self) var appState
+    @Environment(NavigationLayer.self) var navigation
     @Environment(\.palette) var palette
     @Environment(\.colorScheme) var colorScheme
     
@@ -133,7 +133,11 @@ struct InstanceView: View {
             }
         }
         .toolbar {
-            ToolbarEllipsisMenu(instance.menuActions(appState: appState, allowExternalBlocking: true))
+            ToolbarEllipsisMenu(instance.menuActions(
+                appState: appState,
+                navigation: navigation,
+                allowExternalBlocking: true
+            ))
         }
     }
     

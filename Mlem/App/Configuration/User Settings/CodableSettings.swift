@@ -52,6 +52,7 @@ struct CodableSettings: Codable { // swiftlint:disable:this type_body_length
     var links_displayMode: TappableLinksDisplayMode
     var links_openInBrowser: Bool
     var links_readerMode: Bool
+    var links_shareMode: LinkSharingMode
     var links_embedLoops: Bool
     var links_tappableLinksDisplayMode: TappableLinksDisplayMode
     var menus_allModActions: Bool
@@ -173,6 +174,7 @@ struct CodableSettings: Codable { // swiftlint:disable:this type_body_length
         self.links_displayMode = try container.decodeIfPresent(TappableLinksDisplayMode.self, forKey: .links_displayMode) ?? .contextual
         self.links_openInBrowser = try container.decodeIfPresent(Bool.self, forKey: .links_openInBrowser) ?? false
         self.links_readerMode = try container.decodeIfPresent(Bool.self, forKey: .links_readerMode) ?? false
+        self.links_shareMode = try container.decodeIfPresent(LinkSharingMode.self, forKey: .links_shareMode) ?? .myInstance
         self.links_tappableLinksDisplayMode = try container.decodeIfPresent(TappableLinksDisplayMode.self, forKey: .links_tappableLinksDisplayMode) ?? .contextual
         self.links_embedLoops = try container.decodeIfPresent(Bool.self, forKey: .links_embedLoops) ?? true
         self.menus_allModActions = try container.decodeIfPresent(Bool.self, forKey: .menus_allModActions) ?? false
@@ -255,6 +257,7 @@ struct CodableSettings: Codable { // swiftlint:disable:this type_body_length
         self.links_displayMode = settings.tappableLinksDisplayMode
         self.links_openInBrowser = settings.openLinksInBrowser
         self.links_readerMode = settings.openLinksInReaderMode
+        self.links_shareMode = settings.linkSharingMode
         self.links_tappableLinksDisplayMode = settings.tappableLinksDisplayMode
         self.links_embedLoops = settings.embedLoops
         self.menus_allModActions = settings.showAllModActions

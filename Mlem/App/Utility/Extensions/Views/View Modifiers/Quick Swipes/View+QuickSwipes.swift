@@ -197,8 +197,6 @@ struct QuickSwipeView: ViewModifier {
         
         if let action = action as? BasicAction {
             action.callbackWithConfirmation(popupModel: popupModel)
-        } else if let action = action as? ShareAction {
-            navigation.shareInfo = .init(action)
         } else if let action = action as? ActionGroup {
             popupModel.showPopup(action)
         }

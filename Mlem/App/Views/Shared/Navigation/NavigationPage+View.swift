@@ -16,6 +16,8 @@ extension NavigationPage {
             SubscriptionListView()
         case let .selectText(string):
             SelectTextView(text: string)
+        case let .shareInstancePicker(sharable):
+            ShareInstancePickerView(entity: sharable.wrappedValue)
         case let .settings(page):
             page.view()
         case let .logIn(page):

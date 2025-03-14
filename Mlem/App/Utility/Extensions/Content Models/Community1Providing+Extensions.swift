@@ -126,7 +126,7 @@ extension Community1Providing {
         favoriteAction(appState: appState, feedback: feedback)
         openInstanceAction(navigation: navigation)
         copyNameAction()
-        shareAction()
+        shareAction(navigation: navigation)
         blockAction(appState: appState, feedback: feedback)
         if api.isAdmin {
             ActionGroup {

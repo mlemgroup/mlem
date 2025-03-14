@@ -10,7 +10,6 @@ import SwiftUICore
 import Theming
 
 extension MediaView {
-    
     // MARK: Types
     
     enum Overlay {
