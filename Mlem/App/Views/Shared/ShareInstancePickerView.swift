@@ -58,7 +58,7 @@ struct ShareInstancePickerView: View {
             }
         } label: {
             HStack(spacing: 16) {
-                CircleCroppedImageView(url: faviconUrl(for: url), frame: 42, fallback: .person)
+                CircleCroppedImageView(url: faviconUrl(for: url), frame: 42, fallback: .instance)
                 VStack(alignment: .leading, spacing: 5) {
                     Text(host)
                         .foregroundStyle(.themedPrimary)
@@ -95,10 +95,14 @@ struct ShareInstancePickerView: View {
                 }))
             }
         } label: {
-            Label("Choose Another Instance...", systemImage: Icons.search)
-                .padding(16)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: 16))
+            HStack(spacing: 16) {
+                Image(systemName: Icons.search)
+                    .frame(width: 42)
+                Text("Choose Another Instance...")
+            }
+            .padding(16)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: 16))
         }
     }
     
