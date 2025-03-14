@@ -1079,6 +1079,9 @@
         }
       }
     },
+    "Ask Every Time" : {
+
+    },
     "Ask First" : {
       "localizations" : {
         "fr" : {
@@ -1661,6 +1664,9 @@
           }
         }
       }
+    },
+    "Choose Another Instance..." : {
+
     },
     "Choose Community..." : {
       "localizations" : {
@@ -3701,6 +3707,9 @@
         }
       }
     },
+    "In Mlem" : {
+
+    },
     "In Reader" : {
       "localizations" : {
         "fr" : {
@@ -3712,6 +3721,7 @@
       }
     },
     "In-App" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -4630,6 +4640,9 @@
         }
       }
     },
+    "My Instance" : {
+
+    },
     "My Profile" : {
       "localizations" : {
         "fr" : {
@@ -5065,6 +5078,9 @@
           }
         }
       }
+    },
+    "Original Instance" : {
+
     },
     "Original Poster" : {
       "localizations" : {
@@ -6335,6 +6351,9 @@
         }
       }
     },
+    "Resolving..." : {
+
+    },
     "Response Time" : {
       "localizations" : {
         "fr" : {
@@ -6701,6 +6720,15 @@
           }
         }
       }
+    },
+    "Share Links" : {
+
+    },
+    "Share links using..." : {
+
+    },
+    "Share using..." : {
+
     },
     "Share..." : {
       "localizations" : {

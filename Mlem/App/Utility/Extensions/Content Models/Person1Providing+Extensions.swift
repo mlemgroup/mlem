@@ -100,7 +100,7 @@ extension Person1Providing {
         ActionGroup {
             openInstanceAction(navigation: navigation)
             copyNameAction()
-            shareAction()
+            shareAction(navigation: navigation)
             if (AppState.main.firstSession as? UserSession)?.person?.person1 !== person1 {
                 if !isInMessageFeed {
                     sendMessageAction()

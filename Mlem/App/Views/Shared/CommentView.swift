@@ -12,6 +12,7 @@ import SwiftUI
 struct CommentView<EmbeddedContent: View>: View {
     @Environment(AppState.self) var appState
     @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?
+    @Environment(NavigationLayer.self) var navigation
     @Environment(\.communityContext) var communityContext: (any Community1Providing)?
     @Environment(\.reportContext) private var reportContext: Report?
     @Environment(\.palette) private var palette
@@ -115,6 +116,7 @@ struct CommentView<EmbeddedContent: View>: View {
                     if !compact {
                         InteractionBarView(
                             appState: appState,
+                            navigation: navigation,
                             comment: comment,
                             configuration: interactionBarConfiguration,
                             commentTreeTracker: commentTreeTracker,
@@ -152,13 +154,18 @@ struct CommentView<EmbeddedContent: View>: View {
                     }
                 }
                 EllipsisMenu(size: 24) {
-                    comment.basicMenuActions(appState: appState, commentTreeTracker: commentTreeTracker)
+                    comment.basicMenuActions(
+                        appState: appState,
+                        navigation: navigation,
+                        commentTreeTracker: commentTreeTracker
+                    )
                 }
             } else {
                 EllipsisMenu(size: 24) {
                     comment.allMenuActions(
                         appState: appState,
                         showAllActions: !inFeed,
+                        navigation: navigation,
                         commentTreeTracker: commentTreeTracker,
                         report: reportContext
                     )

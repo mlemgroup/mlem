@@ -35,7 +35,7 @@ struct ErrorLogView: View {
                                 fileName: "mlem_error_log.txt",
                                 text: errorsTracker.createErrorLog()
                             ) {
-                                navigation.shareInfo = .init(url: url)
+                                navigation.model?.shareInfo = .init(url: url)
                             } else {
                                 ToastModel.main.add(.failure(String("Failed to share error log")))
                             }

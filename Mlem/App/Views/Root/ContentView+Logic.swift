@@ -33,7 +33,6 @@ extension ContentView {
                     .circleMasked
                     .withRenderingMode(.alwaysOriginal)
                 
-                print("RENDER", colorPalette.palette.accent)
                 let selectedAvatarImage = try await imageTask.image
                     .resized(to: .init(width: imageTask.image.size.width / imageTask.image.size.height * 26, height: 26))
                     .circleBorder(color: .init(colorPalette.palette.accent), width: 3.5)

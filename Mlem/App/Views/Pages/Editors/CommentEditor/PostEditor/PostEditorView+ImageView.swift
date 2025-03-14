@@ -52,7 +52,8 @@ extension PostEditorView {
         MediaView(
             url: url,
             aspectRatioBounds: .imageDefault,
-            cornerRadius: Constants.main.mediumItemCornerRadius)
+            cornerRadius: Constants.main.mediumItemCornerRadius
+        )
         .overlay(alignment: .topTrailing) {
             Button("Remove", systemImage: Icons.closeCircleFill) {
                 onRemove()
