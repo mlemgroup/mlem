@@ -151,7 +151,7 @@ struct SettingsView: View {
             HStack(spacing: 10) {
                 AvatarStackView(
                     urls: accounts.prefix(4).map(\.avatar),
-                    fallback: .person,
+                    fallback: .personAvatar,
                     height: 28,
                     spacing: accounts.count <= 3 ? 18 : 14,
                     outlineWidth: 0.7,

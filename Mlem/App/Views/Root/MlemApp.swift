@@ -22,8 +22,8 @@ struct MlemApp: App {
         // TODO: rate limiting
         ImagePipeline.shared = ImagePipeline(configuration: imageConfig)
         
-        // mp4 handling
-        ImageDecoderRegistry.shared.register(ImageDecoders.Video.init)
+        // video handling
+        ImageDecoderRegistry.shared.register(MlemVideoDecoder.init)
         
         // webp handling
         ImageDecoderRegistry.shared.register(NukeWebpBridgeDecoder.init)

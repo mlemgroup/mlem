@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 15/07/2024.
 //
 
+import MlemMiddleware
 import Nuke
 import SwiftUI
 
@@ -13,11 +14,11 @@ struct SimpleAvatarView: View {
     @State private var loading: Bool
 
     let url: URL?
-    let type: FixedImageView.Fallback
+    let type: MediaView.Fallback
 
     init(
         url: URL?,
-        type: FixedImageView.Fallback
+        type: MediaView.Fallback
     ) {
         self.url = url
         self.type = type
@@ -50,7 +51,8 @@ struct SimpleAvatarView: View {
         guard let url else { return }
 
         do {
-            let imageTask = ImagePipeline.shared.imageTask(with: url)
+            let urlRequest = mlemUrlRequest(url: url)
+            let imageTask = ImagePipeline.shared.imageTask(with: .init(urlRequest: urlRequest))
 
             let image = try await imageTask.image
             uiImage = image.circleMasked

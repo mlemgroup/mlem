@@ -11,7 +11,7 @@ import SwiftUI
 
 struct AvatarBannerView: View {
     var model: (any Profile1Providing)?
-    var fallback: FixedImageView.Fallback
+    var fallback: MediaView.Fallback
     var showEmptyBanner: Bool = false
     var showBanner: Bool = true
     var showAvatar: Bool = true
@@ -28,7 +28,7 @@ struct AvatarBannerView: View {
         self.showEmptyBanner = showEmptyBanner
     }
     
-    init(_ model: (any Profile1Providing)?, fallback: FixedImageView.Fallback, showEmptyBanner: Bool = false) {
+    init(_ model: (any Profile1Providing)?, fallback: MediaView.Fallback, showEmptyBanner: Bool = false) {
         self.model = model
         self.fallback = fallback
         self.showEmptyBanner = showEmptyBanner
@@ -44,7 +44,7 @@ struct AvatarBannerView: View {
             if model?.banner_ != nil || showEmptyBanner, showBanner {
                 ZStack(alignment: .bottom) {
                     VStack {
-                        LazyImage(url: model?.banner_) { state in
+                        LazyImage(request: imageRequest) { state in
                             VStack {
                                 if let image = state.image {
                                     image
@@ -91,6 +91,14 @@ struct AvatarBannerView: View {
                         .padding(.top)
                 }
             }
+        }
+    }
+    
+    var imageRequest: ImageRequest? {
+        if let url = model?.banner_ {
+            .init(urlRequest: mlemUrlRequest(url: url))
+        } else {
+            nil
         }
     }
     

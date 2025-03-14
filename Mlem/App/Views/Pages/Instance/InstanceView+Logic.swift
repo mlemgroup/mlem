@@ -114,20 +114,23 @@ extension InstanceView {
                         from: URL(string: "https://fediseer.com/api/v1/censures/\(host)")!
                     ).0
                     
+                    let decoder = JSONDecoder()
+                    decoder.keyDecodingStrategy = .convertFromSnakeCase
+                    
                     let fediseerData = try await FediseerData(
-                        instance: JSONDecoder.defaultDecoder.decode(
+                        instance: decoder.decode(
                             FediseerInstance.self,
                             from: instanceData
                         ),
-                        endorsements: JSONDecoder.defaultDecoder.decode(
+                        endorsements: decoder.decode(
                             FediseerEndorsements.self,
                             from: endorsementsData
                         ).instances,
-                        hesitations: JSONDecoder.defaultDecoder.decode(
+                        hesitations: decoder.decode(
                             FediseerHesitations.self,
                             from: hesitationsData
                         ).instances,
-                        censures: JSONDecoder.defaultDecoder.decode(
+                        censures: decoder.decode(
                             FediseerCensures.self,
                             from: censuresData
                         ).instances

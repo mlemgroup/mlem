@@ -63,14 +63,7 @@ struct LargePostBodyView: View {
     
     @ViewBuilder
     func mediaView(_ url: URL) -> some View {
-        MediaView(
-            url: url,
-            verticalAspectRatioBounds: .init(width: 4, height: 5),
-            cornerRadius: Constants.main.mediumItemCornerRadius,
-            enableContextMenu: true,
-            enableImageViewer: true,
-            enableNsfwBlur: shouldBlur
-        ) {
+        MediaView.largeImage(url: url, shouldBlur: shouldBlur) {
             post.markRead()
         }
     }

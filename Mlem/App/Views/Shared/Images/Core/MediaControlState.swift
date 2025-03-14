@@ -9,14 +9,20 @@ import Observation
 
 @Observable
 class MediaControlState {
+    /// True if the media should be blurred, false otherwise
+    var blurred: Bool
+    
     /// True if the media, if animated, should be playing
     var animating: Bool
+    
+    /// True if the media should animate, false to suppress animation
+    var enableAnimation: Bool
     
     /// True if the media, if audio available, should not play audio
     var muted: Bool
     
-    /// True if embedded video controls should be enabled, false otherwise
-    let embedControls: Bool
+    /// Which overlays should be enabled
+    let overlays: Set<MediaView.Overlay>
     
     /// True if the media is animated.
     /// - Note: This must be set by MediaView after the media type resolves
@@ -26,16 +32,34 @@ class MediaControlState {
     /// - Note: This must be set by the relevant nested media view once it has extracted audio data
     var audioAvailable: Bool
     
+    /// Current loading state of the media
+    var loading: MediaLoadingState?
+    
+    var enableNsfwOverlay: Bool { overlays.contains(.nsfw) }
+    var enableControlOverlay: Bool { overlays.contains(.controls) }
+    var enableErrorOverlay: Bool { overlays.contains(.error) }
+    
     /// Creates a new MediaControlState
     /// - Parameters:
-    ///   - animating: true if the media should be animating immediately, false otherwise
+    ///   - blurred: true if the media should be blurred
+    ///   - animating: true if the media, if animated, should start animating immediately, false otherwise
+    ///   - overlays: set of overlays to use
+    ///   - enableAnimation: true if the media should animate at all, false otherwise
     ///   - muted: true if the media should be muted, false otherwise. Defaults to Settings.main.muteVideos.
-    ///   - displayMode: whether the media is rendered inline or through the image viewer
     ///   - audioAvailable: true if the media has an audio track, false otherwise. Defaults to false.
-    init(animating: Bool, muted: Bool? = nil, embedControls: Bool, audioAvailable: Bool = false) {
+    init(
+        blurred: Bool,
+        animating: Bool,
+        overlays: Set<MediaView.Overlay>,
+        enableAnimation: Bool = true,
+        muted: Bool? = nil,
+        audioAvailable: Bool = false
+    ) {
+        self.blurred = blurred
         self.animating = animating
+        self.overlays = overlays
+        self.enableAnimation = enableAnimation
         self.muted = muted ?? Settings.main.muteVideos
-        self.embedControls = embedControls
         self.audioAvailable = audioAvailable
     }
 }

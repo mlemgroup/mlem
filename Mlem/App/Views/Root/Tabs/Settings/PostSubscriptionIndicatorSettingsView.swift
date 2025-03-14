@@ -35,7 +35,7 @@ struct PostSubscriptionIndicatorSettingsView: View {
             .frame(height: 100)
             .overlay(alignment: .topLeading) {
                 HStack(spacing: 0) {
-                    CircleCroppedImageView(url: nil, frame: 30, fallback: .person)
+                    CircleCroppedImageView(url: nil, frame: 30, fallback: .personAvatar)
                         .opacity(0.8)
                     Circle()
                         .fill(.themedSecondary)

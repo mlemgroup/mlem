@@ -6,6 +6,7 @@
 //
 
 import LemmyMarkdownUI
+import MlemMiddleware
 import Nuke
 import SwiftUI
 import Theming
@@ -74,21 +75,15 @@ private func imageView(_ image: MarkdownImage, shouldBlur: Bool) -> AnyView {
         return AnyView(ShieldsBadgeView(label: .init(localized: "Uptime"), message: nil, link: image.parentLink))
     default:
         return AnyView(
-            MediaView(
-                url: image.url,
-                verticalAspectRatioBounds: .init(width: 4, height: 5),
-                cornerRadius: Constants.main.mediumItemCornerRadius,
-                enableContextMenu: true,
-                enableImageViewer: true,
-                enableNsfwBlur: shouldBlur
-            )
+            MediaView.largeImage(url: image.url, shouldBlur: shouldBlur)
         )
     }
 }
 
 private func loadInlineImage(inlineImage: MarkdownImage) async {
     guard inlineImage.image == nil else { return }
-    let imageTask = ImagePipeline.shared.imageTask(with: inlineImage.url)
+    let urlRequest = mlemUrlRequest(url: inlineImage.url)
+    let imageTask = ImagePipeline.shared.imageTask(with: .init(urlRequest: urlRequest))
     guard let image: UIImage = try? await imageTask.image else { return }
     let height = inlineImage.fontSize
     let width = image.size.width * (height / image.size.height)
