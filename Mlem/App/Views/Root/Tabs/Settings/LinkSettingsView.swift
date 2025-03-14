@@ -81,7 +81,7 @@ struct LinkSettingsView: View {
     var sharingLinksNavigationLinkValue: LocalizedStringResource {
         switch linkSharingMode {
         case .myInstance: "My Instance"
-        case .hostInstance: "Host Instance"
+        case .originalInstance: "Original Instance"
         case .askEveryTime: "Ask Every Time"
         }
     }

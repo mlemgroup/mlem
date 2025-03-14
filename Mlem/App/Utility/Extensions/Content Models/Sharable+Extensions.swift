@@ -14,7 +14,7 @@ extension Sharable {
         .init(id: "share\(actorId)", appearance: .share(), callback: {
             let url: URL? = switch Settings.main.linkSharingMode {
             case .myInstance: self.url()
-            case .hostInstance: self.actorId.url
+            case .originalInstance: self.actorId.url
             case .askEveryTime: nil
             }
             if let url, let navigation {

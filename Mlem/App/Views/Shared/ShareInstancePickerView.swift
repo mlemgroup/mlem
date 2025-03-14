@@ -29,7 +29,7 @@ struct ShareInstancePickerView: View {
             VStack(spacing: 0) {
                 instanceTargetRow(entity.api.host, label: "My Instance", url: entity.url())
                 Divider()
-                instanceTargetRow(entity.actorId.host, label: "Host Instance", url: entity.actorId.url)
+                instanceTargetRow(entity.actorId.host, label: "Original Instance", url: entity.actorId.url)
             }
             .frame(maxWidth: .infinity)
             .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: 16))

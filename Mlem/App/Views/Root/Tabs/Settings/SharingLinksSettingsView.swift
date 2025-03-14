@@ -15,24 +15,33 @@ struct SharingLinksSettingsView: View {
             Section("Share links using...") {
                 Picker("Share links using...", selection: $linkSharingMode) {
                     ForEach(LinkSharingMode.allCases, id: \.self) { mode in
-                        Text(mode.label)
+                        Label(String(localized: mode.label), systemImage: mode.systemImage)
                     }
                 }
                 .labelsHidden()
                 .pickerStyle(.inline)
             }
         }
+        .labelStyle(.conditional)
     }
 }
 
 enum LinkSharingMode: String, Codable, CaseIterable {
-    case myInstance, hostInstance, askEveryTime
+    case myInstance, originalInstance, askEveryTime
     
     var label: LocalizedStringResource {
         switch self {
         case .myInstance: "My Instance"
-        case .hostInstance: "Host Instance"
+        case .originalInstance: "Original Instance"
         case .askEveryTime: "Ask Every Time"
+        }
+    }
+    
+    var systemImage: String {
+        switch self {
+        case .myInstance: Icons.instance
+        case .originalInstance: "signature"
+        case .askEveryTime: "questionmark.circle"
         }
     }
 }
