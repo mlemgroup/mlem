@@ -7,8 +7,8 @@
 //  Source: https://github.com/kean/Nuke/issues/811
 //  Wraps NukeVideo's decoder to ensure a thumbnail is always generated
 
-import Nuke
 import Foundation
+import Nuke
 
 class MlemVideoDecoder: ImageDecoding, @unchecked Sendable {
     private let decoder: ImageDecoders.Video

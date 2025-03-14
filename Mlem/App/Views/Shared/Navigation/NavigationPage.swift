@@ -37,6 +37,7 @@ enum NavigationPage: Hashable {
     case instancePicker(callback: HashWrapper<(InstanceSummary, NavigationLayer) -> Void>, minimumVersion: SiteVersion? = nil)
     case languagePicker(selectedLanguages: Set<Locale.Language>, callback: HashWrapper<(Locale.Language) -> Void>)
     case selectText(_ string: String)
+    case shareInstancePicker(_ sharable: SharableHashWrapper)
     case subscriptionList
     case createComment(_ context: CommentEditorView.Context, commentTreeTracker: CommentTreeTracker? = nil)
     case editComment(_ comment: Comment2, context: CommentEditorView.Context?)
@@ -110,6 +111,10 @@ enum NavigationPage: Hashable {
         visitContext: VisitHistory.VisitContext = .other
     ) -> NavigationPage {
         Self.instance(.init(wrappedValue: instance), visitContext: visitContext)
+    }
+    
+    static func shareInstancePicker(_ sharable: any Sharable) -> NavigationPage {
+        shareInstancePicker(.init(wrappedValue: sharable))
     }
     
     static func modlog(community: any Community) -> NavigationPage {
@@ -208,9 +213,9 @@ enum NavigationPage: Hashable {
         callback: @escaping (Community2) -> Void
     ) -> NavigationPage {
         communityPicker(api: api, callback: .init(wrappedValue: { value, navigation in
-            callback(value)
             Task { @MainActor in
                 navigation.dismissSheet()
+                callback(value)
             }
         }))
     }
@@ -221,9 +226,9 @@ enum NavigationPage: Hashable {
         callback: @escaping (Person2) -> Void
     ) -> NavigationPage {
         personPicker(api: api, filter: filter, callback: .init(wrappedValue: { value, navigation in
-            callback(value)
             Task { @MainActor in
                 navigation.dismissSheet()
+                callback(value)
             }
         }))
     }
@@ -234,9 +239,9 @@ enum NavigationPage: Hashable {
     ) -> NavigationPage {
         assert((minimumVersion ?? .infinity) > Constants.main.minimumLemmyVersion)
         return instancePicker(callback: .init(wrappedValue: { value, navigation in
-            callback(value)
             Task { @MainActor in
                 navigation.dismissSheet()
+                callback(value)
             }
         }), minimumVersion: minimumVersion)
     }
@@ -378,6 +383,18 @@ struct ReportableHashWrapper: Hashable {
     }
     
     static func == (lhs: ReportableHashWrapper, rhs: ReportableHashWrapper) -> Bool {
+        lhs.hashValue == rhs.hashValue
+    }
+}
+
+struct SharableHashWrapper: Hashable {
+    var wrappedValue: any Sharable
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(wrappedValue.hashValue)
+    }
+    
+    static func == (lhs: SharableHashWrapper, rhs: SharableHashWrapper) -> Bool {
         lhs.hashValue == rhs.hashValue
     }
 }

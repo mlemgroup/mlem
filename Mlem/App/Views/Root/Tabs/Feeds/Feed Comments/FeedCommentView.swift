@@ -12,6 +12,7 @@ import SwiftUI
 struct FeedCommentView<EmbeddedContent: View>: View {
     @Environment(AppState.self) private var appState
     @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?
+    @Environment(NavigationLayer.self) var navigation
     @Environment(\.reportContext) var reportContext: Report?
     
     @Setting(\.postSize) var settingsPostSize
@@ -39,6 +40,7 @@ struct FeedCommentView<EmbeddedContent: View>: View {
             .contextMenu { comment.allMenuActions(
                 appState: appState,
                 showAllActions: false,
+                navigation: navigation,
                 commentTreeTracker: commentTreeTracker,
                 report: reportContext
             ) }

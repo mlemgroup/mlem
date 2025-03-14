@@ -71,6 +71,7 @@ extension InstanceStubProviding {
     func menuActions(
         appState: AppState,
         feedback: Set<FeedbackType> = [.haptic, .toast],
+        navigation: NavigationLayer?,
         allowExternalBlocking: Bool = false
     ) -> [any Action] {
         ActionGroup {
@@ -80,7 +81,7 @@ extension InstanceStubProviding {
         }
         ActionGroup {
             openInBrowserAction()
-            shareAction()
+            shareAction(navigation: navigation)
         }
         if !local || (allowExternalBlocking && actorId != AppState.main.firstApi.actorId) {
             ActionGroup {
@@ -90,6 +91,12 @@ extension InstanceStubProviding {
                     allowExternalBlocking: allowExternalBlocking
                 )
             }
+        }
+    }
+    
+    func shareAction(navigation: NavigationLayer?) -> BasicAction {
+        .init(id: "share\(actorId)", appearance: .share()) {
+            navigation?.model?.shareInfo = .init(url: actorId.url)
         }
     }
     

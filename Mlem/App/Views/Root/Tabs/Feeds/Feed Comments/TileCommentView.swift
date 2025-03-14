@@ -12,6 +12,7 @@ import SwiftUI
 
 struct TileCommentView: View {
     @Environment(AppState.self) var appState
+    @Environment(NavigationLayer.self) var navigation
     @Environment(\.palette) var palette
     @Environment(\.parentFrameWidth) var parentFrameWidth: CGFloat
     
@@ -100,7 +101,7 @@ struct TileCommentView: View {
     
     var score: some View {
         Menu {
-            ForEach(comment.allMenuActions(appState: appState), id: \.id) { action in
+            ForEach(comment.allMenuActions(appState: appState, navigation: navigation), id: \.id) { action in
                 MenuButton(action: action)
             }
         } label: {

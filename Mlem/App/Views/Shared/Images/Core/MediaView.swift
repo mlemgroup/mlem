@@ -36,8 +36,8 @@ struct MediaView: View {
     var uiImage: UIImage { loader.mediaType?.image ?? .blank }
     var showErrorOverlay: Bool {
         controlState.enableErrorOverlay &&
-        loader.error != nil &&
-        navigation != nil
+            loader.error != nil &&
+            navigation != nil
     }
 
     /// Creates a new MediaView. This view is simple by default; if no complex behaviors are specified, it will
@@ -55,16 +55,17 @@ struct MediaView: View {
     ///   - onTapActions: actions to perform when the image is tapped. If `enableImageViewer: true`, tapping the image will both execute
     ///     the specified actions and open the image viewer
     ///  - Warning: Changing the following parameters may cause unexpected view identity changes: `enableContextMenu`, `contentMode`
-    init(url: URL?,
-         size: CGSize? = nil,
-         controlState: Binding<MediaControlState>? = nil,
-         aspectRatioBounds: AspectRatioBounds? = nil,
-         contentMode: ContentMode = .fit,
-         cornerRadius: CGFloat = 0,
-         fallback: Fallback = .image,
-         enableContextMenu: Bool = false,
-         enableImageViewer: Bool = false,
-         onTapActions: (() -> Void)? = nil
+    init(
+        url: URL?,
+        size: CGSize? = nil,
+        controlState: Binding<MediaControlState>? = nil,
+        aspectRatioBounds: AspectRatioBounds? = nil,
+        contentMode: ContentMode = .fit,
+        cornerRadius: CGFloat = 0,
+        fallback: Fallback = .image,
+        enableContextMenu: Bool = false,
+        enableImageViewer: Bool = false,
+        onTapActions: (() -> Void)? = nil
     ) {
         self.url = url
         
@@ -84,7 +85,8 @@ struct MediaView: View {
             self._controlState = .constant(.init(
                 blurred: false,
                 animating: false,
-                overlays: [.controls, .error])
+                overlays: [.controls, .error]
+            )
             )
         }
     }

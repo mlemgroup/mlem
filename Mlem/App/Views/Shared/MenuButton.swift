@@ -32,12 +32,6 @@ struct MenuButton: View {
                 }
             )
             .disabled(action.disabled)
-        } else if let action = action as? ShareAction {
-            Button {
-                navigation.shareInfo = .init(action)
-            } label: {
-                Label("Share...", systemImage: Icons.share)
-            }
         } else if let action = action as? ActionGroup {
             switch action.displayMode {
             case .section:

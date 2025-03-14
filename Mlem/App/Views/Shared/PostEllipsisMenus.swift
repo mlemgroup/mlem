@@ -33,7 +33,11 @@ struct PostEllipsisMenus: View {
                     }
                 }
                 EllipsisMenu(size: size) {
-                    post.basicMenuActions(appState: appState, commentTreeTracker: commentTreeTracker)
+                    post.basicMenuActions(
+                        appState: appState,
+                        navigation: navigation,
+                        commentTreeTracker: commentTreeTracker
+                    )
                 }
             } else {
                 EllipsisMenu(size: size) {

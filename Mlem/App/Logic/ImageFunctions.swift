@@ -33,7 +33,7 @@ func saveMedia(url: URL) async {
 
 func shareImage(url: URL, navigation: NavigationLayer) async {
     if let fileUrl = await downloadImageToFileSystem(url: url) {
-        navigation.shareInfo = .init(url: fileUrl)
+        navigation.model?.shareInfo = .init(url: fileUrl)
     }
 }
 

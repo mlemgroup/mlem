@@ -56,6 +56,8 @@ struct ContentView: View {
                 }
                 .navigationSheetModifiers(
                     nextLayer: navigationModel.layers.first,
+                    isTopSheet: navigationModel.layers.isEmpty,
+                    shareInfo: .init(get: { navigationModel.shareInfo }, set: { navigationModel.shareInfo = $0 }),
                     contentPickerTracker: navigationModel.contentPickerTracker
                 )
                 .tint(.themedAccent)

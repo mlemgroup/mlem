@@ -46,7 +46,7 @@ struct FiltersSettingsView: View {
                                 fileName: "keywords.txt",
                                 text: filtersTracker.filteredKeywords.joined(separator: "\n")
                             ) {
-                                navigation.shareInfo = .init(url: url)
+                                navigation.model?.shareInfo = .init(url: url)
                             } else {
                                 ToastModel.main.add(.failure())
                             }

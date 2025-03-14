@@ -10,6 +10,7 @@ import SwiftUI
 struct LinkSettingsView: View {
     @Setting(\.openLinksInBrowser) var openLinksInBrowser
     @Setting(\.openLinksInReaderMode) var openLinksInReaderMode
+    @Setting(\.linkSharingMode) var linkSharingMode
     @Setting(\.tappableLinksDisplayMode) var tappableLinksDisplayMode
     @Setting(\.compactComments) var compactComments
     @Setting(\.embedLoops) var embedLoops
@@ -31,6 +32,13 @@ struct LinkSettingsView: View {
                     fallbackValue: "",
                     systemImage: "arrow.up.right",
                     destination: .settings(.externalLinks)
+                )
+                NavigationLink(
+                    "Share Links",
+                    value: .init(localized: sharingLinksNavigationLinkValue),
+                    fallbackValue: "",
+                    systemImage: Icons.share,
+                    destination: .settings(.sharingLinks)
                 )
                 NavigationLink(
                     "Tappable Links",
@@ -66,7 +74,15 @@ struct LinkSettingsView: View {
         if openLinksInBrowser {
             "In Browser"
         } else {
-            openLinksInReaderMode ? "In Reader" : "In-App"
+            openLinksInReaderMode ? "In Reader" : "In Mlem"
+        }
+    }
+    
+    var sharingLinksNavigationLinkValue: LocalizedStringResource {
+        switch linkSharingMode {
+        case .myInstance: "My Instance"
+        case .originalInstance: "Original Instance"
+        case .askEveryTime: "Ask Every Time"
         }
     }
 }

@@ -39,7 +39,7 @@ extension ExpandedPostView {
                         depthOffset: tracker.proposedDepthOffset
                     )
                     .quickSwipes(comment.swipeActions(appState: appState, behavior: .standard, commentTreeTracker: tracker))
-                    .contextMenu { comment.allMenuActions(appState: appState) }
+                    .contextMenu { comment.allMenuActions(appState: appState, navigation: navigation) }
                     .paletteBorder(cornerRadius: Constants.main.standardSpacing)
                     .transition(.move(edge: .top).combined(with: .opacity))
                     .zIndex(1000 - Double(comment.depth))
