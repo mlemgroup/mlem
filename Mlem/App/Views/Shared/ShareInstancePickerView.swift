@@ -58,7 +58,7 @@ struct ShareInstancePickerView: View {
             }
         } label: {
             HStack(spacing: 16) {
-                CircleCroppedImageView(url: faviconUrl(for: url), frame: 42, fallback: .instance)
+                CircleCroppedImageView(url: faviconUrl(for: url), frame: 42, fallback: .instanceAvatar)
                 VStack(alignment: .leading, spacing: 5) {
                     Text(host)
                         .foregroundStyle(.themedPrimary)
