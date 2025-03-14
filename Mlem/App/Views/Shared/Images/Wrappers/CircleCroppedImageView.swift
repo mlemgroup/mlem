@@ -37,9 +37,8 @@ struct CircleCroppedImageView: View {
             size: .init(width: frame, height: frame),
             controlState: .constant(.init(
                 blurred: blurred,
-                animating: false,
-                overlays: [],
-                enableAnimation: false
+                animating: Settings.main.animatedAvatars,
+                overlays: []
             )),
             aspectRatioBounds: .absoluteSquare,
             contentMode: .fill,

@@ -86,8 +86,7 @@ struct MediaView: View {
                 blurred: false,
                 animating: false,
                 overlays: [.controls, .error]
-            )
-            )
+            ))
         }
     }
     

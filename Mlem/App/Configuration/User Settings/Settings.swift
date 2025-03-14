@@ -67,6 +67,8 @@ class Settings: ObservableObject {
     @AppStorage("links.shareMode") var linkSharingMode: LinkSharingMode = .myInstance
     @AppStorage("links.embedLoops") var embedLoops: Bool = true
     
+    @AppStorage("media.animatedAvatars") var animatedAvatars: Bool = true
+    
     @AppStorage("feed.markReadOnScroll") var markReadOnScroll: Bool = false
     @AppStorage("feed.showRead") var showReadInFeed: Bool = true
     @AppStorage("feed.default") var defaultFeed: FeedSelection = .subscribed
@@ -163,6 +165,7 @@ class Settings: ObservableObject {
         openLinksInReaderMode = settings.links_readerMode
         linkSharingMode = settings.links_shareMode
         tappableLinksDisplayMode = settings.links_tappableLinksDisplayMode
+        animatedAvatars = settings.media_animatedAvatars
         markReadOnScroll = settings.feed_markReadOnScroll
         showReadInFeed = settings.feed_showRead
         defaultFeed = settings.feed_default

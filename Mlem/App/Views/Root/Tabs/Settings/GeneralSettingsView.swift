@@ -16,6 +16,7 @@ struct GeneralSettingsView: View {
     @Setting(\.defaultFeed) var defaultFeed
     @Setting(\.hapticLevel) var hapticLevel
     @Setting(\.wrapCodeBlockLines) var wrapCodeBlockLines
+    @Setting(\.animatedAvatars) var animatedAvatars
     
     // gestures
     @Setting(\.quickSwipesEnabled) var swipeActionsEnabled
@@ -87,6 +88,9 @@ struct GeneralSettingsView: View {
             Section {
                 Toggle("User Avatar", systemImage: Icons.personCircle, isOn: $showPersonAvatar)
                 Toggle("Community Avatar", systemImage: Icons.communityCircle, isOn: $showCommunityAvatar)
+                if #available(iOS 18, *) {
+                    Toggle("Animated Avatars", systemImage: Icons.playCircle, isOn: $animatedAvatars)
+                }
             }
             
             NavigationLink("Import/Export Settings", systemImage: Icons.importSettings, destination: .settings(.importExportSettings))
