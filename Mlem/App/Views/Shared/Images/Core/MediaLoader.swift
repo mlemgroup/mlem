@@ -9,6 +9,7 @@ import AVFoundation
 import Foundation
 import Nuke
 import SwiftUI
+import MlemMiddleware
 
 // MARK: Types
 
@@ -119,7 +120,10 @@ class MediaLoader {
         
         // otherwise actually load the image
         do {
-            let imageTask = ImagePipeline.shared.imageTask(with: .init(url: url, processors: processors))
+            let imageTask = ImagePipeline.shared.imageTask(with: .init(
+                urlRequest: mlemUrlRequest(url: url),
+                processors: processors
+            ))
             imageTask.priority = .veryHigh
             
             let container = try await imageTask.response.container
@@ -146,7 +150,10 @@ class MediaLoader {
 // MARK: Helpers
 
 func retrieveCachedImage(for url: URL?, with processors: [ImageProcessing]) -> MediaType? {
-    if let url, let container = ImagePipeline.shared.cache.cachedImage(for: .init(url: url, processors: processors)) {
+    if let url,
+       let container = ImagePipeline.shared.cache.cachedImage(for: .init(
+        urlRequest: mlemUrlRequest(url: url),
+        processors: processors)) {
         return container.animatedMediaType
     }
     return nil
