@@ -57,17 +57,26 @@ struct ShareInstancePickerView: View {
                 NavigationModel.main.shareInfo = .init(url: url, actions: entity.shareSheetActions())
             }
         } label: {
-            VStack(alignment: .leading, spacing: 5) {
-                Text(host)
-                    .foregroundStyle(.themedPrimary)
-                Text(label)
-                    .font(.footnote)
-                    .foregroundStyle(.themedSecondary)
+            HStack(spacing: 16) {
+                CircleCroppedImageView(url: faviconUrl(for: url), frame: 42, fallback: .person)
+                VStack(alignment: .leading, spacing: 5) {
+                    Text(host)
+                        .foregroundStyle(.themedPrimary)
+                    Text(label)
+                        .font(.footnote)
+                        .foregroundStyle(.themedSecondary)
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 16)
             .padding(.vertical, 12)
         }
+    }
+    
+    func faviconUrl(for instanceUrl: URL) -> URL? {
+        guard let host = instanceUrl.host() else { return nil }
+        let summary = MlemStats.main.instances?.first(where: { $0.host == host })
+        return summary?.avatar?.withIconSize(128)
     }
     
     @ViewBuilder
@@ -86,7 +95,7 @@ struct ShareInstancePickerView: View {
                 }))
             }
         } label: {
-            Text("Choose Another Instance...")
+            Label("Choose Another Instance...", systemImage: Icons.search)
                 .padding(16)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: 16))
