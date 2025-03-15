@@ -71,3 +71,9 @@ struct PostPage: View {
         }
     }
 }
+
+#Preview(traits: .sampleEnvironment(api: .realistic)) {
+    PostPage(post: .init(Post2.mock(.realistic(.showerThoughtPizza))), scrollTargetedComment: nil)
+        .previewNavigationStack(backButtonLabel: "Local")
+        .previewTabBar(selected: .feeds)
+}
