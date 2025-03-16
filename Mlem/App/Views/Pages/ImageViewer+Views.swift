@@ -79,8 +79,10 @@ extension ImageViewer {
                     let imageType: String = url.proxyAwarePathExtension?.lowercased() ?? "Unknown"
                     Text("Media Type: \(imageType) ")
                     Text("Playback Position: \(String(format: "%.4f", controlState.playbackPosition))")
+                        .monospacedDigit()
                     if let target = controlState.scrubTarget {
                         Text("Scrub Target: \(String(format: "%.4f", target))")
+                            .monospacedDigit()
                     } else {
                         Text("Scrub Target: None")
                     }
