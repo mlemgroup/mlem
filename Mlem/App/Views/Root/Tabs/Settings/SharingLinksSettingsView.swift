@@ -38,7 +38,7 @@ struct SharingLinksSettingsView: View {
             pickerItemView(
                 mode: .lemmyverse,
                 title: "Universal Link",
-                description: "Share links using https://lemmyverse.link. When someone opens the link, they can choose which instance to use.",
+                description: "Share links using \("https://lemmyverse.link"). When someone opens the link, they can choose which instance to use.",
                 systemImage: "globe"
             )
             pickerItemView(

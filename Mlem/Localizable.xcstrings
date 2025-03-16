@@ -6740,7 +6740,7 @@
     "Share Links" : {
 
     },
-    "Share links using https://lemmyverse.link. When someone opens the link, they can choose which instance to use." : {
+    "Share links using %@. When someone opens the link, they can choose which instance to use." : {
 
     },
     "Share links using the instance that the content originated from." : {
