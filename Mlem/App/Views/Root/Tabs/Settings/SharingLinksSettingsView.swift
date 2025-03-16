@@ -80,7 +80,7 @@ struct SharingLinksSettingsView: View {
         .onTapGesture {
             linkSharingMode = mode
         }
-        .listRowInsets(.init(top: 10, leading: 10, bottom: 10, trailing: 15))
+        .listRowInsets(.init(top: 10, leading: showSettingsIcons ? 10 : 16, bottom: 10, trailing: 16))
     }
 }
 
