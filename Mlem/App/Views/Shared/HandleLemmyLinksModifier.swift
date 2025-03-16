@@ -38,9 +38,6 @@ struct HandleLemmyLinksModifier: ViewModifier {
     
     @MainActor
     func didReceiveURL(_ url: URL) -> OpenURLAction.Result {
-        // We don't need to decode `/c/comm@example.com` or `!comm@example.com` formats in this method
-        // - LemmyMarkdownUI converts those links into `https://example.com/c/comm` format during parsing.
-        
         // TODO: Consider handling links to alternative frontends such as `old.lemmy.world` or `oldsh.itjust.works`.
         
         guard let scheme = url.scheme else {
@@ -57,6 +54,11 @@ struct HandleLemmyLinksModifier: ViewModifier {
         }
         
         guard let host = url.host(), scheme.starts(with: "http") else {
+            // LemmyMarkdownUI parses the `/c/comm@example.com` and `!comm@example.com` link formats in to regular links,
+            // so those don't need to be handled in this method. However, it doesn't parse links written in the format
+            // [Some text](/c/comm@example.com), which some instances use. Those links are handled here. Later, it might
+            // be better to move that into LemmyMarkdownUI, but I think we'd need to modify the core cmark
+            
             openRegularLink(url: url)
             return .handled
         }
