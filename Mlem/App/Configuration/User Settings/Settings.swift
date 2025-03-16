@@ -67,7 +67,8 @@ class Settings: ObservableObject {
     @AppStorage("links.shareMode") var linkSharingMode: LinkSharingMode = .myInstance
     @AppStorage("links.embedLoops") var embedLoops: Bool = true
     
-    @AppStorage("media.animatedAvatars") var animatedAvatars: Bool = true
+    // swiftlint:disable:next line_length
+    @AppStorage("media.animatedAvatars") var animatedAvatars: AnimatedAvatarBehavior = UIAccessibility.isReduceMotionEnabled ? .never : .always
     
     @AppStorage("feed.markReadOnScroll") var markReadOnScroll: Bool = false
     @AppStorage("feed.showRead") var showReadInFeed: Bool = true

@@ -867,6 +867,9 @@
         }
       }
     },
+    "Animate Avatars..." : {
+
+    },
     "Animated Avatars" : {
 
     },
@@ -5002,6 +5005,9 @@
         }
       }
     },
+    "Only in Profile" : {
+
+    },
     "Open" : {
       "localizations" : {
         "fr" : {
@@ -5981,6 +5987,9 @@
           }
         }
       }
+    },
+    "Reduce Motion" : {
+
     },
     "Refresh" : {
       "localizations" : {
@@ -7072,6 +7081,9 @@
           }
         }
       }
+    },
+    "Some users set animated media as their avatar. Control whether these avatars should play their animations." : {
+
     },
     "Sort" : {
       "localizations" : {

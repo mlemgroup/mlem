@@ -89,7 +89,13 @@ struct GeneralSettingsView: View {
                 Toggle("User Avatar", systemImage: Icons.personCircle, isOn: $showPersonAvatar)
                 Toggle("Community Avatar", systemImage: Icons.communityCircle, isOn: $showCommunityAvatar)
                 if #available(iOS 18, *) {
-                    Toggle("Animated Avatars", systemImage: Icons.playCircle, isOn: $animatedAvatars)
+                    NavigationLink(
+                        "Animated Avatars",
+                        value: .init(localized: animatedAvatars.label),
+                        fallbackValue: "",
+                        systemImage: Icons.playCircle,
+                        destination: .settings(.animatedAvatars)
+                    )
                 }
             }
             
