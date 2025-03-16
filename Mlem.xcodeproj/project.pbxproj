@@ -2504,6 +2504,7 @@
 		};
 		CDE4FCF62D84CE7E00AED0D5 /* Resolve Package Dependencies */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);

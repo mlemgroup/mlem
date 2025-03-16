@@ -88,15 +88,7 @@ extension UITextView {
             url = nil
         }
         guard let url else {
-            ToastModel.main.add(
-                .basic(
-                    title: "No URL Copied",
-                    subtitle: "Copy a URL to the clipboard, then try again.",
-                    systemImage: nil,
-                    color: .themedAccent,
-                    duration: 2
-                )
-            )
+            ToastModel.main.add(.urlCopyError)
             return
         }
         wrapSelectionWithDelimiters(leading: "[", trailing: "](\(url.absoluteString))")

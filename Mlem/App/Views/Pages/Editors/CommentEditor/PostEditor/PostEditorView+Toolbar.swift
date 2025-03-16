@@ -17,33 +17,6 @@ extension PostEditorView {
         }
         ToolbarItemGroup(placement: .topBarTrailing) {
             Menu("Add", systemImage: Icons.add) {
-                Toggle(
-                    "Link",
-                    systemImage: Icons.websiteAddress,
-                    isOn: .init(get: { link != .none }, set: { link = $0 ? .waiting : .none })
-                ).disabled(imageManager != nil)
-                Toggle(
-                    "Image",
-                    systemImage: Icons.uploadImage,
-                    isOn: .init(
-                        get: { imageManager != nil },
-                        set: { newValue in
-                            if newValue {
-                                imageManager = imageManager ?? .init()
-                            } else {
-                                Task {
-                                    do {
-                                        try await imageManager?.image?.delete()
-                                    } catch {
-                                        handleError(error)
-                                    }
-                                }
-                                self.imageManager = nil
-                            }
-                        }
-                    )
-                )
-                .disabled(link != .none)
                 Toggle("NSFW Tag", systemImage: "tag", isOn: $hasNsfwTag)
                 if postToEdit == nil {
                     Button("Crosspost", systemImage: "shuffle") {

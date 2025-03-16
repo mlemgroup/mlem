@@ -662,6 +662,7 @@
       }
     },
     "Add a Link..." : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -701,7 +702,13 @@
         }
       }
     },
+    "Add Image" : {
+
+    },
     "Add Language..." : {
+
+    },
+    "Add Link" : {
 
     },
     "Add Moderator" : {
