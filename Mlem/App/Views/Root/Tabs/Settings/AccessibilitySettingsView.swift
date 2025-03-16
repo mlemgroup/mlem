@@ -14,6 +14,7 @@ struct AccessibilitySettingsView: View {
     @Setting(\.websiteThumbnailIcon) var websiteThumbnailIcon
     @Setting(\.showSettingsIcons) var showSettingsIcons
     @Setting(\.zoomSliderLocation) var zoomSliderLocation
+    @Setting(\.animatedAvatars) var animatedAvatars
     
     var body: some View {
         Form {
@@ -42,6 +43,20 @@ struct AccessibilitySettingsView: View {
                 Toggle("Settings Icons", systemImage: Icons.icon, isOn: $showSettingsIcons)
             } header: {
                 Text("Non-Text Indicators")
+            }
+                       
+            if #available(iOS 18, *) {
+                Section {
+                    NavigationLink(
+                        "Animated Avatars",
+                        value: .init(localized: animatedAvatars.label),
+                        fallbackValue: "",
+                        systemImage: Icons.playCircle,
+                        destination: .settings(.animatedAvatars)
+                    )
+                } header: {
+                    Text("Reduce Motion")
+                }
             }
             
             Section {

@@ -12,7 +12,6 @@ struct MediaView: View {
     @Environment(\.palette) var palette
     
     @Setting(\.bypassImageProxyShown) var bypassImageProxyShown
-    @Setting(\.autoplayMedia) var autoplayMedia
     @Setting(\.developerMode) var developerMode
     
     @State var loader: MediaLoader
@@ -87,8 +86,7 @@ struct MediaView: View {
                 blurred: false,
                 animating: false,
                 overlays: [.controls, .error]
-            )
-            )
+            ))
         }
     }
     
@@ -97,7 +95,7 @@ struct MediaView: View {
             url: url,
             controlState: .constant(.init(
                 blurred: shouldBlur,
-                animating: false,
+                animating: Settings.main.autoplayMedia,
                 overlays: shouldBlur ? [.controls, .nsfw, .error] : [.controls, .error]
             )),
             aspectRatioBounds: .imageDefault,
@@ -136,7 +134,7 @@ struct MediaView: View {
             if #available(iOS 18.0, *) {
                 image
                     .onScrollVisibilityChange(threshold: 0.5) { isVisible in
-                        if isVisible, autoplayMedia {
+                        if isVisible, controlState.autoplay {
                             controlState.animating = true
                         }
                         if !isVisible {
