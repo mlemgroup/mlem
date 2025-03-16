@@ -16,7 +16,7 @@ struct VideoView: View {
     let player: AVQueuePlayer
     let playerLooper: AVPlayerLooper
     
-    @State var duration: CGFloat?
+    @State var duration: CMTime?
     var timer = Timer.publish(every: 0.02, on: .main, in: .common)
         .autoconnect()
     
@@ -46,8 +46,7 @@ struct VideoView: View {
                         assertionFailure("Could not find AVAsset")
                         return
                     }
-                    self.duration = try await asset.load(.duration).seconds
-                    print("DEBUG new duration: \(self.duration)")
+                    self.duration = try await asset.load(.duration)
                 } catch {
                     handleError(error)
                 }
@@ -62,11 +61,27 @@ struct VideoView: View {
             .onChange(of: controlState.muted, initial: true) {
                 player.volume = controlState.muted ? 0 : 1
             }
+            .onChange(of: controlState.scrubTarget) {
+                guard let duration, let playerItem = player.currentItem else {
+                    assertionFailure("Duration or playerItem not present")
+                    return
+                }
+                if let target = controlState.scrubTarget {
+                    controlState.animating = false
+                    playerItem.seek(
+                        to: .init(seconds: target * duration.seconds, preferredTimescale: duration.timescale),
+                        toleranceBefore: CMTime.zero,
+                        toleranceAfter: CMTime.zero,
+                        completionHandler: nil
+                    )
+                } else {
+                    controlState.animating = true
+                }
+            }
             .onReceive(timer) { _ in
-                if let duration, let playerItem = player.currentItem, controlState.scrubTarget == nil {
+                if let duration, let playerItem = player.currentItem {
                     let currentTime = playerItem.currentTime().seconds
-                    print("DEBUG \(currentTime) / \(duration)")
-                    controlState.playbackPosition = currentTime / duration
+                    controlState.playbackPosition = currentTime / duration.seconds
                 }
             }
     }

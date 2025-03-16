@@ -34,6 +34,10 @@ extension ImageViewer {
             Text("\(controlState.playbackPosition)")
                 .foregroundStyle(.black)
                 .background(.white)
+            
+            Button("Scrub") {
+                controlState.scrubTarget = 0.5
+            }
             Spacer()
             closeButton
                 .padding(.trailing, Constants.main.standardSpacing)
@@ -59,26 +63,56 @@ extension ImageViewer {
     
     @ViewBuilder
     var bottomControlBar: some View {
-        ZStack(alignment: .bottom) {
+        VStack(spacing: 0) {
             if controlState.animationAvailable {
-                playButton
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                Capsule()
+                    .fill(.ultraThinMaterial)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 20)
+                    .overlay {
+                        GeometryReader { geo in
+                            // prevent circle from being dragged over the edge of the capsule
+                            let draggableWidth = geo.size.width - 20
+                            Circle()
+                                .fill(.white)
+                                .frame(width: 20, height: 20)
+                                .offset(x: (controlState.scrubTarget ?? controlState.playbackPosition) * draggableWidth)
+                                .highPriorityGesture(DragGesture()
+                                    .onChanged { value in
+                                        if value.location.x >= 0, value.location.x <= draggableWidth {
+                                            controlState.scrubTarget = value.location.x / draggableWidth
+                                        }
+                                    }
+                                    .onEnded { _ in
+                                        controlState.scrubTarget = nil
+                                    }
+                                )
+                        }
+                    }
+                    .padding(.horizontal, Constants.main.standardSpacing)
             }
             
-            HStack {
-                saveButton
-                shareButton
-                quickLookButton
-            }
-            .padding(.horizontal, Constants.main.halfSpacing)
-            .background {
-                Capsule().fill(.ultraThinMaterial)
-            }
-            .frame(maxWidth: .infinity, alignment: .center)
-            
-            if controlState.audioAvailable {
-                muteButton
-                    .frame(maxWidth: .infinity, alignment: .trailing)
+            ZStack(alignment: .bottom) {
+                if controlState.animationAvailable {
+                    playButton
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                
+                HStack {
+                    saveButton
+                    shareButton
+                    quickLookButton
+                }
+                .padding(.horizontal, Constants.main.halfSpacing)
+                .background {
+                    Capsule().fill(.ultraThinMaterial)
+                }
+                .frame(maxWidth: .infinity, alignment: .center)
+                
+                if controlState.audioAvailable {
+                    muteButton
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                }
             }
         }
         .environment(\.colorScheme, .dark)
