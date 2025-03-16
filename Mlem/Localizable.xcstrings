@@ -692,6 +692,9 @@
         }
       }
     },
+    "Add an image..." : {
+
+    },
     "Add Guest" : {
       "localizations" : {
         "fr" : {
@@ -873,6 +876,12 @@
           }
         }
       }
+    },
+    "Animate Avatars..." : {
+
+    },
+    "Animated Avatars" : {
+
     },
     "Anonymous" : {
       "localizations" : {
@@ -2928,6 +2937,9 @@
         }
       }
     },
+    "Every time I share a link, show a popup asking which instance to use." : {
+
+    },
     "example.com" : {
       "localizations" : {
         "fr" : {
@@ -3726,6 +3738,9 @@
           }
         }
       }
+    },
+    "In the Fediverse, many different links can point to the same piece of content. Choose which site to use when sharing content." : {
+
     },
     "In-App" : {
       "extractionState" : "stale",
@@ -5006,6 +5021,9 @@
         }
       }
     },
+    "Only in Profile" : {
+
+    },
     "Open" : {
       "localizations" : {
         "fr" : {
@@ -5986,6 +6004,9 @@
         }
       }
     },
+    "Reduce Motion" : {
+
+    },
     "Refresh" : {
       "localizations" : {
         "fr" : {
@@ -6731,7 +6752,13 @@
     "Share Links" : {
 
     },
-    "Share links using..." : {
+    "Share links using %@. When someone opens the link, they can choose which instance to use." : {
+
+    },
+    "Share links using the instance that the content originated from." : {
+
+    },
+    "Share links using the instance you are currently connected to." : {
 
     },
     "Share using..." : {
@@ -7076,6 +7103,9 @@
           }
         }
       }
+    },
+    "Some users set animated media as their avatar. Control whether these avatars should play their animations." : {
+
     },
     "Sort" : {
       "localizations" : {
@@ -8239,6 +8269,12 @@
         }
       }
     },
+    "Universal" : {
+
+    },
+    "Universal Link" : {
+
+    },
     "Unknown" : {
       "localizations" : {
         "fr" : {
@@ -8350,6 +8386,7 @@
       }
     },
     "Upload an image..." : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {

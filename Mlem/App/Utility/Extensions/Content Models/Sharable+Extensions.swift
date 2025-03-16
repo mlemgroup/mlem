@@ -10,11 +10,18 @@ import MlemMiddleware
 import SwiftUI
 
 extension Sharable {
+    var lemmyverseUrl: URL? {
+        (URL(string: "https://lemmyverse.link/")?
+            .appendingPathComponent(actorId.host)
+            .appendingPathComponent(actorId.url.path()))
+    }
+    
     func shareAction(navigation: NavigationLayer?) -> BasicAction {
         .init(id: "share\(actorId)", appearance: .share(), callback: {
             let url: URL? = switch Settings.main.linkSharingMode {
             case .myInstance: self.url()
             case .originalInstance: self.actorId.url
+            case .lemmyverse: self.lemmyverseUrl
             case .askEveryTime: nil
             }
             if let url, let navigation {

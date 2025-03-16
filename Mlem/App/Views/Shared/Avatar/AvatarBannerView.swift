@@ -10,6 +10,8 @@ import NukeUI
 import SwiftUI
 
 struct AvatarBannerView: View {
+    @Setting(\.animatedAvatars) var animatedAvatars
+    
     var model: (any Profile1Providing)?
     var fallback: MediaView.Fallback
     var showEmptyBanner: Bool = false
@@ -106,7 +108,8 @@ struct AvatarBannerView: View {
         CircleCroppedImageView(
             url: model?.avatar,
             frame: AvatarBannerView.avatarSize,
-            fallback: fallback
+            fallback: fallback,
+            enableAnimation: animatedAvatars != .never
         )
     }
 }
