@@ -30,6 +30,10 @@ struct ShareInstancePickerView: View {
                 instanceTargetRow(entity.api.host, label: "My Instance", url: entity.url())
                 Divider()
                 instanceTargetRow(entity.actorId.host, label: "Original Instance", url: entity.actorId.url)
+                if let lemmyverseUrl = entity.lemmyverseUrl {
+                    Divider()
+                    instanceTargetRow("lemmyverse.link", label: "Universal", url: lemmyverseUrl)
+                }
             }
             .frame(maxWidth: .infinity)
             .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: 16))
@@ -58,7 +62,14 @@ struct ShareInstancePickerView: View {
             }
         } label: {
             HStack(spacing: 16) {
-                CircleCroppedImageView(url: faviconUrl(for: url), frame: 42, fallback: .instanceAvatar)
+                if host == "lemmyverse.link" {
+                    Image(systemName: "globe")
+                        .foregroundStyle(.themedAccent)
+                        .frame(width: 42, height: 42)
+                        .background(.themedAccent.opacity(0.2), in: .circle)
+                } else {
+                    CircleCroppedImageView(url: faviconUrl(for: url), frame: 42, fallback: .instanceAvatar)
+                }
                 VStack(alignment: .leading, spacing: 5) {
                     Text(host)
                         .foregroundStyle(.themedPrimary)
@@ -72,7 +83,7 @@ struct ShareInstancePickerView: View {
             .padding(.vertical, 12)
         }
     }
-    
+
     func faviconUrl(for instanceUrl: URL) -> URL? {
         guard let host = instanceUrl.host() else { return nil }
         let summary = MlemStats.main.instances?.first(where: { $0.host == host })

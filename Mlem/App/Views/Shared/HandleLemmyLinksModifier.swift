@@ -38,12 +38,19 @@ struct HandleLemmyLinksModifier: ViewModifier {
     
     @MainActor
     func didReceiveURL(_ url: URL) -> OpenURLAction.Result {
-        // We don't need to decode `/c/comm@example.com` or `!comm@example.com` formats in this method
-        // - LemmyMarkdownUI converts those links into `https://example.com/c/comm` format during parsing.
-        
         // TODO: Consider handling links to alternative frontends such as `old.lemmy.world` or `oldsh.itjust.works`.
         
         guard let scheme = url.scheme else {
+            // LemmyMarkdownUI parses the `/c/comm@example.com` and `!comm@example.com` link formats into regular links,
+            // so those don't need to be handled in this method. However, it doesn't parse links written in the format
+            // [Some text](/c/comm@example.com), which is a format that lemmy-ui supports. Those links are handled here.
+            // Later, it might  be better to move that into LemmyMarkdownUI, but I think we'd need to modify the core
+            // cmark code rather than just the extensions, which isn't ideal.
+            
+            if let newUrl = createLemmyUrlFromShortcut(parts: url.pathComponents), interpretLemmyUrlPath(url: newUrl) {
+                return .handled
+            }
+            
             openRegularLink(url: url)
             return .handled
         }
@@ -59,6 +66,15 @@ struct HandleLemmyLinksModifier: ViewModifier {
         guard let host = url.host(), scheme.starts(with: "http") else {
             openRegularLink(url: url)
             return .handled
+        }
+        
+        // Handles https://lemmyverse.link
+        if host == "lemmyverse.link", url.pathComponents.count > 3 {
+            var components = URLComponents()
+            components.scheme = "https"
+            components.host = url.pathComponents[1]
+            components.path = "/" + url.pathComponents.dropFirst(2).joined(separator: "/")
+            if let newUrl = components.url, interpretLemmyUrlPath(url: newUrl) { return .handled }
         }
         
         // If the link is in our Lemmy domain list, push a page to the NavigationStack straight away
@@ -83,6 +99,20 @@ struct HandleLemmyLinksModifier: ViewModifier {
         // If all else fails, fallback to opening in browser
         openRegularLink(url: url)
         return .handled
+    }
+    
+    // Creates https://example.com/c/comm from /c/comm@example.com
+    func createLemmyUrlFromShortcut(parts: [String]) -> URL? {
+        var parts = parts
+        parts.removeFirst()
+        guard parts.count == 2 else { return nil }
+        guard parts[0] == "c" || parts[0] == "u" else { return nil }
+        var components = URLComponents()
+        components.scheme = "https"
+        let fullNameParts = parts[1].split(separator: "@")
+        components.host = String(fullNameParts[1])
+        components.path = "/\(parts[0])/\(fullNameParts[0])"
+        return components.url
     }
     
     func interpretLemmyUrlPath(url: URL) -> Bool {
