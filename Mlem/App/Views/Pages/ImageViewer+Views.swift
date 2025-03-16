@@ -31,6 +31,9 @@ extension ImageViewer {
     @ViewBuilder
     var topControlBar: some View {
         HStack {
+            Text("\(controlState.playbackPosition)")
+                .foregroundStyle(.black)
+                .background(.white)
             Spacer()
             closeButton
                 .padding(.trailing, Constants.main.standardSpacing)

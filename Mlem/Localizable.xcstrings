@@ -415,6 +415,9 @@
         }
       }
     },
+    "%lf" : {
+
+    },
     "%lld Crossposts..." : {
       "localizations" : {
         "en" : {
@@ -691,6 +694,9 @@
           }
         }
       }
+    },
+    "Add an image..." : {
+
     },
     "Add Guest" : {
       "localizations" : {
@@ -8365,6 +8371,7 @@
       }
     },
     "Upload an image..." : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
