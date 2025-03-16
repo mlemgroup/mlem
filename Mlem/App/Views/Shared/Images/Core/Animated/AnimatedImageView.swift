@@ -47,7 +47,7 @@ struct AnimatedImageView: View {
                 controlState.animating = false
                 player.seekToFrame(
                     at: .init((target * CGFloat(player.totalFrameCount)).rounded()),
-                    loopCount: 0
+                    loopCount: player.currentLoopCount + 1
                 )
             } else {
                 controlState.animating = true
