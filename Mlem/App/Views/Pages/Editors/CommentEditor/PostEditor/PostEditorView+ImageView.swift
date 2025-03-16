@@ -175,7 +175,6 @@ private struct ImageSourceButtonLabelStyle: LabelStyle {
     func makeBody(configuration: Configuration) -> some View {
         VStack(spacing: 4) {
             configuration.icon
-//                .foregroundStyle(.secondary) // No palette
             configuration.title
         }
     }
