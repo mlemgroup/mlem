@@ -118,6 +118,16 @@ enum ToastType: Hashable {
         .loading(title: title)
     }
     
+    static var urlCopyError: ToastType {
+        .basic(
+            title: "No URL Copied",
+            subtitle: "Copy a URL to the clipboard, then try again.",
+            systemImage: nil,
+            color: .themedAccent,
+            duration: 2
+        )
+    }
+    
     case error(_ details: ErrorDetails)
     
     case account(any Account)
