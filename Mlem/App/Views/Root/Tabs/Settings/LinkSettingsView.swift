@@ -82,6 +82,7 @@ struct LinkSettingsView: View {
         switch linkSharingMode {
         case .myInstance: "My Instance"
         case .originalInstance: "Original Instance"
+        case .lemmyverse: "Universal"
         case .askEveryTime: "Ask Every Time"
         }
     }
