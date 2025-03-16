@@ -692,6 +692,9 @@
         }
       }
     },
+    "Add an image..." : {
+
+    },
     "Add Guest" : {
       "localizations" : {
         "fr" : {
@@ -2934,6 +2937,9 @@
         }
       }
     },
+    "Every time I share a link, show a popup asking which instance to use." : {
+
+    },
     "example.com" : {
       "localizations" : {
         "fr" : {
@@ -3732,6 +3738,9 @@
           }
         }
       }
+    },
+    "In the Fediverse, many different links can point to the same piece of content. Choose which site to use when sharing content." : {
+
     },
     "In-App" : {
       "extractionState" : "stale",
@@ -6743,7 +6752,13 @@
     "Share Links" : {
 
     },
-    "Share links using..." : {
+    "Share links using %@. When someone opens the link, they can choose which instance to use." : {
+
+    },
+    "Share links using the instance that the content originated from." : {
+
+    },
+    "Share links using the instance you are currently connected to." : {
 
     },
     "Share using..." : {
@@ -8254,6 +8269,12 @@
         }
       }
     },
+    "Universal" : {
+
+    },
+    "Universal Link" : {
+
+    },
     "Unknown" : {
       "localizations" : {
         "fr" : {
@@ -8365,6 +8386,7 @@
       }
     },
     "Upload an image..." : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {

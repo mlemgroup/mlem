@@ -61,6 +61,15 @@ struct HandleLemmyLinksModifier: ViewModifier {
             return .handled
         }
         
+        // Handles https://lemmyverse.link
+        if host == "lemmyverse.link", url.pathComponents.count > 3 {
+            var components = URLComponents()
+            components.scheme = "https"
+            components.host = url.pathComponents[1]
+            components.path = "/" + url.pathComponents.dropFirst(2).joined(separator: "/")
+            if let newUrl = components.url, interpretLemmyUrlPath(url: newUrl) { return .handled }
+        }
+        
         // If the link is in our Lemmy domain list, push a page to the NavigationStack straight away
         if isLemmyHost(host), interpretLemmyUrlPath(url: url) {
             return .handled
