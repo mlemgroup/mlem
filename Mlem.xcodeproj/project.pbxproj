@@ -2313,7 +2313,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6363D5EA27EE196A00E34822 /* Build configuration list for PBXNativeTarget "Mlem" */;
 			buildPhases = (
-				CDE4FCF62D84CE7E00AED0D5 /* Resolve Package Dependencies */,
 				03E96D082BD6ED7E00B7A98F /* Headers */,
 				6363D5BD27EE196700E34822 /* Sources */,
 				50F830EB2A47CC4F00D67099 /* Swiftlint */,
@@ -2501,25 +2500,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n  swiftlint lint --strict\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
-		};
-		CDE4FCF62D84CE7E00AED0D5 /* Resolve Package Dependencies */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Resolve Package Dependencies";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\nxcodebuild -resolvePackageDependencies\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
