@@ -5,45 +5,57 @@
 //  Created by Sjmarf on 29/08/2024.
 //
 
+import MlemMiddleware
 import PhotosUI
 import SwiftUI
 
 extension PostEditorView {
-    @ViewBuilder
     var imageView: some View {
-        switch imageManager?.state {
-        case let .done(image):
-            uploadedImageView(url: image.url) {
-                Task {
-                    do {
-                        try await image.delete()
-                    } catch {
-                        handleError(error)
+        PostEditorImageUploadWidgetView(primaryApi: primaryApi, imageUrl: $imageUrl, imageManager: $imageManager)
+    }
+}
+
+struct PostEditorImageUploadWidgetView: View {
+    @Environment(NavigationLayer.self) var navigation
+    
+    @ScaledMetric(relativeTo: .subheadline) var buttonHeight: CGFloat = 40
+    
+    let primaryApi: ApiClient
+    @Binding var imageUrl: URL?
+    @Binding var imageManager: ImageUploadManager?
+    
+    @ViewBuilder
+    var body: some View {
+        VStack(spacing: 0) {
+            switch imageManager?.state {
+            case let .done(image):
+                uploadedImageView(url: image.url) {
+                    Task {
+                        do {
+                            try await image.delete()
+                        } catch {
+                            handleError(error)
+                        }
                     }
                 }
-            }
-        case let .uploading(progress: progress):
-            VStack {
-                Text("Uploading...")
-                    .foregroundStyle(.themedAccent)
-                if progress == 1.0 {
-                    ProgressView()
+                .transition(.opacity)
+            case let .uploading(progress: progress):
+                uploadingProgressView(progress: progress)
+                    .transition(.opacity)
+            default:
+                if let imageUrl, imageManager?.state != .idle {
+                    uploadedImageView(url: imageUrl)
                 } else {
-                    ProgressView(value: progress)
-                        .progressViewStyle(.linear)
-                        .frame(maxWidth: .infinity)
-                        .padding([.bottom, .horizontal], 4)
+                    imageWaitingView
                 }
             }
-            .frame(maxWidth: .infinity)
-            .padding(8)
-            .background(.themedAccent.opacity(0.2), in: .rect(cornerRadius: 16))
-        case .idle:
-            imageWaitingView
-        case nil:
-            if let imageUrl {
-                uploadedImageView(url: imageUrl)
-            }
+        }
+        .background(.themedAccent.opacity(imageUrl != nil || imageManager?.image != nil ? 0 : 0.2))
+        // This second background is to prevent the view from being partially see-through, which makes the animations cleaner
+        .background(.themedGroupedBackground)
+        .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
+        .onTapGesture {
+            imageManager = imageManager ?? .init()
         }
     }
     
@@ -57,8 +69,8 @@ extension PostEditorView {
         .overlay(alignment: .topTrailing) {
             Button("Remove", systemImage: Icons.closeCircleFill) {
                 onRemove()
-                self.imageManager = nil
-                self.imageUrl = nil
+                imageManager = nil
+                imageUrl = nil
             }
             .symbolRenderingMode(.palette)
             .foregroundStyle(.secondary, .thinMaterial)
@@ -70,69 +82,100 @@ extension PostEditorView {
     
     @ViewBuilder
     private var imageWaitingView: some View {
-        VStack {
+        VStack(spacing: 8) {
             HStack {
-                Text("Upload an image...")
-                    .fontWeight(.semibold)
-                    .padding(.leading, 4)
-                Spacer()
-                Button("Remove", systemImage: Icons.closeCircleFill) {
-                    imageManager = nil
+                HStack {
+                    if imageManager?.state == nil {
+                        Image(systemName: Icons.uploadImage)
+                    }
+                    Text(imageManager?.state == nil ? "Add Image" : "Add an image...")
                 }
-                .font(.title2)
-                .labelStyle(.iconOnly)
-                .symbolRenderingMode(.hierarchical)
-                .foregroundStyle(.themedAccent)
-                .fontWeight(.semibold)
-                .font(.title2)
-                .labelStyle(.iconOnly)
+                .geometryGroup()
+                .padding(.leading, 4)
+                .frame(maxWidth: .infinity, alignment: imageManager?.state == nil ? .center : .leading)
+                if imageManager?.state != nil {
+                    Button("Remove", systemImage: Icons.closeCircleFill) {
+                        imageManager = nil
+                    }
+                    .font(.title2)
+                    .labelStyle(.iconOnly)
+                    .symbolRenderingMode(.hierarchical)
+                    .foregroundStyle(.themedAccent)
+                }
             }
             .foregroundStyle(.themedAccent)
-            HVStack {
-                Button("Photos", systemImage: "photo.on.rectangle.angled") {
-                    guard let imageManager else { return }
-                    navigation.showPhotosPicker(for: imageManager, api: primaryApi)
-                }
-                Button("Files", systemImage: Icons.chooseFile) {
-                    guard let imageManager else { return }
-                    navigation.showFilePicker(for: imageManager, api: primaryApi)
-                }
-                Button("Paste", systemImage: Icons.paste) {
-                    guard let imageManager else { return }
-                    navigation.uploadImageFromClipboard(for: imageManager, api: primaryApi)
+            if imageManager?.state != nil {
+                VStack {
+                    uploadOptionsView(height: buttonHeight + 14)
+                        .transition(.asymmetric(
+                            insertion: .scale.combined(with: .opacity),
+                            removal: .move(edge: .bottom).combined(with: .opacity)
+                        ))
                 }
             }
-            .font(.subheadline)
-            .fontWeight(.semibold)
-            .buttonStyle(ImageSourceButtonStyle())
+        }
+        .fontWeight(.semibold)
+        .frame(maxWidth: .infinity)
+        .padding(8)
+    }
+    
+    @ViewBuilder
+    func uploadingProgressView(progress: Double) -> some View {
+        VStack {
+            Text("Uploading...")
+                .foregroundStyle(.themedAccent)
+            if progress == 1.0 {
+                ProgressView()
+            } else {
+                ProgressView(value: progress)
+                    .progressViewStyle(.linear)
+                    .frame(maxWidth: .infinity)
+                    .padding([.bottom, .horizontal], 4)
+            }
         }
         .frame(maxWidth: .infinity)
         .padding(8)
-        .background(.themedAccent.opacity(0.2), in: .rect(cornerRadius: Constants.main.standardSpacing))
+    }
+    
+    @ViewBuilder
+    func uploadOptionsView(height: CGFloat) -> some View {
+        HStack {
+            Button("Photos", systemImage: "photo.on.rectangle.angled") {
+                guard let imageManager else { return }
+                navigation.showPhotosPicker(for: imageManager, api: primaryApi)
+            }
+            Button("Files", systemImage: Icons.chooseFile) {
+                guard let imageManager else { return }
+                navigation.showFilePicker(for: imageManager, api: primaryApi)
+            }
+            Button("Paste", systemImage: Icons.paste) {
+                guard let imageManager else { return }
+                navigation.uploadImageFromClipboard(for: imageManager, api: primaryApi)
+            }
+        }
+        .font(.subheadline)
+        .buttonStyle(ImageSourceButtonStyle(height: height))
     }
 }
 
 private struct ImageSourceButtonStyle: ButtonStyle {
+    let height: CGFloat
+    
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
+            .labelStyle(ImageSourceButtonLabelStyle())
             .foregroundStyle(.themedContrastingLabel)
-            .padding(.vertical, 2)
             .frame(maxWidth: .infinity)
-            .background(.themedAccent, in: .capsule)
+            .frame(height: height)
+            .background(.themedAccent, in: .rect(cornerRadius: 8))
     }
 }
 
-private struct HVStack<Content: View>: View {
-    let content: Content
-    
-    init(@ViewBuilder content: () -> Content) {
-        self.content = content()
-    }
-    
-    var body: some View {
-        ViewThatFits {
-            HStack { content }
-            VStack { content }
+private struct ImageSourceButtonLabelStyle: LabelStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        VStack(spacing: 4) {
+            configuration.icon
+            configuration.title
         }
     }
 }
