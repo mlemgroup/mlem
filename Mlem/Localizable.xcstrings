@@ -415,9 +415,6 @@
         }
       }
     },
-    "%lf" : {
-
-    },
     "%lld Crossposts..." : {
       "localizations" : {
         "en" : {
@@ -4299,6 +4296,9 @@
         }
       }
     },
+    "Media Type: %@ " : {
+
+    },
     "Medium" : {
       "localizations" : {
         "fr" : {
@@ -5313,6 +5313,9 @@
           }
         }
       }
+    },
+    "Playback Position: %@" : {
+
     },
     "Post" : {
       "localizations" : {
@@ -6539,7 +6542,10 @@
         }
       }
     },
-    "Scrub" : {
+    "Scrub Target: %@" : {
+
+    },
+    "Scrub Target: None" : {
 
     },
     "Search" : {

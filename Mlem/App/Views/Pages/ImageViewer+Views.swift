@@ -30,15 +30,11 @@ extension ImageViewer {
     
     @ViewBuilder
     var topControlBar: some View {
-        HStack {
-            Text("\(controlState.playbackPosition)")
-                .foregroundStyle(.black)
-                .background(.white)
-            
-            Button("Scrub") {
-                controlState.scrubTarget = 0.5
-            }
+        HStack(alignment: .top) {
             Spacer()
+            if developerMode {
+                devTools
+            }
             closeButton
                 .padding(.trailing, Constants.main.standardSpacing)
         }
@@ -49,14 +45,56 @@ extension ImageViewer {
         Button {
             fadeDismiss()
         } label: {
-            Label("Close", systemImage: Icons.close)
+            Image(systemName: Icons.close)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 18, height: 18)
+                .accessibilityLabel("Close")
+                .padding(Constants.main.standardSpacing + 6)
+                .background(.ultraThinMaterial, in: .circle)
         }
-        .padding(Constants.main.standardSpacing)
         .contentShape(.rect)
-        .background {
-            Circle().fill(.ultraThinMaterial)
+        .environment(\.colorScheme, .dark)
+    }
+    
+    @ViewBuilder
+    var devTools: some View {
+        Group {
+            if !devToolsShown {
+                Button {
+                    devToolsShown = true
+                } label: {
+                    Image(systemName: Icons.developerMode)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 22, height: 22)
+                        .accessibilityLabel("Close")
+                        .padding(Constants.main.standardSpacing + 4)
+                        .background(.ultraThinMaterial, in: .circle)
+                }
+                .contentShape(.rect)
                 .environment(\.colorScheme, .dark)
+            } else {
+                VStack(alignment: .leading, spacing: Constants.main.halfSpacing) {
+                    let imageType: String = url.proxyAwarePathExtension?.lowercased() ?? "Unknown"
+                    Text("Media Type: \(imageType) ")
+                    Text("Playback Position: \(String(format: "%.4f", controlState.playbackPosition))")
+                    if let target = controlState.scrubTarget {
+                        Text("Scrub Target: \(String(format: "%.4f", target))")
+                    } else {
+                        Text("Scrub Target: None")
+                    }
+                }
+                .padding(Constants.main.standardSpacing)
+                .foregroundStyle(.white)
+                .font(.footnote)
+                .background(.ultraThinMaterial, in: .rect(cornerRadius: Constants.main.standardSpacing))
+                .onTapGesture {
+                    devToolsShown = false
+                }
+            }
         }
+        .environment(\.colorScheme, .dark)
     }
     
     // MARK: Bottom control bar
@@ -65,31 +103,7 @@ extension ImageViewer {
     var bottomControlBar: some View {
         VStack(spacing: 0) {
             if controlState.animationAvailable {
-                Capsule()
-                    .fill(.ultraThinMaterial)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 20)
-                    .overlay {
-                        GeometryReader { geo in
-                            // prevent circle from being dragged over the edge of the capsule
-                            let draggableWidth = geo.size.width - 20
-                            Circle()
-                                .fill(.white)
-                                .frame(width: 20, height: 20)
-                                .offset(x: (controlState.scrubTarget ?? controlState.playbackPosition) * draggableWidth)
-                                .highPriorityGesture(DragGesture()
-                                    .onChanged { value in
-                                        if value.location.x >= 0, value.location.x <= draggableWidth {
-                                            controlState.scrubTarget = value.location.x / draggableWidth
-                                        }
-                                    }
-                                    .onEnded { _ in
-                                        controlState.scrubTarget = nil
-                                    }
-                                )
-                        }
-                    }
-                    .padding(.horizontal, Constants.main.standardSpacing)
+                playbackBar
             }
             
             ZStack(alignment: .bottom) {
@@ -119,6 +133,35 @@ extension ImageViewer {
     }
     
     @ViewBuilder
+    var playbackBar: some View {
+        Capsule()
+            .fill(.ultraThinMaterial)
+            .frame(maxWidth: .infinity)
+            .frame(height: 20)
+            .overlay {
+                GeometryReader { geo in
+                    // prevent circle from being dragged over the edge of the capsule
+                    let draggableWidth = geo.size.width - 20
+                    Circle()
+                        .fill(.white)
+                        .frame(width: 20, height: 20)
+                        .offset(x: (controlState.scrubTarget ?? controlState.playbackPosition) * draggableWidth)
+                        .highPriorityGesture(DragGesture()
+                            .onChanged { value in
+                                if value.location.x >= 0, value.location.x <= draggableWidth {
+                                    controlState.scrubTarget = value.location.x / draggableWidth
+                                }
+                            }
+                            .onEnded { _ in
+                                controlState.scrubTarget = nil
+                            }
+                        )
+                }
+            }
+            .padding(.horizontal, Constants.main.standardSpacing)
+    }
+    
+    @ViewBuilder
     var playButton: some View {
         Button {
             controlState.animating.toggle()
@@ -127,7 +170,7 @@ extension ImageViewer {
                 .scaledToFit()
                 .frame(width: 22, height: 22)
                 .contentTransition(.symbolEffect(.replace, options: .speed(2)))
-                .padding(Constants.main.standardSpacing + 4) // +3 to match .title2 implicit padding plus offset
+                .padding(Constants.main.standardSpacing + 4) // +4 to match .title2 implicit padding plus offset
                 .background(.ultraThinMaterial, in: .circle)
                 .padding(.leading, Constants.main.standardSpacing)
                 .padding([.top, .trailing], Constants.main.doubleSpacing)
