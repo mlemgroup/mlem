@@ -15,6 +15,9 @@ class MediaControlState {
     /// True if the media, if animated, should be playing
     var animating: Bool
     
+    /// True if the media, if animated, should autoplay; this is the initial value of `animating`
+    let autoplay: Bool
+    
     /// True if the media should animate, false to suppress animation
     var enableAnimation: Bool
     
@@ -42,7 +45,7 @@ class MediaControlState {
     /// Creates a new MediaControlState
     /// - Parameters:
     ///   - blurred: true if the media should be blurred
-    ///   - animating: true if the media, if animated, should start animating immediately, false otherwise
+    ///   - animating: true if animated media should currently be animating. If initialized with `true`, animated media will autoplay.
     ///   - overlays: set of overlays to use
     ///   - enableAnimation: true if the media should animate at all, false otherwise
     ///   - muted: true if the media should be muted, false otherwise. Defaults to Settings.main.muteVideos.
@@ -57,6 +60,7 @@ class MediaControlState {
     ) {
         self.blurred = blurred
         self.animating = animating
+        self.autoplay = animating
         self.overlays = overlays
         self.enableAnimation = enableAnimation
         self.muted = muted ?? Settings.main.muteVideos

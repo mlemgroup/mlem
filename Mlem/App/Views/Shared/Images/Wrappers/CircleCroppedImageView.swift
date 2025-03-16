@@ -16,19 +16,31 @@ struct CircleCroppedImageView: View {
     let fallback: MediaView.Fallback
     let showProgress: Bool
     let blurred: Bool
+    let enableAnimation: Bool
     
+    /// Creates an image from the given URL cropped into a circle
+    /// - Parameters:
+    ///   - url: URL of the image to render
+    ///   - frame: frame to crop the image into
+    ///   - fallback: fallback image
+    ///   - showProgress: true if the progress spinner should be displayed, false otherwise. Defaults to true.
+    ///   - blurred: true if the image should be blurred, false otherwise. Defaults to false.
+    ///   - enableAnimation: true if the image should animate, false if it should not.
+    ///     If unspecified, will only animate if the animated avatars settings is `.always`
     init(
         url: URL?,
         frame: CGFloat,
         fallback: MediaView.Fallback,
         showProgress: Bool = true,
-        blurred: Bool = false
+        blurred: Bool = false,
+        enableAnimation: Bool = (Settings.main.animatedAvatars == .always)
     ) {
         self.url = url
         self.frame = frame
         self.fallback = fallback
         self.showProgress = showProgress
         self.blurred = blurred
+        self.enableAnimation = enableAnimation
     }
     
     var body: some View {
@@ -37,9 +49,8 @@ struct CircleCroppedImageView: View {
             size: .init(width: frame, height: frame),
             controlState: .constant(.init(
                 blurred: blurred,
-                animating: false,
-                overlays: [],
-                enableAnimation: false
+                animating: enableAnimation,
+                overlays: []
             )),
             aspectRatioBounds: .absoluteSquare,
             contentMode: .fill,

@@ -65,7 +65,7 @@ class MediaLoader {
         self.size = size
         
         if let size {
-            self.processors = [.resize(size: size, crop: true)]
+            self.processors = [.resize(size: size)]
         } else {
             self.processors = .init()
         }
