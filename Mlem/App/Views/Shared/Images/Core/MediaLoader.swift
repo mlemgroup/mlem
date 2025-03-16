@@ -21,15 +21,11 @@ enum ImageLoadingError {
 enum MediaType {
     case image(UIImage)
     case video(still: UIImage, animated: AVAsset)
-    case gif(still: UIImage, animated: Data)
-    case webp(still: UIImage, animated: Data)
+    case animated(still: UIImage, animated: Data)
     
     var image: UIImage {
         switch self {
-        case let .image(image): image
-        case let .video(still, _): still
-        case let .gif(still, _): still
-        case let .webp(still, _): still
+        case let .image(image), let .video(image, _), let .animated(image, _): image
         }
     }
     
@@ -171,15 +167,9 @@ func computeProxyBypass(for url: URL?) -> URL? {
 extension ImageContainer {
     var animatedMediaType: MediaType {
         switch type {
-        case .gif:
+        case .gif, .webp:
             if let data {
-                .gif(still: image, animated: data)
-            } else {
-                .image(image)
-            }
-        case .webp:
-            if let data {
-                .webp(still: image, animated: data)
+                .animated(still: image, animated: data)
             } else {
                 .image(image)
             }

@@ -9,7 +9,7 @@ import SDWebImageSwiftUI
 import SDWebImage
 import SwiftUI
 
-struct WebpView: View {
+struct AnimatedImageView: View {
     @Environment(MediaControlState.self) var controlState
     
     let data: Data
