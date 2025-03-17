@@ -19,15 +19,6 @@
       }
     },
     {
-      "identity" : "gifu",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/kaishin/Gifu",
-      "state" : {
-        "branch" : "master",
-        "revision" : "639e40d5dbd86dfa94fc61296c270b49af6f8a2a"
-      }
-    },
-    {
       "identity" : "keychainaccess",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kishikawakatsumi/KeychainAccess.git",
@@ -41,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mlemgroup/LemmyMarkdownUI",
       "state" : {
-        "revision" : "3f9fb02b44f36524a71c35cb745766c9cfdb4ec7",
-        "version" : "0.10.1"
+        "revision" : "958ab436dce0ed4050fb65f1122e19eeef036e1c",
+        "version" : "0.11.0"
       }
     },
     {
@@ -59,8 +50,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mlemgroup/MlemMiddleware",
       "state" : {
-        "revision" : "14d39ad1b7268fe95edd1ec62ba40caa45374fa0",
-        "version" : "0.85.0"
+        "revision" : "878543c580a3b9e033296c56a9d8e5e990809f26",
+        "version" : "0.86.0"
       }
     },
     {
