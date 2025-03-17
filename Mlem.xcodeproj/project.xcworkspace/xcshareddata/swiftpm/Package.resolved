@@ -19,15 +19,6 @@
       }
     },
     {
-      "identity" : "gifu",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/kaishin/Gifu",
-      "state" : {
-        "branch" : "master",
-        "revision" : "639e40d5dbd86dfa94fc61296c270b49af6f8a2a"
-      }
-    },
-    {
       "identity" : "keychainaccess",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kishikawakatsumi/KeychainAccess.git",
