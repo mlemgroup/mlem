@@ -32,15 +32,27 @@ struct ImageViewer: View {
     /// True when the scale indicator should be visible, false otherwise
     @State var scaleDisplayShown: Bool = false
     
+    /// Scale when slide-to-zoom gesture started
     @State var dragStartedScale: CGFloat?
     
+    /// Tracks slide-to-zoom drag gesture
     @GestureState var scaleDragState: Bool = false
+    
+    /// Tracks scrub/dismiss drag gesture
     @GestureState var dragState: Bool = false
     
     // TODO: iOS 17 deprecation: replace this with PanGesture
     /// True when the current drag gesture is a scrub, false when dismiss, nil when no gesture
     @State var dragIsScrub: Bool?
+    
+    /// controlState.playbackPosition when current scrub segment began
     @State var scrubStartedPlaybackPosition: CGFloat?
+    
+    /// controlState.playbackPosition when current scrub segment began
+    @State var scrubSegmentOffset: CGFloat = 0
+    
+    /// Current scrubbing rate
+    @State var scrubRate: CGFloat = 1
     
     /// True when the image is zoomed in, false otherwise
     @State var isZoomed: Bool = false
@@ -154,11 +166,21 @@ struct ImageViewer: View {
             return
         }
         
-        if dragIsScrub {
+        if dragIsScrub, controlState.animationAvailable, controlState.enableAnimation {
             showControls()
             
             if scrubStartedPlaybackPosition == nil {
                 scrubStartedPlaybackPosition = controlState.playbackPosition
+            }
+            
+            // scrub rate is controlled by the height of the scrub gesture.
+            // Every 30px increases/decreases scrub rate by 2x to a max of 8x; update in increments of 10px
+            let newScrubRate: CGFloat = (1 / pow(2, (value.translation.height.stepped(by: 10) / 30))).bounded(lower: 0.125, upper: 8)
+            if newScrubRate != scrubRate {
+                // when the scrub rate changes, compute future scrub targets as if the translation started at the current point and scrubTarget
+                scrubStartedPlaybackPosition = controlState.scrubTarget
+                scrubSegmentOffset = value.translation.width
+                scrubRate = newScrubRate
             }
             
             guard let scrubStartedPlaybackPosition else {
@@ -166,8 +188,8 @@ struct ImageViewer: View {
                 return
             }
             
-            let translation = value.translation.width / UIScreen.main.bounds.width
-            let newScrubTarget = (scrubStartedPlaybackPosition + translation).bounded(lower: 0, upper: 1)
+            let scrubSegmentTranslation = (value.translation.width - scrubSegmentOffset) / ((UIScreen.main.bounds.width - 80) / scrubRate)
+            let newScrubTarget = (scrubStartedPlaybackPosition + scrubSegmentTranslation).bounded(lower: 0, upper: 1)
             controlState.scrubTarget = newScrubTarget
         } else if !isDismissing {
             handleOffsetUpdate(value.translation.height)
@@ -189,7 +211,9 @@ struct ImageViewer: View {
             
             if scrubbing {
                 // scrub ended: reset scrubbing and re-enable control tap
+                scrubRate = 1
                 scrubStartedPlaybackPosition = nil
+                scrubSegmentOffset = 0
                 controlState.scrubTarget = nil
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     enableControlTap = true

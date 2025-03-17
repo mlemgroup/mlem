@@ -86,6 +86,8 @@ extension ImageViewer {
                     } else {
                         Text(verbatim: "Scrub Target: None")
                     }
+                    Text(verbatim: "Scrub Rate: \(String(format: "%.4f", scrubRate))")
+                        .monospacedDigit()
                 }
                 .padding(Constants.main.standardSpacing)
                 .foregroundStyle(.white)
@@ -139,25 +141,15 @@ extension ImageViewer {
         Capsule()
             .fill(.ultraThinMaterial)
             .frame(maxWidth: .infinity)
-            .frame(height: 20)
+            .frame(height: 10)
             .overlay {
                 GeometryReader { geo in
                     // prevent circle from being dragged over the edge of the capsule
-                    let draggableWidth = geo.size.width - 20
+                    let width = geo.size.width - 10
                     Circle()
                         .fill(.white)
-                        .frame(width: 20, height: 20)
-                        .offset(x: (controlState.scrubTarget ?? controlState.playbackPosition) * draggableWidth)
-//                        .highPriorityGesture(DragGesture()
-//                            .onChanged { value in
-//                                if value.location.x >= 0, value.location.x <= draggableWidth {
-//                                    controlState.scrubTarget = value.location.x / draggableWidth
-//                                }
-//                            }
-//                            .onEnded { _ in
-//                                controlState.scrubTarget = nil
-//                            }
-//                        )
+                        .frame(width: 10, height: 10)
+                        .offset(x: (controlState.scrubTarget ?? controlState.playbackPosition) * width)
                 }
             }
             .padding(.horizontal, Constants.main.standardSpacing)

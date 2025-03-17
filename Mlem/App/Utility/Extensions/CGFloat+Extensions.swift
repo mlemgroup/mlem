@@ -17,4 +17,8 @@ extension CGFloat {
         }
         return self
     }
+    
+    func stepped(by increment: CGFloat) -> CGFloat {
+        return (self / increment).rounded() * increment
+    }
 }
