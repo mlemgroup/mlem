@@ -68,7 +68,7 @@ extension ImageViewer {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 22, height: 22)
-                        .accessibilityLabel("Close")
+                        .accessibilityLabel(String("Toggle Developer Tools"))
                         .padding(Constants.main.standardSpacing + 4)
                         .background(.ultraThinMaterial, in: .circle)
                 }
