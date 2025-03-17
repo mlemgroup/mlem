@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct PlayButton: View {
-    @Environment(Palette.self) var palette
-    
     let fontSize: CGFloat
     
     init(postSize: PostSize) {
@@ -23,7 +21,7 @@ struct PlayButton: View {
     var body: some View {
         Image(systemName: Icons.play)
             .font(.system(size: fontSize))
-            .foregroundStyle(palette.background)
+            .foregroundStyle(.themedBackground)
             .padding(0.6 * fontSize)
             .background {
                 Circle()

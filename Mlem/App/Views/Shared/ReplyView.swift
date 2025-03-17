@@ -11,7 +11,6 @@ import SwiftUI
 
 struct ReplyView: View {
     @Environment(AppState.self) private var appState
-    @Environment(Palette.self) private var palette
     @Environment(NavigationLayer.self) private var navigation
     
     let reply: Reply2
@@ -23,8 +22,8 @@ struct ReplyView: View {
                 Spacer()
                 Image(systemName: reply.isMention ? Icons.mention : Icons.reply)
                     .symbolVariant(reply.read ? .none : .fill)
-                    .foregroundStyle(palette.accent)
-                EllipsisMenu(size: 24) { reply.menuActions(appState: appState) }
+                    .foregroundStyle(.themedAccent)
+                EllipsisMenu(size: 24) { reply.menuActions(appState: appState, navigation: navigation) }
                     .frame(height: 10)
             }
           
@@ -43,7 +42,7 @@ struct ReplyView: View {
         .padding(.vertical, 2)
         .padding(Constants.main.standardSpacing)
         .clipped()
-        .background(palette.secondaryGroupedBackground)
+        .background(.themedSecondaryGroupedBackground)
         .contentShape(.rect)
         .onTapGesture {
             navigation.push(.comment(reply.comment))
@@ -51,7 +50,7 @@ struct ReplyView: View {
         .quickSwipes(reply.swipeActions(appState: appState, behavior: .standard))
         .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
-        .contextMenu { reply.menuActions(appState: appState) }
+        .contextMenu { reply.menuActions(appState: appState, navigation: navigation) }
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }
 }

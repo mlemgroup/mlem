@@ -8,19 +8,17 @@
 import SwiftUI
 
 struct Checkbox: View {
-    @Environment(Palette.self) private var palette
-    
     let isOn: Bool
     
     var body: some View {
         VStack {
             if isOn {
                 Image(systemName: "checkmark.circle.fill")
-                    .foregroundStyle(palette.selectedInteractionBarItem, .tint)
+                    .foregroundStyle(.themedContrastingLabel, .tint)
                     .imageScale(.large)
             } else {
                 Image(systemName: "circle")
-                    .foregroundStyle(palette.tertiary)
+                    .foregroundStyle(.themedTertiary)
                     .imageScale(.large)
             }
         }

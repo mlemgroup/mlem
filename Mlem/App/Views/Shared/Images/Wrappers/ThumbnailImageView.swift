@@ -11,17 +11,16 @@ import QuickLook
 import SwiftUI
 
 struct ThumbnailImageView: View {
-    @Environment(Palette.self) var palette
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.openURL) var openURL
     
     @Setting(\.websiteThumbnailIcon) var websiteThumbnailIcon
+    @Setting(\.postSize) var postSize
     
-    @State var loadingTracker: MediaLoadingTracker = .init()
+    @State var mediaControlState: MediaControlState
     @State var quickLookUrl: URL?
     
     let post: any Post1Providing
-    var blurred: Bool = false
     let size: Size
     let frame: CGSize
     
@@ -37,6 +36,20 @@ struct ThumbnailImageView: View {
         }
     }
     
+    var onTapActions: (() -> Void)? {
+        switch post.type {
+        case .media, .embedded:
+            { post.markRead() }
+        case let .link(link):
+            {
+                post.markRead()
+                openURL(link.content)
+            }
+        default:
+            nil
+        }
+    }
+    
     init(
         post: any Post1Providing,
         blurred: Bool,
@@ -44,112 +57,56 @@ struct ThumbnailImageView: View {
         frame: CGSize
     ) {
         self.post = post
-        self.blurred = blurred
         self.size = size
         self.frame = frame
+        
+        self._mediaControlState = .init(wrappedValue: .init(
+            blurred: blurred,
+            animating: false,
+            overlays: .init(),
+            enableAnimation: false
+        ))
     }
     
     var body: some View {
-        Group {
-            switch post.type {
-            case let .media(url), let .embedded(url, _):
-                content
-                    .onTapGesture {
-                        if let loading = loadingTracker.loading, loading == .done || loading == .proxyFailed {
-                            post.markRead()
-                            navigation.showImageViewer(url: url)
-                        }
-                    }
-                    .contextMenu {
-                        if let url = fullSizeUrl(url: url) {
-                            Button("Save", systemImage: Icons.import) {
-                                Task { await saveMedia(url: url) }
-                            }
-                            Button("Share...", systemImage: Icons.share) {
-                                Task { await shareImage(url: url) }
-                            }
-                        }
-                    }
-                    .quickLookPreview($quickLookUrl)
-            case let .link(link):
-                content
-                    .overlay {
-                        if websiteThumbnailIcon {
-                            Image(systemName: Icons.browser)
-                                .frame(width: 16, height: 16)
-                                .foregroundStyle(.white)
-                                .background(.ultraThinMaterial, in: .circle)
-                                .padding(4)
-                                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                        }
-                    }
-                    .onTapGesture {
-                        post.markRead()
-                        openURL(link.content)
-                    }
-            default:
-                content
+        content
+            .overlay {
+                if websiteThumbnailIcon, case .link = post.type {
+                    Image(systemName: Icons.browser)
+                        .frame(width: 16, height: 16)
+                        .foregroundStyle(.white)
+                        .background(.ultraThinMaterial, in: .circle)
+                        .padding(4)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                }
             }
-        }
-        .frame(width: frame.width, height: frame.width)
+            .frame(width: frame.width, height: frame.width)
     }
     
     @ViewBuilder
     var content: some View {
-        switch size {
-        case .standard: standardContent
-        case .tile: tileContent
-        }
-    }
-    
-    @ViewBuilder
-    var standardContent: some View {
-        if let url {
-            FixedImageView(
-                url: url,
-                size: frame,
-                fallback: url.proxyAwarePathExtension?.isMovieExtension ?? false ? .movie : .image,
-                showProgress: true,
-                blurred: blurred && loadingTracker.loading == .done
-            )
-            .clipShape(RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius))
-            .environment(\.loadingTracker, loadingTracker)
-        } else {
-            Image(systemName: post.placeholderImageName)
-                .font(.title)
-                .frame(width: frame.width, height: frame.width)
-                .foregroundStyle(palette.secondary)
-                .background(palette.thumbnailBackground)
-                .clipShape(RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius))
-                .overlay(RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius)
-                    .stroke(palette.secondaryBackground, lineWidth: 1))
-        }
-    }
-    
-    @ViewBuilder
-    var tileContent: some View {
-        if let url {
-            FixedImageView(
-                url: url,
-                size: frame,
-                fallback: .image,
-                showProgress: true,
-                blurred: blurred && loadingTracker.loading == .done
-            )
-            .environment(\.loadingTracker, loadingTracker)
-        } else {
-            Image(systemName: post.placeholderImageName)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(maxWidth: 50)
-                .padding(4)
-                .foregroundStyle(palette.tertiary)
+        MediaView(
+            url: url,
+            size: frame,
+            controlState: $mediaControlState,
+            aspectRatioBounds: .absoluteSquare,
+            contentMode: .fill,
+            cornerRadius: size == .tile ? 0 : Constants.main.smallItemCornerRadius,
+            fallback: post.imageFallback,
+            enableContextMenu: post.type.isMedia,
+            enableImageViewer: post.type.isMedia,
+            onTapActions: onTapActions
+        )
+        .overlay {
+            if mediaControlState.animationAvailable {
+                PlayButton(postSize: postSize)
+            }
         }
     }
     
     func shareImage(url: URL) async {
         if let fileUrl = await downloadImageToFileSystem(url: url) {
-            navigation.shareInfo = .init(url: fileUrl)
+            navigation.model?.shareInfo = .init(url: fileUrl)
         }
     }
 }

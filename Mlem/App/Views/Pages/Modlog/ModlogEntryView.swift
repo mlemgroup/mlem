@@ -9,7 +9,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct ModlogEntryView: View {
-    @Environment(Palette.self) var palette
+    @Environment(\.palette) var palette
     
     let entry: ModlogEntry
     var targetCommunity: (any Community)?
@@ -24,11 +24,11 @@ struct ModlogEntryView: View {
                 Text(entry.created.formatted(date: .abbreviated, time: .shortened))
             }
             .font(.footnote)
-            .foregroundStyle(palette.secondary)
+            .foregroundStyle(.themedSecondary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(Constants.main.standardSpacing)
-        .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+        .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
         .environment(\.communityContext, entry.type.community)
     }
@@ -58,7 +58,8 @@ struct ModlogEntryView: View {
                 showFlairs: true,
                 showInstance: true,
                 communityContext: targetCommunity ?? entry.type.community,
-                font: .footnote
+                font: .footnote,
+                palette: palette
             )
             return entry.type.label(userText: userText)
         }
@@ -114,14 +115,16 @@ struct ModlogEntryView: View {
                 showFlairs: true,
                 showInstance: true,
                 communityContext: targetCommunity ?? community,
-                font: .subheadline
+                font: .subheadline,
+                palette: palette
             )
             let targetText: Text
             if let community {
                 targetText = community.nameTextView(
                     showFlairs: true,
                     showInstance: true,
-                    font: .subheadline
+                    font: .subheadline,
+                    palette: palette
                 )
             } else {
                 targetText = Text("Instance")
@@ -134,11 +137,11 @@ struct ModlogEntryView: View {
             }
         }
         .imageScale(.small)
-        .foregroundStyle(palette.secondary)
+        .foregroundStyle(.themedSecondary)
         .font(.subheadline)
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(Constants.main.standardSpacing)
-        .background(palette.tertiaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+        .background(.themedTertiaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }
     
@@ -152,21 +155,23 @@ struct ModlogEntryView: View {
                 showFlairs: true,
                 showInstance: true,
                 communityContext: targetCommunity ?? community,
-                font: .subheadline
+                font: .subheadline,
+                palette: palette
             )
             let communityText = community.nameTextView(
                 showFlairs: true,
                 showInstance: true,
-                font: .subheadline
+                font: .subheadline,
+                palette: palette
             )
             Text("Community: \(communityText)\nNew Owner: \(userText)")
                 .imageScale(.small)
         }
-        .foregroundStyle(palette.secondary)
+        .foregroundStyle(.themedSecondary)
         .font(.subheadline)
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(Constants.main.standardSpacing)
-        .background(palette.tertiaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+        .background(.themedTertiaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }
     
@@ -181,13 +186,15 @@ struct ModlogEntryView: View {
                 showFlairs: true,
                 showInstance: true,
                 communityContext: targetCommunity ?? community,
-                font: .subheadline
+                font: .subheadline,
+                palette: palette
             )
             if let community {
                 let communityText = community.nameTextView(
                     showFlairs: true,
                     showInstance: true,
-                    font: .subheadline
+                    font: .subheadline,
+                    palette: palette
                 )
                 Text(
                     appointed ? "Appointed: \(userText)\nTo: \(communityText)" : "Removed: \(userText)\nFrom: \(communityText)"
@@ -196,19 +203,19 @@ struct ModlogEntryView: View {
                 Text(appointed ? "Appointed: \(userText)" : "Removed: \(userText)")
             }
         }
-        .foregroundStyle(palette.secondary)
+        .foregroundStyle(.themedSecondary)
         .imageScale(.small)
         .font(.subheadline)
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(Constants.main.standardSpacing)
-        .background(palette.tertiaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+        .background(.themedTertiaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }
     
     @ViewBuilder
     func reasonView(_ reason: String?) -> some View {
         if let reason {
-            Text("Reason: ").foregroundStyle(.secondary) + Text(reason)
+            Text("Reason:").foregroundStyle(.secondary) + Text(verbatim: " \(reason)")
         } else {
             Text("No reason given")
                 .foregroundStyle(.secondary)
@@ -235,9 +242,9 @@ struct ModlogEntryView: View {
                     .multilineTextAlignment(.leading)
                     .lineLimit(5)
             }
-            .foregroundStyle(palette.secondary)
+            .foregroundStyle(.themedSecondary)
             .padding(Constants.main.standardSpacing)
-            .background(palette.tertiaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+            .background(.themedTertiaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
             .paletteBorder(cornerRadius: Constants.main.standardSpacing)
         }
         .id("\(id)_modlog_footer")

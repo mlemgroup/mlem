@@ -9,8 +9,8 @@ import Flow
 import SwiftUI
 
 struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: View {
-    @Environment(Palette.self) var palette
     @Environment(NavigationLayer.self) var navigation
+    @Environment(\.palette) var palette
     
     @State var configuration: Configuration {
         didSet {
@@ -57,7 +57,8 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
         self._barItems = .init(wrappedValue: newBarItems)
         self._infoStackAlignment = .init(wrappedValue: computeInfoStackAlignment(
             infoStackIndex: newInfoStackIndex ?? 0,
-            totalItems: newBarItems.count)
+            totalItems: newBarItems.count
+        )
         )
     }
     
@@ -93,14 +94,15 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
         .frame(maxWidth: .infinity)
         .padding(Constants.main.standardSpacing)
         .padding(.bottom, Constants.main.standardSpacing)
-        .background(palette.groupedBackground)
+        .background(.themedGroupedBackground)
         .coordinateSpace(.named("editor"))
     }
 }
 
-#Preview {
-    NavigationStack {
-        InteractionBarEditorView(configuration: PostBarConfiguration.default, isReport: false, onSet: { _ in })
+#if DEBUG
+    #Preview(traits: .sampleEnvironment) {
+        NavigationStack {
+            InteractionBarEditorView(configuration: PostBarConfiguration.default, isReport: false, onSet: { _ in })
+        }
     }
-    .environment(Palette.main)
-}
+#endif

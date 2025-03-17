@@ -12,7 +12,6 @@ struct CommunityListRow<Content2: View>: View {
     typealias Content = CommunityListRowBody<Content2>
     
     @Environment(AppState.self) var appState
-    @Environment(Palette.self) var palette
     @Environment(NavigationLayer.self) var navigation
     
     let community: any Community
@@ -52,7 +51,7 @@ struct CommunityListRow<Content2: View>: View {
         }
         .buttonStyle(.empty)
         .padding(.vertical, 6)
-        .background(palette.secondaryGroupedBackground)
+        .background(.themedSecondaryGroupedBackground)
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
         .contextMenu { community.menuActions(appState: appState, navigation: navigation, feedLoader: nil) }
         .quickSwipes(community.swipeActions(appState: appState, behavior: .standard))
@@ -72,6 +71,6 @@ struct CommunityListRow<Content2: View>: View {
             }
         }
         .contentMargins(.horizontal, Constants.main.standardSpacing)
-        .background(Palette.main.groupedBackground)
+        .background(.themedGroupedBackground)
     }
 #endif

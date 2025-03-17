@@ -8,16 +8,16 @@
 import MlemMiddleware
 
 extension Profile1Providing {
-    static var avatarFallback: FixedImageView.Fallback {
+    static var avatarFallback: MediaView.Fallback {
         if self is any Community.Type {
-            return .community
+            return .communityAvatar
         } else if self is any Instance.Type {
-            return .instance
+            return .instanceAvatar
         } else if self is any Person.Type || self is any Account.Type {
-            return .person
+            return .personAvatar
         } else {
             assertionFailure()
-            return .person
+            return .personAvatar
         }
     }
 }

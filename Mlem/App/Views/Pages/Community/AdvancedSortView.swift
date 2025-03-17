@@ -21,7 +21,6 @@ struct AdvancedSortView: View {
     }
     
     @Environment(AppState.self) var appState
-    @Environment(Palette.self) var palette
 
     @State var selectedTab: Tab = .sort
     @Binding var selectedSort: PostSortType
@@ -33,7 +32,7 @@ struct AdvancedSortView: View {
             case .filter: filterTab
             }
         }
-        .background(palette.groupedBackground)
+        .background(.themedGroupedBackground)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {

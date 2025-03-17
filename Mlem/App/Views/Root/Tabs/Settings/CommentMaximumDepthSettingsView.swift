@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct CommentMaximumDepthSettingsView: View {
-    @Environment(Palette.self) var palette
-    
     @Setting(\.maxCommentDepth) var maxCommentDepth
     
     var body: some View {
@@ -19,7 +17,7 @@ struct CommentMaximumDepthSettingsView: View {
                     Label("Maximum Comment Depth", systemImage: Icons.commentDepth)
                     Spacer()
                     Text(String(maxCommentDepth))
-                        .foregroundStyle(palette.secondary)
+                        .foregroundStyle(.themedSecondary)
                         .monospaced()
                 }
                 Slider(

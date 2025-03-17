@@ -9,8 +9,6 @@ import Dependencies
 import SwiftUI
 
 struct GeneralSettingsView: View {
-    @Environment(Palette.self) var palette
-    
     // behavior
     @Setting(\.upvoteOnSave) var upvoteOnSave
     @Setting(\.markReadOnScroll) var markReadOnScroll
@@ -18,6 +16,7 @@ struct GeneralSettingsView: View {
     @Setting(\.defaultFeed) var defaultFeed
     @Setting(\.hapticLevel) var hapticLevel
     @Setting(\.wrapCodeBlockLines) var wrapCodeBlockLines
+    @Setting(\.animatedAvatars) var animatedAvatars
     
     // gestures
     @Setting(\.quickSwipesEnabled) var swipeActionsEnabled
@@ -34,7 +33,7 @@ struct GeneralSettingsView: View {
                 description: "Manage your overall setup for Mlem.",
                 systemImage: "gear"
             )
-            .tint(palette.neutralAccent)
+            .tint(.themedNeutralAccent)
             Section {
                 NavigationLink(
                     "Default Feed",
@@ -89,6 +88,15 @@ struct GeneralSettingsView: View {
             Section {
                 Toggle("User Avatar", systemImage: Icons.personCircle, isOn: $showPersonAvatar)
                 Toggle("Community Avatar", systemImage: Icons.communityCircle, isOn: $showCommunityAvatar)
+                if #available(iOS 18, *) {
+                    NavigationLink(
+                        "Animated Avatars",
+                        value: .init(localized: animatedAvatars.label),
+                        fallbackValue: "",
+                        systemImage: Icons.playCircle,
+                        destination: .settings(.animatedAvatars)
+                    )
+                }
             }
             
             NavigationLink("Import/Export Settings", systemImage: Icons.importSettings, destination: .settings(.importExportSettings))

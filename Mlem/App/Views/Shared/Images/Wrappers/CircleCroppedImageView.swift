@@ -13,32 +13,48 @@ import SwiftUI
 struct CircleCroppedImageView: View {
     let url: URL?
     let frame: CGFloat // only need one CGFloat because always 1:1 aspect ratio
-    let fallback: FixedImageView.Fallback
+    let fallback: MediaView.Fallback
     let showProgress: Bool
     let blurred: Bool
+    let enableAnimation: Bool
     
+    /// Creates an image from the given URL cropped into a circle
+    /// - Parameters:
+    ///   - url: URL of the image to render
+    ///   - frame: frame to crop the image into
+    ///   - fallback: fallback image
+    ///   - showProgress: true if the progress spinner should be displayed, false otherwise. Defaults to true.
+    ///   - blurred: true if the image should be blurred, false otherwise. Defaults to false.
+    ///   - enableAnimation: true if the image should animate, false if it should not.
+    ///     If unspecified, will only animate if the animated avatars settings is `.always`
     init(
         url: URL?,
         frame: CGFloat,
-        fallback: FixedImageView.Fallback,
+        fallback: MediaView.Fallback,
         showProgress: Bool = true,
-        blurred: Bool = false
+        blurred: Bool = false,
+        enableAnimation: Bool = (Settings.main.animatedAvatars == .always)
     ) {
         self.url = url
         self.frame = frame
         self.fallback = fallback
         self.showProgress = showProgress
         self.blurred = blurred
+        self.enableAnimation = enableAnimation
     }
     
     var body: some View {
-        FixedImageView(
+        MediaView(
             url: url,
             size: .init(width: frame, height: frame),
-            fallback: fallback,
-            showProgress: showProgress,
-            blurred: blurred,
-            showPlayButton: false
+            controlState: .constant(.init(
+                blurred: blurred,
+                animating: enableAnimation,
+                overlays: []
+            )),
+            aspectRatioBounds: .absoluteSquare,
+            contentMode: .fill,
+            fallback: fallback
         )
         .clipShape(Circle())
         .geometryGroup()
@@ -51,24 +67,28 @@ extension CircleCroppedImageView {
     init<T: Profile1Providing>(
         _ model: T?,
         frame: CGFloat,
+        blurred: Bool = false,
         showProgress: Bool = true
     ) {
         self.init(
             url: model?.avatar,
             frame: frame,
-            fallback: T.avatarFallback
+            fallback: T.avatarFallback,
+            blurred: blurred
         )
     }
 
     init(
         _ model: any Profile1Providing,
         frame: CGFloat,
+        blurred: Bool = false,
         showProgress: Bool = true
     ) {
         self.init(
             url: model.avatar,
             frame: frame,
-            fallback: Swift.type(of: model).avatarFallback
+            fallback: Swift.type(of: model).avatarFallback,
+            blurred: blurred
         )
     }
 }

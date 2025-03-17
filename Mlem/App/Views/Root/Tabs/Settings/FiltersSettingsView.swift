@@ -13,8 +13,8 @@ struct FiltersSettingsView: View {
     
     @Setting(\.keywordFilterEnabled) var keywordFilterEnabled
     
-    @Environment(Palette.self) var palette
     @Environment(FiltersTracker.self) var filtersTracker
+    @Environment(NavigationLayer.self) var navigation
     
     @State var newKeyword: String = ""
     
@@ -37,6 +37,32 @@ struct FiltersSettingsView: View {
         }
         .labelStyle(.conditional)
         .navigationTitle("Filters")
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Menu("More...", systemImage: Icons.menuCircle) {
+                    Button("Export...", systemImage: Icons.share) {
+                        Task {
+                            if let url = await downloadTextToFileSystem(
+                                fileName: "keywords.txt",
+                                text: filtersTracker.filteredKeywords.joined(separator: "\n")
+                            ) {
+                                navigation.model?.shareInfo = .init(url: url)
+                            } else {
+                                ToastModel.main.add(.failure())
+                            }
+                        }
+                    }
+                    Button("Import...", systemImage: Icons.import) {
+                        navigation.showFilePicker(types: [.plainText]) { data in
+                            let text = String(data: data, encoding: .utf8) ?? ""
+                            await filtersTracker.resetFilteredKeywords(
+                                to: Set(text.split(separator: "\n").map(String.init))
+                            )
+                        }
+                    }
+                }
+            }
+        }
     }
     
     @ViewBuilder
@@ -57,7 +83,7 @@ struct FiltersSettingsView: View {
                 
                 // using a Button to do this makes the whole row register tap gestures :/
                 Image(systemName: Icons.delete)
-                    .foregroundStyle(palette.warning)
+                    .foregroundStyle(.themedWarning)
                     .onTapGesture {
                         deleteKeyword(filter)
                     }

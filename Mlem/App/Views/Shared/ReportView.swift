@@ -10,14 +10,14 @@ import MlemMiddleware
 import SwiftUI
 
 struct ReportView: View {
-    @Environment(Palette.self) var palette
+    @Environment(\.palette) var palette
     
     let report: Report
     
     var body: some View {
         targetView
             .buttonStyle(.empty)
-            .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+            .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
             .environment(\.reportContext, report)
     }
     
@@ -61,8 +61,9 @@ struct ReportView: View {
                 showFlairs: false,
                 showInstance: true,
                 font: .footnote,
-                nameColor: palette.warning.opacity(0.5),
-                instanceColor: palette.warning.opacity(0.3)
+                palette: palette,
+                nameColor: .themedWarning.opacity(0.5),
+                instanceColor: .themedWarning.opacity(0.3)
             )
             Text("Reported \(report.created.getRelativeTime()) by \(reporterLabel)")
                 .foregroundStyle(.secondary) // No palette!
@@ -70,11 +71,11 @@ struct ReportView: View {
                 .lineLimit(1)
             Text(report.reason)
         }
-        .foregroundStyle(palette.warning)
+        .foregroundStyle(.themedWarning)
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(Constants.main.standardSpacing)
         .background(
-            palette.warning.opacity(0.1),
+            .themedWarning.opacity(0.1),
             in: .rect(cornerRadius: Constants.main.standardSpacing)
         )
     }
@@ -86,11 +87,12 @@ struct ReportView: View {
                 showFlairs: false,
                 showInstance: true,
                 font: .footnote,
-                nameColor: palette.positive,
-                instanceColor: palette.positive.opacity(0.5)
+                palette: palette,
+                nameColor: .themedPositive,
+                instanceColor: .themedPositive.opacity(0.5)
             )
             Label("Resolved by \(resolverLabel)", systemImage: Icons.successCircleFill)
-                .foregroundStyle(palette.positive)
+                .foregroundStyle(.themedPositive)
                 .font(.footnote)
                 .padding(.horizontal, Constants.main.halfSpacing)
                 .lineLimit(1)
@@ -107,7 +109,7 @@ struct ReportView: View {
                 resolveButton
             }
             .padding(Constants.main.standardSpacing)
-            .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+            .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
             .paletteBorder(cornerRadius: Constants.main.standardSpacing)
         }
     }
@@ -117,12 +119,12 @@ struct ReportView: View {
         NavigationLink(.comment(comment)) {
             VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
                 FullyQualifiedLinkView(creator, labelStyle: .medium)
-                Markdown(comment.content, configuration: .default)
+                Markdown(comment.content, configuration: .default(palette: palette))
                 reportDetailsView
                 resolveButton
             }
             .padding(Constants.main.standardSpacing)
-            .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+            .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
             .paletteBorder(cornerRadius: Constants.main.standardSpacing)
         }
     }
@@ -136,17 +138,17 @@ struct ReportView: View {
             ) {
                 report.toggleResolved(feedback: [.haptic])
             }
-            .foregroundStyle(report.resolved ? palette.selectedInteractionBarItem : palette.primary)
+            .foregroundStyle(report.resolved ? .themedContrastingLabel : .themedPrimary)
             .padding(.vertical, 3)
             .padding(.horizontal, 8)
             .imageScale(.small)
             .background(
-                report.resolved ? palette.positive : palette.tertiaryGroupedBackground,
+                report.resolved ? .themedPositive : .themedTertiaryGroupedBackground,
                 in: .rect(cornerRadius: Constants.main.standardSpacing)
             )
             if report.resolved, let resolver = report.resolver {
                 Text("by \(resolver.fullName)")
-                    .foregroundStyle(palette.positive)
+                    .foregroundStyle(.themedPositive)
             }
         }
         .font(.footnote)

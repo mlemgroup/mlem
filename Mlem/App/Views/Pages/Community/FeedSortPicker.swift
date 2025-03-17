@@ -12,7 +12,6 @@ import SwiftUI
 struct FeedSortPicker: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
-    @Environment(Palette.self) var palette
     
     let showTopTimescaleInIcon: Bool
     @Binding var sort: PostSortType
@@ -106,7 +105,7 @@ struct FeedSortPicker: View {
                 .background {
                     Capsule()
                         // 1.51 is intentional - iOS doesn't render it quite right at 1.5 (iPhone 12)
-                        .strokeBorder(palette.accent, lineWidth: 1.51)
+                        .strokeBorder(.themedAccent, lineWidth: 1.51)
                 }
                 .accessibilityLabel(sort.label(timeRangeFormat: .topAndTimescale))
             } else {

@@ -8,18 +8,18 @@
 import SwiftUI
 
 struct CapsuleButtonStyle: ButtonStyle {
-    @Environment(Palette.self) var palette
+    @Environment(\.palette) var palette
     
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
             .fontWeight(.semibold)
-            .foregroundStyle(palette.accent)
+            .foregroundStyle(.themedAccent)
             .padding(.vertical, 10)
             .frame(maxWidth: .infinity)
             .background {
                 Capsule()
-                    .fill(palette.secondaryGroupedBackground)
-                    .stroke(palette.bordered ? palette.divider : .clear, lineWidth: 0.5)
+                    .fill(.themedSecondaryGroupedBackground)
+                    .stroke(palette.bordered ? .themedDivider : .clear, lineWidth: 0.5)
             }
             .opacity(configuration.isPressed ? 0.8 : 1)
             .animation(.easeOut(duration: 0.1), value: configuration.isPressed)

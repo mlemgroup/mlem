@@ -9,11 +9,10 @@ import MlemMiddleware
 import SwiftUI
 
 struct ProfileHeaderView: View {
-    @Environment(Palette.self) var palette
     @Environment(AppState.self) var appState
     
     var profilable: (any Profile1Providing)?
-    var fallback: FixedImageView.Fallback
+    var fallback: MediaView.Fallback
     var blockedOverride: Bool?
     
     init<T: Profile1Providing>(_ profilable: T?, blockedOverride: Bool? = nil) {
@@ -28,7 +27,7 @@ struct ProfileHeaderView: View {
         self.blockedOverride = blockedOverride
     }
     
-    init(_ profilable: (any Profile1Providing)?, fallback: FixedImageView.Fallback, blockedOverride: Bool? = nil) {
+    init(_ profilable: (any Profile1Providing)?, fallback: MediaView.Fallback, blockedOverride: Bool? = nil) {
         self.profilable = profilable
         self.fallback = fallback
         self.blockedOverride = blockedOverride
@@ -43,10 +42,10 @@ struct ProfileHeaderView: View {
                 VStack(spacing: Constants.main.halfSpacing) {
                     HStack {
                         Text(profilable?.displayName_ ?? profilable?.name ?? "")
-                            .foregroundStyle(palette.primary)
+                            .foregroundStyle(.themedPrimary)
                         if blockedOverride ?? profilable?.blocked ?? false {
                             Image(systemName: Icons.hide)
-                                .foregroundStyle(palette.secondary)
+                                .foregroundStyle(.themedSecondary)
                         }
                     }
                     .font(.title)
@@ -55,7 +54,7 @@ struct ProfileHeaderView: View {
                     .minimumScaleFactor(0.01)
                     Text(subtitle)
                         .font(.caption)
-                        .foregroundStyle(palette.secondary)
+                        .foregroundStyle(.themedSecondary)
                 }
             }
             .buttonStyle(.plain)

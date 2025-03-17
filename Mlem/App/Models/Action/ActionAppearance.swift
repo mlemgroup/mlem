@@ -6,13 +6,14 @@
 //
 
 import SwiftUI
+import Theming
 
 struct ActionAppearance {
     let label: String
     let isOn: Bool
     let isInProgress: Bool
     let isDestructive: Bool
-    let color: Color
+    let color: ThemedColor
     let barIcon: String
     let menuIcon: String
     let swipeIcon1: String
@@ -23,7 +24,7 @@ struct ActionAppearance {
         isOn: Bool = false,
         isInProgress: Bool = false,
         isDestructive: Bool = false,
-        color: Color,
+        color: ThemedColor,
         icon: String,
         barIcon: String? = nil,
         menuIcon: String? = nil,
@@ -50,7 +51,7 @@ struct ActionAppearance {
         isOn: Bool = false,
         isInProgress: Bool = false,
         isDestructive: Bool = false,
-        color: Color,
+        color: ThemedColor,
         icon: String,
         barIcon: String? = nil,
         menuIcon: String? = nil,

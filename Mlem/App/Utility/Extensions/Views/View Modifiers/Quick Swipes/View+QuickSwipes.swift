@@ -7,11 +7,12 @@
 
 import Dependencies
 import SwiftUI
+import Theming
 
 // swiftlint:disable:next type_body_length
 struct QuickSwipeView: ViewModifier {
     @Environment(NavigationLayer.self) var navigation
-    @Environment(Palette.self) var palette
+    @Environment(\.palette) var palette
     
     @Setting(\.quickSwipesEnabled) var quickSwipesEnabled
     
@@ -19,7 +20,7 @@ struct QuickSwipeView: ViewModifier {
     @GestureState var dragState: CGFloat = .zero
     @State var dragPosition: CGFloat = .zero
     @State var prevDragPosition: CGFloat = .zero
-    @State var dragBackground: Color? = Palette.main.background
+    @State var dragBackground: ThemedColor? = .themedBackground
     @State var leadingSwipeSymbol: String?
     @State var trailingSwipeSymbol: String?
     @State var popupModel: PopupAnchorModel = .init()
@@ -114,13 +115,13 @@ struct QuickSwipeView: ViewModifier {
     }
     
     var iconBackground: some View {
-        dragBackground
+        dragBackground?.resolve(with: palette)
             .overlay {
                 HStack(spacing: 0) {
                     if dragPosition > 0 {
                         Image(systemName: leadingSwipeSymbol ?? Icons.warning)
                             .font(.system(size: config.behavior.iconSize))
-                            .foregroundColor(palette.selectedInteractionBarItem)
+                            .foregroundStyle(.themedContrastingLabel)
                             .frame(width: iconWidth)
                             .padding(.horizontal, iconWidth)
                     }
@@ -128,7 +129,7 @@ struct QuickSwipeView: ViewModifier {
                     if dragPosition < 0 {
                         Image(systemName: trailingSwipeSymbol ?? Icons.warning)
                             .font(.system(size: config.behavior.iconSize))
-                            .foregroundColor(palette.selectedInteractionBarItem)
+                            .foregroundStyle(.themedContrastingLabel)
                             .frame(width: iconWidth)
                             .padding(.horizontal, iconWidth)
                     }
@@ -196,8 +197,6 @@ struct QuickSwipeView: ViewModifier {
         
         if let action = action as? BasicAction {
             action.callbackWithConfirmation(popupModel: popupModel)
-        } else if let action = action as? ShareAction {
-            navigation.shareInfo = .init(action)
         } else if let action = action as? ActionGroup {
             popupModel.showPopup(action)
         }
@@ -209,7 +208,7 @@ struct QuickSwipeView: ViewModifier {
             prevDragPosition = .zero
             leadingSwipeSymbol = primaryLeadingAction?.appearance.swipeIcon1
             trailingSwipeSymbol = primaryTrailingAction?.appearance.swipeIcon1
-            dragBackground = palette.background
+            dragBackground = .themedBackground
         }
     }
     

@@ -11,7 +11,6 @@ import SwiftUI
 struct InteractionBarView: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
-    @Environment(Palette.self) var palette
     
     private let leading: [EnrichedWidget]
     private let trailing: [EnrichedWidget]
@@ -21,12 +20,14 @@ struct InteractionBarView: View {
         appState: AppState,
         post: any Post1Providing,
         configuration: PostBarConfiguration,
+        navigation: NavigationLayer,
         commentTreeTracker: CommentTreeTracker? = nil,
         communityContext: (any CommunityStubProviding)? = nil,
         reportContext: Report? = nil
     ) {
         self.leading = .init(
             appState: appState,
+            navigation: navigation,
             post: post,
             items: configuration.leading,
             commentTreeTracker: commentTreeTracker,
@@ -35,6 +36,7 @@ struct InteractionBarView: View {
         )
         self.trailing = .init(
             appState: appState,
+            navigation: navigation,
             post: post,
             items: configuration.trailing,
             commentTreeTracker: commentTreeTracker,
@@ -46,6 +48,7 @@ struct InteractionBarView: View {
     
     init(
         appState: AppState,
+        navigation: NavigationLayer,
         comment: any Comment1Providing,
         configuration: CommentBarConfiguration,
         commentTreeTracker: CommentTreeTracker? = nil,
@@ -54,6 +57,7 @@ struct InteractionBarView: View {
     ) {
         self.leading = .init(
             appState: appState,
+            navigation: navigation,
             comment: comment,
             items: configuration.leading,
             commentTreeTracker: commentTreeTracker,
@@ -62,6 +66,7 @@ struct InteractionBarView: View {
         )
         self.trailing = .init(
             appState: appState,
+            navigation: navigation,
             comment: comment,
             items: configuration.trailing,
             commentTreeTracker: commentTreeTracker,
@@ -131,7 +136,7 @@ struct InteractionBarView: View {
                 .monospacedDigit()
                 .contentTransition(.numericText(value: Double(counter.value ?? 0)))
                 .animation(.default, value: counter.value)
-                .foregroundStyle(palette.primary)
+                .foregroundStyle(.themedPrimary)
                 
             if let trailingAction = counter.trailingAction {
                 actionView(trailingAction)
@@ -142,27 +147,19 @@ struct InteractionBarView: View {
     @ViewBuilder
     private func actionView(_ action: any Action) -> some View {
         Group {
-            if let action = action as? ShareAction {
-                Button {
-                    navigation.shareInfo = .init(action)
+            if let action = action as? ActionGroup {
+                Menu {
+                    ForEach(action.children, id: \.id) { child in
+                        MenuButton(action: child)
+                    }
                 } label: {
                     InteractionBarActionLabelView(action.appearance)
+                        .opacity(action.disabled ? 0.5 : 1)
                 }
-            } else {
-                if let action = action as? ActionGroup {
-                    Menu {
-                        ForEach(action.children, id: \.id) { child in
-                            MenuButton(action: child)
-                        }
-                    } label: {
-                        InteractionBarActionLabelView(action.appearance)
-                            .opacity(action.disabled ? 0.5 : 1)
-                    }
-                    .onTapGesture {}
-                } else if let action = action as? BasicAction {
-                    InteractionBarBasicButton(action: action)
-                        .popupAnchor()
-                }
+                .onTapGesture {}
+            } else if let action = action as? BasicAction {
+                InteractionBarBasicButton(action: action)
+                    .popupAnchor()
             }
         }
         .accessibilityLabel(action.appearance.label)
@@ -228,6 +225,7 @@ private enum EnrichedWidget {
 extension [EnrichedWidget] {
     init(
         appState: AppState,
+        navigation: NavigationLayer,
         post: any Post1Providing,
         items: [PostBarConfiguration.Item],
         commentTreeTracker: CommentTreeTracker?,
@@ -239,6 +237,7 @@ extension [EnrichedWidget] {
             case let .action(action):
                 if let action = post.action(
                     appState: appState,
+                    navigation: navigation,
                     type: action,
                     commentTreeTracker: commentTreeTracker,
                     communityContext: communityContext,
@@ -257,6 +256,7 @@ extension [EnrichedWidget] {
     
     init(
         appState: AppState,
+        navigation: NavigationLayer,
         comment: any Comment1Providing,
         items: [CommentBarConfiguration.Item],
         commentTreeTracker: CommentTreeTracker?,
@@ -269,6 +269,7 @@ extension [EnrichedWidget] {
                 if let action = comment.action(
                     appState: appState,
                     type: action,
+                    navigation: navigation,
                     commentTreeTracker: commentTreeTracker,
                     communityContext: communityContext,
                     reportContext: reportContext

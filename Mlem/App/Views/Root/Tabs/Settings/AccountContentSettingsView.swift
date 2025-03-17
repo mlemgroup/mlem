@@ -9,7 +9,6 @@ import SwiftUI
 
 struct AccountContentSettingsView: View {
     @Environment(AppState.self) var appState
-    @Environment(Palette.self) var palette
     
     @State var showNsfw: Bool = false
     @State var showBotAccounts: Bool = false
@@ -26,7 +25,7 @@ struct AccountContentSettingsView: View {
         Form {
             Section {
                 Toggle("Show NSFW Content", systemImage: Icons.blurNsfw, isOn: $showNsfw)
-                    .tint(palette.warning)
+                    .tint(.themedWarning)
                     .onChange(of: showNsfw) {
                         Task {
                             do {
@@ -75,9 +74,10 @@ struct AccountContentSettingsView: View {
             }
             
             Section {
-                NavigationLink("Discussion Languages",
-                               systemImage: Icons.language,
-                               destination: .settings(.accountLanguages)
+                NavigationLink(
+                    "Discussion Languages",
+                    systemImage: Icons.language,
+                    destination: .settings(.accountLanguages)
                 )
             }
         }

@@ -7,8 +7,9 @@
 
 import Foundation
 import SwiftUI
+import Theming
 
-func postTag(active: Bool, icon: String, color: Color) -> Text {
+func postTag(active: Bool, icon: String, color: ThemedColor) -> Text {
     if active {
         if icon == Icons.nsfwTag {
             Text(Image(icon))

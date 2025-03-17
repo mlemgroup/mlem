@@ -11,7 +11,6 @@ import SwiftUI
 extension SignUpView {
     struct EmailConfirmationView: View {
         @Environment(NavigationLayer.self) var navigation
-        @Environment(Palette.self) var palette
         @Environment(\.scenePhase) var scenePhase
         
         private var timer = Timer.publish(every: 5, tolerance: 0.5, on: .main, in: .common)
@@ -35,14 +34,14 @@ extension SignUpView {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(height: 100)
-                    .foregroundStyle(palette.accent)
+                    .foregroundStyle(.themedAccent)
                     .padding(.bottom)
                 Text("We sent an email to \(email) to verify your email address and activate your account.")
                     .font(.title2)
                     .fontWeight(.semibold)
                 Text("Click on the link in the email to continue.")
                 ProgressView()
-                    .tint(palette.secondary)
+                    .tint(.themedSecondary)
                     .controlSize(.large)
             }
             .multilineTextAlignment(.center)

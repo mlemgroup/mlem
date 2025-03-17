@@ -12,7 +12,6 @@ import SwiftUI
 struct MessageFeedView: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
-    @Environment(Palette.self) var palette
     @Environment(\.dismiss) var dismiss
     
     let person: AnyPerson
@@ -109,7 +108,7 @@ struct MessageFeedView: View {
             .safeAreaInset(edge: .bottom) { textInput(scrollProxy) }
             .defaultScrollAnchor(.bottom)
             .scrollDismissesKeyboard(.interactively)
-            .background(palette.groupedBackground)
+            .background(.themedGroupedBackground)
             .onAppear {
                 if feedLoader == nil {
                     feedLoader = .init(person: person, pageSize: 50)
@@ -130,7 +129,7 @@ struct MessageFeedView: View {
         if messageIsFirstOfDay(message) {
             Text(message.created.messagesRelativeDate())
                 .font(.footnote)
-                .foregroundStyle(palette.secondary)
+                .foregroundStyle(.themedSecondary)
                 .padding(.bottom, Constants.main.halfSpacing)
         }
         VStack(alignment: message.isOwnMessage ? .trailing : .leading, spacing: Constants.main.halfSpacing) {
@@ -151,7 +150,7 @@ struct MessageFeedView: View {
             if let footerText = messageFooterText(for: message) {
                 Text(footerText)
                     .font(.footnote)
-                    .foregroundStyle(palette.secondary)
+                    .foregroundStyle(.themedSecondary)
                     .padding(.horizontal, Constants.main.halfSpacing)
             }
         }
@@ -179,7 +178,7 @@ struct MessageFeedView: View {
         }
         .background(
             RoundedRectangle(cornerRadius: Constants.main.doubleSpacing)
-                .strokeBorder(palette.tertiary.opacity(0.5), lineWidth: 1)
+                .strokeBorder(.themedTertiary.opacity(0.5), lineWidth: 1)
         )
         .padding(Constants.main.standardSpacing)
         .background(.bar)
@@ -194,7 +193,7 @@ struct MessageFeedView: View {
         } label: {
             textInputButtonLabel(systemImage: Icons.closeCircleFill)
         }
-        .tint(palette.tertiary)
+        .tint(.themedTertiary)
     }
     
     @ViewBuilder
@@ -210,7 +209,7 @@ struct MessageFeedView: View {
         } label: {
             textInputButtonLabel(systemImage: editing == nil ? Icons.sendMessage : Icons.successCircleFill)
         }
-        .tint(palette.accent)
+        .tint(.themedAccent)
     }
     
     @ViewBuilder
@@ -219,7 +218,7 @@ struct MessageFeedView: View {
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(maxHeight: .infinity)
-            .foregroundStyle(palette.selectedInteractionBarItem, .tint)
+            .foregroundStyle(.themedContrastingLabel, .tint)
     }
     
     @ViewBuilder
@@ -269,12 +268,12 @@ struct MessageFeedView: View {
             HStack(spacing: Constants.main.halfSpacing) {
                 CircleCroppedImageView(person, frame: 24)
                 Text(person.displayName)
-                    .foregroundStyle(palette.primary)
+                    .foregroundStyle(.themedPrimary)
                     .font(.headline)
                 Image(systemName: Icons.forward)
                     .imageScale(.small)
                     .fontWeight(.semibold)
-                    .foregroundStyle(palette.tertiary)
+                    .foregroundStyle(.themedTertiary)
             }
         }
     }

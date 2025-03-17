@@ -43,7 +43,7 @@ struct MarkdownEditorToolbarView: View {
                     HStack {
                         Text("Uploading...")
                         ProgressView()
-                            .tint(Palette.main.secondary)
+                            .tint(.themedSecondary)
                     }
                 } else {
                     ProgressView(value: progress)

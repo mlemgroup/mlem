@@ -18,7 +18,8 @@ enum SettingsPage: Hashable {
     case privacyBypassImageProxy
     case safetyBlurNsfw, safetyWarnings
     case links, embedding
-    case externalLinks, tappableLinks
+    case animatedAvatars
+    case externalLinks, sharingLinks, tappableLinks
     case importExportSettings
     case theme, icon
     case post, comment, inbox, subscriptionList, tabBar
@@ -121,10 +122,14 @@ enum SettingsPage: Hashable {
             LinkSettingsView()
         case .externalLinks:
             ExternalLinkSettingsView()
+        case .sharingLinks:
+            SharingLinksSettingsView()
         case .tappableLinks:
             TappableLinksSettingsView()
         case .embedding:
             EmbeddingSettingsView()
+        case .animatedAvatars:
+            AnimatedAvatarSettingsView()
         case .sorting:
             SortingSettingsView()
         case .filters:
@@ -194,15 +199,15 @@ enum SettingsPage: Hashable {
 }
 
 private struct SimpleMarkdownPage: View {
-    @Environment(Palette.self) var palette
+    @Environment(\.palette) var palette
     
     let doc: Document
     
     var body: some View {
         ScrollView {
-            Markdown(doc.body, configuration: .default)
+            Markdown(doc.body, configuration: .default(palette: palette))
                 .padding(Constants.main.standardSpacing)
         }
-        .background(palette.background)
+        .background(.themedBackground)
     }
 }

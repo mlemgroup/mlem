@@ -11,7 +11,6 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct ErrorView: View {
-    @Environment(Palette.self) var palette
     @Setting(\.developerMode) var developerMode
     
     @State var errorDetails: ErrorDetails
@@ -39,7 +38,7 @@ struct ErrorView: View {
                 }
                 Text(errorDetails.title ?? "Something went wrong.")
                     .font(.title3.bold())
-                    .foregroundStyle(palette.primary)
+                    .foregroundStyle(.themedPrimary)
                 
                 if let body = errorDetails.body {
                     Text(body)
@@ -63,7 +62,7 @@ struct ErrorView: View {
                             }
                         }
                     }
-                    .tint(palette.secondary)
+                    .tint(.themedSecondary)
                     .buttonStyle(.bordered)
                     .animation(.default, value: refreshInProgress)
                 }
@@ -74,7 +73,7 @@ struct ErrorView: View {
                     showingFullError.toggle()
                 }
                 .buttonStyle(.plain)
-                .foregroundStyle(palette.tertiary)
+                .foregroundStyle(.themedTertiary)
             }
         }
         .padding()

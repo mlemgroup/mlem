@@ -11,7 +11,6 @@ import Semaphore
 import SwiftUI
 
 struct ContentLoader<Content: View, Model: Upgradable>: View {
-    @Environment(Palette.self) var palette: Palette
     @Environment(AppState.self) var appState: AppState
     
     @State var proxy: ContentLoaderProxy<Model>

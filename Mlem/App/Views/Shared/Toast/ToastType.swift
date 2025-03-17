@@ -7,6 +7,7 @@
 
 import MlemMiddleware
 import SwiftUI
+import Theming
 
 enum ToastType: Hashable {
     // Don't initialize this directly - use one of the static methods instead
@@ -14,7 +15,7 @@ enum ToastType: Hashable {
         title: String,
         subtitle: String?,
         systemImage: String?,
-        color: Color,
+        color: ThemedColor,
         duration: Double
     )
     
@@ -22,7 +23,7 @@ enum ToastType: Hashable {
         _ title: LocalizedStringResource,
         subtitle: LocalizedStringResource? = nil,
         systemImage: String? = nil,
-        color: Color? = nil,
+        color: ThemedColor? = nil,
         duration: Double = 1.5
     ) -> ToastType {
         let subtitleString: String?
@@ -35,7 +36,7 @@ enum ToastType: Hashable {
             title: String(localized: title),
             subtitle: subtitleString,
             systemImage: systemImage,
-            color: color ?? Palette.main.accent,
+            color: color ?? .themedAccent,
             duration: duration
         )
     }
@@ -45,14 +46,14 @@ enum ToastType: Hashable {
         _ title: String,
         subtitle: String? = nil,
         systemImage: String? = nil,
-        color: Color? = nil,
+        color: ThemedColor? = nil,
         duration: Double = 1.5
     ) -> ToastType {
         .basic(
             title: title,
             subtitle: subtitle,
             systemImage: systemImage,
-            color: color ?? Palette.main.accent,
+            color: color ?? .themedAccent,
             duration: duration
         )
     }
@@ -63,7 +64,7 @@ enum ToastType: Hashable {
         systemImage: String?,
         successSystemImage: String?,
         callback: () -> Void,
-        color: Color
+        color: ThemedColor
     )
 
     static func undoable(
@@ -71,7 +72,7 @@ enum ToastType: Hashable {
         systemImage: String? = nil,
         successSystemImage: String? = nil,
         callback: @escaping () -> Void,
-        color: Color = Palette.main.accent
+        color: ThemedColor = .themedAccent
     ) -> ToastType {
         let string: String?
         if let title {
@@ -95,7 +96,7 @@ enum ToastType: Hashable {
         systemImage: String? = nil,
         successSystemImage: String? = nil,
         callback: @escaping () -> Void,
-        color: Color = Palette.main.accent
+        color: ThemedColor = .themedAccent
     ) -> ToastType {
         .undoable(
             title: title,
@@ -115,6 +116,16 @@ enum ToastType: Hashable {
     @_disfavoredOverload
     static func loading(_ title: String) -> ToastType {
         .loading(title: title)
+    }
+    
+    static var urlCopyError: ToastType {
+        .basic(
+            title: "No URL Copied",
+            subtitle: "Copy a URL to the clipboard, then try again.",
+            systemImage: nil,
+            color: .themedAccent,
+            duration: 2
+        )
     }
     
     case error(_ details: ErrorDetails)
@@ -168,7 +179,7 @@ enum ToastType: Hashable {
             title: message ?? "Success",
             subtitle: nil,
             systemImage: Icons.successCircleFill,
-            color: Palette.main.positive,
+            color: .themedPositive,
             duration: 1
         )
     }
@@ -187,7 +198,7 @@ enum ToastType: Hashable {
             title: message ?? "Failed",
             subtitle: nil,
             systemImage: Icons.failureCircleFill,
-            color: Palette.main.negative,
+            color: .themedNegative,
             duration: 1
         )
     }

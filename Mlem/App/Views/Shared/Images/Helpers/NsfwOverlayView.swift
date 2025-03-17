@@ -9,17 +9,17 @@ import Foundation
 import SwiftUI
 
 struct NsfwOverlay: View {
-    @Binding var blurred: Bool
+    @Environment(MediaControlState.self) var controlState
         
     @MainActor
     func setBlurred(_ newValue: Bool) {
         withAnimation(newValue ? .easeIn(duration: 0.15) : .easeOut(duration: 0.12)) {
-            blurred = newValue
+            controlState.blurred = newValue
         }
     }
     
     var body: some View {
-        if blurred {
+        if controlState.blurred {
             VStack(spacing: 8) {
                 Image(systemName: Icons.warning)
                     .font(.largeTitle)

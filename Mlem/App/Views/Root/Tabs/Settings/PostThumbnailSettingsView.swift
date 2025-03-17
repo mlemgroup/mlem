@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct PostThumbnailSettingsView: View {
-    @Environment(Palette.self) var palette
-    
     @Setting(\.thumbnailLocation) var thumbnailLocation
     @Setting(\.websiteThumbnailIcon) var websiteThumbnailIcon
     
@@ -58,7 +56,7 @@ struct PostThumbnailSettingsView: View {
                     MockTextView()
                         .frame(width: geometry.size.width / 3, height: geometry.size.height / 6)
                 }
-                .foregroundStyle(palette.secondary)
+                .foregroundStyle(.themedSecondary)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.top, 2)
             }
@@ -69,13 +67,13 @@ struct PostThumbnailSettingsView: View {
         }
         .aspectRatio(8 / 2, contentMode: .fit)
         .padding(8)
-        .background(palette.tertiaryGroupedBackground, in: .rect(cornerRadius: Constants.main.mediumItemCornerRadius))
+        .background(.themedTertiaryGroupedBackground, in: .rect(cornerRadius: Constants.main.mediumItemCornerRadius))
     }
     
     @ViewBuilder
     func thumbnailView(active: Bool) -> some View {
         RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius)
-            .fill(palette.accent.opacity(0.6))
+            .fill(.themedAccent.opacity(0.6))
             .frame(maxHeight: .infinity)
             .aspectRatio(.init(width: active ? 1 : 0, height: 1), contentMode: .fit)
             .overlay {

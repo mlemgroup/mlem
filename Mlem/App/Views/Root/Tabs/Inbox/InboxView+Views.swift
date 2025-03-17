@@ -77,6 +77,7 @@ extension InboxView {
                     }
                 }
             }
+            EndOfFeedView(feedLoader: currentModFeedLoader, viewType: .cartoon)
         }
         .padding(.top, Constants.main.standardSpacing)
         .animation(.easeOut(duration: 0.1), value: currentModFeedLoader.items.isEmpty)
@@ -104,7 +105,7 @@ extension InboxView {
                 return 0
             }
         )
-        .background(palette.groupedBackground.opacity(headerPinned ? 1 : 0))
+        .background(.themedGroupedBackground.opacity(headerPinned ? 1 : 0))
         .background(.bar)
     }
     
@@ -182,7 +183,7 @@ extension InboxView {
                 feedDescription: .init(
                     label: selectedFeed.label,
                     subtitle: selectedFeed.subtitle(isAdmin: appState.firstApi.isAdmin),
-                    color: { _ in selectedFeed.color },
+                    color: selectedFeed.color,
                     iconName: selectedFeed.systemImage,
                     iconNameFill: selectedFeed.systemImageFill,
                     iconScaleFactor: 0.5
@@ -199,7 +200,7 @@ extension InboxView {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(height: 80)
-                .foregroundColor(palette.accent)
+                .foregroundStyle(.themedAccent)
             Text(AccountsTracker.main.isEmpty ? "Log in or sign up to view your inbox." : "Switch account to view your inbox.")
                 .font(.title2)
                 .padding(.horizontal)

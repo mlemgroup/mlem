@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct PostSubscriptionIndicatorSettingsView: View {
-    @Environment(Palette.self) var palette
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.palette) var palette
     
     @Setting(\.showSubscribedStatus) var showSubscribedStatus
     
@@ -30,15 +30,15 @@ struct PostSubscriptionIndicatorSettingsView: View {
             UnevenRoundedRectangle(
                 cornerRadii: .init(topLeading: 16, bottomLeading: 0, bottomTrailing: 10, topTrailing: 0)
             )
-            .fill(palette.tertiaryGroupedBackground)
-            .strokeBorder(colorScheme == .light ? palette.secondaryGroupedBackground : .clear, lineWidth: 2)
+            .fill(.themedTertiaryGroupedBackground)
+            .strokeBorder(colorScheme == .light ? .themedSecondaryGroupedBackground : .clear, lineWidth: 2)
             .frame(height: 100)
             .overlay(alignment: .topLeading) {
                 HStack(spacing: 0) {
-                    CircleCroppedImageView(url: nil, frame: 30, fallback: .person)
+                    CircleCroppedImageView(url: nil, frame: 30, fallback: .personAvatar)
                         .opacity(0.8)
                     Circle()
-                        .fill(palette.secondary)
+                        .fill(.themedSecondary)
                         .frame(width: showSubscribedStatus ? 10 : 0, height: 10)
                         .opacity(showSubscribedStatus ? 10 : 0)
                         .padding(.leading, showSubscribedStatus ? 12 : 5)
@@ -47,7 +47,7 @@ struct PostSubscriptionIndicatorSettingsView: View {
                         .lineLimit(1)
                         .fixedSize(horizontal: false, vertical: true)
                         .font(.title2)
-                        .foregroundStyle(palette.secondary)
+                        .foregroundStyle(.themedSecondary)
                         .opacity(0.8)
                         .mask {
                             LinearGradient(colors: [.black, .black.opacity(0.5)], startPoint: .leading, endPoint: .trailing)
@@ -69,6 +69,6 @@ struct PostSubscriptionIndicatorSettingsView: View {
             assertionFailure()
             return Text(string)
         }
-        return Text(parts[0]) + Text(verbatim: "@\(parts[1])").foregroundColor(palette.tertiary)
+        return Text(parts[0]) + Text(verbatim: "@\(parts[1])").foregroundColor(palette.label.tertiary)
     }
 }

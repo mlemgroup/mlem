@@ -59,13 +59,19 @@ extension Comment1Providing {
         expanded: Bool = false,
         feedback: Set<FeedbackType> = [.haptic, .toast],
         showAllActions: Bool = true,
+        navigation: NavigationLayer?,
         commentTreeTracker: CommentTreeTracker? = nil,
         report: Report? = nil
     ) -> [any Action] {
-        basicMenuActions(appState: appState, feedback: feedback, commentTreeTracker: commentTreeTracker)
+        basicMenuActions(
+            appState: appState,
+            feedback: feedback,
+            navigation: navigation,
+            commentTreeTracker: commentTreeTracker
+        )
         if canModerate {
             ActionGroup(
-                appearance: .init(label: "Moderation...", color: Palette.main.moderation, icon: Icons.moderation),
+                appearance: .init(label: "Moderation...", color: .themedModeration, icon: Icons.moderation),
                 displayMode: Settings.main.moderatorActionGrouping == .divider || expanded ? .section : .disclosure
             ) {
                 moderatorMenuActions(appState: appState, feedback: feedback, showAllActions: showAllActions, report: report)
@@ -77,6 +83,7 @@ extension Comment1Providing {
     func basicMenuActions(
         appState: AppState,
         feedback: Set<FeedbackType> = [.haptic, .toast],
+        navigation: NavigationLayer?,
         commentTreeTracker: CommentTreeTracker? = nil
     ) -> [any Action] {
         ActionGroup(displayMode: .compactSection) {
@@ -87,7 +94,7 @@ extension Comment1Providing {
             if !deleted {
                 selectTextAction()
             }
-            shareAction()
+            shareAction(navigation: navigation)
             
             if isOwnComment {
                 editAction(appState: appState)
@@ -135,6 +142,7 @@ extension Comment1Providing {
     func action(
         appState: AppState,
         type: CommentBarConfiguration.ActionType,
+        navigation: NavigationLayer?,
         commentTreeTracker: CommentTreeTracker? = nil,
         communityContext: (any CommunityStubProviding)? = nil,
         reportContext: Report? = nil
@@ -144,7 +152,7 @@ extension Comment1Providing {
         case .downvote: api.downvotesEnabled ? downvoteAction(appState: appState, feedback: [.haptic]) : nil
         case .save: saveAction(appState: appState, feedback: [.haptic])
         case .reply: replyAction(appState: appState, commentTreeTracker: commentTreeTracker)
-        case .share: shareAction()
+        case .share: shareAction(navigation: navigation)
         case .selectText: selectTextAction()
         case .report: reportAction(appState: appState, communityContext: communityContext)
         case .resolve: reportContext?.resolveAction(appState: appState, feedback: [.haptic])

@@ -17,7 +17,6 @@ struct TilePostView: View {
     @Environment(AppState.self) private var appState
     @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?
     @Environment(NavigationLayer.self) var navigation
-    @Environment(Palette.self) var palette: Palette
     @Environment(\.communityContext) var communityContext: (any Community1Providing)?
     @Environment(\.parentFrameWidth) var parentFrameWidth: CGFloat
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
@@ -48,7 +47,7 @@ struct TilePostView: View {
     var body: some View {
         content
             .frame(width: width, height: frameHeight)
-            .background(palette.secondaryGroupedBackground)
+            .background(.themedSecondaryGroupedBackground)
             .clipShape(.rect(cornerRadius: Constants.main.largeItemCornerRadius))
             .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.largeItemCornerRadius))
             .environment(\.postContext, post)
@@ -74,7 +73,7 @@ struct TilePostView: View {
     var titleSection: some View {
         post.taggedTitle(communityContext: communityContext)
             .lineLimit(post.type.lineLimit)
-            .foregroundStyle(post.read_ ?? false ? palette.secondary : palette.primary)
+            .foregroundStyle(post.read_ ?? false ? .themedSecondary : .themedPrimary)
             .font(.footnote)
             .fontWeight(.semibold)
             .frame(maxWidth: .infinity, minHeight: minTitleHeight, alignment: .topLeading)
@@ -87,7 +86,7 @@ struct TilePostView: View {
                     .lineLimit(1)
                     .font(.caption)
                     .fontWeight(.semibold)
-                    .foregroundStyle(palette.secondary)
+                    .foregroundStyle(.themedSecondary)
             }
             
             Spacer()
@@ -121,7 +120,7 @@ struct TilePostView: View {
     // MARK: - BaseImage
     
     struct BaseImage: View {
-        @Environment(Palette.self) var palette: Palette
+        @Environment(\.palette) var palette
         @Environment(\.communityContext) var communityContext
         
         @Setting(\.blurNsfw) var blurNsfw
@@ -145,7 +144,7 @@ struct TilePostView: View {
                     if post.nsfw {
                         Image(Icons.nsfwTag)
                             .symbolRenderingMode(.palette)
-                            .foregroundStyle(palette.background, palette.warning)
+                            .foregroundStyle(.themedBackground, .themedWarning)
                             .imageScale(.small)
                             .padding(.top, Constants.main.standardSpacing)
                             .padding(.trailing, Constants.main.halfSpacing)
@@ -158,16 +157,16 @@ struct TilePostView: View {
         var content: some View {
             switch post.type {
             case let .text(text):
-                MarkdownText(text, configuration: .caption)
-                    .foregroundStyle(palette.secondary)
+                MarkdownText(text, configuration: .caption(palette: palette))
+                    .foregroundStyle(.themedSecondary)
                     .padding(Constants.main.standardSpacing)
                     .frame(maxWidth: .infinity, maxHeight: height, alignment: .topLeading)
                     .clipped()
             case .titleOnly:
-                Image(systemName: post.placeholderImageName)
+                Image(systemName: post.imageFallback.icon)
                     .resizable()
                     .scaledToFit()
-                    .foregroundStyle(palette.secondary)
+                    .foregroundStyle(.themedSecondary)
                     .frame(width: Constants.main.thumbnailSize, height: Constants.main.thumbnailSize)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             case .media, .embedded:
@@ -199,7 +198,7 @@ struct TilePostView: View {
                 .background {
                     Capsule()
                         .fill(.regularMaterial)
-                        .overlay(Capsule().fill(palette.background.opacity(0.25)))
+                        .overlay(Capsule().fill(.themedBackground.opacity(0.25)))
                 }
                 .padding(Constants.main.compactSpacing)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)

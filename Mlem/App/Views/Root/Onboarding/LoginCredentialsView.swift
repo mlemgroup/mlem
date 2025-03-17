@@ -9,12 +9,12 @@ import MlemMiddleware
 import SwiftUI
 
 struct LoginCredentialsView: View {
-    @Environment(\.dismiss) var dismiss
-    @Environment(\.isRootView) var isRootView
     @Environment(NavigationLayer.self) var navigation
     @Environment(AppState.self) var appState
-    @Environment(Palette.self) var palette
-    
+    @Environment(\.palette) var palette
+    @Environment(\.dismiss) var dismiss
+    @Environment(\.isRootView) var isRootView
+
     @State var instance: (any InstanceStubProviding)?
     let account: UserAccount?
     
@@ -46,7 +46,7 @@ struct LoginCredentialsView: View {
     var body: some View {
         content
             .frame(maxWidth: .infinity)
-            .background(palette.groupedBackground.ignoresSafeArea())
+            .background(palette.groupedBackground.primary.ignoresSafeArea())
             .interactiveDismissDisabled((!usernameOrEmail.isEmpty && showUsernameField) || !password.isEmpty)
             .toolbar {
                 if navigation.isInsideSheet, isRootView {
@@ -99,7 +99,7 @@ struct LoginCredentialsView: View {
     
     @ViewBuilder
     func instanceHeader(_ instance: any InstanceStubProviding) -> some View {
-        CircleCroppedImageView(url: instance.avatar_, frame: 50, fallback: .instance)
+        CircleCroppedImageView(url: instance.avatar_, frame: 50, fallback: .instanceAvatar)
         Text(instance.displayName_ ?? instance.host)
             .font(.title)
             .bold()
@@ -151,7 +151,7 @@ struct LoginCredentialsView: View {
         .autocorrectionDisabled()
         .background(
             RoundedRectangle(cornerRadius: 16)
-                .fill(palette.secondaryGroupedBackground)
+                .fill(.themedSecondaryGroupedBackground)
         )
         .paletteBorder(cornerRadius: 16)
         .onAppear { focused = showUsernameField ? .usernameOrEmail : .password }

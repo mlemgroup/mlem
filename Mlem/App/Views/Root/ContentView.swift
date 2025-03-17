@@ -9,6 +9,7 @@ import Dependencies
 import MlemMiddleware
 import Nuke
 import SwiftUI
+import Theming
 
 struct ContentView: View {
     @Environment(\.scenePhase) var scenePhase
@@ -27,7 +28,6 @@ struct ContentView: View {
     
     // globals
     var appState: AppState { .main }
-    var palette: Palette { .main }
     var tabReselectTracker: TabReselectTracker { .main }
     var navigationModel: NavigationModel { .main }
     var filtersTracker: FiltersTracker { .main }
@@ -56,10 +56,12 @@ struct ContentView: View {
                 }
                 .navigationSheetModifiers(
                     nextLayer: navigationModel.layers.first,
+                    isTopSheet: navigationModel.layers.isEmpty,
+                    shareInfo: .init(get: { navigationModel.shareInfo }, set: { navigationModel.shareInfo = $0 }),
                     contentPickerTracker: navigationModel.contentPickerTracker
                 )
-                .tint(palette.accent)
-                .environment(palette)
+                .tint(.themedAccent)
+                .palette(colorPalette.palette)
                 .environment(tabReselectTracker)
                 .environment(appState)
                 .environment(filtersTracker)
@@ -81,11 +83,6 @@ struct ContentView: View {
                     // Observe AppState.main.firstPerson to update FiltersTracker as needed
                     // TODO: when Observation adds continous observation monitoring, move this into FiltersTracker
                     filtersTracker.moderatedCommunityActorIds = appState.firstPerson?.moderatedCommunityActorIds ?? .init()
-                }
-                .onChange(of: colorPalette) {
-                    withAnimation {
-                        palette.changePalette(to: colorPalette)
-                    }
                 }
                 .onChange(of: scenePhase, initial: false) {
                     if AppState.main.firstAccount is UserAccount, scenePhase != .active {

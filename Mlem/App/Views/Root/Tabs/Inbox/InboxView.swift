@@ -12,7 +12,6 @@ import SwiftUI
 struct InboxView: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(AppState.self) var appState
-    @Environment(Palette.self) var palette
     @Environment(FiltersTracker.self) var filtersTracker
     
     @Setting(\.showReadInInbox) var showRead
@@ -87,7 +86,7 @@ struct InboxView: View {
     }
     
     var availableFeeds: [Feed] {
-        if appState.firstApi.isAdmin || !(appState.firstPerson?.moderatedCommunities.isEmpty ?? true) {
+        if appState.isModOrAdmin {
             return [.inbox, .modMail]
         }
         return [.inbox]
@@ -98,7 +97,7 @@ struct InboxView: View {
             signedOutInfoView
         } else {
             content
-                .background(palette.groupedBackground)
+                .background(.themedGroupedBackground)
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar { toolbar }
                 .loadFeed(inboxFeedLoader)
@@ -179,6 +178,9 @@ struct InboxView: View {
     
     private func refresh() async {
         do {
+            if selectedFeed == .modMail, !appState.isModOrAdmin {
+                selectedFeed = .inbox
+            }
             try await inboxFeedLoader.refresh(clearBeforeRefresh: true)
             try await modMailFeedLoader.refresh(clearBeforeRefresh: true)
         } catch {
@@ -187,7 +189,7 @@ struct InboxView: View {
     }
     
     private func toggleFeed() {
-        selectedFeed = selectedFeed == .inbox ? .modMail : .inbox
+        selectedFeed = selectedFeed == .inbox && appState.isModOrAdmin ? .modMail : .inbox
     }
 }
 

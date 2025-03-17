@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct AccessibilitySettingsView: View {
-    @Environment(Palette.self) var palette
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor: Bool
 
     @Setting(\.readPostIndicator) var readPostIndicator
     @Setting(\.websiteThumbnailIcon) var websiteThumbnailIcon
     @Setting(\.showSettingsIcons) var showSettingsIcons
     @Setting(\.zoomSliderLocation) var zoomSliderLocation
+    @Setting(\.animatedAvatars) var animatedAvatars
     
     var body: some View {
         Form {
@@ -23,7 +23,7 @@ struct AccessibilitySettingsView: View {
                 description: "Customize Mlem to work best for you. Some features are tied to system-wide accessibility settings.",
                 systemImage: "hand.point.up.braille.fill"
             )
-            .tint(palette.colorfulAccent(2))
+            .tint(.themedColorfulAccent(2))
             if differentiateWithoutColor {
                 Section {
                     NavigationLink(
@@ -43,6 +43,20 @@ struct AccessibilitySettingsView: View {
                 Toggle("Settings Icons", systemImage: Icons.icon, isOn: $showSettingsIcons)
             } header: {
                 Text("Non-Text Indicators")
+            }
+                       
+            if #available(iOS 18, *) {
+                Section {
+                    NavigationLink(
+                        "Animated Avatars",
+                        value: .init(localized: animatedAvatars.label),
+                        fallbackValue: "",
+                        systemImage: Icons.playCircle,
+                        destination: .settings(.animatedAvatars)
+                    )
+                } header: {
+                    Text("Reduce Motion")
+                }
             }
             
             Section {

@@ -12,7 +12,6 @@ import SwiftUI
 struct MessageView<EmbeddedContent: View>: View {
     @Environment(AppState.self) private var appState
     @Environment(NavigationLayer.self) private var navigation
-    @Environment(Palette.self) private var palette
     @Environment(\.reportContext) private var reportContext
     
     @Setting(\.moderatorActionGrouping) var moderatorActionGrouping
@@ -39,7 +38,7 @@ struct MessageView<EmbeddedContent: View>: View {
                 if isInInbox {
                     Image(systemName: message.isOwnMessage ? Icons.send : Icons.message)
                         .symbolVariant(message.read ? .none : .fill)
-                        .foregroundStyle(palette.accent)
+                        .foregroundStyle(.themedAccent)
                 }
                 ellipsisMenus
                     .frame(height: 10)
@@ -47,7 +46,7 @@ struct MessageView<EmbeddedContent: View>: View {
             if message.deleted {
                 Text("Message was deleted")
                     .italic()
-                    .foregroundStyle(palette.secondary)
+                    .foregroundStyle(.themedSecondary)
             } else {
                 MarkdownWithLinkList(message.content)
             }
@@ -59,13 +58,13 @@ struct MessageView<EmbeddedContent: View>: View {
                 }
             }
             .font(.caption)
-            .foregroundStyle(palette.secondary)
+            .foregroundStyle(.themedSecondary)
             embeddedContent
         }
         .padding(.vertical, 2)
         .padding(Constants.main.standardSpacing)
         .clipped()
-        .background(palette.secondaryGroupedBackground)
+        .background(.themedSecondaryGroupedBackground)
         .contentShape(.rect)
         .quickSwipes(message.swipeActions(appState: appState, behavior: .standard))
         .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))

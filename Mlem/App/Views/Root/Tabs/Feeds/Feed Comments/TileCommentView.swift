@@ -12,7 +12,8 @@ import SwiftUI
 
 struct TileCommentView: View {
     @Environment(AppState.self) var appState
-    @Environment(Palette.self) var palette
+    @Environment(NavigationLayer.self) var navigation
+    @Environment(\.palette) var palette
     @Environment(\.parentFrameWidth) var parentFrameWidth: CGFloat
     
     let comment: any Comment
@@ -39,7 +40,7 @@ struct TileCommentView: View {
     var body: some View {
         content
             .frame(width: width, height: frameHeight)
-            .background(palette.secondaryGroupedBackground)
+            .background(.themedSecondaryGroupedBackground)
             .clipShape(.rect(cornerRadius: Constants.main.largeItemCornerRadius))
             .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.largeItemCornerRadius))
     }
@@ -53,11 +54,11 @@ struct TileCommentView: View {
                     .padding(Constants.main.halfSpacing)
                     .background {
                         RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius)
-                            .fill(palette.tertiaryGroupedBackground)
+                            .fill(.themedTertiaryGroupedBackground)
                     }
                     .paletteBorder(cornerRadius: Constants.main.smallItemCornerRadius)
             }
-            MarkdownText(comment.content, configuration: .caption)
+            MarkdownText(comment.content, configuration: .caption(palette: palette))
                 .frame(height: contentHeight, alignment: .top)
                 .clipped()
 
@@ -70,7 +71,7 @@ struct TileCommentView: View {
     func titleSection(post: any Post) -> some View {
         Text(post.title)
             .lineLimit(2)
-            .foregroundStyle(palette.secondary)
+            .foregroundStyle(.themedSecondary)
             .font(.footnote)
             .fontWeight(.semibold)
             .frame(maxWidth: .infinity, alignment: .topLeading)
@@ -78,7 +79,7 @@ struct TileCommentView: View {
     
     var replyIcon: Text {
         Text(Image(systemName: Icons.reply))
-            .foregroundStyle(palette.accent)
+            .foregroundStyle(.themedAccent)
     }
     
     var communityAndInfo: some View {
@@ -88,7 +89,7 @@ struct TileCommentView: View {
                     .lineLimit(1)
                     .font(.caption)
                     .fontWeight(.semibold)
-                    .foregroundStyle(palette.secondary)
+                    .foregroundStyle(.themedSecondary)
             }
             
             Spacer()
@@ -100,7 +101,7 @@ struct TileCommentView: View {
     
     var score: some View {
         Menu {
-            ForEach(comment.allMenuActions(appState: appState), id: \.id) { action in
+            ForEach(comment.allMenuActions(appState: appState, navigation: navigation), id: \.id) { action in
                 MenuButton(action: action)
             }
         } label: {

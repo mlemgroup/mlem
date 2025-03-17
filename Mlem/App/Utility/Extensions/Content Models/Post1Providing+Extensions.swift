@@ -139,10 +139,15 @@ extension Post1Providing {
         report: Report? = nil,
         commentTreeTracker: CommentTreeTracker? = nil
     ) -> [any Action] {
-        basicMenuActions(appState: appState, feedback: feedback, commentTreeTracker: commentTreeTracker)
+        basicMenuActions(
+            appState: appState,
+            feedback: feedback,
+            navigation: navigation,
+            commentTreeTracker: commentTreeTracker
+        )
         if canModerate {
             ActionGroup(
-                appearance: .init(label: "Moderation...", color: Palette.main.moderation, icon: Icons.moderation),
+                appearance: .init(label: "Moderation...", color: .themedModeration, icon: Icons.moderation),
                 displayMode: Settings.main.moderatorActionGrouping == .divider || expanded ? .section : .disclosure
             ) {
                 moderatorMenuActions(
@@ -160,6 +165,7 @@ extension Post1Providing {
     func basicMenuActions(
         appState: AppState,
         feedback: Set<FeedbackType> = [.haptic, .toast],
+        navigation: NavigationLayer?,
         commentTreeTracker: CommentTreeTracker? = nil
     ) -> [any Action] {
         ActionGroup(displayMode: .compactSection) {
@@ -170,7 +176,7 @@ extension Post1Providing {
             if !deleted {
                 selectTextAction()
             }
-            shareAction()
+            shareAction(navigation: navigation)
             
             if isOwnPost {
                 editAction(appState: appState)
@@ -228,6 +234,7 @@ extension Post1Providing {
     // swiftlint:disable:next cyclomatic_complexity
     func action(
         appState: AppState,
+        navigation: NavigationLayer,
         type: PostBarConfiguration.ActionType,
         feedback: Set<FeedbackType> = [.haptic, .toast],
         commentTreeTracker: CommentTreeTracker? = nil,
@@ -239,7 +246,7 @@ extension Post1Providing {
         case .downvote: api.downvotesEnabled ? downvoteAction(appState: appState, feedback: feedback) : nil
         case .save: saveAction(appState: appState, feedback: feedback)
         case .reply: replyAction(appState: appState, commentTreeTracker: commentTreeTracker)
-        case .share: shareAction()
+        case .share: shareAction(navigation: navigation)
         case .selectText: selectTextAction()
         case .hide: hideAction(appState: appState, feedback: feedback)
         case .block: blockAction(appState: appState, feedback: feedback)
@@ -293,11 +300,11 @@ extension Post1Providing {
             || (communityContext != nil && pinnedCommunity)
             || locked
         
-        return postTag(active: removed, icon: Icons.removeFill, color: Palette.main.negative) +
-            postTag(active: deleted, icon: Icons.delete, color: Palette.main.negative) +
-            postTag(active: pinnedInstance, icon: Icons.pinFill, color: Palette.main.administration) +
-            postTag(active: pinnedCommunity && communityContext != nil, icon: Icons.pinFill, color: Palette.main.moderation) +
-            postTag(active: locked, icon: Icons.lockFill, color: Palette.main.lockAccent) +
+        return postTag(active: removed, icon: Icons.removeFill, color: .themedNegative) +
+            postTag(active: deleted, icon: Icons.delete, color: .themedNegative) +
+            postTag(active: pinnedInstance, icon: Icons.pinFill, color: .themedAdministration) +
+            postTag(active: pinnedCommunity && communityContext != nil, icon: Icons.pinFill, color: .themedModeration) +
+            postTag(active: locked, icon: Icons.lockFill, color: .themedLockAccent) +
             Text(verbatim: "\(hasTags ? "  " : "")\(title)")
     }
     
@@ -309,12 +316,13 @@ extension Post1Providing {
         return nil
     }
     
-    var placeholderImageName: String {
+    var imageFallback: MediaView.Fallback {
         switch type {
-        case .text: Icons.textPost
-        case .media, .embedded: Icons.photo
-        case .link: Icons.websiteIcon
-        case .titleOnly: Icons.titleOnlyPost
+        case .text: .text
+        case let .media(url), let .embedded(url, _):
+            url.proxyAwarePathExtension?.isMovieExtension ?? false ? .movie : .image
+        case .link: .link
+        case .titleOnly: .titleOnly
         }
     }
     
@@ -332,15 +340,6 @@ extension Post1Providing {
     }
     
     // MARK: Actions
-    
-    // Overrides the `ActorIdentifiable+Extensions` implementation
-    func shareAction() -> ShareAction {
-        .init(
-            id: "share\(actorId)",
-            url: actorId.url,
-            actions: [crossPostAction(), sendLinkInPrivateMessageAction()]
-        )
-    }
     
     func crossPostAction() -> BasicAction {
         .init(
@@ -378,7 +377,7 @@ extension Post1Providing {
             appearance: .init(
                 label: "Block...",
                 isDestructive: true,
-                color: Palette.main.negative,
+                color: .themedNegative,
                 icon: Icons.block
             ),
             prompt: "Block community or user?",
@@ -397,7 +396,7 @@ extension Post1Providing {
                 label: "Block Community",
                 isOn: false,
                 isDestructive: true,
-                color: Palette.main.negative,
+                color: .themedNegative,
                 icon: Icons.block
             ),
             confirmationPrompt: showConfirmation ? "Really block this community?" : nil,

@@ -18,7 +18,6 @@ struct FeedsView: View {
     @Setting(\.embedLoops) var embedLoops
     
     @Environment(AppState.self) var appState
-    @Environment(Palette.self) var palette
     @Environment(FiltersTracker.self) var filtersTracker
     
     @ObservationIgnored @Dependency(\.persistenceRepository) private var persistenceRepository
@@ -91,7 +90,7 @@ struct FeedsView: View {
     
     var body: some View {
         content
-            .background(palette.groupedBackground)
+            .background(.themedGroupedBackground)
             .scrollContentBackground(.hidden)
             .toolbar {
                 if !isAtTop {
@@ -139,7 +138,7 @@ struct FeedsView: View {
     var content: some View {
         FancyScrollView(scrollToTopTrigger: $scrollToTopTrigger) {
             Section {
-                if AccountsTracker.main.isEmpty, showWelcomePrompt {
+                if AccountsTracker.main.isEmpty, showWelcomePrompt, !appState.firstApi.willSendToken {
                     FeedWelcomeView()
                         .padding([.horizontal, .bottom], Constants.main.standardSpacing)
                 }
@@ -195,7 +194,7 @@ struct FeedsView: View {
                 filterContext: filtersTracker.filterContext,
                 prefetchingConfiguration: .forPostSize(postSize),
                 urlCache: Constants.main.urlCache,
-                api: AppState.main.firstApi,
+                api: appState.firstApi,
                 feedType: feedSelection.associatedApiType
             )
         } catch {
@@ -203,3 +202,11 @@ struct FeedsView: View {
         }
     }
 }
+
+#if DEBUG
+    #Preview(traits: .sampleEnvironment(api: .realistic)) {
+        FeedsView()
+            .previewNavigationStack(backButtonLabel: "Feeds")
+            .previewTabBar(selected: .feeds)
+    }
+#endif

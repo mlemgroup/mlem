@@ -16,7 +16,6 @@ struct CompactPostView: View {
     @Setting(\.showDownvotesCompact) var showDownvotesCompact
     
     @Environment(\.communityContext) var communityContext: (any Community1Providing)?
-    @Environment(Palette.self) var palette: Palette
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
     
     @ScaledMetric(relativeTo: .caption) var titleHostHeightLimit: CGFloat = 40
@@ -44,7 +43,7 @@ struct CompactPostView: View {
     var body: some View {
         content
             .padding(Constants.main.standardSpacing)
-            .background(palette.secondaryGroupedBackground)
+            .background(.themedSecondaryGroupedBackground)
             .environment(\.postContext, post)
     }
     
@@ -74,7 +73,7 @@ struct CompactPostView: View {
                     
                     if post.nsfw {
                         Image(Icons.nsfwTag)
-                            .foregroundStyle(palette.warning)
+                            .foregroundStyle(.themedWarning)
                             .imageScale(.small)
                     }
 
@@ -121,7 +120,7 @@ struct CompactPostView: View {
         post.taggedTitle(communityContext: communityContext)
             .multilineTextAlignment(.leading)
             .imageScale(.small)
-            .foregroundStyle(post.read_ ?? false ? palette.secondary : palette.primary)
+            .foregroundStyle(post.read_ ?? false ? .themedSecondary : .themedPrimary)
             .font(.subheadline)
     }
 }

@@ -31,8 +31,8 @@ struct SearchView: View {
     
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
-    @Environment(Palette.self) var palette
     @Environment(FiltersTracker.self) var filtersTracker
+    @Environment(\.palette) var palette
     
     @Setting(\.compactComments) var compactComments
     
@@ -76,7 +76,7 @@ struct SearchView: View {
     
     var body: some View {
         content
-            .background(palette.groupedBackground)
+            .background(.themedGroupedBackground)
             .navigationTitle("Search")
             .navigationBarTitleDisplayMode(.large)
             .navigationSearchBar(searchBar)

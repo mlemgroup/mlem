@@ -9,8 +9,6 @@ import Nuke
 import SwiftUI
 
 struct AdvancedSettingsView: View {
-    @Environment(Palette.self) var palette
-
     var body: some View {
         Form {
             Section {
@@ -19,7 +17,7 @@ struct AdvancedSettingsView: View {
                     Spacer()
                     TimelineView(.periodic(from: .now, by: 0.5)) { _ in
                         Text(ByteCountFormatter.string(fromByteCount: Int64(URLCache.shared.currentDiskUsage), countStyle: .file))
-                            .foregroundStyle(palette.secondary)
+                            .foregroundStyle(.themedSecondary)
                     }
                 }
             }

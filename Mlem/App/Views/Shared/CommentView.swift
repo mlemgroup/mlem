@@ -11,10 +11,11 @@ import SwiftUI
 
 struct CommentView<EmbeddedContent: View>: View {
     @Environment(AppState.self) var appState
-    @Environment(Palette.self) private var palette
     @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?
+    @Environment(NavigationLayer.self) var navigation
     @Environment(\.communityContext) var communityContext: (any Community1Providing)?
     @Environment(\.reportContext) private var reportContext: Report?
+    @Environment(\.palette) private var palette
     
     @Setting(\.compactComments) var compactComments
     @Setting(\.tapCommentsToCollapse) var tapCommentsToCollapse
@@ -115,6 +116,7 @@ struct CommentView<EmbeddedContent: View>: View {
                     if !compact {
                         InteractionBarView(
                             appState: appState,
+                            navigation: navigation,
                             comment: comment,
                             configuration: interactionBarConfiguration,
                             commentTreeTracker: commentTreeTracker,
@@ -132,7 +134,7 @@ struct CommentView<EmbeddedContent: View>: View {
         }
         .padding(depth == 0 ? .horizontal : .trailing, Constants.main.standardSpacing)
         .background(highlight ? palette.accent.opacity(0.2) : .clear)
-        .background(palette.secondaryGroupedBackground)
+        .background(.themedSecondaryGroupedBackground)
         .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
         .contentShape(.interaction, .rect)
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
@@ -152,13 +154,18 @@ struct CommentView<EmbeddedContent: View>: View {
                     }
                 }
                 EllipsisMenu(size: 24) {
-                    comment.basicMenuActions(appState: appState, commentTreeTracker: commentTreeTracker)
+                    comment.basicMenuActions(
+                        appState: appState,
+                        navigation: navigation,
+                        commentTreeTracker: commentTreeTracker
+                    )
                 }
             } else {
                 EllipsisMenu(size: 24) {
                     comment.allMenuActions(
                         appState: appState,
                         showAllActions: !inFeed,
+                        navigation: navigation,
                         commentTreeTracker: commentTreeTracker,
                         report: reportContext
                     )
@@ -176,13 +183,11 @@ struct CommentView<EmbeddedContent: View>: View {
 }
 
 struct CommentBarView: View {
-    @Environment(Palette.self) var palette
-    
     let depth: Int
     
     var body: some View {
         Capsule()
-            .fill(palette.commentIndentColors[depth % palette.commentIndentColors.count])
+            .fill(.themedCommentIndentColor(depth))
             .frame(width: 3)
             .frame(maxHeight: .infinity)
             .padding(.leading, 8)

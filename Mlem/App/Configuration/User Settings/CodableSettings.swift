@@ -49,11 +49,13 @@ struct CodableSettings: Codable { // swiftlint:disable:this type_body_length
     var feed_markReadOnScroll: Bool
     var feed_showRead: Bool
     var inbox_showRead: Bool
-    var links_displayMode: String // TODO: pending easy-tap links
+    var links_displayMode: TappableLinksDisplayMode
     var links_openInBrowser: Bool
     var links_readerMode: Bool
+    var links_shareMode: LinkSharingMode
     var links_embedLoops: Bool
     var links_tappableLinksDisplayMode: TappableLinksDisplayMode
+    var media_animatedAvatars: AnimatedAvatarBehavior
     var menus_allModActions: Bool
     var menus_modActionGrouping: ModeratorActionGrouping
     var post_defaultSort: ApiSortType
@@ -131,7 +133,14 @@ struct CodableSettings: Codable { // swiftlint:disable:this type_body_length
         self.comment_gestures_tapToCollapse = try container.decodeIfPresent(Bool.self, forKey: .comment_gestures_tapToCollapse) ?? true
         self.comment_jumpButton = try container.decodeIfPresent(CommentJumpButtonLocation.self, forKey: .comment_jumpButton) ?? .bottomTrailing
         self.comment_showCreatorInstance = try container.decodeIfPresent(Bool.self, forKey: .comment_showCreatorInstance) ?? true
-        self.comment_maxDepth = try container.decodeIfPresent(Int.self, forKey: .comment_maxDepth) ?? 8
+        
+        if let value = try container.decodeIfPresent(Int.self, forKey: .comment_maxDepth) {
+            self.comment_maxDepth = value
+        } else if let value = try container.decodeIfPresent(Bool.self, forKey: .comment_behaviors_collapseChildren) {
+            self.comment_maxDepth = value ? 1 : 8
+        } else {
+            self.comment_maxDepth = 8
+        }
         self.community_showAvatar = try container.decodeIfPresent(Bool.self, forKey: .community_showAvatar) ?? true
         self.community_showBanner = try container.decodeIfPresent(Bool.self, forKey: .community_showBanner) ?? true
         self.community_showInstance = try container.decodeIfPresent(Bool.self, forKey: .community_showInstance) ?? true
@@ -163,11 +172,13 @@ struct CodableSettings: Codable { // swiftlint:disable:this type_body_length
             self.tab_inbox_badgeIncludedTypes = includedTypes
         }
         self.inbox_showRead = try container.decodeIfPresent(Bool.self, forKey: .inbox_showRead) ?? true
-        self.links_displayMode = try container.decodeIfPresent(String.self, forKey: .links_displayMode) ?? "contextual"
+        self.links_displayMode = try container.decodeIfPresent(TappableLinksDisplayMode.self, forKey: .links_displayMode) ?? .contextual
         self.links_openInBrowser = try container.decodeIfPresent(Bool.self, forKey: .links_openInBrowser) ?? false
         self.links_readerMode = try container.decodeIfPresent(Bool.self, forKey: .links_readerMode) ?? false
+        self.links_shareMode = try container.decodeIfPresent(LinkSharingMode.self, forKey: .links_shareMode) ?? .myInstance
         self.links_tappableLinksDisplayMode = try container.decodeIfPresent(TappableLinksDisplayMode.self, forKey: .links_tappableLinksDisplayMode) ?? .contextual
         self.links_embedLoops = try container.decodeIfPresent(Bool.self, forKey: .links_embedLoops) ?? true
+        self.media_animatedAvatars = try container.decodeIfPresent(Bool.self, forKey: .media_animatedAvatars) ?? UIAccessibility.isReduceMotionEnabled ? .never : .always
         self.menus_allModActions = try container.decodeIfPresent(Bool.self, forKey: .menus_allModActions) ?? false
         self.menus_modActionGrouping = try container.decodeIfPresent(ModeratorActionGrouping.self, forKey: .menus_modActionGrouping) ?? .divider
         self.post_defaultSort = try container.decodeIfPresent(ApiSortType.self, forKey: .post_defaultSort) ?? .hot
@@ -211,17 +222,17 @@ struct CodableSettings: Codable { // swiftlint:disable:this type_body_length
     init(from settings: Settings, filteredKeywords: Set<String>) {
         self.a11y_readPostIndicator = settings.readPostIndicator
         self.a11y_readOutlineThickness = settings.readOutlineThickness
-        self.a11y_showSettingsIcons = true
+        self.a11y_showSettingsIcons = settings.showSettingsIcons
         self.a11y_websiteThumbnailIcon = settings.websiteThumbnailIcon
         self.a11y_zoomSliderLocation = settings.zoomSliderLocation
-        self.accounts_defaultId = nil
+        self.accounts_defaultId = nil // In 2.0, the last used account is now activated when the app is opened
         self.accounts_grouped = settings.groupAccountSort
         self.accounts_sort = settings.accountSort
         self.accounts_keepPlace = settings.keepPlaceOnAccountSwitch
         self.appearance_interfaceStyle = settings.interfaceStyle
         self.appearance_palette = settings.colorPalette
         self.markdown_wrapCodeBlockLines = settings.wrapCodeBlockLines
-        self.behavior_biometricUnlock = false
+        self.behavior_biometricUnlock = false // Removed in 2.0
         self.behavior_confirmImageUploads = settings.confirmImageUploads
         self.behavior_enableQuickSwipes = settings.quickSwipesEnabled
         self.behavior_hapticLevel = settings.hapticLevel
@@ -230,53 +241,55 @@ struct CodableSettings: Codable { // swiftlint:disable:this type_body_length
         self.behavior_autoplayMedia = settings.autoplayMedia
         self.behavior_muteVideos = settings.muteVideos
         self.behavior_infiniteScroll = settings.infiniteScroll
-        self.comment_behaviors_collapseChildren = false
+        self.comment_behaviors_collapseChildren = false // Replaced by comment_maxDepth in 2.0
         self.comment_compact = settings.compactComments
         self.comment_defaultSort = settings.commentSort
         self.comment_gestures_tapToCollapse = settings.tapCommentsToCollapse
         self.comment_jumpButton = settings.jumpButton
-        self.comment_showCreatorInstance = true
-        self.comment_maxDepth = 8
+        self.comment_showCreatorInstance = true // Removed in 2.0
+        self.comment_maxDepth = settings.maxCommentDepth
         self.community_showAvatar = settings.showCommunityAvatar
-        self.community_showBanner = true
-        self.community_showInstance = true
+        self.community_showBanner = true // Removed in 2.0
+        self.community_showInstance = true // Removed in 2.0
         self.dev_developerMode = settings.developerMode
         self.feed_default = settings.defaultFeed
         self.feed_markReadOnScroll = settings.markReadOnScroll
         self.feed_showRead = settings.showReadInFeed
         self.inbox_showRead = settings.showReadInInbox
-        self.links_displayMode = "contextual"
+        self.links_displayMode = settings.tappableLinksDisplayMode
         self.links_openInBrowser = settings.openLinksInBrowser
         self.links_readerMode = settings.openLinksInReaderMode
+        self.links_shareMode = settings.linkSharingMode
         self.links_tappableLinksDisplayMode = settings.tappableLinksDisplayMode
         self.links_embedLoops = settings.embedLoops
+        self.media_animatedAvatars = settings.animatedAvatars
         self.menus_allModActions = settings.showAllModActions
         self.menus_modActionGrouping = settings.moderatorActionGrouping
         self.post_defaultSort = settings.defaultPostSort
         self.post_fallbackSort = settings.fallbackPostSort
-        self.post_limitImageHeight = true
+        self.post_limitImageHeight = true // Removed in 2.0
         self.post_showCreator = settings.showPostCreator
-        self.post_showCreatorInstance = true
+        self.post_showCreatorInstance = true // Removed in 2.0
         self.post_showSubscribedStatus = settings.showSubscribedStatus
-        self.post_showWebsitePreview = true
+        self.post_showWebsitePreview = true // Removed in 2.0
         self.post_size = settings.postSize
         self.post_allowMultipleColumns = settings.allowMultiplePostColumns
         self.post_thumbnailLocation = settings.thumbnailLocation
-        self.post_webPreview_showHost = true
-        self.post_webPreview_showIcon = true
+        self.post_webPreview_showHost = true // Removed in 2.0
+        self.post_webPreview_showIcon = settings.showFavicons
         self.post_showDownvotesCompact = settings.showDownvotesCompact
-        self.profile_showBanner = true
+        self.profile_showBanner = true // Removed in 2.0
         self.safety_blurNsfw = settings.blurNsfw
         self.safety_enableNsfwCommunityWarning = settings.showNsfwCommunityWarning
         self.safety_enableModlogWarning = settings.showModlogWarning
-        self.tab_gestures_enableLongPress = true
-        self.tab_gestures_enableSwipeUp = true
+        self.tab_gestures_enableLongPress = true // Removed in 2.0
+        self.tab_gestures_enableSwipeUp = true // Removed in 2.0
         self.tab_profile_labelType = settings.tabProfileLabelType
         self.tab_profile_showAvatar = settings.tabProfileShowAvatar
         self.tab_inbox_badgeIncludedTypes = settings.tabInboxBadgeIncludedTypes
-        self.tab_showNames = true
+        self.tab_showNames = true // Removed in 2.0
         self.person_showAvatar = settings.showPersonAvatar
-        self.person_showInstance = true
+        self.person_showInstance = true // Removed in 2.0
         self.privacy_autoBypassImageProxy = settings.autoBypassImageProxy
         self.privacy_showFavicons = settings.showFavicons
         self.status_bypassImageProxyShown = settings.bypassImageProxyShown

@@ -41,7 +41,6 @@ struct VotesListView: View {
     
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
-    @Environment(Palette.self) var palette
     
     let target: Target
     
@@ -61,12 +60,12 @@ struct VotesListView: View {
                                 .imageScale(.large)
                                 .symbolVariant(.fill)
                                 .symbolRenderingMode(.palette)
-                                .foregroundStyle(palette.selectedInteractionBarItem, vote.vote.color)
+                                .foregroundStyle(.themedContrastingLabel, vote.vote.color)
                         }
                     }
                     .padding([.vertical, .trailing], Constants.main.halfSpacing)
                     .padding(.leading, Constants.main.standardSpacing)
-                    .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+                    .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
                     .paletteBorder(cornerRadius: Constants.main.standardSpacing)
                     .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
                     .contextMenu {
@@ -81,7 +80,7 @@ struct VotesListView: View {
             }
         }
         .environment(\.communityContext, target.model.community_)
-        .background(palette.groupedBackground)
+        .background(.themedGroupedBackground)
         .navigationTitle("Votes")
     }
     

@@ -15,7 +15,7 @@ struct ExternalLinkSettingsView: View {
         Form {
             Section("Open External Links") {
                 Picker("Open External Links", selection: $openLinksInBrowser) {
-                    Label("In-App", systemImage: Icons.inApp).tag(false)
+                    Label("In Mlem", systemImage: Icons.inApp).tag(false)
                     Label("In Default Browser", systemImage: Icons.browser).tag(true)
                 }
                 .pickerStyle(.inline)

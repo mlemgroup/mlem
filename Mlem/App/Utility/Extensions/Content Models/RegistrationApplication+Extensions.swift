@@ -29,7 +29,7 @@ extension RegistrationApplication {
             id: "approveApplication\(id)",
             appearance: .init(
                 label: "Approve",
-                color: Palette.main.positive,
+                color: .themedPositive,
                 icon: Icons.successCircle
             ),
             callback: { self.approve() }
@@ -41,7 +41,7 @@ extension RegistrationApplication {
             id: "denyApplication\(id)",
             appearance: .init(
                 label: "Deny",
-                color: Palette.main.negative,
+                color: .themedNegative,
                 icon: Icons.failureCircle
             ),
             callback: showDenialSheet

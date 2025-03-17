@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct InboxSettingsView: View {
-    @Environment(Palette.self) var palette
-    
     @Setting(\.tabInboxBadgeIncludedTypes) var tabInboxBadgeIncludedTypes
     
     var body: some View {
@@ -20,7 +18,7 @@ struct InboxSettingsView: View {
                 description: "Customize the interaction bar for inbox items, and choose which types of notification are included in the tab bar badge.",
                 systemImage: Icons.inboxFill
             )
-            .tint(palette.inbox)
+            .tint(.themedInbox)
             Section {
                 NavigationLink(.settings(.replyInteractionBar)) {
                     SettingsInteractionBarSummaryView(configuration: InteractionBarTracker.main.replyInteractionBar)

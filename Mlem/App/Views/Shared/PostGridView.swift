@@ -22,7 +22,6 @@ struct PostGridView: View {
     @Setting(\.infiniteScroll) var infiniteScroll
     @Setting(\.allowMultiplePostColumns) var allowMultipleColumns
     
-    @Environment(Palette.self) var palette
     @Environment(FiltersTracker.self) var filtersTracker
     
     @Environment(\.communityContext) var communityContext
@@ -56,13 +55,7 @@ struct PostGridView: View {
                     handleError(error)
                 }
             }
-            .toolbar {
-                ToolbarItemGroup(placement: .secondaryAction) {
-                    SwiftUI.Section {
-                        standardMenu
-                    }
-                }
-            }
+            .toolbar { FeedToolbarOptions() }
     }
     
     var content: some View {
@@ -132,23 +125,6 @@ struct PostGridView: View {
         } else {
             // Only trigger if not already 1 column to avoid causing unnecessary view update
             return [GridItem(.flexible())]
-        }
-    }
-    
-    @ViewBuilder
-    var standardMenu: some View {
-        Button(showRead ? "Hide Read" : "Show Read", systemImage: Icons.read) {
-            showRead.toggle()
-        }
-        
-        Menu {
-            Picker("Post Size", selection: $postSize) {
-                ForEach(PostSize.allCases, id: \.self) { item in
-                    Label(String(localized: item.label), systemImage: item.icon(filled: postSize == item))
-                }
-            }
-        } label: {
-            Label("Post Size", systemImage: Icons.postSizeSetting)
         }
     }
 }

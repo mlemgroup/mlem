@@ -18,7 +18,7 @@ struct HeadlinePostView<EmbeddedContent: View>: View {
 
     @Environment(AppState.self) private var appState
     @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?
-    @Environment(Palette.self) var palette: Palette
+    @Environment(NavigationLayer.self) var navigation
     @Environment(\.communityContext) var communityContext: (any Community1Providing)?
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
     @Environment(\.reportContext) private var reportContext: Report?
@@ -48,7 +48,7 @@ struct HeadlinePostView<EmbeddedContent: View>: View {
     var body: some View {
         contentView
             .padding(Constants.main.standardSpacing)
-            .background(palette.secondaryGroupedBackground)
+            .background(.themedSecondaryGroupedBackground)
             .environment(\.postContext, post)
     }
     
@@ -68,7 +68,7 @@ struct HeadlinePostView<EmbeddedContent: View>: View {
                 
                 if post.nsfw {
                     Image(Icons.nsfwTag)
-                        .foregroundStyle(palette.warning)
+                        .foregroundStyle(.themedWarning)
                 }
                 
                 PostEllipsisMenus(post: post)
@@ -86,6 +86,7 @@ struct HeadlinePostView<EmbeddedContent: View>: View {
                 appState: appState,
                 post: post,
                 configuration: interactionBarConfiguration,
+                navigation: navigation,
                 commentTreeTracker: commentTreeTracker,
                 communityContext: communityContext,
                 reportContext: reportContext

@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct LinkSettingsView: View {
-    @Environment(Palette.self) var palette
     @Setting(\.openLinksInBrowser) var openLinksInBrowser
     @Setting(\.openLinksInReaderMode) var openLinksInReaderMode
+    @Setting(\.linkSharingMode) var linkSharingMode
     @Setting(\.tappableLinksDisplayMode) var tappableLinksDisplayMode
     @Setting(\.compactComments) var compactComments
     @Setting(\.embedLoops) var embedLoops
@@ -24,7 +24,7 @@ struct LinkSettingsView: View {
                 description: "Manage how Mlem handles links and control how images and videos are displayed.",
                 systemImage: "photo.fill"
             )
-            .tint(palette.colorfulAccent(4))
+            .tint(.themedColorfulAccent(4))
             Section {
                 NavigationLink(
                     "Open External Links",
@@ -32,6 +32,13 @@ struct LinkSettingsView: View {
                     fallbackValue: "",
                     systemImage: "arrow.up.right",
                     destination: .settings(.externalLinks)
+                )
+                NavigationLink(
+                    "Share Links",
+                    value: .init(localized: sharingLinksNavigationLinkValue),
+                    fallbackValue: "",
+                    systemImage: Icons.share,
+                    destination: .settings(.sharingLinks)
                 )
                 NavigationLink(
                     "Tappable Links",
@@ -67,7 +74,16 @@ struct LinkSettingsView: View {
         if openLinksInBrowser {
             "In Browser"
         } else {
-            openLinksInReaderMode ? "In Reader" : "In-App"
+            openLinksInReaderMode ? "In Reader" : "In Mlem"
+        }
+    }
+    
+    var sharingLinksNavigationLinkValue: LocalizedStringResource {
+        switch linkSharingMode {
+        case .myInstance: "My Instance"
+        case .originalInstance: "Original Instance"
+        case .lemmyverse: "Universal"
+        case .askEveryTime: "Ask Every Time"
         }
     }
 }

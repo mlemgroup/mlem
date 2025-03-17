@@ -9,7 +9,6 @@ import SwiftUI
 
 struct ImageViewer: View {
     @Environment(NavigationLayer.self) var navigation
-    @Environment(Palette.self) var palette
     @Environment(\.dismiss) var dismiss
     @Environment(\.colorScheme) var colorScheme
     @Setting(\.zoomSliderLocation) var zoomSliderLocation
@@ -21,8 +20,9 @@ struct ImageViewer: View {
     let screenHeight: CGFloat = UIScreen.main.bounds.height
     
     @State var controlState: MediaControlState = .init(
+        blurred: false,
         animating: true,
-        embedControls: false
+        overlays: [.error]
     )
     
     /// Current scale of the ZoomableContainer
@@ -70,7 +70,7 @@ struct ImageViewer: View {
     
     var body: some View {
         ZoomableContainer(isZoomed: $isZoomed, currentScale: $currentScale) {
-            MediaView(url: url, controlState: controlState, playImmediately: true)
+            MediaView(url: url, controlState: $controlState)
         }
         .offset(y: offset)
         .background(.black)

@@ -9,10 +9,10 @@ import MlemMiddleware
 import SwiftUI
 
 struct LoginInstancePickerView: View {
+    @Environment(\.palette) var palette
     @Environment(\.dismiss) var dismiss
     @Environment(\.isRootView) var isRootView
     @Environment(NavigationLayer.self) var navigation
-    @Environment(Palette.self) var palette
     
     @State var domain: String = ""
     
@@ -24,7 +24,7 @@ struct LoginInstancePickerView: View {
     var body: some View {
         content
             .interactiveDismissDisabled(!domain.isEmpty)
-            .background(palette.groupedBackground.ignoresSafeArea())
+            .background(palette.groupedBackground.primary.ignoresSafeArea())
             .toolbar {
                 if navigation.isInsideSheet, isRootView {
                     ToolbarItem(placement: .topBarLeading) {
@@ -48,12 +48,12 @@ struct LoginInstancePickerView: View {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(height: 50)
-                .foregroundStyle(palette.accent)
+                .foregroundStyle(.themedAccent)
             Text("Sign In to Lemmy")
                 .font(.title)
                 .bold()
             Text("Enter your instance's domain name below.")
-                .foregroundStyle(palette.secondary)
+                .foregroundStyle(.themedSecondary)
                 .multilineTextAlignment(.center)
                 .padding(.bottom, 5)
             instanceSuggestionsBox(suggestions: filteredSuggestions)
@@ -64,7 +64,7 @@ struct LoginInstancePickerView: View {
             }
             if invalidInstance {
                 Text("Failed to connect to \(domain)")
-                    .foregroundStyle(palette.negative)
+                    .foregroundStyle(.themedNegative)
                     .multilineTextAlignment(.center)
             }
             Spacer()
@@ -103,7 +103,7 @@ struct LoginInstancePickerView: View {
             }
         }
         .frame(maxWidth: .infinity)
-        .background(palette.secondaryGroupedBackground)
+        .background(.themedSecondaryGroupedBackground)
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .paletteBorder(cornerRadius: 16)
     }

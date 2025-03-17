@@ -26,7 +26,7 @@ extension InstanceStubProviding {
                         callback: {
                             self.updateBlocked(false)
                         },
-                        color: Palette.main.negative
+                        color: .themedNegative
                     )
                 )
             } else {
@@ -37,7 +37,7 @@ extension InstanceStubProviding {
                         callback: {
                             self.updateBlocked(true)
                         },
-                        color: Palette.main.primary
+                        color: .themedPrimary
                     )
                 )
             }
@@ -71,6 +71,7 @@ extension InstanceStubProviding {
     func menuActions(
         appState: AppState,
         feedback: Set<FeedbackType> = [.haptic, .toast],
+        navigation: NavigationLayer?,
         allowExternalBlocking: Bool = false
     ) -> [any Action] {
         ActionGroup {
@@ -80,7 +81,7 @@ extension InstanceStubProviding {
         }
         ActionGroup {
             openInBrowserAction()
-            shareAction()
+            shareAction(navigation: navigation)
         }
         if !local || (allowExternalBlocking && actorId != AppState.main.firstApi.actorId) {
             ActionGroup {
@@ -93,12 +94,18 @@ extension InstanceStubProviding {
         }
     }
     
+    func shareAction(navigation: NavigationLayer?) -> BasicAction {
+        .init(id: "share\(actorId)", appearance: .share()) {
+            navigation?.model?.shareInfo = .init(url: actorId.url)
+        }
+    }
+    
     func visitAction() -> BasicAction {
         .init(
             id: "visit\(actorId)",
             appearance: .init(
                 label: "Visit",
-                color: .gray,
+                color: .themedNeutralAccent,
                 icon: "arrow.right"
             ),
             callback: isVisiting ? nil : visit
@@ -110,7 +117,7 @@ extension InstanceStubProviding {
             id: "logIn\(actorId)",
             appearance: .init(
                 label: "Log In",
-                color: .gray,
+                color: .themedNeutralAccent,
                 icon: Icons.logIn
             ),
             callback: openLoginSheet
@@ -122,7 +129,7 @@ extension InstanceStubProviding {
             id: "signup\(actorId)",
             appearance: .init(
                 label: "Sign Up",
-                color: .gray,
+                color: .themedNeutralAccent,
                 icon: Icons.signUp
             ),
             callback: openSignUpSheet
@@ -135,7 +142,7 @@ extension InstanceStubProviding {
             appearance: .init(
                 label: "Open in Browser",
                 isOn: false,
-                color: .gray,
+                color: .themedNeutralAccent,
                 icon: Icons.browser
             ),
             callback: {

@@ -124,6 +124,10 @@ class AppState {
     var firstApi: ApiClient { firstSession.api }
     var firstPerson: Person4? { (firstSession as? UserSession)?.person }
     
+    var isModOrAdmin: Bool {
+        firstApi.isAdmin || !(firstPerson?.moderatedCommunities.isEmpty ?? true)
+    }
+    
     func accountThatModerates(actorId: ActorIdentifier) -> UserSession? {
         activeSessions.first(where: { session in
             session.person?.moderatedCommunities.contains { $0.actorId == actorId } ?? false

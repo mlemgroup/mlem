@@ -43,7 +43,6 @@ enum FullyQualifiedLabelStyle: CaseIterable {
 struct FullyQualifiedLabelView: View {
     typealias Entity = CommunityOrPerson & Profile1Providing
     
-    @Environment(Palette.self) var palette
     @Environment(AppState.self) var appState
     @Environment(\.postContext) var postContext: (any Post1Providing)?
     @Environment(\.commentContext) var commentContext: (any Comment1Providing)?
@@ -55,7 +54,7 @@ struct FullyQualifiedLabelView: View {
     @Setting(\.showCommunityAvatar) var showCommunityAvatar
     
     let entity: (any Entity)?
-    let avatarFallback: FixedImageView.Fallback
+    let avatarFallback: MediaView.Fallback
     let labelStyle: FullyQualifiedLabelStyle
     var showAvatar: Bool?
     var showInstance: Bool = true
@@ -103,7 +102,7 @@ struct FullyQualifiedLabelView: View {
                 if showSubscriptionIndicator {
                     Image(systemName: Icons.present)
                         .font(.system(size: subscriptionIndicatorSize))
-                        .foregroundStyle(palette.secondary)
+                        .foregroundStyle(.themedSecondary)
                         .padding(.bottom, 2)
                 }
                 
@@ -160,7 +159,7 @@ extension FullyQualifiedLabelView {
     ) {
         self.init(
             entity: entity,
-            avatarFallback: .person,
+            avatarFallback: .personAvatar,
             labelStyle: labelStyle,
             showAvatar: showAvatar,
             showInstance: showInstance,
@@ -177,7 +176,7 @@ extension FullyQualifiedLabelView {
     ) {
         self.init(
             entity: entity,
-            avatarFallback: .community,
+            avatarFallback: .communityAvatar,
             labelStyle: labelStyle,
             showAvatar: showAvatar,
             showInstance: showInstance,
@@ -194,7 +193,7 @@ extension FullyQualifiedLabelView {
     ) {
         self.init(
             entity: entity,
-            avatarFallback: .person,
+            avatarFallback: .personAvatar,
             labelStyle: labelStyle,
             showAvatar: showAvatar,
             showInstance: showInstance,

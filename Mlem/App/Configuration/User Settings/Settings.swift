@@ -64,7 +64,11 @@ class Settings: ObservableObject {
     @AppStorage("links.openInBrowser") var openLinksInBrowser = false
     @AppStorage("links.readerMode") var openLinksInReaderMode = false
     @AppStorage("links.displayMode") var tappableLinksDisplayMode: TappableLinksDisplayMode = .contextual
+    @AppStorage("links.shareMode") var linkSharingMode: LinkSharingMode = .myInstance
     @AppStorage("links.embedLoops") var embedLoops: Bool = true
+    
+    // swiftlint:disable:next line_length
+    @AppStorage("media.animatedAvatars") var animatedAvatars: AnimatedAvatarBehavior = UIAccessibility.isReduceMotionEnabled ? .never : .always
     
     @AppStorage("feed.markReadOnScroll") var markReadOnScroll: Bool = false
     @AppStorage("feed.showRead") var showReadInFeed: Bool = true
@@ -160,7 +164,9 @@ class Settings: ObservableObject {
         confirmImageUploads = settings.behavior_confirmImageUploads
         openLinksInBrowser = settings.links_openInBrowser
         openLinksInReaderMode = settings.links_readerMode
+        linkSharingMode = settings.links_shareMode
         tappableLinksDisplayMode = settings.links_tappableLinksDisplayMode
+        animatedAvatars = settings.media_animatedAvatars
         markReadOnScroll = settings.feed_markReadOnScroll
         showReadInFeed = settings.feed_showRead
         defaultFeed = settings.feed_default

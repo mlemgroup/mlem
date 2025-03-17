@@ -9,8 +9,6 @@ import MlemMiddleware
 import SwiftUI
 
 struct FooterLinkView: View {
-    @Environment(Palette.self) var palette
-    
     let title: String
     let subtitle: String?
 
@@ -29,9 +27,9 @@ struct FooterLinkView: View {
                     .lineLimit(1)
             }
         }
-        .foregroundStyle(palette.secondary)
+        .foregroundStyle(.themedSecondary)
         .padding(Constants.main.standardSpacing)
-        .background(palette.tertiaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+        .background(.themedTertiaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
     }

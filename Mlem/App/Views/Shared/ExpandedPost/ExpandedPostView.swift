@@ -22,7 +22,7 @@ struct ExpandedPostView<Content: View>: View {
 
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
-    @Environment(Palette.self) var palette
+    @Environment(\.palette) var palette
     @Environment(\.dismiss) var dismiss
     
     @Setting(\.jumpButton) var jumpButton
@@ -76,7 +76,7 @@ struct ExpandedPostView<Content: View>: View {
                 ErrorView(.init(error: contentLoaderError))
             } else {
                 ProgressView()
-                    .tint(palette.secondary)
+                    .tint(.themedSecondary)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -84,7 +84,7 @@ struct ExpandedPostView<Content: View>: View {
             VStack {
                 if showLoadingSymbol {
                     ZStack {
-                        palette.background
+                        palette.background.primary
                             .ignoresSafeArea()
                         ProgressView()
                             .tint(.secondary)
@@ -125,7 +125,7 @@ struct ExpandedPostView<Content: View>: View {
                                 .geometryGroup()
                             default:
                                 ProgressView()
-                                    .tint(palette.secondary)
+                                    .tint(.themedSecondary)
                                     .padding(.top, 50)
                                     // This prevents the tab bar going transparent whilst the comments are loading
                                     .padding(.bottom, 500)
@@ -204,14 +204,14 @@ struct ExpandedPostView<Content: View>: View {
                 HStack {
                     post.taggedTitle(communityContext: post.community_)
                         .font(.headline)
-                        .background(palette.secondaryGroupedBackground)
+                        .background(.themedSecondaryGroupedBackground)
                     Spacer()
                     Image(systemName: Icons.expandComment)
                         .frame(height: 10)
                 }
                 .imageScale(.small)
                 .padding(Constants.main.standardSpacing)
-                .background(palette.secondaryGroupedBackground)
+                .background(.themedSecondaryGroupedBackground)
             } else {
                 LargePostView(post: post, isPostPage: true)
             }

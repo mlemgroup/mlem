@@ -10,8 +10,6 @@ import MlemMiddleware
 import SwiftUI
 
 struct CommentBodyView: View {
-    @Environment(Palette.self) var palette
-    
     @Setting(\.compactComments) var compactComments
     
     let comment: any Comment
@@ -20,11 +18,11 @@ struct CommentBodyView: View {
         if comment.deleted {
             Text("Comment was deleted")
                 .italic()
-                .foregroundStyle(palette.secondary)
+                .foregroundStyle(.themedSecondary)
         } else if comment.removed {
             Text("Comment was removed")
                 .italic()
-                .foregroundStyle(palette.secondary)
+                .foregroundStyle(.themedSecondary)
         } else {
             MarkdownWithLinkList(comment.content, showLinkCaptions: !compactComments)
         }

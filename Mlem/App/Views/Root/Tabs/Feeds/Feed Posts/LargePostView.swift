@@ -18,8 +18,8 @@ struct LargePostView: View {
     @Setting(\.alternateInteractionBarLayoutForReports) var alternateInteractionBarLayoutForReports
     
     @Environment(AppState.self) private var appState
-    @Environment(Palette.self) private var palette: Palette
     @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?
+    @Environment(NavigationLayer.self) var navigation
     @Environment(\.communityContext) private var communityContext
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
     @Environment(\.reportContext) private var reportContext: Report?
@@ -54,7 +54,7 @@ struct LargePostView: View {
     var body: some View {
         content
             .padding(.vertical, Constants.main.standardSpacing)
-            .background(palette.secondaryGroupedBackground)
+            .background(.themedSecondaryGroupedBackground)
             .environment(\.postContext, post)
     }
     
@@ -74,7 +74,7 @@ struct LargePostView: View {
                 
                 if post.nsfw {
                     Image(Icons.nsfwTag)
-                        .foregroundStyle(palette.warning)
+                        .foregroundStyle(.themedWarning)
                 }
                 
                 if !isPostPage {
@@ -97,6 +97,7 @@ struct LargePostView: View {
                 appState: appState,
                 post: post,
                 configuration: interactionBarConfiguration,
+                navigation: navigation,
                 commentTreeTracker: commentTreeTracker,
                 communityContext: communityContext,
                 reportContext: reportContext

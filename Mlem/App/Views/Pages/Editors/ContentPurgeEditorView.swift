@@ -10,7 +10,6 @@ import SwiftUI
 
 struct ContentPurgeEditorView: View {
     @Environment(AppState.self) var appState
-    @Environment(Palette.self) var palette
     @Environment(\.dismiss) var dismiss
     
     let target: any PurgableProviding

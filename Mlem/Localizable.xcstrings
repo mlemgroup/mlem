@@ -662,6 +662,7 @@
       }
     },
     "Add a Link..." : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -691,6 +692,9 @@
         }
       }
     },
+    "Add an image..." : {
+
+    },
     "Add Guest" : {
       "localizations" : {
         "fr" : {
@@ -700,6 +704,15 @@
           }
         }
       }
+    },
+    "Add Image" : {
+
+    },
+    "Add Language..." : {
+
+    },
+    "Add Link" : {
+
     },
     "Add Moderator" : {
       "localizations" : {
@@ -801,6 +814,9 @@
         }
       }
     },
+    "All Languages" : {
+
+    },
     "All Time" : {
       "localizations" : {
         "fr" : {
@@ -860,6 +876,12 @@
           }
         }
       }
+    },
+    "Animate Avatars..." : {
+
+    },
+    "Animated Avatars" : {
+
     },
     "Anonymous" : {
       "localizations" : {
@@ -1073,6 +1095,9 @@
         }
       }
     },
+    "Ask Every Time" : {
+
+    },
     "Ask First" : {
       "localizations" : {
         "fr" : {
@@ -1182,6 +1207,9 @@
           }
         }
       }
+    },
+    "Back" : {
+
     },
     "Ban" : {
       "localizations" : {
@@ -1408,6 +1436,9 @@
           }
         }
       }
+    },
+    "Blur NSFW" : {
+
     },
     "Blur NSFW Content" : {
       "localizations" : {
@@ -1653,6 +1684,9 @@
         }
       }
     },
+    "Choose Another Instance..." : {
+
+    },
     "Choose Community..." : {
       "localizations" : {
         "fr" : {
@@ -1682,6 +1716,9 @@
           }
         }
       }
+    },
+    "Choose Language" : {
+
     },
     "Choose the default sort mode for posts and comments." : {
       "localizations" : {
@@ -2903,6 +2940,9 @@
         }
       }
     },
+    "Every time I share a link, show a popup asking which instance to use." : {
+
+    },
     "example.com" : {
       "localizations" : {
         "fr" : {
@@ -2999,6 +3039,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Paramètres d'exportation"
+          }
+        }
+      }
+    },
+    "Export..." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exporter…"
           }
         }
       }
@@ -3629,6 +3679,16 @@
         }
       }
     },
+    "Import..." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importer..."
+          }
+        }
+      }
+    },
     "Import/Export Settings" : {
       "localizations" : {
         "fr" : {
@@ -3669,6 +3729,9 @@
         }
       }
     },
+    "In Mlem" : {
+
+    },
     "In Reader" : {
       "localizations" : {
         "fr" : {
@@ -3679,7 +3742,11 @@
         }
       }
     },
+    "In the Fediverse, many different links can point to the same piece of content. Choose which site to use when sharing content." : {
+
+    },
     "In-App" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -4598,6 +4665,9 @@
         }
       }
     },
+    "My Instance" : {
+
+    },
     "My Profile" : {
       "localizations" : {
         "fr" : {
@@ -4954,6 +5024,9 @@
         }
       }
     },
+    "Only in Profile" : {
+
+    },
     "Open" : {
       "localizations" : {
         "fr" : {
@@ -5033,6 +5106,9 @@
           }
         }
       }
+    },
+    "Original Instance" : {
+
     },
     "Original Poster" : {
       "localizations" : {
@@ -5881,7 +5957,7 @@
         }
       }
     },
-    "Reason: " : {
+    "Reason:" : {
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -5930,6 +6006,9 @@
           }
         }
       }
+    },
+    "Reduce Motion" : {
+
     },
     "Refresh" : {
       "localizations" : {
@@ -6303,6 +6382,9 @@
         }
       }
     },
+    "Resolving..." : {
+
+    },
     "Response Time" : {
       "localizations" : {
         "fr" : {
@@ -6670,6 +6752,21 @@
         }
       }
     },
+    "Share Links" : {
+
+    },
+    "Share links using %@. When someone opens the link, they can choose which instance to use." : {
+
+    },
+    "Share links using the instance that the content originated from." : {
+
+    },
+    "Share links using the instance you are currently connected to." : {
+
+    },
+    "Share using..." : {
+
+    },
     "Share..." : {
       "localizations" : {
         "fr" : {
@@ -7010,6 +7107,9 @@
         }
       }
     },
+    "Some users set animated media as their avatar. Control whether these avatars should play their animations." : {
+
+    },
     "Sort" : {
       "localizations" : {
         "fr" : {
@@ -7189,6 +7289,9 @@
           }
         }
       }
+    },
+    "Suggested Languages" : {
+
     },
     "Superscript" : {
       "localizations" : {
@@ -8170,6 +8273,12 @@
         }
       }
     },
+    "Universal" : {
+
+    },
+    "Universal Link" : {
+
+    },
     "Unknown" : {
       "localizations" : {
         "fr" : {
@@ -8281,6 +8390,7 @@
       }
     },
     "Upload an image..." : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -8753,6 +8863,7 @@
       }
     },
     "You will not see most content if Undetermined is not selected." : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {

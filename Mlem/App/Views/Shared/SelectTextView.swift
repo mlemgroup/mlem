@@ -10,8 +10,8 @@ import SwiftUI
 import SwiftUIIntrospect
 
 struct SelectTextView: View {
-    @Environment(Palette.self) var palette
     @Environment(\.dismiss) var dismiss
+    @Environment(\.palette) var palette
     
     let text: String
     
@@ -32,7 +32,7 @@ struct SelectTextView: View {
                 .foregroundStyle(.white)
                 .frame(height: 30)
                 .padding(.horizontal, 12)
-                .background(Capsule().fill(palette.accent))
+                .background(Capsule().fill(.themedAccent))
                 CloseButtonView()
             }
             .padding(.horizontal, 10)
@@ -40,13 +40,13 @@ struct SelectTextView: View {
                 .introspect(.textEditor, on: .iOS(.v17, .v18)) { textEditor in
                     textEditor.isEditable = false
                     textEditor.textContainerInset = .init(top: 0, left: 10, bottom: 10, right: 10)
-                    textEditor.backgroundColor = UIColor(palette.background)
+                    textEditor.backgroundColor = UIColor(palette.background.primary)
                 }
         }
         .padding(.top, 10)
         .presentationDetents([.medium])
         .presentationBackgroundInteraction(.enabled)
         .presentationCornerRadius(20)
-        .background(palette.background)
+        .background(.themedBackground)
     }
 }

@@ -49,7 +49,6 @@ extension CommunityView {
     }
     
     func setupFeedLoader(community: any Community) {
-        print("SETUP", postFeedLoader == nil)
         if postFeedLoader == nil {
             Task { @MainActor in
                 @Setting(\.internetSpeed) var internetSpeed

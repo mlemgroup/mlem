@@ -10,7 +10,6 @@ import SwiftUI
 
 struct AccountListRowBody: View {
     @Environment(AppState.self) private var appState
-    @Environment(Palette.self) var palette
     
     enum Complication: CaseIterable {
         case instance, lastUsed, isActive
@@ -35,7 +34,7 @@ struct AccountListRowBody: View {
             Spacer()
             if complications.contains(.isActive), appState.firstSession.actorId == account.actorId {
                 Image(systemName: Icons.present)
-                    .foregroundStyle(palette.positive)
+                    .foregroundStyle(.themedPositive)
                     .font(.system(size: 10.0))
             }
         }

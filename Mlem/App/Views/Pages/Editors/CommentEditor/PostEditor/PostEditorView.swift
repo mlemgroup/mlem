@@ -24,7 +24,6 @@ struct PostEditorView: View {
     
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
-    @Environment(Palette.self) var palette
     @Environment(\.dismiss) var dismiss
     
     @State var titleTextView: UITextView
@@ -83,9 +82,7 @@ struct PostEditorView: View {
         self.titleTextView = .init()
         self.contentTextView = .init()
         titleTextView.tag = 0
-        titleTextView.backgroundColor = UIColor(Palette.main.background)
         contentTextView.tag = 1
-        contentTextView.backgroundColor = UIColor(Palette.main.background)
         
         titleTextView.text = title
         contentTextView.text = content
@@ -105,7 +102,7 @@ struct PostEditorView: View {
                 contentView
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar { toolbar }
-                    .background(palette.groupedBackground)
+                    .background(.themedGroupedBackground)
             }
             .onAppear {
                 contentTextView.resignFirstResponder()
@@ -167,14 +164,14 @@ struct PostEditorView: View {
                     Line()
                         .stroke(style: StrokeStyle(lineWidth: 2, dash: [5]))
                         .frame(height: 2)
-                        .foregroundStyle(palette.primary.opacity(0.2))
+                        .foregroundStyle(.themedPrimary.opacity(0.2))
                         // The line isn't centered properly due to the way that SwiftUI shapes work; this fixes it
                         .padding(.bottom, -1)
                         .padding(.top, 1)
                 }
                 
                 let hasMiddleParts = hasNsfwTag || link != .none || imageManager != nil || imageUrl != nil
-                VStack(alignment: .leading, spacing: hasMiddleParts ? Constants.main.standardSpacing : 0) {
+                VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
                     VStack(spacing: Constants.main.standardSpacing) {
                         MarkdownTextEditor(
                             onChange: {
@@ -210,20 +207,30 @@ struct PostEditorView: View {
                     }
                     .padding(.top, Constants.main.halfSpacing)
                     .background(
-                        palette.secondaryGroupedBackground,
+                        .themedSecondaryGroupedBackground,
                         in: UnevenRoundedRectangle(cornerRadii: .init(
                             topLeading: Constants.main.standardSpacing,
-                            bottomLeading: hasMiddleParts ? Constants.main.standardSpacing : 0,
-                            bottomTrailing: hasMiddleParts ? Constants.main.standardSpacing : 0,
+                            bottomLeading: Constants.main.standardSpacing,
+                            bottomTrailing: Constants.main.standardSpacing,
                             topTrailing: Constants.main.standardSpacing
                         ))
                     )
                     
-                    if hasMiddleParts {
-                        middleParts
-                    } else {
-                        Divider()
-                            .zIndex(1)
+                    if hasNsfwTag {
+                        nsfwTagView
+                            .padding(.leading, 10)
+                            .transition(attachmentTransition)
+                    }
+
+                    HStack(spacing: 10) {
+                        if imageManager == nil, imageUrl == nil {
+                            linkView
+                                .transition(.move(edge: .leading).combined(with: .opacity))
+                        }
+                        if link == .none {
+                            imageView
+                                .transition(.move(edge: .trailing).combined(with: .opacity))
+                        }
                     }
                     
                     VStack {
@@ -260,18 +267,18 @@ struct PostEditorView: View {
                     }
                     .padding([.vertical, .bottom], Constants.main.standardSpacing)
                     .background(
-                        palette.secondaryGroupedBackground,
+                        .themedSecondaryGroupedBackground,
                         in: UnevenRoundedRectangle(cornerRadii: .init(
-                            topLeading: hasMiddleParts ? Constants.main.standardSpacing : 0,
+                            topLeading: Constants.main.standardSpacing,
                             bottomLeading: Constants.main.standardSpacing,
                             bottomTrailing: Constants.main.standardSpacing,
-                            topTrailing: hasMiddleParts ? Constants.main.standardSpacing : 0
+                            topTrailing: Constants.main.standardSpacing
                         ))
                     )
                 }
             }
             .padding([.horizontal, .bottom], Constants.main.standardSpacing)
-            .animation(.snappy(duration: 0.2, extraBounce: 0.1), value: animationHashValue)
+            .animation(.snappy(duration: 0.2, extraBounce: 0.05), value: animationHashValue)
         }
     }
 }

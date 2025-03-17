@@ -43,7 +43,7 @@ extension Community1Providing {
                                     self2.updateSubscribe(true)
                                 }
                             },
-                            color: Palette.main.accent
+                            color: .themedAccent
                         )
                     )
                 }
@@ -68,12 +68,12 @@ extension Community1Providing {
                             callback: {
                                 self2.updateFavorite(true)
                             },
-                            color: Palette.main.favorite
+                            color: .themedFavorite
                         )
                     )
                 } else {
                     ToastModel.main.add(
-                        .basic("Favorited", systemImage: "star.fill", color: .blue)
+                        .basic("Favorited", systemImage: "star.fill", color: .themedFavorite)
                     )
                 }
             }
@@ -93,7 +93,7 @@ extension Community1Providing {
                         callback: {
                             self.updateBlocked(false)
                         },
-                        color: Palette.main.negative
+                        color: .themedNegative
                     )
                 )
             } else {
@@ -104,7 +104,7 @@ extension Community1Providing {
                         callback: {
                             self.updateBlocked(true)
                         },
-                        color: Palette.main.primary
+                        color: .themedPrimary
                     )
                 )
             }
@@ -126,7 +126,7 @@ extension Community1Providing {
         favoriteAction(appState: appState, feedback: feedback)
         openInstanceAction(navigation: navigation)
         copyNameAction()
-        shareAction()
+        shareAction(navigation: navigation)
         blockAction(appState: appState, feedback: feedback)
         if api.isAdmin {
             ActionGroup {
@@ -165,7 +165,7 @@ extension Community1Providing {
             id: "newPost\(uid)",
             appearance: .init(
                 label: "New Post",
-                color: Palette.main.accent,
+                color: .themedAccent,
                 icon: Icons.send,
                 swipeIcon2: Icons.sendFill
             ),
@@ -181,7 +181,7 @@ extension Community1Providing {
                 label: isOn ? "Unsubscribe" : "Subscribe",
                 isOn: isOn,
                 isDestructive: isOn,
-                color: isOn ? Palette.main.negative : Palette.main.positive,
+                color: isOn ? .themedNegative : .themedPositive,
                 icon: isOn ? Icons.unsubscribe : Icons.subscribe,
                 swipeIcon1: isOn ? Icons.unsubscribePerson : Icons.subscribePerson,
                 swipeIcon2: isOn ? Icons.unsubscribePersonFill : Icons.subscribePersonFill
@@ -197,7 +197,7 @@ extension Community1Providing {
             appearance: .init(
                 label: isOn ? "Unfavorite" : "Favorite",
                 isOn: isOn,
-                color: Palette.main.favorite,
+                color: .themedFavorite,
                 icon: isOn ? Icons.unfavorite : Icons.favorite,
                 menuIcon: isOn ? Icons.favoriteFill : Icons.favorite,
                 swipeIcon1: isOn ? Icons.unfavorite : Icons.favorite,

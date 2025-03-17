@@ -91,7 +91,7 @@ struct ToastOverlayView: View {
                 .basic(
                     String("Unfavorited Community"),
                     systemImage: "star.slash.fill",
-                    color: .blue,
+                    color: .themedFavorite,
                     duration: 5
                 )
             )
@@ -104,5 +104,4 @@ struct ToastOverlayView: View {
     .overlay(alignment: .bottom) {
         ToastOverlayView(shouldDisplayNewToasts: true, location: .bottom)
     }
-    .environment(Palette.main)
 }

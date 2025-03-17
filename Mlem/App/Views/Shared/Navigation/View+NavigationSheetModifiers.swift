@@ -10,13 +10,20 @@ import SwiftUI
 private struct NavigationSheetModifier: ViewModifier {
     let nextLayer: NavigationLayer?
     let contentPickerTracker_: () -> NavigationModel.ContentPickerTracker?
+    let isTopSheet: Bool
+    
+    @Binding var shareInfo: NavigationModel.ShareInfo?
     
     init(
         nextLayer: NavigationLayer?,
+        isTopSheet: Bool,
+        shareInfo: Binding<NavigationModel.ShareInfo?>,
         // This tomfoolery exists to prevent this view being subject to NavigationModel view updates, which caused #1492
         contentPickerTracker: @escaping () -> NavigationModel.ContentPickerTracker?
     ) {
         self.nextLayer = nextLayer
+        self.isTopSheet = isTopSheet
+        self._shareInfo = shareInfo
         self.contentPickerTracker_ = contentPickerTracker
     }
     
@@ -27,11 +34,14 @@ private struct NavigationSheetModifier: ViewModifier {
     
     func body(content: Content) -> some View {
         content
+            // https://stackoverflow.com/questions/69693871/how-to-open-share-sheet-from-presented-sheet
+            .background(SharingViewController(
+                isPresenting: Binding(get: { shareInfo != nil && isTopSheet }, set: { if !$0 { shareInfo = nil }})
+            ) { activityViewController }
+            )
             .sheet(isPresented: Binding(
                 get: { !(nextLayer?.isFullScreenCover ?? true) },
-                set: {
-                    if !$0 { closeSheet() }
-                }
+                set: { if !$0 { closeSheet() } }
             )) {
                 if let nextLayer {
                     NavigationLayerView(layer: nextLayer, hasSheetModifiers: true)
@@ -39,9 +49,7 @@ private struct NavigationSheetModifier: ViewModifier {
             }
             .fullScreenCover(isPresented: Binding(
                 get: { nextLayer?.isFullScreenCover ?? false },
-                set: {
-                    if !$0 { closeSheet() }
-                }
+                set: { if !$0 { closeSheet() } }
             )) {
                 if let nextLayer {
                     NavigationLayerView(layer: nextLayer, hasSheetModifiers: true)
@@ -65,7 +73,7 @@ private struct NavigationSheetModifier: ViewModifier {
                     get: { nextLayer == nil && (contentPickerTracker?.showingFilePicker ?? false) },
                     set: { contentPickerTracker?.showingFilePicker = $0 }
                 ),
-                allowedContentTypes: [.image],
+                allowedContentTypes: contentPickerTracker?.filePickerContentTypes ?? [],
                 onCompletion: { result in
                     do {
                         try contentPickerTracker?.filePickerCallback?(result.get())
@@ -74,6 +82,22 @@ private struct NavigationSheetModifier: ViewModifier {
                     }
                 }
             )
+    }
+    
+    var activityViewController: UIActivityViewController {
+        let activityView = UIActivityViewController(
+            activityItems: [shareInfo?.url ?? URL(string: "www.apple.com")!],
+            applicationActivities: shareInfo?.activities
+        )
+        
+        if UIDevice.isPad {
+            activityView.popoverPresentationController?.sourceView = UIView()
+        }
+        
+        activityView.completionWithItemsHandler = { _, _, _, _ in
+            shareInfo = nil
+        }
+        return activityView
     }
     
     func closeSheet() {
@@ -93,6 +117,8 @@ private struct ComputeNextLayerModifier: ViewModifier {
         Group {
             content.navigationSheetModifiers(
                 nextLayer: nextLayer,
+                isTopSheet: layer.isTopSheet,
+                shareInfo: .init(get: { layer.model?.shareInfo }, set: { layer.model?.shareInfo = $0 }),
                 contentPickerTracker: layer.model?.contentPickerTracker
             )
         }.onChange(of: computeNextLayer()?.id, initial: true) {
@@ -116,8 +142,30 @@ extension View {
         
     @ViewBuilder func navigationSheetModifiers(
         nextLayer: NavigationLayer?,
+        isTopSheet: Bool,
+        shareInfo: Binding<NavigationModel.ShareInfo?>,
         contentPickerTracker: @autoclosure @escaping () -> NavigationModel.ContentPickerTracker?
     ) -> some View {
-        modifier(NavigationSheetModifier(nextLayer: nextLayer, contentPickerTracker: contentPickerTracker))
+        modifier(NavigationSheetModifier(
+            nextLayer: nextLayer,
+            isTopSheet: isTopSheet,
+            shareInfo: shareInfo,
+            contentPickerTracker: contentPickerTracker
+        ))
+    }
+}
+
+private struct SharingViewController: UIViewControllerRepresentable {
+    @Binding var isPresenting: Bool
+    var content: () -> UIViewController
+
+    func makeUIViewController(context: Context) -> UIViewController {
+        UIViewController()
+    }
+
+    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
+        if isPresenting {
+            uiViewController.present(content(), animated: true, completion: { isPresenting = false })
+        }
     }
 }

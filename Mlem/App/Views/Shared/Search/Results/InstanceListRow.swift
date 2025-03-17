@@ -11,7 +11,6 @@ import SwiftUI
 struct InstanceListRow<Content2: View>: View {
     typealias Content = InstanceListRowBody<Content2>
     
-    @Environment(Palette.self) var palette
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
     
@@ -59,10 +58,14 @@ struct InstanceListRow<Content2: View>: View {
         }
         .buttonStyle(.empty)
         .padding(.vertical, 6)
-        .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+        .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
         .contextMenu {
-            instanceStub?.menuActions(appState: appState, allowExternalBlocking: true) ?? []
+            instanceStub?.menuActions(
+                appState: appState,
+                navigation: navigation,
+                allowExternalBlocking: true
+            ) ?? []
         }
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }

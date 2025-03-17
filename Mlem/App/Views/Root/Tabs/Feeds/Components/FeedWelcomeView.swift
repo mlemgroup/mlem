@@ -9,7 +9,6 @@ import SwiftUI
 
 struct FeedWelcomeView: View {
     @Environment(AppState.self) var appState
-    @Environment(Palette.self) var palette
     @Environment(NavigationLayer.self) var navigation
     
     @Setting(\.showFeedWelcomePrompt) var showWelcomePrompt
@@ -27,7 +26,7 @@ struct FeedWelcomeView: View {
                     .font(.footnote)
                 }
             }
-            .foregroundStyle(palette.accent)
+            .foregroundStyle(.themedAccent)
             HStack(spacing: Constants.main.standardSpacing) {
                 Button {
                     navigation.openSheet(.logIn(.pickInstance))
@@ -47,7 +46,7 @@ struct FeedWelcomeView: View {
             .buttonStyle(.borderedProminent)
         }
         .padding(Constants.main.standardSpacing)
-        .background(palette.accent.opacity(0.2), in: .rect(cornerRadius: Constants.main.standardSpacing))
+        .background(.themedAccent.opacity(0.2), in: .rect(cornerRadius: Constants.main.standardSpacing))
         .overlay(alignment: .topTrailing) {
             Button("Dismiss", systemImage: Icons.closeCircleFill) {
                 showWelcomePrompt = false

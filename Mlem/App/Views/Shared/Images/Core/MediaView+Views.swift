@@ -11,38 +11,23 @@ extension MediaView {
     /// Struct to actually render the media.
     /// This is declared as its own struct to prevent state updates from the parent view causing unwanted behavior.
     private struct InternalMediaView: View {
-        @Environment(\.blurred) var blurred
+        @Environment(MediaControlState.self) var controlState
         
         let media: MediaType
-        let playing: Bool
         let aspectRatio: CGSize
         let contentMode: ContentMode
         
         var uiImage: UIImage { media.image }
-        
-        var body: some View {
-            image
-                .overlay {
-                    if media.isAnimated, playing {
-                        animatedContent
-                    }
-                }
-        }
 
-        @ViewBuilder
-        var image: some View {
+        var body: some View {
             // WARNING: the combination of .aspectRatio and .frame modifiers in this view is very precise and
             // breaks easily. If you have to modify it, be sure to thoroughly regression test!
             // More info here: https://alejandromp.com/development/blog/image-aspectratio-without-frames/
             Group {
                 if contentMode == .fit {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
+                    content
                 } else if contentMode == .fill {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
+                    content
                         .frame(
                             minWidth: 0,
                             maxWidth: .infinity,
@@ -55,51 +40,91 @@ extension MediaView {
         }
         
         @ViewBuilder
-        var animatedContent: some View {
-            switch media {
-            case let .video(_, animated):
-                VideoView(asset: animated)
-            case let .gif(_, animated):
-                GifView(data: animated)
-            case let .webp(_, animated):
-                WebpView(data: animated)
-            default:
-                EmptyView()
+        var content: some View {
+            if controlState.enableAnimation, media.isAnimated {
+                animatedContent
+            } else {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .aspectRatio(contentMode: contentMode)
             }
+        }
+        
+        @ViewBuilder
+        var animatedContent: some View {
+            Group {
+                switch media {
+                case let .video(_, animated):
+                    VideoView(asset: animated)
+                case let .gif(_, animated):
+                    GifView(data: animated)
+                case let .webp(_, animated):
+                    WebpView(data: animated)
+                default:
+                    EmptyView()
+                }
+            }
+            .aspectRatio(uiImage.size, contentMode: contentMode)
         }
     }
     
     @ViewBuilder
     var image: some View {
         InternalMediaView(
-            media: loader.mediaType,
-            playing: playing,
-            aspectRatio: uiImage.verticallyBoundedAspectRatio(bounds: aspectRatio),
+            media: loader.mediaType ?? .image(.blank),
+            aspectRatio: uiImage.boundedAspectRatio(bounds: aspectRatio),
             contentMode: contentMode
         )
-    }
-    
-    @ViewBuilder
-    var nsfwOverlay: some View {
-        if enableNsfwBlur {
-            NsfwOverlay(blurred: $blurred)
+        .overlay {
+            if loader.mediaType == nil {
+                fallbackImage
+            }
         }
     }
     
     @ViewBuilder
-    var animationControlOverlay: some View {
-        if loader.mediaType.isAnimated, !blurred, !playing {
-            PlayButton(postSize: .large)
-                .onTapGesture {
-                    playing = true
-                }
+    var fallbackImage: some View {
+        if loader.loading == .loading {
+            ProgressView()
+        } else if !showErrorOverlay {
+            switch fallback.fallbackStyle {
+            case .standard:
+                coreFallbackImage
+                    .foregroundStyle(.themedSecondary)
+                    .background(fallback.background)
+            case .avatar:
+                coreFallbackImage
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(.themedContrastingLabel, palette.neutralAccent.gradient)
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var coreFallbackImage: some View {
+        let fallback: Fallback = loader.loading == .proxyFailed ? .proxyFailure : fallback
+        GeometryReader { geo in
+            Image(systemName: fallback.icon)
+                .resizable()
+                .scaledToFit()
+                .frame(width: geo.size.width * fallback.scaleFactor)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+    }
+    
+    @ViewBuilder
+    var nsfwOverlay: some View {
+        if loader.loading == .done, controlState.enableNsfwOverlay {
+            NsfwOverlay()
         }
     }
     
     @ViewBuilder
     var errorOverlay: some View {
-        if let loaderError = loader.error {
-            palette.tertiaryGroupedBackground.overlay {
+        if controlState.enableErrorOverlay,
+           let loaderError = loader.error,
+           let navigation {
+            palette.groupedBackground.tertiary.overlay {
                 switch loaderError {
                 case let .proxyFailure(proxyBypass):
                     VStack(spacing: Constants.main.standardSpacing) {
@@ -117,27 +142,27 @@ extension MediaView {
                                 bypassImageProxyShown = true
                                 navigation.openSheet(.bypassImageProxyWarning {
                                     Task {
-                                        await loader.bypassProxy()
+                                        await loader.load(proxyBypass)
                                     }
                                 })
                             } else {
                                 Task {
-                                    await loader.bypassProxy()
+                                    await loader.load(proxyBypass)
                                 }
                             }
                         }
-                        .foregroundStyle(palette.accent)
+                        .foregroundStyle(.themedAccent)
                         .buttonStyle(.bordered)
                         .padding(.horizontal, Constants.main.standardSpacing)
                     }
-                    .foregroundStyle(palette.tertiary)
-                case .error:
+                    .foregroundStyle(.themedTertiary)
+                default:
                     Image(systemName: Icons.missing)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(maxWidth: 50)
                         .padding(4)
-                        .foregroundStyle(palette.tertiary)
+                        .foregroundStyle(.themedTertiary)
                 }
             }
         }
@@ -145,7 +170,7 @@ extension MediaView {
     
     @ViewBuilder
     var developerOverlay: some View {
-        if developerMode, let ext = loader.url?.proxyAwarePathExtension?.uppercased() {
+        if developerMode, controlState.enableControlOverlay, let ext = loader.url?.proxyAwarePathExtension?.uppercased() {
             Text(ext)
                 .font(.footnote)
                 .fontWeight(.semibold)
@@ -156,7 +181,7 @@ extension MediaView {
                         .fill(.regularMaterial)
                 }
                 .padding(4)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
         }
     }
     
@@ -166,8 +191,10 @@ extension MediaView {
             Button("Save", systemImage: Icons.import) {
                 Task { await saveMedia(url: url) }
             }
-            Button("Share...", systemImage: Icons.share) {
-                Task { await shareImage(url: url, navigation: navigation) }
+            if let navigation {
+                Button("Share...", systemImage: Icons.share) {
+                    Task { await shareImage(url: url, navigation: navigation) }
+                }
             }
         }
     }
