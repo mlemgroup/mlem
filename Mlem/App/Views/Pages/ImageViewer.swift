@@ -41,7 +41,6 @@ struct ImageViewer: View {
     /// Tracks scrub/dismiss drag gesture
     @GestureState var dragState: Bool = false
     
-    // TODO: iOS 17 deprecation: replace this with PanGesture
     /// True when the current drag gesture is a scrub, false when dismiss, nil when no gesture
     @State var dragIsScrub: Bool?
     
