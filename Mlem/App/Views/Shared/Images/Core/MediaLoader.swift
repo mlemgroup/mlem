@@ -7,9 +7,9 @@
 
 import AVFoundation
 import Foundation
+import MlemMiddleware
 import Nuke
 import SwiftUI
-import MlemMiddleware
 
 // MARK: Types
 
@@ -21,15 +21,11 @@ enum ImageLoadingError {
 enum MediaType {
     case image(UIImage)
     case video(still: UIImage, animated: AVAsset)
-    case gif(still: UIImage, animated: Data)
-    case webp(still: UIImage, animated: Data)
+    case animated(still: UIImage, animated: Data)
     
     var image: UIImage {
         switch self {
-        case let .image(image): image
-        case let .video(still, _): still
-        case let .gif(still, _): still
-        case let .webp(still, _): still
+        case let .image(image), let .video(image, _), let .animated(image, _): image
         }
     }
     
@@ -152,8 +148,9 @@ class MediaLoader {
 func retrieveCachedImage(for url: URL?, with processors: [ImageProcessing]) -> MediaType? {
     if let url,
        let container = ImagePipeline.shared.cache.cachedImage(for: .init(
-        urlRequest: mlemUrlRequest(url: url),
-        processors: processors)) {
+           urlRequest: mlemUrlRequest(url: url),
+           processors: processors
+       )) {
         return container.animatedMediaType
     }
     return nil
@@ -171,15 +168,9 @@ func computeProxyBypass(for url: URL?) -> URL? {
 extension ImageContainer {
     var animatedMediaType: MediaType {
         switch type {
-        case .gif:
+        case .gif, .webp:
             if let data {
-                .gif(still: image, animated: data)
-            } else {
-                .image(image)
-            }
-        case .webp:
-            if let data {
-                .webp(still: image, animated: data)
+                .animated(still: image, animated: data)
             } else {
                 .image(image)
             }

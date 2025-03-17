@@ -11,6 +11,7 @@ struct ImageViewer: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.dismiss) var dismiss
     @Environment(\.colorScheme) var colorScheme
+    @Setting(\.developerMode) var developerMode
     @Setting(\.zoomSliderLocation) var zoomSliderLocation
 
     let url: URL
@@ -58,6 +59,8 @@ struct ImageViewer: View {
     @State var enableControlTap: Bool = true
     
     @State var quickLookUrl: URL?
+    
+    @State var devToolsShown: Bool = false
     
     // Whether the controls are currently visible
     var controlsShown: Bool { controlOpacity > 0 }
