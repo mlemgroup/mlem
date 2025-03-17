@@ -58,21 +58,7 @@ struct PersonContentGridView: View {
                     columns = [GridItem(.flexible())]
                 }
             }
-            .toolbar {
-                ToolbarItemGroup(placement: .secondaryAction) {
-                    SwiftUI.Section {
-                        Menu {
-                            Picker("Post Size", selection: $postSize) {
-                                ForEach(PostSize.allCases, id: \.self) { item in
-                                    Label(String(localized: item.label), systemImage: item.icon(filled: postSize == item))
-                                }
-                            }
-                        } label: {
-                            Label("Post Size", systemImage: Icons.postSizeSetting)
-                        }
-                    }
-                }
-            }
+            .toolbar { FeedToolbarOptions() }
     }
     
     var content: some View {
