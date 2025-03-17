@@ -46,7 +46,7 @@ struct VideoView: View {
                         assertionFailure("Could not find AVAsset")
                         return
                     }
-                    self.duration = try await asset.load(.duration)
+                    duration = try await asset.load(.duration)
                 } catch {
                     handleError(error)
                 }
