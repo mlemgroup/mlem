@@ -4296,9 +4296,6 @@
         }
       }
     },
-    "Media Type: %@ " : {
-
-    },
     "Medium" : {
       "localizations" : {
         "fr" : {
@@ -5313,9 +5310,6 @@
           }
         }
       }
-    },
-    "Playback Position: %@" : {
-
     },
     "Post" : {
       "localizations" : {
@@ -6541,12 +6535,6 @@
           }
         }
       }
-    },
-    "Scrub Target: %@" : {
-
-    },
-    "Scrub Target: None" : {
-
     },
     "Search" : {
       "localizations" : {
