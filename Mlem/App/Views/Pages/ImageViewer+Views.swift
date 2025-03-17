@@ -148,16 +148,16 @@ extension ImageViewer {
                         .fill(.white)
                         .frame(width: 20, height: 20)
                         .offset(x: (controlState.scrubTarget ?? controlState.playbackPosition) * draggableWidth)
-                        .highPriorityGesture(DragGesture()
-                            .onChanged { value in
-                                if value.location.x >= 0, value.location.x <= draggableWidth {
-                                    controlState.scrubTarget = value.location.x / draggableWidth
-                                }
-                            }
-                            .onEnded { _ in
-                                controlState.scrubTarget = nil
-                            }
-                        )
+//                        .highPriorityGesture(DragGesture()
+//                            .onChanged { value in
+//                                if value.location.x >= 0, value.location.x <= draggableWidth {
+//                                    controlState.scrubTarget = value.location.x / draggableWidth
+//                                }
+//                            }
+//                            .onEnded { _ in
+//                                controlState.scrubTarget = nil
+//                            }
+//                        )
                 }
             }
             .padding(.horizontal, Constants.main.standardSpacing)

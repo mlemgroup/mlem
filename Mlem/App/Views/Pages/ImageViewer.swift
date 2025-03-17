@@ -37,6 +37,11 @@ struct ImageViewer: View {
     @GestureState var scaleDragState: Bool = false
     @GestureState var dragState: Bool = false
     
+    // TODO: iOS 17 deprecation: replace this with PanGesture
+    /// True when the current drag gesture is a scrub, false when dismiss, nil when no gesture
+    @State var dragIsScrub: Bool?
+    @State var scrubStartedPlaybackPosition: CGFloat?
+    
     /// True when the image is zoomed in, false otherwise
     @State var isZoomed: Bool = false
     
@@ -96,11 +101,7 @@ struct ImageViewer: View {
             }
         }
         .simultaneousGesture(DragGesture(minimumDistance: 1.0)
-            .onChanged { value in
-                if !isZoomed, !isDismissing {
-                    handleOffsetUpdate(value.translation.height)
-                }
-            }
+            .onChanged { handleDragGesture(value: $0) }
             .updating($dragState) { _, state, _ in
                 // this detects cancelled gestures (e.g., if you zoom while dragging)
                 state = true
@@ -112,21 +113,7 @@ struct ImageViewer: View {
             animateOpacityUpdate(1.0)
         }
         .onChange(of: dragState) {
-            guard !isZoomed else { return }
-            
-            if dragState {
-                // drag gesture conflicts with control tap, so we disable it for a brief window after detecting a drag
-                enableControlTap = false
-            } else {
-                if abs(offset) > 100 {
-                    swipeDismiss(finalOffset: offset > 0 ? screenHeight : -screenHeight)
-                } else {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        enableControlTap = true
-                    }
-                    animateOffsetUpdate(0)
-                }
-            }
+            handleDragStateChange(dragState)
         }
         .onChange(of: scaleDragState) {
             if !scaleDragState {
@@ -151,6 +138,74 @@ struct ImageViewer: View {
         .quickLookPreview($quickLookUrl)
         .background(ClearBackgroundView())
         .statusBarHidden(!isDismissing)
+    }
+    
+    func handleDragGesture(value: DragGesture.Value) {
+        guard !isZoomed else {
+            return
+        }
+        
+        if dragIsScrub == nil {
+            dragIsScrub = abs(value.velocity.height) < abs(value.velocity.width)
+        }
+        
+        guard let dragIsScrub else {
+            assertionFailure("DragGesture updated but dragIsScrub is nil")
+            return
+        }
+        
+        if dragIsScrub {
+            showControls()
+            
+            if scrubStartedPlaybackPosition == nil {
+                scrubStartedPlaybackPosition = controlState.playbackPosition
+            }
+            
+            guard let scrubStartedPlaybackPosition else {
+                assertionFailure("drag is scrub but scrubStartedPlaybackPosition is nil")
+                return
+            }
+            
+            let translation = value.translation.width / UIScreen.main.bounds.width
+            let newScrubTarget = (scrubStartedPlaybackPosition + translation).bounded(lower: 0, upper: 1)
+            controlState.scrubTarget = newScrubTarget
+        } else if !isDismissing {
+            handleOffsetUpdate(value.translation.height)
+        }
+    }
+    
+    func handleDragStateChange(_ newDragState: Bool) {
+        guard !isZoomed else { return }
+        
+        if newDragState {
+            // drag gesture conflicts with control tap, so we disable it for a brief window after detecting a drag
+            enableControlTap = false
+        } else {
+            guard let scrubbing = dragIsScrub else {
+                assertionFailure("dragGesture ended but dragIsScrub not defined")
+                return
+            }
+            dragIsScrub = nil
+            
+            if scrubbing {
+                // scrub ended: reset scrubbing and re-enable control tap
+                scrubStartedPlaybackPosition = nil
+                controlState.scrubTarget = nil
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    enableControlTap = true
+                }
+            } else {
+                // dismiss swipe ended: choose whether to dismiss or reset
+                if abs(offset) > 100 {
+                    swipeDismiss(finalOffset: offset > 0 ? screenHeight : -screenHeight)
+                } else {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        enableControlTap = true
+                    }
+                    animateOffsetUpdate(0)
+                }
+            }
+        }
     }
     
     func fadeDismiss() {
