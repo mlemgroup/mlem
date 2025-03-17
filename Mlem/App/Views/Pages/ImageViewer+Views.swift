@@ -77,14 +77,14 @@ extension ImageViewer {
             } else {
                 VStack(alignment: .leading, spacing: Constants.main.halfSpacing) {
                     let imageType: String = url.proxyAwarePathExtension?.lowercased() ?? "Unknown"
-                    Text("Media Type: \(imageType) ")
-                    Text("Playback Position: \(String(format: "%.4f", controlState.playbackPosition))")
+                    Text(verbatim: "Media Type: \(imageType) ")
+                    Text(verbatim: "Playback Position: \(String(format: "%.4f", controlState.playbackPosition))")
                         .monospacedDigit()
                     if let target = controlState.scrubTarget {
-                        Text("Scrub Target: \(String(format: "%.4f", target))")
+                        Text(verbatim: "Scrub Target: \(String(format: "%.4f", target))")
                             .monospacedDigit()
                     } else {
-                        Text("Scrub Target: None")
+                        Text(verbatim: "Scrub Target: None")
                     }
                 }
                 .padding(Constants.main.standardSpacing)
