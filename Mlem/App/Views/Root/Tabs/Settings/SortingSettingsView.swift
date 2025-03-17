@@ -11,7 +11,7 @@ import SwiftUI
 struct SortingSettingsView: View {
     @Setting(\.defaultPostSort) var legacyDefaultPostSort
     @Setting(\.fallbackPostSort) var legacyFallbackPostSort
-    @Setting(\.commentSort) var commentSort
+    @Setting(\.commentSort) var legacyDefaultCommentSort
     
     var defaultPostSort: PostSortType {
         get { .init(legacyDefaultPostSort) }
@@ -21,6 +21,11 @@ struct SortingSettingsView: View {
     var fallbackPostSort: PostSortType {
         get { .init(legacyFallbackPostSort) }
         nonmutating set { legacyFallbackPostSort = newValue.legacyApiSortType ?? .hot }
+    }
+    
+    var defaultCommentSort: CommentSortType {
+        get { .init(legacyDefaultCommentSort) }
+        nonmutating set { legacyDefaultCommentSort = newValue.apiSortType }
     }
     
     var body: some View {
@@ -65,10 +70,10 @@ struct SortingSettingsView: View {
                 HStack {
                     Text("Comments")
                     Spacer()
-                    Menu(String(localized: commentSort.label), systemImage: commentSort.systemImage) {
-                        Picker("Sort", selection: $commentSort) {
-                            ForEach(ApiCommentSortType.allCases, id: \.self) { item in
-                                Label(String(localized: item.label), systemImage: item.systemImage)
+                    Menu(defaultCommentSort.label(timeRangeFormat: .topOnly), systemImage: defaultCommentSort.systemImage) {
+                        Picker("Sort", selection: .init(get: { defaultCommentSort }, set: { defaultCommentSort = $0 })) {
+                            ForEach(CommentSortType.legacyCases, id: \.self) { item in
+                                Label(item.label(timeRangeFormat: .topOnly), systemImage: item.systemImage)
                             }
                         }
                     }
