@@ -194,3 +194,9 @@ struct CommentBarView: View {
             .padding(.vertical, 8)
     }
 }
+
+#if DEBUG
+    #Preview(traits: .sampleEnvironment, .sizeThatFitsLayout) {
+        CommentView(comment: Comment2.mock(.generic))
+    }
+#endif
