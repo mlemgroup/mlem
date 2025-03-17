@@ -16,40 +16,42 @@ extension PostEditorView {
                 .fontWeight(.semibold)
                 .foregroundStyle(.themedAccent)
                 .padding(.leading, 8)
-            Spacer()
-            if link == .waiting {
-                Button {
-                    let url: URL?
-                    if let pastedUrl = UIPasteboard.general.url {
-                        url = pastedUrl
-                    } else if let pastedString = UIPasteboard.general.string, pastedString.starts(with: "http") {
-                        url = URL(string: pastedString, encodingInvalidCharacters: false)
-                    } else {
-                        return
-                    }
-                    if let url {
-                        link = .value(url)
-                    }
-                } label: {
-                    Label("Paste", systemImage: Icons.paste)
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.themedContrastingLabel)
-                        .padding(.vertical, 6)
-                        .padding(.horizontal, 12)
-                        .background(.themedAccent, in: .rect(cornerRadius: 8))
+                .frame(
+                    maxWidth: .infinity,
+                    alignment: link == .none ? .center : .leading
+                )
+            if link != .none {
+                Button("Remove", systemImage: Icons.closeCircleFill) {
+                    link = .none
                 }
+                .font(.title2)
+                .labelStyle(.iconOnly)
+                .symbolRenderingMode(.hierarchical)
+                .foregroundStyle(.themedAccent)
+                .fontWeight(.semibold)
             }
-            Button("Remove", systemImage: Icons.closeCircleFill) {
-                link = .none
-            }
-            .font(.title2)
-            .labelStyle(.iconOnly)
-            .symbolRenderingMode(.hierarchical)
-            .foregroundStyle(.themedAccent)
-            .fontWeight(.semibold)
         }
         .padding(8)
-        .background(.themedAccent.opacity(0.2), in: .rect(cornerRadius: Constants.main.standardSpacing))
+        .background(.themedAccent.opacity(0.2))
+        // This second background is to prevent the view from being partially see-through, which makes the animations cleaner
+        .background(.themedGroupedBackground)
+        .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
+        .onTapGesture { pasteLink() }
+    }
+    
+    private func pasteLink() {
+        let url: URL?
+        if let pastedUrl = UIPasteboard.general.url {
+            url = pastedUrl
+        } else if let pastedString = UIPasteboard.general.string, pastedString.starts(with: "http") {
+            url = URL(string: pastedString, encodingInvalidCharacters: false)
+        } else {
+            ToastModel.main.add(.urlCopyError)
+            return
+        }
+        if let url {
+            link = .value(url)
+        }
     }
     
     private var linkLabel: String {
@@ -57,7 +59,7 @@ extension PostEditorView {
         case let .value(url):
             url.absoluteString
         default:
-            .init(localized: "Add a Link...")
+            .init(localized: "Add Link")
         }
     }
 }
