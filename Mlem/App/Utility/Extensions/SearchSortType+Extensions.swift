@@ -16,7 +16,7 @@ extension SearchSortType {
         case .old:
             .init(localized: "Old")
         case let .top(timeRange):
-            timeRange.label(prefix: "Top", format: timeRangeFormat)
+            timeRange.label(name: "Top", prefix: "Top:", format: timeRangeFormat)
         }
     }
     

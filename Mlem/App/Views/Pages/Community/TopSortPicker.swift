@@ -48,7 +48,7 @@ struct TopSortPicker: View {
                         Text("All Time")
                     }
                 } else {
-                    Text(type.label(prefix: "Top", format: .timescaleAbbreviated))
+                    Text(type.label(name: "Top", prefix: "Top:", format: .timescaleAbbreviated))
                 }
             }
             .frame(maxWidth: .infinity)

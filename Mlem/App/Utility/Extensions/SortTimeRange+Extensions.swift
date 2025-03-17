@@ -16,12 +16,12 @@ extension SortTimeRange {
         case topAndTimescale
     }
     
-    func label(prefix: LocalizedStringResource, format: FormatStyle) -> String {
+    func label(name: LocalizedStringResource, prefix: LocalizedStringResource, format: FormatStyle) -> String {
         switch format {
         case .topOnly:
-            String(localized: prefix)
+            String(localized: name)
         case .topAndTimescale:
-            "\(String(localized: prefix)): \(label(abbreviateUnits: false))"
+            "\(String(localized: prefix)) \(label(abbreviateUnits: false))"
         case .timescaleAbbreviated:
             label(abbreviateUnits: true)
         case .timescaleFull:

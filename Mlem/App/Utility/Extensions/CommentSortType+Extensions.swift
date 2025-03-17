@@ -20,7 +20,7 @@ extension CommentSortType {
         case .controversial:
             .init(localized: "Controversial")
         case let .top(timeRange):
-            timeRange.label(prefix: "Top", format: timeRangeFormat)
+            timeRange.label(name: "Top", prefix: "Top:", format: timeRangeFormat)
         }
     }
     
