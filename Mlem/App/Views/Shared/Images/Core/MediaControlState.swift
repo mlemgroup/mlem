@@ -6,6 +6,7 @@
 //
 
 import Observation
+import Foundation
 
 @Observable
 class MediaControlState {
@@ -27,6 +28,9 @@ class MediaControlState {
     /// Which overlays should be enabled
     let overlays: Set<MediaView.Overlay>
     
+    /// Target playback position of animated media
+    var scrubTarget: CGFloat?
+    
     /// True if the media is animated.
     /// - Note: This must be set by MediaView after the media type resolves
     var animationAvailable: Bool = false
@@ -34,6 +38,10 @@ class MediaControlState {
     /// True when the media has an audio track, false otherwise.
     /// - Note: This must be set by the relevant nested media view once it has extracted audio data
     var audioAvailable: Bool
+    
+    /// Current playback position of animated media
+    /// - Note: This should only be set by the nested media view; to scrub, update scrubTarget
+    var playbackPosition: CGFloat = 0
     
     /// Current loading state of the media
     var loading: MediaLoadingState?

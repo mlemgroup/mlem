@@ -56,10 +56,8 @@ extension MediaView {
                 switch media {
                 case let .video(_, animated):
                     VideoView(asset: animated)
-                case let .gif(_, animated):
-                    GifView(data: animated)
-                case let .webp(_, animated):
-                    WebpView(data: animated)
+                case let .animated(_, animated):
+                    AnimatedImageView(data: animated)
                 default:
                     EmptyView()
                 }
