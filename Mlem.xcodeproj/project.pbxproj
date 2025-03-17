@@ -201,6 +201,7 @@
 		0389DDD52C39F1290005B808 /* CommunityListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0389DDD42C39F1290005B808 /* CommunityListRow.swift */; };
 		0389DDDB2C3AB6340005B808 /* ActionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0389DDDA2C3AB6340005B808 /* ActionBuilder.swift */; };
 		038C85692D861A2100543F70 /* Comment+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038C85682D861A2100543F70 /* Comment+Mock.swift */; };
+		038C85E62D88337100543F70 /* CommentMockType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038C85E52D88337100543F70 /* CommentMockType.swift */; };
 		0391E0F92CFF17AE0040CCA8 /* ProfileSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0391E0F82CFF17AE0040CCA8 /* ProfileSettingsView.swift */; };
 		0391E0FB2D0066240040CCA8 /* ImageUploadMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0391E0FA2D0066240040CCA8 /* ImageUploadMenu.swift */; };
 		0391E0FE2D05B2DF0040CCA8 /* AdvancedSortView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0391E0FD2D05B2DF0040CCA8 /* AdvancedSortView.swift */; };
@@ -731,7 +732,7 @@
 		0389DDD42C39F1290005B808 /* CommunityListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityListRow.swift; sourceTree = "<group>"; };
 		0389DDDA2C3AB6340005B808 /* ActionBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionBuilder.swift; sourceTree = "<group>"; };
 		038C85682D861A2100543F70 /* Comment+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment+Mock.swift"; sourceTree = "<group>"; };
-		038D3F852D86182C0050ADDB /* MlemMiddleware */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MlemMiddleware; path = ../MlemMiddleware; sourceTree = SOURCE_ROOT; };
+		038C85E52D88337100543F70 /* CommentMockType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentMockType.swift; sourceTree = "<group>"; };
 		0391E0F82CFF17AE0040CCA8 /* ProfileSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsView.swift; sourceTree = "<group>"; };
 		0391E0FA2D0066240040CCA8 /* ImageUploadMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUploadMenu.swift; sourceTree = "<group>"; };
 		0391E0FD2D05B2DF0040CCA8 /* AdvancedSortView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSortView.swift; sourceTree = "<group>"; };
@@ -1487,6 +1488,7 @@
 				03F6BD9B2D501478006A425E /* ActorIdentifier+Mock.swift */,
 				03F6BDBB2D52B7FE006A425E /* PostMockType.swift */,
 				0370299E2D6B743B00B749DF /* PostMockType+Realistic.swift */,
+				038C85E52D88337100543F70 /* CommentMockType.swift */,
 			);
 			path = "MlemMiddleware Mock";
 			sourceTree = "<group>";
@@ -1585,7 +1587,6 @@
 		6363D5B827EE196700E34822 = {
 			isa = PBXGroup;
 			children = (
-				038D3F852D86182C0050ADDB /* MlemMiddleware */,
 				03A6315C2D4D15F1009A47A6 /* PrivacyInfo.xcprivacy */,
 				6363D5C327EE196700E34822 /* Mlem */,
 				6363D5D927EE196A00E34822 /* MlemTests */,
@@ -2990,6 +2991,7 @@
 				03F6BDAD2D516615006A425E /* Community+Mock.swift in Sources */,
 				039F58972C7B68F100C61658 /* AboutMlemView.swift in Sources */,
 				035EDEFB2C2DF98700F51144 /* CommunityListRowBody.swift in Sources */,
+				038C85E62D88337100543F70 /* CommentMockType.swift in Sources */,
 				CD77437F2C1BA5CE0085BB43 /* MultiplatformView.swift in Sources */,
 				0391E0F92CFF17AE0040CCA8 /* ProfileSettingsView.swift in Sources */,
 				03E614E72C0BCDC200F692A4 /* FullyQualifiedLinkView.swift in Sources */,
@@ -3423,8 +3425,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware";
 			requirement = {
-				kind = upToNextMinorVersion;
-				minimumVersion = 0.85.0;
+				branch = "sjmarf/comment-mock";
+				kind = branch;
 			};
 		};
 		CD4368BF2AE23FD400BD8BD1 /* XCRemoteSwiftPackageReference "Semaphore" */ = {
