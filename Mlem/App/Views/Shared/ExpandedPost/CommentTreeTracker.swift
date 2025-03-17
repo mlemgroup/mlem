@@ -37,7 +37,7 @@ class CommentTreeTracker: Hashable {
     
     var root: Root
     
-    var sort: ApiCommentSortType = Settings.main.commentSort
+    var sort: CommentSortType = .init(Settings.main.commentSort)
     
     init(root: Root) {
         self.root = root

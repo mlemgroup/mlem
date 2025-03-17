@@ -106,7 +106,7 @@ extension SearchView {
     
     @Observable
     class CommentFilters {
-        var sort: ApiSortType = .topAll
+        var sort: CommentSortType = .top(.allTime)
         var creator: Person2?
         var location: LocationFilter = .any
     }

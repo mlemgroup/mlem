@@ -81,14 +81,14 @@ extension SearchView {
     
     @ViewBuilder
     private var commentFiltersView: some View {
-//        Menu(commentFilters.sort.label(topFormat: .topOnly), systemImage: commentFilters.sort.systemImage) {
-//            Picker("Sort", selection: $commentFilters.sort) {
-//                ForEach(ApiSortType.commentSearchCases, id: \.self) { item in
-//                    Label(item.label(topFormat: .topOnly), systemImage: item.systemImage)
-//                }
-//            }
-//        }
-//        .buttonStyle(.feedFilter(isOn: personFilters.sort != .topAll))
+        Menu(commentFilters.sort.label(timeRangeFormat: .topOnly), systemImage: commentFilters.sort.systemImage) {
+            Picker("Sort", selection: $commentFilters.sort) {
+                ForEach(CommentSortType.legacyCases, id: \.self) { item in
+                    Label(item.label(timeRangeFormat: .topOnly), systemImage: item.systemImage)
+                }
+            }
+        }
+        .buttonStyle(.feedFilter(isOn: commentFilters.sort != .top(.allTime)))
         LocationPicker(filter: $commentFilters.location)
             .buttonStyle(.feedFilter(isOn: commentFilters.location != .any))
         CreatorPicker(

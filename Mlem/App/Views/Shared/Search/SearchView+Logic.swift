@@ -147,7 +147,7 @@ extension SearchView {
         try await commentLoader.refresh(
             query: query,
             listing: listing,
-            sort: commentFilters.sort,
+            sort: .v3(commentFilters.sort),
             clearBeforeRefresh: clearBeforeRefresh
         )
     }
