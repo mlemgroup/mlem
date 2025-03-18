@@ -156,14 +156,8 @@ struct ImageViewer: View {
             return
         }
         
-        if dragIsScrub == nil {
-            dragIsScrub = abs(value.velocity.height) < abs(value.velocity.width)
-        }
-        
-        guard let dragIsScrub else {
-            assertionFailure("DragGesture updated but dragIsScrub is nil")
-            return
-        }
+        let dragIsScrub = self.dragIsScrub ?? abs(value.velocity.height) < abs(value.velocity.width)
+        self.dragIsScrub = dragIsScrub
         
         if dragIsScrub, controlState.animationAvailable, controlState.enableAnimation {
             showControls()
