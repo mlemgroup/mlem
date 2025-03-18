@@ -32,5 +32,6 @@ struct PrivacyBypassImageProxySettingsView: View {
         }
         .contentMargins(.top, 16)
         .labelStyle(.conditional)
+        .hiddenNavigationTitle("Bypass Image Proxy")
     }
 }
