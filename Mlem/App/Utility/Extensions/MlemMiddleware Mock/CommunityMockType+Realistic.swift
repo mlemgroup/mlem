@@ -15,6 +15,7 @@ extension CommunityMockType {
         case meIrl
         case technology
         case nature
+        case showerThoughts
         
         var id: Int {
             switch self {
@@ -23,6 +24,7 @@ extension CommunityMockType {
             case .meIrl: 2
             case .technology: 3
             case .nature: 4
+            case .showerThoughts: 5
             }
         }
         
@@ -51,6 +53,11 @@ extension CommunityMockType {
             case .nature: .init(
                     localized: "community.5.name",
                     defaultValue: "nature",
+                    table: "PreviewLocalizable"
+                )
+            case .showerThoughts: .init(
+                    localized: "community.6.name",
+                    defaultValue: "showerthoughts",
                     table: "PreviewLocalizable"
                 )
             }
@@ -83,6 +90,11 @@ extension CommunityMockType {
                     defaultValue: "Nature",
                     table: "PreviewLocalizable"
                 )
+            case .showerThoughts: .init(
+                    localized: "community.6.displayName",
+                    defaultValue: "Nature",
+                    table: "PreviewLocalizable"
+                )
             }
         }
         
@@ -93,6 +105,7 @@ extension CommunityMockType {
             case .meIrl: nil
             case .technology: nil
             case .nature: nil
+            case .showerThoughts: nil
             }
         }
         
@@ -103,6 +116,7 @@ extension CommunityMockType {
             case .meIrl: .init(string: "mlempreview://image/pfp.person")
             case .technology: .init(string: "mlempreview://image/pfp.circuit")
             case .nature: .init(string: "mlempreview://image/pfp.lakeside")
+            case .showerThoughts: .init(string: "mlempreview://image/pfp.shower")
             }
         }
         
@@ -113,6 +127,7 @@ extension CommunityMockType {
             case .meIrl: nil
             case .technology: nil
             case .nature: nil
+            case .showerThoughts: .init(string: "mlempreview://image.droplets")
             }
         }
     }
