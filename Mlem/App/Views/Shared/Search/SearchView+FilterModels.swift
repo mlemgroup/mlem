@@ -82,13 +82,13 @@ extension SearchView {
     
     @Observable
     class CommunityFilters {
-        var sort: ApiSortType = .topAll
+        var sort: SearchSortType = .top(.allTime)
         var instance: InstanceFilter = .any
     }
     
     @Observable
     class PersonFilters {
-        var sort: ApiSortType = .topAll
+        var sort: SearchSortType = .top(.allTime)
         var instance: InstanceFilter = .any
     }
     
@@ -99,14 +99,14 @@ extension SearchView {
     
     @Observable
     class PostFilters {
-        var sort: ApiSortType = .topAll
+        var sort: PostSortType = .top(.allTime)
         var creator: Person2?
         var location: LocationFilter = .any
     }
     
     @Observable
     class CommentFilters {
-        var sort: ApiSortType = .topAll
+        var sort: CommentSortType = .top(.allTime)
         var creator: Person2?
         var location: LocationFilter = .any
     }

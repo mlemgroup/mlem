@@ -167,14 +167,15 @@ class PersistenceRepository {
         try await save(visitHistory.codedData(), to: path)
     }
     
-    func loadPinnedSortTypes() -> Set<ApiSortType> {
-        load(Set<ApiSortType>.self, from: PersistencePath.pinnedSortTypes) ?? [
+    func loadPinnedSortTypes() -> Set<PostSortType> {
+        let apiSortTypes = load(Set<ApiSortType>.self, from: PersistencePath.pinnedSortTypes) ?? [
             .hot, .new, .topSixHour, .topDay, .topWeek, .topMonth, .topYear, .topAll
         ]
+        return Set(apiSortTypes.map(PostSortType.init))
     }
     
-    func savePinnedSortTypes(_ value: Set<ApiSortType>) async throws {
-        try await save(value, to: PersistencePath.pinnedSortTypes)
+    func savePinnedSortTypes(_ value: Set<PostSortType>) async throws {
+        try await save(value.compactMap(\.legacyApiSortType), to: PersistencePath.pinnedSortTypes)
     }
     
     /// Saves the given user settings

@@ -80,7 +80,7 @@ extension SearchView {
         try await communityLoader.refresh(
             query: query,
             listing: (!filtersActive || communityFilters.instance == .any) ? .all : .local,
-            sort: filtersActive ? communityFilters.sort : .topAll,
+            sort: filtersActive ? communityFilters.sort : .top(.allTime),
             clearBeforeRefresh: clearBeforeRefresh
         )
     }
@@ -93,7 +93,7 @@ extension SearchView {
         try await personLoader.refresh(
             query: query,
             listing: (!filtersActive || personFilters.instance == .any) ? .all : .local,
-            sort: filtersActive ? personFilters.sort : .topAll,
+            sort: filtersActive ? personFilters.sort : .top(.allTime),
             clearBeforeRefresh: clearBeforeRefresh
         )
     }
@@ -104,7 +104,7 @@ extension SearchView {
             to: getRefreshApi(for: postFilters.location),
             context: filtersTracker.filterContext
         )
-        postLoader.searchPostFetcher.setSortType(postFilters.sort)
+        postLoader.searchPostFetcher.setSortType(.v3(postFilters.sort))
         postLoader.searchPostFetcher.query = query
         postLoader.searchPostFetcher.creatorId = postFilters.creator?.id
         postLoader.searchPostFetcher.communityId = nil
@@ -147,7 +147,7 @@ extension SearchView {
         try await commentLoader.refresh(
             query: query,
             listing: listing,
-            sort: commentFilters.sort,
+            sort: .v3(commentFilters.sort),
             clearBeforeRefresh: clearBeforeRefresh
         )
     }
