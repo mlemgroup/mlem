@@ -169,15 +169,16 @@ struct ImageViewer: View {
             showControls()
             
             if scrubStartedPlaybackPosition == nil {
+                print("DEBUG saving playback position")
                 scrubStartedPlaybackPosition = controlState.playbackPosition
             }
             
             // scrub rate is controlled by the height of the scrub gesture.
-            // Every 30px increases/decreases scrub rate by 2x to a max of 8x; update in increments of 10px
-            let newScrubRate: CGFloat = (1 / pow(2, (value.translation.height.stepped(by: 10) / 30))).bounded(lower: 0.125, upper: 8)
+            // Every 50px increases/decreases scrub rate by 2x to a max of 8x; update in increments of 10px
+            let newScrubRate: CGFloat = (1 / pow(2, (value.translation.height.stepped(by: 10) / 50))).bounded(lower: 0.125, upper: 8)
             if newScrubRate != scrubRate {
                 // when the scrub rate changes, compute future scrub targets as if the translation started at the current point and scrubTarget
-                scrubStartedPlaybackPosition = controlState.scrubTarget
+                scrubStartedPlaybackPosition = controlState.scrubTarget ?? controlState.playbackPosition
                 scrubSegmentOffset = value.translation.width
                 scrubRate = newScrubRate
             }
@@ -209,6 +210,7 @@ struct ImageViewer: View {
             dragIsScrub = nil
             
             if scrubbing {
+                print("DEBUG resetting scrub")
                 // scrub ended: reset scrubbing and re-enable control tap
                 scrubRate = 1
                 scrubStartedPlaybackPosition = nil
