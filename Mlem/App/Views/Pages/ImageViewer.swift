@@ -80,6 +80,7 @@ struct ImageViewer: View {
     
     // Whether the controls are currently visible
     var controlsShown: Bool { controlOpacity > 0 }
+    var scaleDisplayValue: CGFloat { dragIsScrub ?? false ? scrubRate : currentScale }
     
     init(url: URL) {
         var components = URLComponents(url: url, resolvingAgainstBaseURL: false)!
@@ -131,15 +132,15 @@ struct ImageViewer: View {
                 dragStartedScale = nil
             }
         }
-        .onChange(of: currentScale) {
+        .onChange(of: scaleDisplayValue) {
             if !scaleDisplayShown {
                 withAnimation(.easeIn(duration: 0.1)) {
                     scaleDisplayShown = true
                 }
             }
-            let oldScale: CGFloat = currentScale
+            let oldScale: CGFloat = scaleDisplayValue
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                if currentScale == oldScale {
+                if scaleDisplayValue == oldScale {
                     withAnimation {
                         scaleDisplayShown = false
                     }
@@ -182,10 +183,10 @@ struct ImageViewer: View {
                     return
                 }
                 
-                // x translation since scrub segment began
-                let scrubSegmentTranslation = value.translation.width - scrubSegmentOffset
-                // translation as a percentage of scrub area adjusted by scrub rate
-                let scrubTargetDelta = (scrubSegmentTranslation * scrubRate) / (UIScreen.main.bounds.width - 80)
+                // x translation since scrub segment began, adjusted by scrub rate
+                let scrubSegmentTranslation = (value.translation.width - scrubSegmentOffset) * scrubRate
+                // convert translation to a percentage of scrub area
+                let scrubTargetDelta = scrubSegmentTranslation / (UIScreen.main.bounds.width - 80)
                 let newScrubTarget = (scrubStartedPlaybackPosition + scrubTargetDelta).bounded(lower: 0, upper: 1)
                 controlState.scrubTarget = newScrubTarget
             }

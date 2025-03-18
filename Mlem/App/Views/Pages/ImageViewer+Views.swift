@@ -228,7 +228,7 @@ extension ImageViewer {
     
     @ViewBuilder
     var scaleDisplay: some View {
-        Text(String(format: "%.1fx", currentScale))
+        Text(String(format: "%.1fx", scaleDisplayValue))
             .foregroundStyle(.white)
             .padding(Constants.main.standardSpacing)
             .padding(.horizontal, Constants.main.halfSpacing)
