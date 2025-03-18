@@ -210,7 +210,6 @@ struct ImageViewer: View {
             dragIsScrub = nil
             
             if scrubbing {
-                print("DEBUG resetting scrub")
                 // scrub ended: reset scrubbing and re-enable control tap
                 scrubRate = 1
                 scrubStartedPlaybackPosition = nil
