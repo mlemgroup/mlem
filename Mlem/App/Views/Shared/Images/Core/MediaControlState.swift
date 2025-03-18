@@ -5,8 +5,8 @@
 //  Created by Eric Andrews on 2025-02-05.
 //
 
-import Observation
 import Foundation
+import Observation
 
 @Observable
 class MediaControlState {

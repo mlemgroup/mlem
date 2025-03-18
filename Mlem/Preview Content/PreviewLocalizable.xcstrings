@@ -111,6 +111,28 @@
         }
       }
     },
+    "community.6.displayName" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Nature"
+          }
+        }
+      }
+    },
+    "community.6.name" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "showerthoughts"
+          }
+        }
+      }
+    },
     "person.1.displayName" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -250,6 +272,17 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Meguro River, Matsuno, Japan"
+          }
+        }
+      }
+    },
+    "post.3.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "During a nuclear explosion, there is a certain distance of the radius where all the frozen supermarket pizzas are cooked to perfection."
           }
         }
       }

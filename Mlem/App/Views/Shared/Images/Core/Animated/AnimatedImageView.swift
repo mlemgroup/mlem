@@ -5,8 +5,8 @@
 //  Created by Eric Andrews on 2024-12-06.
 //
 
-import SDWebImageSwiftUI
 import SDWebImage
+import SDWebImageSwiftUI
 import SwiftUI
 
 struct AnimatedImageView: View {
@@ -33,9 +33,9 @@ struct AnimatedImageView: View {
             view.autoPlayAnimatedImage = controlState.animating
         }
         .onViewUpdate { view, _ in
-            if self.player == nil, let viewPlayer = view.player {
+            if player == nil, let viewPlayer = view.player {
                 DispatchQueue.main.async {
-                    self.player = viewPlayer
+                    player = viewPlayer
                 }
             }
         }
