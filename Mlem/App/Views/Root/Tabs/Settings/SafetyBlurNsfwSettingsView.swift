@@ -23,6 +23,7 @@ struct SafetyBlurNsfwSettingsView: View {
         }
         .contentMargins(.top, 16)
         .labelStyle(.conditional)
+        .hiddenNavigationTitle("Blur NSFW Content")
     }
     
     @ViewBuilder
