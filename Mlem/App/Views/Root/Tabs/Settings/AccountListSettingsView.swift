@@ -23,6 +23,7 @@ struct AccountListSettingsView: View {
             }
         }
         .labelStyle(.conditional)
+        .hiddenNavigationTitle("Accounts")
     }
     
     @ViewBuilder

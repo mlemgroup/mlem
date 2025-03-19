@@ -30,5 +30,6 @@ struct AnimatedAvatarSettingsView: View {
         }
         .labelStyle(.conditional)
         .contentMargins(.top, 16)
+        .hiddenNavigationTitle("Animated Avatars")
     }
 }

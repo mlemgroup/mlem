@@ -52,6 +52,7 @@ struct SafetySettingsView: View {
         }
         .contentMargins(.top, 16)
         .labelStyle(.conditional)
+        .hiddenNavigationTitle("Safety & Filtering")
     }
     
     var contentWarningsNavigationLinkValue: LocalizedStringResource {

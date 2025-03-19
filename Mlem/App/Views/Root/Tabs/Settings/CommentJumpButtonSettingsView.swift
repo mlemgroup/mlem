@@ -55,6 +55,7 @@ struct CommentJumpButtonSettingsView: View {
         .labelStyle(.conditional)
         .contentMargins(.top, 16)
         .animation(.easeOut(duration: 0.1), value: jumpButton == .none)
+        .hiddenNavigationTitle("Jump Button")
     }
     
     var pickerCases: [CommentJumpButtonLocation] {

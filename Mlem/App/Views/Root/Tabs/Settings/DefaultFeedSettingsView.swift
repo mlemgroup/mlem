@@ -29,5 +29,6 @@ struct DefaultFeedSettingsView: View {
             .labelsHidden()
         }
         .contentMargins(.top, 16)
+        .hiddenNavigationTitle("Default Feed")
     }
 }

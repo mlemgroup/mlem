@@ -103,5 +103,6 @@ struct GeneralSettingsView: View {
         }
         .labelStyle(.conditional)
         .contentMargins(.top, 16)
+        .hiddenNavigationTitle("General")
     }
 }
