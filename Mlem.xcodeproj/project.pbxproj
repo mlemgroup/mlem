@@ -521,6 +521,7 @@
 		CDF9EF332AB2845C003F885B /* Icons.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF9EF322AB2845C003F885B /* Icons.swift */; };
 		CDFB8C692C7796020070845F /* View+DynamicBlur.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDFB8C682C7796020070845F /* View+DynamicBlur.swift */; };
 		CDFF11712D3D93DC00386B71 /* ConditionalIconLabelStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDFF11702D3D93D900386B71 /* ConditionalIconLabelStyle.swift */; };
+		CDFF9A332D88C3C1009E02E2 /* CGFloat+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDFF9A322D88C3BE009E02E2 /* CGFloat+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1049,6 +1050,7 @@
 		CDF9EF322AB2845C003F885B /* Icons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icons.swift; sourceTree = "<group>"; };
 		CDFB8C682C7796020070845F /* View+DynamicBlur.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+DynamicBlur.swift"; sourceTree = "<group>"; };
 		CDFF11702D3D93D900386B71 /* ConditionalIconLabelStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionalIconLabelStyle.swift; sourceTree = "<group>"; };
+		CDFF9A322D88C3BE009E02E2 /* CGFloat+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -1917,6 +1919,7 @@
 		CD4D58C22B86DC5800B82964 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				CDFF9A322D88C3BE009E02E2 /* CGFloat+Extensions.swift */,
 				CD5D8E2A2D6D5AAE00AF5CE4 /* CGSize+Extensions.swift */,
 				03A631C92D4FCEE3009A47A6 /* MlemMiddleware Mock */,
 				CD8457132D07576700CEA2B8 /* AVPlayer+Extensions.swift */,
@@ -2875,6 +2878,7 @@
 				03500C2B2BF7F1B100CAA076 /* ToastOverlayView.swift in Sources */,
 				032C32042C3439C600595286 /* ActorIdentifiable+Extensions.swift in Sources */,
 				CD57AFA52D0377EB00AB3956 /* AnimationControlLayer.swift in Sources */,
+				CDFF9A332D88C3C1009E02E2 /* CGFloat+Extensions.swift in Sources */,
 				CD6436522D483F2D002668FB /* MockTextView.swift in Sources */,
 				CD5D8E2B2D6D5AB100AF5CE4 /* CGSize+Extensions.swift in Sources */,
 				CD3485BB2D501470006748B8 /* ZoomSliderLocation.swift in Sources */,
