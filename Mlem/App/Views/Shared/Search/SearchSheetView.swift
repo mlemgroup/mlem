@@ -63,6 +63,7 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
                     SearchBar("Search", text: $query, isEditing: $editing)
                         .isInitialFirstResponder(true)
                         .focused($focused)
+                        .autocorrectionDisabled()
                 }
             }
             ToolbarItem(placement: .topBarTrailing) {
