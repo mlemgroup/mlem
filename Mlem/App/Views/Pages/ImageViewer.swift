@@ -79,13 +79,13 @@ struct ImageViewer: View {
     
     @State var quickLookUrl: URL?
     
+    /// Value to show in the top leading scale display (either scrub rate or zoom depending)
+    @State var scaleDisplayValue: CGFloat = 1
+    
     @State var devToolsShown: Bool = false
     
     /// Whether the controls are currently visible
     var controlsShown: Bool { controlOpacity > 0 }
-    
-    /// Value to show in the top leading scale display
-    var scaleDisplayValue: CGFloat { dragIsScrub ?? false ? scrubRate : currentScale }
     
     init(url: URL) {
         var components = URLComponents(url: url, resolvingAgainstBaseURL: false)!
@@ -136,6 +136,14 @@ struct ImageViewer: View {
             if !scaleDragState {
                 dragStartedScale = nil
             }
+        }
+        .onChange(of: scrubRate) {
+            if dragIsScrub ?? false { // don't update value if not currently scrubbing
+                scaleDisplayValue = scrubRate
+            }
+        }
+        .onChange(of: currentScale) {
+            scaleDisplayValue = currentScale
         }
         .onChange(of: scaleDisplayValue) {
             if !scaleDisplayShown {
