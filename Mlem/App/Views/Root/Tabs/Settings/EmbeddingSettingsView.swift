@@ -22,5 +22,6 @@ struct EmbeddingSettingsView: View {
         }
         .labelStyle(.conditional)
         .contentMargins(.top, 16)
+        .hiddenNavigationTitle("Embedded Content")
     }
 }

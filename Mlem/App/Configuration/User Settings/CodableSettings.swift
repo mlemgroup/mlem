@@ -178,7 +178,7 @@ struct CodableSettings: Codable { // swiftlint:disable:this type_body_length
         self.links_shareMode = try container.decodeIfPresent(LinkSharingMode.self, forKey: .links_shareMode) ?? .myInstance
         self.links_tappableLinksDisplayMode = try container.decodeIfPresent(TappableLinksDisplayMode.self, forKey: .links_tappableLinksDisplayMode) ?? .contextual
         self.links_embedLoops = try container.decodeIfPresent(Bool.self, forKey: .links_embedLoops) ?? true
-        self.media_animatedAvatars = try container.decodeIfPresent(Bool.self, forKey: .media_animatedAvatars) ?? UIAccessibility.isReduceMotionEnabled ? .never : .always
+        self.media_animatedAvatars = try container.decodeIfPresent(AnimatedAvatarBehavior.self, forKey: .media_animatedAvatars) ?? (UIAccessibility.isReduceMotionEnabled ? .never : .always)
         self.menus_allModActions = try container.decodeIfPresent(Bool.self, forKey: .menus_allModActions) ?? false
         self.menus_modActionGrouping = try container.decodeIfPresent(ModeratorActionGrouping.self, forKey: .menus_modActionGrouping) ?? .divider
         self.post_defaultSort = try container.decodeIfPresent(ApiSortType.self, forKey: .post_defaultSort) ?? .hot

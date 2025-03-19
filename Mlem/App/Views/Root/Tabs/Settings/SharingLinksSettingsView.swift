@@ -51,6 +51,7 @@ struct SharingLinksSettingsView: View {
         .contentMargins(.top, 16)
         .labelStyle(.conditional)
         .animation(.easeInOut(duration: 0.1), value: linkSharingMode)
+        .hiddenNavigationTitle("Share Links")
     }
     
     @ViewBuilder
