@@ -34,11 +34,11 @@ struct AnimatedImageView: UIViewRepresentable {
         
         // compute real time duration
         Task {
-            var total: Double = 0
+            var total: TimeInterval = 0
             for index in (0..<animatedImage.animatedImageFrameCount) {
                 total += animatedImage.animatedImageDuration(at: index)
             }
-            print("DEBUG runtime: \(total)")
+            controlState.duration = total
         }
         
         // set up player with observation to update controlState.playbackPosition

@@ -49,6 +49,10 @@ class MediaControlState {
     /// - Note: This should only be set by the nested media view; to scrub, update scrubTarget
     var playbackPosition: CGFloat = 0
     
+    /// Duration of animated media
+    /// - Note: This should only be set by the nested media view
+    var duration: TimeInterval?
+    
     /// Current loading state of the media
     var loading: MediaLoadingState?
     

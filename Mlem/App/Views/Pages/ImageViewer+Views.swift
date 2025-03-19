@@ -78,6 +78,12 @@ extension ImageViewer {
                 VStack(alignment: .leading, spacing: Constants.main.halfSpacing) {
                     let imageType: String = url.proxyAwarePathExtension?.lowercased() ?? "Unknown"
                     Text(verbatim: "Media Type: \(imageType) ")
+                    if let duration = controlState.duration {
+                        Text(verbatim: "Duration: \(String(format: "%.4fs", duration))")
+                            .monospacedDigit()
+                    } else {
+                        Text(verbatim: "Duration: None")
+                    }
                     Text(verbatim: "Playback Position: \(String(format: "%.4f", controlState.playbackPosition))")
                         .monospacedDigit()
                     if let target = controlState.scrubTarget {
@@ -138,31 +144,47 @@ extension ImageViewer {
     
     @ViewBuilder
     var playbackBar: some View {
-        Capsule()
-            .fill(.ultraThinMaterial)
-            .frame(maxWidth: .infinity)
-            .frame(height: 10)
-            .overlay {
-                GeometryReader { geo in
-                    let width = geo.size.width - 10 // prevent circle going past end of capsule
-                    Circle()
-                        .fill(.white)
-                        .frame(width: 6, height: 6)
-                        .padding(2)
-                        .offset(x: (controlState.scrubTarget ?? controlState.playbackPosition) * width)
-                        .onAppear {
-                            // set playbackBarHitbox to be a bit thicker than the real hitbox
-                            let realHitbox = geo.frame(in: .named("ImageViewer"))
-                            playbackBarHitbox = .init(
-                                x: realHitbox.minX,
-                                y: realHitbox.maxY - 50,
-                                width: realHitbox.width,
-                                height: 50)
-                        }
+        VStack(spacing: Constants.main.halfSpacing) {
+            if let duration = controlState.duration {
+                HStack {
+                    let position: TimeInterval = controlState.playbackPosition * duration
+                    Text(position.minuteSecondString)
+                    
+                    Spacer()
+                    
+                    Text(duration.minuteSecondString)
                 }
+                .font(.footnote)
+                .fontWeight(.semibold)
+                .shadow(radius: 2)
             }
-            .padding(.horizontal, Constants.main.standardSpacing)
-            .environment(\.colorScheme, .dark)
+            
+            Capsule()
+                .fill(.ultraThinMaterial)
+                .frame(maxWidth: .infinity)
+                .frame(height: 10)
+                .overlay {
+                    GeometryReader { geo in
+                        let width = geo.size.width - 10 // prevent circle going past end of capsule
+                        Circle()
+                            .fill(.white)
+                            .frame(width: 6, height: 6)
+                            .padding(2)
+                            .offset(x: (controlState.scrubTarget ?? controlState.playbackPosition) * width)
+                            .onAppear {
+                                // set playbackBarHitbox to be a bit thicker than the real hitbox
+                                let realHitbox = geo.frame(in: .named("ImageViewer"))
+                                playbackBarHitbox = .init(
+                                    x: realHitbox.minX,
+                                    y: realHitbox.maxY - 50,
+                                    width: realHitbox.width,
+                                    height: 50)
+                            }
+                    }
+                }
+                .environment(\.colorScheme, .dark)
+        }
+        .padding(.horizontal, Constants.main.standardSpacing)
     }
     
     @ViewBuilder
