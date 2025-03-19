@@ -140,12 +140,13 @@ class AppState {
         }
     }
     
-    var initialFeedSortType: ApiSortType {
+    var initialFeedSortType: PostSortType {
         get async throws {
-            let defaultSort = Settings.main.defaultPostSort
+            // In future, we should be storing `PostSortType` in `Settings` rather than `ApiSortType`
+            let defaultSort: PostSortType = .init(Settings.main.defaultPostSort)
             let instanceVersion = try await firstApi.version
             if instanceVersion >= defaultSort.minimumVersion { return defaultSort }
-            return Settings.main.fallbackPostSort
+            return .init(Settings.main.fallbackPostSort)
         }
     }
     

@@ -60,6 +60,7 @@ struct DiscussionLanguageSettingsView: View {
             }
         }
         .contentMargins(.top, 16)
+        .hiddenNavigationTitle("Discussion Languages")
     }
 
     func updateDiscussionLanguages(with language: Locale.Language) async {

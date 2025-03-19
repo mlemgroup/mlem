@@ -13,10 +13,10 @@ extension AdvancedSortView {
         @Environment(AppState.self) var appState
         @Environment(\.dismiss) var dismiss
 
-        let type: ApiSortType
-        var topFormat: ApiSortType.TopSortModeFormatStyle = .timescaleFull
+        let type: PostSortType
+        var timeRangeFormat: SortTimeRange.FormatStyle = .timescaleFull
 
-        @Binding var selectedSort: ApiSortType
+        @Binding var selectedSort: PostSortType
         
         @State var showingExplanation: Bool = false
         
@@ -70,7 +70,7 @@ extension AdvancedSortView {
         @ViewBuilder
         var titleView: some View {
             HStack(spacing: Constants.main.standardSpacing) {
-                Text(type.label(topFormat: topFormat))
+                Text(type.label(timeRangeFormat: timeRangeFormat))
                 if let explanation = type.explanation {
                     Button {
                         showingExplanation.toggle()

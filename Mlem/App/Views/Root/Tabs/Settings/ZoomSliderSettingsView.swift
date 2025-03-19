@@ -70,6 +70,7 @@ struct ZoomSliderSettingsView: View {
         }
         .labelStyle(.conditional)
         .contentMargins(.top, 16)
+        .hiddenNavigationTitle("Slide to Zoom")
     }
 }
 

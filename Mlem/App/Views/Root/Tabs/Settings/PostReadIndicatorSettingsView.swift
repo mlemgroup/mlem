@@ -54,6 +54,7 @@ struct PostReadIndicatorSettingsView: View {
         }
         .animation(.easeOut(duration: 0.1), value: readPostIndicator)
         .contentMargins(.top, 16)
+        .hiddenNavigationTitle("Read Indicator")
     }
     
     @ViewBuilder

@@ -14,16 +14,16 @@ struct FeedSortPicker: View {
     @Environment(NavigationLayer.self) var navigation
     
     let showTopTimescaleInIcon: Bool
-    @Binding var sort: ApiSortType
+    @Binding var sort: PostSortType
     
     @State var topSortPopupPresented: Bool = false
     
-    init(sort: Binding<ApiSortType>, showTopTimescaleInIcon: Bool = false) {
+    init(sort: Binding<PostSortType>, showTopTimescaleInIcon: Bool = false) {
         self._sort = sort
         self.showTopTimescaleInIcon = showTopTimescaleInIcon
     }
     
-    init(feedLoader: CorePostFeedLoader, showTopTimescaleInIcon: Bool = false) {
+    init(feedLoader: CommunityPostFeedLoader, showTopTimescaleInIcon: Bool = false) {
         self.init(sort: .init(get: { feedLoader.sortType }, set: { newSort in
             Task { @MainActor in
                 do {
@@ -34,15 +34,27 @@ struct FeedSortPicker: View {
             }
         }), showTopTimescaleInIcon: showTopTimescaleInIcon)
     }
-    
-    var nonTopSortTypes: [ApiSortType] {
-        ApiSortType.nonTopCases
+
+    init(feedLoader: AggregatePostFeedLoader, showTopTimescaleInIcon: Bool = false) {
+        self.init(sort: .init(get: { feedLoader.sortType }, set: { newSort in
+            Task { @MainActor in
+                do {
+                    try await feedLoader.changeSortType(to: newSort, forceRefresh: false)
+                } catch {
+                    handleError(error)
+                }
+            }
+        }), showTopTimescaleInIcon: showTopTimescaleInIcon)
+    }
+
+    var nonTopSortTypes: [PostSortType] {
+        PostSortType.nonTopCases
             .filter { PinnedSortTracker.main.pinnedSortTypes.contains($0) }
             .filter { (appState.firstApi.fetchedVersion ?? .infinity) >= $0.minimumVersion }
     }
     
-    var topSortTypes: [ApiSortType] {
-        ApiSortType.topCases
+    var topSortTypes: [PostSortType] {
+        PostSortType.legacyTopCases
             .filter { PinnedSortTracker.main.pinnedSortTypes.contains($0) }
             .filter { (appState.firstApi.fetchedVersion ?? .infinity) >= $0.minimumVersion }
     }
@@ -62,12 +74,12 @@ struct FeedSortPicker: View {
                     Toggle(
                         "Top...",
                         systemImage: Icons.topSort,
-                        isOn: .init(get: { ApiSortType.topCases.contains(sort) }, set: { _ in topSortPopupPresented = true })
+                        isOn: .init(get: { PostSortType.legacyTopCases.contains(sort) }, set: { _ in topSortPopupPresented = true })
                     )
                 } else {
                     ForEach(topSortTypes, id: \.self) { type in
                         Toggle(
-                            type.label(topFormat: .topAndTimescale),
+                            type.label(timeRangeFormat: .topAndTimescale),
                             systemImage: type.systemImage,
                             isOn: .init(get: { sort == type }, set: { _ in sort = type })
                         )
@@ -80,11 +92,11 @@ struct FeedSortPicker: View {
                 }
             }
         } label: {
-            if showTopTimescaleInIcon, ApiSortType.topCases.contains(sort) {
+            if showTopTimescaleInIcon, sort.isTop {
                 HStack {
                     Image(systemName: Icons.topSort)
                         .imageScale(.small)
-                    Text(sort.label(topFormat: .timescaleAbbreviated))
+                    Text(sort.label(timeRangeFormat: .timescaleAbbreviated))
                         .font(.footnote)
                         .fontDesign(.rounded)
                 }
@@ -95,19 +107,22 @@ struct FeedSortPicker: View {
                         // 1.51 is intentional - iOS doesn't render it quite right at 1.5 (iPhone 12)
                         .strokeBorder(.themedAccent, lineWidth: 1.51)
                 }
-                .accessibilityLabel(sort.label(topFormat: .topAndTimescale))
+                .accessibilityLabel(sort.label(timeRangeFormat: .topAndTimescale))
             } else {
-                Label(sort.label(topFormat: topSortTypes.count == 1 ? .topOnly : .topAndTimescale), systemImage: sort.systemImage)
+                Label(sort.label(timeRangeFormat: topSortTypes.count == 1 ? .topOnly : .topAndTimescale), systemImage: sort.systemImage)
             }
         }
         .disabled(appState.firstApi.fetchedVersion == nil)
         .popover(isPresented: $topSortPopupPresented) {
-            TopSortPicker(selected: $sort)
-                // This background is always drawn over a material background unfortunately,
-                // meaning that we can't use thin materials
-                .presentationBackground(.clear)
-                .presentationCornerRadius(18)
-                .presentationCompactAdaptation(.popover)
+            TopSortPicker(
+                action: { sort = .top($0) },
+                filter: { PinnedSortTracker.main.pinnedSortTypes.contains(.top($0)) }
+            )
+            // This background is always drawn over a material background unfortunately,
+            // meaning that we can't use thin materials
+            .presentationBackground(.clear)
+            .presentationCornerRadius(18)
+            .presentationCompactAdaptation(.popover)
         }
     }
     
