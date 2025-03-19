@@ -87,7 +87,7 @@ struct FeedCommentView<EmbeddedContent: View>: View {
             VStack(alignment: .leading) {
                 Text(post.title)
                     .bold()
-                Text(comment.community_?.fullNameWithPrefix ?? "")
+                Text(comment.community_?.fullName ?? "")
             }
             .lineLimit(1)
             .font(.footnote)
