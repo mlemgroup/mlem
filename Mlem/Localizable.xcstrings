@@ -7964,12 +7964,12 @@
         }
       }
     },
-    "Top: %@" : {
+    "Top:" : {
       "localizations" : {
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Top : %@"
+            "value" : "Top :"
           }
         }
       }

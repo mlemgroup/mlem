@@ -39,7 +39,9 @@ extension ExpandedPostView {
                         depthOffset: tracker.proposedDepthOffset
                     )
                     .quickSwipes(comment.swipeActions(appState: appState, behavior: .standard, commentTreeTracker: tracker))
-                    .contextMenu { comment.allMenuActions(appState: appState, navigation: navigation) }
+                    .contextMenu {
+                        comment.allMenuActions(appState: appState, navigation: navigation, commentTreeTracker: tracker)
+                    }
                     .paletteBorder(cornerRadius: Constants.main.standardSpacing)
                     .transition(.move(edge: .top).combined(with: .opacity))
                     .zIndex(1000 - Double(comment.depth))
@@ -68,9 +70,9 @@ extension ExpandedPostView {
                 Task { await tracker.load() }
             })
         ) {
-            ForEach(ApiCommentSortType.allCases, id: \.self) { item in
+            ForEach(CommentSortType.legacyCases, id: \.self) { item in
                 if (post?.api.fetchedVersion ?? .infinity) >= item.minimumVersion {
-                    Label(String(localized: item.label), systemImage: item.systemImage)
+                    Label(item.label(timeRangeFormat: .topOnly), systemImage: item.systemImage)
                 }
             }
         }
