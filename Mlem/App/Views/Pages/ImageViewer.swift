@@ -168,44 +168,7 @@ struct ImageViewer: View {
         
         if dragIsScrub {
             if controlState.animationAvailable, controlState.enableAnimation {
-                showControls()
-                
-                let onPlaybackBar: Bool = playbackBarHitbox?.contains(value.startLocation) ?? false
-                
-                // Track playback position when current scrub segment started to offset from.
-                // If the scrub started on playback bar, we want to snap to the start location, so we set scrubStartedPlaybackPosition
-                // to the value corresponding to the scrub start position
-                if scrubStartedPlaybackPosition == nil {
-                    scrubStartedPlaybackPosition = onPlaybackBar ?
-                    value.startLocation.x / UIScreen.main.bounds.width :
-                    controlState.playbackPosition
-                }
-                
-                // disable variable scrub rate if scrubbing playback bar
-                if !onPlaybackBar {
-                    // scrub rate is controlled by the height of the scrub gesture.
-                    // Every 50px increases/decreases scrub rate by 2x to a max of 8x; update in increments of 10px
-                    let heightStep: CGFloat = value.translation.height.stepped(by: 10) / 50
-                    let newScrubRate: CGFloat = (1 / pow(2, heightStep)).bounded(lower: 0.125, upper: 8)
-                    if newScrubRate != scrubRate {
-                        // when the scrub rate changes, compute future scrub targets as if the translation started at the current point and scrubTarget
-                        scrubStartedPlaybackPosition = controlState.scrubTarget ?? controlState.playbackPosition
-                        scrubSegmentOffset = value.translation.width
-                        scrubRate = newScrubRate
-                    }
-                }
-                    
-                guard let scrubStartedPlaybackPosition else {
-                    assertionFailure("drag is scrub but scrubStartedPlaybackPosition is nil")
-                    return
-                }
-                
-                // compute x translation since scrub segment began and adjust by scrub rate
-                let scrubSegmentTranslation = (value.translation.width - scrubSegmentOffset) * scrubRate
-                // convert translation to a percentage of scrub area
-                let scrubTargetDelta = scrubSegmentTranslation / UIScreen.main.bounds.width
-                let newScrubTarget = (scrubStartedPlaybackPosition + scrubTargetDelta).bounded(lower: 0, upper: 1)
-                controlState.scrubTarget = newScrubTarget
+                handleScrubUpdate(value)
             }
         } else if !isDismissing {
             handleOffsetUpdate(value.translation.height)
@@ -325,6 +288,49 @@ struct ImageViewer: View {
             controlOpacity = 1.0 - (controlOffset / maxControlOffset)
         }
         opacity = 1.0 - (absOffset / screenHeight)
+    }
+    
+    /// Responds to scrub updates
+    /// - Parameter value: latest scrub gesture value
+    private func handleScrubUpdate(_ value: DragGesture.Value) {
+        showControls()
+        
+        let onPlaybackBar: Bool = playbackBarHitbox?.contains(value.startLocation) ?? false
+        
+        // Track playback position when current scrub segment started to offset from.
+        // If the scrub started on playback bar, we want to snap to the start location, so we set scrubStartedPlaybackPosition
+        // to the value corresponding to the scrub start position
+        if scrubStartedPlaybackPosition == nil {
+            scrubStartedPlaybackPosition = onPlaybackBar ?
+            value.startLocation.x / UIScreen.main.bounds.width :
+            controlState.playbackPosition
+        }
+        
+        // disable variable scrub rate if scrubbing playback bar
+        if !onPlaybackBar {
+            // scrub rate is controlled by the height of the scrub gesture.
+            // Every 50px increases/decreases scrub rate by 2x to a max of 8x; update in increments of 10px
+            let heightStep: CGFloat = value.translation.height.stepped(by: 10) / 50
+            let newScrubRate: CGFloat = (1 / pow(2, heightStep)).bounded(lower: 0.125, upper: 8)
+            if newScrubRate != scrubRate {
+                // when the scrub rate changes, compute future scrub targets as if the translation started at the current point and scrubTarget
+                scrubStartedPlaybackPosition = controlState.scrubTarget ?? controlState.playbackPosition
+                scrubSegmentOffset = value.translation.width
+                scrubRate = newScrubRate
+            }
+        }
+            
+        guard let scrubStartedPlaybackPosition else {
+            assertionFailure("drag is scrub but scrubStartedPlaybackPosition is nil")
+            return
+        }
+        
+        // compute x translation since scrub segment began and adjust by scrub rate
+        let scrubSegmentTranslation = (value.translation.width - scrubSegmentOffset) * scrubRate
+        // convert translation to a percentage of scrub area
+        let scrubTargetDelta = scrubSegmentTranslation / UIScreen.main.bounds.width
+        let newScrubTarget = (scrubStartedPlaybackPosition + scrubTargetDelta).bounded(lower: 0, upper: 1)
+        controlState.scrubTarget = newScrubTarget
     }
     
     func showQuickLook(url: URL) async {
