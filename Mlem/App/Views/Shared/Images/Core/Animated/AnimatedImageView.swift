@@ -6,7 +6,6 @@
 //
 
 import SDWebImage
-import SDWebImageSwiftUI
 import SwiftUI
 
 struct AnimatedImageView: View {
@@ -14,49 +13,49 @@ struct AnimatedImageView: View {
     
     let data: Data
     
-    @State var player: SDAnimatedImagePlayer?
-    
     var timer = Timer.publish(every: 0.02, on: .main, in: .common)
         .autoconnect()
     
     var body: some View {
-        AnimatedImage(
-            data: data,
-            isAnimating: Binding(
-                get: { controlState.animating },
-                set: { controlState.animating = $0 }
-            )
-        )
-        .resizable()
-        // https://github.com/SDWebImage/SDWebImageSwiftUI/issues/114#issuecomment-636737317
-        .onViewCreate { view, _ in
-            view.autoPlayAnimatedImage = controlState.animating
+        UIAnimatedImageView(data: data, animating: Binding(
+            get: { controlState.animating },
+            set: { controlState.animating = $0 }
+        ))
+    }
+}
+
+private struct UIAnimatedImageView: UIViewRepresentable {
+    let data: Data
+    
+    @Binding var animating: Bool
+    
+    // TODO: maybe in context, need coordinator
+    @State var player: SDAnimatedImagePlayer?
+    
+    func makeUIView(context: Context) -> SDAnimatedImageView {
+        let imageView = SDAnimatedImageView()
+        imageView.autoPlayAnimatedImage = animating
+        
+        guard let animatedImage = SDAnimatedImage(data: data) else {
+            handleError(MlemError.mediaError("Could not create animated image"))
+            return imageView
         }
-        .onViewUpdate { view, _ in
-            if player == nil, let viewPlayer = view.player {
-                DispatchQueue.main.async {
-                    player = viewPlayer
-                }
-            }
+        animatedImage.preloadAllFrames() // improve backward scrubbing performance
+        
+        DispatchQueue.main.async {
+            assert(imageView.player != nil, "imageView had nil player")
+            self.player = imageView.player
         }
-        .onChange(of: controlState.scrubTarget) {
-            guard let player else {
-                return
-            }
-            if let target = controlState.scrubTarget {
-                controlState.animating = false
-                player.seekToFrame(
-                    at: .init((target * CGFloat(player.totalFrameCount)).rounded()),
-                    loopCount: player.currentLoopCount + 1
-                )
-            } else {
-                controlState.animating = true
-            }
-        }
-        .onReceive(timer) { _ in
-            if let player {
-                controlState.playbackPosition = CGFloat(player.currentFrameIndex) / CGFloat(player.totalFrameCount)
-            }
+        
+        imageView.image = animatedImage
+        return imageView
+    }
+    
+    func updateUIView(_ uiView: SDAnimatedImageView, context: Context) {
+        if animating {
+            player?.startPlaying()
+        } else {
+            player?.stopPlaying()
         }
     }
 }
