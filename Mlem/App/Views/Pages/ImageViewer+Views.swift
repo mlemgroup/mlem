@@ -147,7 +147,8 @@ extension ImageViewer {
                     let width = geo.size.width - 10 // prevent circle going past end of capsule
                     Circle()
                         .fill(.white)
-                        .frame(width: 10, height: 10)
+                        .frame(width: 7, height: 7)
+                        .padding(1.5)
                         .offset(x: (controlState.scrubTarget ?? controlState.playbackPosition) * width)
                         .onAppear {
                             // set playbackBarHitbox to be a bit thicker than the real hitbox
@@ -161,6 +162,7 @@ extension ImageViewer {
                 }
             }
             .padding(.horizontal, Constants.main.standardSpacing)
+            .environment(\.colorScheme, .dark)
     }
     
     @ViewBuilder
