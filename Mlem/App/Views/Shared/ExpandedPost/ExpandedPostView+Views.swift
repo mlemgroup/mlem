@@ -70,9 +70,9 @@ extension ExpandedPostView {
                 Task { await tracker.load() }
             })
         ) {
-            ForEach(ApiCommentSortType.allCases, id: \.self) { item in
+            ForEach(CommentSortType.legacyCases, id: \.self) { item in
                 if (post?.api.fetchedVersion ?? .infinity) >= item.minimumVersion {
-                    Label(String(localized: item.label), systemImage: item.systemImage)
+                    Label(item.label(timeRangeFormat: .topOnly), systemImage: item.systemImage)
                 }
             }
         }

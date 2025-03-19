@@ -59,7 +59,7 @@ enum NavigationPage: Hashable {
     case confirmUpload(imageData: Data, imageManager: ImageUploadManager, uploadApi: ApiClient)
     case rulesList(_ model: Profile2HashWrapper, callback: HashWrapper<(String) -> Void>)
     case blockList
-    case advancedSorting(_ sort: HashWrapper<Binding<ApiSortType>>)
+    case advancedSorting(_ sort: HashWrapper<Binding<PostSortType>>)
     case votesList(_ target: VotesListView.Target)
     case modlog(ModlogView.InitialTarget)
     case denyApplication(RegistrationApplication)
@@ -313,7 +313,7 @@ enum NavigationPage: Hashable {
         rulesList(.init(wrappedValue: model), callback: .init(wrappedValue: callback))
     }
     
-    static func advancedSorting(_ sort: Binding<ApiSortType>) -> NavigationPage {
+    static func advancedSorting(_ sort: Binding<PostSortType>) -> NavigationPage {
         advancedSorting(.init(wrappedValue: sort))
     }
     
