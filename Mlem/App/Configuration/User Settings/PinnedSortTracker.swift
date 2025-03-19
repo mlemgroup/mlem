@@ -15,7 +15,7 @@ class PinnedSortTracker {
     @ObservationIgnored @Dependency(\.persistenceRepository)
     private var persistenceRepository
     
-    var pinnedSortTypes: Set<ApiSortType> {
+    var pinnedSortTypes: Set<PostSortType> {
         didSet { Task.detached {
             try await self.persistenceRepository.savePinnedSortTypes(self.pinnedSortTypes)
         } }
