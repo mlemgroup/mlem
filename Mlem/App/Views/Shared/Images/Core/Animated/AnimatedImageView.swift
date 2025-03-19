@@ -25,10 +25,11 @@ struct AnimatedImageView: UIViewRepresentable {
             return imageView
         }
         
-        // TODO: only if scrubbing enabled
-        Task {
+        if controlState.scrubbingAvailable {
             // loads all frames, which enables smooth backwards scrubbing
-            animatedImage.preloadAllFrames()
+            Task {
+                animatedImage.preloadAllFrames()
+            }
         }
         
         // compute real time duration
