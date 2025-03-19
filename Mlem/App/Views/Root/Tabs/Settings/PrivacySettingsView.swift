@@ -49,6 +49,7 @@ struct PrivacySettingsView: View {
         }
         .labelStyle(.conditional)
         .contentMargins(.top, 16)
+        .hiddenNavigationTitle("Privacy")
     }
     
     var bypassImageProxyNavigationLinkValue: LocalizedStringResource {

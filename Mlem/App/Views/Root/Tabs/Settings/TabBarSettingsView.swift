@@ -53,6 +53,7 @@ struct TabBarSettingsView: View {
         }
         .labelStyle(.conditional)
         .contentMargins(.top, 16)
+        .hiddenNavigationTitle("Tab Bar")
     }
     
     @ViewBuilder

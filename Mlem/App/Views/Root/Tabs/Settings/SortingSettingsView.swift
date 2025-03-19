@@ -84,5 +84,6 @@ struct SortingSettingsView: View {
             }
         }
         .contentMargins(.top, 16)
+        .hiddenNavigationTitle("Sorting")
     }
 }
