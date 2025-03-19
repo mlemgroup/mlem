@@ -144,12 +144,20 @@ extension ImageViewer {
             .frame(height: 10)
             .overlay {
                 GeometryReader { geo in
-                    // prevent circle from being dragged over the edge of the capsule
-                    let width = geo.size.width - 10
+                    let width = geo.size.width - 10 // prevent circle going past end of capsule
                     Circle()
                         .fill(.white)
                         .frame(width: 10, height: 10)
                         .offset(x: (controlState.scrubTarget ?? controlState.playbackPosition) * width)
+                        .onAppear {
+                            // set playbackBarHitbox to be a bit thicker than the real hitbox
+                            let realHitbox = geo.frame(in: .named("ImageViewer"))
+                            playbackBarHitbox = .init(
+                                x: realHitbox.minX,
+                                y: realHitbox.maxY - 50,
+                                width: realHitbox.width,
+                                height: 50)
+                        }
                 }
             }
             .padding(.horizontal, Constants.main.standardSpacing)
