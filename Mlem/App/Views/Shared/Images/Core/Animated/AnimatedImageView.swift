@@ -8,30 +8,10 @@
 import SDWebImage
 import SwiftUI
 
-struct AnimatedImageView: View {
+struct AnimatedImageView: UIViewRepresentable {
     @Environment(MediaControlState.self) var controlState
     
     let data: Data
-    
-    @State var duration: CGFloat?
-    
-    var body: some View {
-        UIAnimatedImageView(
-            data: data,
-            scrubTarget: Binding(
-                get: { controlState.scrubTarget },
-                set: { _ in }
-            )
-        )
-    }
-}
-
-private struct UIAnimatedImageView: UIViewRepresentable {
-    @Environment(MediaControlState.self) var controlState
-    
-    let data: Data
-    
-    @Binding var scrubTarget: CGFloat?
     
     @State var player: SDAnimatedImagePlayer?
     @State var observer: NSKeyValueObservation?
@@ -60,13 +40,12 @@ private struct UIAnimatedImageView: UIViewRepresentable {
             print("DEBUG runtime: \(total)")
         }
         
-        // set up animation info with frame count and observation to update current frame
+        // set up player with observation to update controlState.playbackPosition
         DispatchQueue.main.async {
             guard let player = imageView.player else {
                 assertionFailure("ImageView had nil player")
                 return
             }
-            print("DEBUG total frames: \(player.totalFrameCount)")
             observer = player.observe(\.currentFrameIndex) { player, _ in
                 controlState.playbackPosition = CGFloat(player.currentFrameIndex) / CGFloat(player.totalFrameCount)
             }
@@ -87,7 +66,7 @@ private struct UIAnimatedImageView: UIViewRepresentable {
             return
         }
     
-        if let scrubTarget {
+        if let scrubTarget = controlState.scrubTarget {
             if player.isPlaying {
                 player.pausePlaying()
             }
