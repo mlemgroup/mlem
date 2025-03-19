@@ -16,7 +16,8 @@ struct VideoView: View {
     let player: AVQueuePlayer
     let playerLooper: AVPlayerLooper
     
-    @State var duration: CMTime?
+    @State var timescale: CMTimeScale?
+    
     var timer = Timer.publish(every: 0.02, on: .main, in: .common)
         .autoconnect()
     
@@ -46,7 +47,9 @@ struct VideoView: View {
                         assertionFailure("Could not find AVAsset")
                         return
                     }
-                    duration = try await asset.load(.duration)
+                    let cmTime = try await asset.load(.duration)
+                    controlState.duration = cmTime.seconds
+                    timescale = cmTime.timescale
                 } catch {
                     handleError(error)
                 }
@@ -62,14 +65,14 @@ struct VideoView: View {
                 player.volume = controlState.muted ? 0 : 1
             }
             .onChange(of: controlState.scrubTarget) {
-                guard let duration, let playerItem = player.currentItem else {
+                guard let timescale, let duration = controlState.duration, let playerItem = player.currentItem else {
                     assertionFailure("Duration or playerItem not present")
                     return
                 }
                 if let target = controlState.scrubTarget {
                     controlState.animating = false
                     playerItem.seek(
-                        to: .init(seconds: target * duration.seconds, preferredTimescale: duration.timescale),
+                        to: .init(seconds: target * duration, preferredTimescale: timescale),
                         toleranceBefore: CMTime.zero,
                         toleranceAfter: CMTime.zero,
                         completionHandler: nil
@@ -79,9 +82,9 @@ struct VideoView: View {
                 }
             }
             .onReceive(timer) { _ in
-                if let duration, let playerItem = player.currentItem {
+                if let duration = controlState.duration, let playerItem = player.currentItem {
                     let currentTime = playerItem.currentTime().seconds
-                    controlState.playbackPosition = currentTime / duration.seconds
+                    controlState.playbackPosition = currentTime / duration
                 }
             }
     }
