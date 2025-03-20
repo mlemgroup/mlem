@@ -468,7 +468,6 @@
 		CD9CFA372C306DAB00739BBC /* PostGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9CFA362C306DAB00739BBC /* PostGridView.swift */; };
 		CD9D243D2CC1DF59006E5F3F /* AccountType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9D243C2CC1DF55006E5F3F /* AccountType.swift */; };
 		CDA683F82C77E577000C4486 /* NsfwBlurBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA683F72C77E577000C4486 /* NsfwBlurBehavior.swift */; };
-		CDA910FB2D8B866C00FCD01E /* TimeInterval+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA910FA2D8B866800FCD01E /* TimeInterval+Extensions.swift */; };
 		CDAA02DB2C810DB200D75633 /* Calendar+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDAA02DA2C810DB200D75633 /* Calendar+Extensions.swift */; };
 		CDAA02E12C817AAB00D75633 /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDAA02E02C817AAB00D75633 /* Color+Extensions.swift */; };
 		CDAA02E32C821C9100D75633 /* Divider.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDAA02E22C821C9100D75633 /* Divider.swift */; };
@@ -998,7 +997,6 @@
 		CD9CFA362C306DAB00739BBC /* PostGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostGridView.swift; sourceTree = "<group>"; };
 		CD9D243C2CC1DF55006E5F3F /* AccountType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountType.swift; sourceTree = "<group>"; };
 		CDA683F72C77E577000C4486 /* NsfwBlurBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NsfwBlurBehavior.swift; sourceTree = "<group>"; };
-		CDA910FA2D8B866800FCD01E /* TimeInterval+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeInterval+Extensions.swift"; sourceTree = "<group>"; };
 		CDAA02DA2C810DB200D75633 /* Calendar+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+Extensions.swift"; sourceTree = "<group>"; };
 		CDAA02E02C817AAB00D75633 /* Color+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extensions.swift"; sourceTree = "<group>"; };
 		CDAA02E22C821C9100D75633 /* Divider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Divider.swift; sourceTree = "<group>"; };
@@ -1919,7 +1917,6 @@
 		CD4D58C22B86DC5800B82964 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				CDA910FA2D8B866800FCD01E /* TimeInterval+Extensions.swift */,
 				CDFF9A322D88C3BE009E02E2 /* CGFloat+Extensions.swift */,
 				CD5D8E2A2D6D5AAE00AF5CE4 /* CGSize+Extensions.swift */,
 				03A631C92D4FCEE3009A47A6 /* MlemMiddleware Mock */,
@@ -2736,7 +2733,6 @@
 				0381889B2D4412A40073E88D /* SafetyBlurNsfwSettingsView.swift in Sources */,
 				03ECD71B2C811D6700D48BF6 /* PostEditorView+ImageView.swift in Sources */,
 				038C85692D861A2100543F70 /* Comment+Mock.swift in Sources */,
-				CDA910FB2D8B866C00FCD01E /* TimeInterval+Extensions.swift in Sources */,
 				0397D48C2C6BE9A2002C6CDC /* CollapsibleSection.swift in Sources */,
 				038028D82CACAB960091A8A2 /* ModeratorSettingsView.swift in Sources */,
 				033F84CC2C2B1E46002E3EDF /* HandleLemmyLinksModifier.swift in Sources */,

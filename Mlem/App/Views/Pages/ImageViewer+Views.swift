@@ -145,14 +145,12 @@ extension ImageViewer {
     @ViewBuilder
     var playbackBar: some View {
         VStack(spacing: Constants.main.halfSpacing) {
-            if let duration = controlState.duration {
+            // if let duration = controlState.duration {
+            if let readouts = controlState.playbackReadouts {
                 HStack {
-                    let position: TimeInterval = controlState.playbackPosition * duration
-                    Text(position.minuteSecondString)
-                    
+                    Text(readouts.position)
                     Spacer()
-                    
-                    Text(duration.minuteSecondString)
+                    Text(readouts.duration)
                 }
                 .font(.footnote)
                 .fontWeight(.semibold)

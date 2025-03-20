@@ -60,6 +60,11 @@ class MediaControlState {
     var enableControlOverlay: Bool { overlays.contains(.controls) }
     var enableErrorOverlay: Bool { overlays.contains(.error) }
     
+    var playbackReadouts: (position: String, duration: String)? {
+        guard let duration else { return nil }
+        return (position: minuteSecondString(from: playbackPosition * duration), duration: minuteSecondString(from: duration))
+    }
+    
     /// Creates a new MediaControlState
     /// - Parameters:
     ///   - blurred: true if the media should be blurred
@@ -83,5 +88,12 @@ class MediaControlState {
         self.enableAnimation = enableAnimation
         self.muted = muted ?? Settings.main.muteVideos
         self.scrubbingAvailable = scrubbingAvailable
+    }
+    
+    private func minuteSecondString(from timeInterval: TimeInterval) -> String {
+        String(
+            format: "%d:%02d",
+            Int((timeInterval/60).truncatingRemainder(dividingBy: 60)),
+            Int(timeInterval.truncatingRemainder(dividingBy: 60)))
     }
 }
