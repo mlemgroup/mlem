@@ -78,6 +78,11 @@ struct FeedCommentView<EmbeddedContent: View>: View {
             MediaView(
                 url: headerUrl(post: post),
                 size: .init(width: 40, height: 40),
+                controlState: .constant(.init(
+                    blurred: post.nsfw && blurNsfw != .never,
+                    animating: false,
+                    overlays: []
+                )),
                 aspectRatioBounds: .absoluteSquare,
                 contentMode: .fill,
                 cornerRadius: 10,
