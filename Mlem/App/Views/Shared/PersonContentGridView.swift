@@ -63,7 +63,7 @@ struct PersonContentGridView: View {
     
     var content: some View {
         VStack(spacing: 0) {
-            LazyVGrid(columns: columns, spacing: postSize.sectionSpacing) {
+            LazyVGrid(columns: columns, spacing: spacing) {
                 ForEach(items, id: \.hashValue) { item in
                     if !item.shouldHideInFeed {
                         personContentItem(item)
@@ -84,6 +84,15 @@ struct PersonContentGridView: View {
             }
             .animation(.easeOut(duration: 0.1), value: items.isEmpty)
             EndOfFeedView(loadingState: loadingState, viewType: .hobbit)
+        }
+    }
+    
+    var spacing: CGFloat {
+        switch contentType {
+        case .all, .comments:
+            Constants.main.standardSpacing
+        case .posts:
+            postSize.sectionSpacing
         }
     }
     

@@ -76,9 +76,7 @@ struct CommentView<EmbeddedContent: View>: View {
         let collapsed = treeNode?.collapsed ?? false
         
         HStack(spacing: 12) {
-            if !inFeed, comment.depth != 0 {
-                CommentBarView(depth: comment.depth)
-            }
+            CommentBarView(depth: comment.depth, inFeed: inFeed)
             VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
                 HStack(spacing: 0) {
                     FullyQualifiedLinkView(comment.creator_, labelStyle: .small)
@@ -106,12 +104,6 @@ struct CommentView<EmbeddedContent: View>: View {
                 if !collapsed {
                     CommentBodyView(comment: comment)
                         .padding(.trailing, 2)
-                    if inFeed, let post = comment.post_ {
-                        NavigationLink(.post(post)) {
-                            FooterLinkView(title: post.title, subtitle: comment.community_?.fullNameWithPrefix)
-                        }
-                        .id("\(comment.id)_commment_footer")
-                    }
                     embeddedContent
                     if !compact {
                         InteractionBarView(
@@ -132,7 +124,7 @@ struct CommentView<EmbeddedContent: View>: View {
             .padding(.vertical, Constants.main.standardSpacing)
             .padding(.top, compact || collapsed ? 0 : 3)
         }
-        .padding(depth == 0 ? .horizontal : .trailing, Constants.main.standardSpacing)
+        .padding(.trailing, Constants.main.standardSpacing)
         .background(highlight ? palette.accent.opacity(0.2) : .clear)
         .background(.themedSecondaryGroupedBackground)
         .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
@@ -184,10 +176,11 @@ struct CommentView<EmbeddedContent: View>: View {
 
 struct CommentBarView: View {
     let depth: Int
+    var inFeed: Bool = false
     
     var body: some View {
         Capsule()
-            .fill(.themedCommentIndentColor(depth))
+            .fill(inFeed ? .themedTertiary : .themedCommentIndentColor(depth))
             .frame(width: 3)
             .frame(maxHeight: .infinity)
             .padding(.leading, 8)
