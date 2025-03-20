@@ -7,7 +7,6 @@
 
 import Foundation
 import Nuke
-import SDWebImageSwiftUI
 import SDWebImageWebPCoder
 import UIKit
 
@@ -42,7 +41,7 @@ private let animHeader: Data = .init([65, 78, 73, 77])
 
 private extension Data {
     /// If the given data is a webp, returns true if that webp is animated and false otherwise.
-    /// - Warning: This function's behavior is undefined if the provided data is not an animated webp
+    /// - Warning: This function's behavior is undefined if the provided data is not a webp
     func isAnimatedWebp() -> Bool {
         // This function is built to run fast, banking on the fact that it's being passed in after Nuke checks that
         // the image is a webp to guarantee safety. The check itself therefore only targets the bytes that, if the
