@@ -71,6 +71,7 @@ struct CodableSettings: Codable { // swiftlint:disable:this type_body_length
     var post_webPreview_showHost: Bool
     var post_webPreview_showIcon: Bool
     var post_showDownvotesCompact: Bool
+    var post_gestures_tapToCollapse: Bool
     var profile_showBanner: Bool
     var privacy_autoBypassImageProxy: Bool
     var privacy_showFavicons: Bool
@@ -194,6 +195,7 @@ struct CodableSettings: Codable { // swiftlint:disable:this type_body_length
         self.post_thumbnailLocation = try container.decodeIfPresent(ThumbnailLocation.self, forKey: .post_thumbnailLocation) ?? .left
         self.post_webPreview_showHost = try container.decodeIfPresent(Bool.self, forKey: .post_webPreview_showHost) ?? true
         self.post_webPreview_showIcon = try container.decodeIfPresent(Bool.self, forKey: .post_webPreview_showIcon) ?? true
+        self.post_gestures_tapToCollapse = try container.decodeIfPresent(Bool.self, forKey: .post_gestures_tapToCollapse) ?? true
         self.privacy_autoBypassImageProxy = try container.decodeIfPresent(Bool.self, forKey: .privacy_autoBypassImageProxy) ?? false
         self.privacy_showFavicons = try container.decodeIfPresent(Bool.self, forKey: .privacy_showFavicons) ?? true
         self.profile_showBanner = try container.decodeIfPresent(Bool.self, forKey: .profile_showBanner) ?? true
@@ -278,6 +280,7 @@ struct CodableSettings: Codable { // swiftlint:disable:this type_body_length
         self.post_webPreview_showHost = true // Removed in 2.0
         self.post_webPreview_showIcon = settings.showFavicons
         self.post_showDownvotesCompact = settings.showDownvotesCompact
+        self.post_gestures_tapToCollapse = true
         self.profile_showBanner = true // Removed in 2.0
         self.safety_blurNsfw = settings.blurNsfw
         self.safety_enableNsfwCommunityWarning = settings.showNsfwCommunityWarning

@@ -29,6 +29,12 @@ extension ExpandedPostView {
         !(scrollTargetedComment == nil || (post is any Post3Providing && scrolledToscrollTargetedComment))
     }
     
+    func togglePostCollapsed() {
+        withAnimation(UIAccessibility.isReduceMotionEnabled ? nil : .default) {
+            postCollapsed.toggle()
+        }
+    }
+    
     func generateViewTree(for nodes: [CommentTreeNode]) -> [CommentTreeViewType] {
         nodes.reduce([]) { $0 + generateViewTree(for: $1) }
     }
