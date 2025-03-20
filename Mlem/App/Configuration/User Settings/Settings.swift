@@ -32,7 +32,8 @@ class Settings: ObservableObject {
     @AppStorage("post.showCreator") var showPostCreator: Bool = false
     @AppStorage("post.showSubscribedStatus") var showSubscribedStatus: Bool = true
     @AppStorage("post.showDownvotesCompact") var showDownvotesCompact: Bool = false
-    
+    @AppStorage("post.gestures.tapToCollapse") var tapPostsToCollapse: Bool = true
+
     @AppStorage("quickSwipes.enabled") var quickSwipesEnabled: Bool = true
     
     @AppStorage("behavior.hapticLevel") var hapticLevel: HapticPriority = .low
@@ -144,6 +145,7 @@ class Settings: ObservableObject {
         thumbnailLocation = settings.post_thumbnailLocation
         showPostCreator = settings.post_showCreator
         showSubscribedStatus = settings.post_showSubscribedStatus
+        tapPostsToCollapse = settings.post_gestures_tapToCollapse
         quickSwipesEnabled = settings.behavior_enableQuickSwipes
         hapticLevel = settings.behavior_hapticLevel
         upvoteOnSave = settings.behavior_upvoteOnSave

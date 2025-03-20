@@ -10,6 +10,7 @@ enum MlemError: Error {
     case navigationError(String)
     case unexpectedValue
     case cannotAccessSecurityScopedResource
+    case mediaError(String)
 }
 
 extension MlemError: CustomStringConvertible {
@@ -23,6 +24,8 @@ extension MlemError: CustomStringConvertible {
             return "Cannot access security-scoped resource"
         case .unexpectedValue:
             return "Encountered unexpected value"
+        case let .mediaError(string):
+            return "Media Error: \(string)"
         }
     }
 }

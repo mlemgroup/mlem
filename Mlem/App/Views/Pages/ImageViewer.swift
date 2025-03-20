@@ -23,7 +23,8 @@ struct ImageViewer: View {
     @State var controlState: MediaControlState = .init(
         blurred: false,
         animating: true,
-        overlays: [.error]
+        overlays: [.error],
+        scrubbingAvailable: true
     )
     
     /// Current scale of the ZoomableContainer

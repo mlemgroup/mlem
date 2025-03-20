@@ -1890,6 +1890,9 @@
         }
       }
     },
+    "Collapse Post" : {
+
+    },
     "Comment" : {
       "localizations" : {
         "fr" : {
@@ -3022,6 +3025,9 @@
           }
         }
       }
+    },
+    "Expand Post" : {
+
     },
     "Expires:" : {
       "localizations" : {

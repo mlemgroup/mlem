@@ -205,8 +205,8 @@
 		0389DDDB2C3AB6340005B808 /* ActionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0389DDDA2C3AB6340005B808 /* ActionBuilder.swift */; };
 		038C85692D861A2100543F70 /* Comment+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038C85682D861A2100543F70 /* Comment+Mock.swift */; };
 		038C85D82D87696F00543F70 /* FeedToolbarOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038C85D72D87696F00543F70 /* FeedToolbarOptions.swift */; };
-		038C86572D888EC100543F70 /* CommentSortType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038C86562D888EC100543F70 /* CommentSortType+Extensions.swift */; };
 		038C85E62D88337100543F70 /* CommentMockType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038C85E52D88337100543F70 /* CommentMockType.swift */; };
+		038C86572D888EC100543F70 /* CommentSortType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038C86562D888EC100543F70 /* CommentSortType+Extensions.swift */; };
 		0391E0F92CFF17AE0040CCA8 /* ProfileSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0391E0F82CFF17AE0040CCA8 /* ProfileSettingsView.swift */; };
 		0391E0FB2D0066240040CCA8 /* ImageUploadMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0391E0FA2D0066240040CCA8 /* ImageUploadMenu.swift */; };
 		0391E0FE2D05B2DF0040CCA8 /* AdvancedSortView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0391E0FD2D05B2DF0040CCA8 /* AdvancedSortView.swift */; };
@@ -513,7 +513,6 @@
 		CDE1F19C2C63E2EB008AF042 /* SettingPropertyWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE1F19B2C63E2EB008AF042 /* SettingPropertyWrapper.swift */; };
 		CDE1F19E2C63E306008AF042 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE1F19D2C63E306008AF042 /* Constants.swift */; };
 		CDE4AC3F2CA2083200981010 /* VideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE4AC3E2CA2082F00981010 /* VideoView.swift */; };
-		CDE4AC452CA370E000981010 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = CDE4AC442CA370E000981010 /* SDWebImageSwiftUI */; };
 		CDE4AC472CA372B600981010 /* SDWebImageWebPCoder in Frameworks */ = {isa = PBXBuildFile; productRef = CDE4AC462CA372B600981010 /* SDWebImageWebPCoder */; };
 		CDEE15522D22190600EB9D7B /* ErrorsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEE15512D22190000EB9D7B /* ErrorsTracker.swift */; };
 		CDEE15542D22364B00EB9D7B /* ErrorLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEE15532D22364500EB9D7B /* ErrorLogView.swift */; };
@@ -739,8 +738,8 @@
 		0389DDDA2C3AB6340005B808 /* ActionBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionBuilder.swift; sourceTree = "<group>"; };
 		038C85682D861A2100543F70 /* Comment+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment+Mock.swift"; sourceTree = "<group>"; };
 		038C85D72D87696F00543F70 /* FeedToolbarOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedToolbarOptions.swift; sourceTree = "<group>"; };
-		038C86562D888EC100543F70 /* CommentSortType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentSortType+Extensions.swift"; sourceTree = "<group>"; };
 		038C85E52D88337100543F70 /* CommentMockType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentMockType.swift; sourceTree = "<group>"; };
+		038C86562D888EC100543F70 /* CommentSortType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentSortType+Extensions.swift"; sourceTree = "<group>"; };
 		0391E0F82CFF17AE0040CCA8 /* ProfileSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsView.swift; sourceTree = "<group>"; };
 		0391E0FA2D0066240040CCA8 /* ImageUploadMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUploadMenu.swift; sourceTree = "<group>"; };
 		0391E0FD2D05B2DF0040CCA8 /* AdvancedSortView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSortView.swift; sourceTree = "<group>"; };
@@ -1071,7 +1070,6 @@
 				B104A6D82A59BF3C00B3E725 /* Nuke in Frameworks */,
 				50C99B562A61D792005D57DD /* Dependencies in Frameworks */,
 				636250DC2A18111400FC59B4 /* KeychainAccess in Frameworks */,
-				CDE4AC452CA370E000981010 /* SDWebImageSwiftUI in Frameworks */,
 				CD4368C12AE23FD400BD8BD1 /* Semaphore in Frameworks */,
 				CD2CEF922D7690E30003E53A /* MlemMiddleware in Frameworks */,
 				B104A6DE2A59BF3C00B3E725 /* NukeVideo in Frameworks */,
@@ -2355,7 +2353,6 @@
 				030FF6782BC84F7E00F6BFAC /* SwiftUIIntrospect */,
 				037386462BDAFE81007492B5 /* LemmyMarkdownUI */,
 				03FA318B2C6FECAE00D47FA3 /* Flow */,
-				CDE4AC442CA370E000981010 /* SDWebImageSwiftUI */,
 				CDE4AC462CA372B600981010 /* SDWebImageWebPCoder */,
 				CD2CEF912D7690E30003E53A /* MlemMiddleware */,
 				03A9FD152D7CEC09007A734D /* Theming */,
@@ -2444,7 +2441,6 @@
 				0392826E2BC84E480097F91A /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 				037386452BDAFE81007492B5 /* XCRemoteSwiftPackageReference "LemmyMarkdownUI" */,
 				03FA318A2C6FEC5400D47FA3 /* XCRemoteSwiftPackageReference "SwiftUI-Flow" */,
-				CDE4AC402CA3706400981010 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
 				CDE4AC412CA3706F00981010 /* XCRemoteSwiftPackageReference "SDWebImageWebPCoder" */,
 				CD2CEF902D7690BC0003E53A /* XCRemoteSwiftPackageReference "MlemMiddleware" */,
 			);
@@ -3449,14 +3445,6 @@
 				minimumVersion = 0.0.8;
 			};
 		};
-		CDE4AC402CA3706400981010 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 3.1.2;
-			};
-		};
 		CDE4AC412CA3706F00981010 /* XCRemoteSwiftPackageReference "SDWebImageWebPCoder" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SDWebImage/SDWebImageWebPCoder";
@@ -3526,11 +3514,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CD4368BF2AE23FD400BD8BD1 /* XCRemoteSwiftPackageReference "Semaphore" */;
 			productName = Semaphore;
-		};
-		CDE4AC442CA370E000981010 /* SDWebImageSwiftUI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CDE4AC402CA3706400981010 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
-			productName = SDWebImageSwiftUI;
 		};
 		CDE4AC462CA372B600981010 /* SDWebImageWebPCoder */ = {
 			isa = XCSwiftPackageProductDependency;
