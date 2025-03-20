@@ -37,6 +37,7 @@ extension MediaView {
                 }
             }
             .aspectRatio(aspectRatio, contentMode: .fit)
+            .allowsHitTesting(false)
         }
         
         @ViewBuilder

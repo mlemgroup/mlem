@@ -174,9 +174,9 @@ extension ImageViewer {
                                 let realHitbox = geo.frame(in: .named("ImageViewer"))
                                 playbackBarHitbox = .init(
                                     x: realHitbox.minX,
-                                    y: realHitbox.maxY - 50,
+                                    y: realHitbox.maxY - 80,
                                     width: realHitbox.width,
-                                    height: 50)
+                                    height: 100)
                             }
                     }
                 }
