@@ -18,6 +18,7 @@ struct PostSettingsView: View {
     @Setting(\.showPostCreator) var showCreator
     @Setting(\.showSubscribedStatus) var showSubscribedStatus
     @Setting(\.showDownvotesCompact) var showDownvotesCompact
+    @Setting(\.tapPostsToCollapse) var tapPostsToCollapse
     
     @Setting(\.readPostIndicator) var readPostIndicator
     
@@ -66,6 +67,10 @@ struct PostSettingsView: View {
                         destination: .settings(.postReadIndicator)
                     )
                 }
+            }
+            
+            Section {
+                Toggle("Tap to Collapse", systemImage: Icons.collapseComment, isOn: $tapPostsToCollapse)
             }
             
             if postSize != .tile, postSize != .compact {
