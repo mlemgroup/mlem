@@ -68,6 +68,7 @@ struct LinkSettingsView: View {
         }
         .labelStyle(.conditional)
         .contentMargins(.top, 16)
+        .hiddenNavigationTitle("Media & Links")
     }
     
     var externalLinksNavigationLinkValue: LocalizedStringResource {

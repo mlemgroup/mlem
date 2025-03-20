@@ -27,6 +27,13 @@ struct SearchView: View {
             case .comments: "Comments"
             }
         }
+        
+        var shouldAutocorrect: Bool {
+            switch self {
+            case .comments, .posts: true
+            case .communities, .people, .instances: false
+            }
+        }
     }
     
     @Environment(AppState.self) var appState
@@ -80,6 +87,7 @@ struct SearchView: View {
             .navigationTitle("Search")
             .navigationBarTitleDisplayMode(.large)
             .navigationSearchBar(searchBar)
+            .autocorrectionDisabled(!selectedTab.shouldAutocorrect)
             .navigationSearchBarHiddenWhenScrolling(false)
             .toolbar { PasteLinkButtonView() }
             .scrollDismissesKeyboard(.interactively)

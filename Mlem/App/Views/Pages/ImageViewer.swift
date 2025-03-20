@@ -32,10 +32,29 @@ struct ImageViewer: View {
     /// True when the scale indicator should be visible, false otherwise
     @State var scaleDisplayShown: Bool = false
     
+    /// Scale when slide-to-zoom gesture started
     @State var dragStartedScale: CGFloat?
     
+    /// Tracks slide-to-zoom drag gesture
     @GestureState var scaleDragState: Bool = false
+    
+    /// Tracks scrub/dismiss drag gesture
     @GestureState var dragState: Bool = false
+    
+    /// True when the current drag gesture is a scrub, false when dismiss, nil when no gesture
+    @State var dragIsScrub: Bool?
+    
+    /// controlState.playbackPosition when current scrub segment began
+    @State var scrubStartedPlaybackPosition: CGFloat?
+    
+    /// controlState.playbackPosition when current scrub segment began
+    @State var scrubSegmentOffset: CGFloat = 0
+    
+    /// Current scrubbing rate
+    @State var scrubRate: CGFloat = 1
+    
+    /// Hitbox of the playback bar
+    @State var playbackBarHitbox: CGRect?
     
     /// True when the image is zoomed in, false otherwise
     @State var isZoomed: Bool = false
@@ -60,9 +79,12 @@ struct ImageViewer: View {
     
     @State var quickLookUrl: URL?
     
+    /// Value to show in the top leading scale display (either scrub rate or zoom depending)
+    @State var scaleDisplayValue: CGFloat = 1
+    
     @State var devToolsShown: Bool = false
     
-    // Whether the controls are currently visible
+    /// Whether the controls are currently visible
     var controlsShown: Bool { controlOpacity > 0 }
     
     init(url: URL) {
@@ -96,11 +118,7 @@ struct ImageViewer: View {
             }
         }
         .simultaneousGesture(DragGesture(minimumDistance: 1.0)
-            .onChanged { value in
-                if !isZoomed, !isDismissing {
-                    handleOffsetUpdate(value.translation.height)
-                }
-            }
+            .onChanged { handleDragGesture(value: $0) }
             .updating($dragState) { _, state, _ in
                 // this detects cancelled gestures (e.g., if you zoom while dragging)
                 state = true
@@ -112,12 +130,83 @@ struct ImageViewer: View {
             animateOpacityUpdate(1.0)
         }
         .onChange(of: dragState) {
-            guard !isZoomed else { return }
+            handleDragStateChange(dragState)
+        }
+        .onChange(of: scaleDragState) {
+            if !scaleDragState {
+                dragStartedScale = nil
+            }
+        }
+        .onChange(of: scrubRate) {
+            if dragIsScrub ?? false { // don't update value if not currently scrubbing
+                scaleDisplayValue = scrubRate
+            }
+        }
+        .onChange(of: currentScale) {
+            scaleDisplayValue = currentScale
+        }
+        .onChange(of: scaleDisplayValue) {
+            if !scaleDisplayShown {
+                withAnimation(.easeIn(duration: 0.1)) {
+                    scaleDisplayShown = true
+                }
+            }
+            let oldScale: CGFloat = scaleDisplayValue
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                if scaleDisplayValue == oldScale {
+                    withAnimation {
+                        scaleDisplayShown = false
+                    }
+                }
+            }
+        }
+        .quickLookPreview($quickLookUrl)
+        .background(ClearBackgroundView())
+        .statusBarHidden(!isDismissing)
+        .coordinateSpace(name: "ImageViewer")
+    }
+    
+    func handleDragGesture(value: DragGesture.Value) {
+        guard !isZoomed else {
+            return
+        }
+        
+        let dragIsScrub = self.dragIsScrub ?? (abs(value.velocity.height) < abs(value.velocity.width))
+        self.dragIsScrub = dragIsScrub
+        
+        if dragIsScrub {
+            if controlState.animationAvailable, controlState.enableAnimation {
+                handleScrubUpdate(value)
+            }
+        } else if !isDismissing {
+            handleOffsetUpdate(value.translation.height)
+        }
+    }
+    
+    func handleDragStateChange(_ newDragState: Bool) {
+        guard !isZoomed else { return }
+        
+        if newDragState {
+            // drag gesture conflicts with control tap, so we disable it for a brief window after detecting a drag
+            enableControlTap = false
+        } else {
+            guard let scrubbing = dragIsScrub else {
+                assertionFailure("dragGesture ended but dragIsScrub not defined")
+                return
+            }
+            dragIsScrub = nil
             
-            if dragState {
-                // drag gesture conflicts with control tap, so we disable it for a brief window after detecting a drag
-                enableControlTap = false
+            if scrubbing {
+                // scrub ended: reset scrubbing and re-enable control tap
+                scrubRate = 1
+                scrubStartedPlaybackPosition = nil
+                scrubSegmentOffset = 0
+                controlState.scrubTarget = nil
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    enableControlTap = true
+                }
             } else {
+                // dismiss swipe ended: choose whether to dismiss or reset
                 if abs(offset) > 100 {
                     swipeDismiss(finalOffset: offset > 0 ? screenHeight : -screenHeight)
                 } else {
@@ -128,29 +217,6 @@ struct ImageViewer: View {
                 }
             }
         }
-        .onChange(of: scaleDragState) {
-            if !scaleDragState {
-                dragStartedScale = nil
-            }
-        }
-        .onChange(of: currentScale) {
-            if !scaleDisplayShown {
-                withAnimation(.easeIn(duration: 0.1)) {
-                    scaleDisplayShown = true
-                }
-            }
-            let oldScale: CGFloat = currentScale
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                if currentScale == oldScale {
-                    withAnimation {
-                        scaleDisplayShown = false
-                    }
-                }
-            }
-        }
-        .quickLookPreview($quickLookUrl)
-        .background(ClearBackgroundView())
-        .statusBarHidden(!isDismissing)
     }
     
     func fadeDismiss() {
@@ -230,6 +296,49 @@ struct ImageViewer: View {
             controlOpacity = 1.0 - (controlOffset / maxControlOffset)
         }
         opacity = 1.0 - (absOffset / screenHeight)
+    }
+    
+    /// Responds to scrub updates
+    /// - Parameter value: latest scrub gesture value
+    private func handleScrubUpdate(_ value: DragGesture.Value) {
+        showControls()
+        
+        let onPlaybackBar: Bool = playbackBarHitbox?.contains(value.startLocation) ?? false
+        
+        // Track playback position when current scrub segment started to offset from.
+        // If the scrub started on playback bar, we want to snap to the start location, so we set scrubStartedPlaybackPosition
+        // to the value corresponding to the scrub start position
+        if scrubStartedPlaybackPosition == nil {
+            scrubStartedPlaybackPosition = onPlaybackBar ?
+            value.startLocation.x / UIScreen.main.bounds.width :
+            controlState.playbackPosition
+        }
+        
+        // disable variable scrub rate if scrubbing playback bar
+        if !onPlaybackBar {
+            // scrub rate is controlled by the height of the scrub gesture.
+            // Every 50px increases/decreases scrub rate by 2x to a max of 8x; update in increments of 10px
+            let heightStep: CGFloat = value.translation.height.stepped(by: 10) / 50
+            let newScrubRate: CGFloat = (1 / pow(2, heightStep)).bounded(lower: 0.125, upper: 8)
+            if newScrubRate != scrubRate {
+                // when the scrub rate changes, compute future scrub targets as if the translation started at the current point and scrubTarget
+                scrubStartedPlaybackPosition = controlState.scrubTarget ?? controlState.playbackPosition
+                scrubSegmentOffset = value.translation.width
+                scrubRate = newScrubRate
+            }
+        }
+            
+        guard let scrubStartedPlaybackPosition else {
+            assertionFailure("drag is scrub but scrubStartedPlaybackPosition is nil")
+            return
+        }
+        
+        // compute x translation since scrub segment began and adjust by scrub rate
+        let scrubSegmentTranslation = (value.translation.width - scrubSegmentOffset) * scrubRate
+        // convert translation to a percentage of scrub area
+        let scrubTargetDelta = scrubSegmentTranslation / UIScreen.main.bounds.width
+        let newScrubTarget = (scrubStartedPlaybackPosition + scrubTargetDelta).bounded(lower: 0, upper: 1)
+        controlState.scrubTarget = newScrubTarget
     }
     
     func showQuickLook(url: URL) async {
