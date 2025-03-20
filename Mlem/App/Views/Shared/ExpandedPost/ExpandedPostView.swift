@@ -203,7 +203,7 @@ struct ExpandedPostView<Content: View>: View {
                     Section {
                         Button(
                             postCollapsed ? "Expand Post" : "Collapse Post",
-                            systemImage: postCollapsed ? Icons.collapseComment : Icons.expandComment,
+                            systemImage: postCollapsed ? Icons.expandComment : Icons.collapseComment,
                             action: togglePostCollapsed
                         )
                     }
