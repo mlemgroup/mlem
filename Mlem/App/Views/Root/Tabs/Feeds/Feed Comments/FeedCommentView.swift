@@ -16,7 +16,8 @@ struct FeedCommentView<EmbeddedContent: View>: View {
     @Environment(\.reportContext) var reportContext: Report?
     
     @Setting(\.postSize) var settingsPostSize
-    
+    @Setting(\.blurNsfw) var blurNsfw
+
     let comment: any Comment
     var overriddenSize: PostSize?
     @ViewBuilder var embeddedContent: () -> EmbeddedContent
