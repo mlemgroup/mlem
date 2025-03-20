@@ -91,9 +91,6 @@ class MediaControlState {
     }
     
     private func minuteSecondString(from timeInterval: TimeInterval) -> String {
-        String(
-            format: "%d:%02d",
-            Int((timeInterval/60).truncatingRemainder(dividingBy: 60)),
-            Int(timeInterval.truncatingRemainder(dividingBy: 60)))
+        Duration.seconds(timeInterval).formatted(.time(pattern: .minuteSecond))
     }
 }
