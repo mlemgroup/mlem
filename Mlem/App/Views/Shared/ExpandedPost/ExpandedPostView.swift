@@ -27,6 +27,7 @@ struct ExpandedPostView<Content: View>: View {
     
     @Setting(\.jumpButton) var jumpButton
     @Setting(\.compactComments) var compactComments
+    @Setting(\.tapPostsToCollapse) var tapPostsToCollapse
     
     var post: (any PostStubProviding)?
     var contentLoaderError: Error?
@@ -176,25 +177,39 @@ struct ExpandedPostView<Content: View>: View {
                 }
             }
         }
-        .toolbar {
-            if let tracker {
-                sortPicker(tracker: tracker)
-            }
-            if isLoading || post.shouldShowLoadingSymbol() {
-                ProgressView()
-            } else {
-                ToolbarEllipsisMenu(
+        .toolbar { toolbarContent(post: post, isLoading: isLoading) }
+        .environment(tracker)
+        .environment(\.feedContext, .post)
+    }
+    
+    @ViewBuilder
+    func toolbarContent(post: any Post, isLoading: Bool) -> some View {
+        if let tracker {
+            sortPicker(tracker: tracker)
+        }
+        if isLoading || post.shouldShowLoadingSymbol() {
+            ProgressView()
+        } else {
+            ToolbarEllipsisMenu {
+                MenuButtons {
                     post.allMenuActions(
                         appState: appState,
                         expanded: true,
                         navigation: navigation,
                         commentTreeTracker: tracker
                     )
-                )
+                }
+                if !tapPostsToCollapse {
+                    Section {
+                        Button(
+                            postCollapsed ? "Expand Post" : "Collapse Post",
+                            systemImage: postCollapsed ? Icons.expandComment : Icons.collapseComment,
+                            action: togglePostCollapsed
+                        )
+                    }
+                }
             }
         }
-        .environment(tracker)
-        .environment(\.feedContext, .post)
     }
     
     @ViewBuilder
@@ -228,8 +243,8 @@ struct ExpandedPostView<Content: View>: View {
         }
         .paletteBorder(cornerRadius: PostSize.large.swipeBehavior.cornerRadius)
         .onTapGesture {
-            withAnimation(UIAccessibility.isReduceMotionEnabled ? nil : .default) {
-                postCollapsed.toggle()
+            if tapPostsToCollapse || postCollapsed {
+                togglePostCollapsed()
             }
         }
         .id(post.actorId)
