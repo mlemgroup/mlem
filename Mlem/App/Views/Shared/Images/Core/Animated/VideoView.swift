@@ -55,9 +55,11 @@ struct VideoView: View {
                 }
             }
             .onChange(of: controlState.animating, initial: true) {
+                print("DEBUG animating changed to \(controlState.animating)")
                 if controlState.animating {
                     player.play()
                 } else {
+                    print("DEBUG pausing")
                     player.pause()
                 }
             }

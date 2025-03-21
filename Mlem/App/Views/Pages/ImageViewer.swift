@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Zoomable
 
 struct ImageViewer: View {
     @Environment(NavigationLayer.self) var navigation
@@ -95,9 +96,11 @@ struct ImageViewer: View {
     }
     
     var body: some View {
-        ZoomableContainer(isZoomed: $isZoomed, currentScale: $currentScale) {
-            MediaView(url: url, controlState: $controlState)
-        }
+//        ZoomableContainer(isZoomed: $isZoomed, currentScale: $currentScale) {
+//            MediaView(url: url, controlState: $controlState)
+//        }
+        MediaView(url: url, controlState: $controlState)
+            .zoomable()
         .offset(y: offset)
         .background(.black)
         .overlay(controlOverlay)
