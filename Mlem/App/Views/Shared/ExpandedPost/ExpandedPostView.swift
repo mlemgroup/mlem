@@ -173,10 +173,11 @@ struct ExpandedPostView<Content: View>: View {
                     }
                 }
                 .overlay(alignment: jumpButton.alignment) {
+                    let shouldShow = topVisibleCommentAtLastVisit == nil && (post.commentCount_ ?? 0) > 10
                     JumpButtonsView(
                         showJumpButton: true,
                         topVisibleItem: topVisibleItem,
-                        scrollToLastVisitedPosition: topVisibleCommentAtLastVisit == nil ? nil : scrollToLastVisitedPosition,
+                        scrollToLastVisitedPosition: shouldShow ? nil : scrollToLastVisitedPosition,
                         scrollToNextComment: scrollToNextComment,
                         scrollToPreviousComment: scrollToPreviousComment
                     )
