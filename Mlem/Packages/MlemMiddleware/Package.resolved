@@ -19,6 +19,15 @@
       }
     },
     {
+      "identity" : "gifu",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kaishin/Gifu",
+      "state" : {
+        "branch" : "master",
+        "revision" : "639e40d5dbd86dfa94fc61296c270b49af6f8a2a"
+      }
+    },
+    {
       "identity" : "keychainaccess",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kishikawakatsumi/KeychainAccess.git",
@@ -32,8 +41,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mlemgroup/LemmyMarkdownUI",
       "state" : {
-        "revision" : "958ab436dce0ed4050fb65f1122e19eeef036e1c",
-        "version" : "0.11.0"
+        "revision" : "3f9fb02b44f36524a71c35cb745766c9cfdb4ec7",
+        "version" : "0.10.1"
       }
     },
     {
@@ -50,8 +59,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kean/Nuke",
       "state" : {
-        "revision" : "0ead44350d2737db384908569c012fe67c421e4d",
-        "version" : "12.8.0"
+        "revision" : "8e431251dea0081b6ab154dab61a6ec74e4b6577",
+        "version" : "12.6.0"
       }
     },
     {
@@ -61,6 +70,15 @@
       "state" : {
         "revision" : "8a1be70a625683bc04d6903e2935bf23f3c6d609",
         "version" : "5.19.7"
+      }
+    },
+    {
+      "identity" : "sdwebimageswiftui",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDWebImage/SDWebImageSwiftUI",
+      "state" : {
+        "revision" : "5aa947356f4ea49a0c3b9968564267f6ea5abea7",
+        "version" : "3.1.2"
       }
     },
     {
@@ -77,8 +95,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/groue/Semaphore",
       "state" : {
-        "revision" : "2543679282aa6f6c8ecf2138acd613ed20790bc2",
-        "version" : "0.1.0"
+        "revision" : "f1c4a0acabeb591068dea6cffdd39660b86dec28",
+        "version" : "0.0.8"
       }
     },
     {

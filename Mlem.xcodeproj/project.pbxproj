@@ -103,6 +103,7 @@
 		033FCB2A2C5E3933007B7CD1 /* AlternateIconCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033FCB232C5E3933007B7CD1 /* AlternateIconCell.swift */; };
 		033FCB3E2C5E7FA9007B7CD1 /* View+OutdatedFeedPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033FCB3D2C5E7FA9007B7CD1 /* View+OutdatedFeedPopup.swift */; };
 		034065C32D83742900637308 /* View+NavigtionStackPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034065C22D83742900637308 /* View+NavigtionStackPreview.swift */; };
+		0341480D2D8F63A6005503AF /* MlemMiddleware in Frameworks */ = {isa = PBXBuildFile; productRef = 0341480C2D8F63A6005503AF /* MlemMiddleware */; };
 		0343C0482D3AD6DB001CF709 /* Set+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0343C0472D3AD6DB001CF709 /* Set+Extensions.swift */; };
 		034690932D0F4D720073E664 /* RemovableProviding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034690922D0F4D720073E664 /* RemovableProviding+Extensions.swift */; };
 		034690992D105DFD0073E664 /* InboxView+Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034690982D105DFD0073E664 /* InboxView+Types.swift */; };
@@ -396,7 +397,6 @@
 		CD1DF63E2D387E8500F7851E /* MediaView+Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1DF63D2D387E8300F7851E /* MediaView+Views.swift */; };
 		CD24CAFC2D5568FE0032B5E8 /* DiscussionLanguageSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD24CAFB2D5568F90032B5E8 /* DiscussionLanguageSettingsView.swift */; };
 		CD2C86542D5556C00034CD8A /* MlemError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2C86532D5556BE0034CD8A /* MlemError.swift */; };
-		CD2CEF922D7690E30003E53A /* MlemMiddleware in Frameworks */ = {isa = PBXBuildFile; productRef = CD2CEF912D7690E30003E53A /* MlemMiddleware */; };
 		CD3153072C38421B00BC5FBE /* View+LoadFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3153062C38421B00BC5FBE /* View+LoadFeed.swift */; };
 		CD332D792CA7175500A53988 /* PlayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD332D782CA7175200A53988 /* PlayButton.swift */; };
 		CD332D7E2CA7486000A53988 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD332D7D2CA7485D00A53988 /* String+Extensions.swift */; };
@@ -1065,13 +1065,13 @@
 				03A9FD162D7CEC09007A734D /* Theming in Frameworks */,
 				03FA318C2C6FECAE00D47FA3 /* Flow in Frameworks */,
 				030FF6792BC84F7E00F6BFAC /* SwiftUIIntrospect in Frameworks */,
+				0341480D2D8F63A6005503AF /* MlemMiddleware in Frameworks */,
 				B104A6DA2A59BF3C00B3E725 /* NukeExtensions in Frameworks */,
 				037386472BDAFE81007492B5 /* LemmyMarkdownUI in Frameworks */,
 				B104A6D82A59BF3C00B3E725 /* Nuke in Frameworks */,
 				50C99B562A61D792005D57DD /* Dependencies in Frameworks */,
 				636250DC2A18111400FC59B4 /* KeychainAccess in Frameworks */,
 				CD4368C12AE23FD400BD8BD1 /* Semaphore in Frameworks */,
-				CD2CEF922D7690E30003E53A /* MlemMiddleware in Frameworks */,
 				B104A6DE2A59BF3C00B3E725 /* NukeVideo in Frameworks */,
 				CDE4AC472CA372B600981010 /* SDWebImageWebPCoder in Frameworks */,
 				B104A6DC2A59BF3C00B3E725 /* NukeUI in Frameworks */,
@@ -2354,8 +2354,8 @@
 				037386462BDAFE81007492B5 /* LemmyMarkdownUI */,
 				03FA318B2C6FECAE00D47FA3 /* Flow */,
 				CDE4AC462CA372B600981010 /* SDWebImageWebPCoder */,
-				CD2CEF912D7690E30003E53A /* MlemMiddleware */,
 				03A9FD152D7CEC09007A734D /* Theming */,
+				0341480C2D8F63A6005503AF /* MlemMiddleware */,
 			);
 			productName = Mlem;
 			productReference = 6363D5C127EE196700E34822 /* Mlem.app */;
@@ -2442,7 +2442,6 @@
 				037386452BDAFE81007492B5 /* XCRemoteSwiftPackageReference "LemmyMarkdownUI" */,
 				03FA318A2C6FEC5400D47FA3 /* XCRemoteSwiftPackageReference "SwiftUI-Flow" */,
 				CDE4AC412CA3706F00981010 /* XCRemoteSwiftPackageReference "SDWebImageWebPCoder" */,
-				CD2CEF902D7690BC0003E53A /* XCRemoteSwiftPackageReference "MlemMiddleware" */,
 			);
 			productRefGroup = 6363D5C227EE196700E34822 /* Products */;
 			projectDirPath = "";
@@ -3429,14 +3428,6 @@
 				minimumVersion = 12.1.2;
 			};
 		};
-		CD2CEF902D7690BC0003E53A /* XCRemoteSwiftPackageReference "MlemMiddleware" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware";
-			requirement = {
-				kind = upToNextMinorVersion;
-				minimumVersion = 0.87.0;
-			};
-		};
 		CD4368BF2AE23FD400BD8BD1 /* XCRemoteSwiftPackageReference "Semaphore" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/groue/Semaphore";
@@ -3460,6 +3451,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 0392826E2BC84E480097F91A /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
 			productName = SwiftUIIntrospect;
+		};
+		0341480C2D8F63A6005503AF /* MlemMiddleware */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MlemMiddleware;
 		};
 		037386462BDAFE81007492B5 /* LemmyMarkdownUI */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -3504,11 +3499,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B104A6D62A59BF3C00B3E725 /* XCRemoteSwiftPackageReference "Nuke" */;
 			productName = NukeVideo;
-		};
-		CD2CEF912D7690E30003E53A /* MlemMiddleware */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CD2CEF902D7690BC0003E53A /* XCRemoteSwiftPackageReference "MlemMiddleware" */;
-			productName = MlemMiddleware;
 		};
 		CD4368C02AE23FD400BD8BD1 /* Semaphore */ = {
 			isa = XCSwiftPackageProductDependency;
