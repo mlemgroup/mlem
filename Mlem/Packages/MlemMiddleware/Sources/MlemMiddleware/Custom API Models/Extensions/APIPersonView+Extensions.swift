@@ -9,7 +9,7 @@ import Foundation
 
 extension ApiPersonView: Person2ApiBacker {
     public var admin: Bool {
-        guard let admin = isAdmin ?? person.admin else {
+        guard let admin = self.isAdmin ?? self.person.admin else {
             assertionFailure("Could not determine admin status")
             return false
         }

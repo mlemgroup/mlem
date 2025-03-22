@@ -9,16 +9,8 @@ import Foundation
 
 public extension ApiClient {
     func getMyInstance() async throws -> Instance3 {
-        async let response3 = perform(GetSiteRequest(endpoint: .v3))
-        async let response4 = perform(GetSiteRequest(endpoint: .v4))
-        
-        let response: ApiGetSiteResponse
-        if let response4 = try? await response4 {
-            response = response4
-        } else {
-            response = try await response3
-        }
-        
+        let request = GetSiteRequest(endpoint: .v3)
+        let response = try await perform(request)
         let model = await caches.instance3.getModel(api: self, from: response)
         model.local = true
         _ = await Task { @MainActor in

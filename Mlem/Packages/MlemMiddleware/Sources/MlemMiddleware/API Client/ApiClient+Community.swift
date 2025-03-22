@@ -58,7 +58,7 @@ public extension ApiClient {
         filter: ApiListingType = .all,
         sort: SearchSortType = .top(.allTime)
     ) async throws -> [Community2] {
-        let endpointVersion = try await version.endpointVersion
+        let endpointVersion = try await version.highestSupportedEndpointVersion
         let request = SearchRequest(
             endpoint: .v3,
             q: query,

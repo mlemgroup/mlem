@@ -133,11 +133,11 @@ public class StateManager<Value: Equatable> {
         return false
     }
     
-    /// If the given semaphore is still the most recent operation, rollback `wrappedValue` to `lastVerifiedValue`.
+    /// If the given semaphore is still the most recent operation, rollback `wrappedValue` to `cleanValue`.
     @discardableResult
     func rollback(semaphore: UInt) -> Value? {
         if lastSemaphore == semaphore, let lastVerifiedValue {
-            print("DEBUG [\(semaphore)] is the most recent caller! Resetting wrappedValue to lastVerifiedValue \(lastVerifiedValue) \(wrappedValue != lastVerifiedValue).")
+            print("DEBUG [\(semaphore)] is the most recent caller! Resetting lastVerifiedValue.")
             if wrappedValue != lastVerifiedValue {
                 wrappedValue = lastVerifiedValue
                 onSet(lastVerifiedValue, .rollback, semaphore)
@@ -189,7 +189,7 @@ func groupStateRequest(
     for ticket in tickets {
         ticket.begin(semaphore: semaphore)
     }
-    return Task(priority: .userInitiated) { @MainActor in
+    return Task(priority: .userInitiated) {
         do {
             try await operation(semaphore)
             return .succeeded

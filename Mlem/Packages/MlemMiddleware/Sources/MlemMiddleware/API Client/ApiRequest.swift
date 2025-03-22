@@ -48,9 +48,9 @@ extension ApiRequest {
 extension ApiGetRequest {
     func endpoint(base: URL) throws -> URL {
         if let parameters {
-            try base
+            base
                 .appending(path: path)
-                .appending(queryItems: URLQueryItemEncoder.encode(parameters))
+                .appending(queryItems: try URLQueryItemEncoder.encode(parameters))
         } else {
             base
                 .appending(path: path)

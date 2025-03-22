@@ -8,6 +8,7 @@
 class ReportFetcher: MultiFetcher<ModMailItem> {}
 
 public class ReportChildFeedLoader: ChildFeedLoader<ModMailItem>, InboxFeedLoading {
+    
     var reportFetcher: MultiFetcher<ModMailItem> { fetcher as! ReportFetcher }
     
     public init(
@@ -26,14 +27,14 @@ public class ReportChildFeedLoader: ChildFeedLoader<ModMailItem>, InboxFeedLoadi
         
         super.init(filter: ModMailItemFilter(showRead: showRead), fetcher: fetcher, sortType: sortType)
         
-        for source in sources {
+        sources.forEach { source in
             source.setParent(parent: self)
         }
     }
     
     public func hideRead() async throws {
         await withThrowingTaskGroup(of: Void.self) { group in
-            for source in reportFetcher.sources {
+            reportFetcher.sources.forEach { source in
                 group.addTask {
                     guard let childSource = source as? ModMailChildFeedLoader else {
                         assertionFailure("Child is not ModMailChildFeedLoader")
@@ -49,7 +50,7 @@ public class ReportChildFeedLoader: ChildFeedLoader<ModMailItem>, InboxFeedLoadi
     
     public func showRead() async throws {
         await withThrowingTaskGroup(of: Void.self) { group in
-            for source in reportFetcher.sources {
+            reportFetcher.sources.forEach { source in
                 group.addTask {
                     guard let childSource = source as? ModMailChildFeedLoader else {
                         assertionFailure("Child is not ModMailChildFeedLoader")

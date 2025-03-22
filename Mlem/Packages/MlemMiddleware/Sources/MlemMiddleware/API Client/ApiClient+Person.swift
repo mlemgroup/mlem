@@ -12,7 +12,7 @@ public extension ApiClient {
         guard data.apiUrl == baseUrl else {
             throw ApiClientError.mismatchingUrl
         }
-        guard try await data.apiMyPersonId == myPersonId else {
+        guard data.apiMyPersonId == (try await myPersonId) else {
             throw ApiClientError.mismatchingPersonId
         }
         return await caches.person1.getModel(api: self, from: data.apiPerson, isStale: true)
@@ -22,7 +22,7 @@ public extension ApiClient {
         guard data.apiUrl == baseUrl else {
             throw ApiClientError.mismatchingUrl
         }
-        guard try await data.apiMyPersonId == myPersonId else {
+        guard data.apiMyPersonId == (try await myPersonId) else {
             throw ApiClientError.mismatchingPersonId
         }
         return await caches.person2.getModel(api: self, from: data.apiPersonView, isStale: true)
@@ -56,12 +56,8 @@ public extension ApiClient {
     }
     
     func getPerson(username: String) async throws -> Person3 {
-        try await getPerson(username: username, endpoint: version.endpointVersion)
-    }
-    
-    internal func getPerson(username: String, endpoint: SiteVersion.EndpointVersion) async throws -> Person3 {
         let request = GetPersonDetailsRequest(
-            endpoint: endpoint,
+            endpoint: .v3,
             personId: nil,
             username: username,
             sort: nil,
@@ -92,7 +88,7 @@ public extension ApiClient {
         filter: ApiListingType = .all,
         sort: SearchSortType = .top(.allTime)
     ) async throws -> [Person2] {
-        let endpointVersion = try await version.endpointVersion
+        let endpointVersion = try await self.version.highestSupportedEndpointVersion
         let request = SearchRequest(
             endpoint: .v3,
             q: query,
@@ -223,34 +219,19 @@ public extension ApiClient {
     }
     
     func getMyPerson() async throws -> (person: Person4?, instance: Instance3, blocks: BlockList?) {
-        // We can't use `try await version` here to decide on the endpoint, because the `version` is
-        // found by calling this method. Instead, we try both the v3 and v4 endpoints and see what we
-        // get back.
+        let request = GetSiteRequest(endpoint: .v3)
+        let response = try await perform(request)
         
-        async let response3 = perform(GetSiteRequest(endpoint: .v3))
-        async let response4 = perform(GetSiteRequest(endpoint: .v4))
-        async let myUser4 = perform(GetMyUserRequest())
-        
-        let response: ApiGetSiteResponse
-        let myUser: ApiMyUserInfo?
-        if let response4 = try? await response4 {
-            response = response4
-            myUser = try await myUser4
-        } else {
-            response = try await response3
-            myUser = response.myUser
-        }
-
-        guard myUser?.localUserView.person.name == username else {
-            assertionFailure("Username received from response (\(String(describing: response.myUser?.localUserView.person.name ?? "nil"))) does not match expected username (\(String(describing: username ?? "nil")))")
+        guard response.myUser?.localUserView.person.name == self.username else {
+            assertionFailure()
             throw ApiClientError.mismatchingToken
         }
         
         let instance = await caches.instance3.getModel(api: self, from: response)
         
-        var blocks: BlockList? = blocks
+        var blocks: BlockList? = self.blocks
         var person: Person4?
-        if let myUser {
+        if let myUser = response.myUser {
             person = await caches.person4.getModel(api: self, from: myUser)
             if let blocks {
                 blocks.update(myUserInfo: myUser)

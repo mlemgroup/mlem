@@ -18,8 +18,8 @@ public extension ApiClient {
         filter: GetContentFilter? = nil,
         showHidden: Bool = false
     ) async throws -> (posts: [Post2], cursor: String?) {
-        let request = try await GetPostsRequest(
-            endpoint: version.endpointVersion,
+        let request = GetPostsRequest(
+            endpoint: .v3,
             type_: .all,
             sort: sort.legacyApiSortType,
             page: cursor == nil ? page : nil,
@@ -55,8 +55,8 @@ public extension ApiClient {
         filter: GetContentFilter? = nil,
         showHidden: Bool = false
     ) async throws -> (posts: [Post2], cursor: String?) {
-        let request = try await GetPostsRequest(
-            endpoint: version.endpointVersion,
+        let request = GetPostsRequest(
+            endpoint: .v3,
             type_: feed,
             sort: sort.legacyApiSortType,
             page: cursor == nil ? page : nil,
@@ -181,7 +181,7 @@ public extension ApiClient {
         sort: ApiSearchSortType?,
         timeRangeSeconds: Int?
     ) async throws -> [Post2] {
-        let endpointVersion = try await version.endpointVersion
+        let endpointVersion = try await version.highestSupportedEndpointVersion
         let request = SearchRequest(
             endpoint: .v3,
             q: query,
@@ -293,7 +293,7 @@ public extension ApiClient {
     
     @discardableResult
     func voteOnPost(id: Int, score: ScoringOperation, semaphore: UInt? = nil) async throws -> Post2 {
-        let request = try await LikePostRequest(endpoint: version.endpointVersion, postId: id, score: score.rawValue)
+        let request = LikePostRequest(endpoint: .v3, postId: id, score: score.rawValue)
         let response = try await perform(request)
         return await caches.post2.getModel(api: self, from: response.postView, semaphore: semaphore)
     }

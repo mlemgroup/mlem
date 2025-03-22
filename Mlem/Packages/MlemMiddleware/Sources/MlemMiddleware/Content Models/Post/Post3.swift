@@ -19,7 +19,7 @@ public final class Post3: Post3Providing {
     public var communityModerators: [Person1]
     public var crossPosts: [Post2]
     
-    init(
+    internal init(
         api: ApiClient,
         post2: Post2,
         community: Community2,
@@ -33,3 +33,4 @@ public final class Post3: Post3Providing {
         self.crossPosts = crossPosts
     }
 }
+

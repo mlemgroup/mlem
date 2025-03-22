@@ -1,6 +1,6 @@
 //
 //  DeletableProviding.swift
-//
+//  
 //
 //  Created by Sjmarf on 22/07/2024.
 //

@@ -138,7 +138,7 @@ public extension ApiClient {
         sort: ApiSearchSortType?,
         timeRangeSeconds: Int?
     ) async throws -> [Comment2] {
-        let endpointVersion = try await version.endpointVersion
+        let endpointVersion = try await version.highestSupportedEndpointVersion
         let request = SearchRequest(
             endpoint: .v3,
             q: query,

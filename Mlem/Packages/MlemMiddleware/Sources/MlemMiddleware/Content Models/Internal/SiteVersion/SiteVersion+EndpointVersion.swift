@@ -19,7 +19,17 @@ public extension SiteVersion {
         }
     }
     
-    var endpointVersion: EndpointVersion {
-        self >= .v1_0_0 ? .v4 : .v3
+    var supportedEndpointVersions: Set<EndpointVersion> {
+        switch self {
+        case .other: [.v3] // To be safe, don't allow v4
+        default: self >= .v1_0_0 ? [.v3, .v4] : [.v3]
+        }
+    }
+    
+    var highestSupportedEndpointVersion: EndpointVersion {
+        switch self {
+        case .other: .v3
+        default: self >= .v1_0_0 ? .v4 : .v3
+        }
     }
 }
