@@ -3,12 +3,12 @@
 //  MlemMiddleware
 //
 //  Created by Sjmarf on 2025-03-17.
-//  
+//
 
 import Foundation
 
 extension Comment1 {
-    internal var apiComment: ApiComment {
+    var apiComment: ApiComment {
         ApiComment(
             id: id,
             creatorId: creatorId,

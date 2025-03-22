@@ -38,7 +38,7 @@ public class ApiClient {
     public internal(set) weak var unreadCount: UnreadCount?
     
     /// Stores the IDs of posts that are queued to be marked read.
-    internal var markReadQueue: MarkReadQueue = .init()
+    var markReadQueue: MarkReadQueue = .init()
     
     public var fetchedVersion: SiteVersion? {
         contextDataManager.fetchedValue?.siteVersion
@@ -68,7 +68,7 @@ public class ApiClient {
     
     /// Returns whether the fetched version supports the given feature. Defaults to false if no fetched version available.
     public func fetchedVersionSupports(_ feature: SiteVersion.Feature) -> Bool {
-        return fetchedVersion?.suppports(feature) ?? false
+        fetchedVersion?.suppports(feature) ?? false
     }
     
     // MARK: caching
@@ -87,7 +87,7 @@ public class ApiClient {
     }
     
     /// This should never be used outside of ApiClientCache (and MockApiClient), as the caching system depends on one ApiClient existing for any given session.
-    internal init(
+    init(
         url: URL,
         username: String? = nil,
         permissions: RequestPermissions = .all
@@ -108,12 +108,12 @@ public class ApiClient {
     
     /// Return a new guest `ApiClient`.
     public func asGuest() -> ApiClient {
-        .getApiClient(url: self.baseUrl, username: nil)
+        .getApiClient(url: baseUrl, username: nil)
     }
     
     /// Return a new `ApiClient` targeting the given user.
     public func asUser(name: String) -> ApiClient {
-        .getApiClient(url: self.baseUrl, username: name)
+        .getApiClient(url: baseUrl, username: name)
     }
     
     /// This should **only** be used when we get a new token for **the same** account!
@@ -122,7 +122,7 @@ public class ApiClient {
             assertionFailure()
             return
         }
-        self.token = newToken
+        token = newToken
     }
     
     @discardableResult
@@ -131,9 +131,9 @@ public class ApiClient {
         tokenOverride: String? = nil,
         requiresToken: Bool = true // This should be `true` for the vast majority of requests, even GET requests
     ) async throws -> Request.Response {
-        let token = tokenOverride ?? self.token
+        let token = tokenOverride ?? token
         
-        guard !requiresToken || self.username == nil || token != nil else {
+        guard !requiresToken || username == nil || token != nil else {
             throw ApiClientError.noToken
         }
         
@@ -167,12 +167,12 @@ public class ApiClient {
         return try decode(Request.Response.self, from: data)
     }
     
-    internal func execute(
+    func execute(
         _ urlRequest: URLRequest,
         tokenOverride: String? = nil
     ) async throws -> (Data, URLResponse) {
         var urlRequest: URLRequest = urlRequest // make mutable
-        let token = tokenOverride ?? self.token
+        let token = tokenOverride ?? token
         
         if urlRequest.httpMethod != "GET", // GET requests do not support body
            !fetchedVersionSupports(.headerAuthentication),
@@ -203,7 +203,7 @@ public class ApiClient {
         from definition: any ApiRequest,
         tokenOverride: String? = nil
     ) throws -> URLRequest {
-        let token = tokenOverride ?? self.token
+        let token = tokenOverride ?? token
         guard permissions != .none else { throw ApiClientError.insufficientPermissions }
         let url = try definition.endpoint(base: baseUrl)
         var urlRequest = mlemUrlRequest(url: url)
@@ -265,8 +265,8 @@ extension ApiClient: ActorIdentifiable {
 
 extension ApiClient: Hashable {
     public func hash(into hasher: inout Hasher) {
-        hasher.combine(self.baseUrl)
-        hasher.combine(self.username)
+        hasher.combine(baseUrl)
+        hasher.combine(username)
     }
     
     public static func == (lhs: ApiClient, rhs: ApiClient) -> Bool {
@@ -280,15 +280,15 @@ extension ApiClient: CustomDebugStringConvertible {
     }
 }
 
-extension ApiClient {
-    public struct Context {
+public extension ApiClient {
+    struct Context {
         let siteVersion: SiteVersion
         let myPersonId: Int?
     }
 }
 
-extension ApiClient.Context {
-    public init(instance: Instance3, person: Person4?) {
+public extension ApiClient.Context {
+    init(instance: Instance3, person: Person4?) {
         self.siteVersion = instance.version
         self.myPersonId = person?.id
     }
@@ -307,6 +307,7 @@ extension ApiClient {
             hasher.combine(username)
             return hasher.finalize()
         }
+
         func createOrRetrieveApiClient(url: URL, username: String?) -> ApiClient {
             let url = url.removingPathComponents().appendingPathComponent("/")
             if let client = retrieveModel(cacheId: getCacheId(url: url, username: username)) {

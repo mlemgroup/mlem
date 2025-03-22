@@ -32,6 +32,7 @@ public class PersonVote: ContentModel {
         }
         return state
     }
+
     init(
         api: ApiClient,
         target: Target,

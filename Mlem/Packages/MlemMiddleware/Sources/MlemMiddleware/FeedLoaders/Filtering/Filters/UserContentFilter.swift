@@ -1,6 +1,6 @@
 //
 //  PersonContentFilterType.swift
-//  
+//
 //
 //  Created by Eric Andrews on 2024-07-18.
 //

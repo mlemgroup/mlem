@@ -3,7 +3,7 @@
 //  MlemMiddleware
 //
 //  Created by Sjmarf on 2025-02-22.
-//  
+//
 
 import Foundation
 

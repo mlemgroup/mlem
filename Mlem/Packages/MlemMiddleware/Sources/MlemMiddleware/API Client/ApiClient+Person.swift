@@ -12,7 +12,7 @@ public extension ApiClient {
         guard data.apiUrl == baseUrl else {
             throw ApiClientError.mismatchingUrl
         }
-        guard data.apiMyPersonId == (try await myPersonId) else {
+        guard try await data.apiMyPersonId == myPersonId else {
             throw ApiClientError.mismatchingPersonId
         }
         return await caches.person1.getModel(api: self, from: data.apiPerson, isStale: true)
@@ -22,7 +22,7 @@ public extension ApiClient {
         guard data.apiUrl == baseUrl else {
             throw ApiClientError.mismatchingUrl
         }
-        guard data.apiMyPersonId == (try await myPersonId) else {
+        guard try await data.apiMyPersonId == myPersonId else {
             throw ApiClientError.mismatchingPersonId
         }
         return await caches.person2.getModel(api: self, from: data.apiPersonView, isStale: true)
@@ -88,7 +88,7 @@ public extension ApiClient {
         filter: ApiListingType = .all,
         sort: SearchSortType = .top(.allTime)
     ) async throws -> [Person2] {
-        let endpointVersion = try await self.version.highestSupportedEndpointVersion
+        let endpointVersion = try await version.highestSupportedEndpointVersion
         let request = SearchRequest(
             endpoint: .v3,
             q: query,
@@ -222,14 +222,14 @@ public extension ApiClient {
         let request = GetSiteRequest(endpoint: .v3)
         let response = try await perform(request)
         
-        guard response.myUser?.localUserView.person.name == self.username else {
+        guard response.myUser?.localUserView.person.name == username else {
             assertionFailure()
             throw ApiClientError.mismatchingToken
         }
         
         let instance = await caches.instance3.getModel(api: self, from: response)
         
-        var blocks: BlockList? = self.blocks
+        var blocks: BlockList? = blocks
         var person: Person4?
         if let myUser = response.myUser {
             person = await caches.person4.getModel(api: self, from: myUser)

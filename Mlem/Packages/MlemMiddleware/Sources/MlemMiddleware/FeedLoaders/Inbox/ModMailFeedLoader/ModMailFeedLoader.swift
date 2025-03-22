@@ -8,7 +8,6 @@
 import Foundation
 
 public class ModMailFeedLoader: StandardFeedLoader<ModMailItem> {
-    
     var modMailFetcher: MultiFetcher<ModMailItem> { fetcher as! MultiFetcher }
     
     public init(
@@ -16,13 +15,14 @@ public class ModMailFeedLoader: StandardFeedLoader<ModMailItem> {
         pageSize: Int,
         sources: [ChildFeedLoader<ModMailItem>],
         sortType: FeedLoaderSort.SortType,
-        showRead: Bool) {
-            super.init(
-                filter: ModMailItemFilter(showRead: showRead),
-                fetcher: MultiFetcher(api: api, pageSize: pageSize, sources: sources, sortType: sortType)
-            )
+        showRead: Bool
+    ) {
+        super.init(
+            filter: ModMailItemFilter(showRead: showRead),
+            fetcher: MultiFetcher(api: api, pageSize: pageSize, sources: sources, sortType: sortType)
+        )
         
-        sources.forEach { source in
+        for source in sources {
             source.setParent(parent: self)
         }
     }
@@ -61,7 +61,8 @@ public class ModMailFeedLoader: StandardFeedLoader<ModMailItem> {
             pageSize: pageSize,
             sortType: sortType,
             sources: [postReportFeedLoader, commentReportFeedLoader, messageReportFeedLoader],
-            showRead: showRead)
+            showRead: showRead
+        )
         
         let applicationFeedLoader: ApplicationChildFeedLoader = .init(
             api: api,
@@ -83,8 +84,8 @@ public class ModMailFeedLoader: StandardFeedLoader<ModMailItem> {
     
     public func hideRead() async throws {
         await withThrowingTaskGroup(of: Void.self) { group in
-            modMailFetcher.sources.forEach { source in
-                group.addTask {                    
+            for source in modMailFetcher.sources {
+                group.addTask {
                     guard let childSource = source as? any InboxFeedLoading else {
                         assertionFailure("Child is not ModMailChildFeedLoader")
                         return
@@ -99,7 +100,7 @@ public class ModMailFeedLoader: StandardFeedLoader<ModMailItem> {
     
     public func showRead() async throws {
         await withThrowingTaskGroup(of: Void.self) { group in
-            modMailFetcher.sources.forEach { source in
+            for source in modMailFetcher.sources {
                 group.addTask {
                     guard let childSource = source as? any InboxFeedLoading else {
                         assertionFailure("Child is not ModMailChildFeedLoader")

@@ -6,7 +6,6 @@
 //
 
 public class InboxChildFeedLoader: ChildFeedLoader<InboxItem> {
-    
     var inboxFetcher: InboxFetcher { fetcher as! InboxFetcher }
     
     public init(api: ApiClient, sortType: FeedLoaderSort.SortType, fetcher: InboxFetcher, showRead: Bool) {
