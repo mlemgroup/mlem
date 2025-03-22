@@ -8,6 +8,13 @@
 import MlemMiddleware
 import SwiftUI
 
+@Observable
+class TopVisibleItemContainer {
+    // This doesn't need to trigger view updates
+    @ObservationIgnored var wrappedValue: ActorIdentifier?
+    var isAtPost: Bool = true
+}
+
 struct ExpandedPostView<Content: View>: View {
     struct AnchorsKey: PreferenceKey {
         // swiftlint:disable:next nesting
@@ -19,8 +26,9 @@ struct ExpandedPostView<Content: View>: View {
             value.merge(nextValue()) { $1 }
         }
     }
-
+    
     @Environment(AppState.self) var appState
+    @Environment(ExpandedPostHistoryTracker.self) var expandedPostHistoryTracker
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.palette) var palette
     @Environment(\.dismiss) var dismiss
@@ -40,8 +48,10 @@ struct ExpandedPostView<Content: View>: View {
 
     @State var scrolledToscrollTargetedComment: Bool = false
     @State var jumpButtonTarget: ActorIdentifier?
-    @State var topVisibleItem: ActorIdentifier?
+    @State var topVisibleItem: TopVisibleItemContainer = .init()
     @State var postCollapsed: Bool = false
+    
+    @State var topVisibleCommentAtLastVisit: ActorIdentifier?
     
     init(
         post: (any PostStubProviding)?,
@@ -162,18 +172,18 @@ struct ExpandedPostView<Content: View>: View {
                         self.jumpButtonTarget = nil
                     }
                 }
-                .overlay {
-                    if jumpButton != .none, (tracker?.nodes.count ?? 0) > 1 {
-                        JumpButtonView(onShortPress: scrollToNextComment, onLongPress: scrollToPreviousComment)
-                            .frame(
-                                maxWidth: .infinity,
-                                maxHeight: .infinity,
-                                alignment: jumpButton.alignment
-                            )
-                    }
+                .overlay(alignment: jumpButton.alignment) {
+                    JumpButtonsView(
+                        showJumpButton: true,
+                        topVisibleItem: topVisibleItem,
+                        scrollToLastVisitedPosition: topVisibleCommentAtLastVisit == nil ? nil : scrollToLastVisitedPosition,
+                        scrollToNextComment: scrollToNextComment,
+                        scrollToPreviousComment: scrollToPreviousComment
+                    )
                 }
-                .onPreferenceChange(AnchorsKey.self) { anchors in
-                    topVisibleItem = topCommentRow(of: anchors, in: geo)
+                .onPreferenceChange(AnchorsKey.self) { updateAnchors($0, in: geo) }
+                .onAppear {
+                    topVisibleCommentAtLastVisit = expandedPostHistoryTracker.retrieve(for: post.actorId)
                 }
             }
         }
@@ -254,5 +264,36 @@ struct ExpandedPostView<Content: View>: View {
             key: AnchorsKey.self,
             value: .center
         ) { [post.actorId: $0] }
+    }
+}
+
+private struct JumpButtonsView: View {
+    @Setting(\.jumpButton) var jumpButton
+    
+    var showJumpButton: Bool
+    var topVisibleItem: TopVisibleItemContainer
+    
+    var scrollToLastVisitedPosition: (() -> Void)?
+    var scrollToNextComment: () -> Void
+    var scrollToPreviousComment: () -> Void
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            if let scrollToLastVisitedPosition, topVisibleItem.isAtPost {
+                JumpButtonView(
+                    systemImage: "chevron.down.2",
+                    onShortPress: scrollToLastVisitedPosition,
+                    onLongPress: nil
+                )
+            }
+            if jumpButton != .none, showJumpButton { // (tracker?.nodes.count ?? 0) > 1
+                JumpButtonView(
+                    onShortPress: scrollToNextComment,
+                    onLongPress: scrollToPreviousComment
+                )
+            }
+        }
+        .padding(Constants.main.standardSpacing)
+        .animation(.default, value: topVisibleItem.isAtPost)
     }
 }

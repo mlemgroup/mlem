@@ -63,9 +63,24 @@ extension ExpandedPostView {
         return ret
     }
     
+    func updateAnchors(_ anchors: AnchorsKey.Value, in proxy: GeometryProxy) {
+        guard let postActorId = post?.actorId_ else { return }
+        topVisibleItem.wrappedValue = topCommentRow(of: anchors, in: proxy)
+        if (topVisibleItem.wrappedValue == postActorId) != topVisibleItem.isAtPost {
+            topVisibleItem.isAtPost.toggle()
+        }
+        if let commentActorId = topVisibleItem.wrappedValue, topVisibleItem.wrappedValue != postActorId {
+            expandedPostHistoryTracker.insert(postActorId: postActorId, commentActorId: commentActorId)
+        }
+    }
+    
+    func scrollToLastVisitedPosition() {
+        if let topVisibleCommentAtLastVisit { jumpButtonTarget = topVisibleCommentAtLastVisit }
+    }
+    
     func scrollToNextComment() {
         guard let tracker, let postActorId = post?.actorId_ else { return }
-        if let topVisibleItem {
+        if let topVisibleItem = topVisibleItem.wrappedValue {
             if topVisibleItem == postActorId, let first = tracker.nodes.first {
                 jumpButtonTarget = first.actorId
                 return
@@ -81,7 +96,7 @@ extension ExpandedPostView {
     
     func scrollToPreviousComment() {
         guard let tracker, let postActorId = post?.actorId_ else { return }
-        if let topVisibleItem, topVisibleItem != postActorId {
+        if let topVisibleItem = topVisibleItem.wrappedValue, topVisibleItem != postActorId {
             if let comment = tracker.nodesKeyedByActorId[topVisibleItem] {
                 if var topLevelIndex = tracker.nodes.firstIndex(of: comment.topParent) {
                     if topLevelIndex < 0 || comment == tracker.nodes.first {

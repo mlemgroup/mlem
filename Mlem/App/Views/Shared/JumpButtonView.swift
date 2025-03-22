@@ -8,24 +8,28 @@
 import SwiftUI
 
 struct JumpButtonView: View {
+    @Environment(\.colorScheme) var colorScheme
+    
     @State private var pressed: Bool = false
     
+    var systemImage: String = Icons.jumpButton
     var onShortPress: () -> Void
-    var onLongPress: () -> Void
+    var onLongPress: (() -> Void)?
     
     var body: some View {
         Button {} label: {
-            Image(systemName: Icons.jumpButton)
+            Image(systemName: systemImage)
                 .fontWeight(.semibold)
                 .foregroundStyle(.secondary)
                 .aspectRatio(contentMode: .fit)
-                .padding(16)
+                .frame(width: 44, height: 44)
                 .background(
                     Circle()
                         .stroke(.tertiary.opacity(0.3))
-                        .background(.ultraThinMaterial)
-                        .clipShape(Circle())
+                        .background(colorScheme == .light ? .themedSecondaryGroupedBackground : .themedTertiaryGroupedBackground)
+                        .clipShape(.circle)
                 )
+                .shadow(radius: 10)
                 .padding(10)
                 .scaleEffect(pressed ? 1.2 : 1.0)
                 .onTapGesture {
@@ -35,7 +39,9 @@ struct JumpButtonView: View {
                 .onLongPressGesture(
                     perform: {
                         HapticManager.main.play(haptic: .gentleInfo, priority: .high)
-                        onLongPress()
+                        if let onLongPress {
+                            onLongPress()
+                        }
                     },
                     onPressingChanged: { pressing in
                         withAnimation(.interactiveSpring()) {
@@ -45,6 +51,5 @@ struct JumpButtonView: View {
                 )
         }
         .buttonStyle(.empty)
-        .padding(10)
     }
 }
