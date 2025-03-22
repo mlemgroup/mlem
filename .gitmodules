@@ -1,3 +1,3 @@
-[submodule "/Users/kidsaccount/Documents/XCode projects/mlem-UPSTREAM/Mlem/Packages/MlemMiddleware/Sources/MlemMiddleware/MlemApiTypes"]
-	path = /Users/kidsaccount/Documents/XCode projects/mlem-UPSTREAM/Mlem/Packages/MlemMiddleware/Sources/MlemMiddleware/MlemApiTypes
+[submodule "Mlem/Packages/MlemMiddleware/Sources/MlemMiddleware/MlemApiTypes"]
+	path = Mlem/Packages/MlemMiddleware/Sources/MlemMiddleware/MlemApiTypes
 	url = https://github.com/mlemgroup/MlemApiTypes
