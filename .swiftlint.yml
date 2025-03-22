@@ -15,3 +15,6 @@ identifier_name:
     - x
     - y
   allowed_symbols: ["_"] # these are allowed in type names as we use them in API body arguments
+
+excluded:
+  - Mlem/Packages/MlemMiddleware
