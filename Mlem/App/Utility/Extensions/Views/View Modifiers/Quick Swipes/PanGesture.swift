@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-@available(iOS 18.0, *)
+// @available(iOS 18.0, *)
 struct PanGesture: UIGestureRecognizerRepresentable {
     var handle: (UIPanGestureRecognizer) -> Void
     

@@ -8,15 +8,17 @@
 import SwiftUI
 import Zoomable
 
+// swiftlint:disable file_length
+// swiftlint:disable:next type_body_length
 struct ImageViewer: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.dismiss) var dismiss
     @Environment(\.colorScheme) var colorScheme
     @Setting(\.developerMode) var developerMode
     @Setting(\.zoomSliderLocation) var zoomSliderLocation
-
+    
     let url: URL
-
+    
     let duration: CGFloat = 0.25
     let maxControlOffset: CGFloat = 50
     let screenHeight: CGFloat = UIScreen.main.bounds.height
@@ -89,85 +91,122 @@ struct ImageViewer: View {
     /// Whether the controls are currently visible
     var controlsShown: Bool { controlOpacity > 0 }
     
+    // -------------------------------------------------------- UNDER CONSTRUCTION
+    
+//    @State var scale: CGFloat = 1
+//    @State var anchor: UnitPoint = .zero
+    
+    // --------------------------------------------------------
+    
     init(url: URL) {
         var components = URLComponents(url: url, resolvingAgainstBaseURL: false)!
         components.queryItems = components.queryItems?.filter { $0.name != "thumbnail" }
         self.url = components.url!
     }
     
+    @ViewBuilder
+    var zoomRecognizer: some View {
+        ZoomableContainer(currentScale: $currentScale) {
+            Color.clear.contentShape(.rect)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+    }
+    
     var body: some View {
-//        ZoomableContainer(isZoomed: $isZoomed, currentScale: $currentScale) {
-//            MediaView(url: url, controlState: $controlState)
-//        }
         MediaView(url: url, controlState: $controlState)
-            .zoomable()
-        .offset(y: offset)
-        .background(.black)
-        .overlay(controlOverlay)
-        .opacity(opacity)
-        .onChange(of: isZoomed) {
-            if isZoomed {
-                hideControls(withSlide: true)
-            } else {
-                showControls(withSlide: true)
-            }
-        }
-        .onTapGesture {
-            if enableControlTap {
-                if controlsShown {
-                    hideControls()
+//            .gesture(TapGesture(count: 2).onEnded { _ in
+//                if scale == 1 {
+//                    scale = 4
+//                } else {
+//                    scale = 1
+//                }
+//            })
+//            .simultaneousGesture(MagnifyGesture(minimumScaleDelta: 0)
+//                .onChanged { value in
+//                    scale = value.magnification
+//                    anchor = value.startAnchor
+//                    print("DEBUG \(value.velocity)")
+//                    // print("DEBUG \(value.startLocation)")
+//                }
+//                .onEnded { _ in
+//                    if scale < 1 {
+//                        scale = 1
+//                    }
+//                }
+//            )
+            // .scaleEffect(scale, anchor: anchor)
+            .scaleEffect(currentScale)
+            .offset(y: offset)
+            .background(.black)
+            .overlay(controlOverlay)
+            .opacity(opacity)
+            .onChange(of: isZoomed) {
+                if isZoomed {
+                    hideControls(withSlide: true)
                 } else {
-                    showControls()
+                    showControls(withSlide: true)
                 }
             }
-        }
-        .simultaneousGesture(DragGesture(minimumDistance: 1.0)
-            .onChanged { handleDragGesture(value: $0) }
-            .updating($dragState) { _, state, _ in
-                // this detects cancelled gestures (e.g., if you zoom while dragging)
-                state = true
-            }
-        )
-        .overlay(alignment: .topLeading) { scaleDisplay }
-        .overlay { zoomSliderOverlay }
-        .onAppear {
-            animateOpacityUpdate(1.0)
-        }
-        .onChange(of: dragState) {
-            handleDragStateChange(dragState)
-        }
-        .onChange(of: scaleDragState) {
-            if !scaleDragState {
-                dragStartedScale = nil
-            }
-        }
-        .onChange(of: scrubRate) {
-            if dragIsScrub ?? false { // don't update value if not currently scrubbing
-                scaleDisplayValue = scrubRate
-            }
-        }
-        .onChange(of: currentScale) {
-            scaleDisplayValue = currentScale
-        }
-        .onChange(of: scaleDisplayValue) {
-            if !scaleDisplayShown {
-                withAnimation(.easeIn(duration: 0.1)) {
-                    scaleDisplayShown = true
-                }
-            }
-            let oldScale: CGFloat = scaleDisplayValue
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                if scaleDisplayValue == oldScale {
-                    withAnimation {
-                        scaleDisplayShown = false
+            .onTapGesture {
+                if enableControlTap {
+                    if controlsShown {
+                        hideControls()
+                    } else {
+                        showControls()
                     }
                 }
             }
-        }
-        .quickLookPreview($quickLookUrl)
-        .background(ClearBackgroundView())
-        .statusBarHidden(!isDismissing)
-        .coordinateSpace(name: "ImageViewer")
+            .simultaneousGesture(DragGesture(minimumDistance: 1.0)
+                .onChanged { handleDragGesture(value: $0) }
+                .updating($dragState) { _, state, _ in
+                    // this detects cancelled gestures (e.g., if you zoom while dragging)
+                    state = true
+                }
+            )
+            .overlay(alignment: .topLeading) { scaleDisplay }
+            .overlay { zoomSliderOverlay }
+            .overlay {
+                // Image(systemName: "tree")
+                zoomRecognizer
+            }
+            .onAppear {
+                animateOpacityUpdate(1.0)
+            }
+            .onChange(of: dragState) {
+                handleDragStateChange(dragState)
+            }
+            .onChange(of: scaleDragState) {
+                if !scaleDragState {
+                    dragStartedScale = nil
+                }
+            }
+            .onChange(of: scrubRate) {
+                if dragIsScrub ?? false { // don't update value if not currently scrubbing
+                    scaleDisplayValue = scrubRate
+                }
+            }
+            .onChange(of: currentScale) {
+                scaleDisplayValue = currentScale
+            }
+            .onChange(of: scaleDisplayValue) {
+                if !scaleDisplayShown {
+                    withAnimation(.easeIn(duration: 0.1)) {
+                        scaleDisplayShown = true
+                    }
+                }
+                let oldScale: CGFloat = scaleDisplayValue
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    if scaleDisplayValue == oldScale {
+                        withAnimation {
+                            scaleDisplayShown = false
+                        }
+                    }
+                }
+            }
+            .quickLookPreview($quickLookUrl)
+            .background(ClearBackgroundView())
+            .statusBarHidden(!isDismissing)
+            .coordinateSpace(name: "ImageViewer")
     }
     
     func handleDragGesture(value: DragGesture.Value) {
@@ -253,9 +292,9 @@ struct ImageViewer: View {
     /// Returns controls to a visible state
     private func showControls(withSlide: Bool = false) {
         guard !controlsShown else { return }
-
+        
         controlOffset = withSlide ? maxControlOffset : 0
-
+        
         withAnimation(.easeIn(duration: duration)) {
             controlOpacity = 1
             if withSlide {
@@ -331,7 +370,7 @@ struct ImageViewer: View {
                 scrubRate = newScrubRate
             }
         }
-            
+        
         guard let scrubStartedPlaybackPosition else {
             assertionFailure("drag is scrub but scrubStartedPlaybackPosition is nil")
             return
@@ -370,3 +409,5 @@ private struct ClearBackgroundView: UIViewRepresentable {
         }
     }
 }
+
+// swiftlint:enable file_length
