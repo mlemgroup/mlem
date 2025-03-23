@@ -38,6 +38,9 @@ class PinchRecognizer: UIPinchGestureRecognizer {
     /// Scale when the current pinch began
     private var initialScale: CGFloat = 1.0
     
+    /// Scale when the previous pinch recognizer finished
+    private var previousScale: CGFloat = 1.0
+    
     /// Offset when the current pinch began
     private var initialOffset: CGSize = .zero
 
@@ -54,20 +57,23 @@ class PinchRecognizer: UIPinchGestureRecognizer {
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
         initialScale = zoomScale
+        previousScale = zoomScale
         initialOffset = offset
         super.touchesBegan(touches, with: event)
     }
 
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent) {
+        previousScale = zoomScale
         zoomScale = initialScale * scale
+        
+        let scaleFactor: CGFloat = zoomScale / previousScale
 
-        if touches.count == 2 {
-            let translation = translation(of: touches)
+        let translation = translation(of: touches)
             offset = .init(
                 width: offset.width + translation.width,
                 height: offset.height + translation.height
             )
-        }
+            .scaled(by: scaleFactor)
     }
     
     private func translation(of touches: Set<UITouch>) -> CGSize {
@@ -88,6 +94,12 @@ class PinchRecognizer: UIPinchGestureRecognizer {
             width: averageLocation.x - previousLocation.x,
             height: averageLocation.y - previousLocation.y
         )
+    }
+}
+
+private extension CGSize {
+    func scaled(by factor: CGFloat) -> CGSize {
+        return .init(width: width * factor, height: height * factor)
     }
 }
 
