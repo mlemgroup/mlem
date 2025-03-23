@@ -113,16 +113,45 @@ class PinchRecognizer: UIPinchGestureRecognizer {
     }
 
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent) {
-        // previousScale = zoomScale
+        // TODO: "soft" bounds--should zoom out slower and slower when out of bounds
         zoomScale = initialScale * scale
-        // let scaleDelta: CGFloat = zoomScale / initialScale
         
         guard let bounds = view?.bounds else {
             assertionFailure("No bounds")
             return
         }
         print("DEBUG xOffset: \((scale - 1) * (0.5 - anchor.x))")
-        // compute bounds size in real px
+        
+        let offsetDeltas = computeOffsetDeltas(scale: scale)
+        offset = initialOffset + offsetDeltas
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent) {
+        guard let bounds = view?.bounds else {
+            assertionFailure("No bounds")
+            return
+        }
+        
+        let boundedZoomScale: CGFloat = zoomScale.bounded(lower: 1.0, upper: 4.0)
+        
+        let offsetDeltas = computeOffsetDeltas(scale: boundedZoomScale / initialScale)
+        let maxXOffset: CGFloat = ((boundedZoomScale - 1) / 2) * bounds.width
+        let maxYOffset: CGFloat = ((boundedZoomScale - 1) / 2) * bounds.height
+        
+        // TODO: animate
+        offset = .init(
+            width: (initialOffset.width + offsetDeltas.width).bounded(lower: -maxXOffset, upper: maxXOffset),
+            height: (initialOffset.height + offsetDeltas.height).bounded(lower: -maxYOffset, upper: maxYOffset)
+        )
+        zoomScale = boundedZoomScale
+    }
+    
+    private func computeOffsetDeltas( scale: CGFloat) -> CGSize {
+        guard let bounds = view?.bounds else {
+            assertionFailure("No bounds")
+            return .zero
+        }
+        
         let scaledBounds: CGSize = .init(width: bounds.width, height: bounds.height).scaled(by: initialScale)
         
         // (scale - 1) * (0.5 - anchor) computes the offset required to center the view on the anchor while zooming,
@@ -130,15 +159,8 @@ class PinchRecognizer: UIPinchGestureRecognizer {
         // offset in real px
         let xOffset: CGFloat = (scale - 1) * (0.5 - anchor.x) * scaledBounds.width
         let yOffset: CGFloat = (scale - 1) * (0.5 - anchor.y) * scaledBounds.height
-        offset = .init(
-            width: initialOffset.width + xOffset,
-            height: initialOffset.height + yOffset
-        )
-    }
-    
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent) {
-        // noop
-        // zoomScale = 1.25
+        
+        return .init(width: xOffset, height: yOffset)
     }
     
     private func translation(of touches: Set<UITouch>) -> CGSize {
@@ -168,6 +190,14 @@ private extension UnitPoint {
 }
 
 private extension CGSize {
+    static func + (lhs: Self, rhs: Self) -> Self {
+        .init(width: lhs.width + rhs.width, height: lhs.height + rhs.height)
+    }
+    
+    static func += (lhs: inout Self, rhs: Self) {
+        lhs = lhs + rhs
+    }
+    
     func scaled(by factor: CGFloat) -> CGSize {
         return .init(width: width * factor, height: height * factor)
     }

@@ -109,6 +109,9 @@ struct ImageViewer: View {
             .offset(y: offset)
             .background(.black)
             .overlay(controlOverlay)
+            .overlay(alignment: .topLeading) {
+                scaleDisplay
+            }
             .opacity(opacity)
             .onChange(of: isZoomed) {
                 if isZoomed {
@@ -151,6 +154,7 @@ struct ImageViewer: View {
                 }
             }
             .onChange(of: currentScale) {
+                print("DEBUG updated")
                 scaleDisplayValue = currentScale
             }
             .onChange(of: scaleDisplayValue) {
@@ -177,15 +181,6 @@ struct ImageViewer: View {
     @ViewBuilder
     var zoomableImage: some View {
         MediaView(url: url, controlState: $controlState)
-//            .overlay {
-//                GeometryReader { geo in
-//                    Circle()
-//                        .frame(width: 10, height: 10)
-//                        .foregroundStyle(.blue)
-//                        .offset(x: anchor.x * geo.size.width, y: anchor.y * geo.size.height)
-//                }
-//                .frame(maxWidth: .infinity, maxHeight: .infinity)
-//            }
             .overlay {
                 ZoomRecognizer(scale: $currentScale, offset: $pinchOffset)
             }
