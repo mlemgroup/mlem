@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct JumpButtonView: View {
-    @Environment(\.colorScheme) var colorScheme
-    
     @State private var pressed: Bool = false
     
     var systemImage: String = Icons.jumpButton
@@ -26,10 +24,9 @@ struct JumpButtonView: View {
                 .background(
                     Circle()
                         .stroke(.tertiary.opacity(0.3))
-                        .background(colorScheme == .light ? .themedSecondaryGroupedBackground : .themedTertiaryGroupedBackground)
+                        .background(.bar)
                         .clipShape(.circle)
                 )
-                .shadow(radius: 10)
                 .padding(10)
                 .scaleEffect(pressed ? 1.2 : 1.0)
                 .onTapGesture {

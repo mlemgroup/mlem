@@ -175,7 +175,7 @@ struct ExpandedPostView<Content: View>: View {
                 .overlay(alignment: jumpButton.alignment) {
                     let shouldShow = topVisibleCommentAtLastVisit == nil && (post.commentCount_ ?? 0) > 10
                     JumpButtonsView(
-                        showJumpButton: true,
+                        showJumpButton: (tracker?.nodes.count ?? 0) > 1,
                         topVisibleItem: topVisibleItem,
                         scrollToLastVisitedPosition: shouldShow ? nil : scrollToLastVisitedPosition,
                         scrollToNextComment: scrollToNextComment,
@@ -280,14 +280,14 @@ private struct JumpButtonsView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            if let scrollToLastVisitedPosition, topVisibleItem.isAtPost {
+            if let scrollToLastVisitedPosition, topVisibleItem.isAtPost, showJumpButton {
                 JumpButtonView(
-                    systemImage: "chevron.down.2",
+                    systemImage: Icons.jumpToLastPositionButton,
                     onShortPress: scrollToLastVisitedPosition,
                     onLongPress: nil
                 )
             }
-            if jumpButton != .none, showJumpButton { // (tracker?.nodes.count ?? 0) > 1
+            if jumpButton != .none, showJumpButton {
                 JumpButtonView(
                     onShortPress: scrollToNextComment,
                     onLongPress: scrollToPreviousComment
