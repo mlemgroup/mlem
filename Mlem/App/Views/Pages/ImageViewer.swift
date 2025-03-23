@@ -114,28 +114,7 @@ struct ImageViewer: View {
     
     var body: some View {
         MediaView(url: url, controlState: $controlState)
-//            .gesture(TapGesture(count: 2).onEnded { _ in
-//                if scale == 1 {
-//                    scale = 4
-//                } else {
-//                    scale = 1
-//                }
-//            })
-//            .simultaneousGesture(MagnifyGesture(minimumScaleDelta: 0)
-//                .onChanged { value in
-//                    scale = value.magnification
-//                    anchor = value.startAnchor
-//                    print("DEBUG \(value.velocity)")
-//                    // print("DEBUG \(value.startLocation)")
-//                }
-//                .onEnded { _ in
-//                    if scale < 1 {
-//                        scale = 1
-//                    }
-//                }
-//            )
-            // .scaleEffect(scale, anchor: anchor)
-            .scaleEffect(currentScale)
+            .scaleEffect(currentScale, anchor: anchor)
             .offset(y: offset)
             .background(.black)
             .overlay(controlOverlay)
@@ -157,10 +136,8 @@ struct ImageViewer: View {
                 }
             }
             .overlay(alignment: .topLeading) { scaleDisplay }
-            // .overlay { zoomRecognizer }
             .overlay {
-                ZoomRecognizer()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                ZoomRecognizer(scale: $currentScale, anchor: $anchor)
             }
             .overlay { zoomSliderOverlay }
             .simultaneousGesture(DragGesture(minimumDistance: 1.0)
@@ -235,7 +212,7 @@ struct ImageViewer: View {
             enableControlTap = false
         } else {
             guard let scrubbing = dragIsScrub else {
-                assertionFailure("dragGesture ended but dragIsScrub not defined")
+                // assertionFailure("dragGesture ended but dragIsScrub not defined")
                 return
             }
             dragIsScrub = nil
