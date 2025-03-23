@@ -18,13 +18,13 @@ struct ReplyBarConfiguration: InteractionBarConfiguration {
         case selectText
         case report
         
-        static var defaultWidgets: [ActionType] {[
+        static var defaultWidgets: [ActionType] { [
             .upvote,
             .downvote,
             .save,
             .reply,
             .markRead
-        ]}
+        ] }
         
         var appearance: ActionAppearance {
             switch self {
@@ -45,7 +45,7 @@ struct ReplyBarConfiguration: InteractionBarConfiguration {
         case downvote
         case reply
         
-        static var defaultWidgets: [CounterType] { Self.allCases }
+        static var defaultWidgets: [CounterType] { allCases }
         
         var appearance: CounterAppearance {
             switch self {
@@ -89,6 +89,9 @@ struct ReplyBarConfiguration: InteractionBarConfiguration {
     var trailing: [Item]
     var readouts: [ReadoutType]
     
+    var leadingSwipes: [ActionType] = [.upvote, .downvote]
+    var trailingSwipes: [ActionType] = [.selectText, .markRead]
+
     var availableWidgets: Set<Item>
     func widgetPickerPage(_ configuration: Binding<Self>) -> SettingsPage { .replyBarWidgetPicker(configuration) }
     

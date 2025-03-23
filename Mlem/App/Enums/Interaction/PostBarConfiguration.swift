@@ -26,22 +26,22 @@ struct PostBarConfiguration: InteractionBarConfiguration {
         case remove
         case ban
         
-        static var defaultWidgets: [ActionType] {[
-                .upvote,
-                .downvote,
-                .save,
-                .reply,
-                .share
-        ]}
+        static var defaultWidgets: [ActionType] { [
+            .upvote,
+            .downvote,
+            .save,
+            .reply,
+            .share
+        ] }
         
-        static var defaultReportWidgets: [ActionType] {[
+        static var defaultReportWidgets: [ActionType] { [
             .share,
             .lock,
             .pin,
             .resolve,
             .remove,
             .ban
-        ]}
+        ] }
         
         var appearance: ActionAppearance {
             switch self {
@@ -70,7 +70,7 @@ struct PostBarConfiguration: InteractionBarConfiguration {
         case downvote
         case reply
         
-        static var defaultWidgets: [CounterType] { Self.allCases }
+        static var defaultWidgets: [CounterType] { allCases }
         
         var appearance: CounterAppearance {
             switch self {
@@ -113,6 +113,9 @@ struct PostBarConfiguration: InteractionBarConfiguration {
     var leading: [Item]
     var trailing: [Item]
     var readouts: [ReadoutType]
+    
+    var leadingSwipes: [ActionType] = [.upvote, .downvote]
+    var trailingSwipes: [ActionType] = [.share, .crossPost]
     
     var availableWidgets: Set<Item>
     func widgetPickerPage(_ configuration: Binding<Self>) -> SettingsPage { .postBarWidgetPicker(configuration) }

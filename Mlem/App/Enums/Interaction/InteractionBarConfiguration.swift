@@ -19,6 +19,9 @@ protocol InteractionBarConfiguration: Codable {
     var trailing: [Item] { get set }
     var readouts: [ReadoutType] { get set }
     
+    var leadingSwipes: [ActionType] { get set }
+    var trailingSwipes: [ActionType] { get set }
+
     var availableWidgets: Set<Item> { get set }
     func widgetPickerPage(_ configuration: Binding<Self>) -> SettingsPage
     
