@@ -18,16 +18,7 @@ struct ZoomRecognizer: UIViewRepresentable {
 
     func makeUIView(context: Context) -> UIView {
         let ret: UIView = .init()
-
-        let panGesture = UIPanGestureRecognizer(
-            target: context.coordinator,
-            action: #selector(Coordinator.handlePan(gesture:))
-        )
-        panGesture.minimumNumberOfTouches = 2
-        panGesture.maximumNumberOfTouches = 2
-        panGesture.delegate = context.coordinator
-        ret.addGestureRecognizer(panGesture)
-
+        
         let pinchGesture = PinchRecognizer(
             target: context.coordinator,
             action: nil,
@@ -57,21 +48,6 @@ struct ZoomRecognizer: UIViewRepresentable {
                 UIGestureRecognizer
         ) -> Bool {
             return true
-        }
-
-        //        @objc
-        //        func handlePinch(gesture: UIPinchGestureRecognizer) {
-        //            scale += gesture.scale
-        //        }
-
-        @objc
-        func handlePan(gesture: UIPanGestureRecognizer) {
-            guard let frame = gesture.view?.frame else { return }
-
-            let location = gesture.location(in: nil)
-            print(
-                "DEBUG pan \(location), \(location.x), \(location.x / frame.width)"
-            )
         }
     }
 }
@@ -109,15 +85,8 @@ class PinchRecognizer: UIPinchGestureRecognizer {
         zoomScale = initialScale * scale
 
         if touches.count == 2 {
-            // let averageLocation = averageLocation(of: touches)
             // swiftlint:disable:next shorthand_operator
             offset = offset + translation(of: touches)
-            // offset = initialOffset + averageLocation
-            
-//            anchor = .init(
-//                x: (1 - (averageLocation.x / bounds.width)) / zoomScale,
-//                y: (1 - (averageLocation.y / bounds.height)) / zoomScale
-//            )
         }
         print("DEBUG average location: \(averageLocation(of: touches))")
     }
