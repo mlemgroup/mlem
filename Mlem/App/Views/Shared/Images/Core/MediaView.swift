@@ -138,7 +138,6 @@ struct MediaView: View {
                             controlState.animating = true
                         }
                         if !isVisible {
-                            print("DEBUG no longer visible")
                             controlState.animating = false
                         }
                     }

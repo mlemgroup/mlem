@@ -93,8 +93,7 @@ struct ImageViewer: View {
     
     // -------------------------------------------------------- UNDER CONSTRUCTION
     
-//    @State var scale: CGFloat = 1
-    // @State var anchor: UnitPoint = .zero
+    @State var anchor: UnitPoint = .center
     @State var pinchOffset: CGSize = .zero
     
     // --------------------------------------------------------
@@ -114,9 +113,7 @@ struct ImageViewer: View {
     }
     
     var body: some View {
-        MediaView(url: url, controlState: $controlState)
-            .scaleEffect(currentScale)
-            .offset(x: pinchOffset.width, y: pinchOffset.height)
+        zoomableImage
             .offset(y: offset)
             .background(.black)
             .overlay(controlOverlay)
@@ -136,10 +133,6 @@ struct ImageViewer: View {
                         showControls()
                     }
                 }
-            }
-            .overlay(alignment: .topLeading) { scaleDisplay }
-            .overlay {
-                ZoomRecognizer(scale: $currentScale, offset: $pinchOffset)
             }
             .overlay { zoomSliderOverlay }
             .simultaneousGesture(DragGesture(minimumDistance: 1.0)
@@ -187,6 +180,26 @@ struct ImageViewer: View {
             .background(ClearBackgroundView())
             .statusBarHidden(!isDismissing)
             .coordinateSpace(name: "ImageViewer")
+    }
+    
+    @ViewBuilder
+    var zoomableImage: some View {
+        MediaView(url: url, controlState: $controlState)
+            .overlay {
+                GeometryReader { geo in
+                    Circle()
+                        .frame(width: 10, height: 10)
+                        .foregroundStyle(.blue)
+                        .offset(x: anchor.x * geo.size.width, y: anchor.y * geo.size.height)
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
+            .overlay {
+                ZoomRecognizer(scale: $currentScale, anchor: $anchor, offset: $pinchOffset)
+            }
+            .scaleEffect(currentScale, anchor: anchor)
+            .offset(x: pinchOffset.width, y: pinchOffset.height)
+            // .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
     
     func handleDragGesture(value: DragGesture.Value) {
