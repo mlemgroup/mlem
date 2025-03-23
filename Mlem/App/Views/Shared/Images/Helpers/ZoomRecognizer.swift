@@ -10,7 +10,7 @@ import SwiftUI
 struct ZoomRecognizer: UIViewRepresentable {
 
     @Binding var scale: CGFloat
-    @Binding var offset: CGPoint
+    @Binding var offset: CGSize
 
     func updateUIView(_ uiView: UIView, context: Context) {
         // noop
@@ -33,19 +33,19 @@ struct ZoomRecognizer: UIViewRepresentable {
 
 class PinchRecognizer: UIPinchGestureRecognizer {
     @Binding var zoomScale: CGFloat
-    @Binding var offset: CGPoint
+    @Binding var offset: CGSize
 
     /// Scale when the current pinch began
     private var initialScale: CGFloat = 1.0
     
     /// Offset when the current pinch began
-    private var initialOffset: CGPoint = .zero
+    private var initialOffset: CGSize = .zero
 
     init(
         target: Any?,
         action: Selector?,
         zoomScale: Binding<CGFloat>,
-        offset: Binding<CGPoint>
+        offset: Binding<CGSize>
     ) {
         _zoomScale = zoomScale
         _offset = offset
@@ -53,53 +53,50 @@ class PinchRecognizer: UIPinchGestureRecognizer {
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
-        print("DEBUG touches began")
         initialScale = zoomScale
         initialOffset = offset
         super.touchesBegan(touches, with: event)
     }
 
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent) {
-        print("DEBUG touches moved")
         zoomScale = initialScale * scale
 
         if touches.count == 2 {
-            // swiftlint:disable:next shorthand_operator
-            offset = offset + translation(of: touches)
+            let translation = translation(of: touches)
+            offset = .init(
+                width: offset.width + translation.width,
+                height: offset.height + translation.height
+            )
         }
-        print("DEBUG average location: \(averageLocation(of: touches))")
     }
     
-    private func translation(of touches: Set<UITouch>) -> CGPoint {
-        let averageLocation: CGPoint = averageLocation(of: touches)
-        var previousLocation: CGPoint = .zero
-        for touch in touches {
-            previousLocation.x += touch.previousLocation(in: view).x
-            previousLocation.y += touch.previousLocation(in: view).y
+    private func translation(of touches: Set<UITouch>) -> CGSize {
+        // let averageLocation: CGPoint = averageLocation(of: touches)
+        var averageLocation: CGPoint = touches.reduce(into: .zero) { result, touch in
+            result += touch.location(in: view)
+        }
+        averageLocation.x /= CGFloat(touches.count)
+        averageLocation.y /= CGFloat(touches.count)
+        
+        var previousLocation: CGPoint = touches.reduce(into: .zero) { result, touch in
+            result += touch.previousLocation(in: view)
         }
         previousLocation.x /= CGFloat(touches.count)
         previousLocation.y /= CGFloat(touches.count)
         
         return .init(
-            x: averageLocation.x - previousLocation.x,
-            y: averageLocation.y - previousLocation.y
+            width: averageLocation.x - previousLocation.x,
+            height: averageLocation.y - previousLocation.y
         )
-    }
-
-    private func averageLocation(of touches: Set<UITouch>) -> CGPoint {
-        var averageLocation: CGPoint = .zero
-        for touch in touches {
-            averageLocation.x += touch.location(in: view).x
-            averageLocation.y += touch.location(in: view).y
-        }
-        averageLocation.x /= CGFloat(touches.count)
-        averageLocation.y /= CGFloat(touches.count)
-        return averageLocation
     }
 }
 
 private extension CGPoint {
     static func + (lhs: Self, rhs: Self) -> Self {
         .init(x: lhs.x + rhs.x, y: lhs.y + rhs.y)
+    }
+    
+    static func += (lhs: inout Self, rhs: Self) {
+        lhs = lhs + rhs
     }
 }

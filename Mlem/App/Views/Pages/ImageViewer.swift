@@ -95,7 +95,7 @@ struct ImageViewer: View {
     
 //    @State var scale: CGFloat = 1
     // @State var anchor: UnitPoint = .zero
-    @State var pinchOffset: CGPoint = .zero
+    @State var pinchOffset: CGSize = .zero
     
     // --------------------------------------------------------
     
@@ -116,7 +116,7 @@ struct ImageViewer: View {
     var body: some View {
         MediaView(url: url, controlState: $controlState)
             .scaleEffect(currentScale)
-            .offset(x: pinchOffset.x, y: pinchOffset.y)
+            .offset(x: pinchOffset.width, y: pinchOffset.height)
             .offset(y: offset)
             .background(.black)
             .overlay(controlOverlay)
