@@ -13,7 +13,7 @@ struct ZoomRecognizer: UIViewRepresentable {
     @Binding var offset: CGPoint
 
     func updateUIView(_ uiView: UIView, context: Context) {
-        print("DEBUG updated")
+        // noop
     }
 
     func makeUIView(context: Context) -> UIView {
@@ -25,30 +25,9 @@ struct ZoomRecognizer: UIViewRepresentable {
             zoomScale: $scale,
             offset: $offset
         )
-        pinchGesture.delegate = context.coordinator
         ret.addGestureRecognizer(pinchGesture)
 
         return ret
-    }
-
-    func makeCoordinator() -> Coordinator {
-        .init(scale: $scale)
-    }
-
-    class Coordinator: NSObject, UIGestureRecognizerDelegate {
-        @Binding var scale: CGFloat
-
-        init(scale: Binding<CGFloat>) {
-            _scale = scale
-        }
-
-        func gestureRecognizer(
-            _ gestureRecognizer: UIGestureRecognizer,
-            shouldRecognizeSimultaneouslyWith otherGestureRecognizer:
-                UIGestureRecognizer
-        ) -> Bool {
-            return true
-        }
     }
 }
 
