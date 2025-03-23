@@ -10,7 +10,6 @@ import SwiftUI
 struct ZoomRecognizer: UIViewRepresentable {
 
     @Binding var scale: CGFloat
-    @Binding var anchor: UnitPoint
     @Binding var offset: CGSize
 
     func updateUIView(_ uiView: UIView, context: Context) {
@@ -24,7 +23,6 @@ struct ZoomRecognizer: UIViewRepresentable {
             target: context.coordinator,
             action: nil,
             zoomScale: $scale,
-            anchor: $anchor,
             offset: $offset
         )
         ret.addGestureRecognizer(pinchGesture)
@@ -35,7 +33,6 @@ struct ZoomRecognizer: UIViewRepresentable {
 
 class PinchRecognizer: UIPinchGestureRecognizer {
     @Binding var zoomScale: CGFloat
-    @Binding var anchor: UnitPoint
     @Binding var offset: CGSize
 
     /// Scale when the current pinch began
@@ -48,22 +45,35 @@ class PinchRecognizer: UIPinchGestureRecognizer {
     private var initialOffset: CGSize = .zero
     
     private var previousAnchor: UnitPoint = .zero
+    
+    private var anchor: UnitPoint = .center
 
     init(
         target: Any?,
         action: Selector?,
         zoomScale: Binding<CGFloat>,
-        anchor: Binding<UnitPoint>,
         offset: Binding<CGSize>
     ) {
         _zoomScale = zoomScale
-        _anchor = anchor
         _offset = offset
         super.init(target: target, action: action)
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
         initialScale = zoomScale
+        
+        guard let bounds = view?.bounds else {
+            assertionFailure("No bounds")
+            return
+        }
+        var averageLocation: CGPoint = touches.reduce(into: .zero) { result, touch in
+            result += touch.location(in: view)
+        }
+        averageLocation.x /= CGFloat(touches.count)
+        averageLocation.y /= CGFloat(touches.count)
+        
+        anchor = .init(x: averageLocation.x / bounds.width, y: averageLocation.y / bounds.height)
+        print("DEBUG anchor: \(anchor)")
 //        // previousScale = zoomScale
 //        previousAnchor = anchor
 //        initialOffset = offset
@@ -106,6 +116,15 @@ class PinchRecognizer: UIPinchGestureRecognizer {
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent) {
         // previousScale = zoomScale
         zoomScale = initialScale * scale
+        
+        guard let bounds = view?.bounds else {
+            assertionFailure("No bounds")
+            return
+        }
+        print("DEBUG xOffset: \((zoomScale - 1) * (0.5 - anchor.x))")
+        let xOffset: CGFloat = (zoomScale - 1) * (0.5 - anchor.x) * bounds.width
+        let yOffset: CGFloat = (zoomScale - 1) * (0.5 - anchor.y) * bounds.height
+        offset = .init(width: xOffset, height: yOffset)
         
         // let scaleFactor: CGFloat = zoomScale / previousScale
 

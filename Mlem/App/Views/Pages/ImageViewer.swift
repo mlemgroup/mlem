@@ -104,14 +104,6 @@ struct ImageViewer: View {
         self.url = components.url!
     }
     
-    @ViewBuilder
-    var zoomRecognizer: some View {
-        ZoomableContainer(currentScale: $currentScale) {
-            Color.clear.contentShape(.rect)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-        }
-    }
-    
     var body: some View {
         zoomableImage
             .offset(y: offset)
@@ -185,21 +177,20 @@ struct ImageViewer: View {
     @ViewBuilder
     var zoomableImage: some View {
         MediaView(url: url, controlState: $controlState)
+//            .overlay {
+//                GeometryReader { geo in
+//                    Circle()
+//                        .frame(width: 10, height: 10)
+//                        .foregroundStyle(.blue)
+//                        .offset(x: anchor.x * geo.size.width, y: anchor.y * geo.size.height)
+//                }
+//                .frame(maxWidth: .infinity, maxHeight: .infinity)
+//            }
             .overlay {
-                GeometryReader { geo in
-                    Circle()
-                        .frame(width: 10, height: 10)
-                        .foregroundStyle(.blue)
-                        .offset(x: anchor.x * geo.size.width, y: anchor.y * geo.size.height)
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                ZoomRecognizer(scale: $currentScale, offset: $pinchOffset)
             }
-            .overlay {
-                ZoomRecognizer(scale: $currentScale, anchor: $anchor, offset: $pinchOffset)
-            }
-            .scaleEffect(currentScale, anchor: anchor)
+            .scaleEffect(currentScale)
             .offset(x: pinchOffset.width, y: pinchOffset.height)
-            // .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
     
     func handleDragGesture(value: DragGesture.Value) {
