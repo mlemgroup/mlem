@@ -94,7 +94,7 @@ struct ImageViewer: View {
     // -------------------------------------------------------- UNDER CONSTRUCTION
     
 //    @State var scale: CGFloat = 1
-//    @State var anchor: UnitPoint = .zero
+    @State var anchor: UnitPoint = .zero
     
     // --------------------------------------------------------
     
@@ -156,6 +156,13 @@ struct ImageViewer: View {
                     }
                 }
             }
+            .overlay(alignment: .topLeading) { scaleDisplay }
+            // .overlay { zoomRecognizer }
+            .overlay {
+                ZoomRecognizer()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
+            .overlay { zoomSliderOverlay }
             .simultaneousGesture(DragGesture(minimumDistance: 1.0)
                 .onChanged { handleDragGesture(value: $0) }
                 .updating($dragState) { _, state, _ in
@@ -163,12 +170,6 @@ struct ImageViewer: View {
                     state = true
                 }
             )
-            .overlay(alignment: .topLeading) { scaleDisplay }
-            .overlay { zoomSliderOverlay }
-            .overlay {
-                // Image(systemName: "tree")
-                zoomRecognizer
-            }
             .onAppear {
                 animateOpacityUpdate(1.0)
             }
