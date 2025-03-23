@@ -94,7 +94,8 @@ struct ImageViewer: View {
     // -------------------------------------------------------- UNDER CONSTRUCTION
     
 //    @State var scale: CGFloat = 1
-    @State var anchor: UnitPoint = .zero
+    // @State var anchor: UnitPoint = .zero
+    @State var pinchOffset: CGPoint = .zero
     
     // --------------------------------------------------------
     
@@ -114,7 +115,8 @@ struct ImageViewer: View {
     
     var body: some View {
         MediaView(url: url, controlState: $controlState)
-            .scaleEffect(currentScale, anchor: anchor)
+            .scaleEffect(currentScale)
+            .offset(x: pinchOffset.x, y: pinchOffset.y)
             .offset(y: offset)
             .background(.black)
             .overlay(controlOverlay)
@@ -137,7 +139,7 @@ struct ImageViewer: View {
             }
             .overlay(alignment: .topLeading) { scaleDisplay }
             .overlay {
-                ZoomRecognizer(scale: $currentScale, anchor: $anchor)
+                ZoomRecognizer(scale: $currentScale, offset: $pinchOffset)
             }
             .overlay { zoomSliderOverlay }
             .simultaneousGesture(DragGesture(minimumDistance: 1.0)
