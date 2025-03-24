@@ -41,6 +41,8 @@ class PinchRecognizer: UIPinchGestureRecognizer {
     /// Offset when the current pinch began
     private var initialOffset: CGSize = .zero
     
+    private var panOffset: CGSize = .zero
+    
     private var previousAnchor: UnitPoint = .zero
     
     private var anchor: UnitPoint = .center
@@ -59,55 +61,20 @@ class PinchRecognizer: UIPinchGestureRecognizer {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
         initialScale = zoomScale
         initialOffset = offset
+        panOffset = .zero
         
         guard let bounds = view?.bounds else {
             assertionFailure("No bounds")
             return
         }
+        
+        // compute anchor point--this should remain in the middle of the pinch/pan gesture
         var averageLocation: CGPoint = touches.reduce(into: .zero) { result, touch in
             result += touch.location(in: view)
         }
         averageLocation.x /= CGFloat(touches.count)
         averageLocation.y /= CGFloat(touches.count)
-        
-        print("DEBUG average: \(averageLocation)")
         anchor = .init(x: averageLocation.x / bounds.width, y: averageLocation.y / bounds.height)
-        print("DEBUG anchor: \(anchor)")
-//        // previousScale = zoomScale
-//        previousAnchor = anchor
-//        initialOffset = offset
-//        
-//        if let bounds = view?.bounds {
-//            print("DEBUG \(bounds)")
-//            print("DEBUG \(view?.frame)")
-//            
-//            // compute location in
-//            var averageLocation: CGPoint = touches.reduce(into: .zero) { result, touch in
-//                result += touch.location(in: view)
-//            }
-//            averageLocation.x /= CGFloat(touches.count)
-//            averageLocation.y /= CGFloat(touches.count)
-//            let newAnchor: UnitPoint = .init(
-//                x: averageLocation.x / bounds.width,
-//                y: averageLocation.y / bounds.height
-//            )
-//            
-//            // update offset to handle anchor shift
-//            let anchorDeltaX: CGFloat = ((newAnchor.x - previousAnchor.x) * bounds.width) / 2
-//            let anchorDeltaY: CGFloat = ((newAnchor.y - previousAnchor.y) * bounds.height) / 2
-//            let newOffset: CGSize = .init(
-//                width: offset.width + anchorDeltaX,
-//                height: offset.height + anchorDeltaY
-//            )
-//            
-//            offset = newOffset
-//            anchor = newAnchor
-//            
-//            print("DEBUG \(anchor)")
-//        } else {
-//            assertionFailure("No view")
-//            anchor = .init(x: 0.5, y: 0.5)
-//        }
         
         super.touchesBegan(touches, with: event)
     }
@@ -115,15 +82,12 @@ class PinchRecognizer: UIPinchGestureRecognizer {
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent) {
         // TODO: "soft" bounds--should zoom out slower and slower when out of bounds
         zoomScale = initialScale * scale
-        
-        guard let bounds = view?.bounds else {
-            assertionFailure("No bounds")
-            return
-        }
-        print("DEBUG xOffset: \((scale - 1) * (0.5 - anchor.x))")
-        
         let offsetDeltas = computeOffsetDeltas(scale: scale)
-        offset = initialOffset + offsetDeltas
+        
+        let translation = translation(of: touches)
+        panOffset += translation.scaled(by: zoomScale)
+        
+        offset = initialOffset + offsetDeltas + panOffset
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent) {
@@ -134,7 +98,7 @@ class PinchRecognizer: UIPinchGestureRecognizer {
         
         let boundedZoomScale: CGFloat = zoomScale.bounded(lower: 1.0, upper: 4.0)
         
-        let offsetDeltas = computeOffsetDeltas(scale: boundedZoomScale / initialScale)
+        let offsetDeltas = computeOffsetDeltas(scale: boundedZoomScale / initialScale) + panOffset
         let maxXOffset: CGFloat = ((boundedZoomScale - 1) / 2) * bounds.width
         let maxYOffset: CGFloat = ((boundedZoomScale - 1) / 2) * bounds.height
         
