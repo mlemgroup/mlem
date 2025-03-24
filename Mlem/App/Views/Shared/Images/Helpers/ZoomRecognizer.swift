@@ -19,15 +19,216 @@ struct ZoomRecognizer: UIViewRepresentable {
     func makeUIView(context: Context) -> UIView {
         let ret: UIView = .init()
         
-        let pinchGesture = PinchRecognizer(
+        let pinchGesture = PanningPinchRecognizer(
             target: context.coordinator,
-            action: nil,
-            zoomScale: $scale,
-            offset: $offset
-        )
+            action: #selector(Coordinator.handlePinch(gesture:)),
+            zoomScale: $scale)
+        pinchGesture.delegate = context.coordinator
         ret.addGestureRecognizer(pinchGesture)
+        
+//        let panGesture = UIPanGestureRecognizer(
+//            target: context.coordinator,
+//            action: #selector(Coordinator.handlePan(gesture:))
+//        )
+//        panGesture.delegate = context.coordinator
+//        ret.addGestureRecognizer(panGesture)
 
         return ret
+    }
+    
+    func makeCoordinator() -> Coordinator {
+        .init(scale: $scale, offset: $offset)
+    }
+
+    class Coordinator: NSObject, UIGestureRecognizerDelegate {
+        @Binding var scale: CGFloat
+        @Binding var offset: CGSize
+        
+        /// Whether the pinch gesture is active
+        private var pinching: Bool = false
+        
+        /// Whether the pan gesture is active
+        private var panning: Bool = false
+        
+        /// Whether any gesture is active
+        private var gesturing: Bool {
+            pinching || panning
+        }
+        
+        /// Scale when the current pinch began
+        private var initialScale: CGFloat = 1.0
+        
+        /// Offset when the current pinch began
+        private var initialOffset: CGSize = .zero
+        
+        /// Offset needed to anchor the pinch gesture to anchor
+        private var pinchOffset: CGSize = .zero
+        
+        /// Offset induced by the pan gesture
+        private var panOffset: CGSize = .zero
+        
+        /// Point in the image where the gesture is anchored
+        private var anchor: UnitPoint = .center
+        
+        /// Bounds of the view
+        private var bounds: CGSize?
+        
+        init(scale: Binding<CGFloat>, offset: Binding<CGSize>) {
+            _scale = scale
+            _offset = offset
+        }
+        
+//        @objc
+//        func handlePan(gesture: UIPanGestureRecognizer) {
+//            switch gesture.state {
+//            case .possible:
+//                break
+//            case .began:
+//                panning = true
+//                guard let view = gesture.view else {
+//                    assertionFailure("No view")
+//                    return
+//                }
+//                if !pinching {
+//                    beginGesture(at: gesture.location(in: view), view: view)
+//                }
+//            case .changed:
+//                break
+//            case .ended, .cancelled, .failed:
+//                panning = false
+//            default:
+//                assertionFailure("Unknown state")
+//            }
+//        }
+        
+        @objc
+        func handlePinch(gesture: PanningPinchRecognizer) {
+            switch gesture.state {
+            case .possible:
+                break
+            case .began:
+                pinching = true
+                guard let view = gesture.view else {
+                    assertionFailure("No view")
+                    return
+                }
+                if !panning {
+                    beginGesture(at: gesture.location(in: view), view: view)
+                }
+            case .changed:
+                guard let view = gesture.view else {
+                    assertionFailure("No view")
+                    return
+                }
+                updateScale(with: gesture.scale, panOffset: gesture.panOffset)
+            case .ended, .cancelled, .failed:
+                pinching = false
+            case .recognized:
+                break
+            default:
+                assertionFailure("Unknown state")
+            }
+            // print("DEBUG pinchy pinchy \(gesture.scale)")
+        }
+        
+        func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+            if gestureRecognizer is UIPinchGestureRecognizer {
+                true
+            } else if gestureRecognizer is UIPanGestureRecognizer {
+                gestureRecognizer.numberOfTouches == 2
+            } else {
+                false
+            }
+        }
+        
+        func gestureRecognizer(
+            _ gestureRecognizer: UIGestureRecognizer,
+            shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer
+        ) -> Bool {
+            gestureRecognizer is UIPinchGestureRecognizer ||
+            otherGestureRecognizer is UIPinchGestureRecognizer
+        }
+    
+        func beginGesture(at location: CGPoint, view: UIView) {
+            initialScale = scale
+            initialOffset = offset
+            // panOffset = .zero
+            pinchOffset = .zero
+            bounds = .init(width: view.bounds.width, height: view.bounds.height)
+            anchor = .init(x: location.x / view.bounds.width, y: location.y / view.bounds.height)
+        }
+        
+        func updateScale(with scale: CGFloat, panOffset: CGSize) {
+            let targetZoomScale: CGFloat = (initialScale * scale).softBounded(softMin: 1, hardMin: 0.6, softMax: 4, hardMax: 6)
+            let adjustedScale: CGFloat = targetZoomScale / initialScale
+            
+            self.scale = targetZoomScale
+            let offsetDeltas = computeOffsetDeltas(scale: adjustedScale)
+            offset = initialOffset + panOffset + offsetDeltas // TODO: pan
+        }
+        
+        ///
+        private func computeOffsetDeltas(scale: CGFloat) -> CGSize {
+            guard let bounds else {
+                assertionFailure("No bounds")
+                return .zero
+            }
+            
+            let scaledBounds: CGSize = .init(width: bounds.width, height: bounds.height).scaled(by: initialScale)
+            
+            // (scale - 1) * (0.5 - anchor) computes the offset required to center the view on the anchor while zooming,
+            // expressed in a percentage of the zoomed view's bounds; * scaledBounds.width transforms that into an
+            // offset in real px
+            let xOffset: CGFloat = (scale - 1) * (0.5 - anchor.x) * scaledBounds.width
+            let yOffset: CGFloat = (scale - 1) * (0.5 - anchor.y) * scaledBounds.height
+            
+            return .init(width: xOffset, height: yOffset)
+        }
+    }
+}
+
+class PanningPinchRecognizer: UIPinchGestureRecognizer {
+    @Binding var zoomScale: CGFloat
+    var panOffset: CGSize = .zero
+    
+    init(target: Any?, action: Selector?, zoomScale: Binding<CGFloat>) {
+        _zoomScale = zoomScale
+        super.init(target: target, action: action)
+    }
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent) {
+        let translation = translation(of: touches)
+        panOffset += translation.scaled(by: zoomScale)
+        super.touchesMoved(touches, with: event)
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent) {
+        panOffset = .zero
+        super.touchesEnded(touches, with: event)
+    }
+    
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent) {
+        panOffset = .zero
+        super.touchesCancelled(touches, with: event)
+    }
+    
+    private func translation(of touches: Set<UITouch>) -> CGSize {
+        var averageLocation: CGPoint = touches.reduce(into: .zero) { result, touch in
+            result += touch.location(in: view)
+        }
+        averageLocation.x /= CGFloat(touches.count)
+        averageLocation.y /= CGFloat(touches.count)
+        
+        var previousLocation: CGPoint = touches.reduce(into: .zero) { result, touch in
+            result += touch.previousLocation(in: view)
+        }
+        previousLocation.x /= CGFloat(touches.count)
+        previousLocation.y /= CGFloat(touches.count)
+        
+        return .init(
+            width: averageLocation.x - previousLocation.x,
+            height: averageLocation.y - previousLocation.y
+        )
     }
 }
 
@@ -121,7 +322,7 @@ class PinchRecognizer: UIPinchGestureRecognizer {
         super.touchesEnded(touches, with: event)
     }
     
-    private func computeOffsetDeltas( scale: CGFloat) -> CGSize {
+    private func computeOffsetDeltas(scale: CGFloat) -> CGSize {
         guard let bounds = view?.bounds else {
             assertionFailure("No bounds")
             return .zero
