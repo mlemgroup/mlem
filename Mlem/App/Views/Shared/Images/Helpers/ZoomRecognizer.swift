@@ -61,35 +61,25 @@ class PinchRecognizer: UIPinchGestureRecognizer {
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
-        guard touches.count >= 2 else {
-            state = .possible
+        initialScale = zoomScale
+        initialOffset = offset
+        panOffset = .zero
+        
+        guard let bounds = view?.bounds else {
+            assertionFailure("No bounds")
             return
         }
         
-        print("DEBUG enough touches")
-        beginGesture(touches)
-//        state = .began
-//        initialScale = zoomScale
-//        initialOffset = offset
-//        panOffset = .zero
-//        
-//        guard let bounds = view?.bounds else {
-//            assertionFailure("No bounds")
-//            return
-//        }
-//        
-//        // compute anchor point--this should remain in the middle of the pinch/pan gesture
-//        var averageLocation: CGPoint = touches.reduce(into: .zero) { result, touch in
-//            result += touch.location(in: view)
-//        }
-//        averageLocation.x /= CGFloat(touches.count)
-//        averageLocation.y /= CGFloat(touches.count)
-//        anchor = .init(x: averageLocation.x / bounds.width, y: averageLocation.y / bounds.height)
+        // compute anchor point--this should remain in the middle of the pinch/pan gesture
+        var averageLocation: CGPoint = touches.reduce(into: .zero) { result, touch in
+            result += touch.location(in: view)
+        }
+        averageLocation.x /= CGFloat(touches.count)
+        averageLocation.y /= CGFloat(touches.count)
+        anchor = .init(x: averageLocation.x / bounds.width, y: averageLocation.y / bounds.height)
     }
 
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent) {
-        print("DEBUG moved \(touches.count)")
-        
         guard !debounce else { return }
         let targetZoomScale: CGFloat = (initialScale * scale).softBounded(softMin: 1, hardMin: 0.6, softMax: 4, hardMax: 6)
         let adjustedScale: CGFloat = targetZoomScale / initialScale
@@ -129,27 +119,6 @@ class PinchRecognizer: UIPinchGestureRecognizer {
         }
         
         super.touchesEnded(touches, with: event)
-    }
-    
-    private func beginGesture(_ touches: Set<UITouch>) {
-        assert(touches.count >= 2, "Not enough touches")
-        state = .began
-        initialScale = zoomScale
-        initialOffset = offset
-        panOffset = .zero
-        
-        guard let bounds = view?.bounds else {
-            assertionFailure("No bounds")
-            return
-        }
-        
-        // compute anchor point--this should remain in the middle of the pinch/pan gesture
-        var averageLocation: CGPoint = touches.reduce(into: .zero) { result, touch in
-            result += touch.location(in: view)
-        }
-        averageLocation.x /= CGFloat(touches.count)
-        averageLocation.y /= CGFloat(touches.count)
-        anchor = .init(x: averageLocation.x / bounds.width, y: averageLocation.y / bounds.height)
     }
     
     private func computeOffsetDeltas( scale: CGFloat) -> CGSize {
