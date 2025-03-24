@@ -104,6 +104,7 @@
 		033FCB3E2C5E7FA9007B7CD1 /* View+OutdatedFeedPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033FCB3D2C5E7FA9007B7CD1 /* View+OutdatedFeedPopup.swift */; };
 		034065C32D83742900637308 /* View+NavigtionStackPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034065C22D83742900637308 /* View+NavigtionStackPreview.swift */; };
 		0341480D2D8F63A6005503AF /* MlemMiddleware in Frameworks */ = {isa = PBXBuildFile; productRef = 0341480C2D8F63A6005503AF /* MlemMiddleware */; };
+		034147FD2D8F5844005503AF /* ExpandedPostHistoryTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034147FC2D8F5844005503AF /* ExpandedPostHistoryTracker.swift */; };
 		0343C0482D3AD6DB001CF709 /* Set+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0343C0472D3AD6DB001CF709 /* Set+Extensions.swift */; };
 		034690932D0F4D720073E664 /* RemovableProviding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034690922D0F4D720073E664 /* RemovableProviding+Extensions.swift */; };
 		034690992D105DFD0073E664 /* InboxView+Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034690982D105DFD0073E664 /* InboxView+Types.swift */; };
@@ -635,6 +636,7 @@
 		033FCB252C5E3933007B7CD1 /* IconSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconSettingsView.swift; sourceTree = "<group>"; };
 		033FCB3D2C5E7FA9007B7CD1 /* View+OutdatedFeedPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+OutdatedFeedPopup.swift"; sourceTree = "<group>"; };
 		034065C22D83742900637308 /* View+NavigtionStackPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+NavigtionStackPreview.swift"; sourceTree = "<group>"; };
+		034147FC2D8F5844005503AF /* ExpandedPostHistoryTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandedPostHistoryTracker.swift; sourceTree = "<group>"; };
 		0343C0472D3AD6DB001CF709 /* Set+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Set+Extensions.swift"; sourceTree = "<group>"; };
 		034690922D0F4D720073E664 /* RemovableProviding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemovableProviding+Extensions.swift"; sourceTree = "<group>"; };
 		034690982D105DFD0073E664 /* InboxView+Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InboxView+Types.swift"; sourceTree = "<group>"; };
@@ -1518,6 +1520,7 @@
 				03AD09E72CF88007001EF9F7 /* MoreRepliesButton.swift */,
 				039F58852C7A810100C61658 /* ExpandedPostView+Logic.swift */,
 				03E0EF422CA73D7A002CB66C /* PostPage.swift */,
+				034147FC2D8F5844005503AF /* ExpandedPostHistoryTracker.swift */,
 			);
 			path = ExpandedPost;
 			sourceTree = "<group>";
@@ -2701,6 +2704,7 @@
 				CDE1F1982C63DFC9008AF042 /* PadConstants.swift in Sources */,
 				03B25B312CC4403500EB6DF5 /* Fediseer.swift in Sources */,
 				038028F82CB097A10091A8A2 /* SearchView+InstancePicker.swift in Sources */,
+				034147FD2D8F5844005503AF /* ExpandedPostHistoryTracker.swift in Sources */,
 				03D284082D2AF05200A6659B /* Checkbox.swift in Sources */,
 				CD9CFA2C2C2E1EF300739BBC /* FeedIconView.swift in Sources */,
 				038188992D43E0F30073E88D /* SafetySettingsView.swift in Sources */,

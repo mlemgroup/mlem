@@ -88,6 +88,7 @@ struct MediaView: View {
                 overlays: [.controls, .error]
             ))
         }
+        _controlState.wrappedValue.url = url
     }
     
     static func largeImage(url: URL, shouldBlur: Bool, onTapActions: (() -> Void)? = nil) -> MediaView {
