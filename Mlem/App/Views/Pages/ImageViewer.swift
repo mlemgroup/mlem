@@ -154,7 +154,6 @@ struct ImageViewer: View {
                 }
             }
             .onChange(of: currentScale) {
-                print("DEBUG updated")
                 scaleDisplayValue = currentScale
             }
             .onChange(of: scaleDisplayValue) {

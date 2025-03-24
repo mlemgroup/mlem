@@ -46,6 +46,8 @@ class PinchRecognizer: UIPinchGestureRecognizer {
     private var previousAnchor: UnitPoint = .zero
     
     private var anchor: UnitPoint = .center
+    
+    private var debounce: Bool = false
 
     init(
         target: Any?,
@@ -59,6 +61,79 @@ class PinchRecognizer: UIPinchGestureRecognizer {
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
+        guard touches.count >= 2 else {
+            state = .possible
+            return
+        }
+        
+        print("DEBUG enough touches")
+        beginGesture(touches)
+//        state = .began
+//        initialScale = zoomScale
+//        initialOffset = offset
+//        panOffset = .zero
+//        
+//        guard let bounds = view?.bounds else {
+//            assertionFailure("No bounds")
+//            return
+//        }
+//        
+//        // compute anchor point--this should remain in the middle of the pinch/pan gesture
+//        var averageLocation: CGPoint = touches.reduce(into: .zero) { result, touch in
+//            result += touch.location(in: view)
+//        }
+//        averageLocation.x /= CGFloat(touches.count)
+//        averageLocation.y /= CGFloat(touches.count)
+//        anchor = .init(x: averageLocation.x / bounds.width, y: averageLocation.y / bounds.height)
+    }
+
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent) {
+        print("DEBUG moved \(touches.count)")
+        
+        guard !debounce else { return }
+        let targetZoomScale: CGFloat = (initialScale * scale).softBounded(softMin: 1, hardMin: 0.6, softMax: 4, hardMax: 6)
+        let adjustedScale: CGFloat = targetZoomScale / initialScale
+        zoomScale = targetZoomScale
+        
+        let offsetDeltas = computeOffsetDeltas(scale: adjustedScale)
+        
+        let translation = translation(of: touches)
+        panOffset += translation.scaled(by: zoomScale)
+        
+        offset = initialOffset + offsetDeltas + panOffset
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent) {
+        guard let bounds = view?.bounds else {
+            assertionFailure("No bounds")
+            return
+        }
+        
+        debounce = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.debounce = false
+        }
+        
+        let boundedZoomScale: CGFloat = zoomScale.bounded(lower: 1.0, upper: 4.0)
+        
+        let offsetDeltas = computeOffsetDeltas(scale: boundedZoomScale / initialScale) + panOffset
+        let maxXOffset: CGFloat = ((boundedZoomScale - 1) / 2) * bounds.width
+        let maxYOffset: CGFloat = ((boundedZoomScale - 1) / 2) * bounds.height
+        
+        withAnimation {
+            offset = .init(
+                width: (initialOffset.width + offsetDeltas.width).bounded(lower: -maxXOffset, upper: maxXOffset),
+                height: (initialOffset.height + offsetDeltas.height).bounded(lower: -maxYOffset, upper: maxYOffset)
+            )
+            zoomScale = boundedZoomScale
+        }
+        
+        super.touchesEnded(touches, with: event)
+    }
+    
+    private func beginGesture(_ touches: Set<UITouch>) {
+        assert(touches.count >= 2, "Not enough touches")
+        state = .began
         initialScale = zoomScale
         initialOffset = offset
         panOffset = .zero
@@ -75,39 +150,6 @@ class PinchRecognizer: UIPinchGestureRecognizer {
         averageLocation.x /= CGFloat(touches.count)
         averageLocation.y /= CGFloat(touches.count)
         anchor = .init(x: averageLocation.x / bounds.width, y: averageLocation.y / bounds.height)
-        
-        super.touchesBegan(touches, with: event)
-    }
-
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent) {
-        // TODO: "soft" bounds--should zoom out slower and slower when out of bounds
-        zoomScale = initialScale * scale
-        let offsetDeltas = computeOffsetDeltas(scale: scale)
-        
-        let translation = translation(of: touches)
-        panOffset += translation.scaled(by: zoomScale)
-        
-        offset = initialOffset + offsetDeltas + panOffset
-    }
-    
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent) {
-        guard let bounds = view?.bounds else {
-            assertionFailure("No bounds")
-            return
-        }
-        
-        let boundedZoomScale: CGFloat = zoomScale.bounded(lower: 1.0, upper: 4.0)
-        
-        let offsetDeltas = computeOffsetDeltas(scale: boundedZoomScale / initialScale) + panOffset
-        let maxXOffset: CGFloat = ((boundedZoomScale - 1) / 2) * bounds.width
-        let maxYOffset: CGFloat = ((boundedZoomScale - 1) / 2) * bounds.height
-        
-        // TODO: animate
-        offset = .init(
-            width: (initialOffset.width + offsetDeltas.width).bounded(lower: -maxXOffset, upper: maxXOffset),
-            height: (initialOffset.height + offsetDeltas.height).bounded(lower: -maxYOffset, upper: maxYOffset)
-        )
-        zoomScale = boundedZoomScale
     }
     
     private func computeOffsetDeltas( scale: CGFloat) -> CGSize {
@@ -144,6 +186,38 @@ class PinchRecognizer: UIPinchGestureRecognizer {
             width: averageLocation.x - previousLocation.x,
             height: averageLocation.y - previousLocation.y
         )
+    }
+}
+
+private extension CGFloat {
+    /// Returns the value of this CGFloat bounded within the given range. If this float is above softMax, the returned
+    /// value will asymptotically approach hardMax, and likewise for softMin and hardMin
+    func softBounded(softMin: CGFloat, hardMin: CGFloat, softMax: CGFloat, hardMax: CGFloat) -> CGFloat {
+        guard softMin > hardMin, softMax < hardMax, softMin < softMax else {
+            assertionFailure("Invalid bounds")
+            return self
+        }
+        
+        if self > softMax {
+            let headroom = hardMax - softMax
+            let excess = self - softMax
+            let scaledExcess = headroom - asymptote(x: excess, n: headroom)
+            return softMax + scaledExcess
+        }
+        
+        if self < softMin {
+            let headroom = softMin - hardMin
+            let excess = softMin - self
+            let scaledExcess = asymptote(x: excess, n: headroom) - headroom
+            return softMin + scaledExcess
+        }
+        
+        return self
+    }
+    
+    /// Base asymptotic function used for softBounded, where x is the value to scale and n is the asymptotic bound
+    private func asymptote(x: CGFloat, n: CGFloat) -> CGFloat { // swiftlint:disable:this identifier_name
+        n / (((1 / n) * x) + 1)
     }
 }
 
