@@ -19,7 +19,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
       with:
-        submodules: true
+        submodules: 'true'
 
     - name: Build
       uses: "./.github/actions/ci_xcodebuild"
