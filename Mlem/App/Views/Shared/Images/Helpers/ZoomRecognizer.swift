@@ -25,6 +25,14 @@ struct ZoomRecognizer: UIViewRepresentable {
             zoomScale: $scale)
         pinchGesture.delegate = context.coordinator
         ret.addGestureRecognizer(pinchGesture)
+        
+        let panGesture = UIPanGestureRecognizer(
+            target: context.coordinator,
+            action: #selector(Coordinator.handlePan(gesture:))
+        )
+        panGesture.delegate = context.coordinator
+        ret.addGestureRecognizer(panGesture)
+        
         return ret
     }
     
@@ -75,8 +83,48 @@ struct ZoomRecognizer: UIViewRepresentable {
                 beginGesture(at: gesture.location(in: view))
             case .changed:
                 updateScale(with: gesture.scale, panOffset: gesture.panOffset)
-            case .ended, .cancelled, .failed:
+            case .ended, .cancelled:
                 endGesture(gesture: gesture)
+            case .failed:
+                print("DEBUG pinch gesture failed")
+            default:
+                assertionFailure("Unknown state")
+            }
+        }
+        
+        @objc
+        func handlePan(gesture: UIPanGestureRecognizer) {
+            print("DEBUG panned")
+            switch gesture.state {
+            case .possible:
+                break
+            case .began, .changed:
+                guard let view = gesture.view else {
+                    assertionFailure("No view")
+                    return
+                }
+                let translation = gesture.translation(in: view)
+                offset = initialOffset + .init(width: translation.x, height: translation.y).scaled(by: scale)
+            case .ended, .cancelled:
+                guard let bounds else {
+                    assertionFailure("No bounds")
+                    return
+                }
+                
+                let boundedScale: CGFloat = scale.bounded(lower: 1.0, upper: 4.0)
+                let maxXOffset: CGFloat = ((boundedScale - 1) / 2) * bounds.width
+                let maxYOffset: CGFloat = ((boundedScale - 1) / 2) * bounds.height
+                
+                withAnimation {
+                    offset = .init(
+                        width: (initialOffset.width + panOffset.width).bounded(lower: -maxXOffset, upper: maxXOffset),
+                        height: (initialOffset.height + panOffset.height).bounded(lower: -maxYOffset, upper: maxYOffset)
+                    )
+                    scale = boundedScale
+                }
+                panOffset = .zero
+            case .failed:
+                print("DEBUG pan gesture failed")
             default:
                 assertionFailure("Unknown state")
             }
@@ -86,19 +134,19 @@ struct ZoomRecognizer: UIViewRepresentable {
             if gestureRecognizer is UIPinchGestureRecognizer {
                 true
             } else if gestureRecognizer is UIPanGestureRecognizer {
-                gestureRecognizer.numberOfTouches == 2
+                gestureRecognizer.numberOfTouches == 1 && scale > 1.0
             } else {
                 false
             }
         }
         
-        func gestureRecognizer(
-            _ gestureRecognizer: UIGestureRecognizer,
-            shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer
-        ) -> Bool {
-            gestureRecognizer is UIPinchGestureRecognizer ||
-            otherGestureRecognizer is UIPinchGestureRecognizer
-        }
+//        func gestureRecognizer(
+//            _ gestureRecognizer: UIGestureRecognizer,
+//            shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer
+//        ) -> Bool {
+//            gestureRecognizer is UIPinchGestureRecognizer ||
+//            otherGestureRecognizer is UIPinchGestureRecognizer
+//        }
     
         func beginGesture(at location: CGPoint) {
             guard let bounds else {
@@ -174,9 +222,10 @@ class PanningPinchRecognizer: UIPinchGestureRecognizer {
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent) {
+        super.touchesMoved(touches, with: event)
+        guard state == .began || state == .changed else { return }
         let translation = translation(of: touches)
         panOffset += translation.scaled(by: zoomScale)
-        super.touchesMoved(touches, with: event)
     }
     
     private func translation(of touches: Set<UITouch>) -> CGSize {
