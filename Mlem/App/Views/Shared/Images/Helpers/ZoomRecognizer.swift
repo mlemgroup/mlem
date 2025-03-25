@@ -25,14 +25,6 @@ struct ZoomRecognizer: UIViewRepresentable {
             zoomScale: $scale)
         pinchGesture.delegate = context.coordinator
         ret.addGestureRecognizer(pinchGesture)
-        
-//        let panGesture = UIPanGestureRecognizer(
-//            target: context.coordinator,
-//            action: #selector(Coordinator.handlePan(gesture:))
-//        )
-//        panGesture.delegate = context.coordinator
-//        ret.addGestureRecognizer(panGesture)
-
         return ret
     }
     
@@ -77,13 +69,14 @@ struct ZoomRecognizer: UIViewRepresentable {
                     assertionFailure("No view")
                     return
                 }
-                gesture.panOffset = .zero
-                beginGesture(at: gesture.location(in: view), view: view)
+                if bounds == nil {
+                    bounds = .init(width: view.bounds.width, height: view.bounds.height)
+                }
+                beginGesture(at: gesture.location(in: view))
             case .changed:
                 updateScale(with: gesture.scale, panOffset: gesture.panOffset)
             case .ended, .cancelled, .failed:
-                // TODO: this
-                break
+                endGesture(gesture: gesture)
             default:
                 assertionFailure("Unknown state")
             }
@@ -107,12 +100,16 @@ struct ZoomRecognizer: UIViewRepresentable {
             otherGestureRecognizer is UIPinchGestureRecognizer
         }
     
-        func beginGesture(at location: CGPoint, view: UIView) {
+        func beginGesture(at location: CGPoint) {
+            guard let bounds else {
+                assertionFailure("No bounds")
+                return
+            }
+            
             initialScale = scale
             initialOffset = offset
             pinchOffset = .zero
-            bounds = .init(width: view.bounds.width, height: view.bounds.height)
-            anchor = .init(x: location.x / view.bounds.width, y: location.y / view.bounds.height)
+            anchor = .init(x: location.x / bounds.width, y: location.y / bounds.height)
         }
         
         func updateScale(with scale: CGFloat, panOffset: CGSize) {
@@ -124,9 +121,28 @@ struct ZoomRecognizer: UIViewRepresentable {
             offset = initialOffset + panOffset + offsetDeltas
         }
         
-//        func endGesture() {
-//
-//        }
+        func endGesture(gesture: PanningPinchRecognizer) {
+            guard let bounds else {
+                assertionFailure("No bounds")
+                return
+            }
+            
+            let boundedScale: CGFloat = scale.bounded(lower: 1.0, upper: 4.0)
+            
+            let offsetDeltas = computeOffsetDeltas(scale: boundedScale / initialScale) + gesture.panOffset
+            let maxXOffset: CGFloat = ((boundedScale - 1) / 2) * bounds.width
+            let maxYOffset: CGFloat = ((boundedScale - 1) / 2) * bounds.height
+            
+            gesture.panOffset = .zero
+            
+            withAnimation {
+                offset = .init(
+                    width: (initialOffset.width + offsetDeltas.width).bounded(lower: -maxXOffset, upper: maxXOffset),
+                    height: (initialOffset.height + offsetDeltas.height).bounded(lower: -maxYOffset, upper: maxYOffset)
+                )
+                scale = boundedScale
+            }
+        }
         
         ///
         private func computeOffsetDeltas(scale: CGFloat) -> CGSize {
