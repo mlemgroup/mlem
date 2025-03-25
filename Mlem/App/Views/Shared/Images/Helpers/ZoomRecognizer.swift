@@ -44,17 +44,6 @@ struct ZoomRecognizer: UIViewRepresentable {
         @Binding var scale: CGFloat
         @Binding var offset: CGSize
         
-        /// Whether the pinch gesture is active
-        private var pinching: Bool = false
-        
-        /// Whether the pan gesture is active
-        private var panning: Bool = false
-        
-        /// Whether any gesture is active
-        private var gesturing: Bool {
-            pinching || panning
-        }
-        
         /// Scale when the current pinch began
         private var initialScale: CGFloat = 1.0
         
@@ -78,57 +67,26 @@ struct ZoomRecognizer: UIViewRepresentable {
             _offset = offset
         }
         
-//        @objc
-//        func handlePan(gesture: UIPanGestureRecognizer) {
-//            switch gesture.state {
-//            case .possible:
-//                break
-//            case .began:
-//                panning = true
-//                guard let view = gesture.view else {
-//                    assertionFailure("No view")
-//                    return
-//                }
-//                if !pinching {
-//                    beginGesture(at: gesture.location(in: view), view: view)
-//                }
-//            case .changed:
-//                break
-//            case .ended, .cancelled, .failed:
-//                panning = false
-//            default:
-//                assertionFailure("Unknown state")
-//            }
-//        }
-        
         @objc
         func handlePinch(gesture: PanningPinchRecognizer) {
             switch gesture.state {
             case .possible:
                 break
             case .began:
-                pinching = true
                 guard let view = gesture.view else {
                     assertionFailure("No view")
                     return
                 }
-                if !panning {
-                    beginGesture(at: gesture.location(in: view), view: view)
-                }
+                gesture.panOffset = .zero
+                beginGesture(at: gesture.location(in: view), view: view)
             case .changed:
-                guard let view = gesture.view else {
-                    assertionFailure("No view")
-                    return
-                }
                 updateScale(with: gesture.scale, panOffset: gesture.panOffset)
             case .ended, .cancelled, .failed:
-                pinching = false
-            case .recognized:
+                // TODO: this
                 break
             default:
                 assertionFailure("Unknown state")
             }
-            // print("DEBUG pinchy pinchy \(gesture.scale)")
         }
         
         func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
@@ -152,7 +110,6 @@ struct ZoomRecognizer: UIViewRepresentable {
         func beginGesture(at location: CGPoint, view: UIView) {
             initialScale = scale
             initialOffset = offset
-            // panOffset = .zero
             pinchOffset = .zero
             bounds = .init(width: view.bounds.width, height: view.bounds.height)
             anchor = .init(x: location.x / view.bounds.width, y: location.y / view.bounds.height)
@@ -164,8 +121,12 @@ struct ZoomRecognizer: UIViewRepresentable {
             
             self.scale = targetZoomScale
             let offsetDeltas = computeOffsetDeltas(scale: adjustedScale)
-            offset = initialOffset + panOffset + offsetDeltas // TODO: pan
+            offset = initialOffset + panOffset + offsetDeltas
         }
+        
+//        func endGesture() {
+//
+//        }
         
         ///
         private func computeOffsetDeltas(scale: CGFloat) -> CGSize {
@@ -200,16 +161,6 @@ class PanningPinchRecognizer: UIPinchGestureRecognizer {
         let translation = translation(of: touches)
         panOffset += translation.scaled(by: zoomScale)
         super.touchesMoved(touches, with: event)
-    }
-    
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent) {
-        panOffset = .zero
-        super.touchesEnded(touches, with: event)
-    }
-    
-    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent) {
-        panOffset = .zero
-        super.touchesCancelled(touches, with: event)
     }
     
     private func translation(of touches: Set<UITouch>) -> CGSize {
