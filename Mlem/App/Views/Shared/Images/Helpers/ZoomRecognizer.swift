@@ -53,9 +53,6 @@ struct ZoomRecognizer: UIViewRepresentable {
         /// Offset needed to anchor the pinch gesture to anchor
         private var pinchOffset: CGSize = .zero
         
-        /// Offset induced by the pan gesture
-        private var panOffset: CGSize = .zero
-        
         /// Point in the image where the gesture is anchored
         private var anchor: UnitPoint = .center
         
@@ -92,9 +89,9 @@ struct ZoomRecognizer: UIViewRepresentable {
             }
         }
         
+        // TODO: clean this up
         @objc
         func handlePan(gesture: UIPanGestureRecognizer) {
-            print("DEBUG panned")
             switch gesture.state {
             case .possible:
                 break
@@ -111,18 +108,28 @@ struct ZoomRecognizer: UIViewRepresentable {
                     return
                 }
                 
+                guard let view = gesture.view else {
+                    assertionFailure("No view")
+                    return
+                }
+                
                 let boundedScale: CGFloat = scale.bounded(lower: 1.0, upper: 4.0)
                 let maxXOffset: CGFloat = ((boundedScale - 1) / 2) * bounds.width
                 let maxYOffset: CGFloat = ((boundedScale - 1) / 2) * bounds.height
                 
+                let translation = gesture.translation(in: view)
+                let panOffset: CGSize = .init(width: translation.x, height: translation.y).scaled(by: scale)
+                let newOffset: CGSize = .init(
+                    width: (initialOffset.width + panOffset.width).bounded(lower: -maxXOffset, upper: maxXOffset),
+                    height: (initialOffset.height + panOffset.height).bounded(lower: -maxYOffset, upper: maxYOffset)
+                )
+                
                 withAnimation {
-                    offset = .init(
-                        width: (initialOffset.width + panOffset.width).bounded(lower: -maxXOffset, upper: maxXOffset),
-                        height: (initialOffset.height + panOffset.height).bounded(lower: -maxYOffset, upper: maxYOffset)
-                    )
+                    offset = newOffset
                     scale = boundedScale
                 }
-                panOffset = .zero
+                
+                initialOffset = newOffset
             case .failed:
                 print("DEBUG pan gesture failed")
             default:
@@ -139,14 +146,6 @@ struct ZoomRecognizer: UIViewRepresentable {
                 false
             }
         }
-        
-//        func gestureRecognizer(
-//            _ gestureRecognizer: UIGestureRecognizer,
-//            shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer
-//        ) -> Bool {
-//            gestureRecognizer is UIPinchGestureRecognizer ||
-//            otherGestureRecognizer is UIPinchGestureRecognizer
-//        }
     
         func beginGesture(at location: CGPoint) {
             guard let bounds else {
@@ -182,17 +181,20 @@ struct ZoomRecognizer: UIViewRepresentable {
             let maxYOffset: CGFloat = ((boundedScale - 1) / 2) * bounds.height
             
             gesture.panOffset = .zero
+            let newOffset: CGSize = .init(
+                width: (initialOffset.width + offsetDeltas.width).bounded(lower: -maxXOffset, upper: maxXOffset),
+                height: (initialOffset.height + offsetDeltas.height).bounded(lower: -maxYOffset, upper: maxYOffset)
+            )
             
             withAnimation {
-                offset = .init(
-                    width: (initialOffset.width + offsetDeltas.width).bounded(lower: -maxXOffset, upper: maxXOffset),
-                    height: (initialOffset.height + offsetDeltas.height).bounded(lower: -maxYOffset, upper: maxYOffset)
-                )
+                offset = newOffset
                 scale = boundedScale
             }
+            
+            initialOffset = newOffset
         }
         
-        ///
+        /// Computes the offset deltas from initialOffset required to anchor the view on the anchor point at the given scale
         private func computeOffsetDeltas(scale: CGFloat) -> CGSize {
             guard let bounds else {
                 assertionFailure("No bounds")
