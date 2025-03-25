@@ -47,11 +47,8 @@ struct ZoomRecognizer: UIViewRepresentable {
         /// Scale when the current pinch began
         private var initialScale: CGFloat = 1.0
         
-        /// Offset when the current pinch began
+        /// Offset when the current gesture began
         private var initialOffset: CGSize = .zero
-        
-        /// Offset needed to anchor the pinch gesture to anchor
-        private var pinchOffset: CGSize = .zero
         
         /// Point in the image where the gesture is anchored
         private var anchor: UnitPoint = .center
@@ -89,7 +86,8 @@ struct ZoomRecognizer: UIViewRepresentable {
             }
         }
         
-        // TODO: clean this up
+        // TODO: NOW clean this up
+        // TODO: NOW compute initialOffset at the beginning and not the end
         @objc
         func handlePan(gesture: UIPanGestureRecognizer) {
             switch gesture.state {
@@ -155,7 +153,6 @@ struct ZoomRecognizer: UIViewRepresentable {
             
             initialScale = scale
             initialOffset = offset
-            pinchOffset = .zero
             anchor = .init(x: location.x / bounds.width, y: location.y / bounds.height)
         }
         

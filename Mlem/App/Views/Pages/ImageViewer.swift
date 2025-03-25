@@ -130,13 +130,13 @@ struct ImageViewer: View {
                 }
             }
             .overlay { zoomSliderOverlay }
-//            .simultaneousGesture(DragGesture(minimumDistance: 1.0)
-//                .onChanged { handleDragGesture(value: $0) }
-//                .updating($dragState) { _, state, _ in
-//                    // this detects cancelled gestures (e.g., if you zoom while dragging)
-//                    state = true
-//                }
-//            )
+            .simultaneousGesture(DragGesture(minimumDistance: 1.0)
+                .onChanged { handleDragGesture(value: $0) }
+                .updating($dragState) { _, state, _ in
+                    // this detects cancelled gestures (e.g., if you zoom while dragging)
+                    state = true
+                }
+            )
             .onAppear {
                 animateOpacityUpdate(1.0)
             }
@@ -155,6 +155,8 @@ struct ImageViewer: View {
             }
             .onChange(of: currentScale) {
                 scaleDisplayValue = currentScale
+                // TODO: NOW move this into the UIKit layer for double tap recognition
+                isZoomed = currentScale != 1.0
             }
             .onChange(of: scaleDisplayValue) {
                 if !scaleDisplayShown {
