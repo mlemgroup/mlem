@@ -11,9 +11,47 @@ struct ZoomRecognizer: UIViewRepresentable {
 
     @Binding var scale: CGFloat
     @Binding var offset: CGSize
+    
+    @State var targetScale: CGFloat
+    @State var targetOffset: CGSize
+    
+    init(scale: Binding<CGFloat>, offset: Binding<CGSize>) {
+        _scale = scale
+        _offset = offset
+        _targetScale = .init(wrappedValue: scale.wrappedValue)
+        _targetOffset = .init(wrappedValue: offset.wrappedValue)
+    }
 
     func updateUIView(_ uiView: UIView, context: Context) {
-        // noop
+//        guard !context.coordinator.resetting else {
+//            return
+//        }
+        
+        guard let bounds = context.coordinator.bounds else {
+            return
+        }
+        
+        let maxXOffset: CGFloat = max(80, ((scale - 1) / 2) * bounds.width)
+        let maxYOffset: CGFloat = max(80, ((scale - 1) / 2) * bounds.height)
+        
+        let newOffset: CGSize = .init(
+            width: targetOffset.width.softBounded(
+                softMin: -maxXOffset,
+                hardMin: -maxXOffset - 80,
+                softMax: maxXOffset,
+                hardMax: maxXOffset + 80
+            ),
+            height: targetOffset.height.softBounded(
+                softMin: -maxYOffset,
+                hardMin: -maxYOffset - 80,
+                softMax: maxYOffset,
+                hardMax: maxYOffset + 80
+            )
+        )
+        
+        Task { @MainActor in
+            offset = newOffset
+        }
     }
 
     func makeUIView(context: Context) -> UIView {
@@ -37,7 +75,7 @@ struct ZoomRecognizer: UIViewRepresentable {
     }
     
     func makeCoordinator() -> Coordinator {
-        .init(scale: $scale, offset: $offset)
+        .init(scale: $scale, offset: $targetOffset)
     }
 
     class Coordinator: NSObject, UIGestureRecognizerDelegate {
@@ -54,7 +92,9 @@ struct ZoomRecognizer: UIViewRepresentable {
         private var anchor: UnitPoint = .center
         
         /// Bounds of the view
-        private var bounds: CGSize?
+        var bounds: CGSize?
+        
+        var resetting: Bool = false
         
         init(scale: Binding<CGFloat>, offset: Binding<CGSize>) {
             _scale = scale
@@ -111,23 +151,36 @@ struct ZoomRecognizer: UIViewRepresentable {
                     return
                 }
                 
-                let boundedScale: CGFloat = scale.bounded(lower: 1.0, upper: 4.0)
-                let maxXOffset: CGFloat = ((boundedScale - 1) / 2) * bounds.width
-                let maxYOffset: CGFloat = ((boundedScale - 1) / 2) * bounds.height
+                // let projectedEnd: CGPoint = gesture.location(in: view) + gesture.velocity(in: view)
+                let velocity = gesture.velocity(in: view)
+                let momentumOffset: CGSize = .init(width: velocity.x, height: velocity.y).scaled(by: scale)
                 
-                let translation = gesture.translation(in: view)
-                let panOffset: CGSize = .init(width: translation.x, height: translation.y).scaled(by: scale)
-                let newOffset: CGSize = .init(
-                    width: (initialOffset.width + panOffset.width).bounded(lower: -maxXOffset, upper: maxXOffset),
-                    height: (initialOffset.height + panOffset.height).bounded(lower: -maxYOffset, upper: maxYOffset)
-                )
-                
-                withAnimation {
-                    offset = newOffset
-                    scale = boundedScale
+                resetting = true
+                withAnimation(.linear(duration: 1.0)) {
+                    offset += momentumOffset // offset + projectedEnd
                 }
                 
-                initialOffset = newOffset
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    self.resetting = false
+                }
+//
+//                let boundedScale: CGFloat = scale.bounded(lower: 1.0, upper: 4.0)
+//                let maxXOffset: CGFloat = ((boundedScale - 1) / 2) * bounds.width
+//                let maxYOffset: CGFloat = ((boundedScale - 1) / 2) * bounds.height
+//                
+//                let translation = gesture.translation(in: view)
+//                let panOffset: CGSize = .init(width: translation.x, height: translation.y).scaled(by: scale)
+//                let newOffset: CGSize = .init(
+//                    width: (initialOffset.width + panOffset.width).bounded(lower: -maxXOffset, upper: maxXOffset),
+//                    height: (initialOffset.height + panOffset.height).bounded(lower: -maxYOffset, upper: maxYOffset)
+//                )
+//                
+//                withAnimation {
+//                    offset = newOffset
+//                    scale = boundedScale
+//                }
+//                
+//                initialOffset = newOffset
             case .failed:
                 print("DEBUG pan gesture failed")
             default:
@@ -252,7 +305,15 @@ private extension CGFloat {
     /// value will asymptotically approach hardMax, and likewise for softMin and hardMin
     func softBounded(softMin: CGFloat, hardMin: CGFloat, softMax: CGFloat, hardMax: CGFloat) -> CGFloat {
         guard softMin > hardMin, softMax < hardMax, softMin < softMax else {
-            assertionFailure("Invalid bounds")
+            if softMin <= hardMin {
+                assertionFailure("Soft min \(softMin) <= hard min \(hardMin)")
+            }
+            if softMax >= hardMax {
+                assertionFailure("Soft max \(softMax) >= hard max \(hardMax)")
+            }
+            if softMin >= softMax {
+                assertionFailure("Soft min \(softMin) >= soft max \(softMax)")
+            }
             return self
         }
         
