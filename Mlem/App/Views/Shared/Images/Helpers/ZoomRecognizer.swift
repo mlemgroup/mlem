@@ -91,6 +91,10 @@ struct ZoomRecognizer: UIViewRepresentable {
         /// Point in the image where the gesture is anchored
         private var anchor: UnitPoint = .center
         
+        private var link: CADisplayLink?
+        private var initialVelocity: CGPoint?
+        private var velocity: CGPoint?
+        
         /// Bounds of the view
         var bounds: CGSize?
         
@@ -114,6 +118,8 @@ struct ZoomRecognizer: UIViewRepresentable {
                 if bounds == nil {
                     bounds = .init(width: view.bounds.width, height: view.bounds.height)
                 }
+                link?.invalidate()
+                link = nil
                 beginGesture(at: gesture.location(in: view))
             case .changed:
                 updateScale(with: gesture.scale, panOffset: gesture.panOffset)
@@ -138,6 +144,8 @@ struct ZoomRecognizer: UIViewRepresentable {
                     assertionFailure("No view")
                     return
                 }
+                link?.invalidate()
+                link = nil
                 let translation = gesture.translation(in: view)
                 offset = initialOffset + .init(width: translation.x, height: translation.y).scaled(by: scale)
             case .ended, .cancelled:
@@ -152,17 +160,29 @@ struct ZoomRecognizer: UIViewRepresentable {
                 }
                 
                 // let projectedEnd: CGPoint = gesture.location(in: view) + gesture.velocity(in: view)
-                let velocity = gesture.velocity(in: view)
-                let momentumOffset: CGSize = .init(width: velocity.x, height: velocity.y).scaled(by: scale)
-                
-                resetting = true
-                withAnimation(.linear(duration: 1.0)) {
-                    offset += momentumOffset // offset + projectedEnd
+                let gestureVelocity = gesture.velocity(in: view)
+                print("DEBUG velocity: \(gestureVelocity)")
+                if abs(gestureVelocity.x) + abs(gestureVelocity.y) > 2 {
+                    velocity = gestureVelocity
+                    initialVelocity = gestureVelocity
+//                    velocity = .init(
+//                        x: (gestureVelocity.x / 125) * scale,
+//                        y: (gestureVelocity.y / 125) * scale
+//                    )
+                    // let momentumOffset: CGSize = .init(width: velocity.x, height: velocity.y).scaled(by: scale)
+  
+                    // timer = Timer.scheduledTimer(timeInterval: 0.08, target: self, selector: #selector(fireTimer), userInfo: nil, repeats: true)
+                    link = CADisplayLink(target: self, selector: #selector(fireTimer))
+                    link?.add(to: .current, forMode: .default)
                 }
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    self.resetting = false
-                }
+//                resetting = true
+//                withAnimation(.linear(duration: 1.0)) {
+//                    offset += momentumOffset // offset + projectedEnd
+//                }
+//                
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+//                    self.resetting = false
+//                }
 //
 //                let boundedScale: CGFloat = scale.bounded(lower: 1.0, upper: 4.0)
 //                let maxXOffset: CGFloat = ((boundedScale - 1) / 2) * bounds.width
@@ -186,6 +206,41 @@ struct ZoomRecognizer: UIViewRepresentable {
             default:
                 assertionFailure("Unknown state")
             }
+        }
+        
+        @objc
+        func fireTimer(displayLink: CADisplayLink) {
+            guard let velocity, let initialVelocity else {
+                return
+            }
+            
+            guard abs(velocity.x) + abs(velocity.y) > 0.0 else {
+                displayLink.invalidate()
+                self.link = nil
+                return
+            }
+        
+            // calculate the actual frame rate
+            let deltaT = displayLink.targetTimestamp - displayLink.timestamp
+            let actualFramesPerSecond = 1 / deltaT
+            
+            // Adjust velocity to increment according to frame rate
+            let adjustedVelocity: CGPoint = .init(
+                x: velocity.x * deltaT,
+                y: velocity.y * deltaT
+            )
+            offset = .init(
+                width: offset.width + adjustedVelocity.x,
+                height: offset.height + adjustedVelocity.y
+            )
+            
+            let xDeltaV = initialVelocity.x * deltaT
+            let xVelocity = abs(xDeltaV) > abs(velocity.x) ? 0 : velocity.x - xDeltaV
+            
+            let yDeltaV = initialVelocity.y * deltaT
+            let yVelocity = abs(yDeltaV) > abs(velocity.y) ? 0 : velocity.y - yDeltaV
+            
+            self.velocity = .init(x: xVelocity, y: yVelocity)
         }
         
         func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
