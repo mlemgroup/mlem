@@ -60,7 +60,9 @@ struct ZoomRecognizer: UIViewRepresentable {
         let pinchGesture = PanningPinchRecognizer(
             target: context.coordinator,
             action: #selector(Coordinator.handlePinch(gesture:)),
-            zoomScale: $scale)
+            zoomScale: $scale,
+            resetMomentum: context.coordinator.resetMomentum
+        )
         pinchGesture.delegate = context.coordinator
         ret.addGestureRecognizer(pinchGesture)
         
@@ -132,22 +134,17 @@ struct ZoomRecognizer: UIViewRepresentable {
             }
         }
         
-        // TODO: NOW clean this up
-        // TODO: NOW compute initialOffset at the beginning and not the end
         @objc
         func handlePan(gesture: UIPanGestureRecognizer) {
             switch gesture.state {
             case .possible:
-                break
-            case .began, .changed:
-                guard let view = gesture.view else {
-                    assertionFailure("No view")
-                    return
-                }
-                link?.invalidate()
-                link = nil
-                let translation = gesture.translation(in: view)
-                offset = initialOffset + .init(width: translation.x, height: translation.y).scaled(by: scale)
+                resetMomentum()
+            case .began:
+                resetMomentum()
+                initialOffset = offset
+                updateOffsetForPanGesture(gesture)
+            case .changed:
+                updateOffsetForPanGesture(gesture)
             case .ended, .cancelled:
                 guard let bounds else {
                     assertionFailure("No bounds")
@@ -159,21 +156,15 @@ struct ZoomRecognizer: UIViewRepresentable {
                     return
                 }
                 
-                // let projectedEnd: CGPoint = gesture.location(in: view) + gesture.velocity(in: view)
                 let gestureVelocity = gesture.velocity(in: view)
-                print("DEBUG velocity: \(gestureVelocity)")
                 if abs(gestureVelocity.x) + abs(gestureVelocity.y) > 2 {
-                    velocity = gestureVelocity
-                    initialVelocity = gestureVelocity
-//                    velocity = .init(
-//                        x: (gestureVelocity.x / 125) * scale,
-//                        y: (gestureVelocity.y / 125) * scale
-//                    )
-                    // let momentumOffset: CGSize = .init(width: velocity.x, height: velocity.y).scaled(by: scale)
-  
-                    // timer = Timer.scheduledTimer(timeInterval: 0.08, target: self, selector: #selector(fireTimer), userInfo: nil, repeats: true)
-                    link = CADisplayLink(target: self, selector: #selector(fireTimer))
-                    link?.add(to: .current, forMode: .default)
+                    velocity = .init(x: gestureVelocity.x * scale, y: gestureVelocity.y * scale)
+                    initialVelocity = velocity
+
+                    let link = CADisplayLink(target: self, selector: #selector(fireTimer))
+                    link.preferredFramesPerSecond = 120
+                    link.add(to: .current, forMode: .default)
+                    self.link = link
                 }
 //                resetting = true
 //                withAnimation(.linear(duration: 1.0)) {
@@ -209,6 +200,12 @@ struct ZoomRecognizer: UIViewRepresentable {
         }
         
         @objc
+        func resetMomentum() {
+            link?.invalidate()
+            link = nil
+        }
+        
+        @objc
         func fireTimer(displayLink: CADisplayLink) {
             guard let velocity, let initialVelocity else {
                 return
@@ -219,10 +216,8 @@ struct ZoomRecognizer: UIViewRepresentable {
                 self.link = nil
                 return
             }
-        
-            // calculate the actual frame rate
+            
             let deltaT = displayLink.targetTimestamp - displayLink.timestamp
-            let actualFramesPerSecond = 1 / deltaT
             
             // Adjust velocity to increment according to frame rate
             let adjustedVelocity: CGPoint = .init(
@@ -273,6 +268,17 @@ struct ZoomRecognizer: UIViewRepresentable {
             offset = initialOffset + panOffset + offsetDeltas
         }
         
+        /// Updates offset according to the translation of the given pan gesture recognizer
+        func updateOffsetForPanGesture(_ gesture: UIPanGestureRecognizer) {
+            guard let view = gesture.view else {
+                assertionFailure("No view")
+                return
+            }
+            
+            let translation = gesture.translation(in: view)
+            offset = initialOffset + .init(width: translation.x, height: translation.y).scaled(by: scale)
+        }
+        
         func endGesture(gesture: PanningPinchRecognizer) {
             guard let bounds else {
                 assertionFailure("No bounds")
@@ -321,11 +327,18 @@ struct ZoomRecognizer: UIViewRepresentable {
 
 class PanningPinchRecognizer: UIPinchGestureRecognizer {
     @Binding var zoomScale: CGFloat
+    var resetMomentum: () -> Void
     var panOffset: CGSize = .zero
     
-    init(target: Any?, action: Selector?, zoomScale: Binding<CGFloat>) {
+    init(target: Any?, action: Selector?, zoomScale: Binding<CGFloat>, resetMomentum: @escaping () -> Void) {
         _zoomScale = zoomScale
+        self.resetMomentum = resetMomentum
         super.init(target: target, action: action)
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
+        resetMomentum()
+        super.touchesBegan(touches, with: event)
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent) {
