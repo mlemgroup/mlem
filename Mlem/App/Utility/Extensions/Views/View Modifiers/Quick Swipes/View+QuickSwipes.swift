@@ -54,7 +54,7 @@ extension View {
     }
     
     @ViewBuilder
-    func quickSwipes(post: any Post, configuration: PostBarConfiguration) -> some View {
+    func quickSwipes(post: any Post, configuration: PostBarConfiguration, behavior: SwipeBehavior) -> some View {
         modifier(
             QuickSwipeEnvironmentReaderViewModifier { environment in
                 guard let navigation = environment.navigation, let appState = environment.appState else {
@@ -62,7 +62,7 @@ extension View {
                     return .init()
                 }
                 return .init(
-                    behavior: .standard,
+                    behavior: behavior,
                     leadingActions: configuration.leadingSwipes.compactMap {
                         post.action(
                             appState: appState,
@@ -76,6 +76,37 @@ extension View {
                             appState: appState,
                             navigation: navigation,
                             type: $0,
+                            commentTreeTracker: environment.commentTreeTracker
+                        )
+                    }
+                )
+            }
+        )
+    }
+    
+    @ViewBuilder
+    func quickSwipes(comment: any Comment, configuration: CommentBarConfiguration, behavior: SwipeBehavior) -> some View {
+        modifier(
+            QuickSwipeEnvironmentReaderViewModifier { environment in
+                guard let navigation = environment.navigation, let appState = environment.appState else {
+                    assertionFailure()
+                    return .init()
+                }
+                return .init(
+                    behavior: behavior,
+                    leadingActions: configuration.leadingSwipes.compactMap {
+                        comment.action(
+                            appState: appState,
+                            type: $0,
+                            navigation: navigation,
+                            commentTreeTracker: environment.commentTreeTracker
+                        )
+                    },
+                    trailingActions: configuration.trailingSwipes.compactMap {
+                        comment.action(
+                            appState: appState,
+                            type: $0,
+                            navigation: navigation,
                             commentTreeTracker: environment.commentTreeTracker
                         )
                     }

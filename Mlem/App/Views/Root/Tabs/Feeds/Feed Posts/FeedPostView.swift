@@ -68,7 +68,11 @@ struct FeedPostView<EmbeddedContent: View>: View {
                         }
                     }
                     .contentShape(.contextMenuPreview, .rect(cornerRadius: postSize.swipeBehavior.cornerRadius))
-                    .quickSwipes(post: post, configuration: InteractionBarTracker.main.postInteractionBar)
+                    .quickSwipes(
+                        post: post,
+                        configuration: InteractionBarTracker.main.postInteractionBar,
+                        behavior: .standard
+                    )
                     .contextMenu { post.allMenuActions(
                         appState: appState,
                         showAllActions: false,

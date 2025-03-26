@@ -232,8 +232,11 @@ struct ExpandedPostView<Content: View>: View {
             }
         }
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
-//        .quickSwipes(post.swipeActions(appState: appState, behavior: .standard, commentTreeTracker: tracker))
-        .quickSwipes(post: post, configuration: InteractionBarTracker.main.postInteractionBar)
+        .quickSwipes(
+            post: post,
+            configuration: InteractionBarTracker.main.postInteractionBar,
+            behavior: .standard
+        )
         .contextMenu {
             post.allMenuActions(
                 appState: appState,

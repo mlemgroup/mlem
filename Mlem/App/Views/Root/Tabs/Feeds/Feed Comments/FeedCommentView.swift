@@ -42,7 +42,9 @@ struct FeedCommentView<EmbeddedContent: View>: View {
             content
                 .contentShape(.interaction, .rect)
                 .quickSwipes(
-                    comment.swipeActions(appState: appState, behavior: postSize.swipeBehavior, commentTreeTracker: commentTreeTracker)
+                    comment: comment,
+                    configuration: InteractionBarTracker.main.commentInteractionBar,
+                    behavior: postSize.swipeBehavior
                 )
                 .contextMenu { comment.allMenuActions(
                     appState: appState,
