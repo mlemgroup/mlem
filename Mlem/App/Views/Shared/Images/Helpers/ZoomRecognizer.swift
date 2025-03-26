@@ -94,6 +94,7 @@ struct ZoomRecognizer: UIViewRepresentable {
         private var anchor: UnitPoint = .center
         
         private var link: CADisplayLink?
+        private var t0: CFTimeInterval?
         private var initialVelocity: CGPoint?
         private var velocity: CGPoint?
         
@@ -180,6 +181,9 @@ struct ZoomRecognizer: UIViewRepresentable {
         func resetMomentum() {
             link?.invalidate()
             link = nil
+            t0 = nil
+            initialVelocity = nil
+            velocity = nil
         }
         
         @objc
@@ -187,36 +191,58 @@ struct ZoomRecognizer: UIViewRepresentable {
             guard let velocity, let initialVelocity else {
                 return
             }
+              
+            if t0 == nil {
+                t0 = displayLink.timestamp
+            }
             
-            guard abs(velocity.x) + abs(velocity.y) > 0.0 else {
+            guard let t0 else {
+                assertionFailure("t0 or v0 not defined")
                 displayLink.invalidate()
                 self.link = nil
                 resetToBounds(activeOffset: (offset - initialOffset)) // TODO: that's a hack
                 return
             }
             
+            let t = (displayLink.timestamp - t0) * 3 // swiftlint:disable:this identifier_name
+            
+            guard t < .pi else {
+                resetMomentum()
+                resetToBounds(activeOffset: (offset - initialOffset)) // TODO: that's a hack
+                return
+            }
+            
             let deltaT = displayLink.targetTimestamp - displayLink.timestamp
+            let vX = ((cos(t) + 1) / 2) * initialVelocity.x * deltaT
+            let vY = ((cos(t) + 1) / 2) * initialVelocity.y * deltaT
             
-            // Adjust velocity to increment according to frame rate
-            let adjustedVelocity: CGPoint = .init(
-                x: velocity.x * deltaT,
-                y: velocity.y * deltaT
-            )
             offset = .init(
-                width: offset.width + adjustedVelocity.x,
-                height: offset.height + adjustedVelocity.y
+                width: offset.width + vX,
+                height: offset.height + vY
             )
             
-            let borderDrag = computeBorderDrag(at: offset)
-            
-            // apply friction
-            let xDeltaV = initialVelocity.x * deltaT * borderDrag.width
-            let xVelocity = abs(xDeltaV) > abs(velocity.x) ? 0 : velocity.x - xDeltaV
-            
-            let yDeltaV = initialVelocity.y * deltaT * borderDrag.height
-            let yVelocity = abs(yDeltaV) > abs(velocity.y) ? 0 : velocity.y - yDeltaV
-            
-            self.velocity = .init(x: xVelocity, y: yVelocity)
+//            let deltaT = displayLink.targetTimestamp - displayLink.timestamp
+//            
+//            // Adjust velocity to increment according to frame rate
+//            let adjustedVelocity: CGPoint = .init(
+//                x: velocity.x * deltaT,
+//                y: velocity.y * deltaT
+//            )
+//            offset = .init(
+//                width: offset.width + adjustedVelocity.x,
+//                height: offset.height + adjustedVelocity.y
+//            )
+//            
+//            let borderDrag = computeBorderDrag(at: offset)
+//            
+//            // apply friction
+//            let xDeltaV = initialVelocity.x * deltaT * borderDrag.width
+//            let xVelocity = abs(xDeltaV) > abs(velocity.x) ? 0 : velocity.x - xDeltaV
+//            
+//            let yDeltaV = initialVelocity.y * deltaT * borderDrag.height
+//            let yVelocity = abs(yDeltaV) > abs(velocity.y) ? 0 : velocity.y - yDeltaV
+//            
+//            self.velocity = .init(x: xVelocity, y: yVelocity)
         }
         
         func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
