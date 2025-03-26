@@ -204,7 +204,7 @@ struct ZoomRecognizer: UIViewRepresentable {
                 return
             }
             
-            let t = (displayLink.timestamp - t0) * 3 // swiftlint:disable:this identifier_name
+            let t = (displayLink.targetTimestamp - t0) // swiftlint:disable:this identifier_name
             
             guard t < .pi else {
                 resetMomentum()
@@ -212,14 +212,25 @@ struct ZoomRecognizer: UIViewRepresentable {
                 return
             }
             
-            let deltaT = displayLink.targetTimestamp - displayLink.timestamp
-            let vX = ((cos(t) + 1) / 2) * initialVelocity.x * deltaT
-            let vY = ((cos(t) + 1) / 2) * initialVelocity.y * deltaT
+//            let deltaT = displayLink.targetTimestamp - displayLink.timestamp
+//            let vX = ((cos(t) + 1) / 2) * initialVelocity.x * deltaT
+//            let vY = ((cos(t) + 1) / 2) * initialVelocity.y * deltaT
             
-            offset = .init(
-                width: offset.width + vX,
-                height: offset.height + vY
+            let offsetCoefficient = sin(t / 2)
+  
+            let increment: CGSize = .init(
+                width: offsetCoefficient * initialVelocity.x,
+                height: offsetCoefficient * initialVelocity.y
             )
+            
+            offset = initialOffset + increment
+//            let dX = ((sin(t) + 1) / 2) * initialVelocity.x
+//            let dY = ((sin(t) + 1) / 2) * initialVelocity.y
+            
+//            offset = .init(
+//                width: offset.width + vX,
+//                height: offset.height + vY
+//            )
             
 //            let deltaT = displayLink.targetTimestamp - displayLink.timestamp
 //            
