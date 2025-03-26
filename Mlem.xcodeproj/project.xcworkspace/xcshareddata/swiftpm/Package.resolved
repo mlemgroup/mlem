@@ -46,15 +46,6 @@
       }
     },
     {
-      "identity" : "mlemmiddleware",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/mlemgroup/MlemMiddleware",
-      "state" : {
-        "revision" : "d942360c9113627d38201da16e60cebd7e624d2c",
-        "version" : "0.87.0"
-      }
-    },
-    {
       "identity" : "nuke",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kean/Nuke",

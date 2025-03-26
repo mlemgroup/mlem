@@ -36,6 +36,8 @@ struct ContentView: View {
     @State var avatarImage: UIImage?
     @State var selectedAvatarImage: UIImage?
     
+    @State var expandedPostHistoryTracker: ExpandedPostHistoryTracker = .init()
+    
     var body: some View {
         if appState.appRefreshToggle {
             content
@@ -66,6 +68,7 @@ struct ContentView: View {
                 .environment(appState)
                 .environment(filtersTracker)
                 .environment(errorsTracker)
+                .environment(expandedPostHistoryTracker)
                 .task {
                     do {
                         try await MlemStats.main.loadInstances()

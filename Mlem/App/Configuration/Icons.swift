@@ -351,6 +351,7 @@ enum Icons {
     static let easterEgg: String = "gift.fill"
     static let jumpButton: String = "chevron.down"
     static let jumpButtonCircle: String = "chevron.down.circle"
+    static let jumpToLastPositionButton: String = "chevron.down.2"
     static let browser: String = "safari"
     static let emptySquare: String = "square"
     static let dropDown: String = "chevron.down"
