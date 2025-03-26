@@ -207,10 +207,13 @@ struct ZoomRecognizer: UIViewRepresentable {
                 height: offset.height + adjustedVelocity.y
             )
             
-            let xDeltaV = initialVelocity.x * deltaT
+            let borderDrag = computeBorderDrag(at: offset)
+            
+            // apply friction
+            let xDeltaV = initialVelocity.x * deltaT * borderDrag.width
             let xVelocity = abs(xDeltaV) > abs(velocity.x) ? 0 : velocity.x - xDeltaV
             
-            let yDeltaV = initialVelocity.y * deltaT
+            let yDeltaV = initialVelocity.y * deltaT * borderDrag.height
             let yVelocity = abs(yDeltaV) > abs(velocity.y) ? 0 : velocity.y - yDeltaV
             
             self.velocity = .init(x: xVelocity, y: yVelocity)
@@ -306,6 +309,34 @@ struct ZoomRecognizer: UIViewRepresentable {
             let yOffset: CGFloat = (scale - 1) * (0.5 - anchor.y) * scaledBounds.height
             
             return .init(width: xOffset, height: yOffset)
+        }
+        
+        /// Computes the additional friction to apply to gestures/momentum when a view is out of bound
+        private func computeBorderDrag(at offset: CGSize) -> CGSize {
+            guard let bounds else {
+                assertionFailure("No bounds")
+                return .zero
+            }
+            
+            let scaledBounds: CGSize = .init(width: bounds.width, height: bounds.height).scaled(by: (scale - 1) / 2)
+            
+            let xDrag: CGFloat
+            if abs(offset.width) > scaledBounds.width {
+                print("DEBUG applying x drag")
+                xDrag = 2
+            } else {
+                xDrag = 1
+            }
+            
+            let yDrag: CGFloat
+            if abs(offset.height) > scaledBounds.height {
+                yDrag = 2
+            } else {
+                yDrag = 1
+            }
+            
+            print("DEBUG \(offset), \(scaledBounds)")
+            return .init(width: xDrag, height: yDrag) // .zero
         }
     }
 }
