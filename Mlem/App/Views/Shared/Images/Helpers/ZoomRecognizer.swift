@@ -23,35 +23,7 @@ struct ZoomRecognizer: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: UIView, context: Context) {
-//        guard !context.coordinator.resetting else {
-//            return
-//        }
-//        
-//        guard let bounds = context.coordinator.bounds else {
-//            return
-//        }
-//        
-//        let maxXOffset: CGFloat = max(80, ((scale - 1) / 2) * bounds.width)
-//        let maxYOffset: CGFloat = max(80, ((scale - 1) / 2) * bounds.height)
-//        
-//        let newOffset: CGSize = .init(
-//            width: targetOffset.width.softBounded(
-//                softMin: -maxXOffset,
-//                hardMin: -maxXOffset - 80,
-//                softMax: maxXOffset,
-//                hardMax: maxXOffset + 80
-//            ),
-//            height: targetOffset.height.softBounded(
-//                softMin: -maxYOffset,
-//                hardMin: -maxYOffset - 80,
-//                softMax: maxYOffset,
-//                hardMax: maxYOffset + 80
-//            )
-//        )
-//        
-//        Task { @MainActor in
-//            offset = newOffset
-//        }
+        // noop
     }
 
     func makeUIView(context: Context) -> UIView {
@@ -96,6 +68,9 @@ struct ZoomRecognizer: UIViewRepresentable {
         private var link: CADisplayLink?
         private var t0: CFTimeInterval?
         private var initialVelocity: CGPoint?
+        
+        private var xBoundTime: CFTimeInterval?
+        private var xOob: Bool = false
         
         /// Bounds of the view
         var bounds: CGSize?
@@ -180,6 +155,8 @@ struct ZoomRecognizer: UIViewRepresentable {
             link = nil
             t0 = nil
             initialVelocity = nil
+            xBoundTime = nil
+            xOob = false
         }
         
         @objc
@@ -187,6 +164,12 @@ struct ZoomRecognizer: UIViewRepresentable {
             guard let initialVelocity else {
                 return
             }
+            
+            guard let bounds else {
+                return
+            }
+            let maxXOffset: CGFloat = ((scale - 1) / 2) * bounds.width
+            
             if t0 == nil {
                 t0 = displayLink.timestamp
             }
@@ -199,8 +182,8 @@ struct ZoomRecognizer: UIViewRepresentable {
                 return
             }
             
-            let timeScaler: CGFloat = 3 // factor by which to reduce the time the drag takes
-            let t = (displayLink.targetTimestamp - t0) * timeScaler // swiftlint:disable:this identifier_name
+            // let timeScaler: CGFloat = 3 // factor by which to reduce the time the drag takes
+            let t = (displayLink.targetTimestamp - t0) // * timeScaler // swiftlint:disable:this identifier_name
             
             guard t < .pi else {
                 resetMomentum()
@@ -210,13 +193,41 @@ struct ZoomRecognizer: UIViewRepresentable {
             
             // slow down using a sinusoidal curve such that velocity at time t = (cos(t) + 1) / 2
             // this uses the integral (t + sin(t)) / 2 to compute the position directly
-            let offsetCoefficient = (t + sin(t)) / (2 * timeScaler)
+            let offsetCoefficient = (t + sin(t)) / 2
+            
+            let xOffsetIncrement: CGFloat
+            if !xOob, offset.width >= maxXOffset {
+                    xOob = true
+                    initialOffset.width = maxXOffset
+                    self.xBoundTime = displayLink.timestamp
+            }
+            if xOob {
+                guard let xBoundTime else {
+                    assertionFailure("xBoundTime undefined")
+                    xOffsetIncrement = .zero
+                    return
+                }
+                let tuner: CGFloat = 7.5
+                let xDeltaT: CGFloat = (displayLink.targetTimestamp - xBoundTime) * tuner
+                xOffsetIncrement = computeOutOfBoundsOffset(time: xDeltaT, initialVelocity: initialVelocity.x / tuner)
+            } else {
+                xOffsetIncrement = t * initialVelocity.x
+            }
+            
             let increment: CGSize = .init(
-                width: offsetCoefficient * initialVelocity.x,
+                width: xOffsetIncrement,
                 height: offsetCoefficient * initialVelocity.y
             )
             
             offset = initialOffset + increment
+        }
+        
+        func computeOutOfBoundsOffset(time: CGFloat, initialVelocity: CGFloat) -> CGFloat {
+            guard time < 1.6666666666666667 else {
+                return .zero
+            }
+            let baseOffset: CGFloat = 1.6875 * (pow(0.6 * time - 1, 3) + pow(0.6 * time - 1, 2))
+            return baseOffset * initialVelocity
         }
         
         func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
