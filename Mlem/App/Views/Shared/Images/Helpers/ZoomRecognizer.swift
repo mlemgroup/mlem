@@ -191,6 +191,8 @@ struct ZoomRecognizer: UIViewRepresentable {
                 return
             }
             
+            // TODO: https://developer.apple.com/documentation/swiftui/unitcurve
+            
             // slow down using a sinusoidal curve such that velocity at time t = (cos(t) + 1) / 2
             // this uses the integral (t + sin(t)) / 2 to compute the position directly
             let offsetCoefficient = (t + sin(t)) / 2
