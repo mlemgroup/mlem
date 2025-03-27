@@ -17,10 +17,9 @@ protocol InteractionBarConfiguration: Codable {
     
     var leading: [Item] { get set }
     var trailing: [Item] { get set }
-    var readouts: [ReadoutType] { get set }
-    
     var leadingSwipes: [ActionType] { get set }
     var trailingSwipes: [ActionType] { get set }
+    var readouts: [ReadoutType] { get set }
 
     var availableWidgets: Set<Item> { get set }
     func widgetPickerPage(_ configuration: Binding<Self>) -> SettingsPage
@@ -30,7 +29,14 @@ protocol InteractionBarConfiguration: Codable {
     /// Default report configuration for this type. `nil` if inapplicable.
     static var reportDefault: Self? { get }
     
-    init(leading: [Item], trailing: [Item], readouts: [ReadoutType], availableWidgets: Set<Item>)
+    init(
+        leading: [Item],
+        trailing: [Item],
+        leadingSwipes: [ActionType],
+        trailingSwipes: [ActionType],
+        readouts: [ReadoutType],
+        availableWidgets: Set<Item>
+    )
 }
 
 extension InteractionBarConfiguration {
@@ -40,6 +46,8 @@ extension InteractionBarConfiguration {
         .init(
             leading: leading.compactMap { $0.convert() },
             trailing: trailing.compactMap { $0.convert() },
+            leadingSwipes: leadingSwipes.compactMap { .init(rawValue: $0.rawValue) },
+            trailingSwipes: trailingSwipes.compactMap { .init(rawValue: $0.rawValue) },
             readouts: readouts.compactMap { .init(rawValue: $0.rawValue) },
             availableWidgets: .init(availableWidgets.compactMap { $0.convert() })
         )

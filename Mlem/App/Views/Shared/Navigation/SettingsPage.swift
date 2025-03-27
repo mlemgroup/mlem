@@ -28,6 +28,7 @@ enum SettingsPage: Hashable {
     case inboxBadge
     case about, advanced, developer, errorLog
     case postInteractionBar, commentInteractionBar, replyInteractionBar, postReportInteractionBar, commentReportInteractionBar
+    case postSwipeActions
     case postBarWidgetPicker(HashWrapper<Binding<PostBarConfiguration>>)
     case commentBarWidgetPicker(HashWrapper<Binding<CommentBarConfiguration>>)
     case replyBarWidgetPicker(HashWrapper<Binding<ReplyBarConfiguration>>)
@@ -150,6 +151,8 @@ enum SettingsPage: Hashable {
             InteractionBarEditorView(setting: \.postInteractionBar, isReport: false)
         case let .postBarWidgetPicker(configuration):
             InteractionBarWidgetPickerView<PostBarConfiguration>(configuration: configuration.wrappedValue)
+        case .postSwipeActions:
+            SwipeActionEditorView(setting: \.postInteractionBar)
         case .commentInteractionBar:
             InteractionBarEditorView(setting: \.commentInteractionBar, isReport: false)
         case let .commentBarWidgetPicker(configuration):
