@@ -45,6 +45,14 @@ struct ZoomRecognizer: UIViewRepresentable {
         panGesture.delegate = context.coordinator
         ret.addGestureRecognizer(panGesture)
         
+        let doubleTap: UITapGestureRecognizer = UITapGestureRecognizer(
+            target: context.coordinator,
+            action: #selector(Coordinator.handleDoubleTap(gesture:))
+        )
+        doubleTap.numberOfTapsRequired = 2
+        doubleTap.delegate = context.coordinator
+        ret.addGestureRecognizer(doubleTap)
+        
         return ret
     }
     
@@ -151,6 +159,37 @@ struct ZoomRecognizer: UIViewRepresentable {
             }
         }
         
+        @objc
+        func handleDoubleTap(gesture: UITapGestureRecognizer) {
+            guard let view = gesture.view else {
+                assertionFailure("Tap gesture had no view")
+                return
+            }
+            
+            let targetZoomScale: CGFloat
+            let newOffset: CGSize
+            if scale == 1 {
+                let location = gesture.location(in: view)
+                targetZoomScale = 3
+                anchor = .init(x: location.x / view.bounds.width, y: location.y / view.bounds.height)
+                let adjustedScale: CGFloat = targetZoomScale / scale
+                let offsetDeltas = computeOffsetDeltas(
+                    scale: adjustedScale,
+                    bounds: .init(width: view.bounds.width, height: view.bounds.height)
+                )
+                newOffset = offset + offsetDeltas
+            } else {
+                targetZoomScale = 1
+                anchor = .center
+                newOffset = .zero
+            }
+
+            withAnimation(.easeInOut(duration: 0.25)) {
+                offset = newOffset
+                scale = targetZoomScale
+            }
+        }
+        
         /// Halts momentum physics
         @objc
         func resetMomentum() {
@@ -191,8 +230,18 @@ struct ZoomRecognizer: UIViewRepresentable {
             if !active { resetMomentum() }
         }
         
+        func gestureRecognizer(
+            _ gestureRecognizer: UIGestureRecognizer,
+            shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer
+        ) -> Bool {
+            if gestureRecognizer is UITapGestureRecognizer || otherGestureRecognizer is UITapGestureRecognizer {
+                return true
+            }
+            return false
+        }
+        
         func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-            if gestureRecognizer is UIPinchGestureRecognizer {
+            if gestureRecognizer is UIPinchGestureRecognizer || gestureRecognizer is UITapGestureRecognizer {
                 true
             } else if gestureRecognizer is UIPanGestureRecognizer {
                 gestureRecognizer.numberOfTouches == 1 && scale > 1.0
@@ -202,11 +251,16 @@ struct ZoomRecognizer: UIViewRepresentable {
         }
         
         func updateScale(with scale: CGFloat, panOffset: CGSize) {
+            guard let bounds else {
+                assertionFailure("No bounds")
+                return
+            }
+            
             let targetZoomScale: CGFloat = (initialScale * scale).softBounded(softMin: 1, hardMin: 0.6, softMax: 4, hardMax: 6)
             let adjustedScale: CGFloat = targetZoomScale / initialScale
             
             self.scale = targetZoomScale
-            let offsetDeltas = computeOffsetDeltas(scale: adjustedScale)
+            let offsetDeltas = computeOffsetDeltas(scale: adjustedScale, bounds: bounds)
             offset = initialOffset + panOffset + offsetDeltas
         }
         
@@ -247,7 +301,7 @@ struct ZoomRecognizer: UIViewRepresentable {
             
             let boundedScale: CGFloat = scale.bounded(lower: 1.0, upper: 4.0)
             
-            let offsetDeltas = computeOffsetDeltas(scale: boundedScale / initialScale) + activeOffset
+            let offsetDeltas = computeOffsetDeltas(scale: boundedScale / initialScale, bounds: bounds) + activeOffset
             let maxXOffset: CGFloat = ((boundedScale - 1) / 2) * bounds.width
             let maxYOffset: CGFloat = ((boundedScale - 1) / 2) * bounds.height
             
@@ -266,11 +320,11 @@ struct ZoomRecognizer: UIViewRepresentable {
         }
         
         /// Computes the offset deltas from initialOffset required to anchor the view on the anchor point at the given scale
-        private func computeOffsetDeltas(scale: CGFloat) -> CGSize {
-            guard let bounds else {
-                assertionFailure("No bounds")
-                return .zero
-            }
+        private func computeOffsetDeltas(scale: CGFloat, bounds: CGSize) -> CGSize {
+//            guard let bounds else {
+//                assertionFailure("No bounds")
+//                return .zero
+//            }
             
             let scaledBounds: CGSize = .init(width: bounds.width, height: bounds.height).scaled(by: initialScale)
             
