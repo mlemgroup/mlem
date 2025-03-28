@@ -66,11 +66,12 @@ struct ZoomRecognizer: UIViewRepresentable {
         private var anchor: UnitPoint = .center
         
         private var link: CADisplayLink?
-        private var t0: CFTimeInterval?
-        private var initialVelocity: CGPoint?
-        
-        private var xBoundTime: CFTimeInterval?
-        private var xOob: Bool = false
+        private var momentum: MomentumStatus?
+//        private var t0: CFTimeInterval?
+//        private var initialVelocity: CGPoint?
+//        
+//        private var xBoundTime: CFTimeInterval?
+//        private var xOob: Bool = false
         
         /// Bounds of the view
         var bounds: CGSize?
@@ -128,9 +129,11 @@ struct ZoomRecognizer: UIViewRepresentable {
                 
                 let gestureVelocity = gesture.velocity(in: view)
                 if abs(gestureVelocity.x) + abs(gestureVelocity.y) > 40 {
-                    initialVelocity = .init(x: gestureVelocity.x * scale, y: gestureVelocity.y * scale)
+                    // initialVelocity = .init(x: gestureVelocity.x * scale, y: gestureVelocity.y * scale)
                     initialScale = scale
                     initialOffset = offset
+                    
+                    momentum = .init(initialVelocity: .init(x: gestureVelocity.x * scale, y: gestureVelocity.y * scale))
 
                     // TODO: NOW PERFORMANCE use CAMetalDisplayLink?
                     let link = CADisplayLink(target: self, selector: #selector(fireTimer))
@@ -153,15 +156,13 @@ struct ZoomRecognizer: UIViewRepresentable {
         func resetMomentum() {
             link?.invalidate()
             link = nil
-            t0 = nil
-            initialVelocity = nil
-            xBoundTime = nil
-            xOob = false
+            momentum = nil
         }
         
         @objc
         func fireTimer(displayLink: CADisplayLink) {
-            guard let initialVelocity else {
+            guard let momentum else {
+                assertionFailure("Timer fired with no momentum")
                 return
             }
             
@@ -169,67 +170,34 @@ struct ZoomRecognizer: UIViewRepresentable {
                 return
             }
             let maxXOffset: CGFloat = ((scale - 1) / 2) * bounds.width
-            
-            if t0 == nil {
-                t0 = displayLink.timestamp
+            let maxYOffset: CGFloat = ((scale - 1) / 2) * bounds.height
+  
+            // set up initial times
+            if momentum.xt0 == nil {
+                momentum.xt0 = displayLink.timestamp
+            }
+            if momentum.yt0 == nil {
+                momentum.yt0 = displayLink.timestamp
             }
             
-            guard let t0 else {
-                assertionFailure("t0 or v0 not defined")
-                displayLink.invalidate()
-                self.link = nil
-                resetToBounds(activeOffset: (offset - initialOffset)) // TODO: that's a hack
-                return
+            // check out-of-bounds
+            if !momentum.xOob, offset.width >= maxXOffset {
+                initialOffset.width = offset.width
+                momentum.xLeftBounds(at: displayLink.timestamp)
+            }
+            if !momentum.yOob, offset.height >= maxYOffset {
+                initialOffset.height = offset.height
+                momentum.yLeftBounds(at: displayLink.timestamp)
             }
             
-            // let timeScaler: CGFloat = 3 // factor by which to reduce the time the drag takes
-            let t = (displayLink.targetTimestamp - t0) // * timeScaler // swiftlint:disable:this identifier_name
-            
-            guard t < .pi else {
-                resetMomentum()
-                resetToBounds(activeOffset: (offset - initialOffset)) // TODO: that's a hack
-                return
-            }
-            
-            // TODO: https://developer.apple.com/documentation/swiftui/unitcurve
-            
-            // slow down using a sinusoidal curve such that velocity at time t = (cos(t) + 1) / 2
-            // this uses the integral (t + sin(t)) / 2 to compute the position directly
-            let offsetCoefficient = (t + sin(t)) / 2
-            
-            let xOffsetIncrement: CGFloat
-            if !xOob, offset.width >= maxXOffset {
-                    xOob = true
-                    initialOffset.width = maxXOffset
-                    self.xBoundTime = displayLink.timestamp
-            }
-            if xOob {
-                guard let xBoundTime else {
-                    assertionFailure("xBoundTime undefined")
-                    xOffsetIncrement = .zero
-                    return
-                }
-                let tuner: CGFloat = 7.5
-                let xDeltaT: CGFloat = (displayLink.targetTimestamp - xBoundTime) * tuner
-                xOffsetIncrement = computeOutOfBoundsOffset(time: xDeltaT, initialVelocity: initialVelocity.x / tuner)
-            } else {
-                xOffsetIncrement = t * initialVelocity.x
-            }
-            
+            // compute offset
             let increment: CGSize = .init(
-                width: xOffsetIncrement,
-                height: offsetCoefficient * initialVelocity.y
+                width: momentum.xPosition(at: displayLink.targetTimestamp),
+                height: momentum.yPosition(at: displayLink.targetTimestamp)
             )
             
+            print("DEBUG \(increment)")
             offset = initialOffset + increment
-        }
-        
-        func computeOutOfBoundsOffset(time: CGFloat, initialVelocity: CGFloat) -> CGFloat {
-            guard time < 1.6666666666666667 else {
-                return .zero
-            }
-            let baseOffset: CGFloat = 1.6875 * (pow(0.6 * time - 1, 3) + pow(0.6 * time - 1, 2))
-            return baseOffset * initialVelocity
         }
         
         func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
