@@ -155,7 +155,6 @@ struct ImageViewer: View {
             }
             .onChange(of: currentScale) {
                 scaleDisplayValue = currentScale
-                // TODO: NOW move this into the UIKit layer for double tap recognition
                 isZoomed = currentScale != 1.0
             }
             .onChange(of: scaleDisplayValue) {
