@@ -153,7 +153,6 @@ class PersistenceRepository {
     }
     
     func saveInteractionBarConfigurations(_ value: InteractionBarConfigurations) async throws {
-        print("SAVE", value.post.leadingSwipes)
         try await save(value, to: PersistencePath.layoutWidgets)
     }
     

@@ -8,20 +8,20 @@
 import SwiftUI
 
 struct SwipeActionEditorView<Configuration: InteractionBarConfiguration>: View {
-    @State var configuration: Configuration {
-        didSet { onSet(configuration) }
-    }
+    @State var configuration: Configuration
+    @State var showingApplyToAllConfirmation: Bool = false
+    let isReport: Bool
     
     let onSet: (Configuration) -> Void
     
-    init(configuration: Configuration, onSet: @escaping (Configuration) -> Void) {
+    init(configuration: Configuration, isReport: Bool, onSet: @escaping (Configuration) -> Void) {
         self.configuration = configuration
+        self.isReport = isReport
         self.onSet = onSet
     }
     
-    init(setting: WritableKeyPath<InteractionBarTracker, Configuration>) {
-        self.init(configuration: InteractionBarTracker.main[keyPath: setting]) {
-            print("SET")
+    init(setting: WritableKeyPath<InteractionBarTracker, Configuration>, isReport: Bool) {
+        self.init(configuration: InteractionBarTracker.main[keyPath: setting], isReport: isReport) {
             var main = InteractionBarTracker.main
             main[keyPath: setting] = $0
         }
@@ -31,9 +31,34 @@ struct SwipeActionEditorView<Configuration: InteractionBarConfiguration>: View {
         Form {
             ActionListView(title: "Left", actions: $configuration.leadingSwipes)
             ActionListView(title: "Right", actions: $configuration.trailingSwipes)
+            Button("Reset") {
+                let defaultConfiguration: Configuration = isReport ? .reportDefault ?? .default : .default
+                var newConfiguration = configuration
+                newConfiguration.leadingSwipes = defaultConfiguration.leadingSwipes
+                newConfiguration.trailingSwipes = defaultConfiguration.trailingSwipes
+                configuration = newConfiguration
+            }
+            Button("Apply to All") { showingApplyToAllConfirmation = true }
+                .confirmationDialog(
+                    "Really apply this configuration to all other content types?",
+                    isPresented: $showingApplyToAllConfirmation,
+                    titleVisibility: .visible
+                ) {
+                    Button("Yes") {
+                        let configurations = InteractionBarTracker.main.interactionBarConfigurations
+                        InteractionBarTracker.main.interactionBarConfigurations = .init(
+                            post: configurations.post.applying(other: configuration, types: [.swipe]),
+                            comment: configurations.comment.applying(other: configuration, types: [.swipe]),
+                            reply: configurations.reply.applying(other: configuration, types: [.swipe]),
+                            // Don't apply to report overrides
+                            postReport: InteractionBarTracker.main.interactionBarConfigurations.postReport,
+                            commentReport: InteractionBarTracker.main.interactionBarConfigurations.commentReport
+                        )
+                    }
+                }
         }
         .navigationTitle("Swipe Actions")
-        .environment(\.editMode, .constant(.active))
+        .onChange(of: configuration) { onSet(configuration) }
     }
 }
 
@@ -46,21 +71,18 @@ private struct ActionListView<ActionType: ActionTypeProviding>: View {
             ForEach(Array(actions.enumerated()), id: \.element) { index, action in
                 Label(action.appearance.label, systemImage: action.appearance.swipeIcon2)
                     .tint(action.appearance.color)
-                    .tag(action)
-//                    .swipeActions(edge: .trailing) {
-//                        Button("Remove", role: .destructive) {
-//                            actions.remove(at: index)
-//                        }
-//                        .tint(.themedWarning)
-//                    }
                     .contextMenu {
                         Button("Remove", systemImage: "minus.circle", role: .destructive) {
                             actions.remove(at: index)
                         }
                     }
+                    .tag(action)
             }
-            .onMove { from, tom in
-                print(from, tom)
+            .onMove { old, new in
+                actions.move(fromOffsets: old, toOffset: new)
+            }
+            .onDelete { offsets in
+                actions.remove(atOffsets: offsets)
             }
             .labelStyle(.squircle)
             addButtonView
@@ -75,6 +97,7 @@ private struct ActionListView<ActionType: ActionTypeProviding>: View {
                 Button(action.appearance.label, systemImage: action.appearance.barIcon) {
                     actions.append(action)
                 }
+                .disabled(actions.contains(action))
             }
         }
     }

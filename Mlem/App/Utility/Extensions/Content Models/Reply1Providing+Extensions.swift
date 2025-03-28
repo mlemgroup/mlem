@@ -10,26 +10,6 @@ import MlemMiddleware
 extension Reply1Providing {
     private var self2: (any Reply2Providing)? { self as? any Reply2Providing }
     
-    func swipeActions(appState: AppState, behavior: SwipeBehavior) -> SwipeConfiguration {
-        .init(
-            behavior: behavior,
-            leadingActions: {
-                if api.canInteract(appState: appState) {
-                    upvoteAction(appState: appState, feedback: [.haptic])
-                    if api.downvotesEnabled {
-                        downvoteAction(appState: appState, feedback: [.haptic])
-                    }
-                }
-            },
-            trailingActions: {
-                if api.canInteract(appState: appState) {
-                    markReadAction(appState: appState, feedback: [.haptic])
-                    replyAction(appState: appState)
-                }
-            }
-        )
-    }
-    
     @ActionBuilder
     func menuActions(
         appState: AppState,

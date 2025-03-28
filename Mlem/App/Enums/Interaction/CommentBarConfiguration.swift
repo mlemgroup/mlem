@@ -101,7 +101,6 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
     var leading: [Item]
     var trailing: [Item]
     var readouts: [ReadoutType]
-    
     var leadingSwipes: [ActionType]
     var trailingSwipes: [ActionType]
 

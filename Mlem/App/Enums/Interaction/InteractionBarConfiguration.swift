@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUICore
 
-protocol InteractionBarConfiguration: Codable {
+protocol InteractionBarConfiguration: Codable, Equatable {
     associatedtype ActionType: ActionTypeProviding
     associatedtype CounterType: CounterTypeProviding
     associatedtype ReadoutType: ReadoutTypeProviding
@@ -42,18 +42,23 @@ protocol InteractionBarConfiguration: Codable {
 extension InteractionBarConfiguration {
     /// Convert the `InteractionBarConfiguration` to another type of `InteractionBarConfiguration`. This is done by finding cases with
     /// matching `rawValue` in the new type. If one cannot be found, the item is omitted.
-    func convert<T: InteractionBarConfiguration>() -> T {
+    func applying(other: some InteractionBarConfiguration, types: Set<InteractionBarConfigurationConversionType>) -> Self {
         .init(
-            leading: leading.compactMap { $0.convert() },
-            trailing: trailing.compactMap { $0.convert() },
-            leadingSwipes: leadingSwipes.compactMap { .init(rawValue: $0.rawValue) },
-            trailingSwipes: trailingSwipes.compactMap { .init(rawValue: $0.rawValue) },
-            readouts: readouts.compactMap { .init(rawValue: $0.rawValue) },
-            availableWidgets: .init(availableWidgets.compactMap { $0.convert() })
+            leading: types.contains(.bar) ? other.leading.compactMap { $0.convert() } : leading,
+            trailing: types.contains(.bar) ? other.trailing.compactMap { $0.convert() } : trailing,
+            leadingSwipes: types.contains(.swipe) ? other.leadingSwipes.compactMap { .init(rawValue: $0.rawValue) } : leadingSwipes,
+            trailingSwipes: types.contains(.swipe) ? other.trailingSwipes.compactMap { .init(rawValue: $0.rawValue) } : trailingSwipes,
+            readouts: types.contains(.bar) ? other.readouts.compactMap { .init(rawValue: $0.rawValue) } : readouts,
+            availableWidgets: types.contains(.bar) ? .init(other.availableWidgets.compactMap { $0.convert() }) : availableWidgets
         )
     }
     
     var all: [Item] { leading + trailing }
+}
+
+// swiftlint:disable:next type_name
+enum InteractionBarConfigurationConversionType {
+    case swipe, bar
 }
 
 enum InteractionConfigurationItem<ActionType: ActionTypeProviding, CounterType: CounterTypeProviding>: Codable, Hashable {

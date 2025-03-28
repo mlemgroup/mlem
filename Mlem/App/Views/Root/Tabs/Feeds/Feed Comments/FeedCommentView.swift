@@ -17,6 +17,7 @@ struct FeedCommentView<EmbeddedContent: View>: View {
     
     @Setting(\.postSize) var settingsPostSize
     @Setting(\.blurNsfw) var blurNsfw
+    @Setting(\.alternateInteractionBarLayoutForReports) var alternateInteractionBarLayoutForReports
 
     let comment: any Comment
     var overriddenSize: PostSize?
@@ -43,7 +44,7 @@ struct FeedCommentView<EmbeddedContent: View>: View {
                 .contentShape(.interaction, .rect)
                 .quickSwipes(
                     comment: comment,
-                    configuration: InteractionBarTracker.main.commentInteractionBar,
+                    configuration: interactionBarConfiguration,
                     behavior: postSize.swipeBehavior
                 )
                 .contextMenu { comment.allMenuActions(
@@ -106,5 +107,12 @@ struct FeedCommentView<EmbeddedContent: View>: View {
         .onTapGesture {
             navigation.push(.post(post))
         }
+    }
+    
+    var interactionBarConfiguration: CommentBarConfiguration {
+        if reportContext != nil, alternateInteractionBarLayoutForReports {
+            return InteractionBarTracker.main.commentReportInteractionBar
+        }
+        return InteractionBarTracker.main.commentInteractionBar
     }
 }

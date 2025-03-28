@@ -113,11 +113,11 @@ extension PostBarConfiguration {
             return
         }
         
-        @AppStorage("showDownvotesSeparately") var showPostDownvotesSeparately: Bool = false
-        @AppStorage("shouldShowScoreInPostBar") var shouldShowScoreInPostBar: Bool = false
-        @AppStorage("shouldShowTimeInPostBar") var shouldShowTimeInPostBar: Bool = true
-        @AppStorage("shouldShowSavedInPostBar") var shouldShowSavedInPostBar: Bool = false
-        @AppStorage("shouldShowRepliesInPostBar") var shouldShowRepliesInPostBar: Bool = true
+        @AppStorage("showDownvotesSeparately") var showPostDownvotesSeparately = false
+        @AppStorage("shouldShowScoreInPostBar") var shouldShowScoreInPostBar = false
+        @AppStorage("shouldShowTimeInPostBar") var shouldShowTimeInPostBar = true
+        @AppStorage("shouldShowSavedInPostBar") var shouldShowSavedInPostBar = false
+        @AppStorage("shouldShowRepliesInPostBar") var shouldShowRepliesInPostBar = true
         
         guard legacyItems.count(where: { $0 == .infoStack }) == 1,
               let infoStackIndex = legacyItems.firstIndex(of: .infoStack) else {
@@ -129,6 +129,9 @@ extension PostBarConfiguration {
         self.leading = legacyItems.prefix(upTo: infoStackIndex).compactMap { $0.postEquivalent() }
         self.trailing = legacyItems.suffix(from: infoStackIndex + 1).compactMap { $0.postEquivalent() }
         
+        self.leadingSwipes = [.upvote, .downvote]
+        self.trailingSwipes = [.save, .reply]
+
         var newReadouts: [ReadoutType] = .init()
         if shouldShowTimeInPostBar { newReadouts.append(.created) }
         if shouldShowScoreInPostBar {
@@ -148,8 +151,8 @@ extension PostBarConfiguration {
         } else {
             newAvailableWidgets = .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) })
         }
-        newAvailableWidgets.formUnion(self.leading)
-        newAvailableWidgets.formUnion(self.trailing)
+        newAvailableWidgets.formUnion(leading)
+        newAvailableWidgets.formUnion(trailing)
         self.availableWidgets = newAvailableWidgets
     }
 }
@@ -161,11 +164,11 @@ extension CommentBarConfiguration {
             return
         }
         
-        @AppStorage("showCommentDownvotesSeparately") var showCommentDownvotesSeparately: Bool = false
-        @AppStorage("shouldShowScoreInCommentBar") var shouldShowScoreInCommentBar: Bool = false
-        @AppStorage("shouldShowTimeInCommentBar") var shouldShowTimeInCommentBar: Bool = true
-        @AppStorage("shouldShowSavedInCommentBar") var shouldShowSavedInCommentBar: Bool = false
-        @AppStorage("shouldShowRepliesInCommentBar") var shouldShowRepliesInCommentBar: Bool = true
+        @AppStorage("showCommentDownvotesSeparately") var showCommentDownvotesSeparately = false
+        @AppStorage("shouldShowScoreInCommentBar") var shouldShowScoreInCommentBar = false
+        @AppStorage("shouldShowTimeInCommentBar") var shouldShowTimeInCommentBar = true
+        @AppStorage("shouldShowSavedInCommentBar") var shouldShowSavedInCommentBar = false
+        @AppStorage("shouldShowRepliesInCommentBar") var shouldShowRepliesInCommentBar = true
         
         guard legacyItems.count(where: { $0 == .infoStack }) == 1,
               let infoStackIndex = legacyItems.firstIndex(of: .infoStack) else {
@@ -177,6 +180,9 @@ extension CommentBarConfiguration {
         self.leading = legacyItems.prefix(upTo: infoStackIndex).compactMap { $0.commentEquivalent() }
         self.trailing = legacyItems.suffix(from: infoStackIndex + 1).compactMap { $0.commentEquivalent() }
         
+        self.leadingSwipes = [.upvote, .downvote]
+        self.trailingSwipes = [.save, .reply]
+
         var newReadouts: [ReadoutType] = .init()
         if shouldShowTimeInCommentBar { newReadouts.append(.created) }
         if shouldShowScoreInCommentBar {
@@ -196,8 +202,8 @@ extension CommentBarConfiguration {
         } else {
             newAvailableWidgets = .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) })
         }
-        newAvailableWidgets.formUnion(self.leading)
-        newAvailableWidgets.formUnion(self.trailing)
+        newAvailableWidgets.formUnion(leading)
+        newAvailableWidgets.formUnion(trailing)
         self.availableWidgets = newAvailableWidgets
     }
 }
@@ -209,11 +215,11 @@ extension ReplyBarConfiguration {
             return
         }
         
-        @AppStorage("showCommentDownvotesSeparately") var showCommentDownvotesSeparately: Bool = false
-        @AppStorage("shouldShowScoreInCommentBar") var shouldShowScoreInCommentBar: Bool = false
-        @AppStorage("shouldShowTimeInCommentBar") var shouldShowTimeInCommentBar: Bool = true
-        @AppStorage("shouldShowSavedInCommentBar") var shouldShowSavedInCommentBar: Bool = false
-        @AppStorage("shouldShowRepliesInCommentBar") var shouldShowRepliesInCommentBar: Bool = true
+        @AppStorage("showCommentDownvotesSeparately") var showCommentDownvotesSeparately = false
+        @AppStorage("shouldShowScoreInCommentBar") var shouldShowScoreInCommentBar = false
+        @AppStorage("shouldShowTimeInCommentBar") var shouldShowTimeInCommentBar = true
+        @AppStorage("shouldShowSavedInCommentBar") var shouldShowSavedInCommentBar = false
+        @AppStorage("shouldShowRepliesInCommentBar") var shouldShowRepliesInCommentBar = true
         
         guard legacyItems.count(where: { $0 == .infoStack }) == 1,
               let infoStackIndex = legacyItems.firstIndex(of: .infoStack) else {
@@ -225,6 +231,9 @@ extension ReplyBarConfiguration {
         self.leading = legacyItems.prefix(upTo: infoStackIndex).compactMap { $0.replyEquivalent() }
         self.trailing = legacyItems.suffix(from: infoStackIndex + 1).compactMap { $0.replyEquivalent() }
         
+        self.leadingSwipes = [.upvote, .downvote]
+        self.trailingSwipes = [.markRead, .reply]
+
         var newReadouts: [ReadoutType] = .init()
         if shouldShowTimeInCommentBar { newReadouts.append(.created) }
         if shouldShowScoreInCommentBar {
@@ -241,8 +250,8 @@ extension ReplyBarConfiguration {
         var newAvailableWidgets: Set<Item> = .init(
             CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) }
         )
-        newAvailableWidgets.formUnion(self.leading)
-        newAvailableWidgets.formUnion(self.trailing)
+        newAvailableWidgets.formUnion(leading)
+        newAvailableWidgets.formUnion(trailing)
         self.availableWidgets = newAvailableWidgets
     }
 }

@@ -114,4 +114,25 @@ extension View {
             }
         )
     }
+    
+    @ViewBuilder
+    func quickSwipes(reply: any Reply, configuration: ReplyBarConfiguration, behavior: SwipeBehavior) -> some View {
+        modifier(
+            QuickSwipeEnvironmentReaderViewModifier { environment in
+                guard let navigation = environment.navigation, let appState = environment.appState else {
+                    assertionFailure()
+                    return .init()
+                }
+                return .init(
+                    behavior: behavior,
+                    leadingActions: configuration.leadingSwipes.compactMap {
+                        reply.action(appState: appState, type: $0)
+                    },
+                    trailingActions: configuration.trailingSwipes.compactMap {
+                        reply.action(appState: appState, type: $0)
+                    }
+                )
+            }
+        )
+    }
 }

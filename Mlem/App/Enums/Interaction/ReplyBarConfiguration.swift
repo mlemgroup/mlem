@@ -88,16 +88,24 @@ struct ReplyBarConfiguration: InteractionBarConfiguration {
     var leading: [Item]
     var trailing: [Item]
     var readouts: [ReadoutType]
-    
     var leadingSwipes: [ActionType] = [.upvote, .downvote]
     var trailingSwipes: [ActionType] = [.selectText, .markRead]
 
     var availableWidgets: Set<Item>
     func widgetPickerPage(_ configuration: Binding<Self>) -> SettingsPage { .replyBarWidgetPicker(configuration) }
     
-    init(leading: [Item], trailing: [Item], readouts: [ReadoutType], availableWidgets: Set<Item>) {
+    init(
+        leading: [Item],
+        trailing: [Item],
+        leadingSwipes: [ActionType],
+        trailingSwipes: [ActionType],
+        readouts: [ReadoutType],
+        availableWidgets: Set<Item>
+    ) {
         self.leading = leading
         self.trailing = trailing
+        self.leadingSwipes = leadingSwipes
+        self.trailingSwipes = trailingSwipes
         self.readouts = readouts
         self.availableWidgets = availableWidgets
     }
@@ -115,6 +123,8 @@ struct ReplyBarConfiguration: InteractionBarConfiguration {
         .init(
             leading: [.counter(.score)],
             trailing: [.action(.save), .action(.reply)],
+            leadingSwipes: [.upvote, .downvote],
+            trailingSwipes: [.markRead, .reply],
             readouts: [.created, .comment],
             availableWidgets: .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) })
         )

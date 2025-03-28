@@ -113,7 +113,6 @@ struct PostBarConfiguration: InteractionBarConfiguration {
     var leading: [Item]
     var trailing: [Item]
     var readouts: [ReadoutType]
-    
     var leadingSwipes: [ActionType]
     var trailingSwipes: [ActionType]
     
@@ -123,8 +122,8 @@ struct PostBarConfiguration: InteractionBarConfiguration {
     init(
         leading: [Item],
         trailing: [Item],
-        leadingSwipes: [ActionType] = [],
-        trailingSwipes: [ActionType] = [],
+        leadingSwipes: [ActionType],
+        trailingSwipes: [ActionType],
         readouts: [ReadoutType],
         availableWidgets: Set<Item>
     ) {
