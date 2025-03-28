@@ -10,6 +10,7 @@ import Foundation
 /// Tracks the current momentum and computes position based on time
 class MomentumStatus {
     private let boundResetDuration: Double = 0.3
+    let bounds: CGSize
     
     var xt0: CFTimeInterval?
     private var xv0: CGFloat
@@ -21,9 +22,10 @@ class MomentumStatus {
     private(set) var yOob: Bool = false
     private var yUnitCurve: any ZoomCurve = SinusoidalFriction()
     
-    init(initialVelocity: CGPoint) {
+    init(initialVelocity: CGPoint, bounds: CGSize) {
         self.xv0 = initialVelocity.x
         self.yv0 = initialVelocity.y
+        self.bounds = bounds
     }
     
     func position(at time: CFTimeInterval) -> (CGSize, active: Bool) {

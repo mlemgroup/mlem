@@ -67,11 +67,6 @@ struct ZoomRecognizer: UIViewRepresentable {
         
         private var link: CADisplayLink?
         private var momentum: MomentumStatus?
-//        private var t0: CFTimeInterval?
-//        private var initialVelocity: CGPoint?
-//        
-//        private var xBoundTime: CFTimeInterval?
-//        private var xOob: Bool = false
         
         /// Bounds of the view
         var bounds: CGSize?
@@ -128,12 +123,18 @@ struct ZoomRecognizer: UIViewRepresentable {
                 }
                 
                 let gestureVelocity = gesture.velocity(in: view)
-                if abs(gestureVelocity.x) + abs(gestureVelocity.y) > 40 {
-                    // initialVelocity = .init(x: gestureVelocity.x * scale, y: gestureVelocity.y * scale)
+                let maxXOffset: CGFloat = ((scale - 1) / 2) * view.bounds.width
+                let maxYOffset: CGFloat = ((scale - 1) / 2) * view.bounds.height
+                if abs(offset.width) < maxXOffset,
+                   abs(offset.height) < maxYOffset,
+                   abs(gestureVelocity.x) + abs(gestureVelocity.y) > 40 {
                     initialScale = scale
                     initialOffset = offset
                     
-                    momentum = .init(initialVelocity: .init(x: gestureVelocity.x * scale, y: gestureVelocity.y * scale))
+                    momentum = .init(
+                        initialVelocity: .init(x: gestureVelocity.x * scale, y: gestureVelocity.y * scale),
+                        bounds: .init(width: maxXOffset, height: maxYOffset)
+                    )
 
                     let link = CADisplayLink(target: self, selector: #selector(fireTimer))
                     link.preferredFramesPerSecond = 120
@@ -164,12 +165,6 @@ struct ZoomRecognizer: UIViewRepresentable {
                 assertionFailure("Timer fired with no momentum")
                 return
             }
-            
-            guard let bounds else {
-                return
-            }
-            let maxXOffset: CGFloat = ((scale - 1) / 2) * bounds.width
-            let maxYOffset: CGFloat = ((scale - 1) / 2) * bounds.height
   
             // set up initial times
             if momentum.xt0 == nil {
@@ -180,12 +175,12 @@ struct ZoomRecognizer: UIViewRepresentable {
             }
             
             // check out-of-bounds
-            if !momentum.xOob, abs(offset.width) >= maxXOffset {
-                initialOffset.width = maxXOffset * (offset.width < 0 ? -1 : 1)
+            if !momentum.xOob, abs(offset.width) >= momentum.bounds.width {
+                initialOffset.width = momentum.bounds.width * (offset.width < 0 ? -1 : 1)
                 momentum.xLeftBounds(at: displayLink.targetTimestamp)
             }
-            if !momentum.yOob, abs(offset.height) >= maxYOffset {
-                initialOffset.height = maxYOffset * (offset.height < 0 ? -1 : 1)
+            if !momentum.yOob, abs(offset.height) >= momentum.bounds.height {
+                initialOffset.height = momentum.bounds.height * (offset.height < 0 ? -1 : 1)
                 momentum.yLeftBounds(at: displayLink.targetTimestamp)
             }
             
@@ -262,7 +257,7 @@ struct ZoomRecognizer: UIViewRepresentable {
                 height: (initialOffset.height + offsetDeltas.height).bounded(lower: -maxYOffset, upper: maxYOffset)
             )
             
-            withAnimation {
+            withAnimation(.easeOut(duration: 0.25)) {
                 offset = newOffset
                 scale = boundedScale
             }

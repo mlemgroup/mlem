@@ -129,7 +129,6 @@ struct ImageViewer: View {
                     }
                 }
             }
-            .overlay { zoomSliderOverlay }
             .simultaneousGesture(DragGesture(minimumDistance: 1.0)
                 .onChanged { handleDragGesture(value: $0) }
                 .updating($dragState) { _, state, _ in
@@ -137,6 +136,7 @@ struct ImageViewer: View {
                     state = true
                 }
             )
+            .overlay { zoomSliderOverlay }
             .onAppear {
                 animateOpacityUpdate(1.0)
             }
