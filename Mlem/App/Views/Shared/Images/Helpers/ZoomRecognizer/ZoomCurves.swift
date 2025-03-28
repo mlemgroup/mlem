@@ -9,14 +9,14 @@ import Foundation
 
 /// This works like the native UnitCurve
 protocol ZoomCurve {
-    func value(at: Double) -> Double
+    func value(at: Double) -> (Double, active: Bool)
     func velocity(at: Double) -> Double
 }
 
 class SinusoidalFriction: ZoomCurve {
-    func value(at progress: Double) -> Double {
-        guard progress < 1 else { return 0.5 }
-        return ((.pi * progress) + sin(.pi * progress)) / (2 * .pi)
+    func value(at progress: Double) -> (Double, active: Bool) {
+        guard progress < 1 else { return (0.5, false) }
+        return (((.pi * progress) + sin(.pi * progress)) / (2 * .pi), true)
     }
     
     func velocity(at progress: Double) -> Double {
@@ -34,10 +34,10 @@ class PolynomialBoundReset: ZoomCurve {
         self.duration = duration
     }
     
-    func value(at progress: Double) -> Double {
+    func value(at progress: Double) -> (Double, active: Bool) {
         let scaledProgress: Double = progress / duration
-        guard scaledProgress < 1 else { return 0 }
-        return (pow(scaledProgress - 1, 3) + pow(scaledProgress - 1, 2)) * duration
+        guard scaledProgress < 1 else { return (0, false) }
+        return ((pow(scaledProgress - 1, 3) + pow(scaledProgress - 1, 2)) * duration, true)
     }
     
     func velocity(at progress: Double) -> Double {

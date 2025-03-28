@@ -26,12 +26,19 @@ class MomentumStatus {
         self.yv0 = initialVelocity.y
     }
     
-    func xPosition(at time: CFTimeInterval) -> CGFloat {
-        guard let xt0 else {
-            assertionFailure("Tried to query position before setting xt0")
-            return .zero
+    func position(at time: CFTimeInterval) -> (CGSize, active: Bool) {
+        guard let xt0, let yt0 else {
+            assertionFailure("Tried to query position before setting t0s")
+            return (position: .zero, active: false)
         }
-        return xUnitCurve.value(at: time - xt0) * xv0
+        
+        let (xPosition, xActive) = xUnitCurve.value(at: time - xt0)
+        let (yPosition, yActive) = yUnitCurve.value(at: time - yt0)
+        
+        return (
+            .init(width: xPosition * xv0, height: yPosition * yv0),
+            xActive && yActive
+        )
     }
     
     func xLeftBounds(at time: CFTimeInterval) {
@@ -47,14 +54,6 @@ class MomentumStatus {
         xv0 = xUnitCurve.velocity(at: time - xt0) * xv0
         self.xt0 = time
         xUnitCurve = PolynomialBoundReset(duration: boundResetDuration)
-    }
-    
-    func yPosition(at time: CFTimeInterval) -> CGFloat {
-        guard let yt0 else {
-            assertionFailure("Tried to query position before setting yt0")
-            return .zero
-        }
-        return yUnitCurve.value(at: time - yt0) * yv0
     }
     
     func yLeftBounds(at time: CFTimeInterval) {

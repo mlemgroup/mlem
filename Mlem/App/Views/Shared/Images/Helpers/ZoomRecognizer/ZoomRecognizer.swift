@@ -181,21 +181,19 @@ struct ZoomRecognizer: UIViewRepresentable {
             
             // check out-of-bounds
             if !momentum.xOob, abs(offset.width) >= maxXOffset {
-                initialOffset.width = offset.width
-                momentum.xLeftBounds(at: displayLink.timestamp)
+                initialOffset.width = maxXOffset * (offset.width < 0 ? -1 : 1)
+                momentum.xLeftBounds(at: displayLink.targetTimestamp)
             }
             if !momentum.yOob, abs(offset.height) >= maxYOffset {
-                initialOffset.height = offset.height
-                momentum.yLeftBounds(at: displayLink.timestamp)
+                initialOffset.height = maxYOffset * (offset.height < 0 ? -1 : 1)
+                momentum.yLeftBounds(at: displayLink.targetTimestamp)
             }
             
             // compute offset
-            let increment: CGSize = .init(
-                width: momentum.xPosition(at: displayLink.targetTimestamp),
-                height: momentum.yPosition(at: displayLink.targetTimestamp)
-            )
+            let (increment, active) = momentum.position(at: displayLink.targetTimestamp)
             
             offset = initialOffset + increment
+            if !active { resetMomentum() }
         }
         
         func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
