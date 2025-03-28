@@ -7,6 +7,12 @@
 
 import SwiftUI
 
+// TODO LIST
+// - Preserve x momentum if pan ends oob on y and vice versa
+// - Fix single tap reset momentum when oob not resetting
+// - Single source of truth for bounds
+// - Zoom slider anchoring
+
 struct ZoomRecognizer: UIViewRepresentable {
 
     @Binding var scale: CGFloat
