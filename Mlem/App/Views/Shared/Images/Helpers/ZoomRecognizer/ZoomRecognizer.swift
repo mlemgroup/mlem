@@ -135,7 +135,6 @@ struct ZoomRecognizer: UIViewRepresentable {
                     
                     momentum = .init(initialVelocity: .init(x: gestureVelocity.x * scale, y: gestureVelocity.y * scale))
 
-                    // TODO: NOW PERFORMANCE use CAMetalDisplayLink?
                     let link = CADisplayLink(target: self, selector: #selector(fireTimer))
                     link.preferredFramesPerSecond = 120
                     link.add(to: .current, forMode: .default)
@@ -181,11 +180,11 @@ struct ZoomRecognizer: UIViewRepresentable {
             }
             
             // check out-of-bounds
-            if !momentum.xOob, offset.width >= maxXOffset {
+            if !momentum.xOob, abs(offset.width) >= maxXOffset {
                 initialOffset.width = offset.width
                 momentum.xLeftBounds(at: displayLink.timestamp)
             }
-            if !momentum.yOob, offset.height >= maxYOffset {
+            if !momentum.yOob, abs(offset.height) >= maxYOffset {
                 initialOffset.height = offset.height
                 momentum.yLeftBounds(at: displayLink.timestamp)
             }
