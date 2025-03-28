@@ -15,8 +15,8 @@ protocol ZoomCurve {
 
 class SinusoidalFriction: ZoomCurve {
     func value(at progress: Double) -> Double {
-        guard progress < 1 else { return 1 }
-        return ((.pi * progress) + sin(.pi * progress)) / .pi
+        guard progress < 1 else { return 0.5 }
+        return ((.pi * progress) + sin(.pi * progress)) / (2 * .pi)
     }
     
     func velocity(at progress: Double) -> Double {
@@ -29,9 +29,7 @@ class SinusoidalFriction: ZoomCurve {
 /// The underlying curve equation is y = x^3 + x^2
 class PolynomialBoundReset: ZoomCurve {
     func value(at progress: Double) -> Double {
-        guard progress < 1 else {
-            return 0
-        }
+        guard progress < 1 else { return 0 }
         return pow(progress - 1, 3) + pow(progress - 1, 2)
     }
     

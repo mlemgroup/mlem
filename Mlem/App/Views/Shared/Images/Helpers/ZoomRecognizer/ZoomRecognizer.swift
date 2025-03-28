@@ -196,7 +196,6 @@ struct ZoomRecognizer: UIViewRepresentable {
                 height: momentum.yPosition(at: displayLink.targetTimestamp)
             )
             
-            print("DEBUG \(increment)")
             offset = initialOffset + increment
         }
         
