@@ -90,7 +90,7 @@ struct PersonContentGridView: View {
     var spacing: CGFloat {
         switch contentType {
         case .all, .comments:
-            Constants.main.standardSpacing
+            postSize.sectionSpacing
         case .posts:
             postSize.sectionSpacing
         }
