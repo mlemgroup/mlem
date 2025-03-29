@@ -19,6 +19,7 @@ struct DeveloperSettingsView: View {
     @Setting(\.developerMode) var developerMode
     
     @AppStorage("status.firstAppearance") var firstAppearance: Bool = true
+    @AppStorage("lastBuildNumber") var lastBuildNumber: String?
     
     var body: some View {
         Form {
@@ -28,21 +29,25 @@ struct DeveloperSettingsView: View {
             }
             
             #if DEBUG
-            Section {
-                Button(String("Reset Feed Welcome Prompt")) {
-                    showFeedWelcomePrompt = true
-                }
+                Section {
+                    Button(String("Reset Feed Welcome Banner")) {
+                        showFeedWelcomePrompt = true
+                    }
                 
-                Button(String("Create Error")) {
-                    handleError(ApiClientError.insufficientPermissions)
-                }
+                    Button(String("Reset Feed TestFlight Banner")) {
+                        lastBuildNumber = nil
+                    }
                 
-                Button(String("Create Silent Error")) {
-                    handleError(ApiClientError.noEntityFound, silent: true)
+                    Button(String("Create Error")) {
+                        handleError(ApiClientError.insufficientPermissions)
+                    }
+                
+                    Button(String("Create Silent Error")) {
+                        handleError(ApiClientError.noEntityFound, silent: true)
+                    }
+                } header: {
+                    Text(verbatim: "Debug Tools")
                 }
-            } header: {
-                Text(verbatim: "Debug Tools")
-            }
             #endif
             Button(String("Reset Settings State")) {
                 do {
