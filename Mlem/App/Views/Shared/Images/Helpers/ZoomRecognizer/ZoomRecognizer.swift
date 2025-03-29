@@ -12,6 +12,7 @@ import SwiftUI
 // - Fix single tap reset momentum when oob not resetting
 // - Single source of truth for bounds
 // - Zoom slider anchoring
+// - Intelligent edge bounding--reset xt0 to the actual time the bound would have been crossed
 
 struct ZoomRecognizer: UIViewRepresentable {
 
@@ -105,8 +106,7 @@ struct ZoomRecognizer: UIViewRepresentable {
                 if bounds == nil {
                     bounds = .init(width: view.bounds.width, height: view.bounds.height)
                 }
-                link?.invalidate()
-                link = nil
+                resetMomentum()
                 beginPinch(at: gesture.location(in: view))
             case .changed:
                 updateScale(with: gesture.scale, panOffset: gesture.panOffset)
@@ -151,7 +151,7 @@ struct ZoomRecognizer: UIViewRepresentable {
                     )
 
                     let link = CADisplayLink(target: self, selector: #selector(fireTimer))
-                    link.preferredFramesPerSecond = 120
+                    link.preferredFrameRateRange = .init(minimum: 100, maximum: 120, __preferred: 120)
                     link.add(to: .current, forMode: .default)
                     self.link = link
                 } else {
