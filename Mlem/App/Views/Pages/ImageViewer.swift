@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Zoomable
 
 // swiftlint:disable file_length
 // swiftlint:disable:next type_body_length
