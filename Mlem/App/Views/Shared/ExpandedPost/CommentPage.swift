@@ -104,7 +104,10 @@ struct CommentPage: View {
                 }
             }
         }
-        .background(.themedGroupedBackground)
+        .background {
+            palette.groupedBackground.primary
+                .ignoresSafeArea(.all)
+        }
         .onChange(of: comment.wrappedValue.postId_, initial: true) {
             if let postId = comment.wrappedValue.postId_ {
                 Task {

@@ -24,7 +24,10 @@ struct Form<Content: View>: View {
         }
         .listStyle(.insetGrouped)
         .scrollContentBackground(.hidden)
-        .background(.themedGroupedBackground)
+        .background {
+            palette.groupedBackground.primary
+                .ignoresSafeArea(.all)
+        }
         .shadow(color: palette.label.primary.opacity(palette.bordered ? 0.4 : 0.0), radius: 1)
     }
 }

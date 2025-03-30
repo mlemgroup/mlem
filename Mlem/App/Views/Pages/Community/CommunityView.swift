@@ -84,7 +84,10 @@ struct CommunityView: View {
         }
         .navigationBarTitleDisplayMode(.inline)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(.themedGroupedBackground)
+        .background {
+            palette.groupedBackground.primary
+                .ignoresSafeArea(.all)
+        }
     }
         
     @ViewBuilder

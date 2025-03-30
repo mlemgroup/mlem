@@ -7,6 +7,7 @@
 
 import MlemMiddleware
 import SwiftUI
+import Theming
 
 struct SearchView: View {
     enum Page {
@@ -83,7 +84,11 @@ struct SearchView: View {
     
     var body: some View {
         content
-            .background(.themedGroupedBackground)
+            .background {
+                Theming.ThemedColor.themedPrimary.resolve(with: palette)
+                palette.groupedBackground.primary
+                    .ignoresSafeArea(.all)
+            }
             .navigationTitle("Search")
             .navigationBarTitleDisplayMode(.large)
             .navigationSearchBar(searchBar)

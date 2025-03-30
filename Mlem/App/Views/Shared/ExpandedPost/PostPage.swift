@@ -61,7 +61,10 @@ struct PostPage: View {
                 }
             }
         }
-        .background(.themedGroupedBackground)
+        .background {
+            palette.groupedBackground.primary
+                .ignoresSafeArea(.all)
+        }
         .onAppear {
             if post.isUpgraded, let tracker {
                 Task {
