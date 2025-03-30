@@ -15,16 +15,22 @@ class MomentumStatus {
     var xt0: CFTimeInterval?
     private var xv0: CGFloat
     private(set) var xOob: Bool = false
-    private var xUnitCurve: any ZoomCurve = SinusoidalFriction()
+    private var xUnitCurve: any ZoomCurve
     
     var yt0: CFTimeInterval?
     private var yv0: CGFloat
     private(set) var yOob: Bool = false
-    private var yUnitCurve: any ZoomCurve = SinusoidalFriction()
+    private var yUnitCurve: any ZoomCurve
     
-    init(initialVelocity: CGPoint, bounds: CGSize) {
+    init(initialVelocity: CGPoint, bounds: CGSize, xOob: Bool, yOob: Bool) {
         self.xv0 = initialVelocity.x
+        self.xOob = xOob
+        self.xUnitCurve = xOob ? PolynomialBoundReset(duration: 0.25) : SinusoidalFriction()
+        
         self.yv0 = initialVelocity.y
+        self.yOob = yOob
+        self.yUnitCurve = yOob ? PolynomialBoundReset(duration: 0.25) : SinusoidalFriction()
+        
         self.bounds = bounds
     }
     
@@ -39,7 +45,7 @@ class MomentumStatus {
         
         return (
             .init(width: xPosition * xv0, height: yPosition * yv0),
-            xActive && yActive
+            xActive || yActive
         )
     }
     
@@ -55,7 +61,7 @@ class MomentumStatus {
         xOob = true
         xv0 = xUnitCurve.velocity(at: time - xt0) * xv0
         self.xt0 = time
-        xUnitCurve = PolynomialBoundReset(duration: boundResetDuration)
+        xUnitCurve = PolynomialBoundBounce(duration: boundResetDuration)
     }
     
     func yLeftBounds(at time: CFTimeInterval) {
@@ -70,6 +76,6 @@ class MomentumStatus {
         yOob = true
         yv0 = yUnitCurve.velocity(at: time - yt0) * yv0
         self.yt0 = time
-        yUnitCurve = PolynomialBoundReset(duration: boundResetDuration)
+        yUnitCurve = PolynomialBoundBounce(duration: boundResetDuration)
     }
 }

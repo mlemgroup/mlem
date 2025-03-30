@@ -8,11 +8,11 @@
 import SwiftUI
 
 // TODO LIST
-// - Preserve x momentum if pan ends oob on y and vice versa
 // - Fix single tap reset momentum when oob not resetting
+//   - Move tap recognition into UITapGestureRecognizer
 // - Single source of truth for bounds
 // - Zoom slider anchoring
-// - Intelligent edge bounding--reset xt0 to the actual time the bound would have been crossed
+// - Investigate CGAffineTransform instead of scaleEffect + offset
 
 struct ZoomRecognizer: UIViewRepresentable {
 
@@ -64,7 +64,7 @@ struct ZoomRecognizer: UIViewRepresentable {
     }
     
     func makeCoordinator() -> Coordinator {
-        .init(scale: $scale, offset: $offset) // offset: $targetOffset)
+        .init(scale: $scale, offset: $offset)
     }
 
     class Coordinator: NSObject, UIGestureRecognizerDelegate {
@@ -139,19 +139,40 @@ struct ZoomRecognizer: UIViewRepresentable {
                 let gestureVelocity = gesture.velocity(in: view)
                 let maxXOffset: CGFloat = ((scale - 1) / 2) * view.bounds.width
                 let maxYOffset: CGFloat = ((scale - 1) / 2) * view.bounds.height
-                if abs(offset.width) < maxXOffset,
-                   abs(offset.height) < maxYOffset,
+                let xOob = abs(offset.width) >= maxXOffset
+                let yOob = abs(offset.height) >= maxYOffset
+                if !(xOob && yOob),
                    abs(gestureVelocity.x) + abs(gestureVelocity.y) > 40 {
                     initialScale = scale
                     initialOffset = offset
                     
+                    let xVelo: CGFloat
+                    if xOob {
+                        let xBound: CGFloat = offset.width < 0 ? -maxXOffset : maxXOffset
+                        initialOffset.width = xBound
+                        xVelo = offset.width - xBound
+                    } else {
+                        xVelo = gestureVelocity.x * scale
+                    }
+                    
+                    let yVelo: CGFloat
+                    if yOob {
+                        let yBound: CGFloat = offset.height < 0 ? -maxYOffset : maxYOffset
+                        initialOffset.height = yBound
+                        yVelo = offset.height - yBound
+                    } else {
+                        yVelo = gestureVelocity.y * scale
+                    }
+                    
                     momentum = .init(
-                        initialVelocity: .init(x: gestureVelocity.x * scale, y: gestureVelocity.y * scale),
-                        bounds: .init(width: maxXOffset, height: maxYOffset)
+                        initialVelocity: .init(x: xVelo, y: yVelo),
+                        bounds: .init(width: maxXOffset, height: maxYOffset),
+                        xOob: xOob,
+                        yOob: yOob
                     )
 
                     let link = CADisplayLink(target: self, selector: #selector(fireTimer))
-                    link.preferredFrameRateRange = .init(minimum: 100, maximum: 120, __preferred: 120)
+                    link.preferredFrameRateRange = .init(minimum: 60, maximum: 90, __preferred: 90)
                     link.add(to: .current, forMode: .default)
                     self.link = link
                 } else {
@@ -222,11 +243,11 @@ struct ZoomRecognizer: UIViewRepresentable {
             // check out-of-bounds
             if !momentum.xOob, abs(offset.width) >= momentum.bounds.width {
                 initialOffset.width = momentum.bounds.width * (offset.width < 0 ? -1 : 1)
-                momentum.xLeftBounds(at: displayLink.targetTimestamp)
+                momentum.xLeftBounds(at: displayLink.timestamp)
             }
             if !momentum.yOob, abs(offset.height) >= momentum.bounds.height {
                 initialOffset.height = momentum.bounds.height * (offset.height < 0 ? -1 : 1)
-                momentum.yLeftBounds(at: displayLink.targetTimestamp)
+                momentum.yLeftBounds(at: displayLink.timestamp)
             }
             
             // compute offset
