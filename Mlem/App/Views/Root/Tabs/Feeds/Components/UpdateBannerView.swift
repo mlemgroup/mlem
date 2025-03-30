@@ -67,20 +67,25 @@ struct UpdateBannerView: View {
     func submit() {
         isLoading = true
         Task {
-            let community: Community2 = try await appState.firstApi.getCommunity(url: URL(string: "https://lemmy.ml/c/mlemapp")!)
-            // Assuming the update announcement is pinned, it'll probably be one of these 10.
-            var posts = try await community.getPosts(sort: .new, limit: 10).posts.sorted { $0.created > $1.created }
-            let announcementPost = posts.first { post in
-                post.creator.isMlemDeveloper && post.title.contains("[ TestFlight Update ]")
-            }
-            if let announcementPost {
-                navigation.push(.post(announcementPost))
-            } else {
-                assertionFailure()
-                navigation.push(.community(community, visitContext: .other))
-            }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                dismiss()
+            do {
+                let community: Community2 = try await appState.firstApi.getCommunity(url: URL(string: "https://lemmy.ml/c/mlemapp")!)
+                // Assuming the update announcement is pinned, it'll probably be one of these 10.
+                var posts = try await community.getPosts(sort: .new, limit: 10).posts.sorted { $0.created > $1.created }
+                let announcementPost = posts.first { post in
+                    post.creator.isMlemDeveloper && post.title.contains("[ TestFlight Update ]")
+                }
+                if let announcementPost {
+                    navigation.push(.post(announcementPost))
+                } else {
+                    assertionFailure()
+                    navigation.push(.community(community, visitContext: .other))
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    dismiss()
+                }
+            } catch {
+                handleError(error)
+                isLoading = false
             }
         }
     }
