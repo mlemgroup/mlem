@@ -94,6 +94,7 @@ struct ImageViewer: View {
     
     @State var anchor: UnitPoint = .center
     @State var pinchOffset: CGSize = .zero
+    @State var targetScale: CGFloat = 1
     
     // --------------------------------------------------------
     
