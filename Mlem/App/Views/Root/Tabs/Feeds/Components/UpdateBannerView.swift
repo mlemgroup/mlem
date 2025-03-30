@@ -66,12 +66,12 @@ struct UpdateBannerView: View {
     
     func submit() {
         isLoading = true
-        Task { @MainActor in
+        Task {
             let community: Community2 = try await appState.firstApi.getCommunity(url: URL(string: "https://lemmy.ml/c/mlemapp")!)
-            // Assuming the update announcement is pinned, it'll probably be one of these 5
-            let posts = try await community.getPosts(sort: .new, limit: 5).posts
+            // Assuming the update announcement is pinned, it'll probably be one of these 10.
+            var posts = try await community.getPosts(sort: .new, limit: 10).posts.sorted { $0.created > $1.created }
             let announcementPost = posts.first { post in
-                post.creator.isMlemDeveloper && post.title.lowercased().contains("testflight")
+                post.creator.isMlemDeveloper && post.title.contains("[ TestFlight Update ]")
             }
             if let announcementPost {
                 navigation.push(.post(announcementPost))
