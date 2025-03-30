@@ -75,7 +75,11 @@ struct ZoomRecognizer: UIViewRepresentable {
     }
 
     class Coordinator: NSObject, UIGestureRecognizerDelegate {
-        @Binding var scale: CGFloat
+        @Binding var scale: CGFloat {
+            didSet {
+                print("DEBUG \(scale)")
+            }
+        }
         @Binding var offset: CGSize
         
         /// Scale when the current pinch began
@@ -338,6 +342,7 @@ struct ZoomRecognizer: UIViewRepresentable {
         
         /// Resets offset and scale to be within bounds
         private func resetToBounds(activeOffset: CGSize) {
+            // print("DEBUG resetting")
             guard let bounds else {
                 assertionFailure("No bounds")
                 return
@@ -388,11 +393,6 @@ class MomentumResetTapGestureRecognizer: UITapGestureRecognizer {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
         resetMomentum()
         super.touchesBegan(touches, with: event)
-    }
-    
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent) {
-        print("DEBUG touches ended")
-        super.touchesEnded(touches, with: event)
     }
 }
 
