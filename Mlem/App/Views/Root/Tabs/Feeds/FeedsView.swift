@@ -9,6 +9,7 @@ import Dependencies
 import Foundation
 import MlemMiddleware
 import SwiftUI
+import Theming
 
 struct FeedsView: View {
     @Setting(\.postSize) var postSize
@@ -90,7 +91,7 @@ struct FeedsView: View {
     
     var body: some View {
         content
-            .background(.themedGroupedBackground)
+            .background(ThemedColor.themedGroupedBackground.ignoresSafeArea())
             .scrollContentBackground(.hidden)
             .toolbar {
                 if !isAtTop {

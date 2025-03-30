@@ -7,9 +7,11 @@
 
 import MlemMiddleware
 import SwiftUI
+import Theming
 
 struct CommentPage: View {
     @Environment(NavigationLayer.self) var navigation
+    @Environment(\.palette) var palette
     @Environment(\.dismiss) var dismiss
     
     let comment: AnyComment
@@ -104,10 +106,7 @@ struct CommentPage: View {
                 }
             }
         }
-        .background {
-            palette.groupedBackground.primary
-                .ignoresSafeArea(.all)
-        }
+        .background(ThemedColor.themedGroupedBackground.ignoresSafeArea())
         .onChange(of: comment.wrappedValue.postId_, initial: true) {
             if let postId = comment.wrappedValue.postId_ {
                 Task {

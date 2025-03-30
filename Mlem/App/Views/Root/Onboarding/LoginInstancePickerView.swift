@@ -7,6 +7,7 @@
 
 import MlemMiddleware
 import SwiftUI
+import Theming
 
 struct LoginInstancePickerView: View {
     @Environment(\.palette) var palette
@@ -24,7 +25,8 @@ struct LoginInstancePickerView: View {
     var body: some View {
         content
             .interactiveDismissDisabled(!domain.isEmpty)
-            .background(palette.groupedBackground.primary.ignoresSafeArea())
+            .background(.themedBackground)
+            .presentationBackground(.themedBackground)
             .toolbar {
                 if navigation.isInsideSheet, isRootView {
                     ToolbarItem(placement: .topBarLeading) {

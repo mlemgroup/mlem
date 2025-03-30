@@ -155,10 +155,7 @@ struct PersonView: View {
         .navigationTitle(isAtTop ? "" : (person.wrappedValue.displayName_ ?? ""))
         .navigationBarTitleDisplayMode(.inline)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background {
-            palette.groupedBackground.primary
-                .ignoresSafeArea(.all)
-        }
+        .background(ThemedColor.themedGroupedBackground.ignoresSafeArea())
     }
     
     @ViewBuilder

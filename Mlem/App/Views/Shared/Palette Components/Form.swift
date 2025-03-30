@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import Theming
 
 /// Identical to Form, but respects Palette
 struct Form<Content: View>: View {
@@ -24,10 +25,7 @@ struct Form<Content: View>: View {
         }
         .listStyle(.insetGrouped)
         .scrollContentBackground(.hidden)
-        .background {
-            palette.groupedBackground.primary
-                .ignoresSafeArea(.all)
-        }
+        .background(ThemedColor.themedGroupedBackground.ignoresSafeArea())
         .shadow(color: palette.label.primary.opacity(palette.bordered ? 0.4 : 0.0), radius: 1)
     }
 }

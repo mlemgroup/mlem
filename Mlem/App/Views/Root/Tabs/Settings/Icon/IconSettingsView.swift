@@ -5,8 +5,8 @@
 //  Created by tht7 on 28/06/2023.
 //
 
-import RegexBuilder
 import SwiftUI
+import Theming
 
 // struct AlternateIcons: View {
 struct IconSettingsView: View {
@@ -52,7 +52,7 @@ struct IconSettingsView: View {
             }
             .padding(.vertical)
         }
-        .background(.themedGroupedBackground)
+        .background(ThemedColor.themedGroupedBackground.ignoresSafeArea())
         .navigationTitle("App Icon")
     }
 

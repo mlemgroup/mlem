@@ -93,10 +93,7 @@ struct InstanceView: View {
         }
         .isAtTopSubscriber(isAtTop: $isAtTop)
         .navigationBarTitleDisplayMode(.inline)
-        .background {
-            palette.groupedBackground.primary
-                .ignoresSafeArea(.all)
-        }
+        .background(ThemedColor.themedGroupedBackground.ignoresSafeArea())
     }
     
     @ViewBuilder

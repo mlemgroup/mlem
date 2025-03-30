@@ -85,8 +85,7 @@ struct SearchView: View {
     var body: some View {
         content
             .background {
-                Theming.ThemedColor.themedPrimary.resolve(with: palette)
-                palette.groupedBackground.primary
+                ThemedColor.themedPrimary
                     .ignoresSafeArea(.all)
             }
             .navigationTitle("Search")
