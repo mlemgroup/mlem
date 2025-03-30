@@ -39,8 +39,7 @@ struct ZoomRecognizer: UIViewRepresentable {
         let pinchGesture = PanningPinchRecognizer(
             target: context.coordinator,
             action: #selector(Coordinator.handlePinch(gesture:)),
-            zoomScale: $scale,
-            resetMomentum: context.coordinator.resetMomentum
+            zoomScale: $scale
         )
         pinchGesture.delegate = context.coordinator
         ret.addGestureRecognizer(pinchGesture)
@@ -52,9 +51,10 @@ struct ZoomRecognizer: UIViewRepresentable {
         panGesture.delegate = context.coordinator
         ret.addGestureRecognizer(panGesture)
         
-        let doubleTap: UITapGestureRecognizer = UITapGestureRecognizer(
+        let doubleTap: UITapGestureRecognizer = MomentumResetTapGestureRecognizer(
             target: context.coordinator,
-            action: #selector(Coordinator.handleDoubleTap(gesture:))
+            action: #selector(Coordinator.handleDoubleTap(gesture:)),
+            resetMomentum: context.coordinator.resetMomentum
         )
         doubleTap.numberOfTapsRequired = 2
         doubleTap.delegate = context.coordinator
@@ -348,11 +348,6 @@ struct ZoomRecognizer: UIViewRepresentable {
         
         /// Computes the offset deltas from initialOffset required to anchor the view on the anchor point at the given scale
         private func computeOffsetDeltas(scale: CGFloat, bounds: CGSize) -> CGSize {
-//            guard let bounds else {
-//                assertionFailure("No bounds")
-//                return .zero
-//            }
-            
             let scaledBounds: CGSize = .init(width: bounds.width, height: bounds.height).scaled(by: initialScale)
             
             // (scale - 1) * (0.5 - anchor) computes the offset required to center the view on the anchor while zooming,
@@ -363,44 +358,13 @@ struct ZoomRecognizer: UIViewRepresentable {
             
             return .init(width: xOffset, height: yOffset)
         }
-        
-        /// Computes the additional friction to apply to gestures/momentum when a view is out of bound
-        private func computeBorderDrag(at offset: CGSize) -> CGSize {
-            guard let bounds else {
-                assertionFailure("No bounds")
-                return .zero
-            }
-            
-            let scaledBounds: CGSize = .init(width: bounds.width, height: bounds.height).scaled(by: (scale - 1) / 2)
-            
-            let xDrag: CGFloat
-            if abs(offset.width) > scaledBounds.width {
-                print("DEBUG applying x drag")
-                xDrag = 2
-            } else {
-                xDrag = 1
-            }
-            
-            let yDrag: CGFloat
-            if abs(offset.height) > scaledBounds.height {
-                yDrag = 2
-            } else {
-                yDrag = 1
-            }
-            
-            print("DEBUG \(offset), \(scaledBounds)")
-            return .init(width: xDrag, height: yDrag) // .zero
-        }
     }
 }
 
-class PanningPinchRecognizer: UIPinchGestureRecognizer {
-    @Binding var zoomScale: CGFloat
+class MomentumResetTapGestureRecognizer: UITapGestureRecognizer {
     var resetMomentum: () -> Void
-    var panOffset: CGSize = .zero
     
-    init(target: Any?, action: Selector?, zoomScale: Binding<CGFloat>, resetMomentum: @escaping () -> Void) {
-        _zoomScale = zoomScale
+    init(target: Any?, action: Selector?, resetMomentum: @escaping () -> Void) {
         self.resetMomentum = resetMomentum
         super.init(target: target, action: action)
     }
@@ -408,6 +372,16 @@ class PanningPinchRecognizer: UIPinchGestureRecognizer {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
         resetMomentum()
         super.touchesBegan(touches, with: event)
+    }
+}
+
+class PanningPinchRecognizer: UIPinchGestureRecognizer {
+    @Binding var zoomScale: CGFloat
+    var panOffset: CGSize = .zero
+    
+    init(target: Any?, action: Selector?, zoomScale: Binding<CGFloat>) {
+        _zoomScale = zoomScale
+        super.init(target: target, action: action)
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent) {
