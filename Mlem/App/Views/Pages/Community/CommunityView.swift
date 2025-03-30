@@ -45,8 +45,6 @@ struct CommunityView: View {
     @State var postFeedLoader: CommunityPostFeedLoader?
     @State var warningPresented: Bool
     
-    @State var isAtTop: Bool = true
-    
     @State var showingConfirmation: Bool = false
     @State var newMod: Person2?
     
@@ -131,14 +129,13 @@ struct CommunityView: View {
             }
             .environment(\.communityContext, community)
         }
-        // don't show the refresh popup if community api isn't the active api, since that indicates an unresolvable community
-        .navigationTitle(isAtTop ? "" : community.name)
-        .isAtTopSubscriber(isAtTop: $isAtTop)
+        .conditionalNavigationTitle(community.name)
         .toolbar {
             ToolbarItemGroup(placement: .secondaryAction) {
                 MenuButtons { community.menuActions(appState: appState, navigation: navigation, feedLoader: postFeedLoader) }
             }
         }
+        // don't show the refresh popup if community api isn't the active api, since that indicates an unresolvable community
         .popupAnchor()
         .outdatedFeedPopup(
             feedLoader: postFeedLoader,
