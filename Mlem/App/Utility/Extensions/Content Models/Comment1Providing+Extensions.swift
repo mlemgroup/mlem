@@ -24,30 +24,6 @@ extension Comment1Providing {
         }
     }
 
-    func swipeActions(
-        appState: AppState,
-        behavior: SwipeBehavior,
-        commentTreeTracker: CommentTreeTracker? = nil
-    ) -> SwipeConfiguration {
-        .init(
-            behavior: behavior,
-            leadingActions: {
-                if api.canInteract(appState: appState) {
-                    upvoteAction(appState: appState, feedback: [.haptic])
-                    if api.downvotesEnabled {
-                        downvoteAction(appState: appState, feedback: [.haptic])
-                    }
-                }
-            },
-            trailingActions: {
-                if api.canInteract(appState: appState) {
-                    saveAction(appState: appState, feedback: [.haptic])
-                    replyAction(appState: appState, commentTreeTracker: commentTreeTracker)
-                }
-            }
-        )
-    }
-    
     var canModerate: Bool {
         guard let id = community_?.id as? Int else { return false }
         return api.myPerson?.moderates(communityId: id) ?? false || api.isAdmin
