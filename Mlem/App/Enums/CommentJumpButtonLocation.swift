@@ -15,7 +15,7 @@ enum CommentJumpButtonLocation: String, CaseIterable, Codable {
         case .bottomLeading: .bottomLeading
         case .bottomTrailing: .bottomTrailing
         case .bottomCenter: .bottom
-        case .none: .bottom
+        case .none: .bottomTrailing
         }
     }
     

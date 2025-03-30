@@ -65,6 +65,8 @@ class MediaControlState {
         return (position: minuteSecondString(from: playbackPosition * duration), duration: minuteSecondString(from: duration))
     }
     
+    var url: URL?
+    
     /// Creates a new MediaControlState
     /// - Parameters:
     ///   - blurred: true if the media should be blurred
