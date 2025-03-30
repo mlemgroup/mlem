@@ -7460,6 +7460,9 @@
         }
       }
     },
+    "TestFlight updated!" : {
+
+    },
     "That's all, folks!" : {
       "localizations" : {
         "fr" : {
@@ -8771,6 +8774,9 @@
           }
         }
       }
+    },
+    "What's New?" : {
+
     },
     "When disabled, some moderator actions will only be accessible from the post page." : {
       "localizations" : {
