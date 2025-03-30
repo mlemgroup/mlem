@@ -16,6 +16,7 @@ struct FeedCommentView<EmbeddedContent: View>: View {
     @Environment(\.reportContext) var reportContext: Report?
     
     @Setting(\.postSize) var settingsPostSize
+    @Setting(\.compactComments) var compactComments
     @Setting(\.blurNsfw) var blurNsfw
     @Setting(\.alternateInteractionBarLayoutForReports) var alternateInteractionBarLayoutForReports
 
@@ -35,10 +36,18 @@ struct FeedCommentView<EmbeddedContent: View>: View {
     
     var postSize: PostSize { overriddenSize ?? settingsPostSize }
     
+    var showCompactPostContext: Bool {
+        postSize == .compact || compactComments
+    }
+    
     var body: some View {
-        VStack(spacing: Constants.main.standardSpacing) {
+        VStack(spacing: 0) {
             if !postSize.tiled, let post = comment.post_ {
-                headerView(post: post)
+                if showCompactPostContext {
+                    compactHeaderView(post: post)
+                } else {
+                    largeHeaderView(post: post)
+                }
             }
             content
                 .contentShape(.interaction, .rect)
@@ -64,7 +73,7 @@ struct FeedCommentView<EmbeddedContent: View>: View {
             TileCommentView(comment: comment)
         } else {
             CommentView(comment: comment, inFeed: true, embeddedContent: embeddedContent)
-                .padding(.bottom, 5)
+                .padding(.bottom, showCompactPostContext ? 0 : 5)
         }
     }
     
@@ -77,7 +86,18 @@ struct FeedCommentView<EmbeddedContent: View>: View {
     }
     
     @ViewBuilder
-    func headerView(post: any Post) -> some View {
+    func compactHeaderView(post: any Post) -> some View {
+        Label(post.title, systemImage: Icons.posts)
+            .font(.footnote)
+            .foregroundStyle(.themedSecondary)
+            .lineLimit(1)
+            .padding(.leading, 10)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.bottom, postSize == .compact ? 3 : 5)
+    }
+    
+    @ViewBuilder
+    func largeHeaderView(post: any Post) -> some View {
         HStack {
             MediaView(
                 url: headerUrl(post: post),
@@ -103,7 +123,8 @@ struct FeedCommentView<EmbeddedContent: View>: View {
             .foregroundStyle(.themedSecondary)
             .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .padding(.top, 5)
+        .padding(.top, Constants.main.halfSpacing)
+        .padding(.bottom, Constants.main.standardSpacing)
         .onTapGesture {
             navigation.push(.post(post))
         }
