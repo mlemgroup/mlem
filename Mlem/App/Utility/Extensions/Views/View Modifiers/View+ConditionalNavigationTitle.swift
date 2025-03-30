@@ -3,7 +3,7 @@
 //  Mlem
 //
 //  Created by Sjmarf on 2025-03-30.
-//  
+//
 
 import SwiftUI
 
