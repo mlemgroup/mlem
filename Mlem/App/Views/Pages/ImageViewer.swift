@@ -136,7 +136,6 @@ struct ImageViewer: View {
                     state = true
                 }
             )
-            .overlay { zoomSliderOverlay }
             .onAppear {
                 animateOpacityUpdate(1.0)
             }

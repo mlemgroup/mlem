@@ -8,6 +8,10 @@
 import UIKit
 import SwiftUICore
 
+private enum PanType {
+    case pan, zoom, none
+}
+
 class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
     @Setting(\.zoomSliderLocation) var zoomSliderLocation
     
@@ -30,6 +34,20 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
     var bounds: CGSize?
     
     var resetting: Bool = false
+    private var panType: PanType = .none
+    
+    let leftZoomSliderHitbox: CGRect = .init(
+        x: 0,
+        y: 70,
+        width: 40,
+        height: UIScreen.main.bounds.height - 140
+    )
+    let rightZoomSliderHitbox: CGRect = .init(
+        x: UIScreen.main.bounds.width - 40,
+        y: 70,
+        width: 40,
+        height: UIScreen.main.bounds.height - 140
+    )
     
     init(scale: Binding<CGFloat>, offset: Binding<CGSize>) {
         _scale = scale
@@ -48,11 +66,22 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
     
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         if gestureRecognizer is UIPinchGestureRecognizer || gestureRecognizer is UITapGestureRecognizer {
-            true
+            return true
         } else if gestureRecognizer is UIPanGestureRecognizer {
-            gestureRecognizer.numberOfTouches == 1 && scale > 1.0
+            let location = gestureRecognizer.location(in: nil)
+            if gestureRecognizer.numberOfTouches == 1 {
+                if zoomSliderLocation.leftEnabled && leftZoomSliderHitbox.contains(location) ||
+                    zoomSliderLocation.rightEnabled && rightZoomSliderHitbox.contains(location) {
+                    panType = .zoom
+                    return true
+                } else if scale > 1.0 {
+                    panType = .pan
+                    return true
+                }
+            }
+            return false
         } else {
-            false
+            return false
         }
     }
     
@@ -84,24 +113,29 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
     
     @objc
     func handlePan(gesture: UIPanGestureRecognizer) {
+        switch panType {
+        case .pan:
+            handlePanPan(gesture: gesture)
+        case .zoom:
+            handleZoomPan(gesture: gesture)
+        case .none:
+            assertionFailure("Pan started with no valid pan type")
+        }
+    }
+    
+    func handlePanPan(gesture: UIPanGestureRecognizer) {
         switch gesture.state {
         case .possible:
             break
         case .began:
-            guard let view = gesture.view else {
-                assertionFailure("No view")
-                return
-            }
-            initializeBounds(view: view)
-            
-            print("DEBUG \(gesture.location(in: nil))")
-            
+            initializeBounds(view: gesture.view)
             resetMomentum()
             initialOffset = offset
             updateOffsetForPanGesture(gesture)
         case .changed:
             updateOffsetForPanGesture(gesture)
         case .ended, .cancelled:
+            panType = .none
             guard let view = gesture.view, let bounds else {
                 assertionFailure("Missing view or bounds")
                 return
@@ -120,6 +154,27 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
                 resetToBounds(activeOffset: .init(width: translation.x, height: translation.y).scaled(by: scale))
             }
         case .failed:
+            panType = .none
+            print("DEBUG pan gesture failed")
+        default:
+            assertionFailure("Unknown state")
+        }
+    }
+    
+    func handleZoomPan(gesture: UIPanGestureRecognizer) {
+        switch gesture.state {
+        case .possible:
+            break
+        case .began:
+            initializeBounds(view: gesture.view)
+            resetMomentum()
+            initialScale = scale
+        case .changed:
+            scale = (initialScale + (gesture.translation(in: nil).y / -60)).bounded(lower: 1.0, upper: 4.0)
+        case .ended, .cancelled:
+            panType = .none
+        case .failed:
+            panType = .none
             print("DEBUG pan gesture failed")
         default:
             assertionFailure("Unknown state")
