@@ -69,14 +69,21 @@ private struct ActionListView<ActionType: ActionTypeProviding>: View {
     var body: some View {
         Section(title) {
             ForEach(Array(actions.enumerated()), id: \.element) { index, action in
-                Label(action.appearance.label, systemImage: action.appearance.swipeIcon2)
-                    .tint(action.appearance.color)
-                    .contextMenu {
-                        Button("Remove", systemImage: "minus.circle", role: .destructive) {
+                HStack {
+                    Label(action.appearance.label, systemImage: action.appearance.swipeIcon2)
+                        .tint(action.appearance.color)
+                    Spacer()
+                    Button("Remove", systemImage: "minus.circle.fill", role: .destructive) {
+                        withAnimation {
                             actions.remove(at: index)
                         }
                     }
-                    .tag(action)
+                    .imageScale(.large)
+                    .foregroundStyle(.themedWarning)
+                    .buttonStyle(.plain)
+                    .labelStyle(.iconOnly)
+                }
+                .tag(action)
             }
             .onMove { old, new in
                 actions.move(fromOffsets: old, toOffset: new)
