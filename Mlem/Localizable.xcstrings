@@ -1750,7 +1750,11 @@
         }
       }
     },
+    "Choose whether to use alternate interaction bar and swipe action layouts for post and comment reports in Mod Mail." : {
+
+    },
     "Choose whether to use an alternate interaction bar layout for post and comment reports in Mod Mail." : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -4451,7 +4455,11 @@
         }
       }
     },
+    "Mod Mail Action Layouts" : {
+
+    },
     "Mod Mail Interaction Bar" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -5738,6 +5746,9 @@
           }
         }
       }
+    },
+    "Really apply this configuration to all other content types?" : {
+
     },
     "Really appoint %@ as a moderator of %@?" : {
       "localizations" : {
@@ -8479,6 +8490,7 @@
       }
     },
     "Use Alternate Layout" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -8487,6 +8499,9 @@
           }
         }
       }
+    },
+    "Use Alternate Layouts" : {
+
     },
     "User" : {
       "localizations" : {

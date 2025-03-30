@@ -105,6 +105,8 @@
 		034065C32D83742900637308 /* View+NavigtionStackPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034065C22D83742900637308 /* View+NavigtionStackPreview.swift */; };
 		034147FD2D8F5844005503AF /* ExpandedPostHistoryTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034147FC2D8F5844005503AF /* ExpandedPostHistoryTracker.swift */; };
 		0341480D2D8F63A6005503AF /* MlemMiddleware in Frameworks */ = {isa = PBXBuildFile; productRef = 0341480C2D8F63A6005503AF /* MlemMiddleware */; };
+		03414BA72D901678005503AF /* QuickSwipesViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03414BA62D901678005503AF /* QuickSwipesViewModifier.swift */; };
+		03414FDE2D9411EA005503AF /* SwipeActionEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03414FDD2D9411EA005503AF /* SwipeActionEditorView.swift */; };
 		0343C0482D3AD6DB001CF709 /* Set+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0343C0472D3AD6DB001CF709 /* Set+Extensions.swift */; };
 		034690932D0F4D720073E664 /* RemovableProviding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034690922D0F4D720073E664 /* RemovableProviding+Extensions.swift */; };
 		034690992D105DFD0073E664 /* InboxView+Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034690982D105DFD0073E664 /* InboxView+Types.swift */; };
@@ -638,6 +640,8 @@
 		033FCB3D2C5E7FA9007B7CD1 /* View+OutdatedFeedPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+OutdatedFeedPopup.swift"; sourceTree = "<group>"; };
 		034065C22D83742900637308 /* View+NavigtionStackPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+NavigtionStackPreview.swift"; sourceTree = "<group>"; };
 		034147FC2D8F5844005503AF /* ExpandedPostHistoryTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandedPostHistoryTracker.swift; sourceTree = "<group>"; };
+		03414BA62D901678005503AF /* QuickSwipesViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickSwipesViewModifier.swift; sourceTree = "<group>"; };
+		03414FDD2D9411EA005503AF /* SwipeActionEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeActionEditorView.swift; sourceTree = "<group>"; };
 		0343C0472D3AD6DB001CF709 /* Set+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Set+Extensions.swift"; sourceTree = "<group>"; };
 		034690922D0F4D720073E664 /* RemovableProviding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemovableProviding+Extensions.swift"; sourceTree = "<group>"; };
 		034690982D105DFD0073E664 /* InboxView+Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InboxView+Types.swift"; sourceTree = "<group>"; };
@@ -1183,6 +1187,7 @@
 				03B72B6A2C28A0190023A6C4 /* SubscriptionListSettingsView.swift */,
 				03D284052D2AEE3A00A6659B /* TabBarSettingsView.swift */,
 				031E2D5A2BEFC9460003BC45 /* ThemeSettingsView.swift */,
+				03414FDD2D9411EA005503AF /* SwipeActionEditorView.swift */,
 				039F588D2C7B598000C61658 /* Components */,
 				033FCB262C5E3933007B7CD1 /* Icon */,
 				0397D4982C6EA68A002C6CDC /* InteractionBarEditor */,
@@ -1741,6 +1746,7 @@
 			children = (
 				CD17B24A2C19108B001E174B /* SwipeConfiguration.swift */,
 				CDCA44942C17658000C092B3 /* View+QuickSwipes.swift */,
+				03414BA62D901678005503AF /* QuickSwipesViewModifier.swift */,
 				035E85AF2C999BC4002A2A29 /* PanGesture.swift */,
 			);
 			path = "Quick Swipes";
@@ -2790,8 +2796,10 @@
 				CD4ED8472BF110FA00EFA0A2 /* TabReselectTracker.swift in Sources */,
 				CD8457142D07576A00CEA2B8 /* AVPlayer+Extensions.swift in Sources */,
 				033FCAEE2C57DD14007B7CD1 /* CaptchaDifficulty+Extensions.swift in Sources */,
+				03414BA72D901678005503AF /* QuickSwipesViewModifier.swift in Sources */,
 				035BE0912BDEA01E00F77D73 /* View+NavigationSheetModifiers.swift in Sources */,
 				CDAA02DB2C810DB200D75633 /* Calendar+Extensions.swift in Sources */,
+				03414FDE2D9411EA005503AF /* SwipeActionEditorView.swift in Sources */,
 				CD4D59142B87B36B00B82964 /* InternetConnectionManager.swift in Sources */,
 				0324FA7B2C1F2CD200F6247D /* InfoStackView.swift in Sources */,
 				CD7DB9762C4D6C0A00DCC542 /* FeedCommentView.swift in Sources */,

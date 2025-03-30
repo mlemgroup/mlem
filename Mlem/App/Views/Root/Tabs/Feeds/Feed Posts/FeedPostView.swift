@@ -24,6 +24,7 @@ struct FeedPostView<EmbeddedContent: View>: View {
     @Setting(\.postSize) private var settingsPostSize
     @Setting(\.readPostIndicator) var readPostIndicator
     @Setting(\.readOutlineThickness) var readOutlineThickness
+    @Setting(\.alternateInteractionBarLayoutForReports) var alternateInteractionBarLayoutForReports
     
     let post: any Post1Providing
     let favoredLink: PostViewNavigationLink?
@@ -68,7 +69,11 @@ struct FeedPostView<EmbeddedContent: View>: View {
                         }
                     }
                     .contentShape(.contextMenuPreview, .rect(cornerRadius: postSize.swipeBehavior.cornerRadius))
-                    .quickSwipes(post.swipeActions(appState: appState, behavior: postSize.swipeBehavior))
+                    .quickSwipes(
+                        post: post,
+                        configuration: interactionBarConfiguration,
+                        behavior: .standard
+                    )
                     .contextMenu { post.allMenuActions(
                         appState: appState,
                         showAllActions: false,
@@ -131,6 +136,13 @@ struct FeedPostView<EmbeddedContent: View>: View {
         case .large:
             LargePostView(post: post, favoredLink: favoredLink)
         }
+    }
+    
+    var interactionBarConfiguration: PostBarConfiguration {
+        if reportContext != nil, alternateInteractionBarLayoutForReports {
+            return InteractionBarTracker.main.postReportInteractionBar
+        }
+        return InteractionBarTracker.main.postInteractionBar
     }
     
     func shouldRenderCompact() -> Bool {
