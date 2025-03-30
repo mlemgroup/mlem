@@ -78,4 +78,8 @@ class MomentumStatus {
         self.yt0 = time
         yUnitCurve = PolynomialBoundBounce(duration: boundResetDuration)
     }
+    
+    func isOutOfBounds(offset: CGSize) -> Bool {
+        return abs(offset.width) > bounds.width || abs(offset.height) > bounds.height
+    }
 }

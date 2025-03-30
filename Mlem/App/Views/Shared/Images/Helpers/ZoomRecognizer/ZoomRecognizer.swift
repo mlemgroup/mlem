@@ -51,14 +51,21 @@ struct ZoomRecognizer: UIViewRepresentable {
         panGesture.delegate = context.coordinator
         ret.addGestureRecognizer(panGesture)
         
-        let doubleTap: UITapGestureRecognizer = MomentumResetTapGestureRecognizer(
+        let doubleTap: UITapGestureRecognizer = UITapGestureRecognizer(
             target: context.coordinator,
-            action: #selector(Coordinator.handleDoubleTap(gesture:)),
-            resetMomentum: context.coordinator.resetMomentum
+            action: #selector(Coordinator.handleDoubleTap(gesture:))
         )
         doubleTap.numberOfTapsRequired = 2
         doubleTap.delegate = context.coordinator
         ret.addGestureRecognizer(doubleTap)
+        
+        let singleTap: UITapGestureRecognizer = MomentumResetTapGestureRecognizer(
+            target: context.coordinator,
+            action: #selector(Coordinator.handleSingleTap(gesture:)),
+            resetMomentum: context.coordinator.resetMomentum
+        )
+        singleTap.delegate = context.coordinator
+        ret.addGestureRecognizer(singleTap)
         
         return ret
     }
@@ -210,10 +217,21 @@ struct ZoomRecognizer: UIViewRepresentable {
                 anchor = .center
                 newOffset = .zero
             }
-
+            
             withAnimation(.easeInOut(duration: 0.25)) {
                 offset = newOffset
                 scale = targetZoomScale
+            }
+        }
+        
+        @objc
+        func handleSingleTap(gesture: UITapGestureRecognizer) {
+            if let bounds {
+                let maxXOffset: CGFloat = ((scale - 1) / 2) * bounds.width
+                let maxYOffset: CGFloat = ((scale - 1) / 2) * bounds.height
+                if abs(offset.width) > maxXOffset || abs(offset.height) > maxYOffset {
+                    resetToBounds(activeOffset: offset - initialOffset)
+                }
             }
         }
         
@@ -314,7 +332,6 @@ struct ZoomRecognizer: UIViewRepresentable {
         }
         
         func endPinch(gesture: PanningPinchRecognizer) {
-            // let panOffset = gesture.panOffset
             resetToBounds(activeOffset: gesture.panOffset)
             gesture.panOffset = .zero
         }
@@ -332,7 +349,6 @@ struct ZoomRecognizer: UIViewRepresentable {
             let maxXOffset: CGFloat = ((boundedScale - 1) / 2) * bounds.width
             let maxYOffset: CGFloat = ((boundedScale - 1) / 2) * bounds.height
             
-            // gesture.panOffset = .zero
             let newOffset: CGSize = .init(
                 width: (initialOffset.width + offsetDeltas.width).bounded(lower: -maxXOffset, upper: maxXOffset),
                 height: (initialOffset.height + offsetDeltas.height).bounded(lower: -maxYOffset, upper: maxYOffset)
@@ -372,6 +388,11 @@ class MomentumResetTapGestureRecognizer: UITapGestureRecognizer {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
         resetMomentum()
         super.touchesBegan(touches, with: event)
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent) {
+        print("DEBUG touches ended")
+        super.touchesEnded(touches, with: event)
     }
 }
 
