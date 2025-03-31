@@ -473,6 +473,7 @@
 		CD9CFA302C2E22F600739BBC /* FeedDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9CFA2F2C2E22F600739BBC /* FeedDescription.swift */; };
 		CD9CFA372C306DAB00739BBC /* PostGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9CFA362C306DAB00739BBC /* PostGridView.swift */; };
 		CD9D243D2CC1DF59006E5F3F /* AccountType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9D243C2CC1DF55006E5F3F /* AccountType.swift */; };
+		CDA67A9F2D9B32A100E5D17B /* CGPoint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA67A9E2D9B329D00E5D17B /* CGPoint+Extensions.swift */; };
 		CDA683F82C77E577000C4486 /* NsfwBlurBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA683F72C77E577000C4486 /* NsfwBlurBehavior.swift */; };
 		CDAA02DB2C810DB200D75633 /* Calendar+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDAA02DA2C810DB200D75633 /* Calendar+Extensions.swift */; };
 		CDAA02E12C817AAB00D75633 /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDAA02E02C817AAB00D75633 /* Color+Extensions.swift */; };
@@ -1014,6 +1015,7 @@
 		CD9CFA2F2C2E22F600739BBC /* FeedDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDescription.swift; sourceTree = "<group>"; };
 		CD9CFA362C306DAB00739BBC /* PostGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostGridView.swift; sourceTree = "<group>"; };
 		CD9D243C2CC1DF55006E5F3F /* AccountType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountType.swift; sourceTree = "<group>"; };
+		CDA67A9E2D9B329D00E5D17B /* CGPoint+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extensions.swift"; sourceTree = "<group>"; };
 		CDA683F72C77E577000C4486 /* NsfwBlurBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NsfwBlurBehavior.swift; sourceTree = "<group>"; };
 		CDAA02DA2C810DB200D75633 /* Calendar+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+Extensions.swift"; sourceTree = "<group>"; };
 		CDAA02E02C817AAB00D75633 /* Color+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extensions.swift"; sourceTree = "<group>"; };
@@ -1944,6 +1946,7 @@
 		CD4D58C22B86DC5800B82964 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				CDA67A9E2D9B329D00E5D17B /* CGPoint+Extensions.swift */,
 				CDFF9A322D88C3BE009E02E2 /* CGFloat+Extensions.swift */,
 				CD5D8E2A2D6D5AAE00AF5CE4 /* CGSize+Extensions.swift */,
 				03A631C92D4FCEE3009A47A6 /* MlemMiddleware Mock */,
@@ -2667,6 +2670,7 @@
 				03D2A6372C00F92400ED4FF2 /* Session.swift in Sources */,
 				03AF91DD2C1B23E500E56644 /* ImageViewer.swift in Sources */,
 				CD13CC592C583C7A001AF428 /* WebsitePreviewView.swift in Sources */,
+				CDA67A9F2D9B32A100E5D17B /* CGPoint+Extensions.swift in Sources */,
 				03BF11C52D3D3AFB00CC1F66 /* PostReadIndicatorSettingsView.swift in Sources */,
 				CD869FCE2C15F90C00FC8B5B /* ChildSizeReader.swift in Sources */,
 				035EDEF12C2DE94B00F51144 /* DefaultTextInputType.swift in Sources */,

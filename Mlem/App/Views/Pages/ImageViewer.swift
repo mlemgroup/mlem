@@ -29,8 +29,11 @@ struct ImageViewer: View {
         scrubbingAvailable: true
     )
     
-    /// Current scale of the ZoomableContainer
-    @State var currentScale: CGFloat = 1.0
+    /// Current scale of the zoomable image
+    @State var zoomScale: CGFloat = 1.0
+    
+    /// Offset of the zoomable image
+    @State var zoomOffset: CGSize = .zero
     
     /// True when the scale indicator should be visible, false otherwise
     @State var scaleDisplayShown: Bool = false
@@ -90,14 +93,6 @@ struct ImageViewer: View {
     /// Whether the controls are currently visible
     var controlsShown: Bool { controlOpacity > 0 }
     
-    // -------------------------------------------------------- UNDER CONSTRUCTION
-    
-    @State var anchor: UnitPoint = .center
-    @State var pinchOffset: CGSize = .zero
-    @State var targetScale: CGFloat = 1
-    
-    // --------------------------------------------------------
-    
     init(url: URL) {
         var components = URLComponents(url: url, resolvingAgainstBaseURL: false)!
         components.queryItems = components.queryItems?.filter { $0.name != "thumbnail" }
@@ -120,15 +115,6 @@ struct ImageViewer: View {
                     showControls(withSlide: true)
                 }
             }
-//            .onTapGesture {
-//                if enableControlTap {
-//                    if controlsShown {
-//                        hideControls()
-//                    } else {
-//                        showControls()
-//                    }
-//                }
-//            }
             .onAppear {
                 animateOpacityUpdate(1.0)
             }
@@ -145,9 +131,9 @@ struct ImageViewer: View {
                     scaleDisplayValue = scrubRate
                 }
             }
-            .onChange(of: currentScale) {
-                scaleDisplayValue = currentScale
-                isZoomed = currentScale != 1.0
+            .onChange(of: zoomScale) {
+                scaleDisplayValue = zoomScale
+                isZoomed = zoomScale != 1.0
             }
             .onChange(of: scaleDisplayValue) {
                 if !scaleDisplayShown {
@@ -175,8 +161,8 @@ struct ImageViewer: View {
         MediaView(url: url, controlState: $controlState)
             .overlay {
                 ZoomRecognizer(
-                    scale: $currentScale,
-                    offset: $pinchOffset,
+                    scale: $zoomScale,
+                    offset: $zoomOffset,
                     customDragMoved: handleDragGesture,
                     customDragEnded: dragEnded
                 ) {
@@ -189,8 +175,8 @@ struct ImageViewer: View {
                     }
                 }
             }
-            .scaleEffect(currentScale)
-            .offset(x: pinchOffset.width, y: pinchOffset.height)
+            .scaleEffect(zoomScale)
+            .offset(x: zoomOffset.width, y: zoomOffset.height)
     }
     
     func handleDragGesture(value: BridgeDragValue) {

@@ -180,7 +180,7 @@ extension ZoomRecognizerCoordinator {
         )
         
         let link = CADisplayLink(target: self, selector: #selector(tickMomentum))
-        link.preferredFrameRateRange = .init(minimum: 80, maximum: 110, __preferred: 110)
+        link.preferredFrameRateRange = .init(minimum: 80, maximum: 100, __preferred: 100)
         link.add(to: .current, forMode: .default)
         self.link = link
     }
