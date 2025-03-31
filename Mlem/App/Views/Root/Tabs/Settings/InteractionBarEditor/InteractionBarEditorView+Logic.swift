@@ -307,6 +307,8 @@ extension InteractionBarEditorView {
         configuration = .init(
             leading: barItems[..<infoStackIndex].compactMap(\.item),
             trailing: barItems[infoStackIndex...].compactMap(\.item),
+            leadingSwipes: configuration.leadingSwipes,
+            trailingSwipes: configuration.trailingSwipes,
             readouts: configuration.readouts,
             availableWidgets: configuration.availableWidgets
         )

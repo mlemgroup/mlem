@@ -58,7 +58,8 @@ extension ActionAppearance {
             isOn: false,
             isDestructive: true,
             color: .themedNegative,
-            icon: Icons.block
+            icon: Icons.block,
+            swipeIcon2: Icons.blockFill
         )
     }
     
@@ -68,7 +69,8 @@ extension ActionAppearance {
             isOn: isOn,
             isDestructive: !isOn,
             color: isOn ? .themedPositive : .themedNegative,
-            icon: isOn ? Icons.unbanFromInstance : Icons.banFromInstance
+            icon: isOn ? Icons.unbanFromInstance : Icons.banFromInstance,
+            swipeIcon2: isOn ? Icons.unbanFromInstanceFill : Icons.banFromInstanceFill
         )
     }
     
@@ -78,7 +80,8 @@ extension ActionAppearance {
             isOn: isOn,
             isDestructive: !isOn,
             color: isOn ? .themedPositive : .themedNegative,
-            icon: isOn ? Icons.unbanFromCommunity : Icons.banFromCommunity
+            icon: isOn ? Icons.unbanFromCommunity : Icons.banFromCommunity,
+            swipeIcon2: isOn ? Icons.unbanFromCommunityFill : Icons.banFromCommunityFill
         )
     }
     
@@ -96,7 +99,8 @@ extension ActionAppearance {
             isOn: isOn,
             isDestructive: !isOn,
             color: .themedNegative,
-            icon: isOn ? Icons.unblock : Icons.block
+            icon: isOn ? Icons.unblock : Icons.block,
+            swipeIcon2: isOn ? Icons.unblockFill : Icons.blockFill
         )
     }
     
@@ -132,7 +136,8 @@ extension ActionAppearance {
             isOn: false,
             isDestructive: true,
             color: .themedNegative,
-            icon: Icons.moderationReport
+            icon: Icons.moderationReport,
+            swipeIcon2: Icons.moderationReportFill
         )
     }
     
@@ -157,7 +162,9 @@ extension ActionAppearance {
             isOn: isOn,
             isInProgress: isInProgress,
             color: .themedModeration,
-            icon: isOn ? Icons.pinFill : Icons.pin
+            icon: isOn ? Icons.unpin : Icons.pin,
+            barIcon: isOn ? Icons.pinFill : Icons.pin,
+            swipeIcon2: isOn ? Icons.unpinFill : Icons.pinFill
         )
     }
     
@@ -167,7 +174,9 @@ extension ActionAppearance {
             isOn: isOn,
             isInProgress: isInProgress,
             color: .themedModeration,
-            icon: isOn ? Icons.pinFill : Icons.pin
+            icon: isOn ? Icons.unpin : Icons.pin,
+            barIcon: isOn ? Icons.pinFill : Icons.pin,
+            swipeIcon2: isOn ? Icons.unpinFill : Icons.pinFill
         )
     }
     
@@ -177,7 +186,9 @@ extension ActionAppearance {
             isOn: isOn,
             isInProgress: isInProgress,
             color: .themedAdministration,
-            icon: isOn ? Icons.pinFill : Icons.pin
+            icon: isOn ? Icons.unpin : Icons.pin,
+            barIcon: isOn ? Icons.pinFill : Icons.pin,
+            swipeIcon2: isOn ? Icons.unpinFill : Icons.pinFill
         )
     }
     
@@ -188,7 +199,8 @@ extension ActionAppearance {
             isInProgress: isInProgress,
             color: .themedLockAccent,
             icon: isOn ? Icons.unlock : Icons.lock,
-            barIcon: isOn ? Icons.lockFill : Icons.lock
+            barIcon: isOn ? Icons.lockFill : Icons.lock,
+            swipeIcon2: isOn ? Icons.unlockFill : Icons.lockFill
         )
     }
     
@@ -208,7 +220,7 @@ extension ActionAppearance {
         .init(
             label: isOn ? "Unresolve" : "Resolve",
             isOn: isOn,
-            color: isOn ? .themedPositive : .themedNegative,
+            color: .themedPositive,
             icon: isOn ? Icons.unresolve : Icons.resolve,
             barIcon: isOn ? Icons.resolveFill : Icons.resolve,
             swipeIcon2: isOn ? Icons.unresolveFill : Icons.resolveFill
