@@ -6,17 +6,22 @@
 //
 
 import UIKit
-import SwiftUICore
+import SwiftUI
 
 private enum PanType {
-    case move, zoom, none
+    case move, zoom, custom, none
 }
 
+// swiftlint:disable:next type_body_length
 class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
     @Setting(\.zoomSliderLocation) var zoomSliderLocation
     
     @Binding var scale: CGFloat
     @Binding var offset: CGSize
+    
+    let customDragMoved: ((BridgeDragValue) -> Void)?
+    let customDragEnded: (() -> Void)?
+    let customTap: (() -> Void)?
     
     /// Scale when the current pinch began
     private var initialScale: CGFloat = 1.0
@@ -32,27 +37,31 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
     
     /// Bounds of the view
     var bounds: CGSize?
+    // TODO: NOW can this be private?
     
-    var resetting: Bool = false
     private var panType: PanType = .none
     
-    // TODO: NOW make this nicer
     let leftZoomSliderHitbox: CGRect = .init(
-        x: 0,
-        y: 70,
-        width: 40,
-        height: UIScreen.main.bounds.height - 140
+        origin: .init(x: 0, y: 70),
+        size: .init(width: 40, height: UIScreen.main.bounds.height - 140)
     )
     let rightZoomSliderHitbox: CGRect = .init(
-        x: UIScreen.main.bounds.width - 40,
-        y: 70,
-        width: 40,
-        height: UIScreen.main.bounds.height - 140
+        origin: .init(x: UIScreen.main.bounds.width - 40, y: 70),
+        size: .init(width: 40, height: UIScreen.main.bounds.height - 140)
     )
     
-    init(scale: Binding<CGFloat>, offset: Binding<CGSize>) {
+    init(
+        scale: Binding<CGFloat>,
+        offset: Binding<CGSize>,
+        customDragMoved: ((BridgeDragValue) -> Void)? = nil,
+        customDragEnded: (() -> Void)? = nil,
+        customTap: (() -> Void)? = nil
+    ) {
         _scale = scale
         _offset = offset
+        self.customDragMoved = customDragMoved
+        self.customDragEnded = customDragEnded
+        self.customTap = customTap
     }
     
     func gestureRecognizer(
@@ -60,6 +69,18 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
         shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer
     ) -> Bool {
         if gestureRecognizer is UITapGestureRecognizer || otherGestureRecognizer is UITapGestureRecognizer {
+            return true
+        }
+        return false
+    }
+    
+    func gestureRecognizer(
+        _ gestureRecognizer: UIGestureRecognizer,
+        shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer
+    ) -> Bool {
+        if gestureRecognizer is UITapGestureRecognizer,
+           let doubleTap = otherGestureRecognizer as? UITapGestureRecognizer,
+           doubleTap.numberOfTapsRequired == 2 {
             return true
         }
         return false
@@ -77,6 +98,9 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
                     return true
                 } else if scale > 1.0 {
                     panType = .move
+                    return true
+                } else {
+                    panType = .custom
                     return true
                 }
             }
@@ -119,6 +143,8 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
             handleMovePan(gesture: gesture)
         case .zoom:
             handleZoomPan(gesture: gesture)
+        case .custom:
+            handleCustomPan(gesture: gesture)
         case .none:
             assertionFailure("Pan started with no valid pan type")
         }
@@ -203,6 +229,23 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
             assertionFailure("Unknown state")
         }
     }
+
+    func handleCustomPan(gesture: UIPanGestureRecognizer) {
+        switch gesture.state {
+        case .possible:
+            break
+        case .began, .changed:
+            customDragMoved?(.init(uiPanGesture: gesture))
+        case .ended, .cancelled:
+            if let customDragEnded {
+                customDragEnded()
+            }
+        case .failed:
+            break
+        default:
+            assertionFailure("Unrecognized state")
+        }
+    }
     
     @objc
     func handleDoubleTap(gesture: UITapGestureRecognizer) {
@@ -239,7 +282,7 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
     }
     
     @objc
-    func handleSingleTap(gesture: UITapGestureRecognizer) {
+    func handleSingleTap(gesture: MomentumResetTapGestureRecognizer) {
         initializeBounds(view: gesture.view)
         
         if let bounds {
@@ -248,6 +291,12 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
             if abs(offset.width) > maxXOffset || abs(offset.height) > maxYOffset {
                 resetToBounds(activeOffset: offset - initialOffset)
             }
+        }
+        
+        if gesture.momentumKilled {
+            gesture.momentumKilled = false
+        } else if let customTap {
+            customTap()
         }
     }
     
@@ -288,11 +337,15 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
     }
     
     /// Halts momentum physics
+    /// - Returns: true if momentum was killed, false if noop (no momentum when called)
+    @discardableResult
     @objc
-    func resetMomentum() {
+    func resetMomentum() -> Bool {
+        let ret = momentum != nil
         link?.invalidate()
         link = nil
         momentum = nil
+        return ret
     }
     
     @objc

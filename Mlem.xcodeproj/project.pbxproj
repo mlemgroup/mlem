@@ -505,6 +505,7 @@
 		CDCA44B62C176C5000C092B3 /* View+EdgeBorders.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCA44B52C176C5000C092B3 /* View+EdgeBorders.swift */; };
 		CDCC1BA72D99BDB7006579DF /* Recognizers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCC1BA62D99BDB0006579DF /* Recognizers.swift */; };
 		CDCC1BA92D99BEC1006579DF /* ZoomRecognizerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCC1BA82D99BEA8006579DF /* ZoomRecognizerCoordinator.swift */; };
+		CDCC7FED2D9AEDC800CE18DA /* BridgeDragValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCC7FEC2D9AEDBE00CE18DA /* BridgeDragValue.swift */; };
 		CDD4A09C2C8A122F0001AD1A /* CodableSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD4A09B2C8A122F0001AD1A /* CodableSettings.swift */; };
 		CDD4A09E2C8B69FC0001AD1A /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD4A09D2C8B69FC0001AD1A /* Button.swift */; };
 		CDD4A0A02C8B985D0001AD1A /* ImportExportSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD4A09F2C8B985D0001AD1A /* ImportExportSettingsView.swift */; };
@@ -1041,6 +1042,7 @@
 		CDCA44B52C176C5000C092B3 /* View+EdgeBorders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+EdgeBorders.swift"; sourceTree = "<group>"; };
 		CDCC1BA62D99BDB0006579DF /* Recognizers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recognizers.swift; sourceTree = "<group>"; };
 		CDCC1BA82D99BEA8006579DF /* ZoomRecognizerCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomRecognizerCoordinator.swift; sourceTree = "<group>"; };
+		CDCC7FEC2D9AEDBE00CE18DA /* BridgeDragValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgeDragValue.swift; sourceTree = "<group>"; };
 		CDD4A09B2C8A122F0001AD1A /* CodableSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableSettings.swift; sourceTree = "<group>"; };
 		CDD4A09D2C8B69FC0001AD1A /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 		CDD4A09F2C8B985D0001AD1A /* ImportExportSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportExportSettingsView.swift; sourceTree = "<group>"; };
@@ -2081,6 +2083,7 @@
 		CD5C197B2D9709660089614C /* ZoomRecognizer */ = {
 			isa = PBXGroup;
 			children = (
+				CDCC7FEC2D9AEDBE00CE18DA /* BridgeDragValue.swift */,
 				CDCC1BA82D99BEA8006579DF /* ZoomRecognizerCoordinator.swift */,
 				CDCC1BA62D99BDB0006579DF /* Recognizers.swift */,
 				CD5C197E2D970E570089614C /* MomentumStatus.swift */,
@@ -2593,6 +2596,7 @@
 				0382A7F22C0A758E00C79DDA /* ProfileDateView.swift in Sources */,
 				031E2D5B2BEFC9460003BC45 /* ThemeSettingsView.swift in Sources */,
 				CDE4AC3F2CA2083200981010 /* VideoView.swift in Sources */,
+				CDCC7FED2D9AEDC800CE18DA /* BridgeDragValue.swift in Sources */,
 				CD87BEBC2D51257A0099F190 /* Instance2Providing+Extensions.swift in Sources */,
 				03D3A1F12BB9D48E009DE55E /* BasicAction.swift in Sources */,
 				033F84662D1C780900D87A9E /* ModlogButtonView.swift in Sources */,

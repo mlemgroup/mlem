@@ -20,10 +20,23 @@ struct ZoomRecognizer: UIViewRepresentable {
 
     @Binding var scale: CGFloat
     @Binding var offset: CGSize
+    
+    let customDragMoved: ((BridgeDragValue) -> Void)?
+    let customDragEnded: (() -> Void)?
+    let customTap: (() -> Void)?
         
-    init(scale: Binding<CGFloat>, offset: Binding<CGSize>) {
+    init(
+        scale: Binding<CGFloat>,
+        offset: Binding<CGSize>,
+        customDragMoved: ((BridgeDragValue) -> Void)? = nil,
+        customDragEnded: (() -> Void)? = nil,
+        customTap: (() -> Void)? = nil
+    ) {
         _scale = scale
         _offset = offset
+        self.customDragMoved = customDragMoved
+        self.customDragEnded = customDragEnded
+        self.customTap = customTap
     }
 
     func updateUIView(_ uiView: UIView, context: Context) {
@@ -70,7 +83,13 @@ struct ZoomRecognizer: UIViewRepresentable {
     }
     
     func makeCoordinator() -> Coordinator {
-        .init(scale: $scale, offset: $offset)
+        .init(
+            scale: $scale,
+            offset: $offset,
+            customDragMoved: customDragMoved,
+            customDragEnded: customDragEnded,
+            customTap: customTap
+        )
     }
 }
 

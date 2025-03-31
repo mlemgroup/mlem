@@ -120,22 +120,15 @@ struct ImageViewer: View {
                     showControls(withSlide: true)
                 }
             }
-            .onTapGesture {
-                if enableControlTap {
-                    if controlsShown {
-                        hideControls()
-                    } else {
-                        showControls()
-                    }
-                }
-            }
-//            .simultaneousGesture(DragGesture(minimumDistance: 1.0)
-//                .onChanged { handleDragGesture(value: $0) }
-//                .updating($dragState) { _, state, _ in
-//                    // this detects cancelled gestures (e.g., if you zoom while dragging)
-//                    state = true
+//            .onTapGesture {
+//                if enableControlTap {
+//                    if controlsShown {
+//                        hideControls()
+//                    } else {
+//                        showControls()
+//                    }
 //                }
-//            )
+//            }
             .onAppear {
                 animateOpacityUpdate(1.0)
             }
@@ -181,13 +174,26 @@ struct ImageViewer: View {
     var zoomableImage: some View {
         MediaView(url: url, controlState: $controlState)
             .overlay {
-                ZoomRecognizer(scale: $currentScale, offset: $pinchOffset)
+                ZoomRecognizer(
+                    scale: $currentScale,
+                    offset: $pinchOffset,
+                    customDragMoved: handleDragGesture,
+                    customDragEnded: dragEnded
+                ) {
+                    if enableControlTap {
+                        if controlsShown {
+                            hideControls()
+                        } else {
+                            showControls()
+                        }
+                    }
+                }
             }
             .scaleEffect(currentScale)
             .offset(x: pinchOffset.width, y: pinchOffset.height)
     }
     
-    func handleDragGesture(value: DragGesture.Value) {
+    func handleDragGesture(value: BridgeDragValue) {
         guard !isZoomed else {
             return
         }
@@ -201,6 +207,35 @@ struct ImageViewer: View {
             }
         } else if !isDismissing {
             handleOffsetUpdate(value.translation.height)
+        }
+    }
+    
+    func dragEnded() {
+        guard let scrubbing = dragIsScrub else {
+            assertionFailure("dragGesture ended but dragIsScrub not defined")
+            return
+        }
+        dragIsScrub = nil
+        
+        if scrubbing {
+            // scrub ended: reset scrubbing and re-enable control tap
+            scrubRate = 1
+            scrubStartedPlaybackPosition = nil
+            scrubSegmentOffset = 0
+            controlState.scrubTarget = nil
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                enableControlTap = true
+            }
+        } else {
+            // dismiss swipe ended: choose whether to dismiss or reset
+            if abs(offset) > 100 {
+                swipeDismiss(finalOffset: offset > 0 ? screenHeight : -screenHeight)
+            } else {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    enableControlTap = true
+                }
+                animateOffsetUpdate(0)
+            }
         }
     }
     
@@ -321,7 +356,7 @@ struct ImageViewer: View {
     
     /// Responds to scrub updates
     /// - Parameter value: latest scrub gesture value
-    private func handleScrubUpdate(_ value: DragGesture.Value) {
+    private func handleScrubUpdate(_ value: BridgeDragValue) {
         showControls()
         
         let onPlaybackBar: Bool = playbackBarHitbox?.contains(value.startLocation) ?? false

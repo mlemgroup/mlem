@@ -9,15 +9,16 @@ import UIKit
 import SwiftUICore
 
 class MomentumResetTapGestureRecognizer: UITapGestureRecognizer {
-    var resetMomentum: () -> Void
+    var momentumKilled: Bool = false
+    var resetMomentum: () -> Bool
     
-    init(target: Any?, action: Selector?, resetMomentum: @escaping () -> Void) {
+    init(target: Any?, action: Selector?, resetMomentum: @escaping () -> Bool) {
         self.resetMomentum = resetMomentum
         super.init(target: target, action: action)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
-        resetMomentum()
+        momentumKilled = resetMomentum()
         super.touchesBegan(touches, with: event)
     }
 }
