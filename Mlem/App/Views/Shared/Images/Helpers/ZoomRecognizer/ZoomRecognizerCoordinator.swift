@@ -180,7 +180,7 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
             updateOffsetForPanGesture(gesture)
         case .ended, .cancelled:
             panType = .none
-            guard let view = gesture.view, let bounds else {
+            guard let view = gesture.view else {
                 assertionFailure("Missing view or bounds")
                 return
             }
@@ -311,13 +311,9 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
     func handleSingleTap(gesture: MomentumResetTapGestureRecognizer) {
         initializeBounds(view: gesture.view)
 
-        // TODO: cacheable?
-        if let bounds {
-            let maxXOffset: CGFloat = ((scale - 1) / 2) * bounds.width
-            let maxYOffset: CGFloat = ((scale - 1) / 2) * bounds.height
-            if abs(offset.width) > maxXOffset || abs(offset.height) > maxYOffset {
-                resetToBounds(activeOffset: offset - initialOffset)
-            }
+        let maxOffsets = maxOffsets.compute(scale)
+        if abs(offset.width) > maxOffsets.width || abs(offset.height) > maxOffsets.height {
+            resetToBounds(activeOffset: offset - initialOffset)
         }
         
         if gesture.momentumKilled {
@@ -474,12 +470,11 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
         let boundedScale: CGFloat = scale.bounded(lower: 1.0, upper: 4.0)
         
         let offsetDeltas = computeOffsetDeltas(scaleFactor: boundedScale / initialScale) + activeOffset
-        let maxXOffset: CGFloat = ((boundedScale - 1) / 2) * bounds.width
-        let maxYOffset: CGFloat = ((boundedScale - 1) / 2) * bounds.height
+        let maxOffsets = maxOffsets.compute(boundedScale)
         
         let newOffset: CGSize = .init(
-            width: (initialOffset.width + offsetDeltas.width).bounded(lower: -maxXOffset, upper: maxXOffset),
-            height: (initialOffset.height + offsetDeltas.height).bounded(lower: -maxYOffset, upper: maxYOffset)
+            width: (initialOffset.width + offsetDeltas.width).bounded(lower: -maxOffsets.width, upper: maxOffsets.width),
+            height: (initialOffset.height + offsetDeltas.height).bounded(lower: -maxOffsets.height, upper: maxOffsets.height)
         )
         
         withAnimation(.easeOut(duration: 0.25)) {
