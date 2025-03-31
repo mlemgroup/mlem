@@ -507,7 +507,7 @@
 		CDCA44B22C17675600C092B3 /* Haptic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCA44B12C17675600C092B3 /* Haptic.swift */; };
 		CDCA44B42C176A4700C092B3 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCA44B32C176A4700C092B3 /* Array+Extensions.swift */; };
 		CDCA44B62C176C5000C092B3 /* View+EdgeBorders.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCA44B52C176C5000C092B3 /* View+EdgeBorders.swift */; };
-		CDCC1BA72D99BDB7006579DF /* Recognizers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCC1BA62D99BDB0006579DF /* Recognizers.swift */; };
+		CDCC1BA72D99BDB7006579DF /* GestureRecognizers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCC1BA62D99BDB0006579DF /* GestureRecognizers.swift */; };
 		CDCC1BA92D99BEC1006579DF /* ZoomRecognizerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCC1BA82D99BEA8006579DF /* ZoomRecognizerCoordinator.swift */; };
 		CDCC7FED2D9AEDC800CE18DA /* BridgeDragValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCC7FEC2D9AEDBE00CE18DA /* BridgeDragValue.swift */; };
 		CDCC7FEF2D9B1E7100CE18DA /* CachedComputation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCC7FEE2D9B1E6E00CE18DA /* CachedComputation.swift */; };
@@ -1051,7 +1051,7 @@
 		CDCA44B12C17675600C092B3 /* Haptic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptic.swift; sourceTree = "<group>"; };
 		CDCA44B32C176A4700C092B3 /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
 		CDCA44B52C176C5000C092B3 /* View+EdgeBorders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+EdgeBorders.swift"; sourceTree = "<group>"; };
-		CDCC1BA62D99BDB0006579DF /* Recognizers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recognizers.swift; sourceTree = "<group>"; };
+		CDCC1BA62D99BDB0006579DF /* GestureRecognizers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureRecognizers.swift; sourceTree = "<group>"; };
 		CDCC1BA82D99BEA8006579DF /* ZoomRecognizerCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomRecognizerCoordinator.swift; sourceTree = "<group>"; };
 		CDCC7FEC2D9AEDBE00CE18DA /* BridgeDragValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgeDragValue.swift; sourceTree = "<group>"; };
 		CDCC7FEE2D9B1E6E00CE18DA /* CachedComputation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedComputation.swift; sourceTree = "<group>"; };
@@ -2105,7 +2105,7 @@
 				CDCC7FEE2D9B1E6E00CE18DA /* CachedComputation.swift */,
 				CDCC7FEC2D9AEDBE00CE18DA /* BridgeDragValue.swift */,
 				CDCC1BA82D99BEA8006579DF /* ZoomRecognizerCoordinator.swift */,
-				CDCC1BA62D99BDB0006579DF /* Recognizers.swift */,
+				CDCC1BA62D99BDB0006579DF /* GestureRecognizers.swift */,
 				CD5C197E2D970E570089614C /* MomentumStatus.swift */,
 				CD5C197C2D97096D0089614C /* ZoomCurves.swift */,
 				CD9BD5802D8F8F750006AB7F /* ZoomRecognizer.swift */,
@@ -2586,7 +2586,7 @@
 				03E0EF452CA74036002CB66C /* CommentPage.swift in Sources */,
 				030BCB1B2C3EA5FD0037680F /* InstanceDetailsView.swift in Sources */,
 				03134A582BEC1C46002662CC /* AccountListSettingsView.swift in Sources */,
-				CDCC1BA72D99BDB7006579DF /* Recognizers.swift in Sources */,
+				CDCC1BA72D99BDB7006579DF /* GestureRecognizers.swift in Sources */,
 				03E614E52C0BCCAA00F692A4 /* PostSize.swift in Sources */,
 				03B72B672C2888EE0023A6C4 /* View+ContextMenu.swift in Sources */,
 				039F589D2C7B6C0A00C61658 /* FormChevron.swift in Sources */,
