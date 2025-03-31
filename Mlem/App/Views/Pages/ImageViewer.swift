@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-// swiftlint:disable file_length
-// swiftlint:disable:next type_body_length
 struct ImageViewer: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.dismiss) var dismiss
@@ -37,15 +35,6 @@ struct ImageViewer: View {
     
     /// True when the scale indicator should be visible, false otherwise
     @State var scaleDisplayShown: Bool = false
-    
-    /// Scale when slide-to-zoom gesture started
-    @State var dragStartedScale: CGFloat?
-    
-    /// Tracks slide-to-zoom drag gesture
-    @GestureState var scaleDragState: Bool = false
-    
-    /// Tracks scrub/dismiss drag gesture
-    @GestureState var dragState: Bool = false
     
     /// True when the current drag gesture is a scrub, false when dismiss, nil when no gesture
     @State var dragIsScrub: Bool?
@@ -118,14 +107,6 @@ struct ImageViewer: View {
             .onAppear {
                 animateOpacityUpdate(1.0)
             }
-            .onChange(of: dragState) {
-                handleDragStateChange(dragState)
-            }
-            .onChange(of: scaleDragState) {
-                if !scaleDragState {
-                    dragStartedScale = nil
-                }
-            }
             .onChange(of: scrubRate) {
                 if dragIsScrub ?? false { // don't update value if not currently scrubbing
                     scaleDisplayValue = scrubRate
@@ -154,29 +135,6 @@ struct ImageViewer: View {
             .background(ClearBackgroundView())
             .statusBarHidden(!isDismissing)
             .coordinateSpace(name: "ImageViewer")
-    }
-    
-    @ViewBuilder
-    var zoomableImage: some View {
-        MediaView(url: url, controlState: $controlState)
-            .overlay {
-                ZoomRecognizer(
-                    scale: $zoomScale,
-                    offset: $zoomOffset,
-                    customDragMoved: handleDragGesture,
-                    customDragEnded: dragEnded
-                ) {
-                    if enableControlTap {
-                        if controlsShown {
-                            hideControls()
-                        } else {
-                            showControls()
-                        }
-                    }
-                }
-            }
-            .scaleEffect(zoomScale)
-            .offset(x: zoomOffset.width, y: zoomOffset.height)
     }
     
     func handleDragGesture(value: BridgeDragValue) {
@@ -279,7 +237,7 @@ struct ImageViewer: View {
         }
     }
     
-    private func hideControls(withSlide: Bool = false) {
+    func hideControls(withSlide: Bool = false) {
         withAnimation(.easeOut(duration: duration)) {
             if withSlide {
                 controlOffset = maxControlOffset
@@ -289,7 +247,7 @@ struct ImageViewer: View {
     }
     
     /// Returns controls to a visible state
-    private func showControls(withSlide: Bool = false) {
+    func showControls(withSlide: Bool = false) {
         guard !controlsShown else { return }
         
         controlOffset = withSlide ? maxControlOffset : 0
@@ -408,5 +366,3 @@ private struct ClearBackgroundView: UIViewRepresentable {
         }
     }
 }
-
-// swiftlint:enable file_length
