@@ -7,30 +7,7 @@
 
 import SwiftUI
 
-extension ImageViewer {
-    @ViewBuilder
-    var zoomableImage: some View {
-        MediaView(url: url, controlState: $controlState)
-            .overlay {
-                ZoomRecognizer(
-                    scale: $zoomScale,
-                    offset: $zoomOffset,
-                    customDragMoved: handleDragGesture,
-                    customDragEnded: dragEnded
-                ) {
-                    if enableControlTap {
-                        if controlsShown {
-                            hideControls()
-                        } else {
-                            showControls()
-                        }
-                    }
-                }
-            }
-            .scaleEffect(zoomScale)
-            .offset(x: zoomOffset.width, y: zoomOffset.height)
-    }
-    
+extension ImageViewer {    
     @ViewBuilder
     var controlOverlay: some View {
         VStack {

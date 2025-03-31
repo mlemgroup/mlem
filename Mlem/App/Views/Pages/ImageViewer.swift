@@ -89,55 +89,70 @@ struct ImageViewer: View {
     }
     
     var body: some View {
-        zoomableImage
-            .offset(y: offset)
-            .background(.black)
-            .overlay(controlOverlay)
-            .overlay(alignment: .topLeading) {
-                scaleDisplay
-            }
-            .opacity(opacity)
-            .onChange(of: isZoomed) {
-                if isZoomed {
-                    hideControls(withSlide: true)
+        ZoomableImageView(
+            url: url,
+            controlState: $controlState,
+            scale: $zoomScale,
+            offset: $zoomOffset,
+            customDragMoved: dragMoved,
+            customDragEnded: dragEnded
+        ) {
+            if enableControlTap {
+                if controlsShown {
+                    hideControls()
                 } else {
-                    showControls(withSlide: true)
+                    showControls()
                 }
             }
-            .onAppear {
-                animateOpacityUpdate(1.0)
+        }
+        .offset(y: offset)
+        .background(.black)
+        .overlay(controlOverlay)
+        .overlay(alignment: .topLeading) {
+            scaleDisplay
+        }
+        .opacity(opacity)
+        .onChange(of: isZoomed) {
+            if isZoomed {
+                hideControls(withSlide: true)
+            } else {
+                showControls(withSlide: true)
             }
-            .onChange(of: scrubRate) {
-                if dragIsScrub ?? false { // don't update value if not currently scrubbing
-                    scaleDisplayValue = scrubRate
+        }
+        .onAppear {
+            animateOpacityUpdate(1.0)
+        }
+        .onChange(of: scrubRate) {
+            if dragIsScrub ?? false { // don't update value if not currently scrubbing
+                scaleDisplayValue = scrubRate
+            }
+        }
+        .onChange(of: zoomScale) {
+            scaleDisplayValue = zoomScale
+            isZoomed = zoomScale != 1.0
+        }
+        .onChange(of: scaleDisplayValue) {
+            if !scaleDisplayShown {
+                withAnimation(.easeIn(duration: 0.1)) {
+                    scaleDisplayShown = true
                 }
             }
-            .onChange(of: zoomScale) {
-                scaleDisplayValue = zoomScale
-                isZoomed = zoomScale != 1.0
-            }
-            .onChange(of: scaleDisplayValue) {
-                if !scaleDisplayShown {
-                    withAnimation(.easeIn(duration: 0.1)) {
-                        scaleDisplayShown = true
+            let oldScale: CGFloat = scaleDisplayValue
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                if scaleDisplayValue == oldScale {
+                    withAnimation {
+                        scaleDisplayShown = false
                     }
                 }
-                let oldScale: CGFloat = scaleDisplayValue
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    if scaleDisplayValue == oldScale {
-                        withAnimation {
-                            scaleDisplayShown = false
-                        }
-                    }
-                }
             }
-            .quickLookPreview($quickLookUrl)
-            .background(ClearBackgroundView())
-            .statusBarHidden(!isDismissing)
-            .coordinateSpace(name: "ImageViewer")
+        }
+        .quickLookPreview($quickLookUrl)
+        .background(ClearBackgroundView())
+        .statusBarHidden(!isDismissing)
+        .coordinateSpace(name: "ImageViewer")
     }
     
-    func handleDragGesture(value: BridgeDragValue) {
+    func dragMoved(value: BridgeDragValue) {
         guard !isZoomed else {
             return
         }
@@ -179,42 +194,6 @@ struct ImageViewer: View {
                     enableControlTap = true
                 }
                 animateOffsetUpdate(0)
-            }
-        }
-    }
-    
-    func handleDragStateChange(_ newDragState: Bool) {
-        guard !isZoomed else { return }
-        
-        if newDragState {
-            // drag gesture conflicts with control tap, so we disable it for a brief window after detecting a drag
-            enableControlTap = false
-        } else {
-            guard let scrubbing = dragIsScrub else {
-                // assertionFailure("dragGesture ended but dragIsScrub not defined")
-                return
-            }
-            dragIsScrub = nil
-            
-            if scrubbing {
-                // scrub ended: reset scrubbing and re-enable control tap
-                scrubRate = 1
-                scrubStartedPlaybackPosition = nil
-                scrubSegmentOffset = 0
-                controlState.scrubTarget = nil
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    enableControlTap = true
-                }
-            } else {
-                // dismiss swipe ended: choose whether to dismiss or reset
-                if abs(offset) > 100 {
-                    swipeDismiss(finalOffset: offset > 0 ? screenHeight : -screenHeight)
-                } else {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        enableControlTap = true
-                    }
-                    animateOffsetUpdate(0)
-                }
             }
         }
     }

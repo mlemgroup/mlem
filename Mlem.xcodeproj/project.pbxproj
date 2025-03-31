@@ -399,6 +399,7 @@
 		CD1DF6382D38357500F7851E /* MediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1DF6372D38357100F7851E /* MediaView.swift */; };
 		CD1DF63E2D387E8500F7851E /* MediaView+Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1DF63D2D387E8300F7851E /* MediaView+Views.swift */; };
 		CD24CAFC2D5568FE0032B5E8 /* DiscussionLanguageSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD24CAFB2D5568F90032B5E8 /* DiscussionLanguageSettingsView.swift */; };
+		CD27839A2D9B366000DD4C69 /* ZoomableImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2783992D9B365D00DD4C69 /* ZoomableImageView.swift */; };
 		CD2C86542D5556C00034CD8A /* MlemError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2C86532D5556BE0034CD8A /* MlemError.swift */; };
 		CD3153072C38421B00BC5FBE /* View+LoadFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3153062C38421B00BC5FBE /* View+LoadFeed.swift */; };
 		CD332D792CA7175500A53988 /* PlayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD332D782CA7175200A53988 /* PlayButton.swift */; };
@@ -941,6 +942,7 @@
 		CD1DF6372D38357100F7851E /* MediaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaView.swift; sourceTree = "<group>"; };
 		CD1DF63D2D387E8300F7851E /* MediaView+Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MediaView+Views.swift"; sourceTree = "<group>"; };
 		CD24CAFB2D5568F90032B5E8 /* DiscussionLanguageSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionLanguageSettingsView.swift; sourceTree = "<group>"; };
+		CD2783992D9B365D00DD4C69 /* ZoomableImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomableImageView.swift; sourceTree = "<group>"; };
 		CD2C86532D5556BE0034CD8A /* MlemError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MlemError.swift; sourceTree = "<group>"; };
 		CD3153062C38421B00BC5FBE /* View+LoadFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+LoadFeed.swift"; sourceTree = "<group>"; };
 		CD332D782CA7175200A53988 /* PlayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayButton.swift; sourceTree = "<group>"; };
@@ -1734,6 +1736,7 @@
 		CD13CC682C5D3CCA001AF428 /* Wrappers */ = {
 			isa = PBXGroup;
 			children = (
+				CD2783992D9B365D00DD4C69 /* ZoomableImageView.swift */,
 				03B04FBF2C5FC32300824128 /* SimpleAvatarView.swift */,
 				CDB2EC892BFAEFDF00DBC0EF /* ThumbnailImageView.swift */,
 				CD13CC642C5D2B9D001AF428 /* CircleCroppedImageView.swift */,
@@ -2779,6 +2782,7 @@
 				CD4D58B92B86D9F800B82964 /* AccountListRow.swift in Sources */,
 				03B72B6B2C28A0190023A6C4 /* SubscriptionListSettingsView.swift in Sources */,
 				03F6BD982D500E2A006A425E /* PersonMockType+Realistic.swift in Sources */,
+				CD27839A2D9B366000DD4C69 /* ZoomableImageView.swift in Sources */,
 				CDCA44B02C17673D00C092B3 /* HapticPriority.swift in Sources */,
 				CD4D58B32B86BFD400B82964 /* AccountsTracker.swift in Sources */,
 				0381889B2D4412A40073E88D /* SafetyBlurNsfwSettingsView.swift in Sources */,
