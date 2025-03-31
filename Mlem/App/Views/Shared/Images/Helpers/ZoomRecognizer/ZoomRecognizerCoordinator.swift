@@ -41,6 +41,16 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
     
     private var panType: PanType = .none
     
+    /// Computes the maximum allowed offsets for a given scale.
+    /// - Note: to get the minimum offset, multiply the return value by -1.
+    lazy var maxOffsets: CachedComputation<CGFloat, CGSize> = .init { input in
+        guard let bounds = self.bounds else {
+            assertionFailure("No bounds")
+            return .zero
+        }
+        return bounds.scaled(by: (input - 1) / 2)
+    }
+    
     let leftZoomSliderHitbox: CGRect = .init(
         origin: .init(x: 0, y: 70),
         size: .init(width: 40, height: UIScreen.main.bounds.height - 140)
@@ -62,6 +72,7 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
         self.customDragMoved = customDragMoved
         self.customDragEnded = customDragEnded
         self.customTap = customTap
+        
     }
     
     func gestureRecognizer(
@@ -177,13 +188,18 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
             initialScale = scale
             
             let gestureVelocity = gesture.velocity(in: view)
-            let maxXOffset: CGFloat = ((scale - 1) / 2) * bounds.width
-            let maxYOffset: CGFloat = ((scale - 1) / 2) * bounds.height
-            let xOob = abs(offset.width) >= maxXOffset
-            let yOob = abs(offset.height) >= maxYOffset
+            let maxOffsets = maxOffsets.compute(scale)
+            let xOob = abs(offset.width) >= maxOffsets.width
+            let yOob = abs(offset.height) >= maxOffsets.height
             if !(xOob && yOob),
                abs(gestureVelocity.x) + abs(gestureVelocity.y) > 40 {
-                startMomentum(velocity: gestureVelocity, xOob: xOob, yOob: yOob, maxXOffset: maxXOffset, maxYOffset: maxYOffset)
+                startMomentum(
+                    velocity: gestureVelocity,
+                    xOob: xOob,
+                    yOob: yOob,
+                    maxXOffset: maxOffsets.width,
+                    maxYOffset: maxOffsets.height
+                )
             } else {
                 let translation = gesture.translation(in: view)
                 resetToBounds(activeOffset: .init(width: translation.x, height: translation.y).scaled(by: scale))
@@ -213,20 +229,15 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
             let yAnchor = (((scale * bounds.height) / 2) - offset.height) / (scale * bounds.height)
             anchor = .init(x: xAnchor, y: yAnchor)
         case .changed:
-            guard let bounds else {
-                assertionFailure("No bounds")
-                return
-            }
             let newScale = (initialScale + (gesture.translation(in: nil).y / -60)).bounded(lower: 1.0, upper: 4.0)
-            let maxXOffset: CGFloat = ((newScale - 1) / 2) * bounds.width
-            let maxYOffset: CGFloat = ((newScale - 1) / 2) * bounds.height
+            let maxOffsets = maxOffsets.compute(newScale)
             let offsetDeltas = computeOffsetDeltas(scaleFactor: newScale / initialScale)
             let newOffset = initialOffset + offsetDeltas
             
             scale = newScale
             offset = .init(
-                width: newOffset.width.bounded(lower: -maxXOffset, upper: maxXOffset),
-                height: newOffset.height.bounded(lower: -maxYOffset, upper: maxYOffset)
+                width: newOffset.width.bounded(lower: -maxOffsets.width, upper: maxOffsets.width),
+                height: newOffset.height.bounded(lower: -maxOffsets.height, upper: maxOffsets.height)
             )
         case .ended, .cancelled:
             panType = .none
@@ -277,15 +288,12 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
             let location = gesture.location(in: view)
             targetZoomScale = 3
             anchor = .init(x: location.x / bounds.width, y: location.y / bounds.height)
-            let adjustedScale: CGFloat = targetZoomScale / scale
-            
             let offsetDeltas = computeOffsetDeltas(scaleFactor: targetZoomScale / initialScale)
-            let maxXOffset: CGFloat = ((targetZoomScale - 1) / 2) * bounds.width
-            let maxYOffset: CGFloat = ((targetZoomScale - 1) / 2) * bounds.height
+            let maxOffsets = maxOffsets.compute(targetZoomScale)
             
             newOffset = .init(
-                width: (initialOffset.width + offsetDeltas.width).bounded(lower: -maxXOffset, upper: maxXOffset),
-                height: (initialOffset.height + offsetDeltas.height).bounded(lower: -maxYOffset, upper: maxYOffset)
+                width: (initialOffset.width + offsetDeltas.width).bounded(lower: -maxOffsets.width, upper: maxOffsets.width),
+                height: (initialOffset.height + offsetDeltas.height).bounded(lower: -maxOffsets.height, upper: maxOffsets.height)
             )
         } else {
             targetZoomScale = 1
@@ -302,7 +310,8 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
     @objc
     func handleSingleTap(gesture: MomentumResetTapGestureRecognizer) {
         initializeBounds(view: gesture.view)
-        
+
+        // TODO: cacheable?
         if let bounds {
             let maxXOffset: CGFloat = ((scale - 1) / 2) * bounds.width
             let maxYOffset: CGFloat = ((scale - 1) / 2) * bounds.height
@@ -348,10 +357,44 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
             yOob: yOob
         )
         
-        let link = CADisplayLink(target: self, selector: #selector(fireTimer))
+        let link = CADisplayLink(target: self, selector: #selector(tickMomentum))
         link.preferredFrameRateRange = .init(minimum: 60, maximum: 90, __preferred: 90)
         link.add(to: .current, forMode: .default)
         self.link = link
+    }
+    
+    @objc
+    func tickMomentum(displayLink: CADisplayLink) {
+        guard let momentum else {
+            assertionFailure("Timer fired with no momentum")
+            return
+        }
+        
+        // set up initial times
+        if momentum.xt0 == nil {
+            momentum.xt0 = displayLink.timestamp
+        }
+        if momentum.yt0 == nil {
+            momentum.yt0 = displayLink.timestamp
+        }
+        
+        let maxOffsets = maxOffsets.compute(scale)
+        
+        // check out-of-bounds
+        if !momentum.xOob, abs(offset.width) >= maxOffsets.width {
+            initialOffset.width = maxOffsets.width * (offset.width < 0 ? -1 : 1)
+            momentum.xLeftBounds(at: displayLink.timestamp)
+        }
+        if !momentum.yOob, abs(offset.height) >= maxOffsets.height {
+            initialOffset.height = maxOffsets.height * (offset.height < 0 ? -1 : 1)
+            momentum.yLeftBounds(at: displayLink.timestamp)
+        }
+        
+        // compute offset
+        let (increment, active) = momentum.position(at: displayLink.targetTimestamp)
+        
+        offset = initialOffset + increment
+        if !active { resetMomentum() }
     }
     
     /// Halts momentum physics
@@ -364,46 +407,6 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
         link = nil
         momentum = nil
         return ret
-    }
-    
-    @objc
-    func fireTimer(displayLink: CADisplayLink) {
-        guard let momentum else {
-            assertionFailure("Timer fired with no momentum")
-            return
-        }
-        
-        guard let bounds else {
-            assertionFailure("No bounds")
-            return
-        }
-        
-        // set up initial times
-        if momentum.xt0 == nil {
-            momentum.xt0 = displayLink.timestamp
-        }
-        if momentum.yt0 == nil {
-            momentum.yt0 = displayLink.timestamp
-        }
-        
-        let maxXOffset: CGFloat = ((scale - 1) / 2) * bounds.width
-        let maxYOffset: CGFloat = ((scale - 1) / 2) * bounds.height
-        
-        // check out-of-bounds
-        if !momentum.xOob, abs(offset.width) >= maxXOffset {
-            initialOffset.width = maxXOffset * (offset.width < 0 ? -1 : 1)
-            momentum.xLeftBounds(at: displayLink.timestamp)
-        }
-        if !momentum.yOob, abs(offset.height) >= maxYOffset {
-            initialOffset.height = maxYOffset * (offset.height < 0 ? -1 : 1)
-            momentum.yLeftBounds(at: displayLink.timestamp)
-        }
-        
-        // compute offset
-        let (increment, active) = momentum.position(at: displayLink.targetTimestamp)
-        
-        offset = initialOffset + increment
-        if !active { resetMomentum() }
     }
     
     func updateScale(with scale: CGFloat, panOffset: CGSize) {

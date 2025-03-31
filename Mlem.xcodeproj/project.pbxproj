@@ -506,6 +506,7 @@
 		CDCC1BA72D99BDB7006579DF /* Recognizers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCC1BA62D99BDB0006579DF /* Recognizers.swift */; };
 		CDCC1BA92D99BEC1006579DF /* ZoomRecognizerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCC1BA82D99BEA8006579DF /* ZoomRecognizerCoordinator.swift */; };
 		CDCC7FED2D9AEDC800CE18DA /* BridgeDragValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCC7FEC2D9AEDBE00CE18DA /* BridgeDragValue.swift */; };
+		CDCC7FEF2D9B1E7100CE18DA /* CachedComputation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCC7FEE2D9B1E6E00CE18DA /* CachedComputation.swift */; };
 		CDD4A09C2C8A122F0001AD1A /* CodableSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD4A09B2C8A122F0001AD1A /* CodableSettings.swift */; };
 		CDD4A09E2C8B69FC0001AD1A /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD4A09D2C8B69FC0001AD1A /* Button.swift */; };
 		CDD4A0A02C8B985D0001AD1A /* ImportExportSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD4A09F2C8B985D0001AD1A /* ImportExportSettingsView.swift */; };
@@ -1043,6 +1044,7 @@
 		CDCC1BA62D99BDB0006579DF /* Recognizers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recognizers.swift; sourceTree = "<group>"; };
 		CDCC1BA82D99BEA8006579DF /* ZoomRecognizerCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomRecognizerCoordinator.swift; sourceTree = "<group>"; };
 		CDCC7FEC2D9AEDBE00CE18DA /* BridgeDragValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgeDragValue.swift; sourceTree = "<group>"; };
+		CDCC7FEE2D9B1E6E00CE18DA /* CachedComputation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedComputation.swift; sourceTree = "<group>"; };
 		CDD4A09B2C8A122F0001AD1A /* CodableSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableSettings.swift; sourceTree = "<group>"; };
 		CDD4A09D2C8B69FC0001AD1A /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 		CDD4A09F2C8B985D0001AD1A /* ImportExportSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportExportSettingsView.swift; sourceTree = "<group>"; };
@@ -2083,6 +2085,7 @@
 		CD5C197B2D9709660089614C /* ZoomRecognizer */ = {
 			isa = PBXGroup;
 			children = (
+				CDCC7FEE2D9B1E6E00CE18DA /* CachedComputation.swift */,
 				CDCC7FEC2D9AEDBE00CE18DA /* BridgeDragValue.swift */,
 				CDCC1BA82D99BEA8006579DF /* ZoomRecognizerCoordinator.swift */,
 				CDCC1BA62D99BDB0006579DF /* Recognizers.swift */,
@@ -2961,6 +2964,7 @@
 				CDC44A362D1CBC280030F01C /* ReadPostIndicator.swift in Sources */,
 				0353948D2CA080EB00795AA5 /* FeedWelcomeView.swift in Sources */,
 				0343C0482D3AD6DB001CF709 /* Set+Extensions.swift in Sources */,
+				CDCC7FEF2D9B1E7100CE18DA /* CachedComputation.swift in Sources */,
 				03049A202C650A8100FF6889 /* FormReadout.swift in Sources */,
 				030050D32D109B7E002B1E99 /* ReportView.swift in Sources */,
 				0397D49A2C6EA6EE002C6CDC /* InteractionBarEditorView.swift in Sources */,
