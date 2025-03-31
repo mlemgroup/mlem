@@ -129,13 +129,13 @@ struct ImageViewer: View {
                     }
                 }
             }
-            .simultaneousGesture(DragGesture(minimumDistance: 1.0)
-                .onChanged { handleDragGesture(value: $0) }
-                .updating($dragState) { _, state, _ in
-                    // this detects cancelled gestures (e.g., if you zoom while dragging)
-                    state = true
-                }
-            )
+//            .simultaneousGesture(DragGesture(minimumDistance: 1.0)
+//                .onChanged { handleDragGesture(value: $0) }
+//                .updating($dragState) { _, state, _ in
+//                    // this detects cancelled gestures (e.g., if you zoom while dragging)
+//                    state = true
+//                }
+//            )
             .onAppear {
                 animateOpacityUpdate(1.0)
             }

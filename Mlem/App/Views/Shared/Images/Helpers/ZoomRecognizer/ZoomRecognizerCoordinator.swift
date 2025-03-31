@@ -9,7 +9,7 @@ import UIKit
 import SwiftUICore
 
 private enum PanType {
-    case pan, zoom, none
+    case move, zoom, none
 }
 
 class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
@@ -36,6 +36,7 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
     var resetting: Bool = false
     private var panType: PanType = .none
     
+    // TODO: NOW make this nicer
     let leftZoomSliderHitbox: CGRect = .init(
         x: 0,
         y: 70,
@@ -75,7 +76,7 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
                     panType = .zoom
                     return true
                 } else if scale > 1.0 {
-                    panType = .pan
+                    panType = .move
                     return true
                 }
             }
@@ -114,8 +115,8 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
     @objc
     func handlePan(gesture: UIPanGestureRecognizer) {
         switch panType {
-        case .pan:
-            handlePanPan(gesture: gesture)
+        case .move:
+            handleMovePan(gesture: gesture)
         case .zoom:
             handleZoomPan(gesture: gesture)
         case .none:
@@ -123,7 +124,7 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
         }
     }
     
-    func handlePanPan(gesture: UIPanGestureRecognizer) {
+    func handleMovePan(gesture: UIPanGestureRecognizer) {
         switch gesture.state {
         case .possible:
             break
@@ -167,10 +168,32 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
             break
         case .began:
             initializeBounds(view: gesture.view)
+            guard let bounds else {
+                assertionFailure("No bounds")
+                return
+            }
             resetMomentum()
             initialScale = scale
+            initialOffset = offset
+            let xAnchor = (((scale * bounds.width) / 2) - offset.width) / (scale * bounds.width)
+            let yAnchor = (((scale * bounds.height) / 2) - offset.height) / (scale * bounds.height)
+            anchor = .init(x: xAnchor, y: yAnchor)
         case .changed:
-            scale = (initialScale + (gesture.translation(in: nil).y / -60)).bounded(lower: 1.0, upper: 4.0)
+            guard let bounds else {
+                assertionFailure("No bounds")
+                return
+            }
+            let newScale = (initialScale + (gesture.translation(in: nil).y / -60)).bounded(lower: 1.0, upper: 4.0)
+            let maxXOffset: CGFloat = ((newScale - 1) / 2) * bounds.width
+            let maxYOffset: CGFloat = ((newScale - 1) / 2) * bounds.height
+            let offsetDeltas = computeOffsetDeltas(scaleFactor: newScale / initialScale)
+            let newOffset = initialOffset + offsetDeltas
+            
+            scale = newScale
+            offset = .init(
+                width: newOffset.width.bounded(lower: -maxXOffset, upper: maxXOffset),
+                height: newOffset.height.bounded(lower: -maxYOffset, upper: maxYOffset)
+            )
         case .ended, .cancelled:
             panType = .none
         case .failed:
@@ -201,10 +224,7 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
             targetZoomScale = 3
             anchor = .init(x: location.x / bounds.width, y: location.y / bounds.height)
             let adjustedScale: CGFloat = targetZoomScale / scale
-            let offsetDeltas = computeOffsetDeltas(
-                scale: adjustedScale,
-                bounds: .init(width: bounds.width, height: bounds.height)
-            )
+            let offsetDeltas = computeOffsetDeltas(scaleFactor: adjustedScale)
             newOffset = offset + offsetDeltas
         } else {
             targetZoomScale = 1
@@ -316,16 +336,11 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
     }
     
     func updateScale(with scale: CGFloat, panOffset: CGSize) {
-        guard let bounds else {
-            assertionFailure("No bounds")
-            return
-        }
-        
         let targetZoomScale: CGFloat = (initialScale * scale).softBounded(softMin: 1, hardMin: 0.6, softMax: 4, hardMax: 6)
         let adjustedScale: CGFloat = targetZoomScale / initialScale
         
         self.scale = targetZoomScale
-        let offsetDeltas = computeOffsetDeltas(scale: adjustedScale, bounds: bounds)
+        let offsetDeltas = computeOffsetDeltas(scaleFactor: adjustedScale)
         offset = initialOffset + panOffset + offsetDeltas
     }
     
@@ -384,7 +399,7 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
         
         let boundedScale: CGFloat = scale.bounded(lower: 1.0, upper: 4.0)
         
-        let offsetDeltas = computeOffsetDeltas(scale: boundedScale / initialScale, bounds: bounds) + activeOffset
+        let offsetDeltas = computeOffsetDeltas(scaleFactor: boundedScale / initialScale) + activeOffset
         let maxXOffset: CGFloat = ((boundedScale - 1) / 2) * bounds.width
         let maxYOffset: CGFloat = ((boundedScale - 1) / 2) * bounds.height
         
@@ -402,15 +417,20 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
         anchor = .init(x: newOffset.width / bounds.width, y: newOffset.height / bounds.height)
     }
     
-    /// Computes the offset deltas from initialOffset required to anchor the view on the anchor point at the given scale
-    private func computeOffsetDeltas(scale: CGFloat, bounds: CGSize) -> CGSize {
+    /// Computes the difference that needs to be applied to the offset to anchor the zoom effect at `anchor` for
+    /// a given `scaleFactor`, where `scaleFactor` is the ratio of the target scale to the scale when `anchor` was set.
+    private func computeOffsetDeltas(scaleFactor: CGFloat) -> CGSize {
+        guard let bounds else {
+            assertionFailure("No bounds")
+            return .zero
+        }
         let scaledBounds: CGSize = .init(width: bounds.width, height: bounds.height).scaled(by: initialScale)
         
         // (scale - 1) * (0.5 - anchor) computes the offset required to center the view on the anchor while zooming,
         // expressed in a percentage of the zoomed view's bounds; * scaledBounds.width transforms that into an
         // offset in real px
-        let xOffset: CGFloat = (scale - 1) * (0.5 - anchor.x) * scaledBounds.width
-        let yOffset: CGFloat = (scale - 1) * (0.5 - anchor.y) * scaledBounds.height
+        let xOffset: CGFloat = (scaleFactor - 1) * (0.5 - anchor.x) * scaledBounds.width
+        let yOffset: CGFloat = (scaleFactor - 1) * (0.5 - anchor.y) * scaledBounds.height
         
         return .init(width: xOffset, height: yOffset)
     }
