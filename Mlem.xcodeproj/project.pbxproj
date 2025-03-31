@@ -507,6 +507,8 @@
 		CDCC1BA92D99BEC1006579DF /* ZoomRecognizerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCC1BA82D99BEA8006579DF /* ZoomRecognizerCoordinator.swift */; };
 		CDCC7FED2D9AEDC800CE18DA /* BridgeDragValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCC7FEC2D9AEDBE00CE18DA /* BridgeDragValue.swift */; };
 		CDCC7FEF2D9B1E7100CE18DA /* CachedComputation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCC7FEE2D9B1E6E00CE18DA /* CachedComputation.swift */; };
+		CDCC7FF12D9B27D800CE18DA /* ZoomRecognizerCoordinator+GestureRecognition.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCC7FF02D9B27CE00CE18DA /* ZoomRecognizerCoordinator+GestureRecognition.swift */; };
+		CDCC7FF32D9B283A00CE18DA /* ZoomRecognizerCoordinator+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCC7FF22D9B283400CE18DA /* ZoomRecognizerCoordinator+Logic.swift */; };
 		CDD4A09C2C8A122F0001AD1A /* CodableSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD4A09B2C8A122F0001AD1A /* CodableSettings.swift */; };
 		CDD4A09E2C8B69FC0001AD1A /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD4A09D2C8B69FC0001AD1A /* Button.swift */; };
 		CDD4A0A02C8B985D0001AD1A /* ImportExportSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD4A09F2C8B985D0001AD1A /* ImportExportSettingsView.swift */; };
@@ -1045,6 +1047,8 @@
 		CDCC1BA82D99BEA8006579DF /* ZoomRecognizerCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomRecognizerCoordinator.swift; sourceTree = "<group>"; };
 		CDCC7FEC2D9AEDBE00CE18DA /* BridgeDragValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgeDragValue.swift; sourceTree = "<group>"; };
 		CDCC7FEE2D9B1E6E00CE18DA /* CachedComputation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedComputation.swift; sourceTree = "<group>"; };
+		CDCC7FF02D9B27CE00CE18DA /* ZoomRecognizerCoordinator+GestureRecognition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ZoomRecognizerCoordinator+GestureRecognition.swift"; sourceTree = "<group>"; };
+		CDCC7FF22D9B283400CE18DA /* ZoomRecognizerCoordinator+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ZoomRecognizerCoordinator+Logic.swift"; sourceTree = "<group>"; };
 		CDD4A09B2C8A122F0001AD1A /* CodableSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableSettings.swift; sourceTree = "<group>"; };
 		CDD4A09D2C8B69FC0001AD1A /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 		CDD4A09F2C8B985D0001AD1A /* ImportExportSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportExportSettingsView.swift; sourceTree = "<group>"; };
@@ -2085,6 +2089,8 @@
 		CD5C197B2D9709660089614C /* ZoomRecognizer */ = {
 			isa = PBXGroup;
 			children = (
+				CDCC7FF22D9B283400CE18DA /* ZoomRecognizerCoordinator+Logic.swift */,
+				CDCC7FF02D9B27CE00CE18DA /* ZoomRecognizerCoordinator+GestureRecognition.swift */,
 				CDCC7FEE2D9B1E6E00CE18DA /* CachedComputation.swift */,
 				CDCC7FEC2D9AEDBE00CE18DA /* BridgeDragValue.swift */,
 				CDCC1BA82D99BEA8006579DF /* ZoomRecognizerCoordinator.swift */,
@@ -2540,7 +2546,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n  swiftlint lint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n  swiftlint lint --strict\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -2622,6 +2628,7 @@
 				035BE0872BDD8DA000F77D73 /* NavigationRootView.swift in Sources */,
 				03A9FD182D7CFC20007A734D /* Palette+Oled.swift in Sources */,
 				03A630EF2D497143009A47A6 /* TappableLinksSettingsView.swift in Sources */,
+				CDCC7FF12D9B27D800CE18DA /* ZoomRecognizerCoordinator+GestureRecognition.swift in Sources */,
 				0315B1BE2C74C3D6006D4F82 /* CommentEditorView+Logic.swift in Sources */,
 				CDB2EC7F2BFADACC00DBC0EF /* HeadlinePostView.swift in Sources */,
 				CD87BEC32D5132BE0099F190 /* FilterViolationWarning.swift in Sources */,
@@ -2818,6 +2825,7 @@
 				033F84782D1D68D200D87A9E /* ModlogEntryType+Extensions.swift in Sources */,
 				CD4ED8472BF110FA00EFA0A2 /* TabReselectTracker.swift in Sources */,
 				CD8457142D07576A00CEA2B8 /* AVPlayer+Extensions.swift in Sources */,
+				CDCC7FF32D9B283A00CE18DA /* ZoomRecognizerCoordinator+Logic.swift in Sources */,
 				033FCAEE2C57DD14007B7CD1 /* CaptchaDifficulty+Extensions.swift in Sources */,
 				035BE0912BDEA01E00F77D73 /* View+NavigationSheetModifiers.swift in Sources */,
 				CDAA02DB2C810DB200D75633 /* Calendar+Extensions.swift in Sources */,

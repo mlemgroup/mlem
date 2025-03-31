@@ -8,10 +8,7 @@
 import SwiftUI
 
 // TODO LIST
-// - Precompute offset for double tap to avoid unnecessary motion
-// - Fix double tap offset
 // - Optimize
-//   - Cache bounds more efficiently, including scaled bounds
 //   - Investigate CGAffineTransform instead of scaleEffect + offset
 
 struct ZoomRecognizer: UIViewRepresentable {
@@ -39,9 +36,7 @@ struct ZoomRecognizer: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: UIView, context: Context) {
-        if context.coordinator.bounds == nil, uiView.bounds != .zero {
-            context.coordinator.initializeBounds(view: uiView)
-        }
+        // noop
     }
 
     func makeUIView(context: Context) -> UIView {

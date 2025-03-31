@@ -9,8 +9,8 @@ import Foundation
 
 /// This works like the native UnitCurve
 protocol ZoomCurve {
-    func value(at: Double) -> (Double, active: Bool)
-    func velocity(at: Double) -> Double
+    func value(at progress: Double) -> (Double, active: Bool)
+    func velocity(at progress: Double) -> Double
 }
 
 class SinusoidalFriction: ZoomCurve {
