@@ -68,7 +68,11 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
         _ gestureRecognizer: UIGestureRecognizer,
         shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer
     ) -> Bool {
-        if gestureRecognizer is UITapGestureRecognizer || otherGestureRecognizer is UITapGestureRecognizer {
+        if let doubleTap = gestureRecognizer as? UITapGestureRecognizer {
+            if doubleTap.numberOfTapsRequired == 2, otherGestureRecognizer is UIPanGestureRecognizer {
+                // prevents quick pan gestures from triggering as double tap
+                return false
+            }
             return true
         }
         return false
@@ -78,7 +82,9 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
         _ gestureRecognizer: UIGestureRecognizer,
         shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer
     ) -> Bool {
-        if gestureRecognizer is UITapGestureRecognizer,
+        // single tap should require double tap to fail unless it killed momentum
+        if let momentumResetGesture = gestureRecognizer as? MomentumResetTapGestureRecognizer,
+           !momentumResetGesture.momentumKilled,
            let doubleTap = otherGestureRecognizer as? UITapGestureRecognizer,
            doubleTap.numberOfTapsRequired == 2 {
             return true
