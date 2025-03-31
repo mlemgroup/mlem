@@ -12,6 +12,9 @@ extension ZoomRecognizerCoordinator {
     
     // MARK: - Pan handlers
     
+    /// Reacts to the given pan gesture by updating offset according to the gesture's translation. When the gesture ends,
+    /// if it in bounds on any axis and moving faster than the momentum threshold (40), the view will continue to pan
+    /// with momentum; otherwise it will stop and, if needed, reset to bounds.
     func handleMovePan(gesture: UIPanGestureRecognizer) {
         switch gesture.state {
         case .possible:
@@ -20,6 +23,7 @@ extension ZoomRecognizerCoordinator {
             initializeBounds(view: gesture.view)
             resetMomentum()
             initialOffset = offset
+            
             updateOffsetForPanGesture(gesture)
         case .changed:
             updateOffsetForPanGesture(gesture)
@@ -51,12 +55,12 @@ extension ZoomRecognizerCoordinator {
             }
         case .failed:
             panType = .none
-            print("DEBUG pan gesture failed")
         default:
             assertionFailure("Unknown state")
         }
     }
     
+    /// Reacts to the given pan gesture by updating zoom according to the height of the pan gesture
     func handleZoomPan(gesture: UIPanGestureRecognizer) {
         switch gesture.state {
         case .possible:
@@ -88,12 +92,12 @@ extension ZoomRecognizerCoordinator {
             panType = .none
         case .failed:
             panType = .none
-            print("DEBUG pan gesture failed")
         default:
             assertionFailure("Unknown state")
         }
     }
 
+    /// Reacts to the given pan gesture using user-provided drag callbacks
     func handleCustomPan(gesture: UIPanGestureRecognizer) {
         switch gesture.state {
         case .possible:
@@ -124,6 +128,7 @@ extension ZoomRecognizerCoordinator {
     
     // MARK: - Pinch handlers
     
+    /// Prepares the view to pinch on a given point
     func beginPinch(at location: CGPoint) {
         guard let bounds else {
             assertionFailure("No bounds")
@@ -135,6 +140,7 @@ extension ZoomRecognizerCoordinator {
         anchor = .init(x: location.x / bounds.width, y: location.y / bounds.height)
     }
     
+    /// Updates the view based on the given scale and pan offset such that the anchor remains centered on the pinch
     func updatePinch(with scale: CGFloat, panOffset: CGSize) {
         let targetZoomScale: CGFloat = (initialScale * scale).softBounded(softMin: 1, hardMin: 0.6, softMax: 4, hardMax: 6)
         let adjustedScale: CGFloat = targetZoomScale / initialScale
@@ -179,6 +185,7 @@ extension ZoomRecognizerCoordinator {
             yOob: yOob
         )
         
+        // TODO: optimize this to use the full 120fps available on ProMotion displays
         let link = CADisplayLink(target: self, selector: #selector(tickMomentum))
         link.preferredFrameRateRange = .init(minimum: 80, maximum: 100, __preferred: 100)
         link.add(to: .current, forMode: .default)
@@ -200,9 +207,8 @@ extension ZoomRecognizerCoordinator {
             momentum.yt0 = displayLink.timestamp
         }
         
-        let maxOffsets = maxOffsets.compute(scale)
-        
         // check out-of-bounds
+        let maxOffsets = maxOffsets.compute(scale)
         if !momentum.xOob, abs(offset.width) >= maxOffsets.width {
             initialOffset.width = maxOffsets.width * (offset.width < 0 ? -1 : 1)
             momentum.xLeftBounds(at: displayLink.timestamp)
@@ -253,6 +259,8 @@ extension ZoomRecognizerCoordinator {
     
     // MARK: - Bounds
     
+    /// If bounds are not set, initializes them using the given UIView. The view is declared as optional to make this function
+    /// easy to call, but is expected to be defined.
     func initializeBounds(view: UIView?) {
         guard let view else {
             assertionFailure("No view")
@@ -280,7 +288,6 @@ extension ZoomRecognizerCoordinator {
         }
         
         let boundedScale: CGFloat = scale.bounded(lower: 1.0, upper: 4.0)
-        
         let offsetDeltas = computeOffsetDeltas(scaleFactor: boundedScale / initialScale) + activeOffset
         let maxOffsets = maxOffsets.compute(boundedScale)
         
