@@ -174,6 +174,8 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
                 return
             }
             
+            initialScale = scale
+            
             let gestureVelocity = gesture.velocity(in: view)
             let maxXOffset: CGFloat = ((scale - 1) / 2) * bounds.width
             let maxYOffset: CGFloat = ((scale - 1) / 2) * bounds.height
@@ -266,6 +268,9 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
             return
         }
         
+        initialOffset = offset
+        initialScale = scale
+        
         let targetZoomScale: CGFloat
         let newOffset: CGSize
         if scale == 1 {
@@ -273,8 +278,15 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
             targetZoomScale = 3
             anchor = .init(x: location.x / bounds.width, y: location.y / bounds.height)
             let adjustedScale: CGFloat = targetZoomScale / scale
-            let offsetDeltas = computeOffsetDeltas(scaleFactor: adjustedScale)
-            newOffset = offset + offsetDeltas
+            
+            let offsetDeltas = computeOffsetDeltas(scaleFactor: targetZoomScale / initialScale)
+            let maxXOffset: CGFloat = ((targetZoomScale - 1) / 2) * bounds.width
+            let maxYOffset: CGFloat = ((targetZoomScale - 1) / 2) * bounds.height
+            
+            newOffset = .init(
+                width: (initialOffset.width + offsetDeltas.width).bounded(lower: -maxXOffset, upper: maxXOffset),
+                height: (initialOffset.height + offsetDeltas.height).bounded(lower: -maxYOffset, upper: maxYOffset)
+            )
         } else {
             targetZoomScale = 1
             anchor = .center

@@ -9,8 +9,7 @@ import SwiftUI
 
 // TODO LIST
 // - Precompute offset for double tap to avoid unnecessary motion
-// - Zoom slider OOB handling
-// - Fix drag + onTap conflicts
+// - Fix double tap offset
 // - Optimize
 //   - Cache bounds more efficiently, including scaled bounds
 //   - Investigate CGAffineTransform instead of scaleEffect + offset
