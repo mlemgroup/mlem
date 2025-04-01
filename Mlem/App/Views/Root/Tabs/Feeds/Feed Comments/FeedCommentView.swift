@@ -17,8 +17,7 @@ struct FeedCommentView<EmbeddedContent: View>: View {
     
     @Setting(\.postSize) var settingsPostSize
     @Setting(\.compactComments) var compactComments
-    @Setting(\.blurNsfw) var blurNsfw
-    @Setting(\.alternateInteractionBarLayoutForReports) var alternateInteractionBarLayoutForReports
+    @Setting(\.alternateInteractionBarLayoutForReports) var alternateInteractionBarLayoutForReports: Bool
 
     let comment: any Comment
     var overriddenSize: PostSize?
@@ -46,7 +45,9 @@ struct FeedCommentView<EmbeddedContent: View>: View {
                 if showCompactPostContext {
                     compactHeaderView(post: post)
                 } else {
-                    largeHeaderView(post: post)
+                    CommentContextHeaderView(post: post, community: comment.community_)
+                        .padding(.top, Constants.main.halfSpacing)
+                        .padding(.bottom, Constants.main.standardSpacing)
                 }
             }
             content
@@ -73,7 +74,6 @@ struct FeedCommentView<EmbeddedContent: View>: View {
             TileCommentView(comment: comment)
         } else {
             CommentView(comment: comment, inFeed: true, embeddedContent: embeddedContent)
-                .padding(.bottom, showCompactPostContext ? 0 : 5)
         }
     }
     
@@ -94,40 +94,6 @@ struct FeedCommentView<EmbeddedContent: View>: View {
             .padding(.leading, 10)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.bottom, postSize == .compact ? 3 : 5)
-    }
-    
-    @ViewBuilder
-    func largeHeaderView(post: any Post) -> some View {
-        HStack {
-            MediaView(
-                url: headerUrl(post: post),
-                size: .init(width: 40, height: 40),
-                controlState: .constant(.init(
-                    blurred: post.nsfw && blurNsfw != .never,
-                    animating: false,
-                    overlays: []
-                )),
-                aspectRatioBounds: .absoluteSquare,
-                contentMode: .fill,
-                cornerRadius: 10,
-                fallback: post.imageFallback
-            )
-            .frame(width: 40, height: 40)
-            VStack(alignment: .leading) {
-                Text(post.title)
-                    .bold()
-                Text(comment.community_?.fullName ?? "")
-            }
-            .lineLimit(1)
-            .font(.footnote)
-            .foregroundStyle(.themedSecondary)
-            .frame(maxWidth: .infinity, alignment: .leading)
-        }
-        .padding(.top, Constants.main.halfSpacing)
-        .padding(.bottom, Constants.main.standardSpacing)
-        .onTapGesture {
-            navigation.push(.post(post))
-        }
     }
     
     var interactionBarConfiguration: CommentBarConfiguration {

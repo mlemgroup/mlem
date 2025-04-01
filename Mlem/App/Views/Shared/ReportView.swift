@@ -17,7 +17,6 @@ struct ReportView: View {
     var body: some View {
         targetView
             .buttonStyle(.empty)
-            .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
             .environment(\.reportContext, report)
     }
     
