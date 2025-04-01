@@ -11,14 +11,29 @@ import Foundation
 class MomentumStatus {
     private let boundResetDuration: Double = 0.3
 
+    /// Time at which the current x momentum began
     var xt0: CFTimeInterval?
+
+    /// Velocity when the current x momentum began
     private var xv0: CGFloat
+    
+    /// True if x is out of bounds, false otherwise
     private(set) var xOob: Bool = false
+    
+    /// ZoomCurve for the current x momentum
     private var xUnitCurve: any ZoomCurve
     
+    
+    /// Time at which the current y momentum began
     var yt0: CFTimeInterval?
+    
+    /// Velocity when the current y momentum began
     private var yv0: CGFloat
+    
+    /// True if y is out of bounds, false otherwise
     private(set) var yOob: Bool = false
+    
+    /// ZoomCurve for the current y momentum
     private var yUnitCurve: any ZoomCurve
     
     init(initialVelocity: CGPoint, xOob: Bool, yOob: Bool) {
