@@ -8,6 +8,7 @@
 import LemmyMarkdownUI
 import MlemMiddleware
 import SwiftUI
+import Theming
 
 struct InboxView: View {
     @Environment(NavigationLayer.self) var navigation
@@ -97,7 +98,7 @@ struct InboxView: View {
             signedOutInfoView
         } else {
             content
-                .background(.themedGroupedBackground)
+                .background(ThemedColor.themedGroupedBackground.ignoresSafeArea())
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar { toolbar }
                 .loadFeed(inboxFeedLoader)

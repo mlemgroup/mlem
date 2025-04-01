@@ -56,6 +56,7 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
             }
         }
         .background(.themedGroupedBackground)
+        .presentationBackground(.themedGroupedBackground)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
