@@ -46,7 +46,7 @@ struct LoginCredentialsView: View {
     var body: some View {
         content
             .frame(maxWidth: .infinity)
-            .background(ThemedColor.themedGroupedBackground.ignoresSafeArea())
+            .themedGroupedBackground()
             .interactiveDismissDisabled((!usernameOrEmail.isEmpty && showUsernameField) || !password.isEmpty)
             .toolbar {
                 if navigation.isInsideSheet, isRootView {

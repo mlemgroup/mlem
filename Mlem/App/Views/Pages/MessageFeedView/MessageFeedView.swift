@@ -109,7 +109,7 @@ struct MessageFeedView: View {
             .safeAreaInset(edge: .bottom) { textInput(scrollProxy) }
             .defaultScrollAnchor(.bottom)
             .scrollDismissesKeyboard(.interactively)
-            .background(ThemedColor.themedGroupedBackground.ignoresSafeArea())
+            .themedGroupedBackground()
             .onAppear {
                 if feedLoader == nil {
                     feedLoader = .init(person: person, pageSize: 50)

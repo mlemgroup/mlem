@@ -44,7 +44,7 @@ struct FiltersSettingsView: View {
                         Task {
                             if let url = await downloadTextToFileSystem(
                                 fileName: "keywords.txt",
-                                text: filtersTracker.filteredKeywords.joined(separator: "\n")
+                                text: filtersTracker.rawKeywords.joined(separator: "\n")
                             ) {
                                 navigation.model?.shareInfo = .init(url: url)
                             } else {
@@ -75,7 +75,7 @@ struct FiltersSettingsView: View {
                 saveNewKeyword()
             }
         
-        ForEach(filtersTracker.filteredKeywords.sorted(by: <), id: \.self) { filter in
+        ForEach(filtersTracker.rawKeywords.sorted(by: <), id: \.self) { filter in
             HStack {
                 Text(filter)
                 
@@ -103,7 +103,7 @@ struct FiltersSettingsView: View {
     }
     
     func deleteKeyword(_ keyword: String) {
-        guard filtersTracker.filteredKeywords.contains(keyword) else {
+        guard filtersTracker.rawKeywords.contains(keyword) else {
             return
         }
         

@@ -95,7 +95,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
         .frame(maxWidth: .infinity)
         .padding(Constants.main.standardSpacing)
         .padding(.bottom, Constants.main.standardSpacing)
-        .background(ThemedColor.themedGroupedBackground.ignoresSafeArea())
+        .themedGroupedBackground()
         .coordinateSpace(.named("editor"))
         .hiddenNavigationTitle("Interaction Bar")
     }

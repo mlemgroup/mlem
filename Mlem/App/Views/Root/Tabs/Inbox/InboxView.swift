@@ -98,7 +98,7 @@ struct InboxView: View {
             signedOutInfoView
         } else {
             content
-                .background(ThemedColor.themedGroupedBackground.ignoresSafeArea())
+                .themedGroupedBackground()
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar { toolbar }
                 .loadFeed(inboxFeedLoader)

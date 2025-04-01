@@ -111,7 +111,7 @@ struct ModlogView: View {
             }
             .padding([.horizontal, .bottom], Constants.main.standardSpacing)
         }
-        .background(ThemedColor.themedGroupedBackground.ignoresSafeArea())
+        .themedGroupedBackground()
     }
     
     @ViewBuilder

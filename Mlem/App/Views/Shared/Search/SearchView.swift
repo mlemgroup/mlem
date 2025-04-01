@@ -84,7 +84,8 @@ struct SearchView: View {
     
     var body: some View {
         content
-            .background(ThemedColor.themedGroupedBackground.ignoresSafeArea())
+            .background(ThemedColor.themedGroupedBackground)
+            .themedGroupedBackground()
             .navigationTitle("Search")
             .navigationBarTitleDisplayMode(.large)
             .navigationSearchBar(searchBar)
