@@ -70,9 +70,7 @@ struct FancyScrollView<Content: View>: View {
             }
             .coordinateSpace(name: "scrollView")
             .onPreferenceChange(IsAtTopPreferenceKey.self) { offset in
-                print(offset, isAtTop)
                 if offset != isAtTop {
-                    print("CH2")
                     isAtTop = offset
                 }
             }

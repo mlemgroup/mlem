@@ -11,6 +11,6 @@ import Theming
 extension View {
     func themedGroupedBackground() -> some View {
         background(ThemedColor.themedGroupedBackground)
-            .themedGroupedBackground()
+            .background(ThemedColor.themedGroupedBackground.ignoresSafeArea(.keyboard))
     }
 }
