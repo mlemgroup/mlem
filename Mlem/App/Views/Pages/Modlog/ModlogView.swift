@@ -7,6 +7,7 @@
 
 import MlemMiddleware
 import SwiftUI
+import Theming
 
 struct ModlogView: View {
     @Environment(AppState.self) var appState
@@ -110,7 +111,7 @@ struct ModlogView: View {
             }
             .padding([.horizontal, .bottom], Constants.main.standardSpacing)
         }
-        .background(.themedGroupedBackground)
+        .background(ThemedColor.themedGroupedBackground.ignoresSafeArea())
     }
     
     @ViewBuilder
