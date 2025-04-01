@@ -100,7 +100,7 @@ private func parseKeywordsAndPhrases(from rawKeywords: Set<String>) -> (keywords
     var phrases: Set<[String]> = .init()
     for keyword in rawKeywords {
         if keyword.contains(" ") {
-            phrases.insert(keyword.split(separator: " ").map(\.lowercased))
+            phrases.insert(keyword.split(separator: " ").map { $0.lowercased() })
         } else {
             keywords.insert(keyword)
         }
