@@ -23,7 +23,6 @@ class MomentumStatus {
     /// ZoomCurve for the current x momentum
     private var xUnitCurve: any ZoomCurve
     
-    
     /// Time at which the current y momentum began
     var yt0: CFTimeInterval?
     
