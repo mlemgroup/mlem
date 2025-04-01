@@ -158,6 +158,7 @@
 		0369B3532BFA514B001EFEDF /* ToastLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0369B3522BFA514B001EFEDF /* ToastLocation.swift */; };
 		0369B3562BFA6824001EFEDF /* InboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0369B3552BFA6824001EFEDF /* InboxView.swift */; };
 		0369B35D2BFB86E3001EFEDF /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0369B35A2BFB86E3001EFEDF /* Account.swift */; };
+		036A84572D986B9900E95D50 /* CommentContextHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036A84562D986B9900E95D50 /* CommentContextHeaderView.swift */; };
 		036A84552D98253400E95D50 /* UpdateBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036A84542D98253400E95D50 /* UpdateBannerView.swift */; };
 		036CC3AF2B8145C30098B6A1 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036CC3AE2B8145C30098B6A1 /* AppState.swift */; };
 		036ED6792D0AF3740018E5EA /* PinnedSortTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036ED6782D0AF3740018E5EA /* PinnedSortTracker.swift */; };
@@ -705,6 +706,7 @@
 		0369B3522BFA514B001EFEDF /* ToastLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastLocation.swift; sourceTree = "<group>"; };
 		0369B3552BFA6824001EFEDF /* InboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxView.swift; sourceTree = "<group>"; };
 		0369B35A2BFB86E3001EFEDF /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
+		036A84562D986B9900E95D50 /* CommentContextHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentContextHeaderView.swift; sourceTree = "<group>"; };
 		036A84542D98253400E95D50 /* UpdateBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateBannerView.swift; sourceTree = "<group>"; };
 		036CC3AE2B8145C30098B6A1 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		036ED6782D0AF3740018E5EA /* PinnedSortTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedSortTracker.swift; sourceTree = "<group>"; };
@@ -2128,6 +2130,7 @@
 			children = (
 				CD7DB9722C4AEDDE00DCC542 /* TileCommentView.swift */,
 				CD7DB9752C4D6C0A00DCC542 /* FeedCommentView.swift */,
+				036A84562D986B9900E95D50 /* CommentContextHeaderView.swift */,
 			);
 			path = "Feed Comments";
 			sourceTree = "<group>";
@@ -3028,6 +3031,7 @@
 				0380965F2C10AA80003ED1D8 /* AppState+Transition.swift in Sources */,
 				03BF11C32D3D135D00CC1F66 /* SearchView+CreatorPicker.swift in Sources */,
 				0315B1C62C754802006D4F82 /* PostEditorView+Logic.swift in Sources */,
+				036A84572D986B9900E95D50 /* CommentContextHeaderView.swift in Sources */,
 				0370299F2D6B743B00B749DF /* PostMockType+Realistic.swift in Sources */,
 				CDE1F1942C63DF44008AF042 /* PlatformConstants.swift in Sources */,
 				0335AE112D8991330094FFD9 /* View+HiddenNavigationTitle.swift in Sources */,
