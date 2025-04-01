@@ -10,7 +10,12 @@ import Theming
 
 extension View {
     func themedGroupedBackground() -> some View {
-        background(ThemedColor.themedGroupedBackground)
-            .background(ThemedColor.themedGroupedBackground.ignoresSafeArea(.keyboard))
+        Group {
+            if #available(iOS 18.0, *) {
+                containerBackground(.themedGroupedBackground, for: .navigation)
+            } else {
+                background(ThemedColor.themedGroupedBackground, in: Rectangle())
+            }
+        }
     }
 }
