@@ -17,6 +17,7 @@ struct FeedCommentView<EmbeddedContent: View>: View {
     
     @Setting(\.postSize) var settingsPostSize
     @Setting(\.compactComments) var compactComments
+    @Setting(\.alternateInteractionBarLayoutForReports) var alternateInteractionBarLayoutForReports: Bool
 
     let comment: any Comment
     var overriddenSize: PostSize?
@@ -93,5 +94,12 @@ struct FeedCommentView<EmbeddedContent: View>: View {
             .padding(.leading, 10)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.bottom, postSize == .compact ? 3 : 5)
+    }
+    
+    var interactionBarConfiguration: CommentBarConfiguration {
+        if reportContext != nil, alternateInteractionBarLayoutForReports {
+            return InteractionBarTracker.main.commentReportInteractionBar
+        }
+        return InteractionBarTracker.main.commentInteractionBar
     }
 }
