@@ -25,7 +25,7 @@ struct ErrorLogView: View {
                 .padding(.horizontal, Constants.main.standardSpacing)
             }
         }
-        .background(ThemedColor.themedGroupedBackground.ignoresSafeArea())
+        .themedGroupedBackground()
         .navigationTitle(String("Error Log"))
         .toolbar {
             if !errorsTracker.errors.isEmpty {

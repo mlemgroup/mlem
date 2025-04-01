@@ -59,7 +59,7 @@ struct BlockListView: View {
                 }
             }
         }
-        .background(ThemedColor.themedGroupedBackground.ignoresSafeArea())
+        .themedGroupedBackground()
         .onAppear {
             Task { @MainActor in
                 do {

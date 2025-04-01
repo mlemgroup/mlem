@@ -93,7 +93,8 @@ struct FeedsView: View {
     
     var body: some View {
         content
-            .background(ThemedColor.themedGroupedBackground.ignoresSafeArea())
+            .background(ThemedColor.themedGroupedBackground)
+            .themedGroupedBackground()
             .scrollContentBackground(.hidden)
             .toolbar {
                 if !isAtTop {
