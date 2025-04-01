@@ -88,9 +88,7 @@ extension ZoomRecognizerCoordinator {
                 width: newOffset.width.bounded(lower: -maxOffsets.width, upper: maxOffsets.width),
                 height: newOffset.height.bounded(lower: -maxOffsets.height, upper: maxOffsets.height)
             )
-        case .ended, .cancelled:
-            panType = .none
-        case .failed:
+        case .ended, .cancelled, .failed:
             panType = .none
         default:
             assertionFailure("Unknown state")
