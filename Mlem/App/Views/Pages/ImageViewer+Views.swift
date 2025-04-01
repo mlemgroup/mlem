@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-extension ImageViewer {    
+extension ImageViewer {
     @ViewBuilder
     var controlOverlay: some View {
         VStack {
@@ -176,7 +176,8 @@ extension ImageViewer {
                                     x: realHitbox.minX,
                                     y: realHitbox.maxY - 80,
                                     width: realHitbox.width,
-                                    height: 100)
+                                    height: 100
+                                )
                             }
                     }
                 }

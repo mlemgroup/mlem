@@ -25,6 +25,6 @@ extension CGSize {
     }
     
     func scaled(by factor: CGFloat) -> CGSize {
-        return .init(width: width * factor, height: height * factor)
+        .init(width: width * factor, height: height * factor)
     }
 }

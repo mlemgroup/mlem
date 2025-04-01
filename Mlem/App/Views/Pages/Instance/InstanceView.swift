@@ -49,7 +49,6 @@ struct InstanceView: View {
     @State var upgradeState: LoadingState = .idle
     
     @State var selectedTab: Tab = .about
-    @State var isAtTop: Bool = true
     
     @State var showingConfirmation: Bool = false
     @State var newAdmin: Person2?
@@ -63,7 +62,7 @@ struct InstanceView: View {
         VStack {
             if let instance = instance as? any Instance {
                 content(instance)
-                    .navigationTitle(isAtTop ? "" : instance.displayName)
+                    .conditionalNavigationTitle(instance.displayName)
             } else {
                 ProgressView()
                     .tint(.themedSecondary)
@@ -91,7 +90,6 @@ struct InstanceView: View {
                 handleError(error)
             }
         }
-        .isAtTopSubscriber(isAtTop: $isAtTop)
         .navigationBarTitleDisplayMode(.inline)
         .themedGroupedBackground()
     }

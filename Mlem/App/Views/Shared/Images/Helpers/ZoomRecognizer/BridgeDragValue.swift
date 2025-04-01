@@ -23,8 +23,8 @@ struct BridgeDragValue {
     init(uiPanGesture: UIPanGestureRecognizer) {
         let uiVelocity = uiPanGesture.velocity(in: nil)
         let uiTranslation = uiPanGesture.translation(in: nil)
-        velocity = .init(width: uiVelocity.x, height: uiVelocity.y)
-        translation = .init(width: uiTranslation.x, height: uiTranslation.y)
-        startLocation = uiPanGesture.location(in: nil)
+        self.velocity = .init(width: uiVelocity.x, height: uiVelocity.y)
+        self.translation = .init(width: uiTranslation.x, height: uiTranslation.y)
+        self.startLocation = uiPanGesture.location(in: nil)
     }
 }

@@ -5,8 +5,8 @@
 //  Created by Eric Andrews on 2025-03-30.
 //
 
-import UIKit
 import SwiftUICore
+import UIKit
 
 class MomentumResetTapGestureRecognizer: UITapGestureRecognizer {
     var momentumKilled: Bool = false

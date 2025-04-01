@@ -5,11 +5,10 @@
 //  Created by Eric Andrews on 2025-03-31.
 //
 
-import UIKit
 import SwiftUI
+import UIKit
 
 extension ZoomRecognizerCoordinator {
-    
     // MARK: - Pan handlers
     
     /// Reacts to the given pan gesture by updating offset according to the gesture's translation. When the gesture ends,
@@ -270,7 +269,7 @@ extension ZoomRecognizerCoordinator {
         }
     }
     
-     func isOutOfBounds(offset: CGSize) -> Bool {
+    func isOutOfBounds(offset: CGSize) -> Bool {
         guard let bounds else {
             assertionFailure("No bounds")
             return false

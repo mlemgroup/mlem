@@ -60,7 +60,7 @@ class PolynomialBoundReset: ZoomCurve {
         let scaledProgress: Double = progress / duration
         guard scaledProgress < 1 else { return (0, false) }
         let base: CGFloat = (2 / 3) * (scaledProgress - 1)
-        return (((pow(base, 3) + pow(base, 2)) * 6.75), true)
+        return ((pow(base, 3) + pow(base, 2)) * 6.75, true)
     }
     
     func velocity(at progress: Double) -> Double {

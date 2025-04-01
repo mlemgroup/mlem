@@ -157,7 +157,7 @@ struct ImageViewer: View {
             return
         }
         
-        let dragIsScrub = self.dragIsScrub ?? (abs(value.velocity.height) < abs(value.velocity.width))
+        let dragIsScrub = dragIsScrub ?? (abs(value.velocity.height) < abs(value.velocity.width))
         self.dragIsScrub = dragIsScrub
         
         if dragIsScrub {
@@ -289,8 +289,8 @@ struct ImageViewer: View {
         // to the value corresponding to the scrub start position
         if scrubStartedPlaybackPosition == nil {
             scrubStartedPlaybackPosition = onPlaybackBar ?
-            value.startLocation.x / UIScreen.main.bounds.width :
-            controlState.playbackPosition
+                value.startLocation.x / UIScreen.main.bounds.width :
+                controlState.playbackPosition
         }
         
         // disable variable scrub rate if scrubbing playback bar
