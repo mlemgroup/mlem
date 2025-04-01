@@ -40,7 +40,6 @@ struct PersonView: View {
     @State var person: AnyPerson
     @State private var selectedTab: Tab = .overview
     @State private var selectedContentType: PersonContentType = .all
-    @State private var isAtTop: Bool = true
     @State var feedLoader: PersonContentFeedLoader?
     @State var isAdmin: Bool
     @State var upgraded: Bool = false
@@ -73,7 +72,6 @@ struct PersonView: View {
     
     var body: some View {
         content
-            .isAtTopSubscriber(isAtTop: $isAtTop)
             .onChange(of: selectedTab) {
                 switch selectedTab {
                 case .comments: selectedContentType = .comments
@@ -152,10 +150,10 @@ struct PersonView: View {
             
             upgraded = true
         }
-        .navigationTitle(isAtTop ? "" : (person.wrappedValue.displayName_ ?? ""))
+        .conditionalNavigationTitle(person.wrappedValue.displayName_ ?? "")
         .navigationBarTitleDisplayMode(.inline)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(ThemedColor.themedGroupedBackground.ignoresSafeArea())
+        .themedGroupedBackground()
     }
     
     @ViewBuilder

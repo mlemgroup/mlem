@@ -14,7 +14,9 @@ private struct IsAtTopSubscriber: ViewModifier {
     func body(content: Content) -> some View {
         content
             .onPreferenceChange(IsAtTopPreferenceKey.self, perform: { value in
-                isAtTop = value
+                if value != isAtTop {
+                    isAtTop = value
+                }
             })
     }
 }

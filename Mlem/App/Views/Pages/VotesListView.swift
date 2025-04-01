@@ -81,7 +81,7 @@ struct VotesListView: View {
             }
         }
         .environment(\.communityContext, target.model.community_)
-        .background(ThemedColor.themedGroupedBackground.ignoresSafeArea())
+        .themedGroupedBackground()
         .navigationTitle("Votes")
     }
     

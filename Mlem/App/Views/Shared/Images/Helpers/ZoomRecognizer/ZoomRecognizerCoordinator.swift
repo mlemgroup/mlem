@@ -5,8 +5,8 @@
 //  Created by Eric Andrews on 2025-03-30.
 //
 
-import UIKit
 import SwiftUI
+import UIKit
 
 enum PanType {
     case move, zoom, custom, none
@@ -70,7 +70,6 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
         self.customDragMoved = customDragMoved
         self.customDragEnded = customDragEnded
         self.customTap = customTap
-        
     }
     
     @objc

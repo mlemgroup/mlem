@@ -56,7 +56,7 @@ struct LoginTotpView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(.horizontal)
-        .background(ThemedColor.themedGroupedBackground.ignoresSafeArea())
+        .themedGroupedBackground()
     }
     
     @ViewBuilder

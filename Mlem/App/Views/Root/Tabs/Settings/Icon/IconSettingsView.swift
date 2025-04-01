@@ -52,7 +52,7 @@ struct IconSettingsView: View {
             }
             .padding(.vertical)
         }
-        .background(ThemedColor.themedGroupedBackground.ignoresSafeArea())
+        .themedGroupedBackground()
         .navigationTitle("App Icon")
     }
 

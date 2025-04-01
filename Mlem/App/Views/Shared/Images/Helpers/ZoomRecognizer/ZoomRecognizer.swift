@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-// TODO LIST
+// TODO: LIST
 // - Optimize
 //   - Investigate CGAffineTransform instead of scaleEffect + offset
 
@@ -57,7 +57,7 @@ struct ZoomRecognizer: UIViewRepresentable {
         panGesture.delegate = context.coordinator
         ret.addGestureRecognizer(panGesture)
         
-        let doubleTap: UITapGestureRecognizer = UITapGestureRecognizer(
+        let doubleTap = UITapGestureRecognizer(
             target: context.coordinator,
             action: #selector(Coordinator.handleDoubleTap(gesture:))
         )

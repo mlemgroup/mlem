@@ -19,7 +19,7 @@ extension CGFloat {
     }
     
     func stepped(by increment: CGFloat) -> CGFloat {
-        return (self / increment).rounded() * increment
+        (self / increment).rounded() * increment
     }
     
     /// Returns the value of this CGFloat bounded within the given range. If this float is above softMax, the returned

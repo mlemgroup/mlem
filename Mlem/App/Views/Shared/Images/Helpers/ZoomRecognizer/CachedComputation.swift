@@ -20,7 +20,7 @@ class CachedComputation<Input: Equatable, Output> {
         }
         lastInput = input
         let output = computation(input)
-        self.lastOutput = output
+        lastOutput = output
         return output
     }
 }

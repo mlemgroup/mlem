@@ -64,7 +64,7 @@ struct PostPage: View {
                 }
             }
         }
-        .background(ThemedColor.themedGroupedBackground.ignoresSafeArea())
+        .themedGroupedBackground()
         .onAppear {
             if post.isUpgraded, let tracker {
                 Task {

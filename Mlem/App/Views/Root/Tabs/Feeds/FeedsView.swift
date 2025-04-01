@@ -48,7 +48,6 @@ struct FeedsView: View {
         }
     }
 
-    @State var isAtTop: Bool = true
     @State var scrollToTopTrigger: Bool = false
     
     var feedOptions: [FeedSelection] {
@@ -93,13 +92,12 @@ struct FeedsView: View {
     
     var body: some View {
         content
-            .background(ThemedColor.themedGroupedBackground.ignoresSafeArea())
+            .background(ThemedColor.themedGroupedBackground)
+            .themedGroupedBackground()
             .scrollContentBackground(.hidden)
             .toolbar {
-                if !isAtTop {
-                    ToolbarTitleMenu {
-                        feedSelectionMenu(scroll: true)
-                    }
+                ToolbarTitleMenu {
+                    feedSelectionMenu(scroll: true)
                 }
             }
             .toolbar {
@@ -108,9 +106,8 @@ struct FeedsView: View {
                     FeedSortPicker(feedLoader: postFeedLoader, showTopTimescaleInIcon: true)
                 }
             }
-            .navigationTitle(isAtTop ? "" : String(localized: feedSelection.description.label))
+            .conditionalNavigationTitle(String(localized: feedSelection.description.label))
             .navigationBarTitleDisplayMode(.inline)
-            .isAtTopSubscriber(isAtTop: $isAtTop)
             .onChange(of: showRead) {
                 scrollToTopTrigger.toggle()
             }
