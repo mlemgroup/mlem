@@ -15,15 +15,18 @@ struct MarkdownWithLinkList: View {
     @Setting(\.tappableLinksDisplayMode) var tappableLinksDisplayMode
     
     let blocks: [BlockNode]
+    let shouldBlur: Bool
     let showLinkCaptions: Bool
     
-    init(_ blocks: [BlockNode], showLinkCaptions: Bool = true) {
+    init(_ blocks: [BlockNode], shouldBlur: Bool = false, showLinkCaptions: Bool = true) {
         self.blocks = blocks
+        self.shouldBlur = shouldBlur
         self.showLinkCaptions = showLinkCaptions
     }
     
-    init(_ markdown: String, showLinkCaptions: Bool = true) {
+    init(_ markdown: String, shouldBlur: Bool = false, showLinkCaptions: Bool = true) {
         self.blocks = .init(markdown)
+        self.shouldBlur = shouldBlur
         self.showLinkCaptions = showLinkCaptions
     }
     
@@ -33,7 +36,7 @@ struct MarkdownWithLinkList: View {
     
     var body: some View {
         VStack(spacing: Constants.main.standardSpacing) {
-            Markdown(blocks, configuration: .default(palette: palette))
+            Markdown(blocks, configuration: shouldBlur ? .defaultBlurred(palette: palette) : .default(palette: palette))
             if tappableLinksDisplayMode != .disabled {
                 ForEach(
                     Array(blocks.links.filter { !$0.insideSpoiler }.enumerated()),
