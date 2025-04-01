@@ -7,11 +7,11 @@
 
 import MlemMiddleware
 import SwiftUI
+import Theming
 
 struct LoginTotpView: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
-    @Environment(\.palette) var palette
     
     let client: ApiClient
     let usernameOrEmail: String
@@ -56,7 +56,7 @@ struct LoginTotpView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(.horizontal)
-        .background(palette.groupedBackground.primary.ignoresSafeArea())
+        .background(ThemedColor.themedGroupedBackground.ignoresSafeArea())
     }
     
     @ViewBuilder

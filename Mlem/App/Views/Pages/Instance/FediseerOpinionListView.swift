@@ -7,6 +7,7 @@
 
 import MlemMiddleware
 import SwiftUI
+import Theming
 
 struct FediseerOpinionListView: View {
     let instance: any InstanceStubProviding
@@ -26,7 +27,7 @@ struct FediseerOpinionListView: View {
             }
             .padding(16)
         }
-        .background(.themedGroupedBackground)
+        .background(ThemedColor.themedGroupedBackground.ignoresSafeArea())
         .navigationTitle(opinionType.label)
     }
 }

@@ -19,6 +19,10 @@ extension EnvironmentValues {
     @Entry var isRootView: Bool = false
     
     @Entry var loadingTracker: MediaLoadingTracker?
+    
+    var appState: AppState? { self[AppState.self] }
+    var navigation: NavigationLayer? { self[NavigationLayer.self] }
+    var commentTreeTracker: CommentTreeTracker? { self[CommentTreeTracker.self] }
 }
 
 struct RootLayer {

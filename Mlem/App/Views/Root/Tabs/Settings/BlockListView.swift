@@ -7,6 +7,7 @@
 
 import MlemMiddleware
 import SwiftUI
+import Theming
 
 struct BlockListView: View {
     @Environment(AppState.self) var appState
@@ -58,7 +59,7 @@ struct BlockListView: View {
                 }
             }
         }
-        .background(.themedGroupedBackground)
+        .background(ThemedColor.themedGroupedBackground.ignoresSafeArea())
         .onAppear {
             Task { @MainActor in
                 do {

@@ -104,6 +104,7 @@ struct PostEditorView: View {
                     .toolbar { toolbar }
                     .background(.themedGroupedBackground)
             }
+            .presentationBackground(.themedGroupedBackground)
             .onAppear {
                 contentTextView.resignFirstResponder()
                 titleTextView.becomeFirstResponder()
@@ -206,15 +207,7 @@ struct PostEditorView: View {
                         }
                     }
                     .padding(.top, Constants.main.halfSpacing)
-                    .background(
-                        .themedSecondaryGroupedBackground,
-                        in: UnevenRoundedRectangle(cornerRadii: .init(
-                            topLeading: Constants.main.standardSpacing,
-                            bottomLeading: Constants.main.standardSpacing,
-                            bottomTrailing: Constants.main.standardSpacing,
-                            topTrailing: Constants.main.standardSpacing
-                        ))
-                    )
+                    .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
                     
                     if hasNsfwTag {
                         nsfwTagView

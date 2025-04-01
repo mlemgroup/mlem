@@ -9,6 +9,10 @@ import LemmyMarkdownUI
 import SwiftUI
 
 enum SettingsPage: Hashable {
+    enum ContentActionType: Hashable {
+        case post, comment, reply, postReport, commentReport
+    }
+    
     case root
     case accounts, account
     case profile, accountContent, accountAdvanced, accountSignIn, accountChangeEmail, accountLocal, accountChangePassword, accountLanguages
@@ -27,7 +31,8 @@ enum SettingsPage: Hashable {
     case commentMaximumDepth, commentJumpButton
     case inboxBadge
     case about, advanced, developer, errorLog
-    case postInteractionBar, commentInteractionBar, replyInteractionBar, postReportInteractionBar, commentReportInteractionBar
+    case interactionBar(ContentActionType)
+    case swipeActions(ContentActionType)
     case postBarWidgetPicker(HashWrapper<Binding<PostBarConfiguration>>)
     case commentBarWidgetPicker(HashWrapper<Binding<CommentBarConfiguration>>)
     case replyBarWidgetPicker(HashWrapper<Binding<ReplyBarConfiguration>>)
@@ -146,24 +151,40 @@ enum SettingsPage: Hashable {
             TabBarSettingsView()
         case .inboxBadge:
             InboxBadgeSettingsView()
-        case .postInteractionBar:
-            InteractionBarEditorView(setting: \.postInteractionBar, isReport: false)
+        case let .swipeActions(type):
+            switch type {
+            case .post:
+                SwipeActionEditorView(setting: \.postInteractionBar, isReport: false)
+            case .comment:
+                SwipeActionEditorView(setting: \.commentInteractionBar, isReport: false)
+            case .reply:
+                SwipeActionEditorView(setting: \.replyInteractionBar, isReport: false)
+            case .postReport:
+                SwipeActionEditorView(setting: \.postReportInteractionBar, isReport: true)
+            case .commentReport:
+                SwipeActionEditorView(setting: \.commentReportInteractionBar, isReport: true)
+            }
+        case let .interactionBar(type):
+            switch type {
+            case .post:
+                InteractionBarEditorView(setting: \.postInteractionBar, isReport: false)
+            case .comment:
+                InteractionBarEditorView(setting: \.commentInteractionBar, isReport: false)
+            case .reply:
+                InteractionBarEditorView(setting: \.replyInteractionBar, isReport: false)
+            case .postReport:
+                InteractionBarEditorView(setting: \.postReportInteractionBar, isReport: true)
+            case .commentReport:
+                InteractionBarEditorView(setting: \.commentReportInteractionBar, isReport: true)
+            }
         case let .postBarWidgetPicker(configuration):
             InteractionBarWidgetPickerView<PostBarConfiguration>(configuration: configuration.wrappedValue)
-        case .commentInteractionBar:
-            InteractionBarEditorView(setting: \.commentInteractionBar, isReport: false)
         case let .commentBarWidgetPicker(configuration):
             InteractionBarWidgetPickerView<CommentBarConfiguration>(configuration: configuration.wrappedValue)
-        case .replyInteractionBar:
-            InteractionBarEditorView(setting: \.replyInteractionBar, isReport: false)
         case let .replyBarWidgetPicker(configuration):
             InteractionBarWidgetPickerView<ReplyBarConfiguration>(configuration: configuration.wrappedValue)
-        case .postReportInteractionBar:
-            InteractionBarEditorView(setting: \.postReportInteractionBar, isReport: true)
         case let .postReportBarWidgetPicker(configuration):
             InteractionBarWidgetPickerView<PostBarConfiguration>(configuration: configuration.wrappedValue)
-        case .commentReportInteractionBar:
-            InteractionBarEditorView(setting: \.commentReportInteractionBar, isReport: true)
         case let .commentReportBarWidgetPicker(configuration):
             InteractionBarWidgetPickerView<CommentBarConfiguration>(configuration: configuration.wrappedValue)
         case let .document(doc):

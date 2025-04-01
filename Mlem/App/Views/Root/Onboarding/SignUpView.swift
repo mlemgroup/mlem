@@ -73,6 +73,7 @@ struct SignUpView: View {
         .animation(.easeOut(duration: 0.1), value: instance is any Instance2Providing)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(.themedGroupedBackground)
+        .presentationBackground(.themedGroupedBackground)
         .task {
             guard upgradeState == .idle else { return }
             upgradeState = .loading

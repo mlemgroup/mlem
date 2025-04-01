@@ -8,12 +8,18 @@
 import Foundation
 import SwiftUI
 
-public struct ThemedColor: ShapeStyle, Hashable {
+public struct ThemedColor: ShapeStyle, Hashable, View, Sendable {
+    @Environment(\.palette) private var palette
+    
     fileprivate let hashString: String
     
     let getColor: @Sendable (Palette) -> Color
     var opacity: CGFloat = 1
     
+    public var body: some View {
+        resolve(with: palette)
+    }
+
     public func resolve(in environment: EnvironmentValues) -> Color {
         resolve(with: environment.palette)
     }

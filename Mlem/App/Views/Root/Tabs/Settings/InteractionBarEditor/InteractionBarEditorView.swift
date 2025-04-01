@@ -7,6 +7,7 @@
 
 import Flow
 import SwiftUI
+import Theming
 
 struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: View {
     @Environment(NavigationLayer.self) var navigation
@@ -94,7 +95,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
         .frame(maxWidth: .infinity)
         .padding(Constants.main.standardSpacing)
         .padding(.bottom, Constants.main.standardSpacing)
-        .background(.themedGroupedBackground)
+        .background(ThemedColor.themedGroupedBackground.ignoresSafeArea())
         .coordinateSpace(.named("editor"))
         .hiddenNavigationTitle("Interaction Bar")
     }

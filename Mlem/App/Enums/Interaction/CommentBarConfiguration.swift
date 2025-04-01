@@ -21,20 +21,20 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
         case remove
         case ban
         
-        static var defaultWidgets: [ActionType] {[
+        static var defaultWidgets: [ActionType] { [
             .upvote,
             .downvote,
             .save,
             .reply,
             .share
-        ]}
+        ] }
         
-        static var defaultReportWidgets: [ActionType] {[
+        static var defaultReportWidgets: [ActionType] { [
             .share,
             .resolve,
             .remove,
             .ban
-        ]}
+        ] }
         
         var appearance: ActionAppearance {
             switch self {
@@ -58,7 +58,7 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
         case downvote
         case reply
         
-        static var defaultWidgets: [CounterType] { Self.allCases }
+        static var defaultWidgets: [CounterType] { allCases }
         
         var appearance: CounterAppearance {
             switch self {
@@ -101,13 +101,24 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
     var leading: [Item]
     var trailing: [Item]
     var readouts: [ReadoutType]
-    
+    var leadingSwipes: [ActionType]
+    var trailingSwipes: [ActionType]
+
     var availableWidgets: Set<Item>
     func widgetPickerPage(_ configuration: Binding<Self>) -> SettingsPage { .commentBarWidgetPicker(configuration) }
     
-    init(leading: [Item], trailing: [Item], readouts: [ReadoutType], availableWidgets: Set<Item>) {
+    init(
+        leading: [Item],
+        trailing: [Item],
+        leadingSwipes: [ActionType],
+        trailingSwipes: [ActionType],
+        readouts: [ReadoutType],
+        availableWidgets: Set<Item>
+    ) {
         self.leading = leading
         self.trailing = trailing
+        self.leadingSwipes = leadingSwipes
+        self.trailingSwipes = trailingSwipes
         self.readouts = readouts
         self.availableWidgets = availableWidgets
     }
@@ -116,6 +127,8 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.leading = try container.decodeIfPresent([Item].self, forKey: .leading) ?? [.counter(.score)]
         self.trailing = try container.decodeIfPresent([Item].self, forKey: .trailing) ?? [.action(.save), .action(.reply)]
+        self.leadingSwipes = try container.decodeIfPresent([ActionType].self, forKey: .leadingSwipes) ?? [.upvote, .downvote]
+        self.trailingSwipes = try container.decodeIfPresent([ActionType].self, forKey: .trailingSwipes) ?? [.save, .reply]
         self.readouts = try container.decodeIfPresent([ReadoutType].self, forKey: .readouts) ?? [.created, .comment]
         self.availableWidgets = try container.decodeIfPresent(Set<Item>.self, forKey: .availableWidgets) ??
             .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) })
@@ -125,6 +138,8 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
         .init(
             leading: [.counter(.score)],
             trailing: [.action(.save), .action(.reply)],
+            leadingSwipes: [.upvote, .downvote],
+            trailingSwipes: [.save, .reply],
             readouts: [.created, .comment],
             availableWidgets: .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) })
         )
@@ -134,6 +149,8 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
         .init(
             leading: [.action(.resolve), .action(.share)],
             trailing: [.action(.ban), .action(.remove)],
+            leadingSwipes: [.upvote, .downvote],
+            trailingSwipes: [.save, .reply],
             readouts: [.upvote, .downvote, .created, .comment],
             availableWidgets: .init(ActionType.defaultReportWidgets.map { .action($0) })
         )

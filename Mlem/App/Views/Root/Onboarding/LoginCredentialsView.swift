@@ -7,11 +7,11 @@
 
 import MlemMiddleware
 import SwiftUI
+import Theming
 
 struct LoginCredentialsView: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(AppState.self) var appState
-    @Environment(\.palette) var palette
     @Environment(\.dismiss) var dismiss
     @Environment(\.isRootView) var isRootView
 
@@ -46,7 +46,7 @@ struct LoginCredentialsView: View {
     var body: some View {
         content
             .frame(maxWidth: .infinity)
-            .background(palette.groupedBackground.primary.ignoresSafeArea())
+            .background(ThemedColor.themedGroupedBackground.ignoresSafeArea())
             .interactiveDismissDisabled((!usernameOrEmail.isEmpty && showUsernameField) || !password.isEmpty)
             .toolbar {
                 if navigation.isInsideSheet, isRootView {

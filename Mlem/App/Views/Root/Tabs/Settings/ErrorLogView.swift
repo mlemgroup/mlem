@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Theming
 
 struct ErrorLogView: View {
     @Environment(ErrorsTracker.self) var errorsTracker
@@ -24,7 +25,7 @@ struct ErrorLogView: View {
                 .padding(.horizontal, Constants.main.standardSpacing)
             }
         }
-        .background(.themedGroupedBackground)
+        .background(ThemedColor.themedGroupedBackground.ignoresSafeArea())
         .navigationTitle(String("Error Log"))
         .toolbar {
             if !errorsTracker.errors.isEmpty {
