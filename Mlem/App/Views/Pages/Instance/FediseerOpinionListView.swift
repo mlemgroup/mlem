@@ -27,7 +27,7 @@ struct FediseerOpinionListView: View {
             }
             .padding(16)
         }
-        .background(ThemedColor.themedGroupedBackground.ignoresSafeArea())
+        .themedGroupedBackground()
         .navigationTitle(opinionType.label)
     }
 }

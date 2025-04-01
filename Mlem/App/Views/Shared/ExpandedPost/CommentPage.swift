@@ -106,7 +106,7 @@ struct CommentPage: View {
                 }
             }
         }
-        .background(ThemedColor.themedGroupedBackground.ignoresSafeArea())
+        .themedGroupedBackground()
         .onChange(of: comment.wrappedValue.postId_, initial: true) {
             if let postId = comment.wrappedValue.postId_ {
                 Task {

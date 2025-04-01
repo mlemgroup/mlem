@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Theming
 
 struct IsAtTopPreferenceKey: PreferenceKey {
     static var defaultValue: Bool = true
@@ -69,7 +70,9 @@ struct FancyScrollView<Content: View>: View {
             }
             .coordinateSpace(name: "scrollView")
             .onPreferenceChange(IsAtTopPreferenceKey.self) { offset in
+                print(offset, isAtTop)
                 if offset != isAtTop {
+                    print("CH2")
                     isAtTop = offset
                 }
             }
