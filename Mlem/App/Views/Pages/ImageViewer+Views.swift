@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-extension ImageViewer {
+extension ImageViewer {    
     @ViewBuilder
     var controlOverlay: some View {
         VStack {
@@ -268,56 +268,5 @@ extension ImageViewer {
             }
             .padding(.leading, Constants.main.standardSpacing)
             .opacity(scaleDisplayShown ? 1 : 0)
-    }
-    
-    @ViewBuilder
-    var zoomSliderOverlay: some View {
-        HStack {
-            if zoomSliderLocation == .left || zoomSliderLocation == .either {
-                zoomSlider
-            }
-            
-            Spacer()
-            
-            if zoomSliderLocation == .right || zoomSliderLocation == .either {
-                zoomSlider
-            }
-        }
-    }
-    
-    @ViewBuilder
-    var zoomSlider: some View {
-        Color.clear
-            .contentShape(.rect)
-            .frame(width: 40)
-            .frame(maxHeight: .infinity)
-            .highPriorityGesture(DragGesture()
-                .onChanged { value in
-                    guard offset == 0 else { return }
-                    
-                    let baseScale: CGFloat
-                    if let dragStartedScale {
-                        baseScale = dragStartedScale
-                    } else {
-                        baseScale = currentScale
-                        dragStartedScale = currentScale
-                    }
-                    
-                    let newScale = baseScale + (value.translation.height / -60)
-                    if newScale <= 1.0 {
-                        currentScale = 1.0
-                    } else if newScale >= 4.0 {
-                        currentScale = 4.0
-                    } else {
-                        currentScale = newScale
-                    }
-                }
-                .onEnded { _ in
-                    dragStartedScale = nil
-                }
-                .updating($scaleDragState) { _, state, _ in
-                    state = true
-                })
-            .padding(.vertical, 70) // avoid conflict with control bars
     }
 }
