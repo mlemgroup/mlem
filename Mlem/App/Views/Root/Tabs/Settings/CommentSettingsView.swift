@@ -22,9 +22,10 @@ struct CommentSettingsView: View {
                 }
             }
             Section {
-                NavigationLink(.settings(.commentInteractionBar)) {
+                NavigationLink(.settings(.interactionBar(.comment))) {
                     SettingsInteractionBarSummaryView(configuration: InteractionBarTracker.main.commentInteractionBar)
                 }
+                NavigationLink("Swipe Actions", destination: .settings(.swipeActions(.comment)))
             }
             Section {
                 NavigationLink(

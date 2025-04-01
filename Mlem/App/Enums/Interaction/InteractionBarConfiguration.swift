@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUICore
 
-protocol InteractionBarConfiguration: Codable {
+protocol InteractionBarConfiguration: Codable, Equatable {
     associatedtype ActionType: ActionTypeProviding
     associatedtype CounterType: CounterTypeProviding
     associatedtype ReadoutType: ReadoutTypeProviding
@@ -17,8 +17,10 @@ protocol InteractionBarConfiguration: Codable {
     
     var leading: [Item] { get set }
     var trailing: [Item] { get set }
+    var leadingSwipes: [ActionType] { get set }
+    var trailingSwipes: [ActionType] { get set }
     var readouts: [ReadoutType] { get set }
-    
+
     var availableWidgets: Set<Item> { get set }
     func widgetPickerPage(_ configuration: Binding<Self>) -> SettingsPage
     
@@ -27,22 +29,36 @@ protocol InteractionBarConfiguration: Codable {
     /// Default report configuration for this type. `nil` if inapplicable.
     static var reportDefault: Self? { get }
     
-    init(leading: [Item], trailing: [Item], readouts: [ReadoutType], availableWidgets: Set<Item>)
+    init(
+        leading: [Item],
+        trailing: [Item],
+        leadingSwipes: [ActionType],
+        trailingSwipes: [ActionType],
+        readouts: [ReadoutType],
+        availableWidgets: Set<Item>
+    )
 }
 
 extension InteractionBarConfiguration {
     /// Convert the `InteractionBarConfiguration` to another type of `InteractionBarConfiguration`. This is done by finding cases with
     /// matching `rawValue` in the new type. If one cannot be found, the item is omitted.
-    func convert<T: InteractionBarConfiguration>() -> T {
+    func applying(other: some InteractionBarConfiguration, types: Set<InteractionBarConfigurationConversionType>) -> Self {
         .init(
-            leading: leading.compactMap { $0.convert() },
-            trailing: trailing.compactMap { $0.convert() },
-            readouts: readouts.compactMap { .init(rawValue: $0.rawValue) },
-            availableWidgets: .init(availableWidgets.compactMap { $0.convert() })
+            leading: types.contains(.bar) ? other.leading.compactMap { $0.convert() } : leading,
+            trailing: types.contains(.bar) ? other.trailing.compactMap { $0.convert() } : trailing,
+            leadingSwipes: types.contains(.swipe) ? other.leadingSwipes.compactMap { .init(rawValue: $0.rawValue) } : leadingSwipes,
+            trailingSwipes: types.contains(.swipe) ? other.trailingSwipes.compactMap { .init(rawValue: $0.rawValue) } : trailingSwipes,
+            readouts: types.contains(.bar) ? other.readouts.compactMap { .init(rawValue: $0.rawValue) } : readouts,
+            availableWidgets: types.contains(.bar) ? .init(other.availableWidgets.compactMap { $0.convert() }) : availableWidgets
         )
     }
     
     var all: [Item] { leading + trailing }
+}
+
+// swiftlint:disable:next type_name
+enum InteractionBarConfigurationConversionType {
+    case swipe, bar
 }
 
 enum InteractionConfigurationItem<ActionType: ActionTypeProviding, CounterType: CounterTypeProviding>: Codable, Hashable {

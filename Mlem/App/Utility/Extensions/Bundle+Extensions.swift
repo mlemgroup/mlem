@@ -15,4 +15,9 @@ extension Bundle {
     var buildVersionNumber: String? {
         infoDictionary?["CFBundleVersion"] as? String
     }
+    
+    var isTestFlight: Bool {
+        // https://stackoverflow.com/a/26113597/17629371
+        appStoreReceiptURL?.lastPathComponent == "sandboxReceipt"
+    }
 }

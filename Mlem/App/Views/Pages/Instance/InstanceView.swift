@@ -91,7 +91,7 @@ struct InstanceView: View {
             }
         }
         .navigationBarTitleDisplayMode(.inline)
-        .background(.themedGroupedBackground)
+        .background(ThemedColor.themedGroupedBackground.ignoresSafeArea())
     }
     
     @ViewBuilder

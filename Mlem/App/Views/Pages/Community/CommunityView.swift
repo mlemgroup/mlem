@@ -9,6 +9,7 @@ import Dependencies
 import LemmyMarkdownUI
 import MlemMiddleware
 import SwiftUI
+import Theming
 
 struct CommunityView: View {
     enum Tab: String, CaseIterable, Identifiable {
@@ -82,7 +83,7 @@ struct CommunityView: View {
         }
         .navigationBarTitleDisplayMode(.inline)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(.themedGroupedBackground)
+        .background(ThemedColor.themedGroupedBackground.ignoresSafeArea())
     }
         
     @ViewBuilder

@@ -292,7 +292,12 @@ extension InteractionBarEditorView {
         HStack {
             Button("Reset") {
                 assert(!(isReport && Configuration.reportDefault == nil), "isReport is true but no reportDefault found")
-                configuration = isReport ? .reportDefault ?? .default : .default
+                let defaultConfiguration: Configuration = isReport ? .reportDefault ?? .default : .default
+                var newConfiguration = configuration
+                newConfiguration.leading = defaultConfiguration.leading
+                newConfiguration.trailing = defaultConfiguration.trailing
+                newConfiguration.readouts = defaultConfiguration.readouts
+                self.configuration = newConfiguration
                 infoStackAlignment = computeInfoStackAlignment(
                     infoStackIndex: configuration.leading.count,
                     totalItems: configuration.all.count
@@ -313,10 +318,11 @@ extension InteractionBarEditorView {
                     titleVisibility: .visible
                 ) {
                     Button("Yes") {
+                        let configurations = InteractionBarTracker.main.interactionBarConfigurations
                         InteractionBarTracker.main.interactionBarConfigurations = .init(
-                            post: configuration.convert(),
-                            comment: configuration.convert(),
-                            reply: configuration.convert(),
+                            post: configurations.post.applying(other: configuration, types: [.bar]),
+                            comment: configurations.comment.applying(other: configuration, types: [.bar]),
+                            reply: configurations.reply.applying(other: configuration, types: [.bar]),
                             // Don't apply to report overrides
                             postReport: InteractionBarTracker.main.interactionBarConfigurations.postReport,
                             commentReport: InteractionBarTracker.main.interactionBarConfigurations.commentReport

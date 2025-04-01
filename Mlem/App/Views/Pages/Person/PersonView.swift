@@ -153,7 +153,7 @@ struct PersonView: View {
         .conditionalNavigationTitle(person.wrappedValue.displayName_ ?? "")
         .navigationBarTitleDisplayMode(.inline)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(.themedGroupedBackground)
+        .background(ThemedColor.themedGroupedBackground.ignoresSafeArea())
     }
     
     @ViewBuilder

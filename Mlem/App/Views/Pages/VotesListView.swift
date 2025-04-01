@@ -7,6 +7,7 @@
 
 import MlemMiddleware
 import SwiftUI
+import Theming
 
 struct VotesListView: View {
     enum Target: Hashable {
@@ -80,7 +81,7 @@ struct VotesListView: View {
             }
         }
         .environment(\.communityContext, target.model.community_)
-        .background(.themedGroupedBackground)
+        .background(ThemedColor.themedGroupedBackground.ignoresSafeArea())
         .navigationTitle("Votes")
     }
     

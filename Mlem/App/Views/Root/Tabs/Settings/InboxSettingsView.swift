@@ -20,14 +20,15 @@ struct InboxSettingsView: View {
             )
             .tint(.themedInbox)
             Section {
-                NavigationLink(.settings(.replyInteractionBar)) {
+                NavigationLink(.settings(.interactionBar(.reply))) {
                     SettingsInteractionBarSummaryView(configuration: InteractionBarTracker.main.replyInteractionBar)
                 }
+                NavigationLink("Swipe Actions", destination: .settings(.swipeActions(.reply)))
             }
             if AccountsTracker.main.highestLevelAccountType >= .moderator {
                 Section {
                     NavigationLink(
-                        "Mod Mail Interaction Bar",
+                        "Mod Mail Action Layouts",
                         systemImage: Icons.interactionBar,
                         destination: .settings(.modMailInteractionBar)
                     )

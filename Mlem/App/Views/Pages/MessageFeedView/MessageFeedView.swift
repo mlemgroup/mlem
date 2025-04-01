@@ -7,6 +7,7 @@
 
 import MlemMiddleware
 import SwiftUI
+import Theming
 
 // swiftlint:disable:next type_body_length
 struct MessageFeedView: View {
@@ -108,7 +109,7 @@ struct MessageFeedView: View {
             .safeAreaInset(edge: .bottom) { textInput(scrollProxy) }
             .defaultScrollAnchor(.bottom)
             .scrollDismissesKeyboard(.interactively)
-            .background(.themedGroupedBackground)
+            .background(ThemedColor.themedGroupedBackground.ignoresSafeArea())
             .onAppear {
                 if feedLoader == nil {
                     feedLoader = .init(person: person, pageSize: 50)

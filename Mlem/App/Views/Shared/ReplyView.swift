@@ -16,6 +16,14 @@ struct ReplyView: View {
     let reply: Reply2
     
     var body: some View {
+        VStack(spacing: Constants.main.standardSpacing) {
+            CommentContextHeaderView(post: reply.post, community: reply.community_)
+            content
+        }
+        .padding(.top, Constants.main.halfSpacing)
+    }
+    
+    var content: some View {
         VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
             HStack {
                 FullyQualifiedLinkView(reply.creator_, labelStyle: .small)
@@ -28,10 +36,6 @@ struct ReplyView: View {
             }
           
             MarkdownWithLinkList(reply.comment.content)
-            NavigationLink(.post(reply.post)) {
-                FooterLinkView(title: reply.post.title, subtitle: reply.community.fullNameWithPrefix)
-            }
-            .id("\(reply.id)_reply_footer")
             InteractionBarView(
                 appState: appState,
                 reply: reply,
@@ -47,7 +51,11 @@ struct ReplyView: View {
         .onTapGesture {
             navigation.push(.comment(reply.comment))
         }
-        .quickSwipes(reply.swipeActions(appState: appState, behavior: .standard))
+        .quickSwipes(
+            reply: reply,
+            configuration: InteractionBarTracker.main.replyInteractionBar,
+            behavior: .standard
+        )
         .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
         .contextMenu { reply.menuActions(appState: appState, navigation: navigation) }
