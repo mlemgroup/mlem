@@ -65,7 +65,7 @@ struct SafetySettingsView: View {
     }
     
     var keywordFiltersNavigationLinkValue: LocalizedStringResource {
-        if filtersTracker.filteredKeywords.isEmpty { return "None" }
+        if filtersTracker.rawKeywords.isEmpty { return "None" }
         return keywordFilterEnabled ? "On" : "Off"
     }
 }

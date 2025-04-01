@@ -113,7 +113,7 @@ class Settings: ObservableObject {
         }
     }
     
-    var codable: CodableSettings { .init(from: self, filteredKeywords: FiltersTracker.main.filteredKeywords) }
+    var codable: CodableSettings { .init(from: self, filteredKeywords: FiltersTracker.main.rawKeywords) }
     
     @MainActor
     func restore(from systemSetting: SystemSetting) {
