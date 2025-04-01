@@ -21,18 +21,7 @@ public extension String {
     /// Returns true if this string contains:
     /// - Any single word that matches a single word in filteredKeywords
     /// - Any sequence of words that precisely matches a multi-word phrase in filteredKeywords
-    func failsKeywordFilter(_ filteredKeywords: Set<String>) -> Bool {
-        // parse single keywords from multi-word phrases
-        var keywords: Set<String> = .init()
-        var phrases: Set<[String]> = .init()
-        for keyword in filteredKeywords {
-            if keyword.contains(" ") {
-                phrases.insert(keyword.split(separator: " ").map { $0.lowercased() })
-            } else {
-                keywords.insert(keyword)
-            }
-        }
-        
+    func failsKeywordFilter(keywords: Set<String>, phrases: Set<[String]>) -> Bool {
         // split on any non-letter/number characters so "keyword's" is filtered as "keyword" "s"
         let words = split(separator: /[^[:alnum:]]/)
             .map { $0.lowercased() }
@@ -67,7 +56,7 @@ public extension String {
             }
         }
         
-        return words.contains { filteredKeywords.contains($0) }
+        return false
     }
 }
 
