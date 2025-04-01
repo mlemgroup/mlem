@@ -12,15 +12,17 @@ import SwiftUI
 import Theming
 
 struct FeedsView: View {
+    @Environment(AppState.self) var appState
+    @Environment(FiltersTracker.self) var filtersTracker
+    
     @Setting(\.postSize) var postSize
     @Setting(\.showReadInFeed) var showRead
     @Setting(\.showFeedWelcomePrompt) var showWelcomePrompt
     @Setting(\.internetSpeed) var internetSpeed
     @Setting(\.embedLoops) var embedLoops
     
-    @Environment(AppState.self) var appState
-    @Environment(FiltersTracker.self) var filtersTracker
-    
+    @AppStorage("lastBuildNumber") var lastBuildNumber: String?
+
     @ObservationIgnored @Dependency(\.persistenceRepository) private var persistenceRepository
     
     @State var postFeedLoader: AggregatePostFeedLoader?
@@ -143,6 +145,10 @@ struct FeedsView: View {
                     FeedWelcomeView()
                         .padding([.horizontal, .bottom], Constants.main.standardSpacing)
                 }
+                if Bundle.main.isTestFlight, lastBuildNumber != Bundle.main.buildVersionNumber {
+                    UpdateBannerView()
+                        .padding([.horizontal, .bottom], Constants.main.standardSpacing)
+                }
                 if let savedFeedLoader, feedSelection == .saved {
                     PersonContentGridView(feedLoader: savedFeedLoader, contentType: .constant(.all))
                 } else if let postFeedLoader {
@@ -158,6 +164,7 @@ struct FeedsView: View {
                 .buttonStyle(.plain)
             }
         }
+        .animation(.snappy, value: lastBuildNumber != Bundle.main.buildVersionNumber)
     }
     
     @ViewBuilder

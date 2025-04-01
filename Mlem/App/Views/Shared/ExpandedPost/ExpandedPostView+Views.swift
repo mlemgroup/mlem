@@ -38,7 +38,11 @@ extension ExpandedPostView {
                         highlight: [scrollTargetedComment?.actorId_, highlightedComment?.actorId_].contains(comment.actorId),
                         depthOffset: tracker.proposedDepthOffset
                     )
-                    .quickSwipes(comment.swipeActions(appState: appState, behavior: .standard, commentTreeTracker: tracker))
+                    .quickSwipes(
+                        comment: comment,
+                        configuration: InteractionBarTracker.main.commentInteractionBar,
+                        behavior: .standard
+                    )
                     .contextMenu {
                         comment.allMenuActions(appState: appState, navigation: navigation, commentTreeTracker: tracker)
                     }
