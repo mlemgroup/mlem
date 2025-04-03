@@ -22,6 +22,7 @@ struct QuickSwitcherView: View {
                 navigation.dismissSheet()
             }
         }
+        .presentationBackground(.themedGroupedBackground)
         .presentationDetents([.medium, .large])
     }
 }
