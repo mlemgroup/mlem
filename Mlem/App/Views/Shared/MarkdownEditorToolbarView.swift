@@ -21,6 +21,10 @@ struct MarkdownEditorToolbarView: View {
     let uploadHistory: ImageUploadHistoryManager
     
     @State var imageManager: ImageUploadManager = .init()
+    @ScaledMetric(relativeTo: .body) var toolbarHeight: CGFloat = 32
+    
+    @State var leftFade: Bool
+    @State var rightFade: Bool
     
     init(
         showing actions: AvailableActions = .all,
@@ -32,6 +36,13 @@ struct MarkdownEditorToolbarView: View {
         self.textView = textView
         self.uploadHistory = uploadHistory
         self.imageUploadApi = imageUploadApi
+        
+        self.leftFade = false
+        if #available(iOS 18.0, *) {
+            self.rightFade = true
+        } else {
+            self.rightFade = false
+        }
     }
     
     @ViewBuilder
@@ -55,7 +66,7 @@ struct MarkdownEditorToolbarView: View {
             }
         }
         .frame(maxWidth: .infinity)
-        .frame(height: 32, alignment: .bottom)
+        .frame(height: toolbarHeight, alignment: .bottom)
         .onChange(of: imageManager.state) {
             switch imageManager.state {
             case let .done(upload):
@@ -79,6 +90,11 @@ struct MarkdownEditorToolbarView: View {
                     Button("Undo", systemImage: "arrow.uturn.backward") {
                         textView.undoManager?.undo()
                     }
+                    .compatibilityOnScrollVisibilityChange { isVisible in
+                        withAnimation {
+                            leftFade = !isVisible
+                        }
+                    }
                     Button("Redo", systemImage: "arrow.uturn.forward") {
                         textView.undoManager?.redo()
                     }
@@ -87,6 +103,13 @@ struct MarkdownEditorToolbarView: View {
                 }
                 Button("Bold", systemImage: Icons.bold) {
                     textView.wrapSelectionWithDelimiters("**")
+                }
+                .compatibilityOnScrollVisibilityChange { isVisible in
+                    if UIDevice.isPad {
+                        withAnimation {
+                            leftFade = !isVisible
+                        }
+                    }
                 }
                 Button("Italic", systemImage: Icons.italic) {
                     textView.wrapSelectionWithDelimiters("_")
@@ -150,6 +173,11 @@ struct MarkdownEditorToolbarView: View {
                         textView.insertText("[\(instance.host)](https://\(instance.host))")
                     })
                 }
+                .compatibilityOnScrollVisibilityChange { isVisible in
+                    withAnimation {
+                        rightFade = !isVisible
+                    }
+                }
             }
             .imageScale(.large)
             .buttonStyle(.plain)
@@ -159,5 +187,35 @@ struct MarkdownEditorToolbarView: View {
             .padding(.bottom, 2)
         }
         .scrollIndicators(.hidden)
+        .mask(
+            HStack(spacing: 0) {
+                LinearGradient(
+                    gradient: Gradient(colors: [Color.black.opacity(leftFade ? 0 : 1), Color.black]),
+                    startPoint: .leading,
+                    endPoint: .trailing
+                )
+                .frame(width: 100)
+                
+                Rectangle().fill(Color.black)
+                
+                LinearGradient(
+                    gradient: Gradient(colors: [Color.black, Color.black.opacity(rightFade ? 0 : 1)]),
+                    startPoint: .leading,
+                    endPoint: .trailing
+                )
+                .frame(width: 100)
+            }
+        )
+    }
+}
+
+private extension View {
+    /// If onScrollVisibilityChange is available, applies it to this view; otherwise has no effect.
+    func compatibilityOnScrollVisibilityChange(_ action: @escaping (Bool) -> Void) -> some View {
+        if #available(iOS 18.0, *) {
+            return onScrollVisibilityChange(action)
+        } else {
+            return self
+        }
     }
 }
