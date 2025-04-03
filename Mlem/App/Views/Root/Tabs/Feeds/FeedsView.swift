@@ -28,25 +28,7 @@ struct FeedsView: View {
     @State var postFeedLoader: AggregatePostFeedLoader?
     @State var savedFeedLoader: PersonContentFeedLoader?
     
-    @State var feedSelection: FeedSelection {
-        didSet {
-            guard oldValue != feedSelection else { return }
-            Task {
-                do {
-                    // clear whichever loader is now inactive and refresh/update active loader
-                    if feedSelection == .saved {
-                        await postFeedLoader?.clear()
-                        try await savedFeedLoader?.refresh(clearBeforeRefresh: true)
-                    } else {
-                        await savedFeedLoader?.clear()
-                        try await postFeedLoader?.changeFeedType(to: feedSelection.associatedApiType)
-                    }
-                } catch {
-                    handleError(error)
-                }
-            }
-        }
-    }
+    @State var feedSelection: FeedSelection
 
     @State var scrollToTopTrigger: Bool = false
     
@@ -95,11 +77,14 @@ struct FeedsView: View {
             .background(ThemedColor.themedGroupedBackground)
             .themedGroupedBackground()
             .scrollContentBackground(.hidden)
-            .toolbar {
-                ToolbarTitleMenu {
-                    feedSelectionMenu(scroll: true)
-                }
-            }
+            .modifier(
+                FeedSelectionTitleModifier(
+                    feedOptions: feedOptions,
+                    shouldScrollToTop: true,
+                    feedSelection: $feedSelection,
+                    scrollToTopTrigger: $scrollToTopTrigger
+                )
+            )
             .toolbar {
                 // SwiftUI complains if both this and the menu are in the same toolbar
                 if let postFeedLoader, feedSelection != .saved {
@@ -132,6 +117,23 @@ struct FeedsView: View {
                 return postFeedLoader
             }())
             .environment(\.feedContext, feedSelection.feedContext)
+            .onChange(of: feedSelection) { oldValue, _ in
+                guard oldValue != feedSelection else { return }
+                Task {
+                    do {
+                        // clear whichever loader is now inactive and refresh/update active loader
+                        if feedSelection == .saved {
+                            await postFeedLoader?.clear()
+                            try await savedFeedLoader?.refresh(clearBeforeRefresh: true)
+                        } else {
+                            await savedFeedLoader?.clear()
+                            try await postFeedLoader?.changeFeedType(to: feedSelection.associatedApiType)
+                        }
+                    } catch {
+                        handleError(error)
+                    }
+                }
+            }
     }
     
     @ViewBuilder
@@ -153,7 +155,12 @@ struct FeedsView: View {
                 }
             } header: {
                 Menu {
-                    feedSelectionMenu(scroll: false)
+                    FeedSelectionMenuView(
+                        feedOptions: feedOptions,
+                        shouldScrollToTop: false,
+                        feedSelection: $feedSelection,
+                        scrollToTopTrigger: $scrollToTopTrigger
+                    )
                 } label: {
                     FeedHeaderView(feedDescription: feedSelection.description, dropdownStyle: .enabled(showBadge: false))
                         .padding(.bottom, Constants.main.standardSpacing)
@@ -162,26 +169,6 @@ struct FeedsView: View {
             }
         }
         .animation(.snappy, value: lastBuildNumber != Bundle.main.buildVersionNumber)
-    }
-    
-    @ViewBuilder
-    func feedSelectionMenu(scroll: Bool) -> some View {
-        ForEach(feedOptions, id: \.self) { feed in
-            Button(
-                String(localized: feed.description.label),
-                systemImage: feedSelection == feed ? feed.description.iconNameFill : feed.description.iconName
-            ) {
-                if scroll {
-                    scrollToTopTrigger.toggle()
-                    // delay feed switch to allow scroll to complete
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                        feedSelection = feed
-                    }
-                } else {
-                    feedSelection = feed
-                }
-            }
-        }
     }
     
     @MainActor
@@ -204,6 +191,61 @@ struct FeedsView: View {
             )
         } catch {
             handleError(error)
+        }
+    }
+}
+
+private struct FeedSelectionTitleModifier: ViewModifier {
+    let feedOptions: [FeedSelection]
+    let shouldScrollToTop: Bool
+    @Binding var feedSelection: FeedSelection
+    @Binding var scrollToTopTrigger: Bool
+    
+    @State var isAtTop: Bool = false
+    
+    func body(content: Content) -> some View {
+        content
+            .toolbar {
+                if !isAtTop {
+                    ToolbarTitleMenu {
+                        FeedSelectionMenuView(
+                            feedOptions: feedOptions,
+                            shouldScrollToTop: shouldScrollToTop,
+                            feedSelection: $feedSelection,
+                            scrollToTopTrigger: $scrollToTopTrigger
+                        )
+                    }
+                }
+            }
+            .isAtTopSubscriber(isAtTop: $isAtTop)
+            .onChange(of: isAtTop) {
+                print(isAtTop)
+            }
+    }
+}
+
+private struct FeedSelectionMenuView: View {
+    let feedOptions: [FeedSelection]
+    let shouldScrollToTop: Bool
+    @Binding var feedSelection: FeedSelection
+    @Binding var scrollToTopTrigger: Bool
+    
+    var body: some View {
+        ForEach(feedOptions, id: \.self) { feed in
+            Button(
+                String(localized: feed.description.label),
+                systemImage: feedSelection == feed ? feed.description.iconNameFill : feed.description.iconName
+            ) {
+                if shouldScrollToTop {
+                    scrollToTopTrigger.toggle()
+                    // delay feed switch to allow scroll to complete
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        feedSelection = feed
+                    }
+                } else {
+                    feedSelection = feed
+                }
+            }
         }
     }
 }
