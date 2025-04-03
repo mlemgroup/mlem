@@ -218,9 +218,6 @@ private struct FeedSelectionTitleModifier: ViewModifier {
                 }
             }
             .isAtTopSubscriber(isAtTop: $isAtTop)
-            .onChange(of: isAtTop) {
-                print(isAtTop)
-            }
     }
 }
 
