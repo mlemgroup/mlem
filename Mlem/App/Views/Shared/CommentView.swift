@@ -54,6 +54,8 @@ struct CommentView<EmbeddedContent: View>: View {
         inFeed ? 0 : comment.depth - depthOffset
     }
     
+    var collapsed: Bool { treeNode?.collapsed ?? false }
+    
     var body: some View {
         if inFeed {
             content
@@ -73,56 +75,42 @@ struct CommentView<EmbeddedContent: View>: View {
     
     @ViewBuilder
     var content: some View {
-        let collapsed = treeNode?.collapsed ?? false
-        
-        HStack(spacing: 12) {
-            CommentBarView(depth: comment.depth, inFeed: inFeed)
-            VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
-                HStack(spacing: 0) {
-                    FullyQualifiedLinkView(comment.creator_, labelStyle: .small)
-                    Spacer()
-                    if compact {
-                        InfoStackView(
-                            comment: comment,
-                            readouts: InteractionBarTracker.main.commentInteractionBar.readouts,
-                            showColor: true
-                        )
-                        .layoutPriority(1)
+        VStack(spacing: Constants.main.standardSpacing) {
+            if inFeed {
+                feedHeader
+                    .padding([.horizontal, .top], Constants.main.standardSpacing)
+            }
+            
+            HStack(spacing: 12) {
+                CommentBarView(depth: comment.depth, inFeed: inFeed)
+                VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
+                    if !inFeed {
+                        authorAndMenu.padding(.top, Constants.main.standardSpacing)
                     }
-                    Group {
-                        if collapsed {
-                            Image(systemName: Icons.expandComment)
-                                .frame(height: 10)
-                                .imageScale(.small)
-                        } else {
-                            ellipsisMenus
-                                .frame(height: 10)
+                    
+                    if !collapsed {
+                        CommentBodyView(comment: comment)
+                            .padding(.trailing, 2)
+                        embeddedContent
+                        if !compact {
+                            InteractionBarView(
+                                appState: appState,
+                                navigation: navigation,
+                                comment: comment,
+                                configuration: interactionBarConfiguration,
+                                commentTreeTracker: commentTreeTracker,
+                                communityContext: communityContext,
+                                reportContext: reportContext
+                            )
+                            .padding(.horizontal, 2)
+                            .padding(.bottom, 3)
+                            .padding(.top, 1)
                         }
                     }
-                    .padding(.leading, Constants.main.standardSpacing)
                 }
-                if !collapsed {
-                    CommentBodyView(comment: comment)
-                        .padding(.trailing, 2)
-                    embeddedContent
-                    if !compact {
-                        InteractionBarView(
-                            appState: appState,
-                            navigation: navigation,
-                            comment: comment,
-                            configuration: interactionBarConfiguration,
-                            commentTreeTracker: commentTreeTracker,
-                            communityContext: communityContext,
-                            reportContext: reportContext
-                        )
-                        .padding(.horizontal, 2)
-                        .padding(.bottom, 5)
-                        .padding(.top, 1)
-                    }
-                }
+                .padding(.bottom, Constants.main.standardSpacing)
+                // .padding(.top, compact || collapsed ? 0 : 3)
             }
-            .padding(.vertical, Constants.main.standardSpacing)
-            .padding(.top, compact || collapsed ? 0 : 3)
         }
         .padding(.trailing, Constants.main.standardSpacing)
         .background(highlight ? palette.accent.opacity(0.2) : .clear)
@@ -132,6 +120,43 @@ struct CommentView<EmbeddedContent: View>: View {
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
         .environment(\.commentContext, comment)
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
+    }
+    
+    var feedHeader: some View {
+        VStack(spacing: Constants.main.standardSpacing) {
+            authorAndMenu
+            
+            if let title = comment.post_?.title {
+                FooterLinkView(title: title, subtitle: nil)
+                    .frame(maxWidth: .infinity)
+            }
+        }
+    }
+    
+    var authorAndMenu: some View {
+        HStack(spacing: 0) {
+            FullyQualifiedLinkView(comment.creator_, labelStyle: .small)
+            Spacer()
+            if compact {
+                InfoStackView(
+                    comment: comment,
+                    readouts: InteractionBarTracker.main.commentInteractionBar.readouts,
+                    showColor: true
+                )
+                .layoutPriority(1)
+            }
+            Group {
+                if collapsed {
+                    Image(systemName: Icons.expandComment)
+                        .frame(height: 10)
+                        .imageScale(.small)
+                } else {
+                    ellipsisMenus
+                        .frame(height: 10)
+                }
+            }
+            .padding(.leading, Constants.main.standardSpacing)
+        }
     }
     
     var ellipsisMenus: some View {
@@ -184,7 +209,8 @@ struct CommentBarView: View {
             .frame(width: 3)
             .frame(maxHeight: .infinity)
             .padding(.leading, 8)
-            .padding(.vertical, 8)
+            .padding(.bottom, 8)
+            .padding(.top, inFeed ? 0 : 8)
     }
 }
 

@@ -40,16 +40,17 @@ struct FeedCommentView<EmbeddedContent: View>: View {
     }
     
     var body: some View {
-        VStack(spacing: 0) {
-            if !postSize.tiled, let post = comment.post_ {
-                if showCompactPostContext {
-                    compactHeaderView(post: post)
-                } else {
-                    CommentContextHeaderView(post: post, community: comment.community_)
-                        .padding(.top, Constants.main.halfSpacing)
-                        .padding(.bottom, Constants.main.standardSpacing)
-                }
-            }
+//        VStack(spacing: 0) {
+//            if !postSize.tiled, let post = comment.post_ {
+//                if showCompactPostContext {
+//                    compactHeaderView(post: post)
+//                } else {
+//                    CommentContextHeaderView(post: post, community: comment.community_)
+//                        .padding(.top, Constants.main.halfSpacing)
+//                        .padding(.bottom, Constants.main.standardSpacing)
+//                }
+//                FooterLinkView(title: post.title, subtitle: nil)
+//            }
             content
                 .contentShape(.interaction, .rect)
                 .quickSwipes(
@@ -66,7 +67,7 @@ struct FeedCommentView<EmbeddedContent: View>: View {
                 ) }
                 .paletteBorder(cornerRadius: postSize.swipeBehavior.cornerRadius)
         }
-    }
+//    }
     
     @ViewBuilder
     var content: some View {
