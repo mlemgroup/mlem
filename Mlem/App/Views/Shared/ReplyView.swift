@@ -16,11 +16,8 @@ struct ReplyView: View {
     let reply: Reply2
     
     var body: some View {
-        VStack(spacing: Constants.main.standardSpacing) {
-            CommentContextHeaderView(post: reply.post, community: reply.community_)
-            content
-        }
-        .padding(.top, Constants.main.halfSpacing)
+        content
+            .padding(.top, Constants.main.halfSpacing)
     }
     
     var content: some View {
@@ -34,14 +31,16 @@ struct ReplyView: View {
                 EllipsisMenu(size: 24) { reply.menuActions(appState: appState, navigation: navigation) }
                     .frame(height: 10)
             }
-          
+  
+            FooterLinkView(title: reply.post.title, subtitle: nil)
+
             MarkdownWithLinkList(reply.comment.content)
             InteractionBarView(
                 appState: appState,
                 reply: reply,
                 configuration: InteractionBarTracker.main.replyInteractionBar
             )
-            .padding(.top, 2)
+            .padding(.top, 1)
         }
         .padding(.vertical, 2)
         .padding(Constants.main.standardSpacing)
