@@ -40,32 +40,21 @@ struct FeedCommentView<EmbeddedContent: View>: View {
     }
     
     var body: some View {
-        VStack(spacing: 0) {
-            if !postSize.tiled, let post = comment.post_ {
-                if showCompactPostContext {
-                    compactHeaderView(post: post)
-                } else {
-                    CommentContextHeaderView(post: post, community: comment.community_)
-                        .padding(.top, Constants.main.halfSpacing)
-                        .padding(.bottom, Constants.main.standardSpacing)
-                }
-            }
-            content
-                .contentShape(.interaction, .rect)
-                .quickSwipes(
-                    comment: comment,
-                    configuration: interactionBarConfiguration,
-                    behavior: postSize.swipeBehavior
-                )
-                .contextMenu { comment.allMenuActions(
-                    appState: appState,
-                    showAllActions: false,
-                    navigation: navigation,
-                    commentTreeTracker: commentTreeTracker,
-                    report: reportContext
-                ) }
-                .paletteBorder(cornerRadius: postSize.swipeBehavior.cornerRadius)
-        }
+        content
+            .contentShape(.interaction, .rect)
+            .quickSwipes(
+                comment: comment,
+                configuration: interactionBarConfiguration,
+                behavior: postSize.swipeBehavior
+            )
+            .contextMenu { comment.allMenuActions(
+                appState: appState,
+                showAllActions: false,
+                navigation: navigation,
+                commentTreeTracker: commentTreeTracker,
+                report: reportContext
+            ) }
+            .paletteBorder(cornerRadius: postSize.swipeBehavior.cornerRadius)
     }
     
     @ViewBuilder
@@ -83,17 +72,6 @@ struct FeedCommentView<EmbeddedContent: View>: View {
         case let .link(link): link.thumbnail
         default: nil
         }
-    }
-    
-    @ViewBuilder
-    func compactHeaderView(post: any Post) -> some View {
-        Label(post.title, systemImage: Icons.posts)
-            .font(.footnote)
-            .foregroundStyle(.themedSecondary)
-            .lineLimit(1)
-            .padding(.leading, 10)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.bottom, postSize == .compact ? 3 : 5)
     }
     
     var interactionBarConfiguration: CommentBarConfiguration {
