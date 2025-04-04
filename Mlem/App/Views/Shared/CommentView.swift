@@ -129,7 +129,7 @@ struct CommentView<EmbeddedContent: View>: View {
                     .frame(maxWidth: .infinity)
             }
         }
-        .padding([.horizontal, .top], Constants.main.standardSpacing)
+        .padding([.leading, .top], Constants.main.standardSpacing)
     }
     
     var authorAndMenu: some View {
