@@ -124,6 +124,9 @@ struct ExpandedPostView<Content: View>: View {
                         if let errorDetails = tracker?.errorDetails {
                             ErrorView(errorDetails)
                                 .frame(maxWidth: .infinity)
+                        } else if let contentLoaderError {
+                            ErrorView(.init(error: contentLoaderError))
+                                .frame(maxWidth: .infinity)
                         } else if (post.commentCount_ ?? -1) == 0 {
                             noCommentsView
                                 .padding(.top, Constants.main.doubleSpacing)
