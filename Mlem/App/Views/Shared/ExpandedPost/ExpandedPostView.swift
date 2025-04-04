@@ -16,17 +16,6 @@ class TopVisibleItemContainer {
 }
 
 struct ExpandedPostView<Content: View>: View {
-    struct AnchorsKey: PreferenceKey {
-        // swiftlint:disable:next nesting
-        typealias Value = [ActorIdentifier?: Anchor<CGPoint>]
-
-        static var defaultValue: Value { [:] }
-
-        static func reduce(value: inout Value, nextValue: () -> Value) {
-            value.merge(nextValue()) { $1 }
-        }
-    }
-    
     @Environment(AppState.self) var appState
     @Environment(ExpandedPostHistoryTracker.self) var expandedPostHistoryTracker
     @Environment(NavigationLayer.self) var navigation
@@ -51,7 +40,7 @@ struct ExpandedPostView<Content: View>: View {
     @State var topVisibleItem: TopVisibleItemContainer = .init()
     @State var postCollapsed: Bool = false
     
-    @State var topVisibleCommentAtLastVisit: ActorIdentifier?
+    @State var previousVisitRecord: PreviousVisitRecord?
     
     init(
         post: (any PostStubProviding)?,
@@ -176,18 +165,24 @@ struct ExpandedPostView<Content: View>: View {
                     }
                 }
                 .overlay(alignment: jumpButton.alignment) {
-                    let shouldShow = topVisibleCommentAtLastVisit == nil && (post.commentCount_ ?? 0) > 10
+                    let shouldShowLastVisitButton = (previousVisitRecord?.isRevisit ?? false) && (post.commentCount_ ?? 0) > 10
                     JumpButtonsView(
                         showJumpButton: (tracker?.nodes.count ?? 0) > 1,
                         topVisibleItem: topVisibleItem,
-                        scrollToLastVisitedPosition: shouldShow ? nil : scrollToLastVisitedPosition,
+                        scrollToLastVisitedPosition: shouldShowLastVisitButton ? scrollToLastVisitedPosition : nil,
                         scrollToNextComment: scrollToNextComment,
                         scrollToPreviousComment: scrollToPreviousComment
                     )
                 }
                 .onPreferenceChange(AnchorsKey.self) { updateAnchors($0, in: geo) }
                 .onAppear {
-                    topVisibleCommentAtLastVisit = expandedPostHistoryTracker.retrieve(for: post.actorId)
+                    if previousVisitRecord == nil {
+                        if let actorId = expandedPostHistoryTracker.retrieve(for: post.actorId) {
+                            previousVisitRecord = .revisit(topVisibleCommentAtLastVisit: actorId)
+                        } else {
+                            previousVisitRecord = .firstVisit
+                        }
+                    }
                 }
             }
         }

@@ -9,6 +9,29 @@ import MlemMiddleware
 import SwiftUI
 
 extension ExpandedPostView {
+    struct AnchorsKey: PreferenceKey {
+        // swiftlint:disable:next nesting
+        typealias Value = [ActorIdentifier?: Anchor<CGPoint>]
+
+        static var defaultValue: Value { [:] }
+
+        static func reduce(value: inout Value, nextValue: () -> Value) {
+            value.merge(nextValue()) { $1 }
+        }
+    }
+    
+    enum PreviousVisitRecord {
+        case firstVisit
+        case revisit(topVisibleCommentAtLastVisit: ActorIdentifier)
+        
+        var isRevisit: Bool {
+            switch self {
+            case .revisit: true
+            default: false
+            }
+        }
+    }
+
     enum CommentTreeViewType: Hashable {
         case comment(CommentTreeNode)
         case unloadedComments(comment: CommentTreeNode, count: Int)
@@ -75,7 +98,12 @@ extension ExpandedPostView {
     }
     
     func scrollToLastVisitedPosition() {
-        if let topVisibleCommentAtLastVisit { jumpButtonTarget = topVisibleCommentAtLastVisit }
+        switch previousVisitRecord {
+        case let .revisit(topVisibleCommentAtLastVisit: topVisibleCommentAtLastVisit):
+            jumpButtonTarget = topVisibleCommentAtLastVisit
+        default:
+            break
+        }
     }
     
     func scrollToNextComment() {
