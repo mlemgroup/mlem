@@ -78,7 +78,6 @@ struct CommentView<EmbeddedContent: View>: View {
         VStack(spacing: Constants.main.standardSpacing) {
             if inFeed {
                 feedHeader
-                    .padding([.horizontal, .top], Constants.main.standardSpacing)
             }
             
             HStack(spacing: 12) {
@@ -109,7 +108,6 @@ struct CommentView<EmbeddedContent: View>: View {
                     }
                 }
                 .padding(.bottom, Constants.main.standardSpacing)
-                // .padding(.top, compact || collapsed ? 0 : 3)
             }
         }
         .padding(.trailing, Constants.main.standardSpacing)
@@ -131,6 +129,7 @@ struct CommentView<EmbeddedContent: View>: View {
                     .frame(maxWidth: .infinity)
             }
         }
+        .padding([.horizontal, .top], Constants.main.standardSpacing)
     }
     
     var authorAndMenu: some View {

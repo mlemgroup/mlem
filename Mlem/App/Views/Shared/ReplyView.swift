@@ -16,12 +16,8 @@ struct ReplyView: View {
     let reply: Reply2
     
     var body: some View {
-//        VStack(spacing: Constants.main.standardSpacing) {
-//            CommentContextHeaderView(post: reply.post, community: reply.community_)
-//            content
-//        }
         content
-        .padding(.top, Constants.main.halfSpacing)
+            .padding(.top, Constants.main.halfSpacing)
     }
     
     var content: some View {
@@ -37,28 +33,14 @@ struct ReplyView: View {
             }
   
             FooterLinkView(title: reply.post.title, subtitle: nil)
-            
-//            VStack(alignment: .leading) {
-//                Text(reply.post.title)
-//                    .bold()
-//            }
-//            .lineLimit(1)
-//            .font(.footnote)
-//            .foregroundStyle(.themedSecondary)
-//            .padding(Constants.main.smallItemCornerRadius)
-//            .background(.themedSecondaryBackground, in: .rect(cornerRadius: Constants.main.smallItemCornerRadius))
-          
+
             MarkdownWithLinkList(reply.comment.content)
             InteractionBarView(
                 appState: appState,
                 reply: reply,
                 configuration: InteractionBarTracker.main.replyInteractionBar
             )
-            .padding(.top, 2)
-//            
-//            Divider()
-//            
-//            CommentContextHeaderView(post: reply.post, community: reply.community_)
+            .padding(.top, 1)
         }
         .padding(.vertical, 2)
         .padding(Constants.main.standardSpacing)
