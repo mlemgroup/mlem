@@ -10,6 +10,8 @@ import SwiftUICore
 
 struct CommentBarConfiguration: InteractionBarConfiguration {
     enum ActionType: String, ActionTypeProviding {
+        typealias Configuration = CommentBarConfiguration // swiftlint:disable:this nesting
+        
         case upvote
         case downvote
         case save
@@ -50,9 +52,20 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
             case .ban: .banFromCommunity(isOn: false)
             }
         }
+        
+        var associatedReadout: Set<Configuration.ReadoutType> {
+            switch self {
+            case .upvote: [.upvote, .score]
+            case .downvote: [.downvote, .score]
+            case .save: [.saved]
+            case .reply, .share, .selectText, .report, .resolve, .remove, .ban: []
+            }
+        }
     }
     
     enum CounterType: String, CounterTypeProviding {
+        typealias Configuration = CommentBarConfiguration // swiftlint:disable:this nesting
+        
         case score
         case upvote
         case downvote
@@ -66,6 +79,15 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
             case .upvote: .upvote()
             case .downvote: .downvote()
             case .reply: .reply()
+            }
+        }
+        
+        var associatedReadout: Set<Configuration.ReadoutType> {
+            switch self {
+            case .score: [.upvote, .downvote, .score]
+            case .upvote: [.upvote, .score]
+            case .downvote: [.downvote, .score]
+            case .reply: []
             }
         }
     }

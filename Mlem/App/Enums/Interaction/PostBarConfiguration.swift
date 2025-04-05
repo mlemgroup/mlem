@@ -10,6 +10,8 @@ import SwiftUICore
 
 struct PostBarConfiguration: InteractionBarConfiguration {
     enum ActionType: String, ActionTypeProviding {
+        typealias Configuration = PostBarConfiguration // swiftlint:disable:this nesting
+        
         case upvote
         case downvote
         case save
@@ -62,9 +64,20 @@ struct PostBarConfiguration: InteractionBarConfiguration {
             case .ban: .banFromCommunity(isOn: false)
             }
         }
+        
+        var associatedReadout: Set<PostBarConfiguration.ReadoutType> {
+            switch self {
+            case .upvote: [.upvote, .score]
+            case .downvote: [.downvote, .score]
+            case .save: [.saved]
+            case .reply, .share, .selectText, .hide, .block, .report, .crossPost, .lock, .pin, .resolve, .remove, .ban: []
+            }
+        }
     }
     
     enum CounterType: String, CounterTypeProviding {
+        typealias Configuration = PostBarConfiguration // swiftlint:disable:this nesting
+        
         case score
         case upvote
         case downvote
@@ -78,6 +91,15 @@ struct PostBarConfiguration: InteractionBarConfiguration {
             case .upvote: .upvote()
             case .downvote: .downvote()
             case .reply: .reply()
+            }
+        }
+        
+        var associatedReadout: Set<PostBarConfiguration.ReadoutType> {
+            switch self {
+            case .score: [.upvote, .downvote, .score]
+            case .upvote: [.upvote, .score]
+            case .downvote: [.downvote, .score]
+            case .reply: []
             }
         }
     }

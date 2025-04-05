@@ -10,6 +10,8 @@ import SwiftUICore
 
 struct ReplyBarConfiguration: InteractionBarConfiguration {
     enum ActionType: String, ActionTypeProviding {
+        typealias Configuration = ReplyBarConfiguration // swiftlint:disable:this nesting
+        
         case upvote
         case downvote
         case save
@@ -37,9 +39,20 @@ struct ReplyBarConfiguration: InteractionBarConfiguration {
             case .report: .report()
             }
         }
+        
+        var associatedReadout: Set<ReplyBarConfiguration.ReadoutType> {
+            switch self {
+            case .upvote: [.upvote, .score]
+            case .downvote: [.downvote, .score]
+            case .save: [.saved]
+            case .reply, .markRead, .selectText, .report: []
+            }
+        }
     }
     
     enum CounterType: String, CounterTypeProviding {
+        typealias Configuration = ReplyBarConfiguration // swiftlint:disable:this nesting
+        
         case score
         case upvote
         case downvote
@@ -53,6 +66,15 @@ struct ReplyBarConfiguration: InteractionBarConfiguration {
             case .upvote: .upvote()
             case .downvote: .downvote()
             case .reply: .reply()
+            }
+        }
+        
+        var associatedReadout: Set<ReplyBarConfiguration.ReadoutType> {
+            switch self {
+            case .score: [.upvote, .downvote, .score]
+            case .upvote: [.upvote, .score]
+            case .downvote: [.downvote, .score]
+            case .reply: []
             }
         }
     }

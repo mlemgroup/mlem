@@ -258,10 +258,10 @@ extension Post1Providing {
         }
     }
     
-    func readout(type: PostBarConfiguration.ReadoutType) -> Readout? {
+    func readout(type: PostBarConfiguration.ReadoutType, showColor: Bool) -> Readout? {
         switch type {
         case .created: createdReadout
-        case .score: api.downvotesEnabled ? scoreReadout : upvoteReadout
+        case .score: api.downvotesEnabled ? scoreReadout(showColor: showColor) : upvoteReadout
         case .upvote: upvoteReadout
         case .downvote: api.downvotesEnabled ? downvoteReadout : nil
         case .comment: commentReadout

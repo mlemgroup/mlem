@@ -43,7 +43,17 @@ struct InteractionBarView: View {
             communityContext: communityContext,
             reportContext: reportContext
         )
-        self.readouts = configuration.readouts.compactMap { post.readout(type: $0) }
+        var associatedReadouts: Set<PostBarConfiguration.ReadoutType> = .init()
+        configuration.leading.forEach { action in
+            associatedReadouts.formUnion(action.associatedReadout)
+        }
+        configuration.trailing.forEach { action in
+            associatedReadouts.formUnion(action.associatedReadout)
+        }
+        
+        self.readouts = configuration.readouts.compactMap { readout in
+            post.readout(type: readout, showColor: !associatedReadouts.contains(readout))
+        }
     }
     
     init(
@@ -73,7 +83,7 @@ struct InteractionBarView: View {
             communityContext: communityContext,
             reportContext: reportContext
         )
-        self.readouts = configuration.readouts.compactMap { comment.readout(type: $0) }
+        self.readouts = configuration.readouts.compactMap { comment.readout(type: $0, showColor: false) } // TODO: NOW
     }
     
     init(
@@ -83,14 +93,14 @@ struct InteractionBarView: View {
     ) {
         self.leading = .init(appState: appState, reply: reply, items: configuration.leading)
         self.trailing = .init(appState: appState, reply: reply, items: configuration.trailing)
-        self.readouts = configuration.readouts.compactMap { reply.readout(type: $0) }
+        self.readouts = configuration.readouts.compactMap { reply.readout(type: $0, showColor: false) } // TODO: NOW
     }
 
     var body: some View {
         HStack(spacing: Constants.main.doubleSpacing) {
             ForEach(leading, id: \.viewId, content: widgetView)
                 .fixedSize(horizontal: true, vertical: false)
-            InfoStackView(readouts: readouts, showColor: false)
+            InfoStackView(readouts: readouts)
                 .frame(maxWidth: .infinity, alignment: infoStackAlignment)
                 .padding(infoStackPaddingEdges, -Constants.main.doubleSpacing)
             ForEach(trailing, id: \.viewId, content: widgetView)

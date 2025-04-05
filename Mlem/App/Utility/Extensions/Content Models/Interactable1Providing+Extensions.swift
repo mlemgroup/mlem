@@ -187,7 +187,7 @@ extension Interactable1Providing {
         )
     }
     
-    var scoreReadout: Readout {
+    func scoreReadout(showColor: Bool) -> Readout {
         let icon: String
         let color: ThemedColor?
         switch self2?.votes.myVote {
@@ -205,7 +205,7 @@ extension Interactable1Providing {
             id: "score\(uid)",
             label: self2?.votes.total.description,
             icon: icon,
-            color: color
+            color: showColor ? color : nil
         )
     }
     
