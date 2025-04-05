@@ -56,10 +56,10 @@ extension InteractionBarConfiguration {
     
     var all: [Item] { leading + trailing }
     
-    func associatedReadout(context: any Interactable1Providing) -> Set<ReadoutType> {
+    func associatedReadouts(context: any Interactable1Providing) -> Set<ReadoutType> {
         var ret: Set<ReadoutType> = .init()
         for element in all {
-            ret.formUnion(element.associatedReadout(context: context))
+            ret.formUnion(element.associatedReadouts(context: context))
         }
         return ret
     }
@@ -110,16 +110,16 @@ enum InteractionConfigurationItem<
         }
     }
     
-    func associatedReadout(context: any Interactable1Providing) -> Set<ReadoutType> {
+    func associatedReadouts(context: any Interactable1Providing) -> Set<ReadoutType> {
         switch self {
         case let .action(actionType):
-            guard let ret = actionType.associatedReadout(context: context) as? Set<ReadoutType> else {
+            guard let ret = actionType.associatedReadouts(context: context) as? Set<ReadoutType> else {
                 assertionFailure("Could not cast to ReadoutType")
                 return []
             }
             return ret
         case let .counter(counterType):
-            guard let ret = counterType.associatedReadout(context: context) as? Set<ReadoutType> else {
+            guard let ret = counterType.associatedReadouts(context: context) as? Set<ReadoutType> else {
                 assertionFailure("Could not cast to ReadoutType")
                 return []
             }
@@ -135,7 +135,7 @@ protocol ActionTypeProviding: Codable, CaseIterable, Hashable, RawRepresentable 
     
     static var defaultWidgets: [Self] { get }
     
-    func associatedReadout(context: any Interactable1Providing) -> Set<Configuration.ReadoutType>
+    func associatedReadouts(context: any Interactable1Providing) -> Set<Configuration.ReadoutType>
 }
 
 protocol CounterTypeProviding: Codable, CaseIterable, Hashable, RawRepresentable where RawValue == String {
@@ -145,7 +145,7 @@ protocol CounterTypeProviding: Codable, CaseIterable, Hashable, RawRepresentable
     
     static var defaultWidgets: [Self] { get }
     
-    func associatedReadout(context: any Interactable1Providing) -> Set<Configuration.ReadoutType>
+    func associatedReadouts(context: any Interactable1Providing) -> Set<Configuration.ReadoutType>
 }
 
 protocol ReadoutTypeProviding: Codable, CaseIterable, Hashable, RawRepresentable where RawValue == String {

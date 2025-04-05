@@ -44,7 +44,7 @@ struct InteractionBarView: View {
             reportContext: reportContext
         )
         var associatedReadouts = configuration.all.reduce(into: Set<PostBarConfiguration.ReadoutType>(), { result, widget in
-            result.formUnion(widget.associatedReadout(context: post))
+            result.formUnion(widget.associatedReadouts(context: post))
         })
         self.readouts = configuration.readouts.compactMap { readout in
             post.readout(type: readout, showColor: !associatedReadouts.contains(readout))
@@ -79,7 +79,7 @@ struct InteractionBarView: View {
             reportContext: reportContext
         )
         var associatedReadouts = configuration.all.reduce(into: Set<CommentBarConfiguration.ReadoutType>(), { result, widget in
-            result.formUnion(widget.associatedReadout(context: comment))
+            result.formUnion(widget.associatedReadouts(context: comment))
         })
         self.readouts = configuration.readouts.compactMap { readout in
             comment.readout(type: readout, showColor: !associatedReadouts.contains(readout))
@@ -94,7 +94,7 @@ struct InteractionBarView: View {
         self.leading = .init(appState: appState, reply: reply, items: configuration.leading)
         self.trailing = .init(appState: appState, reply: reply, items: configuration.trailing)
         var associatedReadouts = configuration.all.reduce(into: Set<ReplyBarConfiguration.ReadoutType>(), { result, widget in
-            result.formUnion(widget.associatedReadout(context: reply))
+            result.formUnion(widget.associatedReadouts(context: reply))
         })
         self.readouts = configuration.readouts.compactMap { readout in
             reply.readout(type: readout, showColor: !associatedReadouts.contains(readout))
