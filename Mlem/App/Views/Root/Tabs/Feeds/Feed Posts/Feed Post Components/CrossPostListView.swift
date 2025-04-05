@@ -50,9 +50,9 @@ struct CrossPostListView: View {
                             GridRow {
                                 FullyQualifiedLabelView(crossPost.community, labelStyle: .medium, blurred: crossPost.nsfw)
                                     .frame(maxWidth: .infinity, alignment: .leading)
-                                ReadoutView(readout: crossPost.createdReadout, showColor: true)
-                                ReadoutView(readout: crossPost.scoreReadout, showColor: true)
-                                ReadoutView(readout: crossPost.commentReadout, showColor: true)
+                                ReadoutView(readout: crossPost.createdReadout)
+                                ReadoutView(readout: crossPost.scoreReadout(showColor: true))
+                                ReadoutView(readout: crossPost.commentReadout)
                             }
                             .contentShape(.rect)
                             .onTapGesture {
