@@ -44,11 +44,11 @@ struct InteractionBarView: View {
             reportContext: reportContext
         )
         var associatedReadouts: Set<PostBarConfiguration.ReadoutType> = .init()
-        configuration.leading.forEach { action in
-            associatedReadouts.formUnion(action.associatedReadout)
+        configuration.leading.forEach { widget in
+            associatedReadouts.formUnion(widget.associatedReadout)
         }
-        configuration.trailing.forEach { action in
-            associatedReadouts.formUnion(action.associatedReadout)
+        configuration.trailing.forEach { widget in
+            associatedReadouts.formUnion(widget.associatedReadout)
         }
         
         self.readouts = configuration.readouts.compactMap { readout in
@@ -83,7 +83,16 @@ struct InteractionBarView: View {
             communityContext: communityContext,
             reportContext: reportContext
         )
-        self.readouts = configuration.readouts.compactMap { comment.readout(type: $0, showColor: false) } // TODO: NOW
+        var associatedReadouts: Set<CommentBarConfiguration.ReadoutType> = .init()
+        configuration.leading.forEach { widget in
+            associatedReadouts.formUnion(widget.associatedReadout)
+        }
+        configuration.trailing.forEach { widget in
+            associatedReadouts.formUnion(widget.associatedReadout)
+        }
+        self.readouts = configuration.readouts.compactMap { readout in
+            comment.readout(type: readout, showColor: !associatedReadouts.contains(readout))
+        }
     }
     
     init(
@@ -93,7 +102,16 @@ struct InteractionBarView: View {
     ) {
         self.leading = .init(appState: appState, reply: reply, items: configuration.leading)
         self.trailing = .init(appState: appState, reply: reply, items: configuration.trailing)
-        self.readouts = configuration.readouts.compactMap { reply.readout(type: $0, showColor: false) } // TODO: NOW
+        var associatedReadouts: Set<ReplyBarConfiguration.ReadoutType> = .init()
+        configuration.leading.forEach { widget in
+            associatedReadouts.formUnion(widget.associatedReadout)
+        }
+        configuration.trailing.forEach { widget in
+            associatedReadouts.formUnion(widget.associatedReadout)
+        }
+        self.readouts = configuration.readouts.compactMap { readout in
+            reply.readout(type: readout, showColor: !associatedReadouts.contains(readout))
+        }
     }
 
     var body: some View {
