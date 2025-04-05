@@ -7795,6 +7795,9 @@
         }
       }
     },
+    "This feature is only supported for instances running version %@ or later." : {
+
+    },
     "This field is optional." : {
       "localizations" : {
         "fr" : {
