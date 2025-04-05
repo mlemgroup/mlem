@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 2024-12-22.
 //
 
+import ComponentViews
 import MlemMiddleware
 import SwiftUI
 import Theming

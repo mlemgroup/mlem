@@ -92,7 +92,7 @@ struct InstanceUptimeView: View {
                     .padding(.vertical, 10)
                     .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
             }
-            .buttonStyle(EmptyButtonStyle())
+            .buttonStyle(.empty)
             
             if let url = instance.uptimeFrontendUrl {
                 // Extra string interpolation used here to avoid unnecessary localization

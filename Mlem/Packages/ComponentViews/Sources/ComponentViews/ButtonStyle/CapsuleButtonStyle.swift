@@ -7,10 +7,10 @@
 
 import SwiftUI
 
-struct CapsuleButtonStyle: ButtonStyle {
+public struct CapsuleButtonStyle: ButtonStyle {
     @Environment(\.palette) var palette
     
-    func makeBody(configuration: Self.Configuration) -> some View {
+    public func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
             .fontWeight(.semibold)
             .foregroundStyle(.themedAccent)
@@ -26,6 +26,6 @@ struct CapsuleButtonStyle: ButtonStyle {
     }
 }
 
-extension ButtonStyle where Self == CapsuleButtonStyle {
+public extension ButtonStyle where Self == CapsuleButtonStyle {
     @MainActor static var capsule: CapsuleButtonStyle { .init() }
 }

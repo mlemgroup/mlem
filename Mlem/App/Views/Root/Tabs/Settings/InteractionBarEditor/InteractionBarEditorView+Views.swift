@@ -5,6 +5,7 @@
 //  Created by Eric Andrews on 2025-01-27.
 //
 
+import ComponentViews
 import Flow
 import SwiftUI
 import Theming

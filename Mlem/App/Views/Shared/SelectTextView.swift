@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 03/03/2024.
 //
 
+import ComponentViews
 import Dependencies
 import SwiftUI
 import SwiftUIIntrospect

@@ -6,11 +6,16 @@
 //
 
 import SwiftUI
+import Theming
 
-struct Checkbox: View {
-    let isOn: Bool
+public struct Checkbox: View {
+    public let isOn: Bool
     
-    var body: some View {
+    public init(isOn: Bool) {
+        self.isOn = isOn
+    }
+    
+    public var body: some View {
         VStack {
             if isOn {
                 Image(systemName: "checkmark.circle.fill")
