@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUICore
+import MlemMiddleware
 
 struct CommentBarConfiguration: InteractionBarConfiguration {
     enum ActionType: String, ActionTypeProviding {
@@ -53,10 +54,10 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
             }
         }
         
-        var associatedReadout: Set<Configuration.ReadoutType> {
+        func associatedReadout(context: any Interactable1Providing) -> Set<Configuration.ReadoutType> {
             switch self {
-            case .upvote: [.upvote, .score]
-            case .downvote: [.downvote, .score]
+            case .upvote: context.votes_?.myVote ?? .none == .upvote ? [.upvote, .score] : [.upvote]
+            case .downvote: context.votes_?.myVote ?? .none == .downvote ? [.downvote, .score] : [.downvote]
             case .save: [.saved]
             case .reply, .share, .selectText, .report, .resolve, .remove, .ban: []
             }
@@ -82,11 +83,11 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
             }
         }
         
-        var associatedReadout: Set<Configuration.ReadoutType> {
+        func associatedReadout(context: any Interactable1Providing) -> Set<Configuration.ReadoutType> {
             switch self {
             case .score: [.upvote, .downvote, .score]
-            case .upvote: [.upvote, .score]
-            case .downvote: [.downvote, .score]
+            case .upvote: context.votes_?.myVote ?? .none == .upvote ? [.upvote, .score] : [.upvote]
+            case .downvote: context.votes_?.myVote ?? .none == .downvote ? [.downvote, .score] : [.downvote]
             case .reply: []
             }
         }

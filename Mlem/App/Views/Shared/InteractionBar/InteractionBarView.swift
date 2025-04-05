@@ -45,10 +45,10 @@ struct InteractionBarView: View {
         )
         var associatedReadouts: Set<PostBarConfiguration.ReadoutType> = .init()
         configuration.leading.forEach { widget in
-            associatedReadouts.formUnion(widget.associatedReadout)
+            associatedReadouts.formUnion(widget.associatedReadout(context: post))
         }
         configuration.trailing.forEach { widget in
-            associatedReadouts.formUnion(widget.associatedReadout)
+            associatedReadouts.formUnion(widget.associatedReadout(context: post))
         }
         
         self.readouts = configuration.readouts.compactMap { readout in
@@ -85,10 +85,10 @@ struct InteractionBarView: View {
         )
         var associatedReadouts: Set<CommentBarConfiguration.ReadoutType> = .init()
         configuration.leading.forEach { widget in
-            associatedReadouts.formUnion(widget.associatedReadout)
+            associatedReadouts.formUnion(widget.associatedReadout(context: comment))
         }
         configuration.trailing.forEach { widget in
-            associatedReadouts.formUnion(widget.associatedReadout)
+            associatedReadouts.formUnion(widget.associatedReadout(context: comment))
         }
         self.readouts = configuration.readouts.compactMap { readout in
             comment.readout(type: readout, showColor: !associatedReadouts.contains(readout))
@@ -104,10 +104,10 @@ struct InteractionBarView: View {
         self.trailing = .init(appState: appState, reply: reply, items: configuration.trailing)
         var associatedReadouts: Set<ReplyBarConfiguration.ReadoutType> = .init()
         configuration.leading.forEach { widget in
-            associatedReadouts.formUnion(widget.associatedReadout)
+            associatedReadouts.formUnion(widget.associatedReadout(context: reply))
         }
         configuration.trailing.forEach { widget in
-            associatedReadouts.formUnion(widget.associatedReadout)
+            associatedReadouts.formUnion(widget.associatedReadout(context: reply))
         }
         self.readouts = configuration.readouts.compactMap { readout in
             reply.readout(type: readout, showColor: !associatedReadouts.contains(readout))
