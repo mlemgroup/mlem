@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 30/05/2024.
 //
 
+import ComponentViews
 import Flow
 import LemmyMarkdownUI
 import MlemMiddleware

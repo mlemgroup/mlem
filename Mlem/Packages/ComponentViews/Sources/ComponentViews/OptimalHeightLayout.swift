@@ -8,7 +8,9 @@
 import SwiftUI
 
 // https://stackoverflow.com/a/77631512/17629371
-struct OptimalHeightLayout: Layout {
+public struct OptimalHeightLayout: Layout {
+    public init() {}
+    
     public func sizeThatFits(
         proposal: ProposedViewSize,
         subviews: Subviews,

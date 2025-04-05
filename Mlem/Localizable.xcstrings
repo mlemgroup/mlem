@@ -126,20 +126,22 @@
       }
     },
     "%@ is {{online}}" : {
+      "comment" : "The word(s) within the curly brackets will be colored green.",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "%@ est {{online}}"
           }
         }
       }
     },
     "%@ is {{unhealthy}}" : {
+      "comment" : "The word(s) within the curly brackets will be colored red.",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "%@ est {{unhealthy}}"
           }
         }
@@ -7792,6 +7794,9 @@
           }
         }
       }
+    },
+    "This feature is only supported for instances running version %@ or later." : {
+
     },
     "This field is optional." : {
       "localizations" : {

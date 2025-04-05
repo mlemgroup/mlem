@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 04/02/2024.
 //
 
+import ComponentViews
 import SwiftUI
 
 // swiftlint:disable line_length

@@ -5,6 +5,7 @@
 //  Created by Eric Andrews on 2025-02-12.
 //
 
+import ComponentViews
 import SwiftUI
 
 struct InteractionBarWidgetPickerView<Configuration: InteractionBarConfiguration>: View {

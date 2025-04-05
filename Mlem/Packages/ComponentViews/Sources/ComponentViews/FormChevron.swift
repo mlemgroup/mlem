@@ -7,18 +7,18 @@
 
 import SwiftUI
 
-struct FormChevron<Content: View>: View {
+public struct FormChevron<Content: View>: View {
     let content: Content
     
-    init(@ViewBuilder content: () -> Content) {
+    public init(@ViewBuilder content: () -> Content) {
         self.content = content()
     }
     
-    var body: some View {
+    public var body: some View {
         HStack(spacing: 0) {
             content
                 .frame(maxWidth: .infinity, alignment: .leading)
-            Image(systemName: Icons.forward)
+            Image(systemName: "chevron.forward")
                 .imageScale(.small)
                 .foregroundStyle(.themedTertiary)
                 .fontWeight(.semibold)
