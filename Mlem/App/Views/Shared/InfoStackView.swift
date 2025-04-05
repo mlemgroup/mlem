@@ -10,12 +10,11 @@ import SwiftUI
 
 struct InfoStackView: View {
     let readouts: [Readout]
-    let showColor: Bool
     
     var body: some View {
         HStack(spacing: 12) {
             ForEach(readouts, id: \.viewId) { readout in
-                ReadoutView(readout: readout, showColor: showColor)
+                ReadoutView(readout: readout)
             }
         }
         .geometryGroup()
@@ -26,7 +25,6 @@ struct ReadoutView: View {
     @Environment(\.palette) var palette
     
     let readout: Readout
-    let showColor: Bool
     
     var body: some View {
         HStack(spacing: 2) {
@@ -47,29 +45,34 @@ struct ReadoutView: View {
                     .foregroundStyle(readout.valueColor ?? .themedSecondary)
             }
         }
-        .foregroundStyle((showColor ? readout.color : nil) ?? .themedSecondary)
+        .foregroundStyle(readout.color ?? .themedSecondary)
         .font(.footnote)
         .lineLimit(1)
     }
 }
 
 extension InfoStackView {
-    init(post: any Post1Providing, readouts: [PostBarConfiguration.ReadoutType?], showColor: Bool) {
+    init(post: any Post1Providing, readouts: [PostBarConfiguration.ReadoutType?], coloredReadouts: Set<PostBarConfiguration.ReadoutType>) {
         self.readouts = readouts.compactMap {
-            if let readoutType = $0 { return post.readout(type: readoutType) }
+            if let readoutType = $0 { return post.readout(type: readoutType, showColor: coloredReadouts.contains(readoutType)) }
             return nil
         }
-        self.showColor = showColor
     }
     
-    init(comment: any Comment1Providing, readouts: [CommentBarConfiguration.ReadoutType], showColor: Bool) {
-        self.readouts = readouts.compactMap { comment.readout(type: $0) }
-        self.showColor = showColor
+    init(
+        comment: any Comment1Providing,
+        readouts: [CommentBarConfiguration.ReadoutType],
+        coloredReadouts: Set<CommentBarConfiguration.ReadoutType>
+    ) {
+        self.readouts = readouts.compactMap { comment.readout(type: $0, showColor: coloredReadouts.contains($0)) }
     }
     
-    init(reply: any Reply1Providing, readouts: [ReplyBarConfiguration.ReadoutType], showColor: Bool) {
-        self.readouts = readouts.compactMap { reply.readout(type: $0) }
-        self.showColor = showColor
+    init(
+        reply: any Reply1Providing,
+        readouts: [ReplyBarConfiguration.ReadoutType],
+        coloredReadouts: Set<ReplyBarConfiguration.ReadoutType>
+    ) {
+        self.readouts = readouts.compactMap { reply.readout(type: $0, showColor: coloredReadouts.contains($0)) }
     }
 }
 

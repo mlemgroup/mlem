@@ -140,7 +140,7 @@ struct CommentView<EmbeddedContent: View>: View {
                 InfoStackView(
                     comment: comment,
                     readouts: InteractionBarTracker.main.commentInteractionBar.readouts,
-                    showColor: true
+                    coloredReadouts: .init(CommentBarConfiguration.ReadoutType.allCases)
                 )
                 .layoutPriority(1)
             }

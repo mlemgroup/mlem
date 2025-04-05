@@ -43,7 +43,12 @@ struct InteractionBarView: View {
             communityContext: communityContext,
             reportContext: reportContext
         )
-        self.readouts = configuration.readouts.compactMap { post.readout(type: $0) }
+        let associatedReadouts = configuration.all.reduce(into: Set<PostBarConfiguration.ReadoutType>(), { result, widget in
+            result.formUnion(widget.associatedReadouts(context: post))
+        })
+        self.readouts = configuration.readouts.compactMap { readout in
+            post.readout(type: readout, showColor: !associatedReadouts.contains(readout))
+        }
     }
     
     init(
@@ -73,7 +78,12 @@ struct InteractionBarView: View {
             communityContext: communityContext,
             reportContext: reportContext
         )
-        self.readouts = configuration.readouts.compactMap { comment.readout(type: $0) }
+        let associatedReadouts = configuration.all.reduce(into: Set<CommentBarConfiguration.ReadoutType>(), { result, widget in
+            result.formUnion(widget.associatedReadouts(context: comment))
+        })
+        self.readouts = configuration.readouts.compactMap { readout in
+            comment.readout(type: readout, showColor: !associatedReadouts.contains(readout))
+        }
     }
     
     init(
@@ -83,14 +93,19 @@ struct InteractionBarView: View {
     ) {
         self.leading = .init(appState: appState, reply: reply, items: configuration.leading)
         self.trailing = .init(appState: appState, reply: reply, items: configuration.trailing)
-        self.readouts = configuration.readouts.compactMap { reply.readout(type: $0) }
+        let associatedReadouts = configuration.all.reduce(into: Set<ReplyBarConfiguration.ReadoutType>(), { result, widget in
+            result.formUnion(widget.associatedReadouts(context: reply))
+        })
+        self.readouts = configuration.readouts.compactMap { readout in
+            reply.readout(type: readout, showColor: !associatedReadouts.contains(readout))
+        }
     }
 
     var body: some View {
         HStack(spacing: Constants.main.doubleSpacing) {
             ForEach(leading, id: \.viewId, content: widgetView)
                 .fixedSize(horizontal: true, vertical: false)
-            InfoStackView(readouts: readouts, showColor: false)
+            InfoStackView(readouts: readouts)
                 .frame(maxWidth: .infinity, alignment: infoStackAlignment)
                 .padding(infoStackPaddingEdges, -Constants.main.doubleSpacing)
             ForEach(trailing, id: \.viewId, content: widgetView)

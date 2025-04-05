@@ -7,9 +7,12 @@
 
 import Foundation
 import SwiftUICore
+import MlemMiddleware
 
 struct PostBarConfiguration: InteractionBarConfiguration {
     enum ActionType: String, ActionTypeProviding {
+        typealias Configuration = PostBarConfiguration // swiftlint:disable:this nesting
+        
         case upvote
         case downvote
         case save
@@ -62,9 +65,20 @@ struct PostBarConfiguration: InteractionBarConfiguration {
             case .ban: .banFromCommunity(isOn: false)
             }
         }
+        
+        func associatedReadouts(context: any Interactable1Providing) -> Set<PostBarConfiguration.ReadoutType> {
+            switch self {
+            case .upvote: context.votes_?.myVote ?? .none == .upvote ? [.upvote, .score] : [.upvote]
+            case .downvote: context.votes_?.myVote ?? .none == .downvote ? [.downvote, .score] : [.downvote]
+            case .save: [.saved]
+            case .reply, .share, .selectText, .hide, .block, .report, .crossPost, .lock, .pin, .resolve, .remove, .ban: []
+            }
+        }
     }
     
     enum CounterType: String, CounterTypeProviding {
+        typealias Configuration = PostBarConfiguration // swiftlint:disable:this nesting
+        
         case score
         case upvote
         case downvote
@@ -78,6 +92,15 @@ struct PostBarConfiguration: InteractionBarConfiguration {
             case .upvote: .upvote()
             case .downvote: .downvote()
             case .reply: .reply()
+            }
+        }
+        
+        func associatedReadouts(context: any Interactable1Providing) -> Set<PostBarConfiguration.ReadoutType> {
+            switch self {
+            case .score: [.upvote, .downvote, .score]
+            case .upvote: context.votes_?.myVote ?? .none == .upvote ? [.upvote, .score] : [.upvote]
+            case .downvote: context.votes_?.myVote ?? .none == .downvote ? [.downvote, .score] : [.downvote]
+            case .reply: []
             }
         }
     }

@@ -187,7 +187,7 @@ extension Interactable1Providing {
         )
     }
     
-    var scoreReadout: Readout {
+    func scoreReadout(showColor: Bool) -> Readout {
         let icon: String
         let color: ThemedColor?
         switch self2?.votes.myVote {
@@ -205,27 +205,27 @@ extension Interactable1Providing {
             id: "score\(uid)",
             label: self2?.votes.total.description,
             icon: icon,
-            color: color
+            color: showColor ? color : nil
         )
     }
     
-    var upvoteReadout: Readout {
+    func upvoteReadout(showColor: Bool) -> Readout {
         let isOn = self2?.votes.myVote == .upvote
         return Readout(
             id: "upvote\(uid)",
             label: self2?.votes.upvotes.description,
             icon: isOn ? Icons.upvoteSquareFill : Icons.upvoteSquare,
-            color: isOn ? .themedUpvote : nil
+            color: isOn && showColor ? .themedUpvote : nil
         )
     }
     
-    var downvoteReadout: Readout {
+    func downvoteReadout(showColor: Bool) -> Readout {
         let isOn = self2?.votes.myVote == .downvote
         return Readout(
             id: "downvote\(uid)",
             label: self2?.votes.downvotes.description,
             icon: isOn ? Icons.downvoteSquareFill : Icons.downvoteSquare,
-            color: isOn ? .themedDownvote : nil
+            color: isOn && showColor ? .themedDownvote : nil
         )
     }
     
@@ -247,13 +247,13 @@ extension Interactable1Providing {
         )
     }
     
-    var savedReadout: Readout {
+    func savedReadout(showColor: Bool) -> Readout {
         let isOn = saved_ ?? false
         return .init(
             id: "saved\(uid)",
             label: nil,
             icon: isOn ? Icons.saveFill : Icons.save,
-            color: isOn ? .themedSave : nil
+            color: isOn && showColor ? .themedSave : nil
         )
     }
 }
