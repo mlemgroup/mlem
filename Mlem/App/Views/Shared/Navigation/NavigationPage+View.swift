@@ -133,7 +133,7 @@ extension NavigationPage {
                 .disabled(instance.version < (minimumVersion ?? .zero))
             } header: {
                 if let minimumVersion {
-                    Text("This feature is only supported for instances running version \(minimumVersion) or later.")
+                    Text("This feature is only supported for instances running version \(String(describing: minimumVersion)) or later.")
                         .padding()
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .background(.themedCaution.opacity(0.2), in: .rect(cornerRadius: Constants.main.standardSpacing))
