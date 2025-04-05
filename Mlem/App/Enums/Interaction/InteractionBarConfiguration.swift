@@ -57,11 +57,9 @@ extension InteractionBarConfiguration {
     var all: [Item] { leading + trailing }
     
     func associatedReadouts(context: any Interactable1Providing) -> Set<ReadoutType> {
-        var ret: Set<ReadoutType> = .init()
-        for element in all {
-            ret.formUnion(element.associatedReadouts(context: context))
-        }
-        return ret
+        all.reduce(into: Set<ReadoutType>(), { result, element in
+            result.formUnion(element.associatedReadouts(context: context))
+        })
     }
 }
 
