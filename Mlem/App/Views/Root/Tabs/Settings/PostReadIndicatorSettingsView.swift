@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 2025-01-19.
 //
 
+import ComponentViews
 import SwiftUI
 
 struct PostReadIndicatorSettingsView: View {

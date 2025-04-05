@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 19/09/2024.
 //
 
+import ComponentViews
 import SwiftUI
 
 struct SubscriptionListNavigationButton<Content: View>: View {

@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 25/08/2024.
 //
 
+import ComponentViews
 import SwiftUI
 
 struct AboutMlemView: View {

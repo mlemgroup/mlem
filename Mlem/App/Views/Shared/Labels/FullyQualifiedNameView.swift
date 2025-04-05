@@ -5,6 +5,7 @@
 //  Created by Eric Andrews on 2024-05-19.
 //
 
+import ComponentViews
 import Foundation
 import MlemMiddleware
 import SwiftUI

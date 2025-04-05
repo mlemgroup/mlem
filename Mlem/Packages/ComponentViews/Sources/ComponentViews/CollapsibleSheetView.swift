@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-struct CollapsibleSheetView<Content: View>: View {
+public struct CollapsibleSheetView<Content: View>: View {
     let content: Content
     let canDismiss: Bool
     
     @Binding var presentationSelection: PresentationDetent
     
-    init(
+    public init(
         presentationSelection: Binding<PresentationDetent>,
         canDismiss: Bool,
         @ViewBuilder content: () -> Content
@@ -23,7 +23,7 @@ struct CollapsibleSheetView<Content: View>: View {
         self.content = content()
     }
 
-    var body: some View {
+    public var body: some View {
         content
             .opacity(presentationSelection == .large ? 1 : 0)
             .overlay(alignment: .top) {

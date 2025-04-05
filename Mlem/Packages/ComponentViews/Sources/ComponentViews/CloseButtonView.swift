@@ -9,13 +9,18 @@ import Foundation
 import SwiftUI
 import Theming
 
-struct CloseButtonView: View {
+public struct CloseButtonView: View {
     @Environment(\.dismiss) var dismiss
     
     var size: CGFloat = 30
     var callback: (() -> Void)?
     
-    var body: some View {
+    public init(size: CGFloat = 30, callback: (() -> Void)? = nil) {
+        self.size = size
+        self.callback = callback
+    }
+    
+    public var body: some View {
         Button {
             if let callback {
                 callback()
@@ -23,7 +28,7 @@ struct CloseButtonView: View {
                 dismiss()
             }
         } label: {
-            Image(systemName: Icons.closeCircleFill)
+            Image(systemName: "xmark.circle.fill")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(height: size)
