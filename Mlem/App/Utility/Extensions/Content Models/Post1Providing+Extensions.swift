@@ -261,11 +261,12 @@ extension Post1Providing {
     func readout(type: PostBarConfiguration.ReadoutType, showColor: Bool) -> Readout? {
         switch type {
         case .created: createdReadout
-        case .score: api.downvotesEnabled ? scoreReadout(showColor: showColor) : upvoteReadout
-        case .upvote: upvoteReadout
-        case .downvote: api.downvotesEnabled ? downvoteReadout : nil
+        // swiftlint:disable:next void_function_in_ternary
+        case .score: api.downvotesEnabled ? scoreReadout(showColor: showColor) : upvoteReadout(showColor: showColor)
+        case .upvote: upvoteReadout(showColor: showColor)
+        case .downvote: api.downvotesEnabled ? downvoteReadout(showColor: showColor) : nil
         case .comment: commentReadout
-        case .saved: savedReadout
+        case .saved: savedReadout(showColor: showColor)
         }
     }
     
