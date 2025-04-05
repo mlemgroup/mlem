@@ -9,6 +9,7 @@ import Charts
 import MlemMiddleware
 import SwiftUI
 
+// swiftlint:disable:next type_body_length
 struct InstanceUptimeView: View {
     @Environment(\.accessibilityDifferentiateWithoutColor) var diffWithoutColor: Bool
     @Environment(\.palette) var palette
@@ -145,10 +146,16 @@ struct InstanceUptimeView: View {
         let resource: LocalizedStringResource
         let color: Color
         if isHealthy {
-            resource = "\(instance.name) is {{online}}"
+            resource = .init(
+                "\(instance.name) is {{online}}",
+                comment: "The word(s) within the curly brackets will be colored green."
+            )
             color = palette.positive
         } else {
-            resource = "\(instance.name) is {{unhealthy}}"
+            resource = .init(
+                "\(instance.name) is {{unhealthy}}",
+                comment: "The word(s) within the curly brackets will be colored red."
+            )
             color = palette.negative
         }
         let string = String(localized: resource)
