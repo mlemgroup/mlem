@@ -1745,6 +1745,7 @@
 		CD1464522D63FE6F00202619 /* Legacy */ = {
 			isa = PBXGroup;
 			children = (
+				CDE1F18E2C63D75A008AF042 /* LegacySettings.swift */,
 				CD1464532D63FE7300202619 /* LegacyInteractionBarConfigurations.swift */,
 			);
 			path = Legacy;
@@ -2313,7 +2314,6 @@
 		CDE1F1992C63E277008AF042 /* User Settings */ = {
 			isa = PBXGroup;
 			children = (
-				CDE1F18E2C63D75A008AF042 /* LegacySettings.swift */,
 				CDE1F19B2C63E2EB008AF042 /* SettingPropertyWrapper.swift */,
 				0315B1C92C767847006D4F82 /* InteractionBarTracker.swift */,
 				036ED6782D0AF3740018E5EA /* PinnedSortTracker.swift */,

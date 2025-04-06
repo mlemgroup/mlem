@@ -146,7 +146,7 @@ class CodableSettings: Codable { // swiftlint:disable:this type_body_length
     var subscriptions_sort: SubscriptionListSort
     var navigation_sidebarVisibleByDefault: Bool
     var navigation_swipeAnywhere: Bool
-    var filters_keywordFilterEnabled: Bool
+    var filters_keywordFilterEnabled: Bool // TODO: update FiltersTracker.main
     var interactionBar_alternateReportLayout: Bool
     
     @ObservationIgnored var inbox_badge_includeApplications: Bool = false
