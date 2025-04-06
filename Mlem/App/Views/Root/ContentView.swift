@@ -15,8 +15,6 @@ struct ContentView: View {
     @Environment(\.scenePhase) var scenePhase
     @Environment(\.colorScheme) var colorScheme
     
-    @AppStorage("status.firstAppearance") var firstAppearance: Bool = true
-    
     @Dependency(\.persistenceRepository) var persistenceRepository
     
     @Setting(\.appearance_palette) var colorPalette
@@ -74,12 +72,6 @@ struct ContentView: View {
                         try await MlemStats.main.loadInstances()
                     } catch {
                         handleError(error)
-                    }
-                }
-                .onAppear {
-                    if firstAppearance, persistenceRepository.systemSettingsExists(.v1_user) {
-                        firstAppearance = false
-                        LegacySettings.main.restore(from: .v1_user)
                     }
                 }
                 .onChange(of: appState.firstPerson) {

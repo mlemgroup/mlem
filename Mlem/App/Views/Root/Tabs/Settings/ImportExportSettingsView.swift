@@ -15,8 +15,6 @@ struct ImportExportSettingsView: View {
     
     @Environment(NavigationLayer.self) var navigation
     
-    @AppStorage("status.firstAppearance") var firstAppearance: Bool = true
-    
     @State var importingSettingsFile: Bool = false
     
     // these are tracked as state vars so they can be updated as appropriate
@@ -38,7 +36,8 @@ struct ImportExportSettingsView: View {
                     let fileUrl = try result.get()
                     if let fileData = readSettings(from: fileUrl) {
                         let importedSettings = try JSONDecoder().decode(CodableSettings.self, from: fileData)
-                        LegacySettings.main.reinit(from: importedSettings)
+                        Settings.main.codableSettings = importedSettings
+                        // LegacySettings.main.reinit(from: importedSettings)
                         ToastModel.main.add(.success("Imported Settings"))
                     } else {
                         assertionFailure("Failed to import settings")
@@ -55,14 +54,14 @@ struct ImportExportSettingsView: View {
             Section("Save and Restore") {
                 Button("Save Settings", systemImage: Icons.saveSettings) {
                     Task {
-                        await LegacySettings.main.save(to: .v2_user)
+                        await Settings.main.save(to: .v2_user)
                         v2SettingsExist = persistenceRepository.systemSettingsExists(.v2_user)
                     }
                 }
                 
                 Button("Restore Settings", systemImage: Icons.restoreSettings) {
                     Task { @MainActor in
-                        LegacySettings.main.restore(from: .v2_user)
+                        Settings.main.restore(from: .v2_user)
                     }
                 }
                 .disabled(!v2SettingsExist)
@@ -73,7 +72,7 @@ struct ImportExportSettingsView: View {
             Section {
                 Button("Export Settings", systemImage: Icons.share) {
                     Task {
-                        let data = try JSONEncoder().encode(LegacySettings.main.codable)
+                        let data = try JSONEncoder().encode(Settings.main.codableSettings)
                         let fileUrl = FileManager.default.temporaryDirectory.appending(path: "settings.json")
                         try data.write(to: fileUrl, options: .atomic)
                         navigation.model?.shareInfo = .init(url: fileUrl)
@@ -84,16 +83,6 @@ struct ImportExportSettingsView: View {
                     importingSettingsFile = true
                 }
             }
-            
-            #if DEBUG
-                Section("Debug") {
-                    Button(String("Save V1 Settings"), systemImage: Icons.saveSettings) {
-                        Task {
-                            await LegacySettings.main.save(to: .v1_user)
-                        }
-                    }
-                }
-            #endif
         }
     }
     

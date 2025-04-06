@@ -25,13 +25,31 @@ class Settings {
         }
     }
     
+    func save(to systemSetting: SystemSetting) async {
+        do {
+            try await persistenceRepository.saveSystemSettings(codableSettings, setting: systemSetting)
+            ToastModel.main.add(.success("Saved Settings"))
+        } catch {
+            handleError(error)
+        }
+    }
+    
+    @MainActor
+    func restore(from systemSetting: SystemSetting) {
+        if let savedSettings = persistenceRepository.loadSystemSettings(systemSetting) {
+            codableSettings = savedSettings
+            save()
+            ToastModel.main.add(.success("Restored Settings"))
+        } else {
+            ToastModel.main.add(.failure("Could not find settings"))
+        }
+    }
+    
     init() {
         @Dependency(\.persistenceRepository) var persistenceRepository
         if let savedSettings = persistenceRepository.loadSystemSettings(.v2_system) {
-            print("DEBUG found v2_system")
             codableSettings = savedSettings
         } else {
-            print("DEBUG no v2_system")
             codableSettings = .init(from: .main, filteredKeywords: .init()) // TODO: NOW
             Task {
                 do {

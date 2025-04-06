@@ -113,27 +113,6 @@ class LegacySettings: ObservableObject {
         }
     }
     
-    var codable: CodableSettings { .init(from: self, filteredKeywords: FiltersTracker.main.rawKeywords) }
-    
-    @MainActor
-    func restore(from systemSetting: SystemSetting) {
-        if let savedSettings = persistenceRepository.loadSystemSettings(systemSetting) {
-            reinit(from: savedSettings)
-            ToastModel.main.add(.success("Restored Settings"))
-        } else {
-            ToastModel.main.add(.failure("Could not find settings"))
-        }
-    }
-    
-    func save(to systemSetting: SystemSetting) async {
-        do {
-            try await persistenceRepository.saveSystemSettings(codable, setting: systemSetting)
-            ToastModel.main.add(.success("Saved Settings"))
-        } catch {
-            handleError(error)
-        }
-    }
-    
     /// Re-initializes all values from the given CodableSettings object.
     @MainActor
     // swiftlint:disable:next function_body_length
