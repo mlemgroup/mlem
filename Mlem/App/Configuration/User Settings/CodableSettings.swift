@@ -5,15 +5,25 @@
 //  Created by Eric Andrews on 2024-09-05.
 //
 
+// swiftlint:disable file_length
+
 import Foundation
 import MlemMiddleware
 import UIKit
 import Dependencies
 
 class Settings {
+    @Dependency(\.persistenceRepository) var persistenceRepository
+    
     var codableSettings: CodableSettings
     
     public static let main: Settings = .init()
+    
+    func save() {
+        Task {
+            try await persistenceRepository.saveSystemSettings(codableSettings, setting: .v2_system)
+        }
+    }
     
     init() {
         @Dependency(\.persistenceRepository) var persistenceRepository
@@ -35,7 +45,8 @@ class Settings {
 }
 
 /// Mirror of Settings but without any AppStorage complexity and fully optionalized.
-class CodableSettings: Codable, ObservableObject { // swiftlint:disable:this type_body_length
+@Observable
+class CodableSettings: Codable { // swiftlint:disable:this type_body_length
     // MARK: Settings saved in AppStorage
     
     var a11y_readPostIndicator: ReadPostIndicator
@@ -120,6 +131,11 @@ class CodableSettings: Codable, ObservableObject { // swiftlint:disable:this typ
     var filters_keywordFilterEnabled: Bool
     var interactionBar_alternateReportLayout: Bool
     
+    @ObservationIgnored var inbox_badge_includeApplications: Bool = false
+    @ObservationIgnored var inbox_badge_includeMessageReports: Bool = false
+    @ObservationIgnored var inbox_badge_includeMod: Bool = false
+    @ObservationIgnored var inbox_badge_includePersonal: Bool = false
+    
     enum CodingKeys: String, CodingKey {
         case _a11y_readPostIndicator = "a11y_readPostIndicator"
         case _a11y_readOutlineThickness = "a11y_readOutlineThickness"
@@ -203,10 +219,10 @@ class CodableSettings: Codable, ObservableObject { // swiftlint:disable:this typ
         case _filters_keywordFilterEnabled = "filters_keywordFilterEnabled"
         case _interactionBar_alternateReportLayout = "interactionBar_alternateReportLayout"
      
-        case inbox_badge_includeApplications
-        case inbox_badge_includeMessageReports
-        case inbox_badge_includeMod
-        case inbox_badge_includePersonal
+        case inbox_badge_includeApplications = "inbox_badge_includeApplications"
+        case inbox_badge_includeMessageReports = "inbox_badge_includeMessageReports"
+        case inbox_badge_includeMod = "inbox_badge_includeMod"
+        case inbox_badge_includePersonal = "inbox_badge_includePersonal"
     }
     
     // MARK: Settings saved in files
@@ -418,3 +434,5 @@ class CodableSettings: Codable, ObservableObject { // swiftlint:disable:this typ
     }
     // swiftlint:enable function_body_length
 }
+
+// swiftlint:enable file_length

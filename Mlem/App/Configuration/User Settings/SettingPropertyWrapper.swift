@@ -29,6 +29,7 @@ struct Setting<T>: DynamicProperty {
             get: { defaults[keyPath: keyPath] },
             set: { value in
                 defaults[keyPath: keyPath] = value
+                Settings.main.save()
             }
         )
     }
