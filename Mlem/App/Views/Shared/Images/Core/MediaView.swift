@@ -11,8 +11,8 @@ struct MediaView: View {
     @Environment(NavigationLayer.self) var navigation: NavigationLayer?
     @Environment(\.palette) var palette
     
-    @Setting(\.bypassImageProxyShown) var bypassImageProxyShown
-    @Setting(\.developerMode) var developerMode
+    @Setting(\.status_bypassImageProxyShown) var bypassImageProxyShown
+    @Setting(\.dev_developerMode) var developerMode
     
     @State var loader: MediaLoader
     @Binding var controlState: MediaControlState
@@ -96,7 +96,7 @@ struct MediaView: View {
             url: url,
             controlState: .constant(.init(
                 blurred: shouldBlur,
-                animating: Settings.main.autoplayMedia,
+                animating: LegacySettings.main.autoplayMedia,
                 overlays: shouldBlur ? [.controls, .nsfw, .error] : [.controls, .error]
             )),
             aspectRatioBounds: .imageDefault,

@@ -9,9 +9,9 @@ import MlemMiddleware
 import SwiftUI
 
 struct SortingSettingsView: View {
-    @Setting(\.defaultPostSort) var legacyDefaultPostSort
-    @Setting(\.fallbackPostSort) var legacyFallbackPostSort
-    @Setting(\.commentSort) var legacyDefaultCommentSort
+    @Setting(\.post_defaultSort) var legacyDefaultPostSort
+    @Setting(\.post_fallbackSort) var legacyFallbackPostSort
+    @Setting(\.comment_defaultSort) var legacyDefaultCommentSort
     
     var defaultPostSort: PostSortType {
         get { .init(legacyDefaultPostSort) }

@@ -12,7 +12,7 @@ struct SettingsView: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
     
-    @Setting(\.colorPalette) var colorPalette
+    @Setting(\.appearance_palette) var colorPalette
     
     @State var currentIcon: String? = UIApplication.shared.alternateIconName
 

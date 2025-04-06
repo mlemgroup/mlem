@@ -10,7 +10,7 @@ import SwiftUIIntrospect
 import UIKit
 
 struct NavigationLayerView: View {
-    @Setting(\.interfaceStyle) var interfaceStyle
+    @Setting(\.appearance_interfaceStyle) var interfaceStyle
 
     @State var layer: NavigationLayer
     let hasSheetModifiers: Bool
@@ -80,7 +80,7 @@ struct NavigationLayerView: View {
     }
     
     private var preferredColorScheme: ColorScheme? {
-        @Setting(\.colorPalette) var colorPalette
+        @Setting(\.appearance_palette) var colorPalette
         let newStyle: UIUserInterfaceStyle = colorPalette.supportedModes != .unspecified ? colorPalette.supportedModes : interfaceStyle
         
         // The image viewer relies on having a concrete color scheme for the status bar color.
@@ -97,7 +97,7 @@ private class FullWidthGestureRecognizerDelegate: NSObject, UIGestureRecognizerD
     var navigationController: UINavigationController?
 
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        if !Settings.main.swipeAnywhereToNavigate { return false }
+        if !LegacySettings.main.swipeAnywhereToNavigate { return false }
         let isSystemSwipeToBackEnabled = navigationController?.interactivePopGestureRecognizer?.isEnabled == true
         let isThereStackedViewControllers = (navigationController?.viewControllers.count ?? 0) > 1
         return isSystemSwipeToBackEnabled && isThereStackedViewControllers

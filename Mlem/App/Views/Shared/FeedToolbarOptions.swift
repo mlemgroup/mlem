@@ -10,9 +10,9 @@ import SwiftUI
 struct FeedToolbarOptions: ToolbarContent {
     @Environment(AppState.self) var appState
     
-    @Setting(\.postSize) var postSize
-    @Setting(\.showReadInFeed) var showRead
-    @Setting(\.blurNsfw) var blurNsfw
+    @Setting(\.post_size) var postSize
+    @Setting(\.feed_showRead) var showRead
+    @Setting(\.safety_blurNsfw) var blurNsfw
 
     var body: some ToolbarContent {
         ToolbarItemGroup(placement: .secondaryAction) {

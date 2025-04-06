@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PrivacyBypassImageProxySettingsView: View {
-    @Setting(\.autoBypassImageProxy) var bypassImageProxy
+    @Setting(\.privacy_autoBypassImageProxy) var bypassImageProxy
     
     var body: some View {
         Form {

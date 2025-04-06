@@ -15,8 +15,8 @@ enum PersonContentType {
 
 struct PersonContentGridView: View {
     @Environment(AppState.self) var appState
-    @Setting(\.postSize) var postSize
-    @Setting(\.infiniteScroll) var infiniteScroll
+    @Setting(\.post_size) var postSize
+    @Setting(\.behavior_infiniteScroll) var infiniteScroll
     
     @State var columns: [GridItem] = [GridItem(.flexible())]
     @State var frameWidth: CGFloat = .zero

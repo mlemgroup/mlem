@@ -68,13 +68,18 @@ private enum DiskAccess {
 
 // Enumeration of system-managed settings
 enum SystemSetting {
-    // swiftlint:disable:next identifier_name
-    case v1, v2
+    /// v1 settings manually saved by the user
+    case v1_user
+    /// v2 settings manually saved by the user
+    case v2_user
+    /// v2 settings automatically saved by the app
+    case v2_system
     
     var path: String {
         switch self {
-        case .v1: "v1"
-        case .v2: "v2"
+        case .v1_user: "v1"
+        case .v2_user: "v2"
+        case .v2_system: "v2_system"
         }
     }
 }

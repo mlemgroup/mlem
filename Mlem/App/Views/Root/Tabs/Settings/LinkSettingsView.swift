@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct LinkSettingsView: View {
-    @Setting(\.openLinksInBrowser) var openLinksInBrowser
-    @Setting(\.openLinksInReaderMode) var openLinksInReaderMode
-    @Setting(\.linkSharingMode) var linkSharingMode
-    @Setting(\.tappableLinksDisplayMode) var tappableLinksDisplayMode
-    @Setting(\.compactComments) var compactComments
-    @Setting(\.embedLoops) var embedLoops
-    @Setting(\.autoplayMedia) var autoplayMedia
-    @Setting(\.muteVideos) var muteVideos
+    @Setting(\.links_openInBrowser) var openLinksInBrowser
+    @Setting(\.links_readerMode) var openLinksInReaderMode
+    @Setting(\.links_shareMode) var linkSharingMode
+    @Setting(\.links_displayMode) var tappableLinksDisplayMode
+    @Setting(\.comment_compact) var compactComments
+    @Setting(\.links_embedLoops) var embedLoops
+    @Setting(\.behavior_autoplayMedia) var autoplayMedia
+    @Setting(\.behavior_muteVideos) var muteVideos
 
     var body: some View {
         Form {

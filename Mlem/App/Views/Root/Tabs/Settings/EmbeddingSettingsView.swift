@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct EmbeddingSettingsView: View {
-    @Setting(\.embedLoops) var embedLoops
+    @Setting(\.links_embedLoops) var embedLoops
     
     var body: some View {
         Form {

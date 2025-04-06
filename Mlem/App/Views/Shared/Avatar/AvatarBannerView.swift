@@ -10,7 +10,7 @@ import NukeUI
 import SwiftUI
 
 struct AvatarBannerView: View {
-    @Setting(\.animatedAvatars) var animatedAvatars
+    @Setting(\.media_animatedAvatars) var animatedAvatars
     
     var model: (any Profile1Providing)?
     var fallback: MediaView.Fallback

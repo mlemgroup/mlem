@@ -158,7 +158,6 @@
 		0369B3562BFA6824001EFEDF /* InboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0369B3552BFA6824001EFEDF /* InboxView.swift */; };
 		0369B35D2BFB86E3001EFEDF /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0369B35A2BFB86E3001EFEDF /* Account.swift */; };
 		036A84552D98253400E95D50 /* UpdateBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036A84542D98253400E95D50 /* UpdateBannerView.swift */; };
-		036A84572D986B9900E95D50 /* CommentContextHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036A84562D986B9900E95D50 /* CommentContextHeaderView.swift */; };
 		036A84D82D99531400E95D50 /* View+ConditionalNavigationTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036A84D72D99531400E95D50 /* View+ConditionalNavigationTitle.swift */; };
 		036CC3AF2B8145C30098B6A1 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036CC3AE2B8145C30098B6A1 /* AppState.swift */; };
 		036ED6792D0AF3740018E5EA /* PinnedSortTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036ED6782D0AF3740018E5EA /* PinnedSortTracker.swift */; };
@@ -515,7 +514,7 @@
 		CDD99C3C2C73F3FF0010367F /* DeleteAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD99C3B2C73F3FF0010367F /* DeleteAccountView.swift */; };
 		CDD99C3E2C73F4380010367F /* WarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD99C3D2C73F4380010367F /* WarningView.swift */; };
 		CDE021AD2BFA43380052FD61 /* FeedPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE021AC2BFA43380052FD61 /* FeedPostView.swift */; };
-		CDE1F18F2C63D75A008AF042 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE1F18E2C63D75A008AF042 /* Settings.swift */; };
+		CDE1F18F2C63D75A008AF042 /* LegacySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE1F18E2C63D75A008AF042 /* LegacySettings.swift */; };
 		CDE1F1942C63DF44008AF042 /* PlatformConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE1F1932C63DF44008AF042 /* PlatformConstants.swift */; };
 		CDE1F1962C63DF89008AF042 /* PhoneConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE1F1952C63DF89008AF042 /* PhoneConstants.swift */; };
 		CDE1F1982C63DFC9008AF042 /* PadConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE1F1972C63DFC9008AF042 /* PadConstants.swift */; };
@@ -699,7 +698,6 @@
 		0369B3552BFA6824001EFEDF /* InboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxView.swift; sourceTree = "<group>"; };
 		0369B35A2BFB86E3001EFEDF /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		036A84542D98253400E95D50 /* UpdateBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateBannerView.swift; sourceTree = "<group>"; };
-		036A84562D986B9900E95D50 /* CommentContextHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentContextHeaderView.swift; sourceTree = "<group>"; };
 		036A84D72D99531400E95D50 /* View+ConditionalNavigationTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ConditionalNavigationTitle.swift"; sourceTree = "<group>"; };
 		036CC3AE2B8145C30098B6A1 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		036ED6782D0AF3740018E5EA /* PinnedSortTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedSortTracker.swift; sourceTree = "<group>"; };
@@ -1053,7 +1051,7 @@
 		CDD99C3B2C73F3FF0010367F /* DeleteAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountView.swift; sourceTree = "<group>"; };
 		CDD99C3D2C73F4380010367F /* WarningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningView.swift; sourceTree = "<group>"; };
 		CDE021AC2BFA43380052FD61 /* FeedPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedPostView.swift; sourceTree = "<group>"; };
-		CDE1F18E2C63D75A008AF042 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		CDE1F18E2C63D75A008AF042 /* LegacySettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacySettings.swift; sourceTree = "<group>"; };
 		CDE1F1932C63DF44008AF042 /* PlatformConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformConstants.swift; sourceTree = "<group>"; };
 		CDE1F1952C63DF89008AF042 /* PhoneConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneConstants.swift; sourceTree = "<group>"; };
 		CDE1F1972C63DFC9008AF042 /* PadConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PadConstants.swift; sourceTree = "<group>"; };
@@ -2315,7 +2313,7 @@
 		CDE1F1992C63E277008AF042 /* User Settings */ = {
 			isa = PBXGroup;
 			children = (
-				CDE1F18E2C63D75A008AF042 /* Settings.swift */,
+				CDE1F18E2C63D75A008AF042 /* LegacySettings.swift */,
 				CDE1F19B2C63E2EB008AF042 /* SettingPropertyWrapper.swift */,
 				0315B1C92C767847006D4F82 /* InteractionBarTracker.swift */,
 				036ED6782D0AF3740018E5EA /* PinnedSortTracker.swift */,
@@ -2651,7 +2649,7 @@
 				037F78432D3C129B00D4E180 /* PostThumbnailSettingsView.swift in Sources */,
 				039F58952C7B618F00C61658 /* InboxSettingsView.swift in Sources */,
 				CD4D58CF2B86DDEC00B82964 /* AccountSortMode.swift in Sources */,
-				CDE1F18F2C63D75A008AF042 /* Settings.swift in Sources */,
+				CDE1F18F2C63D75A008AF042 /* LegacySettings.swift in Sources */,
 				03D2A6372C00F92400ED4FF2 /* Session.swift in Sources */,
 				03AF91DD2C1B23E500E56644 /* ImageViewer.swift in Sources */,
 				CD13CC592C583C7A001AF428 /* WebsitePreviewView.swift in Sources */,

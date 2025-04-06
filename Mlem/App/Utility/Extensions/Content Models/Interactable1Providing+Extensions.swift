@@ -58,7 +58,7 @@ extension Interactable1Providing {
             if feedback.contains(.haptic) {
                 HapticManager.main.play(haptic: .success, priority: .low)
             }
-            @Setting(\.upvoteOnSave) var upvoteOnSave
+            @Setting(\.behavior_upvoteOnSave) var upvoteOnSave
             if upvoteOnSave, !self2.saved, self2.votes.myVote != .upvote {
                 self2.updateVote(.upvote)
             }

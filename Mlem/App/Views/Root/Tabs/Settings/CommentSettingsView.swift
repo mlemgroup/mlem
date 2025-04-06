@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct CommentSettingsView: View {
-    @Setting(\.compactComments) var compactComments
-    @Setting(\.tapCommentsToCollapse) var tapCommentsToCollapse
-    @Setting(\.maxCommentDepth) var maxCommentDepth
-    @Setting(\.jumpButton) var jumpButton
+    @Setting(\.comment_compact) var compactComments
+    @Setting(\.comment_gestures_tapToCollapse) var tapCommentsToCollapse
+    @Setting(\.comment_maxDepth) var maxCommentDepth
+    @Setting(\.comment_jumpButton) var jumpButton
 
     var body: some View {
         Form {

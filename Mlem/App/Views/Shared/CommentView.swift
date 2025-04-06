@@ -17,10 +17,10 @@ struct CommentView<EmbeddedContent: View>: View {
     @Environment(\.reportContext) private var reportContext: Report?
     @Environment(\.palette) private var palette
     
-    @Setting(\.compactComments) var compactComments
-    @Setting(\.tapCommentsToCollapse) var tapCommentsToCollapse
-    @Setting(\.moderatorActionGrouping) var moderatorActionGrouping
-    @Setting(\.alternateInteractionBarLayoutForReports) var alternateInteractionBarLayoutForReports
+    @Setting(\.comment_compact) var compactComments
+    @Setting(\.comment_gestures_tapToCollapse) var tapCommentsToCollapse
+    @Setting(\.menus_modActionGrouping) var moderatorActionGrouping
+    @Setting(\.interactionBar_alternateReportLayout) var alternateInteractionBarLayoutForReports
     
     private let indent: CGFloat = 10
     

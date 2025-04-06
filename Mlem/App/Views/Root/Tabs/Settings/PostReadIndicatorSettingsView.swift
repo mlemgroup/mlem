@@ -9,13 +9,13 @@ import ComponentViews
 import SwiftUI
 
 struct PostReadIndicatorSettingsView: View {
-    @Setting(\.readPostIndicator) var readPostIndicator
-    @Setting(\.readOutlineThickness) var readOutlineThickness
+    @Setting(\.a11y_readPostIndicator) var readPostIndicator
+    @Setting(\.a11y_readOutlineThickness) var readOutlineThickness
     
     @State var readBarThicknessSlider: Double
     
     init() {
-        @Setting(\.readOutlineThickness) var readOutlineThickness
+        @Setting(\.a11y_readOutlineThickness) var readOutlineThickness
         _readBarThicknessSlider = .init(wrappedValue: Double(readOutlineThickness))
     }
 

@@ -10,10 +10,10 @@ import Dependencies
 import MlemMiddleware
 import SwiftUI
 
-class Settings: ObservableObject {
+class LegacySettings: ObservableObject {
     @Dependency(\.persistenceRepository) var persistenceRepository
     
-    public static let main: Settings = .init()
+    public static let main: LegacySettings = .init()
     
     /// Default initializer. Will take current AppStorage values.
     init() {}
@@ -203,7 +203,7 @@ class Settings: ObservableObject {
         Task {
             await FiltersTracker.main.resetFilteredKeywords(to: settings.filteredKeywords)
             do {
-                try await persistenceRepository.saveSystemSettings(settings, setting: .v2)
+                try await persistenceRepository.saveSystemSettings(settings, setting: .v2_user)
             } catch {
                 handleError(error)
             }

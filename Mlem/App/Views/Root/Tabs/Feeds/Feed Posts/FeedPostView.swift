@@ -21,10 +21,10 @@ struct FeedPostView<EmbeddedContent: View>: View {
     
     @State var obscured: Bool
     
-    @Setting(\.postSize) private var settingsPostSize
-    @Setting(\.readPostIndicator) var readPostIndicator
-    @Setting(\.readOutlineThickness) var readOutlineThickness
-    @Setting(\.alternateInteractionBarLayoutForReports) var alternateInteractionBarLayoutForReports
+    @Setting(\.post_size) private var settingsPostSize
+    @Setting(\.a11y_readPostIndicator) var readPostIndicator
+    @Setting(\.a11y_readOutlineThickness) var readOutlineThickness
+    @Setting(\.interactionBar_alternateReportLayout) var alternateInteractionBarLayoutForReports
     
     let post: any Post1Providing
     let favoredLink: PostViewNavigationLink?

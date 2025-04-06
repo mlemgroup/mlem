@@ -124,7 +124,7 @@ extension Post1Providing {
         if canModerate {
             ActionGroup(
                 appearance: .init(label: "Moderation...", color: .themedModeration, icon: Icons.moderation),
-                displayMode: Settings.main.moderatorActionGrouping == .divider || expanded ? .section : .disclosure
+                displayMode: LegacySettings.main.moderatorActionGrouping == .divider || expanded ? .section : .disclosure
             ) {
                 moderatorMenuActions(
                     appState: appState,
@@ -180,7 +180,7 @@ extension Post1Providing {
         navigation: NavigationLayer?,
         report: Report? = nil
     ) -> [any Action] {
-        if showAllActions || Settings.main.showAllModActions {
+        if showAllActions || LegacySettings.main.showAllModActions {
             pinToCommunityAction(appState: appState, feedback: feedback, verboseTitle: api.isAdmin)
             if api.isAdmin {
                 pinToInstanceAction(appState: appState, feedback: feedback)

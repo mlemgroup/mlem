@@ -52,7 +52,7 @@ class AppState {
     
     /// If `keepPlace` is `nil`, use the value from `UserDefaults`.
     func changeAccount(to account: any Account, keepPlace: Bool? = nil, showAvatarPopup: Bool = true) {
-        @Setting(\.keepPlaceOnAccountSwitch) var keepPlaceSetting
+        @Setting(\.accounts_keepPlace) var keepPlaceSetting
         let keepPlace = keepPlace ?? keepPlaceSetting
         
         if firstAccount is UserAccount {
@@ -143,10 +143,10 @@ class AppState {
     var initialFeedSortType: PostSortType {
         get async throws {
             // In future, we should be storing `PostSortType` in `Settings` rather than `ApiSortType`
-            let defaultSort: PostSortType = .init(Settings.main.defaultPostSort)
+            let defaultSort: PostSortType = .init(LegacySettings.main.defaultPostSort)
             let instanceVersion = try await firstApi.version
             if instanceVersion >= defaultSort.minimumVersion { return defaultSort }
-            return .init(Settings.main.fallbackPostSort)
+            return .init(LegacySettings.main.fallbackPostSort)
         }
     }
     

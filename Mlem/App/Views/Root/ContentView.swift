@@ -19,9 +19,9 @@ struct ContentView: View {
     
     @Dependency(\.persistenceRepository) var persistenceRepository
     
-    @Setting(\.colorPalette) var colorPalette
-    @Setting(\.tabProfileLabelType) var tabProfileLabelType
-    @Setting(\.tabProfileShowAvatar) var tabProfileShowAvatar
+    @Setting(\.appearance_palette) var colorPalette
+    @Setting(\.tab_profile_labelType) var tabProfileLabelType
+    @Setting(\.tab_profile_showAvatar) var tabProfileShowAvatar
     
     let cacheCleanTimer = Timer.publish(every: 10, on: .main, in: .common).autoconnect()
     let unreadCountTimer = Timer.publish(every: 30, on: .main, in: .common).autoconnect()
@@ -77,9 +77,9 @@ struct ContentView: View {
                     }
                 }
                 .onAppear {
-                    if firstAppearance, persistenceRepository.systemSettingsExists(.v1) {
+                    if firstAppearance, persistenceRepository.systemSettingsExists(.v1_user) {
                         firstAppearance = false
-                        Settings.main.restore(from: .v1)
+                        LegacySettings.main.restore(from: .v1_user)
                     }
                 }
                 .onChange(of: appState.firstPerson) {

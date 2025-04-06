@@ -47,7 +47,7 @@ class FiltersTracker {
     
     init() {
         @Dependency(\.persistenceRepository) var persistenceRepository
-        @Setting(\.keywordFilterEnabled) var keywordFilterEnabled
+        @Setting(\.filters_keywordFilterEnabled) var keywordFilterEnabled
         
         self.isAdmin = AppState.main.firstPerson?.isAdmin ?? false
         self.moderatedCommunityActorIds = AppState.main.firstPerson?.moderatedCommunityActorIds ?? .init()
