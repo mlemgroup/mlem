@@ -11,6 +11,36 @@ import Foundation
 import MlemMiddleware
 import UIKit
 import Dependencies
+import SwiftUI
+
+@propertyWrapper
+struct Setting<T>: DynamicProperty {
+    @State private var defaults: SettingsValues = Settings.main.values
+    private let keyPath: ReferenceWritableKeyPath<SettingsValues, T>
+    
+    public init(_ keyPath: ReferenceWritableKeyPath<SettingsValues, T>) {
+        self.keyPath = keyPath
+    }
+
+    public var wrappedValue: T {
+        get { defaults[keyPath: keyPath] }
+        nonmutating set {
+            defaults[keyPath: keyPath] = newValue
+            Settings.main._save()
+        }
+    }
+
+    public var projectedValue: Binding<T> {
+        Binding (get: { wrappedValue }, set: { wrappedValue = $0 })
+//        Binding(
+//            get: { defaults[keyPath: keyPath] },
+//            set: {
+//                defaults[keyPath: keyPath] = $0
+//                Settings.main._save()
+//            }
+//        )
+    }
+}
 
 /// Responsible for managing settings logic.
 ///
@@ -22,8 +52,8 @@ import Dependencies
 class Settings {
     @Dependency(\.persistenceRepository) var persistenceRepository
     
-    private var values: SettingsValues
-    private static let main: Settings = .init()
+    fileprivate var values: SettingsValues
+    fileprivate static let main: Settings = .init()
     
     // MARK: - API
     
@@ -33,23 +63,19 @@ class Settings {
     
     static func set<T>(_ keyPath: ReferenceWritableKeyPath<SettingsValues, T>, to newValue: T) {
         main.values[keyPath: keyPath] = newValue
-        main.save()
-    }
-    
-    static func save() {
-        main.save()
+        main._save()
     }
     
     static func save(to systemSetting: SystemSetting) async {
-        await main.save(to: systemSetting)
+        await main._save(to: systemSetting)
     }
     
     static func restore(from systemSetting: SystemSetting) {
-        main.restore(from: systemSetting)
+        main._restore(from: systemSetting)
     }
     
     static func reinit(with values: SettingsValues) {
-        main.reinit(with: values)
+        main._reinit(with: values)
     }
     
     static func encoded() throws -> Data {
@@ -58,13 +84,13 @@ class Settings {
     
     // MARK: - Logic
     
-    private func save() {
+    fileprivate func _save() {
         Task {
             try await persistenceRepository.saveSystemSettings(values, setting: .v2_system)
         }
     }
     
-    private func save(to systemSetting: SystemSetting) async {
+    private func _save(to systemSetting: SystemSetting) async {
         do {
             try await persistenceRepository.saveSystemSettings(values, setting: systemSetting)
             ToastModel.main.add(.success("Saved Settings"))
@@ -73,19 +99,20 @@ class Settings {
         }
     }
     
-    private func restore(from systemSetting: SystemSetting) {
+    private func _restore(from systemSetting: SystemSetting) {
         if let savedSettings = persistenceRepository.loadSystemSettings(systemSetting) {
             values = savedSettings
-            save()
+            _save()
             ToastModel.main.add(.success("Restored Settings"))
         } else {
             ToastModel.main.add(.failure("Could not find settings"))
         }
     }
     
-    private func reinit(with newValues: SettingsValues) {
-        values = newValues
-        save()
+    private func _reinit(with newValues: SettingsValues) {
+        // values = newValues
+        values.behavior_upvoteOnSave = newValues.behavior_upvoteOnSave
+        _save()
     }
     
     private init() {
