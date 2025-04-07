@@ -30,6 +30,29 @@ public extension Icon {
         
         public let undo: Icon = .applyCircle("arrow.uturn.backward")
         public let redo: Icon = .applyCircle("arrow.uturn.forward")
+        
+        public let share: Icon = .baseOnly("square.and.arrow.up")
+        public let search: Icon = .custom { variant in
+            switch variant {
+            case .active: "text.magnifyingglass"
+            default: "magnifiyingglass"
+            }
+        }
+
+        public let settings: Icon = .baseOnly("gear")
+        public let filter: Icon = .applyFill("line.3.horizontal.decrease.circle")
+        public let menu: Icon = .baseOnly("ellipsis")
+        public let menuCircle: Icon = .applyFill("ellipsis.circle")
+        public let `import`: Icon = .baseOnly("square.and.arrow.down")
+        public let edit: Icon = .baseOnly("pencil")
+        public let delete: Icon = .applyFill("trash")
+        public let undelete: Icon = .applyFill("trash.slash")
+        
+        public let copy: Icon = .applyFill("doc.on.doc")
+        public let paste: Icon = .applyFill("doc.on.clipboard")
+        public let signOut: Icon = .applyFill("minus.circle")
+        public let refresh: Icon = .baseOnly("arrow.clockwise")
+        public let select: Icon = .baseOnly("selection.pin.")
     }
     
     static let general: GeneralIcons = .init()
