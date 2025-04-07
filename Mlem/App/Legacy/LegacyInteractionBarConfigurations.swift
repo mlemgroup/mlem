@@ -95,7 +95,7 @@ enum LegacyInterationBarItem: String, Codable {
 extension InteractionBarConfigurations {
     init(legacyConfiguration: LegacyInteractionBarConfigurations) {
         if legacyConfiguration.moderator != nil {
-            LegacySettings.main.alternateInteractionBarLayoutForReports = true
+            Settings.main.codableSettings.interactionBar_alternateReportLayout = true
         }
         
         self.post = .init(legacyItems: legacyConfiguration.post, moderator: false)

@@ -88,7 +88,7 @@ class MediaControlState {
         self.autoplay = animating
         self.overlays = overlays
         self.enableAnimation = enableAnimation
-        self.muted = muted ?? LegacySettings.main.muteVideos
+        self.muted = muted ?? Settings.main.codableSettings.behavior_muteVideos
         self.scrubbingAvailable = scrubbingAvailable
     }
     

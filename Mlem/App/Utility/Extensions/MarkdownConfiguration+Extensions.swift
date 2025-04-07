@@ -15,7 +15,7 @@ extension MarkdownConfiguration {
     static func `default`(palette: Theming.Palette) -> MarkdownConfiguration { .init(
         inlineImageLoader: loadInlineImage,
         imageBlockView: { imageView($0, shouldBlur: false) },
-        wrapCodeBlockLines: LegacySettings.main.wrapCodeBlockLines,
+        wrapCodeBlockLines: Settings.main.codableSettings.markdown_wrapCodeBlockLines,
         spoilerLabel: .init(localized: "Spoiler"),
         tableLabel: .init(localized: "Table"),
         censorLabel: .init(localized: "Censored"),

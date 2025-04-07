@@ -19,7 +19,7 @@ struct ModlogView: View {
     let initialTarget: InitialTarget
     
     @State var feedLoader: ModlogFeedLoader
-    @State var warningPresented: Bool = LegacySettings.main.showModlogWarning
+    @State var warningPresented: Bool = Settings.main.codableSettings.safety_enableModlogWarning
     
     @State var communityFilter: CommunityFilter?
     @State var actionTypeFilter: ApiModlogActionType?
@@ -28,7 +28,7 @@ struct ModlogView: View {
         self._feedLoader = .init(
             wrappedValue: .init(
                 api: AppState.main.firstApi,
-                pageSize: LegacySettings.main.internetSpeed.pageSize,
+                pageSize: Settings.main.codableSettings.behavior_internetSpeed.pageSize,
                 communityId: nil,
                 sortType: .new
             )

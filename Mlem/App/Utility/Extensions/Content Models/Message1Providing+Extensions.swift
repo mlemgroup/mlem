@@ -40,7 +40,7 @@ extension Message1Providing {
         if api.isAdmin {
             ActionGroup(
                 appearance: .init(label: "Moderation...", color: .themedModeration, icon: Icons.moderation),
-                displayMode: LegacySettings.main.moderatorActionGrouping == .divider ? .section : .disclosure
+                displayMode: Settings.main.codableSettings.menus_modActionGrouping == .divider ? .section : .disclosure
             ) {
                 moderatorMenuActions(appState: appState, feedback: feedback, report: report)
             }

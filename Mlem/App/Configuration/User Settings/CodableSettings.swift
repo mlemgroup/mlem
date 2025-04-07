@@ -18,6 +18,7 @@ class Settings {
     var codableSettings: CodableSettings
     
     public static let main: Settings = .init()
+    public static var values: CodableSettings { main.codableSettings }
     
     func save() {
         Task {

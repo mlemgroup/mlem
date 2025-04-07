@@ -33,7 +33,7 @@ struct CircleCroppedImageView: View {
         fallback: MediaView.Fallback,
         showProgress: Bool = true,
         blurred: Bool = false,
-        enableAnimation: Bool = (LegacySettings.main.animatedAvatars == .always)
+        enableAnimation: Bool = (Settings.main.codableSettings.media_animatedAvatars == .always)
     ) {
         self.url = url
         self.frame = frame

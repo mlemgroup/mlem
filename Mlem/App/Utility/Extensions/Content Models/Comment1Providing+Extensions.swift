@@ -48,7 +48,7 @@ extension Comment1Providing {
         if canModerate {
             ActionGroup(
                 appearance: .init(label: "Moderation...", color: .themedModeration, icon: Icons.moderation),
-                displayMode: LegacySettings.main.moderatorActionGrouping == .divider || expanded ? .section : .disclosure
+                displayMode: Settings.main.codableSettings.menus_modActionGrouping == .divider || expanded ? .section : .disclosure
             ) {
                 moderatorMenuActions(appState: appState, feedback: feedback, showAllActions: showAllActions, report: report)
             }
@@ -91,7 +91,7 @@ extension Comment1Providing {
         showAllActions: Bool = true,
         report: Report? = nil
     ) -> [any Action] {
-        if api.isAdmin || (api.fetchedVersion ?? .infinity) > .v0_19_4, showAllActions || LegacySettings.main.showAllModActions {
+        if api.isAdmin || (api.fetchedVersion ?? .infinity) > .v0_19_4, showAllActions || Settings.values.menus_allModActions {
             viewVotesAction()
         }
         if let self2, !isOwnComment {

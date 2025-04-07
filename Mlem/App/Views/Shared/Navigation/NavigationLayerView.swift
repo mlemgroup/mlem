@@ -97,7 +97,7 @@ private class FullWidthGestureRecognizerDelegate: NSObject, UIGestureRecognizerD
     var navigationController: UINavigationController?
 
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        if !LegacySettings.main.swipeAnywhereToNavigate { return false }
+        if !Settings.main.codableSettings.navigation_swipeAnywhere { return false }
         let isSystemSwipeToBackEnabled = navigationController?.interactivePopGestureRecognizer?.isEnabled == true
         let isThereStackedViewControllers = (navigationController?.viewControllers.count ?? 0) > 1
         return isSystemSwipeToBackEnabled && isThereStackedViewControllers

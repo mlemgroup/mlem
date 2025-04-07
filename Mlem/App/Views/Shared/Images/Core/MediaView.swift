@@ -96,7 +96,7 @@ struct MediaView: View {
             url: url,
             controlState: .constant(.init(
                 blurred: shouldBlur,
-                animating: LegacySettings.main.autoplayMedia,
+                animating: Settings.main.codableSettings.behavior_autoplayMedia,
                 overlays: shouldBlur ? [.controls, .nsfw, .error] : [.controls, .error]
             )),
             aspectRatioBounds: .imageDefault,
