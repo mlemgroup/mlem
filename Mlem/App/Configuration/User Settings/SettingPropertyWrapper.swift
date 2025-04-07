@@ -11,10 +11,10 @@ import SwiftUI
 
 @propertyWrapper
 struct Setting<T>: DynamicProperty {
-    private var defaults: CodableSettings
-    private let keyPath: ReferenceWritableKeyPath<CodableSettings, T>
+    private var defaults: SettingsValues
+    private let keyPath: ReferenceWritableKeyPath<SettingsValues, T>
     
-    public init(_ keyPath: ReferenceWritableKeyPath<CodableSettings, T>, defaults: CodableSettings = Settings.values) {
+    public init(_ keyPath: ReferenceWritableKeyPath<SettingsValues, T>, defaults: SettingsValues = Settings.values) {
         self.keyPath = keyPath
         self.defaults = defaults
     }
@@ -31,8 +31,8 @@ struct Setting<T>: DynamicProperty {
         )
     }
     
-    private func updateValue(path: ReferenceWritableKeyPath<CodableSettings, T>, value: T) {
+    private func updateValue(path: ReferenceWritableKeyPath<SettingsValues, T>, value: T) {
         defaults[keyPath: keyPath] = value
-        Settings.main.save()
+        Settings.save()
     }
 }

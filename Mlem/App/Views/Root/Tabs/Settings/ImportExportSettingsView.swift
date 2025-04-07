@@ -35,8 +35,8 @@ struct ImportExportSettingsView: View {
                 do {
                     let fileUrl = try result.get()
                     if let fileData = readSettings(from: fileUrl) {
-                        let importedSettings = try JSONDecoder().decode(CodableSettings.self, from: fileData)
-                        Settings.main.reinit(with: importedSettings)
+                        let importedSettings = try JSONDecoder().decode(SettingsValues.self, from: fileData)
+                        Settings.reinit(with: importedSettings)
                         ToastModel.main.add(.success("Imported Settings"))
                     } else {
                         assertionFailure("Failed to import settings")
@@ -53,14 +53,14 @@ struct ImportExportSettingsView: View {
             Section("Save and Restore") {
                 Button("Save Settings", systemImage: Icons.saveSettings) {
                     Task {
-                        await Settings.main.save(to: .v2_user)
+                        await Settings.save(to: .v2_user)
                         v2SettingsExist = persistenceRepository.systemSettingsExists(.v2_user)
                     }
                 }
                 
                 Button("Restore Settings", systemImage: Icons.restoreSettings) {
                     Task { @MainActor in
-                        Settings.main.restore(from: .v2_user)
+                        Settings.restore(from: .v2_user)
                     }
                 }
                 .disabled(!v2SettingsExist)

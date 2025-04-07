@@ -12,33 +12,58 @@ import MlemMiddleware
 import UIKit
 import Dependencies
 
+/// Responsible for managing settings logic.
+///
+/// There should only ever be one instance of this class, the private `main`. To enforce this, interaction with the class
+/// is entirely abstracted to behind a static API.
+///
+/// To access a settings value, use the `@Setting` property wrapper.
 class Settings {
     @Dependency(\.persistenceRepository) var persistenceRepository
     
-    private var codableSettings: CodableSettings
+    private var settingsValues: SettingsValues
+    private static let main: Settings = .init()
     
-    public static let main: Settings = .init()
-    public static var values: CodableSettings { main.codableSettings }
+    // MARK: - API
     
-    func save() {
+    public static var values: SettingsValues { main.settingsValues }
+    
+    static func save() {
+        main.save()
+    }
+    
+    static func save(to systemSetting: SystemSetting) async {
+        await main.save(to: systemSetting)
+    }
+    
+    static func restore(from systemSetting: SystemSetting) {
+        main.restore(from: systemSetting)
+    }
+    
+    static func reinit(with values: SettingsValues) {
+        main.reinit(with: values)
+    }
+    
+    // MARK: - Logic
+    
+    private func save() {
         Task {
-            try await persistenceRepository.saveSystemSettings(codableSettings, setting: .v2_system)
+            try await persistenceRepository.saveSystemSettings(settingsValues, setting: .v2_system)
         }
     }
     
-    func save(to systemSetting: SystemSetting) async {
+    private func save(to systemSetting: SystemSetting) async {
         do {
-            try await persistenceRepository.saveSystemSettings(codableSettings, setting: systemSetting)
+            try await persistenceRepository.saveSystemSettings(settingsValues, setting: systemSetting)
             ToastModel.main.add(.success("Saved Settings"))
         } catch {
             handleError(error)
         }
     }
     
-    @MainActor
-    func restore(from systemSetting: SystemSetting) {
+    private func restore(from systemSetting: SystemSetting) {
         if let savedSettings = persistenceRepository.loadSystemSettings(systemSetting) {
-            codableSettings = savedSettings
+            settingsValues = savedSettings
             save()
             ToastModel.main.add(.success("Restored Settings"))
         } else {
@@ -46,19 +71,20 @@ class Settings {
         }
     }
     
-    func reinit(with values: CodableSettings) {
-        codableSettings = values
+    private func reinit(with values: SettingsValues) {
+        settingsValues = values
+        save()
     }
     
-    init() {
+    private init() {
         @Dependency(\.persistenceRepository) var persistenceRepository
         if let savedSettings = persistenceRepository.loadSystemSettings(.v2_system) {
-            codableSettings = savedSettings
+            settingsValues = savedSettings
         } else {
-            codableSettings = .init(from: .main, filteredKeywords: .init()) // TODO: NOW
+            settingsValues = .init(from: .main, filteredKeywords: .init()) // TODO: NOW
             Task {
                 do {
-                    try await persistenceRepository.saveSystemSettings(codableSettings, setting: .v2_system)
+                    try await persistenceRepository.saveSystemSettings(settingsValues, setting: .v2_system)
                 } catch {
                     handleError(error)
                 }
@@ -69,9 +95,7 @@ class Settings {
 
 /// Mirror of Settings but without any AppStorage complexity and fully optionalized.
 @Observable
-class CodableSettings: Codable { // swiftlint:disable:this type_body_length
-    // MARK: Settings saved in AppStorage
-    
+class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     var a11y_readPostIndicator: ReadPostIndicator
     var a11y_readOutlineThickness: Int
     var a11y_showSettingsIcons: Bool
@@ -154,6 +178,7 @@ class CodableSettings: Codable { // swiftlint:disable:this type_body_length
     var filters_keywordFilterEnabled: Bool // TODO: update FiltersTracker.main
     var interactionBar_alternateReportLayout: Bool
     
+    // These are included in the encoding, but are synthesized into tab_inbox_badgeIncludedTypes at decoding
     @ObservationIgnored var inbox_badge_includeApplications: Bool = false
     @ObservationIgnored var inbox_badge_includeMessageReports: Bool = false
     @ObservationIgnored var inbox_badge_includeMod: Bool = false

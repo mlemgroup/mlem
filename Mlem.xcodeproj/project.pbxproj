@@ -507,7 +507,7 @@
 		CDCC7FEF2D9B1E7100CE18DA /* CachedComputation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCC7FEE2D9B1E6E00CE18DA /* CachedComputation.swift */; };
 		CDCC7FF12D9B27D800CE18DA /* ZoomRecognizerCoordinator+GestureRecognition.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCC7FF02D9B27CE00CE18DA /* ZoomRecognizerCoordinator+GestureRecognition.swift */; };
 		CDCC7FF32D9B283A00CE18DA /* ZoomRecognizerCoordinator+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCC7FF22D9B283400CE18DA /* ZoomRecognizerCoordinator+Logic.swift */; };
-		CDD4A09C2C8A122F0001AD1A /* CodableSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD4A09B2C8A122F0001AD1A /* CodableSettings.swift */; };
+		CDD4A09C2C8A122F0001AD1A /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD4A09B2C8A122F0001AD1A /* Settings.swift */; };
 		CDD4A09E2C8B69FC0001AD1A /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD4A09D2C8B69FC0001AD1A /* Button.swift */; };
 		CDD4A0A02C8B985D0001AD1A /* ImportExportSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD4A09F2C8B985D0001AD1A /* ImportExportSettingsView.swift */; };
 		CDD8B94C2C8234BC00510EBB /* Form.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD8B94B2C8234BC00510EBB /* Form.swift */; };
@@ -1044,7 +1044,7 @@
 		CDCC7FEE2D9B1E6E00CE18DA /* CachedComputation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedComputation.swift; sourceTree = "<group>"; };
 		CDCC7FF02D9B27CE00CE18DA /* ZoomRecognizerCoordinator+GestureRecognition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ZoomRecognizerCoordinator+GestureRecognition.swift"; sourceTree = "<group>"; };
 		CDCC7FF22D9B283400CE18DA /* ZoomRecognizerCoordinator+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ZoomRecognizerCoordinator+Logic.swift"; sourceTree = "<group>"; };
-		CDD4A09B2C8A122F0001AD1A /* CodableSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableSettings.swift; sourceTree = "<group>"; };
+		CDD4A09B2C8A122F0001AD1A /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		CDD4A09D2C8B69FC0001AD1A /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 		CDD4A09F2C8B985D0001AD1A /* ImportExportSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportExportSettingsView.swift; sourceTree = "<group>"; };
 		CDD8B94B2C8234BC00510EBB /* Form.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Form.swift; sourceTree = "<group>"; };
@@ -2317,7 +2317,7 @@
 				CDE1F19B2C63E2EB008AF042 /* SettingPropertyWrapper.swift */,
 				0315B1C92C767847006D4F82 /* InteractionBarTracker.swift */,
 				036ED6782D0AF3740018E5EA /* PinnedSortTracker.swift */,
-				CDD4A09B2C8A122F0001AD1A /* CodableSettings.swift */,
+				CDD4A09B2C8A122F0001AD1A /* Settings.swift */,
 			);
 			path = "User Settings";
 			sourceTree = "<group>";
@@ -2691,7 +2691,7 @@
 				03B431B62C454D49001A1EB5 /* UIImage+Extensions.swift in Sources */,
 				CD1446212A5B328E00610EF1 /* Privacy Policy.swift in Sources */,
 				03AFD0E32C3C0C540054B8AD /* InstanceView.swift in Sources */,
-				CDD4A09C2C8A122F0001AD1A /* CodableSettings.swift in Sources */,
+				CDD4A09C2C8A122F0001AD1A /* Settings.swift in Sources */,
 				03AB906F2D418C200054D9E1 /* CommentJumpButtonSettingsView.swift in Sources */,
 				033819282D4424D9000AFC55 /* SafetyWarningsSettingsView.swift in Sources */,
 				030EE3042D651A4100D58C2C /* View+Refreshable.swift in Sources */,
