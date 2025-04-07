@@ -12,35 +12,28 @@ import MlemMiddleware
 import UIKit
 import Dependencies
 import SwiftUI
-
-@propertyWrapper
-struct Setting<T>: DynamicProperty {
-    @State private var defaults: SettingsValues = Settings.main.values
-    private let keyPath: ReferenceWritableKeyPath<SettingsValues, T>
-    
-    public init(_ keyPath: ReferenceWritableKeyPath<SettingsValues, T>) {
-        self.keyPath = keyPath
-    }
-
-    public var wrappedValue: T {
-        get { defaults[keyPath: keyPath] }
-        nonmutating set {
-            defaults[keyPath: keyPath] = newValue
-            Settings.main._save()
-        }
-    }
-
-    public var projectedValue: Binding<T> {
-        Binding (get: { wrappedValue }, set: { wrappedValue = $0 })
-//        Binding(
-//            get: { defaults[keyPath: keyPath] },
-//            set: {
-//                defaults[keyPath: keyPath] = $0
-//                Settings.main._save()
-//            }
-//        )
-    }
-}
+//
+// @propertyWrapper
+// struct Setting<T>: DynamicProperty {
+//    @State private var defaults: SettingsValues = Settings.main.values
+//    private let keyPath: ReferenceWritableKeyPath<SettingsValues, T>
+//    
+//    public init(_ keyPath: ReferenceWritableKeyPath<SettingsValues, T>) {
+//        self.keyPath = keyPath
+//    }
+//
+//    public var wrappedValue: T {
+//        get { defaults[keyPath: keyPath] }
+//        nonmutating set {
+//            defaults[keyPath: keyPath] = newValue
+//            Settings.main._save()
+//        }
+//    }
+//
+//    public var projectedValue: Binding<T> {
+//        Binding(get: { wrappedValue }, set: { wrappedValue = $0 })
+//    }
+// }
 
 /// Responsible for managing settings logic.
 ///
@@ -70,10 +63,12 @@ class Settings {
         await main._save(to: systemSetting)
     }
     
+    @MainActor
     static func restore(from systemSetting: SystemSetting) {
         main._restore(from: systemSetting)
     }
     
+    @MainActor
     static func reinit(with values: SettingsValues) {
         main._reinit(with: values)
     }
@@ -99,9 +94,11 @@ class Settings {
         }
     }
     
+    @MainActor
     private func _restore(from systemSetting: SystemSetting) {
         if let savedSettings = persistenceRepository.loadSystemSettings(systemSetting) {
-            values = savedSettings
+            // values = savedSettings
+            values.behavior_upvoteOnSave = savedSettings.behavior_upvoteOnSave
             _save()
             ToastModel.main.add(.success("Restored Settings"))
         } else {
@@ -109,6 +106,7 @@ class Settings {
         }
     }
     
+    @MainActor
     private func _reinit(with newValues: SettingsValues) {
         // values = newValues
         values.behavior_upvoteOnSave = newValues.behavior_upvoteOnSave
