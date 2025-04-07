@@ -52,7 +52,7 @@ struct SortingSettingsView: View {
                         Text("Fallback")
                         Spacer()
                         FeedSortPicker(sort: .init(
-                            get: { defaultPostSort }, set: { defaultPostSort = $0 }
+                            get: { fallbackPostSort }, set: { fallbackPostSort = $0 }
                         ))
                         .foregroundStyle(.themedAccent)
                         .frame(minHeight: 50)

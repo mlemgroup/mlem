@@ -16,21 +16,23 @@ struct Setting<T>: DynamicProperty {
     
     public init(_ keyPath: ReferenceWritableKeyPath<CodableSettings, T>, defaults: CodableSettings = Settings.main.codableSettings) {
         self.keyPath = keyPath
-        self.defaults = defaults // .init(wrappedValue: defaults)
+        self.defaults = defaults
     }
 
     public var wrappedValue: T {
         get { defaults[keyPath: keyPath] }
-        nonmutating set { defaults[keyPath: keyPath] = newValue }
+        nonmutating set { updateValue(path: keyPath, value: newValue) }
     }
 
     public var projectedValue: Binding<T> {
         Binding(
             get: { defaults[keyPath: keyPath] },
-            set: { value in
-                defaults[keyPath: keyPath] = value
-                Settings.main.save()
-            }
+            set: { updateValue(path: keyPath, value: $0) }
         )
+    }
+    
+    private func updateValue(path: ReferenceWritableKeyPath<CodableSettings, T>, value: T) {
+        defaults[keyPath: keyPath] = value
+        Settings.main.save()
     }
 }
