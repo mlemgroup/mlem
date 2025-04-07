@@ -17,16 +17,24 @@ import Dependencies
 /// There should only ever be one instance of this class, the private `main`. To enforce this, interaction with the class
 /// is entirely abstracted to behind a static API.
 ///
-/// To access a settings value, use the `@Setting` property wrapper.
+/// To access a settings value, it is recommended to use the `@Setting` property wrapper. In contexts where this is not available,
+/// use `Settings.get(\.keypath)`.
 class Settings {
     @Dependency(\.persistenceRepository) var persistenceRepository
     
-    private var settingsValues: SettingsValues
+    private var values: SettingsValues
     private static let main: Settings = .init()
     
     // MARK: - API
     
-    public static var values: SettingsValues { main.settingsValues }
+    static func get<T>(_ keyPath: ReferenceWritableKeyPath<SettingsValues, T>) -> T {
+        main.values[keyPath: keyPath]
+    }
+    
+    static func set<T>(_ keyPath: ReferenceWritableKeyPath<SettingsValues, T>, to newValue: T) {
+        main.values[keyPath: keyPath] = newValue
+        main.save()
+    }
     
     static func save() {
         main.save()
@@ -44,17 +52,21 @@ class Settings {
         main.reinit(with: values)
     }
     
+    static func encoded() throws -> Data {
+        try JSONEncoder().encode(main.values)
+    }
+    
     // MARK: - Logic
     
     private func save() {
         Task {
-            try await persistenceRepository.saveSystemSettings(settingsValues, setting: .v2_system)
+            try await persistenceRepository.saveSystemSettings(values, setting: .v2_system)
         }
     }
     
     private func save(to systemSetting: SystemSetting) async {
         do {
-            try await persistenceRepository.saveSystemSettings(settingsValues, setting: systemSetting)
+            try await persistenceRepository.saveSystemSettings(values, setting: systemSetting)
             ToastModel.main.add(.success("Saved Settings"))
         } catch {
             handleError(error)
@@ -63,7 +75,7 @@ class Settings {
     
     private func restore(from systemSetting: SystemSetting) {
         if let savedSettings = persistenceRepository.loadSystemSettings(systemSetting) {
-            settingsValues = savedSettings
+            values = savedSettings
             save()
             ToastModel.main.add(.success("Restored Settings"))
         } else {
@@ -71,20 +83,20 @@ class Settings {
         }
     }
     
-    private func reinit(with values: SettingsValues) {
-        settingsValues = values
+    private func reinit(with newValues: SettingsValues) {
+        values = newValues
         save()
     }
     
     private init() {
         @Dependency(\.persistenceRepository) var persistenceRepository
         if let savedSettings = persistenceRepository.loadSystemSettings(.v2_system) {
-            settingsValues = savedSettings
+            values = savedSettings
         } else {
-            settingsValues = .init(from: .main, filteredKeywords: .init()) // TODO: NOW
+            values = .init(from: .main, filteredKeywords: .init()) // TODO: NOW
             Task {
                 do {
-                    try await persistenceRepository.saveSystemSettings(settingsValues, setting: .v2_system)
+                    try await persistenceRepository.saveSystemSettings(values, setting: .v2_system)
                 } catch {
                     handleError(error)
                 }
@@ -93,7 +105,7 @@ class Settings {
     }
 }
 
-/// Mirror of Settings but without any AppStorage complexity and fully optionalized.
+/// Values backing the Settings class.
 @Observable
 class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     var a11y_readPostIndicator: ReadPostIndicator
@@ -137,7 +149,6 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     var links_readerMode: Bool
     var links_shareMode: LinkSharingMode
     var links_embedLoops: Bool
-    var links_tappableLinksDisplayMode: TappableLinksDisplayMode
     var media_animatedAvatars: AnimatedAvatarBehavior
     var menus_allModActions: Bool
     var menus_modActionGrouping: ModeratorActionGrouping
@@ -226,7 +237,6 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         case _links_readerMode = "links_readerMode"
         case _links_shareMode = "links_shareMode"
         case _links_embedLoops = "links_embedLoops"
-        case _links_tappableLinksDisplayMode = "links_tappableLinksDisplayMode"
         case _media_animatedAvatars = "media_animatedAvatars"
         case _menus_allModActions = "menus_allModActions"
         case _menus_modActionGrouping = "menus_modActionGrouping"
@@ -350,7 +360,6 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.links_openInBrowser = try container.decodeIfPresent(Bool.self, forKey: ._links_openInBrowser) ?? false
         self.links_readerMode = try container.decodeIfPresent(Bool.self, forKey: ._links_readerMode) ?? false
         self.links_shareMode = try container.decodeIfPresent(LinkSharingMode.self, forKey: ._links_shareMode) ?? .myInstance
-        self.links_tappableLinksDisplayMode = try container.decodeIfPresent(TappableLinksDisplayMode.self, forKey: ._links_tappableLinksDisplayMode) ?? .contextual
         self.links_embedLoops = try container.decodeIfPresent(Bool.self, forKey: ._links_embedLoops) ?? true
         self.media_animatedAvatars = try container.decodeIfPresent(AnimatedAvatarBehavior.self, forKey: ._media_animatedAvatars) ?? (UIAccessibility.isReduceMotionEnabled ? .never : .always)
         self.menus_allModActions = try container.decodeIfPresent(Bool.self, forKey: ._menus_allModActions) ?? false
@@ -436,7 +445,6 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.links_openInBrowser = settings.openLinksInBrowser
         self.links_readerMode = settings.openLinksInReaderMode
         self.links_shareMode = settings.linkSharingMode
-        self.links_tappableLinksDisplayMode = settings.tappableLinksDisplayMode // TODO: unused?
         self.links_embedLoops = settings.embedLoops
         self.media_animatedAvatars = settings.animatedAvatars
         self.menus_allModActions = settings.showAllModActions

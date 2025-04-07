@@ -71,7 +71,7 @@ struct ImportExportSettingsView: View {
             Section {
                 Button("Export Settings", systemImage: Icons.share) {
                     Task {
-                        let data = try JSONEncoder().encode(Settings.values)
+                        let data = try Settings.encoded()
                         let fileUrl = FileManager.default.temporaryDirectory.appending(path: "settings.json")
                         try data.write(to: fileUrl, options: .atomic)
                         navigation.model?.shareInfo = .init(url: fileUrl)

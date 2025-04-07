@@ -73,7 +73,7 @@ struct SearchView: View {
             wrappedValue: .init(
                 api: appState.firstApi,
                 sortType: .v3(.top(.allTime)),
-                prefetchingConfiguration: .forPostSize(Settings.values.post_size),
+                prefetchingConfiguration: .forPostSize(Settings.get(\.post_size)),
                 urlCache: Constants.main.urlCache
             )
         )
