@@ -118,7 +118,7 @@ class NavigationLayer: Identifiable {
                     guard let data = try await photo.loadTransferable(type: Data.self) else {
                         throw ApiClientError.unsuccessful
                     }
-                    if Settings.main.codableSettings.behavior_confirmImageUploads {
+                    if Settings.values.behavior_confirmImageUploads {
                         self.openSheet(.confirmUpload(imageData: data, imageManager: imageUploadManager, uploadApi: api))
                     } else {
                         try await imageUploadManager.upload(data: data, api: api)
@@ -142,7 +142,7 @@ class NavigationLayer: Identifiable {
                     }
                     let data = try Data(contentsOf: url)
                     url.stopAccessingSecurityScopedResource()
-                    if Settings.main.codableSettings.behavior_confirmImageUploads {
+                    if Settings.values.behavior_confirmImageUploads {
                         self.openSheet(.confirmUpload(imageData: data, imageManager: imageUploadManager, uploadApi: api))
                     } else {
                         try await imageUploadManager.upload(data: data, api: api)
@@ -180,7 +180,7 @@ class NavigationLayer: Identifiable {
     func uploadImageFromClipboard(for imageUploadManager: ImageUploadManager, api: ApiClient) {
         if UIPasteboard.general.hasImages, let content = UIPasteboard.general.image {
             if let data = content.pngData() {
-                if Settings.main.codableSettings.behavior_confirmImageUploads {
+                if Settings.values.behavior_confirmImageUploads {
                     openSheet(.confirmUpload(imageData: data, imageManager: imageUploadManager, uploadApi: api))
                 } else {
                     Task {

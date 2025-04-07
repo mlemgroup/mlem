@@ -13,8 +13,8 @@ extension PrefetchingConfiguration {
         .init(
             prefetcher: .init(pipeline: .shared, destination: .memoryCache, maxConcurrentRequestCount: 40),
             imageSize: .unlimited,
-            fetchFavicons: Settings.main.codableSettings.privacy_showFavicons,
-            embedLoops: Settings.main.codableSettings.links_embedLoops,
+            fetchFavicons: Settings.values.privacy_showFavicons,
+            embedLoops: Settings.values.links_embedLoops,
             avatarSize: postSize.avatarSize
         )
     }

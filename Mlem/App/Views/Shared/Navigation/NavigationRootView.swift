@@ -20,7 +20,7 @@ struct NavigationSplitRootView: View {
             model: .main
         ))
         self.sidebar = sidebar
-        self._columnVisibility = .init(wrappedValue: Settings.main.codableSettings.navigation_sidebarVisibleByDefault ? .all : .detailOnly)
+        self._columnVisibility = .init(wrappedValue: Settings.values.navigation_sidebarVisibleByDefault ? .all : .detailOnly)
     }
     
     var body: some View {

@@ -18,7 +18,7 @@ extension Sharable {
     
     func shareAction(navigation: NavigationLayer?) -> BasicAction {
         .init(id: "share\(actorId)", appearance: .share(), callback: {
-            let url: URL? = switch Settings.main.codableSettings.links_shareMode {
+            let url: URL? = switch Settings.values.links_shareMode {
             case .myInstance: self.url()
             case .originalInstance: self.actorId.url
             case .lemmyverse: self.lemmyverseUrl

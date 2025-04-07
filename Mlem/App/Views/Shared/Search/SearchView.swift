@@ -73,7 +73,7 @@ struct SearchView: View {
             wrappedValue: .init(
                 api: appState.firstApi,
                 sortType: .v3(.top(.allTime)),
-                prefetchingConfiguration: .forPostSize(Settings.main.codableSettings.post_size),
+                prefetchingConfiguration: .forPostSize(Settings.values.post_size),
                 urlCache: Constants.main.urlCache
             )
         )

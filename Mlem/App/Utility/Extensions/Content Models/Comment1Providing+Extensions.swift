@@ -48,7 +48,7 @@ extension Comment1Providing {
         if canModerate {
             ActionGroup(
                 appearance: .init(label: "Moderation...", color: .themedModeration, icon: Icons.moderation),
-                displayMode: Settings.main.codableSettings.menus_modActionGrouping == .divider || expanded ? .section : .disclosure
+                displayMode: Settings.values.menus_modActionGrouping == .divider || expanded ? .section : .disclosure
             ) {
                 moderatorMenuActions(appState: appState, feedback: feedback, showAllActions: showAllActions, report: report)
             }

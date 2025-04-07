@@ -58,7 +58,7 @@ struct MoreRepliesButton: View {
             sort: tracker.sort,
             includedParentCount: 0,
             page: 1,
-            maxDepth: Settings.main.codableSettings.comment_maxDepth,
+            maxDepth: Settings.values.comment_maxDepth,
             limit: 999
         )
         

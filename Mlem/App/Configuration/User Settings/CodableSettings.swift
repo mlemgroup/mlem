@@ -15,7 +15,7 @@ import Dependencies
 class Settings {
     @Dependency(\.persistenceRepository) var persistenceRepository
     
-    var codableSettings: CodableSettings
+    private var codableSettings: CodableSettings
     
     public static let main: Settings = .init()
     public static var values: CodableSettings { main.codableSettings }
@@ -44,6 +44,10 @@ class Settings {
         } else {
             ToastModel.main.add(.failure("Could not find settings"))
         }
+    }
+    
+    func reinit(with values: CodableSettings) {
+        codableSettings = values
     }
     
     init() {

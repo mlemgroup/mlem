@@ -14,7 +14,7 @@ struct Setting<T>: DynamicProperty {
     private var defaults: CodableSettings
     private let keyPath: ReferenceWritableKeyPath<CodableSettings, T>
     
-    public init(_ keyPath: ReferenceWritableKeyPath<CodableSettings, T>, defaults: CodableSettings = Settings.main.codableSettings) {
+    public init(_ keyPath: ReferenceWritableKeyPath<CodableSettings, T>, defaults: CodableSettings = Settings.values) {
         self.keyPath = keyPath
         self.defaults = defaults
     }

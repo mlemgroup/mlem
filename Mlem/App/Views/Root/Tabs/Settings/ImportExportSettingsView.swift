@@ -36,8 +36,7 @@ struct ImportExportSettingsView: View {
                     let fileUrl = try result.get()
                     if let fileData = readSettings(from: fileUrl) {
                         let importedSettings = try JSONDecoder().decode(CodableSettings.self, from: fileData)
-                        Settings.main.codableSettings = importedSettings
-                        // LegacySettings.main.reinit(from: importedSettings)
+                        Settings.main.reinit(with: importedSettings)
                         ToastModel.main.add(.success("Imported Settings"))
                     } else {
                         assertionFailure("Failed to import settings")
@@ -72,7 +71,7 @@ struct ImportExportSettingsView: View {
             Section {
                 Button("Export Settings", systemImage: Icons.share) {
                     Task {
-                        let data = try JSONEncoder().encode(Settings.main.codableSettings)
+                        let data = try JSONEncoder().encode(Settings.values)
                         let fileUrl = FileManager.default.temporaryDirectory.appending(path: "settings.json")
                         try data.write(to: fileUrl, options: .atomic)
                         navigation.model?.shareInfo = .init(url: fileUrl)
