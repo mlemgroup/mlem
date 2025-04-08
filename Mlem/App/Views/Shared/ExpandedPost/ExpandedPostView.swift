@@ -26,7 +26,8 @@ struct ExpandedPostView<Content: View>: View {
     @Setting(\.jumpButton) var jumpButton
     @Setting(\.compactComments) var compactComments
     @Setting(\.tapPostsToCollapse) var tapPostsToCollapse
-    
+    @Setting(\.tapCommentsToCollapse) var tapCommentsToCollapse
+
     var post: (any PostStubProviding)?
     var contentLoaderError: Error?
     let isLoading: Bool
@@ -124,7 +125,7 @@ struct ExpandedPostView<Content: View>: View {
                             switch tracker.loadingState {
                             case .done:
                                 LazyVStack(spacing: 0) {
-                                    commentTree(tracker: tracker)
+                                    commentTree(tracker: tracker, scrollProxy: proxy)
                                 }
                                 .geometryGroup()
                             default:
