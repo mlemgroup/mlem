@@ -92,7 +92,8 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     var subscriptions_sort: SubscriptionListSort
     var navigation_sidebarVisibleByDefault: Bool
     var navigation_swipeAnywhere: Bool
-    var filters_keywordFilterEnabled: Bool // TODO: update FiltersTracker.main
+    var filters_keywordFilterEnabled: Bool
+    var filters_keywords: Set<String>
     var interactionBar_alternateReportLayout: Bool
     
     // These are included in the encoding, but are synthesized into tab_inbox_badgeIncludedTypes at decoding
@@ -100,8 +101,6 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     @ObservationIgnored var inbox_badge_includeMessageReports: Bool = false
     @ObservationIgnored var inbox_badge_includeMod: Bool = false
     @ObservationIgnored var inbox_badge_includePersonal: Bool = false
-    
-    var filteredKeywords: Set<String>
     
     required init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -213,7 +212,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.navigation_sidebarVisibleByDefault = try container.decodeIfPresent(Bool.self, forKey: ._navigation_sidebarVisibleByDefault) ?? true
         self.navigation_swipeAnywhere = try container.decodeIfPresent(Bool.self, forKey: ._navigation_swipeAnywhere) ?? false
         self.filters_keywordFilterEnabled = try container.decodeIfPresent(Bool.self, forKey: ._filters_keywordFilterEnabled) ?? true
-        self.filteredKeywords = .init() // TODO: NOW // try container.decodeIfPresent(Set<String>.self, forKey: ._filteredKeywords) ?? .init()
+        self.filters_keywords = try container.decodeIfPresent(Set<String>.self, forKey: ._filters_keywords) ?? .init()
         self.interactionBar_alternateReportLayout = try container.decodeIfPresent(Bool.self, forKey: ._interactionBar_alternateReportLayout) ?? false
     }
     
@@ -297,6 +296,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.navigation_sidebarVisibleByDefault = otherValues.navigation_sidebarVisibleByDefault
         self.navigation_swipeAnywhere = otherValues.navigation_swipeAnywhere
         self.filters_keywordFilterEnabled = otherValues.filters_keywordFilterEnabled
+        self.filters_keywords = otherValues.filters_keywords
         self.interactionBar_alternateReportLayout = otherValues.interactionBar_alternateReportLayout
         self.inbox_badge_includeApplications = otherValues.inbox_badge_includeApplications
         self.inbox_badge_includeMessageReports = otherValues.inbox_badge_includeMessageReports
@@ -384,6 +384,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         case _navigation_sidebarVisibleByDefault = "navigation_sidebarVisibleByDefault"
         case _navigation_swipeAnywhere = "navigation_swipeAnywhere"
         case _filters_keywordFilterEnabled = "filters_keywordFilterEnabled"
+        case _filters_keywords = "filters_keywords"
         case _interactionBar_alternateReportLayout = "interactionBar_alternateReportLayout"
      
         case inbox_badge_includeApplications = "inbox_badge_includeApplications"
@@ -473,7 +474,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.navigation_swipeAnywhere = settings.swipeAnywhereToNavigate
         self.filters_keywordFilterEnabled = settings.keywordFilterEnabled
         
-        self.filteredKeywords = filteredKeywords
+        self.filters_keywords = filteredKeywords
         self.interactionBar_alternateReportLayout = settings.alternateInteractionBarLayoutForReports
     }
 }
