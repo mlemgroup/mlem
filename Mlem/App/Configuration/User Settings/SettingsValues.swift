@@ -8,7 +8,10 @@
 import UIKit
 import MlemMiddleware
 
+// swiftlint:disable line_length function_body_length file_length
+
 /// Values backing the Settings class.
+/// - Note: when adding a new settings, be sure to add relevant entries to `init`, `reinit`, and `CodingKeys`.
 @Observable
 class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     var a11y_readPostIndicator: ReadPostIndicator
@@ -98,11 +101,8 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     @ObservationIgnored var inbox_badge_includeMod: Bool = false
     @ObservationIgnored var inbox_badge_includePersonal: Bool = false
     
-    // MARK: Settings saved in files
-    
     var filteredKeywords: Set<String>
     
-    // swiftlint:disable line_length function_body_length
     required init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.a11y_readPostIndicator = try container.decodeIfPresent(ReadPostIndicator.self, forKey: ._a11y_readPostIndicator) ?? .checkmark
@@ -217,7 +217,180 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.interactionBar_alternateReportLayout = try container.decodeIfPresent(Bool.self, forKey: ._interactionBar_alternateReportLayout) ?? false
     }
     
-    // swiftlint:enable line_length
+    func reinit(from otherValues: SettingsValues) {
+        self.a11y_readPostIndicator = otherValues.a11y_readPostIndicator
+        self.a11y_readOutlineThickness = otherValues.a11y_readOutlineThickness
+        self.a11y_showSettingsIcons = otherValues.a11y_showSettingsIcons
+        self.a11y_websiteThumbnailIcon = otherValues.a11y_websiteThumbnailIcon
+        self.a11y_zoomSliderLocation = otherValues.a11y_zoomSliderLocation
+        self.accounts_defaultId = otherValues.accounts_defaultId
+        self.accounts_grouped = otherValues.accounts_grouped
+        self.accounts_sort = otherValues.accounts_sort
+        self.accounts_keepPlace = otherValues.accounts_keepPlace
+        self.appearance_interfaceStyle = otherValues.appearance_interfaceStyle
+        self.appearance_palette = otherValues.appearance_palette
+        self.markdown_wrapCodeBlockLines = otherValues.markdown_wrapCodeBlockLines
+        self.behavior_biometricUnlock = otherValues.behavior_biometricUnlock
+        self.behavior_confirmImageUploads = otherValues.behavior_confirmImageUploads
+        self.behavior_enableQuickSwipes = otherValues.behavior_enableQuickSwipes
+        self.behavior_hapticLevel = otherValues.behavior_hapticLevel
+        self.behavior_internetSpeed = otherValues.behavior_internetSpeed
+        self.behavior_upvoteOnSave = otherValues.behavior_upvoteOnSave
+        self.behavior_autoplayMedia = otherValues.behavior_autoplayMedia
+        self.behavior_muteVideos = otherValues.behavior_muteVideos
+        self.behavior_infiniteScroll = otherValues.behavior_infiniteScroll
+        self.comment_behaviors_collapseChildren = otherValues.comment_behaviors_collapseChildren
+        self.comment_compact = otherValues.comment_compact
+        self.comment_defaultSort = otherValues.comment_defaultSort
+        self.comment_gestures_tapToCollapse = otherValues.comment_gestures_tapToCollapse
+        self.comment_jumpButton = otherValues.comment_jumpButton
+        self.comment_showCreatorInstance = otherValues.comment_showCreatorInstance
+        self.comment_maxDepth = otherValues.comment_maxDepth
+        self.community_showAvatar = otherValues.community_showAvatar
+        self.community_showBanner = otherValues.community_showBanner
+        self.community_showInstance = otherValues.community_showInstance
+        self.dev_developerMode = otherValues.dev_developerMode
+        self.feed_default = otherValues.feed_default
+        self.feed_markReadOnScroll = otherValues.feed_markReadOnScroll
+        self.feed_showRead = otherValues.feed_showRead
+        self.inbox_showRead = otherValues.inbox_showRead
+        self.links_displayMode = otherValues.links_displayMode
+        self.links_openInBrowser = otherValues.links_openInBrowser
+        self.links_readerMode = otherValues.links_readerMode
+        self.links_shareMode = otherValues.links_shareMode
+        self.links_embedLoops = otherValues.links_embedLoops
+        self.media_animatedAvatars = otherValues.media_animatedAvatars
+        self.menus_allModActions = otherValues.menus_allModActions
+        self.menus_modActionGrouping = otherValues.menus_modActionGrouping
+        self.post_defaultSort = otherValues.post_defaultSort
+        self.post_fallbackSort = otherValues.post_fallbackSort
+        self.post_limitImageHeight = otherValues.post_limitImageHeight
+        self.post_showCreator = otherValues.post_showCreator
+        self.post_showCreatorInstance = otherValues.post_showCreatorInstance
+        self.post_showSubscribedStatus = otherValues.post_showSubscribedStatus
+        self.post_showWebsitePreview = otherValues.post_showWebsitePreview
+        self.post_size = otherValues.post_size
+        self.post_allowMultipleColumns = otherValues.post_allowMultipleColumns
+        self.post_thumbnailLocation = otherValues.post_thumbnailLocation
+        self.post_webPreview_showHost = otherValues.post_webPreview_showHost
+        self.post_webPreview_showIcon = otherValues.post_webPreview_showIcon
+        self.post_showDownvotesCompact = otherValues.post_showDownvotesCompact
+        self.post_gestures_tapToCollapse = otherValues.post_gestures_tapToCollapse
+        self.profile_showBanner = otherValues.profile_showBanner
+        self.privacy_autoBypassImageProxy = otherValues.privacy_autoBypassImageProxy
+        self.privacy_showFavicons = otherValues.privacy_showFavicons
+        self.safety_blurNsfw = otherValues.safety_blurNsfw
+        self.safety_enableModlogWarning = otherValues.safety_enableModlogWarning
+        self.safety_enableNsfwCommunityWarning = otherValues.safety_enableNsfwCommunityWarning
+        self.tab_gestures_enableLongPress = otherValues.tab_gestures_enableLongPress
+        self.tab_gestures_enableSwipeUp = otherValues.tab_gestures_enableSwipeUp
+        self.tab_profile_labelType = otherValues.tab_profile_labelType
+        self.tab_profile_showAvatar = otherValues.tab_profile_showAvatar
+        self.tab_inbox_badgeIncludedTypes = otherValues.tab_inbox_badgeIncludedTypes
+        self.tab_showNames = otherValues.tab_showNames
+        self.tip_feedWelcomePrompt = otherValues.tip_feedWelcomePrompt
+        self.person_showAvatar = otherValues.person_showAvatar
+        self.person_showInstance = otherValues.person_showInstance
+        self.status_bypassImageProxyShown = otherValues.status_bypassImageProxyShown
+        self.subscriptions_instanceLocation = otherValues.subscriptions_instanceLocation
+        self.subscriptions_sort = otherValues.subscriptions_sort
+        self.navigation_sidebarVisibleByDefault = otherValues.navigation_sidebarVisibleByDefault
+        self.navigation_swipeAnywhere = otherValues.navigation_swipeAnywhere
+        self.filters_keywordFilterEnabled = otherValues.filters_keywordFilterEnabled
+        self.interactionBar_alternateReportLayout = otherValues.interactionBar_alternateReportLayout
+        self.inbox_badge_includeApplications = otherValues.inbox_badge_includeApplications
+        self.inbox_badge_includeMessageReports = otherValues.inbox_badge_includeMessageReports
+        self.inbox_badge_includeMod = otherValues.inbox_badge_includeMod
+        self.inbox_badge_includePersonal = otherValues.inbox_badge_includePersonal
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case _a11y_readPostIndicator = "a11y_readPostIndicator"
+        case _a11y_readOutlineThickness = "a11y_readOutlineThickness"
+        case _a11y_showSettingsIcons = "a11y_showSettingsIcons"
+        case _a11y_websiteThumbnailIcon = "a11y_websiteThumbnailIcon"
+        case _a11y_zoomSliderLocation = "a11y_zoomSliderLocation"
+        case _accounts_defaultId = "accounts_defaultId"
+        case _accounts_grouped = "accounts_grouped"
+        case _accounts_sort = "accounts_sort"
+        case _accounts_keepPlace = "accounts_keepPlace"
+        case _appearance_interfaceStyle = "appearance_interfaceStyle"
+        case _appearance_palette = "appearance_palette"
+        case _markdown_wrapCodeBlockLines = "markdown_wrapCodeBlockLines"
+        case _behavior_biometricUnlock = "behavior_biometricUnlock"
+        case _behavior_confirmImageUploads = "behavior_confirmImageUploads"
+        case _behavior_enableQuickSwipes = "behavior_enableQuickSwipes"
+        case _behavior_hapticLevel = "behavior_hapticLevel"
+        case _behavior_internetSpeed = "behavior_internetSpeed"
+        case _behavior_upvoteOnSave = "behavior_upvoteOnSave"
+        case _behavior_autoplayMedia = "behavior_autoplayMedia"
+        case _behavior_muteVideos = "behavior_muteVideos"
+        case _behavior_infiniteScroll = "behavior_infiniteScroll"
+        case _comment_behaviors_collapseChildren = "comment_behaviors_collapseChildren"
+        case _comment_compact = "comment_compact"
+        case _comment_defaultSort = "comment_defaultSort"
+        case _comment_gestures_tapToCollapse = "comment_gestures_tapToCollapse"
+        case _comment_jumpButton = "comment_jumpButton"
+        case _comment_showCreatorInstance = "comment_showCreatorInstance"
+        case _comment_maxDepth = "comment_maxDepth"
+        case _community_showAvatar = "community_showAvatar"
+        case _community_showBanner = "community_showBanner"
+        case _community_showInstance = "community_showInstance"
+        case _dev_developerMode = "dev_developerMode"
+        case _feed_default = "feed_default"
+        case _feed_markReadOnScroll = "feed_markReadOnScroll"
+        case _feed_showRead = "feed_showRead"
+        case _inbox_showRead = "inbox_showRead"
+        case _links_displayMode = "links_displayMode"
+        case _links_openInBrowser = "links_openInBrowser"
+        case _links_readerMode = "links_readerMode"
+        case _links_shareMode = "links_shareMode"
+        case _links_embedLoops = "links_embedLoops"
+        case _media_animatedAvatars = "media_animatedAvatars"
+        case _menus_allModActions = "menus_allModActions"
+        case _menus_modActionGrouping = "menus_modActionGrouping"
+        case _post_defaultSort = "post_defaultSort"
+        case _post_fallbackSort = "post_fallbackSort"
+        case _post_limitImageHeight = "post_limitImageHeight"
+        case _post_showCreator = "post_showCreator"
+        case _post_showCreatorInstance = "post_showCreatorInstance"
+        case _post_showSubscribedStatus = "post_showSubscribedStatus"
+        case _post_showWebsitePreview = "post_showWebsitePreview"
+        case _post_size = "post_size"
+        case _post_allowMultipleColumns = "post_allowMultipleColumns"
+        case _post_thumbnailLocation = "post_thumbnailLocation"
+        case _post_webPreview_showHost = "post_webPreview_showHost"
+        case _post_webPreview_showIcon = "post_webPreview_showIcon"
+        case _post_showDownvotesCompact = "post_showDownvotesCompact"
+        case _post_gestures_tapToCollapse = "post_gestures_tapToCollapse"
+        case _profile_showBanner = "profile_showBanner"
+        case _privacy_autoBypassImageProxy = "privacy_autoBypassImageProxy"
+        case _privacy_showFavicons = "privacy_showFavicons"
+        case _safety_blurNsfw = "safety_blurNsfw"
+        case _safety_enableModlogWarning = "safety_enableModlogWarning"
+        case _safety_enableNsfwCommunityWarning = "safety_enableNsfwCommunityWarning"
+        case _tab_gestures_enableLongPress = "tab_gestures_enableLongPress"
+        case _tab_gestures_enableSwipeUp = "tab_gestures_enableSwipeUp"
+        case _tab_profile_labelType = "tab_profile_labelType"
+        case _tab_profile_showAvatar = "tab_profile_showAvatar"
+        case _tab_inbox_badgeIncludedTypes = "tab_inbox_badgeIncludedTypes"
+        case _tab_showNames = "tab_showNames"
+        case _tip_feedWelcomePrompt = "tip_feedWelcomePrompt"
+        case _person_showAvatar = "person_showAvatar"
+        case _person_showInstance = "person_showInstance"
+        case _status_bypassImageProxyShown = "status_bypassImageProxyShown"
+        case _subscriptions_instanceLocation = "subscriptions_instanceLocation"
+        case _subscriptions_sort = "subscriptions_sort"
+        case _navigation_sidebarVisibleByDefault = "navigation_sidebarVisibleByDefault"
+        case _navigation_swipeAnywhere = "navigation_swipeAnywhere"
+        case _filters_keywordFilterEnabled = "filters_keywordFilterEnabled"
+        case _interactionBar_alternateReportLayout = "interactionBar_alternateReportLayout"
+     
+        case inbox_badge_includeApplications = "inbox_badge_includeApplications"
+        case inbox_badge_includeMessageReports = "inbox_badge_includeMessageReports"
+        case inbox_badge_includeMod = "inbox_badge_includeMod"
+        case inbox_badge_includePersonal = "inbox_badge_includePersonal"
+    }
     
     init(from settings: LegacySettings, filteredKeywords: Set<String>) {
         self.a11y_readPostIndicator = settings.readPostIndicator
@@ -303,5 +476,6 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.filteredKeywords = filteredKeywords
         self.interactionBar_alternateReportLayout = settings.alternateInteractionBarLayoutForReports
     }
-    // swiftlint:enable function_body_length
 }
+
+// swiftlint:enable line_length function_body_length file_length

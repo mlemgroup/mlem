@@ -82,9 +82,7 @@ class Settings {
     
     @MainActor
     private func _reinit(with newValues: SettingsValues) {
-        // values = newValues
-        // values.behavior_upvoteOnSave = newValues.behavior_upvoteOnSave
-        values[keyPath: \.behavior_upvoteOnSave] = newValues[keyPath: \.behavior_upvoteOnSave]
+        values.reinit(from: newValues)
         _save()
     }
     
