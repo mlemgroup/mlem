@@ -6,8 +6,8 @@
 //
 
 import Foundation
-import SwiftUICore
 import MlemMiddleware
+import SwiftUICore
 
 struct ReplyBarConfiguration: InteractionBarConfiguration {
     enum ActionType: String, ActionTypeProviding {
@@ -111,8 +111,8 @@ struct ReplyBarConfiguration: InteractionBarConfiguration {
     var leading: [Item]
     var trailing: [Item]
     var readouts: [ReadoutType]
-    var leadingSwipes: [ActionType] = [.upvote, .downvote]
-    var trailingSwipes: [ActionType] = [.selectText, .markRead]
+    var leadingSwipes: [ActionType]
+    var trailingSwipes: [ActionType]
 
     var availableWidgets: Set<Item>
     func widgetPickerPage(_ configuration: Binding<Self>) -> SettingsPage { .replyBarWidgetPicker(configuration) }
@@ -137,6 +137,8 @@ struct ReplyBarConfiguration: InteractionBarConfiguration {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.leading = try container.decodeIfPresent([Item].self, forKey: .leading) ?? [.counter(.score)]
         self.trailing = try container.decodeIfPresent([Item].self, forKey: .trailing) ?? [.action(.save), .action(.reply)]
+        self.leadingSwipes = try container.decodeIfPresent([ActionType].self, forKey: .leadingSwipes) ?? [.upvote, .downvote]
+        self.trailingSwipes = try container.decodeIfPresent([ActionType].self, forKey: .trailingSwipes) ?? [.markRead, .reply]
         self.readouts = try container.decodeIfPresent([ReadoutType].self, forKey: .readouts) ?? [.created, .comment]
         self.availableWidgets = try container.decodeIfPresent(Set<Item>.self, forKey: .availableWidgets) ??
             .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) })
