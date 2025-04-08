@@ -21,8 +21,8 @@ import SwiftUI
 class Settings {
     @Dependency(\.persistenceRepository) var persistenceRepository
     
-    fileprivate let values: SettingsValues
-    fileprivate static let main: Settings = .init()
+    private let values: SettingsValues
+    private static let main: Settings = .init()
     
     // MARK: - API
     
