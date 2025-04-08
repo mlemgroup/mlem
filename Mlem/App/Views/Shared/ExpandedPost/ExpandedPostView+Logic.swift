@@ -30,6 +30,13 @@ extension ExpandedPostView {
             default: false
             }
         }
+        
+        var commentActorId: ActorIdentifier? {
+            switch self {
+            case let .revisit(topVisibleCommentAtLastVisit: value): value
+            default: nil
+            }
+        }
     }
 
     enum CommentTreeViewType: Hashable {
@@ -49,7 +56,20 @@ extension ExpandedPostView {
     }
     
     var showLoadingSymbol: Bool {
-        !(scrollTargetedComment == nil || (post is any Post3Providing && scrolledToscrollTargetedComment))
+        !(scrollTargetedComment == nil || (post is any Post3Providing && scrolledToScrollTargetedComment))
+    }
+    
+    func showScrollToLastVisitButton(post: any Post) -> Bool {
+        guard (post.commentCount_ ?? 0) > 10 else { return false }
+        var commentId = previousVisitRecord?.commentActorId
+        if topVisibleItem.isAtPost, commentId == nil {
+            commentId = topVisibleItem.furthestVisitedComment
+        }
+        guard let commentId, let tracker else { return false }
+        let nodes = tracker.nodes.reduce([]) { $0 + $1.tree(hideIfCollapsed: false) }
+        let index = nodes.firstIndex { $0.actorId == commentId }
+        guard let index else { return false }
+        return index > 1
     }
     
     func togglePostCollapsed() {
@@ -92,12 +112,31 @@ extension ExpandedPostView {
         if (topVisibleItem.wrappedValue == postActorId) != topVisibleItem.isAtPost {
             topVisibleItem.isAtPost.toggle()
         }
+        updateHistory()
+    }
+    
+    private func updateHistory() {
+        guard let postActorId = post?.actorId_ else { return }
         if let commentActorId = topVisibleItem.wrappedValue, topVisibleItem.wrappedValue != postActorId {
             expandedPostHistoryTracker.insert(postActorId: postActorId, commentActorId: commentActorId)
+            if let furthestVisitedComment = topVisibleItem.furthestVisitedComment, let tracker {
+                let nodes = tracker.nodes.reduce([]) { $0 + $1.tree(hideIfCollapsed: false) }
+                let furthestVisitedCommentIndex = nodes.firstIndex { $0.actorId == furthestVisitedComment }
+                let newVisitedCommentIndex = nodes.firstIndex { $0.actorId == commentActorId }
+                if let furthestVisitedCommentIndex, let newVisitedCommentIndex {
+                    if furthestVisitedCommentIndex > newVisitedCommentIndex { return }
+                }
+            }
+            topVisibleItem.furthestVisitedComment = commentActorId
         }
     }
     
     func scrollToLastVisitedPosition() {
+        if let furthestVisitedComment = topVisibleItem.furthestVisitedComment {
+            jumpButtonTarget = furthestVisitedComment
+            return
+        }
+        
         switch previousVisitRecord {
         case let .revisit(topVisibleCommentAtLastVisit: topVisibleCommentAtLastVisit):
             jumpButtonTarget = topVisibleCommentAtLastVisit
