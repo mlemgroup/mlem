@@ -130,8 +130,8 @@
       "localizations" : {
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "%@ est {{online}}"
+            "state" : "translated",
+            "value" : "%@ est {{en ligne}}"
           }
         }
       }
@@ -141,8 +141,8 @@
       "localizations" : {
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "%@ est {{unhealthy}}"
+            "state" : "translated",
+            "value" : "%@ n’est {{pas sain}}"
           }
         }
       }
@@ -695,7 +695,14 @@
       }
     },
     "Add an image..." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter une image..."
+          }
+        }
+      }
     },
     "Add Guest" : {
       "localizations" : {
@@ -708,13 +715,34 @@
       }
     },
     "Add Image" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter image"
+          }
+        }
+      }
     },
     "Add Language..." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter langue"
+          }
+        }
+      }
     },
     "Add Link" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter lien"
+          }
+        }
+      }
     },
     "Add Moderator" : {
       "localizations" : {
@@ -817,7 +845,14 @@
       }
     },
     "All Languages" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toutes les langues"
+          }
+        }
+      }
     },
     "All Time" : {
       "localizations" : {
@@ -880,10 +915,24 @@
       }
     },
     "Animate Avatars..." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Animer les avatars..."
+          }
+        }
+      }
     },
     "Animated Avatars" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avatars animés"
+          }
+        }
+      }
     },
     "Anonymous" : {
       "localizations" : {
@@ -1098,7 +1147,14 @@
       }
     },
     "Ask Every Time" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Demander à chaque fois"
+          }
+        }
+      }
     },
     "Ask First" : {
       "localizations" : {
@@ -1211,7 +1267,14 @@
       }
     },
     "Back" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retour"
+          }
+        }
+      }
     },
     "Ban" : {
       "localizations" : {
@@ -1440,7 +1503,14 @@
       }
     },
     "Blur NSFW" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flouter NSFW"
+          }
+        }
+      }
     },
     "Blur NSFW Content" : {
       "localizations" : {
@@ -1687,7 +1757,14 @@
       }
     },
     "Choose Another Instance..." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisir une autre instance…"
+          }
+        }
+      }
     },
     "Choose Community..." : {
       "localizations" : {
@@ -1720,7 +1797,14 @@
       }
     },
     "Choose Language" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisir une langue"
+          }
+        }
+      }
     },
     "Choose the default sort mode for posts and comments." : {
       "localizations" : {
@@ -1753,7 +1837,14 @@
       }
     },
     "Choose whether to use alternate interaction bar and swipe action layouts for post and comment reports in Mod Mail." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisir d'utiliser ou non des dispositions de barre d'interaction et d'action de swipe alternatives pour les rapports de publication et de commentaire dans Mod Mail."
+          }
+        }
+      }
     },
     "Choose whether to use an alternate interaction bar layout for post and comment reports in Mod Mail." : {
       "extractionState" : "stale",
@@ -1897,7 +1988,14 @@
       }
     },
     "Collapse Post" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réduire la publication"
+          }
+        }
+      }
     },
     "Comment" : {
       "localizations" : {
@@ -2950,7 +3048,14 @@
       }
     },
     "Every time I share a link, show a popup asking which instance to use." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "À chaque fois que je partage un lien, une fenêtre contextuelle s'affiche demandant quelle instance utiliser."
+          }
+        }
+      }
     },
     "example.com" : {
       "localizations" : {
@@ -3033,7 +3138,14 @@
       }
     },
     "Expand Post" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Déplier la publication"
+          }
+        }
+      }
     },
     "Expires:" : {
       "localizations" : {
@@ -3742,7 +3854,14 @@
       }
     },
     "In Mlem" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dans Mlem"
+          }
+        }
+      }
     },
     "In Reader" : {
       "localizations" : {
@@ -3755,7 +3874,14 @@
       }
     },
     "In the Fediverse, many different links can point to the same piece of content. Choose which site to use when sharing content." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dans le Fediverse, de nombreux liens différents peuvent pointer vers le même contenu. Choisissez le site à utiliser pour partager du contenu."
+          }
+        }
+      }
     },
     "In-App" : {
       "extractionState" : "stale",
@@ -4458,7 +4584,14 @@
       }
     },
     "Mod Mail Action Layouts" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disposition des actions Mod Mail"
+          }
+        }
+      }
     },
     "Mod Mail Interaction Bar" : {
       "extractionState" : "stale",
@@ -4682,7 +4815,14 @@
       }
     },
     "My Instance" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mon instance"
+          }
+        }
+      }
     },
     "My Profile" : {
       "localizations" : {
@@ -5041,7 +5181,14 @@
       }
     },
     "Only in Profile" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uniquement dans le profil"
+          }
+        }
+      }
     },
     "Open" : {
       "localizations" : {
@@ -5124,7 +5271,14 @@
       }
     },
     "Original Instance" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Instance originale"
+          }
+        }
+      }
     },
     "Original Poster" : {
       "localizations" : {
@@ -5750,7 +5904,14 @@
       }
     },
     "Really apply this configuration to all other content types?" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Faut-il vraiment appliquer cette configuration à tous les autres types de contenu ?"
+          }
+        }
+      }
     },
     "Really appoint %@ as a moderator of %@?" : {
       "localizations" : {
@@ -6027,7 +6188,14 @@
       }
     },
     "Reduce Motion" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réduire les animations"
+          }
+        }
+      }
     },
     "Refresh" : {
       "localizations" : {
@@ -6402,7 +6570,14 @@
       }
     },
     "Resolving..." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Résolution…"
+          }
+        }
+      }
     },
     "Response Time" : {
       "localizations" : {
@@ -6772,19 +6947,54 @@
       }
     },
     "Share Links" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partager les liens"
+          }
+        }
+      }
     },
     "Share links using %@. When someone opens the link, they can choose which instance to use." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partager des liens avec %@. Lorsqu'un utilisateur ouvre le lien, il peut choisir l'instance à utiliser."
+          }
+        }
+      }
     },
     "Share links using the instance that the content originated from." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partager des liens en utilisant l’instance d’où provient le contenu."
+          }
+        }
+      }
     },
     "Share links using the instance you are currently connected to." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partager des liens en utilisant l'instance à laquelle vous êtes actuellement connectée."
+          }
+        }
+      }
     },
     "Share using..." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partager via…"
+          }
+        }
+      }
     },
     "Share..." : {
       "localizations" : {
@@ -7127,7 +7337,14 @@
       }
     },
     "Some users set animated media as their avatar. Control whether these avatars should play their animations." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Certains utilisateurs utilisent des médias animés comme avatars. Contrôlez si ces avatars doivent afficher leurs animations."
+          }
+        }
+      }
     },
     "Sort" : {
       "localizations" : {
@@ -7310,7 +7527,14 @@
       }
     },
     "Suggested Languages" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Langues suggérées"
+          }
+        }
+      }
     },
     "Superscript" : {
       "localizations" : {
@@ -7463,7 +7687,14 @@
       }
     },
     "TestFlight updated!" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "TestFlight mis à jour !"
+          }
+        }
+      }
     },
     "That's all, folks!" : {
       "localizations" : {
@@ -7796,7 +8027,14 @@
       }
     },
     "This feature is only supported for instances running version %@ or later." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cette fonctionnalité n'est prise en charge que pour les instances exécutant la version %@ ou ultérieure."
+          }
+        }
+      }
     },
     "This field is optional." : {
       "localizations" : {
@@ -8298,10 +8536,24 @@
       }
     },
     "Universal" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Universel"
+          }
+        }
+      }
     },
     "Universal Link" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lien universel"
+          }
+        }
+      }
     },
     "Unknown" : {
       "localizations" : {
@@ -8506,7 +8758,14 @@
       }
     },
     "Use Alternate Layouts" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utiliser des dispositions alternatives"
+          }
+        }
+      }
     },
     "User" : {
       "localizations" : {
@@ -8781,7 +9040,14 @@
       }
     },
     "What's New?" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quoi de neuf ?"
+          }
+        }
+      }
     },
     "When disabled, some moderator actions will only be accessible from the post page." : {
       "localizations" : {
