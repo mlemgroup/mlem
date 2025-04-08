@@ -82,6 +82,7 @@ class Settings {
     
     @MainActor
     private func _reinit(with newValues: SettingsValues) {
+        // values needs to be re-initialized memberwise rather than simply reassigned in order for the changes to publish correctly
         values.reinit(from: newValues)
         _save()
     }
