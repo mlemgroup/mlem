@@ -479,6 +479,8 @@
 		CDB2EC862BFADD7C00DBC0EF /* FullyQualifiedLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB2EC852BFADD7C00DBC0EF /* FullyQualifiedLabelView.swift */; };
 		CDB2EC882BFAE14800DBC0EF /* FullyQualifiedNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB2EC872BFAE14800DBC0EF /* FullyQualifiedNameView.swift */; };
 		CDB2EC8A2BFAEFDF00DBC0EF /* ThumbnailImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB2EC892BFAEFDF00DBC0EF /* ThumbnailImageView.swift */; };
+		CDB3DDFB2DA4859500F407AB /* SettingsValues+Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB3DDFA2DA4859300F407AB /* SettingsValues+Keys.swift */; };
+		CDB3DDFD2DA485D200F407AB /* SettingsValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB3DDFC2DA485D000F407AB /* SettingsValues.swift */; };
 		CDB41E8A2C83C24400BD2DE9 /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB41E892C83C24400BD2DE9 /* Section.swift */; };
 		CDB738292CB8A6A5005B11BB /* View+PaletteBorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB738282CB8A69D005B11BB /* View+PaletteBorder.swift */; };
 		CDBFCB652C03920C008CD468 /* PostLinkHostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDBFCB642C03920C008CD468 /* PostLinkHostView.swift */; };
@@ -1016,6 +1018,8 @@
 		CDB2EC852BFADD7C00DBC0EF /* FullyQualifiedLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullyQualifiedLabelView.swift; sourceTree = "<group>"; };
 		CDB2EC872BFAE14800DBC0EF /* FullyQualifiedNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullyQualifiedNameView.swift; sourceTree = "<group>"; };
 		CDB2EC892BFAEFDF00DBC0EF /* ThumbnailImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailImageView.swift; sourceTree = "<group>"; };
+		CDB3DDFA2DA4859300F407AB /* SettingsValues+Keys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsValues+Keys.swift"; sourceTree = "<group>"; };
+		CDB3DDFC2DA485D000F407AB /* SettingsValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsValues.swift; sourceTree = "<group>"; };
 		CDB41E892C83C24400BD2DE9 /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
 		CDB738282CB8A69D005B11BB /* View+PaletteBorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+PaletteBorder.swift"; sourceTree = "<group>"; };
 		CDBFCB642C03920C008CD468 /* PostLinkHostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostLinkHostView.swift; sourceTree = "<group>"; };
@@ -2314,10 +2318,12 @@
 		CDE1F1992C63E277008AF042 /* User Settings */ = {
 			isa = PBXGroup;
 			children = (
+				CDD4A09B2C8A122F0001AD1A /* Settings.swift */,
+				CDB3DDFC2DA485D000F407AB /* SettingsValues.swift */,
+				CDB3DDFA2DA4859300F407AB /* SettingsValues+Keys.swift */,
 				CDE1F19B2C63E2EB008AF042 /* SettingPropertyWrapper.swift */,
 				0315B1C92C767847006D4F82 /* InteractionBarTracker.swift */,
 				036ED6782D0AF3740018E5EA /* PinnedSortTracker.swift */,
-				CDD4A09B2C8A122F0001AD1A /* Settings.swift */,
 			);
 			path = "User Settings";
 			sourceTree = "<group>";
@@ -2645,6 +2651,7 @@
 				033F84C12C2AD072002E3EDF /* CommentTreeNode.swift in Sources */,
 				034B94832C09340A00039AF4 /* MarkdownConfiguration+Extensions.swift in Sources */,
 				034CC0302D22C5BE00C557D3 /* WarningOverlayView.swift in Sources */,
+				CDB3DDFD2DA485D200F407AB /* SettingsValues.swift in Sources */,
 				034690932D0F4D720073E664 /* RemovableProviding+Extensions.swift in Sources */,
 				037F78432D3C129B00D4E180 /* PostThumbnailSettingsView.swift in Sources */,
 				039F58952C7B618F00C61658 /* InboxSettingsView.swift in Sources */,
@@ -2865,6 +2872,7 @@
 				03049A1E2C6508F400FF6889 /* ApiRegistrationMode+Extensions.swift in Sources */,
 				037DE0752CE023E3007F7B92 /* BlockListView.swift in Sources */,
 				CD3FC6802D4A75090088E63B /* CounterApperance+StaticValues.swift in Sources */,
+				CDB3DDFB2DA4859500F407AB /* SettingsValues+Keys.swift in Sources */,
 				038028D52CAB479D0091A8A2 /* PostEditorView+Views.swift in Sources */,
 				CDE021AD2BFA43380052FD61 /* FeedPostView.swift in Sources */,
 				0320B64F2C8A638A00D38548 /* SignUpView.swift in Sources */,
