@@ -18,7 +18,6 @@ struct CommentView<EmbeddedContent: View>: View {
     @Environment(\.palette) private var palette
     
     @Setting(\.comment_compact) var compactComments
-    @Setting(\.comment_gestures_tapToCollapse) var tapCommentsToCollapse
     @Setting(\.menus_modActionGrouping) var moderatorActionGrouping
     @Setting(\.interactionBar_alternateReportLayout) var alternateInteractionBarLayoutForReports
     
@@ -56,25 +55,10 @@ struct CommentView<EmbeddedContent: View>: View {
     
     var collapsed: Bool { treeNode?.collapsed ?? false }
     
-    var body: some View {
-        if inFeed {
-            content
-        } else {
-            content
-                .onTapGesture {
-                    if tapCommentsToCollapse, let treeNode {
-                        withAnimation(UIAccessibility.isReduceMotionEnabled ? nil : .default) {
-                            treeNode.collapsed.toggle()
-                        }
-                    }
-                }
-        }
-    }
-    
     var compact: Bool { compactComments && reportContext == nil }
     
     @ViewBuilder
-    var content: some View {
+    var body: some View {
         VStack(spacing: Constants.main.standardSpacing) {
             if inFeed {
                 feedHeader
