@@ -10,8 +10,8 @@ import MlemMiddleware
 import SwiftUI
 
 private struct MarkReadOnScroll: ViewModifier {
-    @Setting(\.markReadOnScroll) var markReadOnScroll
-    @Setting(\.postSize) var postSize
+    @Setting(\.feed_markReadOnScroll) var markReadOnScroll
+    @Setting(\.post_size) var postSize
     
     var index: Int
     var post: any Post2Providing

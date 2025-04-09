@@ -11,8 +11,8 @@ import Foundation
 import SwiftUI
 
 class HapticManager {
-    @Setting(\.hapticLevel) var hapticLevel
-    @Setting(\.developerMode) var developerMode
+    @Setting(\.behavior_hapticLevel) var hapticLevel
+    @Setting(\.dev_developerMode) var developerMode
     
     // generators/engines
     let rigidImpactGenerator: UIImpactFeedbackGenerator = .init(style: .rigid)

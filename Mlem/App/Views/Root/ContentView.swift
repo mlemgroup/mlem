@@ -15,13 +15,11 @@ struct ContentView: View {
     @Environment(\.scenePhase) var scenePhase
     @Environment(\.colorScheme) var colorScheme
     
-    @AppStorage("status.firstAppearance") var firstAppearance: Bool = true
-    
     @Dependency(\.persistenceRepository) var persistenceRepository
     
-    @Setting(\.colorPalette) var colorPalette
-    @Setting(\.tabProfileLabelType) var tabProfileLabelType
-    @Setting(\.tabProfileShowAvatar) var tabProfileShowAvatar
+    @Setting(\.appearance_palette) var colorPalette
+    @Setting(\.tab_profile_labelType) var tabProfileLabelType
+    @Setting(\.tab_profile_showAvatar) var tabProfileShowAvatar
     
     let cacheCleanTimer = Timer.publish(every: 10, on: .main, in: .common).autoconnect()
     let unreadCountTimer = Timer.publish(every: 30, on: .main, in: .common).autoconnect()
@@ -74,12 +72,6 @@ struct ContentView: View {
                         try await MlemStats.main.loadInstances()
                     } catch {
                         handleError(error)
-                    }
-                }
-                .onAppear {
-                    if firstAppearance, persistenceRepository.systemSettingsExists(.v1) {
-                        firstAppearance = false
-                        Settings.main.restore(from: .v1)
                     }
                 }
                 .onChange(of: appState.firstPerson) {

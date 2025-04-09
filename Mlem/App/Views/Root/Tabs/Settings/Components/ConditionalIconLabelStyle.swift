@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ConditionalIconLabelStyle: LabelStyle {
-    @Setting(\.showSettingsIcons) var showSettingsIcons
+    @Setting(\.a11y_showSettingsIcons) var showSettingsIcons
     
     func makeBody(configuration: Configuration) -> some View {
         Label {

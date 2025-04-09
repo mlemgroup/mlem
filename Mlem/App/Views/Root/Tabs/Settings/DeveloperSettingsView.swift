@@ -15,10 +15,9 @@ import SwiftUI
 struct DeveloperSettingsView: View {
     @Dependency(\.persistenceRepository) var persistenceRepository
     
-    @Setting(\.showFeedWelcomePrompt) var showFeedWelcomePrompt
-    @Setting(\.developerMode) var developerMode
+    @Setting(\.tip_feedWelcomePrompt) var showFeedWelcomePrompt
+    @Setting(\.dev_developerMode) var developerMode
     
-    @AppStorage("status.firstAppearance") var firstAppearance: Bool = true
     @AppStorage("lastBuildNumber") var lastBuildNumber: String?
     
     var body: some View {
@@ -52,7 +51,6 @@ struct DeveloperSettingsView: View {
             Button(String("Reset Settings State")) {
                 do {
                     try persistenceRepository.deleteAllSystemSettings()
-                    firstAppearance = true
                 } catch {
                     handleError(error)
                 }

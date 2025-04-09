@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct SafetyWarningsSettingsView: View {
-    @Setting(\.showNsfwCommunityWarning) var showNsfwCommunityWarning
-    @Setting(\.showModlogWarning) var showModlogWarning
+    @Setting(\.safety_enableNsfwCommunityWarning) var showNsfwCommunityWarning
+    @Setting(\.safety_enableModlogWarning) var showModlogWarning
 
     var body: some View {
         Form {

@@ -15,8 +15,6 @@ struct ImportExportSettingsView: View {
     
     @Environment(NavigationLayer.self) var navigation
     
-    @AppStorage("status.firstAppearance") var firstAppearance: Bool = true
-    
     @State var importingSettingsFile: Bool = false
     
     // these are tracked as state vars so they can be updated as appropriate
@@ -27,8 +25,8 @@ struct ImportExportSettingsView: View {
         content
             .labelStyle(.conditional)
             .onAppear {
-                v1SettingsExist = persistenceRepository.systemSettingsExists(.v1)
-                v2SettingsExist = persistenceRepository.systemSettingsExists(.v2)
+                v1SettingsExist = persistenceRepository.systemSettingsExists(.v1_user)
+                v2SettingsExist = persistenceRepository.systemSettingsExists(.v2_user)
             }
             .fileImporter(
                 isPresented: $importingSettingsFile,
@@ -37,8 +35,8 @@ struct ImportExportSettingsView: View {
                 do {
                     let fileUrl = try result.get()
                     if let fileData = readSettings(from: fileUrl) {
-                        let importedSettings = try JSONDecoder().decode(CodableSettings.self, from: fileData)
-                        Settings.main.reinit(from: importedSettings)
+                        let importedSettings = try JSONDecoder().decode(SettingsValues.self, from: fileData)
+                        Settings.reinit(with: importedSettings)
                         ToastModel.main.add(.success("Imported Settings"))
                     } else {
                         assertionFailure("Failed to import settings")
@@ -55,14 +53,14 @@ struct ImportExportSettingsView: View {
             Section("Save and Restore") {
                 Button("Save Settings", systemImage: Icons.saveSettings) {
                     Task {
-                        await Settings.main.save(to: .v2)
-                        v2SettingsExist = persistenceRepository.systemSettingsExists(.v2)
+                        await Settings.save(to: .v2_user)
+                        v2SettingsExist = persistenceRepository.systemSettingsExists(.v2_user)
                     }
                 }
                 
                 Button("Restore Settings", systemImage: Icons.restoreSettings) {
                     Task { @MainActor in
-                        Settings.main.restore(from: .v2)
+                        Settings.restore(from: .v2_user)
                     }
                 }
                 .disabled(!v2SettingsExist)
@@ -73,7 +71,7 @@ struct ImportExportSettingsView: View {
             Section {
                 Button("Export Settings", systemImage: Icons.share) {
                     Task {
-                        let data = try JSONEncoder().encode(Settings.main.codable)
+                        let data = try Settings.encoded()
                         let fileUrl = FileManager.default.temporaryDirectory.appending(path: "settings.json")
                         try data.write(to: fileUrl, options: .atomic)
                         navigation.model?.shareInfo = .init(url: fileUrl)
@@ -84,16 +82,6 @@ struct ImportExportSettingsView: View {
                     importingSettingsFile = true
                 }
             }
-            
-            #if DEBUG
-                Section("Debug") {
-                    Button(String("Save V1 Settings"), systemImage: Icons.saveSettings) {
-                        Task {
-                            await Settings.main.save(to: .v1)
-                        }
-                    }
-                }
-            #endif
         }
     }
     

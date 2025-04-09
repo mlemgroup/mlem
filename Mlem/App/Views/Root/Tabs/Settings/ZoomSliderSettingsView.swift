@@ -48,7 +48,7 @@ enum AnimationPhase: CaseIterable {
 }
 
 struct ZoomSliderSettingsView: View {
-    @Setting(\.zoomSliderLocation) var zoomSliderLocation
+    @Setting(\.a11y_zoomSliderLocation) var zoomSliderLocation
     
     var body: some View {
         Form {

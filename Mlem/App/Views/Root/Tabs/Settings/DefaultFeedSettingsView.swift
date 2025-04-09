@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct DefaultFeedSettingsView: View {
-    @Setting(\.defaultFeed) var defaultFeed
+    @Setting(\.feed_default) var defaultFeed
     
     var body: some View {
         Form {

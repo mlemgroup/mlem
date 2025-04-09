@@ -11,8 +11,8 @@ struct ImageViewer: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.dismiss) var dismiss
     @Environment(\.colorScheme) var colorScheme
-    @Setting(\.developerMode) var developerMode
-    @Setting(\.zoomSliderLocation) var zoomSliderLocation
+    @Setting(\.dev_developerMode) var developerMode
+    @Setting(\.a11y_zoomSliderLocation) var zoomSliderLocation
     
     let url: URL
     

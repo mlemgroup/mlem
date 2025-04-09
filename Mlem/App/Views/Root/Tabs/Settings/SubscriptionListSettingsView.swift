@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct SubscriptionListSettingsView: View {
-    @Setting(\.subscriptionSort) private var sort
-    @Setting(\.subscriptionInstanceLocation) var instanceLocation
-    @Setting(\.sidebarVisibleByDefault) var sidebarVisibleByDefault
+    @Setting(\.subscriptions_sort) private var sort
+    @Setting(\.subscriptions_instanceLocation) var instanceLocation
+    @Setting(\.navigation_sidebarVisibleByDefault) var sidebarVisibleByDefault
 
     var body: some View {
         Form {

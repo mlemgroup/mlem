@@ -23,10 +23,10 @@ struct ExpandedPostView<Content: View>: View {
     @Environment(\.palette) var palette
     @Environment(\.dismiss) var dismiss
     
-    @Setting(\.jumpButton) var jumpButton
-    @Setting(\.compactComments) var compactComments
-    @Setting(\.tapPostsToCollapse) var tapPostsToCollapse
-    @Setting(\.tapCommentsToCollapse) var tapCommentsToCollapse
+    @Setting(\.comment_jumpButton) var jumpButton
+    @Setting(\.comment_compact) var compactComments
+    @Setting(\.post_gestures_tapToCollapse) var tapPostsToCollapse
+    @Setting(\.comment_gestures_tapToCollapse) var tapCommentsToCollapse
 
     var post: (any PostStubProviding)?
     var contentLoaderError: Error?
@@ -272,7 +272,7 @@ struct ExpandedPostView<Content: View>: View {
 }
 
 private struct JumpButtonsView: View {
-    @Setting(\.jumpButton) var jumpButton
+    @Setting(\.comment_jumpButton) var jumpButton
     
     var showJumpButton: Bool
     var topVisibleItem: TopVisibleItemContainer

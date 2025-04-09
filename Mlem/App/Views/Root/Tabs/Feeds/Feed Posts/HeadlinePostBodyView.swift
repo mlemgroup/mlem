@@ -11,8 +11,8 @@ import SwiftUI
 struct HeadlinePostBodyView: View {
     @Environment(\.communityContext) var communityContext: (any Community1Providing)?
     
-    @Setting(\.thumbnailLocation) var thumbnailLocation
-    @Setting(\.blurNsfw) var blurNsfw
+    @Setting(\.post_thumbnailLocation) var thumbnailLocation
+    @Setting(\.safety_blurNsfw) var blurNsfw
     
     @ScaledMetric(relativeTo: .headline) var titleHostHeightLimit: CGFloat = 75
 

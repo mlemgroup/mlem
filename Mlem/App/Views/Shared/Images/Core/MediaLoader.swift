@@ -45,7 +45,7 @@ enum MediaLoadingState {
 
 @Observable
 class MediaLoader {
-    @ObservationIgnored @Setting(\.autoBypassImageProxy) var autoBypassImageProxy
+    @ObservationIgnored @Setting(\.privacy_autoBypassImageProxy) var autoBypassImageProxy
     
     private(set) var url: URL?
     private var proxyBypass: URL?

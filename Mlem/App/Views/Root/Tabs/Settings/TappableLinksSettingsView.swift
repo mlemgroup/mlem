@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TappableLinksSettingsView: View {
-    @Setting(\.tappableLinksDisplayMode) var tappableLinksDisplayMode
+    @Setting(\.links_displayMode) var tappableLinksDisplayMode
     
     var body: some View {
         Form {

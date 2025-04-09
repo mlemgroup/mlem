@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct PrivacySettingsView: View {
-    @Setting(\.autoBypassImageProxy) var bypassImageProxy
-    @Setting(\.confirmImageUploads) var confirmImageUploads
-    @Setting(\.showFavicons) var showFavicons
+    @Setting(\.privacy_autoBypassImageProxy) var bypassImageProxy
+    @Setting(\.behavior_confirmImageUploads) var confirmImageUploads
+    @Setting(\.post_webPreview_showIcon) var showFavicons
 
     var body: some View {
         Form {

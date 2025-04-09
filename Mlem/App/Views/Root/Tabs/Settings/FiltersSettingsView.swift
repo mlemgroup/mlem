@@ -11,7 +11,7 @@ import SwiftUI
 struct FiltersSettingsView: View {
     @Dependency(\.persistenceRepository) var persistenceRepository
     
-    @Setting(\.keywordFilterEnabled) var keywordFilterEnabled
+    @Setting(\.filters_keywordFilterEnabled) var keywordFilterEnabled
     
     @Environment(FiltersTracker.self) var filtersTracker
     @Environment(NavigationLayer.self) var navigation

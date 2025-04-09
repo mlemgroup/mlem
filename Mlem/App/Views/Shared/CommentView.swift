@@ -17,9 +17,9 @@ struct CommentView<EmbeddedContent: View>: View {
     @Environment(\.reportContext) private var reportContext: Report?
     @Environment(\.palette) private var palette
     
-    @Setting(\.compactComments) var compactComments
-    @Setting(\.moderatorActionGrouping) var moderatorActionGrouping
-    @Setting(\.alternateInteractionBarLayoutForReports) var alternateInteractionBarLayoutForReports
+    @Setting(\.comment_compact) var compactComments
+    @Setting(\.menus_modActionGrouping) var moderatorActionGrouping
+    @Setting(\.interactionBar_alternateReportLayout) var alternateInteractionBarLayoutForReports
     
     private let indent: CGFloat = 10
     

@@ -13,13 +13,13 @@ struct ModlogView: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
     
-    @Setting(\.showModlogWarning) var showModlogWarning
+    @Setting(\.safety_enableModlogWarning) var showModlogWarning
     
     let api: ApiClient
     let initialTarget: InitialTarget
     
     @State var feedLoader: ModlogFeedLoader
-    @State var warningPresented: Bool = Settings.main.showModlogWarning
+    @State var warningPresented: Bool = Settings.get(\.safety_enableModlogWarning)
     
     @State var communityFilter: CommunityFilter?
     @State var actionTypeFilter: ApiModlogActionType?
@@ -28,7 +28,7 @@ struct ModlogView: View {
         self._feedLoader = .init(
             wrappedValue: .init(
                 api: AppState.main.firstApi,
-                pageSize: Settings.main.internetSpeed.pageSize,
+                pageSize: Settings.get(\.behavior_internetSpeed).pageSize,
                 communityId: nil,
                 sortType: .new
             )

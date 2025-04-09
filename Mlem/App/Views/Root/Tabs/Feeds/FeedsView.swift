@@ -15,11 +15,11 @@ struct FeedsView: View {
     @Environment(AppState.self) var appState
     @Environment(FiltersTracker.self) var filtersTracker
     
-    @Setting(\.postSize) var postSize
-    @Setting(\.showReadInFeed) var showRead
-    @Setting(\.showFeedWelcomePrompt) var showWelcomePrompt
-    @Setting(\.internetSpeed) var internetSpeed
-    @Setting(\.embedLoops) var embedLoops
+    @Setting(\.post_size) var postSize
+    @Setting(\.feed_showRead) var showRead
+    @Setting(\.tip_feedWelcomePrompt) var showWelcomePrompt
+    @Setting(\.behavior_internetSpeed) var internetSpeed
+    @Setting(\.links_embedLoops) var embedLoops
     
     @AppStorage("lastBuildNumber") var lastBuildNumber: String?
 
@@ -38,11 +38,11 @@ struct FeedsView: View {
     
     init(feedSelection: FeedSelection? = nil) {
         // need to grab some stuff from app storage to initialize with
-        @Setting(\.internetSpeed) var internetSpeed
-        @Setting(\.showReadInFeed) var showReadPosts
-        @Setting(\.defaultPostSort) var defaultSort
-        @Setting(\.postSize) var postSize
-        @Setting(\.defaultFeed) var defaultFeed
+        @Setting(\.behavior_internetSpeed) var internetSpeed
+        @Setting(\.feed_showRead) var showReadPosts
+        @Setting(\.post_defaultSort) var defaultSort
+        @Setting(\.post_size) var postSize
+        @Setting(\.feed_default) var defaultFeed
         
         @Dependency(\.persistenceRepository) var persistenceRepository
         
@@ -175,8 +175,8 @@ struct FeedsView: View {
     func setupFeedLoader() async {
         guard postFeedLoader == nil else { return }
 
-        @Setting(\.internetSpeed) var internetSpeed
-        @Setting(\.showReadInFeed) var showReadPosts
+        @Setting(\.behavior_internetSpeed) var internetSpeed
+        @Setting(\.feed_showRead) var showReadPosts
         
         do {
             postFeedLoader = try await .init(

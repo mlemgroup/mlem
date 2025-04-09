@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SafetyBlurNsfwSettingsView: View {
-    @Setting(\.blurNsfw) var blurNsfw
+    @Setting(\.safety_blurNsfw) var blurNsfw
     
     var body: some View {
         Form {

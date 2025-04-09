@@ -17,10 +17,10 @@ import SwiftUI
 /// - Default toolbar menu actions (show/hide read, post size)
 /// Scrolling, handling feed type changes, header, footer, etc. should be handled by the parent view
 struct PostGridView: View {
-    @Setting(\.postSize) var postSize
-    @Setting(\.showReadInFeed) var showRead
-    @Setting(\.infiniteScroll) var infiniteScroll
-    @Setting(\.allowMultiplePostColumns) var allowMultipleColumns
+    @Setting(\.post_size) var postSize
+    @Setting(\.feed_showRead) var showRead
+    @Setting(\.behavior_infiniteScroll) var infiniteScroll
+    @Setting(\.post_allowMultipleColumns) var allowMultipleColumns
     
     @Environment(FiltersTracker.self) var filtersTracker
     

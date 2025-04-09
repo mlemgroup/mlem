@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct ThemeSettingsView: View {
-    @Setting(\.interfaceStyle) var interfaceStyle
-    @Setting(\.colorPalette) var colorPalette
+    @Setting(\.appearance_interfaceStyle) var interfaceStyle
+    @Setting(\.appearance_palette) var colorPalette
     
     // convenience
     var supportedModes: UIUserInterfaceStyle { colorPalette.supportedModes }
