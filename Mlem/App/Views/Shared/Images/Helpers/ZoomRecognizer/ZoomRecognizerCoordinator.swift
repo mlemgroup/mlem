@@ -13,7 +13,7 @@ enum PanType {
 }
 
 class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
-    @Setting(\.zoomSliderLocation) var zoomSliderLocation
+    @Setting(\.a11y_zoomSliderLocation) var zoomSliderLocation
     
     @Binding var scale: CGFloat
     @Binding var offset: CGSize

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ModMailInteractionBarSettingsView: View {
-    @Setting(\.alternateInteractionBarLayoutForReports) var useAlternateLayout
+    @Setting(\.interactionBar_alternateReportLayout) var useAlternateLayout
     
     var body: some View {
         Form {

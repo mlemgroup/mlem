@@ -37,7 +37,7 @@ class CommentTreeTracker: Hashable {
     
     var root: Root
     
-    var sort: CommentSortType = .init(Settings.main.commentSort)
+    var sort: CommentSortType = .init(Settings.get(\.comment_defaultSort))
     
     init(root: Root) {
         self.root = root
@@ -112,7 +112,7 @@ class CommentTreeTracker: Hashable {
             return try await post.getComments(
                 sort: sort,
                 page: page,
-                maxDepth: Settings.main.maxCommentDepth,
+                maxDepth: Settings.get(\.comment_maxDepth),
                 limit: 50
             )
         case let .comment(comment, parentCount):
@@ -120,7 +120,7 @@ class CommentTreeTracker: Hashable {
                 sort: sort,
                 includedParentCount: parentCount,
                 page: page,
-                maxDepth: min(8, Settings.main.maxCommentDepth) + parentCount,
+                maxDepth: min(8, Settings.get(\.comment_maxDepth)) + parentCount,
                 limit: 999
             )
         }

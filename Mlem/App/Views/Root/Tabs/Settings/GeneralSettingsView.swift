@@ -10,21 +10,21 @@ import SwiftUI
 
 struct GeneralSettingsView: View {
     // behavior
-    @Setting(\.upvoteOnSave) var upvoteOnSave
-    @Setting(\.markReadOnScroll) var markReadOnScroll
-    @Setting(\.infiniteScroll) var infiniteScroll
-    @Setting(\.defaultFeed) var defaultFeed
-    @Setting(\.hapticLevel) var hapticLevel
-    @Setting(\.wrapCodeBlockLines) var wrapCodeBlockLines
-    @Setting(\.animatedAvatars) var animatedAvatars
+    @Setting(\.behavior_upvoteOnSave) var upvoteOnSave
+    @Setting(\.feed_markReadOnScroll) var markReadOnScroll
+    @Setting(\.behavior_infiniteScroll) var infiniteScroll
+    @Setting(\.feed_default) var defaultFeed
+    @Setting(\.behavior_hapticLevel) var hapticLevel
+    @Setting(\.markdown_wrapCodeBlockLines) var wrapCodeBlockLines
+    @Setting(\.media_animatedAvatars) var animatedAvatars
     
     // gestures
-    @Setting(\.quickSwipesEnabled) var swipeActionsEnabled
-    @Setting(\.swipeAnywhereToNavigate) var swipeAnywhereToNavigate
+    @Setting(\.behavior_enableQuickSwipes) var swipeActionsEnabled
+    @Setting(\.navigation_swipeAnywhere) var swipeAnywhereToNavigate
     
     // avatars
-    @Setting(\.showPersonAvatar) var showPersonAvatar
-    @Setting(\.showCommunityAvatar) var showCommunityAvatar
+    @Setting(\.person_showAvatar) var showPersonAvatar
+    @Setting(\.community_showAvatar) var showCommunityAvatar
     
     var body: some View {
         Form {

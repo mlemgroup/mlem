@@ -12,7 +12,7 @@ import NukeUI
 import SwiftUI
 
 struct TilePostView: View {
-    @Setting(\.readPostIndicator) var readPostIndicator
+    @Setting(\.a11y_readPostIndicator) var readPostIndicator
     
     @Environment(AppState.self) private var appState
     @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?
@@ -123,7 +123,7 @@ struct TilePostView: View {
         @Environment(\.palette) var palette
         @Environment(\.communityContext) var communityContext
         
-        @Setting(\.blurNsfw) var blurNsfw
+        @Setting(\.safety_blurNsfw) var blurNsfw
         
         let post: any Post1Providing
         

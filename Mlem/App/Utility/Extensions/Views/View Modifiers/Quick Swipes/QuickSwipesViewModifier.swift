@@ -14,7 +14,7 @@ struct QuickSwipeViewModifier: ViewModifier {
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.palette) var palette
     
-    @Setting(\.quickSwipesEnabled) var quickSwipesEnabled
+    @Setting(\.behavior_enableQuickSwipes) var quickSwipesEnabled
     
     // state
     @GestureState var dragState: CGFloat = .zero

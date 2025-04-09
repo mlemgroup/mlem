@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct ModeratorSettingsView: View {
-    @Setting(\.moderatorActionGrouping) var moderatorActionGrouping
-    @Setting(\.showAllModActions) var showAllModActions
-    @Setting(\.tabInboxBadgeIncludedTypes) var tabInboxBadgeIncludedTypes
+    @Setting(\.menus_modActionGrouping) var moderatorActionGrouping
+    @Setting(\.menus_allModActions) var showAllModActions
+    @Setting(\.tab_inbox_badgeIncludedTypes) var tabInboxBadgeIncludedTypes
     
     var body: some View {
         Form {

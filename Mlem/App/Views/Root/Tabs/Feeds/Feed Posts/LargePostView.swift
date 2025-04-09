@@ -10,12 +10,12 @@ import MlemMiddleware
 import SwiftUI
 
 struct LargePostView: View {
-    @Setting(\.showPostCreator) private var alwaysShowCreator
-    @Setting(\.showPersonAvatar) private var showPersonAvatar
-    @Setting(\.showCommunityAvatar) private var showCommunityAvatar
-    @Setting(\.blurNsfw) var blurNsfw
-    @Setting(\.readPostIndicator) var readPostIndicator
-    @Setting(\.alternateInteractionBarLayoutForReports) var alternateInteractionBarLayoutForReports
+    @Setting(\.post_showCreator) private var alwaysShowCreator
+    @Setting(\.person_showAvatar) private var showPersonAvatar
+    @Setting(\.community_showAvatar) private var showCommunityAvatar
+    @Setting(\.safety_blurNsfw) var blurNsfw
+    @Setting(\.a11y_readPostIndicator) var readPostIndicator
+    @Setting(\.interactionBar_alternateReportLayout) var alternateInteractionBarLayoutForReports
     
     @Environment(AppState.self) private var appState
     @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?

@@ -15,7 +15,7 @@ struct InboxView: View {
     @Environment(AppState.self) var appState
     @Environment(FiltersTracker.self) var filtersTracker
     
-    @Setting(\.showReadInInbox) var showRead
+    @Setting(\.inbox_showRead) var showRead
     
     @State var headerPinned: Bool = false
     @State var selectedFeed: Feed = .inbox
@@ -39,8 +39,8 @@ struct InboxView: View {
     @State var markAllAsReadTrigger: Bool = false
     
     init() {
-        @Setting(\.internetSpeed) var internetSpeed
-        @Setting(\.showReadInInbox) var showRead
+        @Setting(\.behavior_internetSpeed) var internetSpeed
+        @Setting(\.inbox_showRead) var showRead
         
         let inboxFeedLoaders = InboxFeedLoader.setup(
             api: AppState.main.firstApi,

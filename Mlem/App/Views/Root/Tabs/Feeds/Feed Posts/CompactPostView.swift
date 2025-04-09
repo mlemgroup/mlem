@@ -10,10 +10,10 @@ import MlemMiddleware
 import SwiftUI
 
 struct CompactPostView: View {
-    @Setting(\.thumbnailLocation) var thumbnailLocation
-    @Setting(\.blurNsfw) var blurNsfw
-    @Setting(\.readPostIndicator) var readPostIndicator
-    @Setting(\.showDownvotesCompact) var showDownvotesCompact
+    @Setting(\.post_thumbnailLocation) var thumbnailLocation
+    @Setting(\.safety_blurNsfw) var blurNsfw
+    @Setting(\.a11y_readPostIndicator) var readPostIndicator
+    @Setting(\.post_showDownvotesCompact) var showDownvotesCompact
     
     @Environment(\.communityContext) var communityContext: (any Community1Providing)?
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor

@@ -15,7 +15,7 @@ struct AccountListRow: View {
     
     @Environment(AppState.self) private var appState
     @Environment(NavigationLayer.self) private var navigation
-    @Setting(\.keepPlaceOnAccountSwitch) var keepPlace
+    @Setting(\.accounts_keepPlace) var keepPlace
     
     @State private var showingSignOutConfirmation: Bool = false
     

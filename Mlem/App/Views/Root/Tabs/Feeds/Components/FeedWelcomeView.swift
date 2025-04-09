@@ -11,7 +11,7 @@ struct FeedWelcomeView: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
     
-    @Setting(\.showFeedWelcomePrompt) var showWelcomePrompt
+    @Setting(\.tip_feedWelcomePrompt) var showWelcomePrompt
     
     var body: some View {
         VStack(spacing: Constants.main.standardSpacing) {
