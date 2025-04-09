@@ -13,7 +13,7 @@ extension SignUpView {
     @ViewBuilder
     var approvalInfo: some View {
         VStack(spacing: Constants.main.doubleSpacing) {
-            Image(systemName: Icons.send)
+            Image(icon: .lemmy.send)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(height: 100)

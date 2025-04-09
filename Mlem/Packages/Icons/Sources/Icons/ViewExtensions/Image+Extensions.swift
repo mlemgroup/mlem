@@ -8,7 +8,7 @@
 import SwiftUI
 
 public extension Image {
-    init(_ icon: Icon) {
+    init(icon: Icon) {
         let name = icon.computeImageName()
         switch icon.source {
         case .custom:

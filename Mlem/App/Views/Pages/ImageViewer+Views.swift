@@ -45,7 +45,7 @@ extension ImageViewer {
         Button {
             fadeDismiss()
         } label: {
-            Image(systemName: Icons.close)
+            Image(icon: .general.close)
                 .resizable()
                 .scaledToFit()
                 .frame(width: 18, height: 18)
@@ -64,7 +64,7 @@ extension ImageViewer {
                 Button {
                     devToolsShown = true
                 } label: {
-                    Image(systemName: Icons.developerMode)
+                    Image(icon: .settings.developerMode)
                         .resizable()
                         .scaledToFit()
                         .frame(width: 22, height: 22)

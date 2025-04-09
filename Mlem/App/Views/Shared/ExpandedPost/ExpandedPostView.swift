@@ -230,7 +230,7 @@ struct ExpandedPostView<Content: View>: View {
                         .font(.headline)
                         .background(.themedSecondaryGroupedBackground)
                     Spacer()
-                    Image(systemName: Icons.expandComment)
+                    Image(icon: .general.expand)
                         .frame(height: 10)
                 }
                 .imageScale(.small)

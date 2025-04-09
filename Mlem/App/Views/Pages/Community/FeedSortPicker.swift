@@ -94,7 +94,7 @@ struct FeedSortPicker: View {
         } label: {
             if showTopTimescaleInIcon, sort.isTop {
                 HStack {
-                    Image(systemName: Icons.topSort)
+                    Image(icon: .lemmy.topSort)
                         .imageScale(.small)
                     Text(sort.label(timeRangeFormat: .timescaleAbbreviated))
                         .font(.footnote)

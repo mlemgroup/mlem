@@ -86,7 +86,7 @@ struct PostEditorImageUploadWidgetView: View {
             HStack {
                 HStack {
                     if imageManager?.state == nil {
-                        Image(systemName: Icons.uploadImage)
+                        Image(icon: .markdown.uploadImage)
                     }
                     Text(imageManager?.state == nil ? "Add Image" : "Add an image...")
                 }

@@ -85,7 +85,8 @@ struct CommentEditorView: View {
                                 AccountPickerMenu(account: $account) {
                                     HStack(spacing: 3) {
                                         FullyQualifiedLabelView(account, labelStyle: .medium, showAvatar: false)
-                                        Image(systemName: Icons.dropDownCircleFill)
+                                        Image(icon: .general.dropDown)
+                                            .symbolVariant(.circle.fill)
                                             .symbolRenderingMode(.hierarchical)
                                             .tint(.themedSecondary)
                                             .imageScale(.small)

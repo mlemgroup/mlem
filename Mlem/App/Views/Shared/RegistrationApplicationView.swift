@@ -77,7 +77,7 @@ struct RegistrationApplicationView: View {
             Button {
                 application.showDenialSheet()
             } label: {
-                Image(systemName: Icons.failure)
+                Image(icon: .general.failure)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, Constants.main.standardSpacing)
             }
@@ -87,7 +87,7 @@ struct RegistrationApplicationView: View {
             Button {
                 application.approve()
             } label: {
-                Image(systemName: Icons.success)
+                Image(icon: .general.success)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, Constants.main.standardSpacing)
             }

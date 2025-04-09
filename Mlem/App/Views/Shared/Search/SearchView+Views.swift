@@ -226,7 +226,7 @@ extension SearchView {
     @ViewBuilder
     var searchPlaceholder: some View {
         VStack(spacing: 20) {
-            Image(systemName: Icons.search)
+            Image(icon: .general.search)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 120)

@@ -64,7 +64,7 @@ struct CommunityListRowBody<Content: View>: View {
     var body: some View {
         HStack(spacing: Constants.main.standardSpacing) {
             if community.blocked, showBlockStatus {
-                Image(systemName: Icons.hide)
+                Image(icon: .general.hide)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 30, height: 30)
@@ -111,7 +111,7 @@ struct CommunityListRowBody<Content: View>: View {
                         Text(verbatim: "@\(community.host)")
                     case .subscriberCount:
                         if let subscriberCount = community.subscriberCount_ {
-                            Image(systemName: Icons.person)
+                            Image(icon: .lemmy.person)
                             Text(subscriberCount.abbreviated)
                         }
                     }

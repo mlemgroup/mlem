@@ -133,7 +133,7 @@ struct PersonBanEditorView: View {
                         HStack {
                             targetLabel
                             Spacer()
-                            Image(systemName: Icons.dropDown)
+                            Image(icon: .general.dropDown)
                                 .fontWeight(.semibold)
                                 .foregroundStyle(.themedSecondary)
                         }

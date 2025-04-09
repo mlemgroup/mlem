@@ -35,150 +35,158 @@ public extension Icon {
         
         public let votes: Icon = .applySquare("arrow.up.arrow.down")
         
-        public let scoreCounter: Icon = .applyFill("arrow.up.arrow.down.circle")
-        public let upvoteCounter: Icon = .applyFill("arrow.up.circle")
-        public let downvoteCounter: Icon = .applyFill("arrow.down.circle")
+        public let scoreCounter: Icon = .init("arrow.up.arrow.down.circle")
+        public let upvoteCounter: Icon = .init("arrow.up.circle")
+        public let downvoteCounter: Icon = .init("arrow.down.circle")
         
         // MARK: - Reply/Send
         
-        public let reply: Icon = .applyFill("arrowshape.turn.up.left")
-        public let replyCounter: Icon = .applyFill("arrowshape.turn.up.left.circle")
+        public let reply: Icon = .init("arrowshape.turn.up.left")
+        public let replyCounter: Icon = .init("arrowshape.turn.up.left.circle")
         
-        public let send: Icon = .applyFill("paperplane")
-        public let sendMessage: Icon = .baseOnly("arrow.up.circle.fill")
+        public let send: Icon = .init("paperplane")
+        public let sendMessage: Icon = .init("arrow.up.circle.fill")
         
         // MARK: - Save
         
         @inlinable var saved: Icon { addSave }
-        public let addSave: Icon = .applyFill("bookmark")
-        public let removeSave: Icon = .applyFill("bookmark.slash")
+        public let addSave: Icon = .init("bookmark")
+        public let removeSave: Icon = .init("bookmark.slash")
         
         // MARK: - Mark Read
         
-        public let markRead: Icon = .applyFill("envelope.open")
-        public let markUnread: Icon = .applyFill("envelope")
+        public let markRead: Icon = .init("envelope.open")
+        public let markUnread: Icon = .init("envelope")
         
         // MARK: - Block
         
-        public let block: Icon = .applyFill("hand.raised")
-        public let unblock: Icon = .applyFill("hand.raised.slash")
+        public let block: Icon = .init("hand.raised")
+        public let unblock: Icon = .init("hand.raised.slash")
         
         // MARK: - Pin
         
         @inlinable public var pinned: Icon { addPin }
-        public let addPin: Icon = .applyFill("pin")
-        public let removePin: Icon = .applyFill("pin.slash")
+        public let addPin: Icon = .init("pin")
+        public let removePin: Icon = .init("pin.slash")
         
         // MARK: - Lock
         
         @inlinable public var locked: Icon { addLock }
-        public let addLock: Icon = .applyFill("lock")
-        public let removeLock: Icon = .applyFill("lock.open")
+        public let addLock: Icon = .init("lock")
+        public let removeLock: Icon = .init("lock.open")
         
         // MARK: - Remove
         
         @inlinable public var removed: Icon { remove }
-        public let remove: Icon = .applyFill("xmark.bin")
-        public let restore: Icon = .applyFill("arrow.up.bin")
+        public let remove: Icon = .init("xmark.bin")
+        public let restore: Icon = .init("arrow.up.bin")
         
         // MARK: - Purge
         
         @inlinable public var purged: Icon { purge }
-        public let purge: Icon = .baseOnly("burn")
+        public let purge: Icon = .init("burn")
         
+        // MARK: - Ban
+
+        @inlinable public var bannedFromInstance: Icon { banFromInstance }
+        public let banFromInstance: Icon = .init("xmark.square")
+        public let unbanFromInstance: Icon = .init("checkmark.square")
+        @inlinable public var bannedFromCommunity: Icon { banFromCommunity }
+        public let banFromCommunity: Icon = .init("xmark.shield")
+        public let unbanFromCommunity: Icon = .init("checkmark.shield")
+
         // MARK: - Subscribe
 
         @inlinable public var subscribed: Icon { subscribe }
-        public let subscribe: Icon = .applyFill("plus.circle")
-        public let unsubscribe: Icon = .applyFill("multiply.circle")
+        public let subscribe: Icon = .init("plus.circle")
+        public let unsubscribe: Icon = .init("multiply.circle")
         
         // MARK: - Subscribe
 
         @inlinable public var favorited: Icon { favorite }
-        public let favorite: Icon = .applyFill("star")
-        public let unfavorite: Icon = .applyFill("star.slash")
-        
-        // MARK: - Collapse
-
-        public let collapse: Icon = .baseOnly("arrow.down.and.line.horizontal.and.arrow.up")
-        public let expand: Icon = .baseOnly("arrow.up.and.line.horizontal.and.arrow.down")
+        public let favorite: Icon = .init("star")
+        public let unfavorite: Icon = .init("star.slash")
 
         // MARK: - Moderation
         
-        public let moderation: Icon = .applyFill("shield")
-        public let administration: Icon = .applyFill("crown")
+        public let moderation: Icon = .init("shield")
+        public let administration: Icon = .init("crown")
         
         @inlinable public var addModerator: Icon { moderation }
-        public let removeModerator: Icon = .applyFill("shield.slash")
+        public let removeModerator: Icon = .init("shield.slash")
         
-        public let report: Icon = .applyFill("flag")
-        public let registrationApplication: Icon = .applyFill("list.clipboard")
-        public let modlog: Icon = .applyFill("book.pages")
-        public let transferCommunity: Icon = .baseOnly("arrow.right")
+        public let report: Icon = .init("flag")
+        public let registrationApplication: Icon = .init("list.clipboard")
+        public let modlog: Icon = .init("book.pages")
+        public let transferCommunity: Icon = .init("arrow.right")
         
         @inlinable public var addAdministrator: Icon { administration }
-        public let removeAdministrator: Icon = .applyFill("arrowshape.down")
+        public let removeAdministrator: Icon = .init("arrowshape.down")
         
         // MARK: - Inbox
         
-        public let mention: Icon = .applyFill("quote.bubble")
-        public let message: Icon = .applyFill("envelope")
+        public let mention: Icon = .init("quote.bubble")
+        public let message: Icon = .init("envelope")
         
         // MARK: - Misc Post
         
-        public let post: Icon = .applyFill("doc.plaintext")
-        public let comment: Icon = .applyFill("bubble.left")
+        public let post: Icon = .init("doc.plaintext")
+        public let comment: Icon = .init("bubble.left")
+        public let crosspost: Icon = .init("shuffle")
         
         @inlinable public var replies: Icon { comment }
-        public let unreadReplies: Icon = .applyFill("text.bubble")
+        public let unreadReplies: Icon = .init("text.bubble")
         
-        public let textPost: Icon = .applyFill("text.book.closed")
-        public let titleOnlyPost: Icon = .applyFill("character.bubble")
+        public let textPost: Icon = .init("text.book.closed")
+        public let titleOnlyPost: Icon = .init("character.bubble")
         
         // MARK: - Feeds
 
-        public let feed: Icon = .applyFill("scroll")
-        public let federatedFeed: Icon = .applyFill("circle.hexagongrid")
-        public let localFeed: Icon = .applyFill("building.2")
-        public let subscribedFeed: Icon = .applyFill("newspaper")
+        public let feed: Icon = .init("scroll")
+        public let federatedFeed: Icon = .init("circle.hexagongrid")
+        public let localFeed: Icon = .init("building.2")
+        public let subscribedFeed: Icon = .init("newspaper")
         @inlinable public var savedFeed: Icon { saved }
         
         // MARK: - Sort Types
 
-        public let activeSort: Icon = .applyFill("popcorn")
-        public let hotSort: Icon = .applyFill("flame")
-        public let scaledSort: Icon = .baseOnly("arrow.up.left.and.down.right.and.arrow.up.right.and.down.left")
-        public let newSort: Icon = .applyFill("hare")
-        public let oldSort: Icon = .applyFill("tortoise")
-        public let newCommentsSort: Icon = .applyFill("exclamationmark.bubble")
-        public let mostCommentsSort: Icon = .applyFill("bubble.left.and.bubble.right")
-        public let controversialSort: Icon = .applyFill("bolt")
-        public let topSort: Icon = .applyFill("trophy")
-        public let alphabeticalSort: Icon = .baseOnly("textformat")
-        public let scoreSort: Icon = .applyFill("star")
-        public let usersSort: Icon = .applyFill("person.2")
-        public let versionSort: Icon = .applyFill("server.rack")
+        public let activeSort: Icon = .init("popcorn")
+        public let hotSort: Icon = .init("flame")
+        public let scaledSort: Icon = .init("arrow.up.left.and.down.right.and.arrow.up.right.and.down.left")
+        public let newSort: Icon = .init("hare")
+        public let oldSort: Icon = .init("tortoise")
+        public let newCommentsSort: Icon = .init("exclamationmark.bubble")
+        public let mostCommentsSort: Icon = .init("bubble.left.and.bubble.right")
+        public let controversialSort: Icon = .init("bolt")
+        public let topSort: Icon = .init("trophy")
+        public let alphabeticalSort: Icon = .init("textformat")
+        public let scoreSort: Icon = .init("star")
+        public let usersSort: Icon = .init("person.2")
+        public let versionSort: Icon = .init("server.rack")
         
         // MARK: - Flairs
 
-        public let developerFlair: Icon = .applyFill("hammer")
-        public let botFlair: Icon = .applyFill("terminal")
-        public let opFlair: Icon = .applyFill("person")
-        public let instanceBannedFlair: Icon = .applyFill("xmark.square")
-        public let communityBannedFlair: Icon = .applyFill("xmark.shield")
-        public let mewAccountFlair: Icon = .applyFill("leaf")
+        public let developerFlair: Icon = .init("hammer")
+        public let botFlair: Icon = .init("terminal")
+        public let opFlair: Icon = .init("person")
+        public let newAccountFlair: Icon = .init("leaf")
+        public let cakeDay: Icon = .init("birthday.cake")
         
         // MARK: - General Concepts
 
-        public let federation: Icon = .baseOnly("point.3.filled.connected.trianglepath.dotted")
-        public let instance: Icon = .applyFill("building.2")
-        public let community: Icon = .applyFill("house")
-        public let person: Icon = .baseOnly("person")
-        public let inbox: Icon = .applyFill("mail.stack")
+        public let federation: Icon = .init("point.3.filled.connected.trianglepath.dotted")
+        public let instance: Icon = .init("building.2")
+        public let community: Icon = .init("house")
+        public let person: Icon = .init("person")
+        public let inbox: Icon = .init("mail.stack")
+        public let imageProxy: Icon = .init("firewall")
         
-        // MARK: - Information/Status
+        // MARK: - Other
 
-        public let noContent: Icon = .baseOnly("binoculars")
+        public let noContent: Icon = .init("binoculars")
+        public let switchAccount: Icon = .init("person.crop.circle.badge.plus")
+        public let switchAccountAndReload: Icon = .init("arrow.2.circlepath")
+        public let switchAccountAndKeepPlace: Icon = .init("checkmark.diamond")
     }
     
     static let lemmy: LemmyIcons = .init()

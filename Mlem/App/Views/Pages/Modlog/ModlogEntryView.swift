@@ -20,7 +20,7 @@ struct ModlogEntryView: View {
             headerView
             contentView
             HStack(spacing: 5) {
-                Image(systemName: Icons.time)
+                Image(icon: .general.time)
                 Text(entry.created.formatted(date: .abbreviated, time: .shortened))
             }
             .font(.footnote)

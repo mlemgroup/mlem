@@ -21,7 +21,7 @@ struct NsfwOverlay: View {
     var body: some View {
         if controlState.blurred {
             VStack(spacing: 8) {
-                Image(systemName: Icons.warning)
+                Image(icon: .general.warning)
                     .font(.largeTitle)
                 Text("NSFW")
                     .fontWeight(.black)
@@ -36,7 +36,7 @@ struct NsfwOverlay: View {
             Button {
                 setBlurred(true)
             } label: {
-                Image(systemName: Icons.hide)
+                Image(icon: .general.hide)
                     .padding(.vertical, 4)
                     .padding(.horizontal, 3)
                     .background(.thinMaterial, in: .rect(cornerRadius: 4))

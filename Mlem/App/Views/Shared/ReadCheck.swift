@@ -5,6 +5,7 @@
 //  Created by Eric Andrews on 2024-12-26.
 //
 
+import Icons
 import SwiftUI
 import Theming
 
@@ -16,7 +17,7 @@ struct ReadCheck: View {
     }
     
     var body: some View {
-        Image(systemName: Icons.success)
+        Image(icon: .general.success)
             .resizable()
             .scaledToFit()
             .frame(width: dimension, height: dimension)

@@ -146,7 +146,7 @@ struct CommentView<EmbeddedContent: View>: View {
             }
             Group {
                 if collapsed {
-                    Image(systemName: Icons.expandComment)
+                    Image(icon: .general.expand)
                         .frame(height: 10)
                         .imageScale(.small)
                 } else {

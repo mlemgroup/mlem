@@ -56,7 +56,7 @@ extension PostEditorView {
                     .font(.footnote)
                     .fontWeight(.black)
                     .foregroundStyle(.themedContrastingLabel)
-                Image(systemName: Icons.close)
+                Image(icon: .general.close)
                     .foregroundStyle(.opacity(0.8))
             }
             .foregroundStyle(.white)

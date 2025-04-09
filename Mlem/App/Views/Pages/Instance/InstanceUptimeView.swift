@@ -291,7 +291,8 @@ private struct IncidentRow: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-                Image(systemName: Icons.uptimeOutage)
+                Image(icon: .uptime.outage)
+                    .symbolVariant(.fill)
                     .foregroundStyle(event.severityColor)
                     .foregroundStyle(.themedSecondary)
                 Text("Unhealthy for \(event.differenceTitle())")

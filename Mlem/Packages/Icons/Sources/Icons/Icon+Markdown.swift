@@ -9,18 +9,18 @@ import Foundation
 
 public extension Icon {
     struct MarkdownIcons {
-        let bold: Icon = .baseOnly("bold")
-        let italic: Icon = baseOnly("italic")
-        let strikethrough: Icon = .baseOnly("strikethrough")
-        let superscript: Icon = .baseOnly("textformat.superscript")
-        let `subscript`: Icon = .baseOnly("textformat.subscript")
+        public let bold: Icon = .init("bold")
+        public let italic: Icon = .init("italic")
+        public let strikethrough: Icon = .init("strikethrough")
+        public let superscript: Icon = .init("textformat.superscript")
+        public let `subscript`: Icon = .init("textformat.subscript")
         // Potentially "chevron.left.chevron.right" is better, it's iOS 18+ though
-        let inlineCode: Icon = .baseOnly("chevron.left.forwardslash.chevron.right")
-        let quote: Icon = .baseOnly("quote.opening")
-        let heading: Icon = .baseOnly("textformat.size")
-        let uploadImage: Icon = .baseOnly("photo")
-        let spoiler: Icon = baseOnly("eye")
-        let codeBlock: Icon = baseOnly("text.viewfinder")
+        public let inlineCode: Icon = .init("chevron.left.forwardslash.chevron.right")
+        public let quote: Icon = .init("quote.opening")
+        public let heading: Icon = .init("textformat.size")
+        @inlinable public var uploadImage: Icon { .general.chooseImage }
+        public let spoiler: Icon = .init("eye")
+        public let codeBlock: Icon = .init("text.viewfinder")
     }
     
     static let markdown: MarkdownIcons = .init()

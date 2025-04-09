@@ -127,7 +127,7 @@ extension MediaView {
                 switch loaderError {
                 case let .proxyFailure(proxyBypass):
                     VStack(spacing: Constants.main.standardSpacing) {
-                        Image(systemName: Icons.proxy)
+                        Image(icon: .lemmy.imageProxy)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(maxWidth: 50)
@@ -156,7 +156,7 @@ extension MediaView {
                     }
                     .foregroundStyle(.themedTertiary)
                 default:
-                    Image(systemName: Icons.missing)
+                    Image(icon: .general.missing)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(maxWidth: 50)

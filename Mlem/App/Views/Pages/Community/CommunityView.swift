@@ -156,7 +156,7 @@ struct CommunityView: View {
     func postsTab(community: any Community, postFeedLoader: CommunityPostFeedLoader) -> some View {
         if community.removed {
             VStack(spacing: Constants.main.standardSpacing) {
-                Image(systemName: Icons.remove)
+                Image(icon: .lemmy.remove)
                     .font(.title)
                 Text("This community has been removed.")
                     .fontWeight(.semibold)

@@ -272,7 +272,7 @@ struct MessageFeedView: View {
                 Text(person.displayName)
                     .foregroundStyle(.themedPrimary)
                     .font(.headline)
-                Image(systemName: Icons.forward)
+                Image(icon: .general.forward)
                     .imageScale(.small)
                     .fontWeight(.semibold)
                     .foregroundStyle(.themedTertiary)

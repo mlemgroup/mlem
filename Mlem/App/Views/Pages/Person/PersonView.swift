@@ -239,7 +239,7 @@ struct PersonView: View {
     @ViewBuilder
     func banFlairView(person: any Person) -> some View {
         HStack {
-            Image(systemName: Icons.banFromInstance)
+            Image(icon: .lemmy.bannedFromInstance)
                 .imageScale(.large)
                 .symbolVariant(.fill)
             switch person.instanceBan {
