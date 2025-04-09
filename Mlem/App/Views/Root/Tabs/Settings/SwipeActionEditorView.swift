@@ -71,18 +71,9 @@ private struct ActionListView<ActionType: ActionTypeProviding>: View {
         Section(title) {
             ForEach(Array(actions.enumerated()), id: \.element) { _, action in
                 HStack {
-                    Text(action.appearance.label)
+                    Label(action.appearance.label, systemImage: action.appearance.swipeIcon2)
                         .tint(action.appearance.color)
                     Spacer()
-//                    Button("Remove", systemImage: "minus.circle.fill", role: .destructive) {
-//                        withAnimation {
-//                            actions.remove(at: index)
-//                        }
-//                    }
-//                    .imageScale(.large)
-//                    .foregroundStyle(.themedWarning)
-//                    .buttonStyle(.plain)
-//                    .labelStyle(.iconOnly)
                 }
                 .tag(action)
             }
