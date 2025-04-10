@@ -284,7 +284,7 @@ private struct JumpButtonsView: View {
         VStack(spacing: 0) {
             if let scrollToLastVisitedPosition, topVisibleItem.isAtPost, showJumpButton {
                 JumpButtonView(
-                    systemImage: Icons.jumpToLastPositionButton,
+                    icon: .lemmy.jumpToLastPositionButton,
                     onShortPress: scrollToLastVisitedPosition,
                     onLongPress: nil
                 )

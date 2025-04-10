@@ -145,14 +145,14 @@ extension InboxView {
                 }
             } label: {
                 HStack {
-                    Image(systemName: Icons.markRead)
+                    Image(icon: .lemmy.markRead)
                         .imageScale(.small)
                     Text("All")
                 }
                 .opacity((value == 0 && newMessagesExist) ? 1 : 0)
                 .overlay {
                     if value != 0 {
-                        Image(systemName: Icons.success)
+                        Image(icon: .general.success)
                             .imageScale(.small)
                             .fontWeight(.semibold)
                     }
@@ -196,7 +196,7 @@ extension InboxView {
     @ViewBuilder
     var signedOutInfoView: some View {
         VStack {
-            Image(systemName: Icons.inbox)
+            Image(icon: .lemmy.inbox)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(height: 80)

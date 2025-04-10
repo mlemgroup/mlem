@@ -109,7 +109,7 @@ struct AccountListView: View {
     var addAccountButton: some View {
         Section {
             Button { isShowingAddAccountDialogue = true } label: {
-                Label("Add Account", systemImage: Icons.add)
+                Label("Add Account", icon: .general.add)
                     .labelStyle(.titleAndIcon)
             }
             .confirmationDialog("Choose Account Type", isPresented: $isShowingAddAccountDialogue) {

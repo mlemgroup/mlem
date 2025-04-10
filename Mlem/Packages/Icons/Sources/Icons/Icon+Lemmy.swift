@@ -100,6 +100,7 @@ public extension Icon {
         @inlinable public var subscribed: Icon { subscribe }
         public let subscribe: Icon = .init("plus.circle")
         public let unsubscribe: Icon = .init("multiply.circle")
+        public let didUnsubscribe: Icon = .init("person.slash")
         
         // MARK: - Subscribe
 
@@ -187,6 +188,9 @@ public extension Icon {
         public let switchAccount: Icon = .init("person.crop.circle.badge.plus")
         public let switchAccountAndReload: Icon = .init("arrow.2.circlepath")
         public let switchAccountAndKeepPlace: Icon = .init("checkmark.diamond")
+        
+        public let jumpButton: Icon = .init("chevron.down")
+        public let jumpToLastPositionButton: Icon = .init("chevron.down.2")
     }
     
     static let lemmy: LemmyIcons = .init()

@@ -82,7 +82,7 @@ struct FiltersSettingsView: View {
                 Spacer()
                 
                 // using a Button to do this makes the whole row register tap gestures :/
-                Image(systemName: Icons.delete)
+                Image(icon: .general.delete)
                     .foregroundStyle(.themedWarning)
                     .onTapGesture {
                         deleteKeyword(filter)

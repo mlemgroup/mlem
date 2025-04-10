@@ -107,10 +107,10 @@ struct PostReadIndicatorSettingsView: View {
         .overlay(alignment: .topTrailing) {
             HStack {
                 if style == .checkmark {
-                    Image(systemName: Icons.success)
+                    Image(icon: .general.success)
                         .foregroundStyle(.themedSecondary)
                 }
-                Image(systemName: Icons.menu)
+                Image(icon: .general.menu)
             }
             .font(.title2)
             .frame(height: 30)

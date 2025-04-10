@@ -30,7 +30,6 @@ public extension Icon {
         public let widgetWizard: Icon = .init("wand.and.stars")
         public let thumbnail: Icon = .init("photo")
         public let author: Icon = .init("signature")
-        public let websiteAddress: Icon = .init("link")
         public let leftRight: Icon = .init("arrow.left.arrow.right")
         public let leftAndRightCircle: Icon = .init("arrow.left.and.right.circle")
         public let developerMode: Icon = .init("wrench.adjustable.fill")

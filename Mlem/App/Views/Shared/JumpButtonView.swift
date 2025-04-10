@@ -5,18 +5,19 @@
 //  Created by Sjmarf on 11/08/2023.
 //
 
+import Icons
 import SwiftUI
 
 struct JumpButtonView: View {
     @State private var pressed: Bool = false
     
-    var systemImage: String = Icons.jumpButton
+    var icon: Icon = .lemmy.jumpButton
     var onShortPress: () -> Void
     var onLongPress: (() -> Void)?
     
     var body: some View {
         Button {} label: {
-            Image(systemName: systemImage)
+            Image(icon: icon)
                 .fontWeight(.semibold)
                 .foregroundStyle(.secondary)
                 .aspectRatio(contentMode: .fit)

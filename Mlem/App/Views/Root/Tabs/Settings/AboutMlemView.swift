@@ -61,7 +61,7 @@ struct AboutMlemView: View {
         Link(destination: URL(string: destination)!) {
             HStack {
                 Spacer()
-                Image(systemName: Icons.forward)
+                Image(icon: .general.forward)
                     .imageScale(.small)
                     .foregroundStyle(.themedTertiary)
             }

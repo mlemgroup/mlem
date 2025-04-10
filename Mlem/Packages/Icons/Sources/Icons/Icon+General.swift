@@ -83,6 +83,7 @@ public extension Icon {
         public let forward: Icon = .init("chevron.forward")
         public let backward: Icon = .init("chevron.backward")
         public let security: Icon = .init("key")
+        public let link: Icon = .init("link")
     }
     
     static let general: GeneralIcons = .init()

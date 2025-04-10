@@ -84,7 +84,7 @@ struct MessageView<EmbeddedContent: View>: View {
         HStack {
             if moderatorActionGrouping == .separateMenu {
                 if message.api.isAdmin {
-                    EllipsisMenu(systemImage: Icons.moderation, size: 24) {
+                    EllipsisMenu(icon: .lemmy.moderation, size: 24) {
                         message.moderatorMenuActions(appState: appState, report: reportContext)
                     }
                 }

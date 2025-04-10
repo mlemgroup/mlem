@@ -18,7 +18,7 @@ extension DeletableProviding {
                     ToastModel.main.add(
                         .undoable(
                             "Deleted",
-                            systemImage: Icons.deleteFill,
+                            icon: .general.delete,
                             callback: { self.updateDeleted(false) },
                             color: .themedNegative
                         )

@@ -6,6 +6,7 @@
 //
 
 import ComponentViews
+import Icons
 import SwiftUI
 import Theming
 
@@ -17,7 +18,7 @@ struct ToastView: View {
     @State private var didUndo: Bool = false
     
     // These symbols only have a single hierarchical layer, so we render it as `.secondary`
-    static let dimmedSymbols: Set<String> = [Icons.blockFill]
+    static let dimmedSymbols: Set<Icon> = [.lemmy.block]
     
     var body: some View {
         HStack {
@@ -25,20 +26,20 @@ struct ToastView: View {
             case let .basic(
                 title: title,
                 subtitle: subtitle,
-                systemImage: systemImage,
+                icon: icon,
                 color: color,
                 duration: _
             ):
                 regularView(
                     title: title,
                     subtitle: subtitle,
-                    systemImage: systemImage,
+                    icon: icon,
                     imageColor: color
                 )
             case let .undoable(
                 title: title,
-                systemImage: systemImage,
-                successSystemImage: successSystemImage,
+                icon: icon,
+                successIcon: successIcon,
                 callback: callback,
                 color: color
             ):
@@ -54,10 +55,11 @@ struct ToastView: View {
                     regularView(
                         title: title ?? (didUndo ? .init(localized: "Undone!") : .init(localized: "Undo")),
                         subtitle: title == nil ? nil : (didUndo ? .init(localized: "Undone!") : .init(localized: "Tap to Undo")),
-                        systemImage: didUndo ? (successSystemImage ?? Icons.successCircleFill) : (systemImage ?? Icons.undoCircleFill),
+                        icon: didUndo ? (successIcon ?? .general.success) : (icon ?? .general.undo),
                         imageColor: color,
                         subtitleColor: .themedAccent
                     )
+                    .symbolVariant(didUndo ? .circle : .none)
                     .contentShape(.rect)
                 }
                 .buttonStyle(.empty)
@@ -83,13 +85,13 @@ struct ToastView: View {
     func regularView(
         title: String,
         subtitle: String?,
-        systemImage: String?,
+        icon: Icon?,
         imageColor: ThemedColor,
         subtitleColor: ThemedColor = .themedSecondary
     ) -> some View {
         HStack(spacing: Constants.main.doubleSpacing) {
-            if let systemImage {
-                image(systemImage, color: imageColor)
+            if let icon {
+                image(icon, color: imageColor)
                     .contentTransition(.symbolEffect(.replace, options: .speed(4)))
             }
             Group {
@@ -112,10 +114,10 @@ struct ToastView: View {
                         .frame(minWidth: 80)
                 }
             }
-            .padding(systemImage == nil ? .horizontal : .trailing, Constants.main.doubleSpacing)
+            .padding(icon == nil ? .horizontal : .trailing, Constants.main.doubleSpacing)
         }
         .frame(minWidth: 157)
-        .padding(systemImage == nil ? .vertical : [], Constants.main.standardSpacing)
+        .padding(icon == nil ? .vertical : [], Constants.main.standardSpacing)
     }
     
     @ViewBuilder
@@ -143,7 +145,8 @@ struct ToastView: View {
         } label: {
             VStack(spacing: 0) {
                 HStack {
-                    image(details.systemImage ?? Icons.errorCircleFill, color: .themedNegative)
+                    image(details.icon ?? .general.error, color: .themedNegative)
+                        .symbolVariant(.circle.fill)
                     
                     Text(details.title ?? .init(localized: "Error"))
                         .frame(minWidth: 100)
@@ -200,14 +203,15 @@ struct ToastView: View {
     }
     
     @ViewBuilder
-    func image(_ systemName: String, color: ThemedColor) -> some View {
-        Image(systemName: systemName)
+    func image(_ icon: Icon, color: ThemedColor) -> some View {
+        Image(icon: icon)
             .resizable()
             .aspectRatio(contentMode: .fit)
             .fontWeight(.semibold)
+            .symbolVariant(.fill)
             .symbolRenderingMode(.hierarchical)
             // Don't use palette here! - Sjmarf
-            .foregroundStyle(ToastView.dimmedSymbols.contains(systemName) ? .secondary : .primary)
+            .foregroundStyle(ToastView.dimmedSymbols.contains(icon) ? .secondary : .primary)
             .foregroundStyle(color)
             .frame(width: 27)
             .padding([.vertical, .leading], Constants.main.standardSpacing)
@@ -225,14 +229,6 @@ extension ToastView {
         ToastView(.success())
         ToastView(.failure())
         ToastView(.undoable(callback: {}))
-        ToastView(
-            .undoable(
-                String("Unfavorited Community"),
-                systemImage: "star.slash.fill",
-                callback: {},
-                color: .themedFavorite
-            )
-        )
         ToastView(.error(.init()))
         ToastView(.success(String("Really super long text")))
     }

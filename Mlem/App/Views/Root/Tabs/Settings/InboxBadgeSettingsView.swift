@@ -41,8 +41,9 @@ struct InboxBadgeSettingsView: View {
             title: "Notification Badge",
             description: "Configure which types of notification should be included in the notification badge."
         ) {
-            Image(systemName: Icons.inboxFill)
+            Image(icon: .lemmy.inbox)
                 .resizable()
+                .symbolVariant(.fill)
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 64)
                 .foregroundStyle(.tertiary)

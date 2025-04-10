@@ -61,7 +61,8 @@ struct ChangePasswordView: View {
                         ProgressView()
                             .transition(.scale(scale: 0.9).combined(with: .opacity))
                     case .success:
-                        Image(systemName: Icons.successCircleFill)
+                        Image(icon: .general.success)
+                            .symbolVariant(.circle.fill)
                             .foregroundStyle(.themedPositive)
                             .transition(.scale(scale: 0.9).combined(with: .opacity))
                     }

@@ -69,17 +69,21 @@ extension SignUpView {
                     .task(id: username) {
                         await checkUsernameValidity(instance)
                     }
-                if !username.isEmpty {
-                    switch usernameValidity {
-                    case .checking:
-                        ProgressView()
-                            .tint(.themedSecondary)
-                    case .valid:
-                        Image(systemName: Icons.successCircleFill)
-                            .foregroundStyle(.themedPositive)
-                    case .taken, .tooShort, .invalidCharacters:
-                        Image(systemName: Icons.failureCircleFill)
-                            .foregroundStyle(.themedNegative)
+                Group {
+                    if !username.isEmpty {
+                        switch usernameValidity {
+                        case .checking:
+                            ProgressView()
+                                .tint(.themedSecondary)
+                        case .valid:
+                            Image(icon: .general.success)
+                                .symbolVariant(.circle.fill)
+                                .foregroundStyle(.themedPositive)
+                        case .taken, .tooShort, .invalidCharacters:
+                            Image(icon: .general.failure)
+                                .symbolVariant(.circle.fill)
+                                .foregroundStyle(.themedNegative)
+                        }
                     }
                 }
             }
@@ -197,7 +201,7 @@ extension SignUpView {
     var applicationQuestionWarning: some View {
         Section {
             HStack {
-                Image(systemName: Icons.warning)
+                Image(icon: .general.warning)
                     .font(.title2)
                     .imageScale(.large)
                 Text("To join this instance, you need to create an application and wait to be accepted.")

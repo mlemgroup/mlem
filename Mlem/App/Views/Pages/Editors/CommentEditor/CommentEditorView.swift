@@ -99,7 +99,7 @@ struct CommentEditorView: View {
                             if sending {
                                 ProgressView()
                             } else {
-                                Button("Send", systemImage: Icons.send) {
+                                Button("Send", icon: .lemmy.send) {
                                     sending = true
                                     Task(priority: .userInitiated) {
                                         await send()

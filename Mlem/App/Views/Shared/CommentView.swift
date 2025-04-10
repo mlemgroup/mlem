@@ -165,7 +165,7 @@ struct CommentView<EmbeddedContent: View>: View {
             }
             if moderatorActionGrouping == .separateMenu {
                 if comment.canModerate {
-                    EllipsisMenu(systemImage: Icons.moderation, size: 24) {
+                    EllipsisMenu(icon: .lemmy.moderation, size: 24) {
                         comment.moderatorMenuActions(appState: appState, showAllActions: !inFeed, report: reportContext)
                     }
                 }

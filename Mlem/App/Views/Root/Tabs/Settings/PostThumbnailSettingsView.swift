@@ -84,7 +84,7 @@ struct PostThumbnailSettingsView: View {
                     .opacity(active ? 0.9 : 0)
             }
             .overlay {
-                Image(systemName: Icons.browser)
+                Image(icon: .general.browser)
                     .resizable()
                     .frame(width: 20, height: 20)
                     .foregroundStyle(.white)

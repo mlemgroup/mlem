@@ -18,9 +18,11 @@ public extension Icon {
         public let inlineCode: Icon = .init("chevron.left.forwardslash.chevron.right")
         public let quote: Icon = .init("quote.opening")
         public let heading: Icon = .init("textformat.size")
-        @inlinable public var uploadImage: Icon { .general.chooseImage }
         public let spoiler: Icon = .init("eye")
         public let codeBlock: Icon = .init("text.viewfinder")
+        
+        @inlinable public var insertLink: Icon { .general.link }
+        @inlinable public var uploadImage: Icon { .general.chooseImage }
     }
     
     static let markdown: MarkdownIcons = .init()

@@ -18,7 +18,7 @@ struct CommentJumpButtonSettingsView: View {
                 title: "Jump Button",
                 description: "Tap on the Jump Button whilst viewing a comment thread to scroll to the next comment."
             ) {
-                Image(systemName: Icons.jumpButton)
+                Image(icon: .lemmy.jumpButton)
                     .font(.title)
                     .fontWeight(.semibold)
                     .foregroundStyle(.themedSecondary)

@@ -41,7 +41,7 @@ extension Post1Providing {
                     ToastModel.main.add(
                         .undoable(
                             "Hidden",
-                            systemImage: Icons.hideFill,
+                            icon: .general.hide,
                             callback: {
                                 self2.updateHidden(false)
                             }

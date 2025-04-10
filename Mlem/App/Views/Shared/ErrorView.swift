@@ -30,8 +30,8 @@ struct ErrorView: View {
             if showingFullError {
                 errorDetails(errorDetails.errorText())
             } else {
-                if let systemImage = errorDetails.systemImage {
-                    Image(systemName: systemImage)
+                if let icon = errorDetails.icon {
+                    Image(icon: icon)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(height: 50)
