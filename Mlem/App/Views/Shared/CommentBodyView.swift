@@ -10,7 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct CommentBodyView: View {
-    @Setting(\.compactComments) var compactComments
+    @Setting(\.comment_compact) var compactComments
     
     let comment: any Comment
     

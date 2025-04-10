@@ -12,7 +12,7 @@ import SwiftUI
 struct WebsitePreviewView: View {
     @Environment(\.openURL) private var openURL
     
-    @Setting(\.showFavicons) var showFavicons
+    @Setting(\.post_webPreview_showIcon) var showFavicons
 
     let shouldBlur: Bool
     

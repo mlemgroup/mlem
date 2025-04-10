@@ -26,9 +26,9 @@ class CommentTreeNode: Identifiable, Hashable {
         children.append(child)
     }
     
-    func tree() -> [CommentTreeNode] {
+    func tree(hideIfCollapsed: Bool = true) -> [CommentTreeNode] {
         if comment.creator.blocked { return [] }
-        if collapsed { return [self] }
+        if collapsed, hideIfCollapsed { return [self] }
         return children.reduce([self]) { $0 + $1.tree() }
     }
     

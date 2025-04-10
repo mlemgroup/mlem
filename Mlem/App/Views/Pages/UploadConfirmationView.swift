@@ -13,7 +13,7 @@ struct UploadConfirmationView: View {
     @Environment(\.palette) var palette
     @Environment(\.dismiss) var dismiss
     
-    @Setting(\.confirmImageUploads) var confirmImageUploads
+    @Setting(\.behavior_confirmImageUploads) var confirmImageUploads
     
     var imageData: Data
     var imageManager: ImageUploadManager

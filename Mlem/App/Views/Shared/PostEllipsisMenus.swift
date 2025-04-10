@@ -14,7 +14,7 @@ struct PostEllipsisMenus: View {
     @Environment(NavigationLayer.self) private var navigation
     @Environment(\.reportContext) private var reportContext: Report?
     
-    @Setting(\.moderatorActionGrouping) var moderatorActionGrouping
+    @Setting(\.menus_modActionGrouping) var moderatorActionGrouping
 
     // This @State is necessary!
     @State var post: any Post

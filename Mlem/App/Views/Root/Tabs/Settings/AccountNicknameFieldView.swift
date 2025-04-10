@@ -10,7 +10,7 @@ import SwiftUI
 struct AccountNicknameFieldView: View {
     @Environment(AppState.self) var appState
     
-    @Setting(\.tabProfileLabelType) var tabProfileLabelType
+    @Setting(\.tab_profile_labelType) var tabProfileLabelType
 
     @State var nickname: String
 

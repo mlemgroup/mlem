@@ -10,7 +10,7 @@ import SwiftUI
 
 extension PostSettingsView {
     struct PostSizePicker: View {
-        @Setting(\.postSize) var postSize
+        @Setting(\.post_size) var postSize
         
         var body: some View {
             Section("Size") {

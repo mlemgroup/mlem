@@ -24,7 +24,7 @@ extension ExpandedPostView {
     }
     
     @ViewBuilder
-    func commentTree(tracker: CommentTreeTracker) -> some View {
+    func commentTree(tracker: CommentTreeTracker, scrollProxy: ScrollViewProxy) -> some View {
         ForEach(generateViewTree(for: tracker.nodes), id: \.hashValue) { item in
             Group {
                 switch item {
@@ -38,6 +38,14 @@ extension ExpandedPostView {
                         highlight: [scrollTargetedComment?.actorId_, highlightedComment?.actorId_].contains(comment.actorId),
                         depthOffset: tracker.proposedDepthOffset
                     )
+                    .onTapGesture {
+                        if tapCommentsToCollapse {
+                            withAnimation(UIAccessibility.isReduceMotionEnabled ? nil : .default) {
+                                node.collapsed.toggle()
+                                scrollProxy.scrollTo(comment.actorId)
+                            }
+                        }
+                    }
                     .quickSwipes(
                         comment: comment,
                         configuration: InteractionBarTracker.main.commentInteractionBar,

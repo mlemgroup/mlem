@@ -14,7 +14,7 @@ struct MessageView<EmbeddedContent: View>: View {
     @Environment(NavigationLayer.self) private var navigation
     @Environment(\.reportContext) private var reportContext
     
-    @Setting(\.moderatorActionGrouping) var moderatorActionGrouping
+    @Setting(\.menus_modActionGrouping) var moderatorActionGrouping
     
     let message: any Message
     let isInInbox: Bool

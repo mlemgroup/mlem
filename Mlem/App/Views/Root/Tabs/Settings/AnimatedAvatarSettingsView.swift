@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AnimatedAvatarSettingsView: View {
-    @Setting(\.animatedAvatars) var animatedAvatars
+    @Setting(\.media_animatedAvatars) var animatedAvatars
     
     var body: some View {
         Form {

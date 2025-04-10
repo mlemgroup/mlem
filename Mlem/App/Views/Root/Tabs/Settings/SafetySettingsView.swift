@@ -10,10 +10,10 @@ import SwiftUI
 struct SafetySettingsView: View {
     @Environment(FiltersTracker.self) var filtersTracker
 
-    @Setting(\.blurNsfw) var blurNsfw
-    @Setting(\.keywordFilterEnabled) var keywordFilterEnabled
-    @Setting(\.showNsfwCommunityWarning) var showNsfwCommunityWarning
-    @Setting(\.showModlogWarning) var showModlogWarning
+    @Setting(\.safety_blurNsfw) var blurNsfw
+    @Setting(\.filters_keywordFilterEnabled) var keywordFilterEnabled
+    @Setting(\.safety_enableNsfwCommunityWarning) var showNsfwCommunityWarning
+    @Setting(\.safety_enableModlogWarning) var showModlogWarning
 
     var body: some View {
         Form {

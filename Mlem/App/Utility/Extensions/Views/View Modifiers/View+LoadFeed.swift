@@ -10,7 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 private struct LoadFeed: ViewModifier {
-    @Setting(\.postSize) var postSize
+    @Setting(\.post_size) var postSize
     
     let feedLoader: (any FeedLoading)?
     

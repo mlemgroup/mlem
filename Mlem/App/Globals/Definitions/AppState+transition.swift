@@ -19,7 +19,7 @@ extension AppState {
                 return
             }
             
-            transitionView.overrideUserInterfaceStyle = Settings.main.interfaceStyle
+            transitionView.overrideUserInterfaceStyle = Settings.get(\.appearance_interfaceStyle)
             transitionView.alpha = 0
             window.addSubview(transitionView)
             UIView.animate(withDuration: 0.15) {

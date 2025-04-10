@@ -9,8 +9,8 @@ import ComponentViews
 import SwiftUI
 
 struct SharingLinksSettingsView: View {
-    @Setting(\.linkSharingMode) var linkSharingMode
-    @Setting(\.showSettingsIcons) var showSettingsIcons
+    @Setting(\.links_shareMode) var linkSharingMode
+    @Setting(\.a11y_showSettingsIcons) var showSettingsIcons
 
     var body: some View {
         Form {

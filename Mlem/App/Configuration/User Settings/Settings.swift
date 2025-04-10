@@ -1,212 +1,117 @@
 //
-//  Settings.swift
+//  CodableSettings.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-08-07.
-//  Adapted from https://fatbobman.com/en/posts/appstorage/
+//  Created by Eric Andrews on 2024-09-05.
 //
 
-import Dependencies
+import Foundation
 import MlemMiddleware
+import UIKit
+import Dependencies
 import SwiftUI
 
-class Settings: ObservableObject {
+/// Responsible for managing settings logic.
+///
+/// There should only ever be one instance of this class, the private `main`. To enforce this, interaction with the class
+/// is entirely abstracted to behind a static API.
+///
+/// To access a settings value, it is recommended to use the `@Setting` property wrapper. In contexts where this is not available,
+/// use `Settings.get(\.keypath)`.
+class Settings {
     @Dependency(\.persistenceRepository) var persistenceRepository
     
-    public static let main: Settings = .init()
+    private let values: SettingsValues
+    private static let main: Settings = .init()
     
-    /// Default initializer. Will take current AppStorage values.
-    init() {}
-
-    @AppStorage("a11y.readPostIndicator") var readPostIndicator: ReadPostIndicator = .checkmark
-    @AppStorage("a11y.readOutlineThickness") var readOutlineThickness: Int = 3
-    @AppStorage("a11y.showSettingsIcons") var showSettingsIcons: Bool = false
-    @AppStorage("a11y.websiteThumbnailIcon") var websiteThumbnailIcon: Bool = false
-    @AppStorage("a11y.zoomSliderLocation") var zoomSliderLocation: ZoomSliderLocation = .none
-
-    @AppStorage("post.size") var postSize: PostSize = .compact
-    @AppStorage("post.allowMultipleColumns") var allowMultiplePostColumns: Bool = true
-    @AppStorage("post.defaultSort") var defaultPostSort: ApiSortType = .hot
-    @AppStorage("post.fallbackSort") var fallbackPostSort: ApiSortType = .hot
-    @AppStorage("post.thumbnailLocation") var thumbnailLocation: ThumbnailLocation = .left
-    @AppStorage("post.showCreator") var showPostCreator: Bool = false
-    @AppStorage("post.showSubscribedStatus") var showSubscribedStatus: Bool = true
-    @AppStorage("post.showDownvotesCompact") var showDownvotesCompact: Bool = false
-    @AppStorage("post.gestures.tapToCollapse") var tapPostsToCollapse: Bool = true
-
-    @AppStorage("quickSwipes.enabled") var quickSwipesEnabled: Bool = true
+    // MARK: - API
     
-    @AppStorage("behavior.hapticLevel") var hapticLevel: HapticPriority = .low
-    @AppStorage("behavior.upvoteOnSave") var upvoteOnSave: Bool = false
-    @AppStorage("behavior.internetSpeed") var internetSpeed: InternetSpeed = .fast
-    @AppStorage("behavior.autoplayMedia") var autoplayMedia: Bool = false
-    @AppStorage("behavior.muteVideos") var muteVideos: Bool = true
-    @AppStorage("behavior.confirmImageUploads") var confirmImageUploads: Bool = true
-    @AppStorage("behavior.infiniteScroll") var infiniteScroll: Bool = true
-    
-    @AppStorage("accounts.keepPlace") var keepPlaceOnAccountSwitch: Bool = false
-    @AppStorage("accounts.sort") var accountSort: AccountSortMode = .name
-    @AppStorage("accounts.groupSort") var groupAccountSort: Bool = false
-    
-    @AppStorage("appearance.interfaceStyle") var interfaceStyle: UIUserInterfaceStyle = .unspecified
-    @AppStorage("appearance.palette") var colorPalette: PaletteOption = .standard
-    
-    @AppStorage("markdown.wrapCodeBlockLines") var wrapCodeBlockLines: Bool = true
-    
-    @AppStorage("dev.developerMode") var developerMode: Bool = false
-    
-    @AppStorage("safety.blurNsfw") var blurNsfw: NsfwBlurBehavior = .always
-    @AppStorage("safety.showNsfwCommunityWarning") var showNsfwCommunityWarning: Bool = true
-    @AppStorage("safety.showModlogWarning") var showModlogWarning: Bool = true
-    
-    @AppStorage("privacy.autoBypassImageProxy") var autoBypassImageProxy: Bool = false
-    @AppStorage("privacy.showFavicons") var showFavicons: Bool = true
-    
-    @AppStorage("links.openInBrowser") var openLinksInBrowser = false
-    @AppStorage("links.readerMode") var openLinksInReaderMode = false
-    @AppStorage("links.displayMode") var tappableLinksDisplayMode: TappableLinksDisplayMode = .contextual
-    @AppStorage("links.shareMode") var linkSharingMode: LinkSharingMode = .myInstance
-    @AppStorage("links.embedLoops") var embedLoops: Bool = true
-    
-    // swiftlint:disable:next line_length
-    @AppStorage("media.animatedAvatars") var animatedAvatars: AnimatedAvatarBehavior = UIAccessibility.isReduceMotionEnabled ? .never : .always
-    
-    @AppStorage("feed.markReadOnScroll") var markReadOnScroll: Bool = false
-    @AppStorage("feed.showRead") var showReadInFeed: Bool = true
-    @AppStorage("feed.default") var defaultFeed: FeedSelection = .subscribed
-    
-    @AppStorage("inbox.showRead") var showReadInInbox: Bool = true
-    
-    @AppStorage("subscriptions.instanceLocation") var subscriptionInstanceLocation: InstanceLocation = UIDevice.isPad ? .bottom : .trailing
-    
-    @AppStorage("subscriptions.sort") var subscriptionSort: SubscriptionListSort = .alphabetical
-    
-    @AppStorage("person.showAvatar") var showPersonAvatar: Bool = true
-    
-    @AppStorage("community.showAvatar") var showCommunityAvatar: Bool = true
-    
-    @AppStorage("comment.compact") var compactComments: Bool = false
-    @AppStorage("comment.jumpButton") var jumpButton: CommentJumpButtonLocation = .bottomTrailing
-    @AppStorage("comment.sort") var commentSort: ApiCommentSortType = .top
-    @AppStorage("comment.maxDepth") var maxCommentDepth: Int = 8
-    @AppStorage("comment.gestures.tapToCollapse") var tapCommentsToCollapse: Bool = true
-    
-    @AppStorage("status.bypassImageProxyShown") var bypassImageProxyShown: Bool = false
-    
-    @AppStorage("tip.feedWelcomePrompt") var showFeedWelcomePrompt: Bool = true
-    
-    @AppStorage("navigation.sidebarVisibleByDefault") var sidebarVisibleByDefault: Bool = true
-    @AppStorage("navigation.swipeAnywhere") var swipeAnywhereToNavigate: Bool = false
-    
-    @AppStorage("tab.profile.labelType") var tabProfileLabelType: ProfileTabLabel = .nickname
-    @AppStorage("tab.profile.showAvatar") var tabProfileShowAvatar: Bool = true
-    @AppStorage("tab.inbox.badgeIncludedTypes") var tabInboxBadgeIncludedTypes: Set<InboxItemType> = .all
-    
-    @AppStorage("menus.moderatorActionGrouping") var moderatorActionGrouping: ModeratorActionGrouping = .divider
-    @AppStorage("menus.allModActions") var showAllModActions: Bool = false
-    
-    @AppStorage("interactionBar.alternateReportLayout") var alternateInteractionBarLayoutForReports: Bool = false
-    
-    @AppStorage("filters.keywordFilterEnabled") var keywordFilterEnabled: Bool = true {
-        didSet {
-            FiltersTracker.main.keywordFilterEnabled = keywordFilterEnabled
-        }
+    static func get<T>(_ keyPath: ReferenceWritableKeyPath<SettingsValues, T>) -> T {
+        main.values[keyPath: keyPath]
     }
     
-    var codable: CodableSettings { .init(from: self, filteredKeywords: FiltersTracker.main.rawKeywords) }
+    static func set<T>(_ keyPath: ReferenceWritableKeyPath<SettingsValues, T>, to newValue: T) {
+        main.values[keyPath: keyPath] = newValue
+        main._save()
+    }
+    
+    static func save(to systemSetting: SystemSetting) async {
+        await main._save(to: systemSetting)
+    }
     
     @MainActor
-    func restore(from systemSetting: SystemSetting) {
-        if let savedSettings = persistenceRepository.loadSystemSettings(systemSetting) {
-            reinit(from: savedSettings)
-            ToastModel.main.add(.success("Restored Settings"))
-        } else {
-            ToastModel.main.add(.failure("Could not find settings"))
+    static func restore(from systemSetting: SystemSetting) {
+        main._restore(from: systemSetting)
+    }
+    
+    @MainActor
+    static func reinit(with values: SettingsValues) {
+        main._reinit(with: values)
+    }
+    
+    static func encoded() throws -> Data {
+        try JSONEncoder().encode(main.values)
+    }
+    
+    // MARK: - Logic
+    
+    fileprivate func _save() {
+        Task {
+            try await persistenceRepository.saveSystemSettings(values, setting: .v2_system)
         }
     }
     
-    func save(to systemSetting: SystemSetting) async {
+    private func _save(to systemSetting: SystemSetting) async {
         do {
-            try await persistenceRepository.saveSystemSettings(codable, setting: systemSetting)
+            try await persistenceRepository.saveSystemSettings(values, setting: systemSetting)
             ToastModel.main.add(.success("Saved Settings"))
         } catch {
             handleError(error)
         }
     }
     
-    /// Re-initializes all values from the given CodableSettings object.
     @MainActor
-    // swiftlint:disable:next function_body_length
-    func reinit(from settings: CodableSettings) {
-        postSize = settings.post_size
-        allowMultiplePostColumns = settings.post_allowMultipleColumns
-        defaultPostSort = settings.post_defaultSort
-        fallbackPostSort = settings.post_fallbackSort
-        thumbnailLocation = settings.post_thumbnailLocation
-        showPostCreator = settings.post_showCreator
-        showSubscribedStatus = settings.post_showSubscribedStatus
-        tapPostsToCollapse = settings.post_gestures_tapToCollapse
-        quickSwipesEnabled = settings.behavior_enableQuickSwipes
-        hapticLevel = settings.behavior_hapticLevel
-        upvoteOnSave = settings.behavior_upvoteOnSave
-        internetSpeed = settings.behavior_internetSpeed
-        autoplayMedia = settings.behavior_autoplayMedia
-        muteVideos = settings.behavior_muteVideos
-        infiniteScroll = settings.behavior_infiniteScroll
-        keepPlaceOnAccountSwitch = settings.accounts_keepPlace
-        accountSort = settings.accounts_sort
-        groupAccountSort = settings.accounts_grouped
-        interfaceStyle = settings.appearance_interfaceStyle
-        colorPalette = settings.appearance_palette
-        wrapCodeBlockLines = settings.markdown_wrapCodeBlockLines
-        developerMode = settings.dev_developerMode
-        blurNsfw = settings.safety_blurNsfw
-        showNsfwCommunityWarning = settings.safety_enableNsfwCommunityWarning
-        showModlogWarning = settings.safety_enableModlogWarning
-        confirmImageUploads = settings.behavior_confirmImageUploads
-        openLinksInBrowser = settings.links_openInBrowser
-        openLinksInReaderMode = settings.links_readerMode
-        linkSharingMode = settings.links_shareMode
-        tappableLinksDisplayMode = settings.links_tappableLinksDisplayMode
-        animatedAvatars = settings.media_animatedAvatars
-        markReadOnScroll = settings.feed_markReadOnScroll
-        showReadInFeed = settings.feed_showRead
-        defaultFeed = settings.feed_default
-        showReadInInbox = settings.inbox_showRead
-        subscriptionInstanceLocation = settings.subscriptions_instanceLocation
-        subscriptionSort = settings.subscriptions_sort
-        showPersonAvatar = settings.person_showAvatar
-        showCommunityAvatar = settings.community_showAvatar
-        compactComments = settings.comment_compact
-        jumpButton = settings.comment_jumpButton
-        commentSort = settings.comment_defaultSort
-        maxCommentDepth = settings.comment_maxDepth
-        tapCommentsToCollapse = settings.comment_gestures_tapToCollapse
-        bypassImageProxyShown = settings.status_bypassImageProxyShown
-        autoBypassImageProxy = settings.privacy_autoBypassImageProxy
-        sidebarVisibleByDefault = settings.navigation_sidebarVisibleByDefault
-        swipeAnywhereToNavigate = settings.navigation_swipeAnywhere
-        moderatorActionGrouping = settings.menus_modActionGrouping
-        showAllModActions = settings.menus_allModActions
-        readPostIndicator = settings.a11y_readPostIndicator
-        readOutlineThickness = settings.a11y_readOutlineThickness
-        keywordFilterEnabled = settings.filters_keywordFilterEnabled
-        tabProfileLabelType = settings.tab_profile_labelType
-        tabProfileShowAvatar = settings.tab_profile_showAvatar
-        tabInboxBadgeIncludedTypes = settings.tab_inbox_badgeIncludedTypes
-        websiteThumbnailIcon = settings.a11y_websiteThumbnailIcon
-        showSettingsIcons = settings.a11y_showSettingsIcons
-        embedLoops = settings.links_embedLoops
-        zoomSliderLocation = settings.a11y_zoomSliderLocation
-        alternateInteractionBarLayoutForReports = settings.interactionBar_alternateReportLayout
-        
-        Task {
-            await FiltersTracker.main.resetFilteredKeywords(to: settings.filteredKeywords)
-            do {
-                try await persistenceRepository.saveSystemSettings(settings, setting: .v2)
-            } catch {
-                handleError(error)
+    private func _restore(from systemSetting: SystemSetting) {
+        if let savedSettings = persistenceRepository.loadSystemSettings(systemSetting) {
+            _reinit(with: savedSettings)
+            ToastModel.main.add(.success("Restored Settings"))
+        } else {
+            ToastModel.main.add(.failure("Could not find settings"))
+        }
+    }
+    
+    @MainActor
+    private func _reinit(with newValues: SettingsValues) {
+        // values needs to be re-initialized memberwise rather than simply reassigned in order for the changes to publish correctly
+        values.reinit(from: newValues)
+        _save()
+    }
+    
+    private init() {
+        @Dependency(\.persistenceRepository) var persistenceRepository
+        if let savedSettings = persistenceRepository.loadSystemSettings(.v2_system) {
+            values = savedSettings
+        } else {
+            values = .init(from: .main, filteredKeywords: persistenceRepository.loadFilteredKeywords())
+            Task {
+                do {
+                    try await persistenceRepository.saveSystemSettings(values, setting: .v2_system)
+                } catch {
+                    handleError(error)
+                }
             }
         }
+    }
+}
+
+// MARK: Legacy Keyword Loading
+
+private extension PersistencePath {
+    static var filteredKeywords = root.appendingPathComponent("Blocked Keywords", conformingTo: .json)
+}
+
+private extension PersistenceRepository {
+    func loadFilteredKeywords() -> Set<String> {
+        load(Set<String>.self, from: PersistencePath.filteredKeywords) ?? .init()
     }
 }

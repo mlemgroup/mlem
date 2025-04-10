@@ -12,6 +12,7 @@ import SwiftUI
 class TopVisibleItemContainer {
     // This doesn't need to trigger view updates
     @ObservationIgnored var wrappedValue: ActorIdentifier?
+    var furthestVisitedComment: ActorIdentifier?
     var isAtPost: Bool = true
 }
 
@@ -22,10 +23,11 @@ struct ExpandedPostView<Content: View>: View {
     @Environment(\.palette) var palette
     @Environment(\.dismiss) var dismiss
     
-    @Setting(\.jumpButton) var jumpButton
-    @Setting(\.compactComments) var compactComments
-    @Setting(\.tapPostsToCollapse) var tapPostsToCollapse
-    
+    @Setting(\.comment_jumpButton) var jumpButton
+    @Setting(\.comment_compact) var compactComments
+    @Setting(\.post_gestures_tapToCollapse) var tapPostsToCollapse
+    @Setting(\.comment_gestures_tapToCollapse) var tapCommentsToCollapse
+
     var post: (any PostStubProviding)?
     var contentLoaderError: Error?
     let isLoading: Bool
@@ -35,7 +37,7 @@ struct ExpandedPostView<Content: View>: View {
     @Binding var tracker: CommentTreeTracker?
     @State var scrollTargetedComment: (any CommentStubProviding)?
 
-    @State var scrolledToscrollTargetedComment: Bool = false
+    @State var scrolledToScrollTargetedComment: Bool = false
     @State var jumpButtonTarget: ActorIdentifier?
     @State var topVisibleItem: TopVisibleItemContainer = .init()
     @State var postCollapsed: Bool = false
@@ -123,7 +125,7 @@ struct ExpandedPostView<Content: View>: View {
                             switch tracker.loadingState {
                             case .done:
                                 LazyVStack(spacing: 0) {
-                                    commentTree(tracker: tracker)
+                                    commentTree(tracker: tracker, scrollProxy: proxy)
                                 }
                                 .geometryGroup()
                             default:
@@ -149,7 +151,7 @@ struct ExpandedPostView<Content: View>: View {
                         // Without a slight delay here, `scrollTo` can sometimes fail. I'm not sure why this is.
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                             proxy.scrollTo(scrollTargetedComment.actorId_, anchor: .center)
-                            scrolledToscrollTargetedComment = true
+                            scrolledToScrollTargetedComment = true
                         }
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                             self.scrollTargetedComment = nil
@@ -165,11 +167,10 @@ struct ExpandedPostView<Content: View>: View {
                     }
                 }
                 .overlay(alignment: jumpButton.alignment) {
-                    let shouldShowLastVisitButton = (previousVisitRecord?.isRevisit ?? false) && (post.commentCount_ ?? 0) > 10
                     JumpButtonsView(
                         showJumpButton: (tracker?.nodes.count ?? 0) > 1,
                         topVisibleItem: topVisibleItem,
-                        scrollToLastVisitedPosition: shouldShowLastVisitButton ? scrollToLastVisitedPosition : nil,
+                        scrollToLastVisitedPosition: showScrollToLastVisitButton(post: post) ? scrollToLastVisitedPosition : nil,
                         scrollToNextComment: scrollToNextComment,
                         scrollToPreviousComment: scrollToPreviousComment
                     )
@@ -271,7 +272,7 @@ struct ExpandedPostView<Content: View>: View {
 }
 
 private struct JumpButtonsView: View {
-    @Setting(\.jumpButton) var jumpButton
+    @Setting(\.comment_jumpButton) var jumpButton
     
     var showJumpButton: Bool
     var topVisibleItem: TopVisibleItemContainer

@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct ExternalLinkSettingsView: View {
-    @Setting(\.openLinksInBrowser) var openLinksInBrowser
-    @Setting(\.openLinksInReaderMode) var openLinksInReaderMode
+    @Setting(\.links_openInBrowser) var openLinksInBrowser
+    @Setting(\.links_readerMode) var openLinksInReaderMode
     
     var body: some View {
         Form {

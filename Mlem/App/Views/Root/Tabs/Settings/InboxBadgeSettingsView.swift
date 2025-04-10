@@ -9,7 +9,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct InboxBadgeSettingsView: View {
-    @Setting(\.tabInboxBadgeIncludedTypes) var tabInboxBadgeIncludedTypes
+    @Setting(\.tab_inbox_badgeIncludedTypes) var tabInboxBadgeIncludedTypes
     
     var body: some View {
         Form {

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CommentMaximumDepthSettingsView: View {
-    @Setting(\.maxCommentDepth) var maxCommentDepth
+    @Setting(\.comment_maxDepth) var maxCommentDepth
     
     var body: some View {
         Form {

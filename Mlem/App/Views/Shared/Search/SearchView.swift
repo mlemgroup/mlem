@@ -42,7 +42,7 @@ struct SearchView: View {
     @Environment(FiltersTracker.self) var filtersTracker
     @Environment(\.palette) var palette
     
-    @Setting(\.compactComments) var compactComments
+    @Setting(\.comment_compact) var compactComments
     
     @State var searchBarFocused: Bool = false
     @State var isSearching: Bool = false
@@ -73,7 +73,7 @@ struct SearchView: View {
             wrappedValue: .init(
                 api: appState.firstApi,
                 sortType: .v3(.top(.allTime)),
-                prefetchingConfiguration: .forPostSize(Settings.main.postSize),
+                prefetchingConfiguration: .forPostSize(Settings.get(\.post_size)),
                 urlCache: Constants.main.urlCache
             )
         )

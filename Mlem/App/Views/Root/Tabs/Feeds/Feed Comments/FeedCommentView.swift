@@ -15,9 +15,9 @@ struct FeedCommentView<EmbeddedContent: View>: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.reportContext) var reportContext: Report?
     
-    @Setting(\.postSize) var settingsPostSize
-    @Setting(\.compactComments) var compactComments
-    @Setting(\.alternateInteractionBarLayoutForReports) var alternateInteractionBarLayoutForReports: Bool
+    @Setting(\.post_size) var settingsPostSize
+    @Setting(\.comment_compact) var compactComments
+    @Setting(\.interactionBar_alternateReportLayout) var alternateInteractionBarLayoutForReports: Bool
 
     let comment: any Comment
     var overriddenSize: PostSize?

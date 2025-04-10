@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct HapticSettingsView: View {
-    @Setting(\.hapticLevel) var hapticLevel
+    @Setting(\.behavior_hapticLevel) var hapticLevel
     
     var body: some View {
         Form {
