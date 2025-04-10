@@ -69,7 +69,7 @@ private struct ActionListView<ActionType: ActionTypeProviding>: View {
     
     var body: some View {
         Section(title) {
-            ForEach(Array(actions.enumerated()), id: \.element) { _, action in
+            ForEach(actions, id: \.hashValue) { action in
                 HStack {
                     Label(action.appearance.label, systemImage: action.appearance.swipeIcon2)
                         .tint(action.appearance.color)
