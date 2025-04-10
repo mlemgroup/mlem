@@ -57,6 +57,7 @@ struct SwipeActionEditorView<Configuration: InteractionBarConfiguration>: View {
                     }
                 }
         }
+        .environment(\.editMode, .constant(.active))
         .navigationTitle("Swipe Actions")
         .onChange(of: configuration) { onSet(configuration) }
     }
@@ -68,20 +69,11 @@ private struct ActionListView<ActionType: ActionTypeProviding>: View {
     
     var body: some View {
         Section(title) {
-            ForEach(Array(actions.enumerated()), id: \.element) { index, action in
+            ForEach(actions, id: \.hashValue) { action in
                 HStack {
                     Label(action.appearance.label, systemImage: action.appearance.swipeIcon2)
                         .tint(action.appearance.color)
                     Spacer()
-                    Button("Remove", systemImage: "minus.circle.fill", role: .destructive) {
-                        withAnimation {
-                            actions.remove(at: index)
-                        }
-                    }
-                    .imageScale(.large)
-                    .foregroundStyle(.themedWarning)
-                    .buttonStyle(.plain)
-                    .labelStyle(.iconOnly)
                 }
                 .tag(action)
             }
