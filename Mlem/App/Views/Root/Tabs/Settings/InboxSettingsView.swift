@@ -9,6 +9,7 @@ import SwiftUI
 
 struct InboxSettingsView: View {
     @Setting(\.tab_inbox_badgeIncludedTypes) var tabInboxBadgeIncludedTypes
+    @Setting(\.interactionBar_reply) var replyInteractionBar
     
     var body: some View {
         Form {
@@ -21,7 +22,7 @@ struct InboxSettingsView: View {
             .tint(.themedInbox)
             Section {
                 NavigationLink(.settings(.interactionBar(.reply))) {
-                    SettingsInteractionBarSummaryView(configuration: InteractionBarTracker.main.replyInteractionBar)
+                    SettingsInteractionBarSummaryView(configuration: replyInteractionBar)
                 }
                 NavigationLink("Swipe Actions", destination: .settings(.swipeActions(.reply)))
             }

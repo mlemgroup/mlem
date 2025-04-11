@@ -7,6 +7,7 @@
 
 import UIKit
 import MlemMiddleware
+import Dependencies
 
 // swiftlint:disable line_length function_body_length file_length
 
@@ -94,6 +95,12 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     var navigation_swipeAnywhere: Bool
     var filters_keywordFilterEnabled: Bool
     var filters_keywords: Set<String>
+    
+    var interactionBar_post: PostBarConfiguration
+    var interactionBar_comment: CommentBarConfiguration
+    var interactionBar_reply: ReplyBarConfiguration
+    var interactionBar_postReport: PostBarConfiguration
+    var interactionBar_commentReport: CommentBarConfiguration
     var interactionBar_alternateReportLayout: Bool
     
     // These are included in the encoding, but are synthesized into tab_inbox_badgeIncludedTypes at decoding
@@ -213,6 +220,11 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.navigation_swipeAnywhere = try container.decodeIfPresent(Bool.self, forKey: ._navigation_swipeAnywhere) ?? false
         self.filters_keywordFilterEnabled = try container.decodeIfPresent(Bool.self, forKey: ._filters_keywordFilterEnabled) ?? true
         self.filters_keywords = try container.decodeIfPresent(Set<String>.self, forKey: ._filters_keywords) ?? .init()
+        self.interactionBar_post = try container.decodeIfPresent(PostBarConfiguration.self, forKey: ._interactionBar_post) ?? .default
+        self.interactionBar_comment = try container.decodeIfPresent(CommentBarConfiguration.self, forKey: ._interactionBar_comment) ?? .default
+        self.interactionBar_reply = try container.decodeIfPresent(ReplyBarConfiguration.self, forKey: ._interactionBar_reply) ?? .default
+        self.interactionBar_postReport = try container.decodeIfPresent(PostBarConfiguration.self, forKey: ._interactionBar_postReport) ?? .reportDefault_
+        self.interactionBar_commentReport = try container.decodeIfPresent(CommentBarConfiguration.self, forKey: ._interactionBar_commentReport) ?? .reportDefault_
         self.interactionBar_alternateReportLayout = try container.decodeIfPresent(Bool.self, forKey: ._interactionBar_alternateReportLayout) ?? false
     }
     
@@ -297,6 +309,11 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.navigation_swipeAnywhere = otherValues.navigation_swipeAnywhere
         self.filters_keywordFilterEnabled = otherValues.filters_keywordFilterEnabled
         self.filters_keywords = otherValues.filters_keywords
+        self.interactionBar_post = otherValues.interactionBar_post
+        self.interactionBar_comment = otherValues.interactionBar_comment
+        self.interactionBar_reply = otherValues.interactionBar_reply
+        self.interactionBar_postReport = otherValues.interactionBar_postReport
+        self.interactionBar_commentReport = otherValues.interactionBar_commentReport
         self.interactionBar_alternateReportLayout = otherValues.interactionBar_alternateReportLayout
         self.inbox_badge_includeApplications = otherValues.inbox_badge_includeApplications
         self.inbox_badge_includeMessageReports = otherValues.inbox_badge_includeMessageReports
@@ -385,8 +402,12 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         case _navigation_swipeAnywhere = "navigation_swipeAnywhere"
         case _filters_keywordFilterEnabled = "filters_keywordFilterEnabled"
         case _filters_keywords = "filters_keywords"
+        case _interactionBar_post = "interactionBar_post"
+        case _interactionBar_comment = "interactionBar_comment"
+        case _interactionBar_reply = "interactionBar_reply"
+        case _interactionBar_postReport = "interactionBar_postReport"
+        case _interactionBar_commentReport = "interactionBar_commentReport"
         case _interactionBar_alternateReportLayout = "interactionBar_alternateReportLayout"
-     
         case inbox_badge_includeApplications = "inbox_badge_includeApplications"
         case inbox_badge_includeMessageReports = "inbox_badge_includeMessageReports"
         case inbox_badge_includeMod = "inbox_badge_includeMod"
@@ -394,6 +415,8 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     }
     
     init(from settings: LegacySettings, filteredKeywords: Set<String>) {
+        @Dependency(\.persistenceRepository) var persistenceRepository
+        
         self.a11y_readPostIndicator = settings.readPostIndicator
         self.a11y_readOutlineThickness = settings.readOutlineThickness
         self.a11y_showSettingsIcons = settings.showSettingsIcons
@@ -473,9 +496,15 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.navigation_sidebarVisibleByDefault = settings.sidebarVisibleByDefault
         self.navigation_swipeAnywhere = settings.swipeAnywhereToNavigate
         self.filters_keywordFilterEnabled = settings.keywordFilterEnabled
-        
         self.filters_keywords = filteredKeywords
         self.interactionBar_alternateReportLayout = settings.alternateInteractionBarLayoutForReports
+        
+        let interactionBarConfigurations = persistenceRepository.loadInteractionBarConfigurations()
+        self.interactionBar_post = interactionBarConfigurations.post
+        self.interactionBar_comment = interactionBarConfigurations.comment
+        self.interactionBar_reply = interactionBarConfigurations.reply
+        self.interactionBar_postReport = interactionBarConfigurations.postReport
+        self.interactionBar_commentReport = interactionBarConfigurations.commentReport
     }
 }
 

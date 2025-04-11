@@ -10,6 +10,8 @@ import MlemMiddleware
 import SwiftUI
 
 struct ReplyView: View {
+    @Setting(\.interactionBar_reply) var replyInteractionBar
+    
     @Environment(AppState.self) private var appState
     @Environment(NavigationLayer.self) private var navigation
     
@@ -33,7 +35,7 @@ struct ReplyView: View {
             InteractionBarView(
                 appState: appState,
                 reply: reply,
-                configuration: InteractionBarTracker.main.replyInteractionBar
+                configuration: replyInteractionBar
             )
             .padding(.top, 1)
         }
@@ -47,7 +49,7 @@ struct ReplyView: View {
         }
         .quickSwipes(
             reply: reply,
-            configuration: InteractionBarTracker.main.replyInteractionBar,
+            configuration: replyInteractionBar,
             behavior: .standard
         )
         .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))

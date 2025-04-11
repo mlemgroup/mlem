@@ -17,6 +17,8 @@ struct FeedCommentView<EmbeddedContent: View>: View {
     
     @Setting(\.post_size) var settingsPostSize
     @Setting(\.comment_compact) var compactComments
+    @Setting(\.interactionBar_comment) var commentInteractionBar
+    @Setting(\.interactionBar_commentReport) var commentReportInteractionBar
     @Setting(\.interactionBar_alternateReportLayout) var alternateInteractionBarLayoutForReports: Bool
 
     let comment: any Comment
@@ -76,8 +78,8 @@ struct FeedCommentView<EmbeddedContent: View>: View {
     
     var interactionBarConfiguration: CommentBarConfiguration {
         if reportContext != nil, alternateInteractionBarLayoutForReports {
-            return InteractionBarTracker.main.commentReportInteractionBar
+            commentReportInteractionBar
         }
-        return InteractionBarTracker.main.commentInteractionBar
+        return commentInteractionBar
     }
 }
