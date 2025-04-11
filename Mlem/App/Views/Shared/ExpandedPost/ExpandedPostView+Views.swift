@@ -42,7 +42,9 @@ extension ExpandedPostView {
                         if tapCommentsToCollapse {
                             withAnimation(UIAccessibility.isReduceMotionEnabled ? nil : .default) {
                                 node.collapsed.toggle()
-                                scrollProxy.scrollTo(comment.actorId)
+                                if node.collapsed {
+                                    scrollProxy.scrollTo(comment.actorId)
+                                }
                             }
                         }
                     }
