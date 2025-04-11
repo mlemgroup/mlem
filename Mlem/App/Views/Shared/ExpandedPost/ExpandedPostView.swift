@@ -27,6 +27,8 @@ struct ExpandedPostView<Content: View>: View {
     @Setting(\.comment_compact) var compactComments
     @Setting(\.post_gestures_tapToCollapse) var tapPostsToCollapse
     @Setting(\.comment_gestures_tapToCollapse) var tapCommentsToCollapse
+    @Setting(\.interactionBar_post) var postInteractionBar
+    @Setting(\.interactionBar_comment) var commentInteractionBar
 
     var post: (any PostStubProviding)?
     var contentLoaderError: Error?
@@ -244,7 +246,7 @@ struct ExpandedPostView<Content: View>: View {
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
         .quickSwipes(
             post: post,
-            configuration: InteractionBarTracker.main.postInteractionBar,
+            configuration: postInteractionBar,
             behavior: .standard
         )
         .contextMenu {

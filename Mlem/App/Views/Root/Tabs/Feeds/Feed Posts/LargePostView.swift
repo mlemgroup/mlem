@@ -15,6 +15,8 @@ struct LargePostView: View {
     @Setting(\.community_showAvatar) private var showCommunityAvatar
     @Setting(\.safety_blurNsfw) var blurNsfw
     @Setting(\.a11y_readPostIndicator) var readPostIndicator
+    @Setting(\.interactionBar_post) var postInteractionBar
+    @Setting(\.interactionBar_postReport) var postReportInteractionBar
     @Setting(\.interactionBar_alternateReportLayout) var alternateInteractionBarLayoutForReports
     
     @Environment(AppState.self) private var appState
@@ -109,9 +111,9 @@ struct LargePostView: View {
     
     var interactionBarConfiguration: PostBarConfiguration {
         if reportContext != nil, alternateInteractionBarLayoutForReports {
-            return InteractionBarTracker.main.postReportInteractionBar
+            return postReportInteractionBar
         }
-        return InteractionBarTracker.main.postInteractionBar
+        return postInteractionBar
     }
     
     var showDivider: Bool {

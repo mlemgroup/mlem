@@ -14,6 +14,8 @@ struct HeadlinePostView<EmbeddedContent: View>: View {
     @Setting(\.person_showAvatar) var showPersonAvatar
     @Setting(\.community_showAvatar) var showCommunityAvatar
     @Setting(\.a11y_readPostIndicator) var readPostIndicator
+    @Setting(\.interactionBar_post) var postInteractionBar
+    @Setting(\.interactionBar_postReport) var postReportInteractionBar
     @Setting(\.interactionBar_alternateReportLayout) var alternateInteractionBarLayoutForReports
 
     @Environment(AppState.self) private var appState
@@ -108,9 +110,9 @@ struct HeadlinePostView<EmbeddedContent: View>: View {
     
     var interactionBarConfiguration: PostBarConfiguration {
         if reportContext != nil, alternateInteractionBarLayoutForReports {
-            return InteractionBarTracker.main.postReportInteractionBar
+            return postReportInteractionBar
         }
-        return InteractionBarTracker.main.postInteractionBar
+        return postInteractionBar
     }
 }
 

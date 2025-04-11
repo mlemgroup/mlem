@@ -8,6 +8,10 @@
 import SwiftUI
 
 struct SwipeActionEditorView<Configuration: InteractionBarConfiguration>: View {
+    @Setting(\.interactionBar_post) var postInteractionBar
+    @Setting(\.interactionBar_comment) var commentInteractionBar
+    @Setting(\.interactionBar_reply) var replyInteractionBar
+    
     @State var configuration: Configuration
     @State var showingApplyToAllConfirmation: Bool = false
     let isReport: Bool
@@ -20,11 +24,8 @@ struct SwipeActionEditorView<Configuration: InteractionBarConfiguration>: View {
         self.onSet = onSet
     }
     
-    init(setting: WritableKeyPath<InteractionBarTracker, Configuration>, isReport: Bool) {
-        self.init(configuration: InteractionBarTracker.main[keyPath: setting], isReport: isReport) {
-            var main = InteractionBarTracker.main
-            main[keyPath: setting] = $0
-        }
+    init(setting: ReferenceWritableKeyPath<SettingsValues, Configuration>, isReport: Bool) {
+        self.init(configuration: Settings.get(setting), isReport: isReport) { Settings.set(setting, to: $0) }
     }
     
     var body: some View {
@@ -45,15 +46,10 @@ struct SwipeActionEditorView<Configuration: InteractionBarConfiguration>: View {
                     titleVisibility: .visible
                 ) {
                     Button("Yes") {
-                        let configurations = InteractionBarTracker.main.interactionBarConfigurations
-                        InteractionBarTracker.main.interactionBarConfigurations = .init(
-                            post: configurations.post.applying(other: configuration, types: [.swipe]),
-                            comment: configurations.comment.applying(other: configuration, types: [.swipe]),
-                            reply: configurations.reply.applying(other: configuration, types: [.swipe]),
-                            // Don't apply to report overrides
-                            postReport: InteractionBarTracker.main.interactionBarConfigurations.postReport,
-                            commentReport: InteractionBarTracker.main.interactionBarConfigurations.commentReport
-                        )
+                        postInteractionBar = postInteractionBar.applying(other: configuration, types: [.swipe])
+                        commentInteractionBar = commentInteractionBar.applying(other: configuration, types: [.swipe])
+                        replyInteractionBar = replyInteractionBar.applying(other: configuration, types: [.swipe])
+                        // reports intentionally omitted
                     }
                 }
         }

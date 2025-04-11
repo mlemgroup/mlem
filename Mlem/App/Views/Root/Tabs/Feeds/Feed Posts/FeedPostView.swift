@@ -24,6 +24,8 @@ struct FeedPostView<EmbeddedContent: View>: View {
     @Setting(\.post_size) private var settingsPostSize
     @Setting(\.a11y_readPostIndicator) var readPostIndicator
     @Setting(\.a11y_readOutlineThickness) var readOutlineThickness
+    @Setting(\.interactionBar_post) var postInteractionBar
+    @Setting(\.interactionBar_postReport) var postReportInteractionBar
     @Setting(\.interactionBar_alternateReportLayout) var alternateInteractionBarLayoutForReports
     
     let post: any Post1Providing
@@ -140,9 +142,9 @@ struct FeedPostView<EmbeddedContent: View>: View {
     
     var interactionBarConfiguration: PostBarConfiguration {
         if reportContext != nil, alternateInteractionBarLayoutForReports {
-            return InteractionBarTracker.main.postReportInteractionBar
+            return postReportInteractionBar
         }
-        return InteractionBarTracker.main.postInteractionBar
+        return postInteractionBar
     }
     
     func shouldRenderCompact() -> Bool {

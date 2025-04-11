@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ModMailInteractionBarSettingsView: View {
+    @Setting(\.interactionBar_postReport) var postReportInteractionBar
+    @Setting(\.interactionBar_commentReport) var commentReportInteractionBar
     @Setting(\.interactionBar_alternateReportLayout) var useAlternateLayout
     
     var body: some View {
@@ -25,7 +27,7 @@ struct ModMailInteractionBarSettingsView: View {
                     NavigationLink(.settings(.interactionBar(.postReport))) {
                         SettingsInteractionBarSummaryView(
                             title: "Interaction Bar",
-                            configuration: InteractionBarTracker.main.postReportInteractionBar
+                            configuration: postReportInteractionBar
                         )
                     }
                     NavigationLink("Swipe Actions", destination: .settings(.swipeActions(.postReport)))
@@ -34,7 +36,7 @@ struct ModMailInteractionBarSettingsView: View {
                     NavigationLink(.settings(.interactionBar(.commentReport))) {
                         SettingsInteractionBarSummaryView(
                             title: "Interaction Bar",
-                            configuration: InteractionBarTracker.main.commentReportInteractionBar
+                            configuration: commentReportInteractionBar
                         )
                     }
                     NavigationLink("Swipe Actions", destination: .settings(.swipeActions(.commentReport)))

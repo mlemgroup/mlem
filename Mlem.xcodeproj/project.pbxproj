@@ -41,7 +41,6 @@
 		0315B1BE2C74C3D6006D4F82 /* CommentEditorView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0315B1BD2C74C3D6006D4F82 /* CommentEditorView+Logic.swift */; };
 		0315B1C12C74C71A006D4F82 /* CommentEditorView+Context.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0315B1C02C74C71A006D4F82 /* CommentEditorView+Context.swift */; };
 		0315B1C62C754802006D4F82 /* PostEditorView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0315B1C52C754802006D4F82 /* PostEditorView+Logic.swift */; };
-		0315B1CA2C767847006D4F82 /* InteractionBarTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0315B1C92C767847006D4F82 /* InteractionBarTracker.swift */; };
 		0316CD642C382A6A009EA8EA /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0316CD632C382A6A009EA8EA /* MessageView.swift */; };
 		0318BA9F2D72405F006CA71F /* PostSortType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0318BA9E2D72405F006CA71F /* PostSortType+Extensions.swift */; };
 		031E2D512BEF961D0003BC45 /* SubscriptionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031E2D502BEF961D0003BC45 /* SubscriptionListView.swift */; };
@@ -386,7 +385,6 @@
 		CD1446212A5B328E00610EF1 /* Privacy Policy.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1446202A5B328E00610EF1 /* Privacy Policy.swift */; };
 		CD1446252A5B357900610EF1 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1446242A5B357900610EF1 /* Document.swift */; };
 		CD1446272A5B36DA00610EF1 /* EULA.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1446262A5B36DA00610EF1 /* EULA.swift */; };
-		CD1464542D63FE7900202619 /* LegacyInteractionBarConfigurations.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1464532D63FE7300202619 /* LegacyInteractionBarConfigurations.swift */; };
 		CD17B24B2C19109A001E174B /* SwipeConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD17B24A2C19108B001E174B /* SwipeConfiguration.swift */; };
 		CD1B2E212C7F84160075C7EA /* View+MarkReadOnScroll.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1B2E202C7F84160075C7EA /* View+MarkReadOnScroll.swift */; };
 		CD1C64152D3428710006B3C1 /* CommunityView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1C64142D34286E0006B3C1 /* CommunityView+Logic.swift */; };
@@ -583,7 +581,6 @@
 		0315B1BD2C74C3D6006D4F82 /* CommentEditorView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentEditorView+Logic.swift"; sourceTree = "<group>"; };
 		0315B1C02C74C71A006D4F82 /* CommentEditorView+Context.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentEditorView+Context.swift"; sourceTree = "<group>"; };
 		0315B1C52C754802006D4F82 /* PostEditorView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostEditorView+Logic.swift"; sourceTree = "<group>"; };
-		0315B1C92C767847006D4F82 /* InteractionBarTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionBarTracker.swift; sourceTree = "<group>"; };
 		0316CD632C382A6A009EA8EA /* MessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
 		0318BA9E2D72405F006CA71F /* PostSortType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostSortType+Extensions.swift"; sourceTree = "<group>"; };
 		031E2D502BEF961D0003BC45 /* SubscriptionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionListView.swift; sourceTree = "<group>"; };
@@ -923,7 +920,6 @@
 		CD1446202A5B328E00610EF1 /* Privacy Policy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Privacy Policy.swift"; sourceTree = "<group>"; };
 		CD1446242A5B357900610EF1 /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
 		CD1446262A5B36DA00610EF1 /* EULA.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EULA.swift; sourceTree = "<group>"; };
-		CD1464532D63FE7300202619 /* LegacyInteractionBarConfigurations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyInteractionBarConfigurations.swift; sourceTree = "<group>"; };
 		CD17B24A2C19108B001E174B /* SwipeConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeConfiguration.swift; sourceTree = "<group>"; };
 		CD1B2E202C7F84160075C7EA /* View+MarkReadOnScroll.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+MarkReadOnScroll.swift"; sourceTree = "<group>"; };
 		CD1C64142D34286E0006B3C1 /* CommunityView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommunityView+Logic.swift"; sourceTree = "<group>"; };
@@ -1748,7 +1744,6 @@
 			isa = PBXGroup;
 			children = (
 				CDE1F18E2C63D75A008AF042 /* LegacySettings.swift */,
-				CD1464532D63FE7300202619 /* LegacyInteractionBarConfigurations.swift */,
 			);
 			path = Legacy;
 			sourceTree = "<group>";
@@ -2319,7 +2314,6 @@
 				CDD4A09B2C8A122F0001AD1A /* Settings.swift */,
 				CDB3DDFC2DA485D000F407AB /* SettingsValues.swift */,
 				CDE1F19B2C63E2EB008AF042 /* SettingPropertyWrapper.swift */,
-				0315B1C92C767847006D4F82 /* InteractionBarTracker.swift */,
 				036ED6782D0AF3740018E5EA /* PinnedSortTracker.swift */,
 			);
 			path = "User Settings";
@@ -2582,7 +2576,6 @@
 				03D283FE2D25EEC500A6659B /* SearchView+Views.swift in Sources */,
 				03AFD0DF2C3B2E000054B8AD /* PersonListRow.swift in Sources */,
 				03A6315E2D4D1A1B009A47A6 /* DefaultFeedSettingsView.swift in Sources */,
-				0315B1CA2C767847006D4F82 /* InteractionBarTracker.swift in Sources */,
 				03DAEA772C64074E0064DE64 /* SubscriptionListItemView.swift in Sources */,
 				0324FA772C1F0AE100F6247D /* Readout.swift in Sources */,
 				035E85B02C999BC4002A2A29 /* PanGesture.swift in Sources */,
@@ -2895,7 +2888,6 @@
 				034B94892C09360A00039AF4 /* Int+Extensions.swift in Sources */,
 				036A84552D98253400E95D50 /* UpdateBannerView.swift in Sources */,
 				039D75642C4EEE69004F24C2 /* DeletableProviding+Extensions.swift in Sources */,
-				CD1464542D63FE7900202619 /* LegacyInteractionBarConfigurations.swift in Sources */,
 				0391E0FE2D05B2DF0040CCA8 /* AdvancedSortView.swift in Sources */,
 				035394972CA1AFAF00795AA5 /* InstanceStubProviding+Uptime.swift in Sources */,
 				CDB2EC882BFAE14800DBC0EF /* FullyQualifiedNameView.swift in Sources */,

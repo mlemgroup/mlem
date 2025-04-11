@@ -12,6 +12,7 @@ struct CommentSettingsView: View {
     @Setting(\.comment_gestures_tapToCollapse) var tapCommentsToCollapse
     @Setting(\.comment_maxDepth) var maxCommentDepth
     @Setting(\.comment_jumpButton) var jumpButton
+    @Setting(\.interactionBar_comment) var commentInteractionBar
 
     var body: some View {
         Form {
@@ -23,7 +24,7 @@ struct CommentSettingsView: View {
             }
             Section {
                 NavigationLink(.settings(.interactionBar(.comment))) {
-                    SettingsInteractionBarSummaryView(configuration: InteractionBarTracker.main.commentInteractionBar)
+                    SettingsInteractionBarSummaryView(configuration: commentInteractionBar)
                 }
                 NavigationLink("Swipe Actions", destination: .settings(.swipeActions(.comment)))
             }

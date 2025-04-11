@@ -50,7 +50,7 @@ extension ExpandedPostView {
                     }
                     .quickSwipes(
                         comment: comment,
-                        configuration: InteractionBarTracker.main.commentInteractionBar,
+                        configuration: commentInteractionBar,
                         behavior: .standard
                     )
                     .contextMenu {
