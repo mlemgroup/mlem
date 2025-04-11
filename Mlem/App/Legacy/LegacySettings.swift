@@ -24,7 +24,7 @@ class LegacySettings: ObservableObject {
     @AppStorage("a11y.websiteThumbnailIcon") var websiteThumbnailIcon: Bool = false
     @AppStorage("a11y.zoomSliderLocation") var zoomSliderLocation: ZoomSliderLocation = .none
 
-    @AppStorage("post.size") var postSize: PostSize = .compact
+    @AppStorage("post.size") var postSize: PostSize = .large
     @AppStorage("post.allowMultipleColumns") var allowMultiplePostColumns: Bool = true
     @AppStorage("post.defaultSort") var defaultPostSort: ApiSortType = .hot
     @AppStorage("post.fallbackSort") var fallbackPostSort: ApiSortType = .hot
@@ -107,9 +107,5 @@ class LegacySettings: ObservableObject {
     
     @AppStorage("interactionBar.alternateReportLayout") var alternateInteractionBarLayoutForReports: Bool = false
     
-    @AppStorage("filters.keywordFilterEnabled") var keywordFilterEnabled: Bool = true {
-        didSet {
-            FiltersTracker.main.keywordFilterEnabled = keywordFilterEnabled
-        }
-    }
+    @AppStorage("filters.keywordFilterEnabled") var keywordFilterEnabled: Bool = true
 }
