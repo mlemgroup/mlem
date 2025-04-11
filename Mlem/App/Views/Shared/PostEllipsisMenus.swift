@@ -14,6 +14,7 @@ struct PostEllipsisMenus: View {
     @Environment(NavigationLayer.self) private var navigation
     @Environment(\.reportContext) private var reportContext: Report?
     
+    @Setting(\.interactionBar_post) var postInteractionBar
     @Setting(\.menus_modActionGrouping) var moderatorActionGrouping
 
     // This @State is necessary!
@@ -23,7 +24,7 @@ struct PostEllipsisMenus: View {
     
     var body: some View {
         HStack {
-            if post.shouldShowLoadingSymbol(for: InteractionBarTracker.main.postInteractionBar) {
+            if post.shouldShowLoadingSymbol(for: postInteractionBar) {
                 ProgressView()
             }
             if moderatorActionGrouping == .separateMenu {

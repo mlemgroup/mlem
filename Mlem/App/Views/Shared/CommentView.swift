@@ -19,6 +19,8 @@ struct CommentView<EmbeddedContent: View>: View {
     
     @Setting(\.comment_compact) var compactComments
     @Setting(\.menus_modActionGrouping) var moderatorActionGrouping
+    @Setting(\.interactionBar_comment) var commentInteractionBar
+    @Setting(\.interactionBar_commentReport) var commentReportInteractionBar
     @Setting(\.interactionBar_alternateReportLayout) var alternateInteractionBarLayoutForReports
     
     private let indent: CGFloat = 10
@@ -123,7 +125,7 @@ struct CommentView<EmbeddedContent: View>: View {
             if compact {
                 InfoStackView(
                     comment: comment,
-                    readouts: InteractionBarTracker.main.commentInteractionBar.readouts,
+                    readouts: commentInteractionBar.readouts,
                     coloredReadouts: .init(CommentBarConfiguration.ReadoutType.allCases)
                 )
                 .layoutPriority(1)
@@ -144,7 +146,7 @@ struct CommentView<EmbeddedContent: View>: View {
     
     var ellipsisMenus: some View {
         HStack {
-            if comment.shouldShowLoadingSymbol(for: InteractionBarTracker.main.commentInteractionBar) {
+            if comment.shouldShowLoadingSymbol(for: commentInteractionBar) {
                 ProgressView()
             }
             if moderatorActionGrouping == .separateMenu {
@@ -176,9 +178,9 @@ struct CommentView<EmbeddedContent: View>: View {
     
     var interactionBarConfiguration: CommentBarConfiguration {
         if reportContext != nil, alternateInteractionBarLayoutForReports {
-            return InteractionBarTracker.main.commentReportInteractionBar
+            return commentReportInteractionBar
         }
-        return InteractionBarTracker.main.commentInteractionBar
+        return commentInteractionBar
     }
 }
 
