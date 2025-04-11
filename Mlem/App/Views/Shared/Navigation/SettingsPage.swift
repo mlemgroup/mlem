@@ -154,28 +154,28 @@ enum SettingsPage: Hashable {
         case let .swipeActions(type):
             switch type {
             case .post:
-                SwipeActionEditorView(setting: \.postInteractionBar, isReport: false)
+                SwipeActionEditorView(setting: \.interactionBar_post, isReport: false)
             case .comment:
-                SwipeActionEditorView(setting: \.commentInteractionBar, isReport: false)
+                SwipeActionEditorView(setting: \.interactionBar_comment, isReport: false)
             case .reply:
-                SwipeActionEditorView(setting: \.replyInteractionBar, isReport: false)
+                SwipeActionEditorView(setting: \.interactionBar_reply, isReport: false)
             case .postReport:
-                SwipeActionEditorView(setting: \.postReportInteractionBar, isReport: true)
+                SwipeActionEditorView(setting: \.interactionBar_postReport, isReport: true)
             case .commentReport:
-                SwipeActionEditorView(setting: \.commentReportInteractionBar, isReport: true)
+                SwipeActionEditorView(setting: \.interactionBar_commentReport, isReport: true)
             }
         case let .interactionBar(type):
             switch type {
             case .post:
-                InteractionBarEditorView(setting: \.postInteractionBar, isReport: false)
+                InteractionBarEditorView(setting: \.interactionBar_post, isReport: false)
             case .comment:
-                InteractionBarEditorView(setting: \.commentInteractionBar, isReport: false)
+                InteractionBarEditorView(setting: \.interactionBar_comment, isReport: false)
             case .reply:
-                InteractionBarEditorView(setting: \.replyInteractionBar, isReport: false)
+                InteractionBarEditorView(setting: \.interactionBar_reply, isReport: false)
             case .postReport:
-                InteractionBarEditorView(setting: \.postReportInteractionBar, isReport: true)
+                InteractionBarEditorView(setting: \.interactionBar_postReport, isReport: true)
             case .commentReport:
-                InteractionBarEditorView(setting: \.commentReportInteractionBar, isReport: true)
+                InteractionBarEditorView(setting: \.interactionBar_commentReport, isReport: true)
             }
         case let .postBarWidgetPicker(configuration):
             InteractionBarWidgetPickerView<PostBarConfiguration>(configuration: configuration.wrappedValue)

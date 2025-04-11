@@ -20,6 +20,8 @@ struct PostSettingsView: View {
     @Setting(\.post_showDownvotesCompact) var showDownvotesCompact
     @Setting(\.post_gestures_tapToCollapse) var tapPostsToCollapse
     
+    @Setting(\.interactionBar_post) var postInteractionBar
+    
     @Setting(\.a11y_readPostIndicator) var readPostIndicator
     
     var body: some View {
@@ -31,7 +33,7 @@ struct PostSettingsView: View {
             
             Section {
                 NavigationLink(.settings(.interactionBar(.post))) {
-                    SettingsInteractionBarSummaryView(configuration: InteractionBarTracker.main.postInteractionBar)
+                    SettingsInteractionBarSummaryView(configuration: postInteractionBar)
                 }
                 NavigationLink("Swipe Actions", destination: .settings(.swipeActions(.post)))
             }
