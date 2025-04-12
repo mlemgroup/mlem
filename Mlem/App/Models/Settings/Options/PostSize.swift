@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Icons
 import SwiftUI
 
 enum PostSize: String, CaseIterable, Codable {
@@ -55,12 +56,12 @@ enum PostSize: String, CaseIterable, Codable {
         }
     }
     
-    func icon(filled: Bool) -> String {
+    var icon: Icon {
         switch self {
-        case .compact: filled ? Icons.compactPostFill : Icons.compactPost
-        case .tile: filled ? Icons.tilePostFill : Icons.tilePost
-        case .headline: filled ? Icons.headlinePostFill : Icons.headlinePost
-        case .large: filled ? Icons.largePostFill : Icons.largePost
+        case .compact: .settings.postSizeCompact
+        case .tile: .settings.postSizeTiled
+        case .headline: .settings.postSizeHeadline
+        case .large: .settings.postSizeLarge
         }
     }
     

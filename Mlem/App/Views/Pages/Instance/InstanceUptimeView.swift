@@ -136,7 +136,8 @@ struct InstanceUptimeView: View {
         HStack(spacing: 5) {
             summaryHeaderText(isHealthy: isHealthy)
                 .font(.title2)
-            Image(systemName: isHealthy ? Icons.uptimeOnline : Icons.uptimeOutage)
+            Image(icon: isHealthy ? .uptime.online : .uptime.outage)
+                .symbolVariant(.circle.fill)
                 .foregroundStyle(isHealthy ? .themedPositive : .themedNegative)
         }
         .fontWeight(.semibold)
@@ -173,9 +174,10 @@ struct InstanceUptimeView: View {
             HStack(spacing: 3) {
                 ForEach(uptimeData.results) { result in
                     if diffWithoutColor {
-                        Image(systemName: result.success ? Icons.uptimeOnline : Icons.uptimeOffline)
+                        Image(icon: result.success ? .uptime.online : .uptime.offline)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
+                            .symbolVariant(.circle.fill)
                             .foregroundStyle(result.success ? .themedPositive : .themedNegative)
                             .frame(maxWidth: 20)
                             .frame(maxWidth: 25)

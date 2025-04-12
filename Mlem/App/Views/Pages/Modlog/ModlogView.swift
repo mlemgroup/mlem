@@ -158,7 +158,7 @@ struct ModlogView: View {
     func typeFilterView() -> some View {
         Menu(
             String(localized: actionTypeFilter?.label ?? "Action Type"),
-            systemImage: actionTypeFilter?.systemImage ?? Icons.action
+            icon: actionTypeFilter?.icon ?? .general.action
         ) {
             Section {
                 Toggle(
@@ -200,7 +200,7 @@ struct ModlogView: View {
     @ViewBuilder
     func typeFilterLabel(_ type: ApiModlogActionType) -> some View {
         if type.appliesToCommunity || communityFilter == .any {
-            Label(String(localized: type.contextualLabel), systemImage: type.systemImage)
+            Label(type.contextualLabel, icon: type.icon)
                 .tag(type)
         }
     }

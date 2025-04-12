@@ -2978,30 +2978,51 @@
       }
     },
     "end.of.feed.icon.1" : {
+      "extractionState" : "extracted_with_value",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "figure.climbing"
+          }
+        },
         "fr" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "end.of.feed.icon.1"
           }
         }
       }
     },
     "end.of.feed.icon.2" : {
+      "extractionState" : "extracted_with_value",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "figure.wave"
+          }
+        },
         "fr" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "end.of.feed.icon.2"
           }
         }
       }
     },
     "end.of.feed.icon.3" : {
+      "extractionState" : "extracted_with_value",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "tortoise"
+          }
+        },
         "fr" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "end.of.feed.icon.3"
           }
         }

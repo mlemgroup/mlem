@@ -27,7 +27,7 @@ extension AdvancedSortView {
                     dismiss()
                 } label: {
                     HStack(spacing: Constants.main.standardSpacing) {
-                        Image(systemName: type.systemImage)
+                        Image(icon: type.icon)
                             .symbolVariant(type == selectedSort ? .fill : .none)
                             .frame(width: 30, alignment: .center)
                             .foregroundStyle(type == selectedSort ? .primary : .secondary) // No palette!

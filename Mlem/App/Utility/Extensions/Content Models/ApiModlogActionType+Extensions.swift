@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Icons
 import MlemMiddleware
 
 extension ApiModlogActionType {
@@ -48,20 +49,20 @@ extension ApiModlogActionType {
         }
     }
     
-    var systemImage: String {
+    var icon: Icon {
         switch self {
-        case .all: Icons.federatedFeed
-        case .modRemovePost, .modRemoveComment, .modRemoveCommunity: Icons.remove
-        case .modLockPost: Icons.lock
-        case .modFeaturePost: Icons.pin
-        case .modBanFromCommunity: Icons.banFromCommunity
-        case .modAddCommunity: Icons.moderation
-        case .modTransferCommunity: Icons.transferCommunity
-        case .modAdd: Icons.administration
-        case .modBan: Icons.banFromInstance
-        case .modHideCommunity: Icons.hide
-        case .adminPurgePerson, .adminPurgeCommunity, .adminPurgePost, .adminPurgeComment: Icons.purge
-        default: Icons.absent
+        case .all: .lemmy.federatedFeed
+        case .modRemovePost, .modRemoveComment, .modRemoveCommunity: .lemmy.remove
+        case .modLockPost: .lemmy.addLock
+        case .modFeaturePost: .lemmy.addPin
+        case .modBanFromCommunity: .lemmy.banFromCommunity
+        case .modAddCommunity: .lemmy.moderation
+        case .modTransferCommunity: .lemmy.transferCommunity
+        case .modAdd: .lemmy.administration
+        case .modBan: .lemmy.banFromInstance
+        case .modHideCommunity: .general.hide
+        case .adminPurgePerson, .adminPurgeCommunity, .adminPurgePost, .adminPurgeComment: .lemmy.purge
+        default: .general.circle
         }
     }
     

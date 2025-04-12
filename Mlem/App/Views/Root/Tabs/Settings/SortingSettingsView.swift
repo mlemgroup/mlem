@@ -70,10 +70,10 @@ struct SortingSettingsView: View {
                 HStack {
                     Text("Comments")
                     Spacer()
-                    Menu(defaultCommentSort.label(timeRangeFormat: .topOnly), systemImage: defaultCommentSort.systemImage) {
+                    Menu(defaultCommentSort.label(timeRangeFormat: .topOnly), icon: defaultCommentSort.icon) {
                         Picker("Sort", selection: .init(get: { defaultCommentSort }, set: { defaultCommentSort = $0 })) {
                             ForEach(CommentSortType.legacyCases, id: \.self) { item in
-                                Label(item.label(timeRangeFormat: .topOnly), systemImage: item.systemImage)
+                                Label(item.label(timeRangeFormat: .topOnly), icon: item.icon)
                             }
                         }
                     }

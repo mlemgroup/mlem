@@ -65,7 +65,7 @@ struct FeedSortPicker: View {
                 ForEach(nonTopSortTypes, id: \.self) { type in
                     Toggle(
                         type.label(),
-                        systemImage: type.systemImage,
+                        icon: type.icon,
                         isOn: .init(get: { sort == type }, set: { _ in sort = type })
                     )
                 }
@@ -80,7 +80,7 @@ struct FeedSortPicker: View {
                     ForEach(topSortTypes, id: \.self) { type in
                         Toggle(
                             type.label(timeRangeFormat: .topAndTimescale),
-                            systemImage: type.systemImage,
+                            icon: type.icon,
                             isOn: .init(get: { sort == type }, set: { _ in sort = type })
                         )
                     }
@@ -109,7 +109,7 @@ struct FeedSortPicker: View {
                 }
                 .accessibilityLabel(sort.label(timeRangeFormat: .topAndTimescale))
             } else {
-                Label(sort.label(timeRangeFormat: topSortTypes.count == 1 ? .topOnly : .topAndTimescale), systemImage: sort.systemImage)
+                Label(sort.label(timeRangeFormat: topSortTypes.count == 1 ? .topOnly : .topAndTimescale), icon: sort.icon)
             }
         }
         .disabled(appState.firstApi.fetchedVersion == nil)

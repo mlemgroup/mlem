@@ -26,7 +26,8 @@ struct PostThumbnailSettingsView: View {
             Section {
                 Picker("Thumbnail Location", selection: $thumbnailLocation) {
                     ForEach(ThumbnailLocation.allCases, id: \.self) { location in
-                        Label(String(localized: location.label), systemImage: location.systemImage).tag(location)
+                        Label(location.label, icon: location.icon)
+                            .tag(location)
                     }
                 }
                 .labelsHidden()

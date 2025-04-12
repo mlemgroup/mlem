@@ -173,7 +173,7 @@ extension InboxView {
             if availableFeeds.count > 1 {
                 Picker("Feed", selection: $selectedFeed) {
                     ForEach(availableFeeds) { feedType in
-                        Label(String(localized: feedType.label), systemImage: feedType.systemImage)
+                        Label(feedType.label, icon: feedType.icon)
                             .tag(feedType)
                     }
                 }
@@ -184,8 +184,7 @@ extension InboxView {
                     label: selectedFeed.label,
                     subtitle: selectedFeed.subtitle(isAdmin: appState.firstApi.isAdmin),
                     color: selectedFeed.color,
-                    iconName: selectedFeed.systemImage,
-                    iconNameFill: selectedFeed.systemImageFill,
+                    icon: selectedFeed.icon,
                     iconScaleFactor: 0.5
                 ),
                 dropdownStyle: availableFeeds.count > 1 ? .enabled(showBadge: showBadge) : .disabled

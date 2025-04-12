@@ -21,10 +21,11 @@ struct AnimatedAvatarSettingsView: View {
             
             Picker("Animate Avatars...", selection: $animatedAvatars) {
                 ForEach(AnimatedAvatarBehavior.allCases, id: \.self) { location in
-                    Label(String(localized: location.label), systemImage: location.systemImage)
+                    Label(location.label, icon: location.icon)
                         .tag(location)
                 }
             }
+            .symbolVariant(.circle)
             .labelsHidden()
             .pickerStyle(.inline)
         }

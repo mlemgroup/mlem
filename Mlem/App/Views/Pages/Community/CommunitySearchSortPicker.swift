@@ -21,11 +21,11 @@ struct CommunitySearchSortPicker: View {
     }
     
     var body: some View {
-        Menu(sort.label(timeRangeFormat: .topAndTimescale), systemImage: sort.systemImage) {
+        Menu(sort.label(timeRangeFormat: .topAndTimescale), icon: sort.icon) {
             ForEach(sortTypes, id: \.self) { type in
                 Toggle(
                     type.label(),
-                    systemImage: type.systemImage,
+                    icon: type.icon,
                     isOn: .init(get: { sort == type }, set: { _ in sort = type })
                 )
             }

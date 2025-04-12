@@ -23,17 +23,17 @@ enum EndOfFeedViewType {
         switch self {
         case .hobbit:
             return EndOfFeedViewContent(
-                icon: .init("end.of.feed.icon.1", defaultValue: .init(Icons.endOfFeedHobbit)),
+                icon: .init("end.of.feed.icon.1", defaultValue: "figure.climbing"),
                 message: "I think I've found the bottom!"
             )
         case .cartoon:
             return EndOfFeedViewContent(
-                icon: .init("end.of.feed.icon.2", defaultValue: .init(Icons.endOfFeedCartoon)),
+                icon: .init("end.of.feed.icon.2", defaultValue: "figure.wave"),
                 message: "That's all, folks!"
             )
         case .turtle:
             return EndOfFeedViewContent(
-                icon: .init("end.of.feed.icon.3", defaultValue: .init(Icons.endOfFeedTurtle)),
+                icon: .init("end.of.feed.icon.3", defaultValue: "tortoise"),
                 message: "It's turtles all the way down"
             )
         }

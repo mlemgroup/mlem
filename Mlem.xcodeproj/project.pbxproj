@@ -416,7 +416,6 @@
 		CD4D58B92B86D9F800B82964 /* AccountListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58B82B86D9F800B82964 /* AccountListRow.swift */; };
 		CD4D58BB2B86DA7D00B82964 /* AccountListView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58BA2B86DA7D00B82964 /* AccountListView+Logic.swift */; };
 		CD4D58C82B86DCED00B82964 /* AvatarType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58C72B86DCED00B82964 /* AvatarType.swift */; };
-		CD4D58CB2B86DD3D00B82964 /* AssociatedIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58CA2B86DD3D00B82964 /* AssociatedIcon.swift */; };
 		CD4D58CF2B86DDEC00B82964 /* AccountSortMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58CE2B86DDEC00B82964 /* AccountSortMode.swift */; };
 		CD4D58EB2B86E63300B82964 /* AssociatedColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58EA2B86E63300B82964 /* AssociatedColor.swift */; };
 		CD4D58F82B87B0D100B82964 /* InternetSpeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58F72B87B0D100B82964 /* InternetSpeed.swift */; };
@@ -950,7 +949,6 @@
 		CD4D58B82B86D9F800B82964 /* AccountListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListRow.swift; sourceTree = "<group>"; };
 		CD4D58BA2B86DA7D00B82964 /* AccountListView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountListView+Logic.swift"; sourceTree = "<group>"; };
 		CD4D58C72B86DCED00B82964 /* AvatarType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarType.swift; sourceTree = "<group>"; };
-		CD4D58CA2B86DD3D00B82964 /* AssociatedIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssociatedIcon.swift; sourceTree = "<group>"; };
 		CD4D58CE2B86DDEC00B82964 /* AccountSortMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AccountSortMode.swift; path = Mlem/App/Protocols/AccountSortMode.swift; sourceTree = SOURCE_ROOT; };
 		CD4D58EA2B86E63300B82964 /* AssociatedColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssociatedColor.swift; sourceTree = "<group>"; };
 		CD4D58F72B87B0D100B82964 /* InternetSpeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetSpeed.swift; sourceTree = "<group>"; };
@@ -1990,7 +1988,6 @@
 		CD4D58C92B86DD3200B82964 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				CD4D58CA2B86DD3D00B82964 /* AssociatedIcon.swift */,
 				CD4D58EA2B86E63300B82964 /* AssociatedColor.swift */,
 			);
 			path = Protocols;
@@ -2855,7 +2852,6 @@
 				035BE08B2BDD903100F77D73 /* NavigationModel.swift in Sources */,
 				033F84BB2C2ACB96002E3EDF /* CommentView.swift in Sources */,
 				03AFD0E52C3C14D50054B8AD /* InstanceStubProviding+Extensions.swift in Sources */,
-				CD4D58CB2B86DD3D00B82964 /* AssociatedIcon.swift in Sources */,
 				CDEE15522D22190600EB9D7B /* ErrorsTracker.swift in Sources */,
 				03B62B792CE2A2C00077E9C8 /* RulesPickerView.swift in Sources */,
 				0389DDD52C39F1290005B808 /* CommunityListRow.swift in Sources */,

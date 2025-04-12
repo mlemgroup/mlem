@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 31/05/2024.
 //
 
+import Icons
 import MlemMiddleware
 import SwiftUI
 import Theming
@@ -13,7 +14,8 @@ struct ProfileDateView: View {
     var profilable: any Profile2Providing
     
     var body: some View {
-        Label(format(profilable.created), systemImage: systemImage)
+        Label(format(profilable.created), icon: icon)
+            .symbolVariant(profilable.createdRecently || profilable.isCakeDay ? .fill : .none)
             .foregroundStyle(color)
             .font(.footnote)
     }
@@ -28,14 +30,8 @@ struct ProfileDateView: View {
         }
     }
     
-    var systemImage: String {
-        if profilable.createdRecently {
-            Icons.newAccountFlair
-        } else if profilable.isCakeDay {
-            Icons.cakeDayFill
-        } else {
-            Icons.cakeDay
-        }
+    var icon: Icon {
+        profilable.createdRecently ? .lemmy.newAccountFlair : .lemmy.cakeDay
     }
     
     func format(_ date: Date) -> String {

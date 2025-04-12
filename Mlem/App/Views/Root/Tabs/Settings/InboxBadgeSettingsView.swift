@@ -61,7 +61,7 @@ struct InboxBadgeSettingsView: View {
     
     @ViewBuilder
     func toggle(forType type: InboxItemType) -> some View {
-        Toggle(String(localized: type.label), systemImage: type.systemImage, isOn: .init(
+        Toggle(type.label, icon: type.icon, isOn: .init(
             get: { tabInboxBadgeIncludedTypes.contains(type) },
             set: {
                 if $0 {

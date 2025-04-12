@@ -49,7 +49,7 @@ public extension Icon {
         
         // MARK: - Save
         
-        @inlinable var saved: Icon { addSave }
+        @inlinable public var saved: Icon { addSave }
         public let addSave: Icon = .init("bookmark")
         public let removeSave: Icon = .init("bookmark.slash")
         
@@ -97,7 +97,7 @@ public extension Icon {
 
         // MARK: - Subscribe
 
-        @inlinable public var subscribed: Icon { subscribe }
+        public let subscribed: Icon = .init("checkmark.circle")
         public let subscribe: Icon = .init("plus.circle")
         public let unsubscribe: Icon = .init("multiply.circle")
         public let didUnsubscribe: Icon = .init("person.slash")
@@ -148,7 +148,8 @@ public extension Icon {
         public let localFeed: Icon = .init("building.2")
         public let subscribedFeed: Icon = .init("newspaper")
         @inlinable public var savedFeed: Icon { saved }
-        
+        @inlinable public var moderatedFeed: Icon { moderation }
+
         // MARK: - Sort Types
 
         public let activeSort: Icon = .init("popcorn")
@@ -176,6 +177,8 @@ public extension Icon {
         // MARK: - General Concepts
 
         public let federation: Icon = .init("point.3.filled.connected.trianglepath.dotted")
+        public let `private`: Icon = .init("lock")
+        public let captcha: Icon = .init("photo")
         public let instance: Icon = .init("building.2")
         public let community: Icon = .init("house")
         public let person: Icon = .init("person")

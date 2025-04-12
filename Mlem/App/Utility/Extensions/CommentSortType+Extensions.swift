@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Icons
 import MlemMiddleware
 
 extension CommentSortType {
@@ -24,13 +25,13 @@ extension CommentSortType {
         }
     }
     
-    var systemImage: String {
+    var icon: Icon {
         switch self {
-        case .new: Icons.newSort
-        case .old: Icons.oldSort
-        case .hot: Icons.hotSort
-        case .controversial: Icons.controversialSort
-        case .top: Icons.topSort
+        case .new: .lemmy.newSort
+        case .old: .lemmy.oldSort
+        case .hot: .lemmy.hotSort
+        case .controversial: .lemmy.controversialSort
+        case .top: .lemmy.topSort
         }
     }
 }

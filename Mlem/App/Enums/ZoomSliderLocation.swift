@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Icons
 
 enum ZoomSliderLocation: String, CaseIterable, Codable {
     case left, right, either, none
@@ -19,12 +20,12 @@ enum ZoomSliderLocation: String, CaseIterable, Codable {
         }
     }
     
-    var systemImage: String {
+    var icon: Icon {
         switch self {
-        case .left: Icons.left
-        case .right: Icons.right
-        case .either: Icons.leftAndRightCircle
-        case .none: Icons.absent
+        case .left: .general.backward
+        case .right: .general.forward
+        case .either: .settings.leftRight
+        case .none: .general.circle
         }
     }
     

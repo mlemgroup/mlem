@@ -11,4 +11,9 @@ public extension Label where Title == Text, Icon == Image {
     init(_ title: LocalizedStringResource, icon: Icons.Icon) {
         self.init(title.key, systemImage: icon.computeImageName())
     }
+    
+    @_disfavoredOverload
+    init(_ title: some StringProtocol, icon: Icons.Icon) {
+        self.init(title, systemImage: icon.computeImageName())
+    }
 }

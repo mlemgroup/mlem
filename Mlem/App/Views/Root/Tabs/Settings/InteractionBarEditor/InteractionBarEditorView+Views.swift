@@ -215,7 +215,7 @@ extension InteractionBarEditorView {
                 } label: {
                     let color: ThemedColor = disabled ? .themedPrimary : .themedAccent
                     HStack(spacing: 2) {
-                        Image(systemName: readout.appearance.icon)
+                        Image(icon: readout.appearance.icon.representingState(active: false))
                         if readout.appearance.label != "" {
                             Text(readout.appearance.label)
                         }
@@ -359,7 +359,7 @@ extension InteractionBarEditorView {
         HStack(spacing: 12) {
             ForEach(configuration.readouts, id: \.hashValue) { readout in
                 HStack(spacing: 2) {
-                    Image(systemName: readout.appearance.icon)
+                    Image(icon: readout.appearance.icon.representingState(active: false))
                     Text(readout.appearance.label)
                 }
                 .font(.footnote)

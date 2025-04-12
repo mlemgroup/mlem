@@ -40,7 +40,7 @@ struct ModlogEntryView: View {
                 .fill(entry.type.color.opacity(0.3))
                 .frame(width: 24, height: 24)
                 .overlay {
-                    Image(systemName: entry.type.systemImage)
+                    Image(icon: entry.type.icon)
                         .imageScale(.small)
                         .symbolVariant(.fill)
                         .foregroundStyle(entry.type.color)

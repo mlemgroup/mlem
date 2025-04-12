@@ -113,6 +113,7 @@ struct FullyQualifiedLabelView: View {
                     instanceLocation: showInstance ? labelStyle.instanceLocation : .disabled,
                     prependedText: flairs.textView
                 )
+                .symbolVariant(.fill)
             }
             .imageScale(.small)
             .offset(y: 1)

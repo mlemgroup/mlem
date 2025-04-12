@@ -22,10 +22,14 @@ public struct Icon: Hashable {
         case applyCircle(name: String)
         case custom((Variant?) -> String)
         
+        // swiftlint:disable:next cyclomatic_complexity
         func computeImageName(variant: Variant?) -> String {
             switch self {
             case let .baseOnly(name):
-                name
+                switch variant {
+                case .active: "\(name).fill"
+                default: name
+                }
             case let .applySquare(name):
                 switch variant {
                 case .inactive: "\(name).square"
@@ -59,7 +63,7 @@ public struct Icon: Hashable {
         self.init(.baseOnly(name: name), source: source)
     }
     
-    func computeImageName() -> String {
+    public func computeImageName() -> String {
         variantApplicationStrategy.computeImageName(variant: appliedVariant)
     }
     

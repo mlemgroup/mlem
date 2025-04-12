@@ -6,8 +6,8 @@
 //
 
 import Foundation
-import SwiftUICore
 import MlemMiddleware
+import SwiftUICore
 
 struct CommentBarConfiguration: InteractionBarConfiguration {
     enum ActionType: String, ActionTypeProviding {
@@ -103,12 +103,12 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
         
         var appearance: MockReadoutAppearance {
             switch self {
-            case .created: .init(icon: Icons.time, label: "18h")
-            case .score: .init(icon: Icons.votesSquare, label: "7")
-            case .upvote: .init(icon: Icons.upvoteSquare, label: "9")
-            case .downvote: .init(icon: Icons.downvoteSquare, label: "2")
-            case .comment: .init(icon: Icons.replies, label: "1")
-            case .saved: .init(icon: Icons.save, label: "")
+            case .created: .init(icon: .general.time, label: "18h")
+            case .score: .init(icon: .lemmy.votes, label: "7")
+            case .upvote: .init(icon: .lemmy.upvoted, label: "9")
+            case .downvote: .init(icon: .lemmy.downvoted, label: "2")
+            case .comment: .init(icon: .lemmy.replies, label: "1")
+            case .saved: .init(icon: .lemmy.saved, label: "")
             }
         }
         

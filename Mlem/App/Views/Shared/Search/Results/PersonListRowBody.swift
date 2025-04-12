@@ -76,6 +76,7 @@ struct PersonListRowBody<Content: View>: View {
                     .foregroundStyle(isEnabled ? .themedPrimary : .themedSecondary)
                     .lineLimit(1)
                     .imageScale(.small)
+                    .symbolVariant(.fill)
                 caption
                     .font(.footnote)
                     .foregroundStyle(.themedSecondary)

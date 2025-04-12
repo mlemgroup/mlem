@@ -103,9 +103,10 @@ extension MediaView {
     var coreFallbackImage: some View {
         let fallback: Fallback = loader.loading == .proxyFailed ? .proxyFailure : fallback
         GeometryReader { geo in
-            Image(systemName: fallback.icon)
+            Image(icon: fallback.icon)
                 .resizable()
                 .scaledToFit()
+                .symbolVariant(fallback.fallbackStyle == .avatar ? .circle.fill : .none)
                 .frame(width: geo.size.width * fallback.scaleFactor)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         }

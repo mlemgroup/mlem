@@ -11,4 +11,9 @@ public extension Menu where Label == SwiftUI.Label<Text, Image> {
     nonisolated init(_ title: LocalizedStringResource, icon: Icon, @ViewBuilder content: () -> Content) {
         self.init(title.key, systemImage: icon.computeImageName(), content: content)
     }
+    
+    @_disfavoredOverload
+    nonisolated init(_ title: some StringProtocol, icon: Icon, @ViewBuilder content: () -> Content) {
+        self.init(title, systemImage: icon.computeImageName(), content: content)
+    }
 }

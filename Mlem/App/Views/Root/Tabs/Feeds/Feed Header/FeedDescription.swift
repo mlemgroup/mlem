@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Icons
 import MlemMiddleware
 import SwiftUI
 import Theming
@@ -14,16 +15,14 @@ struct FeedDescription {
     var label: LocalizedStringResource
     var subtitle: LocalizedStringResource
     var color: ThemedColor
-    var iconName: String
-    var iconNameFill: String
+    var icon: Icon
     var iconScaleFactor: CGFloat
     
     static var all: FeedDescription = .init(
         label: "All",
         subtitle: "Posts from all federated instances",
         color: .themedFederatedFeed,
-        iconName: Icons.federatedFeed,
-        iconNameFill: Icons.federatedFeedFill,
+        icon: .lemmy.federatedFeed,
         iconScaleFactor: 0.6
     )
     
@@ -32,8 +31,7 @@ struct FeedDescription {
             label: "Local",
             subtitle: "Posts from \(AppState.main.firstApi.host) communities",
             color: .themedLocalFeed,
-            iconName: Icons.instanceFeed,
-            iconNameFill: Icons.instanceFeedFill,
+            icon: .lemmy.localFeed,
             iconScaleFactor: 0.55
         )
     }
@@ -42,8 +40,7 @@ struct FeedDescription {
         label: "Subscribed",
         subtitle: "Posts from communities you subscribe to",
         color: .themedSubscribedFeed,
-        iconName: Icons.subscribedFeed,
-        iconNameFill: Icons.subscribedFeedFill,
+        icon: .lemmy.subscribedFeed,
         iconScaleFactor: 0.5
     )
     
@@ -51,8 +48,7 @@ struct FeedDescription {
         label: "Moderated",
         subtitle: "Posts from communities you moderate",
         color: .themedModeratedFeed,
-        iconName: Icons.moderation,
-        iconNameFill: Icons.moderationFill,
+        icon: .lemmy.moderatedFeed,
         iconScaleFactor: 0.5
     )
     
@@ -60,8 +56,7 @@ struct FeedDescription {
         label: "Saved",
         subtitle: "Your saved posts and comments",
         color: .themedSavedFeed,
-        iconName: Icons.savedFeed,
-        iconNameFill: Icons.savedFeedFill,
+        icon: .lemmy.savedFeed,
         iconScaleFactor: 0.55
     )
 }
