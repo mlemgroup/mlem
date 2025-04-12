@@ -12,7 +12,7 @@ struct MarkdownWithLinkList: View {
     @Environment(\.palette) var palette
     @Environment(\.openURL) var openURL
     
-    @Setting(\.tappableLinksDisplayMode) var tappableLinksDisplayMode
+    @Setting(\.links_displayMode) var tappableLinksDisplayMode
     
     let blocks: [BlockNode]
     let shouldBlur: Bool

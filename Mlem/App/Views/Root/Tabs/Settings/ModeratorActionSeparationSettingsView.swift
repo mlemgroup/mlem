@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ModeratorActionSeparationSettingsView: View {
-    @Setting(\.moderatorActionGrouping) var moderatorActionGrouping
+    @Setting(\.menus_modActionGrouping) var moderatorActionGrouping
     
     var body: some View {
         Form {

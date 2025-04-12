@@ -13,6 +13,10 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.palette) var palette
     
+    @Setting(\.interactionBar_post) var postInteractionBar
+    @Setting(\.interactionBar_comment) var commentInteractionBar
+    @Setting(\.interactionBar_reply) var replyInteractionBar
+    
     @State var configuration: Configuration {
         didSet {
             onSet(configuration)
@@ -63,11 +67,8 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
         )
     }
     
-    init(setting: WritableKeyPath<InteractionBarTracker, Configuration>, isReport: Bool) {
-        self.init(configuration: InteractionBarTracker.main[keyPath: setting], isReport: isReport) {
-            var main = InteractionBarTracker.main
-            main[keyPath: setting] = $0
-        }
+    init(setting: ReferenceWritableKeyPath<SettingsValues, Configuration>, isReport: Bool) {
+        self.init(configuration: Settings.get(setting), isReport: isReport) { Settings.set(setting, to: $0) }
     }
     
     var body: some View {

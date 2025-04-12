@@ -45,13 +45,19 @@ enum MediaLoadingState {
 
 @Observable
 class MediaLoader {
-    @ObservationIgnored @Setting(\.autoBypassImageProxy) var autoBypassImageProxy
+    @ObservationIgnored @Setting(\.privacy_autoBypassImageProxy) var autoBypassImageProxy
     
     private(set) var url: URL?
-    private var proxyBypass: URL?
     private(set) var mediaType: MediaType?
     private(set) var loading: MediaLoadingState
     private(set) var error: ImageLoadingError?
+    
+    @MainActor func setUrl(_ newValue: URL?) { self.url = newValue }
+    @MainActor func setMediaType(_ newValue: MediaType?) { self.mediaType = newValue }
+    @MainActor func setLoading(_ newValue: MediaLoadingState) { self.loading = newValue }
+    @MainActor func setError(_ newValue: ImageLoadingError?) { self.error = newValue }
+    
+    private var proxyBypass: URL?
     
     private let size: CGSize?
     private let processors: [any ImageProcessing]
@@ -86,31 +92,32 @@ class MediaLoader {
         }
         
         // reset everything
-        self.url = url
+        await setUrl(url)
+        await setMediaType(nil)
+        await setLoading(.loading)
+        await setError(nil)
+        
         proxyBypass = computeProxyBypass(for: url)
-        mediaType = nil
-        loading = .loading
-        error = nil
         
         // easy case: nil url
         guard let url else {
-            loading = .failed
+            await setLoading(.failed)
             return
         }
         
         // handle previews
         #if DEBUG
             if url.scheme == "mlempreview" {
-                mediaType = .image(.init(named: url.lastPathComponent)!)
-                loading = .done
+                await setMediaType(.image(.init(named: url.lastPathComponent)!))
+                await setLoading(.done)
                 return
             }
         #endif
         
         // if already in cache, take the cached value
         if let mediaType = retrieveCachedImage(for: url, with: processors) {
-            self.mediaType = mediaType
-            loading = .done
+            await setMediaType(mediaType)
+            await setLoading(.done)
             return
         }
         
@@ -124,19 +131,19 @@ class MediaLoader {
             
             let container = try await imageTask.response.container
             
-            mediaType = container.animatedMediaType
-            loading = .done
+            await setMediaType(container.animatedMediaType)
+            await setLoading(.done)
             return
         } catch {
             if let proxyBypass, autoBypassImageProxy {
                 await load(proxyBypass)
             } else {
                 if let proxyBypass {
-                    self.error = .proxyFailure(proxyBypass: proxyBypass)
-                    loading = .proxyFailed
+                    await setError(.proxyFailure(proxyBypass: proxyBypass))
+                    await setLoading(.proxyFailed)
                 } else {
-                    self.error = .error(error: error)
-                    loading = .failed
+                    await setError(.error(error: error))
+                    await setLoading(.failed)
                 }
             }
         }

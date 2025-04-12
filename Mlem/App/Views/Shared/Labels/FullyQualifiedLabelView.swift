@@ -49,9 +49,9 @@ struct FullyQualifiedLabelView: View {
     @Environment(\.communityContext) var communityContext: (any Community1Providing)?
     @Environment(\.feedContext) var feedContext: FeedContext?
 
-    @Setting(\.showSubscribedStatus) var showSubscribedStatus
-    @Setting(\.showPersonAvatar) var showPersonAvatar
-    @Setting(\.showCommunityAvatar) var showCommunityAvatar
+    @Setting(\.post_showSubscribedStatus) var showSubscribedStatus
+    @Setting(\.person_showAvatar) var showPersonAvatar
+    @Setting(\.community_showAvatar) var showCommunityAvatar
     
     let entity: (any Entity)?
     let avatarFallback: MediaView.Fallback

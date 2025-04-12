@@ -10,11 +10,11 @@ import SwiftUI
 struct AccessibilitySettingsView: View {
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor: Bool
 
-    @Setting(\.readPostIndicator) var readPostIndicator
-    @Setting(\.websiteThumbnailIcon) var websiteThumbnailIcon
-    @Setting(\.showSettingsIcons) var showSettingsIcons
-    @Setting(\.zoomSliderLocation) var zoomSliderLocation
-    @Setting(\.animatedAvatars) var animatedAvatars
+    @Setting(\.a11y_readPostIndicator) var readPostIndicator
+    @Setting(\.a11y_websiteThumbnailIcon) var websiteThumbnailIcon
+    @Setting(\.a11y_showSettingsIcons) var showSettingsIcons
+    @Setting(\.a11y_zoomSliderLocation) var zoomSliderLocation
+    @Setting(\.media_animatedAvatars) var animatedAvatars
     
     var body: some View {
         Form {

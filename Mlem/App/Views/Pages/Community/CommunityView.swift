@@ -33,9 +33,9 @@ struct CommunityView: View {
     @Environment(\.palette) var palette
     @Environment(\.dismiss) var dismiss
     
-    @Setting(\.postSize) var postSize
-    @Setting(\.showNsfwCommunityWarning) var showNsfwCommunityWarning
-    @Setting(\.blurNsfw) var blurNsfw
+    @Setting(\.post_size) var postSize
+    @Setting(\.safety_enableNsfwCommunityWarning) var showNsfwCommunityWarning
+    @Setting(\.safety_blurNsfw) var blurNsfw
     
     @ObservationIgnored @Dependency(\.persistenceRepository) private var persistenceRepository
     
@@ -53,7 +53,7 @@ struct CommunityView: View {
         community: AnyCommunity,
         visitContext: VisitHistory.VisitContext
     ) {
-        @Setting(\.showNsfwCommunityWarning) var showNsfwCommunityWarning
+        @Setting(\.safety_enableNsfwCommunityWarning) var showNsfwCommunityWarning
         self.community = community
         self.visitContext = visitContext
         self._warningPresented = .init(wrappedValue: showNsfwCommunityWarning && (community.wrappedValue.nsfw_ ?? false))

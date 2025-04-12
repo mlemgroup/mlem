@@ -11,7 +11,7 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct ErrorView: View {
-    @Setting(\.developerMode) var developerMode
+    @Setting(\.dev_developerMode) var developerMode
     
     @State var errorDetails: ErrorDetails
     

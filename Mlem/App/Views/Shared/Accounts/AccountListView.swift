@@ -10,8 +10,8 @@ import SwiftUI
 
 /// This view is a component used as a child of ``QuickSwitcherView`` and ``AccountListSettingsView``.
 struct AccountListView: View {
-    @Setting(\.accountSort) var accountSort
-    @Setting(\.groupAccountSort) var groupAccountSort
+    @Setting(\.accounts_sort) var accountSort
+    @Setting(\.accounts_grouped) var groupAccountSort
     
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation

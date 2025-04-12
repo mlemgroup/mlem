@@ -16,8 +16,8 @@ struct CommentEditorView: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.dismiss) var dismiss
     
-    @Setting(\.showPersonAvatar) private var showPersonAvatar
-    @Setting(\.showCommunityAvatar) private var showCommunityAvatar
+    @Setting(\.person_showAvatar) private var showPersonAvatar
+    @Setting(\.community_showAvatar) private var showCommunityAvatar
     
     enum ResolutionState: Equatable {
         case success, notFound, error(ErrorDetails), resolving

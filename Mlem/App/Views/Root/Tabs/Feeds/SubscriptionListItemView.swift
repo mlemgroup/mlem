@@ -12,8 +12,8 @@ struct SubscriptionListItemView: View {
     @Environment(AppState.self) private var appState
     @Environment(NavigationLayer.self) private var navigation
 
-    @Setting(\.subscriptionSort) private var sort
-    @Setting(\.subscriptionInstanceLocation) private var savedInstanceLocation
+    @Setting(\.subscriptions_sort) private var sort
+    @Setting(\.subscriptions_instanceLocation) private var savedInstanceLocation
 
     let community: Community2
     let section: SubscriptionListSection

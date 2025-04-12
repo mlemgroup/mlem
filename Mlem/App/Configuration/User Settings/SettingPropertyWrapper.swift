@@ -11,24 +11,21 @@ import SwiftUI
 
 @propertyWrapper
 struct Setting<T>: DynamicProperty {
-    @ObservedObject private var defaults: Settings
-    private let keyPath: ReferenceWritableKeyPath<Settings, T>
-    public init(_ keyPath: ReferenceWritableKeyPath<Settings, T>, defaults: Settings = .main) {
+    private let keyPath: ReferenceWritableKeyPath<SettingsValues, T>
+    
+    public init(_ keyPath: ReferenceWritableKeyPath<SettingsValues, T>) {
         self.keyPath = keyPath
-        self._defaults = .init(wrappedValue: defaults)
     }
-
+    
     public var wrappedValue: T {
-        get { defaults[keyPath: keyPath] }
-        nonmutating set { defaults[keyPath: keyPath] = newValue }
+        get { Settings.get(keyPath) }
+        nonmutating set { Settings.set(keyPath, to: newValue) }
     }
-
+    
     public var projectedValue: Binding<T> {
         Binding(
-            get: { defaults[keyPath: keyPath] },
-            set: { value in
-                defaults[keyPath: keyPath] = value
-            }
+            get: { Settings.get(keyPath) },
+            set: { Settings.set(keyPath, to: $0) }
         )
     }
 }

@@ -10,9 +10,9 @@ import SwiftUI
 struct TabBarSettingsView: View {
     @Environment(AppState.self) var appState
     
-    @Setting(\.tabProfileLabelType) var profileTabLabel: ProfileTabLabel
-    @Setting(\.tabProfileShowAvatar) var showUserAvatar: Bool
-    @Setting(\.tabInboxBadgeIncludedTypes) var tabInboxBadgeIncludedTypes
+    @Setting(\.tab_profile_labelType) var profileTabLabel: ProfileTabLabel
+    @Setting(\.tab_profile_showAvatar) var showUserAvatar: Bool
+    @Setting(\.tab_inbox_badgeIncludedTypes) var tabInboxBadgeIncludedTypes
     
     var account: any Account {
         appState.firstAccount

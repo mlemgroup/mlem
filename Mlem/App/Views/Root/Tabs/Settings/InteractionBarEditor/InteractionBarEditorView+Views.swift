@@ -320,15 +320,10 @@ extension InteractionBarEditorView {
                     titleVisibility: .visible
                 ) {
                     Button("Yes") {
-                        let configurations = InteractionBarTracker.main.interactionBarConfigurations
-                        InteractionBarTracker.main.interactionBarConfigurations = .init(
-                            post: configurations.post.applying(other: configuration, types: [.bar]),
-                            comment: configurations.comment.applying(other: configuration, types: [.bar]),
-                            reply: configurations.reply.applying(other: configuration, types: [.bar]),
-                            // Don't apply to report overrides
-                            postReport: InteractionBarTracker.main.interactionBarConfigurations.postReport,
-                            commentReport: InteractionBarTracker.main.interactionBarConfigurations.commentReport
-                        )
+                        postInteractionBar = postInteractionBar.applying(other: configuration, types: [.bar])
+                        commentInteractionBar = commentInteractionBar.applying(other: configuration, types: [.bar])
+                        replyInteractionBar = replyInteractionBar.applying(other: configuration, types: [.bar])
+                        // reports intentionally omitted
                     }
                 }
         }

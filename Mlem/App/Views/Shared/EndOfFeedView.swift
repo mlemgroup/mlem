@@ -41,7 +41,7 @@ enum EndOfFeedViewType {
 }
 
 struct EndOfFeedView: View {
-    @Setting(\.developerMode) var developerMode
+    @Setting(\.dev_developerMode) var developerMode
     
     @State var showLoadMore: Bool = false
     

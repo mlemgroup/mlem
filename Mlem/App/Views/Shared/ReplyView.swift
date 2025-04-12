@@ -10,17 +10,14 @@ import MlemMiddleware
 import SwiftUI
 
 struct ReplyView: View {
+    @Setting(\.interactionBar_reply) var replyInteractionBar
+    
     @Environment(AppState.self) private var appState
     @Environment(NavigationLayer.self) private var navigation
     
     let reply: Reply2
     
     var body: some View {
-        content
-            .padding(.top, Constants.main.halfSpacing)
-    }
-    
-    var content: some View {
         VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
             HStack {
                 FullyQualifiedLinkView(reply.creator_, labelStyle: .small)
@@ -38,7 +35,7 @@ struct ReplyView: View {
             InteractionBarView(
                 appState: appState,
                 reply: reply,
-                configuration: InteractionBarTracker.main.replyInteractionBar
+                configuration: replyInteractionBar
             )
             .padding(.top, 1)
         }
@@ -52,7 +49,7 @@ struct ReplyView: View {
         }
         .quickSwipes(
             reply: reply,
-            configuration: InteractionBarTracker.main.replyInteractionBar,
+            configuration: replyInteractionBar,
             behavior: .standard
         )
         .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))

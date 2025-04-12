@@ -12,15 +12,17 @@ import SwiftUI
 struct PostSettingsView: View {
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor: Bool
     
-    @Setting(\.postSize) var postSize
-    @Setting(\.allowMultiplePostColumns) var allowMultipleColumns
-    @Setting(\.thumbnailLocation) var thumbnailLocation
-    @Setting(\.showPostCreator) var showCreator
-    @Setting(\.showSubscribedStatus) var showSubscribedStatus
-    @Setting(\.showDownvotesCompact) var showDownvotesCompact
-    @Setting(\.tapPostsToCollapse) var tapPostsToCollapse
+    @Setting(\.post_size) var postSize
+    @Setting(\.post_allowMultipleColumns) var allowMultipleColumns
+    @Setting(\.post_thumbnailLocation) var thumbnailLocation
+    @Setting(\.post_showCreator) var showCreator
+    @Setting(\.post_showSubscribedStatus) var showSubscribedStatus
+    @Setting(\.post_showDownvotesCompact) var showDownvotesCompact
+    @Setting(\.post_gestures_tapToCollapse) var tapPostsToCollapse
     
-    @Setting(\.readPostIndicator) var readPostIndicator
+    @Setting(\.interactionBar_post) var postInteractionBar
+    
+    @Setting(\.a11y_readPostIndicator) var readPostIndicator
     
     var body: some View {
         Form {
@@ -31,7 +33,7 @@ struct PostSettingsView: View {
             
             Section {
                 NavigationLink(.settings(.interactionBar(.post))) {
-                    SettingsInteractionBarSummaryView(configuration: InteractionBarTracker.main.postInteractionBar)
+                    SettingsInteractionBarSummaryView(configuration: postInteractionBar)
                 }
                 NavigationLink("Swipe Actions", destination: .settings(.swipeActions(.post)))
             }

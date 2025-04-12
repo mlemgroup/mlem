@@ -11,7 +11,7 @@ struct PostSubscriptionIndicatorSettingsView: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.palette) var palette
     
-    @Setting(\.showSubscribedStatus) var showSubscribedStatus
+    @Setting(\.post_showSubscribedStatus) var showSubscribedStatus
     
     var body: some View {
         Form {

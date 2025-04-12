@@ -28,8 +28,8 @@ struct PersonView: View {
         }
     }
     
-    @Setting(\.postSize) var postSize
-    @Setting(\.internetSpeed) var internetSpeed
+    @Setting(\.post_size) var postSize
+    @Setting(\.behavior_internetSpeed) var internetSpeed
     
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation

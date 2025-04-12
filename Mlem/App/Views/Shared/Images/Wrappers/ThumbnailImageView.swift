@@ -14,8 +14,8 @@ struct ThumbnailImageView: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.openURL) var openURL
     
-    @Setting(\.websiteThumbnailIcon) var websiteThumbnailIcon
-    @Setting(\.postSize) var postSize
+    @Setting(\.a11y_websiteThumbnailIcon) var websiteThumbnailIcon
+    @Setting(\.post_size) var postSize
     
     @State var mediaControlState: MediaControlState
     @State var quickLookUrl: URL?

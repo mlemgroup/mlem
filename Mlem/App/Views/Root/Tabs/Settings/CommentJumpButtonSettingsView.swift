@@ -10,7 +10,7 @@ import SwiftUI
 struct CommentJumpButtonSettingsView: View {
     @Environment(\.colorScheme) var colorScheme
     
-    @Setting(\.jumpButton) var jumpButton
+    @Setting(\.comment_jumpButton) var jumpButton
     
     var body: some View {
         Form {

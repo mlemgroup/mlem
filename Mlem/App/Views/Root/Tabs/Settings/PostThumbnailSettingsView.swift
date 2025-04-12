@@ -9,8 +9,8 @@ import ComponentViews
 import SwiftUI
 
 struct PostThumbnailSettingsView: View {
-    @Setting(\.thumbnailLocation) var thumbnailLocation
-    @Setting(\.websiteThumbnailIcon) var websiteThumbnailIcon
+    @Setting(\.post_thumbnailLocation) var thumbnailLocation
+    @Setting(\.a11y_websiteThumbnailIcon) var websiteThumbnailIcon
     
     // capsule color gradient configuration
     let gradientBegin: CGFloat = 0.55

@@ -15,7 +15,7 @@ struct CommunityListRowBody<Content: View>: View {
     
     @Environment(\.isEnabled) var isEnabled
     
-    @Setting(\.blurNsfw) var blurNsfw
+    @Setting(\.safety_blurNsfw) var blurNsfw
     
     let community: any Community
     let showBlockStatus: Bool

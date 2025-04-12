@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct BypassProxyWarningSheet: View {
-    @Setting(\.autoBypassImageProxy) var autoBypassImageProxy
+    @Setting(\.privacy_autoBypassImageProxy) var autoBypassImageProxy
     
     @Environment(\.dismiss) var dismiss
     

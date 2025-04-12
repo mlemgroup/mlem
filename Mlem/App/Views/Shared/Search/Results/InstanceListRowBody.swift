@@ -11,7 +11,7 @@ import SwiftUI
 struct InstanceListRowBody<Content: View>: View {
     enum Readout { case users }
 
-    @Setting(\.blurNsfw) var blurNsfw
+    @Setting(\.safety_blurNsfw) var blurNsfw
     
     @Environment(\.isEnabled) var isEnabled
     
