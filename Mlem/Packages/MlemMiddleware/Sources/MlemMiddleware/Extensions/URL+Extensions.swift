@@ -65,6 +65,7 @@ public extension URL {
         var components = URLComponents()
         components.scheme = scheme
         components.host = host
+        components.port = port
         return components.url!
     }
     

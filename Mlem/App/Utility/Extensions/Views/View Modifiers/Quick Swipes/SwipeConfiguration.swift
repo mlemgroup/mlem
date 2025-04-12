@@ -30,8 +30,10 @@ public struct SwipeConfiguration {
             leadingActions.count <= 3 && trailingActions.count <= 3,
             "Too many swipe actions!"
         )
-        self.leadingActions = leadingActions.compactMap { $0 }
-        self.trailingActions = trailingActions.compactMap { $0 }
+        
+        let predicate: (any Action) -> Bool = { !(($0 as? BasicAction)?.disabled ?? false) }
+        self.leadingActions = leadingActions.filter(predicate)
+        self.trailingActions = trailingActions.filter(predicate)
         self.behavior = behavior
     }
     
