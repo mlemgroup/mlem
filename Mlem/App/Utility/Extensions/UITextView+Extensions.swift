@@ -87,11 +87,7 @@ extension UITextView {
         } else {
             url = nil
         }
-        guard let url else {
-            ToastModel.main.add(.urlCopyError)
-            return
-        }
-        wrapSelectionWithDelimiters(leading: "[", trailing: "](\(url.absoluteString))")
+        wrapSelectionWithDelimiters(leading: "[", trailing: "](\(url?.absoluteString ?? ""))")
     }
     
     func toggleQuoteAtCursor() {
