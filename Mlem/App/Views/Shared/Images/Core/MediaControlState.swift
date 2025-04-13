@@ -65,6 +65,8 @@ class MediaControlState {
         return (position: minuteSecondString(from: playbackPosition * duration), duration: minuteSecondString(from: duration))
     }
     
+    var canAnimate: Bool { animationAvailable && enableAnimation }
+    
     var url: URL?
     
     /// Creates a new MediaControlState
