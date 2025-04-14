@@ -36,9 +36,10 @@ struct CommentJumpButtonSettingsView: View {
             Section {
                 Toggle(
                     "Jump Button",
-                    systemImage: Icons.jumpButtonCircle,
+                    icon: .lemmy.jumpButton,
                     isOn: .init(get: { jumpButton != .none }, set: { jumpButton = $0 ? .bottomTrailing : .none })
                 )
+                .symbolVariant(.circle)
             }
             if jumpButton != .none {
                 Section("Alignment") {

@@ -171,7 +171,7 @@ struct ToastView: View {
                         }
                         .frame(maxWidth: .infinity)
                         
-                        Button("Copy", systemImage: Icons.copy) {
+                        Button("Copy", icon: .general.copy) {
                             UIPasteboard.general.string = details.errorText()
                         }
                         .font(.caption)

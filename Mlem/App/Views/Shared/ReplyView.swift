@@ -22,7 +22,7 @@ struct ReplyView: View {
             HStack {
                 FullyQualifiedLinkView(reply.creator_, labelStyle: .small)
                 Spacer()
-                Image(systemName: reply.isMention ? Icons.mention : Icons.reply)
+                Image(icon: reply.isMention ? .lemmy.mention : .lemmy.reply)
                     .symbolVariant(reply.read ? .none : .fill)
                     .foregroundStyle(.themedAccent)
                 EllipsisMenu(size: 24) { reply.menuActions(appState: appState, navigation: navigation) }

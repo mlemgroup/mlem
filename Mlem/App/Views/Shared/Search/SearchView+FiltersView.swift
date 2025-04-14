@@ -34,7 +34,7 @@ extension SearchView {
             if selectedTab == .communities, communityFilters.instance.isOther {
                 Label(
                     "Subscription statuses can't be displayed when using these filters.",
-                    systemImage: Icons.warning
+                    icon: .general.warning
                 )
                 .font(.footnote)
                 .foregroundStyle(palette.accent)

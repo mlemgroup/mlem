@@ -72,6 +72,7 @@ struct TilePostView: View {
     @ViewBuilder
     var titleSection: some View {
         post.taggedTitle(communityContext: communityContext)
+            .symbolVariant(.fill)
             .lineLimit(post.type.lineLimit)
             .foregroundStyle(post.read_ ?? false ? .themedSecondary : .themedPrimary)
             .font(.footnote)
@@ -142,7 +143,7 @@ struct TilePostView: View {
             content
                 .overlay {
                     if post.nsfw {
-                        Image(Icons.nsfwTag)
+                        Image(icon: .lemmy.nsfwTag)
                             .symbolRenderingMode(.palette)
                             .foregroundStyle(.themedBackground, .themedWarning)
                             .imageScale(.small)

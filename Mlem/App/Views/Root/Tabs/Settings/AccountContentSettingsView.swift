@@ -24,7 +24,7 @@ struct AccountContentSettingsView: View {
     var body: some View {
         Form {
             Section {
-                Toggle("Show NSFW Content", systemImage: Icons.blurNsfw, isOn: $showNsfw)
+                Toggle("Show NSFW Content", icon: .settings.blurNsfw, isOn: $showNsfw)
                     .tint(.themedWarning)
                     .onChange(of: showNsfw) {
                         Task {
@@ -40,7 +40,7 @@ struct AccountContentSettingsView: View {
                 Text("Show content flagged as Not Safe For Work.")
             }
             Section {
-                Toggle("Show Bot Accounts", systemImage: Icons.botFlair, isOn: $showBotAccounts)
+                Toggle("Show Bot Accounts", icon: .lemmy.botFlair, isOn: $showBotAccounts)
                     .onChange(of: showBotAccounts) {
                         Task {
                             do {
@@ -53,7 +53,7 @@ struct AccountContentSettingsView: View {
                     }
             }
             Section {
-                Toggle("Send Notifications to Email", systemImage: Icons.email, isOn: $sendNotificationsToEmail)
+                Toggle("Send Notifications to Email", icon: .general.email, isOn: $sendNotificationsToEmail)
                     .onChange(of: sendNotificationsToEmail) {
                         Task {
                             do {
@@ -76,7 +76,7 @@ struct AccountContentSettingsView: View {
             Section {
                 NavigationLink(
                     "Discussion Languages",
-                    systemImage: Icons.language,
+                    icon: .settings.language,
                     destination: .settings(.accountLanguages)
                 )
             }

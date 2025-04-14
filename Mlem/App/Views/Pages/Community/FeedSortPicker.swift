@@ -73,7 +73,7 @@ struct FeedSortPicker: View {
                 if topSortTypes.count > 3 {
                     Toggle(
                         "Top...",
-                        systemImage: Icons.topSort,
+                        icon: .lemmy.topSort,
                         isOn: .init(get: { PostSortType.legacyTopCases.contains(sort) }, set: { _ in topSortPopupPresented = true })
                     )
                 } else {
@@ -87,7 +87,7 @@ struct FeedSortPicker: View {
                 }
             }
             Section {
-                Button("More...", systemImage: Icons.menuCircle) {
+                Button("More...", icon: .general.toolbarMenu) {
                     navigation.openSheet(.advancedSorting($sort))
                 }
             }

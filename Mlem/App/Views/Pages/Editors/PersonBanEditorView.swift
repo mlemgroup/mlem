@@ -100,7 +100,7 @@ struct PersonBanEditorView: View {
                         }
                     }
                     ToolbarItem(placement: .topBarTrailing) {
-                        Button("Send", systemImage: Icons.send) {
+                        Button("Send", icon: .lemmy.send) {
                             Task {
                                 await send()
                             }

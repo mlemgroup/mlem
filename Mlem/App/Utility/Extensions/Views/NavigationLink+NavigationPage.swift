@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 07/05/2024.
 //
 
+import Icons
 import SwiftUI
 
 extension NavigationLink where Destination == Never {
@@ -20,7 +21,7 @@ extension NavigationLink where Destination == Never {
         _ titleKey: LocalizedStringResource,
         value: String,
         fallbackValue: String,
-        systemImage: String? = nil,
+        icon: Icon? = nil,
         destination: NavigationPage
     ) where Label == NavigationLinkPickerLabelView {
         self.init(destination) {
@@ -28,7 +29,7 @@ extension NavigationLink where Destination == Never {
                 title: .init(localized: titleKey),
                 value: value,
                 fallbackValue: fallbackValue,
-                systemImage: systemImage
+                icon: icon
             )
         }
     }
@@ -40,10 +41,10 @@ extension NavigationLink where Destination == Never {
     
     init(
         _ titleKey: LocalizedStringResource,
-        systemImage: String,
+        icon: Icon,
         destination: NavigationPage
     ) where Label == SwiftUI.Label<Text, Image> {
-        self.init(value: destination) { Label(String(localized: titleKey), systemImage: systemImage) }
+        self.init(value: destination) { Label(String(localized: titleKey), icon: icon) }
     }
 }
 
@@ -51,13 +52,13 @@ struct NavigationLinkPickerLabelView: View {
     let title: String
     let value: String
     let fallbackValue: String
-    let systemImage: String?
+    let icon: Icon?
     
     var body: some View {
         HStack(spacing: 10) {
             Group {
-                if let systemImage {
-                    Label(title, systemImage: systemImage)
+                if let icon {
+                    Label(title, icon: icon)
                 } else {
                     Text(title)
                 }

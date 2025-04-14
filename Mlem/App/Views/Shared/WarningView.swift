@@ -6,25 +6,26 @@
 //
 
 import Foundation
+import Icons
 import SwiftUI
 import Theming
 
 struct WarningView: View {
-    let iconName: String
+    let icon: Icon
     let text: String
     let inList: Bool
     let overrideColor: ThemedColor?
     
-    init(iconName: String, text: LocalizedStringResource, inList: Bool, overrideColor: ThemedColor? = nil) {
-        self.iconName = iconName
+    init(icon: Icon, text: LocalizedStringResource, inList: Bool, overrideColor: ThemedColor? = nil) {
+        self.icon = icon
         self.text = .init(localized: text)
         self.inList = inList
         self.overrideColor = overrideColor
     }
     
     @_disfavoredOverload
-    init(iconName: String, text: String, inList: Bool, overrideColor: ThemedColor? = nil) {
-        self.iconName = iconName
+    init(icon: Icon, text: String, inList: Bool, overrideColor: ThemedColor? = nil) {
+        self.icon = icon
         self.text = text
         self.inList = inList
         self.overrideColor = overrideColor
@@ -34,7 +35,7 @@ struct WarningView: View {
     
     var body: some View {
         VStack(alignment: .center, spacing: 12) {
-            Image(systemName: iconName)
+            Image(icon: icon)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .foregroundStyle(color)

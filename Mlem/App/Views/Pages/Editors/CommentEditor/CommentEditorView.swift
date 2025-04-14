@@ -261,7 +261,7 @@ struct CommentEditorView: View {
     
     @ViewBuilder
     var selectTextButton: some View {
-        Button("Select Text", systemImage: Icons.select) {
+        Button("Select Text", icon: .general.select) {
             Task { @MainActor in
                 textView.resignFirstResponder()
             }

@@ -28,7 +28,8 @@ extension SearchView {
                     HapticManager.main.play(haptic: .gentleInfo, priority: .low)
                     filtersActive.toggle()
                 } label: {
-                    Label("Filters", systemImage: filtersActive ? Icons.filterFill : Icons.filter)
+                    Label("Filters", icon: .general.filter)
+                        .symbolVariant(filtersActive ? .fill : .none)
                         .transaction { $0.animation = nil }
                 }
                 .labelStyle(.iconOnly)
@@ -299,7 +300,7 @@ extension SearchView {
     @ViewBuilder
     func deleteRecentSearchButton(session: UserSession, callback: @escaping (() -> Void)) -> some View {
         if editingRecentSearches {
-            Button("Remove Recent Search", systemImage: Icons.delete) {
+            Button("Remove Recent Search", icon: .general.delete) {
                 withAnimation {
                     callback()
                 }

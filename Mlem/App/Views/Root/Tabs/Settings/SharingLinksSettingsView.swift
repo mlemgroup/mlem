@@ -6,6 +6,7 @@
 //
 
 import ComponentViews
+import Icons
 import SwiftUI
 
 struct SharingLinksSettingsView: View {
@@ -18,7 +19,7 @@ struct SharingLinksSettingsView: View {
                 title: "Share Links",
                 // swiftlint:disable:next line_length
                 description: "In the Fediverse, many different links can point to the same piece of content. Choose which site to use when sharing content.",
-                systemImage: Icons.share
+                icon: .general.share
             )
             .tint(.themedColorfulAccent(3))
             
@@ -26,27 +27,27 @@ struct SharingLinksSettingsView: View {
                 mode: .myInstance,
                 title: "My Instance",
                 description: "Share links using the instance you are currently connected to.",
-                systemImage: Icons.instance
+                icon: .lemmy.instance
             )
             
             pickerItemView(
                 mode: .originalInstance,
                 title: "Original Instance",
                 description: "Share links using the instance that the content originated from.",
-                systemImage: "signature"
+                icon: .settings.author
             )
 
             pickerItemView(
                 mode: .lemmyverse,
                 title: "Universal Link",
                 description: "Share links using \("https://lemmyverse.link"). When someone opens the link, they can choose which instance to use.",
-                systemImage: "globe"
+                icon: .general.website
             )
             pickerItemView(
                 mode: .askEveryTime,
                 title: "Ask Every Time",
                 description: "Every time I share a link, show a popup asking which instance to use.",
-                systemImage: "questionmark.circle"
+                icon: .settings.ask
             )
         }
         .contentMargins(.top, 16)
@@ -60,11 +61,11 @@ struct SharingLinksSettingsView: View {
         mode: LinkSharingMode,
         title: LocalizedStringResource,
         description: LocalizedStringResource,
-        systemImage: String
+        icon: Icon
     ) -> some View {
         HStack(alignment: .top) {
             if showSettingsIcons {
-                Image(systemName: systemImage)
+                Image(icon: icon)
                     .foregroundStyle(.themedAccent)
                     .frame(width: 30)
                     .padding(.top, 2)

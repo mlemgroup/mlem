@@ -31,7 +31,7 @@ struct CommunitySearchSortPicker: View {
             }
             Toggle(
                 "Top...",
-                systemImage: Icons.topSort,
+                icon: .lemmy.topSort,
                 isOn: .init(get: { sort.isTop }, set: { _ in topSortPopupPresented = true })
             )
         }

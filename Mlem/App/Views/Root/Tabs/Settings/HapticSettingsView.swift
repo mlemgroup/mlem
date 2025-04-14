@@ -15,7 +15,7 @@ struct HapticSettingsView: View {
             SettingsHeaderView(
                 title: "Haptics",
                 description: "Customize how often Mlem plays haptic feedback.",
-                systemImage: Icons.haptics
+                icon: .general.haptics
             )
             .tint(.themedColorfulAccent(1))
             Picker("Haptic Level", selection: $hapticLevel) {

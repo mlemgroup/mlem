@@ -25,6 +25,7 @@ public extension Icon {
         
         public let close: Icon = .applyCircle("multiply")
         public let add: Icon = .applyCircle("plus")
+        public let remove: Icon = .applyCircle("minus")
         public let website: Icon = .init("globe")
         
         public let undo: Icon = .applyCircle("arrow.uturn.backward")
@@ -58,6 +59,9 @@ public extension Icon {
         public let chooseFile: Icon = .init("folder")
         public let chooseImage: Icon = .init("photo")
         
+        public let image: Icon = .init("photo")
+        public let photoLibary: Icon = .init("photo.on.rectangle.angled")
+        
         public let play: Icon = .init("play")
         public let playCircle: Icon = .applyCircle("play.circle")
         public let pause: Icon = .init("pause")
@@ -84,6 +88,7 @@ public extension Icon {
         public let backward: Icon = .init("chevron.backward")
         public let security: Icon = .init("key")
         public let link: Icon = .init("link")
+        public let info: Icon = .init("info.circle")
     }
     
     static let general: GeneralIcons = .init()

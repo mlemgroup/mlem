@@ -277,11 +277,11 @@ extension Post1Providing {
             || (communityContext != nil && pinnedCommunity)
             || locked
         
-        return postTag(active: removed, icon: Icons.removeFill, color: .themedNegative) +
-            postTag(active: deleted, icon: Icons.delete, color: .themedNegative) +
-            postTag(active: pinnedInstance, icon: Icons.pinFill, color: .themedAdministration) +
-            postTag(active: pinnedCommunity && communityContext != nil, icon: Icons.pinFill, color: .themedModeration) +
-            postTag(active: locked, icon: Icons.lockFill, color: .themedLockAccent) +
+        return postTag(active: removed, icon: .lemmy.removed, color: .themedNegative) +
+            postTag(active: deleted, icon: .general.delete, color: .themedNegative) +
+            postTag(active: pinnedInstance, icon: .lemmy.pinned, color: .themedAdministration) +
+            postTag(active: pinnedCommunity && communityContext != nil, icon: .lemmy.pinned, color: .themedModeration) +
+            postTag(active: locked, icon: .lemmy.locked, color: .themedLockAccent) +
             Text(verbatim: "\(hasTags ? "  " : "")\(title)")
     }
     

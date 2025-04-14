@@ -43,7 +43,7 @@ struct PostSettingsView: View {
                     "Subscription Indicator",
                     value: showSubscribedStatus ? .init(localized: "On") : .init(localized: "Off"),
                     fallbackValue: "",
-                    systemImage: Icons.subscribedFeed,
+                    icon: .lemmy.subscribedFeed,
                     destination: .settings(.postSubscriptionIndicator)
                 )
                 
@@ -52,13 +52,13 @@ struct PostSettingsView: View {
                         "Thumbnail",
                         value: .init(localized: thumbnailLocation.label),
                         fallbackValue: "",
-                        systemImage: Icons.thumbnail,
+                        icon: .settings.thumbnail,
                         destination: .settings(.postThumbnail)
                     )
                 }
                 
                 if postSize == .compact {
-                    Toggle("Show Downvotes Separately", systemImage: Icons.votes, isOn: $showDownvotesCompact)
+                    Toggle("Show Downvotes Separately", icon: .lemmy.votes, isOn: $showDownvotesCompact)
                 }
                 
                 if differentiateWithoutColor {
@@ -66,19 +66,19 @@ struct PostSettingsView: View {
                         "Read Indicator",
                         value: .init(localized: readPostIndicator.label),
                         fallbackValue: "",
-                        systemImage: Icons.readIndicatorSetting,
+                        icon: .settings.readIndicatorSetting,
                         destination: .settings(.postReadIndicator)
                     )
                 }
             }
             
             Section {
-                Toggle("Tap to Collapse", systemImage: Icons.collapseComment, isOn: $tapPostsToCollapse)
+                Toggle("Tap to Collapse", icon: .general.collapse, isOn: $tapPostsToCollapse)
             }
             
             if postSize != .tile, postSize != .compact {
                 Section {
-                    Toggle("Always Show Usernames", systemImage: Icons.author, isOn: $showCreator)
+                    Toggle("Always Show Usernames", icon: .settings.author, isOn: $showCreator)
                 }
             }
         }

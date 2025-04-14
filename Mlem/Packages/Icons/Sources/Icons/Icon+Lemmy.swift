@@ -184,6 +184,7 @@ public extension Icon {
         public let person: Icon = .init("person")
         public let inbox: Icon = .init("mail.stack")
         public let imageProxy: Icon = .init("firewall")
+        public let subscriptionList: Icon = .init("list.bullet")
         
         // MARK: - Other
 
@@ -194,6 +195,8 @@ public extension Icon {
         
         public let jumpButton: Icon = .init("chevron.down")
         public let jumpToLastPositionButton: Icon = .init("chevron.down.2")
+        
+        public let nsfwTag: Icon = .init("nsfw", source: .custom)
     }
     
     static let lemmy: LemmyIcons = .init()

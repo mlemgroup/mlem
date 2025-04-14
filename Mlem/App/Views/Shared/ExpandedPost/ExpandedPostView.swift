@@ -232,6 +232,7 @@ struct ExpandedPostView<Content: View>: View {
                 HStack {
                     post.taggedTitle(communityContext: post.community_)
                         .font(.headline)
+                        .symbolVariant(.fill)
                         .background(.themedSecondaryGroupedBackground)
                     Spacer()
                     Image(icon: .general.expand)

@@ -35,7 +35,7 @@ struct PostThumbnailSettingsView: View {
             }
             
             Section {
-                Toggle("Website Icon", systemImage: Icons.browser, isOn: $websiteThumbnailIcon)
+                Toggle("Website Icon", icon: .general.browser, isOn: $websiteThumbnailIcon)
             } footer: {
                 Text("Indicate link thumbnails with an icon.")
             }

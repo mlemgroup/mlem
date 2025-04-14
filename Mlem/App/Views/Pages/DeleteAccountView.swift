@@ -40,7 +40,7 @@ struct DeleteAccountView: View {
                 .fontWeight(.bold)
             
             WarningView(
-                iconName: Icons.warning,
+                icon: .general.warning,
                 text: "This will permanently remove it from \(account.host), not just Mlem!",
                 inList: false
             )

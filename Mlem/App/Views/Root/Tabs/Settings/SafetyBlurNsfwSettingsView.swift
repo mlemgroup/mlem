@@ -32,7 +32,7 @@ struct SafetyBlurNsfwSettingsView: View {
         SettingsHeaderView(
             title: "Blur NSFW Content",
             description: "Choose when Not Safe For Work content should be blurred.",
-            systemImage: Icons.hide
+            icon: .general.hide
         )
         .tint(.themedWarning)
     }

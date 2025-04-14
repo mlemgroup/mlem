@@ -203,7 +203,7 @@ struct CommunityView: View {
             
             if let firstPerson = appState.firstPerson,
                firstPerson.isAdmin || firstPerson.moderates(community: community) {
-                Button("Add Moderator", systemImage: Icons.add, action: openAddModSheet)
+                Button("Add Moderator", icon: .general.add, action: openAddModSheet)
                     .buttonStyle(.capsule)
                     .confirmationDialog("Add Moderator", isPresented: $showingConfirmation) {
                         Button("Yes", action: addNewMod)
@@ -229,7 +229,9 @@ struct CommunityView: View {
         } label: {
             HStack {
                 Text((community.subscriberCount_ ?? 0).abbreviated)
-                Image(systemName: subscribed ? Icons.successCircleFill : Icons.personCircle)
+                Image(icon: subscribed ? .general.success : .lemmy.person)
+                    .symbolVariant(.circle)
+                    .symbolVariant(subscribed ? .fill : .none)
                     .symbolRenderingMode(.hierarchical)
             }
             .fontWeight(.semibold)

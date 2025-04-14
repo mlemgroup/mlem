@@ -16,12 +16,13 @@ struct PrivacyBypassImageProxySettingsView: View {
                 title: "Bypass Image Proxy",
                 // swiftlint:disable:next line_length
                 description: "Some instances proxy images to protect your privacy. In certain cases, this causes image loading to fail. You can bypass the image proxy and load directly, but this will expose your IP address to the image host.",
-                systemImage: Icons.proxy
+                icon: .lemmy.imageProxy
             )
             .tint(.themedColorfulAccent(4))
             Section("Bypass Image Proxy...") {
                 Picker("Bypass Image Proxy", selection: $bypassImageProxy) {
-                    Label("Automatically", systemImage: Icons.successCircle)
+                    Label("Automatically", icon: .general.success)
+                        .symbolVariant(.circle)
                         .tag(true)
                     Label("Ask First", systemImage: "questionmark.circle")
                         .tag(false)

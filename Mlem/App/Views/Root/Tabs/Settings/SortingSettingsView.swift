@@ -33,7 +33,7 @@ struct SortingSettingsView: View {
             SettingsHeaderView(
                 title: "Sorting",
                 description: "Choose the default sort mode for posts and comments.",
-                systemImage: "arrow.up.and.down.text.horizontal"
+                icon: .settings.sorting
             )
             .tint(.themedColorfulAccent(5))
             Section {

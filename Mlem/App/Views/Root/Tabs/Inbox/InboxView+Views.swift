@@ -115,7 +115,7 @@ extension InboxView {
             Button {
                 showRead.toggle()
             } label: {
-                Label("Hide Read", systemImage: Icons.filter)
+                Label("Hide Read", icon: .general.filter)
                     .symbolVariant(showRead ? .none : .fill)
             }
         }

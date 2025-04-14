@@ -14,7 +14,7 @@ struct CommentMaximumDepthSettingsView: View {
         Form {
             Section {
                 HStack {
-                    Label("Maximum Comment Depth", systemImage: Icons.commentDepth)
+                    Label("Maximum Comment Depth", icon: .settings.commentDepth)
                     Spacer()
                     Text(String(maxCommentDepth))
                         .foregroundStyle(.themedSecondary)

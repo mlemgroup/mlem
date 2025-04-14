@@ -69,7 +69,7 @@ struct HeadlinePostView<EmbeddedContent: View>: View {
                 }
                 
                 if post.nsfw {
-                    Image(Icons.nsfwTag)
+                    Image(icon: .lemmy.nsfwTag)
                         .foregroundStyle(.themedWarning)
                 }
                 

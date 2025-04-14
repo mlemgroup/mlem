@@ -25,7 +25,7 @@ struct PostReadIndicatorSettingsView: View {
                 title: "Read Indicator",
                 // swiftlint:disable:next line_length
                 description: "Read posts are shown with dimmed title text. If you like, you can choose an additional way of indicating read status.",
-                systemImage: Icons.read
+                icon: .settings.readIndicatorSetting
             )
             .tint(.themedSecondary)
             Section {

@@ -21,10 +21,11 @@ extension PostEditorView {
                         PostEditorTargetView(target: target, isMoreThanOneTarget: targets.count > 1)
                             .frame(maxWidth: .infinity, alignment: .leading)
                         if targets.count > 1 {
-                            Button("Remove", systemImage: Icons.closeCircleFill) {
+                            Button("Remove", icon: .general.close) {
                                 targets.remove(at: index)
                                 checkSlurFilters()
                             }
+                            .symbolVariant(.circle.fill)
                             .symbolRenderingMode(.hierarchical)
                             .imageScale(.large)
                             .labelStyle(.iconOnly)

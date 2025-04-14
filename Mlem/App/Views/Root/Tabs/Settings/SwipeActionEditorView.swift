@@ -87,7 +87,7 @@ private struct ActionListView<ActionType: ActionTypeProviding>: View {
     
     @ViewBuilder
     var addButtonView: some View {
-        Menu("Add", systemImage: Icons.add) {
+        Menu("Add", icon: .general.add) {
             ForEach(Array(ActionType.allCases), id: \.self) { action in
                 Button(action.appearance.label, systemImage: action.appearance.barIcon) {
                     actions.append(action)

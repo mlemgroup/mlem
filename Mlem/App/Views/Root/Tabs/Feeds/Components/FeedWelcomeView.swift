@@ -48,9 +48,10 @@ struct FeedWelcomeView: View {
         .padding(Constants.main.standardSpacing)
         .background(.themedAccent.opacity(0.2), in: .rect(cornerRadius: Constants.main.standardSpacing))
         .overlay(alignment: .topTrailing) {
-            Button("Dismiss", systemImage: Icons.closeCircleFill) {
+            Button("Dismiss", icon: .general.close) {
                 showWelcomePrompt = false
             }
+            .symbolVariant(.circle.fill)
             .symbolRenderingMode(.hierarchical)
             .labelStyle(.iconOnly)
             .fontWeight(.semibold)

@@ -19,10 +19,10 @@ extension SearchView {
         }
         
         var body: some View {
-            Menu(filter.label, systemImage: Icons.instance) {
+            Menu(filter.label, icon: .lemmy.instance) {
                 Toggle(
                     "Any Instance",
-                    systemImage: Icons.federation,
+                    icon: .lemmy.federation,
                     isOn: .init(get: { filter == .any }, set: { _ in filter = .any })
                 )
                 if allowActiveAccountLocalInstanceSearch {
@@ -51,7 +51,7 @@ extension SearchView {
                 default:
                     EmptyView()
                 }
-                Button("Choose Instance...", systemImage: Icons.instance) {
+                Button("Choose Instance...", icon: .lemmy.instance) {
                     navigation.openSheet(.instancePicker(callback: { instance in
                         filter = .other(instance)
                     }, minimumVersion: isForPersonSearch ? .v0_19_4 : nil))

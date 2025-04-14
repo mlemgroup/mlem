@@ -6,18 +6,14 @@
 //
 
 import Foundation
+import Icons
 import SwiftUI
 import Theming
 
-func postTag(active: Bool, icon: String, color: ThemedColor) -> Text {
+func postTag(active: Bool, icon: Icon, color: ThemedColor) -> Text {
     if active {
-        if icon == Icons.nsfwTag {
-            Text(Image(icon))
-                .foregroundStyle(color)
-        } else {
-            Text(Image(systemName: icon))
-                .foregroundStyle(color)
-        }
+        Text(Image(icon: icon))
+            .foregroundStyle(color)
     } else {
         Text(verbatim: "")
     }

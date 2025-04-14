@@ -15,7 +15,7 @@ struct AnimatedAvatarSettingsView: View {
             SettingsHeaderView(
                 title: "Animated Avatars",
                 description: "Some users set animated media as their avatar. Control whether these avatars should play their animations.",
-                systemImage: Icons.playCircle
+                icon: .general.playCircle
             )
             .tint(.themedColorfulAccent(4))
             

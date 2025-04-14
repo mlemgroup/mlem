@@ -25,6 +25,7 @@ struct LargePostBodyView: View {
                         ? .themedSecondary : .themedPrimary
                 )
                 .font(.headline)
+                .symbolVariant(.fill)
                 .imageScale(.small)
 
             switch post.type {
