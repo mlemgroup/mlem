@@ -25,6 +25,12 @@ struct AnimatedImageView: UIViewRepresentable {
             return imageView
         }
         
+        // gifs and webps can be "animated" with only 1 frame, in which case they should be treated as still images
+        guard animatedImage.animatedImageFrameCount > 1 else {
+            controlState.animationAvailable = false
+            return imageView
+        }
+        
         if controlState.scrubbingAvailable {
             // loads all frames, which enables smooth backwards scrubbing
             Task {
@@ -35,7 +41,7 @@ struct AnimatedImageView: UIViewRepresentable {
         // compute real time duration
         Task {
             var total: TimeInterval = 0
-            for index in (0..<animatedImage.animatedImageFrameCount) {
+            for index in 0 ..< animatedImage.animatedImageFrameCount {
                 total += animatedImage.animatedImageDuration(at: index)
             }
             controlState.duration = total

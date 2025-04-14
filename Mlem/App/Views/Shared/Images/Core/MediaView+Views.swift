@@ -42,7 +42,7 @@ extension MediaView {
         
         @ViewBuilder
         var content: some View {
-            if controlState.enableAnimation, media.isAnimated {
+            if controlState.canAnimate, media.isAnimated {
                 animatedContent
             } else {
                 Image(uiImage: uiImage)

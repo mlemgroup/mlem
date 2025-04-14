@@ -72,9 +72,12 @@ extension ExpandedPostView {
         return index > 1
     }
     
-    func togglePostCollapsed() {
+    func togglePostCollapsed(post: any Post, scrollProxy: ScrollViewProxy) {
         withAnimation(UIAccessibility.isReduceMotionEnabled ? nil : .default) {
             postCollapsed.toggle()
+            if postCollapsed {
+                scrollProxy.scrollTo(post.actorId)
+            }
         }
     }
     

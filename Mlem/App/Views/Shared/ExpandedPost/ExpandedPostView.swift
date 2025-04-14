@@ -109,7 +109,7 @@ struct ExpandedPostView<Content: View>: View {
                         alignment: .leading,
                         spacing: 0
                     ) {
-                        postView(post)
+                        postView(post, scrollProxy: proxy)
                             .padding(.horizontal, Constants.main.standardSpacing)
                         content
                             .padding(.top, compactComments ? Constants.main.halfSpacing : Constants.main.standardSpacing)
@@ -187,15 +187,15 @@ struct ExpandedPostView<Content: View>: View {
                         }
                     }
                 }
+                .toolbar { toolbarContent(post: post, isLoading: isLoading, scrollProxy: proxy) }
             }
         }
-        .toolbar { toolbarContent(post: post, isLoading: isLoading) }
         .environment(tracker)
         .environment(\.feedContext, .post)
     }
     
     @ViewBuilder
-    func toolbarContent(post: any Post, isLoading: Bool) -> some View {
+    func toolbarContent(post: any Post, isLoading: Bool, scrollProxy: ScrollViewProxy) -> some View {
         if let tracker {
             sortPicker(tracker: tracker)
         }
@@ -215,9 +215,10 @@ struct ExpandedPostView<Content: View>: View {
                     Section {
                         Button(
                             postCollapsed ? "Expand Post" : "Collapse Post",
-                            icon: postCollapsed ? .general.expand : .general.collapse,
-                            action: togglePostCollapsed
-                        )
+                            icon: postCollapsed ? .general.expand : .general.collapse
+                        ) {
+                            togglePostCollapsed(post: post, scrollProxy: scrollProxy)
+                        }
                     }
                 }
             }
@@ -225,7 +226,7 @@ struct ExpandedPostView<Content: View>: View {
     }
     
     @ViewBuilder
-    func postView(_ post: any Post) -> some View {
+    func postView(_ post: any Post, scrollProxy: ScrollViewProxy) -> some View {
         Group {
             if postCollapsed {
                 HStack {
@@ -260,7 +261,7 @@ struct ExpandedPostView<Content: View>: View {
         .paletteBorder(cornerRadius: PostSize.large.swipeBehavior.cornerRadius)
         .onTapGesture {
             if tapPostsToCollapse || postCollapsed {
-                togglePostCollapsed()
+                togglePostCollapsed(post: post, scrollProxy: scrollProxy)
             }
         }
         .id(post.actorId)
