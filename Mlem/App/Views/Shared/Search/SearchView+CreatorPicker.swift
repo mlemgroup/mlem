@@ -32,7 +32,6 @@ extension SearchView {
                 isOn: creator != nil,
                 icon: creator == nil ? .general.dropDown : .general.close
             ))
-            .symbolVariant(.circle.fill)
         }
     }
 }

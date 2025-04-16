@@ -186,6 +186,10 @@ public extension Icon {
         public let imageProxy: Icon = .init("firewall")
         public let subscriptionList: Icon = .init("list.bullet")
         
+        @inlinable public var communityAvatar: Icon { community }
+        public let instanceAvatar: Icon = .init("building.2.crop")
+        public let personAvatar: Icon = .init("person.crop")
+
         // MARK: - Other
 
         public let noContent: Icon = .init("binoculars")

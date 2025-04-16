@@ -49,6 +49,7 @@ struct ModlogEntryView: View {
                 .font(.footnote)
                 .foregroundStyle(.secondary)
                 .imageScale(.small)
+                .symbolVariant(.fill)
         }
     }
     

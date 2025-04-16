@@ -34,6 +34,7 @@ struct AccountListRowBody: View {
             Spacer()
             if complications.contains(.isActive), appState.firstSession.actorId == account.actorId {
                 Image(icon: .general.circle)
+                    .symbolVariant(.fill)
                     .foregroundStyle(.themedPositive)
                     .font(.system(size: 10.0))
             }

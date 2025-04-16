@@ -35,7 +35,7 @@ public extension Icon {
         public let search: Icon = .custom { variant in
             switch variant {
             case .active: "text.magnifyingglass"
-            default: "magnifiyingglass"
+            default: "magnifyingglass"
             }
         }
 

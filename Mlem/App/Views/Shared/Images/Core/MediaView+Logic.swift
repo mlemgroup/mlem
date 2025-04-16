@@ -60,9 +60,9 @@ extension MediaView {
         
         var icon: Icon {
             switch self {
-            case .personAvatar: .lemmy.person
-            case .communityAvatar: .lemmy.community
-            case .instanceAvatar: .lemmy.instance
+            case .personAvatar: .lemmy.personAvatar
+            case .communityAvatar: .lemmy.communityAvatar
+            case .instanceAvatar: .lemmy.instanceAvatar
             case .favicon: .general.browser
             case .image: .general.missing
             case .movie: .general.movie

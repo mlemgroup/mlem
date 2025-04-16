@@ -38,7 +38,7 @@ public extension Icon {
         public let signUp: Icon = .init("pencil.and.list.clipboard")
         public let sidebar: Icon = .init("sidebar.left")
         public let infiniteScroll: Icon = .init("infinity")
-        public let markReadOnScroll: Icon = .init("read")
+        public let markReadOnScroll: Icon = .init("book")
         public let confirmImageUploads: Icon = .init("photo.badge.checkmark")
         public let swipeActions: Icon = .init("inset.filled.leadinghalf.rectangle")
         public let swipeAnywhere: Icon = .init("arrow.left")
