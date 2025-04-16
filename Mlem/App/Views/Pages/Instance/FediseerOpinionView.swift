@@ -55,6 +55,7 @@ struct FediseerOpinionView: View {
     var title: some View {
         Image(icon: type(of: opinion).icon)
             .fontWeight(.semibold)
+            .symbolVariant(.fill)
             .foregroundStyle(.secondary) // Don't use palette here
         Text(opinion.domain)
             .fontWeight(.semibold)
