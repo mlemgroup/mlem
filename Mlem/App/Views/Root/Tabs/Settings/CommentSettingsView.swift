@@ -33,10 +33,9 @@ struct CommentSettingsView: View {
                     "Jump Button",
                     value: .init(localized: jumpButton.label),
                     fallbackValue: "",
-                    icon: .lemmy.jumpButton,
+                    icon: .settings.jumpButton,
                     destination: .settings(.commentJumpButton)
                 )
-                .symbolVariant(.circle)
                 NavigationLink(
                     "Maximum Depth",
                     value: String(maxCommentDepth),

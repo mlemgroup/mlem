@@ -75,6 +75,7 @@ public extension Icon {
         public let eula: Icon = .init("doc.plaintext")
         public let licence: Icon = .init("doc")
         public let ask: Icon = .init("questionmark.circle")
+        public let jumpButton: Icon = .init("chevron.down.circle")
     }
     
     static let settings: SettingsIcons = .init()
