@@ -200,7 +200,7 @@ struct ModlogView: View {
     @ViewBuilder
     func typeFilterLabel(_ type: ApiModlogActionType) -> some View {
         if type.appliesToCommunity || communityFilter == .any {
-            Label(type.contextualLabel, icon: type.icon)
+            Label(type.contextualLabel.key, icon: type.icon)
                 .tag(type)
         }
     }

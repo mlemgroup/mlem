@@ -21,7 +21,7 @@ struct AnimatedAvatarSettingsView: View {
             
             Picker("Animate Avatars...", selection: $animatedAvatars) {
                 ForEach(AnimatedAvatarBehavior.allCases, id: \.self) { location in
-                    Label(location.label, icon: location.icon)
+                    Label(location.label.key, icon: location.icon)
                         .tag(location)
                 }
             }

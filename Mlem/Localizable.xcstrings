@@ -1121,7 +1121,6 @@
       }
     },
     "Approved by %@" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -2663,7 +2662,6 @@
       }
     },
     "Denied by %@" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -2674,7 +2672,6 @@
       }
     },
     "Denied by %@: \"%@\"" : {
-      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6587,7 +6584,6 @@
       }
     },
     "Resolved by %@" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {

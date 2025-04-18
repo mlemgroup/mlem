@@ -15,7 +15,7 @@ struct SafetyBlurNsfwSettingsView: View {
             headerView
             Picker("Blur NSFW Content", selection: $blurNsfw) {
                 ForEach(NsfwBlurBehavior.allCases, id: \.self) { type in
-                    Label(type.label, icon: type.icon)
+                    Label(type.label.key, icon: type.icon)
                         .symbolVariant(.circle)
                 }
             }

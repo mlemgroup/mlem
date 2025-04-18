@@ -19,7 +19,7 @@ struct ModeratorActionSeparationSettingsView: View {
             Section {
                 Picker("Separate Actions Using", icon: .settings.menuItems, selection: $moderatorActionGrouping) {
                     ForEach(ModeratorActionGrouping.allCases, id: \.self) { item in
-                        Label(item.label, icon: item.icon)
+                        Label(item.label.key, icon: item.icon)
                     }
                 }
                 .pickerStyle(.inline)

@@ -173,7 +173,7 @@ extension InboxView {
             if availableFeeds.count > 1 {
                 Picker("Feed", selection: $selectedFeed) {
                     ForEach(availableFeeds) { feedType in
-                        Label(feedType.label, icon: feedType.icon)
+                        Label(feedType.label.key, icon: feedType.icon)
                             .tag(feedType)
                     }
                 }

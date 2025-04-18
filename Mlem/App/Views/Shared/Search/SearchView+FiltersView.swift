@@ -105,7 +105,7 @@ extension SearchView {
         ) {
             Picker("Sort", selection: $instanceFilters.sort) {
                 ForEach(InstanceSort.allCases, id: \.self) { sort in
-                    Label(sort.label, icon: sort.icon)
+                    Label(sort.label.key, icon: sort.icon)
                 }
             }
             .pickerStyle(.inline)

@@ -8,12 +8,12 @@
 import SwiftUI
 
 public extension Label where Title == Text, Icon == Image {
-    init(_ title: LocalizedStringResource, icon: Icons.Icon) {
+    init(_ title: LocalizedStringKey, icon: Icons.Icon) {
         switch icon.source {
         case .system:
-            self.init(title.key, systemImage: icon.computeImageName())
+            self.init(title, systemImage: icon.computeImageName())
         case .custom:
-            self.init(title.key, image: icon.computeImageName())
+            self.init(title, image: icon.computeImageName())
         }
     }
     

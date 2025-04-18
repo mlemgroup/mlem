@@ -45,7 +45,7 @@ struct CommentJumpButtonSettingsView: View {
                 Section("Alignment") {
                     Picker("Jump Button", selection: $jumpButton) {
                         ForEach(pickerCases, id: \.self) { location in
-                            Label(location.label, icon: location.icon)
+                            Label(location.label.key, icon: location.icon)
                                 .symbolVariant(.circle)
                         }
                     }
