@@ -27,7 +27,6 @@ public extension Icon {
         public let label: Icon = .init("tag")
         public let unreadBadge: Icon = .init("envelope.badge")
         public let showAvatar: Icon = .init("person.fill.questionmark")
-        public let widgetWizard: Icon = .init("wand.and.stars")
         public let thumbnail: Icon = .init("photo")
         public let author: Icon = .init("signature")
         public let leftRight: Icon = .init("arrow.left.arrow.right")
