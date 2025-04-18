@@ -77,15 +77,14 @@ extension SignUpView {
                                 .tint(.themedSecondary)
                         case .valid:
                             Image(icon: .general.success)
-                                .symbolVariant(.circle.fill)
                                 .foregroundStyle(.themedPositive)
                         case .taken, .tooShort, .invalidCharacters:
                             Image(icon: .general.failure)
-                                .symbolVariant(.circle.fill)
                                 .foregroundStyle(.themedNegative)
                         }
                     }
                 }
+                .symbolVariant(.circle.fill)
             }
         } footer: {
             if username.isEmpty {
