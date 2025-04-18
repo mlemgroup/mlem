@@ -1,5 +1,5 @@
 //
-//  Icons.swift
+//  Icon.swift
 //  Mlem
 //
 //  Created by Sjmarf on 2024-12-23.

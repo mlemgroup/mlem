@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  Icon+Fediseer.swift
 //  Icons
 //
 //  Created by Sjmarf on 2025-04-08.

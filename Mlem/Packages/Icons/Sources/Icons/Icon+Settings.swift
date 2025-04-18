@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  Icon+Settings.swift
 //  Icons
 //
 //  Created by Sjmarf on 2025-04-06.
