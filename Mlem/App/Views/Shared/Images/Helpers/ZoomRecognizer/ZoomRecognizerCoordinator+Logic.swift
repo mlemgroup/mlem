@@ -99,14 +99,18 @@ extension ZoomRecognizerCoordinator {
         switch gesture.state {
         case .possible:
             break
-        case .began, .changed:
-            customDragMoved?(.init(uiPanGesture: gesture))
+        case .began:
+            customPanStartLocation = gesture.location(in: nil)
+            customDragMoved?(.init(uiPanGesture: gesture, startLocation: customPanStartLocation))
+        case .changed:
+            customDragMoved?(.init(uiPanGesture: gesture, startLocation: customPanStartLocation))
         case .ended, .cancelled:
+            customPanStartLocation = nil
             if let customDragEnded {
                 customDragEnded()
             }
         case .failed:
-            break
+            customPanStartLocation = nil
         default:
             assertionFailure("Unrecognized state")
         }
