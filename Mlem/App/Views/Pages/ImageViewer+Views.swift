@@ -171,7 +171,7 @@ extension ImageViewer {
                             .offset(x: (controlState.scrubTarget ?? controlState.playbackPosition) * width)
                             .onAppear {
                                 // set playbackBarHitbox to be a bit thicker than the real hitbox
-                                let realHitbox = geo.frame(in: .named("ImageViewer"))
+                                let realHitbox = geo.frame(in: .global)
                                 playbackBarHitbox = .init(
                                     x: realHitbox.minX,
                                     y: realHitbox.maxY - 80,
@@ -184,6 +184,7 @@ extension ImageViewer {
                 .environment(\.colorScheme, .dark)
         }
         .padding(.horizontal, Constants.main.standardSpacing)
+        .allowsHitTesting(false)
     }
     
     @ViewBuilder

@@ -20,11 +20,12 @@ struct BridgeDragValue {
         self.startLocation = startLocation
     }
     
-    init(uiPanGesture: UIPanGestureRecognizer) {
+    init(uiPanGesture: UIPanGestureRecognizer, startLocation: CGPoint?) {
+        assert(startLocation != nil, "startLocation was nil")
         let uiVelocity = uiPanGesture.velocity(in: nil)
         let uiTranslation = uiPanGesture.translation(in: nil)
         self.velocity = .init(width: uiVelocity.x, height: uiVelocity.y)
         self.translation = .init(width: uiTranslation.x, height: uiTranslation.y)
-        self.startLocation = uiPanGesture.location(in: nil)
+        self.startLocation = startLocation ?? .zero
     }
 }
