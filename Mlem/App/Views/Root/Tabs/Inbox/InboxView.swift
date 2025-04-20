@@ -182,8 +182,12 @@ struct InboxView: View {
             if selectedFeed == .modMail, !appState.isModOrAdmin {
                 selectedFeed = .inbox
             }
-            try await inboxFeedLoader.refresh(clearBeforeRefresh: true)
-            try await modMailFeedLoader.refresh(clearBeforeRefresh: true)
+            switch selectedFeed {
+            case .inbox:
+                try await inboxFeedLoader.refresh(clearBeforeRefresh: false)
+            case .modMail:
+                try await modMailFeedLoader.refresh(clearBeforeRefresh: false)
+            }
         } catch {
             handleError(error)
         }
