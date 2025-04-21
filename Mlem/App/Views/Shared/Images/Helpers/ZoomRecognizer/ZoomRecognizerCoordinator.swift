@@ -39,6 +39,8 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
     
     var panType: PanType = .none
     
+    var customPanStartLocation: CGPoint?
+    
     /// Computes the maximum allowed offsets for a given scale.
     /// - Note: to get the minimum offset, multiply the return value by -1.
     lazy var maxOffsets: CachedComputation<CGFloat, CGSize> = .init { input in

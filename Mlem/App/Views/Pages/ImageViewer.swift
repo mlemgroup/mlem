@@ -149,7 +149,6 @@ struct ImageViewer: View {
         .quickLookPreview($quickLookUrl)
         .background(ClearBackgroundView())
         .statusBarHidden(!isDismissing)
-        .coordinateSpace(name: "ImageViewer")
     }
     
     func dragMoved(value: BridgeDragValue) {
