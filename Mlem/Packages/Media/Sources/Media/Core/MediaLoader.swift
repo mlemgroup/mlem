@@ -29,7 +29,7 @@ public enum MediaType {
         }
     }
     
-    var isAnimated: Bool {
+    public var isAnimated: Bool {
         switch self {
         case .image: false
         default: true
@@ -52,10 +52,10 @@ public class MediaLoader {
     public private(set) var loading: MediaLoadingState
     public private(set) var error: ImageLoadingError?
     
-//    @MainActor func setUrl(_ newValue: URL?) { self.url = newValue }
-//    @MainActor func setMediaType(_ newValue: MediaType?) { self.mediaType = newValue }
-//    @MainActor func setLoading(_ newValue: MediaLoadingState) { self.loading = newValue }
-//    @MainActor func setError(_ newValue: ImageLoadingError?) { self.error = newValue }
+    @MainActor func setUrl(_ newValue: URL?) { self.url = newValue }
+    @MainActor func setMediaType(_ newValue: MediaType?) { self.mediaType = newValue }
+    @MainActor func setLoading(_ newValue: MediaLoadingState) { self.loading = newValue }
+    @MainActor func setError(_ newValue: ImageLoadingError?) { self.error = newValue }
     
     private let autoBypassImageProxy: Bool
     private var proxyBypass: URL?
@@ -87,21 +87,17 @@ public class MediaLoader {
     }
     
     /// Loads the given url.
-    func load(_ url: URL?) async {
+    public func load(_ url: URL?) async {
         // noop if url unchanged and loading done
         guard !(url == self.url && loading == .done) else {
             return
         }
         
         // reset everything
-        // await setUrl(url)
-        // await setMediaType(nil)
-        // await setLoading(.loading)
-        // await setError(nil)
-        self.url = url
-        self.mediaType = nil
-        self.loading = .loading
-        self.error = nil
+         await setUrl(url)
+         await setMediaType(nil)
+         await setLoading(.loading)
+         await setError(nil)
         
         proxyBypass = computeProxyBypass(for: url)
         
