@@ -6,6 +6,7 @@
 //
 
 import ComponentViews
+import Icons
 import SwiftUI
 
 // swiftlint:disable line_length
@@ -13,19 +14,19 @@ struct FediseerInfoView: View {
     var body: some View {
         FancyScrollView {
             VStack(alignment: .leading) {
-                subHeading("The Fediseer", systemImage: Icons.fediseer, color: .indigo)
+                subHeading("The Fediseer", icon: .fediseer.fediseer, color: .indigo)
                 Text("The Fediseer is a service that instance administrators use to identify spam instances and express their approval or disapproval of other instances.")
                     .padding(.horizontal, Constants.main.standardSpacing)
-                subHeading("Guarantees", systemImage: Icons.fediseerGuarantee, color: .green)
+                subHeading("Guarantees", icon: .fediseer.guarantee, color: .green)
                 Text("If an instance is \"guaranteed\", it is known as definitely not spam. Unguaranteed instances are not necessarily spam; rather, it is unknown whether a non-guaranteed instance is spam or not.\n\nAn instance can be guaranteed by any other guaranteed instance. This forms a chain of guaranteed instances known as the \"Chain of Trust\". The Chain of Trust starts at the Fediseer itself, which guarantees several of the largest instances.\n\nA guarantee can be revoked by the guarantor at any time. If an instance's guarantee is revoked, it returns to a \"not guaranteed\" state along with any instances it guarantees.\n\nOnce an instance has been guaranteed, it is able to express its approval or disapproval of other instances using endorsements, hesitations and censures.")
                     .padding(.horizontal, Constants.main.standardSpacing)
-                subHeading("Endorsements", systemImage: Icons.fediseerEndorsement, color: .teal)
+                subHeading("Endorsements", icon: .fediseer.endorsement, color: .teal)
                 Text("An endorsement signifies that an instance approves of another instance. It is completely subjective, and a reason does not have to be given.")
                     .padding(.horizontal, Constants.main.standardSpacing)
-                subHeading("Censures", systemImage: Icons.fediseerCensure, color: .red)
+                subHeading("Censures", icon: .fediseer.censure, color: .red)
                 Text("A censure signifies that an instance disapproves of another instance. Like an endorsement, it is completely subjective and a reason does not have to be given.")
                     .padding(.horizontal, Constants.main.standardSpacing)
-                subHeading("Hesitations", systemImage: Icons.fediseerHesitation, color: .yellow)
+                subHeading("Hesitations", icon: .fediseer.hesitation, color: .yellow)
                 Text("A hesitation signifies that an instance mistrusts another instance. It is a milder version of a censure.")
                     .padding(.horizontal, Constants.main.standardSpacing)
                 Divider()
@@ -45,11 +46,12 @@ struct FediseerInfoView: View {
     }
     
     @ViewBuilder
-    func subHeading(_ title: LocalizedStringResource, systemImage: String, color: Color) -> some View {
+    func subHeading(_ title: LocalizedStringResource, icon: Icon, color: Color) -> some View {
         VStack(alignment: .leading, spacing: 5) {
             HStack {
-                Image(systemName: systemImage)
+                Image(icon: icon)
                     .foregroundStyle(color)
+                    .symbolVariant(.fill)
                 Text(title)
                     .fontWeight(.semibold)
             }

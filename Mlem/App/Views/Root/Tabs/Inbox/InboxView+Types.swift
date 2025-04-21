@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 2024-12-16.
 //
 
+import Icons
 import SwiftUI
 import Theming
 
@@ -34,17 +35,10 @@ extension InboxView {
             }
         }
         
-        var systemImage: String {
+        var icon: Icon {
             switch self {
-            case .inbox: Icons.inbox
-            case .modMail: Icons.moderation
-            }
-        }
-        
-        var systemImageFill: String {
-            switch self {
-            case .inbox: Icons.inboxFill
-            case .modMail: Icons.moderationFill
+            case .inbox: .lemmy.inbox
+            case .modMail: .lemmy.moderation
             }
         }
         

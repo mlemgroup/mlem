@@ -23,13 +23,13 @@ struct ImageUploadMenu<Label: View>: View {
     
     var body: some View {
         Menu(content: {
-            Button("Photo Library", systemImage: Icons.photo) {
+            Button("Photo Library", icon: .general.chooseImage) {
                 navigation.showPhotosPicker(for: imageManager, api: imageUploadApi)
             }
-            Button("Choose File", systemImage: Icons.chooseFile) {
+            Button("Choose File", icon: .general.chooseFile) {
                 navigation.showFilePicker(for: imageManager, api: imageUploadApi)
             }
-            Button("Paste", systemImage: Icons.paste) {
+            Button("Paste", icon: .general.paste) {
                 navigation.uploadImageFromClipboard(for: imageManager, api: imageUploadApi)
             }
         }, label: label)

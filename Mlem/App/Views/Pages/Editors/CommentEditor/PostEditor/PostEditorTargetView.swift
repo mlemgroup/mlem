@@ -27,18 +27,20 @@ struct PostEditorTargetView: View {
                 }
             }
             if isMoreThanOneTarget {
-                switch target.sendState {
-                case .unsent:
-                    EmptyView()
-                case .sent:
-                    Image(systemName: Icons.successCircleFill)
-                        .symbolRenderingMode(.hierarchical)
-                        .foregroundStyle(.themedPositive)
-                case .failed:
-                    Image(systemName: Icons.errorCircleFill)
-                        .symbolRenderingMode(.hierarchical)
-                        .foregroundStyle(.themedNegative)
+                Group {
+                    switch target.sendState {
+                    case .unsent:
+                        EmptyView()
+                    case .sent:
+                        Image(icon: .general.success)
+                            .foregroundStyle(.themedPositive)
+                    case .failed:
+                        Image(icon: .general.error)
+                            .foregroundStyle(.themedNegative)
+                    }
                 }
+                .symbolVariant(.circle.fill)
+                .symbolRenderingMode(.hierarchical)
             }
         }
     }
@@ -66,13 +68,14 @@ struct PostEditorTargetView: View {
                         }
                 } else {
                     HStack(spacing: 7) {
-                        Image(systemName: Icons.communityCircleFill)
+                        Image(icon: .lemmy.community)
                             .resizable()
+                            .symbolVariant(.circle.fill)
+                            .symbolRenderingMode(.hierarchical)
                             .aspectRatio(1, contentMode: .fit)
                             .frame(
                                 width: singleAccount ? Constants.main.mediumAvatarSize : Constants.main.largeAvatarSize
                             )
-                            .symbolRenderingMode(.hierarchical)
                         Text("Choose a community...")
                             .font(.footnote)
                             .multilineTextAlignment(.leading)
@@ -101,8 +104,9 @@ struct PostEditorTargetView: View {
             }
             switch target.resolutionState {
             case .notFound, .error:
-                Image(systemName: Icons.warningFill)
+                Image(icon: .general.warning)
                     .imageScale(.large)
+                    .symbolVariant(.fill)
                     .symbolRenderingMode(.hierarchical)
                     .foregroundStyle(.themedCaution)
                     .fontWeight(.semibold)

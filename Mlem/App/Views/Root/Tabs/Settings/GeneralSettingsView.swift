@@ -31,7 +31,7 @@ struct GeneralSettingsView: View {
             SettingsHeaderView(
                 title: "General",
                 description: "Manage your overall setup for Mlem.",
-                systemImage: "gear"
+                icon: .settings.general
             )
             .tint(.themedNeutralAccent)
             Section {
@@ -39,27 +39,27 @@ struct GeneralSettingsView: View {
                     "Default Feed",
                     value: .init(localized: defaultFeed.label),
                     fallbackValue: "",
-                    systemImage: Icons.feeds,
+                    icon: .lemmy.feed,
                     destination: .settings(.defaultFeed)
                 )
                 NavigationLink(
                     "Haptics",
                     value: .init(localized: hapticLevel.label),
                     fallbackValue: "",
-                    systemImage: Icons.haptics,
+                    icon: .general.haptics,
                     destination: .settings(.haptics)
                 )
             }
             Section {
-                Toggle("Upvote on Save", systemImage: Icons.upvoteOnSave, isOn: $upvoteOnSave)
-                Toggle("Mark Read on Scroll", systemImage: Icons.read, isOn: $markReadOnScroll)
-                Toggle("Infinite Scroll", systemImage: Icons.infiniteScroll, isOn: $infiniteScroll)
-                Toggle("Wrap Code Block Lines", systemImage: Icons.inlineCode, isOn: $wrapCodeBlockLines)
+                Toggle("Upvote on Save", icon: .settings.upvoteOnSave, isOn: $upvoteOnSave)
+                Toggle("Mark Read on Scroll", icon: .settings.markReadOnScroll, isOn: $markReadOnScroll)
+                Toggle("Infinite Scroll", icon: .settings.infiniteScroll, isOn: $infiniteScroll)
+                Toggle("Wrap Code Block Lines", icon: .markdown.inlineCode, isOn: $wrapCodeBlockLines)
             }
             Section {
                 Toggle(
                     "Swipe Actions",
-                    systemImage: Icons.swipeActions,
+                    icon: .settings.swipeActions,
                     isOn: .init(
                         get: { swipeActionsEnabled },
                         set: {
@@ -72,7 +72,7 @@ struct GeneralSettingsView: View {
                 )
                 Toggle(
                     "Swipe Anywhere to Navigate",
-                    systemImage: Icons.swipeAnywhere,
+                    icon: .settings.swipeAnywhere,
                     isOn: .init(
                         get: { swipeAnywhereToNavigate },
                         set: {
@@ -86,20 +86,26 @@ struct GeneralSettingsView: View {
             }
             
             Section {
-                Toggle("User Avatar", systemImage: Icons.personCircle, isOn: $showPersonAvatar)
-                Toggle("Community Avatar", systemImage: Icons.communityCircle, isOn: $showCommunityAvatar)
+                Toggle("User Avatar", icon: .lemmy.person, isOn: $showPersonAvatar)
+                    .symbolVariant(.circle)
+                Toggle("Community Avatar", icon: .lemmy.community, isOn: $showCommunityAvatar)
+                    .symbolVariant(.circle)
                 if #available(iOS 18, *) {
                     NavigationLink(
                         "Animated Avatars",
                         value: .init(localized: animatedAvatars.label),
                         fallbackValue: "",
-                        systemImage: Icons.playCircle,
+                        icon: .general.playCircle,
                         destination: .settings(.animatedAvatars)
                     )
                 }
             }
             
-            NavigationLink("Import/Export Settings", systemImage: Icons.importSettings, destination: .settings(.importExportSettings))
+            NavigationLink(
+                "Import/Export Settings",
+                icon: .general.import,
+                destination: .settings(.importExportSettings)
+            )
         }
         .labelStyle(.conditional)
         .contentMargins(.top, 16)

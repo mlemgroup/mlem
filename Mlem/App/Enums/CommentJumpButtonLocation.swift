@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 24/08/2024.
 //
 
+import Icons
 import SwiftUI
 
 enum CommentJumpButtonLocation: String, CaseIterable, Codable {
@@ -28,11 +29,11 @@ enum CommentJumpButtonLocation: String, CaseIterable, Codable {
         }
     }
     
-    var systemImage: String {
+    var icon: Icon {
         switch self {
-        case .bottomLeading: Icons.left
-        case .bottomTrailing: Icons.right
-        default: Icons.center
+        case .bottomLeading: .general.backward
+        case .bottomTrailing: .general.forward
+        default: .settings.center
         }
     }
 }

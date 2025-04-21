@@ -15,16 +15,17 @@ struct AnimatedAvatarSettingsView: View {
             SettingsHeaderView(
                 title: "Animated Avatars",
                 description: "Some users set animated media as their avatar. Control whether these avatars should play their animations.",
-                systemImage: Icons.playCircle
+                icon: .general.playCircle
             )
             .tint(.themedColorfulAccent(4))
             
             Picker("Animate Avatars...", selection: $animatedAvatars) {
                 ForEach(AnimatedAvatarBehavior.allCases, id: \.self) { location in
-                    Label(String(localized: location.label), systemImage: location.systemImage)
+                    Label(location.label.key, icon: location.icon)
                         .tag(location)
                 }
             }
+            .symbolVariant(.circle)
             .labelsHidden()
             .pickerStyle(.inline)
         }

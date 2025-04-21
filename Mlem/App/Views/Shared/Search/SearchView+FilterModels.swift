@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 04/10/2024.
 //
 
+import Icons
 import MlemMiddleware
 import SwiftUI
 
@@ -48,13 +49,13 @@ extension SearchView {
             }
         }
         
-        var systemImage: String {
+        var icon: Icon {
             switch self {
-            case .any: Icons.websiteIcon
-            case .subscribed: Icons.subscribedFeed
-            case .moderated: Icons.moderation
-            case .localInstance, .instance: Icons.instance
-            case .community: Icons.community
+            case .any: .general.website
+            case .subscribed: .lemmy.subscribedFeed
+            case .moderated: .lemmy.moderation
+            case .localInstance, .instance: .lemmy.instance
+            case .community: .lemmy.community
             }
         }
         

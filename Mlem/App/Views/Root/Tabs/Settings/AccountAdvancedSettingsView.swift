@@ -21,7 +21,7 @@ struct AccountAdvancedSettingsView: View {
     var body: some View {
         Form {
             Section {
-                Toggle("Bot Account", systemImage: Icons.botFlair, isOn: $isBot)
+                Toggle("Bot Account", icon: .lemmy.botFlair, isOn: $isBot)
                     .tint(.themedColorfulAccent(5))
                     .onChange(of: isBot) {
                         Task {

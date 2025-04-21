@@ -85,7 +85,8 @@ struct CommentEditorView: View {
                                 AccountPickerMenu(account: $account) {
                                     HStack(spacing: 3) {
                                         FullyQualifiedLabelView(account, labelStyle: .medium, showAvatar: false)
-                                        Image(systemName: Icons.dropDownCircleFill)
+                                        Image(icon: .general.dropDown)
+                                            .symbolVariant(.circle.fill)
                                             .symbolRenderingMode(.hierarchical)
                                             .tint(.themedSecondary)
                                             .imageScale(.small)
@@ -98,7 +99,7 @@ struct CommentEditorView: View {
                             if sending {
                                 ProgressView()
                             } else {
-                                Button("Send", systemImage: Icons.send) {
+                                Button("Send", icon: .lemmy.send) {
                                     sending = true
                                     Task(priority: .userInitiated) {
                                         await send()
@@ -260,7 +261,7 @@ struct CommentEditorView: View {
     
     @ViewBuilder
     var selectTextButton: some View {
-        Button("Select Text", systemImage: Icons.select) {
+        Button("Select Text", icon: .general.select) {
             Task { @MainActor in
                 textView.resignFirstResponder()
             }

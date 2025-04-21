@@ -26,7 +26,7 @@ struct ModlogButtonView: View {
                 Label {
                     Text("Modlog")
                 } icon: {
-                    Image(systemName: Icons.modlog)
+                    Image(icon: .lemmy.modlog)
                         .foregroundStyle(.themedSecondary)
                 }
             }

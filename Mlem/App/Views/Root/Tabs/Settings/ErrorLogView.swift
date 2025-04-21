@@ -42,7 +42,7 @@ struct ErrorLogView: View {
                             }
                         }
                     } label: {
-                        Image(systemName: Icons.share)
+                        Image(icon: .general.share)
                     }
                 }
             }
@@ -62,7 +62,7 @@ struct ErrorLogView: View {
                     UIPasteboard.general.string = details.errorText()
                     ToastModel.main.add(.success(String("Copied")))
                 } label: {
-                    Text(Image(systemName: Icons.copy))
+                    Text(Image(icon: .general.copy))
                         .font(.subheadline)
                         .foregroundStyle(.themedAccent)
                 }

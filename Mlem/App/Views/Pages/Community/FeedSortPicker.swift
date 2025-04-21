@@ -65,7 +65,7 @@ struct FeedSortPicker: View {
                 ForEach(nonTopSortTypes, id: \.self) { type in
                     Toggle(
                         type.label(),
-                        systemImage: type.systemImage,
+                        icon: type.icon,
                         isOn: .init(get: { sort == type }, set: { _ in sort = type })
                     )
                 }
@@ -73,28 +73,28 @@ struct FeedSortPicker: View {
                 if topSortTypes.count > 3 {
                     Toggle(
                         "Top...",
-                        systemImage: Icons.topSort,
+                        icon: .lemmy.topSort,
                         isOn: .init(get: { PostSortType.legacyTopCases.contains(sort) }, set: { _ in topSortPopupPresented = true })
                     )
                 } else {
                     ForEach(topSortTypes, id: \.self) { type in
                         Toggle(
                             type.label(timeRangeFormat: .topAndTimescale),
-                            systemImage: type.systemImage,
+                            icon: type.icon,
                             isOn: .init(get: { sort == type }, set: { _ in sort = type })
                         )
                     }
                 }
             }
             Section {
-                Button("More...", systemImage: Icons.menuCircle) {
+                Button("More...", icon: .general.toolbarMenu) {
                     navigation.openSheet(.advancedSorting($sort))
                 }
             }
         } label: {
             if showTopTimescaleInIcon, sort.isTop {
                 HStack {
-                    Image(systemName: Icons.topSort)
+                    Image(icon: .lemmy.topSort)
                         .imageScale(.small)
                     Text(sort.label(timeRangeFormat: .timescaleAbbreviated))
                         .font(.footnote)
@@ -109,7 +109,7 @@ struct FeedSortPicker: View {
                 }
                 .accessibilityLabel(sort.label(timeRangeFormat: .topAndTimescale))
             } else {
-                Label(sort.label(timeRangeFormat: topSortTypes.count == 1 ? .topOnly : .topAndTimescale), systemImage: sort.systemImage)
+                Label(sort.label(timeRangeFormat: topSortTypes.count == 1 ? .topOnly : .topAndTimescale), icon: sort.icon)
             }
         }
         .disabled(appState.firstApi.fetchedVersion == nil)

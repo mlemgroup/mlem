@@ -35,7 +35,7 @@ extension Community1Providing {
                     ToastModel.main.add(
                         .undoable(
                             "Unsubscribed",
-                            systemImage: "person.slash.fill",
+                            icon: .lemmy.didUnsubscribe,
                             callback: {
                                 if wasFavorited {
                                     self2.updateFavorite(true)
@@ -64,7 +64,7 @@ extension Community1Providing {
                     ToastModel.main.add(
                         .undoable(
                             "Unfavorited",
-                            systemImage: "star.slash.fill",
+                            icon: .lemmy.unfavorite,
                             callback: {
                                 self2.updateFavorite(true)
                             },
@@ -73,7 +73,7 @@ extension Community1Providing {
                     )
                 } else {
                     ToastModel.main.add(
-                        .basic("Favorited", systemImage: "star.fill", color: .themedFavorite)
+                        .basic("Favorited", icon: .lemmy.favorite, color: .themedFavorite)
                     )
                 }
             }
@@ -89,7 +89,7 @@ extension Community1Providing {
                 ToastModel.main.add(
                     .undoable(
                         "Blocked",
-                        systemImage: Icons.blockFill,
+                        icon: .lemmy.block,
                         callback: {
                             self.updateBlocked(false)
                         },
@@ -100,7 +100,7 @@ extension Community1Providing {
                 ToastModel.main.add(
                     .undoable(
                         "Unblocked",
-                        systemImage: Icons.unblockFill,
+                        icon: .lemmy.unblock,
                         callback: {
                             self.updateBlocked(true)
                         },

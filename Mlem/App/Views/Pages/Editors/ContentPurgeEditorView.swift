@@ -31,7 +31,7 @@ struct ContentPurgeEditorView: View {
                 Form {
                     Section {
                         WarningView(
-                            iconName: Icons.purge,
+                            icon: .lemmy.purge,
                             text: "Purged content is erased from the database and cannot be restored.",
                             inList: true
                         )
@@ -58,7 +58,7 @@ struct ContentPurgeEditorView: View {
                         Button("Cancel") { dismiss() }
                     }
                     ToolbarItem(placement: .topBarTrailing) {
-                        Button("Send", systemImage: Icons.send) {
+                        Button("Send", icon: .lemmy.send) {
                             Task {
                                 await send()
                             }

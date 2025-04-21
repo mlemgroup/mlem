@@ -7,12 +7,13 @@
 //
 
 import Dependencies
+import Icons
 import SwiftUI
 
 struct SectionIndexTitles: View {
     struct Section: Identifiable {
         let label: String
-        var systemImage: String?
+        var icon: Icon?
         var id: String { label }
     }
     
@@ -21,7 +22,7 @@ struct SectionIndexTitles: View {
     
     init(sections: [SubscriptionListSection], sectionScroller: Binding<Int>) {
         self.sections = sections.map {
-            .init(label: $0.label, systemImage: $0.systemImage)
+            .init(label: $0.label, icon: $0.icon)
         }
         self._sectionScroller = sectionScroller
     }
@@ -79,8 +80,8 @@ struct SectionIndexTitles: View {
 // Sidebar Label Views
 @ViewBuilder
 func sectionTitle(for section: SectionIndexTitles.Section) -> some View {
-    if let systemImage = section.systemImage {
-        SectionIndexImage(image: systemImage)
+    if let icon = section.icon {
+        SectionIndexImage(icon: icon)
     } else {
         SectionIndexText(label: section.label)
     }
@@ -97,9 +98,12 @@ struct SectionIndexText: View {
 }
 
 struct SectionIndexImage: View {
-    let image: String
+    let icon: Icon
+    
     var body: some View {
-        Image(systemName: image).resizable()
+        Image(icon: icon)
+            .resizable()
             .frame(width: 8, height: 8)
+            .symbolVariant(.fill)
     }
 }

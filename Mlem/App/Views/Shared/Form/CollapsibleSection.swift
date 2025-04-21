@@ -37,7 +37,7 @@ struct CollapsibleSection<Content: View>: View {
                         .textCase(.uppercase)
                         .opacity(0.5)
                     Spacer()
-                    Image(systemName: Icons.dropDown)
+                    Image(icon: .general.dropDown)
                         .fontWeight(.semibold)
                         .foregroundStyle(Color.accentColor)
                         .rotationEffect(Angle(degrees: collapsed ? -90 : 0))

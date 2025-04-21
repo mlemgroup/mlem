@@ -6,6 +6,7 @@
 //
 
 import Combine
+import Icons
 import MlemMiddleware
 import SwiftUI
 import UniformTypeIdentifiers
@@ -15,7 +16,7 @@ struct ErrorDetails: Hashable {
     var body: String?
     var error: Error?
     var location: String?
-    var systemImage: String?
+    var icon: Icon?
     var buttonText: String?
     var refresh: (() async -> Bool)?
     var autoRefresh: Bool = false
@@ -26,7 +27,7 @@ struct ErrorDetails: Hashable {
         body: String? = nil,
         error: Error? = nil,
         location: String? = nil,
-        systemImage: String? = nil,
+        icon: Icon? = nil,
         buttonText: String? = nil,
         refresh: (() -> Bool)? = nil,
         autoRefresh: Bool = false
@@ -35,7 +36,7 @@ struct ErrorDetails: Hashable {
         self.body = body
         self.error = error
         self.location = location
-        self.systemImage = systemImage
+        self.icon = icon
         self.buttonText = buttonText
         self.refresh = refresh
         self.autoRefresh = autoRefresh
@@ -56,7 +57,7 @@ struct ErrorDetails: Hashable {
         hasher.combine(body)
         hasher.combine(error?.localizedDescription)
         hasher.combine(location)
-        hasher.combine(systemImage)
+        hasher.combine(icon)
         hasher.combine(buttonText)
         hasher.combine(refresh == nil)
         hasher.combine(autoRefresh)

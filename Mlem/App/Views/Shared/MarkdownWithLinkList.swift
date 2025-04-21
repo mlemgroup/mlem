@@ -55,10 +55,10 @@ struct MarkdownWithLinkList: View {
             subtitle: showSubtitle ? data.url.absoluteURL.description : nil
         )
         .contextMenu {
-            Button("Open", systemImage: Icons.browser) {
+            Button("Open", icon: .general.browser) {
                 openURL(data.url)
             }
-            Button("Copy", systemImage: Icons.copy) {
+            Button("Copy", icon: .general.copy) {
                 let pasteboard = UIPasteboard.general
                 pasteboard.url = data.url
             }

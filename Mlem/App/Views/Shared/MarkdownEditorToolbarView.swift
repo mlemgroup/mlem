@@ -101,7 +101,7 @@ struct MarkdownEditorToolbarView: View {
                     SwiftUI.Divider()
                         .padding(.top, 2)
                 }
-                Button("Bold", systemImage: Icons.bold) {
+                Button("Bold", icon: .markdown.bold) {
                     textView.wrapSelectionWithDelimiters("**")
                 }
                 .compatibilityOnScrollVisibilityChange { isVisible in
@@ -111,64 +111,64 @@ struct MarkdownEditorToolbarView: View {
                         }
                     }
                 }
-                Button("Italic", systemImage: Icons.italic) {
+                Button("Italic", icon: .markdown.italic) {
                     textView.wrapSelectionWithDelimiters("_")
                 }
-                Button("Strikethrough", systemImage: Icons.strikethrough) {
+                Button("Strikethrough", icon: .markdown.strikethrough) {
                     textView.wrapSelectionWithDelimiters("~~")
                 }
-                Button("Superscript", systemImage: Icons.superscript) {
+                Button("Superscript", icon: .markdown.superscript) {
                     textView.wrapSelectionWithDelimiters("^")
                 }
-                Button("Subscript", systemImage: Icons.subscript) {
+                Button("Subscript", icon: .markdown.subscript) {
                     textView.wrapSelectionWithDelimiters("~")
                 }
-                Button("Code", systemImage: Icons.inlineCode) {
+                Button("Code", icon: .markdown.inlineCode) {
                     textView.wrapSelectionWithDelimiters("`")
                 }
-                Button("Link", systemImage: Icons.websiteAddress) {
+                Button("Link", icon: .markdown.insertLink) {
                     textView.wrapSelectionWithLink()
                 }
                 if actions == .all {
                     SwiftUI.Divider()
                         .padding(.top, 2)
-                    Menu("Heading", systemImage: Icons.heading) {
+                    Menu("Heading", icon: .markdown.heading) {
                         ForEach(1 ..< 7) { level in
                             Button("Heading \(level)") {
                                 textView.toggleHeadingAtCursor(level: level)
                             }
                         }
                     }
-                    Button("Quote", systemImage: Icons.quote) {
+                    Button("Quote", icon: .markdown.quote) {
                         textView.toggleQuoteAtCursor()
                     }
                     if let imageUploadApi {
                         ImageUploadMenu(imageManager: imageManager, imageUploadApi: imageUploadApi) {
-                            Label("Image", systemImage: Icons.uploadImage)
+                            Label("Image", icon: .markdown.uploadImage)
                         }
                     }
-                    Button("Spoiler", systemImage: Icons.spoiler) {
+                    Button("Spoiler", icon: .markdown.spoiler) {
                         textView.wrapSelectionWithSpoiler()
                     }
-                    Button("Code Block", systemImage: Icons.codeBlock) {
+                    Button("Code Block", icon: .markdown.codeBlock) {
                         textView.wrapSelectionWithCodeBlock()
                     }
                 }
                 SwiftUI.Divider()
                     .padding(.top, 2)
-                Button("Community Link", systemImage: Icons.community) {
+                Button("Community Link", icon: .lemmy.community) {
                     navigation.openSheet(.communityPicker { community in
                         textView.insertText(community.fullNameWithPrefix)
                     })
                 }
-                Button("User Link", systemImage: Icons.person) {
+                Button("User Link", icon: .lemmy.person) {
                     navigation.openSheet(.personPicker { person in
                         // lemmy-ui doesn't recognize the @user@example.com format, so we have to do this instead :(
                         // See this issue https://github.com/LemmyNet/lemmy-ui/issues/2579
                         textView.insertText("[\(person.fullNameWithPrefix)](\(person.actorId))")
                     })
                 }
-                Button("Instance Link", systemImage: Icons.instance) {
+                Button("Instance Link", icon: .lemmy.instance) {
                     navigation.openSheet(.instancePicker { instance in
                         textView.insertText("[\(instance.host)](https://\(instance.host))")
                     })

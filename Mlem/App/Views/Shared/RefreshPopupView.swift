@@ -31,7 +31,7 @@ struct RefreshPopupView: View {
                     HStack(spacing: 0) {
                         Text(title)
                             .padding(.horizontal, 10)
-                        Label("Refresh", systemImage: Icons.refresh)
+                        Label("Refresh", icon: .general.refresh)
                             .foregroundStyle(.themedContrastingLabel)
                             .fontWeight(.semibold)
                             .padding(.vertical, 4)

@@ -21,7 +21,7 @@ struct AccessibilitySettingsView: View {
             SettingsHeaderView(
                 title: "Accessibility",
                 description: "Customize Mlem to work best for you. Some features are tied to system-wide accessibility settings.",
-                systemImage: "hand.point.up.braille.fill"
+                icon: .settings.accessibility
             )
             .tint(.themedColorfulAccent(2))
             if differentiateWithoutColor {
@@ -30,7 +30,7 @@ struct AccessibilitySettingsView: View {
                         "Post Read Indicator",
                         value: .init(localized: readPostIndicator.label),
                         fallbackValue: "",
-                        systemImage: Icons.read,
+                        icon: .settings.readIndicatorSetting,
                         destination: .settings(.postReadIndicator)
                     )
                 } header: {
@@ -39,8 +39,8 @@ struct AccessibilitySettingsView: View {
             }
             
             Section {
-                Toggle("Website Thumbnail Indicator", systemImage: Icons.browser, isOn: $websiteThumbnailIcon)
-                Toggle("Settings Icons", systemImage: Icons.icon, isOn: $showSettingsIcons)
+                Toggle("Website Thumbnail Indicator", icon: .general.browser, isOn: $websiteThumbnailIcon)
+                Toggle("Settings Icons", icon: .settings.settingsIcons, isOn: $showSettingsIcons)
             } header: {
                 Text("Non-Text Indicators")
             }
@@ -51,7 +51,7 @@ struct AccessibilitySettingsView: View {
                         "Animated Avatars",
                         value: .init(localized: animatedAvatars.label),
                         fallbackValue: "",
-                        systemImage: Icons.playCircle,
+                        icon: .general.playCircle,
                         destination: .settings(.animatedAvatars)
                     )
                 } header: {
@@ -64,7 +64,7 @@ struct AccessibilitySettingsView: View {
                     "Slide to Zoom Images",
                     value: .init(localized: zoomSliderLocation.label),
                     fallbackValue: "",
-                    systemImage: Icons.zoomSlider,
+                    icon: .settings.zoomSlider,
                     destination: .settings(.zoomSlider)
                 )
             } header: {

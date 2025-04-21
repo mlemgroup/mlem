@@ -57,7 +57,7 @@ struct ContentRemovalEditorView: View {
                         Button("Cancel") { dismiss() }
                     }
                     ToolbarItem(placement: .topBarTrailing) {
-                        Button("Send", systemImage: Icons.send) {
+                        Button("Send", icon: .lemmy.send) {
                             Task {
                                 await send()
                             }

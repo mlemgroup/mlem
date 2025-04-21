@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Icons
 import MlemMiddleware
 
 extension InboxItemType {
@@ -45,15 +46,15 @@ extension InboxItemType {
         }
     }
     
-    var systemImage: String {
+    var icon: Icon {
         switch self {
-        case .reply: Icons.reply
-        case .mention: Icons.mention
-        case .message: Icons.message
-        case .postReport: Icons.posts
-        case .commentReport: Icons.replies
-        case .messageReport: Icons.moderationReport
-        case .registrationApplication: Icons.registrationApplication
+        case .reply: .lemmy.reply
+        case .mention: .lemmy.mention
+        case .message: .lemmy.message
+        case .postReport: .lemmy.post
+        case .commentReport: .lemmy.replies
+        case .messageReport: .lemmy.report
+        case .registrationApplication: .lemmy.registrationApplication
         }
     }
     

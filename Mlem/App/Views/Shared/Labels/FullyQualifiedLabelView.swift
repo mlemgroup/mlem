@@ -100,7 +100,8 @@ struct FullyQualifiedLabelView: View {
             
             HStack(spacing: 4) {
                 if showSubscriptionIndicator {
-                    Image(systemName: Icons.present)
+                    Image(icon: .general.circle)
+                        .symbolVariant(.fill)
                         .font(.system(size: subscriptionIndicatorSize))
                         .foregroundStyle(.themedSecondary)
                         .padding(.bottom, 2)
@@ -112,6 +113,7 @@ struct FullyQualifiedLabelView: View {
                     instanceLocation: showInstance ? labelStyle.instanceLocation : .disabled,
                     prependedText: flairs.textView
                 )
+                .symbolVariant(.fill)
             }
             .imageScale(.small)
             .offset(y: 1)

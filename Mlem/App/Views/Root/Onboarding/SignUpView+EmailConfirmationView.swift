@@ -30,7 +30,7 @@ extension SignUpView {
         
         var body: some View {
             VStack(spacing: Constants.main.doubleSpacing) {
-                Image(systemName: Icons.email)
+                Image(icon: .general.email)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(height: 100)

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Icons
 import MlemMiddleware
 
 extension PostSortType {
@@ -32,17 +33,17 @@ extension PostSortType {
         }
     }
 
-    var systemImage: String {
+    var icon: Icon {
         switch self {
-        case .active: Icons.activeSort
-        case .hot: Icons.hotSort
-        case .new: Icons.newSort
-        case .old: Icons.oldSort
-        case .mostComments: Icons.mostCommentsSort
-        case .newComments: Icons.newCommentsSort
-        case .controversial: Icons.controversialSort
-        case .scaled: Icons.scaledSort
-        case .top: Icons.topSort
+        case .active: .lemmy.activeSort
+        case .hot: .lemmy.hotSort
+        case .new: .lemmy.newSort
+        case .old: .lemmy.oldSort
+        case .mostComments: .lemmy.mostCommentsSort
+        case .newComments: .lemmy.newCommentsSort
+        case .controversial: .lemmy.controversialSort
+        case .scaled: .lemmy.scaledSort
+        case .top: .lemmy.topSort
         }
     }
     

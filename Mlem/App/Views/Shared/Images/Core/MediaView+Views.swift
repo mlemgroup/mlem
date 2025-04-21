@@ -103,9 +103,10 @@ extension MediaView {
     var coreFallbackImage: some View {
         let fallback: Fallback = loader.loading == .proxyFailed ? .proxyFailure : fallback
         GeometryReader { geo in
-            Image(systemName: fallback.icon)
+            Image(icon: fallback.icon)
                 .resizable()
                 .scaledToFit()
+                .symbolVariant(fallback.fallbackStyle == .avatar ? .circle.fill : .none)
                 .frame(width: geo.size.width * fallback.scaleFactor)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
@@ -127,7 +128,7 @@ extension MediaView {
                 switch loaderError {
                 case let .proxyFailure(proxyBypass):
                     VStack(spacing: Constants.main.standardSpacing) {
-                        Image(systemName: Icons.proxy)
+                        Image(icon: .lemmy.imageProxy)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(maxWidth: 50)
@@ -156,7 +157,7 @@ extension MediaView {
                     }
                     .foregroundStyle(.themedTertiary)
                 default:
-                    Image(systemName: Icons.missing)
+                    Image(icon: .general.missing)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(maxWidth: 50)
@@ -187,11 +188,11 @@ extension MediaView {
     @ViewBuilder
     func contextMenuContent() -> some View {
         if let url = fullSizeUrl ?? loader.url {
-            Button("Save", systemImage: Icons.import) {
+            Button("Save", icon: .general.import) {
                 Task { await saveMedia(url: url) }
             }
             if let navigation {
-                Button("Share...", systemImage: Icons.share) {
+                Button("Share...", icon: .general.share) {
                     Task { await shareImage(url: url, navigation: navigation) }
                 }
             }

@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 01/10/2024.
 //
 
+import Icons
 import SwiftUI
 
 struct ModeratorSettingsView: View {
@@ -17,7 +18,7 @@ struct ModeratorSettingsView: View {
             SettingsHeaderView(
                 title: "Moderation",
                 description: "Manage settings related to content moderation.",
-                systemImage: Icons.moderationFill
+                icon: .lemmy.moderation
             )
             .tint(.themedModeration)
             Section {
@@ -25,12 +26,13 @@ struct ModeratorSettingsView: View {
                     "Moderator Actions",
                     value: .init(localized: moderatorActionGrouping.label),
                     fallbackValue: "",
-                    systemImage: Icons.menuItems,
+                    icon: .settings.menuItems,
                     destination: .settings(.separateModeratorActions)
                 )
             }
             Section {
-                Toggle("Show All Actions in Feed", systemImage: Icons.menuCircle, isOn: $showAllModActions)
+                Toggle("Show All Actions in Feed", icon: .general.menu, isOn: $showAllModActions)
+                    .symbolVariant(.circle)
             } footer: {
                 Text("When disabled, some moderator actions will only be accessible from the post page.")
             }
@@ -39,14 +41,14 @@ struct ModeratorSettingsView: View {
                     "Notification Badge",
                     value: tabInboxBadgeIncludedTypes.label(accountType: AccountsTracker.main.highestLevelAccountType),
                     fallbackValue: .init(localized: "Some"),
-                    systemImage: Icons.unreadBadge,
+                    icon: .settings.unreadBadge,
                     destination: .settings(.inboxBadge)
                 )
             }
             Section {
                 NavigationLink(
                     "Mod Mail Action Layouts",
-                    systemImage: Icons.interactionBar,
+                    icon: .settings.interactionBar,
                     destination: .settings(.modMailInteractionBar)
                 )
             }
@@ -82,11 +84,11 @@ enum ModeratorActionGrouping: String, Codable, CaseIterable {
         }
     }
     
-    var systemImage: String {
+    var icon: Icon {
         switch self {
-        case .divider: "minus"
-        case .disclosureGroup: Icons.dropDown
-        case .separateMenu: Icons.moderation
+        case .divider: .general.remove
+        case .disclosureGroup: .general.dropDown
+        case .separateMenu: .lemmy.moderation
         }
     }
 }

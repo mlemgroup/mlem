@@ -115,7 +115,7 @@ extension InboxView {
             Button {
                 showRead.toggle()
             } label: {
-                Label("Hide Read", systemImage: Icons.filter)
+                Label("Hide Read", icon: .general.filter)
                     .symbolVariant(showRead ? .none : .fill)
             }
         }
@@ -145,14 +145,14 @@ extension InboxView {
                 }
             } label: {
                 HStack {
-                    Image(systemName: Icons.markRead)
+                    Image(icon: .lemmy.markRead)
                         .imageScale(.small)
                     Text("All")
                 }
                 .opacity((value == 0 && newMessagesExist) ? 1 : 0)
                 .overlay {
                     if value != 0 {
-                        Image(systemName: Icons.success)
+                        Image(icon: .general.success)
                             .imageScale(.small)
                             .fontWeight(.semibold)
                     }
@@ -173,7 +173,7 @@ extension InboxView {
             if availableFeeds.count > 1 {
                 Picker("Feed", selection: $selectedFeed) {
                     ForEach(availableFeeds) { feedType in
-                        Label(String(localized: feedType.label), systemImage: feedType.systemImage)
+                        Label(feedType.label.key, icon: feedType.icon)
                             .tag(feedType)
                     }
                 }
@@ -184,8 +184,7 @@ extension InboxView {
                     label: selectedFeed.label,
                     subtitle: selectedFeed.subtitle(isAdmin: appState.firstApi.isAdmin),
                     color: selectedFeed.color,
-                    iconName: selectedFeed.systemImage,
-                    iconNameFill: selectedFeed.systemImageFill,
+                    icon: selectedFeed.icon,
                     iconScaleFactor: 0.5
                 ),
                 dropdownStyle: availableFeeds.count > 1 ? .enabled(showBadge: showBadge) : .disabled
@@ -196,7 +195,7 @@ extension InboxView {
     @ViewBuilder
     var signedOutInfoView: some View {
         VStack {
-            Image(systemName: Icons.inbox)
+            Image(icon: .lemmy.inbox)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(height: 80)

@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 20/01/2024.
 //
 
+import Icons
 import MlemMiddleware
 import SwiftUI
 import Theming
@@ -45,13 +46,13 @@ struct InstanceDetailsView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     settingRow(
                         "Private",
-                        systemImage: Icons.private,
+                        icon: .lemmy.private,
                         value: instance.isPrivate_ ?? false
                     )
                     Divider()
                     settingRow(
                         "Federates",
-                        systemImage: Icons.federation,
+                        icon: .lemmy.federation,
                         value: instance.federationEnabled_ ?? false
                     )
                 }
@@ -61,7 +62,7 @@ struct InstanceDetailsView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     settingRow(
                         "Registration",
-                        systemImage: Icons.person,
+                        icon: .lemmy.person,
                         value: instance.registrationMode_?.label ?? "Closed",
                         color: instance.registrationMode_?.color ?? .themedNegative
                     )
@@ -69,13 +70,13 @@ struct InstanceDetailsView: View {
                         Divider()
                         settingRow(
                             "Email Verification",
-                            systemImage: Icons.email,
+                            icon: .general.email,
                             value: instance.emailVerificationRequired_ ?? false
                         )
                         Divider()
                         settingRow(
                             "Captcha",
-                            systemImage: Icons.photo,
+                            icon: .lemmy.captcha,
                             value: captchaLabel,
                             color: instance.captchaDifficulty_ == nil ? .themedNegative : .themedPositive
                         )
@@ -87,25 +88,25 @@ struct InstanceDetailsView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     settingRow(
                         "NSFW Content",
-                        systemImage: Icons.blurNsfw,
+                        icon: .settings.blurNsfw,
                         value: instance.nsfwContentEnabled_ ?? false
                     )
                     Divider()
                     settingRow(
                         "Downvotes",
-                        systemImage: Icons.downvote,
+                        icon: .lemmy.downvoted,
                         value: instance.downvotesEnabled_ ?? false
                     )
                     Divider()
                     settingRow(
                         "Community Creation",
-                        systemImage: "house",
+                        icon: .lemmy.community,
                         value: !(instance.communityCreationRestrictedToAdmins_ ?? false)
                     )
                     Divider()
                     settingRow(
                         "Slur Filter",
-                        systemImage: Icons.filterFill,
+                        icon: .general.filter,
                         value: instance.slurFilterRegex_ != nil
                     )
                     if let regex = instance.slurFilterRegex_ {
@@ -119,7 +120,7 @@ struct InstanceDetailsView: View {
                                 Text("Tap to show slur filter regex.")
                                 Label(
                                     "This probably contains foul language.",
-                                    systemImage: Icons.warning
+                                    icon: .general.warning
                                 )
                                 .foregroundStyle(.themedCaution)
                             }
@@ -138,7 +139,7 @@ struct InstanceDetailsView: View {
                         Divider()
                         settingRow(
                             "Default Feed Type (Desktop)",
-                            systemImage: Icons.feeds,
+                            icon: .lemmy.feed,
                             value: feedType.label
                         )
                     }
@@ -149,19 +150,19 @@ struct InstanceDetailsView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     settingRow(
                         "Show Mod Names in Modlog",
-                        systemImage: Icons.moderation,
+                        icon: .lemmy.moderation,
                         value: !(instance.hideModlogNames_ ?? true)
                     )
                     Divider()
                     settingRow(
                         "Applications Email Admins",
-                        systemImage: Icons.person,
+                        icon: .lemmy.registrationApplication,
                         value: instance.emailApplicationsToAdmins_ ?? false
                     )
                     Divider()
                     settingRow(
                         "Reports Email Admins",
-                        systemImage: Icons.moderationReport,
+                        icon: .lemmy.report,
                         value: instance.emailReportsToAdmins_ ?? false
                     )
                 }
@@ -184,12 +185,12 @@ struct InstanceDetailsView: View {
     @ViewBuilder
     func settingRow(
         _ label: LocalizedStringResource,
-        systemImage: String,
+        icon: Icon,
         value: LocalizedStringResource,
         color: ThemedColor? = nil
     ) -> some View {
         HStack {
-            Image(systemName: systemImage)
+            Image(icon: icon)
                 .foregroundStyle(.themedSecondary)
                 .frame(width: 30)
             Text(label)
@@ -201,10 +202,10 @@ struct InstanceDetailsView: View {
     }
     
     @ViewBuilder
-    func settingRow(_ label: LocalizedStringResource, systemImage: String, value: Bool) -> some View {
+    func settingRow(_ label: LocalizedStringResource, icon: Icon, value: Bool) -> some View {
         settingRow(
             label,
-            systemImage: systemImage,
+            icon: icon,
             value: value ? "Yes" : "No",
             color: value ? .themedPositive : .themedNegative
         )

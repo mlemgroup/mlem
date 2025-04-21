@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 15/05/2024.
 //
 
+import Icons
 import MlemMiddleware
 import SwiftUI
 import Theming
@@ -14,7 +15,7 @@ enum ToastType: Hashable {
     case basic(
         title: String,
         subtitle: String?,
-        systemImage: String?,
+        icon: Icon?,
         color: ThemedColor,
         duration: Double
     )
@@ -22,7 +23,7 @@ enum ToastType: Hashable {
     static func basic(
         _ title: LocalizedStringResource,
         subtitle: LocalizedStringResource? = nil,
-        systemImage: String? = nil,
+        icon: Icon? = nil,
         color: ThemedColor? = nil,
         duration: Double = 1.5
     ) -> ToastType {
@@ -35,7 +36,7 @@ enum ToastType: Hashable {
         return .basic(
             title: String(localized: title),
             subtitle: subtitleString,
-            systemImage: systemImage,
+            icon: icon,
             color: color ?? .themedAccent,
             duration: duration
         )
@@ -45,14 +46,14 @@ enum ToastType: Hashable {
     static func basic(
         _ title: String,
         subtitle: String? = nil,
-        systemImage: String? = nil,
+        icon: Icon? = nil,
         color: ThemedColor? = nil,
         duration: Double = 1.5
     ) -> ToastType {
         .basic(
             title: title,
             subtitle: subtitle,
-            systemImage: systemImage,
+            icon: icon,
             color: color ?? .themedAccent,
             duration: duration
         )
@@ -61,16 +62,16 @@ enum ToastType: Hashable {
     // Don't initialize this directly - use one of the static methods instead
     case undoable(
         title: String?,
-        systemImage: String?,
-        successSystemImage: String?,
+        icon: Icon?,
+        successIcon: Icon?,
         callback: () -> Void,
         color: ThemedColor
     )
 
     static func undoable(
         _ title: LocalizedStringResource? = nil,
-        systemImage: String? = nil,
-        successSystemImage: String? = nil,
+        icon: Icon? = nil,
+        successIcon: Icon? = nil,
         callback: @escaping () -> Void,
         color: ThemedColor = .themedAccent
     ) -> ToastType {
@@ -83,8 +84,8 @@ enum ToastType: Hashable {
 
         return .undoable(
             title: string,
-            systemImage: systemImage,
-            successSystemImage: successSystemImage,
+            icon: icon,
+            successIcon: successIcon,
             callback: callback,
             color: color
         )
@@ -93,15 +94,15 @@ enum ToastType: Hashable {
     @_disfavoredOverload
     static func undoable(
         _ title: String? = nil,
-        systemImage: String? = nil,
-        successSystemImage: String? = nil,
+        icon: Icon? = nil,
+        successIcon: Icon? = nil,
         callback: @escaping () -> Void,
         color: ThemedColor = .themedAccent
     ) -> ToastType {
         .undoable(
             title: title,
-            systemImage: systemImage,
-            successSystemImage: successSystemImage,
+            icon: icon,
+            successIcon: successIcon,
             callback: callback,
             color: color
         )
@@ -122,7 +123,7 @@ enum ToastType: Hashable {
         .basic(
             title: "No URL Copied",
             subtitle: "Copy a URL to the clipboard, then try again.",
-            systemImage: nil,
+            icon: nil,
             color: .themedAccent,
             duration: 2
         )
@@ -178,7 +179,7 @@ enum ToastType: Hashable {
         .basic(
             title: message ?? "Success",
             subtitle: nil,
-            systemImage: Icons.successCircleFill,
+            icon: .general.success,
             color: .themedPositive,
             duration: 1
         )
@@ -197,7 +198,7 @@ enum ToastType: Hashable {
         .basic(
             title: message ?? "Failed",
             subtitle: nil,
-            systemImage: Icons.failureCircleFill,
+            icon: .general.failure,
             color: .themedNegative,
             duration: 1
         )
@@ -214,15 +215,15 @@ enum ToastType: Hashable {
             hasher.combine(duration)
         case let .undoable(
             title: title,
-            systemImage: systemImage,
-            successSystemImage: successSystemImage,
+            icon: icon,
+            successIcon: successIcon,
             callback: _,
             color: color
         ):
             hasher.combine("undoable")
             hasher.combine(title)
-            hasher.combine(systemImage)
-            hasher.combine(successSystemImage)
+            hasher.combine(icon)
+            hasher.combine(successIcon)
             hasher.combine(color)
         case let .error(details):
             hasher.combine("error")

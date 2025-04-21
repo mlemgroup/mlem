@@ -6,8 +6,9 @@
 //
 
 import Foundation
-import SwiftUICore
+import Icons
 import MlemMiddleware
+import SwiftUICore
 
 protocol InteractionBarConfiguration: Codable, Equatable {
     associatedtype ActionType: ActionTypeProviding
@@ -57,9 +58,9 @@ extension InteractionBarConfiguration {
     var all: [Item] { leading + trailing }
     
     func associatedReadouts(context: any Interactable1Providing) -> Set<ReadoutType> {
-        all.reduce(into: Set<ReadoutType>(), { result, element in
+        all.reduce(into: Set<ReadoutType>()) { result, element in
             result.formUnion(element.associatedReadouts(context: context))
-        })
+        }
     }
 }
 
@@ -71,7 +72,8 @@ enum InteractionBarConfigurationConversionType {
 enum InteractionConfigurationItem<
     ActionType: ActionTypeProviding,
     CounterType: CounterTypeProviding,
-    ReadoutType: ReadoutTypeProviding>: Codable, Hashable {
+    ReadoutType: ReadoutTypeProviding
+>: Codable, Hashable {
     case action(ActionType)
     case counter(CounterType)
     
@@ -82,7 +84,8 @@ enum InteractionConfigurationItem<
     fileprivate func convert<
         A: ActionTypeProviding,
         C: CounterTypeProviding,
-        R: ReadoutTypeProviding>() -> InteractionConfigurationItem<A, C, R>? {
+        R: ReadoutTypeProviding
+    >() -> InteractionConfigurationItem<A, C, R>? {
         switch self {
         case let .action(action):
             if let value = A(rawValue: action.rawValue) {
@@ -194,6 +197,6 @@ struct InteractionBarConfigurations: Codable {
 }
 
 struct MockReadoutAppearance {
-    let icon: String
+    let icon: Icon
     let label: String
 }

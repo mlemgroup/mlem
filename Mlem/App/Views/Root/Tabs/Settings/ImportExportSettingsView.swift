@@ -51,14 +51,14 @@ struct ImportExportSettingsView: View {
     var content: some View {
         Form {
             Section("Save and Restore") {
-                Button("Save Settings", systemImage: Icons.saveSettings) {
+                Button("Save Settings", icon: .settings.saveSettings) {
                     Task {
                         await Settings.save(to: .v2_user)
                         v2SettingsExist = persistenceRepository.systemSettingsExists(.v2_user)
                     }
                 }
                 
-                Button("Restore Settings", systemImage: Icons.restoreSettings) {
+                Button("Restore Settings", icon: .settings.restoreSettings) {
                     Task { @MainActor in
                         Settings.restore(from: .v2_user)
                     }
@@ -69,7 +69,7 @@ struct ImportExportSettingsView: View {
             }
             
             Section {
-                Button("Export Settings", systemImage: Icons.share) {
+                Button("Export Settings", icon: .general.export) {
                     Task {
                         let data = try Settings.encoded()
                         let fileUrl = FileManager.default.temporaryDirectory.appending(path: "settings.json")
@@ -78,7 +78,7 @@ struct ImportExportSettingsView: View {
                     }
                 }
                 
-                Button("Import Settings", systemImage: Icons.import) {
+                Button("Import Settings", icon: .general.import) {
                     importingSettingsFile = true
                 }
             }

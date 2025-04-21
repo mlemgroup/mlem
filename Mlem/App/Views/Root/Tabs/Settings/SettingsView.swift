@@ -27,47 +27,48 @@ struct SettingsView: View {
             Section {
                 NavigationLink(
                     "General",
-                    systemImage: "gear",
+                    icon: .settings.general,
                     destination: .settings(.general)
                 )
                 .tint(.themedNeutralAccent)
                 NavigationLink(
                     "Privacy",
-                    systemImage: Icons.privacy,
+                    icon: .settings.privacy,
                     destination: .settings(.privacy)
                 )
                 .tint(.themedColorfulAccent(2))
                 NavigationLink(
                     "Safety & Filtering",
-                    systemImage: "shield.lefthalf.filled",
+                    icon: .settings.safety,
                     destination: .settings(.safety)
                 )
                 .tint(.themedColorfulAccent(3))
                 NavigationLink(
                     "Accessibility",
-                    systemImage: "hand.point.up.braille.fill",
+                    icon: .settings.accessibility,
                     destination: .settings(.accessibility)
                 )
                 .tint(.themedColorfulAccent(2))
                 NavigationLink(
                     "Media & Links",
-                    systemImage: "photo.fill",
+                    icon: .general.image,
                     destination: .settings(.links)
                 )
                 .tint(.themedColorfulAccent(4))
                 NavigationLink(
                     "Sorting",
-                    systemImage: "arrow.up.and.down.text.horizontal",
+                    icon: .settings.sorting,
                     destination: .settings(.sorting)
                 )
                 .tint(.themedColorfulAccent(5))
                 if AccountsTracker.main.highestLevelAccountType >= .moderator {
                     NavigationLink(
                         "Moderation",
-                        systemImage: Icons.moderationFill,
+                        icon: .lemmy.moderation,
                         destination: .settings(.moderation)
                     )
                     .tint(.themedModeration)
+                    .symbolVariant(.fill)
                 }
             }
             
@@ -80,22 +81,22 @@ struct SettingsView: View {
             }
             
             Section {
-                NavigationLink("Posts", systemImage: "doc.plaintext.fill", destination: .settings(.post))
+                NavigationLink("Posts", icon: .lemmy.post, destination: .settings(.post))
                     .tint(.themedPostAccent)
-                NavigationLink("Comments", systemImage: "bubble.fill", destination: .settings(.comment))
+                NavigationLink("Comments", icon: .lemmy.comment, destination: .settings(.comment))
                     .tint(.themedCommentAccent)
-                NavigationLink("Inbox", systemImage: Icons.inboxFill, destination: .settings(.inbox))
+                NavigationLink("Inbox", icon: .lemmy.inbox, destination: .settings(.inbox))
                     .tint(.themedInbox)
-                NavigationLink("Subscription List", systemImage: "list.bullet", destination: .settings(.subscriptionList))
+                NavigationLink("Subscription List", icon: .lemmy.subscriptionList, destination: .settings(.subscriptionList))
                     .tint(.themedCommunityAccent)
-                NavigationLink("Tab Bar", systemImage: "platter.filled.bottom.iphone", destination: .settings(.tabBar))
+                NavigationLink("Tab Bar", icon: .settings.tabBar, destination: .settings(.tabBar))
                     .tint(.themedColorfulAccent(5))
             }
             
             Section {
-                NavigationLink("About Mlem", systemImage: "info.circle.fill", destination: .settings(.about))
+                NavigationLink("About Mlem", icon: .general.info, destination: .settings(.about))
                     .tint(.themedColorfulAccent(2))
-                NavigationLink("Advanced", systemImage: "gearshape.2.fill", destination: .settings(.advanced))
+                NavigationLink("Advanced", icon: .settings.advanced, destination: .settings(.advanced))
                     .tint(.themedNeutralAccent)
             }
         }

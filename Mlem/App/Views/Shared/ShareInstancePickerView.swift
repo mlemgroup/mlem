@@ -108,7 +108,7 @@ struct ShareInstancePickerView: View {
             }
         } label: {
             HStack(spacing: 16) {
-                Image(systemName: Icons.search)
+                Image(icon: .general.search)
                     .frame(width: 42)
                 Text("Choose Another Instance...")
             }

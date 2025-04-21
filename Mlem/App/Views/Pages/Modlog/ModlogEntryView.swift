@@ -20,7 +20,7 @@ struct ModlogEntryView: View {
             headerView
             contentView
             HStack(spacing: 5) {
-                Image(systemName: Icons.time)
+                Image(icon: .general.time)
                 Text(entry.created.formatted(date: .abbreviated, time: .shortened))
             }
             .font(.footnote)
@@ -40,7 +40,7 @@ struct ModlogEntryView: View {
                 .fill(entry.type.color.opacity(0.3))
                 .frame(width: 24, height: 24)
                 .overlay {
-                    Image(systemName: entry.type.systemImage)
+                    Image(icon: entry.type.icon)
                         .imageScale(.small)
                         .symbolVariant(.fill)
                         .foregroundStyle(entry.type.color)
@@ -49,6 +49,7 @@ struct ModlogEntryView: View {
                 .font(.footnote)
                 .foregroundStyle(.secondary)
                 .imageScale(.small)
+                .symbolVariant(.fill)
         }
     }
     

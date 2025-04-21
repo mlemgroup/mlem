@@ -15,15 +15,15 @@ struct ExternalLinkSettingsView: View {
         Form {
             Section("Open External Links") {
                 Picker("Open External Links", selection: $openLinksInBrowser) {
-                    Label("In Mlem", systemImage: Icons.inApp).tag(false)
-                    Label("In Default Browser", systemImage: Icons.browser).tag(true)
+                    Label("In Mlem", icon: .settings.inApp).tag(false)
+                    Label("In Default Browser", icon: .general.browser).tag(true)
                 }
                 .pickerStyle(.inline)
                 .labelsHidden()
             }
             
             Section {
-                Toggle("Open in Reader", systemImage: Icons.reader, isOn: $openLinksInReaderMode)
+                Toggle("Open in Reader", icon: .settings.reader, isOn: $openLinksInReaderMode)
                     .disabled(openLinksInBrowser)
             } footer: {
                 Text("Automatically enable Reader for supported webpages. You can only enable this when using the in-app browser.")

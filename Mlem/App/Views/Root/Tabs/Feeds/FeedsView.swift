@@ -231,7 +231,7 @@ private struct FeedSelectionMenuView: View {
         ForEach(feedOptions, id: \.self) { feed in
             Button(
                 String(localized: feed.description.label),
-                systemImage: feedSelection == feed ? feed.description.iconNameFill : feed.description.iconName
+                icon: feed.description.icon
             ) {
                 if shouldScrollToTop {
                     scrollToTopTrigger.toggle()
@@ -243,6 +243,7 @@ private struct FeedSelectionMenuView: View {
                     feedSelection = feed
                 }
             }
+            .symbolVariant(feedSelection == feed ? .fill : .none)
         }
     }
 }

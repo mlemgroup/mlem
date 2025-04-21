@@ -59,7 +59,7 @@ private struct AnimationControlLayer: ViewModifier {
     @ViewBuilder
     var muteButton: some View {
         if controlState.audioAvailable {
-            Image(systemName: controlState.muted ? Icons.muted : Icons.unmuted)
+            Image(icon: controlState.muted ? .general.mute : .general.unmute)
                 .resizable()
                 .scaledToFit()
                 .frame(width: 15, height: 15)

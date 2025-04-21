@@ -13,7 +13,7 @@ extension SignUpView {
     @ViewBuilder
     var approvalInfo: some View {
         VStack(spacing: Constants.main.doubleSpacing) {
-            Image(systemName: Icons.send)
+            Image(icon: .lemmy.send)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(height: 100)
@@ -69,19 +69,22 @@ extension SignUpView {
                     .task(id: username) {
                         await checkUsernameValidity(instance)
                     }
-                if !username.isEmpty {
-                    switch usernameValidity {
-                    case .checking:
-                        ProgressView()
-                            .tint(.themedSecondary)
-                    case .valid:
-                        Image(systemName: Icons.successCircleFill)
-                            .foregroundStyle(.themedPositive)
-                    case .taken, .tooShort, .invalidCharacters:
-                        Image(systemName: Icons.failureCircleFill)
-                            .foregroundStyle(.themedNegative)
+                Group {
+                    if !username.isEmpty {
+                        switch usernameValidity {
+                        case .checking:
+                            ProgressView()
+                                .tint(.themedSecondary)
+                        case .valid:
+                            Image(icon: .general.success)
+                                .foregroundStyle(.themedPositive)
+                        case .taken, .tooShort, .invalidCharacters:
+                            Image(icon: .general.failure)
+                                .foregroundStyle(.themedNegative)
+                        }
                     }
                 }
+                .symbolVariant(.circle.fill)
             }
         } footer: {
             if username.isEmpty {
@@ -197,7 +200,7 @@ extension SignUpView {
     var applicationQuestionWarning: some View {
         Section {
             HStack {
-                Image(systemName: Icons.warning)
+                Image(icon: .general.warning)
                     .font(.title2)
                     .imageScale(.large)
                 Text("To join this instance, you need to create an application and wait to be accepted.")

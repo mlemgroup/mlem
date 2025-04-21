@@ -6,6 +6,7 @@
 //
 
 import Dependencies
+import Icons
 import MlemMiddleware
 import NukeUI
 import SwiftUI
@@ -37,12 +38,12 @@ struct AccountListRow: View {
             if appState.firstSession.actorId != account.actorId {
                 Group {
                     if keepPlace {
-                        Button("Reload", systemImage: Icons.accountSwitchReload) {
+                        Button("Reload", icon: .lemmy.switchAccountAndReload) {
                             changeAccount(keepPlace: false)
                         }
                         .buttonStyle(.automatic)
                     } else {
-                        Button("Keep Place", systemImage: Icons.accountSwitchKeepPlace) {
+                        Button("Keep Place", icon: .lemmy.switchAccountAndKeepPlace) {
                             changeAccount(keepPlace: true)
                         }
                         .buttonStyle(.automatic)
@@ -63,20 +64,20 @@ struct AccountListRow: View {
         .contextMenu {
             if (account as? GuestAccount)?.isSaved ?? true {
                 SwiftUI.Section("Switch to this account and...") {
-                    Button("Reload", systemImage: Icons.accountSwitchReload) {
+                    Button("Reload", icon: .lemmy.switchAccountAndReload) {
                         changeAccount(keepPlace: false)
                     }
-                    Button("Keep Place", systemImage: Icons.accountSwitchKeepPlace) {
+                    Button("Keep Place", icon: .lemmy.switchAccountAndKeepPlace) {
                         changeAccount(keepPlace: true)
                     }
                 }
                 .disabled(appState.firstSession.actorId == account.actorId)
                 Divider()
-                Button(signOutLabel, systemImage: Icons.signOut, role: .destructive) {
+                Button(signOutLabel, icon: .general.signOut, role: .destructive) {
                     showingSignOutConfirmation = true
                 }
             } else {
-                Button("Keep", systemImage: Icons.pin) {
+                Button("Keep", icon: .lemmy.addPin) {
                     AccountsTracker.main.addAccount(account: account)
                 }
             }

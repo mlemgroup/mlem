@@ -33,7 +33,7 @@ struct AccountLocalSettingsView: View {
     @ViewBuilder
     func communityFavoritesSection(_ session: UserSession) -> some View {
         Section {
-            Button("Delete Community Favorites", systemImage: Icons.delete, role: .destructive) {
+            Button("Delete Community Favorites", icon: .general.delete, role: .destructive) {
                 isShowingFavoriteDeletionWarning = true
             }
             .disabled(session.account.favorites.isEmpty)
@@ -99,7 +99,7 @@ struct AccountLocalSettingsView: View {
     @ViewBuilder
     func clearVisitHistoryButton(_ session: UserSession, visitHistory: VisitHistory) -> some View {
         if let visitHistory = session.visitHistory {
-            Button("Clear Search History", systemImage: Icons.delete, role: .destructive) {
+            Button("Clear Search History", icon: .general.delete, role: .destructive) {
                 isShowingClearVisitHistoryWarning = true
             }
             .tint(.themedWarning)

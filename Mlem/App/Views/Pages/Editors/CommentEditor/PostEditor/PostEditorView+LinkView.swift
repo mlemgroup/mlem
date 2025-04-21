@@ -11,7 +11,7 @@ extension PostEditorView {
     @ViewBuilder
     var linkView: some View {
         HStack {
-            Label(linkLabel, systemImage: Icons.websiteAddress)
+            Label(linkLabel, icon: .general.link)
                 .lineLimit(1)
                 .fontWeight(.semibold)
                 .foregroundStyle(.themedAccent)
@@ -21,10 +21,11 @@ extension PostEditorView {
                     alignment: link == .none ? .center : .leading
                 )
             if link != .none {
-                Button("Remove", systemImage: Icons.closeCircleFill) {
+                Button("Remove", icon: .general.close) {
                     link = .none
                 }
                 .font(.title2)
+                .symbolVariant(.circle.fill)
                 .labelStyle(.iconOnly)
                 .symbolRenderingMode(.hierarchical)
                 .foregroundStyle(.themedAccent)

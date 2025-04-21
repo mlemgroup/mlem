@@ -69,7 +69,7 @@ struct InteractionBarWidgetPickerView<Configuration: InteractionBarConfiguration
                 Spacer()
                 
                 if selected {
-                    Image(systemName: Icons.success)
+                    Image(icon: .general.success)
                         .foregroundStyle(.themedAccent)
                         .contentTransition(.symbolEffect(.replace, options: .speed(2)))
                 }

@@ -100,7 +100,7 @@ struct PersonBanEditorView: View {
                         }
                     }
                     ToolbarItem(placement: .topBarTrailing) {
-                        Button("Send", systemImage: Icons.send) {
+                        Button("Send", icon: .lemmy.send) {
                             Task {
                                 await send()
                             }
@@ -133,7 +133,7 @@ struct PersonBanEditorView: View {
                         HStack {
                             targetLabel
                             Spacer()
-                            Image(systemName: Icons.dropDown)
+                            Image(icon: .general.dropDown)
                                 .fontWeight(.semibold)
                                 .foregroundStyle(.themedSecondary)
                         }

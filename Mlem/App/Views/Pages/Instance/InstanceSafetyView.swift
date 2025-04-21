@@ -48,17 +48,18 @@ struct InstanceSafetyView: View {
         VStack(alignment: .leading, spacing: 6) {
             HStack {
                 if fediseerData.instance.guarantor != nil {
-                    Label("Guaranteed", systemImage: Icons.fediseerGuarantee)
+                    Label("Guaranteed", icon: .fediseer.guarantee)
                         .foregroundStyle(.themedPositive)
                 } else if fediseerData.censures?.isEmpty ?? true {
-                    Label("Not Guaranteed", systemImage: Icons.fediseerUnguarantee)
+                    Label("Not Guaranteed", icon: .fediseer.unguarantee)
                         .foregroundStyle(.themedSecondary)
                 } else {
-                    Label("Censured", systemImage: Icons.fediseerCensure)
+                    Label("Censured", icon: .fediseer.censure)
                         .foregroundStyle(.themedNegative)
                 }
                 Spacer()
             }
+            .symbolVariant(.fill)
             .fontWeight(.semibold)
             .font(.title2)
             Text(summaryCaption)

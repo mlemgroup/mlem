@@ -22,7 +22,7 @@ struct LinkSettingsView: View {
             SettingsHeaderView(
                 title: "Media & Links",
                 description: "Manage how Mlem handles links and control how images and videos are displayed.",
-                systemImage: "photo.fill"
+                icon: .general.image
             )
             .tint(.themedColorfulAccent(4))
             Section {
@@ -30,30 +30,30 @@ struct LinkSettingsView: View {
                     "Open External Links",
                     value: .init(localized: externalLinksNavigationLinkValue),
                     fallbackValue: "",
-                    systemImage: "arrow.up.right",
+                    icon: .settings.openExternalLinks,
                     destination: .settings(.externalLinks)
                 )
                 NavigationLink(
                     "Share Links",
                     value: .init(localized: sharingLinksNavigationLinkValue),
                     fallbackValue: "",
-                    systemImage: Icons.share,
+                    icon: .general.share,
                     destination: .settings(.sharingLinks)
                 )
                 NavigationLink(
                     "Tappable Links",
                     value: tappableLinksDisplayMode == .disabled ? "Off" : "On",
                     fallbackValue: "",
-                    systemImage: "hand.tap",
+                    icon: .settings.tappableLinks,
                     destination: .settings(.tappableLinks)
                 )
             }
             
             Section {
                 if #available(iOS 18, *) {
-                    Toggle("Autoplay", systemImage: Icons.playCircle, isOn: $autoplayMedia)
+                    Toggle("Autoplay", icon: .general.playCircle, isOn: $autoplayMedia)
                 }
-                Toggle("Mute Videos", systemImage: Icons.muted, isOn: $muteVideos)
+                Toggle("Mute Videos", icon: .general.muted, isOn: $muteVideos)
             }
             
             Section {
@@ -61,7 +61,7 @@ struct LinkSettingsView: View {
                     "Embedded Content",
                     value: embedLoops ? "On" : "Off",
                     fallbackValue: "",
-                    systemImage: Icons.embedding,
+                    icon: .general.embedding,
                     destination: .settings(.embedding)
                 )
             }

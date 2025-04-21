@@ -33,19 +33,19 @@ struct CommentSettingsView: View {
                     "Jump Button",
                     value: .init(localized: jumpButton.label),
                     fallbackValue: "",
-                    systemImage: Icons.jumpButtonCircle,
+                    icon: .settings.jumpButton,
                     destination: .settings(.commentJumpButton)
                 )
                 NavigationLink(
                     "Maximum Depth",
                     value: String(maxCommentDepth),
                     fallbackValue: "",
-                    systemImage: Icons.commentDepth,
+                    icon: .settings.commentDepth,
                     destination: .settings(.commentMaximumDepth)
                 )
             }
             Section {
-                Toggle("Tap to Collapse", systemImage: Icons.collapseComment, isOn: $tapCommentsToCollapse)
+                Toggle("Tap to Collapse", icon: .general.collapse, isOn: $tapCommentsToCollapse)
             }
         }
         .labelStyle(.conditional)
