@@ -17,7 +17,7 @@ public class MediaControlState {
     public var animating: Bool
     
     /// True if the media, if animated, should autoplay; this is the initial value of `animating`
-    let autoplay: Bool
+    public let autoplay: Bool
     
     /// True if the media should animate, false to suppress animation
     public var enableAnimation: Bool
