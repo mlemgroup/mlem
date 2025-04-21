@@ -55,9 +55,8 @@ struct AnimatedImageView: UIViewRepresentable {
                 assertionFailure("ImageView had nil player")
                 return
             }
-            observer = player.observe(\.currentFrameIndex) { _, _ in // player, _ in
-                print("GOTTA DO IT")
-                // controlState.playbackPosition = CGFloat(player.currentFrameIndex) / CGFloat(player.totalFrameCount)
+            observer = player.observe(\.currentFrameIndex) { player, _ in
+                controlState.playbackPosition = CGFloat(player.currentFrameIndex) / CGFloat(player.totalFrameCount)
             }
             self.player = player
         }

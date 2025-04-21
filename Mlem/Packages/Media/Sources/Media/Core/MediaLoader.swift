@@ -45,8 +45,6 @@ public enum MediaLoadingState {
 
 @Observable
 public class MediaLoader {
-    // @ObservationIgnored @Setting(\.privacy_autoBypassImageProxy) var autoBypassImageProxy
-    
     public private(set) var url: URL?
     public private(set) var mediaType: MediaType?
     public private(set) var loading: MediaLoadingState
@@ -73,7 +71,7 @@ public class MediaLoader {
         } else {
             self.processors = .init()
         }
-    
+        
         self.proxyBypass = computeProxyBypass(for: url)
         
         if let cachedImage = retrieveCachedImage(for: url, with: processors) {
@@ -94,37 +92,32 @@ public class MediaLoader {
         }
         
         // reset everything
-         await setUrl(url)
-         await setMediaType(nil)
-         await setLoading(.loading)
-         await setError(nil)
+        await setUrl(url)
+        await setMediaType(nil)
+        await setLoading(.loading)
+        await setError(nil)
         
         proxyBypass = computeProxyBypass(for: url)
         
         // easy case: nil url
         guard let url else {
-            // await setLoading(.failed)
-            self.loading = .failed
+            await setLoading(.failed)
             return
         }
         
         // handle previews
         #if DEBUG
-            if url.scheme == "mlempreview" {
-                // await setMediaType(.image(.init(named: url.lastPathComponent)!))
-                // await setLoading(.done)
-                self.mediaType = .image(.init(named: url.lastPathComponent)!)
-                self.loading = .done
-                return
-            }
+        if url.scheme == "mlempreview" {
+            await setMediaType(.image(.init(named: url.lastPathComponent)!))
+            await setLoading(.done)
+            return
+        }
         #endif
         
         // if already in cache, take the cached value
         if let mediaType = retrieveCachedImage(for: url, with: processors) {
-            // await setMediaType(mediaType)
-            // await setLoading(.done)
-            self.mediaType = mediaType
-            self.loading = .done
+            await setMediaType(mediaType)
+            await setLoading(.done)
             return
         }
         
@@ -138,25 +131,19 @@ public class MediaLoader {
             
             let container = try await imageTask.response.container
             
-            // await setMediaType(container.animatedMediaType)
-            // await setLoading(.done)
-            self.mediaType = container.animatedMediaType
-            self.loading = .done
+            await setMediaType(container.animatedMediaType)
+            await setLoading(.done)
             return
         } catch {
             if let proxyBypass, autoBypassImageProxy {
                 await load(proxyBypass)
             } else {
                 if let proxyBypass {
-                    // await setError(.proxyFailure(proxyBypass: proxyBypass))
-                    // await setLoading(.proxyFailed)
-                    self.error = .proxyFailure(proxyBypass: proxyBypass)
-                    self.loading = .proxyFailed
+                    await setError(.proxyFailure(proxyBypass: proxyBypass))
+                    await setLoading(.proxyFailed)
                 } else {
-                    // await setError(.error(error: error))
-                    // await setLoading(.failed)
-                    self.error = .error(error: error)
-                    self.loading = .failed
+                    await setError(.error(error: error))
+                    await setLoading(.failed)
                 }
             }
         }
@@ -168,8 +155,8 @@ public class MediaLoader {
 func retrieveCachedImage(for url: URL?, with processors: [ImageProcessing]) -> MediaType? {
     if let url,
        let container = ImagePipeline.shared.cache.cachedImage(for: .init(
-           urlRequest: mlemUrlRequest(url: url),
-           processors: processors
+        urlRequest: mlemUrlRequest(url: url),
+        processors: processors
        )) {
         return container.animatedMediaType
     }
@@ -201,7 +188,7 @@ extension ImageContainer {
                 .image(image)
             }
         default:
-            .image(image)
+                .image(image)
         }
     }
 }
