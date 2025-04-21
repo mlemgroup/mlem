@@ -17,16 +17,13 @@ public class MediaControlState {
     public var animating: Bool
     
     /// True if the media, if animated, should autoplay; this is the initial value of `animating`
-    public let autoplay: Bool
+    let autoplay: Bool
     
     /// True if the media should animate, false to suppress animation
     public var enableAnimation: Bool
     
     /// True if the media, if audio available, should not play audio
     public var muted: Bool
-    
-    // /// Which overlays should be enabled
-    // let overlays: Set<MediaView.Overlay>
     
     /// Target playback position of animated media
     public var scrubTarget: CGFloat?
@@ -35,7 +32,7 @@ public class MediaControlState {
     /// load image data into memory to improve scrubbing performance.
     /// - Warning: This does NOT enable any form of scrubbing control! It only informs the underlying view whether to prepare
     /// appropriately for scrubbing.
-    public var scrubbingAvailable: Bool
+    var scrubbingAvailable: Bool
     
     /// True if the media is animated.
     /// - Note: This must be set by MediaView after the media type resolves
@@ -76,7 +73,6 @@ public class MediaControlState {
     public init(
         blurred: Bool,
         animating: Bool,
-        // overlays: Set<MediaView.Overlay>,
         enableAnimation: Bool = true,
         muted: Bool,
         scrubbingAvailable: Bool = false
@@ -84,9 +80,8 @@ public class MediaControlState {
         self.blurred = blurred
         self.animating = animating
         self.autoplay = animating
-        // self.overlays = overlays
         self.enableAnimation = enableAnimation
-        self.muted = muted // ?? Settings.get(\.behavior_muteVideos)
+        self.muted = muted
         self.scrubbingAvailable = scrubbingAvailable
     }
     

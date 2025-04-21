@@ -64,10 +64,10 @@ struct WebsitePreviewView: View {
                         blurred: shouldBlur,
                         animating: false,
                         muted: Settings.get(\.behavior_muteVideos)
-                        // overlays: shouldBlur ? [.controls, .nsfw, .error] : [.controls, .error]
                     )),
                     aspectRatioBounds: .bounded(vertical: .init(width: 1, height: 1), horizontal: nil),
-                    contentMode: .fill
+                    contentMode: .fill,
+                    overlays: shouldBlur ? [.controls, .nsfw, .error] : [.controls, .error]
                 )
                 .overlay(alignment: .bottomLeading) {
                     linkHost

@@ -64,7 +64,6 @@ struct ThumbnailImageView: View {
         self._mediaControlState = .init(wrappedValue: .init(
             blurred: blurred,
             animating: false,
-            // overlays: .init(),
             enableAnimation: false,
             muted: Settings.get(\.behavior_muteVideos)
         ))
