@@ -22,7 +22,7 @@ import SwiftUI
                         .tabItem {
                             Label(
                                 type.label(appState: appState, profileLabelType: .anonymous),
-                                systemImage: selected == type ? type.systemImageFill : type.systemImage
+                                icon: type.icon.representingState(active: selected == type)
                             )
                         }
                 }

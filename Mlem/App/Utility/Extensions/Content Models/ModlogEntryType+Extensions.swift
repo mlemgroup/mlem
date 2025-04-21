@@ -5,35 +5,36 @@
 //  Created by Sjmarf on 2024-12-26.
 //
 
+import Icons
 import MlemMiddleware
 import SwiftUI
 import Theming
 
 extension ModlogEntryType {
-    var systemImage: String {
+    var icon: Icon {
         switch self {
         case let .removePost(_, _, removed, _),
              let .removeComment(_, _, _, _, removed, _),
              let .removeCommunity(_, removed, _):
-            removed ? Icons.remove : Icons.restore
+            removed ? .lemmy.remove : .lemmy.restore
         case let .lockPost(_, _, locked: locked):
-            locked ? Icons.lock : Icons.unlock
+            locked ? .lemmy.addLock : .lemmy.removeLock
         case let .pinPost(_, _, pinned, _):
-            pinned ? Icons.pin : Icons.unpin
+            pinned ? .lemmy.addPin : .lemmy.removePin
         case .purgePost, .purgeComment, .purgeCommunity, .purgePerson:
-            Icons.purge
+            .lemmy.purge
         case let .hideCommunity(_, hidden, _):
-            hidden ? Icons.hide : Icons.show
+            hidden ? .general.hide : .general.show
         case .transferCommunityOwnership:
-            Icons.transferCommunity
+            .lemmy.transferCommunity
         case let .updatePersonModeratorStatus(_, _, appointed):
-            appointed ? Icons.moderation : Icons.demoteModerator
+            appointed ? .lemmy.addModerator : .lemmy.removeModerator
         case .updatePersonAdminStatus:
-            Icons.administrationFill
+            .lemmy.administration
         case let .banPersonFromCommunity(_, _, banned, _, _):
-            banned ? Icons.banFromCommunity : Icons.unbanFromCommunity
+            banned ? .lemmy.banFromCommunity : .lemmy.unbanFromCommunity
         case let .banPersonFromInstance(_, banned, _, _):
-            banned ? Icons.banFromInstance : Icons.unbanFromInstance
+            banned ? .lemmy.banFromInstance : .lemmy.unbanFromInstance
         }
     }
     

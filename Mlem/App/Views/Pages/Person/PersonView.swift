@@ -225,7 +225,7 @@ struct PersonView: View {
                         .tint(.themedAdministration)
                 }
                 if person.isBot {
-                    Label("Bot Account", systemImage: Icons.botFlair)
+                    Label("Bot Account", icon: .lemmy.botFlair)
                         .tint(.themedColorfulAccent(5))
                 }
             }
@@ -239,7 +239,7 @@ struct PersonView: View {
     @ViewBuilder
     func banFlairView(person: any Person) -> some View {
         HStack {
-            Image(systemName: Icons.banFromInstance)
+            Image(icon: .lemmy.bannedFromInstance)
                 .imageScale(.large)
                 .symbolVariant(.fill)
             switch person.instanceBan {
@@ -270,7 +270,7 @@ struct PersonView: View {
             default:
                 if let feedLoader {
                     if isProfileTab, selectedTab == .overview || selectedTab == .posts {
-                        Button("New Post", systemImage: Icons.add) {
+                        Button("New Post", icon: .general.add) {
                             navigation.openSheet(.createPost(community: nil, feedLoader: feedLoader))
                         }
                         .buttonStyle(.capsule)

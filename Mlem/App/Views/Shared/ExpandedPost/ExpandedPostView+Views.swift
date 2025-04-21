@@ -12,7 +12,7 @@ extension ExpandedPostView {
     @ViewBuilder
     var noCommentsView: some View {
         VStack(spacing: 5) {
-            Image(systemName: Icons.noContent)
+            Image(icon: .lemmy.noContent)
                 .font(.title)
                 .foregroundStyle(.tertiary)
             Text("No comments found")
@@ -86,7 +86,7 @@ extension ExpandedPostView {
         ) {
             ForEach(CommentSortType.legacyCases, id: \.self) { item in
                 if (post?.api.fetchedVersion ?? .infinity) >= item.minimumVersion {
-                    Label(item.label(timeRangeFormat: .topOnly), systemImage: item.systemImage)
+                    Label(item.label(timeRangeFormat: .topOnly), icon: item.icon)
                 }
             }
         }

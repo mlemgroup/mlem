@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Icons
 
 enum ThumbnailLocation: String, CaseIterable, Codable {
     case left, right, none
@@ -18,11 +19,11 @@ enum ThumbnailLocation: String, CaseIterable, Codable {
         }
     }
     
-    var systemImage: String {
+    var icon: Icon {
         switch self {
-        case .left: Icons.left
-        case .right: Icons.right
-        case .none: Icons.hide
+        case .left: .general.backward
+        case .right: .general.forward
+        case .none: .general.hide
         }
     }
 }

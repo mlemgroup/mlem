@@ -27,7 +27,7 @@ extension AdvancedSortView {
                     dismiss()
                 } label: {
                     HStack(spacing: Constants.main.standardSpacing) {
-                        Image(systemName: type.systemImage)
+                        Image(icon: type.icon)
                             .symbolVariant(type == selectedSort ? .fill : .none)
                             .frame(width: 30, alignment: .center)
                             .foregroundStyle(type == selectedSort ? .primary : .secondary) // No palette!
@@ -42,7 +42,7 @@ extension AdvancedSortView {
                         }
                         .padding(.vertical, Constants.main.halfSpacing)
                         Spacer()
-                        Button("Pin", systemImage: PinnedSortTracker.main.pinnedSortTypes.contains(type) ? Icons.pinFill : Icons.pin) {
+                        Button("Pin", icon: .lemmy.pinned) {
                             HapticManager.main.play(haptic: .gentleInfo, priority: .low)
                             if PinnedSortTracker.main.pinnedSortTypes.contains(type) {
                                 PinnedSortTracker.main.pinnedSortTypes.remove(type)
@@ -50,6 +50,7 @@ extension AdvancedSortView {
                                 PinnedSortTracker.main.pinnedSortTypes.insert(type)
                             }
                         }
+                        .symbolVariant(PinnedSortTracker.main.pinnedSortTypes.contains(type) ? .fill : .none)
                         .labelStyle(.iconOnly)
                         .foregroundStyle(type == selectedSort ? .themedContrastingLabel : .themedAccent)
                     }

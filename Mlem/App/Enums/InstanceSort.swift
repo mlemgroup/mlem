@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Icons
 
 enum InstanceSort: CaseIterable {
     case alphabetical, score, users, version
@@ -21,12 +22,12 @@ enum InstanceSort: CaseIterable {
         }
     }
     
-    var systemImage: String {
+    var icon: Icon {
         switch self {
-        case .alphabetical: Icons.alphabeticalSort
-        case .score: Icons.scoreSort
-        case .users: Icons.usersSort
-        case .version: Icons.versionSort
+        case .alphabetical: .lemmy.alphabeticalSort
+        case .score: .lemmy.scoreSort
+        case .users: .lemmy.usersSort
+        case .version: .lemmy.versionSort
         }
     }
 }

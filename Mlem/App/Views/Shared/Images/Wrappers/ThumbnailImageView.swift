@@ -72,7 +72,7 @@ struct ThumbnailImageView: View {
         content
             .overlay {
                 if websiteThumbnailIcon, case .link = post.type {
-                    Image(systemName: Icons.browser)
+                    Image(icon: .general.browser)
                         .frame(width: 16, height: 16)
                         .foregroundStyle(.white)
                         .background(.ultraThinMaterial, in: .circle)

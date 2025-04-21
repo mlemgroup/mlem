@@ -34,25 +34,25 @@ struct AccountSettingsView: View {
                 Section {
                     NavigationLink(
                         "My Profile",
-                        systemImage: Icons.personFill,
+                        icon: .lemmy.person,
                         destination: .settings(.profile)
                     )
                     .tint(.themedColorfulAccent(5))
                     NavigationLink(
                         "Sign-In & Security",
-                        systemImage: Icons.securityFill,
+                        icon: .general.security,
                         destination: .settings(.accountSignIn)
                     )
                     .tint(.themedColorfulAccent(2))
                     NavigationLink(
                         "Content & Notifications",
-                        systemImage: "list.bullet.rectangle.fill",
+                        icon: .lemmy.post,
                         destination: .settings(.accountContent)
                     )
                     .tint(.themedColorfulAccent(0))
                     NavigationLink(
                         "Advanced",
-                        systemImage: "gearshape.2.fill",
+                        icon: .settings.advanced,
                         destination: .settings(.accountAdvanced)
                     )
                     .tint(.themedNeutralAccent)
@@ -60,7 +60,7 @@ struct AccountSettingsView: View {
                 Section {
                     NavigationLink(
                         "Block List",
-                        systemImage: Icons.blockFill,
+                        icon: .lemmy.block,
                         destination: .blockList
                     )
                     .tint(.themedNegative)
@@ -68,7 +68,7 @@ struct AccountSettingsView: View {
                 Section {
                     NavigationLink(
                         "Local Options",
-                        systemImage: "iphone",
+                        icon: .settings.localAccountOptions,
                         destination: .settings(.accountLocal)
                     )
                     .tint(.themedColorfulAccent(2))

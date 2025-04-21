@@ -45,7 +45,7 @@ extension ImageViewer {
         Button {
             fadeDismiss()
         } label: {
-            Image(systemName: Icons.close)
+            Image(icon: .general.close)
                 .resizable()
                 .scaledToFit()
                 .frame(width: 18, height: 18)
@@ -64,7 +64,7 @@ extension ImageViewer {
                 Button {
                     devToolsShown = true
                 } label: {
-                    Image(systemName: Icons.developerMode)
+                    Image(icon: .settings.developerMode)
                         .resizable()
                         .scaledToFit()
                         .frame(width: 22, height: 22)
@@ -192,7 +192,8 @@ extension ImageViewer {
         Button {
             controlState.animating.toggle()
         } label: {
-            Image(systemName: controlState.animating ? Icons.pause : Icons.play)
+            Image(icon: controlState.animating ? .general.pause : .general.play)
+                .symbolVariant(.fill)
                 .scaledToFit()
                 .frame(width: 22, height: 22)
                 .contentTransition(.symbolEffect(.replace, options: .speed(2)))
@@ -209,7 +210,7 @@ extension ImageViewer {
         Button {
             Task { await saveMedia(url: url) }
         } label: {
-            Label("Save", systemImage: Icons.import)
+            Label("Save", icon: .general.import)
                 .padding(Constants.main.standardSpacing)
                 .contentShape(.rect)
         }
@@ -221,7 +222,7 @@ extension ImageViewer {
         Button {
             Task { await shareImage(url: url, navigation: navigation) }
         } label: {
-            Label("Share", systemImage: Icons.share)
+            Label("Share", icon: .general.share)
                 .padding(Constants.main.standardSpacing)
                 .contentShape(.rect)
         }
@@ -233,7 +234,8 @@ extension ImageViewer {
         Button {
             Task { await showQuickLook(url: url) }
         } label: {
-            Label("Quick Look", systemImage: Icons.menuCircle)
+            Label("Quick Look", icon: .general.menu)
+                .symbolVariant(.circle)
                 .padding(Constants.main.standardSpacing)
                 .contentShape(.rect)
         }
@@ -244,7 +246,7 @@ extension ImageViewer {
         Button {
             controlState.muted.toggle()
         } label: {
-            Image(systemName: controlState.muted ? Icons.muted : Icons.unmuted)
+            Image(icon: controlState.muted ? .general.mute : .general.unmute)
                 .scaledToFit()
                 .frame(width: 22, height: 22)
                 .contentTransition(.symbolEffect(.replace, options: .speed(2)))

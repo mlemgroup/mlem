@@ -17,24 +17,24 @@ struct FeedToolbarOptions: ToolbarContent {
     var body: some ToolbarContent {
         ToolbarItemGroup(placement: .secondaryAction) {
             SwiftUI.Section {
-                Button(showRead ? "Hide Read" : "Show Read", systemImage: Icons.read) {
+                Button(showRead ? "Hide Read" : "Show Read", icon: .settings.hideRead) {
                     showRead.toggle()
                 }
                 
                 Menu {
                     Picker("Post Size", selection: $postSize) {
                         ForEach(PostSize.allCases, id: \.self) { item in
-                            Label(String(localized: item.label), systemImage: item.icon(filled: postSize == item))
+                            Label(String(localized: item.label), icon: item.icon)
                         }
                     }
                 } label: {
-                    Label("Post Size", systemImage: Icons.postSizeSetting)
+                    Label("Post Size", icon: .settings.postSize)
                 }
                 
                 if appState.firstPerson?.showNsfw ?? false {
                     Toggle(
                         "Blur NSFW",
-                        systemImage: Icons.blurNsfw,
+                        icon: .settings.blurNsfw,
                         isOn: .init(get: { blurNsfw != .never }, set: { blurNsfw = $0 ? .always : .never })
                     )
                 }

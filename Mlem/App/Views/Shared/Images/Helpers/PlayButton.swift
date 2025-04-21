@@ -19,7 +19,8 @@ struct PlayButton: View {
     }
     
     var body: some View {
-        Image(systemName: Icons.play)
+        Image(icon: .general.play)
+            .symbolVariant(.fill)
             .font(.system(size: fontSize))
             .foregroundStyle(.themedBackground)
             .padding(0.6 * fontSize)

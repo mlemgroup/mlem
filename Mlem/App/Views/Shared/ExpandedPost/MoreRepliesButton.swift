@@ -31,7 +31,7 @@ struct MoreRepliesButton: View {
                 CommentBarView(depth: commentTreeNode.comment.depth + 1)
                 HStack {
                     Text("More Replies")
-                    Image(systemName: Icons.forward)
+                    Image(icon: .general.forward)
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 8)

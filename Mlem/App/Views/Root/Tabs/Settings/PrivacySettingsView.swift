@@ -17,11 +17,11 @@ struct PrivacySettingsView: View {
             SettingsHeaderView(
                 title: "Privacy",
                 description: "Manage how Mlem interacts with Lemmy instances and other websites.",
-                systemImage: Icons.privacy
+                icon: .settings.privacy
             )
             .tint(.themedColorfulAccent(2))
             Section {
-                Toggle("Confirm Image Uploads", systemImage: Icons.confirmImageUploads, isOn: $confirmImageUploads)
+                Toggle("Confirm Image Uploads", icon: .settings.confirmImageUploads, isOn: $confirmImageUploads)
             } footer: {
                 Text("When enabled, Mlem will ask you to confirm your choice before uploading an image to your instance.")
             }
@@ -30,7 +30,7 @@ struct PrivacySettingsView: View {
                     "Bypass Image Proxy",
                     value: .init(localized: bypassImageProxyNavigationLinkValue),
                     fallbackValue: "",
-                    systemImage: Icons.proxy,
+                    icon: .lemmy.imageProxy,
                     destination: .settings(.privacyBypassImageProxy)
                 )
             }
@@ -42,7 +42,7 @@ struct PrivacySettingsView: View {
             Section {
                 NavigationLink(
                     "Mlem Privacy Policy",
-                    systemImage: Icons.privacy,
+                    icon: .settings.privacy,
                     destination: .settings(.document(.privacyPolicy))
                 )
             }

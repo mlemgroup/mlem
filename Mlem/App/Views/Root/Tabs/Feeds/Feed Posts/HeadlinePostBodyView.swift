@@ -79,6 +79,7 @@ struct HeadlinePostBodyView: View {
     @ViewBuilder
     var titleView: some View {
         post.taggedTitle(communityContext: communityContext)
+            .symbolVariant(.fill)
             .multilineTextAlignment(.leading)
             .foregroundStyle((post.read_ ?? false) ? .themedSecondary : .themedPrimary)
             .font(.headline)

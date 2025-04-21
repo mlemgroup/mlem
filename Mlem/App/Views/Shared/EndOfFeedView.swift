@@ -23,17 +23,32 @@ enum EndOfFeedViewType {
         switch self {
         case .hobbit:
             return EndOfFeedViewContent(
-                icon: .init("end.of.feed.icon.1", defaultValue: .init(Icons.endOfFeedHobbit)),
+                icon: .init(
+                    "end.of.feed.icon.1",
+                    defaultValue: "figure.climbing",
+                    // swiftlint:disable:next line_length
+                    comment: "This is the key for an icon that appears next to the \"I think I've found the bottom!\" text. It is localized so that you can change the icon to fit better with your translation of the text."
+                ),
                 message: "I think I've found the bottom!"
             )
         case .cartoon:
             return EndOfFeedViewContent(
-                icon: .init("end.of.feed.icon.2", defaultValue: .init(Icons.endOfFeedCartoon)),
+                icon: .init(
+                    "end.of.feed.icon.2",
+                    defaultValue: "figure.wave",
+                    // swiftlint:disable:next line_length
+                    comment: "This is the key for an icon that appears next to the \"That's all, folks!\" text. It is localized so that you can change the icon to fit better with your translation of the text."
+                ),
                 message: "That's all, folks!"
             )
         case .turtle:
             return EndOfFeedViewContent(
-                icon: .init("end.of.feed.icon.3", defaultValue: .init(Icons.endOfFeedTurtle)),
+                icon: .init(
+                    "end.of.feed.icon.3",
+                    defaultValue: "tortoise",
+                    // swiftlint:disable:next line_length
+                    comment: "This is the key for an icon that appears next to the \"It's turtles all the way down\" text. It is localized so that you can change the icon to fit better with your translation of the text."
+                ),
                 message: "It's turtles all the way down"
             )
         }

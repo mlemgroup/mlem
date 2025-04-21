@@ -59,7 +59,7 @@ struct PersonListRowBody<Content: View>: View {
     var body: some View {
         HStack(spacing: Constants.main.standardSpacing) {
             if person.blocked, showBlockStatus {
-                Image(systemName: Icons.hide)
+                Image(icon: .general.hide)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 30, height: 30)
@@ -76,6 +76,7 @@ struct PersonListRowBody<Content: View>: View {
                     .foregroundStyle(isEnabled ? .themedPrimary : .themedSecondary)
                     .lineLimit(1)
                     .imageScale(.small)
+                    .symbolVariant(.fill)
                 caption
                     .font(.footnote)
                     .foregroundStyle(.themedSecondary)
@@ -131,8 +132,8 @@ struct PersonListRowBody<Content: View>: View {
             .font(.subheadline)
             .monospacedDigit()
             VStack(spacing: 10) {
-                Image(systemName: Icons.posts)
-                Image(systemName: Icons.replies)
+                Image(icon: .lemmy.post)
+                Image(icon: .lemmy.comment)
             }
             .imageScale(.small)
         }

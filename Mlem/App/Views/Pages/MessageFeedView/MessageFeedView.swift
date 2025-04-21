@@ -6,6 +6,7 @@
 //
 
 import ComponentViews
+import Icons
 import MlemMiddleware
 import SwiftUI
 import Theming
@@ -193,7 +194,7 @@ struct MessageFeedView: View {
             textView.text = ""
             textView.resignFirstResponder()
         } label: {
-            textInputButtonLabel(systemImage: Icons.closeCircleFill)
+            textInputButtonLabel(icon: .general.close)
         }
         .tint(.themedTertiary)
     }
@@ -209,18 +210,19 @@ struct MessageFeedView: View {
                 }
             }
         } label: {
-            textInputButtonLabel(systemImage: editing == nil ? Icons.sendMessage : Icons.successCircleFill)
+            textInputButtonLabel(icon: editing == nil ? .lemmy.sendMessage : .general.success)
         }
         .tint(.themedAccent)
     }
     
     @ViewBuilder
-    func textInputButtonLabel(systemImage: String) -> some View {
-        Image(systemName: systemImage)
+    func textInputButtonLabel(icon: Icon) -> some View {
+        Image(icon: icon)
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(maxHeight: .infinity)
             .foregroundStyle(.themedContrastingLabel, .tint)
+            .symbolVariant(.circle.fill)
     }
     
     @ViewBuilder
@@ -272,7 +274,7 @@ struct MessageFeedView: View {
                 Text(person.displayName)
                     .foregroundStyle(.themedPrimary)
                     .font(.headline)
-                Image(systemName: Icons.forward)
+                Image(icon: .general.forward)
                     .imageScale(.small)
                     .fontWeight(.semibold)
                     .foregroundStyle(.themedTertiary)

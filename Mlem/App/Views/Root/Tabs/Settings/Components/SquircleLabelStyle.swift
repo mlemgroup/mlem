@@ -12,6 +12,7 @@ struct SquircleLabelStyle: LabelStyle {
         HStack(alignment: .center, spacing: 16) {
             configuration.icon
                 .font(.body)
+                .symbolVariant(.fill)
                 .foregroundStyle(.themedContrastingLabel)
                 .frame(width: Constants.main.settingsIconSize, height: Constants.main.settingsIconSize)
                 .background(.tint)

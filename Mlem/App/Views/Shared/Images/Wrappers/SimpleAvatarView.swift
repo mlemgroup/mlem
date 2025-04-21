@@ -28,7 +28,7 @@ struct SimpleAvatarView: View {
     }
 
     var defaultImage: UIImage {
-        .init(systemName: type.icon)!
+        .init(icon: type.icon)!
             .applyingSymbolConfiguration(.init(
                 font: .systemFont(ofSize: 17),
                 scale: .large
@@ -40,6 +40,7 @@ struct SimpleAvatarView: View {
         Group {
             if url == nil {
                 Image(uiImage: defaultImage)
+                    .symbolVariant(.circle.fill)
             } else {
                 Image(uiImage: uiImage)
                     .task { await loadImage() }

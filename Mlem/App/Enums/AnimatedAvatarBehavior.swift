@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Icons
 
 enum AnimatedAvatarBehavior: String, CaseIterable, Codable {
     case always, profile, never
@@ -18,11 +19,11 @@ enum AnimatedAvatarBehavior: String, CaseIterable, Codable {
         }
     }
     
-    var systemImage: String {
+    var icon: Icon {
         switch self {
-        case .always: Icons.successCircle
-        case .profile: Icons.personCircle
-        case .never: Icons.failureCircle
+        case .always: .general.success
+        case .profile: .lemmy.person
+        case .never: .general.failure
         }
     }
 }

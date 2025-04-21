@@ -25,7 +25,7 @@ struct PostReadIndicatorSettingsView: View {
                 title: "Read Indicator",
                 // swiftlint:disable:next line_length
                 description: "Read posts are shown with dimmed title text. If you like, you can choose an additional way of indicating read status.",
-                systemImage: Icons.read
+                icon: .settings.readIndicatorSetting
             )
             .tint(.themedSecondary)
             Section {
@@ -107,10 +107,10 @@ struct PostReadIndicatorSettingsView: View {
         .overlay(alignment: .topTrailing) {
             HStack {
                 if style == .checkmark {
-                    Image(systemName: Icons.success)
+                    Image(icon: .general.success)
                         .foregroundStyle(.themedSecondary)
                 }
-                Image(systemName: Icons.menu)
+                Image(icon: .general.menu)
             }
             .font(.title2)
             .frame(height: 30)

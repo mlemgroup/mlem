@@ -19,6 +19,6 @@ struct PostLinkHostView: View {
     }
     
     var content: Text {
-        Text(Image(systemName: Icons.browser)) + Text(verbatim: " \(host)")
+        Text(Image(icon: .general.browser)) + Text(verbatim: " \(host)")
     }
 }

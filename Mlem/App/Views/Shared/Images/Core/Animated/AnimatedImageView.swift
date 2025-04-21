@@ -41,7 +41,7 @@ struct AnimatedImageView: UIViewRepresentable {
         // compute real time duration
         Task {
             var total: TimeInterval = 0
-            for index in (0..<animatedImage.animatedImageFrameCount) {
+            for index in 0 ..< animatedImage.animatedImageFrameCount {
                 total += animatedImage.animatedImageDuration(at: index)
             }
             controlState.duration = total

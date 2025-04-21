@@ -90,8 +90,9 @@ struct ReportView: View {
                 nameColor: .themedPositive,
                 instanceColor: .themedPositive.opacity(0.5)
             )
-            Label("Resolved by \(resolverLabel)", systemImage: Icons.successCircleFill)
+            Label("Resolved by \(resolverLabel)", icon: .general.success)
                 .foregroundStyle(.themedPositive)
+                .symbolVariant(.circle.fill)
                 .font(.footnote)
                 .padding(.horizontal, Constants.main.halfSpacing)
                 .lineLimit(1)

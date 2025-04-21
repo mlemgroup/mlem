@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 11/05/2024.
 //
 
+import Icons
 import MlemMiddleware
 import SwiftUI
 @_spi(Advanced) import SwiftUIIntrospect
@@ -205,7 +206,7 @@ enum SubscriptionListSort: String, CaseIterable, Codable {
 
 struct SubscriptionListSection: Identifiable {
     let label: String
-    var systemImage: String?
+    var icon: Icon?
     let communities: [Community2]
     
     var id: String { label }
@@ -215,7 +216,7 @@ private extension SubscriptionList {
     func visibleSections(sort: SubscriptionListSort) -> [SubscriptionListSection] {
         var sections: [SubscriptionListSection] = .init()
         if !favorites.isEmpty {
-            sections.append(.init(label: String(localized: "Favorites"), systemImage: Icons.favoriteFill, communities: favorites))
+            sections.append(.init(label: String(localized: "Favorites"), icon: .lemmy.favorited, communities: favorites))
         }
         switch sort {
         case .alphabetical:

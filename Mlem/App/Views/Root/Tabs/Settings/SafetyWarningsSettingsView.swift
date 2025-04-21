@@ -16,12 +16,12 @@ struct SafetyWarningsSettingsView: View {
             SettingsHeaderView(
                 title: "Content Warnings",
                 description: "Choose whether to show a warning when opening a page that is likely to contain sensitive content.",
-                systemImage: Icons.warning
+                icon: .general.warning
             )
             .tint(.themedWarning)
             Section("Show warnings when opening...") {
-                Toggle("NSFW Communities", systemImage: Icons.community, isOn: $showNsfwCommunityWarning)
-                Toggle("Modlogs", systemImage: Icons.modlog, isOn: $showModlogWarning)
+                Toggle("NSFW Communities", icon: .lemmy.community, isOn: $showNsfwCommunityWarning)
+                Toggle("Modlogs", icon: .lemmy.modlog, isOn: $showModlogWarning)
             }
         }
         .contentMargins(.top, 16)

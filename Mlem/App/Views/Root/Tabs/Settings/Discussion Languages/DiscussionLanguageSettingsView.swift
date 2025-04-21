@@ -30,7 +30,7 @@ struct DiscussionLanguageSettingsView: View {
             SettingsHeaderView(
                 title: "Discussion Languages",
                 description: "Choose which languages appear in your feed. Posts and comments in other languages will be hidden.",
-                systemImage: Icons.language
+                icon: .settings.language
             )
             
             if let person, let instance {
@@ -39,7 +39,7 @@ struct DiscussionLanguageSettingsView: View {
                     ForEach(selectedLanguages, id: \.languageCode) { language in
                         LanguageListRowBody(language: language)
                             .contextMenu {
-                                Button("Remove", systemImage: Icons.signOut, role: .destructive) {
+                                Button("Remove", icon: .general.signOut, role: .destructive) {
                                     Task { await updateDiscussionLanguages(with: language) }
                                 }
                             }

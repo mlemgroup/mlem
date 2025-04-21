@@ -16,7 +16,7 @@ extension SearchView {
         @Binding var creator: Person2?
         
         var body: some View {
-            Button(creator?.name ?? .init(localized: "Anyone"), systemImage: Icons.person) {
+            Button(creator?.name ?? .init(localized: "Anyone"), icon: .lemmy.person) {
                 if creator == nil {
                     navigation.openSheet(.personPicker(
                         api: api,
@@ -30,7 +30,7 @@ extension SearchView {
             }
             .buttonStyle(FeedFilterButtonStyle(
                 isOn: creator != nil,
-                systemImage: creator == nil ? Icons.dropDownCircleFill : Icons.closeCircleFill
+                icon: creator == nil ? .general.dropDown : .general.close
             ))
         }
     }

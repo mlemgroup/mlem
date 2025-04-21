@@ -26,13 +26,13 @@ struct CrossPostListView: View {
                     }
                 } label: {
                     HStack {
-                        Image(systemName: Icons.crossPost)
+                        Image(icon: .lemmy.crosspost)
                             .foregroundStyle(.themedSecondary)
                             .fontWeight(.semibold)
                         Text("\(post.crossPosts.count) Crossposts...")
                         Spacer()
                         HStack(spacing: 2) {
-                            Image(systemName: Icons.replies)
+                            Image(icon: .lemmy.comment)
                             Text(String(post.crossPosts.reduce(0) { $0 + $1.commentCount }))
                         }
                         .font(.footnote)

@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 07/10/2023.
 //
 
+import Icons
 import MlemMiddleware
 import SwiftUI
 import Theming
@@ -61,26 +62,17 @@ enum PersonFlair: Hashable {
         }
     }
     
-    var icon: String {
+    var icon: Icon {
         switch self {
-        case .admin:
-            return Icons.administrationFill
-        case .moderator:
-            return Icons.moderationFill
-        case .op:
-            return Icons.opFlair
-        case .bot:
-            return Icons.botFlair
-        case .bannedFromInstance:
-            return Icons.instanceBannedFlair
-        case .bannedFromCommunity:
-            return Icons.communityBannedFlair
-        case .developer:
-            return Icons.developerFlair
-        case .cakeDay:
-            return Icons.cakeDayFill
-        case .new:
-            return Icons.newAccountFlair
+        case .admin: .lemmy.administration
+        case .moderator: .lemmy.moderation
+        case .op: .lemmy.opFlair
+        case .bot: .lemmy.botFlair
+        case .bannedFromInstance: .lemmy.bannedFromInstance
+        case .bannedFromCommunity: .lemmy.bannedFromCommunity
+        case .developer: .lemmy.developerFlair
+        case .cakeDay: .lemmy.cakeDay
+        case .new: .lemmy.newAccountFlair
         }
     }
     
@@ -99,7 +91,7 @@ enum PersonFlair: Hashable {
     }
     
     var textView: Text {
-        (Text(Image(systemName: icon)) + Text(text).fontWeight(.semibold))
+        (Text(Image(icon: icon)) + Text(text).fontWeight(.semibold))
             .foregroundStyle(color)
     }
 }

@@ -17,7 +17,7 @@ struct SubscriptionListSettingsView: View {
             SettingsHeaderView(
                 title: "Subscription List",
                 description: "Customize how your subscription list is sorted.",
-                systemImage: "list.bullet"
+                icon: .lemmy.subscriptionList
             )
             .tint(.themedCommunityAccent)
             Section("Sort by...") {
@@ -31,16 +31,16 @@ struct SubscriptionListSettingsView: View {
             }
             if sort == .alphabetical {
                 Section("Row Size") {
-                    Picker("Row Size", systemImage: Icons.qualifiedLabel, selection: $instanceLocation) {
-                        Label("Large", systemImage: "rectangle.expand.vertical").tag(InstanceLocation.bottom)
-                        Label("Compact", systemImage: "rectangle.compress.vertical").tag(InstanceLocation.trailing)
+                    Picker("Row Size", icon: .settings.qualifiedLabel, selection: $instanceLocation) {
+                        Label("Large", icon: .settings.postSizeLarge).tag(InstanceLocation.bottom)
+                        Label("Compact", icon: .settings.postSizeCompact).tag(InstanceLocation.trailing)
                     }
                     .labelsHidden()
                     .pickerStyle(.inline)
                 }
             }
             if UIDevice.isPad {
-                Toggle("Show Sidebar on App Launch", systemImage: Icons.sidebar, isOn: $sidebarVisibleByDefault)
+                Toggle("Show Sidebar on App Launch", icon: .settings.sidebar, isOn: $sidebarVisibleByDefault)
             }
         }
         .animation(.easeOut(duration: 0.1), value: sort)

@@ -12,7 +12,7 @@ struct PasteLinkButtonView: View {
     @Environment(\.openURL) private var openURL
     
     var body: some View {
-        Button("Open URL from Clipboard", systemImage: Icons.paste) {
+        Button("Open URL from Clipboard", icon: .general.paste) {
             if let url = UIPasteboard.general.url {
                 openURL(url)
             } else if let string = UIPasteboard.general.string,

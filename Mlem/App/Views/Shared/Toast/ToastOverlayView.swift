@@ -86,16 +86,6 @@ struct ToastOverlayView: View {
         Button(String("Test")) {
             ToastModel.main.add(.success())
         }
-        Button(String("Test Long")) {
-            ToastModel.main.add(
-                .basic(
-                    String("Unfavorited Community"),
-                    systemImage: "star.slash.fill",
-                    color: .themedFavorite,
-                    duration: 5
-                )
-            )
-        }
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .overlay(alignment: .top) {

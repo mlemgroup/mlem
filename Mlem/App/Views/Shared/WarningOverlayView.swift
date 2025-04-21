@@ -17,7 +17,7 @@ struct WarningOverlayView: View {
     var body: some View {
         VStack(spacing: Constants.main.doubleSpacing) {
             WarningView(
-                iconName: Icons.warning,
+                icon: .general.warning,
                 text: text,
                 inList: false
             )

@@ -86,7 +86,7 @@ struct PostEditorImageUploadWidgetView: View {
             HStack {
                 HStack {
                     if imageManager?.state == nil {
-                        Image(systemName: Icons.uploadImage)
+                        Image(icon: .markdown.uploadImage)
                     }
                     Text(imageManager?.state == nil ? "Add Image" : "Add an image...")
                 }
@@ -140,15 +140,15 @@ struct PostEditorImageUploadWidgetView: View {
     @ViewBuilder
     func uploadOptionsView(height: CGFloat) -> some View {
         HStack {
-            Button("Photos", systemImage: "photo.on.rectangle.angled") {
+            Button("Photos", icon: .general.photoLibary) {
                 guard let imageManager else { return }
                 navigation.showPhotosPicker(for: imageManager, api: primaryApi)
             }
-            Button("Files", systemImage: Icons.chooseFile) {
+            Button("Files", icon: .general.chooseFile) {
                 guard let imageManager else { return }
                 navigation.showFilePicker(for: imageManager, api: primaryApi)
             }
-            Button("Paste", systemImage: Icons.paste) {
+            Button("Paste", icon: .general.paste) {
                 guard let imageManager else { return }
                 navigation.uploadImageFromClipboard(for: imageManager, api: primaryApi)
             }

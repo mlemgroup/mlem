@@ -25,7 +25,7 @@ struct FiltersSettingsView: View {
     var body: some View {
         Form {
             Section {
-                Toggle("Enable Keyword Filters", systemImage: Icons.keywordFilter, isOn: $keywordFilterEnabled)
+                Toggle("Enable Keyword Filters", icon: .settings.keywordFilter, isOn: $keywordFilterEnabled)
             }
             
             Section {
@@ -39,8 +39,8 @@ struct FiltersSettingsView: View {
         .navigationTitle("Filters")
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Menu("More...", systemImage: Icons.menuCircle) {
-                    Button("Export...", systemImage: Icons.share) {
+                Menu("More...", icon: .general.toolbarMenu) {
+                    Button("Export...", icon: .general.export) {
                         Task {
                             if let url = await downloadTextToFileSystem(
                                 fileName: "keywords.txt",
@@ -52,7 +52,7 @@ struct FiltersSettingsView: View {
                             }
                         }
                     }
-                    Button("Import...", systemImage: Icons.import) {
+                    Button("Import...", icon: .general.import) {
                         navigation.showFilePicker(types: [.plainText]) { data in
                             let text = String(data: data, encoding: .utf8) ?? ""
                             await filtersTracker.resetFilteredKeywords(
@@ -82,7 +82,7 @@ struct FiltersSettingsView: View {
                 Spacer()
                 
                 // using a Button to do this makes the whole row register tap gestures :/
-                Image(systemName: Icons.delete)
+                Image(icon: .general.delete)
                     .foregroundStyle(.themedWarning)
                     .onTapGesture {
                         deleteKeyword(filter)

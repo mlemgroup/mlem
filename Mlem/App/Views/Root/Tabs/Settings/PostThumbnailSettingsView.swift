@@ -26,7 +26,8 @@ struct PostThumbnailSettingsView: View {
             Section {
                 Picker("Thumbnail Location", selection: $thumbnailLocation) {
                     ForEach(ThumbnailLocation.allCases, id: \.self) { location in
-                        Label(String(localized: location.label), systemImage: location.systemImage).tag(location)
+                        Label(location.label.key, icon: location.icon)
+                            .tag(location)
                     }
                 }
                 .labelsHidden()
@@ -34,7 +35,7 @@ struct PostThumbnailSettingsView: View {
             }
             
             Section {
-                Toggle("Website Icon", systemImage: Icons.browser, isOn: $websiteThumbnailIcon)
+                Toggle("Website Icon", icon: .general.browser, isOn: $websiteThumbnailIcon)
             } footer: {
                 Text("Indicate link thumbnails with an icon.")
             }
@@ -84,7 +85,7 @@ struct PostThumbnailSettingsView: View {
                     .opacity(active ? 0.9 : 0)
             }
             .overlay {
-                Image(systemName: Icons.browser)
+                Image(icon: .general.browser)
                     .resizable()
                     .frame(width: 20, height: 20)
                     .foregroundStyle(.white)

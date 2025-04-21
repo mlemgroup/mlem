@@ -75,7 +75,7 @@ struct LargePostView: View {
                 }
                 
                 if post.nsfw {
-                    Image(Icons.nsfwTag)
+                    Image(icon: .lemmy.nsfwTag)
                         .foregroundStyle(.themedWarning)
                 }
                 
