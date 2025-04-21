@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Media
 
 private struct AnimationControlLayer: ViewModifier {
     @Environment(MediaControlState.self) var controlState
@@ -14,7 +15,7 @@ private struct AnimationControlLayer: ViewModifier {
     @State var showControls: Bool = true
     
     func body(content: Content) -> some View {
-        if controlState.canAnimate, controlState.enableControlOverlay {
+        if controlState.canAnimate { // , controlState.enableControlOverlay {
             contentWithControls(content: content)
         } else {
             content
@@ -45,14 +46,14 @@ private struct AnimationControlLayer: ViewModifier {
                 muteButton
             }
             .onChange(of: controlState.blurred, initial: true) {
-                if controlState.enableNsfwOverlay, controlState.enableControlOverlay {
+                // if controlState.enableNsfwOverlay, controlState.enableControlOverlay {
                     if controlState.blurred {
                         showControls = false
                     } else {
                         controlState.animating = true
                         showControls = true
                     }
-                }
+                // }
             }
     }
     

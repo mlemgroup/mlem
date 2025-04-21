@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Media
 
 struct MediaView: View {
     @Environment(NavigationLayer.self) var navigation: NavigationLayer?
@@ -21,8 +22,10 @@ struct MediaView: View {
     let url: URL?
     
     // appearance
-    let aspectRatio_: AspectRatioBounds?
-    var aspectRatio: AspectRatioBounds { aspectRatio_ ?? .absolute(loader.mediaType?.image.validSize() ?? .init(width: 4, height: 3)) }
+    let aspectRatio_: CoreMediaView.AspectRatioBounds?
+    var aspectRatio: CoreMediaView.AspectRatioBounds {
+        aspectRatio_ ?? .absolute(loader.mediaType?.image.validSize() ?? .init(width: 4, height: 3))
+    }
     let contentMode: ContentMode
     let cornerRadius: CGFloat
     let fallback: Fallback
@@ -35,7 +38,7 @@ struct MediaView: View {
     var fullSizeUrl: URL? { Mlem.fullSizeUrl(url: loader.url) }
     var uiImage: UIImage { loader.mediaType?.image ?? .blank }
     var showErrorOverlay: Bool {
-        controlState.enableErrorOverlay &&
+        // controlState.enableErrorOverlay &&
             loader.error != nil &&
             navigation != nil
     }
@@ -59,7 +62,7 @@ struct MediaView: View {
         url: URL?,
         size: CGSize? = nil,
         controlState: Binding<MediaControlState>? = nil,
-        aspectRatioBounds: AspectRatioBounds? = nil,
+        aspectRatioBounds: CoreMediaView.AspectRatioBounds? = nil,
         contentMode: ContentMode = .fit,
         cornerRadius: CGFloat = 0,
         fallback: Fallback = .image,
@@ -78,14 +81,19 @@ struct MediaView: View {
         self.enableImageViewer = enableImageViewer
         self.onTapActions = onTapActions
 
-        self._loader = .init(wrappedValue: .init(url: url, size: size))
+        self._loader = .init(wrappedValue: .init(
+            url: url,
+            size: size,
+            autoBypassImageProxy: Settings.get(\.privacy_autoBypassImageProxy)
+        ))
         if let controlState {
             self._controlState = controlState
         } else {
             self._controlState = .constant(.init(
                 blurred: false,
                 animating: false,
-                overlays: [.controls, .error]
+                muted: Settings.get(\.behavior_muteVideos)
+                // overlays: [.controls, .error]
             ))
         }
         _controlState.wrappedValue.url = url
@@ -97,7 +105,8 @@ struct MediaView: View {
             controlState: .constant(.init(
                 blurred: shouldBlur,
                 animating: Settings.get(\.behavior_autoplayMedia),
-                overlays: shouldBlur ? [.controls, .nsfw, .error] : [.controls, .error]
+                muted: Settings.get(\.behavior_muteVideos)
+                // overlays: shouldBlur ? [.controls, .nsfw, .error] : [.controls, .error]
             )),
             aspectRatioBounds: .imageDefault,
             cornerRadius: Constants.main.mediumItemCornerRadius,

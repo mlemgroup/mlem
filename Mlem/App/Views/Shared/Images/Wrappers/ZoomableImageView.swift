@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Media
 
 struct ZoomableImageView: View {
     let url: URL

@@ -7,7 +7,7 @@
 
 import Observation
 
-@Observable
-class MediaLoadingTracker {
-    var loading: MediaLoadingState?
-}
+// @Observable
+// class MediaLoadingTracker {
+//    var loading: MediaLoadingState?
+// }

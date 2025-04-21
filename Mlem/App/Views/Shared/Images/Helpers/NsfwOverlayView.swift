@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import Media
 
 struct NsfwOverlay: View {
     @Environment(MediaControlState.self) var controlState

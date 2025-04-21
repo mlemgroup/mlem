@@ -9,65 +9,65 @@ import Foundation
 import Observation
 
 @Observable
-class MediaControlState {
+public class MediaControlState {
     /// True if the media should be blurred, false otherwise
-    var blurred: Bool
+    public var blurred: Bool
     
     /// True if the media, if animated, should be playing
-    var animating: Bool
+    public var animating: Bool
     
     /// True if the media, if animated, should autoplay; this is the initial value of `animating`
-    let autoplay: Bool
+    public let autoplay: Bool
     
     /// True if the media should animate, false to suppress animation
-    var enableAnimation: Bool
+    public var enableAnimation: Bool
     
     /// True if the media, if audio available, should not play audio
-    var muted: Bool
+    public var muted: Bool
     
-    /// Which overlays should be enabled
-    let overlays: Set<MediaView.Overlay>
+    // /// Which overlays should be enabled
+    // let overlays: Set<MediaView.Overlay>
     
     /// Target playback position of animated media
-    var scrubTarget: CGFloat?
+    public var scrubTarget: CGFloat?
     
     /// True if the media is in a context where scrubbing is possible. Used to determine whether to aggressively
     /// load image data into memory to improve scrubbing performance.
     /// - Warning: This does NOT enable any form of scrubbing control! It only informs the underlying view whether to prepare
     /// appropriately for scrubbing.
-    var scrubbingAvailable: Bool
+    public var scrubbingAvailable: Bool
     
     /// True if the media is animated.
     /// - Note: This must be set by MediaView after the media type resolves
-    var animationAvailable: Bool = false
+    public var animationAvailable: Bool = false
     
     /// True when the media has an audio track, false otherwise.
     /// - Note: This must be set by the relevant nested media view once it has extracted audio data
-    var audioAvailable: Bool = false
+    public var audioAvailable: Bool = false
     
     /// Current playback position of animated media
     /// - Note: This should only be set by the nested media view; to scrub, update scrubTarget
-    var playbackPosition: CGFloat = 0
+    public var playbackPosition: CGFloat = 0
     
     /// Duration of animated media
     /// - Note: This should only be set by the nested media view
-    var duration: TimeInterval?
+    public var duration: TimeInterval?
     
     /// Current loading state of the media
-    var loading: MediaLoadingState?
+    public var loading: MediaLoadingState?
     
-    var enableNsfwOverlay: Bool { overlays.contains(.nsfw) }
-    var enableControlOverlay: Bool { overlays.contains(.controls) }
-    var enableErrorOverlay: Bool { overlays.contains(.error) }
+//    var enableNsfwOverlay: Bool { overlays.contains(.nsfw) }
+//    var enableControlOverlay: Bool { overlays.contains(.controls) }
+//    var enableErrorOverlay: Bool { overlays.contains(.error) }
     
-    var playbackReadouts: (position: String, duration: String)? {
+    public var playbackReadouts: (position: String, duration: String)? {
         guard let duration else { return nil }
         return (position: minuteSecondString(from: playbackPosition * duration), duration: minuteSecondString(from: duration))
     }
     
-    var canAnimate: Bool { animationAvailable && enableAnimation }
+    public var canAnimate: Bool { animationAvailable && enableAnimation }
     
-    var url: URL?
+    public var url: URL?
     
     /// Creates a new MediaControlState
     /// - Parameters:
@@ -77,20 +77,20 @@ class MediaControlState {
     ///   - enableAnimation: true if the media should animate at all, false otherwise
     ///   - muted: true if the media should be muted, false otherwise. Defaults to Settings.main.muteVideos.
     ///   - audioAvailable: true if the media has an audio track, false otherwise. Defaults to false.
-    init(
+    public init(
         blurred: Bool,
         animating: Bool,
-        overlays: Set<MediaView.Overlay>,
+        // overlays: Set<MediaView.Overlay>,
         enableAnimation: Bool = true,
-        muted: Bool? = nil,
+        muted: Bool,
         scrubbingAvailable: Bool = false
     ) {
         self.blurred = blurred
         self.animating = animating
         self.autoplay = animating
-        self.overlays = overlays
+        // self.overlays = overlays
         self.enableAnimation = enableAnimation
-        self.muted = muted ?? Settings.get(\.behavior_muteVideos)
+        self.muted = muted // ?? Settings.get(\.behavior_muteVideos)
         self.scrubbingAvailable = scrubbingAvailable
     }
     

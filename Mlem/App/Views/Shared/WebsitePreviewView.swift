@@ -63,7 +63,8 @@ struct WebsitePreviewView: View {
                     controlState: .constant(.init(
                         blurred: shouldBlur,
                         animating: false,
-                        overlays: shouldBlur ? [.controls, .nsfw, .error] : [.controls, .error]
+                        muted: Settings.get(\.behavior_muteVideos)
+                        // overlays: shouldBlur ? [.controls, .nsfw, .error] : [.controls, .error]
                     )),
                     aspectRatioBounds: .bounded(vertical: .init(width: 1, height: 1), horizontal: nil),
                     contentMode: .fill

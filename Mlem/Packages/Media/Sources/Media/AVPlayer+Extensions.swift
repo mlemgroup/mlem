@@ -6,6 +6,7 @@
 //
 //  From https://stackoverflow.com/questions/11704322/how-to-check-if-avplayer-has-video-or-just-audio
 
+@preconcurrency
 import AVFoundation
 
 extension AVPlayer {
