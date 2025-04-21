@@ -9,6 +9,7 @@ import AVFAudio
 import Nuke
 import SDWebImageWebPCoder
 import SwiftUI
+import Media
 
 /// Root view for the app
 @main

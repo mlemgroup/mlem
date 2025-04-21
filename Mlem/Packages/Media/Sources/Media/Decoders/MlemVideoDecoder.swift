@@ -14,7 +14,7 @@ public class MlemVideoDecoder: ImageDecoding, @unchecked Sendable {
     private let decoder: ImageDecoders.Video
     public var isAsynchronous: Bool { decoder.isAsynchronous }
     
-    init?(context: ImageDecodingContext) {
+    public init?(context: ImageDecodingContext) {
         guard let decoder = ImageDecoders.Video(context: context) else { return nil }
         self.decoder = decoder
     }
