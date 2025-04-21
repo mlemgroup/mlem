@@ -139,12 +139,12 @@ struct ModlogView: View {
                         self.communityFilter = .any
                     }
                 } label: {
-                    Label(communityFilter.label, systemImage: Icons.community)
+                    Label(communityFilter.label, icon: .lemmy.community)
                 }
                 .buttonStyle(
                     .feedFilter(
                         isOn: communityFilter != .any,
-                        systemImage: communityFilter == .any ? Icons.dropDownCircleFill : Icons.closeCircleFill
+                        icon: communityFilter == .any ? .general.dropDown : .general.close
                     )
                 )
                 typeFilterView()
@@ -158,34 +158,34 @@ struct ModlogView: View {
     func typeFilterView() -> some View {
         Menu(
             String(localized: actionTypeFilter?.label ?? "Action Type"),
-            systemImage: actionTypeFilter?.systemImage ?? Icons.action
+            icon: actionTypeFilter?.icon ?? .general.action
         ) {
             Section {
                 Toggle(
                     "Any",
-                    systemImage: Icons.action,
+                    icon: .general.action,
                     isOn: .init(get: { actionTypeFilter == nil }, set: { _ in actionTypeFilter = nil })
                 )
             }
             Section {
-                Picker("Post", systemImage: Icons.posts, selection: $actionTypeFilter) {
+                Picker("Post", icon: .lemmy.post, selection: $actionTypeFilter) {
                     typeFilterLabel(.modRemovePost)
                     typeFilterLabel(.modLockPost)
                     typeFilterLabel(.modFeaturePost)
                     typeFilterLabel(.adminPurgePost)
                 }
-                Picker("Comment", systemImage: Icons.replies, selection: $actionTypeFilter) {
+                Picker("Comment", icon: .lemmy.comment, selection: $actionTypeFilter) {
                     typeFilterLabel(.modRemoveComment)
                     typeFilterLabel(.adminPurgeComment)
                 }
-                Picker("Community", systemImage: Icons.community, selection: $actionTypeFilter) {
+                Picker("Community", icon: .lemmy.community, selection: $actionTypeFilter) {
                     typeFilterLabel(.modRemoveCommunity)
                     typeFilterLabel(.modHideCommunity)
                     typeFilterLabel(.modAddCommunity)
                     typeFilterLabel(.modTransferCommunity)
                     typeFilterLabel(.adminPurgeCommunity)
                 }
-                Picker("User", systemImage: Icons.person, selection: $actionTypeFilter) {
+                Picker("User", icon: .lemmy.person, selection: $actionTypeFilter) {
                     typeFilterLabel(.modBan)
                     typeFilterLabel(.modBanFromCommunity)
                     typeFilterLabel(.modAddCommunity)
@@ -200,7 +200,7 @@ struct ModlogView: View {
     @ViewBuilder
     func typeFilterLabel(_ type: ApiModlogActionType) -> some View {
         if type.appliesToCommunity || communityFilter == .any {
-            Label(String(localized: type.contextualLabel), systemImage: type.systemImage)
+            Label(type.contextualLabel.key, icon: type.icon)
                 .tag(type)
         }
     }

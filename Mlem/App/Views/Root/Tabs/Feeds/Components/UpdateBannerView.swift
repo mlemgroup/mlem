@@ -52,7 +52,7 @@ struct UpdateBannerView: View {
             )
         ])
         .contextMenu {
-            Button("Dismiss", systemImage: Icons.close) {
+            Button("Dismiss", icon: .general.close) {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.45) {
                     dismiss()
                 }

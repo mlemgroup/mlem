@@ -34,7 +34,7 @@ extension SearchView {
             if selectedTab == .communities, communityFilters.instance.isOther {
                 Label(
                     "Subscription statuses can't be displayed when using these filters.",
-                    systemImage: Icons.warning
+                    icon: .general.warning
                 )
                 .font(.footnote)
                 .foregroundStyle(palette.accent)
@@ -55,10 +55,10 @@ extension SearchView {
     
     @ViewBuilder
     private var personFiltersView: some View {
-        Menu(personFilters.sort.label(timeRangeFormat: .topOnly), systemImage: personFilters.sort.systemImage) {
+        Menu(personFilters.sort.label(timeRangeFormat: .topOnly), icon: personFilters.sort.icon) {
             Picker("Sort", selection: $personFilters.sort) {
                 ForEach(SearchSortType.legacyPersonCases, id: \.self) { item in
-                    Label(item.label(timeRangeFormat: .topOnly), systemImage: item.systemImage)
+                    Label(item.label(timeRangeFormat: .topOnly), icon: item.icon)
                 }
             }
         }
@@ -81,10 +81,10 @@ extension SearchView {
     
     @ViewBuilder
     private var commentFiltersView: some View {
-        Menu(commentFilters.sort.label(timeRangeFormat: .topOnly), systemImage: commentFilters.sort.systemImage) {
+        Menu(commentFilters.sort.label(timeRangeFormat: .topOnly), icon: commentFilters.sort.icon) {
             Picker("Sort", selection: $commentFilters.sort) {
                 ForEach(CommentSortType.legacyCases, id: \.self) { item in
-                    Label(item.label(timeRangeFormat: .topOnly), systemImage: item.systemImage)
+                    Label(item.label(timeRangeFormat: .topOnly), icon: item.icon)
                 }
             }
         }
@@ -100,12 +100,12 @@ extension SearchView {
     @ViewBuilder
     private var instanceFiltersView: some View {
         Menu(
-            String(localized: instanceFilters.sort.label),
-            systemImage: instanceFilters.sort.systemImage
+            instanceFilters.sort.label,
+            icon: instanceFilters.sort.icon
         ) {
             Picker("Sort", selection: $instanceFilters.sort) {
                 ForEach(InstanceSort.allCases, id: \.self) { sort in
-                    Label(String(localized: sort.label), systemImage: sort.systemImage)
+                    Label(sort.label.key, icon: sort.icon)
                 }
             }
             .pickerStyle(.inline)

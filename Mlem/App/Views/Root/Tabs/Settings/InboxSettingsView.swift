@@ -17,7 +17,7 @@ struct InboxSettingsView: View {
                 title: "Inbox",
                 // swiftlint:disable:next line_length
                 description: "Customize the interaction bar for inbox items, and choose which types of notification are included in the tab bar badge.",
-                systemImage: Icons.inboxFill
+                icon: .lemmy.inbox
             )
             .tint(.themedInbox)
             Section {
@@ -30,7 +30,7 @@ struct InboxSettingsView: View {
                 Section {
                     NavigationLink(
                         "Mod Mail Action Layouts",
-                        systemImage: Icons.interactionBar,
+                        icon: .settings.interactionBar,
                         destination: .settings(.modMailInteractionBar)
                     )
                 }
@@ -40,7 +40,7 @@ struct InboxSettingsView: View {
                     "Notification Badge",
                     value: tabInboxBadgeIncludedTypes.label(accountType: AccountsTracker.main.highestLevelAccountType),
                     fallbackValue: .init(localized: "Some"),
-                    systemImage: Icons.unreadBadge,
+                    icon: .settings.unreadBadge,
                     destination: .settings(.inboxBadge)
                 )
             }

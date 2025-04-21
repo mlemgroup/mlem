@@ -5,17 +5,18 @@
 //  Created by Sjmarf on 2025-01-17.
 //
 
+import Icons
 import SwiftUI
 
-struct SettingsHeaderView<Icon: View>: View {
+struct SettingsHeaderView<IconView: View>: View {
     let title: String
     let description: String?
-    let icon: Icon
+    let icon: IconView
         
     init(
         title: LocalizedStringResource,
         description: LocalizedStringResource?,
-        @ViewBuilder icon: @escaping () -> Icon
+        @ViewBuilder icon: @escaping () -> IconView
     ) {
         self.title = .init(localized: title)
         if let description {
@@ -30,6 +31,7 @@ struct SettingsHeaderView<Icon: View>: View {
         Section {
             VStack(spacing: 12) {
                 icon
+                    .symbolVariant(.fill)
                     .padding(.bottom, 5)
                 Text(title)
                     .font(.title2)
@@ -48,11 +50,12 @@ struct SettingsHeaderView<Icon: View>: View {
 }
 
 struct SettingsHeaderIconView: View {
-    let systemName: String
+    let icon: Icon
     
     var body: some View {
-        Image(systemName: systemName)
+        Image(icon: icon)
             .font(.title)
+            .symbolVariant(.fill)
             .imageScale(.large)
             .foregroundStyle(.themedContrastingLabel)
             .frame(width: 60, height: 60)
@@ -64,10 +67,10 @@ extension SettingsHeaderView {
     init(
         title: LocalizedStringResource,
         description: LocalizedStringResource?,
-        systemImage: String
-    ) where Icon == SettingsHeaderIconView {
+        icon: Icon
+    ) where IconView == SettingsHeaderIconView {
         self.init(title: title, description: description) {
-            SettingsHeaderIconView(systemName: systemImage)
+            SettingsHeaderIconView(icon: icon)
         }
     }
 }

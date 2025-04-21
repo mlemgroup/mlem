@@ -19,7 +19,7 @@ struct AccountListSettingsView: View {
             headerView
             AccountListView()
             Section {
-                Toggle("Reload on Switch", systemImage: Icons.accountSwitchReload, isOn: $keepPlace.invert())
+                Toggle("Reload on Switch", icon: .lemmy.switchAccountAndReload, isOn: $keepPlace.invert())
             }
         }
         .labelStyle(.conditional)

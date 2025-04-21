@@ -117,7 +117,7 @@ struct ExternalApiInfoView: View {
             .overlay {
                 HStack {
                     CircleCroppedImageView(appState.firstSession.instance, frame: 48)
-                    Image(systemName: Icons.failure)
+                    Image(icon: .general.failure)
                         .bold()
                         .foregroundStyle(.red)
                         .imageScale(.large)

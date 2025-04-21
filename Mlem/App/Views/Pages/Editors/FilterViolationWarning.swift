@@ -12,7 +12,7 @@ struct FilterViolationWarning: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
-            Label("Filter violation", systemImage: Icons.warning)
+            Label("Filter violation", icon: .general.warning)
                 .font(.footnote)
                 .foregroundStyle(.themedWarning)
                 .padding(.vertical, 5)

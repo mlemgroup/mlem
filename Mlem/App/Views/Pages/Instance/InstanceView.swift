@@ -153,7 +153,7 @@ struct InstanceView: View {
             }
             
             if appState.firstApi.isAdmin {
-                Button("Add Administrator", systemImage: Icons.add, action: openAddAdminSheet)
+                Button("Add Administrator", icon: .general.add, action: openAddAdminSheet)
                     .buttonStyle(.capsule)
                     .padding(.bottom, Constants.main.halfSpacing)
                     .confirmationDialog("Add Administrator", isPresented: $showingConfirmation) {

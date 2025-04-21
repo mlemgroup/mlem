@@ -16,7 +16,7 @@ extension PostEditorView {
             }
         }
         ToolbarItemGroup(placement: .topBarTrailing) {
-            Menu("Add", systemImage: Icons.add) {
+            Menu("Add", icon: .general.add) {
                 Toggle("NSFW Tag", systemImage: "tag", isOn: $hasNsfwTag)
                 if postToEdit == nil {
                     Button("Crosspost", systemImage: "shuffle") {
@@ -33,7 +33,7 @@ extension PostEditorView {
             if self.sending {
                 ProgressView()
             } else {
-                Button("Send", systemImage: Icons.send) {
+                Button("Send", icon: .lemmy.send) {
                     self.sending = true
                     Task { await submit() }
                 }

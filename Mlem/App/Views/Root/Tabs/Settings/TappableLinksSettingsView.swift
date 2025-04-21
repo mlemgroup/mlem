@@ -15,7 +15,7 @@ struct TappableLinksSettingsView: View {
             Section {
                 Toggle(
                     "Tappable Links",
-                    systemImage: Icons.websiteAddress,
+                    icon: .settings.tappableLinks,
                     isOn: Binding(
                         get: { tappableLinksDisplayMode != .disabled },
                         set: { newValue in
@@ -28,7 +28,7 @@ struct TappableLinksSettingsView: View {
             }
             if tappableLinksDisplayMode != .disabled {
                 Section("Show Full URL") {
-                    Picker("Show Full URL", systemImage: Icons.inlineCode, selection: $tappableLinksDisplayMode) {
+                    Picker("Show Full URL", icon: .markdown.inlineCode, selection: $tappableLinksDisplayMode) {
                         Text("Automatic").tag(TappableLinksDisplayMode.contextual)
                         Text("Always").tag(TappableLinksDisplayMode.large)
                         Text("Never").tag(TappableLinksDisplayMode.compact)

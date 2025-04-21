@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 2025-01-05.
 //
 
+import Icons
 import SwiftUI
 
 struct TabBarSettingsView: View {
@@ -23,30 +24,31 @@ struct TabBarSettingsView: View {
             SettingsHeaderView(
                 title: "Tab Bar",
                 description: "Customize the appearance of the tab bar.",
-                systemImage: "platter.filled.bottom.iphone"
+                icon: .settings.tabBar
             )
             .tint(.themedColorfulAccent(5))
             Section("Profile Tab Label") {
                 Picker("Profile Tab Label", selection: $profileTabLabel) {
-                    profileTabLabelItem("Name", value: account.nickname, systemImage: Icons.alphabeticalSort)
+                    profileTabLabelItem("Name", value: account.nickname, icon: .lemmy.alphabeticalSort)
                         .tag(ProfileTabLabel.nickname)
-                    profileTabLabelItem("Instance", value: account.host, systemImage: Icons.qualifiedLabel)
+                    profileTabLabelItem("Instance", value: account.host, icon: .settings.qualifiedLabel)
                         .tag(ProfileTabLabel.instance)
-                    profileTabLabelItem("Anonymous", value: .init(localized: "Profile"), systemImage: "circle")
+                    profileTabLabelItem("Anonymous", value: .init(localized: "Profile"), icon: .general.circle)
                         .tag(ProfileTabLabel.anonymous)
                 }
                 .labelsHidden()
                 .pickerStyle(.inline)
             }
             Section {
-                Toggle("Show Avatar", systemImage: Icons.personCircle, isOn: $showUserAvatar)
+                Toggle("Show Avatar", icon: .lemmy.person, isOn: $showUserAvatar)
+                    .symbolVariant(.circle)
             }
             Section {
                 NavigationLink(
                     "Notification Badge",
                     value: tabInboxBadgeIncludedTypes.label(accountType: AccountsTracker.main.highestLevelAccountType),
                     fallbackValue: .init(localized: "Some"),
-                    systemImage: Icons.unreadBadge,
+                    icon: .settings.unreadBadge,
                     destination: .settings(.inboxBadge)
                 )
             }
@@ -57,7 +59,7 @@ struct TabBarSettingsView: View {
     }
     
     @ViewBuilder
-    func profileTabLabelItem(_ title: LocalizedStringKey, value: String, systemImage: String) -> some View {
+    func profileTabLabelItem(_ title: LocalizedStringKey, value: String, icon: Icon) -> some View {
         Label {
             VStack(alignment: .leading) {
                 Text(title)
@@ -66,7 +68,7 @@ struct TabBarSettingsView: View {
                     .foregroundStyle(.themedSecondary)
             }
         } icon: {
-            Image(systemName: systemImage)
+            Image(icon: icon)
         }
     }
 }

@@ -66,7 +66,7 @@ extension Person1Providing {
                 ToastModel.main.add(
                     .undoable(
                         "Blocked",
-                        systemImage: Icons.blockFill,
+                        icon: .lemmy.block,
                         callback: {
                             self.updateBlocked(false)
                         },
@@ -77,7 +77,7 @@ extension Person1Providing {
                 ToastModel.main.add(
                     .undoable(
                         "Unblocked",
-                        systemImage: Icons.unblockFill,
+                        icon: .lemmy.unblock,
                         callback: {
                             self.updateBlocked(true)
                         },

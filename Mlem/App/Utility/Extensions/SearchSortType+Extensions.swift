@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Icons
 import MlemMiddleware
 
 extension SearchSortType {
@@ -20,11 +21,11 @@ extension SearchSortType {
         }
     }
     
-    var systemImage: String {
+    var icon: Icon {
         switch self {
-        case .new: Icons.newSort
-        case .old: Icons.oldSort
-        case .top: Icons.topSort
+        case .new: .lemmy.newSort
+        case .old: .lemmy.oldSort
+        case .top: .lemmy.topSort
         }
     }
 }

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Icons
 import SwiftUICore
 import UIKit
 
@@ -23,12 +24,12 @@ extension UIUserInterfaceStyle: Codable {
         }
     }
     
-    var systemImage: String {
+    var icon: Icon {
         switch self {
-        case .unspecified: Icons.systemMode
-        case .light: Icons.lightMode
-        case .dark: Icons.darkMode
-        default: Icons.systemMode
+        case .unspecified: .settings.systemMode
+        case .light: .settings.lightMode
+        case .dark: .settings.darkMode
+        default: .settings.systemMode
         }
     }
     

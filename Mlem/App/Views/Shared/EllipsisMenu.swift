@@ -6,15 +6,16 @@
 //
 
 import Foundation
+import Icons
 import SwiftUI
 
 struct EllipsisMenu: View {
     @State @ActionBuilder var actions: () -> [any Action]
-    let systemImage: String
+    let icon: Icon
     let size: CGFloat
     
-    init(systemImage: String = Icons.menu, size: CGFloat, @ActionBuilder actions: @escaping () -> [any Action]) {
-        self.systemImage = systemImage
+    init(icon: Icon = .general.menu, size: CGFloat, @ActionBuilder actions: @escaping () -> [any Action]) {
+        self.icon = icon
         self.actions = actions
         self.size = size
     }
@@ -23,7 +24,7 @@ struct EllipsisMenu: View {
         Menu {
             MenuButtons(actions: actions)
         } label: {
-            Image(systemName: systemImage)
+            Image(icon: icon)
                 .frame(width: 24, height: size)
                 .contentShape(.rect)
         }

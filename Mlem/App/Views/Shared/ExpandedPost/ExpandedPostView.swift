@@ -215,7 +215,7 @@ struct ExpandedPostView<Content: View>: View {
                     Section {
                         Button(
                             postCollapsed ? "Expand Post" : "Collapse Post",
-                            systemImage: postCollapsed ? Icons.expandComment : Icons.collapseComment
+                            icon: postCollapsed ? .general.expand : .general.collapse
                         ) {
                             togglePostCollapsed(post: post, scrollProxy: scrollProxy)
                         }
@@ -232,9 +232,10 @@ struct ExpandedPostView<Content: View>: View {
                 HStack {
                     post.taggedTitle(communityContext: post.community_)
                         .font(.headline)
+                        .symbolVariant(.fill)
                         .background(.themedSecondaryGroupedBackground)
                     Spacer()
-                    Image(systemName: Icons.expandComment)
+                    Image(icon: .general.expand)
                         .frame(height: 10)
                 }
                 .imageScale(.small)
@@ -288,7 +289,7 @@ private struct JumpButtonsView: View {
         VStack(spacing: 0) {
             if let scrollToLastVisitedPosition, topVisibleItem.isAtPost, showJumpButton {
                 JumpButtonView(
-                    systemImage: Icons.jumpToLastPositionButton,
+                    icon: .lemmy.jumpToLastPositionButton,
                     onShortPress: scrollToLastVisitedPosition,
                     onLongPress: nil
                 )

@@ -22,12 +22,12 @@ struct AboutMlemView: View {
             .listRowInsets(.init(top: 50, leading: 0, bottom: 15, trailing: 0))
             Section {
                 Link(destination: URL(string: "https://mlem.group")!) {
-                    FormChevron { Label("Website", systemImage: Icons.websiteIcon) }
+                    FormChevron { Label("Website", icon: .general.website) }
                         .foregroundStyle(.themedPrimary)
                 }
                 .tint(.themedColorfulAccent(2))
                 Link(destination: URL(string: "https://lemmy.ml/c/mlemapp")!) {
-                    FormChevron { Label("Lemmy Community", systemImage: Icons.communityFill) }
+                    FormChevron { Label("Lemmy Community", icon: .lemmy.community) }
                         .foregroundStyle(.themedPrimary)
                 }
                 .tint(.themedColorfulAccent(3))
@@ -43,11 +43,11 @@ struct AboutMlemView: View {
                 .tint(.black) // non-palette because white tint turns this into white square
             }
             Section {
-                NavigationLink("Privacy Policy", systemImage: Icons.privacy, destination: .settings(.document(.privacyPolicy)))
+                NavigationLink("Privacy Policy", icon: .settings.privacy, destination: .settings(.document(.privacyPolicy)))
                     .tint(.themedColorfulAccent(2))
-                NavigationLink("EULA", systemImage: "doc.plaintext.fill", destination: .settings(.document(.eula)))
+                NavigationLink("EULA", icon: .settings.eula, destination: .settings(.document(.eula)))
                     .tint(.themedColorfulAccent(0))
-                NavigationLink("Licenses", systemImage: "doc.fill", destination: .settings(.licences))
+                NavigationLink("Licenses", icon: .settings.licence, destination: .settings(.licences))
                     .tint(.themedColorfulAccent(4))
             }
         }
@@ -61,7 +61,7 @@ struct AboutMlemView: View {
         Link(destination: URL(string: destination)!) {
             HStack {
                 Spacer()
-                Image(systemName: Icons.forward)
+                Image(icon: .general.forward)
                     .imageScale(.small)
                     .foregroundStyle(.themedTertiary)
             }

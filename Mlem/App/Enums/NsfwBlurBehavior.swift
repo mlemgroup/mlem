@@ -5,6 +5,7 @@
 //  Created by Eric Andrews on 2024-08-22.
 //
 
+import Icons
 import Foundation
 
 enum NsfwBlurBehavior: String, CaseIterable, Codable {
@@ -18,11 +19,11 @@ enum NsfwBlurBehavior: String, CaseIterable, Codable {
         }
     }
     
-    var systemImage: String {
+    var icon: Icon {
         switch self {
-        case .always: Icons.successCircle
-        case .outsideCommunity: Icons.communityCircle
-        case .never: Icons.failureCircle
+        case .always: .general.success
+        case .outsideCommunity: .lemmy.community
+        case .never: .general.failure
         }
     }
 }

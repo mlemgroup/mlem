@@ -15,7 +15,7 @@ struct TileScoreView: View {
     
     var body: some View {
         Group {
-            postTag(active: saved, icon: Icons.saveFill, color: .themedSave) + // saved status
+            postTag(active: saved, icon: .lemmy.saved, color: .themedSave) + // saved status
                 Text(verbatim: saved ? " " : "") + // spacing after save
                 Text(Image(systemName: votes.iconName)) + // vote status
                 Text(verbatim: " \(votes.total.abbreviated)")

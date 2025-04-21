@@ -61,7 +61,7 @@ struct ZoomSliderSettingsView: View {
             
             Picker("Location", selection: $zoomSliderLocation) {
                 ForEach(ZoomSliderLocation.allCases, id: \.self) { location in
-                    Label(String(localized: location.label), systemImage: location.systemImage)
+                    Label(location.label.key, icon: location.icon)
                         .tag(location)
                 }
             }

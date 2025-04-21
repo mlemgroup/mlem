@@ -70,7 +70,7 @@ struct CommentPage: View {
                             } label: {
                                 HStack {
                                     Text("View All")
-                                    Image(systemName: Icons.forward)
+                                    Image(icon: .general.forward)
                                 }
                             }
                         }

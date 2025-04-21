@@ -15,7 +15,8 @@ struct SafetyBlurNsfwSettingsView: View {
             headerView
             Picker("Blur NSFW Content", selection: $blurNsfw) {
                 ForEach(NsfwBlurBehavior.allCases, id: \.self) { type in
-                    Label(String(localized: type.label), systemImage: type.systemImage)
+                    Label(type.label.key, icon: type.icon)
+                        .symbolVariant(.circle)
                 }
             }
             .pickerStyle(.inline)
@@ -31,7 +32,7 @@ struct SafetyBlurNsfwSettingsView: View {
         SettingsHeaderView(
             title: "Blur NSFW Content",
             description: "Choose when Not Safe For Work content should be blurred.",
-            systemImage: Icons.hide
+            icon: .general.hide
         )
         .tint(.themedWarning)
     }

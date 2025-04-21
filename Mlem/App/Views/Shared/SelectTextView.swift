@@ -26,7 +26,8 @@ struct SelectTextView: View {
                     HapticManager.main.play(haptic: .lightSuccess, priority: .high)
                     dismiss()
                 } label: {
-                    Label("Copy All", systemImage: Icons.copyFill)
+                    Label("Copy All", icon: .general.copy)
+                        .symbolVariant(.fill)
                         .font(.footnote)
                         .fontWeight(.semibold)
                 }

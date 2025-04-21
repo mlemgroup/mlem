@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Icons
 import SwiftUICore
 import Theming
 
@@ -37,18 +38,18 @@ extension MediaView {
     enum Fallback {
         case personAvatar, communityAvatar, instanceAvatar, favicon, image, movie, text, link, titleOnly, proxyFailure
         
-        var icon: String {
+        var icon: Icon {
             switch self {
-            case .personAvatar: Icons.personCircleFill
-            case .communityAvatar: Icons.communityCircleFill
-            case .instanceAvatar: Icons.instanceCircleFill
-            case .favicon: Icons.browser
-            case .image: Icons.missing
-            case .movie: Icons.movie
-            case .text: Icons.textPost
-            case .link: Icons.websiteIcon
-            case .titleOnly: Icons.titleOnlyPost
-            case .proxyFailure: Icons.proxy
+            case .personAvatar: .lemmy.personAvatar
+            case .communityAvatar: .lemmy.communityAvatar
+            case .instanceAvatar: .lemmy.instanceAvatar
+            case .favicon: .general.browser
+            case .image: .general.missing
+            case .movie: .general.movie
+            case .text: .lemmy.textPost
+            case .link: .general.website
+            case .titleOnly: .lemmy.titleOnlyPost
+            case .proxyFailure: .lemmy.imageProxy
             }
         }
         

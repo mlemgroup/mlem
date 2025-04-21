@@ -18,7 +18,7 @@ struct BypassProxyWarningSheet: View {
     var body: some View {
         VStack(spacing: Constants.main.doubleSpacing) {
             WarningView(
-                iconName: Icons.proxy,
+                icon: .lemmy.imageProxy,
                 text: "Bypass Image Proxy?",
                 inList: false,
                 overrideColor: .themedCaution

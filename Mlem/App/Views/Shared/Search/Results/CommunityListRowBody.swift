@@ -5,6 +5,7 @@
 //  Created by Eric Andrews on 2024-03-07.
 //
 
+import Icons
 import MlemMiddleware
 import SwiftUI
 import Theming
@@ -64,7 +65,7 @@ struct CommunityListRowBody<Content: View>: View {
     var body: some View {
         HStack(spacing: Constants.main.standardSpacing) {
             if community.blocked, showBlockStatus {
-                Image(systemName: Icons.hide)
+                Image(icon: .general.hide)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 30, height: 30)
@@ -111,7 +112,7 @@ struct CommunityListRowBody<Content: View>: View {
                         Text(verbatim: "@\(community.host)")
                     case .subscriberCount:
                         if let subscriberCount = community.subscriberCount_ {
-                            Image(systemName: Icons.person)
+                            Image(icon: .lemmy.person)
                             Text(subscriberCount.abbreviated)
                         }
                     }
@@ -129,26 +130,27 @@ struct CommunityListRowBody<Content: View>: View {
     }
     
     var subscriberCountReadout: some View {
-        let image: String
+        let icon: Icon
         let color: ThemedColor
         switch community.subscriptionTier_ {
         case .favorited:
             color = .themedFavorite
-            image = Icons.favoriteFill
+            icon = .lemmy.favorite
         case .subscribed:
             color = .themedPositive
-            image = Icons.successCircleFill
+            icon = .lemmy.subscribed
         case .unsubscribed, nil:
             color = .themedSecondary
-            image = Icons.personFill
+            icon = .lemmy.person
         }
         return HStack {
             Text((community.subscriberCount_ ?? 0).abbreviated)
-            Image(systemName: image)
+            Image(icon: icon)
                 .fontWeight(.semibold)
         }
         .monospacedDigit()
         .foregroundStyle(color)
+        .symbolVariant(.fill)
         .symbolRenderingMode(.hierarchical)
     }
 }

@@ -19,7 +19,7 @@ struct ProfileView: View {
             PersonView(person: .init(person), isProfileTab: true, visitContext: nil)
                 .toolbar {
                     ToolbarItem(placement: .secondaryAction) {
-                        Button("Edit", systemImage: Icons.edit) {
+                        Button("Edit", icon: .general.edit) {
                             navigation.openSheet(.settings(.profile))
                         }
                     }

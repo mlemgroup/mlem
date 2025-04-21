@@ -22,7 +22,7 @@ extension InstanceStubProviding {
                 ToastModel.main.add(
                     .undoable(
                         "Blocked",
-                        systemImage: Icons.hideFill,
+                        icon: .lemmy.block,
                         callback: {
                             self.updateBlocked(false)
                         },
@@ -33,7 +33,7 @@ extension InstanceStubProviding {
                 ToastModel.main.add(
                     .undoable(
                         "Unblocked",
-                        systemImage: Icons.unblockFill,
+                        icon: .lemmy.unblock,
                         callback: {
                             self.updateBlocked(true)
                         },

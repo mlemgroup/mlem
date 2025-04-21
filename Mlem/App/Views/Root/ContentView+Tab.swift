@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Icons
 import SwiftUI
 
 extension ContentView {
@@ -38,23 +39,13 @@ extension ContentView {
             }
         }
         
-        var systemImage: String {
+        var icon: Icon {
             switch self {
-            case .feeds: Icons.feeds
-            case .inbox: Icons.inbox
-            case .profile: Icons.personCircle
-            case .search: Icons.search
-            case .settings: Icons.settings
-            }
-        }
-        
-        var systemImageFill: String {
-            switch self {
-            case .feeds: Icons.feedsFill
-            case .inbox: Icons.inboxFill
-            case .profile: Icons.personCircleFill
-            case .search: Icons.searchActive
-            case .settings: Icons.settings
+            case .feeds: .lemmy.feed
+            case .inbox: .lemmy.inbox
+            case .profile: .init("person.circle")
+            case .search: .general.search
+            case .settings: .general.settings
             }
         }
     }
@@ -73,8 +64,8 @@ extension CustomTabItem {
     ) {
         self.init(
             title: tab.label(appState: appState, profileLabelType: profileLabelType),
-            image: imageOverride ?? .init(systemName: tab.systemImage),
-            selectedImage: selectedImageOverride ?? .init(systemName: tab.systemImageFill),
+            image: imageOverride ?? .init(icon: tab.icon.representingState(active: false)),
+            selectedImage: selectedImageOverride ?? .init(icon: tab.icon.representingState(active: true)),
             badge: badge,
             onLongPress: onLongPress, content: content
         )

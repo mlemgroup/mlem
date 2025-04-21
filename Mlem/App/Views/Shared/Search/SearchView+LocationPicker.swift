@@ -14,7 +14,7 @@ extension SearchView {
         @Binding var filter: LocationFilter
         
         var body: some View {
-            Menu(filter.label, systemImage: filter.systemImage) {
+            Menu(filter.label, icon: filter.icon) {
                 Section {
                     Toggle(
                         "Anywhere",
@@ -36,7 +36,7 @@ extension SearchView {
                     default:
                         EmptyView()
                     }
-                    Button("Choose Community...", systemImage: Icons.community) {
+                    Button("Choose Community...", icon: .lemmy.community) {
                         navigation.openSheet(.communityPicker(callback: { community in
                             filter = .community(community)
                         }))
@@ -46,14 +46,14 @@ extension SearchView {
                     if !((AppState.main.firstSession as? UserSession)?.subscriptions.communities.isEmpty ?? true) {
                         Toggle(
                             "Subscribed",
-                            systemImage: Icons.subscribedFeed,
+                            icon: .lemmy.subscribedFeed,
                             isOn: .init(get: { filter == .subscribed }, set: { _ in filter = .subscribed })
                         )
                     }
                     if !((AppState.main.firstSession as? UserSession)?.person?.moderatedCommunities.isEmpty ?? true) {
                         Toggle(
                             "Moderated",
-                            systemImage: Icons.moderation,
+                            icon: .lemmy.moderation,
                             isOn: .init(get: { filter == .moderated }, set: { _ in filter = .moderated })
                         )
                     }
@@ -79,7 +79,7 @@ extension SearchView {
                     default:
                         EmptyView()
                     }
-                    Button("Choose Instance...", systemImage: Icons.instance) {
+                    Button("Choose Instance...", icon: .lemmy.instance) {
                         navigation.openSheet(.instancePicker(callback: { instance in
                             filter = .instance(instance)
                         }))

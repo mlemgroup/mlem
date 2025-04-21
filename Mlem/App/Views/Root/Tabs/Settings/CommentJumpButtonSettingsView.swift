@@ -18,7 +18,7 @@ struct CommentJumpButtonSettingsView: View {
                 title: "Jump Button",
                 description: "Tap on the Jump Button whilst viewing a comment thread to scroll to the next comment."
             ) {
-                Image(systemName: Icons.jumpButton)
+                Image(icon: .lemmy.jumpButton)
                     .font(.title)
                     .fontWeight(.semibold)
                     .foregroundStyle(.themedSecondary)
@@ -36,15 +36,17 @@ struct CommentJumpButtonSettingsView: View {
             Section {
                 Toggle(
                     "Jump Button",
-                    systemImage: Icons.jumpButtonCircle,
+                    icon: .lemmy.jumpButton,
                     isOn: .init(get: { jumpButton != .none }, set: { jumpButton = $0 ? .bottomTrailing : .none })
                 )
+                .symbolVariant(.circle)
             }
             if jumpButton != .none {
                 Section("Alignment") {
                     Picker("Jump Button", selection: $jumpButton) {
                         ForEach(pickerCases, id: \.self) { location in
-                            Label(String(localized: location.label), systemImage: location.systemImage)
+                            Label(location.label.key, icon: location.icon)
+                                .symbolVariant(.circle)
                         }
                     }
                     .labelsHidden()

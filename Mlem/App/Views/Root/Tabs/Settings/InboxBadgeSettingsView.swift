@@ -41,8 +41,9 @@ struct InboxBadgeSettingsView: View {
             title: "Notification Badge",
             description: "Configure which types of notification should be included in the notification badge."
         ) {
-            Image(systemName: Icons.inboxFill)
+            Image(icon: .lemmy.inbox)
                 .resizable()
+                .symbolVariant(.fill)
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 64)
                 .foregroundStyle(.tertiary)
@@ -60,7 +61,7 @@ struct InboxBadgeSettingsView: View {
     
     @ViewBuilder
     func toggle(forType type: InboxItemType) -> some View {
-        Toggle(String(localized: type.label), systemImage: type.systemImage, isOn: .init(
+        Toggle(type.label, icon: type.icon, isOn: .init(
             get: { tabInboxBadgeIncludedTypes.contains(type) },
             set: {
                 if $0 {

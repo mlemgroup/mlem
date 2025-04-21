@@ -89,7 +89,8 @@ struct InstanceListRowBody<Content: View>: View {
     var userCountReadout: some View {
         HStack {
             Text((instance?.userCount_ ?? summary?.userCount ?? 0).abbreviated)
-            Image(systemName: Icons.personFill)
+            Image(icon: .lemmy.person)
+                .symbolVariant(.fill)
                 .fontWeight(.semibold)
         }
         .monospacedDigit()

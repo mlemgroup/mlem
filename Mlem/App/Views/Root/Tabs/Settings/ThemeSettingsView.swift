@@ -48,7 +48,7 @@ struct ThemeSettingsView: View {
     
     @ViewBuilder
     func interfaceStyleLabel(for style: UIUserInterfaceStyle) -> some View {
-        Label(style.label, systemImage: style.systemImage)
+        Label(style.label, icon: style.icon)
             .foregroundStyle(
                 supportedModes == .unspecified || supportedModes == style
                     ? .themedPrimary

@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 03/02/2024.
 //
 
+import Icons
 import MlemMiddleware
 import SwiftUI
 import Theming
@@ -86,7 +87,7 @@ protocol FediseerOpinion {
     var reason: String? { get }
     var evidence: String? { get }
     
-    static var systemImage: String { get }
+    static var icon: Icon { get }
     static var color: ThemedColor { get }
 }
 
@@ -110,7 +111,7 @@ struct FediseerEndorsement: Codable {
 }
 
 extension FediseerEndorsement: FediseerOpinion, Equatable {
-    static var systemImage: String = Icons.fediseerEndorsement
+    static var icon: Icon = .fediseer.endorsement
     static var color: ThemedColor { .themedColorfulAccent(7) }
     
     var reason: String? { endorsementReasons?.first }
@@ -124,7 +125,7 @@ struct FediseerHesitation: Codable {
 }
 
 extension FediseerHesitation: FediseerOpinion, Equatable {
-    static var systemImage: String = Icons.fediseerHesitation
+    static var icon: Icon = .fediseer.hesitation
     static var color: ThemedColor { .themedCaution }
     
     var reason: String? { hesitationReasons?.first }
@@ -138,7 +139,7 @@ struct FediseerCensure: Codable {
 }
 
 extension FediseerCensure: FediseerOpinion, Equatable {
-    static var systemImage: String = Icons.fediseerCensure
+    static var icon: Icon = .fediseer.censure
     static var color: ThemedColor { .themedWarning }
     
     var reason: String? { censureReasons?.first }

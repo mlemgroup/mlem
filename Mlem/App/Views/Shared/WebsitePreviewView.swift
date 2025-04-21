@@ -35,10 +35,10 @@ struct WebsitePreviewView: View {
                 openURL(link.content)
             }
             .contextMenu {
-                Button("Open", systemImage: Icons.browser) {
+                Button("Open", icon: .general.browser) {
                     openURL(link.content)
                 }
-                Button("Copy", systemImage: Icons.copy) {
+                Button("Copy", icon: .general.copy) {
                     let pasteboard = UIPasteboard.general
                     pasteboard.url = link.content
                 }

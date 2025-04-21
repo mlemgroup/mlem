@@ -72,7 +72,7 @@ struct CompactPostView: View {
                     }
                     
                     if post.nsfw {
-                        Image(Icons.nsfwTag)
+                        Image(icon: .lemmy.nsfwTag)
                             .foregroundStyle(.themedWarning)
                             .imageScale(.small)
                     }
@@ -118,6 +118,7 @@ struct CompactPostView: View {
     @ViewBuilder
     var titleView: some View {
         post.taggedTitle(communityContext: communityContext)
+            .symbolVariant(.fill)
             .multilineTextAlignment(.leading)
             .imageScale(.small)
             .foregroundStyle(post.read_ ?? false ? .themedSecondary : .themedPrimary)

@@ -203,7 +203,7 @@ private struct CircleImageUploadButton: View {
                 Button {
                     url = nil
                 } label: {
-                    Image(systemName: Icons.closeCircleFill)
+                    Image(icon: .general.close)
                         .resizable()
                 }
             } else {
@@ -213,12 +213,13 @@ private struct CircleImageUploadButton: View {
                         .controlSize(.extraLarge)
                 default:
                     ImageUploadMenu(imageManager: imageManager, imageUploadApi: api) {
-                        Image(systemName: Icons.addCircleFill)
+                        Image(icon: .general.add)
                             .resizable()
                     }
                 }
             }
         }
+        .symbolVariant(.circle.fill)
         .aspectRatio(contentMode: .fit)
         .frame(height: 48)
         .symbolRenderingMode(.hierarchical)

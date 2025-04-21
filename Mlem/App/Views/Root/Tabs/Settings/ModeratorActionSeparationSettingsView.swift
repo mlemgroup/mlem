@@ -17,9 +17,9 @@ struct ModeratorActionSeparationSettingsView: View {
                 description: "Customize how moderator actions are separated from regular actions in context menus."
             ) {}
             Section {
-                Picker("Separate Actions Using", systemImage: Icons.menuItems, selection: $moderatorActionGrouping) {
+                Picker("Separate Actions Using", icon: .settings.menuItems, selection: $moderatorActionGrouping) {
                     ForEach(ModeratorActionGrouping.allCases, id: \.self) { item in
-                        Label(String(localized: item.label), systemImage: item.systemImage)
+                        Label(item.label.key, icon: item.icon)
                     }
                 }
                 .pickerStyle(.inline)

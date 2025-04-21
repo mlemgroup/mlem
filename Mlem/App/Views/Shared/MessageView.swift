@@ -36,7 +36,7 @@ struct MessageView<EmbeddedContent: View>: View {
                 FullyQualifiedLinkView(message.creator_, labelStyle: .small)
                 Spacer()
                 if isInInbox {
-                    Image(systemName: message.isOwnMessage ? Icons.send : Icons.message)
+                    Image(icon: message.isOwnMessage ? .lemmy.send : .lemmy.message)
                         .symbolVariant(message.read ? .none : .fill)
                         .foregroundStyle(.themedAccent)
                 }
@@ -84,7 +84,7 @@ struct MessageView<EmbeddedContent: View>: View {
         HStack {
             if moderatorActionGrouping == .separateMenu {
                 if message.api.isAdmin {
-                    EllipsisMenu(systemImage: Icons.moderation, size: 24) {
+                    EllipsisMenu(icon: .lemmy.moderation, size: 24) {
                         message.moderatorMenuActions(appState: appState, report: reportContext)
                     }
                 }

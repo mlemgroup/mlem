@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 30/05/2024.
 //
 
+import Icons
 import MlemMiddleware
 import SwiftUI
 
@@ -44,7 +45,7 @@ struct ProfileHeaderView: View {
                         Text(profilable?.displayName_ ?? profilable?.name ?? "")
                             .foregroundStyle(.themedPrimary)
                         if blockedOverride ?? profilable?.blocked ?? false {
-                            Image(systemName: Icons.hide)
+                            Image(icon: .general.hide)
                                 .foregroundStyle(.themedSecondary)
                         }
                     }

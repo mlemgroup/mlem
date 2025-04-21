@@ -56,16 +56,17 @@ struct RegistrationApplicationView: View {
             Group {
                 if case let .denied(reason) = application.resolution {
                     if let reason {
-                        Label("Denied by \(resolverLabel): \"\(reason)\"", systemImage: Icons.failureCircleFill)
+                        Label("Denied by \(resolverLabel): \"\(reason)\"", icon: .general.failure)
                     } else {
-                        Label("Denied by \(resolverLabel)", systemImage: Icons.failureCircleFill)
+                        Label("Denied by \(resolverLabel)", icon: .general.failure)
                             .lineLimit(1)
                     }
                 } else {
-                    Label("Approved by \(resolverLabel)", systemImage: Icons.successCircleFill)
+                    Label("Approved by \(resolverLabel)", icon: .general.success)
                         .lineLimit(1)
                 }
             }
+            .symbolVariant(.circle.fill)
             .foregroundStyle(color)
             .font(.footnote)
         }
@@ -77,7 +78,7 @@ struct RegistrationApplicationView: View {
             Button {
                 application.showDenialSheet()
             } label: {
-                Image(systemName: Icons.failure)
+                Image(icon: .general.failure)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, Constants.main.standardSpacing)
             }
@@ -87,7 +88,7 @@ struct RegistrationApplicationView: View {
             Button {
                 application.approve()
             } label: {
-                Image(systemName: Icons.success)
+                Image(icon: .general.success)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, Constants.main.standardSpacing)
             }

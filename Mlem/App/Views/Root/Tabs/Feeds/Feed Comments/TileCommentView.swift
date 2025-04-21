@@ -78,7 +78,7 @@ struct TileCommentView: View {
     }
     
     var replyIcon: Text {
-        Text(Image(systemName: Icons.reply))
+        Text(Image(icon: .lemmy.reply))
             .foregroundStyle(.themedAccent)
     }
     
@@ -108,7 +108,7 @@ struct TileCommentView: View {
             if let comment = comment as? any Comment2Providing {
                 TileScoreView(comment)
             } else {
-                Image(systemName: Icons.menu)
+                Image(icon: .general.menu)
             }
         }
         .onTapGesture {}

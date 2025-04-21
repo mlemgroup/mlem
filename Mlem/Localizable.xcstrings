@@ -2978,31 +2978,55 @@
       }
     },
     "end.of.feed.icon.1" : {
+      "comment" : "This is the key for an icon that appears next to the \"I think I've found the bottom!\" text. It is localized so that you can change the icon to fit better with your translation of the text.",
+      "extractionState" : "extracted_with_value",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "figure.climbing"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "end.of.feed.icon.1"
+            "value" : "figure.climbing"
           }
         }
       }
     },
     "end.of.feed.icon.2" : {
+      "comment" : "This is the key for an icon that appears next to the \"That's all, folks!\" text. It is localized so that you can change the icon to fit better with your translation of the text.",
+      "extractionState" : "extracted_with_value",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "figure.wave"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "end.of.feed.icon.2"
+            "value" : "figure.wave"
           }
         }
       }
     },
     "end.of.feed.icon.3" : {
+      "comment" : "This is the key for an icon that appears next to the \"It's turtles all the way down\" text. It is localized so that you can change the icon to fit better with your translation of the text.",
+      "extractionState" : "extracted_with_value",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "tortoise"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "end.of.feed.icon.3"
+            "value" : "tortoise"
           }
         }
       }

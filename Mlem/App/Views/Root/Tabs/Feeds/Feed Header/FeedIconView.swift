@@ -21,11 +21,12 @@ struct FeedIconView: View {
     
     var body: some View {
         Circle()
-            .fill(feedDescription.color ?? .themedAccent)
+            .fill(feedDescription.color)
             .frame(width: size, height: size)
             .overlay {
-                Image(systemName: feedDescription.iconNameFill)
+                Image(icon: feedDescription.icon)
                     .resizable()
+                    .symbolVariant(.fill)
                     .aspectRatio(contentMode: .fit)
                     .foregroundStyle(.white)
                     .frame(width: scaledSize, height: scaledSize)

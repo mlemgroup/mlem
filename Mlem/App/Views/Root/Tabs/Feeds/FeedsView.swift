@@ -124,7 +124,7 @@ struct FeedsView: View {
                         // clear whichever loader is now inactive and refresh/update active loader
                         if feedSelection == .saved {
                             await postFeedLoader?.clear()
-                            try await savedFeedLoader?.refresh(clearBeforeRefresh: true)
+                            try await savedFeedLoader?.refresh(clearBeforeRefresh: false)
                         } else {
                             await savedFeedLoader?.clear()
                             try await postFeedLoader?.changeFeedType(to: feedSelection.associatedApiType)
@@ -231,7 +231,7 @@ private struct FeedSelectionMenuView: View {
         ForEach(feedOptions, id: \.self) { feed in
             Button(
                 String(localized: feed.description.label),
-                systemImage: feedSelection == feed ? feed.description.iconNameFill : feed.description.iconName
+                icon: feed.description.icon
             ) {
                 if shouldScrollToTop {
                     scrollToTopTrigger.toggle()
@@ -243,6 +243,7 @@ private struct FeedSelectionMenuView: View {
                     feedSelection = feed
                 }
             }
+            .symbolVariant(feedSelection == feed ? .fill : .none)
         }
     }
 }
