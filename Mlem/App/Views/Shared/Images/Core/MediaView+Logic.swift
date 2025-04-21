@@ -15,6 +15,19 @@ extension MediaView {
     enum Overlay {
         case controls, nsfw, error
     }
+    
+    @Observable
+    class Overlays {
+        private let overlays: Set<Overlay>
+        
+        init(_ overlays: Set<Overlay>) {
+            self.overlays = overlays
+        }
+        
+        var nsfw: Bool { overlays.contains(.nsfw) }
+        var controls: Bool { overlays.contains(.controls) }
+        var error: Bool { overlays.contains(.error) }
+    }
 
     enum FallbackStyle {
         case standard, avatar

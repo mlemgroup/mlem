@@ -56,10 +56,6 @@ public class MediaControlState {
     /// Current loading state of the media
     public var loading: MediaLoadingState?
     
-//    var enableNsfwOverlay: Bool { overlays.contains(.nsfw) }
-//    var enableControlOverlay: Bool { overlays.contains(.controls) }
-//    var enableErrorOverlay: Bool { overlays.contains(.error) }
-    
     public var playbackReadouts: (position: String, duration: String)? {
         guard let duration else { return nil }
         return (position: minuteSecondString(from: playbackPosition * duration), duration: minuteSecondString(from: duration))

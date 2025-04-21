@@ -56,14 +56,14 @@ extension MediaView {
     
     @ViewBuilder
     var nsfwOverlay: some View {
-        if loader.loading == .done { // , controlState.enableNsfwOverlay {
+        if loader.loading == .done, overlays.nsfw {
             NsfwOverlay()
         }
     }
     
     @ViewBuilder
     var errorOverlay: some View {
-        if // controlState.enableErrorOverlay,
+        if overlays.error,
            let loaderError = loader.error,
            let navigation {
             palette.groupedBackground.tertiary.overlay {
@@ -113,8 +113,8 @@ extension MediaView {
     @ViewBuilder
     var developerOverlay: some View {
         if developerMode,
-            // controlState.enableControlOverlay,
-            let ext = loader.url?.proxyAwarePathExtension?.uppercased() {
+           overlays.controls,
+           let ext = loader.url?.proxyAwarePathExtension?.uppercased() {
             Text(ext)
                 .font(.footnote)
                 .fontWeight(.semibold)

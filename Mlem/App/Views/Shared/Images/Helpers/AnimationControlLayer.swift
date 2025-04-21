@@ -10,12 +10,13 @@ import Media
 
 private struct AnimationControlLayer: ViewModifier {
     @Environment(MediaControlState.self) var controlState
+    @Environment(MediaView.Overlays.self) var overlays
     
     // decouple controls state from blurred because the blur animation and material don't get along
     @State var showControls: Bool = true
     
     func body(content: Content) -> some View {
-        if controlState.canAnimate { // , controlState.enableControlOverlay {
+        if controlState.canAnimate, overlays.controls {
             contentWithControls(content: content)
         } else {
             content
@@ -46,14 +47,14 @@ private struct AnimationControlLayer: ViewModifier {
                 muteButton
             }
             .onChange(of: controlState.blurred, initial: true) {
-                // if controlState.enableNsfwOverlay, controlState.enableControlOverlay {
+                if overlays.nsfw, overlays.controls {
                     if controlState.blurred {
                         showControls = false
                     } else {
                         controlState.animating = true
                         showControls = true
                     }
-                // }
+                }
             }
     }
     

@@ -29,6 +29,7 @@ struct MediaView: View {
     let contentMode: ContentMode
     let cornerRadius: CGFloat
     let fallback: Fallback
+    let overlays: Overlays
     
     // interaction
     let enableContextMenu: Bool
@@ -38,9 +39,9 @@ struct MediaView: View {
     var fullSizeUrl: URL? { Mlem.fullSizeUrl(url: loader.url) }
     var uiImage: UIImage { loader.mediaType?.image ?? .blank }
     var showErrorOverlay: Bool {
-        // controlState.enableErrorOverlay &&
-            loader.error != nil &&
-            navigation != nil
+        overlays.error &&
+        loader.error != nil &&
+        navigation != nil
     }
 
     /// Creates a new MediaView. This view is simple by default; if no complex behaviors are specified, it will
@@ -66,12 +67,14 @@ struct MediaView: View {
         contentMode: ContentMode = .fit,
         cornerRadius: CGFloat = 0,
         fallback: Fallback = .image,
+        overlays: Overlays? = nil,
         enableContextMenu: Bool = false,
         enableImageViewer: Bool = false,
         onTapActions: (() -> Void)? = nil
     ) {
         self.url = url
         
+        self.overlays = overlays ?? .init([.controls, .error])
         self.aspectRatio_ = aspectRatioBounds
         self.contentMode = contentMode
         self.cornerRadius = cornerRadius
@@ -93,7 +96,6 @@ struct MediaView: View {
                 blurred: false,
                 animating: false,
                 muted: Settings.get(\.behavior_muteVideos)
-                // overlays: [.controls, .error]
             ))
         }
         _controlState.wrappedValue.url = url
@@ -106,10 +108,10 @@ struct MediaView: View {
                 blurred: shouldBlur,
                 animating: Settings.get(\.behavior_autoplayMedia),
                 muted: Settings.get(\.behavior_muteVideos)
-                // overlays: shouldBlur ? [.controls, .nsfw, .error] : [.controls, .error]
             )),
             aspectRatioBounds: .imageDefault,
             cornerRadius: Constants.main.mediumItemCornerRadius,
+            overlays: .init(shouldBlur ? [.controls, .nsfw, .error] : [.controls, .error]),
             enableContextMenu: true,
             enableImageViewer: true,
             onTapActions: onTapActions
@@ -136,6 +138,7 @@ struct MediaView: View {
                 controlState.animationAvailable = loader.mediaType?.isAnimated ?? false
             }
             .environment(controlState)
+            .environment(overlays)
     }
     
     @ViewBuilder
