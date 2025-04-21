@@ -52,7 +52,6 @@ struct CircleCroppedImageView: View {
                 blurred: blurred,
                 animating: enableAnimation,
                 muted: Settings.get(\.behavior_muteVideos)
-                // overlays: []
             )),
             aspectRatioBounds: .absoluteSquare,
             contentMode: .fill,

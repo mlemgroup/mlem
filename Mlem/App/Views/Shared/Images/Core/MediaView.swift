@@ -54,6 +54,7 @@ struct MediaView: View {
     ///   - contentMode: content resizing mode
     ///   - cornerRadius: corner radius to apply to the image
     ///   - fallback: fallback to use if image loading fails or URL is not present
+    ///   - overlays: overlays to display on the image
     ///   - enableContextMenu: true if the default context menu (save/share/quick look) should appear
     ///   - enableImageViewer: true if tapping the image should open the image viewer
     ///   - onTapActions: actions to perform when the image is tapped. If `enableImageViewer: true`, tapping the image will both execute
@@ -67,14 +68,14 @@ struct MediaView: View {
         contentMode: ContentMode = .fit,
         cornerRadius: CGFloat = 0,
         fallback: Fallback = .image,
-        overlays: Overlays? = nil,
+        overlays: Set<Overlay> = [],
         enableContextMenu: Bool = false,
         enableImageViewer: Bool = false,
         onTapActions: (() -> Void)? = nil
     ) {
         self.url = url
         
-        self.overlays = overlays ?? .init([.controls, .error])
+        self.overlays = .init(overlays)
         self.aspectRatio_ = aspectRatioBounds
         self.contentMode = contentMode
         self.cornerRadius = cornerRadius

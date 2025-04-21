@@ -18,7 +18,7 @@ struct ZoomableImageView: View {
     let customTap: (() -> Void)?
     
     var body: some View {
-        MediaView(url: url, controlState: $controlState)
+        MediaView(url: url, controlState: $controlState, overlays: .init([.error]))
             .overlay {
                 ZoomRecognizer(
                     scale: $scale,
