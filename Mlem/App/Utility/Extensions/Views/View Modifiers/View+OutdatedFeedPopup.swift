@@ -27,7 +27,7 @@ private struct OutdatedFeedPopupModifier: ViewModifier {
         content
             .refreshable(isEnabled: feedLoader != nil) {
                 if let feedLoader {
-                    await refresh(feedLoader)
+                    await refresh(feedLoader, clearBeforeRefresh: false)
                 }
             }
             .onChange(of: apiChangeHash) {
@@ -50,7 +50,7 @@ private struct OutdatedFeedPopupModifier: ViewModifier {
                 RefreshPopupView("Feed is outdated", isPresented: $showRefreshPopup) {
                     Task {
                         if let feedLoader {
-                            await refresh(feedLoader)
+                            await refresh(feedLoader, clearBeforeRefresh: true)
                         }
                     }
                 }
@@ -66,7 +66,7 @@ private struct OutdatedFeedPopupModifier: ViewModifier {
         return hasher.finalize()
     }
     
-    func refresh(_ feedLoader: any FeedLoading) async {
+    func refresh(_ feedLoader: any FeedLoading, clearBeforeRefresh: Bool) async {
         do {
             showRefreshPopup = false
             await feedLoader.changeApi(to: appState.firstApi, context: filtersTracker.filterContext)
@@ -85,7 +85,7 @@ private struct OutdatedFeedPopupModifier: ViewModifier {
                 }
             }
             
-            try await feedLoader.refresh(clearBeforeRefresh: true)
+            try await feedLoader.refresh(clearBeforeRefresh: clearBeforeRefresh)
         } catch {
             handleError(error)
         }
