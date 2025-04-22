@@ -19,7 +19,7 @@ enum PersonFlair: Hashable {
     case cakeDay
     case bannedFromInstance
     case bannedFromCommunity
-    case new(TimeInterval)
+    case accountAge(Date)
     
     // this defines the order in which flairs appear
     var sortVal: Int {
@@ -32,18 +32,39 @@ enum PersonFlair: Hashable {
         case .cakeDay: 5
         case .bannedFromInstance: 6
         case .bannedFromCommunity: 7
-        case .new: 8
+        case .accountAge: 8
         }
     }
     
     var text: String {
         switch self {
-        case let .new(interval):
+        case let .accountAge(created):
+            var components = Calendar.current.dateComponents(
+                [.year, .month, .day, .hour, .minute, .second],
+                from: created,
+                to: .now
+            )
+            
+            if components.year ?? 0 >= 1 {
+                components.month = nil
+                components.day = nil
+                components.hour = nil
+            }
+            
             let formatter = DateComponentsFormatter()
             formatter.unitsStyle = .abbreviated
-            formatter.allowedUnits = [.second, .minute, .hour, .day]
             formatter.maximumUnitCount = 1
-            return formatter.string(from: interval) ?? ""
+            formatter.allowedUnits = [.day, .hour, .minute, .second]
+            if AccountAgeBracket(date: created) != .upToOneMonth {
+                formatter.allowedUnits.formUnion([.month, .year])
+            }
+
+            return formatter.string(from: components) ?? ""
+//            let formatter = DateComponentsFormatter()
+//            formatter.unitsStyle = .abbreviated
+//            formatter.allowedUnits = [.second, .minute, .hour, .day]
+//            formatter.collapsesLargestUnit = true
+//            return formatter.string(from: created, to: .now) ?? ""
         default:
             return ""
         }
@@ -58,7 +79,7 @@ enum PersonFlair: Hashable {
         case .bannedFromInstance, .bannedFromCommunity: .themedNegative
         case .developer: .themedColorfulAccent(4)
         case .cakeDay: .themedColorfulAccent(1)
-        case .new: .themedColorfulAccent(3)
+        case let .accountAge(date): AccountAgeBracket(date: date).color
         }
     }
     
@@ -72,7 +93,7 @@ enum PersonFlair: Hashable {
         case .bannedFromCommunity: .lemmy.bannedFromCommunity
         case .developer: .lemmy.developerFlair
         case .cakeDay: .lemmy.cakeDay
-        case .new: .lemmy.newAccountFlair
+        case let .accountAge(date): AccountAgeBracket(date: date).icon
         }
     }
     
@@ -86,13 +107,55 @@ enum PersonFlair: Hashable {
         case .developer: "Mlem Developer"
         case .op: "Original Poster"
         case .cakeDay: "Cake Day"
-        case .new: "New Account"
+        case let .accountAge(date): "Account Created \(date.formatted(date: .abbreviated, time: .omitted))"
         }
     }
     
     var textView: Text {
         (Text(Image(icon: icon)) + Text(text).fontWeight(.semibold))
             .foregroundStyle(color)
+    }
+}
+
+private enum AccountAgeBracket: CaseIterable {
+    case upToOneMonth
+    case upToOneYear
+    case upToTwoYears // In future we could increase this to three years?
+    case other
+    case beforeInflux
+    
+    init(date: Date) {
+        if date < Date(timeIntervalSince1970: 1_685_617_200) { // 2023-06-01
+            self = .beforeInflux
+            return
+        }
+        
+        let intervalSinceCreation = Date.now.timeIntervalSince(date)
+        let day: TimeInterval = 24 * 60 * 60
+
+        if intervalSinceCreation < 30 * day {
+            self = .upToOneMonth
+        } else if intervalSinceCreation < 365 * day {
+            self = .upToOneYear
+        } else if intervalSinceCreation < 1.2 * 365 * day {
+            self = .upToTwoYears
+        } else {
+            self = .other
+        }
+    }
+    
+    var icon: Icon {
+        switch self {
+        case .upToOneMonth: .lemmy.newAccountFlair
+        case .upToOneYear: .init("camera.macro")
+        case .upToTwoYears: .init("tree.fill")
+        case .other: .init("mountain.2.fill")
+        case .beforeInflux: .init("fossil.shell.fill")
+        }
+    }
+    
+    var color: ThemedColor {
+        .themedAccountAgeColor(Self.allCases.firstIndex(of: self)!)
     }
 }
 

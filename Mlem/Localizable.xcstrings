@@ -603,6 +603,9 @@
         }
       }
     },
+    "Account Created %@" : {
+
+    },
     "Accounts" : {
       "localizations" : {
         "fr" : {
@@ -893,6 +896,9 @@
           }
         }
       }
+    },
+    "Always Show Account Age" : {
+
     },
     "Always Show Usernames" : {
       "localizations" : {
@@ -4889,6 +4895,7 @@
       }
     },
     "New Account" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {

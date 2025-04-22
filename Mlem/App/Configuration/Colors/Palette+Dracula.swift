@@ -47,6 +47,7 @@ extension Palette {
         neutralAccent: _secondaryBackground,
         colorfulAccents: [_orange, _pink, _cyan, _green, _purple, _red, _yellow],
         commentIndentColors: [_cyan, _green, _orange, _pink, _purple, _red],
+        accountAgeColors: [_green, _cyan],
         positive: _green,
         negative: _red,
         warning: _red,
