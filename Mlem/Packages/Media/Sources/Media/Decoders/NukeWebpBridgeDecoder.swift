@@ -14,7 +14,7 @@ import UIKit
 /// `image`: the first frame of the decoded webp
 /// `type`: `.webp`
 /// `data`: the raw webp data if the webp is animated, nil otherwise
-struct NukeWebpBridgeDecoder: ImageDecoding {
+public struct NukeWebpBridgeDecoder: ImageDecoding {
     public init?(context: ImageDecodingContext) {
         guard
             let type = AssetType(context.data),
@@ -23,14 +23,14 @@ struct NukeWebpBridgeDecoder: ImageDecoding {
         else { return nil }
     }
     
-    func decode(_ data: Data) throws -> ImageContainer {
+    public func decode(_ data: Data) throws -> ImageContainer {
         // decode the first frame to use as thumbnail
         let decoded = SDImageWebPCoder().decodedImage(with: data, options: [.decodeFirstFrameOnly: true])
         
         if let ret = decoded?.cgImage {
             return .init(image: .init(cgImage: ret), type: .webp, data: data)
         } else {
-            return .init(image: UIImage.blank)
+            return .init(image: .init())
         }
     }
 }

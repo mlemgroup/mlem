@@ -6,70 +6,13 @@
 //
 
 import SwiftUI
+import Media
 
 extension MediaView {
-    /// Struct to actually render the media.
-    /// This is declared as its own struct to prevent state updates from the parent view causing unwanted behavior.
-    private struct InternalMediaView: View {
-        @Environment(MediaControlState.self) var controlState
-        
-        let media: MediaType
-        let aspectRatio: CGSize
-        let contentMode: ContentMode
-        
-        var uiImage: UIImage { media.image }
-
-        var body: some View {
-            // WARNING: the combination of .aspectRatio and .frame modifiers in this view is very precise and
-            // breaks easily. If you have to modify it, be sure to thoroughly regression test!
-            // More info here: https://alejandromp.com/development/blog/image-aspectratio-without-frames/
-            Group {
-                if contentMode == .fit {
-                    content
-                } else if contentMode == .fill {
-                    content
-                        .frame(
-                            minWidth: 0,
-                            maxWidth: .infinity,
-                            minHeight: 0,
-                            maxHeight: .infinity
-                        )
-                }
-            }
-            .aspectRatio(aspectRatio, contentMode: .fit)
-            .allowsHitTesting(false)
-        }
-        
-        @ViewBuilder
-        var content: some View {
-            if controlState.canAnimate, media.isAnimated {
-                animatedContent
-            } else {
-                Image(uiImage: uiImage)
-                    .resizable()
-                    .aspectRatio(contentMode: contentMode)
-            }
-        }
-        
-        @ViewBuilder
-        var animatedContent: some View {
-            Group {
-                switch media {
-                case let .video(_, animated):
-                    VideoView(asset: animated)
-                case let .animated(_, animated):
-                    AnimatedImageView(data: animated)
-                default:
-                    EmptyView()
-                }
-            }
-            .aspectRatio(uiImage.size, contentMode: contentMode)
-        }
-    }
     
     @ViewBuilder
     var image: some View {
-        InternalMediaView(
+        CoreMediaView(
             media: loader.mediaType ?? .image(.blank),
             aspectRatio: uiImage.boundedAspectRatio(bounds: aspectRatio),
             contentMode: contentMode
@@ -114,14 +57,14 @@ extension MediaView {
     
     @ViewBuilder
     var nsfwOverlay: some View {
-        if loader.loading == .done, controlState.enableNsfwOverlay {
+        if loader.loading == .done, overlays.nsfw {
             NsfwOverlay()
         }
     }
     
     @ViewBuilder
     var errorOverlay: some View {
-        if controlState.enableErrorOverlay,
+        if overlays.error,
            let loaderError = loader.error,
            let navigation {
             palette.groupedBackground.tertiary.overlay {
@@ -170,7 +113,9 @@ extension MediaView {
     
     @ViewBuilder
     var developerOverlay: some View {
-        if developerMode, controlState.enableControlOverlay, let ext = loader.url?.proxyAwarePathExtension?.uppercased() {
+        if developerMode,
+           overlays.controls,
+           let ext = loader.url?.proxyAwarePathExtension?.uppercased() {
             Text(ext)
                 .font(.footnote)
                 .fontWeight(.semibold)

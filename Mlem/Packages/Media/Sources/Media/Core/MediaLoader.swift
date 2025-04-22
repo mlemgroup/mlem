@@ -13,23 +13,23 @@ import SwiftUI
 
 // MARK: Types
 
-enum ImageLoadingError {
+public enum ImageLoadingError {
     case proxyFailure(proxyBypass: URL)
     case error(error: Error)
 }
 
-enum MediaType {
+public enum MediaType {
     case image(UIImage)
     case video(still: UIImage, animated: AVAsset)
     case animated(still: UIImage, animated: Data)
     
-    var image: UIImage {
+    public var image: UIImage {
         switch self {
         case let .image(image), let .video(image, _), let .animated(image, _): image
         }
     }
     
-    var isAnimated: Bool {
+    public var isAnimated: Bool {
         switch self {
         case .image: false
         default: true
@@ -37,41 +37,41 @@ enum MediaType {
     }
 }
 
-enum MediaLoadingState {
+public enum MediaLoadingState {
     case loading, done, proxyFailed, failed
 }
 
 // MARK: Core
 
 @Observable
-class MediaLoader {
-    @ObservationIgnored @Setting(\.privacy_autoBypassImageProxy) var autoBypassImageProxy
-    
-    private(set) var url: URL?
-    private(set) var mediaType: MediaType?
-    private(set) var loading: MediaLoadingState
-    private(set) var error: ImageLoadingError?
+public class MediaLoader {
+    public private(set) var url: URL?
+    public private(set) var mediaType: MediaType?
+    public private(set) var loading: MediaLoadingState
+    public private(set) var error: ImageLoadingError?
     
     @MainActor func setUrl(_ newValue: URL?) { self.url = newValue }
     @MainActor func setMediaType(_ newValue: MediaType?) { self.mediaType = newValue }
     @MainActor func setLoading(_ newValue: MediaLoadingState) { self.loading = newValue }
     @MainActor func setError(_ newValue: ImageLoadingError?) { self.error = newValue }
     
+    private let autoBypassImageProxy: Bool
     private var proxyBypass: URL?
     
     private let size: CGSize?
     private let processors: [any ImageProcessing]
     
-    init(url: URL? = nil, size: CGSize? = nil) {
+    public init(url: URL? = nil, size: CGSize? = nil, autoBypassImageProxy: Bool) {
         self.url = url
         self.size = size
+        self.autoBypassImageProxy = autoBypassImageProxy
         
         if let size {
             self.processors = [.resize(size: size)]
         } else {
             self.processors = .init()
         }
-    
+        
         self.proxyBypass = computeProxyBypass(for: url)
         
         if let cachedImage = retrieveCachedImage(for: url, with: processors) {
@@ -85,7 +85,7 @@ class MediaLoader {
     }
     
     /// Loads the given url.
-    func load(_ url: URL?) async {
+    public func load(_ url: URL?) async {
         // noop if url unchanged and loading done
         guard !(url == self.url && loading == .done) else {
             return
@@ -107,11 +107,11 @@ class MediaLoader {
         
         // handle previews
         #if DEBUG
-            if url.scheme == "mlempreview" {
-                await setMediaType(.image(.init(named: url.lastPathComponent)!))
-                await setLoading(.done)
-                return
-            }
+        if url.scheme == "mlempreview" {
+            await setMediaType(.image(.init(named: url.lastPathComponent)!))
+            await setLoading(.done)
+            return
+        }
         #endif
         
         // if already in cache, take the cached value
@@ -155,8 +155,8 @@ class MediaLoader {
 func retrieveCachedImage(for url: URL?, with processors: [ImageProcessing]) -> MediaType? {
     if let url,
        let container = ImagePipeline.shared.cache.cachedImage(for: .init(
-           urlRequest: mlemUrlRequest(url: url),
-           processors: processors
+        urlRequest: mlemUrlRequest(url: url),
+        processors: processors
        )) {
         return container.animatedMediaType
     }
@@ -188,7 +188,7 @@ extension ImageContainer {
                 .image(image)
             }
         default:
-            .image(image)
+                .image(image)
         }
     }
 }
