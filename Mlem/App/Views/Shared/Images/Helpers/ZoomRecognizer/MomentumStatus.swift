@@ -9,8 +9,6 @@ import Foundation
 
 /// Tracks the current momentum and computes position based on time
 class MomentumStatus {
-    private let boundResetDuration: Double = 0.3
-
     /// Time at which the current x momentum began
     var xt0: CFTimeInterval?
 
@@ -38,11 +36,11 @@ class MomentumStatus {
     init(initialVelocity: CGPoint, xOob: Bool, yOob: Bool) {
         self.xv0 = initialVelocity.x
         self.xOob = xOob
-        self.xUnitCurve = xOob ? PolynomialBoundReset(duration: 0.25) : SinusoidalFriction()
+        self.xUnitCurve = xOob ? PolynomialBoundReset.main : SinusoidalFriction.main
         
         self.yv0 = initialVelocity.y
         self.yOob = yOob
-        self.yUnitCurve = yOob ? PolynomialBoundReset(duration: 0.25) : SinusoidalFriction()
+        self.yUnitCurve = yOob ? PolynomialBoundReset.main : SinusoidalFriction.main
     }
     
     func position(at time: CFTimeInterval) -> (CGSize, active: Bool) {
@@ -72,7 +70,7 @@ class MomentumStatus {
         xOob = true
         xv0 = xUnitCurve.velocity(at: time - xt0) * xv0
         self.xt0 = time
-        xUnitCurve = PolynomialBoundBounce(duration: boundResetDuration)
+        xUnitCurve = PolynomialBoundBounce.main
     }
     
     func yLeftBounds(at time: CFTimeInterval) {
@@ -87,6 +85,6 @@ class MomentumStatus {
         yOob = true
         yv0 = yUnitCurve.velocity(at: time - yt0) * yv0
         self.yt0 = time
-        yUnitCurve = PolynomialBoundBounce(duration: boundResetDuration)
+        yUnitCurve = PolynomialBoundBounce.main
     }
 }

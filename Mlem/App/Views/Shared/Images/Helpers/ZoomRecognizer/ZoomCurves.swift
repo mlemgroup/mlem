@@ -14,6 +14,8 @@ protocol ZoomCurve {
 }
 
 class SinusoidalFriction: ZoomCurve {
+    static var main: SinusoidalFriction { .init() }
+    
     func value(at progress: Double) -> (Double, active: Bool) {
         guard progress < 1 else { return (0.5, false) }
         return (((.pi * progress) + sin(.pi * progress)) / (2 * .pi), true)
@@ -29,6 +31,8 @@ class SinusoidalFriction: ZoomCurve {
 /// The underlying curve equation is y = x^3 + x^2.
 /// The maximum output value is 1/3 * duration; to maintain a slope of 1 at y = 0, the curve shape is scaled by duration on both axes
 class PolynomialBoundBounce: ZoomCurve {
+    static var main: PolynomialBoundBounce { PolynomialBoundBounce(duration: 0.3) }
+    
     var duration: Double
     
     init(duration: Double = 1) {
@@ -50,6 +54,8 @@ class PolynomialBoundBounce: ZoomCurve {
 /// ZoomCurve matching the shape of PolynomialBoundBounce, but starting at the furthest point of the bounce (1) and gently returning to 0.
 /// The maximum output value is 1; this curve only scales with duration along the x axis.
 class PolynomialBoundReset: ZoomCurve {
+    static var main: PolynomialBoundReset { .init(duration: 0.25) }
+    
     var duration: Double
     
     init(duration: Double = 1) {
