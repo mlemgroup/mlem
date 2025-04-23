@@ -122,7 +122,7 @@ private enum AccountAgeBracket: CaseIterable {
             self = .upToOneMonth
         } else if intervalSinceCreation < 365 * day {
             self = .upToOneYear
-        } else if intervalSinceCreation < 1.2 * 365 * day {
+        } else if intervalSinceCreation < 2 * 365 * day {
             self = .upToTwoYears
         } else {
             self = .other
