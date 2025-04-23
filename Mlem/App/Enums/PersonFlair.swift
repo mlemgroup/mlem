@@ -43,28 +43,13 @@ enum PersonFlair: Hashable {
                 [.year, .month, .day, .hour, .minute, .second],
                 from: created,
                 to: .now
-            )
-            
-            if components.year ?? 0 >= 1 {
-                components.month = nil
-                components.day = nil
-                components.hour = nil
-            }
+            ).roundingDownToMostSignificantComponent()
             
             let formatter = DateComponentsFormatter()
             formatter.unitsStyle = .abbreviated
             formatter.maximumUnitCount = 1
-            formatter.allowedUnits = [.day, .hour, .minute, .second]
-            if AccountAgeBracket(date: created) != .upToOneMonth {
-                formatter.allowedUnits.formUnion([.month, .year])
-            }
-
+            formatter.allowedUnits = [.year, .month, .day, .hour, .minute, .second]
             return formatter.string(from: components) ?? ""
-//            let formatter = DateComponentsFormatter()
-//            formatter.unitsStyle = .abbreviated
-//            formatter.allowedUnits = [.second, .minute, .hour, .day]
-//            formatter.collapsesLargestUnit = true
-//            return formatter.string(from: created, to: .now) ?? ""
         default:
             return ""
         }

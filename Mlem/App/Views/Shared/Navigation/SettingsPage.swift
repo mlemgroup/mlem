@@ -18,7 +18,7 @@ enum SettingsPage: Hashable {
     case profile, accountContent, accountAdvanced, accountSignIn, accountChangeEmail, accountLocal, accountChangePassword, accountLanguages
     case general, privacy, safety, accessibility, sorting, filters
     case zoomSlider
-    case defaultFeed, haptics
+    case defaultFeed, haptics, accountAgeVisibility
     case privacyBypassImageProxy
     case safetyBlurNsfw, safetyWarnings
     case links, embedding
@@ -79,6 +79,8 @@ enum SettingsPage: Hashable {
             DefaultFeedSettingsView()
         case .haptics:
             HapticSettingsView()
+        case .accountAgeVisibility:
+            AccountAgeVisibilitySettingsView()
         case .privacy:
             PrivacySettingsView()
         case .privacyBypassImageProxy:

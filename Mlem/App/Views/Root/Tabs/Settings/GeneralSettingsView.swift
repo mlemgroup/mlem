@@ -16,8 +16,8 @@ struct GeneralSettingsView: View {
     @Setting(\.feed_default) var defaultFeed
     @Setting(\.behavior_hapticLevel) var hapticLevel
     @Setting(\.markdown_wrapCodeBlockLines) var wrapCodeBlockLines
+    @Setting(\.person_ageVisibility) var accountAgeVisibility
     @Setting(\.media_animatedAvatars) var animatedAvatars
-    @Setting(\.person_alwaysShowAge) var alwaysShowPersonAge
 
     // gestures
     @Setting(\.behavior_enableQuickSwipes) var swipeActionsEnabled
@@ -52,7 +52,6 @@ struct GeneralSettingsView: View {
                 )
             }
             Section {
-                Toggle("Always Show Account Age", icon: .lemmy.newAccountFlair, isOn: $alwaysShowPersonAge)
                 Toggle("Upvote on Save", icon: .settings.upvoteOnSave, isOn: $upvoteOnSave)
                 Toggle("Mark Read on Scroll", icon: .settings.markReadOnScroll, isOn: $markReadOnScroll)
                 Toggle("Infinite Scroll", icon: .settings.infiniteScroll, isOn: $infiniteScroll)
@@ -84,6 +83,16 @@ struct GeneralSettingsView: View {
                             }
                         }
                     )
+                )
+            }
+            
+            Section {
+                NavigationLink(
+                    "Show Account Age",
+                    value: .init(localized: accountAgeVisibility.label),
+                    fallbackValue: "",
+                    icon: .lemmy.newAccountFlair,
+                    destination: .settings(.accountAgeVisibility)
                 )
             }
             

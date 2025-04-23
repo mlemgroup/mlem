@@ -88,7 +88,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     var tip_feedWelcomePrompt: Bool
     var person_showAvatar: Bool
     var person_showInstance: Bool
-    var person_alwaysShowAge: Bool
+    var person_ageVisibility: AccountAgeFlairVisibility
     var status_bypassImageProxyShown: Bool
     var subscriptions_instanceLocation: InstanceLocation
     var subscriptions_sort: SubscriptionListSort
@@ -214,7 +214,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.tip_feedWelcomePrompt = try container.decodeIfPresent(Bool.self, forKey: ._tip_feedWelcomePrompt) ?? true
         self.person_showAvatar = try container.decodeIfPresent(Bool.self, forKey: ._person_showAvatar) ?? true
         self.person_showInstance = try container.decodeIfPresent(Bool.self, forKey: ._person_showInstance) ?? true
-        self.person_alwaysShowAge = try container.decodeIfPresent(Bool.self, forKey: ._person_alwaysShowAge) ?? false
+        self.person_ageVisibility = try container.decodeIfPresent(AccountAgeFlairVisibility.self, forKey: ._person_ageVisibility) ?? .newAccountsOnly
         self.status_bypassImageProxyShown = try container.decodeIfPresent(Bool.self, forKey: ._status_bypassImageProxyShown) ?? false
         self.subscriptions_instanceLocation = try container.decodeIfPresent(InstanceLocation.self, forKey: ._subscriptions_instanceLocation) ?? (UIDevice.isPad ? .bottom : .trailing)
         self.subscriptions_sort = try container.decodeIfPresent(SubscriptionListSort.self, forKey: ._subscriptions_sort) ?? .alphabetical
@@ -304,7 +304,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         tip_feedWelcomePrompt = otherValues.tip_feedWelcomePrompt
         person_showAvatar = otherValues.person_showAvatar
         person_showInstance = otherValues.person_showInstance
-        person_alwaysShowAge = otherValues.person_alwaysShowAge
+        person_ageVisibility = otherValues.person_ageVisibility
         status_bypassImageProxyShown = otherValues.status_bypassImageProxyShown
         subscriptions_instanceLocation = otherValues.subscriptions_instanceLocation
         subscriptions_sort = otherValues.subscriptions_sort
@@ -398,7 +398,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         case _tip_feedWelcomePrompt = "tip_feedWelcomePrompt"
         case _person_showAvatar = "person_showAvatar"
         case _person_showInstance = "person_showInstance"
-        case _person_alwaysShowAge = "person_alwaysShowAge"
+        case _person_ageVisibility = "person_ageVisibility"
         case _status_bypassImageProxyShown = "status_bypassImageProxyShown"
         case _subscriptions_instanceLocation = "subscriptions_instanceLocation"
         case _subscriptions_sort = "subscriptions_sort"
@@ -492,7 +492,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.tip_feedWelcomePrompt = settings.showFeedWelcomePrompt
         self.person_showAvatar = settings.showPersonAvatar
         self.person_showInstance = true // Removed in 2.0
-        self.person_alwaysShowAge = false // Added in 2.2
+        self.person_ageVisibility = .newAccountsOnly // Added in 2.2
         self.privacy_autoBypassImageProxy = settings.autoBypassImageProxy
         self.privacy_showFavicons = settings.showFavicons // TODO: unused?
         self.status_bypassImageProxyShown = settings.bypassImageProxyShown

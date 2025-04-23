@@ -15,7 +15,7 @@ extension Person1Providing {
         interactableContext interactable: (any Interactable2Providing)? = nil,
         communityContext community: (any Community)? = nil
     ) -> [PersonFlair] {
-        @Setting(\.person_alwaysShowAge) var alwaysShowAccountAge
+        @Setting(\.person_ageVisibility) var alwaysShowAccountAge
         
         let community = community ?? interactable?.community
         var output: Set<PersonFlair> = []
@@ -33,7 +33,7 @@ extension Person1Providing {
             output.insert(.bannedFromCommunity)
         }
         
-        if createdRecently || alwaysShowAccountAge {
+        if (alwaysShowAccountAge == .newAccountsOnly && createdRecently) || alwaysShowAccountAge == .always {
             output.insert(.accountAge(created))
         } else if isCakeDay {
             output.insert(.cakeDay)
