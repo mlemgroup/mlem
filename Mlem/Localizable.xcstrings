@@ -897,9 +897,6 @@
         }
       }
     },
-    "Always Show Account Age" : {
-
-    },
     "Always Show Usernames" : {
       "localizations" : {
         "fr" : {
@@ -1831,6 +1828,9 @@
           }
         }
       }
+    },
+    "Choose whether to show a user's account age next to their username." : {
+
     },
     "Choose whether to show a warning when opening a page that is likely to contain sensitive content." : {
       "localizations" : {
@@ -3512,6 +3512,9 @@
         }
       }
     },
+    "For New Accounts Only" : {
+
+    },
     "General" : {
       "localizations" : {
         "fr" : {
@@ -4035,24 +4038,29 @@
       }
     },
     "john_doe" : {
+      "comment" : "Translate this into a similar placeholder name in your language.",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "john_doe"
           }
         }
       }
     },
     "john_doe@example.com" : {
+      "comment" : "Translate \"john_doe\" into the equivalent placeholder name in your language, and \"example.com\" into a suitable example domain for your locale.",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "john_doe@example.com"
           }
         }
       }
+    },
+    "john@example.com" : {
+      "comment" : "Translate \"john\" into the equivalent placeholder name in your language, and \"example.com\" into a suitable example domain for your locale. The placeholder name should be as short as possible, as this string is displayed in contexts where there may not be much space horizontally."
     },
     "Join Discord Server" : {
       "localizations" : {
@@ -7046,6 +7054,9 @@
           }
         }
       }
+    },
+    "Show Account Age" : {
+
     },
     "Show All Actions in Feed" : {
       "localizations" : {

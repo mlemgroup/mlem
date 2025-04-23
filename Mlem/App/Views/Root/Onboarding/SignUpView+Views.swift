@@ -61,14 +61,17 @@ extension SignUpView {
     func usernameSection(_ instance: any Instance2Providing) -> some View {
         Section("Username") {
             HStack {
-                TextField("Username", text: $username, prompt: Text("john_doe"))
-                    .focused($focused, equals: .username)
-                    .onSubmit { focused = .email }
-                    .autocorrectionDisabled()
-                    .textInputAutocapitalization(.never)
-                    .task(id: username) {
-                        await checkUsernameValidity(instance)
-                    }
+                TextField("Username", text: $username, prompt: Text(
+                    "john_doe",
+                    comment: "Translate this into a similar placeholder name in your language."
+                ))
+                .focused($focused, equals: .username)
+                .onSubmit { focused = .email }
+                .autocorrectionDisabled()
+                .textInputAutocapitalization(.never)
+                .task(id: username) {
+                    await checkUsernameValidity(instance)
+                }
                 Group {
                     if !username.isEmpty {
                         switch usernameValidity {
@@ -113,7 +116,12 @@ extension SignUpView {
             TextField(
                 "Email",
                 text: $email,
-                prompt: Text(String(localized: "john_doe@example.com")) // Avoids this being rendered as a link
+                // Converting to a String avoids this being rendered as a link
+                prompt: Text(String(
+                    localized: "john_doe@example.com",
+                    // swiftlint:disable:next line_length
+                    comment: "Translate \"john_doe\" into the equivalent placeholder name in your language, and \"example.com\" into a suitable example domain for your locale."
+                ))
             )
             .focused($focused, equals: .email)
             .onSubmit { focused = .password }
