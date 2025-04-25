@@ -56,10 +56,10 @@ struct PostGridView: View {
                 }
             }
             .onDisappear {
-                if let firstAccount = AppState.main.firstAccount as? UserAccount {
+                if let api = postFeedLoader.items.first?.api {
                     Task {
                         do {
-                            try await firstAccount.api.flushPostReadQueue()
+                            try await api.flushPostReadQueue()
                         } catch {
                             handleError(error)
                         }
