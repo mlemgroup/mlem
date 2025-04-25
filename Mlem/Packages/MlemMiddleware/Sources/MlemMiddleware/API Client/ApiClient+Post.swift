@@ -287,7 +287,7 @@ public extension ApiClient {
     
     func flushPostReadQueue() async throws {
         if await !markReadQueue.ids.isEmpty {
-            try await markPostsAsRead(ids: [], read: true)
+            try await markPostsAsRead(ids: [])
         }
     }
     

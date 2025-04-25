@@ -55,6 +55,17 @@ struct PostGridView: View {
                     handleError(error)
                 }
             }
+            .onDisappear {
+                if let firstAccount = AppState.main.firstAccount as? UserAccount {
+                    Task {
+                        do {
+                            try await firstAccount.api.flushPostReadQueue()
+                        } catch {
+                            handleError(error)
+                        }
+                    }
+                }
+            }
             .toolbar { FeedToolbarOptions() }
     }
     
