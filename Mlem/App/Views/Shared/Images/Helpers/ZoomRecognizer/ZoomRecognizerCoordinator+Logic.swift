@@ -188,7 +188,7 @@ extension ZoomRecognizerCoordinator {
         
         // TODO: optimize this to use the full 120fps available on ProMotion displays
         let link = CADisplayLink(target: self, selector: #selector(tickMomentum))
-        link.preferredFrameRateRange = .init(minimum: 80, maximum: 100, __preferred: 100)
+        link.preferredFrameRateRange = .init(minimum: 70, maximum: 90, __preferred: 90)
         link.add(to: .current, forMode: .default)
         self.link = link
     }

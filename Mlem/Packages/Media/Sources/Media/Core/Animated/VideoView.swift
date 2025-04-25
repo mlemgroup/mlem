@@ -38,7 +38,8 @@ struct VideoView: View {
                 do {
                     controlState.audioAvailable = try await player.isAudioAvailable() ?? false
                 } catch {
-                    handleError(error)
+                    print(error)
+                    // handleError(error)
                 }
             }
             .task {
@@ -51,7 +52,8 @@ struct VideoView: View {
                     controlState.duration = cmTime.seconds
                     timescale = cmTime.timescale
                 } catch {
-                    handleError(error)
+                    print(error)
+                    // handleError(error)
                 }
             }
             .onChange(of: controlState.animating, initial: true) {

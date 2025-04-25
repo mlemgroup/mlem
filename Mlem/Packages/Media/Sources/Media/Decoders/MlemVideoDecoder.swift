@@ -10,21 +10,21 @@
 import Foundation
 import Nuke
 
-class MlemVideoDecoder: ImageDecoding, @unchecked Sendable {
+public class MlemVideoDecoder: ImageDecoding, @unchecked Sendable {
     private let decoder: ImageDecoders.Video
-    var isAsynchronous: Bool { decoder.isAsynchronous }
+    public var isAsynchronous: Bool { decoder.isAsynchronous }
     
-    init?(context: ImageDecodingContext) {
+    public init?(context: ImageDecodingContext) {
         guard let decoder = ImageDecoders.Video(context: context) else { return nil }
         self.decoder = decoder
     }
     
-    func decode(_ data: Data) throws -> ImageContainer {
+    public func decode(_ data: Data) throws -> ImageContainer {
         if let image = decoder.decodePartiallyDownloadedData(data) { return image }
         return try decoder.decode(data)
     }
     
-    func decodePartiallyDownloadedData(_ data: Data) -> ImageContainer? {
+    public func decodePartiallyDownloadedData(_ data: Data) -> ImageContainer? {
         decoder.decodePartiallyDownloadedData(data)
     }
 }

@@ -9,6 +9,7 @@ import Foundation
 import MlemMiddleware
 import QuickLook
 import SwiftUI
+import Media
 
 struct ThumbnailImageView: View {
     @Environment(NavigationLayer.self) var navigation
@@ -63,8 +64,8 @@ struct ThumbnailImageView: View {
         self._mediaControlState = .init(wrappedValue: .init(
             blurred: blurred,
             animating: false,
-            overlays: .init(),
-            enableAnimation: false
+            enableAnimation: false,
+            muted: Settings.get(\.behavior_muteVideos)
         ))
     }
     

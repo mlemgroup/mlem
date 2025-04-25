@@ -7,6 +7,7 @@
 
 import CoreGraphics
 import UIKit
+import Media
 
 extension UIImage {
     var isPortrait: Bool { size.height > size.width }
@@ -21,7 +22,7 @@ extension UIImage {
         size == .zero ? nil : size
     }
     
-    func boundedAspectRatio(bounds: MediaView.AspectRatioBounds) -> CGSize {
+    func boundedAspectRatio(bounds: CoreMediaView.AspectRatioBounds) -> CGSize {
         // sanity check: bounds do not conflict
         assert(bounds.boundsAreSane, "bounds are not sane")
         

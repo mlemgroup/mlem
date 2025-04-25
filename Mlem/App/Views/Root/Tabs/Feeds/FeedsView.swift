@@ -124,7 +124,7 @@ struct FeedsView: View {
                         // clear whichever loader is now inactive and refresh/update active loader
                         if feedSelection == .saved {
                             await postFeedLoader?.clear()
-                            try await savedFeedLoader?.refresh(clearBeforeRefresh: true)
+                            try await savedFeedLoader?.refresh(clearBeforeRefresh: false)
                         } else {
                             await savedFeedLoader?.clear()
                             try await postFeedLoader?.changeFeedType(to: feedSelection.associatedApiType)

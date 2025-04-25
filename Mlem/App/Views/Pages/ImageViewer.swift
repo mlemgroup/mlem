@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Media
 
 struct ImageViewer: View {
     @Environment(NavigationLayer.self) var navigation
@@ -23,7 +24,7 @@ struct ImageViewer: View {
     @State var controlState: MediaControlState = .init(
         blurred: false,
         animating: true,
-        overlays: [.error],
+        muted: Settings.get(\.behavior_muteVideos),
         scrubbingAvailable: true
     )
     

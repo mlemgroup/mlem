@@ -8,6 +8,7 @@
 import Foundation
 import MlemMiddleware
 import SwiftUI
+import Media
 
 /// Convenience struct to automatically circle-crop an image. Also applies the given `frame` parameter as a frame to the view.
 struct CircleCroppedImageView: View {
@@ -50,7 +51,7 @@ struct CircleCroppedImageView: View {
             controlState: .constant(.init(
                 blurred: blurred,
                 animating: enableAnimation,
-                overlays: []
+                muted: Settings.get(\.behavior_muteVideos)
             )),
             aspectRatioBounds: .absoluteSquare,
             contentMode: .fill,
