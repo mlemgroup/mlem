@@ -33,8 +33,14 @@ extension Date {
         if interval < 1 {
             return String(localized: "Now")
         }
-    
-        let value = formatter.string(from: interval)
+        
+        var components = Calendar.current.dateComponents(
+            [.year, .month, .day, .hour, .minute, .second],
+            from: self,
+            to: date
+        ).roundingDownToMostSignificantComponent()
+
+        let value = formatter.string(from: components)
         return value ?? String(localized: "Unknown")
     }
     

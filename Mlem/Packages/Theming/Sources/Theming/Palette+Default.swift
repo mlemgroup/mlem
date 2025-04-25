@@ -31,6 +31,21 @@ public extension Palette {
         neutralAccent: .gray,
         colorfulAccents: [.orange, .pink, .blue, .green, .purple, .indigo, .mint, .teal, .yellow],
         commentIndentColors: [.red, .orange, .yellow, .green, .blue, .purple],
+        accountAgeColors: [
+            .green,
+            .init(
+                // This is `.green.mix(with: .cyan, by: 0.333)`
+                light: .init(red: 0.20605278, green: 0.7933883, blue: 0.53997606, alpha: 1.0),
+                dark: .init(red: 0.23807898, green: 0.8318233, blue: 0.56663805, alpha: 1.0)
+            ),
+            .init(
+                // This is `.green.mix(with: .cyan, by: 0.666)`
+                light: .init(red: 0.2665288, green: 0.7745191, blue: 0.7497066, alpha: 1.0),
+                dark: .init(red: 0.2917948, green: 0.8128531, blue: 0.7726594, alpha: 1.0)
+            ),
+            .cyan,
+            .brown
+        ],
         positive: .green,
         negative: .red,
         warning: .red,

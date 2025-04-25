@@ -40,6 +40,7 @@ extension Palette {
             Color(uiColor: .systemGray5),
             Color(uiColor: .systemGray6)
         ],
+        accountAgeColors: [.gray],
         positive: .primary,
         negative: .primary,
         warning: .primary,

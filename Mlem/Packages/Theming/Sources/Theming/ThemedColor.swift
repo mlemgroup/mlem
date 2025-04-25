@@ -103,6 +103,10 @@ public extension ShapeStyle where Self == ThemedColor {
         .init(hashString: "commentIndentColor\(index)") { $0.commentIndentColors[index % $0.commentIndentColors.count] }
     }
 
+    static func themedAccountAgeColor(_ index: Int) -> ThemedColor {
+        .init(hashString: "accountAgeColor\(index)") { $0.accountAgeColors[min(index, $0.accountAgeColors.count - 1)] }
+    }
+
     static var themedPositive: ThemedColor {
         .init(hashString: "positive", getColor: \.positive)
     }

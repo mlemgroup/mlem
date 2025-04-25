@@ -21,6 +21,7 @@ public struct Palette {
     public var neutralAccent: Color
     public var colorfulAccents: [Color]
     public var commentIndentColors: [Color]
+    public var accountAgeColors: [Color]
     
     public var positive: Color
     public var negative: Color
@@ -53,6 +54,7 @@ public struct Palette {
         neutralAccent: Color,
         colorfulAccents: [Color],
         commentIndentColors: [Color],
+        accountAgeColors: [Color],
         positive: Color,
         negative: Color,
         warning: Color,
@@ -81,6 +83,7 @@ public struct Palette {
         self.neutralAccent = neutralAccent
         self.colorfulAccents = colorfulAccents
         self.commentIndentColors = commentIndentColors
+        self.accountAgeColors = accountAgeColors
         self.positive = positive
         self.negative = negative
         self.warning = warning

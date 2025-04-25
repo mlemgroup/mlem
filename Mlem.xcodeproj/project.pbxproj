@@ -266,6 +266,8 @@
 		03AB48572CBC0DFC00567FF9 /* AccountSignInSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AB48562CBC0DFC00567FF9 /* AccountSignInSettingsView.swift */; };
 		03AB48592CBC14CE00567FF9 /* AccountEmailSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AB48582CBC14CE00567FF9 /* AccountEmailSettingsView.swift */; };
 		03AB906F2D418C200054D9E1 /* CommentJumpButtonSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AB906E2D418C200054D9E1 /* CommentJumpButtonSettingsView.swift */; };
+		03ABE5B62DB79A0E00374AFF /* DateComponents+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03ABE5B52DB79A0E00374AFF /* DateComponents+Extensions.swift */; };
+		03ABE5E42DB8E57000374AFF /* AccountAgeVisibilitySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03ABE5E32DB8E57000374AFF /* AccountAgeVisibilitySettingsView.swift */; };
 		03AD09E82CF88007001EF9F7 /* MoreRepliesButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AD09E72CF88007001EF9F7 /* MoreRepliesButton.swift */; };
 		03AD0A822CFDBFA0001EF9F7 /* AccountLocalSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AD0A812CFDBFA0001EF9F7 /* AccountLocalSettingsView.swift */; };
 		03AD0A842CFDC557001EF9F7 /* AccountNicknameFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AD0A832CFDC557001EF9F7 /* AccountNicknameFieldView.swift */; };
@@ -796,6 +798,8 @@
 		03AB48562CBC0DFC00567FF9 /* AccountSignInSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSignInSettingsView.swift; sourceTree = "<group>"; };
 		03AB48582CBC14CE00567FF9 /* AccountEmailSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountEmailSettingsView.swift; sourceTree = "<group>"; };
 		03AB906E2D418C200054D9E1 /* CommentJumpButtonSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentJumpButtonSettingsView.swift; sourceTree = "<group>"; };
+		03ABE5B52DB79A0E00374AFF /* DateComponents+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateComponents+Extensions.swift"; sourceTree = "<group>"; };
+		03ABE5E32DB8E57000374AFF /* AccountAgeVisibilitySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAgeVisibilitySettingsView.swift; sourceTree = "<group>"; };
 		03AD09E72CF88007001EF9F7 /* MoreRepliesButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreRepliesButton.swift; sourceTree = "<group>"; };
 		03AD0A812CFDBFA0001EF9F7 /* AccountLocalSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountLocalSettingsView.swift; sourceTree = "<group>"; };
 		03AD0A832CFDC557001EF9F7 /* AccountNicknameFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountNicknameFieldView.swift; sourceTree = "<group>"; };
@@ -1149,6 +1153,7 @@
 				CDEE15532D22364500EB9D7B /* ErrorLogView.swift */,
 				CD45CB0C2D1880E3008BC729 /* FiltersSettingsView.swift */,
 				039F58892C7B54FE00C61658 /* GeneralSettingsView.swift */,
+				03ABE5E32DB8E57000374AFF /* AccountAgeVisibilitySettingsView.swift */,
 				03A6315F2D4D1CBB009A47A6 /* HapticSettingsView.swift */,
 				03A6315D2D4D1A1B009A47A6 /* DefaultFeedSettingsView.swift */,
 				036FFA2E2D45197300998D8A /* PrivacySettingsView.swift */,
@@ -1924,6 +1929,7 @@
 				03134A4E2BEAD23A002662CC /* Views */,
 				037331A32C9CB12D00C826E1 /* EnvironmentValues+Extensions.swift */,
 				CD4E386C2C836F8C009B24F2 /* UIUserInterfaceStyle+Extensions.swift */,
+				03ABE5B52DB79A0E00374AFF /* DateComponents+Extensions.swift */,
 			);
 			name = Extensions;
 			path = Utility/Extensions;
@@ -2781,6 +2787,7 @@
 				0324FA7B2C1F2CD200F6247D /* InfoStackView.swift in Sources */,
 				CD7DB9762C4D6C0A00DCC542 /* FeedCommentView.swift in Sources */,
 				CDCC1BA92D99BEC1006579DF /* ZoomRecognizerCoordinator.swift in Sources */,
+				03ABE5E42DB8E57000374AFF /* AccountAgeVisibilitySettingsView.swift in Sources */,
 				03D283FA2D256E1E00A6659B /* VisitHistory.swift in Sources */,
 				03D3A1EF2BB9CA1D009DE55E /* MenuButton.swift in Sources */,
 				CD0507732C6AA0C8008B1505 /* FeedSelection.swift in Sources */,
@@ -2992,6 +2999,7 @@
 				0391E0F92CFF17AE0040CCA8 /* ProfileSettingsView.swift in Sources */,
 				03E614E72C0BCDC200F692A4 /* FullyQualifiedLinkView.swift in Sources */,
 				B1B78D642A51D53900F72485 /* AppDelegate.swift in Sources */,
+				03ABE5B62DB79A0E00374AFF /* DateComponents+Extensions.swift in Sources */,
 				037F77ED2D3B064B00D4E180 /* SettingsDeviceView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

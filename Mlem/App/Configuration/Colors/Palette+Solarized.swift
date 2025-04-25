@@ -53,6 +53,7 @@ extension Palette {
         neutralAccent: base0,
         colorfulAccents: [orange, violet, blue, cyan, magenta, green, cyan],
         commentIndentColors: [red, orange, yellow, cyan, blue, violet],
+        accountAgeColors: [cyan, blue, violet],
         positive: cyan,
         negative: red,
         warning: red,
