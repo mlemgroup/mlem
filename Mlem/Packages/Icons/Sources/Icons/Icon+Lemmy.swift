@@ -188,7 +188,7 @@ public extension Icon {
         
         @inlinable public var communityAvatar: Icon { community }
         public let instanceAvatar: Icon = .init("building.2.crop")
-        public let personAvatar: Icon = .init("person.crop")
+        public let personAvatar: Icon = .init("person.crop.circle")
 
         // MARK: - Other
 

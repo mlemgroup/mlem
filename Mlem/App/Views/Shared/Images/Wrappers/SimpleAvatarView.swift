@@ -28,7 +28,11 @@ struct SimpleAvatarView: View {
     }
 
     var defaultImage: UIImage {
-        .init(icon: type.icon)!
+        guard let fromIcon: UIImage = .init(icon: type.icon) else {
+            assertionFailure("Could not create default image from \(type.icon)")
+            return .blank
+        }
+        return fromIcon
             .applyingSymbolConfiguration(.init(
                 font: .systemFont(ofSize: 17),
                 scale: .large

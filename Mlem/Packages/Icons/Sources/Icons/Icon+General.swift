@@ -54,7 +54,7 @@ public extension Icon {
         public let signOut: Icon = .init("minus.circle")
         public let attachment: Icon = .init("paperclip")
         public let refresh: Icon = .init("arrow.clockwise")
-        public let select: Icon = .init("selection.pin")
+        public let select: Icon = .init("selection.pin.in.out")
         
         public let chooseFile: Icon = .init("folder")
         public let chooseImage: Icon = .init("photo")
