@@ -55,6 +55,17 @@ struct PostGridView: View {
                     handleError(error)
                 }
             }
+            .onDisappear {
+                if let api = postFeedLoader.items.first?.api {
+                    Task {
+                        do {
+                            try await api.flushPostReadQueue()
+                        } catch {
+                            handleError(error)
+                        }
+                    }
+                }
+            }
             .toolbar { FeedToolbarOptions() }
     }
     
