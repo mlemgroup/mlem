@@ -129,15 +129,7 @@ private enum AccountAgeBracket: CaseIterable {
         }
     }
     
-    var icon: Icon {
-        switch self {
-        case .upToOneMonth: .lemmy.newAccountFlair
-        case .upToOneYear: .init("camera.macro")
-        case .upToTwoYears: .init("tree.fill")
-        case .other: .init("mountain.2.fill")
-        case .beforeInflux: .init("fossil.shell.fill")
-        }
-    }
+    var icon: Icon { .lemmy.accountAgeFlair(bracket: self) }
     
     var color: ThemedColor {
         .themedAccountAgeColor(Self.allCases.firstIndex(of: self)!)
@@ -150,6 +142,18 @@ extension [PersonFlair] {
             Text(verbatim: "")
         } else {
             reduce(Text(verbatim: "")) { $0 + $1.textView } + Text(verbatim: " ")
+        }
+    }
+}
+
+private extension Icon.LemmyIcons {
+    func accountAgeFlair(bracket: AccountAgeBracket) -> Icon {
+        switch bracket {
+        case .upToOneMonth: .lemmy.newAccountFlair
+        case .upToOneYear: .init("camera.macro")
+        case .upToTwoYears: .init("tree.fill")
+        case .other: .init("mountain.2.fill")
+        case .beforeInflux: .init("fossil.shell.fill")
         }
     }
 }
