@@ -6,13 +6,14 @@
 //
 
 import Foundation
+import MlemMiddleware
 import Nuke
 import Photos
 import SwiftUI
 
 func saveMedia(url: URL) async {
     do {
-        let (data, _) = try await ImagePipeline.shared.data(for: .init(url: url))
+        let (data, _) = try await ImagePipeline.shared.data(for: .init(urlRequest: mlemUrlRequest(url: url)))
         let imageSaver = ImageSaver()
         if url.pathExtension.isMovieExtension {
             try await imageSaver.writeVideoToPhotoAlbum(url: url)
@@ -22,6 +23,7 @@ func saveMedia(url: URL) async {
             ToastModel.main.add(.success("Image Saved"))
         }
     } catch {
+        handleError(error, silent: true)
         ToastModel.main.add(.basic(
             "Failed to save media",
             subtitle: "You may need to allow Mlem to access your Photo Library in System Settings.",
@@ -48,7 +50,7 @@ func fullSizeUrl(url: URL?) -> URL? {
 /// Downloads the image at the given URL to the file system, returning the path to the downloaded image
 func downloadImageToFileSystem(url: URL) async -> URL? {
     do {
-        let (data, _) = try await ImagePipeline.shared.data(for: .init(url: url))
+        let (data, _) = try await ImagePipeline.shared.data(for: .init(urlRequest: mlemUrlRequest(url: url)))
         var fileName: String
         
         // image proxies that use url query param don't have pathExtension so we extract it from the embedded url
