@@ -187,8 +187,8 @@ public extension Icon {
         public let subscriptionList: Icon = .init("list.bullet")
         
         @inlinable public var communityAvatar: Icon { community }
-        public let instanceAvatar: Icon = .init("building.2.crop")
-        public let personAvatar: Icon = .init("person.crop")
+        public let instanceAvatar: Icon = .init("building.2.crop.circle")
+        public let personAvatar: Icon = .init("person.crop.circle")
 
         // MARK: - Other
 
