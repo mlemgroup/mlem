@@ -4592,6 +4592,7 @@
       }
     },
     "Mlem uses a Google API to fetch website icon URLs. If you'd prefer not to use this, you can choose to hide favicons." : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -4600,6 +4601,9 @@
           }
         }
       }
+    },
+    "Mlem uses a Google API to fetch website icon URLs. If you'd prefer not to use this, you can choose to hide website icons." : {
+
     },
     "Mlem will always try to load from the proxy first." : {
       "localizations" : {

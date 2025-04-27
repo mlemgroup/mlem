@@ -37,7 +37,8 @@ struct PrivacySettingsView: View {
             Section {
                 Toggle("Hide Website Icons", systemImage: "camera.macro.circle", isOn: $showFavicons.invert())
             } footer: {
-                Text("Mlem uses a Google API to fetch website icon URLs. If you'd prefer not to use this, you can choose to hide favicons.")
+                // swiftlint:disable:next line_length
+                Text("Mlem uses a Google API to fetch website icon URLs. If you'd prefer not to use this, you can choose to hide website icons.")
             }
             Section {
                 NavigationLink(
