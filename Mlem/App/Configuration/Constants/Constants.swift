@@ -104,6 +104,8 @@ class Constants {
     
     // Interaction Bar
     // Note: barIconHitbox = barIconSize + (2 * barIconPadding) + (2 * standardSpacing)
+    // barIconHitbox = 44 (Apple HIG guidelines)
+    // barIconBackgroundSize = (barIconHitbox - standardSpacing) = 24
     
     /// Size of an interaction bar icon
     var barIconSize: CGFloat { platformConstants.barIconSize }

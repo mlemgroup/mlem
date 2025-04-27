@@ -49,40 +49,42 @@ struct HeadlinePostView<EmbeddedContent: View>: View {
     
     var body: some View {
         contentView
-            .padding(Constants.main.standardSpacing)
             .background(.themedSecondaryGroupedBackground)
             .environment(\.postContext, post)
     }
     
     var contentView: some View {
-        VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
-            HStack {
-                switch topNavigationLink {
-                case .community: communityLink
-                case .creator: personLink
+        VStack(spacing: 0) {
+            VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
+                HStack {
+                    switch topNavigationLink {
+                    case .community: communityLink
+                    case .creator: personLink
+                    }
+                    
+                    Spacer()
+                    
+                    if differentiateWithoutColor, readPostIndicator == .checkmark, post.read_ ?? false {
+                        ReadCheck()
+                    }
+                    
+                    if post.nsfw {
+                        Image(icon: .lemmy.nsfwTag)
+                            .foregroundStyle(.themedWarning)
+                    }
+                    
+                    PostEllipsisMenus(post: post)
                 }
                 
-                Spacer()
+                HeadlinePostBodyView(post: post, requireConsistentHeight: requireConsistentHeight)
                 
-                if differentiateWithoutColor, readPostIndicator == .checkmark, post.read_ ?? false {
-                    ReadCheck()
+                if alwaysShowCreator, communityContext == nil {
+                    personLink
                 }
                 
-                if post.nsfw {
-                    Image(icon: .lemmy.nsfwTag)
-                        .foregroundStyle(.themedWarning)
-                }
-                
-                PostEllipsisMenus(post: post)
+                embeddedContent
             }
-            
-            HeadlinePostBodyView(post: post, requireConsistentHeight: requireConsistentHeight)
-            
-            if alwaysShowCreator, communityContext == nil {
-                personLink
-            }
-            
-            embeddedContent
+            .padding([.top, .horizontal], Constants.main.standardSpacing)
             
             InteractionBarView(
                 appState: appState,
@@ -93,8 +95,6 @@ struct HeadlinePostView<EmbeddedContent: View>: View {
                 communityContext: communityContext,
                 reportContext: reportContext
             )
-            .padding(.horizontal, 2)
-            .padding(.vertical, 5)
         }
     }
     

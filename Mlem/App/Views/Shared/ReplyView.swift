@@ -37,9 +37,8 @@ struct ReplyView: View {
                 reply: reply,
                 configuration: replyInteractionBar
             )
-            .padding(.top, 1)
         }
-        .padding(.vertical, 2)
+        .padding(.top, 2)
         .padding(Constants.main.standardSpacing)
         .clipped()
         .background(.themedSecondaryGroupedBackground)

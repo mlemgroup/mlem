@@ -55,7 +55,7 @@ struct LargePostView: View {
     
     var body: some View {
         content
-            .padding(.vertical, Constants.main.standardSpacing)
+            .padding(Constants.main.standardSpacing)
             .background(.themedSecondaryGroupedBackground)
             .environment(\.postContext, post)
     }
@@ -83,17 +83,16 @@ struct LargePostView: View {
                     PostEllipsisMenus(post: post)
                 }
             }
-            .padding(.horizontal, Constants.main.standardSpacing)
             
             LargePostBodyView(post: post, isPostPage: isPostPage, shouldBlur: shouldBlur)
-                .padding(.horizontal, Constants.main.standardSpacing)
             
             if (alwaysShowCreator && communityContext == nil) || isPostPage {
                 personLink
-                    .padding(.horizontal, Constants.main.standardSpacing)
             }
             
-            if showDivider { Divider() }
+            if showDivider {
+                Divider().padding(.horizontal, -Constants.main.standardSpacing)
+            }
             
             InteractionBarView(
                 appState: appState,
@@ -104,8 +103,6 @@ struct LargePostView: View {
                 communityContext: communityContext,
                 reportContext: reportContext
             )
-            .padding(.horizontal, 12)
-            .padding(.vertical, 5)
         }
     }
     

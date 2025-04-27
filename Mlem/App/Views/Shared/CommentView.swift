@@ -87,9 +87,6 @@ struct CommentView<EmbeddedContent: View>: View {
                                 communityContext: communityContext,
                                 reportContext: reportContext
                             )
-                            .padding(.horizontal, 2)
-                            .padding(.bottom, 3)
-                            .padding(.top, 1)
                         }
                     }
                 }

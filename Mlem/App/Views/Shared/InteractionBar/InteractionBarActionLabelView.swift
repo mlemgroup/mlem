@@ -25,9 +25,11 @@ struct InteractionBarActionLabelView: View {
             .opacity(appearance.isInProgress ? 0 : 1)
             .scaledToFit()
             .frame(width: Constants.main.barIconSize, height: Constants.main.barIconSize)
-            .padding(Constants.main.barIconPadding)
+            .frame(width: 24, height: 24) // TODO: NOW
+            // .padding(Constants.main.barIconPadding)
             .foregroundStyle(appearance.isOn ? .themedContrastingLabel : .themedPrimary)
             .background(appearance.isOn ? appearance.color : .clear, in: .rect(cornerRadius: Constants.main.barIconCornerRadius))
+            .frame(width: Constants.main.barIconHitbox, height: Constants.main.barIconHitbox)
             .contentShape(Rectangle())
             .opacity(appearance.isInProgress ? 0.5 : 1)
             .overlay {

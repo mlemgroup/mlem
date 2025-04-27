@@ -8,6 +8,12 @@
 import MlemMiddleware
 import SwiftUI
 
+/// Renders an interaction bar.
+///
+/// This view makes several layout assumptions:
+/// - There will be no padding applied to this view
+/// - This view will always appear at the bottom of its visual container
+/// - The visual container of this view will have a padding of standardSpacing
 struct InteractionBarView: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
@@ -102,7 +108,7 @@ struct InteractionBarView: View {
     }
 
     var body: some View {
-        HStack(spacing: Constants.main.doubleSpacing) {
+        HStack(spacing: 0) { // Constants.main.doubleSpacing) {
             ForEach(leading, id: \.viewId, content: widgetView)
                 .fixedSize(horizontal: true, vertical: false)
             InfoStackView(readouts: readouts)
@@ -111,8 +117,9 @@ struct InteractionBarView: View {
             ForEach(trailing, id: \.viewId, content: widgetView)
                 .fixedSize(horizontal: true, vertical: false)
         }
-        .frame(height: Constants.main.barIconSize)
+        .frame(height: Constants.main.barIconHitbox)
         .geometryGroup()
+        .border(.blue)
     }
     
     var infoStackAlignment: Alignment {
