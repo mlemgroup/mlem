@@ -55,44 +55,46 @@ struct LargePostView: View {
     
     var body: some View {
         content
-            .padding(Constants.main.standardSpacing)
             .background(.themedSecondaryGroupedBackground)
             .environment(\.postContext, post)
     }
     
     var content: some View {
-        VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
-            HStack {
-                switch topNavigationLink {
-                case .community: communityLink
-                case .creator: personLink
+        VStack(spacing: 0) {
+            VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
+                HStack {
+                    switch topNavigationLink {
+                    case .community: communityLink
+                    case .creator: personLink
+                    }
+                    
+                    Spacer()
+                    
+                    if !isPostPage, differentiateWithoutColor, readPostIndicator == .checkmark, post.read_ ?? false {
+                        ReadCheck()
+                    }
+                    
+                    if post.nsfw {
+                        Image(icon: .lemmy.nsfwTag)
+                            .foregroundStyle(.themedWarning)
+                    }
+                    
+                    if !isPostPage {
+                        PostEllipsisMenus(post: post)
+                    }
                 }
                 
-                Spacer()
+                LargePostBodyView(post: post, isPostPage: isPostPage, shouldBlur: shouldBlur)
                 
-                if !isPostPage, differentiateWithoutColor, readPostIndicator == .checkmark, post.read_ ?? false {
-                    ReadCheck()
+                if (alwaysShowCreator && communityContext == nil) || isPostPage {
+                    personLink
                 }
                 
-                if post.nsfw {
-                    Image(icon: .lemmy.nsfwTag)
-                        .foregroundStyle(.themedWarning)
-                }
-                
-                if !isPostPage {
-                    PostEllipsisMenus(post: post)
+                if showDivider {
+                    Divider().padding(.horizontal, -Constants.main.standardSpacing)
                 }
             }
-            
-            LargePostBodyView(post: post, isPostPage: isPostPage, shouldBlur: shouldBlur)
-            
-            if (alwaysShowCreator && communityContext == nil) || isPostPage {
-                personLink
-            }
-            
-            if showDivider {
-                Divider().padding(.horizontal, -Constants.main.standardSpacing)
-            }
+            .padding([.top, .horizontal], Constants.main.standardSpacing)
             
             InteractionBarView(
                 appState: appState,

@@ -150,7 +150,7 @@ struct InteractionBarView: View {
     
     @ViewBuilder
     private func counterView(_ counter: Counter) -> some View {
-        HStack {
+        HStack(spacing: 0) { // TODO: NOW
             if let leadingAction = counter.leadingAction {
                 actionView(leadingAction)
             }
