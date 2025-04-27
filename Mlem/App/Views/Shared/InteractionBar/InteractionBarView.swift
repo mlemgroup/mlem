@@ -108,18 +108,17 @@ struct InteractionBarView: View {
     }
 
     var body: some View {
-        HStack(spacing: 0) { // Constants.main.doubleSpacing) {
+        HStack(spacing: 0) {
             ForEach(leading, id: \.viewId, content: widgetView)
                 .fixedSize(horizontal: true, vertical: false)
             InfoStackView(readouts: readouts)
                 .frame(maxWidth: .infinity, alignment: infoStackAlignment)
-                .padding(infoStackPaddingEdges, -Constants.main.doubleSpacing)
+                .padding(.horizontal, Constants.main.standardSpacing)
             ForEach(trailing, id: \.viewId, content: widgetView)
                 .fixedSize(horizontal: true, vertical: false)
         }
         .frame(height: Constants.main.barIconHitbox)
         .geometryGroup()
-        .border(.blue)
     }
     
     var infoStackAlignment: Alignment {
@@ -127,14 +126,6 @@ struct InteractionBarView: View {
         case (true, false): .leading
         case (false, true): .trailing
         default: .center
-        }
-    }
-    
-    var infoStackPaddingEdges: Edge.Set {
-        switch (leading.isEmpty, trailing.isEmpty) {
-        case (true, false): .trailing
-        case (false, true): .leading
-        default: .horizontal
         }
     }
     
@@ -150,7 +141,7 @@ struct InteractionBarView: View {
     
     @ViewBuilder
     private func counterView(_ counter: Counter) -> some View {
-        HStack(spacing: 0) { // TODO: NOW
+        HStack(spacing: 0) {
             if let leadingAction = counter.leadingAction {
                 actionView(leadingAction)
             }
@@ -159,6 +150,8 @@ struct InteractionBarView: View {
                 .contentTransition(.numericText(value: Double(counter.value ?? 0)))
                 .animation(.default, value: counter.value)
                 .foregroundStyle(.themedPrimary)
+                .padding(.leading, counter.leadingAction == nil ? Constants.main.standardSpacing : 0)
+                .padding(.trailing, counter.trailingAction == nil ? Constants.main.standardSpacing : 0)
                 
             if let trailingAction = counter.trailingAction {
                 actionView(trailingAction)
