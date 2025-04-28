@@ -64,6 +64,7 @@ struct CommentView<EmbeddedContent: View>: View {
         VStack(spacing: Constants.main.standardSpacing) {
             if inFeed {
                 feedHeader
+                    .padding(.trailing, Constants.main.standardSpacing)
             }
             
             HStack(spacing: 0) {
@@ -96,7 +97,6 @@ struct CommentView<EmbeddedContent: View>: View {
                         )
                     }
                 }
-                // .padding(.bottom, Constants.main.standardSpacing)
             }
         }
         .background(highlight ? palette.accent.opacity(0.2) : .clear)
