@@ -28,7 +28,6 @@ extension PlatformConstants {
         settingsIconSize: 28,
         barIconSize: 15.5,
         barIconCornerRadius: 4,
-        barIconPadding: 4.24,
         barIconHitbox: 44
     )
 }
