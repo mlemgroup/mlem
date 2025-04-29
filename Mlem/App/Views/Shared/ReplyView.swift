@@ -41,6 +41,7 @@ struct ReplyView: View {
                 reply: reply,
                 configuration: replyInteractionBar
             )
+            .border(.blue)
         }
         .clipped()
         .background(.themedSecondaryGroupedBackground)

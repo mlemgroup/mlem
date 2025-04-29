@@ -70,7 +70,7 @@ struct CommentView<EmbeddedContent: View>: View {
             HStack(spacing: 0) {
                 CommentBarView(depth: comment.depth, inFeed: inFeed)
                 
-                VStack(spacing: 0) {
+                VStack(alignment: .leading, spacing: 0) {
                     VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
                         if !inFeed {
                             authorAndMenu.padding(.top, Constants.main.standardSpacing)
@@ -85,7 +85,7 @@ struct CommentView<EmbeddedContent: View>: View {
                     .padding(.horizontal, Constants.main.standardSpacing)
                     .padding(.leading, 2)
                     
-                    if !compact {
+                    if !compact, !collapsed {
                         InteractionBarView(
                             appState: appState,
                             navigation: navigation,
@@ -97,6 +97,7 @@ struct CommentView<EmbeddedContent: View>: View {
                         )
                     }
                 }
+                .padding(.bottom, collapsed || compact ? Constants.main.standardSpacing : 0)
             }
         }
         .background(highlight ? palette.accent.opacity(0.2) : .clear)

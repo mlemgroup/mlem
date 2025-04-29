@@ -140,7 +140,13 @@ struct InteractionBarView: View {
     }
     
     @ViewBuilder
-    private func counterView(_ counter: Counter) -> some View {        
+    private func counterView(_ counter: Counter) -> some View {
+        let paddingEdges: Edge.Set = {
+            if counter.leadingAction == nil { return .leading }
+            if counter.trailingAction == nil { return .trailing }
+            return []
+        }()
+        
         HStack(spacing: 0) {
             if let leadingAction = counter.leadingAction {
                 actionView(leadingAction)
@@ -150,6 +156,7 @@ struct InteractionBarView: View {
                 .contentTransition(.numericText(value: Double(counter.value ?? 0)))
                 .animation(.default, value: counter.value)
                 .foregroundStyle(.themedPrimary)
+                .padding(paddingEdges, Constants.main.standardSpacing)
                 
             if let trailingAction = counter.trailingAction {
                 actionView(trailingAction)
