@@ -15,7 +15,6 @@
 		030056A62D7DBD4F00EB0BA3 /* Sharable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030056A52D7DBD4F00EB0BA3 /* Sharable+Extensions.swift */; };
 		030056BB2D7E137800EB0BA3 /* ShareInstancePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030056BA2D7E137800EB0BA3 /* ShareInstancePickerView.swift */; };
 		03036C742C71408700C6DA1D /* CounterAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03036C732C71408700C6DA1D /* CounterAppearance.swift */; };
-		03036C762C71427B00C6DA1D /* InteractionBarCounterLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03036C752C71427B00C6DA1D /* InteractionBarCounterLabelView.swift */; };
 		03036C832C727D0500C6DA1D /* InteractionBarEditorView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03036C822C727D0500C6DA1D /* InteractionBarEditorView+Logic.swift */; };
 		03049A1A2C6502F300FF6889 /* FormSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03049A192C6502F300FF6889 /* FormSection.swift */; };
 		03049A1C2C65039400FF6889 /* ActiveUserCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03049A1B2C65039400FF6889 /* ActiveUserCountView.swift */; };
@@ -551,7 +550,6 @@
 		030056A52D7DBD4F00EB0BA3 /* Sharable+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sharable+Extensions.swift"; sourceTree = "<group>"; };
 		030056BA2D7E137800EB0BA3 /* ShareInstancePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareInstancePickerView.swift; sourceTree = "<group>"; };
 		03036C732C71408700C6DA1D /* CounterAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterAppearance.swift; sourceTree = "<group>"; };
-		03036C752C71427B00C6DA1D /* InteractionBarCounterLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionBarCounterLabelView.swift; sourceTree = "<group>"; };
 		03036C822C727D0500C6DA1D /* InteractionBarEditorView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InteractionBarEditorView+Logic.swift"; sourceTree = "<group>"; };
 		03049A192C6502F300FF6889 /* FormSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSection.swift; sourceTree = "<group>"; };
 		03049A1B2C65039400FF6889 /* ActiveUserCountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveUserCountView.swift; sourceTree = "<group>"; };
@@ -1570,7 +1568,6 @@
 			children = (
 				03AF91E22C1C616F00E56644 /* InteractionBarView.swift */,
 				03FA318E2C6FEF2000D47FA3 /* InteractionBarActionLabelView.swift */,
-				03036C752C71427B00C6DA1D /* InteractionBarCounterLabelView.swift */,
 			);
 			path = InteractionBar;
 			sourceTree = "<group>";
@@ -2930,7 +2927,6 @@
 				03A631CC2D4FD18C009A47A6 /* Post+Mock.swift in Sources */,
 				03FE14082BF94FFB00A8377F /* ErrorView.swift in Sources */,
 				0325B93C2D3AA62500E28B97 /* InboxItemType+Extensions.swift in Sources */,
-				03036C762C71427B00C6DA1D /* InteractionBarCounterLabelView.swift in Sources */,
 				030FF67D2BC8524500F6BFAC /* CustomTabItem.swift in Sources */,
 				CDAA02E32C821C9100D75633 /* Divider.swift in Sources */,
 				CDCA44972C17666C00C092B3 /* HapticManager.swift in Sources */,

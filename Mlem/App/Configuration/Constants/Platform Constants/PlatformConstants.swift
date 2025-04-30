@@ -34,6 +34,5 @@ struct PlatformConstants {
     let settingsIconSize: CGFloat
     let barIconSize: CGFloat
     let barIconCornerRadius: CGFloat
-    let barIconPadding: CGFloat
     let barIconHitbox: CGFloat
 }

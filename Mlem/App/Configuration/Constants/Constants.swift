@@ -103,14 +103,13 @@ class Constants {
     var settingsIconSize: CGFloat { platformConstants.settingsIconSize }
     
     // Interaction Bar
-    // Note: barIconHitbox = barIconSize + (2 * barIconPadding) + (2 * standardSpacing)
     
     /// Size of an interaction bar icon
     var barIconSize: CGFloat { platformConstants.barIconSize }
     /// Corner radius of an interaction bar icon's background
     var barIconCornerRadius: CGFloat { platformConstants.barIconCornerRadius }
-    /// Padding between an interaction bar icon and its background
-    var barIconPadding: CGFloat { platformConstants.barIconPadding }
-    /// Tappable area for a bar icon (extends beyond visible background)
+    /// Size of the visible bar icon background
+    var barIconBackgroundSize: CGFloat { barIconHitbox - (2 * standardSpacing) }
+    /// Tappable area for a bar icon (extends beyond visible background, should be at least 44x44 per Apple HIG)
     var barIconHitbox: CGFloat { platformConstants.barIconHitbox }
 }

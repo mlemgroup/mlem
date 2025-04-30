@@ -18,29 +18,31 @@ struct ReplyView: View {
     let reply: Reply2
     
     var body: some View {
-        VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
-            HStack {
-                FullyQualifiedLinkView(reply.creator_, labelStyle: .small)
-                Spacer()
-                Image(icon: reply.isMention ? .lemmy.mention : .lemmy.reply)
-                    .symbolVariant(reply.read ? .none : .fill)
-                    .foregroundStyle(.themedAccent)
-                EllipsisMenu(size: 24) { reply.menuActions(appState: appState, navigation: navigation) }
-                    .frame(height: 10)
+        VStack(spacing: 0) {
+            VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
+                HStack {
+                    FullyQualifiedLinkView(reply.creator_, labelStyle: .small)
+                    Spacer()
+                    Image(icon: reply.isMention ? .lemmy.mention : .lemmy.reply)
+                        .symbolVariant(reply.read ? .none : .fill)
+                        .foregroundStyle(.themedAccent)
+                    EllipsisMenu(size: 24) { reply.menuActions(appState: appState, navigation: navigation) }
+                        .frame(height: 10)
+                }
+                
+                FooterLinkView(title: reply.post.title, subtitle: nil)
+                
+                MarkdownWithLinkList(reply.comment.content)
             }
-  
-            FooterLinkView(title: reply.post.title, subtitle: nil)
-
-            MarkdownWithLinkList(reply.comment.content)
+            .padding([.top, .horizontal], Constants.main.standardSpacing)
+            
             InteractionBarView(
                 appState: appState,
                 reply: reply,
                 configuration: replyInteractionBar
             )
-            .padding(.top, 1)
+            .border(.blue)
         }
-        .padding(.vertical, 2)
-        .padding(Constants.main.standardSpacing)
         .clipped()
         .background(.themedSecondaryGroupedBackground)
         .contentShape(.rect)
