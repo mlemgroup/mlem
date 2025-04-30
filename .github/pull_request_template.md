@@ -1,5 +1,5 @@
-<!-- 
-Thank you for opening a pull request! 
+<!--
+Thank you for opening a pull request!
 
 We assume you have read CONTRIBUTING.md. If you have not, do not be surprised if your PR is rejected for reasons listed therein.
 
@@ -10,13 +10,6 @@ Please note that if your PR does not address an issue that was assigned to you, 
 
 - closes #issue
 - progress towards #issue
-
-## MlemMiddleware
-
-<!-- Delete this section if no MlemMiddleware PR is needed -->
-
->[!NOTE] 
-> This PR relies on the following MlemMiddleware PR: **LINK**
 
 ## Description
 
