@@ -63,6 +63,7 @@ private struct AnimationControlLayer: ViewModifier {
         if controlState.audioAvailable {
             Image(icon: controlState.muted ? .general.mute : .general.unmute)
                 .resizable()
+                .symbolVariant(.fill)
                 .scaledToFit()
                 .frame(width: 15, height: 15)
                 .padding(5)
