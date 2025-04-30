@@ -7,10 +7,6 @@
 
 import Foundation
 
-extension ApiMyUserInfo: Person3ApiBacker {
-    public var site: ApiSite? { nil }
-    
-    public var person2ApiBacker: any Person2ApiBacker {
-        localUserView
-    }
+extension ApiMyUserInfo: CacheIdentifiable {
+    public var cacheId: Int { localUserView.person.id }
 }

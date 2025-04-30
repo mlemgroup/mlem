@@ -23,7 +23,7 @@ class Person1Cache: ApiTypeBackedCache<Person1, ApiPerson> {
 
         return .init(
             api: api,
-            actorId: apiType.actorId,
+            actorId: apiType.apId ?? apiType.actorId,
             id: apiType.id,
             name: apiType.name,
             created: apiType.published,
@@ -52,7 +52,7 @@ class Person2Cache: CoreCache<Person2> {
     @MainActor
     func getModel(
         api: ApiClient,
-        from apiType: any Person2ApiBacker,
+        from apiType: Person2Backer,
         isStale: Bool = false,
         semaphore: UInt? = nil
     ) -> Person2 {
@@ -77,7 +77,7 @@ class Person2Cache: CoreCache<Person2> {
     @MainActor
     func getModels(
         api: ApiClient,
-        from apiTypes: [any Person2ApiBacker],
+        from apiTypes: [Person2Backer],
         isStale: Bool = false,
         semaphore: UInt? = nil
     ) -> [Person2] {
@@ -88,19 +88,19 @@ class Person2Cache: CoreCache<Person2> {
 // Person3 can be created from any Person3ApiBacker, so can't use ApiTypeBackedCache
 class Person3Cache: CoreCache<Person3> {
     @MainActor
-    func getModel(api: ApiClient, from apiType: any Person3ApiBacker) -> Person3 {
+    func getModel(api: ApiClient, from apiType: Person3Backer) -> Person3 {
         let moderatedCommunities = apiType.moderates.map { moderatedCommunity in
             api.caches.community1.getModel(api: api, from: moderatedCommunity.community)
         }
         
         if let item = retrieveModel(cacheId: apiType.cacheId) {
-            item.update(moderatedCommunities: moderatedCommunities, person2ApiBacker: apiType.person2ApiBacker)
+            item.update(moderatedCommunities: moderatedCommunities, person2ApiBacker: apiType.person)
             return item
         }
         
         let newItem: Person3 = .init(
             api: api,
-            person2: api.caches.person2.getModel(api: api, from: apiType.person2ApiBacker),
+            person2: api.caches.person2.getModel(api: api, from: apiType.person),
             instance: api.caches.instance1.getOptionalModel(api: api, from: apiType.site),
             moderatedCommunities: moderatedCommunities
         )
@@ -115,7 +115,7 @@ class Person4Cache: ApiTypeBackedCache<Person4, ApiMyUserInfo> {
         let user = apiType.localUserView.localUser
         return .init(
             api: api,
-            person3: api.caches.person3.getModel(api: api, from: apiType),
+            person3: api.caches.person3.getModel(api: api, from: .init(from: apiType)),
             voteDisplayMode: apiType.localUserView.localUserVoteDisplayMode,
             email: user.email,
             showNsfw: user.showNsfw,

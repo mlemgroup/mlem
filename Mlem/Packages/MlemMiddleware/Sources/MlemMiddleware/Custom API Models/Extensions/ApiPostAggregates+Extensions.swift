@@ -22,7 +22,9 @@ extension ApiPostAggregates: ApiContentAggregatesProtocol {
             featuredCommunity: false,
             featuredLocal: false,
             hotRank: nil,
-            hotRankActive: nil
+            hotRankActive: nil,
+            communityId: nil,
+            creatorId: nil
         )
     }
 }

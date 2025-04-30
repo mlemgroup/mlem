@@ -7,12 +7,10 @@
 
 import Foundation
 
-extension ApiComment: ActorIdentifiable, CacheIdentifiable {
+extension ApiComment: CacheIdentifiable {
     public var cacheId: Int { id }
-}
-
-public extension ApiComment {
-    var parentId: Int? {
+    
+    public var parentId: Int? {
         let components = path.components(separatedBy: ".")
 
         guard path != "0", components.count != 2 else {

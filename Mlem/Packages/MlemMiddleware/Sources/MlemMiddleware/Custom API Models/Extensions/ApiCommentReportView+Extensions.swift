@@ -36,7 +36,13 @@ extension ApiCommentReportView: ReportApiBacker {
             myVote: myVote,
             creatorIsModerator: creatorIsModerator,
             creatorIsAdmin: creatorIsAdmin,
-            bannedFromCommunity: nil // Can we assume this to be false? Can admins be banned from a local community?
+            bannedFromCommunity: nil, // Can we assume this to be false? Can admins be banned from a local community?
+            communityActions: nil,
+            commentActions: nil,
+            personActions: nil,
+            instanceActions: nil,
+            creatorCommunityActions: nil,
+            canMod: nil
         )
     }
     

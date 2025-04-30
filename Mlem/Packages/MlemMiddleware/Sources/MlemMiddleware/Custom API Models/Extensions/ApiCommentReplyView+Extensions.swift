@@ -7,9 +7,6 @@
 
 import Foundation
 
-extension ApiCommentReplyView: CacheIdentifiable, Reply2ApiBacker {
+extension ApiCommentReplyView: CacheIdentifiable {
     public var cacheId: Int { commentReply.id }
-    public var reply: any Reply1ApiBacker { commentReply }
-    
-    public var resolvedSaved: Bool { saved ?? false }
 }
