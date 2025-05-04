@@ -26,7 +26,7 @@ public class Report: CacheIdentifiable, ContentModel, FeedLoadable {
     public internal(set) var reason: String
     
     var resolvedManager: StateManager<Bool>
-    public var resolved: Bool { resolvedManager.wrappedValue }
+    public var resolved: Bool { resolvedManager.displayedValue }
     
     init(
         api: ApiClient,

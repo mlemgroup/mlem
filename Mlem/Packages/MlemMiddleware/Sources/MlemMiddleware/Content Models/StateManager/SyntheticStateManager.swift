@@ -27,7 +27,7 @@ public class SyntheticStateManager<Value: MergeableValue>: StateManager<Value> {
     
     private var siblings: [UUID: SyntheticStateManager] = .init()
     
-    public var displayedValue: Value {
+    override public var displayedValue: Value {
         siblings.values.reduce(wrappedValue, { result, sibling in
             result.merge(with: sibling.wrappedValue, using: mergeType)
         })
