@@ -169,4 +169,11 @@ public class SubscriptionList {
             alphabeticSections[nil]?.removeFirst { $0 === community }
         }
     }
+    
+    public func getActorIds() -> (subscribed: Set<ActorIdentifier>, favorited: Set<ActorIdentifier>) {
+        return (
+            subscribed: .init(communities.map(\.actorId)),
+            favorited: .init(favorites.map(\.actorId))
+        )
+    }
 }
