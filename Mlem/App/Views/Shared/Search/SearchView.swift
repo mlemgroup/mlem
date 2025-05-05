@@ -93,12 +93,18 @@ struct SearchView: View {
             .navigationSearchBarHiddenWhenScrolling(false)
             .toolbar { PasteLinkButtonView() }
             .scrollDismissesKeyboard(.interactively)
-            .onChange(of: query) {
-                if page != .home {
-                    if query.isEmpty {
-                        page = .recents
-                    } else {
-                        page = .results
+            .onChange(of: query) { _, newValue in
+                switch newValue {
+                case let str where str.hasPrefix("@"), let str where str.hasPrefix("!"):
+                    selectedTab = str.hasPrefix("@") ? .people : .communities
+                    query = ""
+                    page = .recents
+                    searchBarFocused = true
+                    contentChangeTriggerRefresh(onlyRefreshIfEmpty: false)
+                    
+                default:
+                    if page != .home {
+                        page = query.isEmpty ? .recents : .results
                     }
                 }
             }
