@@ -31,16 +31,6 @@ extension SearchView {
                 .padding(.horizontal, Constants.main.standardSpacing)
             }
             .scrollIndicators(.hidden)
-            if selectedTab == .communities, communityFilters.instance.isOther {
-                Label(
-                    "Subscription statuses can't be displayed when using these filters.",
-                    icon: .general.warning
-                )
-                .font(.footnote)
-                .foregroundStyle(palette.accent)
-                .padding(.bottom, 12)
-                .padding(.horizontal, Constants.main.standardSpacing)
-            }
         }
         .animation(.easeOut(duration: 0.1), value: filterAnimationHashValue)
     }

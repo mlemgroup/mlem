@@ -15,8 +15,8 @@ public final class Community2: Community2Providing {
 
     public let community1: Community1
     
-    var subscriptionManager: StateManager<SubscriptionModel>
-    var subscription: SubscriptionModel { subscriptionManager.wrappedValue }
+    var subscriptionManager: SyntheticStateManager<SubscriptionModel>
+    var subscription: SubscriptionModel { subscriptionManager.displayedValue }
     
     public var favorited: Bool {
         api.subscriptions?.isFavorited(self) ?? false
@@ -40,7 +40,7 @@ public final class Community2: Community2Providing {
     ) {
         self.api = api
         self.community1 = community1
-        self.subscriptionManager = .init(wrappedValue: subscription)
+        self.subscriptionManager = .init(wrappedValue: subscription, mergeType: .disjunctive)
         self.postCount = postCount
         self.commentCount = commentCount
         self.activeUserCount = activeUserCount

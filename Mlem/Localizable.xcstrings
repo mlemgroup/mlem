@@ -7563,6 +7563,7 @@
       }
     },
     "Subscription statuses can't be displayed when using these filters." : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
