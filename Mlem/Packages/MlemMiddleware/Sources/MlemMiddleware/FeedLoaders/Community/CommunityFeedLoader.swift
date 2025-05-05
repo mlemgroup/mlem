@@ -30,7 +30,7 @@ class CommunityFetcher: Fetcher<Community2> {
             limit: pageSize,
             filter: listing,
             sort: sort,
-            subscriptionList: hostApi?.subscriptions
+            hostApi: hostApi
         )
         
         return .init(

@@ -27,7 +27,7 @@ extension Community2: Searchable {
         filter: ApiListingType,
         hostApi: ApiClient?
     ) async throws -> [Community2] {
-        try await api.searchCommunities(query: query, page: page, limit: limit, filter: filter, subscriptionList: hostApi?.subscriptions)
+        try await api.searchCommunities(query: query, page: page, limit: limit, filter: filter, hostApi: hostApi)
     }
 }
 
