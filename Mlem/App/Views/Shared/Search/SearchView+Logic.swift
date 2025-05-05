@@ -75,7 +75,8 @@ extension SearchView {
     private func refreshCommunities(clearBeforeRefresh: Bool) async throws {
         await communityLoader.changeApi(
             to: getRefreshApi(for: communityFilters.instance),
-            context: filtersTracker.filterContext
+            context: filtersTracker.filterContext,
+            hostApi: appState.firstApi
         )
         try await communityLoader.refresh(
             query: query,

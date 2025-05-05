@@ -25,6 +25,7 @@ public class SyntheticStateManager<Value: MergeableValue>: StateManager<Value> {
     private let uid: UUID = .init()
     private let mergeType: StateManagerMergeType
     
+    // TODO: use NSMapTable to store weak references
     private var siblings: [UUID: SyntheticStateManager] = .init()
     
     override public var displayedValue: Value {

@@ -87,12 +87,14 @@ public extension ApiClient {
         
         let response = try await perform(request).communities
         let ret = await caches.community2.getModels(api: self, from: response ?? [])
-//        if let subscriptionInfo = subscriptionList?.getActorIds() {
-//            ret.forEach { community in
-//                community.shouldBeFavorited = subscriptionInfo.favorited.contains(community.actorId)
-//                community.subscriptionManager.wrappedValue = subscriptionInfo.subscribed.contains(community.actorId)
-//            }
-//        }
+        if let subscriptionInfo = subscriptionList {
+            ret.forEach { community in
+                if let subscribedCommunity = subscriptionInfo.communities.first(where: { $0.actorId == community.actorId }) {
+                    community.subscriptionManager.addSibling(subscribedCommunity.subscriptionManager)
+                }
+                // TODO: favorites
+            }
+        }
         return ret
     }
     
