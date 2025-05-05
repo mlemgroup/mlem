@@ -22,14 +22,14 @@ public protocol MergeableValue: Equatable {
 }
 
 public class SyntheticStateManager<Value: MergeableValue>: StateManager<Value> {
-    private let uid: UUID = .init()
+    private let uid: NSUUID = .init()
     private let mergeType: StateManagerMergeType
     
-    // TODO: use NSMapTable to store weak references
-    private var siblings: [UUID: SyntheticStateManager] = .init()
+    // using NSMapTable to store weak references
+    private var siblings: NSMapTable<NSUUID, SyntheticStateManager> = .weakToWeakObjects()
     
     override public var displayedValue: Value {
-        siblings.values.reduce(wrappedValue, { result, sibling in
+        siblings.dictionaryRepresentation().values.reduce(wrappedValue, { result, sibling in
             result.merge(with: sibling.wrappedValue, using: mergeType)
         })
     }
@@ -46,10 +46,10 @@ public class SyntheticStateManager<Value: MergeableValue>: StateManager<Value> {
     }
     
     public func addSibling(_ sibling: SyntheticStateManager) {
-        siblings[sibling.uid] = sibling
+        siblings.setObject(sibling, forKey: sibling.uid)
     }
     
     public func removeSibling(_ sibling: SyntheticStateManager) {
-        siblings.removeValue(forKey: sibling.uid)
+        siblings.removeObject(forKey: sibling.uid)
     }
 }

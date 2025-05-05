@@ -76,7 +76,7 @@ public class StateManager<Value: Equatable> {
     private var lastVerifiedValue: Value?
     
     public var isInSync: Bool { lastVerifiedValue == nil }
-    public var verifiedValue: Value { lastVerifiedValue ?? wrappedValue } // TODO: NOW synthetic?
+    public var verifiedValue: Value { lastVerifiedValue ?? wrappedValue }
     
     init(
         wrappedValue: Value,
