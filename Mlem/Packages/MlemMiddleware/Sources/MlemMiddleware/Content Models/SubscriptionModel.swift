@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SubscriptionModel: Hashable, Equatable {
+public struct SubscriptionModel: Hashable, Equatable {
     // These are the values actually provided by the API.
     var actualTotal: Int
     var actualLocal: Int?
@@ -54,6 +54,14 @@ struct SubscriptionModel: Hashable, Equatable {
         self.pending = subscribedType == .pending
     }
     
+    @available(*, deprecated)
+    init(from aggregates: ApiCommunityAggregates?, subscribedType: ApiSubscribedType) {
+        self.actualTotal = aggregates?.subscribers ?? 0
+        self.actualLocal = aggregates?.subscribersLocal ?? 0
+        self.subscribed = subscribedType.isSubscribed
+        self.pending = subscribedType == .pending
+    }
+
     init(total: Int, local: Int? = nil, subscribed: Bool, pending: Bool) {
         self.actualTotal = total
         self.actualLocal = local
@@ -61,14 +69,14 @@ struct SubscriptionModel: Hashable, Equatable {
         self.pending = pending
     }
     
-    func hash(into hasher: inout Hasher) {
+    public func hash(into hasher: inout Hasher) {
         hasher.combine(actualTotal)
         hasher.combine(actualLocal)
         hasher.combine(subscribed)
         hasher.combine(pending)
     }
     
-    static func == (lhs: SubscriptionModel, rhs: SubscriptionModel) -> Bool {
+    public static func == (lhs: SubscriptionModel, rhs: SubscriptionModel) -> Bool {
         lhs.hashValue == rhs.hashValue
     }
 }

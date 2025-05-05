@@ -31,7 +31,7 @@ extension Community1 {
             hidden: false,
             onlyModeratorsCanPost: false,
             blocked: false,
-            visibility: .public_
+            visibility: .public
         )
     }
 }

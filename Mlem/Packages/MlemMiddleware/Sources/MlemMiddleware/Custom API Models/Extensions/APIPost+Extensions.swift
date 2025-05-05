@@ -7,12 +7,12 @@
 
 import Foundation
 
-extension ApiPost: ActorIdentifiable, CacheIdentifiable, Identifiable {
+extension ApiPost: CacheIdentifiable, Identifiable {
     public var cacheId: Int { id }
 }
 
 extension ApiPost {
-    var linkUrl: URL? { LemmyURL(string: url)?.url }
+    var linkUrl: URL? { LemmyURL(string: url?.absoluteString ?? "")?.url }
     // var thumbnailImageUrl: URL? { LemmyURL(string: thumbnail_url)?.url }
     var thumbnailImageUrl: URL? { thumbnailUrl }
     

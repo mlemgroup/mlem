@@ -11,7 +11,7 @@ class Comment1Cache: ApiTypeBackedCache<Comment1, ApiComment> {
     override func performModelTranslation(api: ApiClient, from apiType: ApiComment) -> Comment1 {
         .init(
             api: api,
-            actorId: apiType.actorId,
+            actorId: apiType.apId,
             id: apiType.id,
             content: apiType.content,
             removed: apiType.removed,
@@ -40,10 +40,16 @@ class Comment2Cache: ApiTypeBackedCache<Comment2, ApiCommentView> {
             votesManager = comment.votesManager
             savedManager = comment.savedManager
         } else {
-            votesManager = .init(wrappedValue: .init(
-                from: apiType.counts,
-                myVote: ScoringOperation.guaranteedInit(from: apiType.myVote)
-            ))
+            let votes: VotesModel
+            if let counts = apiType.counts {
+                votes = .init(
+                    from: counts,
+                    myVote: ScoringOperation.guaranteedInit(from: apiType.myVote)
+                )
+            } else {
+                votes = .init(upvotes: 0, downvotes: 0, myVote: .none)
+            }
+            votesManager = .init(wrappedValue: votes)
             savedManager = .init(wrappedValue: apiType.saved ?? false)
         }
         
@@ -57,8 +63,8 @@ class Comment2Cache: ApiTypeBackedCache<Comment2, ApiCommentView> {
             savedManager: savedManager,
             creatorIsModerator: apiType.creatorIsModerator,
             creatorIsAdmin: apiType.creatorIsAdmin,
-            bannedFromCommunity: apiType.creatorBannedFromCommunity,
-            commentCount: apiType.counts.childCount
+            bannedFromCommunity: apiType.creatorBannedFromCommunity ?? false,
+            commentCount: apiType.counts?.childCount ?? 0
         )
     }
     

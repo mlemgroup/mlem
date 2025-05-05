@@ -7,9 +7,8 @@
 
 import Foundation
 
-extension ApiGetPostResponse: ActorIdentifiable, CacheIdentifiable, Identifiable {
+extension ApiGetPostResponse: CacheIdentifiable, Identifiable {
     public var cacheId: Int { id }
 
-    public var actorId: ActorIdentifier { postView.post.actorId }
     public var id: Int { postView.post.id }
 }

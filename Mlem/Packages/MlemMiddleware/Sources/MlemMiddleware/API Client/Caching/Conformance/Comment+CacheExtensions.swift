@@ -30,13 +30,15 @@ extension Comment2: CacheIdentifiable {
     func update(with comment: ApiCommentView, semaphore: UInt? = nil) {
         setIfChanged(\.creatorIsModerator, comment.creatorIsModerator)
         setIfChanged(\.creatorIsAdmin, comment.creatorIsAdmin)
-        creator.updateKnownCommunityBanState(id: community.id, banned: comment.creatorBannedFromCommunity)
-        setIfChanged(\.commentCount, comment.counts.childCount)
+        creator.updateKnownCommunityBanState(id: community.id, banned: comment.creatorBannedFromCommunity ?? false)
+        setIfChanged(\.commentCount, comment.counts?.childCount ?? 0)
 
-        votesManager.updateWithReceivedValue(
-            .init(from: comment.counts, myVote: ScoringOperation.guaranteedInit(from: comment.myVote)),
-            semaphore: semaphore
-        )
+        if let counts = comment.counts {
+            votesManager.updateWithReceivedValue(
+                .init(from: counts, myVote: ScoringOperation.guaranteedInit(from: comment.myVote)),
+                semaphore: semaphore
+            )
+        }
         savedManager.updateWithReceivedValue(comment.saved ?? false, semaphore: semaphore)
         
         comment1.update(with: comment.comment, semaphore: semaphore)

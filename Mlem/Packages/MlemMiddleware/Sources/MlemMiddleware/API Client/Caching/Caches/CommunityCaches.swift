@@ -7,34 +7,34 @@
 
 import Foundation
 
-class Community1Cache: ApiTypeBackedCache<Community1, ApiCommunity> {
+class Community1Cache: ApiTypeBackedCache<Community1, Community1Backer> {
     @MainActor
-    override func performModelTranslation(api: ApiClient, from apiType: ApiCommunity) -> Community1 {
+    override func performModelTranslation(api: ApiClient, from backer: Community1Backer) -> Community1 {
         .init(
             api: api,
-            actorId: apiType.actorId,
-            id: apiType.id,
-            name: apiType.name,
-            created: apiType.published,
-            instanceId: apiType.instanceId,
-            updated: apiType.updated,
-            displayName: apiType.title,
-            description: apiType.description,
-            removed: apiType.removed,
-            deleted: apiType.deleted,
-            nsfw: apiType.nsfw,
-            avatar: apiType.icon,
-            banner: apiType.banner,
-            hidden: apiType.hidden,
-            onlyModeratorsCanPost: apiType.postingRestrictedToMods,
+            actorId: backer.actorId,
+            id: backer.id,
+            name: backer.name,
+            created: backer.created,
+            instanceId: backer.instanceId,
+            updated: backer.updated,
+            displayName: backer.displayName,
+            description: backer.description,
+            removed: backer.removed,
+            deleted: backer.deleted,
+            nsfw: backer.nsfw,
+            avatar: backer.avatar,
+            banner: backer.banner,
+            hidden: backer.hidden,
+            onlyModeratorsCanPost: backer.onlyModeratorsCanPost,
             blocked: nil,
-            visibility: apiType.visibility
+            visibility: backer.visibility
         )
     }
     
     @MainActor
-    override func updateModel(_ item: Community1, with apiType: ApiCommunity, semaphore: UInt? = nil) {
-        item.update(with: apiType)
+    override func updateModel(_ item: Community1, with backer: Community1Backer, semaphore: UInt? = nil) {
+        item.update(with: backer)
     }
 }
 
@@ -45,13 +45,13 @@ class Community2Cache: ApiTypeBackedCache<Community2, ApiCommunityView> {
             api: api,
             community1: api.caches.community1.getModel(api: api, from: apiType.community),
             subscription: .init(from: apiType.counts, subscribedType: apiType.subscribed),
-            postCount: apiType.counts.posts,
-            commentCount: apiType.counts.comments,
+            postCount: apiType.counts?.posts ?? 0,
+            commentCount: apiType.counts?.comments ?? 0,
             activeUserCount: .init(
-                sixMonths: apiType.counts.usersActiveHalfYear,
-                month: apiType.counts.usersActiveMonth,
-                week: apiType.counts.usersActiveWeek,
-                day: apiType.counts.usersActiveDay
+                sixMonths: apiType.counts?.usersActiveHalfYear ?? 0,
+                month: apiType.counts?.usersActiveMonth ?? 0,
+                week: apiType.counts?.usersActiveWeek ?? 0,
+                day: apiType.counts?.usersActiveDay ?? 0
             ),
             bannedFromCommunity: apiType.bannedFromCommunity
         )

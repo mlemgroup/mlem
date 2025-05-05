@@ -30,7 +30,7 @@ public struct Reply2Backer: CacheIdentifiable {
     public var cacheId: Int { reply.id }
     
     init(from commentReply: ApiCommentReplyView) {
-        self.reply = .init(from: commentReply.reply)
+        self.reply = .init(from: commentReply.commentReply)
         self.comment = commentReply.comment
         self.creator = commentReply.creator
         self.post = commentReply.post

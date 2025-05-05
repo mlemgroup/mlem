@@ -7,9 +7,8 @@
 
 import Foundation
 
-extension ApiCommunityView: ActorIdentifiable, CacheIdentifiable, Identifiable {
+extension ApiCommunityView: CacheIdentifiable, Identifiable {
     public var cacheId: Int { id }
 
-    public var actorId: ActorIdentifier { community.actorId }
     public var id: Int { community.id }
 }

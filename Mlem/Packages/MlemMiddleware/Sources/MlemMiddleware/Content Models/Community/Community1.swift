@@ -21,15 +21,15 @@ public final class Community1: Community1Providing {
     public let created: Date
     public let instanceId: Int
     
-    public var updated: Date? = .distantPast
-    public var displayName: String = ""
+    public var updated: Date?
+    public var displayName: String
     public var description: String?
-    public var deleted: Bool = false
-    public var nsfw: Bool = false
+    public var deleted: Bool
+    public var nsfw: Bool
     public var avatar: URL?
     public var banner: URL?
-    public var hidden: Bool = false
-    public var onlyModeratorsCanPost: Bool = false
+    public var hidden: Bool
+    public var onlyModeratorsCanPost: Bool
     public var visibility: ApiCommunityVisibility?
     
     public var purged: Bool = false

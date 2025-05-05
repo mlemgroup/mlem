@@ -9,7 +9,7 @@ import Foundation
 
 class Reply1Cache: CoreCache<Reply1> {
     @MainActor
-    func getModel(api: ApiClient, from apiType: any Reply1ApiBacker, semaphore: UInt? = nil) -> Reply1 {
+    func getModel(api: ApiClient, from apiType: Reply1Backer, semaphore: UInt? = nil) -> Reply1 {
         if let item = retrieveModel(cacheId: apiType.cacheId) {
             item.update(with: apiType)
             return item
@@ -34,7 +34,7 @@ class Reply2Cache: CoreCache<Reply2> {
     public var commentIdItemCache: ItemCache = .init()
     
     @MainActor
-    func getModel(api: ApiClient, from apiType: any Reply2ApiBacker, semaphore: UInt? = nil) -> Reply2 {
+    func getModel(api: ApiClient, from apiType: Reply2Backer, semaphore: UInt? = nil) -> Reply2 {
         if let item = retrieveModel(cacheId: apiType.cacheId) {
             item.update(with: apiType, semaphore: semaphore)
             return item
@@ -81,7 +81,7 @@ class Reply2Cache: CoreCache<Reply2> {
     }
     
     @MainActor
-    func getModels(api: ApiClient, from apiTypes: [any Reply2ApiBacker], semaphore: UInt? = nil) -> [Reply2] {
+    func getModels(api: ApiClient, from apiTypes: [Reply2Backer], semaphore: UInt? = nil) -> [Reply2] {
         apiTypes.map { getModel(api: api, from: $0, semaphore: semaphore) }
     }
     

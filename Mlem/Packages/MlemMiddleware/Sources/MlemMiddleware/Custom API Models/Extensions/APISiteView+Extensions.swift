@@ -7,9 +7,7 @@
 
 import Foundation
 
-extension ApiSiteView: CacheIdentifiable, ActorIdentifiable, Identifiable {
+extension ApiSiteView: CacheIdentifiable, Identifiable {
     public var cacheId: Int { id }
-    
-    public var actorId: ActorIdentifier { site.actorId }
     public var id: Int { site.id }
 }

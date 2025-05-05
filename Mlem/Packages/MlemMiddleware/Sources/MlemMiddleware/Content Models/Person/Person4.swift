@@ -20,7 +20,6 @@ public final class Person4: Person4Providing {
     public internal(set) var email: String?
     public internal(set) var showNsfw: Bool
     public internal(set) var theme: String
-    public internal(set) var defaultSortType: ApiSortType
     public internal(set) var defaultListingType: ApiListingType
     public internal(set) var interfaceLanguage: String
     public internal(set) var showAvatars: Bool
@@ -49,7 +48,6 @@ public final class Person4: Person4Providing {
         email: String?,
         showNsfw: Bool,
         theme: String,
-        defaultSortType: ApiSortType,
         defaultListingType: ApiListingType,
         interfaceLanguage: String,
         showAvatars: Bool,
@@ -77,7 +75,6 @@ public final class Person4: Person4Providing {
         self.email = email
         self.showNsfw = showNsfw
         self.theme = theme
-        self.defaultSortType = defaultSortType
         self.defaultListingType = defaultListingType
         self.interfaceLanguage = interfaceLanguage
         self.showAvatars = showAvatars
@@ -119,7 +116,6 @@ public final class Person4: Person4Providing {
             showNsfw: showNsfw ?? self.showNsfw,
             showScores: showScores,
             theme: theme,
-            defaultSortType: defaultSortType,
             defaultListingType: defaultListingType,
             interfaceLanguage: interfaceLanguage,
             avatar: avatar?.absoluteString ?? "",
@@ -166,7 +162,6 @@ public final class Person4: Person4Providing {
             showNsfw: showNsfw,
             showScores: showScores,
             theme: theme,
-            defaultSortType: defaultSortType,
             defaultListingType: defaultListingType,
             interfaceLanguage: interfaceLanguage,
             avatar: avatar?.absoluteString ?? "",

@@ -7,145 +7,108 @@
 
 import Foundation
 
-class Person1Cache: ApiTypeBackedCache<Person1, ApiPerson> {
+class Person1Cache: ApiTypeBackedCache<Person1, Person1Backer> {
     @MainActor
-    override func performModelTranslation(api: ApiClient, from apiType: ApiPerson) -> Person1 {
-        let instanceBan: InstanceBanType
-        if apiType.banned {
-            if let expires = apiType.banExpires {
-                instanceBan = .temporarilyBanned(expires: expires)
-            } else {
-                instanceBan = .permanentlyBanned
-            }
-        } else {
-            instanceBan = .notBanned
-        }
-
-        return .init(
+    override func performModelTranslation(api: ApiClient, from backer: Person1Backer) -> Person1 {
+        .init(
             api: api,
-            actorId: apiType.apId ?? apiType.actorId,
-            id: apiType.id,
-            name: apiType.name,
-            created: apiType.published,
-            instanceId: apiType.instanceId,
-            updated: apiType.updated,
-            displayName: apiType.displayName ?? apiType.name,
-            description: apiType.bio,
-            matrixId: apiType.matrixUserId,
-            avatar: apiType.avatar,
-            banner: apiType.banner,
-            deleted: apiType.deleted,
-            isBot: apiType.botAccount,
-            instanceBan: instanceBan,
+            actorId: backer.actorId,
+            id: backer.id,
+            name: backer.name,
+            created: backer.created,
+            instanceId: backer.instanceId,
+            updated: backer.updated,
+            displayName: backer.displayName,
+            description: backer.description,
+            matrixId: backer.matrixUserId,
+            avatar: backer.avatar,
+            banner: backer.banner,
+            deleted: backer.deleted,
+            isBot: backer.isBot,
+            instanceBan: backer.instanceBan,
             blocked: nil
         )
     }
     
     @MainActor
-    override func updateModel(_ item: Person1, with apiType: ApiPerson, semaphore: UInt? = nil) {
+    override func updateModel(_ item: Person1, with apiType: Person1Backer, semaphore: UInt? = nil) {
         item.update(with: apiType, semaphore: semaphore)
     }
 }
 
-// Person2 can be created from any Person2ApiBacker, so we can't use ApiTypeBackedCache
-class Person2Cache: CoreCache<Person2> {
+class Person2Cache: ApiTypeBackedCache<Person2, Person2Backer> {
     @MainActor
-    func getModel(
-        api: ApiClient,
-        from apiType: Person2Backer,
-        isStale: Bool = false,
-        semaphore: UInt? = nil
-    ) -> Person2 {
-        if let item = retrieveModel(cacheId: apiType.cacheId) {
-            if !isStale {
-                item.update(with: apiType, semaphore: semaphore)
-            }
-            return item
-        }
-        
-        let newItem: Person2 = .init(
+    override func performModelTranslation(api: ApiClient, from backer: Person2Backer) -> Person2 {
+        .init(
             api: api,
-            person1: api.caches.person1.getModel(api: api, from: apiType.person),
-            postCount: apiType.counts.postCount,
-            commentCount: apiType.counts.commentCount,
-            isAdmin: apiType.admin
+            person1: api.caches.person1.getModel(api: api, from: backer.person),
+            postCount: backer.postCount,
+            commentCount: backer.commentCount,
+            isAdmin: backer.isAdmin
         )
-        itemCache.put(newItem)
-        return newItem
     }
     
     @MainActor
-    func getModels(
-        api: ApiClient,
-        from apiTypes: [Person2Backer],
-        isStale: Bool = false,
-        semaphore: UInt? = nil
-    ) -> [Person2] {
-        apiTypes.map { getModel(api: api, from: $0, isStale: isStale, semaphore: semaphore) }
+    override func updateModel(_ item: Person2, with apiType: Person2Backer, semaphore: UInt? = nil) {
+        item.update(with: apiType, semaphore: semaphore)
     }
 }
 
-// Person3 can be created from any Person3ApiBacker, so can't use ApiTypeBackedCache
-class Person3Cache: CoreCache<Person3> {
+class Person3Cache: ApiTypeBackedCache<Person3, Person3Backer> {
     @MainActor
-    func getModel(api: ApiClient, from apiType: Person3Backer) -> Person3 {
-        let moderatedCommunities = apiType.moderates.map { moderatedCommunity in
-            api.caches.community1.getModel(api: api, from: moderatedCommunity.community)
+    override func performModelTranslation(api: ApiClient, from backer: Person3Backer) -> Person3 {
+        let moderatedCommunities = backer.moderatedCommunities.map {
+            api.caches.community1.getModel(api: api, from: $0.community)
         }
-        
-        if let item = retrieveModel(cacheId: apiType.cacheId) {
-            item.update(moderatedCommunities: moderatedCommunities, person2ApiBacker: apiType.person)
-            return item
-        }
-        
-        let newItem: Person3 = .init(
-            api: api,
-            person2: api.caches.person2.getModel(api: api, from: apiType.person),
-            instance: api.caches.instance1.getOptionalModel(api: api, from: apiType.site),
-            moderatedCommunities: moderatedCommunities
-        )
-        itemCache.put(newItem)
-        return newItem
-    }
-}
-
-class Person4Cache: ApiTypeBackedCache<Person4, ApiMyUserInfo> {
-    @MainActor
-    override func performModelTranslation(api: ApiClient, from apiType: ApiMyUserInfo) -> Person4 {
-        let user = apiType.localUserView.localUser
         return .init(
             api: api,
-            person3: api.caches.person3.getModel(api: api, from: .init(from: apiType)),
-            voteDisplayMode: apiType.localUserView.localUserVoteDisplayMode,
-            email: user.email,
-            showNsfw: user.showNsfw,
-            theme: user.theme,
-            defaultSortType: user.defaultSortType ?? .hot, // TODO: 0.20 support: we shouldn't be coalescing to .hot here
-            defaultListingType: user.defaultListingType,
-            interfaceLanguage: user.interfaceLanguage,
-            showAvatars: user.showAvatars,
-            sendNotificationsToEmail: user.sendNotificationsToEmail,
-            showScores: user.showScores ?? true, // TODO: 0.20 support: we shouldn't be coalescing to true here
-            showBotAccounts: user.showBotAccounts,
-            showReadPosts: user.showReadPosts,
-            discussionLanguageIds: .init(apiType.discussionLanguages.filter { $0 != 0 }),
-            showNewPostNotifs: user.showNewPostNotifs,
-            emailVerified: user.emailVerified,
-            acceptedApplication: user.acceptedApplication,
-            openLinksInNewTab: user.openLinksInNewTab,
-            blurNsfw: user.blurNsfw,
-            autoExpandImages: user.autoExpand,
-            infiniteScrollEnabled: user.infiniteScrollEnabled,
-            postListingMode: user.postListingMode,
-            totp2faEnabled: user.totp2faEnabled,
-            enableKeyboardNavigation: user.enableKeyboardNavigation,
-            enableAnimatedImages: user.enableAnimatedImages,
-            collapseBotComments: user.collapseBotComments
+            person2: api.caches.person2.getModel(api: api, from: backer.person),
+            instance: api.caches.instance1.getOptionalModel(api: api, from: backer.site),
+            moderatedCommunities: moderatedCommunities
         )
     }
     
     @MainActor
-    override func updateModel(_ item: Person4, with apiType: ApiMyUserInfo, semaphore: UInt? = nil) {
-        item.update(with: apiType, semaphore: semaphore)
+    override func updateModel(_ item: Person3, with person: Person3Backer, semaphore: UInt? = nil) {
+        item.update(with: person, semaphore: semaphore)
+    }
+}
+
+class Person4Cache: ApiTypeBackedCache<Person4, Person4Backer> {
+    @MainActor
+    override func performModelTranslation(api: ApiClient, from backer: Person4Backer) -> Person4 {
+        .init(
+            api: api,
+            person3: api.caches.person3.getModel(api: api, from: backer.person),
+            voteDisplayMode: backer.voteDisplayMode,
+            email: backer.email,
+            showNsfw: backer.showNsfw,
+            theme: backer.theme,
+            defaultListingType: backer.defaultListingType,
+            interfaceLanguage: backer.interfaceLanguage,
+            showAvatars: backer.showAvatars,
+            sendNotificationsToEmail: backer.sendNotificationsToEmail,
+            showScores: backer.showScores,
+            showBotAccounts: backer.showBotAccounts,
+            showReadPosts: backer.showReadPosts,
+            discussionLanguageIds: backer.discussionLanguageIds,
+            showNewPostNotifs: backer.showNewPostNotifs,
+            emailVerified: backer.emailVerified,
+            acceptedApplication: backer.acceptedApplication,
+            openLinksInNewTab: backer.openLinksInNewTab,
+            blurNsfw: backer.blurNsfw,
+            autoExpandImages: backer.autoExpandImages,
+            infiniteScrollEnabled: backer.infiniteScrollEnabled,
+            postListingMode: backer.postListingMode,
+            totp2faEnabled: backer.totp2faEnabled,
+            enableKeyboardNavigation: backer.enableKeyboardNavigation,
+            enableAnimatedImages: backer.enableAnimatedImages,
+            collapseBotComments: backer.collapseBotComments
+        )
+    }
+    
+    @MainActor
+    override func updateModel(_ item: Person4, with backer: Person4Backer, semaphore: UInt? = nil) {
+        item.update(with: backer, semaphore: semaphore)
     }
 }

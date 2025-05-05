@@ -49,17 +49,19 @@ extension Instance2: CacheIdentifiable {
         setIfChanged(\.federationSignedFetch, siteView.localSite.federationSignedFetch)
         setIfChanged(\.defaultPostListingMode, siteView.localSite.defaultPostListingMode)
         setIfChanged(\.defaultSortType, siteView.localSite.defaultSortType)
-        setIfChanged(\.userCount, siteView.counts.users)
-        setIfChanged(\.postCount, siteView.counts.posts)
-        setIfChanged(\.commentCount, siteView.counts.comments)
-        setIfChanged(\.communityCount, siteView.counts.communities)
-        setIfChanged(\.activeUserCount, .init(
-            sixMonths: siteView.counts.usersActiveHalfYear,
-            month: siteView.counts.usersActiveMonth,
-            week: siteView.counts.usersActiveWeek,
-            day: siteView.counts.usersActiveDay
-        ))
-        
+        if let counts = siteView.counts {
+            setIfChanged(\.userCount, counts.users)
+            setIfChanged(\.postCount, counts.posts)
+            setIfChanged(\.commentCount, counts.comments)
+            setIfChanged(\.communityCount, counts.communities)
+            setIfChanged(\.activeUserCount, .init(
+                sixMonths: counts.usersActiveHalfYear,
+                month: counts.usersActiveMonth,
+                week: counts.usersActiveWeek,
+                day: counts.usersActiveDay
+            ))
+        }
+            
         instance1.update(with: siteView.site)
     }
 }
@@ -74,7 +76,14 @@ extension Instance3: CacheIdentifiable {
         setIfChanged(\.taglines, response.taglines ?? [response.tagline].compactMap { $0 })
         setIfChanged(\.customEmojis, response.customEmojis ?? []) // TODO: 0.20 support: we shouldn't be coalescing to [] here
         setIfChanged(\.blockedUrls, response.blockedUrls)
-        setIfChanged(\.administrators, response.admins.map { api.caches.person2.getModel(api: api, from: $0) })
+        setIfChanged(\.administrators, response.admins.compactMap {
+            if let backer = try? Person2Backer(from: $0) {
+                return api.caches.person2.getModel(api: api, from: backer)
+            } else {
+                assertionFailure()
+                return nil
+            }
+        })
         
         instance2.update(with: response.siteView)
     }

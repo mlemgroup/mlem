@@ -11,17 +11,19 @@ extension Community1: CacheIdentifiable {
     public var cacheId: Int { id }
     
     @MainActor
-    func update(with community: ApiCommunity, semaphore: UInt? = nil) {
+    func update(with community: Community1Backer, semaphore: UInt? = nil) {
         setIfChanged(\.updated, community.updated)
-        setIfChanged(\.displayName, community.title)
+        setIfChanged(\.displayName, community.displayName)
         setIfChanged(\.description, community.description)
-        removedManager.updateWithReceivedValue(community.removed, semaphore: semaphore)
         setIfChanged(\.deleted, community.deleted)
         setIfChanged(\.nsfw, community.nsfw)
-        setIfChanged(\.avatar, community.icon)
+        setIfChanged(\.avatar, community.avatar)
         setIfChanged(\.banner, community.banner)
         setIfChanged(\.hidden, community.hidden)
-        setIfChanged(\.onlyModeratorsCanPost, community.postingRestrictedToMods)
+        setIfChanged(\.onlyModeratorsCanPost, community.onlyModeratorsCanPost)
+        setIfChanged(\.visibility, community.visibility)
+        
+        removedManager.updateWithReceivedValue(community.removed, semaphore: semaphore)
     }
 }
 
@@ -30,19 +32,21 @@ extension Community2: CacheIdentifiable {
     
     @MainActor
     func update(with communityView: ApiCommunityView, semaphore: UInt? = nil) {
-        setIfChanged(\.postCount, communityView.counts.posts)
-        setIfChanged(\.commentCount, communityView.counts.comments)
+        setIfChanged(\.postCount, communityView.counts?.posts ?? 0)
+        setIfChanged(\.commentCount, communityView.counts?.comments ?? 0)
         setIfChanged(\.activeUserCount, .init(
-            sixMonths: communityView.counts.usersActiveHalfYear,
-            month: communityView.counts.usersActiveMonth,
-            week: communityView.counts.usersActiveWeek,
-            day: communityView.counts.usersActiveDay
+            sixMonths: communityView.counts?.usersActiveHalfYear ?? 0,
+            month: communityView.counts?.usersActiveMonth ?? 0,
+            week: communityView.counts?.usersActiveWeek ?? 0,
+            day: communityView.counts?.usersActiveDay ?? 0
         ))
         
-        subscriptionManager.updateWithReceivedValue(
-            .init(from: communityView.counts, subscribedType: communityView.subscribed),
-            semaphore: semaphore
-        )
+        if let counts = communityView.counts, let subscribed = communityView.subscribed {
+            subscriptionManager.updateWithReceivedValue(
+                .init(from: counts, subscribedType: subscribed),
+                semaphore: semaphore
+            )
+        }
         
         community1.update(with: communityView.community, semaphore: semaphore)
     }

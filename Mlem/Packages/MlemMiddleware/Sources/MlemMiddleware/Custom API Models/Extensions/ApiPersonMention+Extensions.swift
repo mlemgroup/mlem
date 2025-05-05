@@ -7,6 +7,6 @@
 
 import Foundation
 
-extension ApiPersonMention: CacheIdentifiable, Reply1ApiBacker {
+extension ApiPersonMention: CacheIdentifiable {
     public var cacheId: Int { id }
 }

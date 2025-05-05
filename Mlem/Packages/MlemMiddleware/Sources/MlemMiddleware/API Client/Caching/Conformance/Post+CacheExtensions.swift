@@ -37,18 +37,22 @@ extension Post2: CacheIdentifiable {
     func update(with post: ApiPostView, semaphore: UInt? = nil) {
         setIfChanged(\.creatorIsModerator, post.creatorIsModerator)
         setIfChanged(\.creatorIsAdmin, post.creatorIsAdmin)
-        creator.updateKnownCommunityBanState(id: community.id, banned: post.creatorBannedFromCommunity)
-        setIfChanged(\.commentCount, post.counts.comments)
-        setIfChanged(\.unreadCommentCount, post.unreadComments)
+        creator.updateKnownCommunityBanState(id: community.id, banned: post.creatorBannedFromCommunity ?? false)
+        setIfChanged(\.commentCount, post.counts?.comments ?? 0)
+        setIfChanged(\.unreadCommentCount, post.unreadComments ?? 0)
         
         savedManager.updateWithReceivedValue(post.saved ?? false, semaphore: semaphore)
-        readManager.updateWithReceivedValue(post.read, semaphore: semaphore)
+        readManager.updateWithReceivedValue(post.read ?? false, semaphore: semaphore)
         hiddenManager.updateWithReceivedValue(post.hidden ?? false, semaphore: semaphore)
-        votesManager.updateWithReceivedValue(
-            .init(from: post.counts, myVote: ScoringOperation.guaranteedInit(from: post.myVote)),
-            semaphore: semaphore
-        )
-        creator.blockedManager.updateWithReceivedValue(post.creatorBlocked, semaphore: semaphore)
+        
+        if let counts = post.counts {
+            votesManager.updateWithReceivedValue(
+                .init(from: counts, myVote: ScoringOperation.guaranteedInit(from: post.myVote)),
+                semaphore: semaphore
+            )
+        }
+        
+        creator.blockedManager.updateWithReceivedValue(post.creatorBlocked ?? false, semaphore: semaphore)
 
         post1.update(with: post.post, semaphore: semaphore)
         creator.update(with: post.creator, semaphore: semaphore)

@@ -11,7 +11,7 @@ class Post1Cache: ApiTypeBackedCache<Post1, ApiPost> {
     override func performModelTranslation(api: ApiClient, from apiType: ApiPost) -> Post1 {
         .init(
             api: api,
-            actorId: apiType.actorId,
+            actorId: apiType.apId,
             id: apiType.id,
             creatorId: apiType.creatorId,
             communityId: apiType.communityId,
@@ -40,19 +40,25 @@ class Post1Cache: ApiTypeBackedCache<Post1, ApiPost> {
 
 class Post2Cache: ApiTypeBackedCache<Post2, ApiPostView> {
     override func performModelTranslation(api: ApiClient, from apiType: ApiPostView) -> Post2 {
-        .init(
+        let votes: VotesModel
+        if let counts = apiType.counts {
+            votes = .init(from: counts, myVote: ScoringOperation.guaranteedInit(from: apiType.myVote))
+        } else {
+            votes = .init(upvotes: 0, downvotes: 0, myVote: .none)
+        }
+        return .init(
             api: api,
             post1: api.caches.post1.getModel(api: api, from: apiType.post),
             creator: api.caches.person1.getModel(api: api, from: apiType.creator),
             community: api.caches.community1.getModel(api: api, from: apiType.community),
-            votes: .init(from: apiType.counts, myVote: ScoringOperation.guaranteedInit(from: apiType.myVote)),
+            votes: votes,
             creatorIsModerator: apiType.creatorIsModerator,
             creatorIsAdmin: apiType.creatorIsAdmin,
-            bannedFromCommunity: apiType.creatorBannedFromCommunity,
-            commentCount: apiType.counts.comments,
-            unreadCommentCount: apiType.unreadComments,
+            bannedFromCommunity: apiType.creatorBannedFromCommunity ?? false,
+            commentCount: apiType.counts.comments ?? false,
+            unreadCommentCount: apiType.unreadComments ?? false,
             saved: apiType.saved ?? false,
-            read: apiType.read,
+            read: apiType.read ?? false,
             hidden: apiType.hidden ?? false
         )
     }
