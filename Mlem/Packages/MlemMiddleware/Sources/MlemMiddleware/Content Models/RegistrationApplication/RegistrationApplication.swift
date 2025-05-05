@@ -29,7 +29,7 @@ public final class RegistrationApplication: ContentIdentifiable, FeedLoadable {
     public let created: Date
     
     var resolutionManager: StateManager<ResolutionState>
-    public var resolution: ResolutionState { resolutionManager.wrappedValue }
+    public var resolution: ResolutionState { resolutionManager.displayedValue }
     
     init(
         api: ApiClient,

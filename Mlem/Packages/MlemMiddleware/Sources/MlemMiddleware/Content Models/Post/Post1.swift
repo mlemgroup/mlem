@@ -42,20 +42,20 @@ public final class Post1: Post1Providing {
     public var purged: Bool = false
     
     public var lockedManager: StateManager<Bool>
-    public var locked: Bool { lockedManager.wrappedValue }
+    public var locked: Bool { lockedManager.displayedValue }
     public var verifiedLocked: Bool { lockedManager.verifiedValue }
     
     public var pinnedCommunityManager: StateManager<Bool>
-    public var pinnedCommunity: Bool { pinnedCommunityManager.wrappedValue }
+    public var pinnedCommunity: Bool { pinnedCommunityManager.displayedValue }
     
     public var pinnedInstanceManager: StateManager<Bool>
-    public var pinnedInstance: Bool { pinnedInstanceManager.wrappedValue }
+    public var pinnedInstance: Bool { pinnedInstanceManager.displayedValue }
     
     var deletedManager: StateManager<Bool>
-    public var deleted: Bool { deletedManager.wrappedValue }
+    public var deleted: Bool { deletedManager.displayedValue }
     
     public var removedManager: StateManager<Bool>
-    public var removed: Bool { removedManager.wrappedValue }
+    public var removed: Bool { removedManager.displayedValue }
     
     init(
         api: ApiClient,

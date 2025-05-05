@@ -43,10 +43,10 @@ public final class Reply2: Reply2Providing, FeedLoadable {
     }
     
     var votesManager: StateManager<VotesModel>
-    public var votes: VotesModel { votesManager.wrappedValue }
+    public var votes: VotesModel { votesManager.displayedValue }
     
     var savedManager: StateManager<Bool>
-    public var saved: Bool { savedManager.wrappedValue }
+    public var saved: Bool { savedManager.displayedValue }
     
     init(
         api: ApiClient,
