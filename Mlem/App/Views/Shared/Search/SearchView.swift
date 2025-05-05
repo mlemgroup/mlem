@@ -94,7 +94,13 @@ struct SearchView: View {
             .toolbar { PasteLinkButtonView() }
             .scrollDismissesKeyboard(.interactively)
             .onChange(of: query) {
-                if page != .home {
+                if query.hasPrefix("@") {
+                    selectedTab = .people
+                    query = ""
+                    page = .recents
+                    searchBarFocused = true
+                    contentChangeTriggerRefresh(onlyRefreshIfEmpty: false)
+                } else if page != .home {
                     if query.isEmpty {
                         page = .recents
                     } else {
