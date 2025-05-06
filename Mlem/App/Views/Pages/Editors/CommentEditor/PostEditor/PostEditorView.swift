@@ -87,6 +87,7 @@ struct PostEditorView: View {
         
         titleTextView.text = title
         contentTextView.text = content
+        self._titleIsEmpty = .init(wrappedValue: title.isEmpty)
         self._hasNsfwTag = .init(wrappedValue: nsfw)
         if let url {
             if url.isMedia {
