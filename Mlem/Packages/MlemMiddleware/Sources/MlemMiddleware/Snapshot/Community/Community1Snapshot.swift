@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Community1Backer: CacheIdentifiable {
+public struct Community1Snapshot: CacheIdentifiable {
     // Won't change.
     public let actorId: ActorIdentifier
     public let id: Int

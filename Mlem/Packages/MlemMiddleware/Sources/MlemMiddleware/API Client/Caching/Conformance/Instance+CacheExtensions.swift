@@ -77,7 +77,7 @@ extension Instance3: CacheIdentifiable {
         setIfChanged(\.customEmojis, response.customEmojis ?? []) // TODO: 0.20 support: we shouldn't be coalescing to [] here
         setIfChanged(\.blockedUrls, response.blockedUrls)
         setIfChanged(\.administrators, response.admins.compactMap {
-            if let backer = try? Person2Backer(from: $0) {
+            if let backer = try? Person2Snapshot(from: $0) {
                 return api.caches.person2.getModel(api: api, from: backer)
             } else {
                 assertionFailure()

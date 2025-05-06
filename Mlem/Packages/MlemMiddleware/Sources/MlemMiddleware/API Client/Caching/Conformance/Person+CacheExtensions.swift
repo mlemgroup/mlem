@@ -11,7 +11,7 @@ extension Person1: CacheIdentifiable {
     public var cacheId: Int { id }
     
     @MainActor
-    func update(with backer: Person1Backer, semaphore: UInt? = nil) {
+    func update(with backer: Person1Snapshot, semaphore: UInt? = nil) {
         setIfChanged(\.displayName, backer.displayName)
         setIfChanged(\.avatar, backer.avatar)
         setIfChanged(\.banner, backer.banner)
@@ -28,7 +28,7 @@ extension Person2: CacheIdentifiable {
     public var cacheId: Int { id }
     
     @MainActor
-    func update(with backer: Person2Backer, semaphore: UInt? = nil) {
+    func update(with backer: Person2Snapshot, semaphore: UInt? = nil) {
         person1.update(with: backer.person, semaphore: semaphore)
         
         setIfChanged(\.isAdmin, backer.isAdmin)
@@ -41,7 +41,7 @@ extension Person3: CacheIdentifiable {
     public var cacheId: Int { id }
     
     @MainActor
-    func update(with backer: Person3Backer, semaphore: UInt? = nil) {
+    func update(with backer: Person3Snapshot, semaphore: UInt? = nil) {
         person2.update(with: backer.person, semaphore: semaphore)
         if let site = backer.site {
             instance?.update(with: site)
@@ -55,7 +55,7 @@ extension Person4: CacheIdentifiable {
     public var cacheId: Int { id }
     
     @MainActor
-    func update(with backer: Person4Backer, semaphore: UInt? = nil) {
+    func update(with backer: Person4Snapshot, semaphore: UInt? = nil) {
         person3.update(with: backer.person, semaphore: semaphore)
         
         setIfChanged(\.voteDisplayMode, backer.voteDisplayMode)

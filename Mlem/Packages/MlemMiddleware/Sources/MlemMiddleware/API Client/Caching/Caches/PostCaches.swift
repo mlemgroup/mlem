@@ -7,33 +7,33 @@
 
 import Foundation
 
-class Post1Cache: ApiTypeBackedCache<Post1, ApiPost> {
-    override func performModelTranslation(api: ApiClient, from apiType: ApiPost) -> Post1 {
+class Post1Cache: ApiTypeBackedCache<Post1, Post1Snapshot> {
+    override func performModelTranslation(api: ApiClient, from snapshot: Post1Snapshot) -> Post1 {
         .init(
             api: api,
-            actorId: apiType.apId,
-            id: apiType.id,
-            creatorId: apiType.creatorId,
-            communityId: apiType.communityId,
-            created: apiType.published,
-            title: apiType.name,
-            content: apiType.body,
-            linkUrl: apiType.linkUrl,
-            deleted: apiType.deleted,
-            embed: apiType.embed,
-            pinnedCommunity: apiType.featuredCommunity,
-            pinnedInstance: apiType.featuredLocal,
-            locked: apiType.locked,
-            nsfw: apiType.nsfw,
-            removed: apiType.removed,
-            thumbnailUrl: apiType.thumbnailImageUrl,
-            updated: apiType.updated,
-            languageId: apiType.languageId,
-            altText: apiType.altText
+            actorId: snapshot.actorId,
+            id: snapshot.id,
+            creatorId: snapshot.creatorId,
+            communityId: snapshot.communityId,
+            created: snapshot.published,
+            title: snapshot.name,
+            content: snapshot.body,
+            linkUrl: snapshot.linkUrl,
+            deleted: snapshot.deleted,
+            embed: snapshot.embed,
+            pinnedCommunity: snapshot.featuredCommunity,
+            pinnedInstance: snapshot.featuredLocal,
+            locked: snapshot.locked,
+            nsfw: snapshot.nsfw,
+            removed: snapshot.removed,
+            thumbnailUrl: snapshot.thumbnailImageUrl,
+            updated: snapshot.updated,
+            languageId: snapshot.languageId,
+            altText: snapshot.altText
         )
     }
     
-    override func updateModel(_ item: Post1, with apiType: ApiPost, semaphore: UInt? = nil) {
+    override func updateModel(_ item: Post1, with snapshot: Post1Snapshot, semaphore: UInt? = nil) {
         item.update(with: apiType, semaphore: semaphore)
     }
 }

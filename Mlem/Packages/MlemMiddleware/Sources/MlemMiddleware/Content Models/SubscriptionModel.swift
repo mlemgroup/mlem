@@ -46,23 +46,8 @@ public struct SubscriptionModel: Hashable, Equatable {
             return 0
         }
     }
-    
-    init(from aggregates: ApiCommunityAggregates, subscribedType: ApiSubscribedType) {
-        self.actualTotal = aggregates.subscribers
-        self.actualLocal = aggregates.subscribersLocal
-        self.subscribed = subscribedType.isSubscribed
-        self.pending = subscribedType == .pending
-    }
-    
-    @available(*, deprecated)
-    init(from aggregates: ApiCommunityAggregates?, subscribedType: ApiSubscribedType) {
-        self.actualTotal = aggregates?.subscribers ?? 0
-        self.actualLocal = aggregates?.subscribersLocal ?? 0
-        self.subscribed = subscribedType.isSubscribed
-        self.pending = subscribedType == .pending
-    }
 
-    init(total: Int, local: Int? = nil, subscribed: Bool, pending: Bool) {
+    init(total: Int, local: Int?, subscribed: Bool, pending: Bool) {
         self.actualTotal = total
         self.actualLocal = local
         self.subscribed = subscribed

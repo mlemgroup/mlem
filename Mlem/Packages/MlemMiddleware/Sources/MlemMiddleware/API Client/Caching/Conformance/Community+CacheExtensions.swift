@@ -11,7 +11,7 @@ extension Community1: CacheIdentifiable {
     public var cacheId: Int { id }
     
     @MainActor
-    func update(with community: Community1Backer, semaphore: UInt? = nil) {
+    func update(with community: Community1Snapshot, semaphore: UInt? = nil) {
         setIfChanged(\.updated, community.updated)
         setIfChanged(\.displayName, community.displayName)
         setIfChanged(\.description, community.description)
@@ -31,24 +31,17 @@ extension Community2: CacheIdentifiable {
     public var cacheId: Int { id }
     
     @MainActor
-    func update(with communityView: ApiCommunityView, semaphore: UInt? = nil) {
-        setIfChanged(\.postCount, communityView.counts?.posts ?? 0)
-        setIfChanged(\.commentCount, communityView.counts?.comments ?? 0)
-        setIfChanged(\.activeUserCount, .init(
-            sixMonths: communityView.counts?.usersActiveHalfYear ?? 0,
-            month: communityView.counts?.usersActiveMonth ?? 0,
-            week: communityView.counts?.usersActiveWeek ?? 0,
-            day: communityView.counts?.usersActiveDay ?? 0
-        ))
+    func update(with backer: Community2Snapshot, semaphore: UInt? = nil) {
+        setIfChanged(\.postCount, backer.postCount)
+        setIfChanged(\.commentCount, backer.commentCount)
+        setIfChanged(\.activeUserCount, backer.activeUserCount)
         
-        if let counts = communityView.counts, let subscribed = communityView.subscribed {
-            subscriptionManager.updateWithReceivedValue(
-                .init(from: counts, subscribedType: subscribed),
-                semaphore: semaphore
-            )
-        }
+        subscriptionManager.updateWithReceivedValue(
+            backer.subscription,
+            semaphore: semaphore
+        )
         
-        community1.update(with: communityView.community, semaphore: semaphore)
+        community1.update(with: backer.community, semaphore: semaphore)
     }
 }
 
@@ -56,12 +49,10 @@ extension Community3: CacheIdentifiable {
     public var cacheId: Int { id }
     
     @MainActor
-    func update(with response: ApiGetCommunityResponse, semaphore: UInt? = nil) {
-        setIfChanged(\.moderators, response.moderators.map { moderatorView in
-            api.caches.person1.performModelTranslation(api: api, from: moderatorView.moderator)
-        })
-        setIfChanged(\.discussionLanguages, response.discussionLanguages)
+    func update(with backer: Community3Snapshot, semaphore: UInt? = nil) {
+        setIfChanged(\.moderators, api.caches.person1.getModels(api: api, from: backer.moderators))
+        setIfChanged(\.discussionLanguageIds, backer.discussionLanguageIds)
 
-        community2.update(with: response.communityView, semaphore: semaphore)
+        community2.update(with: backer.community, semaphore: semaphore)
     }
 }

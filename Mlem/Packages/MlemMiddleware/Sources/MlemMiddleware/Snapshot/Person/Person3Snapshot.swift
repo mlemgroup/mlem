@@ -7,10 +7,10 @@
 
 import Foundation
 
-public struct Person3Backer: CacheIdentifiable {
+public struct Person3Snapshot: CacheIdentifiable {
     // Won't change, but the corresponding models need to
     // be updated within the `update` method of Person3.
-    let person: Person2Backer
+    let person: Person2Snapshot
     let site: ApiSite?
     
     // May change. If you add/remove items from this list,

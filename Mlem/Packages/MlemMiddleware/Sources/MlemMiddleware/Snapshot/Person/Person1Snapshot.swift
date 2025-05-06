@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Person1Backer: CacheIdentifiable {
+public struct Person1Snapshot: CacheIdentifiable {
     // Won't change.
     public let actorId: ActorIdentifier
     public let id: Int
