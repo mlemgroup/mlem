@@ -96,17 +96,10 @@ public extension ApiClient {
             }
         }
         if let hostApi {
-            await withTaskGroup(of: Void.self) {  group in
-                ret.forEach { community in
-                    group.addTask {
-                        do {
-                            if let resolvedCommunity = try await hostApi.resolve(url: community.resolvableUrl(from: .host)) as? any Community {
-                                community.blockedManager.addSibling(resolvedCommunity.blockedManager)
-                            }
-                        } catch {
-                            print("Failed to resolve \(community.actorId)")
-                        }
-                    }
+            let resolvedCommunities: [URL: Community2] = try await hostApi.resolve(urls: ret.map { $0.resolvableUrl(from: .host) })
+            ret.forEach { community in
+                if let resolvedCommunity = resolvedCommunities[community.resolvableUrl(from: .host)] {
+                    community.blockedManager.addSibling(resolvedCommunity.blockedManager)
                 }
             }
         }
