@@ -15,6 +15,7 @@ extension InstanceView {
             output.append(.uptime)
         }
         output.append(.safety)
+        output.append(.communities)
         return output
     }
     

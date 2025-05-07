@@ -13,7 +13,7 @@ import Theming
 
 struct InstanceView: View {
     enum Tab: String, CaseIterable, Identifiable {
-        case about, administration, details, uptime, safety
+        case about, administration, details, uptime, safety, communities
         
         var label: LocalizedStringResource {
             switch self {
@@ -22,6 +22,7 @@ struct InstanceView: View {
             case .details: "Details"
             case .uptime: "Uptime"
             case .safety: "Trust & Safety"
+            case .communities: "Communities"
             }
         }
         
@@ -48,6 +49,7 @@ struct InstanceView: View {
     @State var uptimeData: UptimeDataStatus?
     @State var fediseerData: FediseerData?
     @State var upgradeState: LoadingState = .idle
+    @State var communityLoader: CommunityFeedLoader
     
     @State var selectedTab: Tab = .about
     
@@ -56,6 +58,7 @@ struct InstanceView: View {
     
     init(instance: any InstanceStubProviding, visitContext: VisitHistory.VisitContext?) {
         self._instance = .init(wrappedValue: instance)
+        self._communityLoader = .init(wrappedValue: .init(api: instance.api))
         self.visitContext = visitContext
     }
     
@@ -129,6 +132,8 @@ struct InstanceView: View {
             case .safety:
                 safetyTab(instance: instance)
                     .onAppear(perform: attemptToLoadFediseerData)
+            case .communities:
+                communities()
             }
         }
         .toolbar {
@@ -192,5 +197,28 @@ struct InstanceView: View {
             ProgressView()
                 .padding(.top, 30)
         }
+    }
+    
+    @ViewBuilder
+    func communities() -> some View {
+        LazyVStack(spacing: 0) {
+            SearchResultsView(results: communityLoader.items) { community in
+                CommunityListRow(
+                    community,
+                    readout: .subscribers,
+                    visitContext: .other
+                )
+                .onAppear {
+                    do {
+                        try communityLoader.loadIfThreshold(community)
+                    } catch {
+                        handleError(error)
+                    }
+                }
+            }
+            EndOfFeedView(feedLoader: communityLoader, viewType: .hobbit)
+        }
+        .animation(.easeOut(duration: 0.1), value: communityLoader.items.isEmpty)
+        .loadFeed(communityLoader)
     }
 }
