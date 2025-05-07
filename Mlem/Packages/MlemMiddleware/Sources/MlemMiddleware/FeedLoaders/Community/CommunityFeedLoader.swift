@@ -53,7 +53,8 @@ public class CommunityFeedLoader: StandardFeedLoader<Community2> {
         query: String = "",
         pageSize: Int = 20,
         listing: ApiListingType = .all,
-        sort: SearchSortType = .top(.allTime)
+        sort: SearchSortType = .top(.allTime),
+        hostApi: ApiClient? = nil
     ) {
         self.api = api
 
@@ -65,7 +66,7 @@ public class CommunityFeedLoader: StandardFeedLoader<Community2> {
                 pageSize: pageSize,
                 listing: listing,
                 sort: sort,
-                hostApi: nil
+                hostApi: hostApi
             )
         )
     }

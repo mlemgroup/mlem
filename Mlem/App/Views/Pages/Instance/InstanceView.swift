@@ -58,7 +58,10 @@ struct InstanceView: View {
     
     init(instance: any InstanceStubProviding, visitContext: VisitHistory.VisitContext?) {
         self._instance = .init(wrappedValue: instance)
-        self._communityLoader = .init(wrappedValue: .init(api: .getApiClient(url: instance.actorId.hostUrl, username: nil)))
+        self._communityLoader = .init(wrappedValue: .init(
+            api: .getApiClient(url: instance.actorId.hostUrl, username: nil),
+            hostApi: instance.api
+        ))
         self.visitContext = visitContext
     }
     
