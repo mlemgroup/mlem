@@ -58,7 +58,7 @@ struct InstanceView: View {
     
     init(instance: any InstanceStubProviding, visitContext: VisitHistory.VisitContext?) {
         self._instance = .init(wrappedValue: instance)
-        self._communityLoader = .init(wrappedValue: .init(api: instance.api))
+        self._communityLoader = .init(wrappedValue: .init(api: .getApiClient(url: instance.actorId.hostUrl, username: nil)))
         self.visitContext = visitContext
     }
     
@@ -219,6 +219,12 @@ struct InstanceView: View {
             EndOfFeedView(feedLoader: communityLoader, viewType: .hobbit)
         }
         .animation(.easeOut(duration: 0.1), value: communityLoader.items.isEmpty)
-        .loadFeed(communityLoader)
+        .task {
+            do {
+                try await communityLoader.refresh(listing: .local)
+            } catch {
+                handleError(error)
+            }
+        }
     }
 }
