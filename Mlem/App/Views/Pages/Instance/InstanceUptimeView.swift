@@ -9,7 +9,6 @@ import Charts
 import MlemMiddleware
 import SwiftUI
 
-// swiftlint:disable:next type_body_length
 struct InstanceUptimeView: View {
     @Environment(\.accessibilityDifferentiateWithoutColor) var diffWithoutColor: Bool
     @Environment(\.palette) var palette
@@ -18,15 +17,40 @@ struct InstanceUptimeView: View {
     @State var showingAllDowntimes: Bool = false
     
     let instance: any Instance
-    let uptimeData: UptimeData
+    @State var uptimeData: UptimeData
+    
+    var uptimeRefreshTimer = Timer.publish(every: 30, tolerance: 0.5, on: .main, in: .common)
+        .autoconnect()
+    
+    var body: some View {
+        ScrollView {
+            content
+        }
+        .background(.themedGroupedBackground)
+        .onReceive(uptimeRefreshTimer) { _ in
+            Task {
+                let uptimeStatus = await loadUptimeData(instance: instance)
+                switch uptimeStatus {
+                case .success(let uptimeData):
+                    withAnimation(.easeOut(duration: 0.2)) {
+                        self.uptimeData = uptimeData
+                    }
+                case .unavailable:
+                    assertionFailure("Uptime data unavailable.")
+                case .failure(let error):
+                    handleError(error)
+                }
+            }
+        }
+    }
     
     @ViewBuilder
-    var body: some View {
+    var content: some View {
         VStack(alignment: .leading, spacing: 0) {
             section { summary }
                 .padding(.bottom, 10)
             section("Recent Checks") {
-                recentChecks
+                RecentUptimeChecks(results: uptimeData.results)
                     .padding(.horizontal)
                     .padding(.vertical, 15)
             }
@@ -169,37 +193,6 @@ struct InstanceUptimeView: View {
     }
     
     @ViewBuilder
-    var recentChecks: some View {
-        VStack(alignment: .leading, spacing: 3) {
-            HStack(spacing: 3) {
-                ForEach(uptimeData.results) { result in
-                    if diffWithoutColor {
-                        Image(icon: result.success ? .uptime.online : .uptime.offline)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .symbolVariant(.circle.fill)
-                            .foregroundStyle(result.success ? .themedPositive : .themedNegative)
-                            .frame(maxWidth: 20)
-                            .frame(maxWidth: 25)
-                    } else {
-                        Circle()
-                            .fill(result.success ? .themedPositive : .themedNegative)
-                            .frame(maxWidth: 20)
-                            .frame(maxWidth: 25)
-                    }
-                }
-            }
-            HStack {
-                footnote(timeOnlyFormatter.string(from: uptimeData.results.first?.timestamp ?? .now))
-                Spacer()
-                footnote(timeOnlyFormatter.string(from: uptimeData.results.last?.timestamp ?? .now))
-            }
-            .frame(maxWidth: CGFloat(uptimeData.results.count * 25 + (uptimeData.results.count - 1) * 3))
-            .padding(.top, 4)
-        }
-    }
-    
-    @ViewBuilder
     var responseTimeChart: some View {
         Chart {
             ForEach(uptimeData.results) { node in
@@ -268,13 +261,6 @@ struct InstanceUptimeView: View {
         Text(title)
             .font(.footnote)
             .foregroundStyle(.themedSecondary)
-    }
-    
-    var timeOnlyFormatter: DateFormatter {
-        let dateFormatter = DateFormatter()
-        dateFormatter.timeStyle = .short
-        dateFormatter.dateStyle = .none
-        return dateFormatter
     }
 
     func formatMilliseconds(_ milliseconds: Int) -> String {

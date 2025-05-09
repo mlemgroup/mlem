@@ -2561,6 +2561,9 @@
         }
       }
     },
+    "Data not available" : {
+
+    },
     "Days:" : {
       "localizations" : {
         "fr" : {
@@ -2722,6 +2725,9 @@
           }
         }
       }
+    },
+    "Details " : {
+
     },
     "Developer" : {
       "localizations" : {

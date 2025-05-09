@@ -11,9 +11,6 @@ import SwiftUI
 extension InstanceView {
     var tabs: [Tab] {
         var output: [Tab] = [.about, .administration, .details]
-        if instance.canFetchUptime {
-            output.append(.uptime)
-        }
         output.append(.safety)
         output.append(.communities)
         return output
@@ -74,25 +71,6 @@ extension InstanceView {
         }
         
         return .init(trailingActions: [person.addAdminAction(instance: myInstance, isOn: isAdmin)])
-    }
-    
-    func attemptToLoadUptimeData() {
-        print("Fetching uptime data...")
-        if let url = instance.uptimeDataUrl {
-            Task {
-                do {
-                    let data = try await URLSession.shared.data(from: url).0
-                    let uptimeData = try JSONDecoder.defaultDecoder.decode(UptimeData.self, from: data)
-                    DispatchQueue.main.async {
-                        withAnimation(.easeOut(duration: 0.2)) {
-                            self.uptimeData = .success(uptimeData)
-                        }
-                    }
-                } catch {
-                    handleError(error)
-                }
-            }
-        }
     }
     
     func attemptToLoadFediseerData() {

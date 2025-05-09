@@ -150,6 +150,8 @@ extension NavigationPage {
             FediseerOpinionListView(instance: instance.wrappedValue, opinionType: opinionType, fediseerData: data)
         case .fediseerInfo:
             FediseerInfoView()
+        case let .instanceUptime(instance, uptimeData):
+            InstanceUptimeView(instance: instance.wrappedValue, uptimeData: uptimeData)
         case let .deleteAccount(account):
             DeleteAccountView(account: account)
         case let .bypassImageProxy(callback):

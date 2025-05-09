@@ -13,29 +13,20 @@ import Theming
 
 struct InstanceView: View {
     enum Tab: String, CaseIterable, Identifiable {
-        case about, administration, details, uptime, safety, communities
+        case about, administration, details, safety, communities
         
         var label: LocalizedStringResource {
             switch self {
             case .about: "About"
+            case .communities: "Communities"
             case .administration: "Administration"
             case .details: "Details"
-            case .uptime: "Uptime"
             case .safety: "Trust & Safety"
-            case .communities: "Communities"
             }
         }
         
         var id: Self { self }
     }
-    
-    enum UptimeDataStatus {
-        case success(UptimeData)
-        case failure(Error)
-    }
-    
-    var uptimeRefreshTimer = Timer.publish(every: 30, tolerance: 0.5, on: .main, in: .common)
-        .autoconnect()
     
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
@@ -46,7 +37,6 @@ struct InstanceView: View {
 
     // This is fetched from the instance itself, not from the logged-in account.
     @State var instance: any InstanceStubProviding
-    @State var uptimeData: UptimeDataStatus?
     @State var fediseerData: FediseerData?
     @State var upgradeState: LoadingState = .idle
     @State var communityLoader: CommunityFeedLoader
@@ -124,19 +114,15 @@ struct InstanceView: View {
                         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
                         .padding([.horizontal, .bottom], Constants.main.standardSpacing)
                 }
+            case .communities:
+                communities()
             case .details:
                 InstanceDetailsView(instance: instance)
             case .administration:
                 administrationTab(instance: instance)
-            case .uptime:
-                uptimeTab(instance: instance)
-                    .onAppear(perform: attemptToLoadUptimeData)
-                    .onReceive(uptimeRefreshTimer) { _ in attemptToLoadUptimeData() }
             case .safety:
                 safetyTab(instance: instance)
                     .onAppear(perform: attemptToLoadFediseerData)
-            case .communities:
-                communities()
             }
         }
         .toolbar {
@@ -176,20 +162,6 @@ struct InstanceView: View {
             }
         }
         .padding([.horizontal, .bottom], Constants.main.standardSpacing)
-    }
-    
-    @ViewBuilder
-    func uptimeTab(instance: any Instance) -> some View {
-        switch uptimeData {
-        case let .success(uptimeData):
-            InstanceUptimeView(instance: instance, uptimeData: uptimeData)
-        case let .failure(error):
-            ErrorView(.init(error: error))
-                .padding(.top, 5)
-        default:
-            ProgressView()
-                .padding(.top, 30)
-        }
     }
     
     @ViewBuilder
