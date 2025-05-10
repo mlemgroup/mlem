@@ -62,7 +62,7 @@ struct InstanceDetailsView: View {
                         
                         if case let .success(uptimeData) = uptimeData {
                             NavigationLink(.instanceUptime(instance: instance, uptimeData: uptimeData)) {
-                                (Text("Details ") + Text(Image(icon: .general.forward)))
+                                (Text("Details") + Text(verbatim: " ") + Text(Image(icon: .general.forward)))
                                     .font(.footnote)
                                     .foregroundStyle(.themedAccent)
                             }
