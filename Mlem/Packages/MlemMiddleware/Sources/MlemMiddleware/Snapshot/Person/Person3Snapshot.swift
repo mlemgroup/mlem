@@ -15,19 +15,35 @@ public struct Person3Snapshot: CacheIdentifiable {
     
     // May change. If you add/remove items from this list,
     // remember to also amend the `update` method of Person3!
-    let moderatedCommunities: [ApiCommunity]
+    let moderatedCommunities: [Community1Snapshot]
     
     public var cacheId: Int { person.cacheId }
     
     init(from myUserInfo: ApiMyUserInfo) throws(ApiClientError) {
         self.person = try .init(from: myUserInfo.localUserView)
         self.site = nil
-        self.moderatedCommunities = myUserInfo.moderates.map(\.community)
+        
+        var moderatedCommunities: [Community1Snapshot] = []
+        moderatedCommunities.reserveCapacity(myUserInfo.moderates.count)
+        
+        for moderate in myUserInfo.moderates {
+            try moderatedCommunities.append(.init(from: moderate.community))
+        }
+        
+        self.moderatedCommunities = moderatedCommunities
     }
     
     init(from personDetails: ApiGetPersonDetailsResponse) throws(ApiClientError) {
         self.person = try .init(from: personDetails.personView)
         self.site = personDetails.site
-        self.moderatedCommunities = personDetails.moderates.map(\.community)
+        
+        var moderatedCommunities: [Community1Snapshot] = []
+        moderatedCommunities.reserveCapacity(personDetails.moderates.count)
+        
+        for moderate in personDetails.moderates {
+            try moderatedCommunities.append(.init(from: moderate.community))
+        }
+        
+        self.moderatedCommunities = moderatedCommunities
     }
 }

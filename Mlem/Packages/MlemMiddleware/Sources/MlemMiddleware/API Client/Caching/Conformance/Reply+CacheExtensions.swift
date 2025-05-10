@@ -11,8 +11,8 @@ extension Reply1: CacheIdentifiable {
     public var cacheId: Int { id }
     
     @MainActor
-    func update(with reply: Reply1Backer, semaphore: UInt? = nil) {
-        readManager.updateWithReceivedValue(reply.read, semaphore: semaphore)
+    func update(with snapshot: Reply1Snapshot, semaphore: UInt? = nil) {
+        readManager.updateWithReceivedValue(snapshot.read, semaphore: semaphore)
     }
 }
 
@@ -20,21 +20,21 @@ extension Reply2: CacheIdentifiable {
     public var cacheId: Int { id }
     
     @MainActor
-    func update(with reply: Reply2Backer, semaphore: UInt? = nil) {
-        setIfChanged(\.subscribed, reply.subscribed.isSubscribed)
-        setIfChanged(\.commentCount, reply.counts.childCount)
-        setIfChanged(\.creatorIsModerator, reply.creatorIsModerator)
-        setIfChanged(\.creatorIsAdmin, reply.creatorIsAdmin)
-        creator.updateKnownCommunityBanState(id: community.id, banned: reply.creatorBannedFromCommunity)
+    func update(with snapshot: Reply2Snapshot, semaphore: UInt? = nil) {
+        reply1.update(with: snapshot.reply, semaphore: semaphore)
+        comment.update(with: snapshot.comment)
+        creator.update(with: snapshot.creator)
+        post.update(with: snapshot.post)
+        community.update(with: snapshot.community)
+        recipient.update(with: snapshot.recipient)
+        
+        setIfChanged(\.subscribed, snapshot.subscribed.isSubscribed)
+        setIfChanged(\.commentCount, snapshot.counts.childCount)
+        setIfChanged(\.creatorIsModerator, snapshot.creatorIsModerator)
+        setIfChanged(\.creatorIsAdmin, snapshot.creatorIsAdmin)
+        creator.updateKnownCommunityBanState(id: community.id, banned: snapshot.creatorBannedFromCommunity)
         
         votesManager.updateWithReceivedValue(votes, semaphore: semaphore)
         savedManager.updateWithReceivedValue(saved, semaphore: semaphore)
-        
-        reply1.update(with: reply.reply, semaphore: semaphore)
-        comment.update(with: reply.comment)
-        creator.update(with: reply.creator)
-        post.update(with: reply.post)
-        community.update(with: reply.community)
-        recipient.update(with: reply.recipient)
     }
 }

@@ -16,20 +16,17 @@ public final class Post3: Post3Providing {
     
     public let post2: Post2
     public let community: Community2
-    public var communityModerators: [Person1]
     public var crossPosts: [Post2]
     
     init(
         api: ApiClient,
         post2: Post2,
         community: Community2,
-        communityModerators: [Person1],
         crossPosts: [Post2]
     ) {
         self.api = api
         self.post2 = post2
         self.community = community
-        self.communityModerators = communityModerators
         self.crossPosts = crossPosts
     }
 }

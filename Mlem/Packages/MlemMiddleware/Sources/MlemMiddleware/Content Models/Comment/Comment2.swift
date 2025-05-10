@@ -30,7 +30,7 @@ public final class Comment2: Comment2Providing {
     var savedManager: StateManager<Bool>
     public var saved: Bool { savedManager.wrappedValue }
     
-    public var bannedFromCommunity: Bool {
+    public var creatorBannedFromCommunity: Bool {
         guard let state = creator.isBannedFromCommunity(community) else {
             assertionFailure("Ban status should be present at this point")
             return false
@@ -48,7 +48,7 @@ public final class Comment2: Comment2Providing {
         savedManager: StateManager<Bool>,
         creatorIsModerator: Bool?,
         creatorIsAdmin: Bool?,
-        bannedFromCommunity: Bool,
+        creatorBannedFromCommunity: Bool,
         commentCount: Int
     ) {
         self.api = api
@@ -61,6 +61,6 @@ public final class Comment2: Comment2Providing {
         self.creatorIsModerator = creatorIsModerator
         self.creatorIsAdmin = creatorIsAdmin
         self.commentCount = commentCount
-        creator.updateKnownCommunityBanState(id: community.id, banned: bannedFromCommunity)
+        creator.updateKnownCommunityBanState(id: community.id, banned: creatorBannedFromCommunity)
     }
 }

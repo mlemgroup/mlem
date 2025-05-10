@@ -11,22 +11,20 @@ extension Post1: CacheIdentifiable {
     public var cacheId: Int { id }
     
     @MainActor
-    func update(with post: ApiPost, semaphore: UInt? = nil) {
-        setIfChanged(\.updated, post.updated)
-        setIfChanged(\.title, post.name)
-        // We can't name this 'body' because @Observable uses that property name already
-        setIfChanged(\.content, post.body)
-        setIfChanged(\.linkUrl, post.linkUrl)
-        setIfChanged(\.embed, post.embed)
+    func update(with snapshot: Post1Snapshot, semaphore: UInt? = nil) {
+        setIfChanged(\.title, snapshot.title)
+        setIfChanged(\.content, snapshot.content)
+        setIfChanged(\.linkUrl, snapshot.linkUrl)
+        setIfChanged(\.updated, snapshot.updated)
+        setIfChanged(\.embed, snapshot.embed)
+        setIfChanged(\.nsfw, snapshot.nsfw)
+        setIfChanged(\.thumbnailUrl, snapshot.thumbnailUrl)
         
-        setIfChanged(\.nsfw, post.nsfw)
-        setIfChanged(\.thumbnailUrl, post.thumbnailImageUrl)
-        
-        deletedManager.updateWithReceivedValue(post.deleted, semaphore: semaphore)
-        pinnedCommunityManager.updateWithReceivedValue(post.featuredCommunity, semaphore: semaphore)
-        pinnedInstanceManager.updateWithReceivedValue(post.featuredLocal, semaphore: semaphore)
-        lockedManager.updateWithReceivedValue(post.locked, semaphore: semaphore)
-        removedManager.updateWithReceivedValue(post.removed, semaphore: semaphore)
+        deletedManager.updateWithReceivedValue(snapshot.deleted, semaphore: semaphore)
+        removedManager.updateWithReceivedValue(snapshot.removed, semaphore: semaphore)
+        pinnedCommunityManager.updateWithReceivedValue(snapshot.pinnedCommunity, semaphore: semaphore)
+        pinnedInstanceManager.updateWithReceivedValue(snapshot.pinnedInstance, semaphore: semaphore)
+        lockedManager.updateWithReceivedValue(snapshot.locked, semaphore: semaphore)
     }
 }
 
@@ -34,29 +32,24 @@ extension Post2: CacheIdentifiable {
     public var cacheId: Int { id }
     
     @MainActor
-    func update(with post: ApiPostView, semaphore: UInt? = nil) {
-        setIfChanged(\.creatorIsModerator, post.creatorIsModerator)
-        setIfChanged(\.creatorIsAdmin, post.creatorIsAdmin)
-        creator.updateKnownCommunityBanState(id: community.id, banned: post.creatorBannedFromCommunity ?? false)
-        setIfChanged(\.commentCount, post.counts?.comments ?? 0)
-        setIfChanged(\.unreadCommentCount, post.unreadComments ?? 0)
+    func update(with snapshot: Post2Snapshot, semaphore: UInt? = nil) {
+        post1.update(with: snapshot.post, semaphore: semaphore)
+        creator.update(with: snapshot.creator, semaphore: semaphore)
+        community.update(with: snapshot.community, semaphore: semaphore)
         
-        savedManager.updateWithReceivedValue(post.saved ?? false, semaphore: semaphore)
-        readManager.updateWithReceivedValue(post.read ?? false, semaphore: semaphore)
-        hiddenManager.updateWithReceivedValue(post.hidden ?? false, semaphore: semaphore)
+        setIfChanged(\.commentCount, snapshot.commentCount)
+        setIfChanged(\.unreadCommentCount, snapshot.unreadCommentCount)
         
-        if let counts = post.counts {
-            votesManager.updateWithReceivedValue(
-                .init(from: counts, myVote: ScoringOperation.guaranteedInit(from: post.myVote)),
-                semaphore: semaphore
-            )
-        }
+        setIfChanged(\.creatorIsModerator, snapshot.creatorIsModerator)
+        setIfChanged(\.creatorIsAdmin, snapshot.creatorIsAdmin)
+        creator.updateKnownCommunityBanState(id: community.id, banned: snapshot.creatorBannedFromCommunity)
         
-        creator.blockedManager.updateWithReceivedValue(post.creatorBlocked ?? false, semaphore: semaphore)
-
-        post1.update(with: post.post, semaphore: semaphore)
-        creator.update(with: post.creator, semaphore: semaphore)
-        community.update(with: post.community, semaphore: semaphore)
+        votesManager.updateWithReceivedValue(snapshot.votes, semaphore: semaphore)
+        savedManager.updateWithReceivedValue(snapshot.saved, semaphore: semaphore)
+        readManager.updateWithReceivedValue(snapshot.read, semaphore: semaphore)
+        hiddenManager.updateWithReceivedValue(snapshot.hidden, semaphore: semaphore)
+        
+        creator.blockedManager.updateWithReceivedValue(snapshot.creatorBlocked, semaphore: semaphore)
     }
 }
 
@@ -64,16 +57,12 @@ extension Post3: CacheIdentifiable {
     public var cacheId: Int { id }
     
     @MainActor
-    func update(with post: ApiGetPostResponse, semaphore: UInt? = nil) {
-        setIfChanged(\.communityModerators, post.moderators?.map { moderatorView in
-            api.caches.person1.performModelTranslation(api: api, from: moderatorView.moderator)
-        } ?? [])
+    func update(with snapshot: Post3Snapshot, semaphore: UInt? = nil) {
+        post2.update(with: snapshot.post, semaphore: semaphore)
+        community.update(with: snapshot.community, semaphore: semaphore)
         
-        setIfChanged(\.crossPosts, post.crossPosts.map { crossPost in
-            api.caches.post2.performModelTranslation(api: api, from: crossPost)
+        setIfChanged(\.crossPosts, snapshot.crossPosts.map { crossPost in
+            api.caches.post2.getModel(api: api, from: crossPost)
         })
-        
-        post2.update(with: post.postView, semaphore: semaphore)
-        community.update(with: post.communityView, semaphore: semaphore)
     }
 }

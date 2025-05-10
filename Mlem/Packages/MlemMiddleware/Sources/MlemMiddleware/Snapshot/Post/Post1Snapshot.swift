@@ -20,18 +20,18 @@ public struct Post1Snapshot: CacheIdentifiable {
     public let title: String
     public let content: String?
     public let linkUrl: URL?
-    public let deleted: Bool
     public let embed: PostEmbed?
-    public let pinnedCommunity: Bool
-    public let pinnedInstance: Bool
-    public let locked: Bool
     public let nsfw: Bool
-    public let removed: Bool
     public let thumbnailUrl: URL?
     public let updated: Date?
     public let languageId: Int
     public let altText: String?
-    
+    public let deleted: Bool
+    public let removed: Bool
+    public let pinnedCommunity: Bool
+    public let pinnedInstance: Bool
+    public let locked: Bool
+
     public var cacheId: Int { id }
     
     public init(from post: ApiPost) throws(ApiClientError) {

@@ -19,9 +19,9 @@ public final class Comment1: Comment1Providing {
     public let parentCommentIds: [Int]
     public let creatorId: Int
     public let postId: Int
-    
-    public var content: String
     public var created: Date
+
+    public var content: String
     public var updated: Date?
     public var distinguished: Bool
     public var languageId: Int

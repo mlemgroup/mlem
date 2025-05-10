@@ -11,16 +11,16 @@ extension Person1: CacheIdentifiable {
     public var cacheId: Int { id }
     
     @MainActor
-    func update(with backer: Person1Snapshot, semaphore: UInt? = nil) {
-        setIfChanged(\.displayName, backer.displayName)
-        setIfChanged(\.avatar, backer.avatar)
-        setIfChanged(\.banner, backer.banner)
-        setIfChanged(\.updated, backer.updated)
-        setIfChanged(\.description, backer.description)
-        setIfChanged(\.matrixId, backer.matrixUserId)
-        setIfChanged(\.isBot, backer.isBot)
-        setIfChanged(\.instanceBan, backer.instanceBan)
-        setIfChanged(\.deleted, backer.deleted)
+    func update(with snapshot: Person1Snapshot, semaphore: UInt? = nil) {
+        setIfChanged(\.displayName, snapshot.displayName)
+        setIfChanged(\.avatar, snapshot.avatar)
+        setIfChanged(\.banner, snapshot.banner)
+        setIfChanged(\.updated, snapshot.updated)
+        setIfChanged(\.description, snapshot.description)
+        setIfChanged(\.matrixId, snapshot.matrixUserId)
+        setIfChanged(\.isBot, snapshot.isBot)
+        setIfChanged(\.instanceBan, snapshot.instanceBan)
+        setIfChanged(\.deleted, snapshot.deleted)
     }
 }
 
@@ -28,12 +28,12 @@ extension Person2: CacheIdentifiable {
     public var cacheId: Int { id }
     
     @MainActor
-    func update(with backer: Person2Snapshot, semaphore: UInt? = nil) {
-        person1.update(with: backer.person, semaphore: semaphore)
+    func update(with snapshot: Person2Snapshot, semaphore: UInt? = nil) {
+        person1.update(with: snapshot.person, semaphore: semaphore)
         
-        setIfChanged(\.isAdmin, backer.isAdmin)
-        setIfChanged(\.postCount, backer.postCount)
-        setIfChanged(\.commentCount, backer.commentCount)
+        setIfChanged(\.isAdmin, snapshot.isAdmin)
+        setIfChanged(\.postCount, snapshot.postCount)
+        setIfChanged(\.commentCount, snapshot.commentCount)
     }
 }
 
@@ -41,13 +41,13 @@ extension Person3: CacheIdentifiable {
     public var cacheId: Int { id }
     
     @MainActor
-    func update(with backer: Person3Snapshot, semaphore: UInt? = nil) {
-        person2.update(with: backer.person, semaphore: semaphore)
-        if let site = backer.site {
+    func update(with snapshot: Person3Snapshot, semaphore: UInt? = nil) {
+        person2.update(with: snapshot.person, semaphore: semaphore)
+        if let site = snapshot.site {
             instance?.update(with: site)
         }
         
-        moderatedCommunities = api.caches.community1.getModels(api: api, from: backer.moderatedCommunities)
+        moderatedCommunities = api.caches.community1.getModels(api: api, from: snapshot.moderatedCommunities)
     }
 }
 
@@ -55,32 +55,32 @@ extension Person4: CacheIdentifiable {
     public var cacheId: Int { id }
     
     @MainActor
-    func update(with backer: Person4Snapshot, semaphore: UInt? = nil) {
-        person3.update(with: backer.person, semaphore: semaphore)
+    func update(with snapshot: Person4Snapshot, semaphore: UInt? = nil) {
+        person3.update(with: snapshot.person, semaphore: semaphore)
         
-        setIfChanged(\.voteDisplayMode, backer.voteDisplayMode)
-        setIfChanged(\.email, backer.email)
-        setIfChanged(\.showNsfw, backer.showNsfw)
-        setIfChanged(\.theme, backer.theme)
-        setIfChanged(\.defaultListingType, backer.defaultListingType)
-        setIfChanged(\.interfaceLanguage, backer.interfaceLanguage)
-        setIfChanged(\.showAvatars, backer.showAvatars)
-        setIfChanged(\.sendNotificationsToEmail, backer.sendNotificationsToEmail)
-        setIfChanged(\.showScores, backer.showScores)
-        setIfChanged(\.showBotAccounts, backer.showBotAccounts)
-        setIfChanged(\.showReadPosts, backer.showReadPosts)
-        setIfChanged(\.discussionLanguageIds, backer.discussionLanguageIds)
-        setIfChanged(\.showNewPostNotifs, backer.showNewPostNotifs)
-        setIfChanged(\.emailVerified, backer.emailVerified)
-        setIfChanged(\.acceptedApplication, backer.acceptedApplication)
-        setIfChanged(\.openLinksInNewTab, backer.openLinksInNewTab)
-        setIfChanged(\.blurNsfw, backer.blurNsfw)
-        setIfChanged(\.autoExpandImages, backer.autoExpandImages)
-        setIfChanged(\.infiniteScrollEnabled, backer.infiniteScrollEnabled)
-        setIfChanged(\.postListingMode, backer.postListingMode)
-        setIfChanged(\.totp2faEnabled, backer.totp2faEnabled)
-        setIfChanged(\.enableKeyboardNavigation, backer.enableKeyboardNavigation)
-        setIfChanged(\.enableAnimatedImages, backer.enableAnimatedImages)
-        setIfChanged(\.collapseBotComments, backer.collapseBotComments)
+        setIfChanged(\.voteDisplayMode, snapshot.voteDisplayMode)
+        setIfChanged(\.email, snapshot.email)
+        setIfChanged(\.showNsfw, snapshot.showNsfw)
+        setIfChanged(\.theme, snapshot.theme)
+        setIfChanged(\.defaultListingType, snapshot.defaultListingType)
+        setIfChanged(\.interfaceLanguage, snapshot.interfaceLanguage)
+        setIfChanged(\.showAvatars, snapshot.showAvatars)
+        setIfChanged(\.sendNotificationsToEmail, snapshot.sendNotificationsToEmail)
+        setIfChanged(\.showScores, snapshot.showScores)
+        setIfChanged(\.showBotAccounts, snapshot.showBotAccounts)
+        setIfChanged(\.showReadPosts, snapshot.showReadPosts)
+        setIfChanged(\.discussionLanguageIds, snapshot.discussionLanguageIds)
+        setIfChanged(\.showNewPostNotifs, snapshot.showNewPostNotifs)
+        setIfChanged(\.emailVerified, snapshot.emailVerified)
+        setIfChanged(\.acceptedApplication, snapshot.acceptedApplication)
+        setIfChanged(\.openLinksInNewTab, snapshot.openLinksInNewTab)
+        setIfChanged(\.blurNsfw, snapshot.blurNsfw)
+        setIfChanged(\.autoExpandImages, snapshot.autoExpandImages)
+        setIfChanged(\.infiniteScrollEnabled, snapshot.infiniteScrollEnabled)
+        setIfChanged(\.postListingMode, snapshot.postListingMode)
+        setIfChanged(\.totp2faEnabled, snapshot.totp2faEnabled)
+        setIfChanged(\.enableKeyboardNavigation, snapshot.enableKeyboardNavigation)
+        setIfChanged(\.enableAnimatedImages, snapshot.enableAnimatedImages)
+        setIfChanged(\.collapseBotComments, snapshot.collapseBotComments)
     }
 }

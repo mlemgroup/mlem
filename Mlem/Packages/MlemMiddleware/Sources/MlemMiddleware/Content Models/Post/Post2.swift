@@ -37,7 +37,7 @@ public final class Post2: Post2Providing {
     var hiddenManager: StateManager<Bool>
     public var hidden: Bool { hiddenManager.wrappedValue }
     
-    public var bannedFromCommunity: Bool {
+    public var creatorBannedFromCommunity: Bool {
         guard let state = creator.isBannedFromCommunity(community) else {
             assertionFailure("Ban status should be present at this point")
             return false
@@ -53,7 +53,7 @@ public final class Post2: Post2Providing {
         votes: VotesModel,
         creatorIsModerator: Bool?,
         creatorIsAdmin: Bool?,
-        bannedFromCommunity: Bool,
+        creatorBannedFromCommunity: Bool,
         commentCount: Int,
         unreadCommentCount: Int,
         saved: Bool,
@@ -72,7 +72,7 @@ public final class Post2: Post2Providing {
         self.savedManager = .init(wrappedValue: saved)
         self.readManager = .init(wrappedValue: read)
         self.hiddenManager = .init(wrappedValue: hidden)
-        creator.updateKnownCommunityBanState(id: community.id, banned: bannedFromCommunity)
+        creator.updateKnownCommunityBanState(id: community.id, banned: creatorBannedFromCommunity)
     }
     
     @MainActor

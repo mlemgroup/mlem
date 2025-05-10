@@ -31,17 +31,17 @@ extension Community2: CacheIdentifiable {
     public var cacheId: Int { id }
     
     @MainActor
-    func update(with backer: Community2Snapshot, semaphore: UInt? = nil) {
-        setIfChanged(\.postCount, backer.postCount)
-        setIfChanged(\.commentCount, backer.commentCount)
-        setIfChanged(\.activeUserCount, backer.activeUserCount)
+    func update(with snapshot: Community2Snapshot, semaphore: UInt? = nil) {
+        setIfChanged(\.postCount, snapshot.postCount)
+        setIfChanged(\.commentCount, snapshot.commentCount)
+        setIfChanged(\.activeUserCount, snapshot.activeUserCount)
         
         subscriptionManager.updateWithReceivedValue(
-            backer.subscription,
+            snapshot.subscription,
             semaphore: semaphore
         )
         
-        community1.update(with: backer.community, semaphore: semaphore)
+        community1.update(with: snapshot.community, semaphore: semaphore)
     }
 }
 
@@ -49,10 +49,10 @@ extension Community3: CacheIdentifiable {
     public var cacheId: Int { id }
     
     @MainActor
-    func update(with backer: Community3Snapshot, semaphore: UInt? = nil) {
-        setIfChanged(\.moderators, api.caches.person1.getModels(api: api, from: backer.moderators))
-        setIfChanged(\.discussionLanguageIds, backer.discussionLanguageIds)
+    func update(with snapshot: Community3Snapshot, semaphore: UInt? = nil) {
+        setIfChanged(\.moderators, api.caches.person1.getModels(api: api, from: snapshot.moderators))
+        setIfChanged(\.discussionLanguageIds, snapshot.discussionLanguageIds)
 
-        community2.update(with: backer.community, semaphore: semaphore)
+        community2.update(with: snapshot.community, semaphore: semaphore)
     }
 }

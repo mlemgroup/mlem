@@ -8,7 +8,7 @@
 import Foundation
 
 public struct Post2Snapshot: CacheIdentifiable {
-    // Won't change, but the correspondingu models need to
+    // Won't change, but the corresponding models need to
     // be updated within the `update` method of Post2.
     public let post: Post1Snapshot
     public let creator: Person1Snapshot
@@ -16,11 +16,13 @@ public struct Post2Snapshot: CacheIdentifiable {
     
     // May change. If you add/remove items from this list,
     // remember to also amend the `update` method of Post2!
-    public let votes: VotesModel
-    public let creatorIsModerator: Bool?
-    public let creatorIsAdmin: Bool?
     public let commentCount: Int
     public let unreadCommentCount: Int
+    public let creatorIsModerator: Bool?
+    public let creatorIsAdmin: Bool?
+    public let creatorBannedFromCommunity: Bool
+    public let creatorBlocked: Bool
+    public let votes: VotesModel
     public let saved: Bool
     public let read: Bool
     public let hidden: Bool
@@ -42,8 +44,13 @@ public struct Post2Snapshot: CacheIdentifiable {
         
         if let actions = post.creatorCommunityActions {
             self.creatorIsModerator = actions.becameModerator != nil
+            self.creatorBannedFromCommunity = actions.banExpires != nil
+            self.creatorBlocked = actions.blocked != nil
         } else {
             self.creatorIsModerator = post.creatorIsModerator
+            self.creatorBannedFromCommunity = post.creatorBannedFromCommunity ?? false
+            guard let creatorBlocked = post.creatorBlocked else { throw .responseMissingRequiredData }
+            self.creatorBlocked = creatorBlocked
         }
         
         self.creatorIsAdmin = post.creatorIsAdmin
