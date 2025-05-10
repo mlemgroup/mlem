@@ -151,12 +151,42 @@ struct HandleLemmyLinksModifier: ViewModifier {
         guard parts.count == 2 else { return false }
         let user = String(parts[0])
         let host = String(parts[1])
-        if !Self.emailDomains.contains(host) {
+        
+        // For common email domains, show an alert asking if user wants to open mail app
+        if Self.emailDomains.contains(host) {
+            showEmailAlert(url: url)
+        } else if isLemmyHost(host) {
+            // If it's a Lemmy host, try to resolve as a Lemmy user
             Task {
                 await showToastAndLoad(url: URL(string: "https://\(host)/u/\(user)")!)
             }
+        } else {
+            // If it's neither a common email domain nor a Lemmy host, show email alert
+            showEmailAlert(url: url)
         }
+        
         return true
+    }
+    
+    private func showEmailAlert(url: URL) {
+        Task { @MainActor in
+            guard let topVC = UIApplication.shared.firstKeyWindow?.rootViewController?.topMostViewController() else {
+                return
+            }
+            
+            let alert = UIAlertController(
+                title: "Open Mail App",
+                message: "Would you like to open this email address in your mail app?",
+                preferredStyle: .alert
+            )
+            
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+            alert.addAction(UIAlertAction(title: "Open", style: .default) { _ in
+                UIApplication.shared.open(url)
+            })
+            
+            topVC.present(alert, animated: true)
+        }
     }
     
     func showToastAndLoad(url: URL) async {
