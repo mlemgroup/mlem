@@ -149,6 +149,10 @@ public class BlockList {
         communities.keys.contains(community.actorId)
     }
     
+    public func contains(instanceActorId: ActorIdentifier) -> Bool {
+        instances.keys.contains(instanceActorId)
+    }
+    
     public func contains(_ instance: any InstanceStubProviding) -> Bool {
         instances.keys.contains(instance.actorId)
     }
