@@ -25,6 +25,7 @@ struct InstanceUptimeView: View {
     var body: some View {
         ScrollView {
             content
+                .padding(.top, 16)
         }
         .background(.themedGroupedBackground)
         .onReceive(uptimeRefreshTimer) { _ in
@@ -42,6 +43,7 @@ struct InstanceUptimeView: View {
                 }
             }
         }
+        .navigationTitle("Uptime")
     }
     
     @ViewBuilder
