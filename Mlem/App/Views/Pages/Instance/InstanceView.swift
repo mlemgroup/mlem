@@ -13,7 +13,7 @@ import Theming
 
 struct InstanceView: View {
     enum Tab: String, CaseIterable, Identifiable {
-        case about, administration, details, safety, communities
+        case about, communities, administration, details, safety
         
         var label: LocalizedStringResource {
             switch self {
@@ -101,7 +101,7 @@ struct InstanceView: View {
             )
             .padding([.horizontal, .bottom], Constants.main.standardSpacing)
             BubblePicker(
-                tabs,
+                Tab.allCases,
                 selected: $selectedTab,
                 label: { $0.label }
             )

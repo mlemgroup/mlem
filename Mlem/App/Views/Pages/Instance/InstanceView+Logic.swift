@@ -9,13 +9,6 @@ import MlemMiddleware
 import SwiftUI
 
 extension InstanceView {
-    var tabs: [Tab] {
-        var output: [Tab] = [.about, .administration, .details]
-        output.append(.safety)
-        output.append(.communities)
-        return output
-    }
-    
     func logVisit(_ instance: any Instance3Providing) {
         guard let visitContext else { return }
         if let session = (appState.firstSession as? UserSession), let visitHistory = session.visitHistory {
