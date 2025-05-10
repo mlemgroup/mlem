@@ -52,14 +52,14 @@ struct CommunityListRowBody<Content: View>: View {
     }
     
     var title: String {
-        var suffix = ""
+        var title = community.name
         if community.blocked, showBlockStatus {
-            suffix.append(" ∙ Blocked")
+            title = title + " ∙ " + String(localized: "Blocked")
         }
         if community.nsfw {
-            suffix.append("∙ NSFW")
+            title = title + " ∙ " + String(localized: "NSFW")
         }
-        return community.name + suffix
+        return title
     }
 
     var body: some View {

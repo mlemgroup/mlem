@@ -88,7 +88,7 @@ class MlemStats {
         
         return instances.filter { instance in
             let actorId = ActorIdentifier.instance(host: instance.host)
-            return blocks.instanceIdOfBlockedInstance(actorId: actorId) == nil
+            return !blocks.contains(instanceActorId: actorId)
         }
     }
 }

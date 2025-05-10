@@ -50,7 +50,7 @@ struct PersonListRowBody<Content: View>: View {
     
     var title: String {
         if person.blocked, showBlockStatus {
-            return "\(person.displayName) ∙ Blocked"
+            return person.displayName + " ∙ " + String(localized: "Blocked")
         } else {
             return person.displayName
         }

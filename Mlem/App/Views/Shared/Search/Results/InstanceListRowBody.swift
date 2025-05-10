@@ -53,11 +53,11 @@ struct InstanceListRowBody<Content: View>: View {
     var isBlocked: Bool {
         guard showBlockStatus else { return false }
         if let instance {
-            return instance.blocked_ ?? false
+            return instance.blocked
         }
         if let summary, let session = AppState.main.firstSession as? UserSession, let blocks = session.blocks {
             let actorId = ActorIdentifier.instance(host: summary.host)
-            return blocks.instanceIdOfBlockedInstance(actorId: actorId) != nil
+            return blocks.contains(instanceActorId: actorId)
         }
         return false
     }
@@ -65,7 +65,7 @@ struct InstanceListRowBody<Content: View>: View {
     var title: String {
         let hostText = instance?.host ?? summary?.host ?? ""
         if isBlocked {
-            return hostText + " ∙ Blocked"
+            return hostText + " ∙ " + String(localized: "Blocked")
         }
         return hostText
     }
