@@ -12,10 +12,21 @@ import Theming
 
 struct InstanceDetailsView: View {
     @State private var showingSlurRegex: Bool = false
+    @State var uptimeData: UptimeDataStatus?
     
     let instance: any Instance
     
     var body: some View {
+        content
+            .task {
+                let fetchedData = await loadUptimeData(instance: instance)
+                withAnimation(.easeOut(duration: 0.2)) {
+                    uptimeData = fetchedData
+                }
+            }
+    }
+    
+    var content: some View {
         VStack(spacing: 16) {
             FormSection {
                 ProfileDateView(profilable: instance)
@@ -40,6 +51,17 @@ struct InstanceDetailsView: View {
             
             if let activeUserCount = instance.activeUserCount_ {
                 ActiveUserCountView(activeUserCount: activeUserCount)
+            }
+            
+            FormSection {
+                if case let .success(uptimeData) = uptimeData {
+                    NavigationLink(.instanceUptime(instance: instance, uptimeData: uptimeData)) {
+                        uptimeSummary
+                    }
+                    .buttonStyle(.plain)
+                } else {
+                    uptimeSummary
+                }
             }
             
             FormSection {
@@ -209,5 +231,40 @@ struct InstanceDetailsView: View {
             value: value ? "Yes" : "No",
             color: value ? .themedPositive : .themedNegative
         )
+    }
+    
+    @ViewBuilder
+    var uptimeSummary: some View {
+        VStack(spacing: Constants.main.standardSpacing) {
+            HStack {
+                Text("Uptime")
+                
+                Spacer()
+                
+                if case let .success(uptimeData) = uptimeData {
+                    // NavigationLink(.instanceUptime(instance: instance, uptimeData: uptimeData)) {
+                        (Text("Details") + Text(verbatim: " ") + Text(Image(icon: .general.forward)))
+                            .font(.footnote)
+                            .foregroundStyle(.themedAccent)
+                    // }
+                }
+            }
+            
+            switch uptimeData {
+            case let .success(uptimeData):
+                RecentUptimeChecks(results: uptimeData.results)
+            case .unavailable:
+                Text("Data not available")
+                    .italic()
+                    .foregroundStyle(.themedWarning)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            case let .failure(error):
+                ErrorView(.init(error: error))
+            default:
+                ProgressView()
+                    .padding(Constants.main.halfSpacing)
+            }
+        }
+        .padding(Constants.main.standardSpacing)
     }
 }

@@ -139,6 +139,29 @@ public extension ApiClient {
         throw ApiClientError.noEntityFound
     }
     
+    func resolve<Value: ActorIdentifiable & Sharable>(urls: [URL]) async throws -> [URL: Value] {
+        try await withThrowingTaskGroup(of: (url: URL, value: Value)?.self) { group in
+            urls.forEach { url in
+                group.addTask {
+                    if let value = try await self.resolve(url: url) as? Value {
+                        return (url, value)
+                    }
+                    return nil
+                }
+            }
+            
+            var collected: [URL: Value] = .init()
+            
+            for try await result in group {
+                if let result {
+                    collected[result.url] = result.value
+                }
+            }
+            
+            return collected
+        }
+    }
+    
     func getBlocked() async throws -> (people: [Person1], communities: [Community1], instances: [Instance1]) {
         let request = GetSiteRequest(endpoint: .v3)
         let response = try await perform(request)

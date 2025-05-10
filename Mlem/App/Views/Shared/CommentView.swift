@@ -71,7 +71,7 @@ struct CommentView<EmbeddedContent: View>: View {
                 CommentBarView(depth: comment.depth, inFeed: inFeed)
                 
                 VStack(alignment: .leading, spacing: 0) {
-                    VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
+                    VStack(alignment: .leading, spacing: Constants.main.compactSpacing) {
                         if !inFeed {
                             authorAndMenu.padding(.top, Constants.main.standardSpacing)
                         }
@@ -80,6 +80,15 @@ struct CommentView<EmbeddedContent: View>: View {
                             CommentBodyView(comment: comment)
                                 .padding(.trailing, 2)
                             embeddedContent
+                        }
+                        
+                        if compact, !collapsed {
+                            InfoStackView(
+                                comment: comment,
+                                readouts: commentInteractionBar.readouts,
+                                coloredReadouts: .init(CommentBarConfiguration.ReadoutType.allCases)
+                            )
+                            .layoutPriority(1)
                         }
                     }
                     .padding(.horizontal, Constants.main.standardSpacing)
@@ -125,14 +134,6 @@ struct CommentView<EmbeddedContent: View>: View {
         HStack(spacing: 0) {
             FullyQualifiedLinkView(comment.creator_, labelStyle: .small)
             Spacer()
-            if compact {
-                InfoStackView(
-                    comment: comment,
-                    readouts: commentInteractionBar.readouts,
-                    coloredReadouts: .init(CommentBarConfiguration.ReadoutType.allCases)
-                )
-                .layoutPriority(1)
-            }
             Group {
                 if collapsed {
                     Image(icon: .general.expand)
