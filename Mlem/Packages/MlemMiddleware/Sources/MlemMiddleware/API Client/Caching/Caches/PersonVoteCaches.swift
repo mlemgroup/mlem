@@ -11,13 +11,13 @@ class PersonVoteCache: CoreCache<PersonVote> {
     @MainActor
     func getModel(
         api: ApiClient,
-        from apiType: ApiVoteView,
+        from snapshot: PersonVoteSnapshot,
         target: PersonVote.Target,
         communityId: Int,
         semaphore: UInt? = nil
     ) -> PersonVote {
-        if let item = retrieveModel(cacheId: getCacheId(target: target, creatorId: apiType.creator.id)) {
-            item.update(with: apiType, semaphore: semaphore)
+        if let item = retrieveModel(cacheId: getCacheId(target: target, creatorId: snapshot.creator.id)) {
+            item.update(with: snapshot, semaphore: semaphore)
             return item
         }
         
@@ -25,9 +25,9 @@ class PersonVoteCache: CoreCache<PersonVote> {
             api: api,
             target: target,
             communityId: communityId,
-            creator: api.caches.person1.getModel(api: api, from: apiType.creator),
-            vote: .init(rawValue: apiType.score) ?? .none,
-            creatorBannedFromCommunity: apiType.creatorBannedFromCommunity
+            creator: api.caches.person1.getModel(api: api, from: snapshot.creator),
+            vote: .init(rawValue: snapshot.score) ?? .none,
+            creatorBannedFromCommunity: snapshot.creatorBannedFromCommunity
         )
         itemCache.put(newItem)
         return newItem

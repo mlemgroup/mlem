@@ -7,20 +7,7 @@
 
 import Foundation
 
-extension ApiCommentReportView: ReportApiBacker {
-    public var cacheId: Int {
-        var hasher = Hasher()
-        hasher.combine(ReportType.comment)
-        hasher.combine(commentReport.id)
-        return hasher.finalize()
-    }
-    
-    public var id: Int { commentReport.id }
-    public var reason: String { commentReport.reason }
-    public var resolved: Bool { commentReport.resolved }
-    public var published: Date { commentReport.published }
-    public var updated: Date? { commentReport.updated }
-    
+extension ApiCommentReportView {
     func toCommentView() -> ApiCommentView? {
         guard let subscribed, let saved, let creatorBlocked else { return nil }
         return .init(
@@ -43,18 +30,6 @@ extension ApiCommentReportView: ReportApiBacker {
             instanceActions: nil,
             creatorCommunityActions: nil,
             canMod: nil
-        )
-    }
-    
-    @MainActor
-    func createTarget(api: ApiClient, myPersonId: Int) -> ReportTarget {
-        if let commentView = toCommentView() {
-            return .comment(api.caches.comment2.getModel(api: api, from: commentView))
-        }
-        return .legacyComment(
-            api.caches.comment1.getModel(api: api, from: comment),
-            community: api.caches.community1.getModel(api: api, from: community),
-            creator: api.caches.person1.getModel(api: api, from: commentCreator)
         )
     }
 }
