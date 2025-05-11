@@ -14,6 +14,9 @@ struct HandleLemmyLinksModifier: ViewModifier {
     @Environment(NavigationLayer.self) var navigation
     @Environment(AppState.self) var appState
     
+    @State private var showingEmailAlert = false
+    @State private var pendingMailtoURL: URL?
+    
     // If a link in the `user@example.com` format is clicked, it opens in the Mail app
     // immediately for these domains. For all other domains, Mlem will attempt to
     // resolve it as a Lemmy link first.
@@ -34,6 +37,16 @@ struct HandleLemmyLinksModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .environment(\.openURL, OpenURLAction(handler: didReceiveURL))
+            .alert("Open Mail App", isPresented: $showingEmailAlert) {
+                Button("Cancel", role: .cancel) {}
+                Button("Open") {
+                    if let url = pendingMailtoURL {
+                        UIApplication.shared.open(url)
+                    }
+                }
+            } message: {
+                Text("Would you like to open this email address in your mail app?")
+            }
     }
     
     @MainActor
@@ -154,7 +167,8 @@ struct HandleLemmyLinksModifier: ViewModifier {
         
         // For common email domains, show an alert asking if user wants to open mail app
         if Self.emailDomains.contains(host) {
-            showEmailAlert(url: url)
+            pendingMailtoURL = url
+            showingEmailAlert = true
         } else if isLemmyHost(host) {
             // If it's a Lemmy host, try to resolve as a Lemmy user
             Task {
@@ -162,31 +176,11 @@ struct HandleLemmyLinksModifier: ViewModifier {
             }
         } else {
             // If it's neither a common email domain nor a Lemmy host, show email alert
-            showEmailAlert(url: url)
+            pendingMailtoURL = url
+            showingEmailAlert = true
         }
         
         return true
-    }
-    
-    private func showEmailAlert(url: URL) {
-        Task { @MainActor in
-            guard let topVC = UIApplication.shared.firstKeyWindow?.rootViewController?.topMostViewController() else {
-                return
-            }
-            
-            let alert = UIAlertController(
-                title: "Open Mail App",
-                message: "Would you like to open this email address in your mail app?",
-                preferredStyle: .alert
-            )
-            
-            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-            alert.addAction(UIAlertAction(title: "Open", style: .default) { _ in
-                UIApplication.shared.open(url)
-            })
-            
-            topVC.present(alert, animated: true)
-        }
     }
     
     func showToastAndLoad(url: URL) async {
