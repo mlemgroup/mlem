@@ -26,7 +26,6 @@ public final class Instance3: Instance3Providing {
     public var allowedLanguageIds: Set<Int>
     
     public var taglines: [ApiTagline]
-    public var customEmojis: [ApiCustomEmojiView]
     public var blockedUrls: [ApiLocalSiteUrlBlocklist]?
     public var administrators: [Person2]
   
@@ -37,7 +36,6 @@ public final class Instance3: Instance3Providing {
         allLanguages: [Locale.Language],
         allowedLanguageIds: Set<Int>,
         taglines: [ApiTagline],
-        customEmojis: [ApiCustomEmojiView],
         blockedUrls: [ApiLocalSiteUrlBlocklist]?,
         administrators: [Person2]
     ) {
@@ -47,7 +45,6 @@ public final class Instance3: Instance3Providing {
         self.allLanguages = allLanguages
         self.allowedLanguageIds = allowedLanguageIds
         self.taglines = taglines
-        self.customEmojis = customEmojis
         self.blockedUrls = blockedUrls
         self.administrators = administrators
     }

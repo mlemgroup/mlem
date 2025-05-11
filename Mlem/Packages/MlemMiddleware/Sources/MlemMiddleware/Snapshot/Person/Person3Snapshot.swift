@@ -11,7 +11,7 @@ public struct Person3Snapshot: CacheIdentifiable {
     // Won't change, but the corresponding models need to
     // be updated within the `update` method of Person3.
     let person: Person2Snapshot
-    let site: ApiSite?
+    let site: Instance1Snapshot?
     
     // May change. If you add/remove items from this list,
     // remember to also amend the `update` method of Person3!
@@ -35,7 +35,12 @@ public struct Person3Snapshot: CacheIdentifiable {
     
     init(from personDetails: ApiGetPersonDetailsResponse) throws(ApiClientError) {
         self.person = try .init(from: personDetails.personView)
-        self.site = personDetails.site
+        
+        if let site = personDetails.site {
+            self.site = try .init(from: site)
+        } else {
+            self.site = nil
+        }
         
         var moderatedCommunities: [Community1Snapshot] = []
         moderatedCommunities.reserveCapacity(personDetails.moderates.count)

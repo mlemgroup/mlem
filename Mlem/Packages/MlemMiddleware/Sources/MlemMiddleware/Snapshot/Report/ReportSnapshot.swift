@@ -102,9 +102,8 @@ public struct ReportSnapshot: CacheIdentifiable {
         self.resolved = report.privateMessageReport.resolved
         self.reason = report.privateMessageReport.reason
         
-        if let messageView = report.toPrivateMessageView() {
-            self.target = try .message(.init(from: messageView))
-        }
+        let messageView = report.toPrivateMessageView()
+        self.target = try .message(.init(from: messageView))
     }
 }
 

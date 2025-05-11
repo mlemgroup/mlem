@@ -11,14 +11,16 @@ extension Instance1: CacheIdentifiable {
     public var cacheId: Int { id }
     
     @MainActor
-    func update(with site: ApiSite) {
-        setIfChanged(\.displayName, site.name)
-        setIfChanged(\.description, site.sidebar)
-        setIfChanged(\.shortDescription, site.description)
-        setIfChanged(\.avatar, site.icon)
-        setIfChanged(\.banner, site.banner)
-        setIfChanged(\.lastRefresh, site.lastRefreshedAt)
-        setIfChanged(\.contentWarning, site.contentWarning)
+    func update(with snapshot: Instance1Snapshot) {
+        setIfChanged(\.updated, snapshot.updated)
+        setIfChanged(\.publicKey, snapshot.publicKey)
+        setIfChanged(\.displayName, snapshot.displayName)
+        setIfChanged(\.description, snapshot.description)
+        setIfChanged(\.shortDescription, snapshot.shortDescription)
+        setIfChanged(\.avatar, snapshot.avatar)
+        setIfChanged(\.banner, snapshot.banner)
+        setIfChanged(\.lastRefresh, snapshot.lastRefresh)
+        setIfChanged(\.contentWarning, snapshot.contentWarning)
     }
 }
 
@@ -26,43 +28,36 @@ extension Instance2: CacheIdentifiable {
     public var cacheId: Int { id }
     
     @MainActor
-    func update(with siteView: ApiSiteView) {
-        setIfChanged(\.setup, siteView.localSite.siteSetup)
-        setIfChanged(\.downvotesEnabled, siteView.localSite.enableDownvotes ?? true) // TODO: 0.20 support: we shouldn't be coalescing to true here
-        setIfChanged(\.nsfwContentEnabled, siteView.localSite.enableNsfw ?? false) // TODO: 0.20 support: we shouldn't be coalescing to false here
-        setIfChanged(\.communityCreationRestrictedToAdmins, siteView.localSite.communityCreationAdminOnly)
-        setIfChanged(\.emailVerificationRequired, siteView.localSite.requireEmailVerification)
-        setIfChanged(\.applicationQuestion, siteView.localSite.applicationQuestion)
-        setIfChanged(\.isPrivate, siteView.localSite.privateInstance)
-        setIfChanged(\.defaultTheme, siteView.localSite.defaultTheme)
-        setIfChanged(\.defaultFeed, siteView.localSite.defaultPostListingType)
-        setIfChanged(\.legalInformation, siteView.localSite.legalInformation)
-        setIfChanged(\.hideModlogNames, siteView.localSite.hideModlogModNames)
-        setIfChanged(\.emailApplicationsToAdmins, siteView.localSite.applicationEmailAdmins)
-        setIfChanged(\.emailReportsToAdmins, siteView.localSite.reportsEmailAdmins)
-        setIfChanged(\.slurFilterRegex, siteView.localSite.slurFilterRegex)
-        setIfChanged(\.actorNameMaxLength, siteView.localSite.actorNameMaxLength)
-        setIfChanged(\.federationEnabled, siteView.localSite.federationEnabled)
-        setIfChanged(\.captchaEnabled, siteView.localSite.captchaEnabled)
-        setIfChanged(\.captchaDifficulty, .init(rawValue: siteView.localSite.captchaDifficulty))
-        setIfChanged(\.registrationMode, siteView.localSite.registrationMode)
-        setIfChanged(\.federationSignedFetch, siteView.localSite.federationSignedFetch)
-        setIfChanged(\.defaultPostListingMode, siteView.localSite.defaultPostListingMode)
-        setIfChanged(\.defaultSortType, siteView.localSite.defaultSortType)
-        if let counts = siteView.counts {
-            setIfChanged(\.userCount, counts.users)
-            setIfChanged(\.postCount, counts.posts)
-            setIfChanged(\.commentCount, counts.comments)
-            setIfChanged(\.communityCount, counts.communities)
-            setIfChanged(\.activeUserCount, .init(
-                sixMonths: counts.usersActiveHalfYear,
-                month: counts.usersActiveMonth,
-                week: counts.usersActiveWeek,
-                day: counts.usersActiveDay
-            ))
-        }
-            
-        instance1.update(with: siteView.site)
+    func update(with snapshot: Instance2Snapshot) {
+        instance1.update(with: snapshot.instance)
+        
+        setIfChanged(\.setup, snapshot.setup)
+        setIfChanged(\.downvotesEnabled, snapshot.downvotesEnabled)
+        setIfChanged(\.nsfwContentEnabled, snapshot.nsfwContentEnabled)
+        setIfChanged(\.communityCreationRestrictedToAdmins, snapshot.communityCreationRestrictedToAdmins)
+        setIfChanged(\.emailVerificationRequired, snapshot.emailVerificationRequired)
+        setIfChanged(\.applicationQuestion, snapshot.applicationQuestion)
+        setIfChanged(\.isPrivate, snapshot.isPrivate)
+        setIfChanged(\.defaultTheme, snapshot.defaultTheme)
+        setIfChanged(\.defaultFeed, snapshot.defaultFeed)
+        setIfChanged(\.legalInformation, snapshot.legalInformation)
+        setIfChanged(\.hideModlogNames, snapshot.hideModlogNames)
+        setIfChanged(\.emailApplicationsToAdmins, snapshot.emailApplicationsToAdmins)
+        setIfChanged(\.emailReportsToAdmins, snapshot.emailReportsToAdmins)
+        setIfChanged(\.slurFilterRegex, snapshot.slurFilterRegex)
+        setIfChanged(\.actorNameMaxLength, snapshot.actorNameMaxLength)
+        setIfChanged(\.federationEnabled, snapshot.federationEnabled)
+        setIfChanged(\.captchaEnabled, snapshot.captchaEnabled)
+        setIfChanged(\.captchaDifficulty, snapshot.captchaDifficulty)
+        setIfChanged(\.registrationMode, snapshot.registrationMode)
+        setIfChanged(\.federationSignedFetch, snapshot.federationSignedFetch)
+        setIfChanged(\.defaultPostListingMode, snapshot.defaultPostListingMode)
+        setIfChanged(\.defaultSortType, snapshot.defaultSortType)
+        setIfChanged(\.userCount, snapshot.userCount)
+        setIfChanged(\.postCount, snapshot.postCount)
+        setIfChanged(\.commentCount, snapshot.commentCount)
+        setIfChanged(\.communityCount, snapshot.communityCount)
+        setIfChanged(\.activeUserCount, snapshot.activeUserCount)
     }
 }
 
@@ -70,21 +65,13 @@ extension Instance3: CacheIdentifiable {
     public var cacheId: Int { id }
     
     @MainActor
-    func update(with response: ApiGetSiteResponse) {
-        setIfChanged(\.version, SiteVersion(response.version))
-        setIfChanged(\.allowedLanguageIds, Set(response.discussionLanguages).subtracting([0]))
-        setIfChanged(\.taglines, response.taglines ?? [response.tagline].compactMap { $0 })
-        setIfChanged(\.customEmojis, response.customEmojis ?? []) // TODO: 0.20 support: we shouldn't be coalescing to [] here
-        setIfChanged(\.blockedUrls, response.blockedUrls)
-        setIfChanged(\.administrators, response.admins.compactMap {
-            if let backer = try? Person2Snapshot(from: $0) {
-                return api.caches.person2.getModel(api: api, from: backer)
-            } else {
-                assertionFailure()
-                return nil
-            }
-        })
+    func update(with snapshot: Instance3Snapshot) {
+        instance2.update(with: snapshot.instance)
         
-        instance2.update(with: response.siteView)
+        setIfChanged(\.version, snapshot.version)
+        setIfChanged(\.allowedLanguageIds, snapshot.allowedLanguageIds)
+        setIfChanged(\.taglines, snapshot.taglines)
+        setIfChanged(\.blockedUrls, snapshot.blockedUrls)
+        setIfChanged(\.administrators, api.caches.person2.getModels(api: api, from: snapshot.administrators))
     }
 }

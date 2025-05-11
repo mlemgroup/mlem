@@ -18,8 +18,37 @@ public struct RegistrationApplicationSnapshot: CacheIdentifiable {
     public let questionResponse: String
     public let email: String?
     public let showNsfw: Bool
+    public let creator: Person1Snapshot
 
     // May change. If you add/remove items from this list,
     // remember to also amend the `update` method of RegistrationApplication!
     public let emailVerified: Bool
+    public let resolver: Person1Snapshot?
+    public let resolution: RegistrationApplication.ResolutionState
+    
+    public var cacheId: Int { id }
+    
+    public init(from application: ApiRegistrationApplicationView) throws(ApiClientError) {
+        self.id = application.registrationApplication.id
+        self.created = application.registrationApplication.published
+        self.questionResponse = application.registrationApplication.answer
+        self.email = application.creatorLocalUser.email
+        self.showNsfw = application.creatorLocalUser.showNsfw
+        self.emailVerified = application.creatorLocalUser.emailVerified
+        self.creator = try .init(from: application.creator)
+        if let resolver = application.admin {
+            self.resolver = try .init(from: resolver)
+        } else {
+            self.resolver = nil
+        }
+        let resolution: RegistrationApplication.ResolutionState
+        if application.creatorLocalUser.acceptedApplication {
+            resolution = .approved
+        } else if application.admin != nil {
+            resolution = .denied(reason: application.registrationApplication.denyReason)
+        } else {
+            resolution = .unresolved
+        }
+        self.resolution = resolution
+    }
 }

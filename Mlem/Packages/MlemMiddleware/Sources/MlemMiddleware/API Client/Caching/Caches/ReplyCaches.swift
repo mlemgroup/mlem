@@ -28,6 +28,10 @@ class Reply1Cache: ApiTypeBackedCache<Reply1, Reply1Snapshot> {
 class Reply2Cache: ApiTypeBackedCache<Reply2, Reply2Snapshot> {
     public var commentIdItemCache: ItemCache = .init()
     
+    public func retrieveModel(commentId: Int) -> Reply2? {
+        commentIdItemCache.get(commentId)
+    }
+
     override func performModelTranslation(api: ApiClient, from snapshot: Reply2Snapshot) -> Reply2 {
         let votesManager: StateManager<VotesModel>
         let savedManager: StateManager<Bool>

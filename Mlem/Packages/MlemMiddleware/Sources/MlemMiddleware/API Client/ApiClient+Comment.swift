@@ -11,14 +11,14 @@ public extension ApiClient {
     func getComment(id: Int) async throws -> Comment2 {
         let request = GetCommentRequest(endpoint: .v3, id: id)
         let response = try await perform(request)
-        return await caches.comment2.getModel(api: self, from: response.commentView)
+        return try await caches.comment2.getModel(api: self, from: .init(from: response.commentView))
     }
     
     func getComment(url: URL) async throws -> Comment2 {
         let request = ResolveObjectRequest(endpoint: .v3, q: url.absoluteString)
         do {
             if let response = try await perform(request).comment {
-                return await caches.comment2.getModel(api: self, from: response)
+                return try await caches.comment2.getModel(api: self, from: .init(from: response))
             }
         } catch let ApiClientError.response(response, _) where response.couldntFindObject {
             throw ApiClientError.noEntityFound
@@ -51,7 +51,10 @@ public extension ApiClient {
             timeRangeSeconds: nil
         )
         let response = try await perform(request)
-        return await caches.comment2.getModels(api: self, from: response.comments)
+        return try await caches.comment2.getModels(
+            api: self,
+            from: response.comments.map { try .init(from: $0) }
+        )
     }
     
     func getComments(
@@ -79,7 +82,7 @@ public extension ApiClient {
             timeRangeSeconds: nil
         )
         let response = try await perform(request)
-        return await caches.comment2.getModels(api: self, from: response.comments)
+        return try await caches.comment2.getModels(api: self, from: response.comments.map { try .init(from: $0) })
     }
     
     // This method should be removed in favor of the below method once we drop support for versions before Lemmy 1.0
@@ -161,28 +164,43 @@ public extension ApiClient {
             pageBack: nil
         )
         let response = try await perform(request)
-        return await caches.comment2.getModels(api: self, from: response.comments ?? [])
+        return try await caches.comment2.getModels(
+            api: self,
+            from: (response.comments ?? []).map { try .init(from: $0) }
+        )
     }
     
     @discardableResult
     func voteOnComment(id: Int, score: ScoringOperation, semaphore: UInt? = nil) async throws -> Comment2 {
-        let request = LikeCommentRequest(endpoint: .v3, commentId: id, score: score.rawValue)
+        let request = CreateCommentLikeRequest(endpoint: .v3, commentId: id, score: score.rawValue)
         let response = try await perform(request)
-        return await caches.comment2.getModel(api: self, from: response.commentView, semaphore: semaphore)
+        return try await caches.comment2.getModel(
+            api: self,
+            from: .init(from: response.commentView),
+            semaphore: semaphore
+        )
     }
     
     @discardableResult
     func saveComment(id: Int, save: Bool, semaphore: UInt? = nil) async throws -> Comment2 {
         let request = SaveCommentRequest(endpoint: .v3, commentId: id, save: save)
         let response = try await perform(request)
-        return await caches.comment2.getModel(api: self, from: response.commentView, semaphore: semaphore)
+        return try await caches.comment2.getModel(
+            api: self,
+            from: .init(from: response.commentView),
+            semaphore: semaphore
+        )
     }
     
     @discardableResult
     func deleteComment(id: Int, delete: Bool, semaphore: UInt? = nil) async throws -> Comment2 {
         let request = DeleteCommentRequest(endpoint: .v3, commentId: id, deleted: delete)
         let response = try await perform(request)
-        return await caches.comment2.getModel(api: self, from: response.commentView, semaphore: semaphore)
+        return try await caches.comment2.getModel(
+            api: self,
+            from: .init(from: response.commentView),
+            semaphore: semaphore
+        )
     }
     
     @discardableResult
@@ -199,7 +217,7 @@ public extension ApiClient {
             formId: nil
         )
         let response = try await perform(request)
-        return await caches.comment2.getModel(api: self, from: response.commentView)
+        return try await caches.comment2.getModel(api: self, from: .init(from: response.commentView))
     }
     
     // There's also a `replyToPost` method in `ApiClient+Post` for creating a comment on a post
@@ -213,7 +231,7 @@ public extension ApiClient {
             formId: nil
         )
         let response = try await perform(request)
-        let comment = await caches.comment2.getModel(api: self, from: response.commentView)
+        let comment = try await caches.comment2.getModel(api: self, from: .init(from: response.commentView))
         comment.getCachedInboxReply()?.setKnownReadState(newValue: true)
         return comment
     }
@@ -230,7 +248,7 @@ public extension ApiClient {
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
         return try await caches.report.getModel(
             api: self,
-            from: response.commentReportView,
+            from: .init(from: response.commentReportView),
             myPersonId: myPersonId
         )
     }
@@ -251,7 +269,11 @@ public extension ApiClient {
     ) async throws -> Comment2 {
         let request = RemoveCommentRequest(endpoint: .v3, commentId: id, removed: remove, reason: reason)
         let response = try await perform(request)
-        return await caches.comment2.getModel(api: self, from: response.commentView, semaphore: semaphore)
+        return try await caches.comment2.getModel(
+            api: self,
+            from: .init(from: response.commentView),
+            semaphore: semaphore
+        )
     }
     
     @discardableResult

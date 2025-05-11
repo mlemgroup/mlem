@@ -7,41 +7,32 @@
 
 import Foundation
 
-class RegistrationApplicationCache: ApiTypeBackedCache<RegistrationApplication, ApiRegistrationApplicationView> {
+class RegistrationApplicationCache: ApiTypeBackedCache<RegistrationApplication, RegistrationApplicationSnapshot> {
     @MainActor
     override func performModelTranslation(
         api: ApiClient,
-        from apiType: ApiRegistrationApplicationView
+        from snapshot: RegistrationApplicationSnapshot
     ) -> RegistrationApplication {
-        let resolution: RegistrationApplication.ResolutionState
-        if apiType.creatorLocalUser.acceptedApplication {
-            resolution = .approved
-        } else if apiType.admin != nil {
-            resolution = .denied(reason: apiType.registrationApplication.denyReason)
-        } else {
-            resolution = .unresolved
-        }
-        
-        return .init(
+        .init(
             api: api,
-            id: apiType.registrationApplication.id,
-            questionResponse: apiType.registrationApplication.answer,
-            creator: api.caches.person1.getModel(api: api, from: apiType.creator),
-            resolver: api.caches.person1.getOptionalModel(api: api, from: apiType.admin),
-            email: apiType.creatorLocalUser.email,
-            emailVerified: apiType.creatorLocalUser.emailVerified,
-            showNsfw: apiType.creatorLocalUser.showNsfw,
-            created: apiType.registrationApplication.published,
-            resolution: resolution
+            id: snapshot.id,
+            questionResponse: snapshot.questionResponse,
+            creator: api.caches.person1.getModel(api: api, from: snapshot.creator),
+            resolver: api.caches.person1.getOptionalModel(api: api, from: snapshot.resolver),
+            email: snapshot.email,
+            emailVerified: snapshot.emailVerified,
+            showNsfw: snapshot.showNsfw,
+            created: snapshot.created,
+            resolution: snapshot.resolution
         )
     }
     
     @MainActor
     override func updateModel(
         _ item: RegistrationApplication,
-        with apiType: ApiRegistrationApplicationView,
+        with snapshot: RegistrationApplicationSnapshot,
         semaphore: UInt? = nil
     ) {
-        item.update(with: apiType, semaphore: semaphore)
+        item.update(with: snapshot, semaphore: semaphore)
     }
 }

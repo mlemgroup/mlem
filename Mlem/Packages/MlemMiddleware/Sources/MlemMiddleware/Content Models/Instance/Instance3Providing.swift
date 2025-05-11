@@ -14,7 +14,6 @@ public protocol Instance3Providing: Instance2Providing {
     var allLanguages: [Locale.Language] { get }
     var allowedLanguageIds: Set<Int> { get }
     var taglines: [ApiTagline] { get }
-    var customEmojis: [ApiCustomEmojiView] { get }
     var blockedUrls: [ApiLocalSiteUrlBlocklist]? { get }
     var administrators: [Person2] { get }
 }
@@ -26,7 +25,6 @@ public extension Instance3Providing {
     var allLanguages: [Locale.Language] { instance3.allLanguages }
     var allowedLanguageIds: Set<Int> { instance3.allowedLanguageIds }
     var taglines: [ApiTagline] { instance3.taglines }
-    var customEmojis: [ApiCustomEmojiView] { instance3.customEmojis }
     var blockedUrls: [ApiLocalSiteUrlBlocklist]? { instance3.blockedUrls }
     var administrators: [Person2] { instance3.administrators }
     
@@ -34,7 +32,6 @@ public extension Instance3Providing {
     var allLanguages_: [Locale.Language]? { instance3.allLanguages }
     var allowedLanguageIds_: Set<Int>? { instance3.allowedLanguageIds }
     var taglines_: [ApiTagline]? { instance3.taglines }
-    var customEmojis_: [ApiCustomEmojiView]? { instance3.customEmojis }
     var blockedUrls_: [ApiLocalSiteUrlBlocklist]? { instance3.blockedUrls }
     var administrators_: [Person2]? { instance3.administrators }
     

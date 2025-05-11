@@ -12,7 +12,7 @@ public struct Community3Snapshot: CacheIdentifiable {
     // be updated within the `update` method of Community3.
     public let community: Community2Snapshot
     
-    public let instance: ApiSite?
+    public let instance: Instance1Snapshot?
     public let moderators: [Person1Snapshot]
     public let discussionLanguageIds: Set<Int>
     
@@ -20,7 +20,11 @@ public struct Community3Snapshot: CacheIdentifiable {
     
     public init(from community: ApiGetCommunityResponse) throws(ApiClientError) {
         self.community = try .init(from: community.communityView)
-        self.instance = community.site
+        if let site = community.site {
+            self.instance = try .init(from: site)
+        } else {
+            self.instance = nil
+        }
         
         var moderators = [Person1Snapshot]()
         for moderator in community.moderators {

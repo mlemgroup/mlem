@@ -7,6 +7,6 @@
 
 import Foundation
 
-extension ApiPersonMentionView: CacheIdentifiable {
-    public var cacheId: Int { personMention.id }
-}
+// extension ApiPersonMentionView: CacheIdentifiable {
+//    public var cacheId: Int { personMention.id }
+// }
