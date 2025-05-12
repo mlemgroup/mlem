@@ -103,7 +103,9 @@ struct HandleLemmyLinksModifier: ViewModifier {
             // The "@" check ensures that KBin links are excluded
             if !host.contains("reddit.com"), components.count == 2, components[1].first != "@" {
                 Task {
-                    await showToastAndLoad(url: url)
+                    await showToastAndResolve(url: url) { url in
+                        openRegularLink(url: url)
+                    }
                 }
                 return .handled
             }
@@ -172,7 +174,11 @@ struct HandleLemmyLinksModifier: ViewModifier {
         } else if isLemmyHost(host) {
             // If it's a Lemmy host, try to resolve as a Lemmy user
             Task {
-                await showToastAndLoad(url: URL(string: "https://\(host)/u/\(user)")!)
+                await showToastAndResolve(url: URL(string: "https://\(host)/u/\(user)")!) { _ in
+                    // If resolution fails, show email alert as fallback
+                    pendingMailtoURL = url
+                    showingEmailAlert = true
+                }
             }
         } else {
             // If it's neither a common email domain nor a Lemmy host, show email alert
@@ -183,7 +189,7 @@ struct HandleLemmyLinksModifier: ViewModifier {
         return true
     }
     
-    func showToastAndLoad(url: URL) async {
+    func showToastAndResolve(url: URL, fallback: @escaping (URL) -> Void) async {
         let toastId = ToastModel.main.add(.loading())
         var output = try? await appState.firstApi.resolve(url: url)
         if output == nil {
@@ -199,7 +205,7 @@ struct HandleLemmyLinksModifier: ViewModifier {
         } else if let community = output as? any Community {
             navigation.push(.community(community))
         } else {
-            openRegularLink(url: url)
+            fallback(url)
         }
         ToastModel.main.removeToast(id: toastId)
     }
