@@ -113,7 +113,7 @@ struct ContentView: View {
                 .inbox,
                 appState: appState,
                 profileLabelType: tabProfileLabelType,
-                badge: (appState.firstSession as? UserSession)?.unreadCount?.badgeLabel
+                badge: (appState.firstSession as? UserSession)?.unreadCount?.badgeLabel.map { String($0) }
             ) {
                 NavigationLayerView(layer: .init(root: .inbox, model: navigationModel), hasSheetModifiers: false)
             },

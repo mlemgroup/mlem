@@ -5286,6 +5286,9 @@
         }
       }
     },
+    "Open Mail App" : {
+
+    },
     "Open URL from Clipboard" : {
       "localizations" : {
         "fr" : {
@@ -7184,6 +7187,9 @@
           }
         }
       }
+    },
+    "Show Response Times" : {
+
     },
     "Show Sidebar on App Launch" : {
       "localizations" : {
@@ -9118,6 +9124,9 @@
           }
         }
       }
+    },
+    "Would you like to open this email address in your mail app?" : {
+
     },
     "Wrap Code Block Lines" : {
       "localizations" : {

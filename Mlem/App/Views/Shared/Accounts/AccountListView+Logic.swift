@@ -133,4 +133,31 @@ extension AccountListView {
         accountsTracker.userAccounts.move(fromOffsets: fromOffsets, toOffset: toOffset)
         accountsTracker.saveAccounts(ofType: .user)
     }
+    
+    func listRowComplications(withInstance: Bool) -> Set<AccountListRowBody.Complication> {
+        var complications: Set<AccountListRowBody.Complication> = [.unreadCount, .isActive]
+        if withInstance {
+            complications.insert(.instance)
+        }
+        switch preferredListRowComplication {
+        case .lastUsed:
+            complications.insert(.lastUsed)
+        case .responseTime:
+            complications.insert(.responseTime)
+        }
+        return complications
+    }
+    
+    func fetchUnreadCounts() {
+        for account in accountsTracker.allAccounts {
+            Task {
+                let startTime = Date.now
+                let unreadCount = try? await account.api.getUnreadCount()
+                self.unreadCountResponses[account.actorId] = .init(
+                    unreadCount: unreadCount,
+                    responseTime: Date.now.timeIntervalSince(startTime)
+                )
+            }
+        }
+    }
 }

@@ -11,6 +11,7 @@ import SwiftUI
 struct AccountListSettingsView: View {
     @Environment(AppState.self) var appState
     @Setting(\.accounts_keepPlace) var keepPlace
+    @Setting(\.accounts_preferredListRowComplication) var preferredListRowComplication
 
     var accounts: [UserAccount] { AccountsTracker.main.userAccounts }
     
@@ -20,6 +21,14 @@ struct AccountListSettingsView: View {
             AccountListView()
             Section {
                 Toggle("Reload on Switch", icon: .lemmy.switchAccountAndReload, isOn: $keepPlace.invert())
+                Toggle(
+                    "Show Response Times",
+                    icon: .general.time,
+                    isOn: .init(
+                        get: { preferredListRowComplication == .responseTime },
+                        set: { preferredListRowComplication = $0 ? .responseTime : .lastUsed }
+                    )
+                )
             }
         }
         .labelStyle(.conditional)
