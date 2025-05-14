@@ -28,8 +28,8 @@ extension Reply2: CacheIdentifiable {
         community.update(with: snapshot.community)
         recipient.update(with: snapshot.recipient)
         
-        setIfChanged(\.subscribed, snapshot.subscribed.isSubscribed)
-        setIfChanged(\.commentCount, snapshot.counts.childCount)
+        setIfChanged(\.subscribed, snapshot.subscribed)
+        setIfChanged(\.commentCount, snapshot.commentCount)
         setIfChanged(\.creatorIsModerator, snapshot.creatorIsModerator)
         setIfChanged(\.creatorIsAdmin, snapshot.creatorIsAdmin)
         creator.updateKnownCommunityBanState(id: community.id, banned: snapshot.creatorBannedFromCommunity)

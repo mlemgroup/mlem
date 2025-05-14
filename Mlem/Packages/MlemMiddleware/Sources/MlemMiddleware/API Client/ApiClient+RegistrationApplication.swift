@@ -24,7 +24,10 @@ public extension ApiClient {
             limit: limit
         )
         let response = try await perform(request)
-        return await caches.registrationApplication.getModels(api: self, from: response.registrationApplications)
+        return try await caches.registrationApplication.getModels(
+            api: self,
+            from: response.registrationApplications.map { try .init(from: $0) }
+        )
     }
     
     @discardableResult
@@ -34,9 +37,9 @@ public extension ApiClient {
     ) async throws -> RegistrationApplication {
         let request = ApproveRegistrationApplicationRequest(endpoint: .v3, id: id, approve: true, denyReason: nil)
         let response = try await perform(request)
-        return await caches.registrationApplication.getModel(
+        return try await caches.registrationApplication.getModel(
             api: self,
-            from: response.registrationApplication,
+            from: .init(from: response.registrationApplication),
             semaphore: semaphore
         )
     }
@@ -49,9 +52,9 @@ public extension ApiClient {
     ) async throws -> RegistrationApplication {
         let request = ApproveRegistrationApplicationRequest(endpoint: .v3, id: id, approve: false, denyReason: reason)
         let response = try await perform(request)
-        return await caches.registrationApplication.getModel(
+        return try await caches.registrationApplication.getModel(
             api: self,
-            from: response.registrationApplication,
+            from: .init(from: response.registrationApplication),
             semaphore: semaphore
         )
     }

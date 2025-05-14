@@ -36,12 +36,12 @@ class PersonVoteCache: CoreCache<PersonVote> {
     @MainActor
     func getModels(
         api: ApiClient,
-        from apiTypes: [ApiVoteView],
+        from snapshots: [PersonVoteSnapshot],
         target: PersonVote.Target,
         communityId: Int,
         semaphore: UInt? = nil
     ) -> [PersonVote] {
-        apiTypes.map {
+        snapshots.map {
             getModel(
                 api: api,
                 from: $0,

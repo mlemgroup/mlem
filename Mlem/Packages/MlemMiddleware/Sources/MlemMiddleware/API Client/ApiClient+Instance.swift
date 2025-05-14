@@ -11,7 +11,10 @@ public extension ApiClient {
     func getMyInstance() async throws -> Instance3 {
         let request = GetSiteRequest(endpoint: .v3)
         let response = try await perform(request)
-        let model = await caches.instance3.getModel(api: self, from: response)
+        let model = try await caches.instance3.getModel(
+            api: self,
+            from: .init(from: response)
+        )
         model.local = true
         _ = await Task { @MainActor in
             myInstance = model
@@ -47,10 +50,17 @@ public extension ApiClient {
         let actorId: ActorIdentifier = .instance(host: host)
         let request = UserBlockInstanceRequest(endpoint: .v3, instanceId: instanceId, block: block)
         let response = try await perform(request)
-        if let instance = caches.instance1.retrieveModel(instanceId: instanceId) {
-            instance.blockedManager.updateWithReceivedValue(response.blocked, semaphore: semaphore)
+        let newBlockState: Bool
+        switch response {
+        case let .apiBlockInstanceResponse(response):
+            newBlockState = response.blocked
+        case .apiSuccessResponse:
+            newBlockState = block
         }
-        if response.blocked {
+        if let instance = caches.instance1.retrieveModel(instanceId: instanceId) {
+            instance.blockedManager.updateWithReceivedValue(newBlockState, semaphore: semaphore)
+        }
+        if newBlockState {
             blocks?.instances[actorId] = instanceId
         } else {
             blocks?.instances.removeValue(forKey: actorId)
@@ -63,9 +73,9 @@ public extension ApiClient {
         let request = AddAdminRequest(endpoint: .v3, personId: personId, added: added)
         let response = try await perform(request)
         
-        let updatedAdministrators = await caches.person2.getModels(
+        let updatedAdministrators = try await caches.person2.getModels(
             api: self,
-            from: response.admins
+            from: response.admins.map { try .init(from: $0) }
         )
         
         // update person's admin status

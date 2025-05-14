@@ -64,6 +64,10 @@ public struct Community2Snapshot: CacheIdentifiable {
             throw .responseMissingRequiredData
         }
         
-        self.bannedFromCommunity = community.community.bannedFromCommunity ?? community.bannedFromCommunity
+        if let actions = community.communityActions {
+            self.bannedFromCommunity = actions.banExpires != nil
+        } else {
+            self.bannedFromCommunity = community.bannedFromCommunity
+        }
     }
 }

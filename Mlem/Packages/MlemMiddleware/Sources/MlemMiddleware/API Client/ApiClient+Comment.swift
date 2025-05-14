@@ -285,9 +285,9 @@ public extension ApiClient {
     ) async throws -> [PersonVote] {
         let request = ListCommentLikesRequest(endpoint: .v3, commentId: id, page: page, limit: limit)
         let response = try await perform(request)
-        return await caches.personVote.getModels(
+        return try await caches.personVote.getModels(
             api: self,
-            from: response.commentLikes,
+            from: response.commentLikes.map { try .init(from: $0) },
             target: .comment(id: id),
             communityId: communityId
         )

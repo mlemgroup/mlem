@@ -26,7 +26,7 @@ public struct Comment2Snapshot: CacheIdentifiable {
     
     public var cacheId: Int { comment.cacheId }
     
-    init(from comment: ApiCommentView) throws(ApiClientError) {
+    public init(from comment: ApiCommentView) throws(ApiClientError) {
         self.comment = try .init(from: comment.comment)
         self.creator = try .init(from: comment.creator)
         self.post = try .init(from: comment.post)

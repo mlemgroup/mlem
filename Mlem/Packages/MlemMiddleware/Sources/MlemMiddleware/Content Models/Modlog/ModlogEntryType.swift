@@ -43,6 +43,7 @@ public enum ModlogEntryType: Equatable {
         reason: String?
     )
     case purgeCommunity(reason: String?)
+    
     case hideCommunity(
         _ community: Community1,
         hidden: Bool,

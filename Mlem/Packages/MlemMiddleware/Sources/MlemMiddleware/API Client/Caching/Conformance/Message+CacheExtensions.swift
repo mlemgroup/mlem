@@ -27,7 +27,7 @@ extension Message2: CacheIdentifiable {
     
     @MainActor
     func update(with snapshot: Message2Snapshot, semaphore: UInt? = nil) {
-        message1.update(with: snapshot.privateMessage, semaphore: semaphore)
+        message1.update(with: snapshot.message, semaphore: semaphore)
         creator.update(with: snapshot.creator, semaphore: semaphore)
         recipient.update(with: snapshot.recipient, semaphore: semaphore)
     }

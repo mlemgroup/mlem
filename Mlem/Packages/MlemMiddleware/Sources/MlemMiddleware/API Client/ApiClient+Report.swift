@@ -30,7 +30,7 @@ public extension ApiClient {
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
         return try await caches.report.getModels(
             api: self,
-            from: response.postReports,
+            from: response.postReports.map { try .init(from: $0) },
             myPersonId: myPersonId
         )
     }
@@ -53,7 +53,7 @@ public extension ApiClient {
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
         return try await caches.report.getModels(
             api: self,
-            from: response.commentReports,
+            from: response.commentReports.map { try .init(from: $0) },
             myPersonId: myPersonId
         )
     }
@@ -72,7 +72,7 @@ public extension ApiClient {
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
         return try await caches.report.getModels(
             api: self,
-            from: response.privateMessageReports,
+            from: response.privateMessageReports.map { try .init(from: $0) },
             myPersonId: myPersonId
         )
     }
@@ -88,7 +88,7 @@ public extension ApiClient {
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
         return try await caches.report.getModel(
             api: self,
-            from: response.postReportView,
+            from: .init(from: response.postReportView),
             myPersonId: myPersonId,
             semaphore: semaphore
         )
@@ -105,7 +105,7 @@ public extension ApiClient {
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
         return try await caches.report.getModel(
             api: self,
-            from: response.commentReportView,
+            from: .init(from: response.commentReportView),
             myPersonId: myPersonId,
             semaphore: semaphore
         )
@@ -122,7 +122,7 @@ public extension ApiClient {
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
         return try await caches.report.getModel(
             api: self,
-            from: response.privateMessageReportView,
+            from: .init(from: response.privateMessageReportView),
             myPersonId: myPersonId,
             semaphore: semaphore
         )

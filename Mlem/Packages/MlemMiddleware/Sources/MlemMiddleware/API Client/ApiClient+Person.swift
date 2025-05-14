@@ -15,7 +15,11 @@ public extension ApiClient {
         guard try await data.apiMyPersonId == myPersonId else {
             throw ApiClientError.mismatchingPersonId
         }
-        return await caches.person1.getModel(api: self, from: data.apiPerson, isStale: true)
+        return try await caches.person1.getModel(
+            api: self,
+            from: .init(from: data.apiPerson),
+            isStale: true
+        )
     }
     
     func decodePerson(_ data: Person2.CodedData) async throws -> Person2 {
@@ -25,7 +29,11 @@ public extension ApiClient {
         guard try await data.apiMyPersonId == myPersonId else {
             throw ApiClientError.mismatchingPersonId
         }
-        return await caches.person2.getModel(api: self, from: data.apiPersonView, isStale: true)
+        return try await caches.person2.getModel(
+            api: self,
+            from: .init(from: data.apiPersonView),
+            isStale: true
+        )
     }
     
     func getPerson(id: Int) async throws -> Person3 {
@@ -40,14 +48,20 @@ public extension ApiClient {
             savedOnly: nil
         )
         let response = try await perform(request)
-        return await caches.person3.getModel(api: self, from: response)
+        return try await caches.person3.getModel(
+            api: self,
+            from: .init(from: response)
+        )
     }
     
     func getPerson(url: URL) async throws -> Person2 {
         let request = ResolveObjectRequest(endpoint: .v3, q: url.absoluteString)
         do {
             if let response = try await perform(request).person {
-                return await caches.person2.getModel(api: self, from: response)
+                return try await caches.person2.getModel(
+                    api: self,
+                    from: .init(from: response)
+                )
             }
         } catch let ApiClientError.response(response, _) where response.couldntFindObject {
             throw ApiClientError.noEntityFound
@@ -69,7 +83,10 @@ public extension ApiClient {
         
         do {
             let response = try await perform(request)
-            return await caches.person3.getModel(api: self, from: response)
+            return try await caches.person3.getModel(
+                api: self,
+                from: .init(from: response)
+            )
         } catch let ApiClientError.response(response, _) where response.couldntFindObject {
             throw ApiClientError.noEntityFound
         }
@@ -114,14 +131,21 @@ public extension ApiClient {
             pageBack: nil
         )
         let response = try await perform(request)
-        return await caches.person2.getModels(api: self, from: response.users ?? [])
+        return try await caches.person2.getModels(
+            api: self,
+            from: response.users?.map { try .init(from: $0) } ?? []
+        )
     }
     
     @discardableResult
     func blockPerson(id: Int, block: Bool, semaphore: UInt? = nil) async throws -> Person2 {
-        let request = BlockPersonRequest(endpoint: .v3, personId: id, block: block)
+        let request = UserBlockPersonRequest(endpoint: .v3, personId: id, block: block)
         let response = try await perform(request)
-        let person = await caches.person2.getModel(api: self, from: response.personView, semaphore: semaphore)
+        let person = try await caches.person2.getModel(
+            api: self,
+            from: .init(from: response.personView),
+            semaphore: semaphore
+        )
         person.person1.blockedManager.updateWithReceivedValue(response.blocked, semaphore: semaphore)
         return person
     }
@@ -146,13 +170,17 @@ public extension ApiClient {
             communityId: communityId,
             personId: personId,
             ban: ban,
-            removeOrRestoreData: removeContent,
+            removeData: removeContent,
             reason: reason,
-            expires: expiryTimestamp
+            expires: expiryTimestamp,
+            removeOrRestoreData: removeContent
         )
         let response = try await perform(request)
         guard response.banned == ban else { throw ApiClientError.unsuccessful }
-        let person = await caches.person2.getModel(api: self, from: response.personView)
+        let person = try await caches.person2.getModel(
+            api: self,
+            from: .init(from: response.personView)
+        )
         person.person1.updateKnownCommunityBanState(id: communityId, banned: response.banned)
         return person
     }
@@ -175,13 +203,17 @@ public extension ApiClient {
             endpoint: .v3,
             personId: personId,
             ban: ban,
-            removeOrRestoreData: removeContent,
+            removeData: removeContent,
             reason: reason,
-            expires: expiryTimestamp
+            expires: expiryTimestamp,
+            removeOrRestoreData: removeContent
         )
         let response = try await perform(request)
         guard response.banned == ban else { throw ApiClientError.unsuccessful }
-        let person = await caches.person2.getModel(api: self, from: response.personView)
+        let person = try await caches.person2.getModel(
+            api: self,
+            from: .init(from: response.personView)
+        )
         return person
     }
     
@@ -211,10 +243,19 @@ public extension ApiClient {
             savedOnly: savedOnly
         )
         let response = try await perform(request)
-        return await (
-            person: caches.person3.getModel(api: self, from: response),
-            posts: caches.post2.getModels(api: self, from: response.posts ?? []),
-            comments: caches.comment2.getModels(api: self, from: response.comments ?? [])
+        return try await (
+            person: caches.person3.getModel(
+                api: self,
+                from: .init(from: response)
+            ),
+            posts: caches.post2.getModels(
+                api: self,
+                from: response.posts?.map { try .init(from: $0) } ?? []
+            ),
+            comments: caches.comment2.getModels(
+                api: self,
+                from: response.comments?.map { try .init(from: $0) } ?? []
+            )
         )
     }
     
@@ -227,12 +268,18 @@ public extension ApiClient {
             throw ApiClientError.mismatchingToken
         }
         
-        let instance = await caches.instance3.getModel(api: self, from: response)
+        let instance = try await caches.instance3.getModel(
+            api: self,
+            from: .init(from: response)
+        )
         
         var blocks: BlockList? = blocks
         var person: Person4?
         if let myUser = response.myUser {
-            person = await caches.person4.getModel(api: self, from: myUser)
+            person = try await caches.person4.getModel(
+                api: self,
+                from: .init(from: myUser)
+            )
             if let blocks {
                 blocks.update(myUserInfo: myUser)
             } else {
@@ -305,9 +352,9 @@ public extension ApiClient {
             discussionLanguages: discussionLanguages,
             generateTotp2fa: nil,
             openLinksInNewTab: openLinksInNewTab,
+            infiniteScrollEnabled: infiniteScrollEnabled,
             blurNsfw: blurNsfw,
             autoExpand: autoExpand,
-            infiniteScrollEnabled: infiniteScrollEnabled,
             postListingMode: postListingMode,
             enableKeyboardNavigation: enableKeyboardNavigation,
             enableAnimatedImages: enableAnimatedImages,
