@@ -99,20 +99,18 @@ private struct AccountListRowBodyReadoutView: View {
     let complications: Set<AccountListRowBody.Complication>
     
     var body: some View {
-        ZStack {
-            if complications.contains(.isActive), isActive {
-                Image(icon: .general.circle)
-                    .symbolVariant(.fill)
-                    .foregroundStyle(.themedPositive)
-                    .font(.system(size: 10.0))
-                    .padding(.trailing, 7)
-            } else {
-                Image(icon: .lemmy.notificationCount(unreadCount ?? 0))
-                    .foregroundStyle(.themedContrastingLabel, .themedWarning)
-                    .imageScale(.large)
-                    // For some reason, the animations don't work if we use an `if` statement
-                    .opacity(unreadCount == nil ? 0 : 1)
-            }
+        if complications.contains(.isActive), isActive {
+            Image(icon: .general.circle)
+                .symbolVariant(.fill)
+                .foregroundStyle(.themedPositive)
+                .font(.system(size: 10.0))
+                .padding(.trailing, 7)
+        } else {
+            Image(icon: .lemmy.notificationCount(unreadCount ?? 0))
+                .foregroundStyle(.themedContrastingLabel, .themedWarning)
+                .imageScale(.large)
+                // For some reason, the animations don't work if we use an `if` statement
+                .opacity(unreadCount == nil ? 0 : 1)
         }
     }
 }
