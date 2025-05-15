@@ -20,6 +20,9 @@ struct ToastView: View {
     // These symbols only have a single hierarchical layer, so we render it as `.secondary`
     static let dimmedSymbols: Set<Icon> = [.lemmy.block]
     
+    // These symbols need `.symbolVariant(.circle.fill)` applied to render properly
+    static let circledSymbols: Set<Icon> = [.general.success, .general.error, .general.failure]
+    
     var body: some View {
         HStack {
             switch toast.type {
@@ -52,14 +55,15 @@ struct ToastView: View {
                         }
                     }
                 } label: {
+                    let icon = didUndo ? (successIcon ?? .general.success) : (icon ?? .general.undo)
                     regularView(
                         title: title ?? (didUndo ? .init(localized: "Undone!") : .init(localized: "Undo")),
                         subtitle: title == nil ? nil : (didUndo ? .init(localized: "Undone!") : .init(localized: "Tap to Undo")),
-                        icon: didUndo ? (successIcon ?? .general.success) : (icon ?? .general.undo),
+                        icon: icon,
                         imageColor: color,
                         subtitleColor: .themedAccent
                     )
-                    .symbolVariant(didUndo ? .circle : .none)
+                    .symbolVariant(ToastView.circledSymbols.contains(icon) ? .circle.fill : .none)
                     .contentShape(.rect)
                 }
                 .buttonStyle(.empty)
@@ -92,7 +96,7 @@ struct ToastView: View {
         HStack(spacing: Constants.main.doubleSpacing) {
             if let icon {
                 image(icon, color: imageColor)
-                    .symbolVariant(.circle.fill)
+                    .symbolVariant(ToastView.circledSymbols.contains(icon) ? .circle.fill : .none)
                     .contentTransition(.symbolEffect(.replace, options: .speed(4)))
             }
             Group {
@@ -144,10 +148,11 @@ struct ToastView: View {
                 }
             }
         } label: {
+            let icon = details.icon ?? .general.error
             VStack(spacing: 0) {
                 HStack {
-                    image(details.icon ?? .general.error, color: .themedNegative)
-                        .symbolVariant(.circle.fill)
+                    image(icon, color: .themedNegative)
+                        .symbolVariant(ToastView.circledSymbols.contains(icon) ? .circle.fill : .none)
                     
                     Text(details.title ?? .init(localized: "Error"))
                         .frame(minWidth: 100)
