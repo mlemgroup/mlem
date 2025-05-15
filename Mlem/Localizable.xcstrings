@@ -5286,6 +5286,9 @@
         }
       }
     },
+    "Open Mail App" : {
+
+    },
     "Open URL from Clipboard" : {
       "localizations" : {
         "fr" : {
@@ -9118,6 +9121,9 @@
           }
         }
       }
+    },
+    "Would you like to open this email address in your mail app?" : {
+
     },
     "Wrap Code Block Lines" : {
       "localizations" : {

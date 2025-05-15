@@ -92,6 +92,7 @@ struct ToastView: View {
         HStack(spacing: Constants.main.doubleSpacing) {
             if let icon {
                 image(icon, color: imageColor)
+                    .symbolVariant(.circle.fill)
                     .contentTransition(.symbolEffect(.replace, options: .speed(4)))
             }
             Group {
