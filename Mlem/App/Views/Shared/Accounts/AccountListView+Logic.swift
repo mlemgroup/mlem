@@ -152,7 +152,7 @@ extension AccountListView {
         for account in accountsTracker.allAccounts {
             Task {
                 let startTime = Date.now
-                let unreadCount = try? await account.api.getUnreadCount()
+                let unreadCount = try? await account.api.getUnreadCount(alwaysMakeCalls: true)
                 self.unreadCountResponses[account.actorId] = .init(
                     unreadCount: unreadCount,
                     responseTime: Date.now.timeIntervalSince(startTime)
