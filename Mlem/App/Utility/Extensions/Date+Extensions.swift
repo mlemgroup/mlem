@@ -8,16 +8,33 @@
 import SwiftUI
 
 extension Date {
-    // Returns strings like "3 seconds ago" and "10 days ago"
-    func getRelativeTime(date: Date = .now, unitsStyle: RelativeDateTimeFormatter.UnitsStyle = .full) -> String {
+    /// Forges a localized `String` with inside the computed elapsed time between `self` and another `Date`.
+    /// Uses a `RelativeDateTimeFormatter` and a given units style.
+    ///
+    /// For example, if the `self` is date 04/11/2023 and `date` is 15/05/2025, will return "2 years ago" (localized).
+    ///
+    /// - Parameters:
+    ///    - date: The date to comapre with `self`, by default `Date.now`
+    ///    - unitsStyle: The style of the string to forge, by default `RelativeDateTimeFormatter.UnitsStyle.full`
+    /// - Returns String: The localized string based.
+    public func getRelativeTime(date: Date = .now, unitsStyle: RelativeDateTimeFormatter.UnitsStyle = .full) -> String {
         let formatter = RelativeDateTimeFormatter()
         formatter.unitsStyle = unitsStyle
-
-        return formatter.localizedString(for: self, relativeTo: date)
+        // Need to get rid of hours and keep only a simple pure date to have the relative date time formatter working
+        return formatter.localizedString(for: shortered, relativeTo: date)
     }
-    
-    // Returns strings like "5/10/2023"
-    var dateString: String {
+
+    /// Returns `self` but with only the day, the month and the year, i.e. the current date without hours.
+    /// If the conversion fails, returns `self` as is.
+    public var shortered: Date {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd/mm/yyyy"
+        return dateFormatter.date(from: dateString) ?? self
+    }
+
+    /// Returns the current `Date` as a shorter version in `String`.
+    /// For example if the date in the 5th of October 2023, returns "5/10/2023"
+    public var dateString: String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .short
         dateFormatter.timeStyle = .none
