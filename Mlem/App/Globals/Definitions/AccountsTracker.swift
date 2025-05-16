@@ -26,6 +26,8 @@ class AccountsTracker {
     var userAccounts: [UserAccount] = .init()
     var guestAccounts: [GuestAccount] = .init()
     
+    var allAccounts: [any Account] { userAccounts + guestAccounts }
+    
     // Used on startup to determine which account should be made active
     func mostRecentAccount() -> any Account {
         let allAccounts: [any Account] = userAccounts + guestAccounts

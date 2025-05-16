@@ -12,11 +12,13 @@ struct AccountListRowBody: View {
     @Environment(AppState.self) private var appState
     
     enum Complication: CaseIterable {
-        case instance, lastUsed, isActive
+        case instance, lastUsed, responseTime, isActive, unreadCount
     }
     
     let account: any Account
-    var complications: Set<Complication> = .withTime
+    var unreadCount: Int?
+    var responseTime: TimeInterval?
+    var complications: Set<Complication> = .instanceAndTime
     
     var body: some View {
         HStack(alignment: .center, spacing: 10) {
@@ -32,14 +34,21 @@ struct AccountListRowBody: View {
             }
             .padding(.vertical, -2)
             Spacer()
-            if complications.contains(.isActive), appState.firstSession.actorId == account.actorId {
-                Image(icon: .general.circle)
-                    .symbolVariant(.fill)
-                    .foregroundStyle(.themedPositive)
-                    .font(.system(size: 10.0))
-            }
+            AccountListRowBodyReadoutView(
+                isActive: appState.firstSession.actorId == account.actorId,
+                unreadCount: unreadCount,
+                complications: complications
+            )
         }
-        .contentShape(Rectangle())
+        .contentShape(.rect)
+        .animation(.easeOut(duration: 0.1), value: animationHash)
+    }
+    
+    var animationHash: Int {
+        var hasher = Hasher()
+        hasher.combine(unreadCount)
+        hasher.combine(responseTime)
+        return hasher.finalize()
     }
     
     var timeText: String? {
@@ -73,12 +82,41 @@ struct AccountListRowBody: View {
                 output.append(.init(localized: "Temporary"))
             }
         }
+        if complications.contains(.responseTime), let responseTime {
+            let measurement = Measurement(value: Double(Int(responseTime * 1000)), unit: UnitDuration.milliseconds)
+            let formatter = MeasurementFormatter()
+            formatter.unitOptions = .providedUnit
+            formatter.unitStyle = .short
+            output.append(formatter.string(from: measurement))
+        }
         return output.joined(separator: " • ")
     }
 }
 
+private struct AccountListRowBodyReadoutView: View {
+    let isActive: Bool
+    let unreadCount: Int?
+    let complications: Set<AccountListRowBody.Complication>
+    
+    var body: some View {
+        if complications.contains(.isActive), isActive {
+            Image(icon: .general.circle)
+                .symbolVariant(.fill)
+                .foregroundStyle(.themedPositive)
+                .font(.system(size: 10.0))
+                .padding(.trailing, 7)
+        } else {
+            Image(icon: .lemmy.notificationCount(unreadCount ?? 0))
+                .foregroundStyle(.themedContrastingLabel, .themedWarning)
+                .imageScale(.large)
+                // For some reason, the animations don't work if we use an `if` statement
+                .opacity(unreadCount == nil ? 0 : 1)
+        }
+    }
+}
+
 extension Set<AccountListRowBody.Complication> {
-    static let withTime: Self = [.instance, .lastUsed, .isActive]
-    static let instanceOnly: Self = [.instance, .isActive]
-    static let timeOnly: Self = [.lastUsed, .isActive]
+    static let instanceAndTime: Self = [.instance, .lastUsed, .isActive, .unreadCount]
+    static let instanceOnly: Self = [.instance, .isActive, .unreadCount]
+    static let timeOnly: Self = [.lastUsed, .isActive, .unreadCount]
 }
