@@ -9203,9 +9203,6 @@
       }
     },
     "Would you like to open this email address in your mail app?" : {
-<<<<<<< HEAD
-
-=======
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -9214,7 +9211,6 @@
           }
         }
       }
->>>>>>> 80b76dfa (fix: missing french translations, basic toast for URL copy error never translated (#2034))
     },
     "Wrap Code Block Lines" : {
       "localizations" : {
