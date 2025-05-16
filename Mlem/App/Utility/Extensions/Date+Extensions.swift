@@ -8,19 +8,29 @@
 import SwiftUI
 
 extension Date {
-    // Returns strings like "3 seconds ago" and "10 days ago"
-    func getRelativeTime(date: Date = .now, unitsStyle: RelativeDateTimeFormatter.UnitsStyle = .full) -> String {
+    /// Forges a localized `String` with inside the computed elapsed time between `self` and another `Date`.
+    /// Uses a `RelativeDateTimeFormatter` and a given units style.
+    ///
+    /// For example, if the `self` is date 04/11/2023 and `date` is 15/05/2025, will return "1 year ago" (localized).
+    ///
+    /// - Parameters:
+    ///    - date: The date to compare with `self`, by default `Date.now`
+    ///    - unitsStyle: The style of the string to forge, by default `RelativeDateTimeFormatter.UnitsStyle.full`
+    /// - Returns String: The localized string based.
+    public func getRelativeTime(date: Date = .now, unitsStyle: RelativeDateTimeFormatter.UnitsStyle = .full) -> String {
         let formatter = RelativeDateTimeFormatter()
         formatter.unitsStyle = unitsStyle
-
         return formatter.localizedString(for: self, relativeTo: date)
     }
-    
-    // Returns strings like "5/10/2023"
-    var dateString: String {
+
+    /// Returns the current `Date` as a shorter version in `String`.
+    /// For example if the date in the 5th of October 2023, returns "5/10/2023".
+    /// Uses the current locale to let the `DateFormatter` apply the suitable date format depending to the user needs.
+    public var dateString: String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .short
         dateFormatter.timeStyle = .none
+        dateFormatter.locale = Locale.current
         return dateFormatter.string(from: self)
     }
     
