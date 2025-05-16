@@ -121,8 +121,8 @@ struct ContentView: View {
                 .profile,
                 appState: appState,
                 profileLabelType: tabProfileLabelType,
-                imageOverride: avatarImage ?? UIImage(systemName: "person.circle"),
-                selectedImageOverride: selectedAvatarImage ?? UIImage(systemName: "person.circle.fill"),
+                imageOverride: avatarImage ?? UIImage(systemName: "person.crop.circle"),
+                selectedImageOverride: selectedAvatarImage ?? UIImage(systemName: "person.crop.circle.fill"),
                 onLongPress: {
                     HapticManager.main.play(haptic: .rigidInfo, priority: .high)
                     NavigationModel.main.openSheet(.quickSwitcher)
