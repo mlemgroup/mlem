@@ -2354,7 +2354,6 @@
       }
     },
     "Copy a URL to the clipboard, then try again." : {
-      "extractionState" : "manual",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -5101,7 +5100,6 @@
       }
     },
     "No URL Copied" : {
-      "extractionState" : "manual",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
