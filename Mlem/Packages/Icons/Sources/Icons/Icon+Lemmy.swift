@@ -201,6 +201,10 @@ public extension Icon {
         public let jumpToLastPositionButton: Icon = .init("chevron.down.2")
         
         public let nsfwTag: Icon = .init("nsfw", source: .custom)
+        
+        public func notificationCount(_ count: Int) -> Icon {
+            .init(count <= 50 ? "\(count).circle.fill" : "exclamationmark.circle.fill")
+        }
     }
     
     static let lemmy: LemmyIcons = .init()

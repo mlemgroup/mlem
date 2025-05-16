@@ -21,16 +21,23 @@ struct AccountListRow: View {
     @State private var showingSignOutConfirmation: Bool = false
     
     let account: any Account
-    var complications: Set<AccountListRowBody.Complication> = .withTime
+    var unreadCount: Int?
+    var responseTime: TimeInterval?
+    var complications: Set<AccountListRowBody.Complication> = .instanceAndTime
     @Binding var isSwitching: Bool
-
+    
     var body: some View {
         Button {
             if appState.firstSession.actorId != account.actorId {
                 changeAccount(keepPlace: keepPlace)
             }
         } label: {
-            AccountListRowBody(account: account, complications: complications)
+            AccountListRowBody(
+                account: account,
+                unreadCount: unreadCount,
+                responseTime: responseTime,
+                complications: complications
+            )
         }
         .buttonStyle(.plain)
         .accessibilityLabel(accessibilityLabel)
