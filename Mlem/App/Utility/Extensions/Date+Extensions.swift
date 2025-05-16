@@ -20,23 +20,12 @@ extension Date {
     public func getRelativeTime(date: Date = .now, unitsStyle: RelativeDateTimeFormatter.UnitsStyle = .full) -> String {
         let formatter = RelativeDateTimeFormatter()
         formatter.unitsStyle = unitsStyle
-        // Need to get rid of hours and keep only a simple pure date to have the relative date time formatter working
-        // Using date components to truncate useless data is not relevant as relative date time formatter
-        // cannot process sunch down rounded values
-        return formatter.localizedString(for: shortered, relativeTo: date)
-    }
-
-    /// Returns `self` but with only the day, the month and the year, i.e. the current date without hours.
-    /// If the conversion fails, returns `self` as is.
-    public var shortered: Date {
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale.current
-//        dateFormatter.dateFormat = "dd/MM/yyyy"
-        return dateFormatter.date(from: dateString) ?? self
+        return formatter.localizedString(for: self, relativeTo: date)
     }
 
     /// Returns the current `Date` as a shorter version in `String`.
-    /// For example if the date in the 5th of October 2023, returns "5/10/2023"
+    /// For example if the date in the 5th of October 2023, returns "5/10/2023".
+    /// Uses the current locale to let the `DateFormatter` apply the suitable date format depending to the user needs.
     public var dateString: String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .short

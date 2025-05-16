@@ -11,7 +11,8 @@
 import SwiftUI
 import Testing
 
-/// Contains tests cases to check some `Date` extensions utils
+/// Contains tests cases to check some `Date` extensions utils.
+/// NOTE: Supposed the language of the device / simulator under tests is english
 struct DateTests {
     @Test(
         "Get relative time must return the localized expected elapsed time for not cake day and more than one year",
@@ -31,39 +32,109 @@ struct DateTests {
         let relativeTimeString = profileCreationDate.getRelativeTime(date: someDate, unitsStyle: .full)
         
         // Then
-        // NOTE: Supposed the language of the device / simulator under tests is english
         #expect(relativeTimeString == "1 year ago")
     }
     
-    @Test("Shortered date must have same day, month and year")
-    func shortered_date_must_have_same_day_month_and_year() {
+    @Test("Get relative time must return the elapsed days for accounts of several days old")
+    func get_relative_time_must_return_elapsed_days_for_accounts_of_several_days_old() {
         let dateFormatter = DateFormatter()
-        var someDate: Date, shortered: Date
-        var someDateComponents: DateComponents, shorteredComponents: DateComponents
+        var profileCreationDate: Date, profileCreationDateABitLater: Date
 
         // Given
-        dateFormatter.dateFormat = "dd/mm/yyyy"
-        someDate = dateFormatter.date(from: "04/11/2023")!
-        // When
-        shortered = someDate.shortered
-        // Then
-        someDateComponents = Calendar.current.dateComponents([.month, .day, .year], from: someDate)
-        shorteredComponents = Calendar.current.dateComponents([.month, .day, .year], from: shortered)
-        #expect(someDateComponents.day == shorteredComponents.day)
-        #expect(someDateComponents.month == shorteredComponents.month)
-        #expect(someDateComponents.year == shorteredComponents.year)
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+        profileCreationDate = dateFormatter.date(from: "2025-05-16 12:05:00 +0000")!
+        profileCreationDateABitLater = dateFormatter.date(from: "2025-05-20 15:30:22 +0000")!
         
+        // When
+        let relativeTimeString = profileCreationDate.getRelativeTime(date: profileCreationDateABitLater, unitsStyle: .full)
+        
+        // Then
+        #expect(relativeTimeString == "4 days ago")
+    }
+
+    @Test("Get relative time must return the elapsed weeks for accounts of several weeks old")
+    func get_relative_time_must_return_elapsed_days_for_accounts_of_several_weeks_old() {
+        let dateFormatter = DateFormatter()
+        var profileCreationDate: Date, profileCreationDateABitLater: Date
+
         // Given
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
-        someDate = dateFormatter.date(from: "2025-01-14 23:05:00 +0000")!
+        profileCreationDate = dateFormatter.date(from: "2025-05-01 12:05:00 +0000")!
+        profileCreationDateABitLater = dateFormatter.date(from: "2025-05-15 15:30:22 +0000")!
+        
         // When
-        shortered = someDate.shortered
+        let relativeTimeString = profileCreationDate.getRelativeTime(date: profileCreationDateABitLater, unitsStyle: .full)
+        
         // Then
-        someDateComponents = Calendar.current.dateComponents([.month, .day, .year], from: someDate)
-        shorteredComponents = Calendar.current.dateComponents([.month, .day, .year], from: shortered)
-        #expect(someDateComponents.day == shorteredComponents.day)
-        #expect(someDateComponents.month == shorteredComponents.month)
-        #expect(someDateComponents.year == shorteredComponents.year)
+        #expect(relativeTimeString == "2 weeks ago")
+    }
+
+    @Test("Get relative time must return the elapsed months for accounts of several months old")
+    func get_relative_time_must_return_elapsed_months_for_accounts_of_several_months_old() {
+        let dateFormatter = DateFormatter()
+        var profileCreationDate: Date, profileCreationDateABitLater: Date
+
+        // Given
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+        profileCreationDate = dateFormatter.date(from: "2025-05-16 12:05:00 +0000")!
+        profileCreationDateABitLater = dateFormatter.date(from: "2025-12-16 15:30:22 +0000")!
+        
+        // When
+        let relativeTimeString = profileCreationDate.getRelativeTime(date: profileCreationDateABitLater, unitsStyle: .full)
+        
+        // Then
+        #expect(relativeTimeString == "7 months ago")
+    }
+    
+    @Test("Get relative time must return the elapsed hours for accounts younger than one day but older than one hour")
+    func get_relative_time_must_return_elapsed_hours_for_accounts_of_several_hours_old() {
+        let dateFormatter = DateFormatter()
+        var profileCreationDate: Date, profileCreationDateABitLater: Date
+
+        // Given
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+        profileCreationDate = dateFormatter.date(from: "2025-05-16 12:05:00 +0000")!
+        profileCreationDateABitLater = dateFormatter.date(from: "2025-05-16 15:30:22 +0000")!
+        
+        // When
+        let relativeTimeString = profileCreationDate.getRelativeTime(date: profileCreationDateABitLater, unitsStyle: .full)
+        
+        // Then
+        #expect(relativeTimeString == "3 hours ago")
+    }
+
+    @Test("Get relative time must return the elapsed minutes for accounts younger than one hour")
+    func get_relative_time_must_return_elapsed_hours_for_accounts_of_less_one_hour_old() {
+        let dateFormatter = DateFormatter()
+        var profileCreationDate: Date, profileCreationDateABitLater: Date
+
+        // Given
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+        profileCreationDate = dateFormatter.date(from: "2025-05-16 12:05:00 +0000")!
+        profileCreationDateABitLater = dateFormatter.date(from: "2025-05-16 12:30:22 +0000")!
+        
+        // When
+        let relativeTimeString = profileCreationDate.getRelativeTime(date: profileCreationDateABitLater, unitsStyle: .full)
+
+        // Then
+        #expect(relativeTimeString == "25 minutes ago")
+    }
+
+    @Test("Get relative time must return the elapsed seconds for accounts of some seconds old")
+    func get_relative_time_must_return_elapsed_seconds_for_accounts_of_some_seconds_old() {
+        let dateFormatter = DateFormatter()
+        var profileCreationDate: Date, profileCreationDateABitLater: Date
+
+        // Given
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+        profileCreationDate = dateFormatter.date(from: "2025-05-16 12:05:00 +0000")!
+        profileCreationDateABitLater = dateFormatter.date(from: "2025-05-16 12:05:42 +0000")!
+        
+        // When
+        let relativeTimeString = profileCreationDate.getRelativeTime(date: profileCreationDateABitLater, unitsStyle: .full)
+
+        // Then
+        #expect(relativeTimeString == "42 seconds ago")
     }
     
     @Test("Date string of some date must be in dd/mm/yyyy format")
