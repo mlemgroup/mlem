@@ -30,7 +30,8 @@ extension Date {
     /// If the conversion fails, returns `self` as is.
     public var shortered: Date {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd/MM/yyyy"
+        dateFormatter.locale = Locale.current
+//        dateFormatter.dateFormat = "dd/MM/yyyy"
         return dateFormatter.date(from: dateString) ?? self
     }
 
@@ -40,6 +41,7 @@ extension Date {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .short
         dateFormatter.timeStyle = .none
+        dateFormatter.locale = Locale.current
         return dateFormatter.string(from: self)
     }
     
