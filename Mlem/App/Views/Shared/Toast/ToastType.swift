@@ -120,8 +120,8 @@ enum ToastType: Hashable {
     }
     
     static var urlCopyError: ToastType {
-        .basic(
-            title: "No URL Copied",
+        basic(
+            "No URL Copied",
             subtitle: "Copy a URL to the clipboard, then try again.",
             icon: nil,
             color: .themedAccent,
