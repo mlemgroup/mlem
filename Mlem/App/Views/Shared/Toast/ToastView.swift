@@ -21,7 +21,7 @@ struct ToastView: View {
     static let dimmedSymbols: Set<Icon> = [.lemmy.block]
     
     // These symbols need `.symbolVariant(.circle.fill)` applied to render properly
-    static let circledSymbols: Set<Icon> = [.general.success, .general.error, .general.failure]
+    static let circledSymbols: Set<Icon> = [.general.success, .general.error, .general.failure, .general.undo]
     
     var body: some View {
         HStack {
