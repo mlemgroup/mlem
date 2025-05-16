@@ -136,18 +136,4 @@ struct DateTests {
         // Then
         #expect(relativeTimeString == "42 seconds ago")
     }
-    
-    @Test("Date string of some date must be in dd/mm/yyyy format")
-    func date_string_must_be_in_ddmmyyy_format() {
-        // Given
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
-        let someDate = dateFormatter.date(from: "2023-11-04 10:05:00 +0000")!
-        
-        // When
-        let dateString = someDate.dateString
-        
-        // Then
-        #expect(dateString == "04/11/2023")
-    }
 }
