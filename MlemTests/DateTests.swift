@@ -24,7 +24,7 @@ struct DateTests {
         // Given
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
         profileCreationDate = dateFormatter.date(from: "2023-11-14 12:05:00 +0000")!
-        dateFormatter.dateFormat = "dd/mm/yyyy"
+        dateFormatter.dateFormat = "dd/MM/yyyy"
         someDate = dateFormatter.date(from: "15/05/2025")!
         
         // When
@@ -32,7 +32,7 @@ struct DateTests {
         
         // Then
         // NOTE: Supposed the language of the device / simulator under tests is english
-        #expect(relativeTimeString == "2 years ago")
+        #expect(relativeTimeString == "1 year ago")
     }
     
     @Test("Shortered date must have same day, month and year")

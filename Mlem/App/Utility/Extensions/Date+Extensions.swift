@@ -11,16 +11,18 @@ extension Date {
     /// Forges a localized `String` with inside the computed elapsed time between `self` and another `Date`.
     /// Uses a `RelativeDateTimeFormatter` and a given units style.
     ///
-    /// For example, if the `self` is date 04/11/2023 and `date` is 15/05/2025, will return "2 years ago" (localized).
+    /// For example, if the `self` is date 04/11/2023 and `date` is 15/05/2025, will return "1 year ago" (localized).
     ///
     /// - Parameters:
-    ///    - date: The date to comapre with `self`, by default `Date.now`
+    ///    - date: The date to compare with `self`, by default `Date.now`
     ///    - unitsStyle: The style of the string to forge, by default `RelativeDateTimeFormatter.UnitsStyle.full`
     /// - Returns String: The localized string based.
     public func getRelativeTime(date: Date = .now, unitsStyle: RelativeDateTimeFormatter.UnitsStyle = .full) -> String {
         let formatter = RelativeDateTimeFormatter()
         formatter.unitsStyle = unitsStyle
         // Need to get rid of hours and keep only a simple pure date to have the relative date time formatter working
+        // Using date components to truncate useless data is not relevant as relative date time formatter
+        // cannot process sunch down rounded values
         return formatter.localizedString(for: shortered, relativeTo: date)
     }
 
@@ -28,7 +30,7 @@ extension Date {
     /// If the conversion fails, returns `self` as is.
     public var shortered: Date {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd/mm/yyyy"
+        dateFormatter.dateFormat = "dd/MM/yyyy"
         return dateFormatter.date(from: dateString) ?? self
     }
 
