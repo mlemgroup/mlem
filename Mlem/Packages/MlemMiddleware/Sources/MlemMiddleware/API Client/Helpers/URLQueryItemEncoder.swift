@@ -66,7 +66,6 @@ private class KeyedContainer<K: CodingKey>: KeyedEncodingContainerProtocol {
             let key = key.stringValue.camelToSnakeCase()
             encoder.queryParams.append(.init(name: key, value: valueString))
         } else {
-            print("VAL", value)
             throw URLQueryItemEncoderError.nestedContainersUnsupported
         }
     }

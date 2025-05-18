@@ -98,7 +98,6 @@ class CommentTreeTracker: Hashable {
             } else {
                 await buildCommentTree(comments: newComments)
             }
-            print(nodes)
             loadingState = .done
             errorDetails = nil
         } catch {
