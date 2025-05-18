@@ -144,7 +144,7 @@ public class ApiClient {
         
         let urlRequest = try urlRequest(from: request, tokenOverride: tokenOverride)
         // this line intentionally left commented for convenient future debugging
-        urlRequest.debug()
+//        urlRequest.debug()
         let (data, response) = try await execute(urlRequest, tokenOverride: tokenOverride)
         if let response = response as? HTTPURLResponse {
             if response.statusCode >= 500 { // Error code for server being offline.
