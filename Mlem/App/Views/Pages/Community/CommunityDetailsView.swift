@@ -48,6 +48,10 @@ struct CommunityDetailsView: View {
                     .tint(.themedCommentAccent)
             }
             .frame(maxWidth: .infinity)
+            
+            if let activeUserCount = community.activeUserCount_ {
+                ActiveUserCountView(activeUserCount: activeUserCount)
+            }
         }
         .padding([.horizontal, .bottom], 16)
     }
