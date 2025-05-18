@@ -56,7 +56,7 @@ public struct Instance2Snapshot: CacheIdentifiable {
         } else if let enableNsfw = site.localSite.enableNsfw {
             self.nsfwContentEnabled = enableNsfw
         } else {
-            throw .responseMissingRequiredData
+            throw .responseMissingRequiredData("ApiSiteView enableNsfw")
         }
         
         self.communityCreationRestrictedToAdmins = site.localSite.communityCreationAdminOnly
@@ -91,18 +91,26 @@ public struct Instance2Snapshot: CacheIdentifiable {
                 day: counts.usersActiveDay
             )
         } else {
-            guard let users = site.localSite.users else { throw .responseMissingRequiredData }
+            guard let users = site.localSite.users else { throw .responseMissingRequiredData("ApiSiteView users") }
             self.userCount = users
-            guard let posts = site.localSite.posts else { throw .responseMissingRequiredData }
+            guard let posts = site.localSite.posts else { throw .responseMissingRequiredData("ApiSiteView posts") }
             self.postCount = posts
-            guard let comments = site.localSite.comments else { throw .responseMissingRequiredData }
+            guard let comments = site.localSite.comments else { throw .responseMissingRequiredData("ApiSiteView comments") }
             self.commentCount = comments
-            guard let communities = site.localSite.communities else { throw .responseMissingRequiredData }
+            guard let communities = site.localSite.communities else { throw .responseMissingRequiredData("ApiSiteView communities") }
             self.communityCount = communities
-            guard let sixMonths = site.localSite.usersActiveHalfYear else { throw .responseMissingRequiredData }
-            guard let month = site.localSite.usersActiveMonth else { throw .responseMissingRequiredData }
-            guard let week = site.localSite.usersActiveWeek else { throw .responseMissingRequiredData }
-            guard let day = site.localSite.usersActiveHalfYear else { throw .responseMissingRequiredData }
+            guard let sixMonths = site.localSite.usersActiveHalfYear else {
+                throw .responseMissingRequiredData("ApiSiteView active users")
+            }
+            guard let month = site.localSite.usersActiveMonth else {
+                throw .responseMissingRequiredData("ApiSiteView active users")
+            }
+            guard let week = site.localSite.usersActiveWeek else {
+                throw .responseMissingRequiredData("ApiSiteView active users")
+            }
+            guard let day = site.localSite.usersActiveHalfYear else {
+                throw .responseMissingRequiredData("ApiSiteView active users")
+            }
             self.activeUserCount = .init(
                 sixMonths: sixMonths,
                 month: month,

@@ -28,8 +28,8 @@ extension Post2 {
                 featuredLocal: pinnedInstance,
                 hotRank: nil,
                 hotRankActive: nil,
-                reportCount: nil,
-                unresolvedReportCount: nil
+                communityId: nil,
+                creatorId: nil
             ),
             subscribed: .notSubscribed,
             saved: saved,
@@ -42,7 +42,11 @@ extension Post2 {
             bannedFromCommunity: bannedFromCommunity,
             hidden: hidden,
             imageDetails: nil,
-            tags: nil,
+            communityActions: nil,
+            personActions: nil,
+            postActions: nil,
+            instanceActions: nil,
+            creatorCommunityActions: nil,
             canMod: nil
         )
     }

@@ -31,7 +31,7 @@ public enum ApiClientError: Error {
     case mismatchingPersonId
     case mismatchingToken
     case noToken
-    case responseMissingRequiredData
+    case responseMissingRequiredData(_ message: String)
 }
 
 extension ApiClientError: CustomStringConvertible {
@@ -82,8 +82,8 @@ extension ApiClientError: CustomStringConvertible {
             return "A valid token was assigned to an ApiClient for the wrong account."
         case .noToken:
             return "A call was made to an ApiClient that doesn't have a token yet."
-        case .responseMissingRequiredData:
-            return "An API response was missing required data"
+        case let .responseMissingRequiredData(message):
+            return "An API response was missing required data: \(message)"
         }
     }
 }

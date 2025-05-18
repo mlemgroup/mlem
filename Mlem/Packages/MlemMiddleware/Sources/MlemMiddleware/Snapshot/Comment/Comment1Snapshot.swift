@@ -32,7 +32,12 @@ public struct Comment1Snapshot: CacheIdentifiable {
         self.id = comment.id
         self.creatorId = comment.creatorId
         self.postId = comment.postId
-        self.parentCommentIds = comment.path.split(separator: ".").dropFirst().compactMap { Int($0) }
+        self.parentCommentIds = comment.path
+            .split(separator: ".")
+            .dropFirst()
+            .dropLast()
+            .compactMap { Int($0) }
+        
         self.created = comment.published
         
         self.content = comment.content

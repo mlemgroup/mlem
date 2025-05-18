@@ -35,19 +35,19 @@ public struct Community2Snapshot: CacheIdentifiable {
                 pending: community.communityActions?.followState == .pending || community.subscribed == .pending
             )
         } else {
-            throw .responseMissingRequiredData
+            throw .responseMissingRequiredData("ApiCommunityView subscribed")
         }
         
         if let postCount = community.counts?.posts ?? community.community.posts {
             self.postCount = postCount
         } else {
-            throw .responseMissingRequiredData
+            throw .responseMissingRequiredData("ApiCommunityView postCount")
         }
         
         if let commentCount = community.counts?.comments ?? community.community.comments {
             self.commentCount = commentCount
         } else {
-            throw .responseMissingRequiredData
+            throw .responseMissingRequiredData("ApiCommunityView commentCount")
         }
         
         if let sixMonths = community.counts?.usersActiveHalfYear ?? community.community.usersActiveHalfYear,
@@ -61,7 +61,7 @@ public struct Community2Snapshot: CacheIdentifiable {
                 day: day
             )
         } else {
-            throw .responseMissingRequiredData
+            throw .responseMissingRequiredData("ApiCommunityView activeUserCount")
         }
         
         if let actions = community.communityActions {

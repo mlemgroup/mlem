@@ -34,12 +34,12 @@ public struct Post2Snapshot: CacheIdentifiable {
         self.creator = try .init(from: post.creator)
         self.community = try .init(from: post.community)
         
-        if let counts = post.counts, let myVote = post.myVote {
-            self.votes = .init(from: counts, myVote: .guaranteedInit(from: myVote))
+        if let counts = post.counts {
+            self.votes = .init(from: counts, myVote: .guaranteedInit(from: post.myVote))
         } else if let upvotes = post.post.upvotes, let downvotes = post.post.downvotes {
             self.votes = .init(upvotes: upvotes, downvotes: downvotes, myVote: .guaranteedInit(from: post.postActions?.likeScore))
         } else {
-            throw .responseMissingRequiredData
+            throw .responseMissingRequiredData("ApiPostView scores")
         }
         
         if let actions = post.creatorCommunityActions {
@@ -49,7 +49,9 @@ public struct Post2Snapshot: CacheIdentifiable {
         } else {
             self.creatorIsModerator = post.creatorIsModerator
             self.creatorBannedFromCommunity = post.creatorBannedFromCommunity ?? false
-            guard let creatorBlocked = post.creatorBlocked else { throw .responseMissingRequiredData }
+            guard let creatorBlocked = post.creatorBlocked else {
+                throw .responseMissingRequiredData("ApiMyUserInfo creatorBlocked")
+            }
             self.creatorBlocked = creatorBlocked
         }
         
@@ -62,7 +64,7 @@ public struct Post2Snapshot: CacheIdentifiable {
             self.commentCount = counts.comments
             self.unreadCommentCount = unreadComments
         } else {
-            throw .responseMissingRequiredData
+            throw .responseMissingRequiredData("ApiMyUserInfo commentCount")
         }
 
         if let actions = post.postActions {
@@ -74,7 +76,7 @@ public struct Post2Snapshot: CacheIdentifiable {
             self.read = read
             self.hidden = hidden
         } else {
-            throw .responseMissingRequiredData
+            throw .responseMissingRequiredData("ApiMyUserInfo actions")
         }
     }
 }

@@ -54,10 +54,10 @@ public struct Person4Snapshot: CacheIdentifiable {
         self.showAvatars = user.showAvatars
         self.sendNotificationsToEmail = user.sendNotificationsToEmail
         
-        if let showScores = user.showScore ?? user.showScores {
+        if let showScores = (user.showScore ?? user.showScores) {
             self.showScores = showScores
         } else {
-            throw .responseMissingRequiredData
+            throw .responseMissingRequiredData("ApiMyUserInfo showScores")
         }
         
         self.showBotAccounts = user.showBotAccounts

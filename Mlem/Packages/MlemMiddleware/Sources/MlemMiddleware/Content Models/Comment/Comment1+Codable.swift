@@ -18,11 +18,17 @@ extension Comment1 {
             published: created,
             updated: updated,
             deleted: deleted,
-            actorId: actorId,
+            apId: actorId,
             local: actorId.host == api.actorId.host,
             path: ([0] + parentCommentIds + [id]).map(String.init).joined(separator: "."),
             distinguished: distinguished,
-            languageId: languageId
+            languageId: languageId,
+            score: nil,
+            upvotes: nil,
+            downvotes: nil,
+            childCount: nil,
+            reportCount: nil,
+            unresolvedReportCount: nil
         )
     }
 }

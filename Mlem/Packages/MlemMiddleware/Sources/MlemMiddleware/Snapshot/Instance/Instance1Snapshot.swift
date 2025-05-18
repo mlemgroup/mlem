@@ -32,7 +32,7 @@ public struct Instance1Snapshot: CacheIdentifiable {
         if let actorId = site.apId ?? site.actorId {
             self.actorId = actorId
         } else {
-            throw .responseMissingRequiredData
+            throw .responseMissingRequiredData("ApiSite actorId")
         }
         
         self.id = site.id

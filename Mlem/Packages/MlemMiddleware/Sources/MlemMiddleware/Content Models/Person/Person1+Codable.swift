@@ -33,7 +33,9 @@ public extension Person1 {
             botAccount: isBot,
             banExpires: instanceBan.expiryDate,
             instanceId: instanceId,
-            inboxUrl: nil
+            apId: actorId,
+            postCount: nil,
+            commentCount: nil
         )
     }
     

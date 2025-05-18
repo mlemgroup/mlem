@@ -110,7 +110,7 @@ public enum ModlogEntryTypeSnapshot {
     
     public init(from view: ApiModRemoveCommentView) throws(ApiClientError) {
         guard let creator = view.otherPerson ?? view.commenter else {
-            throw .responseMissingRequiredData
+            throw .responseMissingRequiredData("ApiModRemoveCommentView otherPerson")
         }
         self = try .removeComment(
             .init(from: view.comment),
@@ -148,7 +148,7 @@ public enum ModlogEntryTypeSnapshot {
     
     public init(from view: ApiModTransferCommunityView) throws(ApiClientError) {
         guard let moddedPerson = view.otherPerson ?? view.moddedPerson else {
-            throw .responseMissingRequiredData
+            throw .responseMissingRequiredData("ApiModTransferCommunityView otherPerson")
         }
         self = try .transferCommunityOwnership(
             person: .init(from: moddedPerson),
@@ -158,7 +158,7 @@ public enum ModlogEntryTypeSnapshot {
     
     public init(from view: ApiModAddCommunityView) throws(ApiClientError) {
         guard let moddedPerson = view.otherPerson ?? view.moddedPerson else {
-            throw .responseMissingRequiredData
+            throw .responseMissingRequiredData("ApiModAddCommunityView otherPerson")
         }
         self = try .updatePersonModeratorStatus(
             person: .init(from: moddedPerson),
@@ -169,7 +169,7 @@ public enum ModlogEntryTypeSnapshot {
     
     public init(from view: ApiModAddView) throws(ApiClientError) {
         guard let moddedPerson = view.otherPerson ?? view.moddedPerson else {
-            throw .responseMissingRequiredData
+            throw .responseMissingRequiredData("ApiModAddView otherPerson")
         }
         self = try .updatePersonAdminStatus(
             person: .init(from: moddedPerson),
@@ -179,7 +179,7 @@ public enum ModlogEntryTypeSnapshot {
     
     public init(from view: ApiModBanFromCommunityView) throws(ApiClientError) {
         guard let bannedPerson = view.otherPerson ?? view.bannedPerson else {
-            throw .responseMissingRequiredData
+            throw .responseMissingRequiredData("ApiModBanFromCommunityView otherPerson")
         }
         self = try .banPersonFromCommunity(
             person: .init(from: bannedPerson),
@@ -192,7 +192,7 @@ public enum ModlogEntryTypeSnapshot {
     
     public init(from view: ApiModBanView) throws(ApiClientError) {
         guard let bannedPerson = view.otherPerson ?? view.bannedPerson else {
-            throw .responseMissingRequiredData
+            throw .responseMissingRequiredData("ApiModBanView otherPerson")
         }
         self = try .banPersonFromInstance(
             person: .init(from: bannedPerson),

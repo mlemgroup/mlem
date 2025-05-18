@@ -26,19 +26,19 @@ public struct Person2Snapshot: CacheIdentifiable {
         if let isAdmin = person.isAdmin ?? person.person.admin {
             self.isAdmin = isAdmin
         } else {
-            throw .responseMissingRequiredData
+            throw .responseMissingRequiredData("ApiPersonView isAdmin")
         }
         
         if let postCount = person.person.postCount ?? person.counts?.postCount {
             self.postCount = postCount
         } else {
-            throw .responseMissingRequiredData
+            throw .responseMissingRequiredData("ApiPersonView postCount")
         }
         
         if let commentCount = person.person.commentCount ?? person.counts?.commentCount {
             self.commentCount = commentCount
         } else {
-            throw .responseMissingRequiredData
+            throw .responseMissingRequiredData("ApiPersonView commentCount")
         }
     }
     
@@ -47,19 +47,19 @@ public struct Person2Snapshot: CacheIdentifiable {
         if let isAdmin = localUser.localUser.admin ?? localUser.person.admin {
             self.isAdmin = isAdmin
         } else {
-            throw ApiClientError.responseMissingRequiredData
+            throw ApiClientError.responseMissingRequiredData("ApiLocalUserView isAdmin")
         }
         
         if let postCount = localUser.person.postCount ?? localUser.counts?.postCount {
             self.postCount = postCount
         } else {
-            throw .responseMissingRequiredData
+            throw .responseMissingRequiredData("ApiLocalUserView postCount")
         }
         
         if let commentCount = localUser.person.commentCount ?? localUser.counts?.commentCount {
             self.commentCount = commentCount
         } else {
-            throw .responseMissingRequiredData
+            throw .responseMissingRequiredData("ApiLocalUserView commentCount")
         }
     }
 }

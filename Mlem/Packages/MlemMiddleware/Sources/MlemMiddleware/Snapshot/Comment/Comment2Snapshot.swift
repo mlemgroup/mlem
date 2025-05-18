@@ -35,7 +35,7 @@ public struct Comment2Snapshot: CacheIdentifiable {
         if let childCount = comment.comment.childCount ?? comment.counts?.childCount {
             self.commentCount = childCount
         } else {
-            throw .responseMissingRequiredData
+            throw .responseMissingRequiredData("ApiCommentView childCount")
         }
             
         self.creatorIsAdmin = comment.creatorIsAdmin
@@ -46,7 +46,9 @@ public struct Comment2Snapshot: CacheIdentifiable {
         } else {
             self.creatorIsModerator = comment.creatorIsModerator
             self.creatorBannedFromCommunity = comment.creatorBannedFromCommunity ?? false
-            guard let creatorBlocked = comment.creatorBlocked else { throw .responseMissingRequiredData }
+            guard let creatorBlocked = comment.creatorBlocked else {
+                throw .responseMissingRequiredData("ApICommentView creatorBlocked")
+            }
         }
         
         if let actions = comment.commentActions {
@@ -54,15 +56,15 @@ public struct Comment2Snapshot: CacheIdentifiable {
         } else if let saved = comment.saved {
             self.saved = saved
         } else {
-            throw .responseMissingRequiredData
+            throw .responseMissingRequiredData("ApiCommentView saved")
         }
         
-        if let counts = comment.counts, let myVote = comment.myVote {
-            self.votes = .init(from: counts, myVote: .guaranteedInit(from: myVote))
+        if let counts = comment.counts {
+            self.votes = .init(from: counts, myVote: .guaranteedInit(from: comment.myVote))
         } else if let upvotes = comment.comment.upvotes, let downvotes = comment.comment.downvotes {
             self.votes = .init(upvotes: upvotes, downvotes: downvotes, myVote: .guaranteedInit(from: comment.commentActions?.likeScore))
         } else {
-            throw .responseMissingRequiredData
+            throw .responseMissingRequiredData("ApiCommentView score")
         }
     }
 }

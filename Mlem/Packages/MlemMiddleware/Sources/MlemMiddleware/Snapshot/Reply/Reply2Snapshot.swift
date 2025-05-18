@@ -42,13 +42,13 @@ public struct Reply2Snapshot: CacheIdentifiable {
         } else if let subscribedType = commentReply.subscribed {
             self.subscribed = subscribedType != .notSubscribed
         } else {
-            throw .responseMissingRequiredData
+            throw .responseMissingRequiredData("ApiCommentReplyView subscribed")
         }
         
         if let childCount = commentReply.comment.childCount ?? commentReply.counts?.childCount {
             self.commentCount = childCount
         } else {
-            throw .responseMissingRequiredData
+            throw .responseMissingRequiredData("ApiCommentReplyView childCount")
         }
         
         self.creatorIsAdmin = commentReply.creatorIsAdmin
@@ -59,7 +59,9 @@ public struct Reply2Snapshot: CacheIdentifiable {
         } else {
             self.creatorIsModerator = commentReply.creatorIsModerator
             self.creatorBannedFromCommunity = commentReply.creatorBannedFromCommunity ?? false
-            guard let creatorBlocked = commentReply.creatorBlocked else { throw .responseMissingRequiredData }
+            guard let creatorBlocked = commentReply.creatorBlocked else {
+                throw .responseMissingRequiredData("ApiCommentReplyView creatorBlocked")
+            }
         }
         
         if let actions = commentReply.commentActions {
@@ -67,15 +69,15 @@ public struct Reply2Snapshot: CacheIdentifiable {
         } else if let saved = commentReply.saved {
             self.saved = saved
         } else {
-            throw .responseMissingRequiredData
+            throw .responseMissingRequiredData("ApiCommentReplyView saved")
         }
         
-        if let counts = commentReply.counts, let myVote = commentReply.myVote {
-            self.votes = .init(from: counts, myVote: .guaranteedInit(from: myVote))
+        if let counts = commentReply.counts {
+            self.votes = .init(from: counts, myVote: .guaranteedInit(from: commentReply.myVote))
         } else if let upvotes = commentReply.comment.upvotes, let downvotes = commentReply.comment.downvotes {
             self.votes = .init(upvotes: upvotes, downvotes: downvotes, myVote: .guaranteedInit(from: commentReply.commentActions?.likeScore))
         } else {
-            throw .responseMissingRequiredData
+            throw .responseMissingRequiredData("ApiCommentReplyView score")
         }
     }
     
@@ -83,7 +85,7 @@ public struct Reply2Snapshot: CacheIdentifiable {
         if let mention = personMention.personCommentMention ?? personMention.personMention {
             self.reply = try .init(from: mention)
         } else {
-            throw .responseMissingRequiredData
+            throw .responseMissingRequiredData("ApiPersonCommentMentionView mention")
         }
         
         self.comment = try .init(from: personMention.comment)
@@ -97,13 +99,13 @@ public struct Reply2Snapshot: CacheIdentifiable {
         } else if let subscribedType = personMention.subscribed {
             self.subscribed = subscribedType != .notSubscribed
         } else {
-            throw .responseMissingRequiredData
+            throw .responseMissingRequiredData("ApiPersonCommentMentionView suscribed")
         }
         
         if let childCount = personMention.comment.childCount ?? personMention.counts?.childCount {
             self.commentCount = childCount
         } else {
-            throw .responseMissingRequiredData
+            throw .responseMissingRequiredData("ApiPersonCommentMentionView childCount")
         }
         
         self.creatorIsAdmin = personMention.creatorIsAdmin
@@ -114,7 +116,9 @@ public struct Reply2Snapshot: CacheIdentifiable {
         } else {
             self.creatorIsModerator = personMention.creatorIsModerator
             self.creatorBannedFromCommunity = personMention.creatorBannedFromCommunity ?? false
-            guard let creatorBlocked = personMention.creatorBlocked else { throw .responseMissingRequiredData }
+            guard let creatorBlocked = personMention.creatorBlocked else {
+                throw .responseMissingRequiredData("ApiPersonCommentMentionView creatorBlocked")
+            }
         }
         
         if let actions = personMention.commentActions {
@@ -122,15 +126,15 @@ public struct Reply2Snapshot: CacheIdentifiable {
         } else if let saved = personMention.saved {
             self.saved = saved
         } else {
-            throw .responseMissingRequiredData
+            throw .responseMissingRequiredData("ApiPersonCommentMentionView saved")
         }
         
-        if let counts = personMention.counts, let myVote = personMention.myVote {
-            self.votes = .init(from: counts, myVote: .guaranteedInit(from: myVote))
+        if let counts = personMention.counts {
+            self.votes = .init(from: counts, myVote: .guaranteedInit(from: personMention.myVote))
         } else if let upvotes = personMention.comment.upvotes, let downvotes = personMention.comment.downvotes {
             self.votes = .init(upvotes: upvotes, downvotes: downvotes, myVote: .guaranteedInit(from: personMention.commentActions?.likeScore))
         } else {
-            throw .responseMissingRequiredData
+            throw .responseMissingRequiredData("ApiPersonCommentMentionView score")
         }
         
         // TODO: Cache init & `update`

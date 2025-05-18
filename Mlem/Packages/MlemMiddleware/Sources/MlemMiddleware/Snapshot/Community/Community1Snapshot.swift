@@ -35,7 +35,7 @@ public struct Community1Snapshot: CacheIdentifiable {
         if let actorId = community.apId ?? community.actorId {
             self.actorId = actorId
         } else {
-            throw .responseMissingRequiredData
+            throw .responseMissingRequiredData("ApiCommunity actorId")
         }
         
         self.id = community.id

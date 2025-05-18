@@ -41,6 +41,10 @@ struct CommunityDetailsView: View {
                 .padding(.vertical, Constants.main.standardSpacing)
             }
             
+            if let activeUserCount = community.activeUserCount_ {
+                ActiveUserCountView(activeUserCount: activeUserCount)
+            }
+
             HStack(spacing: 16) {
                 FormReadout("Posts", value: community.postCount_ ?? 0)
                     .tint(.themedPostAccent)

@@ -15,7 +15,12 @@ public class ApiClient {
         case all, getOnly, none
     }
     
-    let decoder: JSONDecoder = .defaultDecoder
+    let decoder: JSONDecoder = {
+        let decoder: JSONDecoder = .defaultDecoder
+//        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        return decoder
+    }()
+    
     let urlSession: URLSession = .init(configuration: .default)
     
     // url and username MAY NOT be modified! Downstream code expects that a given ApiClient will *always* submit requests from the same user to the same instance.
@@ -139,7 +144,7 @@ public class ApiClient {
         
         let urlRequest = try urlRequest(from: request, tokenOverride: tokenOverride)
         // this line intentionally left commented for convenient future debugging
-        // urlRequest.debug()
+        urlRequest.debug()
         let (data, response) = try await execute(urlRequest, tokenOverride: tokenOverride)
         if let response = response as? HTTPURLResponse {
             if response.statusCode >= 500 { // Error code for server being offline.
@@ -237,6 +242,7 @@ public class ApiClient {
     func createBodyData(for defintion: any ApiRequestBodyProviding) throws -> Data {
         do {
             let encoder = JSONEncoder()
+//            encoder.keyEncodingStrategy = .convertToSnakeCase
             let body = defintion.body ?? ""
             return try encoder.encode(body)
         } catch {

@@ -14,7 +14,6 @@ public struct Person1Snapshot: CacheIdentifiable {
     public let name: String
     public let created: Date
     public let instanceId: Int
-    public let inboxUrl: URL
 
     // May change. If you add/remove items from this list,
     // remember to also amend the `update` method of Person1!
@@ -32,7 +31,7 @@ public struct Person1Snapshot: CacheIdentifiable {
     
     public init(from person: ApiPerson) throws(ApiClientError) {
         guard let actorId = person.apId ?? person.actorId else {
-            throw .responseMissingRequiredData
+            throw .responseMissingRequiredData("ApiPerson actorId")
         }
         
         self.actorId = actorId
@@ -47,7 +46,6 @@ public struct Person1Snapshot: CacheIdentifiable {
         self.matrixUserId = person.matrixUserId
         self.isBot = person.botAccount
         self.deleted = person.deleted
-        self.inboxUrl = person.inboxUrl
         self.instanceId = person.instanceId
         
         if person.banned {

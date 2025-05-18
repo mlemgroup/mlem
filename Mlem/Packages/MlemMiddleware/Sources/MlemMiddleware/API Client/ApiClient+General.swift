@@ -198,21 +198,21 @@ public extension ApiClient {
             pageBack: nil
         )
         let response = try await perform(request)
-        return try await createModlogEntries(response.getEntries(ofType: type))
+        return try await createModlogEntries(response.toSnapshots())
     }
     
     @MainActor
-    private func createModlogEntries(_ entries: [any ModlogEntryApiBacker]) throws -> [ModlogEntry] {
-        try entries.map { entry in
-            try ModlogEntry(
+    private func createModlogEntries(_ entries: [ModlogEntrySnapshot]) -> [ModlogEntry] {
+        entries.map { entry in
+            ModlogEntry(
                 api: self,
-                created: entry.published,
+                created: entry.created,
                 moderator: caches.person1.getOptionalModel(
                     api: self,
-                    from: entry.moderator.map { try .init(from: $0) }
+                    from: entry.moderator
                 ),
                 moderatorId: entry.moderatorId,
-                type: entry.type(api: self)
+                type: .init(from: entry.type, api: self)
             )
         }
     }
