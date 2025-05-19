@@ -43,7 +43,7 @@ import Foundation
             requiresToken: Bool = true
         ) async throws -> Request.Response {
             if let request = request as? GetPostsRequest, let params = request.parameters {
-                return ApiGetPostsResponse(posts: posts.map(\.apiPostView)) as! Request.Response
+                return ApiGetPostsResponse(posts: posts.map(\.apiPostView), nextPage: nil) as! Request.Response
             }
         
             if let request = request as? GetCommentsRequest, let params = request.parameters {
@@ -54,8 +54,10 @@ import Foundation
                 if let person = people.first(where: { $0.id == params.personId })?.apiPersonView {
                     return ApiGetPersonDetailsResponse(
                         personView: person,
+                        comments: nil,
                         posts: posts.filter { $0.creator.id == params.personId }.map(\.apiPostView),
-                        moderates: []
+                        moderates: [],
+                        site: nil
                     ) as! Request.Response
                 }
             }
@@ -71,7 +73,12 @@ import Foundation
         
             if let request = request as? GetCommunityRequest, let params = request.parameters {
                 if let community = communities.first(where: { $0.id == params.id })?.apiCommunityView {
-                    return ApiGetCommunityResponse(communityView: community, moderators: [], discussionLanguages: []) as! Request.Response
+                    return ApiGetCommunityResponse(
+                        communityView: community,
+                        site: nil,
+                        moderators: [],
+                        discussionLanguages: []
+                    ) as! Request.Response
                 }
             }
         
@@ -81,7 +88,9 @@ import Foundation
                     comments: [],
                     posts: [],
                     communities: params.type_ == .communities ? communities.map(\.apiCommunityView) : [],
-                    users: params.type_ == .users ? people.map(\.apiPersonView) : []
+                    users: params.type_ == .users ? people.map(\.apiPersonView) : [],
+                    results: nil,
+                    nextPage: nil
                 ) as! Request.Response
             }
         

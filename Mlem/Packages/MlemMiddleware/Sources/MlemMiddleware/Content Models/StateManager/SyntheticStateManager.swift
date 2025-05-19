@@ -29,9 +29,9 @@ public class SyntheticStateManager<Value: MergeableValue>: StateManager<Value> {
     private var siblings: NSMapTable<NSUUID, SyntheticStateManager> = .weakToWeakObjects()
     
     override public var displayedValue: Value {
-        siblings.dictionaryRepresentation().values.reduce(wrappedValue, { result, sibling in
+        siblings.dictionaryRepresentation().values.reduce(wrappedValue) { result, sibling in
             result.merge(with: sibling.wrappedValue, using: mergeType)
-        })
+        }
     }
     
     init(

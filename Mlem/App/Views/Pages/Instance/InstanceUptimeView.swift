@@ -32,13 +32,13 @@ struct InstanceUptimeView: View {
             Task {
                 let uptimeStatus = await loadUptimeData(instance: instance)
                 switch uptimeStatus {
-                case .success(let uptimeData):
+                case let .success(uptimeData):
                     withAnimation(.easeOut(duration: 0.2)) {
                         self.uptimeData = uptimeData
                     }
                 case .unavailable:
                     assertionFailure("Uptime data unavailable.")
-                case .failure(let error):
+                case let .failure(error):
                     handleError(error)
                 }
             }

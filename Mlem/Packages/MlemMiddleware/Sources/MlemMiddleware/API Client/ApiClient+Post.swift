@@ -41,7 +41,10 @@ public extension ApiClient {
             pageBack: nil
         )
         let response = try await perform(request)
-        let posts = await caches.post2.getModels(api: self, from: response.posts)
+        let posts = try await caches.post2.getModels(
+            api: self,
+            from: response.posts.map { try .init(from: $0) }
+        )
         return (posts: posts, cursor: response.nextPage)
     }
 
@@ -78,7 +81,10 @@ public extension ApiClient {
             pageBack: nil
         )
         let response = try await perform(request)
-        let posts = await caches.post2.getModels(api: self, from: response.posts)
+        let posts = try await caches.post2.getModels(
+            api: self,
+            from: response.posts.map { try .init(from: $0) }
+        )
         return (posts: posts, cursor: response.nextPage)
     }
     
@@ -101,23 +107,35 @@ public extension ApiClient {
             savedOnly: savedOnly
         )
         let response = try await perform(request)
-        return await (
-            person: caches.person3.getModel(api: self, from: response),
-            posts: caches.post2.getModels(api: self, from: response.posts ?? [])
+        return try await (
+            person: caches.person3.getModel(
+                api: self,
+                from: .init(from: response)
+            ),
+            posts: caches.post2.getModels(
+                api: self,
+                from: response.posts?.map { try .init(from: $0) } ?? []
+            )
         )
     }
         
     func getPost(id: Int) async throws -> Post3 {
         let request = GetPostRequest(endpoint: .v3, id: id, commentId: nil)
         let response = try await perform(request)
-        return await caches.post3.getModel(api: self, from: response)
+        return try await caches.post3.getModel(
+            api: self,
+            from: .init(from: response)
+        )
     }
     
     func getPost(url: URL) async throws -> Post2 {
         let request = ResolveObjectRequest(endpoint: .v3, q: url.absoluteString)
         do {
             if let response = try await perform(request).post {
-                return await caches.post2.getModel(api: self, from: response)
+                return try await caches.post2.getModel(
+                    api: self,
+                    from: .init(from: response)
+                )
             }
         } catch let ApiClientError.response(response, _) where response.couldntFindObject {
             throw ApiClientError.noEntityFound
@@ -204,7 +222,10 @@ public extension ApiClient {
             pageBack: nil
         )
         let response = try await perform(request)
-        return await caches.post2.getModels(api: self, from: response.posts ?? [])
+        return try await caches.post2.getModels(
+            api: self,
+            from: response.posts?.map { try .init(from: $0) } ?? []
+        )
     }
     
     /// Mark the given post as read. Works on all versions.
@@ -228,8 +249,13 @@ public extension ApiClient {
         } else {
             request = MarkPostAsReadRequest(endpoint: .v3, postId: id, read: read, postIds: nil)
             let response = try await perform(request)
-            if !response.success {
-                throw ApiClientError.unsuccessful
+            switch response {
+            case let .apiSuccessResponse(response):
+                if !response.success {
+                    throw ApiClientError.unsuccessful
+                }
+            default:
+                break
             }
             await markReadQueue.remove(id)
             Task { @MainActor in
@@ -267,8 +293,13 @@ public extension ApiClient {
         do {
             let request = MarkPostAsReadRequest(endpoint: .v3, postId: nil, read: read, postIds: Array(idsToSend))
             let response = try await perform(request)
-            if !response.success {
-                throw ApiClientError.unsuccessful
+            switch response {
+            case let .apiSuccessResponse(response):
+                if !response.success {
+                    throw ApiClientError.unsuccessful
+                }
+            default:
+                break
             }
             if read {
                 await markReadQueue.subtract(ids)
@@ -293,23 +324,35 @@ public extension ApiClient {
     
     @discardableResult
     func voteOnPost(id: Int, score: ScoringOperation, semaphore: UInt? = nil) async throws -> Post2 {
-        let request = LikePostRequest(endpoint: .v3, postId: id, score: score.rawValue)
+        let request = CreatePostLikeRequest(endpoint: .v3, postId: id, score: score.rawValue)
         let response = try await perform(request)
-        return await caches.post2.getModel(api: self, from: response.postView, semaphore: semaphore)
+        return try await caches.post2.getModel(
+            api: self,
+            from: .init(from: response.postView),
+            semaphore: semaphore
+        )
     }
     
     @discardableResult
     func savePost(id: Int, save: Bool, semaphore: UInt? = nil) async throws -> Post2 {
         let request = SavePostRequest(endpoint: .v3, postId: id, save: save)
         let response = try await perform(request)
-        return await caches.post2.getModel(api: self, from: response.postView, semaphore: semaphore)
+        return try await caches.post2.getModel(
+            api: self,
+            from: .init(from: response.postView),
+            semaphore: semaphore
+        )
     }
     
     @discardableResult
     func deletePost(id: Int, delete: Bool, semaphore: UInt? = nil) async throws -> Post2 {
         let request = DeletePostRequest(endpoint: .v3, postId: id, deleted: delete)
         let response = try await perform(request)
-        return await caches.post2.getModel(api: self, from: response.postView, semaphore: semaphore)
+        return try await caches.post2.getModel(
+            api: self,
+            from: .init(from: response.postView),
+            semaphore: semaphore
+        )
     }
     
     /// Added in 0.19.4
@@ -320,8 +363,13 @@ public extension ApiClient {
     ) async throws {
         let request = HidePostRequest(endpoint: .v3, postIds: Array(ids), hide: hide, postId: nil)
         let response = try await perform(request)
-        if !response.success {
-            throw ApiClientError.unsuccessful
+        switch response {
+        case let .apiSuccessResponse(response):
+            if !response.success {
+                throw ApiClientError.unsuccessful
+            }
+        default:
+            break
         }
         for post in ids.compactMap({ caches.post2.retrieveModel(cacheId: $0) }) {
             post.hiddenManager.updateWithReceivedValue(hide, semaphore: semaphore)
@@ -346,7 +394,7 @@ public extension ApiClient {
             endpoint: .v3,
             name: title,
             communityId: communityId,
-            url: linkUrl?.absoluteString,
+            url: linkUrl,
             body: content,
             honeypot: nil,
             nsfw: nsfw,
@@ -357,7 +405,10 @@ public extension ApiClient {
             scheduledPublishTime: nil
         )
         let response = try await perform(request)
-        return await caches.post2.getModel(api: self, from: response.postView)
+        return try await caches.post2.getModel(
+            api: self,
+            from: .init(from: response.postView)
+        )
     }
     
     @discardableResult
@@ -375,7 +426,7 @@ public extension ApiClient {
             endpoint: .v3,
             postId: id,
             name: title,
-            url: linkUrl?.absoluteString,
+            url: linkUrl,
             body: content,
             nsfw: nsfw,
             languageId: languageId,
@@ -385,7 +436,10 @@ public extension ApiClient {
             scheduledPublishTime: nil
         )
         let response = try await perform(request)
-        return await caches.post2.getModel(api: self, from: response.postView)
+        return try await caches.post2.getModel(
+            api: self,
+            from: .init(from: response.postView)
+        )
     }
 
     func replyToPost(id: Int, content: String, languageId: Int? = nil) async throws -> Comment2 {
@@ -398,7 +452,10 @@ public extension ApiClient {
             formId: nil
         )
         let response = try await perform(request)
-        let comment = await caches.comment2.getModel(api: self, from: response.commentView)
+        let comment = try await caches.comment2.getModel(
+            api: self,
+            from: .init(from: response.commentView)
+        )
         comment.getCachedInboxReply()?.setKnownReadState(newValue: true)
         return comment
     }
@@ -410,7 +467,7 @@ public extension ApiClient {
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
         return try await caches.report.getModel(
             api: self,
-            from: response.postReportView,
+            from: .init(from: response.postReportView),
             myPersonId: myPersonId
         )
     }
@@ -431,21 +488,33 @@ public extension ApiClient {
     ) async throws -> Post2 {
         let request = RemovePostRequest(endpoint: .v3, postId: id, removed: remove, reason: reason)
         let response = try await perform(request)
-        return await caches.post2.getModel(api: self, from: response.postView, semaphore: semaphore)
+        return try await caches.post2.getModel(
+            api: self,
+            from: .init(from: response.postView),
+            semaphore: semaphore
+        )
     }
     
     @discardableResult
     func pinPost(id: Int, pin: Bool, to target: ApiPostFeatureType, semaphore: UInt? = nil) async throws -> Post2 {
         let request = FeaturePostRequest(endpoint: .v3, postId: id, featured: pin, featureType: target)
         let response = try await perform(request)
-        return await caches.post2.getModel(api: self, from: response.postView, semaphore: semaphore)
+        return try await caches.post2.getModel(
+            api: self,
+            from: .init(from: response.postView),
+            semaphore: semaphore
+        )
     }
     
     @discardableResult
     func lockPost(id: Int, lock: Bool, semaphore: UInt? = nil) async throws -> Post2 {
         let request = LockPostRequest(endpoint: .v3, postId: id, locked: lock)
         let response = try await perform(request)
-        return await caches.post2.getModel(api: self, from: response.postView, semaphore: semaphore)
+        return try await caches.post2.getModel(
+            api: self,
+            from: .init(from: response.postView),
+            semaphore: semaphore
+        )
     }
     
     @discardableResult
@@ -457,9 +526,9 @@ public extension ApiClient {
     ) async throws -> [PersonVote] {
         let request = ListPostLikesRequest(endpoint: .v3, postId: id, page: page, limit: limit)
         let response = try await perform(request)
-        return await caches.personVote.getModels(
+        return try await caches.personVote.getModels(
             api: self,
-            from: response.postLikes,
+            from: response.postLikes.map { try .init(from: $0) },
             target: .post(id: id),
             communityId: communityId
         )

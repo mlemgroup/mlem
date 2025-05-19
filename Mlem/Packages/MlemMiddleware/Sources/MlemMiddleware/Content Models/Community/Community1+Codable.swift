@@ -32,11 +32,20 @@ public extension Community1 {
             hidden: hidden,
             postingRestrictedToMods: onlyModeratorsCanPost,
             instanceId: instanceId,
-            followersUrl: nil,
-            inboxUrl: nil,
-            onlyFollowersCanVote: nil,
             visibility: visibility,
-            sidebar: nil
+            sidebar: nil,
+            apId: actorId,
+            subscribers: nil,
+            posts: nil,
+            comments: nil,
+            usersActiveDay: nil,
+            usersActiveWeek: nil,
+            usersActiveMonth: nil,
+            usersActiveHalfYear: nil,
+            subscribersLocal: nil,
+            reportCount: nil,
+            unresolvedReportCount: nil,
+            localRemoved: nil
         )
     }
     

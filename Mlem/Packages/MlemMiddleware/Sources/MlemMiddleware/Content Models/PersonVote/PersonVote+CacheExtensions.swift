@@ -16,10 +16,10 @@ extension PersonVote: CacheIdentifiable {
     }
     
     @MainActor
-    func update(with voteView: ApiVoteView, semaphore: UInt? = nil) {
-        setIfChanged(\.vote, ScoringOperation(rawValue: voteView.score) ?? .none)
-        creator.update(with: voteView.creator, semaphore: semaphore)
-        if let creatorBannedFromCommunity = voteView.creatorBannedFromCommunity {
+    func update(with snapshot: PersonVoteSnapshot, semaphore: UInt? = nil) {
+        setIfChanged(\.vote, ScoringOperation(rawValue: snapshot.score) ?? .none)
+        creator.update(with: snapshot.creator, semaphore: semaphore)
+        if let creatorBannedFromCommunity = snapshot.creatorBannedFromCommunity {
             creator.updateKnownCommunityBanState(id: communityId, banned: creatorBannedFromCommunity)
         }
     }

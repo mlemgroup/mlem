@@ -5,8 +5,8 @@
 //  Created by Eric Andrews on 2025-05-08.
 //
 
-import MlemMiddleware
 import Foundation
+import MlemMiddleware
 
 enum UptimeDataStatus {
     case success(UptimeData)

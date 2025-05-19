@@ -7,9 +7,8 @@
 
 import Foundation
 
-extension ApiGetSiteResponse: ActorIdentifiable, CacheIdentifiable, Identifiable {
+extension ApiGetSiteResponse: CacheIdentifiable, Identifiable {
     public var cacheId: Int { id }
 
-    public var actorId: ActorIdentifier { siteView.site.actorId }
     public var id: Int { siteView.site.id }
 }

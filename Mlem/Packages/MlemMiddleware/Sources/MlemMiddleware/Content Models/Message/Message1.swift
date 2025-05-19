@@ -31,7 +31,6 @@ public final class Message1: Message1Providing {
     
     init(
         api: ApiClient,
-        
         actorId: ActorIdentifier,
         id: Int,
         creatorId: Int,

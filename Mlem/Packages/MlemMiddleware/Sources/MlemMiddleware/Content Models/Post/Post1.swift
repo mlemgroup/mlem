@@ -41,6 +41,12 @@ public final class Post1: Post1Providing {
     
     public var purged: Bool = false
     
+    var deletedManager: StateManager<Bool>
+    public var deleted: Bool { deletedManager.displayedValue }
+    
+    public var removedManager: StateManager<Bool>
+    public var removed: Bool { removedManager.displayedValue }
+    
     public var lockedManager: StateManager<Bool>
     public var locked: Bool { lockedManager.displayedValue }
     public var verifiedLocked: Bool { lockedManager.verifiedValue }
@@ -50,12 +56,6 @@ public final class Post1: Post1Providing {
     
     public var pinnedInstanceManager: StateManager<Bool>
     public var pinnedInstance: Bool { pinnedInstanceManager.displayedValue }
-    
-    var deletedManager: StateManager<Bool>
-    public var deleted: Bool { deletedManager.displayedValue }
-    
-    public var removedManager: StateManager<Bool>
-    public var removed: Bool { removedManager.displayedValue }
     
     init(
         api: ApiClient,

@@ -16,7 +16,10 @@ public extension ApiClient {
     ) async throws -> [Reply2] {
         let request = GetRepliesRequest(sort: sort, page: page, limit: limit, unreadOnly: unreadOnly)
         let response = try await perform(request)
-        return await caches.reply2.getModels(api: self, from: response.replies)
+        return try await caches.reply2.getModels(
+            api: self,
+            from: response.replies.map { try .init(from: $0) }
+        )
     }
     
     func getMentions(
@@ -27,7 +30,11 @@ public extension ApiClient {
     ) async throws -> [Reply2] {
         let request = GetPersonMentionsRequest(sort: sort, page: page, limit: limit, unreadOnly: unreadOnly)
         let response = try await perform(request)
-        return await caches.reply2.getModels(api: self, from: response.mentions)
+        
+        return try await caches.reply2.getModels(
+            api: self,
+            from: response.mentions.map { try .init(from: $0) }
+        )
     }
     
     func getMessages(
@@ -41,13 +48,13 @@ public extension ApiClient {
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
         return try await caches.message2.getModels(
             api: self,
-            from: response.privateMessages,
+            from: response.privateMessages.map { try .init(from: $0) },
             myPersonId: myPersonId
         )
     }
     
     func markAllAsRead() async throws {
-        let request = MarkAllNotificationsAsReadRequest(endpoint: .v3)
+        let request = MarkAllAsReadRequest(endpoint: .v3)
         try await perform(request)
         for reply in caches.reply1.itemCache.value.values {
             reply.content?.readManager.updateWithReceivedValue(true, semaphore: nil)
@@ -58,15 +65,13 @@ public extension ApiClient {
         unreadCount?.clear(.personal)
     }
     
-    @discardableResult
     func markReplyAsRead(
         id: Int,
         read: Bool = true,
         semaphore: UInt? = nil
-    ) async throws -> Reply2 {
+    ) async throws {
         let request = MarkCommentReplyAsReadRequest(endpoint: .v3, commentReplyId: id, read: read)
-        let response = try await perform(request)
-        return await caches.reply2.getModel(api: self, from: response.commentReplyView, semaphore: semaphore)
+        try await perform(request)
     }
     
     @discardableResult
@@ -77,24 +82,20 @@ public extension ApiClient {
     ) async throws -> Reply2 {
         let request = MarkPersonMentionAsReadRequest(personMentionId: id, read: read)
         let response = try await perform(request)
-        return await caches.reply2.getModel(api: self, from: response.personMentionView, semaphore: semaphore)
+        return try await caches.reply2.getModel(
+            api: self,
+            from: .init(from: response.personMentionView),
+            semaphore: semaphore
+        )
     }
     
-    @discardableResult
     func markMessageAsRead(
         id: Int,
         read: Bool = true,
         semaphore: UInt? = nil
-    ) async throws -> Message2 {
+    ) async throws {
         let request = MarkPrivateMessageAsReadRequest(endpoint: .v3, privateMessageId: id, read: read)
-        async let response = try await perform(request)
-        guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
-        return try await caches.message2.getModel(
-            api: self,
-            from: response.privateMessageView,
-            myPersonId: myPersonId,
-            semaphore: semaphore
-        )
+        try await perform(request)
     }
     
     func getPersonalUnreadCount() async throws -> ApiGetUnreadCountResponse {
@@ -115,7 +116,7 @@ public extension ApiClient {
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
         return try await caches.message2.getModel(
             api: self,
-            from: response.privateMessageView,
+            from: .init(from: response.privateMessageView),
             myPersonId: myPersonId
         )
     }
@@ -127,7 +128,7 @@ public extension ApiClient {
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
         return try await caches.message2.getModel(
             api: self,
-            from: response.privateMessageView,
+            from: .init(from: response.privateMessageView),
             myPersonId: myPersonId
         )
     }
@@ -139,7 +140,7 @@ public extension ApiClient {
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
         return try await caches.report.getModel(
             api: self,
-            from: response.privateMessageReportView,
+            from: .init(from: response.privateMessageReportView),
             myPersonId: myPersonId
         )
     }
@@ -151,7 +152,7 @@ public extension ApiClient {
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
         return try await caches.message2.getModel(
             api: self,
-            from: response.privateMessageView,
+            from: .init(from: response.privateMessageView),
             myPersonId: myPersonId,
             semaphore: semaphore
         )

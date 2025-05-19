@@ -61,10 +61,14 @@ public class BlockList {
         instances newInstances: [ApiInstanceBlockView]
     ) {
         let newPeople: [ActorIdentifier: Int] = newPeople.reduce(into: [:]) {
-            $0[$1.target.actorId] = $1.target.id
+            if let actorId = $1.target.apId ?? $1.target.actorId {
+                $0[actorId] = $1.target.id
+            }
         }
         let newCommunities: [ActorIdentifier: Int] = newCommunities.reduce(into: [:]) {
-            $0[$1.community.actorId] = $1.community.id
+            if let actorId = $1.community.apId ?? $1.community.actorId {
+                $0[actorId] = $1.community.id
+            }
         }
         
         let newInstances: [ActorIdentifier: Int] = newInstances.reduce(into: [:]) {

@@ -70,7 +70,7 @@ extension ApiModlogActionType {
         switch self {
         case .all, .modRemovePost, .modLockPost, .modFeaturePost,
              .modRemoveComment, .modBanFromCommunity, .modAddCommunity,
-             .modTransferCommunity, .modHideCommunity: true
+             .modTransferCommunity, .modHideCommunity, .modChangeCommunityVisibility: true
         case .modRemoveCommunity, .modAdd, .modBan,
              .adminPurgePerson, .adminPurgeCommunity,
              .adminPurgePost, .adminPurgeComment,

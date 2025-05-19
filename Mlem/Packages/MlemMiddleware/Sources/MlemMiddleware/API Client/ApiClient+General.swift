@@ -125,23 +125,35 @@ public extension ApiClient {
         let request = ResolveObjectRequest(endpoint: .v3, q: url.absoluteString)
         let response = try await perform(request)
         if let post = response.post {
-            return await caches.post2.getModel(api: self, from: post)
+            return try await caches.post2.getModel(
+                api: self,
+                from: .init(from: post)
+            )
         }
         if let comment = response.comment {
-            return await caches.comment2.getModel(api: self, from: comment)
+            return try await caches.comment2.getModel(
+                api: self,
+                from: .init(from: comment)
+            )
         }
         if let person = response.person {
-            return await caches.person2.getModel(api: self, from: person)
+            return try await caches.person2.getModel(
+                api: self,
+                from: .init(from: person)
+            )
         }
         if let community = response.community {
-            return await caches.community2.getModel(api: self, from: community)
+            return try await caches.community2.getModel(
+                api: self,
+                from: .init(from: community)
+            )
         }
         throw ApiClientError.noEntityFound
     }
     
     func resolve<Value: ActorIdentifiable & Sharable>(urls: [URL]) async throws -> [URL: Value] {
         try await withThrowingTaskGroup(of: (url: URL, value: Value)?.self) { group in
-            urls.forEach { url in
+            for url in urls {
                 group.addTask {
                     if let value = try await self.resolve(url: url) as? Value {
                         return (url, value)
@@ -168,10 +180,19 @@ public extension ApiClient {
         
         guard let myUser = response.myUser else { return ([], [], []) }
         
-        return await (
-            people: caches.person1.getModels(api: self, from: myUser.personBlocks.map(\.target)),
-            communities: caches.community1.getModels(api: self, from: myUser.communityBlocks.map(\.community)),
-            instances: caches.instance1.getModels(api: self, from: myUser.instanceBlocks?.compactMap(\.site) ?? [])
+        return try await (
+            people: caches.person1.getModels(
+                api: self,
+                from: myUser.personBlocks.map { try .init(from: $0.target) }
+            ),
+            communities: caches.community1.getModels(
+                api: self,
+                from: myUser.communityBlocks.map { try .init(from: $0.community) }
+            ),
+            instances: caches.instance1.getModels(
+                api: self,
+                from: myUser.instanceBlocks?.compactMap(\.site).map { try .init(from: $0) } ?? []
+            )
         )
     }
     
@@ -200,18 +221,21 @@ public extension ApiClient {
             pageBack: nil
         )
         let response = try await perform(request)
-        return await createModlogEntries(response.getEntries(ofType: type))
+        return try await createModlogEntries(response.toSnapshots())
     }
     
     @MainActor
-    private func createModlogEntries(_ entries: [any ModlogEntryApiBacker]) -> [ModlogEntry] {
+    private func createModlogEntries(_ entries: [ModlogEntrySnapshot]) -> [ModlogEntry] {
         entries.map { entry in
             ModlogEntry(
                 api: self,
-                created: entry.published,
-                moderator: caches.person1.getOptionalModel(api: self, from: entry.moderator),
+                created: entry.created,
+                moderator: caches.person1.getOptionalModel(
+                    api: self,
+                    from: entry.moderator
+                ),
                 moderatorId: entry.moderatorId,
-                type: entry.type(api: self)
+                type: .init(from: entry.type, api: self)
             )
         }
     }

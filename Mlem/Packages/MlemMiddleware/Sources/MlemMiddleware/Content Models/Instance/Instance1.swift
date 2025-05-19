@@ -20,17 +20,16 @@ public final class Instance1: Instance1Providing {
     // `instanceId` should be used when blocking the instance.
     public let id: Int
     public let instanceId: Int
-    
     public let created: Date
-    public let updated: Date?
-    public let publicKey: String
     
-    public var displayName: String = ""
+    public var updated: Date?
+    public var publicKey: String
+    public var displayName: String
     public var description: String?
     public var shortDescription: String?
     public var avatar: URL?
     public var banner: URL?
-    public var lastRefresh: Date = .distantPast
+    public var lastRefresh: Date
     public var contentWarning: String?
     
     /// If this is `false`, The instance is *not* guaranteed to be non-local, particularly for locally running instances.

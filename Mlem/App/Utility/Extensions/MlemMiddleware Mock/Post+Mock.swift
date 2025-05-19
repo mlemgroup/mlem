@@ -56,7 +56,7 @@ extension Post2 {
             votes: type.votes,
             creatorIsModerator: false,
             creatorIsAdmin: false,
-            bannedFromCommunity: false,
+            creatorBannedFromCommunity: false,
             commentCount: type.commentCount,
             unreadCommentCount: 0,
             saved: false,

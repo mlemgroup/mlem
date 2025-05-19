@@ -7,62 +7,59 @@
 
 import Foundation
 
-class Comment1Cache: ApiTypeBackedCache<Comment1, ApiComment> {
-    override func performModelTranslation(api: ApiClient, from apiType: ApiComment) -> Comment1 {
+class Comment1Cache: ApiTypeBackedCache<Comment1, Comment1Snapshot> {
+    override func performModelTranslation(api: ApiClient, from snapshot: Comment1Snapshot) -> Comment1 {
         .init(
             api: api,
-            actorId: apiType.actorId,
-            id: apiType.id,
-            content: apiType.content,
-            removed: apiType.removed,
-            created: apiType.published,
-            updated: apiType.updated,
-            deleted: apiType.deleted,
-            creatorId: apiType.creatorId,
-            postId: apiType.postId,
-            parentCommentIds: Array(apiType.path.split(separator: ".").compactMap { Int($0) }.dropFirst().dropLast()),
-            distinguished: apiType.distinguished,
-            languageId: apiType.languageId
+            actorId: snapshot.actorId,
+            id: snapshot.id,
+            content: snapshot.content,
+            removed: snapshot.removed,
+            created: snapshot.created,
+            updated: snapshot.updated,
+            deleted: snapshot.deleted,
+            creatorId: snapshot.creatorId,
+            postId: snapshot.postId,
+            parentCommentIds: snapshot.parentCommentIds,
+            distinguished: snapshot.distinguished,
+            languageId: snapshot.languageId
         )
     }
     
-    override func updateModel(_ item: Comment1, with apiType: ApiComment, semaphore: UInt? = nil) {
-        item.update(with: apiType)
+    override func updateModel(_ item: Comment1, with snapshot: Comment1Snapshot, semaphore: UInt? = nil) {
+        item.update(with: snapshot)
     }
 }
 
-class Comment2Cache: ApiTypeBackedCache<Comment2, ApiCommentView> {
-    override func performModelTranslation(api: ApiClient, from apiType: ApiCommentView) -> Comment2 {
+class Comment2Cache: ApiTypeBackedCache<Comment2, Comment2Snapshot> {
+    override func performModelTranslation(api: ApiClient, from snapshot: Comment2Snapshot) -> Comment2 {
         let votesManager: StateManager<VotesModel>
         let savedManager: StateManager<Bool>
         
-        if let comment = api.caches.reply2.retrieveModel(commentId: apiType.id) {
+        if let comment = api.caches.reply2.retrieveModel(commentId: snapshot.comment.id) {
             votesManager = comment.votesManager
             savedManager = comment.savedManager
         } else {
-            votesManager = .init(wrappedValue: .init(
-                from: apiType.counts,
-                myVote: ScoringOperation.guaranteedInit(from: apiType.myVote)
-            ))
-            savedManager = .init(wrappedValue: apiType.saved ?? false)
+            votesManager = .init(wrappedValue: snapshot.votes)
+            savedManager = .init(wrappedValue: snapshot.saved)
         }
         
         return .init(
             api: api,
-            comment1: api.caches.comment1.getModel(api: api, from: apiType.comment),
-            creator: api.caches.person1.getModel(api: api, from: apiType.creator),
-            post: api.caches.post1.getModel(api: api, from: apiType.post),
-            community: api.caches.community1.getModel(api: api, from: apiType.community),
+            comment1: api.caches.comment1.getModel(api: api, from: snapshot.comment),
+            creator: api.caches.person1.getModel(api: api, from: snapshot.creator),
+            post: api.caches.post1.getModel(api: api, from: snapshot.post),
+            community: api.caches.community1.getModel(api: api, from: snapshot.community),
             votesManager: votesManager,
             savedManager: savedManager,
-            creatorIsModerator: apiType.creatorIsModerator,
-            creatorIsAdmin: apiType.creatorIsAdmin,
-            bannedFromCommunity: apiType.creatorBannedFromCommunity,
-            commentCount: apiType.counts.childCount
+            creatorIsModerator: snapshot.creatorIsModerator,
+            creatorIsAdmin: snapshot.creatorIsAdmin,
+            creatorBannedFromCommunity: snapshot.creatorBannedFromCommunity,
+            commentCount: snapshot.commentCount
         )
     }
     
-    override func updateModel(_ item: Comment2, with apiType: ApiCommentView, semaphore: UInt? = nil) {
-        item.update(with: apiType, semaphore: semaphore)
+    override func updateModel(_ item: Comment2, with snapshot: Comment2Snapshot, semaphore: UInt? = nil) {
+        item.update(with: snapshot, semaphore: semaphore)
     }
 }

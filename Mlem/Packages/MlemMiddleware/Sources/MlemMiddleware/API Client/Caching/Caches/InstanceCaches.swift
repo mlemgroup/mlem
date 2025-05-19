@@ -11,27 +11,27 @@ class Instance1Cache: CoreCache<Instance1> {
     public var instanceIdCache: ItemCache = .init()
     
     @MainActor
-    func getModel(api: ApiClient, from apiType: ApiSite, semaphore: UInt? = nil) -> Instance1 {
-        if let item = retrieveModel(cacheId: apiType.cacheId) {
-            item.update(with: apiType)
+    func getModel(api: ApiClient, from snapshot: Instance1Snapshot, semaphore: UInt? = nil) -> Instance1 {
+        if let item = retrieveModel(cacheId: snapshot.cacheId) {
+            item.update(with: snapshot)
             return item
         }
     
         let newItem: Instance1 = .init(
             api: api,
-            actorId: apiType.actorId,
-            id: apiType.id,
-            instanceId: apiType.instanceId,
-            created: apiType.published,
-            updated: apiType.updated,
-            publicKey: apiType.publicKey,
-            displayName: apiType.name,
-            description: apiType.sidebar,
-            shortDescription: apiType.description,
-            avatar: apiType.icon,
-            banner: apiType.banner,
-            lastRefresh: apiType.lastRefreshedAt,
-            contentWarning: apiType.contentWarning,
+            actorId: snapshot.actorId,
+            id: snapshot.id,
+            instanceId: snapshot.instanceId,
+            created: snapshot.created,
+            updated: snapshot.updated,
+            publicKey: snapshot.publicKey,
+            displayName: snapshot.displayName,
+            description: snapshot.description,
+            shortDescription: snapshot.shortDescription,
+            avatar: snapshot.avatar,
+            banner: snapshot.banner,
+            lastRefresh: snapshot.lastRefresh,
+            contentWarning: snapshot.contentWarning,
             blocked: nil
         )
         
@@ -41,8 +41,8 @@ class Instance1Cache: CoreCache<Instance1> {
     }
     
     @MainActor
-    func getModels(api: ApiClient, from apiTypes: [ApiSite], semaphore: UInt? = nil) -> [Instance1] {
-        apiTypes.map { getModel(api: api, from: $0, semaphore: semaphore) }
+    func getModels(api: ApiClient, from snapshots: [Instance1Snapshot], semaphore: UInt? = nil) -> [Instance1] {
+        snapshots.map { getModel(api: api, from: $0, semaphore: semaphore) }
     }
     
     /// Get an instance with the given `instanceId` - this is different from the `id` of the instance.
@@ -59,79 +59,73 @@ class Instance1Cache: CoreCache<Instance1> {
     
     /// Convenience method for getting an optional site
     @MainActor
-    func getOptionalModel(api: ApiClient, from apiType: ApiSite?) -> Instance1? {
-        if let apiType {
-            return getModel(api: api, from: apiType)
+    func getOptionalModel(api: ApiClient, from snapshot: Instance1Snapshot?) -> Instance1? {
+        if let snapshot {
+            return getModel(api: api, from: snapshot)
         }
         return nil
     }
 }
 
-class Instance2Cache: ApiTypeBackedCache<Instance2, ApiSiteView> {
+class Instance2Cache: ApiTypeBackedCache<Instance2, Instance2Snapshot> {
     @MainActor
-    override func performModelTranslation(api: ApiClient, from apiType: ApiSiteView) -> Instance2 {
+    override func performModelTranslation(api: ApiClient, from snapshot: Instance2Snapshot) -> Instance2 {
         .init(
             api: api,
-            instance1: api.caches.instance1.getModel(api: api, from: apiType.site),
-            setup: apiType.localSite.siteSetup,
-            downvotesEnabled: apiType.localSite.enableDownvotes ?? true, // TODO: 0.20 support: we shouldn't be coalescing to true here
-            nsfwContentEnabled: apiType.localSite.enableNsfw ?? false, // TODO: 0.20 support: we shouldn't be coalescing to false here
-            communityCreationRestrictedToAdmins: apiType.localSite.communityCreationAdminOnly,
-            emailVerificationRequired: apiType.localSite.requireEmailVerification,
-            applicationQuestion: apiType.localSite.applicationQuestion,
-            isPrivate: apiType.localSite.privateInstance,
-            defaultTheme: apiType.localSite.defaultTheme,
-            defaultFeed: apiType.localSite.defaultPostListingType,
-            legalInformation: apiType.localSite.legalInformation,
-            hideModlogNames: apiType.localSite.hideModlogModNames,
-            emailApplicationsToAdmins: apiType.localSite.applicationEmailAdmins,
-            emailReportsToAdmins: apiType.localSite.reportsEmailAdmins,
-            slurFilterRegex: apiType.localSite.slurFilterRegex,
-            actorNameMaxLength: apiType.localSite.actorNameMaxLength,
-            federationEnabled: apiType.localSite.federationEnabled,
-            captchaEnabled: apiType.localSite.captchaEnabled,
-            captchaDifficulty: .init(rawValue: apiType.localSite.captchaDifficulty),
-            registrationMode: apiType.localSite.registrationMode,
-            federationSignedFetch: apiType.localSite.federationSignedFetch,
-            defaultPostListingMode: apiType.localSite.defaultPostListingMode,
-            defaultSortType: apiType.localSite.defaultSortType,
-            userCount: apiType.counts.users,
-            postCount: apiType.counts.posts,
-            commentCount: apiType.counts.comments,
-            communityCount: apiType.counts.communities,
-            activeUserCount: .init(
-                sixMonths: apiType.counts.usersActiveHalfYear,
-                month: apiType.counts.usersActiveMonth,
-                week: apiType.counts.usersActiveWeek,
-                day: apiType.counts.usersActiveDay
-            )
+            instance1: api.caches.instance1.getModel(api: api, from: snapshot.instance),
+            setup: snapshot.setup,
+            downvotesEnabled: snapshot.downvotesEnabled,
+            nsfwContentEnabled: snapshot.nsfwContentEnabled,
+            communityCreationRestrictedToAdmins: snapshot.communityCreationRestrictedToAdmins,
+            emailVerificationRequired: snapshot.emailVerificationRequired,
+            applicationQuestion: snapshot.applicationQuestion,
+            isPrivate: snapshot.isPrivate,
+            defaultTheme: snapshot.defaultTheme,
+            defaultFeed: snapshot.defaultFeed,
+            legalInformation: snapshot.legalInformation,
+            hideModlogNames: snapshot.hideModlogNames,
+            emailApplicationsToAdmins: snapshot.emailApplicationsToAdmins,
+            emailReportsToAdmins: snapshot.emailReportsToAdmins,
+            slurFilterRegex: snapshot.slurFilterRegex,
+            actorNameMaxLength: snapshot.actorNameMaxLength,
+            federationEnabled: snapshot.federationEnabled,
+            captchaEnabled: snapshot.captchaEnabled,
+            captchaDifficulty: snapshot.captchaDifficulty,
+            registrationMode: snapshot.registrationMode,
+            federationSignedFetch: snapshot.federationSignedFetch,
+            defaultPostListingMode: snapshot.defaultPostListingMode,
+            defaultSortType: snapshot.defaultSortType,
+            userCount: snapshot.userCount,
+            postCount: snapshot.postCount,
+            commentCount: snapshot.commentCount,
+            communityCount: snapshot.communityCount,
+            activeUserCount: snapshot.activeUserCount
         )
     }
     
     @MainActor
-    override func updateModel(_ item: Instance2, with apiType: ApiSiteView, semaphore: UInt? = nil) {
-        item.update(with: apiType)
+    override func updateModel(_ item: Instance2, with snapshot: Instance2Snapshot, semaphore: UInt? = nil) {
+        item.update(with: snapshot)
     }
 }
 
-class Instance3Cache: ApiTypeBackedCache<Instance3, ApiGetSiteResponse> {
+class Instance3Cache: ApiTypeBackedCache<Instance3, Instance3Snapshot> {
     @MainActor
-    override func performModelTranslation(api: ApiClient, from apiType: ApiGetSiteResponse) -> Instance3 {
+    override func performModelTranslation(api: ApiClient, from snapshot: Instance3Snapshot) -> Instance3 {
         .init(
             api: api,
-            instance2: api.caches.instance2.getModel(api: api, from: apiType.siteView),
-            version: .init(apiType.version),
-            allLanguages: apiType.allLanguages.compactMap { .init($0) },
-            allowedLanguageIds: Set(apiType.discussionLanguages).subtracting([0]),
-            taglines: apiType.taglines ?? [apiType.tagline].compactMap { $0 },
-            customEmojis: apiType.customEmojis ?? [], // TODO: 0.20 support: we shouldn't be coalescing to [] here
-            blockedUrls: apiType.blockedUrls,
-            administrators: apiType.admins.map { api.caches.person2.getModel(api: api, from: $0) }
+            instance2: api.caches.instance2.getModel(api: api, from: snapshot.instance),
+            version: snapshot.version,
+            allLanguages: snapshot.allLanguages,
+            allowedLanguageIds: snapshot.allowedLanguageIds,
+            taglines: snapshot.taglines,
+            blockedUrls: snapshot.blockedUrls,
+            administrators: api.caches.person2.getModels(api: api, from: snapshot.administrators)
         )
     }
     
     @MainActor
-    override func updateModel(_ item: Instance3, with apiType: ApiGetSiteResponse, semaphore: UInt? = nil) {
-        item.update(with: apiType)
+    override func updateModel(_ item: Instance3, with snapshot: Instance3Snapshot, semaphore: UInt? = nil) {
+        item.update(with: snapshot)
     }
 }

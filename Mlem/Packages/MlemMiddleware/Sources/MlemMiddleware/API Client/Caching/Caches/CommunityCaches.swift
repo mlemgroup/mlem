@@ -7,76 +7,71 @@
 
 import Foundation
 
-class Community1Cache: ApiTypeBackedCache<Community1, ApiCommunity> {
+class Community1Cache: ApiTypeBackedCache<Community1, Community1Snapshot> {
     @MainActor
-    override func performModelTranslation(api: ApiClient, from apiType: ApiCommunity) -> Community1 {
+    override func performModelTranslation(api: ApiClient, from snapshot: Community1Snapshot) -> Community1 {
         .init(
             api: api,
-            actorId: apiType.actorId,
-            id: apiType.id,
-            name: apiType.name,
-            created: apiType.published,
-            instanceId: apiType.instanceId,
-            updated: apiType.updated,
-            displayName: apiType.title,
-            description: apiType.description,
-            removed: apiType.removed,
-            deleted: apiType.deleted,
-            nsfw: apiType.nsfw,
-            avatar: apiType.icon,
-            banner: apiType.banner,
-            hidden: apiType.hidden,
-            onlyModeratorsCanPost: apiType.postingRestrictedToMods,
+            actorId: snapshot.actorId,
+            id: snapshot.id,
+            name: snapshot.name,
+            created: snapshot.created,
+            instanceId: snapshot.instanceId,
+            updated: snapshot.updated,
+            displayName: snapshot.displayName,
+            description: snapshot.description,
+            removed: snapshot.removed,
+            deleted: snapshot.deleted,
+            nsfw: snapshot.nsfw,
+            avatar: snapshot.avatar,
+            banner: snapshot.banner,
+            hidden: snapshot.hidden,
+            onlyModeratorsCanPost: snapshot.onlyModeratorsCanPost,
             blocked: nil,
-            visibility: apiType.visibility
+            visibility: snapshot.visibility
         )
     }
     
     @MainActor
-    override func updateModel(_ item: Community1, with apiType: ApiCommunity, semaphore: UInt? = nil) {
-        item.update(with: apiType)
+    override func updateModel(_ item: Community1, with snapshot: Community1Snapshot, semaphore: UInt? = nil) {
+        item.update(with: snapshot)
     }
 }
 
-class Community2Cache: ApiTypeBackedCache<Community2, ApiCommunityView> {
+class Community2Cache: ApiTypeBackedCache<Community2, Community2Snapshot> {
     @MainActor
-    override func performModelTranslation(api: ApiClient, from apiType: ApiCommunityView) -> Community2 {
+    override func performModelTranslation(api: ApiClient, from snapshot: Community2Snapshot) -> Community2 {
         .init(
             api: api,
-            community1: api.caches.community1.getModel(api: api, from: apiType.community),
-            subscription: .init(from: apiType.counts, subscribedType: apiType.subscribed),
-            postCount: apiType.counts.posts,
-            commentCount: apiType.counts.comments,
-            activeUserCount: .init(
-                sixMonths: apiType.counts.usersActiveHalfYear,
-                month: apiType.counts.usersActiveMonth,
-                week: apiType.counts.usersActiveWeek,
-                day: apiType.counts.usersActiveDay
-            ),
-            bannedFromCommunity: apiType.bannedFromCommunity
+            community1: api.caches.community1.getModel(api: api, from: snapshot.community),
+            subscription: snapshot.subscription,
+            postCount: snapshot.postCount,
+            commentCount: snapshot.commentCount,
+            activeUserCount: snapshot.activeUserCount,
+            bannedFromCommunity: snapshot.bannedFromCommunity
         )
     }
     
     @MainActor
-    override func updateModel(_ item: Community2, with apiType: ApiCommunityView, semaphore: UInt? = nil) {
-        item.update(with: apiType, semaphore: semaphore)
+    override func updateModel(_ item: Community2, with snapshot: Community2Snapshot, semaphore: UInt? = nil) {
+        item.update(with: snapshot, semaphore: semaphore)
     }
 }
 
-class Community3Cache: ApiTypeBackedCache<Community3, ApiGetCommunityResponse> {
+class Community3Cache: ApiTypeBackedCache<Community3, Community3Snapshot> {
     @MainActor
-    override func performModelTranslation(api: ApiClient, from apiType: ApiGetCommunityResponse) -> Community3 {
+    override func performModelTranslation(api: ApiClient, from snapshot: Community3Snapshot) -> Community3 {
         .init(
             api: api,
-            community2: api.caches.community2.getModel(api: api, from: apiType.communityView),
-            instance: api.caches.instance1.getOptionalModel(api: api, from: apiType.site),
-            moderators: apiType.moderators.map { api.caches.person1.getModel(api: api, from: $0.moderator) },
-            discussionLanguages: apiType.discussionLanguages
+            community2: api.caches.community2.getModel(api: api, from: snapshot.community),
+            instance: api.caches.instance1.getOptionalModel(api: api, from: snapshot.instance),
+            moderators: api.caches.person1.getModels(api: api, from: snapshot.moderators),
+            discussionLanguageIds: snapshot.discussionLanguageIds
         )
     }
     
     @MainActor
-    override func updateModel(_ item: Community3, with apiType: ApiGetCommunityResponse, semaphore: UInt? = nil) {
-        item.update(with: apiType, semaphore: semaphore)
+    override func updateModel(_ item: Community3, with snapshot: Community3Snapshot, semaphore: UInt? = nil) {
+        item.update(with: snapshot, semaphore: semaphore)
     }
 }

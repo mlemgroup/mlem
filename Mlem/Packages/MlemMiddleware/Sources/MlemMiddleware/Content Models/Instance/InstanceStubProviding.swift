@@ -59,7 +59,6 @@ public protocol InstanceStubProviding: ActorIdentifiable, ContentModel {
     var allLanguages_: [Locale.Language]? { get }
     var allowedLanguageIds_: Set<Int>? { get }
     var taglines_: [ApiTagline]? { get }
-    var customEmojis_: [ApiCustomEmojiView]? { get }
     var blockedUrls_: [ApiLocalSiteUrlBlocklist]? { get }
     var administrators_: [Person2]? { get }
 }
@@ -112,7 +111,6 @@ public extension InstanceStubProviding {
     var allLanguages_: [Locale.Language]? { nil }
     var allowedLanguageIds_: Set<Int>? { nil }
     var taglines_: [ApiTagline]? { nil }
-    var customEmojis_: [ApiCustomEmojiView]? { nil }
     var blockedUrls_: [ApiLocalSiteUrlBlocklist]? { nil }
     var administrators_: [Person2]? { nil }
 }

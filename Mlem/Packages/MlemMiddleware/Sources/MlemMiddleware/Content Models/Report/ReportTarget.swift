@@ -72,6 +72,52 @@ public enum ReportTarget {
         case let .message(message): message.creator
         }
     }
+    
+    @MainActor
+    init(from snapshot: ReportTargetSnapshot, api: ApiClient, myPersonId: Int) {
+        switch snapshot {
+        case let .post(post):
+            self = .post(api.caches.post2.getModel(api: api, from: post))
+        case let .comment(comment):
+            self = .comment(api.caches.comment2.getModel(api: api, from: comment))
+        case let .message(message):
+            self = .message(api.caches.message2.getModel(api: api, from: message, myPersonId: myPersonId))
+        case let .legacyPost(post, community, creator):
+            self = .legacyPost(
+                api.caches.post1.getModel(api: api, from: post),
+                community: api.caches.community1.getModel(api: api, from: community),
+                creator: api.caches.person1.getModel(api: api, from: creator)
+            )
+        case let .legacyComment(comment, community, creator):
+            self = .legacyComment(
+                api.caches.comment1.getModel(api: api, from: comment),
+                community: api.caches.community1.getModel(api: api, from: community),
+                creator: api.caches.person1.getModel(api: api, from: creator)
+            )
+        }
+    }
+    
+    @MainActor
+    func update(with snapshot: ReportTargetSnapshot) {
+        switch (self, snapshot) {
+        case let (.post(post), .post(updatedPost)):
+            post.update(with: updatedPost)
+        case let (.comment(comment), .comment(updatedComment)):
+            comment.update(with: updatedComment)
+        case let (.message(message), .message(updatedMessage)):
+            message.update(with: updatedMessage)
+        case let (.legacyPost(post, community, creator), .legacyPost(updatedPost, updatedCommunity, updatedCreator)):
+            post.update(with: updatedPost)
+            community.update(with: updatedCommunity)
+            creator.update(with: updatedCreator)
+        case let (.legacyComment(comment, community, creator), .legacyComment(updatedComment, updatedCommunity, updatedCreator)):
+            comment.update(with: updatedComment)
+            community.update(with: updatedCommunity)
+            creator.update(with: updatedCreator)
+        default:
+            assertionFailure()
+        }
+    }
 }
 
 public enum ReportType: Hashable {

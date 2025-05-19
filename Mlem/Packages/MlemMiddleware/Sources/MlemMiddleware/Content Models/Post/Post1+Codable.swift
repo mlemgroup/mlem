@@ -12,7 +12,7 @@ extension Post1 {
         ApiPost(
             id: id,
             name: title,
-            url: linkUrl?.absoluteString,
+            url: linkUrl,
             body: content,
             creatorId: creatorId,
             communityId: communityId,
@@ -25,7 +25,7 @@ extension Post1 {
             embedTitle: embed?.title,
             embedDescription: embed?.description,
             thumbnailUrl: thumbnailUrl,
-            actorId: actorId,
+            apId: actorId,
             local: actorId.host == api.actorId.host,
             embedVideoUrl: embed?.videoUrl,
             languageId: languageId,
@@ -33,7 +33,14 @@ extension Post1 {
             featuredLocal: pinnedInstance,
             urlContentType: nil,
             altText: altText,
-            scheduledPublishTime: nil
+            scheduledPublishTime: nil,
+            comments: nil,
+            score: nil,
+            upvotes: nil,
+            downvotes: nil,
+            newestCommentTime: nil,
+            reportCount: nil,
+            unresolvedReportCount: nil
         )
     }
 }

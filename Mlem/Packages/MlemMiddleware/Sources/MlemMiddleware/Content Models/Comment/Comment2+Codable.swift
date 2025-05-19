@@ -22,9 +22,7 @@ extension Comment2 {
                 downvotes: votes.downvotes,
                 published: created,
                 childCount: commentCount,
-                hotRank: nil,
-                reportCount: nil,
-                unresolvedReportCount: nil
+                hotRank: nil
             ),
             creatorBannedFromCommunity: bannedFromCommunity,
             subscribed: .notSubscribed,
@@ -34,6 +32,11 @@ extension Comment2 {
             creatorIsModerator: creatorIsModerator,
             creatorIsAdmin: creatorIsAdmin,
             bannedFromCommunity: false,
+            communityActions: nil,
+            commentActions: nil,
+            personActions: nil,
+            instanceActions: nil,
+            creatorCommunityActions: nil,
             canMod: nil
         )
     }

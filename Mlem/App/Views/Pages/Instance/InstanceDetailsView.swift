@@ -243,9 +243,9 @@ struct InstanceDetailsView: View {
                 
                 if case let .success(uptimeData) = uptimeData {
                     // NavigationLink(.instanceUptime(instance: instance, uptimeData: uptimeData)) {
-                        (Text("Details") + Text(verbatim: " ") + Text(Image(icon: .general.forward)))
-                            .font(.footnote)
-                            .foregroundStyle(.themedAccent)
+                    (Text("Details") + Text(verbatim: " ") + Text(Image(icon: .general.forward)))
+                        .font(.footnote)
+                        .foregroundStyle(.themedAccent)
                     // }
                 }
             }

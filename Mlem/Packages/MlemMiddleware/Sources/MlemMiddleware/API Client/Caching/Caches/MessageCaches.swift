@@ -11,27 +11,27 @@ class Message1Cache: CoreCache<Message1> {
     @MainActor
     func getModel(
         api: ApiClient,
-        from apiType: ApiPrivateMessage,
+        from snapshot: Message1Snapshot,
         myPersonId: Int,
         semaphore: UInt? = nil
     ) -> Message1 {
-        if let item = retrieveModel(cacheId: apiType.cacheId) {
-            item.update(with: apiType, semaphore: semaphore)
+        if let item = retrieveModel(cacheId: snapshot.cacheId) {
+            item.update(with: snapshot, semaphore: semaphore)
             return item
         }
         
         let newItem: Message1 = .init(
             api: api,
-            actorId: apiType.actorId,
-            id: apiType.id,
-            creatorId: apiType.creatorId,
-            recipientId: apiType.recipientId,
-            isOwnMessage: myPersonId == apiType.creatorId,
-            content: apiType.content,
-            deleted: apiType.deleted,
-            created: apiType.published,
-            updated: apiType.updated,
-            read: apiType.read
+            actorId: snapshot.actorId,
+            id: snapshot.id,
+            creatorId: snapshot.creatorId,
+            recipientId: snapshot.recipientId,
+            isOwnMessage: myPersonId == snapshot.creatorId,
+            content: snapshot.content,
+            deleted: snapshot.deleted,
+            created: snapshot.created,
+            updated: snapshot.updated,
+            read: snapshot.read
         )
         itemCache.put(newItem)
         return newItem
@@ -40,11 +40,11 @@ class Message1Cache: CoreCache<Message1> {
     @MainActor
     func getModels(
         api: ApiClient,
-        from apiTypes: [ApiPrivateMessage],
+        from snapshots: [Message1Snapshot],
         myPersonId: Int,
         semaphore: UInt? = nil
     ) -> [Message1] {
-        apiTypes.map { getModel(api: api, from: $0, myPersonId: myPersonId, semaphore: semaphore) }
+        snapshots.map { getModel(api: api, from: $0, myPersonId: myPersonId, semaphore: semaphore) }
     }
 }
 
@@ -52,20 +52,20 @@ class Message2Cache: CoreCache<Message2> {
     @MainActor
     func getModel(
         api: ApiClient,
-        from apiType: ApiPrivateMessageView,
+        from snapshot: Message2Snapshot,
         myPersonId: Int,
         semaphore: UInt? = nil
     ) -> Message2 {
-        if let item = retrieveModel(cacheId: apiType.cacheId) {
-            item.update(with: apiType, semaphore: semaphore)
+        if let item = retrieveModel(cacheId: snapshot.cacheId) {
+            item.update(with: snapshot, semaphore: semaphore)
             return item
         }
         
         let newItem: Message2 = .init(
             api: api,
-            message1: api.caches.message1.getModel(api: api, from: apiType.privateMessage, myPersonId: myPersonId),
-            creator: api.caches.person1.getModel(api: api, from: apiType.creator),
-            recipient: api.caches.person1.getModel(api: api, from: apiType.recipient)
+            message1: api.caches.message1.getModel(api: api, from: snapshot.message, myPersonId: myPersonId),
+            creator: api.caches.person1.getModel(api: api, from: snapshot.creator),
+            recipient: api.caches.person1.getModel(api: api, from: snapshot.recipient)
         )
         itemCache.put(newItem)
         return newItem
@@ -74,10 +74,10 @@ class Message2Cache: CoreCache<Message2> {
     @MainActor
     func getModels(
         api: ApiClient,
-        from apiTypes: [ApiPrivateMessageView],
+        from snapshots: [Message2Snapshot],
         myPersonId: Int,
         semaphore: UInt? = nil
     ) -> [Message2] {
-        apiTypes.map { getModel(api: api, from: $0, myPersonId: myPersonId, semaphore: semaphore) }
+        snapshots.map { getModel(api: api, from: $0, myPersonId: myPersonId, semaphore: semaphore) }
     }
 }

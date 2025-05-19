@@ -197,6 +197,8 @@ func groupStateRequest(
             try await operation(semaphore)
             return .succeeded
         } catch {
+            print("DEBUG [\(semaphore)] failed!")
+            print(error)
             for ticket in tickets {
                 ticket.rollback(semaphore: semaphore)
             }

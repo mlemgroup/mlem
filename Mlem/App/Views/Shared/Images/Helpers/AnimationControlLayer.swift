@@ -5,8 +5,8 @@
 //  Created by Eric Andrews on 2024-12-06.
 //
 
-import SwiftUI
 import Media
+import SwiftUI
 
 private struct AnimationControlLayer: ViewModifier {
     @Environment(MediaControlState.self) var controlState

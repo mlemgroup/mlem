@@ -43,6 +43,7 @@ public enum ModlogEntryType: Equatable {
         reason: String?
     )
     case purgeCommunity(reason: String?)
+    
     case hideCommunity(
         _ community: Community1,
         hidden: Bool,
@@ -109,6 +110,92 @@ public enum ModlogEntryType: Equatable {
         case .banPersonFromCommunity: .modBanFromCommunity
         case .banPersonFromInstance: .modBan
         case .purgePerson: .adminPurgePerson
+        }
+    }
+    
+    @MainActor
+    init(from snapshot: ModlogEntryTypeSnapshot, api: ApiClient) {
+        switch snapshot {
+        case let .removePost(post, community, removed, reason):
+            self = .removePost(
+                api.caches.post1.getModel(api: api, from: post),
+                community: api.caches.community1.getModel(api: api, from: community),
+                removed: removed,
+                reason: reason
+            )
+        case let .lockPost(post, community, locked):
+            self = .lockPost(
+                api.caches.post1.getModel(api: api, from: post),
+                community: api.caches.community1.getModel(api: api, from: community),
+                locked: locked
+            )
+        case let .pinPost(post, community, pinned, type):
+            self = .pinPost(
+                api.caches.post1.getModel(api: api, from: post),
+                community: api.caches.community1.getModel(api: api, from: community),
+                pinned: pinned,
+                type: type
+            )
+        case let .purgePost(reason):
+            self = .purgePost(reason: reason)
+        case let .removeComment(comment, creator, post, community, removed, reason):
+            self = .removeComment(
+                api.caches.comment1.getModel(api: api, from: comment),
+                creator: api.caches.person1.getModel(api: api, from: creator),
+                post: api.caches.post1.getModel(api: api, from: post),
+                community: api.caches.community1.getModel(api: api, from: community),
+                removed: removed,
+                reason: reason
+            )
+        case let .purgeComment(reason):
+            self = .purgeComment(reason: reason)
+        case let .removeCommunity(community, removed, reason):
+            self = .removeCommunity(
+                api.caches.community1.getModel(api: api, from: community),
+                removed: removed,
+                reason: reason
+            )
+        case let .purgeCommunity(reason):
+            self = .purgeCommunity(reason: reason)
+        case let .hideCommunity(community, hidden, reason):
+            self = .hideCommunity(
+                api.caches.community1.getModel(api: api, from: community),
+                hidden: hidden,
+                reason: reason
+            )
+        case let .transferCommunityOwnership(person, community):
+            self = .transferCommunityOwnership(
+                person: api.caches.person1.getModel(api: api, from: person),
+                community: api.caches.community1.getModel(api: api, from: community)
+            )
+        case let .updatePersonModeratorStatus(person, community, appointed):
+            self = .updatePersonModeratorStatus(
+                person: api.caches.person1.getModel(api: api, from: person),
+                community: api.caches.community1.getModel(api: api, from: community),
+                appointed: appointed
+            )
+        case let .updatePersonAdminStatus(person, appointed):
+            self = .updatePersonAdminStatus(
+                person: api.caches.person1.getModel(api: api, from: person),
+                appointed: appointed
+            )
+        case let .banPersonFromCommunity(person, community, banned, reason, expires):
+            self = .banPersonFromCommunity(
+                person: api.caches.person1.getModel(api: api, from: person),
+                community: api.caches.community1.getModel(api: api, from: community),
+                banned: banned,
+                reason: reason,
+                expires: expires
+            )
+        case let .banPersonFromInstance(person, banned, reason, expires):
+            self = .banPersonFromInstance(
+                person: api.caches.person1.getModel(api: api, from: person),
+                banned: banned,
+                reason: reason,
+                expires: expires
+            )
+        case let .purgePerson(reason):
+            self = .purgePerson(reason: reason)
         }
     }
 }

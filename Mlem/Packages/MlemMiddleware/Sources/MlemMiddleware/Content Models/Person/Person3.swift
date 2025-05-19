@@ -21,8 +21,8 @@ public final class Person3: Person3Providing {
     init(
         api: ApiClient,
         person2: Person2,
-        instance: Instance1? = nil,
-        moderatedCommunities: [Community1] = .init()
+        instance: Instance1?,
+        moderatedCommunities: [Community1]
     ) {
         self.api = api
         self.person2 = person2

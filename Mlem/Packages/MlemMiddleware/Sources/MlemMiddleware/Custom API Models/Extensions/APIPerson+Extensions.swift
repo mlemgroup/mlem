@@ -7,6 +7,6 @@
 
 import Foundation
 
-extension ApiPerson: ActorIdentifiable, CacheIdentifiable, Identifiable {
+extension ApiPerson: CacheIdentifiable, Identifiable {
     public var cacheId: Int { id }
 }

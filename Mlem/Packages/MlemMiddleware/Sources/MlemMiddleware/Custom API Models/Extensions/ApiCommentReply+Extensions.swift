@@ -7,6 +7,6 @@
 
 import Foundation
 
-extension ApiCommentReply: CacheIdentifiable, Reply1ApiBacker {
+extension ApiCommentReply: CacheIdentifiable {
     public var cacheId: Int { id }
 }

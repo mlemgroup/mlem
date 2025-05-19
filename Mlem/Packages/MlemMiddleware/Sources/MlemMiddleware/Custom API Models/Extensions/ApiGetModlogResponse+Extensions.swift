@@ -1,54 +1,29 @@
 //
-//  ApiGetModlogResponse+Extensions.swift
+//  File.swift
 //  MlemMiddleware
 //
-//  Created by Sjmarf on 2024-12-25.
+//  Created by Sjmarf on 2025-05-17.
 //
 
 import Foundation
 
-extension ApiGetModlogResponse {
-    var allEntries: [any ModlogEntryApiBacker] {
-        // Compiler didn't like it when I used `a + b + c + d`
-        var output: [any ModlogEntryApiBacker] = []
-        output += removedPosts ?? []
-        output += lockedPosts ?? []
-        output += featuredPosts ?? []
-        output += adminPurgedPosts ?? []
-        output += removedComments ?? []
-        output += adminPurgedComments ?? []
-        output += removedCommunities ?? []
-        output += adminPurgedCommunities ?? []
-        output += hiddenCommunities ?? []
-        output += transferredToCommunity ?? []
-        output += addedToCommunity ?? []
-        output += added ?? []
-        output += bannedFromCommunity ?? []
-        output += banned ?? []
-        output += adminPurgedPersons ?? []
-        // TODO: 0.20 support add items from the new `modlog` field
-        return output
-    }
-    
-    func getEntries(ofType type: ApiModlogActionType) -> [any ModlogEntryApiBacker] {
-        switch type {
-        case .all: allEntries
-        case .modRemovePost: removedPosts ?? []
-        case .modLockPost: lockedPosts ?? []
-        case .modFeaturePost: featuredPosts ?? []
-        case .modRemoveComment: removedComments ?? []
-        case .modRemoveCommunity: removedCommunities ?? []
-        case .modBanFromCommunity: bannedFromCommunity ?? []
-        case .modAddCommunity: addedToCommunity ?? []
-        case .modTransferCommunity: transferredToCommunity ?? []
-        case .modAdd: added ?? []
-        case .modBan: banned ?? []
-        case .modHideCommunity: hiddenCommunities ?? []
-        case .adminPurgePerson: adminPurgedPersons ?? []
-        case .adminPurgeCommunity: adminPurgedCommunities ?? []
-        case .adminPurgePost: adminPurgedPosts ?? []
-        case .adminPurgeComment: adminPurgedComments ?? []
-        default: []
-        }
+public extension ApiGetModlogResponse {
+    func toSnapshots() throws(ApiClientError) -> [ModlogEntrySnapshot] {
+        var result = try (removedPosts ?? []).map(ModlogEntrySnapshot.init)
+        result += try (lockedPosts ?? []).map(ModlogEntrySnapshot.init)
+        result += try (featuredPosts ?? []).map(ModlogEntrySnapshot.init)
+        result += try (removedComments ?? []).map(ModlogEntrySnapshot.init)
+        result += try (removedCommunities ?? []).map(ModlogEntrySnapshot.init)
+        result += try (bannedFromCommunity ?? []).map(ModlogEntrySnapshot.init)
+        result += try (banned ?? []).map(ModlogEntrySnapshot.init)
+        result += try (addedToCommunity ?? []).map(ModlogEntrySnapshot.init)
+        result += try (transferredToCommunity ?? []).map(ModlogEntrySnapshot.init)
+        result += try (added ?? []).map(ModlogEntrySnapshot.init)
+        result += try (adminPurgedPersons ?? []).map(ModlogEntrySnapshot.init)
+        result += try (adminPurgedCommunities ?? []).map(ModlogEntrySnapshot.init)
+        result += try (adminPurgedPosts ?? []).map(ModlogEntrySnapshot.init)
+        result += try (adminPurgedComments ?? []).map(ModlogEntrySnapshot.init)
+        result += try (hiddenCommunities ?? []).map(ModlogEntrySnapshot.init)
+        return result
     }
 }

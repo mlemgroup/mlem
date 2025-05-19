@@ -15,7 +15,8 @@ protocol Searchable: Identifiable {
         page: Int,
         limit: Int,
         filter: ApiListingType,
-        hostApi: ApiClient?) async throws -> [Self]
+        hostApi: ApiClient?
+    ) async throws -> [Self]
 }
 
 extension Community2: Searchable {
@@ -38,7 +39,8 @@ extension Person2: Searchable {
         page: Int,
         limit: Int,
         filter: ApiListingType,
-        hostApi: ApiClient? = nil) async throws -> [Person2] {
+        hostApi: ApiClient? = nil
+    ) async throws -> [Person2] {
         try await api.searchPeople(query: query, page: page, limit: limit, filter: filter)
     }
 }
@@ -52,8 +54,10 @@ extension InstanceSummary: Searchable, Identifiable {
         page _: Int,
         limit _: Int,
         filter _: ApiListingType,
-        hostApi: ApiClient? = nil) async throws -> [InstanceSummary] {
-            try await MlemStats.main.searchInstances(query: query)
-        }
+        hostApi: ApiClient? = nil
+    ) async throws -> [InstanceSummary] {
+        try await MlemStats.main.searchInstances(query: query)
+    }
 }
+
 // swiftlint:enable function_parameter_count

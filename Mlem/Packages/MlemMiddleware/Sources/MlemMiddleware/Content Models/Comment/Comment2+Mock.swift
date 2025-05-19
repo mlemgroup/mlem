@@ -36,7 +36,7 @@ import Foundation
                 savedManager: .init(wrappedValue: saved),
                 creatorIsModerator: creatorIsModerator,
                 creatorIsAdmin: creatorIsAdmin,
-                bannedFromCommunity: bannedFromCommunity,
+                creatorBannedFromCommunity: bannedFromCommunity,
                 commentCount: commentCount
             )
         }

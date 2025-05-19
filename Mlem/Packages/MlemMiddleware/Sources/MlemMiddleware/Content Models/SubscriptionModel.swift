@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SubscriptionModel: Hashable, MergeableValue {
+public struct SubscriptionModel: Hashable, MergeableValue {
     // These are the values actually provided by the API.
     var actualTotal: Int
     var actualLocal: Int?
@@ -36,16 +36,22 @@ struct SubscriptionModel: Hashable, MergeableValue {
         return actualLocal + pendingSubscriptionValue
     }
     
-    func merge(with other: SubscriptionModel, using mergeType: StateManagerMergeType) -> SubscriptionModel {
+    public func merge(with other: SubscriptionModel, using mergeType: StateManagerMergeType) -> SubscriptionModel {
         switch mergeType {
         case .disjunctive:
-                .init(total: max(total, other.total),
-                      subscribed: subscribed || other.subscribed,
-                      pending: pending || other.pending)
+            .init(
+                total: max(total, other.total),
+                local: nil,
+                subscribed: subscribed || other.subscribed,
+                pending: pending || other.pending
+            )
         case .conjunctive:
-                .init(total: max(total, other.total),
-                      subscribed: subscribed && other.subscribed,
-                      pending: pending && other.pending)
+            .init(
+                total: max(total, other.total),
+                local: nil,
+                subscribed: subscribed && other.subscribed,
+                pending: pending && other.pending
+            )
         }
     }
     
@@ -59,29 +65,22 @@ struct SubscriptionModel: Hashable, MergeableValue {
             return 0
         }
     }
-    
-    init(from aggregates: ApiCommunityAggregates, subscribedType: ApiSubscribedType) {
-        self.actualTotal = aggregates.subscribers
-        self.actualLocal = aggregates.subscribersLocal
-        self.subscribed = subscribedType.isSubscribed
-        self.pending = subscribedType == .pending
-    }
-    
-    init(total: Int, local: Int? = nil, subscribed: Bool, pending: Bool) {
+
+    init(total: Int, local: Int?, subscribed: Bool, pending: Bool) {
         self.actualTotal = total
         self.actualLocal = local
         self.subscribed = subscribed
         self.pending = pending
     }
     
-    func hash(into hasher: inout Hasher) {
+    public func hash(into hasher: inout Hasher) {
         hasher.combine(actualTotal)
         hasher.combine(actualLocal)
         hasher.combine(subscribed)
         hasher.combine(pending)
     }
     
-    static func == (lhs: SubscriptionModel, rhs: SubscriptionModel) -> Bool {
+    public static func == (lhs: SubscriptionModel, rhs: SubscriptionModel) -> Bool {
         lhs.hashValue == rhs.hashValue
     }
 }

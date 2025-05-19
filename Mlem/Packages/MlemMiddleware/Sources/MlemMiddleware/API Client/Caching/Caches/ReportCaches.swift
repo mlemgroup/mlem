@@ -12,25 +12,25 @@ class ReportCache: CoreCache<Report> {
     @MainActor
     func getModel(
         api: ApiClient,
-        from apiType: any ReportApiBacker,
+        from snapshot: ReportSnapshot,
         myPersonId: Int,
         semaphore: UInt? = nil
     ) -> Report {
-        if let item = retrieveModel(cacheId: apiType.cacheId) {
-            item.update(with: apiType, semaphore: semaphore)
+        if let item = retrieveModel(cacheId: snapshot.cacheId) {
+            item.update(with: snapshot, semaphore: semaphore)
             return item
         }
         
         let newItem: Report = .init(
             api: api,
-            id: apiType.id,
-            creator: api.caches.person1.getModel(api: api, from: apiType.creator, semaphore: semaphore),
-            resolver: api.caches.person1.getOptionalModel(api: api, from: apiType.resolver, semaphore: semaphore),
-            target: apiType.createTarget(api: api, myPersonId: myPersonId),
-            resolved: apiType.resolved,
-            reason: apiType.reason,
-            created: apiType.published,
-            updated: apiType.updated
+            id: snapshot.id,
+            creator: api.caches.person1.getModel(api: api, from: snapshot.creator, semaphore: semaphore),
+            resolver: api.caches.person1.getOptionalModel(api: api, from: snapshot.resolver, semaphore: semaphore),
+            target: .init(from: snapshot.target, api: api, myPersonId: myPersonId),
+            resolved: snapshot.resolved,
+            reason: snapshot.reason,
+            created: snapshot.created,
+            updated: snapshot.updated
         )
         itemCache.put(newItem)
         return newItem
@@ -39,10 +39,10 @@ class ReportCache: CoreCache<Report> {
     @MainActor
     func getModels(
         api: ApiClient,
-        from apiTypes: [any ReportApiBacker],
+        from snapshots: [ReportSnapshot],
         myPersonId: Int,
         semaphore: UInt? = nil
     ) -> [Report] {
-        apiTypes.map { getModel(api: api, from: $0, myPersonId: myPersonId, semaphore: semaphore) }
+        snapshots.map { getModel(api: api, from: $0, myPersonId: myPersonId, semaphore: semaphore) }
     }
 }

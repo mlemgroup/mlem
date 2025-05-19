@@ -36,7 +36,10 @@ public extension Community2 {
             // Our current architecture doesn't allow us to guarantee that the ban status is present here.
             // Once we drop support for 0.19.3 `nil` won't be allowed here anymore; this will become a
             // problem and we'll have to work around it somehow
-            bannedFromCommunity: api.myPerson?.isBannedFromCommunity(self)
+            bannedFromCommunity: api.myPerson?.isBannedFromCommunity(self),
+            communityActions: nil,
+            instanceActions: nil,
+            canMod: false
         )
     }
     

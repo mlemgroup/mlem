@@ -16,19 +16,19 @@ struct RecentUptimeChecks: View {
         VStack(alignment: .leading, spacing: 3) {
             HStack(spacing: 3) {
                 ForEach(results) { result in
-                Group {
-                    if diffWithoutColor {
-                        Image(icon: result.success ? .uptime.online : .uptime.offline)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .symbolVariant(.circle.fill)
-                    } else {
-                        Circle()
+                    Group {
+                        if diffWithoutColor {
+                            Image(icon: result.success ? .uptime.online : .uptime.offline)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .symbolVariant(.circle.fill)
+                        } else {
+                            Circle()
+                        }
                     }
-                }
-                 .foregroundStyle(result.success ? .themedPositive : .themedNegative)
-                .frame(maxWidth: 20)
-                .frame(maxWidth: 25)
+                    .foregroundStyle(result.success ? .themedPositive : .themedNegative)
+                    .frame(maxWidth: 20)
+                    .frame(maxWidth: 25)
                 }
             }
             HStack {

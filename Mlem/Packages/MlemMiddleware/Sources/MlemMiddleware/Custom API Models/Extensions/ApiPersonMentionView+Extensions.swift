@@ -7,9 +7,6 @@
 
 import Foundation
 
-extension ApiPersonMentionView: CacheIdentifiable, Reply2ApiBacker {
-    public var cacheId: Int { personMention.id }
-    public var reply: any Reply1ApiBacker { personMention }
-    
-    public var resolvedSaved: Bool { saved }
-}
+// extension ApiPersonMentionView: CacheIdentifiable {
+//    public var cacheId: Int { personMention.id }
+// }
