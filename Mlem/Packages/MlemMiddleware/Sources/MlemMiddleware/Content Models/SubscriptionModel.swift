@@ -36,17 +36,19 @@ public struct SubscriptionModel: Hashable, MergeableValue {
         return actualLocal + pendingSubscriptionValue
     }
     
-    func merge(with other: SubscriptionModel, using mergeType: StateManagerMergeType) -> SubscriptionModel {
+    public func merge(with other: SubscriptionModel, using mergeType: StateManagerMergeType) -> SubscriptionModel {
         switch mergeType {
         case .disjunctive:
             .init(
                 total: max(total, other.total),
+                local: nil,
                 subscribed: subscribed || other.subscribed,
                 pending: pending || other.pending
             )
         case .conjunctive:
             .init(
                 total: max(total, other.total),
+                local: nil,
                 subscribed: subscribed && other.subscribed,
                 pending: pending && other.pending
             )
