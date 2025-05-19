@@ -10,12 +10,14 @@ import Flow
 import SwiftUI
 import Theming
 
+// swiftlint:disable file_length
+
 extension InteractionBarEditorView {
     // MARK: - Previews
     
     @ViewBuilder
     var contentPreview: some View {
-        VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
+        VStack(alignment: .leading, spacing: 0) {
             Group {
                 switch configurationType {
                 case .post: postPreviewBody
@@ -23,13 +25,11 @@ extension InteractionBarEditorView {
                 }
             }
             .opacity(0.75)
+            .padding([.top, .horizontal], Constants.main.standardSpacing)
             
             interactionBar
-                .frame(height: Constants.main.barIconSize)
-                .padding(.horizontal, 2)
-                .padding(.vertical, Constants.main.barIconPadding)
+                .frame(height: Constants.main.barIconHitbox)
         }
-        .padding(Constants.main.standardSpacing)
         .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.mediumItemCornerRadius))
         .paletteBorder(cornerRadius: Constants.main.mediumItemCornerRadius)
     }
@@ -103,7 +103,6 @@ extension InteractionBarEditorView {
                 dropIndicator(index: barItems.count)
             }
         }
-        .padding(.horizontal, -Constants.main.standardSpacing)
     }
     
     @ViewBuilder
@@ -176,12 +175,11 @@ extension InteractionBarEditorView {
                     case let .action(action):
                         InteractionBarActionLabelView(action.appearance)
                     case let .counter(counter):
-                        InteractionBarCounterLabelView(counter.appearance)
+                        counterLabel(counter.appearance)
                             .fixedSize()
                     }
                 }
                 .opacity(0.2)
-                .padding(Constants.main.standardSpacing)
                 .background {
                     Capsule()
                         .fill(trayItemOutlineColor(trayItem).opacity(0.2))
@@ -270,7 +268,7 @@ extension InteractionBarEditorView {
                     }
                 case let .counter(counter):
                     HStack {
-                        InteractionBarCounterLabelView(counter.appearance)
+                        counterLabel(counter.appearance)
                             .fixedSize()
                         Text(counter.appearance.label)
                     }
@@ -333,20 +331,42 @@ extension InteractionBarEditorView {
     // MARK: - Helpers
     
     @ViewBuilder
+    func counterLabel(_ appearance: CounterAppearance) -> some View {
+        let paddingEdges: Edge.Set = {
+            if appearance.leading == nil { return .leading }
+            if appearance.trailing == nil { return .trailing }
+            return []
+        }()
+        
+        HStack(spacing: 0) {
+            if let leading = appearance.leading {
+                InteractionBarActionLabelView(leading)
+            }
+            Text(appearance.value?.description ?? "")
+                .monospacedDigit()
+                .foregroundStyle(.themedPrimary)
+                .padding(paddingEdges, Constants.main.standardSpacing)
+            if let trailing = appearance.trailing {
+                InteractionBarActionLabelView(trailing)
+            }
+        }
+        .padding(paddingEdges, 6)
+    }
+    
+    @ViewBuilder
     func itemLabel(_ item: Configuration.Item?) -> some View {
         Group {
             switch item {
             case let .action(action):
                 InteractionBarActionLabelView(action.appearance)
             case let .counter(counter):
-                InteractionBarCounterLabelView(counter.appearance)
+                counterLabel(counter.appearance)
                     .fixedSize()
             default:
                 infoStack
                     .frame(maxWidth: .infinity)
             }
         }
-        .padding(Constants.main.standardSpacing)
         .background {
             Capsule()
                 .fill(.themedSecondaryGroupedBackground.opacity(0.85))
@@ -363,10 +383,12 @@ extension InteractionBarEditorView {
                     Text(readout.appearance.label)
                 }
                 .font(.footnote)
+                .lineLimit(1)
             }
         }
         .foregroundStyle(.themedSecondary)
         .frame(maxWidth: .infinity, alignment: infoStackAlignment)
+        .padding(Constants.main.standardSpacing)
     }
     
     @ViewBuilder
@@ -381,3 +403,5 @@ extension InteractionBarEditorView {
             }
     }
 }
+
+// swiftlint:enable file_length

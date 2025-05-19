@@ -5,8 +5,8 @@
 //  Created by Eric Andrews on 2024-12-06.
 //
 
-import SwiftUI
 import Media
+import SwiftUI
 
 private struct AnimationControlLayer: ViewModifier {
     @Environment(MediaControlState.self) var controlState
@@ -63,6 +63,7 @@ private struct AnimationControlLayer: ViewModifier {
         if controlState.audioAvailable {
             Image(icon: controlState.muted ? .general.mute : .general.unmute)
                 .resizable()
+                .symbolVariant(.fill)
                 .scaledToFit()
                 .frame(width: 15, height: 15)
                 .padding(5)

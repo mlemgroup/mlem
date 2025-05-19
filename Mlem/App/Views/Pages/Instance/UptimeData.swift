@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct UptimeData: Codable {
+struct UptimeData: Codable, Hashable {
     let results: [UptimeResponseTime]
     let events: [UptimeEvent]
     
@@ -27,7 +27,7 @@ struct UptimeData: Codable {
     }
 }
 
-struct UptimeResponseTime: Codable, Identifiable {
+struct UptimeResponseTime: Codable, Identifiable, Hashable {
     let success: Bool
     let duration: Int
     let timestamp: Date
@@ -39,8 +39,9 @@ struct UptimeResponseTime: Codable, Identifiable {
     var id: Int { Int(timestamp.timeIntervalSince1970) }
 }
 
-struct UptimeEvent: Codable, Identifiable {
+struct UptimeEvent: Codable, Identifiable, Hashable {
     enum EventType: String, Codable {
+        case start = "START"
         case healthy = "HEALTHY"
         case unhealthy = "UNHEALTHY"
     }

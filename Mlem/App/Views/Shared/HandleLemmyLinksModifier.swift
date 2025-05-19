@@ -14,6 +14,9 @@ struct HandleLemmyLinksModifier: ViewModifier {
     @Environment(NavigationLayer.self) var navigation
     @Environment(AppState.self) var appState
     
+    @State private var showingEmailAlert = false
+    @State private var pendingMailtoURL: URL?
+    
     // If a link in the `user@example.com` format is clicked, it opens in the Mail app
     // immediately for these domains. For all other domains, Mlem will attempt to
     // resolve it as a Lemmy link first.
@@ -34,6 +37,16 @@ struct HandleLemmyLinksModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .environment(\.openURL, OpenURLAction(handler: didReceiveURL))
+            .alert("Open Mail App", isPresented: $showingEmailAlert) {
+                Button("Cancel", role: .cancel) {}
+                Button("Open") {
+                    if let url = pendingMailtoURL {
+                        UIApplication.shared.open(url)
+                    }
+                }
+            } message: {
+                Text("Would you like to open this email address in your mail app?")
+            }
     }
     
     @MainActor
@@ -90,7 +103,9 @@ struct HandleLemmyLinksModifier: ViewModifier {
             // The "@" check ensures that KBin links are excluded
             if !host.contains("reddit.com"), components.count == 2, components[1].first != "@" {
                 Task {
-                    await showToastAndLoad(url: url)
+                    await showToastAndResolve(url: url) { url in
+                        openRegularLink(url: url)
+                    }
                 }
                 return .handled
             }
@@ -151,15 +166,30 @@ struct HandleLemmyLinksModifier: ViewModifier {
         guard parts.count == 2 else { return false }
         let user = String(parts[0])
         let host = String(parts[1])
-        if !Self.emailDomains.contains(host) {
+        
+        // For common email domains, show an alert asking if user wants to open mail app
+        if Self.emailDomains.contains(host) {
+            pendingMailtoURL = url
+            showingEmailAlert = true
+        } else if isLemmyHost(host) {
+            // If it's a Lemmy host, try to resolve as a Lemmy user
             Task {
-                await showToastAndLoad(url: URL(string: "https://\(host)/u/\(user)")!)
+                await showToastAndResolve(url: URL(string: "https://\(host)/u/\(user)")!) { _ in
+                    // If resolution fails, show email alert as fallback
+                    pendingMailtoURL = url
+                    showingEmailAlert = true
+                }
             }
+        } else {
+            // If it's neither a common email domain nor a Lemmy host, show email alert
+            pendingMailtoURL = url
+            showingEmailAlert = true
         }
+        
         return true
     }
     
-    func showToastAndLoad(url: URL) async {
+    func showToastAndResolve(url: URL, fallback: @escaping (URL) -> Void) async {
         let toastId = ToastModel.main.add(.loading())
         var output = try? await appState.firstApi.resolve(url: url)
         if output == nil {
@@ -175,7 +205,7 @@ struct HandleLemmyLinksModifier: ViewModifier {
         } else if let community = output as? any Community {
             navigation.push(.community(community))
         } else {
-            openRegularLink(url: url)
+            fallback(url)
         }
         ToastModel.main.removeToast(id: toastId)
     }

@@ -25,17 +25,17 @@ public final class Post2: Post2Providing {
     public var unreadCommentCount: Int
     
     var votesManager: StateManager<VotesModel>
-    public var votes: VotesModel { votesManager.wrappedValue }
+    public var votes: VotesModel { votesManager.displayedValue }
     
     var readManager: StateManager<Bool>
-    public var read: Bool { readManager.wrappedValue || readQueued }
+    public var read: Bool { readManager.displayedValue || readQueued }
     private var readQueued: Bool = false
     
     var savedManager: StateManager<Bool>
-    public var saved: Bool { savedManager.wrappedValue }
+    public var saved: Bool { savedManager.displayedValue }
     
     var hiddenManager: StateManager<Bool>
-    public var hidden: Bool { hiddenManager.wrappedValue }
+    public var hidden: Bool { hiddenManager.displayedValue }
     
     public var creatorBannedFromCommunity: Bool {
         guard let state = creator.isBannedFromCommunity(community) else {

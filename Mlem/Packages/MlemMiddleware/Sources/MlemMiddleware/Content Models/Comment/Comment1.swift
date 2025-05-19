@@ -29,10 +29,10 @@ public final class Comment1: Comment1Providing {
     public var purged: Bool = false
     
     var deletedManager: StateManager<Bool>
-    public var deleted: Bool { deletedManager.wrappedValue }
+    public var deleted: Bool { deletedManager.displayedValue }
     
     public var removedManager: StateManager<Bool>
-    public var removed: Bool { removedManager.wrappedValue }
+    public var removed: Bool { removedManager.displayedValue }
     
     init(
         api: ApiClient,

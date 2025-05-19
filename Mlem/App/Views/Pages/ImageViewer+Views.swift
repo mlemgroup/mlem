@@ -248,6 +248,7 @@ extension ImageViewer {
         } label: {
             Image(icon: controlState.muted ? .general.mute : .general.unmute)
                 .scaledToFit()
+                .symbolVariant(.fill)
                 .frame(width: 22, height: 22)
                 .contentTransition(.symbolEffect(.replace, options: .speed(2)))
                 .padding(Constants.main.standardSpacing + 4) // +3 to match .title2 implicit padding plus offset

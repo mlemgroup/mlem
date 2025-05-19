@@ -108,7 +108,7 @@ public extension Community1Providing {
 }
 
 public extension Community1Providing {
-    private var blockedManager: StateManager<Bool> { community1.blockedManager }
+    var blockedManager: SyntheticStateManager<Bool> { community1.blockedManager }
     
     /// Returns a `URL` that can be resolved by another `ApiClient`.
     func resolvableUrl(from instance: ContentModelUrlType) -> URL {

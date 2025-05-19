@@ -12,11 +12,13 @@ class CommunityFetcher: Fetcher<Community2> {
     var query: String
     var listing: ApiListingType
     var sort: SearchSortType
+    var hostApi: ApiClient?
     
-    init(api: ApiClient, query: String, pageSize: Int, listing: ApiListingType, sort: SearchSortType) {
+    init(api: ApiClient, query: String, pageSize: Int, listing: ApiListingType, sort: SearchSortType, hostApi: ApiClient?) {
         self.query = query
         self.listing = listing
         self.sort = sort
+        self.hostApi = hostApi
         
         super.init(api: api, pageSize: pageSize)
     }
@@ -27,7 +29,8 @@ class CommunityFetcher: Fetcher<Community2> {
             page: page,
             limit: pageSize,
             filter: listing,
-            sort: sort
+            sort: sort,
+            hostApi: hostApi
         )
         
         return .init(
@@ -50,7 +53,8 @@ public class CommunityFeedLoader: StandardFeedLoader<Community2> {
         query: String = "",
         pageSize: Int = 20,
         listing: ApiListingType = .all,
-        sort: SearchSortType = .top(.allTime)
+        sort: SearchSortType = .top(.allTime),
+        hostApi: ApiClient? = nil
     ) {
         self.api = api
 
@@ -61,9 +65,15 @@ public class CommunityFeedLoader: StandardFeedLoader<Community2> {
                 query: query,
                 pageSize: pageSize,
                 listing: listing,
-                sort: sort
+                sort: sort,
+                hostApi: hostApi
             )
         )
+    }
+    
+    public func changeApi(to client: ApiClient, context: FilterContext, hostApi: ApiClient?) async {
+        await super.changeApi(to: client, context: context)
+        communityFetcher.hostApi = hostApi
     }
     
     public func refresh(

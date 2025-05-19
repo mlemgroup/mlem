@@ -19,14 +19,14 @@ struct BlockListView: View {
         
         var label: LocalizedStringResource {
             switch self {
-            case .communities: "Communities"
             case .people: "Users"
+            case .communities: "Communities"
             case .instances: "Instances"
             }
         }
     }
     
-    @State var selectedTab: Tab = .communities
+    @State var selectedTab: Tab = .people
     @State var people: [Person1] = []
     @State var communities: [Community1] = []
     @State var instances: [Instance1] = []
@@ -36,26 +36,26 @@ struct BlockListView: View {
             BubblePicker(Tab.allCases, selected: $selectedTab, label: \.label, value: { tab in
                 guard let blockList = (appState.firstSession as? UserSession)?.blocks else { return 0 }
                 switch tab {
-                case .communities:
-                    return blockList.communityCount
                 case .people:
                     return blockList.personCount
+                case .communities:
+                    return blockList.communityCount
                 case .instances:
                     return blockList.instanceCount
                 }
             })
             switch selectedTab {
-            case .communities:
-                SearchResultsView(results: communities.filter(\.blocked)) { community in
-                    CommunityListRow(community, showBlockStatus: false)
-                }
             case .people:
                 SearchResultsView(results: people.filter(\.blocked)) { person in
                     PersonListRow(person, showBlockStatus: false)
                 }
+            case .communities:
+                SearchResultsView(results: communities.filter(\.blocked)) { community in
+                    CommunityListRow(community, showBlockStatus: false)
+                }
             case .instances:
                 SearchResultsView(results: instances.filter(\.blocked)) { instance in
-                    InstanceListRow(instance)
+                    InstanceListRow(instance, showBlockStatus: false)
                 }
             }
         }

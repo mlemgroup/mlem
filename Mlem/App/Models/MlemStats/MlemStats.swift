@@ -66,15 +66,29 @@ class MlemStats {
                     || $0.name.localizedCaseInsensitiveContains(query)
             } ?? []
         }
+        
+        let filteredInstances = filterBlockedInstances(instances)
+        
         switch sort {
         case .score:
-            return instances
+            return filteredInstances
         case .users:
-            return instances.sorted { $0.userCount > $1.userCount }
+            return filteredInstances.sorted { $0.userCount > $1.userCount }
         case .alphabetical:
-            return instances.sorted { $0.host < $1.host }
+            return filteredInstances.sorted { $0.host < $1.host }
         case .version:
-            return instances.sorted { $0.version > $1.version }
+            return filteredInstances.sorted { $0.version > $1.version }
+        }
+    }
+    
+    private func filterBlockedInstances(_ instances: [InstanceSummary]) -> [InstanceSummary] {
+        guard let session = AppState.main.firstSession as? UserSession, let blocks = session.blocks else {
+            return instances
+        }
+        
+        return instances.filter { instance in
+            let actorId = ActorIdentifier.instance(host: instance.host)
+            return !blocks.contains(instanceActorId: actorId)
         }
     }
 }

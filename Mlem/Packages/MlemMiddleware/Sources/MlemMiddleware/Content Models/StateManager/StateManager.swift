@@ -57,8 +57,11 @@ struct StateManagerTicket<Value: Equatable>: StateManagerTickerProtocol {
 /// `lastVerifiedValue`.
 @Observable
 public class StateManager<Value: Equatable> {
-    /// The state-faked value that should be shown to the user.
-    public private(set) var wrappedValue: Value
+    /// Underlying state-faked wrapped value
+    private(set) var wrappedValue: Value
+    
+    /// The state-faked value that should be shown to the user
+    public var displayedValue: Value { wrappedValue }
     
     /// Called when `wrappedValue` is changed.
     var onSet: (Value, _ type: StateManagerUpdateType, _ semaphore: UInt?) -> Void

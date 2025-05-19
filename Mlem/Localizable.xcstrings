@@ -604,7 +604,14 @@
       }
     },
     "Account Created %@" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compte crée %@"
+          }
+        }
+      }
     },
     "Accounts" : {
       "localizations" : {
@@ -1830,7 +1837,14 @@
       }
     },
     "Choose whether to show a user's account age next to their username." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisir d'afficher ou non l'âge du compte d'un utilisateur à côté de son nom d'utilisateur."
+          }
+        }
+      }
     },
     "Choose whether to show a warning when opening a page that is likely to contain sensitive content." : {
       "localizations" : {
@@ -2339,6 +2353,16 @@
         }
       }
     },
+    "Copy a URL to the clipboard, then try again." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copier une URL dans le presse-papiers, et essayer à nouveau."
+          }
+        }
+      }
+    },
     "Copy All" : {
       "localizations" : {
         "fr" : {
@@ -2557,6 +2581,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Personnalisez la barre d’interaction pour les éléments de la boîte de réception et choisissez les types de notifications inclus dans le badge de la barre d’onglets."
+          }
+        }
+      }
+    },
+    "Data not available" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Donnée non disponible"
           }
         }
       }
@@ -3513,7 +3547,14 @@
       }
     },
     "For New Accounts Only" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pour les nouveaux comptes seulement"
+          }
+        }
+      }
     },
     "General" : {
       "localizations" : {
@@ -4042,8 +4083,8 @@
       "localizations" : {
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "john_doe"
+            "state" : "translated",
+            "value" : "jean_dupont"
           }
         }
       }
@@ -4053,14 +4094,22 @@
       "localizations" : {
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "john_doe@example.com"
+            "state" : "translated",
+            "value" : "jean_dupont@exemple.com"
           }
         }
       }
     },
     "john@example.com" : {
-      "comment" : "Translate \"john\" into the equivalent placeholder name in your language, and \"example.com\" into a suitable example domain for your locale. The placeholder name should be as short as possible, as this string is displayed in contexts where there may not be much space horizontally."
+      "comment" : "Translate \"john\" into the equivalent placeholder name in your language, and \"example.com\" into a suitable example domain for your locale. The placeholder name should be as short as possible, as this string is displayed in contexts where there may not be much space horizontally.",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "jean@exemple.com"
+          }
+        }
+      }
     },
     "Join Discord Server" : {
       "localizations" : {
@@ -4603,7 +4652,14 @@
       }
     },
     "Mlem uses a Google API to fetch website icon URLs. If you'd prefer not to use this, you can choose to hide website icons." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mlem utilise une API Google pour récupérer les URL des icônes de sites web. Si vous préférez ne pas l'utiliser, vous pouvez choisir de masquer les icônes de sites web."
+          }
+        }
+      }
     },
     "Mlem will always try to load from the proxy first." : {
       "localizations" : {
@@ -5043,6 +5099,16 @@
         }
       }
     },
+    "No URL Copied" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pas d’URL copiée"
+          }
+        }
+      }
+    },
     "Non-Text Indicators" : {
       "localizations" : {
         "fr" : {
@@ -5279,6 +5345,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ouvrir en « mode lecture »"
+          }
+        }
+      }
+    },
+    "Open Mail App" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ouvrir l’application de mails"
           }
         }
       }
@@ -7060,7 +7136,14 @@
       }
     },
     "Show Account Age" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afficher l’âge du compte"
+          }
+        }
+      }
     },
     "Show All Actions in Feed" : {
       "localizations" : {
@@ -7181,6 +7264,9 @@
           }
         }
       }
+    },
+    "Show Response Times" : {
+
     },
     "Show Sidebar on App Launch" : {
       "localizations" : {
@@ -7563,6 +7649,7 @@
       }
     },
     "Subscription statuses can't be displayed when using these filters." : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -9111,6 +9198,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lorsqu'il est activé, Mlem vous demandera de confirmer votre choix avant de télécharger une image sur votre instance."
+          }
+        }
+      }
+    },
+    "Would you like to open this email address in your mail app?" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Souhaitez-vous ouvrir cette adresse e-mail dans votre application de messagerie?"
           }
         }
       }

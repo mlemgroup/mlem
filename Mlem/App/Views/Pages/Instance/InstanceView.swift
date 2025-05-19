@@ -13,28 +13,20 @@ import Theming
 
 struct InstanceView: View {
     enum Tab: String, CaseIterable, Identifiable {
-        case about, administration, details, uptime, safety
+        case about, communities, administration, details, safety
         
         var label: LocalizedStringResource {
             switch self {
             case .about: "About"
+            case .communities: "Communities"
             case .administration: "Administration"
             case .details: "Details"
-            case .uptime: "Uptime"
             case .safety: "Trust & Safety"
             }
         }
         
         var id: Self { self }
     }
-    
-    enum UptimeDataStatus {
-        case success(UptimeData)
-        case failure(Error)
-    }
-    
-    var uptimeRefreshTimer = Timer.publish(every: 30, tolerance: 0.5, on: .main, in: .common)
-        .autoconnect()
     
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
@@ -45,9 +37,9 @@ struct InstanceView: View {
 
     // This is fetched from the instance itself, not from the logged-in account.
     @State var instance: any InstanceStubProviding
-    @State var uptimeData: UptimeDataStatus?
     @State var fediseerData: FediseerData?
     @State var upgradeState: LoadingState = .idle
+    @State var communityLoader: CommunityFeedLoader
     
     @State var selectedTab: Tab = .about
     
@@ -56,6 +48,10 @@ struct InstanceView: View {
     
     init(instance: any InstanceStubProviding, visitContext: VisitHistory.VisitContext?) {
         self._instance = .init(wrappedValue: instance)
+        self._communityLoader = .init(wrappedValue: .init(
+            api: .getApiClient(url: instance.actorId.hostUrl, username: nil),
+            hostApi: instance.api
+        ))
         self.visitContext = visitContext
     }
     
@@ -105,7 +101,7 @@ struct InstanceView: View {
             )
             .padding([.horizontal, .bottom], Constants.main.standardSpacing)
             BubblePicker(
-                tabs,
+                Tab.allCases,
                 selected: $selectedTab,
                 label: { $0.label }
             )
@@ -118,14 +114,12 @@ struct InstanceView: View {
                         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
                         .padding([.horizontal, .bottom], Constants.main.standardSpacing)
                 }
+            case .communities:
+                communities()
             case .details:
                 InstanceDetailsView(instance: instance)
             case .administration:
                 administrationTab(instance: instance)
-            case .uptime:
-                uptimeTab(instance: instance)
-                    .onAppear(perform: attemptToLoadUptimeData)
-                    .onReceive(uptimeRefreshTimer) { _ in attemptToLoadUptimeData() }
             case .safety:
                 safetyTab(instance: instance)
                     .onAppear(perform: attemptToLoadFediseerData)
@@ -171,26 +165,41 @@ struct InstanceView: View {
     }
     
     @ViewBuilder
-    func uptimeTab(instance: any Instance) -> some View {
-        switch uptimeData {
-        case let .success(uptimeData):
-            InstanceUptimeView(instance: instance, uptimeData: uptimeData)
-        case let .failure(error):
-            ErrorView(.init(error: error))
-                .padding(.top, 5)
-        default:
-            ProgressView()
-                .padding(.top, 30)
-        }
-    }
-    
-    @ViewBuilder
     func safetyTab(instance: any Instance) -> some View {
         if let fediseerData {
             InstanceSafetyView(instance: instance, fediseerData: fediseerData)
         } else {
             ProgressView()
                 .padding(.top, 30)
+        }
+    }
+    
+    @ViewBuilder
+    func communities() -> some View {
+        LazyVStack(spacing: 0) {
+            SearchResultsView(results: communityLoader.items) { community in
+                CommunityListRow(
+                    community,
+                    readout: .subscribers,
+                    visitContext: .other
+                )
+                .onAppear {
+                    do {
+                        try communityLoader.loadIfThreshold(community)
+                    } catch {
+                        handleError(error)
+                    }
+                }
+            }
+            EndOfFeedView(feedLoader: communityLoader, viewType: .hobbit)
+        }
+        .animation(.easeOut(duration: 0.1), value: communityLoader.items.isEmpty)
+        .task {
+            do {
+                try await communityLoader.refresh(listing: .local)
+            } catch {
+                handleError(error)
+            }
         }
     }
 }

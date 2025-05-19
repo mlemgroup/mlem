@@ -64,39 +64,51 @@ struct CommentView<EmbeddedContent: View>: View {
         VStack(spacing: Constants.main.standardSpacing) {
             if inFeed {
                 feedHeader
+                    .padding(.trailing, Constants.main.standardSpacing)
             }
             
-            HStack(spacing: 12) {
+            HStack(spacing: 0) {
                 CommentBarView(depth: comment.depth, inFeed: inFeed)
-                VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
-                    if !inFeed {
-                        authorAndMenu.padding(.top, Constants.main.standardSpacing)
-                    }
-                    
-                    if !collapsed {
-                        CommentBodyView(comment: comment)
-                            .padding(.trailing, 2)
-                        embeddedContent
-                        if !compact {
-                            InteractionBarView(
-                                appState: appState,
-                                navigation: navigation,
+                
+                VStack(alignment: .leading, spacing: 0) {
+                    VStack(alignment: .leading, spacing: Constants.main.compactSpacing) {
+                        if !inFeed {
+                            authorAndMenu.padding(.top, Constants.main.standardSpacing)
+                        }
+                        
+                        if !collapsed {
+                            CommentBodyView(comment: comment)
+                                .padding(.trailing, 2)
+                            embeddedContent
+                        }
+                        
+                        if compact, !collapsed {
+                            InfoStackView(
                                 comment: comment,
-                                configuration: interactionBarConfiguration,
-                                commentTreeTracker: commentTreeTracker,
-                                communityContext: communityContext,
-                                reportContext: reportContext
+                                readouts: commentInteractionBar.readouts,
+                                coloredReadouts: .init(CommentBarConfiguration.ReadoutType.allCases)
                             )
-                            .padding(.horizontal, 2)
-                            .padding(.bottom, 3)
-                            .padding(.top, 1)
+                            .layoutPriority(1)
                         }
                     }
+                    .padding(.horizontal, Constants.main.standardSpacing)
+                    .padding(.leading, 2)
+                    
+                    if !compact, !collapsed {
+                        InteractionBarView(
+                            appState: appState,
+                            navigation: navigation,
+                            comment: comment,
+                            configuration: interactionBarConfiguration,
+                            commentTreeTracker: commentTreeTracker,
+                            communityContext: communityContext,
+                            reportContext: reportContext
+                        )
+                    }
                 }
-                .padding(.bottom, Constants.main.standardSpacing)
+                .padding(.bottom, collapsed || compact ? Constants.main.standardSpacing : 0)
             }
         }
-        .padding(.trailing, Constants.main.standardSpacing)
         .background(highlight ? palette.accent.opacity(0.2) : .clear)
         .background(.themedSecondaryGroupedBackground)
         .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
@@ -122,14 +134,6 @@ struct CommentView<EmbeddedContent: View>: View {
         HStack(spacing: 0) {
             FullyQualifiedLinkView(comment.creator_, labelStyle: .small)
             Spacer()
-            if compact {
-                InfoStackView(
-                    comment: comment,
-                    readouts: commentInteractionBar.readouts,
-                    coloredReadouts: .init(CommentBarConfiguration.ReadoutType.allCases)
-                )
-                .layoutPriority(1)
-            }
             Group {
                 if collapsed {
                     Image(icon: .general.expand)

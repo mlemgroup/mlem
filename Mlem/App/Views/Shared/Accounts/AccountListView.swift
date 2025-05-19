@@ -12,7 +12,8 @@ import SwiftUI
 struct AccountListView: View {
     @Setting(\.accounts_sort) var accountSort
     @Setting(\.accounts_grouped) var groupAccountSort
-    
+    @Setting(\.accounts_preferredListRowComplication) var preferredListRowComplication
+
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.dismiss) var dismiss
@@ -22,6 +23,14 @@ struct AccountListView: View {
     @State var isSwitching: Bool = false
     
     @State private var isShowingAddAccountDialogue: Bool = false
+    
+    @State var isFetchingUnreadCounts: Bool = false
+    @State var unreadCountResponses: [ActorIdentifier: UnreadCountResponse] = [:]
+    
+    struct UnreadCountResponse {
+        let unreadCount: UnreadCount?
+        let responseTime: TimeInterval
+    }
     
     struct AccountGroup {
         let header: String
@@ -50,37 +59,41 @@ struct AccountListView: View {
     }
     
     var body: some View {
-        if !isSwitching {
-            if accountsTracker.userAccounts.count > 3, groupAccountSort {
-                groupedUserAccountList
-            } else if accounts.isEmpty {
-                Text("You don't have any accounts.")
-                    .foregroundStyle(.themedSecondary)
-            } else {
-                Section {
-                    ForEach(accounts, id: \.actorId) { account in
+        Group {
+            if !isSwitching {
+                if accountsTracker.userAccounts.count > 3, groupAccountSort {
+                    groupedUserAccountList
+                } else if accounts.isEmpty {
+                    Text("You don't have any accounts.")
+                        .foregroundStyle(.themedSecondary)
+                } else {
+                    Section {
+                        ForEach(accounts, id: \.actorId) { account in
+                            accountListRow(account: account)
+                        }
+                        .onMove(perform: shouldAllowReordering ? reorderAccount : nil)
+                    } header: {
+                        topHeader()
+                    }
+                }
+                if let account = (appState.firstSession as? GuestSession)?.account, !account.isSaved {
+                    Section {
                         AccountListRow(account: account, isSwitching: $isSwitching)
                     }
-                    .onMove(perform: shouldAllowReordering ? reorderAccount : nil)
-                } header: {
-                    topHeader()
                 }
-            }
-            if let account = (appState.firstSession as? GuestSession)?.account, !account.isSaved {
                 Section {
-                    AccountListRow(account: account, isSwitching: $isSwitching)
+                    ForEach(accountsTracker.guestAccounts, id: \.actorId) { account in
+                        accountListRow(account: account)
+                    }
                 }
+                addAccountButton
             }
-            Section {
-                ForEach(accountsTracker.guestAccounts, id: \.actorId) { account in
-                    AccountListRow(
-                        account: account,
-                        complications: .withTime,
-                        isSwitching: $isSwitching
-                    )
-                }
+        }
+        .onAppear {
+            if !isFetchingUnreadCounts {
+                isFetchingUnreadCounts = true
+                fetchUnreadCounts()
             }
-            addAccountButton
         }
     }
     
@@ -89,10 +102,9 @@ struct AccountListView: View {
         ForEach(Array(accountGroups.enumerated()), id: \.offset) { offset, group in
             Section {
                 ForEach(group.accounts, id: \.actorId) { account in
-                    AccountListRow(
+                    accountListRow(
                         account: account,
-                        complications: accountSort != .instance || group.header == "Other" ? .withTime : .timeOnly,
-                        isSwitching: $isSwitching
+                        withInstanceComplication: accountSort != .instance || group.header == "Other"
                     )
                 }
             } header: {
@@ -136,6 +148,18 @@ struct AccountListView: View {
                 }
             }
         }
+    }
+    
+    @ViewBuilder
+    func accountListRow(account: any Account, withInstanceComplication: Bool = true) -> some View {
+        let responseData = unreadCountResponses[account.actorId]
+        AccountListRow(
+            account: account,
+            unreadCount: responseData?.unreadCount?.badgeLabel,
+            responseTime: responseData?.responseTime,
+            complications: listRowComplications(withInstance: withInstanceComplication),
+            isSwitching: $isSwitching
+        )
     }
     
     @ViewBuilder
@@ -185,4 +209,8 @@ struct AccountListView: View {
         .textCase(nil)
         .labelStyle(.titleAndIcon) // Override `.conditional` label style from parent view
     }
+}
+
+enum PreferredAccountListRowComplication: String, Codable {
+    case lastUsed, responseTime
 }

@@ -83,7 +83,8 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
                     query: query,
                     page: 1,
                     limit: 20,
-                    filter: filter
+                    filter: filter,
+                    hostApi: appState.firstApi
                 )
                 Task { @MainActor in
                     results = response

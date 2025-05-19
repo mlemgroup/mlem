@@ -34,6 +34,11 @@ struct ProfileDateView: View {
         profilable.createdRecently ? .lemmy.newAccountFlair : .lemmy.cakeDay
     }
     
+    /// Returns a `String` with the cake date and a custom message depending to if today is cake day or not.
+    /// If the current day is not the cake day, forges a `String` with relative time between the cake date and today.
+    /// In that case the result string is in *full* unit style so as to improve vocalization of the date with *Voice Over¨.
+    /// - Parameter date: the date to process, here the profile creation daye
+    /// - Returns String: The enriched string to add in the profile
     func format(_ date: Date) -> String {
         if profilable.isCakeDay {
             // It's possible for it to be a user's cake day without their account age quite being 365 days.
@@ -42,6 +47,6 @@ struct ProfileDateView: View {
             let components = Calendar.current.dateComponents([.year], from: startDate, to: .now)
             return "\(date.dateString), " + String(localized: "\(components.year ?? 0) years ago today!")
         }
-        return "\(date.dateString), \(date.getRelativeTime(unitsStyle: .abbreviated))"
+        return "\(date.dateString), \(date.getRelativeTime(unitsStyle: .full))"
     }
 }

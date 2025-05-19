@@ -113,7 +113,7 @@ struct ContentView: View {
                 .inbox,
                 appState: appState,
                 profileLabelType: tabProfileLabelType,
-                badge: (appState.firstSession as? UserSession)?.unreadCount?.badgeLabel
+                badge: (appState.firstSession as? UserSession)?.unreadCount?.badgeLabel.map { String($0) }
             ) {
                 NavigationLayerView(layer: .init(root: .inbox, model: navigationModel), hasSheetModifiers: false)
             },
@@ -121,8 +121,8 @@ struct ContentView: View {
                 .profile,
                 appState: appState,
                 profileLabelType: tabProfileLabelType,
-                imageOverride: avatarImage ?? UIImage(systemName: "person.circle"),
-                selectedImageOverride: selectedAvatarImage ?? UIImage(systemName: "person.circle.fill"),
+                imageOverride: avatarImage ?? UIImage(systemName: "person.crop.circle"),
+                selectedImageOverride: selectedAvatarImage ?? UIImage(systemName: "person.crop.circle.fill"),
                 onLongPress: {
                     HapticManager.main.play(haptic: .rigidInfo, priority: .high)
                     NavigationModel.main.openSheet(.quickSwitcher)

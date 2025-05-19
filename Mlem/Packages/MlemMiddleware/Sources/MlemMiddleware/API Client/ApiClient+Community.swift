@@ -70,7 +70,8 @@ public extension ApiClient {
         page: Int = 1,
         limit: Int = 20,
         filter: ApiListingType = .all,
-        sort: SearchSortType = .top(.allTime)
+        sort: SearchSortType = .top(.allTime),
+        hostApi: ApiClient? = nil
     ) async throws -> [Community2] {
         let endpointVersion = try await version.highestSupportedEndpointVersion
         let request = SearchRequest(
@@ -99,10 +100,27 @@ public extension ApiClient {
         )
         
         let response = try await perform(request).communities
-        return try await caches.community2.getModels(
+        let ret = try await caches.community2.getModels(
             api: self,
             from: (response ?? []).map { try .init(from: $0) }
         )
+        if let subscriptionInfo = hostApi?.subscriptions {
+            for community in ret {
+                if let subscribedCommunity = subscriptionInfo.communities.first(where: { $0.actorId == community.actorId }) {
+                    community.subscriptionManager.addSibling(subscribedCommunity.subscriptionManager)
+                }
+                // TODO: favorites
+            }
+        }
+        if let hostApi {
+            let resolvedCommunities: [URL: Community2] = try await hostApi.resolve(urls: ret.map { $0.resolvableUrl(from: .host) })
+            for community in ret {
+                if let resolvedCommunity = resolvedCommunities[community.resolvableUrl(from: .host)] {
+                    community.blockedManager.addSibling(resolvedCommunity.blockedManager)
+                }
+            }
+        }
+        return ret
     }
     
     func setupSubscriptionList(

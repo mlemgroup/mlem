@@ -25,10 +25,10 @@ public final class Comment2: Comment2Providing {
     public var commentCount: Int
     
     var votesManager: StateManager<VotesModel>
-    public var votes: VotesModel { votesManager.wrappedValue }
+    public var votes: VotesModel { votesManager.displayedValue }
     
     var savedManager: StateManager<Bool>
-    public var saved: Bool { savedManager.wrappedValue }
+    public var saved: Bool { savedManager.displayedValue }
     
     public var creatorBannedFromCommunity: Bool {
         guard let state = creator.isBannedFromCommunity(community) else {

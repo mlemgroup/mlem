@@ -8,6 +8,12 @@
 import MlemMiddleware
 import SwiftUI
 
+/// Renders an interaction bar.
+///
+/// This view makes several layout assumptions:
+/// - There will be no padding applied to this view
+/// - This view will always appear at the bottom of its visual container
+/// - The visual container of this view will have a padding of standardSpacing
 struct InteractionBarView: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
@@ -43,9 +49,9 @@ struct InteractionBarView: View {
             communityContext: communityContext,
             reportContext: reportContext
         )
-        let associatedReadouts = configuration.all.reduce(into: Set<PostBarConfiguration.ReadoutType>(), { result, widget in
+        let associatedReadouts = configuration.all.reduce(into: Set<PostBarConfiguration.ReadoutType>()) { result, widget in
             result.formUnion(widget.associatedReadouts(context: post))
-        })
+        }
         self.readouts = configuration.readouts.compactMap { readout in
             post.readout(type: readout, showColor: !associatedReadouts.contains(readout))
         }
@@ -78,9 +84,9 @@ struct InteractionBarView: View {
             communityContext: communityContext,
             reportContext: reportContext
         )
-        let associatedReadouts = configuration.all.reduce(into: Set<CommentBarConfiguration.ReadoutType>(), { result, widget in
+        let associatedReadouts = configuration.all.reduce(into: Set<CommentBarConfiguration.ReadoutType>()) { result, widget in
             result.formUnion(widget.associatedReadouts(context: comment))
-        })
+        }
         self.readouts = configuration.readouts.compactMap { readout in
             comment.readout(type: readout, showColor: !associatedReadouts.contains(readout))
         }
@@ -93,25 +99,25 @@ struct InteractionBarView: View {
     ) {
         self.leading = .init(appState: appState, reply: reply, items: configuration.leading)
         self.trailing = .init(appState: appState, reply: reply, items: configuration.trailing)
-        let associatedReadouts = configuration.all.reduce(into: Set<ReplyBarConfiguration.ReadoutType>(), { result, widget in
+        let associatedReadouts = configuration.all.reduce(into: Set<ReplyBarConfiguration.ReadoutType>()) { result, widget in
             result.formUnion(widget.associatedReadouts(context: reply))
-        })
+        }
         self.readouts = configuration.readouts.compactMap { readout in
             reply.readout(type: readout, showColor: !associatedReadouts.contains(readout))
         }
     }
 
     var body: some View {
-        HStack(spacing: Constants.main.doubleSpacing) {
+        HStack(spacing: 0) {
             ForEach(leading, id: \.viewId, content: widgetView)
                 .fixedSize(horizontal: true, vertical: false)
             InfoStackView(readouts: readouts)
                 .frame(maxWidth: .infinity, alignment: infoStackAlignment)
-                .padding(infoStackPaddingEdges, -Constants.main.doubleSpacing)
+                .padding(.horizontal, Constants.main.standardSpacing)
             ForEach(trailing, id: \.viewId, content: widgetView)
                 .fixedSize(horizontal: true, vertical: false)
         }
-        .frame(height: Constants.main.barIconSize)
+        .frame(height: Constants.main.barIconHitbox)
         .geometryGroup()
     }
     
@@ -120,14 +126,6 @@ struct InteractionBarView: View {
         case (true, false): .leading
         case (false, true): .trailing
         default: .center
-        }
-    }
-    
-    var infoStackPaddingEdges: Edge.Set {
-        switch (leading.isEmpty, trailing.isEmpty) {
-        case (true, false): .trailing
-        case (false, true): .leading
-        default: .horizontal
         }
     }
     
@@ -143,7 +141,13 @@ struct InteractionBarView: View {
     
     @ViewBuilder
     private func counterView(_ counter: Counter) -> some View {
-        HStack {
+        let paddingEdges: Edge.Set = {
+            if counter.leadingAction == nil { return .leading }
+            if counter.trailingAction == nil { return .trailing }
+            return []
+        }()
+        
+        HStack(spacing: 0) {
             if let leadingAction = counter.leadingAction {
                 actionView(leadingAction)
             }
@@ -152,6 +156,7 @@ struct InteractionBarView: View {
                 .contentTransition(.numericText(value: Double(counter.value ?? 0)))
                 .animation(.default, value: counter.value)
                 .foregroundStyle(.themedPrimary)
+                .padding(paddingEdges, Constants.main.standardSpacing)
                 
             if let trailingAction = counter.trailingAction {
                 actionView(trailingAction)

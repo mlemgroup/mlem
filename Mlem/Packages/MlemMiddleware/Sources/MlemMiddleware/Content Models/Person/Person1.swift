@@ -37,7 +37,7 @@ public final class Person1: Person1Providing {
     
     // This isn't included in the ApiPerson, and so is set externally by Post2 instead
     var blockedManager: StateManager<Bool>
-    public var blocked: Bool { blockedManager.wrappedValue }
+    public var blocked: Bool { blockedManager.displayedValue }
     
     // Communities from which this person is *known* to be banned.
     // If an ID is not in this set, its status is unknown.

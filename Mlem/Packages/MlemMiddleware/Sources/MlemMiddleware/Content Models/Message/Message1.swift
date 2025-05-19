@@ -24,10 +24,10 @@ public final class Message1: Message1Providing {
     public let isOwnMessage: Bool
     
     let readManager: StateManager<Bool>
-    public var read: Bool { readManager.wrappedValue }
+    public var read: Bool { readManager.displayedValue }
     
     var deletedManager: StateManager<Bool>
-    public var deleted: Bool { deletedManager.wrappedValue }
+    public var deleted: Bool { deletedManager.displayedValue }
     
     init(
         api: ApiClient,

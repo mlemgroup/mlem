@@ -24,6 +24,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     var accounts_grouped: Bool
     var accounts_sort: AccountSortMode
     var accounts_keepPlace: Bool
+    var accounts_preferredListRowComplication: PreferredAccountListRowComplication
     var appearance_interfaceStyle: UIUserInterfaceStyle
     var appearance_palette: PaletteOption
     var markdown_wrapCodeBlockLines: Bool
@@ -121,6 +122,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.accounts_grouped = try container.decodeIfPresent(Bool.self, forKey: ._accounts_grouped) ?? false
         self.accounts_sort = try container.decodeIfPresent(AccountSortMode.self, forKey: ._accounts_sort) ?? .name
         self.accounts_keepPlace = try container.decodeIfPresent(Bool.self, forKey: ._accounts_keepPlace) ?? false
+        self.accounts_preferredListRowComplication = try container.decodeIfPresent(PreferredAccountListRowComplication.self, forKey: ._accounts_preferredListRowComplication) ?? .lastUsed
         self.appearance_interfaceStyle = try container.decodeIfPresent(UIUserInterfaceStyle.self, forKey: ._appearance_interfaceStyle) ?? .unspecified
         self.appearance_palette = try container.decodeIfPresent(PaletteOption.self, forKey: ._appearance_palette) ?? .standard
         self.markdown_wrapCodeBlockLines = try container.decodeIfPresent(Bool.self, forKey: ._markdown_wrapCodeBlockLines) ?? true
@@ -240,6 +242,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         accounts_grouped = otherValues.accounts_grouped
         accounts_sort = otherValues.accounts_sort
         accounts_keepPlace = otherValues.accounts_keepPlace
+        accounts_preferredListRowComplication = otherValues.accounts_preferredListRowComplication
         appearance_interfaceStyle = otherValues.appearance_interfaceStyle
         appearance_palette = otherValues.appearance_palette
         markdown_wrapCodeBlockLines = otherValues.markdown_wrapCodeBlockLines
@@ -334,6 +337,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         case _accounts_grouped = "accounts_grouped"
         case _accounts_sort = "accounts_sort"
         case _accounts_keepPlace = "accounts_keepPlace"
+        case _accounts_preferredListRowComplication
         case _appearance_interfaceStyle = "appearance_interfaceStyle"
         case _appearance_palette = "appearance_palette"
         case _markdown_wrapCodeBlockLines = "markdown_wrapCodeBlockLines"
@@ -430,6 +434,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.accounts_grouped = settings.groupAccountSort
         self.accounts_sort = settings.accountSort
         self.accounts_keepPlace = settings.keepPlaceOnAccountSwitch
+        self.accounts_preferredListRowComplication = .lastUsed
         self.appearance_interfaceStyle = settings.interfaceStyle
         self.appearance_palette = settings.colorPalette
         self.markdown_wrapCodeBlockLines = settings.wrapCodeBlockLines

@@ -15,7 +15,6 @@
 		030056A62D7DBD4F00EB0BA3 /* Sharable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030056A52D7DBD4F00EB0BA3 /* Sharable+Extensions.swift */; };
 		030056BB2D7E137800EB0BA3 /* ShareInstancePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030056BA2D7E137800EB0BA3 /* ShareInstancePickerView.swift */; };
 		03036C742C71408700C6DA1D /* CounterAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03036C732C71408700C6DA1D /* CounterAppearance.swift */; };
-		03036C762C71427B00C6DA1D /* InteractionBarCounterLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03036C752C71427B00C6DA1D /* InteractionBarCounterLabelView.swift */; };
 		03036C832C727D0500C6DA1D /* InteractionBarEditorView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03036C822C727D0500C6DA1D /* InteractionBarEditorView+Logic.swift */; };
 		03049A1A2C6502F300FF6889 /* FormSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03049A192C6502F300FF6889 /* FormSection.swift */; };
 		03049A1C2C65039400FF6889 /* ActiveUserCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03049A1B2C65039400FF6889 /* ActiveUserCountView.swift */; };
@@ -405,6 +404,7 @@
 		CD4368C12AE23FD400BD8BD1 /* Semaphore in Frameworks */ = {isa = PBXBuildFile; productRef = CD4368C02AE23FD400BD8BD1 /* Semaphore */; };
 		CD43E8B32BF2C24E007C3D71 /* ContentLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD43E8B22BF2C24E007C3D71 /* ContentLoader.swift */; };
 		CD45CB0D2D1880E8008BC729 /* FiltersSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD45CB0C2D1880E3008BC729 /* FiltersSettingsView.swift */; };
+		CD4B66DA2DCE809D00D28EB4 /* InstanceUptimeView+Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4B66D92DCE809A00D28EB4 /* InstanceUptimeView+Views.swift */; };
 		CD4BAD352B4B2C0B00A1E726 /* FeedsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4BAD342B4B2C0B00A1E726 /* FeedsView.swift */; };
 		CD4D583F2B86855F00B82964 /* MlemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D583E2B86855F00B82964 /* MlemTests.swift */; };
 		CD4D58412B86858100B82964 /* MlemUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58402B86858100B82964 /* MlemUITests.swift */; };
@@ -454,6 +454,7 @@
 		CD87BEC32D5132BE0099F190 /* FilterViolationWarning.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD87BEC22D5132BB0099F190 /* FilterViolationWarning.swift */; };
 		CD8DB93A2D22004000EB0C7B /* Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8DB9392D22003D00EB0C7B /* Animations.swift */; };
 		CD8DCAF92C5E92E8003E4DD7 /* Profile1Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8DCAF82C5E92E8003E4DD7 /* Profile1Providing+Extensions.swift */; };
+		CD93420B2DCD069800945333 /* InstanceUptimeView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD93420A2DCD069800945333 /* InstanceUptimeView+Logic.swift */; };
 		CD9857A42C5E7F9D0084C71F /* NsfwOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9857A32C5E7F9D0084C71F /* NsfwOverlayView.swift */; };
 		CD9BD5812D8F8F7D0006AB7F /* ZoomRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9BD5802D8F8F750006AB7F /* ZoomRecognizer.swift */; };
 		CD9CFA2A2C2E1E8400739BBC /* FeedHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9CFA292C2E1E8400739BBC /* FeedHeaderView.swift */; };
@@ -551,7 +552,6 @@
 		030056A52D7DBD4F00EB0BA3 /* Sharable+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sharable+Extensions.swift"; sourceTree = "<group>"; };
 		030056BA2D7E137800EB0BA3 /* ShareInstancePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareInstancePickerView.swift; sourceTree = "<group>"; };
 		03036C732C71408700C6DA1D /* CounterAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterAppearance.swift; sourceTree = "<group>"; };
-		03036C752C71427B00C6DA1D /* InteractionBarCounterLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionBarCounterLabelView.swift; sourceTree = "<group>"; };
 		03036C822C727D0500C6DA1D /* InteractionBarEditorView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InteractionBarEditorView+Logic.swift"; sourceTree = "<group>"; };
 		03049A192C6502F300FF6889 /* FormSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSection.swift; sourceTree = "<group>"; };
 		03049A1B2C65039400FF6889 /* ActiveUserCountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveUserCountView.swift; sourceTree = "<group>"; };
@@ -933,6 +933,7 @@
 		CD3FC67F2D4A75050088E63B /* CounterApperance+StaticValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CounterApperance+StaticValues.swift"; sourceTree = "<group>"; };
 		CD43E8B22BF2C24E007C3D71 /* ContentLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentLoader.swift; sourceTree = "<group>"; };
 		CD45CB0C2D1880E3008BC729 /* FiltersSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersSettingsView.swift; sourceTree = "<group>"; };
+		CD4B66D92DCE809A00D28EB4 /* InstanceUptimeView+Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InstanceUptimeView+Views.swift"; sourceTree = "<group>"; };
 		CD4BAD342B4B2C0B00A1E726 /* FeedsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedsView.swift; sourceTree = "<group>"; };
 		CD4D583E2B86855F00B82964 /* MlemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MlemTests.swift; sourceTree = "<group>"; };
 		CD4D58402B86858100B82964 /* MlemUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MlemUITests.swift; sourceTree = "<group>"; };
@@ -983,6 +984,7 @@
 		CD87BEC22D5132BB0099F190 /* FilterViolationWarning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViolationWarning.swift; sourceTree = "<group>"; };
 		CD8DB9392D22003D00EB0C7B /* Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animations.swift; sourceTree = "<group>"; };
 		CD8DCAF82C5E92E8003E4DD7 /* Profile1Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Profile1Providing+Extensions.swift"; sourceTree = "<group>"; };
+		CD93420A2DCD069800945333 /* InstanceUptimeView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InstanceUptimeView+Logic.swift"; sourceTree = "<group>"; };
 		CD9857A32C5E7F9D0084C71F /* NsfwOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NsfwOverlayView.swift; sourceTree = "<group>"; };
 		CD9BD5802D8F8F750006AB7F /* ZoomRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomRecognizer.swift; sourceTree = "<group>"; };
 		CD9CFA292C2E1E8400739BBC /* FeedHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedHeaderView.swift; sourceTree = "<group>"; };
@@ -1113,6 +1115,8 @@
 		030BCB192C3EA5E20037680F /* Instance */ = {
 			isa = PBXGroup;
 			children = (
+				CD4B66D92DCE809A00D28EB4 /* InstanceUptimeView+Views.swift */,
+				CD93420A2DCD069800945333 /* InstanceUptimeView+Logic.swift */,
 				03AFD0E22C3C0C540054B8AD /* InstanceView.swift */,
 				035394982CA1B20B00795AA5 /* InstanceView+Logic.swift */,
 				030BCB1A2C3EA5FD0037680F /* InstanceDetailsView.swift */,
@@ -1570,7 +1574,6 @@
 			children = (
 				03AF91E22C1C616F00E56644 /* InteractionBarView.swift */,
 				03FA318E2C6FEF2000D47FA3 /* InteractionBarActionLabelView.swift */,
-				03036C752C71427B00C6DA1D /* InteractionBarCounterLabelView.swift */,
 			);
 			path = InteractionBar;
 			sourceTree = "<group>";
@@ -2653,6 +2656,7 @@
 				032C32182C36F70300595286 /* ReplyBarConfiguration.swift in Sources */,
 				CDD4A0A02C8B985D0001AD1A /* ImportExportSettingsView.swift in Sources */,
 				03B431B62C454D49001A1EB5 /* UIImage+Extensions.swift in Sources */,
+				CD93420B2DCD069800945333 /* InstanceUptimeView+Logic.swift in Sources */,
 				CD1446212A5B328E00610EF1 /* Privacy Policy.swift in Sources */,
 				03AFD0E32C3C0C540054B8AD /* InstanceView.swift in Sources */,
 				CDD4A09C2C8A122F0001AD1A /* Settings.swift in Sources */,
@@ -2743,6 +2747,7 @@
 				CD4D58B52B86BFFB00B82964 /* PersistenceRepository+Dependency.swift in Sources */,
 				03A630F12D497674009A47A6 /* ShieldsBadgeView.swift in Sources */,
 				CD4D58EB2B86E63300B82964 /* AssociatedColor.swift in Sources */,
+				CD4B66DA2DCE809D00D28EB4 /* InstanceUptimeView+Views.swift in Sources */,
 				CD3153072C38421B00BC5FBE /* View+LoadFeed.swift in Sources */,
 				039F588F2C7B599800C61658 /* ThemeLabel.swift in Sources */,
 				037029A32D6B9B8400B749DF /* ContentView+Tab.swift in Sources */,
@@ -2930,7 +2935,6 @@
 				03A631CC2D4FD18C009A47A6 /* Post+Mock.swift in Sources */,
 				03FE14082BF94FFB00A8377F /* ErrorView.swift in Sources */,
 				0325B93C2D3AA62500E28B97 /* InboxItemType+Extensions.swift in Sources */,
-				03036C762C71427B00C6DA1D /* InteractionBarCounterLabelView.swift in Sources */,
 				030FF67D2BC8524500F6BFAC /* CustomTabItem.swift in Sources */,
 				CDAA02E32C821C9100D75633 /* Divider.swift in Sources */,
 				CDCA44972C17666C00C092B3 /* HapticManager.swift in Sources */,
