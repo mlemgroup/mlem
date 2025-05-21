@@ -17,13 +17,17 @@ But that's not all. Mlem is also highly optimized for **performance** and **effi
 
 ## 🚀 Features
 
-| Feeds | Search | Threads |
-|:--------:|:--------:|:--------:|
-| <img src="https://github.com/user-attachments/assets/0ad349ef-3673-46d4-b923-7d035aa1adb2" width="100%"> | <img src="https://github.com/user-attachments/assets/adad7b94-a12c-4821-922c-2ffcc79728cb" width="100%"> | <img src="https://github.com/user-attachments/assets/2dd4221d-c474-4bc1-8d9d-3cb717b5475e" width="100%"> |
+| Feeds | Search |
+|:--------:|:--------:|
+| <img src="https://github.com/user-attachments/assets/0ad349ef-3673-46d4-b923-7d035aa1adb2" width="100%"> | <img src="https://github.com/user-attachments/assets/adad7b94-a12c-4821-922c-2ffcc79728cb" width="100%"> |
 
-| Customization | Themes | Icons |
-|:--------:|:--------:|:--------:|
-| <img src="https://github.com/user-attachments/assets/1c59fd5d-e828-4eda-88a9-379a9aa3ec64" width="100%"> | <img src="https://github.com/user-attachments/assets/f59e87cf-86ac-4114-8624-c392940fc5f2" width="100%"> | <img src="https://github.com/user-attachments/assets/c817ab96-c46f-4932-b3ac-fddaeb12de06" width="100%"> |
+| Threads | Customize |
+|:--------:|:--------:|
+| <img src="https://github.com/user-attachments/assets/2dd4221d-c474-4bc1-8d9d-3cb717b5475e" width="100%"> | <img src="https://github.com/user-attachments/assets/1c59fd5d-e828-4eda-88a9-379a9aa3ec64" width="100%"> |
+
+| Themes | Icons |
+|:--------:|:--------:|
+| <img src="https://github.com/user-attachments/assets/f59e87cf-86ac-4114-8624-c392940fc5f2" width="100%"> | <img src="https://github.com/user-attachments/assets/c817ab96-c46f-4932-b3ac-fddaeb12de06" width="100%"> |
 
 ## 💬 Want to chat about Mlem?
 
