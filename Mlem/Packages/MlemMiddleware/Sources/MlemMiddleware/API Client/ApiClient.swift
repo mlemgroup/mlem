@@ -7,7 +7,6 @@
 
 import Combine
 import Foundation
-import SwiftyJSON
 
 @Observable
 public class ApiClient {
