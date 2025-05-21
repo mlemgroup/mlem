@@ -14,6 +14,7 @@ enum NavigationPage: Hashable {
     case settings(_ page: SettingsPage = .root)
     case logIn(_ page: LoginPage = .pickInstance)
     case signUp(_ instance: HashWrapper<any InstanceStubProviding>)
+    case onboarding(SignUpFormData)
     case feeds(_ selection: FeedSelection? = nil)
     case profile, inbox, search
     case quickSwitcher

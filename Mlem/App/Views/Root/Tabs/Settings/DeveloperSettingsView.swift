@@ -13,6 +13,7 @@ import SwiftUI
 // be burdening translators with these when they'll never be used
 
 struct DeveloperSettingsView: View {
+    @Environment(NavigationLayer.self) var navigation
     @Dependency(\.persistenceRepository) var persistenceRepository
     
     @Setting(\.tip_feedWelcomePrompt) var showFeedWelcomePrompt
@@ -29,6 +30,10 @@ struct DeveloperSettingsView: View {
             
             #if DEBUG
                 Section {
+                    Button(String("Trigger onboarding")) {
+                        navigation.openSheet(.onboarding(.init()))
+                    }
+                    
                     Button(String("Reset Feed Welcome Banner")) {
                         showFeedWelcomePrompt = true
                     }
