@@ -46,9 +46,6 @@ public struct Comment2Snapshot: CacheIdentifiable {
         } else {
             self.creatorIsModerator = comment.creatorIsModerator
             self.creatorBannedFromCommunity = comment.creatorBannedFromCommunity ?? false
-            guard let creatorBlocked = comment.creatorBlocked else {
-                throw .responseMissingRequiredData("ApICommentView creatorBlocked")
-            }
         }
         
         if let actions = comment.commentActions {

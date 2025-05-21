@@ -12,8 +12,7 @@ public protocol Community3Providing: Community2Providing {
     
     var instance: Instance1? { get }
     var moderators: [Person1] { get }
-    var discussionLanguages: [Int] { get }
-    // var defaultPostLanguage: Int? { get }
+    var discussionLanguageIds: Set<Int> { get }
 }
 
 public extension Community3Providing {
@@ -22,13 +21,11 @@ public extension Community3Providing {
     /// This is optional because it's defined as such on ``ApiGetCommunityResponse``. I'm not sure when it actually returns `nil`.
     var instance: Instance1? { community3.instance }
     var moderators: [Person1] { community3.moderators }
-    var discussionLanguages: [Int] { community3.discussionLanguages }
-    // var defaultPostLanguage: Int? { community3.defaultPostLanguage }
+    var discussionLanguageIds: Set<Int> { community3.discussionLanguageIds }
     
     var instance_: Instance1? { community3.instance }
     var moderators_: [Person1]? { community3.moderators }
-    var discussionLanguages_: [Int]? { community3.discussionLanguages }
-    // var defaultPostLanguage_: Int? { community3.defaultPostLanguage }
+    var discussionLanguageIds_: Set<Int>? { community3.discussionLanguageIds }
 }
 
 public extension Community3Providing {
