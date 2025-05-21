@@ -13,6 +13,7 @@ struct TabBarSettingsView: View {
     
     @Setting(\.tab_profile_labelType) var profileTabLabel: ProfileTabLabel
     @Setting(\.tab_profile_showAvatar) var showUserAvatar: Bool
+    @Setting(\.tab_gestures_longPressAction) var longPressAction: TabBarLongPressAction
     @Setting(\.tab_inbox_badgeIncludedTypes) var tabInboxBadgeIncludedTypes
     
     var account: any Account {
@@ -42,6 +43,21 @@ struct TabBarSettingsView: View {
             Section {
                 Toggle("Show Avatar", icon: .lemmy.person, isOn: $showUserAvatar)
                     .symbolVariant(.circle)
+            }
+            
+            Section("Long Press Action") {
+                Picker("Long Press Action", selection: $longPressAction) {
+                    profileTabLabelItem("Open Account Switcher", value: "Show all accounts.", icon: .lemmy.switchAccount)
+                        .tag(TabBarLongPressAction.openAccountSwitcher)
+                    profileTabLabelItem(
+                        "Switch to Last Used",
+                        value: "Switch to the most recently used account.",
+                        icon: .lemmy.switchAccountAndReload
+                    )
+                    .tag(TabBarLongPressAction.switchToLastUsedAccount)
+                }
+                .labelsHidden()
+                .pickerStyle(.inline)
             }
             Section {
                 NavigationLink(
@@ -75,4 +91,17 @@ struct TabBarSettingsView: View {
 
 enum ProfileTabLabel: String, Codable, CaseIterable {
     case nickname, instance, anonymous
+}
+
+enum TabBarLongPressAction: String, Codable, CaseIterable {
+    case openAccountSwitcher, switchToLastUsedAccount
+    
+    var label: String {
+        switch self {
+        case .openAccountSwitcher:
+            return "Open Account Switcher"
+        case .switchToLastUsedAccount:
+            return "Switch to Last Used Account"
+        }
+    }
 }

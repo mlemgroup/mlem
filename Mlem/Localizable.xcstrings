@@ -4420,6 +4420,9 @@
         }
       }
     },
+    "Long Press Action" : {
+
+    },
     "Manage how Mlem handles links and control how images and videos are displayed." : {
       "localizations" : {
         "fr" : {
@@ -5308,6 +5311,9 @@
           }
         }
       }
+    },
+    "Open Account Switcher" : {
+
     },
     "Open Authenticator App..." : {
       "localizations" : {
@@ -7718,6 +7724,9 @@
           }
         }
       }
+    },
+    "Switch to Last Used" : {
+
     },
     "Switch to this account and..." : {
       "localizations" : {

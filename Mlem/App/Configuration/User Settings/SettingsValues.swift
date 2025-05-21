@@ -82,6 +82,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     var safety_enableNsfwCommunityWarning: Bool
     var tab_gestures_enableLongPress: Bool
     var tab_gestures_enableSwipeUp: Bool
+    var tab_gestures_longPressAction: TabBarLongPressAction
     var tab_profile_labelType: ProfileTabLabel
     var tab_profile_showAvatar: Bool
     var tab_inbox_badgeIncludedTypes: Set<InboxItemType>
@@ -210,6 +211,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.safety_enableNsfwCommunityWarning = try container.decodeIfPresent(Bool.self, forKey: ._safety_enableNsfwCommunityWarning) ?? true
         self.tab_gestures_enableLongPress = try container.decodeIfPresent(Bool.self, forKey: ._tab_gestures_enableLongPress) ?? true
         self.tab_gestures_enableSwipeUp = try container.decodeIfPresent(Bool.self, forKey: ._tab_gestures_enableSwipeUp) ?? true
+        self.tab_gestures_longPressAction = try container.decodeIfPresent(TabBarLongPressAction.self, forKey: ._tab_gestures_longPressAction) ?? .openAccountSwitcher
         self.tab_profile_labelType = try container.decodeIfPresent(ProfileTabLabel.self, forKey: ._tab_profile_labelType) ?? .nickname
         self.tab_profile_showAvatar = try container.decodeIfPresent(Bool.self, forKey: ._tab_profile_showAvatar) ?? true
         self.tab_showNames = try container.decodeIfPresent(Bool.self, forKey: ._tab_showNames) ?? true
@@ -395,6 +397,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         case _safety_enableNsfwCommunityWarning = "safety_enableNsfwCommunityWarning"
         case _tab_gestures_enableLongPress = "tab_gestures_enableLongPress"
         case _tab_gestures_enableSwipeUp = "tab_gestures_enableSwipeUp"
+        case _tab_gestures_longPressAction = "tab_gestures_longPressAction"
         case _tab_profile_labelType = "tab_profile_labelType"
         case _tab_profile_showAvatar = "tab_profile_showAvatar"
         case _tab_inbox_badgeIncludedTypes = "tab_inbox_badgeIncludedTypes"
@@ -490,6 +493,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.safety_enableModlogWarning = settings.showModlogWarning
         self.tab_gestures_enableLongPress = true // Removed in 2.0
         self.tab_gestures_enableSwipeUp = true // Removed in 2.0
+        self.tab_gestures_longPressAction = .openAccountSwitcher // Added in 2.2
         self.tab_profile_labelType = settings.tabProfileLabelType
         self.tab_profile_showAvatar = settings.tabProfileShowAvatar
         self.tab_inbox_badgeIncludedTypes = settings.tabInboxBadgeIncludedTypes

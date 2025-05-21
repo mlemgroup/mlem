@@ -20,6 +20,7 @@ struct ContentView: View {
     @Setting(\.appearance_palette) var colorPalette
     @Setting(\.tab_profile_labelType) var tabProfileLabelType
     @Setting(\.tab_profile_showAvatar) var tabProfileShowAvatar
+    @Setting(\.tab_gestures_longPressAction) var tabLongPressAction
     
     let cacheCleanTimer = Timer.publish(every: 10, on: .main, in: .common).autoconnect()
     let unreadCountTimer = Timer.publish(every: 30, on: .main, in: .common).autoconnect()
@@ -125,7 +126,16 @@ struct ContentView: View {
                 selectedImageOverride: selectedAvatarImage ?? UIImage(systemName: "person.crop.circle.fill"),
                 onLongPress: {
                     HapticManager.main.play(haptic: .rigidInfo, priority: .high)
-                    NavigationModel.main.openSheet(.quickSwitcher)
+                    
+                    switch tabLongPressAction {
+                    case .openAccountSwitcher:
+                        NavigationModel.main.openSheet(.quickSwitcher)
+                    case .switchToLastUsedAccount:
+                        // If switch fails (no other accounts), fall back to account switcher.
+                        if !appState.switchToLastUsedAccount() {
+                            NavigationModel.main.openSheet(.quickSwitcher)
+                        }
+                    }
                 },
                 content: {
                     NavigationLayerView(layer: .init(root: .profile, model: navigationModel), hasSheetModifiers: false)
