@@ -5,11 +5,10 @@
 //  Created by Eric Andrews on 2025-01-15.
 //
 
-import SwiftUI
 import Media
+import SwiftUI
 
 extension MediaView {
-    
     @ViewBuilder
     var image: some View {
         CoreMediaView(
@@ -44,13 +43,24 @@ extension MediaView {
     
     @ViewBuilder
     var coreFallbackImage: some View {
-        let fallback: Fallback = loader.loading == .proxyFailed ? .proxyFailure : fallback
+        // Use contextual fallback icons even when proxy fails.
+        let contextualFallback: Fallback = if loader.loading == .proxyFailed {
+            switch fallback {
+            case .personAvatar, .communityAvatar, .instanceAvatar:
+                fallback
+            default:
+                .proxyFailure
+            }
+        } else {
+            fallback
+        }
+        
         GeometryReader { geo in
-            Image(icon: fallback.icon)
+            Image(icon: contextualFallback.icon)
                 .resizable()
                 .scaledToFit()
-                .symbolVariant(fallback.fallbackStyle == .avatar ? .circle.fill : .none)
-                .frame(width: geo.size.width * fallback.scaleFactor)
+                .symbolVariant(contextualFallback.fallbackStyle == .avatar ? .circle.fill : .none)
+                .frame(width: geo.size.width * contextualFallback.scaleFactor)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
