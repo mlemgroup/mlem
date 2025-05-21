@@ -45,12 +45,7 @@ extension MediaView {
     var coreFallbackImage: some View {
         // Use contextual fallback icons even when proxy fails.
         let contextualFallback: Fallback = if loader.loading == .proxyFailed {
-            switch fallback {
-            case .personAvatar, .communityAvatar, .instanceAvatar:
-                fallback
-            default:
-                .proxyFailure
-            }
+            fallback.fallbackStyle == .avatar ? fallback : .proxyFailure
         } else {
             fallback
         }
