@@ -16,7 +16,6 @@ public class ApiClient {
     
     let decoder: JSONDecoder = {
         let decoder: JSONDecoder = .defaultDecoder
-//        decoder.keyDecodingStrategy = .convertFromSnakeCase
         return decoder
     }()
     
@@ -224,7 +223,6 @@ public class ApiClient {
     func createBodyData(for defintion: any ApiRequestBodyProviding) throws -> Data {
         do {
             let encoder = JSONEncoder()
-//            encoder.keyEncodingStrategy = .convertToSnakeCase
             let body = defintion.body ?? ""
             return try encoder.encode(body)
         } catch {
