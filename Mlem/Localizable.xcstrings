@@ -417,6 +417,9 @@
         }
       }
     },
+    "%lld" : {
+
+    },
     "%lld Crossposts..." : {
       "localizations" : {
         "en" : {
@@ -1765,6 +1768,9 @@
           }
         }
       }
+    },
+    "Choose another instance..." : {
+
     },
     "Choose Another Instance..." : {
       "localizations" : {
@@ -4111,7 +4117,7 @@
         }
       }
     },
-    "Join 45000 other users on Lemmy.world" : {
+    "Join %@ active users on Lemmy.world" : {
 
     },
     "Join Discord Server" : {
@@ -4254,6 +4260,9 @@
           }
         }
       }
+    },
+    "Let's Go" : {
+
     },
     "Licenses" : {
       "localizations" : {
