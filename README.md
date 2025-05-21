@@ -35,7 +35,7 @@ You're welcome to join our [community on lemmy.ml](https://lemmy.ml/c/mlemapp) o
 
 ## 🤝 Contributing
 
-We welcome contributions from the community! Whether you're interested in fixing bugs, adding new features, or improving documentation, your help is appreciated.
+We welcome contributions from the community! Whether you're interested in fixing bugs or adding new features, your contributions are always welcome and appreciated.
 
 Check out our [contribution guide](./CONTRIBUTING.md) to get started!
 
