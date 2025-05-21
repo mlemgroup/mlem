@@ -14,22 +14,16 @@ extension Post2 {
             creator: creator.apiPerson,
             community: community.apiCommunity,
             creatorBannedFromCommunity: creator.isBannedFromCommunity(id: communityId) ?? false,
+            creatorIsModerator: creatorIsModerator,
+            creatorIsAdmin: creatorIsAdmin,
             counts: .init(
-                id: nil,
                 postId: post1.id,
                 comments: commentCount,
                 score: votes.total,
                 upvotes: votes.upvotes,
                 downvotes: votes.downvotes,
                 published: created,
-                newestCommentTimeNecro: nil,
-                newestCommentTime: nil,
-                featuredCommunity: pinnedCommunity,
-                featuredLocal: pinnedInstance,
-                hotRank: nil,
-                hotRankActive: nil,
-                communityId: nil,
-                creatorId: nil
+                newestCommentTime: nil
             ),
             subscribed: .notSubscribed,
             saved: saved,
@@ -37,8 +31,6 @@ extension Post2 {
             creatorBlocked: creator.blocked,
             myVote: votes.myVote.rawValue,
             unreadComments: unreadCommentCount,
-            creatorIsModerator: creatorIsModerator,
-            creatorIsAdmin: creatorIsAdmin,
             bannedFromCommunity: bannedFromCommunity,
             hidden: hidden,
             imageDetails: nil,
@@ -46,8 +38,12 @@ extension Post2 {
             personActions: nil,
             postActions: nil,
             instanceActions: nil,
+            creatorHomeInstanceActions: nil,
+            creatorLocalInstanceActions: nil,
             creatorCommunityActions: nil,
-            canMod: nil
+            tags: nil,
+            canMod: nil,
+            creatorBanned: nil
         )
     }
 }

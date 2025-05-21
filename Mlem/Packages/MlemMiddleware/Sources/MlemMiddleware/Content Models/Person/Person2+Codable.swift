@@ -18,14 +18,14 @@ public extension Person2 {
         .init(
             person: person1.apiPerson,
             counts: .init(
-                id: nil,
                 personId: id,
                 postCount: postCount,
-                postScore: nil,
-                commentCount: commentCount,
-                commentScore: nil
+                commentCount: commentCount
             ),
-            isAdmin: isAdmin
+            isAdmin: isAdmin,
+            homeInstanceActions: nil,
+            localInstanceActions: nil,
+            creatorBanned: nil
         )
     }
     

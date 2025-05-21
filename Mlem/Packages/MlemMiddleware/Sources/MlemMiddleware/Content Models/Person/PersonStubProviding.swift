@@ -56,7 +56,6 @@ public protocol PersonStubProviding: ContentModel, Resolvable {
     var showBotAccounts_: Bool? { get }
     var showReadPosts_: Bool? { get }
     var discussionLanguageIds_: Set<Int>? { get }
-    var showNewPostNotifs_: Bool? { get }
     var emailVerified_: Bool? { get }
     var acceptedApplication_: Bool? { get }
     var openLinksInNewTab_: Bool? { get }
@@ -110,7 +109,6 @@ public extension PersonStubProviding {
     var showBotAccounts_: Bool? { nil }
     var showReadPosts_: Bool? { nil }
     var discussionLanguageIds_: Set<Int>? { nil }
-    var showNewPostNotifs_: Bool? { nil }
     var emailVerified_: Bool? { nil }
     var acceptedApplication_: Bool? { nil }
     var openLinksInNewTab_: Bool? { nil }

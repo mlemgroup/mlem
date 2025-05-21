@@ -48,9 +48,9 @@ public struct ReportSnapshot: CacheIdentifiable {
         self.resolved = report.commentReport.resolved
         self.reason = report.commentReport.reason
         
-        if let commentView = report.toCommentView() {
-            self.target = try .comment(.init(from: commentView))
-        } else {
+        do {
+            self.target = try .comment(.init(from: report))
+        } catch .responseMissingRequiredData {
             self.target = try .legacyComment(
                 .init(from: report.comment),
                 community: .init(from: report.community),
@@ -75,9 +75,9 @@ public struct ReportSnapshot: CacheIdentifiable {
         self.resolved = report.postReport.resolved
         self.reason = report.postReport.reason
         
-        if let postView = report.toPostView() {
-            self.target = try .post(.init(from: postView))
-        } else {
+        do {
+            self.target = try .post(.init(from: report))
+        } catch .responseMissingRequiredData {
             self.target = try .legacyPost(
                 .init(from: report.post),
                 community: .init(from: report.community),

@@ -9,6 +9,16 @@ import Foundation
 
 extension ApiSiteAggregates {
     static var zero: Self {
-        .init(id: nil, siteId: 0, users: 0, posts: 0, comments: 0, communities: 0, usersActiveDay: 0, usersActiveWeek: 0, usersActiveMonth: 0, usersActiveHalfYear: 0)
+        .init(
+            siteId: 0,
+            users: 0,
+            posts: 0,
+            comments: 0,
+            communities: 0,
+            usersActiveDay: 0,
+            usersActiveWeek: 0,
+            usersActiveMonth: 0,
+            usersActiveHalfYear: 0
+        )
     }
 }

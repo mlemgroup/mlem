@@ -15,29 +15,31 @@ extension Comment2 {
             post: post.apiPost,
             community: community.apiCommunity,
             counts: .init(
-                id: nil,
                 commentId: id,
                 score: votes.total,
                 upvotes: votes.upvotes,
                 downvotes: votes.downvotes,
                 published: created,
-                childCount: commentCount,
-                hotRank: nil
+                childCount: commentCount
             ),
             creatorBannedFromCommunity: bannedFromCommunity,
+            creatorIsModerator: creatorIsModerator,
+            creatorIsAdmin: creatorIsAdmin,
             subscribed: .notSubscribed,
             saved: saved,
             creatorBlocked: creator.blocked,
             myVote: votes.myVote.rawValue,
-            creatorIsModerator: creatorIsModerator,
-            creatorIsAdmin: creatorIsAdmin,
             bannedFromCommunity: false,
             communityActions: nil,
             commentActions: nil,
             personActions: nil,
             instanceActions: nil,
+            creatorHomeInstanceActions: nil,
+            creatorLocalInstanceActions: nil,
             creatorCommunityActions: nil,
-            canMod: nil
+            postTags: nil,
+            canMod: nil,
+            creatorBanned: nil
         )
     }
 }

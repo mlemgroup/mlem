@@ -23,7 +23,6 @@ public protocol Person4Providing: Person3Providing {
     var showBotAccounts: Bool { get }
     var showReadPosts: Bool { get }
     var discussionLanguageIds: Set<Int> { get }
-    var showNewPostNotifs: Bool? { get }
     var emailVerified: Bool { get }
     var acceptedApplication: Bool { get }
     var openLinksInNewTab: Bool? { get }
@@ -53,7 +52,6 @@ public extension Person4Providing {
     var showBotAccounts: Bool { person4.showBotAccounts }
     var showReadPosts: Bool { person4.showReadPosts }
     var discussionLanguageIds: Set<Int> { person4.discussionLanguageIds }
-    var showNewPostNotifs: Bool? { person4.showNewPostNotifs }
     var emailVerified: Bool { person4.emailVerified }
     var acceptedApplication: Bool { person4.acceptedApplication }
     var openLinksInNewTab: Bool? { person4.openLinksInNewTab }
@@ -79,7 +77,6 @@ public extension Person4Providing {
     var showBotAccounts_: Bool? { person4.showBotAccounts }
     var showReadPosts_: Bool? { person4.showReadPosts }
     var discussionLanguageIds_: Set<Int>? { person4.discussionLanguageIds }
-    var showNewPostNotifs_: Bool? { person4.showNewPostNotifs }
     var emailVerified_: Bool? { person4.emailVerified }
     var acceptedApplication_: Bool? { person4.acceptedApplication }
     var openLinksInNewTab_: Bool? { person4.openLinksInNewTab }

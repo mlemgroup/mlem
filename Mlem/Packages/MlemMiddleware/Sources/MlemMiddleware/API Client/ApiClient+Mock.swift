@@ -42,15 +42,23 @@ import Foundation
             tokenOverride: String? = nil,
             requiresToken: Bool = true
         ) async throws -> Request.Response {
-            if let request = request as? GetPostsRequest, let params = request.parameters {
-                return ApiGetPostsResponse(posts: posts.map(\.apiPostView), nextPage: nil) as! Request.Response
+            if let request = request as? ListPostsRequest, let params = request.parameters {
+                return ApiGetPostsResponse(
+                    posts: posts.map(\.apiPostView),
+                    nextPage: nil,
+                    prevPage: nil
+                ) as! Request.Response
             }
         
-            if let request = request as? GetCommentsRequest, let params = request.parameters {
-                return ApiGetCommentsResponse(comments: comments.map(\.apiCommentView)) as! Request.Response
+            if let request = request as? ListCommentsRequest, let params = request.parameters {
+                return ApiGetCommentsResponse(
+                    comments: comments.map(\.apiCommentView),
+                    nextPage: nil,
+                    prevPage: nil
+                ) as! Request.Response
             }
         
-            if let request = request as? GetPersonDetailsRequest, let params = request.parameters {
+            if let request = request as? ReadPersonRequest, let params = request.parameters {
                 if let person = people.first(where: { $0.id == params.personId })?.apiPersonView {
                     return ApiGetPersonDetailsResponse(
                         personView: person,
@@ -90,7 +98,8 @@ import Foundation
                     communities: params.type_ == .communities ? communities.map(\.apiCommunityView) : [],
                     users: params.type_ == .users ? people.map(\.apiPersonView) : [],
                     results: nil,
-                    nextPage: nil
+                    nextPage: nil,
+                    prevPage: nil
                 ) as! Request.Response
             }
         

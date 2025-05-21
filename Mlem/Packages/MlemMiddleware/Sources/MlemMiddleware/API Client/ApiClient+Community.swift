@@ -150,10 +150,12 @@ public extension ApiClient {
                 endpoint: .v3,
                 type_: .subscribed,
                 sort: nil,
+                showNsfw: true,
                 page: page,
                 limit: limit,
-                showNsfw: true,
-                timeRangeSeconds: nil
+                timeRangeSeconds: nil,
+                pageCursor: nil,
+                pageBack: nil
             )
             let response = try await perform(request)
             communities.append(contentsOf: response.communities)
@@ -200,7 +202,7 @@ public extension ApiClient {
         reason: String?,
         semaphore: UInt? = nil
     ) async throws -> Community2 {
-        let request = RemoveCommunityRequest(endpoint: .v3, communityId: id, removed: remove, reason: reason, expires: nil)
+        let request = RemoveCommunityRequest(endpoint: .v3, communityId: id, removed: remove, reason: reason)
         let response = try await perform(request)
         return try await caches.community2.getModel(
             api: self,

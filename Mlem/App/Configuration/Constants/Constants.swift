@@ -32,7 +32,7 @@ class Constants {
     
     // MARK: Versioning
     
-    let minimumLemmyVersion: SiteVersion = .v0_18_0
+    let minimumLemmyVersion: SiteVersion = .v0_19_0
     
     // MARK: Image Caching
     

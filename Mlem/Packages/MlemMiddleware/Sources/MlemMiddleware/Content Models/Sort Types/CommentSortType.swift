@@ -11,8 +11,6 @@ public enum CommentSortType: Hashable, Sendable {
     case new
     case old
     case hot
-    
-    /// Added in 0.19.0
     case controversial
     
     /// From 1.0.0 onwards, any time interval is supported.
@@ -87,7 +85,6 @@ public enum CommentSortType: Hashable, Sendable {
     
     public var minimumVersion: SiteVersion {
         switch self {
-        case .controversial: .v0_19_0
         case let .top(timeRange): timeRange == .allTime ? .zero : .v1_0_0
         default: .zero
         }
