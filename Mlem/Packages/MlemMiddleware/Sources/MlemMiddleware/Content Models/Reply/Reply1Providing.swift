@@ -39,7 +39,7 @@ public protocol Reply1Providing:
     var commentCount_: Int? { get }
     var creatorIsModerator_: Bool? { get }
     var creatorIsAdmin_: Bool? { get }
-    var bannedFromCommunity_: Bool? { get }
+    var creatorBannedFromCommunity_: Bool? { get }
     var removed_: Bool? { get }
     var removedManager_: StateManager<Bool>? { get }
     var votes_: VotesModel? { get }
@@ -82,7 +82,7 @@ public extension Reply1Providing {
     var commentCount_: Int? { nil }
     var creatorIsModerator_: Bool? { nil }
     var creatorIsAdmin_: Bool? { nil }
-    var bannedFromCommunity_: Bool? { nil }
+    var creatorBannedFromCommunity_: Bool? { nil }
     var votes_: VotesModel? { nil }
     var saved_: Bool? { nil }
     var removed_: Bool? { nil }

@@ -78,7 +78,7 @@ extension Interactable1Providing {
         Task {
             let initialValue = self2.removed
             if feedback.contains(.haptic) {
-                await HapticManager.main.play(haptic: .success, priority: .low)
+                HapticManager.main.play(haptic: .success, priority: .low)
             }
             switch await self2.toggleRemoved(reason: reason).result.get() {
             case .failed:
