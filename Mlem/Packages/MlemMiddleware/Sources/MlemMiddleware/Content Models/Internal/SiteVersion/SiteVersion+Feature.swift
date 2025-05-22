@@ -9,12 +9,9 @@ import Foundation
 
 public extension SiteVersion {
     enum Feature {
-        case headerAuthentication, batchMarkRead
-        
         var minimumVersion: SiteVersion {
             switch self {
-            case .headerAuthentication: .v0_19_0
-            case .batchMarkRead: .v0_19_0
+            default: .v0_19_0
             }
         }
     }

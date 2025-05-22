@@ -16,11 +16,8 @@ public enum LegacySortTimeRangeLimit: CaseIterable {
     case day
     case week
     case month
-    /// Added in 0.18.1
     case threeMonth
-    /// Added in 0.18.1
     case sixMonth
-    /// Added in 0.18.1
     case nineMonth
     case year
 }
@@ -88,10 +85,5 @@ public extension LegacySortTimeRangeLimit {
         }
     }
     
-    var minimumVersion: SiteVersion {
-        switch self {
-        case .threeMonth, .sixMonth, .nineMonth: .v0_18_1
-        default: .zero
-        }
-    }
+    var minimumVersion: SiteVersion { .zero }
 }

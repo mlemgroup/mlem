@@ -26,7 +26,6 @@ public struct Person4Snapshot: CacheIdentifiable {
     public var showBotAccounts: Bool
     public var showReadPosts: Bool
     public var discussionLanguageIds: Set<Int>
-    public var showNewPostNotifs: Bool?
     public var emailVerified: Bool
     public var acceptedApplication: Bool
     public var openLinksInNewTab: Bool?
@@ -63,7 +62,6 @@ public struct Person4Snapshot: CacheIdentifiable {
         self.showBotAccounts = user.showBotAccounts
         self.showReadPosts = user.showReadPosts
         self.discussionLanguageIds = .init(userInfo.discussionLanguages.filter { $0 != 0 })
-        self.showNewPostNotifs = user.showNewPostNotifs
         self.emailVerified = user.emailVerified
         self.acceptedApplication = user.acceptedApplication
         self.openLinksInNewTab = user.openLinksInNewTab

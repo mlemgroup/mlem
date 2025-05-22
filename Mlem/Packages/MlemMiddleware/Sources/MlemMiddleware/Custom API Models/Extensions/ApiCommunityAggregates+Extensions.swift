@@ -10,7 +10,6 @@ import Foundation
 extension ApiCommunityAggregates {
     static var zero: Self {
         .init(
-            id: nil,
             communityId: 0,
             subscribers: 0,
             posts: 0,
@@ -20,7 +19,6 @@ extension ApiCommunityAggregates {
             usersActiveWeek: 0,
             usersActiveMonth: 0,
             usersActiveHalfYear: 0,
-            hotRank: nil,
             subscribersLocal: 0
         )
     }

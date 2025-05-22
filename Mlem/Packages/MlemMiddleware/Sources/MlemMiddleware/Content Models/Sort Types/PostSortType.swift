@@ -14,9 +14,7 @@ public enum PostSortType: Hashable, Sendable {
     case old
     case mostComments
     case newComments
-    /// Added in 0.19.0
     case controversial
-    /// Added in 0.19.0
     case scaled
     
     /// From 1.0.0 onwards, any time interval is supported.
@@ -117,7 +115,6 @@ public enum PostSortType: Hashable, Sendable {
     
     public var minimumVersion: SiteVersion {
         switch self {
-        case .controversial, .scaled: .v0_19_0
         case let .top(timeRange): timeRange.minimumVersion
         default: .zero
         }

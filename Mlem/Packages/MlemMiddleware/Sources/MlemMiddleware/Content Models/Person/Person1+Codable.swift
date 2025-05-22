@@ -29,7 +29,6 @@ public extension Person1 {
             banner: banner,
             deleted: deleted,
             matrixUserId: matrixId,
-            admin: nil,
             botAccount: isBot,
             banExpires: instanceBan.expiryDate,
             instanceId: instanceId,

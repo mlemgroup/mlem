@@ -18,7 +18,7 @@ import Foundation
             votes: VotesModel,
             saved: Bool,
             creatorIsModerator: Bool?,
-            creatorIsAdmin: Bool?,
+            creatorIsAdmin: Bool,
             bannedFromCommunity: Bool,
             commentCount: Int
         ) -> Comment2 {
