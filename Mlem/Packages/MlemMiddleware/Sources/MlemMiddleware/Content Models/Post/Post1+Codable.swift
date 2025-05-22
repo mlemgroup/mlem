@@ -40,7 +40,8 @@ extension Post1 {
             downvotes: nil,
             newestCommentTime: nil,
             reportCount: nil,
-            unresolvedReportCount: nil
+            unresolvedReportCount: nil,
+            federationPending: nil
         )
     }
 }

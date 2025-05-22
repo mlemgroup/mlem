@@ -41,12 +41,8 @@ private struct MarkReadOnScroll: ViewModifier {
     func legacyBody(content: Content) -> some View {
         content
             .task {
-                do {
-                    if markReadOnScroll, try await post.api.supports(.batchMarkRead) {
-                        bottomAppearedItemIndex = max(index, bottomAppearedItemIndex)
-                    }
-                } catch {
-                    handleError(error)
+                if markReadOnScroll {
+                    bottomAppearedItemIndex = max(index, bottomAppearedItemIndex)
                 }
             }
             .onDisappear {

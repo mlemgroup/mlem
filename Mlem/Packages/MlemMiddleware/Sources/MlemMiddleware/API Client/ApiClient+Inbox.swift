@@ -14,7 +14,7 @@ public extension ApiClient {
         limit: Int,
         unreadOnly: Bool = false
     ) async throws -> [Reply2] {
-        let request = GetRepliesRequest(sort: sort, page: page, limit: limit, unreadOnly: unreadOnly)
+        let request = ListRepliesRequest(sort: sort, page: page, limit: limit, unreadOnly: unreadOnly)
         let response = try await perform(request)
         return try await caches.reply2.getModels(
             api: self,
@@ -28,7 +28,7 @@ public extension ApiClient {
         limit: Int,
         unreadOnly: Bool = false
     ) async throws -> [Reply2] {
-        let request = GetPersonMentionsRequest(sort: sort, page: page, limit: limit, unreadOnly: unreadOnly)
+        let request = ListMentionsRequest(sort: sort, page: page, limit: limit, unreadOnly: unreadOnly)
         let response = try await perform(request)
         
         return try await caches.reply2.getModels(
@@ -43,7 +43,7 @@ public extension ApiClient {
         limit: Int,
         unreadOnly: Bool = false
     ) async throws -> [Message2] {
-        let request = GetPrivateMessagesRequest(unreadOnly: unreadOnly, page: page, limit: limit, creatorId: creatorId)
+        let request = GetPrivateMessageRequest(unreadOnly: unreadOnly, page: page, limit: limit, creatorId: creatorId)
         async let response = try await perform(request)
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
         return try await caches.message2.getModels(
@@ -54,7 +54,7 @@ public extension ApiClient {
     }
     
     func markAllAsRead() async throws {
-        let request = MarkAllAsReadRequest(endpoint: .v3)
+        let request = MarkAllNotificationsReadRequest(endpoint: .v3)
         try await perform(request)
         for reply in caches.reply1.itemCache.value.values {
             reply.content?.readManager.updateWithReceivedValue(true, semaphore: nil)
@@ -70,7 +70,7 @@ public extension ApiClient {
         read: Bool = true,
         semaphore: UInt? = nil
     ) async throws {
-        let request = MarkCommentReplyAsReadRequest(endpoint: .v3, commentReplyId: id, read: read)
+        let request = MarkReplyAsReadRequest(endpoint: .v3, commentReplyId: id, read: read)
         try await perform(request)
     }
     
@@ -94,12 +94,12 @@ public extension ApiClient {
         read: Bool = true,
         semaphore: UInt? = nil
     ) async throws {
-        let request = MarkPrivateMessageAsReadRequest(endpoint: .v3, privateMessageId: id, read: read)
+        let request = MarkPmAsReadRequest(endpoint: .v3, privateMessageId: id, read: read)
         try await perform(request)
     }
     
     func getPersonalUnreadCount() async throws -> ApiGetUnreadCountResponse {
-        try await perform(GetUnreadCountRequest(endpoint: .v3))
+        try await perform(UnreadCountRequest(endpoint: .v3))
     }
     
     /// Get an ``UnreadCount`` object that continues to be updated by the ``ApiClient`` whenever an inbox item is marked read/unread.
@@ -123,7 +123,7 @@ public extension ApiClient {
     
     @discardableResult
     func editMessage(id: Int, content: String) async throws -> Message2 {
-        let request = EditPrivateMessageRequest(endpoint: .v3, privateMessageId: id, content: content)
+        let request = UpdatePrivateMessageRequest(endpoint: .v3, privateMessageId: id, content: content)
         async let response = try await perform(request)
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
         return try await caches.message2.getModel(
@@ -135,7 +135,7 @@ public extension ApiClient {
     
     @discardableResult
     func reportMessage(id: Int, reason: String) async throws -> Report {
-        let request = CreatePrivateMessageReportRequest(endpoint: .v3, privateMessageId: id, reason: reason)
+        let request = CreatePmReportRequest(endpoint: .v3, privateMessageId: id, reason: reason)
         async let response = try await perform(request)
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
         return try await caches.report.getModel(

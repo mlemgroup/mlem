@@ -171,28 +171,9 @@ class CommentTreeTracker: Hashable {
         var commentsKeyedById: [Int: CommentTreeNode] = [:]
         var commentsKeyedByActorId: [ActorIdentifier: CommentTreeNode] = clear ? [:] : nodesKeyedByActorId
         
-        // From 0.19.0 onwards, a comment's parent is guaranteed to precede it in the array.
-        //
-        // In 0.18.x versions, this isn't always the case - sometimes the parent can come after
-        // the child. As the tree-building logic relies on correct comment order, we need to sort
-        // the comments by depth before processing them.
-        //
-        // Also on 0.18.x, in super large comment threads where some comments are hidden under
-        // "More replies", comments may be included that don't have a parent *anywhere* in the
-        // list! There's nothing we can do in that circumstance, so those comments are ignored
-        // entirely. I'm not sure under what circumstances this happens. Going to the parent comment
-        // on lemmy-ui loads the comment just fine, but neither the "Show context" nor "Show replies"
-        // buttons work. This issue could be related to Lemmy 0.18, or maybe Beehaw's database is
-        // broken somehow. Comment example: https://beehaw.org/comment/4033679
+        // A comment's parent is guaranteed to precede it in the array.
         
-        var sortedComments: [Comment2]
-        if let version = try? await newComments.first?.api.version, version < .v0_19_0 {
-            sortedComments = newComments.sorted { $0.depth < $1.depth }
-        } else {
-            sortedComments = newComments
-        }
-        
-        for comment in sortedComments {
+        for comment in newComments {
             if commentsKeyedByActorId.keys.contains(comment.actorId) {
                 commentsKeyedById[comment.id] = commentsKeyedByActorId[comment.actorId]
                 continue

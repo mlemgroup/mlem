@@ -191,7 +191,7 @@ public extension ApiClient {
             ),
             instances: caches.instance1.getModels(
                 api: self,
-                from: myUser.instanceBlocks?.compactMap(\.site).map { try .init(from: $0) } ?? []
+                from: myUser.instanceBlocks.compactMap(\.site).map { try .init(from: $0) }
             )
         )
     }
@@ -206,7 +206,7 @@ public extension ApiClient {
         commentId: Int? = nil,
         type: ApiModlogActionType = .all
     ) async throws -> [ModlogEntry] {
-        let request = GetModlogRequest(
+        let request = GetModLogRequest(
             endpoint: .v3,
             modPersonId: moderatorId,
             communityId: communityId,

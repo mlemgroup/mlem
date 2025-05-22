@@ -89,7 +89,6 @@ class Person4Cache: ApiTypeBackedCache<Person4, Person4Snapshot> {
             showBotAccounts: snapshot.showBotAccounts,
             showReadPosts: snapshot.showReadPosts,
             discussionLanguageIds: snapshot.discussionLanguageIds,
-            showNewPostNotifs: snapshot.showNewPostNotifs,
             emailVerified: snapshot.emailVerified,
             acceptedApplication: snapshot.acceptedApplication,
             openLinksInNewTab: snapshot.openLinksInNewTab,

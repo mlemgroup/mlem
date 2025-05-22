@@ -22,7 +22,7 @@ public struct Reply2Snapshot: CacheIdentifiable {
     public let subscribed: Bool
     public let commentCount: Int
     public let creatorIsModerator: Bool?
-    public let creatorIsAdmin: Bool?
+    public let creatorIsAdmin: Bool
     public let creatorBannedFromCommunity: Bool
     public let votes: VotesModel
     public let saved: Bool

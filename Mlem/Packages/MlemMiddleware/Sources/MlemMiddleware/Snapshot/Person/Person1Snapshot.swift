@@ -48,7 +48,7 @@ public struct Person1Snapshot: CacheIdentifiable {
         self.deleted = person.deleted
         self.instanceId = person.instanceId
         
-        if person.banned {
+        if person.banned ?? false { // TODO: We should not be coalescing here! https://github.com/mlemgroup/mlem/issues/2049
             if let expires = person.banExpires {
                 self.instanceBan = .temporarilyBanned(expires: expires)
             } else {
