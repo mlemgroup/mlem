@@ -140,12 +140,12 @@ class AppState {
         }
     }
     
-    func switchToLastUsedAccount() -> Bool {
-        let sortedAccounts = AccountsTracker.main.allAccounts
+    func switchToMostRecentAccount() -> Bool {
+        let mostRecentAccount = AccountsTracker.main.allAccounts
             .filter { $0.actorId != firstAccount.actorId }
-            .sorted { ($0.activityState.lastUsed ?? .distantPast) > ($1.activityState.lastUsed ?? .distantPast) }
+            .min { ($0.activityState.lastUsed ?? .distantPast) > ($1.activityState.lastUsed ?? .distantPast) }
             
-        guard let mostRecentAccount = sortedAccounts.first else { return false }
+        guard let mostRecentAccount else { return false }
         
         changeAccount(to: mostRecentAccount)
         return true

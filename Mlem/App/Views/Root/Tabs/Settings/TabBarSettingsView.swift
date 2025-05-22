@@ -45,20 +45,16 @@ struct TabBarSettingsView: View {
                     .symbolVariant(.circle)
             }
             
-            Section("Long Press Action") {
-                Picker("Long Press Action", selection: $longPressAction) {
-                    profileTabLabelItem("Open Account Switcher", value: "Show all accounts.", icon: .lemmy.switchAccount)
-                        .tag(TabBarLongPressAction.openAccountSwitcher)
-                    profileTabLabelItem(
-                        "Switch to Last Used",
-                        value: "Switch to the most recently used account.",
-                        icon: .lemmy.switchAccountAndReload
-                    )
-                    .tag(TabBarLongPressAction.switchToLastUsedAccount)
-                }
-                .labelsHidden()
-                .pickerStyle(.inline)
+            Section {
+                NavigationLink(
+                    "Long Press Action",
+                    value: .init(localized: longPressAction.label),
+                    fallbackValue: "",
+                    icon: .settings.longPress,
+                    destination: .settings(.longPressAction)
+                )
             }
+            
             Section {
                 NavigationLink(
                     "Notification Badge",
@@ -91,17 +87,4 @@ struct TabBarSettingsView: View {
 
 enum ProfileTabLabel: String, Codable, CaseIterable {
     case nickname, instance, anonymous
-}
-
-enum TabBarLongPressAction: String, Codable, CaseIterable {
-    case openAccountSwitcher, switchToLastUsedAccount
-    
-    var label: String {
-        switch self {
-        case .openAccountSwitcher:
-            return "Open Account Switcher"
-        case .switchToLastUsedAccount:
-            return "Switch to Last Used Account"
-        }
-    }
 }

@@ -129,11 +129,11 @@ struct ContentView: View {
                     
                     switch tabLongPressAction {
                     case .openAccountSwitcher:
-                        NavigationModel.main.openSheet(.quickSwitcher)
-                    case .switchToLastUsedAccount:
+                        navigationModel.openSheet(.quickSwitcher)
+                    case .switchToMostRecentAccount:
                         // If switch fails (no other accounts), fall back to account switcher.
-                        if !appState.switchToLastUsedAccount() {
-                            NavigationModel.main.openSheet(.quickSwitcher)
+                        if !appState.switchToMostRecentAccount() {
+                            navigationModel.openSheet(.quickSwitcher)
                         }
                     }
                 },
