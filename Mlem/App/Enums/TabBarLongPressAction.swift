@@ -20,8 +20,8 @@ enum TabBarLongPressAction: String, CaseIterable, Codable {
     
     var icon: Icon {
         switch self {
-        case .openAccountSwitcher: .lemmy.switchAccount
-        case .switchToMostRecentAccount: .lemmy.switchAccountAndReload
+        case .openAccountSwitcher: .lemmy.openAccountSwitcher
+        case .switchToMostRecentAccount: .lemmy.switchAccount
         }
     }
 }
