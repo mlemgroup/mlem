@@ -11,9 +11,7 @@ If you'd like to participate in the beta version of Mlem, you can [join our Test
 
 ## ✨ Why Use Mlem
 
-Unlike other clients, Mlem prioritizes **ease of use** above all. Its **beautiful, intuitive interface** stays out of your way, letting you **fully engage** with your favorite communities without unnecessary complications or distractions.
-
-But that's not all. Mlem is also highly optimized for **performance** and **efficiency**. It won't drain your battery or slow down your device, allowing you to scroll comfortably throughout the day and night without worrying about resource consumption.
+Mlem is built from the ground up to be intuitive and efficient. Its sleek interface lets you fully engage with your favorite communities free of clutter or distraction. Engineered for long-term performance, Mlem won't drain your battery or slow down your device, so you can scroll comfortably all day and night.
 
 ## 🚀 Features
 
