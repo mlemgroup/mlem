@@ -1,6 +1,6 @@
 # [Mlem](https://mlem.group) - A Beautiful iOS Client for Lemmy
 
-Mlem is a beautiful, intuitive, open source iOS client for [Lemmy](https://join-lemmy.io) that lets you effortlessly participate in conversations across all Lemmy servers.
+Mlem is a beautiful, intuitive, open source iOS client for [Lemmy](https://join-lemmy.org) that lets you effortlessly participate in conversations across all Lemmy servers.
 
 <a href="https://apps.apple.com/app/id6450543782"><img src="https://github.com/user-attachments/assets/a21869b5-521f-4e24-8c53-a35cd74dfb94" alt="Download on the App Store" width="175vw"></a>
 
