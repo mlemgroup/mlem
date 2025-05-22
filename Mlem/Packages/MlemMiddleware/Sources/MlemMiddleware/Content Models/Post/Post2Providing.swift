@@ -25,7 +25,7 @@ public extension Post2Providing {
     var community: any Community { post2.community }
     var creatorIsModerator: Bool? { post2.creatorIsModerator }
     var creatorIsAdmin: Bool { post2.creatorIsAdmin }
-    var bannedFromCommunity: Bool { post2.bannedFromCommunity }
+    var creatorBannedFromCommunity: Bool { post2.creatorBannedFromCommunity }
     var commentCount: Int { post2.commentCount }
     var unreadCommentCount: Int { post2.unreadCommentCount }
     var votes: VotesModel { post2.votes }
@@ -37,7 +37,7 @@ public extension Post2Providing {
     var community_: (any Community)? { post2.community }
     var creatorIsModerator_: Bool? { post2.creatorIsModerator }
     var creatorIsAdmin_: Bool? { post2.creatorIsAdmin }
-    var bannedFromCommunity_: Bool? { post2.bannedFromCommunity }
+    var creatorBannedFromCommunity_: Bool? { post2.creatorBannedFromCommunity }
     var commentCount_: Int? { post2.commentCount }
     var unreadCommentCount_: Int? { post2.unreadCommentCount }
     var votes_: VotesModel? { post2.votes }

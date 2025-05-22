@@ -13,7 +13,7 @@ public protocol Interactable2Providing: Interactable1Providing, RemovableProvidi
     var community: any Community { get }
     var creatorIsModerator: Bool? { get }
     var creatorIsAdmin: Bool { get }
-    var bannedFromCommunity: Bool { get }
+    var creatorBannedFromCommunity: Bool { get }
     var commentCount: Int { get }
     var votes: VotesModel { get }
     var saved: Bool { get }

@@ -22,7 +22,7 @@ extension Comment2 {
                 published: created,
                 childCount: commentCount
             ),
-            creatorBannedFromCommunity: bannedFromCommunity,
+            creatorBannedFromCommunity: nil,
             creatorIsModerator: creatorIsModerator,
             creatorIsAdmin: creatorIsAdmin,
             subscribed: .notSubscribed,
