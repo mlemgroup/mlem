@@ -28,7 +28,7 @@ public extension Comment2Providing {
     var saved: Bool { comment2.saved }
     var creatorIsModerator: Bool? { comment2.creatorIsModerator }
     var creatorIsAdmin: Bool { comment2.creatorIsAdmin }
-    var creatorBannedFromCommunity: Bool { comment2.bannedFromCommunity }
+    var creatorBannedFromCommunity: Bool { comment2.creatorBannedFromCommunity }
     var commentCount: Int { comment2.commentCount }
     
     var creator_: (any Person)? { comment2.creator }

@@ -31,7 +31,7 @@ extension Post2 {
             creatorBlocked: creator.blocked,
             myVote: votes.myVote.rawValue,
             unreadComments: unreadCommentCount,
-            creatorBannedFromCommunity: creatorBannedFromCommunity,
+            bannedFromCommunity: nil,
             hidden: hidden,
             imageDetails: nil,
             communityActions: nil,
