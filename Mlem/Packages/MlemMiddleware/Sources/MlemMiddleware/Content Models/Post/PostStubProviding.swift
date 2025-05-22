@@ -37,7 +37,7 @@ public protocol PostStubProviding: ContentModel, Resolvable {
     var community_: (any Community)? { get }
     var creatorIsModerator_: Bool? { get }
     var creatorIsAdmin_: Bool? { get }
-    var bannedFromCommunity_: Bool? { get }
+    var creatorBannedFromCommunity_: Bool? { get }
     var commentCount_: Int? { get }
     var unreadCommentCount_: Int? { get }
     var votes_: VotesModel? { get }
@@ -46,7 +46,6 @@ public protocol PostStubProviding: ContentModel, Resolvable {
     var hidden_: Bool? { get }
     
     // From Post3Providing. These are defined as nil in the extension below
-    var communityModerators_: [Person1]? { get }
     var crossPosts_: [Post2]? { get }
     
     func upgrade() async throws -> any Post
@@ -80,7 +79,7 @@ public extension PostStubProviding {
     var community_: (any Community)? { nil }
     var creatorIsModerator_: Bool? { nil }
     var creatorIsAdmin_: Bool? { nil }
-    var bannedFromCommunity_: Bool? { nil }
+    var creatorBannedFromCommunity_: Bool? { nil }
     var commentCount_: Int? { nil }
     var votes_: VotesModel? { nil }
     var unreadCommentCount_: Int? { nil }
@@ -88,6 +87,5 @@ public extension PostStubProviding {
     var read_: Bool? { nil }
     var hidden_: Bool? { nil }
     
-    var communityModerators_: [Person1]? { nil }
     var crossPosts_: [Post2]? { nil }
 }

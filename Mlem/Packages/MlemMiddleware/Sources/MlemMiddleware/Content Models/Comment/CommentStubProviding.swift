@@ -30,7 +30,7 @@ public protocol CommentStubProviding: ContentModel, Resolvable {
     var saved_: Bool? { get }
     var creatorIsModerator_: Bool? { get }
     var creatorIsAdmin_: Bool? { get }
-    var bannedFromCommunity_: Bool? { get }
+    var creatorBannedFromCommunity_: Bool? { get }
     var commentCount_: Int? { get }
     
     func upgrade() async throws -> any Comment
@@ -57,7 +57,7 @@ public extension CommentStubProviding {
     var saved_: Bool? { nil }
     var creatorIsModerator_: Bool? { nil }
     var creatorIsAdmin_: Bool? { nil }
-    var bannedFromCommunity_: Bool? { nil }
+    var creatorBannedFromCommunity_: Bool? { nil }
     var commentCount_: Int? { nil }
     
     var depth_: Int? { parentCommentIds_?.count }

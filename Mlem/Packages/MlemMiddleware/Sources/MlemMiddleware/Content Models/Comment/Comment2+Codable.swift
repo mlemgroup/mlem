@@ -24,7 +24,7 @@ extension Comment2 {
                 childCount: commentCount,
                 hotRank: nil
             ),
-            creatorBannedFromCommunity: bannedFromCommunity,
+            creatorBannedFromCommunity: nil,
             subscribed: .notSubscribed,
             saved: saved,
             creatorBlocked: creator.blocked,

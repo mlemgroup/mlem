@@ -15,7 +15,7 @@ public protocol Comment2Providing: Comment1Providing, Interactable2Providing, Pe
     var community: any Community { get }
     var creatorIsModerator: Bool? { get }
     var creatorIsAdmin: Bool? { get }
-    var bannedFromCommunity: Bool { get }
+    var creatorBannedFromCommunity: Bool { get }
 }
 
 public extension Comment2Providing {
@@ -28,7 +28,7 @@ public extension Comment2Providing {
     var saved: Bool { comment2.saved }
     var creatorIsModerator: Bool? { comment2.creatorIsModerator }
     var creatorIsAdmin: Bool? { comment2.creatorIsAdmin }
-    var bannedFromCommunity: Bool { comment2.bannedFromCommunity }
+    var creatorBannedFromCommunity: Bool { comment2.creatorBannedFromCommunity }
     var commentCount: Int { comment2.commentCount }
     
     var creator_: (any Person)? { comment2.creator }
@@ -38,7 +38,7 @@ public extension Comment2Providing {
     var saved_: Bool? { comment2.saved }
     var creatorIsModerator_: Bool? { comment2.creatorIsModerator }
     var creatorIsAdmin_: Bool? { comment2.creatorIsAdmin }
-    var bannedFromCommunity_: Bool? { comment2.bannedFromCommunity }
+    var creatorBannedFromCommunity_: Bool? { comment2.creatorBannedFromCommunity }
     var commentCount_: Int? { comment2.commentCount }
 }
 

@@ -39,7 +39,7 @@ extension Post2 {
             unreadComments: unreadCommentCount,
             creatorIsModerator: creatorIsModerator,
             creatorIsAdmin: creatorIsAdmin,
-            bannedFromCommunity: bannedFromCommunity,
+            bannedFromCommunity: nil,
             hidden: hidden,
             imageDetails: nil,
             communityActions: nil,

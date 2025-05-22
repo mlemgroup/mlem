@@ -91,7 +91,7 @@ extension Post1Providing {
         feedback: Set<FeedbackType>
     ) async {
         if feedback.contains(.haptic) {
-            await HapticManager.main.play(haptic: .success, priority: .low)
+            HapticManager.main.play(haptic: .success, priority: .low)
         }
         switch result {
         case .failed:
