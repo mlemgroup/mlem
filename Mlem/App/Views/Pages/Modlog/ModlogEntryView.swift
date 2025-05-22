@@ -41,16 +41,14 @@ struct ModlogEntryView: View {
                 .frame(width: 24, height: 24)
                 .overlay {
                     Image(icon: entry.type.icon)
-                        .imageScale(.small)
-                        .symbolVariant(.fill)
                         .foregroundStyle(entry.type.color)
                 }
             Text(headerText)
                 .font(.footnote)
                 .foregroundStyle(.secondary)
-                .imageScale(.small)
-                .symbolVariant(.fill)
         }
+        .imageScale(.small)
+        .symbolVariant(.fill)
     }
     
     var headerText: LocalizedStringKey {
@@ -138,6 +136,7 @@ struct ModlogEntryView: View {
             }
         }
         .imageScale(.small)
+        .symbolVariant(.fill)
         .foregroundStyle(.themedSecondary)
         .font(.subheadline)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -206,6 +205,7 @@ struct ModlogEntryView: View {
         }
         .foregroundStyle(.themedSecondary)
         .imageScale(.small)
+        .symbolVariant(.fill)
         .font(.subheadline)
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(Constants.main.standardSpacing)
