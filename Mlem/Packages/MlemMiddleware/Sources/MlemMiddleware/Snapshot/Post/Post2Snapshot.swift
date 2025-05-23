@@ -19,7 +19,7 @@ public struct Post2Snapshot: CacheIdentifiable {
     public let commentCount: Int
     public let unreadCommentCount: Int
     public let creatorIsModerator: Bool?
-    public let creatorIsAdmin: Bool?
+    public let creatorIsAdmin: Bool
     public let creatorBannedFromCommunity: Bool
     public let creatorBlocked: Bool
     public let votes: VotesModel
@@ -50,7 +50,7 @@ public struct Post2Snapshot: CacheIdentifiable {
             self.creatorIsModerator = post.creatorIsModerator
             self.creatorBannedFromCommunity = post.creatorBannedFromCommunity ?? false
             guard let creatorBlocked = post.creatorBlocked else {
-                throw .responseMissingRequiredData("ApiMyUserInfo creatorBlocked")
+                throw .responseMissingRequiredData("ApiPostView creatorBlocked")
             }
             self.creatorBlocked = creatorBlocked
         }
@@ -64,7 +64,7 @@ public struct Post2Snapshot: CacheIdentifiable {
             self.commentCount = counts.comments
             self.unreadCommentCount = unreadComments
         } else {
-            throw .responseMissingRequiredData("ApiMyUserInfo commentCount")
+            throw .responseMissingRequiredData("ApiPostView commentCount")
         }
 
         if let actions = post.postActions {
@@ -76,7 +76,62 @@ public struct Post2Snapshot: CacheIdentifiable {
             self.read = read
             self.hidden = hidden
         } else {
-            throw .responseMissingRequiredData("ApiMyUserInfo actions")
+            throw .responseMissingRequiredData("ApiPostView actions")
+        }
+    }
+    
+    init(from report: ApiPostReportView) throws(ApiClientError) {
+        self.post = try .init(from: report.post)
+        self.creator = try .init(from: report.creator)
+        self.community = try .init(from: report.community)
+        
+        if let counts = report.counts {
+            self.votes = .init(from: counts, myVote: .guaranteedInit(from: report.myVote))
+        } else if let upvotes = report.post.upvotes, let downvotes = report.post.downvotes {
+            self.votes = .init(upvotes: upvotes, downvotes: downvotes, myVote: .guaranteedInit(from: report.postActions?.likeScore))
+        } else {
+            throw .responseMissingRequiredData("ApiPostReportView scores")
+        }
+        
+        if let actions = report.creatorCommunityActions {
+            self.creatorIsModerator = actions.becameModerator != nil
+            self.creatorBannedFromCommunity = actions.banExpires != nil
+            self.creatorBlocked = actions.blocked != nil
+        } else {
+            self.creatorIsModerator = report.creatorIsModerator
+            self.creatorBannedFromCommunity = report.creatorBannedFromCommunity ?? false
+            guard let creatorBlocked = report.creatorBlocked else {
+                throw .responseMissingRequiredData("ApiPostReportView creatorBlocked")
+            }
+            self.creatorBlocked = creatorBlocked
+        }
+        
+        if let creatorIsAdmin = report.creatorIsAdmin {
+            self.creatorIsAdmin = creatorIsAdmin
+        } else {
+            throw .responseMissingRequiredData("ApiPostReportView creatorIsAdmin")
+        }
+
+        if let actions = report.postActions, let comments = report.post.comments {
+            self.commentCount = comments
+            self.unreadCommentCount = comments - (actions.readCommentsAmount ?? 0)
+        } else if let counts = report.counts, let unreadComments = report.unreadComments {
+            self.commentCount = counts.comments
+            self.unreadCommentCount = unreadComments
+        } else {
+            throw .responseMissingRequiredData("ApiPostReportView commentCount")
+        }
+
+        if let actions = report.postActions {
+            self.saved = actions.saved != nil
+            self.read = actions.read != nil
+            self.hidden = actions.hidden != nil
+        } else if let saved = report.saved, let read = report.read, let hidden = report.hidden {
+            self.saved = saved
+            self.read = read
+            self.hidden = hidden
+        } else {
+            throw .responseMissingRequiredData("ApiPostReportView actions")
         }
     }
 }

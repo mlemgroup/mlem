@@ -28,7 +28,6 @@ public final class Person4: Person4Providing {
     public internal(set) var showBotAccounts: Bool
     public internal(set) var showReadPosts: Bool
     public internal(set) var discussionLanguageIds: Set<Int>
-    public internal(set) var showNewPostNotifs: Bool?
     public internal(set) var emailVerified: Bool
     public internal(set) var acceptedApplication: Bool
     public internal(set) var openLinksInNewTab: Bool?
@@ -56,7 +55,6 @@ public final class Person4: Person4Providing {
         showBotAccounts: Bool,
         showReadPosts: Bool,
         discussionLanguageIds: Set<Int>,
-        showNewPostNotifs: Bool?,
         emailVerified: Bool,
         acceptedApplication: Bool,
         openLinksInNewTab: Bool?,
@@ -83,7 +81,6 @@ public final class Person4: Person4Providing {
         self.showBotAccounts = showBotAccounts
         self.showReadPosts = showReadPosts
         self.discussionLanguageIds = discussionLanguageIds
-        self.showNewPostNotifs = showNewPostNotifs
         self.emailVerified = emailVerified
         self.acceptedApplication = acceptedApplication
         self.openLinksInNewTab = openLinksInNewTab

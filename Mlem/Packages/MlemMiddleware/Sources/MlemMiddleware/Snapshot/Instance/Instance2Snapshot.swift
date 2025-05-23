@@ -66,7 +66,7 @@ public struct Instance2Snapshot: CacheIdentifiable {
         self.defaultTheme = site.localSite.defaultTheme
         self.defaultFeed = site.localSite.defaultPostListingType
         self.legalInformation = site.localSite.legalInformation
-        self.hideModlogNames = site.localSite.hideModlogModNames
+        self.hideModlogNames = site.localSite.hideModlogModNames ?? true // Always hidden in 1.0
         self.emailApplicationsToAdmins = site.localSite.applicationEmailAdmins
         self.emailReportsToAdmins = site.localSite.reportsEmailAdmins
         self.slurFilterRegex = site.localSite.slurFilterRegex

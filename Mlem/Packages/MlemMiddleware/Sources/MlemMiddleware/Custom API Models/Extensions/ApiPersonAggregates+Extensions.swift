@@ -9,6 +9,6 @@ import Foundation
 
 extension ApiPersonAggregates {
     static var zero: Self {
-        .init(id: nil, personId: 0, postCount: 0, postScore: nil, commentCount: 0, commentScore: nil)
+        .init(personId: 0, postCount: 0, commentCount: 0)
     }
 }

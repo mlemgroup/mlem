@@ -7,7 +7,6 @@
 
 import Combine
 import Foundation
-import SwiftyJSON
 
 @Observable
 public class ApiClient {
@@ -17,7 +16,6 @@ public class ApiClient {
     
     let decoder: JSONDecoder = {
         let decoder: JSONDecoder = .defaultDecoder
-//        decoder.keyDecodingStrategy = .convertFromSnakeCase
         return decoder
     }()
     
@@ -179,20 +177,6 @@ public class ApiClient {
         var urlRequest: URLRequest = urlRequest // make mutable
         let token = tokenOverride ?? token
         
-        if urlRequest.httpMethod != "GET", // GET requests do not support body
-           !fetchedVersionSupports(.headerAuthentication),
-           let token { // only add if we have a token
-            let authBody: JSON = .init(dictionaryLiteral: ("auth", token))
-            let newBody: JSON
-            if let httpBody = urlRequest.httpBody {
-                newBody = try JSON(httpBody).merged(with: authBody)
-            } else {
-                newBody = authBody
-            }
-            
-            urlRequest.httpBody = try newBody.rawData()
-        }
-        
         do {
             return try await urlSession.data(for: urlRequest)
         } catch {
@@ -230,9 +214,6 @@ public class ApiClient {
         }
         
         if let token, permissions == .all {
-            // TODO: 0.18 deprecation remove this
-            urlRequest.url?.append(queryItems: [.init(name: "auth", value: token)])
-            
             urlRequest.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         }
         
@@ -242,7 +223,6 @@ public class ApiClient {
     func createBodyData(for defintion: any ApiRequestBodyProviding) throws -> Data {
         do {
             let encoder = JSONEncoder()
-//            encoder.keyEncodingStrategy = .convertToSnakeCase
             let body = defintion.body ?? ""
             return try encoder.encode(body)
         } catch {

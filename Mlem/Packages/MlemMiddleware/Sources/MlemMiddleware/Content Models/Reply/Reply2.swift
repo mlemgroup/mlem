@@ -32,9 +32,9 @@ public final class Reply2: Reply2Providing, FeedLoadable {
     public var subscribed: Bool
     public var commentCount: Int
     public var creatorIsModerator: Bool?
-    public var creatorIsAdmin: Bool?
+    public var creatorIsAdmin: Bool
     
-    public var bannedFromCommunity: Bool {
+    public var creatorBannedFromCommunity: Bool {
         guard let state = creator.isBannedFromCommunity(community) else {
             assertionFailure("Ban status should be present at this point")
             return false
@@ -59,7 +59,7 @@ public final class Reply2: Reply2Providing, FeedLoadable {
         subscribed: Bool,
         commentCount: Int,
         creatorIsModerator: Bool?,
-        creatorIsAdmin: Bool?,
+        creatorIsAdmin: Bool,
         bannedFromCommunity: Bool,
         votesManager: StateManager<VotesModel>,
         savedManager: StateManager<Bool>

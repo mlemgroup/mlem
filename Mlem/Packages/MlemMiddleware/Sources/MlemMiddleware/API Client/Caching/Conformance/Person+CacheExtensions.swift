@@ -70,7 +70,6 @@ extension Person4: CacheIdentifiable {
         setIfChanged(\.showBotAccounts, snapshot.showBotAccounts)
         setIfChanged(\.showReadPosts, snapshot.showReadPosts)
         setIfChanged(\.discussionLanguageIds, snapshot.discussionLanguageIds)
-        setIfChanged(\.showNewPostNotifs, snapshot.showNewPostNotifs)
         setIfChanged(\.emailVerified, snapshot.emailVerified)
         setIfChanged(\.acceptedApplication, snapshot.acceptedApplication)
         setIfChanged(\.openLinksInNewTab, snapshot.openLinksInNewTab)

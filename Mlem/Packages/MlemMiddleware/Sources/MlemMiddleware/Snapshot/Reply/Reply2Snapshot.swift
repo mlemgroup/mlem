@@ -22,7 +22,7 @@ public struct Reply2Snapshot: CacheIdentifiable {
     public let subscribed: Bool
     public let commentCount: Int
     public let creatorIsModerator: Bool?
-    public let creatorIsAdmin: Bool?
+    public let creatorIsAdmin: Bool
     public let creatorBannedFromCommunity: Bool
     public let votes: VotesModel
     public let saved: Bool
@@ -59,9 +59,6 @@ public struct Reply2Snapshot: CacheIdentifiable {
         } else {
             self.creatorIsModerator = commentReply.creatorIsModerator
             self.creatorBannedFromCommunity = commentReply.creatorBannedFromCommunity ?? false
-            guard let creatorBlocked = commentReply.creatorBlocked else {
-                throw .responseMissingRequiredData("ApiCommentReplyView creatorBlocked")
-            }
         }
         
         if let actions = commentReply.commentActions {
@@ -116,9 +113,6 @@ public struct Reply2Snapshot: CacheIdentifiable {
         } else {
             self.creatorIsModerator = personMention.creatorIsModerator
             self.creatorBannedFromCommunity = personMention.creatorBannedFromCommunity ?? false
-            guard let creatorBlocked = personMention.creatorBlocked else {
-                throw .responseMissingRequiredData("ApiPersonCommentMentionView creatorBlocked")
-            }
         }
         
         if let actions = personMention.commentActions {

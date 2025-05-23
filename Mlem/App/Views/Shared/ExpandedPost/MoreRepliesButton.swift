@@ -62,12 +62,8 @@ struct MoreRepliesButton: View {
             limit: 999
         )
         
-        // TODO: 0.18.0 deprecation: instead of using `max(by: )`, just take the last item of the array
-        // (from 0.19.0 onwards the last item of the array will be the deepest)
+        guard let maxDepth = comments.last?.depth else { return }
         
-        guard let maxDepth = comments.max(by: { $0.depth < $1.depth })?.depth else {
-            return
-        }
         // Do we want this threshold to change depending on screen size? Could be tricky if we load comments
         // and then the user makes the window less wide (e.g. on iPad), in which case we'd need to hide
         // the comments that exceed the new maximum width.

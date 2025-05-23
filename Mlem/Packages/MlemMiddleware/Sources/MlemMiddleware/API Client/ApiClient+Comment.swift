@@ -34,7 +34,7 @@ public extension ApiClient {
         limit: Int,
         filter: GetContentFilter? = nil
     ) async throws -> [Comment2] {
-        let request = GetCommentsRequest(
+        let request = ListCommentsRequest(
             endpoint: .v3,
             type_: .all,
             sort: sort,
@@ -48,7 +48,9 @@ public extension ApiClient {
             savedOnly: filter == .saved,
             likedOnly: filter == .upvoted,
             dislikedOnly: filter == .downvoted,
-            timeRangeSeconds: nil
+            timeRangeSeconds: nil,
+            pageCursor: nil,
+            pageBack: nil
         )
         let response = try await perform(request)
         return try await caches.comment2.getModels(
@@ -65,7 +67,7 @@ public extension ApiClient {
         limit: Int,
         filter: GetContentFilter? = nil
     ) async throws -> [Comment2] {
-        let request = GetCommentsRequest(
+        let request = ListCommentsRequest(
             endpoint: .v3,
             type_: .all,
             sort: sort.apiSortType,
@@ -79,7 +81,9 @@ public extension ApiClient {
             savedOnly: filter == .saved,
             likedOnly: filter == .upvoted,
             dislikedOnly: filter == .downvoted,
-            timeRangeSeconds: nil
+            timeRangeSeconds: nil,
+            pageCursor: nil,
+            pageBack: nil
         )
         let response = try await perform(request)
         return try await caches.comment2.getModels(api: self, from: response.comments.map { try .init(from: $0) })
@@ -172,7 +176,7 @@ public extension ApiClient {
     
     @discardableResult
     func voteOnComment(id: Int, score: ScoringOperation, semaphore: UInt? = nil) async throws -> Comment2 {
-        let request = CreateCommentLikeRequest(endpoint: .v3, commentId: id, score: score.rawValue)
+        let request = LikeCommentRequest(endpoint: .v3, commentId: id, score: score.rawValue)
         let response = try await perform(request)
         return try await caches.comment2.getModel(
             api: self,
@@ -209,12 +213,11 @@ public extension ApiClient {
         content: String,
         languageId: Int?
     ) async throws -> Comment2 {
-        let request = EditCommentRequest(
+        let request = UpdateCommentRequest(
             endpoint: .v3,
             commentId: id,
             content: content,
-            languageId: languageId,
-            formId: nil
+            languageId: languageId
         )
         let response = try await perform(request)
         return try await caches.comment2.getModel(api: self, from: .init(from: response.commentView))
@@ -227,8 +230,7 @@ public extension ApiClient {
             content: content,
             postId: postId,
             parentId: parentId,
-            languageId: languageId,
-            formId: nil
+            languageId: languageId
         )
         let response = try await perform(request)
         let comment = try await caches.comment2.getModel(api: self, from: .init(from: response.commentView))
@@ -283,7 +285,14 @@ public extension ApiClient {
         page: Int = 1,
         limit: Int = 20
     ) async throws -> [PersonVote] {
-        let request = ListCommentLikesRequest(endpoint: .v3, commentId: id, page: page, limit: limit)
+        let request = ListCommentLikesRequest(
+            endpoint: .v3,
+            commentId: id,
+            page: page,
+            limit: limit,
+            pageCursor: nil,
+            pageBack: nil
+        )
         let response = try await perform(request)
         return try await caches.personVote.getModels(
             api: self,

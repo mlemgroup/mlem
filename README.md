@@ -1,33 +1,45 @@
-# Mlem - the iOS Lemmy Client
+# [Mlem](https://mlem.group) - A Beautiful iOS Client for Lemmy
 
-Mlem is a client for [Lemmy](https://join-lemmy.org) - a Reddit-esque, open-source link aggregator. With Mlem, you can effortlessly participate in the conversation across all Lemmy servers.
+Mlem is a beautiful, intuitive, open source iOS client for [Lemmy](https://join-lemmy.org) that lets you effortlessly participate in conversations across all Lemmy servers.
 
-[You can download Mlem here.](https://apps.apple.com/gb/app/mlem-for-lemmy/id6450543782) Mlem requires iOS 16 or later.
+<a href="https://apps.apple.com/app/id6450543782"><img src="https://github.com/user-attachments/assets/a21869b5-521f-4e24-8c53-a35cd74dfb94" alt="Download on the App Store" width="175vw"></a>
+
+> [!NOTE]
+> Mlem requires iOS 17 or later.
 
 If you'd like to participate in the beta version of Mlem, you can [join our Testflight program](https://testflight.apple.com/join/MelFP11Y).
 
-## Why Use Mlem?
+## ✨ Why Use Mlem
 
-Unlike many other clients, Mlem is designed to be easy to use first. Its UI is beautiful and intuitive, and it just gets out of your way so you can enjoy participating in the communities that matter to you the most.
+Mlem is built from the ground up to be intuitive and efficient. Its sleek interface lets you fully engage with your favorite communities free of clutter or distraction. Engineered for long-term performance, Mlem won't drain your battery or slow down your device, so you can scroll comfortably all day and night.
 
-And that's not all; Mlem is also extensively optimized and performant, which means it will never be a performance and battery hog. You can scroll all day and night long!
+## 🚀 Features
 
-## Screenshots
+| Feeds | Search |
+|:--------:|:--------:|
+| <img src="https://github.com/user-attachments/assets/0ad349ef-3673-46d4-b923-7d035aa1adb2" width="100%"> | <img src="https://github.com/user-attachments/assets/adad7b94-a12c-4821-922c-2ffcc79728cb" width="100%"> |
 
-<img src="https://github.com/mlemgroup/mlem/assets/78750526/6a9d2ea6-e874-4621-a3f6-9ad72caacba9" width="30%">
-<img src="https://github.com/mlemgroup/mlem/assets/78750526/fda618b4-7d42-43e1-9bfa-1a5d7b7145c2" width="30%">
-<img src="https://github.com/mlemgroup/mlem/assets/78750526/30478f39-169d-47ea-b983-a453af2b0959" width="30%">
+| Threads | Customize |
+|:--------:|:--------:|
+| <img src="https://github.com/user-attachments/assets/2dd4221d-c474-4bc1-8d9d-3cb717b5475e" width="100%"> | <img src="https://github.com/user-attachments/assets/1c59fd5d-e828-4eda-88a9-379a9aa3ec64" width="100%"> |
 
-## Want to chat about Mlem?
+| Themes | Icons |
+|:--------:|:--------:|
+| <img src="https://github.com/user-attachments/assets/f59e87cf-86ac-4114-8624-c392940fc5f2" width="100%"> | <img src="https://github.com/user-attachments/assets/c817ab96-c46f-4932-b3ac-fddaeb12de06" width="100%"> |
+
+## 💬 Want to chat about Mlem?
+
 You're welcome to join our [community on lemmy.ml](https://lemmy.ml/c/mlemapp) or [Matrix room](https://matrix.to/#/#mlemappspace:matrix.org)!
 
-## Contributing
+## 🤝 Contributing
 
-Read our [contribution guide](./CONTRIBUTING.md) to get started!
+We welcome contributions from the community! Whether you're interested in fixing bugs or adding new features, your contributions are always welcome and appreciated.
 
-## License
+Check out our [contribution guide](./CONTRIBUTING.md) to get started!
 
-Mlem is fully open-source, licensed under GPL 3.0 with an addendum for compliance with the Apple App Store. See LICENSE for details.
+## 📄 License
+
+Mlem is fully open source, licensed under GPL 3.0 with an addendum for compliance with the Apple App Store. See [LICENSE](./LICENSE) for details.
 
 ### App Icons
 Beehaw Community Icon by Aaron Schneider is included under [CC-BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
