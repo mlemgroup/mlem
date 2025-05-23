@@ -140,6 +140,17 @@ class AppState {
         }
     }
     
+    func switchToMostRecentAccount() -> Bool {
+        let mostRecentAccount = AccountsTracker.main.allAccounts
+            .filter { $0.actorId != firstAccount.actorId }
+            .min { ($0.activityState.lastUsed ?? .distantPast) > ($1.activityState.lastUsed ?? .distantPast) }
+            
+        guard let mostRecentAccount else { return false }
+        
+        changeAccount(to: mostRecentAccount)
+        return true
+    }
+    
     var initialFeedSortType: PostSortType {
         get async throws {
             // In future, we should be storing `PostSortType` in `Settings` rather than `ApiSortType`

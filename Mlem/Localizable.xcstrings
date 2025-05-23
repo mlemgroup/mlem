@@ -1877,6 +1877,9 @@
         }
       }
     },
+    "Choose which action to perform when you tap and hold the profile icon." : {
+
+    },
     "Choose which feed is shown when the app opens." : {
       "localizations" : {
         "fr" : {
@@ -4420,6 +4423,9 @@
         }
       }
     },
+    "Long Press Action" : {
+
+    },
     "Manage how Mlem handles links and control how images and videos are displayed." : {
       "localizations" : {
         "fr" : {
@@ -5308,6 +5314,9 @@
           }
         }
       }
+    },
+    "Open Account Switcher" : {
+
     },
     "Open Authenticator App..." : {
       "localizations" : {
@@ -7699,6 +7708,9 @@
         }
       }
     },
+    "Swiping up on the tab bar will always open the account switcher." : {
+
+    },
     "Switch Account" : {
       "localizations" : {
         "fr" : {
@@ -7718,6 +7730,9 @@
           }
         }
       }
+    },
+    "Switch to Most Recent Account" : {
+
     },
     "Switch to this account and..." : {
       "localizations" : {
