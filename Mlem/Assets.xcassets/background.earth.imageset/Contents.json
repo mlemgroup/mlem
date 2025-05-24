@@ -1,7 +1,26 @@
 {
   "images" : [
     {
-      "filename" : "photo-1659835547789-cb00dbd213c4.png",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "light"
+        }
+      ],
+      "filename" : "earth2.png",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "earth.png",
       "idiom" : "universal"
     }
   ],

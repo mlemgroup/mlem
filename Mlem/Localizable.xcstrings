@@ -1259,6 +1259,9 @@
         }
       }
     },
+    "Available" : {
+
+    },
     "Avatar" : {
       "localizations" : {
         "fr" : {
@@ -1424,6 +1427,9 @@
           }
         }
       }
+    },
+    "Be careful - you can't change this later." : {
+
     },
     "Biography" : {
       "localizations" : {
@@ -1758,6 +1764,9 @@
           }
         }
       }
+    },
+    "Choose a Username" : {
+
     },
     "Choose Account Type" : {
       "localizations" : {
@@ -8992,6 +9001,18 @@
         }
       }
     },
+    "Username cannot be longer than %lld characters." : {
+
+    },
+    "Username cannot contain %@." : {
+
+    },
+    "Username is invalid." : {
+
+    },
+    "Username is taken." : {
+
+    },
     "Username must be 3 or more characters." : {
       "localizations" : {
         "fr" : {
@@ -9001,6 +9022,9 @@
           }
         }
       }
+    },
+    "Username must be at least %lld characters long." : {
+
     },
     "Users" : {
       "localizations" : {

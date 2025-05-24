@@ -9,11 +9,15 @@ import MlemMiddleware
 import SwiftUI
 
 struct SignUpRecommendSingleInstanceView: View {
+    @Environment(\.colorScheme) var colorScheme
     @Environment(AppState.self) var appState
+    @Environment(NavigationLayer.self) var navigation
     
     @State var instance: Instance3?
     
     @State var showButtons: Bool = false
+    
+    private let lightModeForeground: Color = .init(red: 14 / 255, green: 150 / 255, blue: 195 / 255)
     
     var body: some View {
         VStack {
@@ -51,26 +55,29 @@ struct SignUpRecommendSingleInstanceView: View {
         Image("background.earth")
             .resizable()
             .aspectRatio(contentMode: .fit)
-            .scaleEffect(1.5)
             .frame(maxHeight: .infinity, alignment: .bottom)
-            .background(.black)
+            .background(colorScheme == .dark ? .black : .white)
             .ignoresSafeArea()
     }
     
     func text(_ instance: Instance3) -> some View {
         Text("Join \(numberText(instance.activeUserCount.month)) active users on Lemmy.world")
-            .foregroundStyle(.white)
+            .foregroundStyle(colorScheme == .dark ? .white : .black)
             .compositingGroup()
             .font(.largeTitle)
             .fontWeight(.bold)
             .multilineTextAlignment(.center)
             .padding(.horizontal, 20)
-            .shadow(radius: 5)
     }
     
     func numberText(_ value: Int) -> Text {
-        Text("\(value)")
-            .foregroundStyle(.teal.gradient.shadow(.drop(color: .blue, radius: 10)))
+        if colorScheme == .dark {
+            Text("\(value)")
+                .foregroundStyle(.teal.gradient.shadow(.drop(color: .blue, radius: 10)))
+        } else {
+            Text("\(value)")
+                .foregroundStyle(lightModeForeground)
+        }
     }
     
     var buttons: some View {
@@ -82,6 +89,7 @@ struct SignUpRecommendSingleInstanceView: View {
             }
             .buttonStyle(.borderedProminent)
             .buttonBorderShape(.roundedRectangle(radius: 16))
+            .tint(colorScheme == .dark ? .blue : lightModeForeground)
             Button {} label: {
                 Text("Choose another instance...")
                     .foregroundStyle(.gray)
@@ -92,9 +100,9 @@ struct SignUpRecommendSingleInstanceView: View {
         }
     }
     
-    func submit() {}
-}
-
-#Preview {
-    SignUpRecommendSingleInstanceView()
+    func submit() {
+        if let instance {
+            navigation.push(.onboarding(.enterUsername(instance: instance)))
+        }
+    }
 }

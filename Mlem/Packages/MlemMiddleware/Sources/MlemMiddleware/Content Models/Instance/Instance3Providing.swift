@@ -58,4 +58,47 @@ public extension Instance3Providing {
     var allowedLanguages: Set<Locale.Language> {
         Set(allowedLanguageIds.lazy.compactMap { self.language(withId: $0) })
     }
+    
+    func usernameIsValidForNewAccount(_ username: String) async throws -> UsernameValidity {
+        guard username.count >= 3 else {
+            return .invalid(.tooShort(minLength: 3))
+        }
+        guard username.count <= actorNameMaxLength else {
+            return .invalid(.tooLong(maxLength: actorNameMaxLength))
+        }
+        
+        // Relevant backend code https://github.com/LemmyNet/lemmy/blob/5095092d3a6b0c194295e2cf3034d2b9abf8db54/crates/utils/src/utils/validation.rs#L94
+        
+        let regex = /^(?:[a-zA-Z0-9_]+|[0-9_\p{Arabic}]+|[0-9_\p{Cyrillic}]+)$/
+        
+        if try regex.wholeMatch(in: username) == nil {
+            // If username isn't english, give a generic error
+            let englishRegex = /[^\p{Arabic}\p{Cyrillic}]+/
+            if try englishRegex.wholeMatch(in: username) == nil { return .invalid(.other) }
+            
+            // If the username *is* in english, we can be more descriptive
+            let invalidCharacters = username.filter { char in
+                if char == "_" { return false }
+                guard let scalar = char.unicodeScalars.first, char.unicodeScalars.count == 1 else { return true }
+                if scalar.value >= 65, scalar.value <= 90 { return false } // Uppercase
+                if scalar.value >= 97, scalar.value <= 122 { return false } // Lowercase
+                if scalar.value >= 48, scalar.value <= 57 { return false } // Numbers
+                return true
+            }
+            
+            if !invalidCharacters.isEmpty {
+                return .invalid(.containsInvalidCharacters(Set(invalidCharacters)))
+            }
+            
+            assertionFailure()
+            return .invalid(.other)
+        }
+        
+        do {
+            _ = try await api.getPerson(username: username)
+            return .taken
+        } catch ApiClientError.noEntityFound {
+            return .available
+        }
+    }
 }
