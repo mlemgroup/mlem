@@ -51,14 +51,23 @@ struct SignUpRecommendSingleInstanceView: View {
         }
     }
     
+    @ViewBuilder
     var image: some View {
-        Image("background.earth")
-            .resizable()
-            .aspectRatio(contentMode: .fill)
-            .frame(maxHeight: .infinity, alignment: .top)
-            .blur(radius: 5, opaque: true)
-            .background(colorScheme == .dark ? .black : .white)
-            .ignoresSafeArea()
+        if colorScheme == .dark {
+            Image("background.earth")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(maxHeight: .infinity, alignment: .bottom)
+                .background(.black)
+                .ignoresSafeArea()
+        } else {
+            Image("background.trees")
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(maxHeight: .infinity, alignment: .top)
+                .blur(radius: 5, opaque: true)
+                .ignoresSafeArea()
+        }
     }
     
     func text(_ instance: Instance3) -> some View {
