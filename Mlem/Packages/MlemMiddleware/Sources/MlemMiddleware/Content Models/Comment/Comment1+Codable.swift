@@ -28,7 +28,8 @@ extension Comment1 {
             downvotes: nil,
             childCount: nil,
             reportCount: nil,
-            unresolvedReportCount: nil
+            unresolvedReportCount: nil,
+            federationPending: nil
         )
     }
 }

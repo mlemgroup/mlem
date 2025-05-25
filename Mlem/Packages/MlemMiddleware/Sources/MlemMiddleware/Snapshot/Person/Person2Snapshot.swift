@@ -23,11 +23,7 @@ public struct Person2Snapshot: CacheIdentifiable {
     init(from person: ApiPersonView) throws(ApiClientError) {
         self.person = try .init(from: person.person)
         
-        if let isAdmin = person.isAdmin ?? person.person.admin {
-            self.isAdmin = isAdmin
-        } else {
-            throw .responseMissingRequiredData("ApiPersonView isAdmin")
-        }
+        self.isAdmin = person.isAdmin
         
         if let postCount = person.person.postCount ?? person.counts?.postCount {
             self.postCount = postCount
@@ -44,11 +40,7 @@ public struct Person2Snapshot: CacheIdentifiable {
     
     init(from localUser: ApiLocalUserView) throws(ApiClientError) {
         self.person = try .init(from: localUser.person)
-        if let isAdmin = localUser.localUser.admin ?? localUser.person.admin {
-            self.isAdmin = isAdmin
-        } else {
-            throw ApiClientError.responseMissingRequiredData("ApiLocalUserView isAdmin")
-        }
+        self.isAdmin = localUser.localUser.admin
         
         if let postCount = localUser.person.postCount ?? localUser.counts?.postCount {
             self.postCount = postCount

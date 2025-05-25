@@ -18,7 +18,7 @@ public extension ApiClient {
         filter: GetContentFilter? = nil,
         showHidden: Bool = false
     ) async throws -> (posts: [Post2], cursor: String?) {
-        let request = GetPostsRequest(
+        let request = ListPostsRequest(
             endpoint: .v3,
             type_: .all,
             sort: sort.legacyApiSortType,
@@ -34,7 +34,6 @@ public extension ApiClient {
             showRead: nil,
             showNsfw: nil,
             timeRangeSeconds: nil,
-            readOnly: nil,
             hideMedia: nil,
             markAsRead: nil,
             noCommentsOnly: nil,
@@ -58,7 +57,7 @@ public extension ApiClient {
         filter: GetContentFilter? = nil,
         showHidden: Bool = false
     ) async throws -> (posts: [Post2], cursor: String?) {
-        let request = GetPostsRequest(
+        let request = ListPostsRequest(
             endpoint: .v3,
             type_: feed,
             sort: sort.legacyApiSortType,
@@ -74,7 +73,6 @@ public extension ApiClient {
             showRead: nil,
             showNsfw: nil,
             timeRangeSeconds: nil,
-            readOnly: nil,
             hideMedia: nil,
             markAsRead: nil,
             noCommentsOnly: nil,
@@ -96,7 +94,7 @@ public extension ApiClient {
         limit: Int,
         savedOnly: Bool = false
     ) async throws -> (person: Person3, posts: [Post2]) {
-        let request = GetPersonDetailsRequest(
+        let request = ReadPersonRequest(
             endpoint: .v3,
             personId: personId,
             username: nil,
@@ -229,45 +227,23 @@ public extension ApiClient {
     }
     
     /// Mark the given post as read. Works on all versions.
-    /// On v0.19.0 and above, if `includeQueuedPosts` is set to `true`, any queued posts will be marked read as well.
+    /// If `includeQueuedPosts` is set to `true`, any queued posts will be marked read as well.
     func markPostAsRead(
         id: Int,
         read: Bool = true,
         includeQueuedPosts: Bool = true,
         semaphore: UInt? = nil
     ) async throws {
-        // We *must* use `postId` in 0.18 versions, and we *must* use `postIds` from 0.19.4 onwards.
-        // On versions 0.19.0 to 0.19.3, either parameter is allowed.
-        let request: MarkPostAsReadRequest
-        if try await supports(.batchMarkRead) {
-            try await markPostsAsRead(
-                ids: [id],
-                read: read,
-                includeQueuedPosts: includeQueuedPosts,
-                semaphore: semaphore
-            )
-        } else {
-            request = MarkPostAsReadRequest(endpoint: .v3, postId: id, read: read, postIds: nil)
-            let response = try await perform(request)
-            switch response {
-            case let .apiSuccessResponse(response):
-                if !response.success {
-                    throw ApiClientError.unsuccessful
-                }
-            default:
-                break
-            }
-            await markReadQueue.remove(id)
-            Task { @MainActor in
-                if let post = caches.post2.retrieveModel(cacheId: id) {
-                    post.readManager.updateWithReceivedValue(read, semaphore: semaphore)
-                    post.updateReadQueued(false)
-                }
-            }
-        }
+        // We *must* use `postIds` from 0.19.4 onwards. On 0.19.3 and below, either `postId` or `postIds` is allowed.
+        try await markPostsAsRead(
+            ids: [id],
+            read: read,
+            includeQueuedPosts: includeQueuedPosts,
+            semaphore: semaphore
+        )
     }
     
-    /// Mark the given posts as read. Only works on v0.19.0 and above; on lower versions, use `markPostAsRead` instead.
+    /// Mark the given posts as read.
     /// Calling this will also mark any queued posts as read unless `includeQueuedPosts` is set to `false`.
     func markPostsAsRead(
         ids: Set<Int>,
@@ -291,7 +267,7 @@ public extension ApiClient {
         guard !idsToSend.isEmpty else { return }
         
         do {
-            let request = MarkPostAsReadRequest(endpoint: .v3, postId: nil, read: read, postIds: Array(idsToSend))
+            let request = MarkPostAsReadRequest(endpoint: .v3, postId: nil, postIds: Array(idsToSend), read: read)
             let response = try await perform(request)
             switch response {
             case let .apiSuccessResponse(response):
@@ -324,7 +300,7 @@ public extension ApiClient {
     
     @discardableResult
     func voteOnPost(id: Int, score: ScoringOperation, semaphore: UInt? = nil) async throws -> Post2 {
-        let request = CreatePostLikeRequest(endpoint: .v3, postId: id, score: score.rawValue)
+        let request = LikePostRequest(endpoint: .v3, postId: id, score: score.rawValue)
         let response = try await perform(request)
         return try await caches.post2.getModel(
             api: self,
@@ -422,7 +398,7 @@ public extension ApiClient {
         nsfw: Bool,
         languageId: Int? = nil
     ) async throws -> Post2 {
-        let request = EditPostRequest(
+        let request = UpdatePostRequest(
             endpoint: .v3,
             postId: id,
             name: title,
@@ -432,8 +408,8 @@ public extension ApiClient {
             languageId: languageId,
             altText: altText,
             customThumbnail: thumbnail?.absoluteString,
-            tags: nil,
-            scheduledPublishTime: nil
+            scheduledPublishTime: nil,
+            tags: nil
         )
         let response = try await perform(request)
         return try await caches.post2.getModel(
@@ -448,8 +424,7 @@ public extension ApiClient {
             content: content,
             postId: id,
             parentId: nil,
-            languageId: languageId,
-            formId: nil
+            languageId: languageId
         )
         let response = try await perform(request)
         let comment = try await caches.comment2.getModel(
@@ -508,7 +483,7 @@ public extension ApiClient {
     
     @discardableResult
     func lockPost(id: Int, lock: Bool, semaphore: UInt? = nil) async throws -> Post2 {
-        let request = LockPostRequest(endpoint: .v3, postId: id, locked: lock)
+        let request = LockPostRequest(endpoint: .v3, postId: id, locked: lock, reason: nil)
         let response = try await perform(request)
         return try await caches.post2.getModel(
             api: self,
@@ -524,7 +499,14 @@ public extension ApiClient {
         page: Int = 1,
         limit: Int = 20
     ) async throws -> [PersonVote] {
-        let request = ListPostLikesRequest(endpoint: .v3, postId: id, page: page, limit: limit)
+        let request = ListPostLikesRequest(
+            endpoint: .v3,
+            postId: id,
+            page: page,
+            limit: limit,
+            pageCursor: nil,
+            pageBack: nil
+        )
         let response = try await perform(request)
         return try await caches.personVote.getModels(
             api: self,

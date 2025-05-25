@@ -26,7 +26,8 @@ enum SettingsPage: Hashable {
     case externalLinks, sharingLinks, tappableLinks
     case importExportSettings
     case theme, icon
-    case post, comment, inbox, subscriptionList, tabBar
+    case post, comment, inbox, subscriptionList
+    case tabBar, longPressAction
     case postThumbnail, postSubscriptionIndicator, postReadIndicator
     case commentMaximumDepth, commentJumpButton
     case inboxBadge
@@ -151,6 +152,8 @@ enum SettingsPage: Hashable {
             SubscriptionListSettingsView()
         case .tabBar:
             TabBarSettingsView()
+        case .longPressAction:
+            LongPressActionSettingsView()
         case .inboxBadge:
             InboxBadgeSettingsView()
         case let .swipeActions(type):

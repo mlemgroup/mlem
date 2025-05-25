@@ -20,7 +20,6 @@ public extension Community2 {
             subscribed: subscription.subscribedType,
             blocked: blocked,
             counts: .init(
-                id: nil,
                 communityId: id,
                 subscribers: subscription.actualTotal,
                 posts: postCount,
@@ -30,7 +29,6 @@ public extension Community2 {
                 usersActiveWeek: activeUserCount.week,
                 usersActiveMonth: activeUserCount.month,
                 usersActiveHalfYear: activeUserCount.sixMonths,
-                hotRank: nil,
                 subscribersLocal: subscription.actualLocal
             ),
             // Our current architecture doesn't allow us to guarantee that the ban status is present here.
@@ -39,7 +37,8 @@ public extension Community2 {
             bannedFromCommunity: api.myPerson?.isBannedFromCommunity(self),
             communityActions: nil,
             instanceActions: nil,
-            canMod: false
+            canMod: false,
+            postTags: nil
         )
     }
     

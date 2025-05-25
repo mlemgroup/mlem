@@ -9,7 +9,7 @@ import Foundation
 
 public extension ApiClient {
     func getReportCount(communityId: Int? = nil) async throws -> ApiGetReportCountResponse {
-        try await perform(GetReportCountRequest(endpoint: .v3, communityId: communityId))
+        try await perform(ReportCountRequest(endpoint: .v3, communityId: communityId))
     }
     
     func getPostReports(
@@ -63,7 +63,7 @@ public extension ApiClient {
         limit: Int = 20,
         unresolvedOnly: Bool = false
     ) async throws -> [Report] {
-        let request = ListPrivateMessageReportsRequest(
+        let request = ListPmReportsRequest(
             page: page,
             limit: limit,
             unresolvedOnly: unresolvedOnly
@@ -117,7 +117,7 @@ public extension ApiClient {
         resolved: Bool,
         semaphore: UInt? = nil
     ) async throws -> Report {
-        let request = ResolvePrivateMessageReportRequest(endpoint: .v3, reportId: id, resolved: resolved)
+        let request = ResolvePmReportRequest(endpoint: .v3, reportId: id, resolved: resolved)
         async let response = try await perform(request)
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
         return try await caches.report.getModel(

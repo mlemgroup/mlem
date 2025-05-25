@@ -75,6 +75,7 @@ public extension Icon {
         public let licence: Icon = .init("doc")
         public let ask: Icon = .init("questionmark.circle")
         public let jumpButton: Icon = .init("chevron.down.circle")
+        public let longPress: Icon = .init("hand.point.up.left.fill")
     }
     
     static let settings: SettingsIcons = .init()

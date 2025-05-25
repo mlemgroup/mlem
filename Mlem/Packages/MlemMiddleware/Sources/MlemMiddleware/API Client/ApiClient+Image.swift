@@ -18,13 +18,6 @@ public extension ApiClient {
         
         let boundary = UUID().uuidString
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        
-        // This is required pre 0.19.0
-        // TODO: 0.18 deprecation: possibly remove this? Haven't tested how >0.19 behaves without this,
-        // but I assume it's not required anymore since they're now requiring a different format instead
-        request.setValue("jwt=\(token)", forHTTPHeaderField: "Cookie")
-        
-        // This is required post 0.19.0
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
         let encodedData = createMultiPartForm(
@@ -57,8 +50,6 @@ public extension ApiClient {
     func deleteImage(alias: String, deleteToken: String) async throws {
         guard let token else { throw ApiClientError.notLoggedIn }
         var request = mlemUrlRequest(url: baseUrl.appending(path: "pictrs/image/delete/\(deleteToken)/\(alias)"))
-        // TODO: 0.18 deprecation: see comments in method above
-        request.setValue("jwt=\(token)", forHTTPHeaderField: "Cookie")
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         let response = try await execute(request)
         if let response = response.1 as? HTTPURLResponse {

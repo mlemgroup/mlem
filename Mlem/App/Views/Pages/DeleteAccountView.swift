@@ -20,8 +20,6 @@ struct DeleteAccountView: View {
     @State var confirmed: Bool = false
     @State var deleteContent: Bool = true
     
-    let deleteContentMinimumVersion: SiteVersion = .init("0.19.0")
-    
     var body: some View {
         content
             .task {
@@ -59,7 +57,7 @@ struct DeleteAccountView: View {
     var deleteConfirmation: some View {
         if confirmed {
             if let version = account.api.fetchedVersion {
-                passwordPrompt(canDeleteContent: version >= deleteContentMinimumVersion)
+                passwordPrompt()
             } else {
                 VStack(spacing: Constants.main.standardSpacing) {
                     ProgressView()
@@ -79,7 +77,7 @@ struct DeleteAccountView: View {
     }
     
     @ViewBuilder
-    func passwordPrompt(canDeleteContent: Bool) -> some View {
+    func passwordPrompt() -> some View {
         Text("To confirm, please enter your password:")
         
         Group {
@@ -94,10 +92,8 @@ struct DeleteAccountView: View {
                 }
                 .labelsHidden()
             
-            if canDeleteContent {
-                Toggle(isOn: $deleteContent) {
-                    Text("Delete posts and comments")
-                }
+            Toggle(isOn: $deleteContent) {
+                Text("Delete posts and comments")
             }
             
             Button("Permanently delete \(account.name)") {

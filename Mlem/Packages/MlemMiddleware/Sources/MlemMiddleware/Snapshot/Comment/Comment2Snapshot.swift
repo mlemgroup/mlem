@@ -19,7 +19,7 @@ public struct Comment2Snapshot: CacheIdentifiable {
     // remember to also amend the `update` method of Comment2!
     public let commentCount: Int
     public let creatorIsModerator: Bool?
-    public let creatorIsAdmin: Bool?
+    public let creatorIsAdmin: Bool
     public let creatorBannedFromCommunity: Bool
     public let votes: VotesModel
     public let saved: Bool
@@ -62,6 +62,49 @@ public struct Comment2Snapshot: CacheIdentifiable {
             self.votes = .init(upvotes: upvotes, downvotes: downvotes, myVote: .guaranteedInit(from: comment.commentActions?.likeScore))
         } else {
             throw .responseMissingRequiredData("ApiCommentView score")
+        }
+    }
+    
+    public init(from report: ApiCommentReportView) throws(ApiClientError) {
+        self.comment = try .init(from: report.comment)
+        self.creator = try .init(from: report.creator)
+        self.post = try .init(from: report.post)
+        self.community = try .init(from: report.community)
+        
+        if let childCount = report.comment.childCount ?? report.counts?.childCount {
+            self.commentCount = childCount
+        } else {
+            throw .responseMissingRequiredData("ApiCommentReportView childCount")
+        }
+            
+        if let creatorIsAdmin = report.creatorIsAdmin {
+            self.creatorIsAdmin = creatorIsAdmin
+        } else {
+            throw .responseMissingRequiredData("ApiCommentReportView creatorIsAdmin")
+        }
+
+        if let actions = report.creatorCommunityActions {
+            self.creatorIsModerator = actions.becameModerator != nil
+            self.creatorBannedFromCommunity = actions.banExpires != nil
+        } else {
+            self.creatorIsModerator = report.creatorIsModerator
+            self.creatorBannedFromCommunity = report.creatorBannedFromCommunity ?? false
+        }
+        
+        if let actions = report.commentActions {
+            self.saved = actions.saved != nil
+        } else if let saved = report.saved {
+            self.saved = saved
+        } else {
+            throw .responseMissingRequiredData("ApiCommentReportView saved")
+        }
+        
+        if let counts = report.counts {
+            self.votes = .init(from: counts, myVote: .guaranteedInit(from: report.myVote))
+        } else if let upvotes = report.comment.upvotes, let downvotes = report.comment.downvotes {
+            self.votes = .init(upvotes: upvotes, downvotes: downvotes, myVote: .guaranteedInit(from: report.commentActions?.likeScore))
+        } else {
+            throw .responseMissingRequiredData("ApiCommentReportView score")
         }
     }
 }

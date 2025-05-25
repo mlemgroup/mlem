@@ -37,7 +37,7 @@ public extension ApiClient {
     }
     
     func getPerson(id: Int) async throws -> Person3 {
-        let request = GetPersonDetailsRequest(
+        let request = ReadPersonRequest(
             endpoint: .v3,
             personId: id,
             username: nil,
@@ -70,7 +70,7 @@ public extension ApiClient {
     }
     
     func getPerson(username: String) async throws -> Person3 {
-        let request = GetPersonDetailsRequest(
+        let request = ReadPersonRequest(
             endpoint: .v3,
             personId: nil,
             username: username,
@@ -199,7 +199,7 @@ public extension ApiClient {
         } else {
             expiryTimestamp = nil
         }
-        let request = BanPersonRequest(
+        let request = BanFromSiteRequest(
             endpoint: .v3,
             personId: personId,
             ban: ban,
@@ -232,7 +232,7 @@ public extension ApiClient {
         savedOnly: Bool? = nil,
         communityId: Int? = nil
     ) async throws -> (person: Person3, posts: [Post2], comments: [Comment2]) {
-        let request = GetPersonDetailsRequest(
+        let request = ReadPersonRequest(
             endpoint: .v3,
             personId: id,
             username: nil,
@@ -294,8 +294,12 @@ public extension ApiClient {
         return (person: person, instance: instance, blocks: blocks)
     }
     
-    func deleteAccount(password: String, deleteContent: Bool?) async throws {
-        let request = DeleteAccountRequest(endpoint: .v3, password: password, deleteContent: deleteContent)
+    func deleteAccount(password: String, deleteContent: Bool) async throws {
+        let request = DeleteAccountRequest(
+            endpoint: .v3,
+            password: password,
+            deleteContent: deleteContent
+        )
         try await perform(request)
     }
     
@@ -332,6 +336,8 @@ public extension ApiClient {
         let request = SaveUserSettingsRequest(
             endpoint: .v3,
             showNsfw: showNsfw,
+            blurNsfw: blurNsfw,
+            autoExpand: autoExpand,
             showScores: showScores,
             theme: theme,
             defaultSortType: nil,
@@ -348,13 +354,9 @@ public extension ApiClient {
             botAccount: botAccount,
             showBotAccounts: showBotAccounts,
             showReadPosts: showReadPosts,
-            showNewPostNotifs: nil,
             discussionLanguages: discussionLanguages,
-            generateTotp2fa: nil,
             openLinksInNewTab: openLinksInNewTab,
             infiniteScrollEnabled: infiniteScrollEnabled,
-            blurNsfw: blurNsfw,
-            autoExpand: autoExpand,
             postListingMode: postListingMode,
             enableKeyboardNavigation: enableKeyboardNavigation,
             enableAnimatedImages: enableAnimatedImages,
@@ -365,6 +367,7 @@ public extension ApiClient {
             defaultPostSortType: nil,
             defaultPostTimeRangeSeconds: nil,
             defaultCommentSortType: nil,
+            blockingKeywords: nil,
             enablePrivateMessages: nil,
             autoMarkFetchedPostsAsRead: nil,
             hideMedia: nil

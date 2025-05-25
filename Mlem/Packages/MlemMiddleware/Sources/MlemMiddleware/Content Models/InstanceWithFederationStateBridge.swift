@@ -1,0 +1,28 @@
+//
+//  File.swift
+//  MlemMiddleware
+//
+//  Created by Sjmarf on 2025-05-21.
+//
+
+import Foundation
+
+public struct InstanceWithFederationStateBridge: Codable, Hashable, Sendable {
+    let domain: String
+    
+    public init(from decoder: any Decoder) throws {
+        if let old = try? ApiInstance(from: decoder) {
+            self.domain = old.domain
+            return
+        }
+        
+        if let new = try? ApiInstanceWithFederationState(from: decoder) {
+            self.domain = new.instance.domain
+            return
+        }
+        
+        throw DecodingError.dataCorrupted(
+            .init(codingPath: decoder.codingPath, debugDescription: "InstanceWithFederationStateBridge error")
+        )
+    }
+}

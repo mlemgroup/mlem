@@ -21,7 +21,9 @@ public extension ApiClient {
             endpoint: .v3,
             unreadOnly: unreadOnly,
             page: page,
-            limit: limit
+            limit: limit,
+            pageCursor: nil,
+            pageBack: nil
         )
         let response = try await perform(request)
         return try await caches.registrationApplication.getModels(

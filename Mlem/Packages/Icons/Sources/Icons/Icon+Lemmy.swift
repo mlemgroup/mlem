@@ -193,7 +193,8 @@ public extension Icon {
         // MARK: - Other
 
         public let noContent: Icon = .init("binoculars")
-        public let switchAccount: Icon = .init("person.crop.circle.badge.plus")
+        public let openAccountSwitcher: Icon = .init("person.crop.rectangle.stack.fill")
+        public let switchAccount: Icon = .init("arrow.left.arrow.right")
         public let switchAccountAndReload: Icon = .init("arrow.2.circlepath")
         public let switchAccountAndKeepPlace: Icon = .init("checkmark.diamond")
         
