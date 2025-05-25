@@ -17,7 +17,7 @@ struct SignUpRecommendSingleInstanceView: View {
     
     @State var showButtons: Bool = false
     
-    private let lightModeForeground: Color = .init(red: 14 / 255, green: 150 / 255, blue: 195 / 255)
+    private let lightModeForeground: Color = .init(red: 40 / 255, green: 113 / 255, blue: 127 / 255)
     
     var body: some View {
         VStack {
@@ -54,8 +54,9 @@ struct SignUpRecommendSingleInstanceView: View {
     var image: some View {
         Image("background.earth")
             .resizable()
-            .aspectRatio(contentMode: .fit)
-            .frame(maxHeight: .infinity, alignment: .bottom)
+            .aspectRatio(contentMode: .fill)
+            .frame(maxHeight: .infinity, alignment: .top)
+            .blur(radius: 5, opaque: true)
             .background(colorScheme == .dark ? .black : .white)
             .ignoresSafeArea()
     }

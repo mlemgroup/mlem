@@ -1428,9 +1428,6 @@
         }
       }
     },
-    "Be careful - you can't change this later." : {
-
-    },
     "Biography" : {
       "localizations" : {
         "fr" : {
@@ -8164,6 +8161,9 @@
           }
         }
       }
+    },
+    "This cannot be changed later." : {
+
     },
     "This community has been removed." : {
       "localizations" : {
