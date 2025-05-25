@@ -9,15 +9,11 @@ import MlemMiddleware
 import SwiftUI
 
 struct SignUpUsernameView: View {
-    enum ValidityWarningDisplayCondition { case immediate, onSubmit, never }
-    
     let instance: Instance3
     
     @State var username: String = ""
-    @State var submissionAttempted: Bool = false
     @FocusState var focused: Bool
     
-    @State var usernameValidityTask: Task<Void, Never>?
     @State var usernameValidity: UsernameValidity?
     
     var body: some View {
@@ -58,16 +54,17 @@ struct SignUpUsernameView: View {
         .padding()
         .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: 16))
         .task(id: username) {
-            usernameValidityTask?.cancel()
-            usernameValidityTask = Task {
-                submissionAttempted = false
-                do {
-                    usernameValidity = try await instance.usernameIsValidForNewAccount(username)
-                } catch {
-                    handleError(error)
+            do {
+                usernameValidity = nil
+                if !username.isEmpty {
+                    try await Task.sleep(for: .seconds(0.5))
                 }
+                usernameValidity = try await instance.usernameIsValidForNewAccount(username)
+            } catch ApiClientError.cancelled {
+                // no-op
+            } catch {
+                handleError(error)
             }
-            _ = await usernameValidityTask?.value
         }
     }
     
@@ -77,58 +74,38 @@ struct SignUpUsernameView: View {
             Text("Next")
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 10)
+                .opacity(usernameValidity == nil ? 0 : 1)
+                .overlay {
+                    if usernameValidity == nil {
+                        ProgressView()
+                            .tint(.themedSecondary)
+                    }
+                }
         }
         .buttonStyle(.borderedProminent)
         .buttonBorderShape(.roundedRectangle(radius: 16))
-        // IMO it's less jarring to only disable the button once they try to tap on it - otherwise the user would see the button flicker as they type out their username
-        .disabled(submissionAttempted && usernameValidity != .available)
+        .disabled(usernameValidity != .available)
     }
 
     @ViewBuilder
     var validityWarningView: some View {
         Text(validityWarningText)
             .font(.footnote)
-            .foregroundStyle(submissionAttempted ? .red : .secondary)
+            .foregroundStyle(.secondary)
             .lineLimit(3, reservesSpace: true)
     }
     
     var validityWarningText: String {
         guard let usernameValidity else { return "" }
-        
-        let shouldDisplay: Bool
-        switch validityWarningDisplayCondition() {
-        case .immediate:
-            shouldDisplay = true
-        case .onSubmit:
-            shouldDisplay = submissionAttempted
-        case .never:
-            shouldDisplay = false
-        }
-        
-        if shouldDisplay {
+        if usernameValidity != .available {
             return String(localized: usernameValidity.label)
         } else {
             return ""
         }
     }
     
-    func validityWarningDisplayCondition() -> ValidityWarningDisplayCondition {
-        switch usernameValidity {
-        case .available: .never
-        case .taken: .immediate
-        case .invalid(.tooShort): .onSubmit
-        case .invalid(.tooLong): .immediate
-        case .invalid(.containsInvalidCharacters): .immediate
-        case .invalid(.other): .immediate
-        case nil: .never
-        }
-    }
-    
     func submit() {
         Task {
-            // Await the task to ensure we have the most up-to-date result
-            _ = await usernameValidityTask?.value
-            submissionAttempted = true
             guard usernameValidity == .available else { return }
         }
     }
