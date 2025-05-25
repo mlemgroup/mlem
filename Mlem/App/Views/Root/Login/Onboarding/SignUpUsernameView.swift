@@ -27,7 +27,7 @@ struct SignUpUsernameView: View {
                     .font(.title)
                     .fontWeight(.bold)
                     .padding(.top, 50)
-                Text("Be careful - you can't change this later.")
+                Text("This cannot be changed later.")
                     .multilineTextAlignment(.center)
                     .foregroundStyle(.secondary)
                 VStack(spacing: 16) {
