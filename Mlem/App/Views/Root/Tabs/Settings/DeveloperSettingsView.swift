@@ -30,8 +30,8 @@ struct DeveloperSettingsView: View {
             
             #if DEBUG
                 Section {
-                    Button(String("Trigger onboarding")) {
-                        navigation.showFullScreenCover(.onboarding(.recommendInstance))
+                    Button(String("Trigger Onboarding")) {
+                        navigation.showFullScreenCover(.onboarding)
                     }
                     
                     Button(String("Reset Feed Welcome Banner")) {

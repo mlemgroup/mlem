@@ -1,15 +1,17 @@
 //
-//  SignUpUsernameView.swift
+//  OnboardingUsernameView.swift
 //  Mlem
 //
 //  Created by Sjmarf on 2025-05-24.
 //
 
+import ComponentViews
 import MlemMiddleware
 import SwiftUI
 
-struct SignUpUsernameView: View {
+struct OnboardingUsernameView: View {
     let instance: Instance3
+    let back: () -> Void
     
     @State var username: String = ""
     @FocusState var focused: Bool
@@ -17,25 +19,33 @@ struct SignUpUsernameView: View {
     @State var usernameValidity: UsernameValidity?
     
     var body: some View {
-        ScrollView {
-            VStack {
-                Text("Choose a Username")
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .padding(.top, 50)
-                Text("This cannot be changed later.")
-                    .multilineTextAlignment(.center)
-                    .foregroundStyle(.secondary)
-                VStack(spacing: 16) {
-                    textFieldView
-                    nextButtonView
-                }
-                validityWarningView
+        VStack {
+            Text("Choose a Username")
+                .font(.title)
+                .fontWeight(.bold)
+            Text("This cannot be changed later.")
+                .multilineTextAlignment(.center)
+                .foregroundStyle(.secondary)
+            VStack(spacing: 16) {
+                textFieldView
+                nextButtonView
             }
-            .padding(.horizontal, 16)
+            validityWarningView
+        }
+        .padding(.horizontal, 16)
+        .frame(minHeight: 0, maxHeight: .infinity) // Min height is needed here otherwise the keyboard padding doesn't work properly
+        .keyboardAwarePadding(removePaddingOnDismiss: false)
+        .overlay(alignment: .topLeading) {
+            Button("Back", icon: .general.backward) {
+                focused = false
+                back()
+            }
+            .fontWeight(.semibold)
+            .imageScale(.large)
+            .labelStyle(.iconOnly)
+            .padding()
         }
         .frame(maxHeight: .infinity)
-        .background(.themedGroupedBackground)
     }
     
     @ViewBuilder
@@ -46,6 +56,8 @@ struct SignUpUsernameView: View {
             TextField("Username", text: $username, prompt: Text(verbatim: ""))
                 .autocorrectionDisabled()
                 .textInputAutocapitalization(.never)
+                .submitLabel(.done)
+                .onSubmit {}
                 .focused($focused)
                 .onAppear {
                     focused = true
