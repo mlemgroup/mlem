@@ -21,6 +21,7 @@ let package = Package(
         .target(
             name: "Haptics",
             dependencies: [],
+            resources: [.process("Resources")],
             swiftSettings: [.enableUpcomingFeature("BareSlashRegexLiterals")]
         )
     ]
