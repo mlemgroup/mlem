@@ -60,7 +60,7 @@ extension InteractionBarEditorView {
     @ViewBuilder
     var commentPreviewBody: some View {
         HStack(spacing: 7) {
-            Image(icon: .lemmy.person)
+            Image(icon: .lemmy.personAvatar)
                 .resizable()
                 .scaledToFit()
                 .symbolVariant(.circle.fill)
