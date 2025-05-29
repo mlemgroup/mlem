@@ -175,11 +175,11 @@
 		037331A42C9CB12D00C826E1 /* EnvironmentValues+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037331A32C9CB12D00C826E1 /* EnvironmentValues+Extensions.swift */; };
 		037386472BDAFE81007492B5 /* LemmyMarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 037386462BDAFE81007492B5 /* LemmyMarkdownUI */; };
 		037658DF2BE7D9EF00F4DD4D /* Community1Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037658DE2BE7D9EF00F4DD4D /* Community1Providing+Extensions.swift */; };
-		0377BE292DE7A2DE00E38593 /* Haptics in Frameworks */ = {isa = PBXBuildFile; productRef = 0377BE282DE7A2DE00E38593 /* Haptics */; };
-		0377BE3B2DE8E70D00E38593 /* HapticLevel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0377BE3A2DE8E70D00E38593 /* HapticLevel+Extensions.swift */; };
 		0377BD752DE219A400E38593 /* OnboardingUsernameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0377BD742DE219A400E38593 /* OnboardingUsernameView.swift */; };
 		0377BD792DE22D4E00E38593 /* UsernameValidity+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0377BD782DE22D4E00E38593 /* UsernameValidity+Extensions.swift */; };
 		0377BE072DE645E100E38593 /* OnboardingRecommendInstanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0377BE062DE645E100E38593 /* OnboardingRecommendInstanceView.swift */; };
+		0377BE292DE7A2DE00E38593 /* Haptics in Frameworks */ = {isa = PBXBuildFile; productRef = 0377BE282DE7A2DE00E38593 /* Haptics */; };
+		0377BE3B2DE8E70D00E38593 /* HapticLevel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0377BE3A2DE8E70D00E38593 /* HapticLevel+Extensions.swift */; };
 		037DE0752CE023E3007F7B92 /* BlockListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DE0742CE023E3007F7B92 /* BlockListView.swift */; };
 		037DE07A2CE108D9007F7B92 /* FooterLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DE0792CE108D9007F7B92 /* FooterLinkView.swift */; };
 		037F77ED2D3B064B00D4E180 /* SettingsDeviceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037F77EC2D3B064B00D4E180 /* SettingsDeviceView.swift */; };
@@ -705,10 +705,10 @@
 		0372EC1F2D370F0200257095 /* RegistrationApplicationDenialEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationApplicationDenialEditorView.swift; sourceTree = "<group>"; };
 		037331A32C9CB12D00C826E1 /* EnvironmentValues+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+Extensions.swift"; sourceTree = "<group>"; };
 		037658DE2BE7D9EF00F4DD4D /* Community1Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Community1Providing+Extensions.swift"; sourceTree = "<group>"; };
-		0377BE3A2DE8E70D00E38593 /* HapticLevel+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HapticLevel+Extensions.swift"; sourceTree = "<group>"; };
 		0377BD742DE219A400E38593 /* OnboardingUsernameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingUsernameView.swift; sourceTree = "<group>"; };
 		0377BD782DE22D4E00E38593 /* UsernameValidity+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UsernameValidity+Extensions.swift"; sourceTree = "<group>"; };
 		0377BE062DE645E100E38593 /* OnboardingRecommendInstanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingRecommendInstanceView.swift; sourceTree = "<group>"; };
+		0377BE3A2DE8E70D00E38593 /* HapticLevel+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HapticLevel+Extensions.swift"; sourceTree = "<group>"; };
 		037DE0742CE023E3007F7B92 /* BlockListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockListView.swift; sourceTree = "<group>"; };
 		037DE0792CE108D9007F7B92 /* FooterLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterLinkView.swift; sourceTree = "<group>"; };
 		037F77EC2D3B064B00D4E180 /* SettingsDeviceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDeviceView.swift; sourceTree = "<group>"; };
