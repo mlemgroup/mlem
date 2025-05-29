@@ -417,6 +417,9 @@
         }
       }
     },
+    "%lld" : {
+
+    },
     "%lld Crossposts..." : {
       "localizations" : {
         "en" : {
@@ -1256,6 +1259,9 @@
         }
       }
     },
+    "Available" : {
+
+    },
     "Avatar" : {
       "localizations" : {
         "fr" : {
@@ -1756,6 +1762,9 @@
         }
       }
     },
+    "Choose a Username" : {
+
+    },
     "Choose Account Type" : {
       "localizations" : {
         "fr" : {
@@ -1765,6 +1774,9 @@
           }
         }
       }
+    },
+    "Choose another instance..." : {
+
     },
     "Choose Another Instance..." : {
       "localizations" : {
@@ -4117,6 +4129,9 @@
         }
       }
     },
+    "Join %@ active users on Lemmy.world" : {
+
+    },
     "Join Discord Server" : {
       "localizations" : {
         "fr" : {
@@ -4257,6 +4272,9 @@
           }
         }
       }
+    },
+    "Let's Go" : {
+
     },
     "Licenses" : {
       "localizations" : {
@@ -8150,6 +8168,9 @@
         }
       }
     },
+    "This cannot be changed later." : {
+
+    },
     "This community has been removed." : {
       "localizations" : {
         "fr" : {
@@ -9001,6 +9022,18 @@
         }
       }
     },
+    "Username cannot be longer than %lld characters." : {
+
+    },
+    "Username cannot contain %@." : {
+
+    },
+    "Username is invalid." : {
+
+    },
+    "Username is taken." : {
+
+    },
     "Username must be 3 or more characters." : {
       "localizations" : {
         "fr" : {
@@ -9010,6 +9043,9 @@
           }
         }
       }
+    },
+    "Username must be at least %lld characters long." : {
+
     },
     "Users" : {
       "localizations" : {
