@@ -22,6 +22,7 @@ struct HapticSettingsView: View {
             Picker("Haptic Level", selection: $hapticLevel) {
                 ForEach(HapticLevel.allCases, id: \.self) { level in
                     Text(level.label)
+                        .tag(level as HapticLevel?)
                 }
                 Text("None").tag(nil as HapticLevel?)
             }
