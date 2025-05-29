@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Haptics
 import MlemMiddleware
 
 extension Community1Providing {

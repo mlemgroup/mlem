@@ -5,6 +5,7 @@
 //  Created by Eric Andrews on 2024-05-02.
 //
 
+import Haptics
 import MlemMiddleware
 import SwiftUI
 import Theming

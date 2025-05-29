@@ -5,12 +5,14 @@
 //  Created by Sjmarf on 2025-03-23.
 //
 
+import Haptics
 import MlemMiddleware
 import SwiftUI
 import Theming
 
 // swiftlint:disable:next type_body_length
 struct QuickSwipeViewModifier: ViewModifier {
+    @Environment(HapticManager.self) var hapticManager
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.palette) var palette
     
@@ -181,7 +183,7 @@ struct QuickSwipeViewModifier: ViewModifier {
             let previousIndex = self.actionIndex(edge: edgeForActions, at: prevDragPosition)
             let currentIndex = self.actionIndex(edge: edgeForActions, at: dragPosition)
             if let hapticInfo = hapticInfo(transitioningFrom: previousIndex, to: currentIndex) {
-                HapticManager.main.play(haptic: hapticInfo.0, priority: hapticInfo.1)
+                hapticManager.play(haptic: hapticInfo.0, priority: hapticInfo.1)
             }
                           
             prevDragPosition = dragPosition
@@ -292,7 +294,7 @@ struct QuickSwipeViewModifier: ViewModifier {
     private func hapticInfo(
         transitioningFrom previousIndex: Array<CGFloat>.Index?,
         to currentIndex: Array<CGFloat>.Index?
-    ) -> (Haptic, HapticPriority)? {
+    ) -> (Haptic, HapticLevel)? {
         guard previousIndex != currentIndex else {
             /// Same action, don't play haptic.
             return nil

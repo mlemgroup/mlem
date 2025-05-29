@@ -7,10 +7,12 @@
 
 import ComponentViews
 import Dependencies
+import Haptics
 import SwiftUI
 import SwiftUIIntrospect
 
 struct SelectTextView: View {
+    @Environment(HapticManager.self) var hapticManager
     @Environment(\.dismiss) var dismiss
     @Environment(\.palette) var palette
     
@@ -23,7 +25,7 @@ struct SelectTextView: View {
                 Button {
                     let pasteboard = UIPasteboard.general
                     pasteboard.string = text
-                    HapticManager.main.play(haptic: .lightSuccess, priority: .high)
+                    hapticManager.play(haptic: .lightSuccess, priority: .high)
                     dismiss()
                 } label: {
                     Label("Copy All", icon: .general.copy)

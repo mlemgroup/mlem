@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 05/07/2024.
 //
 
+import Haptics
 import MlemMiddleware
 
 extension InboxItemProviding {

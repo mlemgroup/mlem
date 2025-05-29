@@ -5,9 +5,12 @@
 //  Created by Sjmarf on 12/07/2024.
 //
 
+import Haptics
 import SwiftUI
 
 struct RefreshPopupView: View {
+    @Environment(HapticManager.self) var hapticManager
+    
     let title: LocalizedStringResource
     @Binding var isPresented: Bool
     let callback: () -> Void
@@ -23,7 +26,7 @@ struct RefreshPopupView: View {
             if isPresented {
                 Button {
                     isPresented = false
-                    HapticManager.main.play(haptic: .lightSuccess, priority: .high)
+                    hapticManager.play(haptic: .lightSuccess, priority: .high)
                     Task { @MainActor in
                         callback()
                     }

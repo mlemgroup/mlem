@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 2024-12-16.
 //
 
+import Haptics
 import MlemMiddleware
 
 extension Report {

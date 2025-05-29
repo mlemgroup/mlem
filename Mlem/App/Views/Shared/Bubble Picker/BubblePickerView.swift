@@ -6,6 +6,7 @@
 //
 
 import Dependencies
+import Haptics
 import SwiftUI
 
 enum DividerPlacement {
@@ -18,6 +19,7 @@ struct BubblePickerItemFrame: Equatable {
 }
 
 struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
+    @Environment(HapticManager.self) var hapticManager
     @Binding var selected: Value
     
     // currentTabIndex is used to drive the capsule animation; it is tracked separately from selected so that the capsule animations can be triggered independently of any animation (or lack thereof) that is desired on selected
@@ -127,7 +129,7 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
     ) -> some View {
         Button {
             selected = tab
-            HapticManager.main.play(haptic: .gentleInfo, priority: .low)
+            hapticManager.play(haptic: .gentleInfo, priority: .low)
         } label: {
             bubbleButtonLabel(tab: tab, isSelected: isSelected)
         }

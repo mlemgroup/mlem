@@ -209,7 +209,7 @@ extension InteractionBarEditorView {
                             configuration.readouts.contains($0) || $0 == readout
                         }
                     }
-                    HapticManager.main.play(haptic: .gentleInfo, priority: .low)
+                    hapticManager.play(haptic: .gentleInfo, priority: .low)
                 } label: {
                     let color: ThemedColor = disabled ? .themedPrimary : .themedAccent
                     HStack(spacing: 2) {
@@ -399,7 +399,7 @@ extension InteractionBarEditorView {
             .padding(-2)
             .frame(width: 0)
             .onAppear {
-                HapticManager.main.play(haptic: .gentleInfo, priority: .low)
+                hapticManager.play(haptic: .gentleInfo, priority: .low)
             }
     }
 }

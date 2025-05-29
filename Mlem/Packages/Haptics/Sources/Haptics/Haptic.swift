@@ -8,7 +8,7 @@
 import Foundation
 
 /// Enumerates all custom defined haptics used in the app. The raw value of a case corresponds to the name of the file it is stored in.
-enum Haptic: String, CaseIterable {
+public enum Haptic: String, CaseIterable {
     /// Very gentle tap. Used for subtle feedback--things like crossing a swipe boundary
     case gentleInfo = "Gentle Info"
     

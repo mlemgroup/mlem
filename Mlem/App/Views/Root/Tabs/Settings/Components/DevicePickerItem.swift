@@ -5,9 +5,12 @@
 //  Created by Sjmarf on 2025-01-21.
 //
 
+import Haptics
 import SwiftUI
 
 struct DevicePickerItem<Item: Equatable, ScreenContent: View>: View {
+    @Environment(HapticManager.self) var hapticManager
+    
     let title: String
     let item: Item
     let scale: CGFloat
@@ -41,7 +44,7 @@ struct DevicePickerItem<Item: Equatable, ScreenContent: View>: View {
                 .background(isSelected ? .themedAccent : .clear, in: .capsule)
         }
         .onTapGesture {
-            HapticManager.main.play(haptic: .gentleInfo, priority: .low)
+            hapticManager.play(haptic: .gentleInfo, priority: .low)
             withAnimation(.easeOut(duration: 0.1)) {
                 selected = item
             }
