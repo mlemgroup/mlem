@@ -24,6 +24,8 @@ extension NavigationPage {
             page.view()
         case let .signUp(instance):
             SignUpView(instance: instance.wrappedValue)
+        case let .onboarding:
+            OnboardingView()
         case let .feeds(feedSelection):
             FeedsView(feedSelection: feedSelection)
         case let .community(community, visitContext):
