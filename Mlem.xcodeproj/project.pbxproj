@@ -178,6 +178,8 @@
 		0377BD752DE219A400E38593 /* OnboardingUsernameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0377BD742DE219A400E38593 /* OnboardingUsernameView.swift */; };
 		0377BD792DE22D4E00E38593 /* UsernameValidity+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0377BD782DE22D4E00E38593 /* UsernameValidity+Extensions.swift */; };
 		0377BE072DE645E100E38593 /* OnboardingRecommendInstanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0377BE062DE645E100E38593 /* OnboardingRecommendInstanceView.swift */; };
+		0377BE9B2DEA328900E38593 /* OnboardingEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0377BE9A2DEA328900E38593 /* OnboardingEmailView.swift */; };
+		0377BE9F2DEA361600E38593 /* OnboardingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0377BE9E2DEA361600E38593 /* OnboardingModel.swift */; };
 		037DE0752CE023E3007F7B92 /* BlockListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DE0742CE023E3007F7B92 /* BlockListView.swift */; };
 		037DE07A2CE108D9007F7B92 /* FooterLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DE0792CE108D9007F7B92 /* FooterLinkView.swift */; };
 		037F77ED2D3B064B00D4E180 /* SettingsDeviceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037F77EC2D3B064B00D4E180 /* SettingsDeviceView.swift */; };
@@ -718,6 +720,8 @@
 		0377BD742DE219A400E38593 /* OnboardingUsernameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingUsernameView.swift; sourceTree = "<group>"; };
 		0377BD782DE22D4E00E38593 /* UsernameValidity+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UsernameValidity+Extensions.swift"; sourceTree = "<group>"; };
 		0377BE062DE645E100E38593 /* OnboardingRecommendInstanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingRecommendInstanceView.swift; sourceTree = "<group>"; };
+		0377BE9A2DEA328900E38593 /* OnboardingEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingEmailView.swift; sourceTree = "<group>"; };
+		0377BE9E2DEA361600E38593 /* OnboardingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingModel.swift; sourceTree = "<group>"; };
 		037DE0742CE023E3007F7B92 /* BlockListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockListView.swift; sourceTree = "<group>"; };
 		037DE0792CE108D9007F7B92 /* FooterLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterLinkView.swift; sourceTree = "<group>"; };
 		037F77EC2D3B064B00D4E180 /* SettingsDeviceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDeviceView.swift; sourceTree = "<group>"; };
@@ -1310,6 +1314,8 @@
 				0348F98C2DDBB526006639CD /* OnboardingView.swift */,
 				0377BE062DE645E100E38593 /* OnboardingRecommendInstanceView.swift */,
 				0377BD742DE219A400E38593 /* OnboardingUsernameView.swift */,
+				0377BE9A2DEA328900E38593 /* OnboardingEmailView.swift */,
+				0377BE9E2DEA361600E38593 /* OnboardingModel.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -2762,6 +2768,7 @@
 				03ECD71B2C811D6700D48BF6 /* PostEditorView+ImageView.swift in Sources */,
 				038C85692D861A2100543F70 /* Comment+Mock.swift in Sources */,
 				0397D48C2C6BE9A2002C6CDC /* CollapsibleSection.swift in Sources */,
+				0377BE9B2DEA328900E38593 /* OnboardingEmailView.swift in Sources */,
 				038028D82CACAB960091A8A2 /* ModeratorSettingsView.swift in Sources */,
 				033F84CC2C2B1E46002E3EDF /* HandleLemmyLinksModifier.swift in Sources */,
 				0389DDD32C39E4D40005B808 /* PasteLinkButtonView.swift in Sources */,
@@ -2854,6 +2861,7 @@
 				038C86572D888EC100543F70 /* CommentSortType+Extensions.swift in Sources */,
 				CD4BAD352B4B2C0B00A1E726 /* FeedsView.swift in Sources */,
 				03A630ED2D497005009A47A6 /* ExternalLinkSettingsView.swift in Sources */,
+				0377BE9F2DEA361600E38593 /* OnboardingModel.swift in Sources */,
 				03049A1E2C6508F400FF6889 /* ApiRegistrationMode+Extensions.swift in Sources */,
 				037DE0752CE023E3007F7B92 /* BlockListView.swift in Sources */,
 				CD3FC6802D4A75090088E63B /* CounterApperance+StaticValues.swift in Sources */,
