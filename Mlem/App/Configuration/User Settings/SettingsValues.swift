@@ -135,7 +135,6 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         do {
             self.behavior_hapticLevel = try container.decodeIfPresent(HapticLevel.self, forKey: ._behavior_hapticLevel) ?? .high
         } catch DecodingError.dataCorrupted { // Decodes the 'sentinel' value, which was replaced with `nil` in Mlem 2.2
-            print("DECODE SENTINEL")
             self.behavior_hapticLevel = nil
         }
         
