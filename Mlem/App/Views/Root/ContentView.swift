@@ -31,7 +31,8 @@ struct ContentView: View {
     var navigationModel: NavigationModel { .main }
     var filtersTracker: FiltersTracker { .main }
     var errorsTracker: ErrorsTracker { .main }
-
+    var backendClient: BackendClient { .main }
+    
     @State var avatarImage: UIImage?
     @State var selectedAvatarImage: UIImage?
     
@@ -68,6 +69,7 @@ struct ContentView: View {
                 .environment(filtersTracker)
                 .environment(errorsTracker)
                 .environment(expandedPostHistoryTracker)
+                .environment(backendClient)
                 .task {
                     do {
                         try await MlemStats.main.loadInstances()

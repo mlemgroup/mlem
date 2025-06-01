@@ -8,11 +8,14 @@
 import Dependencies
 import MlemMiddleware
 import SwiftUI
+import Theming
 
 // Strings in this view are intentionally left unlocalized; we shouldn't
 // be burdening translators with these when they'll never be used
 
 struct DeveloperSettingsView: View {
+    @Environment(BackendClient.self) var backendClient
+    
     @Environment(NavigationLayer.self) var navigation
     @Dependency(\.persistenceRepository) var persistenceRepository
     
@@ -21,12 +24,38 @@ struct DeveloperSettingsView: View {
     
     @AppStorage("lastBuildNumber") var lastBuildNumber: String?
     
+    @State var backendStatus: Bool?
+    @State var lastBackendStatusCheck: Date?
+    
     var body: some View {
         Form {
             Section {
                 Toggle(String("Developer Mode"), isOn: $developerMode)
                 NavigationLink(String("Error Log"), destination: .settings(.errorLog))
             }
+            
+            Section {
+                HStack {
+                    Text("Status")
+                    Spacer()
+                    if let backendStatus {
+                        Image(systemName: Icons.present)
+                            .foregroundStyle(backendStatus ? .themedPositive : .themedNegative)
+                    } else {
+                        Text("Unknown")
+                            .foregroundStyle(.themedSecondary)
+                    }
+                }
+                
+                Button("Refresh") { checkBackendStatus() }
+            } header: {
+                Text("Backend")
+            } footer: {
+                if let lastBackendStatusCheck {
+                    Text("Refreshed \(lastBackendStatusCheck.formatted(date: .abbreviated, time: .standard))")
+                }
+            }
+            .task { checkBackendStatus() }
             
             #if DEBUG
                 Section {
@@ -62,5 +91,17 @@ struct DeveloperSettingsView: View {
             }
         }
         .navigationTitle("Developer")
+    }
+    
+    private func checkBackendStatus() {
+        Task {
+            do {
+                backendStatus = try await backendClient.healthcheck()
+            } catch {
+                handleError(error)
+                backendStatus = false
+            }
+            lastBackendStatusCheck = .now
+        }
     }
 }
