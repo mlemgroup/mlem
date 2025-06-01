@@ -71,7 +71,13 @@ struct OnboardingEmailView: View {
     }
     
     var emailIsValid: Bool {
-        (try? /[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}/.wholeMatch(in: email) != nil) ?? false
+        do {
+            let regex = /[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,64}/
+            return try (regex.wholeMatch(in: email) != nil)
+        } catch {
+            assertionFailure(String(describing: error))
+            return false
+        }
     }
     
     func submit() {
