@@ -37,7 +37,7 @@ class MlemStats {
         do {
             let decoder: JSONDecoder = .defaultDecoder
             decoder.keyDecodingStrategy = .convertFromSnakeCase
-            let instances = try await BackendClient.main.fetchInstances()
+            let instances = try await BackendClient.main.getInstances()
             self.instances = instances
             hosts.formUnion(Set(instances.lazy.map(\.host)))
             loadingState = .done

@@ -58,7 +58,7 @@ public class BackendClient {
         testflightUpdate = try jsonDecoder.decode(TestflightUpdate.self, from: data).url
     }
     
-    public func fetchInstances() async throws -> [InstanceSummary] {
+    public func getInstances() async throws -> [InstanceSummary] {
         let request: URLRequest = .init(url: baseUrl
             .appendingPathComponent("/stats/instances")
             .appending(queryItems: [
