@@ -13,8 +13,22 @@ private let backendAddress: String = "https://backend.mlemapp.org:8443/v0"
 @Observable
 public class BackendClient {
     private let baseUrl: URL
+    private let jsonDecoder: JSONDecoder = {
+        let decoder: JSONDecoder = .init()
+        decoder.dateDecodingStrategy = .custom { decoder in
+            let formatter: ISO8601DateFormatter = .init()
+            formatter.formatOptions = [.withFractionalSeconds, .withInternetDateTime]
+            let dateStr = try decoder.singleValueContainer().decode(String.self)
+            if let date = formatter.date(from: dateStr) {
+                return date
+            }
+            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Invalid date"))
+        }
+        return decoder
+    }()
     
-    public var mlemDevelopers: [String: Bool] = .init()
+    public private(set) var mlemDevelopers: [String: Bool] = .init()
+    public private(set) var testflightUpdate: URL?
     
     public static var main: BackendClient = .init()
 
@@ -27,6 +41,7 @@ public class BackendClient {
         Task {
             do {
                 try await fetchDevelopers()
+                try await fetchTestflightUpdate()
             } catch {
                 print(error)
             }
@@ -35,12 +50,30 @@ public class BackendClient {
     
     public func healthcheck() async throws -> Bool {
         let (data, _) = try await URLSession.shared.data(for: URLRequest(url: baseUrl.appendingPathComponent("/health")))
-        return try JSONDecoder().decode(Bool.self, from: data)
+        return try jsonDecoder.decode(Bool.self, from: data)
+    }
+    
+    public func fetchTestflightUpdate() async throws {
+        let (data, _) = try await URLSession.shared.data(for: URLRequest(url: baseUrl.appendingPathComponent("/mlem/testflight")))
+        testflightUpdate = try jsonDecoder.decode(TestflightUpdate.self, from: data).url
+    }
+    
+    public func fetchInstances() async throws -> [InstanceSummary] {
+        let request: URLRequest = .init(url: baseUrl
+            .appendingPathComponent("/stats/instances")
+            .appending(queryItems: [
+                .init(name: "minUsers", value: "20"),
+                .init(name: "minScore", value: "0"),
+                .init(name: "allowSus", value: "false")
+            ])
+        )
+        let (data, _) = try await URLSession.shared.data(for: request)
+        return try jsonDecoder.decode([InstanceSummary].self, from: data)
     }
     
     private func fetchDevelopers() async throws {
         let (data, _) = try await URLSession.shared.data(for: URLRequest(url: baseUrl.appendingPathComponent("/mlem/developers")))
-        let response = try JSONDecoder().decode([MlemDeveloper].self, from: data)
+        let response = try jsonDecoder.decode([MlemDeveloper].self, from: data)
         
         // convert to map for faster key lookup
         mlemDevelopers = response.reduce(into: [String: Bool]()) { result, developer in

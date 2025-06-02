@@ -45,9 +45,7 @@ extension Person2: Searchable {
     }
 }
 
-extension InstanceSummary: Searchable, Identifiable {
-    var id: String { host }
-    
+extension InstanceSummary: Searchable {
     static func search(
         api _: ApiClient,
         query: String,

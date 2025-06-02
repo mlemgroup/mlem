@@ -22,7 +22,7 @@ struct DeveloperSettingsView: View {
     @Setting(\.tip_feedWelcomePrompt) var showFeedWelcomePrompt
     @Setting(\.dev_developerMode) var developerMode
     
-    @AppStorage("lastBuildNumber") var lastBuildNumber: String?
+    @AppStorage("lastTestflightUpdate") var lastTestflightUpdate: URL?
     
     @State var backendStatus: Bool?
     @State var lastBackendStatusCheck: Date?
@@ -42,8 +42,7 @@ struct DeveloperSettingsView: View {
                         Image(systemName: Icons.present)
                             .foregroundStyle(backendStatus ? .themedPositive : .themedNegative)
                     } else {
-                        Text("Unknown")
-                            .foregroundStyle(.themedSecondary)
+                        ProgressView()
                     }
                 }
                 
@@ -68,7 +67,7 @@ struct DeveloperSettingsView: View {
                     }
                 
                     Button(String("Reset Feed TestFlight Banner")) {
-                        lastBuildNumber = nil
+                        lastTestflightUpdate = nil
                     }
                 
                     Button(String("Create Error")) {

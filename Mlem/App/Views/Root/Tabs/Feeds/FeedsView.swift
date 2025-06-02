@@ -14,6 +14,7 @@ import Theming
 struct FeedsView: View {
     @Environment(AppState.self) var appState
     @Environment(FiltersTracker.self) var filtersTracker
+    @Environment(BackendClient.self) var backendClient
     
     @Setting(\.post_size) var postSize
     @Setting(\.feed_showRead) var showRead
@@ -21,7 +22,7 @@ struct FeedsView: View {
     @Setting(\.behavior_internetSpeed) var internetSpeed
     @Setting(\.links_embedLoops) var embedLoops
     
-    @AppStorage("lastBuildNumber") var lastBuildNumber: String?
+    @AppStorage("lastTestflightUpdate") var lastTestflightUpdate: URL?
 
     @ObservationIgnored @Dependency(\.persistenceRepository) private var persistenceRepository
     
@@ -144,8 +145,8 @@ struct FeedsView: View {
                     FeedWelcomeView()
                         .padding([.horizontal, .bottom], Constants.main.standardSpacing)
                 }
-                if Bundle.main.isTestFlight, lastBuildNumber != Bundle.main.buildVersionNumber {
-                    UpdateBannerView()
+                if Bundle.main.isTestFlight, let testflightUrl = backendClient.testflightUpdate, lastTestflightUpdate != testflightUrl {
+                    UpdateBannerView(url: testflightUrl)
                         .padding([.horizontal, .bottom], Constants.main.standardSpacing)
                 }
                 if let savedFeedLoader, feedSelection == .saved {
@@ -168,7 +169,7 @@ struct FeedsView: View {
                 .buttonStyle(.plain)
             }
         }
-        .animation(.snappy, value: lastBuildNumber != Bundle.main.buildVersionNumber)
+        .animation(.snappy, value: backendClient.testflightUpdate != lastTestflightUpdate)
     }
     
     @MainActor
