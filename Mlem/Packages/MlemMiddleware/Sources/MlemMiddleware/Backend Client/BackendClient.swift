@@ -53,11 +53,6 @@ public class BackendClient {
         return try jsonDecoder.decode(Bool.self, from: data)
     }
     
-    public func fetchTestflightUpdate() async throws {
-        let (data, _) = try await URLSession.shared.data(for: URLRequest(url: baseUrl.appendingPathComponent("/mlem/testflight")))
-        testflightUpdate = try jsonDecoder.decode(TestflightUpdate.self, from: data).url
-    }
-    
     public func getInstances() async throws -> [InstanceSummary] {
         let request: URLRequest = .init(url: baseUrl
             .appendingPathComponent("/stats/instances")
@@ -69,6 +64,11 @@ public class BackendClient {
         )
         let (data, _) = try await URLSession.shared.data(for: request)
         return try jsonDecoder.decode([InstanceSummary].self, from: data)
+    }
+    
+    private func fetchTestflightUpdate() async throws {
+        let (data, _) = try await URLSession.shared.data(for: URLRequest(url: baseUrl.appendingPathComponent("/mlem/testflight")))
+        testflightUpdate = try jsonDecoder.decode(TestflightUpdate.self, from: data).url
     }
     
     private func fetchDevelopers() async throws {
