@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum HapticLevel: String, CaseIterable, Comparable, Codable {
+public enum HapticTier: String, CaseIterable, Comparable, Codable {
     case high
     case low
     
@@ -18,5 +18,5 @@ public enum HapticLevel: String, CaseIterable, Comparable, Codable {
         }
     }
     
-    public static func < (lhs: HapticLevel, rhs: HapticLevel) -> Bool { lhs.intValue < rhs.intValue }
+    public static func < (lhs: HapticTier, rhs: HapticTier) -> Bool { lhs.intValue < rhs.intValue }
 }

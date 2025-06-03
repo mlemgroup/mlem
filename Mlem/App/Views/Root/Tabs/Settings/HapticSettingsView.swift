@@ -20,11 +20,11 @@ struct HapticSettingsView: View {
             )
             .tint(.themedColorfulAccent(1))
             Picker("Haptic Level", selection: $hapticLevel) {
-                ForEach(HapticLevel.allCases, id: \.self) { level in
+                ForEach(HapticTier.allCases, id: \.self) { level in
                     Text(level.label)
-                        .tag(level as HapticLevel?)
+                        .tag(level as HapticTier?)
                 }
-                Text("None").tag(nil as HapticLevel?)
+                Text("None").tag(nil as HapticTier?)
             }
             .pickerStyle(.inline)
             .labelsHidden()

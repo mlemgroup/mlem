@@ -93,7 +93,7 @@ struct ContentView: View {
                         }
                     }
                 }
-                .hapticConfiguration(maximumHapticLevel: .none, errorHandler: handleHapticError)
+                .hapticConfiguration(maximumHapticTier: .none, errorHandler: handleHapticError)
                 .environment(AppState.main)
         }
     }
@@ -123,7 +123,7 @@ struct ContentView: View {
                 imageOverride: avatarImage ?? UIImage(systemName: "person.crop.circle"),
                 selectedImageOverride: selectedAvatarImage ?? UIImage(systemName: "person.crop.circle.fill"),
                 onLongPress: {
-                    HapticManager.main.play(haptic: .rigidInfo, priority: .high)
+                    HapticManager.main.play(haptic: .rigidInfo, tier: .high)
                     
                     switch tabLongPressAction {
                     case .openAccountSwitcher:

@@ -19,7 +19,7 @@ public class HapticManager {
     
     // Config
     var errorHandler: (HapticError) -> Void = { print("Haptic error:", $0) }
-    var maximumHapticLevel: HapticLevel?
+    var maximumHapticTier: HapticTier?
     
     // generators/engines
     private let rigidImpactGenerator: UIImpactFeedbackGenerator = .init(style: .rigid)
@@ -62,14 +62,14 @@ public class HapticManager {
     }
     
     /// Plays a haptic if the given priority is equal to or lower than the current haptic level
-    public func play(haptic: Haptic, priority: HapticLevel) {
+    public func play(haptic: Haptic, tier: HapticTier) {
         Task(priority: .userInitiated) {
             if hapticEngine == nil {
                 print("\(haptic.rawValue) not played (no engine)")
                 return
             }
             
-            if priority.intValue <= (maximumHapticLevel?.intValue ?? 0) {
+            if tier.intValue <= (maximumHapticTier?.intValue ?? 0) {
                 do {
                     guard let player = players[haptic] else { throw HapticError.noPlayer(haptic) }
                     try player.start(atTime: .zero)
@@ -78,7 +78,7 @@ public class HapticManager {
                     handleFailure(with: haptic, error: error as? HapticError)
                 }
             } else {
-                print("\(haptic.rawValue) not played (priority \(priority.intValue) > \(maximumHapticLevel?.intValue ?? 0))")
+                print("\(haptic.rawValue) not played (priority \(tier.intValue) > \(maximumHapticTier?.intValue ?? 0))")
             }
         }
     }

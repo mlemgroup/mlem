@@ -86,7 +86,7 @@ extension CommentEditorView {
             Task { @MainActor in
                 textView.resignFirstResponder()
                 textView.isEditable = false
-                hapticManager.play(haptic: .success, priority: .low)
+                hapticManager.play(haptic: .success, tier: .low)
                 dismiss()
             }
         } catch {

@@ -11,7 +11,7 @@ import MlemMiddleware
 extension Report {
     func toggleResolved(feedback: Set<FeedbackType>) {
         if feedback.contains(.haptic) {
-            HapticManager.main.play(haptic: .success, priority: .low)
+            HapticManager.main.play(haptic: .success, tier: .low)
         }
         toggleResolved()
     }

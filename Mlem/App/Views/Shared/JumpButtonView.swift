@@ -34,12 +34,12 @@ struct JumpButtonView: View {
                 .padding(10)
                 .scaleEffect(pressed ? 1.2 : 1.0)
                 .onTapGesture {
-                    hapticManager.play(haptic: .gentleInfo, priority: .high)
+                    hapticManager.play(haptic: .gentleInfo, tier: .high)
                     onShortPress()
                 }
                 .onLongPressGesture(
                     perform: {
-                        hapticManager.play(haptic: .gentleInfo, priority: .high)
+                        hapticManager.play(haptic: .gentleInfo, tier: .high)
                         if let onLongPress {
                             onLongPress()
                         }

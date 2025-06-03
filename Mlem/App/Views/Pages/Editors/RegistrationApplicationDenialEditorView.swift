@@ -51,7 +51,7 @@ struct RegistrationApplicationDenialEditorView: View {
         let result = await application.deny(reason: reason.isEmpty ? nil : reason).result.get()
         switch result {
         case .succeeded:
-            hapticManager.play(haptic: .success, priority: .low)
+            hapticManager.play(haptic: .success, tier: .low)
             dismiss()
         case .failed:
             ToastModel.main.add(.failure())

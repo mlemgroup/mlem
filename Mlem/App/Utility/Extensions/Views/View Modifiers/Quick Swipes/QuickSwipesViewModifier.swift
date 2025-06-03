@@ -183,7 +183,7 @@ struct QuickSwipeViewModifier: ViewModifier {
             let previousIndex = self.actionIndex(edge: edgeForActions, at: prevDragPosition)
             let currentIndex = self.actionIndex(edge: edgeForActions, at: dragPosition)
             if let hapticInfo = hapticInfo(transitioningFrom: previousIndex, to: currentIndex) {
-                hapticManager.play(haptic: hapticInfo.0, priority: hapticInfo.1)
+                hapticManager.play(haptic: hapticInfo.0, tier: hapticInfo.1)
             }
                           
             prevDragPosition = dragPosition
@@ -294,7 +294,7 @@ struct QuickSwipeViewModifier: ViewModifier {
     private func hapticInfo(
         transitioningFrom previousIndex: Array<CGFloat>.Index?,
         to currentIndex: Array<CGFloat>.Index?
-    ) -> (Haptic, HapticLevel)? {
+    ) -> (Haptic, HapticTier)? {
         guard previousIndex != currentIndex else {
             /// Same action, don't play haptic.
             return nil

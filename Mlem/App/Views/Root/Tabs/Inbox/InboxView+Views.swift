@@ -131,7 +131,7 @@ extension InboxView {
         let newMessagesExist = !waitingOnMarkAllAsRead && ((appState.firstSession as? UserSession)?.unreadCount?.personalTotal ?? 0) != 0
         PhaseAnimator([0, 1], trigger: markAllAsReadTrigger) { value in
             Button {
-                hapticManager.play(haptic: .gentleInfo, priority: .low)
+                hapticManager.play(haptic: .gentleInfo, tier: .low)
                 waitingOnMarkAllAsRead = true
                 markAllAsReadTrigger.toggle()
                 Task {

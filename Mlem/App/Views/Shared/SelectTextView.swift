@@ -25,7 +25,7 @@ struct SelectTextView: View {
                 Button {
                     let pasteboard = UIPasteboard.general
                     pasteboard.string = text
-                    hapticManager.play(haptic: .lightSuccess, priority: .high)
+                    hapticManager.play(haptic: .lightSuccess, tier: .high)
                     dismiss()
                 } label: {
                     Label("Copy All", icon: .general.copy)

@@ -217,7 +217,7 @@ struct PersonBanEditorView: View {
     func daysPresetButton(_ date: DateComponents, value: Int) -> some View {
         Button(dateFormatter.string(for: date) ?? "") {
             days = value
-            hapticManager.play(haptic: .gentleInfo, priority: .low)
+            hapticManager.play(haptic: .gentleInfo, tier: .low)
         }
         .buttonStyle(BanFormButtonStyle(selected: days == value && !isPermanent))
     }

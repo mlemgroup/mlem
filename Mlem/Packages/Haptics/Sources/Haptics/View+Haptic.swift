@@ -25,11 +25,11 @@ private struct HapticConfigurationViewModifier: ViewModifier {
 
 public extension View {
     func hapticConfiguration(
-        maximumHapticLevel: HapticLevel?,
+        maximumHapticTier: HapticTier?,
         errorHandler: @escaping (HapticError) -> Void
     ) -> some View {
         HapticManager.mainInternal.errorHandler = errorHandler
-        HapticManager.mainInternal.maximumHapticLevel = maximumHapticLevel
+        HapticManager.mainInternal.maximumHapticTier = maximumHapticTier
         
         return modifier(HapticConfigurationViewModifier())
     }

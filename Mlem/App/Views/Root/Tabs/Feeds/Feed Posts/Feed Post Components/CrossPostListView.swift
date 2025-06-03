@@ -22,7 +22,7 @@ struct CrossPostListView: View {
         if !post.crossPosts.isEmpty {
             VStack(spacing: Constants.main.halfSpacing) {
                 Button {
-                    hapticManager.play(haptic: .gentleInfo, priority: .low)
+                    hapticManager.play(haptic: .gentleInfo, tier: .low)
                     withAnimation(.easeOut(duration: 0.2)) {
                         isExpanded.toggle()
                     }

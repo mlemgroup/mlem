@@ -74,7 +74,7 @@ struct ContentRemovalEditorView: View {
     func send() async {
         switch await target.toggleRemoved(reason: reason).result.get() {
         case .succeeded:
-            hapticManager.play(haptic: .success, priority: .low)
+            hapticManager.play(haptic: .success, tier: .low)
             dismiss()
         default:
             ToastModel.main.add(.failure())

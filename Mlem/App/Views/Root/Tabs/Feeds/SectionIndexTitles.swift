@@ -70,7 +70,7 @@ struct SectionIndexTitles: View {
                                     Task { @MainActor in
                                         lastSelectedLabel = sectionLabel
                                         sectionScroller = sectionIndex
-                                        hapticManager.play(haptic: .rigidInfo, priority: .low)
+                                        hapticManager.play(haptic: .rigidInfo, tier: .low)
                                     }
                                 }
                             }

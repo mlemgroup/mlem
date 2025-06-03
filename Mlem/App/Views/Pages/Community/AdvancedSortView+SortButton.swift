@@ -45,7 +45,7 @@ extension AdvancedSortView {
                         .padding(.vertical, Constants.main.halfSpacing)
                         Spacer()
                         Button("Pin", icon: .lemmy.pinned) {
-                            hapticManager.play(haptic: .gentleInfo, priority: .low)
+                            hapticManager.play(haptic: .gentleInfo, tier: .low)
                             if PinnedSortTracker.main.pinnedSortTypes.contains(type) {
                                 PinnedSortTracker.main.pinnedSortTypes.remove(type)
                             } else {

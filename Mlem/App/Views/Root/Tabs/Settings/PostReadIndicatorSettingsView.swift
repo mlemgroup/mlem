@@ -95,7 +95,7 @@ struct PostReadIndicatorSettingsView: View {
         }
         .frame(maxWidth: .infinity)
         .onTapGesture {
-            hapticManager.play(haptic: .gentleInfo, priority: .low)
+            hapticManager.play(haptic: .gentleInfo, tier: .low)
             readPostIndicator = style
         }
     }

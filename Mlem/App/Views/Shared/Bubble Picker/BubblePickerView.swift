@@ -129,7 +129,7 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
     ) -> some View {
         Button {
             selected = tab
-            hapticManager.play(haptic: .gentleInfo, priority: .low)
+            hapticManager.play(haptic: .gentleInfo, tier: .low)
         } label: {
             bubbleButtonLabel(tab: tab, isSelected: isSelected)
         }

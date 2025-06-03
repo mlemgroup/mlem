@@ -109,7 +109,7 @@ struct ChangePasswordView: View {
                     )
                     AccountsTracker.main.saveAccounts(ofType: .user)
                     viewState = .success
-                    hapticManager.play(haptic: .success, priority: .high)
+                    hapticManager.play(haptic: .success, tier: .high)
                     try? await Task.sleep(for: .seconds(0.5))
                     dismiss()
                     // Catch separately to prevent the token expiry sheet opening in this view

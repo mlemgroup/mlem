@@ -73,7 +73,7 @@ struct ReportEditorView: View {
     func send() async {
         do {
             try await target.report(reason: reason)
-            hapticManager.play(haptic: .success, priority: .low)
+            hapticManager.play(haptic: .success, tier: .low)
             dismiss()
         } catch {
             handleError(error)

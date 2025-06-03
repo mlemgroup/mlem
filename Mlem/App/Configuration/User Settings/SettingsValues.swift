@@ -32,7 +32,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     var behavior_biometricUnlock: Bool
     var behavior_confirmImageUploads: Bool
     var behavior_enableQuickSwipes: Bool
-    var behavior_hapticLevel: HapticLevel?
+    var behavior_hapticLevel: HapticTier?
     var behavior_internetSpeed: InternetSpeed
     var behavior_upvoteOnSave: Bool
     var behavior_autoplayMedia: Bool
@@ -133,7 +133,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.behavior_enableQuickSwipes = try container.decodeIfPresent(Bool.self, forKey: ._behavior_enableQuickSwipes) ?? true
         
         do {
-            self.behavior_hapticLevel = try container.decodeIfPresent(HapticLevel.self, forKey: ._behavior_hapticLevel) ?? .high
+            self.behavior_hapticLevel = try container.decodeIfPresent(HapticTier.self, forKey: ._behavior_hapticLevel) ?? .high
         } catch DecodingError.dataCorrupted { // Decodes the 'sentinel' value, which was replaced with `nil` in Mlem 2.2
             print("DECODE SENTINEL")
             self.behavior_hapticLevel = nil

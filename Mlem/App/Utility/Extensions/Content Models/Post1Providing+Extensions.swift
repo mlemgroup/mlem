@@ -33,7 +33,7 @@ extension Post1Providing {
     func toggleHidden(feedback: Set<FeedbackType>) {
         if let self2 {
             if feedback.contains(.haptic) {
-                HapticManager.main.play(haptic: .lightSuccess, priority: .low)
+                HapticManager.main.play(haptic: .lightSuccess, tier: .low)
             }
             if feedback.contains(.toast) {
                 if self2.hidden {
@@ -92,7 +92,7 @@ extension Post1Providing {
         feedback: Set<FeedbackType>
     ) async {
         if feedback.contains(.haptic) {
-            HapticManager.main.play(haptic: .success, priority: .low)
+            HapticManager.main.play(haptic: .success, tier: .low)
         }
         switch result {
         case .failed:

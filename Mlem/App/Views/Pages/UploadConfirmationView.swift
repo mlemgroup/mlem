@@ -66,7 +66,7 @@ struct UploadConfirmationView: View {
                                 isUploading = true
                                 do {
                                     try await imageManager.upload(data: imageData, api: uploadApi)
-                                    hapticManager.play(haptic: .success, priority: .low)
+                                    hapticManager.play(haptic: .success, tier: .low)
                                     dismiss()
                                 } catch {
                                     handleError(error)

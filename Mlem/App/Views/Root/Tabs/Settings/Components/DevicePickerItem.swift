@@ -44,7 +44,7 @@ struct DevicePickerItem<Item: Equatable, ScreenContent: View>: View {
                 .background(isSelected ? .themedAccent : .clear, in: .capsule)
         }
         .onTapGesture {
-            hapticManager.play(haptic: .gentleInfo, priority: .low)
+            hapticManager.play(haptic: .gentleInfo, tier: .low)
             withAnimation(.easeOut(duration: 0.1)) {
                 selected = item
             }

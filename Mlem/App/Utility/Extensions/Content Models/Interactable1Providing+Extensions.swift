@@ -33,7 +33,7 @@ extension Interactable1Providing {
     func toggleUpvoted(feedback: Set<FeedbackType>) {
         if let self2 {
             if feedback.contains(.haptic) {
-                HapticManager.main.play(haptic: .lightSuccess, priority: .low)
+                HapticManager.main.play(haptic: .lightSuccess, tier: .low)
             }
             self2.toggleUpvoted()
             inboxItem?.updateRead(true)
@@ -45,7 +45,7 @@ extension Interactable1Providing {
     func toggleDownvoted(feedback: Set<FeedbackType>) {
         if let self2 {
             if feedback.contains(.haptic) {
-                HapticManager.main.play(haptic: .lightSuccess, priority: .low)
+                HapticManager.main.play(haptic: .lightSuccess, tier: .low)
             }
             self2.toggleDownvoted()
             inboxItem?.updateRead(true)
@@ -57,7 +57,7 @@ extension Interactable1Providing {
     func toggleSaved(feedback: Set<FeedbackType>) {
         if let self2 {
             if feedback.contains(.haptic) {
-                HapticManager.main.play(haptic: .success, priority: .low)
+                HapticManager.main.play(haptic: .success, tier: .low)
             }
             @Setting(\.behavior_upvoteOnSave) var upvoteOnSave
             if upvoteOnSave, !self2.saved, self2.votes.myVote != .upvote {
@@ -79,7 +79,7 @@ extension Interactable1Providing {
         Task {
             let initialValue = self2.removed
             if feedback.contains(.haptic) {
-                HapticManager.main.play(haptic: .success, priority: .low)
+                HapticManager.main.play(haptic: .success, tier: .low)
             }
             switch await self2.toggleRemoved(reason: reason).result.get() {
             case .failed:

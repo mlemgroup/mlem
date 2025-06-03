@@ -26,7 +26,7 @@ struct RefreshPopupView: View {
             if isPresented {
                 Button {
                     isPresented = false
-                    hapticManager.play(haptic: .lightSuccess, priority: .high)
+                    hapticManager.play(haptic: .lightSuccess, tier: .high)
                     Task { @MainActor in
                         callback()
                     }

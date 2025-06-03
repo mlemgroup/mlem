@@ -75,7 +75,7 @@ struct ContentPurgeEditorView: View {
     func send() async {
         do {
             try await target.purge(reason: reason.isEmpty ? nil : reason)
-            hapticManager.play(haptic: .success, priority: .low)
+            hapticManager.play(haptic: .success, tier: .low)
             dismiss()
         } catch {
             handleError(error)
