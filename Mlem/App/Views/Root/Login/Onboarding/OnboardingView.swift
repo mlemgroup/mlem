@@ -10,35 +10,33 @@ import SwiftUI
 import Theming
 
 struct OnboardingView: View {
-    enum Page { case recommendInstance, username }
-    
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.palette) var palette
-
-    @State var instance: Instance3?
-    @State var page: Page = .recommendInstance
     
+    @State var model = OnboardingModel()
+
     var body: some View {
         VStack {
-            switch page {
+            switch model.page {
             case .recommendInstance:
-                OnboardingRecommendInstanceView(instance: instance) { page = .username }
+                OnboardingRecommendInstanceView(instance: model.instance) { model.page = .username }
+                    .transition(.blurReplace)
+            case .email:
+                OnboardingEmailView()
                     .transition(.blurReplace)
             case .username:
-                if let instance {
-                    OnboardingUsernameView(instance: instance) { page = .recommendInstance }
-                        .transition(.blurReplace)
-                }
+                OnboardingUsernameView()
+                    .transition(.blurReplace)
             }
         }
-        .animation(.easeOut(duration: 0.2), value: page)
-        .animation(.bouncy, value: instance)
+        .animation(.easeOut(duration: 0.2), value: model.page)
+        .animation(.bouncy, value: model.instance)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background {
             VStack {
-                switch page {
+                switch model.page {
                 case .recommendInstance:
                     image
                 default:
@@ -46,7 +44,7 @@ struct OnboardingView: View {
                 }
             }
             .ignoresSafeArea(.container, edges: .top)
-            .animation(.easeOut(duration: 0.2), value: page)
+            .animation(.easeOut(duration: 0.2), value: model.page)
         }
         .onAppear {
             Task {
@@ -54,10 +52,11 @@ struct OnboardingView: View {
                 let stub = InstanceStub(api: appState.firstApi, actorId: .init(url: URL(string: "https://lemmy.world")!)!)
                 let instance = try await stub.upgradeLocal()
                 try await Task.sleep(for: .seconds(Date.now.advanced(by: 0.1).timeIntervalSince(startTime)))
-                self.instance = instance
+                model.instance = instance
             }
         }
         .ignoresSafeArea(.all, edges: .bottom)
+        .environment(model)
     }
     
     @ViewBuilder
