@@ -3002,6 +3002,9 @@
         }
       }
     },
+    "Email Address" : {
+
+    },
     "Email Verification" : {
       "localizations" : {
         "fr" : {
@@ -9328,6 +9331,9 @@
           }
         }
       }
+    },
+    "You cannot use a temporary email address." : {
+
     },
     "You don't have an email attached to this account." : {
       "localizations" : {

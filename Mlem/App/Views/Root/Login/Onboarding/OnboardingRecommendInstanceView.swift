@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 2025-05-27.
 //
 
+import ComponentViews
 import MlemMiddleware
 import SwiftUI
 
@@ -37,6 +38,11 @@ struct OnboardingRecommendInstanceView: View {
             Spacer()
         }
         .frame(maxWidth: .infinity)
+        .frame(maxHeight: .infinity)
+        .overlay(alignment: .topLeading) {
+            CloseButtonView()
+                .padding()
+        }
         .onAppear {
             if instance != nil {
                 showButtons = true
