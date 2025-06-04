@@ -30,8 +30,7 @@ import Foundation
             self.comments = comments
             super.init(
                 url: URL(string: "https://lemmy.world/")!,
-                username: "",
-                permissions: .all
+                username: ""
             )
             contextDataManager.fetchedValue = .init(siteVersion: .v0_19_9, myPersonId: nil)
             self.token = "" // Not nil so that the views are interactable

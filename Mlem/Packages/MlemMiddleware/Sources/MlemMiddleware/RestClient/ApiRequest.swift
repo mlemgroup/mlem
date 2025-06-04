@@ -20,7 +20,7 @@ protocol ApiRequest {
     var path: String { get }
     var headers: [String: String] { get }
     
-    func endpoint(base: URL) throws -> URL
+    func endpoint(base: URL) throws(URLQueryItemEncoderError) -> URL
 }
 
 extension ApiRequest {
@@ -39,14 +39,14 @@ protocol ApiGetRequest: ApiRequest {
 }
 
 extension ApiRequest {
-    func endpoint(base: URL) throws -> URL {
+    func endpoint(base: URL) throws(URLQueryItemEncoderError) -> URL {
         base
             .appending(path: path)
     }
 }
 
 extension ApiGetRequest {
-    func endpoint(base: URL) throws -> URL {
+    func endpoint(base: URL) throws(URLQueryItemEncoderError) -> URL {
         if let parameters {
             try base
                 .appending(path: path)

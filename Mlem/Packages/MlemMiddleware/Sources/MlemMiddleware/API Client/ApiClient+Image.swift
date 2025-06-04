@@ -28,14 +28,14 @@ public extension ApiClient {
             auth: token
         )
         
-        let (data, _) = try await urlSession.upload(
+        let (data, _) = try await restClient.urlSession.upload(
             for: request,
             from: encodedData,
             delegate: ImageUploadDelegate(callback: progressCallback)
         )
         
         do {
-            let response = try decoder.decode(ApiPictrsUploadResponse.self, from: data)
+            let response = try JSONDecoder.defaultDecoder.decode(ApiPictrsUploadResponse.self, from: data)
             guard let file = response.files?.first else { throw ApiClientError.noEntityFound }
             return caches.imageUpload1.getModel(api: self, from: file)
         } catch DecodingError.dataCorrupted {
@@ -51,7 +51,7 @@ public extension ApiClient {
         guard let token else { throw ApiClientError.notLoggedIn }
         var request = mlemUrlRequest(url: baseUrl.appending(path: "pictrs/image/delete/\(deleteToken)/\(alias)"))
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        let response = try await execute(request)
+        let response = try await restClient.execute(request)
         if let response = response.1 as? HTTPURLResponse {
             if response.statusCode != 204 {
                 throw ApiClientError.response(.init(error: "Unexpected status code"), response.statusCode)

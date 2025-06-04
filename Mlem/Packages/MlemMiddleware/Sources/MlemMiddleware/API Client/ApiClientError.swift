@@ -15,7 +15,8 @@ enum HTTPMethod {
 public enum ApiClientError: Error {
     case encoding(Error)
     case networking(Error)
-    case response(ApiErrorResponse, Int?)
+    case serverError(statusCode: Int)
+    case response(ApiErrorResponse, Int)
     case cancelled
     case notLoggedIn
     case invalidSession(ApiClient)
@@ -32,6 +33,25 @@ public enum ApiClientError: Error {
     case mismatchingToken
     case noToken
     case responseMissingRequiredData(_ message: String)
+    
+    init(from error: RestError) {
+        self = switch error {
+        case let .serverError(statusCode):
+            .serverError(statusCode: statusCode)
+        case let .response(string, statusCode):
+            .response(.init(error: string), statusCode)
+        case let .encoding(error):
+            .encoding(error)
+        case let .parameterEncoding(uRLQueryItemEncoderError):
+            .encoding(error)
+        case let .decoding(data, error):
+            .decoding(data, error)
+        case let .networking(error):
+            .networking(error)
+        case .cancelled:
+            .cancelled
+        }
+    }
 }
 
 extension ApiClientError: CustomStringConvertible {
@@ -44,10 +64,9 @@ extension ApiClientError: CustomStringConvertible {
         case let .networking(error):
             return "Networking error: \(error)"
         case let .response(errorResponse, status):
-            if let status {
-                return "Response error: \(errorResponse) with status \(status)"
-            }
-            return "Response error: \(errorResponse)"
+            return "Response error: \(errorResponse) with status \(status)"
+        case let .serverError(status):
+            return "Server error: \(status)"
         case .cancelled:
             return "Cancelled"
         case .invalidSession:
