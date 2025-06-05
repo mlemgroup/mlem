@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Rest
 
 public extension ApiClient {
     func uploadImage(

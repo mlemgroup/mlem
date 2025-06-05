@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Rest
 
 #if DEBUG
     public extension ApiClient {
@@ -36,7 +37,7 @@ import Foundation
             self.token = "" // Not nil so that the views are interactable
         }
     
-        override func perform<Request: ApiRequest>(
+        override func perform<Request: RestRequest>(
             _ request: Request,
             tokenOverride: String? = nil,
             requiresToken: Bool = true

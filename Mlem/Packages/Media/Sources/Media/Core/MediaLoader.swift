@@ -9,6 +9,7 @@ import AVFoundation
 import Foundation
 import MlemMiddleware
 import Nuke
+import Rest
 import SwiftUI
 
 // MARK: Types
@@ -50,10 +51,10 @@ public class MediaLoader {
     public private(set) var loading: MediaLoadingState
     public private(set) var error: ImageLoadingError?
     
-    @MainActor func setUrl(_ newValue: URL?) { self.url = newValue }
-    @MainActor func setMediaType(_ newValue: MediaType?) { self.mediaType = newValue }
-    @MainActor func setLoading(_ newValue: MediaLoadingState) { self.loading = newValue }
-    @MainActor func setError(_ newValue: ImageLoadingError?) { self.error = newValue }
+    @MainActor func setUrl(_ newValue: URL?) { url = newValue }
+    @MainActor func setMediaType(_ newValue: MediaType?) { mediaType = newValue }
+    @MainActor func setLoading(_ newValue: MediaLoadingState) { loading = newValue }
+    @MainActor func setError(_ newValue: ImageLoadingError?) { error = newValue }
     
     private let autoBypassImageProxy: Bool
     private var proxyBypass: URL?
@@ -107,11 +108,11 @@ public class MediaLoader {
         
         // handle previews
         #if DEBUG
-        if url.scheme == "mlempreview" {
-            await setMediaType(.image(.init(named: url.lastPathComponent)!))
-            await setLoading(.done)
-            return
-        }
+            if url.scheme == "mlempreview" {
+                await setMediaType(.image(.init(named: url.lastPathComponent)!))
+                await setLoading(.done)
+                return
+            }
         #endif
         
         // if already in cache, take the cached value
@@ -155,8 +156,8 @@ public class MediaLoader {
 func retrieveCachedImage(for url: URL?, with processors: [ImageProcessing]) -> MediaType? {
     if let url,
        let container = ImagePipeline.shared.cache.cachedImage(for: .init(
-        urlRequest: mlemUrlRequest(url: url),
-        processors: processors
+           urlRequest: mlemUrlRequest(url: url),
+           processors: processors
        )) {
         return container.animatedMediaType
     }
@@ -188,7 +189,7 @@ extension ImageContainer {
                 .image(image)
             }
         default:
-                .image(image)
+            .image(image)
         }
     }
 }

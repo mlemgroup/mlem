@@ -7,6 +7,7 @@
 
 import Foundation
 import Nuke
+import Rest
 
 extension Post2: ImagePrefetchProviding {
     public func imageRequests(configuration config: PrefetchingConfiguration) async -> [ImageRequest] {

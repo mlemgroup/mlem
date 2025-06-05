@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Rest
 
 enum HTTPMethod {
     case get

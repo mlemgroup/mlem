@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum URLQueryItemEncoder {
+public enum URLQueryItemEncoder {
     static func encode(_ value: some Encodable) throws(URLQueryItemEncoderError) -> [URLQueryItem] {
         let encoder = InternalURLQueryItemEncoder()
         do {
@@ -23,7 +23,7 @@ enum URLQueryItemEncoder {
     }
 }
 
-protocol URLQueryItemEncodable {
+public protocol URLQueryItemEncodable {
     func encodeInQueryItemFormat() -> String?
 }
 
@@ -99,7 +99,9 @@ private class KeyedContainer<K: CodingKey>: KeyedEncodingContainerProtocol {
         }
     }
 
-    func nestedContainer<NestedKey>(keyedBy type: NestedKey.Type, forKey key: K) -> KeyedEncodingContainer<NestedKey> where NestedKey: CodingKey {
+    func nestedContainer<NestedKey>(
+        keyedBy type: NestedKey.Type, forKey key: K
+    ) -> KeyedEncodingContainer<NestedKey> where NestedKey: CodingKey {
         assertionFailure("We should throw an error *before* this gets called")
         return KeyedEncodingContainer(KeyedContainer<NestedKey>(encoder: encoder))
     }

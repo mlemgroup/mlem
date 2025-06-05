@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Rest
 
 // The `ApiSearch.sort` property uses `ApiSortType` pre-0.20 and
 // uses `ApiSearchSortType` post-0.20, even when interacting using the v3 api.
@@ -31,7 +32,7 @@ public extension SearchSortTypeBridge {
         try container.encode(encodeInQueryItemFormat())
     }
     
-    internal func encodeInQueryItemFormat() -> String? {
+    func encodeInQueryItemFormat() -> String? {
         if let oldSortType {
             return oldSortType.rawValue
         } else if let newSortType {

@@ -7,6 +7,7 @@
 
 import Combine
 import Foundation
+import Rest
 
 @Observable
 public class ApiClient {
@@ -115,7 +116,7 @@ public class ApiClient {
     }
     
     @discardableResult
-    func perform<Request: ApiRequest>(
+    func perform<Request: RestRequest>(
         _ request: Request,
         tokenOverride: String? = nil,
         requiresToken: Bool = true // This should be `true` for the vast majority of requests, even GET requests

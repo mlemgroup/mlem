@@ -7,12 +7,15 @@
 
 import Foundation
 
-class RestClient<ErrorType: Decodable & CustomStringConvertible> {
-    let decoder: JSONDecoder = .defaultDecoder
+public class RestClient<ErrorType: Decodable & CustomStringConvertible> {
+    private let decoder: JSONDecoder = .defaultDecoder
     
-    let urlSession: URLSession = .init(configuration: .default)
+    // This should really be internal, but for now the image upload system needs to access this
+    public let urlSession: URLSession = .init(configuration: .default)
     
-    func perform<Request: ApiRequest>(
+    public init() {}
+    
+    public func perform<Request: RestRequest>(
         baseUrl: URL,
         _ request: Request,
         token: String?
@@ -39,7 +42,7 @@ class RestClient<ErrorType: Decodable & CustomStringConvertible> {
         return try decode(Request.Response.self, from: data)
     }
     
-    func execute(_ urlRequest: URLRequest) async throws(RestError) -> (Data, URLResponse) {
+    public func execute(_ urlRequest: URLRequest) async throws(RestError) -> (Data, URLResponse) {
         do {
             return try await urlSession.data(for: urlRequest)
         } catch {
@@ -53,7 +56,7 @@ class RestClient<ErrorType: Decodable & CustomStringConvertible> {
     
     func urlRequest(
         baseUrl: URL,
-        request: any ApiRequest,
+        request: any RestRequest,
         token: String?
     ) throws(RestError) -> URLRequest {
         let url: URL
@@ -68,15 +71,15 @@ class RestClient<ErrorType: Decodable & CustomStringConvertible> {
             urlRequest.setValue(header.value, forHTTPHeaderField: header.key)
         }
         
-        if request as? any ApiGetRequest != nil {
+        if request is any GetRequest {
             urlRequest.httpMethod = "GET"
-        } else if let postDefinition = request as? any ApiPostRequest {
+        } else if let postDefinition = request as? any PostRequest {
             urlRequest.httpMethod = "POST"
             urlRequest.httpBody = try createBodyData(for: postDefinition)
-        } else if let putDefinition = request as? any ApiPutRequest {
+        } else if let putDefinition = request as? any PutRequest {
             urlRequest.httpMethod = "PUT"
             urlRequest.httpBody = try createBodyData(for: putDefinition)
-        } else if let deleteDefinition = request as? any ApiDeleteRequest {
+        } else if let deleteDefinition = request as? any DeleteRequest {
             urlRequest.httpMethod = "DELETE"
             urlRequest.httpBody = try createBodyData(for: deleteDefinition)
         }
@@ -88,7 +91,7 @@ class RestClient<ErrorType: Decodable & CustomStringConvertible> {
         return urlRequest
     }
     
-    func createBodyData(for defintion: any ApiRequestBodyProviding) throws(RestError) -> Data {
+    func createBodyData(for defintion: any RequestWithBody) throws(RestError) -> Data {
         do {
             let encoder = JSONEncoder()
             let body = defintion.body ?? ""
