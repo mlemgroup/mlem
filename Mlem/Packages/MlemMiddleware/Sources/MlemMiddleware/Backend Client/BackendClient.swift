@@ -71,8 +71,14 @@ public class BackendClient {
         testflightUpdate = try jsonDecoder.decode(TestflightUpdate.self, from: data).url
     }
     
-    private func fetchFlairs() async throws {
-        let (data, _) = try await URLSession.shared.data(for: URLRequest(url: baseUrl.appendingPathComponent("/mlem/flairs")))
+    private func fetchFlairs(enabledOnly: Bool = true) async throws {
+        let request: URLRequest = .init(url: baseUrl
+            .appendingPathComponent("/mlem/flairs")
+            .appending(queryItems: [
+                .init(name: "enabledOnly", value: enabledOnly.description)
+            ])
+        )
+        let (data, _) = try await URLSession.shared.data(for: request)
         let response = try jsonDecoder.decode([MlemFlair].self, from: data)
         
         flairs = .init(developers: .init(
