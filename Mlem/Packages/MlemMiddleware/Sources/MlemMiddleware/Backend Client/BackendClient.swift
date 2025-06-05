@@ -27,7 +27,7 @@ public class BackendClient {
         return decoder
     }()
     
-    public private(set) var mlemDevelopers: [String: Bool] = .init()
+    public private(set) var flairs: MlemFlairs = .init(developers: .init())
     public private(set) var testflightUpdate: URL?
     
     public static var main: BackendClient = .init()
@@ -40,7 +40,7 @@ public class BackendClient {
         
         Task {
             do {
-                try await fetchDevelopers()
+                try await fetchFlairs()
                 try await fetchTestflightUpdate()
             } catch {
                 print(error)
@@ -71,13 +71,14 @@ public class BackendClient {
         testflightUpdate = try jsonDecoder.decode(TestflightUpdate.self, from: data).url
     }
     
-    private func fetchDevelopers() async throws {
-        let (data, _) = try await URLSession.shared.data(for: URLRequest(url: baseUrl.appendingPathComponent("/mlem/developers")))
-        let response = try jsonDecoder.decode([MlemDeveloper].self, from: data)
+    private func fetchFlairs() async throws {
+        let (data, _) = try await URLSession.shared.data(for: URLRequest(url: baseUrl.appendingPathComponent("/mlem/flairs")))
+        let response = try jsonDecoder.decode([MlemFlair].self, from: data)
         
-        // convert to map for faster key lookup
-        mlemDevelopers = response.reduce(into: [String: Bool]()) { result, developer in
-            result[developer.apId] = developer.active
-        }
+        flairs = .init(developers: .init(
+            response
+            .filter { [.activeDev, .inactiveDev].contains($0.flairType) }
+            .map { $0.apId }
+        ))
     }
 }
