@@ -6,10 +6,12 @@
 //
 
 import ComponentViews
+import Haptics
 import MlemMiddleware
 import SwiftUI
 
 struct RegistrationApplicationDenialEditorView: View {
+    @Environment(HapticManager.self) var hapticManager
     @Environment(\.dismiss) var dismiss
     
     let application: RegistrationApplication
@@ -49,7 +51,7 @@ struct RegistrationApplicationDenialEditorView: View {
         let result = await application.deny(reason: reason.isEmpty ? nil : reason).result.get()
         switch result {
         case .succeeded:
-            HapticManager.main.play(haptic: .success, priority: .low)
+            hapticManager.play(haptic: .success, tier: .low)
             dismiss()
         case .failed:
             ToastModel.main.add(.failure())

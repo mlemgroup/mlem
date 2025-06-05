@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 06/07/2024.
 //
 
+import Haptics
 import MlemMiddleware
 import SwiftUI
 import Theming
@@ -38,6 +39,7 @@ struct SearchView: View {
     }
     
     @Environment(AppState.self) var appState
+    @Environment(HapticManager.self) var hapticManager
     @Environment(NavigationLayer.self) var navigation
     @Environment(FiltersTracker.self) var filtersTracker
     @Environment(\.palette) var palette

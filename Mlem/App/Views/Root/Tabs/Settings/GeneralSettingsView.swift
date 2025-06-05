@@ -45,7 +45,7 @@ struct GeneralSettingsView: View {
                 )
                 NavigationLink(
                     "Haptics",
-                    value: .init(localized: hapticLevel.label),
+                    value: .init(localized: hapticLevel?.label ?? "None"),
                     fallbackValue: "",
                     icon: .general.haptics,
                     destination: .settings(.haptics)

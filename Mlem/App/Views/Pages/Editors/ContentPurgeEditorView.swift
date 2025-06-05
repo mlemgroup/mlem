@@ -6,11 +6,13 @@
 //
 
 import ComponentViews
+import Haptics
 import MlemMiddleware
 import SwiftUI
 
 struct ContentPurgeEditorView: View {
     @Environment(AppState.self) var appState
+    @Environment(HapticManager.self) var hapticManager
     @Environment(\.dismiss) var dismiss
     
     let target: any PurgableProviding
@@ -73,7 +75,7 @@ struct ContentPurgeEditorView: View {
     func send() async {
         do {
             try await target.purge(reason: reason.isEmpty ? nil : reason)
-            HapticManager.main.play(haptic: .success, priority: .low)
+            hapticManager.play(haptic: .success, tier: .low)
             dismiss()
         } catch {
             handleError(error)

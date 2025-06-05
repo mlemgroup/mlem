@@ -3815,6 +3815,9 @@
         }
       }
     },
+    "High" : {
+
+    },
     "Hot" : {
       "localizations" : {
         "fr" : {
@@ -4445,6 +4448,9 @@
       }
     },
     "Long Press Action" : {
+
+    },
+    "Low" : {
 
     },
     "Manage how Mlem handles links and control how images and videos are displayed." : {

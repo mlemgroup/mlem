@@ -5,11 +5,13 @@
 //  Created by Sjmarf on 30/09/2023.
 //
 
+import Haptics
 import MlemMiddleware
 import PhotosUI
 import SwiftUI
 
 struct UploadConfirmationView: View {
+    @Environment(HapticManager.self) var hapticManager
     @Environment(\.palette) var palette
     @Environment(\.dismiss) var dismiss
     
@@ -64,7 +66,7 @@ struct UploadConfirmationView: View {
                                 isUploading = true
                                 do {
                                     try await imageManager.upload(data: imageData, api: uploadApi)
-                                    HapticManager.main.play(haptic: .success, priority: .low)
+                                    hapticManager.play(haptic: .success, tier: .low)
                                     dismiss()
                                 } catch {
                                     handleError(error)

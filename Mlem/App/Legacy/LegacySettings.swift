@@ -7,6 +7,7 @@
 //
 
 import Dependencies
+import Haptics
 import MlemMiddleware
 import SwiftUI
 
@@ -36,7 +37,7 @@ class LegacySettings: ObservableObject {
 
     @AppStorage("quickSwipes.enabled") var quickSwipesEnabled: Bool = true
     
-    @AppStorage("behavior.hapticLevel") var hapticLevel: HapticPriority = .low
+    @AppStorage("behavior.hapticLevel") var hapticLevel: HapticTier = .high
     @AppStorage("behavior.upvoteOnSave") var upvoteOnSave: Bool = false
     @AppStorage("behavior.internetSpeed") var internetSpeed: InternetSpeed = .fast
     @AppStorage("behavior.autoplayMedia") var autoplayMedia: Bool = false

@@ -7,10 +7,13 @@
 //
 
 import Dependencies
+import Haptics
 import Icons
 import SwiftUI
 
 struct SectionIndexTitles: View {
+    @Environment(HapticManager.self) var hapticManager
+    
     struct Section: Identifiable {
         let label: String
         var icon: Icon?
@@ -67,7 +70,7 @@ struct SectionIndexTitles: View {
                                     Task { @MainActor in
                                         lastSelectedLabel = sectionLabel
                                         sectionScroller = sectionIndex
-                                        HapticManager.main.play(haptic: .rigidInfo, priority: .low)
+                                        hapticManager.play(haptic: .rigidInfo, tier: .low)
                                     }
                                 }
                             }
