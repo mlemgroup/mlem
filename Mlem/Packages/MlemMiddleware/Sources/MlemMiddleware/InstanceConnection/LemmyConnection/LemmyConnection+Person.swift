@@ -1,0 +1,313 @@
+//
+//  File.swift
+//  MlemMiddleware
+//
+//  Created by Sjmarf on 2025-06-06.
+//
+
+import Foundation
+
+public extension LemmyConnection {
+    func getPerson(id: Int) async throws -> Person3Snapshot {
+        let response = try await performingForEndpoint { endpoint in
+            ReadPersonRequest(
+                endpoint: endpoint,
+                personId: id,
+                username: nil,
+                sort: .new,
+                page: 1,
+                limit: 1,
+                communityId: nil,
+                savedOnly: nil
+            )
+        }
+        return try .init(from: response)
+    }
+    
+    func getPerson(url: URL) async throws -> Person2Snapshot {
+        do {
+            let response = try await performingForEndpoint { endpoint in
+                ResolveObjectRequest(endpoint: .v3, q: url.absoluteString)
+            }
+            if let person = response.person {
+                return try .init(from: person)
+            }
+        } catch let ApiClientError.response(response, _) where response.couldntFindObject {
+            throw ApiClientError.noEntityFound
+        }
+        throw ApiClientError.noEntityFound
+    }
+    
+    func getPerson(username: String) async throws -> Person3Snapshot {
+        do {
+            let response = try await performingForEndpoint { endpoint in
+                ReadPersonRequest(
+                    endpoint: endpoint,
+                    personId: nil,
+                    username: username,
+                    sort: nil,
+                    page: nil,
+                    limit: nil,
+                    communityId: nil,
+                    savedOnly: nil
+                )
+            }
+            return try .init(from: response)
+        } catch let ApiClientError.response(response, _) where response.couldntFindObject {
+            throw ApiClientError.noEntityFound
+        }
+    }
+    
+    func getPerson(url: URL) async throws -> Person3Snapshot {
+        let person: Person2Snapshot = try await getPerson(url: url)
+        return try await getPerson(id: person.person.id)
+    }
+    
+    /// `filter` can be set to `.local` from 0.19.4 onwards.
+    func searchPeople(
+        query: String,
+        page: Int = 1,
+        limit: Int = 20,
+        filter: ApiListingType = .all,
+        sort: SearchSortType = .top(.allTime)
+    ) async throws -> [Person2Snapshot] {
+        let response = try await performingForEndpoint { endpoint in
+            SearchRequest(
+                endpoint: endpoint,
+                q: query,
+                communityId: nil,
+                communityName: nil,
+                creatorId: nil,
+                type_: .users,
+                sort: .init(
+                    oldSortType: endpoint == .v3 ? sort.legacyApiSortType : nil,
+                    newSortType: endpoint == .v4 ? sort.apiSortType : nil
+                ),
+                listingType: filter,
+                page: page,
+                limit: limit,
+                postTitleOnly: false,
+                searchTerm: query,
+                timeRangeSeconds: sort.timeRangeSeconds,
+                titleOnly: nil,
+                postUrlOnly: nil,
+                likedOnly: nil,
+                dislikedOnly: nil,
+                showNsfw: nil,
+                pageCursor: nil,
+                pageBack: nil
+            )
+        }
+        return try response.users?.map { try .init(from: $0) } ?? []
+    }
+    
+    @discardableResult
+    func blockPerson(id: Int, block: Bool) async throws -> Person2Snapshot {
+        let response = try await performingForEndpoint { endpoint in
+            UserBlockPersonRequest(endpoint: endpoint, personId: id, block: block)
+        }
+        return try .init(from: response.personView)
+    }
+    
+    @discardableResult
+    func banPersonFromCommunity(
+        personId: Int,
+        communityId: Int,
+        ban: Bool,
+        removeContent: Bool,
+        reason: String?,
+        expires: Date? = nil
+    ) async throws -> Person2Snapshot {
+        let expiryTimestamp: Int?
+        if let expires {
+            expiryTimestamp = Int(expires.timeIntervalSince1970)
+        } else {
+            expiryTimestamp = nil
+        }
+        let response = try await performingForEndpoint { endpoint in
+            BanFromCommunityRequest(
+                endpoint: endpoint,
+                communityId: communityId,
+                personId: personId,
+                ban: ban,
+                removeData: removeContent,
+                reason: reason,
+                expires: expiryTimestamp,
+                removeOrRestoreData: removeContent
+            )
+        }
+        guard response.banned == ban else { throw ApiClientError.unsuccessful }
+        return try .init(from: response.personView)
+    }
+    
+    @discardableResult
+    func banPersonFromInstance(
+        personId: Int,
+        ban: Bool,
+        removeContent: Bool,
+        reason: String?,
+        expires: Date? = nil
+    ) async throws -> Person2Snapshot {
+        let expiryTimestamp: Int?
+        if let expires {
+            expiryTimestamp = Int(expires.timeIntervalSince1970)
+        } else {
+            expiryTimestamp = nil
+        }
+        let response = try await performingForEndpoint { endpoint in
+            BanFromSiteRequest(
+                endpoint: endpoint,
+                personId: personId,
+                ban: ban,
+                removeData: removeContent,
+                reason: reason,
+                expires: expiryTimestamp,
+                removeOrRestoreData: removeContent
+            )
+        }
+        guard response.banned == ban else { throw ApiClientError.unsuccessful }
+        return try .init(from: response.personView)
+    }
+    
+    func purgePerson(id: Int, reason: String?) async throws {
+        let response = try await performingForEndpoint { endpoint in
+            PurgePersonRequest(endpoint: endpoint, personId: id, reason: reason)
+        }
+        guard response.success else { throw ApiClientError.unsuccessful }
+    }
+    
+    func getContent(
+        authorId id: Int,
+        sort: ApiSortType,
+        page: Int,
+        limit: Int,
+        savedOnly: Bool? = nil,
+        communityId: Int? = nil
+    ) async throws -> (person: Person3Snapshot, posts: [Post2Snapshot], comments: [Comment2Snapshot]) {
+        let response = try await performingForEndpoint { endpoint in
+            ReadPersonRequest(
+                endpoint: .v3,
+                personId: id,
+                username: nil,
+                sort: sort,
+                page: page,
+                limit: limit,
+                communityId: nil,
+                savedOnly: savedOnly
+            )
+        }
+        return try (
+            person: .init(from: response),
+            posts: response.posts?.map { try .init(from: $0) } ?? [],
+            comments: response.comments?.map { try .init(from: $0) } ?? []
+        )
+    }
+    
+    func getMyPerson() async throws -> (person: Person4Snapshot?, instance: Instance3Snapshot, blocks: BlockListSnapshot?) {
+        let response = try await performingForEndpoint { endpoint in
+            GetSiteRequest(endpoint: endpoint)
+        }
+        
+        var person: Person4Snapshot?
+        var blocks: BlockListSnapshot?
+        if let myUser = response.myUser {
+            person = try .init(from: myUser)
+            blocks = .init(from: myUser)
+        }
+        
+        return try (
+            person: person,
+            instance: .init(from: response),
+            blocks: blocks
+        )
+    }
+    
+    func deleteAccount(password: String, deleteContent: Bool) async throws {
+        let response = try await performingForEndpoint { endpoint in
+            DeleteAccountRequest(
+                endpoint: endpoint,
+                password: password,
+                deleteContent: deleteContent
+            )
+        }
+        guard response.success else {
+            throw ApiClientError.unsuccessful
+        }
+    }
+    
+    func editAccountSettings(
+        showNsfw: Bool?,
+        showScores: Bool?,
+        theme: String?,
+        defaultListingType: ApiListingType?,
+        interfaceLanguage: String?,
+        avatar: String?,
+        banner: String?,
+        displayName: String?,
+        email: String?,
+        bio: String?,
+        matrixUserId: String?,
+        showAvatars: Bool?,
+        sendNotificationsToEmail: Bool?,
+        botAccount: Bool?,
+        showBotAccounts: Bool?,
+        showReadPosts: Bool?,
+        discussionLanguages: [Int]?,
+        openLinksInNewTab: Bool?,
+        blurNsfw: Bool?,
+        autoExpand: Bool?,
+        infiniteScrollEnabled: Bool?,
+        postListingMode: ApiPostListingMode?,
+        enableKeyboardNavigation: Bool?,
+        enableAnimatedImages: Bool?,
+        collapseBotComments: Bool?,
+        showUpvotes: Bool?,
+        showDownvotes: Bool?,
+        showUpvotePercentage: Bool?
+    ) async throws {
+        let response = try await performingForEndpoint { endpoint in
+            SaveUserSettingsRequest(
+                endpoint: .v3,
+                showNsfw: showNsfw,
+                blurNsfw: blurNsfw,
+                autoExpand: autoExpand,
+                showScores: showScores,
+                theme: theme,
+                defaultSortType: nil,
+                defaultListingType: defaultListingType,
+                interfaceLanguage: interfaceLanguage,
+                avatar: avatar,
+                banner: banner,
+                displayName: displayName,
+                email: email,
+                bio: bio,
+                matrixUserId: matrixUserId,
+                showAvatars: showAvatars,
+                sendNotificationsToEmail: sendNotificationsToEmail,
+                botAccount: botAccount,
+                showBotAccounts: showBotAccounts,
+                showReadPosts: showReadPosts,
+                discussionLanguages: discussionLanguages,
+                openLinksInNewTab: openLinksInNewTab,
+                infiniteScrollEnabled: infiniteScrollEnabled,
+                postListingMode: postListingMode,
+                enableKeyboardNavigation: enableKeyboardNavigation,
+                enableAnimatedImages: enableAnimatedImages,
+                collapseBotComments: collapseBotComments,
+                showUpvotes: showUpvotes,
+                showDownvotes: showDownvotes,
+                showUpvotePercentage: showUpvotePercentage,
+                defaultPostSortType: nil,
+                defaultPostTimeRangeSeconds: nil,
+                defaultCommentSortType: nil,
+                blockingKeywords: nil,
+                enablePrivateMessages: nil,
+                autoMarkFetchedPostsAsRead: nil,
+                hideMedia: nil
+            )
+        }
+        guard response.success else {
+            throw ApiClientError.unsuccessful
+        }
+    }
+}

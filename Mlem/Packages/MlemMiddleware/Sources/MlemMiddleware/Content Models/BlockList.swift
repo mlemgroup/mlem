@@ -133,7 +133,7 @@ public class BlockList {
         update(
             people: myUserInfo.personBlocks,
             communities: myUserInfo.communityBlocks,
-            instances: myUserInfo.instanceBlocks ?? []
+            instances: myUserInfo.instanceBlocks
         )
     }
     
