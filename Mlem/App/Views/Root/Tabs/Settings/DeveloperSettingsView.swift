@@ -8,18 +8,24 @@
 import Dependencies
 import MlemMiddleware
 import SwiftUI
+import Theming
 
 // Strings in this view are intentionally left unlocalized; we shouldn't
 // be burdening translators with these when they'll never be used
 
 struct DeveloperSettingsView: View {
+    @Environment(BackendClient.self) var backendClient
+    
     @Environment(NavigationLayer.self) var navigation
     @Dependency(\.persistenceRepository) var persistenceRepository
     
     @Setting(\.tip_feedWelcomePrompt) var showFeedWelcomePrompt
     @Setting(\.dev_developerMode) var developerMode
     
-    @AppStorage("lastBuildNumber") var lastBuildNumber: String?
+    @AppStorage("lastTestFlightUpdate") var lastTestFlightUpdate: URL?
+    
+    @State var backendStatus: Bool?
+    @State var lastBackendStatusCheck: Date?
     
     var body: some View {
         Form {
@@ -27,6 +33,30 @@ struct DeveloperSettingsView: View {
                 Toggle(String("Developer Mode"), isOn: $developerMode)
                 NavigationLink(String("Error Log"), destination: .settings(.errorLog))
             }
+            
+            Section {
+                HStack {
+                    Text(verbatim: "Status")
+                    Spacer()
+                    if let backendStatus {
+                        Image(systemName: Icons.present)
+                            .foregroundStyle(backendStatus ? .themedPositive : .themedNegative)
+                    } else {
+                        ProgressView()
+                    }
+                }
+                
+                Button("Refresh") { checkBackendStatus() }
+            } header: {
+                Text(verbatim: "Backend")
+            } footer: {
+                if let lastBackendStatusCheck {
+                    Text(verbatim: "Refreshed \(lastBackendStatusCheck.formatted(date: .abbreviated, time: .standard))")
+                } else {
+                    Text(verbatim: "Refreshing...")
+                }
+            }
+            .onAppear { checkBackendStatus() }
             
             #if DEBUG
                 Section {
@@ -39,7 +69,7 @@ struct DeveloperSettingsView: View {
                     }
                 
                     Button(String("Reset Feed TestFlight Banner")) {
-                        lastBuildNumber = nil
+                        lastTestFlightUpdate = nil
                     }
                 
                     Button(String("Create Error")) {
@@ -62,5 +92,17 @@ struct DeveloperSettingsView: View {
             }
         }
         .navigationTitle("Developer")
+    }
+    
+    private func checkBackendStatus() {
+        Task {
+            do {
+                backendStatus = try await backendClient.healthCheck()
+            } catch {
+                handleError(error)
+                backendStatus = false
+            }
+            lastBackendStatusCheck = .now
+        }
     }
 }
