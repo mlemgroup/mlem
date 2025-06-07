@@ -23,7 +23,8 @@ struct ContentView: View {
     @Setting(\.tab_profile_showAvatar) var tabProfileShowAvatar
     @Setting(\.tab_gestures_longPressAction) var tabLongPressAction
     @Setting(\.dev_developerMode) var developerMode
-    
+    @Setting(\.behavior_hapticLevel) var hapticLevel
+
     let cacheCleanTimer = Timer.publish(every: 10, on: .main, in: .common).autoconnect()
     let unreadCountTimer = Timer.publish(every: 30, on: .main, in: .common).autoconnect()
     
@@ -93,7 +94,7 @@ struct ContentView: View {
                         }
                     }
                 }
-                .hapticConfiguration(maximumHapticTier: .none, errorHandler: handleHapticError)
+                .hapticConfiguration(maximumHapticTier: hapticLevel, errorHandler: handleHapticError)
                 .environment(AppState.main)
         }
     }
