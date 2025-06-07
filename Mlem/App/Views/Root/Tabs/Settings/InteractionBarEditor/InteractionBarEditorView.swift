@@ -6,10 +6,12 @@
 //
 
 import Flow
+import Haptics
 import SwiftUI
 import Theming
 
 struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: View {
+    @Environment(HapticManager.self) var hapticManager
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.palette) var palette
     

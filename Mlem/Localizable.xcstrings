@@ -2025,6 +2025,12 @@
         }
       }
     },
+    "Collapse" : {
+
+    },
+    "Collapse Parent" : {
+
+    },
     "Collapse Post" : {
       "localizations" : {
         "fr" : {
@@ -2034,6 +2040,9 @@
           }
         }
       }
+    },
+    "Collapse to Top" : {
+
     },
     "Comment" : {
       "localizations" : {
@@ -3005,6 +3014,9 @@
         }
       }
     },
+    "Email Address" : {
+
+    },
     "Email Verification" : {
       "localizations" : {
         "fr" : {
@@ -3815,6 +3827,9 @@
         }
       }
     },
+    "High" : {
+
+    },
     "Hot" : {
       "localizations" : {
         "fr" : {
@@ -4445,6 +4460,9 @@
       }
     },
     "Long Press Action" : {
+
+    },
+    "Low" : {
 
     },
     "Manage how Mlem handles links and control how images and videos are displayed." : {
@@ -9331,6 +9349,9 @@
           }
         }
       }
+    },
+    "You cannot use a temporary email address." : {
+
     },
     "You don't have an email attached to this account." : {
       "localizations" : {

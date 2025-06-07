@@ -5,12 +5,14 @@
 //  Created by Sjmarf on 2024-12-12.
 //
 
+import Haptics
 import MlemMiddleware
 import SwiftUI
 
 extension AdvancedSortView {
     struct SortButton: View {
         @Environment(AppState.self) var appState
+        @Environment(HapticManager.self) var hapticManager
         @Environment(\.dismiss) var dismiss
 
         let type: PostSortType
@@ -43,7 +45,7 @@ extension AdvancedSortView {
                         .padding(.vertical, Constants.main.halfSpacing)
                         Spacer()
                         Button("Pin", icon: .lemmy.pinned) {
-                            HapticManager.main.play(haptic: .gentleInfo, priority: .low)
+                            hapticManager.play(haptic: .gentleInfo, tier: .low)
                             if PinnedSortTracker.main.pinnedSortTypes.contains(type) {
                                 PinnedSortTracker.main.pinnedSortTypes.remove(type)
                             } else {

@@ -6,6 +6,7 @@
 //
 
 import ComponentViews
+import Haptics
 import LemmyMarkdownUI
 import MlemMiddleware
 import SwiftUI
@@ -16,6 +17,7 @@ struct PersonBanEditorView: View {
     }
     
     @Environment(AppState.self) var appState
+    @Environment(HapticManager.self) var hapticManager
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.dismiss) var dismiss
     
@@ -215,7 +217,7 @@ struct PersonBanEditorView: View {
     func daysPresetButton(_ date: DateComponents, value: Int) -> some View {
         Button(dateFormatter.string(for: date) ?? "") {
             days = value
-            HapticManager.main.play(haptic: .gentleInfo, priority: .low)
+            hapticManager.play(haptic: .gentleInfo, tier: .low)
         }
         .buttonStyle(BanFormButtonStyle(selected: days == value && !isPermanent))
     }

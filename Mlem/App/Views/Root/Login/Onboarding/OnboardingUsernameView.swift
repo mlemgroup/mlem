@@ -10,8 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct OnboardingUsernameView: View {
-    let instance: Instance3
-    let back: () -> Void
+    @Environment(OnboardingModel.self) var model
     
     @State var username: String = ""
     @FocusState var focused: Bool
@@ -38,7 +37,7 @@ struct OnboardingUsernameView: View {
         .overlay(alignment: .topLeading) {
             Button("Back", icon: .general.backward) {
                 focused = false
-                back()
+                model.page = .recommendInstance
             }
             .fontWeight(.semibold)
             .imageScale(.large)
@@ -71,7 +70,7 @@ struct OnboardingUsernameView: View {
                 if !username.isEmpty {
                     try await Task.sleep(for: .seconds(0.5))
                 }
-                usernameValidity = try await instance.usernameIsValidForNewAccount(username)
+                usernameValidity = try await model.instance?.usernameIsValidForNewAccount(username)
             } catch ApiClientError.cancelled {
                 // no-op
             } catch {
@@ -104,21 +103,21 @@ struct OnboardingUsernameView: View {
         Text(validityWarningText)
             .font(.footnote)
             .foregroundStyle(.secondary)
-            .lineLimit(3, reservesSpace: true)
+            .lineLimit(2, reservesSpace: true)
     }
     
     var validityWarningText: String {
-        guard let usernameValidity else { return "" }
+        guard let usernameValidity else { return " " }
         if usernameValidity != .available {
             return String(localized: usernameValidity.label)
         } else {
-            return ""
+            return " "
         }
     }
     
     func submit() {
-        Task {
-            guard usernameValidity == .available else { return }
-        }
+        guard usernameValidity == .available else { return }
+        model.username = username
+        model.page = .email
     }
 }

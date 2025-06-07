@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 2025-01-25.
 //
 
+import Haptics
 import MlemMiddleware
 import SwiftUI
 
@@ -14,6 +15,7 @@ struct ChangePasswordView: View {
     }
     
     @Environment(AppState.self) var appState
+    @Environment(HapticManager.self) var hapticManager
     @Environment(\.dismiss) var dismiss
 
     @State private var viewState: ViewState = .initial
@@ -107,7 +109,7 @@ struct ChangePasswordView: View {
                     )
                     AccountsTracker.main.saveAccounts(ofType: .user)
                     viewState = .success
-                    HapticManager.main.play(haptic: .success, priority: .high)
+                    hapticManager.play(haptic: .success, tier: .high)
                     try? await Task.sleep(for: .seconds(0.5))
                     dismiss()
                     // Catch separately to prevent the token expiry sheet opening in this view

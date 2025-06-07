@@ -6,6 +6,7 @@
 //
 
 import Dependencies
+import Haptics
 import MlemMiddleware
 import Nuke
 import SwiftUI
@@ -21,7 +22,9 @@ struct ContentView: View {
     @Setting(\.tab_profile_labelType) var tabProfileLabelType
     @Setting(\.tab_profile_showAvatar) var tabProfileShowAvatar
     @Setting(\.tab_gestures_longPressAction) var tabLongPressAction
-    
+    @Setting(\.dev_developerMode) var developerMode
+    @Setting(\.behavior_hapticLevel) var hapticLevel
+
     let cacheCleanTimer = Timer.publish(every: 10, on: .main, in: .common).autoconnect()
     let unreadCountTimer = Timer.publish(every: 30, on: .main, in: .common).autoconnect()
     
@@ -92,12 +95,8 @@ struct ContentView: View {
                             }
                         }
                     }
-                    if scenePhase == .active {
-                        // When the app moves into the background, the haptic engine stops.
-                        // This ensures the engine is started before a haptic is played to avoid a short lag while the engine starts
-                        HapticManager.main.startEngine()
-                    }
                 }
+                .hapticConfiguration(maximumHapticTier: hapticLevel, errorHandler: handleHapticError)
                 .environment(AppState.main)
         }
     }
@@ -127,7 +126,7 @@ struct ContentView: View {
                 imageOverride: avatarImage ?? UIImage(systemName: "person.crop.circle"),
                 selectedImageOverride: selectedAvatarImage ?? UIImage(systemName: "person.crop.circle.fill"),
                 onLongPress: {
-                    HapticManager.main.play(haptic: .rigidInfo, priority: .high)
+                    HapticManager.main.play(haptic: .rigidInfo, tier: .high)
                     
                     switch tabLongPressAction {
                     case .openAccountSwitcher:

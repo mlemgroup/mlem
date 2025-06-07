@@ -6,6 +6,7 @@
 //
 
 import ComponentViews
+import Haptics
 import LemmyMarkdownUI
 import MlemMiddleware
 import SwiftUI
@@ -13,6 +14,7 @@ import Theming
 
 struct CommentEditorView: View {
     @Environment(AppState.self) var appState
+    @Environment(HapticManager.self) var hapticManager
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.dismiss) var dismiss
     

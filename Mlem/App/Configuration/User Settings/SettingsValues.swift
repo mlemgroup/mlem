@@ -6,6 +6,7 @@
 //
 
 import Dependencies
+import Haptics
 import MlemMiddleware
 import UIKit
 
@@ -31,7 +32,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     var behavior_biometricUnlock: Bool
     var behavior_confirmImageUploads: Bool
     var behavior_enableQuickSwipes: Bool
-    var behavior_hapticLevel: HapticPriority
+    var behavior_hapticLevel: HapticTier?
     var behavior_internetSpeed: InternetSpeed
     var behavior_upvoteOnSave: Bool
     var behavior_autoplayMedia: Bool
@@ -130,7 +131,13 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.behavior_biometricUnlock = try container.decodeIfPresent(Bool.self, forKey: ._behavior_biometricUnlock) ?? false
         self.behavior_confirmImageUploads = try container.decodeIfPresent(Bool.self, forKey: ._behavior_confirmImageUploads) ?? true
         self.behavior_enableQuickSwipes = try container.decodeIfPresent(Bool.self, forKey: ._behavior_enableQuickSwipes) ?? true
-        self.behavior_hapticLevel = try container.decodeIfPresent(HapticPriority.self, forKey: ._behavior_hapticLevel) ?? .high
+        
+        do {
+            self.behavior_hapticLevel = try container.decodeIfPresent(HapticTier.self, forKey: ._behavior_hapticLevel) ?? .high
+        } catch DecodingError.dataCorrupted { // Decodes the 'sentinel' value, which was replaced with `nil` in Mlem 2.2
+            self.behavior_hapticLevel = nil
+        }
+        
         self.behavior_internetSpeed = try container.decodeIfPresent(InternetSpeed.self, forKey: ._behavior_internetSpeed) ?? .fast
         self.behavior_autoplayMedia = try container.decodeIfPresent(Bool.self, forKey: ._behavior_autoplayMedia) ?? false
         self.behavior_muteVideos = try container.decodeIfPresent(Bool.self, forKey: ._behavior_muteVideos) ?? true

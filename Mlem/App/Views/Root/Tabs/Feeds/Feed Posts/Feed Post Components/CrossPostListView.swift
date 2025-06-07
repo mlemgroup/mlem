@@ -5,11 +5,13 @@
 //  Created by Sjmarf on 25/09/2024.
 //
 
+import Haptics
 import MlemMiddleware
 import SwiftUI
 
 struct CrossPostListView: View {
     @Environment(AppState.self) private var appState
+    @Environment(HapticManager.self) var hapticManager
     @Environment(NavigationLayer.self) private var navigation
     
     let post: any Post3Providing
@@ -20,7 +22,7 @@ struct CrossPostListView: View {
         if !post.crossPosts.isEmpty {
             VStack(spacing: Constants.main.halfSpacing) {
                 Button {
-                    HapticManager.main.play(haptic: .gentleInfo, priority: .low)
+                    hapticManager.play(haptic: .gentleInfo, tier: .low)
                     withAnimation(.easeOut(duration: 0.2)) {
                         isExpanded.toggle()
                     }
