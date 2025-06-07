@@ -52,6 +52,8 @@ struct DeveloperSettingsView: View {
             } footer: {
                 if let lastBackendStatusCheck {
                     Text(verbatim: "Refreshed \(lastBackendStatusCheck.formatted(date: .abbreviated, time: .standard))")
+                } else {
+                    Text(verbatim: "Refreshing...")
                 }
             }
             .onAppear { checkBackendStatus() }
@@ -95,7 +97,7 @@ struct DeveloperSettingsView: View {
     private func checkBackendStatus() {
         Task {
             do {
-                backendStatus = try await backendClient.healthcheck()
+                backendStatus = try await backendClient.healthCheck()
             } catch {
                 handleError(error)
                 backendStatus = false

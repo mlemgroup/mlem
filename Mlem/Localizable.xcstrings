@@ -1292,9 +1292,6 @@
         }
       }
     },
-    "Backend" : {
-
-    },
     "Ban" : {
       "localizations" : {
         "fr" : {
@@ -6384,9 +6381,6 @@
         }
       }
     },
-    "Refreshed %@" : {
-
-    },
     "Registration" : {
       "localizations" : {
         "fr" : {
@@ -7598,9 +7592,6 @@
           }
         }
       }
-    },
-    "Status" : {
-
     },
     "Strikethrough" : {
       "localizations" : {
