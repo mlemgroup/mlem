@@ -48,7 +48,7 @@ public class BackendClient {
         }
     }
     
-    public func healthcheck() async throws -> Bool {
+    public func healthCheck() async throws -> Bool {
         let (data, _) = try await URLSession.shared.data(for: URLRequest(url: baseUrl.appendingPathComponent("/health")))
         return try jsonDecoder.decode(Bool.self, from: data)
     }
