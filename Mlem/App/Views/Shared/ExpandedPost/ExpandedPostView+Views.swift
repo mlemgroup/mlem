@@ -24,6 +24,7 @@ extension ExpandedPostView {
     }
     
     @ViewBuilder
+    // swiftlint:disable:next function_body_length
     func commentTree(tracker: CommentTreeTracker, scrollProxy: ScrollViewProxy) -> some View {
         ForEach(generateViewTree(for: tracker.nodes), id: \.hashValue) { item in
             Group {
@@ -42,9 +43,19 @@ extension ExpandedPostView {
                         if tapCommentsToCollapse {
                             withAnimation(UIAccessibility.isReduceMotionEnabled ? nil : .default) {
                                 node.collapsed.toggle()
-                                if node.collapsed {
-                                    scrollProxy.scrollTo(comment.actorId)
-                                }
+                            }
+                        }
+                    }
+                    .onChange(of: node.collapsed) { _, isCollapsed in
+                        guard isCollapsed else { return }
+                        
+                        withAnimation(UIAccessibility.isReduceMotionEnabled ? nil : .default) {
+                            if node == node.topParent,
+                               let topParentIndex = tracker.nodes.firstIndex(of: node),
+                               topParentIndex + 1 < tracker.nodes.count {
+                                scrollProxy.scrollTo(tracker.nodes[topParentIndex + 1].actorId, anchor: .top)
+                            } else {
+                                scrollProxy.scrollTo(comment.actorId)
                             }
                         }
                     }
