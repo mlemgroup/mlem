@@ -127,6 +127,7 @@ public extension ApiClient {
             postUrlOnly: nil,
             likedOnly: nil,
             dislikedOnly: nil,
+            showNsfw: nil,
             pageCursor: nil,
             pageBack: nil
         )

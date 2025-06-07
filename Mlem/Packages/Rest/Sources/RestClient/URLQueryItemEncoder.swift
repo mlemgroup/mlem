@@ -7,22 +7,31 @@
 
 import Foundation
 
-enum URLQueryItemEncoder {
-    static func encode(_ value: some Encodable) throws -> [URLQueryItem] {
+public enum URLQueryItemEncoder {
+    static func encode(_ value: some Encodable) throws(URLQueryItemEncoderError) -> [URLQueryItem] {
         let encoder = InternalURLQueryItemEncoder()
-        try value.encode(to: encoder)
+        do {
+            try value.encode(to: encoder)
+        } catch {
+            if let error = error as? URLQueryItemEncoderError {
+                throw error
+            }
+            assertionFailure()
+            throw .unknown
+        }
         return encoder.queryParams
     }
 }
 
-protocol URLQueryItemEncodable {
+public protocol URLQueryItemEncodable {
     func encodeInQueryItemFormat() -> String?
 }
 
-enum URLQueryItemEncoderError: Error {
+public enum URLQueryItemEncoderError: Error {
     case nestedContainersUnsupported
     case singleValueContainerUnsupported
     case unkeyedContainerUnsupported
+    case unknown // Should never be thrown
 }
 
 private class InternalURLQueryItemEncoder: Encoder {
@@ -90,7 +99,9 @@ private class KeyedContainer<K: CodingKey>: KeyedEncodingContainerProtocol {
         }
     }
 
-    func nestedContainer<NestedKey>(keyedBy type: NestedKey.Type, forKey key: K) -> KeyedEncodingContainer<NestedKey> where NestedKey: CodingKey {
+    func nestedContainer<NestedKey>(
+        keyedBy type: NestedKey.Type, forKey key: K
+    ) -> KeyedEncodingContainer<NestedKey> where NestedKey: CodingKey {
         assertionFailure("We should throw an error *before* this gets called")
         return KeyedEncodingContainer(KeyedContainer<NestedKey>(encoder: encoder))
     }

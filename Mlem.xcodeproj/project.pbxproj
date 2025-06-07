@@ -182,6 +182,7 @@
 		0377BE3B2DE8E70D00E38593 /* HapticLevel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0377BE3A2DE8E70D00E38593 /* HapticLevel+Extensions.swift */; };
 		0377BE9B2DEA328900E38593 /* OnboardingEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0377BE9A2DEA328900E38593 /* OnboardingEmailView.swift */; };
 		0377BE9F2DEA361600E38593 /* OnboardingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0377BE9E2DEA361600E38593 /* OnboardingModel.swift */; };
+		0377BF9B2DF0E0E000E38593 /* Rest in Frameworks */ = {isa = PBXBuildFile; productRef = 0377BF9A2DF0E0E000E38593 /* Rest */; };
 		037DE0752CE023E3007F7B92 /* BlockListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DE0742CE023E3007F7B92 /* BlockListView.swift */; };
 		037DE07A2CE108D9007F7B92 /* FooterLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DE0792CE108D9007F7B92 /* FooterLinkView.swift */; };
 		037F77ED2D3B064B00D4E180 /* SettingsDeviceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037F77EC2D3B064B00D4E180 /* SettingsDeviceView.swift */; };
@@ -1060,6 +1061,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0377BF9B2DF0E0E000E38593 /* Rest in Frameworks */,
 				03A9FD162D7CEC09007A734D /* Theming in Frameworks */,
 				03FA318C2C6FECAE00D47FA3 /* Flow in Frameworks */,
 				030FF6792BC84F7E00F6BFAC /* SwiftUIIntrospect in Frameworks */,
@@ -2318,6 +2320,7 @@
 				036879992DA1320000E796EF /* ComponentViews */,
 				CDA711FA2DB5CAC3008BC3ED /* Media */,
 				03D8BF422DA55B6900506687 /* Icons */,
+				0377BF9A2DF0E0E000E38593 /* Rest */,
 				0377BE282DE7A2DE00E38593 /* Haptics */,
 			);
 			productName = Mlem;
@@ -3424,6 +3427,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 037386452BDAFE81007492B5 /* XCRemoteSwiftPackageReference "LemmyMarkdownUI" */;
 			productName = LemmyMarkdownUI;
+		};
+		0377BF9A2DF0E0E000E38593 /* Rest */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Rest;
 		};
 		0377BE282DE7A2DE00E38593 /* Haptics */ = {
 			isa = XCSwiftPackageProductDependency;
