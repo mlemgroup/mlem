@@ -22,7 +22,7 @@ struct FeedsView: View {
     @Setting(\.behavior_internetSpeed) var internetSpeed
     @Setting(\.links_embedLoops) var embedLoops
     
-    @AppStorage("lastTestflightUpdate") var lastTestflightUpdate: URL?
+    @AppStorage("lastTestFlightUpdate") var lastTestFlightUpdate: URL?
 
     @ObservationIgnored @Dependency(\.persistenceRepository) private var persistenceRepository
     
@@ -145,7 +145,7 @@ struct FeedsView: View {
                     FeedWelcomeView()
                         .padding([.horizontal, .bottom], Constants.main.standardSpacing)
                 }
-                if Bundle.main.isTestFlight, let testflightUrl = backendClient.testflightUpdate, lastTestflightUpdate != testflightUrl {
+                if Bundle.main.isTestFlight, let testflightUrl = backendClient.testflightUpdate, lastTestFlightUpdate != testflightUrl {
                     UpdateBannerView(url: testflightUrl)
                         .padding([.horizontal, .bottom], Constants.main.standardSpacing)
                 }
@@ -169,7 +169,7 @@ struct FeedsView: View {
                 .buttonStyle(.plain)
             }
         }
-        .animation(.snappy, value: backendClient.testflightUpdate != lastTestflightUpdate)
+        .animation(.snappy, value: backendClient.testflightUpdate != lastTestFlightUpdate)
     }
     
     @MainActor

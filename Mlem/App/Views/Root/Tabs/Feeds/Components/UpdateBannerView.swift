@@ -14,7 +14,7 @@ struct UpdateBannerView: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.palette) var palette
     
-    @AppStorage("lastTestflightUpdate") var lastTestflightUpdate: URL?
+    @AppStorage("lastTestFlightUpdate") var lastTestFlightUpdate: URL?
     
     @State var isLoading: Bool = false
     
@@ -63,7 +63,7 @@ struct UpdateBannerView: View {
     }
     
     func dismiss() {
-        lastTestflightUpdate = url
+        lastTestFlightUpdate = url
     }
     
     func submit() {

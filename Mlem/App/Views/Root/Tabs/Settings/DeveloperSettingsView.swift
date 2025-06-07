@@ -22,7 +22,7 @@ struct DeveloperSettingsView: View {
     @Setting(\.tip_feedWelcomePrompt) var showFeedWelcomePrompt
     @Setting(\.dev_developerMode) var developerMode
     
-    @AppStorage("lastTestflightUpdate") var lastTestflightUpdate: URL?
+    @AppStorage("lastTestFlightUpdate") var lastTestFlightUpdate: URL?
     
     @State var backendStatus: Bool?
     @State var lastBackendStatusCheck: Date?
@@ -69,7 +69,7 @@ struct DeveloperSettingsView: View {
                     }
                 
                     Button(String("Reset Feed TestFlight Banner")) {
-                        lastTestflightUpdate = nil
+                        lastTestFlightUpdate = nil
                     }
                 
                     Button(String("Create Error")) {
