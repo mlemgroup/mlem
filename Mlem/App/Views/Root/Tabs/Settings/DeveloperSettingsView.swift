@@ -36,7 +36,7 @@ struct DeveloperSettingsView: View {
             
             Section {
                 HStack {
-                    Text("Status")
+                    Text(verbatim: "Status")
                     Spacer()
                     if let backendStatus {
                         Image(systemName: Icons.present)
