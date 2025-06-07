@@ -13,8 +13,8 @@ public enum HapticTier: String, CaseIterable, Comparable, Codable {
     
     var intValue: Int {
         switch self {
-        case .high: return 1
-        case .low: return 2
+        case .high: return 2
+        case .low: return 1
         }
     }
     

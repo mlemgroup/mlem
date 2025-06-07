@@ -7,6 +7,7 @@
 
 import Foundation
 import MlemMiddleware
+import SwiftUI
 
 extension Comment1Providing {
     private var self2: (any Comment2Providing)? { self as? any Comment2Providing }
@@ -115,6 +116,7 @@ extension Comment1Providing {
         false
     }
     
+    // swiftlint:disable:next cyclomatic_complexity
     func action(
         appState: AppState,
         type: CommentBarConfiguration.ActionType,
@@ -134,6 +136,9 @@ extension Comment1Providing {
         case .resolve: reportContext?.resolveAction(appState: appState, feedback: [.haptic])
         case .remove: removeAction(appState: appState).disabled(!canModerate)
         case .ban: reportContext?.contextualBanAction(appState: appState)
+        case .collapse: collapseAction(commentTreeTracker: commentTreeTracker)
+        case .collapseParent: collapseParentAction(commentTreeTracker: commentTreeTracker)
+        case .collapseToTop: collapseToTopAction(commentTreeTracker: commentTreeTracker)
         }
     }
     
@@ -186,6 +191,43 @@ extension Comment1Providing {
             id: "viewVotes\(uid)",
             appearance: .viewVotes(),
             callback: callback
+        )
+    }
+    
+    func collapseAction(commentTreeTracker: CommentTreeTracker? = nil) -> BasicAction {
+        .init(
+            id: "collapse\(uid)",
+            appearance: .collapse(),
+            callback: { @MainActor in
+                withAnimation(UIAccessibility.isReduceMotionEnabled ? nil : .default) {
+                    commentTreeTracker?.nodesKeyedByActorId[self.actorId]?.collapsed.toggle()
+                }
+            }
+        )
+    }
+    
+    func collapseParentAction(commentTreeTracker: CommentTreeTracker? = nil) -> BasicAction {
+        .init(
+            id: "collapseParent\(uid)",
+            appearance: .collapseParent(),
+            callback: { @MainActor in
+                withAnimation(UIAccessibility.isReduceMotionEnabled ? nil : .default) {
+                    guard let comment = commentTreeTracker?.nodesKeyedByActorId[self.actorId] else { return }
+                    (comment.parent ?? comment).collapsed.toggle()
+                }
+            }
+        )
+    }
+    
+    func collapseToTopAction(commentTreeTracker: CommentTreeTracker? = nil) -> BasicAction {
+        .init(
+            id: "collapseToTop\(uid)",
+            appearance: .collapseToTop(),
+            callback: { @MainActor in
+                withAnimation(UIAccessibility.isReduceMotionEnabled ? nil : .default) {
+                    commentTreeTracker?.nodesKeyedByActorId[self.actorId]?.topParent.collapsed.toggle()
+                }
+            }
         )
     }
 }
