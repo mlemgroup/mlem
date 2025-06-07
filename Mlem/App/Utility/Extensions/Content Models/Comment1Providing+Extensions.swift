@@ -212,7 +212,8 @@ extension Comment1Providing {
             appearance: .collapseParent(),
             callback: { @MainActor in
                 withAnimation(UIAccessibility.isReduceMotionEnabled ? nil : .default) {
-                    commentTreeTracker?.nodesKeyedByActorId[self.actorId]?.parent?.collapsed.toggle()
+                    guard let comment = commentTreeTracker?.nodesKeyedByActorId[self.actorId] else { return }
+                    (comment.parent ?? comment).collapsed.toggle()
                 }
             }
         )
