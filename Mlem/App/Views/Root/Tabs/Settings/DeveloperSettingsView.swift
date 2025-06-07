@@ -48,7 +48,7 @@ struct DeveloperSettingsView: View {
                 
                 Button("Refresh") { checkBackendStatus() }
             } header: {
-                Text("Backend")
+                Text(verbatim: "Backend")
             } footer: {
                 if let lastBackendStatusCheck {
                     Text("Refreshed \(lastBackendStatusCheck.formatted(date: .abbreviated, time: .standard))")
