@@ -42,10 +42,14 @@ extension ExpandedPostView {
                         if tapCommentsToCollapse {
                             withAnimation(UIAccessibility.isReduceMotionEnabled ? nil : .default) {
                                 node.collapsed.toggle()
-                                if node.collapsed {
-                                    scrollProxy.scrollTo(comment.actorId)
-                                }
                             }
+                        }
+                    }
+                    .onChange(of: node.collapsed) { _, isCollapsed in
+                        guard isCollapsed else { return }
+                        
+                        withAnimation(UIAccessibility.isReduceMotionEnabled ? nil : .default) {
+                            scrollProxy.scrollTo(comment.actorId)
                         }
                     }
                     .quickSwipes(

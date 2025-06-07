@@ -2022,6 +2022,12 @@
         }
       }
     },
+    "Collapse" : {
+
+    },
+    "Collapse Parent" : {
+
+    },
     "Collapse Post" : {
       "localizations" : {
         "fr" : {
@@ -2031,6 +2037,9 @@
           }
         }
       }
+    },
+    "Collapse to Top" : {
+
     },
     "Comment" : {
       "localizations" : {
