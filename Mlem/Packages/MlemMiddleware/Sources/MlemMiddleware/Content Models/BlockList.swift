@@ -30,59 +30,23 @@ public class BlockList {
         self.instances = instances
     }
     
-    convenience init(
-        api: ApiClient,
-        people: [ApiPersonBlockView],
-        communities: [ApiCommunityBlockView],
-        instances: [ApiInstanceBlockView]
-    ) {
+    convenience init(api: ApiClient, blocks: BlockListSnapshot) {
         self.init(
             api: api,
-            people: [ActorIdentifier: Int](),
-            communities: [ActorIdentifier: Int](),
-            instances: [ActorIdentifier: Int]()
-        )
-        
-        update(people: people, communities: communities, instances: instances)
-    }
-    
-    convenience init(api: ApiClient, myUserInfo: ApiMyUserInfo) {
-        self.init(
-            api: api,
-            people: myUserInfo.personBlocks,
-            communities: myUserInfo.communityBlocks,
-            instances: myUserInfo.instanceBlocks ?? []
+            people: blocks.people,
+            communities: blocks.communities,
+            instances: blocks.instances
         )
     }
     
-    func update(
-        people newPeople: [ApiPersonBlockView],
-        communities newCommunities: [ApiCommunityBlockView],
-        instances newInstances: [ApiInstanceBlockView]
-    ) {
-        let newPeople: [ActorIdentifier: Int] = newPeople.reduce(into: [:]) {
-            if let actorId = $1.target.apId ?? $1.target.actorId {
-                $0[actorId] = $1.target.id
-            }
-        }
-        let newCommunities: [ActorIdentifier: Int] = newCommunities.reduce(into: [:]) {
-            if let actorId = $1.community.apId ?? $1.community.actorId {
-                $0[actorId] = $1.community.id
-            }
-        }
-        
-        let newInstances: [ActorIdentifier: Int] = newInstances.reduce(into: [:]) {
-            let actorId: ActorIdentifier = .instance(host: $1.instance.domain)
-            $0[actorId] = $1.instance.id
-        }
-        
+    func update(blocks: BlockListSnapshot) {
         // People
         
         let oldPeopleKeys = Set(people.keys)
-        let newPeopleKeys = Set(newPeople.keys)
+        let newPeopleKeys = Set(blocks.people.keys)
 
         for key in newPeopleKeys.subtracting(oldPeopleKeys) {
-            if let id = newPeople[key], let person = api.caches.person1.retrieveModel(cacheId: id) {
+            if let id = blocks.people[key], let person = api.caches.person1.retrieveModel(cacheId: id) {
                 person.blockedManager.updateWithReceivedValue(true, semaphore: nil)
             }
         }
@@ -94,11 +58,11 @@ public class BlockList {
         
         // Communities
         
-        let oldCommunitiesKeys = Set(people.keys)
-        let newCommunitiesKeys = Set(newPeople.keys)
+        let oldCommunitiesKeys = Set(communities.keys)
+        let newCommunitiesKeys = Set(blocks.communities.keys)
 
         for key in newCommunitiesKeys.subtracting(oldCommunitiesKeys) {
-            if let id = newCommunities[key], let community = api.caches.community1.retrieveModel(cacheId: id) {
+            if let id = blocks.communities[key], let community = api.caches.community1.retrieveModel(cacheId: id) {
                 community.blockedManager.updateWithReceivedValue(true, semaphore: nil)
             }
         }
@@ -111,10 +75,10 @@ public class BlockList {
         // Instances
         
         let oldInstancesKeys = Set(instances.keys)
-        let newInstancesKeys = Set(newInstances.keys)
+        let newInstancesKeys = Set(blocks.instances.keys)
 
         for key in newInstancesKeys.subtracting(oldInstancesKeys) {
-            if let id = newInstances[key], let instance = api.caches.instance1.retrieveModel(instanceId: id) {
+            if let id = blocks.instances[key], let instance = api.caches.instance1.retrieveModel(instanceId: id) {
                 instance.blockedManager.updateWithReceivedValue(true, semaphore: nil)
             }
         }
@@ -124,17 +88,9 @@ public class BlockList {
             }
         }
 
-        people = newPeople
-        communities = newCommunities
-        instances = newInstances
-    }
-    
-    func update(myUserInfo: ApiMyUserInfo) {
-        update(
-            people: myUserInfo.personBlocks,
-            communities: myUserInfo.communityBlocks,
-            instances: myUserInfo.instanceBlocks
-        )
+        people = blocks.people
+        communities = blocks.communities
+        instances = blocks.instances
     }
     
     public func contains(personActorId: ActorIdentifier) -> Bool {

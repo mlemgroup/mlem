@@ -78,7 +78,7 @@ public extension LemmyConnection {
                 pageBack: nil
             )
         }
-        returntry (
+        return try (
             posts: response.posts.map { try .init(from: $0) },
             cursor: response.nextPage
         )
