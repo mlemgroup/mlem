@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Haptics
 import MlemMiddleware
 
 extension Community1Providing {
@@ -27,7 +28,7 @@ extension Community1Providing {
     func toggleSubscribe(feedback: Set<FeedbackType>) {
         if let self2 {
             if feedback.contains(.haptic) {
-                HapticManager.main.play(haptic: .lightSuccess, priority: .low)
+                HapticManager.main.play(haptic: .lightSuccess, tier: .low)
             }
             if feedback.contains(.toast) {
                 let wasFavorited = self2.favorited
@@ -57,7 +58,7 @@ extension Community1Providing {
     func toggleFavorite(feedback: Set<FeedbackType>) {
         if let self2 {
             if feedback.contains(.haptic) {
-                HapticManager.main.play(haptic: .lightSuccess, priority: .low)
+                HapticManager.main.play(haptic: .lightSuccess, tier: .low)
             }
             if feedback.contains(.toast) {
                 if self2.favorited {

@@ -6,6 +6,7 @@
 //
 
 import ComponentViews
+import Haptics
 import MlemMiddleware
 import PhotosUI
 import SwiftUI
@@ -24,6 +25,7 @@ struct PostEditorView: View {
     }
     
     @Environment(AppState.self) var appState
+    @Environment(HapticManager.self) var hapticManager
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.dismiss) var dismiss
     

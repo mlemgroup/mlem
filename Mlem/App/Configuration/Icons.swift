@@ -272,6 +272,17 @@ enum Icons {
     static let chooseFile: String = "folder"
     static let add: String = "plus"
     
+    // collapse actions
+    static let collapse: String = "minus"
+    static let collapseSquare: String = "minus.rectangle"
+    static let collapseSquareFill: String = "minus.rectangle.fill"
+    static let collapseParent: String = "chevron.up"
+    static let collapseParentSquare: String = "chevron.up.square"
+    static let collapseParentSquareFill: String = "chevron.up.square.fill"
+    static let collapseToTop: String = "arrow.up.to.line"
+    static let collapseToTopSquare: String = "arrow.up.to.line.square"
+    static let collapseToTopSquareFill: String = "arrow.up.to.line.square.fill"
+    
     // settings
     static let upvoteOnSave: String = "arrow.up.heart"
     static let readIndicatorSetting: String = "book"

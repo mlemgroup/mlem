@@ -113,7 +113,7 @@ extension InteractionBarEditorView {
         DragGesture(minimumDistance: 0, coordinateSpace: .named("editor"))
             .onChanged { gesture in
                 if barPickedUpItem == nil {
-                    HapticManager.main.play(haptic: .firmInfo, priority: .low)
+                    hapticManager.play(haptic: .firmInfo, tier: .low)
                     barPickedUpItem = (item, index)
                     if let trayItem = trayItems.first(where: { $0.item == item.item }) {
                         withAnimation(.easeOut(duration: barAnimationDuration)) {
@@ -133,7 +133,7 @@ extension InteractionBarEditorView {
         DragGesture(minimumDistance: 0, coordinateSpace: .named("editor"))
             .onChanged { gesture in
                 if trayPickedUpItem == nil {
-                    HapticManager.main.play(haptic: .firmInfo, priority: .low)
+                    hapticManager.play(haptic: .firmInfo, tier: .low)
                     trayPickedUpItem = trayItem
                 }
                 dragLocation = gesture.location
@@ -180,7 +180,7 @@ extension InteractionBarEditorView {
             return
         }
         
-        HapticManager.main.play(haptic: .firmInfo, priority: .high)
+        hapticManager.play(haptic: .firmInfo, tier: .high)
 
         let newItem: BarItem = .init(item: trayItem.item, expanded: false, visible: true)
         
@@ -207,7 +207,7 @@ extension InteractionBarEditorView {
         // noop on move to current location or immediately after current location
         guard targetIndex != sourceIndex, targetIndex != sourceIndex + 1 else { return }
         
-        HapticManager.main.play(haptic: .firmInfo, priority: .high)
+        hapticManager.play(haptic: .firmInfo, tier: .high)
         
         let newItem: BarItem = .init(item: barItem.item, expanded: false, visible: true, ancestor: barItem)
         barItem.hide()
@@ -270,7 +270,7 @@ extension InteractionBarEditorView {
         // no removing the info stack
         guard barItem.item != nil else { return }
         
-        HapticManager.main.play(haptic: .firmInfo, priority: .high)
+        hapticManager.play(haptic: .firmInfo, tier: .high)
         
         // recompute infoStackAlignment with projected info stack location
         let infoStackIndex = infoStackIndex()

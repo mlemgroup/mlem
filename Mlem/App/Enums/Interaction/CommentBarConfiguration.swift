@@ -23,6 +23,9 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
         case resolve
         case remove
         case ban
+        case collapse
+        case collapseParent
+        case collapseToTop
         
         static var defaultWidgets: [ActionType] { [
             .upvote,
@@ -51,6 +54,9 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
             case .resolve: .resolve(isOn: false)
             case .remove: .remove(isOn: false)
             case .ban: .banFromCommunity(isOn: false)
+            case .collapse: .collapse()
+            case .collapseParent: .collapseParent()
+            case .collapseToTop: .collapseToTop()
             }
         }
         
@@ -60,6 +66,7 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
             case .downvote: context.votes_?.myVote ?? .none == .downvote ? [.downvote, .score] : [.downvote]
             case .save: [.saved]
             case .reply, .share, .selectText, .report, .resolve, .remove, .ban: []
+            case .collapse, .collapseParent, .collapseToTop: []
             }
         }
     }

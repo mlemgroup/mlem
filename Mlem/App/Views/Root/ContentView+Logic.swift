@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 25/08/2024.
 //
 
+import Haptics
 import MlemMiddleware
 import Nuke
 import Rest
@@ -47,5 +48,13 @@ extension ContentView {
         } catch {
             handleError(error, silent: true)
         }
+    }
+    
+    func handleHapticError(_ error: HapticError) {
+        let silent = switch error {
+        case .failedToStartEngine: developerMode
+        default: false
+        }
+        handleError(error, silent: silent)
     }
 }

@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 2025-01-01.
 //
 
+import Haptics
 import SwiftUI
 
 extension SearchView {
@@ -25,7 +26,7 @@ extension SearchView {
             }
             if page != .home {
                 Button {
-                    HapticManager.main.play(haptic: .gentleInfo, priority: .low)
+                    hapticManager.play(haptic: .gentleInfo, tier: .low)
                     filtersActive.toggle()
                 } label: {
                     Label("Filters", icon: .general.filter)

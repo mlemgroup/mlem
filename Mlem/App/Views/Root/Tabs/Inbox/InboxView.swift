@@ -5,14 +5,16 @@
 //  Created by Sjmarf on 19/05/2024.
 //
 
+import Haptics
 import LemmyMarkdownUI
 import MlemMiddleware
 import SwiftUI
 import Theming
 
 struct InboxView: View {
-    @Environment(NavigationLayer.self) var navigation
     @Environment(AppState.self) var appState
+    @Environment(HapticManager.self) var hapticManager
+    @Environment(NavigationLayer.self) var navigation
     @Environment(FiltersTracker.self) var filtersTracker
     
     @Setting(\.inbox_showRead) var showRead
