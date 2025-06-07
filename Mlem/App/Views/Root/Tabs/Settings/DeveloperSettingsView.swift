@@ -54,7 +54,7 @@ struct DeveloperSettingsView: View {
                     Text("Refreshed \(lastBackendStatusCheck.formatted(date: .abbreviated, time: .standard))")
                 }
             }
-            .task { checkBackendStatus() }
+            .onAppear { checkBackendStatus() }
             
             #if DEBUG
                 Section {
