@@ -7,23 +7,18 @@
 
 import Foundation
 
-// MARK: - ApiRequest
+// MARK: - RestRequest
 
-enum ApiRequestError: Error {
-    case authenticationRequired
-    case undefinedSession
-}
-
-protocol ApiRequest {
+public protocol RestRequest {
     associatedtype Response: Decodable
 
     var path: String { get }
     var headers: [String: String] { get }
     
-    func endpoint(base: URL) throws -> URL
+    func endpoint(base: URL) throws(URLQueryItemEncoderError) -> URL
 }
 
-extension ApiRequest {
+public extension RestRequest {
     var headers: [String: String] { defaultHeaders }
 
     var defaultHeaders: [String: String] {
@@ -31,22 +26,22 @@ extension ApiRequest {
     }
 }
 
-// MARK: - ApiGetRequest
+// MARK: - GetRequest
 
-protocol ApiGetRequest: ApiRequest {
+public protocol GetRequest: RestRequest {
     associatedtype Parameters: Encodable
     var parameters: Parameters? { get }
 }
 
-extension ApiRequest {
-    func endpoint(base: URL) throws -> URL {
+public extension RestRequest {
+    func endpoint(base: URL) throws(URLQueryItemEncoderError) -> URL {
         base
             .appending(path: path)
     }
 }
 
-extension ApiGetRequest {
-    func endpoint(base: URL) throws -> URL {
+public extension GetRequest {
+    func endpoint(base: URL) throws(URLQueryItemEncoderError) -> URL {
         if let parameters {
             try base
                 .appending(path: path)
@@ -58,13 +53,13 @@ extension ApiGetRequest {
     }
 }
 
-// MARK: - ApiRequestBodyProviding
+// MARK: - RequestWithBody
 
-protocol ApiRequestBodyProviding: ApiRequest {
+public protocol RequestWithBody: RestRequest {
     associatedtype Body: Encodable
     var body: Body? { get }
 }
 
-protocol ApiPostRequest: ApiRequestBodyProviding {}
-protocol ApiPutRequest: ApiRequestBodyProviding {}
-protocol ApiDeleteRequest: ApiRequestBodyProviding {}
+public protocol PostRequest: RequestWithBody {}
+public protocol PutRequest: RequestWithBody {}
+public protocol DeleteRequest: RequestWithBody {}

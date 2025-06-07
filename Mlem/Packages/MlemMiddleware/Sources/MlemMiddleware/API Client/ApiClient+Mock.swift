@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Rest
 
 #if DEBUG
     public extension ApiClient {
@@ -30,14 +31,13 @@ import Foundation
             self.comments = comments
             super.init(
                 url: URL(string: "https://lemmy.world/")!,
-                username: "",
-                permissions: .all
+                username: ""
             )
             contextDataManager.fetchedValue = .init(siteVersion: .v0_19_9, myPersonId: nil)
             self.token = "" // Not nil so that the views are interactable
         }
     
-        override func perform<Request: ApiRequest>(
+        override func perform<Request: RestRequest>(
             _ request: Request,
             tokenOverride: String? = nil,
             requiresToken: Bool = true

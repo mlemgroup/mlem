@@ -7,32 +7,21 @@
 
 import Combine
 import Foundation
+import Rest
 
 @Observable
 public class ApiClient {
-    public enum RequestPermissions {
-        case all, getOnly, none
-    }
-    
-    let decoder: JSONDecoder = {
-        let decoder: JSONDecoder = .defaultDecoder
-        return decoder
-    }()
-    
-    let urlSession: URLSession = .init(configuration: .default)
-    
     // url and username MAY NOT be modified! Downstream code expects that a given ApiClient will *always* submit requests from the same user to the same instance.
     public let baseUrl: URL
     public let username: String?
+    
+    var restClient: RestClient<ApiErrorResponse> = .init()
     
     public internal(set) var token: String?
     
     public private(set) var contextDataManager: SharedTaskManager<Context> = .init()
     
-    /// When `true`, the token will not be attatched to any API requests. This is useful for ensuring that inactive accounts don't accidentally make requests
-    public var permissions: RequestPermissions = .all
-    
-    public var willSendToken: Bool { permissions == .all && token != nil }
+    public var willSendToken: Bool { token != nil }
     
     public internal(set) weak var myInstance: Instance3?
     public internal(set) weak var myPerson: Person4?
@@ -92,12 +81,10 @@ public class ApiClient {
     /// This should never be used outside of ApiClientCache (and MockApiClient), as the caching system depends on one ApiClient existing for any given session.
     init(
         url: URL,
-        username: String? = nil,
-        permissions: RequestPermissions = .all
+        username: String? = nil
     ) {
         self.baseUrl = url
         self.username = username
-        self.permissions = permissions
         contextDataManager.fetchTask = {
             let (person, instance, _) = try await self.getMyPerson()
             return .init(instance: instance, person: person)
@@ -129,112 +116,29 @@ public class ApiClient {
     }
     
     @discardableResult
-    func perform<Request: ApiRequest>(
+    func perform<Request: RestRequest>(
         _ request: Request,
         tokenOverride: String? = nil,
         requiresToken: Bool = true // This should be `true` for the vast majority of requests, even GET requests
     ) async throws -> Request.Response {
-        let token = tokenOverride ?? token
-        
         guard !requiresToken || username == nil || token != nil else {
             throw ApiClientError.noToken
         }
         
-        let urlRequest = try urlRequest(from: request, tokenOverride: tokenOverride)
-        // this line intentionally left commented for convenient future debugging
-        // urlRequest.debug()
-        let (data, response) = try await execute(urlRequest, tokenOverride: tokenOverride)
-        if let response = response as? HTTPURLResponse {
-            if response.statusCode >= 500 { // Error code for server being offline.
-                throw ApiClientError.response(
-                    ApiErrorResponse(error: "Instance appears to be offline.\nTry again later."),
-                    response.statusCode
-                )
-            }
-        }
-        
-        if let apiError = try? decoder.decode(ApiErrorResponse.self, from: data) {
-            // at present we have a single error model which appears to be used throughout
-            // the API, however we may way to consider adding the error model type as an
-            // associated value in the same was as the response to allow requests to define
-            // their own error models when necessary, or drop back to this as the default...
-            
-            if apiError.isNotLoggedIn {
-                throw token == nil ? ApiClientError.notLoggedIn : ApiClientError.invalidSession(self)
-            }
-            
-            let statusCode = (response as? HTTPURLResponse)?.statusCode
-            throw ApiClientError.response(apiError, statusCode)
-        }
-        
-        return try decode(Request.Response.self, from: data)
-    }
-    
-    func execute(
-        _ urlRequest: URLRequest,
-        tokenOverride: String? = nil
-    ) async throws -> (Data, URLResponse) {
-        var urlRequest: URLRequest = urlRequest // make mutable
         let token = tokenOverride ?? token
-        
-        do {
-            return try await urlSession.data(for: urlRequest)
+        do throws(RestError) {
+            return try await restClient.perform(baseUrl: baseUrl, request, token: token)
         } catch {
-            if case URLError.cancelled = error as NSError {
-                throw ApiClientError.cancelled
-            } else {
-                throw ApiClientError.networking(error)
+            switch error {
+            case let RestError.response(response, statusCode: _):
+                if ApiErrorResponse(error: response).isNotLoggedIn {
+                    throw token == nil ? ApiClientError.notLoggedIn : ApiClientError.invalidSession(self)
+                } else {
+                    throw ApiClientError(from: error)
+                }
+            default:
+                throw ApiClientError(from: error)
             }
-        }
-    }
-    
-    func urlRequest(
-        from definition: any ApiRequest,
-        tokenOverride: String? = nil
-    ) throws -> URLRequest {
-        let token = tokenOverride ?? token
-        guard permissions != .none else { throw ApiClientError.insufficientPermissions }
-        let url = try definition.endpoint(base: baseUrl)
-        var urlRequest = mlemUrlRequest(url: url)
-        for header in definition.headers {
-            urlRequest.setValue(header.value, forHTTPHeaderField: header.key)
-        }
-        
-        if definition as? any ApiGetRequest != nil {
-            urlRequest.httpMethod = "GET"
-        } else if let postDefinition = definition as? any ApiPostRequest {
-            urlRequest.httpMethod = "POST"
-            urlRequest.httpBody = try createBodyData(for: postDefinition)
-        } else if let putDefinition = definition as? any ApiPutRequest {
-            urlRequest.httpMethod = "PUT"
-            urlRequest.httpBody = try createBodyData(for: putDefinition)
-        } else if let deleteDefinition = definition as? any ApiDeleteRequest {
-            urlRequest.httpMethod = "DELETE"
-            urlRequest.httpBody = try createBodyData(for: deleteDefinition)
-        }
-        
-        if let token, permissions == .all {
-            urlRequest.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        }
-        
-        return urlRequest
-    }
-    
-    func createBodyData(for defintion: any ApiRequestBodyProviding) throws -> Data {
-        do {
-            let encoder = JSONEncoder()
-            let body = defintion.body ?? ""
-            return try encoder.encode(body)
-        } catch {
-            throw ApiClientError.encoding(error)
-        }
-    }
-    
-    private func decode<T: Decodable>(_ model: T.Type, from data: Data) throws -> T {
-        do {
-            return try decoder.decode(model, from: data)
-        } catch {
-            throw ApiClientError.decoding(data, error)
         }
     }
 }

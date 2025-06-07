@@ -82,7 +82,7 @@ public struct Post2Snapshot: CacheIdentifiable {
     
     init(from report: ApiPostReportView) throws(ApiClientError) {
         self.post = try .init(from: report.post)
-        self.creator = try .init(from: report.creator)
+        self.creator = try .init(from: report.postCreator)
         self.community = try .init(from: report.community)
         
         if let counts = report.counts {

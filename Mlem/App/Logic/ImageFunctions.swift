@@ -9,6 +9,7 @@ import Foundation
 import MlemMiddleware
 import Nuke
 import Photos
+import Rest
 import SwiftUI
 
 func saveMedia(url: URL) async {
