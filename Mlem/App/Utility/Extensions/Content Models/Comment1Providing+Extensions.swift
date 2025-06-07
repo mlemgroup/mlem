@@ -7,6 +7,7 @@
 
 import Foundation
 import MlemMiddleware
+import SwiftUI
 
 extension Comment1Providing {
     private var self2: (any Comment2Providing)? { self as? any Comment2Providing }
@@ -198,7 +199,9 @@ extension Comment1Providing {
             id: "collapse\(uid)",
             appearance: .collapse(),
             callback: { @MainActor in
-                commentTreeTracker?.nodesKeyedByActorId[self.actorId]?.collapsed = true
+                withAnimation(UIAccessibility.isReduceMotionEnabled ? nil : .default) {
+                    commentTreeTracker?.nodesKeyedByActorId[self.actorId]?.collapsed.toggle()
+                }
             }
         )
     }
@@ -208,7 +211,9 @@ extension Comment1Providing {
             id: "collapseParent\(uid)",
             appearance: .collapseParent(),
             callback: { @MainActor in
-                commentTreeTracker?.nodesKeyedByActorId[self.actorId]?.parent?.collapsed = true
+                withAnimation(UIAccessibility.isReduceMotionEnabled ? nil : .default) {
+                    commentTreeTracker?.nodesKeyedByActorId[self.actorId]?.parent?.collapsed.toggle()
+                }
             }
         )
     }
@@ -218,7 +223,9 @@ extension Comment1Providing {
             id: "collapseToTop\(uid)",
             appearance: .collapseToTop(),
             callback: { @MainActor in
-                commentTreeTracker?.nodesKeyedByActorId[self.actorId]?.topParent.collapsed = true
+                withAnimation(UIAccessibility.isReduceMotionEnabled ? nil : .default) {
+                    commentTreeTracker?.nodesKeyedByActorId[self.actorId]?.topParent.collapsed.toggle()
+                }
             }
         )
     }

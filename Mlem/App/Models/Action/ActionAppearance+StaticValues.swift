@@ -285,7 +285,8 @@ extension ActionAppearance {
             label: "Collapse",
             color: .themedColorfulAccent(4),
             icon: Icons.collapse,
-            swipeIcon2: Icons.collapseFill
+            swipeIcon1: Icons.collapseSquare,
+            swipeIcon2: Icons.collapseSquareFill
         )
     }
     
@@ -294,7 +295,8 @@ extension ActionAppearance {
             label: "Collapse Parent",
             color: .themedColorfulAccent(4),
             icon: Icons.collapseParent,
-            swipeIcon2: Icons.collapseParentFill
+            swipeIcon1: Icons.collapseParentSquare,
+            swipeIcon2: Icons.collapseParentSquareFill
         )
     }
     
@@ -303,7 +305,8 @@ extension ActionAppearance {
             label: "Collapse to Top",
             color: .themedColorfulAccent(4),
             icon: Icons.collapseToTop,
-            swipeIcon2: Icons.collapseToTopFill
+            swipeIcon1: Icons.collapseToTopSquare,
+            swipeIcon2: Icons.collapseToTopSquareFill
         )
     }
 }
