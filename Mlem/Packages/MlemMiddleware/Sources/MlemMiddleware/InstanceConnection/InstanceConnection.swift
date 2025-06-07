@@ -293,4 +293,41 @@ public protocol InstanceConnection {
         showDownvotes: Bool?,
         showUpvotePercentage: Bool?
     ) async throws
+    
+    // MARK: - Community
+
+    func getCommunity(id: Int) async throws -> Community3Snapshot
+    func getCommunity(url: URL) async throws -> Community2Snapshot
+    func getCommunity(url: URL) async throws -> Community3Snapshot
+    
+    func searchCommunities(
+        query: String,
+        page: Int,
+        limit: Int,
+        filter: ApiListingType,
+        sort: SearchSortType
+    ) async throws -> [Community2Snapshot]
+    
+    @discardableResult
+    func getSubscriptionList(page: Int, limit: Int) async throws -> [Community2Snapshot]
+    @discardableResult
+    func subscribeToCommunity(id: Int, subscribe: Bool) async throws -> Community2Snapshot
+    @discardableResult
+    func blockCommunity(id: Int, block: Bool) async throws -> Community2Snapshot
+    
+    @discardableResult
+    func removeCommunity(
+        id: Int,
+        remove: Bool,
+        reason: String?
+    ) async throws -> Community2Snapshot
+    
+    func purgeCommunity(id: Int, reason: String?) async throws
+    
+    @discardableResult
+    func addModerator(
+        communityId: Int,
+        personId: Int,
+        added: Bool
+    ) async throws -> (moderators: [Person1Snapshot], community: Community1Snapshot)
 }

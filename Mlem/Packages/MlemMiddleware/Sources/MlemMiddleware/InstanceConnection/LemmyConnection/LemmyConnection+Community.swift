@@ -33,4 +33,119 @@ public extension LemmyConnection {
         let comm: Community2Snapshot = try await getCommunity(url: url)
         return try await getCommunity(id: comm.community.id)
     }
+    
+    func searchCommunities(
+        query: String,
+        page: Int = 1,
+        limit: Int = 20,
+        filter: ApiListingType = .all,
+        sort: SearchSortType = .top(.allTime)
+    ) async throws -> [Community2Snapshot] {
+        let response = try await performingForEndpoint { endpoint in
+            SearchRequest(
+                endpoint: .v3,
+                q: query,
+                communityId: nil,
+                communityName: nil,
+                creatorId: nil,
+                type_: .communities,
+                sort: .init(
+                    oldSortType: endpoint == .v3 ? sort.legacyApiSortType : nil,
+                    newSortType: endpoint == .v4 ? sort.apiSortType : nil
+                ),
+                listingType: filter,
+                page: page,
+                limit: limit,
+                postTitleOnly: false,
+                searchTerm: query,
+                timeRangeSeconds: sort.timeRangeSeconds,
+                titleOnly: nil,
+                postUrlOnly: nil,
+                likedOnly: nil,
+                dislikedOnly: nil,
+                showNsfw: nil,
+                pageCursor: nil,
+                pageBack: nil
+            )
+        }
+        return try response.communities?.map { try .init(from: $0) } ?? []
+    }
+    
+    @discardableResult
+    func getSubscriptionList(page: Int, limit: Int) async throws -> [Community2Snapshot] {
+        let response = try await performingForEndpoint { endpoint in
+            ListCommunitiesRequest(
+                endpoint: endpoint,
+                type_: .subscribed,
+                sort: nil,
+                showNsfw: true,
+                page: page,
+                limit: limit,
+                timeRangeSeconds: nil,
+                pageCursor: nil,
+                pageBack: nil
+            )
+        }
+        return try response.communities.map { try .init(from: $0) }
+    }
+    
+    @discardableResult
+    func subscribeToCommunity(id: Int, subscribe: Bool) async throws -> Community2Snapshot {
+        let response = try await performingForEndpoint { endpoint in
+            FollowCommunityRequest(endpoint: endpoint, communityId: id, follow: subscribe)
+        }
+        return try .init(from: response.communityView)
+    }
+    
+    @discardableResult
+    func blockCommunity(id: Int, block: Bool) async throws -> Community2Snapshot {
+        let response = try await performingForEndpoint { endpoint in
+            UserBlockCommunityRequest(endpoint: endpoint, communityId: id, block: block)
+        }
+        return try .init(from: response.communityView)
+    }
+    
+    @discardableResult
+    func removeCommunity(
+        id: Int,
+        remove: Bool,
+        reason: String?
+    ) async throws -> Community2Snapshot {
+        let response = try await performingForEndpoint { endpoint in
+            RemoveCommunityRequest(endpoint: .v3, communityId: id, removed: remove, reason: reason)
+        }
+        return try .init(from: response.communityView)
+    }
+    
+    func purgeCommunity(id: Int, reason: String?) async throws {
+        let response = try await performingForEndpoint { endpoint in
+            PurgeCommunityRequest(endpoint: endpoint, communityId: id, reason: reason)
+        }
+    }
+    
+    @discardableResult
+    func addModerator(
+        communityId: Int,
+        personId: Int,
+        added: Bool
+    ) async throws -> (moderators: [Person1Snapshot], community: Community1Snapshot) {
+        let response = try await performingForEndpoint { endpoint in
+            AddModToCommunityRequest(
+                endpoint: endpoint,
+                communityId: communityId,
+                personId: personId,
+                added: added
+            )
+        }
+        let moderators: [Person1Snapshot] = try response.moderators.map { try .init(from: $0.moderator) }
+        
+        guard let first = response.moderators.first else {
+            throw ApiClientError.unsuccessful
+        }
+        let community: Community1Snapshot = try .init(from: first.community)
+        return (
+            moderators: moderators,
+            community: community
+        )
+    }
 }
