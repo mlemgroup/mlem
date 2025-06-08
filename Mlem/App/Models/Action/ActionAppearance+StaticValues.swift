@@ -279,4 +279,34 @@ extension ActionAppearance {
     static func viewVotes() -> Self {
         .init(label: "View Votes", color: .themedAccent, icon: Icons.votes)
     }
+        
+    static func collapse() -> Self {
+        .init(
+            label: "Collapse",
+            color: .themedColorfulAccent(4),
+            icon: Icons.collapse,
+            swipeIcon1: Icons.collapseSquare,
+            swipeIcon2: Icons.collapseSquareFill
+        )
+    }
+    
+    static func collapseParent() -> Self {
+        .init(
+            label: "Collapse Parent",
+            color: .themedColorfulAccent(4),
+            icon: Icons.collapseParent,
+            swipeIcon1: Icons.collapseParentSquare,
+            swipeIcon2: Icons.collapseParentSquareFill
+        )
+    }
+    
+    static func collapseToTop() -> Self {
+        .init(
+            label: "Collapse to Top",
+            color: .themedColorfulAccent(4),
+            icon: Icons.collapseToTop,
+            swipeIcon1: Icons.collapseToTopSquare,
+            swipeIcon2: Icons.collapseToTopSquareFill
+        )
+    }
 }

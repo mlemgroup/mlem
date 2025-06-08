@@ -7,15 +7,6 @@
 
 import Foundation
 
-let developerNames = [
-    "https://lemmy.tespia.org/u/navi",
-    "https://beehaw.org/u/jojo",
-    "https://beehaw.org/u/kronusdark",
-    "https://lemmy.ml/u/ericbandrews",
-    "https://programming.dev/u/tht7",
-    "https://lemmy.ml/u/sjmarf"
-]
-
 public protocol PersonStubProviding: ContentModel, Resolvable {
     // From Person1Providing.
     var actorId_: ActorIdentifier? { get }

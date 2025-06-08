@@ -104,7 +104,9 @@ public extension Person1Providing {
 public extension Person1Providing {
     private var blockedManager: StateManager<Bool> { person1.blockedManager }
 
-    var isMlemDeveloper: Bool { developerNames.contains(actorId.description) }
+    var isMlemDeveloper: Bool {
+        BackendClient.main.flairs.developers.contains(actorId.description)
+    }
     
     /// Returns a `URL` that can be resolved by another `ApiClient`.
     func resolvableUrl(from instance: ContentModelUrlType) -> URL {

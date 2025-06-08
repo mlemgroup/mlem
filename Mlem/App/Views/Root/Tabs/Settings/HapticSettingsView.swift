@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 2025-01-31.
 //
 
+import Haptics
 import SwiftUI
 
 struct HapticSettingsView: View {
@@ -19,9 +20,11 @@ struct HapticSettingsView: View {
             )
             .tint(.themedColorfulAccent(1))
             Picker("Haptic Level", selection: $hapticLevel) {
-                ForEach(HapticPriority.allCases, id: \.self) { item in
-                    Text(item.label)
+                ForEach(HapticTier.allCases, id: \.self) { level in
+                    Text(level.label)
+                        .tag(level as HapticTier?)
                 }
+                Text("None").tag(nil as HapticTier?)
             }
             .pickerStyle(.inline)
             .labelsHidden()

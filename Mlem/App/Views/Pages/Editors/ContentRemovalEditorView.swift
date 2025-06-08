@@ -6,11 +6,13 @@
 //
 
 import ComponentViews
+import Haptics
 import MlemMiddleware
 import SwiftUI
 
 struct ContentRemovalEditorView: View {
     @Environment(AppState.self) var appState
+    @Environment(HapticManager.self) var hapticManager
     @Environment(\.dismiss) var dismiss
     
     enum Mode {
@@ -72,7 +74,7 @@ struct ContentRemovalEditorView: View {
     func send() async {
         switch await target.toggleRemoved(reason: reason).result.get() {
         case .succeeded:
-            HapticManager.main.play(haptic: .success, priority: .low)
+            hapticManager.play(haptic: .success, tier: .low)
             dismiss()
         default:
             ToastModel.main.add(.failure())

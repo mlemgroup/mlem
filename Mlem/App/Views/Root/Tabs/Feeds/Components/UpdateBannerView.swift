@@ -14,9 +14,11 @@ struct UpdateBannerView: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.palette) var palette
     
-    @AppStorage("lastBuildNumber") var lastBuildNumber: String?
+    @AppStorage("lastTestFlightUpdate") var lastTestFlightUpdate: URL?
     
     @State var isLoading: Bool = false
+    
+    let url: URL
     
     var body: some View {
         HStack {
@@ -61,25 +63,15 @@ struct UpdateBannerView: View {
     }
     
     func dismiss() {
-        lastBuildNumber = Bundle.main.buildVersionNumber
+        lastTestFlightUpdate = url
     }
     
     func submit() {
         isLoading = true
         Task {
             do {
-                let community: Community2 = try await appState.firstApi.getCommunity(url: URL(string: "https://lemmy.ml/c/mlemapp")!)
-                // Assuming the update announcement is pinned, it'll probably be one of these 10.
-                var posts = try await community.getPosts(sort: .new, limit: 10).posts.sorted { $0.created > $1.created }
-                let announcementPost = posts.first { post in
-                    post.creator.isMlemDeveloper && post.title.contains("[ TestFlight Update ]")
-                }
-                if let announcementPost {
-                    navigation.push(.post(announcementPost))
-                } else {
-                    assertionFailure()
-                    navigation.push(.community(community, visitContext: .other))
-                }
+                let announcementPost = try await appState.firstApi.getPost(url: url)
+                navigation.push(.post(announcementPost))
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     dismiss()
                 }

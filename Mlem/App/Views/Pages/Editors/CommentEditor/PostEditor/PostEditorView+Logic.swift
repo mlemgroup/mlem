@@ -65,7 +65,7 @@ extension PostEditorView {
                 nsfw: hasNsfwTag,
                 languageId: nil
             )
-            HapticManager.main.play(haptic: .success, priority: .low)
+            hapticManager.play(haptic: .success, tier: .low)
             dismiss()
         } catch {
             handleError(error)
@@ -115,7 +115,7 @@ extension PostEditorView {
             return posts
         }
         if posts.count == validTargets.count {
-            HapticManager.main.play(haptic: .success, priority: .low)
+            hapticManager.play(haptic: .success, tier: .low)
             dismiss()
         } else {
             sending = false

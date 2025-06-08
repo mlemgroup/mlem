@@ -6,9 +6,12 @@
 //
 
 import ComponentViews
+import Haptics
 import SwiftUI
 
 struct PostReadIndicatorSettingsView: View {
+    @Environment(HapticManager.self) var hapticManager
+    
     @Setting(\.a11y_readPostIndicator) var readPostIndicator
     @Setting(\.a11y_readOutlineThickness) var readOutlineThickness
     
@@ -92,7 +95,7 @@ struct PostReadIndicatorSettingsView: View {
         }
         .frame(maxWidth: .infinity)
         .onTapGesture {
-            HapticManager.main.play(haptic: .gentleInfo, priority: .low)
+            hapticManager.play(haptic: .gentleInfo, tier: .low)
             readPostIndicator = style
         }
     }
