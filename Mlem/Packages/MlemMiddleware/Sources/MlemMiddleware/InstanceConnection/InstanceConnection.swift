@@ -330,4 +330,136 @@ public protocol InstanceConnection {
         personId: Int,
         added: Bool
     ) async throws -> (moderators: [Person1Snapshot], community: Community1Snapshot)
+    
+    // MARK: - General
+
+    func getAccountToken(usernameOrEmail: String, password: String, totpToken: String?) async throws -> ApiLoginResponse
+    func getUsernameFromToken(token: String) async throws -> String
+    
+    func signUp(
+        username: String,
+        password: String,
+        confirmPassword: String,
+        showNsfw: Bool,
+        email: String?,
+        captcha: Captcha?,
+        captchaAnswer: String?,
+        applicationQuestionResponse: String?
+    ) async throws -> ApiLoginResponse
+    
+    @discardableResult
+    func changePassword(
+        newPassword: String,
+        confirmNewPassword: String,
+        oldPassword: String
+    ) async throws -> ApiLoginResponse
+    
+    func getCaptcha() async throws -> Captcha
+    
+    func resolve(url: URL) async throws -> ResolvedContent
+    
+    func getBlocked() async throws -> (people: [Person1Snapshot], communities: [Community1Snapshot], instances: [Instance1Snapshot])
+    
+    func getModlog(
+        page: Int,
+        limit: Int,
+        communityId: Int?,
+        moderatorId: Int?,
+        subjectPersonId: Int?,
+        postId: Int?,
+        commentId: Int?,
+        type: ApiModlogActionType
+    ) async throws -> [ModlogEntrySnapshot]
+    
+    // MARK: - Inbox
+    
+    func getReplies(
+        sort: ApiCommentSortType,
+        page: Int,
+        limit: Int,
+        unreadOnly: Bool
+    ) async throws -> [Reply2Snapshot]
+    
+    func getMentions(
+        sort: ApiCommentSortType,
+        page: Int,
+        limit: Int,
+        unreadOnly: Bool
+    ) async throws -> [Reply2Snapshot]
+    
+    func getMessages(
+        creatorId: Int?,
+        page: Int,
+        limit: Int,
+        unreadOnly: Bool
+    ) async throws -> [Message2Snapshot]
+    
+    func markAllAsRead() async throws
+    func markReplyAsRead(id: Int, read: Bool) async throws
+    func markMentionAsRead(id: Int, read: Bool) async throws
+    func markMessageAsRead(id: Int, read: Bool) async throws
+    func getPersonalUnreadCount() async throws -> ApiGetUnreadCountResponse
+    func createMessage(personId: Int, content: String) async throws -> Message2Snapshot
+    @discardableResult
+    func editMessage(id: Int, content: String) async throws -> Message2Snapshot
+    @discardableResult
+    func reportMessage(id: Int, reason: String) async throws -> ReportSnapshot
+    @discardableResult
+    func deleteMessage(id: Int, delete: Bool) async throws -> Message2Snapshot
+    
+    // MARK: - Instance
+    
+    func getMyInstance() async throws -> Instance3Snapshot
+    func getFederatedInstances() async throws -> ApiFederatedInstances
+    func blockInstance(instanceId: Int, block: Bool) async throws
+    @discardableResult
+    func addAdmin(personId: Int, added: Bool) async throws -> [Person2Snapshot]
+    
+    // MARK: - RegistrationApplication
+    
+    func getRegistrationApplicationCount() async throws -> ApiGetUnreadRegistrationApplicationCountResponse
+    
+    func getRegistrationApplications(
+        page: Int,
+        limit: Int,
+        unreadOnly: Bool
+    ) async throws -> [RegistrationApplicationSnapshot]
+    
+    @discardableResult
+    func approveRegistrationApplication(id: Int) async throws -> RegistrationApplicationSnapshot
+    @discardableResult
+    func denyRegistrationApplication(id: Int, reason: String?) async throws -> RegistrationApplicationSnapshot
+    
+    // MARK: - Report
+    
+    func getReportCount(communityId: Int?) async throws -> ApiGetReportCountResponse
+    
+    func getPostReports(
+        page: Int,
+        limit: Int,
+        unresolvedOnly: Bool,
+        communityId: Int?,
+        postId: Int?
+    ) async throws -> [ReportSnapshot]
+    
+    func getCommentReports(
+        page: Int,
+        limit: Int,
+        unresolvedOnly: Bool,
+        communityId: Int?,
+        commentId: Int?
+    ) async throws -> [ReportSnapshot]
+    
+    func getMessageReports(
+        page: Int,
+        limit: Int,
+        unresolvedOnly: Bool
+    ) async throws -> [ReportSnapshot]
+    
+    @discardableResult
+    func resolvePostReport(id: Int, resolved: Bool) async throws -> ReportSnapshot
+    @discardableResult
+    func resolveCommentReport(id: Int, resolved: Bool) async throws -> ReportSnapshot
+    @discardableResult
+    func resolveMessageReport(id: Int, resolved: Bool) async throws -> ReportSnapshot
 }

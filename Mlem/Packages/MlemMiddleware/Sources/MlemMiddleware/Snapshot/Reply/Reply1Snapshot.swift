@@ -19,7 +19,12 @@ public struct Reply1Snapshot: CacheIdentifiable, Identifiable {
     // remember to also amend the `update` method of Reply1!
     public let read: Bool
     
-    public var cacheId: Int { id }
+    public var cacheId: Int {
+        var hasher = Hasher()
+        hasher.combine(id)
+        hasher.combine(isMention)
+        return hasher.finalize()
+    }
 
     public init(from commentReply: ApiCommentReply) throws(ApiClientError) {
         self.id = commentReply.id

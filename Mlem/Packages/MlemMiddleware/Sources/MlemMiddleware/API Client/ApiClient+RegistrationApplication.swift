@@ -9,7 +9,10 @@ import Foundation
 
 public extension ApiClient {
     func getRegistrationApplicationCount() async throws -> ApiGetUnreadRegistrationApplicationCountResponse {
-        try await perform(GetUnreadRegistrationApplicationCountRequest(endpoint: .v3))
+        let response = try await performingForConnection { connection in
+            try await connection.getRegistrationApplicationCount()
+        }
+        return response
     }
     
     func getRegistrationApplications(
@@ -17,19 +20,14 @@ public extension ApiClient {
         limit: Int = 20,
         unreadOnly: Bool = false
     ) async throws -> [RegistrationApplication] {
-        let request = ListRegistrationApplicationsRequest(
-            endpoint: .v3,
-            unreadOnly: unreadOnly,
-            page: page,
-            limit: limit,
-            pageCursor: nil,
-            pageBack: nil
-        )
-        let response = try await perform(request)
-        return try await caches.registrationApplication.getModels(
-            api: self,
-            from: response.registrationApplications.map { try .init(from: $0) }
-        )
+        let response = try await performingForConnection { connection in
+            try await connection.getRegistrationApplications(
+                page: page,
+                limit: limit,
+                unreadOnly: unreadOnly
+            )
+        }
+        return await caches.registrationApplication.getModels(api: self, from: response)
     }
     
     @discardableResult
@@ -37,11 +35,12 @@ public extension ApiClient {
         id: Int,
         semaphore: UInt? = nil
     ) async throws -> RegistrationApplication {
-        let request = ApproveRegistrationApplicationRequest(endpoint: .v3, id: id, approve: true, denyReason: nil)
-        let response = try await perform(request)
-        return try await caches.registrationApplication.getModel(
+        let response = try await performingForConnection { connection in
+            try await connection.approveRegistrationApplication(id: id)
+        }
+        return await caches.registrationApplication.getModel(
             api: self,
-            from: .init(from: response.registrationApplication),
+            from: response,
             semaphore: semaphore
         )
     }
@@ -52,11 +51,12 @@ public extension ApiClient {
         reason: String?,
         semaphore: UInt? = nil
     ) async throws -> RegistrationApplication {
-        let request = ApproveRegistrationApplicationRequest(endpoint: .v3, id: id, approve: false, denyReason: reason)
-        let response = try await perform(request)
-        return try await caches.registrationApplication.getModel(
+        let response = try await performingForConnection { connection in
+            try await connection.denyRegistrationApplication(id: id, reason: reason)
+        }
+        return await caches.registrationApplication.getModel(
             api: self,
-            from: .init(from: response.registrationApplication),
+            from: response,
             semaphore: semaphore
         )
     }
