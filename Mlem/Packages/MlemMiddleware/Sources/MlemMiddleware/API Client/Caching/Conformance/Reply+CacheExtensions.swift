@@ -8,7 +8,12 @@
 import Foundation
 
 extension Reply1: CacheIdentifiable {
-    public var cacheId: Int { id }
+    public var cacheId: Int {
+        var hasher = Hasher()
+        hasher.combine(id)
+        hasher.combine(isMention)
+        return hasher.finalize()
+    }
     
     @MainActor
     func update(with snapshot: Reply1Snapshot, semaphore: UInt? = nil) {
@@ -17,7 +22,7 @@ extension Reply1: CacheIdentifiable {
 }
 
 extension Reply2: CacheIdentifiable {
-    public var cacheId: Int { id }
+    @inlinable public var cacheId: Int { reply1.cacheId }
     
     @MainActor
     func update(with snapshot: Reply2Snapshot, semaphore: UInt? = nil) {

@@ -36,15 +36,15 @@ class Reply2Cache: ApiTypeBackedCache<Reply2, Reply2Snapshot> {
         let votesManager: StateManager<VotesModel>
         let savedManager: StateManager<Bool>
         
-        if let comment = api.caches.comment2.retrieveModel(cacheId: snapshot.comment.id) {
-            votesManager = comment.votesManager
-            savedManager = comment.savedManager
+        if let reply = api.caches.comment2.retrieveModel(cacheId: snapshot.comment.id) {
+            votesManager = reply.votesManager
+            savedManager = reply.savedManager
         } else {
             votesManager = .init(wrappedValue: snapshot.votes)
             savedManager = .init(wrappedValue: snapshot.saved)
         }
         
-        return .init(
+        let result: Reply2 = .init(
             api: api,
             reply1: api.caches.reply1.getModel(api: api, from: snapshot.reply),
             comment: api.caches.comment1.getModel(api: api, from: snapshot.comment),
@@ -60,6 +60,8 @@ class Reply2Cache: ApiTypeBackedCache<Reply2, Reply2Snapshot> {
             votesManager: votesManager,
             savedManager: savedManager
         )
+        commentIdItemCache.put(result, overrideCacheId: snapshot.comment.id)
+        return result
     }
     
     override func updateModel(_ item: Reply2, with snapshot: Reply2Snapshot, semaphore: UInt? = nil) {

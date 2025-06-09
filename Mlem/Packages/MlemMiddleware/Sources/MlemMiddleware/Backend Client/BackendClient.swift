@@ -36,7 +36,7 @@ public class BackendClient {
         guard let url = URL(string: backendAddress) else {
             fatalError("Could not form backend URL")
         }
-        baseUrl = url
+        self.baseUrl = url
         
         Task {
             do {
@@ -83,8 +83,8 @@ public class BackendClient {
         
         flairs = .init(developers: .init(
             response
-            .filter { [.activeDev, .inactiveDev].contains($0.flairType) }
-            .map { $0.apId }
+                .filter { [.activeDev, .inactiveDev].contains($0.flairType) }
+                .map(\.apId)
         ))
     }
 }

@@ -9,21 +9,17 @@ import Foundation
 
 public extension ApiClient {
     func getComment(id: Int) async throws -> Comment2 {
-        let request = GetCommentRequest(endpoint: .v3, id: id)
-        let response = try await perform(request)
-        return try await caches.comment2.getModel(api: self, from: .init(from: response.commentView))
+        let response = try await performingForConnection { connection in
+            try await connection.getComment(id: id)
+        }
+        return await caches.comment2.getModel(api: self, from: response)
     }
     
     func getComment(url: URL) async throws -> Comment2 {
-        let request = ResolveObjectRequest(endpoint: .v3, q: url.absoluteString)
-        do {
-            if let response = try await perform(request).comment {
-                return try await caches.comment2.getModel(api: self, from: .init(from: response))
-            }
-        } catch let ApiClientError.response(response, _) where response.couldntFindObject {
-            throw ApiClientError.noEntityFound
+        let response = try await performingForConnection { connection in
+            try await connection.getComment(url: url)
         }
-        throw ApiClientError.noEntityFound
+        return await caches.comment2.getModel(api: self, from: response)
     }
     
     func getComments(
@@ -34,29 +30,17 @@ public extension ApiClient {
         limit: Int,
         filter: GetContentFilter? = nil
     ) async throws -> [Comment2] {
-        let request = ListCommentsRequest(
-            endpoint: .v3,
-            type_: .all,
-            sort: sort,
-            maxDepth: maxDepth,
-            page: page,
-            limit: limit,
-            communityId: nil,
-            communityName: nil,
-            postId: postId,
-            parentId: nil,
-            savedOnly: filter == .saved,
-            likedOnly: filter == .upvoted,
-            dislikedOnly: filter == .downvoted,
-            timeRangeSeconds: nil,
-            pageCursor: nil,
-            pageBack: nil
-        )
-        let response = try await perform(request)
-        return try await caches.comment2.getModels(
-            api: self,
-            from: response.comments.map { try .init(from: $0) }
-        )
+        let response = try await performingForConnection { connection in
+            try await connection.getComments(
+                postId: postId,
+                sort: sort,
+                page: page,
+                maxDepth: maxDepth,
+                limit: limit,
+                filter: filter
+            )
+        }
+        return await caches.comment2.getModels(api: self, from: response)
     }
     
     func getComments(
@@ -67,26 +51,17 @@ public extension ApiClient {
         limit: Int,
         filter: GetContentFilter? = nil
     ) async throws -> [Comment2] {
-        let request = ListCommentsRequest(
-            endpoint: .v3,
-            type_: .all,
-            sort: sort.apiSortType,
-            maxDepth: maxDepth,
-            page: page,
-            limit: limit,
-            communityId: nil,
-            communityName: nil,
-            postId: nil,
-            parentId: parentId,
-            savedOnly: filter == .saved,
-            likedOnly: filter == .upvoted,
-            dislikedOnly: filter == .downvoted,
-            timeRangeSeconds: nil,
-            pageCursor: nil,
-            pageBack: nil
-        )
-        let response = try await perform(request)
-        return try await caches.comment2.getModels(api: self, from: response.comments.map { try .init(from: $0) })
+        let response = try await performingForConnection { connection in
+            try await connection.getComments(
+                parentId: parentId,
+                sort: sort,
+                page: page,
+                maxDepth: maxDepth,
+                limit: limit,
+                filter: filter
+            )
+        }
+        return await caches.comment2.getModels(api: self, from: response)
     }
     
     // This method should be removed in favor of the below method once we drop support for versions before Lemmy 1.0
@@ -99,17 +74,18 @@ public extension ApiClient {
         filter: ApiListingType = .all,
         sort: CommentSortType = .top(.allTime)
     ) async throws -> [Comment2] {
-        try await searchComments(
-            query: query,
-            page: page,
-            limit: limit,
-            communityId: communityId,
-            creatorId: creatorId,
-            filter: filter,
-            legacySort: sort.legacyApiSortType,
-            sort: sort.apiSearchSortType,
-            timeRangeSeconds: sort.timeRangeSeconds
-        )
+        let response = try await performingForConnection { connection in
+            try await connection.searchComments(
+                query: query,
+                page: page,
+                limit: limit,
+                communityId: communityId,
+                creatorId: creatorId,
+                filter: filter,
+                sort: sort
+            )
+        }
+        return await caches.comment2.getModels(api: self, from: response)
     }
     
     func searchComments(
@@ -121,89 +97,52 @@ public extension ApiClient {
         filter: ApiListingType = .all,
         sort: SearchSortType = .top(.allTime)
     ) async throws -> [Comment2] {
-        try await searchComments(
-            query: query,
-            page: page,
-            limit: limit,
-            communityId: communityId,
-            creatorId: creatorId,
-            filter: filter,
-            legacySort: sort.legacyApiSortType,
-            sort: sort.apiSortType,
-            timeRangeSeconds: sort.timeRangeSeconds
-        )
+        let response = try await performingForConnection { connection in
+            try await connection.searchComments(
+                query: query,
+                page: page,
+                limit: limit,
+                communityId: communityId,
+                creatorId: creatorId,
+                filter: filter,
+                sort: sort
+            )
+        }
+        return await caches.comment2.getModels(api: self, from: response)
     }
 
-    private func searchComments(
-        query: String,
-        page: Int = 1,
-        limit: Int = 20,
-        communityId: Int?,
-        creatorId: Int?,
-        filter: ApiListingType,
-        legacySort: ApiSortType?,
-        sort: ApiSearchSortType?,
-        timeRangeSeconds: Int?
-    ) async throws -> [Comment2] {
-        let endpointVersion = try await version.highestSupportedEndpointVersion
-        let request = SearchRequest(
-            endpoint: .v3,
-            q: query,
-            communityId: communityId,
-            communityName: nil,
-            creatorId: creatorId,
-            type_: .comments,
-            sort: .init(oldSortType: endpointVersion == .v3 ? legacySort : nil, newSortType: endpointVersion == .v4 ? sort : nil),
-            listingType: filter,
-            page: page,
-            limit: limit,
-            postTitleOnly: false,
-            searchTerm: nil,
-            timeRangeSeconds: timeRangeSeconds,
-            titleOnly: nil,
-            postUrlOnly: nil,
-            likedOnly: nil,
-            dislikedOnly: nil,
-            showNsfw: nil,
-            pageCursor: nil,
-            pageBack: nil
-        )
-        let response = try await perform(request)
-        return try await caches.comment2.getModels(
-            api: self,
-            from: (response.comments ?? []).map { try .init(from: $0) }
-        )
-    }
-    
     @discardableResult
     func voteOnComment(id: Int, score: ScoringOperation, semaphore: UInt? = nil) async throws -> Comment2 {
-        let request = LikeCommentRequest(endpoint: .v3, commentId: id, score: score.rawValue)
-        let response = try await perform(request)
-        return try await caches.comment2.getModel(
+        let response = try await performingForConnection { connection in
+            try await connection.voteOnComment(id: id, score: score)
+        }
+        return await caches.comment2.getModel(
             api: self,
-            from: .init(from: response.commentView),
+            from: response,
             semaphore: semaphore
         )
     }
     
     @discardableResult
     func saveComment(id: Int, save: Bool, semaphore: UInt? = nil) async throws -> Comment2 {
-        let request = SaveCommentRequest(endpoint: .v3, commentId: id, save: save)
-        let response = try await perform(request)
-        return try await caches.comment2.getModel(
+        let response = try await performingForConnection { connection in
+            try await connection.saveComment(id: id, save: save)
+        }
+        return await caches.comment2.getModel(
             api: self,
-            from: .init(from: response.commentView),
+            from: response,
             semaphore: semaphore
         )
     }
     
     @discardableResult
     func deleteComment(id: Int, delete: Bool, semaphore: UInt? = nil) async throws -> Comment2 {
-        let request = DeleteCommentRequest(endpoint: .v3, commentId: id, deleted: delete)
-        let response = try await perform(request)
-        return try await caches.comment2.getModel(
+        let response = try await performingForConnection { connection in
+            try await connection.deleteComment(id: id, delete: delete)
+        }
+        return await caches.comment2.getModel(
             api: self,
-            from: .init(from: response.commentView),
+            from: response,
             semaphore: semaphore
         )
     }
@@ -214,53 +153,46 @@ public extension ApiClient {
         content: String,
         languageId: Int?
     ) async throws -> Comment2 {
-        let request = UpdateCommentRequest(
-            endpoint: .v3,
-            commentId: id,
-            content: content,
-            languageId: languageId
-        )
-        let response = try await perform(request)
-        return try await caches.comment2.getModel(api: self, from: .init(from: response.commentView))
+        let response = try await performingForConnection { connection in
+            try await connection.editComment(
+                id: id,
+                content: content,
+                languageId: languageId
+            )
+        }
+        return await caches.comment2.getModel(api: self, from: response)
     }
     
     // There's also a `replyToPost` method in `ApiClient+Post` for creating a comment on a post
     func replyToComment(postId: Int, parentId: Int?, content: String, languageId: Int? = nil) async throws -> Comment2 {
-        let request = CreateCommentRequest(
-            endpoint: .v3,
-            content: content,
-            postId: postId,
-            parentId: parentId,
-            languageId: languageId
-        )
-        let response = try await perform(request)
-        let comment = try await caches.comment2.getModel(api: self, from: .init(from: response.commentView))
-        comment.getCachedInboxReply()?.setKnownReadState(newValue: true)
-        return comment
+        let response = try await performingForConnection { connection in
+            try await connection.replyToComment(
+                postId: postId,
+                parentId: parentId,
+                content: content,
+                languageId: languageId
+            )
+        }
+        return await caches.comment2.getModel(api: self, from: response)
     }
     
     @discardableResult
     func reportComment(id: Int, reason: String) async throws -> Report {
-        let request = CreateCommentReportRequest(
-            endpoint: .v3,
-            commentId: id,
-            reason: reason,
-            violatesInstanceRules: nil
-        )
-        async let response = try await perform(request)
+        let response = try await performingForConnection { connection in
+            try await connection.reportComment(id: id, reason: reason)
+        }
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
-        return try await caches.report.getModel(
+        return await caches.report.getModel(
             api: self,
-            from: .init(from: response.commentReportView),
+            from: response,
             myPersonId: myPersonId
         )
     }
     
     func purgeComment(id: Int, reason: String?) async throws {
-        let request = PurgeCommentRequest(endpoint: .v3, commentId: id, reason: reason)
-        let response = try await perform(request)
-        guard response.success else { throw ApiClientError.unsuccessful }
-        caches.comment1.retrieveModel(cacheId: id)?.purged = true
+        try await performingForConnection { connection in
+            try await connection.purgeComment(id: id, reason: reason)
+        }
     }
     
     @discardableResult
@@ -270,11 +202,12 @@ public extension ApiClient {
         reason: String?,
         semaphore: UInt? = nil
     ) async throws -> Comment2 {
-        let request = RemoveCommentRequest(endpoint: .v3, commentId: id, removed: remove, reason: reason)
-        let response = try await perform(request)
-        return try await caches.comment2.getModel(
+        let response = try await performingForConnection { connection in
+            try await connection.removeComment(id: id, remove: remove, reason: reason)
+        }
+        return await caches.comment2.getModel(
             api: self,
-            from: .init(from: response.commentView),
+            from: response,
             semaphore: semaphore
         )
     }
@@ -286,18 +219,17 @@ public extension ApiClient {
         page: Int = 1,
         limit: Int = 20
     ) async throws -> [PersonVote] {
-        let request = ListCommentLikesRequest(
-            endpoint: .v3,
-            commentId: id,
-            page: page,
-            limit: limit,
-            pageCursor: nil,
-            pageBack: nil
-        )
-        let response = try await perform(request)
-        return try await caches.personVote.getModels(
+        let response = try await performingForConnection { connection in
+            try await connection.getCommentVotes(
+                id: id,
+                communityId: communityId,
+                page: page,
+                limit: limit
+            )
+        }
+        return await caches.personVote.getModels(
             api: self,
-            from: response.commentLikes.map { try .init(from: $0) },
+            from: response,
             target: .comment(id: id),
             communityId: communityId
         )

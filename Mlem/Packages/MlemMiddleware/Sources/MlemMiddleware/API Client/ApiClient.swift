@@ -15,6 +15,7 @@ public class ApiClient {
     public let baseUrl: URL
     public let username: String?
     
+    var connection: (any InstanceConnection)?
     var restClient: RestClient<ApiErrorResponse> = .init()
     
     public internal(set) var token: String?
@@ -112,6 +113,7 @@ public class ApiClient {
             assertionFailure()
             return
         }
+        connection?.updateToken(newToken)
         token = newToken
     }
     
@@ -139,6 +141,18 @@ public class ApiClient {
             default:
                 throw ApiClientError(from: error)
             }
+        }
+    }
+    
+    func performingForConnection<T>(
+        _ callback: (any InstanceConnection) async throws -> T
+    ) async throws -> T {
+        if let connection {
+            return try await callback(connection)
+        } else {
+            let connection = LemmyConnection(baseUrl: baseUrl, token: token)
+            self.connection = connection
+            return try await callback(connection)
         }
     }
 }

@@ -37,64 +37,31 @@ public extension ApiClient {
     }
     
     func getPerson(id: Int) async throws -> Person3 {
-        let request = ReadPersonRequest(
-            endpoint: .v3,
-            personId: id,
-            username: nil,
-            sort: .new,
-            page: 1,
-            limit: 1,
-            communityId: nil,
-            savedOnly: nil
-        )
-        let response = try await perform(request)
-        return try await caches.person3.getModel(
-            api: self,
-            from: .init(from: response)
-        )
+        let response = try await performingForConnection { connection in
+            try await connection.getPerson(id: id)
+        }
+        return await caches.person3.getModel(api: self, from: response)
     }
     
     func getPerson(url: URL) async throws -> Person2 {
-        let request = ResolveObjectRequest(endpoint: .v3, q: url.absoluteString)
-        do {
-            if let response = try await perform(request).person {
-                return try await caches.person2.getModel(
-                    api: self,
-                    from: .init(from: response)
-                )
-            }
-        } catch let ApiClientError.response(response, _) where response.couldntFindObject {
-            throw ApiClientError.noEntityFound
+        let response: Person2Snapshot = try await performingForConnection { connection in
+            try await connection.getPerson(url: url)
         }
-        throw ApiClientError.noEntityFound
+        return await caches.person2.getModel(api: self, from: response)
     }
     
     func getPerson(username: String) async throws -> Person3 {
-        let request = ReadPersonRequest(
-            endpoint: .v3,
-            personId: nil,
-            username: username,
-            sort: nil,
-            page: nil,
-            limit: nil,
-            communityId: nil,
-            savedOnly: nil
-        )
-        
-        do {
-            let response = try await perform(request)
-            return try await caches.person3.getModel(
-                api: self,
-                from: .init(from: response)
-            )
-        } catch let ApiClientError.response(response, _) where response.couldntFindObject {
-            throw ApiClientError.noEntityFound
+        let response: Person3Snapshot = try await performingForConnection { connection in
+            try await connection.getPerson(username: username)
         }
+        return await caches.person3.getModel(api: self, from: response)
     }
     
     func getPerson(url: URL) async throws -> Person3 {
-        let person: Person2 = try await getPerson(url: url)
-        return try await getPerson(id: person.id)
+        let response: Person3Snapshot = try await performingForConnection { connection in
+            try await connection.getPerson(url: url)
+        }
+        return await caches.person3.getModel(api: self, from: response)
     }
     
     /// `filter` can be set to `.local` from 0.19.4 onwards.
@@ -105,50 +72,28 @@ public extension ApiClient {
         filter: ApiListingType = .all,
         sort: SearchSortType = .top(.allTime)
     ) async throws -> [Person2] {
-        let endpointVersion = try await version.highestSupportedEndpointVersion
-        let request = SearchRequest(
-            endpoint: .v3,
-            q: query,
-            communityId: nil,
-            communityName: nil,
-            creatorId: nil,
-            type_: .users,
-            sort: .init(
-                oldSortType: endpointVersion == .v3 ? sort.legacyApiSortType : nil,
-                newSortType: endpointVersion == .v4 ? sort.apiSortType : nil
-            ),
-            listingType: filter,
-            page: page,
-            limit: limit,
-            postTitleOnly: false,
-            searchTerm: query,
-            timeRangeSeconds: sort.timeRangeSeconds,
-            titleOnly: nil,
-            postUrlOnly: nil,
-            likedOnly: nil,
-            dislikedOnly: nil,
-            showNsfw: nil,
-            pageCursor: nil,
-            pageBack: nil
-        )
-        let response = try await perform(request)
-        return try await caches.person2.getModels(
-            api: self,
-            from: response.users?.map { try .init(from: $0) } ?? []
-        )
+        let response = try await performingForConnection { connection in
+            try await connection.searchPeople(
+                query: query,
+                page: page,
+                limit: limit,
+                filter: filter,
+                sort: sort
+            )
+        }
+        return await caches.person2.getModels(api: self, from: response)
     }
     
     @discardableResult
     func blockPerson(id: Int, block: Bool, semaphore: UInt? = nil) async throws -> Person2 {
-        let request = UserBlockPersonRequest(endpoint: .v3, personId: id, block: block)
-        let response = try await perform(request)
-        let person = try await caches.person2.getModel(
+        let response = try await performingForConnection { connection in
+            try await connection.blockPerson(id: id, block: block)
+        }
+        return await caches.person2.getModel(
             api: self,
-            from: .init(from: response.personView),
+            from: response,
             semaphore: semaphore
         )
-        person.person1.blockedManager.updateWithReceivedValue(response.blocked, semaphore: semaphore)
-        return person
     }
     
     @discardableResult
@@ -160,29 +105,21 @@ public extension ApiClient {
         reason: String?,
         expires: Date? = nil
     ) async throws -> Person2 {
-        let expiryTimestamp: Int?
-        if let expires {
-            expiryTimestamp = Int(expires.timeIntervalSince1970)
-        } else {
-            expiryTimestamp = nil
+        let response = try await performingForConnection { connection in
+            try await connection.banPersonFromCommunity(
+                personId: personId,
+                communityId: communityId,
+                ban: ban,
+                removeContent: removeContent,
+                reason: reason,
+                expires: expires
+            )
         }
-        let request = BanFromCommunityRequest(
-            endpoint: .v3,
-            communityId: communityId,
-            personId: personId,
-            ban: ban,
-            removeData: removeContent,
-            reason: reason,
-            expires: expiryTimestamp,
-            removeOrRestoreData: removeContent
-        )
-        let response = try await perform(request)
-        guard response.banned == ban else { throw ApiClientError.unsuccessful }
-        let person = try await caches.person2.getModel(
+        let person = await caches.person2.getModel(
             api: self,
-            from: .init(from: response.personView)
+            from: response
         )
-        person.person1.updateKnownCommunityBanState(id: communityId, banned: response.banned)
+        person.person1.updateKnownCommunityBanState(id: communityId, banned: ban)
         return person
     }
     
@@ -194,34 +131,25 @@ public extension ApiClient {
         reason: String?,
         expires: Date? = nil
     ) async throws -> Person2 {
-        let expiryTimestamp: Int?
-        if let expires {
-            expiryTimestamp = Int(expires.timeIntervalSince1970)
-        } else {
-            expiryTimestamp = nil
+        let response = try await performingForConnection { connection in
+            try await connection.banPersonFromInstance(
+                personId: personId,
+                ban: ban,
+                removeContent: removeContent,
+                reason: reason,
+                expires: expires
+            )
         }
-        let request = BanFromSiteRequest(
-            endpoint: .v3,
-            personId: personId,
-            ban: ban,
-            removeData: removeContent,
-            reason: reason,
-            expires: expiryTimestamp,
-            removeOrRestoreData: removeContent
-        )
-        let response = try await perform(request)
-        guard response.banned == ban else { throw ApiClientError.unsuccessful }
-        let person = try await caches.person2.getModel(
+        return await caches.person2.getModel(
             api: self,
-            from: .init(from: response.personView)
+            from: response
         )
-        return person
     }
     
     func purgePerson(id: Int, reason: String?) async throws {
-        let request = PurgePersonRequest(endpoint: .v3, personId: id, reason: reason)
-        let response = try await perform(request)
-        guard response.success else { throw ApiClientError.unsuccessful }
+        try await performingForConnection { connection in
+            try await connection.purgePerson(id: id, reason: reason)
+        }
         caches.person1.retrieveModel(cacheId: id)?.purged = true
     }
     
@@ -233,58 +161,42 @@ public extension ApiClient {
         savedOnly: Bool? = nil,
         communityId: Int? = nil
     ) async throws -> (person: Person3, posts: [Post2], comments: [Comment2]) {
-        let request = ReadPersonRequest(
-            endpoint: .v3,
-            personId: id,
-            username: nil,
-            sort: sort,
-            page: page,
-            limit: limit,
-            communityId: nil,
-            savedOnly: savedOnly
-        )
-        let response = try await perform(request)
-        return try await (
-            person: caches.person3.getModel(
-                api: self,
-                from: .init(from: response)
-            ),
-            posts: caches.post2.getModels(
-                api: self,
-                from: response.posts?.map { try .init(from: $0) } ?? []
-            ),
-            comments: caches.comment2.getModels(
-                api: self,
-                from: response.comments?.map { try .init(from: $0) } ?? []
+        let response = try await performingForConnection { connection in
+            try await connection.getContent(
+                authorId: id,
+                sort: sort,
+                page: page,
+                limit: limit,
+                savedOnly: savedOnly,
+                communityId: communityId
             )
+        }
+        return await (
+            person: caches.person3.getModel(api: self, from: response.person),
+            posts: caches.post2.getModels(api: self, from: response.posts),
+            comments: caches.comment2.getModels(api: self, from: response.comments)
         )
     }
     
     func getMyPerson() async throws -> (person: Person4?, instance: Instance3, blocks: BlockList?) {
-        let request = GetSiteRequest(endpoint: .v3)
-        let response = try await perform(request)
-        
-        guard response.myUser?.localUserView.person.name == username else {
+        let response = try await performingForConnection { connection in
+            try await connection.getMyPerson()
+        }
+        guard response.person?.person.person.person.name == username else {
             assertionFailure()
             throw ApiClientError.mismatchingToken
         }
         
-        let instance = try await caches.instance3.getModel(
-            api: self,
-            from: .init(from: response)
-        )
-        
+        let instance = await caches.instance3.getModel(api: self, from: response.instance)
+        let person = await caches.person4.getOptionalModel(api: self, from: response.person)
+
         var blocks: BlockList? = blocks
-        var person: Person4?
-        if let myUser = response.myUser {
-            person = try await caches.person4.getModel(
-                api: self,
-                from: .init(from: myUser)
-            )
+        
+        if let person, let newBlocks = response.blocks {
             if let blocks {
-                blocks.update(myUserInfo: myUser)
+                blocks.update(blocks: newBlocks)
             } else {
-                blocks = .init(api: self, myUserInfo: myUser)
+                blocks = .init(api: self, blocks: newBlocks)
             }
         }
         _ = await Task { @MainActor in
@@ -296,12 +208,9 @@ public extension ApiClient {
     }
     
     func deleteAccount(password: String, deleteContent: Bool) async throws {
-        let request = DeleteAccountRequest(
-            endpoint: .v3,
-            password: password,
-            deleteContent: deleteContent
-        )
-        try await perform(request)
+        try await performingForConnection { connection in
+            try await connection.deleteAccount(password: password, deleteContent: deleteContent)
+        }
     }
     
     func editAccountSettings(
@@ -334,46 +243,37 @@ public extension ApiClient {
         showDownvotes: Bool?,
         showUpvotePercentage: Bool?
     ) async throws {
-        let request = SaveUserSettingsRequest(
-            endpoint: .v3,
-            showNsfw: showNsfw,
-            blurNsfw: blurNsfw,
-            autoExpand: autoExpand,
-            showScores: showScores,
-            theme: theme,
-            defaultSortType: nil,
-            defaultListingType: defaultListingType,
-            interfaceLanguage: interfaceLanguage,
-            avatar: avatar,
-            banner: banner,
-            displayName: displayName,
-            email: email,
-            bio: bio,
-            matrixUserId: matrixUserId,
-            showAvatars: showAvatars,
-            sendNotificationsToEmail: sendNotificationsToEmail,
-            botAccount: botAccount,
-            showBotAccounts: showBotAccounts,
-            showReadPosts: showReadPosts,
-            discussionLanguages: discussionLanguages,
-            openLinksInNewTab: openLinksInNewTab,
-            infiniteScrollEnabled: infiniteScrollEnabled,
-            postListingMode: postListingMode,
-            enableKeyboardNavigation: enableKeyboardNavigation,
-            enableAnimatedImages: enableAnimatedImages,
-            collapseBotComments: collapseBotComments,
-            showUpvotes: showUpvotes,
-            showDownvotes: showDownvotes,
-            showUpvotePercentage: showUpvotePercentage,
-            defaultPostSortType: nil,
-            defaultPostTimeRangeSeconds: nil,
-            defaultCommentSortType: nil,
-            blockingKeywords: nil,
-            enablePrivateMessages: nil,
-            autoMarkFetchedPostsAsRead: nil,
-            hideMedia: nil
-        )
-        let response = try await perform(request)
-        guard response.success else { throw ApiClientError.unsuccessful }
+        try await performingForConnection { connection in
+            try await connection.editAccountSettings(
+                showNsfw: showNsfw,
+                showScores: showScores,
+                theme: theme,
+                defaultListingType: defaultListingType,
+                interfaceLanguage: interfaceLanguage,
+                avatar: avatar,
+                banner: banner,
+                displayName: displayName,
+                email: email,
+                bio: bio,
+                matrixUserId: matrixUserId,
+                showAvatars: showAvatars,
+                sendNotificationsToEmail: sendNotificationsToEmail,
+                botAccount: botAccount,
+                showBotAccounts: showBotAccounts,
+                showReadPosts: showReadPosts,
+                discussionLanguages: discussionLanguages,
+                openLinksInNewTab: openLinksInNewTab,
+                blurNsfw: blurNsfw,
+                autoExpand: autoExpand,
+                infiniteScrollEnabled: infiniteScrollEnabled,
+                postListingMode: postListingMode,
+                enableKeyboardNavigation: enableKeyboardNavigation,
+                enableAnimatedImages: enableAnimatedImages,
+                collapseBotComments: collapseBotComments,
+                showUpvotes: showUpvotes,
+                showDownvotes: showDownvotes,
+                showUpvotePercentage: showUpvotePercentage
+            )
+        }
     }
 }

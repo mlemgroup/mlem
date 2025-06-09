@@ -9,12 +9,10 @@ import Foundation
 
 public extension ApiClient {
     func getMyInstance() async throws -> Instance3 {
-        let request = GetSiteRequest(endpoint: .v3)
-        let response = try await perform(request)
-        let model = try await caches.instance3.getModel(
-            api: self,
-            from: .init(from: response)
-        )
+        let response = try await performingForConnection { connection in
+            try await connection.getMyInstance()
+        }
+        let model = await caches.instance3.getModel(api: self, from: response)
         model.local = true
         _ = await Task { @MainActor in
             myInstance = model
@@ -23,12 +21,10 @@ public extension ApiClient {
     }
     
     func getFederatedInstances() async throws -> ApiFederatedInstances {
-        let request = GetFederatedInstancesRequest(endpoint: .v3)
-        let response = try await perform(request)
-        if let federatedInstances = response.federatedInstances {
-            return federatedInstances
+        let response = try await performingForConnection { connection in
+            try await connection.getFederatedInstances()
         }
-        throw ApiClientError.noEntityFound
+        return response
     }
     
     /// Returns `true` if federated, `false` if not federated, or `nil` if the status could not be determined.
@@ -48,15 +44,10 @@ public extension ApiClient {
     func blockInstance(url: URL, instanceId: Int, block: Bool, semaphore: UInt? = nil) async throws {
         guard let host = url.host() else { throw ApiClientError.invalidInput }
         let actorId: ActorIdentifier = .instance(host: host)
-        let request = UserBlockInstanceRequest(endpoint: .v3, instanceId: instanceId, block: block)
-        let response = try await perform(request)
-        let newBlockState: Bool
-        switch response {
-        case let .apiBlockInstanceResponse(response):
-            newBlockState = response.blocked
-        case .apiSuccessResponse:
-            newBlockState = block
+        try await performingForConnection { connection in
+            try await connection.blockInstance(instanceId: instanceId, block: block)
         }
+        let newBlockState: Bool = block
         if let instance = caches.instance1.retrieveModel(instanceId: instanceId) {
             instance.blockedManager.updateWithReceivedValue(newBlockState, semaphore: semaphore)
         }
@@ -70,13 +61,11 @@ public extension ApiClient {
     /// Adds or removes an admin from this API's instance
     @discardableResult
     func addAdmin(personId: Int, added: Bool) async throws -> [Person2] {
-        let request = AddAdminRequest(endpoint: .v3, personId: personId, added: added)
-        let response = try await perform(request)
-        
-        let updatedAdministrators = try await caches.person2.getModels(
-            api: self,
-            from: response.admins.map { try .init(from: $0) }
-        )
+        let response = try await performingForConnection { connection in
+            try await connection.addAdmin(personId: personId, added: added)
+        }
+
+        let updatedAdministrators = await caches.person2.getModels(api: self, from: response)
         
         // update person's admin status
         // only need to do this manually if removing admin, otherwise handled by above caching logic
