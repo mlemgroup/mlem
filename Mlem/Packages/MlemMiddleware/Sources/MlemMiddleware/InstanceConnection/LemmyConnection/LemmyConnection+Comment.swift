@@ -31,7 +31,7 @@ public extension LemmyConnection {
     
     func getComments(
         postId: Int,
-        sort: ApiCommentSortType,
+        sort: CommentSortType,
         page: Int,
         maxDepth: Int? = nil,
         limit: Int,
@@ -41,7 +41,7 @@ public extension LemmyConnection {
             ListCommentsRequest(
                 endpoint: endpoint,
                 type_: .all,
-                sort: sort,
+                sort: sort.apiSortType,
                 maxDepth: maxDepth,
                 page: page,
                 limit: limit,
@@ -98,7 +98,7 @@ public extension LemmyConnection {
         limit: Int = 20,
         communityId: Int? = nil,
         creatorId: Int? = nil,
-        filter: ApiListingType = .all,
+        filter: ListingType = .all,
         sort: CommentSortType = .top(.allTime)
     ) async throws -> [Comment2Snapshot] {
         try await searchComments(
@@ -120,7 +120,7 @@ public extension LemmyConnection {
         limit: Int = 20,
         communityId: Int? = nil,
         creatorId: Int? = nil,
-        filter: ApiListingType = .all,
+        filter: ListingType = .all,
         sort: SearchSortType = .top(.allTime)
     ) async throws -> [Comment2Snapshot] {
         try await searchComments(
@@ -142,7 +142,7 @@ public extension LemmyConnection {
         limit: Int = 20,
         communityId: Int?,
         creatorId: Int?,
-        filter: ApiListingType,
+        filter: ListingType,
         legacySort: ApiSortType?,
         sort: ApiSearchSortType?,
         timeRangeSeconds: Int?
@@ -156,7 +156,7 @@ public extension LemmyConnection {
                 creatorId: creatorId,
                 type_: .comments,
                 sort: .init(oldSortType: endpoint == .v3 ? legacySort : nil, newSortType: endpoint == .v4 ? sort : nil),
-                listingType: filter,
+                listingType: filter.apiType,
                 page: page,
                 limit: limit,
                 postTitleOnly: false,

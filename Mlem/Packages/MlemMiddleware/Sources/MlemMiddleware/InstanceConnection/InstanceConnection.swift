@@ -140,7 +140,7 @@ public protocol InstanceConnection {
     
     func getComments(
         postId: Int,
-        sort: ApiCommentSortType,
+        sort: CommentSortType,
         page: Int,
         maxDepth: Int?,
         limit: Int,
@@ -163,7 +163,7 @@ public protocol InstanceConnection {
         limit: Int,
         communityId: Int?,
         creatorId: Int?,
-        filter: ApiListingType,
+        filter: ListingType,
         sort: CommentSortType
     ) async throws -> [Comment2Snapshot]
     
@@ -173,7 +173,7 @@ public protocol InstanceConnection {
         limit: Int,
         communityId: Int?,
         creatorId: Int?,
-        filter: ApiListingType,
+        filter: ListingType,
         sort: SearchSortType
     ) async throws -> [Comment2Snapshot]
     

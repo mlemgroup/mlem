@@ -190,7 +190,7 @@ public extension Post1Providing {
     ) async throws -> [Comment2] {
         try await api.getComments(
             postId: id,
-            sort: sort.apiSortType,
+            sort: sort,
             page: page,
             maxDepth: maxDepth,
             limit: limit,
