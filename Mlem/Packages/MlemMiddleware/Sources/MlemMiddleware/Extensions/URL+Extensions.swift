@@ -113,4 +113,42 @@ public extension URL {
         if scheme == "mlempreview" { return true }
         return proxyAwarePathExtension?.isContainedIn(["jpg", "jpeg", "png", "webp", "gif", "mp4"]) ?? false
     }
+    
+    var isYouTubeLink: Bool {
+        guard let host = host()?.lowercased() else { return false }
+        return host == "youtube.com" || host == "www.youtube.com" || host == "youtu.be" || host == "m.youtube.com"
+    }
+    
+    var youTubeVideoId: String? {
+        guard isYouTubeLink else { return nil }
+        
+        let host = host()?.lowercased() ?? ""
+        
+        if host == "youtu.be" {
+            let pathComponents = pathComponents
+            if pathComponents.count > 1 {
+                return pathComponents[1]
+            }
+        } else if host == "youtube.com" || host == "www.youtube.com" || host == "m.youtube.com" {
+            guard let components = URLComponents(url: self, resolvingAgainstBaseURL: true),
+                  let queryItems = components.queryItems,
+                  let videoId = queryItems.first(where: { $0.name == "v" })?.value else {
+                let pathComponents = pathComponents
+                if pathComponents.count > 2, pathComponents[1] == "embed" {
+                    return pathComponents[2]
+                }
+                
+                return nil
+            }
+            
+            return videoId
+        }
+        
+        return nil
+    }
+    
+    var youTubeThumbnailUrl: URL? {
+        guard let videoId = youTubeVideoId else { return nil }
+        return URL(string: "https://img.youtube.com/vi/\(videoId)/mqdefault.jpg")
+    }
 }
