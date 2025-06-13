@@ -57,7 +57,7 @@ struct WebsitePreviewView: View {
     
     var complex: some View {
         VStack(alignment: .leading, spacing: 0) {
-            if let thumbnailUrl = link.thumbnail {
+            if let thumbnailUrl = link.effectiveThumbnail {
                 MediaView(
                     url: thumbnailUrl,
                     controlState: .constant(.init(
