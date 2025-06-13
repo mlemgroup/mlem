@@ -102,9 +102,9 @@ public class LemmyConnection: InstanceConnection {
         try await callback(.v3)
     }
     
-#if DEBUG
-    func setMockContext(_ context: Context) {
-        self.contextDataManager.fetchedValue = context
-    }
-#endif
+    #if DEBUG
+        func setMockContext(_ context: Context) {
+            contextDataManager.fetchedValue = context
+        }
+    #endif
 }
