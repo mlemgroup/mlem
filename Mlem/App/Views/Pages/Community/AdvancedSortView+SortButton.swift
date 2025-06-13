@@ -35,7 +35,7 @@ extension AdvancedSortView {
                             .foregroundStyle(type == selectedSort ? .primary : .secondary) // No palette!
                         VStack(alignment: .leading) {
                             titleView
-                            if (appState.firstApi.fetchedVersion ?? .infinity) < type.minimumVersion {
+                            if !(appState.firstApi.supportsOrNil(.postSortType(type)) ?? true) {
                                 Text("Requires Lemmy \(String(describing: type.minimumVersion)) or later")
                                     .multilineTextAlignment(.leading)
                                     .foregroundStyle(.themedWarning)
@@ -67,7 +67,7 @@ extension AdvancedSortView {
                     .paletteBorder(cornerRadius: Constants.main.standardSpacing)
                 }
             }
-            .disabled((appState.firstApi.fetchedVersion ?? .infinity) < type.minimumVersion)
+            .disabled(!(appState.firstApi.supportsOrNil(.postSortType(type)) ?? true))
         }
         
         @ViewBuilder

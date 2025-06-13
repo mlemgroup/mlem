@@ -155,8 +155,7 @@ class AppState {
         get async throws {
             // In future, we should be storing `PostSortType` in `Settings` rather than `ApiSortType`
             let defaultSort: PostSortType = .init(Settings.get(\.post_defaultSort))
-            let instanceVersion = try await firstApi.version
-            if instanceVersion >= defaultSort.minimumVersion { return defaultSort }
+            if try await firstApi.supports(.postSortType(defaultSort)) { return defaultSort }
             return .init(Settings.get(\.post_fallbackSort))
         }
     }

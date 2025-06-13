@@ -92,14 +92,14 @@ struct AdvancedSortView: View {
     }
     
     var nonTopCases: [PostSortType] {
-        PostSortType.nonTopCases.filter { (appState.firstApi.fetchedVersion ?? .infinity) >= $0.minimumVersion }
+        PostSortType.nonTopCases.filter { appState.firstApi.supportsOrNil(.postSortType($0)) ?? true }
     }
     
     var topCases: [PostSortType] {
-        PostSortType.legacyTopCases.filter { (appState.firstApi.fetchedVersion ?? .infinity) >= $0.minimumVersion }
+        PostSortType.legacyTopCases.filter { appState.firstApi.supportsOrNil(.postSortType($0)) ?? true }
     }
     
     var unavailableCases: [PostSortType] {
-        PostSortType.legacyCases.filter { (appState.firstApi.fetchedVersion ?? .zero) < $0.minimumVersion }
+        PostSortType.legacyCases.filter { !(appState.firstApi.supportsOrNil(.postSortType($0)) ?? true) }
     }
 }

@@ -17,7 +17,7 @@ struct CommunitySearchSortPicker: View {
 
     var sortTypes: [SearchSortType] {
         SearchSortType.nonTopCases
-            .filter { (appState.firstApi.fetchedVersion ?? .infinity) >= $0.minimumVersion }
+            .filter { appState.firstApi.supportsOrNil(.searchSortType($0)) ?? true }
     }
     
     var body: some View {

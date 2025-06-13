@@ -92,7 +92,7 @@ extension Comment1Providing {
         showAllActions: Bool = true,
         report: Report? = nil
     ) -> [any Action] {
-        if api.isAdmin || (api.fetchedVersion ?? .infinity) > .v0_19_4, showAllActions || Settings.get(\.menus_allModActions) {
+        if api.isAdmin || (api.supportsOrNil(.moderatorsCanViewVotes) ?? true), showAllActions || Settings.get(\.menus_allModActions) {
             viewVotesAction()
         }
         if let self2, !isOwnComment {
@@ -178,7 +178,7 @@ extension Comment1Providing {
     }
     
     func viewVotesAction() -> BasicAction {
-        let enabled = canModerate && (api.isAdmin || (api.fetchedVersion ?? .infinity) > .v0_19_4)
+        let enabled = canModerate && (api.isAdmin || (api.supportsOrNil(.moderatorsCanViewVotes) ?? true))
         let callback: (@MainActor () -> Void)?
         if let self2, enabled {
             callback = {

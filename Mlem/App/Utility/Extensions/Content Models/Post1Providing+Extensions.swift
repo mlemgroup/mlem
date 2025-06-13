@@ -159,10 +159,7 @@ extension Post1Providing {
                 editAction(appState: appState)
                 deleteAction(appState: appState, feedback: feedback)
             } else {
-                // If no version has been fetched yet, assume they're on <0.19.4 for now.
-                // Once 0.19.4 is widely adopted we could assume they're on >=0.19.4.
-                // See also the identical check within `hideAction` itself.
-                if (api.fetchedVersion ?? .zero) >= .v0_19_4 {
+                if api.supportsOrNil(.hidePosts) ?? true {
                     hideAction(appState: appState, feedback: feedback)
                 }
                 if !canModerate, !deleted {
@@ -187,7 +184,7 @@ extension Post1Providing {
                 pinToInstanceAction(appState: appState, feedback: feedback)
             }
             lockAction(appState: appState, feedback: feedback)
-            if let navigation, api.isAdmin || (api.fetchedVersion ?? .infinity) > .v0_19_4 {
+            if let navigation, api.isAdmin || (api.supportsOrNil(.moderatorsCanViewVotes) ?? true) {
                 viewVotesAction(navigation: navigation)
             }
         }
@@ -342,7 +339,7 @@ extension Post1Providing {
     
     func hideAction(appState: AppState, feedback: Set<FeedbackType>) -> BasicAction {
         let hidden = hidden_ ?? false
-        let available = (api.fetchedVersion ?? .zero) >= .v0_19_4 && api.canInteract(appState: appState)
+        let available = (api.supportsOrNil(.hidePosts) ?? true) && api.canInteract(appState: appState)
         return .init(
             id: "hide\(uid)",
             appearance: .hide(isOn: hidden),
@@ -474,7 +471,7 @@ extension Post1Providing {
     }
     
     func viewVotesAction(navigation: NavigationLayer) -> BasicAction {
-        let enabled = canModerate && (api.isAdmin || (api.fetchedVersion ?? .infinity) > .v0_19_4)
+        let enabled = canModerate && (api.isAdmin || (api.supportsOrNil(.moderatorsCanViewVotes) ?? true))
         return .init(
             id: "viewVotes\(uid)",
             appearance: .viewVotes(),

@@ -73,15 +73,13 @@ private struct OutdatedFeedPopupModifier: ViewModifier {
             
             // This duplication isn't ideal, but it works for now
             if let feedLoader = feedLoader as? AggregatePostFeedLoader {
-                // if try await !appState.firstApi.supports(.postSortType(feedLoader.sortType)) {
-                if try await appState.firstApi.version < feedLoader.sortType.minimumVersion {
+                if try await !appState.firstApi.supports(.postSortType(feedLoader.sortType)) {
                     try await feedLoader.changeSortType(to: appState.initialFeedSortType, forceRefresh: true)
                     return
                 }
             }
             if let feedLoader = feedLoader as? CommunityPostFeedLoader {
-                // if try await !appState.firstApi.supports(.postSortType(feedLoader.sortType)) {
-                if try await appState.firstApi.version < feedLoader.sortType.minimumVersion {
+                if try await !appState.firstApi.supports(.postSortType(feedLoader.sortType)) {
                     try await feedLoader.changeSortType(to: appState.initialFeedSortType, forceRefresh: true)
                     return
                 }

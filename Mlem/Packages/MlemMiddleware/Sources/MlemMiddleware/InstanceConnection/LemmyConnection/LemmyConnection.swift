@@ -42,6 +42,10 @@ public class LemmyConnection: InstanceConnection {
         }
     }
     
+    public var contextIsFetched: Bool {
+        contextDataManager.fetchedValue != nil
+    }
+    
     public func ensureContextPresence() async throws {
         try await contextDataManager.getValue()
     }

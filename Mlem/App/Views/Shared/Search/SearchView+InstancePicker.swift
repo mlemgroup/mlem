@@ -10,12 +10,15 @@ import SwiftUI
 
 extension SearchView {
     struct InstancePicker: View {
+        @Environment(AppState.self) var appState
         @Environment(NavigationLayer.self) var navigation
         @Binding var filter: InstanceFilter
         let isForPersonSearch: Bool
         
+        @State var instanceSupportsSearchingLocalPeople: Bool?
+        
         var allowActiveAccountLocalInstanceSearch: Bool {
-            !isForPersonSearch || (AppState.main.firstApi.fetchedVersion ?? .infinity) >= .v0_19_4
+            !isForPersonSearch || (instanceSupportsSearchingLocalPeople ?? false)
         }
         
         var body: some View {
@@ -55,6 +58,15 @@ extension SearchView {
                     navigation.openSheet(.instancePicker(callback: { instance in
                         filter = .other(instance)
                     }, minimumVersion: isForPersonSearch ? .v0_19_4 : nil))
+                }
+            }
+            .task(id: appState.firstApi) {
+                if isForPersonSearch {
+                    do {
+                        instanceSupportsSearchingLocalPeople = try await appState.firstApi.supports(.searchLocalPeople)
+                    } catch {
+                        handleError(error)
+                    }
                 }
             }
         }

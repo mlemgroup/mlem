@@ -50,13 +50,13 @@ struct FeedSortPicker: View {
     var nonTopSortTypes: [PostSortType] {
         PostSortType.nonTopCases
             .filter { PinnedSortTracker.main.pinnedSortTypes.contains($0) }
-            .filter { (appState.firstApi.fetchedVersion ?? .infinity) >= $0.minimumVersion }
+            .filter { appState.firstApi.supportsOrNil(.postSortType($0)) ?? true }
     }
     
     var topSortTypes: [PostSortType] {
         PostSortType.legacyTopCases
             .filter { PinnedSortTracker.main.pinnedSortTypes.contains($0) }
-            .filter { (appState.firstApi.fetchedVersion ?? .infinity) >= $0.minimumVersion }
+            .filter { appState.firstApi.supportsOrNil(.postSortType($0)) ?? true }
     }
     
     var body: some View {
@@ -112,7 +112,7 @@ struct FeedSortPicker: View {
                 Label(sort.label(timeRangeFormat: topSortTypes.count == 1 ? .topOnly : .topAndTimescale), icon: sort.icon)
             }
         }
-        .disabled(appState.firstApi.fetchedVersion == nil)
+        .disabled(!appState.firstApi.contextIsFetched)
         .popover(isPresented: $topSortPopupPresented) {
             TopSortPicker(
                 action: { sort = .top($0) },

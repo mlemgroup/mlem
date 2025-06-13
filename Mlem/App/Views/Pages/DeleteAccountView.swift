@@ -56,7 +56,7 @@ struct DeleteAccountView: View {
     @ViewBuilder
     var deleteConfirmation: some View {
         if confirmed {
-            if let version = account.api.fetchedVersion {
+            if account.api.contextIsFetched {
                 passwordPrompt()
             } else {
                 VStack(spacing: Constants.main.standardSpacing) {
