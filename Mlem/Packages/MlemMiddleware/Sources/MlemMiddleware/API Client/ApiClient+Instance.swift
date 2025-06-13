@@ -20,7 +20,7 @@ public extension ApiClient {
         return model
     }
     
-    func getFederatedInstances() async throws -> ApiFederatedInstances {
+    func getFederatedInstances() async throws -> FederationPolicy {
         let response = try await performingForConnection { connection in
             try await connection.getFederatedInstances()
         }
@@ -32,9 +32,9 @@ public extension ApiClient {
         guard let domain = url.host() else { throw ApiClientError.invalidInput }
         let federatedInstances = try await getFederatedInstances()
         if !federatedInstances.blocked.isEmpty {
-            return federatedInstances.blocked.contains(where: { $0.domain == domain }) ? .explicitlyBlocked : .implicitlyAllowed
+            return federatedInstances.blocked.contains(domain) ? .explicitlyBlocked : .implicitlyAllowed
         } else if !federatedInstances.allowed.isEmpty {
-            return federatedInstances.allowed.contains(where: { $0.domain == domain }) ? .explicitlyAllowed : .implicitlyBlocked
+            return federatedInstances.allowed.contains(domain) ? .explicitlyAllowed : .implicitlyBlocked
         }
         return nil
     }

@@ -15,12 +15,12 @@ public extension LemmyConnection {
         return try .init(from: response)
     }
     
-    func getFederatedInstances() async throws -> ApiFederatedInstances {
+    func getFederatedInstances() async throws -> FederationPolicy {
         let response = try await performingForEndpoint { endpoint in
             GetFederatedInstancesRequest(endpoint: endpoint)
         }
         if let federatedInstances = response.federatedInstances {
-            return federatedInstances
+            return .init(from: federatedInstances)
         }
         throw ApiClientError.noEntityFound
     }

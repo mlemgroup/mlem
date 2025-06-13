@@ -8,11 +8,11 @@
 import Foundation
 
 public extension LemmyConnection {
-    func getRegistrationApplicationCount() async throws -> ApiGetUnreadRegistrationApplicationCountResponse {
+    func getRegistrationApplicationCount() async throws -> Int {
         let response = try await performingForEndpoint { endpoint in
             GetUnreadRegistrationApplicationCountRequest(endpoint: endpoint)
         }
-        return response
+        return response.registrationApplications
     }
     
     func getRegistrationApplications(
