@@ -8,8 +8,11 @@
 import Foundation
 
 public extension ApiClient {
-    func getReportCount(communityId: Int? = nil) async throws -> ApiGetReportCountResponse {
-        try await perform(ReportCountRequest(endpoint: .v3, communityId: communityId))
+    func getReportCount(communityId: Int? = nil) async throws -> ReportUnreadCountSnapshot {
+        let response = try await performingForConnection { connection in
+            try await connection.getReportCount(communityId: communityId)
+        }
+        return response
     }
     
     func getPostReports(
@@ -19,18 +22,19 @@ public extension ApiClient {
         communityId: Int? = nil,
         postId: Int? = nil
     ) async throws -> [Report] {
-        let request = ListPostReportsRequest(
-            page: page,
-            limit: limit,
-            unresolvedOnly: unresolvedOnly,
-            communityId: communityId,
-            postId: postId
-        )
-        async let response = try await perform(request)
+        let response = try await performingForConnection { connection in
+            try await connection.getPostReports(
+                page: page,
+                limit: limit,
+                unresolvedOnly: unresolvedOnly,
+                communityId: communityId,
+                postId: postId
+            )
+        }
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
-        return try await caches.report.getModels(
+        return await caches.report.getModels(
             api: self,
-            from: response.postReports.map { try .init(from: $0) },
+            from: response,
             myPersonId: myPersonId
         )
     }
@@ -42,18 +46,19 @@ public extension ApiClient {
         communityId: Int? = nil,
         commentId: Int? = nil
     ) async throws -> [Report] {
-        let request = ListCommentReportsRequest(
-            page: page,
-            limit: limit,
-            unresolvedOnly: unresolvedOnly,
-            communityId: communityId,
-            commentId: commentId
-        )
-        async let response = try await perform(request)
+        let response = try await performingForConnection { connection in
+            try await connection.getCommentReports(
+                page: page,
+                limit: limit,
+                unresolvedOnly: unresolvedOnly,
+                communityId: communityId,
+                commentId: commentId
+            )
+        }
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
-        return try await caches.report.getModels(
+        return await caches.report.getModels(
             api: self,
-            from: response.commentReports.map { try .init(from: $0) },
+            from: response,
             myPersonId: myPersonId
         )
     }
@@ -63,16 +68,17 @@ public extension ApiClient {
         limit: Int = 20,
         unresolvedOnly: Bool = false
     ) async throws -> [Report] {
-        let request = ListPmReportsRequest(
-            page: page,
-            limit: limit,
-            unresolvedOnly: unresolvedOnly
-        )
-        async let response = try await perform(request)
+        let response = try await performingForConnection { connection in
+            try await connection.getMessageReports(
+                page: page,
+                limit: limit,
+                unresolvedOnly: unresolvedOnly
+            )
+        }
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
-        return try await caches.report.getModels(
+        return await caches.report.getModels(
             api: self,
-            from: response.privateMessageReports.map { try .init(from: $0) },
+            from: response,
             myPersonId: myPersonId
         )
     }
@@ -83,12 +89,13 @@ public extension ApiClient {
         resolved: Bool,
         semaphore: UInt? = nil
     ) async throws -> Report {
-        let request = ResolvePostReportRequest(endpoint: .v3, reportId: id, resolved: resolved)
-        async let response = try await perform(request)
+        let response = try await performingForConnection { connection in
+            try await connection.resolvePostReport(id: id, resolved: resolved)
+        }
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
-        return try await caches.report.getModel(
+        return await caches.report.getModel(
             api: self,
-            from: .init(from: response.postReportView),
+            from: response,
             myPersonId: myPersonId,
             semaphore: semaphore
         )
@@ -100,12 +107,13 @@ public extension ApiClient {
         resolved: Bool,
         semaphore: UInt? = nil
     ) async throws -> Report {
-        let request = ResolveCommentReportRequest(endpoint: .v3, reportId: id, resolved: resolved)
-        async let response = try await perform(request)
+        let response = try await performingForConnection { connection in
+            try await connection.resolveCommentReport(id: id, resolved: resolved)
+        }
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
-        return try await caches.report.getModel(
+        return await caches.report.getModel(
             api: self,
-            from: .init(from: response.commentReportView),
+            from: response,
             myPersonId: myPersonId,
             semaphore: semaphore
         )
@@ -117,12 +125,13 @@ public extension ApiClient {
         resolved: Bool,
         semaphore: UInt? = nil
     ) async throws -> Report {
-        let request = ResolvePmReportRequest(endpoint: .v3, reportId: id, resolved: resolved)
-        async let response = try await perform(request)
+        let response = try await performingForConnection { connection in
+            try await connection.resolveMessageReport(id: id, resolved: resolved)
+        }
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
-        return try await caches.report.getModel(
+        return await caches.report.getModel(
             api: self,
-            from: .init(from: response.privateMessageReportView),
+            from: response,
             myPersonId: myPersonId,
             semaphore: semaphore
         )

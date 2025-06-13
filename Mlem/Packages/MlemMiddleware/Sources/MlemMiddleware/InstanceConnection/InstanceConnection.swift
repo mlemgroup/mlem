@@ -432,7 +432,7 @@ public protocol InstanceConnection {
     
     // MARK: - Report
     
-    func getReportCount(communityId: Int?) async throws -> ApiGetReportCountResponse
+    func getReportCount(communityId: Int?) async throws -> ReportUnreadCountSnapshot
     
     func getPostReports(
         page: Int,
