@@ -23,7 +23,7 @@ public protocol InstanceConnection {
     ) async throws -> (posts: [Post2Snapshot], cursor: String?)
     
     func getPosts(
-        feed: ApiListingType,
+        feed: ListingType,
         sort: PostSortType,
         page: Int,
         cursor: String?,
@@ -51,7 +51,7 @@ public protocol InstanceConnection {
         limit: Int,
         communityId: Int?,
         creatorId: Int?,
-        filter: ApiListingType,
+        filter: ListingType,
         sort: PostSortType
     ) async throws -> [Post2Snapshot]
     
@@ -61,7 +61,7 @@ public protocol InstanceConnection {
         limit: Int,
         communityId: Int?,
         creatorId: Int?,
-        filter: ApiListingType,
+        filter: ListingType,
         sort: SearchSortType
     ) async throws -> [Post2Snapshot]
     
@@ -119,7 +119,7 @@ public protocol InstanceConnection {
     func pinPost(
         id: Int,
         pin: Bool,
-        to target: ApiPostFeatureType
+        to target: PostFeatureType
     ) async throws -> Post2Snapshot
     
     @discardableResult
@@ -223,7 +223,7 @@ public protocol InstanceConnection {
         query: String,
         page: Int,
         limit: Int,
-        filter: ApiListingType,
+        filter: ListingType,
         sort: SearchSortType
     ) async throws -> [Person2Snapshot]
     
@@ -253,7 +253,7 @@ public protocol InstanceConnection {
     
     func getContent(
         authorId id: Int,
-        sort: ApiSortType,
+        sort: PostSortType,
         page: Int,
         limit: Int,
         savedOnly: Bool?,
@@ -267,7 +267,7 @@ public protocol InstanceConnection {
         showNsfw: Bool?,
         showScores: Bool?,
         theme: String?,
-        defaultListingType: ApiListingType?,
+        defaultListingType: ListingType?,
         interfaceLanguage: String?,
         avatar: String?,
         banner: String?,
@@ -285,7 +285,7 @@ public protocol InstanceConnection {
         blurNsfw: Bool?,
         autoExpand: Bool?,
         infiniteScrollEnabled: Bool?,
-        postListingMode: ApiPostListingMode?,
+        postListingMode: PostFeedViewMode?,
         enableKeyboardNavigation: Bool?,
         enableAnimatedImages: Bool?,
         collapseBotComments: Bool?,
@@ -304,7 +304,7 @@ public protocol InstanceConnection {
         query: String,
         page: Int,
         limit: Int,
-        filter: ApiListingType,
+        filter: ListingType,
         sort: SearchSortType
     ) async throws -> [Community2Snapshot]
     
@@ -333,7 +333,7 @@ public protocol InstanceConnection {
     
     // MARK: - General
 
-    func getAccountToken(usernameOrEmail: String, password: String, totpToken: String?) async throws -> ApiLoginResponse
+    func getAccountToken(usernameOrEmail: String, password: String, totpToken: String?) async throws -> String
     func getUsernameFromToken(token: String) async throws -> String
     
     func signUp(
@@ -345,14 +345,14 @@ public protocol InstanceConnection {
         captcha: Captcha?,
         captchaAnswer: String?,
         applicationQuestionResponse: String?
-    ) async throws -> ApiLoginResponse
+    ) async throws -> SignUpResponse
     
     @discardableResult
     func changePassword(
         newPassword: String,
         confirmNewPassword: String,
         oldPassword: String
-    ) async throws -> ApiLoginResponse
+    ) async throws -> String
     
     func getCaptcha() async throws -> Captcha
     
@@ -368,20 +368,20 @@ public protocol InstanceConnection {
         subjectPersonId: Int?,
         postId: Int?,
         commentId: Int?,
-        type: ApiModlogActionType
+        type: ModlogEntryType?
     ) async throws -> [ModlogEntrySnapshot]
     
     // MARK: - Inbox
     
     func getReplies(
-        sort: ApiCommentSortType,
+        sort: CommentSortType,
         page: Int,
         limit: Int,
         unreadOnly: Bool
     ) async throws -> [Reply2Snapshot]
     
     func getMentions(
-        sort: ApiCommentSortType,
+        sort: CommentSortType,
         page: Int,
         limit: Int,
         unreadOnly: Bool

@@ -9,9 +9,9 @@ import Foundation
 
 @Observable
 class AggregatePostFetcher: PostFetcher {
-    var feedType: ApiListingType
+    var feedType: ListingType
     
-    init(api: ApiClient, feedType: ApiListingType, sortType: PostSortType, pageSize: Int) {
+    init(api: ApiClient, feedType: ListingType, sortType: PostSortType, pageSize: Int) {
         self.feedType = feedType
         
         super.init(api: api, sortType: sortType, pageSize: pageSize)
@@ -47,7 +47,7 @@ public class AggregatePostFeedLoader: CorePostFeedLoader {
         prefetchingConfiguration: PrefetchingConfiguration,
         urlCache: URLCache,
         api: ApiClient,
-        feedType: ApiListingType
+        feedType: ListingType
     ) {
         super.init(
             showReadPosts: showReadPosts,
@@ -63,7 +63,7 @@ public class AggregatePostFeedLoader: CorePostFeedLoader {
     }
     
     @MainActor
-    public func changeFeedType(to newFeedType: ApiListingType) async throws {
+    public func changeFeedType(to newFeedType: ListingType) async throws {
         let shouldRefresh = items.isEmpty || aggregatePostFetcher.feedType != newFeedType
         
         // always perform assignment--if account changed, feed type will look unchanged but API will be different

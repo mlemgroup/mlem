@@ -47,7 +47,7 @@ public extension LemmyConnection {
     }
     
     func getPosts(
-        feed: ApiListingType,
+        feed: ListingType,
         sort: PostSortType,
         page: Int,
         cursor: String?,
@@ -58,7 +58,7 @@ public extension LemmyConnection {
         let response = try await performingForEndpoint { endpoint in
             ListPostsRequest(
                 endpoint: endpoint,
-                type_: feed,
+                type_: feed.apiType,
                 sort: sort.legacyApiSortType,
                 page: cursor == nil ? page : nil,
                 limit: limit,
@@ -142,7 +142,7 @@ public extension LemmyConnection {
         limit: Int = 20,
         communityId: Int? = nil,
         creatorId: Int? = nil,
-        filter: ApiListingType = .all,
+        filter: ListingType = .all,
         sort: PostSortType
     ) async throws -> [Post2Snapshot] {
         try await searchPosts(
@@ -164,7 +164,7 @@ public extension LemmyConnection {
         limit: Int = 20,
         communityId: Int? = nil,
         creatorId: Int? = nil,
-        filter: ApiListingType = .all,
+        filter: ListingType = .all,
         sort: SearchSortType
     ) async throws -> [Post2Snapshot] {
         try await searchPosts(
@@ -186,7 +186,7 @@ public extension LemmyConnection {
         limit: Int,
         communityId: Int?,
         creatorId: Int?,
-        filter: ApiListingType,
+        filter: ListingType,
         legacySort: ApiSortType?,
         sort: ApiSearchSortType?,
         timeRangeSeconds: Int?
@@ -200,7 +200,7 @@ public extension LemmyConnection {
                 creatorId: creatorId,
                 type_: .posts,
                 sort: .init(oldSortType: endpoint == .v3 ? legacySort : nil, newSortType: endpoint == .v4 ? sort : nil),
-                listingType: filter,
+                listingType: filter.apiType,
                 page: page,
                 limit: limit,
                 postTitleOnly: false,
@@ -411,14 +411,14 @@ public extension LemmyConnection {
     func pinPost(
         id: Int,
         pin: Bool,
-        to target: ApiPostFeatureType
+        to target: PostFeatureType
     ) async throws -> Post2Snapshot {
         let response = try await performingForEndpoint { endpoint in
             FeaturePostRequest(
                 endpoint: endpoint,
                 postId: id,
                 featured: pin,
-                featureType: target
+                featureType: target.apiType
             )
         }
         return try .init(from: response.postView)

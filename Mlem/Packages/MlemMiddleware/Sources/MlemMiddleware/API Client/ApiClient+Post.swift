@@ -38,7 +38,7 @@ public extension ApiClient {
 
     // swiftlint:disable:next function_parameter_count
     func getPosts(
-        feed: ApiListingType,
+        feed: ListingType,
         sort: PostSortType,
         page: Int,
         cursor: String?,
@@ -109,7 +109,7 @@ public extension ApiClient {
         limit: Int = 20,
         communityId: Int? = nil,
         creatorId: Int? = nil,
-        filter: ApiListingType = .all,
+        filter: ListingType = .all,
         sort: PostSortType
     ) async throws -> [Post2] {
         let response = try await performingForConnection { connection in
@@ -132,7 +132,7 @@ public extension ApiClient {
         limit: Int = 20,
         communityId: Int? = nil,
         creatorId: Int? = nil,
-        filter: ApiListingType = .all,
+        filter: ListingType = .all,
         sort: SearchSortType
     ) async throws -> [Post2] {
         let response = try await performingForConnection { connection in
@@ -364,7 +364,7 @@ public extension ApiClient {
     func pinPost(
         id: Int,
         pin: Bool,
-        to target: ApiPostFeatureType,
+        to target: PostFeatureType,
         semaphore: UInt? = nil
     ) async throws -> Post2 {
         let response = try await performingForConnection { connection in

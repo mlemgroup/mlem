@@ -61,7 +61,7 @@ public extension ApiClient {
         query: String,
         page: Int = 1,
         limit: Int = 20,
-        filter: ApiListingType = .all,
+        filter: ListingType = .all,
         sort: SearchSortType = .top(.allTime),
         hostApi: ApiClient? = nil
     ) async throws -> [Community2] {

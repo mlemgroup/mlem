@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  ModlogEntryContentSnapshot.swift
 //  MlemMiddleware
 //
 //  Created by Sjmarf on 2025-05-13.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum ModlogEntryTypeSnapshot {
+public enum ModlogEntryContentSnapshot {
     case removePost(
         _ post: Post1Snapshot,
         community: Community1Snapshot,

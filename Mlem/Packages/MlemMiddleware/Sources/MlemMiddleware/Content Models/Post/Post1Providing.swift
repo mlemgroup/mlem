@@ -265,7 +265,7 @@ public extension Post1Providing {
     @discardableResult
     func updatePinnedInstance(_ newValue: Bool) -> Task<StateUpdateResult, Never> {
         pinnedInstanceManager.performRequest(expectedResult: newValue) { semaphore in
-            try await self.api.pinPost(id: self.id, pin: newValue, to: .local, semaphore: semaphore)
+            try await self.api.pinPost(id: self.id, pin: newValue, to: .instance, semaphore: semaphore)
         }
     }
     
