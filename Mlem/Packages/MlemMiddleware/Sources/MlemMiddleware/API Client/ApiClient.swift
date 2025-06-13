@@ -20,8 +20,6 @@ public class ApiClient {
     
     public internal(set) var token: String?
     
-    public private(set) var contextDataManager: SharedTaskManager<Context> = .init()
-    
     public var willSendToken: Bool { token != nil }
     
     public internal(set) weak var myInstance: Instance3?
@@ -33,35 +31,24 @@ public class ApiClient {
     /// Stores the IDs of posts that are queued to be marked read.
     var markReadQueue: MarkReadQueue = .init()
     
-    public var fetchedVersion: SiteVersion? {
-        contextDataManager.fetchedValue?.siteVersion
+    public func ensureContextPresence() async throws {
+        try await getLemmyConnection().ensureContextPresence()
     }
     
-    /// Returns the `fetchedVersion` if the version has already been fetched. Otherwise, waits until the version has been fetched before returning the received value.
+    public var fetchedVersion: SiteVersion? {
+        getLemmyConnection().fetchedVersion
+    }
+    
     public var version: SiteVersion {
         get async throws {
-            try await contextDataManager.getValue().siteVersion
+            try await getLemmyConnection().version
         }
     }
     
     public var myPersonId: Int? {
         get async throws {
-            try await contextDataManager.getValue().myPersonId
+            try await getLemmyConnection().myPersonId
         }
-    }
-    
-    public func ensureContextPresence() async throws {
-        try await contextDataManager.getValue()
-    }
-    
-    /// Returns whether the version supports the given feature
-    public func supports(_ feature: SiteVersion.Feature) async throws -> Bool {
-        try await version.suppports(feature)
-    }
-    
-    /// Returns whether the fetched version supports the given feature. Defaults to false if no fetched version available.
-    public func fetchedVersionSupports(_ feature: SiteVersion.Feature) -> Bool {
-        fetchedVersion?.suppports(feature) ?? false
     }
     
     // MARK: caching
@@ -86,10 +73,6 @@ public class ApiClient {
     ) {
         self.baseUrl = url
         self.username = username
-        contextDataManager.fetchTask = {
-            let (person, instance, _) = try await self.getMyPerson()
-            return .init(instance: instance, person: person)
-        }
     }
     
     public func cleanCaches() {
@@ -147,12 +130,17 @@ public class ApiClient {
     func performingForConnection<T>(
         _ callback: (any InstanceConnection) async throws -> T
     ) async throws -> T {
+        try await callback(getLemmyConnection())
+    }
+    
+    // This is temporary and will be removed shortly
+    private func getLemmyConnection() -> any InstanceConnection {
         if let connection {
-            return try await callback(connection)
+            return connection
         } else {
             let connection = LemmyConnection(baseUrl: baseUrl, token: token)
             self.connection = connection
-            return try await callback(connection)
+            return connection
         }
     }
 }
@@ -181,20 +169,6 @@ extension ApiClient: Hashable {
 extension ApiClient: CustomDebugStringConvertible {
     public var debugDescription: String {
         "ApiClient(\(host), authenticated: \(token != nil))"
-    }
-}
-
-public extension ApiClient {
-    struct Context {
-        let siteVersion: SiteVersion
-        let myPersonId: Int?
-    }
-}
-
-public extension ApiClient.Context {
-    init(instance: Instance3, person: Person4?) {
-        self.siteVersion = instance.version
-        self.myPersonId = person?.id
     }
 }
 

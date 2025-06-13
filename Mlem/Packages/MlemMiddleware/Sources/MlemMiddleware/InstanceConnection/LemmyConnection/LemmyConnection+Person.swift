@@ -203,11 +203,29 @@ public extension LemmyConnection {
         )
     }
     
-    func getMyPerson() async throws -> (person: Person4Snapshot?, instance: Instance3Snapshot, blocks: BlockListSnapshot?) {
+    // Returns a raw API type. For use inside LemmyConnection only
+    internal func rawGetMyPerson() async throws -> ApiGetSiteResponse {
         let response = try await performingForEndpoint { endpoint in
             GetSiteRequest(endpoint: endpoint)
         }
-        
+        return response
+    }
+    
+    // Calls rawGetMyPerson, but if there's already a task running in the `contextDataManager` uses that instead.
+    internal func rawGetMyPersonWithContext() async throws -> ApiGetSiteResponse {
+        if let ongoingTask = contextDataManager.ongoingTask {
+            return try await ongoingTask.result.get()
+        } else {
+            let task = Task { try await rawGetMyPerson() }
+            Task.detached {
+                _ = try await self.contextDataManager.getValue(task: task)
+            }
+            return try await task.result.get()
+        }
+    }
+    
+    func getMyPerson() async throws -> (person: Person4Snapshot?, instance: Instance3Snapshot, blocks: BlockListSnapshot?) {
+        let response = try await rawGetMyPersonWithContext()
         var person: Person4Snapshot?
         var blocks: BlockListSnapshot?
         if let myUser = response.myUser {

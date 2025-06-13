@@ -9,9 +9,7 @@ import Foundation
 
 public extension LemmyConnection {
     func getMyInstance() async throws -> Instance3Snapshot {
-        let response = try await performingForEndpoint { endpoint in
-            GetSiteRequest(endpoint: endpoint)
-        }
+        let response = try await rawGetMyPersonWithContext()
         return try .init(from: response)
     }
     
