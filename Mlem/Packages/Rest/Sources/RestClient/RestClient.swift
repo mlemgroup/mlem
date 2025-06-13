@@ -18,12 +18,11 @@ public class RestClient<ErrorType: Decodable & CustomStringConvertible> {
     public func perform<Request: RestRequest>(
         baseUrl: URL,
         _ request: Request,
-        token: String?,
-        ignoreLocalCache: Bool = false
+        token: String?
     ) async throws(RestError) -> Request.Response {
-        let urlRequest = try urlRequest(baseUrl: baseUrl, request: request, token: token, ignoreLocalCache: ignoreLocalCache)
+        let urlRequest = try urlRequest(baseUrl: baseUrl, request: request, token: token)
         // this line intentionally left commented for convenient future debugging
-        urlRequest.debug()
+//        urlRequest.debug()
         let (data, response) = try await execute(urlRequest)
         if let response = response as? HTTPURLResponse {
             if response.statusCode >= 500 { // Error code for server being offline.
@@ -58,8 +57,7 @@ public class RestClient<ErrorType: Decodable & CustomStringConvertible> {
     func urlRequest(
         baseUrl: URL,
         request: any RestRequest,
-        token: String?,
-        ignoreLocalCache: Bool = false
+        token: String?
     ) throws(RestError) -> URLRequest {
         let url: URL
         do {
@@ -69,9 +67,7 @@ public class RestClient<ErrorType: Decodable & CustomStringConvertible> {
         }
         
         var urlRequest = mlemUrlRequest(url: url)
-        if ignoreLocalCache {
-            urlRequest.cachePolicy = .reloadIgnoringLocalCacheData
-        }
+        urlRequest.cachePolicy = .reloadIgnoringLocalCacheData
         for header in request.headers {
             urlRequest.setValue(header.value, forHTTPHeaderField: header.key)
         }

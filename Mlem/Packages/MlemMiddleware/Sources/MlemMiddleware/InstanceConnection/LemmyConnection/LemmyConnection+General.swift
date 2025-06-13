@@ -23,7 +23,7 @@ public extension LemmyConnection {
     func getUsernameFromToken(token: String) async throws -> String {
         let response = try await processingForEndpoint { endpoint in
             let request = GetSiteRequest(endpoint: endpoint)
-            return try await perform(request, tokenOverride: token, ignoreLocalCache: true)
+            return try await perform(request, tokenOverride: token)
         }
         if let name = response.myUser?.localUserView.person.name {
             return name

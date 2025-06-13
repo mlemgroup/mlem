@@ -28,14 +28,10 @@ public class LemmyConnection: InstanceConnection {
     }
 
     @discardableResult
-    func perform<Request: RestRequest>(
-        _ request: Request,
-        tokenOverride: String? = nil,
-        ignoreLocalCache: Bool = false
-    ) async throws -> Request.Response {
+    func perform<Request: RestRequest>(_ request: Request, tokenOverride: String? = nil) async throws -> Request.Response {
         let token = tokenOverride ?? token
         do throws(RestError) {
-            return try await restClient.perform(baseUrl: baseUrl, request, token: token, ignoreLocalCache: ignoreLocalCache)
+            return try await restClient.perform(baseUrl: baseUrl, request, token: token)
         } catch {
             switch error {
             case let RestError.response(response, statusCode: _):
