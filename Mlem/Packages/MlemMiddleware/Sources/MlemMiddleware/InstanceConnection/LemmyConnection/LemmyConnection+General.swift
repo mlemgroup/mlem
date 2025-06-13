@@ -25,10 +25,10 @@ public extension LemmyConnection {
         // I actually don't think this is necessary - the login endpoint seems to throw these errors itself.
         // I suspect that `registrationCreated` and `verifyEmailSent` can only be true for the `ApiLoginResponse`
         // that is returned when signing in. Nevertheless, I've included this just in case.
-        if !response.registrationCreated {
+        if response.registrationCreated {
             throw ApiClientError.response(.init(error: "registration_application_is_pending"), 200)
         }
-        if !response.verifyEmailSent {
+        if response.verifyEmailSent {
             throw ApiClientError.response(.init(error: "email_not_verified"), 200)
         }
         
