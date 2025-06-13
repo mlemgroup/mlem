@@ -9,11 +9,11 @@ import MlemMiddleware
 import SwiftUI
 import Theming
 
-extension ApiRegistrationMode {
+extension RegistrationMode {
     var label: LocalizedStringResource {
         switch self {
         case .closed: "Closed"
-        case .requireApplication: "Requires Application"
+        case .requiresApplication: "Requires Application"
         case .open: "Open"
         }
     }
@@ -21,7 +21,7 @@ extension ApiRegistrationMode {
     var color: ThemedColor {
         switch self {
         case .closed: .themedNegative
-        case .requireApplication: .themedCaution
+        case .requiresApplication: .themedCaution
         case .open: .themedPositive
         }
     }

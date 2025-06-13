@@ -27,7 +27,6 @@ public protocol CommunityStubProviding: ContentModel, Resolvable {
     var onlyModeratorsCanPost_: Bool? { get }
     var blocked_: Bool? { get }
     var purged_: Bool? { get }
-    var visibility_: ApiCommunityVisibility? { get }
     
     // From Community2Providing.
     var subscribed_: Bool? { get }
@@ -69,7 +68,6 @@ public extension CommunityStubProviding {
     var onlyModeratorsCanPost_: Bool? { nil }
     var blocked_: Bool? { nil }
     var purged_: Bool? { nil }
-    var visibility_: ApiCommunityVisibility? { nil }
     
     // From Community2Providing.
     var subscribed_: Bool? { nil }

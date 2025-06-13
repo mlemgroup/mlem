@@ -34,7 +34,6 @@ public protocol PersonStubProviding: ContentModel, Resolvable {
     
     // From Person4Providing.
     var isAdmin_: Bool? { get }
-    var voteDisplayMode_: ApiLocalUserVoteDisplayMode? { get }
     var email_: String? { get }
     var showNsfw_: Bool? { get }
     var theme_: String? { get }
@@ -87,7 +86,6 @@ public extension PersonStubProviding {
     var moderatedCommunities_: [Community1]? { nil }
     
     var isAdmin_: Bool? { nil }
-    var voteDisplayMode_: ApiLocalUserVoteDisplayMode? { nil }
     var email_: String? { nil }
     var showNsfw_: Bool? { nil }
     var theme_: String? { nil }

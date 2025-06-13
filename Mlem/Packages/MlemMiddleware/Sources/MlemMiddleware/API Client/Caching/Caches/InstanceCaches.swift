@@ -94,7 +94,7 @@ class Instance2Cache: ApiTypeBackedCache<Instance2, Instance2Snapshot> {
             registrationMode: snapshot.registrationMode,
             federationSignedFetch: snapshot.federationSignedFetch,
             defaultPostListingMode: snapshot.defaultPostListingMode,
-            defaultSortType: snapshot.defaultSortType,
+            defaultPostSortType: snapshot.defaultPostSortType,
             userCount: snapshot.userCount,
             postCount: snapshot.postCount,
             commentCount: snapshot.commentCount,
@@ -118,7 +118,6 @@ class Instance3Cache: ApiTypeBackedCache<Instance3, Instance3Snapshot> {
             version: snapshot.version,
             allLanguages: snapshot.allLanguages,
             allowedLanguageIds: snapshot.allowedLanguageIds,
-            taglines: snapshot.taglines,
             blockedUrls: snapshot.blockedUrls,
             administrators: api.caches.person2.getModels(api: api, from: snapshot.administrators)
         )

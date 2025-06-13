@@ -50,7 +50,6 @@ public extension Community1Providing {
     var onlyModeratorsCanPost: Bool { community1.onlyModeratorsCanPost }
     var blocked: Bool { community1.blocked }
     var purged: Bool { community1.purged }
-    var visibility: ApiCommunityVisibility? { community1.visibility }
     
     var actorId_: ActorIdentifier? { community1.actorId }
     var id_: Int? { community1.id }
@@ -70,7 +69,6 @@ public extension Community1Providing {
     var onlyModeratorsCanPost_: Bool? { community1.onlyModeratorsCanPost }
     var blocked_: Bool? { community1.blocked }
     var purged_: Bool? { community1.purged }
-    var visibility_: ApiCommunityVisibility? { community1.visibility }
 }
 
 // Resolvable conformance

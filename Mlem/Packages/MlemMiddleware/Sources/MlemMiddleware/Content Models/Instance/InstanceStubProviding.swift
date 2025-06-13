@@ -34,7 +34,7 @@ public protocol InstanceStubProviding: ActorIdentifiable, ContentModel {
     var applicationQuestion_: String? { get }
     var isPrivate_: Bool? { get }
     var defaultTheme_: String? { get }
-    var defaultFeed_: ApiListingType? { get }
+    var defaultFeed_: ListingType? { get }
     var legalInformation_: String? { get }
     var hideModlogNames_: Bool? { get }
     var emailApplicationsToAdmins_: Bool? { get }
@@ -44,9 +44,9 @@ public protocol InstanceStubProviding: ActorIdentifiable, ContentModel {
     var federationEnabled_: Bool? { get }
     var captchaEnabled_: Bool? { get }
     var captchaDifficulty_: CaptchaDifficulty? { get }
-    var registrationMode_: ApiRegistrationMode? { get }
+    var registrationMode_: RegistrationMode? { get }
     var federationSignedFetch_: Bool? { get }
-    var defaultPostListingMode_: ApiPostListingMode? { get }
+    var defaultPostListingMode_: PostFeedViewMode? { get }
     var defaultSortType_: ApiSortType? { get }
     var userCount_: Int? { get }
     var postCount_: Int? { get }
@@ -58,8 +58,7 @@ public protocol InstanceStubProviding: ActorIdentifiable, ContentModel {
     var version_: SiteVersion? { get }
     var allLanguages_: [Locale.Language]? { get }
     var allowedLanguageIds_: Set<Int>? { get }
-    var taglines_: [ApiTagline]? { get }
-    var blockedUrls_: [ApiLocalSiteUrlBlocklist]? { get }
+    var blockedUrls_: [InstanceUrlBlockRecord]? { get }
     var administrators_: [Person2]? { get }
 }
 
@@ -86,7 +85,7 @@ public extension InstanceStubProviding {
     var applicationQuestion_: String? { nil }
     var isPrivate_: Bool? { nil }
     var defaultTheme_: String? { nil }
-    var defaultFeed_: ApiListingType? { nil }
+    var defaultFeed_: ListingType? { nil }
     var legalInformation_: String? { nil }
     var hideModlogNames_: Bool? { nil }
     var emailApplicationsToAdmins_: Bool? { nil }
@@ -96,9 +95,9 @@ public extension InstanceStubProviding {
     var federationEnabled_: Bool? { nil }
     var captchaEnabled_: Bool? { nil }
     var captchaDifficulty_: CaptchaDifficulty? { nil }
-    var registrationMode_: ApiRegistrationMode? { nil }
+    var registrationMode_: RegistrationMode? { nil }
     var federationSignedFetch_: Bool? { nil }
-    var defaultPostListingMode_: ApiPostListingMode? { nil }
+    var defaultPostListingMode_: PostFeedViewMode? { nil }
     var defaultSortType_: ApiSortType? { nil }
     var userCount_: Int? { nil }
     var postCount_: Int? { nil }
@@ -110,8 +109,7 @@ public extension InstanceStubProviding {
     var version_: SiteVersion? { nil }
     var allLanguages_: [Locale.Language]? { nil }
     var allowedLanguageIds_: Set<Int>? { nil }
-    var taglines_: [ApiTagline]? { nil }
-    var blockedUrls_: [ApiLocalSiteUrlBlocklist]? { nil }
+    var blockedUrls_: [InstanceUrlBlockRecord]? { nil }
     var administrators_: [Person2]? { nil }
 }
 

@@ -14,7 +14,6 @@ public struct Person4Snapshot: CacheIdentifiable {
     
     // May change. If you add/remove items from this list,
     // remember to also amend the `update` method of Person3!
-    public var voteDisplayMode: ApiLocalUserVoteDisplayMode?
     public var email: String?
     public var showNsfw: Bool
     public var theme: String
@@ -44,7 +43,6 @@ public struct Person4Snapshot: CacheIdentifiable {
         self.person = try .init(from: userInfo)
         let user = userInfo.localUserView.localUser
 
-        self.voteDisplayMode = userInfo.localUserView.localUserVoteDisplayMode
         self.email = user.email
         self.showNsfw = user.showNsfw
         self.theme = user.theme

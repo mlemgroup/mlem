@@ -26,8 +26,7 @@ import Foundation
             banner: URL?,
             hidden: Bool,
             onlyModeratorsCanPost: Bool,
-            blocked: Bool,
-            visibility: ApiCommunityVisibility?
+            blocked: Bool
         ) -> Community1 {
             .init(
                 api: api,
@@ -46,8 +45,7 @@ import Foundation
                 banner: banner,
                 hidden: hidden,
                 onlyModeratorsCanPost: onlyModeratorsCanPost,
-                blocked: blocked,
-                visibility: visibility
+                blocked: blocked
             )
         }
     }

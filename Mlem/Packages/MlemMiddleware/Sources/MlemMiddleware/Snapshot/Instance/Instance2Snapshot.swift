@@ -22,7 +22,7 @@ public struct Instance2Snapshot: CacheIdentifiable {
     public var applicationQuestion: String?
     public var isPrivate: Bool
     public var defaultTheme: String
-    public var defaultFeed: ApiListingType
+    public var defaultFeed: ListingType
     public var legalInformation: String?
     public var hideModlogNames: Bool
     public var emailApplicationsToAdmins: Bool
@@ -32,10 +32,10 @@ public struct Instance2Snapshot: CacheIdentifiable {
     public var federationEnabled: Bool
     public var captchaEnabled: Bool
     public var captchaDifficulty: CaptchaDifficulty?
-    public var registrationMode: ApiRegistrationMode
+    public var registrationMode: RegistrationMode
     public var federationSignedFetch: Bool?
-    public var defaultPostListingMode: ApiPostListingMode?
-    public var defaultSortType: ApiSortType?
+    public var defaultPostListingMode: PostFeedViewMode?
+    public var defaultPostSortType: PostSortType?
     public var userCount: Int
     public var postCount: Int
     public var commentCount: Int
@@ -64,7 +64,7 @@ public struct Instance2Snapshot: CacheIdentifiable {
         self.applicationQuestion = site.localSite.applicationQuestion
         self.isPrivate = site.localSite.privateInstance
         self.defaultTheme = site.localSite.defaultTheme
-        self.defaultFeed = site.localSite.defaultPostListingType
+        self.defaultFeed = .init(from: site.localSite.defaultPostListingType)
         self.legalInformation = site.localSite.legalInformation
         self.hideModlogNames = site.localSite.hideModlogModNames ?? true // Always hidden in 1.0
         self.emailApplicationsToAdmins = site.localSite.applicationEmailAdmins
@@ -74,10 +74,10 @@ public struct Instance2Snapshot: CacheIdentifiable {
         self.federationEnabled = site.localSite.federationEnabled
         self.captchaEnabled = site.localSite.captchaEnabled
         self.captchaDifficulty = .init(rawValue: site.localSite.captchaDifficulty)
-        self.registrationMode = site.localSite.registrationMode
+        self.registrationMode = .init(from: site.localSite.registrationMode)
         self.federationSignedFetch = site.localSite.federationSignedFetch
-        self.defaultPostListingMode = site.localSite.defaultPostListingMode
-        self.defaultSortType = site.localSite.defaultSortType
+        self.defaultPostListingMode = site.localSite.defaultPostListingMode.map { .init(from: $0) }
+        self.defaultPostSortType = site.localSite.defaultSortType.map { .init($0) }
         
         if let counts = site.counts {
             self.userCount = counts.users

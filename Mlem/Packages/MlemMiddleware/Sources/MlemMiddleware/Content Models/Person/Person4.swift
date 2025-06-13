@@ -16,7 +16,6 @@ public final class Person4: Person4Providing {
 
     public let person3: Person3
     
-    public internal(set) var voteDisplayMode: ApiLocalUserVoteDisplayMode?
     public internal(set) var email: String?
     public internal(set) var showNsfw: Bool
     public internal(set) var theme: String
@@ -43,7 +42,6 @@ public final class Person4: Person4Providing {
     init(
         api: ApiClient,
         person3: Person3,
-        voteDisplayMode: ApiLocalUserVoteDisplayMode?,
         email: String?,
         showNsfw: Bool,
         theme: String,
@@ -69,7 +67,6 @@ public final class Person4: Person4Providing {
     ) {
         self.api = api
         self.person3 = person3
-        self.voteDisplayMode = voteDisplayMode
         self.email = email
         self.showNsfw = showNsfw
         self.theme = theme
@@ -135,9 +132,9 @@ public final class Person4: Person4Providing {
             enableKeyboardNavigation: enableKeyboardNavigation,
             enableAnimatedImages: enableAnimatedImages,
             collapseBotComments: collapseBotComments,
-            showUpvotes: voteDisplayMode?.upvotes,
-            showDownvotes: voteDisplayMode?.downvotes,
-            showUpvotePercentage: voteDisplayMode?.upvotePercentage
+            showUpvotes: nil,
+            showDownvotes: nil,
+            showUpvotePercentage: nil
         )
         self.email = email ?? self.email
         person1.matrixId = matrixId ?? self.matrixId
@@ -181,9 +178,9 @@ public final class Person4: Person4Providing {
             enableKeyboardNavigation: enableKeyboardNavigation,
             enableAnimatedImages: enableAnimatedImages,
             collapseBotComments: collapseBotComments,
-            showUpvotes: voteDisplayMode?.upvotes,
-            showDownvotes: voteDisplayMode?.downvotes,
-            showUpvotePercentage: voteDisplayMode?.upvotePercentage
+            showUpvotes: nil,
+            showDownvotes: nil,
+            showUpvotePercentage: nil
         )
         person1.displayName = displayName ?? name
         person1.description = description

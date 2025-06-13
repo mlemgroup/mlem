@@ -27,8 +27,7 @@ class Community1Cache: ApiTypeBackedCache<Community1, Community1Snapshot> {
             banner: snapshot.banner,
             hidden: snapshot.hidden,
             onlyModeratorsCanPost: snapshot.onlyModeratorsCanPost,
-            blocked: nil,
-            visibility: snapshot.visibility
+            blocked: nil
         )
     }
     
