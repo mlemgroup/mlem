@@ -85,7 +85,6 @@ struct EndOfFeedView: View {
         Group {
             switch loadingState {
             case .idle:
-                Text("IDLE")
                 Group {
                     if showLoadMore, let feedLoader {
                         Button("Load More") {
@@ -116,10 +115,8 @@ struct EndOfFeedView: View {
                     }
                 }
             case .loading:
-                Text("LOADING")
                 ProgressView()
             case .done:
-                Text("DONE")
                 HStack {
                     Image(systemName: .init(localized: viewType.viewContent.icon))
                     Text(viewType.viewContent.message)

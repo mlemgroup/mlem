@@ -82,12 +82,6 @@ struct PersonContentGridView: View {
             }
             .animation(.easeOut(duration: 0.1), value: items.isEmpty)
             EndOfFeedView(loadingState: loadingState, viewType: .hobbit)
-            
-            Button("PRINT") {
-                print("All: \(feedLoader.loadingState)")
-                print("Post: \(feedLoader.postLoadingState)")
-                print("Comment: \(feedLoader.commentLoadingState)")
-            }
         }
     }
     
