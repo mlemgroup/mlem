@@ -8,6 +8,8 @@
 import Foundation
 
 public protocol InstanceConnection {
+    init(baseUrl: URL, token: String?)
+        
     func updateToken(_ newToken: String)
     
     var contextIsFetched: Bool { get }

@@ -34,6 +34,7 @@ public enum ApiClientError: Error {
     case mismatchingToken
     case noToken
     case responseMissingRequiredData(_ message: String)
+    case unableToDetermineSoftware(_ errors: [any Error])
     
     init(from error: RestError) {
         self = switch error {
@@ -104,6 +105,8 @@ extension ApiClientError: CustomStringConvertible {
             return "A call was made to an ApiClient that doesn't have a token yet."
         case let .responseMissingRequiredData(message):
             return "An API response was missing required data: \(message)"
+        case let .unableToDetermineSoftware(errors):
+            return "Unable to determine software: \(errors.map { String(describing: $0) }.joined(separator: ", "))"
         }
     }
 }

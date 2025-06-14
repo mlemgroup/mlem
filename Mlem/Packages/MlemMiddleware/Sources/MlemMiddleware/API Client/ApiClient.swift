@@ -11,13 +11,17 @@ import Rest
 
 @Observable
 public class ApiClient {
+    private static let supportedConnections: [any InstanceConnection.Type] = [LemmyConnection.self, PieFedConnection.self]
+    
     // url and username MAY NOT be modified! Downstream code expects that a given ApiClient will *always* submit requests from the same user to the same instance.
     public let baseUrl: URL
     public let username: String?
     
+    private var ongoingConnectionDiscoveryTask: Task<Any, Error>?
     var connection: (any InstanceConnection)?
-    var restClient: RestClient<ApiErrorResponse> = .init()
     
+    var restClient: RestClient<ApiErrorResponse> = .init()
+
     public internal(set) var token: String?
     
     public var willSendToken: Bool { token != nil }
@@ -32,30 +36,30 @@ public class ApiClient {
     var markReadQueue: MarkReadQueue = .init()
     
     public func ensureContextPresence() async throws {
-        try await getLemmyConnection().ensureContextPresence()
+        try await getConnection().ensureContextPresence()
     }
     
     public func supports(_ feature: Feature) async throws -> Bool {
-        try await getLemmyConnection().supports(feature)
+        try await getConnection().supports(feature)
     }
     
     public func supportsOrNil(_ feature: Feature) -> Bool? {
-        getLemmyConnection().supportsOrNil(feature)
+        connection?.supportsOrNil(feature)
     }
     
     public var contextIsFetched: Bool {
-        getLemmyConnection().contextIsFetched
+        connection?.contextIsFetched ?? false
     }
 
     public var myPersonId: Int? {
         get async throws {
-            try await getLemmyConnection().myPersonId
+            try await getConnection().myPersonId
         }
     }
     
     public var software: SiteSoftware {
         get async throws {
-            try await .init(type: .lemmy, version: getLemmyConnection().version)
+            try await .init(type: .lemmy, version: getConnection().version)
         }
     }
     
@@ -135,21 +139,75 @@ public class ApiClient {
         }
     }
     
-    func performingForConnection<T>(
-        _ callback: (any InstanceConnection) async throws -> T
-    ) async throws -> T {
-        try await callback(getLemmyConnection())
-    }
-    
-    // This is temporary and will be removed shortly
-    private func getLemmyConnection() -> any InstanceConnection {
+    private func getConnection() async throws -> any InstanceConnection {
+        _ = await ongoingConnectionDiscoveryTask?.result
         if let connection {
             return connection
-        } else {
-            let connection = LemmyConnection(baseUrl: baseUrl, token: token)
-            self.connection = connection
+        }
+        _ = try await getMyInstance()
+        if let connection {
             return connection
         }
+        assertionFailure()
+        throw ApiClientError.unsuccessful
+    }
+    
+    @MainActor
+    func performingForConnection<T>(
+        _ callback: @escaping (any InstanceConnection) async throws -> T,
+        file: String = #fileID,
+        function: String = #function,
+        line: Int = #line
+    ) async throws -> T {
+        // Iterate through all possible connections, and attempt the request on all of them in parallel.
+        // As soon as one of the requests succeeds, return the result and cancel the other ongoing requests.
+        // Cache the `InstanceConnection` that succeeded in the `self.connection` property, and use that
+        // for all subsequent calls of `performingForConnection`.
+        
+        // If `performingForConnection` is called and `self.connection` is `nil` but there is another
+        // `performingForConnection` call ongoing, it will wait for the other call to succeed first.
+
+        _ = await self.ongoingConnectionDiscoveryTask?.result
+        if let connection {
+            return try await callback(connection)
+        }
+
+        let ongoingConnectionDiscoveryTask: Task<T, Error> = Task {
+            try await withThrowingTaskGroup(of: (any InstanceConnection, T).self) { group in
+                var errors: [any Error] = []
+                
+                for connectionType in Self.supportedConnections {
+                    let connection = connectionType.init(baseUrl: baseUrl, token: token)
+                    group.addTask {
+                        try await (connection, callback(connection))
+                    }
+                }
+                
+                while !group.isEmpty {
+                    do {
+                        guard let result = try await group.next() else {
+                            assertionFailure()
+                            continue
+                        }
+                        // Cancel all other tasks once any one task succeeds
+                        group.cancelAll()
+                        self.connection = result.0
+                        self.ongoingConnectionDiscoveryTask = nil
+                        return result.1
+                    } catch {
+                        errors.append(error)
+                    }
+                }
+                
+                throw ApiClientError.unableToDetermineSoftware(errors)
+            }
+        }
+        
+        self.ongoingConnectionDiscoveryTask = Task {
+            _ = try? await ongoingConnectionDiscoveryTask.result.get()
+        }
+        
+        return try await ongoingConnectionDiscoveryTask.result.get()
     }
 }
 
