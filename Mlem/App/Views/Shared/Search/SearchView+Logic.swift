@@ -131,7 +131,7 @@ extension SearchView {
         await commentLoader.searchCommentFetcher.changeApi(
             to: getRefreshApi(for: commentFilters.location)
         )
-        var listing: ApiListingType = .all
+        var listing: ListingType = .all
         commentLoader.searchCommentFetcher.communityId = nil
         commentLoader.searchCommentFetcher.creatorId = commentFilters.creator?.id
         switch commentFilters.location {

@@ -112,15 +112,11 @@ class AccountsTracker {
         password: String,
         totpToken: String? = nil
     ) async throws -> UserAccount {
-        let response = try await unauthenticatedApi.getAccountToken(
+        let token = try await unauthenticatedApi.getAccountToken(
             usernameOrEmail: usernameOrEmail,
             password: password,
             totpToken: totpToken
         )
-        guard let token = response.jwt else {
-            throw ApiClientError.unsuccessful
-        }
-        
         let username = try await unauthenticatedApi.getUsernameFromToken(token: token)
         
         return try await logIn(

@@ -9,7 +9,7 @@ import Foundation
 
 public extension ApiClient {
     func getReplies(
-        sort: ApiCommentSortType = .new,
+        sort: CommentSortType = .new,
         page: Int,
         limit: Int,
         unreadOnly: Bool = false
@@ -26,7 +26,7 @@ public extension ApiClient {
     }
     
     func getMentions(
-        sort: ApiCommentSortType = .new,
+        sort: CommentSortType = .new,
         page: Int,
         limit: Int,
         unreadOnly: Bool = false

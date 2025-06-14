@@ -10,11 +10,18 @@ import Foundation
 @Observable
 class CommunityFetcher: Fetcher<Community2> {
     var query: String
-    var listing: ApiListingType
+    var listing: ListingType
     var sort: SearchSortType
     var hostApi: ApiClient?
     
-    init(api: ApiClient, query: String, pageSize: Int, listing: ApiListingType, sort: SearchSortType, hostApi: ApiClient?) {
+    init(
+        api: ApiClient,
+        query: String,
+        pageSize: Int,
+        listing: ListingType,
+        sort: SearchSortType,
+        hostApi: ApiClient?
+    ) {
         self.query = query
         self.listing = listing
         self.sort = sort
@@ -52,7 +59,7 @@ public class CommunityFeedLoader: StandardFeedLoader<Community2> {
         api: ApiClient,
         query: String = "",
         pageSize: Int = 20,
-        listing: ApiListingType = .all,
+        listing: ListingType = .all,
         sort: SearchSortType = .top(.allTime),
         hostApi: ApiClient? = nil
     ) {
@@ -78,7 +85,7 @@ public class CommunityFeedLoader: StandardFeedLoader<Community2> {
     
     public func refresh(
         query: String? = nil,
-        listing: ApiListingType? = nil,
+        listing: ListingType? = nil,
         sort: SearchSortType? = nil,
         clearBeforeRefresh: Bool = false
     ) async throws {

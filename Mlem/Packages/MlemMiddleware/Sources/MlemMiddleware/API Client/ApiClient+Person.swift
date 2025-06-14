@@ -69,7 +69,7 @@ public extension ApiClient {
         query: String,
         page: Int = 1,
         limit: Int = 20,
-        filter: ApiListingType = .all,
+        filter: ListingType = .all,
         sort: SearchSortType = .top(.allTime)
     ) async throws -> [Person2] {
         let response = try await performingForConnection { connection in
@@ -155,7 +155,7 @@ public extension ApiClient {
     
     func getContent(
         authorId id: Int,
-        sort: ApiSortType,
+        sort: PostSortType,
         page: Int,
         limit: Int,
         savedOnly: Bool? = nil,
@@ -217,7 +217,7 @@ public extension ApiClient {
         showNsfw: Bool?,
         showScores: Bool?,
         theme: String?,
-        defaultListingType: ApiListingType?,
+        defaultListingType: ListingType?,
         interfaceLanguage: String?,
         avatar: String?,
         banner: String?,
@@ -235,7 +235,7 @@ public extension ApiClient {
         blurNsfw: Bool?,
         autoExpand: Bool?,
         infiniteScrollEnabled: Bool?,
-        postListingMode: ApiPostListingMode?,
+        postListingMode: PostFeedViewMode?,
         enableKeyboardNavigation: Bool?,
         enableAnimatedImages: Bool?,
         collapseBotComments: Bool?,

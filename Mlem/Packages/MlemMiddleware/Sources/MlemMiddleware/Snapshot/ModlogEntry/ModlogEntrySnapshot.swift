@@ -11,7 +11,7 @@ public struct ModlogEntrySnapshot {
     public let created: Date
     public let moderator: Person1Snapshot?
     public let moderatorId: Int
-    public let type: ModlogEntryTypeSnapshot
+    public let type: ModlogEntryContentSnapshot
     
     public init(from view: ApiModRemovePostView) throws(ApiClientError) {
         self.type = try .init(from: view)

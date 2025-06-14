@@ -27,7 +27,7 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
     
     @ViewBuilder let content: ([Item], NavigationLayer) -> Content
     let api: ApiClient
-    let filter: ApiListingType
+    let filter: ListingType
     let closeButtonLabel: CloseButtonLabel
     
     @State var query: String = ""
@@ -39,7 +39,7 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
     /// If `api` is `nil`, the active ApiClient will be used.
     init(
         api: ApiClient? = nil,
-        filter: ApiListingType? = nil,
+        filter: ListingType? = nil,
         closeButtonLabel: CloseButtonLabel = .cancel,
         @ViewBuilder content: @escaping ([Item], NavigationLayer) -> Content
     ) {
@@ -102,7 +102,7 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
 extension SearchSheetView {
     init<RowContent: View>(
         api: ApiClient? = nil,
-        filter: ApiListingType? = nil,
+        filter: ListingType? = nil,
         closeButtonLabel: CloseButtonLabel = .cancel,
         @ViewBuilder content: @escaping (Item, NavigationLayer) -> RowContent
     ) where Content == SearchResultsView<Item, RowContent> {
@@ -118,7 +118,7 @@ extension SearchSheetView {
     
     init<RowContent: View, HeaderContent: View>(
         api: ApiClient? = nil,
-        filter: ApiListingType? = nil,
+        filter: ListingType? = nil,
         closeButtonLabel: CloseButtonLabel = .cancel,
         @ViewBuilder content: @escaping (Item, NavigationLayer) -> RowContent,
         @ViewBuilder header: @escaping () -> HeaderContent

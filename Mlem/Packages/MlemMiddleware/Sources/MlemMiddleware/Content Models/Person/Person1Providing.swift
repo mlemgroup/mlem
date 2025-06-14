@@ -124,7 +124,7 @@ public extension Person1Providing {
     
     func getContent(
         community: (any Community)? = nil,
-        sort: ApiSortType = .new,
+        sort: PostSortType = .new,
         page: Int,
         limit: Int,
         savedOnly: Bool = false

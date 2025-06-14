@@ -9,7 +9,7 @@ import Foundation
 
 extension ModlogChildFetcher {
     class SharedCache {
-        typealias TaskResponse = [ApiModlogActionType: [ModlogEntry]]
+        typealias TaskResponse = [ModlogEntryType: [ModlogEntry]]
         var api: ApiClient
         let pageSize: Int
         var communityId: Int?
@@ -27,7 +27,7 @@ extension ModlogChildFetcher {
         }
         
         @MainActor
-        func get(type: ApiModlogActionType) async throws -> [ModlogEntry] {
+        func get(type: ModlogEntryType) async throws -> [ModlogEntry] {
             let task: Task<TaskResponse, Error>
             if let ongoingTask {
                 task = ongoingTask

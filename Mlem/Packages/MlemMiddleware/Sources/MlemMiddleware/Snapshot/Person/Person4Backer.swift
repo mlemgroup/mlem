@@ -18,7 +18,7 @@ public struct Person4Snapshot: CacheIdentifiable {
     public var email: String?
     public var showNsfw: Bool
     public var theme: String
-    public var defaultListingType: ApiListingType
+    public var defaultListingType: ListingType
     public var interfaceLanguage: String
     public var showAvatars: Bool
     public var sendNotificationsToEmail: Bool
@@ -32,7 +32,7 @@ public struct Person4Snapshot: CacheIdentifiable {
     public var blurNsfw: Bool?
     public var autoExpandImages: Bool?
     public var infiniteScrollEnabled: Bool?
-    public var postListingMode: ApiPostListingMode?
+    public var postListingMode: PostFeedViewMode?
     public var totp2faEnabled: Bool?
     public var enableKeyboardNavigation: Bool?
     public var enableAnimatedImages: Bool?
@@ -48,7 +48,7 @@ public struct Person4Snapshot: CacheIdentifiable {
         self.email = user.email
         self.showNsfw = user.showNsfw
         self.theme = user.theme
-        self.defaultListingType = user.defaultListingType
+        self.defaultListingType = .init(from: user.defaultListingType)
         self.interfaceLanguage = user.interfaceLanguage
         self.showAvatars = user.showAvatars
         self.sendNotificationsToEmail = user.sendNotificationsToEmail
@@ -68,7 +68,7 @@ public struct Person4Snapshot: CacheIdentifiable {
         self.blurNsfw = user.blurNsfw
         self.autoExpandImages = user.autoExpand
         self.infiniteScrollEnabled = user.infiniteScrollEnabled
-        self.postListingMode = user.postListingMode
+        self.postListingMode = .init(from: user.postListingMode)
         self.totp2faEnabled = user.totp2faEnabled
         self.enableKeyboardNavigation = user.enableKeyboardNavigation
         self.enableAnimatedImages = user.enableAnimatedImages

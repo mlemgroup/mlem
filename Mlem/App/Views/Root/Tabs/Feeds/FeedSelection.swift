@@ -48,7 +48,7 @@ enum FeedSelection: String, CaseIterable, Codable {
         }
     }
     
-    var associatedApiType: ApiListingType {
+    var associatedApiType: ListingType {
         switch self {
         case .all: .all
         case .local: .local

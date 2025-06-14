@@ -1,5 +1,5 @@
 //
-//  ModlogEntryType.swift
+//  ModlogEntryContent.swift
 //  MlemMiddleware
 //
 //  Created by Sjmarf on 2024-12-25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum ModlogEntryType: Equatable {
+public enum ModlogEntryContent: Equatable {
     case removePost(
         _ post: Post1,
         community: Community1,
@@ -93,28 +93,28 @@ public enum ModlogEntryType: Equatable {
         }
     }
     
-    public var type: ApiModlogActionType {
+    public var type: ModlogEntryType {
         switch self {
-        case .removePost: .modRemovePost
-        case .lockPost: .modLockPost
-        case .pinPost: .modFeaturePost
-        case .purgePost: .adminPurgePost
-        case .removeComment: .modRemoveComment
-        case .purgeComment: .adminPurgeComment
-        case .removeCommunity: .modRemoveCommunity
-        case .purgeCommunity: .adminPurgeCommunity
-        case .hideCommunity: .modHideCommunity
-        case .transferCommunityOwnership: .modTransferCommunity
-        case .updatePersonModeratorStatus: .modAddCommunity
-        case .updatePersonAdminStatus: .modAdd
-        case .banPersonFromCommunity: .modBanFromCommunity
-        case .banPersonFromInstance: .modBan
-        case .purgePerson: .adminPurgePerson
+        case .removePost: .removePost
+        case .lockPost: .lockPost
+        case .pinPost: .pinPost
+        case .purgePost: .purgePost
+        case .removeComment: .removeComment
+        case .purgeComment: .purgeComment
+        case .removeCommunity: .removeCommunity
+        case .purgeCommunity: .purgeCommunity
+        case .hideCommunity: .hideCommunity
+        case .transferCommunityOwnership: .transferCommunityOwnership
+        case .updatePersonModeratorStatus: .updatePersonModeratorStatus
+        case .updatePersonAdminStatus: .updatePersonAdminStatus
+        case .banPersonFromCommunity: .banPersonFromCommunity
+        case .banPersonFromInstance: .banPersonFromInstance
+        case .purgePerson: .purgePerson
         }
     }
     
     @MainActor
-    init(from snapshot: ModlogEntryTypeSnapshot, api: ApiClient) {
+    init(from snapshot: ModlogEntryContentSnapshot, api: ApiClient) {
         switch snapshot {
         case let .removePost(post, community, removed, reason):
             self = .removePost(

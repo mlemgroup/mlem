@@ -8,7 +8,11 @@
 import Foundation
 
 public extension LemmyConnection {
-    func getAccountToken(usernameOrEmail: String, password: String, totpToken: String?) async throws -> ApiLoginResponse {
+    func getAccountToken(
+        usernameOrEmail: String,
+        password: String,
+        totpToken: String?
+    ) async throws -> String {
         let response = try await performingForEndpoint { endpoint in
             LoginRequest(
                 endpoint: endpoint,
@@ -17,7 +21,22 @@ public extension LemmyConnection {
                 totp2faToken: totpToken
             )
         }
-        return response
+        
+        // I actually don't think this is necessary - the login endpoint seems to throw these errors itself.
+        // I suspect that `registrationCreated` and `verifyEmailSent` can only be true for the `ApiLoginResponse`
+        // that is returned when signing in. Nevertheless, I've included this just in case.
+        if response.registrationCreated {
+            throw ApiClientError.response(.init(error: "registration_application_is_pending"), 200)
+        }
+        if response.verifyEmailSent {
+            throw ApiClientError.response(.init(error: "email_not_verified"), 200)
+        }
+        
+        guard let jwt = response.jwt else {
+            assertionFailure()
+            throw ApiClientError.responseMissingRequiredData("getAccountToken jwt")
+        }
+        return jwt
     }
     
     func getUsernameFromToken(token: String) async throws -> String {
@@ -40,7 +59,7 @@ public extension LemmyConnection {
         captcha: Captcha?,
         captchaAnswer: String?,
         applicationQuestionResponse: String?
-    ) async throws -> ApiLoginResponse {
+    ) async throws -> SignUpResponse {
         let response = try await performingForEndpoint { endpoint in
             RegisterRequest(
                 endpoint: .v3,
@@ -55,7 +74,7 @@ public extension LemmyConnection {
                 answer: applicationQuestionResponse
             )
         }
-        return response
+        return .init(from: response)
     }
     
     @discardableResult
@@ -63,7 +82,7 @@ public extension LemmyConnection {
         newPassword: String,
         confirmNewPassword: String,
         oldPassword: String
-    ) async throws -> ApiLoginResponse {
+    ) async throws -> String {
         let response = try await performingForEndpoint { endpoint in
             ChangePasswordRequest(
                 endpoint: endpoint,
@@ -72,7 +91,11 @@ public extension LemmyConnection {
                 oldPassword: oldPassword
             )
         }
-        return response
+        guard let token = response.jwt else {
+            assertionFailure()
+            throw ApiClientError.responseMissingRequiredData("changePassword jwt")
+        }
+        return token
     }
     
     func getCaptcha() async throws -> Captcha {
@@ -116,7 +139,7 @@ public extension LemmyConnection {
         subjectPersonId: Int? = nil,
         postId: Int? = nil,
         commentId: Int? = nil,
-        type: ApiModlogActionType = .all
+        type: ModlogEntryType? = nil
     ) async throws -> [ModlogEntrySnapshot] {
         let response = try await performingForEndpoint { endpoint in
             GetModLogRequest(
@@ -125,7 +148,7 @@ public extension LemmyConnection {
                 communityId: communityId,
                 page: page,
                 limit: limit,
-                type_: type,
+                type_: type?.apiType ?? .all,
                 otherPersonId: subjectPersonId,
                 postId: postId,
                 commentId: commentId,

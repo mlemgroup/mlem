@@ -9,14 +9,14 @@ import Foundation
 
 public extension LemmyConnection {
     func getReplies(
-        sort: ApiCommentSortType = .new,
+        sort: CommentSortType = .new,
         page: Int,
         limit: Int,
         unreadOnly: Bool = false
     ) async throws -> [Reply2Snapshot] {
         let response = try await performingForEndpoint { _ in
             ListRepliesRequest(
-                sort: sort,
+                sort: sort.apiSortType,
                 page: page,
                 limit: limit,
                 unreadOnly: unreadOnly
@@ -26,14 +26,14 @@ public extension LemmyConnection {
     }
     
     func getMentions(
-        sort: ApiCommentSortType = .new,
+        sort: CommentSortType = .new,
         page: Int,
         limit: Int,
         unreadOnly: Bool = false
     ) async throws -> [Reply2Snapshot] {
         let response = try await performingForEndpoint { _ in
             ListMentionsRequest(
-                sort: sort,
+                sort: sort.apiSortType,
                 page: page,
                 limit: limit,
                 unreadOnly: unreadOnly

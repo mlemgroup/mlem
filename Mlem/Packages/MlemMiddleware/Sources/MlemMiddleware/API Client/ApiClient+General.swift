@@ -25,7 +25,7 @@ public extension ApiClient {
     
     // Returns a raw API type :(
     // Probably OK because it's part of onboarding, which is cursed and bootstrappy
-    func getAccountToken(usernameOrEmail: String, password: String, totpToken: String?) async throws -> ApiLoginResponse {
+    func getAccountToken(usernameOrEmail: String, password: String, totpToken: String?) async throws -> String {
         let response = try await performingForConnection { connection in
             try await connection.getAccountToken(
                 usernameOrEmail: usernameOrEmail,
@@ -45,12 +45,8 @@ public extension ApiClient {
     
     func login(password: String, totpToken: String?) async throws {
         guard let username else { throw ApiClientError.notLoggedIn }
-        let response = try await getAccountToken(usernameOrEmail: username, password: password, totpToken: totpToken)
-        if let jwt = response.jwt {
-            updateToken(jwt)
-        } else {
-            throw ApiClientError.unsuccessful
-        }
+        let token = try await getAccountToken(usernameOrEmail: username, password: password, totpToken: totpToken)
+        updateToken(token)
     }
     
     func signUp(
@@ -62,7 +58,7 @@ public extension ApiClient {
         captcha: Captcha?,
         captchaAnswer: String?,
         applicationQuestionResponse: String?
-    ) async throws -> ApiLoginResponse {
+    ) async throws -> SignUpResponse {
         let response = try await performingForConnection { connection in
             try await connection.signUp(
                 username: username,
@@ -83,18 +79,16 @@ public extension ApiClient {
         newPassword: String,
         confirmNewPassword: String,
         oldPassword: String
-    ) async throws -> ApiLoginResponse {
-        let response = try await performingForConnection { connection in
+    ) async throws -> String {
+        let token = try await performingForConnection { connection in
             try await connection.changePassword(
                 newPassword: newPassword,
                 confirmNewPassword: confirmNewPassword,
                 oldPassword: oldPassword
             )
         }
-        if let token = response.jwt {
-            updateToken(token)
-        }
-        return response
+        updateToken(token)
+        return token
     }
     
     func getCaptcha() async throws -> Captcha {
@@ -173,7 +167,7 @@ public extension ApiClient {
         subjectPersonId: Int? = nil,
         postId: Int? = nil,
         commentId: Int? = nil,
-        type: ApiModlogActionType = .all
+        type: ModlogEntryType? = nil
     ) async throws -> [ModlogEntry] {
         let response = try await performingForConnection { connection in
             try await connection.getModlog(

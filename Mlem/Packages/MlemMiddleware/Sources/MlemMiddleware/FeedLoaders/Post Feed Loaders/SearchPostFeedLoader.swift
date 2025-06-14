@@ -18,7 +18,7 @@ public class SearchPostFetcher: Fetcher<Post2> {
     public var communityId: Int?
     public var creatorId: Int?
     
-    public var listing: ApiListingType
+    public var listing: ListingType
     
     public var sortType: SortType
 
@@ -36,7 +36,7 @@ public class SearchPostFetcher: Fetcher<Post2> {
         query: String,
         communityId: Int?,
         creatorId: Int?,
-        listing: ApiListingType
+        listing: ListingType
     ) {
         self.query = query
         self.communityId = communityId
@@ -88,7 +88,7 @@ public class SearchPostFeedLoader: CorePostFeedLoader {
         communityId: Int? = nil,
         prefetchingConfiguration: PrefetchingConfiguration,
         urlCache: URLCache,
-        listing: ApiListingType = .all
+        listing: ListingType = .all
     ) {
         super.init(
             showReadPosts: true,

@@ -14,7 +14,7 @@ public protocol Person4Providing: Person3Providing {
     var email: String? { get }
     var showNsfw: Bool { get }
     var theme: String { get }
-    var defaultListingType: ApiListingType { get }
+    var defaultListingType: ListingType { get }
     var interfaceLanguage: String { get }
     var showAvatars: Bool { get }
     var sendNotificationsToEmail: Bool { get }
@@ -42,7 +42,7 @@ public extension Person4Providing {
     var email: String? { person4.email }
     var showNsfw: Bool { person4.showNsfw }
     var theme: String { person4.theme }
-    var defaultListingType: ApiListingType { person4.defaultListingType }
+    var defaultListingType: ListingType { person4.defaultListingType }
     var interfaceLanguage: String { person4.interfaceLanguage }
     var showAvatars: Bool { person4.showAvatars }
     var sendNotificationsToEmail: Bool { person4.sendNotificationsToEmail }
@@ -66,7 +66,7 @@ public extension Person4Providing {
     var email_: String? { person4.email }
     var showNsfw_: Bool? { person4.showNsfw }
     var theme_: String? { person4.theme }
-    var defaultListingType_: ApiListingType? { person4.defaultListingType }
+    var defaultListingType_: ListingType? { person4.defaultListingType }
     var interfaceLanguage_: String? { person4.interfaceLanguage }
     var showAvatars_: Bool? { person4.showAvatars }
     var sendNotificationsToEmail_: Bool? { person4.sendNotificationsToEmail }

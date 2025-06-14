@@ -20,7 +20,7 @@ public final class Person4: Person4Providing {
     public internal(set) var email: String?
     public internal(set) var showNsfw: Bool
     public internal(set) var theme: String
-    public internal(set) var defaultListingType: ApiListingType
+    public internal(set) var defaultListingType: ListingType
     public internal(set) var interfaceLanguage: String
     public internal(set) var showAvatars: Bool
     public internal(set) var sendNotificationsToEmail: Bool
@@ -34,7 +34,7 @@ public final class Person4: Person4Providing {
     public internal(set) var blurNsfw: Bool?
     public internal(set) var autoExpandImages: Bool?
     public internal(set) var infiniteScrollEnabled: Bool?
-    public internal(set) var postListingMode: ApiPostListingMode?
+    public internal(set) var postListingMode: PostFeedViewMode?
     public internal(set) var totp2faEnabled: Bool?
     public internal(set) var enableKeyboardNavigation: Bool?
     public internal(set) var enableAnimatedImages: Bool?
@@ -47,7 +47,7 @@ public final class Person4: Person4Providing {
         email: String?,
         showNsfw: Bool,
         theme: String,
-        defaultListingType: ApiListingType,
+        defaultListingType: ListingType,
         interfaceLanguage: String,
         showAvatars: Bool,
         sendNotificationsToEmail: Bool,
@@ -61,7 +61,7 @@ public final class Person4: Person4Providing {
         blurNsfw: Bool?,
         autoExpandImages: Bool?,
         infiniteScrollEnabled: Bool?,
-        postListingMode: ApiPostListingMode?,
+        postListingMode: PostFeedViewMode?,
         totp2faEnabled: Bool?,
         enableKeyboardNavigation: Bool?,
         enableAnimatedImages: Bool?,
