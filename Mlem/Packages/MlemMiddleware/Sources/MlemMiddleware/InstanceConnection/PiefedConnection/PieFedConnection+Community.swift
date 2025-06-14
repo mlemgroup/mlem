@@ -9,15 +9,15 @@ import Foundation
 
 public extension PieFedConnection {
     func getCommunity(id: Int) async throws -> Community3Snapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func getCommunity(url: URL) async throws -> Community2Snapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func getCommunity(url: URL) async throws -> Community3Snapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func searchCommunities(
@@ -27,22 +27,22 @@ public extension PieFedConnection {
         filter: ListingType = .all,
         sort: SearchSortType = .top(.allTime)
     ) async throws -> [Community2Snapshot] {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     @discardableResult
     func getSubscriptionList(page: Int, limit: Int) async throws -> [Community2Snapshot] {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     @discardableResult
     func subscribeToCommunity(id: Int, subscribe: Bool) async throws -> Community2Snapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     @discardableResult
     func blockCommunity(id: Int, block: Bool) async throws -> Community2Snapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     @discardableResult
@@ -51,11 +51,11 @@ public extension PieFedConnection {
         remove: Bool,
         reason: String?
     ) async throws -> Community2Snapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func purgeCommunity(id: Int, reason: String?) async throws {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     @discardableResult
@@ -64,6 +64,6 @@ public extension PieFedConnection {
         personId: Int,
         added: Bool
     ) async throws -> (moderators: [Person1Snapshot], community: Community1Snapshot) {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
 }

@@ -9,11 +9,11 @@ import Foundation
 
 public extension PieFedConnection {
     func getComment(id: Int) async throws -> Comment2Snapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func getComment(url: URL) async throws -> Comment2Snapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func getComments(
@@ -24,7 +24,7 @@ public extension PieFedConnection {
         limit: Int,
         filter: GetContentFilter? = nil
     ) async throws -> [Comment2Snapshot] {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func getComments(
@@ -35,7 +35,7 @@ public extension PieFedConnection {
         limit: Int,
         filter: GetContentFilter? = nil
     ) async throws -> [Comment2Snapshot] {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     // This method should be removed in favor of the below method once we drop support for versions before Lemmy 1.0
@@ -48,7 +48,7 @@ public extension PieFedConnection {
         filter: ListingType = .all,
         sort: CommentSortType = .top(.allTime)
     ) async throws -> [Comment2Snapshot] {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func searchComments(
@@ -60,7 +60,7 @@ public extension PieFedConnection {
         filter: ListingType = .all,
         sort: SearchSortType = .top(.allTime)
     ) async throws -> [Comment2Snapshot] {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
 
     private func searchComments(
@@ -74,22 +74,22 @@ public extension PieFedConnection {
         sort: ApiSearchSortType?,
         timeRangeSeconds: Int?
     ) async throws -> [Comment2Snapshot] {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     @discardableResult
     func voteOnComment(id: Int, score: ScoringOperation) async throws -> Comment2Snapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     @discardableResult
     func saveComment(id: Int, save: Bool) async throws -> Comment2Snapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     @discardableResult
     func deleteComment(id: Int, delete: Bool) async throws -> Comment2Snapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     @discardableResult
@@ -98,20 +98,20 @@ public extension PieFedConnection {
         content: String,
         languageId: Int?
     ) async throws -> Comment2Snapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func replyToComment(postId: Int, parentId: Int?, content: String, languageId: Int? = nil) async throws -> Comment2Snapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     @discardableResult
     func reportComment(id: Int, reason: String) async throws -> ReportSnapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func purgeComment(id: Int, reason: String?) async throws {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     @discardableResult
@@ -120,7 +120,7 @@ public extension PieFedConnection {
         remove: Bool,
         reason: String?
     ) async throws -> Comment2Snapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     @discardableResult
@@ -130,6 +130,6 @@ public extension PieFedConnection {
         page: Int = 1,
         limit: Int = 20
     ) async throws -> [PersonVoteSnapshot] {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
 }

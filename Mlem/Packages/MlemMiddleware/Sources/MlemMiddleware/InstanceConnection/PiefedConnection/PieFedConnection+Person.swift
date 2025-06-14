@@ -9,19 +9,19 @@ import Foundation
 
 public extension PieFedConnection {
     func getPerson(id: Int) async throws -> Person3Snapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func getPerson(url: URL) async throws -> Person2Snapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func getPerson(username: String) async throws -> Person3Snapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func getPerson(url: URL) async throws -> Person3Snapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     /// `filter` can be set to `.local` from 0.19.4 onwards.
@@ -32,12 +32,12 @@ public extension PieFedConnection {
         filter: ListingType = .all,
         sort: SearchSortType = .top(.allTime)
     ) async throws -> [Person2Snapshot] {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     @discardableResult
     func blockPerson(id: Int, block: Bool) async throws -> Person2Snapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     @discardableResult
@@ -49,7 +49,7 @@ public extension PieFedConnection {
         reason: String?,
         expires: Date? = nil
     ) async throws -> Person2Snapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     @discardableResult
@@ -60,11 +60,11 @@ public extension PieFedConnection {
         reason: String?,
         expires: Date? = nil
     ) async throws -> Person2Snapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func purgePerson(id: Int, reason: String?) async throws {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func getContent(
@@ -75,25 +75,25 @@ public extension PieFedConnection {
         savedOnly: Bool? = nil,
         communityId: Int? = nil
     ) async throws -> (person: Person3Snapshot, posts: [Post2Snapshot], comments: [Comment2Snapshot]) {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     // Returns a raw API type. For use inside LemmyConnection only
     internal func rawGetMyPerson() async throws -> ApiGetSiteResponse {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     // Calls rawGetMyPerson, but if there's already a task running in the `contextDataManager` uses that instead.
     internal func rawGetMyPersonWithContext() async throws -> ApiGetSiteResponse {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func getMyPerson() async throws -> (person: Person4Snapshot?, instance: Instance3Snapshot, blocks: BlockListSnapshot?) {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func deleteAccount(password: String, deleteContent: Bool) async throws {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func editAccountSettings(
@@ -126,6 +126,6 @@ public extension PieFedConnection {
         showDownvotes: Bool?,
         showUpvotePercentage: Bool?
     ) async throws {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
 }

@@ -17,7 +17,7 @@ public extension PieFedConnection {
         filter: GetContentFilter? = nil,
         showHidden: Bool = false
     ) async throws -> (posts: [Post2Snapshot], cursor: String?) {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func getPosts(
@@ -29,7 +29,7 @@ public extension PieFedConnection {
         filter: GetContentFilter? = nil,
         showHidden: Bool = false
     ) async throws -> (posts: [Post2Snapshot], cursor: String?) {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
 
     func getPosts(
@@ -40,15 +40,15 @@ public extension PieFedConnection {
         limit: Int,
         savedOnly: Bool = false
     ) async throws -> (person: Person3Snapshot, posts: [Post2Snapshot]) {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
 
     func getPost(id: Int) async throws -> Post3Snapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func getPost(url: URL) async throws -> Post2Snapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     // This method should be removed in favor of the below method once we drop support for versions before Lemmy 1.0
@@ -61,7 +61,7 @@ public extension PieFedConnection {
         filter: ListingType = .all,
         sort: PostSortType
     ) async throws -> [Post2Snapshot] {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func searchPosts(
@@ -73,7 +73,7 @@ public extension PieFedConnection {
         filter: ListingType = .all,
         sort: SearchSortType
     ) async throws -> [Post2Snapshot] {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     private func searchPosts(
@@ -87,36 +87,36 @@ public extension PieFedConnection {
         sort: ApiSearchSortType?,
         timeRangeSeconds: Int?
     ) async throws -> [Post2Snapshot] {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     // Marking many posts as *unread* was possible in 0.19.0, but that capability was removed in 1.0.0
     func markPostsAsRead(ids: Set<Int>) async throws {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func markPostAsRead(id: Int, read: Bool) async throws {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     @discardableResult
     func voteOnPost(id: Int, score: ScoringOperation) async throws -> Post2Snapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     @discardableResult
     func savePost(id: Int, save: Bool) async throws -> Post2Snapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     @discardableResult
     func deletePost(id: Int, delete: Bool) async throws -> Post2Snapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     // Marking many posts as hidden was possible in 0.19.0, but this was removed in 1.0.0
     func hidePost(id: Int, hide: Bool) async throws {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func createPost(
@@ -129,7 +129,7 @@ public extension PieFedConnection {
         nsfw: Bool,
         languageId: Int? = nil
     ) async throws -> Post2Snapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     @discardableResult
@@ -143,7 +143,7 @@ public extension PieFedConnection {
         nsfw: Bool,
         languageId: Int? = nil
     ) async throws -> Post2Snapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func replyToPost(
@@ -151,16 +151,16 @@ public extension PieFedConnection {
         content: String,
         languageId: Int? = nil
     ) async throws -> Comment2Snapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     @discardableResult
     func reportPost(id: Int, reason: String) async throws -> ReportSnapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func purgePost(id: Int, reason: String?) async throws {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     @discardableResult
@@ -169,7 +169,7 @@ public extension PieFedConnection {
         remove: Bool,
         reason: String?
     ) async throws -> Post2Snapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     @discardableResult
@@ -178,12 +178,12 @@ public extension PieFedConnection {
         pin: Bool,
         to target: PostFeatureType
     ) async throws -> Post2Snapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     @discardableResult
     func lockPost(id: Int, lock: Bool) async throws -> Post2Snapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     @discardableResult
@@ -193,6 +193,6 @@ public extension PieFedConnection {
         page: Int = 1,
         limit: Int = 20
     ) async throws -> [PersonVoteSnapshot] {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
 }

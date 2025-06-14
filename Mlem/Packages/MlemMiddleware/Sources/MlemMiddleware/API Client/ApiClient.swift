@@ -173,33 +173,41 @@ public class ApiClient {
         }
 
         let ongoingConnectionDiscoveryTask: Task<T, Error> = Task {
-            try await withThrowingTaskGroup(of: (any InstanceConnection, T).self) { group in
-                var errors: [any Error] = []
-                
+            try await withThrowingTaskGroup(of: (any InstanceConnection, Result<T, Error>).self) { group in
                 for connectionType in Self.supportedConnections {
                     let connection = connectionType.init(baseUrl: baseUrl, token: token)
                     group.addTask {
-                        try await (connection, callback(connection))
+                        do {
+                            let response = try await callback(connection)
+                            return (connection, .success(response))
+                        } catch {
+                            return (connection, .failure(error))
+                        }
                     }
                 }
                 
                 while !group.isEmpty {
+                    guard let result = try? await group.next() else {
+                        assertionFailure()
+                        continue
+                    }
                     do {
-                        guard let result = try await group.next() else {
-                            assertionFailure()
-                            continue
-                        }
+                        let value = try result.1.get()
                         // Cancel all other tasks once any one task succeeds
                         group.cancelAll()
                         self.connection = result.0
                         self.ongoingConnectionDiscoveryTask = nil
-                        return result.1
+                        return value
+                    } catch ApiClientError.serverError(404), ApiClientError.featureUnsupported {
+                        // no-op
                     } catch {
-                        errors.append(error)
+                        // We *could* set the `connection` here, but I'd rather not just incase some other
+                        // 404-equivalent error is thrown that we haven't accounted for
+                        throw error
                     }
                 }
                 
-                throw ApiClientError.unableToDetermineSoftware(errors)
+                throw ApiClientError.unableToDetermineSoftware
             }
         }
         

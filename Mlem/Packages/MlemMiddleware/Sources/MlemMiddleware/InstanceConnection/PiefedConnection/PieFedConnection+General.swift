@@ -13,11 +13,11 @@ public extension PieFedConnection {
         password: String,
         totpToken: String?
     ) async throws -> String {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func getUsernameFromToken(token: String) async throws -> String {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func signUp(
@@ -30,7 +30,7 @@ public extension PieFedConnection {
         captchaAnswer: String?,
         applicationQuestionResponse: String?
     ) async throws -> SignUpResponse {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     @discardableResult
@@ -39,19 +39,19 @@ public extension PieFedConnection {
         confirmNewPassword: String,
         oldPassword: String
     ) async throws -> String {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func getCaptcha() async throws -> Captcha {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func resolve(url: URL) async throws -> ResolvedContent {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func getBlocked() async throws -> (people: [Person1Snapshot], communities: [Community1Snapshot], instances: [Instance1Snapshot]) {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func getModlog(
@@ -64,6 +64,6 @@ public extension PieFedConnection {
         commentId: Int? = nil,
         type: ModlogEntryType? = nil
     ) async throws -> [ModlogEntrySnapshot] {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
 }

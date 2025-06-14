@@ -9,7 +9,7 @@ import Foundation
 
 public extension PieFedConnection {
     func getReportCount(communityId: Int? = nil) async throws -> ReportUnreadCountSnapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func getPostReports(
@@ -19,7 +19,7 @@ public extension PieFedConnection {
         communityId: Int? = nil,
         postId: Int? = nil
     ) async throws -> [ReportSnapshot] {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func getCommentReports(
@@ -29,7 +29,7 @@ public extension PieFedConnection {
         communityId: Int? = nil,
         commentId: Int? = nil
     ) async throws -> [ReportSnapshot] {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func getMessageReports(
@@ -37,21 +37,21 @@ public extension PieFedConnection {
         limit: Int = 20,
         unresolvedOnly: Bool = false
     ) async throws -> [ReportSnapshot] {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     @discardableResult
     func resolvePostReport(id: Int, resolved: Bool) async throws -> ReportSnapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     @discardableResult
     func resolveCommentReport(id: Int, resolved: Bool) async throws -> ReportSnapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     @discardableResult
     func resolveMessageReport(id: Int, resolved: Bool) async throws -> ReportSnapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
 }

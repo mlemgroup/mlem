@@ -9,19 +9,19 @@ import Foundation
 
 public extension PieFedConnection {
     func getMyInstance() async throws -> Instance3Snapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func getFederatedInstances() async throws -> FederationPolicy {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func blockInstance(instanceId: Int, block: Bool) async throws {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     @discardableResult
     func addAdmin(personId: Int, added: Bool) async throws -> [Person2Snapshot] {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
 }

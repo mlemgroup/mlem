@@ -14,7 +14,7 @@ public extension PieFedConnection {
         limit: Int,
         unreadOnly: Bool = false
     ) async throws -> [Reply2Snapshot] {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func getMentions(
@@ -23,7 +23,7 @@ public extension PieFedConnection {
         limit: Int,
         unreadOnly: Bool = false
     ) async throws -> [Reply2Snapshot] {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func getMessages(
@@ -32,45 +32,45 @@ public extension PieFedConnection {
         limit: Int,
         unreadOnly: Bool = false
     ) async throws -> [Message2Snapshot] {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func markAllAsRead() async throws {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func markReplyAsRead(id: Int, read: Bool = true) async throws {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func markMentionAsRead(id: Int, read: Bool = true) async throws {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func markMessageAsRead(id: Int, read: Bool = true) async throws {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func getPersonalUnreadCount() async throws -> PersonalUnreadCountSnapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     func createMessage(personId: Int, content: String) async throws -> Message2Snapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     @discardableResult
     func editMessage(id: Int, content: String) async throws -> Message2Snapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     @discardableResult
     func reportMessage(id: Int, reason: String) async throws -> ReportSnapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
     
     @discardableResult
     func deleteMessage(id: Int, delete: Bool) async throws -> Message2Snapshot {
-        throw ApiClientError.unsupportedLemmyVersion
+        throw ApiClientError.featureUnsupported
     }
 }

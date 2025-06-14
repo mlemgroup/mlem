@@ -14,7 +14,7 @@ public struct PersonalUnreadCountSnapshot {
     
     public init(from response: ApiGetUnreadCountResponse) throws(ApiClientError) {
         guard let replies = response.replies, let mentions = response.mentions, let messages = response.privateMessages else {
-            throw ApiClientError.unsupportedLemmyVersion
+            throw ApiClientError.featureUnsupported
         }
         self.replies = replies
         self.mentions = mentions
