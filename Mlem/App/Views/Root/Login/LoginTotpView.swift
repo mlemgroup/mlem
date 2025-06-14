@@ -119,6 +119,7 @@ struct LoginTotpView: View {
                     navigation.dismissSheet()
                 }
             } catch {
+                handleError(error, silent: true)
                 Task { @MainActor in
                     authenticating = false
                     totpToken = ""

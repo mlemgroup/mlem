@@ -27,6 +27,10 @@ public struct PostLink: Equatable {
         return "website"
     }
     
+    public var effectiveThumbnail: URL? {
+        return thumbnail ?? content.youTubeThumbnailUrl
+    }
+    
     public init(content: URL, thumbnail: URL?, label: String) {
         self.content = content
         self.thumbnail = thumbnail
