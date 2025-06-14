@@ -30,7 +30,6 @@ public final class Community1: Community1Providing {
     public var banner: URL?
     public var hidden: Bool
     public var onlyModeratorsCanPost: Bool
-    public var visibility: ApiCommunityVisibility?
     
     public var purged: Bool = false
     
@@ -58,8 +57,7 @@ public final class Community1: Community1Providing {
         banner: URL?,
         hidden: Bool,
         onlyModeratorsCanPost: Bool,
-        blocked: Bool?,
-        visibility: ApiCommunityVisibility?
+        blocked: Bool?
     ) {
         self.api = api
         self.actorId = actorId
@@ -77,7 +75,6 @@ public final class Community1: Community1Providing {
         self.banner = banner
         self.hidden = hidden
         self.onlyModeratorsCanPost = onlyModeratorsCanPost
-        self.visibility = visibility
         self.blockedManager = .init(wrappedValue: blocked ?? api.blocks?.communities.keys.contains(actorId) ?? false, mergeType: .disjunctive)
         blockedManager.onSet = { newValue, type, _ in
             if type != .receive {

@@ -18,7 +18,7 @@ public protocol Instance2Providing: Instance1Providing {
     var applicationQuestion: String? { get }
     var isPrivate: Bool { get }
     var defaultTheme: String { get }
-    var defaultFeed: ApiListingType { get }
+    var defaultFeed: ListingType { get }
     var legalInformation: String? { get }
     var hideModlogNames: Bool { get }
     var emailApplicationsToAdmins: Bool { get }
@@ -28,10 +28,10 @@ public protocol Instance2Providing: Instance1Providing {
     var federationEnabled: Bool { get }
     var captchaEnabled: Bool { get }
     var captchaDifficulty: CaptchaDifficulty? { get }
-    var registrationMode: ApiRegistrationMode { get }
+    var registrationMode: RegistrationMode { get }
     var federationSignedFetch: Bool? { get }
-    var defaultPostListingMode: ApiPostListingMode? { get }
-    var defaultSortType: ApiSortType? { get }
+    var defaultPostListingMode: PostFeedViewMode? { get }
+    var defaultPostSortType: PostSortType? { get }
     
     var userCount: Int { get }
     var postCount: Int { get }
@@ -51,7 +51,7 @@ public extension Instance2Providing {
     var applicationQuestion: String? { instance2.applicationQuestion }
     var isPrivate: Bool { instance2.isPrivate }
     var defaultTheme: String { instance2.defaultTheme }
-    var defaultFeed: ApiListingType { instance2.defaultFeed }
+    var defaultFeed: ListingType { instance2.defaultFeed }
     var legalInformation: String? { instance2.legalInformation }
     var hideModlogNames: Bool { instance2.hideModlogNames }
     var emailApplicationsToAdmins: Bool { instance2.emailApplicationsToAdmins }
@@ -61,10 +61,10 @@ public extension Instance2Providing {
     var federationEnabled: Bool { instance2.federationEnabled }
     var captchaEnabled: Bool { instance2.captchaEnabled }
     var captchaDifficulty: CaptchaDifficulty? { instance2.captchaDifficulty }
-    var registrationMode: ApiRegistrationMode { instance2.registrationMode }
+    var registrationMode: RegistrationMode { instance2.registrationMode }
     var federationSignedFetch: Bool? { instance2.federationSignedFetch }
-    var defaultPostListingMode: ApiPostListingMode? { instance2.defaultPostListingMode }
-    var defaultSortType: ApiSortType? { instance2.defaultSortType }
+    var defaultPostListingMode: PostFeedViewMode? { instance2.defaultPostListingMode }
+    var defaultPostSortType: PostSortType? { instance2.defaultPostSortType }
     var userCount: Int { instance2.userCount }
     var postCount: Int { instance2.postCount }
     var commentCount: Int { instance2.commentCount }
@@ -79,7 +79,7 @@ public extension Instance2Providing {
     var applicationQuestion_: String? { instance2.applicationQuestion }
     var isPrivate_: Bool? { instance2.isPrivate }
     var defaultTheme_: String? { instance2.defaultTheme }
-    var defaultFeed_: ApiListingType? { instance2.defaultFeed }
+    var defaultFeed_: ListingType? { instance2.defaultFeed }
     var legalInformation_: String? { instance2.legalInformation }
     var hideModlogNames_: Bool? { instance2.hideModlogNames }
     var emailApplicationsToAdmins_: Bool? { instance2.emailApplicationsToAdmins }
@@ -89,10 +89,10 @@ public extension Instance2Providing {
     var federationEnabled_: Bool? { instance2.federationEnabled }
     var captchaEnabled_: Bool? { instance2.captchaEnabled }
     var captchaDifficulty_: CaptchaDifficulty? { instance2.captchaDifficulty }
-    var registrationMode_: ApiRegistrationMode? { instance2.registrationMode }
+    var registrationMode_: RegistrationMode? { instance2.registrationMode }
     var federationSignedFetch_: Bool? { instance2.federationSignedFetch }
-    var defaultPostListingMode_: ApiPostListingMode? { instance2.defaultPostListingMode }
-    var defaultSortType_: ApiSortType? { instance2.defaultSortType }
+    var defaultPostListingMode_: PostFeedViewMode? { instance2.defaultPostListingMode }
+    var defaultPostSortType_: PostSortType? { instance2.defaultPostSortType }
     var userCount_: Int? { instance2.userCount }
     var postCount_: Int? { instance2.postCount }
     var commentCount_: Int? { instance2.commentCount }

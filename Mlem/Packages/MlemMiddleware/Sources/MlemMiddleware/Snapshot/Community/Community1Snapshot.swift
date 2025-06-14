@@ -27,7 +27,6 @@ public struct Community1Snapshot: CacheIdentifiable {
     public let banner: URL?
     public let hidden: Bool
     public let onlyModeratorsCanPost: Bool
-    public let visibility: ApiCommunityVisibility?
 
     public var cacheId: Int { id }
     
@@ -53,6 +52,5 @@ public struct Community1Snapshot: CacheIdentifiable {
         self.banner = community.banner
         self.hidden = community.hidden ?? false // TODO: 0.20 we shouldn't be null coalescing here
         self.onlyModeratorsCanPost = community.postingRestrictedToMods
-        self.visibility = community.visibility
     }
 }

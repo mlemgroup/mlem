@@ -112,7 +112,7 @@ public extension ApiClient {
         }
     }
     
-    func getPersonalUnreadCount() async throws -> ApiGetUnreadCountResponse {
+    func getPersonalUnreadCount() async throws -> PersonalUnreadCountSnapshot {
         let response = try await performingForConnection { connection in
             try await connection.getPersonalUnreadCount()
         }

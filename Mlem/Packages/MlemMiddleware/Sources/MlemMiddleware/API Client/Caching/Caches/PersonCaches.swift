@@ -77,7 +77,6 @@ class Person4Cache: ApiTypeBackedCache<Person4, Person4Snapshot> {
         .init(
             api: api,
             person3: api.caches.person3.getModel(api: api, from: snapshot.person),
-            voteDisplayMode: snapshot.voteDisplayMode,
             email: snapshot.email,
             showNsfw: snapshot.showNsfw,
             theme: snapshot.theme,

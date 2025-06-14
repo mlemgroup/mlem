@@ -22,8 +22,7 @@ public struct Instance3Snapshot: CacheIdentifiable {
     // because its presence or absence doesn't actually affect whether you're
     // able to create a post with "undetermined" as the language
     public var allowedLanguageIds: Set<Int>
-    public let taglines: [ApiTagline]
-    public let blockedUrls: [ApiLocalSiteUrlBlocklist]?
+    public let blockedUrls: [InstanceUrlBlockRecord]?
     public let administrators: [Person2Snapshot]
 
     public var cacheId: Int { instance.cacheId }
@@ -33,9 +32,8 @@ public struct Instance3Snapshot: CacheIdentifiable {
         self.version = .init(site.version)
         self.allLanguages = site.allLanguages.compactMap { .init($0) }
         self.allowedLanguageIds = Set(site.discussionLanguages).subtracting([0])
-        self.taglines = site.taglines ?? [site.tagline].compactMap { $0 }
         
-        self.blockedUrls = site.blockedUrls
+        self.blockedUrls = site.blockedUrls?.compactMap { .init(from: $0) }
     
         var administrators: [Person2Snapshot] = []
         administrators.reserveCapacity(site.admins.count)

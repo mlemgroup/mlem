@@ -58,7 +58,6 @@ extension Person4: CacheIdentifiable {
     func update(with snapshot: Person4Snapshot, semaphore: UInt? = nil) {
         person3.update(with: snapshot.person, semaphore: semaphore)
         
-        setIfChanged(\.voteDisplayMode, snapshot.voteDisplayMode)
         setIfChanged(\.email, snapshot.email)
         setIfChanged(\.showNsfw, snapshot.showNsfw)
         setIfChanged(\.theme, snapshot.theme)

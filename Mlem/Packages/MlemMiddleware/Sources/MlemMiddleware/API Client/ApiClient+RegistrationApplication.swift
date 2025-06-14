@@ -8,7 +8,7 @@
 import Foundation
 
 public extension ApiClient {
-    func getRegistrationApplicationCount() async throws -> ApiGetUnreadRegistrationApplicationCountResponse {
+    func getRegistrationApplicationCount() async throws -> Int {
         let response = try await performingForConnection { connection in
             try await connection.getRegistrationApplicationCount()
         }

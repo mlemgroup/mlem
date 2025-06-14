@@ -23,7 +23,7 @@ public enum ModlogEntryContentSnapshot {
         _ post: Post1Snapshot,
         community: Community1Snapshot,
         pinned: Bool,
-        type: ApiPostFeatureType
+        type: PostFeatureType
     )
     case purgePost(reason: String?)
     
@@ -100,7 +100,7 @@ public enum ModlogEntryContentSnapshot {
             .init(from: view.post),
             community: .init(from: view.community),
             pinned: view.modFeaturePost.featured,
-            type: view.modFeaturePost.isFeaturedCommunity ? .community : .local
+            type: view.modFeaturePost.isFeaturedCommunity ? .community : .instance
         )
     }
     
