@@ -70,13 +70,11 @@ struct PersonContentGridView: View {
                             .buttonStyle(.empty)
                             .padding(.horizontal, postSize.tiled ? Constants.main.halfSpacing : 10)
                             .onAppear {
-                                if infiniteScroll {
-                                    do {
-                                        try feedLoader.loadIfThreshold(item, asChild: contentType != .all)
-                                    } catch {
-                                        // TODO: is postFeedLoader.loadIfThreshold throws 400, this line is not executed
-                                        handleError(error)
-                                    }
+                                do {
+                                    try feedLoader.loadIfThreshold(item, asChild: contentType != .all)
+                                } catch {
+                                    // TODO: is postFeedLoader.loadIfThreshold throws 400, this line is not executed
+                                    handleError(error)
                                 }
                             }
                     }
@@ -84,6 +82,12 @@ struct PersonContentGridView: View {
             }
             .animation(.easeOut(duration: 0.1), value: items.isEmpty)
             EndOfFeedView(loadingState: loadingState, viewType: .hobbit)
+            
+            Button("PRINT") {
+                print("All: \(feedLoader.loadingState)")
+                print("Post: \(feedLoader.postLoadingState)")
+                print("Comment: \(feedLoader.commentLoadingState)")
+            }
         }
     }
     

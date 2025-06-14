@@ -102,12 +102,13 @@ class PersonContentFetcher: Fetcher<PersonContent> {
     }
 }
 
+@Observable
 public class PersonContentFeedLoader: StandardFeedLoader<PersonContent> {
     // force unwrap because this should ALWAYS be a PersonContentFetcher
-    var personContentFetcher: PersonContentFetcher { fetcher as! PersonContentFetcher }
+    @ObservationIgnored var personContentFetcher: PersonContentFetcher { fetcher as! PersonContentFetcher }
     
-    public var api: ApiClient { personContentFetcher.api }
-    public var userId: Int { personContentFetcher.userId }
+    @ObservationIgnored public var api: ApiClient { personContentFetcher.api }
+    @ObservationIgnored public var userId: Int { personContentFetcher.userId }
     
     // MARK: Custom Behavior
 
@@ -181,6 +182,14 @@ public class PersonContentFeedLoader: StandardFeedLoader<PersonContent> {
         } else {
             shouldLoad = thresholds.isThreshold(item)
         }
+        
+        if asChild {
+            switch item.wrappedValue {
+            case .post: print("DEBUG \(shouldLoad ? "should" : "should not") load posts")
+            case .comment: print("DEBUG \(shouldLoad ? "should" : "should not") load comments")
+            }
+        }
+        
         
         // regardless of which threshold triggers this, always call loadMoreItems() because there's no item-specific endpoint
         if shouldLoad {
