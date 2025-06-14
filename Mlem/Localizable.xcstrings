@@ -8214,6 +8214,7 @@
       }
     },
     "This feature is only supported for instances running version %@ or later." : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -8222,6 +8223,9 @@
           }
         }
       }
+    },
+    "This feature is only supported on instances running certain software versions." : {
+
     },
     "This field is optional." : {
       "localizations" : {

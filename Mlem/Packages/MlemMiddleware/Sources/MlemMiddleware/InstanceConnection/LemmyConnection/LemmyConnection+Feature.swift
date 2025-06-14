@@ -9,18 +9,18 @@ import Foundation
 
 public extension LemmyConnection {
     func supports(_ feature: Feature) async throws -> Bool {
-        try await supports(feature, version: version)
+        try await Self.supports(feature, version: version)
     }
     
     func supportsOrNil(_ feature: Feature) -> Bool? {
         if let fetchedVersion {
-            return supports(feature, version: fetchedVersion)
+            return Self.supports(feature, version: fetchedVersion)
         } else {
             return nil
         }
     }
 
-    internal func supports(
+    static func supports(
         _ feature: Feature,
         version: SiteVersion
     ) -> Bool {

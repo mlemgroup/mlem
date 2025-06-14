@@ -57,7 +57,7 @@ extension SearchView {
                 Button("Choose Instance...", icon: .lemmy.instance) {
                     navigation.openSheet(.instancePicker(callback: { instance in
                         filter = .other(instance)
-                    }, minimumVersion: isForPersonSearch ? .v0_19_4 : nil))
+                    }, requiredFeature: isForPersonSearch ? .searchLocalPeople : nil))
                 }
             }
             .task(id: appState.firstApi) {

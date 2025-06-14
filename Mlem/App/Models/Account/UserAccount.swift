@@ -19,20 +19,20 @@ class UserAccount: Account, CommunityOrPerson {
     let api: ApiClient
     let name: String
     var storedNickname: String?
-    var cachedSiteVersion: SiteVersion?
+    var siteSoftware: SiteSoftware?
     var avatar: URL?
     var activityState: AccountActivityState
     var favorites: Set<Int>
     var visitHistoryEnabled: Bool
     var accountType: AccountType
     
-    init(person: Person4, instance: Instance3) {
+    init(person: Person4, instance: Instance3, siteSoftware: SiteSoftware) {
         self.api = person.api
         self.id = person.id
         self.name = person.name
         self.actorId = person.actorId
         self.storedNickname = nil
-        self.cachedSiteVersion = instance.version
+        self.siteSoftware = siteSoftware
         self.avatar = person.avatar
         self.activityState = .inactive(lastUsed: nil)
         self.favorites = []
@@ -44,6 +44,7 @@ class UserAccount: Account, CommunityOrPerson {
         // These key names don't match the identifiers of their corresponding properties - this is because these key names must match the property names used in SavedAccount pre-1.3 in order to maintain compatibility
         case id, username, storedNickname, instanceLink, siteVersion, avatarUrl
         case lastUsed, favorites, accountType, visitHistoryEnabled, activityState
+        case siteSoftware
     }
     
     enum DecodingError: Error { case cannotModifyPathComponents, invalidHost }
@@ -56,7 +57,15 @@ class UserAccount: Account, CommunityOrPerson {
         let name = try values.decode(String.self, forKey: .username)
         self.name = name
         self.storedNickname = try values.decode(String?.self, forKey: .storedNickname)
-        self.cachedSiteVersion = try values.decode(SiteVersion?.self, forKey: .siteVersion)
+        
+        if let siteSoftware = try values.decodeIfPresent(SiteSoftware.self, forKey: .siteSoftware) {
+            self.siteSoftware = siteSoftware
+        } else if let version = try values.decode(SiteVersion?.self, forKey: .siteVersion) {
+            self.siteSoftware = .init(type: .lemmy, version: version)
+        } else {
+            self.siteSoftware = nil
+        }
+        
         self.avatar = try values.decode(URL?.self, forKey: .avatarUrl)
         
         if let activityState = try values.decodeIfPresent(AccountActivityState.self, forKey: .activityState) {
@@ -104,7 +113,7 @@ class UserAccount: Account, CommunityOrPerson {
         try container.encode(id, forKey: .id)
         try container.encode(name, forKey: .username)
         try container.encode(storedNickname, forKey: .storedNickname)
-        try container.encode(cachedSiteVersion, forKey: .siteVersion)
+        try container.encode(siteSoftware, forKey: .siteSoftware)
         try container.encode(avatar, forKey: .avatarUrl)
         try container.encode(activityState, forKey: .activityState)
         try container.encode(api.baseUrl, forKey: .instanceLink)
@@ -118,16 +127,17 @@ class UserAccount: Account, CommunityOrPerson {
     }
     
     @MainActor
-    func update(person: Person4, instance: Instance3) {
+    func update(person: Person4, instance: Instance3, software: SiteSoftware) {
         var shouldSave = false
         if avatar != person.avatar {
             avatar = person.avatar
             shouldSave = true
         }
-        if cachedSiteVersion != instance.version {
-            cachedSiteVersion = instance.version
+        if siteSoftware != software {
+            siteSoftware = software
             shouldSave = true
         }
+        
         let newAccountType: AccountType
         if person.isAdmin {
             newAccountType = .admin

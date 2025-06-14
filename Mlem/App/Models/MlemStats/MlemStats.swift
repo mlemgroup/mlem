@@ -70,7 +70,7 @@ class MlemStats {
         case .alphabetical:
             return filteredInstances.sorted { $0.host < $1.host }
         case .version:
-            return filteredInstances.sorted { $0.version > $1.version }
+            return filteredInstances.sorted { $0.software.version > $1.software.version }
         }
     }
     

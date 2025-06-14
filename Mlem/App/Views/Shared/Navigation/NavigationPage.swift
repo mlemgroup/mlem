@@ -36,7 +36,7 @@ enum NavigationPage: Hashable {
     case imageViewer(_ url: URL)
     case communityPicker(api: ApiClient?, callback: HashWrapper<(Community2, NavigationLayer) -> Void>)
     case personPicker(api: ApiClient?, filter: ListingType, callback: HashWrapper<(Person2, NavigationLayer) -> Void>)
-    case instancePicker(callback: HashWrapper<(InstanceSummary, NavigationLayer) -> Void>, minimumVersion: SiteVersion? = nil)
+    case instancePicker(callback: HashWrapper<(InstanceSummary, NavigationLayer) -> Void>, requiredFeature: Feature? = nil)
     case languagePicker(selectedLanguages: Set<Locale.Language>, callback: HashWrapper<(Locale.Language) -> Void>)
     case selectText(_ string: String)
     case shareInstancePicker(_ sharable: SharableHashWrapper)
@@ -196,10 +196,9 @@ enum NavigationPage: Hashable {
     
     static func instancePicker(
         callback: @escaping (InstanceSummary, NavigationLayer) -> Void,
-        minimumVersion: SiteVersion? = nil
+        requiredFeature: Feature? = nil
     ) -> NavigationPage {
-        assert((minimumVersion ?? .infinity) > Constants.main.minimumLemmyVersion)
-        return instancePicker(callback: .init(wrappedValue: callback), minimumVersion: minimumVersion)
+        instancePicker(callback: .init(wrappedValue: callback), requiredFeature: requiredFeature)
     }
     
     static func languagePicker(
@@ -244,15 +243,14 @@ enum NavigationPage: Hashable {
     
     static func instancePicker(
         callback: @escaping (InstanceSummary) -> Void,
-        minimumVersion: SiteVersion? = nil
+        requiredFeature: Feature? = nil
     ) -> NavigationPage {
-        assert((minimumVersion ?? .infinity) > Constants.main.minimumLemmyVersion)
-        return instancePicker(callback: .init(wrappedValue: { value, navigation in
+        instancePicker(callback: .init(wrappedValue: { value, navigation in
             Task { @MainActor in
                 navigation.dismissSheet()
                 callback(value)
             }
-        }), minimumVersion: minimumVersion)
+        }), requiredFeature: requiredFeature)
     }
     
     static func createPost(

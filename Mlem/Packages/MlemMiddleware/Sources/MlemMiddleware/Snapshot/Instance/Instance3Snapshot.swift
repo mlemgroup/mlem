@@ -17,7 +17,7 @@ public struct Instance3Snapshot: CacheIdentifiable {
 
     // May change. If you add/remove items from this list,
     // remember to also amend the `update` method of Instance3!
-    public let version: SiteVersion
+    public let software: SiteSoftware
     // This excludes the "undetermined" language identifier (which is 0),
     // because its presence or absence doesn't actually affect whether you're
     // able to create a post with "undetermined" as the language
@@ -29,7 +29,7 @@ public struct Instance3Snapshot: CacheIdentifiable {
     
     public init(from site: ApiGetSiteResponse) throws(ApiClientError) {
         self.instance = try .init(from: site.siteView)
-        self.version = .init(site.version)
+        self.software = .init(type: .lemmy, version: .init(site.version))
         self.allLanguages = site.allLanguages.compactMap { .init($0) }
         self.allowedLanguageIds = Set(site.discussionLanguages).subtracting([0])
         
