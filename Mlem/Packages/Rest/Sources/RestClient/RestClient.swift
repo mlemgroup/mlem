@@ -22,7 +22,7 @@ public class RestClient<ErrorType: Decodable & CustomStringConvertible> {
     ) async throws(RestError) -> Request.Response {
         let urlRequest = try urlRequest(baseUrl: baseUrl, request: request, token: token)
         // this line intentionally left commented for convenient future debugging
-        // urlRequest.debug()
+//        urlRequest.debug()
         let (data, response) = try await execute(urlRequest)
         if let response = response as? HTTPURLResponse {
             if response.statusCode >= 500 { // Error code for server being offline.
@@ -67,6 +67,7 @@ public class RestClient<ErrorType: Decodable & CustomStringConvertible> {
         }
         
         var urlRequest = mlemUrlRequest(url: url)
+        urlRequest.cachePolicy = .reloadIgnoringLocalCacheData
         for header in request.headers {
             urlRequest.setValue(header.value, forHTTPHeaderField: header.key)
         }
