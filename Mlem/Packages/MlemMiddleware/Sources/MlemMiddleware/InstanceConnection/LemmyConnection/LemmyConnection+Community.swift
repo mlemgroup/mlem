@@ -38,7 +38,7 @@ public extension LemmyConnection {
         query: String,
         page: Int = 1,
         limit: Int = 20,
-        filter: ApiListingType = .all,
+        filter: ListingType = .all,
         sort: SearchSortType = .top(.allTime)
     ) async throws -> [Community2Snapshot] {
         let response = try await performingForEndpoint { endpoint in
@@ -53,7 +53,7 @@ public extension LemmyConnection {
                     oldSortType: endpoint == .v3 ? sort.legacyApiSortType : nil,
                     newSortType: endpoint == .v4 ? sort.apiSortType : nil
                 ),
-                listingType: filter,
+                listingType: filter.apiType,
                 page: page,
                 limit: limit,
                 postTitleOnly: false,

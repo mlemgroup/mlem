@@ -11,14 +11,14 @@ import Foundation
 public class ModlogChildFetcher: Fetcher<ModlogEntry> {
     let sharedCache: SharedCache
     var communityId: Int?
-    var type: ApiModlogActionType
+    var type: ModlogEntryType
     
     init(
         api: ApiClient,
         pageSize: Int,
         sharedCache: SharedCache,
         communityId: Int?,
-        type: ApiModlogActionType
+        type: ModlogEntryType
     ) {
         self.communityId = communityId
         self.type = type

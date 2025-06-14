@@ -14,7 +14,7 @@ protocol Searchable: Identifiable {
         query: String,
         page: Int,
         limit: Int,
-        filter: ApiListingType,
+        filter: ListingType,
         hostApi: ApiClient?
     ) async throws -> [Self]
 }
@@ -25,7 +25,7 @@ extension Community2: Searchable {
         query: String,
         page: Int,
         limit: Int,
-        filter: ApiListingType,
+        filter: ListingType,
         hostApi: ApiClient?
     ) async throws -> [Community2] {
         try await api.searchCommunities(query: query, page: page, limit: limit, filter: filter, hostApi: hostApi)
@@ -38,7 +38,7 @@ extension Person2: Searchable {
         query: String,
         page: Int,
         limit: Int,
-        filter: ApiListingType,
+        filter: ListingType,
         hostApi: ApiClient? = nil
     ) async throws -> [Person2] {
         try await api.searchPeople(query: query, page: page, limit: limit, filter: filter)
@@ -51,7 +51,7 @@ extension InstanceSummary: Searchable {
         query: String,
         page _: Int,
         limit _: Int,
-        filter _: ApiListingType,
+        filter _: ListingType,
         hostApi: ApiClient? = nil
     ) async throws -> [InstanceSummary] {
         try await MlemStats.main.searchInstances(query: query)

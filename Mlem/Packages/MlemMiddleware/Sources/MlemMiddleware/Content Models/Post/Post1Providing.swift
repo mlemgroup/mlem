@@ -190,7 +190,7 @@ public extension Post1Providing {
     ) async throws -> [Comment2] {
         try await api.getComments(
             postId: id,
-            sort: sort.apiSortType,
+            sort: sort,
             page: page,
             maxDepth: maxDepth,
             limit: limit,
@@ -265,7 +265,7 @@ public extension Post1Providing {
     @discardableResult
     func updatePinnedInstance(_ newValue: Bool) -> Task<StateUpdateResult, Never> {
         pinnedInstanceManager.performRequest(expectedResult: newValue) { semaphore in
-            try await self.api.pinPost(id: self.id, pin: newValue, to: .local, semaphore: semaphore)
+            try await self.api.pinPost(id: self.id, pin: newValue, to: .instance, semaphore: semaphore)
         }
     }
     

@@ -24,7 +24,7 @@ public extension ApiClient {
     
     func getComments(
         postId: Int,
-        sort: ApiCommentSortType,
+        sort: CommentSortType,
         page: Int,
         maxDepth: Int? = nil,
         limit: Int,
@@ -71,7 +71,7 @@ public extension ApiClient {
         limit: Int = 20,
         communityId: Int? = nil,
         creatorId: Int? = nil,
-        filter: ApiListingType = .all,
+        filter: ListingType = .all,
         sort: CommentSortType = .top(.allTime)
     ) async throws -> [Comment2] {
         let response = try await performingForConnection { connection in
@@ -94,7 +94,7 @@ public extension ApiClient {
         limit: Int = 20,
         communityId: Int? = nil,
         creatorId: Int? = nil,
-        filter: ApiListingType = .all,
+        filter: ListingType = .all,
         sort: SearchSortType = .top(.allTime)
     ) async throws -> [Comment2] {
         let response = try await performingForConnection { connection in

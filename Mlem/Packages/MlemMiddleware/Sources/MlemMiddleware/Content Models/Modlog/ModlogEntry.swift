@@ -12,7 +12,7 @@ public struct ModlogEntry {
     public let created: Date
     public let moderator: Person1?
     public let moderatorId: Int
-    public let type: ModlogEntryType
+    public let type: ModlogEntryContent
 }
 
 extension ModlogEntry: FeedLoadable {

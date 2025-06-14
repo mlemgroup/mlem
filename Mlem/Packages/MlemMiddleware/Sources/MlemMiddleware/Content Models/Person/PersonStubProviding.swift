@@ -39,7 +39,7 @@ public protocol PersonStubProviding: ContentModel, Resolvable {
     var showNsfw_: Bool? { get }
     var theme_: String? { get }
     var defaultSortType_: ApiSortType? { get }
-    var defaultListingType_: ApiListingType? { get }
+    var defaultListingType_: ListingType? { get }
     var interfaceLanguage_: String? { get }
     var showAvatars_: Bool? { get }
     var sendNotificationsToEmail_: Bool? { get }
@@ -92,7 +92,7 @@ public extension PersonStubProviding {
     var showNsfw_: Bool? { nil }
     var theme_: String? { nil }
     var defaultSortType_: ApiSortType? { nil }
-    var defaultListingType_: ApiListingType? { nil }
+    var defaultListingType_: ListingType? { nil }
     var interfaceLanguage_: String? { nil }
     var showAvatars_: Bool? { nil }
     var sendNotificationsToEmail_: Bool? { nil }

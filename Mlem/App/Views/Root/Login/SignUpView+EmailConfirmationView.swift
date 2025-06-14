@@ -56,12 +56,11 @@ extension SignUpView {
         
         func attemptToLogIn() async {
             do {
-                let response = try await api.getAccountToken(
+                let token = try await api.getAccountToken(
                     usernameOrEmail: username,
                     password: password,
                     totpToken: nil
                 )
-                guard let token = response.jwt else { return }
                 let account = try await AccountsTracker.main.logIn(username: username, url: api.baseUrl, token: token)
                 navigation.dismissSheet()
                 AppState.main.changeAccount(to: account)

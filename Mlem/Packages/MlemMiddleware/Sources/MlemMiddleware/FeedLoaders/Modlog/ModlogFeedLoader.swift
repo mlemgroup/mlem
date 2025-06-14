@@ -25,7 +25,7 @@ public class ModlogFeedLoader: StandardFeedLoader<ModlogEntry> {
         let sharedCache: ModlogChildFetcher.SharedCache = .init(api: api, pageSize: pageSize, communityId: communityId)
         self.sharedCache = sharedCache
         
-        let sources: [ModlogChildFeedLoader] = ApiModlogActionType.allFilteredCases.map { type in
+        let sources: [ModlogChildFeedLoader] = ModlogEntryType.allCases.map { type in
             .init(
                 api: api,
                 sortType: sortType,
@@ -48,15 +48,15 @@ public class ModlogFeedLoader: StandardFeedLoader<ModlogEntry> {
         }
     }
     
-    public func items(ofType type: ApiModlogActionType?) -> [ModlogEntry] {
-        if let type, type != .all {
+    public func items(ofType type: ModlogEntryType?) -> [ModlogEntry] {
+        if let type {
             modlogSources.first { $0.modlogFetcher.type == type }?.items ?? []
         } else {
             items
         }
     }
     
-    public func childLoader(ofType type: ApiModlogActionType) -> ModlogChildFeedLoader {
+    public func childLoader(ofType type: ModlogEntryType) -> ModlogChildFeedLoader {
         modlogSources.first(where: { $0.modlogFetcher.type == type })!
     }
     

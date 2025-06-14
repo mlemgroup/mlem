@@ -22,7 +22,7 @@ struct ModlogView: View {
     @State var warningPresented: Bool = Settings.get(\.safety_enableModlogWarning)
     
     @State var communityFilter: CommunityFilter?
-    @State var actionTypeFilter: ApiModlogActionType?
+    @State var actionTypeFilter: ModlogEntryType?
     
     init(initialTarget: InitialTarget) {
         self._feedLoader = .init(
@@ -169,28 +169,28 @@ struct ModlogView: View {
             }
             Section {
                 Picker("Post", icon: .lemmy.post, selection: $actionTypeFilter) {
-                    typeFilterLabel(.modRemovePost)
-                    typeFilterLabel(.modLockPost)
-                    typeFilterLabel(.modFeaturePost)
-                    typeFilterLabel(.adminPurgePost)
+                    typeFilterLabel(.removePost)
+                    typeFilterLabel(.lockPost)
+                    typeFilterLabel(.pinPost)
+                    typeFilterLabel(.purgePost)
                 }
                 Picker("Comment", icon: .lemmy.comment, selection: $actionTypeFilter) {
-                    typeFilterLabel(.modRemoveComment)
-                    typeFilterLabel(.adminPurgeComment)
+                    typeFilterLabel(.removeComment)
+                    typeFilterLabel(.purgeComment)
                 }
                 Picker("Community", icon: .lemmy.community, selection: $actionTypeFilter) {
-                    typeFilterLabel(.modRemoveCommunity)
-                    typeFilterLabel(.modHideCommunity)
-                    typeFilterLabel(.modAddCommunity)
-                    typeFilterLabel(.modTransferCommunity)
-                    typeFilterLabel(.adminPurgeCommunity)
+                    typeFilterLabel(.removeCommunity)
+                    typeFilterLabel(.hideCommunity)
+                    typeFilterLabel(.updatePersonModeratorStatus)
+                    typeFilterLabel(.transferCommunityOwnership)
+                    typeFilterLabel(.purgeCommunity)
                 }
                 Picker("User", icon: .lemmy.person, selection: $actionTypeFilter) {
-                    typeFilterLabel(.modBan)
-                    typeFilterLabel(.modBanFromCommunity)
-                    typeFilterLabel(.modAddCommunity)
-                    typeFilterLabel(.modAdd)
-                    typeFilterLabel(.adminPurgePerson)
+                    typeFilterLabel(.banPersonFromInstance)
+                    typeFilterLabel(.banPersonFromCommunity)
+                    typeFilterLabel(.updatePersonModeratorStatus)
+                    typeFilterLabel(.updatePersonAdminStatus)
+                    typeFilterLabel(.purgePerson)
                 }
             }
         }
@@ -198,7 +198,7 @@ struct ModlogView: View {
     }
     
     @ViewBuilder
-    func typeFilterLabel(_ type: ApiModlogActionType) -> some View {
+    func typeFilterLabel(_ type: ModlogEntryType) -> some View {
         if type.appliesToCommunity || communityFilter == .any {
             Label(type.contextualLabel.key, icon: type.icon)
                 .tag(type)

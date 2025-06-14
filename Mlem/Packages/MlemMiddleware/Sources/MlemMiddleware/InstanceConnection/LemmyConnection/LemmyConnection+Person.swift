@@ -68,7 +68,7 @@ public extension LemmyConnection {
         query: String,
         page: Int = 1,
         limit: Int = 20,
-        filter: ApiListingType = .all,
+        filter: ListingType = .all,
         sort: SearchSortType = .top(.allTime)
     ) async throws -> [Person2Snapshot] {
         let response = try await performingForEndpoint { endpoint in
@@ -83,7 +83,7 @@ public extension LemmyConnection {
                     oldSortType: endpoint == .v3 ? sort.legacyApiSortType : nil,
                     newSortType: endpoint == .v4 ? sort.apiSortType : nil
                 ),
-                listingType: filter,
+                listingType: filter.apiType,
                 page: page,
                 limit: limit,
                 postTitleOnly: false,
@@ -178,7 +178,7 @@ public extension LemmyConnection {
     
     func getContent(
         authorId id: Int,
-        sort: ApiSortType,
+        sort: PostSortType,
         page: Int,
         limit: Int,
         savedOnly: Bool? = nil,
@@ -189,7 +189,7 @@ public extension LemmyConnection {
                 endpoint: .v3,
                 personId: id,
                 username: nil,
-                sort: sort,
+                sort: sort.legacyApiSortType,
                 page: page,
                 limit: limit,
                 communityId: nil,
@@ -239,7 +239,7 @@ public extension LemmyConnection {
         showNsfw: Bool?,
         showScores: Bool?,
         theme: String?,
-        defaultListingType: ApiListingType?,
+        defaultListingType: ListingType?,
         interfaceLanguage: String?,
         avatar: String?,
         banner: String?,
@@ -257,7 +257,7 @@ public extension LemmyConnection {
         blurNsfw: Bool?,
         autoExpand: Bool?,
         infiniteScrollEnabled: Bool?,
-        postListingMode: ApiPostListingMode?,
+        postListingMode: PostFeedViewMode?,
         enableKeyboardNavigation: Bool?,
         enableAnimatedImages: Bool?,
         collapseBotComments: Bool?,
@@ -274,7 +274,7 @@ public extension LemmyConnection {
                 showScores: showScores,
                 theme: theme,
                 defaultSortType: nil,
-                defaultListingType: defaultListingType,
+                defaultListingType: defaultListingType?.apiType,
                 interfaceLanguage: interfaceLanguage,
                 avatar: avatar,
                 banner: banner,
@@ -290,7 +290,7 @@ public extension LemmyConnection {
                 discussionLanguages: discussionLanguages,
                 openLinksInNewTab: openLinksInNewTab,
                 infiniteScrollEnabled: infiniteScrollEnabled,
-                postListingMode: postListingMode,
+                postListingMode: postListingMode?.apiType,
                 enableKeyboardNavigation: enableKeyboardNavigation,
                 enableAnimatedImages: enableAnimatedImages,
                 collapseBotComments: collapseBotComments,

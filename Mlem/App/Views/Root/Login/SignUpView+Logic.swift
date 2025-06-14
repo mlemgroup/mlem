@@ -57,7 +57,8 @@ extension SignUpView {
                 captchaAnswer: captchaAnswer.isEmpty ? nil : captchaAnswer,
                 applicationQuestionResponse: applicationQuestionResponse.isEmpty ? nil : applicationQuestionResponse
             )
-            if let token = response.jwt {
+            switch response {
+            case let .canLogIn(token: token):
                 let account = try await AccountsTracker.main.logIn(
                     username: username,
                     url: instance.guestApi.baseUrl,
@@ -66,10 +67,12 @@ extension SignUpView {
                 AppState.main.changeAccount(to: account)
                 navigation.dismissSheet()
                 return
-            } else if response.registrationCreated {
-                signInResult = .awaitingApproval
-            } else if response.verifyEmailSent {
-                signInResult = .awaitingEmail
+            case let .cannotLogIn(reasons: reasons):
+                if reasons.contains(.awaitingApproval) {
+                    signInResult = .awaitingApproval
+                } else {
+                    signInResult = .awaitingEmail
+                }
             }
         } catch {
             handleError(error)
