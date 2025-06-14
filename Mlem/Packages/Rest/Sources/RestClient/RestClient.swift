@@ -22,7 +22,7 @@ public class RestClient<ErrorType: Decodable & CustomStringConvertible> {
     ) async throws(RestError) -> Request.Response {
         let urlRequest = try urlRequest(baseUrl: baseUrl, request: request, token: token)
         // this line intentionally left commented for convenient future debugging
-//        urlRequest.debug()
+        urlRequest.debug()
         let (data, response) = try await execute(urlRequest)
         if let response = response as? HTTPURLResponse {
             if response.statusCode >= 500 || response.statusCode == 404 {

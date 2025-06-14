@@ -8,5 +8,5 @@
 import Foundation
 
 public enum SiteSoftwareType: String, Codable {
-    case lemmy
+    case lemmy, pieFed
 }

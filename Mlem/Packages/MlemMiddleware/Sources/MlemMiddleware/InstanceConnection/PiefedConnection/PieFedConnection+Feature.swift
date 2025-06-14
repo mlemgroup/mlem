@@ -34,7 +34,7 @@ public extension PieFedConnection {
         case let .sortTimeRange(timeRange):
             version >= timeRange.minimumVersion
         case .searchLocalPeople, .moderatorsCanViewVotes, .hidePosts, .fullyFeaturedReports:
-            version >= .v0_19_4
+            false
         }
     }
 }
