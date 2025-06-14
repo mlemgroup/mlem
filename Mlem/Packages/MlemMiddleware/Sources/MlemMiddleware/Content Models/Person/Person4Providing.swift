@@ -10,7 +10,6 @@ import Foundation
 public protocol Person4Providing: Person3Providing {
     var person4: Person4 { get }
     
-    var voteDisplayMode: ApiLocalUserVoteDisplayMode? { get }
     var email: String? { get }
     var showNsfw: Bool { get }
     var theme: String { get }
@@ -38,7 +37,6 @@ public protocol Person4Providing: Person3Providing {
 public extension Person4Providing {
     var person3: Person3 { person4.person3 }
     
-    var voteDisplayMode: ApiLocalUserVoteDisplayMode? { person4.voteDisplayMode }
     var email: String? { person4.email }
     var showNsfw: Bool { person4.showNsfw }
     var theme: String { person4.theme }
@@ -62,7 +60,6 @@ public extension Person4Providing {
     var enableAnimatedImages: Bool? { person4.enableAnimatedImages }
     var collapseBotComments: Bool? { person4.collapseBotComments }
     
-    var voteDisplayMode_: ApiLocalUserVoteDisplayMode? { person4.voteDisplayMode }
     var email_: String? { person4.email }
     var showNsfw_: Bool? { person4.showNsfw }
     var theme_: String? { person4.theme }

@@ -8,7 +8,7 @@
 import Foundation
 import MlemMiddleware
 
-extension ApiListingType {
+extension ListingType {
     var label: LocalizedStringResource {
         switch self {
         case .all: "All"

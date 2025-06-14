@@ -13,8 +13,7 @@ public protocol Instance3Providing: Instance2Providing {
     var version: SiteVersion { get }
     var allLanguages: [Locale.Language] { get }
     var allowedLanguageIds: Set<Int> { get }
-    var taglines: [ApiTagline] { get }
-    var blockedUrls: [ApiLocalSiteUrlBlocklist]? { get }
+    var blockedUrls: [InstanceUrlBlockRecord]? { get }
     var administrators: [Person2] { get }
 }
 
@@ -24,15 +23,13 @@ public extension Instance3Providing {
     var version: SiteVersion { instance3.version }
     var allLanguages: [Locale.Language] { instance3.allLanguages }
     var allowedLanguageIds: Set<Int> { instance3.allowedLanguageIds }
-    var taglines: [ApiTagline] { instance3.taglines }
-    var blockedUrls: [ApiLocalSiteUrlBlocklist]? { instance3.blockedUrls }
+    var blockedUrls: [InstanceUrlBlockRecord]? { instance3.blockedUrls }
     var administrators: [Person2] { instance3.administrators }
     
     var version_: SiteVersion? { instance3.version }
     var allLanguages_: [Locale.Language]? { instance3.allLanguages }
     var allowedLanguageIds_: Set<Int>? { instance3.allowedLanguageIds }
-    var taglines_: [ApiTagline]? { instance3.taglines }
-    var blockedUrls_: [ApiLocalSiteUrlBlocklist]? { instance3.blockedUrls }
+    var blockedUrls_: [InstanceUrlBlockRecord]? { instance3.blockedUrls }
     var administrators_: [Person2]? { instance3.administrators }
     
     func addAdmin(personId: Int, added: Bool) async throws {

@@ -8,11 +8,11 @@
 import Foundation
 
 public extension LemmyConnection {
-    func getReportCount(communityId: Int? = nil) async throws -> ApiGetReportCountResponse {
+    func getReportCount(communityId: Int? = nil) async throws -> ReportUnreadCountSnapshot {
         let response = try await performingForEndpoint { endpoint in
             ReportCountRequest(endpoint: endpoint, communityId: communityId)
         }
-        return response
+        return try .init(from: response)
     }
     
     func getPostReports(

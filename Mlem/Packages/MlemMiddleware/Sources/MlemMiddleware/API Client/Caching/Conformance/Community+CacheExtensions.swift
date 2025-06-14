@@ -21,7 +21,6 @@ extension Community1: CacheIdentifiable {
         setIfChanged(\.banner, community.banner)
         setIfChanged(\.hidden, community.hidden)
         setIfChanged(\.onlyModeratorsCanPost, community.onlyModeratorsCanPost)
-        setIfChanged(\.visibility, community.visibility)
         
         removedManager.updateWithReceivedValue(community.removed, semaphore: semaphore)
     }

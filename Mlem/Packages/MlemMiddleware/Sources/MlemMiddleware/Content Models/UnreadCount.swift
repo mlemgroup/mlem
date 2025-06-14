@@ -116,7 +116,7 @@ public final class UnreadCount {
             if alwaysMakeCalls || api.myInstance?.administrators.contains(where: { $0.id == api.myPerson?.id }) ?? true {
                 taskGroup.addTask {
                     do {
-                        return try await self.api.getRegistrationApplicationCount().unreadCountDictionary
+                        return try await [.registrationApplication: self.api.getRegistrationApplicationCount()]
                     } catch let ApiClientError.response(response, _) where response.notAdmin {
                         return [:]
                     }

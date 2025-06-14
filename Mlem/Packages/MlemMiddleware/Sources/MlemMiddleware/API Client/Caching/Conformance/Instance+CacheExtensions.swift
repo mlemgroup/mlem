@@ -52,7 +52,7 @@ extension Instance2: CacheIdentifiable {
         setIfChanged(\.registrationMode, snapshot.registrationMode)
         setIfChanged(\.federationSignedFetch, snapshot.federationSignedFetch)
         setIfChanged(\.defaultPostListingMode, snapshot.defaultPostListingMode)
-        setIfChanged(\.defaultSortType, snapshot.defaultSortType)
+        setIfChanged(\.defaultPostSortType, snapshot.defaultPostSortType)
         setIfChanged(\.userCount, snapshot.userCount)
         setIfChanged(\.postCount, snapshot.postCount)
         setIfChanged(\.commentCount, snapshot.commentCount)
@@ -70,7 +70,6 @@ extension Instance3: CacheIdentifiable {
         
         setIfChanged(\.version, snapshot.version)
         setIfChanged(\.allowedLanguageIds, snapshot.allowedLanguageIds)
-        setIfChanged(\.taglines, snapshot.taglines)
         setIfChanged(\.blockedUrls, snapshot.blockedUrls)
         setIfChanged(\.administrators, api.caches.person2.getModels(api: api, from: snapshot.administrators))
     }

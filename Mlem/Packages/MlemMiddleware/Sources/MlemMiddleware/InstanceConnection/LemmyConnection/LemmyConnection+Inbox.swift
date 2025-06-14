@@ -87,11 +87,11 @@ public extension LemmyConnection {
         }
     }
     
-    func getPersonalUnreadCount() async throws -> ApiGetUnreadCountResponse {
+    func getPersonalUnreadCount() async throws -> PersonalUnreadCountSnapshot {
         let response = try await performingForEndpoint { endpoint in
             UnreadCountRequest(endpoint: endpoint)
         }
-        return response
+        return try .init(from: response)
     }
     
     func createMessage(personId: Int, content: String) async throws -> Message2Snapshot {

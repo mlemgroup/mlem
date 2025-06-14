@@ -24,7 +24,7 @@ public final class Instance2: Instance2Providing {
     public var applicationQuestion: String?
     public var isPrivate: Bool
     public var defaultTheme: String
-    public var defaultFeed: ApiListingType
+    public var defaultFeed: ListingType
     public var legalInformation: String?
     public var hideModlogNames: Bool
     public var emailApplicationsToAdmins: Bool
@@ -34,10 +34,10 @@ public final class Instance2: Instance2Providing {
     public var federationEnabled: Bool
     public var captchaEnabled: Bool
     public var captchaDifficulty: CaptchaDifficulty?
-    public var registrationMode: ApiRegistrationMode
+    public var registrationMode: RegistrationMode
     public var federationSignedFetch: Bool?
-    public var defaultPostListingMode: ApiPostListingMode?
-    public var defaultSortType: ApiSortType?
+    public var defaultPostListingMode: PostFeedViewMode?
+    public var defaultPostSortType: PostSortType?
     
     public var userCount: Int
     public var postCount: Int
@@ -56,7 +56,7 @@ public final class Instance2: Instance2Providing {
         applicationQuestion: String? = nil,
         isPrivate: Bool,
         defaultTheme: String,
-        defaultFeed: ApiListingType,
+        defaultFeed: ListingType,
         legalInformation: String? = nil,
         hideModlogNames: Bool,
         emailApplicationsToAdmins: Bool,
@@ -66,10 +66,10 @@ public final class Instance2: Instance2Providing {
         federationEnabled: Bool,
         captchaEnabled: Bool,
         captchaDifficulty: CaptchaDifficulty? = nil,
-        registrationMode: ApiRegistrationMode,
+        registrationMode: RegistrationMode,
         federationSignedFetch: Bool? = nil,
-        defaultPostListingMode: ApiPostListingMode? = nil,
-        defaultSortType: ApiSortType? = nil,
+        defaultPostListingMode: PostFeedViewMode? = nil,
+        defaultPostSortType: PostSortType? = nil,
         userCount: Int,
         postCount: Int,
         commentCount: Int,
@@ -99,7 +99,7 @@ public final class Instance2: Instance2Providing {
         self.registrationMode = registrationMode
         self.federationSignedFetch = federationSignedFetch
         self.defaultPostListingMode = defaultPostListingMode
-        self.defaultSortType = defaultSortType
+        self.defaultPostSortType = defaultPostSortType
         self.userCount = userCount
         self.postCount = postCount
         self.commentCount = commentCount

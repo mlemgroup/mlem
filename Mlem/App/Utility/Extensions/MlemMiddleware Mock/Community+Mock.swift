@@ -30,8 +30,7 @@ extension Community1 {
             banner: type.banner,
             hidden: false,
             onlyModeratorsCanPost: false,
-            blocked: false,
-            visibility: .public
+            blocked: false
         )
     }
 }

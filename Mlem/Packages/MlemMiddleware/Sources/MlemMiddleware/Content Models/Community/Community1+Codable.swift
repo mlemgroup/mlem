@@ -32,7 +32,7 @@ public extension Community1 {
             hidden: hidden,
             postingRestrictedToMods: onlyModeratorsCanPost,
             instanceId: instanceId,
-            visibility: visibility,
+            visibility: nil,
             sidebar: nil,
             apId: actorId,
             subscribers: nil,

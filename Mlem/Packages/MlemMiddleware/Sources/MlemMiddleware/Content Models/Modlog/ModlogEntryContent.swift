@@ -23,7 +23,7 @@ public enum ModlogEntryContent: Equatable {
         _ post: Post1,
         community: Community1,
         pinned: Bool,
-        type: ApiPostFeatureType
+        type: PostFeatureType
     )
     case purgePost(reason: String?)
     

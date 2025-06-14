@@ -154,7 +154,7 @@ private func pinLabel(
     userText: Text?,
     community: Community1,
     pinned: Bool,
-    type: ApiPostFeatureType
+    type: PostFeatureType
 ) -> LocalizedStringKey {
     let target: String = (type == .community ? community.fullName : community.api.host)
     if let userText {

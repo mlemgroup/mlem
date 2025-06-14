@@ -398,7 +398,7 @@ public protocol InstanceConnection {
     func markReplyAsRead(id: Int, read: Bool) async throws
     func markMentionAsRead(id: Int, read: Bool) async throws
     func markMessageAsRead(id: Int, read: Bool) async throws
-    func getPersonalUnreadCount() async throws -> ApiGetUnreadCountResponse
+    func getPersonalUnreadCount() async throws -> PersonalUnreadCountSnapshot
     func createMessage(personId: Int, content: String) async throws -> Message2Snapshot
     @discardableResult
     func editMessage(id: Int, content: String) async throws -> Message2Snapshot
@@ -410,14 +410,14 @@ public protocol InstanceConnection {
     // MARK: - Instance
     
     func getMyInstance() async throws -> Instance3Snapshot
-    func getFederatedInstances() async throws -> ApiFederatedInstances
+    func getFederatedInstances() async throws -> FederationPolicy
     func blockInstance(instanceId: Int, block: Bool) async throws
     @discardableResult
     func addAdmin(personId: Int, added: Bool) async throws -> [Person2Snapshot]
     
     // MARK: - RegistrationApplication
     
-    func getRegistrationApplicationCount() async throws -> ApiGetUnreadRegistrationApplicationCountResponse
+    func getRegistrationApplicationCount() async throws -> Int
     
     func getRegistrationApplications(
         page: Int,
@@ -432,7 +432,7 @@ public protocol InstanceConnection {
     
     // MARK: - Report
     
-    func getReportCount(communityId: Int?) async throws -> ApiGetReportCountResponse
+    func getReportCount(communityId: Int?) async throws -> ReportUnreadCountSnapshot
     
     func getPostReports(
         page: Int,
