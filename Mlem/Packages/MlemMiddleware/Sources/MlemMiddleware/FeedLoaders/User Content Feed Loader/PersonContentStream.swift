@@ -46,7 +46,12 @@ public class PersonContentStream<Item: PersonContentProviding> {
         preloadImages(personContentItems)
         items.append(contentsOf: personContentItems)
         thresholds.update(with: personContentItems)
-        if newItems.isEmpty {
+        // since the API returns posts and comments together, .success/.done isn't a reliable way to determine whether a particular stream
+        // has finished loading. This will solve that problem in almost every case; however, if the user's filters remove enough items
+        // that the page drops below the threshold, it will erroneously flag the load as done. This would require filtering out 40/50 items,
+        // so it's very unlikely to actually occur.
+        // TODO: 0.19 deprecation rewrite this whole thing with a standard parent/child feed loader setup using the type filtering in /personT
+        if newItems.count < MiddlewareConstants.infiniteLoadThresholdOffset {
             doneLoading = true
         }
     }
