@@ -21,14 +21,9 @@ class GuestSession: Session {
         account.activate()
         
         Task {
-            try await self.api.contextDataManager.getValue(task: Task {
-                let (_, instance, _) = try await self.api.getMyPerson()
-                self.instance = instance
-                Task { @MainActor in
-                    self.account.update(instance: instance)
-                }
-                return .init(instance: instance, person: nil)
-            })
+            let instance = try await self.api.getMyInstance()
+            await self.account.update(instance: instance)
+            self.instance = instance
         }
     }
     
