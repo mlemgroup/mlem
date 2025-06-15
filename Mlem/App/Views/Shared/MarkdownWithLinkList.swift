@@ -59,7 +59,7 @@ struct MarkdownWithLinkList: View {
                         linksCollapsed = false
                     }
                 } label: {
-                    FooterLinkView(title: "Show \(linksData.count - 3) more links", subtitle: nil)
+                    FooterLinkView(title: String(localized: "\(linksData.count - 3) more links..."), subtitle: nil)
                 }
             }
             
