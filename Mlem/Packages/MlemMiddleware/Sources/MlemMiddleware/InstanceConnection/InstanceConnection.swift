@@ -9,7 +9,12 @@ import Foundation
 
 public protocol InstanceConnection {
     func updateToken(_ newToken: String)
-    
+
+    var fetchedVersion: SiteVersion? { get }
+    var version: SiteVersion { get async throws }
+    var myPersonId: Int? { get async throws }
+    func ensureContextPresence() async throws
+
     // MARK: - Post
     
     func getPosts(

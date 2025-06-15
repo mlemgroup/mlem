@@ -189,7 +189,6 @@ public extension ApiClient {
         
         let instance = await caches.instance3.getModel(api: self, from: response.instance)
         let person = await caches.person4.getOptionalModel(api: self, from: response.person)
-
         var blocks: BlockList? = blocks
         
         if let person, let newBlocks = response.blocks {

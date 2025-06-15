@@ -29,12 +29,15 @@ import Rest
             self.communities = communities
             self.people = people
             self.comments = comments
+            let url = URL(string: "https://lemmy.world/")!
             super.init(
-                url: URL(string: "https://lemmy.world/")!,
+                url: url,
                 username: ""
             )
-            contextDataManager.fetchedValue = .init(siteVersion: .v0_19_9, myPersonId: nil)
             self.token = "" // Not nil so that the views are interactable
+            let connection = LemmyConnection(baseUrl: url, token: "")
+            connection.setMockContext(.init(siteVersion: .v0_19_9, myPersonId: nil))
+            self.connection = connection
         }
     
         override func perform<Request: RestRequest>(

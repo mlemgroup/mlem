@@ -37,16 +37,13 @@ class UserSession: Session {
         
         Task { @MainActor in
             do {
-                try await self.api.contextDataManager.getValue(task: Task {
-                    let (person, instance, blocks) = try await self.api.getMyPerson()
-                    if let person {
-                        self.account.update(person: person, instance: instance)
-                        self.person = person
-                    }
-                    self.blocks = blocks
-                    self.instance = instance
-                    return .init(instance: instance, person: person)
-                })
+                let (person, instance, blocks) = try await self.api.getMyPerson()
+                if let person {
+                    self.account.update(person: person, instance: instance)
+                    self.person = person
+                }
+                self.blocks = blocks
+                self.instance = instance
                 
                 try await self.api.getSubscriptionList()
                 
