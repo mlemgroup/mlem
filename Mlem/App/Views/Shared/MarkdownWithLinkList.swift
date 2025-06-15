@@ -74,7 +74,7 @@ struct MarkdownWithLinkList: View {
                         scrollProxy?.scrollTo(2, anchor: .top)
                     }
                 } label: {
-                    FooterLinkView(title: "Hide links", subtitle: nil)
+                    FooterLinkView(title: String(localized: "Hide links"), subtitle: nil)
                 }
             }
         } else {
