@@ -35,16 +35,18 @@ public class ApiClient {
         try await getLemmyConnection().ensureContextPresence()
     }
     
-    public var fetchedVersion: SiteVersion? {
-        getLemmyConnection().fetchedVersion
+    public func supports(_ feature: Feature) async throws -> Bool {
+        try await getLemmyConnection().supports(feature)
     }
     
-    public var version: SiteVersion {
-        get async throws {
-            try await getLemmyConnection().version
-        }
+    public func supportsOrNil(_ feature: Feature) -> Bool? {
+        getLemmyConnection().supportsOrNil(feature)
     }
     
+    public var contextIsFetched: Bool {
+        getLemmyConnection().contextIsFetched
+    }
+
     public var myPersonId: Int? {
         get async throws {
             try await getLemmyConnection().myPersonId

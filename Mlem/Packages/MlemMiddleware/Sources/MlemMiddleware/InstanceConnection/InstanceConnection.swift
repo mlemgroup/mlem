@@ -9,6 +9,10 @@ import Foundation
 
 public protocol InstanceConnection {
     func updateToken(_ newToken: String)
+    
+    var contextIsFetched: Bool { get }
+    func supports(_ feature: Feature) async throws -> Bool
+    func supportsOrNil(_ feature: Feature) -> Bool?
 
     var fetchedVersion: SiteVersion? { get }
     var version: SiteVersion { get async throws }

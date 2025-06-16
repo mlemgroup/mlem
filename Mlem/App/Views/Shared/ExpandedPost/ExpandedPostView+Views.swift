@@ -89,7 +89,7 @@ extension ExpandedPostView {
             })
         ) {
             ForEach(CommentSortType.legacyCases, id: \.self) { item in
-                if (post?.api.fetchedVersion ?? .infinity) >= item.minimumVersion {
+                if post?.api.supportsOrNil(.commentSortType(item)) ?? true {
                     Label(item.label(timeRangeFormat: .topOnly), icon: item.icon)
                 }
             }
