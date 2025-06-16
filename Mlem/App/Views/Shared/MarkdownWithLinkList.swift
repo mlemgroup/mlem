@@ -11,8 +11,11 @@ import SwiftUI
 struct MarkdownWithLinkList: View {
     @Environment(\.palette) var palette
     @Environment(\.openURL) var openURL
+    @Environment(\.scrollProxy) var scrollProxy
     
     @Setting(\.links_displayMode) var tappableLinksDisplayMode
+    
+    @State var linksCollapsed: Bool = true
     
     let blocks: [BlockNode]
     let shouldBlur: Bool
@@ -38,12 +41,45 @@ struct MarkdownWithLinkList: View {
         VStack(spacing: Constants.main.standardSpacing) {
             Markdown(blocks, configuration: shouldBlur ? .defaultBlurred(palette: palette) : .default(palette: palette))
             if tappableLinksDisplayMode != .disabled {
-                ForEach(
-                    Array(blocks.links.filter { !$0.insideSpoiler }.enumerated()),
-                    id: \.offset
-                ) { _, link in
+                linksView(blocks.links.filter { !$0.insideSpoiler })
+            }
+        }
+    }
+    
+    @ViewBuilder
+    func linksView(_ linksData: [LinkData]) -> some View {
+        if linksData.count > 3 {
+            ForEach(Array(linksData[0..<3].enumerated()), id: \.offset) { _, link in
+                linkView(link)
+            }
+            
+            if linksCollapsed {
+                Button {
+                    withAnimation {
+                        linksCollapsed = false
+                    }
+                } label: {
+                    FooterLinkView(title: String(localized: "\(linksData.count - 3) more links..."), subtitle: nil)
+                }
+            }
+            
+            if !linksCollapsed {
+                ForEach(Array(linksData[3...].enumerated()), id: \.offset) { _, link in
                     linkView(link)
                 }
+                
+                Button {
+                    withAnimation {
+                        linksCollapsed = true
+                        scrollProxy?.scrollTo(2, anchor: .top)
+                    }
+                } label: {
+                    FooterLinkView(title: String(localized: "Hide links"), subtitle: nil)
+                }
+            }
+        } else {
+            ForEach(Array(linksData.enumerated()), id: \.offset) { _, link in
+                linkView(link)
             }
         }
     }
