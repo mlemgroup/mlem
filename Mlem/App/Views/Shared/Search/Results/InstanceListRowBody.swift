@@ -74,8 +74,8 @@ struct InstanceListRowBody<Content: View>: View {
         instance?.avatar ?? summary?.avatar
     }
     
-    var version: SiteVersion? {
-        instance?.version_ ?? summary?.version
+    var software: SiteSoftware? {
+        instance?.software_ ?? summary?.software
     }
 
     var body: some View {
@@ -98,8 +98,8 @@ struct InstanceListRowBody<Content: View>: View {
                 Text(title)
                     .foregroundStyle(isEnabled ? .themedPrimary : .themedSecondary)
                     .lineLimit(1)
-                if let version {
-                    Text(version.description)
+                if let software {
+                    Text(software.label)
                         .font(.footnote)
                         .foregroundStyle(.themedSecondary)
                         .lineLimit(1)

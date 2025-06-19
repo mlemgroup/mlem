@@ -122,7 +122,7 @@ extension NavigationPage {
                         .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
                 }
             }
-        case let .instancePicker(callback: callback, minimumVersion: minimumVersion):
+        case let .instancePicker(callback: callback, requiredFeature: requiredFeature):
             SearchSheetView { (instance: InstanceSummary, navigation: NavigationLayer) in
                 Button {
                     callback.wrappedValue(instance, navigation)
@@ -132,10 +132,10 @@ extension NavigationPage {
                         .padding(.vertical, 6)
                         .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
                 }
-                .disabled(instance.version < (minimumVersion ?? .zero))
+                .disabled(requiredFeature.map { !instance.software.supports($0) } ?? false)
             } header: {
-                if let minimumVersion {
-                    Text("This feature is only supported for instances running version \(String(describing: minimumVersion)) or later.")
+                if let requiredFeature {
+                    Text("This feature is not available on all instances.")
                         .padding()
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .background(.themedCaution.opacity(0.2), in: .rect(cornerRadius: Constants.main.standardSpacing))

@@ -38,8 +38,9 @@ class UserSession: Session {
         Task { @MainActor in
             do {
                 let (person, instance, blocks) = try await self.api.getMyPerson()
+                let software = try await self.api.software
                 if let person {
-                    self.account.update(person: person, instance: instance)
+                    self.account.update(person: person, instance: instance, software: software)
                     self.person = person
                 }
                 self.blocks = blocks

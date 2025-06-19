@@ -147,7 +147,8 @@ class AccountsTracker {
             guard let person = response.person else {
                 throw ApiClientError.unsuccessful
             }
-            let account = UserAccount(person: person, instance: response.instance)
+            let software = try await authenticatedApiClient.software
+            let account = UserAccount(person: person, instance: response.instance, siteSoftware: software)
             addAccount(account: account)
             return account
         }

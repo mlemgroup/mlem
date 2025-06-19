@@ -15,7 +15,7 @@ extension Instance3 {
             name: name,
             userCount: userCount,
             avatar: avatar,
-            version: version
+            software: software
         )
     }
 }

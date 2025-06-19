@@ -15,7 +15,7 @@ protocol Account: AnyObject, Codable, ActorIdentifiable, Profile1Providing, Hash
     var api: ApiClient { get }
     var name: String { get }
     var storedNickname: String? { get }
-    var cachedSiteVersion: SiteVersion? { get }
+    var siteSoftware: SiteSoftware? { get }
     var avatar: URL? { get }
     var activityState: AccountActivityState { get set }
     var accountType: AccountType { get }
