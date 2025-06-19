@@ -37,36 +37,52 @@ extension SearchView {
     
     @ViewBuilder
     private var communityFiltersView: some View {
-        CommunitySearchSortPicker(sort: $communityFilters.sort)
+        if let communityFilters {
+            CommunitySearchSortPicker(sort: Binding(
+                get: { communityFilters.sort }, set: { self.communityFilters?.sort = $0 }
+            ))
             .buttonStyle(.feedFilter(isOn: communityFilters.sort != .top(.allTime)))
-        InstancePicker(filter: $communityFilters.instance, isForPersonSearch: false)
+            InstancePicker(
+                filter: Binding(get: { communityFilters.instance }, set: { self.communityFilters?.instance = $0 }),
+                isForPersonSearch: false
+            )
             .buttonStyle(.feedFilter(isOn: communityFilters.instance != .any))
+        }
     }
     
     @ViewBuilder
     private var personFiltersView: some View {
-        Menu(personFilters.sort.label(timeRangeFormat: .topOnly), icon: personFilters.sort.icon) {
-            Picker("Sort", selection: $personFilters.sort) {
-                ForEach(SearchSortType.legacyPersonCases, id: \.self) { item in
-                    Label(item.label(timeRangeFormat: .topOnly), icon: item.icon)
+        if let personFilters {
+            Menu(personFilters.sort.label(timeRangeFormat: .topOnly), icon: personFilters.sort.icon) {
+                Picker("Sort", selection: Binding(
+                    get: { personFilters.sort }, set: { self.personFilters?.sort = $0 }
+                )) {
+                    ForEach(SearchSortType.legacyPersonCases, id: \.self) { item in
+                        Label(item.label(timeRangeFormat: .topOnly), icon: item.icon)
+                    }
                 }
             }
-        }
-        .buttonStyle(.feedFilter(isOn: personFilters.sort != .top(.allTime)))
-        InstancePicker(filter: $personFilters.instance, isForPersonSearch: true)
+            .buttonStyle(.feedFilter(isOn: personFilters.sort != .top(.allTime)))
+            InstancePicker(
+                filter: Binding(get: { personFilters.instance }, set: { self.personFilters?.instance = $0 }),
+                isForPersonSearch: true
+            )
             .buttonStyle(.feedFilter(isOn: personFilters.instance != .any))
+        }
     }
     
     @ViewBuilder
     private var postFiltersView: some View {
-        FeedSortPicker(sort: $postFilters.sort)
-            .buttonStyle(.feedFilter(isOn: postFilters.sort != .top(.allTime)))
-        LocationPicker(filter: $postFilters.location)
-            .buttonStyle(.feedFilter(isOn: postFilters.location != .any))
-        CreatorPicker(
-            api: postFilters.location.instanceStub?.api ?? appState.firstApi,
-            creator: $postFilters.creator
-        )
+        if let postFilters {
+            FeedSortPicker(sort: Binding(get: { postFilters.sort }, set: { self.postFilters?.sort = $0 }))
+                .buttonStyle(.feedFilter(isOn: postFilters.sort != .top(.allTime)))
+            LocationPicker(filter: Binding(get: { postFilters.location }, set: { self.postFilters?.location = $0 }))
+                .buttonStyle(.feedFilter(isOn: postFilters.location != .any))
+            CreatorPicker(
+                api: postFilters.location.instanceStub?.api ?? appState.firstApi,
+                creator: Binding(get: { postFilters.creator }, set: { self.postFilters?.creator = $0 })
+            )
+        }
     }
     
     @ViewBuilder

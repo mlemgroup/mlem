@@ -6687,6 +6687,7 @@
       }
     },
     "Requires Lemmy %@ or later" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -8010,6 +8011,9 @@
           }
         }
       }
+    },
+    "The PieFed beta doesn't yet support resolving links to external instances. This content is being loaded from **%@** instead." : {
+
     },
     "Theme" : {
       "localizations" : {

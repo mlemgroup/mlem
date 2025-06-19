@@ -13,6 +13,8 @@ struct ExternalApiInfoView: View {
     @Environment(AppState.self) private var appState
     
     @State private var isLoading: Bool = true
+    
+    @State private var internalSoftware: SiteSoftware?
     @State private var internalFederationStatus: FederationStatus?
     @State private var externalFederationStatus: FederationStatus?
     @State private var externalInstance: Instance3?
@@ -32,9 +34,16 @@ struct ExternalApiInfoView: View {
             if isLoading {
                 Text("Diagnosing...")
                     .foregroundStyle(.secondary)
-            } else {
-                ScrollView {
-                    content
+            } else if let internalSoftware {
+                if internalSoftware.type == .pieFed {
+                    // swiftlint:disable:next line_length
+                    Text("The PieFed beta doesn't yet support resolving links to external instances. This content is being loaded from **\(entityLocalApi.host)** instead.")
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal)
+                } else {
+                    ScrollView {
+                        content
+                    }
                 }
             }
         }
@@ -152,10 +161,10 @@ struct ExternalApiInfoView: View {
     
     @MainActor
     func loadData() async {
+        let externalApi = entityLocalApi
+        let internalApi = appState.firstApi
+        
         do {
-            let externalApi = entityLocalApi
-            let internalApi = appState.firstApi
-            
             async let externalFederationStatus = await externalApi.federatedWith(with: internalApi.baseUrl)
             async let internalFederationStatus = await internalApi.federatedWith(with: externalApi.baseUrl)
             async let externalInstance = await externalApi.getMyInstance()
@@ -163,9 +172,16 @@ struct ExternalApiInfoView: View {
             self.externalFederationStatus = try await externalFederationStatus
             self.internalFederationStatus = try await internalFederationStatus
             self.externalInstance = try await externalInstance
-            isLoading = false
         } catch {
-            isLoading = false
+            handleError(error, silent: true)
         }
+        
+        do {
+            internalSoftware = try await internalApi.software
+        } catch {
+            handleError(error, silent: true)
+        }
+        
+        isLoading = false
     }
 }

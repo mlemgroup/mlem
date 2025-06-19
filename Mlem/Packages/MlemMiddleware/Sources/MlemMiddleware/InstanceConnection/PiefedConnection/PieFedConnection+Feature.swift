@@ -23,5 +23,17 @@ public extension PieFedConnection {
     static func supports(
         _ feature: Feature,
         version: SiteVersion
-    ) -> Bool { false }
+    ) -> Bool {
+        switch feature {
+        case let .postSortType(sort):
+            sort.pieFedSortType != nil
+        case let .commentSortType(sort):
+            sort.piefedSortType != nil
+        case let .searchSortType(sort):
+            sort.pieFedSortType != nil
+        case let .sortTimeRange(timeRange):
+            timeRange.pieFedSortType != nil
+        default: false
+        }
+    }
 }

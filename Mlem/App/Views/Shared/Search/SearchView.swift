@@ -53,10 +53,10 @@ struct SearchView: View {
     @State var page: Page = .home
     
     @State var filtersActive: Bool = false
-    @State var communityFilters: CommunityFilters = .init()
-    @State var personFilters: PersonFilters = .init()
+    @State var communityFilters: CommunityFilters?
+    @State var personFilters: PersonFilters?
     @State var instanceFilters: InstanceFilters = .init()
-    @State var postFilters: PostFilters = .init()
+    @State var postFilters: PostFilters?
     @State var commentFilters: CommentFilters = .init()
     
     @State var selectedTab: Tab = .communities
@@ -123,13 +123,14 @@ struct SearchView: View {
             }
             .onChange(of: selectedTab) { contentChangeTriggerRefresh(onlyRefreshIfEmpty: true) }
             .onChange(of: filterRefreshHashValue, onFilterRefreshHashValueChange)
-            .onChange(of: postFilters.location.instanceStub) {
+            .onChange(of: postFilters?.location.instanceStub) {
                 resolvePostFilterCreator()
             }
             .onDisappear {
                 editingRecentSearches = false
             }
             .environment(\.feedContext, .search)
+            .task(id: appState.firstApi) { await setupFilters() }
     }
     
     @ViewBuilder

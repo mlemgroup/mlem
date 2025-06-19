@@ -9,6 +9,8 @@ import Foundation
 import Rest
 
 public class LemmyConnection: InstanceConnection {
+    public static let softwareType: SiteSoftwareType = .lemmy
+    
     private let restClient = RestClient<ApiErrorResponse>()
     
     enum LemmyConnectionError: Error {

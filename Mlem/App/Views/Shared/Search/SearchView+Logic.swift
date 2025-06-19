@@ -17,7 +17,7 @@ extension SearchView {
             }
         } else {
             Task {
-                await refresh(clearBeforeRefresh: false)
+                await refresh(clearBeforeRefresh: false, onlyRefreshIfEmpty: onlyRefreshIfEmpty)
             }
         }
     }
@@ -38,6 +38,17 @@ extension SearchView {
             Task { await refresh(clearBeforeRefresh: true) }
         }
         resultsScrollToTopTrigger.toggle()
+    }
+    
+    func setupFilters() async {
+        do {
+            let software = try await appState.firstApi.software
+            communityFilters = .init(software: software)
+            personFilters = .init(software: software)
+            postFilters = .init(software: software)
+        } catch {
+            handleError(error)
+        }
     }
     
     // swiftlint:disable:next cyclomatic_complexity
@@ -73,34 +84,54 @@ extension SearchView {
     }
     
     private func refreshCommunities(clearBeforeRefresh: Bool) async throws {
+        guard let communityFilters else { return }
         let refreshApi = getRefreshApi(for: communityFilters.instance)
         await communityLoader.changeApi(
             to: refreshApi,
             context: filtersTracker.filterContext,
             hostApi: refreshApi == appState.firstApi ? nil : appState.firstApi
         )
+        
+        let defaultSort: SearchSortType
+        if try await refreshApi.supports(.searchSortType(.top(.allTime))) {
+            defaultSort = .top(.allTime)
+        } else {
+            defaultSort = .top(.limited(.month))
+        }
+        
         try await communityLoader.refresh(
             query: query,
             listing: (!filtersActive || communityFilters.instance == .any) ? .all : .local,
-            sort: filtersActive ? communityFilters.sort : .top(.allTime),
+            sort: filtersActive ? communityFilters.sort : defaultSort,
             clearBeforeRefresh: clearBeforeRefresh
         )
     }
     
     private func refreshPeople(clearBeforeRefresh: Bool) async throws {
+        guard let personFilters else { return }
+        let refreshApi = getRefreshApi(for: personFilters.instance)
         await personLoader.changeApi(
-            to: getRefreshApi(for: personFilters.instance),
+            to: refreshApi,
             context: filtersTracker.filterContext
         )
+        
+        let defaultSort: SearchSortType
+        if try await refreshApi.supports(.searchSortType(.top(.allTime))) {
+            defaultSort = .top(.allTime)
+        } else {
+            defaultSort = .top(.limited(.month))
+        }
+        
         try await personLoader.refresh(
             query: query,
             listing: (!filtersActive || personFilters.instance == .any) ? .all : .local,
-            sort: filtersActive ? personFilters.sort : .top(.allTime),
+            sort: filtersActive ? personFilters.sort : defaultSort,
             clearBeforeRefresh: clearBeforeRefresh
         )
     }
     
     private func refreshPosts(clearBeforeRefresh: Bool) async throws {
+        guard let postFilters else { return }
         guard !query.isEmpty else { return }
         await postLoader.searchPostFetcher.changeApi(
             to: getRefreshApi(for: postFilters.location),
@@ -181,6 +212,7 @@ extension SearchView {
     }
     
     func resolvePostFilterCreator() {
+        guard let postFilters else { return }
         let api = postFilters.location.instanceStub?.api ?? appState.firstApi
         if let creator = postFilters.creator, api !== creator.api {
             Task {
@@ -204,7 +236,7 @@ extension SearchView {
     var filterAnimationHashValue: Int {
         var hasher = Hasher()
         hasher.combine(filtersActive)
-        hasher.combine(communityFilters.instance.isOther)
+        hasher.combine(communityFilters?.instance.isOther)
         hasher.combine(selectedTab)
         return hasher.finalize()
     }
@@ -212,14 +244,14 @@ extension SearchView {
     var filterRefreshHashValue: Int {
         var hasher = Hasher()
         hasher.combine(filtersActive)
-        hasher.combine(communityFilters.sort)
-        hasher.combine(communityFilters.instance)
-        hasher.combine(personFilters.sort)
-        hasher.combine(personFilters.instance)
+        hasher.combine(communityFilters?.sort)
+        hasher.combine(communityFilters?.instance)
+        hasher.combine(personFilters?.sort)
+        hasher.combine(personFilters?.instance)
         hasher.combine(instanceFilters.sort)
-        hasher.combine(postFilters.sort)
-        hasher.combine(postFilters.creator?.actorId)
-        hasher.combine(postFilters.location)
+        hasher.combine(postFilters?.sort)
+        hasher.combine(postFilters?.creator?.actorId)
+        hasher.combine(postFilters?.location)
         hasher.combine(commentFilters.sort)
         hasher.combine(commentFilters.creator?.actorId)
         hasher.combine(commentFilters.location)

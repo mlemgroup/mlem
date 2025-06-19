@@ -26,6 +26,7 @@ public enum Feature: Hashable {
     case viewInstanceAdministratorList
     case viewInstanceCreationDate
     case viewInstanceSettings
+    case viewCommunityActiveUsers
     
     case logIn
     case signUp

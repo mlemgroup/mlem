@@ -17,7 +17,22 @@ public extension PieFedConnection {
         filter: GetContentFilter? = nil,
         showHidden: Bool = false
     ) async throws -> (posts: [Post2Snapshot], cursor: String?) {
-        throw ApiClientError.featureUnsupported
+        if filter == .saved || filter == .downvoted {
+            throw ApiClientError.featureUnsupported
+        }
+        let request = PieFedGetPostsRequest(
+            type_: nil,
+            sort: sort.pieFedSortType,
+            pageCursor: page,
+            limit: limit,
+            communityId: communityId,
+            personId: nil,
+            communityName: nil,
+            likedOnly: filter == .upvoted
+        )
+        let response = try await perform(request)
+        let posts: [Post2Snapshot] = try response.posts.map { try .init(from: $0) }
+        return (posts: posts, cursor: nil)
     }
     
     func getPosts(
@@ -29,7 +44,22 @@ public extension PieFedConnection {
         filter: GetContentFilter? = nil,
         showHidden: Bool = false
     ) async throws -> (posts: [Post2Snapshot], cursor: String?) {
-        throw ApiClientError.featureUnsupported
+        if filter == .saved || filter == .downvoted || showHidden {
+            throw ApiClientError.featureUnsupported
+        }
+        let request = PieFedGetPostsRequest(
+            type_: feed.pieFedListingType,
+            sort: sort.pieFedSortType,
+            pageCursor: page,
+            limit: limit,
+            communityId: nil,
+            personId: nil,
+            communityName: nil,
+            likedOnly: filter == .upvoted
+        )
+        let response = try await perform(request)
+        let posts: [Post2Snapshot] = try response.posts.map { try .init(from: $0) }
+        return (posts: posts, cursor: nil)
     }
 
     func getPosts(
@@ -44,7 +74,9 @@ public extension PieFedConnection {
     }
 
     func getPost(id: Int) async throws -> Post3Snapshot {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedGetPostRequest(id: id, commentId: nil)
+        let response = try await perform(request)
+        return try .init(from: response)
     }
     
     func getPost(url: URL) async throws -> Post2Snapshot {
@@ -61,7 +93,22 @@ public extension PieFedConnection {
         filter: ListingType = .all,
         sort: PostSortType
     ) async throws -> [Post2Snapshot] {
-        throw ApiClientError.featureUnsupported
+        guard let sort = sort.pieFedSortType else {
+            throw ApiClientError.featureUnsupported
+        }
+        if communityId != nil || creatorId != nil {
+            throw ApiClientError.featureUnsupported
+        }
+        let request = PieFedSearchRequest(
+            q: query,
+            type_: .posts,
+            sort: sort,
+            listingType: filter.pieFedListingType,
+            page: page,
+            limit: limit
+        )
+        let response = try await perform(request)
+        return try response.posts.map { try .init(from: $0) }
     }
     
     func searchPosts(

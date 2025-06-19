@@ -33,7 +33,7 @@ struct ChildSizeReader<Content: View>: View {
             if index < sizes.count {
                 sizes[index] = preferences
             } else {
-                assertionFailure()
+//                assertionFailure()
             }
         }
     }

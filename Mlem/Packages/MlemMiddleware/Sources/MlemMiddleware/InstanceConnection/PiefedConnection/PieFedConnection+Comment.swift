@@ -24,7 +24,25 @@ public extension PieFedConnection {
         limit: Int,
         filter: GetContentFilter? = nil
     ) async throws -> [Comment2Snapshot] {
-        throw ApiClientError.featureUnsupported
+        guard let sort = sort.piefedSortType else {
+            throw ApiClientError.featureUnsupported
+        }
+        let request = PieFedGetCommentsRequest(
+            type_: .all,
+            sort: sort,
+            maxDepth: maxDepth,
+            page: page,
+            limit: limit,
+            communityId: nil,
+            communityName: nil,
+            postId: postId,
+            parentId: nil,
+            savedOnly: filter == .saved,
+            likedOnly: filter == .upvoted,
+            dislikedOnly: filter == .downvoted
+        )
+        let response = try await perform(request)
+        return try response.comments.map { try .init(from: $0) }
     }
     
     func getComments(
@@ -35,7 +53,25 @@ public extension PieFedConnection {
         limit: Int,
         filter: GetContentFilter? = nil
     ) async throws -> [Comment2Snapshot] {
-        throw ApiClientError.featureUnsupported
+        guard let sort = sort.piefedSortType else {
+            throw ApiClientError.featureUnsupported
+        }
+        let request = PieFedGetCommentsRequest(
+            type_: .all,
+            sort: sort,
+            maxDepth: maxDepth,
+            page: nil,
+            limit: nil,
+            communityId: nil,
+            communityName: nil,
+            postId: nil,
+            parentId: parentId,
+            savedOnly: filter == .saved,
+            likedOnly: filter == .upvoted,
+            dislikedOnly: filter == .downvoted
+        )
+        let response = try await perform(request)
+        return try response.comments.map { try .init(from: $0) }
     }
     
     // This method should be removed in favor of the below method once we drop support for versions before Lemmy 1.0
