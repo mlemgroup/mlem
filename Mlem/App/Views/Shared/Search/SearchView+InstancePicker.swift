@@ -69,6 +69,15 @@ extension SearchView {
                     }
                 }
             }
+            .task(id: appState.firstApi) {
+                if isForPersonSearch {
+                    do {
+                        instanceSupportsSearchingLocalPeople = try await appState.firstApi.supports(.searchLocalPeople)
+                    } catch {
+                        handleError(error)
+                    }
+                }
+            }
         }
     }
 }
