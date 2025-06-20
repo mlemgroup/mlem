@@ -478,6 +478,9 @@
         }
       }
     },
+    "%lld more links..." : {
+
+    },
     "%lld years ago today!" : {
       "localizations" : {
         "en" : {
@@ -3793,6 +3796,9 @@
           }
         }
       }
+    },
+    "Hide links" : {
+
     },
     "Hide Older Incidents" : {
       "localizations" : {
