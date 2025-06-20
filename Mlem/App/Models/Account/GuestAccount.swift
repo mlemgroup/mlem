@@ -15,7 +15,7 @@ class GuestAccount: Account {
     let actorId: ActorIdentifier
     let api: ApiClient
     var storedNickname: String?
-    var cachedSiteVersion: SiteVersion?
+    var siteSoftware: SiteSoftware?
     var avatar: URL?
     var activityState: AccountActivityState
     let accountType: AccountType = .guest
@@ -43,7 +43,7 @@ class GuestAccount: Account {
     
     enum CodingKeys: String, CodingKey {
         // Keys are named this way to be consistent with the `UserAccount.CodingKey` cases
-        case storedNickname, instanceLink, siteVersion, avatarUrl, lastUsed, activityState
+        case storedNickname, instanceLink, siteVersion, avatarUrl, lastUsed, activityState, siteSoftware
     }
     
     enum DecodingError: Error {
@@ -54,7 +54,15 @@ class GuestAccount: Account {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         
         self.storedNickname = try values.decode(String?.self, forKey: .storedNickname)
-        self.cachedSiteVersion = try values.decode(SiteVersion?.self, forKey: .siteVersion)
+        
+        if let siteSoftware = try values.decodeIfPresent(SiteSoftware.self, forKey: .siteSoftware) {
+            self.siteSoftware = siteSoftware
+        } else if let version = try values.decode(SiteVersion?.self, forKey: .siteVersion) {
+            self.siteSoftware = .init(type: .lemmy, version: version)
+        } else {
+            self.siteSoftware = nil
+        }
+        
         self.avatar = try values.decode(URL?.self, forKey: .avatarUrl)
         
         if let activityState = try values.decodeIfPresent(AccountActivityState.self, forKey: .activityState) {
@@ -73,21 +81,21 @@ class GuestAccount: Account {
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(storedNickname, forKey: .storedNickname)
-        try container.encode(cachedSiteVersion, forKey: .siteVersion)
+        try container.encode(siteSoftware, forKey: .siteSoftware)
         try container.encode(avatar, forKey: .avatarUrl)
         try container.encode(activityState, forKey: .activityState)
         try container.encode(api.baseUrl, forKey: .instanceLink)
     }
     
     @MainActor
-    func update(instance: Instance3) {
+    func update(instance: Instance3, software: SiteSoftware) {
         var shouldSave = false
         if avatar != instance.avatar {
             avatar = instance.avatar
             shouldSave = true
         }
-        if cachedSiteVersion != instance.version {
-            cachedSiteVersion = instance.version
+        if siteSoftware != software {
+            siteSoftware = software
             shouldSave = true
         }
         if shouldSave {

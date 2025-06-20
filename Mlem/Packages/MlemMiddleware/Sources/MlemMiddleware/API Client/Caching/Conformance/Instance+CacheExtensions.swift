@@ -68,7 +68,7 @@ extension Instance3: CacheIdentifiable {
     func update(with snapshot: Instance3Snapshot) {
         instance2.update(with: snapshot.instance)
         
-        setIfChanged(\.version, snapshot.version)
+        setIfChanged(\.software, snapshot.software)
         setIfChanged(\.allowedLanguageIds, snapshot.allowedLanguageIds)
         setIfChanged(\.blockedUrls, snapshot.blockedUrls)
         setIfChanged(\.administrators, api.caches.person2.getModels(api: api, from: snapshot.administrators))

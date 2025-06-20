@@ -115,7 +115,7 @@ class Instance3Cache: ApiTypeBackedCache<Instance3, Instance3Snapshot> {
         .init(
             api: api,
             instance2: api.caches.instance2.getModel(api: api, from: snapshot.instance),
-            version: snapshot.version,
+            software: snapshot.software,
             allLanguages: snapshot.allLanguages,
             allowedLanguageIds: snapshot.allowedLanguageIds,
             blockedUrls: snapshot.blockedUrls,

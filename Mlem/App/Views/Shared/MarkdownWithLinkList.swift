@@ -49,7 +49,7 @@ struct MarkdownWithLinkList: View {
     @ViewBuilder
     func linksView(_ linksData: [LinkData]) -> some View {
         if linksData.count > 3 {
-            ForEach(Array(linksData[0..<3].enumerated()), id: \.offset) { _, link in
+            ForEach(Array(linksData[0 ..< 3].enumerated()), id: \.offset) { _, link in
                 linkView(link)
             }
             

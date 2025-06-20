@@ -10,7 +10,7 @@ import Foundation
 public protocol Instance3Providing: Instance2Providing {
     var instance3: Instance3 { get }
     
-    var version: SiteVersion { get }
+    var software: SiteSoftware { get }
     var allLanguages: [Locale.Language] { get }
     var allowedLanguageIds: Set<Int> { get }
     var blockedUrls: [InstanceUrlBlockRecord]? { get }
@@ -20,13 +20,13 @@ public protocol Instance3Providing: Instance2Providing {
 public extension Instance3Providing {
     var instance2: Instance2 { instance3.instance2 }
     
-    var version: SiteVersion { instance3.version }
+    var software: SiteSoftware { instance3.software }
     var allLanguages: [Locale.Language] { instance3.allLanguages }
     var allowedLanguageIds: Set<Int> { instance3.allowedLanguageIds }
     var blockedUrls: [InstanceUrlBlockRecord]? { instance3.blockedUrls }
     var administrators: [Person2] { instance3.administrators }
     
-    var version_: SiteVersion? { instance3.version }
+    var software_: SiteSoftware? { instance3.software }
     var allLanguages_: [Locale.Language]? { instance3.allLanguages }
     var allowedLanguageIds_: Set<Int>? { instance3.allowedLanguageIds }
     var blockedUrls_: [InstanceUrlBlockRecord]? { instance3.blockedUrls }
