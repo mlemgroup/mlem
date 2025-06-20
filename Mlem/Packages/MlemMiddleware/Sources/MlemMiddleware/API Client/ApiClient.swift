@@ -63,6 +63,12 @@ public class ApiClient {
         }
     }
     
+    public var software: SiteSoftware {
+        get async throws {
+            try await .init(type: .lemmy, version: getLemmyConnection().version)
+        }
+    }
+    
     // MARK: caching
     
     /// Caches of objects stored per ApiClient instance
