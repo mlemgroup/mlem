@@ -8236,9 +8236,6 @@
         }
       }
     },
-    "This feature is only supported on instances running certain software versions." : {
-
-    },
     "This field is optional." : {
       "localizations" : {
         "fr" : {
