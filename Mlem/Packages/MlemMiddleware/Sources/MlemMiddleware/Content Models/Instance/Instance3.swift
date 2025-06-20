@@ -16,7 +16,7 @@ public final class Instance3: Instance3Providing {
     
     public let instance2: Instance2
     
-    public var version: SiteVersion
+    public var software: SiteSoftware
     
     public let allLanguages: [Locale.Language]
     
@@ -31,7 +31,7 @@ public final class Instance3: Instance3Providing {
     init(
         api: ApiClient,
         instance2: Instance2,
-        version: SiteVersion,
+        software: SiteSoftware,
         allLanguages: [Locale.Language],
         allowedLanguageIds: Set<Int>,
         blockedUrls: [InstanceUrlBlockRecord]?,
@@ -39,7 +39,7 @@ public final class Instance3: Instance3Providing {
     ) {
         self.api = api
         self.instance2 = instance2
-        self.version = version
+        self.software = software
         self.allLanguages = allLanguages
         self.allowedLanguageIds = allowedLanguageIds
         self.blockedUrls = blockedUrls

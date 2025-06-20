@@ -22,7 +22,8 @@ class GuestSession: Session {
         
         Task {
             let instance = try await self.api.getMyInstance()
-            await self.account.update(instance: instance)
+            let software = try await self.api.software
+            await self.account.update(instance: instance, software: software)
             self.instance = instance
         }
     }

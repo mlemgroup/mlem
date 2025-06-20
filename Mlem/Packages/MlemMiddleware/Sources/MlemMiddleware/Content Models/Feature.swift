@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum Feature {
+public enum Feature: Hashable {
     case postSortType(PostSortType)
     case commentSortType(CommentSortType)
     case searchSortType(SearchSortType)
