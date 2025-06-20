@@ -23,18 +23,5 @@ public extension PieFedConnection {
     static func supports(
         _ feature: Feature,
         version: SiteVersion
-    ) -> Bool {
-        switch feature {
-        case let .postSortType(sort):
-            version >= sort.minimumVersion
-        case let .commentSortType(sort):
-            version >= sort.minimumVersion
-        case let .searchSortType(sort):
-            version >= sort.minimumVersion
-        case let .sortTimeRange(timeRange):
-            version >= timeRange.minimumVersion
-        case .searchLocalPeople, .moderatorsCanViewVotes, .hidePosts, .fullyFeaturedReports:
-            false
-        }
-    }
+    ) -> Bool { false }
 }
