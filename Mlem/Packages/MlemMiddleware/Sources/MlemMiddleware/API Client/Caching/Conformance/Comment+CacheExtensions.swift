@@ -12,7 +12,9 @@ extension Comment1: CacheIdentifiable {
     
     @MainActor
     func update(with snapshot: Comment1Snapshot, semaphore: UInt? = nil) {
-        setIfChanged(\.content, snapshot.content)
+        if !snapshot.removed {
+            setIfChanged(\.content, snapshot.content)
+        }
         setIfChanged(\.created, snapshot.created)
         setIfChanged(\.updated, snapshot.updated)
         setIfChanged(\.distinguished, snapshot.distinguished)

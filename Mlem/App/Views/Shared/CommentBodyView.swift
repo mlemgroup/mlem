@@ -10,21 +10,30 @@ import MlemMiddleware
 import SwiftUI
 
 struct CommentBodyView: View {
+    @Environment(\.exposeRemovedContent) var exposeRemovedContent
+    
     @Setting(\.comment_compact) var compactComments
     
     let comment: any Comment
     
     var body: some View {
         if comment.deleted {
-            Text("Comment was deleted")
-                .italic()
-                .foregroundStyle(.themedSecondary)
+            missingContentMessage("Comment was deleted")
         } else if comment.removed {
-            Text("Comment was removed")
-                .italic()
-                .foregroundStyle(.themedSecondary)
+            if exposeRemovedContent {
+                MarkdownWithLinkList(comment.content, configuration: .removedContent, showLinkCaptions: !compactComments)
+            } else {
+                missingContentMessage("Comment was removed")
+            }
         } else {
             MarkdownWithLinkList(comment.content, showLinkCaptions: !compactComments)
         }
+    }
+    
+    @ViewBuilder
+    func missingContentMessage(_ label: LocalizedStringResource) -> some View {
+        Text(label)
+            .italic()
+            .foregroundStyle(.themedSecondary)
     }
 }

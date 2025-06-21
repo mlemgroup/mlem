@@ -62,8 +62,13 @@ extension NavigationPage {
         case let .post(post, scrollTargetedComment, communityContext, _):
             PostPage(post: post, scrollTargetedComment: scrollTargetedComment?.wrappedValue)
                 .environment(\.communityContext, communityContext?.wrappedValue)
-        case let .comment(comment, comments: comments, showViewPostButton):
-            CommentPage(comment: comment, initialComments: comments, showViewPostButton: showViewPostButton)
+        case let .comment(comment, comments: comments, showViewPostButton, exposeRemovedContent):
+            CommentPage(
+                comment: comment,
+                initialComments: comments,
+                showViewPostButton: showViewPostButton,
+                exposeRemovedContent: exposeRemovedContent
+            )
         case let .person(person, visitContext):
             PersonView(person: person, visitContext: visitContext)
         case let .createComment(context, commentTreeTracker):
