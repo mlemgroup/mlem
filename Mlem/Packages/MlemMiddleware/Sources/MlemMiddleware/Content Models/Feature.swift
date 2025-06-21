@@ -30,4 +30,6 @@ public enum Feature: Hashable {
     
     case logIn
     case signUp
+    
+    case commentTreeSortedByDepth
 }

@@ -36,7 +36,7 @@ public extension LemmyConnection {
         case .searchLocalPeople, .moderatorsCanViewVotes, .hidePosts, .fullyFeaturedReports:
             version >= .v0_19_4
         case .searchLocalCommunities, .viewInstanceSettings, .viewInstanceCreationDate, .viewInstanceAdministratorList,
-             .logIn, .signUp, .viewCommunityActiveUsers:
+             .logIn, .signUp, .viewCommunityActiveUsers, .commentTreeSortedByDepth:
             true
         }
     }
