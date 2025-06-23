@@ -10,6 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct ProfileSettingsView: View {
+    @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
     
     @Environment(\.palette) var palette
@@ -184,6 +185,11 @@ struct ProfileSettingsView: View {
                 avatar: avatarUrl,
                 banner: bannerUrl
             )
+            if let session = appState.firstSession as? UserSession, session.person === person {
+                try await session.updateAccount()
+            } else {
+                assertionFailure()
+            }
             dismiss()
         } catch {
             handleError(error)
