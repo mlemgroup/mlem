@@ -24,7 +24,7 @@ public extension PieFedConnection {
         limit: Int,
         filter: GetContentFilter? = nil
     ) async throws -> [Comment2Snapshot] {
-        guard let sort = sort.piefedSortType else {
+        guard let sort = sort.piefedSortType, filter == nil else {
             throw ApiClientError.featureUnsupported
         }
         let request = PieFedGetCommentsRequest(
@@ -34,12 +34,9 @@ public extension PieFedConnection {
             page: page,
             limit: limit,
             communityId: nil,
-            communityName: nil,
             postId: postId,
             parentId: nil,
-            savedOnly: filter == .saved,
-            likedOnly: filter == .upvoted,
-            dislikedOnly: filter == .downvoted
+            personId: nil
         )
         let response = try await perform(request)
         return try response.comments.map { try .init(from: $0) }
@@ -53,22 +50,19 @@ public extension PieFedConnection {
         limit: Int,
         filter: GetContentFilter? = nil
     ) async throws -> [Comment2Snapshot] {
-        guard let sort = sort.piefedSortType else {
+        guard let sort = sort.piefedSortType, filter == nil else {
             throw ApiClientError.featureUnsupported
         }
         let request = PieFedGetCommentsRequest(
             type_: .all,
             sort: sort,
             maxDepth: maxDepth,
-            page: nil,
-            limit: nil,
+            page: page,
+            limit: limit,
             communityId: nil,
-            communityName: nil,
             postId: nil,
             parentId: parentId,
-            savedOnly: filter == .saved,
-            likedOnly: filter == .upvoted,
-            dislikedOnly: filter == .downvoted
+            personId: nil
         )
         let response = try await perform(request)
         return try response.comments.map { try .init(from: $0) }

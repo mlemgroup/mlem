@@ -8,7 +8,7 @@
 import Foundation
 
 public extension Community1Snapshot {
-    init(from community: PieFedCommunity) throws(ApiClientError) {
+    init(from community: PieFedCommunity, allPropertiesPresent: Bool = false) throws(ApiClientError) {
         self.actorId = community.actorId
         self.id = community.id
         self.name = community.name
@@ -24,5 +24,6 @@ public extension Community1Snapshot {
         self.banner = community.banner
         self.hidden = community.hidden
         self.onlyModeratorsCanPost = false
+        self.allPropertiesPresent = allPropertiesPresent
     }
 }

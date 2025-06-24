@@ -8,7 +8,7 @@
 import Foundation
 
 public extension Person1Snapshot {
-    init(from person: PieFedPerson) throws(ApiClientError) {
+    init(from person: PieFedPerson, allPropertiesPresent: Bool = false) throws(ApiClientError) {
         self.actorId = person.actorId
         self.id = person.id
         self.name = person.userName
@@ -18,7 +18,7 @@ public extension Person1Snapshot {
         self.created = person.published
         
         self.updated = nil
-        self.description = nil
+        self.description = person.about
         self.matrixUserId = nil
         
         self.isBot = person.bot
@@ -27,5 +27,7 @@ public extension Person1Snapshot {
         
         // Does PieFed not have bans with expiry times, or did they just not put it in the API yet?
         self.instanceBan = person.banned ? .permanentlyBanned : .notBanned
+        
+        self.allPropertiesPresent = allPropertiesPresent
     }
 }

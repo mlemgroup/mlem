@@ -9,7 +9,7 @@ import Foundation
 
 public extension Person3Snapshot {
     init(from personDetails: PieFedGetPersonDetailsResponse) throws(ApiClientError) {
-        self.person = try .init(from: personDetails.personView)
+        self.person = try .init(from: personDetails.personView, allPropertiesPresent: true)
         
         if let site = personDetails.site {
             self.site = try .init(from: site)

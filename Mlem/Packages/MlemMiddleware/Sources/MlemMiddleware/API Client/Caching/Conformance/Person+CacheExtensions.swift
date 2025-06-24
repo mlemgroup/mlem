@@ -14,9 +14,11 @@ extension Person1: CacheIdentifiable {
     func update(with snapshot: Person1Snapshot, semaphore: UInt? = nil) {
         setIfChanged(\.displayName, snapshot.displayName)
         setIfChanged(\.avatar, snapshot.avatar)
-        setIfChanged(\.banner, snapshot.banner)
+        if snapshot.allPropertiesPresent {
+            setIfChanged(\.description, snapshot.description)
+            setIfChanged(\.banner, snapshot.banner)
+        }
         setIfChanged(\.updated, snapshot.updated)
-        setIfChanged(\.description, snapshot.description)
         setIfChanged(\.matrixId, snapshot.matrixUserId)
         setIfChanged(\.isBot, snapshot.isBot)
         setIfChanged(\.instanceBan, snapshot.instanceBan)

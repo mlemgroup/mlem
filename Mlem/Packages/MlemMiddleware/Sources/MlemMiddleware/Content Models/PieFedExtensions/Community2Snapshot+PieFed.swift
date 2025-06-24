@@ -8,8 +8,8 @@
 import Foundation
 
 public extension Community2Snapshot {
-    init(from community: PieFedCommunityView) throws(ApiClientError) {
-        self.community = try .init(from: community.community)
+    init(from community: PieFedCommunityView, allPropertiesPresent: Bool = false) throws(ApiClientError) {
+        self.community = try .init(from: community.community, allPropertiesPresent: allPropertiesPresent)
         self.subscription = .init(
             total: community.counts.subscriptionsCount,
             local: nil,
