@@ -76,6 +76,12 @@ class UserSession: Session {
         lhs.api == rhs.api
     }
     
+    func updateAccount() async throws {
+        if let person, let instance {
+            try await account.update(person: person, instance: instance, software: api.software)
+        }
+    }
+    
     func saveVisitHistory() async throws {
         if let visitHistory {
             try await PersistenceRepository.liveValue.saveVisitHistory(visitHistory, for: account)
