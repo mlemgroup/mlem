@@ -12,8 +12,23 @@ import Rest
 import SwiftUI
 import Theming
 
+enum MarkdownConfigurationType {
+    case `default`, defaultBlurred, dimmed, caption, inverted, removedContent
+}
+
 extension MarkdownConfiguration {
-    static func `default`(palette: Theming.Palette) -> MarkdownConfiguration { .init(
+    init(type: MarkdownConfigurationType, palette: Palette) {
+        self = switch type {
+        case .default: .default(palette: palette)
+        case .defaultBlurred: .defaultBlurred(palette: palette)
+        case .dimmed: .dimmed(palette: palette)
+        case .caption: .caption(palette: palette)
+        case .inverted: .inverted(palette: palette)
+        case .removedContent: .removedContent(palette: palette)
+        }
+    }
+    
+    static func `default`(palette: Palette) -> MarkdownConfiguration { .init(
         inlineImageLoader: loadInlineImage,
         imageBlockView: { imageView($0, shouldBlur: false) },
         wrapCodeBlockLines: Settings.get(\.markdown_wrapCodeBlockLines),
@@ -27,13 +42,13 @@ extension MarkdownConfiguration {
         codeFontScaleFactor: 0.9
     ) }
     
-    static func defaultBlurred(palette: Theming.Palette) -> MarkdownConfiguration {
+    static func defaultBlurred(palette: Palette) -> MarkdownConfiguration {
         var config = Self.default(palette: palette)
         config.imageBlockView = { imageView($0, shouldBlur: true) }
         return config
     }
     
-    static func dimmed(palette: Theming.Palette) -> MarkdownConfiguration {
+    static func dimmed(palette: Palette) -> MarkdownConfiguration {
         var config = Self.default(palette: palette)
         
         // Don't load any images; they will remain as placeholders
@@ -46,19 +61,29 @@ extension MarkdownConfiguration {
         return config
     }
     
-    static func caption(palette: Theming.Palette) -> MarkdownConfiguration {
+    static func caption(palette: Palette) -> MarkdownConfiguration {
         var config = Self.default(palette: palette)
         config.font = .preferredFont(forTextStyle: .caption1)
         return config
     }
     
-    static func inverted(palette: Theming.Palette) -> MarkdownConfiguration {
+    static func inverted(palette: Palette) -> MarkdownConfiguration {
         var config = Self.default(palette: palette)
         config.primaryColor = palette.contrastingLabel
         config.secondaryColor = palette.contrastingLabel.opacity(0.8)
         config.spoilerHeaderBackgroundColor = palette.contrastingLabel.opacity(0.1)
         config.spoilerOutlineColor = palette.contrastingLabel.opacity(0.5)
         config.codeBackgroundColor = palette.contrastingLabel.opacity(0.1)
+        return config
+    }
+    
+    static func removedContent(palette: Palette) -> MarkdownConfiguration {
+        var config = Self.default(palette: palette)
+        config.primaryColor = palette.negative
+        config.secondaryColor = palette.negative.opacity(0.8)
+        config.spoilerHeaderBackgroundColor = palette.negative.opacity(0.1)
+        config.spoilerOutlineColor = palette.negative.opacity(0.5)
+        config.codeBackgroundColor = palette.negative.opacity(0.1)
         return config
     }
 }

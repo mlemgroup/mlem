@@ -18,13 +18,20 @@ struct CommentPage: View {
     let initialComments: [Comment2]?
     @State var tracker: CommentTreeTracker?
     let showViewPostButton: Bool
-    
+    let exposeRemovedContent: Bool
+
     @State var post: Post3?
     
-    init(comment: AnyComment, initialComments: [Comment2]?, showViewPostButton: Bool = false) {
+    init(
+        comment: AnyComment,
+        initialComments: [Comment2]?,
+        showViewPostButton: Bool = false,
+        exposeRemovedContent: Bool = false
+    ) {
         self.comment = comment
         self.showViewPostButton = showViewPostButton
         self.initialComments = initialComments
+        self.exposeRemovedContent = exposeRemovedContent
         if let comment = comment.wrappedValue as? any Comment {
             self._tracker = .init(wrappedValue: .init(root: .comment(comment, parentCount: 1)))
         } else {
@@ -125,6 +132,7 @@ struct CommentPage: View {
                 }
             }
         }
+        .environment(\.exposeRemovedContent, exposeRemovedContent)
     }
     
     var currentDepth: Int {

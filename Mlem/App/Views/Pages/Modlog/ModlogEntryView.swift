@@ -234,7 +234,7 @@ struct ModlogEntryView: View {
     
     @ViewBuilder
     func commentLink(comment: Comment1) -> some View {
-        NavigationLink(.comment(comment)) {
+        NavigationLink(.comment(comment, exposeRemovedContent: true)) {
             VStack {
                 Text(comment.content)
                     .frame(maxWidth: .infinity, alignment: .leading)

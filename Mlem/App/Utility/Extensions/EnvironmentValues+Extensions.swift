@@ -19,6 +19,7 @@ extension EnvironmentValues {
     @Entry var isRootView: Bool = false
     
     @Entry var scrollProxy: ScrollViewProxy?
+    @Entry var exposeRemovedContent: Bool = false
     
     var appState: AppState? { self[AppState.self] }
     var navigation: NavigationLayer? { self[NavigationLayer.self] }
