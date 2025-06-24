@@ -135,7 +135,7 @@ extension NavigationPage {
                 .disabled(requiredFeature.map { !instance.software.supports($0) } ?? false)
             } header: {
                 if let requiredFeature {
-                    Text("This feature is only supported on instances running certain software versions.")
+                    Text("This feature is not available on all instances.")
                         .padding()
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .background(.themedCaution.opacity(0.2), in: .rect(cornerRadius: Constants.main.standardSpacing))
