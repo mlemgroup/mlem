@@ -25,7 +25,7 @@ public class RestClient<ErrorType: Decodable & CustomStringConvertible> {
 //        urlRequest.debug()
         let (data, response) = try await execute(urlRequest)
         if let response = response as? HTTPURLResponse {
-            if response.statusCode >= 500 { // Error code for server being offline.
+            if response.statusCode >= 500 || response.statusCode == 404 {
                 throw .serverError(statusCode: response.statusCode)
             }
             

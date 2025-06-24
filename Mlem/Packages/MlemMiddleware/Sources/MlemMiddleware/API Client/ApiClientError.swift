@@ -25,7 +25,7 @@ public enum ApiClientError: Error {
     case insufficientPermissions
     /// Thrown when a `false` value of `SuccessResponse` is returned
     case unsuccessful
-    case unsupportedLemmyVersion
+    case featureUnsupported
     case noEntityFound
     case invalidInput
     case imageTooLarge
@@ -34,6 +34,7 @@ public enum ApiClientError: Error {
     case mismatchingToken
     case noToken
     case responseMissingRequiredData(_ message: String)
+    case unableToDetermineSoftware
     
     init(from error: RestError) {
         self = switch error {
@@ -88,8 +89,8 @@ extension ApiClientError: CustomStringConvertible {
             return "Unable to decode: \(string)"
         case .unsuccessful:
             return "Operation was unsuccessful."
-        case .unsupportedLemmyVersion:
-            return "This version of Lemmy doesn't support that operation."
+        case .featureUnsupported:
+            return "This instance doesn't support that operation."
         case .noEntityFound:
             return "No entity returned in response."
         case .invalidInput:
@@ -104,6 +105,8 @@ extension ApiClientError: CustomStringConvertible {
             return "A call was made to an ApiClient that doesn't have a token yet."
         case let .responseMissingRequiredData(message):
             return "An API response was missing required data: \(message)"
+        case let .unableToDetermineSoftware:
+            return "Unable to determine software"
         }
     }
 }

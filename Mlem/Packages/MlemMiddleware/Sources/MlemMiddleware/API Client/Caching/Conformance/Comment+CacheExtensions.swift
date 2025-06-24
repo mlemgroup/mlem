@@ -12,7 +12,13 @@ extension Comment1: CacheIdentifiable {
     
     @MainActor
     func update(with snapshot: Comment1Snapshot, semaphore: UInt? = nil) {
-        setIfChanged(\.content, snapshot.content)
+        // If the comment is removed, the API returns an empty string
+        // for the `comment/list` endpoint, but returns the comment content
+        // in the modlog endpoint. This `if` statement prevents the comment
+        // content being overwritten with that empty string.
+        if !snapshot.removed {
+            setIfChanged(\.content, snapshot.content)
+        }
         setIfChanged(\.created, snapshot.created)
         setIfChanged(\.updated, snapshot.updated)
         setIfChanged(\.distinguished, snapshot.distinguished)
