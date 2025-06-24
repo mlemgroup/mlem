@@ -8,10 +8,10 @@
 import Foundation
 import Rest
 
-public class LemmyConnection: InstanceConnection {
+public class PieFedConnection: InstanceConnection {
     private let restClient = RestClient<ApiErrorResponse>()
     
-    enum LemmyConnectionError: Error {
+    enum PieFedConnectionError: Error {
         case invalidSession
     }
     
@@ -77,7 +77,7 @@ public class LemmyConnection: InstanceConnection {
                     if token == nil {
                         throw ApiClientError.notLoggedIn
                     } else {
-                        throw LemmyConnectionError.invalidSession
+                        throw PieFedConnectionError.invalidSession
                     }
                 } else {
                     throw ApiClientError(from: error)
@@ -87,28 +87,4 @@ public class LemmyConnection: InstanceConnection {
             }
         }
     }
-    
-    // When this function is called, the `requestGenerator` will be called at least once,
-    // but may be called more than once.
-    func performingForEndpoint<Request: RestRequest>(
-        _ requestGenerator: (SiteVersion.EndpointVersion) async throws -> Request
-    ) async throws -> Request.Response {
-        // This is placeholder code - in future this will be updated to sometimes use .v4
-        try await perform(requestGenerator(.v3))
-    }
-    
-    // When this function is called, the `callback` will be called at least once,
-    // but may be called more than once.
-    func processingForEndpoint<Response>(
-        _ callback: (SiteVersion.EndpointVersion) async throws -> Response
-    ) async throws -> Response {
-        // This is placeholder code - in future this will be updated to sometimes use .v4
-        try await callback(.v3)
-    }
-    
-    #if DEBUG
-        func setMockContext(_ context: Context) {
-            contextDataManager.fetchedValue = context
-        }
-    #endif
 }

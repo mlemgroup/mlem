@@ -14,7 +14,7 @@ public struct ReportUnreadCountSnapshot {
     
     init(from response: ApiGetReportCountResponse) throws(ApiClientError) {
         guard response.count == nil else {
-            throw ApiClientError.unsupportedLemmyVersion
+            throw ApiClientError.featureUnsupported
         }
         self.comments = response.commentReports ?? 0
         self.posts = response.postReports ?? 0

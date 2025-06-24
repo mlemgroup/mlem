@@ -42,9 +42,9 @@ public enum ModlogEntryType: CaseIterable {
         case .adminPurgeCommunity: .purgeCommunity
         case .adminPurgePost: .purgePost
         case .adminPurgeComment: .purgeComment
-        case .modChangeCommunityVisibility: throw .unsupportedLemmyVersion
-        case .adminBlockInstance: throw .unsupportedLemmyVersion
-        case .adminAllowInstance: throw .unsupportedLemmyVersion
+        case .modChangeCommunityVisibility: throw .featureUnsupported
+        case .adminBlockInstance: throw .featureUnsupported
+        case .adminAllowInstance: throw .featureUnsupported
         }
         if let result {
             self = result

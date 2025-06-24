@@ -167,7 +167,7 @@ public extension ApiClient {
         } else {
             try await performingForConnection { connection in
                 try await connection.markPostAsRead(id: id, read: false)
-                if let post = caches.post2.retrieveModel(cacheId: id) {
+                if let post = self.caches.post2.retrieveModel(cacheId: id) {
                     post.readManager.updateWithReceivedValue(read, semaphore: semaphore)
                 }
             }
