@@ -15,10 +15,7 @@ extension InstanceView {
         if instance.api.supportsOrNil(.searchLocalCommunities) ?? true {
             result.append(.communities)
         }
-        if instance.api.supportsOrNil(.viewInstanceAdministratorList) ?? true {
-            result.append(.administration)
-        }
-        result += [.details, .safety]
+        result += [.administration, .details, .safety]
         return result
     }
     

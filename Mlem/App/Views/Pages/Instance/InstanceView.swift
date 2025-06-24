@@ -144,7 +144,9 @@ struct InstanceView: View {
     @ViewBuilder
     func administrationTab(instance: any Instance) -> some View {
         VStack(spacing: Constants.main.standardSpacing) {
-            ModlogButtonView(instance: instance)
+            if instance.api.supportsOrNil(.modlog) ?? true {
+                ModlogButtonView(instance: instance)
+            }
             
             VStack(spacing: Constants.main.halfSpacing) {
                 ForEach(instance.administrators_ ?? []) { person in
