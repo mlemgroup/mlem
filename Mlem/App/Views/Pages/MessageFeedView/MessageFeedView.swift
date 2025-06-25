@@ -23,6 +23,8 @@ struct MessageFeedView: View {
     
     let timer = Timer.publish(every: 5, on: .main, in: .common).autoconnect()
     
+    @State var markdownToolbarEditorModel: MarkdownEditorToolbarModel = .init()
+
     init(
         person: AnyPerson,
         messageContent: String = "",
@@ -249,10 +251,13 @@ struct MessageFeedView: View {
                 MarkdownEditorToolbarView(
                     textView: textView,
                     uploadHistory: uploadHistory,
-                    imageUploadApi: appState.firstApi
+                    model: markdownToolbarEditorModel
                 )
             }
         )
+        .onChange(of: appState.firstApi) {
+            markdownToolbarEditorModel.imageUploadApi = appState.firstApi
+        }
         .frame(
             maxWidth: .infinity,
             minHeight: minTextEditorHeight

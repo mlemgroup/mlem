@@ -39,9 +39,8 @@ struct CommentEditorView: View {
     @State var presentationSelection: PresentationDetent = .large
     
     @State var textIsEmpty: Bool = true
-    
+    @State var markdownToolbarEditorModel: MarkdownEditorToolbarModel = .init()
     @State var uploadHistory: ImageUploadHistoryManager = .init()
-    
     @State var slurMatch: String?
     
     @FocusState var focused: Bool
@@ -175,10 +174,13 @@ struct CommentEditorView: View {
                             MarkdownEditorToolbarView(
                                 textView: textView,
                                 uploadHistory: uploadHistory,
-                                imageUploadApi: account.api
+                                model: markdownToolbarEditorModel
                             )
                         }
                     )
+                    .onChange(of: account.api, initial: true) {
+                        markdownToolbarEditorModel.imageUploadApi = account.api
+                    }
                     
                     if let slurMatch {
                         FilterViolationWarning(failures: [account.host: slurMatch])

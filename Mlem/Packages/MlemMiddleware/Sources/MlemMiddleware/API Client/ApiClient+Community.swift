@@ -62,9 +62,18 @@ public extension ApiClient {
         page: Int = 1,
         limit: Int = 20,
         filter: ListingType = .all,
-        sort: SearchSortType = .top(.allTime),
+        sort sort_: SearchSortType? = nil,
         hostApi: ApiClient? = nil
     ) async throws -> [Community2] {
+        let sort: SearchSortType
+        if let sort_ {
+            sort = sort_
+        } else if try await software.supports(.searchSortType(.top(.allTime))) {
+            sort = .top(.allTime)
+        } else {
+            sort = .top(.limited(.month))
+        }
+        
         let response = try await performingForConnection { connection in
             try await connection.searchCommunities(
                 query: query,

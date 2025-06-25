@@ -27,7 +27,7 @@ public extension LemmyConnection {
     func getPerson(url: URL) async throws -> Person2Snapshot {
         do {
             let response = try await performingForEndpoint { endpoint in
-                ResolveObjectRequest(endpoint: .v3, q: url.absoluteString)
+                ResolveObjectRequest(endpoint: endpoint, q: url.absoluteString)
             }
             if let person = response.person {
                 return try .init(from: person)

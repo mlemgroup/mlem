@@ -599,6 +599,9 @@
         }
       }
     },
+    "Accessing the inbox on PieFed isn't implemented yet." : {
+
+    },
     "Account" : {
       "localizations" : {
         "fr" : {
@@ -8226,6 +8229,9 @@
         }
       }
     },
+    "This feature is not available on all instances." : {
+
+    },
     "This feature is only supported for instances running version %@ or later." : {
       "extractionState" : "stale",
       "localizations" : {
@@ -8236,9 +8242,6 @@
           }
         }
       }
-    },
-    "This feature is not available on all instances." : {
-
     },
     "This field is optional." : {
       "localizations" : {
@@ -8849,6 +8852,9 @@
         }
       }
     },
+    "Unsupported" : {
+
+    },
     "Unsupported Badge" : {
       "localizations" : {
         "fr" : {
@@ -8889,6 +8895,9 @@
           }
         }
       }
+    },
+    "Uploading images on PieFed isn't supported yet." : {
+
     },
     "Uploading..." : {
       "localizations" : {

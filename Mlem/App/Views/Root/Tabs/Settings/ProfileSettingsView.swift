@@ -22,6 +22,7 @@ struct ProfileSettingsView: View {
     
     @State var bioTextView: UITextView = .init()
     @State var bioHasChanged: Bool = false
+    @State var markdownToolbarEditorModel: MarkdownEditorToolbarModel = .init()
     @State var uploadHistory: ImageUploadHistoryManager = .init()
     
     @State var avatarUrl: URL?
@@ -72,7 +73,7 @@ struct ProfileSettingsView: View {
                         MarkdownEditorToolbarView(
                             textView: bioTextView,
                             uploadHistory: uploadHistory,
-                            imageUploadApi: person.api
+                            model: markdownToolbarEditorModel
                         )
                     }
                 )
@@ -86,6 +87,9 @@ struct ProfileSettingsView: View {
             }
             avatarSection
             bannerSection
+        }
+        .onAppear {
+            markdownToolbarEditorModel.imageUploadApi = person.api
         }
         .navigationTitle("My Profile")
         .navigationBarTitleDisplayMode(.inline)

@@ -13,7 +13,16 @@ public extension PieFedConnection {
     }
     
     func getComment(url: URL) async throws -> Comment2Snapshot {
-        throw ApiClientError.featureUnsupported
+        do {
+            let request = PieFedResolveObjectRequest(q: url.absoluteString)
+            let response = try await perform(request)
+            if let comment = response.comment {
+                return try .init(from: comment)
+            }
+        } catch let ApiClientError.response(response, _) where response.couldntFindObject {
+            throw ApiClientError.noEntityFound
+        }
+        throw ApiClientError.noEntityFound
     }
     
     func getComments(
@@ -109,17 +118,23 @@ public extension PieFedConnection {
     
     @discardableResult
     func voteOnComment(id: Int, score: ScoringOperation) async throws -> Comment2Snapshot {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedCreateCommentLikeRequest(commentId: id, score: score.rawValue)
+        let response = try await perform(request)
+        return try .init(from: response.commentView)
     }
     
     @discardableResult
     func saveComment(id: Int, save: Bool) async throws -> Comment2Snapshot {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedSaveCommentRequest(commentId: id, save: save)
+        let response = try await perform(request)
+        return try .init(from: response.commentView)
     }
     
     @discardableResult
     func deleteComment(id: Int, delete: Bool) async throws -> Comment2Snapshot {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedDeleteCommentRequest(commentId: id, deleted: delete)
+        let response = try await perform(request)
+        return try .init(from: response.commentView)
     }
     
     @discardableResult
@@ -128,11 +143,25 @@ public extension PieFedConnection {
         content: String,
         languageId: Int?
     ) async throws -> Comment2Snapshot {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedEditCommentRequest(commentId: id, body: content, languageId: languageId)
+        let response = try await perform(request)
+        return try .init(from: response.commentView)
     }
     
-    func replyToComment(postId: Int, parentId: Int?, content: String, languageId: Int? = nil) async throws -> Comment2Snapshot {
-        throw ApiClientError.featureUnsupported
+    func replyToComment(
+        postId: Int,
+        parentId: Int?,
+        content: String,
+        languageId: Int? = nil
+    ) async throws -> Comment2Snapshot {
+        let request = PieFedCreateCommentRequest(
+            body: content,
+            postId: postId,
+            parentId: parentId,
+            languageId: languageId
+        )
+        let response = try await perform(request)
+        return try .init(from: response.commentView)
     }
     
     @discardableResult

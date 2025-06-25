@@ -18,9 +18,11 @@ struct ProfileView: View {
         if let person = appState.firstPerson {
             PersonView(person: .init(person), isProfileTab: true, visitContext: nil)
                 .toolbar {
-                    ToolbarItem(placement: .secondaryAction) {
-                        Button("Edit", icon: .general.edit) {
-                            navigation.openSheet(.settings(.profile))
+                    if person.api.supportsOrNil(.editAccountSettings) ?? false {
+                        ToolbarItem(placement: .secondaryAction) {
+                            Button("Edit", icon: .general.edit) {
+                                navigation.openSheet(.settings(.profile))
+                            }
                         }
                     }
                 }

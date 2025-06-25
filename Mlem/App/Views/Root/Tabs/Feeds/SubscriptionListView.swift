@@ -24,6 +24,7 @@ struct SubscriptionListView: View {
     }
     
     @State var sectionScroller: Int = 0
+    @State var errorDetails: ErrorDetails?
     
     @Weak var form: UICollectionView?
     
@@ -75,12 +76,19 @@ struct SubscriptionListView: View {
                         .listRowBackground(Color.clear)
                 }
             }
-            
-            ForEach(sections) { section in
-                SubscriptionListSectionView(section: section, sectionIndicesShown: sectionIndicesShown)
-                    .id(section.label)
+            if let errorDetails {
+                Section {
+                    ErrorView(errorDetails)
+                        .frame(maxWidth: .infinity)
+                        .listRowBackground(Color.clear)
+                }
+            } else {
+                ForEach(sections) { section in
+                    SubscriptionListSectionView(section: section, sectionIndicesShown: sectionIndicesShown)
+                        .id(section.label)
+                }
+                .scrollTargetLayout()
             }
-            .scrollTargetLayout()
         }
         .introspect(.form, on: .iOS(.v17, .v18)) { introspectedForm in
             form = introspectedForm
@@ -113,12 +121,18 @@ struct SubscriptionListView: View {
                 form?.scrollToItem(at: .init(row: 0, section: 0), at: .bottom, animated: true)
             }
         }
+        .onChange(of: (appState.firstSession as? UserSession)?.subscriptionListErrorDetails) {
+            if let details = (appState.firstSession as? UserSession)?.subscriptionListErrorDetails {
+                errorDetails = details
+            }
+        }
         .scrollIndicators(sectionIndicesShown ? .hidden : .visible)
         .refreshable {
             do {
                 try await subscriptions?.refresh()
+                errorDetails = nil
             } catch {
-                handleError(error)
+                errorDetails = handleErrorWithDetails(error)
             }
         }
         .background(.themedBackground)

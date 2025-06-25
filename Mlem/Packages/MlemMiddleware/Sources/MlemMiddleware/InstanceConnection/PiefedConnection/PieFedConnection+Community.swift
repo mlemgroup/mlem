@@ -15,11 +15,21 @@ public extension PieFedConnection {
     }
     
     func getCommunity(url: URL) async throws -> Community2Snapshot {
-        throw ApiClientError.featureUnsupported
+        do {
+            let request = PieFedResolveObjectRequest(q: url.absoluteString)
+            let response = try await perform(request)
+            if let community = response.community {
+                return try .init(from: community)
+            }
+        } catch let ApiClientError.response(response, _) where response.couldntFindObject {
+            throw ApiClientError.noEntityFound
+        }
+        throw ApiClientError.noEntityFound
     }
     
     func getCommunity(url: URL) async throws -> Community3Snapshot {
-        throw ApiClientError.featureUnsupported
+        let comm: Community2Snapshot = try await getCommunity(url: url)
+        return try await getCommunity(id: comm.community.id)
     }
     
     func searchCommunities(
@@ -46,17 +56,29 @@ public extension PieFedConnection {
     
     @discardableResult
     func getSubscriptionList(page: Int, limit: Int) async throws -> [Community2Snapshot] {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedListCommunitiesRequest(
+            type_: .subscribed,
+            sort: nil,
+            showNsfw: true,
+            page: page,
+            limit: limit
+        )
+        let response = try await perform(request)
+        return try response.communities.map { try .init(from: $0) }
     }
     
     @discardableResult
     func subscribeToCommunity(id: Int, subscribe: Bool) async throws -> Community2Snapshot {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedFollowCommunityRequest(communityId: id, follow: subscribe)
+        let response = try await perform(request)
+        return try .init(from: response.communityView)
     }
     
     @discardableResult
     func blockCommunity(id: Int, block: Bool) async throws -> Community2Snapshot {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedBlockCommunityRequest(communityId: id, block: block)
+        let response = try await perform(request)
+        return try .init(from: response.communityView)
     }
     
     @discardableResult

@@ -13,11 +13,24 @@ public extension PieFedConnection {
         password: String,
         totpToken: String?
     ) async throws -> String {
-        throw ApiClientError.featureUnsupported
+        if totpToken != nil {
+            throw ApiClientError.featureUnsupported
+        }
+        let request = PieFedLoginRequest(username: usernameOrEmail, password: password)
+        let response = try await perform(request)
+        guard let jwt = response.jwt else {
+            throw ApiClientError.notLoggedIn
+        }
+        return jwt
     }
     
     func getUsernameFromToken(token: String) async throws -> String {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedGetSiteRequest()
+        let response = try await perform(request, tokenOverride: token)
+        if let name = response.myUser?.localUserView.person.userName {
+            return name
+        }
+        throw ApiClientError.notLoggedIn
     }
     
     func signUp(
@@ -47,11 +60,21 @@ public extension PieFedConnection {
     }
     
     func resolve(url: URL) async throws -> ResolvedContent {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedResolveObjectRequest(q: url.absoluteString)
+        let response = try await perform(request)
+        return try .init(from: response)
     }
     
     func getBlocked() async throws -> (people: [Person1Snapshot], communities: [Community1Snapshot], instances: [Instance1Snapshot]) {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedGetSiteRequest()
+        let response = try await perform(request)
+        guard let myUser = response.myUser else { return ([], [], []) }
+        
+        return try (
+            people: myUser.personBlocks.map { try .init(from: $0.target) },
+            communities: myUser.communityBlocks.map { try .init(from: $0.community) },
+            instances: myUser.instanceBlocks.compactMap(\.site).map { try .init(from: $0) }
+        )
     }
     
     func getModlog(
