@@ -478,6 +478,9 @@
         }
       }
     },
+    "%lld more links..." : {
+
+    },
     "%lld years ago today!" : {
       "localizations" : {
         "en" : {
@@ -3793,6 +3796,9 @@
           }
         }
       }
+    },
+    "Hide links" : {
+
     },
     "Hide Older Incidents" : {
       "localizations" : {
@@ -8231,7 +8237,7 @@
         }
       }
     },
-    "This feature is only supported on instances running certain software versions." : {
+    "This feature is not available on all instances." : {
 
     },
     "This field is optional." : {

@@ -15,8 +15,6 @@ struct ShareInstancePickerView: View {
     
     let entity: any Sharable
     
-    @State private var sheetContentHeight: CGFloat = SheetHeightKey.defaultValue
-    
     var body: some View {
         VStack(spacing: 16) {
             HStack {
@@ -42,16 +40,7 @@ struct ShareInstancePickerView: View {
         }
         .padding(16)
         .presentationBackground(.themedGroupedBackground)
-        .overlay {
-            GeometryReader { proxy in
-                Color.clear.preference(
-                    key: SheetHeightKey.self,
-                    value: proxy.size.height
-                )
-            }
-        }
-        .onPreferenceChange(SheetHeightKey.self) { sheetContentHeight = $0 }
-        .presentationDetents([.height(sheetContentHeight)])
+        .presentationDetentFitsContent()
     }
     
     @ViewBuilder
@@ -132,14 +121,6 @@ struct ShareInstancePickerView: View {
             ToastModel.main.removeToast(id: toastId)
             handleError(error)
         }
-    }
-}
-
-struct SheetHeightKey: PreferenceKey {
-    static var defaultValue: CGFloat = 500
-    
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
-        value = nextValue()
     }
 }
 

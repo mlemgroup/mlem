@@ -9,11 +9,11 @@ import LemmyMarkdownUI
 
 extension [BlockNode] {
     // swiftlint:disable:next cyclomatic_complexity function_body_length
-    func rules() -> [[BlockNode]] {
+    func rules(isProbableRuleList: Bool = false) -> [[BlockNode]] {
         var output: [[BlockNode]] = []
         
         /// Is `true` when the previous block was a "Rules" title, or if there is only one block in the array.
-        var isProbableRuleList: Bool = count == 1
+        var isProbableRuleList: Bool = isProbableRuleList || count == 1
        
         /// Stores the parts of a rule currently being parsed.
         /// This happens when a rule consists of a heading followed by a paragraph.
@@ -72,7 +72,7 @@ extension [BlockNode] {
             case let .spoiler(title: title, blocks: blocks):
                 // This handles the situation where a spoiler is used to enclose the rules list.
                 if let title, stringIsRulesTitle(title) {
-                    return blocks.rules()
+                    return blocks.rules(isProbableRuleList: true)
                 }
                 // This handles situations where each item of the rules list contains a spoiler
                 // block that can be expanded for more info on that rule.

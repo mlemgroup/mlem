@@ -62,8 +62,13 @@ extension NavigationPage {
         case let .post(post, scrollTargetedComment, communityContext, _):
             PostPage(post: post, scrollTargetedComment: scrollTargetedComment?.wrappedValue)
                 .environment(\.communityContext, communityContext?.wrappedValue)
-        case let .comment(comment, comments: comments, showViewPostButton):
-            CommentPage(comment: comment, initialComments: comments, showViewPostButton: showViewPostButton)
+        case let .comment(comment, comments: comments, showViewPostButton, exposeRemovedContent):
+            CommentPage(
+                comment: comment,
+                initialComments: comments,
+                showViewPostButton: showViewPostButton,
+                exposeRemovedContent: exposeRemovedContent
+            )
         case let .person(person, visitContext):
             PersonView(person: person, visitContext: visitContext)
         case let .createComment(context, commentTreeTracker):
@@ -135,7 +140,7 @@ extension NavigationPage {
                 .disabled(requiredFeature.map { !instance.software.supports($0) } ?? false)
             } header: {
                 if let requiredFeature {
-                    Text("This feature is only supported on instances running certain software versions.")
+                    Text("This feature is not available on all instances.")
                         .padding()
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .background(.themedCaution.opacity(0.2), in: .rect(cornerRadius: Constants.main.standardSpacing))

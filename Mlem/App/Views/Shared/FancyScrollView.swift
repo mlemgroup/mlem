@@ -50,6 +50,7 @@ struct FancyScrollView<Content: View>: View {
                     content()
                 }
             }
+            .environment(\.scrollProxy, proxy)
             .onReselectTab {
                 if isAtTop {
                     if let reselectAction {
