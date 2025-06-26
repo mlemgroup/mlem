@@ -13,7 +13,8 @@ import SwiftUI
 // on the tab/screen you were on - despite the shortcuts being designed to take you to the "Feeds" tab
 var shortcutItemToProcess: UIApplicationShortcutItem?
 
-class AppDelegate: UIResponder, UIApplicationDelegate, UIWindowSceneDelegate {
+@Observable
+class AppDelegate: UIResponder, UIApplicationDelegate, UIWindowSceneDelegate, UNUserNotificationCenterDelegate {
     func application(
         _ application: UIApplication,
         configurationForConnecting connectingSceneSession: UISceneSession,
@@ -28,6 +29,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIWindowSceneDelegate {
         sceneConfiguration.delegateClass = CustomSceneDelegate.self
 
         return sceneConfiguration
+    }
+    
+    // This function lets us do something when the user interacts with a notification
+    // like log that they clicked it, or navigate to a specific screen
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
+        @AppStorage("notice_test") var notificationTest: Bool = false
+        print("Got notification title: ", response.notification.request.content.title)
+        notificationTest = true
     }
 }
 

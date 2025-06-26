@@ -5187,6 +5187,9 @@
         }
       }
     },
+    "Nothing yet" : {
+
+    },
     "Notification Badge" : {
       "localizations" : {
         "fr" : {
@@ -5206,6 +5209,9 @@
           }
         }
       }
+    },
+    "Notificied" : {
+
     },
     "Now" : {
       "localizations" : {
@@ -6889,6 +6895,9 @@
         }
       }
     },
+    "Schedule notification" : {
+
+    },
     "Score" : {
       "localizations" : {
         "fr" : {
@@ -8219,6 +8228,9 @@
         }
       }
     },
+    "This feature is not available on all instances." : {
+
+    },
     "This feature is only supported for instances running version %@ or later." : {
       "extractionState" : "stale",
       "localizations" : {
@@ -8229,9 +8241,6 @@
           }
         }
       }
-    },
-    "This feature is not available on all instances." : {
-
     },
     "This field is optional." : {
       "localizations" : {

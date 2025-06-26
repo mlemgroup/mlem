@@ -9,6 +9,7 @@ import Dependencies
 import MlemMiddleware
 import SwiftUI
 import Theming
+import UserNotifications
 
 // Strings in this view are intentionally left unlocalized; we shouldn't
 // be burdening translators with these when they'll never be used
@@ -27,8 +28,27 @@ struct DeveloperSettingsView: View {
     @State var backendStatus: Bool?
     @State var lastBackendStatusCheck: Date?
     
+    @AppStorage("notice_test") var notificationTest: Bool = false
+    
     var body: some View {
         Form {
+            Button("Schedule notification") {
+                notificationTest = false
+                
+                let content = UNMutableNotificationContent()
+                content.title = "Test Notification"
+                content.body = "Scheduled at \(Date())"
+                
+                // 10 seconds from now
+                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+                
+                let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+                
+                UNUserNotificationCenter.current().add(request)
+            }
+            
+            Text(notificationTest ? "Notificied" : "Nothing yet")
+            
             Section {
                 Toggle(String("Developer Mode"), isOn: $developerMode)
                 NavigationLink(String("Error Log"), destination: .settings(.errorLog))

@@ -14,6 +14,8 @@ import Media
 /// Root view for the app
 @main
 struct MlemApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
+    
     init() {
         var imageConfig = ImagePipeline.Configuration.withDataCache(name: "main", sizeLimit: Constants.main.cacheSize)
         imageConfig.dataLoadingQueue = OperationQueue(maxConcurrentCount: 8)
@@ -39,6 +41,10 @@ struct MlemApp: App {
         } catch {
             handleError(error)
         }
+        
+        // set up notifications
+        NotificationsManager.requestPermissions()
+        UNUserNotificationCenter.current().delegate = appDelegate
     }
     
     var body: some Scene {
