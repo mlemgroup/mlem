@@ -48,10 +48,12 @@ struct PostEditorTargetView: View {
     @ViewBuilder
     var communityPicker: some View {
         Button {
-            navigation.openSheet(.communityPicker(
-                api: target.account.api,
-                callback: { target.community = .init($0) }
-            ))
+            withoutAnimation {
+                navigation.showFullScreenCover(.communityPicker(
+                    api: target.account.api,
+                    callback: { target.community = .init($0) }
+                ))
+            }
         } label: {
             let singleAccount = AccountsTracker.main.userAccounts.count == 1
             HStack(spacing: 0) {

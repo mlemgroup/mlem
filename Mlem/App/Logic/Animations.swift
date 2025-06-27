@@ -13,6 +13,11 @@ import UIKit
 func withoutAnimation(action: @escaping () -> Void) {
     var transaction = Transaction()
     transaction.disablesAnimations = true
+    transaction.animation = nil
+    UIView.setAnimationsEnabled(false)
+    transaction.addAnimationCompletion {
+        UIView.setAnimationsEnabled(true)
+    }
     withTransaction(transaction) {
         action()
     }

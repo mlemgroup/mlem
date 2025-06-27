@@ -106,16 +106,17 @@ extension NavigationPage {
         case let .editPost(post):
             PostEditorView(postToEdit: post, community: nil)
         case let .communityPicker(api: api, callback: callback):
-            SearchSheetView(api: api) { (community: Community2, navigation: NavigationLayer) in
-                Button {
-                    callback.wrappedValue(community, navigation)
-                } label: {
-                    CommunityListRowBody(community, readout: .subscribers)
-                        .tint(.themedPrimary)
-                        .padding(.vertical, 6)
-                        .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
-                }
-            }
+//            SearchSheetView(api: api) { (community: Community2, navigation: NavigationLayer) in
+//                Button {
+//                    callback.wrappedValue(community, navigation)
+//                } label: {
+//                    CommunityListRowBody(community, readout: .subscribers)
+//                        .tint(.themedPrimary)
+//                        .padding(.vertical, 6)
+//                        .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+//                }
+//            }
+            NewSearchSheet()
         case let .personPicker(api: api, filter: filter, callback: callback):
             SearchSheetView(api: api, filter: filter) { (person: Person2, navigation: NavigationLayer) in
                 Button {

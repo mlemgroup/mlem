@@ -23,9 +23,11 @@ extension PostEditorView {
                         if let account = targets.last?.account {
                             let newTarget: PostEditorTarget = .init(account: account, onAccountChange: checkSlurFilters)
                             targets.append(newTarget)
-                            navigation.openSheet(.communityPicker(api: account.api, callback: { community in
-                                newTarget.community = community
-                            }))
+                            withoutAnimation {
+                                navigation.showFullScreenCover(.communityPicker(api: account.api, callback: { community in
+                                    newTarget.community = community
+                                }))
+                            }
                         }
                     }
                 }

@@ -8219,6 +8219,9 @@
         }
       }
     },
+    "This feature is not available on all instances." : {
+
+    },
     "This feature is only supported for instances running version %@ or later." : {
       "extractionState" : "stale",
       "localizations" : {
@@ -8229,9 +8232,6 @@
           }
         }
       }
-    },
-    "This feature is not available on all instances." : {
-
     },
     "This field is optional." : {
       "localizations" : {
