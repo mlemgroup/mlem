@@ -9,6 +9,19 @@ import MlemMiddleware
 import SwiftUI
 
 extension InstanceView {
+    var availableTabs: [Tab] {
+        var result: [Tab] = []
+        result.append(.about)
+        if instance.api.supportsOrNil(.searchLocalCommunities) ?? true {
+            result.append(.communities)
+        }
+        if instance.api.supportsOrNil(.viewInstanceAdministratorList) ?? true {
+            result.append(.administration)
+        }
+        result += [.details, .safety]
+        return result
+    }
+    
     func logVisit(_ instance: any Instance3Providing) {
         guard let visitContext else { return }
         if let session = (appState.firstSession as? UserSession), let visitHistory = session.visitHistory {

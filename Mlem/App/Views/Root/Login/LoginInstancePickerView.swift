@@ -180,6 +180,7 @@ struct LoginInstancePickerView: View {
                         connecting = false
                     }
                 } catch {
+                    handleError(error, silent: true)
                     Task { @MainActor in
                         connecting = false
                         invalidInstance = true

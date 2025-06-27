@@ -75,9 +75,13 @@ extension InstanceStubProviding {
         allowExternalBlocking: Bool = false
     ) -> [any Action] {
         ActionGroup {
-            visitAction()
-            logInAction()
-            signUpAction()
+            if api.supportsOrNil(.logIn) ?? true {
+                visitAction()
+                logInAction()
+            }
+            if api.supportsOrNil(.signUp) ?? true {
+                signUpAction()
+            }
         }
         ActionGroup {
             openInBrowserAction()

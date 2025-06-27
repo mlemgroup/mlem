@@ -67,6 +67,7 @@ struct InstanceView: View {
             }
         }
         .animation(.easeOut(duration: 0.2), value: instance is any Instance)
+        .animation(.easeOut(duration: 0.2), value: instance.apiIsLocal)
         .task {
             guard upgradeState == .idle else { return }
             upgradeState = .loading
@@ -100,29 +101,35 @@ struct InstanceView: View {
                 blockedOverride: (appState.firstSession as? UserSession)?.blocks?.contains(instance)
             )
             .padding([.horizontal, .bottom], Constants.main.standardSpacing)
-            BubblePicker(
-                Tab.allCases,
-                selected: $selectedTab,
-                label: { $0.label }
-            )
-            switch selectedTab {
-            case .about:
-                if let description = instance.description {
-                    Markdown(description, configuration: .default(palette: palette))
-                        .padding(Constants.main.standardSpacing)
-                        .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
-                        .paletteBorder(cornerRadius: Constants.main.standardSpacing)
-                        .padding([.horizontal, .bottom], Constants.main.standardSpacing)
+            if instance.apiIsLocal {
+                BubblePicker(
+                    availableTabs,
+                    selected: $selectedTab,
+                    label: { $0.label }
+                )
+                switch selectedTab {
+                case .about:
+                    if let description = instance.description {
+                        Markdown(description, configuration: .default(palette: palette))
+                            .padding(Constants.main.standardSpacing)
+                            .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+                            .paletteBorder(cornerRadius: Constants.main.standardSpacing)
+                            .padding([.horizontal, .bottom], Constants.main.standardSpacing)
+                    }
+                case .communities:
+                    communities()
+                case .details:
+                    InstanceDetailsView(instance: instance)
+                case .administration:
+                    administrationTab(instance: instance)
+                case .safety:
+                    safetyTab(instance: instance)
+                        .onAppear(perform: attemptToLoadFediseerData)
                 }
-            case .communities:
-                communities()
-            case .details:
-                InstanceDetailsView(instance: instance)
-            case .administration:
-                administrationTab(instance: instance)
-            case .safety:
-                safetyTab(instance: instance)
-                    .onAppear(perform: attemptToLoadFediseerData)
+            } else {
+                ProgressView()
+                    .tint(.themedSecondary)
+                    .padding(.top)
             }
         }
         .toolbar {
