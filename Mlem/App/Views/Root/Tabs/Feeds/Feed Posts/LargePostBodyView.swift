@@ -48,7 +48,7 @@ struct LargePostBodyView: View {
             }
             if let content = post.content {
                 if isPostPage {
-                    MarkdownWithLinkList(content, configuration: .defaultBlurred)
+                    MarkdownWithLinkList(content, configuration: shouldBlur ? .defaultBlurred : .default)
                 } else {
                     // Cut down on compute time for very long text posts by only rendering the first 4 blocks
                     MarkdownText(
