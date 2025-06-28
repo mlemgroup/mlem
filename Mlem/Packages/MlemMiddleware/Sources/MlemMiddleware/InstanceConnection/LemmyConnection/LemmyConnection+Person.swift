@@ -205,8 +205,19 @@ public extension LemmyConnection {
     
     // Returns a raw API type. For use inside LemmyConnection only
     internal func rawGetMyPerson() async throws -> ApiGetSiteResponse {
-        let response = try await performingForEndpoint { endpoint in
-            GetSiteRequest(endpoint: endpoint)
+        // Inconveniently, PieFed offers the `api/v3/site` endpoint in an attempt to look like a Lemmy instance.
+        // We need to check that this *isn't* a PieFed instance, which we can do by making a second request.
+        // The type of request doesn't matter - we're using `UnreadCountRequest` here.
+        
+        let response = try await processingForEndpoint { endpoint in
+            async let site = await perform(GetSiteRequest(endpoint: endpoint))
+            async let other = await perform(UnreadCountRequest(endpoint: endpoint))
+            do {
+                _ = try await other
+            } catch ApiClientError.notLoggedIn {
+                // no-op
+            }
+            return try await site
         }
         return response
     }

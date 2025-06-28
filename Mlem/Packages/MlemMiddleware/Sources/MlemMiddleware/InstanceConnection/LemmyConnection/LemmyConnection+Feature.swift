@@ -35,6 +35,9 @@ public extension LemmyConnection {
             version >= timeRange.minimumVersion
         case .searchLocalPeople, .moderatorsCanViewVotes, .hidePosts, .fullyFeaturedReports:
             version >= .v0_19_4
+        case .searchLocalCommunities, .viewInstanceSettings, .viewInstanceCreationDate, .viewInstanceAdministratorList,
+             .logIn, .signUp:
+            true
         }
     }
 }

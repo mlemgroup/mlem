@@ -18,6 +18,7 @@ extension SiteSoftwareType {
     var label: LocalizedStringResource {
         switch self {
         case .lemmy: "Lemmy"
+        case .pieFed: "PieFed"
         }
     }
 }

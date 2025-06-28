@@ -23,7 +23,7 @@ public class PieFedConnection: InstanceConnection {
     public let baseUrl: URL
     public var token: String?
     
-    private(set) var contextDataManager: SharedTaskManager<Context, ApiGetSiteResponse> = .init()
+    private(set) var contextDataManager: SharedTaskManager<Context, (PieFedGetSiteResponse, PieFedLemmyCompatibleSiteResponse)> = .init()
 
     public var fetchedVersion: SiteVersion? {
         contextDataManager.fetchedValue?.siteVersion
@@ -57,7 +57,7 @@ public class PieFedConnection: InstanceConnection {
             try await self.rawGetMyPerson()
         }
         contextDataManager.createValue = { response in
-            .init(siteVersion: .init(response.version), myPersonId: response.myUser?.localUserView.person.id)
+            .init(siteVersion: .init(response.0.version), myPersonId: response.0.myUser?.localUserView.person.id)
         }
     }
 

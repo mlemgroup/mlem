@@ -9,7 +9,8 @@ import Foundation
 
 public extension PieFedConnection {
     func getMyInstance() async throws -> Instance3Snapshot {
-        throw ApiClientError.featureUnsupported
+        let response = try await rawGetMyPersonWithContext()
+        return try .init(pieFed: response.0, lemmy: response.1)
     }
     
     func getFederatedInstances() async throws -> FederationPolicy {

@@ -19,6 +19,7 @@ public struct SiteSoftware: Codable, Hashable {
     public func supports(_ feature: Feature) -> Bool {
         switch type {
         case .lemmy: LemmyConnection.supports(feature, version: version)
+        case .pieFed: PieFedConnection.supports(feature, version: version)
         }
     }
 }

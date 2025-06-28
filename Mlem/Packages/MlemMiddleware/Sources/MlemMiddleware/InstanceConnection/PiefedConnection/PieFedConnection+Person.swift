@@ -78,14 +78,24 @@ public extension PieFedConnection {
         throw ApiClientError.featureUnsupported
     }
     
-    // Returns a raw API type. For use inside LemmyConnection only
-    internal func rawGetMyPerson() async throws -> ApiGetSiteResponse {
-        throw ApiClientError.featureUnsupported
+    // Returns a raw API type. For use inside PieFedConnection only
+    internal func rawGetMyPerson() async throws -> (PieFedGetSiteResponse, PieFedLemmyCompatibleSiteResponse) {
+        async let pieFedResponse = await perform(PieFedGetSiteRequest())
+        async let lemmyResponse = await perform(PieFedLemmyCompatibleGetSiteRequest())
+        return try await (pieFedResponse, lemmyResponse)
     }
     
     // Calls rawGetMyPerson, but if there's already a task running in the `contextDataManager` uses that instead.
-    internal func rawGetMyPersonWithContext() async throws -> ApiGetSiteResponse {
-        throw ApiClientError.featureUnsupported
+    internal func rawGetMyPersonWithContext() async throws -> (PieFedGetSiteResponse, PieFedLemmyCompatibleSiteResponse) {
+        if let ongoingTask = contextDataManager.ongoingTask {
+            return try await ongoingTask.result.get()
+        } else {
+            let task = Task { try await rawGetMyPerson() }
+            Task.detached {
+                _ = try await self.contextDataManager.getValue(task: task)
+            }
+            return try await task.result.get()
+        }
     }
     
     func getMyPerson() async throws -> (person: Person4Snapshot?, instance: Instance3Snapshot, blocks: BlockListSnapshot?) {
