@@ -24,7 +24,7 @@ extension PostEditorView {
                             let newTarget: PostEditorTarget = .init(account: account, onAccountChange: checkSlurFilters)
                             targets.append(newTarget)
                             withoutAnimation {
-                                navigation.showFullScreenCover(.communityPicker(api: account.api, callback: { community in
+                                navigation.showFullScreenCover(.newCommunityPicker(api: account.api, callback: { community in
                                     newTarget.community = community
                                 }))
                             }

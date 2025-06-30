@@ -6,35 +6,135 @@
 //
 
 import ComponentViews
+import MlemMiddleware
 import SwiftUI
+import SwiftUIIntrospect
 
-struct NewSearchSheet: View {
+struct NewSearchSheet<Model: Hashable, Content: View>: View {
+    @Environment(AppState.self) var appState
+    @Environment(NavigationLayer.self) var navigation
+    
+    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.palette) var palette
     @Environment(\.dismiss) var dismiss
     
-    @State var fadeIn: Bool = false
+    let callback: (Model) -> Void
+    let loadContent: (String) async throws -> [Model]
+    let content: (Model) -> Content
     
+    init(
+        callback: @escaping (Model) -> Void,
+        loadContent: @escaping (String) async throws -> [Model],
+        @ViewBuilder content: @escaping (Model) -> Content
+    ) {
+        self.callback = callback
+        self.loadContent = loadContent
+        self.content = content
+    }
+    
+    @State var fadeIn: Bool = false
     @State var query: String = ""
+    @State var results: [Model] = []
+    
+    @State var backgroundAccent: Color = .clear
     
     var body: some View {
-        ScrollView {}
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(.ultraThinMaterial)
-            .overlay(alignment: .bottom) {
-                overlayView
-                    .padding(16)
+        ScrollView {
+            VStack(spacing: 0) {
+                Spacer()
+                    .frame(height: 60)
+                Text("Results")
+                    .foregroundStyle(.themedSecondary)
+                    .fontWeight(.semibold)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.leading, 16)
+                    .padding(.bottom, 5)
+                resultsView
+                Spacer()
+                    .frame(height: 70)
             }
-            .safeAreaInset(edge: .top) {
-                CloseButtonView()
+        }
+        .scrollIndicators(.hidden)
+        .mask {
+            VStack(spacing: 0) {
+                Color.clear
+                    .frame(height: 30)
+                LinearGradient(colors: [.clear, .white], startPoint: .top, endPoint: .bottom)
+                    .frame(height: 30)
+                Color.white
+                LinearGradient(colors: [.white, .clear], startPoint: .top, endPoint: .bottom)
+                    .frame(height: 30)
+                Color.clear
+                    .frame(height: 30)
             }
-            .keyboardAwarePadding(removePaddingOnDismiss: false)
-            .compositingGroup()
-            .opacity(fadeIn ? 1 : 0)
-            .onAppear {
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .overlay(alignment: .bottom) {
+            overlayView
+                .scaleEffect(fadeIn ? 1 : 0.9)
+                .padding(16)
+        }
+        .overlay(alignment: .topTrailing) {
+            CloseButtonView(callback: closeSheet)
+                .padding(.horizontal, 16)
+        }
+        .compositingGroup()
+        .opacity(fadeIn ? 1 : 0)
+        .onAppear {
+            if !fadeIn {
+                backgroundAccent = palette.colorfulAccents.randomElement() ?? palette.accent
                 withAnimation(.easeOut(duration: 0.2)) {
                     fadeIn = true
                 }
             }
-            .presentationBackground(.clear)
+        }
+        .background {
+            LinearGradient(
+                colors: [.clear, backgroundAccent.opacity(0.2)],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+            .background(.background)
+            .ignoresSafeArea(.container)
+            .opacity(fadeIn ? 1 : 0)
+        }
+        .presentationBackground(.clear)
+        .task(id: query) {
+            do {
+                results = try await loadContent(query)
+            } catch {
+                handleError(error)
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var resultsView: some View {
+        VStack(spacing: 0) {
+            ForEach(Array(results.enumerated()), id: \.element) { index, result in
+                content(result)
+                    .padding(8)
+                    .background {
+                        if index == 0 {
+                            if colorScheme == .dark {
+                                Capsule().fill(.ultraThinMaterial)
+                            } else {
+                                Capsule().fill(.themedSecondaryGroupedBackground)
+                            }
+                        }
+                    }
+                    .compositingGroup()
+                    .shadow(color: .black.opacity(index == 0 ? 0.1 : 0), radius: 2)
+                if index != 0 {
+                    Divider()
+                        .padding(.leading, 48)
+                }
+            }
+            .id(results)
+        }
+        .padding(.horizontal, 16)
+        .animation(.easeOut(duration: 0.2), value: results)
+        .tint(backgroundAccent)
     }
     
     @ViewBuilder
@@ -44,8 +144,21 @@ struct NewSearchSheet: View {
                 Image(icon: .general.search)
                     .foregroundStyle(.secondary)
                 TextField("Search", text: $query)
-                    .introspect(.textField, on: .iOS(.v17, .v18)) { textField in
-                        textField.becomeFirstResponder()
+                    .autocorrectionDisabled()
+                    .textInputAutocapitalization(.never)
+                    .submitLabel(.done)
+                    .onSubmit {
+                        if !query.isEmpty, let first = results.first {
+                            callback(first)
+                        }
+                        closeSheet()
+                    }
+                    .introspect(.textField, on: .iOS(.v18)) { textField in
+                        Task.detached { @MainActor in
+                            if !textField.isFirstResponder {
+                                textField.becomeFirstResponder()
+                            }
+                        }
                     }
             }
             .onAppear {
@@ -60,10 +173,27 @@ struct NewSearchSheet: View {
             }
             .frame(height: 50)
             .padding(.horizontal)
-            .background(.background, in: .capsule)
+            .background {
+                if colorScheme == .dark {
+                    Capsule().fill(.regularMaterial)
+                } else {
+                    Capsule().fill(.themedSecondaryGroupedBackground)
+                }
+            }
         }
         .scrollDismissesKeyboard(.interactively)
         .compositingGroup()
         .shadow(color: .black.opacity(0.2), radius: 15)
+    }
+
+    func closeSheet() {
+        var transaction = Transaction()
+        transaction.animation = .easeOut(duration: 0.2)
+        transaction.addAnimationCompletion {
+            navigation.dismissSheet()
+        }
+        withTransaction(transaction) {
+            fadeIn = false
+        }
     }
 }

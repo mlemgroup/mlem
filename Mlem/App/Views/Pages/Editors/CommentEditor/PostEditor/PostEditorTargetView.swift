@@ -49,7 +49,7 @@ struct PostEditorTargetView: View {
     var communityPicker: some View {
         Button {
             withoutAnimation {
-                navigation.showFullScreenCover(.communityPicker(
+                navigation.showFullScreenCover(.newCommunityPicker(
                     api: target.account.api,
                     callback: { target.community = .init($0) }
                 ))

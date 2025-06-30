@@ -37,6 +37,7 @@ enum NavigationPage: Hashable {
     case communityPicker(api: ApiClient?, callback: HashWrapper<(Community2, NavigationLayer) -> Void>)
     case personPicker(api: ApiClient?, filter: ListingType, callback: HashWrapper<(Person2, NavigationLayer) -> Void>)
     case instancePicker(callback: HashWrapper<(InstanceSummary, NavigationLayer) -> Void>, requiredFeature: Feature? = nil)
+    case newCommunityPicker(api: ApiClient?, callback: HashWrapper<(Community2) -> Void>)
     case languagePicker(selectedLanguages: Set<Locale.Language>, callback: HashWrapper<(Locale.Language) -> Void>)
     case selectText(_ string: String)
     case shareInstancePicker(_ sharable: SharableHashWrapper)
@@ -257,6 +258,13 @@ enum NavigationPage: Hashable {
                 callback(value)
             }
         }), requiredFeature: requiredFeature)
+    }
+
+    static func newCommunityPicker(
+        api: ApiClient?,
+        callback: @escaping (Community2) -> Void
+    ) -> NavigationPage {
+        newCommunityPicker(api: api, callback: .init(wrappedValue: callback))
     }
     
     static func createPost(
