@@ -28,7 +28,7 @@ public struct Person1Snapshot: CacheIdentifiable {
     public let deleted: Bool
     
     // This is a dodgy workaround for https://codeberg.org/rimu/pyfedi/issues/882
-    // If that issue gets fixed, we can remove this
+    // TODO: If that issue gets fixed, we can remove this
     public let allPropertiesPresent: Bool
 
     public var cacheId: Int { id }
