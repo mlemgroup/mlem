@@ -14,7 +14,7 @@ public extension Person2Snapshot {
         self.postCount = person.counts.postCount
         self.commentCount = person.counts.commentCount
     }
-    
+
     init(from localUser: PieFedLocalUserView) throws(ApiClientError) {
         self.person = try .init(from: localUser.person, allPropertiesPresent: true)
         self.isAdmin = false
