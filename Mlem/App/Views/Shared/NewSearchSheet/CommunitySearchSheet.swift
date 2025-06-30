@@ -28,7 +28,7 @@ struct CommunitySearchSheet: View {
                 .background(.themedSecondary.opacity(0.2), in: .circle)
                 (
                     Text(community.name).foregroundStyle(.tint)
-                        + Text("@\(community.host)").foregroundStyle(.tint.opacity(0.5))
+                        + Text(verbatim: "@\(community.host)").foregroundStyle(.tint.opacity(0.5))
                 )
                 .saturation(0.3)
                 .brightness(colorScheme == .dark ? 0.5 : -0.5)
