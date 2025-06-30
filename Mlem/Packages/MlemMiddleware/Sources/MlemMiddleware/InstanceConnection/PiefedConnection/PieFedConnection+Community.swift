@@ -9,7 +9,9 @@ import Foundation
 
 public extension PieFedConnection {
     func getCommunity(id: Int) async throws -> Community3Snapshot {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedGetCommunityRequest(id: id, name: nil)
+        let response = try await perform(request)
+        return try .init(from: response)
     }
     
     func getCommunity(url: URL) async throws -> Community2Snapshot {
@@ -27,7 +29,19 @@ public extension PieFedConnection {
         filter: ListingType = .all,
         sort: SearchSortType = .top(.allTime)
     ) async throws -> [Community2Snapshot] {
-        throw ApiClientError.featureUnsupported
+        guard let sort = sort.pieFedSortType else {
+            throw ApiClientError.featureUnsupported
+        }
+        let request = PieFedSearchRequest(
+            q: query,
+            type_: .communities,
+            sort: sort,
+            listingType: filter.pieFedListingType,
+            page: page,
+            limit: limit
+        )
+        let response = try await perform(request)
+        return try response.communities.map { try .init(from: $0) }
     }
     
     @discardableResult

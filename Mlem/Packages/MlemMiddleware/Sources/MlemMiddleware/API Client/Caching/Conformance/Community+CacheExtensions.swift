@@ -14,11 +14,13 @@ extension Community1: CacheIdentifiable {
     func update(with community: Community1Snapshot, semaphore: UInt? = nil) {
         setIfChanged(\.updated, community.updated)
         setIfChanged(\.displayName, community.displayName)
-        setIfChanged(\.description, community.description)
+        if community.allPropertiesPresent {
+            setIfChanged(\.description, community.description)
+            setIfChanged(\.banner, community.banner)
+        }
         setIfChanged(\.deleted, community.deleted)
         setIfChanged(\.nsfw, community.nsfw)
         setIfChanged(\.avatar, community.avatar)
-        setIfChanged(\.banner, community.banner)
         setIfChanged(\.hidden, community.hidden)
         setIfChanged(\.onlyModeratorsCanPost, community.onlyModeratorsCanPost)
         

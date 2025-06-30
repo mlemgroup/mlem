@@ -33,16 +33,8 @@ extension AdvancedSortView {
                             .symbolVariant(type == selectedSort ? .fill : .none)
                             .frame(width: 30, alignment: .center)
                             .foregroundStyle(type == selectedSort ? .primary : .secondary) // No palette!
-                        VStack(alignment: .leading) {
-                            titleView
-                            if !(appState.firstApi.supportsOrNil(.postSortType(type)) ?? true) {
-                                Text("Requires Lemmy \(String(describing: type.minimumVersion)) or later")
-                                    .multilineTextAlignment(.leading)
-                                    .foregroundStyle(.themedWarning)
-                                    .font(.footnote)
-                            }
-                        }
-                        .padding(.vertical, Constants.main.halfSpacing)
+                        titleView
+                            .padding(.vertical, Constants.main.halfSpacing)
                         Spacer()
                         Button("Pin", icon: .lemmy.pinned) {
                             hapticManager.play(haptic: .gentleInfo, tier: .low)

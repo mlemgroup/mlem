@@ -27,6 +27,10 @@ public struct Person1Snapshot: CacheIdentifiable {
     public let instanceBan: InstanceBanType
     public let deleted: Bool
     
+    // This is a dodgy workaround for https://codeberg.org/rimu/pyfedi/issues/882
+    // TODO: If that issue gets fixed, we can remove this
+    public let allPropertiesPresent: Bool
+
     public var cacheId: Int { id }
     
     public init(from person: ApiPerson) throws(ApiClientError) {
@@ -57,5 +61,7 @@ public struct Person1Snapshot: CacheIdentifiable {
         } else {
             self.instanceBan = .notBanned
         }
+        
+        self.allPropertiesPresent = true
     }
 }

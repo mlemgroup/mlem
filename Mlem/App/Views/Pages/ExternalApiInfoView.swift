@@ -13,6 +13,7 @@ struct ExternalApiInfoView: View {
     @Environment(AppState.self) private var appState
     
     @State private var isLoading: Bool = true
+    
     @State private var internalFederationStatus: FederationStatus?
     @State private var externalFederationStatus: FederationStatus?
     @State private var externalInstance: Instance3?
@@ -163,9 +164,10 @@ struct ExternalApiInfoView: View {
             self.externalFederationStatus = try await externalFederationStatus
             self.internalFederationStatus = try await internalFederationStatus
             self.externalInstance = try await externalInstance
-            isLoading = false
         } catch {
-            isLoading = false
+            handleError(error, silent: true)
         }
+        
+        isLoading = false
     }
 }

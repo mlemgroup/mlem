@@ -59,7 +59,8 @@ public class ApiClient {
     
     public var software: SiteSoftware {
         get async throws {
-            try await .init(type: .lemmy, version: getConnection().version)
+            let connection = try await getConnection()
+            return try await .init(type: type(of: connection).softwareType, version: connection.version)
         }
     }
     

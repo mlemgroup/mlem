@@ -9,6 +9,8 @@ import Foundation
 import Rest
 
 public class PieFedConnection: InstanceConnection {
+    public static let softwareType: SiteSoftwareType = .pieFed
+    
     private let restClient = RestClient<ApiErrorResponse>()
     
     enum PieFedConnectionError: Error {

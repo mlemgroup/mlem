@@ -9,7 +9,18 @@ import Foundation
 
 public extension PieFedConnection {
     func getPerson(id: Int) async throws -> Person3Snapshot {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedGetPersonDetailsRequest(
+            personId: id,
+            username: nil,
+            sort: .new,
+            page: 1,
+            limit: 1,
+            communityId: nil,
+            savedOnly: nil,
+            includeContent: false
+        )
+        let response = try await perform(request)
+        return try .init(from: response)
     }
     
     func getPerson(url: URL) async throws -> Person2Snapshot {
@@ -32,7 +43,19 @@ public extension PieFedConnection {
         filter: ListingType = .all,
         sort: SearchSortType = .top(.allTime)
     ) async throws -> [Person2Snapshot] {
-        throw ApiClientError.featureUnsupported
+        guard let sort = sort.pieFedSortType else {
+            throw ApiClientError.featureUnsupported
+        }
+        let request = PieFedSearchRequest(
+            q: query,
+            type_: .users,
+            sort: sort,
+            listingType: filter.pieFedListingType,
+            page: page,
+            limit: limit
+        )
+        let response = try await perform(request)
+        return try response.users.map { try .init(from: $0) }
     }
     
     @discardableResult
@@ -75,7 +98,22 @@ public extension PieFedConnection {
         savedOnly: Bool? = nil,
         communityId: Int? = nil
     ) async throws -> (person: Person3Snapshot, posts: [Post2Snapshot], comments: [Comment2Snapshot]) {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedGetPersonDetailsRequest(
+            personId: id,
+            username: nil,
+            sort: .new,
+            page: page,
+            limit: limit,
+            communityId: nil,
+            savedOnly: nil,
+            includeContent: true
+        )
+        let response = try await perform(request)
+        return try (
+            person: .init(from: response),
+            posts: response.posts.map { try .init(from: $0) },
+            comments: response.comments.map { try .init(from: $0) }
+        )
     }
     
     // Returns a raw API type. For use inside PieFedConnection only

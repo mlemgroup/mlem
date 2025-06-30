@@ -28,6 +28,12 @@ public extension Instance3Snapshot {
         
         self.allowedLanguageIds = .init(0 ... allLanguages.count - 1)
         self.blockedUrls = []
-        self.administrators = []
+        
+        var administrators: [Person2Snapshot] = []
+        administrators.reserveCapacity(pieFed.admins.count)
+        for admin in pieFed.admins {
+            try administrators.append(.init(from: admin))
+        }
+        self.administrators = administrators
     }
 }

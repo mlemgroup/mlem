@@ -171,9 +171,14 @@ class CommentTreeTracker: Hashable {
         var commentsKeyedById: [Int: CommentTreeNode] = [:]
         var commentsKeyedByActorId: [ActorIdentifier: CommentTreeNode] = clear ? [:] : nodesKeyedByActorId
         
-        // A comment's parent is guaranteed to precede it in the array.
+        let sortedComments: [Comment2]
+        if await (try? newComments.first?.api.supports(.commentTreeSortedByDepth)) ?? false {
+            sortedComments = newComments
+        } else {
+            sortedComments = newComments.sorted { $0.depth < $1.depth }
+        }
         
-        for comment in newComments {
+        for comment in sortedComments {
             if commentsKeyedByActorId.keys.contains(comment.actorId) {
                 commentsKeyedById[comment.id] = commentsKeyedByActorId[comment.actorId]
                 continue

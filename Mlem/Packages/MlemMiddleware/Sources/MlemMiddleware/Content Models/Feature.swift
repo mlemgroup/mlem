@@ -23,10 +23,13 @@ public enum Feature: Hashable {
     case searchLocalPeople
     case searchLocalCommunities
 
-    case viewInstanceAdministratorList
+    case modlog
     case viewInstanceCreationDate
     case viewInstanceSettings
+    case viewCommunityActiveUsers
     
     case logIn
     case signUp
+    
+    case commentTreeSortedByDepth
 }

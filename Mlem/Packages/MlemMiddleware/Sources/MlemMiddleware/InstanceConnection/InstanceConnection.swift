@@ -8,6 +8,8 @@
 import Foundation
 
 public protocol InstanceConnection {
+    static var softwareType: SiteSoftwareType { get }
+    
     init(baseUrl: URL, token: String?)
         
     func updateToken(_ newToken: String)
