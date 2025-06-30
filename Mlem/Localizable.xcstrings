@@ -8018,9 +8018,6 @@
         }
       }
     },
-    "The PieFed beta doesn't yet support resolving links to external instances. This content is being loaded from **%@** instead." : {
-
-    },
     "Theme" : {
       "localizations" : {
         "fr" : {
@@ -8226,6 +8223,9 @@
         }
       }
     },
+    "This feature is not available on all instances." : {
+
+    },
     "This feature is only supported for instances running version %@ or later." : {
       "extractionState" : "stale",
       "localizations" : {
@@ -8236,9 +8236,6 @@
           }
         }
       }
-    },
-    "This feature is not available on all instances." : {
-
     },
     "This field is optional." : {
       "localizations" : {
