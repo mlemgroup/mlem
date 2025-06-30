@@ -33,16 +33,9 @@ struct ExternalApiInfoView: View {
             if isLoading {
                 Text("Diagnosing...")
                     .foregroundStyle(.secondary)
-            } else if let internalSoftware {
-                if internalSoftware.type == .pieFed {
-                    // swiftlint:disable:next line_length
-                    Text("The PieFed beta doesn't yet support resolving links to external instances. This content is being loaded from **\(entityLocalApi.host)** instead.")
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal)
-                } else {
-                    ScrollView {
-                        content
-                    }
+            } else {
+                ScrollView {
+                    content
                 }
             }
         }
