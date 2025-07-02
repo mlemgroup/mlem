@@ -11,20 +11,9 @@ import Rest
 
 @Observable
 public class ApiClient {
-    private static let supportedConnections: [any InstanceConnection.Type] = [LemmyConnection.self, PieFedConnection.self]
+    internal var repository: ApiRepository
     
-    // url and username MAY NOT be modified! Downstream code expects that a given ApiClient will *always* submit requests from the same user to the same instance.
-    public let baseUrl: URL
-    public let username: String?
-    
-    private var ongoingConnectionDiscoveryTask: Task<Any, Error>?
-    var connection: (any InstanceConnection)?
-    
-    var restClient: RestClient<ApiErrorResponse> = .init()
-
-    public internal(set) var token: String?
-    
-    public var willSendToken: Bool { token != nil }
+    public var willSendToken: Bool { repository.token != nil }
     
     public internal(set) weak var myInstance: Instance3?
     public internal(set) weak var myPerson: Person4?
@@ -36,30 +25,30 @@ public class ApiClient {
     var markReadQueue: MarkReadQueue = .init()
     
     public func ensureContextPresence() async throws {
-        try await getConnection().ensureContextPresence()
+        try await repository.getConnection().ensureContextPresence()
     }
     
     public func supports(_ feature: Feature) async throws -> Bool {
-        try await getConnection().supports(feature)
+        try await repository.getConnection().supports(feature)
     }
     
     public func supportsOrNil(_ feature: Feature) -> Bool? {
-        connection?.supportsOrNil(feature)
+        repository.connection?.supportsOrNil(feature)
     }
     
     public var contextIsFetched: Bool {
-        connection?.contextIsFetched ?? false
+        repository.connection?.contextIsFetched ?? false
     }
 
     public var myPersonId: Int? {
         get async throws {
-            try await getConnection().myPersonId
+            try await repository.getConnection().myPersonId
         }
     }
     
     public var software: SiteSoftware {
         get async throws {
-            let connection = try await getConnection()
+            let connection = try await repository.getConnection()
             return try await .init(type: type(of: connection).softwareType, version: connection.version)
         }
     }
@@ -84,8 +73,7 @@ public class ApiClient {
         url: URL,
         username: String? = nil
     ) {
-        self.baseUrl = url
-        self.username = username
+        self.repository = .init(baseUrl: url, username: username)
     }
     
     public func cleanCaches() {
@@ -95,145 +83,36 @@ public class ApiClient {
     
     /// Return a new guest `ApiClient`.
     public func asGuest() -> ApiClient {
-        .getApiClient(url: baseUrl, username: nil)
+        .getApiClient(url: repository.baseUrl, username: nil)
     }
     
     /// Return a new `ApiClient` targeting the given user.
     public func asUser(name: String) -> ApiClient {
-        .getApiClient(url: baseUrl, username: name)
+        .getApiClient(url: repository.baseUrl, username: name)
     }
     
     /// This should **only** be used when we get a new token for **the same** account!
     public func updateToken(_ newToken: String) {
-        guard username != nil else {
-            assertionFailure()
-            return
-        }
-        connection?.updateToken(newToken)
-        token = newToken
+        repository.updateToken(newToken)
     }
     
-    @discardableResult
-    func perform<Request: RestRequest>(
-        _ request: Request,
-        tokenOverride: String? = nil,
-        requiresToken: Bool = true // This should be `true` for the vast majority of requests, even GET requests
-    ) async throws -> Request.Response {
-        guard !requiresToken || username == nil || token != nil else {
-            throw ApiClientError.noToken
-        }
-        
-        let token = tokenOverride ?? token
-        do throws(RestError) {
-            return try await restClient.perform(baseUrl: baseUrl, request, token: token)
-        } catch {
-            switch error {
-            case let RestError.response(response, statusCode: _):
-                if ApiErrorResponse(error: response).isNotLoggedIn {
-                    throw token == nil ? ApiClientError.notLoggedIn : ApiClientError.invalidSession(self)
-                } else {
-                    throw ApiClientError(from: error)
-                }
-            default:
-                throw ApiClientError(from: error)
-            }
-        }
-    }
-    
-    private func getConnection() async throws -> any InstanceConnection {
-        _ = await ongoingConnectionDiscoveryTask?.result
-        if let connection {
-            return connection
-        }
-        _ = try await getMyInstance()
-        if let connection {
-            return connection
-        }
-        assertionFailure()
-        throw ApiClientError.unsuccessful
-    }
-    
-    @MainActor
-    func performingForConnection<T>(
-        _ callback: @escaping (any InstanceConnection) async throws -> T,
-        file: String = #fileID,
-        function: String = #function,
-        line: Int = #line
-    ) async throws -> T {
-        // Iterate through all possible connections, and attempt the request on all of them in parallel.
-        // As soon as one of the requests succeeds, return the result and cancel the other ongoing requests.
-        // Cache the `InstanceConnection` that succeeded in the `self.connection` property, and use that
-        // for all subsequent calls of `performingForConnection`.
-        
-        // If `performingForConnection` is called and `self.connection` is `nil` but there is another
-        // `performingForConnection` call ongoing, it will wait for the other call to succeed first.
 
-        _ = await self.ongoingConnectionDiscoveryTask?.result
-        if let connection {
-            return try await callback(connection)
-        }
-
-        let ongoingConnectionDiscoveryTask: Task<T, Error> = Task {
-            try await withThrowingTaskGroup(of: (any InstanceConnection, Result<T, Error>).self) { group in
-                for connectionType in Self.supportedConnections {
-                    let connection = connectionType.init(baseUrl: baseUrl, token: token)
-                    group.addTask {
-                        do {
-                            let response = try await callback(connection)
-                            return (connection, .success(response))
-                        } catch {
-                            return (connection, .failure(error))
-                        }
-                    }
-                }
-                
-                while !group.isEmpty {
-                    guard let result = try? await group.next() else {
-                        assertionFailure()
-                        continue
-                    }
-                    do {
-                        let value = try result.1.get()
-                        // Cancel all other tasks once any one task succeeds
-                        group.cancelAll()
-                        self.connection = result.0
-                        self.ongoingConnectionDiscoveryTask = nil
-                        return value
-                    } catch ApiClientError.serverError(404), ApiClientError.featureUnsupported {
-                        // no-op
-                    } catch {
-                        // We *could* set the `connection` here, but I'd rather not just incase some other
-                        // 404-equivalent error is thrown that we haven't accounted for
-                        throw error
-                    }
-                }
-                
-                throw ApiClientError.unableToDetermineSoftware
-            }
-        }
-        
-        self.ongoingConnectionDiscoveryTask = Task {
-            _ = try? await ongoingConnectionDiscoveryTask.result.get()
-        }
-        
-        return try await ongoingConnectionDiscoveryTask.result.get()
-    }
 }
 
 extension ApiClient: CacheIdentifiable {
     public var cacheId: Int {
-        ApiClient.apiClientCache.getCacheId(url: baseUrl, username: username)
+        ApiClient.apiClientCache.getCacheId(url: repository.baseUrl, username: repository.username)
     }
 }
 
 extension ApiClient: ActorIdentifiable {
-    public var actorId: ActorIdentifier { .instance(host: baseUrl.host()!) }
+    public var actorId: ActorIdentifier { .instance(host: repository.baseUrl.host()!) }
 }
 
 extension ApiClient: Hashable {
     public func hash(into hasher: inout Hasher) {
-        hasher.combine(baseUrl)
-        hasher.combine(username)
+        hasher.combine(repository.baseUrl)
+        hasher.combine(repository.username)
     }
     
     public static func == (lhs: ApiClient, rhs: ApiClient) -> Bool {
@@ -243,7 +122,7 @@ extension ApiClient: Hashable {
 
 extension ApiClient: CustomDebugStringConvertible {
     public var debugDescription: String {
-        "ApiClient(\(host), authenticated: \(token != nil))"
+        "ApiClient(\(host), authenticated: \(repository.token != nil))"
     }
 }
 
