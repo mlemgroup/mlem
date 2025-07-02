@@ -5,7 +5,7 @@
 //  Created by Eric Andrews on 2025-07-02.
 //
 
-public extension ApiRepository {
+extension ApiRepository {
     func getMyInstance() async throws -> Instance3Snapshot {
         return try await performingForConnection { connection in
             try await connection.getMyInstance()
