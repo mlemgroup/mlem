@@ -98,6 +98,11 @@ struct InboxView: View {
     var body: some View {
         if appState.firstSession is GuestSession {
             signedOutInfoView
+        } else if !(appState.firstApi.supportsOrNil(.inbox) ?? true) {
+            Text("Accessing the inbox on PieFed isn't implemented yet.")
+                .multilineTextAlignment(.center)
+                .foregroundStyle(.secondary)
+                .padding()
         } else {
             content
                 .themedGroupedBackground()

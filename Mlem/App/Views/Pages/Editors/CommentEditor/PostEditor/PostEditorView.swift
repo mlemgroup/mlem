@@ -42,6 +42,7 @@ struct PostEditorView: View {
     @State var imageUrl: URL?
     @State var imageManager: ImageUploadManager?
     @State var uploadHistory: ImageUploadHistoryManager = .init()
+    @State var markdownToolbarEditorModel: MarkdownEditorToolbarModel = .init()
     @State var sending: Bool = false
         
     @State var targets: [PostEditorTarget]
@@ -193,7 +194,7 @@ struct PostEditorView: View {
                                 MarkdownEditorToolbarView(
                                     showing: .inlineOnly,
                                     textView: titleTextView,
-                                    imageUploadApi: nil
+                                    model: .init()
                                 )
                             }
                         )
@@ -245,10 +246,13 @@ struct PostEditorView: View {
                                 MarkdownEditorToolbarView(
                                     textView: contentTextView,
                                     uploadHistory: uploadHistory,
-                                    imageUploadApi: primaryApi
+                                    model: markdownToolbarEditorModel
                                 )
                             }
                         )
+                        .onChange(of: primaryApi, initial: true) {
+                            markdownToolbarEditorModel.imageUploadApi = primaryApi
+                        }
                         .frame(
                             maxWidth: .infinity,
                             minHeight: minTextEditorHeight,

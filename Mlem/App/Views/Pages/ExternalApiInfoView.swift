@@ -153,10 +153,10 @@ struct ExternalApiInfoView: View {
     
     @MainActor
     func loadData() async {
+        let externalApi = entityLocalApi
+        let internalApi = appState.firstApi
+        
         do {
-            let externalApi = entityLocalApi
-            let internalApi = appState.firstApi
-            
             async let externalFederationStatus = await externalApi.federatedWith(with: internalApi.baseUrl)
             async let internalFederationStatus = await internalApi.federatedWith(with: externalApi.baseUrl)
             async let externalInstance = await externalApi.getMyInstance()

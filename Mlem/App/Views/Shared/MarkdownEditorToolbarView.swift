@@ -8,6 +8,13 @@
 import MlemMiddleware
 import SwiftUI
 
+// These can't be passed directly to the constructor - SwiftUI doesn't pick up on
+// view updates, because of the way this view is nested inside the keyboard using UIKit.
+@Observable
+class MarkdownEditorToolbarModel {
+    var imageUploadApi: ApiClient?
+}
+
 struct MarkdownEditorToolbarView: View {
     enum AvailableActions {
         case all, inlineOnly
@@ -17,7 +24,8 @@ struct MarkdownEditorToolbarView: View {
     
     let actions: AvailableActions
     let textView: UITextView
-    let imageUploadApi: ApiClient?
+    
+    let model: MarkdownEditorToolbarModel
     let uploadHistory: ImageUploadHistoryManager
     
     @State var imageManager: ImageUploadManager = .init()
@@ -30,12 +38,12 @@ struct MarkdownEditorToolbarView: View {
         showing actions: AvailableActions = .all,
         textView: UITextView,
         uploadHistory: ImageUploadHistoryManager = .init(),
-        imageUploadApi: ApiClient?
+        model: MarkdownEditorToolbarModel
     ) {
         self.actions = actions
         self.textView = textView
         self.uploadHistory = uploadHistory
-        self.imageUploadApi = imageUploadApi
+        self.model = model
         
         self.leftFade = false
         if #available(iOS 18.0, *) {
@@ -142,9 +150,18 @@ struct MarkdownEditorToolbarView: View {
                     Button("Quote", icon: .markdown.quote) {
                         textView.toggleQuoteAtCursor()
                     }
-                    if let imageUploadApi {
-                        ImageUploadMenu(imageManager: imageManager, imageUploadApi: imageUploadApi) {
-                            Label("Image", icon: .markdown.uploadImage)
+                    if let imageUploadApi = model.imageUploadApi {
+                        if imageUploadApi.supportsOrNil(.uploadImages) ?? true {
+                            ImageUploadMenu(imageManager: imageManager, imageUploadApi: imageUploadApi) {
+                                Label("Image", icon: .markdown.uploadImage)
+                            }
+                            .disabled(!imageUploadApi.contextIsFetched)
+                        } else {
+                            Button("Image", icon: .markdown.uploadImage) {
+                                ToastModel.main.add(
+                                    .basic("Unsupported", subtitle: "Uploading images on PieFed isn't supported yet.")
+                                )
+                            }
                         }
                     }
                     Button("Spoiler", icon: .markdown.spoiler) {
@@ -206,6 +223,13 @@ struct MarkdownEditorToolbarView: View {
                 .frame(width: 100)
             }
         )
+        .task(id: model.imageUploadApi) {
+            do {
+                try await model.imageUploadApi?.ensureContextPresence()
+            } catch {
+                handleError(error)
+            }
+        }
     }
 }
 

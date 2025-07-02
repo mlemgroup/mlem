@@ -44,7 +44,7 @@ public enum ApiClientError: Error {
             .response(.init(error: string), statusCode)
         case let .encoding(error):
             .encoding(error)
-        case let .parameterEncoding(uRLQueryItemEncoderError):
+        case let .parameterEncoding(error):
             .encoding(error)
         case let .decoding(data, error):
             .decoding(data, error)
@@ -105,7 +105,7 @@ extension ApiClientError: CustomStringConvertible {
             return "A call was made to an ApiClient that doesn't have a token yet."
         case let .responseMissingRequiredData(message):
             return "An API response was missing required data: \(message)"
-        case let .unableToDetermineSoftware:
+        case .unableToDetermineSoftware:
             return "Unable to determine software"
         }
     }

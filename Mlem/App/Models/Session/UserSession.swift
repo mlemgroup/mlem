@@ -23,6 +23,8 @@ class UserSession: Session {
     /// This **only** includes requests made by calling `toggleInstanceBlock` on this `UserSession`.
     private(set) var ongoingInstanceBlockRequests: Set<ActorIdentifier> = []
     private(set) var visitHistory: VisitHistory?
+    
+    private(set) var subscriptionListErrorDetails: ErrorDetails?
 
     init(account: UserAccount) {
         self.account = account
@@ -46,12 +48,18 @@ class UserSession: Session {
                 self.blocks = blocks
                 self.instance = instance
                 
-                try await self.api.getSubscriptionList()
-                
-                self.unreadCount = try await api.getUnreadCount()
+                if software.supports(.inbox) {
+                    self.unreadCount = try await api.getUnreadCount()
+                }
             } catch {
                 handleError(error)
             }
+            do {
+                try await self.api.getSubscriptionList()
+            } catch {
+                self.subscriptionListErrorDetails = handleErrorWithDetails(error)
+            }
+            
             if account.visitHistoryEnabled {
                 do {
                     self.visitHistory = try await PersistenceRepository.liveValue.loadVisitHistory(for: account)

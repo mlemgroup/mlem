@@ -32,11 +32,19 @@ public extension PieFedConnection {
         limit: Int,
         unreadOnly: Bool = false
     ) async throws -> [Message2Snapshot] {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedGetPrivateMessagesRequest(
+            unreadOnly: unreadOnly,
+            page: page,
+            limit: limit,
+            creatorId: creatorId
+        )
+        let response = try await perform(request)
+        return try response.privateMessages.map { try .init(from: $0) }
     }
     
     func markAllAsRead() async throws {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedMarkAllRepliesReadRequest()
+        try await perform(request)
     }
     
     func markReplyAsRead(id: Int, read: Bool = true) async throws {

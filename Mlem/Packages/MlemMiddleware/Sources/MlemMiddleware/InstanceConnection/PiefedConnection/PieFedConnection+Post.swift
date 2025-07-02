@@ -80,7 +80,16 @@ public extension PieFedConnection {
     }
     
     func getPost(url: URL) async throws -> Post2Snapshot {
-        throw ApiClientError.featureUnsupported
+        do {
+            let request = PieFedResolveObjectRequest(q: url.absoluteString)
+            let response = try await perform(request)
+            if let post = response.post {
+                return try .init(from: post)
+            }
+        } catch let ApiClientError.response(response, _) where response.couldntFindObject {
+            throw ApiClientError.noEntityFound
+        }
+        throw ApiClientError.noEntityFound
     }
     
     // This method should be removed in favor of the below method once we drop support for versions before Lemmy 1.0
@@ -148,20 +157,25 @@ public extension PieFedConnection {
     
     @discardableResult
     func voteOnPost(id: Int, score: ScoringOperation) async throws -> Post2Snapshot {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedCreatePostLikeRequest(postId: id, score: score.rawValue)
+        let response = try await perform(request)
+        return try .init(from: response.postView)
     }
     
     @discardableResult
     func savePost(id: Int, save: Bool) async throws -> Post2Snapshot {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedSavePostRequest(postId: id, save: save)
+        let response = try await perform(request)
+        return try .init(from: response.postView)
     }
     
     @discardableResult
     func deletePost(id: Int, delete: Bool) async throws -> Post2Snapshot {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedDeletePostRequest(postId: id, deleted: delete)
+        let response = try await perform(request)
+        return try .init(from: response.postView)
     }
     
-    // Marking many posts as hidden was possible in 0.19.0, but this was removed in 1.0.0
     func hidePost(id: Int, hide: Bool) async throws {
         throw ApiClientError.featureUnsupported
     }
@@ -176,7 +190,19 @@ public extension PieFedConnection {
         nsfw: Bool,
         languageId: Int? = nil
     ) async throws -> Post2Snapshot {
-        throw ApiClientError.featureUnsupported
+        if thumbnail != nil || altText != nil {
+            throw ApiClientError.featureUnsupported
+        }
+        let request = PieFedCreatePostRequest(
+            title: title,
+            communityId: communityId,
+            url: linkUrl,
+            body: content,
+            nsfw: nsfw,
+            languageId: languageId
+        )
+        let response = try await perform(request)
+        return try .init(from: response.postView)
     }
     
     @discardableResult
@@ -190,7 +216,19 @@ public extension PieFedConnection {
         nsfw: Bool,
         languageId: Int? = nil
     ) async throws -> Post2Snapshot {
-        throw ApiClientError.featureUnsupported
+        if thumbnail != nil || altText != nil {
+            throw ApiClientError.featureUnsupported
+        }
+        let request = PieFedEditPostRequest(
+            postId: id,
+            title: title,
+            url: linkUrl,
+            body: content,
+            nsfw: nsfw,
+            languageId: languageId
+        )
+        let response = try await perform(request)
+        return try .init(from: response.postView)
     }
     
     func replyToPost(
@@ -198,7 +236,14 @@ public extension PieFedConnection {
         content: String,
         languageId: Int? = nil
     ) async throws -> Comment2Snapshot {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedCreateCommentRequest(
+            body: content,
+            postId: id,
+            parentId: nil,
+            languageId: languageId
+        )
+        let response = try await perform(request)
+        return try .init(from: response.commentView)
     }
     
     @discardableResult

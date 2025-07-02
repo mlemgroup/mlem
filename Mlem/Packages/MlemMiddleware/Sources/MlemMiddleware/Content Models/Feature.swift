@@ -32,4 +32,7 @@ public enum Feature: Hashable {
     case signUp
     
     case commentTreeSortedByDepth
+    case inbox
+    case uploadImages
+    case editAccountSettings
 }

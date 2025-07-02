@@ -31,31 +31,33 @@ struct AccountSettingsView: View {
             .listRowInsets(.init(top: 10, leading: 0, bottom: 0, trailing: 0))
             
             if appState.firstSession is UserSession {
-                Section {
-                    NavigationLink(
-                        "My Profile",
-                        icon: .lemmy.person,
-                        destination: .settings(.profile)
-                    )
-                    .tint(.themedColorfulAccent(5))
-                    NavigationLink(
-                        "Sign-In & Security",
-                        icon: .general.security,
-                        destination: .settings(.accountSignIn)
-                    )
-                    .tint(.themedColorfulAccent(2))
-                    NavigationLink(
-                        "Content & Notifications",
-                        icon: .lemmy.post,
-                        destination: .settings(.accountContent)
-                    )
-                    .tint(.themedColorfulAccent(0))
-                    NavigationLink(
-                        "Advanced",
-                        icon: .settings.advanced,
-                        destination: .settings(.accountAdvanced)
-                    )
-                    .tint(.themedNeutralAccent)
+                if appState.firstAccount.siteSoftware?.supports(.editAccountSettings) ?? false {
+                    Section {
+                        NavigationLink(
+                            "My Profile",
+                            icon: .lemmy.person,
+                            destination: .settings(.profile)
+                        )
+                        .tint(.themedColorfulAccent(5))
+                        NavigationLink(
+                            "Sign-In & Security",
+                            icon: .general.security,
+                            destination: .settings(.accountSignIn)
+                        )
+                        .tint(.themedColorfulAccent(2))
+                        NavigationLink(
+                            "Content & Notifications",
+                            icon: .lemmy.post,
+                            destination: .settings(.accountContent)
+                        )
+                        .tint(.themedColorfulAccent(0))
+                        NavigationLink(
+                            "Advanced",
+                            icon: .settings.advanced,
+                            destination: .settings(.accountAdvanced)
+                        )
+                        .tint(.themedNeutralAccent)
+                    }
                 }
                 Section {
                     NavigationLink(

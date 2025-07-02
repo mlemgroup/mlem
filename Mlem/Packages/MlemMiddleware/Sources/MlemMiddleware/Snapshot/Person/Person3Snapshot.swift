@@ -19,14 +19,14 @@ public struct Person3Snapshot: CacheIdentifiable {
     
     public var cacheId: Int { person.cacheId }
     
-    init(from myUserInfo: ApiMyUserInfo) throws(ApiClientError) {
-        self.person = try .init(from: myUserInfo.localUserView)
+    init(from userInfo: ApiMyUserInfo) throws(ApiClientError) {
+        self.person = try .init(from: userInfo.localUserView)
         self.site = nil
         
         var moderatedCommunities: [Community1Snapshot] = []
-        moderatedCommunities.reserveCapacity(myUserInfo.moderates.count)
+        moderatedCommunities.reserveCapacity(userInfo.moderates.count)
         
-        for moderate in myUserInfo.moderates {
+        for moderate in userInfo.moderates {
             try moderatedCommunities.append(.init(from: moderate.community))
         }
         

@@ -24,15 +24,36 @@ public extension PieFedConnection {
     }
     
     func getPerson(url: URL) async throws -> Person2Snapshot {
-        throw ApiClientError.featureUnsupported
+        do {
+            let request = PieFedResolveObjectRequest(q: url.absoluteString)
+            let response = try await perform(request)
+            if let person = response.person {
+                return try .init(from: person)
+            }
+        } catch let ApiClientError.response(response, _) where response.couldntFindObject {
+            throw ApiClientError.noEntityFound
+        }
+        throw ApiClientError.noEntityFound
     }
     
     func getPerson(username: String) async throws -> Person3Snapshot {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedGetPersonDetailsRequest(
+            personId: nil,
+            username: username,
+            sort: .new,
+            page: 1,
+            limit: 1,
+            communityId: nil,
+            savedOnly: nil,
+            includeContent: false
+        )
+        let response = try await perform(request)
+        return try .init(from: response)
     }
     
     func getPerson(url: URL) async throws -> Person3Snapshot {
-        throw ApiClientError.featureUnsupported
+        let person: Person2Snapshot = try await getPerson(url: url)
+        return try await getPerson(id: person.person.id)
     }
     
     /// `filter` can be set to `.local` from 0.19.4 onwards.
@@ -60,7 +81,9 @@ public extension PieFedConnection {
     
     @discardableResult
     func blockPerson(id: Int, block: Bool) async throws -> Person2Snapshot {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedBlockPersonRequest(personId: id, block: block)
+        let response = try await perform(request)
+        return try .init(from: response.personView)
     }
     
     @discardableResult
@@ -137,7 +160,19 @@ public extension PieFedConnection {
     }
     
     func getMyPerson() async throws -> (person: Person4Snapshot?, instance: Instance3Snapshot, blocks: BlockListSnapshot?) {
-        throw ApiClientError.featureUnsupported
+        let response = try await rawGetMyPersonWithContext()
+        var person: Person4Snapshot?
+        var blocks: BlockListSnapshot?
+        if let myUser = response.0.myUser {
+            person = try .init(from: myUser)
+            blocks = .init(from: myUser)
+        }
+        
+        return try (
+            person: person,
+            instance: .init(pieFed: response.0, lemmy: response.1),
+            blocks: blocks
+        )
     }
     
     func deleteAccount(password: String, deleteContent: Bool) async throws {
