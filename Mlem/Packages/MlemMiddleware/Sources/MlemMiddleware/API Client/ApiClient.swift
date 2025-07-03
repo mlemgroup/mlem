@@ -11,7 +11,7 @@ import Rest
 
 @Observable
 public class ApiClient {
-    internal var repository: ApiRepository
+    var repository: ApiRepository
     
     public var willSendToken: Bool { repository.token != nil }
     
