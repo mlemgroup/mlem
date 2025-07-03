@@ -17,7 +17,7 @@ public extension PieFedConnection {
         filter: GetContentFilter? = nil,
         showHidden: Bool = false
     ) async throws -> (posts: [Post2Snapshot], cursor: String?) {
-        if filter == .saved || filter == .downvoted {
+        if filter == .downvoted {
             throw ApiClientError.featureUnsupported
         }
         let request = PieFedGetPostsRequest(
@@ -28,7 +28,8 @@ public extension PieFedConnection {
             communityId: communityId,
             personId: nil,
             communityName: nil,
-            likedOnly: filter == .upvoted
+            likedOnly: filter == .upvoted,
+            savedOnly: filter == .saved
         )
         let response = try await perform(request)
         let posts: [Post2Snapshot] = try response.posts.map { try .init(from: $0) }
@@ -44,7 +45,7 @@ public extension PieFedConnection {
         filter: GetContentFilter? = nil,
         showHidden: Bool = false
     ) async throws -> (posts: [Post2Snapshot], cursor: String?) {
-        if filter == .saved || filter == .downvoted || showHidden {
+        if filter == .downvoted || showHidden {
             throw ApiClientError.featureUnsupported
         }
         let request = PieFedGetPostsRequest(
@@ -55,7 +56,8 @@ public extension PieFedConnection {
             communityId: nil,
             personId: nil,
             communityName: nil,
-            likedOnly: filter == .upvoted
+            likedOnly: filter == .upvoted,
+            savedOnly: filter == .saved
         )
         let response = try await perform(request)
         let posts: [Post2Snapshot] = try response.posts.map { try .init(from: $0) }

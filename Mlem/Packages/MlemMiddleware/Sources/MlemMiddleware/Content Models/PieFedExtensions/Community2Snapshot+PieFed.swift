@@ -11,8 +11,8 @@ public extension Community2Snapshot {
     init(from community: PieFedCommunityView, allPropertiesPresent: Bool = false) throws(ApiClientError) {
         self.community = try .init(from: community.community, allPropertiesPresent: allPropertiesPresent)
         self.subscription = .init(
-            total: community.counts.subscriptionsCount,
-            local: nil,
+            total: community.counts.totalSubscriptionsCount,
+            local: community.counts.subscriptionsCount,
             subscribed: community.subscribed.isSubscribed,
             pending: community.subscribed == .pending
         )
