@@ -106,7 +106,7 @@ public final class UnreadCount {
             if alwaysMakeCalls || !(self.api.myPerson?.moderatedCommunities.isEmpty ?? false) || self.api.isAdmin {
                 taskGroup.addTask {
                     do {
-                        return try await self.api.getReportCount(communityId: nil).unreadCountDictionary
+                        return try await self.api.repository.getReportCount(communityId: nil).unreadCountDictionary
                     } catch let ApiClientError.response(response, _) where response.notModOrAdmin {
                         return [:]
                     }

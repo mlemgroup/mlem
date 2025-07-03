@@ -30,6 +30,20 @@ public class MockApiClient: ApiClient {
         
         self.repository = MockApiRepository(url: url, username: username, posts: posts, communities: communities, people: people, comments: comments)
     }
+    
+    private var mockRepository: MockApiRepository { repository as! MockApiRepository }
+    
+    public func setPosts(_ posts: [Post2]) {
+        mockRepository.posts = posts
+    }
+    
+    public func setCommunities(_ communities: [Community2]) {
+        mockRepository.communities = communities
+    }
+    
+    public func setPeople(_ people: [Person2]) {
+        mockRepository.people = people
+    }
 }
 
 #endif

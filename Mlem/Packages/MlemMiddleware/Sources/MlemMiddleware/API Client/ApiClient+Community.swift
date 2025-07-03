@@ -9,7 +9,7 @@ import Foundation
 
 public extension ApiClient {
     func decodeCommunity(_ data: Community1.CodedData) async throws -> Community1 {
-        guard data.apiUrl == repository.baseUrl else {
+        guard data.apiUrl == baseUrl else {
             throw ApiClientError.mismatchingUrl
         }
         guard try await data.apiMyPersonId == myPersonId else {
@@ -23,7 +23,7 @@ public extension ApiClient {
     }
     
     func decodeCommunity(_ data: Community2.CodedData) async throws -> Community2 {
-        guard data.apiUrl == repository.baseUrl else {
+        guard data.apiUrl == baseUrl else {
             throw ApiClientError.mismatchingUrl
         }
         guard try await data.apiMyPersonId == myPersonId else {

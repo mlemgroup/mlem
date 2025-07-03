@@ -40,6 +40,12 @@ public class ApiClient {
         repository.connection?.contextIsFetched ?? false
     }
 
+    public var username: String? { repository.username }
+    
+    public var baseUrl: URL { repository.baseUrl }
+    
+    public var token: String? { repository.token }
+    
     public var myPersonId: Int? {
         get async throws {
             try await repository.getConnection().myPersonId
@@ -83,12 +89,12 @@ public class ApiClient {
     
     /// Return a new guest `ApiClient`.
     public func asGuest() -> ApiClient {
-        .getApiClient(url: repository.baseUrl, username: nil)
+        .getApiClient(url: baseUrl, username: nil)
     }
     
     /// Return a new `ApiClient` targeting the given user.
     public func asUser(name: String) -> ApiClient {
-        .getApiClient(url: repository.baseUrl, username: name)
+        .getApiClient(url: baseUrl, username: name)
     }
     
     /// This should **only** be used when we get a new token for **the same** account!
@@ -101,18 +107,18 @@ public class ApiClient {
 
 extension ApiClient: CacheIdentifiable {
     public var cacheId: Int {
-        ApiClient.apiClientCache.getCacheId(url: repository.baseUrl, username: repository.username)
+        ApiClient.apiClientCache.getCacheId(url: baseUrl, username: username)
     }
 }
 
 extension ApiClient: ActorIdentifiable {
-    public var actorId: ActorIdentifier { .instance(host: repository.baseUrl.host()!) }
+    public var actorId: ActorIdentifier { .instance(host: baseUrl.host()!) }
 }
 
 extension ApiClient: Hashable {
     public func hash(into hasher: inout Hasher) {
-        hasher.combine(repository.baseUrl)
-        hasher.combine(repository.username)
+        hasher.combine(baseUrl)
+        hasher.combine(username)
     }
     
     public static func == (lhs: ApiClient, rhs: ApiClient) -> Bool {

@@ -9,7 +9,7 @@ import Foundation
 
 public extension ApiClient {
     func decodePerson(_ data: Person1.CodedData) async throws -> Person1 {
-        guard data.apiUrl == repository.baseUrl else {
+        guard data.apiUrl == baseUrl else {
             throw ApiClientError.mismatchingUrl
         }
         guard try await data.apiMyPersonId == myPersonId else {
@@ -23,7 +23,7 @@ public extension ApiClient {
     }
     
     func decodePerson(_ data: Person2.CodedData) async throws -> Person2 {
-        guard data.apiUrl == repository.baseUrl else {
+        guard data.apiUrl == baseUrl else {
             throw ApiClientError.mismatchingUrl
         }
         guard try await data.apiMyPersonId == myPersonId else {
@@ -160,7 +160,7 @@ public extension ApiClient {
     
     func getMyPerson() async throws -> (person: Person4?, instance: Instance3, blocks: BlockList?) {
         let snapshot = try await repository.getMyPerson()
-        guard snapshot.person?.person.person.person.name == repository.username else {
+        guard snapshot.person?.person.person.person.name == username else {
             assertionFailure()
             throw ApiClientError.mismatchingToken
         }

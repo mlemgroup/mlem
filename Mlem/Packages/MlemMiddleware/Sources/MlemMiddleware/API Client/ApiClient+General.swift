@@ -32,7 +32,7 @@ public extension ApiClient {
     }
     
     func login(password: String, totpToken: String?) async throws {
-        guard let username = repository.username else { throw ApiClientError.notLoggedIn }
+        guard let username = username else { throw ApiClientError.notLoggedIn }
         let token = try await getAccountToken(usernameOrEmail: username, password: password, totpToken: totpToken)
         updateToken(token)
     }

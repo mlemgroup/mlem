@@ -8,7 +8,7 @@
 import Foundation
 import Rest
 
-public extension ApiRepository {
+extension ApiRepository {
     func uploadImage(
         _ imageData: Data,
         onProgress progressCallback: @escaping (_ progress: Double) -> Void = { _ in }
