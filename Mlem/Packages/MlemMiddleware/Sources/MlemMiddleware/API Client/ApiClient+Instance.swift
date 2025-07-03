@@ -50,9 +50,9 @@ public extension ApiClient {
     /// Adds or removes an admin from this API's instance
     @discardableResult
     func addAdmin(personId: Int, added: Bool) async throws -> [Person2] {
-        let response = try await repository.addAdmin(personId: personId, added: added)
+        let snapshot = try await repository.addAdmin(personId: personId, added: added)
 
-        let updatedAdministrators = await caches.person2.getModels(api: self, from: response)
+        let updatedAdministrators = await caches.person2.getModels(api: self, from: snapshot)
         
         // update person's admin status
         // only need to do this manually if removing admin, otherwise handled by above caching logic

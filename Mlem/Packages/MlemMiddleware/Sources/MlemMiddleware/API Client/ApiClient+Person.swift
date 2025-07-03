@@ -64,14 +64,14 @@ public extension ApiClient {
         filter: ListingType = .all,
         sort: SearchSortType = .top(.allTime)
     ) async throws -> [Person2] {
-        let snapshot = try await repository.searchPeople(
+        let snapshots = try await repository.searchPeople(
             query: query,
             page: page,
             limit: limit,
             filter: filter,
             sort: sort
         )
-        return await caches.person2.getModels(api: self, from: snapshot)
+        return await caches.person2.getModels(api: self, from: snapshots)
     }
     
     @discardableResult
@@ -143,7 +143,7 @@ public extension ApiClient {
         savedOnly: Bool? = nil,
         communityId: Int? = nil
     ) async throws -> (person: Person3, posts: [Post2], comments: [Comment2]) {
-        let snapshot = try await repository.getContent(
+        let snapshots = try await repository.getContent(
             authorId: id,
             sort: sort,
             page: page,
@@ -152,9 +152,9 @@ public extension ApiClient {
             communityId: communityId
         )
         return await (
-            person: caches.person3.getModel(api: self, from: snapshot.person),
-            posts: caches.post2.getModels(api: self, from: snapshot.posts),
-            comments: caches.comment2.getModels(api: self, from: snapshot.comments)
+            person: caches.person3.getModel(api: self, from: snapshots.person),
+            posts: caches.post2.getModels(api: self, from: snapshots.posts),
+            comments: caches.comment2.getModels(api: self, from: snapshots.comments)
         )
     }
     

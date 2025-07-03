@@ -14,13 +14,13 @@ public extension ApiClient {
         limit: Int,
         unreadOnly: Bool = false
     ) async throws -> [Reply2] {
-        let snapshot = try await repository.getReplies(
-                sort: sort,
-                page: page,
-                limit: limit,
-                unreadOnly: unreadOnly
-            )
-        return await caches.reply2.getModels(api: self, from: snapshot)
+        let snapshots = try await repository.getReplies(
+            sort: sort,
+            page: page,
+            limit: limit,
+            unreadOnly: unreadOnly
+        )
+        return await caches.reply2.getModels(api: self, from: snapshots)
     }
     
     func getMentions(
@@ -29,13 +29,13 @@ public extension ApiClient {
         limit: Int,
         unreadOnly: Bool = false
     ) async throws -> [Reply2] {
-        let snapshot = try await repository.getMentions(
-                sort: sort,
-                page: page,
-                limit: limit,
-                unreadOnly: unreadOnly
-            )
-        return await caches.reply2.getModels(api: self, from: snapshot)
+        let snapshots = try await repository.getMentions(
+            sort: sort,
+            page: page,
+            limit: limit,
+            unreadOnly: unreadOnly
+        )
+        return await caches.reply2.getModels(api: self, from: snapshots)
     }
     
     func getMessages(
@@ -44,16 +44,16 @@ public extension ApiClient {
         limit: Int,
         unreadOnly: Bool = false
     ) async throws -> [Message2] {
-        let snapshot = try await repository.getMessages(
-                creatorId: creatorId,
-                page: page,
-                limit: limit,
-                unreadOnly: unreadOnly
-            )
+        let snapshots = try await repository.getMessages(
+            creatorId: creatorId,
+            page: page,
+            limit: limit,
+            unreadOnly: unreadOnly
+        )
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
         return await caches.message2.getModels(
             api: self,
-            from: snapshot,
+            from: snapshots,
             myPersonId: myPersonId
         )
     }
