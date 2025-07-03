@@ -10,10 +10,23 @@ import Foundation
 import SwiftUI
 
 struct ChildSizeReader<Content: View>: View {
-    @Binding var sizes: [BubblePickerItemFrame]
-    let index: Int
+    init(
+        size: Binding<BubblePickerItemFrame>?,
+        spaceName: String,
+        @ViewBuilder content: @escaping () -> Content
+    ) {
+        self.selectedSize = size
+        self.spaceName = spaceName
+        self.content = content
+    }
+    
+    var selectedSize: Binding<BubblePickerItemFrame>?
+    
+    @State var size: BubblePickerItemFrame = .zero
+    
     let spaceName: String
     let content: () -> Content
+    
     var body: some View {
         ZStack {
             content()
@@ -27,19 +40,21 @@ struct ChildSizeReader<Content: View>: View {
                     }
                 )
         }
-        .onPreferenceChange(SizePreferenceKey.self) { preferences in
-            // This *should* never fail. But somehow it happened one time and
-            // we got a TF crash, so there's an `if` statement now.
-            if index < sizes.count {
-                sizes[index] = preferences
-            } else {
-                assertionFailure()
-            }
+        .onPreferenceChange(SizePreferenceKey.self) { size = $0 }
+        .onChange(of: onChangeHash, initial: true) {
+            selectedSize?.wrappedValue = size
         }
+    }
+    
+    var onChangeHash: Int {
+        var hasher = Hasher()
+        hasher.combine(selectedSize == nil)
+        hasher.combine(size)
+        return hasher.finalize()
     }
 }
 
-struct SizePreferenceKey: PreferenceKey {
+private struct SizePreferenceKey: PreferenceKey {
     typealias Value = BubblePickerItemFrame
     static var defaultValue: Value = .init(width: .zero, offset: .zero)
 
