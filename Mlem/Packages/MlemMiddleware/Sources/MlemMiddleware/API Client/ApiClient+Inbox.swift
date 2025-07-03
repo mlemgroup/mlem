@@ -98,10 +98,6 @@ public extension ApiClient {
         }
     }
     
-    func getPersonalUnreadCount() async throws -> PersonalUnreadCountSnapshot {
-        try await repository.getPersonalUnreadCount()
-    }
-    
     /// Get an ``UnreadCount`` object that continues to be updated by the ``ApiClient`` whenever an inbox item is marked read/unread.
     func getUnreadCount(alwaysMakeCalls: Bool = false) async throws -> UnreadCount {
         let unreadCount = unreadCount ?? .init(api: self)

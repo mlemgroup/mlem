@@ -13,20 +13,20 @@ import Foundation
 ///
 /// The data access methods in here are all intentionally dumb--they just make calls and return snapshots. Validation, enrichment,
 /// and other business logic that must occur before serving the final model to the app should be performed by the consumer of the repository.
-class ApiRepository {
+internal class ApiRepository {
     private static let supportedConnections: [any InstanceConnection.Type] = [LemmyConnection.self, PieFedConnection.self]
     
-    public let baseUrl: URL
-    public let username: String?
+    let baseUrl: URL
+    let username: String?
     
     private var ongoingConnectionDiscoveryTask: Task<Any, Error>?
     var connection: (any InstanceConnection)?
     
     var restClient: RestClient<ApiErrorResponse> = .init()
     
-    public internal(set) var token: String?
+    var token: String?
     
-    public init(baseUrl: URL, username: String? = nil) {
+    init(baseUrl: URL, username: String? = nil) {
         self.baseUrl = baseUrl
         self.username = username
     }
