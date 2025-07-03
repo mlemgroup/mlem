@@ -14,7 +14,6 @@ extension ApiRepository {
         }
     }
     
-    // TODO: needed? (redundant with below?)
     func getCommunity(url: URL) async throws -> Community2Snapshot {
         try await performingForConnection { connection in
             try await connection.getCommunity(url: url)

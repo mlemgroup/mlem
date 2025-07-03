@@ -157,7 +157,7 @@ public extension ApiClient {
     @discardableResult
     func reportComment(id: Int, reason: String) async throws -> Report {
         let snapshot = try await repository.reportComment(id: id, reason: reason)
-        guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn } // TODO: needed?
+        guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
         return await caches.report.getModel(
             api: self,
             from: snapshot,
