@@ -9,10 +9,7 @@ import Foundation
 
 public extension ApiClient {
     func getRegistrationApplicationCount() async throws -> Int {
-        let response = try await performingForConnection { connection in
-            try await connection.getRegistrationApplicationCount()
-        }
-        return response
+        try await repository.getRegistrationApplicationCount()
     }
     
     func getRegistrationApplications(
@@ -20,14 +17,12 @@ public extension ApiClient {
         limit: Int = 20,
         unreadOnly: Bool = false
     ) async throws -> [RegistrationApplication] {
-        let response = try await performingForConnection { connection in
-            try await connection.getRegistrationApplications(
-                page: page,
-                limit: limit,
-                unreadOnly: unreadOnly
-            )
-        }
-        return await caches.registrationApplication.getModels(api: self, from: response)
+        let snapshot = try await repository.getRegistrationApplications(
+            page: page,
+            limit: limit,
+            unreadOnly: unreadOnly
+        )
+        return await caches.registrationApplication.getModels(api: self, from: snapshot)
     }
     
     @discardableResult
@@ -35,12 +30,10 @@ public extension ApiClient {
         id: Int,
         semaphore: UInt? = nil
     ) async throws -> RegistrationApplication {
-        let response = try await performingForConnection { connection in
-            try await connection.approveRegistrationApplication(id: id)
-        }
+        let snapshot = try await repository.approveRegistrationApplication(id: id)
         return await caches.registrationApplication.getModel(
             api: self,
-            from: response,
+            from: snapshot,
             semaphore: semaphore
         )
     }
@@ -51,12 +44,10 @@ public extension ApiClient {
         reason: String?,
         semaphore: UInt? = nil
     ) async throws -> RegistrationApplication {
-        let response = try await performingForConnection { connection in
-            try await connection.denyRegistrationApplication(id: id, reason: reason)
-        }
+        let snapshot = try await repository.denyRegistrationApplication(id: id, reason: reason)
         return await caches.registrationApplication.getModel(
             api: self,
-            from: response,
+            from: snapshot,
             semaphore: semaphore
         )
     }
