@@ -10,7 +10,10 @@ import Foundation
 
 /// This class represents an abstract interface on top of the underlying Connection; it is responsible for managing the Connection and
 /// serving consistent Snapshot models to higher layers.
-public class ApiRepository {
+///
+/// The data access methods in here are all intentionally dumb--they just make calls and return snapshots. Validation, enrichment,
+/// and other business logic that must occur before serving the final model to the app should be performed by the consumer of the repository.
+class ApiRepository {
     private static let supportedConnections: [any InstanceConnection.Type] = [LemmyConnection.self, PieFedConnection.self]
     
     public let baseUrl: URL
@@ -38,7 +41,6 @@ public class ApiRepository {
         token = newToken
     }
     
-    @discardableResult
     func perform<Request: RestRequest>(
         _ request: Request,
         tokenOverride: String? = nil,
