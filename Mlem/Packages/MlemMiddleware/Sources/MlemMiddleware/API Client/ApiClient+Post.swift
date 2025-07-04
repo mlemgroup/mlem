@@ -18,24 +18,22 @@ public extension ApiClient {
         filter: GetContentFilter? = nil,
         showHidden: Bool = false
     ) async throws -> (posts: [Post2], cursor: String?) {
-        let response = try await performingForConnection { connection in
-            try await connection.getPosts(
-                communityId: communityId,
-                sort: sort,
-                page: page,
-                cursor: cursor,
-                limit: limit,
-                filter: filter,
-                showHidden: showHidden
-            )
-        }
+        let snapshots = try await repository.getPosts(
+            communityId: communityId,
+            sort: sort,
+            page: page,
+            cursor: cursor,
+            limit: limit,
+            filter: filter,
+            showHidden: showHidden
+        )
         let posts = await caches.post2.getModels(
             api: self,
-            from: response.posts
+            from: snapshots.posts
         )
-        return (posts: posts, cursor: response.cursor)
+        return (posts: posts, cursor: snapshots.cursor)
     }
-
+    
     // swiftlint:disable:next function_parameter_count
     func getPosts(
         feed: ListingType,
@@ -46,22 +44,20 @@ public extension ApiClient {
         filter: GetContentFilter? = nil,
         showHidden: Bool = false
     ) async throws -> (posts: [Post2], cursor: String?) {
-        let response = try await performingForConnection { connection in
-            try await connection.getPosts(
-                feed: feed,
-                sort: sort,
-                page: page,
-                cursor: cursor,
-                limit: limit,
-                filter: filter,
-                showHidden: showHidden
-            )
-        }
+        let snapshots = try await repository.getPosts(
+            feed: feed,
+            sort: sort,
+            page: page,
+            cursor: cursor,
+            limit: limit,
+            filter: filter,
+            showHidden: showHidden
+        )
         let posts = await caches.post2.getModels(
             api: self,
-            from: response.posts
+            from: snapshots.posts
         )
-        return (posts: posts, cursor: response.cursor)
+        return (posts: posts, cursor: snapshots.cursor)
     }
     
     func getPosts(
@@ -72,34 +68,28 @@ public extension ApiClient {
         limit: Int,
         savedOnly: Bool = false
     ) async throws -> (person: Person3, posts: [Post2]) {
-        let response = try await performingForConnection { connection in
-            try await connection.getPosts(
-                personId: personId,
-                communityId: communityId,
-                sort: sort,
-                page: page,
-                limit: limit,
-                savedOnly: savedOnly
-            )
-        }
+        let snapshots = try await repository.getPosts(
+            personId: personId,
+            communityId: communityId,
+            sort: sort,
+            page: page,
+            limit: limit,
+            savedOnly: savedOnly
+        )
         return await (
-            person: caches.person3.getModel(api: self, from: response.person),
-            posts: caches.post2.getModels(api: self, from: response.posts)
+            person: caches.person3.getModel(api: self, from: snapshots.person),
+            posts: caches.post2.getModels(api: self, from: snapshots.posts)
         )
     }
-        
+    
     func getPost(id: Int) async throws -> Post3 {
-        let response = try await performingForConnection { connection in
-            try await connection.getPost(id: id)
-        }
-        return await caches.post3.getModel(api: self, from: response)
+        let snapshot = try await repository.getPost(id: id)
+        return await caches.post3.getModel(api: self, from: snapshot)
     }
     
     func getPost(url: URL) async throws -> Post2 {
-        let response = try await performingForConnection { connection in
-            try await connection.getPost(url: url)
-        }
-        return await caches.post2.getModel(api: self, from: response)
+        let snapshot = try await repository.getPost(url: url)
+        return await caches.post2.getModel(api: self, from: snapshot)
     }
     
     // This method should be removed in favor of the below method once we drop support for versions before Lemmy 1.0
@@ -112,18 +102,16 @@ public extension ApiClient {
         filter: ListingType = .all,
         sort: PostSortType
     ) async throws -> [Post2] {
-        let response = try await performingForConnection { connection in
-            try await connection.searchPosts(
-                query: query,
-                page: page,
-                limit: limit,
-                communityId: communityId,
-                creatorId: creatorId,
-                filter: filter,
-                sort: sort
-            )
-        }
-        return await caches.post2.getModels(api: self, from: response)
+        let snapshots = try await repository.searchPosts(
+            query: query,
+            page: page,
+            limit: limit,
+            communityId: communityId,
+            creatorId: creatorId,
+            filter: filter,
+            sort: sort
+        )
+        return await caches.post2.getModels(api: self, from: snapshots)
     }
     
     func searchPosts(
@@ -135,18 +123,16 @@ public extension ApiClient {
         filter: ListingType = .all,
         sort: SearchSortType
     ) async throws -> [Post2] {
-        let response = try await performingForConnection { connection in
-            try await connection.searchPosts(
-                query: query,
-                page: page,
-                limit: limit,
-                communityId: communityId,
-                creatorId: creatorId,
-                filter: filter,
-                sort: sort
-            )
-        }
-        return await caches.post2.getModels(api: self, from: response)
+        let snapshots = try await repository.searchPosts(
+            query: query,
+            page: page,
+            limit: limit,
+            communityId: communityId,
+            creatorId: creatorId,
+            filter: filter,
+            sort: sort
+        )
+        return await caches.post2.getModels(api: self, from: snapshots)
     }
     
     /// Mark the given post as read. Works on all versions.
@@ -165,11 +151,9 @@ public extension ApiClient {
                 semaphore: semaphore
             )
         } else {
-            try await performingForConnection { connection in
-                try await connection.markPostAsRead(id: id, read: false)
-                if let post = self.caches.post2.retrieveModel(cacheId: id) {
-                    post.readManager.updateWithReceivedValue(read, semaphore: semaphore)
-                }
+            try await repository.markPostAsRead(id: id, read: false)
+            if let post = self.caches.post2.retrieveModel(cacheId: id) {
+                post.readManager.updateWithReceivedValue(read, semaphore: semaphore)
             }
         }
     }
@@ -194,9 +178,7 @@ public extension ApiClient {
         guard !idsToSend.isEmpty else { return }
         
         do {
-            try await performingForConnection { connection in
-                try await connection.markPostsAsRead(ids: idsToSend)
-            }
+            try await repository.markPostsAsRead(ids: idsToSend)
             await markReadQueue.subtract(ids)
         } catch {
             await markReadQueue.union(markReadQueueCopy)
@@ -218,36 +200,30 @@ public extension ApiClient {
     
     @discardableResult
     func voteOnPost(id: Int, score: ScoringOperation, semaphore: UInt? = nil) async throws -> Post2 {
-        let response = try await performingForConnection { connection in
-            try await connection.voteOnPost(id: id, score: score)
-        }
+        let snapshot = try await repository.voteOnPost(id: id, score: score)
         return await caches.post2.getModel(
             api: self,
-            from: response,
+            from: snapshot,
             semaphore: semaphore
         )
     }
-
+    
     @discardableResult
     func savePost(id: Int, save: Bool, semaphore: UInt? = nil) async throws -> Post2 {
-        let response = try await performingForConnection { connection in
-            try await connection.savePost(id: id, save: save)
-        }
+        let snapshot = try await repository.savePost(id: id, save: save)
         return await caches.post2.getModel(
             api: self,
-            from: response,
+            from: snapshot,
             semaphore: semaphore
         )
     }
     
     @discardableResult
     func deletePost(id: Int, delete: Bool, semaphore: UInt? = nil) async throws -> Post2 {
-        let response = try await performingForConnection { connection in
-            try await connection.deletePost(id: id, delete: delete)
-        }
+        let snapshot = try await repository.deletePost(id: id, delete: delete)
         return await caches.post2.getModel(
             api: self,
-            from: response,
+            from: snapshot,
             semaphore: semaphore
         )
     }
@@ -258,9 +234,7 @@ public extension ApiClient {
         hide: Bool,
         semaphore: UInt? = nil
     ) async throws {
-        try await performingForConnection { connection in
-            try await connection.hidePost(id: id, hide: hide)
-        }
+        try await repository.hidePost(id: id, hide: hide)
         if let post = caches.post2.retrieveModel(cacheId: id) {
             post.hiddenManager.updateWithReceivedValue(hide, semaphore: semaphore)
         }
@@ -276,19 +250,17 @@ public extension ApiClient {
         nsfw: Bool,
         languageId: Int? = nil
     ) async throws -> Post2 {
-        let response = try await performingForConnection { connection in
-            try await connection.createPost(
-                communityId: communityId,
-                title: title,
-                content: content,
-                linkUrl: linkUrl,
-                altText: altText,
-                thumbnail: thumbnail,
-                nsfw: nsfw,
-                languageId: languageId
-            )
-        }
-        return await caches.post2.getModel(api: self, from: response)
+        let snapshot = try await repository.createPost(
+            communityId: communityId,
+            title: title,
+            content: content,
+            linkUrl: linkUrl,
+            altText: altText,
+            thumbnail: thumbnail,
+            nsfw: nsfw,
+            languageId: languageId
+        )
+        return await caches.post2.getModel(api: self, from: snapshot)
     }
     
     @discardableResult
@@ -302,45 +274,37 @@ public extension ApiClient {
         nsfw: Bool,
         languageId: Int? = nil
     ) async throws -> Post2 {
-        let response = try await performingForConnection { connection in
-            try await connection.editPost(
-                id: id,
-                title: title,
-                content: content,
-                linkUrl: linkUrl,
-                altText: altText,
-                thumbnail: thumbnail,
-                nsfw: nsfw,
-                languageId: languageId
-            )
-        }
-        return await caches.post2.getModel(api: self, from: response)
+        let snapshot = try await repository.editPost(
+            id: id,
+            title: title,
+            content: content,
+            linkUrl: linkUrl,
+            altText: altText,
+            thumbnail: thumbnail,
+            nsfw: nsfw,
+            languageId: languageId
+        )
+        return await caches.post2.getModel(api: self, from: snapshot)
     }
-
+    
     func replyToPost(id: Int, content: String, languageId: Int? = nil) async throws -> Comment2 {
-        let response = try await performingForConnection { connection in
-            try await connection.replyToPost(id: id, content: content, languageId: languageId)
-        }
-        return await caches.comment2.getModel(api: self, from: response)
+        let snapshot = try await repository.replyToPost(id: id, content: content, languageId: languageId)
+        return await caches.comment2.getModel(api: self, from: snapshot)
     }
     
     @discardableResult
     func reportPost(id: Int, reason: String) async throws -> Report {
-        let response = try await performingForConnection { connection in
-            try await connection.reportPost(id: id, reason: reason)
-        }
+        let snapshot = try await repository.reportPost(id: id, reason: reason)
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
         return await caches.report.getModel(
             api: self,
-            from: response,
+            from: snapshot,
             myPersonId: myPersonId
         )
     }
     
     func purgePost(id: Int, reason: String?) async throws {
-        try await performingForConnection { connection in
-            try await connection.purgePost(id: id, reason: reason)
-        }
+        try await repository.purgePost(id: id, reason: reason)
     }
     
     @discardableResult
@@ -350,12 +314,10 @@ public extension ApiClient {
         reason: String?,
         semaphore: UInt? = nil
     ) async throws -> Post2 {
-        let response = try await performingForConnection { connection in
-            try await connection.removePost(id: id, remove: remove, reason: reason)
-        }
+        let snapshot = try await repository.removePost(id: id, remove: remove, reason: reason)
         return await caches.post2.getModel(
             api: self,
-            from: response,
+            from: snapshot,
             semaphore: semaphore
         )
     }
@@ -367,12 +329,10 @@ public extension ApiClient {
         to target: PostFeatureType,
         semaphore: UInt? = nil
     ) async throws -> Post2 {
-        let response = try await performingForConnection { connection in
-            try await connection.pinPost(id: id, pin: pin, to: target)
-        }
+        let snapshot = try await repository.pinPost(id: id, pin: pin, to: target)
         return await caches.post2.getModel(
             api: self,
-            from: response,
+            from: snapshot,
             semaphore: semaphore
         )
     }
@@ -383,12 +343,10 @@ public extension ApiClient {
         lock: Bool,
         semaphore: UInt? = nil
     ) async throws -> Post2 {
-        let response = try await performingForConnection { connection in
-            try await connection.lockPost(id: id, lock: lock)
-        }
+        let snapshot = try await repository.lockPost(id: id, lock: lock)
         return await caches.post2.getModel(
             api: self,
-            from: response,
+            from: snapshot,
             semaphore: semaphore
         )
     }
@@ -400,17 +358,15 @@ public extension ApiClient {
         page: Int = 1,
         limit: Int = 20
     ) async throws -> [PersonVote] {
-        let response = try await performingForConnection { connection in
-            try await connection.getPostVotes(
-                id: id,
-                communityId: communityId,
-                page: page,
-                limit: limit
-            )
-        }
+        let snapshot = try await repository.getPostVotes(
+            id: id,
+            communityId: communityId,
+            page: page,
+            limit: limit
+        )
         return await caches.personVote.getModels(
             api: self,
-            from: response,
+            from: snapshot,
             target: .post(id: id),
             communityId: communityId
         )

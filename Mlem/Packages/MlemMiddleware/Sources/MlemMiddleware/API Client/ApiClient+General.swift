@@ -23,28 +23,16 @@ public extension ApiClient {
         return myAdminIndex < targetAdminIndex
     }
     
-    // Returns a raw API type :(
-    // Probably OK because it's part of onboarding, which is cursed and bootstrappy
     func getAccountToken(usernameOrEmail: String, password: String, totpToken: String?) async throws -> String {
-        let response = try await performingForConnection { connection in
-            try await connection.getAccountToken(
-                usernameOrEmail: usernameOrEmail,
-                password: password,
-                totpToken: totpToken
-            )
-        }
-        return response
+        try await repository.getAccountToken(usernameOrEmail: usernameOrEmail, password: password, totpToken: totpToken)
     }
     
     func getUsernameFromToken(token: String) async throws -> String {
-        let response = try await performingForConnection { connection in
-            try await connection.getUsernameFromToken(token: token)
-        }
-        return response
+        try await repository.getUsernameFromToken(token: token)
     }
     
     func login(password: String, totpToken: String?) async throws {
-        guard let username else { throw ApiClientError.notLoggedIn }
+        guard let username = username else { throw ApiClientError.notLoggedIn }
         let token = try await getAccountToken(usernameOrEmail: username, password: password, totpToken: totpToken)
         updateToken(token)
     }
@@ -59,19 +47,7 @@ public extension ApiClient {
         captchaAnswer: String?,
         applicationQuestionResponse: String?
     ) async throws -> SignUpResponse {
-        let response = try await performingForConnection { connection in
-            try await connection.signUp(
-                username: username,
-                password: password,
-                confirmPassword: confirmPassword,
-                showNsfw: showNsfw,
-                email: email,
-                captcha: captcha,
-                captchaAnswer: captchaAnswer,
-                applicationQuestionResponse: applicationQuestionResponse
-            )
-        }
-        return response
+        try await repository.signUp(username: username, password: password, confirmPassword: confirmPassword, showNsfw: showNsfw, email: email, captcha: captcha, captchaAnswer: captchaAnswer, applicationQuestionResponse: applicationQuestionResponse)
     }
     
     @discardableResult
@@ -80,22 +56,13 @@ public extension ApiClient {
         confirmNewPassword: String,
         oldPassword: String
     ) async throws -> String {
-        let token = try await performingForConnection { connection in
-            try await connection.changePassword(
-                newPassword: newPassword,
-                confirmNewPassword: confirmNewPassword,
-                oldPassword: oldPassword
-            )
-        }
+        let token = try await repository.changePassword(newPassword: newPassword, confirmNewPassword: confirmNewPassword, oldPassword: oldPassword)
         updateToken(token)
         return token
     }
     
     func getCaptcha() async throws -> Captcha {
-        let response = try await performingForConnection { connection in
-            try await connection.getCaptcha()
-        }
-        return response
+        try await repository.getCaptcha()
     }
     
     /// Returns an object associated with the given URL.
@@ -110,9 +77,7 @@ public extension ApiClient {
     /// **Importantly, step 2) is only performed if the `ApiClient` is authenticated.**
     ///
     func resolve(url: URL) async throws -> (any ActorIdentifiable & Sharable) {
-        let response = try await performingForConnection { connection in
-            try await connection.resolve(url: url)
-        }
+        let response = try await repository.resolve(url: url)
         return switch response {
         case let .comment(comment):
             await caches.comment2.getModel(api: self, from: comment)
@@ -149,13 +114,11 @@ public extension ApiClient {
     }
     
     func getBlocked() async throws -> (people: [Person1], communities: [Community1], instances: [Instance1]) {
-        let response = try await performingForConnection { connection in
-            try await connection.getBlocked()
-        }
+        let snapshots = try await repository.getBlocked()
         return await (
-            people: caches.person1.getModels(api: self, from: response.people),
-            communities: caches.community1.getModels(api: self, from: response.communities),
-            instances: caches.instance1.getModels(api: self, from: response.instances)
+            people: caches.person1.getModels(api: self, from: snapshots.people),
+            communities: caches.community1.getModels(api: self, from: snapshots.communities),
+            instances: caches.instance1.getModels(api: self, from: snapshots.instances)
         )
     }
     
@@ -169,19 +132,17 @@ public extension ApiClient {
         commentId: Int? = nil,
         type: ModlogEntryType? = nil
     ) async throws -> [ModlogEntry] {
-        let response = try await performingForConnection { connection in
-            try await connection.getModlog(
-                page: page,
-                limit: limit,
-                communityId: communityId,
-                moderatorId: moderatorId,
-                subjectPersonId: subjectPersonId,
-                postId: postId,
-                commentId: commentId,
-                type: type
-            )
-        }
-        return await createModlogEntries(response)
+        let snapshots = try await repository.getModlog(
+            page: page,
+            limit: limit,
+            communityId: communityId,
+            moderatorId: moderatorId,
+            subjectPersonId: subjectPersonId,
+            postId: postId,
+            commentId: commentId,
+            type: type
+        )
+        return await createModlogEntries(snapshots)
     }
     
     @MainActor

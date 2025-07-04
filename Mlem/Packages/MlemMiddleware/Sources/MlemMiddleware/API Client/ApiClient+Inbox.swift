@@ -14,15 +14,13 @@ public extension ApiClient {
         limit: Int,
         unreadOnly: Bool = false
     ) async throws -> [Reply2] {
-        let response = try await performingForConnection { connection in
-            try await connection.getReplies(
-                sort: sort,
-                page: page,
-                limit: limit,
-                unreadOnly: unreadOnly
-            )
-        }
-        return await caches.reply2.getModels(api: self, from: response)
+        let snapshots = try await repository.getReplies(
+            sort: sort,
+            page: page,
+            limit: limit,
+            unreadOnly: unreadOnly
+        )
+        return await caches.reply2.getModels(api: self, from: snapshots)
     }
     
     func getMentions(
@@ -31,15 +29,13 @@ public extension ApiClient {
         limit: Int,
         unreadOnly: Bool = false
     ) async throws -> [Reply2] {
-        let response = try await performingForConnection { connection in
-            try await connection.getMentions(
-                sort: sort,
-                page: page,
-                limit: limit,
-                unreadOnly: unreadOnly
-            )
-        }
-        return await caches.reply2.getModels(api: self, from: response)
+        let snapshots = try await repository.getMentions(
+            sort: sort,
+            page: page,
+            limit: limit,
+            unreadOnly: unreadOnly
+        )
+        return await caches.reply2.getModels(api: self, from: snapshots)
     }
     
     func getMessages(
@@ -48,26 +44,22 @@ public extension ApiClient {
         limit: Int,
         unreadOnly: Bool = false
     ) async throws -> [Message2] {
-        let response = try await performingForConnection { connection in
-            try await connection.getMessages(
-                creatorId: creatorId,
-                page: page,
-                limit: limit,
-                unreadOnly: unreadOnly
-            )
-        }
+        let snapshots = try await repository.getMessages(
+            creatorId: creatorId,
+            page: page,
+            limit: limit,
+            unreadOnly: unreadOnly
+        )
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
         return await caches.message2.getModels(
             api: self,
-            from: response,
+            from: snapshots,
             myPersonId: myPersonId
         )
     }
     
     func markAllAsRead() async throws {
-        try await performingForConnection { connection in
-            try await connection.markAllAsRead()
-        }
+        try await repository.markAllAsRead()
         for reply in caches.reply1.itemCache.value.values {
             reply.content?.readManager.updateWithReceivedValue(true, semaphore: nil)
         }
@@ -78,9 +70,7 @@ public extension ApiClient {
     }
     
     func markReplyAsRead(id: Int, read: Bool = true, semaphore: UInt? = nil) async throws {
-        try await performingForConnection { connection in
-            try await connection.markReplyAsRead(id: id, read: read)
-        }
+        try await repository.markReplyAsRead(id: id, read: read)
         var hasher = Hasher()
         hasher.combine(id)
         hasher.combine(false) // isMention
@@ -91,9 +81,7 @@ public extension ApiClient {
     }
     
     func markMentionAsRead(id: Int, read: Bool = true, semaphore: UInt? = nil) async throws {
-        try await performingForConnection { connection in
-            try await connection.markMentionAsRead(id: id, read: read)
-        }
+        try await repository.markMentionAsRead(id: id, read: read)
         var hasher = Hasher()
         hasher.combine(id)
         hasher.combine(true) // isMention
@@ -104,19 +92,10 @@ public extension ApiClient {
     }
     
     func markMessageAsRead(id: Int, read: Bool = true, semaphore: UInt? = nil) async throws {
-        try await performingForConnection { connection in
-            try await connection.markMessageAsRead(id: id, read: read)
-        }
+        try await repository.markMessageAsRead(id: id, read: read)
         if let message = caches.message1.retrieveModel(cacheId: id) {
             message.readManager.updateWithReceivedValue(read, semaphore: semaphore)
         }
-    }
-    
-    func getPersonalUnreadCount() async throws -> PersonalUnreadCountSnapshot {
-        let response = try await performingForConnection { connection in
-            try await connection.getPersonalUnreadCount()
-        }
-        return response
     }
     
     /// Get an ``UnreadCount`` object that continues to be updated by the ``ApiClient`` whenever an inbox item is marked read/unread.
@@ -128,52 +107,44 @@ public extension ApiClient {
     }
     
     func createMessage(personId: Int, content: String) async throws -> Message2 {
-        let response = try await performingForConnection { connection in
-            try await connection.createMessage(personId: personId, content: content)
-        }
+        let snapshot = try await repository.createMessage(personId: personId, content: content)
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
         return await caches.message2.getModel(
             api: self,
-            from: response,
+            from: snapshot,
             myPersonId: myPersonId
         )
     }
     
     @discardableResult
     func editMessage(id: Int, content: String) async throws -> Message2 {
-        let response = try await performingForConnection { connection in
-            try await connection.editMessage(id: id, content: content)
-        }
+        let snapshot = try await repository.editMessage(id: id, content: content)
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
         return await caches.message2.getModel(
             api: self,
-            from: response,
+            from: snapshot,
             myPersonId: myPersonId
         )
     }
     
     @discardableResult
     func reportMessage(id: Int, reason: String) async throws -> Report {
-        let response = try await performingForConnection { connection in
-            try await connection.reportMessage(id: id, reason: reason)
-        }
+        let snapshot = try await repository.reportMessage(id: id, reason: reason)
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
         return await caches.report.getModel(
             api: self,
-            from: response,
+            from: snapshot,
             myPersonId: myPersonId
         )
     }
     
     @discardableResult
     func deleteMessage(id: Int, delete: Bool, semaphore: UInt? = nil) async throws -> Message2 {
-        let response = try await performingForConnection { connection in
-            try await connection.deleteMessage(id: id, delete: delete)
-        }
+        let snapshot = try await repository.deleteMessage(id: id, delete: delete)
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
         return await caches.message2.getModel(
             api: self,
-            from: response,
+            from: snapshot,
             myPersonId: myPersonId,
             semaphore: semaphore
         )

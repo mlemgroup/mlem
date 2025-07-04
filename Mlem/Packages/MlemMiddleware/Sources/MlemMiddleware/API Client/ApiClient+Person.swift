@@ -37,31 +37,23 @@ public extension ApiClient {
     }
     
     func getPerson(id: Int) async throws -> Person3 {
-        let response = try await performingForConnection { connection in
-            try await connection.getPerson(id: id)
-        }
-        return await caches.person3.getModel(api: self, from: response)
+        let snapshot = try await repository.getPerson(id: id)
+        return await caches.person3.getModel(api: self, from: snapshot)
     }
     
     func getPerson(url: URL) async throws -> Person2 {
-        let response: Person2Snapshot = try await performingForConnection { connection in
-            try await connection.getPerson(url: url)
-        }
-        return await caches.person2.getModel(api: self, from: response)
+        let snapshot: Person2Snapshot = try await repository.getPerson(url: url)
+        return await caches.person2.getModel(api: self, from: snapshot)
     }
     
     func getPerson(username: String) async throws -> Person3 {
-        let response: Person3Snapshot = try await performingForConnection { connection in
-            try await connection.getPerson(username: username)
-        }
-        return await caches.person3.getModel(api: self, from: response)
+        let snapshot: Person3Snapshot = try await repository.getPerson(username: username)
+        return await caches.person3.getModel(api: self, from: snapshot)
     }
     
     func getPerson(url: URL) async throws -> Person3 {
-        let response: Person3Snapshot = try await performingForConnection { connection in
-            try await connection.getPerson(url: url)
-        }
-        return await caches.person3.getModel(api: self, from: response)
+        let snapshot: Person3Snapshot = try await repository.getPerson(url: url)
+        return await caches.person3.getModel(api: self, from: snapshot)
     }
     
     /// `filter` can be set to `.local` from 0.19.4 onwards.
@@ -72,26 +64,22 @@ public extension ApiClient {
         filter: ListingType = .all,
         sort: SearchSortType = .top(.allTime)
     ) async throws -> [Person2] {
-        let response = try await performingForConnection { connection in
-            try await connection.searchPeople(
-                query: query,
-                page: page,
-                limit: limit,
-                filter: filter,
-                sort: sort
-            )
-        }
-        return await caches.person2.getModels(api: self, from: response)
+        let snapshots = try await repository.searchPeople(
+            query: query,
+            page: page,
+            limit: limit,
+            filter: filter,
+            sort: sort
+        )
+        return await caches.person2.getModels(api: self, from: snapshots)
     }
     
     @discardableResult
     func blockPerson(id: Int, block: Bool, semaphore: UInt? = nil) async throws -> Person2 {
-        let response = try await performingForConnection { connection in
-            try await connection.blockPerson(id: id, block: block)
-        }
+        let snapshot = try await repository.blockPerson(id: id, block: block)
         return await caches.person2.getModel(
             api: self,
-            from: response,
+            from: snapshot,
             semaphore: semaphore
         )
     }
@@ -105,19 +93,17 @@ public extension ApiClient {
         reason: String?,
         expires: Date? = nil
     ) async throws -> Person2 {
-        let response = try await performingForConnection { connection in
-            try await connection.banPersonFromCommunity(
-                personId: personId,
-                communityId: communityId,
-                ban: ban,
-                removeContent: removeContent,
-                reason: reason,
-                expires: expires
-            )
-        }
+        let snapshot = try await repository.banPersonFromCommunity(
+            personId: personId,
+            communityId: communityId,
+            ban: ban,
+            removeContent: removeContent,
+            reason: reason,
+            expires: expires
+        )
         let person = await caches.person2.getModel(
             api: self,
-            from: response
+            from: snapshot
         )
         person.person1.updateKnownCommunityBanState(id: communityId, banned: ban)
         return person
@@ -131,25 +117,21 @@ public extension ApiClient {
         reason: String?,
         expires: Date? = nil
     ) async throws -> Person2 {
-        let response = try await performingForConnection { connection in
-            try await connection.banPersonFromInstance(
-                personId: personId,
-                ban: ban,
-                removeContent: removeContent,
-                reason: reason,
-                expires: expires
-            )
-        }
+        let snapshot = try await repository.banPersonFromInstance(
+            personId: personId,
+            ban: ban,
+            removeContent: removeContent,
+            reason: reason,
+            expires: expires
+        )
         return await caches.person2.getModel(
             api: self,
-            from: response
+            from: snapshot
         )
     }
     
     func purgePerson(id: Int, reason: String?) async throws {
-        try await performingForConnection { connection in
-            try await connection.purgePerson(id: id, reason: reason)
-        }
+        try await repository.purgePerson(id: id, reason: reason)
         caches.person1.retrieveModel(cacheId: id)?.purged = true
     }
     
@@ -161,37 +143,33 @@ public extension ApiClient {
         savedOnly: Bool? = nil,
         communityId: Int? = nil
     ) async throws -> (person: Person3, posts: [Post2], comments: [Comment2]) {
-        let response = try await performingForConnection { connection in
-            try await connection.getContent(
-                authorId: id,
-                sort: sort,
-                page: page,
-                limit: limit,
-                savedOnly: savedOnly,
-                communityId: communityId
-            )
-        }
+        let snapshots = try await repository.getContent(
+            authorId: id,
+            sort: sort,
+            page: page,
+            limit: limit,
+            savedOnly: savedOnly,
+            communityId: communityId
+        )
         return await (
-            person: caches.person3.getModel(api: self, from: response.person),
-            posts: caches.post2.getModels(api: self, from: response.posts),
-            comments: caches.comment2.getModels(api: self, from: response.comments)
+            person: caches.person3.getModel(api: self, from: snapshots.person),
+            posts: caches.post2.getModels(api: self, from: snapshots.posts),
+            comments: caches.comment2.getModels(api: self, from: snapshots.comments)
         )
     }
     
     func getMyPerson() async throws -> (person: Person4?, instance: Instance3, blocks: BlockList?) {
-        let response = try await performingForConnection { connection in
-            try await connection.getMyPerson()
-        }
-        guard response.person?.person.person.person.name == username else {
+        let snapshot = try await repository.getMyPerson()
+        guard snapshot.person?.person.person.person.name == username else {
             assertionFailure()
             throw ApiClientError.mismatchingToken
         }
         
-        let instance = await caches.instance3.getModel(api: self, from: response.instance)
-        let person = await caches.person4.getOptionalModel(api: self, from: response.person)
+        let instance = await caches.instance3.getModel(api: self, from: snapshot.instance)
+        let person = await caches.person4.getOptionalModel(api: self, from: snapshot.person)
         var blocks: BlockList? = blocks
         
-        if let person, let newBlocks = response.blocks {
+        if person != nil, let newBlocks = snapshot.blocks {
             if let blocks {
                 blocks.update(blocks: newBlocks)
             } else {
@@ -207,9 +185,7 @@ public extension ApiClient {
     }
     
     func deleteAccount(password: String, deleteContent: Bool) async throws {
-        try await performingForConnection { connection in
-            try await connection.deleteAccount(password: password, deleteContent: deleteContent)
-        }
+        try await repository.deleteAccount(password: password, deleteContent: deleteContent)
     }
     
     func editAccountSettings(
@@ -242,37 +218,35 @@ public extension ApiClient {
         showDownvotes: Bool?,
         showUpvotePercentage: Bool?
     ) async throws {
-        try await performingForConnection { connection in
-            try await connection.editAccountSettings(
-                showNsfw: showNsfw,
-                showScores: showScores,
-                theme: theme,
-                defaultListingType: defaultListingType,
-                interfaceLanguage: interfaceLanguage,
-                avatar: avatar,
-                banner: banner,
-                displayName: displayName,
-                email: email,
-                bio: bio,
-                matrixUserId: matrixUserId,
-                showAvatars: showAvatars,
-                sendNotificationsToEmail: sendNotificationsToEmail,
-                botAccount: botAccount,
-                showBotAccounts: showBotAccounts,
-                showReadPosts: showReadPosts,
-                discussionLanguages: discussionLanguages,
-                openLinksInNewTab: openLinksInNewTab,
-                blurNsfw: blurNsfw,
-                autoExpand: autoExpand,
-                infiniteScrollEnabled: infiniteScrollEnabled,
-                postListingMode: postListingMode,
-                enableKeyboardNavigation: enableKeyboardNavigation,
-                enableAnimatedImages: enableAnimatedImages,
-                collapseBotComments: collapseBotComments,
-                showUpvotes: showUpvotes,
-                showDownvotes: showDownvotes,
-                showUpvotePercentage: showUpvotePercentage
-            )
-        }
+        try await repository.editAccountSettings(
+            showNsfw: showNsfw,
+            showScores: showScores,
+            theme: theme,
+            defaultListingType: defaultListingType,
+            interfaceLanguage: interfaceLanguage,
+            avatar: avatar,
+            banner: banner,
+            displayName: displayName,
+            email: email,
+            bio: bio,
+            matrixUserId: matrixUserId,
+            showAvatars: showAvatars,
+            sendNotificationsToEmail: sendNotificationsToEmail,
+            botAccount: botAccount,
+            showBotAccounts: showBotAccounts,
+            showReadPosts: showReadPosts,
+            discussionLanguages: discussionLanguages,
+            openLinksInNewTab: openLinksInNewTab,
+            blurNsfw: blurNsfw,
+            autoExpand: autoExpand,
+            infiniteScrollEnabled: infiniteScrollEnabled,
+            postListingMode: postListingMode,
+            enableKeyboardNavigation: enableKeyboardNavigation,
+            enableAnimatedImages: enableAnimatedImages,
+            collapseBotComments: collapseBotComments,
+            showUpvotes: showUpvotes,
+            showDownvotes: showDownvotes,
+            showUpvotePercentage: showUpvotePercentage
+        )
     }
 }

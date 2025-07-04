@@ -96,7 +96,7 @@ public final class UnreadCount {
             returning: [InboxItemType: Int].self
         ) { taskGroup in
             taskGroup.addTask {
-                try await self.api.getPersonalUnreadCount().unreadCountDictionary
+                try await self.api.repository.getPersonalUnreadCount().unreadCountDictionary
             }
             if !alwaysMakeCalls, self.api.username != nil, self.api.myPerson == nil || self.api.myInstance == nil {
                 // The theoretical solution to this is to store the moderated
@@ -106,7 +106,7 @@ public final class UnreadCount {
             if alwaysMakeCalls || !(self.api.myPerson?.moderatedCommunities.isEmpty ?? false) || self.api.isAdmin {
                 taskGroup.addTask {
                     do {
-                        return try await self.api.getReportCount(communityId: nil).unreadCountDictionary
+                        return try await self.api.repository.getReportCount(communityId: nil).unreadCountDictionary
                     } catch let ApiClientError.response(response, _) where response.notModOrAdmin {
                         return [:]
                     }

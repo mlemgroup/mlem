@@ -37,24 +37,18 @@ public extension ApiClient {
     }
     
     func getCommunity(id: Int) async throws -> Community3 {
-        let response = try await performingForConnection { connection in
-            try await connection.getCommunity(id: id)
-        }
-        return await caches.community3.getModel(api: self, from: response)
+        let snapshot = try await repository.getCommunity(id: id)
+        return await caches.community3.getModel(api: self, from: snapshot)
     }
     
     func getCommunity(url: URL) async throws -> Community2 {
-        let response: Community2Snapshot = try await performingForConnection { connection in
-            try await connection.getCommunity(url: url)
-        }
-        return await caches.community2.getModel(api: self, from: response)
+        let snapshot: Community2Snapshot = try await repository.getCommunity(url: url)
+        return await caches.community2.getModel(api: self, from: snapshot)
     }
     
     func getCommunity(url: URL) async throws -> Community3 {
-        let response: Community3Snapshot = try await performingForConnection { connection in
-            try await connection.getCommunity(url: url)
-        }
-        return await caches.community3.getModel(api: self, from: response)
+        let snapshot: Community3Snapshot = try await repository.getCommunity(url: url)
+        return await caches.community3.getModel(api: self, from: snapshot)
     }
     
     func searchCommunities(
@@ -74,17 +68,15 @@ public extension ApiClient {
             sort = .top(.limited(.month))
         }
         
-        let response = try await performingForConnection { connection in
-            try await connection.searchCommunities(
-                query: query,
-                page: page,
-                limit: limit,
-                filter: filter,
-                sort: sort
-            )
-        }
+        let snapshot = try await repository.searchCommunities(
+            query: query,
+            page: page,
+            limit: limit,
+            filter: filter,
+            sort: sort
+        )
         
-        let ret = await caches.community2.getModels(api: self, from: response)
+        let ret = await caches.community2.getModels(api: self, from: snapshot)
         if let subscriptionInfo = hostApi?.subscriptions {
             for community in ret {
                 if let subscribedCommunity = subscriptionInfo.communities.first(where: { $0.actorId == community.actorId }) {
@@ -135,11 +127,9 @@ public extension ApiClient {
         var communities = [Community2Snapshot]()
         
         repeat {
-            let response = try await performingForConnection { connection in
-                try await connection.getSubscriptionList(page: page, limit: limit)
-            }
-            communities.append(contentsOf: response)
-            hasMorePages = response.count >= limit
+            let snapshots = try await repository.getSubscriptionList(page: page, limit: limit)
+            communities.append(contentsOf: snapshots)
+            hasMorePages = snapshots.count >= limit
             page += 1
         } while hasMorePages
             
@@ -151,24 +141,20 @@ public extension ApiClient {
     
     @discardableResult
     func subscribeToCommunity(id: Int, subscribe: Bool, semaphore: UInt?) async throws -> Community2 {
-        let response = try await performingForConnection { connection in
-            try await connection.subscribeToCommunity(id: id, subscribe: subscribe)
-        }
+        let snapshot = try await repository.subscribeToCommunity(id: id, subscribe: subscribe)
         return await caches.community2.getModel(
             api: self,
-            from: response,
+            from: snapshot,
             semaphore: semaphore
         )
     }
     
     @discardableResult
     func blockCommunity(id: Int, block: Bool, semaphore: UInt? = nil) async throws -> Community2 {
-        let response = try await performingForConnection { connection in
-            try await connection.blockCommunity(id: id, block: block)
-        }
+        let snapshot = try await repository.blockCommunity(id: id, block: block)
         return await caches.community2.getModel(
             api: self,
-            from: response,
+            from: snapshot,
             semaphore: semaphore
         )
     }
@@ -180,50 +166,44 @@ public extension ApiClient {
         reason: String?,
         semaphore: UInt? = nil
     ) async throws -> Community2 {
-        let response = try await performingForConnection { connection in
-            try await connection.removeCommunity(
-                id: id,
-                remove: remove,
-                reason: reason
-            )
-        }
+        let snapshot = try await repository.removeCommunity(
+            id: id,
+            remove: remove,
+            reason: reason
+        )
         return await caches.community2.getModel(
             api: self,
-            from: response,
+            from: snapshot,
             semaphore: semaphore
         )
     }
     
     func purgeCommunity(id: Int, reason: String?) async throws {
-        try await performingForConnection { connection in
-            try await connection.purgeCommunity(id: id, reason: reason)
-        }
+        try await repository.purgeCommunity(id: id, reason: reason)
         caches.community1.retrieveModel(cacheId: id)?.purged = true
     }
     
     @discardableResult
     func addModerator(communityId: Int, personId: Int, added: Bool) async throws -> [Person1] {
-        let response = try await performingForConnection { connection in
-            try await connection.addModerator(
+        let snapshots = try await repository.addModerator(
                 communityId: communityId,
                 personId: personId,
                 added: added
             )
-        }
 
-        let updatedModerators = await caches.person1.getModels(api: self, from: response.moderators)
+        let updatedModerators = await caches.person1.getModels(api: self, from: snapshots.moderators)
         
         if let community = caches.community3.retrieveModel(cacheId: communityId) {
             community.moderators = updatedModerators
         }
         
         if let person = caches.person3.retrieveModel(cacheId: personId) {
-            let newModerator = response.moderators.first(where: { $0.id == personId })
+            let newModerator = snapshots.moderators.first(where: { $0.id == personId })
             if added {
-                guard let newModerator else { throw ApiClientError.unsuccessful }
+                guard newModerator != nil else { throw ApiClientError.unsuccessful }
                 await person.moderatedCommunities.append(caches.community1.getModel(
                     api: self,
-                    from: response.community
+                    from: snapshots.community
                 ))
             } else {
                 guard newModerator == nil else { throw ApiClientError.unsuccessful }
