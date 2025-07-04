@@ -24,7 +24,6 @@ public extension PieFedConnection {
             unreadOnly: unreadOnly
         )
         let response = try await perform(request)
-        print(response)
         return try response.replies.map { try .init(from: $0) }
     }
     
