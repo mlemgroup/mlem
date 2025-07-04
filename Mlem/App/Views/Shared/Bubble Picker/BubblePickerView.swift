@@ -13,9 +13,13 @@ enum DividerPlacement {
     case top, bottom
 }
 
-struct BubblePickerItemFrame: Equatable {
+struct BubblePickerItemFrame: Hashable {
     let width: CGFloat
     let offset: CGFloat
+    
+    static var zero: Self {
+        .init(width: 0, offset: 0)
+    }
 }
 
 struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
@@ -24,7 +28,7 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
     
     // currentTabIndex is used to drive the capsule animation; it is tracked separately from selected so that the capsule animations can be triggered independently of any animation (or lack thereof) that is desired on selected
     @State var currentTabIndex: Int
-    @State var sizes: [BubblePickerItemFrame]
+    @State var selectedTabFrame: BubblePickerItemFrame?
     
     let tabs: [Value]
     let dividers: Set<DividerPlacement>
@@ -32,6 +36,8 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
     let value: (Value) -> Int?
     let spaceName: String = UUID().uuidString
     
+    let animation: Animation = .interactiveSpring(response: 0.2, dampingFraction: 0.8)
+
     init(
         _ tabs: [Value],
         selected: Binding<Value>,
@@ -49,7 +55,6 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
         self.dividers = withDividers
         self.label = label
         self.value = value
-        self._sizes = .init(wrappedValue: .init(repeating: .init(width: .zero, offset: .zero), count: tabs.count))
     }
     
     var body: some View {
@@ -60,17 +65,17 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
             
             ScrollViewReader { scrollProxy in
                 ScrollView(.horizontal) {
-                    buttonStack(scrollProxy: scrollProxy, isSelected: false)
+                    buttonStack(scrollProxy: scrollProxy, isSelectionIndicator: false)
                         .overlay {
-                            buttonStack(isSelected: true)
+                            buttonStack(isSelectionIndicator: true)
                                 .background(.themedAccent)
                                 .allowsHitTesting(false)
                                 .mask(alignment: .leading) {
-                                    // This `if` statement prevents the size of the capsule animating from 0 to `width` when transitioning in
-                                    if sizes[currentTabIndex].width != 0 {
+                                    if let selectedTabFrame {
                                         Capsule()
-                                            .offset(x: sizes[currentTabIndex].offset + Constants.main.standardSpacing)
-                                            .frame(width: max(sizes[currentTabIndex].width - Constants.main.doubleSpacing, 0), height: 30)
+                                            .offset(x: selectedTabFrame.offset + Constants.main.standardSpacing)
+                                            .frame(width: max(selectedTabFrame.width - Constants.main.doubleSpacing, 0), height: 30)
+                                            .animation(animation, value: selectedTabFrame)
                                     } else {
                                         Color.clear
                                     }
@@ -81,8 +86,8 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
                 .scrollIndicators(.hidden)
                 .onChange(of: selected) {
                     let newIndex = tabs.firstIndex(of: selected) ?? 0
-                    withAnimation(.interactiveSpring(response: 0.2, dampingFraction: 0.8)) {
-                        currentTabIndex = newIndex
+                    currentTabIndex = newIndex
+                    withAnimation(animation) {
                         scrollProxy.scrollTo(newIndex)
                     }
                 }
@@ -99,22 +104,28 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
     @ViewBuilder
     func buttonStack(
         scrollProxy: ScrollViewProxy? = nil,
-        isSelected: Bool
+        isSelectionIndicator: Bool
     ) -> some View {
         // Use negative spacing as well as padding the HStack's children so that scrollTo leaves extra space around each tab
         HStack(spacing: -Constants.main.doubleSpacing) {
             ForEach(Array(tabs.enumerated()), id: \.offset) { index, tab in
                 if let scrollProxy {
-                    ChildSizeReader(sizes: $sizes, index: index, spaceName: spaceName) {
+                    ChildSizeReader(
+                        size: tab == selected ? Binding(
+                            get: { selectedTabFrame ?? .zero },
+                            set: { selectedTabFrame = $0 }
+                        ) : nil,
+                        spaceName: spaceName
+                    ) {
                         bubbleButton(
                             index: index,
                             tab: tab,
                             scrollProxy: scrollProxy,
-                            isSelected: isSelected
+                            isSelectionIndicator: isSelectionIndicator
                         )
                     }
                 } else {
-                    bubbleButtonLabel(tab: tab, isSelected: isSelected)
+                    bubbleButtonLabel(tab: tab, isSelectionIndicator: isSelectionIndicator)
                 }
             }
         }
@@ -125,13 +136,13 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
         index: Int,
         tab: Value,
         scrollProxy: ScrollViewProxy,
-        isSelected: Bool
+        isSelectionIndicator: Bool
     ) -> some View {
         Button {
             selected = tab
             hapticManager.play(haptic: .gentleInfo, tier: .low)
         } label: {
-            bubbleButtonLabel(tab: tab, isSelected: isSelected)
+            bubbleButtonLabel(tab: tab, isSelectionIndicator: isSelectionIndicator)
         }
         .buttonStyle(.empty)
         .id(index)
@@ -140,26 +151,26 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
     @ViewBuilder
     func bubbleButtonLabel(
         tab: Value,
-        isSelected: Bool
+        isSelectionIndicator: Bool
     ) -> some View {
         AnyView(HStack(spacing: 8) {
             let value = value(tab)
             Text(label(tab))
                 .font(.subheadline)
                 .fontWeight(.semibold)
-                .foregroundStyle(isSelected ? .themedContrastingLabel : .themedPrimary)
+                .foregroundStyle(isSelectionIndicator ? .themedContrastingLabel : .themedPrimary)
             if let value {
                 Text(value.abbreviated)
                     .monospacedDigit()
                     .font(.subheadline)
                     .fontWeight(.medium)
-                    .foregroundStyle(isSelected ? .themedContrastingLabel : .themedSecondary)
-                    .opacity(isSelected ? 0.8 : 1)
+                    .foregroundStyle(isSelectionIndicator ? .themedContrastingLabel : .themedSecondary)
+                    .opacity(isSelectionIndicator ? 0.8 : 1)
             }
         })
         .padding(.horizontal, 22)
         .frame(minHeight: 50)
-        .contentShape(Rectangle())
+        .contentShape(.rect)
     }
 }
 
