@@ -599,9 +599,6 @@
         }
       }
     },
-    "Accessing the inbox on PieFed isn't implemented yet." : {
-
-    },
     "Account" : {
       "localizations" : {
         "fr" : {

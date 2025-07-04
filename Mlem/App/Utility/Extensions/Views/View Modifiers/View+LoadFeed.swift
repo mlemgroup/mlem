@@ -13,11 +13,12 @@ private struct LoadFeed: ViewModifier {
     @Setting(\.post_size) var postSize
     
     let feedLoader: (any FeedLoading)?
+    let shouldLoad: Bool
     
     func body(content: Content) -> some View {
         content
-            .onChange(of: feedLoader == nil, initial: true) {
-                if let feedLoader, feedLoader.items.isEmpty {
+            .onChange(of: onChangeHash, initial: true) {
+                if let feedLoader, feedLoader.items.isEmpty, shouldLoad {
                     // wrapping this in a Task instead of using .task prevents cancellation errors from the parent view de-rendering
                     Task {
                         do {
@@ -32,11 +33,18 @@ private struct LoadFeed: ViewModifier {
                 (feedLoader as? CorePostFeedLoader)?.setPrefetchingConfiguration(.forPostSize(postSize))
             }
     }
+    
+    var onChangeHash: Int {
+        var hasher = Hasher()
+        hasher.combine(feedLoader == nil)
+        hasher.combine(shouldLoad)
+        return hasher.finalize()
+    }
 }
 
 extension View {
     /// Convenience modifier. Attach to a view to load items from the given FeedLoading on appear if the given FeedLoading has no items
-    func loadFeed(_ feedLoader: (any FeedLoading)?) -> some View {
-        modifier(LoadFeed(feedLoader: feedLoader))
+    func loadFeed(_ feedLoader: (any FeedLoading)?, shouldLoad: Bool = true) -> some View {
+        modifier(LoadFeed(feedLoader: feedLoader, shouldLoad: shouldLoad))
     }
 }

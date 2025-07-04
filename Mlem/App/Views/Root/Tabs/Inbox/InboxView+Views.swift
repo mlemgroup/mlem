@@ -33,7 +33,11 @@ extension InboxView {
                 }
                 
                 EndOfFeedView(feedLoader: feedLoader, viewType: .cartoon)
-            } header: { sectionHeader }
+            } header: {
+                if appState.firstApi.supportsOrNil(.privateMessaging) ?? false {
+                    sectionHeader
+                }
+            }
         }
         .animation(.easeOut(duration: 0.1), value: feedLoader.items.isEmpty)
     }

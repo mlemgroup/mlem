@@ -48,9 +48,7 @@ class UserSession: Session {
                 self.blocks = blocks
                 self.instance = instance
                 
-                if software.supports(.inbox) {
-                    self.unreadCount = try await api.getUnreadCount()
-                }
+                self.unreadCount = try await api.getUnreadCount()
             } catch {
                 handleError(error)
             }

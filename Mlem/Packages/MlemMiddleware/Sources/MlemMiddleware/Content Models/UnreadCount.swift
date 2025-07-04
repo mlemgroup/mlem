@@ -103,22 +103,25 @@ public final class UnreadCount {
                 // community IDs in `ApiClient.Context` and `await` them here.
                 print("Warning: ApiClient.myPerson or ApiClient.myInstance is nil at UnreadCount refresh - this may lead to unneeded API calls")
             }
-            if alwaysMakeCalls || !(self.api.myPerson?.moderatedCommunities.isEmpty ?? false) || self.api.isAdmin {
-                taskGroup.addTask {
-                    do {
-                        return try await self.api.repository.getReportCount(communityId: nil).unreadCountDictionary
-                    } catch let ApiClientError.response(response, _) where response.notModOrAdmin {
-                        return [:]
+            
+            if try await self.api.supports(.viewReports) {
+                if alwaysMakeCalls || !(self.api.myPerson?.moderatedCommunities.isEmpty ?? false) || self.api.isAdmin {
+                    taskGroup.addTask {
+                        do {
+                            return try await self.api.repository.getReportCount(communityId: nil).unreadCountDictionary
+                        } catch let ApiClientError.response(response, _) where response.notModOrAdmin {
+                            return [:]
+                        }
                     }
                 }
-            }
-            // Don't use `api.isAdmin` here; it falls back to `false` and we need to fallback to `true`
-            if alwaysMakeCalls || api.myInstance?.administrators.contains(where: { $0.id == api.myPerson?.id }) ?? true {
-                taskGroup.addTask {
-                    do {
-                        return try await [.registrationApplication: self.api.getRegistrationApplicationCount()]
-                    } catch let ApiClientError.response(response, _) where response.notAdmin {
-                        return [:]
+                // Don't use `api.isAdmin` here; it falls back to `false` and we need to fallback to `true`
+                if alwaysMakeCalls || api.myInstance?.administrators.contains(where: { $0.id == api.myPerson?.id }) ?? true {
+                    taskGroup.addTask {
+                        do {
+                            return try await [.registrationApplication: self.api.getRegistrationApplicationCount()]
+                        } catch let ApiClientError.response(response, _) where response.notAdmin {
+                            return [:]
+                        }
                     }
                 }
             }

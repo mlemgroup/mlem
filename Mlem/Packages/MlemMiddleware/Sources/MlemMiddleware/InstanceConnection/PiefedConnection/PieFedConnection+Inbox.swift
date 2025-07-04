@@ -14,7 +14,18 @@ public extension PieFedConnection {
         limit: Int,
         unreadOnly: Bool = false
     ) async throws -> [Reply2Snapshot] {
-        throw ApiClientError.featureUnsupported
+        guard let sort = sort.piefedSortType else {
+            throw ApiClientError.featureUnsupported
+        }
+        let request = PieFedGetRepliesRequest(
+            sort: sort,
+            page: page,
+            limit: limit,
+            unreadOnly: unreadOnly
+        )
+        let response = try await perform(request)
+        print(response)
+        return try response.replies.map { try .init(from: $0) }
     }
     
     func getMentions(
@@ -23,7 +34,7 @@ public extension PieFedConnection {
         limit: Int,
         unreadOnly: Bool = false
     ) async throws -> [Reply2Snapshot] {
-        throw ApiClientError.featureUnsupported
+        []
     }
     
     func getMessages(
@@ -48,7 +59,8 @@ public extension PieFedConnection {
     }
     
     func markReplyAsRead(id: Int, read: Bool = true) async throws {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedMarkReplyAsReadRequest(commentReplyId: id, read: read)
+        try await perform(request)
     }
     
     func markMentionAsRead(id: Int, read: Bool = true) async throws {
@@ -60,7 +72,9 @@ public extension PieFedConnection {
     }
     
     func getPersonalUnreadCount() async throws -> PersonalUnreadCountSnapshot {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedGetUnreadCountRequest()
+        let response = try await perform(request)
+        return try .init(from: response)
     }
     
     func createMessage(personId: Int, content: String) async throws -> Message2Snapshot {
