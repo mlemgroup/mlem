@@ -152,7 +152,7 @@ struct PostEditorView: View {
                     do {
                         try await imageManager?.image?.delete()
                     } catch {
-                        handleError(error)
+                        handleError(error, silent: true)
                     }
                 }
                 uploadHistory.deleteAll()

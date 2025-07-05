@@ -8,13 +8,14 @@
 import Foundation
 
 class ImageUpload1Cache: CoreCache<ImageUpload1> {
-    func getModel(api: ApiClient, from apiType: any ImageUpload1Backer, semaphore: UInt? = nil) -> ImageUpload1 {
-        if let item = retrieveModel(cacheId: apiType.cacheId) { return item }
+    func getModel(api: ApiClient, from snapshot: ImageUpload1Snapshot, semaphore: UInt? = nil) -> ImageUpload1 {
+        if let item = retrieveModel(cacheId: snapshot.cacheId) { return item }
         
         let newItem: ImageUpload1 = .init(
             api: api,
-            alias: apiType.alias,
-            deleteToken: apiType.deleteToken
+            url: snapshot.url,
+            alias: snapshot.alias,
+            deleteToken: snapshot.deleteToken
         )
 
         itemCache.put(newItem)

@@ -151,18 +151,10 @@ struct MarkdownEditorToolbarView: View {
                         textView.toggleQuoteAtCursor()
                     }
                     if let imageUploadApi = model.imageUploadApi {
-                        if imageUploadApi.supportsOrNil(.uploadImages) ?? true {
-                            ImageUploadMenu(imageManager: imageManager, imageUploadApi: imageUploadApi) {
-                                Label("Image", icon: .markdown.uploadImage)
-                            }
-                            .disabled(!imageUploadApi.contextIsFetched)
-                        } else {
-                            Button("Image", icon: .markdown.uploadImage) {
-                                ToastModel.main.add(
-                                    .basic("Unsupported", subtitle: "Uploading images on PieFed isn't supported yet.")
-                                )
-                            }
+                        ImageUploadMenu(imageManager: imageManager, imageUploadApi: imageUploadApi) {
+                            Label("Image", icon: .markdown.uploadImage)
                         }
+                        .disabled(!imageUploadApi.contextIsFetched)
                     }
                     Button("Spoiler", icon: .markdown.spoiler) {
                         textView.wrapSelectionWithSpoiler()

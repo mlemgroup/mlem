@@ -34,7 +34,7 @@ struct PostEditorImageUploadWidgetView: View {
                         do {
                             try await image.delete()
                         } catch {
-                            handleError(error)
+                            handleError(error, silent: true)
                         }
                     }
                 }
@@ -57,12 +57,6 @@ struct PostEditorImageUploadWidgetView: View {
         .onTapGesture {
             imageManager = imageManager ?? .init()
         }
-        .opacity(imageUploadsAllowed ? 1 : 0.5)
-        .disabled(!imageUploadsAllowed)
-    }
-    
-    var imageUploadsAllowed: Bool {
-        primaryApi.supportsOrNil(.uploadImages) ?? false
     }
     
     @ViewBuilder
