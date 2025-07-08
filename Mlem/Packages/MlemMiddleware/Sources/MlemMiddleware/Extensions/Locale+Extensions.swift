@@ -8,7 +8,7 @@
 import Foundation
 
 extension Locale.Language {
-    init?(_ apiLanguage: ApiLanguage) {
+    init?(_ apiLanguage: LemmyLanguage) {
         if apiLanguage.code == "und" {
             return nil
         } else {

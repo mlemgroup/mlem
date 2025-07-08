@@ -78,7 +78,7 @@ public enum ModlogEntryContentSnapshot {
     )
     case purgePerson(reason: String?)
     
-    public init(from view: ApiModRemovePostView) throws(ApiClientError) {
+    public init(from view: LemmyModRemovePostView) throws(ApiClientError) {
         self = try .removePost(
             .init(from: view.post),
             community: .init(from: view.community),
@@ -87,7 +87,7 @@ public enum ModlogEntryContentSnapshot {
         )
     }
     
-    public init(from view: ApiModLockPostView) throws(ApiClientError) {
+    public init(from view: LemmyModLockPostView) throws(ApiClientError) {
         self = try .lockPost(
             .init(from: view.post),
             community: .init(from: view.community),
@@ -95,7 +95,7 @@ public enum ModlogEntryContentSnapshot {
         )
     }
     
-    public init(from view: ApiModFeaturePostView) throws(ApiClientError) {
+    public init(from view: LemmyModFeaturePostView) throws(ApiClientError) {
         self = try .pinPost(
             .init(from: view.post),
             community: .init(from: view.community),
@@ -104,13 +104,13 @@ public enum ModlogEntryContentSnapshot {
         )
     }
     
-    public init(from view: ApiAdminPurgePostView) throws(ApiClientError) {
+    public init(from view: LemmyAdminPurgePostView) throws(ApiClientError) {
         self = .purgePost(reason: view.adminPurgePost.reason)
     }
     
-    public init(from view: ApiModRemoveCommentView) throws(ApiClientError) {
+    public init(from view: LemmyModRemoveCommentView) throws(ApiClientError) {
         guard let creator = view.otherPerson ?? view.commenter else {
-            throw .responseMissingRequiredData("ApiModRemoveCommentView otherPerson")
+            throw .responseMissingRequiredData("LemmyModRemoveCommentView otherPerson")
         }
         self = try .removeComment(
             .init(from: view.comment),
@@ -122,11 +122,11 @@ public enum ModlogEntryContentSnapshot {
         )
     }
     
-    public init(from view: ApiAdminPurgeCommentView) throws(ApiClientError) {
+    public init(from view: LemmyAdminPurgeCommentView) throws(ApiClientError) {
         self = .purgeComment(reason: view.adminPurgeComment.reason)
     }
     
-    public init(from view: ApiModRemoveCommunityView) throws(ApiClientError) {
+    public init(from view: LemmyModRemoveCommunityView) throws(ApiClientError) {
         self = try .removeCommunity(
             .init(from: view.community),
             removed: view.modRemoveCommunity.removed,
@@ -134,11 +134,11 @@ public enum ModlogEntryContentSnapshot {
         )
     }
     
-    public init(from view: ApiAdminPurgeCommunityView) throws(ApiClientError) {
+    public init(from view: LemmyAdminPurgeCommunityView) throws(ApiClientError) {
         self = .purgeCommunity(reason: view.adminPurgeCommunity.reason)
     }
     
-    public init(from view: ApiModHideCommunityView) throws(ApiClientError) {
+    public init(from view: LemmyModHideCommunityView) throws(ApiClientError) {
         self = try .hideCommunity(
             .init(from: view.community),
             hidden: view.modHideCommunity.hidden,
@@ -146,9 +146,9 @@ public enum ModlogEntryContentSnapshot {
         )
     }
     
-    public init(from view: ApiModTransferCommunityView) throws(ApiClientError) {
+    public init(from view: LemmyModTransferCommunityView) throws(ApiClientError) {
         guard let moddedPerson = view.otherPerson ?? view.moddedPerson else {
-            throw .responseMissingRequiredData("ApiModTransferCommunityView otherPerson")
+            throw .responseMissingRequiredData("LemmyModTransferCommunityView otherPerson")
         }
         self = try .transferCommunityOwnership(
             person: .init(from: moddedPerson),
@@ -156,9 +156,9 @@ public enum ModlogEntryContentSnapshot {
         )
     }
     
-    public init(from view: ApiModAddCommunityView) throws(ApiClientError) {
+    public init(from view: LemmyModAddCommunityView) throws(ApiClientError) {
         guard let moddedPerson = view.otherPerson ?? view.moddedPerson else {
-            throw .responseMissingRequiredData("ApiModAddCommunityView otherPerson")
+            throw .responseMissingRequiredData("LemmyModAddCommunityView otherPerson")
         }
         self = try .updatePersonModeratorStatus(
             person: .init(from: moddedPerson),
@@ -167,9 +167,9 @@ public enum ModlogEntryContentSnapshot {
         )
     }
     
-    public init(from view: ApiModAddView) throws(ApiClientError) {
+    public init(from view: LemmyModAddView) throws(ApiClientError) {
         guard let moddedPerson = view.otherPerson ?? view.moddedPerson else {
-            throw .responseMissingRequiredData("ApiModAddView otherPerson")
+            throw .responseMissingRequiredData("LemmyModAddView otherPerson")
         }
         self = try .updatePersonAdminStatus(
             person: .init(from: moddedPerson),
@@ -177,9 +177,9 @@ public enum ModlogEntryContentSnapshot {
         )
     }
     
-    public init(from view: ApiModBanFromCommunityView) throws(ApiClientError) {
+    public init(from view: LemmyModBanFromCommunityView) throws(ApiClientError) {
         guard let bannedPerson = view.otherPerson ?? view.bannedPerson else {
-            throw .responseMissingRequiredData("ApiModBanFromCommunityView otherPerson")
+            throw .responseMissingRequiredData("LemmyModBanFromCommunityView otherPerson")
         }
         self = try .banPersonFromCommunity(
             person: .init(from: bannedPerson),
@@ -190,9 +190,9 @@ public enum ModlogEntryContentSnapshot {
         )
     }
     
-    public init(from view: ApiModBanView) throws(ApiClientError) {
+    public init(from view: LemmyModBanView) throws(ApiClientError) {
         guard let bannedPerson = view.otherPerson ?? view.bannedPerson else {
-            throw .responseMissingRequiredData("ApiModBanView otherPerson")
+            throw .responseMissingRequiredData("LemmyModBanView otherPerson")
         }
         self = try .banPersonFromInstance(
             person: .init(from: bannedPerson),
@@ -202,7 +202,7 @@ public enum ModlogEntryContentSnapshot {
         )
     }
     
-    public init(from view: ApiAdminPurgePersonView) throws(ApiClientError) {
+    public init(from view: LemmyAdminPurgePersonView) throws(ApiClientError) {
         self = .purgePerson(reason: view.adminPurgePerson.reason)
     }
 }

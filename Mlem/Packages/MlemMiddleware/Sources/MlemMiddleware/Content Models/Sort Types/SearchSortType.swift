@@ -33,7 +33,7 @@ public enum SearchSortType: Hashable, Sendable {
     public static var legacyCases: [Self] = nonTopCases + legacyTopCases
     public static var legacyPersonCases: [Self] = nonTopCases + [.top(.allTime)]
     
-    public init?(_ legacyApiSortType: ApiSortType) {
+    public init?(_ legacyApiSortType: LemmySortType) {
         switch legacyApiSortType {
         case .new:
             self = .new
@@ -48,8 +48,8 @@ public enum SearchSortType: Hashable, Sendable {
         }
     }
     
-    /// Returns `nil` if the `SearchSortType` is a value that cannot be converted to an `ApiSortType`.
-    public var legacyApiSortType: ApiSortType? {
+    /// Returns `nil` if the `SearchSortType` is a value that cannot be converted to an `LemmySortType`.
+    public var legacyApiSortType: LemmySortType? {
         switch self {
         case .new: .new
         case .old: .old
@@ -57,8 +57,8 @@ public enum SearchSortType: Hashable, Sendable {
         }
     }
     
-    /// Returns `nil` if the `SearchSortType` is a value that cannot be converted to an `ApiSearchSortType`.
-    public var apiSortType: ApiSearchSortType? {
+    /// Returns `nil` if the `SearchSortType` is a value that cannot be converted to an `LemmySearchSortType`.
+    public var apiSortType: LemmySearchSortType? {
         switch self {
         case .new: .new
         case .old: .old

@@ -28,7 +28,7 @@ public struct RegistrationApplicationSnapshot: CacheIdentifiable {
     
     public var cacheId: Int { id }
     
-    public init(from application: ApiRegistrationApplicationView) throws(ApiClientError) {
+    public init(from application: LemmyRegistrationApplicationView) throws(ApiClientError) {
         self.id = application.registrationApplication.id
         self.created = application.registrationApplication.published
         self.questionResponse = application.registrationApplication.answer

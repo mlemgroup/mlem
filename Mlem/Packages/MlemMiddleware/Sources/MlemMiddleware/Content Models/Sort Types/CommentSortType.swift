@@ -33,7 +33,7 @@ public enum CommentSortType: Hashable, Sendable {
     
     public static var legacyCases: [Self] = nonTopCases + [.top(.allTime)]
     
-    public init(_ apiSortType: ApiCommentSortType) {
+    public init(_ apiSortType: LemmyCommentSortType) {
         self = switch apiSortType {
         case .hot: .hot
         case .top: .top(.allTime)
@@ -43,7 +43,7 @@ public enum CommentSortType: Hashable, Sendable {
         }
     }
     
-    public var apiSortType: ApiCommentSortType {
+    public var apiSortType: LemmyCommentSortType {
         switch self {
         case .new: .new
         case .old: .old
@@ -53,7 +53,7 @@ public enum CommentSortType: Hashable, Sendable {
         }
     }
     
-    public var legacyApiSortType: ApiSortType {
+    public var legacyApiSortType: LemmySortType {
         switch self {
         case .new: .new
         case .old: .old
@@ -63,8 +63,8 @@ public enum CommentSortType: Hashable, Sendable {
         }
     }
     
-    /// Returns `nil` if the `CommentSortType` is a value that cannot be converted to an `ApiSearchSortType`.
-    public var apiSearchSortType: ApiSearchSortType? {
+    /// Returns `nil` if the `CommentSortType` is a value that cannot be converted to an `LemmySearchSortType`.
+    public var apiSearchSortType: LemmySearchSortType? {
         switch self {
         case .new: .new
         case .old: .old

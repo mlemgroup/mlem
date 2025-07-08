@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension ApiSiteAggregates {
+extension LemmySiteAggregates {
     static var zero: Self {
         .init(
             siteId: 0,

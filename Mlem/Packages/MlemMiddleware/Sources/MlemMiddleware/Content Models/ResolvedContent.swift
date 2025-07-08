@@ -13,7 +13,7 @@ public enum ResolvedContent {
     case community(Community2Snapshot)
     case person(Person2Snapshot)
     
-    init(from response: ApiResolveObjectResponse) throws {
+    init(from response: LemmyResolveObjectResponse) throws {
         if let comment = response.comment {
             self = try .comment(.init(from: comment))
         } else if let post = response.post {

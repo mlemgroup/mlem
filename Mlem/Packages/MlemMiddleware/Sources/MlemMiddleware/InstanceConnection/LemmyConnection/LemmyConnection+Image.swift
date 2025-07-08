@@ -38,7 +38,7 @@ public extension LemmyConnection {
         )
         
         do {
-            let response = try JSONDecoder.defaultDecoder.decode(ApiPictrsUploadResponse.self, from: data)
+            let response = try JSONDecoder.defaultDecoder.decode(LemmyPictrsUploadResponse.self, from: data)
             guard let file = response.files?.first else { throw ApiClientError.noEntityFound }
             return .init(from: file, baseUrl: baseUrl)
         } catch DecodingError.dataCorrupted {

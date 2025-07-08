@@ -7,7 +7,7 @@
 
 import Foundation
 
-public extension ApiGetModlogResponse {
+public extension LemmyGetModlogResponse {
     func toSnapshots() throws(ApiClientError) -> [ModlogEntrySnapshot] {
         var result = try (removedPosts ?? []).map(ModlogEntrySnapshot.init)
         result += try (lockedPosts ?? []).map(ModlogEntrySnapshot.init)

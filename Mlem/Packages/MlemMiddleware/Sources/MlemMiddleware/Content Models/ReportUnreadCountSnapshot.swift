@@ -12,7 +12,7 @@ public struct ReportUnreadCountSnapshot {
     let posts: Int
     let messages: Int
     
-    init(from response: ApiGetReportCountResponse) throws(ApiClientError) {
+    init(from response: LemmyGetReportCountResponse) throws(ApiClientError) {
         guard response.count == nil else {
             throw ApiClientError.featureUnsupported
         }

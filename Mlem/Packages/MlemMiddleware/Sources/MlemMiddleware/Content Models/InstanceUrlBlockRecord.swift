@@ -13,7 +13,7 @@ public struct InstanceUrlBlockRecord: Hashable {
     let updated: Date?
     let url: URL
     
-    public init?(from blocklist: ApiLocalSiteUrlBlocklist) {
+    public init?(from blocklist: LemmyLocalSiteUrlBlocklist) {
         self.id = blocklist.id
         self.created = blocklist.published
         self.updated = blocklist.updated

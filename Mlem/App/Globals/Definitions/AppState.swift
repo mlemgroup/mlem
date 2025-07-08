@@ -153,7 +153,7 @@ class AppState {
     
     var initialFeedSortType: PostSortType {
         get async throws {
-            // In future, we should be storing `PostSortType` in `Settings` rather than `ApiSortType`
+            // In future, we should be storing `PostSortType` in `Settings` rather than `LemmySortType`
             let defaultSort: PostSortType = .init(Settings.get(\.post_defaultSort))
             if try await firstApi.supports(.postSortType(defaultSort)) { return defaultSort }
             return .init(Settings.get(\.post_fallbackSort))

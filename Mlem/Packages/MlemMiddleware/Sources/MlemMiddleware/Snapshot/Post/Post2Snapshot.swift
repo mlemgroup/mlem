@@ -29,7 +29,7 @@ public struct Post2Snapshot: CacheIdentifiable {
     
     public var cacheId: Int { post.cacheId }
     
-    init(from post: ApiPostView) throws(ApiClientError) {
+    init(from post: LemmyPostView) throws(ApiClientError) {
         self.post = try .init(from: post.post)
         self.creator = try .init(from: post.creator)
         self.community = try .init(from: post.community)
@@ -39,7 +39,7 @@ public struct Post2Snapshot: CacheIdentifiable {
         } else if let upvotes = post.post.upvotes, let downvotes = post.post.downvotes {
             self.votes = .init(upvotes: upvotes, downvotes: downvotes, myVote: .guaranteedInit(from: post.postActions?.likeScore))
         } else {
-            throw .responseMissingRequiredData("ApiPostView scores")
+            throw .responseMissingRequiredData("LemmyPostView scores")
         }
         
         if let actions = post.creatorCommunityActions {
@@ -50,7 +50,7 @@ public struct Post2Snapshot: CacheIdentifiable {
             self.creatorIsModerator = post.creatorIsModerator
             self.creatorBannedFromCommunity = post.creatorBannedFromCommunity ?? false
             guard let creatorBlocked = post.creatorBlocked else {
-                throw .responseMissingRequiredData("ApiPostView creatorBlocked")
+                throw .responseMissingRequiredData("LemmyPostView creatorBlocked")
             }
             self.creatorBlocked = creatorBlocked
         }
@@ -64,7 +64,7 @@ public struct Post2Snapshot: CacheIdentifiable {
             self.commentCount = counts.comments
             self.unreadCommentCount = unreadComments
         } else {
-            throw .responseMissingRequiredData("ApiPostView commentCount")
+            throw .responseMissingRequiredData("LemmyPostView commentCount")
         }
 
         if let actions = post.postActions {
@@ -76,11 +76,11 @@ public struct Post2Snapshot: CacheIdentifiable {
             self.read = read
             self.hidden = hidden
         } else {
-            throw .responseMissingRequiredData("ApiPostView actions")
+            throw .responseMissingRequiredData("LemmyPostView actions")
         }
     }
     
-    init(from report: ApiPostReportView) throws(ApiClientError) {
+    init(from report: LemmyPostReportView) throws(ApiClientError) {
         self.post = try .init(from: report.post)
         self.creator = try .init(from: report.postCreator)
         self.community = try .init(from: report.community)
@@ -90,7 +90,7 @@ public struct Post2Snapshot: CacheIdentifiable {
         } else if let upvotes = report.post.upvotes, let downvotes = report.post.downvotes {
             self.votes = .init(upvotes: upvotes, downvotes: downvotes, myVote: .guaranteedInit(from: report.postActions?.likeScore))
         } else {
-            throw .responseMissingRequiredData("ApiPostReportView scores")
+            throw .responseMissingRequiredData("LemmyPostReportView scores")
         }
         
         if let actions = report.creatorCommunityActions {
@@ -101,7 +101,7 @@ public struct Post2Snapshot: CacheIdentifiable {
             self.creatorIsModerator = report.creatorIsModerator
             self.creatorBannedFromCommunity = report.creatorBannedFromCommunity ?? false
             guard let creatorBlocked = report.creatorBlocked else {
-                throw .responseMissingRequiredData("ApiPostReportView creatorBlocked")
+                throw .responseMissingRequiredData("LemmyPostReportView creatorBlocked")
             }
             self.creatorBlocked = creatorBlocked
         }
@@ -109,7 +109,7 @@ public struct Post2Snapshot: CacheIdentifiable {
         if let creatorIsAdmin = report.creatorIsAdmin {
             self.creatorIsAdmin = creatorIsAdmin
         } else {
-            throw .responseMissingRequiredData("ApiPostReportView creatorIsAdmin")
+            throw .responseMissingRequiredData("LemmyPostReportView creatorIsAdmin")
         }
 
         if let actions = report.postActions, let comments = report.post.comments {
@@ -119,7 +119,7 @@ public struct Post2Snapshot: CacheIdentifiable {
             self.commentCount = counts.comments
             self.unreadCommentCount = unreadComments
         } else {
-            throw .responseMissingRequiredData("ApiPostReportView commentCount")
+            throw .responseMissingRequiredData("LemmyPostReportView commentCount")
         }
 
         if let actions = report.postActions {
@@ -131,7 +131,7 @@ public struct Post2Snapshot: CacheIdentifiable {
             self.read = read
             self.hidden = hidden
         } else {
-            throw .responseMissingRequiredData("ApiPostReportView actions")
+            throw .responseMissingRequiredData("LemmyPostReportView actions")
         }
     }
 }

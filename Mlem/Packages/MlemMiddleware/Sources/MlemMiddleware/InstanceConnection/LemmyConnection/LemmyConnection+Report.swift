@@ -10,7 +10,7 @@ import Foundation
 public extension LemmyConnection {
     func getReportCount(communityId: Int? = nil) async throws -> ReportUnreadCountSnapshot {
         let response = try await performingForEndpoint { endpoint in
-            ReportCountRequest(endpoint: endpoint, communityId: communityId)
+            LemmyReportCountRequest(endpoint: endpoint, communityId: communityId)
         }
         return try .init(from: response)
     }
@@ -23,7 +23,7 @@ public extension LemmyConnection {
         postId: Int? = nil
     ) async throws -> [ReportSnapshot] {
         let response = try await performingForEndpoint { _ in
-            ListPostReportsRequest(
+            LemmyListPostReportsRequest(
                 page: page,
                 limit: limit,
                 unresolvedOnly: unresolvedOnly,
@@ -42,7 +42,7 @@ public extension LemmyConnection {
         commentId: Int? = nil
     ) async throws -> [ReportSnapshot] {
         let response = try await performingForEndpoint { _ in
-            ListCommentReportsRequest(
+            LemmyListCommentReportsRequest(
                 page: page,
                 limit: limit,
                 unresolvedOnly: unresolvedOnly,
@@ -59,7 +59,7 @@ public extension LemmyConnection {
         unresolvedOnly: Bool = false
     ) async throws -> [ReportSnapshot] {
         let response = try await performingForEndpoint { _ in
-            ListPmReportsRequest(
+            LemmyListPmReportsRequest(
                 page: page,
                 limit: limit,
                 unresolvedOnly: unresolvedOnly
@@ -71,7 +71,7 @@ public extension LemmyConnection {
     @discardableResult
     func resolvePostReport(id: Int, resolved: Bool) async throws -> ReportSnapshot {
         let response = try await performingForEndpoint { endpoint in
-            ResolvePostReportRequest(endpoint: endpoint, reportId: id, resolved: resolved)
+            LemmyResolvePostReportRequest(endpoint: endpoint, reportId: id, resolved: resolved)
         }
         return try .init(from: response.postReportView)
     }
@@ -79,7 +79,7 @@ public extension LemmyConnection {
     @discardableResult
     func resolveCommentReport(id: Int, resolved: Bool) async throws -> ReportSnapshot {
         let response = try await performingForEndpoint { endpoint in
-            ResolveCommentReportRequest(endpoint: endpoint, reportId: id, resolved: resolved)
+            LemmyResolveCommentReportRequest(endpoint: endpoint, reportId: id, resolved: resolved)
         }
         return try .init(from: response.commentReportView)
     }
@@ -87,7 +87,7 @@ public extension LemmyConnection {
     @discardableResult
     func resolveMessageReport(id: Int, resolved: Bool) async throws -> ReportSnapshot {
         let response = try await performingForEndpoint { endpoint in
-            ResolvePmReportRequest(endpoint: endpoint, reportId: id, resolved: resolved)
+            LemmyResolvePmReportRequest(endpoint: endpoint, reportId: id, resolved: resolved)
         }
         return try .init(from: response.privateMessageReportView)
     }

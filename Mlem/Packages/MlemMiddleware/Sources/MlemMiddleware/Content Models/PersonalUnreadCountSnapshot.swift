@@ -12,7 +12,7 @@ public struct PersonalUnreadCountSnapshot {
     let mentions: Int
     let messages: Int
     
-    public init(from response: ApiGetUnreadCountResponse) throws(ApiClientError) {
+    public init(from response: LemmyGetUnreadCountResponse) throws(ApiClientError) {
         guard let replies = response.replies, let mentions = response.mentions, let messages = response.privateMessages else {
             throw ApiClientError.featureUnsupported
         }

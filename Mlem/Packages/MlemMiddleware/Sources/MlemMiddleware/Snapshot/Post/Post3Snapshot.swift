@@ -19,7 +19,7 @@ public struct Post3Snapshot: CacheIdentifiable {
     
     public var cacheId: Int { post.cacheId }
     
-    public init(from post: ApiGetPostResponse) throws(ApiClientError) {
+    public init(from post: LemmyGetPostResponse) throws(ApiClientError) {
         self.post = try .init(from: post.postView)
         self.community = try .init(from: post.communityView)
         

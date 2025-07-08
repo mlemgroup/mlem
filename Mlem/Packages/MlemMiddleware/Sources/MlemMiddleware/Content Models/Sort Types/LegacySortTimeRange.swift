@@ -31,7 +31,7 @@ public extension LegacySortTimeRangeLimit {
         }
     }
     
-    internal init?(_ legacyApiSortType: ApiSortType) {
+    internal init?(_ legacyApiSortType: LemmySortType) {
         if let value: Self = switch legacyApiSortType {
         case .topHour: .hour
         case .topSixHour: .sixHour
@@ -70,7 +70,7 @@ public extension LegacySortTimeRangeLimit {
         }
     }
     
-    var legacyApiSortType: ApiSortType {
+    var legacyApiSortType: LemmySortType {
         switch self {
         case .hour: .topHour
         case .sixHour: .topSixHour

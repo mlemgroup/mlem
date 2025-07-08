@@ -10,7 +10,7 @@ import Foundation
 public enum ListingType {
     case all, local, subscribed, moderatorView
     
-    init(from type: ApiListingType) {
+    init(from type: LemmyListingType) {
         self = switch type {
         case .all: .all
         case .local: .local
@@ -19,7 +19,7 @@ public enum ListingType {
         }
     }
     
-    var apiType: ApiListingType {
+    var apiType: LemmyListingType {
         switch self {
         case .all: .all
         case .local: .local

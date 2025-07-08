@@ -1,5 +1,5 @@
 //
-//  ApiPrivateMessageReportView+Extensions.swift
+//  LemmyPrivateMessageReportView+Extensions.swift
 //  MlemMiddleware
 //
 //  Created by Sjmarf on 2024-12-16.
@@ -7,8 +7,8 @@
 
 import Foundation
 
-extension ApiPrivateMessageReportView {
-    func toPrivateMessageView() -> ApiPrivateMessageView {
+extension LemmyPrivateMessageReportView {
+    func toPrivateMessageView() -> LemmyPrivateMessageView {
         .init(
             privateMessage: privateMessage,
             creator: privateMessageCreator,

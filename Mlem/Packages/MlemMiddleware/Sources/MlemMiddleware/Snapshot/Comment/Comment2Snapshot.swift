@@ -26,7 +26,7 @@ public struct Comment2Snapshot: CacheIdentifiable {
     
     public var cacheId: Int { comment.cacheId }
     
-    public init(from comment: ApiCommentView) throws(ApiClientError) {
+    public init(from comment: LemmyCommentView) throws(ApiClientError) {
         self.comment = try .init(from: comment.comment)
         self.creator = try .init(from: comment.creator)
         self.post = try .init(from: comment.post)
@@ -35,7 +35,7 @@ public struct Comment2Snapshot: CacheIdentifiable {
         if let childCount = comment.comment.childCount ?? comment.counts?.childCount {
             self.commentCount = childCount
         } else {
-            throw .responseMissingRequiredData("ApiCommentView childCount")
+            throw .responseMissingRequiredData("LemmyCommentView childCount")
         }
             
         self.creatorIsAdmin = comment.creatorIsAdmin
@@ -53,7 +53,7 @@ public struct Comment2Snapshot: CacheIdentifiable {
         } else if let saved = comment.saved {
             self.saved = saved
         } else {
-            throw .responseMissingRequiredData("ApiCommentView saved")
+            throw .responseMissingRequiredData("LemmyCommentView saved")
         }
         
         if let counts = comment.counts {
@@ -61,11 +61,11 @@ public struct Comment2Snapshot: CacheIdentifiable {
         } else if let upvotes = comment.comment.upvotes, let downvotes = comment.comment.downvotes {
             self.votes = .init(upvotes: upvotes, downvotes: downvotes, myVote: .guaranteedInit(from: comment.commentActions?.likeScore))
         } else {
-            throw .responseMissingRequiredData("ApiCommentView score")
+            throw .responseMissingRequiredData("LemmyCommentView score")
         }
     }
     
-    public init(from report: ApiCommentReportView) throws(ApiClientError) {
+    public init(from report: LemmyCommentReportView) throws(ApiClientError) {
         self.comment = try .init(from: report.comment)
         self.creator = try .init(from: report.commentCreator)
         self.post = try .init(from: report.post)
@@ -74,13 +74,13 @@ public struct Comment2Snapshot: CacheIdentifiable {
         if let childCount = report.comment.childCount ?? report.counts?.childCount {
             self.commentCount = childCount
         } else {
-            throw .responseMissingRequiredData("ApiCommentReportView childCount")
+            throw .responseMissingRequiredData("LemmyCommentReportView childCount")
         }
             
         if let creatorIsAdmin = report.creatorIsAdmin {
             self.creatorIsAdmin = creatorIsAdmin
         } else {
-            throw .responseMissingRequiredData("ApiCommentReportView creatorIsAdmin")
+            throw .responseMissingRequiredData("LemmyCommentReportView creatorIsAdmin")
         }
 
         if let actions = report.creatorCommunityActions {
@@ -96,7 +96,7 @@ public struct Comment2Snapshot: CacheIdentifiable {
         } else if let saved = report.saved {
             self.saved = saved
         } else {
-            throw .responseMissingRequiredData("ApiCommentReportView saved")
+            throw .responseMissingRequiredData("LemmyCommentReportView saved")
         }
         
         if let counts = report.counts {
@@ -104,7 +104,7 @@ public struct Comment2Snapshot: CacheIdentifiable {
         } else if let upvotes = report.comment.upvotes, let downvotes = report.comment.downvotes {
             self.votes = .init(upvotes: upvotes, downvotes: downvotes, myVote: .guaranteedInit(from: report.commentActions?.likeScore))
         } else {
-            throw .responseMissingRequiredData("ApiCommentReportView score")
+            throw .responseMissingRequiredData("LemmyCommentReportView score")
         }
     }
 }

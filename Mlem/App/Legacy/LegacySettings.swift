@@ -27,8 +27,8 @@ class LegacySettings: ObservableObject {
 
     @AppStorage("post.size") var postSize: PostSize = .large
     @AppStorage("post.allowMultipleColumns") var allowMultiplePostColumns: Bool = true
-    @AppStorage("post.defaultSort") var defaultPostSort: ApiSortType = .hot
-    @AppStorage("post.fallbackSort") var fallbackPostSort: ApiSortType = .hot
+    @AppStorage("post.defaultSort") var defaultPostSort: LemmySortType = .hot
+    @AppStorage("post.fallbackSort") var fallbackPostSort: LemmySortType = .hot
     @AppStorage("post.thumbnailLocation") var thumbnailLocation: ThumbnailLocation = .left
     @AppStorage("post.showCreator") var showPostCreator: Bool = false
     @AppStorage("post.showSubscribedStatus") var showSubscribedStatus: Bool = true
@@ -88,7 +88,7 @@ class LegacySettings: ObservableObject {
     
     @AppStorage("comment.compact") var compactComments: Bool = false
     @AppStorage("comment.jumpButton") var jumpButton: CommentJumpButtonLocation = .bottomTrailing
-    @AppStorage("comment.sort") var commentSort: ApiCommentSortType = .top
+    @AppStorage("comment.sort") var commentSort: LemmyCommentSortType = .top
     @AppStorage("comment.maxDepth") var maxCommentDepth: Int = 8
     @AppStorage("comment.gestures.tapToCollapse") var tapCommentsToCollapse: Bool = true
     

@@ -33,9 +33,9 @@ public struct Person1Snapshot: CacheIdentifiable {
 
     public var cacheId: Int { id }
     
-    public init(from person: ApiPerson) throws(ApiClientError) {
+    public init(from person: LemmyPerson) throws(ApiClientError) {
         guard let actorId = person.apId ?? person.actorId else {
-            throw .responseMissingRequiredData("ApiPerson actorId")
+            throw .responseMissingRequiredData("LemmyPerson actorId")
         }
         
         self.actorId = actorId

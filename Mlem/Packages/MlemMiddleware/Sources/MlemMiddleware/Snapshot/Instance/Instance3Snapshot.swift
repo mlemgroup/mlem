@@ -27,7 +27,7 @@ public struct Instance3Snapshot: CacheIdentifiable {
 
     public var cacheId: Int { instance.cacheId }
     
-    public init(from site: ApiGetSiteResponse) throws(ApiClientError) {
+    public init(from site: LemmyGetSiteResponse) throws(ApiClientError) {
         self.instance = try .init(from: site.siteView)
         self.software = .init(type: .lemmy, version: .init(site.version))
         self.allLanguages = site.allLanguages.compactMap { .init($0) }

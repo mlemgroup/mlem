@@ -39,7 +39,7 @@ public struct Person4Snapshot: CacheIdentifiable {
 
     public var cacheId: Int { person.cacheId }
     
-    public init(from userInfo: ApiMyUserInfo) throws(ApiClientError) {
+    public init(from userInfo: LemmyMyUserInfo) throws(ApiClientError) {
         self.person = try .init(from: userInfo)
         let user = userInfo.localUserView.localUser
 
@@ -54,7 +54,7 @@ public struct Person4Snapshot: CacheIdentifiable {
         if let showScores = (user.showScore ?? user.showScores) {
             self.showScores = showScores
         } else {
-            throw .responseMissingRequiredData("ApiMyUserInfo showScores")
+            throw .responseMissingRequiredData("LemmyMyUserInfo showScores")
         }
         
         self.showBotAccounts = user.showBotAccounts

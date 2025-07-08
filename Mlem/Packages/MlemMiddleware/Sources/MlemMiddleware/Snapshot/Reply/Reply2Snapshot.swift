@@ -29,7 +29,7 @@ public struct Reply2Snapshot: CacheIdentifiable {
     
     public var cacheId: Int { reply.id }
     
-    init(from commentReply: ApiCommentReplyView) throws(ApiClientError) {
+    init(from commentReply: LemmyCommentReplyView) throws(ApiClientError) {
         self.reply = try .init(from: commentReply.commentReply)
         self.comment = try .init(from: commentReply.comment)
         self.creator = try .init(from: commentReply.creator)
@@ -42,13 +42,13 @@ public struct Reply2Snapshot: CacheIdentifiable {
         } else if let subscribedType = commentReply.subscribed {
             self.subscribed = subscribedType != .notSubscribed
         } else {
-            throw .responseMissingRequiredData("ApiCommentReplyView subscribed")
+            throw .responseMissingRequiredData("LemmyCommentReplyView subscribed")
         }
         
         if let childCount = commentReply.comment.childCount ?? commentReply.counts?.childCount {
             self.commentCount = childCount
         } else {
-            throw .responseMissingRequiredData("ApiCommentReplyView childCount")
+            throw .responseMissingRequiredData("LemmyCommentReplyView childCount")
         }
         
         self.creatorIsAdmin = commentReply.creatorIsAdmin
@@ -66,7 +66,7 @@ public struct Reply2Snapshot: CacheIdentifiable {
         } else if let saved = commentReply.saved {
             self.saved = saved
         } else {
-            throw .responseMissingRequiredData("ApiCommentReplyView saved")
+            throw .responseMissingRequiredData("LemmyCommentReplyView saved")
         }
         
         if let counts = commentReply.counts {
@@ -74,15 +74,15 @@ public struct Reply2Snapshot: CacheIdentifiable {
         } else if let upvotes = commentReply.comment.upvotes, let downvotes = commentReply.comment.downvotes {
             self.votes = .init(upvotes: upvotes, downvotes: downvotes, myVote: .guaranteedInit(from: commentReply.commentActions?.likeScore))
         } else {
-            throw .responseMissingRequiredData("ApiCommentReplyView score")
+            throw .responseMissingRequiredData("LemmyCommentReplyView score")
         }
     }
     
-    init(from personMention: ApiPersonCommentMentionView) throws(ApiClientError) {
+    init(from personMention: LemmyPersonCommentMentionView) throws(ApiClientError) {
         if let mention = personMention.personCommentMention ?? personMention.personMention {
             self.reply = try .init(from: mention)
         } else {
-            throw .responseMissingRequiredData("ApiPersonCommentMentionView mention")
+            throw .responseMissingRequiredData("LemmyPersonCommentMentionView mention")
         }
         
         self.comment = try .init(from: personMention.comment)
@@ -96,13 +96,13 @@ public struct Reply2Snapshot: CacheIdentifiable {
         } else if let subscribedType = personMention.subscribed {
             self.subscribed = subscribedType != .notSubscribed
         } else {
-            throw .responseMissingRequiredData("ApiPersonCommentMentionView suscribed")
+            throw .responseMissingRequiredData("LemmyPersonCommentMentionView suscribed")
         }
         
         if let childCount = personMention.comment.childCount ?? personMention.counts?.childCount {
             self.commentCount = childCount
         } else {
-            throw .responseMissingRequiredData("ApiPersonCommentMentionView childCount")
+            throw .responseMissingRequiredData("LemmyPersonCommentMentionView childCount")
         }
         
         self.creatorIsAdmin = personMention.creatorIsAdmin
@@ -120,7 +120,7 @@ public struct Reply2Snapshot: CacheIdentifiable {
         } else if let saved = personMention.saved {
             self.saved = saved
         } else {
-            throw .responseMissingRequiredData("ApiPersonCommentMentionView saved")
+            throw .responseMissingRequiredData("LemmyPersonCommentMentionView saved")
         }
         
         if let counts = personMention.counts {
@@ -128,7 +128,7 @@ public struct Reply2Snapshot: CacheIdentifiable {
         } else if let upvotes = personMention.comment.upvotes, let downvotes = personMention.comment.downvotes {
             self.votes = .init(upvotes: upvotes, downvotes: downvotes, myVote: .guaranteedInit(from: personMention.commentActions?.likeScore))
         } else {
-            throw .responseMissingRequiredData("ApiPersonCommentMentionView score")
+            throw .responseMissingRequiredData("LemmyPersonCommentMentionView score")
         }
         
         // TODO: Cache init & `update`

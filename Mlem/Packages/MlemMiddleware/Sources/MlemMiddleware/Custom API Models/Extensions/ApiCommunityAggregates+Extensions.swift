@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension ApiCommunityAggregates {
+extension LemmyCommunityAggregates {
     static var zero: Self {
         .init(
             communityId: 0,

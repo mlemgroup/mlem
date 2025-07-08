@@ -25,7 +25,7 @@ public class LemmyConnection: InstanceConnection {
     public let baseUrl: URL
     public var token: String?
     
-    private(set) var contextDataManager: SharedTaskManager<Context, ApiGetSiteResponse> = .init()
+    private(set) var contextDataManager: SharedTaskManager<Context, LemmyGetSiteResponse> = .init()
 
     public var fetchedVersion: SiteVersion? {
         contextDataManager.fetchedValue?.siteVersion

@@ -32,7 +32,7 @@ public struct ReportSnapshot: CacheIdentifiable {
         return hasher.finalize()
     }
     
-    init(from report: ApiCommentReportView) throws(ApiClientError) {
+    init(from report: LemmyCommentReportView) throws(ApiClientError) {
         self.creator = try .init(from: report.creator)
         
         self.id = report.commentReport.id
@@ -59,7 +59,7 @@ public struct ReportSnapshot: CacheIdentifiable {
         }
     }
     
-    init(from report: ApiPostReportView) throws(ApiClientError) {
+    init(from report: LemmyPostReportView) throws(ApiClientError) {
         self.creator = try .init(from: report.creator)
         
         self.id = report.postReport.id
@@ -86,7 +86,7 @@ public struct ReportSnapshot: CacheIdentifiable {
         }
     }
     
-    init(from report: ApiPrivateMessageReportView) throws(ApiClientError) {
+    init(from report: LemmyPrivateMessageReportView) throws(ApiClientError) {
         self.creator = try .init(from: report.creator)
         
         self.id = report.privateMessageReport.id

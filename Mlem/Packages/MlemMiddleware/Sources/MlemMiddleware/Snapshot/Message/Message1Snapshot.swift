@@ -24,7 +24,7 @@ public struct Message1Snapshot: CacheIdentifiable {
     
     public var cacheId: Int { id }
     
-    public init(from message: ApiPrivateMessage) throws(ApiClientError) {
+    public init(from message: LemmyPrivateMessage) throws(ApiClientError) {
         self.actorId = message.apId
         self.id = message.id
         self.creatorId = message.creatorId

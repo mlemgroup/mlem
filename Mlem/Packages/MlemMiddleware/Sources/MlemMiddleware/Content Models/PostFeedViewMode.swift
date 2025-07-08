@@ -10,7 +10,7 @@ import Foundation
 public enum PostFeedViewMode {
     case list, card, smallCard
     
-    init(from listingMode: ApiPostListingMode) {
+    init(from listingMode: LemmyPostListingMode) {
         self = switch listingMode {
         case .list: .list
         case .card: .card
@@ -18,7 +18,7 @@ public enum PostFeedViewMode {
         }
     }
     
-    var apiType: ApiPostListingMode {
+    var apiType: LemmyPostListingMode {
         switch self {
         case .list: .list
         case .card: .card

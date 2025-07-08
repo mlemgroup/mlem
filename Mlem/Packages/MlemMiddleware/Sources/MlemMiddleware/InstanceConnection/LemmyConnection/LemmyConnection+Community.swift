@@ -10,7 +10,7 @@ import Foundation
 public extension LemmyConnection {
     func getCommunity(id: Int) async throws -> Community3Snapshot {
         let response = try await performingForEndpoint { endpoint in
-            GetCommunityRequest(endpoint: endpoint, id: id, name: nil)
+            LemmyGetCommunityRequest(endpoint: endpoint, id: id, name: nil)
         }
         return try .init(from: response)
     }
@@ -18,7 +18,7 @@ public extension LemmyConnection {
     func getCommunity(url: URL) async throws -> Community2Snapshot {
         do {
             let response = try await performingForEndpoint { endpoint in
-                ResolveObjectRequest(endpoint: endpoint, q: url.absoluteString)
+                LemmyResolveObjectRequest(endpoint: endpoint, q: url.absoluteString)
             }
             if let community = response.community {
                 return try .init(from: community)
@@ -42,7 +42,7 @@ public extension LemmyConnection {
         sort: SearchSortType = .top(.allTime)
     ) async throws -> [Community2Snapshot] {
         let response = try await performingForEndpoint { endpoint in
-            SearchRequest(
+            LemmySearchRequest(
                 endpoint: .v3,
                 q: query,
                 communityId: nil,
@@ -74,7 +74,7 @@ public extension LemmyConnection {
     @discardableResult
     func getSubscriptionList(page: Int, limit: Int) async throws -> [Community2Snapshot] {
         let response = try await performingForEndpoint { endpoint in
-            ListCommunitiesRequest(
+            LemmyListCommunitiesRequest(
                 endpoint: endpoint,
                 type_: .subscribed,
                 sort: nil,
@@ -92,7 +92,7 @@ public extension LemmyConnection {
     @discardableResult
     func subscribeToCommunity(id: Int, subscribe: Bool) async throws -> Community2Snapshot {
         let response = try await performingForEndpoint { endpoint in
-            FollowCommunityRequest(endpoint: endpoint, communityId: id, follow: subscribe)
+            LemmyFollowCommunityRequest(endpoint: endpoint, communityId: id, follow: subscribe)
         }
         return try .init(from: response.communityView)
     }
@@ -100,7 +100,7 @@ public extension LemmyConnection {
     @discardableResult
     func blockCommunity(id: Int, block: Bool) async throws -> Community2Snapshot {
         let response = try await performingForEndpoint { endpoint in
-            UserBlockCommunityRequest(endpoint: endpoint, communityId: id, block: block)
+            LemmyUserBlockCommunityRequest(endpoint: endpoint, communityId: id, block: block)
         }
         return try .init(from: response.communityView)
     }
@@ -112,14 +112,14 @@ public extension LemmyConnection {
         reason: String?
     ) async throws -> Community2Snapshot {
         let response = try await performingForEndpoint { endpoint in
-            RemoveCommunityRequest(endpoint: .v3, communityId: id, removed: remove, reason: reason)
+            LemmyRemoveCommunityRequest(endpoint: .v3, communityId: id, removed: remove, reason: reason)
         }
         return try .init(from: response.communityView)
     }
     
     func purgeCommunity(id: Int, reason: String?) async throws {
         let response = try await performingForEndpoint { endpoint in
-            PurgeCommunityRequest(endpoint: endpoint, communityId: id, reason: reason)
+            LemmyPurgeCommunityRequest(endpoint: endpoint, communityId: id, reason: reason)
         }
     }
     
@@ -130,7 +130,7 @@ public extension LemmyConnection {
         added: Bool
     ) async throws -> (moderators: [Person1Snapshot], community: Community1Snapshot) {
         let response = try await performingForEndpoint { endpoint in
-            AddModToCommunityRequest(
+            LemmyAddModToCommunityRequest(
                 endpoint: endpoint,
                 communityId: communityId,
                 personId: personId,

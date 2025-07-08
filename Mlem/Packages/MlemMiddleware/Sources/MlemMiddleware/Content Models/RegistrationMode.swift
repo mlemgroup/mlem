@@ -10,7 +10,7 @@ import Foundation
 public enum RegistrationMode {
     case closed, open, requiresApplication
     
-    init(from mode: ApiRegistrationMode) {
+    init(from mode: LemmyRegistrationMode) {
         self = switch mode {
         case .closed: .closed
         case .requireApplication: .requiresApplication
@@ -18,7 +18,7 @@ public enum RegistrationMode {
         }
     }
     
-    var apiType: ApiRegistrationMode {
+    var apiType: LemmyRegistrationMode {
         switch self {
         case .closed: .closed
         case .open: .open

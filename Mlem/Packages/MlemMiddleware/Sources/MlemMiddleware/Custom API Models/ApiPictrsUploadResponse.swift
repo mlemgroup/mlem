@@ -1,5 +1,5 @@
 //
-//  ApiPictrsUploadResponse.swift
+//  LemmyPictrsUploadResponse.swift
 //
 //
 //  Created by Sjmarf on 26/08/2024.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct ApiPictrsUploadResponse: Codable {
+public struct LemmyPictrsUploadResponse: Codable {
     public let msg: String?
-    public let files: [ApiPictrsFile]?
+    public let files: [LemmyPictrsFile]?
 }

@@ -26,7 +26,7 @@ public struct Reply1Snapshot: CacheIdentifiable, Identifiable {
         return hasher.finalize()
     }
 
-    public init(from commentReply: ApiCommentReply) throws(ApiClientError) {
+    public init(from commentReply: LemmyCommentReply) throws(ApiClientError) {
         self.id = commentReply.id
         self.recipientId = commentReply.recipientId
         self.commentId = commentReply.commentId
@@ -35,7 +35,7 @@ public struct Reply1Snapshot: CacheIdentifiable, Identifiable {
         self.isMention = false
     }
     
-    public init(from personMention: ApiPersonCommentMention) throws(ApiClientError) {
+    public init(from personMention: LemmyPersonCommentMention) throws(ApiClientError) {
         self.id = personMention.id
         self.recipientId = personMention.recipientId
         self.commentId = personMention.commentId

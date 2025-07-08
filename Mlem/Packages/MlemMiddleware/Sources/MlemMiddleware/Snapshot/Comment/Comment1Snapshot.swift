@@ -27,7 +27,7 @@ public struct Comment1Snapshot: CacheIdentifiable {
     
     public var cacheId: Int { id }
     
-    public init(from comment: ApiComment) throws(ApiClientError) {
+    public init(from comment: LemmyComment) throws(ApiClientError) {
         self.actorId = comment.apId
         self.id = comment.id
         self.creatorId = comment.creatorId

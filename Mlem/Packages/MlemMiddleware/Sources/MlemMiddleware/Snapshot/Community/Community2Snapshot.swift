@@ -22,7 +22,7 @@ public struct Community2Snapshot: CacheIdentifiable {
     
     public var cacheId: Int { community.cacheId }
     
-    init(from community: ApiCommunityView) throws(ApiClientError) {
+    init(from community: LemmyCommunityView) throws(ApiClientError) {
         self.community = try .init(from: community.community)
         
         if let total = community.community.subscribers ?? community.counts?.subscribers,
@@ -35,19 +35,19 @@ public struct Community2Snapshot: CacheIdentifiable {
                 pending: community.communityActions?.followState == .pending || community.subscribed == .pending
             )
         } else {
-            throw .responseMissingRequiredData("ApiCommunityView subscribed")
+            throw .responseMissingRequiredData("LemmyCommunityView subscribed")
         }
         
         if let postCount = community.counts?.posts ?? community.community.posts {
             self.postCount = postCount
         } else {
-            throw .responseMissingRequiredData("ApiCommunityView postCount")
+            throw .responseMissingRequiredData("LemmyCommunityView postCount")
         }
         
         if let commentCount = community.counts?.comments ?? community.community.comments {
             self.commentCount = commentCount
         } else {
-            throw .responseMissingRequiredData("ApiCommunityView commentCount")
+            throw .responseMissingRequiredData("LemmyCommunityView commentCount")
         }
         
         if let sixMonths = community.counts?.usersActiveHalfYear ?? community.community.usersActiveHalfYear,
@@ -61,7 +61,7 @@ public struct Community2Snapshot: CacheIdentifiable {
                 day: day
             )
         } else {
-            throw .responseMissingRequiredData("ApiCommunityView activeUserCount")
+            throw .responseMissingRequiredData("LemmyCommunityView activeUserCount")
         }
         
         if let actions = community.communityActions {

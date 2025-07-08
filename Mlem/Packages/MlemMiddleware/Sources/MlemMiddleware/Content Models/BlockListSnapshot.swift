@@ -15,7 +15,7 @@ public struct BlockListSnapshot {
     /// Mapping `actorId` to `instanceId`.
     var instances: [ActorIdentifier: Int] = .init()
     
-    init(from myUserInfo: ApiMyUserInfo) {
+    init(from myUserInfo: LemmyMyUserInfo) {
         self.people = myUserInfo.personBlocks.reduce(into: [:]) {
             if let actorId = $1.target.apId ?? $1.target.actorId {
                 $0[actorId] = $1.target.id

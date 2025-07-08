@@ -8,8 +8,8 @@
 import Foundation
 
 extension Comment1 {
-    var apiComment: ApiComment {
-        ApiComment(
+    var apiComment: LemmyComment {
+        LemmyComment(
             id: id,
             creatorId: creatorId,
             postId: postId,

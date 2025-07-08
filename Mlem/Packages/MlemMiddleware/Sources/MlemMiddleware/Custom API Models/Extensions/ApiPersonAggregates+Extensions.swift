@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension ApiPersonAggregates {
+extension LemmyPersonAggregates {
     static var zero: Self {
         .init(personId: 0, postCount: 0, commentCount: 0)
     }

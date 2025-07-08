@@ -8,8 +8,8 @@
 import Foundation
 
 extension Comment2 {
-    var apiCommentView: ApiCommentView {
-        ApiCommentView(
+    var apiCommentView: LemmyCommentView {
+        LemmyCommentView(
             comment: comment1.apiComment,
             creator: creator.apiPerson,
             post: post.apiPost,

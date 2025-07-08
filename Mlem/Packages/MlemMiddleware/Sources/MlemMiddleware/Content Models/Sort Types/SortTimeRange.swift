@@ -15,7 +15,7 @@ public enum SortTimeRange: Hashable, Sendable {
         .limited(timeRangeLimit.timeInterval)
     }
     
-    init?(_ apiSortType: ApiSortType) {
+    init?(_ apiSortType: LemmySortType) {
         if apiSortType == .topAll {
             self = .allTime
         } else if let legacyTimeRange = LegacySortTimeRangeLimit(apiSortType) {
@@ -35,7 +35,7 @@ public enum SortTimeRange: Hashable, Sendable {
         }
     }
     
-    public var legacyApiSortType: ApiSortType? {
+    public var legacyApiSortType: LemmySortType? {
         switch self {
         case .allTime: .topAll
         case let .limited(timeInterval): LegacySortTimeRangeLimit(timeInterval)?.legacyApiSortType

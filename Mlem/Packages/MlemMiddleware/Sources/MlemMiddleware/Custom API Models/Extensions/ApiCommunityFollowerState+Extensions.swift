@@ -7,6 +7,6 @@
 
 import Foundation
 
-public extension ApiCommunityFollowerState {
+public extension LemmyCommunityFollowerState {
     var isSubscribed: Bool { self == .accepted }
 }

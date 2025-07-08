@@ -19,7 +19,7 @@ public struct Person3Snapshot: CacheIdentifiable {
     
     public var cacheId: Int { person.cacheId }
     
-    init(from userInfo: ApiMyUserInfo) throws(ApiClientError) {
+    init(from userInfo: LemmyMyUserInfo) throws(ApiClientError) {
         self.person = try .init(from: userInfo.localUserView)
         self.site = nil
         
@@ -33,7 +33,7 @@ public struct Person3Snapshot: CacheIdentifiable {
         self.moderatedCommunities = moderatedCommunities
     }
     
-    init(from personDetails: ApiGetPersonDetailsResponse) throws(ApiClientError) {
+    init(from personDetails: LemmyGetPersonDetailsResponse) throws(ApiClientError) {
         self.person = try .init(from: personDetails.personView)
         
         if let site = personDetails.site {

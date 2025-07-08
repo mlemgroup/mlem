@@ -11,10 +11,10 @@ public extension Person1 {
     struct CodedData: Codable {
         let apiUrl: URL
         let apiMyPersonId: Int?
-        let apiPerson: ApiPerson
+        let apiPerson: LemmyPerson
     }
     
-    internal var apiPerson: ApiPerson {
+    internal var apiPerson: LemmyPerson {
         .init(
             id: id,
             name: name,

@@ -9,7 +9,7 @@ import Foundation
 import Observation
 
 // There are no higher tiers of this model yet - in future `ImageUpload2` will be
-// created from `ApiLocalImage` and `ImageUpload3` will be created from `ApiLocalImageView`.
+// created from `LemmyLocalImage` and `ImageUpload3` will be created from `LemmyLocalImageView`.
 
 @Observable
 public class ImageUpload1: ImageUpload1Providing {

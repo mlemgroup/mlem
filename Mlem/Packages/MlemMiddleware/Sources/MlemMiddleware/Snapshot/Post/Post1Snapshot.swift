@@ -34,7 +34,7 @@ public struct Post1Snapshot: CacheIdentifiable {
 
     public var cacheId: Int { id }
     
-    public init(from post: ApiPost) throws(ApiClientError) {
+    public init(from post: LemmyPost) throws(ApiClientError) {
         self.actorId = post.apId
         self.id = post.id
         self.creatorId = post.creatorId

@@ -18,7 +18,7 @@ public struct Community3Snapshot: CacheIdentifiable {
     
     public var cacheId: Int { community.cacheId }
     
-    public init(from community: ApiGetCommunityResponse) throws(ApiClientError) {
+    public init(from community: LemmyGetCommunityResponse) throws(ApiClientError) {
         self.community = try .init(from: community.communityView)
         if let site = community.site {
             self.instance = try .init(from: site)

@@ -8,8 +8,8 @@
 import Foundation
 
 extension Post1 {
-    var apiPost: ApiPost {
-        ApiPost(
+    var apiPost: LemmyPost {
+        LemmyPost(
             id: id,
             name: title,
             url: linkUrl,

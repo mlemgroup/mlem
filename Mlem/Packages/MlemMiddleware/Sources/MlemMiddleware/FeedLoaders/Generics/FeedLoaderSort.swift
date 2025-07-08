@@ -21,7 +21,7 @@ public extension FeedLoaderSort {
         }
     }
     
-    var apiType: ApiSortType {
+    var apiType: LemmySortType {
         switch self {
         case .new: .new
         }

@@ -20,7 +20,7 @@ public struct Person2Snapshot: CacheIdentifiable {
     
     public var cacheId: Int { person.cacheId }
     
-    init(from person: ApiPersonView) throws(ApiClientError) {
+    init(from person: LemmyPersonView) throws(ApiClientError) {
         self.person = try .init(from: person.person)
         
         self.isAdmin = person.isAdmin
@@ -28,30 +28,30 @@ public struct Person2Snapshot: CacheIdentifiable {
         if let postCount = person.person.postCount ?? person.counts?.postCount {
             self.postCount = postCount
         } else {
-            throw .responseMissingRequiredData("ApiPersonView postCount")
+            throw .responseMissingRequiredData("LemmyPersonView postCount")
         }
         
         if let commentCount = person.person.commentCount ?? person.counts?.commentCount {
             self.commentCount = commentCount
         } else {
-            throw .responseMissingRequiredData("ApiPersonView commentCount")
+            throw .responseMissingRequiredData("LemmyPersonView commentCount")
         }
     }
     
-    init(from localUser: ApiLocalUserView) throws(ApiClientError) {
+    init(from localUser: LemmyLocalUserView) throws(ApiClientError) {
         self.person = try .init(from: localUser.person)
         self.isAdmin = localUser.localUser.admin
         
         if let postCount = localUser.person.postCount ?? localUser.counts?.postCount {
             self.postCount = postCount
         } else {
-            throw .responseMissingRequiredData("ApiLocalUserView postCount")
+            throw .responseMissingRequiredData("LemmyLocalUserView postCount")
         }
         
         if let commentCount = localUser.person.commentCount ?? localUser.counts?.commentCount {
             self.commentCount = commentCount
         } else {
-            throw .responseMissingRequiredData("ApiLocalUserView commentCount")
+            throw .responseMissingRequiredData("LemmyLocalUserView commentCount")
         }
     }
 }

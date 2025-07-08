@@ -11,10 +11,10 @@ public extension Community2 {
     struct CodedData: Codable {
         let apiUrl: URL
         let apiMyPersonId: Int?
-        let apiCommunityView: ApiCommunityView
+        let apiCommunityView: LemmyCommunityView
     }
     
-    internal var apiCommunityView: ApiCommunityView {
+    internal var apiCommunityView: LemmyCommunityView {
         .init(
             community: community1.apiCommunity,
             subscribed: subscription.subscribedType,

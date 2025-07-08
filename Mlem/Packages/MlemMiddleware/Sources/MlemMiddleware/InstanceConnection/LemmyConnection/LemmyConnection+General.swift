@@ -14,7 +14,7 @@ public extension LemmyConnection {
         totpToken: String?
     ) async throws -> String {
         let response = try await performingForEndpoint { endpoint in
-            LoginRequest(
+            LemmyLoginRequest(
                 endpoint: endpoint,
                 usernameOrEmail: usernameOrEmail,
                 password: password,
@@ -23,7 +23,7 @@ public extension LemmyConnection {
         }
         
         // I actually don't think this is necessary - the login endpoint seems to throw these errors itself.
-        // I suspect that `registrationCreated` and `verifyEmailSent` can only be true for the `ApiLoginResponse`
+        // I suspect that `registrationCreated` and `verifyEmailSent` can only be true for the `LemmyLoginResponse`
         // that is returned when signing in. Nevertheless, I've included this just in case.
         if response.registrationCreated {
             throw ApiClientError.response(.init(error: "registration_application_is_pending"), 200)
@@ -41,7 +41,7 @@ public extension LemmyConnection {
     
     func getUsernameFromToken(token: String) async throws -> String {
         let response = try await processingForEndpoint { endpoint in
-            let request = GetSiteRequest(endpoint: endpoint)
+            let request = LemmyGetSiteRequest(endpoint: endpoint)
             return try await perform(request, tokenOverride: token)
         }
         if let name = response.myUser?.localUserView.person.name {
@@ -61,7 +61,7 @@ public extension LemmyConnection {
         applicationQuestionResponse: String?
     ) async throws -> SignUpResponse {
         let response = try await performingForEndpoint { endpoint in
-            RegisterRequest(
+            LemmyRegisterRequest(
                 endpoint: .v3,
                 username: username,
                 password: password,
@@ -84,7 +84,7 @@ public extension LemmyConnection {
         oldPassword: String
     ) async throws -> String {
         let response = try await performingForEndpoint { endpoint in
-            ChangePasswordRequest(
+            LemmyChangePasswordRequest(
                 endpoint: endpoint,
                 newPassword: newPassword,
                 newPasswordVerify: confirmNewPassword,
@@ -100,7 +100,7 @@ public extension LemmyConnection {
     
     func getCaptcha() async throws -> Captcha {
         let response = try await performingForEndpoint { endpoint in
-            GetCaptchaRequest(endpoint: endpoint)
+            LemmyGetCaptchaRequest(endpoint: endpoint)
         }
         guard let info = response.ok,
               let uuid = UUID(uuidString: info.uuid),
@@ -112,14 +112,14 @@ public extension LemmyConnection {
     
     func resolve(url: URL) async throws -> ResolvedContent {
         let response = try await performingForEndpoint { endpoint in
-            ResolveObjectRequest(endpoint: endpoint, q: url.absoluteString)
+            LemmyResolveObjectRequest(endpoint: endpoint, q: url.absoluteString)
         }
         return try .init(from: response)
     }
     
     func getBlocked() async throws -> (people: [Person1Snapshot], communities: [Community1Snapshot], instances: [Instance1Snapshot]) {
         let response = try await performingForEndpoint { endpoint in
-            GetSiteRequest(endpoint: endpoint)
+            LemmyGetSiteRequest(endpoint: endpoint)
         }
         
         guard let myUser = response.myUser else { return ([], [], []) }
@@ -142,7 +142,7 @@ public extension LemmyConnection {
         type: ModlogEntryType? = nil
     ) async throws -> [ModlogEntrySnapshot] {
         let response = try await performingForEndpoint { endpoint in
-            GetModLogRequest(
+            LemmyGetModLogRequest(
                 endpoint: endpoint,
                 modPersonId: moderatorId,
                 communityId: communityId,

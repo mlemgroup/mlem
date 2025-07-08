@@ -18,7 +18,7 @@ public protocol Community3Providing: Community2Providing {
 public extension Community3Providing {
     var community2: Community2 { community3.community2 }
     
-    /// This is optional because it's defined as such on ``ApiGetCommunityResponse``. I'm not sure when it actually returns `nil`.
+    /// This is optional because it's defined as such on ``LemmyGetCommunityResponse``. I'm not sure when it actually returns `nil`.
     var instance: Instance1? { community3.instance }
     var moderators: [Person1] { community3.moderators }
     var discussionLanguageIds: Set<Int> { community3.discussionLanguageIds }

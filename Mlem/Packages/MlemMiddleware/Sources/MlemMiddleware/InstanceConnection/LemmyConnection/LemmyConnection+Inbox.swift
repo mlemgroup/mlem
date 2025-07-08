@@ -15,7 +15,7 @@ public extension LemmyConnection {
         unreadOnly: Bool = false
     ) async throws -> [Reply2Snapshot] {
         let response = try await performingForEndpoint { _ in
-            ListRepliesRequest(
+            LemmyListRepliesRequest(
                 sort: sort.apiSortType,
                 page: page,
                 limit: limit,
@@ -32,7 +32,7 @@ public extension LemmyConnection {
         unreadOnly: Bool = false
     ) async throws -> [Reply2Snapshot] {
         let response = try await performingForEndpoint { _ in
-            ListMentionsRequest(
+            LemmyListMentionsRequest(
                 sort: sort.apiSortType,
                 page: page,
                 limit: limit,
@@ -49,7 +49,7 @@ public extension LemmyConnection {
         unreadOnly: Bool = false
     ) async throws -> [Message2Snapshot] {
         let response = try await performingForEndpoint { _ in
-            GetPrivateMessageRequest(
+            LemmyGetPrivateMessageRequest(
                 unreadOnly: unreadOnly,
                 page: page,
                 limit: limit,
@@ -61,25 +61,25 @@ public extension LemmyConnection {
     
     func markAllAsRead() async throws {
         let response = try await performingForEndpoint { endpoint in
-            MarkAllNotificationsReadRequest(endpoint: endpoint)
+            LemmyMarkAllNotificationsReadRequest(endpoint: endpoint)
         }
     }
     
     func markReplyAsRead(id: Int, read: Bool = true) async throws {
         _ = try await performingForEndpoint { endpoint in
-            MarkReplyAsReadRequest(endpoint: endpoint, commentReplyId: id, read: read)
+            LemmyMarkReplyAsReadRequest(endpoint: endpoint, commentReplyId: id, read: read)
         }
     }
     
     func markMentionAsRead(id: Int, read: Bool = true) async throws {
         _ = try await performingForEndpoint { _ in
-            MarkPersonMentionAsReadRequest(personMentionId: id, read: read)
+            LemmyMarkPersonMentionAsReadRequest(personMentionId: id, read: read)
         }
     }
     
     func markMessageAsRead(id: Int, read: Bool = true) async throws {
         let response = try await performingForEndpoint { endpoint in
-            MarkPmAsReadRequest(
+            LemmyMarkPmAsReadRequest(
                 endpoint: endpoint,
                 privateMessageId: id,
                 read: read
@@ -89,14 +89,14 @@ public extension LemmyConnection {
     
     func getPersonalUnreadCount() async throws -> PersonalUnreadCountSnapshot {
         let response = try await performingForEndpoint { endpoint in
-            UnreadCountRequest(endpoint: endpoint)
+            LemmyUnreadCountRequest(endpoint: endpoint)
         }
         return try .init(from: response)
     }
     
     func createMessage(personId: Int, content: String) async throws -> Message2Snapshot {
         let response = try await performingForEndpoint { endpoint in
-            CreatePrivateMessageRequest(
+            LemmyCreatePrivateMessageRequest(
                 endpoint: endpoint,
                 content: content,
                 recipientId: personId
@@ -108,7 +108,7 @@ public extension LemmyConnection {
     @discardableResult
     func editMessage(id: Int, content: String) async throws -> Message2Snapshot {
         let response = try await performingForEndpoint { endpoint in
-            UpdatePrivateMessageRequest(
+            LemmyUpdatePrivateMessageRequest(
                 endpoint: endpoint,
                 privateMessageId: id,
                 content: content
@@ -120,7 +120,7 @@ public extension LemmyConnection {
     @discardableResult
     func reportMessage(id: Int, reason: String) async throws -> ReportSnapshot {
         let response = try await performingForEndpoint { endpoint in
-            CreatePmReportRequest(endpoint: endpoint, privateMessageId: id, reason: reason)
+            LemmyCreatePmReportRequest(endpoint: endpoint, privateMessageId: id, reason: reason)
         }
         return try .init(from: response.privateMessageReportView)
     }
@@ -128,7 +128,7 @@ public extension LemmyConnection {
     @discardableResult
     func deleteMessage(id: Int, delete: Bool) async throws -> Message2Snapshot {
         let response = try await performingForEndpoint { endpoint in
-            DeletePrivateMessageRequest(endpoint: endpoint, privateMessageId: id, deleted: delete)
+            LemmyDeletePrivateMessageRequest(endpoint: endpoint, privateMessageId: id, deleted: delete)
         }
         return try .init(from: response.privateMessageView)
     }

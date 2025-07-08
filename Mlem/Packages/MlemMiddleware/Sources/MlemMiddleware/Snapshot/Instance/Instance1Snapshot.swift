@@ -28,11 +28,11 @@ public struct Instance1Snapshot: CacheIdentifiable {
     
     public var cacheId: Int { id }
     
-    public init(from site: ApiSite) throws(ApiClientError) {
+    public init(from site: LemmySite) throws(ApiClientError) {
         if let actorId = site.apId ?? site.actorId {
             self.actorId = actorId
         } else {
-            throw .responseMissingRequiredData("ApiSite actorId")
+            throw .responseMissingRequiredData("LemmySite actorId")
         }
         
         self.id = site.id

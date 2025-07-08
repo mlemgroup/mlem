@@ -16,7 +16,7 @@ public struct Message2Snapshot: CacheIdentifiable {
     
     public var cacheId: Int { message.cacheId }
     
-    public init(from message: ApiPrivateMessageView) throws(ApiClientError) {
+    public init(from message: LemmyPrivateMessageView) throws(ApiClientError) {
         self.message = try .init(from: message.privateMessage)
         self.creator = try .init(from: message.creator)
         self.recipient = try .init(from: message.recipient)

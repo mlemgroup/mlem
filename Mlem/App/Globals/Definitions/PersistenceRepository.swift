@@ -160,7 +160,7 @@ class PersistenceRepository {
     }
     
     func loadPinnedSortTypes() -> Set<PostSortType> {
-        let apiSortTypes = load(Set<ApiSortType>.self, from: PersistencePath.pinnedSortTypes) ?? [
+        let apiSortTypes = load(Set<LemmySortType>.self, from: PersistencePath.pinnedSortTypes) ?? [
             .hot, .new, .topSixHour, .topDay, .topWeek, .topMonth, .topYear, .topAll
         ]
         return Set(apiSortTypes.map(PostSortType.init))
