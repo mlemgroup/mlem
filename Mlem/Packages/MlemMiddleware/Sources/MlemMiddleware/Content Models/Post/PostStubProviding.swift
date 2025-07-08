@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol PostStubProviding: ContentModel, Resolvable {
+public protocol PostStubProviding: ContentModel, Resolvable, AnyObject {
     // From Post1Providing. These are defined as nil in the extension below
     var actorId_: ActorIdentifier? { get }
     var creatorId_: Int? { get }

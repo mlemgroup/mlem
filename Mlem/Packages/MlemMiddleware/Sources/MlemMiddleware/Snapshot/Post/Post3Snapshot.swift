@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Post3Snapshot: CacheIdentifiable {
+public struct Post3Snapshot: CacheIdentifiable, PostSnapshotProviding {
     // Won't change, but the corresponding models need to
     // be updated within the `update` method of Post2.
     public let post: Post2Snapshot

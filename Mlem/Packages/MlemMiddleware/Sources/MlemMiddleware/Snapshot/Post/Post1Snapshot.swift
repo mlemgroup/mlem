@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Post1Snapshot: CacheIdentifiable {
+public struct Post1Snapshot: CacheIdentifiable, PostSnapshotProviding {
     // Won't change.
     public let actorId: ActorIdentifier
     public let id: Int
