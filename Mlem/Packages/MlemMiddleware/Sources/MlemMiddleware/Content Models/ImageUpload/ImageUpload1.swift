@@ -17,18 +17,17 @@ public class ImageUpload1: ImageUpload1Providing {
     public var api: ApiClient
     public var mediaUpload1: ImageUpload1 { self }
     
+    public let url: URL
+    
     // This includes the file extension
-    let alias: String
-    let deleteToken: String
+    let alias: String?
+    let deleteToken: String?
     
     public internal(set) var deleted: Bool = false
     
-    public var url: URL {
-        api.baseUrl.appending(path: "pictrs/image/\(alias)")
-    }
-    
-    init(api: ApiClient, alias: String, deleteToken: String) {
+    init(api: ApiClient, url: URL, alias: String?, deleteToken: String?) {
         self.api = api
+        self.url = url
         self.alias = alias
         self.deleteToken = deleteToken
     }

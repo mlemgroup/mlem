@@ -8849,9 +8849,6 @@
         }
       }
     },
-    "Unsupported" : {
-
-    },
     "Unsupported Badge" : {
       "localizations" : {
         "fr" : {
@@ -8892,9 +8889,6 @@
           }
         }
       }
-    },
-    "Uploading images on PieFed isn't supported yet." : {
-
     },
     "Uploading..." : {
       "localizations" : {

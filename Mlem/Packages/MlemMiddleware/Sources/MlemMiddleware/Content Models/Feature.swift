@@ -33,6 +33,5 @@ public enum Feature: Hashable {
     
     case commentTreeSortedByDepth
     case inbox
-    case uploadImages
     case editAccountSettings
 }

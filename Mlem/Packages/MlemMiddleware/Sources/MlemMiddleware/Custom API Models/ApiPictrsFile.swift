@@ -7,13 +7,9 @@
 
 import Foundation
 
-public struct ApiPictrsFile: Codable, Equatable, ImageUpload1Backer {
+public struct ApiPictrsFile: Codable, Equatable {
     public let file: String
     public let deleteToken: String
-    
-    public var alias: String { file }
-    
-    public var cacheId: Int { alias.hashValue }
 }
 
 public extension ApiPictrsFile {
