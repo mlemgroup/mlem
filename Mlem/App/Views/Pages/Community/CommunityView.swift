@@ -192,7 +192,9 @@ struct CommunityView: View {
     @ViewBuilder
     func moderationTab(community: any Community) -> some View {
         VStack(spacing: Constants.main.standardSpacing) {
-            ModlogButtonView(community: community)
+            if community.api.supportsOrNil(.modlog) ?? true {
+                ModlogButtonView(community: community)
+            }
 
             VStack(spacing: Constants.main.halfSpacing) {
                 ForEach(community.moderators_ ?? []) { person in
