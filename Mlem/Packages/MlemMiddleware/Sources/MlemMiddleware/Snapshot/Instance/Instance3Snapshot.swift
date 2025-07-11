@@ -33,7 +33,16 @@ public struct Instance3Snapshot: CacheIdentifiable {
         self.allLanguages = site.allLanguages.compactMap { .init($0) }
         self.allowedLanguageIds = Set(site.discussionLanguages).subtracting([0])
         
-        self.blockedUrls = site.blockedUrls?.compactMap { .init(from: $0) }
+        if let blockedUrls = site.blockedUrls {
+            var newBlockedUrls: [InstanceUrlBlockRecord] = []
+            newBlockedUrls.reserveCapacity(blockedUrls.count)
+            for url in blockedUrls {
+                try newBlockedUrls.append(.init(from: url))
+            }
+            self.blockedUrls = newBlockedUrls
+        } else {
+            self.blockedUrls = nil
+        }
     
         var administrators: [Person2Snapshot] = []
         administrators.reserveCapacity(site.admins.count)

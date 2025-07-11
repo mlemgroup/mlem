@@ -18,7 +18,7 @@ public struct Comment2Snapshot: CacheIdentifiable {
     // May change. If you add/remove items from this list,
     // remember to also amend the `update` method of Comment2!
     public let commentCount: Int
-    public let creatorIsModerator: Bool?
+    public let creatorIsModerator: Bool
     public let creatorIsAdmin: Bool
     public let creatorBannedFromCommunity: Bool
     public let votes: VotesModel
@@ -44,7 +44,7 @@ public struct Comment2Snapshot: CacheIdentifiable {
         self.creatorBannedFromCommunity = comment.creatorBannedFromCommunity
         
         if let actions = comment.commentActions {
-            self.saved = actions.saved != nil
+            self.saved = actions.savedAt != nil
         } else if let saved = comment.saved {
             self.saved = saved
         } else {
@@ -86,7 +86,7 @@ public struct Comment2Snapshot: CacheIdentifiable {
         self.creatorBannedFromCommunity = report.creatorBannedFromCommunity ?? false
         
         if let actions = report.commentActions {
-            self.saved = actions.saved != nil
+            self.saved = actions.savedAt != nil
         } else if let saved = report.saved {
             self.saved = saved
         } else {

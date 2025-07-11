@@ -46,7 +46,7 @@ public struct Person4Snapshot: CacheIdentifiable {
         self.email = user.email
         self.showNsfw = user.showNsfw
         self.theme = user.theme
-        self.defaultListingType = .init(from: user.defaultListingType)
+        self.defaultListingType = try .init(from: user.defaultListingType)
         self.interfaceLanguage = user.interfaceLanguage
         self.showAvatars = user.showAvatars
         self.sendNotificationsToEmail = user.sendNotificationsToEmail

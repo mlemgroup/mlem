@@ -65,7 +65,7 @@ public struct Community2Snapshot: CacheIdentifiable {
         }
         
         if let actions = community.communityActions {
-            self.bannedFromCommunity = actions.banExpires != nil
+            self.bannedFromCommunity = actions.banExpiresAt != nil
         } else {
             self.bannedFromCommunity = community.bannedFromCommunity
         }

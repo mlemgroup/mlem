@@ -20,7 +20,7 @@ public final class Comment2: Comment2Providing {
     public let post: Post1
     public let community: Community1
     
-    public var creatorIsModerator: Bool?
+    public var creatorIsModerator: Bool
     public var creatorIsAdmin: Bool
     public var commentCount: Int
     
@@ -46,7 +46,7 @@ public final class Comment2: Comment2Providing {
         community: Community1,
         votesManager: StateManager<VotesModel>,
         savedManager: StateManager<Bool>,
-        creatorIsModerator: Bool?,
+        creatorIsModerator: Bool,
         creatorIsAdmin: Bool,
         creatorBannedFromCommunity: Bool,
         commentCount: Int

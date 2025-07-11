@@ -18,7 +18,7 @@ public struct Post2Snapshot: CacheIdentifiable {
     // remember to also amend the `update` method of Post2!
     public let commentCount: Int
     public let unreadCommentCount: Int
-    public let creatorIsModerator: Bool?
+    public let creatorIsModerator: Bool
     public let creatorIsAdmin: Bool
     public let creatorBannedFromCommunity: Bool
     public let creatorBlocked: Bool
@@ -62,9 +62,9 @@ public struct Post2Snapshot: CacheIdentifiable {
         }
 
         if let actions = post.postActions {
-            self.saved = actions.saved != nil
-            self.read = actions.read != nil
-            self.hidden = actions.hidden != nil
+            self.saved = actions.savedAt != nil
+            self.read = actions.readAt != nil
+            self.hidden = actions.hiddenAt != nil
         } else if let saved = post.saved, let read = post.read, let hidden = post.hidden {
             self.saved = saved
             self.read = read
@@ -115,9 +115,9 @@ public struct Post2Snapshot: CacheIdentifiable {
         }
 
         if let actions = report.postActions {
-            self.saved = actions.saved != nil
-            self.read = actions.read != nil
-            self.hidden = actions.hidden != nil
+            self.saved = actions.savedAt != nil
+            self.read = actions.readAt != nil
+            self.hidden = actions.hiddenAt != nil
         } else if let saved = report.saved, let read = report.read, let hidden = report.hidden {
             self.saved = saved
             self.read = read

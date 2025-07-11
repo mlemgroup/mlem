@@ -29,10 +29,15 @@ public struct Message1Snapshot: CacheIdentifiable {
         self.id = message.id
         self.creatorId = message.creatorId
         self.recipientId = message.recipientId
-        self.created = message.published
         
+        if let published = message.publishedAt ?? message.published {
+            self.created = published
+        } else {
+            throw .responseMissingRequiredData("LemmyPrivateMessage published")
+        }
+
         self.content = message.content
-        self.updated = message.updated
+        self.updated = message.updatedAt ?? message.updated
         self.read = message.read
         self.deleted = message.deleted
     }

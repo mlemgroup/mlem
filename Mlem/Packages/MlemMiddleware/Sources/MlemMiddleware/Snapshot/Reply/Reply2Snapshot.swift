@@ -21,7 +21,7 @@ public struct Reply2Snapshot: CacheIdentifiable {
     // remember to also amend the `update` method of Reply2!
     public let subscribed: Bool
     public let commentCount: Int
-    public let creatorIsModerator: Bool?
+    public let creatorIsModerator: Bool
     public let creatorIsAdmin: Bool
     public let creatorBannedFromCommunity: Bool
     public let votes: VotesModel
@@ -57,7 +57,7 @@ public struct Reply2Snapshot: CacheIdentifiable {
         self.creatorBannedFromCommunity = commentReply.creatorBannedFromCommunity
         
         if let actions = commentReply.commentActions {
-            self.saved = actions.saved != nil
+            self.saved = actions.savedAt != nil
         } else if let saved = commentReply.saved {
             self.saved = saved
         } else {
@@ -106,7 +106,7 @@ public struct Reply2Snapshot: CacheIdentifiable {
         self.creatorBannedFromCommunity = personMention.creatorBannedFromCommunity
         
         if let actions = personMention.commentActions {
-            self.saved = actions.saved != nil
+            self.saved = actions.savedAt != nil
         } else if let saved = personMention.saved {
             self.saved = saved
         } else {

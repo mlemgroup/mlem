@@ -17,16 +17,16 @@ public extension LemmyConnection {
     
     func getCommunity(url: URL) async throws -> Community2Snapshot {
         do {
-            let response = try await performingForEndpoint { endpoint in
-                LemmyResolveObjectRequest(endpoint: endpoint, q: url.absoluteString)
-            }
-            if let community = response.community {
-                return try .init(from: community)
+            let result = try await resolve(url: url)
+            switch result {
+            case let .community(community):
+                return community
+            default:
+                throw ApiClientError.noEntityFound
             }
         } catch let ApiClientError.response(response, _) where response.couldntFindObject {
             throw ApiClientError.noEntityFound
         }
-        throw ApiClientError.noEntityFound
     }
     
     func getCommunity(url: URL) async throws -> Community3Snapshot {
@@ -57,7 +57,6 @@ public extension LemmyConnection {
                 page: page,
                 limit: limit,
                 postTitleOnly: false,
-                searchTerm: query,
                 timeRangeSeconds: sort.timeRangeSeconds,
                 titleOnly: nil,
                 postUrlOnly: nil,

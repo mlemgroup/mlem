@@ -23,6 +23,8 @@ extension Comment1 {
             path: ([0] + parentCommentIds + [id]).map(String.init).joined(separator: "."),
             distinguished: distinguished,
             languageId: languageId,
+            publishedAt: created,
+            updatedAt: updated,
             score: nil,
             upvotes: nil,
             downvotes: nil,
