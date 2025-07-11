@@ -40,6 +40,7 @@ extension InboxView {
             }
         }
         .animation(.easeOut(duration: 0.1), value: feedLoader.items.isEmpty)
+        .padding(.top, (appState.firstApi.supportsOrNil(.privateMessaging) ?? false) ? 0 : Constants.main.standardSpacing)
     }
     
     @ViewBuilder
