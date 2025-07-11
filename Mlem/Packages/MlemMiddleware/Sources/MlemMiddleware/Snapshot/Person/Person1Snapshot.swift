@@ -44,8 +44,14 @@ public struct Person1Snapshot: CacheIdentifiable {
         self.displayName = person.displayName ?? person.name
         self.avatar = person.avatar
         self.banner = person.banner
-        self.created = person.published
-        self.updated = person.updated
+        
+        if let published = person.publishedAt ?? person.published {
+            self.created = published
+        } else {
+            throw .responseMissingRequiredData("LemmyPerson published")
+        }
+        self.updated = person.updatedAt ?? person.updated
+        
         self.description = person.bio
         self.matrixUserId = person.matrixUserId
         self.isBot = person.botAccount

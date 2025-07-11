@@ -38,10 +38,16 @@ public struct Comment1Snapshot: CacheIdentifiable {
             .dropLast()
             .compactMap { Int($0) }
         
-        self.created = comment.published
+        if let published = comment.publishedAt ?? comment.published {
+            self.created = published
+        } else {
+            throw .responseMissingRequiredData("LemmyComment published")
+        }
         
         self.content = comment.content
-        self.updated = comment.updated
+        
+        self.updated = comment.updatedAt ?? comment.updated
+        
         self.distinguished = comment.distinguished
         self.languageId = comment.languageId
         self.deleted = comment.deleted

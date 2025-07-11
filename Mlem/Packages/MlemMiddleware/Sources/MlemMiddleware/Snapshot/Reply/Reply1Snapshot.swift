@@ -31,7 +31,13 @@ public struct Reply1Snapshot: CacheIdentifiable, Identifiable {
         self.recipientId = commentReply.recipientId
         self.commentId = commentReply.commentId
         self.read = commentReply.read
-        self.created = commentReply.published
+        
+        if let published = commentReply.publishedAt ?? commentReply.published {
+            self.created = published
+        } else {
+            throw .responseMissingRequiredData("LemmyCommentReply published")
+        }
+        
         self.isMention = false
     }
     
@@ -40,7 +46,13 @@ public struct Reply1Snapshot: CacheIdentifiable, Identifiable {
         self.recipientId = personMention.recipientId
         self.commentId = personMention.commentId
         self.read = personMention.read
-        self.created = personMention.published
+        
+        if let published = personMention.publishedAt ?? personMention.published {
+            self.created = published
+        } else {
+            throw .responseMissingRequiredData("LemmyPersonCommentMention published")
+        }
+        
         self.isMention = true
     }
 }

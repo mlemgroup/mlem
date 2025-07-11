@@ -30,7 +30,13 @@ public struct RegistrationApplicationSnapshot: CacheIdentifiable {
     
     public init(from application: LemmyRegistrationApplicationView) throws(ApiClientError) {
         self.id = application.registrationApplication.id
-        self.created = application.registrationApplication.published
+        
+        if let published = application.registrationApplication.publishedAt ?? application.registrationApplication.published {
+            self.created = published
+        } else {
+            throw .responseMissingRequiredData("LemmyRegistrationApplication published")
+        }
+        
         self.questionResponse = application.registrationApplication.answer
         self.email = application.creatorLocalUser.email
         self.showNsfw = application.creatorLocalUser.showNsfw

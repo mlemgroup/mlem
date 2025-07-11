@@ -21,7 +21,7 @@ public struct Reply2Snapshot: CacheIdentifiable {
     // remember to also amend the `update` method of Reply2!
     public let subscribed: Bool
     public let commentCount: Int
-    public let creatorIsModerator: Bool?
+    public let creatorIsModerator: Bool
     public let creatorIsAdmin: Bool
     public let creatorBannedFromCommunity: Bool
     public let votes: VotesModel
@@ -53,16 +53,11 @@ public struct Reply2Snapshot: CacheIdentifiable {
         
         self.creatorIsAdmin = commentReply.creatorIsAdmin
 
-        if let actions = commentReply.creatorCommunityActions {
-            self.creatorIsModerator = actions.becameModerator != nil
-            self.creatorBannedFromCommunity = actions.banExpires != nil
-        } else {
-            self.creatorIsModerator = commentReply.creatorIsModerator
-            self.creatorBannedFromCommunity = commentReply.creatorBannedFromCommunity ?? false
-        }
+        self.creatorIsModerator = commentReply.creatorIsModerator
+        self.creatorBannedFromCommunity = commentReply.creatorBannedFromCommunity
         
         if let actions = commentReply.commentActions {
-            self.saved = actions.saved != nil
+            self.saved = actions.savedAt != nil
         } else if let saved = commentReply.saved {
             self.saved = saved
         } else {
@@ -107,16 +102,11 @@ public struct Reply2Snapshot: CacheIdentifiable {
         
         self.creatorIsAdmin = personMention.creatorIsAdmin
 
-        if let actions = personMention.creatorCommunityActions {
-            self.creatorIsModerator = actions.becameModerator != nil
-            self.creatorBannedFromCommunity = actions.banExpires != nil
-        } else {
-            self.creatorIsModerator = personMention.creatorIsModerator
-            self.creatorBannedFromCommunity = personMention.creatorBannedFromCommunity ?? false
-        }
+        self.creatorIsModerator = personMention.creatorIsModerator
+        self.creatorBannedFromCommunity = personMention.creatorBannedFromCommunity
         
         if let actions = personMention.commentActions {
-            self.saved = actions.saved != nil
+            self.saved = actions.savedAt != nil
         } else if let saved = personMention.saved {
             self.saved = saved
         } else {

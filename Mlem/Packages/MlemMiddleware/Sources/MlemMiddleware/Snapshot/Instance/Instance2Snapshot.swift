@@ -64,7 +64,7 @@ public struct Instance2Snapshot: CacheIdentifiable {
         self.applicationQuestion = site.localSite.applicationQuestion
         self.isPrivate = site.localSite.privateInstance
         self.defaultTheme = site.localSite.defaultTheme
-        self.defaultFeed = .init(from: site.localSite.defaultPostListingType)
+        self.defaultFeed = try .init(from: site.localSite.defaultPostListingType)
         self.legalInformation = site.localSite.legalInformation
         self.hideModlogNames = site.localSite.hideModlogModNames ?? true // Always hidden in 1.0
         self.emailApplicationsToAdmins = site.localSite.applicationEmailAdmins

@@ -23,8 +23,7 @@ public extension Person2 {
                 commentCount: commentCount
             ),
             isAdmin: isAdmin,
-            homeInstanceActions: nil,
-            localInstanceActions: nil,
+            personActions: nil,
             creatorBanned: nil
         )
     }

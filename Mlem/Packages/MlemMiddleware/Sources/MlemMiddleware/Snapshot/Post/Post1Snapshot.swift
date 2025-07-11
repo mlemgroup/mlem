@@ -39,8 +39,13 @@ public struct Post1Snapshot: CacheIdentifiable {
         self.id = post.id
         self.creatorId = post.creatorId
         self.communityId = post.communityId
-        self.created = post.published
         
+        if let published = post.publishedAt ?? post.published {
+            self.created = published
+        } else {
+            throw .responseMissingRequiredData("LemmyPost published")
+        }
+
         self.title = post.name
         self.content = post.body
         self.linkUrl = post.linkUrl
@@ -52,7 +57,7 @@ public struct Post1Snapshot: CacheIdentifiable {
         self.nsfw = post.nsfw
         self.removed = post.removed
         self.thumbnailUrl = post.thumbnailImageUrl
-        self.updated = post.updated
+        self.updated = post.updatedAt ?? post.updated
         self.languageId = post.languageId
         self.altText = post.altText
     }

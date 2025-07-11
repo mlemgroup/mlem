@@ -15,7 +15,7 @@ import Foundation
             creator: Person1,
             community: Community1,
             votes: VotesModel,
-            creatorIsModerator: Bool?,
+            creatorIsModerator: Bool,
             creatorIsAdmin: Bool,
             creatorBannedFromCommunity: Bool,
             commentCount: Int,

@@ -38,9 +38,6 @@ extension Post2 {
             personActions: nil,
             postActions: nil,
             instanceActions: nil,
-            creatorHomeInstanceActions: nil,
-            creatorLocalInstanceActions: nil,
-            creatorCommunityActions: nil,
             tags: nil,
             canMod: nil,
             creatorBanned: nil

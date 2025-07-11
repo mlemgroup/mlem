@@ -37,9 +37,14 @@ public struct Instance1Snapshot: CacheIdentifiable {
         
         self.id = site.id
         self.instanceId = site.instanceId
-        self.created = site.published
         
-        self.updated = site.updated
+        if let published = site.publishedAt ?? site.published {
+            self.created = published
+        } else {
+            throw .responseMissingRequiredData("LemmySite published")
+        }
+
+        self.updated = site.updatedAt ?? site.updated
         self.publicKey = site.publicKey
         self.displayName = site.name
         self.description = site.sidebar

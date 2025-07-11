@@ -19,7 +19,7 @@ public protocol Reply2Providing: Reply1Providing, Interactable2Providing, ActorI
     var recipient: Person1 { get }
     var subscribed: Bool { get }
     var commentCount: Int { get }
-    var creatorIsModerator: Bool? { get }
+    var creatorIsModerator: Bool { get }
     var creatorIsAdmin: Bool { get }
     var creatorBannedFromCommunity: Bool { get }
     var removed: Bool { get }
@@ -36,7 +36,7 @@ public extension Reply2Providing {
     var recipient: Person1 { reply2.recipient }
     var subscribed: Bool { reply2.subscribed }
     var commentCount: Int { reply2.commentCount }
-    var creatorIsModerator: Bool? { reply2.creatorIsModerator }
+    var creatorIsModerator: Bool { reply2.creatorIsModerator }
     var creatorIsAdmin: Bool { reply2.creatorIsAdmin }
     var creatorBannedFromCommunity: Bool { reply2.creatorBannedFromCommunity }
     var removed: Bool { reply2.comment.removed }
