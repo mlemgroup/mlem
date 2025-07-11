@@ -42,18 +42,12 @@ public struct Post2Snapshot: CacheIdentifiable {
             throw .responseMissingRequiredData("LemmyPostView scores")
         }
         
-        if let actions = post.creatorCommunityActions {
-            self.creatorIsModerator = actions.becameModerator != nil
-            self.creatorBannedFromCommunity = actions.banExpires != nil
-            self.creatorBlocked = actions.blocked != nil
-        } else {
-            self.creatorIsModerator = post.creatorIsModerator
-            self.creatorBannedFromCommunity = post.creatorBannedFromCommunity ?? false
-            guard let creatorBlocked = post.creatorBlocked else {
-                throw .responseMissingRequiredData("LemmyPostView creatorBlocked")
-            }
-            self.creatorBlocked = creatorBlocked
+        self.creatorIsModerator = post.creatorIsModerator
+        self.creatorBannedFromCommunity = post.creatorBannedFromCommunity
+        guard let creatorBlocked = post.creatorBlocked else {
+            throw .responseMissingRequiredData("LemmyPostView creatorBlocked")
         }
+        self.creatorBlocked = creatorBlocked
         
         self.creatorIsAdmin = post.creatorIsAdmin
 
@@ -93,18 +87,16 @@ public struct Post2Snapshot: CacheIdentifiable {
             throw .responseMissingRequiredData("LemmyPostReportView scores")
         }
         
-        if let actions = report.creatorCommunityActions {
-            self.creatorIsModerator = actions.becameModerator != nil
-            self.creatorBannedFromCommunity = actions.banExpires != nil
-            self.creatorBlocked = actions.blocked != nil
-        } else {
-            self.creatorIsModerator = report.creatorIsModerator
-            self.creatorBannedFromCommunity = report.creatorBannedFromCommunity ?? false
-            guard let creatorBlocked = report.creatorBlocked else {
-                throw .responseMissingRequiredData("LemmyPostReportView creatorBlocked")
-            }
-            self.creatorBlocked = creatorBlocked
+        // I reckon this value being removed in 1.0.0 is an oversight,
+        // so am null coalescing to `false` for now.
+        // https://github.com/LemmyNet/lemmy/pull/5808#discussion_r2198777728
+        self.creatorIsModerator = report.creatorIsModerator ?? false
+        
+        self.creatorBannedFromCommunity = report.creatorBannedFromCommunity ?? false
+        guard let creatorBlocked = report.creatorBlocked else {
+            throw .responseMissingRequiredData("LemmyPostReportView creatorBlocked")
         }
+        self.creatorBlocked = creatorBlocked
         
         if let creatorIsAdmin = report.creatorIsAdmin {
             self.creatorIsAdmin = creatorIsAdmin

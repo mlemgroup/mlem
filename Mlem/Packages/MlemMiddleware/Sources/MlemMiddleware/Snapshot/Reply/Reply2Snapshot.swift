@@ -53,13 +53,8 @@ public struct Reply2Snapshot: CacheIdentifiable {
         
         self.creatorIsAdmin = commentReply.creatorIsAdmin
 
-        if let actions = commentReply.creatorCommunityActions {
-            self.creatorIsModerator = actions.becameModerator != nil
-            self.creatorBannedFromCommunity = actions.banExpires != nil
-        } else {
-            self.creatorIsModerator = commentReply.creatorIsModerator
-            self.creatorBannedFromCommunity = commentReply.creatorBannedFromCommunity ?? false
-        }
+        self.creatorIsModerator = commentReply.creatorIsModerator
+        self.creatorBannedFromCommunity = commentReply.creatorBannedFromCommunity
         
         if let actions = commentReply.commentActions {
             self.saved = actions.saved != nil
@@ -107,13 +102,8 @@ public struct Reply2Snapshot: CacheIdentifiable {
         
         self.creatorIsAdmin = personMention.creatorIsAdmin
 
-        if let actions = personMention.creatorCommunityActions {
-            self.creatorIsModerator = actions.becameModerator != nil
-            self.creatorBannedFromCommunity = actions.banExpires != nil
-        } else {
-            self.creatorIsModerator = personMention.creatorIsModerator
-            self.creatorBannedFromCommunity = personMention.creatorBannedFromCommunity ?? false
-        }
+        self.creatorIsModerator = personMention.creatorIsModerator
+        self.creatorBannedFromCommunity = personMention.creatorBannedFromCommunity
         
         if let actions = personMention.commentActions {
             self.saved = actions.saved != nil

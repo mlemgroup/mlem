@@ -40,13 +40,8 @@ public struct Comment2Snapshot: CacheIdentifiable {
             
         self.creatorIsAdmin = comment.creatorIsAdmin
 
-        if let actions = comment.creatorCommunityActions {
-            self.creatorIsModerator = actions.becameModerator != nil
-            self.creatorBannedFromCommunity = actions.banExpires != nil
-        } else {
-            self.creatorIsModerator = comment.creatorIsModerator
-            self.creatorBannedFromCommunity = comment.creatorBannedFromCommunity ?? false
-        }
+        self.creatorIsModerator = comment.creatorIsModerator
+        self.creatorBannedFromCommunity = comment.creatorBannedFromCommunity
         
         if let actions = comment.commentActions {
             self.saved = actions.saved != nil
@@ -83,13 +78,12 @@ public struct Comment2Snapshot: CacheIdentifiable {
             throw .responseMissingRequiredData("LemmyCommentReportView creatorIsAdmin")
         }
 
-        if let actions = report.creatorCommunityActions {
-            self.creatorIsModerator = actions.becameModerator != nil
-            self.creatorBannedFromCommunity = actions.banExpires != nil
-        } else {
-            self.creatorIsModerator = report.creatorIsModerator
-            self.creatorBannedFromCommunity = report.creatorBannedFromCommunity ?? false
-        }
+        // I reckon this value being removed in 1.0.0 is an oversight,
+        // so am null coalescing to `false` for now.
+        // https://github.com/LemmyNet/lemmy/pull/5808#discussion_r2198777728
+        self.creatorIsModerator = report.creatorIsModerator ?? false
+        
+        self.creatorBannedFromCommunity = report.creatorBannedFromCommunity ?? false
         
         if let actions = report.commentActions {
             self.saved = actions.saved != nil
