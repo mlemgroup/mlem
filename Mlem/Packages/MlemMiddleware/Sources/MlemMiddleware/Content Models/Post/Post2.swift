@@ -19,7 +19,7 @@ public final class Post2: Post2Providing {
     public let creator: Person1
     public let community: Community1
     
-    public var creatorIsModerator: Bool?
+    public var creatorIsModerator: Bool
     public var creatorIsAdmin: Bool
     public var commentCount: Int
     public var unreadCommentCount: Int
@@ -51,7 +51,7 @@ public final class Post2: Post2Providing {
         creator: Person1,
         community: Community1,
         votes: VotesModel,
-        creatorIsModerator: Bool?,
+        creatorIsModerator: Bool,
         creatorIsAdmin: Bool,
         creatorBannedFromCommunity: Bool,
         commentCount: Int,
