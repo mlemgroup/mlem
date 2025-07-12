@@ -34,6 +34,11 @@ struct HandleLemmyLinksModifier: ViewModifier {
         "btinternet.com"
     ]
     
+    private static let instanceMultiplexerDomains: Set<String> = [
+        "lemmyverse.link",
+        "threadiverse.link"
+    ]
+    
     func body(content: Content) -> some View {
         content
             .environment(\.openURL, OpenURLAction(handler: didReceiveURL))
@@ -81,8 +86,7 @@ struct HandleLemmyLinksModifier: ViewModifier {
             return .handled
         }
         
-        // Handles https://lemmyverse.link
-        if host == "lemmyverse.link", url.pathComponents.count > 3 {
+        if Self.instanceMultiplexerDomains.contains(host), url.pathComponents.count > 3 {
             var components = URLComponents()
             components.scheme = "https"
             components.host = url.pathComponents[1]
