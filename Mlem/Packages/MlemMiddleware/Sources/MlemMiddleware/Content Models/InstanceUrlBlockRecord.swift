@@ -13,13 +13,19 @@ public struct InstanceUrlBlockRecord: Hashable {
     let updated: Date?
     let url: URL
     
-    public init?(from blocklist: LemmyLocalSiteUrlBlocklist) {
+    public init(from blocklist: LemmyLocalSiteUrlBlocklist) throws(ApiClientError) {
         self.id = blocklist.id
-        self.created = blocklist.published
-        self.updated = blocklist.updated
+        
+        if let published = blocklist.publishedAt ?? blocklist.published {
+            self.created = published
+        } else {
+            throw .responseMissingRequiredData("LemmyLocalSiteUrlBlocklist published")
+        }
+        
+        self.updated = blocklist.updatedAt ?? blocklist.updated
         
         guard let url = URL(string: blocklist.url) else {
-            return nil
+            throw .responseMissingRequiredData("LemmyLocalSiteUrlBlocklist Invalid URL")
         }
         self.url = url
     }

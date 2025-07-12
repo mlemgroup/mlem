@@ -34,6 +34,7 @@ public extension LemmyConnection {
                 showRead: nil,
                 showNsfw: nil,
                 timeRangeSeconds: nil,
+                multiCommunityId: nil,
                 hideMedia: nil,
                 markAsRead: nil,
                 noCommentsOnly: nil,
@@ -72,6 +73,7 @@ public extension LemmyConnection {
                 showRead: nil,
                 showNsfw: nil,
                 timeRangeSeconds: nil,
+                multiCommunityId: nil,
                 hideMedia: nil,
                 markAsRead: nil,
                 noCommentsOnly: nil,
@@ -123,11 +125,12 @@ public extension LemmyConnection {
     
     func getPost(url: URL) async throws -> Post2Snapshot {
         do {
-            let response = try await performingForEndpoint { endpoint in
-                LemmyResolveObjectRequest(endpoint: endpoint, q: url.absoluteString)
-            }
-            if let post = response.post {
-                return try .init(from: post)
+            let result = try await resolve(url: url)
+            switch result {
+            case let .post(post):
+                return post
+            default:
+                throw ApiClientError.noEntityFound
             }
         } catch let ApiClientError.response(response, _) where response.couldntFindObject {
             throw ApiClientError.noEntityFound
@@ -204,7 +207,6 @@ public extension LemmyConnection {
                 page: page,
                 limit: limit,
                 postTitleOnly: false,
-                searchTerm: query,
                 timeRangeSeconds: timeRangeSeconds,
                 titleOnly: nil,
                 postUrlOnly: nil,
@@ -318,7 +320,7 @@ public extension LemmyConnection {
                 altText: altText,
                 customThumbnail: thumbnail?.absoluteString,
                 tags: nil,
-                scheduledPublishTime: nil
+                scheduledPublishTimeAt: nil
             )
         }
         return try .init(from: response.postView)
@@ -346,7 +348,7 @@ public extension LemmyConnection {
                 languageId: languageId,
                 altText: altText,
                 customThumbnail: thumbnail?.absoluteString,
-                scheduledPublishTime: nil,
+                scheduledPublishTimeAt: nil,
                 tags: nil
             )
         }

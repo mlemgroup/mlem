@@ -26,11 +26,12 @@ public extension LemmyConnection {
     
     func getPerson(url: URL) async throws -> Person2Snapshot {
         do {
-            let response = try await performingForEndpoint { endpoint in
-                LemmyResolveObjectRequest(endpoint: endpoint, q: url.absoluteString)
-            }
-            if let person = response.person {
-                return try .init(from: person)
+            let result = try await resolve(url: url)
+            switch result {
+            case let .person(person):
+                return person
+            default:
+                throw ApiClientError.noEntityFound
             }
         } catch let ApiClientError.response(response, _) where response.couldntFindObject {
             throw ApiClientError.noEntityFound
@@ -87,7 +88,6 @@ public extension LemmyConnection {
                 page: page,
                 limit: limit,
                 postTitleOnly: false,
-                searchTerm: query,
                 timeRangeSeconds: sort.timeRangeSeconds,
                 titleOnly: nil,
                 postUrlOnly: nil,
@@ -133,7 +133,8 @@ public extension LemmyConnection {
                 removeData: removeContent,
                 reason: reason,
                 expires: expiryTimestamp,
-                removeOrRestoreData: removeContent
+                removeOrRestoreData: removeContent,
+                expiresAt: expiryTimestamp
             )
         }
         guard response.banned == ban else { throw ApiClientError.unsuccessful }
@@ -162,7 +163,8 @@ public extension LemmyConnection {
                 removeData: removeContent,
                 reason: reason,
                 expires: expiryTimestamp,
-                removeOrRestoreData: removeContent
+                removeOrRestoreData: removeContent,
+                expiresAt: expiryTimestamp
             )
         }
         guard response.banned == ban else { throw ApiClientError.unsuccessful }
@@ -332,7 +334,8 @@ public extension LemmyConnection {
                 blockingKeywords: nil,
                 enablePrivateMessages: nil,
                 autoMarkFetchedPostsAsRead: nil,
-                hideMedia: nil
+                hideMedia: nil,
+                showPersonVotes: nil
             )
         }
         guard response.success else {

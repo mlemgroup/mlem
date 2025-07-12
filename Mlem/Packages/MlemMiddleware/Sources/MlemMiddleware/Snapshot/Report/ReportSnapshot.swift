@@ -36,15 +36,20 @@ public struct ReportSnapshot: CacheIdentifiable {
         self.creator = try .init(from: report.creator)
         
         self.id = report.commentReport.id
-        self.created = report.commentReport.published
         
+        if let published = report.commentReport.publishedAt ?? report.commentReport.published {
+            self.created = published
+        } else {
+            throw .responseMissingRequiredData("LemmyCommentReportView published")
+        }
+
         if let resolver = report.resolver {
             self.resolver = try .init(from: resolver)
         } else {
             self.resolver = nil
         }
         
-        self.updated = report.commentReport.updated
+        self.updated = report.commentReport.updatedAt ?? report.commentReport.updated
         self.resolved = report.commentReport.resolved
         self.reason = report.commentReport.reason
         
@@ -63,15 +68,20 @@ public struct ReportSnapshot: CacheIdentifiable {
         self.creator = try .init(from: report.creator)
         
         self.id = report.postReport.id
-        self.created = report.postReport.published
         
+        if let published = report.postReport.publishedAt ?? report.postReport.published {
+            self.created = published
+        } else {
+            throw .responseMissingRequiredData("LemmyPostReply published")
+        }
+
         if let resolver = report.resolver {
             self.resolver = try .init(from: resolver)
         } else {
             self.resolver = nil
         }
         
-        self.updated = report.postReport.updated
+        self.updated = report.postReport.updatedAt ?? report.postReport.updated
         self.resolved = report.postReport.resolved
         self.reason = report.postReport.reason
         
@@ -90,15 +100,20 @@ public struct ReportSnapshot: CacheIdentifiable {
         self.creator = try .init(from: report.creator)
         
         self.id = report.privateMessageReport.id
-        self.created = report.privateMessageReport.published
         
+        if let published = report.privateMessageReport.publishedAt ?? report.privateMessageReport.published {
+            self.created = published
+        } else {
+            throw .responseMissingRequiredData("LemmyPrivateMessageReport published")
+        }
+
         if let resolver = report.resolver {
             self.resolver = try .init(from: resolver)
         } else {
             self.resolver = nil
         }
         
-        self.updated = report.privateMessageReport.updated
+        self.updated = report.privateMessageReport.updatedAt ?? report.privateMessageReport.updated
         self.resolved = report.privateMessageReport.resolved
         self.reason = report.privateMessageReport.reason
         

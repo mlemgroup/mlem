@@ -34,9 +34,6 @@ extension Comment2 {
             commentActions: nil,
             personActions: nil,
             instanceActions: nil,
-            creatorHomeInstanceActions: nil,
-            creatorLocalInstanceActions: nil,
-            creatorCommunityActions: nil,
             postTags: nil,
             canMod: nil,
             creatorBanned: nil

@@ -43,10 +43,16 @@ public struct Community1Snapshot: CacheIdentifiable {
         
         self.id = community.id
         self.name = community.name
-        self.created = community.published
+        
+        if let published = community.publishedAt ?? community.published {
+            self.created = published
+        } else {
+            throw .responseMissingRequiredData("LemmyCommunity published")
+        }
+        
         self.instanceId = community.instanceId
         
-        self.updated = community.updated
+        self.updated = community.updatedAt ?? community.updated
         self.displayName = community.title
         self.description = community.description
         self.removed = community.removed

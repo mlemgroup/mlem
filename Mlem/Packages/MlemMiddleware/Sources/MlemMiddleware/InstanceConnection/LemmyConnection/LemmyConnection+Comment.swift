@@ -17,11 +17,12 @@ public extension LemmyConnection {
     
     func getComment(url: URL) async throws -> Comment2Snapshot {
         do {
-            let response = try await performingForEndpoint { endpoint in
-                LemmyResolveObjectRequest(endpoint: endpoint, q: url.absoluteString)
-            }
-            if let comment = response.comment {
-                return try .init(from: comment)
+            let result = try await resolve(url: url)
+            switch result {
+            case let .comment(comment):
+                return comment
+            default:
+                throw ApiClientError.noEntityFound
             }
         } catch let ApiClientError.response(response, _) where response.couldntFindObject {
             throw ApiClientError.noEntityFound
@@ -160,7 +161,6 @@ public extension LemmyConnection {
                 page: page,
                 limit: limit,
                 postTitleOnly: false,
-                searchTerm: nil,
                 timeRangeSeconds: timeRangeSeconds,
                 titleOnly: nil,
                 postUrlOnly: nil,
