@@ -105,7 +105,7 @@ struct DeveloperSettingsView: View {
             Text(verbatim: "Status")
             Spacer()
             if let good {
-                Image(systemName: Icons.present).foregroundStyle(good ? .themedPositive : .themedNegative)
+                Image(icon: .general.circle).foregroundStyle(good ? .themedPositive : .themedNegative)
             } else {
                 ProgressView()
             }
