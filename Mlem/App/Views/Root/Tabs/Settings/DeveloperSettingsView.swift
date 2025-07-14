@@ -37,9 +37,9 @@ struct DeveloperSettingsView: View {
             Section {
                 if let backendStatus {
                     if backendStatus.unhealthyReasons.isEmpty {
-                        backendStatusRow(good: true)
+                        backendStatusRow(isHealthy: true)
                     } else {
-                        backendStatusRow(good: false)
+                        backendStatusRow(isHealthy: false)
                         
                         ForEach(Array(backendStatus.unhealthyReasons.enumerated()), id: \.offset) { _, reason in
                             Text(reason)
@@ -48,7 +48,7 @@ struct DeveloperSettingsView: View {
                         }
                     }
                 } else {
-                    backendStatusRow(good: nil)
+                    backendStatusRow(isHealthy: nil)
                 }
                 
                 Button("Refresh") { checkBackendStatus() }
@@ -100,12 +100,12 @@ struct DeveloperSettingsView: View {
     }
     
     @ViewBuilder
-    private func backendStatusRow(good: Bool?) -> some View {
+    private func backendStatusRow(isHealthy: Bool?) -> some View {
         HStack {
             Text(verbatim: "Status")
             Spacer()
-            if let good {
-                Image(systemName: Icons.present).foregroundStyle(good ? .themedPositive : .themedNegative)
+            if let isHealthy {
+                Image(systemName: Icons.present).foregroundStyle(isHealthy ? .themedPositive : .themedNegative)
             } else {
                 ProgressView()
             }
