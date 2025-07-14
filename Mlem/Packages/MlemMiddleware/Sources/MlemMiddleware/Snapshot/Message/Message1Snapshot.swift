@@ -23,22 +23,4 @@ public struct Message1Snapshot: CacheIdentifiable {
     public let deleted: Bool
     
     public var cacheId: Int { id }
-    
-    public init(from message: LemmyPrivateMessage) throws(ApiClientError) {
-        self.actorId = message.apId
-        self.id = message.id
-        self.creatorId = message.creatorId
-        self.recipientId = message.recipientId
-        
-        if let published = message.publishedAt ?? message.published {
-            self.created = published
-        } else {
-            throw .responseMissingRequiredData("LemmyPrivateMessage published")
-        }
-
-        self.content = message.content
-        self.updated = message.updatedAt ?? message.updated
-        self.read = message.read
-        self.deleted = message.deleted
-    }
 }

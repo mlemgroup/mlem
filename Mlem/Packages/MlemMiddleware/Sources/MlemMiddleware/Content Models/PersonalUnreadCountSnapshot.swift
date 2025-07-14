@@ -12,15 +12,6 @@ public struct PersonalUnreadCountSnapshot {
     let mentions: Int
     let messages: Int
     
-    public init(from response: LemmyGetUnreadCountResponse) throws(ApiClientError) {
-        guard let replies = response.replies, let mentions = response.mentions, let messages = response.privateMessages else {
-            throw ApiClientError.featureUnsupported
-        }
-        self.replies = replies
-        self.mentions = mentions
-        self.messages = messages
-    }
-    
     var unreadCountDictionary: [InboxItemType: Int] {
         [
             .reply: replies,

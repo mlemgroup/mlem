@@ -18,37 +18,4 @@ public struct Person3Snapshot: CacheIdentifiable {
     let moderatedCommunities: [Community1Snapshot]
     
     public var cacheId: Int { person.cacheId }
-    
-    init(from userInfo: LemmyMyUserInfo) throws(ApiClientError) {
-        self.person = try .init(from: userInfo.localUserView)
-        self.site = nil
-        
-        var moderatedCommunities: [Community1Snapshot] = []
-        moderatedCommunities.reserveCapacity(userInfo.moderates.count)
-        
-        for moderate in userInfo.moderates {
-            try moderatedCommunities.append(.init(from: moderate.community))
-        }
-        
-        self.moderatedCommunities = moderatedCommunities
-    }
-    
-    init(from personDetails: LemmyGetPersonDetailsResponse) throws(ApiClientError) {
-        self.person = try .init(from: personDetails.personView)
-        
-        if let site = personDetails.site {
-            self.site = try .init(from: site)
-        } else {
-            self.site = nil
-        }
-        
-        var moderatedCommunities: [Community1Snapshot] = []
-        moderatedCommunities.reserveCapacity(personDetails.moderates.count)
-        
-        for moderate in personDetails.moderates {
-            try moderatedCommunities.append(.init(from: moderate.community))
-        }
-        
-        self.moderatedCommunities = moderatedCommunities
-    }
 }
