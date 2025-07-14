@@ -14,7 +14,7 @@ public struct BackendHealthCheck: Decodable {
     public var unhealthyReasons: [String] {
         guard let minimumAllowableFetch = Calendar.current.date(byAdding: .day, value: -1, to: Date()) else {
             assertionFailure("Could not compute minimum allowable fetch")
-            return .init(["Could not compute minimum allowable fetch"])
+            return ["Could not compute minimum allowable fetch"]
         }
         
         var ret: [String] = .init()
