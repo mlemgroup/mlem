@@ -24,7 +24,7 @@ struct DeveloperSettingsView: View {
     
     @AppStorage("lastTestFlightUpdate") var lastTestFlightUpdate: URL?
     
-    @State var backendStatus: Bool?
+    @State var backendStatus: BackendHealthCheck?
     @State var lastBackendStatusCheck: Date?
     
     var body: some View {
@@ -35,15 +35,20 @@ struct DeveloperSettingsView: View {
             }
             
             Section {
-                HStack {
-                    Text(verbatim: "Status")
-                    Spacer()
-                    if let backendStatus {
-                        Image(systemName: Icons.present)
-                            .foregroundStyle(backendStatus ? .themedPositive : .themedNegative)
+                if let backendStatus {
+                    if backendStatus.unhealthyReasons.isEmpty {
+                        backendStatusRow(good: true)
                     } else {
-                        ProgressView()
+                        backendStatusRow(good: false)
+                        
+                        ForEach(Array(backendStatus.unhealthyReasons.enumerated()), id: \.offset) { _, reason in
+                            Text(reason)
+                                .padding(.leading, Constants.main.standardSpacing)
+                                .foregroundStyle(.themedNegative)
+                        }
                     }
+                } else {
+                    backendStatusRow(good: nil)
                 }
                 
                 Button("Refresh") { checkBackendStatus() }
@@ -94,13 +99,26 @@ struct DeveloperSettingsView: View {
         .navigationTitle("Developer")
     }
     
+    @ViewBuilder
+    private func backendStatusRow(good: Bool?) -> some View {
+        HStack {
+            Text(verbatim: "Status")
+            Spacer()
+            if let good {
+                Image(systemName: Icons.present).foregroundStyle(good ? .themedPositive : .themedNegative)
+            } else {
+                ProgressView()
+            }
+        }
+    }
+    
     private func checkBackendStatus() {
         Task {
             do {
                 backendStatus = try await backendClient.healthCheck()
             } catch {
                 handleError(error)
-                backendStatus = false
+                backendStatus = nil
             }
             lastBackendStatusCheck = .now
         }
