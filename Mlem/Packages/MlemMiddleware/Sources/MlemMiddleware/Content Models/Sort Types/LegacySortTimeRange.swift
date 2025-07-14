@@ -3,7 +3,7 @@
 //  MlemMiddleware
 //
 //  Created by Sjmarf on 2025-02-25.
-//  
+//
 
 import Foundation
 
@@ -31,26 +31,6 @@ public extension LegacySortTimeRangeLimit {
         }
     }
     
-    internal init?(_ legacyApiSortType: LemmySortType) {
-        if let value: Self = switch legacyApiSortType {
-        case .topHour: .hour
-        case .topSixHour: .sixHour
-        case .topTwelveHour: .twelveHour
-        case .topDay: .day
-        case .topWeek: .week
-        case .topMonth: .month
-        case .topThreeMonths: .threeMonth
-        case .topSixMonths: .sixMonth
-        case .topNineMonths: .nineMonth
-        case .topYear: .year
-        default: nil
-        } {
-            self = value
-        } else {
-            return nil
-        }
-    }
-    
     var timeInterval: TimeInterval {
         let hour = 3600.0
         let day = hour * 24
@@ -69,21 +49,4 @@ public extension LegacySortTimeRangeLimit {
         case .year: day * 365
         }
     }
-    
-    var legacyApiSortType: LemmySortType {
-        switch self {
-        case .hour: .topHour
-        case .sixHour: .topSixHour
-        case .twelveHour: .topTwelveHour
-        case .day: .topDay
-        case .week: .topWeek
-        case .month: .topMonth
-        case .threeMonth: .topThreeMonths
-        case .sixMonth: .topSixMonths
-        case .nineMonth: .topNineMonths
-        case .year: .topYear
-        }
-    }
-    
-    var minimumVersion: SiteVersion { .zero }
 }
