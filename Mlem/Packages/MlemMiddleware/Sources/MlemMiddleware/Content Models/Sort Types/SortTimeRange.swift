@@ -34,18 +34,4 @@ public enum SortTimeRange: Hashable, Sendable {
         case let .limited(value): Int(value)
         }
     }
-    
-    public var legacyApiSortType: LemmySortType? {
-        switch self {
-        case .allTime: .topAll
-        case let .limited(timeInterval): LegacySortTimeRangeLimit(timeInterval)?.legacyApiSortType
-        }
-    }
-    
-    public var minimumVersion: SiteVersion {
-        switch self {
-        case .allTime: .zero
-        case let .limited(timeInterval): LegacySortTimeRangeLimit(timeInterval)?.minimumVersion ?? .v1_0_0
-        }
-    }
 }
