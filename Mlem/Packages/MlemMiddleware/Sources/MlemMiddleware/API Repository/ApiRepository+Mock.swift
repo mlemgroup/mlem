@@ -35,7 +35,7 @@ import Rest
             )
             self.token = "" // Not nil so that the views are interactable
             let connection = LemmyConnection(baseUrl: url, token: "")
-            connection.setMockContext(.init(siteVersion: .v0_19_9, myPersonId: nil))
+            connection.setMockContext(.init(siteVersion: .init("0.19.0"), myPersonId: nil))
             self.connection = connection
         }
     

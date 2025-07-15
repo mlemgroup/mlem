@@ -67,11 +67,4 @@ public extension PostSortType {
         default: nil
         }
     }
-    
-    var minimumVersion: SiteVersion {
-        switch self {
-        case let .top(timeRange): timeRange.minimumVersion
-        default: .zero
-        }
-    }
 }

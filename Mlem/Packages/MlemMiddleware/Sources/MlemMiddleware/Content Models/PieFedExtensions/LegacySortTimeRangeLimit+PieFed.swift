@@ -8,7 +8,7 @@
 import Foundation
 
 public extension LegacySortTimeRangeLimit {
-    var pieFedSortType: PieFedSortType? {
+    var pieFedSortType: PieFedSortType {
         switch self {
         case .hour: .topHour
         case .sixHour: .topSixHour
@@ -16,7 +16,10 @@ public extension LegacySortTimeRangeLimit {
         case .day: .topDay
         case .week: .topWeek
         case .month: .topMonth
-        case .threeMonth, .sixMonth, .nineMonth, .year: nil
+        case .threeMonth: .topThreeMonths
+        case .sixMonth: .topSixMonths
+        case .nineMonth: .topNineMonths
+        case .year: .topYear
         }
     }
 }

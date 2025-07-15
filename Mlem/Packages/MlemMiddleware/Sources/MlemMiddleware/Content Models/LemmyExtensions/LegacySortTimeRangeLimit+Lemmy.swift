@@ -42,6 +42,4 @@ internal extension LegacySortTimeRangeLimit {
         case .year: .topYear
         }
     }
-    
-    var minimumVersion: SiteVersion { .zero }
 }

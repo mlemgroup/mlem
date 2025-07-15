@@ -42,11 +42,14 @@ public extension PieFedConnection {
         limit: Int,
         unreadOnly: Bool = false
     ) async throws -> [Message2Snapshot] {
+        guard creatorId == nil else {
+            throw ApiClientError.featureUnsupported
+        }
         let request = PieFedGetPrivateMessagesRequest(
             unreadOnly: unreadOnly,
             page: page,
             limit: limit,
-            creatorId: creatorId
+            creatorId: nil
         )
         let response = try await perform(request)
         return try response.privateMessages.map { try .init(from: $0) }

@@ -7901,6 +7901,7 @@
       }
     },
     "The \"%@\" sort mode is only available on instances running version %@ or later. On instances running earlier versions, the \"Fallback\" sort mode will be used instead." : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7915,6 +7916,9 @@
           }
         }
       }
+    },
+    "The \"%@\" sort mode is only available on some instances. On unsupported instances, the \"Fallback\" sort mode will be used instead." : {
+
     },
     "The %@ theme only supports %@ mode." : {
       "localizations" : {

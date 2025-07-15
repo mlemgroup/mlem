@@ -47,7 +47,7 @@ struct SortingSettingsView: View {
                     .frame(minHeight: 50)
                     .buttonStyle(.bordered)
                 }
-                if defaultPostSort.minimumVersion != .zero {
+                if !defaultPostSort.supportedByAllSoftwares {
                     HStack {
                         Text("Fallback")
                         Spacer()
@@ -60,9 +60,9 @@ struct SortingSettingsView: View {
                     }
                 }
             } footer: {
-                if defaultPostSort.minimumVersion != .zero {
+                if !defaultPostSort.supportedByAllSoftwares {
                     // swiftlint:disable:next line_length
-                    Text("The \"\(defaultPostSort.label())\" sort mode is only available on instances running version \(defaultPostSort.minimumVersion.description) or later. On instances running earlier versions, the \"Fallback\" sort mode will be used instead.")
+                    Text("The \"\(defaultPostSort.label())\" sort mode is only available on some instances. On unsupported instances, the \"Fallback\" sort mode will be used instead.")
                 }
             }
             
@@ -85,5 +85,16 @@ struct SortingSettingsView: View {
         }
         .contentMargins(.top, 16)
         .hiddenNavigationTitle("Sorting")
+    }
+}
+
+private extension PostSortType {
+    var supportedByAllSoftwares: Bool {
+        // This assumes that sort types won't be *removed* once they are added.
+        // This is fine for now but may need updating in future
+        SiteSoftwareType.allCases.allSatisfy { softwareType in
+            SiteSoftware(type: softwareType, version: softwareType.minimumSupportedVersion)
+                .supports(.postSortType(self))
+        }
     }
 }

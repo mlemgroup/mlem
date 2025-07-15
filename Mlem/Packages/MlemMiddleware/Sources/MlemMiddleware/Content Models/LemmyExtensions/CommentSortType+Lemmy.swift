@@ -48,11 +48,4 @@ public extension CommentSortType {
         default: nil
         }
     }
-    
-    var minimumVersion: SiteVersion {
-        switch self {
-        case let .top(timeRange): timeRange == .allTime ? .zero : .v1_0_0
-        default: .zero
-        }
-    }
 }

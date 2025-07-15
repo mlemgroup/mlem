@@ -10,7 +10,7 @@ import Foundation
 public extension SortTimeRange {
     var pieFedSortType: PieFedSortType? {
         switch self {
-        case .allTime: nil
+        case .allTime: .topAll
         case let .limited(timeInterval):
             LegacySortTimeRangeLimit(timeInterval)?.pieFedSortType
         }
