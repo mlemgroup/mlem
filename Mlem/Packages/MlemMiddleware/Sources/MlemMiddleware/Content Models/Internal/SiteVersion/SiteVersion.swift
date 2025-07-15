@@ -37,18 +37,6 @@ public enum SiteVersion: Equatable, Hashable {
     }
 
     // swiftlint: enable large_tuple
-    
-    public static let v0_19_0: Self = .init("0.19.0")
-    public static let v0_19_1: Self = .init("0.19.1")
-    public static let v0_19_2: Self = .init("0.19.2")
-    public static let v0_19_3: Self = .init("0.19.3")
-    public static let v0_19_4: Self = .init("0.19.4")
-    public static let v0_19_5: Self = .init("0.19.5")
-    public static let v0_19_6: Self = .init("0.19.6")
-    public static let v0_19_7: Self = .init("0.19.7")
-    public static let v0_19_8: Self = .init("0.19.8")
-    public static let v0_19_9: Self = .init("0.19.9")
-    public static let v1_0_0: Self = .init("1.0.0")
 }
 
 extension SiteVersion: CustomStringConvertible {

@@ -30,10 +30,6 @@ class Constants {
     
     // These constants are used across all platforms, and generally configure backend behavior
     
-    // MARK: Versioning
-    
-    let minimumLemmyVersion: SiteVersion = .v0_19_0
-    
     // MARK: Image Caching
     
     /// Size for the image cache (500MB)

@@ -7,6 +7,6 @@
 
 import Foundation
 
-public enum SiteSoftwareType: String, Codable {
+public enum SiteSoftwareType: String, Codable, Sendable, CaseIterable {
     case lemmy, pieFed
 }

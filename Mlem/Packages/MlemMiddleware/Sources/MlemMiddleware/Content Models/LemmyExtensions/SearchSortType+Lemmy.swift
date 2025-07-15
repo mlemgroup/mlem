@@ -40,11 +40,4 @@ extension SearchSortType {
         case .top: .top
         }
     }
-    
-    var minimumVersion: SiteVersion {
-        switch self {
-        case let .top(timeRange): timeRange.minimumVersion
-        default: .zero
-        }
-    }
 }
