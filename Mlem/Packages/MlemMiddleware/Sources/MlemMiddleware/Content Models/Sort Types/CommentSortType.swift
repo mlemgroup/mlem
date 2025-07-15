@@ -33,46 +33,6 @@ public enum CommentSortType: Hashable, Sendable {
     
     public static var legacyCases: [Self] = nonTopCases + [.top(.allTime)]
     
-    public init(_ apiSortType: ApiCommentSortType) {
-        self = switch apiSortType {
-        case .hot: .hot
-        case .top: .top(.allTime)
-        case .new: .new
-        case .old: .old
-        case .controversial: .controversial
-        }
-    }
-    
-    public var apiSortType: ApiCommentSortType {
-        switch self {
-        case .new: .new
-        case .old: .old
-        case .hot: .hot
-        case .controversial: .controversial
-        case .top: .top
-        }
-    }
-    
-    public var legacyApiSortType: ApiSortType {
-        switch self {
-        case .new: .new
-        case .old: .old
-        case .hot: .hot
-        case .controversial: .controversial
-        case .top: .topAll
-        }
-    }
-    
-    /// Returns `nil` if the `CommentSortType` is a value that cannot be converted to an `ApiSearchSortType`.
-    public var apiSearchSortType: ApiSearchSortType? {
-        switch self {
-        case .new: .new
-        case .old: .old
-        case .top: .top
-        default: nil
-        }
-    }
-    
     public var timeRange: SortTimeRange? {
         switch self {
         case let .top(timeRange): timeRange
@@ -82,11 +42,4 @@ public enum CommentSortType: Hashable, Sendable {
     
     // This should only be used internally within ApiClient
     var timeRangeSeconds: Int? { timeRange?.timeRangeSeconds }
-    
-    public var minimumVersion: SiteVersion {
-        switch self {
-        case let .top(timeRange): timeRange == .allTime ? .zero : .v1_0_0
-        default: .zero
-        }
-    }
 }

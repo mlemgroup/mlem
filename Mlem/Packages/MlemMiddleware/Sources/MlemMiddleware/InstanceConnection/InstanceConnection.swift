@@ -475,4 +475,14 @@ public protocol InstanceConnection {
     func resolveCommentReport(id: Int, resolved: Bool) async throws -> ReportSnapshot
     @discardableResult
     func resolveMessageReport(id: Int, resolved: Bool) async throws -> ReportSnapshot
+    
+    // MARK: - Image
+    
+    func uploadImage(
+        _ imageData: Data,
+        fileExtension: String,
+        onProgress progressCallback: @escaping (_ progress: Double) -> Void
+    ) async throws -> ImageUpload1Snapshot
+    
+    func deleteImage(alias: String, deleteToken: String) async throws
 }

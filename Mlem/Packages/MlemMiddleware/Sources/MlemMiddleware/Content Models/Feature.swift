@@ -31,8 +31,9 @@ public enum Feature: Hashable {
     case logIn
     case signUp
     
+    case viewReports
+    case privateMessaging
     case commentTreeSortedByDepth
-    case inbox
     case uploadImages
     case editAccountSettings
 }

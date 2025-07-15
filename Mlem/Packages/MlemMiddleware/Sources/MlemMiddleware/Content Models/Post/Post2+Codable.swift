@@ -8,8 +8,8 @@
 import Foundation
 
 extension Post2 {
-    var apiPostView: ApiPostView {
-        ApiPostView(
+    var apiPostView: LemmyPostView {
+        LemmyPostView(
             post: post1.apiPost,
             creator: creator.apiPerson,
             community: community.apiCommunity,
@@ -38,9 +38,6 @@ extension Post2 {
             personActions: nil,
             postActions: nil,
             instanceActions: nil,
-            creatorHomeInstanceActions: nil,
-            creatorLocalInstanceActions: nil,
-            creatorCommunityActions: nil,
             tags: nil,
             canMod: nil,
             creatorBanned: nil

@@ -2,13 +2,13 @@
 //  File.swift
 //  MlemMiddleware
 //
-//  Created by Sjmarf on 2025-02-28.
+//  Created by Sjmarf on 2025-07-14.
 //
 
 import Foundation
 
 extension Locale.Language {
-    init?(_ apiLanguage: ApiLanguage) {
+    init?(_ apiLanguage: LemmyLanguage) {
         if apiLanguage.code == "und" {
             return nil
         } else {

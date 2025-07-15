@@ -23,7 +23,7 @@ public extension Post2Providing {
     
     var creator: any Person { post2.creator }
     var community: any Community { post2.community }
-    var creatorIsModerator: Bool? { post2.creatorIsModerator }
+    var creatorIsModerator: Bool { post2.creatorIsModerator }
     var creatorIsAdmin: Bool { post2.creatorIsAdmin }
     var creatorBannedFromCommunity: Bool { post2.creatorBannedFromCommunity }
     var commentCount: Int { post2.commentCount }

@@ -58,7 +58,7 @@ enum NavigationPage: Hashable {
     case editPost(_ post: Post2)
     case deleteAccount(_ account: UserAccount)
     case bypassImageProxy(callback: HashWrapper<() -> Void>)
-    case confirmUpload(imageData: Data, imageManager: ImageUploadManager, uploadApi: ApiClient)
+    case confirmUpload(imageData: Data, fileExtension: String, imageManager: ImageUploadManager, uploadApi: ApiClient)
     case rulesList(_ model: Profile2HashWrapper, callback: HashWrapper<(String) -> Void>)
     case blockList
     case advancedSorting(_ sort: HashWrapper<Binding<PostSortType>>)

@@ -25,22 +25,4 @@ public struct Reply1Snapshot: CacheIdentifiable, Identifiable {
         hasher.combine(isMention)
         return hasher.finalize()
     }
-
-    public init(from commentReply: ApiCommentReply) throws(ApiClientError) {
-        self.id = commentReply.id
-        self.recipientId = commentReply.recipientId
-        self.commentId = commentReply.commentId
-        self.read = commentReply.read
-        self.created = commentReply.published
-        self.isMention = false
-    }
-    
-    public init(from personMention: ApiPersonCommentMention) throws(ApiClientError) {
-        self.id = personMention.id
-        self.recipientId = personMention.recipientId
-        self.commentId = personMention.commentId
-        self.read = personMention.read
-        self.created = personMention.published
-        self.isMention = true
-    }
 }

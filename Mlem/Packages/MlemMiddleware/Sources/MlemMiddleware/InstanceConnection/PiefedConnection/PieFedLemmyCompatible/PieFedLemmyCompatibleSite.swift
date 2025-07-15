@@ -35,7 +35,7 @@ public extension PieFedLemmyCompatibleSiteResponse {
 }
 
 public struct PieFedLemmyCompatibleSiteView: Codable, Hashable, Sendable {
-    public let counts: ApiSiteAggregates
+    public let counts: LemmySiteAggregates
 }
 
 public extension PieFedLemmyCompatibleSiteView {

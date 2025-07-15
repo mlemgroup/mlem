@@ -47,7 +47,6 @@ public protocol InstanceStubProviding: ActorIdentifiable, ContentModel {
     var registrationMode_: RegistrationMode? { get }
     var federationSignedFetch_: Bool? { get }
     var defaultPostListingMode_: PostFeedViewMode? { get }
-    var defaultSortType_: ApiSortType? { get }
     var userCount_: Int? { get }
     var postCount_: Int? { get }
     var commentCount_: Int? { get }
@@ -98,7 +97,6 @@ public extension InstanceStubProviding {
     var registrationMode_: RegistrationMode? { nil }
     var federationSignedFetch_: Bool? { nil }
     var defaultPostListingMode_: PostFeedViewMode? { nil }
-    var defaultSortType_: ApiSortType? { nil }
     var userCount_: Int? { nil }
     var postCount_: Int? { nil }
     var commentCount_: Int? { nil }

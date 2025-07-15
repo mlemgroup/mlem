@@ -12,7 +12,7 @@ public struct FederationPolicy {
     let allowed: Set<String>
     let blocked: Set<String>
     
-    init(from federatedInstances: ApiFederatedInstances) {
+    init(from federatedInstances: LemmyFederatedInstances) {
         self.linked = Set(federatedInstances.linked.map(\.domain))
         self.allowed = Set(federatedInstances.allowed.map(\.domain))
         self.blocked = Set(federatedInstances.blocked.map(\.domain))

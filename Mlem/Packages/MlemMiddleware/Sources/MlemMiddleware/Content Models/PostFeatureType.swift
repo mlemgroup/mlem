@@ -10,14 +10,14 @@ import Foundation
 public enum PostFeatureType {
     case community, instance
     
-    init(from featureType: ApiPostFeatureType) {
+    init(from featureType: LemmyPostFeatureType) {
         self = switch featureType {
         case .community: .community
         case .local: .instance
         }
     }
     
-    var apiType: ApiPostFeatureType {
+    var apiType: LemmyPostFeatureType {
         switch self {
         case .community: .community
         case .instance: .local

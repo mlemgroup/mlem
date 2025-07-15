@@ -26,20 +26,4 @@ public struct Instance3Snapshot: CacheIdentifiable {
     public let administrators: [Person2Snapshot]
 
     public var cacheId: Int { instance.cacheId }
-    
-    public init(from site: ApiGetSiteResponse) throws(ApiClientError) {
-        self.instance = try .init(from: site.siteView)
-        self.software = .init(type: .lemmy, version: .init(site.version))
-        self.allLanguages = site.allLanguages.compactMap { .init($0) }
-        self.allowedLanguageIds = Set(site.discussionLanguages).subtracting([0])
-        
-        self.blockedUrls = site.blockedUrls?.compactMap { .init(from: $0) }
-    
-        var administrators: [Person2Snapshot] = []
-        administrators.reserveCapacity(site.admins.count)
-        for admin in site.admins {
-            try administrators.append(.init(from: admin))
-        }
-        self.administrators = administrators
-    }
 }

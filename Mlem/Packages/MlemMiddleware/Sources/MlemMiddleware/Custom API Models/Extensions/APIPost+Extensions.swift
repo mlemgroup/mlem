@@ -1,5 +1,5 @@
 //
-//  ApiPost+ActorIdentifiable.swift
+//  LemmyPost+ActorIdentifiable.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2024-02-19.
@@ -7,11 +7,7 @@
 
 import Foundation
 
-extension ApiPost: CacheIdentifiable, Identifiable {
-    public var cacheId: Int { id }
-}
-
-extension ApiPost {
+extension LemmyPost {
     var linkUrl: URL? { LemmyURL(string: url?.absoluteString ?? "")?.url }
     // var thumbnailImageUrl: URL? { LemmyURL(string: thumbnail_url)?.url }
     var thumbnailImageUrl: URL? { thumbnailUrl }

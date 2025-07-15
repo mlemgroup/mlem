@@ -27,26 +27,4 @@ public struct Instance1Snapshot: CacheIdentifiable {
     public var contentWarning: String?
     
     public var cacheId: Int { id }
-    
-    public init(from site: ApiSite) throws(ApiClientError) {
-        if let actorId = site.apId ?? site.actorId {
-            self.actorId = actorId
-        } else {
-            throw .responseMissingRequiredData("ApiSite actorId")
-        }
-        
-        self.id = site.id
-        self.instanceId = site.instanceId
-        self.created = site.published
-        
-        self.updated = site.updated
-        self.publicKey = site.publicKey
-        self.displayName = site.name
-        self.description = site.sidebar
-        self.shortDescription = site.description
-        self.avatar = site.icon
-        self.banner = site.banner
-        self.lastRefresh = site.lastRefreshedAt
-        self.contentWarning = site.contentWarning
-    }
 }

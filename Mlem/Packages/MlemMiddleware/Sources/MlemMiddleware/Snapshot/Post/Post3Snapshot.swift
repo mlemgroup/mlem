@@ -18,15 +18,4 @@ public struct Post3Snapshot: CacheIdentifiable, PostSnapshotProviding {
     public let crossPosts: [Post2Snapshot]
     
     public var cacheId: Int { post.cacheId }
-    
-    public init(from post: ApiGetPostResponse) throws(ApiClientError) {
-        self.post = try .init(from: post.postView)
-        self.community = try .init(from: post.communityView)
-        
-        var crossPosts: [Post2Snapshot] = []
-        for crossPost in post.crossPosts {
-            try crossPosts.append(.init(from: crossPost))
-        }
-        self.crossPosts = crossPosts
-    }
 }

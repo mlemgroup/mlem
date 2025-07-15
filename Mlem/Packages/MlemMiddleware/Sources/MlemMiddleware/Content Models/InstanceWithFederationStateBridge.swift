@@ -11,12 +11,12 @@ public struct InstanceWithFederationStateBridge: Codable, Hashable, Sendable {
     let domain: String
     
     public init(from decoder: any Decoder) throws {
-        if let old = try? ApiInstance(from: decoder) {
+        if let old = try? LemmyInstance(from: decoder) {
             self.domain = old.domain
             return
         }
         
-        if let new = try? ApiInstanceWithFederationState(from: decoder) {
+        if let new = try? LemmyInstanceWithFederationState(from: decoder) {
             self.domain = new.instance.domain
             return
         }

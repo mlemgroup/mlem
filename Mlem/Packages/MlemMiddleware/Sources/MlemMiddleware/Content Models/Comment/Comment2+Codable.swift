@@ -8,8 +8,8 @@
 import Foundation
 
 extension Comment2 {
-    var apiCommentView: ApiCommentView {
-        ApiCommentView(
+    var apiCommentView: LemmyCommentView {
+        LemmyCommentView(
             comment: comment1.apiComment,
             creator: creator.apiPerson,
             post: post.apiPost,
@@ -34,9 +34,6 @@ extension Comment2 {
             commentActions: nil,
             personActions: nil,
             instanceActions: nil,
-            creatorHomeInstanceActions: nil,
-            creatorLocalInstanceActions: nil,
-            creatorCommunityActions: nil,
             postTags: nil,
             canMod: nil,
             creatorBanned: nil

@@ -10,12 +10,12 @@ import Foundation
 public extension PostSortType {
     var pieFedSortType: PieFedSortType? {
         switch self {
-        case .active: .active
+        case .active: nil
         case .hot: .hot
         case .new: .new
         case .old: nil
         case .mostComments: nil
-        case .newComments: nil
+        case .newComments: .active // This is intentional
         case .controversial: nil
         case .scaled: .scaled
         case let .top(range):

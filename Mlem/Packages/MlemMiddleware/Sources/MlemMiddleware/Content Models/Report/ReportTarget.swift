@@ -31,7 +31,7 @@ public enum ReportTarget {
     
     // TODO: 0.19.3 deprecation - remove the below two cases and associated code.
     
-    // `ApiPostReportView` is a superset of `ApiPostView` from 0.19.4 onwards, allowing
+    // `LemmyPostReportView` is a superset of `LemmyPostView` from 0.19.4 onwards, allowing
     // us to create a `Post2` (as seen above). However, prior to 0.19.4 this was not the
     // case - only *some* of the necessary properties are included.
     

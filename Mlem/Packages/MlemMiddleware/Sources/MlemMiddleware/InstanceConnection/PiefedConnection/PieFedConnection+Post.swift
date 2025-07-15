@@ -141,8 +141,8 @@ public extension PieFedConnection {
         communityId: Int?,
         creatorId: Int?,
         filter: ListingType,
-        legacySort: ApiSortType?,
-        sort: ApiSearchSortType?,
+        legacySort: LemmySortType?,
+        sort: LemmySearchSortType?,
         timeRangeSeconds: Int?
     ) async throws -> [Post2Snapshot] {
         throw ApiClientError.featureUnsupported

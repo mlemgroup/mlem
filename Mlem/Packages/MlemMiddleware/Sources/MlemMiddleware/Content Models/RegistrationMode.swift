@@ -9,20 +9,4 @@ import Foundation
 
 public enum RegistrationMode {
     case closed, open, requiresApplication
-    
-    init(from mode: ApiRegistrationMode) {
-        self = switch mode {
-        case .closed: .closed
-        case .requireApplication: .requiresApplication
-        case .open: .open
-        }
-    }
-    
-    var apiType: ApiRegistrationMode {
-        switch self {
-        case .closed: .closed
-        case .open: .open
-        case .requiresApplication: .requireApplication
-        }
-    }
 }

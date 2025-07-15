@@ -38,38 +38,4 @@ public struct Person4Snapshot: CacheIdentifiable {
     public var collapseBotComments: Bool?
 
     public var cacheId: Int { person.cacheId }
-    
-    public init(from userInfo: ApiMyUserInfo) throws(ApiClientError) {
-        self.person = try .init(from: userInfo)
-        let user = userInfo.localUserView.localUser
-
-        self.email = user.email
-        self.showNsfw = user.showNsfw
-        self.theme = user.theme
-        self.defaultListingType = .init(from: user.defaultListingType)
-        self.interfaceLanguage = user.interfaceLanguage
-        self.showAvatars = user.showAvatars
-        self.sendNotificationsToEmail = user.sendNotificationsToEmail
-        
-        if let showScores = (user.showScore ?? user.showScores) {
-            self.showScores = showScores
-        } else {
-            throw .responseMissingRequiredData("ApiMyUserInfo showScores")
-        }
-        
-        self.showBotAccounts = user.showBotAccounts
-        self.showReadPosts = user.showReadPosts
-        self.discussionLanguageIds = .init(userInfo.discussionLanguages.filter { $0 != 0 })
-        self.emailVerified = user.emailVerified
-        self.acceptedApplication = user.acceptedApplication
-        self.openLinksInNewTab = user.openLinksInNewTab
-        self.blurNsfw = user.blurNsfw
-        self.autoExpandImages = user.autoExpand
-        self.infiniteScrollEnabled = user.infiniteScrollEnabled
-        self.postListingMode = .init(from: user.postListingMode)
-        self.totp2faEnabled = user.totp2faEnabled
-        self.enableKeyboardNavigation = user.enableKeyboardNavigation
-        self.enableAnimatedImages = user.enableAnimatedImages
-        self.collapseBotComments = user.collapseBotComments
-    }
 }

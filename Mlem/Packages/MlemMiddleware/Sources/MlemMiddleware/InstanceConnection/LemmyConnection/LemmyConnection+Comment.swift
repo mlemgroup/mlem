@@ -10,18 +10,19 @@ import Foundation
 public extension LemmyConnection {
     func getComment(id: Int) async throws -> Comment2Snapshot {
         let response = try await performingForEndpoint { endpoint in
-            GetCommentRequest(endpoint: endpoint, id: id)
+            LemmyGetCommentRequest(endpoint: endpoint, id: id)
         }
         return try .init(from: response.commentView)
     }
     
     func getComment(url: URL) async throws -> Comment2Snapshot {
         do {
-            let response = try await performingForEndpoint { endpoint in
-                ResolveObjectRequest(endpoint: endpoint, q: url.absoluteString)
-            }
-            if let comment = response.comment {
-                return try .init(from: comment)
+            let result = try await resolve(url: url)
+            switch result {
+            case let .comment(comment):
+                return comment
+            default:
+                throw ApiClientError.noEntityFound
             }
         } catch let ApiClientError.response(response, _) where response.couldntFindObject {
             throw ApiClientError.noEntityFound
@@ -38,7 +39,7 @@ public extension LemmyConnection {
         filter: GetContentFilter? = nil
     ) async throws -> [Comment2Snapshot] {
         let response = try await performingForEndpoint { endpoint in
-            ListCommentsRequest(
+            LemmyListCommentsRequest(
                 endpoint: endpoint,
                 type_: .all,
                 sort: sort.apiSortType,
@@ -69,7 +70,7 @@ public extension LemmyConnection {
         filter: GetContentFilter? = nil
     ) async throws -> [Comment2Snapshot] {
         let response = try await performingForEndpoint { endpoint in
-            ListCommentsRequest(
+            LemmyListCommentsRequest(
                 endpoint: endpoint,
                 type_: .all,
                 sort: sort.apiSortType,
@@ -143,12 +144,12 @@ public extension LemmyConnection {
         communityId: Int?,
         creatorId: Int?,
         filter: ListingType,
-        legacySort: ApiSortType?,
-        sort: ApiSearchSortType?,
+        legacySort: LemmySortType?,
+        sort: LemmySearchSortType?,
         timeRangeSeconds: Int?
     ) async throws -> [Comment2Snapshot] {
         let response = try await performingForEndpoint { endpoint in
-            SearchRequest(
+            LemmySearchRequest(
                 endpoint: .v3,
                 q: query,
                 communityId: communityId,
@@ -160,7 +161,6 @@ public extension LemmyConnection {
                 page: page,
                 limit: limit,
                 postTitleOnly: false,
-                searchTerm: nil,
                 timeRangeSeconds: timeRangeSeconds,
                 titleOnly: nil,
                 postUrlOnly: nil,
@@ -177,7 +177,7 @@ public extension LemmyConnection {
     @discardableResult
     func voteOnComment(id: Int, score: ScoringOperation) async throws -> Comment2Snapshot {
         let response = try await performingForEndpoint { endpoint in
-            LikeCommentRequest(endpoint: endpoint, commentId: id, score: score.rawValue)
+            LemmyLikeCommentRequest(endpoint: endpoint, commentId: id, score: score.rawValue)
         }
         return try .init(from: response.commentView)
     }
@@ -185,7 +185,7 @@ public extension LemmyConnection {
     @discardableResult
     func saveComment(id: Int, save: Bool) async throws -> Comment2Snapshot {
         let response = try await performingForEndpoint { endpoint in
-            SaveCommentRequest(endpoint: endpoint, commentId: id, save: save)
+            LemmySaveCommentRequest(endpoint: endpoint, commentId: id, save: save)
         }
         return try .init(from: response.commentView)
     }
@@ -193,7 +193,7 @@ public extension LemmyConnection {
     @discardableResult
     func deleteComment(id: Int, delete: Bool) async throws -> Comment2Snapshot {
         let response = try await performingForEndpoint { endpoint in
-            DeleteCommentRequest(endpoint: endpoint, commentId: id, deleted: delete)
+            LemmyDeleteCommentRequest(endpoint: endpoint, commentId: id, deleted: delete)
         }
         return try .init(from: response.commentView)
     }
@@ -205,7 +205,7 @@ public extension LemmyConnection {
         languageId: Int?
     ) async throws -> Comment2Snapshot {
         let response = try await performingForEndpoint { endpoint in
-            UpdateCommentRequest(
+            LemmyUpdateCommentRequest(
                 endpoint: endpoint,
                 commentId: id,
                 content: content,
@@ -217,7 +217,7 @@ public extension LemmyConnection {
     
     func replyToComment(postId: Int, parentId: Int?, content: String, languageId: Int? = nil) async throws -> Comment2Snapshot {
         let response = try await performingForEndpoint { endpoint in
-            CreateCommentRequest(
+            LemmyCreateCommentRequest(
                 endpoint: endpoint,
                 content: content,
                 postId: postId,
@@ -231,7 +231,7 @@ public extension LemmyConnection {
     @discardableResult
     func reportComment(id: Int, reason: String) async throws -> ReportSnapshot {
         let response = try await performingForEndpoint { endpoint in
-            CreateCommentReportRequest(
+            LemmyCreateCommentReportRequest(
                 endpoint: endpoint,
                 commentId: id,
                 reason: reason,
@@ -243,7 +243,7 @@ public extension LemmyConnection {
     
     func purgeComment(id: Int, reason: String?) async throws {
         let response = try await performingForEndpoint { endpoint in
-            PurgeCommentRequest(endpoint: endpoint, commentId: id, reason: reason)
+            LemmyPurgeCommentRequest(endpoint: endpoint, commentId: id, reason: reason)
         }
         guard response.success else { throw ApiClientError.unsuccessful }
     }
@@ -255,7 +255,7 @@ public extension LemmyConnection {
         reason: String?
     ) async throws -> Comment2Snapshot {
         let response = try await performingForEndpoint { endpoint in
-            RemoveCommentRequest(
+            LemmyRemoveCommentRequest(
                 endpoint: endpoint,
                 commentId: id,
                 removed: remove,
@@ -273,7 +273,7 @@ public extension LemmyConnection {
         limit: Int = 20
     ) async throws -> [PersonVoteSnapshot] {
         let response = try await performingForEndpoint { endpoint in
-            ListCommentLikesRequest(
+            LemmyListCommentLikesRequest(
                 endpoint: endpoint,
                 commentId: id,
                 page: page,

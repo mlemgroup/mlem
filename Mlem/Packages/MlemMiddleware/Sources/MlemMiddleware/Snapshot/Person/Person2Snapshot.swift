@@ -19,39 +19,4 @@ public struct Person2Snapshot: CacheIdentifiable {
     public let commentCount: Int
     
     public var cacheId: Int { person.cacheId }
-    
-    init(from person: ApiPersonView) throws(ApiClientError) {
-        self.person = try .init(from: person.person)
-        
-        self.isAdmin = person.isAdmin
-        
-        if let postCount = person.person.postCount ?? person.counts?.postCount {
-            self.postCount = postCount
-        } else {
-            throw .responseMissingRequiredData("ApiPersonView postCount")
-        }
-        
-        if let commentCount = person.person.commentCount ?? person.counts?.commentCount {
-            self.commentCount = commentCount
-        } else {
-            throw .responseMissingRequiredData("ApiPersonView commentCount")
-        }
-    }
-    
-    init(from localUser: ApiLocalUserView) throws(ApiClientError) {
-        self.person = try .init(from: localUser.person)
-        self.isAdmin = localUser.localUser.admin
-        
-        if let postCount = localUser.person.postCount ?? localUser.counts?.postCount {
-            self.postCount = postCount
-        } else {
-            throw .responseMissingRequiredData("ApiLocalUserView postCount")
-        }
-        
-        if let commentCount = localUser.person.commentCount ?? localUser.counts?.commentCount {
-            self.commentCount = commentCount
-        } else {
-            throw .responseMissingRequiredData("ApiLocalUserView commentCount")
-        }
-    }
 }

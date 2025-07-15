@@ -23,17 +23,4 @@ public struct Message1Snapshot: CacheIdentifiable {
     public let deleted: Bool
     
     public var cacheId: Int { id }
-    
-    public init(from message: ApiPrivateMessage) throws(ApiClientError) {
-        self.actorId = message.apId
-        self.id = message.id
-        self.creatorId = message.creatorId
-        self.recipientId = message.recipientId
-        self.created = message.published
-        
-        self.content = message.content
-        self.updated = message.updated
-        self.read = message.read
-        self.deleted = message.deleted
-    }
 }

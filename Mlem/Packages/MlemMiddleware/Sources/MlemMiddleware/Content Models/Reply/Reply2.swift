@@ -31,7 +31,7 @@ public final class Reply2: Reply2Providing, FeedLoadable {
     public let recipient: Person1
     public var subscribed: Bool
     public var commentCount: Int
-    public var creatorIsModerator: Bool?
+    public var creatorIsModerator: Bool
     public var creatorIsAdmin: Bool
     
     public var creatorBannedFromCommunity: Bool {
@@ -58,7 +58,7 @@ public final class Reply2: Reply2Providing, FeedLoadable {
         recipient: Person1,
         subscribed: Bool,
         commentCount: Int,
-        creatorIsModerator: Bool?,
+        creatorIsModerator: Bool,
         creatorIsAdmin: Bool,
         bannedFromCommunity: Bool,
         votesManager: StateManager<VotesModel>,

@@ -18,7 +18,7 @@ public extension LemmyConnection {
         showHidden: Bool = false
     ) async throws -> (posts: [Post2Snapshot], cursor: String?) {
         let response = try await performingForEndpoint { endpoint in
-            ListPostsRequest(
+            LemmyListPostsRequest(
                 endpoint: endpoint,
                 type_: .all,
                 sort: sort.legacyApiSortType,
@@ -34,6 +34,7 @@ public extension LemmyConnection {
                 showRead: nil,
                 showNsfw: nil,
                 timeRangeSeconds: nil,
+                multiCommunityId: nil,
                 hideMedia: nil,
                 markAsRead: nil,
                 noCommentsOnly: nil,
@@ -56,7 +57,7 @@ public extension LemmyConnection {
         showHidden: Bool = false
     ) async throws -> (posts: [Post2Snapshot], cursor: String?) {
         let response = try await performingForEndpoint { endpoint in
-            ListPostsRequest(
+            LemmyListPostsRequest(
                 endpoint: endpoint,
                 type_: feed.apiType,
                 sort: sort.legacyApiSortType,
@@ -72,6 +73,7 @@ public extension LemmyConnection {
                 showRead: nil,
                 showNsfw: nil,
                 timeRangeSeconds: nil,
+                multiCommunityId: nil,
                 hideMedia: nil,
                 markAsRead: nil,
                 noCommentsOnly: nil,
@@ -93,7 +95,7 @@ public extension LemmyConnection {
         savedOnly: Bool = false
     ) async throws -> (person: Person3Snapshot, posts: [Post2Snapshot]) {
         let response = try await performingForEndpoint { endpoint in
-            ReadPersonRequest(
+            LemmyReadPersonRequest(
                 endpoint: endpoint,
                 personId: personId,
                 username: nil,
@@ -112,7 +114,7 @@ public extension LemmyConnection {
 
     func getPost(id: Int) async throws -> Post3Snapshot {
         let response = try await performingForEndpoint { endpoint in
-            GetPostRequest(
+            LemmyGetPostRequest(
                 endpoint: endpoint,
                 id: id,
                 commentId: nil
@@ -123,11 +125,12 @@ public extension LemmyConnection {
     
     func getPost(url: URL) async throws -> Post2Snapshot {
         do {
-            let response = try await performingForEndpoint { endpoint in
-                ResolveObjectRequest(endpoint: endpoint, q: url.absoluteString)
-            }
-            if let post = response.post {
-                return try .init(from: post)
+            let result = try await resolve(url: url)
+            switch result {
+            case let .post(post):
+                return post
+            default:
+                throw ApiClientError.noEntityFound
             }
         } catch let ApiClientError.response(response, _) where response.couldntFindObject {
             throw ApiClientError.noEntityFound
@@ -187,12 +190,12 @@ public extension LemmyConnection {
         communityId: Int?,
         creatorId: Int?,
         filter: ListingType,
-        legacySort: ApiSortType?,
-        sort: ApiSearchSortType?,
+        legacySort: LemmySortType?,
+        sort: LemmySearchSortType?,
         timeRangeSeconds: Int?
     ) async throws -> [Post2Snapshot] {
         let response = try await performingForEndpoint { endpoint in
-            SearchRequest(
+            LemmySearchRequest(
                 endpoint: .v3,
                 q: query,
                 communityId: communityId,
@@ -204,7 +207,6 @@ public extension LemmyConnection {
                 page: page,
                 limit: limit,
                 postTitleOnly: false,
-                searchTerm: query,
                 timeRangeSeconds: timeRangeSeconds,
                 titleOnly: nil,
                 postUrlOnly: nil,
@@ -225,10 +227,10 @@ public extension LemmyConnection {
         try await processingForEndpoint { endpoint in
             switch endpoint {
             case .v3:
-                let request = MarkPostAsReadRequest(endpoint: .v3, postId: nil, postIds: Array(ids), read: true)
+                let request = LemmyMarkPostAsReadRequest(endpoint: .v3, postId: nil, postIds: Array(ids), read: true)
                 try await perform(request)
             case .v4:
-                let request = MarkPostsAsReadRequest(postIds: Array(ids))
+                let request = LemmyMarkPostsAsReadRequest(postIds: Array(ids))
                 try await perform(request)
             }
         }
@@ -237,7 +239,7 @@ public extension LemmyConnection {
     func markPostAsRead(id: Int, read: Bool) async throws {
         // Could we do something with the response here?
         _ = try await performingForEndpoint { endpoint in
-            MarkPostAsReadRequest(
+            LemmyMarkPostAsReadRequest(
                 endpoint: endpoint,
                 postId: id,
                 postIds: [id],
@@ -249,7 +251,7 @@ public extension LemmyConnection {
     @discardableResult
     func voteOnPost(id: Int, score: ScoringOperation) async throws -> Post2Snapshot {
         let response = try await performingForEndpoint { endpoint in
-            LikePostRequest(
+            LemmyLikePostRequest(
                 endpoint: endpoint,
                 postId: id,
                 score: score.rawValue
@@ -261,7 +263,7 @@ public extension LemmyConnection {
     @discardableResult
     func savePost(id: Int, save: Bool) async throws -> Post2Snapshot {
         let response = try await performingForEndpoint { endpoint in
-            SavePostRequest(
+            LemmySavePostRequest(
                 endpoint: endpoint,
                 postId: id,
                 save: save
@@ -273,7 +275,7 @@ public extension LemmyConnection {
     @discardableResult
     func deletePost(id: Int, delete: Bool) async throws -> Post2Snapshot {
         let response = try await performingForEndpoint { endpoint in
-            DeletePostRequest(
+            LemmyDeletePostRequest(
                 endpoint: endpoint,
                 postId: id,
                 deleted: delete
@@ -286,7 +288,7 @@ public extension LemmyConnection {
     func hidePost(id: Int, hide: Bool) async throws {
         // Could we do something with the response here?
         _ = try await performingForEndpoint { endpoint in
-            HidePostRequest(
+            LemmyHidePostRequest(
                 endpoint: endpoint,
                 postIds: [id],
                 hide: hide,
@@ -306,7 +308,7 @@ public extension LemmyConnection {
         languageId: Int? = nil
     ) async throws -> Post2Snapshot {
         let response = try await performingForEndpoint { endpoint in
-            CreatePostRequest(
+            LemmyCreatePostRequest(
                 endpoint: endpoint,
                 name: title,
                 communityId: communityId,
@@ -318,7 +320,7 @@ public extension LemmyConnection {
                 altText: altText,
                 customThumbnail: thumbnail?.absoluteString,
                 tags: nil,
-                scheduledPublishTime: nil
+                scheduledPublishTimeAt: nil
             )
         }
         return try .init(from: response.postView)
@@ -336,7 +338,7 @@ public extension LemmyConnection {
         languageId: Int? = nil
     ) async throws -> Post2Snapshot {
         let response = try await performingForEndpoint { endpoint in
-            UpdatePostRequest(
+            LemmyUpdatePostRequest(
                 endpoint: endpoint,
                 postId: id,
                 name: title,
@@ -346,7 +348,7 @@ public extension LemmyConnection {
                 languageId: languageId,
                 altText: altText,
                 customThumbnail: thumbnail?.absoluteString,
-                scheduledPublishTime: nil,
+                scheduledPublishTimeAt: nil,
                 tags: nil
             )
         }
@@ -359,7 +361,7 @@ public extension LemmyConnection {
         languageId: Int? = nil
     ) async throws -> Comment2Snapshot {
         let response = try await performingForEndpoint { endpoint in
-            CreateCommentRequest(
+            LemmyCreateCommentRequest(
                 endpoint: endpoint,
                 content: content,
                 postId: id,
@@ -373,7 +375,7 @@ public extension LemmyConnection {
     @discardableResult
     func reportPost(id: Int, reason: String) async throws -> ReportSnapshot {
         let response = try await performingForEndpoint { endpoint in
-            CreatePostReportRequest(
+            LemmyCreatePostReportRequest(
                 endpoint: endpoint,
                 postId: id,
                 reason: reason,
@@ -385,7 +387,7 @@ public extension LemmyConnection {
     
     func purgePost(id: Int, reason: String?) async throws {
         let response = try await performingForEndpoint { endpoint in
-            PurgePostRequest(endpoint: endpoint, postId: id, reason: reason)
+            LemmyPurgePostRequest(endpoint: endpoint, postId: id, reason: reason)
         }
         guard response.success else { throw ApiClientError.unsuccessful }
     }
@@ -397,7 +399,7 @@ public extension LemmyConnection {
         reason: String?
     ) async throws -> Post2Snapshot {
         let response = try await performingForEndpoint { endpoint in
-            RemovePostRequest(
+            LemmyRemovePostRequest(
                 endpoint: endpoint,
                 postId: id,
                 removed: remove,
@@ -414,7 +416,7 @@ public extension LemmyConnection {
         to target: PostFeatureType
     ) async throws -> Post2Snapshot {
         let response = try await performingForEndpoint { endpoint in
-            FeaturePostRequest(
+            LemmyFeaturePostRequest(
                 endpoint: endpoint,
                 postId: id,
                 featured: pin,
@@ -427,7 +429,7 @@ public extension LemmyConnection {
     @discardableResult
     func lockPost(id: Int, lock: Bool) async throws -> Post2Snapshot {
         let response = try await performingForEndpoint { endpoint in
-            LockPostRequest(
+            LemmyLockPostRequest(
                 endpoint: endpoint,
                 postId: id,
                 locked: lock,
@@ -445,7 +447,7 @@ public extension LemmyConnection {
         limit: Int = 20
     ) async throws -> [PersonVoteSnapshot] {
         let response = try await performingForEndpoint { endpoint in
-            ListPostLikesRequest(
+            LemmyListPostLikesRequest(
                 endpoint: endpoint,
                 postId: id,
                 page: page,

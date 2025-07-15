@@ -17,21 +17,4 @@ public struct Community3Snapshot: CacheIdentifiable {
     public let discussionLanguageIds: Set<Int>
     
     public var cacheId: Int { community.cacheId }
-    
-    public init(from community: ApiGetCommunityResponse) throws(ApiClientError) {
-        self.community = try .init(from: community.communityView)
-        if let site = community.site {
-            self.instance = try .init(from: site)
-        } else {
-            self.instance = nil
-        }
-        
-        var moderators = [Person1Snapshot]()
-        for moderator in community.moderators {
-            try moderators.append(.init(from: moderator.moderator))
-        }
-        
-        self.moderators = moderators
-        self.discussionLanguageIds = .init(community.discussionLanguages)
-    }
 }

@@ -33,39 +33,6 @@ public enum SearchSortType: Hashable, Sendable {
     public static var legacyCases: [Self] = nonTopCases + legacyTopCases
     public static var legacyPersonCases: [Self] = nonTopCases + [.top(.allTime)]
     
-    public init?(_ legacyApiSortType: ApiSortType) {
-        switch legacyApiSortType {
-        case .new:
-            self = .new
-        case .old:
-            self = .old
-        default:
-            if let timeRange = SortTimeRange(legacyApiSortType) {
-                self = .top(timeRange)
-            } else {
-                return nil
-            }
-        }
-    }
-    
-    /// Returns `nil` if the `SearchSortType` is a value that cannot be converted to an `ApiSortType`.
-    public var legacyApiSortType: ApiSortType? {
-        switch self {
-        case .new: .new
-        case .old: .old
-        case let .top(timeRange): timeRange.legacyApiSortType
-        }
-    }
-    
-    /// Returns `nil` if the `SearchSortType` is a value that cannot be converted to an `ApiSearchSortType`.
-    public var apiSortType: ApiSearchSortType? {
-        switch self {
-        case .new: .new
-        case .old: .old
-        case .top: .top
-        }
-    }
-    
     public var timeRange: SortTimeRange? {
         switch self {
         case let .top(timeRange): timeRange
@@ -75,11 +42,4 @@ public enum SearchSortType: Hashable, Sendable {
 
     // This should only be used internally within ApiClient
     var timeRangeSeconds: Int? { timeRange?.timeRangeSeconds }
-
-    public var minimumVersion: SiteVersion {
-        switch self {
-        case let .top(timeRange): timeRange.minimumVersion
-        default: .zero
-        }
-    }
 }

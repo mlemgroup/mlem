@@ -15,7 +15,7 @@ public enum SignUpResponse {
     case canLogIn(token: String)
     case cannotLogIn(reasons: Set<Reason>)
     
-    init(from loginResponse: ApiLoginResponse) {
+    init(from loginResponse: LemmyLoginResponse) {
         if let token = loginResponse.jwt {
             self = .canLogIn(token: token)
         }

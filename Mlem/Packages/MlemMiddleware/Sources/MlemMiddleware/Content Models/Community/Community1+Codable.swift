@@ -11,11 +11,11 @@ public extension Community1 {
     struct CodedData: Codable {
         let apiUrl: URL
         let apiMyPersonId: Int?
-        let apiCommunity: ApiCommunity
+        let apiCommunity: LemmyCommunity
     }
     
-    internal var apiCommunity: ApiCommunity {
-        ApiCommunity(
+    internal var apiCommunity: LemmyCommunity {
+        LemmyCommunity(
             id: id,
             name: name,
             title: displayName,
@@ -34,6 +34,8 @@ public extension Community1 {
             instanceId: instanceId,
             visibility: nil,
             sidebar: nil,
+            publishedAt: created,
+            updatedAt: updated,
             apId: actorId,
             subscribers: nil,
             posts: nil,

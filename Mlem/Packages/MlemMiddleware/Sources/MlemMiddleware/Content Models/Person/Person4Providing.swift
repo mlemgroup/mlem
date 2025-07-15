@@ -27,7 +27,7 @@ public protocol Person4Providing: Person3Providing {
     var blurNsfw: Bool? { get }
     var autoExpandImages: Bool? { get }
     var infiniteScrollEnabled: Bool? { get }
-    var postListingMode: ApiPostListingMode? { get }
+    var postListingMode: PostFeedViewMode? { get }
     var totp2faEnabled: Bool? { get }
     var enableKeyboardNavigation: Bool? { get }
     var enableAnimatedImages: Bool? { get }
@@ -54,7 +54,7 @@ public extension Person4Providing {
     var blurNsfw: Bool? { person4.blurNsfw }
     var autoExpandImages: Bool? { person4.autoExpandImages }
     var infiniteScrollEnabled: Bool? { person4.infiniteScrollEnabled }
-    var postListingMode: ApiPostListingMode? { person4.postListingMode }
+    var postListingMode: PostFeedViewMode? { person4.postListingMode }
     var totp2faEnabled: Bool? { person4.totp2faEnabled }
     var enableKeyboardNavigation: Bool? { person4.enableKeyboardNavigation }
     var enableAnimatedImages: Bool? { person4.enableAnimatedImages }
@@ -77,7 +77,7 @@ public extension Person4Providing {
     var blurNsfw_: Bool? { person4.blurNsfw }
     var autoExpandImages_: Bool? { person4.autoExpandImages }
     var infiniteScrollEnabled_: Bool? { person4.infiniteScrollEnabled }
-    var postListingMode_: ApiPostListingMode? { person4.postListingMode }
+    var postListingMode_: PostFeedViewMode? { person4.postListingMode }
     var totp2faEnabled_: Bool? { person4.totp2faEnabled }
     var enableKeyboardNavigation_: Bool? { person4.enableKeyboardNavigation }
     var enableAnimatedImages_: Bool? { person4.enableAnimatedImages }

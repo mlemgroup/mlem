@@ -10,7 +10,7 @@ import Foundation
 public extension LemmyConnection {
     func getPerson(id: Int) async throws -> Person3Snapshot {
         let response = try await performingForEndpoint { endpoint in
-            ReadPersonRequest(
+            LemmyReadPersonRequest(
                 endpoint: endpoint,
                 personId: id,
                 username: nil,
@@ -26,11 +26,12 @@ public extension LemmyConnection {
     
     func getPerson(url: URL) async throws -> Person2Snapshot {
         do {
-            let response = try await performingForEndpoint { endpoint in
-                ResolveObjectRequest(endpoint: endpoint, q: url.absoluteString)
-            }
-            if let person = response.person {
-                return try .init(from: person)
+            let result = try await resolve(url: url)
+            switch result {
+            case let .person(person):
+                return person
+            default:
+                throw ApiClientError.noEntityFound
             }
         } catch let ApiClientError.response(response, _) where response.couldntFindObject {
             throw ApiClientError.noEntityFound
@@ -41,7 +42,7 @@ public extension LemmyConnection {
     func getPerson(username: String) async throws -> Person3Snapshot {
         do {
             let response = try await performingForEndpoint { endpoint in
-                ReadPersonRequest(
+                LemmyReadPersonRequest(
                     endpoint: endpoint,
                     personId: nil,
                     username: username,
@@ -72,7 +73,7 @@ public extension LemmyConnection {
         sort: SearchSortType = .top(.allTime)
     ) async throws -> [Person2Snapshot] {
         let response = try await performingForEndpoint { endpoint in
-            SearchRequest(
+            LemmySearchRequest(
                 endpoint: endpoint,
                 q: query,
                 communityId: nil,
@@ -87,7 +88,6 @@ public extension LemmyConnection {
                 page: page,
                 limit: limit,
                 postTitleOnly: false,
-                searchTerm: query,
                 timeRangeSeconds: sort.timeRangeSeconds,
                 titleOnly: nil,
                 postUrlOnly: nil,
@@ -104,7 +104,7 @@ public extension LemmyConnection {
     @discardableResult
     func blockPerson(id: Int, block: Bool) async throws -> Person2Snapshot {
         let response = try await performingForEndpoint { endpoint in
-            UserBlockPersonRequest(endpoint: endpoint, personId: id, block: block)
+            LemmyUserBlockPersonRequest(endpoint: endpoint, personId: id, block: block)
         }
         return try .init(from: response.personView)
     }
@@ -125,7 +125,7 @@ public extension LemmyConnection {
             expiryTimestamp = nil
         }
         let response = try await performingForEndpoint { endpoint in
-            BanFromCommunityRequest(
+            LemmyBanFromCommunityRequest(
                 endpoint: endpoint,
                 communityId: communityId,
                 personId: personId,
@@ -133,7 +133,8 @@ public extension LemmyConnection {
                 removeData: removeContent,
                 reason: reason,
                 expires: expiryTimestamp,
-                removeOrRestoreData: removeContent
+                removeOrRestoreData: removeContent,
+                expiresAt: expiryTimestamp
             )
         }
         guard response.banned == ban else { throw ApiClientError.unsuccessful }
@@ -155,14 +156,15 @@ public extension LemmyConnection {
             expiryTimestamp = nil
         }
         let response = try await performingForEndpoint { endpoint in
-            BanFromSiteRequest(
+            LemmyBanFromSiteRequest(
                 endpoint: endpoint,
                 personId: personId,
                 ban: ban,
                 removeData: removeContent,
                 reason: reason,
                 expires: expiryTimestamp,
-                removeOrRestoreData: removeContent
+                removeOrRestoreData: removeContent,
+                expiresAt: expiryTimestamp
             )
         }
         guard response.banned == ban else { throw ApiClientError.unsuccessful }
@@ -171,7 +173,7 @@ public extension LemmyConnection {
     
     func purgePerson(id: Int, reason: String?) async throws {
         let response = try await performingForEndpoint { endpoint in
-            PurgePersonRequest(endpoint: endpoint, personId: id, reason: reason)
+            LemmyPurgePersonRequest(endpoint: endpoint, personId: id, reason: reason)
         }
         guard response.success else { throw ApiClientError.unsuccessful }
     }
@@ -185,7 +187,7 @@ public extension LemmyConnection {
         communityId: Int? = nil
     ) async throws -> (person: Person3Snapshot, posts: [Post2Snapshot], comments: [Comment2Snapshot]) {
         let response = try await performingForEndpoint { endpoint in
-            ReadPersonRequest(
+            LemmyReadPersonRequest(
                 endpoint: .v3,
                 personId: id,
                 username: nil,
@@ -204,14 +206,14 @@ public extension LemmyConnection {
     }
     
     // Returns a raw API type. For use inside LemmyConnection only
-    internal func rawGetMyPerson() async throws -> ApiGetSiteResponse {
+    internal func rawGetMyPerson() async throws -> LemmyGetSiteResponse {
         // Inconveniently, PieFed offers the `api/v3/site` endpoint in an attempt to look like a Lemmy instance.
         // We need to check that this *isn't* a PieFed instance, which we can do by making a second request.
         // The type of request doesn't matter - we're using `UnreadCountRequest` here.
         
         let response = try await processingForEndpoint { endpoint in
-            async let site = await perform(GetSiteRequest(endpoint: endpoint))
-            async let other = await perform(UnreadCountRequest(endpoint: endpoint))
+            async let site = await perform(LemmyGetSiteRequest(endpoint: endpoint))
+            async let other = await perform(LemmyUnreadCountRequest(endpoint: endpoint))
             do {
                 _ = try await other
             } catch ApiClientError.notLoggedIn {
@@ -223,7 +225,7 @@ public extension LemmyConnection {
     }
     
     // Calls rawGetMyPerson, but if there's already a task running in the `contextDataManager` uses that instead.
-    internal func rawGetMyPersonWithContext() async throws -> ApiGetSiteResponse {
+    internal func rawGetMyPersonWithContext() async throws -> LemmyGetSiteResponse {
         if let ongoingTask = contextDataManager.ongoingTask {
             return try await ongoingTask.result.get()
         } else {
@@ -253,7 +255,7 @@ public extension LemmyConnection {
     
     func deleteAccount(password: String, deleteContent: Bool) async throws {
         let response = try await performingForEndpoint { endpoint in
-            DeleteAccountRequest(
+            LemmyDeleteAccountRequest(
                 endpoint: endpoint,
                 password: password,
                 deleteContent: deleteContent
@@ -295,7 +297,7 @@ public extension LemmyConnection {
         showUpvotePercentage: Bool?
     ) async throws {
         let response = try await performingForEndpoint { endpoint in
-            SaveUserSettingsRequest(
+            LemmySaveUserSettingsRequest(
                 endpoint: .v3,
                 showNsfw: showNsfw,
                 blurNsfw: blurNsfw,
@@ -332,7 +334,8 @@ public extension LemmyConnection {
                 blockingKeywords: nil,
                 enablePrivateMessages: nil,
                 autoMarkFetchedPostsAsRead: nil,
-                hideMedia: nil
+                hideMedia: nil,
+                showPersonVotes: nil
             )
         }
         guard response.success else {

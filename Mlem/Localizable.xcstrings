@@ -599,9 +599,6 @@
         }
       }
     },
-    "Accessing the inbox on PieFed isn't implemented yet." : {
-
-    },
     "Account" : {
       "localizations" : {
         "fr" : {
@@ -8849,9 +8846,6 @@
         }
       }
     },
-    "Unsupported" : {
-
-    },
     "Unsupported Badge" : {
       "localizations" : {
         "fr" : {
@@ -8892,9 +8886,6 @@
           }
         }
       }
-    },
-    "Uploading images on PieFed isn't supported yet." : {
-
     },
     "Uploading..." : {
       "localizations" : {

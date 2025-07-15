@@ -37,7 +37,6 @@ public protocol PersonStubProviding: ContentModel, Resolvable {
     var email_: String? { get }
     var showNsfw_: Bool? { get }
     var theme_: String? { get }
-    var defaultSortType_: ApiSortType? { get }
     var defaultListingType_: ListingType? { get }
     var interfaceLanguage_: String? { get }
     var showAvatars_: Bool? { get }
@@ -52,7 +51,7 @@ public protocol PersonStubProviding: ContentModel, Resolvable {
     var blurNsfw_: Bool? { get }
     var autoExpandImages_: Bool? { get }
     var infiniteScrollEnabled_: Bool? { get }
-    var postListingMode_: ApiPostListingMode? { get }
+    var postListingMode_: PostFeedViewMode? { get }
     var totp2faEnabled_: Bool? { get }
     var enableKeyboardNavigation_: Bool? { get }
     var enableAnimatedImages_: Bool? { get }
@@ -89,7 +88,6 @@ public extension PersonStubProviding {
     var email_: String? { nil }
     var showNsfw_: Bool? { nil }
     var theme_: String? { nil }
-    var defaultSortType_: ApiSortType? { nil }
     var defaultListingType_: ListingType? { nil }
     var interfaceLanguage_: String? { nil }
     var showAvatars_: Bool? { nil }
@@ -104,7 +102,7 @@ public extension PersonStubProviding {
     var blurNsfw_: Bool? { nil }
     var autoExpandImages_: Bool? { nil }
     var infiniteScrollEnabled_: Bool? { nil }
-    var postListingMode_: ApiPostListingMode? { nil }
+    var postListingMode_: PostFeedViewMode? { nil }
     var totp2faEnabled_: Bool? { nil }
     var enableKeyboardNavigation_: Bool? { nil }
     var enableAnimatedImages_: Bool? { nil }

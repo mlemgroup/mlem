@@ -33,30 +33,4 @@ public struct Community1Snapshot: CacheIdentifiable {
     public let allPropertiesPresent: Bool
 
     public var cacheId: Int { id }
-    
-    public init(from community: ApiCommunity) throws(ApiClientError) {
-        if let actorId = community.apId ?? community.actorId {
-            self.actorId = actorId
-        } else {
-            throw .responseMissingRequiredData("ApiCommunity actorId")
-        }
-        
-        self.id = community.id
-        self.name = community.name
-        self.created = community.published
-        self.instanceId = community.instanceId
-        
-        self.updated = community.updated
-        self.displayName = community.title
-        self.description = community.description
-        self.removed = community.removed
-        self.deleted = community.deleted
-        self.nsfw = community.nsfw
-        self.avatar = community.icon
-        self.banner = community.banner
-        self.hidden = community.hidden ?? false // TODO: 0.20 we shouldn't be null coalescing here
-        self.onlyModeratorsCanPost = community.postingRestrictedToMods
-        
-        self.allPropertiesPresent = true
-    }
 }

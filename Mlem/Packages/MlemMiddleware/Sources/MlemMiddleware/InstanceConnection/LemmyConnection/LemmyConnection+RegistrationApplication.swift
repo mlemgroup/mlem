@@ -10,7 +10,7 @@ import Foundation
 public extension LemmyConnection {
     func getRegistrationApplicationCount() async throws -> Int {
         let response = try await performingForEndpoint { endpoint in
-            GetUnreadRegistrationApplicationCountRequest(endpoint: endpoint)
+            LemmyGetUnreadRegistrationApplicationCountRequest(endpoint: endpoint)
         }
         return response.registrationApplications
     }
@@ -21,7 +21,7 @@ public extension LemmyConnection {
         unreadOnly: Bool = false
     ) async throws -> [RegistrationApplicationSnapshot] {
         let response = try await performingForEndpoint { endpoint in
-            ListRegistrationApplicationsRequest(
+            LemmyListRegistrationApplicationsRequest(
                 endpoint: endpoint,
                 unreadOnly: unreadOnly,
                 page: page,
@@ -36,7 +36,7 @@ public extension LemmyConnection {
     @discardableResult
     func approveRegistrationApplication(id: Int) async throws -> RegistrationApplicationSnapshot {
         let response = try await performingForEndpoint { endpoint in
-            ApproveRegistrationApplicationRequest(
+            LemmyApproveRegistrationApplicationRequest(
                 endpoint: endpoint,
                 id: id,
                 approve: true,
@@ -49,7 +49,7 @@ public extension LemmyConnection {
     @discardableResult
     func denyRegistrationApplication(id: Int, reason: String?) async throws -> RegistrationApplicationSnapshot {
         let response = try await performingForEndpoint { endpoint in
-            ApproveRegistrationApplicationRequest(
+            LemmyApproveRegistrationApplicationRequest(
                 endpoint: endpoint,
                 id: id,
                 approve: false,

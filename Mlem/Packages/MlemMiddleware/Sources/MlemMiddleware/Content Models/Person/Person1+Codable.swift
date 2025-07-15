@@ -11,10 +11,10 @@ public extension Person1 {
     struct CodedData: Codable {
         let apiUrl: URL
         let apiMyPersonId: Int?
-        let apiPerson: ApiPerson
+        let apiPerson: LemmyPerson
     }
     
-    internal var apiPerson: ApiPerson {
+    internal var apiPerson: LemmyPerson {
         .init(
             id: id,
             name: name,
@@ -32,6 +32,8 @@ public extension Person1 {
             botAccount: isBot,
             banExpires: instanceBan.expiryDate,
             instanceId: instanceId,
+            publishedAt: created,
+            updatedAt: updated,
             apId: actorId,
             postCount: nil,
             commentCount: nil

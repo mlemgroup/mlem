@@ -11,10 +11,10 @@ public extension Person2 {
     struct CodedData: Codable {
         let apiUrl: URL
         let apiMyPersonId: Int?
-        let apiPersonView: ApiPersonView
+        let apiPersonView: LemmyPersonView
     }
     
-    internal var apiPersonView: ApiPersonView {
+    internal var apiPersonView: LemmyPersonView {
         .init(
             person: person1.apiPerson,
             counts: .init(
@@ -23,8 +23,7 @@ public extension Person2 {
                 commentCount: commentCount
             ),
             isAdmin: isAdmin,
-            homeInstanceActions: nil,
-            localInstanceActions: nil,
+            personActions: nil,
             creatorBanned: nil
         )
     }
