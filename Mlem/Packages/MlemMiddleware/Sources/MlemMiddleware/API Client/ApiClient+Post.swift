@@ -186,7 +186,8 @@ public extension ApiClient {
         }
         Task { @MainActor in
             for post in idsToSend.compactMap({ caches.post2.retrieveModel(cacheId: $0) }) {
-                // post.readManager.updateWithReceivedValue(true, semaphore: semaphore)
+                // TODO: NOW handle this properly (with mock snapshot?)
+                post.read_ = true
                 post.updateReadQueued(false)
             }
         }

@@ -33,8 +33,11 @@ private struct MarkReadOnScroll: ViewModifier {
                 geometry.frame(in: .global).maxY < 0
             } action: { wasAboveTop, isAboveTop in
                 if markReadOnScroll, !wasAboveTop, isAboveTop {
-                    print("DEBUG mark read on scroll disabled")
-                    // post.updateRead(true, shouldQueue: true)
+                    do {
+                        try post.updateRead(true, shouldQueue: true)
+                    } catch {
+                        handleError(error)
+                    }
                 }
             }
     }

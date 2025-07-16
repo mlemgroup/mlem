@@ -10,14 +10,6 @@ import Observation
 
 @Observable
 public final class Post3: Post3Providing {
-    public func updateSaved(_ newValue: Bool) -> Task<StateUpdateResult, Never> {
-        post2.updateSaved(newValue)
-    }
-    
-    public func updateVote(_ newVote: ScoringOperation) -> Task<StateUpdateResult, Never> {
-        post2.updateVote(newVote)
-    }
-    
     public static let tierNumber: Int = 3
     public var api: ApiClient
     public var post3: Post3 { self }

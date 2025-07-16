@@ -32,11 +32,15 @@ extension Interactable1Providing {
     
     func toggleUpvoted(feedback: Set<FeedbackType>) {
         if let self2 {
-            if feedback.contains(.haptic) {
-                HapticManager.main.play(haptic: .lightSuccess, tier: .low)
+            do {
+                if feedback.contains(.haptic) {
+                    HapticManager.main.play(haptic: .lightSuccess, tier: .low)
+                }
+                try self2.toggleUpvoted()
+                inboxItem?.updateRead(true)
+            } catch {
+                handleError(error)
             }
-            self2.toggleUpvoted()
-            inboxItem?.updateRead(true)
         } else {
             handleError(MlemError.modelError("No self2 found"), silent: true)
         }
@@ -44,11 +48,15 @@ extension Interactable1Providing {
     
     func toggleDownvoted(feedback: Set<FeedbackType>) {
         if let self2 {
-            if feedback.contains(.haptic) {
-                HapticManager.main.play(haptic: .lightSuccess, tier: .low)
+            do {
+                if feedback.contains(.haptic) {
+                    HapticManager.main.play(haptic: .lightSuccess, tier: .low)
+                }
+                try self2.toggleDownvoted()
+                inboxItem?.updateRead(true)
+            } catch {
+                handleError(error)
             }
-            self2.toggleDownvoted()
-            inboxItem?.updateRead(true)
         } else {
             handleError(MlemError.modelError("No self2 found"), silent: true)
         }
@@ -63,25 +71,29 @@ extension Interactable1Providing {
                     HapticManager.main.play(haptic: .success, tier: .low)
                 }
                 if upvoteOnSave, !post.saved, post.votes.myVote != .upvote {
-                    try post.newUpdateVote(.upvote)
+                    try post.updateVote(.upvote)
                 }
-                try post.newUpdateSaved(!post.saved)
+                try post.updateSaved(!post.saved)
             } catch {
                 handleError(error)
             }
         } else {
             print("DEBUG not a post :(")
             if let self2 {
-                if feedback.contains(.haptic) {
-                    HapticManager.main.play(haptic: .success, tier: .low)
+                do {
+                    if feedback.contains(.haptic) {
+                        HapticManager.main.play(haptic: .success, tier: .low)
+                    }
+                    @Setting(\.behavior_upvoteOnSave) var upvoteOnSave
+                    if upvoteOnSave, !self2.saved, self2.votes.myVote != .upvote {
+                        try self2.updateVote(.upvote)
+                    }
+                    
+                    try self2.toggleSaved()
+                    inboxItem?.updateRead(true)
+                } catch {
+                    handleError(error)
                 }
-                @Setting(\.behavior_upvoteOnSave) var upvoteOnSave
-                if upvoteOnSave, !self2.saved, self2.votes.myVote != .upvote {
-                    self2.updateVote(.upvote)
-                }
-                
-                self2.toggleSaved()
-                inboxItem?.updateRead(true)
             } else {
                 handleError(MlemError.modelError("No self2 found"), silent: true)
             }

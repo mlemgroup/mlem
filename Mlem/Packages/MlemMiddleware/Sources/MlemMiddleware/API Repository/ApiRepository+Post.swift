@@ -136,7 +136,7 @@ extension ApiRepository {
         read: Bool = true
     ) async throws {
         try await performingForConnection { connection in
-            try await connection.markPostAsRead(id: id, read: false)
+            try await connection.markPostAsRead(id: id, read: read)
         }
     }
     

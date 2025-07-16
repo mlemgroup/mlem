@@ -10,19 +10,6 @@ import Observation
 
 @Observable
 public final class Post2: Post2Providing {
-    public func updateSaved(_ newValue: Bool) -> Task<StateUpdateResult, Never> {
-        return .init {
-            .failed
-        }
-    }
-    
-    public func updateVote(_ newVote: ScoringOperation) -> Task<StateUpdateResult, Never> {
-        assertionFailure("Deprecated")
-        return .init {
-            .failed
-        }
-    }
-    
     public static let tierNumber: Int = 2
     public var api: ApiClient
     public var post2: Post2 { self }
@@ -39,7 +26,10 @@ public final class Post2: Post2Providing {
     
     public var votes: VotesModel
     
-    public var read: Bool
+    public var read: Bool { readQueued || read_ }
+    internal var read_: Bool
+    internal var readQueued: Bool = false
+    
     public var saved: Bool
     
     var hiddenManager: StateManager<Bool>
@@ -78,7 +68,7 @@ public final class Post2: Post2Providing {
         self.commentCount = commentCount
         self.unreadCommentCount = unreadCommentCount
         self.saved = saved
-        self.read = read
+        self.read_ = read
         self.hiddenManager = .init(wrappedValue: hidden)
         creator.updateKnownCommunityBanState(id: community.id, banned: creatorBannedFromCommunity)
         
@@ -108,13 +98,12 @@ public final class Post2: Post2Providing {
 //        self.creatorBlocked = snapshot.creatorBlocked
         self.votes = snapshot.votes
         self.saved = snapshot.saved
-        self.read = snapshot.read
+        self.read_ = snapshot.read
 //        self.hidden = snapshot.hidden
     }
     
     @MainActor
     func updateReadQueued(_ newValue: Bool) {
-        // readQueued = newValue
-        read = newValue
+        readQueued = newValue
     }
 }

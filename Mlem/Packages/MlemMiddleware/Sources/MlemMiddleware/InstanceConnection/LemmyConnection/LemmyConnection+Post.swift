@@ -120,6 +120,7 @@ public extension LemmyConnection {
                 commentId: nil
             )
         }
+        print("DEBUG got post. Read: \(response.postView.read)")
         return try .init(from: response)
     }
     

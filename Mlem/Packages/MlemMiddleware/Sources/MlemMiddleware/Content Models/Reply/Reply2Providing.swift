@@ -59,16 +59,16 @@ public extension Reply2Providing {
     private var votesManager: StateManager<VotesModel> { reply2.votesManager }
     private var savedManager: StateManager<Bool> { reply2.savedManager }
     
-    @discardableResult
-    func updateVote(_ newValue: ScoringOperation) -> Task<StateUpdateResult, Never> {
-        votesManager.performRequest(expectedResult: votes.applyScoringOperation(operation: newValue)) { semaphore in
+    func updateVote(_ newValue: ScoringOperation) throws {
+        // TODO: queued state management
+        _ = votesManager.performRequest(expectedResult: votes.applyScoringOperation(operation: newValue)) { semaphore in
             try await self.api.voteOnComment(id: self.commentId, score: newValue, semaphore: semaphore)
         }
     }
     
-    @discardableResult
-    func updateSaved(_ newValue: Bool) -> Task<StateUpdateResult, Never> {
-        savedManager.performRequest(expectedResult: newValue) { semaphore in
+    func updateSaved(_ newValue: Bool) throws {
+        // TODO: queued state management
+        _ = savedManager.performRequest(expectedResult: newValue) { semaphore in
             try await self.api.saveComment(id: self.commentId, save: newValue, semaphore: semaphore)
         }
     }
