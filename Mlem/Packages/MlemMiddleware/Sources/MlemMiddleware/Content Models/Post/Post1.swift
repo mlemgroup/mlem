@@ -100,4 +100,33 @@ public final class Post1: Post1Providing {
         self.languageId = languageId
         self.altText = altText
     }
+    
+    public func snapshotUpdate(with snapshot: any PostSnapshotProviding) {
+        if let post3snapshot = snapshot as? Post3Snapshot {
+            snapshotUpdate(with: post3snapshot.post.post)
+        } else if let post2snapshot = snapshot as? Post2Snapshot {
+            snapshotUpdate(with: post2snapshot.post)
+        } else if let post1snapshot = snapshot as? Post1Snapshot {
+            snapshotUpdate(with: post1snapshot)
+        } else {
+            assertionFailure("Unrecognized post snapshot")
+        }
+    }
+    
+    internal func snapshotUpdate(with snapshot: Post1Snapshot) {
+        self.title = snapshot.title
+        self.content = snapshot.content
+        self.linkUrl = snapshot.linkUrl
+        self.embed = snapshot.embed
+        self.nsfw = snapshot.nsfw
+        self.thumbnailUrl = snapshot.thumbnailUrl
+        self.updated = snapshot.updated
+        self.languageId = snapshot.languageId
+        self.altText = snapshot.altText
+//        self.deleted = snapshot.deleted
+//        self.removed = snapshot.removed
+//        self.pinnedCommunity = snapshot.pinnedCommunity
+//        self.pinnedInstance = snapshot.pinnedInstance
+//        self.locked = snapshot.locked
+    }
 }

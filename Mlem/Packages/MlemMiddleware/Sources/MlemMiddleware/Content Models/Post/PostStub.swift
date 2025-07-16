@@ -32,6 +32,10 @@ public struct PostStub: PostStubProviding, Hashable {
     public func upgrade() async throws -> any Post {
         try await api.getPost(url: resolvableUrl)
     }
+    
+    public func snapshotUpdate(with snapshot: any PostSnapshotProviding) {
+        // noop
+    }
 }
 
 // Resolvable conformance

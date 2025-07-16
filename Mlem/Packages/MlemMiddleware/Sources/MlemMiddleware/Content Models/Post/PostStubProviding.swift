@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol PostStubProviding: ContentModel, Resolvable, AnyObject {
+public protocol PostStubProviding: ContentModel, Resolvable {
     // From Post1Providing. These are defined as nil in the extension below
     var actorId_: ActorIdentifier? { get }
     var creatorId_: Int? { get }
@@ -47,6 +47,8 @@ public protocol PostStubProviding: ContentModel, Resolvable, AnyObject {
     
     // From Post3Providing. These are defined as nil in the extension below
     var crossPosts_: [Post2]? { get }
+    
+    func snapshotUpdate(with snapshot: any PostSnapshotProviding)
     
     func upgrade() async throws -> any Post
 }

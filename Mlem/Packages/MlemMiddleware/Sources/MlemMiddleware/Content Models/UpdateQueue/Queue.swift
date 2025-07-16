@@ -8,17 +8,17 @@
 internal class Queue<T> {
     private var items: [T] = .init()
     
-    public func enqueue(_ item: T) {
+    internal var numItems: Int { items.count }
+    
+    internal func enqueue(_ item: T) {
         items.append(item)
     }
     
     @discardableResult
-    public func dequeue() -> T? {
+    internal func dequeue() -> T? {
         guard !items.isEmpty else { return nil }
         return items.removeFirst()
     }
     
-    public func next() -> T? {
-        return items.first
-    }
+    internal func next() -> T? { items.first }
 }

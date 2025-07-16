@@ -75,6 +75,31 @@ public final class Post2: Post2Providing {
         creator.updateKnownCommunityBanState(id: community.id, banned: creatorBannedFromCommunity)
     }
     
+    public func snapshotUpdate(with snapshot: any PostSnapshotProviding) {
+        if let post3snapshot = snapshot as? Post3Snapshot {
+            snapshotUpdate(with: post3snapshot.post)
+        } else if let post2snapshot = snapshot as? Post2Snapshot {
+            snapshotUpdate(with: post2snapshot)
+        } else if let post1snapshot = snapshot as? Post1Snapshot {
+            post1.snapshotUpdate(with: post1snapshot)
+        } else {
+            assertionFailure("Unrecognized post snapshot")
+        }
+    }
+    
+    internal func snapshotUpdate(with snapshot: Post2Snapshot) {
+        self.commentCount = snapshot.commentCount
+        self.unreadCommentCount = snapshot.unreadCommentCount
+        self.creatorIsModerator = snapshot.creatorIsModerator
+        self.creatorIsAdmin = snapshot.creatorIsAdmin
+//        self.creatorBannedFromCommunity = snapshot.creatorBannedFromCommunity
+//        self.creatorBlocked = snapshot.creatorBlocked
+//        self.votes = snapshot.votes
+//        self.saved = snapshot.saved
+//        self.read = snapshot.read
+//        self.hidden = snapshot.hidden
+    }
+    
     @MainActor
     func updateReadQueued(_ newValue: Bool) {
         readQueued = newValue
