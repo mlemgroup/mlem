@@ -42,6 +42,9 @@ public protocol Post1Providing:
     var updated: Date? { get }
     var languageId: Int { get }
     var altText: String? { get }
+    
+    func snapshotUpdate(with snapshot: any PostSnapshotProviding)
+    var updateQueue: PostUpdateQueue { get }
 }
 
 public typealias Post = Post1Providing

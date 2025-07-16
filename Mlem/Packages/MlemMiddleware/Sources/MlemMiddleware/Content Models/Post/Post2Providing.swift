@@ -20,6 +20,7 @@ public protocol Post2Providing: Post1Providing, Interactable2Providing, PersonCo
 
 public extension Post2Providing {
     var post1: Post1 { post2.post1 }
+    var updateQueue: PostUpdateQueue { post1.updateQueue }
     
     var creator: any Person { post2.creator }
     var community: any Community { post2.community }
@@ -48,52 +49,61 @@ public extension Post2Providing {
 
 public extension Post2Providing {
     private var votesManager: StateManager<VotesModel> { post2.votesManager }
-    private var readManager: StateManager<Bool> { post2.readManager }
-    private var savedManager: StateManager<Bool> { post2.savedManager }
+//    private var readManager: StateManager<Bool> { post2.readManager }
+//    private var savedManager: StateManager<Bool> { post2.savedManager }
     private var hiddenManager: StateManager<Bool> { post2.hiddenManager }
         
-    @discardableResult
-    func updateRead(_ newValue: Bool, shouldQueue: Bool = false) -> Task<StateUpdateResult, Never> {
-        if shouldQueue {
-            return Task { @MainActor in
-                if newValue {
-                    await api.markReadQueue.add(self.id)
-                    post2.updateReadQueued(true)
-                } else {
-                    await api.markReadQueue.remove(self.id)
-                    post2.updateReadQueued(false)
-                }
-                return .deferred
-            }
-        } else {
-            return readManager.performRequest(expectedResult: newValue) { semaphore in
-                try await self.api.markPostAsRead(id: self.id, read: newValue, includeQueuedPosts: true, semaphore: semaphore)
-            }
+    func updateRead(_ newValue: Bool, shouldQueue: Bool = false) async throws {
+        print("DEBUG updating read to \(newValue)")
+        post2.read = newValue
+        await updateQueue.addItem {
+            try await self.api.repository.markPostAsRead(id: self.id, read: newValue)
+            let ret = try await self.api.repository.getPost(id: self.id) // TODO: mock snapshot instead, get real value
+            return ret
         }
-    }
-    
-    @discardableResult
-    func toggleRead(shouldQueue: Bool = false) -> Task<StateUpdateResult, Never> {
-        updateRead(!read, shouldQueue: shouldQueue)
+//        if shouldQueue {
+//            return Task { @MainActor in
+//                if newValue {
+//                    await api.markReadQueue.add(self.id)
+//                    post2.updateReadQueued(true)
+//                } else {
+//                    await api.markReadQueue.remove(self.id)
+//                    post2.updateReadQueued(false)
+//                }
+//                return .deferred
+//            }
+//        } else {
+//            return readManager.performRequest(expectedResult: newValue) { semaphore in
+//                try await self.api.markPostAsRead(id: self.id, read: newValue, includeQueuedPosts: true, semaphore: semaphore)
+//            }
+//        }
     }
 
-    @discardableResult
-    func updateVote(_ newValue: ScoringOperation) -> Task<StateUpdateResult, Never> {
-        groupStateRequest(
-            votesManager.ticket(votes.applyScoringOperation(operation: newValue)),
-            readManager.ticket(true)
-        ) { semaphore in
-            try await self.api.voteOnPost(id: self.id, score: newValue, semaphore: semaphore)
+    func newUpdateVote(_ newValue: ScoringOperation) throws {
+        post2.votes = post2.votes.applyScoringOperation(operation: newValue)
+        post2.read = true
+        Task {
+            await updateQueue.addItem {
+                print("DEBUG voting on post")
+                return try await self.api.repository.voteOnPost(id: self.id, score: newValue)
+            }
         }
+//        groupStateRequest(
+//            votesManager.ticket(votes.applyScoringOperation(operation: newValue)),
+//            readManager.ticket(true)
+//        ) { semaphore in
+//            try await self.api.voteOnPost(id: self.id, score: newValue, semaphore: semaphore)
+//        }
     }
     
-    @discardableResult
-    func updateSaved(_ newValue: Bool) -> Task<StateUpdateResult, Never> {
-        groupStateRequest(
-            savedManager.ticket(newValue),
-            readManager.ticket(true)
-        ) { semaphore in
-            try await self.api.savePost(id: self.id, save: newValue, semaphore: semaphore)
+    func newUpdateSaved(_ newValue: Bool) throws {
+        post2.saved = newValue
+        post2.read = true
+        Task {
+            await updateQueue.addItem {
+                print("DEBUG saving post")
+                return try await self.api.repository.savePost(id: self.id, save: newValue)
+            }
         }
     }
     

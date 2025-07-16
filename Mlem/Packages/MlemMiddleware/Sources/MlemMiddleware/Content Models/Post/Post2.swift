@@ -10,6 +10,19 @@ import Observation
 
 @Observable
 public final class Post2: Post2Providing {
+    public func updateSaved(_ newValue: Bool) -> Task<StateUpdateResult, Never> {
+        return .init {
+            .failed
+        }
+    }
+    
+    public func updateVote(_ newVote: ScoringOperation) -> Task<StateUpdateResult, Never> {
+        assertionFailure("Deprecated")
+        return .init {
+            .failed
+        }
+    }
+    
     public static let tierNumber: Int = 2
     public var api: ApiClient
     public var post2: Post2 { self }
@@ -24,15 +37,10 @@ public final class Post2: Post2Providing {
     public var commentCount: Int
     public var unreadCommentCount: Int
     
-    var votesManager: StateManager<VotesModel>
-    public var votes: VotesModel { votesManager.displayedValue }
+    public var votes: VotesModel
     
-    var readManager: StateManager<Bool>
-    public var read: Bool { readManager.displayedValue || readQueued }
-    private var readQueued: Bool = false
-    
-    var savedManager: StateManager<Bool>
-    public var saved: Bool { savedManager.displayedValue }
+    public var read: Bool
+    public var saved: Bool
     
     var hiddenManager: StateManager<Bool>
     public var hidden: Bool { hiddenManager.displayedValue }
@@ -64,15 +72,19 @@ public final class Post2: Post2Providing {
         self.post1 = post1
         self.creator = creator
         self.community = community
-        self.votesManager = .init(wrappedValue: votes)
+        self.votes = votes
         self.creatorIsModerator = creatorIsModerator
         self.creatorIsAdmin = creatorIsAdmin
         self.commentCount = commentCount
         self.unreadCommentCount = unreadCommentCount
-        self.savedManager = .init(wrappedValue: saved)
-        self.readManager = .init(wrappedValue: read)
+        self.saved = saved
+        self.read = read
         self.hiddenManager = .init(wrappedValue: hidden)
         creator.updateKnownCommunityBanState(id: community.id, banned: creatorBannedFromCommunity)
+        
+        Task {
+            await updateQueue.updateParent(self)
+        }
     }
     
     public func snapshotUpdate(with snapshot: any PostSnapshotProviding) {
@@ -94,14 +106,15 @@ public final class Post2: Post2Providing {
         self.creatorIsAdmin = snapshot.creatorIsAdmin
 //        self.creatorBannedFromCommunity = snapshot.creatorBannedFromCommunity
 //        self.creatorBlocked = snapshot.creatorBlocked
-//        self.votes = snapshot.votes
-//        self.saved = snapshot.saved
-//        self.read = snapshot.read
+        self.votes = snapshot.votes
+        self.saved = snapshot.saved
+        self.read = snapshot.read
 //        self.hidden = snapshot.hidden
     }
     
     @MainActor
     func updateReadQueued(_ newValue: Bool) {
-        readQueued = newValue
+        // readQueued = newValue
+        read = newValue
     }
 }

@@ -16,6 +16,8 @@ public struct PostEmbed: Equatable {
 
 @Observable
 public final class Post1: Post1Providing {
+    public var updateQueue: PostUpdateQueue = .init()
+    
     public static let tierNumber: Int = 1
     public var api: ApiClient
     public var post1: Post1 { self }
@@ -99,6 +101,10 @@ public final class Post1: Post1Providing {
         self.updated = updated
         self.languageId = languageId
         self.altText = altText
+        
+        Task {
+            await updateQueue.updateParent(self)
+        }
     }
     
     public func snapshotUpdate(with snapshot: any PostSnapshotProviding) {

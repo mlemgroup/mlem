@@ -5,7 +5,7 @@
 //  Created by Eric Andrews on 2025-07-04.
 //
 
-internal class Queue<T> {
+public class Queue<T> {
     private var items: [T] = .init()
     
     internal var numItems: Int { items.count }

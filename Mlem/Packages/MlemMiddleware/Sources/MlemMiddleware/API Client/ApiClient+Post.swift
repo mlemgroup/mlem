@@ -137,26 +137,26 @@ public extension ApiClient {
     
     /// Mark the given post as read. Works on all versions.
     /// If `includeQueuedPosts` is set to `true`, any queued posts will be marked read as well.
-    func markPostAsRead(
-        id: Int,
-        read: Bool = true,
-        includeQueuedPosts: Bool = true,
-        semaphore: UInt? = nil
-    ) async throws {
-        if read {
-            // We *must* use `postIds` from 0.19.4 onwards. On 0.19.3 and below, either `postId` or `postIds` is allowed.
-            try await markPostsAsRead(
-                ids: [id],
-                includeQueuedPosts: includeQueuedPosts,
-                semaphore: semaphore
-            )
-        } else {
-            try await repository.markPostAsRead(id: id, read: false)
-            if let post = self.caches.post2.retrieveModel(cacheId: id) {
-                post.readManager.updateWithReceivedValue(read, semaphore: semaphore)
-            }
-        }
-    }
+//    func markPostAsRead(
+//        id: Int,
+//        read: Bool = true,
+//        includeQueuedPosts: Bool = true,
+//        semaphore: UInt? = nil
+//    ) async throws {
+//        if read {
+//            // We *must* use `postIds` from 0.19.4 onwards. On 0.19.3 and below, either `postId` or `postIds` is allowed.
+//            try await markPostsAsRead(
+//                ids: [id],
+//                includeQueuedPosts: includeQueuedPosts,
+//                semaphore: semaphore
+//            )
+//        } else {
+//            try await repository.markPostAsRead(id: id, read: false)
+//            if let post = self.caches.post2.retrieveModel(cacheId: id) {
+//                post.readManager.updateWithReceivedValue(read, semaphore: semaphore)
+//            }
+//        }
+//    }
     
     /// Mark the given posts as read.
     /// Calling this will also mark any queued posts as read unless `includeQueuedPosts` is set to `false`.
@@ -186,7 +186,7 @@ public extension ApiClient {
         }
         Task { @MainActor in
             for post in idsToSend.compactMap({ caches.post2.retrieveModel(cacheId: $0) }) {
-                post.readManager.updateWithReceivedValue(true, semaphore: semaphore)
+                // post.readManager.updateWithReceivedValue(true, semaphore: semaphore)
                 post.updateReadQueued(false)
             }
         }

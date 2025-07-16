@@ -44,9 +44,9 @@ extension Post2: CacheIdentifiable {
         setIfChanged(\.creatorIsAdmin, snapshot.creatorIsAdmin)
         creator.updateKnownCommunityBanState(id: community.id, banned: snapshot.creatorBannedFromCommunity)
         
-        votesManager.updateWithReceivedValue(snapshot.votes, semaphore: semaphore)
-        savedManager.updateWithReceivedValue(snapshot.saved, semaphore: semaphore)
-        readManager.updateWithReceivedValue(snapshot.read, semaphore: semaphore)
+        // votes = snapshot.votes
+//        savedManager.updateWithReceivedValue(snapshot.saved, semaphore: semaphore)
+//        readManager.updateWithReceivedValue(snapshot.read, semaphore: semaphore)
         hiddenManager.updateWithReceivedValue(snapshot.hidden, semaphore: semaphore)
         
         creator.blockedManager.updateWithReceivedValue(snapshot.creatorBlocked, semaphore: semaphore)

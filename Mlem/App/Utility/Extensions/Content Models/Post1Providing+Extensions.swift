@@ -103,7 +103,13 @@ extension Post1Providing {
     }
     
     func markRead() {
-        self2?.updateRead(true)
+        Task {
+            do {
+                try await self2?.updateRead(true)
+            } catch {
+                print(error)
+            }
+        }
     }
     
     @ActionBuilder
