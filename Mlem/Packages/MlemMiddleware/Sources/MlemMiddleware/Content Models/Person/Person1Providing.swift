@@ -67,6 +67,27 @@ public extension Person1Providing {
     var blocked_: Bool? { person1.blocked }
 }
 
+extension Person1Providing {
+    internal func takeSnapshot1() -> Person1Snapshot {
+        .init(actorId: actorId,
+              id: id,
+              name: name,
+              created: created,
+              instanceId: instanceId,
+              displayName: displayName,
+              avatar: avatar,
+              banner: banner,
+              updated: updated,
+              description: description,
+              matrixUserId: matrixId,
+              isBot: isBot,
+              instanceBan: instanceBan,
+              deleted: deleted,
+              allPropertiesPresent: true // TODO: NOW what should this be?
+        )
+    }
+}
+
 // Resolvable conformance
 public extension Person1Providing {
     @inlinable

@@ -47,6 +47,17 @@ public extension Community2Providing {
     var subscriptionTier_: SubscriptionTier? { community2.subscriptionTier }
 }
 
+extension Community2Providing {
+    internal func takeSnapshot2() -> Community2Snapshot {
+        .init(community: community1.takeSnapshot1(),
+              subscription: .init(total: subscriberCount, local: localSubscriberCount, subscribed: subscribed, pending: false), // TODO: NOW pending?
+              postCount: postCount,
+              commentCount: commentCount,
+              activeUserCount: activeUserCount,
+              bannedFromCommunity: false) // TODO: NOW how to populate?
+    }
+}
+
 public extension Community2Providing {
     private var subscriptionManager: StateManager<SubscriptionModel> { community2.subscriptionManager }
     

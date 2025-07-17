@@ -35,27 +35,9 @@ public final class Post3: Post3Providing {
     }
     
     deinit {
-        print("Deinitializing")
         let post2 = self.post2
         Task {
             await post2.updateQueue.setParent(post2)
         }
-    }
-    
-    public func snapshotUpdate(with snapshot: any PostSnapshotProviding) {
-        if let post3snapshot = snapshot as? Post3Snapshot {
-            snapshotUpdate(with: post3snapshot)
-        } else if let post2snapshot = snapshot as? Post2Snapshot {
-            post2.snapshotUpdate(with: post2snapshot)
-        } else if let post1snapshot = snapshot as? Post1Snapshot {
-            post2.post1.snapshotUpdate(with: post1snapshot)
-        } else {
-            assertionFailure("Unrecognized post snapshot")
-        }
-    }
-    
-    internal func snapshotUpdate(with snapshot: Post3Snapshot) {
-        // self.crossPosts = snapshot.crossPosts // TODO: get models from cache
-        post2.snapshotUpdate(with: snapshot.post)
     }
 }
