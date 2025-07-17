@@ -172,7 +172,6 @@ extension ApiRepository {
         hide: Bool
     ) async throws {
         try await performingForConnection { connection in
-            sleep(2)
             try await connection.hidePost(id: id, hide: hide)
         }
     }

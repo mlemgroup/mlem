@@ -33,4 +33,20 @@ public struct Post1Snapshot: CacheIdentifiable, PostSnapshotProviding {
     public let locked: Bool
 
     public var cacheId: Int { id }
+    
+    public func merge(with snapshot: any PostSnapshotProviding) -> any PostSnapshotProviding {
+        if snapshot is Post1Snapshot {
+            return self
+        }
+        if var snapshot2 = snapshot as? Post2Snapshot {
+            snapshot2.post = self
+            return snapshot2
+        }
+        if var snapshot3 = snapshot as? Post3Snapshot {
+            snapshot3.post.post = self
+            return snapshot3
+        }
+        assertionFailure("Unrecognized snapshot")
+        return self
+    }
 }

@@ -26,9 +26,9 @@ public final class Post2: Post2Providing {
     
     public var votes: VotesModel
     
-    public var read: Bool { readQueued || read_ }
-    internal var read_: Bool // TODO: NOW resolve name inconsistency
-    internal var readQueued: Bool = false
+    public var read: Bool { readQueued || readStatus }
+    internal var readStatus: Bool // indicates server-side read status; can be state faked
+    internal var readQueued: Bool = false // indicates post is queued to be marked read, but not submitted
     
     public var saved: Bool
     
@@ -67,7 +67,7 @@ public final class Post2: Post2Providing {
         self.commentCount = commentCount
         self.unreadCommentCount = unreadCommentCount
         self.saved = saved
-        self.read_ = read
+        self.readStatus = read
         self.hidden = hidden
         creator.updateKnownCommunityBanState(id: community.id, banned: creatorBannedFromCommunity)
         
@@ -81,10 +81,5 @@ public final class Post2: Post2Providing {
         Task {
             await post1.updateQueue.setParent(post1)
         }
-    }
-    
-    @MainActor
-    func updateReadQueued(_ newValue: Bool) {
-        readQueued = newValue
     }
 }

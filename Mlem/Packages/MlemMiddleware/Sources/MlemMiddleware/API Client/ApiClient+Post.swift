@@ -139,8 +139,7 @@ public extension ApiClient {
     /// Calling this will also mark any queued posts as read unless `includeQueuedPosts` is set to `false`.
     func markPostsAsRead(
         ids: Set<Int>,
-        includeQueuedPosts: Bool = true,
-        semaphore: UInt? = nil
+        includeQueuedPosts: Bool = true
     ) async throws {
         let idsToSend: Set<Int>
         let markReadQueueCopy: Set<Int>
@@ -163,9 +162,11 @@ public extension ApiClient {
         }
         Task { @MainActor in
             for post in idsToSend.compactMap({ caches.post2.retrieveModel(cacheId: $0) }) {
-                // TODO: NOW handle this properly (with mock snapshot?)
-                post.read_ = true
-                post.updateReadQueued(false)
+                do {
+                    try post.queuedMarkReadCompleted()
+                } catch {
+                    print(error)
+                }
             }
         }
     }

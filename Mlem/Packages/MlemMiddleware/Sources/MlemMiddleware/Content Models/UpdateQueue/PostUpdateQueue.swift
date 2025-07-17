@@ -23,22 +23,28 @@ public actor PostUpdateQueue {
     
     private var lastVerifiedSnapshot: (any PostSnapshotProviding)?
     
-    private var queue: Queue<() async throws -> any PostSnapshotProviding> = .init()
-    
+    private var queue: Queue<PostUpdateTask> = .init()
+
     internal func setParent(_ newParent: any Post1Providing) {
-//        print("DEBUG assigning parent \(newParent.id)")
-//        if newParent is any Post3Providing {
-//            print("DEBUG new parent is post3")
-//        } else if newParent is any Post2Providing {
-//            print("DEBUG new parent is post2")
-//        } else {
-//            print("DEBUG new parent is post1")
-//        }
-        // TODO: allow model to produce snapshot. Make lastVerifiedSnapshot always present; when parent is set, also set lastVerifiedSnapshot
         self.parent = newParent
+        let parentSnapshot = newParent.takeSnapshot()
+        self.lastVerifiedSnapshot = self.lastVerifiedSnapshot?.merge(with: parentSnapshot) ?? parentSnapshot
     }
     
+    /// Add a task to the queue for a repository call that returns a complete snapshot.
+    /// - Note: prefer this method over the snapshot-modifying variant below
     internal func addItem(item: @escaping () async throws -> any PostSnapshotProviding) {
+        addItem(.createsSnapshot(item))
+    }
+    
+    /// Add a task to the queue for a repository call that **does not** return a complete snapshot. The queue will provide the latest verified
+    /// snapshot to the task, which should then modify and return the snapshot according to the repository call result.
+    /// - Note: **only** use this method when absolutely necessary; if the repository returns a complete snapshot, use the variant above.
+    internal func addItem(item: @escaping (any PostSnapshotProviding) async throws -> any PostSnapshotProviding) {
+        addItem(.modifiesSnapshot(item))
+    }
+    
+    private func addItem(_ item: PostUpdateTask) {
         queue.enqueue(item)
         if queue.numItems == 1 {
             Task {
@@ -58,8 +64,23 @@ public actor PostUpdateQueue {
         while let task = queue.next() {
             print("DEBUG found next task")
             do {
-                let snapshot = try await task()
-                lastVerifiedSnapshot = snapshot // TODO: only if rank high enough
+                // let snapshot = try await task()
+                let snapshot: any PostSnapshotProviding
+                switch task {
+                case let .createsSnapshot(callback):
+                    snapshot = try await callback()
+                case let .modifiesSnapshot(callback):
+                    snapshot = try await callback(lastVerifiedSnapshot ?? parent.takeSnapshot())
+                }
+                
+                if let lastVerifiedSnapshot {
+                    // in case the function returned a lower tier snapshot than currently available, merge lastVerifiedSnapshot into the returned
+                    // snapshot. This operation prefers the returned snapshot, so if it is of equal or higher tier than lastVerifiedSnapshot,
+                    // it overrides it entirely
+                    self.lastVerifiedSnapshot = snapshot.merge(with: lastVerifiedSnapshot)
+                } else {
+                    self.lastVerifiedSnapshot = snapshot
+                }
                 queue.dequeue()
             } catch {
                 print(error)
@@ -80,4 +101,9 @@ public actor PostUpdateQueue {
 //        }
         parent.snapshotUpdate(with: snapshot)
     }
+}
+
+enum PostUpdateTask {
+    case createsSnapshot(() async throws -> any PostSnapshotProviding)
+    case modifiesSnapshot((any PostSnapshotProviding) async throws -> any PostSnapshotProviding)
 }

@@ -53,8 +53,11 @@ private struct MarkReadOnScroll: ViewModifier {
                 if markReadOnScroll, // mark read on scroll enabled
                    index <= (bottomAppearedItemIndex - postSize.markReadOffset) ||
                    index >= (postFeedLoader.items.count - postSize.markReadOffset) { // edge case: end of feed
-                    print("DEBUG mark read on scroll disabled")
-                    // post.updateRead(true, shouldQueue: true)
+                    do {
+                        try post.updateRead(true, shouldQueue: true)
+                    } catch {
+                        handleError(error)
+                    }
                 }
             }
     }

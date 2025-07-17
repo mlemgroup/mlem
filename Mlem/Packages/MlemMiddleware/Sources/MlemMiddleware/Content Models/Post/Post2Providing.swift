@@ -70,7 +70,7 @@ extension Post2Providing {
 //        self.creatorBlocked = snapshot.creatorBlocked
         post2.votes = snapshot.votes
         post2.saved = snapshot.saved
-        post2.read_ = snapshot.read
+        post2.readStatus = snapshot.read
         post2.hidden = snapshot.hidden
         post2.post1.snapshot1Update(with: snapshot.post)
     }
@@ -91,7 +91,7 @@ extension Post2Providing {
               creatorBlocked: creator.blocked,
               votes: votes,
               saved: saved,
-              read: read, // TODO: NOW point to internal read
+              read: post2.readStatus,
               hidden: hidden
         )
     }
@@ -109,19 +109,54 @@ public extension Post2Providing {
                 }
             }
         } else {
-            post2.read_ = newValue
+            post2.readStatus = newValue
             Task {
-                await updateQueue.addItem {
+                await updateQueue.addItem { snapshot in
                     try await self.api.repository.markPostAsRead(id: self.id, read: newValue)
-                    return try await self.api.repository.getPost(id: self.id) // TODO: mock snapshot instead
+                    if var snapshot2 = snapshot as? Post2Snapshot {
+                        snapshot2.read = newValue
+                        return snapshot2
+                    }
+                    if var snapshot3 = snapshot as? Post3Snapshot {
+                        snapshot3.post.read = newValue
+                        return snapshot3
+                    }
+                    // this shouldn't ever happen--when Post2Providing is initialized it should set the queue's parent to itself,
+                    // so this closure should always receive at least Post2Snapshot
+                    assertionFailure("No Post2Snapshot available")
+                    return snapshot
                 }
             }
+        }
+    }
+    
+    /// Update the post when its queued mark read operation completes.
+    func queuedMarkReadCompleted() throws {
+        guard post2.readQueued else {
+            assertionFailure("readQueueFlushed called but post was not queued")
+            return
+        }
+        // sending this through the updateQueue ensures the last verified snapshot in the queue receives the correct read value
+        Task {
+            await updateQueue.addItem { snapshot in
+                if var snapshot2 = snapshot as? Post2Snapshot {
+                    snapshot2.read = true
+                    return snapshot2
+                }
+                if var snapshot3 = snapshot as? Post3Snapshot {
+                    snapshot3.post.read = true
+                    return snapshot3
+                }
+                assertionFailure("No Post2Snapshot available")
+                return snapshot
+            }
+            post2.readQueued = false
         }
     }
 
     func updateVote(_ newValue: ScoringOperation) throws {
         post2.votes = post2.votes.applyScoringOperation(operation: newValue)
-        post2.read_ = true
+        post2.readStatus = true
         Task {
             await updateQueue.addItem {
                 return try await self.api.repository.voteOnPost(id: self.id, score: newValue)
@@ -131,7 +166,7 @@ public extension Post2Providing {
     
     func updateSaved(_ newValue: Bool) throws {
         post2.saved = newValue
-        post2.read_ = true
+        post2.readStatus = true
         Task {
             await updateQueue.addItem {
                 return try await self.api.repository.savePost(id: self.id, save: newValue)
@@ -145,11 +180,20 @@ public extension Post2Providing {
     
     func updateHidden(_ newValue: Bool) throws {
         post2.hidden = newValue
-        post2.read_ = true
+        post2.readStatus = true
         Task {
-            await updateQueue.addItem {
+            await updateQueue.addItem { snapshot in
                 try await self.api.repository.hidePost(id: self.id, hide: newValue)
-                return try await self.api.repository.getPost(id: self.id) // TODO: mock snapshot instead
+                if var snapshot2 = snapshot as? Post2Snapshot {
+                    snapshot2.hidden = newValue
+                    return snapshot2
+                }
+                if var snapshot3 = snapshot as? Post3Snapshot {
+                    snapshot3.post.hidden = newValue
+                    return snapshot3
+                }
+                assertionFailure("No Post2Snapshot available")
+                return snapshot
             }
         }
     }

@@ -89,7 +89,7 @@ extension Community1Providing {
               banner: banner,
               hidden: hidden,
               onlyModeratorsCanPost: onlyModeratorsCanPost,
-              allPropertiesPresent: true // TODO: NOW what's the right value for this?
+              allPropertiesPresent: false
         )
     }
 }

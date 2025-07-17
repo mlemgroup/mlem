@@ -83,7 +83,7 @@ extension Person1Providing {
               isBot: isBot,
               instanceBan: instanceBan,
               deleted: deleted,
-              allPropertiesPresent: true // TODO: NOW what should this be?
+              allPropertiesPresent: false
         )
     }
 }
