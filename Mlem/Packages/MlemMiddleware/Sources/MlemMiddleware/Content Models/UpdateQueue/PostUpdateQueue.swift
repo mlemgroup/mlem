@@ -5,6 +5,19 @@
 //  Created by Eric Andrews on 2025-07-04.
 //
 
+/// This actor synchronizes state updates for a particular post.
+///
+/// Calls are queued using `addItem`, and each call must return a `PostSnapshotProviding`. When each call returns, `lastVerifiedSnapshot` is updated
+/// with the returned snapshot. Each call will only execute when the previous one finishes, ensuring that `lastVerifiedSnapshot` always accurately reflects
+/// the most recently queried server state.
+///
+/// When the queue finishes executing altogether, it updates its parent model with the most recent snapshot. State faking is performed by the model
+/// before the work item is queued.
+///
+/// - Note: some care must be taken to ensure that `parent` always points to a valid model. When a model is initialized, it updates `parent` to be itself;
+/// likewise, when a model is deinitialized, it updates `parent` to be the next lower-tier model contained within itself (e.g., `Post3`'s deinit updates parent
+/// to be `post2`). If this update is not performed, `parent` may become nil and the queue will refuse to execute. In debug mode this will throw an error,
+/// while in production the queue will simply not run until an item is added when the parent is present.
 public actor PostUpdateQueue {
     weak var parent: (any Post1Providing)?
     
@@ -13,14 +26,15 @@ public actor PostUpdateQueue {
     private var queue: Queue<() async throws -> any PostSnapshotProviding> = .init()
     
     internal func setParent(_ newParent: any Post1Providing) {
-        print("DEBUG assigning parent \(newParent.id)")
-        if newParent is any Post3Providing {
-            print("DEBUG new parent is post3")
-        } else if newParent is any Post2Providing {
-            print("DEBUG new parent is post2")
-        } else if newParent is any Post1Providing {
-            print("DEBUG new parent is post1")
-        }
+//        print("DEBUG assigning parent \(newParent.id)")
+//        if newParent is any Post3Providing {
+//            print("DEBUG new parent is post3")
+//        } else if newParent is any Post2Providing {
+//            print("DEBUG new parent is post2")
+//        } else {
+//            print("DEBUG new parent is post1")
+//        }
+        // TODO: allow model to produce snapshot. Make lastVerifiedSnapshot always present; when parent is set, also set lastVerifiedSnapshot
         self.parent = newParent
     }
     
