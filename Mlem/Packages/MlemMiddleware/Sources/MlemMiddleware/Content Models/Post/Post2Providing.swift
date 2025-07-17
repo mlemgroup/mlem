@@ -48,11 +48,8 @@ public extension Post2Providing {
 }
 
 public extension Post2Providing {
-    private var hiddenManager: StateManager<Bool> { post2.hiddenManager }
-        
     func updateRead(_ newValue: Bool, shouldQueue: Bool = false) throws {
         if shouldQueue {
-            print("DEBUG queuing for mark read to \(newValue)")
             post2.readQueued = newValue
             Task {
                 if newValue {
@@ -62,13 +59,11 @@ public extension Post2Providing {
                 }
             }
         } else {
-            print("DEBUG updating read to \(newValue)")
             post2.read_ = newValue
             Task {
                 await updateQueue.addItem {
                     try await self.api.repository.markPostAsRead(id: self.id, read: newValue)
-                    let ret = try await self.api.repository.getPost(id: self.id) // TODO: mock snapshot instead
-                    return ret
+                    return try await self.api.repository.getPost(id: self.id) // TODO: mock snapshot instead
                 }
             }
         }
@@ -79,7 +74,6 @@ public extension Post2Providing {
         post2.read_ = true
         Task {
             await updateQueue.addItem {
-                print("DEBUG voting on post")
                 return try await self.api.repository.voteOnPost(id: self.id, score: newValue)
             }
         }
@@ -90,26 +84,23 @@ public extension Post2Providing {
         post2.read_ = true
         Task {
             await updateQueue.addItem {
-                print("DEBUG saving post")
                 return try await self.api.repository.savePost(id: self.id, save: newValue)
             }
         }
     }
     
-    var queuedForMarkAsRead: Bool {
-        get async { await api.markReadQueue.ids.contains(id) }
+    func toggleHidden() throws {
+        try updateHidden(!hidden)
     }
     
-    @discardableResult
-    func toggleHidden() -> Task<StateUpdateResult, Never> {
-        updateHidden(!hidden)
-    }
-    
-    @discardableResult
-    func updateHidden(_ newValue: Bool) -> Task<StateUpdateResult, Never> {
-        // Unlike other post operations, this one does not mark the post as read
-        hiddenManager.performRequest(expectedResult: newValue) { semaphore in
-            try await self.api.hidePost(id: self.id, hide: newValue, semaphore: semaphore)
+    func updateHidden(_ newValue: Bool) throws {
+        post2.hidden = newValue
+        post2.read_ = true
+        Task {
+            await updateQueue.addItem {
+                try await self.api.repository.hidePost(id: self.id, hide: newValue)
+                return try await self.api.repository.getPost(id: self.id) // TODO: mock snapshot instead
+            }
         }
     }
 }

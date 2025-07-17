@@ -30,7 +30,15 @@ public final class Post3: Post3Providing {
         self.crossPosts = crossPosts
         
         Task {
-            await updateQueue.updateParent(self)
+            await updateQueue.setParent(self)
+        }
+    }
+    
+    deinit {
+        print("Deinitializing")
+        let post2 = self.post2
+        Task {
+            await post2.updateQueue.setParent(post2)
         }
     }
     

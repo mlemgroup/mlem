@@ -30,7 +30,7 @@ extension Post1Providing {
         }
     }
     
-    func toggleHidden(feedback: Set<FeedbackType>) {
+    func toggleHidden(feedback: Set<FeedbackType>) throws {
         if let self2 {
             if feedback.contains(.haptic) {
                 HapticManager.main.play(haptic: .lightSuccess, tier: .low)
@@ -44,13 +44,17 @@ extension Post1Providing {
                             "Hidden",
                             icon: .general.hide,
                             callback: {
-                                self2.updateHidden(false)
+                                do {
+                                    try self2.updateHidden(false)
+                                } catch {
+                                    handleError(error)
+                                }
                             }
                         )
                     )
                 }
             }
-            self2.toggleHidden()
+            try self2.toggleHidden()
         } else {
             handleError(MlemError.modelError("No self2 found"), silent: true)
         }
@@ -349,7 +353,13 @@ extension Post1Providing {
         return .init(
             id: "hide\(uid)",
             appearance: .hide(isOn: hidden),
-            callback: available ? { @MainActor in self.self2?.toggleHidden(feedback: feedback) } : nil
+            callback: available ? { @MainActor in
+                do {
+                    try self.self2?.toggleHidden(feedback: feedback)
+                } catch {
+                    handleError(error)
+                }
+            } : nil
         )
     }
     

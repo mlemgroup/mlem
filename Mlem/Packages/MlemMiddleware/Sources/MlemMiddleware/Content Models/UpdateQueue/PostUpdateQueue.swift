@@ -12,7 +12,15 @@ public actor PostUpdateQueue {
     
     private var queue: Queue<() async throws -> any PostSnapshotProviding> = .init()
     
-    internal func updateParent(_ newParent: any Post1Providing) {
+    internal func setParent(_ newParent: any Post1Providing) {
+        print("DEBUG assigning parent \(newParent.id)")
+        if newParent is any Post3Providing {
+            print("DEBUG new parent is post3")
+        } else if newParent is any Post2Providing {
+            print("DEBUG new parent is post2")
+        } else if newParent is any Post1Providing {
+            print("DEBUG new parent is post1")
+        }
         self.parent = newParent
     }
     
@@ -27,6 +35,12 @@ public actor PostUpdateQueue {
     
     private func executeQueue() async {
         print("DEBUG executing queue")
+        // assigning this here ensures parent stays in scope for the duration of the queue; for operations that remove the post
+        // (e.g., hide), if the call is slow, the parent might go out of scope before it returns; this in turn breaks the undo behavior
+        guard let parent else {
+            assertionFailure("Cannot execute queue with no parent!")
+            return
+        }
         while let task = queue.next() {
             print("DEBUG found next task")
             do {
@@ -40,16 +54,16 @@ public actor PostUpdateQueue {
         
         print("DEBUG done executing queue")
         if let lastVerifiedSnapshot {
-            updateParent(with: lastVerifiedSnapshot)
+            updateParent(parent, with: lastVerifiedSnapshot)
         }
     }
     
-    private func updateParent(with snapshot: any PostSnapshotProviding) {
+    private func updateParent(_ parent: any Post1Providing, with snapshot: any PostSnapshotProviding) {
         print("DEBUG updating parent")
-        guard let parent else {
-            assertionFailure("No parent")
-            return
-        }
+//        guard let parent else {
+//            assertionFailure("No parent")
+//            return
+//        }
         parent.snapshotUpdate(with: snapshot)
     }
 }

@@ -120,7 +120,6 @@ public extension LemmyConnection {
                 commentId: nil
             )
         }
-        print("DEBUG got post. Read: \(response.postView.read)")
         return try .init(from: response)
     }
     
@@ -136,7 +135,6 @@ public extension LemmyConnection {
         } catch let ApiClientError.response(response, _) where response.couldntFindObject {
             throw ApiClientError.noEntityFound
         }
-        throw ApiClientError.noEntityFound
     }
     
     // This method should be removed in favor of the below method once we drop support for versions before Lemmy 1.0

@@ -103,7 +103,7 @@ public final class Post1: Post1Providing {
         self.altText = altText
         
         Task {
-            await updateQueue.updateParent(self)
+            await updateQueue.setParent(self)
         }
     }
     

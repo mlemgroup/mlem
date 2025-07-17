@@ -31,6 +31,7 @@ extension Post1: CacheIdentifiable {
 extension Post2: CacheIdentifiable {
     public var cacheId: Int { id }
     
+    // TODO: NOW deprecate
     @MainActor
     func update(with snapshot: Post2Snapshot, semaphore: UInt? = nil) {
         post1.update(with: snapshot.post, semaphore: semaphore)
@@ -47,7 +48,7 @@ extension Post2: CacheIdentifiable {
         // votes = snapshot.votes
 //        savedManager.updateWithReceivedValue(snapshot.saved, semaphore: semaphore)
 //        readManager.updateWithReceivedValue(snapshot.read, semaphore: semaphore)
-        hiddenManager.updateWithReceivedValue(snapshot.hidden, semaphore: semaphore)
+        // hiddenManager.updateWithReceivedValue(snapshot.hidden, semaphore: semaphore)
         
         creator.blockedManager.updateWithReceivedValue(snapshot.creatorBlocked, semaphore: semaphore)
     }

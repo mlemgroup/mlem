@@ -32,8 +32,7 @@ public final class Post2: Post2Providing {
     
     public var saved: Bool
     
-    var hiddenManager: StateManager<Bool>
-    public var hidden: Bool { hiddenManager.displayedValue }
+    public var hidden: Bool
     
     public var creatorBannedFromCommunity: Bool {
         guard let state = creator.isBannedFromCommunity(community) else {
@@ -69,11 +68,18 @@ public final class Post2: Post2Providing {
         self.unreadCommentCount = unreadCommentCount
         self.saved = saved
         self.read_ = read
-        self.hiddenManager = .init(wrappedValue: hidden)
+        self.hidden = hidden
         creator.updateKnownCommunityBanState(id: community.id, banned: creatorBannedFromCommunity)
         
         Task {
-            await updateQueue.updateParent(self)
+            await updateQueue.setParent(self)
+        }
+    }
+    
+    deinit {
+        let post1 = self.post1
+        Task {
+            await post1.updateQueue.setParent(post1)
         }
     }
     
@@ -99,7 +105,7 @@ public final class Post2: Post2Providing {
         self.votes = snapshot.votes
         self.saved = snapshot.saved
         self.read_ = snapshot.read
-//        self.hidden = snapshot.hidden
+        self.hidden = snapshot.hidden
     }
     
     @MainActor

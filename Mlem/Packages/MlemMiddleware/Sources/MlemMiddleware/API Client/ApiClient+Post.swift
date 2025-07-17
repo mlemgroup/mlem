@@ -135,29 +135,6 @@ public extension ApiClient {
         return await caches.post2.getModels(api: self, from: snapshots)
     }
     
-    /// Mark the given post as read. Works on all versions.
-    /// If `includeQueuedPosts` is set to `true`, any queued posts will be marked read as well.
-//    func markPostAsRead(
-//        id: Int,
-//        read: Bool = true,
-//        includeQueuedPosts: Bool = true,
-//        semaphore: UInt? = nil
-//    ) async throws {
-//        if read {
-//            // We *must* use `postIds` from 0.19.4 onwards. On 0.19.3 and below, either `postId` or `postIds` is allowed.
-//            try await markPostsAsRead(
-//                ids: [id],
-//                includeQueuedPosts: includeQueuedPosts,
-//                semaphore: semaphore
-//            )
-//        } else {
-//            try await repository.markPostAsRead(id: id, read: false)
-//            if let post = self.caches.post2.retrieveModel(cacheId: id) {
-//                post.readManager.updateWithReceivedValue(read, semaphore: semaphore)
-//            }
-//        }
-//    }
-    
     /// Mark the given posts as read.
     /// Calling this will also mark any queued posts as read unless `includeQueuedPosts` is set to `false`.
     func markPostsAsRead(
@@ -210,16 +187,6 @@ public extension ApiClient {
     }
     
     @discardableResult
-    func savePost(id: Int, save: Bool, semaphore: UInt? = nil) async throws -> Post2 {
-        let snapshot = try await repository.savePost(id: id, save: save)
-        return await caches.post2.getModel(
-            api: self,
-            from: snapshot,
-            semaphore: semaphore
-        )
-    }
-    
-    @discardableResult
     func deletePost(id: Int, delete: Bool, semaphore: UInt? = nil) async throws -> Post2 {
         let snapshot = try await repository.deletePost(id: id, delete: delete)
         return await caches.post2.getModel(
@@ -227,18 +194,6 @@ public extension ApiClient {
             from: snapshot,
             semaphore: semaphore
         )
-    }
-    
-    /// Added in 0.19.4
-    func hidePost(
-        id: Int,
-        hide: Bool,
-        semaphore: UInt? = nil
-    ) async throws {
-        try await repository.hidePost(id: id, hide: hide)
-        if let post = caches.post2.retrieveModel(cacheId: id) {
-            post.hiddenManager.updateWithReceivedValue(hide, semaphore: semaphore)
-        }
     }
     
     func createPost(
