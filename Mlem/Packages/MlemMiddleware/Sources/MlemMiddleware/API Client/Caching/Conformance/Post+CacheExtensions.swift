@@ -31,7 +31,7 @@ extension Post1: CacheIdentifiable {
 extension Post2: CacheIdentifiable {
     public var cacheId: Int { id }
     
-    // TODO: NOW deprecate
+    // TODO: NOW deprecate/move to different location; ensure setIfChanged used for snapshotUpdate methods
     @MainActor
     func update(with snapshot: Post2Snapshot, semaphore: UInt? = nil) {
         post1.update(with: snapshot.post, semaphore: semaphore)
