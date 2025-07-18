@@ -52,8 +52,8 @@ public final class Post1: Post1Providing {
     public var locked: Bool
     public var lockedPending: Bool = false
     
-    public var pinnedCommunityManager: StateManager<Bool>
-    public var pinnedCommunity: Bool { pinnedCommunityManager.displayedValue }
+    public var pinnedCommunity: Bool
+    public var pinnedCommunityPending: Bool = false
     
     public var pinnedInstanceManager: StateManager<Bool>
     public var pinnedInstance: Bool { pinnedInstanceManager.displayedValue }
@@ -91,7 +91,7 @@ public final class Post1: Post1Providing {
         self.linkUrl = linkUrl
         self.deletedManager = .init(wrappedValue: deleted)
         self.embed = embed
-        self.pinnedCommunityManager = .init(wrappedValue: pinnedCommunity)
+        self.pinnedCommunity = pinnedCommunity
         self.pinnedInstanceManager = .init(wrappedValue: pinnedInstance)
         self.locked = locked
         self.nsfw = nsfw

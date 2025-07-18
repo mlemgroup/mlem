@@ -31,10 +31,10 @@ public protocol Post1Providing:
     var deleted: Bool { get }
     var embed: PostEmbed? { get }
     var pinnedCommunity: Bool { get }
+    var pinnedCommunityPending: Bool { get }
     var pinnedInstance: Bool { get }
     var locked: Bool { get }
     var lockedPending: Bool { get }
-    var pinnedCommunityManager: StateManager<Bool> { get }
     var pinnedInstanceManager: StateManager<Bool> { get }
     var nsfw: Bool { get }
     var created: Date { get }
@@ -64,10 +64,10 @@ public extension Post1Providing {
     var deleted: Bool { post1.deleted }
     var embed: PostEmbed? { post1.embed }
     var pinnedCommunity: Bool { post1.pinnedCommunity }
+    var pinnedCommunityPending: Bool { post1.pinnedCommunityPending }
     var pinnedInstance: Bool { post1.pinnedInstance }
     var locked: Bool { post1.locked }
     var lockedPending: Bool { post1.lockedPending }
-    var pinnedCommunityManager: StateManager<Bool> { post1.pinnedCommunityManager }
     var pinnedInstanceManager: StateManager<Bool> { post1.pinnedInstanceManager }
     var nsfw: Bool { post1.nsfw }
     var created: Date { post1.created }
@@ -90,7 +90,6 @@ public extension Post1Providing {
     var pinnedCommunity_: Bool? { post1.pinnedCommunity }
     var pinnedInstance_: Bool? { post1.pinnedInstance }
     var locked_: Bool? { post1.locked }
-    var pinnedCommunityManager_: StateManager<Bool>? { post1.pinnedCommunityManager }
     var pinnedInstanceManager_: StateManager<Bool>? { post1.pinnedInstanceManager }
     var nsfw_: Bool? { post1.nsfw }
     var created_: Date? { post1.created }
@@ -329,16 +328,26 @@ public extension Post1Providing {
         try updateLocked(!locked, callback: callback)
     }
     
-    @discardableResult
-    func updatePinnedCommunity(_ newValue: Bool) -> Task<StateUpdateResult, Never> {
-        pinnedCommunityManager.performRequest(expectedResult: newValue) { semaphore in
-            try await self.api.pinPost(id: self.id, pin: newValue, to: .community, semaphore: semaphore)
+    func updatePinnedCommunity(_ newValue: Bool, callback: ((Bool) -> Void)?) throws {
+        post1.pinnedCommunity = newValue
+        post1.pinnedCommunityPending = true
+        Task {
+            await updateQueue.addItem {
+                defer { self.post1.pinnedCommunityPending = false }
+                do {
+                    let ret = try await self.api.repository.pinPost(id: self.id, pin: newValue, to: .community)
+                    callback?(true)
+                    return ret
+                } catch {
+                    callback?(false)
+                    throw error
+                }
+            }
         }
     }
     
-    @discardableResult
-    func togglePinnedCommunity() -> Task<StateUpdateResult, Never> {
-        updatePinnedCommunity(!pinnedCommunity)
+    func togglePinnedCommunity(callback: ((Bool) -> Void)? = nil) throws {
+        try updatePinnedCommunity(!pinnedCommunity, callback: callback)
     }
     
     @discardableResult

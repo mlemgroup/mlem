@@ -77,12 +77,18 @@ extension Post1Providing {
     }
     
     func togglePinnedCommunity(feedback: Set<FeedbackType>) {
-        Task {
-            await handleModerationActionCompletion(
-                message: pinnedCommunity ? "Failed to unpin post" : "Failed to pin post",
-                result: self.togglePinnedCommunity().result.get(),
-                feedback: feedback
-            )
+        do {
+            try self.togglePinnedCommunity { success in
+                Task {
+                    await self.handleModerationActionCompletion(
+                        message: self.pinnedCommunity ? "Failed to unpin post" : "Failed to pin post",
+                        result: success ? .succeeded : .failed,
+                        feedback: feedback
+                    )
+                }
+            }
+        } catch {
+            handleError(error)
         }
     }
     
@@ -318,10 +324,10 @@ extension Post1Providing {
     }
     
     func shouldShowLoadingSymbol(for barConfiguration: PostBarConfiguration? = nil) -> Bool {
-        if lockedPending { // , !(barConfiguration?.all.contains(.action(.lock)) ?? false) {
+        if lockedPending, !(barConfiguration?.all.contains(.action(.lock)) ?? false) {
             return true
         }
-        if !pinnedCommunityManager.isInSync, !(barConfiguration?.all.contains(.action(.pin)) ?? false) {
+        if pinnedCommunityPending, !(barConfiguration?.all.contains(.action(.pin)) ?? false) {
             return true
         }
         if !pinnedInstanceManager.isInSync, !(barConfiguration?.all.contains(.action(.pin)) ?? false) {
@@ -422,7 +428,7 @@ extension Post1Providing {
     
     func pinAction(appState: AppState, feedback: Set<FeedbackType> = []) -> ActionGroup {
         .init(
-            appearance: .pin(isOn: false, isInProgress: !(pinnedCommunityManager.isInSync && pinnedInstanceManager.isInSync)),
+            appearance: .pin(isOn: false, isInProgress: pinnedCommunityPending || !pinnedInstanceManager.isInSync),
             prompt: "Pin to Community or Instance?",
             displayMode: .popup
         ) {
@@ -459,9 +465,9 @@ extension Post1Providing {
         return .init(
             id: "pinToCommunity\(uid)",
             appearance: verboseTitle ? .pinToCommunity(
-                isOn: isOn, isInProgress: !pinnedCommunityManager.isInSync
+                isOn: isOn, isInProgress: pinnedCommunityPending
             ) : .pin(
-                isOn: isOn, isInProgress: !pinnedCommunityManager.isInSync
+                isOn: isOn, isInProgress: pinnedCommunityPending
             ),
             confirmationPrompt: prompt,
             callback: api.canInteract(appState: appState) && canModerate ? { @MainActor in
