@@ -127,9 +127,11 @@ extension Post1Providing {
         post1.altText = snapshot.altText
         //        self.deleted = snapshot.deleted
         //        self.removed = snapshot.removed
-        //        self.pinnedCommunity = snapshot.pinnedCommunity
+        post1.pinnedCommunity = snapshot.pinnedCommunity
+        post1.pinnedCommunityPending = false
         //        self.pinnedInstance = snapshot.pinnedInstance
         post1.locked = snapshot.locked
+        post1.lockedPending = false
     }
     
     public func takeSnapshot() -> any PostSnapshotProviding {
@@ -311,7 +313,6 @@ public extension Post1Providing {
         post1.lockedPending = true
         Task {
             await updateQueue.addItem {
-                defer { self.post1.lockedPending = false }
                 do {
                     let ret = try await self.api.repository.lockPost(id: self.id, lock: newValue)
                     callback?(true)
@@ -333,7 +334,6 @@ public extension Post1Providing {
         post1.pinnedCommunityPending = true
         Task {
             await updateQueue.addItem {
-                defer { self.post1.pinnedCommunityPending = false }
                 do {
                     let ret = try await self.api.repository.pinPost(id: self.id, pin: newValue, to: .community)
                     callback?(true)
