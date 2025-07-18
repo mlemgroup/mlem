@@ -33,9 +33,9 @@ public protocol Post1Providing:
     var pinnedCommunity: Bool { get }
     var pinnedInstance: Bool { get }
     var locked: Bool { get }
+    var lockedPending: Bool { get }
     var pinnedCommunityManager: StateManager<Bool> { get }
     var pinnedInstanceManager: StateManager<Bool> { get }
-    var lockedManager: StateManager<Bool> { get }
     var nsfw: Bool { get }
     var created: Date { get }
     var thumbnailUrl: URL? { get }
@@ -66,9 +66,9 @@ public extension Post1Providing {
     var pinnedCommunity: Bool { post1.pinnedCommunity }
     var pinnedInstance: Bool { post1.pinnedInstance }
     var locked: Bool { post1.locked }
+    var lockedPending: Bool { post1.lockedPending }
     var pinnedCommunityManager: StateManager<Bool> { post1.pinnedCommunityManager }
     var pinnedInstanceManager: StateManager<Bool> { post1.pinnedInstanceManager }
-    var lockedManager: StateManager<Bool> { post1.lockedManager }
     var nsfw: Bool { post1.nsfw }
     var created: Date { post1.created }
     var removed: Bool { post1.removed }
@@ -92,7 +92,6 @@ public extension Post1Providing {
     var locked_: Bool? { post1.locked }
     var pinnedCommunityManager_: StateManager<Bool>? { post1.pinnedCommunityManager }
     var pinnedInstanceManager_: StateManager<Bool>? { post1.pinnedInstanceManager }
-    var lockedManager_: StateManager<Bool>? { post1.lockedManager }
     var nsfw_: Bool? { post1.nsfw }
     var created_: Date? { post1.created }
     var removed_: Bool? { post1.removed }
@@ -131,7 +130,7 @@ extension Post1Providing {
         //        self.removed = snapshot.removed
         //        self.pinnedCommunity = snapshot.pinnedCommunity
         //        self.pinnedInstance = snapshot.pinnedInstance
-        //        self.locked = snapshot.locked
+        post1.locked = snapshot.locked
     }
     
     public func takeSnapshot() -> any PostSnapshotProviding {
@@ -302,16 +301,32 @@ public extension Post1Providing {
         )
     }
     
-    @discardableResult
-    func updateLocked(_ newValue: Bool) -> Task<StateUpdateResult, Never> {
-        lockedManager.performRequest(expectedResult: newValue) { semaphore in
-            try await self.api.lockPost(id: self.id, lock: newValue, semaphore: semaphore)
+    
+    /// Locks or unlocks this post according to newValue
+    /// - Parameters:
+    ///   - newValue: true to lock post, false to unlock
+    ///   - callback: if present, when the repository completes, is called with `true` if the repository call succeeded and `false` otherwise.
+    /// - Note: the callback's parameter indicates success/failure, not locked/unlocked.
+    func updateLocked(_ newValue: Bool, callback: ((Bool) -> Void)?) throws {
+        post1.locked = newValue
+        post1.lockedPending = true
+        Task {
+            await updateQueue.addItem {
+                defer { self.post1.lockedPending = false }
+                do {
+                    let ret = try await self.api.repository.lockPost(id: self.id, lock: newValue)
+                    callback?(true)
+                    return ret
+                } catch {
+                    callback?(false)
+                    throw(error)
+                }
+            }
         }
     }
     
-    @discardableResult
-    func toggleLocked() -> Task<StateUpdateResult, Never> {
-        updateLocked(!locked)
+    func toggleLocked(callback: ((Bool) -> Void)? = nil) throws {
+        try updateLocked(!locked, callback: callback)
     }
     
     @discardableResult

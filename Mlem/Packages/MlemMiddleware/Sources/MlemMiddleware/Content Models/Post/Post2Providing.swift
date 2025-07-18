@@ -159,7 +159,7 @@ public extension Post2Providing {
         post2.readStatus = true
         Task {
             await updateQueue.addItem {
-                return try await self.api.repository.voteOnPost(id: self.id, score: newValue)
+                try await self.api.repository.voteOnPost(id: self.id, score: newValue)
             }
         }
     }

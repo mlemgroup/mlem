@@ -178,16 +178,6 @@ public extension ApiClient {
     }
     
     @discardableResult
-    func voteOnPost(id: Int, score: ScoringOperation, semaphore: UInt? = nil) async throws -> Post2 {
-        let snapshot = try await repository.voteOnPost(id: id, score: score)
-        return await caches.post2.getModel(
-            api: self,
-            from: snapshot,
-            semaphore: semaphore
-        )
-    }
-    
-    @discardableResult
     func deletePost(id: Int, delete: Bool, semaphore: UInt? = nil) async throws -> Post2 {
         let snapshot = try await repository.deletePost(id: id, delete: delete)
         return await caches.post2.getModel(
@@ -287,20 +277,6 @@ public extension ApiClient {
         semaphore: UInt? = nil
     ) async throws -> Post2 {
         let snapshot = try await repository.pinPost(id: id, pin: pin, to: target)
-        return await caches.post2.getModel(
-            api: self,
-            from: snapshot,
-            semaphore: semaphore
-        )
-    }
-    
-    @discardableResult
-    func lockPost(
-        id: Int,
-        lock: Bool,
-        semaphore: UInt? = nil
-    ) async throws -> Post2 {
-        let snapshot = try await repository.lockPost(id: id, lock: lock)
         return await caches.post2.getModel(
             api: self,
             from: snapshot,

@@ -63,7 +63,7 @@ public actor PostUpdateQueue {
             return
         }
         // this shouldn't be possible, since lastVerifiedSnapshot is set when the parent is set
-        guard let lastVerifiedSnapshot else {
+        guard var lastVerifiedSnapshot else {
             assertionFailure("Cannot execute queue with no lastVerifiedSnapshot!")
             return
         }
@@ -81,7 +81,9 @@ public actor PostUpdateQueue {
                 // in case the function returned a lower tier snapshot than currently available, merge lastVerifiedSnapshot into the returned
                 // snapshot. This operation prefers the returned snapshot, so if it is of equal or higher tier than lastVerifiedSnapshot,
                 // it overrides it entirely
-                self.lastVerifiedSnapshot = snapshot.merge(with: lastVerifiedSnapshot)
+                let newSnapshot = snapshot.merge(with: lastVerifiedSnapshot)
+                self.lastVerifiedSnapshot = newSnapshot
+                lastVerifiedSnapshot = newSnapshot // also need to update scoped lastVerifiedSnapshot so updateParent gets the correct value
                 queue.dequeue()
             } catch {
                 print(error)

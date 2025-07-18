@@ -61,12 +61,18 @@ extension Post1Providing {
     }
     
     func toggleLocked(feedback: Set<FeedbackType>) {
-        Task {
-            await handleModerationActionCompletion(
-                message: locked ? "Failed to unlock post" : "Failed to lock post",
-                result: self.toggleLocked().result.get(),
-                feedback: feedback
-            )
+        do {
+            try self.toggleLocked { success in
+                Task {
+                    await self.handleModerationActionCompletion(
+                        message: self.locked ? "Failed to unlock post" : "Failed to lock post",
+                        result: success ? .succeeded : .failed, // TODO: replace with bool
+                        feedback: feedback
+                    )
+                }
+            }
+        } catch {
+            handleError(error)
         }
     }
     
@@ -312,7 +318,7 @@ extension Post1Providing {
     }
     
     func shouldShowLoadingSymbol(for barConfiguration: PostBarConfiguration? = nil) -> Bool {
-        if !lockedManager.isInSync, !(barConfiguration?.all.contains(.action(.lock)) ?? false) {
+        if lockedPending { // , !(barConfiguration?.all.contains(.action(.lock)) ?? false) {
             return true
         }
         if !pinnedCommunityManager.isInSync, !(barConfiguration?.all.contains(.action(.pin)) ?? false) {
@@ -406,7 +412,7 @@ extension Post1Providing {
     func lockAction(appState: AppState, feedback: Set<FeedbackType> = []) -> BasicAction {
         .init(
             id: "lock\(uid)",
-            appearance: .lock(isOn: locked, isInProgress: !lockedManager.isInSync),
+            appearance: .lock(isOn: locked, isInProgress: lockedPending),
             confirmationPrompt: locked ? "Really unlock this post?" : "Really lock this post?",
             callback: api.canInteract(appState: appState) && canModerate ? { @MainActor in
                 self.self2?.toggleLocked(feedback: feedback)
