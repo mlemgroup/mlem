@@ -136,7 +136,7 @@ public extension Post2Providing {
             assertionFailure("readQueueFlushed called but post was not queued")
             return
         }
-        // sending this through the updateQueue ensures the last verified snapshot in the queue receives the correct read value
+        // sending this through the updateQueue ensures queue.lastVerifiedSnapshot receives the correct read value
         Task {
             await updateQueue.addItem { snapshot in
                 if var snapshot2 = snapshot as? Post2Snapshot {

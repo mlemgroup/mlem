@@ -39,6 +39,7 @@ class Post1Cache: ApiTypeBackedCache<Post1, Post1Snapshot> {
 }
 
 class Post2Cache: ApiTypeBackedCache<Post2, Post2Snapshot> {
+    // TODO: NOW
     override func performModelTranslation(api: ApiClient, from snapshot: Post2Snapshot) -> Post2 {
         .init(
             api: api,

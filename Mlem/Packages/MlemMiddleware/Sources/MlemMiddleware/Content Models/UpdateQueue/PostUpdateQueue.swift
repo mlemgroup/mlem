@@ -27,6 +27,7 @@ public actor PostUpdateQueue {
 
     internal func setParent(_ newParent: any Post1Providing) {
         self.parent = newParent
+        // this ensures that if we set a parent to a higher tier model, lastVerifiedSnapshot is upgraded to that tier as well
         let parentSnapshot = newParent.takeSnapshot()
         self.lastVerifiedSnapshot = self.lastVerifiedSnapshot?.merge(with: parentSnapshot) ?? parentSnapshot
     }
@@ -61,26 +62,26 @@ public actor PostUpdateQueue {
             assertionFailure("Cannot execute queue with no parent!")
             return
         }
+        // this shouldn't be possible, since lastVerifiedSnapshot is set when the parent is set
+        guard let lastVerifiedSnapshot else {
+            assertionFailure("Cannot execute queue with no lastVerifiedSnapshot!")
+            return
+        }
         while let task = queue.next() {
             print("DEBUG found next task")
             do {
-                // let snapshot = try await task()
                 let snapshot: any PostSnapshotProviding
                 switch task {
                 case let .createsSnapshot(callback):
                     snapshot = try await callback()
                 case let .modifiesSnapshot(callback):
-                    snapshot = try await callback(lastVerifiedSnapshot ?? parent.takeSnapshot())
+                    snapshot = try await callback(lastVerifiedSnapshot)
                 }
                 
-                if let lastVerifiedSnapshot {
-                    // in case the function returned a lower tier snapshot than currently available, merge lastVerifiedSnapshot into the returned
-                    // snapshot. This operation prefers the returned snapshot, so if it is of equal or higher tier than lastVerifiedSnapshot,
-                    // it overrides it entirely
-                    self.lastVerifiedSnapshot = snapshot.merge(with: lastVerifiedSnapshot)
-                } else {
-                    self.lastVerifiedSnapshot = snapshot
-                }
+                // in case the function returned a lower tier snapshot than currently available, merge lastVerifiedSnapshot into the returned
+                // snapshot. This operation prefers the returned snapshot, so if it is of equal or higher tier than lastVerifiedSnapshot,
+                // it overrides it entirely
+                self.lastVerifiedSnapshot = snapshot.merge(with: lastVerifiedSnapshot)
                 queue.dequeue()
             } catch {
                 print(error)
@@ -88,17 +89,11 @@ public actor PostUpdateQueue {
         }
         
         print("DEBUG done executing queue")
-        if let lastVerifiedSnapshot {
-            updateParent(parent, with: lastVerifiedSnapshot)
-        }
+        updateParent(parent, with: lastVerifiedSnapshot)
     }
     
     private func updateParent(_ parent: any Post1Providing, with snapshot: any PostSnapshotProviding) {
         print("DEBUG updating parent")
-//        guard let parent else {
-//            assertionFailure("No parent")
-//            return
-//        }
         parent.snapshotUpdate(with: snapshot)
     }
 }
