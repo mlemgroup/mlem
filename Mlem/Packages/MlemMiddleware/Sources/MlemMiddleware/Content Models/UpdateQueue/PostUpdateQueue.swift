@@ -55,7 +55,11 @@ public actor PostUpdateQueue {
         // this method is a unique case because the context it is called from needs to receive its result. This method therefore waits
         // for any currently queued actions to finish, then blocks the queue from restarting until the upgrade is complete.
         await semaphore.wait()
-        defer { semaphore.signal() }
+        defer {
+            semaphore.signal()
+            print("DEBUG upgrade complete")
+        }
+        print("DEBUG beginning upgrade")
         
         let (snapshot, post) = try await task()
         lastVerifiedSnapshot = snapshot
@@ -66,14 +70,19 @@ public actor PostUpdateQueue {
         queue.enqueue(item)
         if queue.numItems == 1 {
             Task {
-                await semaphore.wait()
-                defer { semaphore.signal() }
                 await executeQueue()
             }
         }
     }
     
     private func executeQueue() async {
+        await semaphore.wait()
+        defer {
+            semaphore.signal()
+            print("DEBUG finished executing queue")
+        }
+        print("DEBUG executing queue")
+        
         // assigning this here ensures parent stays in scope for the duration of the queue; for operations that remove the post
         // (e.g., hide), if the call is slow, the parent might go out of scope before it returns; this in turn breaks the undo behavior
         guard let parent else {
@@ -108,7 +117,6 @@ public actor PostUpdateQueue {
             }
         }
         
-        print("DEBUG done executing queue")
         updateParent(parent, with: lastVerifiedSnapshot)
     }
     
