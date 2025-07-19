@@ -30,6 +30,10 @@ extension Post1Providing {
         }
     }
     
+    func upgrade() async throws -> any Post {
+        try await api.getPost(id: id)
+    }
+    
     func toggleHidden(feedback: Set<FeedbackType>) throws {
         if let self2 {
             if feedback.contains(.haptic) {
@@ -93,12 +97,18 @@ extension Post1Providing {
     }
     
     func togglePinnedInstance(feedback: Set<FeedbackType>) {
-        Task {
-            await handleModerationActionCompletion(
-                message: pinnedInstance ? "Failed to unpin post" : "Failed to pin post",
-                result: self.togglePinnedInstance().result.get(),
-                feedback: feedback
-            )
+        do {
+            try self.togglePinnedInstance { success in
+                Task {
+                    await self.handleModerationActionCompletion(
+                        message: self.pinnedInstance ? "Failed to unpin post" : "Failed to pin post",
+                        result: success ? .succeeded : .failed,
+                        feedback: feedback
+                    )
+                }
+            }
+        } catch {
+            handleError(error)
         }
     }
     
@@ -330,7 +340,7 @@ extension Post1Providing {
         if pinnedCommunityPending, !(barConfiguration?.all.contains(.action(.pin)) ?? false) {
             return true
         }
-        if !pinnedInstanceManager.isInSync, !(barConfiguration?.all.contains(.action(.pin)) ?? false) {
+        if pinnedInstancePending, !(barConfiguration?.all.contains(.action(.pin)) ?? false) {
             return true
         }
         return false
@@ -428,7 +438,7 @@ extension Post1Providing {
     
     func pinAction(appState: AppState, feedback: Set<FeedbackType> = []) -> ActionGroup {
         .init(
-            appearance: .pin(isOn: false, isInProgress: pinnedCommunityPending || !pinnedInstanceManager.isInSync),
+            appearance: .pin(isOn: false, isInProgress: pinnedCommunityPending || pinnedInstancePending),
             prompt: "Pin to Community or Instance?",
             displayMode: .popup
         ) {
@@ -490,7 +500,7 @@ extension Post1Providing {
         }
         return .init(
             id: "pinToInstance\(uid)",
-            appearance: .pinToInstance(isOn: isOn, isInProgress: !pinnedInstanceManager.isInSync),
+            appearance: .pinToInstance(isOn: isOn, isInProgress: pinnedInstancePending),
             confirmationPrompt: prompt,
             callback: api.canInteract(appState: appState) && api.isAdmin ? { @MainActor in
                 self.togglePinnedInstance(feedback: feedback)

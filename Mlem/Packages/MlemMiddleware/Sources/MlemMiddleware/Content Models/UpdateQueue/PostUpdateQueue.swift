@@ -5,6 +5,8 @@
 //  Created by Eric Andrews on 2025-07-04.
 //
 
+import Semaphore
+
 /// This actor synchronizes state updates for a particular post.
 ///
 /// Calls are queued using `addItem`, and each call must return a `PostSnapshotProviding`. When each call returns, `lastVerifiedSnapshot` is updated
@@ -23,6 +25,7 @@ public actor PostUpdateQueue {
     
     private var lastVerifiedSnapshot: (any PostSnapshotProviding)?
     
+    private var semaphore: AsyncSemaphore = .init(value: 1)
     private var queue: Queue<PostUpdateTask> = .init()
 
     internal func setParent(_ newParent: any Post1Providing) {
@@ -45,17 +48,32 @@ public actor PostUpdateQueue {
         addItem(.modifiesSnapshot(item))
     }
     
+    /// Queues the given upgrade operation for execution
+    /// - Returns: post returned by the upgrade operation
+    /// - Warning: this method assumes that the given operation will update this queue's parent (this generally happens in the parent's initializer)
+    internal func addUpgrade(task: @escaping () async throws -> (Post3Snapshot, Post3)) async throws -> any Post {
+        // this method is a unique case because the context it is called from needs to receive its result. This method therefore waits
+        // for any currently queued actions to finish, then blocks the queue from restarting until the upgrade is complete.
+        await semaphore.wait()
+        defer { semaphore.signal() }
+        
+        let (snapshot, post) = try await task()
+        lastVerifiedSnapshot = snapshot
+        return post
+    }
+    
     private func addItem(_ item: PostUpdateTask) {
         queue.enqueue(item)
         if queue.numItems == 1 {
             Task {
+                await semaphore.wait()
+                defer { semaphore.signal() }
                 await executeQueue()
             }
         }
     }
     
     private func executeQueue() async {
-        print("DEBUG executing queue")
         // assigning this here ensures parent stays in scope for the duration of the queue; for operations that remove the post
         // (e.g., hide), if the call is slow, the parent might go out of scope before it returns; this in turn breaks the undo behavior
         guard let parent else {

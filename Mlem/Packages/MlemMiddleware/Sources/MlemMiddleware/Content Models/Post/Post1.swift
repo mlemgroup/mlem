@@ -55,8 +55,8 @@ public final class Post1: Post1Providing {
     public var pinnedCommunity: Bool
     public var pinnedCommunityPending: Bool = false
     
-    public var pinnedInstanceManager: StateManager<Bool>
-    public var pinnedInstance: Bool { pinnedInstanceManager.displayedValue }
+    public var pinnedInstance: Bool
+    public var pinnedInstancePending: Bool = false
     
     init(
         api: ApiClient,
@@ -92,7 +92,7 @@ public final class Post1: Post1Providing {
         self.deletedManager = .init(wrappedValue: deleted)
         self.embed = embed
         self.pinnedCommunity = pinnedCommunity
-        self.pinnedInstanceManager = .init(wrappedValue: pinnedInstance)
+        self.pinnedInstance = pinnedInstance
         self.locked = locked
         self.nsfw = nsfw
         self.removedManager = .init(wrappedValue: removed)

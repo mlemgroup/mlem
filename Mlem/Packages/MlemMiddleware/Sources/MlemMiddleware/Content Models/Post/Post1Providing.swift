@@ -33,9 +33,9 @@ public protocol Post1Providing:
     var pinnedCommunity: Bool { get }
     var pinnedCommunityPending: Bool { get }
     var pinnedInstance: Bool { get }
+    var pinnedInstancePending: Bool { get }
     var locked: Bool { get }
     var lockedPending: Bool { get }
-    var pinnedInstanceManager: StateManager<Bool> { get }
     var nsfw: Bool { get }
     var created: Date { get }
     var thumbnailUrl: URL? { get }
@@ -66,9 +66,9 @@ public extension Post1Providing {
     var pinnedCommunity: Bool { post1.pinnedCommunity }
     var pinnedCommunityPending: Bool { post1.pinnedCommunityPending }
     var pinnedInstance: Bool { post1.pinnedInstance }
+    var pinnedInstancePending: Bool { post1.pinnedInstancePending }
     var locked: Bool { post1.locked }
     var lockedPending: Bool { post1.lockedPending }
-    var pinnedInstanceManager: StateManager<Bool> { post1.pinnedInstanceManager }
     var nsfw: Bool { post1.nsfw }
     var created: Date { post1.created }
     var removed: Bool { post1.removed }
@@ -90,7 +90,6 @@ public extension Post1Providing {
     var pinnedCommunity_: Bool? { post1.pinnedCommunity }
     var pinnedInstance_: Bool? { post1.pinnedInstance }
     var locked_: Bool? { post1.locked }
-    var pinnedInstanceManager_: StateManager<Bool>? { post1.pinnedInstanceManager }
     var nsfw_: Bool? { post1.nsfw }
     var created_: Date? { post1.created }
     var removed_: Bool? { post1.removed }
@@ -129,7 +128,8 @@ extension Post1Providing {
         //        self.removed = snapshot.removed
         post1.pinnedCommunity = snapshot.pinnedCommunity
         post1.pinnedCommunityPending = false
-        //        self.pinnedInstance = snapshot.pinnedInstance
+        post1.pinnedInstance = snapshot.pinnedInstance
+        post1.pinnedInstancePending = false
         post1.locked = snapshot.locked
         post1.lockedPending = false
     }
@@ -242,7 +242,11 @@ public extension Post1Providing {
     private var deletedManager: StateManager<Bool> { post1.deletedManager }
 
     func upgrade() async throws -> any Post {
-        try await api.getPost(id: id)
+        try await updateQueue.addUpgrade {
+            let snapshot = try await self.api.repository.getPost(id: self.id)
+            let post = await self.api.caches.post3.performModelTranslation(api: self.api, from: snapshot)
+            return (snapshot, post)
+        }
     }
     
     func getComments(
@@ -329,6 +333,11 @@ public extension Post1Providing {
         try updateLocked(!locked, callback: callback)
     }
     
+    /// Pins or unpins this post to the community according to newValue
+    /// - Parameters:
+    ///   - newValue: true to pin post, false to unpin
+    ///   - callback: if present, when the repository completes, is called with `true` if the repository call succeeded and `false` otherwise.
+    /// - Note: the callback's parameter indicates success/failure, not pinned/unpinned.
     func updatePinnedCommunity(_ newValue: Bool, callback: ((Bool) -> Void)?) throws {
         post1.pinnedCommunity = newValue
         post1.pinnedCommunityPending = true
@@ -350,16 +359,25 @@ public extension Post1Providing {
         try updatePinnedCommunity(!pinnedCommunity, callback: callback)
     }
     
-    @discardableResult
-    func updatePinnedInstance(_ newValue: Bool) -> Task<StateUpdateResult, Never> {
-        pinnedInstanceManager.performRequest(expectedResult: newValue) { semaphore in
-            try await self.api.pinPost(id: self.id, pin: newValue, to: .instance, semaphore: semaphore)
+    func updatePinnedInstance(_ newValue: Bool, callback: ((Bool) -> Void)?) throws {
+        post1.pinnedInstance = newValue
+        post1.pinnedInstancePending = true
+        Task {
+            await updateQueue.addItem {
+                do {
+                    let ret = try await self.api.repository.pinPost(id: self.id, pin: newValue, to: .instance)
+                    callback?(true)
+                    return ret
+                } catch {
+                    callback?(false)
+                    throw error
+                }
+            }
         }
     }
     
-    @discardableResult
-    func togglePinnedInstance() -> Task<StateUpdateResult, Never> {
-        updatePinnedInstance(!pinnedInstance)
+    func togglePinnedInstance(callback: ((Bool) -> Void)? = nil) throws {
+        try updatePinnedInstance(!pinnedInstance, callback: callback)
     }
     
     @discardableResult
