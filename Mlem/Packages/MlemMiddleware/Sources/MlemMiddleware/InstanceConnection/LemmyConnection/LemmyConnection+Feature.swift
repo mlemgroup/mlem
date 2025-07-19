@@ -37,7 +37,8 @@ public extension LemmyConnection {
             version >= .v0_19_4
         case .searchLocalCommunities, .viewInstanceSettings, .viewInstanceCreationDate, .modlog,
              .logIn, .signUp, .viewCommunityActiveUsers, .commentTreeSortedByDepth, .uploadImages,
-             .editAccountSettings, .privateMessaging, .viewReports:
+             .editAccountSettings, .viewMentionsAndPrivateMessages, .viewReports, .editAndDeletePrivateMessages,
+             .reportPrivateMessages:
             true
         }
     }
