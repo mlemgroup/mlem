@@ -148,13 +148,14 @@ public extension PieFedConnection {
         throw ApiClientError.featureUnsupported
     }
     
-    // Marking many posts as *unread* was possible in 0.19.0, but that capability was removed in 1.0.0
     func markPostsAsRead(ids: Set<Int>) async throws {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedMarkPostAsReadRequest(postIds: Array(ids), postId: nil, read: true)
+        try await perform(request)
     }
     
     func markPostAsRead(id: Int, read: Bool) async throws {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedMarkPostAsReadRequest(postIds: nil, postId: id, read: read)
+        try await perform(request)
     }
     
     @discardableResult
