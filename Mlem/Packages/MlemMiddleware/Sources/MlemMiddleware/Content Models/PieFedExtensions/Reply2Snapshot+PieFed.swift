@@ -8,8 +8,8 @@
 import Foundation
 
 public extension Reply2Snapshot {
-    init(from commentReply: PieFedCommentReplyView) throws(ApiClientError) {
-        self.reply = try .init(from: commentReply.commentReply)
+    init(from commentReply: PieFedCommentReplyView, isMention: Bool) throws(ApiClientError) {
+        self.reply = try .init(from: commentReply.commentReply, isMention: isMention)
         self.comment = try .init(from: commentReply.comment)
         self.creator = try .init(from: commentReply.creator)
         self.post = try .init(from: commentReply.post)

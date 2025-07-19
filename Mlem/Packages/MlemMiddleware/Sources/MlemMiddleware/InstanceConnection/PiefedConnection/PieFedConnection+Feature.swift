@@ -35,6 +35,8 @@ public extension PieFedConnection {
             version >= timeRange.minimumVersion
         case .viewCommunityActiveUsers:
             version >= .v1_0_1
+        case .viewMentionsAndPrivateMessages:
+            version >= .v1_0_1
         default: false
         }
     }

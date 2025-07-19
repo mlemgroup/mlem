@@ -69,7 +69,7 @@ struct InboxView: View {
     }
     
     var feedLoader: StandardFeedLoader<InboxItem> {
-        if appState.firstApi.supportsOrNil(.privateMessaging) ?? false {
+        if appState.firstApi.supportsOrNil(.viewMentionsAndPrivateMessages) ?? false {
             switch selectedTab {
             case .all:
                 inboxFeedLoader
