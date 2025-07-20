@@ -184,7 +184,12 @@ extension Post1Providing {
                 pinToInstanceAction(appState: appState, feedback: feedback)
             }
             lockAction(appState: appState, feedback: feedback)
-            if let navigation, api.isAdmin || (api.supportsOrNil(.moderatorsCanViewVotes) ?? true) {
+            
+            let adminsCanViewVotes = api.supportsOrNil(.adminsCanViewVotes) ?? false
+            let moderatorsCanViewVotes = api.supportsOrNil(.moderatorsCanViewVotes) ?? false
+            let viewVotesIsPossible = (api.isAdmin && adminsCanViewVotes) || moderatorsCanViewVotes
+            
+            if let navigation, viewVotesIsPossible {
                 viewVotesAction(navigation: navigation)
             }
         }
@@ -192,7 +197,7 @@ extension Post1Providing {
             self2.removeAction(appState: appState).disabled(!canModerate)
             self2.creator.banActions(appState: appState, community: self2.community, withUserLabel: true)
         }
-        if api.isAdmin {
+        if api.isAdmin, api.supportsOrNil(.purgeContent) ?? false {
             purgeAction(appState: appState)
             if !isOwnPost {
                 purgeCreatorAction(appState: appState)

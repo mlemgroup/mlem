@@ -114,10 +114,14 @@ extension Person1Providing {
             banActions(appState: appState, community: community)
             if api.isAdmin {
                 purgeAction(appState: appState)
+                if api.supportsOrNil(.purgeContent) ?? false {
+                    purgeAction(appState: appState)
+                }
             }
             
             if let community3 = community as? any Community3Providing,
                let myPerson = api.myPerson,
+               api.supportsOrNil(.editModeratorList) ?? false,
                myPerson.canModerate(self, in: community3) {
                 addModAction(community: community3, isOn: community3.moderators.contains(where: { $0.id == id }))
             }
@@ -149,19 +153,22 @@ extension Person1Providing {
     }
     
     func banActions(appState: AppState, community: (any Community)?, withUserLabel: Bool = false) -> [any Action] {
-        let isModerator: Bool
+        let canBanFromCommunity: Bool
         let showBoth: Bool
+        
+        let canBanFromInstance = api.isAdmin && (api.supportsOrNil(.banFromInstance) ?? false)
+        
         if let myPerson = api.myPerson, let community {
-            isModerator = myPerson.moderates(communityId: community.id)
-            showBoth = api.isAdmin && isBannedFromCommunity(community) != bannedFromInstance
+            canBanFromCommunity = myPerson.moderates(communityId: community.id) && (api.supportsOrNil(.banFromCommunity) ?? false)
+            showBoth = canBanFromInstance && isBannedFromCommunity(community) != bannedFromInstance
         } else {
-            isModerator = false
+            canBanFromCommunity = false
             showBoth = false
         }
         var output: [any Action] = .init()
         // admins should see separate 'ban' and 'unban' actions if ban statuses conflict; otherwise actions are grouped under a single entry (community or instance, depending on moderation status)
         // moderators see community ban action by default, regardless of admin status
-        if isModerator {
+        if canBanFromCommunity {
             if showBoth {
                 output.append(banFromInstanceAction(appState: appState))
             }
@@ -170,7 +177,7 @@ extension Person1Providing {
             }
         }
         // non-moderator admins see instance ban action by default
-        else if api.isAdmin {
+        else if canBanFromInstance {
             output.append(banFromInstanceAction(appState: appState))
             if showBoth, let community {
                 output.append(banFromCommunityAction(appState: appState, community: community, withUserLabel: withUserLabel))

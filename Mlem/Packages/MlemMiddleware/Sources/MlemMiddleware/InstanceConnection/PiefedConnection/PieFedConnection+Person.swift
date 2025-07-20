@@ -94,8 +94,28 @@ public extension PieFedConnection {
         removeContent: Bool,
         reason: String?,
         expires: Date? = nil
-    ) async throws -> Person2Snapshot {
-        throw ApiClientError.featureUnsupported
+    ) async throws -> Person1Snapshot {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX") // ensure consistent formatting
+        formatter.timeZone = TimeZone(secondsFromGMT: 0) // optional, adjust if needed
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        if ban {
+            let request = PieFedModerateCommunityBanRequest(
+                communityId: communityId,
+                userId: personId,
+                reason: reason ?? "",
+                expiredAt: formatter.string(from: expires ?? .distantFuture)
+            )
+            let response = try await perform(request)
+            return try .init(from: response.bannedUser)
+        } else {
+            let request = PieFedModerateCommunityUnBanRequest(
+                communityId: communityId,
+                userId: personId
+            )
+            let response = try await perform(request)
+            return try .init(from: response.bannedUser)
+        }
     }
     
     @discardableResult

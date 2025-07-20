@@ -264,7 +264,9 @@ public extension PieFedConnection {
         remove: Bool,
         reason: String?
     ) async throws -> Post2Snapshot {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedRemovePostRequest(postId: id, removed: remove, reason: reason)
+        let response = try await perform(request)
+        return try .init(from: response.postView)
     }
     
     @discardableResult
@@ -273,12 +275,20 @@ public extension PieFedConnection {
         pin: Bool,
         to target: PostFeatureType
     ) async throws -> Post2Snapshot {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedFeaturePostRequest(
+            postId: id,
+            featured: pin,
+            featureType: target.piefedPostFeatureType
+        )
+        let response = try await perform(request)
+        return try .init(from: response.postView)
     }
     
     @discardableResult
     func lockPost(id: Int, lock: Bool) async throws -> Post2Snapshot {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedLockPostRequest(postId: id, locked: lock)
+        let response = try await perform(request)
+        return try .init(from: response.postView)
     }
     
     @discardableResult

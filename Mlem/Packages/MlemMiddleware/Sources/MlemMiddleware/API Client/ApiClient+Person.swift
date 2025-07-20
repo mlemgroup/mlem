@@ -92,7 +92,7 @@ public extension ApiClient {
         removeContent: Bool,
         reason: String?,
         expires: Date? = nil
-    ) async throws -> Person2 {
+    ) async throws -> Person1 {
         let snapshot = try await repository.banPersonFromCommunity(
             personId: personId,
             communityId: communityId,
@@ -101,7 +101,7 @@ public extension ApiClient {
             reason: reason,
             expires: expires
         )
-        let person = await caches.person2.getModel(
+        let person = await caches.person1.getModel(
             api: self,
             from: snapshot
         )

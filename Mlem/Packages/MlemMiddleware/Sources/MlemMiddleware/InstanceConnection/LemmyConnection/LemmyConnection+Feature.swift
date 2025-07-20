@@ -38,7 +38,8 @@ public extension LemmyConnection {
         case .searchLocalCommunities, .viewInstanceSettings, .viewInstanceCreationDate, .modlog,
              .logIn, .signUp, .viewCommunityActiveUsers, .commentTreeSortedByDepth, .uploadImages,
              .editAccountSettings, .viewMentionsAndPrivateMessages, .viewReports, .editAndDeletePrivateMessages,
-             .reportPrivateMessages:
+             .reportPrivateMessages, .adminsCanViewVotes, .purgeContent, .removeCommunity, .banFromInstance,
+             .banFromCommunity, .editModeratorList:
             true
         }
     }

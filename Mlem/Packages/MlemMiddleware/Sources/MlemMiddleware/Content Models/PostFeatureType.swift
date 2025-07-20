@@ -16,11 +16,4 @@ public enum PostFeatureType {
         case .local: .instance
         }
     }
-    
-    var apiType: LemmyPostFeatureType {
-        switch self {
-        case .community: .community
-        case .instance: .local
-        }
-    }
 }

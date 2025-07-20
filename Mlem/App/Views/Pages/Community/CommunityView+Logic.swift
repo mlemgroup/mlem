@@ -9,6 +9,14 @@ import Foundation
 import MlemMiddleware
 
 extension CommunityView {
+    func canEditModeratorList(_ community: any Community) -> Bool {
+        guard let firstPerson = appState.firstPerson else { return false }
+        if !(firstPerson.api.supportsOrNil(.editModeratorList) ?? true) {
+            return false
+        }
+        return firstPerson.isAdmin || firstPerson.moderates(community: community)
+    }
+    
     func openAddModSheet() {
         navigation.openSheet(.personPicker { person in
             newMod = person
@@ -40,6 +48,7 @@ extension CommunityView {
     
     func moderatorQuickSwipes(community: any Community, person: any Person) -> SwipeConfiguration {
         guard let community = community as? any Community3Providing,
+              canEditModeratorList(community),
               let myPerson = appState.firstPerson,
               myPerson.canModerate(person, in: community) else {
             return .init()

@@ -131,8 +131,12 @@ extension Community1Providing {
         blockAction(appState: appState, feedback: feedback)
         if api.isAdmin {
             ActionGroup {
-                removeAction(appState: appState)
-                purgeAction(appState: appState)
+                if api.supportsOrNil(.removeCommunity) ?? false {
+                    removeAction(appState: appState)
+                }
+                if api.supportsOrNil(.purgeContent) ?? false {
+                    purgeAction(appState: appState)
+                }
             }
         }
     }

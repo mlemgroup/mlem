@@ -92,14 +92,18 @@ extension Comment1Providing {
         showAllActions: Bool = true,
         report: Report? = nil
     ) -> [any Action] {
-        if api.isAdmin || (api.supportsOrNil(.moderatorsCanViewVotes) ?? true), showAllActions || Settings.get(\.menus_allModActions) {
+        let adminsCanViewVotes = api.supportsOrNil(.adminsCanViewVotes) ?? false
+        let moderatorsCanViewVotes = api.supportsOrNil(.moderatorsCanViewVotes) ?? false
+        let viewVotesIsPossible = (api.isAdmin && adminsCanViewVotes) || moderatorsCanViewVotes
+        
+        if viewVotesIsPossible, showAllActions || Settings.get(\.menus_allModActions) {
             viewVotesAction()
         }
         if let self2, !isOwnComment {
             self2.removeAction(appState: appState).disabled(!canModerate)
             self2.creator.banActions(appState: appState, community: self2.community, withUserLabel: true)
         }
-        if api.isAdmin {
+        if api.isAdmin, api.supportsOrNil(.purgeContent) ?? false {
             purgeAction(appState: appState)
             if !isOwnComment {
                 purgeCreatorAction(appState: appState)
