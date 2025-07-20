@@ -22,7 +22,10 @@ extension Message1Snapshot {
 
         self.content = message.content
         self.updated = message.updatedAt ?? message.updated
-        self.read = message.read
+        
+        // Temporary: Fix in 1.0
+        self.read = message.read ?? false
+        
         self.deleted = message.deleted
     }
 }
