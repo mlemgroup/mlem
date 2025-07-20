@@ -24,7 +24,7 @@ public extension PieFedConnection {
             unreadOnly: unreadOnly
         )
         let response = try await perform(request)
-        return try response.replies.map { try .init(from: $0) }
+        return try response.replies.map { try .init(from: $0, isMention: false) }
     }
     
     func getMentions(
@@ -33,7 +33,17 @@ public extension PieFedConnection {
         limit: Int,
         unreadOnly: Bool = false
     ) async throws -> [Reply2Snapshot] {
-        []
+        guard let sort = sort.piefedSortType else {
+            throw ApiClientError.featureUnsupported
+        }
+        let request = PieFedGetMentionsRequest(
+            sort: sort,
+            page: page,
+            limit: limit,
+            unreadOnly: unreadOnly
+        )
+        let response = try await perform(request)
+        return try response.replies.map { try .init(from: $0, isMention: true) }
     }
     
     func getMessages(
@@ -42,14 +52,27 @@ public extension PieFedConnection {
         limit: Int,
         unreadOnly: Bool = false
     ) async throws -> [Message2Snapshot] {
-        let request = PieFedGetPrivateMessagesRequest(
-            unreadOnly: unreadOnly,
-            page: page,
-            limit: limit,
-            creatorId: creatorId
-        )
-        let response = try await perform(request)
-        return try response.privateMessages.map { try .init(from: $0) }
+        if let creatorId {
+            if unreadOnly {
+                throw ApiClientError.featureUnsupported
+            }
+            let request = PieFedGetPrivateMessagesConversationRequest(
+                page: page,
+                limit: limit,
+                personId: creatorId
+            )
+            let response = try await perform(request)
+            return try response.privateMessages.map { try .init(from: $0) }
+        } else {
+            let request = PieFedGetPrivateMessagesRequest(
+                unreadOnly: unreadOnly,
+                page: page,
+                limit: limit,
+                creatorId: nil
+            )
+            let response = try await perform(request)
+            return try response.privateMessages.map { try .init(from: $0) }
+        }
     }
     
     func markAllAsRead() async throws {
@@ -63,11 +86,13 @@ public extension PieFedConnection {
     }
     
     func markMentionAsRead(id: Int, read: Bool = true) async throws {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedMarkReplyAsReadRequest(commentReplyId: id, read: read)
+        try await perform(request)
     }
     
     func markMessageAsRead(id: Int, read: Bool = true) async throws {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedMarkPrivateMessageAsReadRequest(privateMessageId: id, read: read)
+        try await perform(request)
     }
     
     func getPersonalUnreadCount() async throws -> PersonalUnreadCountSnapshot {
@@ -77,7 +102,9 @@ public extension PieFedConnection {
     }
     
     func createMessage(personId: Int, content: String) async throws -> Message2Snapshot {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedCreatePrivateMessageRequest(content: content, recipientId: personId)
+        let response = try await perform(request)
+        return try .init(from: response.privateMessageView)
     }
     
     @discardableResult

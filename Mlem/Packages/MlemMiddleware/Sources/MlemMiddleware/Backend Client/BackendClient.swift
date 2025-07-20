@@ -48,9 +48,9 @@ public class BackendClient {
         }
     }
     
-    public func healthCheck() async throws -> Bool {
+    public func healthCheck() async throws -> BackendHealthCheck {
         let (data, _) = try await URLSession.shared.data(for: URLRequest(url: baseUrl.appendingPathComponent("/health")))
-        return try jsonDecoder.decode(Bool.self, from: data)
+        return try jsonDecoder.decode(BackendHealthCheck.self, from: data)
     }
     
     public func getInstances() async throws -> [InstanceSummary] {

@@ -13,13 +13,7 @@ extension Reply1Snapshot {
         self.recipientId = commentReply.recipientId
         self.commentId = commentReply.commentId
         self.read = commentReply.read
-        
-        if let published = commentReply.publishedAt ?? commentReply.published {
-            self.created = published
-        } else {
-            throw .responseMissingRequiredData("LemmyCommentReply published")
-        }
-        
+        self.created = commentReply.published
         self.isMention = false
     }
     
@@ -28,13 +22,7 @@ extension Reply1Snapshot {
         self.recipientId = personMention.recipientId
         self.commentId = personMention.commentId
         self.read = personMention.read
-        
-        if let published = personMention.publishedAt ?? personMention.published {
-            self.created = published
-        } else {
-            throw .responseMissingRequiredData("LemmyPersonCommentMention published")
-        }
-        
+        self.created = personMention.published
         self.isMention = true
     }
 }

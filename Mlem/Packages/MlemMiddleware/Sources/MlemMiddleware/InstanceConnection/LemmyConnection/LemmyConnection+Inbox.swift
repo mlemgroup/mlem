@@ -60,30 +60,41 @@ public extension LemmyConnection {
     }
     
     func markAllAsRead() async throws {
-        let response = try await performingForEndpoint { endpoint in
+        _ = try await performingForEndpoint { endpoint in
             LemmyMarkAllNotificationsReadRequest(endpoint: endpoint)
         }
     }
     
     func markReplyAsRead(id: Int, read: Bool = true) async throws {
-        _ = try await performingForEndpoint { endpoint in
-            LemmyMarkReplyAsReadRequest(endpoint: endpoint, commentReplyId: id, read: read)
+        try await processingForEndpoint { endpoint in
+            switch endpoint {
+            case .v3:
+                try await perform(LemmyMarkReplyAsReadRequest(commentReplyId: id, read: read))
+            case .v4:
+                try await perform(LemmyMarkNotificationAsReadRequest(notificationId: id, read: read))
+            }
         }
     }
     
     func markMentionAsRead(id: Int, read: Bool = true) async throws {
-        _ = try await performingForEndpoint { _ in
-            LemmyMarkPersonMentionAsReadRequest(personMentionId: id, read: read)
+        try await processingForEndpoint { endpoint in
+            switch endpoint {
+            case .v3:
+                try await perform(LemmyMarkPersonMentionAsReadRequest(personMentionId: id, read: read))
+            case .v4:
+                try await perform(LemmyMarkNotificationAsReadRequest(notificationId: id, read: read))
+            }
         }
     }
     
     func markMessageAsRead(id: Int, read: Bool = true) async throws {
-        let response = try await performingForEndpoint { endpoint in
-            LemmyMarkPmAsReadRequest(
-                endpoint: endpoint,
-                privateMessageId: id,
-                read: read
-            )
+        try await processingForEndpoint { endpoint in
+            switch endpoint {
+            case .v3:
+                try await perform(LemmyMarkPmAsReadRequest(privateMessageId: id, read: read))
+            case .v4:
+                try await perform(LemmyMarkNotificationAsReadRequest(notificationId: id, read: read))
+            }
         }
     }
     

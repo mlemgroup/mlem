@@ -26,14 +26,79 @@ public extension PieFedConnection {
     ) -> Bool {
         switch feature {
         case let .postSortType(sort):
-            sort.pieFedSortType != nil
+            version >= sort.minimumVersion
         case let .commentSortType(sort):
-            sort.piefedSortType != nil
+            version >= sort.minimumVersion
         case let .searchSortType(sort):
-            sort.pieFedSortType != nil
+            version >= sort.minimumVersion
         case let .sortTimeRange(timeRange):
-            timeRange.pieFedSortType != nil
+            version >= timeRange.minimumVersion
+        case .viewCommunityActiveUsers:
+            version >= .v1_0_1
+        case .viewMentionsAndPrivateMessages:
+            version >= .v1_0_1
         default: false
+        }
+    }
+}
+
+private extension SiteVersion {
+    static let v1_0_0: Self = .init("1.0.0")
+    static let v1_0_1: Self = .init("1.0.1")
+}
+
+private extension PostSortType {
+    var minimumVersion: SiteVersion {
+        switch self {
+        case .active: .infinity
+        case .hot: .zero
+        case .new: .zero
+        case .old: .infinity
+        case .mostComments: .infinity
+        case .newComments: .zero
+        case .controversial: .infinity
+        case .scaled: .zero
+        case let .top(timeRange): timeRange.minimumVersion
+        }
+    }
+}
+
+private extension CommentSortType {
+    var minimumVersion: SiteVersion {
+        switch self {
+        case .new: .zero
+        case .old: .zero
+        case .hot: .zero
+        case .controversial: .infinity
+        case let .top(timeRange): timeRange == .allTime ? .zero : .infinity
+        }
+    }
+}
+
+private extension SearchSortType {
+    var minimumVersion: SiteVersion {
+        switch self {
+        case .new: .zero
+        case .old: .infinity
+        case let .top(timeRange): timeRange.minimumVersion
+        }
+    }
+}
+
+private extension SortTimeRange {
+    var minimumVersion: SiteVersion {
+        switch self {
+        case .allTime: .v1_0_1
+        case let .limited(timeInterval): LegacySortTimeRangeLimit(timeInterval)?.minimumVersion ?? .infinity
+        }
+    }
+}
+
+private extension LegacySortTimeRangeLimit {
+    var minimumVersion: SiteVersion {
+        switch self {
+        case .threeMonth, .sixMonth, .nineMonth, .year: .v1_0_1
+        default: .zero
         }
     }
 }
