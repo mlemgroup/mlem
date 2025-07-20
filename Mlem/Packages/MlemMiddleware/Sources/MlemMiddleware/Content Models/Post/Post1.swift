@@ -40,13 +40,11 @@ public final class Post1: Post1Providing {
     public var updated: Date?
     public var languageId: Int
     public var altText: String?
-    
     public var purged: Bool = false
-    
     public var deleted: Bool
     
-    public var removedManager: StateManager<Bool>
-    public var removed: Bool { removedManager.displayedValue }
+    public var removed: Bool
+    public var removedPending: Bool = false
     
     public var locked: Bool
     public var lockedPending: Bool = false
@@ -94,7 +92,7 @@ public final class Post1: Post1Providing {
         self.pinnedInstance = pinnedInstance
         self.locked = locked
         self.nsfw = nsfw
-        self.removedManager = .init(wrappedValue: removed)
+        self.removed = removed
         self.thumbnailUrl = thumbnailUrl
         self.updated = updated
         self.languageId = languageId

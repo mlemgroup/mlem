@@ -23,7 +23,6 @@ public protocol Reply2Providing: Reply1Providing, Interactable2Providing, ActorI
     var creatorIsAdmin: Bool { get }
     var creatorBannedFromCommunity: Bool { get }
     var removed: Bool { get }
-    var removedManager: StateManager<Bool> { get }
 }
 
 public extension Reply2Providing {
@@ -40,7 +39,7 @@ public extension Reply2Providing {
     var creatorIsAdmin: Bool { reply2.creatorIsAdmin }
     var creatorBannedFromCommunity: Bool { reply2.creatorBannedFromCommunity }
     var removed: Bool { reply2.comment.removed }
-    var removedManager: StateManager<Bool> { reply2.comment.removedManager }
+    var removedPending: Bool { reply2.comment.removedPending }
     
     var reply1_: Reply1? { reply2.reply1 }
     var comment_: Comment1? { reply2.comment }
@@ -77,8 +76,7 @@ public extension Reply2Providing {
         try await api.replyToComment(postId: post.id, parentId: commentId, content: content, languageId: languageId)
     }
     
-    @discardableResult
-    func updateRemoved(_ newValue: Bool, reason: String?) -> Task<StateUpdateResult, Never> {
-        comment.updateRemoved(newValue, reason: reason)
+    func updateRemoved(_ newValue: Bool, reason: String?, callback: ((Bool) -> Void)?) throws {
+        try comment.updateRemoved(newValue, reason: reason, callback: callback)
     }
 }

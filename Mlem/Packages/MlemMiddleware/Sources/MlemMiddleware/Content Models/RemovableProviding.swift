@@ -8,16 +8,14 @@
 import Foundation
 
 public protocol RemovableProviding: ContentIdentifiable {
-    var removedManager: StateManager<Bool> { get }
     var removed: Bool { get }
+    var removedPending: Bool { get }
     
-    @discardableResult
-    func updateRemoved(_ newValue: Bool, reason: String?) -> Task<StateUpdateResult, Never>
+    func updateRemoved(_ newValue: Bool, reason: String?, callback: ((Bool) -> Void)?) throws
 }
 
 public extension RemovableProviding {
-    @discardableResult
-    func toggleRemoved(reason: String?) -> Task<StateUpdateResult, Never> {
-        updateRemoved(!removed, reason: reason)
+    func toggleRemoved(reason: String?, callback: ((Bool) -> Void)? = nil) throws {
+        try updateRemoved(!removed, reason: reason, callback: callback)
     }
 }

@@ -110,11 +110,14 @@ extension Interactable1Providing {
             if feedback.contains(.haptic) {
                 HapticManager.main.play(haptic: .success, tier: .low)
             }
-            switch await self2.toggleRemoved(reason: reason).result.get() {
-            case .failed:
-                ToastModel.main.add(.failure(initialValue ? "Failed to remove content" : "Failed to restore content"))
-            default:
-                break
+            do {
+                try self2.toggleRemoved(reason: reason) { success in
+                    if !success {
+                        ToastModel.main.add(.failure(initialValue ? "Failed to remove content" : "Failed to restore content"))
+                    }
+                }
+            } catch {
+                handleError(error)
             }
         }
     }

@@ -41,7 +41,7 @@ public extension Community1Providing {
     var displayName: String { community1.displayName }
     var description: String? { community1.description }
     var removed: Bool { community1.removed }
-    var removedManager: StateManager<Bool> { community1.removedManager }
+    var removedPending: Bool { !community1.removedManager.isInSync }
     var deleted: Bool { community1.deleted }
     var nsfw: Bool { community1.nsfw }
     var avatar: URL? { community1.avatar }
@@ -174,10 +174,14 @@ public extension Community1Providing {
         updateBlocked(!blocked)
     }
     
-    @discardableResult
-    func updateRemoved(_ newValue: Bool, reason: String?) -> Task<StateUpdateResult, Never> {
-        removedManager.performRequest(expectedResult: newValue) { semaphore in
-            try await self.api.removeCommunity(id: self.id, remove: newValue, reason: reason, semaphore: semaphore)
+    func updateRemoved(_ newValue: Bool, reason: String?, callback: ((Bool) -> Void)?) throws {
+        _ = community1.removedManager.performRequest(expectedResult: newValue) { semaphore in
+            do {
+                try await self.api.removeCommunity(id: self.id, remove: newValue, reason: reason, semaphore: semaphore)
+                callback?(true)
+            } catch {
+                callback?(false)
+            }
         }
     }
     

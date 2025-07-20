@@ -72,7 +72,7 @@ public extension Post1Providing {
     var nsfw: Bool { post1.nsfw }
     var created: Date { post1.created }
     var removed: Bool { post1.removed }
-    var removedManager: StateManager<Bool> { post1.removedManager }
+    var removedPending: Bool { post1.removedPending }
     var thumbnailUrl: URL? { post1.thumbnailUrl }
     var updated: Date? { post1.updated }
     var languageId: Int { post1.languageId }
@@ -93,7 +93,6 @@ public extension Post1Providing {
     var nsfw_: Bool? { post1.nsfw }
     var created_: Date? { post1.created }
     var removed_: Bool? { post1.removed }
-    var removedManager_: StateManager<Bool>? { post1.removedManager }
     var thumbnailUrl_: URL? { post1.thumbnailUrl }
     var updated_: Date? { post1.updated }
     var languageId_: Int? { post1.languageId }
@@ -125,7 +124,8 @@ extension Post1Providing {
         post1.languageId = snapshot.languageId
         post1.altText = snapshot.altText
         post1.deleted = snapshot.deleted
-        //        self.removed = snapshot.removed
+        post1.removed = snapshot.removed
+        post1.removedPending = false
         post1.pinnedCommunity = snapshot.pinnedCommunity
         post1.pinnedCommunityPending = false
         post1.pinnedInstance = snapshot.pinnedInstance
@@ -300,17 +300,28 @@ public extension Post1Providing {
         thumbnail: URL?,
         nsfw: Bool,
         languageId: Int?
-    ) async throws {
-        try await api.editPost(
-            id: id,
-            title: title,
-            content: content,
-            linkUrl: linkUrl,
-            altText: altText,
-            thumbnail: thumbnail,
-            nsfw: nsfw,
-            languageId: languageId
-        )
+    ) throws {
+        post1.title = title
+        post1.content = content
+        post1.linkUrl = linkUrl
+        post1.altText = altText
+        post1.thumbnailUrl = thumbnail
+        post1.nsfw = nsfw
+        post1.languageId = languageId ?? post1.languageId
+        Task {
+            await updateQueue.addItem {
+                try await self.api.repository.editPost(
+                    id: self.id,
+                    title: title,
+                    content: content,
+                    linkUrl: linkUrl,
+                    altText: altText,
+                    thumbnail: thumbnail,
+                    nsfw: nsfw,
+                    languageId: languageId
+                )
+            }
+        }
     }
     
     
@@ -387,10 +398,20 @@ public extension Post1Providing {
         try updatePinnedInstance(!pinnedInstance, callback: callback)
     }
     
-    @discardableResult
-    func updateRemoved(_ newValue: Bool, reason: String?) -> Task<StateUpdateResult, Never> {
-        removedManager.performRequest(expectedResult: newValue) { semaphore in
-            try await self.api.removePost(id: self.id, remove: newValue, reason: reason, semaphore: semaphore)
+    func updateRemoved(_ newValue: Bool, reason: String?, callback: ((Bool) -> Void)?) throws {
+        post1.removed = newValue
+        post1.removedPending = true
+        Task {
+            await updateQueue.addItem {
+                do {
+                    let ret = try await self.api.repository.removePost(id: self.id, remove: newValue, reason: reason)
+                    callback?(true)
+                    return ret
+                } catch {
+                    callback?(false)
+                    throw(error)
+                }
+            }
         }
     }
     

@@ -21,7 +21,7 @@ extension Post1: CacheIdentifiable {
         setIfChanged(\.thumbnailUrl, snapshot.thumbnailUrl)
         
         // deletedManager.updateWithReceivedValue(snapshot.deleted, semaphore: semaphore)
-        removedManager.updateWithReceivedValue(snapshot.removed, semaphore: semaphore)
+        // removedManager.updateWithReceivedValue(snapshot.removed, semaphore: semaphore)
         // pinnedCommunityManager.updateWithReceivedValue(snapshot.pinnedCommunity, semaphore: semaphore)
         // pinnedInstanceManager.updateWithReceivedValue(snapshot.pinnedInstance, semaphore: semaphore)
         // lockedManager.updateWithReceivedValue(snapshot.locked, semaphore: semaphore)

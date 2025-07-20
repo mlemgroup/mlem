@@ -60,9 +60,7 @@ struct ContentRemovalEditorView: View {
                     }
                     ToolbarItem(placement: .topBarTrailing) {
                         Button("Send", icon: .lemmy.send) {
-                            Task {
-                                await send()
-                            }
+                            send()
                         }
                     }
                 }
@@ -71,13 +69,18 @@ struct ContentRemovalEditorView: View {
         }
     }
     
-    func send() async {
-        switch await target.toggleRemoved(reason: reason).result.get() {
-        case .succeeded:
-            hapticManager.play(haptic: .success, tier: .low)
-            dismiss()
-        default:
-            ToastModel.main.add(.failure())
+    func send() {
+        do {
+            try target.toggleRemoved(reason: reason) { success in
+                if success {
+                    hapticManager.play(haptic: .success, tier: .low)
+                    dismiss()
+                } else {
+                    ToastModel.main.add(.failure())
+                }
+            }
+        } catch {
+            handleError(error)
         }
     }
 }
