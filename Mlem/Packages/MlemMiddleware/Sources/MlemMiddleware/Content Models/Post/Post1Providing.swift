@@ -124,7 +124,7 @@ extension Post1Providing {
         post1.updated = snapshot.updated
         post1.languageId = snapshot.languageId
         post1.altText = snapshot.altText
-        //        self.deleted = snapshot.deleted
+        post1.deleted = snapshot.deleted
         //        self.removed = snapshot.removed
         post1.pinnedCommunity = snapshot.pinnedCommunity
         post1.pinnedCommunityPending = false
@@ -239,8 +239,6 @@ public extension Post1Providing {
 }
 
 public extension Post1Providing {
-    private var deletedManager: StateManager<Bool> { post1.deletedManager }
-
     func upgrade() async throws -> any Post {
         try await updateQueue.addUpgrade {
             let snapshot = try await self.api.repository.getPost(id: self.id)
@@ -278,10 +276,19 @@ public extension Post1Providing {
         try await api.purgePost(id: id, reason: reason)
     }
     
-    @discardableResult
-    func updateDeleted(_ newValue: Bool) -> Task<StateUpdateResult, Never> {
-        deletedManager.performRequest(expectedResult: newValue) { semaphore in
-            try await self.api.deletePost(id: self.id, delete: newValue, semaphore: semaphore)
+    func updateDeleted(_ newValue: Bool, callback: ((Bool) -> Void)?) {
+        post1.deleted = newValue
+        Task {
+            await updateQueue.addItem {
+                do {
+                    let snapshot = try await self.api.repository.deletePost(id: self.id, delete: newValue)
+                    callback?(true)
+                    return snapshot
+                } catch {
+                    callback?(false)
+                    throw error
+                }
+            }
         }
     }
     

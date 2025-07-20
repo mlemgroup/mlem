@@ -43,8 +43,7 @@ public final class Post1: Post1Providing {
     
     public var purged: Bool = false
     
-    var deletedManager: StateManager<Bool>
-    public var deleted: Bool { deletedManager.displayedValue }
+    public var deleted: Bool
     
     public var removedManager: StateManager<Bool>
     public var removed: Bool { removedManager.displayedValue }
@@ -89,7 +88,7 @@ public final class Post1: Post1Providing {
         self.title = title
         self.content = content
         self.linkUrl = linkUrl
-        self.deletedManager = .init(wrappedValue: deleted)
+        self.deleted = deleted
         self.embed = embed
         self.pinnedCommunity = pinnedCommunity
         self.pinnedInstance = pinnedInstance

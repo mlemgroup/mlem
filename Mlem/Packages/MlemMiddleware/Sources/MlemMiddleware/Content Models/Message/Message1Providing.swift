@@ -95,10 +95,14 @@ public extension Message1Providing {
         try await api.reportMessage(id: id, reason: reason)
     }
     
-    @discardableResult
-    func updateDeleted(_ newValue: Bool) -> Task<StateUpdateResult, Never> {
-        deletedManager.performRequest(expectedResult: newValue) { semaphore in
-            try await self.api.deleteMessage(id: self.id, delete: newValue, semaphore: semaphore)
+    func updateDeleted(_ newValue: Bool, callback: ((Bool) -> Void)?) {
+        _ = deletedManager.performRequest(expectedResult: newValue) { semaphore in
+            do {
+                try await self.api.deleteMessage(id: self.id, delete: newValue, semaphore: semaphore)
+                callback?(true)
+            } catch {
+                callback?(false)
+            }
         }
     }
     

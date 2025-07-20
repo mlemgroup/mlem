@@ -10,13 +10,11 @@ import Foundation
 public protocol DeletableProviding: ContentIdentifiable {
     var deleted: Bool { get }
     
-    @discardableResult
-    func updateDeleted(_ newValue: Bool) -> Task<StateUpdateResult, Never>
+    func updateDeleted(_ newValue: Bool, callback: ((Bool) -> Void)?)
 }
 
 public extension DeletableProviding {
-    @discardableResult
-    func toggleDeleted() -> Task<StateUpdateResult, Never> {
-        updateDeleted(!deleted)
+    func toggleDeleted(callback: ((Bool) -> Void)? = nil) {
+        updateDeleted(!deleted, callback: callback)
     }
 }
