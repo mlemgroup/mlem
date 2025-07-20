@@ -176,17 +176,7 @@ public extension ApiClient {
             try await markPostsAsRead(ids: [])
         }
     }
-    
-    @discardableResult
-    func deletePost(id: Int, delete: Bool, semaphore: UInt? = nil) async throws -> Post2 {
-        let snapshot = try await repository.deletePost(id: id, delete: delete)
-        return await caches.post2.getModel(
-            api: self,
-            from: snapshot,
-            semaphore: semaphore
-        )
-    }
-    
+
     func createPost(
         communityId: Int,
         title: String,
@@ -199,30 +189,6 @@ public extension ApiClient {
     ) async throws -> Post2 {
         let snapshot = try await repository.createPost(
             communityId: communityId,
-            title: title,
-            content: content,
-            linkUrl: linkUrl,
-            altText: altText,
-            thumbnail: thumbnail,
-            nsfw: nsfw,
-            languageId: languageId
-        )
-        return await caches.post2.getModel(api: self, from: snapshot)
-    }
-    
-    @discardableResult
-    func editPost(
-        id: Int,
-        title: String,
-        content: String? = nil,
-        linkUrl: URL? = nil,
-        altText: String? = nil,
-        thumbnail: URL? = nil,
-        nsfw: Bool,
-        languageId: Int? = nil
-    ) async throws -> Post2 {
-        let snapshot = try await repository.editPost(
-            id: id,
             title: title,
             content: content,
             linkUrl: linkUrl,
@@ -252,36 +218,6 @@ public extension ApiClient {
     
     func purgePost(id: Int, reason: String?) async throws {
         try await repository.purgePost(id: id, reason: reason)
-    }
-    
-    @discardableResult
-    func removePost(
-        id: Int,
-        remove: Bool,
-        reason: String?,
-        semaphore: UInt? = nil
-    ) async throws -> Post2 {
-        let snapshot = try await repository.removePost(id: id, remove: remove, reason: reason)
-        return await caches.post2.getModel(
-            api: self,
-            from: snapshot,
-            semaphore: semaphore
-        )
-    }
-    
-    @discardableResult
-    func pinPost(
-        id: Int,
-        pin: Bool,
-        to target: PostFeatureType,
-        semaphore: UInt? = nil
-    ) async throws -> Post2 {
-        let snapshot = try await repository.pinPost(id: id, pin: pin, to: target)
-        return await caches.post2.getModel(
-            api: self,
-            from: snapshot,
-            semaphore: semaphore
-        )
     }
     
     @discardableResult
