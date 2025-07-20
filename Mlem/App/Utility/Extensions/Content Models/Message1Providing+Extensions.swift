@@ -66,13 +66,17 @@ extension Message1Providing {
             selectTextAction()
         }
         if isOwnMessage {
-            if let editCallback {
-                editAction(appState: appState, callback: editCallback)
+            if api.supportsOrNil(.editAndDeletePrivateMessages) ?? true {
+                if let editCallback {
+                    editAction(appState: appState, callback: editCallback)
+                }
+                deleteAction(appState: appState, feedback: feedback)
             }
-            deleteAction(appState: appState, feedback: feedback)
         } else {
-            if report == nil {
-                reportAction(appState: appState)
+            if api.supportsOrNil(.reportPrivateMessages) ?? true {
+                if report == nil {
+                    reportAction(appState: appState)
+                }
             }
             if !isInMessageFeed {
                 blockCreatorAction(appState: appState, feedback: feedback)

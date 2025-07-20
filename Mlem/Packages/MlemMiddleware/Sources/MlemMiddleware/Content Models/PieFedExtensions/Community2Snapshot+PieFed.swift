@@ -18,7 +18,14 @@ public extension Community2Snapshot {
         )
         self.postCount = community.counts.postCount
         self.commentCount = community.counts.postReplyCount
-        self.activeUserCount = .zero
+        
+        self.activeUserCount = .init(
+            sixMonths: community.counts.active6monthly ?? 0,
+            month: community.counts.activeMonthly ?? 0,
+            week: community.counts.activeWeekly ?? 0,
+            day: community.counts.activeDaily ?? 0
+        )
+            
         self.bannedFromCommunity = false
     }
 }
