@@ -96,8 +96,8 @@ public extension PieFedConnection {
         expires: Date? = nil
     ) async throws -> Person1Snapshot {
         let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "en_US_POSIX") // ensure consistent formatting
-        formatter.timeZone = TimeZone(secondsFromGMT: 0) // optional, adjust if needed
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
         if ban {
             let request = PieFedModerateCommunityBanRequest(
