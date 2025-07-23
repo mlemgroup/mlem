@@ -43,7 +43,7 @@ public protocol Post1Providing:
     var languageId: Int { get }
     var altText: String? { get }
     
-    @MainActor func snapshotUpdate(with snapshot: any PostSnapshotProviding)
+    func snapshotUpdate(with snapshot: any PostSnapshotProviding) async
     func takeSnapshot() -> any PostSnapshotProviding
     var updateQueue: PostUpdateQueue { get }
 }

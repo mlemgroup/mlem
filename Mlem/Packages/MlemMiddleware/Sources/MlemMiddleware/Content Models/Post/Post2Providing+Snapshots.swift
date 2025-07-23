@@ -6,14 +6,13 @@
 //
 
 extension Post2Providing {
-    @MainActor
-    public func snapshotUpdate(with snapshot: any PostSnapshotProviding) {
+    public func snapshotUpdate(with snapshot: any PostSnapshotProviding) async {
         if let post3snapshot = snapshot as? Post3Snapshot {
-            snapshot2Update(with: post3snapshot.post)
+            await snapshot2Update(with: post3snapshot.post)
         } else if let post2snapshot = snapshot as? Post2Snapshot {
-            snapshot2Update(with: post2snapshot)
+            await snapshot2Update(with: post2snapshot)
         } else if let post1snapshot = snapshot as? Post1Snapshot {
-            post1.snapshotUpdate(with: post1snapshot)
+            await post1.snapshotUpdate(with: post1snapshot)
         } else {
             assertionFailure("Unrecognized post snapshot")
         }

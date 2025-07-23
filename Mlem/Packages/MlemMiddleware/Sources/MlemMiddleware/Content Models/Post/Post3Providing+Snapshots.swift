@@ -6,22 +6,23 @@
 //
 
 extension Post3Providing {
-    @MainActor
-    public func snapshotUpdate(with snapshot: any PostSnapshotProviding) {
+    public func snapshotUpdate(with snapshot: any PostSnapshotProviding) async {
         if let post3snapshot = snapshot as? Post3Snapshot {
-            snapshot3Update(with: post3snapshot)
+            // do this here to avoid blocking the main actor
+            let newCrossPosts = await self.api.caches.post2.getModels(api: self.api, from: post3snapshot.crossPosts)
+            await snapshot3Update(with: post3snapshot, crossPosts: newCrossPosts)
         } else if let post2snapshot = snapshot as? Post2Snapshot {
-            post2.snapshot2Update(with: post2snapshot)
+            await post2.snapshot2Update(with: post2snapshot)
         } else if let post1snapshot = snapshot as? Post1Snapshot {
-            post2.post1.snapshot1Update(with: post1snapshot)
+            await post2.post1.snapshot1Update(with: post1snapshot)
         } else {
             assertionFailure("Unrecognized post snapshot")
         }
     }
     
     @MainActor
-    internal func snapshot3Update(with snapshot: Post3Snapshot) {
-        // self.crossPosts = snapshot.crossPosts // TODO: NOW get models from cache
+    internal func snapshot3Update(with snapshot: Post3Snapshot, crossPosts: [Post2]) {
+        post3.setIfChanged(\.crossPosts, crossPosts)
         post2.snapshot2Update(with: snapshot.post)
     }
     

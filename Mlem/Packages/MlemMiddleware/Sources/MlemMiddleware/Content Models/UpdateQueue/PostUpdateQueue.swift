@@ -120,10 +120,9 @@ public actor PostUpdateQueue {
         await updateParent(parent, with: lastVerifiedSnapshot)
     }
     
-    @MainActor
-    private func updateParent(_ parent: any Post1Providing, with snapshot: any PostSnapshotProviding) {
+    private func updateParent(_ parent: any Post1Providing, with snapshot: any PostSnapshotProviding) async {
         print("DEBUG updating parent")
-        parent.snapshotUpdate(with: snapshot)
+        await parent.snapshotUpdate(with: snapshot)
     }
 }
 
