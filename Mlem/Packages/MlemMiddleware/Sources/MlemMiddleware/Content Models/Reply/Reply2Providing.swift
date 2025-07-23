@@ -59,14 +59,14 @@ public extension Reply2Providing {
     private var savedManager: StateManager<Bool> { reply2.savedManager }
     
     func updateVote(_ newValue: ScoringOperation) throws {
-        // TODO: queued state management
+        // TODO: UpdateQueue queued state management
         _ = votesManager.performRequest(expectedResult: votes.applyScoringOperation(operation: newValue)) { semaphore in
             try await self.api.voteOnComment(id: self.commentId, score: newValue, semaphore: semaphore)
         }
     }
     
     func updateSaved(_ newValue: Bool) throws {
-        // TODO: queued state management
+        // TODO: UpdateQueue queued state management
         _ = savedManager.performRequest(expectedResult: newValue) { semaphore in
             try await self.api.saveComment(id: self.commentId, save: newValue, semaphore: semaphore)
         }
