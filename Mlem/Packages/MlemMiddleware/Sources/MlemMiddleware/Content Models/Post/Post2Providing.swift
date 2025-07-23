@@ -47,56 +47,6 @@ public extension Post2Providing {
     var hidden_: Bool? { post2.hidden }
 }
 
-// snapshot methods
-extension Post2Providing {
-    public func snapshotUpdate(with snapshot: any PostSnapshotProviding) {
-        if let post3snapshot = snapshot as? Post3Snapshot {
-            snapshot2Update(with: post3snapshot.post)
-        } else if let post2snapshot = snapshot as? Post2Snapshot {
-            snapshot2Update(with: post2snapshot)
-        } else if let post1snapshot = snapshot as? Post1Snapshot {
-            post1.snapshotUpdate(with: post1snapshot)
-        } else {
-            assertionFailure("Unrecognized post snapshot")
-        }
-    }
-    
-    internal func snapshot2Update(with snapshot: Post2Snapshot) {
-        post2.commentCount = snapshot.commentCount
-        post2.unreadCommentCount = snapshot.unreadCommentCount
-        post2.creatorIsModerator = snapshot.creatorIsModerator
-        post2.creatorIsAdmin = snapshot.creatorIsAdmin
-//        self.creatorBannedFromCommunity = snapshot.creatorBannedFromCommunity
-//        self.creatorBlocked = snapshot.creatorBlocked
-        post2.votes = snapshot.votes
-        post2.saved = snapshot.saved
-        post2.readStatus = snapshot.read
-        post2.hidden = snapshot.hidden
-        post2.post1.snapshot1Update(with: snapshot.post)
-    }
-    
-    public func takeSnapshot() -> any PostSnapshotProviding {
-        takeSnapshot2()
-    }
-    
-    internal func takeSnapshot2() -> Post2Snapshot {
-        .init(post: post1.takeSnapshot1(),
-              creator: creator.takeSnapshot1(),
-              community: community.takeSnapshot1(),
-              commentCount: commentCount,
-              unreadCommentCount: unreadCommentCount,
-              creatorIsModerator: creatorIsModerator,
-              creatorIsAdmin: creatorIsAdmin,
-              creatorBannedFromCommunity: creatorBannedFromCommunity,
-              creatorBlocked: creator.blocked,
-              votes: votes,
-              saved: saved,
-              read: post2.readStatus,
-              hidden: hidden
-        )
-    }
-}
-
 public extension Post2Providing {
     func updateRead(_ newValue: Bool, shouldQueue: Bool = false) throws {
         if shouldQueue {

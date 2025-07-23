@@ -129,12 +129,10 @@ extension Post1Providing {
     }
     
     func markRead() {
-        Task {
-            do {
-                try await self2?.updateRead(true)
-            } catch {
-                print(error)
-            }
+        do {
+            try self2?.updateRead(true)
+        } catch {
+            print(error)
         }
     }
     

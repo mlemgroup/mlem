@@ -43,7 +43,7 @@ public protocol Post1Providing:
     var languageId: Int { get }
     var altText: String? { get }
     
-    func snapshotUpdate(with snapshot: any PostSnapshotProviding)
+    @MainActor func snapshotUpdate(with snapshot: any PostSnapshotProviding)
     func takeSnapshot() -> any PostSnapshotProviding
     var updateQueue: PostUpdateQueue { get }
 }
@@ -97,70 +97,6 @@ public extension Post1Providing {
     var updated_: Date? { post1.updated }
     var languageId_: Int? { post1.languageId }
     var altText_: String? { post1.altText }
-}
-
-// snapshot methods
-extension Post1Providing {
-    public func snapshotUpdate(with snapshot: any PostSnapshotProviding) {
-        if let post3snapshot = snapshot as? Post3Snapshot {
-            snapshot1Update(with: post3snapshot.post.post)
-        } else if let post2snapshot = snapshot as? Post2Snapshot {
-            snapshot1Update(with: post2snapshot.post)
-        } else if let post1snapshot = snapshot as? Post1Snapshot {
-            snapshot1Update(with: post1snapshot)
-        } else {
-            assertionFailure("Unrecognized post snapshot")
-        }
-    }
-    
-    internal func snapshot1Update(with snapshot: Post1Snapshot) {
-        post1.title = snapshot.title
-        post1.content = snapshot.content
-        post1.linkUrl = snapshot.linkUrl
-        post1.embed = snapshot.embed
-        post1.nsfw = snapshot.nsfw
-        post1.thumbnailUrl = snapshot.thumbnailUrl
-        post1.updated = snapshot.updated
-        post1.languageId = snapshot.languageId
-        post1.altText = snapshot.altText
-        post1.deleted = snapshot.deleted
-        post1.removed = snapshot.removed
-        post1.removedPending = false
-        post1.pinnedCommunity = snapshot.pinnedCommunity
-        post1.pinnedCommunityPending = false
-        post1.pinnedInstance = snapshot.pinnedInstance
-        post1.pinnedInstancePending = false
-        post1.locked = snapshot.locked
-        post1.lockedPending = false
-    }
-    
-    public func takeSnapshot() -> any PostSnapshotProviding {
-        takeSnapshot1()
-    }
-    
-    public func takeSnapshot1() -> Post1Snapshot {
-        .init(
-            actorId: actorId,
-            id: id,
-            creatorId: creatorId,
-            communityId: communityId,
-            created: created,
-            title: title,
-            content: content,
-            linkUrl: linkUrl,
-            embed: embed,
-            nsfw: nsfw,
-            thumbnailUrl: thumbnailUrl,
-            updated: updated,
-            languageId: languageId,
-            altText: altText,
-            deleted: deleted,
-            removed: removed,
-            pinnedCommunity: pinnedCommunity,
-            pinnedInstance: pinnedInstance,
-            locked: locked
-        )
-    }
 }
 
 // Resolvable conformance

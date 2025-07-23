@@ -36,7 +36,10 @@ extension Comment2: CacheIdentifiable {
     func update(with snapshot: Comment2Snapshot, semaphore: UInt? = nil) {
         comment1.update(with: snapshot.comment, semaphore: semaphore)
         creator.update(with: snapshot.creator, semaphore: semaphore)
-        post.update(with: snapshot.post, semaphore: semaphore)
+        
+        // TODO: UpdateQueue remove this shim code
+        post.snapshotUpdate(with: snapshot.post)
+        
         community.update(with: snapshot.community, semaphore: semaphore)
         
         setIfChanged(\.commentCount, snapshot.commentCount)
