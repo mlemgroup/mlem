@@ -83,7 +83,7 @@ public actor PostUpdateQueue {
         }
         print("DEBUG executing queue")
         
-        // assigning this here ensures parent stays in scope for the duration of the queue; for operations that remove the post
+        // assigning this here ensures parent stays in scope for the duration of the queue. For operations that remove the post
         // (e.g., hide), if the call is slow, the parent might go out of scope before it returns; this in turn breaks the undo behavior
         guard let parent else {
             assertionFailure("Cannot execute queue with no parent!")

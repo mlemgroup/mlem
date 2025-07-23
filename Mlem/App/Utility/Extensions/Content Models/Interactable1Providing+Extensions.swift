@@ -63,8 +63,8 @@ extension Interactable1Providing {
     }
     
     func toggleSaved(feedback: Set<FeedbackType>) {
+        // TODO: UpdateQueue remove this shim code
         if let post = self2 as? Post2 {
-            print("DEBUG it's a post!")
             do {
                 @Setting(\.behavior_upvoteOnSave) var upvoteOnSave
                 if feedback.contains(.haptic) {
@@ -78,7 +78,6 @@ extension Interactable1Providing {
                 handleError(error)
             }
         } else {
-            print("DEBUG not a post :(")
             if let self2 {
                 do {
                     if feedback.contains(.haptic) {

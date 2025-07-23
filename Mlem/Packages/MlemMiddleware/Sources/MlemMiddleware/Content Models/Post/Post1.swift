@@ -43,6 +43,8 @@ public final class Post1: Post1Providing {
     public var purged: Bool = false
     public var deleted: Bool
     
+    // TODO: UpdateQueue replace these with a Pendable<T> struct
+    // such a struct will require protocol changes beyond the post scope
     public var removed: Bool
     public var removedPending: Bool = false
     

@@ -70,7 +70,7 @@ extension Post1Providing {
                 Task {
                     await self.handleModerationActionCompletion(
                         message: self.locked ? "Failed to unlock post" : "Failed to lock post",
-                        result: success ? .succeeded : .failed, // TODO: replace with bool
+                        result: success ? .succeeded : .failed, // TODO: UpdateQueue replace with bool
                         feedback: feedback
                     )
                 }

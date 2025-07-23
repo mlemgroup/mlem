@@ -71,29 +71,6 @@ public extension Community1Providing {
     var purged_: Bool? { community1.purged }
 }
 
-// Snapshot methods
-extension Community1Providing {
-    internal func takeSnapshot1() -> Community1Snapshot {
-        .init(actorId: actorId,
-              id: id,
-              name: name,
-              created: created,
-              instanceId: instanceId,
-              updated: updated,
-              displayName: displayName,
-              description: description,
-              deleted: deleted,
-              removed: removed,
-              nsfw: nsfw,
-              avatar: avatar,
-              banner: banner,
-              hidden: hidden,
-              onlyModeratorsCanPost: onlyModeratorsCanPost,
-              allPropertiesPresent: false
-        )
-    }
-}
-
 // Resolvable conformance
 public extension Community1Providing {
     @inlinable
@@ -175,6 +152,7 @@ public extension Community1Providing {
     }
     
     func updateRemoved(_ newValue: Bool, reason: String?, callback: ((Bool) -> Void)?) throws {
+        // TODO: UpdateQueue use queued state management
         _ = community1.removedManager.performRequest(expectedResult: newValue) { semaphore in
             do {
                 try await self.api.removeCommunity(id: self.id, remove: newValue, reason: reason, semaphore: semaphore)

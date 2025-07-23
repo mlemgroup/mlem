@@ -141,6 +141,7 @@ public extension Comment1Providing {
     }
     
     func updateRemoved(_ newValue: Bool, reason: String?, callback: ((Bool) -> Void)?) throws {
+        // TODO: UpdateQueue use queued state management
         _ = removedManager.performRequest(expectedResult: newValue) { semaphore in
             do {
                 try await self.api.removeComment(id: self.id, remove: newValue, reason: reason, semaphore: semaphore)
@@ -164,6 +165,7 @@ public extension Comment1Providing {
     }
     
     func updateDeleted(_ newValue: Bool, callback: ((Bool) -> Void)?) {
+        // TODO: UpdateQueue use queued state management
         _ = deletedManager.performRequest(expectedResult: newValue) { semaphore in
             do {
                 try await self.api.deleteComment(id: self.id, delete: newValue, semaphore: semaphore)

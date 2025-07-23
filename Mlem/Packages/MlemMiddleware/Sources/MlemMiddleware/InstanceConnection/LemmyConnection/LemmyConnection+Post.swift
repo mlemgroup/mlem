@@ -268,7 +268,6 @@ public extension LemmyConnection {
                 save: save
             )
         }
-        // Lemmy doesn't return read: true even though it's updated server-side
         return try .init(from: response.postView, overrideRead: true)
     }
     

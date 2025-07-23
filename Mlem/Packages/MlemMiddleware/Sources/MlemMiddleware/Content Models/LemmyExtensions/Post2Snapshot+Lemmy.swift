@@ -8,6 +8,10 @@
 import Foundation
 
 extension Post2Snapshot {
+    /// Instantiates a Post2Snapshot from a given LemmyPostView
+    /// - Parameters:
+    ///   - post: LemmyPostView
+    ///   - overrideRead: if present, overrides the LemmyPostView's read value. This is required because Lemmy doesn't return `read: true` in some cases (e.g., save post) even if the value is updated server-side.
     init(from post: LemmyPostView, overrideRead: Bool? = nil) throws(ApiClientError) {
         self.post = try .init(from: post.post)
         self.creator = try .init(from: post.creator)
