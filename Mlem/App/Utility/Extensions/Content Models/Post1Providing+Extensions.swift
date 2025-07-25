@@ -30,10 +30,6 @@ extension Post1Providing {
         }
     }
     
-    func upgrade() async throws -> any Post {
-        try await api.getPost(id: id)
-    }
-    
     func toggleHidden(feedback: Set<FeedbackType>) throws {
         if let self2 {
             if feedback.contains(.haptic) {
