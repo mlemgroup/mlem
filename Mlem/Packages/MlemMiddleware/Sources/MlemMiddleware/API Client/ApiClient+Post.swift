@@ -162,11 +162,7 @@ public extension ApiClient {
         }
         Task { @MainActor in
             for post in idsToSend.compactMap({ caches.post2.retrieveModel(cacheId: $0) }) {
-                do {
-                    try post.queuedMarkReadCompleted()
-                } catch {
-                    print(error)
-                }
+                post.queuedMarkReadCompleted()
             }
         }
     }

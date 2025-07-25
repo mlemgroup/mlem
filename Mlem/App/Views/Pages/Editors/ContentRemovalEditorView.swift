@@ -32,7 +32,7 @@ struct ContentRemovalEditorView: View {
         self._mode = .init(wrappedValue: target.removed ? .restore : .remove)
         self._community = .init(wrappedValue: (target as? any Interactable2Providing)?.community)
     }
-
+    
     var body: some View {
         CollapsibleSheetView(presentationSelection: $presentationSelection, canDismiss: reason.isEmpty) {
             NavigationStack {
@@ -70,18 +70,14 @@ struct ContentRemovalEditorView: View {
     }
     
     func send() {
-        do {
-            try target.toggleRemoved(reason: reason) { status in
-                switch status {
-                case .success:
-                    hapticManager.play(haptic: .success, tier: .low)
-                    dismiss()
-                case let .failure(error):
-                    handleError(error)
-                }
+        target.toggleRemoved(reason: reason) { status in
+            switch status {
+            case .success:
+                hapticManager.play(haptic: .success, tier: .low)
+                dismiss()
+            case let .failure(error):
+                handleError(error)
             }
-        } catch {
-            handleError(error)
         }
     }
 }

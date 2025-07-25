@@ -76,7 +76,7 @@ public extension Reply2Providing {
         try await api.replyToComment(postId: post.id, parentId: commentId, content: content, languageId: languageId)
     }
     
-    func updateRemoved(_ newValue: Bool, reason: String?, callback: ((UpdateStatus) -> Void)?) throws {
-        try comment.updateRemoved(newValue, reason: reason, callback: callback)
+    func updateRemoved(_ newValue: Bool, reason: String?, callback: ((UpdateStatus) -> Void)?) {
+        comment.updateRemoved(newValue, reason: reason, callback: callback)
     }
 }

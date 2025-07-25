@@ -140,7 +140,7 @@ public extension Comment1Providing {
         return comments.filter { $0.parentCommentIds.contains(id) || self.parentCommentIds.contains($0.id) || $0.id == self.id }
     }
     
-    func updateRemoved(_ newValue: Bool, reason: String?, callback: ((UpdateStatus) -> Void)?) throws {
+    func updateRemoved(_ newValue: Bool, reason: String?, callback: ((UpdateStatus) -> Void)?) {
         // TODO: UpdateQueue use queued state management
         _ = removedManager.performRequest(expectedResult: newValue) { semaphore in
             do {

@@ -48,67 +48,51 @@ extension Post1Providing {
                             "Hidden",
                             icon: .general.hide,
                             callback: {
-                                do {
-                                    try self2.updateHidden(false)
-                                } catch {
-                                    handleError(error)
-                                }
+                                self2.updateHidden(false)
                             }
                         )
                     )
                 }
             }
-            try self2.toggleHidden()
+            self2.toggleHidden()
         } else {
             handleError(MlemError.modelError("No self2 found"), silent: true)
         }
     }
     
     func toggleLocked(feedback: Set<FeedbackType>) {
-        do {
-            try self.toggleLocked { status in
-                Task {
-                    await self.handleModerationActionCompletion(
-                        message: self.locked ? "Failed to unlock post" : "Failed to lock post",
-                        result: status, // TODO: UpdateQueue replace with bool
-                        feedback: feedback
-                    )
-                }
+        self.toggleLocked { status in
+            Task {
+                await self.handleModerationActionCompletion(
+                    message: self.locked ? "Failed to unlock post" : "Failed to lock post",
+                    result: status, // TODO: UpdateQueue replace with bool
+                    feedback: feedback
+                )
             }
-        } catch {
-            handleError(error)
         }
     }
     
     func togglePinnedCommunity(feedback: Set<FeedbackType>) {
-        do {
-            try self.togglePinnedCommunity { status in
-                Task {
-                    await self.handleModerationActionCompletion(
-                        message: self.pinnedCommunity ? "Failed to unpin post" : "Failed to pin post",
-                        result: status,
-                        feedback: feedback
-                    )
-                }
+        self.togglePinnedCommunity { status in
+            Task {
+                await self.handleModerationActionCompletion(
+                    message: self.pinnedCommunity ? "Failed to unpin post" : "Failed to pin post",
+                    result: status,
+                    feedback: feedback
+                )
             }
-        } catch {
-            handleError(error)
         }
     }
     
     func togglePinnedInstance(feedback: Set<FeedbackType>) {
-        do {
-            try self.togglePinnedInstance { status in
-                Task {
-                    await self.handleModerationActionCompletion(
-                        message: self.pinnedInstance ? "Failed to unpin post" : "Failed to pin post",
-                        result: status,
-                        feedback: feedback
-                    )
-                }
+        self.togglePinnedInstance { status in
+            Task {
+                await self.handleModerationActionCompletion(
+                    message: self.pinnedInstance ? "Failed to unpin post" : "Failed to pin post",
+                    result: status,
+                    feedback: feedback
+                )
             }
-        } catch {
-            handleError(error)
         }
     }
     
@@ -145,11 +129,7 @@ extension Post1Providing {
     }
     
     func markRead() {
-        do {
-            try self2?.updateRead(true)
-        } catch {
-            print(error)
-        }
+        self2?.updateRead(true)
     }
     
     @ActionBuilder
@@ -273,16 +253,16 @@ extension Post1Providing {
         case .report: reportAction(appState: appState, communityContext: communityContext)
         case .crossPost: crossPostAction()
         case .lock: lockAction(appState: appState, feedback: feedback)
-        // SwiftLint is erroneously warning here. This could be fixed by wrapping the expression
-        // in parenthesis, but the pre-commit hook removed the paranthesis
-        // swiftlint:disable:next void_function_in_ternary
+            // SwiftLint is erroneously warning here. This could be fixed by wrapping the expression
+            // in parenthesis, but the pre-commit hook removed the paranthesis
+            // swiftlint:disable:next void_function_in_ternary
         case .pin: api.isAdmin ? pinAction(
-                appState: appState,
-                feedback: feedback
-            ) : pinToCommunityAction(
-                appState: appState,
-                feedback: feedback
-            )
+            appState: appState,
+            feedback: feedback
+        ) : pinToCommunityAction(
+            appState: appState,
+            feedback: feedback
+        )
         case .resolve: reportContext?.resolveAction(appState: appState, feedback: feedback)
         case .remove: removeAction(appState: appState, feedback: feedback).disabled(!canModerate)
         case .ban: reportContext?.contextualBanAction(appState: appState)
@@ -305,7 +285,7 @@ extension Post1Providing {
     func readout(type: PostBarConfiguration.ReadoutType, showColor: Bool) -> Readout? {
         switch type {
         case .created: createdReadout
-        // swiftlint:disable:next void_function_in_ternary
+            // swiftlint:disable:next void_function_in_ternary
         case .score: api.downvotesEnabled ? scoreReadout(showColor: showColor) : upvoteReadout(showColor: showColor)
         case .upvote: upvoteReadout(showColor: showColor)
         case .downvote: api.downvotesEnabled ? downvoteReadout(showColor: showColor) : nil
@@ -316,17 +296,17 @@ extension Post1Providing {
     
     func taggedTitle(communityContext: (any Community1Providing)?) -> Text {
         let hasTags: Bool = removed
-            || deleted
-            || pinnedInstance
-            || (communityContext != nil && pinnedCommunity)
-            || locked
+        || deleted
+        || pinnedInstance
+        || (communityContext != nil && pinnedCommunity)
+        || locked
         
         return postTag(active: removed, icon: .lemmy.removed, color: .themedNegative) +
-            postTag(active: deleted, icon: .general.delete, color: .themedNegative) +
-            postTag(active: pinnedInstance, icon: .lemmy.pinned, color: .themedAdministration) +
-            postTag(active: pinnedCommunity && communityContext != nil, icon: .lemmy.pinned, color: .themedModeration) +
-            postTag(active: locked, icon: .lemmy.locked, color: .themedLockAccent) +
-            Text(verbatim: "\(hasTags ? "  " : "")\(title)")
+        postTag(active: deleted, icon: .general.delete, color: .themedNegative) +
+        postTag(active: pinnedInstance, icon: .lemmy.pinned, color: .themedAdministration) +
+        postTag(active: pinnedCommunity && communityContext != nil, icon: .lemmy.pinned, color: .themedModeration) +
+        postTag(active: locked, icon: .lemmy.locked, color: .themedLockAccent) +
+        Text(verbatim: "\(hasTags ? "  " : "")\(title)")
     }
     
     /// Host if this is a link post, otherwise nil.

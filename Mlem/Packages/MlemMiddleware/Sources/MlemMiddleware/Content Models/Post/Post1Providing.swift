@@ -265,7 +265,7 @@ public extension Post1Providing {
     /// - Parameters:
     ///   - newValue: true to lock post, false to unlock
     ///   - callback: if present, when the repository call completes, is called with `.success` if the operation succeeded and `.failure` otherwise.
-    func updateLocked(_ newValue: Bool, callback: ((UpdateStatus) -> Void)?) throws {
+    func updateLocked(_ newValue: Bool, callback: ((UpdateStatus) -> Void)?) {
         post1.locked = newValue
         post1.lockedPending = true
         Task {
@@ -284,15 +284,15 @@ public extension Post1Providing {
     
     /// Toggles the locked status of this post
     /// - Parameter callback: if present, when the repository call completes, is called with `.success` if the operation succeeded and `.failure` otherwise.
-    func toggleLocked(callback: ((UpdateStatus) -> Void)? = nil) throws {
-        try updateLocked(!locked, callback: callback)
+    func toggleLocked(callback: ((UpdateStatus) -> Void)? = nil) {
+        updateLocked(!locked, callback: callback)
     }
     
     /// Pins or unpins this post to the community according to newValue
     /// - Parameters:
     ///   - newValue: true to pin post, false to unpin
     ///   - callback: if present, when the repository call completes, is called with `.success` if the operation succeeded and `.failure` otherwise.
-    func updatePinnedCommunity(_ newValue: Bool, callback: ((UpdateStatus) -> Void)?) throws {
+    func updatePinnedCommunity(_ newValue: Bool, callback: ((UpdateStatus) -> Void)?) {
         post1.pinnedCommunity = newValue
         post1.pinnedCommunityPending = true
         Task {
@@ -311,15 +311,15 @@ public extension Post1Providing {
     
     /// Toggles the community pinned status of this post
     /// - Parameter callback: if present, when the repository call completes, is called with `.success` if the operation succeeded and `.failure` otherwise.
-    func togglePinnedCommunity(callback: ((UpdateStatus) -> Void)? = nil) throws {
-        try updatePinnedCommunity(!pinnedCommunity, callback: callback)
+    func togglePinnedCommunity(callback: ((UpdateStatus) -> Void)? = nil) {
+        updatePinnedCommunity(!pinnedCommunity, callback: callback)
     }
     
     /// Pins or unpins this post to the instance according to newValue
     /// - Parameters:
     ///   - newValue: true to pin post, false to unpin
     ///   - callback: if present, when the repository call completes, is called with `.success` if the operation succeeded and `.failure` otherwise.
-    func updatePinnedInstance(_ newValue: Bool, callback: ((UpdateStatus) -> Void)?) throws {
+    func updatePinnedInstance(_ newValue: Bool, callback: ((UpdateStatus) -> Void)?) {
         post1.pinnedInstance = newValue
         post1.pinnedInstancePending = true
         Task {
@@ -338,15 +338,15 @@ public extension Post1Providing {
     
     /// Toggles the instance pinned status of this post
     /// - Parameter callback: if present, when the repository call completes, is called with `.success` if the operation succeeded and `.failure` otherwise.
-    func togglePinnedInstance(callback: ((UpdateStatus) -> Void)? = nil) throws {
-        try updatePinnedInstance(!pinnedInstance, callback: callback)
+    func togglePinnedInstance(callback: ((UpdateStatus) -> Void)? = nil) {
+        updatePinnedInstance(!pinnedInstance, callback: callback)
     }
     
     /// Removes or restores this post according to newValue
     /// - Parameters:
     ///   - newValue: true to remove post, false to restore
     ///   - callback: if present, when the repository call completes, is called with `.success` if the operation succeeded and `.failure` otherwise.
-    func updateRemoved(_ newValue: Bool, reason: String?, callback: ((UpdateStatus) -> Void)?) throws {
+    func updateRemoved(_ newValue: Bool, reason: String?, callback: ((UpdateStatus) -> Void)?) {
         post1.removed = newValue
         post1.removedPending = true
         Task {
