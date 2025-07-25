@@ -24,7 +24,7 @@ struct TopSortPicker: View {
     }
     
     var body: some View {
-        HFlow(spacing: 10, justification: .stretchItems) {
+        HFlow(spacing: 10) {
             ForEach(timeRanges, id: \.self) { type in
                 button(type)
                     .frame(minWidth: 60)

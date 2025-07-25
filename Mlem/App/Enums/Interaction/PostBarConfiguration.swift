@@ -7,7 +7,7 @@
 
 import Foundation
 import MlemMiddleware
-import SwiftUICore
+import SwiftUI
 
 struct PostBarConfiguration: InteractionBarConfiguration {
     enum ActionType: String, ActionTypeProviding {
