@@ -251,7 +251,9 @@ public extension PieFedConnection {
     
     @discardableResult
     func reportPost(id: Int, reason: String) async throws -> ReportSnapshot {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedCreatePostReportRequest(postId: id, reason: reason)
+        let response = try await perform(request)
+        return try .init(from: response.postReportView)
     }
     
     func purgePost(id: Int, reason: String?) async throws {

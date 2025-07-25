@@ -160,8 +160,11 @@ public extension ApiClient {
     
     func getMyPerson() async throws -> (person: Person4?, instance: Instance3, blocks: BlockList?) {
         let snapshot = try await repository.getMyPerson()
-        guard snapshot.person?.person.person.person.name == username else {
-            assertionFailure()
+        let snapshotPersonName = snapshot.person?.person.person.person.name
+        guard snapshotPersonName == username else {
+            assertionFailure(
+                "Returned account name \(String(describing: snapshotPersonName)) does not match logged in username \(String(describing: username))"
+            )
             throw ApiClientError.mismatchingToken
         }
         

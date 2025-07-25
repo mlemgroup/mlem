@@ -29,4 +29,25 @@ public extension Post2Snapshot {
         self.creatorBannedFromCommunity = post.creatorBannedFromCommunity
         self.creatorBlocked = false
     }
+    
+    init(from report: PieFedPostReportView) throws(ApiClientError) {
+        self.post = try .init(from: report.post)
+        self.creator = try .init(from: report.postCreator)
+        self.community = try .init(from: report.community)
+        
+        self.votes = .init(from: report.counts, myVote: .guaranteedInit(from: report.myVote))
+        
+        self.creatorIsModerator = report.creatorIsModerator
+        
+        self.creatorBannedFromCommunity = report.creatorBannedFromCommunity
+        self.creatorBlocked = report.creatorBlocked
+        self.creatorIsAdmin = report.creatorIsAdmin
+
+        self.commentCount = report.counts.comments
+        self.unreadCommentCount = 0
+        
+        self.saved = report.saved
+        self.read = false
+        self.hidden = false
+    }
 }

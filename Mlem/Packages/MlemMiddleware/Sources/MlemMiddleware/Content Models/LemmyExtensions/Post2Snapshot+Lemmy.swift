@@ -75,7 +75,7 @@ extension Post2Snapshot {
         // https://github.com/LemmyNet/lemmy/pull/5808#discussion_r2198777728
         self.creatorIsModerator = report.creatorIsModerator ?? false
         
-        self.creatorBannedFromCommunity = report.creatorBannedFromCommunity ?? false
+        self.creatorBannedFromCommunity = report.creatorBannedFromCommunity
         guard let creatorBlocked = report.creatorBlocked else {
             throw .responseMissingRequiredData("LemmyPostReportView creatorBlocked")
         }
