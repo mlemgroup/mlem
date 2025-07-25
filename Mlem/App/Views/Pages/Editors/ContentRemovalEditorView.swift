@@ -71,12 +71,13 @@ struct ContentRemovalEditorView: View {
     
     func send() {
         do {
-            try target.toggleRemoved(reason: reason) { success in
-                if success {
+            try target.toggleRemoved(reason: reason) { status in
+                switch status {
+                case .success:
                     hapticManager.play(haptic: .success, tier: .low)
                     dismiss()
-                } else {
-                    ToastModel.main.add(.failure())
+                case let .failure(error):
+                    handleError(error)
                 }
             }
         } catch {

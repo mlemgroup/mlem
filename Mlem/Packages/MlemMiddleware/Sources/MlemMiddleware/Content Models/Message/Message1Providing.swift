@@ -95,13 +95,14 @@ public extension Message1Providing {
         try await api.reportMessage(id: id, reason: reason)
     }
     
-    func updateDeleted(_ newValue: Bool, callback: ((Bool) -> Void)?) {
+    func updateDeleted(_ newValue: Bool, callback: ((UpdateStatus) -> Void)?) {
+        // TODO: UpdateQueue queued state management
         _ = deletedManager.performRequest(expectedResult: newValue) { semaphore in
             do {
                 try await self.api.deleteMessage(id: self.id, delete: newValue, semaphore: semaphore)
-                callback?(true)
+                callback?(.success)
             } catch {
-                callback?(false)
+                callback?(.failure(error))
             }
         }
     }

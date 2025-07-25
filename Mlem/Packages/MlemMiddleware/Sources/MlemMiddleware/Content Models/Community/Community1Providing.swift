@@ -151,14 +151,14 @@ public extension Community1Providing {
         updateBlocked(!blocked)
     }
     
-    func updateRemoved(_ newValue: Bool, reason: String?, callback: ((Bool) -> Void)?) throws {
+    func updateRemoved(_ newValue: Bool, reason: String?, callback: ((UpdateStatus) -> Void)?) throws {
         // TODO: UpdateQueue use queued state management
         _ = community1.removedManager.performRequest(expectedResult: newValue) { semaphore in
             do {
                 try await self.api.removeCommunity(id: self.id, remove: newValue, reason: reason, semaphore: semaphore)
-                callback?(true)
+                callback?(.success)
             } catch {
-                callback?(false)
+                callback?(.failure(error))
             }
         }
     }

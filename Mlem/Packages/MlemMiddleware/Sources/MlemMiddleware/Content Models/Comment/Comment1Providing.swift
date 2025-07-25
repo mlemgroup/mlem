@@ -140,14 +140,14 @@ public extension Comment1Providing {
         return comments.filter { $0.parentCommentIds.contains(id) || self.parentCommentIds.contains($0.id) || $0.id == self.id }
     }
     
-    func updateRemoved(_ newValue: Bool, reason: String?, callback: ((Bool) -> Void)?) throws {
+    func updateRemoved(_ newValue: Bool, reason: String?, callback: ((UpdateStatus) -> Void)?) throws {
         // TODO: UpdateQueue use queued state management
         _ = removedManager.performRequest(expectedResult: newValue) { semaphore in
             do {
                 try await self.api.removeComment(id: self.id, remove: newValue, reason: reason, semaphore: semaphore)
-                callback?(true)
+                callback?(.success)
             } catch {
-                callback?(false)
+                callback?(.failure(error))
             }
         }
     }
@@ -164,14 +164,14 @@ public extension Comment1Providing {
         try await api.purgeComment(id: id, reason: reason)
     }
     
-    func updateDeleted(_ newValue: Bool, callback: ((Bool) -> Void)?) {
+    func updateDeleted(_ newValue: Bool, callback: ((UpdateStatus) -> Void)?) {
         // TODO: UpdateQueue use queued state management
         _ = deletedManager.performRequest(expectedResult: newValue) { semaphore in
             do {
                 try await self.api.deleteComment(id: self.id, delete: newValue, semaphore: semaphore)
-                callback?(true)
+                callback?(.success)
             } catch {
-                callback?(false)
+                callback?(.failure(error))
             }
         }
     }

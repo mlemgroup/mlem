@@ -10,8 +10,9 @@ import MlemMiddleware
 extension DeletableProviding {
     func toggleDeleted(feedback: Set<FeedbackType>) {
         if feedback.contains(.toast), !deleted {
-            toggleDeleted { success in
-                if success {
+            toggleDeleted { status in
+                switch status {
+                case .success:
                     ToastModel.main.add(
                         .undoable(
                             "Deleted",
@@ -20,7 +21,7 @@ extension DeletableProviding {
                             color: .themedNegative
                         )
                     )
-                } else {
+                case .failure:
                     ToastModel.main.add(.failure("Failed to delete post!"))
                 }
             }

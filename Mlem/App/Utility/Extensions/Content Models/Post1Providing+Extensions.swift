@@ -66,11 +66,11 @@ extension Post1Providing {
     
     func toggleLocked(feedback: Set<FeedbackType>) {
         do {
-            try self.toggleLocked { success in
+            try self.toggleLocked { status in
                 Task {
                     await self.handleModerationActionCompletion(
                         message: self.locked ? "Failed to unlock post" : "Failed to lock post",
-                        result: success ? .succeeded : .failed, // TODO: UpdateQueue replace with bool
+                        result: status, // TODO: UpdateQueue replace with bool
                         feedback: feedback
                     )
                 }
@@ -82,11 +82,11 @@ extension Post1Providing {
     
     func togglePinnedCommunity(feedback: Set<FeedbackType>) {
         do {
-            try self.togglePinnedCommunity { success in
+            try self.togglePinnedCommunity { status in
                 Task {
                     await self.handleModerationActionCompletion(
                         message: self.pinnedCommunity ? "Failed to unpin post" : "Failed to pin post",
-                        result: success ? .succeeded : .failed,
+                        result: status,
                         feedback: feedback
                     )
                 }
@@ -98,11 +98,11 @@ extension Post1Providing {
     
     func togglePinnedInstance(feedback: Set<FeedbackType>) {
         do {
-            try self.togglePinnedInstance { success in
+            try self.togglePinnedInstance { status in
                 Task {
                     await self.handleModerationActionCompletion(
                         message: self.pinnedInstance ? "Failed to unpin post" : "Failed to pin post",
-                        result: success ? .succeeded : .failed,
+                        result: status,
                         feedback: feedback
                     )
                 }
@@ -110,6 +110,22 @@ extension Post1Providing {
         } catch {
             handleError(error)
         }
+    }
+    
+    // TODO: UpdateQueue remove this shim code
+    private func handleModerationActionCompletion(
+        message: LocalizedStringResource,
+        result: UpdateStatus,
+        feedback: Set<FeedbackType>
+    ) async {
+        var stateUpdateResult: StateUpdateResult
+        switch result {
+        case .success:
+            stateUpdateResult = .succeeded
+        case .failure:
+            stateUpdateResult = .failed
+        }
+        await handleModerationActionCompletion(message: message, result: stateUpdateResult, feedback: feedback)
     }
     
     private func handleModerationActionCompletion(

@@ -10,11 +10,11 @@ import Foundation
 public protocol DeletableProviding: ContentIdentifiable {
     var deleted: Bool { get }
     
-    func updateDeleted(_ newValue: Bool, callback: ((Bool) -> Void)?)
+    func updateDeleted(_ newValue: Bool, callback: ((UpdateStatus) -> Void)?)
 }
 
 public extension DeletableProviding {
-    func toggleDeleted(callback: ((Bool) -> Void)? = nil) {
+    func toggleDeleted(callback: ((UpdateStatus) -> Void)? = nil) {
         updateDeleted(!deleted, callback: callback)
     }
 }
