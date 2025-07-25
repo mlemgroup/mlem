@@ -5,7 +5,7 @@
 //  Created by Eric Andrews on 2025-03-30.
 //
 
-import SwiftUICore
+import SwiftUI
 import UIKit
 
 class MomentumResetTapGestureRecognizer: UITapGestureRecognizer {
