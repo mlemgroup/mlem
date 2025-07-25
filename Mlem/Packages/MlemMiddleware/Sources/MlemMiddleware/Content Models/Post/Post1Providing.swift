@@ -264,8 +264,7 @@ public extension Post1Providing {
     /// Locks or unlocks this post according to newValue
     /// - Parameters:
     ///   - newValue: true to lock post, false to unlock
-    ///   - callback: if present, when the repository call completes, is called with `true` if the operation succeeded and `false` otherwise.
-    /// - Note: the callback's parameter indicates success/failure, not locked/unlocked.
+    ///   - callback: if present, when the repository call completes, is called with `.success` if the operation succeeded and `.failure` otherwise.
     func updateLocked(_ newValue: Bool, callback: ((UpdateStatus) -> Void)?) throws {
         post1.locked = newValue
         post1.lockedPending = true
@@ -284,8 +283,7 @@ public extension Post1Providing {
     }
     
     /// Toggles the locked status of this post
-    /// - Parameter callback: if present, when the repository call completes, is called with `true` if the operation succeeded and `false` otherwise.
-    /// - Note: the callback's parameter indicates success/failure, not locked/unlocked.
+    /// - Parameter callback: if present, when the repository call completes, is called with `.success` if the operation succeeded and `.failure` otherwise.
     func toggleLocked(callback: ((UpdateStatus) -> Void)? = nil) throws {
         try updateLocked(!locked, callback: callback)
     }
@@ -293,8 +291,7 @@ public extension Post1Providing {
     /// Pins or unpins this post to the community according to newValue
     /// - Parameters:
     ///   - newValue: true to pin post, false to unpin
-    ///   - callback: if present, when the repository call completes, is called with `true` if the operation succeeded and `false` otherwise.
-    /// - Note: the callback's parameter indicates success/failure, not pinned/unpinned.
+    ///   - callback: if present, when the repository call completes, is called with `.success` if the operation succeeded and `.failure` otherwise.
     func updatePinnedCommunity(_ newValue: Bool, callback: ((UpdateStatus) -> Void)?) throws {
         post1.pinnedCommunity = newValue
         post1.pinnedCommunityPending = true
@@ -313,8 +310,7 @@ public extension Post1Providing {
     }
     
     /// Toggles the community pinned status of this post
-    /// - Parameter callback: if present, when the repository call completes, is called with `true` if the operation succeeded and `false` otherwise.
-    /// - Note: the callback's parameter indicates success/failure, not pinned/unpinned.
+    /// - Parameter callback: if present, when the repository call completes, is called with `.success` if the operation succeeded and `.failure` otherwise.
     func togglePinnedCommunity(callback: ((UpdateStatus) -> Void)? = nil) throws {
         try updatePinnedCommunity(!pinnedCommunity, callback: callback)
     }
@@ -322,8 +318,7 @@ public extension Post1Providing {
     /// Pins or unpins this post to the instance according to newValue
     /// - Parameters:
     ///   - newValue: true to pin post, false to unpin
-    ///   - callback: if present, when the repository call completes, is called with `true` if the operation succeeded and `false` otherwise.
-    /// - Note: the callback's parameter indicates success/failure, not pinned/unpinned.
+    ///   - callback: if present, when the repository call completes, is called with `.success` if the operation succeeded and `.failure` otherwise.
     func updatePinnedInstance(_ newValue: Bool, callback: ((UpdateStatus) -> Void)?) throws {
         post1.pinnedInstance = newValue
         post1.pinnedInstancePending = true
@@ -342,8 +337,7 @@ public extension Post1Providing {
     }
     
     /// Toggles the instance pinned status of this post
-    /// - Parameter callback: if present, when the repository call completes, is called with `true` if the operation succeeded and `false` otherwise.
-    /// - Note: the callback's parameter indicates success/failure, not pinned/unpinned.
+    /// - Parameter callback: if present, when the repository call completes, is called with `.success` if the operation succeeded and `.failure` otherwise.
     func togglePinnedInstance(callback: ((UpdateStatus) -> Void)? = nil) throws {
         try updatePinnedInstance(!pinnedInstance, callback: callback)
     }
@@ -351,8 +345,7 @@ public extension Post1Providing {
     /// Removes or restores this post according to newValue
     /// - Parameters:
     ///   - newValue: true to remove post, false to restore
-    ///   - callback: if present, when the repository call completes, is called with `true` if the operation succeeded and `false` otherwise.
-    /// - Note: the callback's parameter indicates success/failure, not removed/restored.
+    ///   - callback: if present, when the repository call completes, is called with `.success` if the operation succeeded and `.failure` otherwise.
     func updateRemoved(_ newValue: Bool, reason: String?, callback: ((UpdateStatus) -> Void)?) throws {
         post1.removed = newValue
         post1.removedPending = true

@@ -16,8 +16,7 @@ public protocol RemovableProviding: ContentIdentifiable {
 
 public extension RemovableProviding {
     /// Toggles the removed status of this item
-    /// - Parameters: callback: if present, when the repository call completes, is called with `true` if the operation succeeded and `false` otherwise.
-    /// - Note: the callback's parameter indicates success/failure, not removed/restored.
+    /// - Parameters: callback: if present, when the repository call completes, is called with `.success` if the operation succeeded and `.failure` otherwise.
     func toggleRemoved(reason: String?, callback: ((UpdateStatus) -> Void)? = nil) throws {
         try updateRemoved(!removed, reason: reason, callback: callback)
     }

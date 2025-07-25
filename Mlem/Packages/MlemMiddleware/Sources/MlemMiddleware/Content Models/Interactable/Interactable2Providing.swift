@@ -18,23 +18,23 @@ public protocol Interactable2Providing: Interactable1Providing, RemovableProvidi
     var votes: VotesModel { get }
     var saved: Bool { get }
     
-    func updateVote(_ newVote: ScoringOperation) throws
+    func updateVote(_ newVote: ScoringOperation)
     
-    func updateSaved(_ newValue: Bool) throws
+    func updateSaved(_ newValue: Bool)
     
     func reply(content: String, languageId: Int?) async throws -> Comment2
 }
 
 public extension Interactable2Providing {
-    func toggleUpvoted() throws {
-        try updateVote(votes.myVote == .upvote ? .none : .upvote)
+    func toggleUpvoted() {
+        updateVote(votes.myVote == .upvote ? .none : .upvote)
     }
     
-    func toggleDownvoted() throws {
-        try updateVote(votes.myVote == .downvote ? .none : .downvote)
+    func toggleDownvoted() {
+        updateVote(votes.myVote == .downvote ? .none : .downvote)
     }
     
-    func toggleSaved() throws {
-        try updateSaved(!saved)
+    func toggleSaved() {
+        updateSaved(!saved)
     }
 }

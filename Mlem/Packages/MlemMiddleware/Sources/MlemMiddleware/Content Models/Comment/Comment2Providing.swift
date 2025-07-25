@@ -48,14 +48,14 @@ public extension Comment2Providing {
     
     func upgrade() async throws -> any Comment { self }
     
-    func updateVote(_ newValue: ScoringOperation) throws {
+    func updateVote(_ newValue: ScoringOperation) {
         // TODO: UpdateQueue use queued state management
         _ = votesManager.performRequest(expectedResult: votes.applyScoringOperation(operation: newValue)) { semaphore in
             try await self.api.voteOnComment(id: self.id, score: newValue, semaphore: semaphore)
         }
     }
     
-    func updateSaved(_ newValue: Bool) throws {
+    func updateSaved(_ newValue: Bool) {
         // TODO: UpdateQueue queued state management
         _ = savedManager.performRequest(expectedResult: newValue) { semaphore in
             try await self.api.saveComment(id: self.id, save: newValue, semaphore: semaphore)

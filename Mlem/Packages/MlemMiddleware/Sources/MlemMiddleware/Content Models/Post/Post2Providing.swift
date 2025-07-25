@@ -48,7 +48,7 @@ public extension Post2Providing {
 }
 
 public extension Post2Providing {
-    func updateRead(_ newValue: Bool, shouldQueue: Bool = false) throws {
+    func updateRead(_ newValue: Bool, shouldQueue: Bool = false) {
         if shouldQueue {
             post2.readQueued = newValue
             Task {
@@ -81,7 +81,7 @@ public extension Post2Providing {
     }
     
     /// Update the post when its queued mark read operation completes.
-    func queuedMarkReadCompleted() throws {
+    func queuedMarkReadCompleted() {
         guard post2.readQueued else {
             assertionFailure("readQueueFlushed called but post was not queued")
             return
@@ -104,7 +104,7 @@ public extension Post2Providing {
         }
     }
 
-    func updateVote(_ newValue: ScoringOperation) throws {
+    func updateVote(_ newValue: ScoringOperation) {
         post2.votes = post2.votes.applyScoringOperation(operation: newValue)
         post2.readStatus = true
         Task {
@@ -114,7 +114,7 @@ public extension Post2Providing {
         }
     }
     
-    func updateSaved(_ newValue: Bool) throws {
+    func updateSaved(_ newValue: Bool) {
         post2.saved = newValue
         post2.readStatus = true
         Task {
@@ -124,11 +124,11 @@ public extension Post2Providing {
         }
     }
     
-    func toggleHidden() throws {
-        try updateHidden(!hidden)
+    func toggleHidden() {
+        updateHidden(!hidden)
     }
     
-    func updateHidden(_ newValue: Bool) throws {
+    func updateHidden(_ newValue: Bool) {
         post2.hidden = newValue
         post2.readStatus = true
         Task {
