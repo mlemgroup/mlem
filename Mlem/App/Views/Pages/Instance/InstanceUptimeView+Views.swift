@@ -5,7 +5,7 @@
 //  Created by Eric Andrews on 2025-05-09.
 //
 
-import SwiftUICore
+import SwiftUI
 
 struct RecentUptimeChecks: View {
     @Environment(\.accessibilityDifferentiateWithoutColor) var diffWithoutColor: Bool
