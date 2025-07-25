@@ -110,11 +110,11 @@ public actor PostUpdateQueue {
                 // it overrides it entirely
                 let newSnapshot = snapshot.merge(with: lastVerifiedSnapshot)
                 self.lastVerifiedSnapshot = newSnapshot
-                lastVerifiedSnapshot = newSnapshot // also need to update scoped lastVerifiedSnapshot so updateParent gets the correct value
-                queue.dequeue()
+                lastVerifiedSnapshot = newSnapshot // also need to update scoped lastVerifiedSnapshot so updateParent gets the correct value\
             } catch {
                 print(error)
             }
+            queue.dequeue()
         }
         
         await updateParent(parent, with: lastVerifiedSnapshot)

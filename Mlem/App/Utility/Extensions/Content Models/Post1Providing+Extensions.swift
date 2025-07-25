@@ -61,11 +61,12 @@ extension Post1Providing {
     }
     
     func toggleLocked(feedback: Set<FeedbackType>) {
+        let shouldLock = !locked
         self.toggleLocked { status in
             Task {
                 await self.handleModerationActionCompletion(
-                    message: self.locked ? "Failed to unlock post" : "Failed to lock post",
-                    result: status, // TODO: UpdateQueue replace with bool
+                    message: shouldLock ? "Failed to lock post" : "Failed to unlock post",
+                    result: status,
                     feedback: feedback
                 )
             }
@@ -73,10 +74,11 @@ extension Post1Providing {
     }
     
     func togglePinnedCommunity(feedback: Set<FeedbackType>) {
+        let shouldPin = !pinnedCommunity
         self.togglePinnedCommunity { status in
             Task {
                 await self.handleModerationActionCompletion(
-                    message: self.pinnedCommunity ? "Failed to unpin post" : "Failed to pin post",
+                    message: shouldPin ? "Failed to pin post" : "Failed to unpin post",
                     result: status,
                     feedback: feedback
                 )
@@ -85,10 +87,11 @@ extension Post1Providing {
     }
     
     func togglePinnedInstance(feedback: Set<FeedbackType>) {
+        let shouldPin = !pinnedInstance
         self.togglePinnedInstance { status in
             Task {
                 await self.handleModerationActionCompletion(
-                    message: self.pinnedInstance ? "Failed to unpin post" : "Failed to pin post",
+                    message: shouldPin ? "Failed to pin post" : "Failed to unpin post",
                     result: status,
                     feedback: feedback
                 )
