@@ -31,17 +31,21 @@ public protocol Post1Providing:
     var deleted: Bool { get }
     var embed: PostEmbed? { get }
     var pinnedCommunity: Bool { get }
+    var pinnedCommunityPending: Bool { get }
     var pinnedInstance: Bool { get }
+    var pinnedInstancePending: Bool { get }
     var locked: Bool { get }
-    var pinnedCommunityManager: StateManager<Bool> { get }
-    var pinnedInstanceManager: StateManager<Bool> { get }
-    var lockedManager: StateManager<Bool> { get }
+    var lockedPending: Bool { get }
     var nsfw: Bool { get }
     var created: Date { get }
     var thumbnailUrl: URL? { get }
     var updated: Date? { get }
     var languageId: Int { get }
     var altText: String? { get }
+    
+    func snapshotUpdate(with snapshot: any PostSnapshotProviding) async
+    func takeSnapshot() -> any PostSnapshotProviding
+    var updateQueue: PostUpdateQueue { get }
 }
 
 public typealias Post = Post1Providing
@@ -60,15 +64,15 @@ public extension Post1Providing {
     var deleted: Bool { post1.deleted }
     var embed: PostEmbed? { post1.embed }
     var pinnedCommunity: Bool { post1.pinnedCommunity }
+    var pinnedCommunityPending: Bool { post1.pinnedCommunityPending }
     var pinnedInstance: Bool { post1.pinnedInstance }
+    var pinnedInstancePending: Bool { post1.pinnedInstancePending }
     var locked: Bool { post1.locked }
-    var pinnedCommunityManager: StateManager<Bool> { post1.pinnedCommunityManager }
-    var pinnedInstanceManager: StateManager<Bool> { post1.pinnedInstanceManager }
-    var lockedManager: StateManager<Bool> { post1.lockedManager }
+    var lockedPending: Bool { post1.lockedPending }
     var nsfw: Bool { post1.nsfw }
     var created: Date { post1.created }
     var removed: Bool { post1.removed }
-    var removedManager: StateManager<Bool> { post1.removedManager }
+    var removedPending: Bool { post1.removedPending }
     var thumbnailUrl: URL? { post1.thumbnailUrl }
     var updated: Date? { post1.updated }
     var languageId: Int { post1.languageId }
@@ -86,13 +90,9 @@ public extension Post1Providing {
     var pinnedCommunity_: Bool? { post1.pinnedCommunity }
     var pinnedInstance_: Bool? { post1.pinnedInstance }
     var locked_: Bool? { post1.locked }
-    var pinnedCommunityManager_: StateManager<Bool>? { post1.pinnedCommunityManager }
-    var pinnedInstanceManager_: StateManager<Bool>? { post1.pinnedInstanceManager }
-    var lockedManager_: StateManager<Bool>? { post1.lockedManager }
     var nsfw_: Bool? { post1.nsfw }
     var created_: Date? { post1.created }
     var removed_: Bool? { post1.removed }
-    var removedManager_: StateManager<Bool>? { post1.removedManager }
     var thumbnailUrl_: URL? { post1.thumbnailUrl }
     var updated_: Date? { post1.updated }
     var languageId_: Int? { post1.languageId }
@@ -175,10 +175,12 @@ public extension Post1Providing {
 }
 
 public extension Post1Providing {
-    private var deletedManager: StateManager<Bool> { post1.deletedManager }
-
     func upgrade() async throws -> any Post {
-        try await api.getPost(id: id)
+        try await updateQueue.addUpgrade {
+            let snapshot = try await self.api.repository.getPost(id: self.id)
+            let post = await self.api.caches.post3.performModelTranslation(api: self.api, from: snapshot)
+            return (snapshot, post)
+        }
     }
     
     func getComments(
@@ -210,10 +212,19 @@ public extension Post1Providing {
         try await api.purgePost(id: id, reason: reason)
     }
     
-    @discardableResult
-    func updateDeleted(_ newValue: Bool) -> Task<StateUpdateResult, Never> {
-        deletedManager.performRequest(expectedResult: newValue) { semaphore in
-            try await self.api.deletePost(id: self.id, delete: newValue, semaphore: semaphore)
+    func updateDeleted(_ newValue: Bool, callback: ((UpdateStatus) -> Void)?) {
+        post1.deleted = newValue
+        Task {
+            await updateQueue.addItem {
+                do {
+                    let snapshot = try await self.api.repository.deletePost(id: self.id, delete: newValue)
+                    callback?(.success)
+                    return snapshot
+                } catch {
+                    callback?(.failure(error))
+                    throw error
+                }
+            }
         }
     }
     
@@ -225,59 +236,130 @@ public extension Post1Providing {
         thumbnail: URL?,
         nsfw: Bool,
         languageId: Int?
-    ) async throws {
-        try await api.editPost(
-            id: id,
-            title: title,
-            content: content,
-            linkUrl: linkUrl,
-            altText: altText,
-            thumbnail: thumbnail,
-            nsfw: nsfw,
-            languageId: languageId
-        )
-    }
-    
-    @discardableResult
-    func updateLocked(_ newValue: Bool) -> Task<StateUpdateResult, Never> {
-        lockedManager.performRequest(expectedResult: newValue) { semaphore in
-            try await self.api.lockPost(id: self.id, lock: newValue, semaphore: semaphore)
+    ) throws {
+        post1.title = title
+        post1.content = content
+        post1.linkUrl = linkUrl
+        post1.altText = altText
+        post1.thumbnailUrl = thumbnail
+        post1.nsfw = nsfw
+        post1.languageId = languageId ?? post1.languageId
+        Task {
+            await updateQueue.addItem {
+                try await self.api.repository.editPost(
+                    id: self.id,
+                    title: title,
+                    content: content,
+                    linkUrl: linkUrl,
+                    altText: altText,
+                    thumbnail: thumbnail,
+                    nsfw: nsfw,
+                    languageId: languageId
+                )
+            }
         }
     }
     
-    @discardableResult
-    func toggleLocked() -> Task<StateUpdateResult, Never> {
-        updateLocked(!locked)
-    }
     
-    @discardableResult
-    func updatePinnedCommunity(_ newValue: Bool) -> Task<StateUpdateResult, Never> {
-        pinnedCommunityManager.performRequest(expectedResult: newValue) { semaphore in
-            try await self.api.pinPost(id: self.id, pin: newValue, to: .community, semaphore: semaphore)
+    /// Locks or unlocks this post according to newValue
+    /// - Parameters:
+    ///   - newValue: true to lock post, false to unlock
+    ///   - callback: if present, when the repository call completes, is called with `.success` if the operation succeeded and `.failure` otherwise.
+    func updateLocked(_ newValue: Bool, callback: ((UpdateStatus) -> Void)?) {
+        post1.locked = newValue
+        post1.lockedPending = true
+        Task {
+            await updateQueue.addItem {
+                do {
+                    let ret = try await self.api.repository.lockPost(id: self.id, lock: newValue)
+                    callback?(.success)
+                    return ret
+                } catch {
+                    callback?(.failure(error))
+                    throw(error)
+                }
+            }
         }
     }
     
-    @discardableResult
-    func togglePinnedCommunity() -> Task<StateUpdateResult, Never> {
-        updatePinnedCommunity(!pinnedCommunity)
+    /// Toggles the locked status of this post
+    /// - Parameter callback: if present, when the repository call completes, is called with `.success` if the operation succeeded and `.failure` otherwise.
+    func toggleLocked(callback: ((UpdateStatus) -> Void)? = nil) {
+        updateLocked(!locked, callback: callback)
     }
     
-    @discardableResult
-    func updatePinnedInstance(_ newValue: Bool) -> Task<StateUpdateResult, Never> {
-        pinnedInstanceManager.performRequest(expectedResult: newValue) { semaphore in
-            try await self.api.pinPost(id: self.id, pin: newValue, to: .instance, semaphore: semaphore)
+    /// Pins or unpins this post to the community according to newValue
+    /// - Parameters:
+    ///   - newValue: true to pin post, false to unpin
+    ///   - callback: if present, when the repository call completes, is called with `.success` if the operation succeeded and `.failure` otherwise.
+    func updatePinnedCommunity(_ newValue: Bool, callback: ((UpdateStatus) -> Void)?) {
+        post1.pinnedCommunity = newValue
+        post1.pinnedCommunityPending = true
+        Task {
+            await updateQueue.addItem {
+                do {
+                    let ret = try await self.api.repository.pinPost(id: self.id, pin: newValue, to: .community)
+                    callback?(.success)
+                    return ret
+                } catch {
+                    callback?(.failure(error))
+                    throw error
+                }
+            }
         }
     }
     
-    @discardableResult
-    func togglePinnedInstance() -> Task<StateUpdateResult, Never> {
-        updatePinnedInstance(!pinnedInstance)
+    /// Toggles the community pinned status of this post
+    /// - Parameter callback: if present, when the repository call completes, is called with `.success` if the operation succeeded and `.failure` otherwise.
+    func togglePinnedCommunity(callback: ((UpdateStatus) -> Void)? = nil) {
+        updatePinnedCommunity(!pinnedCommunity, callback: callback)
     }
     
-    @discardableResult
-    func updateRemoved(_ newValue: Bool, reason: String?) -> Task<StateUpdateResult, Never> {
-        removedManager.performRequest(expectedResult: newValue) { semaphore in
-            try await self.api.removePost(id: self.id, remove: newValue, reason: reason, semaphore: semaphore)
+    /// Pins or unpins this post to the instance according to newValue
+    /// - Parameters:
+    ///   - newValue: true to pin post, false to unpin
+    ///   - callback: if present, when the repository call completes, is called with `.success` if the operation succeeded and `.failure` otherwise.
+    func updatePinnedInstance(_ newValue: Bool, callback: ((UpdateStatus) -> Void)?) {
+        post1.pinnedInstance = newValue
+        post1.pinnedInstancePending = true
+        Task {
+            await updateQueue.addItem {
+                do {
+                    let ret = try await self.api.repository.pinPost(id: self.id, pin: newValue, to: .instance)
+                    callback?(.success)
+                    return ret
+                } catch {
+                    callback?(.failure(error))
+                    throw error
+                }
+            }
+        }
+    }
+    
+    /// Toggles the instance pinned status of this post
+    /// - Parameter callback: if present, when the repository call completes, is called with `.success` if the operation succeeded and `.failure` otherwise.
+    func togglePinnedInstance(callback: ((UpdateStatus) -> Void)? = nil) {
+        updatePinnedInstance(!pinnedInstance, callback: callback)
+    }
+    
+    /// Removes or restores this post according to newValue
+    /// - Parameters:
+    ///   - newValue: true to remove post, false to restore
+    ///   - callback: if present, when the repository call completes, is called with `.success` if the operation succeeded and `.failure` otherwise.
+    func updateRemoved(_ newValue: Bool, reason: String?, callback: ((UpdateStatus) -> Void)?) {
+        post1.removed = newValue
+        post1.removedPending = true
+        Task {
+            await updateQueue.addItem {
+                do {
+                    let ret = try await self.api.repository.removePost(id: self.id, remove: newValue, reason: reason)
+                    callback?(.success)
+                    return ret
+                } catch {
+                    callback?(.failure(error))
+                    throw(error)
+                }
+            }
         }
     }
     

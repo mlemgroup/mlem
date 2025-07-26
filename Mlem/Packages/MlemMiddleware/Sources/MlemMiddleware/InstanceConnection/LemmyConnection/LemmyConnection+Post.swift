@@ -135,7 +135,6 @@ public extension LemmyConnection {
         } catch let ApiClientError.response(response, _) where response.couldntFindObject {
             throw ApiClientError.noEntityFound
         }
-        throw ApiClientError.noEntityFound
     }
     
     // This method should be removed in favor of the below method once we drop support for versions before Lemmy 1.0
@@ -269,7 +268,7 @@ public extension LemmyConnection {
                 save: save
             )
         }
-        return try .init(from: response.postView)
+        return try .init(from: response.postView, overrideRead: true)
     }
     
     @discardableResult

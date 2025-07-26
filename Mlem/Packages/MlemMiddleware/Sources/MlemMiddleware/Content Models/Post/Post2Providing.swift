@@ -20,6 +20,7 @@ public protocol Post2Providing: Post1Providing, Interactable2Providing, PersonCo
 
 public extension Post2Providing {
     var post1: Post1 { post2.post1 }
+    var updateQueue: PostUpdateQueue { post1.updateQueue }
     
     var creator: any Person { post2.creator }
     var community: any Community { post2.community }
@@ -47,70 +48,103 @@ public extension Post2Providing {
 }
 
 public extension Post2Providing {
-    private var votesManager: StateManager<VotesModel> { post2.votesManager }
-    private var readManager: StateManager<Bool> { post2.readManager }
-    private var savedManager: StateManager<Bool> { post2.savedManager }
-    private var hiddenManager: StateManager<Bool> { post2.hiddenManager }
-        
-    @discardableResult
-    func updateRead(_ newValue: Bool, shouldQueue: Bool = false) -> Task<StateUpdateResult, Never> {
+    func updateRead(_ newValue: Bool, shouldQueue: Bool = false) {
         if shouldQueue {
-            return Task { @MainActor in
+            post2.readQueued = newValue
+            Task {
                 if newValue {
-                    await api.markReadQueue.add(self.id)
-                    post2.updateReadQueued(true)
+                    await api.markReadQueue.add(id)
                 } else {
-                    await api.markReadQueue.remove(self.id)
-                    post2.updateReadQueued(false)
+                    await api.markReadQueue.remove(id)
                 }
-                return .deferred
             }
         } else {
-            return readManager.performRequest(expectedResult: newValue) { semaphore in
-                try await self.api.markPostAsRead(id: self.id, read: newValue, includeQueuedPosts: true, semaphore: semaphore)
+            post2.readStatus = newValue
+            Task {
+                await updateQueue.addItem { snapshot in
+                    try await self.api.repository.markPostAsRead(id: self.id, read: newValue)
+                    if var snapshot2 = snapshot as? Post2Snapshot {
+                        snapshot2.read = newValue
+                        return snapshot2
+                    }
+                    if var snapshot3 = snapshot as? Post3Snapshot {
+                        snapshot3.post.read = newValue
+                        return snapshot3
+                    }
+                    // this shouldn't ever happen--when Post2Providing is initialized it should set the queue's parent to itself,
+                    // so this closure should always receive at least Post2Snapshot
+                    assertionFailure("No Post2Snapshot available")
+                    return snapshot
+                }
             }
         }
     }
     
-    @discardableResult
-    func toggleRead(shouldQueue: Bool = false) -> Task<StateUpdateResult, Never> {
-        updateRead(!read, shouldQueue: shouldQueue)
+    /// Update the post when its queued mark read operation completes.
+    func queuedMarkReadCompleted() {
+        guard post2.readQueued else {
+            assertionFailure("readQueueFlushed called but post was not queued")
+            return
+        }
+        // sending this through the updateQueue ensures queue.lastVerifiedSnapshot receives the correct read value
+        Task {
+            await updateQueue.addItem { snapshot in
+                if var snapshot2 = snapshot as? Post2Snapshot {
+                    snapshot2.read = true
+                    return snapshot2
+                }
+                if var snapshot3 = snapshot as? Post3Snapshot {
+                    snapshot3.post.read = true
+                    return snapshot3
+                }
+                assertionFailure("No Post2Snapshot available")
+                return snapshot
+            }
+            post2.readQueued = false
+        }
     }
 
-    @discardableResult
-    func updateVote(_ newValue: ScoringOperation) -> Task<StateUpdateResult, Never> {
-        groupStateRequest(
-            votesManager.ticket(votes.applyScoringOperation(operation: newValue)),
-            readManager.ticket(true)
-        ) { semaphore in
-            try await self.api.voteOnPost(id: self.id, score: newValue, semaphore: semaphore)
+    func updateVote(_ newValue: ScoringOperation) {
+        post2.votes = post2.votes.applyScoringOperation(operation: newValue)
+        post2.readStatus = true
+        Task {
+            await updateQueue.addItem {
+                try await self.api.repository.voteOnPost(id: self.id, score: newValue)
+            }
         }
     }
     
-    @discardableResult
-    func updateSaved(_ newValue: Bool) -> Task<StateUpdateResult, Never> {
-        groupStateRequest(
-            savedManager.ticket(newValue),
-            readManager.ticket(true)
-        ) { semaphore in
-            try await self.api.savePost(id: self.id, save: newValue, semaphore: semaphore)
+    func updateSaved(_ newValue: Bool) {
+        post2.saved = newValue
+        post2.readStatus = true
+        Task {
+            await updateQueue.addItem {
+                return try await self.api.repository.savePost(id: self.id, save: newValue)
+            }
         }
     }
     
-    var queuedForMarkAsRead: Bool {
-        get async { await api.markReadQueue.ids.contains(id) }
-    }
-    
-    @discardableResult
-    func toggleHidden() -> Task<StateUpdateResult, Never> {
+    func toggleHidden() {
         updateHidden(!hidden)
     }
     
-    @discardableResult
-    func updateHidden(_ newValue: Bool) -> Task<StateUpdateResult, Never> {
-        // Unlike other post operations, this one does not mark the post as read
-        hiddenManager.performRequest(expectedResult: newValue) { semaphore in
-            try await self.api.hidePost(id: self.id, hide: newValue, semaphore: semaphore)
+    func updateHidden(_ newValue: Bool) {
+        post2.hidden = newValue
+        post2.readStatus = true
+        Task {
+            await updateQueue.addItem { snapshot in
+                try await self.api.repository.hidePost(id: self.id, hide: newValue)
+                if var snapshot2 = snapshot as? Post2Snapshot {
+                    snapshot2.hidden = newValue
+                    return snapshot2
+                }
+                if var snapshot3 = snapshot as? Post3Snapshot {
+                    snapshot3.post.hidden = newValue
+                    return snapshot3
+                }
+                assertionFailure("No Post2Snapshot available")
+                return snapshot
+            }
         }
     }
 }

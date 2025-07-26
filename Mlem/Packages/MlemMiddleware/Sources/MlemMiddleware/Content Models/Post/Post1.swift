@@ -16,6 +16,8 @@ public struct PostEmbed: Equatable {
 
 @Observable
 public final class Post1: Post1Providing {
+    public var updateQueue: PostUpdateQueue = .init()
+    
     public static let tierNumber: Int = 1
     public var api: ApiClient
     public var post1: Post1 { self }
@@ -38,24 +40,22 @@ public final class Post1: Post1Providing {
     public var updated: Date?
     public var languageId: Int
     public var altText: String?
-    
     public var purged: Bool = false
+    public var deleted: Bool
     
-    var deletedManager: StateManager<Bool>
-    public var deleted: Bool { deletedManager.displayedValue }
+    // TODO: UpdateQueue replace these with a Pendable<T> struct
+    // such a struct will require protocol changes beyond the post scope
+    public var removed: Bool
+    public var removedPending: Bool = false
     
-    public var removedManager: StateManager<Bool>
-    public var removed: Bool { removedManager.displayedValue }
+    public var locked: Bool
+    public var lockedPending: Bool = false
     
-    public var lockedManager: StateManager<Bool>
-    public var locked: Bool { lockedManager.displayedValue }
-    public var verifiedLocked: Bool { lockedManager.verifiedValue }
+    public var pinnedCommunity: Bool
+    public var pinnedCommunityPending: Bool = false
     
-    public var pinnedCommunityManager: StateManager<Bool>
-    public var pinnedCommunity: Bool { pinnedCommunityManager.displayedValue }
-    
-    public var pinnedInstanceManager: StateManager<Bool>
-    public var pinnedInstance: Bool { pinnedInstanceManager.displayedValue }
+    public var pinnedInstance: Bool
+    public var pinnedInstancePending: Bool = false
     
     init(
         api: ApiClient,
@@ -88,16 +88,20 @@ public final class Post1: Post1Providing {
         self.title = title
         self.content = content
         self.linkUrl = linkUrl
-        self.deletedManager = .init(wrappedValue: deleted)
+        self.deleted = deleted
         self.embed = embed
-        self.pinnedCommunityManager = .init(wrappedValue: pinnedCommunity)
-        self.pinnedInstanceManager = .init(wrappedValue: pinnedInstance)
-        self.lockedManager = .init(wrappedValue: locked)
+        self.pinnedCommunity = pinnedCommunity
+        self.pinnedInstance = pinnedInstance
+        self.locked = locked
         self.nsfw = nsfw
-        self.removedManager = .init(wrappedValue: removed)
+        self.removed = removed
         self.thumbnailUrl = thumbnailUrl
         self.updated = updated
         self.languageId = languageId
         self.altText = altText
+        
+        Task {
+            await updateQueue.setParent(self)
+        }
     }
 }

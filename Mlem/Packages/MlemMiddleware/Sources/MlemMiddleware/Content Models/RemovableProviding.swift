@@ -8,16 +8,16 @@
 import Foundation
 
 public protocol RemovableProviding: ContentIdentifiable {
-    var removedManager: StateManager<Bool> { get }
     var removed: Bool { get }
+    var removedPending: Bool { get }
     
-    @discardableResult
-    func updateRemoved(_ newValue: Bool, reason: String?) -> Task<StateUpdateResult, Never>
+    func updateRemoved(_ newValue: Bool, reason: String?, callback: ((UpdateStatus) -> Void)?)
 }
 
 public extension RemovableProviding {
-    @discardableResult
-    func toggleRemoved(reason: String?) -> Task<StateUpdateResult, Never> {
-        updateRemoved(!removed, reason: reason)
+    /// Toggles the removed status of this item
+    /// - Parameters: callback: if present, when the repository call completes, is called with `.success` if the operation succeeded and `.failure` otherwise.
+    func toggleRemoved(reason: String?, callback: ((UpdateStatus) -> Void)? = nil) {
+        updateRemoved(!removed, reason: reason, callback: callback)
     }
 }

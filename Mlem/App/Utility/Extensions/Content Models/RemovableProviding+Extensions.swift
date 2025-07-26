@@ -16,7 +16,7 @@ extension RemovableProviding {
     func removeAction(appState: AppState, feedback: Set<FeedbackType> = []) -> BasicAction {
         .init(
             id: "remove\(uid)",
-            appearance: .remove(isOn: removed, isInProgress: !removedManager.isInSync),
+            appearance: .remove(isOn: removed, isInProgress: removedPending),
             callback: api.canInteract(appState: appState) ? showRemoveSheet : nil
         )
     }

@@ -8,7 +8,11 @@
 import Foundation
 
 extension Post2Snapshot {
-    init(from post: LemmyPostView) throws(ApiClientError) {
+    /// Instantiates a Post2Snapshot from a given LemmyPostView
+    /// - Parameters:
+    ///   - post: LemmyPostView
+    ///   - overrideRead: if present, overrides the LemmyPostView's read value. This is required because Lemmy doesn't return `read: true` in some cases (e.g., save post) even if the value is updated server-side.
+    init(from post: LemmyPostView, overrideRead: Bool? = nil) throws(ApiClientError) {
         self.post = try .init(from: post.post)
         self.creator = try .init(from: post.creator)
         self.community = try .init(from: post.community)
@@ -42,11 +46,11 @@ extension Post2Snapshot {
 
         if let actions = post.postActions {
             self.saved = actions.savedAt != nil
-            self.read = actions.readAt != nil
+            self.read = overrideRead ?? (actions.readAt != nil)
             self.hidden = actions.hiddenAt != nil
         } else if let saved = post.saved, let read = post.read, let hidden = post.hidden {
             self.saved = saved
-            self.read = read
+            self.read = overrideRead ?? read
             self.hidden = hidden
         } else {
             throw .responseMissingRequiredData("LemmyPostView actions")

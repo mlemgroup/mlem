@@ -32,7 +32,7 @@ struct ContentRemovalEditorView: View {
         self._mode = .init(wrappedValue: target.removed ? .restore : .remove)
         self._community = .init(wrappedValue: (target as? any Interactable2Providing)?.community)
     }
-
+    
     var body: some View {
         CollapsibleSheetView(presentationSelection: $presentationSelection, canDismiss: reason.isEmpty) {
             NavigationStack {
@@ -60,9 +60,7 @@ struct ContentRemovalEditorView: View {
                     }
                     ToolbarItem(placement: .topBarTrailing) {
                         Button("Send", icon: .lemmy.send) {
-                            Task {
-                                await send()
-                            }
+                            send()
                         }
                     }
                 }
@@ -71,13 +69,15 @@ struct ContentRemovalEditorView: View {
         }
     }
     
-    func send() async {
-        switch await target.toggleRemoved(reason: reason).result.get() {
-        case .succeeded:
-            hapticManager.play(haptic: .success, tier: .low)
-            dismiss()
-        default:
-            ToastModel.main.add(.failure())
+    func send() {
+        target.toggleRemoved(reason: reason) { status in
+            switch status {
+            case .success:
+                hapticManager.play(haptic: .success, tier: .low)
+                dismiss()
+            case let .failure(error):
+                handleError(error)
+            }
         }
     }
 }
