@@ -16,6 +16,7 @@ public enum Feature: Hashable {
     // On some earlier Lemmy versions, legacy report types are used
     case fullyFeaturedReports
     
+    case adminsCanViewVotes
     // On Lemmy, admins were able to view votes before moderators were able to
     case moderatorsCanViewVotes
     
@@ -36,6 +37,13 @@ public enum Feature: Hashable {
     
     case editAndDeletePrivateMessages
     case reportPrivateMessages
+    case purgeContent
+    case removeCommunity
+    case banFromInstance
+    case banFromCommunity
+    
+    // Add/remove moderators from a community
+    case editModeratorList
     
     case commentTreeSortedByDepth
     case uploadImages

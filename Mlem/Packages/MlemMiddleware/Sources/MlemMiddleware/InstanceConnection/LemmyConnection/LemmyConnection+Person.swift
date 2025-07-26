@@ -117,7 +117,7 @@ public extension LemmyConnection {
         removeContent: Bool,
         reason: String?,
         expires: Date? = nil
-    ) async throws -> Person2Snapshot {
+    ) async throws -> Person1Snapshot {
         let expiryTimestamp: Int?
         if let expires {
             expiryTimestamp = Int(expires.timeIntervalSince1970)
@@ -138,7 +138,7 @@ public extension LemmyConnection {
             )
         }
         guard response.banned == ban else { throw ApiClientError.unsuccessful }
-        return try .init(from: response.personView)
+        return try .init(from: response.personView.person)
     }
     
     @discardableResult

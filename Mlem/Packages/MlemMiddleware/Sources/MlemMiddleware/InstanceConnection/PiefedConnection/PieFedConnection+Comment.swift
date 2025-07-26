@@ -183,7 +183,9 @@ public extension PieFedConnection {
         remove: Bool,
         reason: String?
     ) async throws -> Comment2Snapshot {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedRemoveCommentRequest(commentId: id, removed: remove, reason: reason)
+        let response = try await perform(request)
+        return try .init(from: response.commentView)
     }
     
     @discardableResult

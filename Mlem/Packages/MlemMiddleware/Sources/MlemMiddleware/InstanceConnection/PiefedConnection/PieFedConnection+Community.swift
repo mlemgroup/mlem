@@ -100,6 +100,17 @@ public extension PieFedConnection {
         personId: Int,
         added: Bool
     ) async throws -> (moderators: [Person1Snapshot], community: Community1Snapshot) {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedAddModToCommunityRequest(communityId: communityId, personId: personId, added: added)
+        let response = try await perform(request)
+        let moderators: [Person1Snapshot] = try response.moderators.map { try .init(from: $0.moderator) }
+        
+        guard let first = response.moderators.first else {
+            throw ApiClientError.unsuccessful
+        }
+        let community: Community1Snapshot = try .init(from: first.community)
+        return (
+            moderators: moderators,
+            community: community
+        )
     }
 }

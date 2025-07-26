@@ -111,10 +111,14 @@ public extension LemmyConnection {
     }
     
     func resolve(url: URL) async throws -> ResolvedContent {
-        let response = try await performingForEndpoint { endpoint in
-            LemmyResolveObjectRequest(endpoint: endpoint, q: url.absoluteString)
+        do {
+            let response = try await performingForEndpoint { endpoint in
+                LemmyResolveObjectRequest(endpoint: endpoint, q: url.absoluteString)
+            }
+            return try .init(from: response)
+        } catch let ApiClientError.response(response, _) where response.couldntFindObject {
+            throw ApiClientError.noEntityFound
         }
-        return try .init(from: response)
     }
     
     func getBlocked() async throws -> (people: [Person1Snapshot], communities: [Community1Snapshot], instances: [Instance1Snapshot]) {

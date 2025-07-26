@@ -25,7 +25,10 @@ public extension Comment1Snapshot {
         self.updated = comment.updated
         self.distinguished = comment.distinguished ?? false
         self.languageId = comment.languageId
-        self.deleted = comment.deleted
+        
+        // If a post is removed, deleted is true for some reason
+        self.deleted = comment.removed ? false : comment.deleted
+        
         self.removed = comment.removed
     }
 }

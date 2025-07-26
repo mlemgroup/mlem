@@ -36,7 +36,8 @@ private let possible2FAErrors: Set<String> = [
 
 private let couldntFindObjectErrors: Set<String> = [
     "couldnt_find_person",
-    "couldnt_find_object"
+    "couldnt_find_object",
+    "No object found."
 ]
 
 public extension ApiErrorResponse {
