@@ -30,7 +30,7 @@ extension Post1Providing {
         }
     }
     
-    func toggleHidden(feedback: Set<FeedbackType>) {
+    func toggleHidden(feedback: Set<FeedbackType>) throws {
         if let self2 {
             if feedback.contains(.haptic) {
                 HapticManager.main.play(haptic: .lightSuccess, tier: .low)
@@ -57,33 +57,58 @@ extension Post1Providing {
     }
     
     func toggleLocked(feedback: Set<FeedbackType>) {
-        Task {
-            await handleModerationActionCompletion(
-                message: locked ? "Failed to unlock post" : "Failed to lock post",
-                result: self.toggleLocked().result.get(),
-                feedback: feedback
-            )
+        let shouldLock = !locked
+        self.toggleLocked { status in
+            Task {
+                await self.handleModerationActionCompletion(
+                    message: shouldLock ? "Failed to lock post" : "Failed to unlock post",
+                    result: status,
+                    feedback: feedback
+                )
+            }
         }
     }
     
     func togglePinnedCommunity(feedback: Set<FeedbackType>) {
-        Task {
-            await handleModerationActionCompletion(
-                message: pinnedCommunity ? "Failed to unpin post" : "Failed to pin post",
-                result: self.togglePinnedCommunity().result.get(),
-                feedback: feedback
-            )
+        let shouldPin = !pinnedCommunity
+        self.togglePinnedCommunity { status in
+            Task {
+                await self.handleModerationActionCompletion(
+                    message: shouldPin ? "Failed to pin post" : "Failed to unpin post",
+                    result: status,
+                    feedback: feedback
+                )
+            }
         }
     }
     
     func togglePinnedInstance(feedback: Set<FeedbackType>) {
-        Task {
-            await handleModerationActionCompletion(
-                message: pinnedInstance ? "Failed to unpin post" : "Failed to pin post",
-                result: self.togglePinnedInstance().result.get(),
-                feedback: feedback
-            )
+        let shouldPin = !pinnedInstance
+        self.togglePinnedInstance { status in
+            Task {
+                await self.handleModerationActionCompletion(
+                    message: shouldPin ? "Failed to pin post" : "Failed to unpin post",
+                    result: status,
+                    feedback: feedback
+                )
+            }
         }
+    }
+    
+    // TODO: UpdateQueue remove this shim code
+    private func handleModerationActionCompletion(
+        message: LocalizedStringResource,
+        result: UpdateStatus,
+        feedback: Set<FeedbackType>
+    ) async {
+        var stateUpdateResult: StateUpdateResult
+        switch result {
+        case .success:
+            stateUpdateResult = .succeeded
+        case .failure:
+            stateUpdateResult = .failed
+        }
+        await handleModerationActionCompletion(message: message, result: stateUpdateResult, feedback: feedback)
     }
     
     private func handleModerationActionCompletion(
@@ -227,16 +252,16 @@ extension Post1Providing {
         case .report: reportAction(appState: appState, communityContext: communityContext)
         case .crossPost: crossPostAction()
         case .lock: lockAction(appState: appState, feedback: feedback)
-        // SwiftLint is erroneously warning here. This could be fixed by wrapping the expression
-        // in parenthesis, but the pre-commit hook removed the paranthesis
-        // swiftlint:disable:next void_function_in_ternary
+            // SwiftLint is erroneously warning here. This could be fixed by wrapping the expression
+            // in parenthesis, but the pre-commit hook removed the paranthesis
+            // swiftlint:disable:next void_function_in_ternary
         case .pin: api.isAdmin ? pinAction(
-                appState: appState,
-                feedback: feedback
-            ) : pinToCommunityAction(
-                appState: appState,
-                feedback: feedback
-            )
+            appState: appState,
+            feedback: feedback
+        ) : pinToCommunityAction(
+            appState: appState,
+            feedback: feedback
+        )
         case .resolve: reportContext?.resolveAction(appState: appState, feedback: feedback)
         case .remove: removeAction(appState: appState, feedback: feedback).disabled(!canModerate)
         case .ban: reportContext?.contextualBanAction(appState: appState)
@@ -259,7 +284,7 @@ extension Post1Providing {
     func readout(type: PostBarConfiguration.ReadoutType, showColor: Bool) -> Readout? {
         switch type {
         case .created: createdReadout
-        // swiftlint:disable:next void_function_in_ternary
+            // swiftlint:disable:next void_function_in_ternary
         case .score: api.downvotesEnabled ? scoreReadout(showColor: showColor) : upvoteReadout(showColor: showColor)
         case .upvote: upvoteReadout(showColor: showColor)
         case .downvote: api.downvotesEnabled ? downvoteReadout(showColor: showColor) : nil
@@ -270,17 +295,17 @@ extension Post1Providing {
     
     func taggedTitle(communityContext: (any Community1Providing)?) -> Text {
         let hasTags: Bool = removed
-            || deleted
-            || pinnedInstance
-            || (communityContext != nil && pinnedCommunity)
-            || locked
+        || deleted
+        || pinnedInstance
+        || (communityContext != nil && pinnedCommunity)
+        || locked
         
         return postTag(active: removed, icon: .lemmy.removed, color: .themedNegative) +
-            postTag(active: deleted, icon: .general.delete, color: .themedNegative) +
-            postTag(active: pinnedInstance, icon: .lemmy.pinned, color: .themedAdministration) +
-            postTag(active: pinnedCommunity && communityContext != nil, icon: .lemmy.pinned, color: .themedModeration) +
-            postTag(active: locked, icon: .lemmy.locked, color: .themedLockAccent) +
-            Text(verbatim: "\(hasTags ? "  " : "")\(title)")
+        postTag(active: deleted, icon: .general.delete, color: .themedNegative) +
+        postTag(active: pinnedInstance, icon: .lemmy.pinned, color: .themedAdministration) +
+        postTag(active: pinnedCommunity && communityContext != nil, icon: .lemmy.pinned, color: .themedModeration) +
+        postTag(active: locked, icon: .lemmy.locked, color: .themedLockAccent) +
+        Text(verbatim: "\(hasTags ? "  " : "")\(title)")
     }
     
     /// Host if this is a link post, otherwise nil.
@@ -302,13 +327,13 @@ extension Post1Providing {
     }
     
     func shouldShowLoadingSymbol(for barConfiguration: PostBarConfiguration? = nil) -> Bool {
-        if !lockedManager.isInSync, !(barConfiguration?.all.contains(.action(.lock)) ?? false) {
+        if lockedPending, !(barConfiguration?.all.contains(.action(.lock)) ?? false) {
             return true
         }
-        if !pinnedCommunityManager.isInSync, !(barConfiguration?.all.contains(.action(.pin)) ?? false) {
+        if pinnedCommunityPending, !(barConfiguration?.all.contains(.action(.pin)) ?? false) {
             return true
         }
-        if !pinnedInstanceManager.isInSync, !(barConfiguration?.all.contains(.action(.pin)) ?? false) {
+        if pinnedInstancePending, !(barConfiguration?.all.contains(.action(.pin)) ?? false) {
             return true
         }
         return false
@@ -343,7 +368,13 @@ extension Post1Providing {
         return .init(
             id: "hide\(uid)",
             appearance: .hide(isOn: hidden),
-            callback: available ? { @MainActor in self.self2?.toggleHidden(feedback: feedback) } : nil
+            callback: available ? { @MainActor in
+                do {
+                    try self.self2?.toggleHidden(feedback: feedback)
+                } catch {
+                    handleError(error)
+                }
+            } : nil
         )
     }
     
@@ -390,7 +421,7 @@ extension Post1Providing {
     func lockAction(appState: AppState, feedback: Set<FeedbackType> = []) -> BasicAction {
         .init(
             id: "lock\(uid)",
-            appearance: .lock(isOn: locked, isInProgress: !lockedManager.isInSync),
+            appearance: .lock(isOn: locked, isInProgress: lockedPending),
             confirmationPrompt: locked ? "Really unlock this post?" : "Really lock this post?",
             callback: api.canInteract(appState: appState) && canModerate ? { @MainActor in
                 self.self2?.toggleLocked(feedback: feedback)
@@ -400,7 +431,7 @@ extension Post1Providing {
     
     func pinAction(appState: AppState, feedback: Set<FeedbackType> = []) -> ActionGroup {
         .init(
-            appearance: .pin(isOn: false, isInProgress: !(pinnedCommunityManager.isInSync && pinnedInstanceManager.isInSync)),
+            appearance: .pin(isOn: false, isInProgress: pinnedCommunityPending || pinnedInstancePending),
             prompt: "Pin to Community or Instance?",
             displayMode: .popup
         ) {
@@ -437,9 +468,9 @@ extension Post1Providing {
         return .init(
             id: "pinToCommunity\(uid)",
             appearance: verboseTitle ? .pinToCommunity(
-                isOn: isOn, isInProgress: !pinnedCommunityManager.isInSync
+                isOn: isOn, isInProgress: pinnedCommunityPending
             ) : .pin(
-                isOn: isOn, isInProgress: !pinnedCommunityManager.isInSync
+                isOn: isOn, isInProgress: pinnedCommunityPending
             ),
             confirmationPrompt: prompt,
             callback: api.canInteract(appState: appState) && canModerate ? { @MainActor in
@@ -462,7 +493,7 @@ extension Post1Providing {
         }
         return .init(
             id: "pinToInstance\(uid)",
-            appearance: .pinToInstance(isOn: isOn, isInProgress: !pinnedInstanceManager.isInSync),
+            appearance: .pinToInstance(isOn: isOn, isInProgress: pinnedInstancePending),
             confirmationPrompt: prompt,
             callback: api.canInteract(appState: appState) && api.isAdmin ? { @MainActor in
                 self.togglePinnedInstance(feedback: feedback)

@@ -28,5 +28,16 @@ public final class Post3: Post3Providing {
         self.post2 = post2
         self.community = community
         self.crossPosts = crossPosts
+        
+        Task {
+            await updateQueue.setParent(self)
+        }
+    }
+    
+    deinit {
+        let post2 = self.post2
+        Task {
+            await post2.updateQueue.setParent(post2)
+        }
     }
 }

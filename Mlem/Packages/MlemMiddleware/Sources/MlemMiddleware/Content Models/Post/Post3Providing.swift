@@ -14,11 +14,13 @@ public protocol Post3Providing: Post2Providing {
 }
 
 public extension Post3Providing {
+    var updateQueue: PostUpdateQueue { post1.updateQueue }
+    
     func upgrade() async throws -> any Post { self }
 
     // Override `Post2Providing` definition
-    var community: any Community { post3.community }
-    var community_: (any Community)? { post3.community }
+    var community: Community2 { post3.community }
+    var community_: (Community2)? { post3.community }
     
     var crossPosts: [Post2] { post3.crossPosts }
     

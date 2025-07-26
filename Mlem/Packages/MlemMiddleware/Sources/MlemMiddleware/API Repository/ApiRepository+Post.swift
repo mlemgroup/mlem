@@ -136,7 +136,7 @@ extension ApiRepository {
         read: Bool = true
     ) async throws {
         try await performingForConnection { connection in
-            try await connection.markPostAsRead(id: id, read: false)
+            try await connection.markPostAsRead(id: id, read: read)
         }
     }
     
@@ -266,7 +266,7 @@ extension ApiRepository {
         id: Int,
         lock: Bool
     ) async throws -> Post2Snapshot {
-        try await performingForConnection { connection in
+        return try await performingForConnection { connection in
             try await connection.lockPost(id: id, lock: lock)
         }
     }

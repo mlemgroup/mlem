@@ -47,16 +47,16 @@ extension PostEditorView {
     func submit() async {
         uploadHistory.deleteWhereNotPresent(in: contentTextView.text)
         if postToEdit != nil {
-            await editPost()
+            editPost()
         } else {
             await send()
         }
     }
     
-    private func editPost() async {
+    private func editPost() {
         guard let post = postToEdit else { return }
         do {
-            try await post.edit(
+            try post.edit(
                 title: titleTextView.text,
                 content: contentTextView.text,
                 linkUrl: imageManager?.image?.url ?? link.url ?? imageUrl,

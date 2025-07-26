@@ -49,25 +49,38 @@ extension Interactable1Providing {
             }
             self2.toggleDownvoted()
             inboxItem?.updateRead(true)
+            
         } else {
             handleError(MlemError.modelError("No self2 found"), silent: true)
         }
     }
     
     func toggleSaved(feedback: Set<FeedbackType>) {
-        if let self2 {
+        // TODO: UpdateQueue remove this shim code
+        if let post = self2 as? Post2 {
+            @Setting(\.behavior_upvoteOnSave) var upvoteOnSave
             if feedback.contains(.haptic) {
                 HapticManager.main.play(haptic: .success, tier: .low)
             }
-            @Setting(\.behavior_upvoteOnSave) var upvoteOnSave
-            if upvoteOnSave, !self2.saved, self2.votes.myVote != .upvote {
-                self2.updateVote(.upvote)
+            if upvoteOnSave, !post.saved, post.votes.myVote != .upvote {
+                post.updateVote(.upvote)
             }
-            
-            self2.toggleSaved()
-            inboxItem?.updateRead(true)
+            post.updateSaved(!post.saved)
         } else {
-            handleError(MlemError.modelError("No self2 found"), silent: true)
+            if let self2 {
+                if feedback.contains(.haptic) {
+                    HapticManager.main.play(haptic: .success, tier: .low)
+                }
+                @Setting(\.behavior_upvoteOnSave) var upvoteOnSave
+                if upvoteOnSave, !self2.saved, self2.votes.myVote != .upvote {
+                    self2.updateVote(.upvote)
+                }
+                
+                self2.toggleSaved()
+                inboxItem?.updateRead(true)
+            } else {
+                handleError(MlemError.modelError("No self2 found"), silent: true)
+            }
         }
     }
     
@@ -81,15 +94,15 @@ extension Interactable1Providing {
             if feedback.contains(.haptic) {
                 HapticManager.main.play(haptic: .success, tier: .low)
             }
-            switch await self2.toggleRemoved(reason: reason).result.get() {
-            case .failed:
-                ToastModel.main.add(.failure(initialValue ? "Failed to remove content" : "Failed to restore content"))
-            default:
-                break
+            self2.toggleRemoved(reason: reason) { status in
+                if case .failure = status {
+                    ToastModel.main.add(.failure(initialValue ? "Failed to remove content" : "Failed to restore content"))
+                }
             }
+            
         }
     }
-
+    
     // MARK: Counters
     
     func upvoteCounter(appState: AppState) -> Counter {
