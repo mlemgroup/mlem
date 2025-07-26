@@ -170,7 +170,9 @@ public extension PieFedConnection {
     
     @discardableResult
     func reportComment(id: Int, reason: String) async throws -> ReportSnapshot {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedCreateCommentReportRequest(commentId: id, reason: reason)
+        let response = try await perform(request)
+        return try .init(from: response.commentReportView)
     }
     
     func purgeComment(id: Int, reason: String?) async throws {

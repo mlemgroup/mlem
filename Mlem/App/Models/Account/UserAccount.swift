@@ -200,7 +200,7 @@ private func getKeychainId(actorId: ActorIdentifier) -> String {
     // [1](https://join-lemmy.org/docs/contributors/02-local-development.html#tests)
 
     let keychainActorId = actorId.description.replacing(
-        /https?:\/\/(lemmy-(alpha|beta|gamma|delta|epsilon)|localhost:\d{4})/,
+        /https?:\/\/(lemmy-(alpha|beta|gamma|delta|epsilon)|127\.0\.0\.1:\d{4}|localhost:\d{4})/,
         with: "localhost"
     )
     return "\(keychainActorId)_accessToken"
