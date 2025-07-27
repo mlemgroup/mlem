@@ -30,7 +30,7 @@ private struct MarkReadOnScroll: ViewModifier {
     func ios18Body(content: Content) -> some View {
         content
             .onGeometryChange(for: Bool.self) { geometry in
-                geometry.frame(in: .global).maxY < 100
+                geometry.frame(in: .global).maxY < 90
             } action: { wasAboveTop, isAboveTop in
                 if markReadOnScroll, !wasAboveTop, isAboveTop {
                     post.updateRead(true, shouldQueue: true)
