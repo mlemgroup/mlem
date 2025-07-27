@@ -88,7 +88,7 @@ extension PostEditorView {
                                 communityId: community.id,
                                 title: titleTextView.text,
                                 content: contentTextView.text,
-                                linkUrl: imageManager?.image?.url ?? link.url,
+                                linkUrl: imageManager?.image?.url ?? link.url ?? imageUrl,
                                 nsfw: hasNsfwTag
                             )
                         } catch {
