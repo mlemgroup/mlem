@@ -36,7 +36,6 @@ public extension LemmyConnection {
         } catch let ApiClientError.response(response, _) where response.couldntFindObject {
             throw ApiClientError.noEntityFound
         }
-        throw ApiClientError.noEntityFound
     }
     
     func getPerson(username: String) async throws -> Person3Snapshot {

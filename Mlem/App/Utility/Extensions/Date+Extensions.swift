@@ -44,7 +44,7 @@ extension Date {
             return String(localized: "Now")
         }
         
-        var components = Calendar.current.dateComponents(
+        let components = Calendar.current.dateComponents(
             [.year, .month, .day, .hour, .minute, .second],
             from: self,
             to: date
