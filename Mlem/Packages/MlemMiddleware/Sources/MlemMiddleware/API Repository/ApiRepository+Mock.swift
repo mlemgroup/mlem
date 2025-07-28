@@ -44,7 +44,7 @@ import Rest
             tokenOverride: String? = nil,
             requiresToken: Bool = true
         ) async throws -> Request.Response {
-            if let request = request as? LemmyListPostsRequest, let params = request.parameters {
+            if let request = request as? LemmyListPostsRequest, request.parameters != nil {
                 return LemmyGetPostsResponse(
                     posts: posts.map(\.apiPostView),
                     nextPage: nil,
@@ -52,7 +52,7 @@ import Rest
                 ) as! Request.Response
             }
     
-            if let request = request as? LemmyListCommentsRequest, let params = request.parameters {
+            if let request = request as? LemmyListCommentsRequest, request.parameters != nil {
                 return LemmyGetCommentsResponse(
                     comments: comments.map(\.apiCommentView),
                     nextPage: nil,

@@ -176,7 +176,6 @@ struct PostEditorView: View {
                         .padding(.top, 1)
                 }
                 
-                let hasMiddleParts = hasNsfwTag || link != .none || imageManager != nil || imageUrl != nil
                 VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
                     VStack(spacing: Constants.main.standardSpacing) {
                         MarkdownTextEditor(

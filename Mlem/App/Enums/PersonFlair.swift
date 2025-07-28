@@ -39,7 +39,7 @@ enum PersonFlair: Hashable {
     var text: String {
         switch self {
         case let .accountAge(created):
-            var components = Calendar.current.dateComponents(
+            let components = Calendar.current.dateComponents(
                 [.year, .month, .day, .hour, .minute, .second],
                 from: created,
                 to: .now
