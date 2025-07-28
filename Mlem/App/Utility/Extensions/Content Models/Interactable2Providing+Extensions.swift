@@ -10,7 +10,7 @@ import MlemMiddleware
 extension Interactable2Providing {
     func contextualFlairs() -> Set<PersonFlair> {
         var output: Set<PersonFlair> = []
-        if api.myInstance?.administrators.contains(where: { $0.id == id }) ?? creatorIsAdmin {
+        if creatorIsAdmin {
             output.insert(.admin)
         }
         if creatorIsModerator {
