@@ -25,7 +25,7 @@ public extension LemmyConnection {
     
     func blockInstance(instanceId: Int, block: Bool) async throws {
         _ = try await performingForEndpoint { endpoint in
-            LemmyUserBlockInstanceRequest(endpoint: endpoint, instanceId: instanceId, block: block)
+            LemmyUserBlockInstanceCommunitiesRequest(endpoint: endpoint, instanceId: instanceId, block: block)
         }
     }
     
