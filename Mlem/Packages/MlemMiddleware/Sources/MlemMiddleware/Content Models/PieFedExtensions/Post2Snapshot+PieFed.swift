@@ -8,7 +8,7 @@
 import Foundation
 
 public extension Post2Snapshot {
-    init(from post: PieFedPostView) throws(ApiClientError) {
+    init(from post: PieFedPostView, overrideRead: Bool? = nil) throws(ApiClientError) {
         self.post = try .init(from: post.post)
         self.creator = try .init(from: post.creator)
         self.community = try .init(from: post.community)
@@ -19,7 +19,7 @@ public extension Post2Snapshot {
             myVote: .guaranteedInit(from: post.myVote)
         )
         self.saved = post.saved
-        self.read = post.read
+        self.read = overrideRead ?? post.read
         self.hidden = post.hidden
         
         self.commentCount = post.counts.comments
