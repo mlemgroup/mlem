@@ -9,6 +9,14 @@ import MlemMiddleware
 import SwiftUI
 
 extension SearchView {
+    var availableTabs: [Tab] {
+        var ret: [Tab] = [.communities, .people, .instances, .posts]
+        if appState.firstApi.supportsOrNil(.commentSearch) ?? false {
+            ret.append(.comments)
+        }
+        return ret
+    }
+    
     func contentChangeTriggerRefresh(onlyRefreshIfEmpty: Bool) {
         editingRecentSearches = false
         if selectedTab == .posts || selectedTab == .comments {
