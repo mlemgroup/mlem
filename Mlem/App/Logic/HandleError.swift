@@ -66,6 +66,7 @@ private func _handleError(
         return true
     default:
         if (error as NSError).code == NSURLErrorCancelled {
+            print("Timeout error")
             return true
         }
         return false
