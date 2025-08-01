@@ -119,7 +119,7 @@ extension View {
     func quickSwipes(reply: any Reply, configuration: ReplyBarConfiguration, behavior: SwipeBehavior) -> some View {
         modifier(
             QuickSwipeEnvironmentReaderViewModifier { environment in
-                guard let navigation = environment.navigation, let appState = environment.appState else {
+                guard environment.navigation != nil, let appState = environment.appState else {
                     assertionFailure()
                     return .init()
                 }

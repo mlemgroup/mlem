@@ -117,7 +117,7 @@ public extension LemmyConnection {
     }
     
     func purgeCommunity(id: Int, reason: String?) async throws {
-        let response = try await performingForEndpoint { endpoint in
+        let _ = try await performingForEndpoint { endpoint in
             LemmyPurgeCommunityRequest(endpoint: endpoint, communityId: id, reason: reason)
         }
     }
