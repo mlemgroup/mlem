@@ -48,7 +48,7 @@ private func _handleError(
         print("📂 -> \(file) | \(function) | line: \(line)")
     #endif
     
-    let location: String = "\(file), \(function):\(line)"
+    let location = "\(file), \(function):\(line)"
     
     Task {
         await ErrorsTracker.main.addError(error, location: location)
@@ -65,6 +65,10 @@ private func _handleError(
         print("Cancellation error")
         return true
     default:
+        if (error as NSError).code == NSURLErrorCancelled {
+            print("Timeout error")
+            return true
+        }
         return false
     }
 }
