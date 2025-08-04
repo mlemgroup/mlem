@@ -161,15 +161,17 @@ public extension PieFedConnection {
     @discardableResult
     func voteOnPost(id: Int, score: ScoringOperation) async throws -> Post2Snapshot {
         let request = PieFedCreatePostLikeRequest(postId: id, score: score.rawValue)
-        let response = try await perform(request)
-        return try .init(from: response.postView)
+        async let response = perform(request)
+        try await markPostAsRead(id: id, read: true)
+        return try await .init(from: response.postView, overrideRead: true)
     }
     
     @discardableResult
     func savePost(id: Int, save: Bool) async throws -> Post2Snapshot {
         let request = PieFedSavePostRequest(postId: id, save: save)
-        let response = try await perform(request)
-        return try .init(from: response.postView)
+        async let response = try await perform(request)
+        try await markPostAsRead(id: id, read: true)
+        return try await .init(from: response.postView, overrideRead: true)
     }
     
     @discardableResult
