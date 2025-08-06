@@ -79,10 +79,13 @@ public struct ModlogEntrySnapshot {
         self.moderator = try view.admin.map(Person1Snapshot.init)
     }
     
-    public init(from view: LemmyModRemoveCommunityView) throws(ApiClientError) {
+    public init(from view: LemmyAdminRemoveCommunityView) throws(ApiClientError) {
+        guard let inner = view.adminRemoveCommunity ?? view.modRemoveCommunity else {
+            throw .responseMissingRequiredData("LemmyAdminRemoveCommunityView inner")
+        }
         self.type = try .init(from: view)
-        self.moderatorId = view.modRemoveCommunity.modPersonId
-        if let created = view.modRemoveCommunity.when_ ?? view.modRemoveCommunity.publishedAt {
+        self.moderatorId = inner.modPersonId
+        if let created = inner.when_ ?? inner.publishedAt {
             self.created = created
         } else {
             throw .responseMissingRequiredData("LemmyModRemoveCommunityView created")
@@ -119,10 +122,13 @@ public struct ModlogEntrySnapshot {
         self.moderator = try view.moderator.map(Person1Snapshot.init)
     }
     
-    public init(from view: LemmyModAddCommunityView) throws(ApiClientError) {
+    public init(from view: LemmyModAddToCommunityView) throws(ApiClientError) {
+        guard let inner = view.modAddToCommunity ?? view.modAddCommunity else {
+            throw .responseMissingRequiredData("LemmyModAddToCommunityView inner")
+        }
         self.type = try .init(from: view)
-        self.moderatorId = view.modAddCommunity.modPersonId
-        if let created = view.modAddCommunity.when_ ?? view.modAddCommunity.publishedAt {
+        self.moderatorId = inner.modPersonId
+        if let created = inner.when_ ?? inner.publishedAt {
             self.created = created
         } else {
             throw .responseMissingRequiredData("LemmyModAddCommunityView created")
@@ -130,10 +136,13 @@ public struct ModlogEntrySnapshot {
         self.moderator = try view.moderator.map(Person1Snapshot.init)
     }
     
-    public init(from view: LemmyModAddView) throws(ApiClientError) {
+    public init(from view: LemmyAdminAddView) throws(ApiClientError) {
+        guard let inner = view.adminAdd ?? view.modAdd else {
+            throw .responseMissingRequiredData("LemmyAdminAddView inner")
+        }
         self.type = try .init(from: view)
-        self.moderatorId = view.modAdd.modPersonId
-        if let created = view.modAdd.when_ ?? view.modAdd.publishedAt {
+        self.moderatorId = inner.modPersonId
+        if let created = inner.when_ ?? inner.publishedAt {
             self.created = created
         } else {
             throw .responseMissingRequiredData("LemmyModAddView created")
@@ -152,10 +161,13 @@ public struct ModlogEntrySnapshot {
         self.moderator = try view.moderator.map(Person1Snapshot.init)
     }
     
-    public init(from view: LemmyModBanView) throws(ApiClientError) {
+    public init(from view: LemmyAdminBanView) throws(ApiClientError) {
+        guard let inner = view.adminBan ?? view.modBan else {
+            throw .responseMissingRequiredData("LemmyAdminBanView inner")
+        }
         self.type = try .init(from: view)
-        self.moderatorId = view.modBan.modPersonId
-        if let created = view.modBan.when_ ?? view.modBan.publishedAt {
+        self.moderatorId = inner.modPersonId
+        if let created = inner.when_ ?? inner.publishedAt {
             self.created = created
         } else {
             throw .responseMissingRequiredData("LemmyModBanView created")

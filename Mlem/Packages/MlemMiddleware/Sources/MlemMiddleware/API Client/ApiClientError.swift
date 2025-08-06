@@ -62,9 +62,9 @@ extension ApiClientError: CustomStringConvertible {
         case .insufficientPermissions:
             return "Insufficient permissions. Check `ApiClient.permissions`"
         case let .encoding(error):
-            return "Unable to encode: \(error)"
+            return "Unable to encode: \(String(describing: error))"
         case let .networking(error):
-            return "Networking error: \(error)"
+            return "Networking error: \(String(describing: error))"
         case let .response(errorResponse, status):
             return "Response error: \(errorResponse) with status \(status)"
         case let .serverError(status):
@@ -83,7 +83,7 @@ extension ApiClientError: CustomStringConvertible {
             }
             
             if let error {
-                return "Unable to decode: \(string)\nError: \(error)"
+                return "Unable to decode: \(string)\nError: \(String(describing: error))"
             }
             
             return "Unable to decode: \(string)"
