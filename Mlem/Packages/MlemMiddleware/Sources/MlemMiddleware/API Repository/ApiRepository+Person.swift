@@ -64,7 +64,7 @@ extension ApiRepository {
         removeContent: Bool,
         reason: String?,
         expires: Date? = nil
-    ) async throws -> Person2Snapshot {
+    ) async throws -> Person1Snapshot {
         try await performingForConnection { connection in
             try await connection.banPersonFromCommunity(
                 personId: personId,

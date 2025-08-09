@@ -10,23 +10,19 @@ import MlemMiddleware
 extension DeletableProviding {
     func toggleDeleted(feedback: Set<FeedbackType>) {
         if feedback.contains(.toast), !deleted {
-            let task = toggleDeleted()
-            Task {
-                let result = await task.result.get()
-                switch result {
-                case .succeeded:
+            toggleDeleted { status in
+                switch status {
+                case .success:
                     ToastModel.main.add(
                         .undoable(
                             "Deleted",
                             icon: .general.delete,
-                            callback: { self.updateDeleted(false) },
+                            callback: { self.updateDeleted(false, callback: nil) },
                             color: .themedNegative
                         )
                     )
-                case .failed:
+                case .failure:
                     ToastModel.main.add(.failure("Failed to delete post!"))
-                default:
-                    handleError(MlemError.unexpectedValue, silent: true)
                 }
             }
         } else {

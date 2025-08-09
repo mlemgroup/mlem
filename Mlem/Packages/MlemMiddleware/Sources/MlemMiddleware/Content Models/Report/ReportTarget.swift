@@ -100,14 +100,15 @@ public enum ReportTarget {
     @MainActor
     func update(with snapshot: ReportTargetSnapshot) {
         switch (self, snapshot) {
-        case let (.post(post), .post(updatedPost)):
-            post.update(with: updatedPost)
+        case (.post, .post):
+            // TODO: UpdateQueue handle report update callbacks through UpdateQueue
+            print("noop") // print here to make the compiler happy
         case let (.comment(comment), .comment(updatedComment)):
             comment.update(with: updatedComment)
         case let (.message(message), .message(updatedMessage)):
             message.update(with: updatedMessage)
-        case let (.legacyPost(post, community, creator), .legacyPost(updatedPost, updatedCommunity, updatedCreator)):
-            post.update(with: updatedPost)
+        case let (.legacyPost(_, community, creator), .legacyPost(_, updatedCommunity, updatedCreator)):
+            // TODO: UpdateQueue update post via UpdateQueue
             community.update(with: updatedCommunity)
             creator.update(with: updatedCreator)
         case let (.legacyComment(comment, community, creator), .legacyComment(updatedComment, updatedCommunity, updatedCreator)):

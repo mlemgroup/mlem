@@ -26,4 +26,19 @@ public extension Comment2Snapshot {
         )
         self.saved = comment.saved
     }
+    
+    init(from report: PieFedCommentReportView) throws(ApiClientError) {
+        self.comment = try .init(from: report.comment)
+        self.creator = try .init(from: report.commentCreator)
+        self.post = try .init(from: report.post)
+        self.community = try .init(from: report.community)
+        
+        self.commentCount = report.counts.childCount
+        self.creatorIsAdmin = report.creatorIsAdmin
+        self.creatorIsModerator = report.creatorIsModerator
+        self.creatorBannedFromCommunity = report.creatorBannedFromCommunity
+        self.saved = report.saved
+        
+        self.votes = .init(from: report.counts, myVote: .guaranteedInit(from: report.myVote))
+    }
 }

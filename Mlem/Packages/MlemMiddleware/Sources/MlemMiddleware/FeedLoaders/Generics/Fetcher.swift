@@ -32,7 +32,7 @@ enum LoadingResponse<Item: FeedLoadable> {
 
 @Observable
 public class Fetcher<Item: FeedLoadable> {
-    internal(set) var api: ApiClient
+    var api: ApiClient
     var pageSize: Int
     var page: Int
     private var cursor: String?

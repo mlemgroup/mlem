@@ -36,7 +36,6 @@ public extension LemmyConnection {
         } catch let ApiClientError.response(response, _) where response.couldntFindObject {
             throw ApiClientError.noEntityFound
         }
-        throw ApiClientError.noEntityFound
     }
     
     func getPerson(username: String) async throws -> Person3Snapshot {
@@ -117,7 +116,7 @@ public extension LemmyConnection {
         removeContent: Bool,
         reason: String?,
         expires: Date? = nil
-    ) async throws -> Person2Snapshot {
+    ) async throws -> Person1Snapshot {
         let expiryTimestamp: Int?
         if let expires {
             expiryTimestamp = Int(expires.timeIntervalSince1970)
@@ -138,7 +137,7 @@ public extension LemmyConnection {
             )
         }
         guard response.banned == ban else { throw ApiClientError.unsuccessful }
-        return try .init(from: response.personView)
+        return try .init(from: response.personView.person)
     }
     
     @discardableResult
@@ -243,7 +242,7 @@ public extension LemmyConnection {
         var blocks: BlockListSnapshot?
         if let myUser = response.myUser {
             person = try .init(from: myUser)
-            blocks = .init(from: myUser)
+            blocks = try .init(from: myUser)
         }
         
         return try (
@@ -330,6 +329,7 @@ public extension LemmyConnection {
                 showUpvotePercentage: showUpvotePercentage,
                 defaultPostSortType: nil,
                 defaultPostTimeRangeSeconds: nil,
+                defaultItemsPerPage: nil,
                 defaultCommentSortType: nil,
                 blockingKeywords: nil,
                 enablePrivateMessages: nil,

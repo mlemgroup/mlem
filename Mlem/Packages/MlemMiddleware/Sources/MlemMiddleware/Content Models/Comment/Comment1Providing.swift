@@ -47,6 +47,7 @@ public extension Comment1Providing {
     var parentCommentIds: [Int] { comment1.parentCommentIds }
     var distinguished: Bool { comment1.distinguished }
     var removed: Bool { comment1.removed }
+    var removedPending: Bool { !comment1.removedManager.isInSync }
     var removedManager: StateManager<Bool> { comment1.removedManager }
     var languageId: Int { comment1.languageId }
     var purged: Bool { comment1.purged }
@@ -139,10 +140,15 @@ public extension Comment1Providing {
         return comments.filter { $0.parentCommentIds.contains(id) || self.parentCommentIds.contains($0.id) || $0.id == self.id }
     }
     
-    @discardableResult
-    func updateRemoved(_ newValue: Bool, reason: String?) -> Task<StateUpdateResult, Never> {
-        removedManager.performRequest(expectedResult: newValue) { semaphore in
-            try await self.api.removeComment(id: self.id, remove: newValue, reason: reason, semaphore: semaphore)
+    func updateRemoved(_ newValue: Bool, reason: String?, callback: ((UpdateStatus) -> Void)?) {
+        // TODO: UpdateQueue use queued state management
+        _ = removedManager.performRequest(expectedResult: newValue) { semaphore in
+            do {
+                try await self.api.removeComment(id: self.id, remove: newValue, reason: reason, semaphore: semaphore)
+                callback?(.success)
+            } catch {
+                callback?(.failure(error))
+            }
         }
     }
     
@@ -158,10 +164,15 @@ public extension Comment1Providing {
         try await api.purgeComment(id: id, reason: reason)
     }
     
-    @discardableResult
-    func updateDeleted(_ newValue: Bool) -> Task<StateUpdateResult, Never> {
-        deletedManager.performRequest(expectedResult: newValue) { semaphore in
-            try await self.api.deleteComment(id: self.id, delete: newValue, semaphore: semaphore)
+    func updateDeleted(_ newValue: Bool, callback: ((UpdateStatus) -> Void)?) {
+        // TODO: UpdateQueue use queued state management
+        _ = deletedManager.performRequest(expectedResult: newValue) { semaphore in
+            do {
+                try await self.api.deleteComment(id: self.id, delete: newValue, semaphore: semaphore)
+                callback?(.success)
+            } catch {
+                callback?(.failure(error))
+            }
         }
     }
     

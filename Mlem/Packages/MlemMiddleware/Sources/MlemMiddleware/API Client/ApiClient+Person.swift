@@ -92,7 +92,7 @@ public extension ApiClient {
         removeContent: Bool,
         reason: String?,
         expires: Date? = nil
-    ) async throws -> Person2 {
+    ) async throws -> Person1 {
         let snapshot = try await repository.banPersonFromCommunity(
             personId: personId,
             communityId: communityId,
@@ -101,7 +101,7 @@ public extension ApiClient {
             reason: reason,
             expires: expires
         )
-        let person = await caches.person2.getModel(
+        let person = await caches.person1.getModel(
             api: self,
             from: snapshot
         )
@@ -160,8 +160,11 @@ public extension ApiClient {
     
     func getMyPerson() async throws -> (person: Person4?, instance: Instance3, blocks: BlockList?) {
         let snapshot = try await repository.getMyPerson()
-        guard snapshot.person?.person.person.person.name == username else {
-            assertionFailure()
+        let snapshotPersonName = snapshot.person?.person.person.person.name
+        guard snapshotPersonName == username else {
+            assertionFailure(
+                "Returned account name \(String(describing: snapshotPersonName)) does not match logged in username \(String(describing: username))"
+            )
             throw ApiClientError.mismatchingToken
         }
         

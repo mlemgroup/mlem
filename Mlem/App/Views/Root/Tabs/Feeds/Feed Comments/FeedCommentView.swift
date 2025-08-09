@@ -78,7 +78,7 @@ struct FeedCommentView<EmbeddedContent: View>: View {
     
     var interactionBarConfiguration: CommentBarConfiguration {
         if reportContext != nil, alternateInteractionBarLayoutForReports {
-            commentReportInteractionBar
+            return commentReportInteractionBar
         }
         return commentInteractionBar
     }

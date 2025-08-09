@@ -23,7 +23,6 @@ public protocol Reply2Providing: Reply1Providing, Interactable2Providing, ActorI
     var creatorIsAdmin: Bool { get }
     var creatorBannedFromCommunity: Bool { get }
     var removed: Bool { get }
-    var removedManager: StateManager<Bool> { get }
 }
 
 public extension Reply2Providing {
@@ -40,7 +39,7 @@ public extension Reply2Providing {
     var creatorIsAdmin: Bool { reply2.creatorIsAdmin }
     var creatorBannedFromCommunity: Bool { reply2.creatorBannedFromCommunity }
     var removed: Bool { reply2.comment.removed }
-    var removedManager: StateManager<Bool> { reply2.comment.removedManager }
+    var removedPending: Bool { reply2.comment.removedPending }
     
     var reply1_: Reply1? { reply2.reply1 }
     var comment_: Comment1? { reply2.comment }
@@ -59,16 +58,16 @@ public extension Reply2Providing {
     private var votesManager: StateManager<VotesModel> { reply2.votesManager }
     private var savedManager: StateManager<Bool> { reply2.savedManager }
     
-    @discardableResult
-    func updateVote(_ newValue: ScoringOperation) -> Task<StateUpdateResult, Never> {
-        votesManager.performRequest(expectedResult: votes.applyScoringOperation(operation: newValue)) { semaphore in
+    func updateVote(_ newValue: ScoringOperation) {
+        // TODO: UpdateQueue queued state management
+        _ = votesManager.performRequest(expectedResult: votes.applyScoringOperation(operation: newValue)) { semaphore in
             try await self.api.voteOnComment(id: self.commentId, score: newValue, semaphore: semaphore)
         }
     }
     
-    @discardableResult
-    func updateSaved(_ newValue: Bool) -> Task<StateUpdateResult, Never> {
-        savedManager.performRequest(expectedResult: newValue) { semaphore in
+    func updateSaved(_ newValue: Bool) {
+        // TODO: UpdateQueue queued state management
+        _ = savedManager.performRequest(expectedResult: newValue) { semaphore in
             try await self.api.saveComment(id: self.commentId, save: newValue, semaphore: semaphore)
         }
     }
@@ -77,8 +76,7 @@ public extension Reply2Providing {
         try await api.replyToComment(postId: post.id, parentId: commentId, content: content, languageId: languageId)
     }
     
-    @discardableResult
-    func updateRemoved(_ newValue: Bool, reason: String?) -> Task<StateUpdateResult, Never> {
-        comment.updateRemoved(newValue, reason: reason)
+    func updateRemoved(_ newValue: Bool, reason: String?, callback: ((UpdateStatus) -> Void)?) {
+        comment.updateRemoved(newValue, reason: reason, callback: callback)
     }
 }

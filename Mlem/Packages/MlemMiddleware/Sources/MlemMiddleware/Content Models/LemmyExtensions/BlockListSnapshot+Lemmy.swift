@@ -8,7 +8,7 @@
 import Foundation
 
 extension BlockListSnapshot {
-    init(from myUserInfo: LemmyMyUserInfo) {
+    init(from myUserInfo: LemmyMyUserInfo) throws(ApiClientError) {
         self.people = myUserInfo.personBlocks.reduce(into: [:]) {
             if let actorId = $1.target.apId ?? $1.target.actorId {
                 $0[actorId] = $1.target.id
@@ -21,9 +21,18 @@ extension BlockListSnapshot {
             }
         }
         
-        self.instances = myUserInfo.instanceBlocks.reduce(into: [:]) {
-            let actorId: ActorIdentifier = .instance(host: $1.instance.domain)
-            $0[actorId] = $1.instance.id
+        if let instanceCommunitiesBlocks = myUserInfo.instanceCommunitiesBlocks {
+            self.instances = instanceCommunitiesBlocks.reduce(into: [:]) {
+                let actorId: ActorIdentifier = .instance(host: $1.domain)
+                $0[actorId] = $1.id
+            }
+        } else if let instanceBlocks = myUserInfo.instanceBlocks {
+            self.instances = instanceBlocks.reduce(into: [:]) {
+                let actorId: ActorIdentifier = .instance(host: $1.instance.domain)
+                $0[actorId] = $1.instance.id
+            }
+        } else {
+            throw .responseMissingRequiredData("LemmyMyUserInfo instanceBlocks (BlockListSnapshot)")
         }
     }
 }

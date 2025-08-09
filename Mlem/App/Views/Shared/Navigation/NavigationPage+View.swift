@@ -24,7 +24,7 @@ extension NavigationPage {
             page.view()
         case let .signUp(instance):
             SignUpView(instance: instance.wrappedValue)
-        case let .onboarding:
+        case .onboarding:
             OnboardingView()
         case let .feeds(feedSelection):
             FeedsView(feedSelection: feedSelection)
@@ -139,7 +139,7 @@ extension NavigationPage {
                 }
                 .disabled(requiredFeature.map { !instance.software.supports($0) } ?? false)
             } header: {
-                if let requiredFeature {
+                if requiredFeature != nil {
                     Text("This feature is not available on all instances.")
                         .padding()
                         .frame(maxWidth: .infinity, alignment: .leading)

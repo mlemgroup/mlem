@@ -203,8 +203,7 @@ struct CommunityView: View {
                 }
             }
             
-            if let firstPerson = appState.firstPerson,
-               firstPerson.isAdmin || firstPerson.moderates(community: community) {
+            if canEditModeratorList(community) {
                 Button("Add Moderator", icon: .general.add, action: openAddModSheet)
                     .buttonStyle(.capsule)
                     .confirmationDialog("Add Moderator", isPresented: $showingConfirmation) {

@@ -255,7 +255,7 @@ struct InstanceDetailsView: View {
                 
                 Spacer()
                 
-                if case let .success(uptimeData) = uptimeData {
+                if case .success = uptimeData {
                     // NavigationLink(.instanceUptime(instance: instance, uptimeData: uptimeData)) {
                     (Text("Details") + Text(verbatim: " ") + Text(Image(icon: .general.forward)))
                         .font(.footnote)

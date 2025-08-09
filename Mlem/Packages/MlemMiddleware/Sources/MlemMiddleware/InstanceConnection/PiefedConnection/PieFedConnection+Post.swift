@@ -161,15 +161,17 @@ public extension PieFedConnection {
     @discardableResult
     func voteOnPost(id: Int, score: ScoringOperation) async throws -> Post2Snapshot {
         let request = PieFedCreatePostLikeRequest(postId: id, score: score.rawValue)
-        let response = try await perform(request)
-        return try .init(from: response.postView)
+        async let response = perform(request)
+        try await markPostAsRead(id: id, read: true)
+        return try await .init(from: response.postView, overrideRead: true)
     }
     
     @discardableResult
     func savePost(id: Int, save: Bool) async throws -> Post2Snapshot {
         let request = PieFedSavePostRequest(postId: id, save: save)
-        let response = try await perform(request)
-        return try .init(from: response.postView)
+        async let response = try await perform(request)
+        try await markPostAsRead(id: id, read: true)
+        return try await .init(from: response.postView, overrideRead: true)
     }
     
     @discardableResult
@@ -251,7 +253,9 @@ public extension PieFedConnection {
     
     @discardableResult
     func reportPost(id: Int, reason: String) async throws -> ReportSnapshot {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedCreatePostReportRequest(postId: id, reason: reason)
+        let response = try await perform(request)
+        return try .init(from: response.postReportView)
     }
     
     func purgePost(id: Int, reason: String?) async throws {
@@ -264,7 +268,9 @@ public extension PieFedConnection {
         remove: Bool,
         reason: String?
     ) async throws -> Post2Snapshot {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedRemovePostRequest(postId: id, removed: remove, reason: reason)
+        let response = try await perform(request)
+        return try .init(from: response.postView)
     }
     
     @discardableResult
@@ -273,12 +279,20 @@ public extension PieFedConnection {
         pin: Bool,
         to target: PostFeatureType
     ) async throws -> Post2Snapshot {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedFeaturePostRequest(
+            postId: id,
+            featured: pin,
+            featureType: target.piefedPostFeatureType
+        )
+        let response = try await perform(request)
+        return try .init(from: response.postView)
     }
     
     @discardableResult
     func lockPost(id: Int, lock: Bool) async throws -> Post2Snapshot {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedLockPostRequest(postId: id, locked: lock)
+        let response = try await perform(request)
+        return try .init(from: response.postView)
     }
     
     @discardableResult

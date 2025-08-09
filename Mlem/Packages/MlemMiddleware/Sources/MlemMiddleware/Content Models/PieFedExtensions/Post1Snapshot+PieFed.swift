@@ -18,7 +18,10 @@ public extension Post1Snapshot {
         self.title = post.title
         self.content = post.body
         self.linkUrl = post.url
-        self.deleted = post.deleted
+        
+        // If a post is removed, deleted is true for some reason
+        self.deleted = post.removed ? false : post.deleted
+        
         self.embed = nil
         self.pinnedCommunity = post.sticky
         self.pinnedInstance = false

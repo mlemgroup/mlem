@@ -251,7 +251,7 @@ public protocol InstanceConnection {
         removeContent: Bool,
         reason: String?,
         expires: Date?
-    ) async throws -> Person2Snapshot
+    ) async throws -> Person1Snapshot
     
     @discardableResult
     func banPersonFromInstance(

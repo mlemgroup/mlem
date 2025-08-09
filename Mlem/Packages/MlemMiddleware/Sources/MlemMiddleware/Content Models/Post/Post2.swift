@@ -24,18 +24,15 @@ public final class Post2: Post2Providing {
     public var commentCount: Int
     public var unreadCommentCount: Int
     
-    var votesManager: StateManager<VotesModel>
-    public var votes: VotesModel { votesManager.displayedValue }
+    public var votes: VotesModel
     
-    var readManager: StateManager<Bool>
-    public var read: Bool { readManager.displayedValue || readQueued }
-    private var readQueued: Bool = false
+    public var read: Bool { readQueued || readStatus }
+    internal var readStatus: Bool // indicates server-side read status; can be state faked
+    internal var readQueued: Bool = false // indicates post is queued to be marked read, but not submitted
     
-    var savedManager: StateManager<Bool>
-    public var saved: Bool { savedManager.displayedValue }
+    public var saved: Bool
     
-    var hiddenManager: StateManager<Bool>
-    public var hidden: Bool { hiddenManager.displayedValue }
+    public var hidden: Bool
     
     public var creatorBannedFromCommunity: Bool {
         guard let state = creator.isBannedFromCommunity(community) else {
@@ -64,19 +61,25 @@ public final class Post2: Post2Providing {
         self.post1 = post1
         self.creator = creator
         self.community = community
-        self.votesManager = .init(wrappedValue: votes)
+        self.votes = votes
         self.creatorIsModerator = creatorIsModerator
         self.creatorIsAdmin = creatorIsAdmin
         self.commentCount = commentCount
         self.unreadCommentCount = unreadCommentCount
-        self.savedManager = .init(wrappedValue: saved)
-        self.readManager = .init(wrappedValue: read)
-        self.hiddenManager = .init(wrappedValue: hidden)
+        self.saved = saved
+        self.readStatus = read
+        self.hidden = hidden
         creator.updateKnownCommunityBanState(id: community.id, banned: creatorBannedFromCommunity)
+        
+        Task {
+            await updateQueue.setParent(self)
+        }
     }
     
-    @MainActor
-    func updateReadQueued(_ newValue: Bool) {
-        readQueued = newValue
+    deinit {
+        let post1 = self.post1
+        Task {
+            await post1.updateQueue.setParent(post1)
+        }
     }
 }

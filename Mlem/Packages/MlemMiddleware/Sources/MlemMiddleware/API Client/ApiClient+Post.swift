@@ -135,35 +135,11 @@ public extension ApiClient {
         return await caches.post2.getModels(api: self, from: snapshots)
     }
     
-    /// Mark the given post as read. Works on all versions.
-    /// If `includeQueuedPosts` is set to `true`, any queued posts will be marked read as well.
-    func markPostAsRead(
-        id: Int,
-        read: Bool = true,
-        includeQueuedPosts: Bool = true,
-        semaphore: UInt? = nil
-    ) async throws {
-        if read {
-            // We *must* use `postIds` from 0.19.4 onwards. On 0.19.3 and below, either `postId` or `postIds` is allowed.
-            try await markPostsAsRead(
-                ids: [id],
-                includeQueuedPosts: includeQueuedPosts,
-                semaphore: semaphore
-            )
-        } else {
-            try await repository.markPostAsRead(id: id, read: false)
-            if let post = self.caches.post2.retrieveModel(cacheId: id) {
-                post.readManager.updateWithReceivedValue(read, semaphore: semaphore)
-            }
-        }
-    }
-    
     /// Mark the given posts as read.
     /// Calling this will also mark any queued posts as read unless `includeQueuedPosts` is set to `false`.
     func markPostsAsRead(
         ids: Set<Int>,
-        includeQueuedPosts: Bool = true,
-        semaphore: UInt? = nil
+        includeQueuedPosts: Bool = true
     ) async throws {
         let idsToSend: Set<Int>
         let markReadQueueCopy: Set<Int>
@@ -186,8 +162,7 @@ public extension ApiClient {
         }
         Task { @MainActor in
             for post in idsToSend.compactMap({ caches.post2.retrieveModel(cacheId: $0) }) {
-                post.readManager.updateWithReceivedValue(true, semaphore: semaphore)
-                post.updateReadQueued(false)
+                post.queuedMarkReadCompleted()
             }
         }
     }
@@ -197,49 +172,7 @@ public extension ApiClient {
             try await markPostsAsRead(ids: [])
         }
     }
-    
-    @discardableResult
-    func voteOnPost(id: Int, score: ScoringOperation, semaphore: UInt? = nil) async throws -> Post2 {
-        let snapshot = try await repository.voteOnPost(id: id, score: score)
-        return await caches.post2.getModel(
-            api: self,
-            from: snapshot,
-            semaphore: semaphore
-        )
-    }
-    
-    @discardableResult
-    func savePost(id: Int, save: Bool, semaphore: UInt? = nil) async throws -> Post2 {
-        let snapshot = try await repository.savePost(id: id, save: save)
-        return await caches.post2.getModel(
-            api: self,
-            from: snapshot,
-            semaphore: semaphore
-        )
-    }
-    
-    @discardableResult
-    func deletePost(id: Int, delete: Bool, semaphore: UInt? = nil) async throws -> Post2 {
-        let snapshot = try await repository.deletePost(id: id, delete: delete)
-        return await caches.post2.getModel(
-            api: self,
-            from: snapshot,
-            semaphore: semaphore
-        )
-    }
-    
-    /// Added in 0.19.4
-    func hidePost(
-        id: Int,
-        hide: Bool,
-        semaphore: UInt? = nil
-    ) async throws {
-        try await repository.hidePost(id: id, hide: hide)
-        if let post = caches.post2.retrieveModel(cacheId: id) {
-            post.hiddenManager.updateWithReceivedValue(hide, semaphore: semaphore)
-        }
-    }
-    
+
     func createPost(
         communityId: Int,
         title: String,
@@ -252,30 +185,6 @@ public extension ApiClient {
     ) async throws -> Post2 {
         let snapshot = try await repository.createPost(
             communityId: communityId,
-            title: title,
-            content: content,
-            linkUrl: linkUrl,
-            altText: altText,
-            thumbnail: thumbnail,
-            nsfw: nsfw,
-            languageId: languageId
-        )
-        return await caches.post2.getModel(api: self, from: snapshot)
-    }
-    
-    @discardableResult
-    func editPost(
-        id: Int,
-        title: String,
-        content: String? = nil,
-        linkUrl: URL? = nil,
-        altText: String? = nil,
-        thumbnail: URL? = nil,
-        nsfw: Bool,
-        languageId: Int? = nil
-    ) async throws -> Post2 {
-        let snapshot = try await repository.editPost(
-            id: id,
             title: title,
             content: content,
             linkUrl: linkUrl,
@@ -305,50 +214,6 @@ public extension ApiClient {
     
     func purgePost(id: Int, reason: String?) async throws {
         try await repository.purgePost(id: id, reason: reason)
-    }
-    
-    @discardableResult
-    func removePost(
-        id: Int,
-        remove: Bool,
-        reason: String?,
-        semaphore: UInt? = nil
-    ) async throws -> Post2 {
-        let snapshot = try await repository.removePost(id: id, remove: remove, reason: reason)
-        return await caches.post2.getModel(
-            api: self,
-            from: snapshot,
-            semaphore: semaphore
-        )
-    }
-    
-    @discardableResult
-    func pinPost(
-        id: Int,
-        pin: Bool,
-        to target: PostFeatureType,
-        semaphore: UInt? = nil
-    ) async throws -> Post2 {
-        let snapshot = try await repository.pinPost(id: id, pin: pin, to: target)
-        return await caches.post2.getModel(
-            api: self,
-            from: snapshot,
-            semaphore: semaphore
-        )
-    }
-    
-    @discardableResult
-    func lockPost(
-        id: Int,
-        lock: Bool,
-        semaphore: UInt? = nil
-    ) async throws -> Post2 {
-        let snapshot = try await repository.lockPost(id: id, lock: lock)
-        return await caches.post2.getModel(
-            api: self,
-            from: snapshot,
-            semaphore: semaphore
-        )
     }
     
     @discardableResult

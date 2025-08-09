@@ -31,13 +31,13 @@ public enum ModlogEntryType: CaseIterable {
         case .modLockPost: .lockPost
         case .modFeaturePost: .pinPost
         case .modRemoveComment: .removeComment
-        case .modRemoveCommunity: .removeCommunity
         case .modBanFromCommunity: .banPersonFromCommunity
-        case .modAddCommunity: .updatePersonModeratorStatus
+        case .modAddToCommunity, .modAddCommunity: .updatePersonModeratorStatus
         case .modTransferCommunity: .transferCommunityOwnership
-        case .modAdd: .updatePersonAdminStatus
-        case .modBan: .banPersonFromInstance
         case .modHideCommunity: .hideCommunity
+        case .adminAdd, .modAdd: .updatePersonAdminStatus
+        case .adminBan, .modBan: .banPersonFromInstance
+        case .adminRemoveCommunity, .modRemoveCommunity: .removeCommunity
         case .adminPurgePerson: .purgePerson
         case .adminPurgeCommunity: .purgeCommunity
         case .adminPurgePost: .purgePost

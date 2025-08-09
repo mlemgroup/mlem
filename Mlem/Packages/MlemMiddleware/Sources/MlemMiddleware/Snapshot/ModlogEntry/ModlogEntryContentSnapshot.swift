@@ -126,11 +126,14 @@ public enum ModlogEntryContentSnapshot {
         self = .purgeComment(reason: view.adminPurgeComment.reason)
     }
     
-    public init(from view: LemmyModRemoveCommunityView) throws(ApiClientError) {
+    public init(from view: LemmyAdminRemoveCommunityView) throws(ApiClientError) {
+        guard let inner = view.adminRemoveCommunity ?? view.modRemoveCommunity else {
+            throw .responseMissingRequiredData("LemmyAdminRemoveCommunityView inner")
+        }
         self = try .removeCommunity(
             .init(from: view.community),
-            removed: view.modRemoveCommunity.removed,
-            reason: view.modRemoveCommunity.reason
+            removed: inner.removed,
+            reason: inner.reason
         )
     }
     
@@ -156,24 +159,30 @@ public enum ModlogEntryContentSnapshot {
         )
     }
     
-    public init(from view: LemmyModAddCommunityView) throws(ApiClientError) {
+    public init(from view: LemmyModAddToCommunityView) throws(ApiClientError) {
         guard let moddedPerson = view.otherPerson ?? view.moddedPerson else {
             throw .responseMissingRequiredData("LemmyModAddCommunityView otherPerson")
+        }
+        guard let inner = view.modAddToCommunity ?? view.modAddCommunity else {
+            throw .responseMissingRequiredData("LemmyModAddToCommunityView inner")
         }
         self = try .updatePersonModeratorStatus(
             person: .init(from: moddedPerson),
             community: .init(from: view.community),
-            appointed: !view.modAddCommunity.removed
+            appointed: !inner.removed
         )
     }
     
-    public init(from view: LemmyModAddView) throws(ApiClientError) {
+    public init(from view: LemmyAdminAddView) throws(ApiClientError) {
         guard let moddedPerson = view.otherPerson ?? view.moddedPerson else {
             throw .responseMissingRequiredData("LemmyModAddView otherPerson")
         }
+        guard let inner = view.adminAdd ?? view.modAdd else {
+            throw .responseMissingRequiredData("LemmyAdminAddView inner")
+        }
         self = try .updatePersonAdminStatus(
             person: .init(from: moddedPerson),
-            appointed: !view.modAdd.removed
+            appointed: !inner.removed
         )
     }
     
@@ -190,15 +199,18 @@ public enum ModlogEntryContentSnapshot {
         )
     }
     
-    public init(from view: LemmyModBanView) throws(ApiClientError) {
+    public init(from view: LemmyAdminBanView) throws(ApiClientError) {
         guard let bannedPerson = view.otherPerson ?? view.bannedPerson else {
             throw .responseMissingRequiredData("LemmyModBanView otherPerson")
         }
+        guard let inner = view.adminBan ?? view.modBan else {
+            throw .responseMissingRequiredData("LemmyAdminBanView inner")
+        }
         self = try .banPersonFromInstance(
             person: .init(from: bannedPerson),
-            banned: view.modBan.banned,
-            reason: view.modBan.reason,
-            expires: view.modBan.expires
+            banned: inner.banned,
+            reason: inner.reason,
+            expires: inner.expires
         )
     }
     

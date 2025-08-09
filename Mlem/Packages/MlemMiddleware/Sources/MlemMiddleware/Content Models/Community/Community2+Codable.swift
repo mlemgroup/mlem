@@ -36,7 +36,6 @@ public extension Community2 {
             // problem and we'll have to work around it somehow
             bannedFromCommunity: api.myPerson?.isBannedFromCommunity(self),
             communityActions: nil,
-            instanceActions: nil,
             canMod: false,
             postTags: nil
         )
