@@ -56,7 +56,14 @@ extension ExpandedPostView {
     }
     
     var showLoadingSymbol: Bool {
-        !(scrollTargetedComment == nil || (post is any Post3Providing && scrolledToScrollTargetedComment))
+        // Don't need to show ProgressView if there's nothing to scroll to
+        if scrollTargetedComment == nil { return false }
+        
+        // If there's an error, we don't want to cover up the error view with the ProgressView
+        if contentLoaderError != nil { return false }
+        
+        let hasFinishedLoading = !(post is any Post3Providing && scrolledToScrollTargetedComment)
+        return hasFinishedLoading
     }
     
     func showScrollToLastVisitButton(post: any Post) -> Bool {
