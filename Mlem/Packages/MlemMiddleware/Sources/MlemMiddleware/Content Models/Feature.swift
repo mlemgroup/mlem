@@ -48,4 +48,5 @@ public enum Feature: Hashable {
     case commentTreeSortedByDepth
     case uploadImages
     case editAccountSettings
+    case commentSearch
 }
