@@ -39,7 +39,7 @@ public extension LemmyConnection {
              .logIn, .signUp, .viewCommunityActiveUsers, .commentTreeSortedByDepth, .uploadImages,
              .editAccountSettings, .viewMentionsAndPrivateMessages, .viewReports, .editAndDeletePrivateMessages,
              .reportPrivateMessages, .adminsCanViewVotes, .purgeContent, .removeCommunity, .banFromInstance,
-             .banFromCommunity, .editModeratorList:
+             .banFromCommunity, .editModeratorList, .commentSearch:
             true
         }
     }
