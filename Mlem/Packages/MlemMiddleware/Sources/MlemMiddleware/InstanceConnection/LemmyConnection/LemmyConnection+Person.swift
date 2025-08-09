@@ -185,7 +185,7 @@ public extension LemmyConnection {
         savedOnly: Bool? = nil,
         communityId: Int? = nil
     ) async throws -> (person: Person3Snapshot, posts: [Post2Snapshot], comments: [Comment2Snapshot]) {
-        let response = try await performingForEndpoint { endpoint in
+        let response = try await performingForEndpoint { _ in
             LemmyReadPersonRequest(
                 endpoint: .v3,
                 personId: id,
@@ -242,7 +242,7 @@ public extension LemmyConnection {
         var blocks: BlockListSnapshot?
         if let myUser = response.myUser {
             person = try .init(from: myUser)
-            blocks = .init(from: myUser)
+            blocks = try .init(from: myUser)
         }
         
         return try (
@@ -295,7 +295,7 @@ public extension LemmyConnection {
         showDownvotes: Bool?,
         showUpvotePercentage: Bool?
     ) async throws {
-        let response = try await performingForEndpoint { endpoint in
+        let response = try await performingForEndpoint { _ in
             LemmySaveUserSettingsRequest(
                 endpoint: .v3,
                 showNsfw: showNsfw,
@@ -329,6 +329,7 @@ public extension LemmyConnection {
                 showUpvotePercentage: showUpvotePercentage,
                 defaultPostSortType: nil,
                 defaultPostTimeRangeSeconds: nil,
+                defaultItemsPerPage: nil,
                 defaultCommentSortType: nil,
                 blockingKeywords: nil,
                 enablePrivateMessages: nil,

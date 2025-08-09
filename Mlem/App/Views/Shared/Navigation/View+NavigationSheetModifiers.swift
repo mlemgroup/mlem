@@ -6,8 +6,11 @@
 //
 
 import SwiftUI
+import Theming
 
 private struct NavigationSheetModifier: ViewModifier {
+    @Setting(\.appearance_palette) var colorPalette
+    
     let nextLayer: NavigationLayer?
     let contentPickerTracker_: () -> NavigationModel.ContentPickerTracker?
     let isTopSheet: Bool
@@ -82,6 +85,7 @@ private struct NavigationSheetModifier: ViewModifier {
                     }
                 }
             )
+            .accentColor(ThemedColor.themedAccent.resolve(with: colorPalette.palette)) // deprecated, but .tint colors menu buttons
     }
     
     var activityViewController: UIActivityViewController {

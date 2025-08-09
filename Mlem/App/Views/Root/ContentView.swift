@@ -65,7 +65,7 @@ struct ContentView: View {
                     shareInfo: .init(get: { navigationModel.shareInfo }, set: { navigationModel.shareInfo = $0 }),
                     contentPickerTracker: navigationModel.contentPickerTracker
                 )
-                .tint(.themedAccent)
+                .accentColor(ThemedColor.themedAccent.resolve(with: colorPalette.palette)) // deprecated, but .tint colors menu buttons
                 .palette(colorPalette.palette)
                 .environment(tabReselectTracker)
                 .environment(appState)

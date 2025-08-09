@@ -60,7 +60,7 @@ public extension LemmyConnection {
         captchaAnswer: String?,
         applicationQuestionResponse: String?
     ) async throws -> SignUpResponse {
-        let response = try await performingForEndpoint { endpoint in
+        let response = try await performingForEndpoint { _ in
             LemmyRegisterRequest(
                 endpoint: .v3,
                 username: username,
@@ -131,7 +131,7 @@ public extension LemmyConnection {
         return try (
             people: myUser.personBlocks.map { try .init(from: $0.target) },
             communities: myUser.communityBlocks.map { try .init(from: $0.community) },
-            instances: myUser.instanceBlocks.compactMap(\.site).map { try .init(from: $0) }
+            instances: myUser.instanceBlocks?.compactMap(\.site).map { try .init(from: $0) } ?? [] // TODO: Lemmy 1.0
         )
     }
     

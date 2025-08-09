@@ -33,7 +33,6 @@ extension Comment2 {
             communityActions: nil,
             commentActions: nil,
             personActions: nil,
-            instanceActions: nil,
             postTags: nil,
             canMod: nil,
             creatorBanned: nil
