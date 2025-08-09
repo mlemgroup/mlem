@@ -228,10 +228,10 @@ public extension LemmyConnection {
             switch endpoint {
             case .v3:
                 let request = LemmyMarkPostAsReadRequest(endpoint: .v3, postId: nil, postIds: Array(ids), read: true)
-                try await perform(request)
+                try await self.perform(request)
             case .v4:
                 let request = LemmyMarkPostsAsReadRequest(postIds: Array(ids))
-                try await perform(request)
+                try await self.perform(request)
             }
         }
     }

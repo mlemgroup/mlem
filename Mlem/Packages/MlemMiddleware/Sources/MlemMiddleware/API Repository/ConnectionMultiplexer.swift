@@ -56,6 +56,7 @@ class ConnectionMultiplexer<Candidate> {
                         let value = try result.1.get()
                         // Cancel all other tasks once any one task succeeds
                         group.cancelAll()
+                        print("ConnectionMultiplexer: Selected \(result.0)")
                         self.selectedCandidate = result.0
                         self.ongoingTask = nil
                         return value

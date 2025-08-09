@@ -186,7 +186,7 @@ public extension LemmyConnection {
         savedOnly: Bool? = nil,
         communityId: Int? = nil
     ) async throws -> (person: Person3Snapshot, posts: [Post2Snapshot], comments: [Comment2Snapshot]) {
-        let response = try await performingForEndpoint { endpoint in
+        let response = try await performingForEndpoint { _ in
             LemmyReadPersonRequest(
                 endpoint: .v3,
                 personId: id,
@@ -212,8 +212,8 @@ public extension LemmyConnection {
         // The type of request doesn't matter - we're using `UnreadCountRequest` here.
         
         let response = try await processingForEndpoint { endpoint in
-            async let site = await perform(LemmyGetSiteRequest(endpoint: endpoint))
-            async let other = await perform(LemmyUnreadCountRequest(endpoint: endpoint))
+            async let site = await self.perform(LemmyGetSiteRequest(endpoint: endpoint))
+            async let other = await self.perform(LemmyUnreadCountRequest(endpoint: endpoint))
             do {
                 _ = try await other
             } catch ApiClientError.notLoggedIn {
@@ -296,7 +296,7 @@ public extension LemmyConnection {
         showDownvotes: Bool?,
         showUpvotePercentage: Bool?
     ) async throws {
-        let response = try await performingForEndpoint { endpoint in
+        let response = try await performingForEndpoint { _ in
             LemmySaveUserSettingsRequest(
                 endpoint: .v3,
                 showNsfw: showNsfw,

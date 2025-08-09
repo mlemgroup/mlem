@@ -43,12 +43,12 @@ private func _handleError(
         print("☠️ ERROR ☠️")
         print("📝 -> \(error.localizedDescription)")
         if let error = error as? ApiClientError {
-            print("     \(error.description)")
+            print("     \(String(describing: error))")
         }
         print("📂 -> \(file) | \(function) | line: \(line)")
     #endif
     
-    let location: String = "\(file), \(function):\(line)"
+    let location = "\(file), \(function):\(line)"
     
     Task {
         await ErrorsTracker.main.addError(error, location: location)
