@@ -101,8 +101,12 @@ public class LemmyConnection: InstanceConnection {
     func performingForEndpoint<Request: RestRequest>(
         _ requestGenerator: @escaping (SiteVersion.EndpointVersion) async throws -> Request
     ) async throws -> Request.Response {
-        try await endpointMultiplexer.perform { endpoint in
-            try await self.perform(requestGenerator(endpoint))
+        do {
+            return try await endpointMultiplexer.perform { endpoint in
+                try await self.perform(requestGenerator(endpoint))
+            }
+        } catch ConnectionMultiplexerError.allConnectionsFailed {
+            throw ApiClientError.serverError(statusCode: 404)
         }
     }
     
@@ -111,8 +115,12 @@ public class LemmyConnection: InstanceConnection {
     func processingForEndpoint<Response>(
         _ callback: @escaping (SiteVersion.EndpointVersion) async throws -> Response
     ) async throws -> Response {
-        try await endpointMultiplexer.perform { endpoint in
-            try await callback(endpoint)
+        do {
+            return try await endpointMultiplexer.perform { endpoint in
+                try await callback(endpoint)
+            }
+        } catch ConnectionMultiplexerError.allConnectionsFailed {
+            throw ApiClientError.serverError(statusCode: 404)
         }
     }
     

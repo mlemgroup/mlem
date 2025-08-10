@@ -94,8 +94,12 @@ class ApiRepository {
         function: String = #function,
         line: Int = #line
     ) async throws -> T {
-        try await connectionMultiplexer.perform { wrapper in
-            try await callback(wrapper.wrappedValue)
+        do {
+            return try await connectionMultiplexer.perform { wrapper in
+                try await callback(wrapper.wrappedValue)
+            }
+        } catch ConnectionMultiplexerError.allConnectionsFailed {
+            throw ApiClientError.unableToDetermineSoftware
         }
     }
 }

@@ -7,6 +7,10 @@
 
 import Foundation
 
+enum ConnectionMultiplexerError: Error {
+    case allConnectionsFailed
+}
+
 class ConnectionMultiplexer<Candidate> {
     private var ongoingTask: Task<Any, Error>?
     
@@ -69,7 +73,7 @@ class ConnectionMultiplexer<Candidate> {
                     }
                 }
                 
-                throw ApiClientError.unableToDetermineSoftware
+                throw ConnectionMultiplexerError.allConnectionsFailed
             }
         }
         
