@@ -195,7 +195,7 @@ public extension LemmyConnection {
     ) async throws -> [Post2Snapshot] {
         let response = try await performingForEndpoint { endpoint in
             LemmySearchRequest(
-                endpoint: .v3,
+                endpoint: endpoint,
                 q: query,
                 communityId: communityId,
                 communityName: nil,

@@ -21,12 +21,17 @@ public class LemmyConnection: InstanceConnection {
         let siteVersion: SiteVersion
         let myPersonId: Int?
     }
+    
+    struct RawContext {
+        let site: LemmyGetSiteResponse
+        let myUser: LemmyMyUserInfo?
+    }
 
     public let baseUrl: URL
     public var token: String?
     
     private var endpointMultiplexer: ConnectionMultiplexer<SiteVersion.EndpointVersion> = .init { [.v3, .v4] }
-    private(set) var contextDataManager: SharedTaskManager<Context, LemmyGetSiteResponse> = .init()
+    private(set) var contextDataManager: SharedTaskManager<Context, RawContext> = .init()
 
     public var fetchedVersion: SiteVersion? {
         contextDataManager.fetchedValue?.siteVersion
@@ -57,10 +62,10 @@ public class LemmyConnection: InstanceConnection {
         self.baseUrl = baseUrl
         self.token = token
         contextDataManager.fetchTask = {
-            try await self.rawGetMyPerson()
+            try await self.getRawContext()
         }
         contextDataManager.createValue = { response in
-            .init(siteVersion: .init(response.version), myPersonId: response.myUser?.localUserView.person.id)
+            .init(siteVersion: .init(response.site.version), myPersonId: response.myUser?.localUserView.person.id)
         }
     }
 

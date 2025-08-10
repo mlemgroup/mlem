@@ -185,9 +185,9 @@ public extension LemmyConnection {
         savedOnly: Bool? = nil,
         communityId: Int? = nil
     ) async throws -> (person: Person3Snapshot, posts: [Post2Snapshot], comments: [Comment2Snapshot]) {
-        let response = try await performingForEndpoint { _ in
+        let response = try await performingForEndpoint { endpoint in
             LemmyReadPersonRequest(
-                endpoint: .v3,
+                endpoint: endpoint,
                 personId: id,
                 username: nil,
                 sort: sort.legacyApiSortType,
@@ -204,50 +204,18 @@ public extension LemmyConnection {
         )
     }
     
-    // Returns a raw API type. For use inside LemmyConnection only
-    internal func rawGetMyPerson() async throws -> LemmyGetSiteResponse {
-        // Inconveniently, PieFed offers the `api/v3/site` endpoint in an attempt to look like a Lemmy instance.
-        // We need to check that this *isn't* a PieFed instance, which we can do by making a second request.
-        // The type of request doesn't matter - we're using `UnreadCountRequest` here.
-        
-        let response = try await processingForEndpoint { endpoint in
-            async let site = await self.perform(LemmyGetSiteRequest(endpoint: endpoint))
-            async let other = await self.perform(LemmyUnreadCountRequest(endpoint: endpoint))
-            do {
-                _ = try await other
-            } catch ApiClientError.notLoggedIn {
-                // no-op
-            }
-            return try await site
-        }
-        return response
-    }
-    
-    // Calls rawGetMyPerson, but if there's already a task running in the `contextDataManager` uses that instead.
-    internal func rawGetMyPersonWithContext() async throws -> LemmyGetSiteResponse {
-        if let ongoingTask = contextDataManager.ongoingTask {
-            return try await ongoingTask.result.get()
-        } else {
-            let task = Task { try await rawGetMyPerson() }
-            Task.detached {
-                _ = try await self.contextDataManager.getValue(task: task)
-            }
-            return try await task.result.get()
-        }
-    }
-    
     func getMyPerson() async throws -> (person: Person4Snapshot?, instance: Instance3Snapshot, blocks: BlockListSnapshot?) {
-        let response = try await rawGetMyPersonWithContext()
+        let rawContext = try await getRawContextWithCaching()
         var person: Person4Snapshot?
         var blocks: BlockListSnapshot?
-        if let myUser = response.myUser {
+        if let myUser = rawContext.myUser {
             person = try .init(from: myUser)
             blocks = try .init(from: myUser)
         }
         
         return try (
             person: person,
-            instance: .init(from: response),
+            instance: .init(from: rawContext.site),
             blocks: blocks
         )
     }
@@ -295,9 +263,9 @@ public extension LemmyConnection {
         showDownvotes: Bool?,
         showUpvotePercentage: Bool?
     ) async throws {
-        let response = try await performingForEndpoint { _ in
+        let response = try await performingForEndpoint { endpoint in
             LemmySaveUserSettingsRequest(
-                endpoint: .v3,
+                endpoint: endpoint,
                 showNsfw: showNsfw,
                 blurNsfw: blurNsfw,
                 autoExpand: autoExpand,

@@ -30,7 +30,7 @@ public enum SortTimeRange: Hashable, Sendable {
     // This should only be used internally within ApiClient
     var timeRangeSeconds: Int {
         switch self {
-        case .allTime: .max
+        case .allTime: 2_147_483_647 // This is the upper bound of an i32 in Rust; going higher than this causes an error
         case let .limited(value): Int(value)
         }
     }
