@@ -79,7 +79,7 @@ struct MarkdownWithLinkList: View {
                 Button {
                     withAnimation {
                         linksCollapsed = true
-                        scrollProxy?.scrollTo(2, anchor: .top)
+                        scrollProxy?.scrollTo(2)
                     }
                 } label: {
                     FooterLinkView(title: String(localized: "Hide links"), subtitle: nil)
