@@ -8,6 +8,7 @@
 import Foundation
 import MlemMiddleware
 import SwiftUI
+import Theming
 
 struct EndOfFeedViewContent {
     // This is a `LocalizedStringResource` because different languages
@@ -96,6 +97,7 @@ struct EndOfFeedView: View {
                                 }
                             }
                         }
+                        .tint(.themedAccent)
                         .buttonStyle(.bordered)
                     } else {
                         Group {
