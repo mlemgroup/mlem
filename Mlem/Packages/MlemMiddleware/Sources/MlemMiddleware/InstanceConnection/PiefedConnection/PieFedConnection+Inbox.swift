@@ -121,7 +121,7 @@ public extension PieFedConnection {
     
     @discardableResult
     func deleteMessage(id: Int, delete: Bool) async throws -> Message2Snapshot {
-        let request = PieFedDeletePrivateMessageRequest(privateMessageId: id, deleted: delete)
+        let request = PieFedDeletePrivateMessageRequest(messageId: id, deleted: delete)
         let response = try await perform(request)
         return try .init(from: response.privateMessageView)
     }
