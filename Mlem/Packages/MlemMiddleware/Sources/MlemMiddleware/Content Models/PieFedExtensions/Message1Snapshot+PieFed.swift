@@ -18,6 +18,13 @@ public extension Message1Snapshot {
         self.content = message.content
         self.updated = message.updated
         self.read = message.read
-        self.deleted = message.deleted
+        
+        var deleted = message.deleted
+        // This is required on PieFed 1.1. It *should* no longer be necessary
+        // from PieFed 1.2 onwards. Check to be sure though
+        if message.content == "Message Deleted" {
+            deleted = true
+        }
+        self.deleted = deleted
     }
 }

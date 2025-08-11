@@ -13,14 +13,24 @@ extension DeletableProviding {
             toggleDeleted { status in
                 switch status {
                 case .success:
-                    ToastModel.main.add(
-                        .undoable(
-                            "Deleted",
-                            icon: .general.delete,
-                            callback: { self.updateDeleted(false, callback: nil) },
-                            color: .themedNegative
+                    if self is any Message1Providing, !(self.api.supportsOrNil(.undeletePrivateMessages) ?? true) {
+                        ToastModel.main.add(
+                            .basic(
+                                "Deleted",
+                                icon: .general.delete,
+                                color: .themedNegative
+                            )
                         )
-                    )
+                    } else {
+                        ToastModel.main.add(
+                            .undoable(
+                                "Deleted",
+                                icon: .general.delete,
+                                callback: { self.updateDeleted(false, callback: nil) },
+                                color: .themedNegative
+                            )
+                        )
+                    }
                 case .failure:
                     ToastModel.main.add(.failure("Failed to delete post!"))
                 }
