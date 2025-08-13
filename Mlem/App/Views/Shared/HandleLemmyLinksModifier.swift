@@ -148,7 +148,11 @@ struct HandleLemmyLinksModifier: ViewModifier {
             navigation.push(.community(CommunityStub(api: appState.firstApi, url: url)))
             return true
         case "post":
-            if components.count == 2 {
+            if let fragment = url.fragment()?.trimmingPrefix("comment_") {
+                let newUrl = url.removingPathComponents().appendingPathComponent("comment/\(fragment)")
+                navigation.push(.comment(CommentStub(api: appState.firstApi, url: newUrl)))
+                return true
+            } else if components.count == 2 {
                 navigation.push(.post(PostStub(api: appState.firstApi, url: url)))
                 return true
             } else if components.count == 3 {
