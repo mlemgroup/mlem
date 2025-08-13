@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Comment1Snapshot: CacheIdentifiable {
+public struct Comment1Snapshot: CacheIdentifiable, CommentSnapshotProviding {
     // Won't change.
     public let actorId: ActorIdentifier
     public let id: Int
@@ -26,4 +26,16 @@ public struct Comment1Snapshot: CacheIdentifiable {
     public let removed: Bool
     
     public var cacheId: Int { id }
+    
+    public func merge(with snapshot: any CommentSnapshotProviding) -> any CommentSnapshotProviding {
+        if snapshot is Comment1Snapshot {
+            return self
+        }
+        if var snapshot2 = snapshot as? Comment2Snapshot {
+            snapshot2.comment = self
+            return snapshot2
+        }
+        assertionFailure("Unrecognized snapshot")
+        return self
+    }
 }
