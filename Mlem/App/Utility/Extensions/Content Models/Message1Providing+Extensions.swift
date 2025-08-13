@@ -70,7 +70,9 @@ extension Message1Providing {
                 if let editCallback {
                     editAction(appState: appState, callback: editCallback)
                 }
-                deleteAction(appState: appState, feedback: feedback)
+                if (api.supportsOrNil(.undeletePrivateMessages) ?? true) || !deleted {
+                    deleteAction(appState: appState, feedback: feedback)
+                }
             }
         } else {
             if api.supportsOrNil(.reportPrivateMessages) ?? true {
