@@ -20,7 +20,7 @@ public extension Instance1Snapshot {
         self.publicKey = ""
         
         self.displayName = site.name
-        self.description = site.sidebar
+        self.description = site.sidebarMd ?? site.sidebar
         self.shortDescription = site.description
         self.avatar = site.icon
         self.banner = nil

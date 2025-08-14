@@ -9,7 +9,9 @@ import Foundation
 
 public extension PieFedConnection {
     func getComment(id: Int) async throws -> Comment2Snapshot {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedGetCommentRequest(id: id)
+        let response = try await perform(request)
+        return try .init(from: response.commentView)
     }
     
     func getComment(url: URL) async throws -> Comment2Snapshot {

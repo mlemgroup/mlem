@@ -33,10 +33,8 @@ public extension PieFedConnection {
             version >= sort.minimumVersion
         case let .sortTimeRange(timeRange):
             version >= timeRange.minimumVersion
-        case .viewCommunityActiveUsers:
-            version >= .v1_0_1
-        case .viewMentionsAndPrivateMessages:
-            version >= .v1_0_1
+        case .viewCommunityActiveUsers, .viewMentionsAndPrivateMessages, .editAndDeletePrivateMessages:
+            version >= .v1_1_0
         default: false
         }
     }
@@ -44,7 +42,7 @@ public extension PieFedConnection {
 
 private extension SiteVersion {
     static let v1_0_0: Self = .init("1.0.0")
-    static let v1_0_1: Self = .init("1.0.1")
+    static let v1_1_0: Self = .init("1.1.0")
 }
 
 private extension PostSortType {
@@ -88,7 +86,7 @@ private extension SearchSortType {
 private extension SortTimeRange {
     var minimumVersion: SiteVersion {
         switch self {
-        case .allTime: .v1_0_1
+        case .allTime: .v1_1_0
         case let .limited(timeInterval): LegacySortTimeRangeLimit(timeInterval)?.minimumVersion ?? .infinity
         }
     }
@@ -97,7 +95,7 @@ private extension SortTimeRange {
 private extension LegacySortTimeRangeLimit {
     var minimumVersion: SiteVersion {
         switch self {
-        case .threeMonth, .sixMonth, .nineMonth, .year: .v1_0_1
+        case .threeMonth, .sixMonth, .nineMonth, .year: .v1_1_0
         default: .zero
         }
     }

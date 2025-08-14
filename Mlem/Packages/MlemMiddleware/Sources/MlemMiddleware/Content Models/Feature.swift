@@ -36,6 +36,7 @@ public enum Feature: Hashable {
     case viewMentionsAndPrivateMessages
     
     case editAndDeletePrivateMessages
+    case undeletePrivateMessages
     case reportPrivateMessages
     case purgeContent
     case removeCommunity
@@ -48,4 +49,5 @@ public enum Feature: Hashable {
     case commentTreeSortedByDepth
     case uploadImages
     case editAccountSettings
+    case commentSearch
 }
