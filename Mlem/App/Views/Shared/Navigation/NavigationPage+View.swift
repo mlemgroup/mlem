@@ -28,6 +28,10 @@ extension NavigationPage {
             OnboardingView()
         case let .feeds(feedSelection):
             FeedsView(feedSelection: feedSelection)
+        case .savedFeed:
+            SavedFeedView()
+        case .historyFeed:
+            HistoryFeedView()
         case let .community(community, visitContext):
             CommunityView(community: community, visitContext: visitContext)
         case .profile:

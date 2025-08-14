@@ -1581,6 +1581,9 @@
         }
       }
     },
+    "Browse" : {
+
+    },
     "by %@" : {
       "localizations" : {
         "fr" : {
@@ -3831,6 +3834,9 @@
       }
     },
     "High" : {
+
+    },
+    "History" : {
 
     },
     "Hot" : {
