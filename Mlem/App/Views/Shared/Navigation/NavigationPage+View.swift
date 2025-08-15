@@ -32,6 +32,12 @@ extension NavigationPage {
             SavedFeedView()
         case .historyFeed:
             HistoryFeedView()
+        case .topCommunities:
+            TopCommunitiesListView()
+        case .topPeople:
+            TopPeopleListView()
+        case .topInstances:
+            TopInstancesListView()
         case let .community(community, visitContext):
             CommunityView(community: community, visitContext: visitContext)
         case .profile:

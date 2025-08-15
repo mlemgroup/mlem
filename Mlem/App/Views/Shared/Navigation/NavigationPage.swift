@@ -18,6 +18,7 @@ enum NavigationPage: Hashable {
     case feeds(_ selection: FeedSelection? = nil)
     case savedFeed
     case historyFeed
+    case topCommunities, topPeople, topInstances
     case profile, inbox, search
     case quickSwitcher
     case post(

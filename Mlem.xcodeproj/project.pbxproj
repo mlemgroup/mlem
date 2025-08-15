@@ -36,6 +36,9 @@
 		0311ADB72E4DF49800EC3120 /* SearchHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0311ADB62E4DF49800EC3120 /* SearchHomeView.swift */; };
 		0311ADB92E4E0E0800EC3120 /* SavedFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0311ADB82E4E0E0800EC3120 /* SavedFeedView.swift */; };
 		0311ADBB2E4E103A00EC3120 /* HistoryFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0311ADBA2E4E103A00EC3120 /* HistoryFeedView.swift */; };
+		0311ADBD2E4F668900EC3120 /* TopCommunitiesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0311ADBC2E4F668900EC3120 /* TopCommunitiesListView.swift */; };
+		0311ADBF2E4F68D000EC3120 /* TopPeopleListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0311ADBE2E4F68D000EC3120 /* TopPeopleListView.swift */; };
+		0311ADC12E4F693B00EC3120 /* TopInstancesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0311ADC02E4F693B00EC3120 /* TopInstancesListView.swift */; };
 		03134A502BEAD245002662CC /* NavigationLink+NavigationPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03134A4F2BEAD245002662CC /* NavigationLink+NavigationPage.swift */; };
 		03134A522BEAD69F002662CC /* SettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03134A512BEAD69F002662CC /* SettingsPage.swift */; };
 		03134A582BEC1C46002662CC /* AccountListSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03134A572BEC1C46002662CC /* AccountListSettingsView.swift */; };
@@ -576,6 +579,9 @@
 		0311ADB62E4DF49800EC3120 /* SearchHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHomeView.swift; sourceTree = "<group>"; };
 		0311ADB82E4E0E0800EC3120 /* SavedFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedFeedView.swift; sourceTree = "<group>"; };
 		0311ADBA2E4E103A00EC3120 /* HistoryFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryFeedView.swift; sourceTree = "<group>"; };
+		0311ADBC2E4F668900EC3120 /* TopCommunitiesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopCommunitiesListView.swift; sourceTree = "<group>"; };
+		0311ADBE2E4F68D000EC3120 /* TopPeopleListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopPeopleListView.swift; sourceTree = "<group>"; };
+		0311ADC02E4F693B00EC3120 /* TopInstancesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopInstancesListView.swift; sourceTree = "<group>"; };
 		03134A4F2BEAD245002662CC /* NavigationLink+NavigationPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationLink+NavigationPage.swift"; sourceTree = "<group>"; };
 		03134A512BEAD69F002662CC /* SettingsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPage.swift; sourceTree = "<group>"; };
 		03134A572BEC1C46002662CC /* AccountListSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListSettingsView.swift; sourceTree = "<group>"; };
@@ -1143,6 +1149,9 @@
 			isa = PBXGroup;
 			children = (
 				0311ADB62E4DF49800EC3120 /* SearchHomeView.swift */,
+				0311ADBC2E4F668900EC3120 /* TopCommunitiesListView.swift */,
+				0311ADBE2E4F68D000EC3120 /* TopPeopleListView.swift */,
+				0311ADC02E4F693B00EC3120 /* TopInstancesListView.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -2730,6 +2739,7 @@
 				03A630F12D497674009A47A6 /* ShieldsBadgeView.swift in Sources */,
 				CD4D58EB2B86E63300B82964 /* AssociatedColor.swift in Sources */,
 				CD4B66DA2DCE809D00D28EB4 /* InstanceUptimeView+Views.swift in Sources */,
+				0311ADBF2E4F68D000EC3120 /* TopPeopleListView.swift in Sources */,
 				CD3153072C38421B00BC5FBE /* View+LoadFeed.swift in Sources */,
 				039F588F2C7B599800C61658 /* ThemeLabel.swift in Sources */,
 				037029A32D6B9B8400B749DF /* ContentView+Tab.swift in Sources */,
@@ -2790,6 +2800,7 @@
 				0397D4932C6CE87E002C6CDC /* PostEditorTargetView.swift in Sources */,
 				034690992D105DFD0073E664 /* InboxView+Types.swift in Sources */,
 				03F6BDB12D52AA00006A425E /* CommunityMockType+Realistic.swift in Sources */,
+				0311ADC12E4F693B00EC3120 /* TopInstancesListView.swift in Sources */,
 				033F84492D18D1F400D87A9E /* MessageFeedView.swift in Sources */,
 				030050D52D10AE30002B1E99 /* Report+Extensions.swift in Sources */,
 				0369B3562BFA6824001EFEDF /* InboxView.swift in Sources */,
@@ -2809,6 +2820,7 @@
 				CD4BAD352B4B2C0B00A1E726 /* FeedsView.swift in Sources */,
 				03A630ED2D497005009A47A6 /* ExternalLinkSettingsView.swift in Sources */,
 				0377BE9F2DEA361600E38593 /* OnboardingModel.swift in Sources */,
+				0311ADBD2E4F668900EC3120 /* TopCommunitiesListView.swift in Sources */,
 				03049A1E2C6508F400FF6889 /* RegistrationMode+Extensions.swift in Sources */,
 				037DE0752CE023E3007F7B92 /* BlockListView.swift in Sources */,
 				CD3FC6802D4A75090088E63B /* CounterApperance+StaticValues.swift in Sources */,
@@ -3165,7 +3177,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = "local build";
 				DEVELOPMENT_ASSET_PATHS = "\"Mlem/Preview Content\"";
-				DEVELOPMENT_TEAM = V4747CQLU2;
+				DEVELOPMENT_TEAM = 8B9GNJW88W;
 				ENABLE_PREVIEWS = YES;
 				EXCLUDED_SOURCE_FILE_NAMES = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -3186,7 +3198,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 2.2;
-				PRODUCT_BUNDLE_IDENTIFIER = com.sjmarf.mlem1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hanners.Mlem;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

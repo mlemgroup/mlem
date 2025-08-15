@@ -8428,6 +8428,9 @@
         }
       }
     },
+    "Top Communities" : {
+
+    },
     "Top of..." : {
       "localizations" : {
         "fr" : {
@@ -8487,6 +8490,9 @@
           }
         }
       }
+    },
+    "Trending Communities" : {
+
     },
     "Troll" : {
       "localizations" : {
