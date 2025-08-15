@@ -22,8 +22,6 @@ public extension LemmyConnection {
             )
         }
         
-        print(response)
-        
         // I actually don't think this is necessary - the login endpoint seems to throw these errors itself.
         // I suspect that `registrationCreated` and `verifyEmailSent` can only be true for the `LemmyLoginResponse`
         // that is returned when signing in. Nevertheless, I've included this just in case.
