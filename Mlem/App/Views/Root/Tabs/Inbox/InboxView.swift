@@ -37,8 +37,6 @@ struct InboxView: View {
     @State var modMailFeedLoader: ModMailFeedLoader
     
     @State var showRefreshPopup: Bool = false
-    @State var waitingOnMarkAllAsRead: Bool = false
-    @State var markAllAsReadTrigger: Bool = false
     
     init() {
         @Setting(\.behavior_internetSpeed) var internetSpeed
@@ -173,6 +171,7 @@ struct InboxView: View {
                 .frame(width: 0, height: 0)
                 .onPreferenceChange(ScrollOffsetKey.self, perform: { value in
                     if value != headerPinned {
+                        if #available(iOS 26, *), headerPinned { return }
                         headerPinned = value
                     }
                 })
