@@ -8,7 +8,7 @@
 import Foundation
 import Icons
 import MlemMiddleware
-import SwiftUICore
+import SwiftUI
 
 protocol InteractionBarConfiguration: Codable, Equatable {
     associatedtype ActionType: ActionTypeProviding
