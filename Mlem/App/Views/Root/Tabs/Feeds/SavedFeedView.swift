@@ -1,5 +1,5 @@
 //
-//  FeedsView.swift
+//  SavedFeedView.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2024-01-07.
@@ -32,10 +32,7 @@ struct SavedFeedView: View {
     init(feedSelection: FeedSelection? = nil) {
         // need to grab some stuff from app storage to initialize with
         @Setting(\.behavior_internetSpeed) var internetSpeed
-        @Setting(\.feed_showRead) var showReadPosts
-        @Setting(\.post_defaultSort) var defaultSort
         @Setting(\.post_size) var postSize
-        @Setting(\.feed_default) var defaultFeed
         
         if let firstUser = AppState.main.firstAccount as? UserAccount {
             _savedFeedLoader = .init(wrappedValue: .init(
@@ -56,9 +53,6 @@ struct SavedFeedView: View {
             .scrollContentBackground(.hidden)
             .conditionalNavigationTitle("Saved")
             .navigationBarTitleDisplayMode(.inline)
-            .onChange(of: showRead) {
-                scrollToTopTrigger.toggle()
-            }
             .outdatedFeedPopup(feedLoader: savedFeedLoader)
             .environment(\.feedContext, .saved)
     }
