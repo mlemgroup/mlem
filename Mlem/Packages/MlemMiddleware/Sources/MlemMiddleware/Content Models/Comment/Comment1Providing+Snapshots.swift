@@ -8,9 +8,9 @@
 extension Comment1Providing {
     public func snapshotUpdate(with snapshot: any CommentSnapshotProviding) async {
         if let comment2Snapshot = snapshot as? Comment2Snapshot {
-            snapshot1Update(with: comment2Snapshot.comment)
+            await snapshot1Update(with: comment2Snapshot.comment)
         } else if let comment1Snapshot = snapshot as? Comment1Snapshot {
-            snapshotUpdate(with: comment1Snapshot)
+            await snapshotUpdate(with: comment1Snapshot)
         } else {
             assertionFailure("Unrecognized comment snapshot")
         }
