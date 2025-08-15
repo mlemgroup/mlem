@@ -47,11 +47,16 @@ class UserSession: Session {
                 }
                 self.blocks = blocks
                 self.instance = instance
-                
+            } catch {
+                handleError(error)
+            }
+            
+            do {
                 self.unreadCount = try await api.getUnreadCount()
             } catch {
                 handleError(error)
             }
+            
             do {
                 try await self.api.getSubscriptionList()
             } catch {
