@@ -7,7 +7,7 @@
 
 import Foundation
 import Icons
-import SwiftUICore
+import SwiftUI
 import UIKit
 
 extension UIUserInterfaceStyle: Codable {
