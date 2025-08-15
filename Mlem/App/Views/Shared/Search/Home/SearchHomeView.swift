@@ -1,0 +1,145 @@
+//
+//  SearchHomeView.swift
+//  Mlem
+//
+//  Created by Sjmarf on 2025-08-14.
+//
+
+import ComponentViews
+import Icons
+import SwiftUI
+import Theming
+
+struct SearchHomeView: View {
+    @Environment(\.navigation) var navigation
+    
+    var body: some View {
+        VStack {
+            Spacer()
+                .frame(height: 30)
+            topRow
+            Text("Browse")
+                .font(.title)
+                .fontWeight(.semibold)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.top, 30)
+                .padding(.bottom, -4)
+            browseList
+        }
+        .padding(.horizontal, 16)
+    }
+    
+    @ViewBuilder
+    var topRow: some View {
+        HStack(spacing: 16) {
+            Button("Saved", icon: .lemmy.saved) {
+                navigation?.push(.savedFeed)
+            }
+            Button("History", icon: .general.time) {
+                navigation?.push(.historyFeed)
+            }
+        }
+        .buttonStyle(CapsuleButtonStyle())
+    }
+    
+    @ViewBuilder
+    var browseList: some View {
+        VStack(spacing: 16) {
+            ListRowButton(
+                title: "Communities",
+                icon: .lemmy.community,
+                destination: .topCommunities
+            )
+            .tint(.themedCommunityAccent)
+            ListRowButton(
+                title: "Users",
+                icon: .lemmy.person,
+                destination: .topPeople
+            )
+            .tint(.themedPersonAccent)
+            ListRowButton(
+                title: "Instances",
+                icon: .lemmy.instance,
+                destination: .topInstances
+            )
+            .tint(.themedColorfulAccent(1))
+        }
+    }
+    
+    @ViewBuilder
+    var browseGrid: some View {
+        LazyVGrid(columns: [.init(.flexible()), .init(.flexible())], spacing: 16) {
+            GridButton(title: "Top Communities", color: .themedCommunityAccent)
+            GridButton(title: "Trending Communities", color: .themedColorfulAccent(0))
+            GridButton(title: "Users", color: .themedPersonAccent)
+            GridButton(title: "Instances", color: .themedColorfulAccent(1))
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.horizontal, -4)
+    }
+}
+
+private struct ListRowButton: View {
+    @Environment(\.navigation) var navigation
+    
+    let title: LocalizedStringResource
+    let icon: Icon
+    let destination: NavigationPage
+    
+    var body: some View {
+        Button {
+            navigation?.push(destination)
+        } label: {
+            FormChevron {
+                HStack {
+                    Image(icon: icon)
+                        .symbolVariant(.fill)
+                        .foregroundStyle(.tint)
+                        .frame(minWidth: 30)
+                    Text(title)
+                }
+            }
+            .padding(16)
+            .frame(maxWidth: .infinity)
+            .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: 24))
+        }
+        .buttonStyle(.plain)
+    }
+}
+
+private struct GridButton: View {
+    @Environment(\.palette) var palette
+    
+    let title: LocalizedStringResource
+    let color: ThemedColor
+    
+    var body: some View {
+        ZStack {
+            Text(title)
+                .foregroundStyle(.themedContrastingLabel)
+                .fontWeight(.bold)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
+                .padding(.horizontal, 15)
+                .padding(.vertical, 10)
+        }
+        .aspectRatio(5 / 3, contentMode: .fit)
+        .frame(maxWidth: .infinity)
+        .background(color.resolve(with: palette).gradient)
+        .clipShape(.rect(cornerRadius: 16))
+        .padding(.horizontal, 4)
+        .onTapGesture {}
+    }
+}
+
+private struct CapsuleButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .foregroundStyle(.themedAccent)
+            .padding(.vertical, 10)
+            .fontWeight(.semibold)
+            .frame(maxWidth: .infinity)
+            .background(.themedSecondaryGroupedBackground, in: .capsule)
+            .symbolVariant(.fill)
+            .opacity(configuration.isPressed ? 0.5 : 1)
+    }
+}

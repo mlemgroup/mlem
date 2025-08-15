@@ -27,7 +27,6 @@ struct FeedsView: View {
     @ObservationIgnored @Dependency(\.persistenceRepository) private var persistenceRepository
     
     @State var postFeedLoader: AggregatePostFeedLoader?
-    @State var savedFeedLoader: PersonContentFeedLoader?
     
     @State var feedSelection: FeedSelection
 
@@ -38,11 +37,6 @@ struct FeedsView: View {
     }
     
     init(feedSelection: FeedSelection? = nil) {
-        // need to grab some stuff from app storage to initialize with
-        @Setting(\.behavior_internetSpeed) var internetSpeed
-        @Setting(\.feed_showRead) var showReadPosts
-        @Setting(\.post_defaultSort) var defaultSort
-        @Setting(\.post_size) var postSize
         @Setting(\.feed_default) var defaultFeed
         
         @Dependency(\.persistenceRepository) var persistenceRepository
@@ -60,17 +54,6 @@ struct FeedsView: View {
         }
         
         _feedSelection = .init(initialValue: initialFeedSelection)
-        
-        if let firstUser = AppState.main.firstAccount as? UserAccount {
-            _savedFeedLoader = .init(wrappedValue: .init(
-                api: AppState.main.firstApi,
-                pageSize: internetSpeed.pageSize,
-                userId: firstUser.id,
-                sortType: .new,
-                savedOnly: true,
-                prefetchingConfiguration: .forPostSize(postSize)
-            ))
-        }
     }
     
     var body: some View {
@@ -88,7 +71,7 @@ struct FeedsView: View {
             )
             .toolbar {
                 // SwiftUI complains if both this and the menu are in the same toolbar
-                if let postFeedLoader, feedSelection != .saved {
+                if let postFeedLoader {
                     FeedSortPicker(feedLoader: postFeedLoader, showTopTimescaleInIcon: true)
                 }
             }
@@ -111,25 +94,13 @@ struct FeedsView: View {
                 }
             }
             .task { await setupFeedLoader() }
-            .outdatedFeedPopup(feedLoader: {
-                if feedSelection == .saved, let savedFeedLoader {
-                    return savedFeedLoader
-                }
-                return postFeedLoader
-            }())
+            .outdatedFeedPopup(feedLoader: postFeedLoader)
             .environment(\.feedContext, feedSelection.feedContext)
             .onChange(of: feedSelection) { oldValue, _ in
                 guard oldValue != feedSelection else { return }
                 Task {
                     do {
-                        // clear whichever loader is now inactive and refresh/update active loader
-                        if feedSelection == .saved {
-                            await postFeedLoader?.clear()
-                            try await savedFeedLoader?.refresh(clearBeforeRefresh: false)
-                        } else {
-                            await savedFeedLoader?.clear()
-                            try await postFeedLoader?.changeFeedType(to: feedSelection.associatedApiType)
-                        }
+                        try await postFeedLoader?.changeFeedType(to: feedSelection.associatedApiType)
                     } catch {
                         handleError(error)
                     }
@@ -149,9 +120,7 @@ struct FeedsView: View {
                     UpdateBannerView(url: testflightUrl)
                         .padding([.horizontal, .bottom], Constants.main.standardSpacing)
                 }
-                if let savedFeedLoader, feedSelection == .saved {
-                    PersonContentGridView(feedLoader: savedFeedLoader, contentType: .constant(.all))
-                } else if let postFeedLoader {
+                if let postFeedLoader {
                     PostGridView(postFeedLoader: postFeedLoader)
                 }
             } header: {
