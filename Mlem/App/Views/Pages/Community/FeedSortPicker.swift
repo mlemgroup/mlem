@@ -157,7 +157,6 @@ struct FeedSortPicker: View {
             .presentationCornerRadius(18)
             .presentationCompactAdaptation(.popover)
         }
-        .frame(height: 80)
     }
     
     @ViewBuilder
