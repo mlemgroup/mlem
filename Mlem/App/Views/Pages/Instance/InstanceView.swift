@@ -109,15 +109,9 @@ struct InstanceView: View {
                 )
                 switch selectedTab {
                 case .about:
-                    if let description = instance.description {
-                        Markdown(description, configuration: .default(palette: palette))
-                            .padding(Constants.main.standardSpacing)
-                            .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
-                            .paletteBorder(cornerRadius: Constants.main.standardSpacing)
-                            .padding([.horizontal, .bottom], Constants.main.standardSpacing)
-                    }
+                    aboutTab(instance: instance)
                 case .communities:
-                    communities()
+                    communitiesTab()
                 case .details:
                     InstanceDetailsView(instance: instance)
                 case .administration:
@@ -184,7 +178,7 @@ struct InstanceView: View {
     }
     
     @ViewBuilder
-    func communities() -> some View {
+    func communitiesTab() -> some View {
         LazyVStack(spacing: 0) {
             SearchResultsView(results: communityLoader.items) { community in
                 CommunityListRow(

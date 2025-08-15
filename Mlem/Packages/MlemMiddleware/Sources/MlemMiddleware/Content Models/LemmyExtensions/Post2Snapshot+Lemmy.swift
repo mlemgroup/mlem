@@ -27,10 +27,16 @@ extension Post2Snapshot {
         
         self.creatorIsModerator = post.creatorIsModerator
         self.creatorBannedFromCommunity = post.creatorBannedFromCommunity
-        guard let creatorBlocked = post.creatorBlocked else {
-            throw .responseMissingRequiredData("LemmyPostView creatorBlocked")
+        
+        if let personActions = post.personActions {
+            self.creatorBlocked = personActions.blockedAt != nil
+        } else if let creatorBlocked = post.creatorBlocked {
+            self.creatorBlocked = creatorBlocked
+        } else {
+            // `personActions` is `nil` on Lemmy 1.0 for your own posts.
+            // Therefore we can set `creatorBlocked` to `false`.
+            self.creatorBlocked = false
         }
-        self.creatorBlocked = creatorBlocked
         
         self.creatorIsAdmin = post.creatorIsAdmin
 
