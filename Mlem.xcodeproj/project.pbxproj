@@ -33,6 +33,12 @@
 		030FF67D2BC8524500F6BFAC /* CustomTabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030FF67C2BC8524500F6BFAC /* CustomTabItem.swift */; };
 		030FF67F2BC8544700F6BFAC /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030FF67E2BC8544600F6BFAC /* CustomTabBarController.swift */; };
 		030FF6812BC859FD00F6BFAC /* CustomTabViewHostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030FF6802BC859FD00F6BFAC /* CustomTabViewHostingController.swift */; };
+		0311ADB72E4DF49800EC3120 /* SearchHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0311ADB62E4DF49800EC3120 /* SearchHomeView.swift */; };
+		0311ADB92E4E0E0800EC3120 /* SavedFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0311ADB82E4E0E0800EC3120 /* SavedFeedView.swift */; };
+		0311ADBB2E4E103A00EC3120 /* HistoryFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0311ADBA2E4E103A00EC3120 /* HistoryFeedView.swift */; };
+		0311ADBD2E4F668900EC3120 /* TopCommunitiesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0311ADBC2E4F668900EC3120 /* TopCommunitiesListView.swift */; };
+		0311ADBF2E4F68D000EC3120 /* TopPeopleListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0311ADBE2E4F68D000EC3120 /* TopPeopleListView.swift */; };
+		0311ADC12E4F693B00EC3120 /* TopInstancesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0311ADC02E4F693B00EC3120 /* TopInstancesListView.swift */; };
 		03134A502BEAD245002662CC /* NavigationLink+NavigationPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03134A4F2BEAD245002662CC /* NavigationLink+NavigationPage.swift */; };
 		03134A522BEAD69F002662CC /* SettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03134A512BEAD69F002662CC /* SettingsPage.swift */; };
 		03134A582BEC1C46002662CC /* AccountListSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03134A572BEC1C46002662CC /* AccountListSettingsView.swift */; };
@@ -571,6 +577,12 @@
 		030FF67C2BC8524500F6BFAC /* CustomTabItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabItem.swift; sourceTree = "<group>"; };
 		030FF67E2BC8544600F6BFAC /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
 		030FF6802BC859FD00F6BFAC /* CustomTabViewHostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabViewHostingController.swift; sourceTree = "<group>"; };
+		0311ADB62E4DF49800EC3120 /* SearchHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHomeView.swift; sourceTree = "<group>"; };
+		0311ADB82E4E0E0800EC3120 /* SavedFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedFeedView.swift; sourceTree = "<group>"; };
+		0311ADBA2E4E103A00EC3120 /* HistoryFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryFeedView.swift; sourceTree = "<group>"; };
+		0311ADBC2E4F668900EC3120 /* TopCommunitiesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopCommunitiesListView.swift; sourceTree = "<group>"; };
+		0311ADBE2E4F68D000EC3120 /* TopPeopleListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopPeopleListView.swift; sourceTree = "<group>"; };
+		0311ADC02E4F693B00EC3120 /* TopInstancesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopInstancesListView.swift; sourceTree = "<group>"; };
 		03134A4F2BEAD245002662CC /* NavigationLink+NavigationPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationLink+NavigationPage.swift"; sourceTree = "<group>"; };
 		03134A512BEAD69F002662CC /* SettingsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPage.swift; sourceTree = "<group>"; };
 		03134A572BEC1C46002662CC /* AccountListSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListSettingsView.swift; sourceTree = "<group>"; };
@@ -1136,6 +1148,17 @@
 			path = Instance;
 			sourceTree = "<group>";
 		};
+		0311ADB52E4DF49100EC3120 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				0311ADB62E4DF49800EC3120 /* SearchHomeView.swift */,
+				0311ADBC2E4F668900EC3120 /* TopCommunitiesListView.swift */,
+				0311ADBE2E4F68D000EC3120 /* TopPeopleListView.swift */,
+				0311ADC02E4F693B00EC3120 /* TopInstancesListView.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
 		03134A492BEACF46002662CC /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -1325,6 +1348,7 @@
 		03531EEF2C2DA291004A3464 /* Search */ = {
 			isa = PBXGroup;
 			children = (
+				0311ADB52E4DF49100EC3120 /* Home */,
 				035EDEF72C2DF93C00F51144 /* Results */,
 				035EDEEB2C2DE93E00F51144 /* SearchBar */,
 				0389DDCE2C39CB0E0005B808 /* SearchView.swift */,
@@ -1781,6 +1805,8 @@
 				CDE021AB2BFA43220052FD61 /* Feed Posts */,
 				033F84AC2C298466002E3EDF /* SectionIndexTitles.swift */,
 				CD0507722C6AA0C8008B1505 /* FeedSelection.swift */,
+				0311ADB82E4E0E0800EC3120 /* SavedFeedView.swift */,
+				0311ADBA2E4E103A00EC3120 /* HistoryFeedView.swift */,
 			);
 			path = Feeds;
 			sourceTree = "<group>";
@@ -2700,6 +2726,7 @@
 				03ECD71B2C811D6700D48BF6 /* PostEditorView+ImageView.swift in Sources */,
 				038C85692D861A2100543F70 /* Comment+Mock.swift in Sources */,
 				0397D48C2C6BE9A2002C6CDC /* CollapsibleSection.swift in Sources */,
+				0311ADB72E4DF49800EC3120 /* SearchHomeView.swift in Sources */,
 				0377BE9B2DEA328900E38593 /* OnboardingEmailView.swift in Sources */,
 				038028D82CACAB960091A8A2 /* ModeratorSettingsView.swift in Sources */,
 				033F84CC2C2B1E46002E3EDF /* HandleLemmyLinksModifier.swift in Sources */,
@@ -2715,6 +2742,7 @@
 				03A630F12D497674009A47A6 /* ShieldsBadgeView.swift in Sources */,
 				CD4D58EB2B86E63300B82964 /* AssociatedColor.swift in Sources */,
 				CD4B66DA2DCE809D00D28EB4 /* InstanceUptimeView+Views.swift in Sources */,
+				0311ADBF2E4F68D000EC3120 /* TopPeopleListView.swift in Sources */,
 				CD3153072C38421B00BC5FBE /* View+LoadFeed.swift in Sources */,
 				039F588F2C7B599800C61658 /* ThemeLabel.swift in Sources */,
 				037029A32D6B9B8400B749DF /* ContentView+Tab.swift in Sources */,
@@ -2775,6 +2803,7 @@
 				0397D4932C6CE87E002C6CDC /* PostEditorTargetView.swift in Sources */,
 				034690992D105DFD0073E664 /* InboxView+Types.swift in Sources */,
 				03F6BDB12D52AA00006A425E /* CommunityMockType+Realistic.swift in Sources */,
+				0311ADC12E4F693B00EC3120 /* TopInstancesListView.swift in Sources */,
 				033F84492D18D1F400D87A9E /* MessageFeedView.swift in Sources */,
 				030050D52D10AE30002B1E99 /* Report+Extensions.swift in Sources */,
 				0369B3562BFA6824001EFEDF /* InboxView.swift in Sources */,
@@ -2794,6 +2823,7 @@
 				CD4BAD352B4B2C0B00A1E726 /* FeedsView.swift in Sources */,
 				03A630ED2D497005009A47A6 /* ExternalLinkSettingsView.swift in Sources */,
 				0377BE9F2DEA361600E38593 /* OnboardingModel.swift in Sources */,
+				0311ADBD2E4F668900EC3120 /* TopCommunitiesListView.swift in Sources */,
 				03049A1E2C6508F400FF6889 /* RegistrationMode+Extensions.swift in Sources */,
 				037DE0752CE023E3007F7B92 /* BlockListView.swift in Sources */,
 				CD3FC6802D4A75090088E63B /* CounterApperance+StaticValues.swift in Sources */,
@@ -2812,6 +2842,7 @@
 				CD10FA772C7A8622008985AD /* ImageSaver.swift in Sources */,
 				03267D822BED489C009D6268 /* AvatarBannerView.swift in Sources */,
 				03500C2D2BF7FC2500CAA076 /* ToastView.swift in Sources */,
+				0311ADB92E4E0E0800EC3120 /* SavedFeedView.swift in Sources */,
 				0316CD642C382A6A009EA8EA /* MessageView.swift in Sources */,
 				CDF9EF332AB2845C003F885B /* Icons.swift in Sources */,
 				03AF91E32C1C616F00E56644 /* InteractionBarView.swift in Sources */,
@@ -2895,6 +2926,7 @@
 				03F6BD9A2D501041006A425E /* SeededRandomNumberGenerator.swift in Sources */,
 				036ED6792D0AF3740018E5EA /* PinnedSortTracker.swift in Sources */,
 				CDC44A362D1CBC280030F01C /* ReadPostIndicator.swift in Sources */,
+				0311ADBB2E4E103A00EC3120 /* HistoryFeedView.swift in Sources */,
 				0353948D2CA080EB00795AA5 /* FeedWelcomeView.swift in Sources */,
 				0343C0482D3AD6DB001CF709 /* Set+Extensions.swift in Sources */,
 				CDCC7FEF2D9B1E7100CE18DA /* CachedComputation.swift in Sources */,
