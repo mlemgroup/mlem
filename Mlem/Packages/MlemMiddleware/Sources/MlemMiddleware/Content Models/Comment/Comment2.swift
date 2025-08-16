@@ -62,5 +62,9 @@ public final class Comment2: Comment2Providing {
         self.creatorIsAdmin = creatorIsAdmin
         self.commentCount = commentCount
         creator.updateKnownCommunityBanState(id: community.id, banned: creatorBannedFromCommunity)
+        
+        Task {
+            await updateQueue.setParent(self)
+        }
     }
 }

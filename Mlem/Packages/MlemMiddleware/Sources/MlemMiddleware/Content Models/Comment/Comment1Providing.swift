@@ -29,6 +29,8 @@ public protocol Comment1Providing:
     var parentCommentIds: [Int] { get }
     var distinguished: Bool { get }
     var languageId: Int { get }
+    
+    var updateQueue: CommentUpdateQueue { get }
 }
 
 public typealias Comment = Comment1Providing
@@ -47,8 +49,7 @@ public extension Comment1Providing {
     var parentCommentIds: [Int] { comment1.parentCommentIds }
     var distinguished: Bool { comment1.distinguished }
     var removed: Bool { comment1.removed }
-    var removedPending: Bool { !comment1.removedManager.isInSync }
-    var removedManager: StateManager<Bool> { comment1.removedManager }
+    var removedPending: Bool { comment1.removedPending }
     var languageId: Int { comment1.languageId }
     var purged: Bool { comment1.purged }
     
@@ -62,7 +63,6 @@ public extension Comment1Providing {
     var parentCommentIds_: [Int]? { comment1.parentCommentIds }
     var distinguished_: Bool? { comment1.distinguished }
     var removed_: Bool? { comment1.distinguished }
-    var removedManager_: StateManager<Bool>? { comment1.removedManager }
     var languageId_: Int? { comment1.languageId }
 }
 
@@ -141,13 +141,18 @@ public extension Comment1Providing {
     }
     
     func updateRemoved(_ newValue: Bool, reason: String?, callback: ((UpdateStatus) -> Void)?) {
-        // TODO: UpdateQueue use queued state management
-        _ = removedManager.performRequest(expectedResult: newValue) { semaphore in
-            do {
-                try await self.api.removeComment(id: self.id, remove: newValue, reason: reason, semaphore: semaphore)
-                callback?(.success)
-            } catch {
-                callback?(.failure(error))
+        comment1.removed = newValue
+        comment1.removedPending = true
+        Task {
+            await updateQueue.addItem {
+                do {
+                    let ret = try await self.api.repository.removeComment(id: self.id, remove: newValue, reason: reason)
+                    callback?(.success)
+                    return ret
+                } catch {
+                    callback?(.failure(error))
+                    throw(error)
+                }
             }
         }
     }
