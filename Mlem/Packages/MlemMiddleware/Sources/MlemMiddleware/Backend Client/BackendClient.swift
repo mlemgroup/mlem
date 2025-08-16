@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import SwiftUICore
+import SwiftUI
 
 private let backendAddress: String = "https://backend.mlemapp.org:8443/v0"
 

@@ -16,6 +16,9 @@ enum NavigationPage: Hashable {
     case signUp(_ instance: HashWrapper<any InstanceStubProviding>)
     case onboarding
     case feeds(_ selection: FeedSelection? = nil)
+    case savedFeed
+    case historyFeed
+    case topCommunities, topPeople, topInstances
     case profile, inbox, search
     case quickSwitcher
     case post(

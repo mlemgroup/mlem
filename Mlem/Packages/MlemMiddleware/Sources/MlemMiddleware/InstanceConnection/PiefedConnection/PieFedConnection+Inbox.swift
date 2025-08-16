@@ -109,7 +109,9 @@ public extension PieFedConnection {
     
     @discardableResult
     func editMessage(id: Int, content: String) async throws -> Message2Snapshot {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedEditPrivateMessageRequest(privateMessageId: id, content: content)
+        let response = try await perform(request)
+        return try .init(from: response.privateMessageView)
     }
     
     @discardableResult
@@ -119,6 +121,8 @@ public extension PieFedConnection {
     
     @discardableResult
     func deleteMessage(id: Int, delete: Bool) async throws -> Message2Snapshot {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedDeletePrivateMessageRequest(messageId: id, deleted: delete)
+        let response = try await perform(request)
+        return try .init(from: response.privateMessageView)
     }
 }

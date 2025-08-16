@@ -36,6 +36,7 @@ public enum Feature: Hashable {
     case viewMentionsAndPrivateMessages
     
     case editAndDeletePrivateMessages
+    case undeletePrivateMessages
     case reportPrivateMessages
     case purgeContent
     case removeCommunity

@@ -137,15 +137,21 @@ struct SearchView: View {
     var content: some View {
         FancyScrollView(scrollToTopTrigger: $resultsScrollToTopTrigger) { searchBarFocused = true } content: {
             VStack(alignment: .leading, spacing: 0) {
-                tabView
-                if filtersActive, page != .home {
-                    filtersView
+                if page != .home {
+                    tabView
+                    if filtersActive {
+                        filtersView
+                    }
                 }
             }
             .padding(.top, -8)
-            if page == .recents {
+            switch page {
+            case .recents:
                 recentSearchesListView
-            } else {
+            case .home:
+                SearchHomeView()
+                    .frame(maxWidth: .infinity)
+            case .results:
                 resultsListView
             }
         }

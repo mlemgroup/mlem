@@ -43,7 +43,7 @@ public extension LemmyConnection {
     ) async throws -> [Community2Snapshot] {
         let response = try await performingForEndpoint { endpoint in
             LemmySearchRequest(
-                endpoint: .v3,
+                endpoint: endpoint,
                 q: query,
                 communityId: nil,
                 communityName: nil,
@@ -111,13 +111,13 @@ public extension LemmyConnection {
         reason: String?
     ) async throws -> Community2Snapshot {
         let response = try await performingForEndpoint { endpoint in
-            LemmyRemoveCommunityRequest(endpoint: .v3, communityId: id, removed: remove, reason: reason)
+            LemmyRemoveCommunityRequest(endpoint: endpoint, communityId: id, removed: remove, reason: reason)
         }
         return try .init(from: response.communityView)
     }
     
     func purgeCommunity(id: Int, reason: String?) async throws {
-        let _ = try await performingForEndpoint { endpoint in
+        _ = try await performingForEndpoint { endpoint in
             LemmyPurgeCommunityRequest(endpoint: endpoint, communityId: id, reason: reason)
         }
     }

@@ -40,12 +40,20 @@ public extension LemmyConnection {
     }
     
     func getUsernameFromToken(token: String) async throws -> String {
-        let response = try await processingForEndpoint { endpoint in
-            let request = LemmyGetSiteRequest(endpoint: endpoint)
-            return try await perform(request, tokenOverride: token)
+        let username = try await processingForEndpoint { endpoint in
+            switch endpoint {
+            case .v3:
+                let request = LemmyGetSiteRequest(endpoint: endpoint)
+                let response = try await self.perform(request, tokenOverride: token)
+                return response.myUser?.localUserView.person.name
+            case .v4:
+                let request = LemmyGetMyUserRequest()
+                let response = try await self.perform(request, tokenOverride: token)
+                return response.localUserView.person.name
+            }
         }
-        if let name = response.myUser?.localUserView.person.name {
-            return name
+        if let username {
+            return username
         }
         throw ApiClientError.notLoggedIn
     }
@@ -60,9 +68,9 @@ public extension LemmyConnection {
         captchaAnswer: String?,
         applicationQuestionResponse: String?
     ) async throws -> SignUpResponse {
-        let response = try await performingForEndpoint { _ in
+        let response = try await performingForEndpoint { endpoint in
             LemmyRegisterRequest(
-                endpoint: .v3,
+                endpoint: endpoint,
                 username: username,
                 password: password,
                 passwordVerify: confirmPassword,

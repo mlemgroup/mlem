@@ -9,7 +9,7 @@ import Foundation
 import MlemMiddleware
 
 enum FeedSelection: String, CaseIterable, Codable {
-    case all, local, subscribed, saved, moderated
+    case all, local, subscribed, moderated
     
     /// Feeds that can be used by a guest account
     static var guestCases: [FeedSelection] {
@@ -18,7 +18,7 @@ enum FeedSelection: String, CaseIterable, Codable {
     
     /// Feeds that can be used by an authenticated, non-moderator account
     static var userCases: [FeedSelection] {
-        [.all, .local, .subscribed, .saved]
+        [.all, .local, .subscribed]
     }
     
     /// Feeds that can be used by a moderator account
@@ -43,7 +43,6 @@ enum FeedSelection: String, CaseIterable, Codable {
         case .all: .all
         case .local: .local
         case .subscribed: .subscribed
-        case .saved: .saved
         case .moderated: .moderated
         }
     }
@@ -53,7 +52,6 @@ enum FeedSelection: String, CaseIterable, Codable {
         case .all: .all
         case .local: .local
         case .subscribed: .subscribed
-        case .saved: .all
         case .moderated: .moderatorView
         }
     }
@@ -63,7 +61,6 @@ enum FeedSelection: String, CaseIterable, Codable {
         case .all: .all
         case .local: .local
         case .subscribed: .subscribed
-        case .saved: .saved
         case .moderated: .moderated
         }
     }
