@@ -92,6 +92,7 @@ extension PostEditorView {
                                 nsfw: hasNsfwTag
                             )
                         } catch {
+                            handleError(error, silent: true)
                             post = nil
                         }
                         return (target, post)

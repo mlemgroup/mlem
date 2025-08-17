@@ -9,8 +9,8 @@ import Foundation
 
 public extension LemmyConnection {
     func getMyInstance() async throws -> Instance3Snapshot {
-        let response = try await rawGetMyPersonWithContext()
-        return try .init(from: response)
+        let rawContext = try await getRawContextWithCaching()
+        return try .init(from: rawContext.site)
     }
     
     func getFederatedInstances() async throws -> FederationPolicy {

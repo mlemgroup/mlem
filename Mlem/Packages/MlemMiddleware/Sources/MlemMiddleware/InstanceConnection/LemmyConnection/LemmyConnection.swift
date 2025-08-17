@@ -21,11 +21,17 @@ public class LemmyConnection: InstanceConnection {
         let siteVersion: SiteVersion
         let myPersonId: Int?
     }
+    
+    struct RawContext {
+        let site: LemmyGetSiteResponse
+        let myUser: LemmyMyUserInfo?
+    }
 
     public let baseUrl: URL
     public var token: String?
     
-    private(set) var contextDataManager: SharedTaskManager<Context, LemmyGetSiteResponse> = .init()
+    private var endpointMultiplexer: ConnectionMultiplexer<SiteVersion.EndpointVersion> = .init { [.v3, .v4] }
+    private(set) var contextDataManager: SharedTaskManager<Context, RawContext> = .init()
 
     public var fetchedVersion: SiteVersion? {
         contextDataManager.fetchedValue?.siteVersion
@@ -56,10 +62,10 @@ public class LemmyConnection: InstanceConnection {
         self.baseUrl = baseUrl
         self.token = token
         contextDataManager.fetchTask = {
-            try await self.rawGetMyPerson()
+            try await self.getRawContext()
         }
         contextDataManager.createValue = { response in
-            .init(siteVersion: .init(response.version), myPersonId: response.myUser?.localUserView.person.id)
+            .init(siteVersion: .init(response.site.version), myPersonId: response.myUser?.localUserView.person.id)
         }
     }
 
@@ -93,19 +99,29 @@ public class LemmyConnection: InstanceConnection {
     // When this function is called, the `requestGenerator` will be called at least once,
     // but may be called more than once.
     func performingForEndpoint<Request: RestRequest>(
-        _ requestGenerator: (SiteVersion.EndpointVersion) async throws -> Request
+        _ requestGenerator: @escaping (SiteVersion.EndpointVersion) async throws -> Request
     ) async throws -> Request.Response {
-        // This is placeholder code - in future this will be updated to sometimes use .v4
-        try await perform(requestGenerator(.v3))
+        do {
+            return try await endpointMultiplexer.perform { endpoint in
+                try await self.perform(requestGenerator(endpoint))
+            }
+        } catch ConnectionMultiplexerError.allConnectionsFailed {
+            throw ApiClientError.serverError(statusCode: 404)
+        }
     }
     
     // When this function is called, the `callback` will be called at least once,
     // but may be called more than once.
     func processingForEndpoint<Response>(
-        _ callback: (SiteVersion.EndpointVersion) async throws -> Response
+        _ callback: @escaping (SiteVersion.EndpointVersion) async throws -> Response
     ) async throws -> Response {
-        // This is placeholder code - in future this will be updated to sometimes use .v4
-        try await callback(.v3)
+        do {
+            return try await endpointMultiplexer.perform { endpoint in
+                try await callback(endpoint)
+            }
+        } catch ConnectionMultiplexerError.allConnectionsFailed {
+            throw ApiClientError.serverError(statusCode: 404)
+        }
     }
     
     #if DEBUG
