@@ -129,20 +129,6 @@ public extension ApiClient {
         )
     }
     
-    @discardableResult
-    func editComment(
-        id: Int,
-        content: String,
-        languageId: Int?
-    ) async throws -> Comment2 {
-        let snapshot = try await repository.editComment(
-            id: id,
-            content: content,
-            languageId: languageId
-        )
-        return await caches.comment2.getModel(api: self, from: snapshot)
-    }
-    
     // There's also a `replyToPost` method in `ApiClient+Post` for creating a comment on a post
     func replyToComment(postId: Int, parentId: Int?, content: String, languageId: Int? = nil) async throws -> Comment2 {
         let snapshot = try await repository.replyToComment(
@@ -167,21 +153,6 @@ public extension ApiClient {
     
     func purgeComment(id: Int, reason: String?) async throws {
         try await repository.purgeComment(id: id, reason: reason)
-    }
-    
-    @discardableResult
-    func removeComment(
-        id: Int,
-        remove: Bool,
-        reason: String?,
-        semaphore: UInt? = nil
-    ) async throws -> Comment2 {
-        let snapshot = try await repository.removeComment(id: id, remove: remove, reason: reason)
-        return await caches.comment2.getModel(
-            api: self,
-            from: snapshot,
-            semaphore: semaphore
-        )
     }
     
     @discardableResult

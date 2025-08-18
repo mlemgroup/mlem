@@ -38,6 +38,8 @@ public typealias Comment = Comment1Providing
 public extension Comment1Providing {
     static var modelTypeId: ContentType { .comment }
     
+    var updateQueue: CommentUpdateQueue { comment1.updateQueue }
+    
     var actorId: ActorIdentifier { comment1.actorId }
     var id: Int { comment1.id }
     var content: String { comment1.content }
@@ -95,8 +97,6 @@ public extension Comment1Providing {
 }
 
 public extension Comment1Providing {
-    private var deletedManager: StateManager<Bool> { comment1.deletedManager }
-
     /// Returns a `URL` that can be resolved by another `ApiClient`.
     func resolvableUrl(from instance: ContentModelUrlType) -> URL {
         switch instance {
@@ -108,7 +108,11 @@ public extension Comment1Providing {
     var depth: Int { parentCommentIds.count }
     
     func upgrade() async throws -> any Comment {
-        try await api.getComment(id: id)
+        try await updateQueue.addUpgrade {
+            let snapshot = try await self.api.repository.getComment(id: self.id)
+            let comment = await self.api.caches.comment2.performModelTranslation(api: self.api, from: snapshot)
+            return (snapshot, comment)
+        }
     }
     
     func getChildren(
@@ -170,13 +174,17 @@ public extension Comment1Providing {
     }
     
     func updateDeleted(_ newValue: Bool, callback: ((UpdateStatus) -> Void)?) {
-        // TODO: UpdateQueue use queued state management
-        _ = deletedManager.performRequest(expectedResult: newValue) { semaphore in
-            do {
-                try await self.api.deleteComment(id: self.id, delete: newValue, semaphore: semaphore)
-                callback?(.success)
-            } catch {
-                callback?(.failure(error))
+        comment1.deleted = newValue
+        Task {
+            await updateQueue.addItem {
+                do {
+                    let ret = try await self.api.repository.deleteComment(id: self.id, delete: newValue)
+                    callback?(.success)
+                    return ret
+                } catch {
+                    callback?(.failure(error))
+                    throw(error)
+                }
             }
         }
     }
@@ -185,7 +193,15 @@ public extension Comment1Providing {
         content: String,
         languageId: Int?
     ) async throws {
-        try await api.editComment(id: id, content: content, languageId: languageId)
+        comment1.content = content
+        if let languageId {
+            comment1.languageId = languageId
+        }
+        Task {
+            await updateQueue.addItem {
+                try await self.api.repository.editComment(id: self.id, content: content, languageId: languageId)
+            }
+        }
     }
     
     // Get the parent comment, or return `nil` if there is no parent

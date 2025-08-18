@@ -20,7 +20,7 @@ public protocol Comment2Providing: Comment1Providing, Interactable2Providing, Pe
 
 public extension Comment2Providing {
     var comment1: Comment1 { comment2.comment1 }
-    
+
     var creator: any Person { comment2.creator }
     var post: Post1 { comment2.post }
     var community: any Community { comment2.community }
