@@ -33,25 +33,14 @@ class Comment1Cache: ApiTypeBackedCache<Comment1, Comment1Snapshot> {
 
 class Comment2Cache: ApiTypeBackedCache<Comment2, Comment2Snapshot> {
     override func performModelTranslation(api: ApiClient, from snapshot: Comment2Snapshot) -> Comment2 {
-        let votesManager: StateManager<VotesModel>
-        let savedManager: StateManager<Bool>
-        
-        if let comment = api.caches.reply2.retrieveModel(commentId: snapshot.comment.id) {
-            votesManager = comment.votesManager
-            savedManager = comment.savedManager
-        } else {
-            votesManager = .init(wrappedValue: snapshot.votes)
-            savedManager = .init(wrappedValue: snapshot.saved)
-        }
-        
         return .init(
             api: api,
             comment1: api.caches.comment1.getModel(api: api, from: snapshot.comment),
             creator: api.caches.person1.getModel(api: api, from: snapshot.creator),
             post: api.caches.post1.getModel(api: api, from: snapshot.post),
             community: api.caches.community1.getModel(api: api, from: snapshot.community),
-            votesManager: votesManager,
-            savedManager: savedManager,
+            votes: snapshot.votes,
+            saved: snapshot.saved,
             creatorIsModerator: snapshot.creatorIsModerator,
             creatorIsAdmin: snapshot.creatorIsAdmin,
             creatorBannedFromCommunity: snapshot.creatorBannedFromCommunity,
