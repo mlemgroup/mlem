@@ -71,12 +71,14 @@ struct ContentRemovalEditorView: View {
     
     func send() {
         target.toggleRemoved(reason: reason) { status in
-            switch status {
-            case .success:
-                hapticManager.play(haptic: .success, tier: .low)
-                dismiss()
-            case let .failure(error):
-                handleError(error)
+            Task { @MainActor in
+                switch status {
+                case .success:
+                    hapticManager.play(haptic: .success, tier: .low)
+                    dismiss()
+                case let .failure(error):
+                    handleError(error)
+                }
             }
         }
     }
