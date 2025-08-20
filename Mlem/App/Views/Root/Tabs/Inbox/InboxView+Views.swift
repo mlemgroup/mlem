@@ -9,13 +9,9 @@ import MlemMiddleware
 import SwiftUI
 
 extension InboxView {
-    var shouldPinHeader: Bool {
-        if #available(iOS 26, *) { false } else { true }
-    }
-    
     @ViewBuilder
     var inboxFeedView: some View {
-        LazyVStack(spacing: 0, pinnedViews: shouldPinHeader ? [.sectionHeaders] : []) {
+        LazyVStack(spacing: 0, pinnedViews: UIDevice.isIos26 ? [] : [.sectionHeaders]) {
             Section {
                 ForEach(feedLoader.items, id: \.inboxId) { item in
                     Group {
@@ -121,7 +117,7 @@ extension InboxView {
     @ToolbarContentBuilder
     var toolbar: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
-            if #available(iOS 26, *) {
+            if UIDevice.isIos26 {
                 // This is a bit of a hack... the WWDC mentioned a `.glassProminent` button style
                 // that we should be using here, but it seems to be missing from the API
                 if showRead {

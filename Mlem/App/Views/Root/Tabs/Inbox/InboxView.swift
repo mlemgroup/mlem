@@ -171,7 +171,7 @@ struct InboxView: View {
                 .frame(width: 0, height: 0)
                 .onPreferenceChange(ScrollOffsetKey.self, perform: { value in
                     if value != headerPinned {
-                        if #available(iOS 26, *), headerPinned { return }
+                        if UIDevice.isIos26, headerPinned { return }
                         headerPinned = value
                     }
                 })

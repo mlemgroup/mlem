@@ -167,13 +167,13 @@ struct FeedSortPicker: View {
                     Image(icon: .lemmy.topSort)
                         .imageScale(.small)
                     Text(sort.label(timeRangeFormat: .timescaleAbbreviated))
-                        .font(isIos26 ? .body : .footnote)
+                        .font(UIDevice.isIos26 ? .body : .footnote)
                         .fontDesign(.rounded)
                 }
                 .padding(.horizontal, 10)
                 .padding(.vertical, 5)
                 .background {
-                    if !isIos26 {
+                    if !UIDevice.isIos26 {
                         Capsule()
                             // 1.51 is intentional - iOS doesn't render it quite right at 1.5 (iPhone 12)
                             .strokeBorder(.themedAccent, lineWidth: 1.51)
@@ -185,10 +185,6 @@ struct FeedSortPicker: View {
             }
         }
         .animation(.easeOut(duration: 0.4), value: value == .unknown)
-    }
-    
-    var isIos26: Bool {
-        if #available(iOS 26, *) { true } else { false }
     }
     
     var formatter: DateComponentsFormatter {

@@ -17,7 +17,7 @@ struct MarkAllAsReadButton: ToolbarContent {
     
     var body: some ToolbarContent {
         Group {
-            if newMessagesExist || animationPlaying || !shouldRemoveToolbarItem {
+            if newMessagesExist || animationPlaying || !UIDevice.isIos26 {
                 ToolbarItem(placement: .topBarTrailing) {
                     PhaseAnimator([0, 1], trigger: phaseAnimatorTrigger) { value in
                         Button {
@@ -34,7 +34,7 @@ struct MarkAllAsReadButton: ToolbarContent {
                                 animationPlaying = false
                             }
                         } label: {
-                            if #available(iOS 26, *) {
+                            if UIDevice.isIos26 {
                                 label(value: value)
                             } else {
                                 label(value: value)
@@ -46,10 +46,6 @@ struct MarkAllAsReadButton: ToolbarContent {
                 }
             }
         }
-    }
-    
-    var shouldRemoveToolbarItem: Bool {
-        if #available(iOS 26, *) { true } else { false }
     }
     
     var newMessagesExist: Bool {
