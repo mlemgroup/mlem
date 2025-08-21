@@ -27,7 +27,8 @@ class Comment1Cache: ApiTypeBackedCache<Comment1, Comment1Snapshot> {
     }
     
     override func updateModel(_ item: Comment1, with snapshot: Comment1Snapshot, semaphore: UInt? = nil) {
-        item.update(with: snapshot)
+        // TODO: UpdateQueue move updateModel responsibilities fully out of the cache
+        print("noop")
     }
 }
 
@@ -49,6 +50,7 @@ class Comment2Cache: ApiTypeBackedCache<Comment2, Comment2Snapshot> {
     }
     
     override func updateModel(_ item: Comment2, with snapshot: Comment2Snapshot, semaphore: UInt? = nil) {
-        item.update(with: snapshot, semaphore: semaphore)
+        // TODO: UpdateQueue move updateModel responsibilities fully out of the cache
+        print("noop")
     }
 }
