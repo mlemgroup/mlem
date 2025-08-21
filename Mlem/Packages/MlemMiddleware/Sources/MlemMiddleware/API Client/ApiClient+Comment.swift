@@ -99,6 +99,7 @@ public extension ApiClient {
         return await caches.comment2.getModels(api: self, from: snapshots)
     }
     
+    // TODO: UpdateQueue remove (currently needed for Reply)
     @discardableResult
     func voteOnComment(id: Int, score: ScoringOperation, semaphore: UInt? = nil) async throws -> Comment2 {
         let snapshot = try await repository.voteOnComment(id: id, score: score)
@@ -109,19 +110,10 @@ public extension ApiClient {
         )
     }
     
+    // TODO: UpdateQueue remove (currently needed for Reply)
     @discardableResult
     func saveComment(id: Int, save: Bool, semaphore: UInt? = nil) async throws -> Comment2 {
         let snapshot = try await repository.saveComment(id: id, save: save)
-        return await caches.comment2.getModel(
-            api: self,
-            from: snapshot,
-            semaphore: semaphore
-        )
-    }
-    
-    @discardableResult
-    func deleteComment(id: Int, delete: Bool, semaphore: UInt? = nil) async throws -> Comment2 {
-        let snapshot = try await repository.deleteComment(id: id, delete: delete)
         return await caches.comment2.getModel(
             api: self,
             from: snapshot,
