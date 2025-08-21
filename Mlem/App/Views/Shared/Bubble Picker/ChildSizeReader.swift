@@ -40,7 +40,11 @@ struct ChildSizeReader<Content: View>: View {
                     }
                 )
         }
-        .onPreferenceChange(SizePreferenceKey.self) { size = $0 }
+        .onPreferenceChange(SizePreferenceKey.self) {
+            if size == .zero {
+                size = $0
+            }
+        }
         .onChange(of: onChangeHash, initial: true) {
             selectedSize?.wrappedValue = size
         }
