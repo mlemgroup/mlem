@@ -16,8 +16,6 @@ struct LanguagePickerSheetView: View {
     let callback: (Locale.Language) -> Void
     
     @State var query: String = ""
-    @State var editing: Bool = true
-    @State var focused: Bool = true
 
     var allLanguages: [Locale.Language] {
         appState.firstSession.instance?.allLanguages ?? []
@@ -83,19 +81,7 @@ struct LanguagePickerSheetView: View {
         .contentMargins(.top, searchResults.isEmpty ? nil : 16)
         .navigationTitle("Choose Language")
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack(spacing: 0) {
-                    SearchBar("Search", text: $query, isEditing: $editing)
-                        .isInitialFirstResponder(true)
-                        .focused($focused)
-                        .autocorrectionDisabled()
-                }
-            }
-            ToolbarItem(placement: .topBarTrailing) {
-                Button("Cancel") { dismiss() }
-            }
-        }
+        .sheetSearchable(query: $query)
     }
     
     func languageRow(_ language: Locale.Language) -> some View {

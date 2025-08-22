@@ -33,9 +33,6 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
     @State var query: String = ""
     @State var results: [Item] = []
     
-    @State var editing: Bool = true
-    @State var focused: Bool = true
-    
     /// If `api` is `nil`, the active ApiClient will be used.
     init(
         api: ApiClient? = nil,
@@ -58,21 +55,7 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
         .background(.themedGroupedBackground)
         .presentationBackground(.themedGroupedBackground)
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack(spacing: 0) {
-                    SearchBar("Search", text: $query, isEditing: $editing)
-                        .isInitialFirstResponder(true)
-                        .focused($focused)
-                        .autocorrectionDisabled()
-                }
-            }
-            ToolbarItem(placement: .topBarTrailing) {
-                Button(String(localized: closeButtonLabel.label)) {
-                    navigation.dismissSheet()
-                }
-            }
-        }
+        .sheetSearchable(closeButtonLabel: closeButtonLabel.label, query: $query)
         .task(id: query, priority: .userInitiated) {
             do {
                 if !query.isEmpty {
@@ -92,9 +75,6 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
             } catch {
                 handleError(error)
             }
-        }
-        .onAppear {
-            focused = true
         }
     }
 }
