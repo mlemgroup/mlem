@@ -16,6 +16,10 @@ extension UIDevice {
         UIDevice.current.userInterfaceIdiom == .phone
     }
     
+    static var isIos26: Bool {
+        if #available(iOS 26, *) { true } else { false }
+    }
+
     static var frameType: DeviceFrameType {
         if let simulatorModelIdentifier = ProcessInfo().environment["SIMULATOR_MODEL_IDENTIFIER"] {
             let nameSimulator = simulatorModelIdentifier

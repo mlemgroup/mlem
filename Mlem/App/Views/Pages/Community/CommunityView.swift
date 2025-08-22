@@ -114,9 +114,16 @@ struct CommunityView: View {
             VStack {
                 switch selectedTab {
                 case .posts:
-                    if let postFeedLoader {
-                        postsTab(community: community, postFeedLoader: postFeedLoader)
-                            .padding(.bottom, -4)
+                    VStack {
+                        if let postFeedLoader {
+                            postsTab(community: community, postFeedLoader: postFeedLoader)
+                                .padding(.bottom, -4)
+                        }
+                    }
+                    .toolbar {
+                        ToolbarItem(placement: .topBarTrailing) {
+                            FeedSortPicker(feedLoader: postFeedLoader, showTopTimescaleInIcon: true)
+                        }
                     }
                 case .about:
                     aboutTab(community: community)
@@ -165,11 +172,6 @@ struct CommunityView: View {
             .padding(.top, Constants.main.doubleSpacing)
         } else {
             PostGridView(postFeedLoader: postFeedLoader)
-                .toolbar {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        FeedSortPicker(feedLoader: postFeedLoader, showTopTimescaleInIcon: true)
-                    }
-                }
         }
     }
 

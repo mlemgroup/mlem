@@ -107,9 +107,16 @@ struct SubscriptionListView: View {
         }
         .toolbar {
             if !(subscriptions?.communities.isEmpty ?? true) {
-                Picker("Sort", selection: $sort) {
+                Menu("Sort", icon: sort.icon) {
                     ForEach(SubscriptionListSort.allCases, id: \.self) { item in
-                        Label(String(localized: item.label), systemImage: item.systemImage)
+                        Toggle(
+                            item.label,
+                            icon: item.icon,
+                            isOn: .init(
+                                get: { sort == item },
+                                set: { _ in sort = item }
+                            )
+                        )
                     }
                 }
             }
@@ -210,10 +217,10 @@ enum SubscriptionListSort: String, CaseIterable, Codable {
         }
     }
     
-    var systemImage: String {
+    var icon: Icon {
         switch self {
-        case .alphabetical: "textformat"
-        case .instance: "at"
+        case .alphabetical: .lemmy.alphabeticalSort
+        case .instance: .settings.qualifiedLabel
         }
     }
 }

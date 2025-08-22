@@ -11,7 +11,7 @@ import SwiftUI
 extension InboxView {
     @ViewBuilder
     var inboxFeedView: some View {
-        LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
+        LazyVStack(spacing: 0, pinnedViews: UIDevice.isIos26 ? [] : [.sectionHeaders]) {
             Section {
                 ForEach(feedLoader.items, id: \.inboxId) { item in
                     Group {
@@ -117,57 +117,31 @@ extension InboxView {
     @ToolbarContentBuilder
     var toolbar: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
-            Button {
-                showRead.toggle()
-            } label: {
-                Label("Hide Read", icon: .general.filter)
-                    .symbolVariant(showRead ? .none : .fill)
+            if UIDevice.isIos26 {
+                // This is a bit of a hack... the WWDC mentioned a `.glassProminent` button style
+                // that we should be using here, but it seems to be missing from the API
+                if showRead {
+                    hideReadButton
+                } else {
+                    hideReadButton
+                        .buttonStyle(.borderedProminent)
+                }
+            } else {
+                hideReadButton
             }
         }
-        ToolbarItem(placement: .topBarTrailing) {
-            if selectedFeed == .inbox {
-                markAllAsReadButton
-            }
+        if selectedFeed == .inbox {
+            MarkAllAsReadButton()
         }
     }
     
     @ViewBuilder
-    var markAllAsReadButton: some View {
-        let newMessagesExist = !waitingOnMarkAllAsRead && ((appState.firstSession as? UserSession)?.unreadCount?.personalTotal ?? 0) != 0
-        PhaseAnimator([0, 1], trigger: markAllAsReadTrigger) { value in
-            Button {
-                hapticManager.play(haptic: .gentleInfo, tier: .low)
-                waitingOnMarkAllAsRead = true
-                markAllAsReadTrigger.toggle()
-                Task {
-                    do {
-                        try await appState.firstApi.markAllAsRead()
-                        try await Task.sleep(for: .seconds(0.05))
-                    } catch {
-                        handleError(error)
-                    }
-                    waitingOnMarkAllAsRead = false
-                }
-            } label: {
-                HStack {
-                    Image(icon: .lemmy.markRead)
-                        .imageScale(.small)
-                    Text("All")
-                }
-                .opacity((value == 0 && newMessagesExist) ? 1 : 0)
-                .overlay {
-                    if value != 0 {
-                        Image(icon: .general.success)
-                            .imageScale(.small)
-                            .fontWeight(.semibold)
-                    }
-                }
-                .fixedSize()
-                .padding(.vertical, 2)
-                .padding(.horizontal, 10)
-                .background(.bar, in: .capsule)
-            }
-            .opacity((newMessagesExist || value != 0) ? 1 : 0)
+    var hideReadButton: some View {
+        Button {
+            showRead.toggle()
+        } label: {
+            Label("Hide Read", icon: .general.filterMenu)
+                .symbolVariant(showRead ? .none : .fill)
         }
     }
     

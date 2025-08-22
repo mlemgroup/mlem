@@ -80,17 +80,21 @@ extension ExpandedPostView {
     
     @ViewBuilder
     func sortPicker(tracker: CommentTreeTracker) -> some View {
-        Picker(
-            "Sort",
-            selection: Binding(get: { tracker.sort }, set: {
-                tracker.sort = $0
-                tracker.clear()
-                Task { await tracker.load() }
-            })
-        ) {
+        Menu("Sort", icon: tracker.sort.icon) {
             ForEach(CommentSortType.legacyCases, id: \.self) { item in
                 if post?.api.supportsOrNil(.commentSortType(item)) ?? true {
-                    Label(item.label(timeRangeFormat: .topOnly), icon: item.icon)
+                    Toggle(
+                        item.label(timeRangeFormat: .topOnly),
+                        icon: item.icon,
+                        isOn: .init(
+                            get: { tracker.sort == item },
+                            set: { _ in
+                                tracker.sort = item
+                                tracker.clear()
+                                Task { await tracker.load() }
+                            }
+                        )
+                    )
                 }
             }
         }
