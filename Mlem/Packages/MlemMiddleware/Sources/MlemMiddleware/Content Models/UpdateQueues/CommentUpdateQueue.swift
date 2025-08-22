@@ -46,7 +46,7 @@ public actor CommentUpdateQueue {
     }
     
     /// Queues the given upgrade operation for execution
-    /// - Returns: post returned by the upgrade operation
+    /// - Returns: comment returned by the upgrade operation
     /// - Warning: this method assumes that the given operation will update this queue's parent (this generally happens in the parent's initializer)
     internal func addUpgrade(task: @escaping () async throws -> (Comment2Snapshot, Comment2)) async throws -> any Comment {
         // this method is a unique case because the context it is called from needs to receive its result. This method therefore waits
