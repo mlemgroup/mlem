@@ -60,7 +60,7 @@ public actor CommentUpdateQueue {
         
         let (snapshot, post) = try await task()
         lastVerifiedSnapshot = snapshot
-        return post
+        return comment
     }
     
     private func addItem(_ item: CommentUpdateTask) {
