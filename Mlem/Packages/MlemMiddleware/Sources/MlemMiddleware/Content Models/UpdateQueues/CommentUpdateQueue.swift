@@ -58,7 +58,7 @@ public actor CommentUpdateQueue {
         }
         print("DEBUG beginning upgrade")
         
-        let (snapshot, post) = try await task()
+        let (snapshot, comment) = try await task()
         lastVerifiedSnapshot = snapshot
         return comment
     }
