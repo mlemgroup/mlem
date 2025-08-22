@@ -18,7 +18,11 @@ extension Comment1Providing {
     
     @MainActor
     internal func snapshot1Update(with snapshot: Comment1Snapshot) {
-        comment1.setIfChanged(\.content, snapshot.content)
+        // If the comment is removed, the API returns an empty string for the `comment/list` endpoint, but returns the comment content
+        // in the modlog endpoint. This `if` statement prevents the comment content being overwritten with that empty string.
+        if !snapshot.removed {
+            comment1.setIfChanged(\.content, snapshot.content)
+        }
         comment1.setIfChanged(\.updated, snapshot.updated)
         comment1.setIfChanged(\.distinguished, snapshot.distinguished)
         comment1.setIfChanged(\.languageId, snapshot.languageId)
