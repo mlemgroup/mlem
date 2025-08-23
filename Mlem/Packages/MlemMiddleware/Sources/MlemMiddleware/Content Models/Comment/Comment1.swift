@@ -10,6 +10,8 @@ import Observation
 
 @Observable
 public final class Comment1: Comment1Providing {
+    public var updateQueue: CommentUpdateQueue = .init()
+    
     public static let tierNumber: Int = 1
     public var api: ApiClient
     public var comment1: Comment1 { self }
@@ -28,11 +30,10 @@ public final class Comment1: Comment1Providing {
     
     public var purged: Bool = false
     
-    var deletedManager: StateManager<Bool>
-    public var deleted: Bool { deletedManager.displayedValue }
+    public var deleted: Bool
     
-    public var removedManager: StateManager<Bool>
-    public var removed: Bool { removedManager.displayedValue }
+    public var removed: Bool
+    public var removedPending: Bool = false
     
     init(
         api: ApiClient,
@@ -53,14 +54,18 @@ public final class Comment1: Comment1Providing {
         self.actorId = actorId
         self.id = id
         self.content = content
-        self.removedManager = .init(wrappedValue: removed)
+        self.removed = removed
         self.created = created
         self.updated = updated
-        self.deletedManager = .init(wrappedValue: deleted)
+        self.deleted = deleted
         self.creatorId = creatorId
         self.postId = postId
         self.parentCommentIds = parentCommentIds
         self.distinguished = distinguished
         self.languageId = languageId
+        
+        Task {
+            await updateQueue.setParent(self)
+        }
     }
 }

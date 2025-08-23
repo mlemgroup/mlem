@@ -99,6 +99,7 @@ public extension ApiClient {
         return await caches.comment2.getModels(api: self, from: snapshots)
     }
     
+    // TODO: UpdateQueue remove (currently needed for Reply)
     @discardableResult
     func voteOnComment(id: Int, score: ScoringOperation, semaphore: UInt? = nil) async throws -> Comment2 {
         let snapshot = try await repository.voteOnComment(id: id, score: score)
@@ -109,6 +110,7 @@ public extension ApiClient {
         )
     }
     
+    // TODO: UpdateQueue remove (currently needed for Reply)
     @discardableResult
     func saveComment(id: Int, save: Bool, semaphore: UInt? = nil) async throws -> Comment2 {
         let snapshot = try await repository.saveComment(id: id, save: save)
@@ -117,30 +119,6 @@ public extension ApiClient {
             from: snapshot,
             semaphore: semaphore
         )
-    }
-    
-    @discardableResult
-    func deleteComment(id: Int, delete: Bool, semaphore: UInt? = nil) async throws -> Comment2 {
-        let snapshot = try await repository.deleteComment(id: id, delete: delete)
-        return await caches.comment2.getModel(
-            api: self,
-            from: snapshot,
-            semaphore: semaphore
-        )
-    }
-    
-    @discardableResult
-    func editComment(
-        id: Int,
-        content: String,
-        languageId: Int?
-    ) async throws -> Comment2 {
-        let snapshot = try await repository.editComment(
-            id: id,
-            content: content,
-            languageId: languageId
-        )
-        return await caches.comment2.getModel(api: self, from: snapshot)
     }
     
     // There's also a `replyToPost` method in `ApiClient+Post` for creating a comment on a post
@@ -167,21 +145,6 @@ public extension ApiClient {
     
     func purgeComment(id: Int, reason: String?) async throws {
         try await repository.purgeComment(id: id, reason: reason)
-    }
-    
-    @discardableResult
-    func removeComment(
-        id: Int,
-        remove: Bool,
-        reason: String?,
-        semaphore: UInt? = nil
-    ) async throws -> Comment2 {
-        let snapshot = try await repository.removeComment(id: id, remove: remove, reason: reason)
-        return await caches.comment2.getModel(
-            api: self,
-            from: snapshot,
-            semaphore: semaphore
-        )
     }
     
     @discardableResult

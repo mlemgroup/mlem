@@ -7,10 +7,10 @@
 
 import Foundation
 
-public struct Comment2Snapshot: CacheIdentifiable {
+public struct Comment2Snapshot: CacheIdentifiable, CommentSnapshotProviding {
     // Won't change, but the corresponding models need to
     // be updated within the `update` method of Post2.
-    public let comment: Comment1Snapshot
+    public var comment: Comment1Snapshot
     public let creator: Person1Snapshot
     public let post: Post1Snapshot
     public let community: Community1Snapshot
@@ -25,4 +25,8 @@ public struct Comment2Snapshot: CacheIdentifiable {
     public let saved: Bool
     
     public var cacheId: Int { comment.cacheId }
+    
+    public func merge(with snapshot: any CommentSnapshotProviding) -> any CommentSnapshotProviding {
+        return self
+    }
 }

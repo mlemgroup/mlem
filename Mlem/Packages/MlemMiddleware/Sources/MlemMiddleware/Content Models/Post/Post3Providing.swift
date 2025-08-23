@@ -14,8 +14,6 @@ public protocol Post3Providing: Post2Providing {
 }
 
 public extension Post3Providing {
-    var updateQueue: PostUpdateQueue { post1.updateQueue }
-    
     func upgrade() async throws -> any Post { self }
 
     // Override `Post2Providing` definition

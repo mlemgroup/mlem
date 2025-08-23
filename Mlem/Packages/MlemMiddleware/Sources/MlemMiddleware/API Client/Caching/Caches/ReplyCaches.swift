@@ -33,17 +33,7 @@ class Reply2Cache: ApiTypeBackedCache<Reply2, Reply2Snapshot> {
     }
 
     override func performModelTranslation(api: ApiClient, from snapshot: Reply2Snapshot) -> Reply2 {
-        let votesManager: StateManager<VotesModel>
-        let savedManager: StateManager<Bool>
-        
-        if let reply = api.caches.comment2.retrieveModel(cacheId: snapshot.comment.id) {
-            votesManager = reply.votesManager
-            savedManager = reply.savedManager
-        } else {
-            votesManager = .init(wrappedValue: snapshot.votes)
-            savedManager = .init(wrappedValue: snapshot.saved)
-        }
-        
+        // TODO: UpdateQueue replace instantiation of votes and saved managers
         let result: Reply2 = .init(
             api: api,
             reply1: api.caches.reply1.getModel(api: api, from: snapshot.reply),
@@ -57,8 +47,8 @@ class Reply2Cache: ApiTypeBackedCache<Reply2, Reply2Snapshot> {
             creatorIsModerator: snapshot.creatorIsModerator,
             creatorIsAdmin: snapshot.creatorIsAdmin,
             bannedFromCommunity: snapshot.creatorBannedFromCommunity,
-            votesManager: votesManager,
-            savedManager: savedManager
+            votesManager: .init(wrappedValue: snapshot.votes),
+            savedManager: .init(wrappedValue: snapshot.saved)
         )
         commentIdItemCache.put(result, overrideCacheId: snapshot.comment.id)
         return result

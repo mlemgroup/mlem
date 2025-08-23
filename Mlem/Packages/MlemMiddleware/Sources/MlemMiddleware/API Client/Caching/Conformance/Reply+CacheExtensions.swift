@@ -27,11 +27,11 @@ extension Reply2: CacheIdentifiable {
     @MainActor
     func update(with snapshot: Reply2Snapshot, semaphore: UInt? = nil) {
         reply1.update(with: snapshot.reply, semaphore: semaphore)
-        comment.update(with: snapshot.comment)
         creator.update(with: snapshot.creator)
         
         // TODO: UpdateQueue remove this shim code
         post.post1.snapshot1Update(with: snapshot.post)
+        comment.comment1.snapshot1Update(with: snapshot.comment)
         
         community.update(with: snapshot.community)
         recipient.update(with: snapshot.recipient)

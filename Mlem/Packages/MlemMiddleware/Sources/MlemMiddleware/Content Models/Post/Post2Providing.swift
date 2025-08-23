@@ -20,7 +20,6 @@ public protocol Post2Providing: Post1Providing, Interactable2Providing, PersonCo
 
 public extension Post2Providing {
     var post1: Post1 { post2.post1 }
-    var updateQueue: PostUpdateQueue { post1.updateQueue }
     
     var creator: any Person { post2.creator }
     var community: any Community { post2.community }
