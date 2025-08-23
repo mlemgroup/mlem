@@ -5,7 +5,6 @@
 //  Created by Eric Andrews on 2023-06-20.
 //
 
-import MlemMiddleware
 import SwiftUI
 import Theming
 
