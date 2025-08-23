@@ -8,7 +8,6 @@
 import ComponentViews
 import Haptics
 import Icons
-import MlemMiddleware
 import SwiftUI
 import Theming
 
