@@ -53,6 +53,8 @@ public typealias Post = Post1Providing
 public extension Post1Providing {
     static var modelTypeId: ContentType { .post }
     
+    var updateQueue: PostUpdateQueue { post1.updateQueue }
+    
     var actorId: ActorIdentifier { post1.actorId }
     var id: Int { post1.id }
     var creatorId: Int { post1.creatorId }
@@ -260,7 +262,6 @@ public extension Post1Providing {
         }
     }
     
-    
     /// Locks or unlocks this post according to newValue
     /// - Parameters:
     ///   - newValue: true to lock post, false to unlock
@@ -276,7 +277,7 @@ public extension Post1Providing {
                     return ret
                 } catch {
                     callback?(.failure(error))
-                    throw(error)
+                    throw (error)
                 }
             }
         }
@@ -357,7 +358,7 @@ public extension Post1Providing {
                     return ret
                 } catch {
                     callback?(.failure(error))
-                    throw(error)
+                    throw (error)
                 }
             }
         }

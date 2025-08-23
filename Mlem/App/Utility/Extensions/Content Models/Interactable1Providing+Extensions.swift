@@ -31,57 +31,44 @@ extension Interactable1Providing {
     }
     
     func toggleUpvoted(feedback: Set<FeedbackType>) {
-        if let self2 {
-            if feedback.contains(.haptic) {
-                HapticManager.main.play(haptic: .lightSuccess, tier: .low)
-            }
-            self2.toggleUpvoted()
-            inboxItem?.updateRead(true)
-        } else {
+        guard let self2 else {
             handleError(MlemError.modelError("No self2 found"), silent: true)
+            return
         }
+        if feedback.contains(.haptic) {
+            HapticManager.main.play(haptic: .lightSuccess, tier: .low)
+        }
+        self2.toggleUpvoted()
+        inboxItem?.updateRead(true)
     }
     
     func toggleDownvoted(feedback: Set<FeedbackType>) {
-        if let self2 {
-            if feedback.contains(.haptic) {
-                HapticManager.main.play(haptic: .lightSuccess, tier: .low)
-            }
-            self2.toggleDownvoted()
-            inboxItem?.updateRead(true)
-            
-        } else {
+        guard let self2 else {
             handleError(MlemError.modelError("No self2 found"), silent: true)
+            return
         }
+        if feedback.contains(.haptic) {
+            HapticManager.main.play(haptic: .lightSuccess, tier: .low)
+        }
+        self2.toggleDownvoted()
+        inboxItem?.updateRead(true)
     }
     
     func toggleSaved(feedback: Set<FeedbackType>) {
-        // TODO: UpdateQueue remove this shim code
-        if let post = self2 as? Post2 {
-            @Setting(\.behavior_upvoteOnSave) var upvoteOnSave
-            if feedback.contains(.haptic) {
-                HapticManager.main.play(haptic: .success, tier: .low)
-            }
-            if upvoteOnSave, !post.saved, post.votes.myVote != .upvote {
-                post.updateVote(.upvote)
-            }
-            post.updateSaved(!post.saved)
-        } else {
-            if let self2 {
-                if feedback.contains(.haptic) {
-                    HapticManager.main.play(haptic: .success, tier: .low)
-                }
-                @Setting(\.behavior_upvoteOnSave) var upvoteOnSave
-                if upvoteOnSave, !self2.saved, self2.votes.myVote != .upvote {
-                    self2.updateVote(.upvote)
-                }
-                
-                self2.toggleSaved()
-                inboxItem?.updateRead(true)
-            } else {
-                handleError(MlemError.modelError("No self2 found"), silent: true)
-            }
+        guard let self2 else {
+            handleError(MlemError.modelError("No self2 found"), silent: true)
+            return
         }
+        if feedback.contains(.haptic) {
+            HapticManager.main.play(haptic: .success, tier: .low)
+        }
+        @Setting(\.behavior_upvoteOnSave) var upvoteOnSave
+        if upvoteOnSave, !self2.saved, self2.votes.myVote != .upvote {
+            self2.updateVote(.upvote)
+        }
+        
+        self2.toggleSaved()
+        inboxItem?.updateRead(true)
     }
     
     func toggleRemoved(reason: String?, feedback: Set<FeedbackType>) {
@@ -99,8 +86,7 @@ extension Interactable1Providing {
                     ToastModel.main.add(.failure(initialValue ? "Failed to remove content" : "Failed to restore content"))
                 }
             }
-            
-        }
+         }
     }
     
     // MARK: Counters
