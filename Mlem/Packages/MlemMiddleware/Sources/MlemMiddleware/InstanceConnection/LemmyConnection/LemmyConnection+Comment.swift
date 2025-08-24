@@ -52,7 +52,7 @@ public extension LemmyConnection {
                 savedOnly: filter == .saved,
                 likedOnly: filter == .upvoted,
                 dislikedOnly: filter == .downvoted,
-                timeRangeSeconds: nil,
+                timeRangeSeconds: sort.timeRangeSeconds,
                 pageCursor: nil,
                 pageBack: nil
             )
@@ -83,7 +83,7 @@ public extension LemmyConnection {
                 savedOnly: filter == .saved,
                 likedOnly: filter == .upvoted,
                 dislikedOnly: filter == .downvoted,
-                timeRangeSeconds: nil,
+                timeRangeSeconds: sort.timeRangeSeconds,
                 pageCursor: nil,
                 pageBack: nil
             )

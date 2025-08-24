@@ -33,7 +33,7 @@ public extension LemmyConnection {
                 showHidden: showHidden,
                 showRead: nil,
                 showNsfw: nil,
-                timeRangeSeconds: nil,
+                timeRangeSeconds: sort.timeRangeSeconds,
                 multiCommunityId: nil,
                 hideMedia: nil,
                 markAsRead: nil,
@@ -72,7 +72,7 @@ public extension LemmyConnection {
                 showHidden: showHidden,
                 showRead: nil,
                 showNsfw: nil,
-                timeRangeSeconds: nil,
+                timeRangeSeconds: sort.timeRangeSeconds,
                 multiCommunityId: nil,
                 hideMedia: nil,
                 markAsRead: nil,
@@ -155,7 +155,7 @@ public extension LemmyConnection {
             creatorId: creatorId,
             filter: filter,
             createSortType: { try sort.apiType(for: $0) },
-            timeRangeSeconds: nil
+            timeRangeSeconds: sort.timeRangeSeconds
         )
     }
     
@@ -191,14 +191,14 @@ public extension LemmyConnection {
         timeRangeSeconds: Int?
     ) async throws -> [Post2Snapshot] {
         let response = try await performingForEndpoint { endpoint in
-            LemmySearchRequest(
+            try LemmySearchRequest(
                 endpoint: endpoint,
                 q: query,
                 communityId: communityId,
                 communityName: nil,
                 creatorId: creatorId,
                 type_: .posts,
-                sort: try createSortType(endpoint),
+                sort: createSortType(endpoint),
                 listingType: filter.apiType,
                 page: page,
                 limit: limit,
