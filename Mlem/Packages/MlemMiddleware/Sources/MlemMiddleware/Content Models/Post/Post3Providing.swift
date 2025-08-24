@@ -18,7 +18,7 @@ public extension Post3Providing {
 
     // Override `Post2Providing` definition
     var community: Community2 { post3.community }
-    var community_: (Community2)? { post3.community }
+    var community_: Community2? { post3.community }
     
     var crossPosts: [Post2] { post3.crossPosts }
     

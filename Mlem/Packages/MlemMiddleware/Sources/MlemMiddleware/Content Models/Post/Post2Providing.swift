@@ -118,7 +118,7 @@ public extension Post2Providing {
         post2.readStatus = true
         Task {
             await updateQueue.addItem {
-                return try await self.api.repository.savePost(id: self.id, save: newValue)
+                try await self.api.repository.savePost(id: self.id, save: newValue)
             }
         }
     }

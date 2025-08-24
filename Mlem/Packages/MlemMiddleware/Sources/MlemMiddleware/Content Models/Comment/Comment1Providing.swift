@@ -155,7 +155,7 @@ public extension Comment1Providing {
                     return ret
                 } catch {
                     callback?(.failure(error))
-                    throw(error)
+                    throw (error)
                 }
             }
         }
@@ -183,7 +183,7 @@ public extension Comment1Providing {
                     return ret
                 } catch {
                     callback?(.failure(error))
-                    throw(error)
+                    throw (error)
                 }
             }
         }

@@ -27,6 +27,6 @@ public struct Comment2Snapshot: CacheIdentifiable, CommentSnapshotProviding {
     public var cacheId: Int { comment.cacheId }
     
     public func merge(with snapshot: any CommentSnapshotProviding) -> any CommentSnapshotProviding {
-        return self
+        self
     }
 }

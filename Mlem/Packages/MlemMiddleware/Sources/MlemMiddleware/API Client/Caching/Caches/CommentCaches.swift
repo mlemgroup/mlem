@@ -34,7 +34,7 @@ class Comment1Cache: ApiTypeBackedCache<Comment1, Comment1Snapshot> {
 
 class Comment2Cache: ApiTypeBackedCache<Comment2, Comment2Snapshot> {
     override func performModelTranslation(api: ApiClient, from snapshot: Comment2Snapshot) -> Comment2 {
-        return .init(
+        .init(
             api: api,
             comment1: api.caches.comment1.getModel(api: api, from: snapshot.comment),
             creator: api.caches.person1.getModel(api: api, from: snapshot.creator),

@@ -40,16 +40,8 @@ struct ReportView: View {
         case let .message(message):
             MessageView(message: message) {
                 reportDetailsView
-                if message.api.supportsOrNil(.fullyFeaturedReports) ?? true {
-                    resolveButton
-                } else {
-                    resolutionInfoView
-                }
+                resolveButton
             }
-        case let .legacyPost(post, community: community, creator: creator):
-            legacyPostView(post: post, community: community, creator: creator)
-        case let .legacyComment(comment, community: community, creator: creator):
-            legacyCommentView(comment: comment, community: community, creator: creator)
         }
     }
     
@@ -105,21 +97,6 @@ struct ReportView: View {
             VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
                 FullyQualifiedLinkView(creator, labelStyle: .medium)
                 HeadlinePostBodyView(post: post)
-                reportDetailsView
-                resolveButton
-            }
-            .padding(Constants.main.standardSpacing)
-            .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
-            .paletteBorder(cornerRadius: Constants.main.standardSpacing)
-        }
-    }
-    
-    @ViewBuilder
-    func legacyCommentView(comment: Comment1, community: Community1, creator: Person1) -> some View {
-        NavigationLink(.comment(comment)) {
-            VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
-                FullyQualifiedLinkView(creator, labelStyle: .medium)
-                Markdown(comment.content, configuration: .default(palette: palette))
                 reportDetailsView
                 resolveButton
             }

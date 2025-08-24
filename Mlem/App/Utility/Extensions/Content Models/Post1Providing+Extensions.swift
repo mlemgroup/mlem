@@ -58,7 +58,7 @@ extension Post1Providing {
     
     func toggleLocked(feedback: Set<FeedbackType>) {
         let shouldLock = !locked
-        self.toggleLocked { status in
+        toggleLocked { status in
             Task {
                 await self.handleModerationActionCompletion(
                     message: shouldLock ? "Failed to lock post" : "Failed to unlock post",
@@ -71,7 +71,7 @@ extension Post1Providing {
     
     func togglePinnedCommunity(feedback: Set<FeedbackType>) {
         let shouldPin = !pinnedCommunity
-        self.togglePinnedCommunity { status in
+        togglePinnedCommunity { status in
             Task {
                 await self.handleModerationActionCompletion(
                     message: shouldPin ? "Failed to pin post" : "Failed to unpin post",
@@ -84,7 +84,7 @@ extension Post1Providing {
     
     func togglePinnedInstance(feedback: Set<FeedbackType>) {
         let shouldPin = !pinnedInstance
-        self.togglePinnedInstance { status in
+        togglePinnedInstance { status in
             Task {
                 await self.handleModerationActionCompletion(
                     message: shouldPin ? "Failed to pin post" : "Failed to unpin post",
@@ -210,9 +210,7 @@ extension Post1Providing {
             }
             lockAction(appState: appState, feedback: feedback)
             
-            let adminsCanViewVotes = api.supportsOrNil(.adminsCanViewVotes) ?? false
-            let moderatorsCanViewVotes = api.supportsOrNil(.moderatorsCanViewVotes) ?? false
-            let viewVotesIsPossible = (api.isAdmin && adminsCanViewVotes) || moderatorsCanViewVotes
+            let viewVotesIsPossible = api.supportsOrNil(.viewVotes) ?? false
             
             if let navigation, viewVotesIsPossible {
                 viewVotesAction(navigation: navigation)
@@ -257,16 +255,16 @@ extension Post1Providing {
         case .report: reportAction(appState: appState, communityContext: communityContext)
         case .crossPost: crossPostAction()
         case .lock: lockAction(appState: appState, feedback: feedback)
-            // SwiftLint is erroneously warning here. This could be fixed by wrapping the expression
-            // in parenthesis, but the pre-commit hook removed the paranthesis
-            // swiftlint:disable:next void_function_in_ternary
+        // SwiftLint is erroneously warning here. This could be fixed by wrapping the expression
+        // in parenthesis, but the pre-commit hook removed the paranthesis
+        // swiftlint:disable:next void_function_in_ternary
         case .pin: api.isAdmin ? pinAction(
-            appState: appState,
-            feedback: feedback
-        ) : pinToCommunityAction(
-            appState: appState,
-            feedback: feedback
-        )
+                appState: appState,
+                feedback: feedback
+            ) : pinToCommunityAction(
+                appState: appState,
+                feedback: feedback
+            )
         case .resolve: reportContext?.resolveAction(appState: appState, feedback: feedback)
         case .remove: removeAction(appState: appState, feedback: feedback).disabled(!canModerate)
         case .ban: reportContext?.contextualBanAction(appState: appState)
@@ -289,7 +287,7 @@ extension Post1Providing {
     func readout(type: PostBarConfiguration.ReadoutType, showColor: Bool) -> Readout? {
         switch type {
         case .created: createdReadout
-            // swiftlint:disable:next void_function_in_ternary
+        // swiftlint:disable:next void_function_in_ternary
         case .score: api.downvotesEnabled ? scoreReadout(showColor: showColor) : upvoteReadout(showColor: showColor)
         case .upvote: upvoteReadout(showColor: showColor)
         case .downvote: api.downvotesEnabled ? downvoteReadout(showColor: showColor) : nil
@@ -300,17 +298,17 @@ extension Post1Providing {
     
     func taggedTitle(communityContext: (any Community1Providing)?) -> Text {
         let hasTags: Bool = removed
-        || deleted
-        || pinnedInstance
-        || (communityContext != nil && pinnedCommunity)
-        || locked
+            || deleted
+            || pinnedInstance
+            || (communityContext != nil && pinnedCommunity)
+            || locked
         
         return postTag(active: removed, icon: .lemmy.removed, color: .themedNegative) +
-        postTag(active: deleted, icon: .general.delete, color: .themedNegative) +
-        postTag(active: pinnedInstance, icon: .lemmy.pinned, color: .themedAdministration) +
-        postTag(active: pinnedCommunity && communityContext != nil, icon: .lemmy.pinned, color: .themedModeration) +
-        postTag(active: locked, icon: .lemmy.locked, color: .themedLockAccent) +
-        Text(verbatim: "\(hasTags ? "  " : "")\(title)")
+            postTag(active: deleted, icon: .general.delete, color: .themedNegative) +
+            postTag(active: pinnedInstance, icon: .lemmy.pinned, color: .themedAdministration) +
+            postTag(active: pinnedCommunity && communityContext != nil, icon: .lemmy.pinned, color: .themedModeration) +
+            postTag(active: locked, icon: .lemmy.locked, color: .themedLockAccent) +
+            Text(verbatim: "\(hasTags ? "  " : "")\(title)")
     }
     
     /// Host if this is a link post, otherwise nil.
@@ -507,7 +505,7 @@ extension Post1Providing {
     }
     
     func viewVotesAction(navigation: NavigationLayer) -> BasicAction {
-        let enabled = canModerate && (api.isAdmin || (api.supportsOrNil(.moderatorsCanViewVotes) ?? true))
+        let enabled = canModerate && (api.supportsOrNil(.viewVotes) ?? true)
         return .init(
             id: "viewVotes\(uid)",
             appearance: .viewVotes(),

@@ -262,7 +262,6 @@ public extension Post1Providing {
         }
     }
     
-    
     /// Locks or unlocks this post according to newValue
     /// - Parameters:
     ///   - newValue: true to lock post, false to unlock
@@ -278,7 +277,7 @@ public extension Post1Providing {
                     return ret
                 } catch {
                     callback?(.failure(error))
-                    throw(error)
+                    throw (error)
                 }
             }
         }
@@ -359,7 +358,7 @@ public extension Post1Providing {
                     return ret
                 } catch {
                     callback?(.failure(error))
-                    throw(error)
+                    throw (error)
                 }
             }
         }

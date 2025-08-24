@@ -86,8 +86,7 @@ extension Interactable1Providing {
                     ToastModel.main.add(.failure(initialValue ? "Failed to remove content" : "Failed to restore content"))
                 }
             }
-            
-        }
+         }
     }
     
     // MARK: Counters

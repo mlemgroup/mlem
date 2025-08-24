@@ -92,9 +92,7 @@ extension Comment1Providing {
         showAllActions: Bool = true,
         report: Report? = nil
     ) -> [any Action] {
-        let adminsCanViewVotes = api.supportsOrNil(.adminsCanViewVotes) ?? false
-        let moderatorsCanViewVotes = api.supportsOrNil(.moderatorsCanViewVotes) ?? false
-        let viewVotesIsPossible = (api.isAdmin && adminsCanViewVotes) || moderatorsCanViewVotes
+        let viewVotesIsPossible = api.supportsOrNil(.viewVotes) ?? false
         
         if viewVotesIsPossible, showAllActions || Settings.get(\.menus_allModActions) {
             viewVotesAction()
@@ -182,7 +180,7 @@ extension Comment1Providing {
     }
     
     func viewVotesAction() -> BasicAction {
-        let enabled = canModerate && (api.isAdmin || (api.supportsOrNil(.moderatorsCanViewVotes) ?? true))
+        let enabled = canModerate && (api.supportsOrNil(.viewVotes) ?? true)
         let callback: (@MainActor () -> Void)?
         if let self2, enabled {
             callback = {

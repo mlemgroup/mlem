@@ -26,9 +26,9 @@ class Reply1Cache: ApiTypeBackedCache<Reply1, Reply1Snapshot> {
 }
 
 class Reply2Cache: ApiTypeBackedCache<Reply2, Reply2Snapshot> {
-    public var commentIdItemCache: ItemCache = .init()
+    var commentIdItemCache: ItemCache = .init()
     
-    public func retrieveModel(commentId: Int) -> Reply2? {
+    func retrieveModel(commentId: Int) -> Reply2? {
         commentIdItemCache.get(commentId)
     }
 

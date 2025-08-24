@@ -33,13 +33,12 @@ public extension LemmyConnection {
             version >= sort.minimumVersion
         case let .sortTimeRange(timeRange):
             version >= timeRange.minimumVersion
-        case .searchLocalPeople, .moderatorsCanViewVotes, .hidePosts, .fullyFeaturedReports:
-            version >= .v0_19_4
         case .searchLocalCommunities, .viewInstanceSettings, .viewInstanceCreationDate, .modlog,
              .logIn, .signUp, .viewCommunityActiveUsers, .commentTreeSortedByDepth, .uploadImages,
              .editAccountSettings, .viewMentionsAndPrivateMessages, .viewReports, .editAndDeletePrivateMessages,
-             .reportPrivateMessages, .adminsCanViewVotes, .purgeContent, .removeCommunity, .banFromInstance,
-             .banFromCommunity, .editModeratorList, .commentSearch, .undeletePrivateMessages:
+             .reportPrivateMessages, .viewVotes, .purgeContent, .removeCommunity, .banFromInstance,
+             .banFromCommunity, .editModeratorList, .commentSearch, .undeletePrivateMessages, .searchLocalPeople,
+             .hidePosts:
             true
         }
     }

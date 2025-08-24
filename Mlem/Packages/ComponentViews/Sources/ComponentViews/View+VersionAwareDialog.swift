@@ -3,7 +3,7 @@
 //  ComponentViews
 //
 //  Created by Sjmarf on 2025-08-23.
-//  
+//
 
 import SwiftUI
 

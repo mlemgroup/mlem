@@ -34,21 +34,14 @@ public struct ReportSnapshot: CacheIdentifiable {
 }
 
 public enum ReportTargetSnapshot {
-    /// All post reports use this case on 0.19.4 and above.
     case post(Post2Snapshot)
-    /// All comment reports use this case on 0.19.4 and above.
     case comment(Comment2Snapshot)
-    /// All messages reports use this case regardless of version.
     case message(Message2Snapshot)
-    /// All post reports use this case on 0.19.3 and below.
-    case legacyPost(Post1Snapshot, community: Community1Snapshot, creator: Person1Snapshot)
-    /// All comment reports use this case on 0.19.3 and below.
-    case legacyComment(Comment1Snapshot, community: Community1Snapshot, creator: Person1Snapshot)
     
     var type: ReportType {
         switch self {
-        case .post, .legacyPost: .post
-        case .comment, .legacyComment: .comment
+        case .post: .post
+        case .comment: .comment
         case .message: .message
         }
     }
