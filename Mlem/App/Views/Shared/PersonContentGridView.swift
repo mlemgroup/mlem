@@ -80,6 +80,9 @@ struct PersonContentGridView: View {
                     }
                 }
             }
+            .quickSwipeCornerRadius(postSize.cornerRadius)
+            .quickSwipeIconSize(postSize.quickSwipeIconSize)
+            .quickSwipeThresholds(postSize.quickSwipeThresholds)
             .animation(.easeOut(duration: 0.1), value: items.isEmpty)
             EndOfFeedView(loadingState: loadingState, viewType: .hobbit)
         }

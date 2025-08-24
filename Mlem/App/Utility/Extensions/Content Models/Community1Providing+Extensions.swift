@@ -8,6 +8,7 @@
 import Foundation
 import Haptics
 import MlemMiddleware
+import QuickSwipes
 
 extension Community1Providing {
     private var self2: (any Community2Providing)? { self as? any Community2Providing }
@@ -141,9 +142,8 @@ extension Community1Providing {
         }
     }
     
-    func swipeActions(appState: AppState, behavior: SwipeBehavior) -> SwipeConfiguration {
+    func swipeActions(appState: AppState) -> SwipeConfiguration {
         .init(
-            behavior: behavior,
             leadingActions: {},
             trailingActions: {
                 if api.canInteract(appState: appState) {

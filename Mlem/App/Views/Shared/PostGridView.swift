@@ -109,6 +109,9 @@ struct PostGridView: View {
                     }
                 }
             }
+            .quickSwipeCornerRadius(postSize.cornerRadius)
+            .quickSwipeIconSize(postSize.quickSwipeIconSize)
+            .quickSwipeThresholds(postSize.quickSwipeThresholds)
             .padding(.horizontal, postSize.tiled || columns.count == 1 ? 0 : Constants.main.halfSpacing)
             .animation(.easeOut(duration: 0.1), value: postFeedLoader.items.isEmpty)
             EndOfFeedView(feedLoader: postFeedLoader, viewType: .hobbit)

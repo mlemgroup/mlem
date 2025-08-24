@@ -6,13 +6,13 @@
 //
 
 import MlemMiddleware
+import QuickSwipes
 
 extension Message1Providing {
     var self2: (any Message2Providing)? { self as? any Message2Providing }
         
-    func swipeActions(appState: AppState, behavior: SwipeBehavior) -> SwipeConfiguration {
+    func swipeActions(appState: AppState) -> SwipeConfiguration {
         .init(
-            behavior: behavior,
             trailingActions: {
                 if api.canInteract(appState: appState), !isOwnMessage {
                     markReadAction(appState: appState, feedback: [.haptic])

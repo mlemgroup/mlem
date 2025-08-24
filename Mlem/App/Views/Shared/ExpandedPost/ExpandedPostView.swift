@@ -246,11 +246,7 @@ struct ExpandedPostView<Content: View>: View {
             }
         }
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
-        .quickSwipes(
-            post: post,
-            configuration: postInteractionBar,
-            behavior: .standard
-        )
+        .quickSwipes(post: post, configuration: postInteractionBar)
         .contextMenu {
             post.allMenuActions(
                 appState: appState,
@@ -259,7 +255,7 @@ struct ExpandedPostView<Content: View>: View {
                 commentTreeTracker: tracker
             )
         }
-        .paletteBorder(cornerRadius: PostSize.large.swipeBehavior.cornerRadius)
+        .paletteBorder(cornerRadius: Constants.main.standardSpacing)
         .onTapGesture {
             if tapPostsToCollapse || postCollapsed {
                 togglePostCollapsed(post: post, scrollProxy: scrollProxy)

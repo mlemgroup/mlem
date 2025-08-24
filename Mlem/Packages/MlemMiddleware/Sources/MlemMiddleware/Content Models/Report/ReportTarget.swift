@@ -62,12 +62,12 @@ public enum ReportTarget {
     
     @MainActor
     func update(with snapshot: ReportTargetSnapshot) {
+        // TODO: UpdateQueue rework reports to integrate UpdateQueue
         switch (self, snapshot) {
         case (.post, .post):
-            // TODO: UpdateQueue handle report update callbacks through UpdateQueue
             print("noop") // print here to make the compiler happy
         case let (.comment(comment), .comment(updatedComment)):
-            comment.update(with: updatedComment)
+            print("noop") // print here to make the compiler happy
         case let (.message(message), .message(updatedMessage)):
             message.update(with: updatedMessage)
         default:

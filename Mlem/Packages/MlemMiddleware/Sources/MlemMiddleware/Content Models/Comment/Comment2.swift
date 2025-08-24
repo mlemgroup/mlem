@@ -23,12 +23,9 @@ public final class Comment2: Comment2Providing {
     public var creatorIsModerator: Bool
     public var creatorIsAdmin: Bool
     public var commentCount: Int
-    
-    var votesManager: StateManager<VotesModel>
-    public var votes: VotesModel { votesManager.displayedValue }
-    
-    var savedManager: StateManager<Bool>
-    public var saved: Bool { savedManager.displayedValue }
+
+    public var votes: VotesModel
+    public var saved: Bool
     
     public var creatorBannedFromCommunity: Bool {
         guard let state = creator.isBannedFromCommunity(community) else {
@@ -44,8 +41,8 @@ public final class Comment2: Comment2Providing {
         creator: Person1,
         post: Post1,
         community: Community1,
-        votesManager: StateManager<VotesModel>,
-        savedManager: StateManager<Bool>,
+        votes: VotesModel,
+        saved: Bool,
         creatorIsModerator: Bool,
         creatorIsAdmin: Bool,
         creatorBannedFromCommunity: Bool,
@@ -56,11 +53,15 @@ public final class Comment2: Comment2Providing {
         self.creator = creator
         self.post = post
         self.community = community
-        self.votesManager = votesManager
-        self.savedManager = savedManager
+        self.votes = votes
+        self.saved = saved
         self.creatorIsModerator = creatorIsModerator
         self.creatorIsAdmin = creatorIsAdmin
         self.commentCount = commentCount
         creator.updateKnownCommunityBanState(id: community.id, banned: creatorBannedFromCommunity)
+        
+        Task {
+            await updateQueue.setParent(self)
+        }
     }
 }
