@@ -65,17 +65,13 @@ struct FeedPostView<EmbeddedContent: View>: View {
                 content
                     .overlay(alignment: .topLeading) {
                         if differentiateWithoutColor, !(post.read_ ?? false), readPostIndicator == .outline {
-                            RoundedRectangle(cornerRadius: postSize.swipeBehavior.cornerRadius)
+                            RoundedRectangle(cornerRadius: postSize.cornerRadius)
                                 .stroke(lineWidth: .init(readOutlineThickness))
                                 .foregroundStyle(.themedSecondary)
                         }
                     }
-                    .contentShape(.contextMenuPreview, .rect(cornerRadius: postSize.swipeBehavior.cornerRadius))
-                    .quickSwipes(
-                        post: post,
-                        configuration: interactionBarConfiguration,
-                        behavior: .standard
-                    )
+                    .contentShape(.contextMenuPreview, .rect(cornerRadius: postSize.cornerRadius))
+                    .quickSwipes(post: post, configuration: interactionBarConfiguration)
                     .contextMenu { post.allMenuActions(
                         appState: appState,
                         showAllActions: false,
@@ -85,7 +81,7 @@ struct FeedPostView<EmbeddedContent: View>: View {
             }
         }
         .contentShape(.interaction, .rect)
-        .paletteBorder(cornerRadius: postSize.swipeBehavior.cornerRadius)
+        .paletteBorder(cornerRadius: postSize.cornerRadius)
         .onChange(of: filtersTracker.changeHash) {
             obscured = filtersTracker.postWouldBeFiltered(post)
         }
@@ -118,7 +114,7 @@ struct FeedPostView<EmbeddedContent: View>: View {
             .padding(Constants.main.standardSpacing)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             .background(.themedSecondaryGroupedBackground)
-            .clipShape(.rect(cornerRadius: postSize.swipeBehavior.cornerRadius))
+            .clipShape(.rect(cornerRadius: postSize.cornerRadius))
     }
     
     @ViewBuilder

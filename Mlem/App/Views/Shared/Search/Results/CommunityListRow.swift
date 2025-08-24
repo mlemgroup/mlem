@@ -55,7 +55,7 @@ struct CommunityListRow<Content2: View>: View {
         .background(.themedSecondaryGroupedBackground)
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
         .contextMenu { community.menuActions(appState: appState, navigation: navigation, feedLoader: nil) }
-        .quickSwipes(community.swipeActions(appState: appState, behavior: .standard))
+        .quickSwipes(community.swipeActions(appState: appState))
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }
 }
