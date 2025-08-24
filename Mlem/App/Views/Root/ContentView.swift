@@ -9,6 +9,7 @@ import Dependencies
 import Haptics
 import MlemMiddleware
 import Nuke
+import QuickSwipes
 import SwiftUI
 import Theming
 
@@ -24,6 +25,7 @@ struct ContentView: View {
     @Setting(\.tab_gestures_longPressAction) var tabLongPressAction
     @Setting(\.dev_developerMode) var developerMode
     @Setting(\.behavior_hapticLevel) var hapticLevel
+    @Setting(\.behavior_enableQuickSwipes) var quickSwipesEnabled
 
     let cacheCleanTimer = Timer.publish(every: 10, on: .main, in: .common).autoconnect()
     let unreadCountTimer = Timer.publish(every: 30, on: .main, in: .common).autoconnect()
@@ -73,6 +75,11 @@ struct ContentView: View {
                 .environment(errorsTracker)
                 .environment(expandedPostHistoryTracker)
                 .environment(backendClient)
+                .quickSwipesDisabled(!quickSwipesEnabled)
+                .quickSwipeThresholds(primary: 60, secondary: 150, tertiary: 240)
+                .quickSwipeMinimumDrag(20)
+                .quickSwipeCornerRadius(Constants.main.standardSpacing)
+                .quickSwipeIconSize(28)
                 .task {
                     do {
                         try await MlemStats.main.loadInstances()

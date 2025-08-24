@@ -5,75 +5,73 @@
 //  Created by Sjmarf on 2025-03-23.
 //
 
+import ComponentViews
 import Haptics
-import MlemMiddleware
+import Icons
 import SwiftUI
 import Theming
 
 // swiftlint:disable:next type_body_length
 struct QuickSwipeViewModifier: ViewModifier {
     @Environment(HapticManager.self) var hapticManager
-    @Environment(NavigationLayer.self) var navigation
     @Environment(\.palette) var palette
     
-    @Setting(\.behavior_enableQuickSwipes) var quickSwipesEnabled
+    @Environment(\.quickSwipeThresholdSet) var thresholds
+    @Environment(\.quickSwipeMinimumDrag) var minimumDrag
+    @Environment(\.quickSwipeIconSize) var iconSize
+    @Environment(\.quickSwipeCornerRadius) var cornerRadius
+    @Environment(\.quickSwipesEnabled) var quickSwipesEnabled
     
     // state
     @GestureState var dragState: CGFloat = .zero
     @State var dragPosition: CGFloat = .zero
     @State var prevDragPosition: CGFloat = .zero
     @State var dragBackground: ThemedColor? = .themedBackground
-    @State var leadingSwipeSymbol: String?
-    @State var trailingSwipeSymbol: String?
-    @State var popupModel: PopupAnchorModel = .init()
+    @State var leadingSwipeIcon: Icon?
+    @State var trailingSwipeIcon: Icon?
+    @State var iconIsActive: Bool = false
+    @State var activeChoiceGroup: QuickSwipeChoiceGroup?
     
     let config: SwipeConfiguration
     
-    private let iconWidth: CGFloat
-    
-    private var primaryLeadingAction: (any Action)? { config.leadingActions.first }
-    private var primaryTrailingAction: (any Action)? { config.trailingActions.first }
+    private var primaryLeadingAction: QuickSwipeAction? { config.leadingActions.first }
+    private var primaryTrailingAction: QuickSwipeAction? { config.trailingActions.first }
     
     init(config: SwipeConfiguration) {
         self.config = config
         
-        // this sets the icon to always be centered between the edge of the background and the edge of the swipeable item, as this is
-        // both the width of the icon's frame and its padding. the actual icon size is done using fonts.
-        self.iconWidth = config.behavior.primaryThreshold / 3
-        
-        _leadingSwipeSymbol = State(initialValue: primaryLeadingAction?.appearance.swipeIcon1)
-        _trailingSwipeSymbol = State(initialValue: primaryTrailingAction?.appearance.swipeIcon1)
+        _leadingSwipeIcon = State(initialValue: primaryLeadingAction?.icon)
+        _trailingSwipeIcon = State(initialValue: primaryTrailingAction?.icon)
     }
     
     func body(content: Content) -> some View {
         if quickSwipesEnabled {
-            Group {
-                if #available(iOS 18.0, *) {
-                    iOS18Body(content: content)
-                } else {
-                    legacyBody(content: content)
-                        .onChange(of: dragState) {
-                            draggingUpdated(dragState: dragState)
-                        }
+            innerBody(content: content)
+                .clipShape(.rect(cornerRadius: cornerRadius)) // clip slidable card
+                .background(shadowBackground)
+                .geometryGroup()
+                .offset(x: dragPosition) // using dragPosition so we can apply withAnimation() to it
+                .background(iconBackground)
+                // disables links from highlighting when tapped
+                .buttonStyle(.empty)
+                .clipShape(.rect(cornerRadius: cornerRadius)) // clip entire view
+                .versionAwareDialog(
+                    activeChoiceGroup?.title ?? "",
+                    isPresented: .init(get: { activeChoiceGroup != nil }, set: { _ in activeChoiceGroup = nil })
+                ) {
+                    ForEach(Array((activeChoiceGroup?.items ?? []).enumerated()), id: \.offset) { _, item in
+                        Button(item.label, role: item.destructive ? .destructive : nil, action: item.callback)
+                    }
+                    Button("Cancel", role: .cancel) {}
                 }
-            }
-            .clipShape(.rect(cornerRadius: config.behavior.cornerRadius)) // clip slidable card
-            .background(shadowBackground)
-            .geometryGroup()
-            .offset(x: dragPosition) // using dragPosition so we can apply withAnimation() to it
-            .background(iconBackground)
-            // disables links from highlighting when tapped
-            .buttonStyle(.empty)
-            .clipShape(.rect(cornerRadius: config.behavior.cornerRadius)) // clip entire view
-            .popupAnchor(model: popupModel)
         } else {
             content
-                .clipShape(.rect(cornerRadius: config.behavior.cornerRadius)) // clip entire view
+                .clipShape(.rect(cornerRadius: cornerRadius)) // clip entire view
         }
     }
     
-    @available(iOS 18.0, *) @ViewBuilder
-    func iOS18Body(content: Content) -> some View {
+    @ViewBuilder
+    func innerBody(content: Content) -> some View {
         content
             .gesture(
                 PanGesture { recognizer in
@@ -86,32 +84,12 @@ struct QuickSwipeViewModifier: ViewModifier {
             )
     }
     
-    @ViewBuilder
-    func legacyBody(content: Content) -> some View {
-        content
-            .highPriorityGesture(
-                DragGesture(
-                    minimumDistance: config.behavior.minimumDrag, // min distance prevents conflict with scrolling drag gesture
-                    coordinateSpace: .global
-                )
-                .updating($dragState) { value, state, _ in
-                    // this check adds a dead zone to the left side of the screen so it doesn't interfere with navigation
-                    if dragState == .zero && abs(value.translation.height) * 1.7 > abs(value.translation.width) {
-                        return
-                    }
-                    if dragState != .zero || value.location.x > 70 {
-                        state = value.translation.width
-                    }
-                }
-            )
-    }
-    
     var shadowBackground: some View {
         // creates a shadow under the edge of the view
         Rectangle()
             .foregroundStyle(.clear)
             .border(width: 10, edges: [.leading, .trailing], color: .black)
-            .clipShape(RoundedRectangle(cornerRadius: config.behavior.cornerRadius))
+            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
             .shadow(radius: 5)
             .opacity(dragPosition == .zero ? 0 : 1) // prevent this view from appearing in animations on parent view(s).
     }
@@ -121,24 +99,24 @@ struct QuickSwipeViewModifier: ViewModifier {
             .overlay {
                 HStack(spacing: 0) {
                     if dragPosition > 0 {
-                        Image(systemName: leadingSwipeSymbol ?? Icons.warning)
-                            .font(.system(size: config.behavior.iconSize))
-                            .foregroundStyle(.themedContrastingLabel)
-                            .frame(width: iconWidth)
-                            .padding(.horizontal, iconWidth)
+                        iconView(leadingSwipeIcon)
                     }
                     Spacer()
                     if dragPosition < 0 {
-                        Image(systemName: trailingSwipeSymbol ?? Icons.warning)
-                            .font(.system(size: config.behavior.iconSize))
-                            .foregroundStyle(.themedContrastingLabel)
-                            .frame(width: iconWidth)
-                            .padding(.horizontal, iconWidth)
+                        iconView(trailingSwipeIcon)
                     }
                 }
                 .accessibilityHidden(true) // prevent these from popping up in VO
                 .opacity(dragPosition == .zero ? 0 : 1) // prevent this view from appearing in animations on parent view(s).
             }
+    }
+    
+    func iconView(_ icon: Icon?) -> some View {
+        Image(icon: icon?.representingState(active: iconIsActive) ?? .general.warning)
+            .font(.system(size: iconSize))
+            .foregroundStyle(.themedContrastingLabel)
+            .frame(width: iconWidth)
+            .padding(.horizontal, iconWidth)
     }
     
     private func draggingUpdated(dragState: CGFloat) {
@@ -163,19 +141,23 @@ struct QuickSwipeViewModifier: ViewModifier {
             switch edgeForActions {
             case .leading:
                 if actionIndex == nil {
-                    leadingSwipeSymbol = primaryLeadingAction?.appearance.swipeIcon1
-                    dragBackground = primaryLeadingAction?.appearance.color.opacity(dragPosition / threshold)
+                    iconIsActive = false
+                    leadingSwipeIcon = primaryLeadingAction?.icon
+                    dragBackground = primaryLeadingAction?.color.opacity(dragPosition / threshold)
                 } else {
-                    leadingSwipeSymbol = action?.appearance.swipeIcon2
-                    dragBackground = action?.appearance.color.opacity(dragPosition / threshold)
+                    iconIsActive = true
+                    leadingSwipeIcon = action?.icon
+                    dragBackground = action?.color.opacity(dragPosition / threshold)
                 }
             case .trailing:
                 if actionIndex == nil {
-                    trailingSwipeSymbol = primaryTrailingAction?.appearance.swipeIcon1
-                    dragBackground = primaryTrailingAction?.appearance.color.opacity(dragPosition / threshold)
+                    iconIsActive = false
+                    trailingSwipeIcon = primaryTrailingAction?.icon
+                    dragBackground = primaryTrailingAction?.color.opacity(dragPosition / threshold)
                 } else {
-                    trailingSwipeSymbol = action?.appearance.swipeIcon2
-                    dragBackground = action?.appearance.color.opacity(dragPosition / threshold)
+                    iconIsActive = true
+                    trailingSwipeIcon = action?.icon
+                    dragBackground = action?.color.opacity(dragPosition / threshold)
                 }
             }
             
@@ -197,10 +179,20 @@ struct QuickSwipeViewModifier: ViewModifier {
         
         let action = swipeAction(at: finalDragPosition)
         
-        if let action = action as? BasicAction {
-            action.callbackWithConfirmation(popupModel: popupModel)
-        } else if let action = action as? ActionGroup {
-            popupModel.showPopup(action)
+        switch action?.perform {
+        case let .callback(callback, confirmationPrompt):
+            if let confirmationPrompt {
+                activeChoiceGroup = .init(
+                    title: confirmationPrompt,
+                    items: [.init(label: "Confirm", destructive: true, callback: callback)]
+                )
+            } else {
+                callback()
+            }
+        case let .choice(choiceGroup):
+            activeChoiceGroup = choiceGroup
+        case nil:
+            break
         }
     }
     
@@ -208,8 +200,8 @@ struct QuickSwipeViewModifier: ViewModifier {
         withAnimation(.spring(response: 0.25)) {
             dragPosition = .zero
             prevDragPosition = .zero
-            leadingSwipeSymbol = primaryLeadingAction?.appearance.swipeIcon1
-            trailingSwipeSymbol = primaryTrailingAction?.appearance.swipeIcon1
+            leadingSwipeIcon = primaryLeadingAction?.icon
+            trailingSwipeIcon = primaryTrailingAction?.icon
             dragBackground = .themedBackground
         }
     }
@@ -230,7 +222,7 @@ struct QuickSwipeViewModifier: ViewModifier {
     
     /// Get the swipe action a specific drag position.
     /// - Parameter dragPosition: Along the x-axis.
-    private func swipeAction(at dragPosition: CGFloat) -> (any Action)? {
+    private func swipeAction(at dragPosition: CGFloat) -> (QuickSwipeAction)? {
         let edge = edgeForActions(at: dragPosition)
         let index = actionIndex(edge: edge, at: dragPosition)
         let action = action(edge: edge, index: index)
@@ -246,7 +238,7 @@ struct QuickSwipeViewModifier: ViewModifier {
     /// - Returns: A `nil` value denotes the state where swiping has begun, but not enough to trigger any actions.
     private func actionIndex(edge: HorizontalEdge, at dragPosition: CGFloat) -> Array<CGFloat>.Index? {
         /// Map a `dragPosition` to a `dragThreshold`, which tells us what swipe action to perform, where `nil` is no action, `1` is primary, `2` is secondary, etc.
-        let thresholdIndex = config.behavior.thresholds.lastIndex {
+        let thresholdIndex = thresholds.all.lastIndex {
             switch edge {
             case .leading:
                 return dragPosition > $0
@@ -277,7 +269,7 @@ struct QuickSwipeViewModifier: ViewModifier {
     }
     
     /// Get the action associated with an edge at the specified index.
-    private func action(edge: HorizontalEdge, index actionIndex: Array<CGFloat>.Index?) -> (any Action)? {
+    private func action(edge: HorizontalEdge, index actionIndex: Array<CGFloat>.Index?) -> (QuickSwipeAction)? {
         guard let actionIndex else {
             return nil
         }
@@ -328,17 +320,23 @@ struct QuickSwipeViewModifier: ViewModifier {
         guard let actionIndex else {
             switch edgeForActions {
             case .leading:
-                return config.behavior.primaryThreshold
+                return thresholds.primary
             case .trailing:
-                return -config.behavior.primaryThreshold
+                return -thresholds.primary
             }
         }
         
         switch edgeForActions {
         case .leading:
-            return config.behavior.thresholds[actionIndex]
+            return thresholds.all[actionIndex]
         case .trailing:
-            return -config.behavior.thresholds[actionIndex]
+            return -thresholds.all[actionIndex]
         }
+    }
+    
+    private var iconWidth: CGFloat {
+        // this sets the icon to always be centered between the edge of the background and the edge of the swipeable item, as this is
+        // both the width of the icon's frame and its padding. the actual icon size is done using fonts.
+        thresholds.primary / 3
     }
 }

@@ -6,6 +6,7 @@
 //
 
 import MlemMiddleware
+import QuickSwipes
 import SwiftUI
 
 extension InstanceView {

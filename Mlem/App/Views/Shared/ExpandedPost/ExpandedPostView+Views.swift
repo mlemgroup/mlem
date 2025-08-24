@@ -52,11 +52,7 @@ extension ExpandedPostView {
                             scrollProxy.scrollTo(comment.actorId)
                         }
                     }
-                    .quickSwipes(
-                        comment: comment,
-                        configuration: commentInteractionBar,
-                        behavior: .standard
-                    )
+                    .quickSwipes(comment: comment, configuration: commentInteractionBar)
                     .contextMenu {
                         comment.allMenuActions(appState: appState, navigation: navigation, commentTreeTracker: tracker)
                     }

@@ -4,23 +4,30 @@
 import PackageDescription
 
 let package = Package(
-    name: "ComponentViews",
+    name: "QuickSwipes",
     platforms: [.iOS(.v18)],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
-            name: "ComponentViews",
-            targets: ["ComponentViews"]
+            name: "QuickSwipes",
+            targets: ["QuickSwipes"]
         )
-
     ],
-    dependencies: [.package(path: "../Theming")],
+    dependencies: [
+        .package(path: "../Theming"),
+        .package(path: "../ComponentViews"),
+        .package(path: "../Icons")
+    ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "ComponentViews",
-            dependencies: [.byName(name: "Theming")],
+            name: "QuickSwipes",
+            dependencies: [
+                .byName(name: "Theming"),
+                .byName(name: "ComponentViews"),
+                .byName(name: "Icons")
+            ],
             swiftSettings: [
                 .swiftLanguageMode(.v5),
                 .enableUpcomingFeature("BareSlashRegexLiterals")

@@ -7,6 +7,7 @@
 
 import Foundation
 import MlemMiddleware
+import QuickSwipes
 
 extension CommunityView {
     func canEditModeratorList(_ community: any Community) -> Bool {
