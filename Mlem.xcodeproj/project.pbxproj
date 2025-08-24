@@ -48,8 +48,8 @@
 		0315B1C62C754802006D4F82 /* PostEditorView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0315B1C52C754802006D4F82 /* PostEditorView+Logic.swift */; };
 		0316CD642C382A6A009EA8EA /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0316CD632C382A6A009EA8EA /* MessageView.swift */; };
 		0318BA9F2D72405F006CA71F /* PostSortType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0318BA9E2D72405F006CA71F /* PostSortType+Extensions.swift */; };
-		031CA4AE2E58A84E00CF0C0F /* View+SheetSearchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031CA4AD2E58A84E00CF0C0F /* View+SheetSearchable.swift */; };
 		031CA0D92E4FBFD800CF0C0F /* MarkAllAsReadButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031CA0D82E4FBFD800CF0C0F /* MarkAllAsReadButton.swift */; };
+		031CA4AE2E58A84E00CF0C0F /* View+WithSheetSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031CA4AD2E58A84E00CF0C0F /* View+WithSheetSearch.swift */; };
 		031E2D512BEF961D0003BC45 /* SubscriptionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031E2D502BEF961D0003BC45 /* SubscriptionListView.swift */; };
 		031E2D5B2BEFC9460003BC45 /* ThemeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031E2D5A2BEFC9460003BC45 /* ThemeSettingsView.swift */; };
 		031E2D5D2BEFCC630003BC45 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031E2D5C2BEFCC630003BC45 /* SettingsView.swift */; };
@@ -594,8 +594,8 @@
 		0315B1C52C754802006D4F82 /* PostEditorView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostEditorView+Logic.swift"; sourceTree = "<group>"; };
 		0316CD632C382A6A009EA8EA /* MessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
 		0318BA9E2D72405F006CA71F /* PostSortType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostSortType+Extensions.swift"; sourceTree = "<group>"; };
-		031CA4AD2E58A84E00CF0C0F /* View+SheetSearchable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+SheetSearchable.swift"; sourceTree = "<group>"; };
 		031CA0D82E4FBFD800CF0C0F /* MarkAllAsReadButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkAllAsReadButton.swift; sourceTree = "<group>"; };
+		031CA4AD2E58A84E00CF0C0F /* View+WithSheetSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+WithSheetSearch.swift"; sourceTree = "<group>"; };
 		031E2D502BEF961D0003BC45 /* SubscriptionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionListView.swift; sourceTree = "<group>"; };
 		031E2D5A2BEFC9460003BC45 /* ThemeSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeSettingsView.swift; sourceTree = "<group>"; };
 		031E2D5C2BEFCC630003BC45 /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -1396,7 +1396,7 @@
 				035EDEEC2C2DE94B00F51144 /* _assignIfNotEqual.swift */,
 				035EDEED2C2DE94B00F51144 /* DefaultTextInputType.swift */,
 				035EDEEE2C2DE94B00F51144 /* SearchBar.swift */,
-				031CA4AD2E58A84E00CF0C0F /* View+SheetSearchable.swift */,
+				031CA4AD2E58A84E00CF0C0F /* View+WithSheetSearch.swift */,
 				035EDEEF2C2DE94B00F51144 /* SearchBar+NavigationView.swift */,
 				035EDEF02C2DE94B00F51144 /* SearchBarExtensions.swift */,
 			);
@@ -2081,7 +2081,6 @@
 				CDCA44B52C176C5000C092B3 /* View+EdgeBorders.swift */,
 				03A82FA22C0D1F2400D01A5C /* View+ExternalApiWarning.swift */,
 				030E95E62C80A20A0045BC2C /* View+NavigationTransition.swift */,
-				0311ADE62E4F6D5E00EC3120 /* View+ButtonSizing.swift */,
 				0335AE102D8991330094FFD9 /* View+HiddenNavigationTitle.swift */,
 				036A84D72D99531400E95D50 /* View+ConditionalNavigationTitle.swift */,
 				CD3153062C38421B00BC5FBE /* View+LoadFeed.swift */,
@@ -2975,7 +2974,7 @@
 				CDBFCB6C2C054AA7008CD468 /* TilePostView.swift in Sources */,
 				0380965F2C10AA80003ED1D8 /* AppState+Transition.swift in Sources */,
 				03BF11C32D3D135D00CC1F66 /* SearchView+CreatorPicker.swift in Sources */,
-				031CA4AE2E58A84E00CF0C0F /* View+SheetSearchable.swift in Sources */,
+				031CA4AE2E58A84E00CF0C0F /* View+WithSheetSearch.swift in Sources */,
 				0315B1C62C754802006D4F82 /* PostEditorView+Logic.swift in Sources */,
 				0370299F2D6B743B00B749DF /* PostMockType+Realistic.swift in Sources */,
 				CDE1F1942C63DF44008AF042 /* PlatformConstants.swift in Sources */,
@@ -2993,7 +2992,6 @@
 				035EDF012C2ECFE000F51144 /* Searchable.swift in Sources */,
 				CD7743892C20EDEE0085BB43 /* VotesModel+Extensions.swift in Sources */,
 				CD4D58AD2B86BE7100B82964 /* QuickSwitcherView.swift in Sources */,
-				0311ADE72E4F6D5E00EC3120 /* View+ButtonSizing.swift in Sources */,
 				0397D4642C676CA8002C6CDC /* FeedSortPicker.swift in Sources */,
 				0355F9462C150B2300605248 /* ExternalApiInfoView.swift in Sources */,
 				03D0273C2CD3BA5100984519 /* PersonContent+Extensions.swift in Sources */,

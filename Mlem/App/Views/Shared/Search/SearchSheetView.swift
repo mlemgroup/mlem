@@ -55,7 +55,7 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
         .background(.themedGroupedBackground)
         .presentationBackground(.themedGroupedBackground)
         .navigationBarTitleDisplayMode(.inline)
-        .sheetSearchable(closeButtonLabel: closeButtonLabel.label, query: $query)
+        .withSheetSearch(closeButtonLabel: closeButtonLabel.label, query: $query)
         .task(id: query, priority: .userInitiated) {
             do {
                 if !query.isEmpty {

@@ -1,5 +1,5 @@
 //
-//  View+sheetSearchable.swift
+//  View+withSheetSearch.swift
 //  Mlem
 //
 //  Created by Sjmarf on 2025-08-22.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-private struct SheetSearchableViewModifier: ViewModifier {
+private struct SearchSheetViewModifier: ViewModifier {
     @Environment(NavigationLayer.self) var navigation
     
     let closeButtonLabel: LocalizedStringResource
@@ -66,10 +66,10 @@ private struct SheetSearchableViewModifier: ViewModifier {
 }
 
 extension View {
-    func sheetSearchable(
+    func withSheetSearch(
         closeButtonLabel: LocalizedStringResource = "Cancel",
         query: Binding<String>
     ) -> some View {
-        modifier(SheetSearchableViewModifier(closeButtonLabel: closeButtonLabel, query: query))
+        modifier(SearchSheetViewModifier(closeButtonLabel: closeButtonLabel, query: query))
     }
 }

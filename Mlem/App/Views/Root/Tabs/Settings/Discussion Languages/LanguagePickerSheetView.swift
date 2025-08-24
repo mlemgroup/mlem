@@ -81,7 +81,7 @@ struct LanguagePickerSheetView: View {
         .contentMargins(.top, searchResults.isEmpty ? nil : 16)
         .navigationTitle("Choose Language")
         .navigationBarTitleDisplayMode(.inline)
-        .sheetSearchable(query: $query)
+        .withSheetSearch(query: $query)
     }
     
     func languageRow(_ language: Locale.Language) -> some View {
