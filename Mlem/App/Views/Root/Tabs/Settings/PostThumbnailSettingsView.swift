@@ -40,7 +40,8 @@ struct PostThumbnailSettingsView: View {
                 Text("Indicate link thumbnails with an icon.")
             }
         }
-        .labelStyle(.conditional)
+                .labelStyle(.conditional)
+        .toggleStyle(.conditional)
         .navigationTitle("Thumbnail")
     }
     

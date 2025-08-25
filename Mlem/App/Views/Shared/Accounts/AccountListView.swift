@@ -7,6 +7,7 @@
 
 import MlemMiddleware
 import SwiftUI
+import Icons
 
 /// This view is a component used as a child of ``QuickSwitcherView`` and ``AccountListSettingsView``.
 struct AccountListView: View {
@@ -190,9 +191,10 @@ struct AccountListView: View {
             }
             if accountsTracker.userAccounts.count > 3 {
                 Divider()
-                Toggle(isOn: $groupAccountSort) {
-                    Label("Grouped", systemImage: "square.stack.3d.up.fill")
-                }
+                Toggle("Grouped", icon: .lemmy.groupAccountSort, isOn: $groupAccountSort)
+//                Toggle(isOn: $groupAccountSort) {
+//                    Label("Grouped", systemImage: "square.stack.3d.up.fill")
+//                }
                 .disabled(accountSort == .custom)
             }
         } label: {

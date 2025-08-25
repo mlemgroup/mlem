@@ -72,6 +72,7 @@ struct AccessibilitySettingsView: View {
             }
         }
         .labelStyle(.conditional)
+        .toggleStyle(.conditional)
         .contentMargins(.top, 16)
         .hiddenNavigationTitle("Accessibility")
     }
