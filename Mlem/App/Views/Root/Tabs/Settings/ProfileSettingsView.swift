@@ -213,8 +213,9 @@ private struct CircleImageUploadButton: View {
                 Button {
                     url = nil
                 } label: {
-                    Image(icon: .general.close)
+                    Image(icon: .general.delete)
                         .resizable()
+                        .symbolVariant(.circle.fill)
                 }
             } else {
                 switch imageManager.state {
@@ -225,14 +226,14 @@ private struct CircleImageUploadButton: View {
                     ImageUploadMenu(imageManager: imageManager, imageUploadApi: api) {
                         Image(icon: .general.add)
                             .resizable()
+                            .symbolVariant(.circle.fill)
                     }
                 }
             }
         }
-        .symbolVariant(.circle.fill)
         .aspectRatio(contentMode: .fit)
-        .frame(height: 48)
+        .frame(height: 36)
         .symbolRenderingMode(.hierarchical)
-        .fontWeight(.thin)
+        .fontWeight(.regular)
     }
 }
