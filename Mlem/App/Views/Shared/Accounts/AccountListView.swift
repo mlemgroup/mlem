@@ -192,9 +192,6 @@ struct AccountListView: View {
             if accountsTracker.userAccounts.count > 3 {
                 Divider()
                 Toggle("Grouped", icon: .lemmy.groupAccountSort, isOn: $groupAccountSort)
-//                Toggle(isOn: $groupAccountSort) {
-//                    Label("Grouped", systemImage: "square.stack.3d.up.fill")
-//                }
                 .disabled(accountSort == .custom)
             }
         } label: {
