@@ -45,8 +45,7 @@ struct InboxSettingsView: View {
                 )
             }
         }
-        .labelStyle(.conditional)
-        .toggleStyle(.conditional)
+        .withConditionalLabelStyle()
         .contentMargins(.top, 16)
         .hiddenNavigationTitle("Inbox")
     }

@@ -53,8 +53,7 @@ struct ModeratorSettingsView: View {
                 )
             }
         }
-        .labelStyle(.conditional)
-        .toggleStyle(.conditional)
+        .withConditionalLabelStyle()
         .contentMargins(.top, 16)
         .hiddenNavigationTitle("Moderation")
     }

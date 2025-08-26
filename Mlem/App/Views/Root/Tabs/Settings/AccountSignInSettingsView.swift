@@ -29,8 +29,7 @@ struct AccountSignInSettingsView: View {
                 }
             }
         }
-        .labelStyle(.conditional)
-        .toggleStyle(.conditional)
+        .withConditionalLabelStyle()
         .navigationTitle("Sign-In & Security")
     }
 }

@@ -81,8 +81,7 @@ struct AccountContentSettingsView: View {
                 )
             }
         }
-        .labelStyle(.conditional)
-        .toggleStyle(.conditional)
+        .withConditionalLabelStyle()
         .navigationTitle("Content & Notifications")
     }
 }

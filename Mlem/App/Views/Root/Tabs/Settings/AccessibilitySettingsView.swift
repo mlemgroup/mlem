@@ -71,8 +71,7 @@ struct AccessibilitySettingsView: View {
                 Text("Gestures")
             }
         }
-        .labelStyle(.conditional)
-        .toggleStyle(.conditional)
+        .withConditionalLabelStyle()
         .contentMargins(.top, 16)
         .hiddenNavigationTitle("Accessibility")
     }

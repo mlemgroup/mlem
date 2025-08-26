@@ -48,8 +48,7 @@ struct PrivacySettingsView: View {
                 )
             }
         }
-        .labelStyle(.conditional)
-        .toggleStyle(.conditional)
+        .withConditionalLabelStyle()
         .contentMargins(.top, 16)
         .hiddenNavigationTitle("Privacy")
     }

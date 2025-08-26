@@ -44,8 +44,7 @@ struct SubscriptionListSettingsView: View {
             }
         }
         .animation(.easeOut(duration: 0.1), value: sort)
-        .labelStyle(.conditional)
-        .toggleStyle(.conditional)
+        .withConditionalLabelStyle()
         .contentMargins(.top, 16)
         .hiddenNavigationTitle("Subscription List")
     }

@@ -426,7 +426,7 @@
 		CD3FC6802D4A75090088E63B /* CounterApperance+StaticValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3FC67F2D4A75050088E63B /* CounterApperance+StaticValues.swift */; };
 		CD4368C12AE23FD400BD8BD1 /* Semaphore in Frameworks */ = {isa = PBXBuildFile; productRef = CD4368C02AE23FD400BD8BD1 /* Semaphore */; };
 		CD43E8B32BF2C24E007C3D71 /* ContentLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD43E8B22BF2C24E007C3D71 /* ContentLoader.swift */; };
-		CD44C92C2E5CC8B900F24AC8 /* ConditionalIconToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD44C92B2E5CC8B600F24AC8 /* ConditionalIconToggleStyle.swift */; };
+		CD44C92C2E5CC8B900F24AC8 /* ConditionalLabelStyleViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD44C92B2E5CC8B600F24AC8 /* ConditionalLabelStyleViewModifier.swift */; };
 		CD45CB0D2D1880E8008BC729 /* FiltersSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD45CB0C2D1880E3008BC729 /* FiltersSettingsView.swift */; };
 		CD4B66DA2DCE809D00D28EB4 /* InstanceUptimeView+Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4B66D92DCE809A00D28EB4 /* InstanceUptimeView+Views.swift */; };
 		CD4BAD352B4B2C0B00A1E726 /* FeedsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4BAD342B4B2C0B00A1E726 /* FeedsView.swift */; };
@@ -532,7 +532,6 @@
 		CDF8C1912D5D502400295CBA /* InteractionBarWidgetPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF8C1902D5D501E00295CBA /* InteractionBarWidgetPickerView.swift */; };
 		CDF9EF332AB2845C003F885B /* Icons.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF9EF322AB2845C003F885B /* Icons.swift */; };
 		CDFB8C692C7796020070845F /* View+DynamicBlur.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDFB8C682C7796020070845F /* View+DynamicBlur.swift */; };
-		CDFF11712D3D93DC00386B71 /* ConditionalIconLabelStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDFF11702D3D93D900386B71 /* ConditionalIconLabelStyle.swift */; };
 		CDFF9A332D88C3C1009E02E2 /* CGFloat+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDFF9A322D88C3BE009E02E2 /* CGFloat+Extensions.swift */; };
 /* End PBXBuildFile section */
 
@@ -962,7 +961,7 @@
 		CD3485BC2D50156E006748B8 /* ZoomSliderSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomSliderSettingsView.swift; sourceTree = "<group>"; };
 		CD3FC67F2D4A75050088E63B /* CounterApperance+StaticValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CounterApperance+StaticValues.swift"; sourceTree = "<group>"; };
 		CD43E8B22BF2C24E007C3D71 /* ContentLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentLoader.swift; sourceTree = "<group>"; };
-		CD44C92B2E5CC8B600F24AC8 /* ConditionalIconToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionalIconToggleStyle.swift; sourceTree = "<group>"; };
+		CD44C92B2E5CC8B600F24AC8 /* ConditionalLabelStyleViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionalLabelStyleViewModifier.swift; sourceTree = "<group>"; };
 		CD45CB0C2D1880E3008BC729 /* FiltersSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersSettingsView.swift; sourceTree = "<group>"; };
 		CD4B66D92DCE809A00D28EB4 /* InstanceUptimeView+Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InstanceUptimeView+Views.swift"; sourceTree = "<group>"; };
 		CD4BAD342B4B2C0B00A1E726 /* FeedsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedsView.swift; sourceTree = "<group>"; };
@@ -1068,7 +1067,6 @@
 		CDF8C1902D5D501E00295CBA /* InteractionBarWidgetPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionBarWidgetPickerView.swift; sourceTree = "<group>"; };
 		CDF9EF322AB2845C003F885B /* Icons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icons.swift; sourceTree = "<group>"; };
 		CDFB8C682C7796020070845F /* View+DynamicBlur.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+DynamicBlur.swift"; sourceTree = "<group>"; };
-		CDFF11702D3D93D900386B71 /* ConditionalIconLabelStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionalIconLabelStyle.swift; sourceTree = "<group>"; };
 		CDFF9A322D88C3BE009E02E2 /* CGFloat+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1513,8 +1511,7 @@
 		039F588D2C7B598000C61658 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				CD44C92B2E5CC8B600F24AC8 /* ConditionalIconToggleStyle.swift */,
-				CDFF11702D3D93D900386B71 /* ConditionalIconLabelStyle.swift */,
+				CD44C92B2E5CC8B600F24AC8 /* ConditionalLabelStyleViewModifier.swift */,
 				039F58872C7B531800C61658 /* SquircleLabelStyle.swift */,
 				039F588E2C7B599800C61658 /* ThemeLabel.swift */,
 				0325B93D2D3AAE9E00E28B97 /* SettingsHeaderView.swift */,
@@ -2808,7 +2805,7 @@
 				CDB41E8A2C83C24400BD2DE9 /* Section.swift in Sources */,
 				CD7BF9322D18F4ED0020F2C5 /* FiltersTracker.swift in Sources */,
 				81A179BC2DDE591700B17017 /* LongPressActionSettingsView.swift in Sources */,
-				CD44C92C2E5CC8B900F24AC8 /* ConditionalIconToggleStyle.swift in Sources */,
+				CD44C92C2E5CC8B900F24AC8 /* ConditionalLabelStyleViewModifier.swift in Sources */,
 				03B045F62E26D64900540EFB /* SiteSoftwareType+Extensions.swift in Sources */,
 				0391E0FB2D0066240040CCA8 /* ImageUploadMenu.swift in Sources */,
 				035BE08B2BDD903100F77D73 /* NavigationModel.swift in Sources */,
@@ -2945,7 +2942,6 @@
 				033FCAEC2C57DCCD007B7CD1 /* ListingType+Extensions.swift in Sources */,
 				033FCB272C5E3933007B7CD1 /* AlternateIconLabel.swift in Sources */,
 				033FCB282C5E3933007B7CD1 /* AlternateIcon.swift in Sources */,
-				CDFF11712D3D93DC00386B71 /* ConditionalIconLabelStyle.swift in Sources */,
 				038028F62CB096960091A8A2 /* SearchView+FilterModels.swift in Sources */,
 				033FCB292C5E3933007B7CD1 /* IconSettingsView.swift in Sources */,
 				CD03742A2D1DBFD2001E85FA /* ReadCheck.swift in Sources */,

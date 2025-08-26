@@ -44,8 +44,7 @@ struct AccountAdvancedSettingsView: View {
                 }
             }
         }
-        .labelStyle(.conditional)
-        .toggleStyle(.conditional)
+        .withConditionalLabelStyle()
         .navigationTitle("Advanced")
     }
 }

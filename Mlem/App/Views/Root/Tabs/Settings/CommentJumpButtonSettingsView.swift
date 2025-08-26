@@ -54,8 +54,7 @@ struct CommentJumpButtonSettingsView: View {
                 }
             }
         }
-        .labelStyle(.conditional)
-        .toggleStyle(.conditional)
+        .withConditionalLabelStyle()
         .contentMargins(.top, 16)
         .animation(.easeOut(duration: 0.1), value: jumpButton == .none)
         .hiddenNavigationTitle("Jump Button")
