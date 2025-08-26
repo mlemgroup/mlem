@@ -118,7 +118,7 @@ struct GeneralSettingsView: View {
                 destination: .settings(.importExportSettings)
             )
         }
-                .labelStyle(.conditional)
+        .labelStyle(.conditional)
         .toggleStyle(.conditional)
         .contentMargins(.top, 16)
         .hiddenNavigationTitle("General")

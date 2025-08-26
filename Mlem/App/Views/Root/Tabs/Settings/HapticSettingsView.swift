@@ -30,7 +30,7 @@ struct HapticSettingsView: View {
             .labelsHidden()
         }
         .contentMargins(.top, 16)
-                .labelStyle(.conditional)
+        .labelStyle(.conditional)
         .toggleStyle(.conditional)
         .hiddenNavigationTitle("Haptics")
     }

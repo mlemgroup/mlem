@@ -48,7 +48,7 @@ struct CommentSettingsView: View {
                 Toggle("Tap to Collapse", icon: .general.collapse, isOn: $tapCommentsToCollapse)
             }
         }
-                .labelStyle(.conditional)
+        .labelStyle(.conditional)
         .toggleStyle(.conditional)
         .navigationTitle("Comments")
     }

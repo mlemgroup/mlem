@@ -26,7 +26,7 @@ struct ModeratorActionSeparationSettingsView: View {
                 .labelsHidden()
             }
         }
-                .labelStyle(.conditional)
+        .labelStyle(.conditional)
         .toggleStyle(.conditional)
         .contentMargins(.top, 16)
         .hiddenNavigationTitle("Moderator Actions")

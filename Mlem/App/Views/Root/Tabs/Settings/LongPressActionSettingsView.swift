@@ -33,7 +33,7 @@ struct LongPressActionSettingsView: View {
                 Text("Swiping up on the tab bar will always open the account switcher.")
             }
         }
-                .labelStyle(.conditional)
+        .labelStyle(.conditional)
         .toggleStyle(.conditional)
         .contentMargins(.top, 16)
         .hiddenNavigationTitle("Long Press Action")

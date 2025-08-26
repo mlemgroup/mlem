@@ -29,7 +29,7 @@ struct AnimatedAvatarSettingsView: View {
             .labelsHidden()
             .pickerStyle(.inline)
         }
-                .labelStyle(.conditional)
+        .labelStyle(.conditional)
         .toggleStyle(.conditional)
         .contentMargins(.top, 16)
         .hiddenNavigationTitle("Animated Avatars")
