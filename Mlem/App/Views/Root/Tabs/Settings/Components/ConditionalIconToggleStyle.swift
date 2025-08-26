@@ -1,5 +1,5 @@
 //
-//  Toggle+Extensions.swift
+//  ConditionalIconToggeStyle.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2025-08-25.
