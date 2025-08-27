@@ -20,7 +20,7 @@ struct SavedFeedView: View {
     
     @State var scrollToTopTrigger: Bool = false
     
-    init(feedSelection: FeedSelection? = nil) {
+    init() {
         // need to grab some stuff from app storage to initialize with
         @Setting(\.behavior_internetSpeed) var internetSpeed
         @Setting(\.post_size) var postSize
