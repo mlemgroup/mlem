@@ -14,7 +14,7 @@ extension ListingType {
         case .all: "All"
         case .local: "Local"
         case .subscribed: "Subscribed"
-        case .moderatorView: "Moderated"
+        case .moderated: "Moderated"
         }
     }
 
@@ -41,7 +41,7 @@ extension ListingType {
         case .all: .all
         case .local: .local
         case .subscribed: .subscribed
-        case .moderatorView: .moderated
+        case .moderated: .moderated
         }
     }
     
@@ -50,7 +50,7 @@ extension ListingType {
         case .all: .all
         case .local: .local
         case .subscribed: .subscribed
-        case .moderatorView: .moderated
+        case .moderated: .moderated
         }
     }
 }

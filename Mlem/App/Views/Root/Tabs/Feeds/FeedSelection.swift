@@ -52,7 +52,7 @@ enum FeedSelection: String, CaseIterable, Codable {
         case .all: .all
         case .local: .local
         case .subscribed: .subscribed
-        case .moderated: .moderatorView
+        case .moderated: .moderated
         }
     }
     

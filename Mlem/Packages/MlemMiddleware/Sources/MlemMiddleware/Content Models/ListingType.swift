@@ -8,5 +8,5 @@
 import Foundation
 
 public enum ListingType: CaseIterable {
-    case all, local, subscribed, moderatorView
+    case all, local, subscribed, moderated
 }

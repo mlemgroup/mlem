@@ -13,7 +13,7 @@ extension ListingType {
         case .all: .all
         case .local: .local
         case .subscribed: .subscribed
-        case .moderatorView: .moderatorView
+        case .moderatorView: .moderated
         case .suggested: nil
         }
         
@@ -29,7 +29,7 @@ extension ListingType {
         case .all: .all
         case .local: .local
         case .subscribed: .subscribed
-        case .moderatorView: .moderatorView
+        case .moderated: .moderatorView
         }
     }
 }
