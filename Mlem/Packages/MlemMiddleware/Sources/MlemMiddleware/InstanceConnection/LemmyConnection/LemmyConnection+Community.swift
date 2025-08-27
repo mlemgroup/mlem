@@ -42,17 +42,14 @@ public extension LemmyConnection {
         sort: SearchSortType = .top(.allTime)
     ) async throws -> [Community2Snapshot] {
         let response = try await performingForEndpoint { endpoint in
-            LemmySearchRequest(
+            try LemmySearchRequest(
                 endpoint: endpoint,
                 q: query,
                 communityId: nil,
                 communityName: nil,
                 creatorId: nil,
                 type_: .communities,
-                sort: .init(
-                    oldSortType: endpoint == .v3 ? sort.legacyApiSortType : nil,
-                    newSortType: endpoint == .v4 ? sort.apiSortType : nil
-                ),
+                sort: sort.apiType(for: endpoint),
                 listingType: filter.apiType,
                 page: page,
                 limit: limit,
@@ -76,7 +73,7 @@ public extension LemmyConnection {
             LemmyListCommunitiesRequest(
                 endpoint: endpoint,
                 type_: .subscribed,
-                sort: nil,
+                sort: endpoint == .v4 ? .new(.nameAsc) : .old(.new),
                 showNsfw: true,
                 page: page,
                 limit: limit,

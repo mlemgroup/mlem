@@ -23,8 +23,14 @@ extension SearchSortType {
         }
     }
     
-    /// Returns `nil` if the `SearchSortType` is a value that cannot be converted to an `LemmySortType`.
-    var legacyApiSortType: LemmySortType? {
+    func apiType(for endpoint: SiteVersion.EndpointVersion) throws(ApiClientError) -> SearchSortTypeBridge {
+        try switch endpoint {
+        case .v3: try .oldOrUnsupported(v3ApiType)
+        case .v4: try .newOrUnsupported(v4ApiType)
+        }
+    }
+    
+    private var v3ApiType: LemmySortType? {
         switch self {
         case .new: .new
         case .old: .old
@@ -32,8 +38,7 @@ extension SearchSortType {
         }
     }
     
-    /// Returns `nil` if the `SearchSortType` is a value that cannot be converted to an `LemmySearchSortType`.
-    var apiSortType: LemmySearchSortType? {
+    private var v4ApiType: LemmySearchSortType? {
         switch self {
         case .new: .new
         case .old: .old

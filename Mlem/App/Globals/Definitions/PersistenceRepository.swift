@@ -167,7 +167,7 @@ class PersistenceRepository {
     }
     
     func savePinnedSortTypes(_ value: Set<PostSortType>) async throws {
-        try await save(value.compactMap(\.legacyApiSortType), to: PersistencePath.pinnedSortTypes)
+        try await save(value.compactMap(\.v3ApiType), to: PersistencePath.pinnedSortTypes)
     }
     
     /// Saves the given user settings

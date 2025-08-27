@@ -19,7 +19,14 @@ public extension CommentSortType {
         }
     }
     
-    var apiSortType: LemmyCommentSortType {
+    func apiType(for endpoint: SiteVersion.EndpointVersion) throws(ApiClientError) -> SearchSortTypeBridge {
+        switch endpoint {
+        case .v3: .old(v3PostApiType)
+        case .v4: try .newOrUnsupported(v4SearchApiType)
+        }
+    }
+    
+    var v3CommentApiType: LemmyCommentSortType {
         switch self {
         case .new: .new
         case .old: .old
@@ -29,7 +36,7 @@ public extension CommentSortType {
         }
     }
     
-    var legacyApiSortType: LemmySortType {
+    var v3PostApiType: LemmySortType {
         switch self {
         case .new: .new
         case .old: .old
@@ -39,8 +46,7 @@ public extension CommentSortType {
         }
     }
     
-    /// Returns `nil` if the `CommentSortType` is a value that cannot be converted to an `LemmySearchSortType`.
-    var apiSearchSortType: LemmySearchSortType? {
+    var v4SearchApiType: LemmySearchSortType? {
         switch self {
         case .new: .new
         case .old: .old
