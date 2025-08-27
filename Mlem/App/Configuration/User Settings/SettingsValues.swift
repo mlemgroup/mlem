@@ -49,7 +49,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     var community_showBanner: Bool
     var community_showInstance: Bool
     var dev_developerMode: Bool
-    var feed_default: FeedSelection
+    var feed_default: ListingType
     var feed_markReadOnScroll: Bool
     var feed_showRead: Bool
     var inbox_showRead: Bool
@@ -161,7 +161,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.community_showBanner = try container.decodeIfPresent(Bool.self, forKey: ._community_showBanner) ?? true
         self.community_showInstance = try container.decodeIfPresent(Bool.self, forKey: ._community_showInstance) ?? true
         self.dev_developerMode = try container.decodeIfPresent(Bool.self, forKey: ._dev_developerMode) ?? false
-        self.feed_default = try container.decodeIfPresent(FeedSelection.self, forKey: ._feed_default) ?? .subscribed
+        self.feed_default = try container.decodeIfPresent(ListingType.self, forKey: ._feed_default) ?? .subscribed
         self.feed_markReadOnScroll = try container.decodeIfPresent(Bool.self, forKey: ._feed_markReadOnScroll) ?? false
         self.feed_showRead = try container.decodeIfPresent(Bool.self, forKey: ._feed_showRead) ?? true
         

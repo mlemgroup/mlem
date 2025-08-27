@@ -37,7 +37,7 @@ struct FeedsView: View {
     }
     
     init(listingType: ListingType? = nil) {
-        // @Setting(\.feed_default) var defaultFeed
+        @Setting(\.feed_default) var defaultFeed
         
         @Dependency(\.persistenceRepository) var persistenceRepository
         
@@ -45,7 +45,7 @@ struct FeedsView: View {
         if let listingType {
             initialFeedSelection = listingType
         } else {
-            initialFeedSelection = .all
+            initialFeedSelection = defaultFeed
         }
         
         // fallback to local if using guest account and selection requires authenticated account
