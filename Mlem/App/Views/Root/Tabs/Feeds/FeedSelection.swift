@@ -37,7 +37,7 @@ enum FeedSelection: String, CaseIterable, Codable {
     var label: LocalizedStringResource {
         description.label
     }
-    
+
     var description: FeedDescription {
         switch self {
         case .all: .all

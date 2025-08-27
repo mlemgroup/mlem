@@ -17,4 +17,40 @@ extension ListingType {
         case .moderatorView: "Moderated"
         }
     }
+
+    static var guestCases: [ListingType] {
+        [.all, .local]
+    }
+
+    static var userCases: [ListingType] {
+        [.all, .local, .subscribed]
+    }
+
+    static var moderatorCases: [ListingType] { allCases }
+
+    static func cases(for accountType: AccountType) -> [Self] {
+        switch accountType {
+        case .guest: guestCases
+        case .user: userCases
+        case .moderator, .admin: moderatorCases
+        }
+    }
+
+    var description: FeedDescription {
+        switch self {
+        case .all: .all
+        case .local: .local
+        case .subscribed: .subscribed
+        case .moderatorView: .moderated
+        }
+    }
+    
+    var feedContext: FeedContext {
+        switch self {
+        case .all: .all
+        case .local: .local
+        case .subscribed: .subscribed
+        case .moderatorView: .moderated
+        }
+    }
 }
