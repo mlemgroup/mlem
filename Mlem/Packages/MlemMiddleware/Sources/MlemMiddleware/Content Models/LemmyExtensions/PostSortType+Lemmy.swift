@@ -29,8 +29,21 @@ public extension PostSortType {
         }
     }
     
-    /// Returns `nil` if the `PostSortType` is a value that cannot be converted to an `LemmySortType`.
-    var legacyApiSortType: LemmySortType? {
+    func apiType(for endpoint: SiteVersion.EndpointVersion) throws(ApiClientError) -> SearchSortTypeBridge {
+        switch endpoint {
+        case .v3: try .oldOrUnsupported(v3ApiType)
+        case .v4: try .newOrUnsupported(v4SearchApiType)
+        }
+    }
+    
+    func apiType(for endpoint: SiteVersion.EndpointVersion) throws(ApiClientError) -> PostSortTypeBridge {
+        switch endpoint {
+        case .v3: try .oldOrUnsupported(v3ApiType)
+        case .v4: .new(v4PostApiType)
+        }
+    }
+
+    var v3ApiType: LemmySortType? {
         switch self {
         case .active: .active
         case .hot: .hot
@@ -44,7 +57,7 @@ public extension PostSortType {
         }
     }
     
-    var apiSortType: LemmyPostSortType {
+    var v4PostApiType: LemmyPostSortType {
         switch self {
         case .active: .active
         case .hot: .hot
@@ -58,8 +71,7 @@ public extension PostSortType {
         }
     }
     
-    /// Returns `nil` if the `PostSortType` is a value that cannot be converted to an `LemmySearchSortType`.
-    var apiSearchSortType: LemmySearchSortType? {
+    var v4SearchApiType: LemmySearchSortType? {
         switch self {
         case .new: .new
         case .old: .old

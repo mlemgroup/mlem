@@ -41,7 +41,7 @@ public extension LemmyConnection {
             LemmyListCommentsRequest(
                 endpoint: endpoint,
                 type_: .all,
-                sort: sort.apiSortType,
+                sort: sort.v3CommentApiType,
                 maxDepth: maxDepth,
                 page: page,
                 limit: limit,
@@ -52,7 +52,7 @@ public extension LemmyConnection {
                 savedOnly: filter == .saved,
                 likedOnly: filter == .upvoted,
                 dislikedOnly: filter == .downvoted,
-                timeRangeSeconds: nil,
+                timeRangeSeconds: sort.timeRangeSeconds,
                 pageCursor: nil,
                 pageBack: nil
             )
@@ -72,7 +72,7 @@ public extension LemmyConnection {
             LemmyListCommentsRequest(
                 endpoint: endpoint,
                 type_: .all,
-                sort: sort.apiSortType,
+                sort: sort.v3CommentApiType,
                 maxDepth: maxDepth,
                 page: page,
                 limit: limit,
@@ -83,7 +83,7 @@ public extension LemmyConnection {
                 savedOnly: filter == .saved,
                 likedOnly: filter == .upvoted,
                 dislikedOnly: filter == .downvoted,
-                timeRangeSeconds: nil,
+                timeRangeSeconds: sort.timeRangeSeconds,
                 pageCursor: nil,
                 pageBack: nil
             )
@@ -108,8 +108,7 @@ public extension LemmyConnection {
             communityId: communityId,
             creatorId: creatorId,
             filter: filter,
-            legacySort: sort.legacyApiSortType,
-            sort: sort.apiSearchSortType,
+            createSortType: { try sort.apiType(for: $0) },
             timeRangeSeconds: sort.timeRangeSeconds
         )
     }
@@ -130,8 +129,7 @@ public extension LemmyConnection {
             communityId: communityId,
             creatorId: creatorId,
             filter: filter,
-            legacySort: sort.legacyApiSortType,
-            sort: sort.apiSortType,
+            createSortType: { try sort.apiType(for: $0) },
             timeRangeSeconds: sort.timeRangeSeconds
         )
     }
@@ -143,19 +141,18 @@ public extension LemmyConnection {
         communityId: Int?,
         creatorId: Int?,
         filter: ListingType,
-        legacySort: LemmySortType?,
-        sort: LemmySearchSortType?,
+        createSortType: @escaping (SiteVersion.EndpointVersion) throws -> SearchSortTypeBridge,
         timeRangeSeconds: Int?
     ) async throws -> [Comment2Snapshot] {
         let response = try await performingForEndpoint { endpoint in
-            LemmySearchRequest(
+            try LemmySearchRequest(
                 endpoint: endpoint,
                 q: query,
                 communityId: communityId,
                 communityName: nil,
                 creatorId: creatorId,
                 type_: .comments,
-                sort: .init(oldSortType: endpoint == .v3 ? legacySort : nil, newSortType: endpoint == .v4 ? sort : nil),
+                sort: createSortType(endpoint),
                 listingType: filter.apiType,
                 page: page,
                 limit: limit,

@@ -15,17 +15,17 @@ struct SortingSettingsView: View {
     
     var defaultPostSort: PostSortType {
         get { .init(legacyDefaultPostSort) }
-        nonmutating set { legacyDefaultPostSort = newValue.legacyApiSortType ?? .hot }
+        nonmutating set { legacyDefaultPostSort = newValue.v3ApiType ?? .hot }
     }
     
     var fallbackPostSort: PostSortType {
         get { .init(legacyFallbackPostSort) }
-        nonmutating set { legacyFallbackPostSort = newValue.legacyApiSortType ?? .hot }
+        nonmutating set { legacyFallbackPostSort = newValue.v3ApiType ?? .hot }
     }
     
     var defaultCommentSort: CommentSortType {
         get { .init(legacyDefaultCommentSort) }
-        nonmutating set { legacyDefaultCommentSort = newValue.apiSortType }
+        nonmutating set { legacyDefaultCommentSort = newValue.v3CommentApiType }
     }
     
     var body: some View {

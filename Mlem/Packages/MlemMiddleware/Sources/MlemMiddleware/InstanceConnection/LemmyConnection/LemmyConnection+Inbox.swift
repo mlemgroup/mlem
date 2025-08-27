@@ -16,7 +16,7 @@ public extension LemmyConnection {
     ) async throws -> [Reply2Snapshot] {
         let response = try await performingForEndpoint { _ in
             LemmyListRepliesRequest(
-                sort: sort.apiSortType,
+                sort: sort.v3CommentApiType,
                 page: page,
                 limit: limit,
                 unreadOnly: unreadOnly
@@ -33,7 +33,7 @@ public extension LemmyConnection {
     ) async throws -> [Reply2Snapshot] {
         let response = try await performingForEndpoint { _ in
             LemmyListMentionsRequest(
-                sort: sort.apiSortType,
+                sort: sort.v3CommentApiType,
                 page: page,
                 limit: limit,
                 unreadOnly: unreadOnly
