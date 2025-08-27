@@ -41,7 +41,7 @@ public struct CoreMediaView: View {
                     )
             }
         }
-        .aspectRatio(aspectRatio, contentMode: .fit)
+        .aspectRatio(aspectRatio, contentMode: contentMode)
         .allowsHitTesting(false)
     }
     
