@@ -25,7 +25,7 @@ struct SafetyWarningsSettingsView: View {
             }
         }
         .contentMargins(.top, 16)
-        .labelStyle(.conditional)
+        .withConditionalLabelStyle()
         .hiddenNavigationTitle("Content Warnings")
     }
 }

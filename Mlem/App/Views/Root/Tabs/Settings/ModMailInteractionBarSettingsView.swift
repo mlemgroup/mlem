@@ -44,7 +44,7 @@ struct ModMailInteractionBarSettingsView: View {
             }
         }
         .animation(.easeOut(duration: 0.1), value: useAlternateLayout)
-        .labelStyle(.conditional)
+        .withConditionalLabelStyle()
         .contentMargins(.top, 16)
         .hiddenNavigationTitle("Mod Mail Action Layouts")
     }

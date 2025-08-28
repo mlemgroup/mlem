@@ -30,6 +30,6 @@ struct ExternalLinkSettingsView: View {
             }
         }
         .navigationTitle("External Links")
-        .labelStyle(.conditional)
+        .withConditionalLabelStyle()
     }
 }

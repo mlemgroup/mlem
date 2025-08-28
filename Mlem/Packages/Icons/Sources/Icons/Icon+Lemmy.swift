@@ -187,6 +187,7 @@ public extension Icon {
         public let inbox: Icon = .init("mail.stack")
         public let imageProxy: Icon = .init("firewall")
         public let subscriptionList: Icon = .init("list.bullet")
+        public let tag: Icon = .init("tag")
         
         @inlinable public var communityAvatar: Icon { community }
         public let instanceAvatar: Icon = .init("building.2.crop.circle")
@@ -196,6 +197,7 @@ public extension Icon {
 
         public let noContent: Icon = .init("binoculars")
         public let openAccountSwitcher: Icon = .init("person.crop.rectangle.stack.fill")
+        public let groupAccountSort: Icon = .init("square.stack.3d.up.fill")
         public let switchAccount: Icon = .init("arrow.left.arrow.right")
         public let switchAccountAndReload: Icon = .init("arrow.2.circlepath")
         public let switchAccountAndKeepPlace: Icon = .init("checkmark.diamond")

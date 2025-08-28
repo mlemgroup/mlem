@@ -43,6 +43,6 @@ struct TappableLinksSettingsView: View {
             }
         }
         .navigationTitle("Tappable Links")
-        .labelStyle(.conditional)
+        .withConditionalLabelStyle()
     }
 }
