@@ -31,7 +31,7 @@ struct InboxBadgeSettingsView: View {
             }
         }
         .contentMargins(.top, 16, for: .scrollContent)
-        .labelStyle(.conditional)
+        .withConditionalLabelStyle()
         .hiddenNavigationTitle("Notification Badge")
     }
     

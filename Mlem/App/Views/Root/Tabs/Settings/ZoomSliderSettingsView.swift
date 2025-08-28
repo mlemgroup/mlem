@@ -68,7 +68,7 @@ struct ZoomSliderSettingsView: View {
             .labelsHidden()
             .pickerStyle(.inline)
         }
-        .labelStyle(.conditional)
+        .withConditionalLabelStyle()
         .contentMargins(.top, 16)
         .hiddenNavigationTitle("Slide to Zoom")
     }

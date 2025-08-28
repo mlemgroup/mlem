@@ -51,7 +51,7 @@ struct SharingLinksSettingsView: View {
             )
         }
         .contentMargins(.top, 16)
-        .labelStyle(.conditional)
+        .withConditionalLabelStyle()
         .animation(.easeInOut(duration: 0.1), value: linkSharingMode)
         .hiddenNavigationTitle("Share Links")
     }

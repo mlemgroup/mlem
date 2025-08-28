@@ -23,7 +23,7 @@ struct ImportExportSettingsView: View {
     
     var body: some View {
         content
-            .labelStyle(.conditional)
+            .withConditionalLabelStyle()
             .onAppear {
                 v1SettingsExist = persistenceRepository.systemSettingsExists(.v1_user)
                 v2SettingsExist = persistenceRepository.systemSettingsExists(.v2_user)

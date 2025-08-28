@@ -31,7 +31,7 @@ struct AccountListSettingsView: View {
                 )
             }
         }
-        .labelStyle(.conditional)
+        .withConditionalLabelStyle()
         .hiddenNavigationTitle("Accounts")
     }
     

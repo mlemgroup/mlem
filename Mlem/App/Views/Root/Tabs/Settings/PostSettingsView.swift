@@ -82,7 +82,7 @@ struct PostSettingsView: View {
                 }
             }
         }
-        .labelStyle(.conditional)
+        .withConditionalLabelStyle()
         .navigationTitle("Posts")
     }
 }

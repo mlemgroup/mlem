@@ -33,6 +33,6 @@ struct CommentMaximumDepthSettingsView: View {
             }
         }
         .navigationTitle("Maximum Depth")
-        .labelStyle(.conditional)
+        .withConditionalLabelStyle()
     }
 }
