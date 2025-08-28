@@ -154,7 +154,7 @@ extension SearchView {
         case .subscribed:
             postLoader.searchPostFetcher.listing = .subscribed
         case .moderated:
-            postLoader.searchPostFetcher.listing = .moderatorView
+            postLoader.searchPostFetcher.listing = .moderated
         case .localInstance, .instance:
             postLoader.searchPostFetcher.listing = .local
         case let .community(community):
@@ -177,7 +177,7 @@ extension SearchView {
         case .subscribed:
             listing = .subscribed
         case .moderated:
-            listing = .moderatorView
+            listing = .moderated
         case .localInstance, .instance:
             listing = .local
         case let .community(community):

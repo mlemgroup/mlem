@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 2025-01-31.
 //
 
+import MlemMiddleware
 import SwiftUI
 
 struct DefaultFeedSettingsView: View {
@@ -17,7 +18,7 @@ struct DefaultFeedSettingsView: View {
                 description: "Choose which feed is shown when the app opens."
             ) {}
             Picker("Default Feed", selection: $defaultFeed) {
-                ForEach(FeedSelection.allCases, id: \.self) { item in
+                ForEach(ListingType.allCases, id: \.self) { item in
                     Label {
                         Text(item.description.label)
                     } icon: {

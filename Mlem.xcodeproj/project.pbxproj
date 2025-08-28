@@ -57,6 +57,7 @@
 		031E2D512BEF961D0003BC45 /* SubscriptionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031E2D502BEF961D0003BC45 /* SubscriptionListView.swift */; };
 		031E2D5B2BEFC9460003BC45 /* ThemeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031E2D5A2BEFC9460003BC45 /* ThemeSettingsView.swift */; };
 		031E2D5D2BEFCC630003BC45 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031E2D5C2BEFCC630003BC45 /* SettingsView.swift */; };
+		031EC5302E5F77D7003408B7 /* FeedContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031EC52F2E5F77D7003408B7 /* FeedContext.swift */; };
 		0320B64F2C8A638A00D38548 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0320B64E2C8A638A00D38548 /* SignUpView.swift */; };
 		0320B6542C8B65EB00D38548 /* Captcha+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0320B6532C8B65EB00D38548 /* Captcha+Extensions.swift */; };
 		0320B6582C8BB3C400D38548 /* SignUpView+Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0320B6572C8BB3C400D38548 /* SignUpView+Views.swift */; };
@@ -399,7 +400,6 @@
 		B104A6DE2A59BF3C00B3E725 /* NukeVideo in Frameworks */ = {isa = PBXBuildFile; productRef = B104A6DD2A59BF3C00B3E725 /* NukeVideo */; };
 		B1B78D642A51D53900F72485 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B78D632A51D53900F72485 /* AppDelegate.swift */; };
 		CD03742A2D1DBFD2001E85FA /* ReadCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0374292D1DBFCF001E85FA /* ReadCheck.swift */; };
-		CD0507732C6AA0C8008B1505 /* FeedSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0507722C6AA0C8008B1505 /* FeedSelection.swift */; };
 		CD0E06F72C0E739F00445849 /* PostType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0E06F62C0E739F00445849 /* PostType+Extensions.swift */; };
 		CD0F280A2C6CEFBE00C1F65B /* View+IsAtTopSubscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0F28092C6CEFBE00C1F65B /* View+IsAtTopSubscriber.swift */; };
 		CD10FA772C7A8622008985AD /* ImageSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD10FA762C7A8622008985AD /* ImageSaver.swift */; };
@@ -601,6 +601,7 @@
 		031E2D502BEF961D0003BC45 /* SubscriptionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionListView.swift; sourceTree = "<group>"; };
 		031E2D5A2BEFC9460003BC45 /* ThemeSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeSettingsView.swift; sourceTree = "<group>"; };
 		031E2D5C2BEFCC630003BC45 /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		031EC52F2E5F77D7003408B7 /* FeedContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedContext.swift; sourceTree = "<group>"; };
 		0320B64E2C8A638A00D38548 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		0320B6532C8B65EB00D38548 /* Captcha+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Captcha+Extensions.swift"; sourceTree = "<group>"; };
 		0320B6572C8BB3C400D38548 /* SignUpView+Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SignUpView+Views.swift"; sourceTree = "<group>"; };
@@ -934,7 +935,6 @@
 		B104A6E12A5AFC9F00B3E725 /* Mlem.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Mlem.entitlements; sourceTree = "<group>"; };
 		B1B78D632A51D53900F72485 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CD0374292D1DBFCF001E85FA /* ReadCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadCheck.swift; sourceTree = "<group>"; };
-		CD0507722C6AA0C8008B1505 /* FeedSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedSelection.swift; sourceTree = "<group>"; };
 		CD0E06F62C0E739F00445849 /* PostType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostType+Extensions.swift"; sourceTree = "<group>"; };
 		CD0E07002C12707700445849 /* ToolbarEllipsisMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarEllipsisMenu.swift; sourceTree = "<group>"; };
 		CD0F28092C6CEFBE00C1F65B /* View+IsAtTopSubscriber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+IsAtTopSubscriber.swift"; sourceTree = "<group>"; };
@@ -1634,6 +1634,7 @@
 				03FE14032BF93FDD00A8377F /* ErrorDetails.swift */,
 				033F84C62C2B192F002E3EDF /* MlemStats */,
 				033F84B02C29907F002E3EDF /* FeedbackType.swift */,
+				031EC52F2E5F77D7003408B7 /* FeedContext.swift */,
 				033F84C02C2AD072002E3EDF /* CommentTreeNode.swift */,
 				03ECD71E2C864DB700D48BF6 /* ImageUploadManager.swift */,
 				0320B65B2C8CFBDC00D38548 /* ImageUploadHistoryManager.swift */,
@@ -1797,7 +1798,6 @@
 				CD9CFA2D2C2E22E200739BBC /* Feed Header */,
 				CDE021AB2BFA43220052FD61 /* Feed Posts */,
 				033F84AC2C298466002E3EDF /* SectionIndexTitles.swift */,
-				CD0507722C6AA0C8008B1505 /* FeedSelection.swift */,
 				0311ADB82E4E0E0800EC3120 /* SavedFeedView.swift */,
 				0311ADBA2E4E103A00EC3120 /* HistoryFeedView.swift */,
 			);
@@ -2673,6 +2673,7 @@
 				033171782CCE89E3002DA370 /* PurgableProviding+Extensions.swift in Sources */,
 				03D2A63B2C010B7500ED4FF2 /* GuestAccount.swift in Sources */,
 				CDE1F1962C63DF89008AF042 /* PhoneConstants.swift in Sources */,
+				031EC5302E5F77D7003408B7 /* FeedContext.swift in Sources */,
 				0397D4862C6A24D2002C6CDC /* ReportableProviding+Extensions.swift in Sources */,
 				CD4ED84A2BF1113800EFA0A2 /* View+TabReselectConsumer.swift in Sources */,
 				CD6DC02C2D86540A00693B16 /* AnimatedAvatarSettingsView.swift in Sources */,
@@ -2784,7 +2785,6 @@
 				03ABE5E42DB8E57000374AFF /* AccountAgeVisibilitySettingsView.swift in Sources */,
 				03D283FA2D256E1E00A6659B /* VisitHistory.swift in Sources */,
 				03D3A1EF2BB9CA1D009DE55E /* MenuButton.swift in Sources */,
-				CD0507732C6AA0C8008B1505 /* FeedSelection.swift in Sources */,
 				039F58862C7A810100C61658 /* ExpandedPostView+Logic.swift in Sources */,
 				CD1C64152D3428710006B3C1 /* CommunityView+Logic.swift in Sources */,
 				031E2D512BEF961D0003BC45 /* SubscriptionListView.swift in Sources */,

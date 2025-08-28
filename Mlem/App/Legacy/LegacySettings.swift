@@ -14,7 +14,7 @@ import SwiftUI
 class LegacySettings: ObservableObject {
     @Dependency(\.persistenceRepository) var persistenceRepository
     
-    public static let main: LegacySettings = .init()
+    static let main: LegacySettings = .init()
     
     /// Default initializer. Will take current AppStorage values.
     init() {}
@@ -74,7 +74,7 @@ class LegacySettings: ObservableObject {
     
     @AppStorage("feed.markReadOnScroll") var markReadOnScroll: Bool = false
     @AppStorage("feed.showRead") var showReadInFeed: Bool = true
-    @AppStorage("feed.default") var defaultFeed: FeedSelection = .subscribed
+    @AppStorage("feed.default") var defaultFeed: ListingType = .subscribed
     
     @AppStorage("inbox.showRead") var showReadInInbox: Bool = true
     

@@ -34,6 +34,7 @@ struct ContentView: View {
     var appState: AppState { .main }
     var tabReselectTracker: TabReselectTracker { .main }
     var navigationModel: NavigationModel { .main }
+
     var filtersTracker: FiltersTracker { .main }
     var errorsTracker: ErrorsTracker { .main }
     var backendClient: BackendClient { .main }

@@ -28,32 +28,32 @@ struct FeedsView: View {
     
     @State var postFeedLoader: AggregatePostFeedLoader?
     
-    @State var feedSelection: FeedSelection
+    @State var listingType: ListingType
 
     @State var scrollToTopTrigger: Bool = false
     
-    var feedOptions: [FeedSelection] {
-        FeedSelection.cases(for: appState.firstAccount.accountType)
+    var feedOptions: [ListingType] {
+        ListingType.cases(for: appState.firstAccount.accountType)
     }
     
-    init(feedSelection: FeedSelection? = nil) {
+    init(listingType: ListingType? = nil) {
         @Setting(\.feed_default) var defaultFeed
         
         @Dependency(\.persistenceRepository) var persistenceRepository
         
-        var initialFeedSelection: FeedSelection
-        if let feedSelection {
-            initialFeedSelection = feedSelection
+        var initialFeedSelection: ListingType
+        if let listingType {
+            initialFeedSelection = listingType
         } else {
             initialFeedSelection = defaultFeed
         }
         
         // fallback to local if using guest account and selection requires authenticated account
-        if !(AppState.main.firstAccount is UserAccount), !FeedSelection.guestCases.contains(initialFeedSelection) {
+        if !(AppState.main.firstAccount is UserAccount), !ListingType.guestCases.contains(initialFeedSelection) {
             initialFeedSelection = .local
         }
         
-        _feedSelection = .init(initialValue: initialFeedSelection)
+        _listingType = .init(initialValue: initialFeedSelection)
     }
     
     var body: some View {
@@ -65,7 +65,7 @@ struct FeedsView: View {
                 FeedSelectionTitleModifier(
                     feedOptions: feedOptions,
                     shouldScrollToTop: true,
-                    feedSelection: $feedSelection,
+                    feedSelection: $listingType,
                     scrollToTopTrigger: $scrollToTopTrigger
                 )
             )
@@ -75,7 +75,7 @@ struct FeedsView: View {
                     FeedSortPicker(feedLoader: postFeedLoader, showTopTimescaleInIcon: true)
                 }
             }
-            .conditionalNavigationTitle(String(localized: feedSelection.description.label))
+            .conditionalNavigationTitle(String(localized: listingType.label))
             .navigationBarTitleDisplayMode(.inline)
             .onChange(of: showRead) {
                 scrollToTopTrigger.toggle()
@@ -83,24 +83,24 @@ struct FeedsView: View {
             .onChange(of: appState.firstApi, initial: false) {
                 // ensure we always are showing an appropriate feed
                 Task {
-                    if !FeedSelection.cases(for: appState.firstAccount.accountType).contains(feedSelection) {
+                    if !ListingType.cases(for: appState.firstAccount.accountType).contains(listingType) {
                         try await postFeedLoader?.changeSortType(to: appState.initialFeedSortType)
-                        let newFeedSelection: FeedSelection = appState.firstAccount.accountType == .guest ? .all : .subscribed
-                        if newFeedSelection != feedSelection {
+                        let newFeedSelection: ListingType = appState.firstAccount.accountType == .guest ? .all : .subscribed
+                        if newFeedSelection != listingType {
                             await postFeedLoader?.changeApi(to: appState.firstApi, context: filtersTracker.filterContext)
                         }
-                        feedSelection = newFeedSelection
+                        listingType = newFeedSelection
                     }
                 }
             }
             .task { await setupFeedLoader() }
             .outdatedFeedPopup(feedLoader: postFeedLoader)
-            .environment(\.feedContext, feedSelection.feedContext)
-            .onChange(of: feedSelection) { oldValue, _ in
-                guard oldValue != feedSelection else { return }
+            .environment(\.feedContext, listingType.feedContext)
+            .onChange(of: listingType) { oldValue, _ in
+                guard oldValue != listingType else { return }
                 Task {
                     do {
-                        try await postFeedLoader?.changeFeedType(to: feedSelection.associatedApiType)
+                        try await postFeedLoader?.changeFeedType(to: listingType)
                     } catch {
                         handleError(error)
                     }
@@ -128,11 +128,11 @@ struct FeedsView: View {
                     FeedSelectionMenuView(
                         feedOptions: feedOptions,
                         shouldScrollToTop: false,
-                        feedSelection: $feedSelection,
+                        feedSelection: $listingType,
                         scrollToTopTrigger: $scrollToTopTrigger
                     )
                 } label: {
-                    FeedHeaderView(feedDescription: feedSelection.description, dropdownStyle: .enabled(showBadge: false))
+                    FeedHeaderView(feedDescription: listingType.description, dropdownStyle: .enabled(showBadge: false))
                         .padding(.bottom, Constants.main.standardSpacing)
                 }
                 .buttonStyle(.plain)
@@ -157,7 +157,7 @@ struct FeedsView: View {
                 prefetchingConfiguration: .forPostSize(postSize),
                 urlCache: Constants.main.urlCache,
                 api: appState.firstApi,
-                feedType: feedSelection.associatedApiType
+                feedType: listingType
             )
         } catch {
             handleError(error)
@@ -166,9 +166,9 @@ struct FeedsView: View {
 }
 
 private struct FeedSelectionTitleModifier: ViewModifier {
-    let feedOptions: [FeedSelection]
+    let feedOptions: [ListingType]
     let shouldScrollToTop: Bool
-    @Binding var feedSelection: FeedSelection
+    @Binding var feedSelection: ListingType
     @Binding var scrollToTopTrigger: Bool
     
     @State var isAtTop: Bool = false
@@ -192,9 +192,9 @@ private struct FeedSelectionTitleModifier: ViewModifier {
 }
 
 private struct FeedSelectionMenuView: View {
-    let feedOptions: [FeedSelection]
+    let feedOptions: [ListingType]
     let shouldScrollToTop: Bool
-    @Binding var feedSelection: FeedSelection
+    @Binding var feedSelection: ListingType
     @Binding var scrollToTopTrigger: Bool
     
     var body: some View {

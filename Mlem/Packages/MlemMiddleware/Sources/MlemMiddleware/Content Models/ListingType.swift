@@ -7,6 +7,6 @@
 
 import Foundation
 
-public enum ListingType {
-    case all, local, subscribed, moderatorView
+public enum ListingType: String, CaseIterable, Codable {
+    case all, local, subscribed, moderated
 }
