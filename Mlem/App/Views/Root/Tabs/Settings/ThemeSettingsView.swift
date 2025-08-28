@@ -42,7 +42,7 @@ struct ThemeSettingsView: View {
             .labelsHidden()
             .pickerStyle(.inline)
         }
-        .labelStyle(.conditional)
+        .withConditionalLabelStyle()
         .navigationTitle("Theme")
     }
     

@@ -65,7 +65,7 @@ struct TabBarSettingsView: View {
                 )
             }
         }
-        .labelStyle(.conditional)
+        .withConditionalLabelStyle()
         .contentMargins(.top, 16)
         .hiddenNavigationTitle("Tab Bar")
     }

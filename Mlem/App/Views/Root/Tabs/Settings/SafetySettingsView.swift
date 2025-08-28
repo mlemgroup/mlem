@@ -51,7 +51,7 @@ struct SafetySettingsView: View {
             }
         }
         .contentMargins(.top, 16)
-        .labelStyle(.conditional)
+        .withConditionalLabelStyle()
         .hiddenNavigationTitle("Safety & Filtering")
     }
     

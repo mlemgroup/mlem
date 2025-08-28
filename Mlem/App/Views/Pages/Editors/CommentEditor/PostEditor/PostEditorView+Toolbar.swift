@@ -17,7 +17,7 @@ extension PostEditorView {
         }
         ToolbarItemGroup(placement: .topBarTrailing) {
             Menu("Add", icon: .general.add) {
-                Toggle("NSFW Tag", systemImage: "tag", isOn: $hasNsfwTag)
+                Toggle("NSFW Tag", icon: .lemmy.tag, isOn: $hasNsfwTag)
                 if postToEdit == nil {
                     Button("Crosspost", systemImage: "shuffle") {
                         if let account = targets.last?.account {
