@@ -147,6 +147,8 @@ public extension Icon {
         public let federatedFeed: Icon = .init("circle.hexagongrid")
         public let localFeed: Icon = .init("building.2")
         public let subscribedFeed: Icon = .init("newspaper")
+        public let popularFeed: Icon = .init("chart.line.uptrend.xyaxis")
+        public let suggestedFeed: Icon = .init("lightbulb")
         @inlinable public var savedFeed: Icon { saved }
         @inlinable public var moderatedFeed: Icon { moderation }
 

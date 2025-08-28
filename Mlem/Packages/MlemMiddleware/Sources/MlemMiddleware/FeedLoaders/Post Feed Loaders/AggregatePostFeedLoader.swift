@@ -37,6 +37,7 @@ public class AggregatePostFeedLoader: CorePostFeedLoader {
     // force unwrap because this should ALWAYS be a PostFetcher
     private var postFetcher: PostFetcher { fetcher as! PostFetcher }
         
+    public var feedType: ListingType { aggregatePostFetcher.feedType }
     public var sortType: PostSortType { postFetcher.sortType }
     
     public init(

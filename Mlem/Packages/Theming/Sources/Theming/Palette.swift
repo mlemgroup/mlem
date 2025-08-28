@@ -41,6 +41,8 @@ public struct Palette {
     public var subscribedFeed: Color
     public var moderatedFeed: Color
     public var savedFeed: Color
+    public var popularFeed: Color
+    public var suggestedFeed: Color
     public var inbox: Color
     
     public init(
@@ -71,6 +73,8 @@ public struct Palette {
         subscribedFeed: Color,
         moderatedFeed: Color,
         savedFeed: Color,
+        popularFeed: Color,
+        suggestedFeed: Color,
         inbox: Color
     ) {
         self.bordered = bordered
@@ -100,6 +104,8 @@ public struct Palette {
         self.subscribedFeed = subscribedFeed
         self.moderatedFeed = moderatedFeed
         self.savedFeed = savedFeed
+        self.popularFeed = popularFeed
+        self.suggestedFeed = suggestedFeed
         self.inbox = inbox
     }
 }
