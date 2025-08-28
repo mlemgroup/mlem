@@ -66,7 +66,10 @@ struct FeedsView: View {
                 // ensure we always are showing an appropriate feed
                 if let postFeedLoader {
                     Task {
-                        if !ListingType.cases(for: appState.firstAccount.accountType, api: appState.firstApi).contains(postFeedLoader.feedType) {
+                        if !ListingType.cases(
+                            for: appState.firstAccount.accountType,
+                            api: appState.firstApi
+                        ).contains(postFeedLoader.feedType) {
                             try await postFeedLoader.changeSortType(to: appState.initialFeedSortType)
                             let newFeedSelection: ListingType =
                                 appState.firstAccount.accountType == .guest ? .all : .subscribed
@@ -93,7 +96,9 @@ struct FeedsView: View {
                             FeedWelcomeView()
                                 .padding([.horizontal, .bottom], Constants.main.standardSpacing)
                         }
-                        if Bundle.main.isTestFlight, let testflightUrl = backendClient.testflightUpdate, lastTestFlightUpdate != testflightUrl {
+                        if Bundle.main.isTestFlight,
+                           let testflightUrl = backendClient.testflightUpdate,
+                           lastTestFlightUpdate != testflightUrl {
                             UpdateBannerView(url: testflightUrl)
                                 .padding([.horizontal, .bottom], Constants.main.standardSpacing)
                         }
