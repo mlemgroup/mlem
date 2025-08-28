@@ -124,8 +124,6 @@ struct FeedsView: View {
     
     @MainActor
     func setupFeedLoader() async {
-        print("Set up feed loader")
-
         guard postFeedLoader == nil else { return }
 
         @Setting(\.behavior_internetSpeed) var internetSpeed
