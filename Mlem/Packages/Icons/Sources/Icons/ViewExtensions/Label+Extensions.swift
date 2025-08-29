@@ -17,12 +17,13 @@ public extension Label where Title == Text, Icon == Image {
         }
     }
     
-    init(_ title: String, icon: Icons.Icon) {
+    @_disfavoredOverload
+    init(_ title: some StringProtocol, icon: Icons.Icon) {
         switch icon.source {
         case .system:
-            self.init(LocalizedStringKey(title), systemImage: icon.computeImageName())
+            self.init(title, systemImage: icon.computeImageName())
         case .custom:
-            self.init(LocalizedStringKey(title), image: icon.computeImageName())
+            self.init(title, image: icon.computeImageName())
         }
     }
 }

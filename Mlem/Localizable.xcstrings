@@ -705,7 +705,6 @@
       }
     },
     "Add Account" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -926,7 +925,6 @@
       }
     },
     "Always Show Usernames" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -987,7 +985,6 @@
       }
     },
     "Any" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -1154,7 +1151,6 @@
       }
     },
     "Approved by %@" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -1271,7 +1267,6 @@
       }
     },
     "Autoplay" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -1548,7 +1543,6 @@
       }
     },
     "Blur NSFW" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -1569,7 +1563,6 @@
       }
     },
     "Bold" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -1738,7 +1731,6 @@
       }
     },
     "Censured" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -1775,7 +1767,6 @@
       }
     },
     "Change Password" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -1846,7 +1837,6 @@
       }
     },
     "Choose Community..." : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -1857,7 +1847,6 @@
       }
     },
     "Choose File" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -1868,7 +1857,6 @@
       }
     },
     "Choose Instance..." : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -2020,7 +2008,6 @@
       }
     },
     "Clear Search History" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -2071,7 +2058,6 @@
       }
     },
     "Code" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -2082,7 +2068,6 @@
       }
     },
     "Code Block" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -2113,7 +2098,6 @@
       }
     },
     "Collapse Post" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -2234,7 +2218,6 @@
       }
     },
     "Community Avatar" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -2255,7 +2238,6 @@
       }
     },
     "Community Link" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -2372,7 +2354,6 @@
       }
     },
     "Confirm Image Uploads" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -2483,7 +2464,6 @@
       }
     },
     "Copy All" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -2822,7 +2802,6 @@
       }
     },
     "Denied by %@" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -2833,7 +2812,6 @@
       }
     },
     "Denied by %@: \"%@\"" : {
-      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3140,7 +3118,6 @@
       }
     },
     "Enable Keyword Filters" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -3335,7 +3312,6 @@
       }
     },
     "Expand Post" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -3356,7 +3332,6 @@
       }
     },
     "Export Settings" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -3367,7 +3342,6 @@
       }
     },
     "Export..." : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -3633,7 +3607,6 @@
       }
     },
     "Files" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -3654,7 +3627,6 @@
       }
     },
     "Filter violation" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -3745,7 +3717,6 @@
       }
     },
     "Grouped" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -3756,7 +3727,6 @@
       }
     },
     "Guaranteed" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -3928,7 +3898,6 @@
       }
     },
     "Hide Read" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -3959,7 +3928,6 @@
       }
     },
     "History" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -4010,7 +3978,6 @@
       }
     },
     "Image" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -4041,7 +4008,6 @@
       }
     },
     "Import Settings" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -4052,7 +4018,6 @@
       }
     },
     "Import..." : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -4093,7 +4058,6 @@
       }
     },
     "In Default Browser" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -4185,7 +4149,6 @@
       }
     },
     "Infinite Scroll" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -4206,7 +4169,6 @@
       }
     },
     "Instance Link" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -4247,7 +4209,6 @@
       }
     },
     "Italic" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -4341,7 +4302,6 @@
       }
     },
     "Keep" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -4352,7 +4312,6 @@
       }
     },
     "Keep Place" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -4434,7 +4393,6 @@
       }
     },
     "Lemmy Community" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -4465,7 +4423,6 @@
       }
     },
     "Link" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -4694,7 +4651,6 @@
       }
     },
     "Mark Read on Scroll" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -4725,7 +4681,6 @@
       }
     },
     "Maximum Comment Depth" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -5038,7 +4993,6 @@
       }
     },
     "More" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -5129,7 +5083,6 @@
       }
     },
     "Mute Videos" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -5357,7 +5310,6 @@
       }
     },
     "Not Guaranteed" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -5428,7 +5380,6 @@
       }
     },
     "NSFW Tag" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -5579,7 +5530,6 @@
       }
     },
     "Open in Reader" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -5600,7 +5550,6 @@
       }
     },
     "Open URL from Clipboard" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -5731,7 +5680,6 @@
       }
     },
     "Paste" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -5772,7 +5720,6 @@
       }
     },
     "Photo Library" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -5783,7 +5730,6 @@
       }
     },
     "Photos" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -6194,7 +6140,6 @@
       }
     },
     "Quick Look" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -6205,7 +6150,6 @@
       }
     },
     "Quote" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -6623,7 +6567,6 @@
       }
     },
     "Reload" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -6634,7 +6577,6 @@
       }
     },
     "Reload on Switch" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -6725,7 +6667,6 @@
       }
     },
     "Remove Recent Search" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -6939,7 +6880,6 @@
       }
     },
     "Resolved by %@" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -6980,7 +6920,6 @@
       }
     },
     "Restore Settings" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -7051,7 +6990,6 @@
       }
     },
     "Save Settings" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -7219,7 +7157,6 @@
       }
     },
     "Send" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -7250,7 +7187,6 @@
       }
     },
     "Send Notifications to Email" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -7311,7 +7247,6 @@
       }
     },
     "Settings Icons" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -7322,7 +7257,6 @@
       }
     },
     "Share" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -7413,7 +7347,6 @@
       }
     },
     "Show All Actions in Feed" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -7424,7 +7357,6 @@
       }
     },
     "Show Avatar" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -7435,7 +7367,6 @@
       }
     },
     "Show Bot Accounts" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -7466,7 +7397,6 @@
       }
     },
     "Show Downvotes Separately" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -7527,7 +7457,6 @@
       }
     },
     "Show Read" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -7538,7 +7467,6 @@
       }
     },
     "Show Response Times" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -7549,7 +7477,6 @@
       }
     },
     "Show Sidebar on App Launch" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -7830,7 +7757,6 @@
       }
     },
     "Strikethrough" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -7901,7 +7827,6 @@
       }
     },
     "Subscript" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -7953,7 +7878,6 @@
       }
     },
     "Superscript" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -7974,7 +7898,6 @@
       }
     },
     "Swipe Anywhere to Navigate" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -8075,7 +7998,6 @@
       }
     },
     "Tap to Collapse" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -8548,7 +8470,6 @@
       }
     },
     "This probably contains foul language." : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -8720,7 +8641,6 @@
       }
     },
     "Top..." : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -9230,7 +9150,6 @@
       }
     },
     "Upvote on Save" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -9272,7 +9191,6 @@
       }
     },
     "User Avatar" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -9283,7 +9201,6 @@
       }
     },
     "User Link" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -9514,7 +9431,6 @@
       }
     },
     "Website" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -9525,7 +9441,6 @@
       }
     },
     "Website Icon" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -9536,7 +9451,6 @@
       }
     },
     "Website Thumbnail Indicator" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -9629,7 +9543,6 @@
       }
     },
     "Wrap Code Block Lines" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
