@@ -49,7 +49,8 @@ struct CommunityDetailsView: View {
             }
             .frame(maxWidth: .infinity)
             
-            if let activeUserCount = community.activeUserCount_, community.api.supportsOrElse(.viewCommunityActiveUsers, defaultValue: true) {
+            if let activeUserCount = community.activeUserCount_,
+               community.api.supportsOrElse(.viewCommunityActiveUsers, defaultValue: true) {
                 ActiveUserCountView(activeUserCount: activeUserCount)
             }
         }

@@ -78,7 +78,7 @@ extension ExpandedPostView {
     func sortPicker(tracker: CommentTreeTracker) -> some View {
         Menu("Sort", icon: tracker.sort.icon) {
             ForEach(CommentSortType.legacyCases, id: \.self) { item in
-                if post?.api.supportsOrElse(.commentSortType(item), defaultValue: true) {
+                if post?.api.supportsOrElse(.commentSortType(item), defaultValue: true) ?? true {
                     Toggle(
                         item.label(timeRangeFormat: .topOnly),
                         icon: item.icon,

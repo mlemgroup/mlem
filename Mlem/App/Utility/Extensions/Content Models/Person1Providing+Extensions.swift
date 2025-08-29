@@ -121,7 +121,7 @@ extension Person1Providing {
             
             if let community3 = community as? any Community3Providing,
                let myPerson = api.myPerson,
-               api.supportsOrElse(.editModeratorList, defaultValue: false,)
+               api.supportsOrElse(.editModeratorList, defaultValue: false),
                myPerson.canModerate(self, in: community3) {
                 addModAction(community: community3, isOn: community3.moderators.contains(where: { $0.id == id }))
             }
