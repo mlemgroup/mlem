@@ -22,7 +22,7 @@ struct LongPressActionSettingsView: View {
             Section {
                 Picker("Long Press Action", selection: $longPressAction) {
                     ForEach(TabBarLongPressAction.allCases, id: \.rawValue) { action in
-                        Label(action.label.key, icon: action.icon)
+                        Label(String(localized: action.label), icon: action.icon)
                             .symbolVariant(.circle)
                             .tag(action)
                     }
