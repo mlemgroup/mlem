@@ -11,7 +11,7 @@ import SwiftUI
 extension SearchView {
     var availableTabs: [Tab] {
         var ret: [Tab] = [.communities, .people, .instances, .posts]
-        if appState.firstApi.supportsOrNil(.commentSearch) ?? false || selectedTab == .comments {
+        if appState.firstApi.supportsOrElse(.commentSearch, defaultValue: false) || selectedTab == .comments {
             ret.append(.comments)
         }
         return ret

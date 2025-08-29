@@ -184,7 +184,7 @@ extension Post1Providing {
                 editAction(appState: appState)
                 deleteAction(appState: appState, feedback: feedback)
             } else {
-                if api.supportsOrNil(.hidePosts) ?? true {
+                if api.supportsOrElse(.hidePosts, defaultValue: true) {
                     hideAction(appState: appState, feedback: feedback)
                 }
                 if !canModerate, !deleted {
@@ -210,7 +210,7 @@ extension Post1Providing {
             }
             lockAction(appState: appState, feedback: feedback)
             
-            let viewVotesIsPossible = api.supportsOrNil(.viewVotes) ?? false
+            let viewVotesIsPossible = api.supportsOrElse(.viewVotes, defaultValue: false)
             
             if let navigation, viewVotesIsPossible {
                 viewVotesAction(navigation: navigation)
@@ -220,7 +220,7 @@ extension Post1Providing {
             self2.removeAction(appState: appState).disabled(!canModerate)
             self2.creator.banActions(appState: appState, community: self2.community, withUserLabel: true)
         }
-        if api.isAdmin, api.supportsOrNil(.purgeContent) ?? false {
+        if api.isAdmin, api.supportsOrElse(.purgeContent, defaultValue: false) {
             purgeAction(appState: appState)
             if !isOwnPost {
                 purgeCreatorAction(appState: appState)
@@ -367,7 +367,7 @@ extension Post1Providing {
     
     func hideAction(appState: AppState, feedback: Set<FeedbackType>) -> BasicAction {
         let hidden = hidden_ ?? false
-        let available = (api.supportsOrNil(.hidePosts) ?? true) && api.canInteract(appState: appState)
+        let available = (api.supportsOrElse(.hidePosts, defaultValue: true)) && api.canInteract(appState: appState)
         return .init(
             id: "hide\(uid)",
             appearance: .hide(isOn: hidden),
@@ -505,7 +505,7 @@ extension Post1Providing {
     }
     
     func viewVotesAction(navigation: NavigationLayer) -> BasicAction {
-        let enabled = canModerate && (api.supportsOrNil(.viewVotes) ?? true)
+        let enabled = canModerate && (api.supportsOrElse(.viewVotes, defaultValue: true))
         return .init(
             id: "viewVotes\(uid)",
             appearance: .viewVotes(),

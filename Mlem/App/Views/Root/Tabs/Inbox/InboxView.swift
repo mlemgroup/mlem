@@ -67,7 +67,7 @@ struct InboxView: View {
     }
     
     var feedLoader: StandardFeedLoader<InboxItem> {
-        if appState.firstApi.supportsOrNil(.viewMentionsAndPrivateMessages) ?? false {
+        if appState.firstApi.supportsOrElse(.viewMentionsAndPrivateMessages, defaultValue: false) {
             switch selectedTab {
             case .all:
                 inboxFeedLoader
@@ -91,7 +91,7 @@ struct InboxView: View {
     }
     
     var availableFeeds: [Feed] {
-        if appState.isModOrAdmin, appState.firstApi.supportsOrNil(.viewReports) ?? false {
+        if appState.isModOrAdmin, appState.firstApi.supportsOrElse(.viewReports, defaultValue: false) {
             return [.inbox, .modMail]
         }
         return [.inbox]
@@ -106,7 +106,7 @@ struct InboxView: View {
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar { toolbar }
                 .loadFeed(inboxFeedLoader)
-                .loadFeed(modMailFeedLoader, shouldLoad: appState.firstApi.supportsOrNil(.viewReports) ?? false)
+                .loadFeed(modMailFeedLoader, shouldLoad: appState.firstApi.supportsOrElse(.viewReports, defaultValue: false))
                 .onChange(of: appState.firstApi, initial: false) {
                     if appState.firstAccount is UserAccount {
                         Task {
@@ -121,12 +121,12 @@ struct InboxView: View {
                         do {
                             if showRead {
                                 try await inboxFeedLoader.showRead()
-                                if appState.firstApi.supportsOrNil(.viewReports) ?? false {
+                                if appState.firstApi.supportsOrElse(.viewReports, defaultValue: false) {
                                     try await modMailFeedLoader.showRead()
                                 }
                             } else {
                                 try await inboxFeedLoader.hideRead()
-                                if appState.firstApi.supportsOrNil(.viewReports) ?? false {
+                                if appState.firstApi.supportsOrElse(.viewReports, defaultValue: false) {
                                     try await modMailFeedLoader.hideRead()
                                 }
                             }
@@ -194,7 +194,7 @@ struct InboxView: View {
             switch selectedFeed {
             case .inbox:
                 try await inboxFeedLoader.refresh(clearBeforeRefresh: false)
-                if appState.firstApi.supportsOrNil(.viewReports) ?? false {
+                if appState.firstApi.supportsOrElse(.viewReports, defaultValue: false) {
                     Task {
                         try await modMailFeedLoader.refresh(clearBeforeRefresh: false)
                     }

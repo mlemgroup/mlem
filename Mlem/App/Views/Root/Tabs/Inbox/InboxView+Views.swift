@@ -34,13 +34,13 @@ extension InboxView {
                 
                 EndOfFeedView(feedLoader: feedLoader, viewType: .cartoon)
             } header: {
-                if appState.firstApi.supportsOrNil(.viewMentionsAndPrivateMessages) ?? false {
+                if appState.firstApi.supportsOrElse(.viewMentionsAndPrivateMessages, defaultValue: false) {
                     sectionHeader
                 }
             }
         }
         .animation(.easeOut(duration: 0.1), value: feedLoader.items.isEmpty)
-        .padding(.top, (appState.firstApi.supportsOrNil(.viewMentionsAndPrivateMessages) ?? false) ? 0 : Constants.main.standardSpacing)
+        .padding(.top, (appState.firstApi.supportsOrElse(.viewMentionsAndPrivateMessages, defaultValue: false)) ? 0 : Constants.main.standardSpacing)
     }
     
     @ViewBuilder

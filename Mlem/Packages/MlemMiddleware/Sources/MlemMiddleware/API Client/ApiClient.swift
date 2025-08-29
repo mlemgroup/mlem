@@ -32,8 +32,8 @@ public class ApiClient {
         try await repository.getConnection().supports(feature)
     }
     
-    public func supportsOrNil(_ feature: Feature) -> Bool? {
-        repository.connection?.supportsOrNil(feature)
+    public func supportsOrElse(_ feature: Feature, defaultValue: Bool) -> Bool {
+        repository.connection?.supportsOrElse(feature, defaultValue: defaultValue) ?? defaultValue
     }
     
     public var contextIsFetched: Bool {
