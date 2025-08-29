@@ -50,7 +50,7 @@ struct SearchHomeView: View {
                 title: "Communities",
                 icon: .lemmy.community,
                 destination: .topCommunities,
-                color: .green
+                color: .themedCommunityAccent
             )
             
             if !UIDevice.isPad {
@@ -61,7 +61,7 @@ struct SearchHomeView: View {
                 title: "Users",
                 icon: .lemmy.person,
                 destination: .topPeople,
-                color: .blue
+                color: .themedPersonAccent
             )
             
             if !UIDevice.isPad {
@@ -72,7 +72,7 @@ struct SearchHomeView: View {
                 title: "Instances",
                 icon: .lemmy.instance,
                 destination: .topInstances,
-                color: .red
+                color: .themedColorfulAccent(1)
             )
             
             if UIDevice.isPad {
@@ -101,7 +101,7 @@ private struct ListRowButton: View {
     let title: LocalizedStringResource
     let icon: Icon
     let destination: NavigationPage
-    let color: Color
+    let color: ThemedColor
     
     var body: some View {
         Button {
@@ -112,7 +112,6 @@ private struct ListRowButton: View {
                     .resizable()
                     .foregroundStyle(.white)
                     .symbolVariant(.fill)
-                    .scaledToFit()
                     .padding(20)
                     .background(color.gradient, in: .circle)
                     .frame(width: 80, height: 80)
@@ -120,18 +119,6 @@ private struct ListRowButton: View {
                     .fontWeight(.semibold)
                     .font(.subheadline)
             }
-//            FormChevron {
-//                HStack {
-//                    Image(icon: icon)
-//                        .symbolVariant(.fill)
-//                        .foregroundStyle(.tint)
-//                        .frame(minWidth: 30)
-//                    Text(title)
-//                }
-//            }
-//            .padding(16)
-//            .frame(maxWidth: .infinity)
-//            .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: 24))
         }
         .buttonStyle(.plain)
     }
