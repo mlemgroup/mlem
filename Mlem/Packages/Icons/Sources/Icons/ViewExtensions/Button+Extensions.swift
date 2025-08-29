@@ -17,12 +17,13 @@ public extension Button where Label == SwiftUI.Label<Text, Image> {
         self.init(title.key, systemImage: icon.computeImageName(), role: role, action: action)
     }
     
+    @_disfavoredOverload
     nonisolated init(
         _ title: String,
         icon: Icon,
         role: ButtonRole? = nil,
         action: @escaping @MainActor () -> Void
     ) {
-        self.init(LocalizedStringKey(title), systemImage: icon.computeImageName(), role: role, action: action)
+        self.init(title, systemImage: icon.computeImageName(), role: role, action: action)
     }
 }

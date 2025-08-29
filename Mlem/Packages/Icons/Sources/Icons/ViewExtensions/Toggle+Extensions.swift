@@ -12,7 +12,8 @@ public extension Toggle where Label == SwiftUI.Label<Text, Image> {
         self.init(title.key, systemImage: icon.computeImageName(), isOn: isOn)
     }
     
-    nonisolated init(_ title: String, icon: Icon, isOn: Binding<Bool>) {
-        self.init(LocalizedStringKey(title), systemImage: icon.computeImageName(), isOn: isOn)
+    @_disfavoredOverload
+    nonisolated init(_ title: some StringProtocol, icon: Icon, isOn: Binding<Bool>) {
+        self.init(title, systemImage: icon.computeImageName(), isOn: isOn)
     }
 }
