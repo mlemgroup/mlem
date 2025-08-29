@@ -21,7 +21,7 @@ extension ListingType {
     }
 
     static var guestCases: [ListingType] {
-        [.all, .local]
+        [.all, .local, .popular]
     }
 
     static var userCases: [ListingType] {
