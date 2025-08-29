@@ -110,7 +110,7 @@ struct SubscriptionListView: View {
                 Menu("Sort", icon: sort.icon) {
                     ForEach(SubscriptionListSort.allCases, id: \.self) { item in
                         Toggle(
-                            String(localized: item.label),
+                            item.label,
                             icon: item.icon,
                             isOn: .init(
                                 get: { sort == item },
