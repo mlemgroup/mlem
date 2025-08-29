@@ -19,6 +19,10 @@ public struct ThemedColor: ShapeStyle, Hashable, View, Sendable {
     public var body: some View {
         resolve(with: palette)
     }
+    
+    public var gradient: AnyGradient {
+        resolve(with: palette).gradient
+    }
 
     public func resolve(in environment: EnvironmentValues) -> Color {
         resolve(with: environment.palette)
