@@ -133,7 +133,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.behavior_enableQuickSwipes = try container.decodeIfPresent(Bool.self, forKey: ._behavior_enableQuickSwipes) ?? true
         
         do {
-            self.behavior_hapticLevel = try container.decodeIfPresent(HapticTier.self, forKey: ._behavior_hapticLevel) ?? .high
+            self.behavior_hapticLevel = try container.decodeIfPresent(HapticTier.self, forKey: ._behavior_hapticLevel)
         } catch DecodingError.dataCorrupted { // Decodes the 'sentinel' value, which was replaced with `nil` in Mlem 2.2
             self.behavior_hapticLevel = nil
         }
