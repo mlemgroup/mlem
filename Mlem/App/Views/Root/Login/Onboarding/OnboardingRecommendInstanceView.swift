@@ -82,10 +82,10 @@ struct OnboardingRecommendInstanceView: View {
     
     func numberText(_ value: Int) -> Text {
         if colorScheme == .dark {
-            Text("\(value)")
+            Text(String(value))
                 .foregroundStyle(.teal.gradient.shadow(.drop(color: .blue, radius: 10)))
         } else {
-            Text("\(value)")
+            Text(String(value))
                 .foregroundStyle(lightModeForeground)
         }
     }

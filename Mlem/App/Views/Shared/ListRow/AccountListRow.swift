@@ -61,7 +61,7 @@ struct AccountListRow: View {
         }
         .swipeActions(edge: .trailing, allowsFullSwipe: false) {
             if (account as? GuestAccount)?.isSaved ?? true {
-                Button(signOutLabel) {
+                Button(String(localized: signOutLabel)) {
                     showingSignOutConfirmation = true
                 }
                 .buttonStyle(.automatic)
@@ -90,8 +90,8 @@ struct AccountListRow: View {
             }
         }
         .labelStyle(.titleAndIcon) // Override `.conditional` label style from parent view
-        .confirmationDialog(signOutPrompt, isPresented: $showingSignOutConfirmation) {
-            Button(signOutLabel, role: .destructive) {
+        .confirmationDialog(String(localized: signOutPrompt), isPresented: $showingSignOutConfirmation) {
+            Button(String(localized: signOutLabel), role: .destructive) {
                 if navigation.isInsideSheet, appState.activeSessions.contains(where: { $0.account === account }) {
                     dismiss()
                 }
@@ -115,11 +115,11 @@ struct AccountListRow: View {
         }
     }
     
-    var signOutLabel: String {
+    var signOutLabel: LocalizedStringResource {
         account is UserAccount ? "Sign Out" : "Remove"
     }
     
-    var signOutPrompt: String {
+    var signOutPrompt: LocalizedStringResource {
         if account is UserAccount {
             "Really sign out of \(account.nickname)?"
         } else {
