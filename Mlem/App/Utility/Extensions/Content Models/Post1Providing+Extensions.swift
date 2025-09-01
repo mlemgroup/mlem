@@ -505,7 +505,7 @@ extension Post1Providing {
     }
     
     func viewVotesAction(navigation: NavigationLayer) -> BasicAction {
-        let enabled = canModerate && (api.supportsOrElse(.viewVotes, defaultValue: true))
+        let enabled = canModerate && api.supportsOrElse(.viewVotes, defaultValue: true)
         return .init(
             id: "viewVotes\(uid)",
             appearance: .viewVotes(),
