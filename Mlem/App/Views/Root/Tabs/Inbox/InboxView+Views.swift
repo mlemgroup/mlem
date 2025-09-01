@@ -34,7 +34,7 @@ extension InboxView {
                 
                 EndOfFeedView(feedLoader: feedLoader, viewType: .cartoon)
             } header: {
-                if appState.firstApi.supportsOrElse(.viewMentionsAndPrivateMessages, defaultValue: false) {
+                if appState.firstApi.supports(.viewMentionsAndPrivateMessages, defaultValue: false) {
                     sectionHeader
                 }
             }
@@ -42,7 +42,7 @@ extension InboxView {
         .animation(.easeOut(duration: 0.1), value: feedLoader.items.isEmpty)
         .padding(
             .top,
-            appState.firstApi.supportsOrElse(.viewMentionsAndPrivateMessages, defaultValue: false) ? 0 : Constants.main.standardSpacing
+            appState.firstApi.supports(.viewMentionsAndPrivateMessages, defaultValue: false) ? 0 : Constants.main.standardSpacing
         )
     }
     

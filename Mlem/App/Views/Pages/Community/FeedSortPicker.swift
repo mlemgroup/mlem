@@ -88,13 +88,13 @@ struct FeedSortPicker: View {
     var nonTopSortTypes: [PostSortType] {
         PostSortType.nonTopCases
             .filter { PinnedSortTracker.main.pinnedSortTypes.contains($0) }
-            .filter { appState.firstApi.supportsOrElse(.postSortType($0), defaultValue: true) }
+            .filter { appState.firstApi.supports(.postSortType($0), defaultValue: true) }
     }
     
     var topSortTypes: [PostSortType] {
         PostSortType.legacyTopCases
             .filter { PinnedSortTracker.main.pinnedSortTypes.contains($0) }
-            .filter { appState.firstApi.supportsOrElse(.postSortType($0), defaultValue: true) }
+            .filter { appState.firstApi.supports(.postSortType($0), defaultValue: true) }
     }
     
     var body: some View {

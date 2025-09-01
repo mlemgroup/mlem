@@ -16,7 +16,7 @@ public protocol InstanceConnection {
     
     var contextIsFetched: Bool { get }
     func supports(_ feature: Feature) async throws -> Bool
-    func supportsOrElse(_ feature: Feature, defaultValue: Bool) -> Bool
+    func supports(_ feature: Feature, defaultValue: Bool) -> Bool
 
     var fetchedVersion: SiteVersion? { get }
     var version: SiteVersion { get async throws }

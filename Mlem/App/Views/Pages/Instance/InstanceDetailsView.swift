@@ -28,7 +28,7 @@ struct InstanceDetailsView: View {
     
     var content: some View {
         VStack(spacing: 16) {
-            if instance.api.supportsOrElse(.viewInstanceCreationDate, defaultValue: true) {
+            if instance.api.supports(.viewInstanceCreationDate, defaultValue: true) {
                 FormSection {
                     ProfileDateView(profilable: instance)
                         .padding(.vertical, Constants.main.standardSpacing)
@@ -48,7 +48,7 @@ struct InstanceDetailsView: View {
                 }
             }
             
-            if instance.api.supportsOrElse(.viewInstanceSettings, defaultValue: true) {
+            if instance.api.supports(.viewInstanceSettings, defaultValue: true) {
                 settingsListView
             }
         }

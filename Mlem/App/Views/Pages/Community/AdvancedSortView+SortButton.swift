@@ -59,7 +59,7 @@ extension AdvancedSortView {
                     .paletteBorder(cornerRadius: Constants.main.standardSpacing)
                 }
             }
-            .disabled(!appState.firstApi.supportsOrElse(.postSortType(type), defaultValue: true))
+            .disabled(!appState.firstApi.supports(.postSortType(type), defaultValue: true))
         }
         
         @ViewBuilder

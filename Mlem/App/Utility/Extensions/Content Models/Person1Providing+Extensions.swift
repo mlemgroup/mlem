@@ -114,14 +114,14 @@ extension Person1Providing {
             banActions(appState: appState, community: community)
             if api.isAdmin {
                 purgeAction(appState: appState)
-                if api.supportsOrElse(.purgeContent, defaultValue: false) {
+                if api.supports(.purgeContent, defaultValue: false) {
                     purgeAction(appState: appState)
                 }
             }
             
             if let community3 = community as? any Community3Providing,
                let myPerson = api.myPerson,
-               api.supportsOrElse(.editModeratorList, defaultValue: false),
+               api.supports(.editModeratorList, defaultValue: false),
                myPerson.canModerate(self, in: community3) {
                 addModAction(community: community3, isOn: community3.moderators.contains(where: { $0.id == id }))
             }
@@ -156,10 +156,10 @@ extension Person1Providing {
         let canBanFromCommunity: Bool
         let showBoth: Bool
         
-        let canBanFromInstance = api.isAdmin && api.supportsOrElse(.banFromInstance, defaultValue: false)
+        let canBanFromInstance = api.isAdmin && api.supports(.banFromInstance, defaultValue: false)
         
         if let myPerson = api.myPerson, let community {
-            canBanFromCommunity = myPerson.moderates(communityId: community.id) && api.supportsOrElse(.banFromCommunity, defaultValue: false)
+            canBanFromCommunity = myPerson.moderates(communityId: community.id) && api.supports(.banFromCommunity, defaultValue: false)
             showBoth = canBanFromInstance && isBannedFromCommunity(community) != bannedFromInstance
         } else {
             canBanFromCommunity = false

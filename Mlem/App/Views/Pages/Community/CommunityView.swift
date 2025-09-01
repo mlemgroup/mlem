@@ -194,7 +194,7 @@ struct CommunityView: View {
     @ViewBuilder
     func moderationTab(community: any Community) -> some View {
         VStack(spacing: Constants.main.standardSpacing) {
-            if community.api.supportsOrElse(.modlog, defaultValue: true) {
+            if community.api.supports(.modlog, defaultValue: true) {
                 ModlogButtonView(community: community)
             }
 

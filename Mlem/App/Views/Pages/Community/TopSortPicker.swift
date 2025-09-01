@@ -20,7 +20,7 @@ struct TopSortPicker: View {
     var timeRanges: [SortTimeRange] {
         SortTimeRange.legacyCases
             .filter(filter)
-            .filter { appState.firstApi.supportsOrElse(.sortTimeRange($0), defaultValue: true) }
+            .filter { appState.firstApi.supports(.sortTimeRange($0), defaultValue: true) }
     }
     
     var body: some View {

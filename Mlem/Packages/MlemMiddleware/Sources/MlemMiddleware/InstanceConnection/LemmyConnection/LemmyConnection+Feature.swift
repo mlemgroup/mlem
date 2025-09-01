@@ -12,7 +12,7 @@ public extension LemmyConnection {
         try await Self.supports(feature, version: version)
     }
     
-    func supportsOrElse(_ feature: Feature, defaultValue: Bool) -> Bool {
+    func supports(_ feature: Feature, defaultValue: Bool) -> Bool {
         if let fetchedVersion {
             return Self.supports(feature, version: fetchedVersion)
         } else {

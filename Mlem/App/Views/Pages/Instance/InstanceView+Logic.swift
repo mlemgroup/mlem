@@ -13,7 +13,7 @@ extension InstanceView {
     var availableTabs: [Tab] {
         var result: [Tab] = []
         result.append(.about)
-        if instance.api.supportsOrElse(.searchLocalCommunities, defaultValue: true) {
+        if instance.api.supports(.searchLocalCommunities, defaultValue: true) {
             result.append(.communities)
         }
         result += [.administration, .details, .safety]
