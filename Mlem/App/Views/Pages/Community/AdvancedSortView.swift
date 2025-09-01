@@ -100,6 +100,6 @@ struct AdvancedSortView: View {
     }
     
     var unavailableCases: [PostSortType] {
-        PostSortType.legacyCases.filter { !(appState.firstApi.supportsOrElse(.postSortType($0), defaultValue: true)) }
+        PostSortType.legacyCases.filter { !appState.firstApi.supportsOrElse(.postSortType($0), defaultValue: true) }
     }
 }
