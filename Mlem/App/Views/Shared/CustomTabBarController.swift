@@ -77,6 +77,11 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
     }
     
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        guard !TabReselectTracker.main.blockTabSwitch else {
+            print("DEBUG tab switch blocked")
+            return false
+        }
+        
         TabReselectTracker.main.reset() // reset to prevent unconsumed actions from blocking the reselect flag
         if tabBarController.selectedViewController === viewController,
            let item = viewController as? CustomTabViewHostingController {

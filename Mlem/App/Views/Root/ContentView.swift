@@ -159,6 +159,18 @@ struct ContentView: View {
         ], onSwipeUp: {
             navigationModel.openSheet(.quickSwitcher)
         })
+        .simultaneousGesture(DragGesture()
+            .onChanged { value in
+                if (UIScreen.main.bounds.height - value.startLocation.y) < 80, value.translation.height < -100 {
+                    tabReselectTracker.blockTabSwitch = true
+                    navigationModel.openSheet(.quickSwitcher)
+                }
+            }
+            .onEnded { _ in
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    tabReselectTracker.blockTabSwitch = false
+                }
+            })
         .overlay(alignment: .bottom) {
             ToastOverlayView(
                 shouldDisplayNewToasts: shouldDisplayToasts,
