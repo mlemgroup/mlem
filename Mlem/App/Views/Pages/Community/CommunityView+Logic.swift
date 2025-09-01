@@ -12,7 +12,7 @@ import QuickSwipes
 extension CommunityView {
     func canEditModeratorList(_ community: any Community) -> Bool {
         guard let firstPerson = appState.firstPerson else { return false }
-        if !(firstPerson.api.supportsOrElse(.editModeratorList, defaultValue: true)) {
+        if !firstPerson.api.supportsOrElse(.editModeratorList, defaultValue: true) {
             return false
         }
         return firstPerson.isAdmin || firstPerson.moderates(community: community)
