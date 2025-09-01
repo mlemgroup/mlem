@@ -417,16 +417,6 @@
         }
       }
     },
-    "%lld" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld"
-          }
-        }
-      }
-    },
     "%lld Crossposts..." : {
       "localizations" : {
         "en" : {
@@ -5744,7 +5734,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PiedFed"
+            "value" : "PieFed"
           }
         }
       }
