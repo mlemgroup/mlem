@@ -164,11 +164,10 @@ struct ContentView: View {
                 if (UIScreen.main.bounds.height - value.startLocation.y) < 80, value.translation.height < -100 {
                     tabReselectTracker.blockTabSwitch = true
                     navigationModel.openSheet(.quickSwitcher)
-                }
-            }
-            .onEnded { _ in
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    tabReselectTracker.blockTabSwitch = false
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        tabReselectTracker.blockTabSwitch = false
+                    }
                 }
             })
         .overlay(alignment: .bottom) {
