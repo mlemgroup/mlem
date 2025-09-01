@@ -479,7 +479,14 @@
       }
     },
     "%lld more links..." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld liens en plus…"
+          }
+        }
+      }
     },
     "%lld years ago today!" : {
       "localizations" : {
@@ -1263,7 +1270,14 @@
       }
     },
     "Available" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disponible"
+          }
+        }
+      }
     },
     "Avatar" : {
       "localizations" : {
@@ -1766,7 +1780,14 @@
       }
     },
     "Choose a Username" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisir un nom d’utilisateur"
+          }
+        }
+      }
     },
     "Choose Account Type" : {
       "localizations" : {
@@ -1779,7 +1800,14 @@
       }
     },
     "Choose another instance..." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisir une autre instance"
+          }
+        }
+      }
     },
     "Choose Another Instance..." : {
       "localizations" : {
@@ -1893,7 +1921,14 @@
       }
     },
     "Choose which action to perform when you tap and hold the profile icon." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisie quelle action faire quand on fait un appui long que l’icône du profil."
+          }
+        }
+      }
     },
     "Choose which feed is shown when the app opens." : {
       "localizations" : {
@@ -2026,10 +2061,24 @@
       }
     },
     "Collapse" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Déplier"
+          }
+        }
+      }
     },
     "Collapse Parent" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Déplier le parent"
+          }
+        }
+      }
     },
     "Collapse Post" : {
       "localizations" : {
@@ -2042,7 +2091,14 @@
       }
     },
     "Collapse to Top" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Déplier jusqu’en haut"
+          }
+        }
+      }
     },
     "Comment" : {
       "localizations" : {
@@ -3015,7 +3071,14 @@
       }
     },
     "Email Address" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adresse email"
+          }
+        }
+      }
     },
     "Email Verification" : {
       "localizations" : {
@@ -3798,7 +3861,14 @@
       }
     },
     "Hide links" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cacher les liens"
+          }
+        }
+      }
     },
     "Hide Older Incidents" : {
       "localizations" : {
@@ -3831,7 +3901,14 @@
       }
     },
     "High" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Élevé"
+          }
+        }
+      }
     },
     "Hot" : {
       "localizations" : {
@@ -4148,7 +4225,14 @@
       }
     },
     "Join %@ active users on Lemmy.world" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rejoindre %@ utilisateurs actifs sur Lemmy.world"
+          }
+        }
+      }
     },
     "Join Discord Server" : {
       "localizations" : {
@@ -4292,7 +4376,14 @@
       }
     },
     "Let's Go" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "C’est parti"
+          }
+        }
+      }
     },
     "Licenses" : {
       "localizations" : {
@@ -4463,10 +4554,24 @@
       }
     },
     "Long Press Action" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Action d’appui long"
+          }
+        }
+      }
     },
     "Low" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bas"
+          }
+        }
+      }
     },
     "Manage how Mlem handles links and control how images and videos are displayed." : {
       "localizations" : {
@@ -5358,7 +5463,14 @@
       }
     },
     "Open Account Switcher" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ouvrir le sélectionneur de comptes"
+          }
+        }
+      }
     },
     "Open Authenticator App..." : {
       "localizations" : {
@@ -5601,7 +5713,14 @@
       }
     },
     "PieFed" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PieFed"
+          }
+        }
+      }
     },
     "Pin" : {
       "localizations" : {
@@ -7321,7 +7440,14 @@
       }
     },
     "Show Response Times" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afficher les temps de réponse"
+          }
+        }
+      }
     },
     "Show Sidebar on App Launch" : {
       "localizations" : {
@@ -7755,7 +7881,14 @@
       }
     },
     "Swiping up on the tab bar will always open the account switcher." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Glisser sur la bar d’onglets va toujours ouvrir le sélectionneur de comptes."
+          }
+        }
+      }
     },
     "Switch Account" : {
       "localizations" : {
@@ -7778,7 +7911,14 @@
       }
     },
     "Switch to Most Recent Account" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Changer vers le compte le plus récent"
+          }
+        }
+      }
     },
     "Switch to this account and..." : {
       "localizations" : {
@@ -7918,7 +8058,14 @@
       }
     },
     "The \"%@\" sort mode is only available on some instances. On unsupported instances, the \"Fallback\" sort mode will be used instead." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le mode de tri « %@ » n’est disponible que dans certaines instances. Sur les instances non supportées, le tri « Fallback » sera appliqué à la place."
+          }
+        }
+      }
     },
     "The %@ theme only supports %@ mode." : {
       "localizations" : {
@@ -8195,7 +8342,14 @@
       }
     },
     "This cannot be changed later." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ceci ne pourra pas être changé plus tard."
+          }
+        }
+      }
     },
     "This community has been removed." : {
       "localizations" : {
@@ -8228,7 +8382,14 @@
       }
     },
     "This feature is not available on all instances." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cette fonctionnalité n’est pas disponible sur toutes les instances."
+          }
+        }
+      }
     },
     "This feature is only supported for instances running version %@ or later." : {
       "extractionState" : "stale",
@@ -9053,16 +9214,44 @@
       }
     },
     "Username cannot be longer than %lld characters." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le nom d’utilisateur ne peut pas être plus long que %lld caractères."
+          }
+        }
+      }
     },
     "Username cannot contain %@." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le nom d’utilisateur ne peut pas contenir %@."
+          }
+        }
+      }
     },
     "Username is invalid." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le nom d’utilisateur n’est pas valide."
+          }
+        }
+      }
     },
     "Username is taken." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le nom d’utilisateur est déjà pris."
+          }
+        }
+      }
     },
     "Username must be 3 or more characters." : {
       "localizations" : {
@@ -9075,7 +9264,14 @@
       }
     },
     "Username must be at least %lld characters long." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le nom d’utilisateur doit être d’au moins %lld caractères."
+          }
+        }
+      }
     },
     "Users" : {
       "localizations" : {
@@ -9360,7 +9556,14 @@
       }
     },
     "You cannot use a temporary email address." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous ne pouvez pas utiliser une adresse email temporaire."
+          }
+        }
+      }
     },
     "You don't have an email attached to this account." : {
       "localizations" : {
