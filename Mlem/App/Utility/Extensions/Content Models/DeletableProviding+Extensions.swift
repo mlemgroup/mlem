@@ -13,7 +13,7 @@ extension DeletableProviding {
             toggleDeleted { status in
                 switch status {
                 case .success:
-                    if self is any Message1Providing, !(self.api.supportsOrElse(.undeletePrivateMessages, defaultValue: true)) {
+                    if self is any Message1Providing, !self.api.supportsOrElse(.undeletePrivateMessages, defaultValue: true) {
                         ToastModel.main.add(
                             .basic(
                                 "Deleted",
