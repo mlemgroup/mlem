@@ -180,7 +180,7 @@ extension Comment1Providing {
     }
     
     func viewVotesAction() -> BasicAction {
-        let enabled = canModerate && (api.supportsOrElse(.viewVotes, defaultValue: true))
+        let enabled = canModerate && api.supportsOrElse(.viewVotes, defaultValue: true)
         let callback: (@MainActor () -> Void)?
         if let self2, enabled {
             callback = {
