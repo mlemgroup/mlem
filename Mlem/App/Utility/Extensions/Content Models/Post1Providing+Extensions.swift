@@ -367,7 +367,7 @@ extension Post1Providing {
     
     func hideAction(appState: AppState, feedback: Set<FeedbackType>) -> BasicAction {
         let hidden = hidden_ ?? false
-        let available = (api.supportsOrElse(.hidePosts, defaultValue: true)) && api.canInteract(appState: appState)
+        let available = api.supportsOrElse(.hidePosts, defaultValue: true) && api.canInteract(appState: appState)
         return .init(
             id: "hide\(uid)",
             appearance: .hide(isOn: hidden),
