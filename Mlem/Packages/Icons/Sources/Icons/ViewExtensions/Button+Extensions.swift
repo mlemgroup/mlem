@@ -14,7 +14,7 @@ public extension Button where Label == SwiftUI.Label<Text, Image> {
         role: ButtonRole? = nil,
         action: @escaping @MainActor () -> Void
     ) {
-        self.init(title.key, systemImage: icon.computeImageName(), role: role, action: action)
+        self.init(LocalizedStringKey(title.key), systemImage: icon.computeImageName(), role: role, action: action)
     }
     
     @_disfavoredOverload
