@@ -14,7 +14,7 @@ public extension ListingType {
         case .local: .local
         case .subscribed: .subscribed
         case .moderatorView: .moderated
-        case .popular: nil
+        case .popular: .popular
         }
         if let value {
             self = value
@@ -23,12 +23,14 @@ public extension ListingType {
         }
     }
     
-    var pieFedListingType: PieFedListingType {
+    var pieFedListingType: PieFedListingType? {
         switch self {
         case .all: .all
         case .local: .local
         case .subscribed: .subscribed
         case .moderated: .moderatorView
+        case .popular: .popular
+        case .suggested: nil
         }
     }
 }

@@ -62,6 +62,8 @@ public extension Palette {
         subscribedFeed: .red,
         moderatedFeed: .cyan,
         savedFeed: .green,
+        popularFeed: .indigo,
+        suggestedFeed: .orange,
         inbox: .purple
     )
 }

@@ -15,25 +15,28 @@ extension ListingType {
         case .local: "Local"
         case .subscribed: "Subscribed"
         case .moderated: "Moderated"
+        case .popular: "Popular"
+        case .suggested: "Suggested"
         }
     }
 
     static var guestCases: [ListingType] {
-        [.all, .local]
+        [.all, .local, .popular]
     }
 
     static var userCases: [ListingType] {
-        [.all, .local, .subscribed]
+        [.all, .local, .popular, .suggested, .subscribed]
     }
 
     static var moderatorCases: [ListingType] { allCases }
 
-    static func cases(for accountType: AccountType) -> [Self] {
-        switch accountType {
+    static func cases(for accountType: AccountType, api: ApiClient) -> [Self] {
+        let cases = switch accountType {
         case .guest: guestCases
         case .user: userCases
         case .moderator, .admin: moderatorCases
         }
+        return cases.filter { api.supportsOrNil(.listingType($0)) ?? false }
     }
 
     var description: FeedDescription {
@@ -42,6 +45,8 @@ extension ListingType {
         case .local: .local
         case .subscribed: .subscribed
         case .moderated: .moderated
+        case .popular: .popular
+        case .suggested: .suggested
         }
     }
     
@@ -51,6 +56,8 @@ extension ListingType {
         case .local: .local
         case .subscribed: .subscribed
         case .moderated: .moderated
+        case .popular: .popular
+        case .suggested: .suggested
         }
     }
 }
