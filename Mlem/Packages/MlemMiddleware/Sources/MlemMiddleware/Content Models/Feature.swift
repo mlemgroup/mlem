@@ -12,6 +12,7 @@ public enum Feature: Hashable {
     case commentSortType(CommentSortType)
     case searchSortType(SearchSortType)
     case sortTimeRange(SortTimeRange)
+    case listingType(ListingType)
     
     case viewVotes
     

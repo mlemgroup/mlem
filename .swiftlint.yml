@@ -17,4 +17,6 @@ identifier_name:
   allowed_symbols: ["_"] # these are allowed in type names as we use them in API body arguments
 
 excluded:
+  - "**/.build"
+  - "**/build"
   - Mlem/Packages/MlemMiddleware

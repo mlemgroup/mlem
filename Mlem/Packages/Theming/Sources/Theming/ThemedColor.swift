@@ -175,6 +175,14 @@ public extension ShapeStyle where Self == ThemedColor {
         .init(hashString: "savedFeed", getColor: \.savedFeed)
     }
 
+    static var themedPopularFeed: ThemedColor {
+        .init(hashString: "popularFeed", getColor: \.popularFeed)
+    }
+
+    static var themedSuggestedFeed: ThemedColor {
+        .init(hashString: "suggestedFeed", getColor: \.suggestedFeed)
+    }
+
     static var themedInbox: ThemedColor {
         .init(hashString: "inbox", getColor: \.inbox)
     }
