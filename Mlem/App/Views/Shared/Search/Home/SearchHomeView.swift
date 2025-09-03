@@ -97,6 +97,7 @@ struct SearchHomeView: View {
 
 private struct ListRowButton: View {
     @Environment(\.navigation) var navigation
+    @Environment(\.palette) var palette
     
     let title: LocalizedStringResource
     let icon: Icon
@@ -113,7 +114,7 @@ private struct ListRowButton: View {
                     .foregroundStyle(.white)
                     .symbolVariant(.fill)
                     .padding(20)
-                    .background(color.gradient, in: .circle)
+                    .background(color.gradient(palette: palette), in: .circle)
                     .frame(width: 80, height: 80)
                 Text(title)
                     .fontWeight(.semibold)

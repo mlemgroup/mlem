@@ -9,18 +9,16 @@ import Foundation
 import SwiftUI
 
 public struct ThemedColor: ShapeStyle, Hashable, View, Sendable {
-    @Environment(\.palette) private var palette
-    
     fileprivate let hashString: String
     
     let getColor: @Sendable (Palette) -> Color
     var opacity: CGFloat = 1
     
-    public var body: some View {
+    public func body(palette: Palette) -> some View {
         resolve(with: palette)
     }
     
-    public var gradient: AnyGradient {
+    public func gradient(palette: Palette) -> AnyGradient {
         resolve(with: palette).gradient
     }
 
