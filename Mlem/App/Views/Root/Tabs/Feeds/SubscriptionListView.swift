@@ -20,7 +20,7 @@ struct SubscriptionListView: View {
     @State var noDetail: Bool = false
     
     var feedOptions: [ListingType] {
-        ListingType.cases(for: appState.firstAccount.accountType)
+        ListingType.cases(for: appState.firstAccount.accountType, api: appState.firstApi)
     }
     
     @State var sectionScroller: Int = 0

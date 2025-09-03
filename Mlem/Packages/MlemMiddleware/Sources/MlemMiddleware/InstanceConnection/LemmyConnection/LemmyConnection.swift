@@ -11,7 +11,7 @@ import Rest
 public class LemmyConnection: InstanceConnection {
     public static let softwareType: SiteSoftwareType = .lemmy
     
-    let restClient = RestClient<ApiErrorResponse>()
+    let restClient = RestClient(errorType: ApiErrorResponse.self)
     
     enum LemmyConnectionError: Error {
         case invalidSession

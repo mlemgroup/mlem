@@ -59,4 +59,20 @@ struct FeedDescription {
         icon: .lemmy.savedFeed,
         iconScaleFactor: 0.55
     )
+
+    static var popular: FeedDescription = .init(
+        label: "Popular",
+        subtitle: "Posts from popular communities",
+        color: .themedPopularFeed,
+        icon: .lemmy.popularFeed,
+        iconScaleFactor: 0.55
+    )
+
+    static var suggested: FeedDescription = .init(
+        label: "Suggested",
+        subtitle: "A selection of communities curated by \(AppState.main.firstApi.host) admins",
+        color: .themedSuggestedFeed,
+        icon: .lemmy.suggestedFeed,
+        iconScaleFactor: 0.55
+    )
 }

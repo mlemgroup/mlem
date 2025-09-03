@@ -563,6 +563,9 @@
         }
       }
     },
+    "A selection of communities curated by %@ admins" : {
+
+    },
     "About" : {
       "localizations" : {
         "fr" : {
@@ -5799,6 +5802,9 @@
         }
       }
     },
+    "Popular" : {
+
+    },
     "Post" : {
       "localizations" : {
         "fr" : {
@@ -5978,6 +5984,9 @@
           }
         }
       }
+    },
+    "Posts from popular communities" : {
+
     },
     "Posts with these keywords in their titles will be hidden. If you are a moderator or administrator of a matching post, it will appear in your feed but require you to tap to view its content." : {
       "localizations" : {
@@ -7856,6 +7865,9 @@
           }
         }
       }
+    },
+    "Suggested" : {
+
     },
     "Suggested Languages" : {
       "localizations" : {
