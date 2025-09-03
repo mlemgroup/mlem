@@ -7,13 +7,36 @@
 
 import Foundation
 
-public class RestClient<ErrorType: Decodable & CustomStringConvertible> {
+public class RestClient {
+    public struct ErrorProcessorContext {
+        let decoder: JSONDecoder
+        let data: Data
+        let response: HTTPURLResponse
+    }
+
     private let decoder: JSONDecoder = .defaultDecoder
     
     // This should really be internal, but for now the image upload system needs to access this
     public let urlSession: URLSession = .init(configuration: .default)
+
+    public var errorProcessor: (ErrorProcessorContext) throws(RestError) -> Void
     
-    public init() {}
+    public init(errorProcessor: @escaping (ErrorProcessorContext) throws(RestError) -> Void = { _ in }) {
+        self.errorProcessor = errorProcessor
+    }
+
+    public init<ErrorType: Decodable & CustomStringConvertible>(errorType: ErrorType.Type) {
+        self.errorProcessor = { context throws(RestError) in
+            if let apiError = try? context.decoder.decode(ErrorType.self, from: context.data) {
+                // at present we have a single error model which appears to be used throughout
+                // the API, however we may way to consider adding the error model type as an
+                // associated value in the same was as the response to allow requests to define
+                // their own error models when necessary, or drop back to this as the default...
+                
+                throw .response(String(describing: apiError), statusCode: context.response.statusCode)
+            }
+        }
+    }
     
     public func perform<Request: RestRequest>(
         baseUrl: URL,
@@ -28,15 +51,14 @@ public class RestClient<ErrorType: Decodable & CustomStringConvertible> {
             if response.statusCode >= 500 || response.statusCode == 404 {
                 throw .serverError(statusCode: response.statusCode)
             }
-            
-            if let apiError = try? decoder.decode(ErrorType.self, from: data) {
-                // at present we have a single error model which appears to be used throughout
-                // the API, however we may way to consider adding the error model type as an
-                // associated value in the same was as the response to allow requests to define
-                // their own error models when necessary, or drop back to this as the default...
-                
-                throw .response(String(describing: apiError), statusCode: response.statusCode)
-            }
+
+            try errorProcessor(
+                .init(
+                    decoder: decoder,
+                    data: data,
+                    response: response
+                )
+            )
         }
         
         return try decode(Request.Response.self, from: data)

@@ -33,6 +33,8 @@ public extension LemmyConnection {
             version >= sort.minimumVersion
         case let .sortTimeRange(timeRange):
             version >= timeRange.minimumVersion
+        case let .listingType(listingType):
+            version >= listingType.minimumVersion
         case .searchLocalCommunities, .viewInstanceSettings, .viewInstanceCreationDate, .modlog,
              .logIn, .signUp, .viewCommunityActiveUsers, .commentTreeSortedByDepth, .uploadImages,
              .editAccountSettings, .viewMentionsAndPrivateMessages, .viewReports, .editAndDeletePrivateMessages,
@@ -99,4 +101,14 @@ private extension SortTimeRange {
 
 private extension LegacySortTimeRangeLimit {
     var minimumVersion: SiteVersion { .zero }
+}
+
+private extension ListingType {
+    var minimumVersion: SiteVersion {
+        switch self {
+        case .suggested: .v1_0_0
+        case .popular: .infinity
+        default: .zero
+        }
+    }
 }

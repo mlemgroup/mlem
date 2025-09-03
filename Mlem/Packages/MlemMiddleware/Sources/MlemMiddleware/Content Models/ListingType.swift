@@ -8,5 +8,5 @@
 import Foundation
 
 public enum ListingType: String, CaseIterable, Codable {
-    case all, local, subscribed, moderated
+    case all, local, subscribed, moderated, popular, suggested
 }

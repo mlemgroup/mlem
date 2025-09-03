@@ -24,7 +24,7 @@ class ApiRepository {
     let username: String?
     private var connectionMultiplexer: ConnectionMultiplexer<ConnectionWrapper>!
     
-    var restClient: RestClient<ApiErrorResponse> = .init()
+    let restClient = RestClient(errorType: ApiErrorResponse.self)
     var token: String?
     
     var connection: (any InstanceConnection)? {

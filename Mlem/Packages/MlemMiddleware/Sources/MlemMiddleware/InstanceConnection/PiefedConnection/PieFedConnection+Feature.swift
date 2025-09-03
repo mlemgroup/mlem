@@ -33,6 +33,8 @@ public extension PieFedConnection {
             version >= sort.minimumVersion
         case let .sortTimeRange(timeRange):
             version >= timeRange.minimumVersion
+        case let .listingType(listingType):
+            listingType.pieFedListingType != nil
         case .viewCommunityActiveUsers, .viewMentionsAndPrivateMessages, .editAndDeletePrivateMessages:
             version >= .v1_1_0
         default: false
