@@ -66,16 +66,16 @@ extension Message1Providing {
             selectTextAction()
         }
         if isOwnMessage {
-            if api.supportsOrNil(.editAndDeletePrivateMessages) ?? true {
+            if api.supports(.editAndDeletePrivateMessages, defaultValue: true) {
                 if let editCallback {
                     editAction(appState: appState, callback: editCallback)
                 }
-                if (api.supportsOrNil(.undeletePrivateMessages) ?? true) || !deleted {
+                if api.supports(.undeletePrivateMessages, defaultValue: true) || !deleted {
                     deleteAction(appState: appState, feedback: feedback)
                 }
             }
         } else {
-            if api.supportsOrNil(.reportPrivateMessages) ?? true {
+            if api.supports(.reportPrivateMessages, defaultValue: true) {
                 if report == nil {
                     reportAction(appState: appState)
                 }
