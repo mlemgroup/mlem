@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Theming
 
 struct AccessibilitySettingsView: View {
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor: Bool
@@ -23,7 +24,7 @@ struct AccessibilitySettingsView: View {
                 description: "Customize Mlem to work best for you. Some features are tied to system-wide accessibility settings.",
                 icon: .settings.accessibility
             )
-            .tint(.themedColorfulAccent(2))
+            .tint(ThemedColor.themedColorfulAccent(2).gradient)
             if differentiateWithoutColor {
                 Section {
                     NavigationLink(

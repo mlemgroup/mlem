@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Theming
 
 struct SafetyBlurNsfwSettingsView: View {
     @Setting(\.safety_blurNsfw) var blurNsfw
@@ -34,6 +35,6 @@ struct SafetyBlurNsfwSettingsView: View {
             description: "Choose when Not Safe For Work content should be blurred.",
             icon: .general.hide
         )
-        .tint(.themedWarning)
+        .tint(ThemedColor.themedWarning.gradient)
     }
 }

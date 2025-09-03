@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Theming
 
 struct SubscriptionListSettingsView: View {
     @Setting(\.subscriptions_sort) private var sort
@@ -19,7 +20,7 @@ struct SubscriptionListSettingsView: View {
                 description: "Customize how your subscription list is sorted.",
                 icon: .lemmy.subscriptionList
             )
-            .tint(.themedCommunityAccent)
+            .tint(ThemedColor.themedCommunityAccent.gradient)
             Section("Sort by...") {
                 Picker("Sort by...", selection: $sort) {
                     ForEach(SubscriptionListSort.allCases, id: \.self) { item in

@@ -8,6 +8,7 @@
 import ComponentViews
 import Icons
 import SwiftUI
+import Theming
 
 struct SharingLinksSettingsView: View {
     @Setting(\.links_shareMode) var linkSharingMode
@@ -21,7 +22,7 @@ struct SharingLinksSettingsView: View {
                 description: "In the Fediverse, many different links can point to the same piece of content. Choose which site to use when sharing content.",
                 icon: .general.share
             )
-            .tint(.themedColorfulAccent(3))
+            .tint(ThemedColor.themedColorfulAccent(3).gradient)
             
             pickerItemView(
                 mode: .myInstance,

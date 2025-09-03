@@ -21,7 +21,7 @@ struct FeedIconView: View {
     
     var body: some View {
         Circle()
-            .fill(feedDescription.color)
+            .fill(feedDescription.color.gradient)
             .frame(width: size, height: size)
             .overlay {
                 Image(icon: feedDescription.icon)

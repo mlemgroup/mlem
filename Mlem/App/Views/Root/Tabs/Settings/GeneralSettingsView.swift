@@ -7,6 +7,7 @@
 
 import Dependencies
 import SwiftUI
+import Theming
 
 struct GeneralSettingsView: View {
     // behavior
@@ -34,7 +35,7 @@ struct GeneralSettingsView: View {
                 description: "Manage your overall setup for Mlem.",
                 icon: .settings.general
             )
-            .tint(.themedNeutralAccent)
+            .tint(ThemedColor.themedNeutralAccent.gradient)
             Section {
                 NavigationLink(
                     "Default Feed",

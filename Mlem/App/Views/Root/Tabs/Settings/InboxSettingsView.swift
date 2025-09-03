@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Theming
 
 struct InboxSettingsView: View {
     @Setting(\.tab_inbox_badgeIncludedTypes) var tabInboxBadgeIncludedTypes
@@ -19,7 +20,7 @@ struct InboxSettingsView: View {
                 description: "Customize the interaction bar for inbox items, and choose which types of notification are included in the tab bar badge.",
                 icon: .lemmy.inbox
             )
-            .tint(.themedInbox)
+            .tint(ThemedColor.themedInbox.gradient)
             Section {
                 NavigationLink(.settings(.interactionBar(.reply))) {
                     SettingsInteractionBarSummaryView(configuration: replyInteractionBar)

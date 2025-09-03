@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Theming
 
 struct LongPressActionSettingsView: View {
     @Setting(\.tab_gestures_longPressAction) private var longPressAction: TabBarLongPressAction
@@ -17,7 +18,7 @@ struct LongPressActionSettingsView: View {
                 description: "Choose which action to perform when you tap and hold the profile icon.",
                 icon: .settings.longPress
             )
-            .tint(.themedColorfulAccent(2))
+            .tint(ThemedColor.themedColorfulAccent(2).gradient)
             
             Section {
                 Picker("Long Press Action", selection: $longPressAction) {

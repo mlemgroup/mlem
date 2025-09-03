@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Theming
 
 struct SafetySettingsView: View {
     @Environment(FiltersTracker.self) var filtersTracker
@@ -23,7 +24,7 @@ struct SafetySettingsView: View {
                 description: "Customize how content is displayed in your feed. Choose which types of content are blurred, and apply filters to hide posts from the feed altogether.",
                 icon: .settings.safety
             )
-            .tint(.themedColorfulAccent(3))
+            .tint(ThemedColor.themedColorfulAccent(3).gradient)
             Section {
                 NavigationLink(
                     "Blur NSFW Content",

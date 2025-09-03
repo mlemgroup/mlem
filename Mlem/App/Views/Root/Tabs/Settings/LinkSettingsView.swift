@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Theming
 
 struct LinkSettingsView: View {
     @Setting(\.links_openInBrowser) var openLinksInBrowser
@@ -24,7 +25,7 @@ struct LinkSettingsView: View {
                 description: "Manage how Mlem handles links and control how images and videos are displayed.",
                 icon: .general.image
             )
-            .tint(.themedColorfulAccent(4))
+            .tint(ThemedColor.themedColorfulAccent(4).gradient)
             Section {
                 NavigationLink(
                     "Open External Links",

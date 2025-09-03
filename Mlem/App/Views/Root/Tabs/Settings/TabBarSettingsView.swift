@@ -7,6 +7,7 @@
 
 import Icons
 import SwiftUI
+import Theming
 
 struct TabBarSettingsView: View {
     @Environment(AppState.self) var appState
@@ -27,7 +28,7 @@ struct TabBarSettingsView: View {
                 description: "Customize the appearance of the tab bar.",
                 icon: .settings.tabBar
             )
-            .tint(.themedColorfulAccent(5))
+            .tint(ThemedColor.themedColorfulAccent(5).gradient)
             Section("Profile Tab Label") {
                 Picker("Profile Tab Label", selection: $profileTabLabel) {
                     profileTabLabelItem("Name", value: account.nickname, icon: .lemmy.alphabeticalSort)
