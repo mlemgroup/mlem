@@ -120,17 +120,26 @@ struct HandleLemmyLinksModifier: ViewModifier {
         return .handled
     }
     
-    // Creates https://example.com/c/comm from /c/comm@example.com
+    // Creates https://example.com/c/comm from /c/comm@example.com or example.com/c/comm
     func createLemmyUrlFromShortcut(parts: [String]) -> URL? {
         var parts = parts
-        parts.removeFirst()
-        guard parts.count == 2 else { return nil }
-        guard parts[0] == "c" || parts[0] == "u" else { return nil }
+        
         var components = URLComponents()
         components.scheme = "https"
-        let fullNameParts = parts[1].split(separator: "@")
-        components.host = String(fullNameParts[1])
-        components.path = "/\(parts[0])/\(fullNameParts[0])"
+        
+        if parts[0] != "/" {
+            guard parts.count == 3 else { return nil }
+            guard parts[1] == "c" || parts[1] == "u" else { return nil }
+            components.host = parts[0]
+            components.path = "/\(parts[1])/\(parts[2])"
+        } else {
+            parts.removeFirst()
+            guard parts.count == 2 else { return nil }
+            guard parts[0] == "c" || parts[0] == "u" else { return nil }
+            let fullNameParts = parts[1].split(separator: "@")
+            components.host = String(fullNameParts[1])
+            components.path = "/\(parts[0])/\(fullNameParts[0])"
+        }
         return components.url
     }
     
