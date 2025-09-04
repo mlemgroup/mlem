@@ -27,33 +27,15 @@ struct FeedsView: View {
     @ObservationIgnored @Dependency(\.persistenceRepository) private var persistenceRepository
     
     @State var postFeedLoader: AggregatePostFeedLoader?
-    
-    @State var listingType: ListingType
-
     @State var scrollToTopTrigger: Bool = false
+    @State var initialListingType: ListingType?
     
     var feedOptions: [ListingType] {
-        ListingType.cases(for: appState.firstAccount.accountType)
+        ListingType.cases(for: appState.firstAccount.accountType, api: appState.firstApi)
     }
     
     init(listingType: ListingType? = nil) {
-        @Setting(\.feed_default) var defaultFeed
-        
-        @Dependency(\.persistenceRepository) var persistenceRepository
-        
-        var initialFeedSelection: ListingType
-        if let listingType {
-            initialFeedSelection = listingType
-        } else {
-            initialFeedSelection = defaultFeed
-        }
-        
-        // fallback to local if using guest account and selection requires authenticated account
-        if !(AppState.main.firstAccount is UserAccount), !ListingType.guestCases.contains(initialFeedSelection) {
-            initialFeedSelection = .local
-        }
-        
-        _listingType = .init(initialValue: initialFeedSelection)
+        _initialListingType = .init(initialValue: listingType)
     }
     
     var body: some View {
@@ -65,7 +47,7 @@ struct FeedsView: View {
                 FeedSelectionTitleModifier(
                     feedOptions: feedOptions,
                     shouldScrollToTop: true,
-                    feedSelection: $listingType,
+                    feedLoader: postFeedLoader,
                     scrollToTopTrigger: $scrollToTopTrigger
                 )
             )
@@ -75,70 +57,74 @@ struct FeedsView: View {
                     FeedSortPicker(feedLoader: postFeedLoader, showTopTimescaleInIcon: true)
                 }
             }
-            .conditionalNavigationTitle(String(localized: listingType.label))
+            .conditionalNavigationTitle((postFeedLoader?.feedType.label ?? nil).map(String.init(localized:)) ?? "")
             .navigationBarTitleDisplayMode(.inline)
             .onChange(of: showRead) {
                 scrollToTopTrigger.toggle()
             }
             .onChange(of: appState.firstApi, initial: false) {
                 // ensure we always are showing an appropriate feed
-                Task {
-                    if !ListingType.cases(for: appState.firstAccount.accountType).contains(listingType) {
-                        try await postFeedLoader?.changeSortType(to: appState.initialFeedSortType)
-                        let newFeedSelection: ListingType = appState.firstAccount.accountType == .guest ? .all : .subscribed
-                        if newFeedSelection != listingType {
-                            await postFeedLoader?.changeApi(to: appState.firstApi, context: filtersTracker.filterContext)
+                if let postFeedLoader {
+                    Task {
+                        if !ListingType.cases(
+                            for: appState.firstAccount.accountType,
+                            api: appState.firstApi
+                        ).contains(postFeedLoader.feedType) {
+                            try await postFeedLoader.changeSortType(to: appState.initialFeedSortType)
+                            let newFeedSelection: ListingType =
+                                appState.firstAccount.accountType == .guest ? .all : .subscribed
+                            if newFeedSelection != postFeedLoader.feedType {
+                                await postFeedLoader.changeApi(to: appState.firstApi, context: filtersTracker.filterContext)
+                            }
+                            try await postFeedLoader.changeFeedType(to: newFeedSelection)
                         }
-                        listingType = newFeedSelection
                     }
                 }
             }
             .task { await setupFeedLoader() }
             .outdatedFeedPopup(feedLoader: postFeedLoader)
-            .environment(\.feedContext, listingType.feedContext)
-            .onChange(of: listingType) { oldValue, _ in
-                guard oldValue != listingType else { return }
-                Task {
-                    do {
-                        try await postFeedLoader?.changeFeedType(to: listingType)
-                    } catch {
-                        handleError(error)
-                    }
-                }
-            }
+            .environment(\.feedContext, postFeedLoader?.feedType.feedContext)
     }
     
     @ViewBuilder
     var content: some View {
-        FancyScrollView(scrollToTopTrigger: $scrollToTopTrigger) {
-            Section {
-                if AccountsTracker.main.isEmpty, showWelcomePrompt, !appState.firstApi.willSendToken {
-                    FeedWelcomeView()
-                        .padding([.horizontal, .bottom], Constants.main.standardSpacing)
+        ZStack {
+            if let postFeedLoader {
+                FancyScrollView(scrollToTopTrigger: $scrollToTopTrigger) {
+                    Section {
+                        if AccountsTracker.main.isEmpty, showWelcomePrompt, !appState.firstApi.willSendToken {
+                            FeedWelcomeView()
+                                .padding([.horizontal, .bottom], Constants.main.standardSpacing)
+                        }
+                        if Bundle.main.isTestFlight,
+                           let testflightUrl = backendClient.testflightUpdate,
+                           lastTestFlightUpdate != testflightUrl {
+                            UpdateBannerView(url: testflightUrl)
+                                .padding([.horizontal, .bottom], Constants.main.standardSpacing)
+                        }
+                        PostGridView(postFeedLoader: postFeedLoader)
+                    } header: {
+                        Menu {
+                            FeedSelectionMenuView(
+                                feedOptions: feedOptions,
+                                shouldScrollToTop: false,
+                                feedLoader: postFeedLoader,
+                                scrollToTopTrigger: $scrollToTopTrigger
+                            )
+                        } label: {
+                            FeedHeaderView(feedDescription: postFeedLoader.feedType.description, dropdownStyle: .enabled(showBadge: false))
+                                .padding(.bottom, Constants.main.standardSpacing)
+                        }
+                        .buttonStyle(.plain)
+                    }
                 }
-                if Bundle.main.isTestFlight, let testflightUrl = backendClient.testflightUpdate, lastTestFlightUpdate != testflightUrl {
-                    UpdateBannerView(url: testflightUrl)
-                        .padding([.horizontal, .bottom], Constants.main.standardSpacing)
-                }
-                if let postFeedLoader {
-                    PostGridView(postFeedLoader: postFeedLoader)
-                }
-            } header: {
-                Menu {
-                    FeedSelectionMenuView(
-                        feedOptions: feedOptions,
-                        shouldScrollToTop: false,
-                        feedSelection: $listingType,
-                        scrollToTopTrigger: $scrollToTopTrigger
-                    )
-                } label: {
-                    FeedHeaderView(feedDescription: listingType.description, dropdownStyle: .enabled(showBadge: false))
-                        .padding(.bottom, Constants.main.standardSpacing)
-                }
-                .buttonStyle(.plain)
+                .animation(.snappy, value: backendClient.testflightUpdate != lastTestFlightUpdate)
+            } else {
+                ProgressView()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(.themedGroupedBackground)
             }
         }
-        .animation(.snappy, value: backendClient.testflightUpdate != lastTestFlightUpdate)
     }
     
     @MainActor
@@ -147,8 +133,25 @@ struct FeedsView: View {
 
         @Setting(\.behavior_internetSpeed) var internetSpeed
         @Setting(\.feed_showRead) var showReadPosts
+        @Setting(\.feed_default) var defaultFeed
         
+        var listingType: ListingType
+
         do {
+            if let initialListingType {
+                listingType = initialListingType
+            } else if try await appState.firstApi.supports(.listingType(defaultFeed)) {
+                listingType = defaultFeed
+            } else {
+                listingType = .subscribed
+            }
+
+            // fallback to local if using guest account and selection requires authenticated account
+            if !(AppState.main.firstAccount is UserAccount),
+               !ListingType.guestCases.contains(listingType) {
+                listingType = .local
+            }
+
             postFeedLoader = try await .init(
                 pageSize: internetSpeed.pageSize,
                 sortType: appState.initialFeedSortType,
@@ -168,7 +171,7 @@ struct FeedsView: View {
 private struct FeedSelectionTitleModifier: ViewModifier {
     let feedOptions: [ListingType]
     let shouldScrollToTop: Bool
-    @Binding var feedSelection: ListingType
+    var feedLoader: AggregatePostFeedLoader?
     @Binding var scrollToTopTrigger: Bool
     
     @State var isAtTop: Bool = false
@@ -176,12 +179,12 @@ private struct FeedSelectionTitleModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .toolbar {
-                if !isAtTop {
+                if !isAtTop, let feedLoader {
                     ToolbarTitleMenu {
                         FeedSelectionMenuView(
                             feedOptions: feedOptions,
                             shouldScrollToTop: shouldScrollToTop,
-                            feedSelection: $feedSelection,
+                            feedLoader: feedLoader,
                             scrollToTopTrigger: $scrollToTopTrigger
                         )
                     }
@@ -215,6 +218,31 @@ private struct FeedSelectionMenuView: View {
             }
             .symbolVariant(feedSelection == feed ? .fill : .none)
         }
+    }
+}
+
+extension FeedSelectionMenuView {
+    init(
+        feedOptions: [ListingType],
+        shouldScrollToTop: Bool,
+        feedLoader: AggregatePostFeedLoader,
+        scrollToTopTrigger: Binding<Bool>
+    ) {
+        self._feedSelection = .init(get: {
+            feedLoader.feedType
+        }, set: { newValue in
+            Task { @MainActor in
+                do {
+                    try await feedLoader.changeFeedType(to: newValue)
+                } catch {
+                    handleError(error)
+                }
+            }
+        })
+
+        self.feedOptions = feedOptions
+        self.shouldScrollToTop = shouldScrollToTop
+        self._scrollToTopTrigger = scrollToTopTrigger
     }
 }
 

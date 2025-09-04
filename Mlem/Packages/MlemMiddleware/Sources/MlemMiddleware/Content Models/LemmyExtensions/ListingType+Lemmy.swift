@@ -14,7 +14,7 @@ extension ListingType {
         case .local: .local
         case .subscribed: .subscribed
         case .moderatorView: .moderated
-        case .suggested: nil
+        case .suggested: .suggested
         }
         
         guard let value else {
@@ -24,12 +24,14 @@ extension ListingType {
         self = value
     }
     
-    var apiType: LemmyListingType {
+    var apiType: LemmyListingType? {
         switch self {
         case .all: .all
         case .local: .local
         case .subscribed: .subscribed
         case .moderated: .moderatorView
+        case .popular: nil
+        case .suggested: .suggested
         }
     }
 }

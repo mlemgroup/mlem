@@ -70,6 +70,8 @@ extension Palette {
         subscribedFeed: red,
         moderatedFeed: violet,
         savedFeed: cyan,
+        popularFeed: magenta,
+        suggestedFeed: orange,
         inbox: violet
     )
 }

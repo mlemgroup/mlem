@@ -22,6 +22,7 @@ let package = Package(
             dependencies: [],
             swiftSettings: [
                 .swiftLanguageMode(.v5),
+                .enableUpcomingFeature("FullTypedThrows"),
                 .enableUpcomingFeature("BareSlashRegexLiterals")
             ]
         )
