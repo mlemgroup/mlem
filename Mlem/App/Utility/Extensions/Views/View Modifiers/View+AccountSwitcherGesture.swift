@@ -16,7 +16,7 @@ struct AccountSwitcherGesture: ViewModifier {
     @State var dragCompleted: Bool = false
     
     func body(content: Content) -> some View {
-        if #available(iOS 26, *) {
+        if #available(iOS 26, *), !UIDevice.isPad {
             content
                 .simultaneousGesture(DragGesture()
                     .updating($dragGestureActive) { _, state, _ in
