@@ -13,3 +13,15 @@ import Foundation
 public enum LoadingState: Hashable {
     case idle, loading, done
 }
+
+public enum FeedLoadingState: Hashable {
+    case initial, idle, loading, done
+
+    public init(from loadingState: LoadingState) {
+        self = switch loadingState {
+        case .idle: .idle
+        case .loading: .loading
+        case .done: .done
+        }
+    }
+}

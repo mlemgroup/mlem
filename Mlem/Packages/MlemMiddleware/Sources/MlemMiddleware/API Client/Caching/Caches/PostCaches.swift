@@ -35,7 +35,6 @@ class Post1Cache: ApiTypeBackedCache<Post1, Post1Snapshot> {
     
     override func updateModel(_ item: Post1, with snapshot: Post1Snapshot, semaphore: UInt? = nil) {
         // TODO: UpdateQueue move updateModel responsibilities fully out of the cache
-        print("noop")
     }
 }
 
@@ -60,7 +59,6 @@ class Post2Cache: ApiTypeBackedCache<Post2, Post2Snapshot> {
     
     override func updateModel(_ item: Post2, with snapshot: Post2Snapshot, semaphore: UInt? = nil) {
         // TODO: UpdateQueue move updateModel responsibilities fully out of the cache
-        print("noop")
     }
 }
 
@@ -76,6 +74,5 @@ class Post3Cache: ApiTypeBackedCache<Post3, Post3Snapshot> {
     
     override func updateModel(_ item: Post3, with snapshot: Post3Snapshot, semaphore: UInt? = nil) {
         // TODO: UpdateQueue move updateModel responsibilities fully out of the cache
-        print("noop")
     }
 }
