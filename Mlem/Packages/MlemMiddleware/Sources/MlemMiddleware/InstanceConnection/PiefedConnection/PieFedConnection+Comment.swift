@@ -49,7 +49,8 @@ public extension PieFedConnection {
             parentId: nil,
             personId: nil,
             likedOnly: filter == .upvoted,
-            savedOnly: filter == .saved
+            savedOnly: filter == .saved,
+            depthFirst: false
         )
         let response = try await perform(request)
         return try response.comments.map { try .init(from: $0) }
@@ -77,7 +78,8 @@ public extension PieFedConnection {
             parentId: parentId,
             personId: nil,
             likedOnly: filter == .upvoted,
-            savedOnly: filter == .saved
+            savedOnly: filter == .saved,
+            depthFirst: false
         )
         let response = try await perform(request)
         return try response.comments.map { try .init(from: $0) }
@@ -124,7 +126,11 @@ public extension PieFedConnection {
     
     @discardableResult
     func voteOnComment(id: Int, score: ScoringOperation) async throws -> Comment2Snapshot {
-        let request = PieFedCreateCommentLikeRequest(commentId: id, score: score.rawValue)
+        let request = PieFedCreateCommentLikeRequest(
+            commentId: id,
+            score: score.rawValue,
+            private: false
+        )
         let response = try await perform(request)
         return try .init(from: response.commentView)
     }
@@ -149,7 +155,12 @@ public extension PieFedConnection {
         content: String,
         languageId: Int?
     ) async throws -> Comment2Snapshot {
-        let request = PieFedEditCommentRequest(commentId: id, body: content, languageId: languageId)
+        let request = PieFedEditCommentRequest(
+            commentId: id,
+            body: content,
+            languageId: languageId,
+            distinguished: false
+        )
         let response = try await perform(request)
         return try .init(from: response.commentView)
     }
@@ -172,7 +183,12 @@ public extension PieFedConnection {
     
     @discardableResult
     func reportComment(id: Int, reason: String) async throws -> ReportSnapshot {
-        let request = PieFedCreateCommentReportRequest(commentId: id, reason: reason)
+        let request = PieFedCreateCommentReportRequest(
+            commentId: id,
+            reason: reason,
+            description: nil,
+            reportRemote: nil
+        )
         let response = try await perform(request)
         return try .init(from: response.commentReportView)
     }
