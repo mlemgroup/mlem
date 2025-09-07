@@ -148,10 +148,10 @@ public final class Person4: Person4Providing {
     
     public func updateProfile(_ details: ProfileDetails) async throws {
         let diff = ProfileDetailsMutation(
-            originalDetails: self.profileDetails(),
+            originalDetails: profileDetails(),
             newDetails: details
         )
-        if !(try await diff.isValid(forSoftware: api.software)) {
+        if try await !(diff.isValid(forSoftware: api.software)) {
             throw ApiClientError.invalidInput
         }
         try await api.editProfile(details)

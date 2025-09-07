@@ -37,6 +37,8 @@ public extension PieFedConnection {
             listingType.pieFedListingType != nil
         case .viewCommunityActiveUsers, .viewMentionsAndPrivateMessages, .editAndDeletePrivateMessages:
             version >= .v1_1_0
+        case .editAccountSettings:
+            version >= .v1_2_0
         default: false
         }
     }
@@ -45,6 +47,7 @@ public extension PieFedConnection {
 private extension SiteVersion {
     static let v1_0_0: Self = .init("1.0.0")
     static let v1_1_0: Self = .init("1.1.0")
+    static let v1_2_0: Self = .init("1.2.0")
 }
 
 private extension PostSortType {
