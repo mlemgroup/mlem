@@ -201,6 +201,20 @@ public extension PieFedConnection {
         throw ApiClientError.featureUnsupported
     }
     
+    func editProfile(details: ProfileDetails) async throws {
+        let request = PieFedSaveUserSettingsRequest(
+            showNsfw: nil,
+            showReadPosts: nil,
+            bio: details.description,
+            avatar: details.avatar,
+            cover: details.banner,
+            defaultCommentSortType: nil,
+            defaultSortType: nil,
+            showNsfl: nil
+        )
+        let response = try await perform(request)
+    }
+
     func editAccountSettings(
         showNsfw: Bool?,
         showScores: Bool?,

@@ -46,4 +46,6 @@ public enum Feature: Hashable {
     case uploadImages
     case editAccountSettings
     case commentSearch
+
+    case editDisplayName
 }

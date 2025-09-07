@@ -18,27 +18,32 @@ struct ProfileSettingsView: View {
     @Environment(\.dismiss) var dismiss
     
     let person: Person4
-    @State var displayName: String
+
+    @State var profileDetails: ProfileDetails
     
     @State var bioTextView: UITextView = .init()
-    @State var bioHasChanged: Bool = false
     @State var markdownToolbarEditorModel: MarkdownEditorToolbarModel = .init()
     @State var uploadHistory: ImageUploadHistoryManager = .init()
     
-    @State var avatarUrl: URL?
     @State var avatarManager: ImageUploadManager = .init()
-    
-    @State var bannerUrl: URL?
     @State var bannerManager: ImageUploadManager = .init()
     
     @State var isSubmitting: Bool = false
     
     init(person: Person4) {
         self.person = person
-        self._displayName = .init(wrappedValue: person.displayName == person.name ? "" : person.displayName)
+        self._profileDetails = .init(wrappedValue: person.profileDetails())
         bioTextView.text = person.description ?? ""
-        self._avatarUrl = .init(wrappedValue: person.avatar)
-        self._bannerUrl = .init(wrappedValue: person.banner)
+    }
+
+    var displayNameText: Binding<String> {
+        .init(get: {
+            profileDetails.displayName ?? ""
+        }, set: { newValue in
+            if newValue == person.displayName || newValue.isEmpty {
+                profileDetails.displayName = nil
+            }
+        })
     }
     
     var minTextEditorHeight: CGFloat {
@@ -47,18 +52,12 @@ struct ProfileSettingsView: View {
     
     var body: some View {
         Form {
-            Section("Display Name") {
-                TextField("Display Name", text: $displayName, prompt: Text(person.name))
-                    .autocorrectionDisabled()
-                    .textInputAutocapitalization(.never)
-            } footer: {
-                Text("The name that is displayed on your profile. This is not the same as your username, which cannot be changed.")
+            if person.api.supports(.editDisplayName, defaultValue: true) {
+                displayNameSection
             }
             Section("Biography") {
                 MarkdownTextEditor(
-                    onChange: { newValue in
-                        bioHasChanged = (person.description ?? "") != newValue
-                    },
+                    onChange: { profileDetails.description = $0 },
                     prompt: "Write a bit about yourself...",
                     textView: bioTextView,
                     insets: .init(
@@ -100,11 +99,7 @@ struct ProfileSettingsView: View {
             if showToolbarOptions {
                 ToolbarItem(placement: .topBarLeading) {
                     Button("Cancel") {
-                        displayName = person.displayName == person.name ? "" : person.displayName
-                        bioTextView.text = person.description ?? ""
-                        bioHasChanged = false
-                        avatarUrl = person.avatar
-                        bannerUrl = person.banner
+                        profileDetails = person.profileDetails()
                     }
                     .disabled(isSubmitting)
                 }
@@ -127,22 +122,30 @@ struct ProfileSettingsView: View {
         }
     }
     
-    var showToolbarOptions: Bool {
-        let originalDisplayName = (person.displayName == person.name) ? "" : person.displayName
-        return bioHasChanged || displayName != originalDisplayName || avatarUrl != person.avatar || bannerUrl != person.banner
+    var showToolbarOptions: Bool { profileDetails != person.profileDetails() }
+
+    @ViewBuilder
+    var displayNameSection: some View {
+        Section("Display Name") {
+            TextField("Display Name", text: displayNameText, prompt: Text(person.name))
+                .autocorrectionDisabled()
+                .textInputAutocapitalization(.never)
+        } footer: {
+            Text("The name that is displayed on your profile. This is not the same as your username, which cannot be changed.")
+        }
     }
     
     @ViewBuilder
     var avatarSection: some View {
         Section {
             HStack(spacing: 15) {
-                CircleCroppedImageView(url: avatarUrl, frame: 48, fallback: .personAvatar)
+                CircleCroppedImageView(url: profileDetails.avatar, frame: 48, fallback: .personAvatar)
                 Text("Avatar")
                 Spacer()
-                CircleImageUploadButton(imageManager: avatarManager, url: $avatarUrl, api: person.api)
+                CircleImageUploadButton(imageManager: avatarManager, url: $profileDetails.avatar, api: person.api)
             }
             .onChange(of: avatarManager.image?.url) {
-                avatarUrl = avatarManager.image?.url
+                profileDetails.avatar = avatarManager.image?.url
             }
         }
     }
@@ -151,7 +154,7 @@ struct ProfileSettingsView: View {
     var bannerSection: some View {
         Section {
             VStack(spacing: 0) {
-                if let bannerUrl {
+                if let bannerUrl = profileDetails.banner {
                     MediaView(
                         url: bannerUrl,
                         contentMode: .fill,
@@ -167,13 +170,13 @@ struct ProfileSettingsView: View {
                 HStack(spacing: 15) {
                     Text("Banner")
                     Spacer()
-                    CircleImageUploadButton(imageManager: bannerManager, url: $bannerUrl, api: person.api)
+                    CircleImageUploadButton(imageManager: bannerManager, url: $profileDetails.banner, api: person.api)
                 }
                 .padding(.horizontal, 15)
                 .padding(.vertical, 10)
             }
             .onChange(of: bannerManager.image?.url) {
-                bannerUrl = bannerManager.image?.url
+                profileDetails.banner = bannerManager.image?.url
             }
         }
         .listRowInsets(.init())
@@ -183,12 +186,7 @@ struct ProfileSettingsView: View {
     func submit() async {
         isSubmitting = true
         do {
-            try await person.updateProfile(
-                displayName: displayName.isEmpty ? nil : displayName,
-                description: bioTextView.text.isEmpty ? nil : bioTextView.text,
-                avatar: avatarUrl,
-                banner: bannerUrl
-            )
+            try await person.updateProfile(profileDetails)
             if let session = appState.firstSession as? UserSession, session.person === person {
                 try await session.updateAccount()
             } else {

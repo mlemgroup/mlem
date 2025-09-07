@@ -229,6 +229,55 @@ public extension LemmyConnection {
             throw ApiClientError.unsuccessful
         }
     }
+
+    func editProfile(details: ProfileDetails) async throws {
+        let response = try await performingForEndpoint { endpoint in
+            LemmySaveUserSettingsRequest(
+                endpoint: endpoint,
+                showNsfw: nil,
+                blurNsfw: nil,
+                autoExpand: nil,
+                showScores: nil,
+                theme: nil,
+                defaultSortType: nil,
+                defaultListingType: nil,
+                interfaceLanguage: nil,
+                avatar: details.avatar?.absoluteString,
+                banner: details.banner?.absoluteString,
+                displayName: details.displayName,
+                email: nil,
+                bio: details.description,
+                matrixUserId: details.matrixId,
+                showAvatars: nil,
+                sendNotificationsToEmail: nil,
+                botAccount: nil,
+                showBotAccounts: nil,
+                showReadPosts: nil,
+                discussionLanguages: nil,
+                openLinksInNewTab: nil,
+                infiniteScrollEnabled: nil,
+                postListingMode: nil,
+                enableKeyboardNavigation: nil,
+                enableAnimatedImages: nil,
+                collapseBotComments: nil,
+                showUpvotes: nil,
+                showDownvotes: nil,
+                showUpvotePercentage: nil,
+                defaultPostSortType: nil,
+                defaultPostTimeRangeSeconds: nil,
+                defaultItemsPerPage: nil,
+                defaultCommentSortType: nil,
+                blockingKeywords: nil,
+                enablePrivateMessages: nil,
+                autoMarkFetchedPostsAsRead: nil,
+                hideMedia: nil,
+                showPersonVotes: nil
+            )
+        }
+        guard response.success else {
+            throw ApiClientError.unsuccessful
+        }
+    }
     
     func editAccountSettings(
         showNsfw: Bool?,
