@@ -17,7 +17,7 @@ struct CommunitySearchSortPicker: View {
 
     var sortTypes: [SearchSortType] {
         SearchSortType.nonTopCases
-            .filter { appState.firstApi.supportsOrNil(.searchSortType($0)) ?? true }
+            .filter { appState.firstApi.supports(.searchSortType($0), defaultValue: true) }
     }
     
     var body: some View {

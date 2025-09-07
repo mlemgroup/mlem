@@ -12,11 +12,11 @@ public extension PieFedConnection {
         try await Self.supports(feature, version: version)
     }
     
-    func supportsOrNil(_ feature: Feature) -> Bool? {
+    func supports(_ feature: Feature, defaultValue: Bool) -> Bool {
         if let fetchedVersion {
             return Self.supports(feature, version: fetchedVersion)
         } else {
-            return nil
+            return defaultValue
         }
     }
 

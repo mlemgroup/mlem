@@ -138,7 +138,7 @@ struct InstanceView: View {
     @ViewBuilder
     func administrationTab(instance: any Instance) -> some View {
         VStack(spacing: Constants.main.standardSpacing) {
-            if instance.api.supportsOrNil(.modlog) ?? true {
+            if instance.api.supports(.modlog, defaultValue: true) {
                 ModlogButtonView(instance: instance)
             }
             
