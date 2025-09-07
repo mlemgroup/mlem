@@ -37,7 +37,7 @@ public extension PieFedConnection {
             listingType.pieFedListingType != nil
         case .viewCommunityActiveUsers, .viewMentionsAndPrivateMessages, .editAndDeletePrivateMessages:
             version >= .v1_1_0
-        case .editAccountSettings:
+        case .editProfile:
             version >= .v1_2_0
         default: false
         }
