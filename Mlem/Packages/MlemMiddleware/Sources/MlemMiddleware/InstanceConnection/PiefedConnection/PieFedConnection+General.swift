@@ -16,7 +16,7 @@ public extension PieFedConnection {
         if totpToken != nil {
             throw ApiClientError.featureUnsupported
         }
-        let request = PieFedLoginRequest(username: usernameOrEmail, password: password)
+        let request = PieFedUserLoginRequest(username: usernameOrEmail, password: password)
         let response = try await perform(request)
         guard let jwt = response.jwt else {
             throw ApiClientError.notLoggedIn
