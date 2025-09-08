@@ -206,13 +206,13 @@ public extension PieFedConnection {
             showNsfw: nil,
             showReadPosts: nil,
             bio: details.description,
-            avatar: details.avatar,
-            cover: details.banner,
+            avatar: details.avatar?.absoluteString ?? "",
+            cover: details.banner?.absoluteString ?? "",
             defaultCommentSortType: nil,
             defaultSortType: nil,
             showNsfl: nil
         )
-        let response = try await perform(request)
+        try await perform(request)
     }
 
     func editAccountSettings(
