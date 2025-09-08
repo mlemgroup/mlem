@@ -15,7 +15,9 @@ extension PersonView {
                 return
             }
             do {
-                try await feedLoader.loadMoreItems()
+                if feedLoader.loadingState == .initial {
+                    try await feedLoader.loadMoreItems()
+                }
             } catch {
                 handleError(error)
             }
