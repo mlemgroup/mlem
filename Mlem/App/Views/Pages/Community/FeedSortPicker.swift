@@ -30,7 +30,14 @@ struct FeedSortPicker: View {
     let showTopTimescaleInIcon: Bool
     @Binding var value: Value
     
-    @State var topSortPopupPresented: Bool = false
+    @State var topSortPickerPresented: Bool = false
+
+    var presentingTopSortPickerAsPopover: Binding<Bool> {
+        .init(
+            get: { topSortPickerPresented && !UIDevice.isIos26 },
+            set: { topSortPickerPresented = $0 }
+        )
+    }
     
     init(sort: Binding<PostSortType>, showTopTimescaleInIcon: Bool = false) {
         self._value = .init(get: { .known(sort.wrappedValue) }, set: {
@@ -99,54 +106,18 @@ struct FeedSortPicker: View {
     
     var body: some View {
         Menu {
-            Section {
-                ForEach(nonTopSortTypes, id: \.self) { type in
-                    Toggle(
-                        type.label(),
-                        icon: type.icon,
-                        isOn: .init(get: { value.sortType == type }, set: { _ in value = .known(type) })
-                    )
-                }
-                let topSortTypes = topSortTypes
-                if topSortTypes.count > 3 {
-                    Toggle(
-                        "Top...",
-                        icon: .lemmy.topSort,
-                        isOn: .init(
-                            get: {
-                                if let sort = value.sortType {
-                                    PostSortType.legacyTopCases.contains(sort)
-                                } else {
-                                    false
-                                }
-                            },
-                            set: { _ in topSortPopupPresented = true }
-                        )
-                    )
+            Group {
+                if topSortPickerPresented, UIDevice.isIos26 {
+                    topResults(format: .timescaleFull)
                 } else {
-                    ForEach(topSortTypes, id: \.self) { type in
-                        Toggle(
-                            type.label(timeRangeFormat: .topAndTimescale),
-                            icon: type.icon,
-                            isOn: .init(get: { value.sortType == type }, set: { _ in value = .known(type) })
-                        )
-                    }
-                }
-            }
-            Section {
-                Button("More...", icon: .general.toolbarMenu) {
-                    navigation.openSheet(.advancedSorting(.init(get: {
-                        value.sortType ?? .hot
-                    }, set: {
-                        value = .known($0)
-                    })))
+                    mainPage
                 }
             }
         } label: {
             labelView
         }
         .disabled(!appState.firstApi.contextIsFetched)
-        .popover(isPresented: $topSortPopupPresented) {
+        .popover(isPresented: presentingTopSortPickerAsPopover) {
             TopSortPicker(
                 action: { value = .known(.top($0)) },
                 filter: { PinnedSortTracker.main.pinnedSortTypes.contains(.top($0)) }
@@ -159,6 +130,62 @@ struct FeedSortPicker: View {
         }
     }
     
+    @ViewBuilder
+    var mainPage: some View {
+        Section {
+            ForEach(nonTopSortTypes, id: \.self) { type in
+                Toggle(
+                    type.label(),
+                    icon: type.icon,
+                    isOn: .init(get: { value.sortType == type }, set: { _ in value = .known(type) })
+                )
+            }
+            let topSortTypes = topSortTypes
+            if topSortTypes.count > 3 {
+                Toggle(
+                    "Top...",
+                    icon: .lemmy.topSort,
+                    isOn: .init(
+                        get: {
+                            if let sort = value.sortType {
+                                PostSortType.legacyTopCases.contains(sort)
+                            } else {
+                                false
+                            }
+                        },
+                        set: { _ in topSortPickerPresented = true }
+                    )
+                )
+                .menuActionDismissBehavior(.disabled)
+            } else {
+                topResults(format: .topAndTimescale)
+            }
+        }
+        Section {
+            Button("More...", icon: .general.toolbarMenu) {
+                navigation.openSheet(.advancedSorting(.init(get: {
+                    value.sortType ?? .hot
+                }, set: {
+                    value = .known($0)
+                })))
+            }
+        }
+    }
+    
+    @ViewBuilder
+    func topResults(format: SortTimeRange.FormatStyle) -> some View {
+        ForEach(topSortTypes, id: \.self) { type in
+            Toggle(
+                type.label(timeRangeFormat: format),
+                icon: type.icon,
+                isOn: .init(get: { value.sortType == type }, set: { _ in
+                    value = .known(type)
+                    topSortPickerPresented = false
+                })
+            )
+        }
+    }
+
     @ViewBuilder
     var labelView: some View {
         VStack {
