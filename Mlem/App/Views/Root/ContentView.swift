@@ -159,6 +159,7 @@ struct ContentView: View {
         ], onSwipeUp: {
             navigationModel.openSheet(.quickSwitcher)
         })
+        .withAccountSwitcherGesture(tabReselectTracker: tabReselectTracker, navigationModel: navigationModel)
         .overlay(alignment: .bottom) {
             ToastOverlayView(
                 shouldDisplayNewToasts: shouldDisplayToasts,

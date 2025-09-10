@@ -12,7 +12,7 @@ import Semaphore
 @Observable
 public class StandardFeedLoader<Item: FeedLoadable>: FeedLoading {
     public internal(set) var items: [Item] = .init()
-    public internal(set) var loadingState: LoadingState = .loading
+    public internal(set) var loadingState: FeedLoadingState = .initial
     private(set) var thresholds: Thresholds<Item> = .init()
     
     let fetcher: Fetcher<Item>
@@ -27,7 +27,7 @@ public class StandardFeedLoader<Item: FeedLoadable>: FeedLoading {
     
     /// Updates the loading state
     @MainActor
-    func setLoading(_ newState: LoadingState) {
+    func setLoading(_ newState: FeedLoadingState) {
         loadingState = newState
         print("[\(Self.self)] set loading state to \(newState)")
     }
@@ -84,7 +84,7 @@ public class StandardFeedLoader<Item: FeedLoadable>: FeedLoading {
   
         try await loadingActor.load { response in
             var newItems: [Item]?
-            var newState: LoadingState
+            var newState: FeedLoadingState
             
             switch response {
             case let .success(items):
