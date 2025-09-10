@@ -66,13 +66,14 @@ struct PersonView: View {
                 savedOnly: false,
                 prefetchingConfiguration: .forPostSize(postSize)
             ))
-            
-            preheatFeedLoader()
         }
     }
     
     var body: some View {
         content
+            .onAppear {
+                preheatFeedLoader()
+            }
             .onChange(of: selectedTab) {
                 switch selectedTab {
                 case .comments: selectedContentType = .comments
@@ -120,13 +121,11 @@ struct PersonView: View {
         } upgradeOperation: { model, api in
             try await model.upgrade(api: api) { entity in
                 if let entity = entity as? any Person1Providing {
-                    let response = try await entity.getContent(page: 1, limit: 3)
-                    
                     if feedLoader == nil {
                         feedLoader = .init(
                             api: AppState.main.firstApi,
                             pageSize: internetSpeed.pageSize,
-                            userId: response.person.id,
+                            userId: entity.id,
                             sortType: .new,
                             savedOnly: false,
                             prefetchingConfiguration: .forPostSize(postSize)
@@ -138,6 +137,7 @@ struct PersonView: View {
                         }
                     }
                     
+                    let response = try await entity.getContent(page: 1, limit: 1)
                     return response.person
                 }
                 return try await entity.upgrade()

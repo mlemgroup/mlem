@@ -8,7 +8,7 @@
 import Foundation
 
 public extension PersonalUnreadCountSnapshot {
-    init(from response: PieFedGetUnreadCountResponse) throws(ApiClientError) {
+    init(from response: PieFedUserUnreadCountsResponse) throws(ApiClientError) {
         self.replies = response.replies
         self.mentions = response.mentions
         self.messages = response.privateMessages

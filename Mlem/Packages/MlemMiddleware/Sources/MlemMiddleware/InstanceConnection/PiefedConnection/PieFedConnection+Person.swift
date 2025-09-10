@@ -104,7 +104,9 @@ public extension PieFedConnection {
                 communityId: communityId,
                 userId: personId,
                 reason: reason ?? "",
-                expiredAt: formatter.string(from: expires ?? .distantFuture)
+                expiredAt: formatter.string(from: expires ?? .distantFuture),
+                expiresAt: expires,
+                permanent: expires == nil
             )
             let response = try await perform(request)
             return try .init(from: response.bannedUser)
