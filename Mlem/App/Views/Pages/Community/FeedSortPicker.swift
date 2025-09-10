@@ -30,15 +30,6 @@ struct FeedSortPicker: View {
     let showTopTimescaleInIcon: Bool
     @Binding var value: Value
     
-    @State var topSortPickerPresented: Bool = false
-
-    var presentingTopSortPickerAsPopover: Binding<Bool> {
-        .init(
-            get: { topSortPickerPresented && !UIDevice.isIos26 },
-            set: { topSortPickerPresented = $0 }
-        )
-    }
-    
     init(sort: Binding<PostSortType>, showTopTimescaleInIcon: Bool = false) {
         self._value = .init(get: { .known(sort.wrappedValue) }, set: {
             if let sortType = $0.sortType {
@@ -106,81 +97,52 @@ struct FeedSortPicker: View {
     
     var body: some View {
         Menu {
-            Group {
-                if topSortPickerPresented, UIDevice.isIos26 {
-                    topResults(format: .timescaleFull)
-                } else {
-                    mainPage
+            Section {
+                ForEach(nonTopSortTypes, id: \.self) { type in
+                    Toggle(
+                        type.label(),
+                        icon: type.icon,
+                        isOn: .init(get: { value.sortType == type }, set: { _ in value = .known(type) })
+                    )
+                }
+                if collapseTopSorts {
+                    Menu("Top...", icon: .lemmy.topSort) {
+                        topResultsView
+                    }
+                }
+            }
+            if !collapseTopSorts {
+                Section("Top...") {
+                    topResultsView
+                }
+            }
+            Section {
+                Button("More...", icon: .general.toolbarMenu) {
+                    navigation.openSheet(.advancedSorting(.init(get: {
+                        value.sortType ?? .hot
+                    }, set: {
+                        value = .known($0)
+                    })))
                 }
             }
         } label: {
             labelView
         }
         .disabled(!appState.firstApi.contextIsFetched)
-        .popover(isPresented: presentingTopSortPickerAsPopover) {
-            TopSortPicker(
-                action: { value = .known(.top($0)) },
-                filter: { PinnedSortTracker.main.pinnedSortTypes.contains(.top($0)) }
-            )
-            // This background is always drawn over a material background unfortunately,
-            // meaning that we can't use thin materials
-            .presentationBackground(.clear)
-            .presentationCornerRadius(18)
-            .presentationCompactAdaptation(.popover)
-        }
     }
     
-    @ViewBuilder
-    var mainPage: some View {
-        Section {
-            ForEach(nonTopSortTypes, id: \.self) { type in
-                Toggle(
-                    type.label(),
-                    icon: type.icon,
-                    isOn: .init(get: { value.sortType == type }, set: { _ in value = .known(type) })
-                )
-            }
-            let topSortTypes = topSortTypes
-            if topSortTypes.count > 3 {
-                Toggle(
-                    "Top...",
-                    icon: .lemmy.topSort,
-                    isOn: .init(
-                        get: {
-                            if let sort = value.sortType {
-                                PostSortType.legacyTopCases.contains(sort)
-                            } else {
-                                false
-                            }
-                        },
-                        set: { _ in topSortPickerPresented = true }
-                    )
-                )
-                .menuActionDismissBehavior(.disabled)
-            } else {
-                topResults(format: .topAndTimescale)
-            }
-        }
-        Section {
-            Button("More...", icon: .general.toolbarMenu) {
-                navigation.openSheet(.advancedSorting(.init(get: {
-                    value.sortType ?? .hot
-                }, set: {
-                    value = .known($0)
-                })))
-            }
-        }
+    var collapseTopSorts: Bool {
+        topSortTypes.count > 7 || PinnedSortTracker.main.pinnedSortTypes.count > 9
     }
-    
+
     @ViewBuilder
-    func topResults(format: SortTimeRange.FormatStyle) -> some View {
+    var topResultsView: some View {
         ForEach(topSortTypes, id: \.self) { type in
             Toggle(
-                type.label(timeRangeFormat: format),
+                type.label(timeRangeFormat: .timescaleFull),
                 icon: type.icon,
                 isOn: .init(get: { value.sortType == type }, set: { _ in
                     value = .known(type)
-                    topSortPickerPresented = false
                 })
             )
         }
