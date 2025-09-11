@@ -41,7 +41,7 @@ struct FediseerInfoView: View {
             .frame(maxWidth: .infinity)
         }
         .toolbar {
-            CloseButtonView()
+            CloseButtonToolbarItem()
         }
     }
     

@@ -5,15 +5,14 @@
 //  Created by Sjmarf on 02/09/2024.
 //
 
+import ComponentViews
 import SwiftUI
 
 extension PostEditorView {
     @ToolbarContentBuilder
     var toolbar: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
-            Button("Cancel") {
-                dismiss()
-            }
+            CloseButtonView(ios18Label: .cancel)
         }
         ToolbarItemGroup(placement: .topBarTrailing) {
             Menu("Add", icon: .general.add) {
@@ -33,12 +32,18 @@ extension PostEditorView {
             if self.sending {
                 ProgressView()
             } else {
-                Button("Send", icon: .lemmy.send) {
-                    self.sending = true
-                    Task { await submit() }
-                }
-                .disabled(!canSubmit)
+                sendButton
             }
         }
+    }
+    
+    @ViewBuilder
+    var sendButton: some View {
+        Button("Send", icon: .lemmy.send) {
+            self.sending = true
+            Task { await submit() }
+        }
+        .disabled(!canSubmit)
+        .glassProminentButtonStyle()
     }
 }

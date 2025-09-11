@@ -99,12 +99,18 @@ struct ProfileSettingsView: View {
         .toolbar {
             if showToolbarOptions {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button("Cancel") {
+                    Button {
                         displayName = person.displayName == person.name ? "" : person.displayName
                         bioTextView.text = person.description ?? ""
                         bioHasChanged = false
                         avatarUrl = person.avatar
                         bannerUrl = person.banner
+                    } label: {
+                        if #available(iOS 26, *) {
+                            Label("Discard", icon: .general.delete)
+                        } else {
+                            Text("Cancel")
+                        }
                     }
                     .disabled(isSubmitting)
                 }
@@ -112,17 +118,11 @@ struct ProfileSettingsView: View {
                     if isSubmitting {
                         ProgressView()
                     } else {
-                        Button("Save") {
-                            Task { @MainActor in
-                                await submit()
-                            }
-                        }
+                        saveButtonView
                     }
                 }
             } else if navigation.isInsideSheet {
-                ToolbarItem(placement: .topBarTrailing) {
-                    CloseButtonView()
-                }
+                CloseButtonToolbarItem()
             }
         }
     }
@@ -177,6 +177,14 @@ struct ProfileSettingsView: View {
             }
         }
         .listRowInsets(.init())
+    }
+    
+    @ViewBuilder
+    var saveButtonView: some View {
+        Button("Save", icon: .general.success) {
+            Task { @MainActor in await submit() }
+        }
+        .glassProminentButtonStyle()
     }
     
     @MainActor

@@ -13,22 +13,9 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
     
-    enum CloseButtonLabel {
-        case cancel
-        case done
-        
-        var label: LocalizedStringResource {
-            switch self {
-            case .cancel: "Cancel"
-            case .done: "Done"
-            }
-        }
-    }
-    
     @ViewBuilder let content: ([Item], NavigationLayer) -> Content
     let api: ApiClient
     let filter: ListingType
-    let closeButtonLabel: CloseButtonLabel
     
     @State var query: String = ""
     @State var results: [Item] = []
@@ -37,13 +24,11 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
     init(
         api: ApiClient? = nil,
         filter: ListingType? = nil,
-        closeButtonLabel: CloseButtonLabel = .cancel,
         @ViewBuilder content: @escaping ([Item], NavigationLayer) -> Content
     ) {
         self.api = api ?? AppState.main.firstApi
         self.filter = filter ?? .all
         self.content = content
-        self.closeButtonLabel = closeButtonLabel
     }
     
     var body: some View {
@@ -55,7 +40,7 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
         .background(.themedGroupedBackground)
         .presentationBackground(.themedGroupedBackground)
         .navigationBarTitleDisplayMode(.inline)
-        .withSheetSearch(closeButtonLabel: closeButtonLabel.label, query: $query)
+        .withSheetSearch(query: $query)
         .task(id: query, priority: .userInitiated) {
             do {
                 if !query.isEmpty {
@@ -83,12 +68,10 @@ extension SearchSheetView {
     init<RowContent: View>(
         api: ApiClient? = nil,
         filter: ListingType? = nil,
-        closeButtonLabel: CloseButtonLabel = .cancel,
         @ViewBuilder content: @escaping (Item, NavigationLayer) -> RowContent
     ) where Content == SearchResultsView<Item, RowContent> {
         self.api = api ?? AppState.main.firstApi
         self.filter = filter ?? .all
-        self.closeButtonLabel = closeButtonLabel
         self.content = { (results: [Item], navigation: NavigationLayer) in
             SearchResultsView(results: results) { item in
                 content(item, navigation)
@@ -99,13 +82,11 @@ extension SearchSheetView {
     init<RowContent: View, HeaderContent: View>(
         api: ApiClient? = nil,
         filter: ListingType? = nil,
-        closeButtonLabel: CloseButtonLabel = .cancel,
         @ViewBuilder content: @escaping (Item, NavigationLayer) -> RowContent,
         @ViewBuilder header: @escaping () -> HeaderContent
     ) where Content == VStack<TupleView<(HeaderContent, SearchResultsView<Item, RowContent>)>> {
         self.api = api ?? AppState.main.firstApi
         self.filter = filter ?? .all
-        self.closeButtonLabel = closeButtonLabel
         self.content = { (results: [Item], dismiss: NavigationLayer) in
             VStack(alignment: .leading, spacing: 0) {
                 header()

@@ -37,9 +37,7 @@ struct AdvancedSortView: View {
         .presentationBackground(.themedGroupedBackground)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                CloseButtonView()
-            }
+            CloseButtonToolbarItem()
 //            Intentionally left commented out!
 //
 //            ToolbarItem(placement: .principal) {
