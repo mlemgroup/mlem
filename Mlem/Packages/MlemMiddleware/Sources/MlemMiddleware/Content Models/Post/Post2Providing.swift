@@ -81,10 +81,6 @@ public extension Post2Providing {
     
     /// Update the post when its queued mark read operation completes.
     func queuedMarkReadCompleted() {
-        guard post2.readQueued else {
-            assertionFailure("readQueueFlushed called but post was not queued")
-            return
-        }
         // sending this through the updateQueue ensures queue.lastVerifiedSnapshot receives the correct read value
         Task {
             await updateQueue.addItem { snapshot in
