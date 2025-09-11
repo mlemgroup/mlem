@@ -37,8 +37,10 @@ struct TopCommunitiesListView: View {
             .animation(.easeOut(duration: 0.1), value: communityLoader?.items.isEmpty)
             .task {
                 do {
-                    communityLoader = .init(api: appState.firstApi)
-                    try await communityLoader?.refresh(listing: .all)
+                    if communityLoader == nil {
+                        communityLoader = .init(api: appState.firstApi)
+                        try await communityLoader?.refresh(listing: .all)
+                    }
                 } catch {
                     handleError(error)
                 }
