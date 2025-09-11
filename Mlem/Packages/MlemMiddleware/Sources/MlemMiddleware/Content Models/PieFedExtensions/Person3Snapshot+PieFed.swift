@@ -22,7 +22,7 @@ public extension Person3Snapshot {
         self.moderatedCommunities = moderatedCommunities
     }
     
-    init(from personDetails: PieFedGetPersonDetailsResponse) throws(ApiClientError) {
+    init(from personDetails: PieFedGetUserResponse) throws(ApiClientError) {
         self.person = try .init(from: personDetails.personView, allPropertiesPresent: true)
         
         if let site = personDetails.site {
