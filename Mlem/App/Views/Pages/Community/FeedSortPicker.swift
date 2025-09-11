@@ -132,7 +132,7 @@ struct FeedSortPicker: View {
     }
     
     var collapseTopSorts: Bool {
-        topSortTypes.count > 7 || PinnedSortTracker.main.pinnedSortTypes.count > 9
+        topSortTypes.count > 3 && !nonTopSortTypes.isEmpty
     }
 
     @ViewBuilder
