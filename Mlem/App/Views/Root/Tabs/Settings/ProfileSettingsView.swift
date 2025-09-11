@@ -181,8 +181,14 @@ struct ProfileSettingsView: View {
     
     @ViewBuilder
     var saveButtonView: some View {
-        Button("Save", icon: .general.success) {
+        Button {
             Task { @MainActor in await submit() }
+        } label: {
+            if #available(iOS 26, *) {
+                Label("Save", icon: .general.success)
+            } else {
+                Text("Save")
+            }
         }
         .glassProminentButtonStyle()
     }

@@ -16,50 +16,49 @@ public struct CloseButtonView: View {
         case cancel, xmark
     }
     
-    var size: CGFloat = 30
     var ios18Label: LabelType
     var callback: (() -> Void)?
     
     public init(
-        size: CGFloat = 30,
         ios18Label: LabelType = .xmark,
         callback: (() -> Void)? = nil
     ) {
-        self.size = size
         self.ios18Label = ios18Label
         self.callback = callback
     }
     
     public var body: some View {
-        Button {
-            if let callback {
-                callback()
-            } else {
-                dismiss()
-            }
-        } label: {
-            if #available(iOS 26, *) {
-                Image(systemName: "xmark")
-            } else {
-                ios18LabelView
-            }
+        if #available(iOS 26, *) {
+            Button("Dismiss", systemImage: "xmark", action: submit)
+        } else {
+            ios18Body
         }
-        .buttonStyle(.plain)
-        .accessibilityLabel("Dismiss")
     }
     
     @ViewBuilder
-    private var ios18LabelView: some View {
+    private var ios18Body: some View {
         switch ios18Label {
         case .cancel:
-            Text("Cancel")
+            Button("Cancel", action: submit)
         case .xmark:
-            Image(systemName: "xmark.circle.fill")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(height: size)
-                .symbolRenderingMode(.palette)
-                .foregroundStyle(.themedSecondary, .themedSecondary.opacity(0.2))
+            Button(action: submit) {
+                Image(systemName: "xmark.circle.fill")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(height: 30)
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(.themedSecondary, .themedSecondary.opacity(0.2))
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("Dismiss")
+        }
+    }
+    
+    func submit() {
+        if let callback {
+            callback()
+        } else {
+            dismiss()
         }
     }
 }
