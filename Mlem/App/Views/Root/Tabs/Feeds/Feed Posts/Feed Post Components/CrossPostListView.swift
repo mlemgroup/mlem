@@ -69,8 +69,23 @@ struct CrossPostListView: View {
             }
             .padding(.vertical, 8)
             .background(.themedSecondaryGroupedBackground)
+            .contentShape(.rect(cornerRadius: Constants.main.standardSpacing))
             .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
+            .contextMenu {
+                Button("Mark Read", icon: .lemmy.markRead) {
+                    Task { await markAllAsRead() }
+                }
+            }
             .paletteBorder(cornerRadius: Constants.main.standardSpacing)
+        }
+    }
+
+    func markAllAsRead() async {
+        do {
+            try await post.api.markPostsAsRead(ids: Set(post.crossPosts.lazy.map(\.id)))
+            ToastModel.main.add(.success("Read \(post.crossPosts.count) posts"))
+        } catch {
+            handleError(error)
         }
     }
 }
