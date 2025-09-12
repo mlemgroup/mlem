@@ -6191,6 +6191,9 @@
         }
       }
     },
+    "Read %lld posts" : {
+
+    },
     "Read Indicator" : {
       "localizations" : {
         "fr" : {
