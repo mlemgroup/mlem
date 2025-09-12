@@ -70,7 +70,15 @@ struct MarkdownEditorToolbarView: View {
                         .padding(.horizontal)
                 }
             default:
-                content
+                if #available(iOS 26, *) {
+                    content
+                        .compositingGroup()
+                        .glassEffect(.regular.interactive(), in: .capsule)
+                        .padding(.horizontal, 10)
+                        .padding(.bottom, 7)
+                } else {
+                    content
+                }
             }
         }
         .frame(maxWidth: .infinity)
@@ -91,109 +99,18 @@ struct MarkdownEditorToolbarView: View {
     
     var content: some View {
         ScrollView(.horizontal) {
-            Spacer()
+            if !UIDevice.isIos26 {
+                Spacer()
+            }
             HStack(spacing: 16) {
-                // iPad already shows these buttons
-                if !UIDevice.isPad {
-                    Button("Undo", systemImage: "arrow.uturn.backward") {
-                        textView.undoManager?.undo()
-                    }
-                    .compatibilityOnScrollVisibilityChange { isVisible in
-                        withAnimation {
-                            leftFade = !isVisible
-                        }
-                    }
-                    Button("Redo", systemImage: "arrow.uturn.forward") {
-                        textView.undoManager?.redo()
-                    }
-                    SwiftUI.Divider()
-                        .padding(.top, 2)
-                }
-                Button("Bold", icon: .markdown.bold) {
-                    textView.wrapSelectionWithDelimiters("**")
-                }
-                .compatibilityOnScrollVisibilityChange { isVisible in
-                    if UIDevice.isPad {
-                        withAnimation {
-                            leftFade = !isVisible
-                        }
-                    }
-                }
-                Button("Italic", icon: .markdown.italic) {
-                    textView.wrapSelectionWithDelimiters("_")
-                }
-                Button("Strikethrough", icon: .markdown.strikethrough) {
-                    textView.wrapSelectionWithDelimiters("~~")
-                }
-                Button("Superscript", icon: .markdown.superscript) {
-                    textView.wrapSelectionWithDelimiters("^")
-                }
-                Button("Subscript", icon: .markdown.subscript) {
-                    textView.wrapSelectionWithDelimiters("~")
-                }
-                Button("Code", icon: .markdown.inlineCode) {
-                    textView.wrapSelectionWithDelimiters("`")
-                }
-                Button("Link", icon: .markdown.insertLink) {
-                    textView.wrapSelectionWithLink()
-                }
-                if actions == .all {
-                    SwiftUI.Divider()
-                        .padding(.top, 2)
-                    Menu("Heading", icon: .markdown.heading) {
-                        ForEach(1 ..< 7) { level in
-                            Button("Heading \(level)") {
-                                textView.toggleHeadingAtCursor(level: level)
-                            }
-                        }
-                    }
-                    Button("Quote", icon: .markdown.quote) {
-                        textView.toggleQuoteAtCursor()
-                    }
-                    if let imageUploadApi = model.imageUploadApi {
-                        ImageUploadMenu(imageManager: imageManager, imageUploadApi: imageUploadApi) {
-                            Label("Image", icon: .markdown.uploadImage)
-                        }
-                        .disabled(!imageUploadApi.contextIsFetched)
-                    }
-                    Button("Spoiler", icon: .markdown.spoiler) {
-                        textView.wrapSelectionWithSpoiler()
-                    }
-                    Button("Code Block", icon: .markdown.codeBlock) {
-                        textView.wrapSelectionWithCodeBlock()
-                    }
-                }
-                SwiftUI.Divider()
-                    .padding(.top, 2)
-                Button("Community Link", icon: .lemmy.community) {
-                    navigation.openSheet(.communityPicker { community in
-                        textView.insertText(community.fullNameWithPrefix)
-                    })
-                }
-                Button("User Link", icon: .lemmy.person) {
-                    navigation.openSheet(.personPicker { person in
-                        // lemmy-ui doesn't recognize the @user@example.com format, so we have to do this instead :(
-                        // See this issue https://github.com/LemmyNet/lemmy-ui/issues/2579
-                        textView.insertText("[\(person.fullNameWithPrefix)](\(person.actorId))")
-                    })
-                }
-                Button("Instance Link", icon: .lemmy.instance) {
-                    navigation.openSheet(.instancePicker { instance in
-                        textView.insertText("[\(instance.host)](https://\(instance.host))")
-                    })
-                }
-                .compatibilityOnScrollVisibilityChange { isVisible in
-                    withAnimation {
-                        rightFade = !isVisible
-                    }
-                }
+                scrollContent
             }
             .imageScale(.large)
             .buttonStyle(.plain)
             .foregroundStyle(.secondary)
             .labelStyle(.iconOnly)
             .padding(.horizontal)
-            .padding(.bottom, 2)
+            .padding(UIDevice.isIos26 ? .vertical : .bottom, UIDevice.isIos26 ? 5 : 2)
         }
         .scrollIndicators(.hidden)
         .mask(
@@ -220,6 +137,104 @@ struct MarkdownEditorToolbarView: View {
                 try await model.imageUploadApi?.ensureContextPresence()
             } catch {
                 handleError(error)
+            }
+        }
+    }
+
+    @ViewBuilder
+    var scrollContent: some View {
+        // iPad already shows these buttons
+        if !UIDevice.isPad {
+            Button("Undo", systemImage: "arrow.uturn.backward") {
+                textView.undoManager?.undo()
+            }
+            .compatibilityOnScrollVisibilityChange { isVisible in
+                withAnimation {
+                    leftFade = !isVisible
+                }
+            }
+            Button("Redo", systemImage: "arrow.uturn.forward") {
+                textView.undoManager?.redo()
+            }
+            SwiftUI.Divider()
+                .padding(.top, 2)
+        }
+        Button("Bold", icon: .markdown.bold) {
+            textView.wrapSelectionWithDelimiters("**")
+        }
+        .compatibilityOnScrollVisibilityChange { isVisible in
+            if UIDevice.isPad {
+                withAnimation {
+                    leftFade = !isVisible
+                }
+            }
+        }
+        Button("Italic", icon: .markdown.italic) {
+            textView.wrapSelectionWithDelimiters("_")
+        }
+        Button("Strikethrough", icon: .markdown.strikethrough) {
+            textView.wrapSelectionWithDelimiters("~~")
+        }
+        Button("Superscript", icon: .markdown.superscript) {
+            textView.wrapSelectionWithDelimiters("^")
+        }
+        Button("Subscript", icon: .markdown.subscript) {
+            textView.wrapSelectionWithDelimiters("~")
+        }
+        Button("Code", icon: .markdown.inlineCode) {
+            textView.wrapSelectionWithDelimiters("`")
+        }
+        Button("Link", icon: .markdown.insertLink) {
+            textView.wrapSelectionWithLink()
+        }
+        if actions == .all {
+            SwiftUI.Divider()
+                .padding(.top, 2)
+            Menu("Heading", icon: .markdown.heading) {
+                ForEach(1 ..< 7) { level in
+                    Button("Heading \(level)") {
+                        textView.toggleHeadingAtCursor(level: level)
+                    }
+                }
+            }
+            Button("Quote", icon: .markdown.quote) {
+                textView.toggleQuoteAtCursor()
+            }
+            if let imageUploadApi = model.imageUploadApi {
+                ImageUploadMenu(imageManager: imageManager, imageUploadApi: imageUploadApi) {
+                    Label("Image", icon: .markdown.uploadImage)
+                }
+                .disabled(!imageUploadApi.contextIsFetched)
+            }
+            Button("Spoiler", icon: .markdown.spoiler) {
+                textView.wrapSelectionWithSpoiler()
+            }
+            Button("Code Block", icon: .markdown.codeBlock) {
+                textView.wrapSelectionWithCodeBlock()
+            }
+        }
+        SwiftUI.Divider()
+            .padding(.top, 2)
+        Button("Community Link", icon: .lemmy.community) {
+            navigation.openSheet(.communityPicker { community in
+                textView.insertText(community.fullNameWithPrefix)
+            })
+        }
+        Button("User Link", icon: .lemmy.person) {
+            navigation.openSheet(.personPicker { person in
+                // lemmy-ui doesn't recognize the @user@example.com format, so we have to do this instead :(
+                // See this issue https://github.com/LemmyNet/lemmy-ui/issues/2579
+                textView.insertText("[\(person.fullNameWithPrefix)](\(person.actorId))")
+            })
+        }
+        Button("Instance Link", icon: .lemmy.instance) {
+            navigation.openSheet(.instancePicker { instance in
+                textView.insertText("[\(instance.host)](https://\(instance.host))")
+            })
+        }
+        .compatibilityOnScrollVisibilityChange { isVisible in
+            withAnimation {
+                rightFade = !isVisible
             }
         }
     }
