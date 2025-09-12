@@ -99,8 +99,9 @@ class AccountsTracker {
         AppState.main.deactivate(account: account)
         do {
             try PersistenceRepository.liveValue.deleteAccountSettings(for: account)
+            try PersistenceRepository.liveValue.deleteVisitHistory(for: account)
         } catch {
-            handleError(error)
+            handleError(error, silent: true)
         }
         GuestAccountCache.main.clean()
     }
