@@ -77,9 +77,7 @@ struct CommentEditorView: View {
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar {
                         ToolbarItem(placement: .topBarLeading) {
-                            Button("Cancel") {
-                                dismiss()
-                            }
+                            CloseButtonView(ios18Label: .cancel)
                         }
                         ToolbarItem(placement: .principal) {
                             if AccountsTracker.main.userAccounts.count > 1, commentToEdit == nil {
@@ -100,13 +98,7 @@ struct CommentEditorView: View {
                             if sending {
                                 ProgressView()
                             } else {
-                                Button("Send", icon: .lemmy.send) {
-                                    sending = true
-                                    Task(priority: .userInitiated) {
-                                        await send()
-                                    }
-                                }
-                                .disabled(resolutionState != .success || textIsEmpty || slurMatch != nil)
+                                sendButton
                             }
                         }
                     }
@@ -281,5 +273,17 @@ struct CommentEditorView: View {
             .frame(maxWidth: .infinity)
             .background(.opacity(0.2), in: .capsule)
             .foregroundStyle(.themedCaution)
+    }
+    
+    @ViewBuilder
+    var sendButton: some View {
+        Button("Send", icon: .lemmy.send) {
+            sending = true
+            Task(priority: .userInitiated) {
+                await send()
+            }
+        }
+        .disabled(resolutionState != .success || textIsEmpty || slurMatch != nil)
+        .glassProminentButtonStyle()
     }
 }
