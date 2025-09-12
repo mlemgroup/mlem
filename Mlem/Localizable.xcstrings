@@ -2890,6 +2890,9 @@
         }
       }
     },
+    "Discard" : {
+
+    },
     "Disclosure Group" : {
       "localizations" : {
         "fr" : {
@@ -5803,7 +5806,14 @@
       }
     },
     "Popular" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Populaire"
+          }
+        }
+      }
     },
     "Post" : {
       "localizations" : {
@@ -5986,7 +5996,14 @@
       }
     },
     "Posts from popular communities" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Publications des communautés populaires"
+          }
+        }
+      }
     },
     "Posts with these keywords in their titles will be hidden. If you are a moderator or administrator of a matching post, it will appear in your feed but require you to tap to view its content." : {
       "localizations" : {

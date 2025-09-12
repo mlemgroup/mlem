@@ -32,14 +32,13 @@ struct RegistrationApplicationDenialEditorView: View {
                 .navigationTitle("Deny Application")
                 .toolbar {
                     ToolbarItem(placement: .topBarLeading) {
-                        Button("Cancel") { dismiss() }
+                        CloseButtonView(ios18Label: .cancel)
                     }
                     ToolbarItem(placement: .topBarTrailing) {
                         Button("Send", icon: .lemmy.send) {
-                            Task {
-                                await send()
-                            }
+                            Task { await send() }
                         }
+                        .glassProminentButtonStyle()
                     }
                 }
             }
