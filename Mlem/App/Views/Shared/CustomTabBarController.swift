@@ -72,8 +72,9 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
     }
     
     @objc func swipeGestureTriggered(_ recognizer: UISwipeGestureRecognizer) {
-        print("DEBUG swipe gesture triggered")
-        swipeGestureCallback()
+        if !UIDevice.isIos26 {
+            swipeGestureCallback()
+        }
     }
     
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
