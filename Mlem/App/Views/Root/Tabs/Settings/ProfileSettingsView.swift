@@ -100,6 +100,7 @@ struct ProfileSettingsView: View {
                 ToolbarItem(placement: .topBarLeading) {
                     Button {
                         profileDetails = person.profileDetails()
+                        bioTextView.text = profileDetails.description
                     } label: {
                         if #available(iOS 26, *) {
                             Label("Discard", icon: .general.delete)
