@@ -30,6 +30,7 @@ struct SearchHomeView: View {
             browseList
         }
         .padding(.horizontal, 16)
+        .padding(.top, 20)
     }
     
     @ViewBuilder
