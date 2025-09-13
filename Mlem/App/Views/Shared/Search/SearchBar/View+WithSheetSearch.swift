@@ -5,12 +5,11 @@
 //  Created by Sjmarf on 2025-08-22.
 //
 
+import ComponentViews
 import SwiftUI
 
 private struct SearchSheetViewModifier: ViewModifier {
     @Environment(NavigationLayer.self) var navigation
-    
-    let closeButtonLabel: LocalizedStringResource
     
     @Binding var query: String
     @FocusState var focused: Bool
@@ -24,10 +23,8 @@ private struct SearchSheetViewModifier: ViewModifier {
             }
         }
         .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button(String(localized: closeButtonLabel)) {
-                    navigation.dismissSheet()
-                }
+            CloseButtonToolbarItem(ios18Label: .cancel) {
+                navigation.dismissSheet()
             }
         }
         .onAppear {
@@ -66,10 +63,7 @@ private struct SearchSheetViewModifier: ViewModifier {
 }
 
 extension View {
-    func withSheetSearch(
-        closeButtonLabel: LocalizedStringResource = "Cancel",
-        query: Binding<String>
-    ) -> some View {
-        modifier(SearchSheetViewModifier(closeButtonLabel: closeButtonLabel, query: query))
+    func withSheetSearch(query: Binding<String>) -> some View {
+        modifier(SearchSheetViewModifier(query: query))
     }
 }

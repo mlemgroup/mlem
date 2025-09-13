@@ -5,6 +5,7 @@
 //  Created by Eric Andrews on 2024-08-19.
 //
 
+import ComponentViews
 import Dependencies
 import Foundation
 import MlemMiddleware
@@ -45,9 +46,7 @@ struct DeleteAccountView: View {
             
             deleteConfirmation
             
-            Button("Cancel") {
-                dismiss()
-            }
+            CloseButtonView(ios18Label: .cancel)
         }
         .multilineTextAlignment(.center)
         .padding(Constants.main.doubleSpacing)

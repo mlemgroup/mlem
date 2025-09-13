@@ -120,14 +120,12 @@ extension InboxView {
     @ToolbarContentBuilder
     var toolbar: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
-            if UIDevice.isIos26 {
-                // This is a bit of a hack... the WWDC mentioned a `.glassProminent` button style
-                // that we should be using here, but it seems to be missing from the API
+            if #available(iOS 26, *) {
                 if showRead {
                     hideReadButton
                 } else {
                     hideReadButton
-                        .buttonStyle(.borderedProminent)
+                        .buttonStyle(.glassProminent)
                 }
             } else {
                 hideReadButton
