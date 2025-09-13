@@ -16,7 +16,6 @@ struct SearchHomeView: View {
     
     var body: some View {
         VStack(spacing: 20) {
-            // Spacer()
             Text("Visit Again")
                 .font(.title)
                 .fontWeight(.semibold)
