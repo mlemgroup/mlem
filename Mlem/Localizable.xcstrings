@@ -3921,6 +3921,7 @@
       }
     },
     "History" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -6190,6 +6191,9 @@
           }
         }
       }
+    },
+    "Read %lld posts" : {
+
     },
     "Read Indicator" : {
       "localizations" : {
@@ -9411,6 +9415,9 @@
           }
         }
       }
+    },
+    "Visit Again" : {
+
     },
     "Votes" : {
       "localizations" : {
