@@ -3924,6 +3924,7 @@
       }
     },
     "History" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -9431,6 +9432,9 @@
           }
         }
       }
+    },
+    "Visit Again" : {
+
     },
     "Votes" : {
       "localizations" : {
