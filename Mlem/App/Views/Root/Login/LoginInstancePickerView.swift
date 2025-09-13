@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 10/05/2024.
 //
 
+import ComponentViews
 import MlemMiddleware
 import SwiftUI
 import Theming
@@ -30,10 +31,8 @@ struct LoginInstancePickerView: View {
             .toolbar {
                 if navigation.isInsideSheet, isRootView {
                     ToolbarItem(placement: .topBarLeading) {
-                        Button("Cancel") {
-                            dismiss()
-                        }
-                        .disabled(connecting)
+                        CloseButtonView(ios18Label: .cancel)
+                            .disabled(connecting)
                     }
                 }
             }

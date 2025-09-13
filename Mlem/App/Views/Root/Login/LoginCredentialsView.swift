@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 11/05/2024.
 //
 
+import ComponentViews
 import MlemMiddleware
 import SwiftUI
 import Theming
@@ -51,10 +52,8 @@ struct LoginCredentialsView: View {
             .toolbar {
                 if navigation.isInsideSheet, isRootView {
                     ToolbarItem(placement: .topBarLeading) {
-                        Button("Cancel") {
-                            dismiss()
-                        }
-                        .disabled(authenticating)
+                        CloseButtonView(ios18Label: .cancel)
+                            .disabled(authenticating)
                     }
                 }
             }
