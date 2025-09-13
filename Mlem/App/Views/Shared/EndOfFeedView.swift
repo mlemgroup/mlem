@@ -61,16 +61,21 @@ struct EndOfFeedView: View {
     
     @State var showLoadMore: Bool = false
     
-    let loadingState_: LoadingState?
+    let loadingState_: FeedLoadingState?
     let viewType: EndOfFeedViewType
     let feedLoader: (any FeedLoading)?
     
-    var loadingState: LoadingState {
+    var loadingState: FeedLoadingState {
         assert(loadingState_ != nil || feedLoader != nil, "either loadingState_ or feedLoader must be defined")
         return loadingState_ ?? feedLoader?.loadingState ?? .done
     }
     
+    @_disfavoredOverload
     init(loadingState: LoadingState, viewType: EndOfFeedViewType) {
+        self.init(loadingState: .init(from: loadingState), viewType: viewType)
+    }
+
+    init(loadingState: FeedLoadingState, viewType: EndOfFeedViewType) {
         self.loadingState_ = loadingState
         self.feedLoader = nil
         self.viewType = viewType
@@ -116,7 +121,7 @@ struct EndOfFeedView: View {
                         }
                     }
                 }
-            case .loading:
+            case .loading, .initial:
                 ProgressView()
             case .done:
                 HStack {

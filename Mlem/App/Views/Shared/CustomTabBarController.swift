@@ -72,11 +72,16 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
     }
     
     @objc func swipeGestureTriggered(_ recognizer: UISwipeGestureRecognizer) {
-        print("DEBUG swipe gesture triggered")
-        swipeGestureCallback()
+        if !UIDevice.isIos26 {
+            swipeGestureCallback()
+        }
     }
     
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        guard !TabReselectTracker.main.blockTabSwitch else {
+            return false
+        }
+        
         TabReselectTracker.main.reset() // reset to prevent unconsumed actions from blocking the reselect flag
         if tabBarController.selectedViewController === viewController,
            let item = viewController as? CustomTabViewHostingController {

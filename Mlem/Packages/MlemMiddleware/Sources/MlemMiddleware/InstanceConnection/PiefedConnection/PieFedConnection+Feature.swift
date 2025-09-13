@@ -35,7 +35,7 @@ public extension PieFedConnection {
             version >= timeRange.minimumVersion
         case let .listingType(listingType):
             listingType.pieFedListingType != nil
-        case .viewCommunityActiveUsers, .viewMentionsAndPrivateMessages, .editAndDeletePrivateMessages:
+        case .viewCommunityActiveUsers, .viewMentionsAndPrivateMessages, .editAndDeletePrivateMessages, .autoMarkPostReadOnInteract:
             version >= .v1_1_0
         case .editProfile:
             version >= .v1_2_0

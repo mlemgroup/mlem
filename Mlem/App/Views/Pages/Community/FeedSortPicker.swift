@@ -30,8 +30,6 @@ struct FeedSortPicker: View {
     let showTopTimescaleInIcon: Bool
     @Binding var value: Value
     
-    @State var topSortPopupPresented: Bool = false
-    
     init(sort: Binding<PostSortType>, showTopTimescaleInIcon: Bool = false) {
         self._value = .init(get: { .known(sort.wrappedValue) }, set: {
             if let sortType = $0.sortType {
@@ -107,30 +105,15 @@ struct FeedSortPicker: View {
                         isOn: .init(get: { value.sortType == type }, set: { _ in value = .known(type) })
                     )
                 }
-                let topSortTypes = topSortTypes
-                if topSortTypes.count > 3 {
-                    Toggle(
-                        "Top...",
-                        icon: .lemmy.topSort,
-                        isOn: .init(
-                            get: {
-                                if let sort = value.sortType {
-                                    PostSortType.legacyTopCases.contains(sort)
-                                } else {
-                                    false
-                                }
-                            },
-                            set: { _ in topSortPopupPresented = true }
-                        )
-                    )
-                } else {
-                    ForEach(topSortTypes, id: \.self) { type in
-                        Toggle(
-                            type.label(timeRangeFormat: .topAndTimescale),
-                            icon: type.icon,
-                            isOn: .init(get: { value.sortType == type }, set: { _ in value = .known(type) })
-                        )
+                if collapseTopSorts {
+                    Menu("Top...", icon: .lemmy.topSort) {
+                        topResultsView
                     }
+                }
+            }
+            if !collapseTopSorts {
+                Section("Top...") {
+                    topResultsView
                 }
             }
             Section {
@@ -146,19 +129,25 @@ struct FeedSortPicker: View {
             labelView
         }
         .disabled(!appState.firstApi.contextIsFetched)
-        .popover(isPresented: $topSortPopupPresented) {
-            TopSortPicker(
-                action: { value = .known(.top($0)) },
-                filter: { PinnedSortTracker.main.pinnedSortTypes.contains(.top($0)) }
-            )
-            // This background is always drawn over a material background unfortunately,
-            // meaning that we can't use thin materials
-            .presentationBackground(.clear)
-            .presentationCornerRadius(18)
-            .presentationCompactAdaptation(.popover)
-        }
     }
     
+    var collapseTopSorts: Bool {
+        topSortTypes.count > 3 && !nonTopSortTypes.isEmpty
+    }
+
+    @ViewBuilder
+    var topResultsView: some View {
+        ForEach(topSortTypes, id: \.self) { type in
+            Toggle(
+                type.label(timeRangeFormat: .timescaleFull),
+                icon: type.icon,
+                isOn: .init(get: { value.sortType == type }, set: { _ in
+                    value = .known(type)
+                })
+            )
+        }
+    }
+
     @ViewBuilder
     var labelView: some View {
         VStack {

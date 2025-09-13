@@ -37,8 +37,10 @@ struct TopPeopleListView: View {
             .animation(.easeOut(duration: 0.1), value: personLoader?.items.isEmpty)
             .task {
                 do {
-                    personLoader = .init(api: appState.firstApi)
-                    try await personLoader?.refresh(listing: .all)
+                    if personLoader == nil {
+                        personLoader = .init(api: appState.firstApi)
+                        try await personLoader?.refresh(listing: .all)
+                    }
                 } catch {
                     handleError(error)
                 }

@@ -68,6 +68,7 @@ class UserSession: Session {
                     self.visitHistory = try await PersistenceRepository.liveValue.loadVisitHistory(for: account)
                 } catch {
                     self.visitHistory = .init()
+                    try? await saveVisitHistory()
                     handleError(error, silent: true)
                 }
             }

@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 05/09/2024.
 //
 
+import ComponentViews
 import MlemMiddleware
 import SwiftUI
 
@@ -95,7 +96,7 @@ struct SignUpView: View {
         .toolbar {
             if navigation.isInsideSheet, isRootView {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button("Cancel") {
+                    CloseButtonView(ios18Label: .cancel) {
                         navigation.dismissSheet()
                     }
                 }
