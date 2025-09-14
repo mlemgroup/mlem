@@ -214,7 +214,7 @@ private struct SubscriptionListSectionView: View {
     
     // TODO: iOS 18 deprecation remove compatibility shim
     var body: some View {
-        if #available(iOS 26, *), section.label != "Favorites" {
+        if #available(iOS 26, *), section.label != String(localized: "Favorites") {
             content
                 .sectionIndexLabel(section.label)
         } else {
