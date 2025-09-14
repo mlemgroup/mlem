@@ -21,7 +21,7 @@ struct ModeratorSettingsView: View {
                 description: "Manage settings related to content moderation.",
                 icon: .lemmy.moderation
             )
-            .gradientTint(ThemedColor.themedModeration)
+            .gradientTint(.themedModeration)
             Section {
                 NavigationLink(
                     "Moderator Actions",

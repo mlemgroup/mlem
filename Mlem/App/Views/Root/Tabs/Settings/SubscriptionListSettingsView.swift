@@ -20,7 +20,7 @@ struct SubscriptionListSettingsView: View {
                 description: "Customize how your subscription list is sorted.",
                 icon: .lemmy.subscriptionList
             )
-            .gradientTint(ThemedColor.themedCommunityAccent)
+            .gradientTint(.themedCommunityAccent)
             Section("Sort by...") {
                 Picker("Sort by...", selection: $sort) {
                     ForEach(SubscriptionListSort.allCases, id: \.self) { item in

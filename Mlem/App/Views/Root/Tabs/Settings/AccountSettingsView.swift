@@ -39,25 +39,25 @@ struct AccountSettingsView: View {
                             icon: .lemmy.person,
                             destination: .settings(.profile)
                         )
-                        .gradientTint(ThemedColor.themedColorfulAccent(5))
+                        .gradientTint(.themedColorfulAccent(5))
                         NavigationLink(
                             "Sign-In & Security",
                             icon: .general.security,
                             destination: .settings(.accountSignIn)
                         )
-                        .gradientTint(ThemedColor.themedColorfulAccent(2))
+                        .gradientTint(.themedColorfulAccent(2))
                         NavigationLink(
                             "Content & Notifications",
                             icon: .lemmy.post,
                             destination: .settings(.accountContent)
                         )
-                        .gradientTint(ThemedColor.themedColorfulAccent(0))
+                        .gradientTint(.themedColorfulAccent(0))
                         NavigationLink(
                             "Advanced",
                             icon: .settings.advanced,
                             destination: .settings(.accountAdvanced)
                         )
-                        .gradientTint(ThemedColor.themedNeutralAccent)
+                        .gradientTint(.themedNeutralAccent)
                     }
                 }
                 Section {

@@ -24,7 +24,7 @@ struct SafetySettingsView: View {
                 description: "Customize how content is displayed in your feed. Choose which types of content are blurred, and apply filters to hide posts from the feed altogether.",
                 icon: .settings.safety
             )
-            .gradientTint(ThemedColor.themedColorfulAccent(3))
+            .gradientTint(.themedColorfulAccent(3))
             Section {
                 NavigationLink(
                     "Blur NSFW Content",

@@ -31,44 +31,44 @@ struct SettingsView: View {
                     icon: .settings.general,
                     destination: .settings(.general)
                 )
-                .gradientTint(ThemedColor.themedNeutralAccent)
+                .gradientTint(.themedNeutralAccent)
                 NavigationLink(
                     "Privacy",
                     icon: .settings.privacy,
                     destination: .settings(.privacy)
                 )
-                .gradientTint(ThemedColor.themedColorfulAccent(2))
+                .gradientTint(.themedColorfulAccent(2))
                 NavigationLink(
                     "Safety & Filtering",
                     icon: .settings.safety,
                     destination: .settings(.safety)
                 )
-                .gradientTint(ThemedColor.themedColorfulAccent(3))
+                .gradientTint(.themedColorfulAccent(3))
                 NavigationLink(
                     "Accessibility",
                     icon: .settings.accessibility,
                     destination: .settings(.accessibility)
                 )
-                .gradientTint(ThemedColor.themedColorfulAccent(2))
+                .gradientTint(.themedColorfulAccent(2))
                 NavigationLink(
                     "Media & Links",
                     icon: .general.image,
                     destination: .settings(.links)
                 )
-                .gradientTint(ThemedColor.themedColorfulAccent(4))
+                .gradientTint(.themedColorfulAccent(4))
                 NavigationLink(
                     "Sorting",
                     icon: .settings.sorting,
                     destination: .settings(.sorting)
                 )
-                .gradientTint(ThemedColor.themedColorfulAccent(5))
+                .gradientTint(.themedColorfulAccent(5))
                 if AccountsTracker.main.highestLevelAccountType >= .moderator {
                     NavigationLink(
                         "Moderation",
                         icon: .lemmy.moderation,
                         destination: .settings(.moderation)
                     )
-                    .gradientTint(ThemedColor.themedModeration)
+                    .gradientTint(.themedModeration)
                     .symbolVariant(.fill)
                 }
             }
@@ -83,22 +83,22 @@ struct SettingsView: View {
             
             Section {
                 NavigationLink("Posts", icon: .lemmy.post, destination: .settings(.post))
-                    .gradientTint(ThemedColor.themedPostAccent)
+                    .gradientTint(.themedPostAccent)
                 NavigationLink("Comments", icon: .lemmy.comment, destination: .settings(.comment))
-                    .gradientTint(ThemedColor.themedCommentAccent)
+                    .gradientTint(.themedCommentAccent)
                 NavigationLink("Inbox", icon: .lemmy.inbox, destination: .settings(.inbox))
-                    .gradientTint(ThemedColor.themedInbox)
+                    .gradientTint(.themedInbox)
                 NavigationLink("Subscription List", icon: .lemmy.subscriptionList, destination: .settings(.subscriptionList))
-                    .gradientTint(ThemedColor.themedCommunityAccent)
+                    .gradientTint(.themedCommunityAccent)
                 NavigationLink("Tab Bar", icon: .settings.tabBar, destination: .settings(.tabBar))
-                    .gradientTint(ThemedColor.themedColorfulAccent(5))
+                    .gradientTint(.themedColorfulAccent(5))
             }
             
             Section {
                 NavigationLink("About Mlem", icon: .general.info, destination: .settings(.about))
-                    .gradientTint(ThemedColor.themedColorfulAccent(2))
+                    .gradientTint(.themedColorfulAccent(2))
                 NavigationLink("Advanced", icon: .settings.advanced, destination: .settings(.advanced))
-                    .gradientTint(ThemedColor.themedNeutralAccent)
+                    .gradientTint(.themedNeutralAccent)
             }
         }
         .labelStyle(.squircle)

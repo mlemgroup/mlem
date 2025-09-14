@@ -35,6 +35,6 @@ struct SafetyBlurNsfwSettingsView: View {
             description: "Choose when Not Safe For Work content should be blurred.",
             icon: .general.hide
         )
-        .gradientTint(ThemedColor.themedWarning)
+        .gradientTint(.themedWarning)
     }
 }

@@ -22,7 +22,7 @@ struct SharingLinksSettingsView: View {
                 description: "In the Fediverse, many different links can point to the same piece of content. Choose which site to use when sharing content.",
                 icon: .general.share
             )
-            .gradientTint(ThemedColor.themedColorfulAccent(3))
+            .gradientTint(.themedColorfulAccent(3))
             
             pickerItemView(
                 mode: .myInstance,

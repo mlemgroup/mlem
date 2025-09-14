@@ -36,7 +36,7 @@ struct SortingSettingsView: View {
                 description: "Choose the default sort mode for posts and comments.",
                 icon: .settings.sorting
             )
-            .gradientTint(ThemedColor.themedColorfulAccent(5))
+            .gradientTint(.themedColorfulAccent(5))
             Section {
                 HStack {
                     Text("Posts")
