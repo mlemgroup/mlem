@@ -44,8 +44,11 @@ public enum Feature: Hashable {
     
     case commentTreeSortedByDepth
     case uploadImages
-    case editAccountSettings
     case commentSearch
+
+    case editProfile
+    case editAccountSettings
+    case editDisplayName
     
     /// Server automatically marks posts as read when voted on or saved
     case autoMarkPostReadOnInteract

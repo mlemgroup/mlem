@@ -32,14 +32,16 @@ struct AccountSettingsView: View {
             .listRowInsets(.init(top: 10, leading: 0, bottom: 0, trailing: 0))
             
             if appState.firstSession is UserSession {
-                if appState.firstAccount.siteSoftware?.supports(.editAccountSettings) ?? false {
-                    Section {
+                Section {
+                    if appState.firstAccount.siteSoftware?.supports(.editProfile) ?? false {
                         NavigationLink(
                             "My Profile",
                             icon: .lemmy.person,
                             destination: .settings(.profile)
                         )
                         .gradientTint(.themedColorfulAccent(5))
+                    }
+                    if appState.firstAccount.siteSoftware?.supports(.editAccountSettings) ?? false {
                         NavigationLink(
                             "Sign-In & Security",
                             icon: .general.security,
