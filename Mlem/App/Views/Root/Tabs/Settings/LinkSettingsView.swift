@@ -25,7 +25,7 @@ struct LinkSettingsView: View {
                 description: "Manage how Mlem handles links and control how images and videos are displayed.",
                 icon: .general.image
             )
-            .tint(ThemedColor.themedColorfulAccent(4).gradient)
+            .gradientTint(ThemedColor.themedColorfulAccent(4))
             Section {
                 NavigationLink(
                     "Open External Links",

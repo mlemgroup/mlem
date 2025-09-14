@@ -10,6 +10,7 @@ import Theming
 
 struct LongPressActionSettingsView: View {
     @Setting(\.tab_gestures_longPressAction) private var longPressAction: TabBarLongPressAction
+    @Environment(\.palette) var palette
     
     var body: some View {
         Form {
@@ -18,7 +19,7 @@ struct LongPressActionSettingsView: View {
                 description: "Choose which action to perform when you tap and hold the profile icon.",
                 icon: .settings.longPress
             )
-            .tint(ThemedColor.themedColorfulAccent(2).gradient)
+            .tint(ThemedColor.themedColorfulAccent(2).gradient(palette: palette))
             
             Section {
                 Picker("Long Press Action", selection: $longPressAction) {

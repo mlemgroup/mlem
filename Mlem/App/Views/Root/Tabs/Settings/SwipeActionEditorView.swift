@@ -68,7 +68,7 @@ private struct ActionListView<ActionType: ActionTypeProviding>: View {
             ForEach(actions, id: \.hashValue) { action in
                 HStack {
                     Label(action.appearance.label, systemImage: action.appearance.swipeIcon2)
-                        .tint(action.appearance.color.gradient)
+                        .gradientTint(action.appearance.color)
                     Spacer()
                 }
                 .tag(action)

@@ -28,7 +28,7 @@ struct TabBarSettingsView: View {
                 description: "Customize the appearance of the tab bar.",
                 icon: .settings.tabBar
             )
-            .tint(ThemedColor.themedColorfulAccent(5).gradient)
+            .gradientTint(ThemedColor.themedColorfulAccent(5))
             Section("Profile Tab Label") {
                 Picker("Profile Tab Label", selection: $profileTabLabel) {
                     profileTabLabelItem("Name", value: account.nickname, icon: .lemmy.alphabeticalSort)

@@ -31,7 +31,7 @@ struct PostReadIndicatorSettingsView: View {
                 description: "Read posts are shown with dimmed title text. If you like, you can choose an additional way of indicating read status.",
                 icon: .settings.readIndicatorSetting
             )
-            .tint(ThemedColor.themedSecondary.gradient)
+            .gradientTint(ThemedColor.themedSecondary)
             Section {
                 Toggle(
                     "Additional Read Indicator",

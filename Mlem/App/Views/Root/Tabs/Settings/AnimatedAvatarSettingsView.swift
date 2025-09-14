@@ -18,7 +18,7 @@ struct AnimatedAvatarSettingsView: View {
                 description: "Some users set animated media as their avatar. Control whether these avatars should play their animations.",
                 icon: .general.playCircle
             )
-            .tint(ThemedColor.themedColorfulAccent(4).gradient)
+            .gradientTint(ThemedColor.themedColorfulAccent(4))
             
             Picker("Animate Avatars...", selection: $animatedAvatars) {
                 ForEach(AnimatedAvatarBehavior.allCases, id: \.self) { location in

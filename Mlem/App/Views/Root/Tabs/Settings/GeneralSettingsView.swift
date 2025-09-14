@@ -35,7 +35,7 @@ struct GeneralSettingsView: View {
                 description: "Manage your overall setup for Mlem.",
                 icon: .settings.general
             )
-            .tint(ThemedColor.themedNeutralAccent.gradient)
+            .gradientTint(.themedNeutralAccent)
             Section {
                 NavigationLink(
                     "Default Feed",

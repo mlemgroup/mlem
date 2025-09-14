@@ -20,7 +20,7 @@ struct InboxSettingsView: View {
                 description: "Customize the interaction bar for inbox items, and choose which types of notification are included in the tab bar badge.",
                 icon: .lemmy.inbox
             )
-            .tint(ThemedColor.themedInbox.gradient)
+            .gradientTint(ThemedColor.themedInbox)
             Section {
                 NavigationLink(.settings(.interactionBar(.reply))) {
                     SettingsInteractionBarSummaryView(configuration: replyInteractionBar)

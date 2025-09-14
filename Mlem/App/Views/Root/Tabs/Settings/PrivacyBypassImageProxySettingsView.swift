@@ -19,7 +19,7 @@ struct PrivacyBypassImageProxySettingsView: View {
                 description: "Some instances proxy images to protect your privacy. In certain cases, this causes image loading to fail. You can bypass the image proxy and load directly, but this will expose your IP address to the image host.",
                 icon: .lemmy.imageProxy
             )
-            .tint(ThemedColor.themedColorfulAccent(4).gradient)
+            .gradientTint(ThemedColor.themedColorfulAccent(4))
             Section("Bypass Image Proxy...") {
                 Picker("Bypass Image Proxy", selection: $bypassImageProxy) {
                     Label("Automatically", icon: .general.success)

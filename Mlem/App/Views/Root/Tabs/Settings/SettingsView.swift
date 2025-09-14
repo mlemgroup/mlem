@@ -31,44 +31,44 @@ struct SettingsView: View {
                     icon: .settings.general,
                     destination: .settings(.general)
                 )
-                .tint(ThemedColor.themedNeutralAccent.gradient)
+                .gradientTint(ThemedColor.themedNeutralAccent)
                 NavigationLink(
                     "Privacy",
                     icon: .settings.privacy,
                     destination: .settings(.privacy)
                 )
-                .tint(ThemedColor.themedColorfulAccent(2).gradient)
+                .gradientTint(ThemedColor.themedColorfulAccent(2))
                 NavigationLink(
                     "Safety & Filtering",
                     icon: .settings.safety,
                     destination: .settings(.safety)
                 )
-                .tint(ThemedColor.themedColorfulAccent(3).gradient)
+                .gradientTint(ThemedColor.themedColorfulAccent(3))
                 NavigationLink(
                     "Accessibility",
                     icon: .settings.accessibility,
                     destination: .settings(.accessibility)
                 )
-                .tint(ThemedColor.themedColorfulAccent(2).gradient)
+                .gradientTint(ThemedColor.themedColorfulAccent(2))
                 NavigationLink(
                     "Media & Links",
                     icon: .general.image,
                     destination: .settings(.links)
                 )
-                .tint(ThemedColor.themedColorfulAccent(4).gradient)
+                .gradientTint(ThemedColor.themedColorfulAccent(4))
                 NavigationLink(
                     "Sorting",
                     icon: .settings.sorting,
                     destination: .settings(.sorting)
                 )
-                .tint(ThemedColor.themedColorfulAccent(5).gradient)
+                .gradientTint(ThemedColor.themedColorfulAccent(5))
                 if AccountsTracker.main.highestLevelAccountType >= .moderator {
                     NavigationLink(
                         "Moderation",
                         icon: .lemmy.moderation,
                         destination: .settings(.moderation)
                     )
-                    .tint(ThemedColor.themedModeration.gradient)
+                    .gradientTint(ThemedColor.themedModeration)
                     .symbolVariant(.fill)
                 }
             }
@@ -83,22 +83,22 @@ struct SettingsView: View {
             
             Section {
                 NavigationLink("Posts", icon: .lemmy.post, destination: .settings(.post))
-                    .tint(ThemedColor.themedPostAccent.gradient)
+                    .gradientTint(ThemedColor.themedPostAccent)
                 NavigationLink("Comments", icon: .lemmy.comment, destination: .settings(.comment))
-                    .tint(ThemedColor.themedCommentAccent.gradient)
+                    .gradientTint(ThemedColor.themedCommentAccent)
                 NavigationLink("Inbox", icon: .lemmy.inbox, destination: .settings(.inbox))
-                    .tint(ThemedColor.themedInbox.gradient)
+                    .gradientTint(ThemedColor.themedInbox)
                 NavigationLink("Subscription List", icon: .lemmy.subscriptionList, destination: .settings(.subscriptionList))
-                    .tint(ThemedColor.themedCommunityAccent.gradient)
+                    .gradientTint(ThemedColor.themedCommunityAccent)
                 NavigationLink("Tab Bar", icon: .settings.tabBar, destination: .settings(.tabBar))
-                    .tint(ThemedColor.themedColorfulAccent(5).gradient)
+                    .gradientTint(ThemedColor.themedColorfulAccent(5))
             }
             
             Section {
                 NavigationLink("About Mlem", icon: .general.info, destination: .settings(.about))
-                    .tint(ThemedColor.themedColorfulAccent(2).gradient)
+                    .gradientTint(ThemedColor.themedColorfulAccent(2))
                 NavigationLink("Advanced", icon: .settings.advanced, destination: .settings(.advanced))
-                    .tint(ThemedColor.themedNeutralAccent.gradient)
+                    .gradientTint(ThemedColor.themedNeutralAccent)
             }
         }
         .labelStyle(.squircle)

@@ -39,25 +39,25 @@ struct AccountSettingsView: View {
                             icon: .lemmy.person,
                             destination: .settings(.profile)
                         )
-                        .tint(ThemedColor.themedColorfulAccent(5).gradient)
+                        .gradientTint(ThemedColor.themedColorfulAccent(5))
                         NavigationLink(
                             "Sign-In & Security",
                             icon: .general.security,
                             destination: .settings(.accountSignIn)
                         )
-                        .tint(ThemedColor.themedColorfulAccent(2).gradient)
+                        .gradientTint(ThemedColor.themedColorfulAccent(2))
                         NavigationLink(
                             "Content & Notifications",
                             icon: .lemmy.post,
                             destination: .settings(.accountContent)
                         )
-                        .tint(ThemedColor.themedColorfulAccent(0).gradient)
+                        .gradientTint(ThemedColor.themedColorfulAccent(0))
                         NavigationLink(
                             "Advanced",
                             icon: .settings.advanced,
                             destination: .settings(.accountAdvanced)
                         )
-                        .tint(ThemedColor.themedNeutralAccent.gradient)
+                        .gradientTint(ThemedColor.themedNeutralAccent)
                     }
                 }
                 Section {
@@ -66,7 +66,7 @@ struct AccountSettingsView: View {
                         icon: .lemmy.block,
                         destination: .blockList
                     )
-                    .tint(ThemedColor.themedNegative.gradient)
+                    .gradientTint(.themedNegative)
                 }
                 Section {
                     NavigationLink(
@@ -74,7 +74,7 @@ struct AccountSettingsView: View {
                         icon: .settings.localAccountOptions,
                         destination: .settings(.accountLocal)
                     )
-                    .tint(ThemedColor.themedColorfulAccent(2).gradient)
+                    .gradientTint(.themedColorfulAccent(2))
                 } footer: {
                     Text("These options are stored locally in Mlem and not on your Lemmy account.")
                 }
