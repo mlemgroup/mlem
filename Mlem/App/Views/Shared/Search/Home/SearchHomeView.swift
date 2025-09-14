@@ -28,6 +28,7 @@ struct SearchHomeView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.bottom, -4)
             browseList
+                .padding(.top, 20)
         }
         .padding(.horizontal, 16)
         .padding(.top, 20)

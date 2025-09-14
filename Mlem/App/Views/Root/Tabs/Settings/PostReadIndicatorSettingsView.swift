@@ -8,6 +8,7 @@
 import ComponentViews
 import Haptics
 import SwiftUI
+import Theming
 
 struct PostReadIndicatorSettingsView: View {
     @Environment(HapticManager.self) var hapticManager
@@ -30,7 +31,7 @@ struct PostReadIndicatorSettingsView: View {
                 description: "Read posts are shown with dimmed title text. If you like, you can choose an additional way of indicating read status.",
                 icon: .settings.readIndicatorSetting
             )
-            .tint(.themedSecondary)
+            .gradientTint(.themedSecondary)
             Section {
                 Toggle(
                     "Additional Read Indicator",

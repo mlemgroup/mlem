@@ -275,6 +275,8 @@ public protocol InstanceConnection {
     
     func getMyPerson() async throws -> (person: Person4Snapshot?, instance: Instance3Snapshot, blocks: BlockListSnapshot?)
     func deleteAccount(password: String, deleteContent: Bool) async throws
+
+    func editProfile(details: ProfileDetails) async throws
     
     func editAccountSettings(
         showNsfw: Bool?,

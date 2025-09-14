@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 2025-02-02.
 //
 
+import Haptics
 import MlemMiddleware
 import SwiftUI
 
@@ -25,6 +26,8 @@ import SwiftUI
                 .environment(Mlem.AppState.mock(api: api))
                 .environment(FiltersTracker.main)
                 .environment(TabReselectTracker.main)
+                .environment(BackendClient.main)
+                .environment(HapticManager.main)
         }
     }
 

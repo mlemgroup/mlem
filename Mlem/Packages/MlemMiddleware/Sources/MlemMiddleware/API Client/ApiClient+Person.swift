@@ -190,6 +190,18 @@ public extension ApiClient {
     func deleteAccount(password: String, deleteContent: Bool) async throws {
         try await repository.deleteAccount(password: password, deleteContent: deleteContent)
     }
+
+    func editProfile(_ details: ProfileDetails) async throws {
+        try await repository.editProfile(details)
+        let personId = try await myPersonId
+        if let personId, let person = caches.person1.retrieveModel(cacheId: personId) {
+            person.avatar = details.avatar
+            person.banner = details.banner
+            person.displayName = details.displayName ?? person.name
+            person.description = details.description
+            person.matrixId = details.matrixId
+        }
+    }
     
     func editAccountSettings(
         showNsfw: Bool?,
