@@ -214,9 +214,9 @@ private struct SubscriptionListSectionView: View {
     
     // TODO: iOS 18 deprecation remove compatibility shim
     var body: some View {
-        if #available(iOS 26, *), section.label != String(localized: "Favorites") {
+        if #available(iOS 26, *) {
             content
-                .sectionIndexLabel(section.label)
+                .sectionIndexLabel(section.showInScroller ? section.label : nil)
         } else {
             content
         }
@@ -258,6 +258,14 @@ struct SubscriptionListSection: Identifiable {
     let label: String
     var icon: Icon?
     let communities: [Community2]
+    let showInScroller: Bool
+    
+    init(label: String, icon: Icon? = nil, communities: [Community2], showInScroller: Bool = true) {
+        self.label = label
+        self.icon = icon
+        self.communities = communities
+        self.showInScroller = showInScroller
+    }
     
     var id: String { label }
 }
@@ -266,7 +274,11 @@ private extension SubscriptionList {
     func visibleSections(sort: SubscriptionListSort) -> [SubscriptionListSection] {
         var sections: [SubscriptionListSection] = .init()
         if !favorites.isEmpty {
-            sections.append(.init(label: String(localized: "Favorites"), icon: .lemmy.favorited, communities: favorites))
+            sections.append(.init(
+                label: String(localized: "Favorites"),
+                icon: .lemmy.favorited,
+                communities: favorites,
+                showInScroller: false))
         }
         switch sort {
         case .alphabetical:
