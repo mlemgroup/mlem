@@ -12,30 +12,53 @@ import Theming
 public struct CloseButtonView: View {
     @Environment(\.dismiss) var dismiss
     
-    var size: CGFloat = 30
+    public enum LabelType {
+        case cancel, xmark
+    }
+    
+    var ios18Label: LabelType
     var callback: (() -> Void)?
     
-    public init(size: CGFloat = 30, callback: (() -> Void)? = nil) {
-        self.size = size
+    public init(
+        ios18Label: LabelType = .xmark,
+        callback: (() -> Void)? = nil
+    ) {
+        self.ios18Label = ios18Label
         self.callback = callback
     }
     
     public var body: some View {
-        Button {
-            if let callback {
-                callback()
-            } else {
-                dismiss()
-            }
-        } label: {
-            Image(systemName: "xmark.circle.fill")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(height: size)
-                .symbolRenderingMode(.palette)
-                .foregroundStyle(.themedSecondary, .themedSecondary.opacity(0.2))
+        if #available(iOS 26, *) {
+            Button("Dismiss", systemImage: "xmark", action: submit)
+        } else {
+            ios18Body
         }
-        .buttonStyle(.plain)
-        .accessibilityLabel("Dismiss")
+    }
+    
+    @ViewBuilder
+    private var ios18Body: some View {
+        switch ios18Label {
+        case .cancel:
+            Button("Cancel", action: submit)
+        case .xmark:
+            Button(action: submit) {
+                Image(systemName: "xmark.circle.fill")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(height: 30)
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(.themedSecondary, .themedSecondary.opacity(0.2))
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("Dismiss")
+        }
+    }
+    
+    func submit() {
+        if let callback {
+            callback()
+        } else {
+            dismiss()
+        }
     }
 }

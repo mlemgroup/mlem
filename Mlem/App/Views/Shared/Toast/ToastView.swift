@@ -139,6 +139,7 @@ struct ToastView: View {
     }
     
     @ViewBuilder
+    // swiftlint:disable:next function_body_length
     func errorView(_ details: ErrorDetails) -> some View {
         Button {
             if details.error != nil {
@@ -160,9 +161,15 @@ struct ToastView: View {
                         .frame(maxWidth: isExpanded ? .infinity : nil)
                     
                     if isExpanded {
-                        CloseButtonView(size: 28, callback: {
+                        Button("Close", icon: .general.close) {
                             toast.kill()
-                        })
+                        }
+                        .labelStyle(.iconOnly)
+                        .symbolVariant(.circle.fill)
+                        .symbolRenderingMode(.hierarchical)
+                        .foregroundStyle(.themedSecondary)
+                        .foregroundStyle(.secondary)
+                        .font(.title)
                         .padding(.trailing, 10)
                     }
                 }

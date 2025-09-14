@@ -23,7 +23,7 @@ struct ShareInstancePickerView: View {
                     .foregroundStyle(.themedSecondary)
                     .padding(.leading, 8)
                 Spacer()
-                CloseButtonView()
+                closeButton
             }
             VStack(spacing: 0) {
                 instanceTargetRow(entity.api.host, label: "My Instance", url: entity.url())
@@ -41,6 +41,25 @@ struct ShareInstancePickerView: View {
         .padding(16)
         .presentationBackground(.themedGroupedBackground)
         .presentationDetentFitsContent()
+    }
+    
+    @ViewBuilder
+    var closeButton: some View {
+        if #available(iOS 26, *) {
+            Button {
+                dismiss()
+            } label: {
+                Label("Close", icon: .general.close)
+                    .padding(10)
+                    .background(.themedSecondaryGroupedBackground, in: .circle)
+                    .foregroundStyle(.themedSecondary)
+            }
+            .labelStyle(.iconOnly)
+            .font(.title)
+            .buttonStyle(.plain)
+        } else {
+            CloseButtonView()
+        }
     }
     
     @ViewBuilder

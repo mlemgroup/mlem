@@ -121,6 +121,10 @@ class PersistenceRepository {
         try FileManager.default.removeItem(at: PersistencePath.accountSettingsDirectory(for: account))
     }
     
+    func deleteVisitHistory(for account: any Account) throws {
+        try FileManager.default.removeItem(at: PersistencePath.visitHistory(for: account))
+    }
+    
     func loadUserAccounts() -> [UserAccount] {
         load([UserAccount].self, from: PersistencePath.userAccounts) ?? []
     }

@@ -39,11 +39,14 @@ public enum Feature: Hashable {
     case banFromInstance
     case banFromCommunity
     
-    // Add/remove moderators from a community
+    /// Add/remove moderators from a community
     case editModeratorList
     
     case commentTreeSortedByDepth
     case uploadImages
     case editAccountSettings
     case commentSearch
+    
+    /// Server automatically marks posts as read when voted on or saved
+    case autoMarkPostReadOnInteract
 }

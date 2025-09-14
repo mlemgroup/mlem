@@ -122,10 +122,10 @@ public class PersonContentFeedLoader: StandardFeedLoader<PersonContent> {
     
     // convenience accessors for child types
     public var posts: [PersonContent] { tempPostStream?.items ?? postStream.items }
-    public var postLoadingState: LoadingState { postStream.doneLoading ? .done : loadingState }
+    public var postLoadingState: FeedLoadingState { postStream.doneLoading ? .done : loadingState }
     
     public var comments: [PersonContent] { tempCommentStream?.items ?? commentStream.items }
-    public var commentLoadingState: LoadingState { commentStream.doneLoading ? .done : loadingState }
+    public var commentLoadingState: FeedLoadingState { commentStream.doneLoading ? .done : loadingState }
     
     public init(
         api: ApiClient,

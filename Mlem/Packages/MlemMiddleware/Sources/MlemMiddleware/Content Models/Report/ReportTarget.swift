@@ -65,9 +65,9 @@ public enum ReportTarget {
         // TODO: UpdateQueue rework reports to integrate UpdateQueue
         switch (self, snapshot) {
         case (.post, .post):
-            print("noop") // print here to make the compiler happy
+            break
         case let (.comment(comment), .comment(updatedComment)):
-            print("noop") // print here to make the compiler happy
+            break
         case let (.message(message), .message(updatedMessage)):
             message.update(with: updatedMessage)
         default:

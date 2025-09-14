@@ -12,35 +12,51 @@ import Theming
 
 struct SearchHomeView: View {
     @Environment(\.navigation) var navigation
+    @Environment(\.palette) var palette
     
     var body: some View {
-        VStack {
-            Spacer()
-                .frame(height: 30)
+        VStack(spacing: 20) {
+            Text("Visit Again")
+                .font(.title)
+                .fontWeight(.semibold)
+                .frame(maxWidth: .infinity, alignment: .leading)
             topRow
+            
             Text("Browse")
                 .font(.title)
                 .fontWeight(.semibold)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.top, 30)
                 .padding(.bottom, -4)
             browseList
                 .padding(.top, 20)
         }
         .padding(.horizontal, 16)
+        .padding(.top, 20)
     }
     
     @ViewBuilder
     var topRow: some View {
-        HStack(spacing: 16) {
-            Button("Saved", icon: .lemmy.saved) {
-                navigation?.push(.savedFeed)
+        VStack {
+            NavigationLink(.savedFeed) {
+                FormChevron {
+                    HStack(spacing: 15) {
+                        Image(icon: .lemmy.savedFeed)
+                            .symbolVariant(.fill)
+                            .foregroundStyle(.white)
+                            .scaledToFit()
+                            .frame(width: 15, height: 15)
+                            .padding(10)
+                            .background(.themedSavedFeed.gradient(palette: palette), in: .circle)
+                        Text("Saved")
+                        
+                        Spacer()
+                    }
+                }
             }
-            Button("History", icon: .general.time) {
-                navigation?.push(.historyFeed)
-            }
+            .buttonStyle(.empty)
         }
-        .buttonStyle(CapsuleButtonStyle())
+        .padding(10)
+        .background(.themedBackground, in: .rect(cornerRadius: 25))
     }
     
     @ViewBuilder
@@ -97,6 +113,7 @@ struct SearchHomeView: View {
 
 private struct ListRowButton: View {
     @Environment(\.navigation) var navigation
+    @Environment(\.palette) var palette
     
     let title: LocalizedStringResource
     let icon: Icon
@@ -113,7 +130,7 @@ private struct ListRowButton: View {
                     .foregroundStyle(.white)
                     .symbolVariant(.fill)
                     .padding(20)
-                    .background(color.gradient, in: .circle)
+                    .background(color.gradient(palette: palette), in: .circle)
                     .frame(width: 80, height: 80)
                 Text(title)
                     .fontWeight(.semibold)

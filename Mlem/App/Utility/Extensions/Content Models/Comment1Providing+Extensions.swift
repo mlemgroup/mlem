@@ -92,7 +92,7 @@ extension Comment1Providing {
         showAllActions: Bool = true,
         report: Report? = nil
     ) -> [any Action] {
-        let viewVotesIsPossible = api.supportsOrNil(.viewVotes) ?? false
+        let viewVotesIsPossible = api.supports(.viewVotes, defaultValue: false)
         
         if viewVotesIsPossible, showAllActions || Settings.get(\.menus_allModActions) {
             viewVotesAction()
@@ -101,7 +101,7 @@ extension Comment1Providing {
             self2.removeAction(appState: appState).disabled(!canModerate)
             self2.creator.banActions(appState: appState, community: self2.community, withUserLabel: true)
         }
-        if api.isAdmin, api.supportsOrNil(.purgeContent) ?? false {
+        if api.isAdmin, api.supports(.purgeContent, defaultValue: false) {
             purgeAction(appState: appState)
             if !isOwnComment {
                 purgeCreatorAction(appState: appState)
@@ -180,7 +180,7 @@ extension Comment1Providing {
     }
     
     func viewVotesAction() -> BasicAction {
-        let enabled = canModerate && (api.supportsOrNil(.viewVotes) ?? true)
+        let enabled = canModerate && api.supports(.viewVotes, defaultValue: true)
         let callback: (@MainActor () -> Void)?
         if let self2, enabled {
             callback = {

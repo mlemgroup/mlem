@@ -34,13 +34,16 @@ extension InboxView {
                 
                 EndOfFeedView(feedLoader: feedLoader, viewType: .cartoon)
             } header: {
-                if appState.firstApi.supportsOrNil(.viewMentionsAndPrivateMessages) ?? false {
+                if appState.firstApi.supports(.viewMentionsAndPrivateMessages, defaultValue: false) {
                     sectionHeader
                 }
             }
         }
         .animation(.easeOut(duration: 0.1), value: feedLoader.items.isEmpty)
-        .padding(.top, (appState.firstApi.supportsOrNil(.viewMentionsAndPrivateMessages) ?? false) ? 0 : Constants.main.standardSpacing)
+        .padding(
+            .top,
+            appState.firstApi.supports(.viewMentionsAndPrivateMessages, defaultValue: false) ? 0 : Constants.main.standardSpacing
+        )
     }
     
     @ViewBuilder
@@ -117,14 +120,12 @@ extension InboxView {
     @ToolbarContentBuilder
     var toolbar: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
-            if UIDevice.isIos26 {
-                // This is a bit of a hack... the WWDC mentioned a `.glassProminent` button style
-                // that we should be using here, but it seems to be missing from the API
+            if #available(iOS 26, *) {
                 if showRead {
                     hideReadButton
                 } else {
                     hideReadButton
-                        .buttonStyle(.borderedProminent)
+                        .buttonStyle(.glassProminent)
                 }
             } else {
                 hideReadButton

@@ -36,7 +36,7 @@ extension ListingType {
         case .user: userCases
         case .moderator, .admin: moderatorCases
         }
-        return cases.filter { api.supportsOrNil(.listingType($0)) ?? false }
+        return cases.filter { api.supports(.listingType($0), defaultValue: false) }
     }
 
     var description: FeedDescription {

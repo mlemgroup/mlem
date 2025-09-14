@@ -10,6 +10,7 @@ import SwiftUI
 
 @Observable
 class TabReselectTracker {
+    var blockTabSwitch: Bool = false
     private(set) var flag: Bool = false
 
     static var main: TabReselectTracker = .init()

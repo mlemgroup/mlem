@@ -32,7 +32,7 @@ struct PersonContentGridView: View {
         }
     }
     
-    var loadingState: LoadingState {
+    var loadingState: FeedLoadingState {
         switch contentType {
         case .all: feedLoader.loadingState
         case .posts: feedLoader.postLoadingState
