@@ -7,6 +7,7 @@
 
 import Icons
 import SwiftUI
+import Theming
 
 struct ModeratorSettingsView: View {
     @Setting(\.menus_modActionGrouping) var moderatorActionGrouping
@@ -20,7 +21,7 @@ struct ModeratorSettingsView: View {
                 description: "Manage settings related to content moderation.",
                 icon: .lemmy.moderation
             )
-            .tint(.themedModeration)
+            .gradientTint(.themedModeration)
             Section {
                 NavigationLink(
                     "Moderator Actions",

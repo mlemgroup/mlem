@@ -7,6 +7,7 @@
 
 import MlemMiddleware
 import SwiftUI
+import Theming
 
 struct SortingSettingsView: View {
     @Setting(\.post_defaultSort) var legacyDefaultPostSort
@@ -35,7 +36,7 @@ struct SortingSettingsView: View {
                 description: "Choose the default sort mode for posts and comments.",
                 icon: .settings.sorting
             )
-            .tint(.themedColorfulAccent(5))
+            .gradientTint(.themedColorfulAccent(5))
             Section {
                 HStack {
                     Text("Posts")

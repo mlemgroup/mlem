@@ -23,3 +23,20 @@ public extension View {
         modifier(ThemedTintViewModifier(themedColor: themedColor))
     }
 }
+
+private struct ThemedGradientTintModifier: ViewModifier {
+    @Environment(\.palette) private var palette
+    
+    let themedColor: ThemedColor
+    
+    func body(content: Content) -> some View {
+        content
+            .tint(themedColor.gradient(palette: palette))
+    }
+}
+
+public extension View {
+    func gradientTint(_ themedColor: ThemedColor) -> some View {
+        modifier(ThemedGradientTintModifier(themedColor: themedColor))
+    }
+}
