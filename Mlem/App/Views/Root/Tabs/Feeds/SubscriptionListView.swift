@@ -28,12 +28,6 @@ struct SubscriptionListView: View {
     
     @Weak var form: UICollectionView?
     
-    var body: some View {
-        content
-            .listStyle(.sidebar)
-            .navigationTitle("Feeds")
-    }
-    
     var detailDisplayed: Bool {
         if UIDevice.isPad {
             noDetail ? false : navigation.path.isEmpty
@@ -42,32 +36,39 @@ struct SubscriptionListView: View {
         }
     }
     
+    var subscriptions: SubscriptionList? {
+        (appState.firstSession as? UserSession)?.subscriptions
+    }
+    
+    var sectionIndicesShown: Bool {
+        !UIDevice.isPad && sort == .alphabetical && (subscriptions?.communities.count ?? 0) > 10
+    }
+    
+    var body: some View {
+        Group {
+            // TODO: iOS 18 deprecation remove compatibility shim
+            if #available(iOS 26, *) {
+                content
+                    .listSectionIndexVisibility(sectionIndicesShown ? .visible : .hidden)
+            } else {
+                content
+            }
+        }
+        .listStyle(.sidebar)
+        .navigationTitle("Feeds")
+    }
+    
     @ViewBuilder
     var content: some View {
         let sections = subscriptions?.visibleSections(sort: sort) ?? []
         
         Form {
-            Section {
-                ForEach(feedOptions, id: \.hashValue) { feedOption in
-                    SubscriptionListNavigationButton(.feeds(feedOption)) {
-                        HStack(spacing: 15) {
-                            FeedIconView(
-                                feedDescription: feedOption.description,
-                                size: appState.firstSession is GuestSession ? 36 : 28
-                            )
-                            VStack(alignment: .leading) {
-                                Text(feedOption.description.label)
-                                if appState.firstSession is GuestSession {
-                                    Text(feedOption.description.subtitle)
-                                        .font(.footnote)
-                                        .foregroundStyle(.themedSecondary)
-                                }
-                            }
-                        }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .contentShape(.rect)
-                    }
-                }
+            // TODO: iOS 18 deprecation remove compatibility shim
+            if #available(iOS 26, *) {
+                feeds
+                    .sectionIndexLabel("★")
+            } else {
+                feeds
             }
             
             if AccountsTracker.main.isEmpty {
@@ -98,7 +99,7 @@ struct SubscriptionListView: View {
         }
         .foregroundStyle(.themedPrimary)
         .overlay(alignment: .trailing) {
-            if sectionIndicesShown {
+            if !UIDevice.isIos26, sectionIndicesShown {
                 SectionIndexTitles(
                     sections: sections,
                     sectionScroller: $sectionScroller
@@ -146,6 +147,32 @@ struct SubscriptionListView: View {
     }
     
     @ViewBuilder
+    var feeds: some View {
+        Section {
+            ForEach(feedOptions, id: \.hashValue) { feedOption in
+                SubscriptionListNavigationButton(.feeds(feedOption)) {
+                    HStack(spacing: 15) {
+                        FeedIconView(
+                            feedDescription: feedOption.description,
+                            size: appState.firstSession is GuestSession ? 36 : 28
+                        )
+                        VStack(alignment: .leading) {
+                            Text(feedOption.description.label)
+                            if appState.firstSession is GuestSession {
+                                Text(feedOption.description.subtitle)
+                                    .font(.footnote)
+                                    .foregroundStyle(.themedSecondary)
+                            }
+                        }
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .contentShape(.rect)
+                }
+            }
+        }
+    }
+    
+    @ViewBuilder
     var signedOutInfoView: some View {
         VStack {
             Image(systemName: "list.bullet")
@@ -179,21 +206,23 @@ struct SubscriptionListView: View {
         .frame(maxWidth: .infinity)
         .foregroundStyle(.themedSecondary)
     }
-    
-    var subscriptions: SubscriptionList? {
-        (appState.firstSession as? UserSession)?.subscriptions
-    }
-    
-    var sectionIndicesShown: Bool {
-        !UIDevice.isPad && sort == .alphabetical && (subscriptions?.communities.count ?? 0) > 10
-    }
 }
 
 private struct SubscriptionListSectionView: View {
     let section: SubscriptionListSection
     let sectionIndicesShown: Bool
     
+    // TODO: iOS 18 deprecation remove compatibility shim
     var body: some View {
+        if #available(iOS 26, *), section.label != "Favorites" {
+            content
+                .sectionIndexLabel(section.label)
+        } else {
+            content
+        }
+    }
+    
+    var content: some View {
         Section(section.label) {
             ForEach(section.communities) { (community: Community2) in
                 SubscriptionListItemView(
