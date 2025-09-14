@@ -43,7 +43,7 @@ extension ContentView {
             switch self {
             case .feeds: .lemmy.feed
             case .inbox: .lemmy.inbox
-            case .profile: .init("person.circle")
+            case .profile: .lemmy.personAvatar
             case .search: .general.search
             case .settings: .general.settings
             }
