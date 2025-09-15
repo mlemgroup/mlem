@@ -29,7 +29,11 @@ public extension PieFedConnection {
             personId: nil,
             communityName: nil,
             likedOnly: filter == .upvoted,
-            savedOnly: filter == .saved
+            savedOnly: filter == .saved,
+            q: nil,
+            page: page,
+            feedId: nil,
+            topicId: nil
         )
         let response = try await perform(request)
         let posts: [Post2Snapshot] = try response.posts.map { try .init(from: $0) }
@@ -57,7 +61,11 @@ public extension PieFedConnection {
             personId: nil,
             communityName: nil,
             likedOnly: filter == .upvoted,
-            savedOnly: filter == .saved
+            savedOnly: filter == .saved,
+            q: nil,
+            page: page,
+            feedId: nil,
+            topicId: nil
         )
         let response = try await perform(request)
         let posts: [Post2Snapshot] = try response.posts.map { try .init(from: $0) }
