@@ -57,8 +57,31 @@ struct SearchHomeView: View {
                 }
             }
             .buttonStyle(.empty)
+            
+            Divider()
+                .padding(.leading, 55)
+            
+            NavigationLink(.upvotedFeed) {
+                FormChevron {
+                    HStack(spacing: 15) {
+                        Image(icon: .lemmy.upvoted)
+                            .symbolVariant(.fill)
+                            .bold()
+                            .foregroundStyle(.white)
+                            .scaledToFit()
+                            .frame(width: 15, height: 15)
+                            .padding(10)
+                            .background(.themedUpvote.gradient(palette: palette), in: .circle)
+                        Text("Upvoted")
+                        
+                        Spacer()
+                    }
+                }
+            }
+            .buttonStyle(.empty)
         }
         .padding(10)
+        .padding(.trailing, 5)
         .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: 25))
     }
     

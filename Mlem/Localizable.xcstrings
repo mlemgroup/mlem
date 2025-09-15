@@ -9182,6 +9182,9 @@
         }
       }
     },
+    "Upvoted" : {
+
+    },
     "Use Alternate Layout" : {
       "extractionState" : "stale",
       "localizations" : {
