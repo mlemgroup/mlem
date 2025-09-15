@@ -13,14 +13,17 @@ import Theming
 struct SearchHomeView: View {
     @Environment(\.navigation) var navigation
     @Environment(\.palette) var palette
+    @Environment(AppState.self) var appState
     
     var body: some View {
         VStack(spacing: 20) {
-            Text("Visit Again")
-                .font(.title)
-                .fontWeight(.semibold)
-                .frame(maxWidth: .infinity, alignment: .leading)
-            topRow
+            if appState.firstAccount.accountType != .guest {
+                Text("Visit Again")
+                    .font(.title)
+                    .fontWeight(.semibold)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                topRow
+            }
             
             Text("Browse")
                 .font(.title)
@@ -56,7 +59,7 @@ struct SearchHomeView: View {
             .buttonStyle(.empty)
         }
         .padding(10)
-        .background(.themedBackground, in: .rect(cornerRadius: 25))
+        .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: 25))
     }
     
     @ViewBuilder
