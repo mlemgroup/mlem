@@ -73,7 +73,9 @@ public extension PieFedConnection {
             sort: sort,
             listingType: filter.pieFedListingType,
             page: page,
-            limit: limit
+            limit: limit,
+            communityName: nil,
+            communityId: nil
         )
         let response = try await perform(request)
         return try response.users.map { try .init(from: $0) }

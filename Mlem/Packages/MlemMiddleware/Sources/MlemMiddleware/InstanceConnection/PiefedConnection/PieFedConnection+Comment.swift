@@ -126,7 +126,7 @@ public extension PieFedConnection {
     
     @discardableResult
     func voteOnComment(id: Int, score: ScoringOperation) async throws -> Comment2Snapshot {
-        let request = PieFedCreateCommentLikeRequest(
+        let request = PieFedLikeCommentRequest(
             commentId: id,
             score: score.rawValue,
             private: false
