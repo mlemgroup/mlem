@@ -203,4 +203,14 @@ public extension Person1Providing {
     func isBannedFromCommunity(_ community: any Community) -> Bool? {
         isBannedFromCommunity(id: community.id)
     }
+
+    func profileDetails() -> ProfileDetails {
+        .init(
+            avatar: avatar,
+            banner: banner,
+            displayName: displayName,
+            description: description,
+            matrixId: matrixId
+        )
+    }
 }

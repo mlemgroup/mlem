@@ -132,6 +132,12 @@ extension ApiRepository {
             try await connection.deleteAccount(password: password, deleteContent: deleteContent)
         }
     }
+
+    func editProfile(_ details: ProfileDetails) async throws {
+        try await performingForConnection { connection in
+            try await connection.editProfile(details: details)
+        }
+    }
     
     func editAccountSettings(
         showNsfw: Bool?,

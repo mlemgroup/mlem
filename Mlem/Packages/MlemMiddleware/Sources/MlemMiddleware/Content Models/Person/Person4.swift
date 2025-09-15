@@ -146,45 +146,14 @@ public final class Person4: Person4Providing {
         person1.isBot = isBot ?? self.isBot
     }
     
-    public func updateProfile(
-        displayName: String?,
-        description: String?,
-        avatar: URL?,
-        banner: URL?
-    ) async throws {
-        try await api.editAccountSettings(
-            showNsfw: showNsfw,
-            showScores: showScores,
-            theme: theme,
-            defaultListingType: defaultListingType,
-            interfaceLanguage: interfaceLanguage,
-            avatar: avatar?.absoluteString ?? "",
-            banner: banner?.absoluteString ?? "",
-            displayName: displayName ?? "",
-            email: email,
-            bio: description ?? "",
-            matrixUserId: matrixId,
-            showAvatars: showAvatars,
-            sendNotificationsToEmail: sendNotificationsToEmail,
-            botAccount: isBot,
-            showBotAccounts: showBotAccounts,
-            showReadPosts: showReadPosts,
-            discussionLanguages: nil,
-            openLinksInNewTab: openLinksInNewTab,
-            blurNsfw: blurNsfw,
-            autoExpand: autoExpandImages,
-            infiniteScrollEnabled: infiniteScrollEnabled,
-            postListingMode: postListingMode,
-            enableKeyboardNavigation: enableKeyboardNavigation,
-            enableAnimatedImages: enableAnimatedImages,
-            collapseBotComments: collapseBotComments,
-            showUpvotes: nil,
-            showDownvotes: nil,
-            showUpvotePercentage: nil
+    public func updateProfile(_ details: ProfileDetails) async throws {
+        let diff = ProfileDetailsMutation(
+            originalDetails: profileDetails(),
+            newDetails: details
         )
-        person1.displayName = displayName ?? name
-        person1.description = description
-        person1.avatar = avatar
-        person1.banner = banner
+        if try await !(diff.isValid(forSoftware: api.software)) {
+            throw ApiClientError.invalidInput
+        }
+        try await api.editProfile(details)
     }
 }

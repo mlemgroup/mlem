@@ -7,6 +7,7 @@
 
 import MlemMiddleware
 import SwiftUI
+import Theming
 
 struct SettingsView: View {
     @Environment(AppState.self) var appState
@@ -30,44 +31,44 @@ struct SettingsView: View {
                     icon: .settings.general,
                     destination: .settings(.general)
                 )
-                .tint(.themedNeutralAccent)
+                .gradientTint(.themedNeutralAccent)
                 NavigationLink(
                     "Privacy",
                     icon: .settings.privacy,
                     destination: .settings(.privacy)
                 )
-                .tint(.themedColorfulAccent(2))
+                .gradientTint(.themedColorfulAccent(2))
                 NavigationLink(
                     "Safety & Filtering",
                     icon: .settings.safety,
                     destination: .settings(.safety)
                 )
-                .tint(.themedColorfulAccent(3))
+                .gradientTint(.themedColorfulAccent(3))
                 NavigationLink(
                     "Accessibility",
                     icon: .settings.accessibility,
                     destination: .settings(.accessibility)
                 )
-                .tint(.themedColorfulAccent(2))
+                .gradientTint(.themedColorfulAccent(2))
                 NavigationLink(
                     "Media & Links",
                     icon: .general.image,
                     destination: .settings(.links)
                 )
-                .tint(.themedColorfulAccent(4))
+                .gradientTint(.themedColorfulAccent(4))
                 NavigationLink(
                     "Sorting",
                     icon: .settings.sorting,
                     destination: .settings(.sorting)
                 )
-                .tint(.themedColorfulAccent(5))
+                .gradientTint(.themedColorfulAccent(5))
                 if AccountsTracker.main.highestLevelAccountType >= .moderator {
                     NavigationLink(
                         "Moderation",
                         icon: .lemmy.moderation,
                         destination: .settings(.moderation)
                     )
-                    .tint(.themedModeration)
+                    .gradientTint(.themedModeration)
                     .symbolVariant(.fill)
                 }
             }
@@ -82,22 +83,22 @@ struct SettingsView: View {
             
             Section {
                 NavigationLink("Posts", icon: .lemmy.post, destination: .settings(.post))
-                    .tint(.themedPostAccent)
+                    .gradientTint(.themedPostAccent)
                 NavigationLink("Comments", icon: .lemmy.comment, destination: .settings(.comment))
-                    .tint(.themedCommentAccent)
+                    .gradientTint(.themedCommentAccent)
                 NavigationLink("Inbox", icon: .lemmy.inbox, destination: .settings(.inbox))
-                    .tint(.themedInbox)
+                    .gradientTint(.themedInbox)
                 NavigationLink("Subscription List", icon: .lemmy.subscriptionList, destination: .settings(.subscriptionList))
-                    .tint(.themedCommunityAccent)
+                    .gradientTint(.themedCommunityAccent)
                 NavigationLink("Tab Bar", icon: .settings.tabBar, destination: .settings(.tabBar))
-                    .tint(.themedColorfulAccent(5))
+                    .gradientTint(.themedColorfulAccent(5))
             }
             
             Section {
                 NavigationLink("About Mlem", icon: .general.info, destination: .settings(.about))
-                    .tint(.themedColorfulAccent(2))
+                    .gradientTint(.themedColorfulAccent(2))
                 NavigationLink("Advanced", icon: .settings.advanced, destination: .settings(.advanced))
-                    .tint(.themedNeutralAccent)
+                    .gradientTint(.themedNeutralAccent)
             }
         }
         .labelStyle(.squircle)

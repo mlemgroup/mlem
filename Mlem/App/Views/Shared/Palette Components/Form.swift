@@ -20,7 +20,6 @@ struct Form<Content: View>: View {
             content()
                 .foregroundStyle(.themedPrimary)
                 .listRowBackground(palette.groupedBackground.secondary)
-                // .tint(.themedAccent)
                 .buttonStyle(PaletteButton())
         }
         .tint(.themedAccent)
