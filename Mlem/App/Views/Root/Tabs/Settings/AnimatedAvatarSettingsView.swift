@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Theming
 
 struct AnimatedAvatarSettingsView: View {
     @Setting(\.media_animatedAvatars) var animatedAvatars
@@ -17,7 +18,7 @@ struct AnimatedAvatarSettingsView: View {
                 description: "Some users set animated media as their avatar. Control whether these avatars should play their animations.",
                 icon: .general.playCircle
             )
-            .tint(.themedColorfulAccent(4))
+            .gradientTint(.themedColorfulAccent(4))
             
             Picker("Animate Avatars...", selection: $animatedAvatars) {
                 ForEach(AnimatedAvatarBehavior.allCases, id: \.self) { location in

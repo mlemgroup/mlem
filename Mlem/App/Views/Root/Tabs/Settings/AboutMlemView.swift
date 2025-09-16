@@ -7,6 +7,7 @@
 
 import ComponentViews
 import SwiftUI
+import Theming
 
 struct AboutMlemView: View {
     @Environment(\.palette) var palette
@@ -25,30 +26,30 @@ struct AboutMlemView: View {
                     FormChevron { Label("Website", icon: .general.website) }
                         .foregroundStyle(.themedPrimary)
                 }
-                .tint(.themedColorfulAccent(2))
+                .gradientTint(.themedColorfulAccent(2))
                 Link(destination: URL(string: "https://lemmy.ml/c/mlemapp")!) {
                     FormChevron { Label("Lemmy Community", icon: .lemmy.community) }
                         .foregroundStyle(.themedPrimary)
                 }
-                .tint(.themedColorfulAccent(3))
+                .gradientTint(.themedColorfulAccent(3))
                 Link(destination: URL(string: "https://matrix.to/#/#mlemappspace:matrix.org")!) {
                     FormChevron { Label("Matrix Room", image: "matrix.logo") }
                         .foregroundStyle(.themedPrimary)
                 }
-                .tint(.black) // non-palette because white tint turns this into white square
+                .tint(Color.black.gradient) // not ThemedColor because white tint turns this into white square
                 Link(destination: URL(string: "https://github.com/mlemgroup/mlem")!) {
                     FormChevron { Label("GitHub Repository", image: "github.logo") }
                         .foregroundStyle(.themedPrimary)
                 }
-                .tint(.black) // non-palette because white tint turns this into white square
+                .tint(Color.black.gradient) // not ThemedColor because white tint turns this into white square
             }
             Section {
                 NavigationLink("Privacy Policy", icon: .settings.privacy, destination: .settings(.document(.privacyPolicy)))
-                    .tint(.themedColorfulAccent(2))
+                    .gradientTint(.themedColorfulAccent(2))
                 NavigationLink("EULA", icon: .settings.eula, destination: .settings(.document(.eula)))
-                    .tint(.themedColorfulAccent(0))
+                    .gradientTint(.themedColorfulAccent(0))
                 NavigationLink("Licenses", icon: .settings.licence, destination: .settings(.licences))
-                    .tint(.themedColorfulAccent(4))
+                    .gradientTint(.themedColorfulAccent(4))
             }
         }
         .buttonStyle(.plain)

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Theming
 
 struct SafetyWarningsSettingsView: View {
     @Setting(\.safety_enableNsfwCommunityWarning) var showNsfwCommunityWarning
@@ -18,7 +19,7 @@ struct SafetyWarningsSettingsView: View {
                 description: "Choose whether to show a warning when opening a page that is likely to contain sensitive content.",
                 icon: .general.warning
             )
-            .tint(.themedWarning)
+            .gradientTint(.themedWarning)
             Section("Show warnings when opening...") {
                 Toggle("NSFW Communities", icon: .lemmy.community, isOn: $showNsfwCommunityWarning)
                 Toggle("Modlogs", icon: .lemmy.modlog, isOn: $showModlogWarning)

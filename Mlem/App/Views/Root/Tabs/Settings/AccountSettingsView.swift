@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Theming
 
 struct AccountSettingsView: View {
     @Environment(AppState.self) var appState
@@ -38,7 +39,7 @@ struct AccountSettingsView: View {
                             icon: .lemmy.person,
                             destination: .settings(.profile)
                         )
-                        .tint(.themedColorfulAccent(5))
+                        .gradientTint(.themedColorfulAccent(5))
                     }
                     if appState.firstAccount.siteSoftware?.supports(.editAccountSettings) ?? false {
                         NavigationLink(
@@ -46,19 +47,19 @@ struct AccountSettingsView: View {
                             icon: .general.security,
                             destination: .settings(.accountSignIn)
                         )
-                        .tint(.themedColorfulAccent(2))
+                        .gradientTint(.themedColorfulAccent(2))
                         NavigationLink(
                             "Content & Notifications",
                             icon: .lemmy.post,
                             destination: .settings(.accountContent)
                         )
-                        .tint(.themedColorfulAccent(0))
+                        .gradientTint(.themedColorfulAccent(0))
                         NavigationLink(
                             "Advanced",
                             icon: .settings.advanced,
                             destination: .settings(.accountAdvanced)
                         )
-                        .tint(.themedNeutralAccent)
+                        .gradientTint(.themedNeutralAccent)
                     }
                 }
                 Section {
@@ -67,7 +68,7 @@ struct AccountSettingsView: View {
                         icon: .lemmy.block,
                         destination: .blockList
                     )
-                    .tint(.themedNegative)
+                    .gradientTint(.themedNegative)
                 }
                 Section {
                     NavigationLink(
@@ -75,7 +76,7 @@ struct AccountSettingsView: View {
                         icon: .settings.localAccountOptions,
                         destination: .settings(.accountLocal)
                     )
-                    .tint(.themedColorfulAccent(2))
+                    .gradientTint(.themedColorfulAccent(2))
                 } footer: {
                     Text("These options are stored locally in Mlem and not on your Lemmy account.")
                 }
