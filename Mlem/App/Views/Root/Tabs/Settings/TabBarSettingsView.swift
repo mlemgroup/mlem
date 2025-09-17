@@ -46,16 +46,18 @@ struct TabBarSettingsView: View {
                     .symbolVariant(.circle)
             }
             
-            Section {
-                NavigationLink(
-                    "Long Press Action",
-                    value: .init(localized: longPressAction.label),
-                    fallbackValue: "",
-                    icon: .settings.longPress,
-                    destination: .settings(.longPressAction)
-                )
+            if !UIDevice.isIos26 {
+                Section {
+                    NavigationLink(
+                        "Long Press Action",
+                        value: .init(localized: longPressAction.label),
+                        fallbackValue: "",
+                        icon: .settings.longPress,
+                        destination: .settings(.longPressAction)
+                    )
+                }
             }
-            
+                
             Section {
                 NavigationLink(
                     "Notification Badge",
