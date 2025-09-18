@@ -10,7 +10,7 @@ import Foundation
 public extension BlockListSnapshot {
     init(from myUserInfo: PieFedMyUserInfo) {
         self.people = myUserInfo.personBlocks.reduce(into: [:]) {
-            $0[$1.person.actorId] = $1.target.id
+            $0[$1.target.actorId] = $1.target.id
         }
         
         self.communities = myUserInfo.communityBlocks.reduce(into: [:]) {
