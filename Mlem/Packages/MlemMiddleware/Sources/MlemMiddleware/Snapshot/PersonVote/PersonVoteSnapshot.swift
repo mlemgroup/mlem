@@ -13,10 +13,4 @@ public struct PersonVoteSnapshot: CacheIdentifiable {
     public let creatorBannedFromCommunity: Bool?
     
     public var cacheId: Int { creator.id }
-    
-    public init(from vote: LemmyVoteView) throws(ApiClientError) {
-        self.creator = try .init(from: vote.creator)
-        self.score = vote.score
-        self.creatorBannedFromCommunity = vote.creatorBannedFromCommunity
-    }
 }
