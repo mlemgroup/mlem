@@ -17,7 +17,6 @@ struct UpvotedFeedView: View {
     var body: some View {
         content
             .task { await setupFeedLoader() }
-            .background(.themedGroupedBackground)
             .themedGroupedBackground()
             .scrollContentBackground(.hidden)
             .conditionalNavigationTitle("Upvoted")
