@@ -141,7 +141,6 @@ public protocol InstanceConnection {
     @discardableResult
     func getPostVotes(
         id: Int,
-        communityId: Int,
         page: Int,
         limit: Int
     ) async throws -> [PersonVoteSnapshot]
@@ -220,7 +219,6 @@ public protocol InstanceConnection {
     @discardableResult
     func getCommentVotes(
         id: Int,
-        communityId: Int,
         page: Int,
         limit: Int
     ) async throws -> [PersonVoteSnapshot]
