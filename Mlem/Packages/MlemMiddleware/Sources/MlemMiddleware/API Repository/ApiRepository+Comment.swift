@@ -174,14 +174,12 @@ extension ApiRepository {
     
     func getCommentVotes(
         id: Int,
-        communityId: Int,
         page: Int = 1,
         limit: Int = 20
     ) async throws -> [PersonVoteSnapshot] {
         try await performingForConnection { connection in
             try await connection.getCommentVotes(
                 id: id,
-                communityId: communityId,
                 page: page,
                 limit: limit
             )

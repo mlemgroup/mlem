@@ -52,28 +52,7 @@ struct VotesListView: View {
     var body: some View {
         FancyScrollView {
             LazyVStack(spacing: Constants.main.halfSpacing) {
-                ForEach(votes, id: \.creator.id) { (vote: PersonVote) in
-                    NavigationLink(.person(vote.creator)) {
-                        HStack {
-                            FullyQualifiedLinkView(vote.creator, labelStyle: .medium)
-                            Spacer()
-                            Image(systemName: vote.vote.systemImage)
-                                .imageScale(.large)
-                                .symbolVariant(.fill)
-                                .symbolRenderingMode(.palette)
-                                .foregroundStyle(.themedContrastingLabel, vote.vote.color)
-                        }
-                    }
-                    .padding([.vertical, .trailing], Constants.main.halfSpacing)
-                    .padding(.leading, Constants.main.standardSpacing)
-                    .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
-                    .paletteBorder(cornerRadius: Constants.main.standardSpacing)
-                    .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
-                    .contextMenu {
-                        vote.creator.menuActions(appState: appState, navigation: navigation, community: target.model.community_)
-                    }
-                    .padding(.horizontal, Constants.main.standardSpacing)
-                }
+                ForEach(votes, id: \.creator.id, content: rowView)
                 EndOfFeedView(loadingState: loadingState, viewType: .turtle)
                     .onAppear {
                         loadNextPage()
@@ -83,6 +62,35 @@ struct VotesListView: View {
         .environment(\.communityContext, target.model.community_)
         .themedGroupedBackground()
         .navigationTitle("Votes")
+    }
+    
+    @ViewBuilder
+    func rowView(_ vote: PersonVote) -> some View {
+        NavigationLink(.person(vote.creator)) {
+            rowViewLabel(vote)
+        }
+        .padding([.vertical, .trailing], Constants.main.halfSpacing)
+        .padding(.leading, Constants.main.standardSpacing)
+        .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+        .paletteBorder(cornerRadius: Constants.main.standardSpacing)
+        .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
+        .contextMenu {
+            vote.creator.menuActions(appState: appState, navigation: navigation, community: target.model.community_)
+        }
+        .padding(.horizontal, Constants.main.standardSpacing)
+    }
+    
+    @ViewBuilder
+    func rowViewLabel(_ vote: PersonVote) -> some View {
+        HStack {
+            FullyQualifiedLinkView(vote.creator, labelStyle: .medium)
+            Spacer()
+            Image(systemName: vote.vote.systemImage)
+                .imageScale(.large)
+                .symbolVariant(.fill)
+                .symbolRenderingMode(.palette)
+                .foregroundStyle(.themedContrastingLabel, vote.vote.color)
+        }
     }
     
     func loadNextPage() {
