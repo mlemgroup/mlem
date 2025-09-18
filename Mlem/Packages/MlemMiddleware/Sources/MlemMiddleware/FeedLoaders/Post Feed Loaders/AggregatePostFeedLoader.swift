@@ -10,9 +10,11 @@ import Foundation
 @Observable
 class AggregatePostFetcher: PostFetcher {
     var feedType: ListingType
+    let contentFilter: GetContentFilter?
     
-    init(api: ApiClient, feedType: ListingType, sortType: PostSortType, pageSize: Int) {
+    init(api: ApiClient, feedType: ListingType, sortType: PostSortType, pageSize: Int, contentFilter: GetContentFilter?) {
         self.feedType = feedType
+        self.contentFilter = contentFilter
         
         super.init(api: api, sortType: sortType, pageSize: pageSize)
     }
@@ -24,7 +26,7 @@ class AggregatePostFetcher: PostFetcher {
             page: page,
             cursor: cursor,
             limit: pageSize,
-            filter: nil, // TODO:
+            filter: contentFilter,
             showHidden: false // TODO:
         )
     }
@@ -48,7 +50,8 @@ public class AggregatePostFeedLoader: CorePostFeedLoader {
         prefetchingConfiguration: PrefetchingConfiguration,
         urlCache: URLCache,
         api: ApiClient,
-        feedType: ListingType
+        feedType: ListingType,
+        contentFilter: GetContentFilter? = nil
     ) {
         super.init(
             showReadPosts: showReadPosts,
@@ -58,7 +61,8 @@ public class AggregatePostFeedLoader: CorePostFeedLoader {
                 api: api,
                 feedType: feedType,
                 sortType: sortType,
-                pageSize: pageSize
+                pageSize: pageSize,
+                contentFilter: contentFilter
             )
         )
     }

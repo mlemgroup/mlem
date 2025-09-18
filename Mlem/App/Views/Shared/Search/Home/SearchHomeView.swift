@@ -41,24 +41,19 @@ struct SearchHomeView: View {
     var topRow: some View {
         VStack {
             NavigationLink(.savedFeed) {
-                FormChevron {
-                    HStack(spacing: 15) {
-                        Image(icon: .lemmy.savedFeed)
-                            .symbolVariant(.fill)
-                            .foregroundStyle(.white)
-                            .scaledToFit()
-                            .frame(width: 15, height: 15)
-                            .padding(10)
-                            .background(.themedSavedFeed.gradient(palette: palette), in: .circle)
-                        Text("Saved")
-                        
-                        Spacer()
-                    }
-                }
+                VisitAgainLink(icon: .lemmy.savedFeed, color: .themedSavedFeed, title: "Saved")
             }
-            .buttonStyle(.empty)
+            
+            Divider()
+                .padding(.leading, 50)
+            
+            NavigationLink(.upvotedFeed) {
+                VisitAgainLink(icon: .lemmy.upvoted, iconWeight: .bold, color: .themedUpvote, title: "Upvoted")
+            }
         }
+        .buttonStyle(.empty)
         .padding(10)
+        .padding(.trailing, 5)
         .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: 25))
     }
     
@@ -168,15 +163,36 @@ private struct GridButton: View {
     }
 }
 
-private struct CapsuleButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .foregroundStyle(.themedAccent)
-            .padding(.vertical, 10)
-            .fontWeight(.semibold)
-            .frame(maxWidth: .infinity)
-            .background(.themedSecondaryGroupedBackground, in: .capsule)
-            .symbolVariant(.fill)
-            .opacity(configuration.isPressed ? 0.5 : 1)
+private struct VisitAgainLink: View {
+    @Environment(\.palette) var palette
+    
+    let icon: Icon
+    let iconWeight: Font.Weight
+    let color: ThemedColor
+    let title: String
+    
+    init(icon: Icon, iconWeight: Font.Weight = .regular, color: ThemedColor, title: String) {
+        self.icon = icon
+        self.iconWeight = iconWeight
+        self.color = color
+        self.title = title
+    }
+
+    var body: some View {
+        FormChevron {
+            HStack(spacing: 15) {
+                Image(icon: icon)
+                    .fontWeight(iconWeight)
+                    .symbolVariant(.fill)
+                    .foregroundStyle(.white)
+                    .scaledToFit()
+                    .frame(width: 15, height: 15)
+                    .padding(10)
+                    .background(color.gradient(palette: palette), in: .circle)
+                Text(title)
+                
+                Spacer()
+            }
+        }
     }
 }

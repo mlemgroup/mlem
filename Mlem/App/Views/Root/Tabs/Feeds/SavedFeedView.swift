@@ -39,7 +39,6 @@ struct SavedFeedView: View {
     
     var body: some View {
         content
-            .background(ThemedColor.themedGroupedBackground)
             .themedGroupedBackground()
             .scrollContentBackground(.hidden)
             .conditionalNavigationTitle("Saved")

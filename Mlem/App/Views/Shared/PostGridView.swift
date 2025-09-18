@@ -34,9 +34,12 @@ struct PostGridView: View {
     @Namespace var navigationNamespace
     
     let postFeedLoader: CorePostFeedLoader
+    
+    let alwaysShowRead: Bool
 
-    init(postFeedLoader: CorePostFeedLoader) {
+    init(postFeedLoader: CorePostFeedLoader, alwaysShowRead: Bool = false) {
         self.postFeedLoader = postFeedLoader
+        self.alwaysShowRead = alwaysShowRead
     }
     
     var body: some View {
@@ -46,7 +49,7 @@ struct PostGridView: View {
             .loadFeed(postFeedLoader)
             .task(id: showRead) {
                 do {
-                    if showRead {
+                    if showRead || alwaysShowRead {
                         try await postFeedLoader.deactivateFilter(.read)
                     } else {
                         try await postFeedLoader.activateFilter(.read)

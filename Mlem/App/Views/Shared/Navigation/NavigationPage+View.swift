@@ -30,8 +30,8 @@ extension NavigationPage {
             FeedsView(listingType: listingType)
         case .savedFeed:
             SavedFeedView()
-        case .historyFeed:
-            HistoryFeedView()
+        case .upvotedFeed:
+            UpvotedFeedView()
         case .topCommunities:
             TopCommunitiesListView()
         case .topPeople:
