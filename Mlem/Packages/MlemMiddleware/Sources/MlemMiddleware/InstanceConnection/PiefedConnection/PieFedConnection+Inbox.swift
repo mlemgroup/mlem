@@ -64,7 +64,7 @@ public extension PieFedConnection {
             let response = try await perform(request)
             return try response.privateMessages.map { try .init(from: $0) }
         } else {
-            let request = PieFedGetPrivateMessagesRequest(
+            let request = PieFedListPrivateMessagesRequest(
                 unreadOnly: unreadOnly,
                 page: page,
                 limit: limit,
@@ -121,7 +121,11 @@ public extension PieFedConnection {
     
     @discardableResult
     func deleteMessage(id: Int, delete: Bool) async throws -> Message2Snapshot {
-        let request = PieFedDeletePrivateMessageRequest(messageId: id, deleted: delete)
+        let request = PieFedDeletePrivateMessageRequest(
+            messageId: id,
+            deleted: delete,
+            privateMessageId: id
+        )
         let response = try await perform(request)
         return try .init(from: response.privateMessageView)
     }
