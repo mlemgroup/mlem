@@ -277,7 +277,7 @@ struct CommentEditorView: View {
     
     @ViewBuilder
     var sendButton: some View {
-        Button("Send", icon: .lemmy.send) {
+        Button("Send", icon: commentToEdit != nil ? .general.success : .lemmy.send) {
             sending = true
             Task(priority: .userInitiated) {
                 await send()

@@ -39,7 +39,7 @@ extension PostEditorView {
     
     @ViewBuilder
     var sendButton: some View {
-        Button("Send", icon: .lemmy.send) {
+        Button("Send", icon: postToEdit != nil ? .general.success : .lemmy.send) {
             self.sending = true
             Task { await submit() }
         }
