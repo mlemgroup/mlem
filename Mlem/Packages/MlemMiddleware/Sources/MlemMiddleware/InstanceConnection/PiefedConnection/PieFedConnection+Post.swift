@@ -20,7 +20,7 @@ public extension PieFedConnection {
         if filter == .downvoted {
             throw ApiClientError.featureUnsupported
         }
-        let request = PieFedGetPostsRequest(
+        let request = PieFedListPostsRequest(
             type_: nil,
             sort: sort.pieFedSortType,
             pageCursor: page,
@@ -29,7 +29,11 @@ public extension PieFedConnection {
             personId: nil,
             communityName: nil,
             likedOnly: filter == .upvoted,
-            savedOnly: filter == .saved
+            savedOnly: filter == .saved,
+            q: nil,
+            page: page,
+            feedId: nil,
+            topicId: nil
         )
         let response = try await perform(request)
         let posts: [Post2Snapshot] = try response.posts.map { try .init(from: $0) }
@@ -48,7 +52,7 @@ public extension PieFedConnection {
         if filter == .downvoted || showHidden {
             throw ApiClientError.featureUnsupported
         }
-        let request = PieFedGetPostsRequest(
+        let request = PieFedListPostsRequest(
             type_: feed.pieFedListingType,
             sort: sort.pieFedSortType,
             pageCursor: page,
@@ -57,7 +61,11 @@ public extension PieFedConnection {
             personId: nil,
             communityName: nil,
             likedOnly: filter == .upvoted,
-            savedOnly: filter == .saved
+            savedOnly: filter == .saved,
+            q: nil,
+            page: page,
+            feedId: nil,
+            topicId: nil
         )
         let response = try await perform(request)
         let posts: [Post2Snapshot] = try response.posts.map { try .init(from: $0) }
@@ -116,7 +124,9 @@ public extension PieFedConnection {
             sort: sort,
             listingType: filter.pieFedListingType,
             page: page,
-            limit: limit
+            limit: limit,
+            communityName: nil,
+            communityId: communityId
         )
         let response = try await perform(request)
         return try response.posts.map { try .init(from: $0) }
@@ -160,7 +170,7 @@ public extension PieFedConnection {
     
     @discardableResult
     func voteOnPost(id: Int, score: ScoringOperation) async throws -> Post2Snapshot {
-        let request = PieFedCreatePostLikeRequest(postId: id, score: score.rawValue)
+        let request = PieFedLikePostRequest(postId: id, score: score.rawValue)
         async let response = perform(request)
         if !supports(.autoMarkPostReadOnInteract, defaultValue: false) {
             try await markPostAsRead(id: id, read: true)

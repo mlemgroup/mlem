@@ -8,7 +8,7 @@
 import Foundation
 
 public extension ImageUpload1Snapshot {
-    init(from response: PieFedUploadResponse) {
+    init(from response: PieFedImageUploadResponse) {
         self.url = response.url
         self.alias = nil
         self.deleteToken = nil
