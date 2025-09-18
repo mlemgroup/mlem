@@ -156,7 +156,6 @@ public extension ApiClient {
     ) async throws -> [PersonVote] {
         let snapshot = try await repository.getCommentVotes(
             id: id,
-            communityId: communityId,
             page: page,
             limit: limit
         )

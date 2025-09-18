@@ -211,7 +211,6 @@ public extension PieFedConnection {
     @discardableResult
     func getCommentVotes(
         id: Int,
-        communityId: Int,
         page: Int = 1,
         limit: Int = 20
     ) async throws -> [PersonVoteSnapshot] {
