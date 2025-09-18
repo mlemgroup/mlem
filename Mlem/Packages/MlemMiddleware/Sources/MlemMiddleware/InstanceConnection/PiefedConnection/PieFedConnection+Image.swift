@@ -38,7 +38,7 @@ public extension PieFedConnection {
         )
         
         do {
-            let response = try JSONDecoder.defaultDecoder.decode(PieFedUploadResponse.self, from: data)
+            let response = try JSONDecoder.defaultDecoder.decode(PieFedImageUploadResponse.self, from: data)
             return .init(from: response)
         } catch DecodingError.dataCorrupted {
             let text = String(decoding: data, as: UTF8.self)
