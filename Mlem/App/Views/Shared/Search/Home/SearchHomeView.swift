@@ -59,7 +59,7 @@ struct SearchHomeView: View {
             .buttonStyle(.empty)
             
             Divider()
-                .padding(.leading, 55)
+                .padding(.leading, 50)
             
             NavigationLink(.upvotedFeed) {
                 FormChevron {
