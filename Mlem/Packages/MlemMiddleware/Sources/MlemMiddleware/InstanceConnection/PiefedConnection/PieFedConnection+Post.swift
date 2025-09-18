@@ -318,6 +318,8 @@ public extension PieFedConnection {
         page: Int = 1,
         limit: Int = 20
     ) async throws -> [PersonVoteSnapshot] {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedListPostLikesRequest(postId: id, page: page, limit: limit)
+        let response = try await perform(request)
+        return try response.postLikes?.map { try .init(from: $0) } ?? []
     }
 }
