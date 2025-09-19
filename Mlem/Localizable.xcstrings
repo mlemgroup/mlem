@@ -564,7 +564,14 @@
       }
     },
     "A selection of communities curated by %@ admins" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Communautés sélectionnées par les administrateurs de %@\n"
+          }
+        }
+      }
     },
     "About" : {
       "localizations" : {
@@ -2891,7 +2898,14 @@
       }
     },
     "Discard" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abandonner"
+          }
+        }
+      }
     },
     "Disclosure Group" : {
       "localizations" : {
@@ -6210,7 +6224,14 @@
       }
     },
     "Read %lld posts" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lu %lld publications"
+          }
+        }
+      }
     },
     "Read Indicator" : {
       "localizations" : {
@@ -7888,7 +7909,14 @@
       }
     },
     "Suggested" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suggérées"
+          }
+        }
+      }
     },
     "Suggested Languages" : {
       "localizations" : {
@@ -9183,7 +9211,14 @@
       }
     },
     "Upvoted" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Votées positivement"
+          }
+        }
+      }
     },
     "Use Alternate Layout" : {
       "extractionState" : "stale",
@@ -9437,7 +9472,14 @@
       }
     },
     "Visit Again" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revisiter"
+          }
+        }
+      }
     },
     "Votes" : {
       "localizations" : {
