@@ -43,8 +43,6 @@ struct CommentEditorView: View {
     @State var uploadHistory: ImageUploadHistoryManager = .init()
     @State var slurMatch: String?
     
-    // @FocusState var focused: Bool
-    
     @State var slurRegex: Regex<AnyRegexOutput>?
     
     init?(
