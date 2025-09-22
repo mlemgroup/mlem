@@ -14,8 +14,7 @@ extension SelectableContentProviding {
     }
     
     func selectTextAction() -> BasicAction {
-
-        return .init(
+        .init(
             id: "selectText\(actorId.description)",
             appearance: .selectText(),
             callback: selectableContent == nil ? nil : showTextSelectionSheet
