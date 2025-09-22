@@ -9,18 +9,16 @@ import MlemMiddleware
 
 extension SelectableContentProviding {
     @MainActor
-    func showTextSelectionSheet(onSelectTextCallback: (() -> Void)? = nil) {
-        onSelectTextCallback?()
+    func showTextSelectionSheet() {
         NavigationModel.main.openSheet(.selectText(selectableContent ?? ""))
     }
     
-    func selectTextAction(onSelectTextCallback: (() -> Void)? = nil) -> BasicAction {
-        let callback: @MainActor () -> Void = { showTextSelectionSheet(onSelectTextCallback: onSelectTextCallback) }
-        
+    func selectTextAction() -> BasicAction {
+
         return .init(
             id: "selectText\(actorId.description)",
             appearance: .selectText(),
-            callback: selectableContent == nil ? nil : callback
+            callback: selectableContent == nil ? nil : showTextSelectionSheet
         )
     }
 }

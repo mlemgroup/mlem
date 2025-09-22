@@ -20,7 +20,9 @@ struct MessageFeedView: View {
     let person: AnyPerson
     let focusTextField: Bool
     @State var editing: (any Message)?
-    @State var textViewWasFirstResponder: Bool = false
+    
+    /// Tracks whether the text view was firstResponder when a sheet was opened. Nil when no sheet is open.
+    @State var textViewWasFirstResponder: Bool?
     
     let timer = Timer.publish(every: 5, on: .main, in: .common).autoconnect()
     
@@ -81,6 +83,7 @@ struct MessageFeedView: View {
         }
     }
     
+    // swiftlint:disable:next function_body_length
     @ViewBuilder func content(person: any Person) -> some View {
         ScrollViewReader { scrollProxy in
             ScrollView {
@@ -127,6 +130,17 @@ struct MessageFeedView: View {
                     }
                 }
             }
+            .onChange(of: navigation.model?.layers.count) {
+                if let numLayers = navigation.model?.layers.count {
+                    if numLayers > 0, textViewWasFirstResponder == nil {
+                        textViewWasFirstResponder = textView.isFirstResponder
+                        textView.resignFirstResponder()
+                    } else if textViewWasFirstResponder ?? false {
+                        textViewWasFirstResponder = nil
+                        textView.becomeFirstResponder()
+                    }
+                }
+            }
         }
     }
     
@@ -143,9 +157,6 @@ struct MessageFeedView: View {
                 editing = message
                 textView.text = message.content
                 textView.becomeFirstResponder()
-            }, onSelectTextCallback: {
-                textViewWasFirstResponder = textView.isFirstResponder
-                textView.resignFirstResponder()
             })
             .padding(message.isOwnMessage ? .leading : .trailing, 50)
             .frame(maxWidth: 400, alignment: message.isOwnMessage ? .trailing : .leading)
@@ -154,12 +165,6 @@ struct MessageFeedView: View {
                     try feedLoader.loadIfThreshold(message)
                 } catch {
                     handleError(error)
-                }
-            }
-            .onChange(of: navigation.model?.layers.count) {
-                if textViewWasFirstResponder, navigation.model?.layers.count == 0 {
-                    textViewWasFirstResponder = false
-                    textView.becomeFirstResponder()
                 }
             }
             if let footerText = messageFooterText(for: message) {

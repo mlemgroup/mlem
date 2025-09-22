@@ -16,7 +16,6 @@ struct MessageBubbleView: View {
     
     let message: any Message
     var editCallback: @MainActor () -> Void
-    let onSelectTextCallback: () -> Void
     
     var body: some View {
         Group {
@@ -45,8 +44,7 @@ struct MessageBubbleView: View {
                 appState: appState,
                 isInMessageFeed: true,
                 editCallback: editCallback,
-                navigation: navigation,
-                onSelectTextCallback: onSelectTextCallback)
+                navigation: navigation)
         }
     }
 }
