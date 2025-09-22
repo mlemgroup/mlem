@@ -77,11 +77,6 @@ struct MessageFeedView: View {
                         }
                     }
                     .popupAnchor()
-                    .onChange(of: navigation.isTopSheet) {
-                        if navigation.isTopSheet, navigation.model != nil {
-                            textView.becomeFirstResponder()
-                        }
-                    }
             }
         }
     }
