@@ -141,7 +141,7 @@ public extension LemmyConnection {
         communityId: Int?,
         creatorId: Int?,
         filter: ListingType,
-        createSortType: @escaping (SiteVersion.EndpointVersion) throws -> SearchSortTypeBridge,
+        createSortType: @escaping (LemmyEndpointVersion) throws -> SearchSortTypeBridge,
         timeRangeSeconds: Int?
     ) async throws -> [Comment2Snapshot] {
         let response = try await performingForEndpoint { endpoint in
