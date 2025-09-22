@@ -169,9 +169,9 @@ private struct VisitAgainLink: View {
     let icon: Icon
     let iconWeight: Font.Weight
     let color: ThemedColor
-    let title: String
+    let title: LocalizedStringResource
     
-    init(icon: Icon, iconWeight: Font.Weight = .regular, color: ThemedColor, title: String) {
+    init(icon: Icon, iconWeight: Font.Weight = .regular, color: ThemedColor, title: LocalizedStringResource) {
         self.icon = icon
         self.iconWeight = iconWeight
         self.color = color

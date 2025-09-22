@@ -28,19 +28,25 @@ extension MarkdownConfiguration {
         }
     }
     
-    static func `default`(palette: Palette) -> MarkdownConfiguration { .init(
-        inlineImageLoader: loadInlineImage,
-        imageBlockView: { imageView($0, shouldBlur: false) },
-        wrapCodeBlockLines: Settings.get(\.markdown_wrapCodeBlockLines),
-        spoilerLabel: .init(localized: "Spoiler"),
-        tableLabel: .init(localized: "Table"),
-        censorLabel: .init(localized: "Censored"),
-        primaryColor: palette.label.primary,
-        secondaryColor: palette.label.secondary,
-        codeBackgroundColor: palette.groupedBackground.tertiary,
-        censorColor: palette.warning,
-        codeFontScaleFactor: 0.9
-    ) }
+    static func `default`(palette: Palette) -> MarkdownConfiguration {
+        let currentPaletteOption = Settings.get(\.appearance_palette)
+        let enableSyntaxHighlighting = ![.solarized, .monochrome].contains(currentPaletteOption)
+
+        return .init(
+            inlineImageLoader: loadInlineImage,
+            imageBlockView: { imageView($0, shouldBlur: false) },
+            wrapCodeBlockLines: Settings.get(\.markdown_wrapCodeBlockLines),
+            spoilerLabel: .init(localized: "Spoiler"),
+            tableLabel: .init(localized: "Table"),
+            censorLabel: .init(localized: "Censored"),
+            primaryColor: palette.label.primary,
+            secondaryColor: palette.label.secondary,
+            codeBackgroundColor: palette.groupedBackground.tertiary,
+            censorColor: palette.warning,
+            codeFontScaleFactor: 0.9,
+            enableSyntaxHighlighting: enableSyntaxHighlighting
+        )
+    }
     
     static func defaultBlurred(palette: Palette) -> MarkdownConfiguration {
         var config = Self.default(palette: palette)
