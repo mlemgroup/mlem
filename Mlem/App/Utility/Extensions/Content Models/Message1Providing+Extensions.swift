@@ -28,14 +28,16 @@ extension Message1Providing {
         isInMessageFeed: Bool = false,
         editCallback: (@MainActor () -> Void)?,
         navigation: NavigationLayer? = nil,
-        report: Report? = nil
+        report: Report? = nil,
+        onSelectTextCallback: (() -> Void)? = nil
     ) -> [any Action] {
         basicMenuActions(
             appState: appState,
             feedback: feedback,
             isInMessageFeed: isInMessageFeed,
             editCallback: editCallback,
-            navigation: navigation
+            navigation: navigation,
+            onSelectTextCallback: onSelectTextCallback
         )
         if api.isAdmin {
             ActionGroup(
@@ -54,7 +56,8 @@ extension Message1Providing {
         isInMessageFeed: Bool = false,
         editCallback: (@MainActor () -> Void)?,
         navigation: NavigationLayer? = nil,
-        report: Report? = nil
+        report: Report? = nil,
+        onSelectTextCallback: (() -> Void)? = nil
     ) -> [any Action] {
         if !isOwnMessage {
             if let navigation, !isInMessageFeed {
@@ -63,7 +66,7 @@ extension Message1Providing {
             markReadAction(appState: appState, feedback: feedback)
         }
         if !deleted {
-            selectTextAction()
+            selectTextAction(onSelectTextCallback: onSelectTextCallback)
         }
         if isOwnMessage {
             if api.supports(.editAndDeletePrivateMessages, defaultValue: true) {

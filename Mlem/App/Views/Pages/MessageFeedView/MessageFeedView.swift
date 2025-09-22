@@ -20,6 +20,7 @@ struct MessageFeedView: View {
     let person: AnyPerson
     let focusTextField: Bool
     @State var editing: (any Message)?
+    @State var textViewWasFirstResponder: Bool = false
     
     let timer = Timer.publish(every: 5, on: .main, in: .common).autoconnect()
     
@@ -76,6 +77,11 @@ struct MessageFeedView: View {
                         }
                     }
                     .popupAnchor()
+                    .onChange(of: navigation.isTopSheet) {
+                        if navigation.isTopSheet, navigation.model != nil {
+                            textView.becomeFirstResponder()
+                        }
+                    }
             }
         }
     }
@@ -142,6 +148,9 @@ struct MessageFeedView: View {
                 editing = message
                 textView.text = message.content
                 textView.becomeFirstResponder()
+            }, onSelectTextCallback: {
+                textViewWasFirstResponder = textView.isFirstResponder
+                textView.resignFirstResponder()
             })
             .padding(message.isOwnMessage ? .leading : .trailing, 50)
             .frame(maxWidth: 400, alignment: message.isOwnMessage ? .trailing : .leading)
@@ -150,6 +159,12 @@ struct MessageFeedView: View {
                     try feedLoader.loadIfThreshold(message)
                 } catch {
                     handleError(error)
+                }
+            }
+            .onChange(of: navigation.model?.layers.count) {
+                if textViewWasFirstResponder, navigation.model?.layers.count == 0 {
+                    textViewWasFirstResponder = false
+                    textView.becomeFirstResponder()
                 }
             }
             if let footerText = messageFooterText(for: message) {

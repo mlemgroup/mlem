@@ -73,7 +73,7 @@ extension Reply1Providing {
     func selectTextAction() -> BasicAction {
         let callback: (@MainActor () -> Void)?
         if let comment = comment_ {
-            callback = comment.showTextSelectionSheet
+            callback = { comment.showTextSelectionSheet() }
         } else {
             callback = nil
         }
