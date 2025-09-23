@@ -23,7 +23,7 @@ extension SearchSortType {
         }
     }
     
-    func apiType(for endpoint: SiteVersion.EndpointVersion) throws(ApiClientError) -> SearchSortTypeBridge {
+    func apiType(for endpoint: LemmyEndpointVersion) throws(ApiClientError) -> SearchSortTypeBridge {
         try switch endpoint {
         case .v3: try .oldOrUnsupported(v3ApiType)
         case .v4: try .newOrUnsupported(v4ApiType)
