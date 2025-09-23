@@ -10,7 +10,7 @@ import Foundation
 public extension Post3Snapshot {
     init(from post: PieFedGetPostResponse) throws(ApiClientError) {
         self.post = try .init(from: post.postView)
-        self.community = try .init(from: post.communityView, allPropertiesPresent: true)
+        self.community = try .init(from: post.communityView, allPropertiesPresent: false)
         
         var crossPosts: [Post2Snapshot] = []
         for crossPost in post.crossPosts {
