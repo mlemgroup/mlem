@@ -83,7 +83,7 @@ struct ModlogView: View {
         }
         .onChange(of: communityFilter, initial: true) { oldValue, newValue in
             // This prevents the feed from refreshing when changing tabs
-            guard oldValue != newValue || (feedLoader.loadingState == .loading && feedLoader.items.isEmpty) else {
+            guard oldValue != newValue || feedLoader.loadingState == .initial else {
                 return
             }
             if communityFilter != nil {
