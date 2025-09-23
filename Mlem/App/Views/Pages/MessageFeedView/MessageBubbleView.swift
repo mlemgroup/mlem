@@ -40,7 +40,11 @@ struct MessageBubbleView: View {
         )
         .contentShape(.contextMenuPreview, BubbleShape(myMessage: message.isOwnMessage))
         .contextMenu {
-            message.allMenuActions(appState: appState, isInMessageFeed: true, editCallback: editCallback, navigation: navigation)
+            message.allMenuActions(
+                appState: appState,
+                isInMessageFeed: true,
+                editCallback: editCallback,
+                navigation: navigation)
         }
     }
 }

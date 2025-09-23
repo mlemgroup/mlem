@@ -30,7 +30,7 @@ public class LemmyConnection: InstanceConnection {
     public let baseUrl: URL
     public var token: String?
     
-    private var endpointMultiplexer: ConnectionMultiplexer<SiteVersion.EndpointVersion> = .init { [.v3, .v4] }
+    private var endpointMultiplexer: ConnectionMultiplexer<LemmyEndpointVersion> = .init { [.v3, .v4] }
     private(set) var contextDataManager: SharedTaskManager<Context, RawContext> = .init()
 
     public var fetchedVersion: SiteVersion? {
@@ -99,7 +99,7 @@ public class LemmyConnection: InstanceConnection {
     // When this function is called, the `requestGenerator` will be called at least once,
     // but may be called more than once.
     func performingForEndpoint<Request: RestRequest>(
-        _ requestGenerator: @escaping (SiteVersion.EndpointVersion) async throws -> Request
+        _ requestGenerator: @escaping (LemmyEndpointVersion) async throws -> Request
     ) async throws -> Request.Response {
         do {
             return try await endpointMultiplexer.perform { endpoint in
@@ -113,7 +113,7 @@ public class LemmyConnection: InstanceConnection {
     // When this function is called, the `callback` will be called at least once,
     // but may be called more than once.
     func processingForEndpoint<Response>(
-        _ callback: @escaping (SiteVersion.EndpointVersion) async throws -> Response
+        _ callback: @escaping (LemmyEndpointVersion) async throws -> Response
     ) async throws -> Response {
         do {
             return try await endpointMultiplexer.perform { endpoint in

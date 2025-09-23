@@ -19,7 +19,7 @@ public extension CommentSortType {
         }
     }
     
-    func apiType(for endpoint: SiteVersion.EndpointVersion) throws(ApiClientError) -> SearchSortTypeBridge {
+    internal func apiType(for endpoint: LemmyEndpointVersion) throws(ApiClientError) -> SearchSortTypeBridge {
         switch endpoint {
         case .v3: .old(v3PostApiType)
         case .v4: try .newOrUnsupported(v4SearchApiType)
