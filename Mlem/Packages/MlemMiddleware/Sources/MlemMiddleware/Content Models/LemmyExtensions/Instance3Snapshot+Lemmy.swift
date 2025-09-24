@@ -9,20 +9,16 @@ import Foundation
 
 extension Instance3Snapshot {
     init(from site: LemmyGetSiteResponse) throws(ApiClientError) {
-        self.instance = try .init(from: site.siteView)
-        self.software = .init(type: .lemmy, version: .init(site.version))
-        self.allLanguages = site.allLanguages.compactMap { .init($0) }
-        self.allowedLanguageIds = Set(site.discussionLanguages).subtracting([0])
-        
-        if let blockedUrls = site.blockedUrls {
+        let blockedUrls: [InstanceUrlBlockRecord]?
+        if let blockedUrls_ = site.blockedUrls {
             var newBlockedUrls: [InstanceUrlBlockRecord] = []
-            newBlockedUrls.reserveCapacity(blockedUrls.count)
-            for url in blockedUrls {
+            newBlockedUrls.reserveCapacity(blockedUrls_.count)
+            for url in blockedUrls_ {
                 try newBlockedUrls.append(.init(from: url))
             }
-            self.blockedUrls = newBlockedUrls
+            blockedUrls = newBlockedUrls
         } else {
-            self.blockedUrls = nil
+            blockedUrls = nil
         }
     
         var administrators: [Person2Snapshot] = []
@@ -30,6 +26,14 @@ extension Instance3Snapshot {
         for admin in site.admins {
             try administrators.append(.init(from: admin))
         }
-        self.administrators = administrators
+
+        try self.init(
+            instance: .init(from: site.siteView),
+            allLanguages: site.allLanguages.compactMap { .init($0) },
+            software: .init(type: .lemmy, version: .init(site.version)),
+            allowedLanguageIds: Set(site.discussionLanguages).subtracting([0]),
+            blockedUrls: blockedUrls,
+            administrators: administrators
+        )
     }
 }

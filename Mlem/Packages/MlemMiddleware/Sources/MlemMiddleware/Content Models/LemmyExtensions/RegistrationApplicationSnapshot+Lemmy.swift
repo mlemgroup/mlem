@@ -9,24 +9,10 @@ import Foundation
 
 extension RegistrationApplicationSnapshot {
     init(from application: LemmyRegistrationApplicationView) throws(ApiClientError) {
-        self.id = application.registrationApplication.id
-        
-        if let published = application.registrationApplication.publishedAt ?? application.registrationApplication.published {
-            self.created = published
-        } else {
+        guard let published = application.registrationApplication.publishedAt ?? application.registrationApplication.published else {
             throw .responseMissingRequiredData("LemmyRegistrationApplication published")
         }
         
-        self.questionResponse = application.registrationApplication.answer
-        self.email = application.creatorLocalUser.email
-        self.showNsfw = application.creatorLocalUser.showNsfw
-        self.emailVerified = application.creatorLocalUser.emailVerified
-        self.creator = try .init(from: application.creator)
-        if let resolver = application.admin {
-            self.resolver = try .init(from: resolver)
-        } else {
-            self.resolver = nil
-        }
         let resolution: RegistrationApplication.ResolutionState
         if application.creatorLocalUser.acceptedApplication {
             resolution = .approved
@@ -35,6 +21,17 @@ extension RegistrationApplicationSnapshot {
         } else {
             resolution = .unresolved
         }
-        self.resolution = resolution
+
+        try self.init(
+            id: application.registrationApplication.id,
+            created: published,
+            questionResponse: application.registrationApplication.answer,
+            email: application.creatorLocalUser.email,
+            showNsfw: application.creatorLocalUser.showNsfw,
+            creator: .init(from: application.creator),
+            emailVerified: application.creatorLocalUser.emailVerified,
+            resolver: application.admin.map { admin throws(ApiClientError) in try .init(from: admin) },
+            resolution: resolution
+        )
     }
 }

@@ -9,51 +9,56 @@ import Foundation
 
 extension Community2Snapshot {
     init(from community: LemmyCommunityView) throws(ApiClientError) {
-        self.community = try .init(from: community.community)
-        
-        if let total = community.community.subscribers ?? community.counts?.subscribers,
-           let subscribed = community.communityActions?.followState?.isSubscribed ?? community.subscribed?.isSubscribed {
-            let local = community.community.subscribersLocal ?? community.counts?.subscribersLocal
-            self.subscription = .init(
-                total: total,
-                local: local,
-                subscribed: subscribed,
-                pending: community.communityActions?.followState == .pending || community.subscribed == .pending
-            )
-        } else {
+        guard let totalSubscribers = community.community.subscribers ?? community.counts?.subscribers,
+              let subscribed = community.communityActions?.followState?.isSubscribed ?? community.subscribed?.isSubscribed,
+              let localSubscribers = community.community.subscribersLocal ?? community.counts?.subscribersLocal
+        else {
             throw .responseMissingRequiredData("LemmyCommunityView subscribed")
         }
+
+        let subscription = SubscriptionModel(
+            total: totalSubscribers,
+            local: localSubscribers,
+            subscribed: subscribed,
+            pending: community.communityActions?.followState == .pending || community.subscribed == .pending
+        )
         
-        if let postCount = community.counts?.posts ?? community.community.posts {
-            self.postCount = postCount
-        } else {
+        guard let postCount = community.counts?.posts ?? community.community.posts else {
             throw .responseMissingRequiredData("LemmyCommunityView postCount")
         }
         
-        if let commentCount = community.counts?.comments ?? community.community.comments {
-            self.commentCount = commentCount
-        } else {
+        guard let commentCount = community.counts?.comments ?? community.community.comments else {
             throw .responseMissingRequiredData("LemmyCommunityView commentCount")
         }
         
-        if let sixMonths = community.counts?.usersActiveHalfYear ?? community.community.usersActiveHalfYear,
-           let month = community.counts?.usersActiveMonth ?? community.community.usersActiveMonth,
-           let week = community.counts?.usersActiveWeek ?? community.community.usersActiveWeek,
-           let day = community.counts?.usersActiveDay ?? community.community.usersActiveDay {
-            self.activeUserCount = .init(
-                sixMonths: sixMonths,
-                month: month,
-                week: week,
-                day: day
-            )
-        } else {
+        guard let activeUsers6Months = community.counts?.usersActiveHalfYear ?? community.community.usersActiveHalfYear,
+              let activeUsersMonth = community.counts?.usersActiveMonth ?? community.community.usersActiveMonth,
+              let activeUsersWeek = community.counts?.usersActiveWeek ?? community.community.usersActiveWeek,
+              let activeUsersDay = community.counts?.usersActiveDay ?? community.community.usersActiveDay else {
             throw .responseMissingRequiredData("LemmyCommunityView activeUserCount")
         }
+
+        let activeUserCount = ActiveUserCount(
+            sixMonths: activeUsers6Months,
+            month: activeUsersMonth,
+            week: activeUsersWeek,
+            day: activeUsersDay
+        )
         
+        let bannedFromCommunity: Bool?
         if let actions = community.communityActions {
-            self.bannedFromCommunity = actions.banExpiresAt != nil
+            bannedFromCommunity = actions.banExpiresAt != nil
         } else {
-            self.bannedFromCommunity = community.bannedFromCommunity
+            bannedFromCommunity = community.bannedFromCommunity
         }
+
+        try self.init(
+            community: .init(from: community.community),
+            subscription: subscription,
+            postCount: postCount,
+            commentCount: commentCount,
+            activeUserCount: activeUserCount,
+            bannedFromCommunity: bannedFromCommunity
+        )
     }
 }

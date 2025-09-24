@@ -9,29 +9,29 @@ import Foundation
 
 extension Comment1Snapshot {
     init(from comment: LemmyComment) throws(ApiClientError) {
-        self.actorId = comment.apId
-        self.id = comment.id
-        self.creatorId = comment.creatorId
-        self.postId = comment.postId
-        self.parentCommentIds = comment.path
+        let parentCommentIds = comment.path
             .split(separator: ".")
             .dropFirst()
             .dropLast()
             .compactMap { Int($0) }
         
-        if let published = comment.publishedAt ?? comment.published {
-            self.created = published
-        } else {
+        guard let published = comment.publishedAt ?? comment.published else {
             throw .responseMissingRequiredData("LemmyComment published")
         }
         
-        self.content = comment.content
-        
-        self.updated = comment.updatedAt ?? comment.updated
-        
-        self.distinguished = comment.distinguished
-        self.languageId = comment.languageId
-        self.deleted = comment.deleted
-        self.removed = comment.removed
+        self.init(
+            actorId: comment.apId,
+            id: comment.id,
+            creatorId: comment.creatorId,
+            postId: comment.postId,
+            parentCommentIds: parentCommentIds,
+            created: published,
+            content: comment.content,
+            updated: comment.updatedAt ?? comment.updated,
+            distinguished: comment.distinguished,
+            languageId: comment.languageId,
+            deleted: comment.deleted,
+            removed: comment.removed
+        )
     }
 }

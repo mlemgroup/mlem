@@ -9,29 +9,28 @@ import Foundation
 
 extension Instance1Snapshot {
     init(from site: LemmySite) throws(ApiClientError) {
-        if let actorId = site.apId ?? site.actorId {
-            self.actorId = actorId
-        } else {
+        guard let actorId = site.apId ?? site.actorId else {
             throw .responseMissingRequiredData("LemmySite actorId")
         }
         
-        self.id = site.id
-        self.instanceId = site.instanceId
-        
-        if let published = site.publishedAt ?? site.published {
-            self.created = published
-        } else {
+        guard let published = site.publishedAt ?? site.published else {
             throw .responseMissingRequiredData("LemmySite published")
         }
 
-        self.updated = site.updatedAt ?? site.updated
-        self.publicKey = site.publicKey
-        self.displayName = site.name
-        self.description = site.sidebar
-        self.shortDescription = site.description
-        self.avatar = site.icon
-        self.banner = site.banner
-        self.lastRefresh = site.lastRefreshedAt
-        self.contentWarning = site.contentWarning
+        self.init(
+            actorId: actorId,
+            id: site.id,
+            instanceId: site.instanceId,
+            created: published,
+            updated: site.updatedAt ?? site.updated,
+            publicKey: site.publicKey,
+            displayName: site.name,
+            description: site.sidebar,
+            shortDescription: site.description,
+            avatar: site.icon,
+            banner: site.banner,
+            lastRefresh: site.lastRefreshedAt,
+            contentWarning: site.contentWarning
+        )
     }
 }
