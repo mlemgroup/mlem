@@ -31,6 +31,26 @@ public struct ReportSnapshot: CacheIdentifiable {
         hasher.combine(id)
         return hasher.finalize()
     }
+    
+    public init(
+        creator: Person1Snapshot,
+        id: Int,
+        created: Date,
+        resolver: Person1Snapshot?,
+        updated: Date?,
+        resolved: Bool,
+        reason: String,
+        target: ReportTargetSnapshot
+    ) {
+        self.creator = creator
+        self.id = id
+        self.created = created
+        self.resolver = resolver
+        self.updated = updated
+        self.resolved = resolved
+        self.reason = reason
+        self.target = target
+    }
 }
 
 public enum ReportTargetSnapshot {

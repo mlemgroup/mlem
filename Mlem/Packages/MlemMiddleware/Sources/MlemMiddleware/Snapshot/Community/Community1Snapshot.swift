@@ -33,4 +33,40 @@ public struct Community1Snapshot: CacheIdentifiable {
     public let allPropertiesPresent: Bool
 
     public var cacheId: Int { id }
+    
+    public init(
+        actorId: ActorIdentifier,
+        id: Int,
+        name: String,
+        created: Date,
+        instanceId: Int,
+        updated: Date?,
+        displayName: String,
+        description: String?,
+        deleted: Bool,
+        removed: Bool,
+        nsfw: Bool,
+        avatar: URL?,
+        banner: URL?,
+        hidden: Bool,
+        onlyModeratorsCanPost: Bool,
+        allPropertiesPresent: Bool
+    ) {
+        self.actorId = actorId
+        self.id = id
+        self.name = name
+        self.created = created
+        self.instanceId = instanceId
+        self.updated = updated
+        self.displayName = displayName
+        self.description = description
+        self.deleted = deleted
+        self.removed = removed
+        self.nsfw = nsfw
+        self.avatar = avatar
+        self.banner = banner
+        self.hidden = hidden
+        self.onlyModeratorsCanPost = onlyModeratorsCanPost
+        self.allPropertiesPresent = allPropertiesPresent
+    }
 }

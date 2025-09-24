@@ -29,6 +29,36 @@ public struct Post2Snapshot: CacheIdentifiable, PostSnapshotProviding {
     
     public var cacheId: Int { post.cacheId }
     
+    public init(
+        post: Post1Snapshot,
+        creator: Person1Snapshot,
+        community: Community1Snapshot,
+        commentCount: Int,
+        unreadCommentCount: Int,
+        creatorIsModerator: Bool,
+        creatorIsAdmin: Bool,
+        creatorBannedFromCommunity: Bool,
+        creatorBlocked: Bool,
+        votes: VotesModel,
+        saved: Bool,
+        read: Bool,
+        hidden: Bool
+    ) {
+        self.post = post
+        self.creator = creator
+        self.community = community
+        self.commentCount = commentCount
+        self.unreadCommentCount = unreadCommentCount
+        self.creatorIsModerator = creatorIsModerator
+        self.creatorIsAdmin = creatorIsAdmin
+        self.creatorBannedFromCommunity = creatorBannedFromCommunity
+        self.creatorBlocked = creatorBlocked
+        self.votes = votes
+        self.saved = saved
+        self.read = read
+        self.hidden = hidden
+    }
+    
     public func merge(with snapshot: any PostSnapshotProviding) -> any PostSnapshotProviding {
         if snapshot is Post1Snapshot || snapshot is Post2Snapshot {
             return self

@@ -38,4 +38,54 @@ public struct Person4Snapshot: CacheIdentifiable {
     public var collapseBotComments: Bool?
 
     public var cacheId: Int { person.cacheId }
+    
+    public init(
+        person: Person3Snapshot,
+        email: String? = nil,
+        showNsfw: Bool,
+        theme: String,
+        defaultListingType: ListingType,
+        interfaceLanguage: String,
+        showAvatars: Bool,
+        sendNotificationsToEmail: Bool,
+        showScores: Bool,
+        showBotAccounts: Bool,
+        showReadPosts: Bool,
+        discussionLanguageIds: Set<Int>,
+        emailVerified: Bool,
+        acceptedApplication: Bool,
+        openLinksInNewTab: Bool? = nil,
+        blurNsfw: Bool? = nil,
+        autoExpandImages: Bool? = nil,
+        infiniteScrollEnabled: Bool? = nil,
+        postListingMode: PostFeedViewMode? = nil,
+        totp2faEnabled: Bool? = nil,
+        enableKeyboardNavigation: Bool? = nil,
+        enableAnimatedImages: Bool? = nil,
+        collapseBotComments: Bool? = nil
+    ) {
+        self.person = person
+        self.email = email
+        self.showNsfw = showNsfw
+        self.theme = theme
+        self.defaultListingType = defaultListingType
+        self.interfaceLanguage = interfaceLanguage
+        self.showAvatars = showAvatars
+        self.sendNotificationsToEmail = sendNotificationsToEmail
+        self.showScores = showScores
+        self.showBotAccounts = showBotAccounts
+        self.showReadPosts = showReadPosts
+        self.discussionLanguageIds = discussionLanguageIds
+        self.emailVerified = emailVerified
+        self.acceptedApplication = acceptedApplication
+        self.openLinksInNewTab = openLinksInNewTab
+        self.blurNsfw = blurNsfw
+        self.autoExpandImages = autoExpandImages
+        self.infiniteScrollEnabled = infiniteScrollEnabled
+        self.postListingMode = postListingMode
+        self.totp2faEnabled = totp2faEnabled
+        self.enableKeyboardNavigation = enableKeyboardNavigation
+        self.enableAnimatedImages = enableAnimatedImages
+        self.collapseBotComments = collapseBotComments
+    }
 }

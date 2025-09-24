@@ -43,4 +43,64 @@ public struct Instance2Snapshot: CacheIdentifiable {
     public var activeUserCount: ActiveUserCount
     
     public var cacheId: Int { instance.cacheId }
+    
+    public init(
+        instance: Instance1Snapshot,
+        setup: Bool,
+        downvotesEnabled: Bool,
+        nsfwContentEnabled: Bool,
+        communityCreationRestrictedToAdmins: Bool,
+        emailVerificationRequired: Bool,
+        applicationQuestion: String? = nil,
+        isPrivate: Bool,
+        defaultTheme: String,
+        defaultFeed: ListingType,
+        legalInformation: String? = nil,
+        hideModlogNames: Bool,
+        emailApplicationsToAdmins: Bool,
+        emailReportsToAdmins: Bool,
+        slurFilterRegex: String? = nil,
+        actorNameMaxLength: Int,
+        federationEnabled: Bool,
+        captchaEnabled: Bool,
+        captchaDifficulty: CaptchaDifficulty? = nil,
+        registrationMode: RegistrationMode,
+        federationSignedFetch: Bool? = nil,
+        defaultPostListingMode: PostFeedViewMode? = nil,
+        defaultPostSortType: PostSortType? = nil,
+        userCount: Int,
+        postCount: Int,
+        commentCount: Int,
+        communityCount: Int,
+        activeUserCount: ActiveUserCount
+    ) {
+        self.instance = instance
+        self.setup = setup
+        self.downvotesEnabled = downvotesEnabled
+        self.nsfwContentEnabled = nsfwContentEnabled
+        self.communityCreationRestrictedToAdmins = communityCreationRestrictedToAdmins
+        self.emailVerificationRequired = emailVerificationRequired
+        self.applicationQuestion = applicationQuestion
+        self.isPrivate = isPrivate
+        self.defaultTheme = defaultTheme
+        self.defaultFeed = defaultFeed
+        self.legalInformation = legalInformation
+        self.hideModlogNames = hideModlogNames
+        self.emailApplicationsToAdmins = emailApplicationsToAdmins
+        self.emailReportsToAdmins = emailReportsToAdmins
+        self.slurFilterRegex = slurFilterRegex
+        self.actorNameMaxLength = actorNameMaxLength
+        self.federationEnabled = federationEnabled
+        self.captchaEnabled = captchaEnabled
+        self.captchaDifficulty = captchaDifficulty
+        self.registrationMode = registrationMode
+        self.federationSignedFetch = federationSignedFetch
+        self.defaultPostListingMode = defaultPostListingMode
+        self.defaultPostSortType = defaultPostSortType
+        self.userCount = userCount
+        self.postCount = postCount
+        self.commentCount = commentCount
+        self.communityCount = communityCount
+        self.activeUserCount = activeUserCount
+    }
 }

@@ -15,4 +15,14 @@ public struct Message2Snapshot: CacheIdentifiable {
     public let recipient: Person1Snapshot
     
     public var cacheId: Int { message.cacheId }
+    
+    public init(
+        message: Message1Snapshot,
+        creator: Person1Snapshot,
+        recipient: Person1Snapshot
+    ) {
+        self.message = message
+        self.creator = creator
+        self.recipient = recipient
+    }
 }
