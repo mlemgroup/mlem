@@ -52,4 +52,6 @@ public enum Feature: Hashable {
     
     /// Server automatically marks posts as read when voted on or saved
     case autoMarkPostReadOnInteract
+    
+    case blockInstances
 }
