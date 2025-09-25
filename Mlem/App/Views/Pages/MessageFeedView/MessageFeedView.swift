@@ -21,6 +21,9 @@ struct MessageFeedView: View {
     let focusTextField: Bool
     @State var editing: (any Message)?
     
+    /// Tracks whether the text view was firstResponder when a sheet was opened. Nil when no sheet is open.
+    @State var textViewWasFirstResponder: Bool?
+    
     let timer = Timer.publish(every: 5, on: .main, in: .common).autoconnect()
     
     @State var markdownToolbarEditorModel: MarkdownEditorToolbarModel = .init()
@@ -80,6 +83,7 @@ struct MessageFeedView: View {
         }
     }
     
+    // swiftlint:disable:next function_body_length
     @ViewBuilder func content(person: any Person) -> some View {
         ScrollViewReader { scrollProxy in
             ScrollView {
@@ -123,6 +127,17 @@ struct MessageFeedView: View {
                         } catch {
                             handleError(error)
                         }
+                    }
+                }
+            }
+            .onChange(of: navigation.model?.layers.count) {
+                if let numLayers = navigation.model?.layers.count {
+                    if numLayers > 0, textViewWasFirstResponder == nil {
+                        textViewWasFirstResponder = textView.isFirstResponder
+                        textView.resignFirstResponder()
+                    } else if textViewWasFirstResponder ?? false {
+                        textViewWasFirstResponder = nil
+                        textView.becomeFirstResponder()
                     }
                 }
             }
