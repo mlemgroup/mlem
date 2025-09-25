@@ -37,10 +37,12 @@ extension Community2: CacheIdentifiable {
         setIfChanged(\.commentCount, snapshot.commentCount)
         setIfChanged(\.activeUserCount, snapshot.activeUserCount)
         
-        subscriptionManager.updateWithReceivedValue(
-            snapshot.subscription,
-            semaphore: semaphore
-        )
+        if snapshot.community.allPropertiesPresent {
+            subscriptionManager.updateWithReceivedValue(
+                snapshot.subscription,
+                semaphore: semaphore
+            )
+        }
         
         community1.update(with: snapshot.community, semaphore: semaphore)
     }
