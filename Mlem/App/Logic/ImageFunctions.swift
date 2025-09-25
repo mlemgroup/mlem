@@ -34,6 +34,14 @@ func saveMedia(url: URL) async {
     }
 }
 
+@MainActor
+func createImageFromView(_ view: some View) -> UIImage? {
+    let renderer = ImageRenderer(content: view)
+    renderer.scale = 3 // boost resolution to look better on larger devices
+    renderer.proposedSize.width = UIScreen.main.bounds.width
+    return renderer.uiImage
+}
+
 func shareImage(url: URL, navigation: NavigationLayer) async {
     if let fileUrl = await downloadImageToFileSystem(url: url) {
         navigation.model?.shareInfo = .init(url: fileUrl)

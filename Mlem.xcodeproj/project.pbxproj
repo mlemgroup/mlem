@@ -501,6 +501,7 @@
 		CDB3DDFD2DA485D200F407AB /* SettingsValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB3DDFC2DA485D000F407AB /* SettingsValues.swift */; };
 		CDB41E8A2C83C24400BD2DE9 /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB41E892C83C24400BD2DE9 /* Section.swift */; };
 		CDB738292CB8A6A5005B11BB /* View+PaletteBorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB738282CB8A69D005B11BB /* View+PaletteBorder.swift */; };
+		CDBEC30F2E84C9F800F30B00 /* ExportablePostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDBEC30E2E84C9F300F30B00 /* ExportablePostView.swift */; };
 		CDBFCB652C03920C008CD468 /* PostLinkHostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDBFCB642C03920C008CD468 /* PostLinkHostView.swift */; };
 		CDBFCB6A2C04EFFE008CD468 /* PostSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDBFCB692C04EFFE008CD468 /* PostSettingsView.swift */; };
 		CDBFCB6C2C054AA7008CD468 /* TilePostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDBFCB6B2C054AA7008CD468 /* TilePostView.swift */; };
@@ -1038,6 +1039,7 @@
 		CDB3DDFC2DA485D000F407AB /* SettingsValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsValues.swift; sourceTree = "<group>"; };
 		CDB41E892C83C24400BD2DE9 /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
 		CDB738282CB8A69D005B11BB /* View+PaletteBorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+PaletteBorder.swift"; sourceTree = "<group>"; };
+		CDBEC30E2E84C9F300F30B00 /* ExportablePostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportablePostView.swift; sourceTree = "<group>"; };
 		CDBFCB642C03920C008CD468 /* PostLinkHostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostLinkHostView.swift; sourceTree = "<group>"; };
 		CDBFCB692C04EFFE008CD468 /* PostSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSettingsView.swift; sourceTree = "<group>"; };
 		CDBFCB6B2C054AA7008CD468 /* TilePostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TilePostView.swift; sourceTree = "<group>"; };
@@ -1858,6 +1860,7 @@
 		CD4D58A82B86BE4C00B82964 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				CDBEC30D2E84C9DB00F30B00 /* ExportableViews */,
 				CD0374292D1DBFCF001E85FA /* ReadCheck.swift */,
 				CDAA02E42C82236200D75633 /* Palette Components */,
 				03B431C32C45BA45001A1EB5 /* AccountPickerMenu.swift */,
@@ -2235,6 +2238,14 @@
 				CDB2EC872BFAE14800DBC0EF /* FullyQualifiedNameView.swift */,
 			);
 			path = Labels;
+			sourceTree = "<group>";
+		};
+		CDBEC30D2E84C9DB00F30B00 /* ExportableViews */ = {
+			isa = PBXGroup;
+			children = (
+				CDBEC30E2E84C9F300F30B00 /* ExportablePostView.swift */,
+			);
+			path = ExportableViews;
 			sourceTree = "<group>";
 		};
 		CDBFCB662C04EA59008CD468 /* Feed Post Components */ = {
@@ -2893,6 +2904,7 @@
 				030030A12C416B0B009A65FF /* RefreshPopupView.swift in Sources */,
 				037FC0702E4A6B16009E3E63 /* InstanceView+About.swift in Sources */,
 				03E614E42C0BCC7B00F692A4 /* Post1Providing+Extensions.swift in Sources */,
+				CDBEC30F2E84C9F800F30B00 /* ExportablePostView.swift in Sources */,
 				0368F3432D72796B007DEB70 /* LanguagePickerSheetView.swift in Sources */,
 				0397D4A22C6EB035002C6CDC /* ActionAppearance.swift in Sources */,
 				035394952CA1AE6300795AA5 /* InstanceUptimeView.swift in Sources */,
