@@ -199,7 +199,9 @@ struct InstanceView: View {
         .animation(.easeOut(duration: 0.1), value: communityLoader.items.isEmpty)
         .task {
             do {
-                try await communityLoader.refresh(listing: .local)
+                if communityLoader.loadingState == .initial {
+                    try await communityLoader.refresh(listing: .local)
+                }
             } catch {
                 handleError(error)
             }
