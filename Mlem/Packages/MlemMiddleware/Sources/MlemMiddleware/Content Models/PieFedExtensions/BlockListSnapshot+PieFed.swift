@@ -19,7 +19,7 @@ public extension BlockListSnapshot {
         
         self.instances = myUserInfo.instanceBlocks.reduce(into: [:]) {
             let actorId: ActorIdentifier = .instance(host: $1.instance.domain)
-            $0[actorId] = $1.instance.id
+            $0[actorId] = actorId.url.absoluteString.hashValue
         }
     }
 }
