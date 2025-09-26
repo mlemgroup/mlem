@@ -170,7 +170,7 @@ public extension PieFedConnection {
     
     @discardableResult
     func voteOnPost(id: Int, score: ScoringOperation) async throws -> Post2Snapshot {
-        let request = PieFedLikePostRequest(postId: id, score: score.rawValue)
+        let request = PieFedLikePostRequest(postId: id, score: score.rawValue, private: nil)
         async let response = perform(request)
         if !supports(.autoMarkPostReadOnInteract, defaultValue: false) {
             try await markPostAsRead(id: id, read: true)
@@ -319,6 +319,6 @@ public extension PieFedConnection {
     ) async throws -> [PersonVoteSnapshot] {
         let request = PieFedListPostLikesRequest(postId: id, page: page, limit: limit)
         let response = try await perform(request)
-        return try response.postLikes?.map { try .init(from: $0) } ?? []
+        return try response.postLikes.map { try .init(from: $0) }
     }
 }
