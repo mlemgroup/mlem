@@ -9,36 +9,43 @@ import Foundation
 
 public extension Comment2Snapshot {
     init(from comment: PieFedCommentView) throws(ApiClientError) {
-        self.comment = try .init(from: comment.comment)
-        self.creator = try .init(from: comment.creator)
-        self.post = try .init(from: comment.post)
-        self.community = try .init(from: comment.community)
-        
-        self.commentCount = comment.counts.childCount
-        self.creatorIsModerator = comment.creatorIsModerator
-        self.creatorIsAdmin = comment.creatorIsAdmin
-        self.creatorBannedFromCommunity = comment.creatorBannedFromCommunity
-        
-        self.votes = .init(
+        votes: VotesModel = .init(
             upvotes: comment.counts.upvotes,
             downvotes: comment.counts.downvotes,
             myVote: .guaranteedInit(from: comment.myVote)
         )
-        self.saved = comment.saved
+
+        try self.init(
+            comment: .init(from: comment.comment),
+            creator: .init(from: comment.creator),
+            post: .init(from: comment.post),
+            community: .init(from: comment.community),
+            commentCount: comment.counts.childCount,
+            creatorIsModerator: comment.creatorIsModerator,
+            creatorIsAdmin: comment.creatorIsAdmin,
+            creatorBannedFromCommunity: comment.creatorBannedFromCommunity,
+            votes: votes,
+            saved: comment.saved
+        )
     }
     
     init(from report: PieFedCommentReportView) throws(ApiClientError) {
-        self.comment = try .init(from: report.comment)
-        self.creator = try .init(from: report.commentCreator)
-        self.post = try .init(from: report.post)
-        self.community = try .init(from: report.community)
-        
-        self.commentCount = report.counts.childCount
-        self.creatorIsAdmin = report.creatorIsAdmin
-        self.creatorIsModerator = report.creatorIsModerator
-        self.creatorBannedFromCommunity = report.creatorBannedFromCommunity
-        self.saved = report.saved
-        
-        self.votes = .init(from: report.counts, myVote: .guaranteedInit(from: report.myVote))
+        let votes: VotesModel = .init(
+            from: report.counts,
+            myVote: .guaranteedInit(from: report.myVote)
+        )
+
+        try self.init(
+            comment: .init(from: report.comment),
+            creator: .init(from: report.creator),
+            post: .init(from: report.post),
+            community: .init(from: report.community),
+            commentCount: report.counts.childCount,
+            creatorIsModerator: report.creatorIsModerator,
+            creatorIsAdmin: report.creatorIsAdmin,
+            creatorBannedFromCommunity: report.creatorBannedFromCommunity,
+            votes: votes,
+            saved: report.saved
+        )
     }
 }
