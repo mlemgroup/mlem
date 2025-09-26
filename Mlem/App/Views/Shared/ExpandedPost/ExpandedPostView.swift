@@ -16,7 +16,6 @@ class TopVisibleItemContainer {
     var isAtPost: Bool = true
 }
 
-// swiftlint:disable:next type_body_length
 struct ExpandedPostView<Content: View>: View {
     @Environment(AppState.self) var appState
     @Environment(ExpandedPostHistoryTracker.self) var expandedPostHistoryTracker
@@ -206,12 +205,7 @@ struct ExpandedPostView<Content: View>: View {
             ToolbarEllipsisMenu {
                 Button("Save") {
                     Task {
-                        if let imageData = createImageFromView(LargePostView(post: post, isPostPage: true)
-                            .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
-                            .padding(Constants.main.standardSpacing)
-                            .background(.themedGroupedBackground)
-                            .environment(appState)
-                            .environment(navigation))?.pngData() {
+                        if let imageData = createImageFromView(ExportablePostView(post: post))?.pngData() {
                             do {
                                 try await ImageSaver().writeImageToPhotoAlbum(imageData: imageData)
                             } catch {
