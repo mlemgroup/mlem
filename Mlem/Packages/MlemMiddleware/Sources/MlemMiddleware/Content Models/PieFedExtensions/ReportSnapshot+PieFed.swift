@@ -22,7 +22,7 @@ extension ReportSnapshot {
         
         self.updated = report.commentReport.updated
         self.resolved = report.commentReport.resolved
-        self.reason = report.commentReport.reason
+        self.reason = report.commentReport.reason ?? ""
         
         self.target = try .comment(.init(from: report))
     }

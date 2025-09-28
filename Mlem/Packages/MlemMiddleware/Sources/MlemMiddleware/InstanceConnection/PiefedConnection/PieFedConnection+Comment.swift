@@ -216,6 +216,6 @@ public extension PieFedConnection {
     ) async throws -> [PersonVoteSnapshot] {
         let request = PieFedListCommentLikesRequest(commentId: id, page: page, limit: limit)
         let response = try await perform(request)
-        return try response.commentLikes?.map { try .init(from: $0) } ?? []
+        return try response.commentLikes.map { try .init(from: $0) }
     }
 }
