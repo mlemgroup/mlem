@@ -9,60 +9,57 @@ import Foundation
 
 public extension Instance2Snapshot {
     init(pieFed: PieFedSite, lemmy: PieFedLemmyCompatibleSiteView) throws(ApiClientError) {
-        self.instance = try .init(from: pieFed)
-        
         // I suspect these can only be `nil` when the `PieFedSite` is used in a request body
         
-        if let enableDownvotes = pieFed.enableDownvotes {
-            self.downvotesEnabled = enableDownvotes
-        } else {
+        guard let enableDownvotes = pieFed.enableDownvotes else {
             throw ApiClientError.responseMissingRequiredData("PieFedSite downvotesEnabled")
         }
         
-        if let userCount = pieFed.userCount {
-            self.userCount = userCount
-        } else {
+        guard let userCount = pieFed.userCount else {
             throw ApiClientError.responseMissingRequiredData("PieFedSite userCount")
         }
         
-        if let registrationMode = pieFed.registrationMode {
-            self.registrationMode = .init(from: registrationMode)
-        } else {
+        guard let registrationMode = pieFed.registrationMode else {
             throw ApiClientError.responseMissingRequiredData("PieFedSite downvotesEnabled")
         }
-        
-        self.setup = true
-        self.emailVerificationRequired = true
-        self.isPrivate = false
-        self.defaultTheme = "browser"
-        self.legalInformation = nil
-        self.hideModlogNames = true
-        self.emailApplicationsToAdmins = true
-        self.emailReportsToAdmins = false
-        self.actorNameMaxLength = 20
-        self.defaultFeed = .all
-        self.slurFilterRegex = nil
-        self.federationEnabled = true
-        self.captchaDifficulty = .medium
-        self.federationSignedFetch = nil
-        self.defaultPostSortType = .hot
-        self.defaultPostListingMode = .list
-        
-        // In theory we *could* grab these from the lemmy-compatible site
-        self.nsfwContentEnabled = false
-        self.communityCreationRestrictedToAdmins = false
-        self.applicationQuestion = nil
-        self.captchaEnabled = false
-        
+
         let counts = lemmy.counts
-        self.postCount = counts.posts
-        self.commentCount = counts.comments
-        self.communityCount = counts.communities
-        self.activeUserCount = .init(
+        let activeUserCount: ActiveUserCount = .init(
             sixMonths: counts.usersActiveHalfYear,
             month: counts.usersActiveMonth,
             week: counts.usersActiveWeek,
             day: counts.usersActiveDay
+        )
+
+        try self.init(
+            instance: .init(from: pieFed),
+            setup: true,
+            downvotesEnabled: enableDownvotes,
+            nsfwContentEnabled: false,
+            communityCreationRestrictedToAdmins: false,
+            emailVerificationRequired: true,
+            applicationQuestion: nil,
+            isPrivate: false,
+            defaultTheme: "browser",
+            defaultFeed: .all,
+            legalInformation: nil,
+            hideModlogNames: true,
+            emailApplicationsToAdmins: true,
+            emailReportsToAdmins: false,
+            slurFilterRegex: nil,
+            actorNameMaxLength: 20,
+            federationEnabled: true,
+            captchaEnabled: false,
+            captchaDifficulty: nil,
+            registrationMode: .init(from: registrationMode),
+            federationSignedFetch: nil,
+            defaultPostListingMode: .list,
+            defaultPostSortType: .hot,
+            userCount: userCount,
+            postCount: counts.posts,
+            commentCount: counts.comments,
+            communityCount: counts.communities,
+            activeUserCount: activeUserCount
         )
     }
 }
