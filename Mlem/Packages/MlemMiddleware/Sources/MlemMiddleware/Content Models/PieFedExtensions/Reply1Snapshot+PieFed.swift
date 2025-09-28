@@ -9,11 +9,13 @@ import Foundation
 
 public extension Reply1Snapshot {
     init(from commentReply: PieFedCommentReply, isMention: Bool) throws(ApiClientError) {
-        self.id = commentReply.id
-        self.recipientId = commentReply.recipientId
-        self.commentId = commentReply.commentId
-        self.read = commentReply.read
-        self.created = commentReply.published
-        self.isMention = isMention
+        self.init(
+            id: commentReply.id,
+            recipientId: commentReply.recipientId,
+            commentId: commentReply.commentId,
+            created: commentReply.published,
+            isMention: isMention,
+            read: commentReply.read
+        )
     }
 }

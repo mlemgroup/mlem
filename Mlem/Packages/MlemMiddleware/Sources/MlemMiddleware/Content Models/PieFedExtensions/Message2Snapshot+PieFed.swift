@@ -9,8 +9,10 @@ import Foundation
 
 public extension Message2Snapshot {
     init(from message: PieFedPrivateMessageView) throws(ApiClientError) {
-        self.message = try .init(from: message.privateMessage)
-        self.creator = try .init(from: message.creator)
-        self.recipient = try .init(from: message.recipient)
+        try self.init(
+            message: .init(from: message.privateMessage),
+            creator: .init(from: message.creator),
+            recipient: .init(from: message.recipient)
+        )
     }
 }
