@@ -9,7 +9,7 @@ import Foundation
 
 public extension Comment2Snapshot {
     init(from comment: PieFedCommentView) throws(ApiClientError) {
-        votes: VotesModel = .init(
+        let votes: VotesModel = .init(
             upvotes: comment.counts.upvotes,
             downvotes: comment.counts.downvotes,
             myVote: .guaranteedInit(from: comment.myVote)
