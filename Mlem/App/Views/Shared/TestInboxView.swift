@@ -17,6 +17,7 @@ struct TestInboxView: View {
                     TestInboxSectionView(type: type)
                 }
             }
+            .padding(.horizontal, 10)
         }
         .themedGroupedBackground()
     }
@@ -38,11 +39,18 @@ private struct TestInboxSectionView: View {
             Text(type.rawValue)
             if let notifications {
                 ForEach(notifications) { notification in
-                    Text(String(notification.id))
-                        .lineLimit(3)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(10)
-                        .background(.themedSecondaryGroupedBackground, in: .capsule)
+                    HStack {
+                        Text(String(notification.id))
+                        Spacer()
+                        if notification.read {
+                            Image(icon: .general.success)
+                                .foregroundStyle(.blue)
+                        }
+                    }
+                    .lineLimit(3)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(10)
+                    .background(.themedSecondaryGroupedBackground, in: .capsule)
                 }
             }
         }
