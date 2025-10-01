@@ -20,6 +20,7 @@ enum NavigationPage: Hashable {
     case upvotedFeed
     case topCommunities, topPeople, topInstances
     case profile, inbox, search
+    case testInbox
     case quickSwitcher
     case post(
         _ post: AnyPost,

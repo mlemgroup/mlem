@@ -75,6 +75,18 @@ public extension PieFedConnection {
         }
     }
     
+    func getReplyNotifications() async throws -> [NotificationSnapshot] {
+        throw ApiClientError.featureUnsupported
+    }
+
+    func getMentionNotifications() async throws -> [NotificationSnapshot] {
+        throw ApiClientError.featureUnsupported
+    }
+
+    func getMessageNotifications() async throws -> [NotificationSnapshot] {
+        throw ApiClientError.featureUnsupported
+    }
+
     func markAllAsRead() async throws {
         let request = PieFedMarkAllRepliesReadRequest()
         try await perform(request)

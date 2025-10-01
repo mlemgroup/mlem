@@ -363,6 +363,7 @@
 		03E614E42C0BCC7B00F692A4 /* Post1Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E614E32C0BCC7B00F692A4 /* Post1Providing+Extensions.swift */; };
 		03E614E52C0BCCAA00F692A4 /* PostSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB2EC7A2BFADA8B00DBC0EF /* PostSize.swift */; };
 		03E614E72C0BCDC200F692A4 /* FullyQualifiedLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E614E62C0BCDC200F692A4 /* FullyQualifiedLinkView.swift */; };
+		03EC82B72E8D8C97004698BB /* TestInboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03EC82B62E8D8C97004698BB /* TestInboxView.swift */; };
 		03ECD7192C81195000D48BF6 /* PostEditorView+LinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03ECD7182C81195000D48BF6 /* PostEditorView+LinkView.swift */; };
 		03ECD71B2C811D6700D48BF6 /* PostEditorView+ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03ECD71A2C811D6700D48BF6 /* PostEditorView+ImageView.swift */; };
 		03ECD71F2C864DB700D48BF6 /* ImageUploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03ECD71E2C864DB700D48BF6 /* ImageUploadManager.swift */; };
@@ -901,6 +902,7 @@
 		03E46AD32D130728002589DB /* ScoringOperation+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScoringOperation+Extensions.swift"; sourceTree = "<group>"; };
 		03E614E32C0BCC7B00F692A4 /* Post1Providing+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Post1Providing+Extensions.swift"; sourceTree = "<group>"; };
 		03E614E62C0BCDC200F692A4 /* FullyQualifiedLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullyQualifiedLinkView.swift; sourceTree = "<group>"; };
+		03EC82B62E8D8C97004698BB /* TestInboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestInboxView.swift; sourceTree = "<group>"; };
 		03ECD7182C81195000D48BF6 /* PostEditorView+LinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostEditorView+LinkView.swift"; sourceTree = "<group>"; };
 		03ECD71A2C811D6700D48BF6 /* PostEditorView+ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostEditorView+ImageView.swift"; sourceTree = "<group>"; };
 		03ECD71E2C864DB700D48BF6 /* ImageUploadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUploadManager.swift; sourceTree = "<group>"; };
@@ -1919,6 +1921,7 @@
 				CD635E1A2C94DACD00864F75 /* BypassProxyWarningSheet.swift */,
 				03AB484E2CBAE33500567FF9 /* MarkdownWithLinkList.swift */,
 				037DE0792CE108D9007F7B92 /* FooterLinkView.swift */,
+				03EC82B62E8D8C97004698BB /* TestInboxView.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -2532,6 +2535,7 @@
 				81A179BF2DDE5BF300B17017 /* TabBarLongPressAction.swift in Sources */,
 				03B25B352CC4446400EB6DF5 /* FediseerOpinionListView.swift in Sources */,
 				CDB2EC7D2BFADAB300DBC0EF /* CompactPostView.swift in Sources */,
+				03EC82B72E8D8C97004698BB /* TestInboxView.swift in Sources */,
 				CD33CA522D3C18BF00106C8C /* ImageViewer+Views.swift in Sources */,
 				031CA5B52E590B0D00CF0C0F /* QuickSwipeAction+Extensions.swift in Sources */,
 				030056A42D7DB05A00EB0BA3 /* SharingLinksSettingsView.swift in Sources */,

@@ -57,7 +57,22 @@ public extension ApiClient {
             myPersonId: myPersonId
         )
     }
+
+    func getReplyNotifications() async throws -> [Notification] {
+        let snapshots = try await repository.getReplyNotifications()
+        return await caches.notification.getModels(api: self, from: snapshots)
+    }
     
+    func getMentionNotifications() async throws -> [Notification] {
+        let snapshots = try await repository.getMentionNotifications()
+        return await caches.notification.getModels(api: self, from: snapshots)
+    }
+
+    func getMessageNotifications() async throws -> [Notification] {
+        let snapshots = try await repository.getMessageNotifications()
+        return await caches.notification.getModels(api: self, from: snapshots)
+    }
+
     func markAllAsRead() async throws {
         try await repository.markAllAsRead()
         for reply in caches.reply1.itemCache.value.values {
