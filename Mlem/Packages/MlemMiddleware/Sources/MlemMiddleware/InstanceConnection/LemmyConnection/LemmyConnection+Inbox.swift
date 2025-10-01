@@ -59,7 +59,7 @@ public extension LemmyConnection {
         return try response.privateMessages.map { try .init(from: $0) }
     }
     
-    func getReplyNotifications() async throws -> [NotificationSnapshot] {
+    func getReplyNotifications() async throws -> [InboxNotificationSnapshot] {
         let response = try await performingForEndpoint { _ in
             LemmyListRepliesRequest(
                 sort: .new,
@@ -71,7 +71,7 @@ public extension LemmyConnection {
         return try response.replies.map { try .init(from: $0) }
     }
 
-    func getMentionNotifications() async throws -> [NotificationSnapshot] {
+    func getMentionNotifications() async throws -> [InboxNotificationSnapshot] {
         let response = try await performingForEndpoint { _ in
             LemmyListMentionsRequest(
                 sort: .new,
@@ -83,7 +83,7 @@ public extension LemmyConnection {
         return try response.mentions.map { try .init(from: $0) }
     }
 
-    func getMessageNotifications() async throws -> [NotificationSnapshot] {
+    func getMessageNotifications() async throws -> [InboxNotificationSnapshot] {
         let response = try await performingForEndpoint { _ in
             LemmyGetPrivateMessageRequest(
                 unreadOnly: false,

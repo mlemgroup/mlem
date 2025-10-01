@@ -31,7 +31,7 @@ private struct TestInboxSectionView: View {
     
     let type: NotifType
     
-    @State var notifications: [MlemMiddleware.Notification]?
+    @State var notifications: [InboxNotification]?
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {

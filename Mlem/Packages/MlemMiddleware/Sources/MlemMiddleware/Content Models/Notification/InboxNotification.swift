@@ -8,7 +8,7 @@
 import Foundation
 
 @Observable
-public class Notification: ContentModel, Identifiable {
+public class InboxNotification: ContentModel, Identifiable {
     public static var tierNumber: Int = 1
     public var api: ApiClient
 

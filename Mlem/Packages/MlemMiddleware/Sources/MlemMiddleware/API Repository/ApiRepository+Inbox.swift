@@ -54,19 +54,19 @@ extension ApiRepository {
         }
     }
 
-    func getReplyNotifications() async throws -> [NotificationSnapshot] {
+    func getReplyNotifications() async throws -> [InboxNotificationSnapshot] {
         try await performingForConnection { connection in
             try await connection.getReplyNotifications()
         }
     }
     
-    func getMentionNotifications() async throws -> [NotificationSnapshot] {
+    func getMentionNotifications() async throws -> [InboxNotificationSnapshot] {
         try await performingForConnection { connection in
             try await connection.getMentionNotifications()
         }
     }
 
-    func getMessageNotifications() async throws -> [NotificationSnapshot] {
+    func getMessageNotifications() async throws -> [InboxNotificationSnapshot] {
         try await performingForConnection { connection in
             try await connection.getMessageNotifications()
         }

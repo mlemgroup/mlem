@@ -58,17 +58,17 @@ public extension ApiClient {
         )
     }
 
-    func getReplyNotifications() async throws -> [Notification] {
+    func getReplyNotifications() async throws -> [InboxNotification] {
         let snapshots = try await repository.getReplyNotifications()
         return await caches.notification.getModels(api: self, from: snapshots)
     }
     
-    func getMentionNotifications() async throws -> [Notification] {
+    func getMentionNotifications() async throws -> [InboxNotification] {
         let snapshots = try await repository.getMentionNotifications()
         return await caches.notification.getModels(api: self, from: snapshots)
     }
 
-    func getMessageNotifications() async throws -> [Notification] {
+    func getMessageNotifications() async throws -> [InboxNotification] {
         let snapshots = try await repository.getMessageNotifications()
         return await caches.notification.getModels(api: self, from: snapshots)
     }
