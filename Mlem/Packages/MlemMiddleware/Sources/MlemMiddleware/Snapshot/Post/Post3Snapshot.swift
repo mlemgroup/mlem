@@ -19,7 +19,17 @@ public struct Post3Snapshot: CacheIdentifiable, PostSnapshotProviding {
     
     public var cacheId: Int { post.cacheId }
     
+    public init(
+        post: Post2Snapshot,
+        community: Community2Snapshot,
+        crossPosts: [Post2Snapshot]
+    ) {
+        self.post = post
+        self.community = community
+        self.crossPosts = crossPosts
+    }
+    
     public func merge(with snapshot: any PostSnapshotProviding) -> any PostSnapshotProviding {
-        return self
+        self
     }
 }

@@ -17,23 +17,23 @@ public extension Instance3Snapshot {
         // The source code for this is here (function name: `lemmy_site_data`)
         // https://codeberg.org/rimu/pyfedi/src/commit/75c48f6d22ec831e05bc54852f514caf34a60d0a/app/activitypub/util.py
         
-        self.instance = try .init(pieFed: pieFed.site, lemmy: lemmy.siteView)
-        self.software = .init(type: .pieFed, version: .init(pieFed.version))
-        
-        if let allLanguages = pieFed.site.allLanguages {
-            self.allLanguages = allLanguages.compactMap { .init($0) }
-        } else {
+        guard let allLanguages = pieFed.site.allLanguages else {
             throw ApiClientError.responseMissingRequiredData("PieFedSite allLanguages")
         }
-        
-        self.allowedLanguageIds = .init(0 ... allLanguages.count - 1)
-        self.blockedUrls = []
         
         var administrators: [Person2Snapshot] = []
         administrators.reserveCapacity(pieFed.admins.count)
         for admin in pieFed.admins {
             try administrators.append(.init(from: admin))
         }
-        self.administrators = administrators
+
+        try self.init(
+            instance: .init(pieFed: pieFed.site, lemmy: lemmy.siteView),
+            allLanguages: allLanguages.compactMap { .init($0) },
+            software: .init(type: .pieFed, version: .init(pieFed.version)),
+            allowedLanguageIds: .init(0 ... allLanguages.count - 1),
+            blockedUrls: [],
+            administrators: administrators
+        )
     }
 }

@@ -9,75 +9,54 @@ import Foundation
 
 extension ReportSnapshot {
     init(from report: LemmyCommentReportView) throws(ApiClientError) {
-        self.creator = try .init(from: report.creator)
-        
-        self.id = report.commentReport.id
-        
-        if let published = report.commentReport.publishedAt ?? report.commentReport.published {
-            self.created = published
-        } else {
+        guard let published = report.commentReport.publishedAt ?? report.commentReport.published else {
             throw .responseMissingRequiredData("LemmyCommentReportView published")
         }
 
-        if let resolver = report.resolver {
-            self.resolver = try .init(from: resolver)
-        } else {
-            self.resolver = nil
-        }
-        
-        self.updated = report.commentReport.updatedAt ?? report.commentReport.updated
-        self.resolved = report.commentReport.resolved
-        self.reason = report.commentReport.reason
-        
-        self.target = try .comment(.init(from: report))
+        try self.init(
+            creator: .init(from: report.creator),
+            id: report.commentReport.id,
+            created: published,
+            resolver: report.resolver.map { resolver throws(ApiClientError) in try .init(from: resolver) },
+            updated: report.commentReport.updatedAt ?? report.commentReport.updated,
+            resolved: report.commentReport.resolved,
+            reason: report.commentReport.reason,
+            target: .comment(.init(from: report))
+        )
     }
     
     init(from report: LemmyPostReportView) throws(ApiClientError) {
-        self.creator = try .init(from: report.creator)
-        
-        self.id = report.postReport.id
-        
-        if let published = report.postReport.publishedAt ?? report.postReport.published {
-            self.created = published
-        } else {
+        guard let published = report.postReport.publishedAt ?? report.postReport.published else {
             throw .responseMissingRequiredData("LemmyPostReply published")
         }
 
-        if let resolver = report.resolver {
-            self.resolver = try .init(from: resolver)
-        } else {
-            self.resolver = nil
-        }
-        
-        self.updated = report.postReport.updatedAt ?? report.postReport.updated
-        self.resolved = report.postReport.resolved
-        self.reason = report.postReport.reason
-        
-        self.target = try .post(.init(from: report))
+        try self.init(
+            creator: .init(from: report.creator),
+            id: report.postReport.id,
+            created: published,
+            resolver: report.resolver.map { resolver throws(ApiClientError) in try .init(from: resolver) },
+            updated: report.postReport.updatedAt ?? report.postReport.updated,
+            resolved: report.postReport.resolved,
+            reason: report.postReport.reason,
+            target: .post(.init(from: report))
+        )
     }
     
     init(from report: LemmyPrivateMessageReportView) throws(ApiClientError) {
-        self.creator = try .init(from: report.creator)
-        
-        self.id = report.privateMessageReport.id
-        
-        if let published = report.privateMessageReport.publishedAt ?? report.privateMessageReport.published {
-            self.created = published
-        } else {
+        guard let published = report.privateMessageReport.publishedAt ?? report.privateMessageReport.published else {
             throw .responseMissingRequiredData("LemmyPrivateMessageReport published")
         }
-
-        if let resolver = report.resolver {
-            self.resolver = try .init(from: resolver)
-        } else {
-            self.resolver = nil
-        }
-        
-        self.updated = report.privateMessageReport.updatedAt ?? report.privateMessageReport.updated
-        self.resolved = report.privateMessageReport.resolved
-        self.reason = report.privateMessageReport.reason
-        
         let messageView = report.toPrivateMessageView()
-        self.target = try .message(.init(from: messageView))
+
+        try self.init(
+            creator: .init(from: report.creator),
+            id: report.privateMessageReport.id,
+            created: published,
+            resolver: report.resolver.map { resolver throws(ApiClientError) in try .init(from: resolver) },
+            updated: report.privateMessageReport.updatedAt ?? report.privateMessageReport.updated,
+            resolved: report.privateMessageReport.resolved,
+            reason: report.privateMessageReport.reason,
+            target: .message(.init(from: messageView))
+        )
     }
 }

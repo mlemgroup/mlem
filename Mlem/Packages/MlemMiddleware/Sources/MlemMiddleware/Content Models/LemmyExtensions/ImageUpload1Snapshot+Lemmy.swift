@@ -9,8 +9,10 @@ import Foundation
 
 extension ImageUpload1Snapshot {
     init(from file: LemmyPictrsFile, baseUrl: URL) {
-        self.url = baseUrl.appending(path: "pictrs/image/\(file.file)")
-        self.alias = file.file
-        self.deleteToken = file.deleteToken
+        self.init(
+            url: baseUrl.appending(path: "pictrs/image/\(file.file)"),
+            alias: file.file,
+            deleteToken: file.deleteToken
+        )
     }
 }

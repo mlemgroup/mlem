@@ -13,4 +13,14 @@ public struct PersonVoteSnapshot: CacheIdentifiable {
     public let creatorBannedFromCommunity: Bool?
     
     public var cacheId: Int { creator.id }
+    
+    public init(
+        creator: Person1Snapshot,
+        score: Int,
+        creatorBannedFromCommunity: Bool?
+    ) {
+        self.creator = creator
+        self.score = score
+        self.creatorBannedFromCommunity = creatorBannedFromCommunity
+    }
 }

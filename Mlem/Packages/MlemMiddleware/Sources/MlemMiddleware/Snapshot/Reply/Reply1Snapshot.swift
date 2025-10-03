@@ -25,4 +25,20 @@ public struct Reply1Snapshot: CacheIdentifiable, Identifiable {
         hasher.combine(isMention)
         return hasher.finalize()
     }
+    
+    public init(
+        id: Int,
+        recipientId: Int,
+        commentId: Int,
+        created: Date,
+        isMention: Bool,
+        read: Bool
+    ) {
+        self.id = id
+        self.recipientId = recipientId
+        self.commentId = commentId
+        self.created = created
+        self.isMention = isMention
+        self.read = read
+    }
 }

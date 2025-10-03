@@ -17,4 +17,16 @@ public struct Community3Snapshot: CacheIdentifiable {
     public let discussionLanguageIds: Set<Int>
     
     public var cacheId: Int { community.cacheId }
+    
+    public init(
+        community: Community2Snapshot,
+        instance: Instance1Snapshot?,
+        moderators: [Person1Snapshot],
+        discussionLanguageIds: Set<Int>
+    ) {
+        self.community = community
+        self.instance = instance
+        self.moderators = moderators
+        self.discussionLanguageIds = discussionLanguageIds
+    }
 }

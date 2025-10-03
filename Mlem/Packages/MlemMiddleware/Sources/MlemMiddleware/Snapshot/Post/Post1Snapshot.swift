@@ -34,6 +34,48 @@ public struct Post1Snapshot: CacheIdentifiable, PostSnapshotProviding {
 
     public var cacheId: Int { id }
     
+    public init(
+        actorId: ActorIdentifier,
+        id: Int,
+        creatorId: Int,
+        communityId: Int,
+        created: Date,
+        title: String,
+        content: String?,
+        linkUrl: URL?,
+        embed: PostEmbed?,
+        nsfw: Bool,
+        thumbnailUrl: URL?,
+        updated: Date?,
+        languageId: Int,
+        altText: String?,
+        deleted: Bool,
+        removed: Bool,
+        pinnedCommunity: Bool,
+        pinnedInstance: Bool,
+        locked: Bool
+    ) {
+        self.actorId = actorId
+        self.id = id
+        self.creatorId = creatorId
+        self.communityId = communityId
+        self.created = created
+        self.title = title
+        self.content = content
+        self.linkUrl = linkUrl
+        self.embed = embed
+        self.nsfw = nsfw
+        self.thumbnailUrl = thumbnailUrl
+        self.updated = updated
+        self.languageId = languageId
+        self.altText = altText
+        self.deleted = deleted
+        self.removed = removed
+        self.pinnedCommunity = pinnedCommunity
+        self.pinnedInstance = pinnedInstance
+        self.locked = locked
+    }
+    
     public func merge(with snapshot: any PostSnapshotProviding) -> any PostSnapshotProviding {
         if snapshot is Post1Snapshot {
             return self

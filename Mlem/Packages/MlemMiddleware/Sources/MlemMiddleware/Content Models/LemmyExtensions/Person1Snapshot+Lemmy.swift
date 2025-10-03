@@ -13,36 +13,37 @@ extension Person1Snapshot {
             throw .responseMissingRequiredData("LemmyPerson actorId")
         }
         
-        self.actorId = actorId
-        self.id = person.id
-        self.name = person.name
-        self.displayName = person.displayName ?? person.name
-        self.avatar = person.avatar
-        self.banner = person.banner
-        
-        if let published = person.publishedAt ?? person.published {
-            self.created = published
-        } else {
+        guard let published = person.publishedAt ?? person.published else {
             throw .responseMissingRequiredData("LemmyPerson published")
         }
-        self.updated = person.updatedAt ?? person.updated
-        
-        self.description = person.bio
-        self.matrixUserId = person.matrixUserId
-        self.isBot = person.botAccount
-        self.deleted = person.deleted
-        self.instanceId = person.instanceId
-        
+
+        let instanceBan: InstanceBanType
         if person.banned ?? false { // TODO: We should not be coalescing here! https://github.com/mlemgroup/mlem/issues/2049
             if let expires = person.banExpires {
-                self.instanceBan = .temporarilyBanned(expires: expires)
+                instanceBan = .temporarilyBanned(expires: expires)
             } else {
-                self.instanceBan = .permanentlyBanned
+                instanceBan = .permanentlyBanned
             }
         } else {
-            self.instanceBan = .notBanned
+            instanceBan = .notBanned
         }
-        
-        self.allPropertiesPresent = true
+
+        self.init(
+            actorId: actorId,
+            id: person.id,
+            name: person.name,
+            created: published,
+            instanceId: person.instanceId,
+            displayName: person.displayName ?? person.name,
+            avatar: person.avatar,
+            banner: person.banner,
+            updated: person.updatedAt ?? person.updated,
+            description: person.bio,
+            matrixUserId: person.matrixUserId,
+            isBot: person.botAccount,
+            instanceBan: instanceBan,
+            deleted: person.deleted,
+            allPropertiesPresent: true
+        )
     }
 }

@@ -26,6 +26,30 @@ public struct Comment2Snapshot: CacheIdentifiable, CommentSnapshotProviding {
     
     public var cacheId: Int { comment.cacheId }
     
+    public init(
+        comment: Comment1Snapshot,
+        creator: Person1Snapshot,
+        post: Post1Snapshot,
+        community: Community1Snapshot,
+        commentCount: Int,
+        creatorIsModerator: Bool,
+        creatorIsAdmin: Bool,
+        creatorBannedFromCommunity: Bool,
+        votes: VotesModel,
+        saved: Bool
+    ) {
+        self.comment = comment
+        self.creator = creator
+        self.post = post
+        self.community = community
+        self.commentCount = commentCount
+        self.creatorIsModerator = creatorIsModerator
+        self.creatorIsAdmin = creatorIsAdmin
+        self.creatorBannedFromCommunity = creatorBannedFromCommunity
+        self.votes = votes
+        self.saved = saved
+    }
+    
     public func merge(with snapshot: any CommentSnapshotProviding) -> any CommentSnapshotProviding {
         self
     }

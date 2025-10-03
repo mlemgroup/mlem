@@ -21,4 +21,20 @@ public struct Community2Snapshot: CacheIdentifiable {
     public let bannedFromCommunity: Bool?
     
     public var cacheId: Int { community.cacheId }
+    
+    public init(
+        community: Community1Snapshot,
+        subscription: SubscriptionModel,
+        postCount: Int,
+        commentCount: Int,
+        activeUserCount: ActiveUserCount,
+        bannedFromCommunity: Bool?
+    ) {
+        self.community = community
+        self.subscription = subscription
+        self.postCount = postCount
+        self.commentCount = commentCount
+        self.activeUserCount = activeUserCount
+        self.bannedFromCommunity = bannedFromCommunity
+    }
 }

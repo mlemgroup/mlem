@@ -26,4 +26,20 @@ public struct Instance3Snapshot: CacheIdentifiable {
     public let administrators: [Person2Snapshot]
 
     public var cacheId: Int { instance.cacheId }
+    
+    public init(
+        instance: Instance2Snapshot,
+        allLanguages: [Locale.Language],
+        software: SiteSoftware,
+        allowedLanguageIds: Set<Int>,
+        blockedUrls: [InstanceUrlBlockRecord]?,
+        administrators: [Person2Snapshot]
+    ) {
+        self.instance = instance
+        self.allLanguages = allLanguages
+        self.software = software
+        self.allowedLanguageIds = allowedLanguageIds
+        self.blockedUrls = blockedUrls
+        self.administrators = administrators
+    }
 }

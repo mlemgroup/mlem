@@ -9,23 +9,21 @@ import Foundation
 
 public extension Instance1Snapshot {
     init(from site: PieFedSite) throws(ApiClientError) {
-        self.actorId = site.actorId
-        
-        // This is kinda dodgy
-        self.id = site.actorId.hashValue
-        self.instanceId = site.actorId.hashValue
-        
-        self.created = Date(timeIntervalSince1970: 0)
-        self.updated = nil
-        self.publicKey = ""
-        
-        self.displayName = site.name
-        self.description = site.sidebarMd ?? site.sidebar
-        self.shortDescription = site.description
-        self.avatar = site.icon
-        self.banner = nil
-        
-        self.lastRefresh = Date(timeIntervalSince1970: 0)
-        self.contentWarning = nil
+        self.init(
+            actorId: site.actorId,
+            // This is kinda dodgy
+            id: site.actorId.hashValue,
+            instanceId: site.actorId.hashValue,
+            created: Date(timeIntervalSince1970: 0),
+            updated: nil,
+            publicKey: "",
+            displayName: site.name,
+            description: site.sidebarMd ?? site.sidebar,
+            shortDescription: site.description,
+            avatar: site.icon,
+            banner: nil,
+            lastRefresh: Date(timeIntervalSince1970: 0),
+            contentWarning: nil
+        )
     }
 }
