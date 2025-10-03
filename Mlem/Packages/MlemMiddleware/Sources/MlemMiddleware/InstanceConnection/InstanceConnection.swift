@@ -407,6 +407,10 @@ public protocol InstanceConnection {
         unreadOnly: Bool
     ) async throws -> [Message2Snapshot]
     
+    func getReplyNotifications() async throws -> [InboxNotificationSnapshot]
+    func getMentionNotifications() async throws -> [InboxNotificationSnapshot]
+    func getMessageNotifications() async throws -> [InboxNotificationSnapshot]
+
     func markAllAsRead() async throws
     func markReplyAsRead(id: Int, read: Bool) async throws
     func markMentionAsRead(id: Int, read: Bool) async throws
