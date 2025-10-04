@@ -59,6 +59,42 @@ public extension LemmyConnection {
         return try response.privateMessages.map { try .init(from: $0) }
     }
     
+    func getReplyNotifications() async throws -> [InboxNotificationSnapshot] {
+        let response = try await performingForEndpoint { _ in
+            LemmyListRepliesRequest(
+                sort: .new,
+                page: 1,
+                limit: 5,
+                unreadOnly: false
+            )
+        }
+        return try response.replies.map { try .init(from: $0) }
+    }
+
+    func getMentionNotifications() async throws -> [InboxNotificationSnapshot] {
+        let response = try await performingForEndpoint { _ in
+            LemmyListMentionsRequest(
+                sort: .new,
+                page: 1,
+                limit: 5,
+                unreadOnly: false
+            )
+        }
+        return try response.mentions.map { try .init(from: $0) }
+    }
+
+    func getMessageNotifications() async throws -> [InboxNotificationSnapshot] {
+        let response = try await performingForEndpoint { _ in
+            LemmyGetPrivateMessageRequest(
+                unreadOnly: false,
+                page: 1,
+                limit: 5,
+                creatorId: nil
+            )
+        }
+        return try response.privateMessages.map { try .init(from: $0) }
+    }
+    
     func markAllAsRead() async throws {
         _ = try await performingForEndpoint { endpoint in
             LemmyMarkAllNotificationsReadRequest(endpoint: endpoint)

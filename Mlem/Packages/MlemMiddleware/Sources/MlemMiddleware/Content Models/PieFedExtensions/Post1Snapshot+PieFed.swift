@@ -9,28 +9,27 @@ import Foundation
 
 public extension Post1Snapshot {
     init(from post: PieFedPost) throws(ApiClientError) {
-        self.actorId = post.apId
-        self.id = post.id
-        self.creatorId = post.userId
-        self.communityId = post.communityId
-        self.created = post.published
-        
-        self.title = post.title
-        self.content = post.body
-        self.linkUrl = post.url
-        
-        // If a post is removed, deleted is true for some reason
-        self.deleted = post.removed ? false : post.deleted
-        
-        self.embed = nil
-        self.pinnedCommunity = post.sticky
-        self.pinnedInstance = false
-        self.locked = post.locked
-        self.nsfw = post.nsfw
-        self.removed = post.removed
-        self.thumbnailUrl = post.thumbnailUrl
-        self.updated = post.updated
-        self.languageId = post.languageId
-        self.altText = post.altText
+        self.init(
+            actorId: post.apId,
+            id: post.id,
+            creatorId: post.userId,
+            communityId: post.communityId,
+            created: post.published,
+            title: post.title,
+            content: post.body,
+            linkUrl: post.url,
+            embed: nil,
+            nsfw: post.nsfw,
+            thumbnailUrl: post.thumbnailUrl,
+            updated: post.updated,
+            languageId: post.languageId,
+            altText: post.altText,
+            // If a post is removed, deleted is true for some reason
+            deleted: post.removed ? false : post.deleted,
+            removed: post.removed,
+            pinnedCommunity: post.sticky,
+            pinnedInstance: false,
+            locked: post.locked
+        )
     }
 }

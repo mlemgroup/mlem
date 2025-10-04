@@ -9,23 +9,26 @@ import Foundation
 
 public extension Reply2Snapshot {
     init(from commentReply: PieFedCommentReplyView, isMention: Bool) throws(ApiClientError) {
-        self.reply = try .init(from: commentReply.commentReply, isMention: isMention)
-        self.comment = try .init(from: commentReply.comment)
-        self.creator = try .init(from: commentReply.creator)
-        self.post = try .init(from: commentReply.post)
-        self.community = try .init(from: commentReply.community)
-        self.recipient = try .init(from: commentReply.recipient)
-        
-        self.subscribed = commentReply.subscribed.isSubscribed
-        self.commentCount = commentReply.counts.childCount
-        self.creatorIsAdmin = commentReply.creatorIsAdmin
-        self.creatorIsModerator = commentReply.creatorIsModerator
-        self.creatorBannedFromCommunity = commentReply.creatorBannedFromCommunity
-        self.saved = commentReply.saved
-        self.votes = .init(
+        let votes = VotesModel(
             upvotes: commentReply.counts.upvotes,
             downvotes: commentReply.counts.downvotes,
             myVote: .guaranteedInit(from: commentReply.myVote)
+        )
+
+        try self.init(
+            reply: .init(from: commentReply.commentReply, isMention: isMention),
+            comment: .init(from: commentReply.comment),
+            creator: .init(from: commentReply.creator),
+            post: .init(from: commentReply.post),
+            community: .init(from: commentReply.community),
+            recipient: .init(from: commentReply.recipient),
+            subscribed: commentReply.subscribed.isSubscribed,
+            commentCount: commentReply.counts.childCount,
+            creatorIsModerator: commentReply.creatorIsModerator,
+            creatorIsAdmin: commentReply.creatorIsAdmin,
+            creatorBannedFromCommunity: commentReply.creatorBannedFromCommunity,
+            votes: votes,
+            saved: commentReply.saved
         )
     }
 }

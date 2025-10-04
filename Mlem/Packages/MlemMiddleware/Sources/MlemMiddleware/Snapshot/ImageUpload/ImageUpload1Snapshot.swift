@@ -13,6 +13,16 @@ public struct ImageUpload1Snapshot: CacheIdentifiable {
     public let alias: String?
     public let deleteToken: String?
     
+    public init(
+        url: URL,
+        alias: String?,
+        deleteToken: String?
+    ) {
+        self.url = url
+        self.alias = alias
+        self.deleteToken = deleteToken
+    }
+    
     public var cacheId: Int {
         url.hashValue
     }

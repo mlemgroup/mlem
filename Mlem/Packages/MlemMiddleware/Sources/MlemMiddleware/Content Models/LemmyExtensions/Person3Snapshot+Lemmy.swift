@@ -9,9 +9,6 @@ import Foundation
 
 extension Person3Snapshot {
     init(from userInfo: LemmyMyUserInfo) throws(ApiClientError) {
-        self.person = try .init(from: userInfo.localUserView)
-        self.site = nil
-        
         var moderatedCommunities: [Community1Snapshot] = []
         moderatedCommunities.reserveCapacity(userInfo.moderates.count)
         
@@ -19,25 +16,25 @@ extension Person3Snapshot {
             try moderatedCommunities.append(.init(from: moderate.community))
         }
         
-        self.moderatedCommunities = moderatedCommunities
+        self.init(
+            person: try .init(from: userInfo.localUserView),
+            site: nil,
+            moderatedCommunities: moderatedCommunities
+        )
     }
     
     init(from personDetails: LemmyGetPersonDetailsResponse) throws(ApiClientError) {
-        self.person = try .init(from: personDetails.personView)
-        
-        if let site = personDetails.site {
-            self.site = try .init(from: site)
-        } else {
-            self.site = nil
-        }
-        
         var moderatedCommunities: [Community1Snapshot] = []
         moderatedCommunities.reserveCapacity(personDetails.moderates.count)
         
         for moderate in personDetails.moderates {
             try moderatedCommunities.append(.init(from: moderate.community))
         }
-        
-        self.moderatedCommunities = moderatedCommunities
+
+        self.init(
+            person: try .init(from: personDetails.personView),
+            site: try personDetails.site.map { site throws(ApiClientError) in try.init(from: site) },
+            moderatedCommunities: moderatedCommunities
+        )
     }
 }

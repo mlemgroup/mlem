@@ -19,4 +19,16 @@ public struct Person2Snapshot: CacheIdentifiable {
     public let commentCount: Int
     
     public var cacheId: Int { person.cacheId }
+    
+    public init(
+        person: Person1Snapshot,
+        isAdmin: Bool,
+        postCount: Int,
+        commentCount: Int
+    ) {
+        self.person = person
+        self.isAdmin = isAdmin
+        self.postCount = postCount
+        self.commentCount = commentCount
+    }
 }

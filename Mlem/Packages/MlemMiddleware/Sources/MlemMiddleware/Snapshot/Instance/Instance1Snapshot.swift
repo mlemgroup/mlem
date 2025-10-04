@@ -27,4 +27,34 @@ public struct Instance1Snapshot: CacheIdentifiable {
     public var contentWarning: String?
     
     public var cacheId: Int { id }
+    
+    public init(
+        actorId: ActorIdentifier,
+        id: Int,
+        instanceId: Int,
+        created: Date,
+        updated: Date?,
+        publicKey: String,
+        displayName: String,
+        description: String? = nil,
+        shortDescription: String? = nil,
+        avatar: URL? = nil,
+        banner: URL? = nil,
+        lastRefresh: Date,
+        contentWarning: String? = nil
+    ) {
+        self.actorId = actorId
+        self.id = id
+        self.instanceId = instanceId
+        self.created = created
+        self.updated = updated
+        self.publicKey = publicKey
+        self.displayName = displayName
+        self.description = description
+        self.shortDescription = shortDescription
+        self.avatar = avatar
+        self.banner = banner
+        self.lastRefresh = lastRefresh
+        self.contentWarning = contentWarning
+    }
 }

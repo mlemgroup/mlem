@@ -9,25 +9,23 @@ import Foundation
 
 public extension Person1Snapshot {
     init(from person: PieFedPerson, allPropertiesPresent: Bool = false) throws(ApiClientError) {
-        self.actorId = person.actorId
-        self.id = person.id
-        self.name = person.userName
-        self.displayName = person.title ?? person.userName
-        self.avatar = person.avatar
-        self.banner = person.banner
-        self.created = person.published
-        
-        self.updated = nil
-        self.description = person.about
-        self.matrixUserId = nil
-        
-        self.isBot = person.bot
-        self.deleted = person.deleted
-        self.instanceId = person.instanceId
-        
-        // Does PieFed not have bans with expiry times, or did they just not put it in the API yet?
-        self.instanceBan = person.banned ? .permanentlyBanned : .notBanned
-        
-        self.allPropertiesPresent = allPropertiesPresent
+        self.init(
+            actorId: person.actorId,
+            id: person.id,
+            name: person.userName,
+            created: person.published,
+            instanceId: person.instanceId,
+            displayName: person.title ?? person.userName,
+            avatar: person.avatar,
+            banner: person.banner,
+            updated: nil,
+            description: person.about,
+            matrixUserId: nil,
+            isBot: person.bot,
+            // Does PieFed not have bans with expiry times, or did they just not put it in the API yet?
+            instanceBan: person.banned ? .permanentlyBanned : .notBanned,
+            deleted: person.deleted,
+            allPropertiesPresent: allPropertiesPresent
+        )
     }
 }
