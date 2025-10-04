@@ -5,8 +5,8 @@
 //  Created by Eric Andrews on 2025-07-22.
 //
 
-extension Post1Providing {
-    public func snapshotUpdate(with snapshot: any PostSnapshotProviding) async {
+public extension Post1Providing {
+    func snapshotUpdate(with snapshot: any PostSnapshotProviding) async {
         if let post3snapshot = snapshot as? Post3Snapshot {
             await snapshot1Update(with: post3snapshot.post.post)
         } else if let post2snapshot = snapshot as? Post2Snapshot {
@@ -38,13 +38,14 @@ extension Post1Providing {
         post1.setIfChanged(\.pinnedInstancePending, false)
         post1.setIfChanged(\.locked, snapshot.locked)
         post1.setIfChanged(\.lockedPending, false)
+        post1.setIfChanged(\.nsfwPending, false)
     }
     
-    public func takeSnapshot() -> any PostSnapshotProviding {
+    func takeSnapshot() -> any PostSnapshotProviding {
         takeSnapshot1()
     }
     
-    public func takeSnapshot1() -> Post1Snapshot {
+    func takeSnapshot1() -> Post1Snapshot {
         .init(
             actorId: actorId,
             id: id,

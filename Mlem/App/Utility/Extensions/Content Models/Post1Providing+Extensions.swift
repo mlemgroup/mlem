@@ -210,6 +210,10 @@ extension Post1Providing {
             }
             lockAction(appState: appState, feedback: feedback)
             
+            if setNsfwIsAvailable(appState: appState) {
+                setNsfwAction(appState: appState)
+            }
+            
             let viewVotesIsPossible = api.supports(.viewVotes, defaultValue: false)
             
             if let navigation, viewVotesIsPossible {
@@ -337,6 +341,9 @@ extension Post1Providing {
             return true
         }
         if pinnedInstancePending, !(barConfiguration?.all.contains(.action(.pin)) ?? false) {
+            return true
+        }
+        if nsfwPending {
             return true
         }
         return false
@@ -504,6 +511,33 @@ extension Post1Providing {
         )
     }
     
+    func setNsfwAction(appState: AppState) -> BasicAction {
+        .init(
+            id: "setNsfw\(uid)",
+            appearance: .toggleNsfw(isOn: nsfw),
+            callback: setNsfwIsAvailable(appState: appState) ? { @MainActor in
+                self.self2?.toggleNsfw { status in
+                    Task {
+                        await self.handleModerationActionCompletion(
+                            message: "Failed to set NSFW status",
+                            result: status,
+                            feedback: [.haptic]
+                        )
+                    }
+                }
+            } : nil
+        )
+    }
+    
+    func setNsfwIsAvailable(appState: AppState) -> Bool {
+        guard let self2 else { return false }
+        guard canModerate else { return false }
+        guard self2.community.apiIsLocal else { return false }
+        guard api.canInteract(appState: appState) else { return false }
+        guard api.supports(.moderatorSetNsfw, defaultValue: false) else { return false }
+        return true
+    }
+
     func viewVotesAction(navigation: NavigationLayer) -> BasicAction {
         let enabled = canModerate && api.supports(.viewVotes, defaultValue: true)
         return .init(

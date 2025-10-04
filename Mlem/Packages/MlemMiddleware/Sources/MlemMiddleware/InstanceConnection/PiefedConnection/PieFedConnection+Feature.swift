@@ -39,6 +39,7 @@ public extension PieFedConnection {
             version >= .v1_1_0
         case .editProfile, .viewVotes, .undeletePrivateMessages:
             version >= .v1_2_0
+        case .moderatorSetNsfw: true
         default: false
         }
     }

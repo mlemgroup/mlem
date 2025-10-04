@@ -42,6 +42,8 @@ public extension LemmyConnection {
              .banFromCommunity, .editModeratorList, .commentSearch, .undeletePrivateMessages, .searchLocalPeople,
              .hidePosts, .editDisplayName, .editProfile, .autoMarkPostReadOnInteract, .blockInstances:
             true
+        case .moderatorSetNsfw:
+            false
         }
     }
 }
