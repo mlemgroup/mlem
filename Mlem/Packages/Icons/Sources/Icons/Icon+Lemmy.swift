@@ -45,7 +45,7 @@ public extension Icon {
         public let replyCounter: Icon = .init("arrowshape.turn.up.left.circle")
         
         public let send: Icon = .init("paperplane")
-        public let sendMessage: Icon = .init("arrow.up.circle.fill")
+        public let sendMessage: Icon = .init("arrow.up")
         
         // MARK: - Save
         
