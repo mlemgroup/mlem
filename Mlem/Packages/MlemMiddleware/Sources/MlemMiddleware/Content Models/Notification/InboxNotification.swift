@@ -14,14 +14,23 @@ public class InboxNotification: ContentModel, Identifiable {
 
     public let id: Int
     public var read: Bool
+    public let content: InboxNotificationContent
 
     init(
         api: ApiClient,
         id: Int,
-        read: Bool
+        read: Bool,
+        content: InboxNotificationContent
     ) {
         self.api = api
         self.id = id
         self.read = read
+        self.content = content
     }
+}
+
+public enum InboxNotificationContent {
+    case reply(Comment2)
+    case mention(Comment2)
+    case message(Message2)
 }

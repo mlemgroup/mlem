@@ -10,12 +10,14 @@ import Foundation
 public struct InboxNotificationSnapshot: CacheIdentifiable {
     public let id: Int
     public var read: Bool
+    public var content: InboxNotificationContentSnapshot
 
     public var cacheId: Int { id }
 
-    public init(id: Int, read: Bool) {
+    public init(id: Int, read: Bool, content: InboxNotificationContentSnapshot) {
         self.id = id
         self.read = read
+        self.content = content
     }
 }
 
