@@ -35,7 +35,9 @@ extension Comment2 {
             personActions: nil,
             postTags: nil,
             canMod: nil,
-            creatorBanned: nil
+            creatorBanned: nil,
+            creatorBanExpiresAt: nil,
+            creatorCommunityBanExpiresAt: nil
         )
     }
 }

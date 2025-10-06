@@ -269,7 +269,12 @@ public extension PieFedConnection {
     
     @discardableResult
     func reportPost(id: Int, reason: String) async throws -> ReportSnapshot {
-        let request = PieFedCreatePostReportRequest(postId: id, reason: reason)
+        let request = PieFedCreatePostReportRequest(
+            postId: id,
+            reason: reason,
+            description: nil,
+            reportRemote: true
+        )
         let response = try await perform(request)
         return try .init(from: response.postReportView)
     }
