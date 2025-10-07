@@ -59,18 +59,21 @@ public extension ApiClient {
     }
 
     func getReplyNotifications() async throws -> [InboxNotification] {
+        guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
         let snapshots = try await repository.getReplyNotifications()
-        return await caches.notification.getModels(api: self, from: snapshots)
+        return await caches.notification.getModels(api: self, from: snapshots, myPersonId: myPersonId)
     }
     
     func getMentionNotifications() async throws -> [InboxNotification] {
+        guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
         let snapshots = try await repository.getMentionNotifications()
-        return await caches.notification.getModels(api: self, from: snapshots)
+        return await caches.notification.getModels(api: self, from: snapshots, myPersonId: myPersonId)
     }
 
     func getMessageNotifications() async throws -> [InboxNotification] {
+        guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
         let snapshots = try await repository.getMessageNotifications()
-        return await caches.notification.getModels(api: self, from: snapshots)
+        return await caches.notification.getModels(api: self, from: snapshots, myPersonId: myPersonId)
     }
 
     func markAllAsRead() async throws {

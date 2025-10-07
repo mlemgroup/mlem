@@ -81,4 +81,34 @@ extension Comment2Snapshot {
             saved: saved
         )
     }
+
+    init(from reply: LemmyCommentReplyView) throws(ApiClientError) {
+        try self.init(
+            comment: .init(from: reply.comment),
+            creator: .init(from: reply.creator),
+            post: .init(from: reply.post),
+            community: .init(from: reply.community),
+            commentCount: reply.comment.childCount ?? reply.counts.childCount,
+            creatorIsModerator: reply.creatorIsModerator,
+            creatorIsAdmin: reply.creatorIsAdmin,
+            creatorBannedFromCommunity: reply.creatorBannedFromCommunity,
+            votes: .init(from: reply.counts, myVote: .guaranteedInit(from: reply.myVote)),
+            saved: reply.saved
+        )
+    }
+
+    init(from mention: LemmyPersonCommentMentionView) throws(ApiClientError) {
+        try self.init(
+            comment: .init(from: mention.comment),
+            creator: .init(from: mention.creator),
+            post: .init(from: mention.post),
+            community: .init(from: mention.community),
+            commentCount: mention.comment.childCount ?? mention.counts.childCount,
+            creatorIsModerator: mention.creatorIsModerator,
+            creatorIsAdmin: mention.creatorIsAdmin,
+            creatorBannedFromCommunity: mention.creatorBannedFromCommunity,
+            votes: .init(from: mention.counts, myVote: .guaranteedInit(from: mention.myVote)),
+            saved: mention.saved
+        )
+    }
 }
