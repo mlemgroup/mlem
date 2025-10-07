@@ -221,17 +221,8 @@ struct PostEditorView: View {
                             .padding(.leading, 10)
                             .transition(attachmentTransition)
                     }
-
-                    HStack(spacing: 10) {
-                        if imageManager == nil, imageUrl == nil {
-                            linkView
-                                .transition(.move(edge: .leading).combined(with: .opacity))
-                        }
-                        if link == .none {
-                            imageView
-                                .transition(.move(edge: .trailing).combined(with: .opacity))
-                        }
-                    }
+                    
+                    attachmentPickerView
                     
                     VStack {
                         MarkdownTextEditor(

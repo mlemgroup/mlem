@@ -11,25 +11,7 @@ import SwiftUI
 
 extension PostEditorView {
     @ViewBuilder
-    var linkView: some View {
-        HStack {
-            switch link {
-            case let .value(link):
-                Text(link.label)
-            default:
-                addLinkButton()
-            }
-        }
-        .padding(8)
-        .background(.themedAccent.opacity(0.2))
-        // This second background is to prevent the view from being partially see-through, which makes the animations cleaner
-        .background(.themedGroupedBackground)
-        .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
-        .onTapGesture { pasteLink() }
-    }
-    
-    @ViewBuilder
-    private func addLinkButton() -> some View {
+    func addLinkButton() -> some View {
         Label("Add Link", icon: .general.link)
             .lineLimit(1)
             .fontWeight(.semibold)
@@ -39,6 +21,12 @@ extension PostEditorView {
                 maxWidth: .infinity,
                 alignment: link == .none ? .center : .leading
             )
+            .padding(8)
+            .background(.themedAccent.opacity(0.2))
+            // This second background is to prevent the view from being partially see-through, which makes the animations cleaner
+            .background(.themedGroupedBackground)
+            .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
+            .onTapGesture { pasteLink() }
     }
     
     private func pasteLink() {
