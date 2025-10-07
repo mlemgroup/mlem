@@ -71,18 +71,11 @@ struct WebsitePreviewView: View {
                     overlays: shouldBlur ? [.controls, .nsfw, .error] : [.controls, .error]
                 )
                 .overlay(alignment: .bottomLeading) {
-                    LinkHostView(link: link)
-                        .padding(Constants.main.halfSpacing)
-                        .padding(showFavicons ? .trailing : .horizontal, 3)
-                        .background {
-                            Capsule()
-                                .fill(.regularMaterial)
-                                .overlay(Capsule().fill(.themedBackground.opacity(0.25)))
-                        }
+                    LinkHostView(link: link, withCapsule: true)
                         .padding(Constants.main.halfSpacing)
                 }
             } else {
-                LinkHostView(link: link)
+                LinkHostView(link: link, withCapsule: false)
                     .padding([.horizontal, .top], Constants.main.standardSpacing)
             }
             
