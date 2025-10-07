@@ -39,22 +39,35 @@ private struct TestInboxSectionView: View {
             Text(type.rawValue)
             if let notifications {
                 ForEach(notifications) { notification in
-                    HStack {
-                        Text(String(notification.id))
-                        Spacer()
+                    VStack {
                         if notification.read {
                             Image(icon: .general.success)
                                 .foregroundStyle(.blue)
+                                .frame(maxWidth: .infinity, alignment: .trailing)
                         }
+                        itemBody(notification.content)
+                            .lineLimit(2)
                     }
                     .lineLimit(3)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(10)
-                    .background(.themedSecondaryGroupedBackground, in: .capsule)
+                    .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: 10))
                 }
             }
         }
         .task { await load() }
+    }
+
+    @ViewBuilder
+    func itemBody(_ content: InboxNotificationContent) -> some View {
+        switch content {
+        case let .reply(comment):
+            Text(comment.content)
+        case let .mention(comment):
+            Text(comment.content)
+        case let .message(message):
+            Text(message.content)
+        }
     }
     
     func load() async {
