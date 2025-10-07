@@ -13,7 +13,8 @@ struct WebsitePreviewView: View {
     @Environment(\.openURL) private var openURL
     
     @Setting(\.post_webPreview_showIcon) var showFavicons
-    
+    @Setting(\.behavior_muteVideos) var muteVideos
+
     let shouldBlur: Bool
     
     let link: PostLink
@@ -64,7 +65,7 @@ struct WebsitePreviewView: View {
                     controlState: .constant(.init(
                         blurred: shouldBlur,
                         animating: false,
-                        muted: Settings.get(\.behavior_muteVideos)
+                        muted: muteVideos
                     )),
                     aspectRatioBounds: .bounded(vertical: .init(width: 1, height: 1), horizontal: nil),
                     contentMode: .fill,
