@@ -8,11 +8,22 @@
 import Foundation
 import SwiftUI
 
-private let backendAddress: String = "https://backend.mlemapp.org:8443/v0"
+public enum BackendEnvironment {
+    case qc, prod
+    
+    internal var address: URL {
+        switch self {
+        case .prod:
+            return .init(string: "https://backend.mlemapp.org:8443/")!
+        case .qc:
+            return .init(string: "https://backend.mlemapp.org:2096/")!
+        }
+    }
+}
 
 @Observable
 public class BackendClient {
-    private let baseUrl: URL
+    public private(set) var environment: BackendEnvironment = .prod
     private let jsonDecoder: JSONDecoder = {
         let decoder: JSONDecoder = .init()
         decoder.dateDecodingStrategy = .custom { decoder in
@@ -31,31 +42,20 @@ public class BackendClient {
     public private(set) var testflightUpdate: URL?
     
     public static var main: BackendClient = .init()
-
+    private var baseUrl: URL { environment.address }
+    
     private init() {
-        guard let url = URL(string: backendAddress) else {
-            fatalError("Could not form backend URL")
-        }
-        self.baseUrl = url
-        
-        Task {
-            do {
-                try await fetchFlairs()
-                try await fetchTestflightUpdate()
-            } catch {
-                print(error)
-            }
-        }
+        refresh()
     }
     
     public func healthCheck() async throws -> BackendHealthCheck {
-        let (data, _) = try await URLSession.shared.data(for: URLRequest(url: baseUrl.appendingPathComponent("/health")))
+        let (data, _) = try await URLSession.shared.data(for: URLRequest(url: baseUrl.appendingPathComponent("/v0/health")))
         return try jsonDecoder.decode(BackendHealthCheck.self, from: data)
     }
     
     public func getInstances() async throws -> [InstanceSummary] {
         let request: URLRequest = .init(url: baseUrl
-            .appendingPathComponent("/stats/instances")
+            .appendingPathComponent("/v0/stats/instances")
             .appending(queryItems: [
                 .init(name: "minUsers", value: "20"),
                 .init(name: "minScore", value: "0"),
@@ -66,14 +66,30 @@ public class BackendClient {
         return try jsonDecoder.decode([InstanceSummary].self, from: data)
     }
     
+    public func changeEnvironment(to environment: BackendEnvironment) {
+        self.environment = environment
+        refresh()
+    }
+    
+    private func refresh() {
+        Task {
+            do {
+                try await fetchFlairs()
+                try await fetchTestflightUpdate()
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
     private func fetchTestflightUpdate() async throws {
-        let (data, _) = try await URLSession.shared.data(for: URLRequest(url: baseUrl.appendingPathComponent("/mlem/testflight")))
+        let (data, _) = try await URLSession.shared.data(for: URLRequest(url: baseUrl.appendingPathComponent("/v0/mlem/testflight")))
         testflightUpdate = try jsonDecoder.decode(TestflightUpdate.self, from: data).url
     }
     
     private func fetchFlairs(enabledOnly: Bool = true) async throws {
         let request: URLRequest = .init(url: baseUrl
-            .appendingPathComponent("/mlem/flairs")
+            .appendingPathComponent("/v0/mlem/flairs")
             .appending(queryItems: [
                 .init(name: "enabledOnly", value: enabledOnly.description)
             ])
