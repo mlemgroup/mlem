@@ -13,7 +13,7 @@ struct WebsitePreviewView: View {
     @Environment(\.openURL) private var openURL
     
     @Setting(\.post_webPreview_showIcon) var showFavicons
-
+    
     let shouldBlur: Bool
     
     let link: PostLink
@@ -53,6 +53,7 @@ struct WebsitePreviewView: View {
             .clipShape(RoundedRectangle(cornerRadius: Constants.main.mediumItemCornerRadius))
             .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.mediumItemCornerRadius))
             .paletteBorder(cornerRadius: Constants.main.mediumItemCornerRadius)
+            .contentShape(.rect)
     }
     
     var complex: some View {
@@ -70,7 +71,7 @@ struct WebsitePreviewView: View {
                     overlays: shouldBlur ? [.controls, .nsfw, .error] : [.controls, .error]
                 )
                 .overlay(alignment: .bottomLeading) {
-                    linkHost
+                    LinkHostView(link: link)
                         .padding(Constants.main.halfSpacing)
                         .padding(showFavicons ? .trailing : .horizontal, 3)
                         .background {
@@ -81,7 +82,7 @@ struct WebsitePreviewView: View {
                         .padding(Constants.main.halfSpacing)
                 }
             } else {
-                linkHost
+                LinkHostView(link: link)
                     .padding([.horizontal, .top], Constants.main.standardSpacing)
             }
             
@@ -91,17 +92,5 @@ struct WebsitePreviewView: View {
                 .padding(Constants.main.standardSpacing)
                 .foregroundStyle(.themedPrimary)
         }
-    }
-    
-    var linkHost: some View {
-        HStack(spacing: Constants.main.halfSpacing) {
-            if showFavicons {
-                CircleCroppedImageView(url: link.favicon, frame: Constants.main.smallAvatarSize, fallback: .favicon)
-            }
-            
-            Text(link.host)
-                .foregroundStyle(.themedSecondary)
-        }
-        .font(.footnote)
     }
 }
