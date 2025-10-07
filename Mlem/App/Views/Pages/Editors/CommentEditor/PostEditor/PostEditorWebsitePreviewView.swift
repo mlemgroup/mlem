@@ -28,8 +28,8 @@ struct PostEditorWebsitePreviewView: View {
     
     @ViewBuilder
     var content: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            if let thumbnailUrl = link.effectiveThumbnail {
+        if let thumbnailUrl = link.effectiveThumbnail {
+            VStack(alignment: .leading, spacing: 0) {
                 MediaView(
                     url: thumbnailUrl,
                     controlState: .constant(.init(
@@ -45,13 +45,19 @@ struct PostEditorWebsitePreviewView: View {
                     LinkHostView(link: link, withCapsule: true)
                         .padding(Constants.main.halfSpacing)
                 }
-            } else {
-                LinkHostView(link: link, withCapsule: false)
-                    .padding([.horizontal, .top], Constants.main.standardSpacing)
-            }
-            
-            HStack {
+                .overlay(alignment: .topTrailing) {
+                    removeButton
+                        .padding(10)
+                }
                 titleView
+            }
+        } else {
+            HStack {
+                VStack(alignment: .leading, spacing: 0) {
+                    LinkHostView(link: link, withCapsule: false)
+                        .padding([.horizontal, .top], Constants.main.standardSpacing)
+                    titleView
+                }
                 Spacer()
                 removeButton
                     .padding(.trailing, 10)
@@ -76,7 +82,7 @@ struct PostEditorWebsitePreviewView: View {
             action: removeCallback
         )
         .buttonStyle(.plain)
-        .font(.title2)
+        .font(.title)
         .fontWeight(.semibold)
         .imageScale(.large)
         .labelStyle(.iconOnly)
