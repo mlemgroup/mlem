@@ -13,25 +13,11 @@ extension PostEditorView {
     @ViewBuilder
     var linkView: some View {
         HStack {
-            Label(linkLabel, icon: .general.link)
-                .lineLimit(1)
-                .fontWeight(.semibold)
-                .foregroundStyle(.themedAccent)
-                .padding(.leading, 8)
-                .frame(
-                    maxWidth: .infinity,
-                    alignment: link == .none ? .center : .leading
-                )
-            if link != .none {
-                Button("Remove", icon: .general.close) {
-                    link = .none
-                }
-                .font(.title2)
-                .symbolVariant(.circle.fill)
-                .labelStyle(.iconOnly)
-                .symbolRenderingMode(.hierarchical)
-                .foregroundStyle(.themedAccent)
-                .fontWeight(.semibold)
+            switch link {
+            case let .value(link):
+                Text(link.label)
+            default:
+                addLinkButton()
             }
         }
         .padding(8)
@@ -40,6 +26,19 @@ extension PostEditorView {
         .background(.themedGroupedBackground)
         .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
         .onTapGesture { pasteLink() }
+    }
+    
+    @ViewBuilder
+    private func addLinkButton() -> some View {
+        Label("Add Link", icon: .general.link)
+            .lineLimit(1)
+            .fontWeight(.semibold)
+            .foregroundStyle(.themedAccent)
+            .padding(.leading, 8)
+            .frame(
+                maxWidth: .infinity,
+                alignment: link == .none ? .center : .leading
+            )
     }
     
     private func pasteLink() {
@@ -60,15 +59,6 @@ extension PostEditorView {
                     handleError(error)
                 }
             }
-        }
-    }
-    
-    private var linkLabel: String {
-        switch link {
-        case let .value(link):
-            link.content.absoluteString
-        default:
-            .init(localized: "Add Link")
         }
     }
     
