@@ -10,10 +10,7 @@ import MlemMiddleware
 extension PersonView {
     func preheatFeedLoader() {
         Task {
-            guard let feedLoader else {
-                assertionFailure("No feedLoader found!")
-                return
-            }
+            guard let feedLoader else { return }
             do {
                 if feedLoader.loadingState == .initial {
                     try await feedLoader.loadMoreItems()

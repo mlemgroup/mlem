@@ -317,6 +317,13 @@ public extension PieFedConnection {
     }
     
     @discardableResult
+    func setPostNsfw(id: Int, nsfw: Bool) async throws -> Post1Snapshot {
+        let request = PieFedModerateCommunityPostNsfwRequest(postId: id, nsfwStatus: nsfw)
+        let response = try await perform(request)
+        return try .init(from: response.post)
+    }
+
+    @discardableResult
     func getPostVotes(
         id: Int,
         page: Int = 1,

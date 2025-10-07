@@ -120,6 +120,34 @@ public extension LemmyConnection {
     
     func resolve(url: URL) async throws -> ResolvedContent {
         do {
+            // Fix for https://github.com/mlemgroup/mlem/issues/2341
+            let components = url.pathComponents
+            if url.host == baseUrl.host(), components.count > 2 {
+                switch components[1] {
+                case "c":
+                    let response = try await performingForEndpoint { endpoint in
+                        LemmyGetCommunityRequest(endpoint: endpoint, id: nil, name: components[2])
+                    }
+                    return try .community(.init(from: response.communityView))
+                case "u":
+                    let response = try await performingForEndpoint { endpoint in
+                        LemmyReadPersonRequest(
+                            endpoint: endpoint,
+                            personId: nil,
+                            username: components[2],
+                            sort: nil,
+                            page: 1,
+                            limit: 1,
+                            communityId: nil,
+                            savedOnly: nil
+                        )
+                    }
+                    return try .person(.init(from: response.personView))
+                default:
+                    break
+                }
+            }
+            
             let response = try await performingForEndpoint { endpoint in
                 LemmyResolveObjectRequest(endpoint: endpoint, q: url.absoluteString)
             }

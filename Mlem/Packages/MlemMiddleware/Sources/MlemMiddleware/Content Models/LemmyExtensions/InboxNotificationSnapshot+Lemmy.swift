@@ -9,16 +9,18 @@ import Foundation
 
 extension InboxNotificationSnapshot {
     init(from replyView: LemmyCommentReplyView) throws(ApiClientError) {
-        self.init(
+        try self.init(
             id: LegacyNotificationIdWrapper(type: .reply, id: replyView.commentReply.id).hashValue,
-            read: replyView.commentReply.read
+            read: replyView.commentReply.read,
+            content: .reply(.init(from: replyView))
         )
     }
 
     init(from mentionView: LemmyPersonCommentMentionView) throws(ApiClientError) {
-        self.init(
+        try self.init(
             id: LegacyNotificationIdWrapper(type: .mention, id: mentionView.personMention.id).hashValue,
-            read: mentionView.personMention.read
+            read: mentionView.personMention.read,
+            content: .mention(.init(from: mentionView))
         )
     }
 
@@ -27,9 +29,10 @@ extension InboxNotificationSnapshot {
             throw .responseMissingRequiredData("LemmyPrivateMessage read")
         }
 
-        self.init(
+        try self.init(
             id: LegacyNotificationIdWrapper(type: .message, id: messageView.privateMessage.id).hashValue,
-            read: read
+            read: read,
+            content: .message(.init(from: messageView))
         )
     }
 }

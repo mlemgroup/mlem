@@ -34,7 +34,6 @@ public final class Post1: Post1Providing {
     public var linkUrl: URL?
     public var embeddedMediaUrl: URL?
     public var embed: PostEmbed?
-    public var nsfw: Bool
     public var thumbnailUrl: URL?
     public let created: Date
     public var updated: Date?
@@ -57,6 +56,9 @@ public final class Post1: Post1Providing {
     public var pinnedInstance: Bool
     public var pinnedInstancePending: Bool = false
     
+    public var nsfw: Bool
+    public var nsfwPending: Bool = false
+
     init(
         api: ApiClient,
         actorId: ActorIdentifier,
