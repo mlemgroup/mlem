@@ -72,6 +72,7 @@ public extension Post1Providing {
     var locked: Bool { post1.locked }
     var lockedPending: Bool { post1.lockedPending }
     var nsfw: Bool { post1.nsfw }
+    var nsfwPending: Bool { post1.nsfwPending }
     var created: Date { post1.created }
     var removed: Bool { post1.removed }
     var removedPending: Bool { post1.removedPending }
@@ -364,6 +365,27 @@ public extension Post1Providing {
         }
     }
     
+    func updateNsfw(_ newValue: Bool, callback: ((UpdateStatus) -> Void)?) {
+        post1.nsfw = newValue
+        post1.nsfwPending = true
+        Task {
+            await updateQueue.addItem {
+                do {
+                    let ret = try await self.api.repository.setPostNsfw(id: self.id, nsfw: newValue)
+                    callback?(.success)
+                    return ret
+                } catch {
+                    callback?(.failure(error))
+                    throw (error)
+                }
+            }
+        }
+    }
+    
+    func toggleNsfw(callback: ((UpdateStatus) -> Void)?) {
+        updateNsfw(!nsfw, callback: callback)
+    }
+
     func getVotes(page: Int, limit: Int) async throws -> [PersonVote] {
         try await api.getPostVotes(id: id, communityId: communityId, page: page, limit: limit)
     }

@@ -139,6 +139,9 @@ public protocol InstanceConnection {
     func lockPost(id: Int, lock: Bool) async throws -> Post2Snapshot
     
     @discardableResult
+    func setPostNsfw(id: Int, nsfw: Bool) async throws -> Post1Snapshot
+    
+    @discardableResult
     func getPostVotes(
         id: Int,
         page: Int,

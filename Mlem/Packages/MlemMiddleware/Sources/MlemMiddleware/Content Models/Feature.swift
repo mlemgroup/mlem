@@ -54,4 +54,5 @@ public enum Feature: Hashable {
     case autoMarkPostReadOnInteract
     
     case blockInstances
+    case moderatorSetNsfw
 }

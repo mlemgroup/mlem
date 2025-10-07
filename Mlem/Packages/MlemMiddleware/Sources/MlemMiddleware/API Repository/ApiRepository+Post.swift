@@ -271,6 +271,12 @@ extension ApiRepository {
         }
     }
     
+    func setPostNsfw(id: Int, nsfw: Bool) async throws -> Post1Snapshot {
+        try await performingForConnection { connection in
+            try await connection.setPostNsfw(id: id, nsfw: nsfw)
+        }
+    }
+    
     func getPostVotes(
         id: Int,
         page: Int = 1,

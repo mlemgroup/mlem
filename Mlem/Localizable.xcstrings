@@ -784,6 +784,9 @@
         }
       }
     },
+    "Add NSFW Tag" : {
+
+    },
     "Additional Read Indicator" : {
       "localizations" : {
         "fr" : {
@@ -3460,6 +3463,9 @@
           }
         }
       }
+    },
+    "Failed to set NSFW status" : {
+
     },
     "Failed to unlock post" : {
       "localizations" : {
@@ -6696,6 +6702,9 @@
           }
         }
       }
+    },
+    "Remove NSFW Tag" : {
+
     },
     "Remove Post" : {
       "localizations" : {
