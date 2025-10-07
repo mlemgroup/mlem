@@ -55,4 +55,6 @@ public enum Feature: Hashable {
     
     case blockInstances
     case moderatorSetNsfw
+    
+    case fetchLinkMetadata
 }

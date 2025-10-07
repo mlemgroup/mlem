@@ -89,4 +89,8 @@ public extension PieFedConnection {
     ) async throws -> [ModlogEntrySnapshot] {
         throw ApiClientError.featureUnsupported
     }
+    
+    func getPostLink(url: URL) async throws -> PostLink {
+        throw ApiClientError.featureUnsupported
+    }
 }

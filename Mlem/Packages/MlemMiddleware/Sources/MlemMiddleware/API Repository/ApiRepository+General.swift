@@ -103,4 +103,10 @@ extension ApiRepository {
             )
         }
     }
+    
+    func getPostLink(url: URL) async throws -> PostLink {
+        try await performingForConnection { connection in
+            try await connection.getPostLink(url: url)
+        }
+    }
 }

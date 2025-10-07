@@ -387,6 +387,8 @@ public protocol InstanceConnection {
         type: ModlogEntryType?
     ) async throws -> [ModlogEntrySnapshot]
     
+    func getPostLink(url: URL) async throws -> PostLink
+
     // MARK: - Inbox
     
     func getReplies(
