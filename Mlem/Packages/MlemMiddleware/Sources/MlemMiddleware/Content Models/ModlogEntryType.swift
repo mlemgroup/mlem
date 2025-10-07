@@ -45,6 +45,7 @@ public enum ModlogEntryType: CaseIterable {
         case .modChangeCommunityVisibility: throw .featureUnsupported
         case .adminBlockInstance: throw .featureUnsupported
         case .adminAllowInstance: throw .featureUnsupported
+        case .modLockComment: throw .featureUnsupported
         }
         if let result {
             self = result
