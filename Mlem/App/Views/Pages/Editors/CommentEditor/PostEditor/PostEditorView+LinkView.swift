@@ -51,14 +51,14 @@ extension PostEditorView {
             return
         }
         if let url {
-            link = .value(url)
+            link = .value(.init(content: url, thumbnail: nil, label: ""))
         }
     }
     
     private var linkLabel: String {
         switch link {
-        case let .value(url):
-            url.absoluteString
+        case let .value(link):
+            link.content.absoluteString
         default:
             .init(localized: "Add Link")
         }
