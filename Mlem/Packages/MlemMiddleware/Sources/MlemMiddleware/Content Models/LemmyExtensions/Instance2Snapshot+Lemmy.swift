@@ -80,7 +80,7 @@ extension Instance2Snapshot {
             emailApplicationsToAdmins: site.localSite.applicationEmailAdmins,
             emailReportsToAdmins: site.localSite.reportsEmailAdmins,
             slurFilterRegex: site.localSite.slurFilterRegex,
-            actorNameMaxLength: site.localSite.actorNameMaxLength,
+            actorNameMaxLength: site.localSite.actorNameMaxLength ?? 20,
             federationEnabled: site.localSite.federationEnabled,
             captchaEnabled: site.localSite.captchaEnabled,
             captchaDifficulty: .init(rawValue: site.localSite.captchaDifficulty),

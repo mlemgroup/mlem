@@ -43,7 +43,9 @@ extension Post1 {
             newestCommentTimeAt: nil,
             reportCount: nil,
             unresolvedReportCount: nil,
-            federationPending: nil
+            federationPending: nil,
+            embedVideoWidth: nil,
+            embedVideoHeight: nil
         )
     }
 }

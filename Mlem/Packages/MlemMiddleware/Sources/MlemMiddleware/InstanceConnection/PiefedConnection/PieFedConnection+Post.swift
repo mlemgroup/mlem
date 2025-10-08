@@ -269,7 +269,12 @@ public extension PieFedConnection {
     
     @discardableResult
     func reportPost(id: Int, reason: String) async throws -> ReportSnapshot {
-        let request = PieFedCreatePostReportRequest(postId: id, reason: reason)
+        let request = PieFedCreatePostReportRequest(
+            postId: id,
+            reason: reason,
+            description: nil,
+            reportRemote: true
+        )
         let response = try await perform(request)
         return try .init(from: response.postReportView)
     }
@@ -311,6 +316,13 @@ public extension PieFedConnection {
         return try .init(from: response.postView)
     }
     
+    @discardableResult
+    func setPostNsfw(id: Int, nsfw: Bool) async throws -> Post1Snapshot {
+        let request = PieFedModerateCommunityPostNsfwRequest(postId: id, nsfwStatus: nsfw)
+        let response = try await perform(request)
+        return try .init(from: response.post)
+    }
+
     @discardableResult
     func getPostVotes(
         id: Int,

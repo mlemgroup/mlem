@@ -39,7 +39,9 @@ extension Post2 {
             postActions: nil,
             tags: nil,
             canMod: nil,
-            creatorBanned: nil
+            creatorBanned: nil,
+            creatorBanExpiresAt: nil,
+            creatorCommunityBanExpiresAt: nil
         )
     }
 }
