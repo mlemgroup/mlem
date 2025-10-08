@@ -55,11 +55,10 @@ public class BackendClient {
     
     public func getInstances() async throws -> [InstanceSummary] {
         let request: URLRequest = .init(url: baseUrl
-            .appendingPathComponent("/v0/stats/instances")
+            .appendingPathComponent("/v1/stats/instances")
             .appending(queryItems: [
-                .init(name: "minUsers", value: "20"),
-                .init(name: "minScore", value: "0"),
-                .init(name: "allowSus", value: "false")
+                .init(name: "minTotalUsers", value: "20"),
+                .init(name: "minMonthyUsers", value: "1"),
             ])
         )
         let (data, _) = try await URLSession.shared.data(for: request)

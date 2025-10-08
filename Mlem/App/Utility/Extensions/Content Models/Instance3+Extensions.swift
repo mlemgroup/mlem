@@ -13,7 +13,7 @@ extension Instance3 {
         .init(
             displayName: displayName,
             name: name,
-            userCount: userCount,
+            totalUsers: userCount,
             avatar: avatar,
             software: software
         )
