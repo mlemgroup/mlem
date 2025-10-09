@@ -13,10 +13,8 @@ public enum BackendEnvironment {
     
     internal var address: URL {
         switch self {
-        case .prod:
-            return .init(string: "https://backend.mlemapp.org:8443/")!
-        case .qc:
-            return .init(string: "https://backend.mlemapp.org:2096/")!
+        case .prod: .init(string: "https://backend.mlemapp.org:8443/")!
+        case .qc: .init(string: "https://backend.mlemapp.org:2096/")!
         }
     }
 }
