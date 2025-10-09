@@ -65,7 +65,7 @@ struct DeveloperSettingsView: View {
             
             #if DEBUG
                 Section {
-                    Toggle("Use QC Backend",
+                    Toggle(String("Use QC Backend"),
                            isOn: .init(get: { BackendClient.main.environment == .qc },
                                        set: { BackendClient.main.changeEnvironment(to: $0 ? .qc : .prod) }))
                     
