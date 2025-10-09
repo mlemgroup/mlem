@@ -102,6 +102,11 @@ struct PostEditorTargetView: View {
                     .padding(.vertical, 6)
                     .padding(.horizontal, 8)
             }
+            .onChange(of: target.account) {
+                Task {
+                    await resolveCommunity()
+                }
+            }
             switch target.resolutionState {
             case .notFound, .error:
                 Image(icon: .general.warning)
