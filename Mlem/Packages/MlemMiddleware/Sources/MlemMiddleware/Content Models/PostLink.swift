@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct PostLink: Equatable {
+public struct PostLink: Hashable {
     public let content: URL
     public let thumbnail: URL?
     public let label: String
@@ -28,7 +28,7 @@ public struct PostLink: Equatable {
     }
     
     public var effectiveThumbnail: URL? {
-        return thumbnail ?? content.youTubeThumbnailUrl
+        thumbnail ?? content.youTubeThumbnailUrl
     }
     
     public init(content: URL, thumbnail: URL?, label: String) {

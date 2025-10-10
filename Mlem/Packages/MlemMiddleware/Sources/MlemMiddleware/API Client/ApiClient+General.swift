@@ -32,7 +32,7 @@ public extension ApiClient {
     }
     
     func login(password: String, totpToken: String?) async throws {
-        guard let username = username else { throw ApiClientError.notLoggedIn }
+        guard let username else { throw ApiClientError.notLoggedIn }
         let token = try await getAccountToken(usernameOrEmail: username, password: password, totpToken: totpToken)
         updateToken(token)
     }
@@ -159,5 +159,9 @@ public extension ApiClient {
                 type: .init(from: entry.type, api: self)
             )
         }
+    }
+    
+    func getPostLink(url: URL) async throws -> PostLink {
+        try await repository.getPostLink(url: url)
     }
 }

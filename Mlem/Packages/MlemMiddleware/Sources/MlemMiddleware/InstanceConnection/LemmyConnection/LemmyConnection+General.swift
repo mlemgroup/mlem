@@ -199,4 +199,15 @@ public extension LemmyConnection {
         }
         return try response.toSnapshots()
     }
+    
+    func getPostLink(url: URL) async throws -> PostLink {
+        let response = try await performingForEndpoint { endpoint in
+            LemmyGetLinkMetadataRequest(endpoint: endpoint, url: url)
+        }
+        return .init(
+            content: url,
+            thumbnail: response.metadata.image,
+            label: response.metadata.title ?? url.absoluteString
+        )
+    }
 }
