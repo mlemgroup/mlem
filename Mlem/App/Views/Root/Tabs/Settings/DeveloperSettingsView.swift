@@ -65,6 +65,10 @@ struct DeveloperSettingsView: View {
             
             #if DEBUG
                 Section {
+                    Toggle(String("Use QC Backend"),
+                           isOn: .init(get: { BackendClient.main.environment == .qc },
+                                       set: { BackendClient.main.changeEnvironment(to: $0 ? .qc : .prod) }))
+                    
                     Button(String("Trigger Onboarding")) {
                         navigation.showFullScreenCover(.onboarding)
                     }
@@ -72,7 +76,7 @@ struct DeveloperSettingsView: View {
                     Button(String("Reset Feed Welcome Banner")) {
                         showFeedWelcomePrompt = true
                     }
-                
+                    
                     Button(String("Reset Feed TestFlight Banner")) {
                         lastTestFlightUpdate = nil
                     }

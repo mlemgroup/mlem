@@ -84,6 +84,10 @@ extension PostEditorView {
                     taskGroup.addTask { @MainActor in
                         let post: Post2?
                         do {
+                            guard community.api === target.account.api else {
+                                assertionFailure()
+                                throw PostEditorViewError.mismatchingTargetApi
+                            }
                             post = try await community.api.createPost(
                                 communityId: community.id,
                                 title: titleTextView.text,
@@ -186,4 +190,8 @@ extension PostEditorView {
         
         return newSlurMatches
     }
+}
+
+private enum PostEditorViewError: Error {
+    case mismatchingTargetApi
 }
