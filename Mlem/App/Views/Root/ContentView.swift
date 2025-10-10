@@ -81,7 +81,8 @@ struct ContentView: View {
                 .quickSwipeMinimumDrag(20)
                 .quickSwipeCornerRadius(Constants.main.standardSpacing)
                 .quickSwipeIconSize(28)
-                .task {
+                .task(id: BackendClient.main.environment) {
+                    print("DEBUG loading instances")
                     do {
                         try await MlemStats.main.loadInstances()
                     } catch {

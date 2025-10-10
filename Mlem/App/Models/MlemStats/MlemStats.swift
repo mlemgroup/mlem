@@ -66,7 +66,7 @@ class MlemStats {
         case .score:
             return filteredInstances
         case .users:
-            return filteredInstances.sorted { $0.userCount > $1.userCount }
+            return filteredInstances.sorted { $0.totalUsers > $1.totalUsers }
         case .alphabetical:
             return filteredInstances.sorted { $0.host < $1.host }
         case .version:
