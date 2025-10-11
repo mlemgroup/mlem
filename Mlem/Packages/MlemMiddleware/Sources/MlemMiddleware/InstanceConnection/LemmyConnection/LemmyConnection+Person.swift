@@ -163,7 +163,6 @@ public extension LemmyConnection {
                 expiresAt: expiryTimestamp
             )
         }
-        guard response.banned == ban else { throw ApiClientError.unsuccessful }
         return try .init(from: response.personView)
     }
     
