@@ -203,18 +203,6 @@ struct ExpandedPostView<Content: View>: View {
             ProgressView()
         } else {
             ToolbarEllipsisMenu {
-                Button("Save") {
-                    Task {
-                        if let imageData = createImageFromView(ExportablePostView(post: post))?.pngData() {
-                            do {
-                                try await ImageSaver().writeImageToPhotoAlbum(imageData: imageData)
-                            } catch {
-                                handleError(error)
-                            }
-                        }
-                    }
-                }
-                
                 MenuButtons {
                     post.allMenuActions(
                         appState: appState,

@@ -2513,6 +2513,12 @@
         }
       }
     },
+    "Create Image" : {
+
+    },
+    "Creator" : {
+
+    },
     "Crosspost" : {
       "localizations" : {
         "fr" : {
@@ -7796,6 +7802,9 @@
           }
         }
       }
+    },
+    "Stats" : {
+
     },
     "Strikethrough" : {
       "localizations" : {

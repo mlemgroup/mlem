@@ -43,6 +43,14 @@ extension ActionAppearance {
         )
     }
     
+    static func createImage() -> Self {
+        .init(
+            label: "Create Image",
+            color: .themedAccent,
+            icon: Icons.createImage
+        )
+    }
+    
     static func reply() -> Self {
         .init(
             label: "Reply",

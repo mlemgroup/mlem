@@ -68,6 +68,7 @@ enum NavigationPage: Hashable {
     case votesList(_ target: VotesListView.Target)
     case modlog(ModlogView.InitialTarget)
     case denyApplication(RegistrationApplication)
+    case exportPostImage(_ post: HashWrapper<any Post>)
     
     static func post(_ post: any PostStubProviding, scrollTargetedComment: (any CommentStubProviding)? = nil) -> NavigationPage {
         if let scrollTargetedComment {
@@ -331,6 +332,10 @@ enum NavigationPage: Hashable {
     
     static func advancedSorting(_ sort: Binding<PostSortType>) -> NavigationPage {
         advancedSorting(.init(wrappedValue: sort))
+    }
+    
+    static func createPostImage(_ post: any Post) -> NavigationPage {
+        exportPostImage(.init(wrappedValue: post))
     }
     
     var hasNavigationStack: Bool {

@@ -400,6 +400,7 @@
 		B104A6DE2A59BF3C00B3E725 /* NukeVideo in Frameworks */ = {isa = PBXBuildFile; productRef = B104A6DD2A59BF3C00B3E725 /* NukeVideo */; };
 		B1B78D642A51D53900F72485 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B78D632A51D53900F72485 /* AppDelegate.swift */; };
 		CD03742A2D1DBFD2001E85FA /* ReadCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0374292D1DBFCF001E85FA /* ReadCheck.swift */; };
+		CD0C5C102E99629A0074D5A4 /* ExportablePostEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0C5C0F2E9962970074D5A4 /* ExportablePostEditorView.swift */; };
 		CD0E06F72C0E739F00445849 /* PostType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0E06F62C0E739F00445849 /* PostType+Extensions.swift */; };
 		CD0F280A2C6CEFBE00C1F65B /* View+IsAtTopSubscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0F28092C6CEFBE00C1F65B /* View+IsAtTopSubscriber.swift */; };
 		CD10FA772C7A8622008985AD /* ImageSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD10FA762C7A8622008985AD /* ImageSaver.swift */; };
@@ -531,6 +532,7 @@
 		CDE88C352E68938D00183AE5 /* View+AccountSwitcherGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE88C342E68938800183AE5 /* View+AccountSwitcherGesture.swift */; };
 		CDEE15522D22190600EB9D7B /* ErrorsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEE15512D22190000EB9D7B /* ErrorsTracker.swift */; };
 		CDEE15542D22364B00EB9D7B /* ErrorLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEE15532D22364500EB9D7B /* ErrorLogView.swift */; };
+		CDF60A012E998BB5005FA3F1 /* Data+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF60A002E998BB2005FA3F1 /* Data+Extensions.swift */; };
 		CDF8C1912D5D502400295CBA /* InteractionBarWidgetPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF8C1902D5D501E00295CBA /* InteractionBarWidgetPickerView.swift */; };
 		CDF9EF332AB2845C003F885B /* Icons.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF9EF322AB2845C003F885B /* Icons.swift */; };
 		CDFB8C692C7796020070845F /* View+DynamicBlur.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDFB8C682C7796020070845F /* View+DynamicBlur.swift */; };
@@ -937,6 +939,7 @@
 		B104A6E12A5AFC9F00B3E725 /* Mlem.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Mlem.entitlements; sourceTree = "<group>"; };
 		B1B78D632A51D53900F72485 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CD0374292D1DBFCF001E85FA /* ReadCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadCheck.swift; sourceTree = "<group>"; };
+		CD0C5C0F2E9962970074D5A4 /* ExportablePostEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportablePostEditorView.swift; sourceTree = "<group>"; };
 		CD0E06F62C0E739F00445849 /* PostType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostType+Extensions.swift"; sourceTree = "<group>"; };
 		CD0E07002C12707700445849 /* ToolbarEllipsisMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarEllipsisMenu.swift; sourceTree = "<group>"; };
 		CD0F28092C6CEFBE00C1F65B /* View+IsAtTopSubscriber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+IsAtTopSubscriber.swift"; sourceTree = "<group>"; };
@@ -1068,6 +1071,7 @@
 		CDE88C342E68938800183AE5 /* View+AccountSwitcherGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+AccountSwitcherGesture.swift"; sourceTree = "<group>"; };
 		CDEE15512D22190000EB9D7B /* ErrorsTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorsTracker.swift; sourceTree = "<group>"; };
 		CDEE15532D22364500EB9D7B /* ErrorLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorLogView.swift; sourceTree = "<group>"; };
+		CDF60A002E998BB2005FA3F1 /* Data+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Extensions.swift"; sourceTree = "<group>"; };
 		CDF8C1902D5D501E00295CBA /* InteractionBarWidgetPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionBarWidgetPickerView.swift; sourceTree = "<group>"; };
 		CDF9EF322AB2845C003F885B /* Icons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icons.swift; sourceTree = "<group>"; };
 		CDFB8C682C7796020070845F /* View+DynamicBlur.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+DynamicBlur.swift"; sourceTree = "<group>"; };
@@ -1939,6 +1943,7 @@
 		CD4D58C22B86DC5800B82964 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				CDF60A002E998BB2005FA3F1 /* Data+Extensions.swift */,
 				CDA67A9E2D9B329D00E5D17B /* CGPoint+Extensions.swift */,
 				CDFF9A322D88C3BE009E02E2 /* CGFloat+Extensions.swift */,
 				CD5D8E2A2D6D5AAE00AF5CE4 /* CGSize+Extensions.swift */,
@@ -2243,6 +2248,7 @@
 		CDBEC30D2E84C9DB00F30B00 /* ExportableViews */ = {
 			isa = PBXGroup;
 			children = (
+				CD0C5C0F2E9962970074D5A4 /* ExportablePostEditorView.swift */,
 				CDBEC30E2E84C9F300F30B00 /* ExportablePostView.swift */,
 			);
 			path = ExportableViews;
@@ -2669,6 +2675,7 @@
 				03ECD7212C8654BA00D48BF6 /* PostEditorView+Toolbar.swift in Sources */,
 				CD3485BD2D501573006748B8 /* ZoomSliderSettingsView.swift in Sources */,
 				033EF4102CB9AEF7004D8A3F /* ExpandedPostView+Views.swift in Sources */,
+				CDF60A012E998BB5005FA3F1 /* Data+Extensions.swift in Sources */,
 				03FE140C2BF953B000A8377F /* HandleError.swift in Sources */,
 				0320B65A2C8CBB0D00D38548 /* SignUpView+EmailConfirmationView.swift in Sources */,
 				03ECD71F2C864DB700D48BF6 /* ImageUploadManager.swift in Sources */,
@@ -2872,6 +2879,7 @@
 				033F84BF2C2ACC9F002E3EDF /* Comment1Providing+Extensions.swift in Sources */,
 				CD24CAFC2D5568FE0032B5E8 /* DiscussionLanguageSettingsView.swift in Sources */,
 				0369B35D2BFB86E3001EFEDF /* Account.swift in Sources */,
+				CD0C5C102E99629A0074D5A4 /* ExportablePostEditorView.swift in Sources */,
 				036CC3AF2B8145C30098B6A1 /* AppState.swift in Sources */,
 				033F844D2D18D90900D87A9E /* MessageBubbleView.swift in Sources */,
 				03134A502BEAD245002662CC /* NavigationLink+NavigationPage.swift in Sources */,

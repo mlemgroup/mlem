@@ -200,6 +200,8 @@ extension NavigationPage {
             ModlogView(initialTarget: target)
         case let .denyApplication(application):
             RegistrationApplicationDenialEditorView(application: application)
+        case let .exportPostImage(post):
+            ExportablePostEditorView(post: post.wrappedValue)
         }
     }
 }

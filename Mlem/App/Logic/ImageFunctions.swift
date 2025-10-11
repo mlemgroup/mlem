@@ -35,10 +35,12 @@ func saveMedia(url: URL) async {
 }
 
 @MainActor
-func createImageFromView(_ view: some View) -> UIImage? {
+func createImageFromView(_ view: some View, dimensions: CGSize) -> UIImage? {
+    print("DEBUG using dimensions \(dimensions)")
     let renderer = ImageRenderer(content: view)
     renderer.scale = 3 // boost resolution to look better on larger devices
-    renderer.proposedSize.width = UIScreen.main.bounds.width
+    renderer.proposedSize.width = dimensions.width
+    // renderer.proposedSize.height = dimensions.height
     return renderer.uiImage
 }
 
@@ -78,12 +80,7 @@ func downloadImageToFileSystem(url: URL) async -> URL? {
             return nil
         }
         
-        let fileUrl = FileManager.default.temporaryDirectory.appending(path: fileName)
-        if FileManager.default.fileExists(atPath: fileUrl.absoluteString) {
-            try FileManager.default.removeItem(at: fileUrl)
-        }
-        try data.write(to: fileUrl)
-        return fileUrl
+        return try data.writeToTempFile(fileName: fileName)
     } catch {
         handleError(error)
         return nil
