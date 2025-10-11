@@ -97,16 +97,18 @@ public extension PieFedConnection {
         reason: String?,
         expires: Date? = nil
     ) async throws -> Person1Snapshot {
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "en_US_POSIX")
-        formatter.timeZone = TimeZone(secondsFromGMT: 0)
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        // Explicit check because the endpoint exists before 1.3, but the date
+        // formats are different. Don't want to send a broken ban request.
+        if try await !supports(.banFromCommunity) {
+            throw ApiClientError.featureUnsupported
+        }
+
         if ban {
             let request = PieFedModerateCommunityBanRequest(
                 communityId: communityId,
                 userId: personId,
                 reason: reason ?? "",
-                expiredAt: formatter.string(from: expires ?? .distantFuture),
+                expiredAt: nil,
                 expiresAt: expires,
                 permanent: expires == nil
             )

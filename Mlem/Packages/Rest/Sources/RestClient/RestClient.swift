@@ -117,6 +117,14 @@ public class RestClient {
     func createBodyData(for defintion: any RequestWithBody) throws(RestError) -> Data {
         do {
             let encoder = JSONEncoder()
+            var formatter = ISO8601DateFormatter()
+            // `.withFractionalSeconds` is required for the PieFed banFromCommunity request
+            formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+            encoder.dateEncodingStrategy = .custom { date, encoder in
+                var container = encoder.singleValueContainer()
+                try container.encode(formatter.string(from: date))
+            }
+
             let body = defintion.body ?? ""
             return try encoder.encode(body)
         } catch {

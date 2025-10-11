@@ -39,6 +39,8 @@ public extension PieFedConnection {
             version >= .v1_1_0
         case .editProfile, .viewVotes, .undeletePrivateMessages:
             version >= .v1_2_0
+        case .banFromCommunity:
+            version >= .v1_3_0
         case .moderatorSetNsfw: true
         default: false
         }
@@ -49,6 +51,7 @@ private extension SiteVersion {
     static let v1_0_0: Self = .init("1.0.0")
     static let v1_1_0: Self = .init("1.1.0")
     static let v1_2_0: Self = .init("1.2.0")
+    static let v1_3_0: Self = .init("1.3.0")
 }
 
 private extension PostSortType {
