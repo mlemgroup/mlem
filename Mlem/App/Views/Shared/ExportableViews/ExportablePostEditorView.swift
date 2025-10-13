@@ -9,6 +9,8 @@ import SwiftUI
 import MlemMiddleware
 import Theming
 import ComponentViews
+import Nuke
+import Media
 
 struct ExportablePostEditorView: View {
     @Environment(NavigationLayer.self) var navigation
@@ -20,9 +22,32 @@ struct ExportablePostEditorView: View {
 
     @State var dimensions: CGSize = .zero
     
-    // TODO: images all need to be fetched ahead of time and passed directly into LargePostView
+    @State var staticImages: [URL: Image]?
+    @State var failed: Bool = false
     
+    var staticImageProvider: StaticImageProvider = .init()
+    
+    // TODO: images all need to be fetched ahead of time and passed directly into LargePostView
+    // Create class to manage all images
+    // Class initialized with URLs
+    // Has isComplete which waits for all URLs to be fetched
+  
     var body: some View {
+        switch staticImageProvider.loadingState {
+        case .empty, .loading:
+            ProgressView()
+                .task {
+                    let imageRequests = await post.imageRequests(configuration: .forPostSize(.large))
+                    staticImageProvider.loadImages(for: imageRequests)
+                }
+        case .done:
+            content
+        case .failed:
+            Text("Something went wrong")
+        }
+    }
+    
+    var content: some View {
         ScrollView {
             exportablePost
                 .overlay {
@@ -67,55 +92,66 @@ struct ExportablePostEditorView: View {
     
     @ViewBuilder
     var controls: some View {
-        if let imageData = snapshot().pngData(), // let imageData = createImageFromView(exportablePost, dimensions: dimensions)?.pngData(),
-           let fileUrl = createTempFile(data: imageData, fileName: "post.png") {
-            HStack {
-                Button {
-                    Task {
-                        do {
+        HStack {
+            Button {
+                Task {
+                    do {
+                        if let imageData = snapshot()?.pngData() {
                             try await ImageSaver().writeImageToPhotoAlbum(imageData: imageData)
-                        } catch {
-                            handleError(error)
                         }
+                    } catch {
+                        handleError(error)
                     }
-                } label: {
-                    Label("Save", icon: .general.import)
-                        .padding(Constants.main.standardSpacing)
-                        .contentShape(.rect)
                 }
-                
-                ShareLink(item: fileUrl) {
-                    Label("Share", icon: .general.export)
-                        .padding(Constants.main.standardSpacing)
-                        .contentShape(.rect)
-                }
+            } label: {
+                Label("Save", icon: .general.import)
+                    .padding(Constants.main.standardSpacing)
+                    .contentShape(.rect)
             }
-            .id(dimensions)
-            .font(.title2)
-            .labelStyle(.iconOnly)
-            .buttonStyle(.plain)
-            .padding(.horizontal, Constants.main.halfSpacing)
-        } else {
-            ErrorView(.init(title: "Failed to create image"))
+            
+            Button {
+                Task {
+                    if let imageData = snapshot()?.pngData(),
+                       let fileUrl = createTempFile(data: imageData, fileName: "post.png") {
+                        navigation.model?.shareInfo = .init(url: fileUrl)
+                    }
+                }
+            } label: {
+                Label("Share", icon: .general.export)
+                    .padding(Constants.main.standardSpacing)
+                    .contentShape(.rect)
+            }
         }
+        .font(.title2)
+        .labelStyle(.iconOnly)
+        .buttonStyle(.plain)
+        .padding(.horizontal, Constants.main.halfSpacing)
     }
-    
+        
     var exportablePost: some View {
         ExportablePostView(post: post, showCommunity: showCommunity, showCreator: showCreator, showStats: showStats)
+            // .environment(staticImageProvider)
             .allowsHitTesting(false)
     }
     
-    func snapshot() -> UIImage {
-        let controller = UIHostingController(rootView: exportablePost)
-        let view = controller.view
-        // let targetSize = controller.view.intrinsicContentSize
-        view?.bounds = CGRect(origin: .init(x: 0, y: 15), size: dimensions)
-        view?.backgroundColor = .clear
-
-        let renderer = UIGraphicsImageRenderer(size: dimensions)
-        return renderer.image { _ in
-            view?.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
-        }
+    func snapshot() -> UIImage? {
+        let renderer = ImageRenderer(content: exportablePost)
+        renderer.scale = 3
+        renderer.proposedSize.width = UIScreen.main.bounds.width
+        return renderer.uiImage
+        
+//        let imageView = ExportablePostView(post: post, showCommunity: showCommunity, showCreator: showCreator, showStats: showStats)
+//            .environment(staticImageProvider)
+//        
+//        let controller = UIHostingController(rootView: imageView)
+//        let view = controller.view
+//        view?.bounds = CGRect(origin: .init(x: 0, y: 15), size: dimensions)
+//        view?.backgroundColor = .clear
+//
+//        let renderer = UIGraphicsImageRenderer(size: dimensions)
+//        return renderer.image { _ in
+//            view?.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+//        }
     }
     
     private func createTempFile(data: Data, fileName: String) -> URL? {
