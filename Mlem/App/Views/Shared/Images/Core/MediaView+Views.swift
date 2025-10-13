@@ -11,32 +11,13 @@ import SwiftUI
 extension MediaView {
     @ViewBuilder
     var image: some View {
-        Group {
-            if let staticImageProvider {
-                if let url = loader.url, let image = staticImageProvider.images?[url] {
-                    CoreMediaView(
-                        media: .image(image),
-                        aspectRatio: uiImage.boundedAspectRatio(bounds: aspectRatio),
-                        contentMode: contentMode
-                    )
-                    .overlay {
-                        Color.blue.opacity(0.3)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    }
-                } else {
-                    EmptyView()
-                }
-
-            } else {
-                CoreMediaView(
-                    media: loader.mediaType ?? .image(.blank),
-                    aspectRatio: uiImage.boundedAspectRatio(bounds: aspectRatio),
-                    contentMode: contentMode
-                )
-            }
-        }
+        CoreMediaView(
+            media: loader.mediaType ?? .image(.blank),
+            aspectRatio: uiImage.boundedAspectRatio(bounds: aspectRatio),
+            contentMode: contentMode
+        )
         .overlay {
-            if loader.mediaType == nil || loader.url == nil {
+            if loader.mediaType == nil {
                 fallbackImage
             }
         }
