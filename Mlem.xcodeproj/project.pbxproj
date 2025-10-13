@@ -369,6 +369,7 @@
 		03EC83F02E9590D3004698BB /* LinkHostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03EC83EF2E9590D3004698BB /* LinkHostView.swift */; };
 		03EC84422E959AA5004698BB /* PostEditorWebsitePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03EC84412E959AA5004698BB /* PostEditorWebsitePreviewView.swift */; };
 		03EC86462E9E9D4D004698BB /* PopupAnchorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03EC86452E9E9D4C004698BB /* PopupAnchorModel.swift */; };
+		03EC85EC2E9D8F37004698BB /* Actions in Frameworks */ = {isa = PBXBuildFile; productRef = 03EC85EB2E9D8F37004698BB /* Actions */; };
 		03ECD7192C81195000D48BF6 /* PostEditorView+LinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03ECD7182C81195000D48BF6 /* PostEditorView+LinkView.swift */; };
 		03ECD71B2C811D6700D48BF6 /* PostEditorView+ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03ECD71A2C811D6700D48BF6 /* PostEditorView+ImageView.swift */; };
 		03ECD71F2C864DB700D48BF6 /* ImageUploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03ECD71E2C864DB700D48BF6 /* ImageUploadManager.swift */; };
@@ -1099,6 +1100,7 @@
 				030FF6792BC84F7E00F6BFAC /* SwiftUIIntrospect in Frameworks */,
 				0341480D2D8F63A6005503AF /* MlemMiddleware in Frameworks */,
 				B104A6DA2A59BF3C00B3E725 /* NukeExtensions in Frameworks */,
+				03EC85EC2E9D8F37004698BB /* Actions in Frameworks */,
 				037386472BDAFE81007492B5 /* LemmyMarkdownUI in Frameworks */,
 				CDA711FB2DB5CAC3008BC3ED /* Media in Frameworks */,
 				B104A6D82A59BF3C00B3E725 /* Nuke in Frameworks */,
@@ -2373,6 +2375,7 @@
 				0377BE282DE7A2DE00E38593 /* Haptics */,
 				031CA5762E5900E900CF0C0F /* QuickSwipes */,
 				03EC83ED2E958A44004698BB /* OpenGraph */,
+				03EC85EB2E9D8F37004698BB /* Actions */,
 			);
 			productName = Mlem;
 			productReference = 6363D5C127EE196700E34822 /* Mlem.app */;
@@ -3528,6 +3531,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 03EC83EC2E958A44004698BB /* XCRemoteSwiftPackageReference "OpenGraph" */;
 			productName = OpenGraph;
+		};
+		03EC85EB2E9D8F37004698BB /* Actions */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Actions;
 		};
 		03FA318B2C6FECAE00D47FA3 /* Flow */ = {
 			isa = XCSwiftPackageProductDependency;
