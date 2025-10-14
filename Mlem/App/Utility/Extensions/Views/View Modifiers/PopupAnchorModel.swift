@@ -10,8 +10,7 @@ import Foundation
 @Observable
 class PopupAnchorModel {
     struct PopupData {
-        var title: String
-        var message: String?
+        var message: String
         var actions: [Action]?
     }
     
@@ -23,8 +22,8 @@ class PopupAnchorModel {
     
     private(set) var data: PopupData?
     
-    func showPopup(title: String, message: String?, _ actions: [Action]?) {
-        let newData = PopupData(title: title, message: message, actions: actions)
+    func showPopup(message: String, _ actions: [Action]?) {
+        let newData = PopupData(message: message, actions: actions)
         if data == nil {
             data = newData
         } else {
@@ -52,8 +51,7 @@ extension PopupAnchorModel {
             }
         }
         showPopup(
-            title: actionGroup.appearance.label,
-            message: actionGroup.prompt,
+            message: actionGroup.prompt ?? actionGroup.appearance.label,
             children
         )
     }

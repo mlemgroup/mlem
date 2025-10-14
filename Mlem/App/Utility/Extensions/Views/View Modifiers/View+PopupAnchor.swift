@@ -15,29 +15,49 @@ struct PopupAnchor: ViewModifier {
         model.data?.actions ?? []
     }
     
-    func body(content: Content) -> some View {
-        content
-            .confirmationDialog(
-                model.data?.title ?? "",
-                isPresented: Binding(
-                    get: { model.data != nil },
-                    set: {
-                        if !$0 { model.dismissPopup() }
-                    }
-                )
-            ) {
-                ForEach(Array(actions.enumerated()), id: \.offset) { _, action in
-                    Button(
-                        action.title,
-                        role: action.isDestructive ? .destructive : nil,
-                        action: action.callback
-                    )
-                }
-                Button("Cancel", role: .cancel) {}
-            } message: {
-                Text(model.data?.message ?? "")
+    var isPresented: Binding<Bool> {
+        Binding(
+            get: { model.data != nil },
+            set: {
+                if !$0 { model.dismissPopup() }
             }
-            .environment(model)
+        )
+    }
+    
+    func body(content: Content) -> some View {
+        if #available(iOS 26, *) {
+            content
+                .alert(
+                    model.data?.message ?? "",
+                    isPresented: isPresented
+                ) {
+                    buttonsView
+                }
+                .environment(model)
+        } else {
+            content
+                .confirmationDialog(
+                    model.data?.message ?? "",
+                    isPresented: isPresented
+                ) {
+                    buttonsView
+                } message: {
+                    Text(model.data?.message ?? "")
+                }
+                .environment(model)
+        }
+    }
+    
+    @ViewBuilder
+    var buttonsView: some View {
+        ForEach(Array(actions.enumerated()), id: \.offset) { _, action in
+            Button(
+                action.title,
+                role: action.isDestructive ? .destructive : nil,
+                action: action.callback
+            )
+        }
+        Button("Cancel", role: .cancel) {}
     }
 }
 
