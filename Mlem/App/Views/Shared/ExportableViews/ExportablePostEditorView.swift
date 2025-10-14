@@ -19,21 +19,10 @@ struct ExportablePostEditorView: View {
     @State var showCommunity: Bool = true
     @State var showCreator: Bool = true
     @State var showStats: Bool = true
-
-    @State var dimensions: CGSize = .zero
     
     var body: some View {
         ScrollView {
             exportablePost
-                .overlay {
-                    GeometryReader { geometry in
-                        Color.clear.contentShape(.rect)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .onChange(of: geometry.size, initial: true) {
-                                dimensions = .init(width: geometry.size.width, height: geometry.size.height)
-                            }
-                    }
-                }
                 .padding(.bottom, 200)
         }
         .background(.themedGroupedBackground)
@@ -114,16 +103,6 @@ struct ExportablePostEditorView: View {
     
     var snapshot: UIImage? {
         createImageFromView(exportablePost)
-        
-//        let postView = ExportablePostView(post: post, showCommunity: showCommunity, showCreator: showCreator, showStats: showStats)
-//        let controller = UIHostingController(rootView: postView)
-//        let view = controller.view
-//        view?.bounds = CGRect(origin: .init(x: 0, y: 15), size: dimensions)
-//        view?.backgroundColor = .clear
-//        let renderer = UIGraphicsImageRenderer(size: dimensions)
-//        return renderer.image { _ in
-//            view?.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
-//        }
     }
     
     private func createTempFile(data: Data, fileName: String) -> URL? {
