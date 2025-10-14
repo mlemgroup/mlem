@@ -86,6 +86,15 @@ public extension PieFedConnection {
     func getMessageNotifications() async throws -> [InboxNotificationSnapshot] {
         throw ApiClientError.featureUnsupported
     }
+    
+    func markNotificationAsRead(
+        type: InboxNotificationContentType,
+        id: Int,
+        contentId: Int,
+        read: Bool
+    ) async throws {
+        throw ApiClientError.featureUnsupported
+    }
 
     func markAllAsRead() async throws {
         let request = PieFedMarkAllRepliesReadRequest()

@@ -22,4 +22,23 @@ extension Comment2Providing {
         comment2.setIfChanged(\.creatorIsAdmin, snapshot.creatorIsAdmin)
         comment1.snapshot1Update(with: snapshot.comment)
     }
+    
+    public func takeSnapshot() -> any CommentSnapshotProviding {
+        takeSnapshot2()
+    }
+    
+    func takeSnapshot2() -> Comment2Snapshot {
+        .init(
+            comment: comment1.takeSnapshot1(),
+            creator: creator.takeSnapshot1(),
+            post: post.takeSnapshot1(),
+            community: community.takeSnapshot1(),
+            commentCount: commentCount,
+            creatorIsModerator: creatorIsModerator,
+            creatorIsAdmin: creatorIsAdmin,
+            creatorBannedFromCommunity: creatorBannedFromCommunity,
+            votes: votes,
+            saved: saved
+        )
+    }
 }

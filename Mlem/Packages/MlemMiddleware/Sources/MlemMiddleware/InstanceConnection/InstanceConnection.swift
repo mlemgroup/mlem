@@ -416,6 +416,13 @@ public protocol InstanceConnection {
     func getMentionNotifications() async throws -> [InboxNotificationSnapshot]
     func getMessageNotifications() async throws -> [InboxNotificationSnapshot]
 
+    func markNotificationAsRead(
+        type: InboxNotificationContentType,
+        id: Int,
+        contentId: Int,
+        read: Bool
+    ) async throws
+        
     func markAllAsRead() async throws
     func markReplyAsRead(id: Int, read: Bool) async throws
     func markMentionAsRead(id: Int, read: Bool) async throws
