@@ -37,14 +37,14 @@ struct ExportablePostView: View {
     var content: some View {
         VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
             if showCommunity {
-                FullyQualifiedLabelView(post.community_, labelStyle: .medium)
+                FullyQualifiedLabelView(post.community_, labelStyle: .medium, showFlairs: false)
                     .transition(.scale.combined(with: .opacity))
             }
             
             LargePostBodyView(post: post, isPostPage: true, shouldBlur: false)
             
             if showCreator {
-                FullyQualifiedLabelView(post.creator_, labelStyle: .medium)
+                FullyQualifiedLabelView(post.creator_, labelStyle: .medium, showFlairs: false)
                     .transition(.scale.combined(with: .opacity))
             }
             

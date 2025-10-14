@@ -148,6 +148,7 @@ extension Post1Providing {
     ) -> [any Action] {
         basicMenuActions(
             appState: appState,
+            expanded: expanded,
             feedback: feedback,
             navigation: navigation,
             commentTreeTracker: commentTreeTracker
@@ -171,6 +172,7 @@ extension Post1Providing {
     @ActionBuilder
     func basicMenuActions(
         appState: AppState,
+        expanded: Bool,
         feedback: Set<FeedbackType> = [.haptic, .toast],
         navigation: NavigationLayer?,
         commentTreeTracker: CommentTreeTracker? = nil
@@ -185,7 +187,7 @@ extension Post1Providing {
             }
             shareAction(navigation: navigation)
             
-            if let navigation {
+            if expanded, let navigation {
                 createImageAction(navigation: navigation)
             }
             

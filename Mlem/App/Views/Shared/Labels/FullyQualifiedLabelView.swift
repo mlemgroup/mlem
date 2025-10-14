@@ -58,6 +58,7 @@ struct FullyQualifiedLabelView: View {
     let labelStyle: FullyQualifiedLabelStyle
     var showAvatar: Bool?
     var showInstance: Bool = true
+    var showFlairs: Bool = true
     var blurred: Bool = false
     
     var shouldShowAvatar: Bool {
@@ -123,7 +124,7 @@ struct FullyQualifiedLabelView: View {
     }
     
     var flairs: [PersonFlair] {
-        guard let person = entity as? any Person else { return [] }
+        guard showFlairs, let person = entity as? any Person else { return [] }
         return person.flairs(
             interactableContext: interactableContext,
             communityContext: communityContext
@@ -157,6 +158,7 @@ extension FullyQualifiedLabelView {
         labelStyle: FullyQualifiedLabelStyle,
         showAvatar: Bool? = nil,
         showInstance: Bool = true,
+        showFlairs: Bool = true,
         blurred: Bool = false
     ) {
         self.init(
@@ -165,6 +167,7 @@ extension FullyQualifiedLabelView {
             labelStyle: labelStyle,
             showAvatar: showAvatar,
             showInstance: showInstance,
+            showFlairs: showFlairs,
             blurred: blurred
         )
     }
@@ -174,6 +177,7 @@ extension FullyQualifiedLabelView {
         labelStyle: FullyQualifiedLabelStyle,
         showAvatar: Bool? = nil,
         showInstance: Bool = true,
+        showFlairs: Bool = true,
         blurred: Bool = false
     ) {
         self.init(
@@ -182,6 +186,7 @@ extension FullyQualifiedLabelView {
             labelStyle: labelStyle,
             showAvatar: showAvatar,
             showInstance: showInstance,
+            showFlairs: showFlairs,
             blurred: blurred
         )
     }
@@ -191,6 +196,7 @@ extension FullyQualifiedLabelView {
         labelStyle: FullyQualifiedLabelStyle,
         showAvatar: Bool? = nil,
         showInstance: Bool = true,
+        showFlairs: Bool = true,
         blurred: Bool = false
     ) {
         self.init(
@@ -199,6 +205,7 @@ extension FullyQualifiedLabelView {
             labelStyle: labelStyle,
             showAvatar: showAvatar,
             showInstance: showInstance,
+            showFlairs: showFlairs,
             blurred: blurred
         )
     }

@@ -10,7 +10,6 @@ import Media
 
 struct MediaView: View {
     @Environment(NavigationLayer.self) var navigation: NavigationLayer?
-    @Environment(StaticImageProvider.self) var staticImageProvider: StaticImageProvider?
     @Environment(\.palette) var palette
     
     @Setting(\.status_bypassImageProxyShown) var bypassImageProxyShown

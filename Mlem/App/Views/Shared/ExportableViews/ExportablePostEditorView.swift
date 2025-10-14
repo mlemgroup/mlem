@@ -22,28 +22,7 @@ struct ExportablePostEditorView: View {
 
     @State var dimensions: CGSize = .zero
     
-    @State var staticImages: [URL: Image]?
-    @State var failed: Bool = false
-    
-    @State var staticImageProvider: StaticImageProvider = .init()
-  
     var body: some View {
-        content
-//        switch staticImageProvider.loadingState {
-//        case .empty, .loading:
-//            ProgressView()
-//                .task {
-//                    let imageRequests = await post.imageRequests(configuration: .forPostSize(.large))
-//                    staticImageProvider.loadImages(for: imageRequests)
-//                }
-//        case .done:
-//            content
-//        case .failed:
-//            Text("Something went wrong")
-//        }
-    }
-    
-    var content: some View {
         ScrollView {
             exportablePost
                 .overlay {
@@ -135,19 +114,12 @@ struct ExportablePostEditorView: View {
     
     var snapshot: UIImage? {
         createImageFromView(exportablePost)
-//        let renderer = ImageRenderer(content: exportablePost)
-//        renderer.scale = 3
-//        renderer.proposedSize.width = UIScreen.main.bounds.width
-//        return renderer.uiImage
         
-//        let imageView = ExportablePostView(post: post, showCommunity: showCommunity, showCreator: showCreator, showStats: showStats)
-//            .environment(staticImageProvider)
-//        
-//        let controller = UIHostingController(rootView: imageView)
+//        let postView = ExportablePostView(post: post, showCommunity: showCommunity, showCreator: showCreator, showStats: showStats)
+//        let controller = UIHostingController(rootView: postView)
 //        let view = controller.view
 //        view?.bounds = CGRect(origin: .init(x: 0, y: 15), size: dimensions)
 //        view?.backgroundColor = .clear
-//
 //        let renderer = UIGraphicsImageRenderer(size: dimensions)
 //        return renderer.image { _ in
 //            view?.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
