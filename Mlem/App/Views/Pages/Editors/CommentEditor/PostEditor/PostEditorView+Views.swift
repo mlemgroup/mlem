@@ -17,6 +17,8 @@ extension PostEditorView {
                     get: { link },
                     set: { self.link = .value($0) }
                 ),
+                imageManager: $thumbnailManager,
+                primaryApi: primaryApi,
                 removeCallback: {
                     self.link = .none
                 },
