@@ -35,12 +35,15 @@ func saveMedia(url: URL) async {
 }
 
 @MainActor
-func createImageFromView(_ view: some View, dimensions: CGSize) -> UIImage? {
-    print("DEBUG using dimensions \(dimensions)")
+func createImageFromView(_ view: some View, dimensions: CGSize? = nil) -> UIImage? {
     let renderer = ImageRenderer(content: view)
     renderer.scale = 3 // boost resolution to look better on larger devices
-    renderer.proposedSize.width = dimensions.width
-    // renderer.proposedSize.height = dimensions.height
+    if let dimensions {
+        renderer.proposedSize = .init(dimensions)
+    } else {
+        // assume screen width
+        renderer.proposedSize.width = UIScreen.main.bounds.width
+    }
     return renderer.uiImage
 }
 

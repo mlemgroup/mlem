@@ -25,21 +25,22 @@ struct ExportablePostEditorView: View {
     @State var staticImages: [URL: Image]?
     @State var failed: Bool = false
     
-    var staticImageProvider: StaticImageProvider = .init()
+    @State var staticImageProvider: StaticImageProvider = .init()
   
     var body: some View {
-        switch staticImageProvider.loadingState {
-        case .empty, .loading:
-            ProgressView()
-                .task {
-                    let imageRequests = await post.imageRequests(configuration: .forPostSize(.large))
-                    staticImageProvider.loadImages(for: imageRequests)
-                }
-        case .done:
-            content
-        case .failed:
-            Text("Something went wrong")
-        }
+        content
+//        switch staticImageProvider.loadingState {
+//        case .empty, .loading:
+//            ProgressView()
+//                .task {
+//                    let imageRequests = await post.imageRequests(configuration: .forPostSize(.large))
+//                    staticImageProvider.loadImages(for: imageRequests)
+//                }
+//        case .done:
+//            content
+//        case .failed:
+//            Text("Something went wrong")
+//        }
     }
     
     var content: some View {
@@ -133,10 +134,11 @@ struct ExportablePostEditorView: View {
     }
     
     var snapshot: UIImage? {
-        let renderer = ImageRenderer(content: exportablePost)
-        renderer.scale = 3
-        renderer.proposedSize.width = UIScreen.main.bounds.width
-        return renderer.uiImage
+        createImageFromView(exportablePost)
+//        let renderer = ImageRenderer(content: exportablePost)
+//        renderer.scale = 3
+//        renderer.proposedSize.width = UIScreen.main.bounds.width
+//        return renderer.uiImage
         
 //        let imageView = ExportablePostView(post: post, showCommunity: showCommunity, showCreator: showCreator, showStats: showStats)
 //            .environment(staticImageProvider)
