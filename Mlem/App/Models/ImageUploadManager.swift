@@ -120,6 +120,15 @@ class ImageUploadManager: Hashable {
         state = .idle
     }
     
+    func delete() async throws {
+        var imageToDelete: ImageUpload1?
+        if let image {
+            imageToDelete = image
+        }
+        await clear()
+        try await imageToDelete?.delete()
+    }
+    
     static func == (lhs: ImageUploadManager, rhs: ImageUploadManager) -> Bool {
         lhs.hashValue == rhs.hashValue
     }

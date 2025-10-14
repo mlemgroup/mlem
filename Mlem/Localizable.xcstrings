@@ -1809,6 +1809,9 @@
         }
       }
     },
+    "Change Thumbnail" : {
+
+    },
     "Checkmark" : {
       "localizations" : {
         "fr" : {
@@ -2605,6 +2608,9 @@
           }
         }
       }
+    },
+    "Custom Thumbnail" : {
+
     },
     "Customize how content is displayed in your feed. Choose which types of content are blurred, and apply filters to hide posts from the feed altogether." : {
       "localizations" : {
