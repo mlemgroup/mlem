@@ -9,30 +9,31 @@ import Foundation
 
 public extension Person4Snapshot {
     init(from userInfo: PieFedMyUserInfo) throws(ApiClientError) {
-        self.person = try .init(from: userInfo)
-        
         let user = userInfo.localUserView.localUser
-        
-        self.email = nil
-        self.showNsfw = user.showNsfw
-        self.theme = ""
-        self.defaultListingType = .init(from: user.defaultListingType) ?? .all
-        self.interfaceLanguage = "en"
-        self.showAvatars = true
-        self.sendNotificationsToEmail = false
-        self.showScores = user.showScores
-        self.showBotAccounts = user.showBotAccounts
-        self.showReadPosts = user.showReadPosts
-        self.discussionLanguageIds = Set(userInfo.discussionLanguages.compactMap(\.id))
-        self.emailVerified = true
-        self.acceptedApplication = true
-        self.openLinksInNewTab = nil
-        self.blurNsfw = nil
-        self.autoExpandImages = nil
-        self.infiniteScrollEnabled = nil
-        self.totp2faEnabled = false
-        self.enableKeyboardNavigation = true
-        self.enableAnimatedImages = nil
-        self.collapseBotComments = false
+        try self.init(
+            person: .init(from: userInfo),
+            email: nil,
+            showNsfw: user.showNsfw,
+            theme: "",
+            defaultListingType: .init(from: user.defaultListingType) ?? .all,
+            interfaceLanguage: "en",
+            showAvatars: true,
+            sendNotificationsToEmail: false,
+            showScores: user.showScores,
+            showBotAccounts: user.showBotAccounts,
+            showReadPosts: user.showReadPosts,
+            discussionLanguageIds: Set(userInfo.discussionLanguages.compactMap(\.id)),
+            emailVerified: true,
+            acceptedApplication: true,
+            openLinksInNewTab: nil,
+            blurNsfw: nil,
+            autoExpandImages: nil,
+            infiniteScrollEnabled: nil,
+            postListingMode: nil,
+            totp2faEnabled: false,
+            enableKeyboardNavigation: true,
+            enableAnimatedImages: nil,
+            collapseBotComments: false
+        )
     }
 }

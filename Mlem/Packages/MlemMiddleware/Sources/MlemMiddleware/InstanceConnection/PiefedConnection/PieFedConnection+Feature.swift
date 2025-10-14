@@ -37,8 +37,9 @@ public extension PieFedConnection {
             listingType.pieFedListingType != nil
         case .viewCommunityActiveUsers, .viewMentionsAndPrivateMessages, .editAndDeletePrivateMessages, .autoMarkPostReadOnInteract:
             version >= .v1_1_0
-        case .editProfile, .viewVotes:
+        case .editProfile, .viewVotes, .undeletePrivateMessages:
             version >= .v1_2_0
+        case .moderatorSetNsfw: true
         default: false
         }
     }

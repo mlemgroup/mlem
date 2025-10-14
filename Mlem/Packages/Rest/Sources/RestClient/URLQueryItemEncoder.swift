@@ -88,6 +88,8 @@ private class KeyedContainer<K: CodingKey>: KeyedEncodingContainerProtocol {
             String(value)
         } else if let value = value as? Bool {
             value ? "true" : "false"
+        } else if let value = value as? URL {
+            value.absoluteString
         } else if let value = value as? any RawRepresentable<String> {
             value.rawValue
         } else if let value = value as? any RawRepresentable<Int> {

@@ -436,6 +436,19 @@ public extension LemmyConnection {
     }
     
     @discardableResult
+    func setPostNsfw(id: Int, nsfw: Bool) async throws -> Post1Snapshot {
+        let response = try await performingForEndpoint { endpoint in
+            switch endpoint {
+            case .v3:
+                throw ApiClientError.featureUnsupported
+            case .v4:
+                return LemmyModUpdatePostRequest(postId: id, nsfw: nsfw, tags: nil)
+            }
+        }
+        return try .init(from: response.postView.post)
+    }
+
+    @discardableResult
     func getPostVotes(
         id: Int,
         page: Int = 1,

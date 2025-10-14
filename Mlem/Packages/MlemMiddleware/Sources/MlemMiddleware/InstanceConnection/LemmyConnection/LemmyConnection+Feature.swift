@@ -40,8 +40,11 @@ public extension LemmyConnection {
              .editAccountSettings, .viewMentionsAndPrivateMessages, .viewReports, .editAndDeletePrivateMessages,
              .reportPrivateMessages, .viewVotes, .purgeContent, .removeCommunity, .banFromInstance,
              .banFromCommunity, .editModeratorList, .commentSearch, .undeletePrivateMessages, .searchLocalPeople,
-             .hidePosts, .editDisplayName, .editProfile, .autoMarkPostReadOnInteract:
+             .hidePosts, .editDisplayName, .editProfile, .autoMarkPostReadOnInteract, .blockInstances,
+             .fetchLinkMetadata:
             true
+        case .moderatorSetNsfw:
+            false
         }
     }
 }

@@ -269,6 +269,7 @@ public extension LemmyConnection {
                 defaultCommentSortType: nil,
                 blockingKeywords: nil,
                 enablePrivateMessages: nil,
+                showScore: nil,
                 autoMarkFetchedPostsAsRead: nil,
                 hideMedia: nil,
                 showPersonVotes: nil
@@ -347,6 +348,7 @@ public extension LemmyConnection {
                 defaultCommentSortType: nil,
                 blockingKeywords: nil,
                 enablePrivateMessages: nil,
+                showScore: nil,
                 autoMarkFetchedPostsAsRead: nil,
                 hideMedia: nil,
                 showPersonVotes: nil

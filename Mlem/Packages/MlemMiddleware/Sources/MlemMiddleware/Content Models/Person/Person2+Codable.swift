@@ -24,7 +24,8 @@ public extension Person2 {
             ),
             isAdmin: isAdmin,
             personActions: nil,
-            creatorBanned: nil
+            banned: nil,
+            banExpiresAt: nil
         )
     }
     

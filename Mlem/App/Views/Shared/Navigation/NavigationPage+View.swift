@@ -44,6 +44,8 @@ extension NavigationPage {
             ProfileView()
         case .inbox:
             InboxView()
+        case .testInbox:
+            TestInboxView()
         case .search:
             SearchView()
         case let .externalApiInfo(api: api, actorId: actorId):
@@ -96,16 +98,14 @@ extension NavigationPage {
         case let .createPost(
             community: community,
             title: title,
-            content: content,
-            url: url,
+            type: type,
             nsfw: nsfw,
             feedLoader: feedLoader
         ):
             if let view = PostEditorView(
                 community: community,
                 title: title,
-                content: content,
-                url: url,
+                type: type,
                 nsfw: nsfw,
                 feedLoader: feedLoader.wrappedValue
             ) {

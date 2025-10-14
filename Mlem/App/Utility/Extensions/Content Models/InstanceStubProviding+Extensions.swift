@@ -87,7 +87,8 @@ extension InstanceStubProviding {
             openInBrowserAction()
             shareAction(navigation: navigation)
         }
-        if !local || (allowExternalBlocking && actorId != AppState.main.firstApi.actorId) {
+        
+        if blockingAvailable(allowExternalBlocking: allowExternalBlocking) {
             ActionGroup {
                 blockAction(
                     appState: appState,
@@ -96,6 +97,22 @@ extension InstanceStubProviding {
                 )
             }
         }
+    }
+    
+    private func blockingAvailable(allowExternalBlocking: Bool) -> Bool {
+        let apiToBlockWith: ApiClient
+        
+        if api.token == nil {
+            if !allowExternalBlocking { return false }
+            if actorId == AppState.main.firstApi.actorId { return false }
+            apiToBlockWith = AppState.main.firstApi
+        } else {
+            apiToBlockWith = api
+        }
+        
+        if !apiToBlockWith.supports(.blockInstances, defaultValue: false) { return false }
+        
+        return true
     }
     
     func shareAction(navigation: NavigationLayer?) -> BasicAction {

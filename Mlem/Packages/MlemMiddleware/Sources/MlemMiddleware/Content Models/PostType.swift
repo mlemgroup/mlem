@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum PostType: Equatable {
+public enum PostType: Hashable {
     /// Post containing both a title and text
     case text(String)
     /// Post containing only media

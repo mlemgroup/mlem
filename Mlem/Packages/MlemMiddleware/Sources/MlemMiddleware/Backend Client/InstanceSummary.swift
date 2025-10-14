@@ -11,20 +11,20 @@ import Foundation
 public struct InstanceSummary: Codable, Hashable, Identifiable {
     public let displayName: String
     public let name: String
-    public let userCount: Int
+    public let totalUsers: Int
     public let avatar: URL?
     public let software: SiteSoftware
     
     public init(
         displayName: String,
         name: String,
-        userCount: Int,
+        totalUsers: Int,
         avatar: URL? = nil,
         software: SiteSoftware
     ) {
         self.displayName = displayName
         self.name = name
-        self.userCount = userCount
+        self.totalUsers = totalUsers
         self.avatar = avatar
         self.software = software
     }
@@ -32,9 +32,9 @@ public struct InstanceSummary: Codable, Hashable, Identifiable {
     enum CodingKeys: String, CodingKey {
         case displayName = "name"
         case name = "host"
-        case userCount
+        case userCount // Removed in Mlem 2.4
+        case totalUsers
         case avatar
-        case version // Removed in Mlem 2.2
         case software
     }
 
@@ -47,23 +47,24 @@ public struct InstanceSummary: Codable, Hashable, Identifiable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.displayName = try container.decode(String.self, forKey: .displayName)
         self.name = try container.decode(String.self, forKey: .name)
-        self.userCount = try container.decode(Int.self, forKey: .userCount)
-        self.avatar = try container.decode(URL?.self, forKey: .avatar)
         
-        if let software = try container.decodeIfPresent(SiteSoftware.self, forKey: .software) {
-            self.software = software
-        } else if let version = try container.decodeIfPresent(SiteVersion.self, forKey: .version) {
-            self.software = .init(type: .lemmy, version: version)
+        if let totalUsers = try container.decodeIfPresent(Int.self, forKey: .totalUsers) {
+            self.totalUsers = totalUsers
+        } else if let totalUsers = try container.decodeIfPresent(Int.self, forKey: .userCount) {
+            self.totalUsers = totalUsers
         } else {
-            throw DecodingError.dataCorruptedError(forKey: .software, in: container, debugDescription: "")
+            throw DecodingError.dataCorruptedError(forKey: .totalUsers, in: container, debugDescription: "")
         }
+        
+        self.avatar = try container.decode(URL?.self, forKey: .avatar)
+        self.software = try container.decode(SiteSoftware.self, forKey: .software)
     }
     
     public func encode(to encoder: any Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(displayName, forKey: .displayName)
         try container.encode(name, forKey: .name)
-        try container.encode(userCount, forKey: .userCount)
+        try container.encode(totalUsers, forKey: .totalUsers)
         try container.encode(avatar, forKey: .avatar)
         try container.encode(software, forKey: .software)
     }

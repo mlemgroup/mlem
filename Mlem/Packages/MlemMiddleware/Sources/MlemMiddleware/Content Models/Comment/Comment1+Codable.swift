@@ -31,7 +31,8 @@ extension Comment1 {
             childCount: nil,
             reportCount: nil,
             unresolvedReportCount: nil,
-            federationPending: nil
+            federationPending: nil,
+            locked: nil
         )
     }
 }

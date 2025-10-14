@@ -13,6 +13,7 @@ struct WebsitePreviewView: View {
     @Environment(\.openURL) private var openURL
     
     @Setting(\.post_webPreview_showIcon) var showFavicons
+    @Setting(\.behavior_muteVideos) var muteVideos
 
     let shouldBlur: Bool
     
@@ -53,6 +54,7 @@ struct WebsitePreviewView: View {
             .clipShape(RoundedRectangle(cornerRadius: Constants.main.mediumItemCornerRadius))
             .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.mediumItemCornerRadius))
             .paletteBorder(cornerRadius: Constants.main.mediumItemCornerRadius)
+            .contentShape(.rect)
     }
     
     var complex: some View {
@@ -63,25 +65,18 @@ struct WebsitePreviewView: View {
                     controlState: .constant(.init(
                         blurred: shouldBlur,
                         animating: false,
-                        muted: Settings.get(\.behavior_muteVideos)
+                        muted: muteVideos
                     )),
                     aspectRatioBounds: .bounded(vertical: .init(width: 1, height: 1), horizontal: nil),
                     contentMode: .fill,
                     overlays: shouldBlur ? [.controls, .nsfw, .error] : [.controls, .error]
                 )
                 .overlay(alignment: .bottomLeading) {
-                    linkHost
-                        .padding(Constants.main.halfSpacing)
-                        .padding(showFavicons ? .trailing : .horizontal, 3)
-                        .background {
-                            Capsule()
-                                .fill(.regularMaterial)
-                                .overlay(Capsule().fill(.themedBackground.opacity(0.25)))
-                        }
+                    LinkHostView(link: link, withCapsule: true)
                         .padding(Constants.main.halfSpacing)
                 }
             } else {
-                linkHost
+                LinkHostView(link: link, withCapsule: false)
                     .padding([.horizontal, .top], Constants.main.standardSpacing)
             }
             
@@ -91,17 +86,5 @@ struct WebsitePreviewView: View {
                 .padding(Constants.main.standardSpacing)
                 .foregroundStyle(.themedPrimary)
         }
-    }
-    
-    var linkHost: some View {
-        HStack(spacing: Constants.main.halfSpacing) {
-            if showFavicons {
-                CircleCroppedImageView(url: link.favicon, frame: Constants.main.smallAvatarSize, fallback: .favicon)
-            }
-            
-            Text(link.host)
-                .foregroundStyle(.themedSecondary)
-        }
-        .font(.footnote)
     }
 }

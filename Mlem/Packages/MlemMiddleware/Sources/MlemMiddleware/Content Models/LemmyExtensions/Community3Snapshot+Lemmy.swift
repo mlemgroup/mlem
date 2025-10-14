@@ -9,19 +9,23 @@ import Foundation
 
 extension Community3Snapshot {
     init(from community: LemmyGetCommunityResponse) throws(ApiClientError) {
-        self.community = try .init(from: community.communityView)
+        let instance: Instance1Snapshot?
         if let site = community.site {
-            self.instance = try .init(from: site)
+            instance = try .init(from: site)
         } else {
-            self.instance = nil
+            instance = nil
         }
         
         var moderators = [Person1Snapshot]()
         for moderator in community.moderators {
             try moderators.append(.init(from: moderator.moderator))
         }
-        
-        self.moderators = moderators
-        self.discussionLanguageIds = .init(community.discussionLanguages)
+
+        try self.init(
+            community: .init(from: community.communityView),
+            instance: instance,
+            moderators: moderators,
+            discussionLanguageIds: .init(community.discussionLanguages)
+        )
     }
 }

@@ -9,6 +9,38 @@ import SwiftUI
 
 extension PostEditorView {
     @ViewBuilder
+    var attachmentPickerView: some View {
+        switch link {
+        case let .value(link):
+            PostEditorWebsitePreviewView(
+                link: .init(
+                    get: { link },
+                    set: { self.link = .value($0) }
+                ),
+                imageManager: $thumbnailManager,
+                primaryApi: primaryApi,
+                removeCallback: {
+                    self.link = .none
+                },
+                shouldBlur: false
+            )
+            .transition(.scale.combined(with: .opacity))
+        default:
+            HStack(spacing: 10) {
+                if imageManager == nil, imageUrl == nil {
+                    addLinkButton()
+                        .transition(.move(edge: .leading).combined(with: .opacity))
+                }
+                if link == .none {
+                    imageView
+                        .transition(.move(edge: .trailing).combined(with: .opacity))
+                }
+            }
+            .transition(.scale.combined(with: .opacity))
+        }
+    }
+    
+    @ViewBuilder
     var targetSelectionView: some View {
         let showWarning = !targets.allSatisfy { $0.sendState != .failed }
         VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {

@@ -18,4 +18,14 @@ public struct Person3Snapshot: CacheIdentifiable {
     let moderatedCommunities: [Community1Snapshot]
     
     public var cacheId: Int { person.cacheId }
+    
+    public init(
+        person: Person2Snapshot,
+        site: Instance1Snapshot?,
+        moderatedCommunities: [Community1Snapshot]
+    ) {
+        self.person = person
+        self.site = site
+        self.moderatedCommunities = moderatedCommunities
+    }
 }

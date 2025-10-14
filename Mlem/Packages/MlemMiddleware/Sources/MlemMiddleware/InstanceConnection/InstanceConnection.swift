@@ -139,6 +139,9 @@ public protocol InstanceConnection {
     func lockPost(id: Int, lock: Bool) async throws -> Post2Snapshot
     
     @discardableResult
+    func setPostNsfw(id: Int, nsfw: Bool) async throws -> Post1Snapshot
+    
+    @discardableResult
     func getPostVotes(
         id: Int,
         page: Int,
@@ -384,6 +387,8 @@ public protocol InstanceConnection {
         type: ModlogEntryType?
     ) async throws -> [ModlogEntrySnapshot]
     
+    func getPostLink(url: URL) async throws -> PostLink
+
     // MARK: - Inbox
     
     func getReplies(
@@ -407,6 +412,17 @@ public protocol InstanceConnection {
         unreadOnly: Bool
     ) async throws -> [Message2Snapshot]
     
+    func getReplyNotifications() async throws -> [InboxNotificationSnapshot]
+    func getMentionNotifications() async throws -> [InboxNotificationSnapshot]
+    func getMessageNotifications() async throws -> [InboxNotificationSnapshot]
+
+    func markNotificationAsRead(
+        type: InboxNotificationContentType,
+        id: Int,
+        contentId: Int,
+        read: Bool
+    ) async throws
+        
     func markAllAsRead() async throws
     func markReplyAsRead(id: Int, read: Bool) async throws
     func markMentionAsRead(id: Int, read: Bool) async throws

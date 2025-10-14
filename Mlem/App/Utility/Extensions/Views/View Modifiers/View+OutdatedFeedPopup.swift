@@ -33,7 +33,9 @@ private struct OutdatedFeedPopupModifier: ViewModifier {
             .onChange(of: apiChangeHash) {
                 if let feedLoader {
                     if let newApi = feedLoader.items.first?.api {
-                        showRefreshPopup = canShowPopup && (newApi !== appState.firstApi && feedLoader.loadingState != .loading)
+                        showRefreshPopup = canShowPopup && (
+                            newApi !== appState.firstApi && ![.loading, .initial].contains(feedLoader.loadingState)
+                        )
                     } else {
                         showRefreshPopup = false
                     }

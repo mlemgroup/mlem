@@ -363,6 +363,11 @@
 		03E614E42C0BCC7B00F692A4 /* Post1Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E614E32C0BCC7B00F692A4 /* Post1Providing+Extensions.swift */; };
 		03E614E52C0BCCAA00F692A4 /* PostSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB2EC7A2BFADA8B00DBC0EF /* PostSize.swift */; };
 		03E614E72C0BCDC200F692A4 /* FullyQualifiedLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E614E62C0BCDC200F692A4 /* FullyQualifiedLinkView.swift */; };
+		03EC82B72E8D8C97004698BB /* TestInboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03EC82B62E8D8C97004698BB /* TestInboxView.swift */; };
+		03EC83252E916C51004698BB /* View+SafeAreaBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03EC83242E916C51004698BB /* View+SafeAreaBar.swift */; };
+		03EC83EE2E958A44004698BB /* OpenGraph in Frameworks */ = {isa = PBXBuildFile; productRef = 03EC83ED2E958A44004698BB /* OpenGraph */; };
+		03EC83F02E9590D3004698BB /* LinkHostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03EC83EF2E9590D3004698BB /* LinkHostView.swift */; };
+		03EC84422E959AA5004698BB /* PostEditorWebsitePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03EC84412E959AA5004698BB /* PostEditorWebsitePreviewView.swift */; };
 		03ECD7192C81195000D48BF6 /* PostEditorView+LinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03ECD7182C81195000D48BF6 /* PostEditorView+LinkView.swift */; };
 		03ECD71B2C811D6700D48BF6 /* PostEditorView+ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03ECD71A2C811D6700D48BF6 /* PostEditorView+ImageView.swift */; };
 		03ECD71F2C864DB700D48BF6 /* ImageUploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03ECD71E2C864DB700D48BF6 /* ImageUploadManager.swift */; };
@@ -904,6 +909,10 @@
 		03E46AD32D130728002589DB /* ScoringOperation+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScoringOperation+Extensions.swift"; sourceTree = "<group>"; };
 		03E614E32C0BCC7B00F692A4 /* Post1Providing+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Post1Providing+Extensions.swift"; sourceTree = "<group>"; };
 		03E614E62C0BCDC200F692A4 /* FullyQualifiedLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullyQualifiedLinkView.swift; sourceTree = "<group>"; };
+		03EC82B62E8D8C97004698BB /* TestInboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestInboxView.swift; sourceTree = "<group>"; };
+		03EC83242E916C51004698BB /* View+SafeAreaBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+SafeAreaBar.swift"; sourceTree = "<group>"; };
+		03EC83EF2E9590D3004698BB /* LinkHostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkHostView.swift; sourceTree = "<group>"; };
+		03EC84412E959AA5004698BB /* PostEditorWebsitePreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostEditorWebsitePreviewView.swift; sourceTree = "<group>"; };
 		03ECD7182C81195000D48BF6 /* PostEditorView+LinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostEditorView+LinkView.swift"; sourceTree = "<group>"; };
 		03ECD71A2C811D6700D48BF6 /* PostEditorView+ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostEditorView+ImageView.swift"; sourceTree = "<group>"; };
 		03ECD71E2C864DB700D48BF6 /* ImageUploadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUploadManager.swift; sourceTree = "<group>"; };
@@ -1097,6 +1106,7 @@
 				037386472BDAFE81007492B5 /* LemmyMarkdownUI in Frameworks */,
 				CDA711FB2DB5CAC3008BC3ED /* Media in Frameworks */,
 				B104A6D82A59BF3C00B3E725 /* Nuke in Frameworks */,
+				03EC83EE2E958A44004698BB /* OpenGraph in Frameworks */,
 				50C99B562A61D792005D57DD /* Dependencies in Frameworks */,
 				636250DC2A18111400FC59B4 /* KeychainAccess in Frameworks */,
 				CD4368C12AE23FD400BD8BD1 /* Semaphore in Frameworks */,
@@ -1491,6 +1501,7 @@
 				03ECD7182C81195000D48BF6 /* PostEditorView+LinkView.swift */,
 				03ECD71A2C811D6700D48BF6 /* PostEditorView+ImageView.swift */,
 				0397D4922C6CE87E002C6CDC /* PostEditorTargetView.swift */,
+				03EC84412E959AA5004698BB /* PostEditorWebsitePreviewView.swift */,
 			);
 			path = PostEditor;
 			sourceTree = "<group>";
@@ -1922,10 +1933,12 @@
 				CDD99C3D2C73F4380010367F /* WarningView.swift */,
 				034CC02F2D22C5BE00C557D3 /* WarningOverlayView.swift */,
 				CD13CC582C583C7A001AF428 /* WebsitePreviewView.swift */,
+				03EC83EF2E9590D3004698BB /* LinkHostView.swift */,
 				CD13CC5A2C588B34001AF428 /* WebView.swift */,
 				CD635E1A2C94DACD00864F75 /* BypassProxyWarningSheet.swift */,
 				03AB484E2CBAE33500567FF9 /* MarkdownWithLinkList.swift */,
 				037DE0792CE108D9007F7B92 /* FooterLinkView.swift */,
+				03EC82B62E8D8C97004698BB /* TestInboxView.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -2079,6 +2092,7 @@
 				CD4ED8492BF1113800EFA0A2 /* View+TabReselectConsumer.swift */,
 				03A82FA22C0D1F2400D01A5C /* View+ExternalApiWarning.swift */,
 				030E95E62C80A20A0045BC2C /* View+NavigationTransition.swift */,
+				03EC83242E916C51004698BB /* View+SafeAreaBar.swift */,
 				0335AE102D8991330094FFD9 /* View+HiddenNavigationTitle.swift */,
 				036A84D72D99531400E95D50 /* View+ConditionalNavigationTitle.swift */,
 				CD3153062C38421B00BC5FBE /* View+LoadFeed.swift */,
@@ -2372,6 +2386,7 @@
 				0377BF9A2DF0E0E000E38593 /* Rest */,
 				0377BE282DE7A2DE00E38593 /* Haptics */,
 				031CA5762E5900E900CF0C0F /* QuickSwipes */,
+				03EC83ED2E958A44004698BB /* OpenGraph */,
 			);
 			productName = Mlem;
 			productReference = 6363D5C127EE196700E34822 /* Mlem.app */;
@@ -2458,6 +2473,7 @@
 				037386452BDAFE81007492B5 /* XCRemoteSwiftPackageReference "LemmyMarkdownUI" */,
 				03FA318A2C6FEC5400D47FA3 /* XCRemoteSwiftPackageReference "SwiftUI-Flow" */,
 				CDE4AC412CA3706F00981010 /* XCRemoteSwiftPackageReference "SDWebImageWebPCoder" */,
+				03EC83EC2E958A44004698BB /* XCRemoteSwiftPackageReference "OpenGraph" */,
 			);
 			productRefGroup = 6363D5C227EE196700E34822 /* Products */;
 			projectDirPath = "";
@@ -2549,6 +2565,7 @@
 				81A179BF2DDE5BF300B17017 /* TabBarLongPressAction.swift in Sources */,
 				03B25B352CC4446400EB6DF5 /* FediseerOpinionListView.swift in Sources */,
 				CDB2EC7D2BFADAB300DBC0EF /* CompactPostView.swift in Sources */,
+				03EC82B72E8D8C97004698BB /* TestInboxView.swift in Sources */,
 				CD33CA522D3C18BF00106C8C /* ImageViewer+Views.swift in Sources */,
 				031CA5B52E590B0D00CF0C0F /* QuickSwipeAction+Extensions.swift in Sources */,
 				030056A42D7DB05A00EB0BA3 /* SharingLinksSettingsView.swift in Sources */,
@@ -2714,6 +2731,7 @@
 				038028F82CB097A10091A8A2 /* SearchView+InstancePicker.swift in Sources */,
 				CD5C197D2D97096F0089614C /* ZoomCurves.swift in Sources */,
 				034147FD2D8F5844005503AF /* ExpandedPostHistoryTracker.swift in Sources */,
+				03EC84422E959AA5004698BB /* PostEditorWebsitePreviewView.swift in Sources */,
 				CD9CFA2C2C2E1EF300739BBC /* FeedIconView.swift in Sources */,
 				038188992D43E0F30073E88D /* SafetySettingsView.swift in Sources */,
 				CD1446252A5B357900610EF1 /* Document.swift in Sources */,
@@ -2854,6 +2872,7 @@
 				03036C832C727D0500C6DA1D /* InteractionBarEditorView+Logic.swift in Sources */,
 				6DE1183C2A4A217400810C7E /* Profile View.swift in Sources */,
 				03CBD18D2C6120F600E870BC /* PersonFlair.swift in Sources */,
+				03EC83252E916C51004698BB /* View+SafeAreaBar.swift in Sources */,
 				033FCB3E2C5E7FA9007B7CD1 /* View+OutdatedFeedPopup.swift in Sources */,
 				CD10FA772C7A8622008985AD /* ImageSaver.swift in Sources */,
 				03267D822BED489C009D6268 /* AvatarBannerView.swift in Sources */,
@@ -2971,6 +2990,7 @@
 				CD03742A2D1DBFD2001E85FA /* ReadCheck.swift in Sources */,
 				035394932CA1AE2C00795AA5 /* UptimeData.swift in Sources */,
 				036ED6832D0C483B0018E5EA /* Profile2Providing+Extensions.swift in Sources */,
+				03EC83F02E9590D3004698BB /* LinkHostView.swift in Sources */,
 				033FCB2A2C5E3933007B7CD1 /* AlternateIconCell.swift in Sources */,
 				0389DDC72C389F840005B808 /* UnreadCount+Extensions.swift in Sources */,
 				03500C242BF55D0E00CAA076 /* Toast.swift in Sources */,
@@ -3221,7 +3241,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.3;
+				MARKETING_VERSION = 2.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hanners.Mlem;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -3268,7 +3288,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.3;
+				MARKETING_VERSION = 2.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hanners.Mlem;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -3423,6 +3443,14 @@
 				minimumVersion = "1.4.0-beta.4";
 			};
 		};
+		03EC83EC2E958A44004698BB /* XCRemoteSwiftPackageReference "OpenGraph" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/satoshi-takano/OpenGraph";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.6.0;
+			};
+		};
 		03FA318A2C6FEC5400D47FA3 /* XCRemoteSwiftPackageReference "SwiftUI-Flow" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/tevelee/SwiftUI-Flow";
@@ -3511,6 +3539,11 @@
 		03D8BF422DA55B6900506687 /* Icons */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Icons;
+		};
+		03EC83ED2E958A44004698BB /* OpenGraph */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 03EC83EC2E958A44004698BB /* XCRemoteSwiftPackageReference "OpenGraph" */;
+			productName = OpenGraph;
 		};
 		03FA318B2C6FECAE00D47FA3 /* Flow */ = {
 			isa = XCSwiftPackageProductDependency;

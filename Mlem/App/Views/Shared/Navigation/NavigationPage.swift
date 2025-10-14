@@ -20,6 +20,7 @@ enum NavigationPage: Hashable {
     case upvotedFeed
     case topCommunities, topPeople, topInstances
     case profile, inbox, search
+    case testInbox
     case quickSwitcher
     case post(
         _ post: AnyPost,
@@ -53,8 +54,7 @@ enum NavigationPage: Hashable {
     case createPost(
         community: AnyCommunity?,
         title: String,
-        content: String,
-        url: URL?,
+        type: PostType?,
         nsfw: Bool,
         feedLoader: HashWrapper<(any FeedLoading)?>
     )
@@ -266,8 +266,7 @@ enum NavigationPage: Hashable {
     static func createPost(
         community: (any CommunityStubProviding)?,
         title: String = "",
-        content: String = "",
-        url: URL? = nil,
+        type: PostType?,
         nsfw: Bool = false,
         feedLoader: (any FeedLoading)?
     ) -> NavigationPage {
@@ -280,8 +279,7 @@ enum NavigationPage: Hashable {
         return createPost(
             community: anyCommunity,
             title: title,
-            content: content,
-            url: url,
+            type: type,
             nsfw: nsfw,
             feedLoader: .init(wrappedValue: feedLoader)
         )

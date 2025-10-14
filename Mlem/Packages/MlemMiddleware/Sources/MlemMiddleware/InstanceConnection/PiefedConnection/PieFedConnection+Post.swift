@@ -170,7 +170,7 @@ public extension PieFedConnection {
     
     @discardableResult
     func voteOnPost(id: Int, score: ScoringOperation) async throws -> Post2Snapshot {
-        let request = PieFedLikePostRequest(postId: id, score: score.rawValue)
+        let request = PieFedLikePostRequest(postId: id, score: score.rawValue, private: nil)
         async let response = perform(request)
         if !supports(.autoMarkPostReadOnInteract, defaultValue: false) {
             try await markPostAsRead(id: id, read: true)
@@ -269,7 +269,12 @@ public extension PieFedConnection {
     
     @discardableResult
     func reportPost(id: Int, reason: String) async throws -> ReportSnapshot {
-        let request = PieFedCreatePostReportRequest(postId: id, reason: reason)
+        let request = PieFedCreatePostReportRequest(
+            postId: id,
+            reason: reason,
+            description: nil,
+            reportRemote: true
+        )
         let response = try await perform(request)
         return try .init(from: response.postReportView)
     }
@@ -312,6 +317,13 @@ public extension PieFedConnection {
     }
     
     @discardableResult
+    func setPostNsfw(id: Int, nsfw: Bool) async throws -> Post1Snapshot {
+        let request = PieFedModerateCommunityPostNsfwRequest(postId: id, nsfwStatus: nsfw)
+        let response = try await perform(request)
+        return try .init(from: response.post)
+    }
+
+    @discardableResult
     func getPostVotes(
         id: Int,
         page: Int = 1,
@@ -319,6 +331,6 @@ public extension PieFedConnection {
     ) async throws -> [PersonVoteSnapshot] {
         let request = PieFedListPostLikesRequest(postId: id, page: page, limit: limit)
         let response = try await perform(request)
-        return try response.postLikes?.map { try .init(from: $0) } ?? []
+        return try response.postLikes.map { try .init(from: $0) }
     }
 }

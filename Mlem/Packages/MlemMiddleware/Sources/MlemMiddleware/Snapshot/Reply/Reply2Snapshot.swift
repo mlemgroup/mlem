@@ -28,4 +28,34 @@ public struct Reply2Snapshot: CacheIdentifiable {
     public let saved: Bool
     
     public var cacheId: Int { reply.id }
+    
+    public init(
+        reply: Reply1Snapshot,
+        comment: Comment1Snapshot,
+        creator: Person1Snapshot,
+        post: Post1Snapshot,
+        community: Community1Snapshot,
+        recipient: Person1Snapshot,
+        subscribed: Bool,
+        commentCount: Int,
+        creatorIsModerator: Bool,
+        creatorIsAdmin: Bool,
+        creatorBannedFromCommunity: Bool,
+        votes: VotesModel,
+        saved: Bool
+    ) {
+        self.reply = reply
+        self.comment = comment
+        self.creator = creator
+        self.post = post
+        self.community = community
+        self.recipient = recipient
+        self.subscribed = subscribed
+        self.commentCount = commentCount
+        self.creatorIsModerator = creatorIsModerator
+        self.creatorIsAdmin = creatorIsAdmin
+        self.creatorBannedFromCommunity = creatorBannedFromCommunity
+        self.votes = votes
+        self.saved = saved
+    }
 }

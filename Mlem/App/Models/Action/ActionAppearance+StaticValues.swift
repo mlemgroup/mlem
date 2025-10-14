@@ -224,6 +224,14 @@ extension ActionAppearance {
         )
     }
     
+    static func toggleNsfw(isOn: Bool) -> Self {
+        .init(
+            label: isOn ? "Remove NSFW Tag" : "Add NSFW Tag",
+            color: .themedNegative,
+            icon: Icons.blurNsfw
+        )
+    }
+    
     static func resolve(isOn: Bool) -> Self {
         .init(
             label: isOn ? "Unresolve" : "Resolve",

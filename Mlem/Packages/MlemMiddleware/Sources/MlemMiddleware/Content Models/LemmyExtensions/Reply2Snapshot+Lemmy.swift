@@ -9,34 +9,38 @@ import Foundation
 
 extension Reply2Snapshot {
     init(from commentReply: LemmyCommentReplyView) throws(ApiClientError) {
-        self.reply = try .init(from: commentReply.commentReply)
-        self.comment = try .init(from: commentReply.comment)
-        self.creator = try .init(from: commentReply.creator)
-        self.post = try .init(from: commentReply.post)
-        self.community = try .init(from: commentReply.community)
-        self.recipient = try .init(from: commentReply.recipient)
-        self.subscribed = commentReply.subscribed != .notSubscribed
-        self.commentCount = commentReply.counts.childCount
-        self.creatorIsAdmin = commentReply.creatorIsAdmin
-        self.creatorIsModerator = commentReply.creatorIsModerator
-        self.creatorBannedFromCommunity = commentReply.creatorBannedFromCommunity
-        self.saved = commentReply.saved
-        self.votes = .init(from: commentReply.counts, myVote: .guaranteedInit(from: commentReply.myVote))
+        try self.init(
+            reply: .init(from: commentReply.commentReply),
+            comment: .init(from: commentReply.comment),
+            creator: .init(from: commentReply.creator),
+            post: .init(from: commentReply.post),
+            community: .init(from: commentReply.community),
+            recipient: .init(from: commentReply.recipient),
+            subscribed: commentReply.subscribed != .notSubscribed,
+            commentCount: commentReply.counts.childCount,
+            creatorIsModerator: commentReply.creatorIsModerator,
+            creatorIsAdmin: commentReply.creatorIsAdmin,
+            creatorBannedFromCommunity: commentReply.creatorBannedFromCommunity,
+            votes: .init(from: commentReply.counts, myVote: .guaranteedInit(from: commentReply.myVote)),
+            saved: commentReply.saved
+        )
     }
     
     init(from personMention: LemmyPersonCommentMentionView) throws(ApiClientError) {
-        self.reply = try .init(from: personMention.personMention)
-        self.comment = try .init(from: personMention.comment)
-        self.creator = try .init(from: personMention.creator)
-        self.post = try .init(from: personMention.post)
-        self.community = try .init(from: personMention.community)
-        self.recipient = try .init(from: personMention.recipient)
-        self.subscribed = personMention.subscribed != .notSubscribed
-        self.commentCount = personMention.counts.childCount
-        self.creatorIsAdmin = personMention.creatorIsAdmin
-        self.creatorIsModerator = personMention.creatorIsModerator
-        self.creatorBannedFromCommunity = personMention.creatorBannedFromCommunity
-        self.saved = personMention.saved
-        self.votes = .init(from: personMention.counts, myVote: .guaranteedInit(from: personMention.myVote))
+        try self.init(
+            reply: .init(from: personMention.personMention),
+            comment: .init(from: personMention.comment),
+            creator: .init(from: personMention.creator),
+            post: .init(from: personMention.post),
+            community: .init(from: personMention.community),
+            recipient: .init(from: personMention.recipient),
+            subscribed: personMention.subscribed != .notSubscribed,
+            commentCount: personMention.counts.childCount,
+            creatorIsModerator: personMention.creatorIsModerator,
+            creatorIsAdmin: personMention.creatorIsAdmin,
+            creatorBannedFromCommunity: personMention.creatorBannedFromCommunity,
+            votes: .init(from: personMention.counts, myVote: .guaranteedInit(from: personMention.myVote)),
+            saved: personMention.saved
+        )
     }
 }

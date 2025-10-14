@@ -61,7 +61,7 @@ extension PostEditorView {
                 content: contentTextView.text,
                 linkUrl: imageManager?.image?.url ?? link.url ?? imageUrl,
                 altText: post.altText,
-                thumbnail: nil,
+                thumbnail: thumbnailManager.image?.url,
                 nsfw: hasNsfwTag,
                 languageId: nil
             )
@@ -84,11 +84,16 @@ extension PostEditorView {
                     taskGroup.addTask { @MainActor in
                         let post: Post2?
                         do {
+                            guard community.api === target.account.api else {
+                                assertionFailure()
+                                throw PostEditorViewError.mismatchingTargetApi
+                            }
                             post = try await community.api.createPost(
                                 communityId: community.id,
                                 title: titleTextView.text,
                                 content: contentTextView.text,
                                 linkUrl: imageManager?.image?.url ?? link.url ?? imageUrl,
+                                thumbnail: thumbnailManager.image?.url,
                                 nsfw: hasNsfwTag
                             )
                         } catch {
@@ -186,4 +191,8 @@ extension PostEditorView {
         
         return newSlurMatches
     }
+}
+
+private enum PostEditorViewError: Error {
+    case mismatchingTargetApi
 }

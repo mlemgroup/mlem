@@ -27,6 +27,34 @@ public struct Comment1Snapshot: CacheIdentifiable, CommentSnapshotProviding {
     
     public var cacheId: Int { id }
     
+    public init(
+        actorId: ActorIdentifier,
+        id: Int,
+        creatorId: Int,
+        postId: Int,
+        parentCommentIds: [Int],
+        created: Date,
+        content: String,
+        updated: Date?,
+        distinguished: Bool,
+        languageId: Int,
+        deleted: Bool,
+        removed: Bool
+    ) {
+        self.actorId = actorId
+        self.id = id
+        self.creatorId = creatorId
+        self.postId = postId
+        self.parentCommentIds = parentCommentIds
+        self.created = created
+        self.content = content
+        self.updated = updated
+        self.distinguished = distinguished
+        self.languageId = languageId
+        self.deleted = deleted
+        self.removed = removed
+    }
+    
     public func merge(with snapshot: any CommentSnapshotProviding) -> any CommentSnapshotProviding {
         if snapshot is Comment1Snapshot {
             return self

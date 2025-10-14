@@ -32,4 +32,38 @@ public struct Person1Snapshot: CacheIdentifiable {
     public let allPropertiesPresent: Bool
 
     public var cacheId: Int { id }
+    
+    public init(
+        actorId: ActorIdentifier,
+        id: Int,
+        name: String,
+        created: Date,
+        instanceId: Int,
+        displayName: String,
+        avatar: URL?,
+        banner: URL?,
+        updated: Date?,
+        description: String?,
+        matrixUserId: String?,
+        isBot: Bool,
+        instanceBan: InstanceBanType,
+        deleted: Bool,
+        allPropertiesPresent: Bool
+    ) {
+        self.actorId = actorId
+        self.id = id
+        self.name = name
+        self.created = created
+        self.instanceId = instanceId
+        self.displayName = displayName
+        self.avatar = avatar
+        self.banner = banner
+        self.updated = updated
+        self.description = description
+        self.matrixUserId = matrixUserId
+        self.isBot = isBot
+        self.instanceBan = instanceBan
+        self.deleted = deleted
+        self.allPropertiesPresent = allPropertiesPresent
+    }
 }

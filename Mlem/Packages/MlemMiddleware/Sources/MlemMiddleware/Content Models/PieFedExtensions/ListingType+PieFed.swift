@@ -13,7 +13,7 @@ public extension ListingType {
         case .all: .all
         case .local: .local
         case .subscribed: .subscribed
-        case .moderatorView: .moderated
+        case .moderatorView, .moderating: .moderated
         case .popular: .popular
         }
         if let value {
