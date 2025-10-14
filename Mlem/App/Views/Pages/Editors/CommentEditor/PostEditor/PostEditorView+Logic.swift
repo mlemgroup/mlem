@@ -61,7 +61,7 @@ extension PostEditorView {
                 content: contentTextView.text,
                 linkUrl: imageManager?.image?.url ?? link.url ?? imageUrl,
                 altText: post.altText,
-                thumbnail: nil,
+                thumbnail: thumbnailManager.image?.url,
                 nsfw: hasNsfwTag,
                 languageId: nil
             )
@@ -93,6 +93,7 @@ extension PostEditorView {
                                 title: titleTextView.text,
                                 content: contentTextView.text,
                                 linkUrl: imageManager?.image?.url ?? link.url ?? imageUrl,
+                                thumbnail: thumbnailManager.image?.url,
                                 nsfw: hasNsfwTag
                             )
                         } catch {
