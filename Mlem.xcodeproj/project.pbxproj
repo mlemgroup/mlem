@@ -1086,6 +1086,7 @@
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		03DA26AC2D79F29700E66267 /* Packages */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Packages; sourceTree = "<group>"; };
+		03EC85ED2E9D925B004698BB /* Actions */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Actions; sourceTree = "<group>"; };
 		03F6BDA12D502382006A425E /* Preview Content */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "Preview Content"; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
@@ -1824,6 +1825,7 @@
 		CD4D583B2B867BB300B82964 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				03EC85ED2E9D925B004698BB /* Actions */,
 				CD1464522D63FE6F00202619 /* Legacy */,
 				CDE1F18D2C63D646008AF042 /* Configuration */,
 				CD14461F2A5B328600610EF1 /* Data */,
@@ -2351,6 +2353,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				03DA26AC2D79F29700E66267 /* Packages */,
+				03EC85ED2E9D925B004698BB /* Actions */,
 				03F6BDA12D502382006A425E /* Preview Content */,
 			);
 			name = Mlem;

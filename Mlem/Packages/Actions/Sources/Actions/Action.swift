@@ -5,4 +5,11 @@
 //  Created by Sjmarf on 2025-10-13.
 //
 
-import Foundation
+import SwiftUI
+
+public protocol Action {
+    func createLabel(environment: EnvironmentValues) -> ActionLabel
+    
+    @MainActor
+    func execute(environment: EnvironmentValues)
+}

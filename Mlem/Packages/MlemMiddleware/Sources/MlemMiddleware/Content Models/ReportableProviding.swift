@@ -8,5 +8,6 @@
 import Foundation
 
 public protocol ReportableProviding: ContentIdentifiable {
+    func isOwnContent(myPersonId: Int) -> Bool
     func report(reason: String) async throws
 }

@@ -14,13 +14,17 @@ let package = Package(
         )
 
     ],
-    dependencies: [],
+    dependencies: [
+        .package(path: "../Icons")
+    ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
             name: "Actions",
-            dependencies: [],
+            dependencies: [
+                .byName(name: "Icons")
+            ],
             swiftSettings: [
                 .swiftLanguageMode(.v5),
                 .enableUpcomingFeature("BareSlashRegexLiterals")
