@@ -16,6 +16,7 @@ struct AccessibilitySettingsView: View {
     @Setting(\.a11y_showSettingsIcons) var showSettingsIcons
     @Setting(\.a11y_zoomSliderLocation) var zoomSliderLocation
     @Setting(\.media_animatedAvatars) var animatedAvatars
+    @Setting(\.a11y_showInteractionBarButtonOutline) var showInteractionBarButtonOutline
     
     var body: some View {
         Form {
@@ -58,6 +59,12 @@ struct AccessibilitySettingsView: View {
                 } header: {
                     Text("Reduce Motion")
                 }
+            }
+
+            Section {
+                Toggle("Button Outlines", icon: .general.circle, isOn: $showInteractionBarButtonOutline)
+            } header: {
+                Text("Contrast")
             }
             
             Section {
