@@ -10,6 +10,7 @@ import MlemMiddleware
 
 struct ExportablePostView: View {
     let post: any Post1Providing
+    let appState: AppState // directly passed in because ImageRenderer doesn't work with @Environment
     let showCommunity: Bool
     let showCreator: Bool
     let showStats: Bool
@@ -31,7 +32,7 @@ struct ExportablePostView: View {
             .padding(Constants.main.standardSpacing)
             .background(.themedGroupedBackground)
             .animation(.snappy, value: animationHashValue)
-            .environment(AppState.main)
+            .environment(appState)
     }
     
     var content: some View {

@@ -14,6 +14,7 @@ import Media
 
 struct ExportablePostEditorView: View {
     @Environment(NavigationLayer.self) var navigation
+    @Environment(AppState.self) var appState
     
     let post: any Post1Providing
     @State var showCommunity: Bool = true
@@ -110,14 +111,9 @@ struct ExportablePostEditorView: View {
     }
         
     var exportablePost: some View {
-        ExportablePostView(post: post, showCommunity: showCommunity, showCreator: showCreator, showStats: showStats)
+        ExportablePostView(post: post, appState: appState, showCommunity: showCommunity, showCreator: showCreator, showStats: showStats)
             .allowsHitTesting(false)
     }
-    
-//    var snapshot: UIImage? {
-//        print("Re-rendering...")
-//        return createImageFromView(exportablePost)
-//    }
     
     private func createTempFile(data: Data, fileName: String) -> URL? {
         do {
