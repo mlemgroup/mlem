@@ -11,7 +11,7 @@ import Theming
 struct InteractionBarActionLabelView: View {
     static let unweightedSymbols: Set<String> = [Icons.upvote, Icons.downvote]
 
-    @Setting(\.a11y_showInteractionBarButtonOutline) var showInteractionBarButtonOutline
+    @Setting(\.a11y_showInteractionBarButtonBackground) var showInteractionBarButtonBackground
         
     let appearance: ActionAppearance
     
@@ -49,6 +49,6 @@ struct InteractionBarActionLabelView: View {
     }
 
     var showOutline: Bool {
-        !appearance.isOn && showInteractionBarButtonOutline
+        !appearance.isOn && showInteractionBarButtonBackground
     }
 }

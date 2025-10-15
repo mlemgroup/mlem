@@ -16,7 +16,7 @@ struct AccessibilitySettingsView: View {
     @Setting(\.a11y_showSettingsIcons) var showSettingsIcons
     @Setting(\.a11y_zoomSliderLocation) var zoomSliderLocation
     @Setting(\.media_animatedAvatars) var animatedAvatars
-    @Setting(\.a11y_showInteractionBarButtonOutline) var showInteractionBarButtonOutline
+    @Setting(\.a11y_showInteractionBarButtonBackground) var showInteractionBarButtonBackground
     
     var body: some View {
         Form {
@@ -62,7 +62,7 @@ struct AccessibilitySettingsView: View {
             }
 
             Section {
-                Toggle("Button Outlines", icon: .general.circle, isOn: $showInteractionBarButtonOutline)
+                Toggle("Distinguish Interaction Bar", icon: .general.circle, isOn: $showInteractionBarButtonBackground)
             } header: {
                 Text("Contrast")
             }
