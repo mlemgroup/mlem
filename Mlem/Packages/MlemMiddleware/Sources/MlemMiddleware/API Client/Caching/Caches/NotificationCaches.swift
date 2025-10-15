@@ -31,6 +31,7 @@ class NotificationCache: CoreCache<InboxNotification> {
         let newItem: InboxNotification = .init(
             api: api,
             id: snapshot.id,
+            contentId: snapshot.contentId,
             read: snapshot.read,
             content: content
         )

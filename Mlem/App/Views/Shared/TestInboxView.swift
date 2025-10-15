@@ -52,6 +52,11 @@ private struct TestInboxSectionView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(10)
                     .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: 10))
+                    .onTapGesture {
+                        Task {
+                            notification.toggleRead()
+                        }
+                    }
                 }
             }
         }
