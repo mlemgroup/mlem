@@ -20,10 +20,23 @@ struct ExportablePostEditorView: View {
     @State var showCreator: Bool = true
     @State var showStats: Bool = true
     
+    @State var snapshot: UIImage?
+    
+    var snapshotRenderHashValue: Int {
+        var hasher = Hasher()
+        hasher.combine(showCommunity)
+        hasher.combine(showCreator)
+        hasher.combine(showStats)
+        return hasher.finalize()
+    }
+    
     var body: some View {
         ScrollView {
             exportablePost
                 .padding(.bottom, 200)
+        }
+        .onChange(of: snapshotRenderHashValue, initial: true) {
+            snapshot = createImageFromView(exportablePost)
         }
         .background(.themedGroupedBackground)
         .overlay(alignment: .bottom) {
@@ -101,9 +114,10 @@ struct ExportablePostEditorView: View {
             .allowsHitTesting(false)
     }
     
-    var snapshot: UIImage? {
-        createImageFromView(exportablePost)
-    }
+//    var snapshot: UIImage? {
+//        print("Re-rendering...")
+//        return createImageFromView(exportablePost)
+//    }
     
     private func createTempFile(data: Data, fileName: String) -> URL? {
         do {
