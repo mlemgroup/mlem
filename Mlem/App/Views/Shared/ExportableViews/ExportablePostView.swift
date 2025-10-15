@@ -36,8 +36,8 @@ struct ExportablePostView: View {
             .background(.themedGroupedBackground)
             .animation(.snappy, value: animationHashValue)
             .environment(appState)
-            .environment(\.colorScheme, colorScheme)
             .palette(colorPalette.palette)
+            .environment(\.colorScheme, colorScheme)
     }
     
     var content: some View {

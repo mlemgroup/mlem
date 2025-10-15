@@ -18,11 +18,22 @@ struct ExportablePostEditorView: View {
     @Environment(AppState.self) var appState
     @Environment(HapticManager.self) var hapticManager
     @Environment(\.colorScheme) var colorScheme
+    @Setting(\.appearance_palette) var palette
     
     let post: any Post1Providing
     @State var showCommunity: Bool = true
     @State var showCreator: Bool = true
     @State var showStats: Bool = true
+    @State var overrideColorScheme: UIUserInterfaceStyle = .unspecified
+    
+    var overriddenColorScheme: ColorScheme {
+        switch overrideColorScheme {
+        case .unspecified: colorScheme
+        case .light: .light
+        case .dark: .dark
+        default: .light
+        }
+    }
     
     @State var snapshot: UIImage?
     
@@ -31,9 +42,10 @@ struct ExportablePostEditorView: View {
         hasher.combine(showCommunity)
         hasher.combine(showCreator)
         hasher.combine(showStats)
+        hasher.combine(overriddenColorScheme)
         return hasher.finalize()
     }
-    
+
     var body: some View {
         ScrollView {
             exportablePost
@@ -65,6 +77,16 @@ struct ExportablePostEditorView: View {
                     Toggle("Community", isOn: $showCommunity)
                     Toggle("Creator", isOn: $showCreator)
                     Toggle("Stats", isOn: $showStats)
+                    
+                    if palette.supportedModes == .unspecified {
+                        Menu("Color Scheme") {
+                            Picker("Color Scheme", selection: $overrideColorScheme) {
+                                ForEach(UIUserInterfaceStyle.optionCases, id: \.self) { style in
+                                    Label(style.label, icon: style.icon)
+                                }
+                            }
+                        }
+                    }
                 }
                 .menuActionDismissBehavior(.disabled)
             }
@@ -118,7 +140,7 @@ struct ExportablePostEditorView: View {
         ExportablePostView(
             post: post,
             appState: appState,
-            colorScheme: colorScheme,
+            colorScheme: overriddenColorScheme,
             showCommunity: showCommunity,
             showCreator: showCreator,
             showStats: showStats
