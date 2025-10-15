@@ -9,8 +9,11 @@ import SwiftUI
 import MlemMiddleware
 
 struct ExportablePostView: View {
+    @Setting(\.appearance_palette) var colorPalette
+    
     let post: any Post1Providing
     let appState: AppState // directly passed in because ImageRenderer doesn't work with @Environment
+    let colorScheme: ColorScheme
     let showCommunity: Bool
     let showCreator: Bool
     let showStats: Bool
@@ -33,6 +36,8 @@ struct ExportablePostView: View {
             .background(.themedGroupedBackground)
             .animation(.snappy, value: animationHashValue)
             .environment(appState)
+            .environment(\.colorScheme, colorScheme)
+            .palette(colorPalette.palette)
     }
     
     var content: some View {

@@ -17,6 +17,7 @@ struct ExportablePostEditorView: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(AppState.self) var appState
     @Environment(HapticManager.self) var hapticManager
+    @Environment(\.colorScheme) var colorScheme
     
     let post: any Post1Providing
     @State var showCommunity: Bool = true
@@ -114,8 +115,15 @@ struct ExportablePostEditorView: View {
     }
         
     var exportablePost: some View {
-        ExportablePostView(post: post, appState: appState, showCommunity: showCommunity, showCreator: showCreator, showStats: showStats)
-            .allowsHitTesting(false)
+        ExportablePostView(
+            post: post,
+            appState: appState,
+            colorScheme: colorScheme,
+            showCommunity: showCommunity,
+            showCreator: showCreator,
+            showStats: showStats
+        )
+        .allowsHitTesting(false)
     }
     
     private func createTempFile(data: Data, fileName: String) -> URL? {
