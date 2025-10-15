@@ -11,6 +11,7 @@ extension InboxNotificationSnapshot {
     init(from replyView: LemmyCommentReplyView) throws(ApiClientError) {
         try self.init(
             id: LegacyNotificationIdWrapper(type: .reply, id: replyView.commentReply.id).hashValue,
+            contentId: replyView.commentReply.id,
             read: replyView.commentReply.read,
             content: .reply(.init(from: replyView))
         )
@@ -19,6 +20,7 @@ extension InboxNotificationSnapshot {
     init(from mentionView: LemmyPersonCommentMentionView) throws(ApiClientError) {
         try self.init(
             id: LegacyNotificationIdWrapper(type: .mention, id: mentionView.personMention.id).hashValue,
+            contentId: mentionView.personMention.id,
             read: mentionView.personMention.read,
             content: .mention(.init(from: mentionView))
         )
@@ -31,6 +33,7 @@ extension InboxNotificationSnapshot {
 
         try self.init(
             id: LegacyNotificationIdWrapper(type: .message, id: messageView.privateMessage.id).hashValue,
+            contentId: messageView.privateMessage.id,
             read: read,
             content: .message(.init(from: messageView))
         )
@@ -39,10 +42,6 @@ extension InboxNotificationSnapshot {
 
 // This can be removed once we drop support for < Lemmy 1.0
 private struct LegacyNotificationIdWrapper: Hashable {
-    enum NotificationType: Hashable {
-        case reply, mention, message
-    }
-
-    let type: NotificationType
+    let type: InboxNotificationContentType
     let id: Int
 }

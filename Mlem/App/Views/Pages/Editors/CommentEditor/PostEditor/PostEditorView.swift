@@ -41,6 +41,7 @@ struct PostEditorView: View {
     @State var link: LinkState = .none
     @State var imageUrl: URL?
     @State var imageManager: ImageUploadManager?
+    @State var thumbnailManager: ImageUploadManager = .init()
     @State var uploadHistory: ImageUploadHistoryManager = .init()
     @State var markdownToolbarEditorModel: MarkdownEditorToolbarModel = .init()
     @State var sending: Bool = false
@@ -154,6 +155,7 @@ struct PostEditorView: View {
                 Task {
                     do {
                         try await imageManager?.image?.delete()
+                        try await thumbnailManager.image?.delete()
                     } catch {
                         handleError(error, silent: true)
                     }

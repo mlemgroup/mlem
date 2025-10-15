@@ -95,6 +95,25 @@ public extension LemmyConnection {
         return try response.privateMessages.map { try .init(from: $0) }
     }
     
+    func markNotificationAsRead(
+        type: InboxNotificationContentType,
+        id: Int,
+        contentId: Int,
+        read: Bool = true
+    ) async throws {
+        try await processingForEndpoint { endpoint in
+            guard endpoint == .v3 else { throw ApiClientError.featureUnsupported }
+            switch type {
+            case .reply:
+                try await self.markReplyAsRead(id: contentId, read: read)
+            case .mention:
+                try await self.markMentionAsRead(id: contentId, read: read)
+            case .message:
+                try await self.markMessageAsRead(id: contentId, read: read)
+            }
+        }
+    }
+    
     func markAllAsRead() async throws {
         _ = try await performingForEndpoint { endpoint in
             LemmyMarkAllNotificationsReadRequest(endpoint: endpoint)

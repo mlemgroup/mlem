@@ -71,6 +71,22 @@ extension ApiRepository {
             try await connection.getMessageNotifications()
         }
     }
+    
+    func markNotificationAsRead(
+        type: InboxNotificationContentType,
+        id: Int,
+        contentId: Int,
+        read: Bool
+    ) async throws {
+        try await performingForConnection { connection in
+            try await connection.markNotificationAsRead(
+                type: type,
+                id: id,
+                contentId: contentId,
+                read: read
+            )
+        }
+    }
 
     func markAllAsRead() async throws {
         try await performingForConnection { connection in
