@@ -49,7 +49,13 @@ struct BasicAction: Action {
                     children: {
                         BasicAction(
                             id: "",
-                            appearance: .init(label: "Yes", isOn: false, color: .themedWarning, icon: ""),
+                            appearance: .init(
+                                label: "Yes",
+                                isOn: false,
+                                isDestructive: true,
+                                color: .themedWarning,
+                                icon: ""
+                            ),
                             callback: callback
                         )
                     }
