@@ -11,10 +11,12 @@ import Theming
 import ComponentViews
 import Nuke
 import Media
+import Haptics
 
 struct ExportablePostEditorView: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(AppState.self) var appState
+    @Environment(HapticManager.self) var hapticManager
     
     let post: any Post1Providing
     @State var showCommunity: Bool = true
@@ -86,6 +88,7 @@ struct ExportablePostEditorView: View {
                 Task {
                     do {
                         try await ImageSaver().writeImageToPhotoAlbum(imageData: imageData)
+                        ToastModel.main.add(.success("Image Saved"))
                     } catch {
                         handleError(error)
                     }
