@@ -84,14 +84,13 @@ struct PersonBanEditorView: View {
             NavigationStack {
                 Form {
                     scopeSection
-                    reasonSection
-                    Section {
-                        Toggle("Permanent", isOn: $isPermanent)
-                            .tint(.themedWarning)
+                    if appState.firstApi.supports(.unbanWithReason, defaultValue: true) || shouldBan {
+                        reasonSection
                     }
-                    .listSectionSpacing(60)
-                    durationSection
-                    removeContentSection
+                    if shouldBan {
+                        durationSection
+                        removeContentSection
+                    }
                 }
                 .navigationTitle(shouldBan ? "Ban \(person.name)" : "Unban \(person.name)")
                 .navigationBarTitleDisplayMode(.inline)
@@ -176,6 +175,11 @@ struct PersonBanEditorView: View {
     
     @ViewBuilder
     var durationSection: some View {
+        Section {
+            Toggle("Permanent", isOn: $isPermanent)
+                .tint(.themedWarning)
+        }
+        .listSectionSpacing(60)
         Section("Ban Duration") {
             HStack {
                 Text("Days:")
