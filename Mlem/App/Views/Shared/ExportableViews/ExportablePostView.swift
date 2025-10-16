@@ -30,8 +30,9 @@ struct ExportablePostView: View {
     
     var body: some View {
         content
-            .background(.themedBackground)
+            .background(.themedSecondaryBackground)
             .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
+            .paletteBorder(cornerRadius: Constants.main.standardSpacing)
             .padding(Constants.main.standardSpacing)
             .background(.themedGroupedBackground)
             .animation(.snappy, value: animationHashValue)
