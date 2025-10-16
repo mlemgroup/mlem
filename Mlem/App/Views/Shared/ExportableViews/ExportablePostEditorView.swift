@@ -54,7 +54,7 @@ struct ExportablePostEditorView: View {
         .task(id: snapshotRenderHashValue) {
             snapshot = createImageFromView(exportablePost)
         }
-        .background(.themedGroupedBackground)
+        .presentationBackground(.themedGroupedBackground)
         .overlay(alignment: .bottom) {
             Group {
                 if #available(iOS 26, *) {
