@@ -19,8 +19,13 @@ private struct ThemedTintViewModifier: ViewModifier {
 }
 
 public extension View {
-    func tint(_ themedColor: ThemedColor) -> some View {
-        modifier(ThemedTintViewModifier(themedColor: themedColor))
+    @ViewBuilder
+    func tint(_ themedColor: ThemedColor?) -> some View {
+        if let themedColor {
+            modifier(ThemedTintViewModifier(themedColor: themedColor))
+        } else {
+            self
+        }
     }
 }
 
