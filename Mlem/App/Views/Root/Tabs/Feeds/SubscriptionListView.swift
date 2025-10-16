@@ -63,7 +63,7 @@ struct SubscriptionListView: View {
     var content: some View {
         let sections = subscriptions?.visibleSections(sort: sort) ?? []
         
-        Form {
+        Form(tint: .themedPrimary) {
             // TODO: iOS 18 deprecation remove compatibility shim
             if #available(iOS 26, *) {
                 feeds

@@ -15,6 +15,13 @@ struct Form<Content: View>: View {
     
     @ViewBuilder let content: () -> Content
     
+    let tint: ThemedColor
+    
+    init(tint: ThemedColor = .themedAccent, @ViewBuilder content: @escaping () -> Content) {
+        self.tint = tint
+        self.content = content
+    }
+    
     var body: some View {
         SwiftUI.Form {
             content()
@@ -22,6 +29,7 @@ struct Form<Content: View>: View {
                 .listRowBackground(palette.groupedBackground.secondary)
                 .buttonStyle(PaletteButton())
         }
+        .tint(tint)
         .listStyle(.insetGrouped)
         .scrollContentBackground(.hidden)
         .background(.themedGroupedBackground)
