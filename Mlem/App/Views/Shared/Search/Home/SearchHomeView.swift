@@ -55,6 +55,7 @@ struct SearchHomeView: View {
         .padding(10)
         .padding(.trailing, 5)
         .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: 25))
+        .paletteBorder(cornerRadius: 25)
     }
     
     @ViewBuilder
