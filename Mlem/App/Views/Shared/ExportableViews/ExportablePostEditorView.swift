@@ -51,7 +51,7 @@ struct ExportablePostEditorView: View {
             exportablePost
                 .padding(.bottom, 200)
         }
-        .onChange(of: snapshotRenderHashValue, initial: true) {
+        .task(id: snapshotRenderHashValue) {
             snapshot = createImageFromView(exportablePost)
         }
         .background(.themedGroupedBackground)
@@ -74,12 +74,12 @@ struct ExportablePostEditorView: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Menu("Details", systemImage: "slider.horizontal.3") {
-                    Toggle("Community", isOn: $showCommunity)
-                    Toggle("Creator", isOn: $showCreator)
-                    Toggle("Stats", isOn: $showStats)
+                    Toggle("Community", icon: .lemmy.community, isOn: $showCommunity)
+                    Toggle("Creator", icon: .lemmy.person, isOn: $showCreator)
+                    Toggle("Stats", icon: .lemmy.votes, isOn: $showStats)
                     
                     if palette.supportedModes == .unspecified {
-                        Menu("Color Scheme") {
+                        Menu("Color Scheme", icon: overrideColorScheme.icon) {
                             Picker("Color Scheme", selection: $overrideColorScheme) {
                                 ForEach(UIUserInterfaceStyle.optionCases, id: \.self) { style in
                                     Label(style.label, icon: style.icon)
