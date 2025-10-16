@@ -21,6 +21,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     var a11y_showSettingsIcons: Bool
     var a11y_websiteThumbnailIcon: Bool
     var a11y_zoomSliderLocation: ZoomSliderLocation
+    var a11y_showInteractionBarButtonBackground: Bool
     var accounts_defaultId: Int?
     var accounts_grouped: Bool
     var accounts_sort: AccountSortMode
@@ -120,6 +121,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.a11y_showSettingsIcons = try container.decodeIfPresent(Bool.self, forKey: ._a11y_showSettingsIcons) ?? true
         self.a11y_websiteThumbnailIcon = try container.decodeIfPresent(Bool.self, forKey: ._a11y_websiteThumbnailIcon) ?? false
         self.a11y_zoomSliderLocation = try container.decodeIfPresent(ZoomSliderLocation.self, forKey: ._a11y_zoomSliderLocation) ?? .none
+        self.a11y_showInteractionBarButtonBackground = try container.decodeIfPresent(Bool.self, forKey: ._a11y_showInteractionBarButtonBackground) ?? false
         self.accounts_defaultId = try container.decodeIfPresent(Int?.self, forKey: ._accounts_defaultId) ?? nil
         self.accounts_grouped = try container.decodeIfPresent(Bool.self, forKey: ._accounts_grouped) ?? false
         self.accounts_sort = try container.decodeIfPresent(AccountSortMode.self, forKey: ._accounts_sort) ?? .name
@@ -342,6 +344,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         case _a11y_showSettingsIcons = "a11y_showSettingsIcons"
         case _a11y_websiteThumbnailIcon = "a11y_websiteThumbnailIcon"
         case _a11y_zoomSliderLocation = "a11y_zoomSliderLocation"
+        case _a11y_showInteractionBarButtonBackground = "a11y_showInteractionBarButtonBackground"
         case _accounts_defaultId = "accounts_defaultId"
         case _accounts_grouped = "accounts_grouped"
         case _accounts_sort = "accounts_sort"
@@ -440,6 +443,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.a11y_showSettingsIcons = settings.showSettingsIcons
         self.a11y_websiteThumbnailIcon = settings.websiteThumbnailIcon
         self.a11y_zoomSliderLocation = settings.zoomSliderLocation
+        self.a11y_showInteractionBarButtonBackground = false
         self.accounts_defaultId = nil // In 2.0, the last used account is now activated when the app is opened
         self.accounts_grouped = settings.groupAccountSort
         self.accounts_sort = settings.accountSort
