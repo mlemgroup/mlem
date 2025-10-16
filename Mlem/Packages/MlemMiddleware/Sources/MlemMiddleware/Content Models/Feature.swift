@@ -38,6 +38,7 @@ public enum Feature: Hashable {
     case removeCommunity
     case banFromInstance
     case banFromCommunity
+    case unbanWithReason
     
     /// Add/remove moderators from a community
     case editModeratorList

@@ -117,6 +117,7 @@ public class RestClient {
     func createBodyData(for defintion: any RequestWithBody) throws(RestError) -> Data {
         do {
             let encoder = JSONEncoder()
+            encoder.dateEncodingStrategy = .iso8601WithMilliseconds
             let body = defintion.body ?? ""
             return try encoder.encode(body)
         } catch {
