@@ -54,6 +54,7 @@ struct SubscriptionListView: View {
                 content
             }
         }
+        .tint(.themedPrimary)
         .listStyle(.sidebar)
         .navigationTitle("Feeds")
     }

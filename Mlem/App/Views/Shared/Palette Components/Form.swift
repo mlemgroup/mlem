@@ -22,7 +22,6 @@ struct Form<Content: View>: View {
                 .listRowBackground(palette.groupedBackground.secondary)
                 .buttonStyle(PaletteButton())
         }
-        .tint(.themedAccent)
         .listStyle(.insetGrouped)
         .scrollContentBackground(.hidden)
         .background(.themedGroupedBackground)
