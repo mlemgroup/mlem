@@ -34,6 +34,7 @@ struct InteractionBarActionLabelView: View {
                 if showOutline {
                     RoundedRectangle(cornerRadius: Constants.main.barIconCornerRadius)
                         .fill(.themedTertiaryGroupedBackground)
+                        .paletteBorder(cornerRadius: Constants.main.barIconCornerRadius)
                 }
             }
             .frame(width: Constants.main.barIconHitbox, height: Constants.main.barIconHitbox)
