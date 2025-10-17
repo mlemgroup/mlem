@@ -10,35 +10,45 @@ import MlemMiddleware
 import SwiftUI
 
 struct ReportAction: ConfigurableAction {
-    static let configurationKey = "report"
-    
+    let entity: any ReportableProviding
+}
+
+// MARK: - Configurability
+
+extension ActionSeed {
+    static let report = ActionSeed("report") { entity in
+        switch entity {
+        case let entity as any ReportableProviding: ReportAction(entity: entity)
+        default: nil
+        }
+    }
+}
+
+// MARK: - Appearance
+
+extension ReportAction {
     static let label: ActionLabel = .init(
         "Report",
         icon: .lemmy.report,
         isDestructive: true
     )
     
-    let entity: any ReportableProviding
-    
     func createLabel(environment: EnvironmentValues) -> ActionLabel {
-        var label = Self.label
-        
-        guard let myPersonId = entity.api.myPerson?.id else {
-            return label
-        }
-        
-        if entity.isOwnContent(myPersonId: myPersonId) {
-            label.visibility = .hidden
-        }
-        
-        return label
+        Self.label.withVisibility(visibility)
     }
     
-    func execute(environment: EnvironmentValues) {
-        environment.navigation?.openSheet(.report(entity, community: environment.communityContext))
+    private var visibility: ActionVisiblity {
+        guard let myPersonId = entity.api.myPerson?.id else { return .hidden }
+        if entity.isOwnContent(myPersonId: myPersonId) { return .hidden }
+        return .enabled
     }
 }
 
-extension ReportAction: MessageConfigurableAction {
-    init(_ message: any Message1Providing) { self.entity = message }
+// MARK: - Behavior
+
+extension ReportAction {
+    @MainActor
+    func execute(environment: EnvironmentValues) {
+        environment.navigation?.openSheet(.report(entity, community: environment.communityContext))
+    }
 }

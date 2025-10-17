@@ -7,7 +7,6 @@
 
 import Foundation
 
-public protocol ReportableProviding: ContentIdentifiable {
-    func isOwnContent(myPersonId: Int) -> Bool
+public protocol ReportableProviding: OwnershipProviding {
     func report(reason: String) async throws
 }

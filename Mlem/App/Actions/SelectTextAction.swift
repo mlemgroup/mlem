@@ -9,8 +9,7 @@ import Actions
 import MlemMiddleware
 import SwiftUI
 
-struct SelectTextAction: ConfigurableAction {
-    static let configurationKey = "selectText"
+struct SelectTextAction: Actions.ConfigurableAction {
     static let label: ActionLabel = .init("Select Text", icon: .general.select)
     
     let text: String
@@ -20,6 +19,13 @@ struct SelectTextAction: ConfigurableAction {
     }
 }
 
-extension SelectTextAction: MessageConfigurableAction {
-    init(_ message: any Message1Providing) { self.text = message.content }
+extension ActionSeed {
+    static let selectText = ActionSeed("selectText") { entity in
+        switch entity {
+        case let entity as any Message1Providing:
+            SelectTextAction(text: entity.content)
+        default:
+            nil
+        }
+    }
 }
