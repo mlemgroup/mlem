@@ -76,6 +76,7 @@ struct ContentView: View {
                 .environment(errorsTracker)
                 .environment(expandedPostHistoryTracker)
                 .environment(backendClient)
+                .environment(ToastModel.main)
                 .quickSwipesDisabled(!quickSwipesEnabled)
                 .quickSwipeThresholds(primary: 60, secondary: 150, tertiary: 240)
                 .quickSwipeMinimumDrag(20)

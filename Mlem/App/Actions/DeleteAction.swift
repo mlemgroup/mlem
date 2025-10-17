@@ -42,7 +42,10 @@ extension DeleteAction {
     
     private var visibility: ActionVisiblity {
         guard let myPersonId = entity.api.myPerson?.id else { return .hidden }
-        return entity.isOwnContent(myPersonId: myPersonId) ? .enabled : .hidden
+        guard entity.isOwnContent(myPersonId: myPersonId) else { return .hidden }
+        guard !entity.deleted || canUndelete else { return .hidden }
+        
+        return .enabled
     }
 }
 
@@ -51,6 +54,48 @@ extension DeleteAction {
 extension DeleteAction {
     @MainActor
     func execute(environment: EnvironmentValues) {
-        entity.toggleDeleted()
+        environment.popupModel?.showPopup(message: "Really delete?", [
+            .init(title: "Yes", isDestructive: true) {
+                entity.toggleDeleted { status in
+                    let toast = createToast(didDelete: entity.deleted, requestStatus: status)
+                    environment.toastModel?.add(toast)
+                }
+            }
+        ])
+    }
+    
+    var canUndelete: Bool {
+        switch entity {
+        case is any Message1Providing:
+            entity.api.supports(.undeletePrivateMessages, defaultValue: true)
+        default:
+            true
+        }
+    }
+    
+    private func createToast(didDelete: Bool, requestStatus: UpdateStatus) -> ToastType {
+        switch (didDelete, requestStatus) {
+        case (true, .success): createConfirmationToast()
+        case (true, .failure): .failure("Failed to delete!")
+        case (false, .success): .success("Restored")
+        case (false, .failure): .success("Failed to restore!")
+        }
+    }
+    
+    private func createConfirmationToast() -> ToastType {
+        if canUndelete {
+            .undoable(
+                "Deleted",
+                icon: .general.delete,
+                callback: { entity.updateDeleted(false, callback: nil) },
+                color: .themedNegative
+            )
+        } else {
+            .basic(
+                "Deleted",
+                icon: .general.delete,
+                color: .themedNegative
+            )
+        }
     }
 }

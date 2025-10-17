@@ -22,6 +22,8 @@ extension EnvironmentValues {
     @Entry var exposeRemovedContent: Bool = false
     
     var appState: AppState? { self[AppState.self] }
+    var popupModel: PopupAnchorModel? { self[PopupAnchorModel.self] }
+    var toastModel: ToastModel? { self[ToastModel.self] }
     var navigation: NavigationLayer? { self[NavigationLayer.self] }
     var commentTreeTracker: CommentTreeTracker? { self[CommentTreeTracker.self] }
 }

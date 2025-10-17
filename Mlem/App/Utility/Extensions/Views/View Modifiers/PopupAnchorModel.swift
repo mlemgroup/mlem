@@ -18,10 +18,28 @@ class PopupAnchorModel {
         let title: String
         let isDestructive: Bool
         let callback: @MainActor () -> Void
+        
+        init(title: LocalizedStringResource, isDestructive: Bool, callback: @escaping () -> Void) {
+            self.title = .init(localized: title)
+            self.isDestructive = isDestructive
+            self.callback = callback
+        }
+        
+        @_disfavoredOverload
+        init(title: String, isDestructive: Bool, callback: @escaping () -> Void) {
+            self.title = title
+            self.isDestructive = isDestructive
+            self.callback = callback
+        }
     }
     
     private(set) var data: PopupData?
     
+    func showPopup(message: LocalizedStringResource, _ actions: [Action]?) {
+        showPopup(message: .init(localized: message), actions)
+    }
+    
+    @_disfavoredOverload
     func showPopup(message: String, _ actions: [Action]?) {
         let newData = PopupData(message: message, actions: actions)
         if data == nil {
