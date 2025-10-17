@@ -3436,6 +3436,9 @@
         }
       }
     },
+    "Failed to delete!" : {
+
+    },
     "Failed to import settings" : {
       "localizations" : {
         "fr" : {
@@ -3495,6 +3498,9 @@
           }
         }
       }
+    },
+    "Failed to restore!" : {
+
     },
     "Failed to save media" : {
       "localizations" : {
@@ -7023,6 +7029,9 @@
           }
         }
       }
+    },
+    "Restored" : {
+
     },
     "Restored Settings" : {
       "localizations" : {
