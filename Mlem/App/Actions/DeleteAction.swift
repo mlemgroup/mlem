@@ -34,13 +34,15 @@ extension DeleteAction {
 
     func createLabel(environment: EnvironmentValues) -> ActionLabel {
         if entity.deleted {
-            Self.restoreLabel.withVisibility(visibility)
+            Self.restoreLabel.withVisibility(visibility(environment))
         } else {
-            Self.deleteLabel.withVisibility(visibility)
+            Self.deleteLabel.withVisibility(visibility(environment))
         }
     }
     
-    private var visibility: ActionVisiblity {
+    private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {
+        guard entity.api.canInteract(appState: environment.appState) else { return .hidden }
+        
         guard let myPersonId = entity.api.myPerson?.id else { return .hidden }
         guard entity.isOwnContent(myPersonId: myPersonId) else { return .hidden }
         guard !entity.deleted || canUndelete else { return .hidden }

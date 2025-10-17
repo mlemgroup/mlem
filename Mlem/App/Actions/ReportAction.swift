@@ -34,12 +34,15 @@ extension ReportAction {
     )
     
     func createLabel(environment: EnvironmentValues) -> ActionLabel {
-        Self.label.withVisibility(visibility)
+        Self.label.withVisibility(visibility(environment))
     }
     
-    private var visibility: ActionVisiblity {
+    private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {
+        guard entity.api.canInteract(appState: environment.appState) else { return .hidden }
+        
         guard let myPersonId = entity.api.myPerson?.id else { return .hidden }
         if entity.isOwnContent(myPersonId: myPersonId) { return .hidden }
+        
         return .enabled
     }
 }

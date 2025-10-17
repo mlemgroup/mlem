@@ -40,10 +40,12 @@ extension EditAction {
     static let label: ActionLabel = .init("Edit", icon: .general.edit)
     
     func createLabel(environment: EnvironmentValues) -> ActionLabel {
-        Self.label.withVisibility(visibility)
+        Self.label.withVisibility(visibility(environment))
     }
     
-    private var visibility: ActionVisiblity {
+    private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {
+        guard content.value.api.canInteract(appState: environment.appState) else { return .hidden }
+        
         guard let myPersonId = content.value.api.myPerson?.id else { return .hidden }
         return content.value.isOwnContent(myPersonId: myPersonId) ? .enabled : .hidden
     }
