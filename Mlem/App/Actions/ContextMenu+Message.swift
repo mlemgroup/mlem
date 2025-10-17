@@ -11,7 +11,8 @@ import SwiftUI
 
 private let seeds: [ActionSeed] = [
     .selectText,
-    .report
+    .report,
+    .edit
 ]
 
 extension View {

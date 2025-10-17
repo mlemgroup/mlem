@@ -15,7 +15,6 @@ struct MessageBubbleView: View {
     @Environment(\.palette) var palette
     
     let message: any Message
-    var editCallback: @MainActor () -> Void
     
     var body: some View {
         Group {
