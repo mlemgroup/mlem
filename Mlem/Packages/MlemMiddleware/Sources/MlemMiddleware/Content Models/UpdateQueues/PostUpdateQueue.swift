@@ -48,6 +48,12 @@ public actor PostUpdateQueue {
         addItem(.modifiesSnapshot(item))
     }
     
+    /// Attempts to update the post with the given snapshot. If any tasks are queued, no action will be taken.
+    func attemptDirectUpdate(with snapshot: any PostSnapshotProviding) async {
+        guard queue.numItems == 0, let parent else { return }
+        await updateParent(parent, with: snapshot)
+    }
+    
     /// Queues the given upgrade operation for execution
     /// - Returns: post returned by the upgrade operation
     /// - Warning: this method assumes that the given operation will update this queue's parent (this generally happens in the parent's initializer)
