@@ -31,6 +31,7 @@ struct MenuButton: View {
                     }
                 }
             )
+            .tint(action.appearance.isDestructive ? .themedNegative : nil)
             .disabled(action.disabled)
         } else if let action = action as? ActionGroup {
             switch action.displayMode {

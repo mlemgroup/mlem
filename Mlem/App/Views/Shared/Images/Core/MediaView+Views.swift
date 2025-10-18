@@ -7,6 +7,7 @@
 
 import Media
 import SwiftUI
+import Theming
 
 extension MediaView {
     @ViewBuilder
@@ -27,6 +28,7 @@ extension MediaView {
     var fallbackImage: some View {
         if loader.loading == .loading {
             ProgressView()
+                .tint(.themedSecondary)
         } else if !showErrorOverlay {
             switch fallback.fallbackStyle {
             case .standard:
