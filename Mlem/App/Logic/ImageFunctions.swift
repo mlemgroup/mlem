@@ -34,6 +34,19 @@ func saveMedia(url: URL) async {
     }
 }
 
+@MainActor
+func createImageFromView(_ view: some View, dimensions: CGSize? = nil) -> UIImage? {
+    let renderer = ImageRenderer(content: view)
+    renderer.scale = 3 // boost resolution to look better on larger devices
+    if let dimensions {
+        renderer.proposedSize = .init(dimensions)
+    } else {
+        // assume screen width
+        renderer.proposedSize.width = UIScreen.main.bounds.width
+    }
+    return renderer.uiImage
+}
+
 func shareImage(url: URL, navigation: NavigationLayer) async {
     if let fileUrl = await downloadImageToFileSystem(url: url) {
         navigation.model?.shareInfo = .init(url: fileUrl)
@@ -70,12 +83,7 @@ func downloadImageToFileSystem(url: URL) async -> URL? {
             return nil
         }
         
-        let fileUrl = FileManager.default.temporaryDirectory.appending(path: fileName)
-        if FileManager.default.fileExists(atPath: fileUrl.absoluteString) {
-            try FileManager.default.removeItem(at: fileUrl)
-        }
-        try data.write(to: fileUrl)
-        return fileUrl
+        return try data.writeToTempFile(fileName: fileName)
     } catch {
         handleError(error)
         return nil

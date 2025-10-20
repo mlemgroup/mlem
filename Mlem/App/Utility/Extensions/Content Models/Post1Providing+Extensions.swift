@@ -131,6 +131,11 @@ extension Post1Providing {
         self2?.updateRead(true)
     }
     
+    @MainActor
+    func createImage(navigation: NavigationLayer) {
+        navigation.openSheet(.createPostImage(self))
+    }
+    
     @ActionBuilder
     func allMenuActions(
         appState: AppState,
@@ -143,6 +148,7 @@ extension Post1Providing {
     ) -> [any Action] {
         basicMenuActions(
             appState: appState,
+            expanded: expanded,
             feedback: feedback,
             navigation: navigation,
             commentTreeTracker: commentTreeTracker
@@ -166,6 +172,7 @@ extension Post1Providing {
     @ActionBuilder
     func basicMenuActions(
         appState: AppState,
+        expanded: Bool,
         feedback: Set<FeedbackType> = [.haptic, .toast],
         navigation: NavigationLayer?,
         commentTreeTracker: CommentTreeTracker? = nil
@@ -179,6 +186,10 @@ extension Post1Providing {
                 selectTextAction()
             }
             shareAction(navigation: navigation)
+            
+            if expanded, let navigation {
+                createImageAction(navigation: navigation)
+            }
             
             if isOwnPost {
                 editAction(appState: appState)
@@ -350,6 +361,16 @@ extension Post1Providing {
     }
     
     // MARK: Actions
+    
+    func createImageAction(navigation: NavigationLayer) -> BasicAction {
+        .init(
+            id: "exportAsImage\(uid)",
+            appearance: .createImage(),
+            callback: {
+                navigation.openSheet(.createPostImage(self))
+            }
+        )
+    }
     
     func crossPostAction() -> BasicAction {
         .init(
