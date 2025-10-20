@@ -9,8 +9,8 @@ import MlemMiddleware
 import SafariServices
 import SwiftUI
 
-/// Modifier that overrides the `openURL` environment variable and attempts to open Lemmy links in-app.
-struct HandleLemmyLinksModifier: ViewModifier {
+/// Modifier that overrides the `openURL` environment variable and attempts to open threadiverse links in-app.
+struct HandleThreadiverseLinksModifier: ViewModifier {
     @Environment(NavigationLayer.self) var navigation
     @Environment(AppState.self) var appState
     
