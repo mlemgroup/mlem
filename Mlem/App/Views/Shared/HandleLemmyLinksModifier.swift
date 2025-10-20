@@ -65,7 +65,8 @@ struct HandleLemmyLinksModifier: ViewModifier {
             // Later, it might be better to move that into LemmyMarkdownUI, but I think we'd need to modify the core
             // cmark code rather than just the extensions, which isn't ideal.
             
-            if let newUrl = createLemmyUrlFromShortcut(parts: url.pathComponents), interpretLemmyUrlPath(url: newUrl) {
+            if let newUrl = createLemmyUrlFromShortcut(parts: url.pathComponents), let page = createNavigationPage(url: newUrl) {
+                navigation.push(page)
                 return .handled
             }
             
@@ -91,11 +92,15 @@ struct HandleLemmyLinksModifier: ViewModifier {
             components.scheme = "https"
             components.host = url.pathComponents[1]
             components.path = "/" + url.pathComponents.dropFirst(2).joined(separator: "/")
-            if let newUrl = components.url, interpretLemmyUrlPath(url: newUrl) { return .handled }
+            if let newUrl = components.url, let page = createNavigationPage(url: newUrl) {
+                navigation.push(page)
+                return .handled
+            }
         }
         
         // If the link is in our Lemmy domain list, push a page to the NavigationStack straight away
-        if isLemmyHost(host), interpretLemmyUrlPath(url: url) {
+        if isLemmyHost(host), let page = createNavigationPage(url: url) {
+            navigation.push(page)
             return .handled
         }
         
@@ -143,47 +148,40 @@ struct HandleLemmyLinksModifier: ViewModifier {
         return components.url
     }
     
-    func interpretLemmyUrlPath(url: URL) -> Bool {
+    func createNavigationPage(url: URL) -> NavigationPage? {
         let components = Array(url.pathComponents.dropFirst())
         if components.isEmpty, let host = url.host() {
-            navigation.push(.instance(InstanceStub(api: appState.firstApi, actorId: .instance(host: host))))
-            return true
+            return .instance(InstanceStub(api: appState.firstApi, actorId: .instance(host: host)))
         }
         switch components.first {
         case "u":
-            navigation.push(.person(PersonStub(api: appState.firstApi, url: url)))
-            return true
+            return .person(PersonStub(api: appState.firstApi, url: url))
         case "c":
             // Handle links that look like this:
             // https://piefed.social/c/politics/p/1385905/will-the-supreme-court-hand-government-contractors-blanket-immunity
             if components.count > 4, components[2] == "p" {
                 let newUrl = url.removingPathComponents().appendingPathComponent("post/\(components[3])")
-                print(newUrl)
-                navigation.push(.post(PostStub(api: appState.firstApi, url: newUrl)))
-                return true
+                return .post(PostStub(api: appState.firstApi, url: newUrl))
+            } else {
+                return .community(CommunityStub(api: appState.firstApi, url: url))
             }
-            navigation.push(.community(CommunityStub(api: appState.firstApi, url: url)))
-            return true
         case "post":
             if let fragment = url.fragment()?.trimmingPrefix("comment_") {
                 let newUrl = url.removingPathComponents().appendingPathComponent("comment/\(fragment)")
-                navigation.push(.comment(CommentStub(api: appState.firstApi, url: newUrl)))
-                return true
+                return .comment(CommentStub(api: appState.firstApi, url: newUrl))
             } else if components.count == 2 {
-                navigation.push(.post(PostStub(api: appState.firstApi, url: url)))
-                return true
+                return .post(PostStub(api: appState.firstApi, url: url))
             } else if components.count == 3 {
                 let newUrl = url.removingPathComponents().appendingPathComponent("comment/\(url.lastPathComponent)")
-                navigation.push(.comment(CommentStub(api: appState.firstApi, url: newUrl)))
-                return true
+                return .comment(CommentStub(api: appState.firstApi, url: newUrl))
+            } else {
+                return nil
             }
         case "comment":
-            navigation.push(.comment(CommentStub(api: appState.firstApi, url: url)))
-            return true
+            return .comment(CommentStub(api: appState.firstApi, url: url))
         default:
-            break
+            return nil
         }
-        return false
     }
     
     func parseEmail(url: URL) -> Bool {
