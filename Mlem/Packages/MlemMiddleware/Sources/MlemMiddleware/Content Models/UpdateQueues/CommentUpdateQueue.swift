@@ -45,6 +45,16 @@ public actor CommentUpdateQueue {
         addItem(.modifiesSnapshot(item))
     }
     
+    /// Attempts to update the comment with the given snapshot. If any tasks are queued, no action will be taken.
+    func attemptDirectUpdate(with snapshot: any CommentSnapshotProviding) async {
+        print("DEBGU DIRECT UPDATE")
+        guard queue.numItems == 0, let parent else {
+            print("DEBGU ignoring (queue: \(queue.numItems), parent: \(parent != nil))")
+            return
+        }
+        await updateParent(parent, with: snapshot)
+    }
+    
     /// Queues the given upgrade operation for execution
     /// - Returns: comment returned by the upgrade operation
     /// - Warning: this method assumes that the given operation will update this queue's parent (this generally happens in the parent's initializer)

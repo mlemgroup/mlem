@@ -7,6 +7,7 @@
 
 public extension Comment1Providing {
     func snapshotUpdate(with snapshot: any CommentSnapshotProviding) async {
+        print("DEBGU comment1 snapshot update")
         if let comment2Snapshot = snapshot as? Comment2Snapshot {
             await snapshot1Update(with: comment2Snapshot.comment)
         } else if let comment1Snapshot = snapshot as? Comment1Snapshot {

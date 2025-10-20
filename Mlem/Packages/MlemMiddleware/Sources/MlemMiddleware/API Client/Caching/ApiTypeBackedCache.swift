@@ -18,6 +18,7 @@ class ApiTypeBackedCache<Content: CacheIdentifiable & AnyObject & ContentModel, 
     ) -> Content {
         if let item = retrieveModel(cacheId: apiType.cacheId) {
             if !isStale {
+                print("DEBGU not stale, updating")
                 updateModel(item, with: apiType, semaphore: semaphore)
             }
             return item
