@@ -98,16 +98,16 @@ struct HandleThreadiverseLinksModifier: ViewModifier {
             }
         }
         
-        // If the link is in our Lemmy domain list, push a page to the NavigationStack straight away
-        if isLemmyHost(host), let page = createNavigationPage(url: url) {
+        // If the link is in our threadiverse domain list, push a page to the NavigationStack straight away
+        if isThreadiverseHost(host), let page = createNavigationPage(url: url) {
             navigation.push(page)
             return .handled
         }
         
         let components = url.pathComponents.dropFirst()
         
-        // Super-small instances may not appear in the Lemmy domain list, in which case we show a
-        // "Loading..." toast whilst we attempt to work out if it's actually a Lemmy link
+        // Super-small instances may not appear in the threadiverse domain list, in which case we show a
+        // "Loading..." toast whilst we attempt to work out if it's actually a threadiverse link
         if ["u", "c", "post", "comment"].contains(components.first) {
             // The "@" check ensures that KBin links are excluded
             if !host.contains("reddit.com"), components.count == 2, components[1].first != "@" {
@@ -194,7 +194,7 @@ struct HandleThreadiverseLinksModifier: ViewModifier {
         if Self.emailDomains.contains(host) {
             pendingMailtoURL = url
             showingEmailAlert = true
-        } else if isLemmyHost(host) {
+        } else if isThreadiverseHost(host) {
             // If it's a Lemmy host, try to resolve as a Lemmy user
             Task {
                 await showToastAndResolve(url: URL(string: "https://\(host)/u/\(user)")!) { _ in
@@ -233,7 +233,7 @@ struct HandleThreadiverseLinksModifier: ViewModifier {
         ToastModel.main.removeToast(id: toastId)
     }
     
-    func isLemmyHost(_ host: String) -> Bool {
+    func isThreadiverseHost(_ host: String) -> Bool {
         MlemStats.main.hosts.contains(host)
     }
 }
