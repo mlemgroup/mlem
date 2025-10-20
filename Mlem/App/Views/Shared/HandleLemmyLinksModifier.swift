@@ -144,7 +144,7 @@ struct HandleLemmyLinksModifier: ViewModifier {
     }
     
     func interpretLemmyUrlPath(url: URL) -> Bool {
-        let components = url.pathComponents.dropFirst()
+        let components = Array(url.pathComponents.dropFirst())
         if components.isEmpty, let host = url.host() {
             navigation.push(.instance(InstanceStub(api: appState.firstApi, actorId: .instance(host: host))))
             return true
@@ -154,6 +154,14 @@ struct HandleLemmyLinksModifier: ViewModifier {
             navigation.push(.person(PersonStub(api: appState.firstApi, url: url)))
             return true
         case "c":
+            // Handle links that look like this:
+            // https://piefed.social/c/politics/p/1385905/will-the-supreme-court-hand-government-contractors-blanket-immunity
+            if components.count > 4, components[2] == "p" {
+                let newUrl = url.removingPathComponents().appendingPathComponent("post/\(components[3])")
+                print(newUrl)
+                navigation.push(.post(PostStub(api: appState.firstApi, url: newUrl)))
+                return true
+            }
             navigation.push(.community(CommunityStub(api: appState.firstApi, url: url)))
             return true
         case "post":
