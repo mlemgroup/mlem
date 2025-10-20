@@ -9,16 +9,22 @@ import AVFAudio
 import CoreHaptics
 import Foundation
 import SwiftUI
+import os
 
 @Observable
 public class HapticManager {
+    private static let logger = Logger(
+        subsystem: Bundle.module.bundleIdentifier ?? "unknown",
+        category: String(describing: HapticManager.self)
+    )
+    
     static let mainInternal: HapticManager = .init()
     
     @available(*, deprecated, message: "Access the HapticManager from the environment instead.")
     public static var main: HapticManager { mainInternal }
     
     // Config
-    var errorHandler: (HapticError) -> Void = { print("Haptic error:", $0) }
+    var errorHandler: (HapticError) -> Void = { HapticManager.logger.error("Haptic error: \($0.description)") }
     var maximumHapticTier: HapticTier?
     
     // generators/engines
@@ -30,7 +36,6 @@ public class HapticManager {
     
     private init() {
         // create and start the engine if this device supports haptics
-        print("Initialized haptic engine")
         self.hapticEngine = initEngine()
         
         // load all the haptic files into players to avoid lag on first play caused by slow disk read
@@ -38,14 +43,16 @@ public class HapticManager {
         
         // if the engine stops, tell us why
         hapticEngine?.stoppedHandler = { reason in
-            print("The engine stopped: \(reason)")
+            Self.logger.warning("The engine stopped: \(String(describing: reason))")
         }
         
         // if the engine fails, attempt to restart
         hapticEngine?.resetHandler = { [weak self] in
-            print("The engine reset")
+            Self.logger.warning("The engine reset")
             self?.handleFailure()
         }
+        
+        Self.logger.info("Initialized haptic engine")
     }
     
     func startEngine() {
@@ -65,7 +72,7 @@ public class HapticManager {
     public func play(haptic: Haptic, tier: HapticTier) {
         Task(priority: .userInitiated) {
             if hapticEngine == nil {
-                print("\(haptic.rawValue) not played (no engine)")
+                Self.logger.warning("\(haptic.rawValue) not played (no engine)")
                 return
             }
             
@@ -78,7 +85,7 @@ public class HapticManager {
                     handleFailure(with: haptic, error: error as? HapticError)
                 }
             } else {
-                print("\(haptic.rawValue) not played (priority \(tier.intValue) > \(maximumHapticTier?.intValue ?? 0))")
+                Self.logger.debug("\(haptic.rawValue) not played (priority \(tier.intValue) > \(self.maximumHapticTier?.intValue ?? 0))")
             }
         }
     }
