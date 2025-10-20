@@ -70,7 +70,7 @@ struct HandleLemmyLinksModifier: ViewModifier {
                 return .handled
             }
             
-            openRegularLink(url: url)
+            openLinkAsWebsite(url: url)
             return .handled
         }
         
@@ -83,7 +83,7 @@ struct HandleLemmyLinksModifier: ViewModifier {
         }
         
         guard let host = url.host(), scheme.starts(with: "http") else {
-            openRegularLink(url: url)
+            openLinkAsWebsite(url: url)
             return .handled
         }
         
@@ -113,7 +113,7 @@ struct HandleLemmyLinksModifier: ViewModifier {
             if !host.contains("reddit.com"), components.count == 2, components[1].first != "@" {
                 Task {
                     await showToastAndResolve(url: url) { url in
-                        openRegularLink(url: url)
+                        openLinkAsWebsite(url: url)
                     }
                 }
                 return .handled
@@ -121,7 +121,7 @@ struct HandleLemmyLinksModifier: ViewModifier {
         }
         
         // If all else fails, fallback to opening in browser
-        openRegularLink(url: url)
+        openLinkAsWebsite(url: url)
         return .handled
     }
     
@@ -238,7 +238,7 @@ struct HandleLemmyLinksModifier: ViewModifier {
     }
 }
 
-func openRegularLink(url: URL) {
+func openLinkAsWebsite(url: URL) {
     @Setting(\.links_openInBrowser) var openLinksInBrowser
     
     if let scheme = url.scheme, scheme.hasPrefix("http"), !openLinksInBrowser {
