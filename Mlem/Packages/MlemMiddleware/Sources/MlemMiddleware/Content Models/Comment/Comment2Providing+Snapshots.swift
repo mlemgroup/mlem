@@ -7,7 +7,6 @@
 
 extension Comment2Providing {
     public func snapshotUpdate(with snapshot: any CommentSnapshotProviding) async {
-        print("DEBGU comment2snapshot updatea")
         if let comment2Snapshot = snapshot as? Comment2Snapshot {
             await snapshot2Update(with: comment2Snapshot)
         } else if let comment1Snapshot = snapshot as? Comment1Snapshot {
@@ -19,7 +18,6 @@ extension Comment2Providing {
     
     @MainActor
     func snapshot2Update(with snapshot: Comment2Snapshot) {
-        print("DEBGU \(votes.myVote), \(snapshot.votes.myVote)")
         comment2.setIfChanged(\.votes, snapshot.votes)
         comment2.setIfChanged(\.creatorIsModerator, snapshot.creatorIsModerator)
         comment2.setIfChanged(\.creatorIsAdmin, snapshot.creatorIsAdmin)

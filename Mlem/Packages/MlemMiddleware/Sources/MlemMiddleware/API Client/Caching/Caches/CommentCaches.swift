@@ -54,7 +54,6 @@ class Comment2Cache: ApiTypeBackedCache<Comment2, Comment2Snapshot> {
     override func updateModel(_ item: Comment2, with snapshot: Comment2Snapshot, semaphore: UInt? = nil) {
         // TODO: UpdateQueue move updateModel responsibilities fully out of the cache
         Task {
-            print("DEBGU attempting direct comment2 update")
             await item.updateQueue.attemptDirectUpdate(with: snapshot)
         }
     }

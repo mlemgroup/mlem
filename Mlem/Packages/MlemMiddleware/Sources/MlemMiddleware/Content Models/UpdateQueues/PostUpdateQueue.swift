@@ -49,6 +49,7 @@ public actor PostUpdateQueue {
     }
     
     /// Attempts to update the post with the given snapshot. If any tasks are queued, no action will be taken.
+    /// This method should be called when new snapshots are received by actions in a foreign object's queue or by headless calls
     func attemptDirectUpdate(with snapshot: any PostSnapshotProviding) async {
         guard queue.numItems == 0, let parent else { return }
         await updateParent(parent, with: snapshot)

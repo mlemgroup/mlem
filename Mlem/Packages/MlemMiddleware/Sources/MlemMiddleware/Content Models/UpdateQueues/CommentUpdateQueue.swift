@@ -46,12 +46,9 @@ public actor CommentUpdateQueue {
     }
     
     /// Attempts to update the comment with the given snapshot. If any tasks are queued, no action will be taken.
+    /// This method should be called when new snapshots are received by actions in a foreign object's queue or by headless calls
     func attemptDirectUpdate(with snapshot: any CommentSnapshotProviding) async {
-        print("DEBGU DIRECT UPDATE")
-        guard queue.numItems == 0, let parent else {
-            print("DEBGU ignoring (queue: \(queue.numItems), parent: \(parent != nil))")
-            return
-        }
+        guard queue.numItems == 0, let parent else { return }
         await updateParent(parent, with: snapshot)
     }
     
