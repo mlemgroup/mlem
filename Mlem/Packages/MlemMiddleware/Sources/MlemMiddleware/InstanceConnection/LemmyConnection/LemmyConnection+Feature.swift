@@ -41,7 +41,7 @@ public extension LemmyConnection {
              .reportPrivateMessages, .viewVotes, .purgeContent, .removeCommunity, .banFromInstance,
              .banFromCommunity, .editModeratorList, .commentSearch, .undeletePrivateMessages, .searchLocalPeople,
              .hidePosts, .editDisplayName, .editProfile, .autoMarkPostReadOnInteract, .blockInstances,
-             .fetchLinkMetadata, .unbanWithReason:
+             .fetchLinkMetadata, .unbanWithReason, .banFromNonLocalCommunity:
             true
         case .moderatorSetNsfw:
             false
