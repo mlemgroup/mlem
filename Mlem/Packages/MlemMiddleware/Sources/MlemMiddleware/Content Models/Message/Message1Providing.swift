@@ -75,6 +75,11 @@ public extension Message1Providing {
     var recipient_: Person1? { nil }
 }
 
+// ReportableProviding conformance
+public extension Message1Providing {
+    func isOwnContent(myPersonId: Int) -> Bool { isOwnMessage }
+}
+
 public extension Message1Providing {
     private var readManager: StateManager<Bool> { message1.readManager }
     private var deletedManager: StateManager<Bool> { message1.deletedManager }

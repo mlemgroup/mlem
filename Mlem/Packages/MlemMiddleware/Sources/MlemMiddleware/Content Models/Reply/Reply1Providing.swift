@@ -53,6 +53,11 @@ public extension Reply1Providing {
     var updated: Date? { nil }
 }
 
+// ReportableProviding conformance
+public extension Reply1Providing {
+    func isOwnContent(myPersonId: Int) -> Bool { false }
+}
+
 public extension Reply1Providing {
     static var modelTypeId: ContentType { .reply }
     

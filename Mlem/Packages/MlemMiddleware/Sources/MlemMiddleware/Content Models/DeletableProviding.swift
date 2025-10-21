@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol DeletableProviding: ContentIdentifiable {
+public protocol DeletableProviding: OwnershipProviding {
     var deleted: Bool { get }
     
     func updateDeleted(_ newValue: Bool, callback: ((UpdateStatus) -> Void)?)
