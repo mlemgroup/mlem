@@ -9,8 +9,8 @@ import MlemMiddleware
 import SafariServices
 import SwiftUI
 
-/// Modifier that overrides the `openURL` environment variable and attempts to open Lemmy links in-app.
-struct HandleLemmyLinksModifier: ViewModifier {
+/// Modifier that overrides the `openURL` environment variable and attempts to open threadiverse links in-app.
+struct HandleThreadiverseLinksModifier: ViewModifier {
     @Environment(NavigationLayer.self) var navigation
     @Environment(AppState.self) var appState
     
@@ -65,11 +65,12 @@ struct HandleLemmyLinksModifier: ViewModifier {
             // Later, it might be better to move that into LemmyMarkdownUI, but I think we'd need to modify the core
             // cmark code rather than just the extensions, which isn't ideal.
             
-            if let newUrl = createLemmyUrlFromShortcut(parts: url.pathComponents), interpretLemmyUrlPath(url: newUrl) {
+            if let newUrl = createLemmyUrlFromShortcut(parts: url.pathComponents), let page = createNavigationPage(url: newUrl) {
+                navigation.push(page)
                 return .handled
             }
             
-            openRegularLink(url: url)
+            openLinkAsWebsite(url: url)
             return .handled
         }
         
@@ -82,7 +83,7 @@ struct HandleLemmyLinksModifier: ViewModifier {
         }
         
         guard let host = url.host(), scheme.starts(with: "http") else {
-            openRegularLink(url: url)
+            openLinkAsWebsite(url: url)
             return .handled
         }
         
@@ -91,24 +92,28 @@ struct HandleLemmyLinksModifier: ViewModifier {
             components.scheme = "https"
             components.host = url.pathComponents[1]
             components.path = "/" + url.pathComponents.dropFirst(2).joined(separator: "/")
-            if let newUrl = components.url, interpretLemmyUrlPath(url: newUrl) { return .handled }
+            if let newUrl = components.url, let page = createNavigationPage(url: newUrl) {
+                navigation.push(page)
+                return .handled
+            }
         }
         
-        // If the link is in our Lemmy domain list, push a page to the NavigationStack straight away
-        if isLemmyHost(host), interpretLemmyUrlPath(url: url) {
+        // If the link is in our threadiverse domain list, push a page to the NavigationStack straight away
+        if isThreadiverseHost(host), let page = createNavigationPage(url: url) {
+            navigation.push(page)
             return .handled
         }
         
         let components = url.pathComponents.dropFirst()
         
-        // Super-small instances may not appear in the Lemmy domain list, in which case we show a
-        // "Loading..." toast whilst we attempt to work out if it's actually a Lemmy link
+        // Super-small instances may not appear in the threadiverse domain list, in which case we show a
+        // "Loading..." toast whilst we attempt to work out if it's actually a threadiverse link
         if ["u", "c", "post", "comment"].contains(components.first) {
             // The "@" check ensures that KBin links are excluded
             if !host.contains("reddit.com"), components.count == 2, components[1].first != "@" {
                 Task {
                     await showToastAndResolve(url: url) { url in
-                        openRegularLink(url: url)
+                        openLinkAsWebsite(url: url)
                     }
                 }
                 return .handled
@@ -116,7 +121,7 @@ struct HandleLemmyLinksModifier: ViewModifier {
         }
         
         // If all else fails, fallback to opening in browser
-        openRegularLink(url: url)
+        openLinkAsWebsite(url: url)
         return .handled
     }
     
@@ -143,39 +148,40 @@ struct HandleLemmyLinksModifier: ViewModifier {
         return components.url
     }
     
-    func interpretLemmyUrlPath(url: URL) -> Bool {
-        let components = url.pathComponents.dropFirst()
+    func createNavigationPage(url: URL) -> NavigationPage? {
+        let components = Array(url.pathComponents.dropFirst())
         if components.isEmpty, let host = url.host() {
-            navigation.push(.instance(InstanceStub(api: appState.firstApi, actorId: .instance(host: host))))
-            return true
+            return .instance(InstanceStub(api: appState.firstApi, actorId: .instance(host: host)))
         }
         switch components.first {
         case "u":
-            navigation.push(.person(PersonStub(api: appState.firstApi, url: url)))
-            return true
+            return .person(PersonStub(api: appState.firstApi, url: url))
         case "c":
-            navigation.push(.community(CommunityStub(api: appState.firstApi, url: url)))
-            return true
+            // Handle links that look like this:
+            // https://piefed.social/c/politics/p/1385905/will-the-supreme-court-hand-government-contractors-blanket-immunity
+            if components.count > 4, components[2] == "p" {
+                let newUrl = url.removingPathComponents().appendingPathComponent("post/\(components[3])")
+                return .post(PostStub(api: appState.firstApi, url: newUrl))
+            } else {
+                return .community(CommunityStub(api: appState.firstApi, url: url))
+            }
         case "post":
             if let fragment = url.fragment()?.trimmingPrefix("comment_") {
                 let newUrl = url.removingPathComponents().appendingPathComponent("comment/\(fragment)")
-                navigation.push(.comment(CommentStub(api: appState.firstApi, url: newUrl)))
-                return true
+                return .comment(CommentStub(api: appState.firstApi, url: newUrl))
             } else if components.count == 2 {
-                navigation.push(.post(PostStub(api: appState.firstApi, url: url)))
-                return true
+                return .post(PostStub(api: appState.firstApi, url: url))
             } else if components.count == 3 {
                 let newUrl = url.removingPathComponents().appendingPathComponent("comment/\(url.lastPathComponent)")
-                navigation.push(.comment(CommentStub(api: appState.firstApi, url: newUrl)))
-                return true
+                return .comment(CommentStub(api: appState.firstApi, url: newUrl))
+            } else {
+                return nil
             }
         case "comment":
-            navigation.push(.comment(CommentStub(api: appState.firstApi, url: url)))
-            return true
+            return .comment(CommentStub(api: appState.firstApi, url: url))
         default:
-            break
+            return nil
         }
-        return false
     }
     
     func parseEmail(url: URL) -> Bool {
@@ -188,7 +194,7 @@ struct HandleLemmyLinksModifier: ViewModifier {
         if Self.emailDomains.contains(host) {
             pendingMailtoURL = url
             showingEmailAlert = true
-        } else if isLemmyHost(host) {
+        } else if isThreadiverseHost(host) {
             // If it's a Lemmy host, try to resolve as a Lemmy user
             Task {
                 await showToastAndResolve(url: URL(string: "https://\(host)/u/\(user)")!) { _ in
@@ -227,12 +233,12 @@ struct HandleLemmyLinksModifier: ViewModifier {
         ToastModel.main.removeToast(id: toastId)
     }
     
-    func isLemmyHost(_ host: String) -> Bool {
+    func isThreadiverseHost(_ host: String) -> Bool {
         MlemStats.main.hosts.contains(host)
     }
 }
 
-func openRegularLink(url: URL) {
+func openLinkAsWebsite(url: URL) {
     @Setting(\.links_openInBrowser) var openLinksInBrowser
     
     if let scheme = url.scheme, scheme.hasPrefix("http"), !openLinksInBrowser {

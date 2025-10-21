@@ -2153,6 +2153,9 @@
         }
       }
     },
+    "Color Scheme" : {
+
+    },
     "Comment" : {
       "localizations" : {
         "fr" : {
@@ -2551,6 +2554,12 @@
           }
         }
       }
+    },
+    "Create Image" : {
+
+    },
+    "Creator" : {
+
     },
     "Crosspost" : {
       "localizations" : {
@@ -7859,6 +7868,9 @@
           }
         }
       }
+    },
+    "Stats" : {
+
     },
     "Strikethrough" : {
       "localizations" : {
