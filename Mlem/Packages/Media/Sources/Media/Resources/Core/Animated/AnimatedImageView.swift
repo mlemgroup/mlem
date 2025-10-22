@@ -7,9 +7,15 @@
 
 import SDWebImage
 import SwiftUI
+import os
 
 @preconcurrency
 struct AnimatedImageView: UIViewRepresentable {
+    private static let logger = Logger(
+        subsystem: "Media",
+        category: String(describing: AnimatedImageView.self)
+    )
+    
     @Environment(MediaControlState.self) var controlState
     
     let data: Data
@@ -22,8 +28,7 @@ struct AnimatedImageView: UIViewRepresentable {
         imageView.autoPlayAnimatedImage = controlState.animating
         
         guard let animatedImage = SDAnimatedImage(data: data) else {
-            // handleError(MlemError.mediaError("Could not create animated image"))
-            print("Could not create animated image")
+            Self.logger.error("Could not create animated image")
             return imageView
         }
         

@@ -14,9 +14,10 @@ import os
 @Observable
 public class HapticManager {
     private static let logger = Logger(
-        subsystem: Bundle.module.bundleIdentifier ?? "unknown",
+        subsystem: "Haptics",
         category: String(describing: HapticManager.self)
     )
+    private var log: Logger { Self.logger }
     
     static let mainInternal: HapticManager = .init()
     
@@ -43,7 +44,7 @@ public class HapticManager {
         
         // if the engine stops, tell us why
         hapticEngine?.stoppedHandler = { reason in
-            Self.logger.warning("The engine stopped: \(String(describing: reason))")
+            self.log.warning("The engine stopped: \(String(describing: reason))")
         }
         
         // if the engine fails, attempt to restart
@@ -52,7 +53,7 @@ public class HapticManager {
             self?.handleFailure()
         }
         
-        Self.logger.info("Initialized haptic engine")
+        log.info("Initialized haptic engine")
     }
     
     func startEngine() {
@@ -72,7 +73,7 @@ public class HapticManager {
     public func play(haptic: Haptic, tier: HapticTier) {
         Task(priority: .userInitiated) {
             if hapticEngine == nil {
-                Self.logger.warning("\(haptic.rawValue) not played (no engine)")
+                log.warning("\(haptic.rawValue) not played (no engine)")
                 return
             }
             
@@ -85,7 +86,7 @@ public class HapticManager {
                     handleFailure(with: haptic, error: error as? HapticError)
                 }
             } else {
-                Self.logger.debug("\(haptic.rawValue) not played (priority \(tier.intValue) > \(self.maximumHapticTier?.intValue ?? 0))")
+                log.debug("\(haptic.rawValue) not played (priority \(tier.intValue) > \(self.maximumHapticTier?.intValue ?? 0))")
             }
         }
     }

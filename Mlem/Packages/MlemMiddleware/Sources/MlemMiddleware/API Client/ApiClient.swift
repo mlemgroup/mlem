@@ -8,9 +8,16 @@
 import Combine
 import Foundation
 import Rest
+import os
 
 @Observable
 public class ApiClient {
+    private static let logger = Logger(
+        subsystem: "MlemMiddleware",
+        category: String(describing: ApiClient.self)
+    )
+    var log: Logger { Self.logger }
+    
     var repository: ApiRepository
     
     public var willSendToken: Bool { repository.token != nil }
