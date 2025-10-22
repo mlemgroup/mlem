@@ -8,6 +8,8 @@
 import MlemMiddleware
 import SwiftUI
 
+/// Ellipsis menu for a post appearing in a larger view context. Posts appearing on their own page (i.e., ExpandedPostView) should
+/// place their ellipsis menu in the toolbar.
 struct PostEllipsisMenus: View {
     @Environment(AppState.self) private var appState
     @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?
@@ -36,6 +38,7 @@ struct PostEllipsisMenus: View {
                 EllipsisMenu(size: size) {
                     post.basicMenuActions(
                         appState: appState,
+                        expanded: false,
                         navigation: navigation,
                         commentTreeTracker: commentTreeTracker
                     )

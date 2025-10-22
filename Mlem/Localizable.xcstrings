@@ -2153,6 +2153,9 @@
         }
       }
     },
+    "Color Scheme" : {
+
+    },
     "Comment" : {
       "localizations" : {
         "fr" : {
@@ -2551,6 +2554,12 @@
           }
         }
       }
+    },
+    "Create Image" : {
+
+    },
+    "Creator" : {
+
     },
     "Crosspost" : {
       "localizations" : {
@@ -3436,6 +3445,9 @@
         }
       }
     },
+    "Failed to delete!" : {
+
+    },
     "Failed to import settings" : {
       "localizations" : {
         "fr" : {
@@ -3495,6 +3507,9 @@
           }
         }
       }
+    },
+    "Failed to restore!" : {
+
     },
     "Failed to save media" : {
       "localizations" : {
@@ -7024,6 +7039,9 @@
         }
       }
     },
+    "Restored" : {
+
+    },
     "Restored Settings" : {
       "localizations" : {
         "fr" : {
@@ -7850,6 +7868,9 @@
           }
         }
       }
+    },
+    "Stats" : {
+
     },
     "Strikethrough" : {
       "localizations" : {

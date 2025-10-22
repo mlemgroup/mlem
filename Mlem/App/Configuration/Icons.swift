@@ -271,6 +271,7 @@ enum Icons {
     static let crossPost: String = "shuffle"
     static let chooseFile: String = "folder"
     static let add: String = "plus"
+    static let createImage: String = "scanner"
     
     // collapse actions
     static let collapse: String = "minus"

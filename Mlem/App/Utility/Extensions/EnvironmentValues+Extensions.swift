@@ -21,7 +21,17 @@ extension EnvironmentValues {
     @Entry var scrollProxy: ScrollViewProxy?
     @Entry var exposeRemovedContent: Bool = false
     
-    var appState: AppState? { self[AppState.self] }
+    var appState: AppState {
+        if let appState = self[AppState.self] {
+            return appState
+        } else {
+            assertionFailure()
+            return AppState.main
+        }
+    }
+
+    var popupModel: PopupAnchorModel? { self[PopupAnchorModel.self] }
+    var toastModel: ToastModel? { self[ToastModel.self] }
     var navigation: NavigationLayer? { self[NavigationLayer.self] }
     var commentTreeTracker: CommentTreeTracker? { self[CommentTreeTracker.self] }
 }

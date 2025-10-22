@@ -136,6 +136,13 @@ public extension Post1Providing {
     }
 }
 
+// ReportableProviding conformance
+public extension Post1Providing {
+    func isOwnContent(myPersonId: Int) -> Bool {
+        creatorId == myPersonId
+    }
+}
+
 public extension Post1Providing {
     /// Returns a `URL` that can be resolved by another `ApiClient`.
     func resolvableUrl(from instance: ContentModelUrlType) -> URL {

@@ -65,7 +65,7 @@ struct NavigationLayerView: View {
             )
             .padding(.bottom, 8)
         }
-        .modifier(HandleLemmyLinksModifier())
+        .modifier(HandleThreadiverseLinksModifier())
         .environment(layer)
         .preferredColorScheme(preferredColorScheme)
     }

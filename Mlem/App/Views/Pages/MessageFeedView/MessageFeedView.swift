@@ -159,6 +159,11 @@ struct MessageFeedView: View {
                     }
                 }
             }
+            .environment(\.editMessage) { message in
+                editing = message
+                textView.text = message.content
+                textView.becomeFirstResponder()
+            }
         }
     }
     
@@ -171,20 +176,16 @@ struct MessageFeedView: View {
                 .padding(.bottom, Constants.main.halfSpacing)
         }
         VStack(alignment: message.isOwnMessage ? .trailing : .leading, spacing: Constants.main.halfSpacing) {
-            MessageBubbleView(message: message, editCallback: {
-                editing = message
-                textView.text = message.content
-                textView.becomeFirstResponder()
-            })
-            .padding(message.isOwnMessage ? .leading : .trailing, 50)
-            .frame(maxWidth: 400, alignment: message.isOwnMessage ? .trailing : .leading)
-            .onAppear {
-                do {
-                    try feedLoader.loadIfThreshold(message)
-                } catch {
-                    handleError(error)
+            MessageBubbleView(message: message)
+                .padding(message.isOwnMessage ? .leading : .trailing, 50)
+                .frame(maxWidth: 400, alignment: message.isOwnMessage ? .trailing : .leading)
+                .onAppear {
+                    do {
+                        try feedLoader.loadIfThreshold(message)
+                    } catch {
+                        handleError(error)
+                    }
                 }
-            }
             if let footerText = messageFooterText(for: message) {
                 Text(footerText)
                     .font(.footnote)
@@ -324,4 +325,8 @@ struct MessageFeedView: View {
             }
         }
     }
+}
+
+extension EnvironmentValues {
+    @Entry var editMessage: (Message2) -> Void = { _ in assertionFailure() }
 }
