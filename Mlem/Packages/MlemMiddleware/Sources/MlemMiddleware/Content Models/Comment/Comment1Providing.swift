@@ -30,6 +30,8 @@ public protocol Comment1Providing:
     var distinguished: Bool { get }
     var languageId: Int { get }
     
+    func snapshotUpdate(with snapshot: any CommentSnapshotProviding) async
+    func takeSnapshot() -> any CommentSnapshotProviding
     var updateQueue: CommentUpdateQueue { get }
 }
 

@@ -16,6 +16,9 @@ class NotificationCache: CoreCache<InboxNotification> {
         semaphore: UInt? = nil
     ) -> InboxNotification {
         if let item = retrieveModel(cacheId: snapshot.cacheId) {
+            Task {
+                await item.updateQueue.attemptDirectUpdate(with: snapshot)
+            }
             return item
         }
 
