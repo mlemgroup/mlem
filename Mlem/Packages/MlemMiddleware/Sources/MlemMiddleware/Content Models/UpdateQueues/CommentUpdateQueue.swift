@@ -45,6 +45,13 @@ public actor CommentUpdateQueue {
         addItem(.modifiesSnapshot(item))
     }
     
+    /// Attempts to update the comment with the given snapshot. If any tasks are queued, no action will be taken.
+    /// This method should be called when new snapshots are received by actions in a foreign object's queue or by headless calls
+    func attemptDirectUpdate(with snapshot: any CommentSnapshotProviding) async {
+        guard queue.numItems == 0, let parent else { return }
+        await updateParent(parent, with: snapshot)
+    }
+    
     /// Queues the given upgrade operation for execution
     /// - Returns: comment returned by the upgrade operation
     /// - Warning: this method assumes that the given operation will update this queue's parent (this generally happens in the parent's initializer)

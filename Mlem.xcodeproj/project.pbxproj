@@ -102,7 +102,7 @@
 		033F84C12C2AD072002E3EDF /* CommentTreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84C02C2AD072002E3EDF /* CommentTreeNode.swift */; };
 		033F84C32C2B12AA002E3EDF /* InstanceSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84C22C2B12AA002E3EDF /* InstanceSummary.swift */; };
 		033F84C82C2B193D002E3EDF /* MlemStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84C72C2B193D002E3EDF /* MlemStats.swift */; };
-		033F84CC2C2B1E46002E3EDF /* HandleLemmyLinksModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84CB2C2B1E46002E3EDF /* HandleLemmyLinksModifier.swift */; };
+		033F84CC2C2B1E46002E3EDF /* HandleThreadiverseLinksModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84CB2C2B1E46002E3EDF /* HandleThreadiverseLinksModifier.swift */; };
 		033F84D92C2B61FB002E3EDF /* ToastType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03500C212BF5594100CAA076 /* ToastType.swift */; };
 		033FCAEC2C57DCCD007B7CD1 /* ListingType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033FCAEB2C57DCCD007B7CD1 /* ListingType+Extensions.swift */; };
 		033FCAEE2C57DD14007B7CD1 /* CaptchaDifficulty+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033FCAED2C57DD14007B7CD1 /* CaptchaDifficulty+Extensions.swift */; };
@@ -368,6 +368,7 @@
 		03EC83EE2E958A44004698BB /* OpenGraph in Frameworks */ = {isa = PBXBuildFile; productRef = 03EC83ED2E958A44004698BB /* OpenGraph */; };
 		03EC83F02E9590D3004698BB /* LinkHostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03EC83EF2E9590D3004698BB /* LinkHostView.swift */; };
 		03EC84422E959AA5004698BB /* PostEditorWebsitePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03EC84412E959AA5004698BB /* PostEditorWebsitePreviewView.swift */; };
+		03EC85EC2E9D8F37004698BB /* Actions in Frameworks */ = {isa = PBXBuildFile; productRef = 03EC85EB2E9D8F37004698BB /* Actions */; };
 		03EC86462E9E9D4D004698BB /* PopupAnchorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03EC86452E9E9D4C004698BB /* PopupAnchorModel.swift */; };
 		03ECD7192C81195000D48BF6 /* PostEditorView+LinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03ECD7182C81195000D48BF6 /* PostEditorView+LinkView.swift */; };
 		03ECD71B2C811D6700D48BF6 /* PostEditorView+ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03ECD71A2C811D6700D48BF6 /* PostEditorView+ImageView.swift */; };
@@ -656,7 +657,7 @@
 		033F84C02C2AD072002E3EDF /* CommentTreeNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTreeNode.swift; sourceTree = "<group>"; };
 		033F84C22C2B12AA002E3EDF /* InstanceSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceSummary.swift; sourceTree = "<group>"; };
 		033F84C72C2B193D002E3EDF /* MlemStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MlemStats.swift; sourceTree = "<group>"; };
-		033F84CB2C2B1E46002E3EDF /* HandleLemmyLinksModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandleLemmyLinksModifier.swift; sourceTree = "<group>"; };
+		033F84CB2C2B1E46002E3EDF /* HandleThreadiverseLinksModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandleThreadiverseLinksModifier.swift; sourceTree = "<group>"; };
 		033FCAEB2C57DCCD007B7CD1 /* ListingType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListingType+Extensions.swift"; sourceTree = "<group>"; };
 		033FCAED2C57DD14007B7CD1 /* CaptchaDifficulty+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CaptchaDifficulty+Extensions.swift"; sourceTree = "<group>"; };
 		033FCAF32C59843E007B7CD1 /* CommunityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityView.swift; sourceTree = "<group>"; };
@@ -1091,6 +1092,7 @@
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		03DA26AC2D79F29700E66267 /* Packages */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Packages; sourceTree = "<group>"; };
+		03EC85ED2E9D925B004698BB /* Actions */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Actions; sourceTree = "<group>"; };
 		03F6BDA12D502382006A425E /* Preview Content */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "Preview Content"; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
@@ -1105,6 +1107,7 @@
 				030FF6792BC84F7E00F6BFAC /* SwiftUIIntrospect in Frameworks */,
 				0341480D2D8F63A6005503AF /* MlemMiddleware in Frameworks */,
 				B104A6DA2A59BF3C00B3E725 /* NukeExtensions in Frameworks */,
+				03EC85EC2E9D8F37004698BB /* Actions in Frameworks */,
 				037386472BDAFE81007492B5 /* LemmyMarkdownUI in Frameworks */,
 				CDA711FB2DB5CAC3008BC3ED /* Media in Frameworks */,
 				B104A6D82A59BF3C00B3E725 /* Nuke in Frameworks */,
@@ -1828,6 +1831,7 @@
 		CD4D583B2B867BB300B82964 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				03EC85ED2E9D925B004698BB /* Actions */,
 				CD1464522D63FE6F00202619 /* Legacy */,
 				CDE1F18D2C63D646008AF042 /* Configuration */,
 				CD14461F2A5B328600610EF1 /* Data */,
@@ -1899,7 +1903,7 @@
 				03B0EB6D2C87673D00F79FDF /* ExpandedPost */,
 				034B948D2C0937BA00039AF4 /* FancyScrollView.swift */,
 				03049A182C6502DB00FF6889 /* Form */,
-				033F84CB2C2B1E46002E3EDF /* HandleLemmyLinksModifier.swift */,
+				033F84CB2C2B1E46002E3EDF /* HandleThreadiverseLinksModifier.swift */,
 				039D75652C4FC56A004F24C2 /* Images */,
 				0324FA7A2C1F2CD200F6247D /* InfoStackView.swift */,
 				03FA318D2C6FEF0E00D47FA3 /* InteractionBar */,
@@ -2366,6 +2370,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				03DA26AC2D79F29700E66267 /* Packages */,
+				03EC85ED2E9D925B004698BB /* Actions */,
 				03F6BDA12D502382006A425E /* Preview Content */,
 			);
 			name = Mlem;
@@ -2390,6 +2395,7 @@
 				0377BE282DE7A2DE00E38593 /* Haptics */,
 				031CA5762E5900E900CF0C0F /* QuickSwipes */,
 				03EC83ED2E958A44004698BB /* OpenGraph */,
+				03EC85EB2E9D8F37004698BB /* Actions */,
 			);
 			productName = Mlem;
 			productReference = 6363D5C127EE196700E34822 /* Mlem.app */;
@@ -2769,7 +2775,7 @@
 				0311ADB72E4DF49800EC3120 /* SearchHomeView.swift in Sources */,
 				0377BE9B2DEA328900E38593 /* OnboardingEmailView.swift in Sources */,
 				038028D82CACAB960091A8A2 /* ModeratorSettingsView.swift in Sources */,
-				033F84CC2C2B1E46002E3EDF /* HandleLemmyLinksModifier.swift in Sources */,
+				033F84CC2C2B1E46002E3EDF /* HandleThreadiverseLinksModifier.swift in Sources */,
 				0389DDD32C39E4D40005B808 /* PasteLinkButtonView.swift in Sources */,
 				03AF91EA2C1CE96600E56644 /* Counter.swift in Sources */,
 				03D283FC2D25A3F700A6659B /* VisitHistory+CodedData.swift in Sources */,
@@ -3548,6 +3554,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 03EC83EC2E958A44004698BB /* XCRemoteSwiftPackageReference "OpenGraph" */;
 			productName = OpenGraph;
+		};
+		03EC85EB2E9D8F37004698BB /* Actions */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Actions;
 		};
 		03FA318B2C6FECAE00D47FA3 /* Flow */ = {
 			isa = XCSwiftPackageProductDependency;
