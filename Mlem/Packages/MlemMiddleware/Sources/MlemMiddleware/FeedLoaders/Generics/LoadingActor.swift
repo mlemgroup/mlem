@@ -6,12 +6,15 @@
 //
 
 import Foundation
+import os
 
 enum LoadingError: Error {
     case noTask
 }
 
 actor LoadingActor<Item: FeedLoadable> {
+    internal let log: Logger = .mlemLogger(subsystem: "MlemMiddleware")
+    
     private var done: Bool = false
     private var loadingTask: Task<Void, Error>?
     var filter: MultiFilter<Item>
@@ -36,16 +39,16 @@ actor LoadingActor<Item: FeedLoadable> {
     /// - Returns: on success, .success with FetchResponse containing loaded items; if another load is underway, .ignored; if the load is cancelled, .cancelled
     func load(_ callback: @escaping (LoadingResponse<Item>) async -> Void) async throws {
         guard !done else {
-            print("[\(Self.self)] ignoring request, finished loading")
+            log.debug("[\(Self.self)] ignoring request, finished loading")
             return
         }
         
         // if already loading something, ignore the request
         if let loadingTask {
-            print("[\(Self.self)] ignoring request, load underway")
+            log.debug("[\(Self.self)] ignoring request, load underway")
             // return .ignored
             _ = try await loadingTask.result.get()
-            print("[\(Self.self)] preexisting load finished, returning")
+            log.debug("[\(Self.self)] preexisting load finished, returning")
             return
         }
         
@@ -63,7 +66,7 @@ actor LoadingActor<Item: FeedLoadable> {
         }
         
         _ = try await loadingTask.result.get()
-        print("[\(Self.self)] finished loading")
+        log.debug("[\(Self.self)] finished loading")
     }
     
     @discardableResult
@@ -97,14 +100,14 @@ actor LoadingActor<Item: FeedLoadable> {
             
             switch response {
             case let .success(items):
-                print("[\(Self.self)] received success (\(items.count))")
+                log.debug("[\(Self.self)] received success (\(items.count))")
                 newItems.append(contentsOf: filter.filter(items))
             case let .done(items):
-                print("[\(Self.self)] received finished (\(items.count))")
+                log.debug("[\(Self.self)] received finished (\(items.count))")
                 newItems.append(contentsOf: filter.filter(items))
                 return .done(newItems)
             case .cancelled, .ignored:
-                print("[\(Self.self)] load did not complete (\(response.description))")
+                log.debug("[\(Self.self)] load did not complete (\(response.description))")
                 break fetchLoop
             }
         } while newItems.count < MiddlewareConstants.infiniteLoadThresholdOffset
