@@ -13,13 +13,17 @@ let package = Package(
             targets: ["Rest"]
         )
     ],
-    dependencies: [],
+    dependencies: [
+        .package(path: "../MlemLogger")
+    ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
             name: "Rest",
-            dependencies: [],
+            dependencies: [
+                .byName(name: "MlemLogger")
+            ],
             swiftSettings: [
                 .swiftLanguageMode(.v5),
                 .enableUpcomingFeature("FullTypedThrows"),
