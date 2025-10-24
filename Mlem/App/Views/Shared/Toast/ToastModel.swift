@@ -6,9 +6,12 @@
 //
 
 import SwiftUI
+import os
 
 @Observable
 class ToastModel {
+    private let log: Logger = .mlemLogger(subsystem: "Mlem")
+    
     private var toasts: [Toast] = .init()
     
     static let main: ToastModel = .init()
@@ -40,7 +43,7 @@ class ToastModel {
             if let index = toasts.firstIndex(where: { $0.id == id }) {
                 toasts.remove(at: index)
             } else {
-                print("No Toast Index")
+                log.debug("No Toast Index")
             }
         }
     }

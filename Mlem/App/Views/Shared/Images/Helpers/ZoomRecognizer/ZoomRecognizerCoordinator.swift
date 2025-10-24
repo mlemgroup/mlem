@@ -7,12 +7,15 @@
 
 import SwiftUI
 import UIKit
+import os
 
 enum PanType {
     case move, zoom, custom, none
 }
 
 class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
+    private let log: Logger = .mlemLogger(subsystem: "Mlem")
+    
     @Setting(\.a11y_zoomSliderLocation) var zoomSliderLocation
     
     @Binding var scale: CGFloat
@@ -92,7 +95,7 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
         case .ended, .cancelled:
             endPinch(gesture: gesture)
         case .failed:
-            print("DEBUG pinch gesture failed")
+            log.debug("Pinch gesture failed")
         default:
             assertionFailure("Unknown state")
         }
