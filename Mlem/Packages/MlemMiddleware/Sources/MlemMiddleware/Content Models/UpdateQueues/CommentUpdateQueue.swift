@@ -6,6 +6,7 @@
 //
 
 import Semaphore
+import os
 
 /// This actor synchronizes state updates for a particular comment.
 ///
@@ -18,6 +19,8 @@ import Semaphore
 /// to be `post2`). If this update is not performed, `parent` may become nil and the queue will refuse to execute. In debug mode this will throw an error,
 /// while in production the queue will simply not run until an item is added when the parent is present.
 public actor CommentUpdateQueue {
+    internal let log: Logger = .mlemLogger(subsystem: "MlemMiddleware")
+    
     weak var parent: (any Comment1Providing)?
     
     private var lastVerifiedSnapshot: (any CommentSnapshotProviding)?
@@ -61,9 +64,9 @@ public actor CommentUpdateQueue {
         await semaphore.wait()
         defer {
             semaphore.signal()
-            print("DEBUG upgrade complete")
+            log.debug("Upgrade complete")
         }
-        print("DEBUG beginning upgrade")
+        log.debug("Beginning upgrade")
         
         let (snapshot, comment) = try await task()
         lastVerifiedSnapshot = snapshot
@@ -83,9 +86,9 @@ public actor CommentUpdateQueue {
         await semaphore.wait()
         defer {
             semaphore.signal()
-            print("DEBUG finished executing queue")
+            log.debug("Finished executing queue")
         }
-        print("DEBUG executing queue")
+        log.debug("Executing queue")
         
         // assigning this here ensures parent stays in scope for the duration of the queue. For operations that remove the post
         // (e.g., hide), if the call is slow, the parent might go out of scope before it returns; this in turn breaks the undo behavior
@@ -99,7 +102,7 @@ public actor CommentUpdateQueue {
             return
         }
         while let task = queue.next() {
-            print("DEBUG found next task")
+            log.debug("Found next task")
             do {
                 let snapshot: any CommentSnapshotProviding
                 switch task {
@@ -116,7 +119,7 @@ public actor CommentUpdateQueue {
                 self.lastVerifiedSnapshot = newSnapshot
                 lastVerifiedSnapshot = newSnapshot // also need to update scoped lastVerifiedSnapshot so updateParent gets the correct value\
             } catch {
-                print(error)
+                log.error("\(error.localizedDescription)")
             }
             queue.dequeue()
         }
@@ -125,7 +128,7 @@ public actor CommentUpdateQueue {
     }
     
     private func updateParent(_ parent: any Comment1Providing, with snapshot: any CommentSnapshotProviding) async {
-        print("DEBUG updating parent")
+        log.debug("Updating parent")
         await parent.snapshotUpdate(with: snapshot)
     }
 }
