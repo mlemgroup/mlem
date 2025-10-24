@@ -58,4 +58,5 @@ public enum Feature: Hashable {
     case moderatorSetNsfw
     
     case fetchLinkMetadata
+    case customPostThumbnail
 }

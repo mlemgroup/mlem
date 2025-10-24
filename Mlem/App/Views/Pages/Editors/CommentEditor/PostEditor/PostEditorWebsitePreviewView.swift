@@ -37,12 +37,25 @@ struct PostEditorWebsitePreviewView: View {
         VStack(alignment: .leading, spacing: 0) {
             if let thumbnailUrl = imageManager.image?.url ?? link.effectiveThumbnail {
                 imageView(thumbnailUrl)
-            } else {
+                titleView
+            } else if primaryApi.supports(.customPostThumbnail, defaultValue: false) {
                 imagePlaceholderView
                 LinkHostView(link: link, withCapsule: false)
                     .padding([.horizontal, .top], Constants.main.standardSpacing)
+                titleView
+            } else {
+                HStack {
+                    VStack(alignment: .leading, spacing: 5) {
+                        LinkHostView(link: link, withCapsule: false)
+                            .padding([.horizontal, .top], Constants.main.standardSpacing)
+                        titleView
+                    }
+                    Spacer()
+                    removeButton
+                        .foregroundStyle(.secondary, .themedTertiaryGroupedBackground)
+                        .padding(.trailing, 10)
+                }
             }
-            titleView
         }
     }
 
@@ -73,8 +86,10 @@ struct PostEditorWebsitePreviewView: View {
                 .padding(Constants.main.halfSpacing)
         }
         .overlay(alignment: .topLeading) {
-            thumbnailUploadButton
-                .padding(10)
+            if primaryApi.supports(.customPostThumbnail, defaultValue: false) {
+                thumbnailUploadButton
+                    .padding(10)
+            }
         }
         .overlay(alignment: .topTrailing) {
             removeButton
