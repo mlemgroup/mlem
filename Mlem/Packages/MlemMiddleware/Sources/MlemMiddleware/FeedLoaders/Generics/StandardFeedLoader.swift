@@ -8,9 +8,12 @@
 import Foundation
 import Observation
 import Semaphore
+import os
 
 @Observable
 public class StandardFeedLoader<Item: FeedLoadable>: FeedLoading {
+    internal let log: Logger = .mlemLogger(subsystem: "MlemMiddleware")
+    
     public internal(set) var items: [Item] = .init()
     public internal(set) var loadingState: FeedLoadingState = .initial
     private(set) var thresholds: Thresholds<Item> = .init()
@@ -29,7 +32,7 @@ public class StandardFeedLoader<Item: FeedLoadable>: FeedLoading {
     @MainActor
     func setLoading(_ newState: FeedLoadingState) {
         loadingState = newState
-        print("[\(Self.self)] set loading state to \(newState)")
+        log.debug("Set loading state to \(String(describing: newState))")
     }
     
     /// Sets the items to a new array
@@ -94,7 +97,7 @@ public class StandardFeedLoader<Item: FeedLoadable>: FeedLoading {
                 newItems = items
                 newState = .done
             case .ignored, .cancelled:
-                print("[\(Self.self)] load did not complete (\(response.description))")
+                self.log.debug("Load did not complete (\(response.description))")
                 newState = .idle
             }
             
@@ -107,7 +110,7 @@ public class StandardFeedLoader<Item: FeedLoadable>: FeedLoading {
             }
             
             await self.setLoading(newState)
-            print("[\(Self.self)] loadMoreItems complete")
+            self.log.debug("LoadMoreItems complete")
         }
     }
     

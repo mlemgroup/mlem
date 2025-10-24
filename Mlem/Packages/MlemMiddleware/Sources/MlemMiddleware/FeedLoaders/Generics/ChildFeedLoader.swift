@@ -16,7 +16,7 @@ class FeedLoaderStream {
     }
 }
 
-public class ChildFeedLoader<Item: FeedLoadable>: StandardFeedLoader<Item> {
+public class ChildFeedLoader<Item: FeedLoadable>: StandardFeedLoader<Item> {    
     var stream: FeedLoaderStream?
     var sortType: FeedLoaderSort.SortType
     
@@ -34,7 +34,7 @@ public class ChildFeedLoader<Item: FeedLoadable>: StandardFeedLoader<Item> {
         assert(sortType == self.sortType, "Conflicting types for sortType! This will lead to unexpected sorting behavior.")
         
         guard let stream, stream.parent != nil else {
-            print("[\(Self.self)] could not find stream or parent")
+            log.warning("Could not find stream or parent")
             return nil
         }
         
@@ -42,11 +42,11 @@ public class ChildFeedLoader<Item: FeedLoadable>: StandardFeedLoader<Item> {
             return items[safeIndex: stream.cursor]?.sortVal(sortType: sortType)
         } else {
             if loadingState == .done {
-                print("[\(Self.self)] done loading")
+                log.debug("Done loading")
                 return nil
             }
             
-            print("[\(Self.self)] out of items (\(items.count)), loading more")
+            log.debug("Out of items (\(self.items.count)), loading more")
             try await loadMoreItems()
             
             if stream.cursor >= items.count {
@@ -55,7 +55,7 @@ public class ChildFeedLoader<Item: FeedLoadable>: StandardFeedLoader<Item> {
                 return nil
             }
             
-            print("[\(Self.self)] fetched more items (\(items.count))")
+            log.debug("Fetched more items (\(self.items.count))")
             return items[stream.cursor].sortVal(sortType: sortType)
         }
     }
