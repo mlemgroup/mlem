@@ -9,14 +9,11 @@ import AVFoundation
 import AVKit
 import NukeVideo
 import SwiftUI
+import MlemLogger
 import os
 
 struct VideoView: View {
-    private static let logger = Logger(
-        subsystem: "Media",
-        category: String(describing: AnimatedImageView.self)
-    )
-    private var log: Logger { Self.logger }
+    private let log: Logger = .mlemLogger(subsystem: "Media")
     
     @Environment(MediaControlState.self) var controlState
     

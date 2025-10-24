@@ -13,10 +13,7 @@ enum ConnectionMultiplexerError: Error {
 }
 
 class ConnectionMultiplexer<Candidate> {
-    private let log = Logger(
-        subsystem: "MlemMiddleware",
-        category: String(describing: ConnectionMultiplexer.self)
-    )
+    private let log: Logger = .mlemLogger(subsystem: "MlemMiddleware")
     
     private var ongoingTask: Task<Any, Error>?
     
@@ -66,7 +63,7 @@ class ConnectionMultiplexer<Candidate> {
                         let value = try result.1.get()
                         // Cancel all other tasks once any one task succeeds
                         group.cancelAll()
-                        log.debug("ConnectionMultiplexer: Selected \(String(describing: result.0))")
+                        log.debug("Selected \(String(describing: result.0))")
                         self.selectedCandidate = result.0
                         self.ongoingTask = nil
                         return value

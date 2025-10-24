@@ -9,15 +9,12 @@ import AVFAudio
 import CoreHaptics
 import Foundation
 import SwiftUI
+import MlemLogger
 import os
 
 @Observable
 public class HapticManager {
-    private static let logger = Logger(
-        subsystem: "Haptics",
-        category: String(describing: HapticManager.self)
-    )
-    private var log: Logger { Self.logger }
+    private let log: Logger = .mlemLogger(subsystem: "Haptics")
     
     static let mainInternal: HapticManager = .init()
     
@@ -25,7 +22,7 @@ public class HapticManager {
     public static var main: HapticManager { mainInternal }
     
     // Config
-    var errorHandler: (HapticError) -> Void = { HapticManager.logger.error("Haptic error: \($0.description)") }
+    var errorHandler: (HapticError) -> Void = { Logger.universal.error("Haptic error: \($0.description)") }
     var maximumHapticTier: HapticTier?
     
     // generators/engines
@@ -49,7 +46,7 @@ public class HapticManager {
         
         // if the engine fails, attempt to restart
         hapticEngine?.resetHandler = { [weak self] in
-            Self.logger.warning("The engine reset")
+            (self?.log ?? Logger.universal).warning("The haptic engine reset")
             self?.handleFailure()
         }
         

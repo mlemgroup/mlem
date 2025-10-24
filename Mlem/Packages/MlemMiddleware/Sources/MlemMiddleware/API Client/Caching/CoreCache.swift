@@ -7,6 +7,7 @@
 
 import Foundation
 import Semaphore
+import MlemLogger
 import os
 
 /// Class providing common caching behavior
@@ -18,10 +19,7 @@ open class CoreCache<Content: CacheIdentifiable & AnyObject> {
     }
     
     public class ItemCache {
-        private let log = Logger(
-            subsystem: "MlemMiddleware",
-            category: String(describing: CoreCache.self)
-        )
+        private let log: Logger = .mlemLogger(subsystem: "MlemMiddleware")
         
         private var cachedItems: Atomic<[Int: WeakReference<Content>]> = .init(.init())
         private let cleaningSemaphore: AsyncSemaphore = .init(value: 1)
