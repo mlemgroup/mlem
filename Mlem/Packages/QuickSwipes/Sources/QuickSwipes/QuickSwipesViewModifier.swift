@@ -14,7 +14,7 @@ import os
 
 // swiftlint:disable:next type_body_length
 struct QuickSwipeViewModifier: ViewModifier {
-    let log: Logger = .mlemLogger(subsystem: "QuickSwipes")
+    internal let log: Logger = .mlemLogger(subsystem: "QuickSwipes")
     
     @Environment(HapticManager.self) var hapticManager
     @Environment(\.palette) var palette
