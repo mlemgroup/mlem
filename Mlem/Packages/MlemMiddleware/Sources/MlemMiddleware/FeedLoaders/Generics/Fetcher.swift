@@ -6,6 +6,7 @@
 //
 
 import Observation
+import os
 
 enum LoadingResponse<Item: FeedLoadable> {
     /// Indicates a successful load with more items available to fetch
@@ -32,6 +33,8 @@ enum LoadingResponse<Item: FeedLoadable> {
 
 @Observable
 public class Fetcher<Item: FeedLoadable> {
+    internal let log: Logger = .mlemLogger(subsystem: "MlemMiddleware")
+    
     var api: ApiClient
     var pageSize: Int
     var page: Int

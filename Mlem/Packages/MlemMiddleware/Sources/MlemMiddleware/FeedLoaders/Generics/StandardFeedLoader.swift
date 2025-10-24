@@ -32,7 +32,7 @@ public class StandardFeedLoader<Item: FeedLoadable>: FeedLoading {
     @MainActor
     func setLoading(_ newState: FeedLoadingState) {
         loadingState = newState
-        log.debug("Set loading state to \(String(describing: newState))")
+        log.debug("[\(Self.self)] set loading state to \(String(describing: newState))")
     }
     
     /// Sets the items to a new array
@@ -97,7 +97,7 @@ public class StandardFeedLoader<Item: FeedLoadable>: FeedLoading {
                 newItems = items
                 newState = .done
             case .ignored, .cancelled:
-                self.log.debug("Load did not complete (\(response.description))")
+                self.log.debug("[\(Self.self)] load did not complete (\(response.description))")
                 newState = .idle
             }
             
@@ -110,7 +110,7 @@ public class StandardFeedLoader<Item: FeedLoadable>: FeedLoading {
             }
             
             await self.setLoading(newState)
-            self.log.debug("LoadMoreItems complete")
+            self.log.debug("[\(Self.self)] loadMoreItems complete")
         }
     }
     
