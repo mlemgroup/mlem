@@ -10,7 +10,7 @@ public extension Comment1Providing {
         if let comment2Snapshot = snapshot as? Comment2Snapshot {
             await snapshot1Update(with: comment2Snapshot.comment)
         } else if let comment1Snapshot = snapshot as? Comment1Snapshot {
-            await snapshotUpdate(with: comment1Snapshot)
+            await snapshot1Update(with: comment1Snapshot)
         } else {
             assertionFailure("Unrecognized comment snapshot")
         }
