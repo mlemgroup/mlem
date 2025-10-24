@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import os
 
 extension URL: @retroactive Identifiable {
     public var id: URL { absoluteURL }
@@ -51,7 +52,7 @@ public extension URL {
         guard scheme == "http" || scheme == "https" else { return self }
         guard let size else { return self }
         guard var components = URLComponents(url: self, resolvingAgainstBaseURL: true) else {
-            print("Failed to create URLComponents")
+            Logger.universal.warning("Failed to create URLComponents")
             return appending(queryItems: [.init(name: "thumbnail", value: String(size))])
         }
         var queryItems = components.queryItems ?? []
@@ -88,7 +89,7 @@ public extension URL {
                 return loopUrl
             }
         } catch {
-            print(error)
+            Logger.universal.error("Failed to parse embedded loops: \(error.localizedDescription)")
         }
         return nil
     }
