@@ -6,6 +6,7 @@
 //
 
 import Semaphore
+import os
 
 /// This actor synchronizes state updates for a particular inbox notification.
 ///
@@ -17,6 +18,8 @@ import Semaphore
 /// before the work item is queued.
 ///
 public actor InboxNotificationUpdateQueue {
+    internal let log: Logger = .mlemLogger(subsystem: "MlemMiddleware")
+    
     weak var parent: InboxNotification?
     
     private var lastVerifiedSnapshot: InboxNotificationSnapshot?
@@ -62,9 +65,9 @@ public actor InboxNotificationUpdateQueue {
         await semaphore.wait()
         defer {
             semaphore.signal()
-            print("DEBUG finished executing queue")
+            log.debug("Finished executing queue")
         }
-        print("DEBUG executing queue")
+        log.debug("Executing queue")
         
         guard let parent else {
             assertionFailure("Cannot execute queue with no parent!")
@@ -76,7 +79,7 @@ public actor InboxNotificationUpdateQueue {
             return
         }
         while let task = queue.next() {
-            print("DEBUG found next task")
+            log.debug("Found next task")
             do {
                 let snapshot: InboxNotificationSnapshot
                 switch task {
@@ -89,7 +92,7 @@ public actor InboxNotificationUpdateQueue {
                 self.lastVerifiedSnapshot = snapshot
                 lastVerifiedSnapshot = snapshot // also need to update scoped lastVerifiedSnapshot so updateParent gets the correct value\
             } catch {
-                print(error)
+                log.error("\(error.localizedDescription)")
             }
             queue.dequeue()
         }
