@@ -21,7 +21,8 @@ private let seeds: [ActionSeed] = [
     .blockCreator,
     .edit,
     .delete,
-    .viewVotes
+    .viewVotes,
+    .remove
 ]
 
 extension View {
