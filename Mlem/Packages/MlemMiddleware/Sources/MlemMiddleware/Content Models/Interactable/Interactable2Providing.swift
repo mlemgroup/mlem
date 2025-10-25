@@ -8,7 +8,7 @@
 import Foundation
 
 // Content that can be upvoted, downvoted, saved etc
-public protocol Interactable2Providing: Interactable1Providing, RemovableProviding, PurgableProviding {
+public protocol Interactable2Providing: Interactable1Providing, RemovableProviding, PurgableProviding, CanModerateProviding {
     var creator: any Person { get }
     var community: any Community { get }
     var creatorIsModerator: Bool { get }
