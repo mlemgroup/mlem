@@ -167,15 +167,7 @@ struct CommentView<EmbeddedContent: View>: View {
                     )
                 }
             } else {
-                EllipsisMenu(size: 24) {
-                    comment.allMenuActions(
-                        appState: appState,
-                        showAllActions: !inFeed,
-                        navigation: navigation,
-                        commentTreeTracker: commentTreeTracker,
-                        report: reportContext
-                    )
-                }
+                EllipsisMenu(size: 24, comment: comment)
             }
         }
     }

@@ -6,6 +6,7 @@
 //
 
 import Actions
+import Icons
 import MlemMiddleware
 import SwiftUI
 
@@ -28,6 +29,21 @@ extension View {
             ActionButtons { _ in
                 seeds.compactMap { $0.createAction(comment) }
             }
+        }
+    }
+}
+
+extension EllipsisMenu {
+    init(
+        icon: Icon = .general.menu,
+        size: CGFloat,
+        comment: any Comment1Providing
+    ) where Content == ActionButtons {
+        self.icon = icon
+        self.size = size
+
+        self.content = ActionButtons { _ in
+            seeds.compactMap { $0.createAction(comment) }
         }
     }
 }
