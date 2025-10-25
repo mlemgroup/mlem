@@ -11,10 +11,12 @@ import SwiftUI
 
 struct EditAction: ConfigurableAction {
     enum Content {
+        case comment(any Comment1Providing)
         case message(any Message1Providing)
         
         var value: any OwnershipProviding {
             switch self {
+            case let .comment(comment): comment
             case let .message(message): message
             }
         }
@@ -29,6 +31,7 @@ extension ActionSeed {
     static let edit = ActionSeed("edit") { entity in
         switch entity {
         case let entity as any Message1Providing: EditAction(content: .message(entity))
+        case let entity as any Comment1Providing: EditAction(content: .comment(entity))
         default: nil
         }
     }
@@ -57,6 +60,12 @@ extension EditAction {
     @MainActor
     func execute(environment: EnvironmentValues) {
         switch content {
+        case let .comment(comment):
+            if let comment = comment as? any Comment2Providing {
+                environment.navigation?.openSheet(.editComment(comment.comment2, context: nil))
+            } else {
+                assertionFailure()
+            }
         case let .message(message):
             if let message = message as? any Message2Providing {
                 environment.editMessage(message.message2)
