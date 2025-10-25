@@ -11,6 +11,7 @@ import SwiftUI
 
 private let seeds: [ActionSeed] = [
     .selectText,
+    .share,
     .report,
     .edit,
     .delete
