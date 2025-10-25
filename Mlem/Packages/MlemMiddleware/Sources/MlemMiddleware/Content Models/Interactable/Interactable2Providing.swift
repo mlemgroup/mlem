@@ -33,6 +33,14 @@ public extension Interactable2Providing {
     func toggleDownvoted() {
         updateVote(votes.myVote == .downvote ? .none : .downvote)
     }
+
+    func toggleVote(type: ScoringOperation) {
+        guard type != .none else {
+            assertionFailure()
+            return
+        }
+        updateVote(votes.myVote == type ? .none : type)
+    }
     
     func toggleSaved() {
         updateSaved(!saved)

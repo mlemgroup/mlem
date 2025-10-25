@@ -10,6 +10,8 @@ import MlemMiddleware
 import SwiftUI
 
 private let seeds: [ActionSeed] = [
+    .upvote,
+    .downvote,
     .save,
     .reply,
     .selectText,
