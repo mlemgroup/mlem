@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 19/09/2024.
 //
 
+import Haptics
 import MlemMiddleware
 import SwiftUI
 
@@ -26,7 +27,16 @@ extension EnvironmentValues {
             return appState
         } else {
             assertionFailure()
-            return AppState.main
+            return .main
+        }
+    }
+
+    var hapticManager: HapticManager {
+        if let hapticManager = self[HapticManager.self] {
+            return hapticManager
+        } else {
+            assertionFailure()
+            return .main
         }
     }
 
