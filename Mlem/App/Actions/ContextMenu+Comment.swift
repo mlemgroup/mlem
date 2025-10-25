@@ -13,6 +13,7 @@ private let seeds: [ActionSeed] = [
     .selectText,
     .share,
     .report,
+    .blockCreator,
     .edit,
     .delete
 ]

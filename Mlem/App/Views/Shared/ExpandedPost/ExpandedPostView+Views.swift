@@ -54,6 +54,7 @@ extension ExpandedPostView {
                     }
                     .quickSwipes(comment: comment, configuration: commentInteractionBar)
                     .contextMenu(comment: comment)
+                    .popupAnchor()
                     .paletteBorder(cornerRadius: Constants.main.standardSpacing)
                     .transition(.move(edge: .top).combined(with: .opacity))
                     .zIndex(1000 - Double(comment.depth))
