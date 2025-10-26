@@ -35,10 +35,10 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension VoteAction {
-    static let upvoteLabel: ActionLabel = .init("Upvote", icon: .lemmy.addUpvote.representingState(active: false))
-    static let downvoteLabel: ActionLabel = .init("Downvote", icon: .lemmy.addDownvote.representingState(active: false))
-    static let removeUpvoteLabel: ActionLabel = .init("Undo Upvote", icon: .lemmy.removeUpvote.representingState(active: false))
-    static let removeDownvoteLabel: ActionLabel = .init("Undo Downvote", icon: .lemmy.removeDownvote.representingState(active: false))
+    static let upvoteLabel: ActionLabel = .init("Upvote", icon: .lemmy.upvoted.representingState(active: false))
+    static let downvoteLabel: ActionLabel = .init("Downvote", icon: .lemmy.downvoted.representingState(active: false))
+    static let removeUpvoteLabel: ActionLabel = .init("Upvoted", icon: .lemmy.upvoted.representingState(active: true))
+    static let removeDownvoteLabel: ActionLabel = .init("Downvoted", icon: .lemmy.downvoted.representingState(active: true))
     
     static var label: ActionLabel { upvoteLabel }
 
