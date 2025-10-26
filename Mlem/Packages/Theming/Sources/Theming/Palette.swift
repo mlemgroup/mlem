@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@preconcurrency
 public struct Palette {
     public var bordered: Bool
     

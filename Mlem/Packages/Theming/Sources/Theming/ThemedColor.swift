@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 
+@preconcurrency
 public struct ThemedColor: ShapeStyle, Hashable, View, Sendable {
     fileprivate let hashString: String
     
@@ -22,7 +23,7 @@ public struct ThemedColor: ShapeStyle, Hashable, View, Sendable {
         resolve(with: palette).gradient
     }
 
-    public func resolve(in environment: EnvironmentValues) -> Color {
+    public nonisolated func resolve(in environment: EnvironmentValues) -> Color {
         resolve(with: environment.palette)
     }
     
@@ -34,12 +35,12 @@ public struct ThemedColor: ShapeStyle, Hashable, View, Sendable {
         .init(hashString: hashString, getColor: getColor, opacity: newOpacity)
     }
     
-    public func hash(into hasher: inout Hasher) {
+    public nonisolated func hash(into hasher: inout Hasher) {
         hasher.combine(hashString)
         hasher.combine(opacity)
     }
     
-    public static func == (lhs: Self, rhs: Self) -> Bool {
+    public nonisolated static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.hashValue == rhs.hashValue
     }
 }
