@@ -8,7 +8,6 @@
 import Foundation
 import SwiftUI
 
-@preconcurrency
 public struct ThemedColor: ShapeStyle, Hashable, View, Sendable {
     fileprivate let hashString: String
     
