@@ -5,13 +5,13 @@
 //  Created by Eric Andrews on 2025-10-10.
 //
 
-import SwiftUI
-import MlemMiddleware
-import Theming
 import ComponentViews
-import Nuke
-import Media
 import Haptics
+import Media
+import MlemMiddleware
+import Nuke
+import SwiftUI
+import Theming
 
 struct ExportablePostEditorView: View {
     @Environment(NavigationLayer.self) var navigation
@@ -127,7 +127,7 @@ struct ExportablePostEditorView: View {
     @ViewBuilder
     var shareButton: some View {
         if let imageData = snapshot?.pngData(),
-        let fileUrl = createTempFile(data: imageData, fileName: "post.png") {
+           let fileUrl = createTempFile(data: imageData, fileName: "post.png") {
             ShareLink(item: fileUrl)
                 .padding(Constants.main.standardSpacing)
                 .contentShape(.rect)
