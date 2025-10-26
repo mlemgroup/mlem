@@ -88,7 +88,7 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
         TabReselectTracker.main.reset() // reset to prevent unconsumed actions from blocking the reselect flag
         if tabBarController.selectedViewController === viewController,
            let item = viewController as? CustomTabViewHostingController {
-            log.debug("\(item.item.title) tab re-selected")
+            log.trace("\(item.item.title) tab re-selected")
             TabReselectTracker.main.signal()
         }
         selectedIndexBinding = viewControllers?.firstIndex(of: viewController) ?? 0

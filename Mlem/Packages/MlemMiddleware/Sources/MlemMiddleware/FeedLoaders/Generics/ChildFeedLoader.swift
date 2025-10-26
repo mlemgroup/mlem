@@ -42,11 +42,11 @@ public class ChildFeedLoader<Item: FeedLoadable>: StandardFeedLoader<Item> {
             return items[safeIndex: stream.cursor]?.sortVal(sortType: sortType)
         } else {
             if loadingState == .done {
-                log.debug("[\(Self.self)] done loading")
+                log.trace("[\(Self.self)] done loading")
                 return nil
             }
             
-            log.debug("[\(Self.self)] out of items (\(self.items.count)), loading more")
+            log.trace("[\(Self.self)] out of items (\(self.items.count)), loading more")
             try await loadMoreItems()
             
             if stream.cursor >= items.count {
@@ -55,7 +55,7 @@ public class ChildFeedLoader<Item: FeedLoadable>: StandardFeedLoader<Item> {
                 return nil
             }
             
-            log.debug("[\(Self.self)] fetched more items (\(self.items.count))")
+            log.trace("[\(Self.self)] fetched more items (\(self.items.count))")
             return items[stream.cursor].sortVal(sortType: sortType)
         }
     }

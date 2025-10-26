@@ -39,16 +39,16 @@ actor LoadingActor<Item: FeedLoadable> {
     /// - Returns: on success, .success with FetchResponse containing loaded items; if another load is underway, .ignored; if the load is cancelled, .cancelled
     func load(_ callback: @escaping (LoadingResponse<Item>) async -> Void) async throws {
         guard !done else {
-            log.debug("[\(Self.self)] ignoring request, finished loading")
+            log.trace("[\(Self.self)] ignoring request, finished loading")
             return
         }
         
         // if already loading something, ignore the request
         if let loadingTask {
-            log.debug("[\(Self.self)] ignoring request, load underway")
+            log.trace("[\(Self.self)] ignoring request, load underway")
             // return .ignored
             _ = try await loadingTask.result.get()
-            log.debug("[\(Self.self)] preexisting load finished, returning")
+            log.trace("[\(Self.self)] preexisting load finished, returning")
             return
         }
         
@@ -100,10 +100,10 @@ actor LoadingActor<Item: FeedLoadable> {
             
             switch response {
             case let .success(items):
-                log.debug("[\(Self.self)] received success (\(items.count))")
+                log.trace("[\(Self.self)] received success (\(items.count))")
                 newItems.append(contentsOf: filter.filter(items))
             case let .done(items):
-                log.debug("[\(Self.self)] received finished (\(items.count))")
+                log.trace("[\(Self.self)] received finished (\(items.count))")
                 newItems.append(contentsOf: filter.filter(items))
                 return .done(newItems)
             case .cancelled, .ignored:

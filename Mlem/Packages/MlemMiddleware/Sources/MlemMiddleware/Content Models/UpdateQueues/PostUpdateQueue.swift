@@ -67,7 +67,7 @@ public actor PostUpdateQueue {
         await semaphore.wait()
         defer {
             semaphore.signal()
-            log.debug("Upgrade complete")
+            log.trace("Upgrade complete")
         }
         log.debug("Beginning upgrade")
         
@@ -89,7 +89,7 @@ public actor PostUpdateQueue {
         await semaphore.wait()
         defer {
             semaphore.signal()
-            log.debug("Finished executing queue")
+            log.trace("Finished executing queue")
         }
         log.debug("Executing queue")
         
@@ -105,7 +105,7 @@ public actor PostUpdateQueue {
             return
         }
         while let task = queue.next() {
-            log.debug("Found next task")
+            log.trace("Found next task")
             do {
                 let snapshot: any PostSnapshotProviding
                 switch task {
@@ -131,7 +131,7 @@ public actor PostUpdateQueue {
     }
     
     private func updateParent(_ parent: any Post1Providing, with snapshot: any PostSnapshotProviding) async {
-        log.debug("Updating parent")
+        log.trace("Updating parent")
         await parent.snapshotUpdate(with: snapshot)
     }
 }

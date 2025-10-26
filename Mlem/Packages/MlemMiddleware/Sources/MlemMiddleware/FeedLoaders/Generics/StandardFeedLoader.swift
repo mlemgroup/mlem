@@ -32,7 +32,7 @@ public class StandardFeedLoader<Item: FeedLoadable>: FeedLoading {
     @MainActor
     func setLoading(_ newState: FeedLoadingState) {
         loadingState = newState
-        log.debug("[\(Self.self)] set loading state to \(String(describing: newState))")
+        log.trace("[\(Self.self)] set loading state to \(String(describing: newState))")
     }
     
     /// Sets the items to a new array

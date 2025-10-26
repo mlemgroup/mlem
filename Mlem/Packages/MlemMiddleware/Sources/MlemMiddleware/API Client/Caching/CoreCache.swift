@@ -38,7 +38,7 @@ open class CoreCache<Content: CacheIdentifiable & AnyObject> {
         }
         
         public func remove(_ cacheId: Int) {
-            log.debug("Removed \(cacheId)")
+            log.trace("Removed \(cacheId)")
             cachedItems.value[cacheId] = nil
         }
         

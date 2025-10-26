@@ -65,7 +65,7 @@ public actor InboxNotificationUpdateQueue {
         await semaphore.wait()
         defer {
             semaphore.signal()
-            log.debug("Finished executing queue")
+            log.trace("Finished executing queue")
         }
         log.debug("Executing queue")
         
@@ -79,7 +79,7 @@ public actor InboxNotificationUpdateQueue {
             return
         }
         while let task = queue.next() {
-            log.debug("Found next task")
+            log.trace("Found next task")
             do {
                 let snapshot: InboxNotificationSnapshot
                 switch task {

@@ -258,13 +258,13 @@ struct QuickSwipeViewModifier: ViewModifier {
         switch edge {
         case .leading:
             if thresholdIndex > (config.leadingActions.endIndex - 1) {
-                log.debug("leading action not configured for this threshold")
+                log.trace("leading action not configured for this threshold")
                 return config.leadingActions.endIndex - 1
             }
             return thresholdIndex
         case .trailing:
             if thresholdIndex > (config.trailingActions.endIndex - 1) {
-                log.debug("trailing action not configured for this threshold")
+                log.trace("trailing action not configured for this threshold")
                 return config.trailingActions.endIndex - 1
             }
             return thresholdIndex

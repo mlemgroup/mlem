@@ -112,7 +112,7 @@ struct CommentEditorView: View {
             // If we didn't have the `isAlive` check here, the images would
             // get deleted when you click on a link in the reply context
             if !navigation.isAlive, !sending, !uploadHistory.uploads.isEmpty {
-                log.debug("Deleting uploaded images...")
+                log.trace("Deleting uploaded images...")
                 uploadHistory.deleteAll()
             }
         }
