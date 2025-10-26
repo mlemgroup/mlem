@@ -5,8 +5,8 @@
 //  Created by Eric Andrews on 2025-09-24.
 //
 
-import SwiftUI
 import MlemMiddleware
+import SwiftUI
 
 struct ExportablePostView: View {
     @Setting(\.appearance_palette) var colorPalette
