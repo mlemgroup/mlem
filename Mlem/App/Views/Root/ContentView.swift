@@ -76,13 +76,13 @@ struct ContentView: View {
                 .environment(errorsTracker)
                 .environment(expandedPostHistoryTracker)
                 .environment(backendClient)
+                .environment(ToastModel.main)
                 .quickSwipesDisabled(!quickSwipesEnabled)
                 .quickSwipeThresholds(primary: 60, secondary: 150, tertiary: 240)
                 .quickSwipeMinimumDrag(20)
                 .quickSwipeCornerRadius(Constants.main.standardSpacing)
                 .quickSwipeIconSize(28)
                 .task(id: BackendClient.main.environment) {
-                    print("DEBUG loading instances")
                     do {
                         try await MlemStats.main.loadInstances()
                     } catch {

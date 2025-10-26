@@ -167,7 +167,7 @@ extension InstanceStubProviding {
                 icon: Icons.browser
             ),
             callback: {
-                openRegularLink(url: self.actorId.url)
+                openLinkAsWebsite(url: self.actorId.url)
             }
         )
     }

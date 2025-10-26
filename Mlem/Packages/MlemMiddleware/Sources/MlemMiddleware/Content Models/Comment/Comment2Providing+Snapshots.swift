@@ -18,6 +18,7 @@ extension Comment2Providing {
     
     @MainActor
     func snapshot2Update(with snapshot: Comment2Snapshot) {
+        comment2.setIfChanged(\.votes, snapshot.votes)
         comment2.setIfChanged(\.creatorIsModerator, snapshot.creatorIsModerator)
         comment2.setIfChanged(\.creatorIsAdmin, snapshot.creatorIsAdmin)
         comment1.snapshot1Update(with: snapshot.comment)

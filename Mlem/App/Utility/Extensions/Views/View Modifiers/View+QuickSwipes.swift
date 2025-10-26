@@ -36,14 +36,14 @@ extension View {
     func quickSwipes(post: any Post, configuration: PostBarConfiguration) -> some View {
         modifier(
             QuickSwipeEnvironmentReaderViewModifier { environment in
-                guard let navigation = environment.navigation, let appState = environment.appState else {
+                guard let navigation = environment.navigation else {
                     assertionFailure()
                     return .init()
                 }
                 return .init(
                     leadingActions: configuration.leadingSwipes.compactMap {
                         post.action(
-                            appState: appState,
+                            appState: environment.appState,
                             navigation: navigation,
                             type: $0,
                             commentTreeTracker: environment.commentTreeTracker
@@ -51,7 +51,7 @@ extension View {
                     }.compactMap(QuickSwipeAction.init),
                     trailingActions: configuration.trailingSwipes.compactMap {
                         post.action(
-                            appState: appState,
+                            appState: environment.appState,
                             navigation: navigation,
                             type: $0,
                             commentTreeTracker: environment.commentTreeTracker
@@ -66,14 +66,14 @@ extension View {
     func quickSwipes(comment: any Comment, configuration: CommentBarConfiguration) -> some View {
         modifier(
             QuickSwipeEnvironmentReaderViewModifier { environment in
-                guard let navigation = environment.navigation, let appState = environment.appState else {
+                guard let navigation = environment.navigation else {
                     assertionFailure()
                     return .init()
                 }
                 return .init(
                     leadingActions: configuration.leadingSwipes.compactMap {
                         comment.action(
-                            appState: appState,
+                            appState: environment.appState,
                             type: $0,
                             navigation: navigation,
                             commentTreeTracker: environment.commentTreeTracker
@@ -81,7 +81,7 @@ extension View {
                     }.compactMap(QuickSwipeAction.init),
                     trailingActions: configuration.trailingSwipes.compactMap {
                         comment.action(
-                            appState: appState,
+                            appState: environment.appState,
                             type: $0,
                             navigation: navigation,
                             commentTreeTracker: environment.commentTreeTracker
@@ -96,16 +96,16 @@ extension View {
     func quickSwipes(reply: any Reply, configuration: ReplyBarConfiguration) -> some View {
         modifier(
             QuickSwipeEnvironmentReaderViewModifier { environment in
-                guard environment.navigation != nil, let appState = environment.appState else {
+                guard environment.navigation != nil else {
                     assertionFailure()
                     return .init()
                 }
                 return .init(
                     leadingActions: configuration.leadingSwipes.compactMap {
-                        reply.action(appState: appState, type: $0)
+                        reply.action(appState: environment.appState, type: $0)
                     }.compactMap(QuickSwipeAction.init),
                     trailingActions: configuration.trailingSwipes.compactMap {
-                        reply.action(appState: appState, type: $0)
+                        reply.action(appState: environment.appState, type: $0)
                     }.compactMap(QuickSwipeAction.init)
                 )
             }

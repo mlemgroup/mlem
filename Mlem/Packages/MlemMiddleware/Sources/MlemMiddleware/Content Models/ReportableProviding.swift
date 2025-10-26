@@ -7,6 +7,6 @@
 
 import Foundation
 
-public protocol ReportableProviding: ContentIdentifiable {
+public protocol ReportableProviding: OwnershipProviding {
     func report(reason: String) async throws
 }
