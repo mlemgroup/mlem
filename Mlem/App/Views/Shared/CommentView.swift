@@ -178,7 +178,19 @@ struct CommentView<EmbeddedContent: View>: View {
                     )
                 }
             case .divider:
-                EllipsisMenu(size: 24, comment: comment)
+                if reportContext != nil {
+                    EllipsisMenu(size: 24) {
+                        comment.allMenuActions(
+                            appState: appState,
+                            showAllActions: !inFeed,
+                            navigation: navigation,
+                            commentTreeTracker: commentTreeTracker,
+                            report: reportContext
+                        )
+                    }
+                } else {
+                    EllipsisMenu(size: 24, comment: comment)
+                }
             }
         }
     }
