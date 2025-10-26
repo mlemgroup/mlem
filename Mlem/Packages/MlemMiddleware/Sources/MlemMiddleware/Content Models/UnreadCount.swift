@@ -6,9 +6,12 @@
 //
 
 import Foundation
+import os
 
 @Observable
 public final class UnreadCount {
+    internal let log: Logger = .mlemLogger()
+    
     public let api: ApiClient
     
     var verifiedCount: [InboxItemType: Int] = .init()
@@ -101,7 +104,7 @@ public final class UnreadCount {
             if !alwaysMakeCalls, self.api.username != nil, self.api.myPerson == nil || self.api.myInstance == nil {
                 // The theoretical solution to this is to store the moderated
                 // community IDs in `ApiClient.Context` and `await` them here.
-                print("Warning: ApiClient.myPerson or ApiClient.myInstance is nil at UnreadCount refresh - this may lead to unneeded API calls")
+                log.warning("ApiClient.myPerson or ApiClient.myInstance is nil at UnreadCount refresh - this may lead to unneeded API calls")
             }
             
             if try await self.api.supports(.viewReports) {

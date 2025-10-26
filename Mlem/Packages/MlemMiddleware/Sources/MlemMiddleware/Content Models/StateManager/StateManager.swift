@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import os
 
 // These can't go inside of StateManager because generic classes cannot store static properties
 class SemaphoreServer {
@@ -57,6 +58,8 @@ struct StateManagerTicket<Value: Equatable>: StateManagerTickerProtocol {
 /// `lastVerifiedValue`.
 @Observable
 public class StateManager<Value: Equatable> {
+    internal let log: Logger = .mlemLogger()
+    
     /// Underlying state-faked wrapped value
     private(set) var wrappedValue: Value
     
@@ -94,14 +97,14 @@ public class StateManager<Value: Equatable> {
     func beginOperation(expectedResult: Value, semaphore: UInt? = nil) -> UInt {
         let semaphore = semaphore ?? SemaphoreServer.next()
         lastSemaphore = semaphore
-        print("DEBUG [\(semaphore)] began operation.")
+        log.debug("[\(semaphore)] began operation.")
         if lastVerifiedValue == nil {
-            print("DEBUG [\(semaphore)] Set lastVerifiedValue to \(wrappedValue).")
+            log.debug("[\(semaphore)] Set lastVerifiedValue to \(String(describing: self.wrappedValue)).")
             lastVerifiedValue = wrappedValue
         }
         if wrappedValue != expectedResult {
             wrappedValue = expectedResult
-            print("DEBUG [\(semaphore)] Set wrappedValue to \(expectedResult).")
+            log.debug("[\(semaphore)] Set wrappedValue to \(String(describing: expectedResult)).")
             onSet(expectedResult, .begin, semaphore)
         }
         return lastSemaphore
@@ -121,7 +124,7 @@ public class StateManager<Value: Equatable> {
         }
         
         if lastSemaphore == semaphore {
-            print("DEBUG [\(semaphore?.description ?? "nil")] is the last caller! Resetting lastVerifiedValue.")
+            log.debug("[\(semaphore?.description ?? "nil")] is the last caller! Resetting lastVerifiedValue.")
             onVerify(newState, semaphore)
             lastVerifiedValue = nil
             return true
@@ -130,7 +133,7 @@ public class StateManager<Value: Equatable> {
         if lastVerifiedValue != newState {
             lastVerifiedValue = newState
             if semaphore != nil {
-                print("DEBUG [\(semaphore?.description ?? "nil")] is not the last caller! Updating lastVerifiedValue to \(wrappedValue).")
+                log.debug("[\(semaphore?.description ?? "nil")] is not the last caller! Updating lastVerifiedValue to \(String(describing: self.wrappedValue)).")
             }
         }
         return false
@@ -140,7 +143,7 @@ public class StateManager<Value: Equatable> {
     @discardableResult
     func rollback(semaphore: UInt) -> Value? {
         if lastSemaphore == semaphore, let lastVerifiedValue {
-            print("DEBUG [\(semaphore)] is the most recent caller! Resetting lastVerifiedValue.")
+            log.debug("[\(semaphore)] is the most recent caller! Resetting lastVerifiedValue.")
             if wrappedValue != lastVerifiedValue {
                 wrappedValue = lastVerifiedValue
                 onSet(lastVerifiedValue, .rollback, semaphore)
@@ -148,7 +151,7 @@ public class StateManager<Value: Equatable> {
             defer { self.lastVerifiedValue = nil }
             return lastVerifiedValue
         } else {
-            print("DEBUG [\(semaphore)] is not the most recent caller or vote state nil.")
+            log.debug("[\(semaphore)] is not the most recent caller or vote state nil.")
             return nil
         }
     }
@@ -166,8 +169,7 @@ public class StateManager<Value: Equatable> {
                 try await operation(semaphore)
                 return .succeeded
             } catch {
-                print("DEBUG [\(semaphore)] failed!")
-                print(error)
+                log.error("Semaphore failed: \(error.localizedDescription)")
                 if let newValue = self.rollback(semaphore: semaphore) {
                     onRollback(newValue)
                 }
@@ -197,8 +199,7 @@ func groupStateRequest(
             try await operation(semaphore)
             return .succeeded
         } catch {
-            print("DEBUG [\(semaphore)] failed!")
-            print(error)
+            Logger.universal.error("StateManager [\(semaphore)] failed: \(error.localizedDescription)")
             for ticket in tickets {
                 ticket.rollback(semaphore: semaphore)
             }

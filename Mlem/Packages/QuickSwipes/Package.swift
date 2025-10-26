@@ -16,7 +16,8 @@ let package = Package(
     dependencies: [
         .package(path: "../Theming"),
         .package(path: "../ComponentViews"),
-        .package(path: "../Icons")
+        .package(path: "../Icons"),
+        .package(path: "../MlemLogger")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -26,7 +27,8 @@ let package = Package(
             dependencies: [
                 .byName(name: "Theming"),
                 .byName(name: "ComponentViews"),
-                .byName(name: "Icons")
+                .byName(name: "Icons"),
+                .byName(name: "MlemLogger")
             ],
             swiftSettings: [
                 .swiftLanguageMode(.v5),

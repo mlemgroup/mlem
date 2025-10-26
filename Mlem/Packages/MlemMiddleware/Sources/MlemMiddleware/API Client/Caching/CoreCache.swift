@@ -7,6 +7,8 @@
 
 import Foundation
 import Semaphore
+import MlemLogger
+import os
 
 /// Class providing common caching behavior
 open class CoreCache<Content: CacheIdentifiable & AnyObject> {
@@ -17,6 +19,8 @@ open class CoreCache<Content: CacheIdentifiable & AnyObject> {
     }
     
     public class ItemCache {
+        private let log: Logger = .mlemLogger()
+        
         private var cachedItems: Atomic<[Int: WeakReference<Content>]> = .init(.init())
         private let cleaningSemaphore: AsyncSemaphore = .init(value: 1)
         
@@ -34,7 +38,7 @@ open class CoreCache<Content: CacheIdentifiable & AnyObject> {
         }
         
         public func remove(_ cacheId: Int) {
-            // print("Removed \(cacheId)")
+            log.debug("Removed \(cacheId)")
             cachedItems.value[cacheId] = nil
         }
         

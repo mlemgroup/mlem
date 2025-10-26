@@ -10,9 +10,13 @@ import Haptics
 import Icons
 import SwiftUI
 import Theming
+import MlemLogger
+import os
 
 // swiftlint:disable:next type_body_length
 struct QuickSwipeViewModifier: ViewModifier {
+    internal let log: Logger = .mlemLogger()
+    
     @Environment(HapticManager.self) var hapticManager
     @Environment(\.palette) var palette
     
@@ -255,13 +259,13 @@ struct QuickSwipeViewModifier: ViewModifier {
         switch edge {
         case .leading:
             if thresholdIndex > (config.leadingActions.endIndex - 1) {
-                print(#function, "leading action not configured for this threshold")
+                log.debug("leading action not configured for this threshold")
                 return config.leadingActions.endIndex - 1
             }
             return thresholdIndex
         case .trailing:
             if thresholdIndex > (config.trailingActions.endIndex - 1) {
-                print(#function, "trailing action not configured for this threshold")
+                log.debug("trailing action not configured for this threshold")
                 return config.trailingActions.endIndex - 1
             }
             return thresholdIndex

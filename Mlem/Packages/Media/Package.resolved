@@ -1,6 +1,15 @@
 {
-  "originHash" : "433eb46e437fba071b47444bcf712c57872e1973de4812d146c7db18e50834e2",
+  "originHash" : "9f566dd1a015f0bc4788be19b84e8a555f2d5656e28b7614517b9d04c3ddb2ba",
   "pins" : [
+    {
+      "identity" : "collectionconcurrencykit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/JohnSundell/CollectionConcurrencyKit.git",
+      "state" : {
+        "revision" : "b4f23e24b5a1bff301efc5e70871083ca029ff95",
+        "version" : "0.2.0"
+      }
+    },
     {
       "identity" : "libwebp-xcode",
       "kind" : "remoteSourceControl",
@@ -35,6 +44,15 @@
       "state" : {
         "revision" : "f534cfe830a7807ecc3d0332127a502426cfa067",
         "version" : "0.14.6"
+      }
+    },
+    {
+      "identity" : "semaphore",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/groue/Semaphore.git",
+      "state" : {
+        "revision" : "2543679282aa6f6c8ecf2138acd613ed20790bc2",
+        "version" : "0.1.0"
       }
     }
   ],
