@@ -12,6 +12,7 @@ import Nuke
 import QuickSwipes
 import SwiftUI
 import Theming
+import os
 
 struct ContentView: View {
     @Environment(\.scenePhase) var scenePhase
@@ -48,6 +49,7 @@ struct ContentView: View {
         if appState.appRefreshToggle {
             content
                 .task(id: avatarRefreshHash) {
+                    Logger.dev.info("CI Test :)")
                     avatarImage = nil
                     selectedAvatarImage = nil
                     if let url = appState.firstAccount.avatar {
