@@ -48,7 +48,13 @@ struct FeedCommentView<EmbeddedContent: View>: View {
                 comment: comment,
                 configuration: interactionBarConfiguration
             )
-            .contextMenu(comment: comment)
+            .contextMenu { comment.allMenuActions(
+                appState: appState,
+                showAllActions: false,
+                navigation: navigation,
+                commentTreeTracker: commentTreeTracker,
+                report: reportContext
+            ) }
             .paletteBorder(cornerRadius: postSize.cornerRadius)
     }
     
