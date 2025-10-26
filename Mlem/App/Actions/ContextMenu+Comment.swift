@@ -20,7 +20,10 @@ private let seeds: [ActionSeed] = [
     .report,
     .blockCreator,
     .edit,
-    .delete,
+    .delete
+]
+
+private let moderationSeeds: [ActionSeed] = [
     .viewVotes,
     .remove,
     .banCreator,
@@ -60,5 +63,10 @@ struct CommentEllipsisMenuContent: View {
             }
         }
         .controlGroupStyle(.compactMenu)
+        Section {
+            ActionButtons { _ in
+                moderationSeeds.compactMap { $0.createAction(comment) }
+            }
+        }
     }
 }

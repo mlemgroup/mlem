@@ -153,7 +153,8 @@ struct CommentView<EmbeddedContent: View>: View {
             if comment.shouldShowLoadingSymbol(for: commentInteractionBar) {
                 ProgressView()
             }
-            if moderatorActionGrouping == .separateMenu {
+            switch moderatorActionGrouping {
+            case .separateMenu:
                 if comment.canModerate {
                     EllipsisMenu(icon: .lemmy.moderation, size: 24) {
                         comment.moderatorMenuActions(appState: appState, showAllActions: !inFeed, report: reportContext)
@@ -166,7 +167,17 @@ struct CommentView<EmbeddedContent: View>: View {
                         commentTreeTracker: commentTreeTracker
                     )
                 }
-            } else {
+            case .disclosureGroup:
+                EllipsisMenu(size: 24) {
+                    comment.allMenuActions(
+                        appState: appState,
+                        showAllActions: !inFeed,
+                        navigation: navigation,
+                        commentTreeTracker: commentTreeTracker,
+                        report: reportContext
+                    )
+                }
+            case .divider:
                 EllipsisMenu(size: 24, comment: comment)
             }
         }
