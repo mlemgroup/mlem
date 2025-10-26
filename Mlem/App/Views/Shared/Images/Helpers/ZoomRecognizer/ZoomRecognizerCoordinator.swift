@@ -95,7 +95,7 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
         case .ended, .cancelled:
             endPinch(gesture: gesture)
         case .failed:
-            log.trace("Pinch gesture failed")
+            log.debug("Pinch gesture failed")
         default:
             assertionFailure("Unknown state")
         }

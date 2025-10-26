@@ -12,7 +12,7 @@ import MlemLogger
 
 extension URLRequest {
     /// Prints this URLRequest in human-readable form
-    func trace() {
+    func debug() {
         let statement: String = """
         \(httpMethod!) \(url!)
         "Headers:"
@@ -20,6 +20,6 @@ extension URLRequest {
         "Body:"
         \(String(data: httpBody ?? Data(), encoding: .utf8)!)
         """
-        Logger.universal.trace("\(statement)")
+        Logger.universal.debug("\(statement)")
     }
 }

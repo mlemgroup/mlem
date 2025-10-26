@@ -65,9 +65,9 @@ public actor InboxNotificationUpdateQueue {
         await semaphore.wait()
         defer {
             semaphore.signal()
-            log.trace("Finished executing queue")
+            log.debug("Finished executing queue")
         }
-        log.debug("Executing queue")
+        log.info("Executing queue")
         
         guard let parent else {
             assertionFailure("Cannot execute queue with no parent!")
@@ -79,7 +79,7 @@ public actor InboxNotificationUpdateQueue {
             return
         }
         while let task = queue.next() {
-            log.trace("Found next task")
+            log.debug("Found next task")
             do {
                 let snapshot: InboxNotificationSnapshot
                 switch task {

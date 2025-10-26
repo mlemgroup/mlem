@@ -67,9 +67,9 @@ public actor PostUpdateQueue {
         await semaphore.wait()
         defer {
             semaphore.signal()
-            log.trace("Upgrade complete")
+            log.debug("Upgrade complete")
         }
-        log.debug("Beginning upgrade")
+        log.info("Beginning upgrade")
         
         let (snapshot, post) = try await task()
         lastVerifiedSnapshot = snapshot
@@ -89,9 +89,9 @@ public actor PostUpdateQueue {
         await semaphore.wait()
         defer {
             semaphore.signal()
-            log.trace("Finished executing queue")
+            log.debug("Finished executing queue")
         }
-        log.debug("Executing queue")
+        log.info("Executing queue")
         
         // assigning this here ensures parent stays in scope for the duration of the queue. For operations that remove the post
         // (e.g., hide), if the call is slow, the parent might go out of scope before it returns; this in turn breaks the undo behavior
@@ -105,7 +105,7 @@ public actor PostUpdateQueue {
             return
         }
         while let task = queue.next() {
-            log.trace("Found next task")
+            log.debug("Found next task")
             do {
                 let snapshot: any PostSnapshotProviding
                 switch task {
@@ -131,7 +131,7 @@ public actor PostUpdateQueue {
     }
     
     private func updateParent(_ parent: any Post1Providing, with snapshot: any PostSnapshotProviding) async {
-        log.trace("Updating parent")
+        log.debug("Updating parent")
         await parent.snapshotUpdate(with: snapshot)
     }
 }

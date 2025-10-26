@@ -39,16 +39,16 @@ actor LoadingActor<Item: FeedLoadable> {
     /// - Returns: on success, .success with FetchResponse containing loaded items; if another load is underway, .ignored; if the load is cancelled, .cancelled
     func load(_ callback: @escaping (LoadingResponse<Item>) async -> Void) async throws {
         guard !done else {
-            log.trace("[\(Self.self)] ignoring request, finished loading")
+            log.debug("[\(Self.self)] ignoring request, finished loading")
             return
         }
         
         // if already loading something, ignore the request
         if let loadingTask {
-            log.trace("[\(Self.self)] ignoring request, load underway")
+            log.debug("[\(Self.self)] ignoring request, load underway")
             // return .ignored
             _ = try await loadingTask.result.get()
-            log.trace("[\(Self.self)] preexisting load finished, returning")
+            log.debug("[\(Self.self)] preexisting load finished, returning")
             return
         }
         
@@ -66,7 +66,7 @@ actor LoadingActor<Item: FeedLoadable> {
         }
         
         _ = try await loadingTask.result.get()
-        log.debug("[\(Self.self)] finished loading")
+        log.info("[\(Self.self)] finished loading")
     }
     
     @discardableResult
@@ -100,14 +100,14 @@ actor LoadingActor<Item: FeedLoadable> {
             
             switch response {
             case let .success(items):
-                log.trace("[\(Self.self)] received success (\(items.count))")
+                log.debug("[\(Self.self)] received success (\(items.count))")
                 newItems.append(contentsOf: filter.filter(items))
             case let .done(items):
-                log.trace("[\(Self.self)] received finished (\(items.count))")
+                log.debug("[\(Self.self)] received finished (\(items.count))")
                 newItems.append(contentsOf: filter.filter(items))
                 return .done(newItems)
             case .cancelled, .ignored:
-                log.debug("[\(Self.self)] load did not complete (\(response.description))")
+                log.info("[\(Self.self)] load did not complete (\(response.description))")
                 break fetchLoop
             }
         } while newItems.count < MiddlewareConstants.infiniteLoadThresholdOffset

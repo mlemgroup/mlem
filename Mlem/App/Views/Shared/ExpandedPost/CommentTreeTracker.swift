@@ -71,7 +71,7 @@ class CommentTreeTracker: Hashable {
                 if let ensuredComment = ensuredComment as? any Comment, ensuredComment.api == api {
                     comment = ensuredComment
                 } else if let ensuredComment = ensuredComment as? CommentStub {
-                    log.debug("Resolving comment")
+                    log.info("Resolving comment")
                     comment = try await api.getComment(url: ensuredComment.resolvableUrl)
                 } else {
                     assertionFailure()

@@ -97,14 +97,14 @@ public class StateManager<Value: Equatable> {
     func beginOperation(expectedResult: Value, semaphore: UInt? = nil) -> UInt {
         let semaphore = semaphore ?? SemaphoreServer.next()
         lastSemaphore = semaphore
-        log.trace("[\(semaphore)] began operation.")
+        log.debug("[\(semaphore)] began operation.")
         if lastVerifiedValue == nil {
-            log.trace("[\(semaphore)] Set lastVerifiedValue to \(String(describing: self.wrappedValue)).")
+            log.debug("[\(semaphore)] Set lastVerifiedValue to \(String(describing: self.wrappedValue)).")
             lastVerifiedValue = wrappedValue
         }
         if wrappedValue != expectedResult {
             wrappedValue = expectedResult
-            log.trace("[\(semaphore)] Set wrappedValue to \(String(describing: expectedResult)).")
+            log.debug("[\(semaphore)] Set wrappedValue to \(String(describing: expectedResult)).")
             onSet(expectedResult, .begin, semaphore)
         }
         return lastSemaphore
@@ -124,7 +124,7 @@ public class StateManager<Value: Equatable> {
         }
         
         if lastSemaphore == semaphore {
-            log.trace("[\(semaphore?.description ?? "nil")] is the last caller! Resetting lastVerifiedValue.")
+            log.debug("[\(semaphore?.description ?? "nil")] is the last caller! Resetting lastVerifiedValue.")
             onVerify(newState, semaphore)
             lastVerifiedValue = nil
             return true
@@ -133,7 +133,7 @@ public class StateManager<Value: Equatable> {
         if lastVerifiedValue != newState {
             lastVerifiedValue = newState
             if semaphore != nil {
-                log.trace("[\(semaphore?.description ?? "nil")] is not the last caller! Updating lastVerifiedValue to \(String(describing: self.wrappedValue)).")
+                log.debug("[\(semaphore?.description ?? "nil")] is not the last caller! Updating lastVerifiedValue to \(String(describing: self.wrappedValue)).")
             }
         }
         return false
@@ -143,7 +143,7 @@ public class StateManager<Value: Equatable> {
     @discardableResult
     func rollback(semaphore: UInt) -> Value? {
         if lastSemaphore == semaphore, let lastVerifiedValue {
-            log.trace("[\(semaphore)] is the most recent caller! Resetting lastVerifiedValue.")
+            log.debug("[\(semaphore)] is the most recent caller! Resetting lastVerifiedValue.")
             if wrappedValue != lastVerifiedValue {
                 wrappedValue = lastVerifiedValue
                 onSet(lastVerifiedValue, .rollback, semaphore)
@@ -151,7 +151,7 @@ public class StateManager<Value: Equatable> {
             defer { self.lastVerifiedValue = nil }
             return lastVerifiedValue
         } else {
-            log.trace("[\(semaphore)] is not the most recent caller or vote state nil.")
+            log.debug("[\(semaphore)] is not the most recent caller or vote state nil.")
             return nil
         }
     }

@@ -43,7 +43,7 @@ class ToastModel {
             if let index = toasts.firstIndex(where: { $0.id == id }) {
                 toasts.remove(at: index)
             } else {
-                log.debug("No Toast Index")
+                log.info("No Toast Index")
             }
         }
     }
