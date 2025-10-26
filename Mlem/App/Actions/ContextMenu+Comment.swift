@@ -27,7 +27,8 @@ private let moderationSeeds: [ActionSeed] = [
     .viewVotes,
     .remove,
     .banCreator,
-    .purge
+    .purge,
+    .purgeCreator
 ]
 
 extension View {
