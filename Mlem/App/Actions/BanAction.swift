@@ -11,6 +11,22 @@ import SwiftUI
 
 struct BanAction: ConfigurableAction {
     let entity: any Person1Providing
+
+    var canBanFromInstance: Bool {
+        entity.api.isAdmin && entity.api.supports(.banFromInstance, defaultValue: false)
+    }
+
+    func canBanFromCommunity(community: (any Community1Providing)?) -> Bool {
+        let supportedByApi = entity.api.supports(.banFromCommunity, defaultValue: false) && (
+            entity.apiIsLocal || entity.api.supports(.banFromNonLocalCommunity, defaultValue: false)
+        )
+
+        guard supportedByApi else { return false }
+        guard let community else { return entity.api.isAdmin }
+        guard let myPerson = entity.api.myPerson else { return false }
+
+        return myPerson.moderates(community: community) || entity.api.isAdmin
+    }
 }
 
 // MARK: - Configurability
@@ -34,23 +50,21 @@ extension BanAction {
 
         let bannedFromCommunity = isBannedFromCommunity(environment: environment)
         let bannedFromInstance = entity.bannedFromInstance
-        let isAdmin = entity.api.isAdmin
+        let canBanFromCommunity = canBanFromCommunity(community: environment.communityContext)
 
-        if isAdmin {
-            switch (bannedFromCommunity, bannedFromInstance) {
-            case (false, false):
-                label = .init("Ban User", icon: .lemmy.banFromInstance, isDestructive: true)
-            case (true, true):
-                label = .init("Unban User", icon: .lemmy.unbanFromInstance)
-            default:
-                label = .init("Ban...", icon: .lemmy.banFromInstance, isDestructive: true)
-            }
-        } else {
-            if bannedFromCommunity {
-                label = .init("Unban User", icon: .lemmy.unbanFromCommunity)
-            } else {
-                label = Self.label
-            }
+        switch (bannedFromCommunity, bannedFromInstance, canBanFromCommunity, canBanFromInstance) {
+        case (false, false, _, true), (true, false, false, true):
+            label = .init("Ban User", icon: .lemmy.banFromInstance, isDestructive: true)
+        case (true, true, _, true), (false, true, false, true):
+            label = .init("Unban User", icon: .lemmy.unbanFromInstance)
+        case (_, _, true, true):
+            label = .init("Ban...", icon: .lemmy.banFromInstance, isDestructive: true)
+        case (true, _, true, false):
+            label = .init("Unban User", icon: .lemmy.unbanFromCommunity)
+        case (false, _, true, false):
+            label = Self.label
+        case (_, _, false, false):
+            return Self.label.withVisibility(.hidden)
         }
 
         return label.withVisibility(visibility(environment))
@@ -77,7 +91,7 @@ extension BanAction {
         let bannedFromCommunity = isBannedFromCommunity(environment: environment)
         let bannedFromInstance = entity.bannedFromInstance
 
-        if entity.api.isAdmin {
+        if canBanFromInstance {
             switch (bannedFromCommunity, bannedFromInstance) {
             case (false, false):
                 return true
