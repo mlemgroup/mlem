@@ -42,12 +42,23 @@ extension EllipsisMenu {
         icon: Icon = .general.menu,
         size: CGFloat,
         comment: any Comment1Providing
-    ) where Content == ActionButtons {
+    ) where Content == CommentEllipsisMenuContent {
         self.icon = icon
         self.size = size
 
-        self.content = ActionButtons { _ in
-            seeds.compactMap { $0.createAction(comment) }
+        self.content = CommentEllipsisMenuContent(comment: comment)
+    }
+}
+
+struct CommentEllipsisMenuContent: View {
+    let comment: any Comment1Providing
+
+    var body: some View {
+        ControlGroup {
+            ActionButtons { _ in
+                seeds.compactMap { $0.createAction(comment) }
+            }
         }
+        .controlGroupStyle(.compactMenu)
     }
 }
