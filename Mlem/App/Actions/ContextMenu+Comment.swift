@@ -23,7 +23,8 @@ private let seeds: [ActionSeed] = [
     .delete,
     .viewVotes,
     .remove,
-    .banCreator
+    .banCreator,
+    .purge
 ]
 
 extension View {
