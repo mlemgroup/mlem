@@ -13,7 +13,7 @@ extension Data {
         if FileManager.default.fileExists(atPath: fileUrl.absoluteString) {
             try FileManager.default.removeItem(at: fileUrl)
         }
-        try self.write(to: fileUrl)
+        try write(to: fileUrl)
         return fileUrl
     }
 }
