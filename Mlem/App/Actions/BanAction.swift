@@ -43,7 +43,7 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension BanAction {
-    static let label: ActionLabel = .init("Ban User", icon: .lemmy.banFromCommunity, isDestructive: true)
+    static let label: ActionLabel = .init("Ban", icon: .lemmy.banFromCommunity, isDestructive: true)
 
     func createLabel(environment: EnvironmentValues) -> ActionLabel {
         let label: ActionLabel
@@ -54,13 +54,13 @@ extension BanAction {
 
         switch (bannedFromCommunity, bannedFromInstance, canBanFromCommunity, canBanFromInstance) {
         case (false, false, _, true), (true, false, false, true):
-            label = .init("Ban User", icon: .lemmy.banFromInstance, isDestructive: true)
+            label = .init("Ban", icon: .lemmy.banFromInstance, isDestructive: true)
         case (true, true, _, true), (false, true, false, true):
-            label = .init("Unban User", icon: .lemmy.unbanFromInstance)
+            label = .init("Unban", icon: .lemmy.unbanFromInstance)
         case (_, _, true, true):
             label = .init("Ban...", icon: .lemmy.banFromInstance, isDestructive: true)
         case (true, _, true, false):
-            label = .init("Unban User", icon: .lemmy.unbanFromCommunity)
+            label = .init("Unban", icon: .lemmy.unbanFromCommunity)
         case (false, _, true, false):
             label = Self.label
         case (_, _, false, false):
