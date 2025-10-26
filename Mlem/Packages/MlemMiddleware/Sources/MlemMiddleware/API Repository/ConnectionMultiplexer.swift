@@ -13,7 +13,7 @@ enum ConnectionMultiplexerError: Error {
 }
 
 class ConnectionMultiplexer<Candidate> {
-    private let log: Logger = .mlemLogger(subsystem: "MlemMiddleware")
+    private let log: Logger = .mlemLogger()
     
     private var ongoingTask: Task<Any, Error>?
     

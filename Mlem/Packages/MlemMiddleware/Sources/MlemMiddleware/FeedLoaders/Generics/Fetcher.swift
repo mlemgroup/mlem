@@ -33,7 +33,7 @@ enum LoadingResponse<Item: FeedLoadable> {
 
 @Observable
 public class Fetcher<Item: FeedLoadable> {
-    internal let log: Logger = .mlemLogger(subsystem: "MlemMiddleware")
+    internal let log: Logger = .mlemLogger()
     
     var api: ApiClient
     var pageSize: Int

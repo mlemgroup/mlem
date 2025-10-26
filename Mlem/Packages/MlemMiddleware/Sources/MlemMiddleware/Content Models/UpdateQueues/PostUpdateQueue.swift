@@ -22,7 +22,7 @@ import os
 /// to be `post2`). If this update is not performed, `parent` may become nil and the queue will refuse to execute. In debug mode this will throw an error,
 /// while in production the queue will simply not run until an item is added when the parent is present.
 public actor PostUpdateQueue {
-    internal let log: Logger = .mlemLogger(subsystem: "MlemMiddleware")
+    internal let log: Logger = .mlemLogger()
     
     weak var parent: (any Post1Providing)?
     

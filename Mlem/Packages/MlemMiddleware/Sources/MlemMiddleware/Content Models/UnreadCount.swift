@@ -10,7 +10,7 @@ import os
 
 @Observable
 public final class UnreadCount {
-    internal let log: Logger = .mlemLogger(subsystem: "MlemMiddleware")
+    internal let log: Logger = .mlemLogger()
     
     public let api: ApiClient
     

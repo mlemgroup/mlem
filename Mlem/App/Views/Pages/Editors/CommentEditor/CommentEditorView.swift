@@ -14,7 +14,7 @@ import Theming
 import os
 
 struct CommentEditorView: View {
-    private let log: Logger = .mlemLogger(subsystem: "Mlem")
+    private let log: Logger = .mlemLogger()
     
     @Environment(AppState.self) var appState
     @Environment(HapticManager.self) var hapticManager

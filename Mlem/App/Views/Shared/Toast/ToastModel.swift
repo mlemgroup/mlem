@@ -10,7 +10,7 @@ import os
 
 @Observable
 class ToastModel {
-    private let log: Logger = .mlemLogger(subsystem: "Mlem")
+    private let log: Logger = .mlemLogger()
     
     private var toasts: [Toast] = .init()
     

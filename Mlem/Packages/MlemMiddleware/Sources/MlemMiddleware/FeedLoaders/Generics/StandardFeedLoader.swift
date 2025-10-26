@@ -12,7 +12,7 @@ import os
 
 @Observable
 public class StandardFeedLoader<Item: FeedLoadable>: FeedLoading {
-    internal let log: Logger = .mlemLogger(subsystem: "MlemMiddleware")
+    internal let log: Logger = .mlemLogger()
     
     public internal(set) var items: [Item] = .init()
     public internal(set) var loadingState: FeedLoadingState = .initial

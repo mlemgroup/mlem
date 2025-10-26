@@ -13,7 +13,7 @@ import MlemLogger
 import os
 
 struct VideoView: View {
-    private let log: Logger = .mlemLogger(subsystem: "Media")
+    private let log: Logger = .mlemLogger()
     
     @Environment(MediaControlState.self) var controlState
     

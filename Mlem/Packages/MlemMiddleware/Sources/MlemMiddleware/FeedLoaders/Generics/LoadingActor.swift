@@ -13,7 +13,7 @@ enum LoadingError: Error {
 }
 
 actor LoadingActor<Item: FeedLoadable> {
-    internal let log: Logger = .mlemLogger(subsystem: "MlemMiddleware")
+    internal let log: Logger = .mlemLogger()
     
     private var done: Bool = false
     private var loadingTask: Task<Void, Error>?

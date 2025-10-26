@@ -14,7 +14,7 @@ enum PanType {
 }
 
 class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
-    private let log: Logger = .mlemLogger(subsystem: "Mlem")
+    private let log: Logger = .mlemLogger()
     
     @Setting(\.a11y_zoomSliderLocation) var zoomSliderLocation
     

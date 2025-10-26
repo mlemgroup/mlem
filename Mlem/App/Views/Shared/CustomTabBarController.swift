@@ -12,7 +12,7 @@ import Theming
 import os
 
 class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
-    private let log: Logger = .mlemLogger(subsystem: "Mlem")
+    private let log: Logger = .mlemLogger()
     
     @Binding var selectedIndexBinding: Int
     let swipeGestureCallback: () -> Void

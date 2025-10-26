@@ -12,7 +12,7 @@ import os
 
 @Observable
 public class ApiClient {
-    internal let log: Logger = .mlemLogger(subsystem: "MlemMiddleware")
+    internal let log: Logger = .mlemLogger()
     
     var repository: ApiRepository
     

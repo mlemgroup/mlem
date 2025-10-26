@@ -58,7 +58,7 @@ struct StateManagerTicket<Value: Equatable>: StateManagerTickerProtocol {
 /// `lastVerifiedValue`.
 @Observable
 public class StateManager<Value: Equatable> {
-    internal let log: Logger = .mlemLogger(subsystem: "MlemMiddleware")
+    internal let log: Logger = .mlemLogger()
     
     /// Underlying state-faked wrapped value
     private(set) var wrappedValue: Value

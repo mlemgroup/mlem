@@ -57,7 +57,7 @@ struct ContentLoader<Content: View, Model: Upgradable>: View {
 
 @Observable @MainActor
 class ContentLoaderProxy<Model: Upgradable> {
-    private let log: Logger = .mlemLogger(subsystem: "Mlem")
+    private let log: Logger = .mlemLogger()
     
     fileprivate enum UpgradeState: String {
         case idle, loading, done, failed

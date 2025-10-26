@@ -11,7 +11,7 @@ import os
 
 @Observable
 class CommentTreeTracker: Hashable {
-    private let log: Logger = .mlemLogger(subsystem: "Mlem")
+    private let log: Logger = .mlemLogger()
     
     enum Root {
         case post(any Post)

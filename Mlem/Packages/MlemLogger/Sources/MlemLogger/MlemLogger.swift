@@ -8,8 +8,9 @@
 import os
 
 public extension Logger {
-    static func mlemLogger(subsystem: String, file: String = #fileID) -> Logger {
-        Logger(subsystem: subsystem, category: file)
+    static func mlemLogger(file: String = #file) -> Logger {
+        let splitFile = file.split(separator: "/")
+        return Logger(subsystem: String(splitFile.first ?? "Unknown"), category: String(splitFile.last ?? "Unknown"))
     }
     
     /// Singleton logger to be used ONLY where access to a relevant specific logger is not available. Use of

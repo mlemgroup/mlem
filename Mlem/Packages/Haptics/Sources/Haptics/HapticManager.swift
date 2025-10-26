@@ -14,7 +14,7 @@ import os
 
 @Observable
 public class HapticManager {
-    private let log: Logger = .mlemLogger(subsystem: "Haptics")
+    private let log: Logger = .mlemLogger()
     
     static let mainInternal: HapticManager = .init()
     

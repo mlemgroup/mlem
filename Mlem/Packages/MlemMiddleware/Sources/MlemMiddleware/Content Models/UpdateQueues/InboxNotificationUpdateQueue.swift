@@ -18,7 +18,7 @@ import os
 /// before the work item is queued.
 ///
 public actor InboxNotificationUpdateQueue {
-    internal let log: Logger = .mlemLogger(subsystem: "MlemMiddleware")
+    internal let log: Logger = .mlemLogger()
     
     weak var parent: InboxNotification?
     

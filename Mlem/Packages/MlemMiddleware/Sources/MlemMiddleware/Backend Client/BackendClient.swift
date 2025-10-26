@@ -22,7 +22,7 @@ public enum BackendEnvironment {
 
 @Observable
 public class BackendClient {
-    internal let log: Logger = .mlemLogger(subsystem: "MlemMiddleware")
+    internal let log: Logger = .mlemLogger()
     
     public private(set) var environment: BackendEnvironment = .prod
     private let jsonDecoder: JSONDecoder = {
