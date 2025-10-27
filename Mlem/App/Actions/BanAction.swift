@@ -9,6 +9,36 @@ import Actions
 import MlemMiddleware
 import SwiftUI
 
+private enum BanScope {
+    case community
+    case instance
+}
+
+private extension Set<BanScope> {
+    static let communityOnly: Set<BanScope> = [.community]
+    static let instanceOnly: Set<BanScope> = [.instance]
+    static let both: Set<BanScope> = [.community, .instance]
+    static let none: Set<BanScope> = []
+}
+
+private struct BanScopePattern {
+    let closure: (Set<BanScope>) -> Bool
+
+    static func ~= (lhs: BanScopePattern, rhs: Set<BanScope>) -> Bool {
+        lhs.closure(rhs)
+    }
+}
+
+private extension BanScopePattern {
+    static func anyContaining(_ value: BanScope) -> BanScopePattern {
+        BanScopePattern { $0.contains(value) }
+    }
+
+    static func anyNotContaining(_ value: BanScope) -> BanScopePattern {
+        BanScopePattern { !$0.contains(value) }
+    }
+}
+
 struct BanAction: ConfigurableAction {
     let entity: any Person1Providing
 
@@ -48,26 +78,57 @@ extension BanAction {
     func createLabel(environment: EnvironmentValues) -> ActionLabel {
         let label: ActionLabel
 
-        let bannedFromCommunity = isBannedFromCommunity(environment: environment)
-        let bannedFromInstance = entity.bannedFromInstance
-        let canBanFromCommunity = canBanFromCommunity(community: environment.communityContext)
+        let appliedBanScopes = getAppliedBanScopes(environment: environment)
+        let actionableBanScopes = getActionableBanScopes(environment: environment)
 
-        switch (bannedFromCommunity, bannedFromInstance, canBanFromCommunity, canBanFromInstance) {
-        case (false, false, _, true), (true, false, false, true):
+        switch (bannedFrom: appliedBanScopes, canBanFrom: actionableBanScopes) {
+        case (bannedFrom: .none, canBanFrom: .both),
+             (bannedFrom: .anyNotContaining(.community), canBanFrom: .instanceOnly):
             label = .init("Ban", icon: .lemmy.banFromInstance, isDestructive: true)
-        case (true, true, _, true), (false, true, false, true):
+
+        case (bannedFrom: .anyContaining(.instance), canBanFrom: .instanceOnly),
+             (bannedFrom: .both, canBanFrom: .both):
             label = .init("Unban", icon: .lemmy.unbanFromInstance)
-        case (_, _, true, true):
+
+        case (bannedFrom: .instanceOnly, canBanFrom: .both),
+             (bannedFrom: .communityOnly, canBanFrom: .both):
             label = .init("Ban...", icon: .lemmy.banFromInstance, isDestructive: true)
-        case (true, _, true, false):
+
+        case (bannedFrom: .anyContaining(.community), canBanFrom: .communityOnly):
             label = .init("Unban", icon: .lemmy.unbanFromCommunity)
-        case (false, _, true, false):
+
+        case (bannedFrom: .anyNotContaining(.community), canBanFrom: .communityOnly):
             label = Self.label
-        case (_, _, false, false):
+
+        default:
             return Self.label.withVisibility(.hidden)
         }
 
         return label.withVisibility(visibility(environment))
+    }
+
+    /// Get the scopes that the target is current banned within.
+    private func getAppliedBanScopes(environment: EnvironmentValues) -> Set<BanScope> {
+        var output: Set<BanScope> = []
+        if isBannedFromCommunity(environment: environment) {
+            output.insert(.community)
+        }
+        if entity.bannedFromInstance {
+            output.insert(.instance)
+        }
+        return output
+    }
+
+    /// Get the set of ban scopes that the authorized user is able to apply to the target.
+    private func getActionableBanScopes(environment: EnvironmentValues) -> Set<BanScope> {
+        var output: Set<BanScope> = []
+        if canBanFromCommunity(community: environment.communityContext) {
+            output.insert(.community)
+        }
+        if entity.api.isAdmin {
+            output.insert(.instance)
+        }
+        return output
     }
 
     private func isBannedFromCommunity(environment: EnvironmentValues) -> Bool {
