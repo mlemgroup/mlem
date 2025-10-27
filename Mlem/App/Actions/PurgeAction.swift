@@ -40,9 +40,7 @@ extension PurgeAction {
     
     func createLabel(environment: EnvironmentValues) -> ActionLabel {
         if useVerboseLabel {
-            if !(entity is any Person1Providing) {
-                assertionFailure()
-            }
+            assert(entity is any Person1Providing)
             return Self.verboseLabel.withVisibility(visibility(environment))
         } else {
             return Self.label.withVisibility(visibility(environment))
