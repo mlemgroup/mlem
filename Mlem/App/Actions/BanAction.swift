@@ -83,7 +83,7 @@ extension BanAction {
 
         switch (bannedFrom: appliedBanScopes, canBanFrom: actionableBanScopes) {
         case (bannedFrom: .none, canBanFrom: .both),
-             (bannedFrom: .anyNotContaining(.community), canBanFrom: .instanceOnly):
+             (bannedFrom: .anyNotContaining(.instance), canBanFrom: .instanceOnly):
             label = .init("Ban", icon: .lemmy.banFromInstance, isDestructive: true)
 
         case (bannedFrom: .anyContaining(.instance), canBanFrom: .instanceOnly),
