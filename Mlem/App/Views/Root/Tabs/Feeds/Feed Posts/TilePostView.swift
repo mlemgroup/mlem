@@ -63,7 +63,7 @@ struct TilePostView: View {
                 titleSection
                     .typesettingLanguage(.init(languageCode: .english))
                 
-                communityAndInfo
+                nameAndInfo
             }
             .padding(Constants.main.standardSpacing)
         }
@@ -80,15 +80,21 @@ struct TilePostView: View {
             .frame(maxWidth: .infinity, minHeight: minTitleHeight, alignment: .topLeading)
     }
 
-    var communityAndInfo: some View {
+    var nameAndInfo: some View {
         HStack(spacing: 6) {
-            if let communityName = post.community_?.name {
-                Text(communityName)
-                    .lineLimit(1)
-                    .font(.caption)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(.themedSecondary)
+            Group {
+                if communityContext != nil {
+                    if let creatorName = post.creator_?.name {
+                        Text(creatorName)
+                    }
+                } else if let communityName = post.community_?.name {
+                    Text(communityName)
+                }
             }
+            .lineLimit(1)
+            .font(.caption)
+            .fontWeight(.semibold)
+            .foregroundStyle(.themedSecondary)
             
             Spacer()
             
