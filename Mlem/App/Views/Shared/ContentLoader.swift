@@ -9,6 +9,7 @@ import Foundation
 import MlemMiddleware
 import Semaphore
 import SwiftUI
+import os
 
 struct ContentLoader<Content: View, Model: Upgradable>: View {
     @Environment(AppState.self) var appState: AppState
@@ -56,6 +57,8 @@ struct ContentLoader<Content: View, Model: Upgradable>: View {
 
 @Observable @MainActor
 class ContentLoaderProxy<Model: Upgradable> {
+    private let log: Logger = .mlemLogger()
+    
     fileprivate enum UpgradeState: String {
         case idle, loading, done, failed
     }
@@ -98,7 +101,7 @@ class ContentLoaderProxy<Model: Upgradable> {
                     try await model.upgrade(api: api ?? modelApi, upgradeOperation: nil)
                 }
             } catch ApiClientError.noEntityFound {
-                print("No entity found, upgrading from local...")
+                log.info("No entity found, upgrading from local")
                 if !model.isUpgraded {
                     try await model.upgradeFromLocal()
                 }

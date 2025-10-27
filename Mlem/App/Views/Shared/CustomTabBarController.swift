@@ -9,8 +9,11 @@ import Dependencies
 import Foundation
 import SwiftUI
 import Theming
+import os
 
 class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
+    private let log: Logger = .mlemLogger()
+    
     @Binding var selectedIndexBinding: Int
     let swipeGestureCallback: () -> Void
     let palette: Theming.Palette
@@ -85,7 +88,7 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
         TabReselectTracker.main.reset() // reset to prevent unconsumed actions from blocking the reselect flag
         if tabBarController.selectedViewController === viewController,
            let item = viewController as? CustomTabViewHostingController {
-            print("\(item.item.title) tab re-selected")
+            log.debug("\(item.item.title) tab re-selected")
             TabReselectTracker.main.signal()
         }
         selectedIndexBinding = viewControllers?.firstIndex(of: viewController) ?? 0

@@ -7,9 +7,12 @@
 
 import MlemMiddleware
 import SwiftUI
+import os
 
 @Observable
 class CommentTreeTracker: Hashable {
+    private let log: Logger = .mlemLogger()
+    
     enum Root {
         case post(any Post)
         case comment(any Comment, parentCount: Int)
@@ -68,7 +71,7 @@ class CommentTreeTracker: Hashable {
                 if let ensuredComment = ensuredComment as? any Comment, ensuredComment.api == api {
                     comment = ensuredComment
                 } else if let ensuredComment = ensuredComment as? CommentStub {
-                    print("CommentTreeTracker: Resolving comment...")
+                    log.info("Resolving comment")
                     comment = try await api.getComment(url: ensuredComment.resolvableUrl)
                 } else {
                     assertionFailure()

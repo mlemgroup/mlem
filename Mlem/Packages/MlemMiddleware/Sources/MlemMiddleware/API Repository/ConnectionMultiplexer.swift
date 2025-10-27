@@ -6,12 +6,15 @@
 //
 
 import Foundation
+import os
 
 enum ConnectionMultiplexerError: Error {
     case allConnectionsFailed
 }
 
 class ConnectionMultiplexer<Candidate> {
+    private let log: Logger = .mlemLogger()
+    
     private var ongoingTask: Task<Any, Error>?
     
     var getCandidates: () -> [Candidate]
@@ -60,7 +63,7 @@ class ConnectionMultiplexer<Candidate> {
                         let value = try result.1.get()
                         // Cancel all other tasks once any one task succeeds
                         group.cancelAll()
-                        print("ConnectionMultiplexer: Selected \(result.0)")
+                        log.info("Selected \(String(describing: result.0))")
                         self.selectedCandidate = result.0
                         self.ongoingTask = nil
                         return value

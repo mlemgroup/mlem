@@ -11,8 +11,11 @@ import LemmyMarkdownUI
 import MlemMiddleware
 import SwiftUI
 import Theming
+import os
 
 struct CommentEditorView: View {
+    private let log: Logger = .mlemLogger()
+    
     @Environment(AppState.self) var appState
     @Environment(HapticManager.self) var hapticManager
     @Environment(NavigationLayer.self) var navigation
@@ -109,7 +112,7 @@ struct CommentEditorView: View {
             // If we didn't have the `isAlive` check here, the images would
             // get deleted when you click on a link in the reply context
             if !navigation.isAlive, !sending, !uploadHistory.uploads.isEmpty {
-                print("Deleting uploaded images...")
+                log.debug("Deleting uploaded images...")
                 uploadHistory.deleteAll()
             }
         }

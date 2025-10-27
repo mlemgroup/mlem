@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import os
 
 public enum BackendEnvironment {
     case qc, prod
@@ -21,6 +22,8 @@ public enum BackendEnvironment {
 
 @Observable
 public class BackendClient {
+    internal let log: Logger = .mlemLogger()
+    
     public private(set) var environment: BackendEnvironment = .prod
     private let jsonDecoder: JSONDecoder = {
         let decoder: JSONDecoder = .init()
@@ -74,7 +77,7 @@ public class BackendClient {
                 try await fetchFlairs()
                 try await fetchTestflightUpdate()
             } catch {
-                print(error)
+                log.error("\(error.localizedDescription)")
             }
         }
     }

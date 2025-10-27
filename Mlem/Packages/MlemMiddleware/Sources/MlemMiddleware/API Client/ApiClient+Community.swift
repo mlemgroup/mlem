@@ -98,7 +98,7 @@ public extension ApiClient {
             } catch {
                 // if this fails, don't fail the whole call
                 // TODO: error toast (depends on packaged error handling)
-                print("Failed to resolve community URLs: \(error)")
+                log.error("Failed to resolve community URLs: \(error)")
             }
         }
         return ret
