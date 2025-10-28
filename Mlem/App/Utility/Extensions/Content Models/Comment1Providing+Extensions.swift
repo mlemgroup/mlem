@@ -136,7 +136,7 @@ extension Comment1Providing {
         case .selectText: selectTextAction()
         case .report: reportAction(appState: appState, communityContext: communityContext)
         case .resolve: reportContext?.resolveAction(appState: appState, feedback: [.haptic])
-        case .remove: removeAction(appState: appState).disabled(!canModerate)
+        case .remove: self2?.removeAction(appState: appState).disabled(!canModerate)
         case .ban: reportContext?.contextualBanAction(appState: appState)
         case .collapse: collapseAction(commentTreeTracker: commentTreeTracker)
         case .collapseParent: collapseParentAction(commentTreeTracker: commentTreeTracker)

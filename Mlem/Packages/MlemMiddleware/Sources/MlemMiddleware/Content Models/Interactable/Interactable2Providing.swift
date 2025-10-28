@@ -8,7 +8,7 @@
 import Foundation
 
 // Content that can be upvoted, downvoted, saved etc
-public protocol Interactable2Providing: Interactable1Providing, RemovableProviding, PurgableProviding {
+public protocol Interactable2Providing: Interactable1Providing, RemovableProviding, PurgableProviding, CanModerateProviding {
     var creator: any Person { get }
     var community: any Community { get }
     var creatorIsModerator: Bool { get }
@@ -32,6 +32,14 @@ public extension Interactable2Providing {
     
     func toggleDownvoted() {
         updateVote(votes.myVote == .downvote ? .none : .downvote)
+    }
+
+    func toggleVote(type: ScoringOperation) {
+        guard type != .none else {
+            assertionFailure()
+            return
+        }
+        updateVote(votes.myVote == type ? .none : type)
     }
     
     func toggleSaved() {

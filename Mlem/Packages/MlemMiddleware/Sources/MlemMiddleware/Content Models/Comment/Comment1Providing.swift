@@ -14,7 +14,6 @@ public protocol Comment1Providing:
     ContentIdentifiable,
     Interactable1Providing,
     DeletableProviding,
-    RemovableProviding,
     PurgableProviding,
     SelectableContentProviding,
     Sharable,

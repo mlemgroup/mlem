@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol Comment2Providing: Comment1Providing, Interactable2Providing, PersonContentProviding {
+public protocol Comment2Providing: Comment1Providing, Interactable2Providing, PersonContentProviding, RemovableProviding {
     var comment2: Comment2 { get }
     
     var creator: any Person { get }
@@ -78,7 +78,14 @@ public extension Comment2Providing {
     }
 }
 
-/// PersonContentProviding conformance
+// PersonContentProviding conformance
 public extension Comment2Providing {
     var userContent: PersonContent { .init(wrappedValue: .comment(comment2)) }
+}
+
+// CanModerateProviding conformance
+public extension Comment2Providing {
+    var canModerate: Bool {
+        api.myPerson?.moderates(communityId: community.id) ?? false || api.isAdmin
+    }
 }
