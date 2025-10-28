@@ -15,6 +15,7 @@ public protocol Community1Providing:
     RemovableProviding,
     PurgableProviding,
     Sharable,
+    CanModerateProviding,
     FeedLoadable where FilterType == CommunityFilterType {
     var community1: Community1 { get }
     
@@ -173,5 +174,12 @@ public extension Community1Providing {
     
     func addModerator(_ person: any Person, added: Bool) async throws {
         try await api.addModerator(communityId: id, personId: person.id, added: added)
+    }
+}
+
+// CanModerateProviding conformance
+public extension Community1Providing {
+    var canModerate: Bool {
+        api.myPerson?.moderates(communityId: id) ?? false || api.isAdmin
     }
 }

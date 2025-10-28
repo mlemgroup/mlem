@@ -26,7 +26,7 @@ class MultiFetcher<Item: FeedLoadable>: Fetcher<Item> {
             if let nextItem = try await computeNextItem() {
                 newItems.append(nextItem)
             } else {
-                print("[\(Self.self)] no next item found")
+                log.debug("[\(Self.self)] no next item found")
                 return .done(newItems)
             }
         }
@@ -37,7 +37,7 @@ class MultiFetcher<Item: FeedLoadable>: Fetcher<Item> {
     override func reset() async {
         for source in sources {
             await source.clear(clearParent: false)
-            print("[\(Self.self)] source cleared (\(source.loadingState))")
+            log.debug("[\(Self.self)] source cleared (\(String(describing: source.loadingState)))")
         }
         
         await super.reset()

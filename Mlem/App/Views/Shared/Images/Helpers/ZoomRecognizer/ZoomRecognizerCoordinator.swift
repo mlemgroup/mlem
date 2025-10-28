@@ -5,6 +5,7 @@
 //  Created by Eric Andrews on 2025-03-30.
 //
 
+import os
 import SwiftUI
 import UIKit
 
@@ -13,6 +14,8 @@ enum PanType {
 }
 
 class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
+    private let log: Logger = .mlemLogger()
+    
     @Setting(\.a11y_zoomSliderLocation) var zoomSliderLocation
     
     @Binding var scale: CGFloat
@@ -92,7 +95,7 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
         case .ended, .cancelled:
             endPinch(gesture: gesture)
         case .failed:
-            print("DEBUG pinch gesture failed")
+            log.debug("Pinch gesture failed")
         default:
             assertionFailure("Unknown state")
         }

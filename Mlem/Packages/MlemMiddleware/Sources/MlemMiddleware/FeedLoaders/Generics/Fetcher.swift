@@ -6,6 +6,7 @@
 //
 
 import Observation
+import os
 
 enum LoadingResponse<Item: FeedLoadable> {
     /// Indicates a successful load with more items available to fetch
@@ -32,6 +33,8 @@ enum LoadingResponse<Item: FeedLoadable> {
 
 @Observable
 public class Fetcher<Item: FeedLoadable> {
+    let log: Logger = .mlemLogger()
+    
     var api: ApiClient
     var pageSize: Int
     var page: Int
@@ -46,20 +49,20 @@ public class Fetcher<Item: FeedLoadable> {
     /// Helper struct bundling the response from a fetchPage or fetchCursor call
     struct FetchResponse {
         /// Items returned
-        public let items: [Item]
+        let items: [Item]
         
         /// Cursor used to fetch this response, if applicable
-        public let prevCursor: String?
+        let prevCursor: String?
         
         /// New cursor, if applicable
-        public let nextCursor: String?
+        let nextCursor: String?
     }
     
     /// Fetches the next page of items
     func fetch() async throws -> LoadingResponse<Item> {
         do {
             if let cursor, page > 0 {
-                print("[\(Item.self) Fetcher] loading cursor \(cursor)")
+                log.debug("[\(Item.self) Fetcher] loading cursor \(cursor)")
                 let response = try await fetchCursor(cursor)
                 
                 // if same cursor returned, loading is finished
@@ -71,12 +74,12 @@ public class Fetcher<Item: FeedLoadable> {
                 return .success(response.items)
             } else {
                 page += 1
-                print("[\(Item.self) Fetcher] loading page \(page)")
+                log.debug("[\(Item.self) Fetcher] loading page \(page)")
                 let response = try await fetchPage(page)
                 
                 // if nothing returned, loading is finished
                 if response.items.count < pageSize {
-                    print("[\(Item.self) Fetcher] received undersized page (\(response.items.count)/\(pageSize))")
+                    log.debug("[\(Item.self) Fetcher] received undersized page (\(response.items.count)/\(pageSize))")
                     return .done(response.items)
                 }
                 cursor = response.nextCursor

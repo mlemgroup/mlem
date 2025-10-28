@@ -80,7 +80,7 @@ extension DeleteAction {
         case (true, .success): createConfirmationToast()
         case (true, .failure): .failure("Failed to delete!")
         case (false, .success): .success("Restored")
-        case (false, .failure): .success("Failed to restore!")
+        case (false, .failure): .failure("Failed to restore!")
         }
     }
     

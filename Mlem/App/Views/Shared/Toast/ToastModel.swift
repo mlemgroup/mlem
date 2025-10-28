@@ -5,10 +5,13 @@
 //  Created by Sjmarf on 16/05/2024.
 //
 
+import os
 import SwiftUI
 
 @Observable
 class ToastModel {
+    private let log: Logger = .mlemLogger()
+    
     private var toasts: [Toast] = .init()
     
     static let main: ToastModel = .init()
@@ -40,7 +43,7 @@ class ToastModel {
             if let index = toasts.firstIndex(where: { $0.id == id }) {
                 toasts.remove(at: index)
             } else {
-                print("No Toast Index")
+                log.info("No Toast Index")
             }
         }
     }

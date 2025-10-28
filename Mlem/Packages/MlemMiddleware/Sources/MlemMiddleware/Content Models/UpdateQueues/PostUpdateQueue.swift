@@ -5,6 +5,7 @@
 //  Created by Eric Andrews on 2025-07-04.
 //
 
+import os
 import Semaphore
 
 /// This actor synchronizes state updates for a particular post.
@@ -21,6 +22,8 @@ import Semaphore
 /// to be `post2`). If this update is not performed, `parent` may become nil and the queue will refuse to execute. In debug mode this will throw an error,
 /// while in production the queue will simply not run until an item is added when the parent is present.
 public actor PostUpdateQueue {
+    let log: Logger = .mlemLogger()
+    
     weak var parent: (any Post1Providing)?
     
     private var lastVerifiedSnapshot: (any PostSnapshotProviding)?
@@ -64,9 +67,9 @@ public actor PostUpdateQueue {
         await semaphore.wait()
         defer {
             semaphore.signal()
-            print("DEBUG upgrade complete")
+            log.debug("Upgrade complete")
         }
-        print("DEBUG beginning upgrade")
+        log.info("Beginning upgrade")
         
         let (snapshot, post) = try await task()
         lastVerifiedSnapshot = snapshot
@@ -86,9 +89,9 @@ public actor PostUpdateQueue {
         await semaphore.wait()
         defer {
             semaphore.signal()
-            print("DEBUG finished executing queue")
+            log.debug("Finished executing queue")
         }
-        print("DEBUG executing queue")
+        log.info("Executing queue")
         
         // assigning this here ensures parent stays in scope for the duration of the queue. For operations that remove the post
         // (e.g., hide), if the call is slow, the parent might go out of scope before it returns; this in turn breaks the undo behavior
@@ -102,7 +105,7 @@ public actor PostUpdateQueue {
             return
         }
         while let task = queue.next() {
-            print("DEBUG found next task")
+            log.debug("Found next task")
             do {
                 let snapshot: any PostSnapshotProviding
                 switch task {
@@ -119,7 +122,7 @@ public actor PostUpdateQueue {
                 self.lastVerifiedSnapshot = newSnapshot
                 lastVerifiedSnapshot = newSnapshot // also need to update scoped lastVerifiedSnapshot so updateParent gets the correct value\
             } catch {
-                print(error)
+                log.error("\(error.localizedDescription)")
             }
             queue.dequeue()
         }
@@ -128,7 +131,7 @@ public actor PostUpdateQueue {
     }
     
     private func updateParent(_ parent: any Post1Providing, with snapshot: any PostSnapshotProviding) async {
-        print("DEBUG updating parent")
+        log.debug("Updating parent")
         await parent.snapshotUpdate(with: snapshot)
     }
 }

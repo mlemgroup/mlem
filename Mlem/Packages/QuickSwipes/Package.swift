@@ -1,4 +1,4 @@
-// swift-tools-version: 6.0
+// swift-tools-version: 6.2
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -17,7 +17,8 @@ let package = Package(
         .package(path: "../Theming"),
         .package(path: "../ComponentViews"),
         .package(path: "../Icons"),
-        .package(path: "../Haptics")
+        .package(path: "../Haptics"),
+        .package(path: "../MlemLogger")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -28,7 +29,8 @@ let package = Package(
                 .byName(name: "Theming"),
                 .byName(name: "ComponentViews"),
                 .byName(name: "Icons"),
-                .byName(name: "Haptics")
+                .byName(name: "Haptics"),
+                .byName(name: "MlemLogger")
             ],
             swiftSettings: [
                 .swiftLanguageMode(.v5),

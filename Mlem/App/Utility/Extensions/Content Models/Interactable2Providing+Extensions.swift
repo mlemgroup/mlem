@@ -23,8 +23,4 @@ extension Interactable2Providing {
         }
         return output
     }
-    
-    var canModerate: Bool {
-        api.myPerson?.moderates(communityId: community.id) ?? false || api.isAdmin
-    }
 }

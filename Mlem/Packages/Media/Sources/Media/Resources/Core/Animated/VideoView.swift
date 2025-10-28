@@ -7,10 +7,14 @@
 
 import AVFoundation
 import AVKit
+import MlemLogger
 import NukeVideo
+import os
 import SwiftUI
 
 struct VideoView: View {
+    private let log: Logger = .mlemLogger()
+    
     @Environment(MediaControlState.self) var controlState
     
     let player: AVQueuePlayer
@@ -38,8 +42,7 @@ struct VideoView: View {
                 do {
                     controlState.audioAvailable = try await player.isAudioAvailable() ?? false
                 } catch {
-                    print(error)
-                    // handleError(error)
+                    log.error("\(error.localizedDescription)")
                 }
             }
             .task {
@@ -52,8 +55,7 @@ struct VideoView: View {
                     controlState.duration = cmTime.seconds
                     timescale = cmTime.timescale
                 } catch {
-                    print(error)
-                    // handleError(error)
+                    log.error("\(error.localizedDescription)")
                 }
             }
             .onChange(of: controlState.animating, initial: true) {

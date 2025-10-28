@@ -6,6 +6,7 @@
 //
 
 import MlemMiddleware
+import os
 import SwiftUI
 
 func handleError(
@@ -40,12 +41,18 @@ private func _handleError(
     line: Int = #line
 ) -> Bool {
     #if DEBUG
-        print("☠️ ERROR ☠️")
-        print("📝 -> \(error.localizedDescription)")
+        let descriptiveString: String
         if let error = error as? ApiClientError {
-            print("     \(String(describing: error))")
+            descriptiveString = "     \(String(describing: error))\n"
+        } else {
+            descriptiveString = ""
         }
-        print("📂 -> \(file) | \(function) | line: \(line)")
+        let statement = """
+        ☠️ ERROR ☠️
+        📝 -> \(error.localizedDescription)
+        \(descriptiveString)📂 -> \(file) | \(function) | line: \(line)
+        """
+        Logger.universal.error("\(statement)")
     #endif
     
     let location = "\(file), \(function):\(line)"

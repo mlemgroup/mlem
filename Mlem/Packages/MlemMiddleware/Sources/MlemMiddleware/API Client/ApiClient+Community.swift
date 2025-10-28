@@ -98,7 +98,7 @@ public extension ApiClient {
             } catch {
                 // if this fails, don't fail the whole call
                 // TODO: error toast (depends on packaged error handling)
-                print("Failed to resolve community URLs: \(error)")
+                log.error("Failed to resolve community URLs: \(error)")
             }
         }
         return ret
@@ -186,10 +186,10 @@ public extension ApiClient {
     @discardableResult
     func addModerator(communityId: Int, personId: Int, added: Bool) async throws -> [Person1] {
         let snapshots = try await repository.addModerator(
-                communityId: communityId,
-                personId: personId,
-                added: added
-            )
+            communityId: communityId,
+            personId: personId,
+            added: added
+        )
 
         let updatedModerators = await caches.person1.getModels(api: self, from: snapshots.moderators)
         
