@@ -1429,6 +1429,9 @@
         }
       }
     },
+    "Ban..." : {
+
+    },
     "Banned from Community" : {
       "localizations" : {
         "fr" : {
@@ -1851,6 +1854,9 @@
           }
         }
       }
+    },
+    "Choose action..." : {
+
     },
     "Choose another instance..." : {
       "localizations" : {
@@ -3425,6 +3431,9 @@
         }
       }
     },
+    "Failed to block!" : {
+
+    },
     "Failed to connect to %@" : {
       "localizations" : {
         "fr" : {
@@ -3522,6 +3531,9 @@
       }
     },
     "Failed to set NSFW status" : {
+
+    },
+    "Failed to unblock!" : {
 
     },
     "Failed to unlock post" : {
@@ -8916,6 +8928,12 @@
         }
       }
     },
+    "Unban from Community" : {
+
+    },
+    "Unban from Instance" : {
+
+    },
     "Unban from..." : {
       "localizations" : {
         "fr" : {
@@ -8971,6 +8989,9 @@
           }
         }
       }
+    },
+    "Unblock User" : {
+
     },
     "Unblocked" : {
       "localizations" : {

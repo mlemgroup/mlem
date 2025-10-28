@@ -80,3 +80,10 @@ public extension Reply2Providing {
         comment.updateRemoved(newValue, reason: reason, callback: callback)
     }
 }
+
+// CanModerateProviding conformance
+public extension Reply2Providing {
+    var canModerate: Bool {
+        api.myPerson?.moderates(communityId: community.id) ?? false || api.isAdmin
+    }
+}

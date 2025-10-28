@@ -18,6 +18,7 @@ public protocol Post1Providing:
     PurgableProviding,
     ImagePrefetchProviding,
     Sharable,
+    CanModerateProviding,
     FeedLoadable where FilterType == PostFilterType {
     var post1: Post1 { get }
     
@@ -140,6 +141,13 @@ public extension Post1Providing {
 public extension Post1Providing {
     func isOwnContent(myPersonId: Int) -> Bool {
         creatorId == myPersonId
+    }
+}
+
+// CanModerateProviding conformance
+public extension Post1Providing {
+    var canModerate: Bool {
+        api.myPerson?.moderates(communityId: communityId) ?? false || api.isAdmin
     }
 }
 

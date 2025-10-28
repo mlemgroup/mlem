@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol RemovableProviding: ContentIdentifiable {
+public protocol RemovableProviding: ContentIdentifiable, CanModerateProviding {
     var removed: Bool { get }
     var removedPending: Bool { get }
     

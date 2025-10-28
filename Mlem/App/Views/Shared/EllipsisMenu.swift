@@ -5,24 +5,25 @@
 //  Created by Eric Andrews on 2024-05-24.
 //
 
+import Actions
 import Foundation
 import Icons
 import SwiftUI
 
-struct EllipsisMenu: View {
-    @State @ActionBuilder var actions: () -> [any Action]
+struct EllipsisMenu<Content: View>: View {
+    let content: Content
     let icon: Icon
     let size: CGFloat
     
-    init(icon: Icon = .general.menu, size: CGFloat, @ActionBuilder actions: @escaping () -> [any Action]) {
+    init(icon: Icon = .general.menu, size: CGFloat, @ViewBuilder content: @escaping () -> Content) {
         self.icon = icon
-        self.actions = actions
         self.size = size
+        self.content = content()
     }
     
     var body: some View {
         Menu {
-            MenuButtons(actions: actions)
+            content
         } label: {
             Image(icon: icon)
                 .frame(width: 24, height: size)
@@ -31,5 +32,18 @@ struct EllipsisMenu: View {
         .popupAnchor()
         .buttonStyle(.empty)
         .onTapGesture {} // prevent NavigationLink from disabling menu (thanks Swift)
+    }
+}
+
+extension EllipsisMenu {
+    init(
+        icon: Icon = .general.menu,
+        size: CGFloat,
+        @ActionBuilder actions: @escaping () -> [any Action]
+    ) where Content == MenuButtons {
+        self.icon = icon
+        self.size = size
+
+        self.content = MenuButtons(actions: actions)
     }
 }
