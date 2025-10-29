@@ -7,9 +7,9 @@
 
 import Dependencies
 import Foundation
+import os
 import SwiftUI
 import Theming
-import os
 
 class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
     private let log: Logger = .mlemLogger()

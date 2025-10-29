@@ -5,8 +5,8 @@
 //  Created by Eric Andrews on 2025-07-04.
 //
 
-import Semaphore
 import os
+import Semaphore
 
 /// This actor synchronizes state updates for a particular inbox notification.
 ///
@@ -18,7 +18,7 @@ import os
 /// before the work item is queued.
 ///
 public actor InboxNotificationUpdateQueue {
-    internal let log: Logger = .mlemLogger()
+    let log: Logger = .mlemLogger()
     
     weak var parent: InboxNotification?
     

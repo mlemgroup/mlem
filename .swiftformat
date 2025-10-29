@@ -2,7 +2,7 @@
 --commas inline
 --disable wrapMultilineStatementBraces
 --trimwhitespace nonblank-lines
---self init-only
 --stripunusedargs closure-only
 --header ignore
+--disable self
 --disable headerFileName

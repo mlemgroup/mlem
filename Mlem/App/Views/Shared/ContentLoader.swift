@@ -7,9 +7,9 @@
 
 import Foundation
 import MlemMiddleware
+import os
 import Semaphore
 import SwiftUI
-import os
 
 struct ContentLoader<Content: View, Model: Upgradable>: View {
     @Environment(AppState.self) var appState: AppState

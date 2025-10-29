@@ -8,14 +8,14 @@
 import ComponentViews
 import Haptics
 import Icons
-import SwiftUI
-import Theming
 import MlemLogger
 import os
+import SwiftUI
+import Theming
 
 // swiftlint:disable:next type_body_length
 struct QuickSwipeViewModifier: ViewModifier {
-    internal let log: Logger = .mlemLogger()
+    let log: Logger = .mlemLogger()
     
     @Environment(HapticManager.self) var hapticManager
     @Environment(\.palette) var palette

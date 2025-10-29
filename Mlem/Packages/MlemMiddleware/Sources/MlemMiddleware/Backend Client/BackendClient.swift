@@ -6,13 +6,13 @@
 //
 
 import Foundation
-import SwiftUI
 import os
+import SwiftUI
 
 public enum BackendEnvironment {
     case qc, prod
     
-    internal var address: URL {
+    var address: URL {
         switch self {
         case .prod: .init(string: "https://backend.mlemapp.org:8443/")!
         case .qc: .init(string: "https://backend.mlemapp.org:2096/")!
@@ -22,7 +22,7 @@ public enum BackendEnvironment {
 
 @Observable
 public class BackendClient {
-    internal let log: Logger = .mlemLogger()
+    let log: Logger = .mlemLogger()
     
     public private(set) var environment: BackendEnvironment = .prod
     private let jsonDecoder: JSONDecoder = {
@@ -59,7 +59,7 @@ public class BackendClient {
             .appendingPathComponent("/v1/stats/instances")
             .appending(queryItems: [
                 .init(name: "minTotalUsers", value: "20"),
-                .init(name: "minMonthyUsers", value: "1"),
+                .init(name: "minMonthyUsers", value: "1")
             ])
         )
         let (data, _) = try await URLSession.shared.data(for: request)

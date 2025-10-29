@@ -7,10 +7,10 @@
 
 import AVFoundation
 import AVKit
-import NukeVideo
-import SwiftUI
 import MlemLogger
+import NukeVideo
 import os
+import SwiftUI
 
 struct VideoView: View {
     private let log: Logger = .mlemLogger()

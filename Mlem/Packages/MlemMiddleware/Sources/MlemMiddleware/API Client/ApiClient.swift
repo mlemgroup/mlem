@@ -7,12 +7,12 @@
 
 import Combine
 import Foundation
-import Rest
 import os
+import Rest
 
 @Observable
 public class ApiClient {
-    internal let log: Logger = .mlemLogger()
+    let log: Logger = .mlemLogger()
     
     var repository: ApiRepository
     
@@ -105,8 +105,6 @@ public class ApiClient {
     public func updateToken(_ newToken: String) {
         repository.updateToken(newToken)
     }
-    
-
 }
 
 extension ApiClient: CacheIdentifiable {

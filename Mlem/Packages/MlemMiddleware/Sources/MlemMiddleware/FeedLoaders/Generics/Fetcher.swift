@@ -33,7 +33,7 @@ enum LoadingResponse<Item: FeedLoadable> {
 
 @Observable
 public class Fetcher<Item: FeedLoadable> {
-    internal let log: Logger = .mlemLogger()
+    let log: Logger = .mlemLogger()
     
     var api: ApiClient
     var pageSize: Int
@@ -49,13 +49,13 @@ public class Fetcher<Item: FeedLoadable> {
     /// Helper struct bundling the response from a fetchPage or fetchCursor call
     struct FetchResponse {
         /// Items returned
-        public let items: [Item]
+        let items: [Item]
         
         /// Cursor used to fetch this response, if applicable
-        public let prevCursor: String?
+        let prevCursor: String?
         
         /// New cursor, if applicable
-        public let nextCursor: String?
+        let nextCursor: String?
     }
     
     /// Fetches the next page of items

@@ -5,10 +5,10 @@
 //  Created by Eric Andrews on 2024-12-06.
 //
 
-import SDWebImage
-import SwiftUI
 import MlemLogger
 import os
+import SDWebImage
+import SwiftUI
 
 @preconcurrency
 struct AnimatedImageView: UIViewRepresentable {

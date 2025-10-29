@@ -186,10 +186,10 @@ public extension ApiClient {
     @discardableResult
     func addModerator(communityId: Int, personId: Int, added: Bool) async throws -> [Person1] {
         let snapshots = try await repository.addModerator(
-                communityId: communityId,
-                personId: personId,
-                added: added
-            )
+            communityId: communityId,
+            personId: personId,
+            added: added
+        )
 
         let updatedModerators = await caches.person1.getModels(api: self, from: snapshots.moderators)
         

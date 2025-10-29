@@ -6,8 +6,8 @@
 //
 
 import MlemMiddleware
-import SwiftUI
 import os
+import SwiftUI
 
 @Observable
 class CommentTreeTracker: Hashable {

@@ -17,6 +17,7 @@ let package = Package(
         .package(path: "../Theming"),
         .package(path: "../ComponentViews"),
         .package(path: "../Icons"),
+        .package(path: "../Haptics"),
         .package(path: "../MlemLogger")
     ],
     targets: [
@@ -28,6 +29,7 @@ let package = Package(
                 .byName(name: "Theming"),
                 .byName(name: "ComponentViews"),
                 .byName(name: "Icons"),
+                .byName(name: "Haptics"),
                 .byName(name: "MlemLogger")
             ],
             swiftSettings: [

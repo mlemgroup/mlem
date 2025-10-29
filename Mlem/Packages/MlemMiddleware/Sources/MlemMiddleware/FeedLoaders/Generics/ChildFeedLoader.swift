@@ -51,7 +51,7 @@ public class ChildFeedLoader<Item: FeedLoadable>: StandardFeedLoader<Item> {
             
             if stream.cursor >= items.count {
                 // NOTE: this assertion can sometimes be tripped by spamming the filter button
-                assert(loadingState == .done, "[\(Item.self) ChildFeedLoader] Invalid loading state \(loadingState)")
+                assert(loadingState == .done, "[\(Item.self) ChildFeedLoader] Invalid loading state \(self.loadingState)")
                 return nil
             }
             

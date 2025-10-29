@@ -5,8 +5,8 @@
 //  Created by Eric Andrews on 2025-08-12.
 //
 
-import Semaphore
 import os
+import Semaphore
 
 /// This actor synchronizes state updates for a particular comment.
 ///
@@ -19,7 +19,7 @@ import os
 /// to be `post2`). If this update is not performed, `parent` may become nil and the queue will refuse to execute. In debug mode this will throw an error,
 /// while in production the queue will simply not run until an item is added when the parent is present.
 public actor CommentUpdateQueue {
-    internal let log: Logger = .mlemLogger()
+    let log: Logger = .mlemLogger()
     
     weak var parent: (any Comment1Providing)?
     
