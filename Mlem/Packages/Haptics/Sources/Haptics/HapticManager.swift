@@ -8,9 +8,9 @@
 import AVFAudio
 import CoreHaptics
 import Foundation
-import SwiftUI
 import MlemLogger
 import os
+import SwiftUI
 
 @Observable
 public class HapticManager {

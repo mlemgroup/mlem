@@ -5,9 +5,9 @@
 //  Created by Eric Andrews on 2025-03-30.
 //
 
+import os
 import SwiftUI
 import UIKit
-import os
 
 enum PanType {
     case move, zoom, custom, none

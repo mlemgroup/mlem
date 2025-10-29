@@ -32,7 +32,8 @@ let package = Package(
             ],
             swiftSettings: [
                 .swiftLanguageMode(.v5),
-                .enableUpcomingFeature("BareSlashRegexLiterals")]
+                .enableUpcomingFeature("BareSlashRegexLiterals")
+            ]
         ),
         .testTarget(
             name: "MlemMiddlewareTests",

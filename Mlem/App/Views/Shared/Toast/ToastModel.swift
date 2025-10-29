@@ -5,8 +5,8 @@
 //  Created by Sjmarf on 16/05/2024.
 //
 
-import SwiftUI
 import os
+import SwiftUI
 
 @Observable
 class ToastModel {

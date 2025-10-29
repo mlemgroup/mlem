@@ -6,9 +6,9 @@
 //
 
 import Foundation
-import Semaphore
 import MlemLogger
 import os
+import Semaphore
 
 /// Class providing common caching behavior
 open class CoreCache<Content: CacheIdentifiable & AnyObject> {

@@ -9,9 +9,9 @@ import ComponentViews
 import Haptics
 import LemmyMarkdownUI
 import MlemMiddleware
+import os
 import SwiftUI
 import Theming
-import os
 
 struct CommentEditorView: View {
     private let log: Logger = .mlemLogger()

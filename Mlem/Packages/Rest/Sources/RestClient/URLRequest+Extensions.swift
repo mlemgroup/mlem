@@ -7,13 +7,13 @@
 // https://stackoverflow.com/questions/34705449/how-to-print-http-request-to-console
 
 import Foundation
-import os
 import MlemLogger
+import os
 
 extension URLRequest {
     /// Prints this URLRequest in human-readable form
     func debug() {
-        let statement: String = """
+        let statement = """
         \(httpMethod!) \(url!)
         "Headers:"
         \(allHTTPHeaderFields ?? [:])

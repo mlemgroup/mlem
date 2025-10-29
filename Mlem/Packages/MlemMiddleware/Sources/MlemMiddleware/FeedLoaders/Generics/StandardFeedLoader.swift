@@ -7,12 +7,12 @@
 
 import Foundation
 import Observation
-import Semaphore
 import os
+import Semaphore
 
 @Observable
 public class StandardFeedLoader<Item: FeedLoadable>: FeedLoading {
-    internal let log: Logger = .mlemLogger()
+    let log: Logger = .mlemLogger()
     
     public internal(set) var items: [Item] = .init()
     public internal(set) var loadingState: FeedLoadingState = .initial

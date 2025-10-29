@@ -6,8 +6,8 @@
 //
 
 import MlemMiddleware
-import SwiftUI
 import os
+import SwiftUI
 
 func handleError(
     _ error: Error,
@@ -47,11 +47,11 @@ private func _handleError(
         } else {
             descriptiveString = ""
         }
-        let statement: String = """
-            ☠️ ERROR ☠️
-            📝 -> \(error.localizedDescription)
-            \(descriptiveString)📂 -> \(file) | \(function) | line: \(line)
-            """
+        let statement = """
+        ☠️ ERROR ☠️
+        📝 -> \(error.localizedDescription)
+        \(descriptiveString)📂 -> \(file) | \(function) | line: \(line)
+        """
         Logger.universal.error("\(statement)")
     #endif
     
