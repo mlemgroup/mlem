@@ -21,7 +21,6 @@ struct SavedFeedView: View {
     @State var commentsFeedLoader: CommentChildFeedLoader
 
     @State var selectedContentType: PersonContentType = .all
-    
     @State var scrollToTopTrigger: Bool = false
     
     init() {
@@ -29,15 +28,16 @@ struct SavedFeedView: View {
         @Setting(\.behavior_internetSpeed) var internetSpeed
         @Setting(\.post_size) var postSize
 
-        let savedFeedLoaders = DualSourceMixedFeedLoader.setup(
+        let feedLoaders = DualSourceMixedFeedLoader.setup(
             api: AppState.main.firstApi,
             pageSize: internetSpeed.pageSize,
-            sortType: .new
+            sortType: .new,
+            filter: .saved
         )
         
-        self._mixedFeedLoader = .init(wrappedValue: savedFeedLoaders.savedFeedLoader)
-        self._postsFeedLoader = .init(wrappedValue: savedFeedLoaders.postFeedLoader)
-        self._commentsFeedLoader = .init(wrappedValue: savedFeedLoaders.commentFeedLoader)
+        self._mixedFeedLoader = .init(wrappedValue: feedLoaders.savedFeedLoader)
+        self._postsFeedLoader = .init(wrappedValue: feedLoaders.postFeedLoader)
+        self._commentsFeedLoader = .init(wrappedValue: feedLoaders.commentFeedLoader)
     }
     
     var body: some View {

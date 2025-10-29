@@ -33,14 +33,26 @@ public class DualSourceMixedFeedLoader: StandardFeedLoader<PersonContent> {
     public static func setup(
         api: ApiClient,
         pageSize: Int,
-        sortType: FeedLoaderSort.SortType
+        sortType: FeedLoaderSort.SortType,
+        filter: GetContentFilter
     ) -> (
         postFeedLoader: PostChildFeedLoader,
         commentFeedLoader: CommentChildFeedLoader,
         savedFeedLoader: DualSourceMixedFeedLoader
     ) {
-        let postFeedLoader: PostChildFeedLoader = .init(api: api, pageSize: pageSize, sortType: sortType)
-        let commentFeedLoader: CommentChildFeedLoader = .init(api: api, pageSize: pageSize, sortType: sortType)
+        let postFeedLoader: PostChildFeedLoader = .init(
+            api: api,
+            pageSize: pageSize,
+            sortType: sortType,
+            filter: filter
+        )
+        
+        let commentFeedLoader: CommentChildFeedLoader = .init(
+            api: api,
+            pageSize: pageSize,
+            sortType: sortType,
+            filter: filter
+        )
         
         let savedFeedLoader: DualSourceMixedFeedLoader = .init(
             api: api,
