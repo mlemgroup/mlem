@@ -21,6 +21,24 @@ extension ApiRepository {
     }
     
     func getComments(
+        sort: CommentSortType,
+        page: Int,
+        maxDepth: Int? = nil,
+        limit: Int,
+        filter: GetContentFilter? = nil
+    ) async throws -> [Comment2Snapshot] {
+        try await performingForConnection { connection in
+            try await connection.getComments(
+                sort: sort,
+                page: page,
+                maxDepth: maxDepth,
+                limit: limit,
+                filter: filter
+            )
+        }
+    }
+    
+    func getComments(
         postId: Int,
         sort: CommentSortType,
         page: Int,

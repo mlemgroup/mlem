@@ -28,6 +28,34 @@ public extension PieFedConnection {
     }
     
     func getComments(
+        sort: CommentSortType,
+        page: Int,
+        maxDepth: Int? = nil,
+        limit: Int,
+        filter: GetContentFilter? = nil
+    ) async throws -> [Comment2Snapshot] {
+        guard let sort = sort.piefedSortType, filter != .downvoted else {
+            throw ApiClientError.featureUnsupported
+        }
+        let request = PieFedGetCommentsRequest(
+            type_: .all,
+            sort: sort,
+            maxDepth: maxDepth,
+            page: page,
+            limit: limit,
+            communityId: nil,
+            postId: nil,
+            parentId: nil,
+            personId: nil,
+            likedOnly: filter == .upvoted,
+            savedOnly: filter == .saved,
+            depthFirst: false
+        )
+        let response = try await perform(request)
+        return try response.comments.map { try .init(from: $0) }
+    }
+
+    func getComments(
         postId: Int,
         sort: CommentSortType,
         page: Int,

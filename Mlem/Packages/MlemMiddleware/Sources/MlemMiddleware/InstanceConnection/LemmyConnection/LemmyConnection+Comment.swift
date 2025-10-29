@@ -30,6 +30,36 @@ public extension LemmyConnection {
     }
     
     func getComments(
+        sort: CommentSortType,
+        page: Int,
+        maxDepth: Int?,
+        limit: Int,
+        filter: GetContentFilter?
+    ) async throws -> [Comment2Snapshot] {
+        let response = try await performingForEndpoint { endpoint in
+            LemmyListCommentsRequest(
+                endpoint: endpoint,
+                type_: .all,
+                sort: sort.v3CommentApiType,
+                maxDepth: maxDepth,
+                page: page,
+                limit: limit,
+                communityId: nil,
+                communityName: nil,
+                postId: nil,
+                parentId: nil,
+                savedOnly: filter == .saved,
+                likedOnly: filter == .upvoted,
+                dislikedOnly: filter == .downvoted,
+                timeRangeSeconds: sort.timeRangeSeconds,
+                pageCursor: nil,
+                pageBack: nil
+            )
+        }
+        return try response.comments.map { try .init(from: $0) }
+    }
+
+    func getComments(
         postId: Int,
         sort: CommentSortType,
         page: Int,
