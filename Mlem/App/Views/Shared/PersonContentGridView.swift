@@ -22,7 +22,6 @@ struct PersonContentGridView: View {
     @State var frameWidth: CGFloat = .zero
     
     var feedLoader: FeedLoaderType
-    var contentType: PersonContentType
     
     var body: some View {
         content
@@ -75,7 +74,7 @@ struct PersonContentGridView: View {
     }
     
     var spacing: CGFloat {
-        switch contentType {
+        switch feedLoader.type {
         case .all, .comments:
             postSize.sectionSpacing
         case .posts:

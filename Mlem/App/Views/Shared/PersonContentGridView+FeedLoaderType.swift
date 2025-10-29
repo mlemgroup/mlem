@@ -61,5 +61,14 @@ extension PersonContentGridView {
                 try feedLoader.loadIfThreshold(item, asChild: contentType != .all)
             }
         }
+        
+        var type: PersonContentType {
+            switch self {
+            case .dualSourceMixed: .all
+            case .post: .posts
+            case .comment: .comments
+            case let .singleSourceMixed(_, type): type
+            }
+        }
     }
 }

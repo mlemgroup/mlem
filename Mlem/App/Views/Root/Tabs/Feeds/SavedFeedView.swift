@@ -47,7 +47,7 @@ struct SavedFeedView: View {
     @ViewBuilder
     var content: some View {
         FancyScrollView(scrollToTopTrigger: $scrollToTopTrigger) {
-            PersonContentGridView(feedLoader: .dualSourceMixed(savedFeedLoader), contentType: .all)
+            PersonContentGridView(feedLoader: .dualSourceMixed(savedFeedLoader))
         }
     }
 }
