@@ -276,7 +276,10 @@ struct PersonView: View {
                         .buttonStyle(.capsule)
                         .padding([.horizontal, .bottom], Constants.main.standardSpacing)
                     }
-                    PersonContentGridView(feedLoader: feedLoader, contentType: $selectedContentType)
+                    PersonContentGridView(
+                        feedLoader: .combinedPersonContent(feedLoader, contentType: selectedContentType),
+                        contentType: selectedContentType
+                    )
                 } else {
                     ProgressView()
                 }
