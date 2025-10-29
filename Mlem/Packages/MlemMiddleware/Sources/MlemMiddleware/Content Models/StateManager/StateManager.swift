@@ -99,7 +99,7 @@ public class StateManager<Value: Equatable> {
         lastSemaphore = semaphore
         log.debug("[\(semaphore)] began operation.")
         if lastVerifiedValue == nil {
-            log.debug("[\(semaphore)] Set lastVerifiedValue to \(String(describing: wrappedValue)).")
+            log.debug("[\(semaphore)] Set lastVerifiedValue to \(String(describing: self.wrappedValue)).")
             lastVerifiedValue = wrappedValue
         }
         if wrappedValue != expectedResult {
@@ -133,7 +133,7 @@ public class StateManager<Value: Equatable> {
         if lastVerifiedValue != newState {
             lastVerifiedValue = newState
             if semaphore != nil {
-                log.debug("[\(semaphore?.description ?? "nil")] is not the last caller! Updating lastVerifiedValue to \(String(describing: wrappedValue)).")
+                log.debug("[\(semaphore?.description ?? "nil")] is not the last caller! Updating lastVerifiedValue to \(String(describing: self.wrappedValue)).")
             }
         }
         return false
