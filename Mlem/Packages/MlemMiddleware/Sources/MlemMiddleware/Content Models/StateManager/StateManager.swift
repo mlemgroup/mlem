@@ -104,7 +104,7 @@ public class StateManager<Value: Equatable> {
         }
         if wrappedValue != expectedResult {
             wrappedValue = expectedResult
-            log.debug("[\(semaphore)] Set wrappedValue to \(String(describing: self.expectedResult)).")
+            log.debug("[\(semaphore)] Set wrappedValue to \(String(describing: expectedResult)).")
             onSet(expectedResult, .begin, semaphore)
         }
         return lastSemaphore
