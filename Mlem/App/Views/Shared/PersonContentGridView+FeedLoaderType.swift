@@ -10,16 +10,12 @@ import MlemMiddleware
 
 extension PersonContentGridView {
     enum FeedLoaderType {
-        case dualSourceMixed(StandardFeedLoader<PersonContent>)
-        case post(StandardFeedLoader<Post2>)
-        case comment(StandardFeedLoader<Comment2>)
+        case standard(StandardFeedLoader<PersonContent>, contentType: PersonContentType)
         case singleSourceMixed(SingleSourceMixedFeedLoader, contentType: PersonContentType)
 
         var items: [PersonContent] {
             switch self {
-            case let .dualSourceMixed(feedLoader): feedLoader.items
-            case let .post(feedLoader): feedLoader.items.map { .init(wrappedValue: .post($0)) }
-            case let .comment(feedLoader): feedLoader.items.map { .init(wrappedValue: .comment($0)) }
+            case let .standard(feedLoader, _): feedLoader.items
             case let .singleSourceMixed(feedLoader, contentType): feedLoader.itemsForType(contentType)
             }
         }
@@ -33,30 +29,14 @@ extension PersonContentGridView {
         
         var feedLoading: any FeedLoading {
             switch self {
-            case let .dualSourceMixed(feedLoader): feedLoader
-            case let .post(feedLoader): feedLoader
-            case let .comment(feedLoader): feedLoader
+            case let .standard(feedLoader, _): feedLoader
             case let .singleSourceMixed(feedLoader, _): feedLoader
             }
         }
         
         func loadIfThreshold(_ item: PersonContent) throws {
             switch self {
-            case let .dualSourceMixed(feedLoader): try feedLoader.loadIfThreshold(item)
-            case let .post(feedLoader):
-                switch item.wrappedValue {
-                case let .post(post):
-                    try feedLoader.loadIfThreshold(post)
-                default:
-                    assertionFailure()
-                }
-            case let .comment(feedLoader):
-                switch item.wrappedValue {
-                case let .comment(comment):
-                    try feedLoader.loadIfThreshold(comment)
-                default:
-                    assertionFailure()
-                }
+            case let .standard(feedLoader, _): try feedLoader.loadIfThreshold(item)
             case let .singleSourceMixed(feedLoader, contentType):
                 try feedLoader.loadIfThreshold(item, asChild: contentType != .all)
             }
@@ -64,9 +44,7 @@ extension PersonContentGridView {
         
         var type: PersonContentType {
             switch self {
-            case .dualSourceMixed: .all
-            case .post: .posts
-            case .comment: .comments
+            case let .standard(_, type): type
             case let .singleSourceMixed(_, type): type
             }
         }

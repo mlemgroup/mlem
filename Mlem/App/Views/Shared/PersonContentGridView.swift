@@ -9,8 +9,18 @@ import Foundation
 import MlemMiddleware
 import SwiftUI
 
-enum PersonContentType {
+enum PersonContentType: CaseIterable, Identifiable {
     case all, posts, comments
+    
+    var id: Self { self }
+    
+    var label: LocalizedStringResource {
+        switch self {
+        case .all: "All"
+        case .posts: "Posts"
+        case .comments: "Comments"
+        }
+    }
 }
 
 struct PersonContentGridView: View {

@@ -16,7 +16,11 @@ struct SavedFeedView: View {
     @Environment(FiltersTracker.self) var filtersTracker
     @Environment(BackendClient.self) var backendClient
     
-    @State var savedFeedLoader: DualSourceMixedFeedLoader
+    @State var mixedFeedLoader: DualSourceMixedFeedLoader
+    @State var postsFeedLoader: PostChildFeedLoader
+    @State var commentsFeedLoader: CommentChildFeedLoader
+
+    @State var selectedContentType: PersonContentType = .all
     
     @State var scrollToTopTrigger: Bool = false
     
@@ -31,7 +35,9 @@ struct SavedFeedView: View {
             sortType: .new
         )
         
-        self._savedFeedLoader = .init(wrappedValue: savedFeedLoaders.savedFeedLoader)
+        self._mixedFeedLoader = .init(wrappedValue: savedFeedLoaders.savedFeedLoader)
+        self._postsFeedLoader = .init(wrappedValue: savedFeedLoaders.postFeedLoader)
+        self._commentsFeedLoader = .init(wrappedValue: savedFeedLoaders.commentFeedLoader)
     }
     
     var body: some View {
@@ -40,14 +46,23 @@ struct SavedFeedView: View {
             .scrollContentBackground(.hidden)
             .conditionalNavigationTitle("Saved")
             .navigationBarTitleDisplayMode(.inline)
-            .outdatedFeedPopup(feedLoader: savedFeedLoader)
+            .outdatedFeedPopup(feedLoader: mixedFeedLoader)
             .environment(\.feedContext, .saved)
     }
     
     @ViewBuilder
     var content: some View {
         FancyScrollView(scrollToTopTrigger: $scrollToTopTrigger) {
-            PersonContentGridView(feedLoader: .dualSourceMixed(savedFeedLoader))
+            BubblePicker(PersonContentType.allCases, selected: $selectedContentType, label: \.label)
+            PersonContentGridView(feedLoader: .standard(selectedFeedLoader, contentType: selectedContentType))
+        }
+    }
+    
+    var selectedFeedLoader: StandardFeedLoader<PersonContent> {
+        switch selectedContentType {
+        case .all: mixedFeedLoader
+        case .posts: postsFeedLoader
+        case .comments: commentsFeedLoader
         }
     }
 }
