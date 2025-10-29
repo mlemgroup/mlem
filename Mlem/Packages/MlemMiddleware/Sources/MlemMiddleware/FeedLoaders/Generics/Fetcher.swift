@@ -74,12 +74,12 @@ public class Fetcher<Item: FeedLoadable> {
                 return .success(response.items)
             } else {
                 page += 1
-                log.debug("[\(Item.self) Fetcher] loading page \(page)")
+                log.debug("[\(Item.self) Fetcher] loading page \(self.page)")
                 let response = try await fetchPage(page)
                 
                 // if nothing returned, loading is finished
                 if response.items.count < pageSize {
-                    log.debug("[\(Item.self) Fetcher] received undersized page (\(response.items.count)/\(pageSize))")
+                    log.debug("[\(Item.self) Fetcher] received undersized page (\(response.items.count)/\(self.pageSize))")
                     return .done(response.items)
                 }
                 cursor = response.nextCursor

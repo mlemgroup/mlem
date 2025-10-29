@@ -46,7 +46,7 @@ public class ChildFeedLoader<Item: FeedLoadable>: StandardFeedLoader<Item> {
                 return nil
             }
             
-            log.debug("[\(Self.self)] out of items (\(items.count)), loading more")
+            log.debug("[\(Self.self)] out of items (\(self.items.count)), loading more")
             try await loadMoreItems()
             
             if stream.cursor >= items.count {
