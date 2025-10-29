@@ -1855,7 +1855,7 @@
         }
       }
     },
-    "Choose action..." : {
+    "Choose an action..." : {
 
     },
     "Choose another instance..." : {
@@ -3086,6 +3086,9 @@
           }
         }
       }
+    },
+    "Downvoted" : {
+
     },
     "Downvotes" : {
       "localizations" : {
