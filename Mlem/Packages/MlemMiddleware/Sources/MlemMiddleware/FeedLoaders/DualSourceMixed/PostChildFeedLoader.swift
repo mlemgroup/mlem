@@ -1,21 +1,23 @@
 //
-//  SavedCommentChildFeedLoader.swift
+//  PostChildFeedLoader.swift
 //  MlemMiddleware
 //
 //  Created by sjmarf on 2025-10-29.
 //
 
-public class SavedCommentChildFeedLoader: ChildFeedLoader<PersonContent> {
+public class PostChildFeedLoader: ChildFeedLoader<PersonContent> {
     class Fetcher: MlemMiddleware.Fetcher<PersonContent> {
         override func fetchPage(_ page: Int) async throws -> FetchResponse {
-            let response = try await api.getComments(
+            let response = try await api.getPosts(
+                feed: .all,
                 sort: .new,
                 page: page,
+                cursor: nil,
                 limit: pageSize,
                 filter: .saved
             )
             return .init(
-                items: response.map { PersonContent(wrappedValue: .comment($0)) },
+                items: response.posts.map { PersonContent(wrappedValue: .post($0)) },
                 prevCursor: nil,
                 nextCursor: nil
             )

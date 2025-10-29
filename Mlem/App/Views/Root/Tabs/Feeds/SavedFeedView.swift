@@ -16,7 +16,7 @@ struct SavedFeedView: View {
     @Environment(FiltersTracker.self) var filtersTracker
     @Environment(BackendClient.self) var backendClient
     
-    @State var savedFeedLoader: SavedFeedLoader
+    @State var savedFeedLoader: DualSourceMixedFeedLoader
     
     @State var scrollToTopTrigger: Bool = false
     
@@ -25,7 +25,7 @@ struct SavedFeedView: View {
         @Setting(\.behavior_internetSpeed) var internetSpeed
         @Setting(\.post_size) var postSize
 
-        let savedFeedLoaders = SavedFeedLoader.setup(
+        let savedFeedLoaders = DualSourceMixedFeedLoader.setup(
             api: AppState.main.firstApi,
             pageSize: internetSpeed.pageSize,
             sortType: .new

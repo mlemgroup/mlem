@@ -1,5 +1,5 @@
 //
-//  SavedFeedLoader.swift
+//  DualSourceMixedFeedLoader.swift
 //  MlemMiddleware
 //
 //  Created by Sjmarf on 2025-10-29.
@@ -7,9 +7,8 @@
 
 import Foundation
 
-public class SavedFeedLoader: StandardFeedLoader<PersonContent> {
-    var savedFetcher: MultiFetcher<PersonContent> { fetcher as! MultiFetcher }
-    
+// A feed loader that loads both posts and comments, with two child feed loaders that fetch from different sources.
+public class DualSourceMixedFeedLoader: StandardFeedLoader<PersonContent> {
     public init(
         api: ApiClient,
         pageSize: Int,
@@ -36,22 +35,20 @@ public class SavedFeedLoader: StandardFeedLoader<PersonContent> {
         pageSize: Int,
         sortType: FeedLoaderSort.SortType
     ) -> (
-        postFeedLoader: SavedPostChildFeedLoader,
-        commentFeedLoader: SavedCommentChildFeedLoader,
-        savedFeedLoader: SavedFeedLoader
+        postFeedLoader: PostChildFeedLoader,
+        commentFeedLoader: CommentChildFeedLoader,
+        savedFeedLoader: DualSourceMixedFeedLoader
     ) {
-        let postFeedLoader: SavedPostChildFeedLoader = .init(api: api, pageSize: pageSize, sortType: sortType)
-        let commentFeedLoader: SavedCommentChildFeedLoader = .init(api: api, pageSize: pageSize, sortType: sortType)
+        let postFeedLoader: PostChildFeedLoader = .init(api: api, pageSize: pageSize, sortType: sortType)
+        let commentFeedLoader: CommentChildFeedLoader = .init(api: api, pageSize: pageSize, sortType: sortType)
         
-        let savedFeedLoader: SavedFeedLoader = .init(
+        let savedFeedLoader: DualSourceMixedFeedLoader = .init(
             api: api,
             pageSize: pageSize,
             sources: [postFeedLoader, commentFeedLoader],
             sortType: sortType
         )
         
-        return (
-        postFeedLoader, commentFeedLoader, savedFeedLoader
-        )
+        return (postFeedLoader, commentFeedLoader, savedFeedLoader)
     }
 }
