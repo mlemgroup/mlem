@@ -15,39 +15,39 @@ enum PersonContentType {
 
 struct PersonContentGridView: View {
     enum FeedLoaderType {
-        case personContent(StandardFeedLoader<PersonContent>)
+        case dualSourceMixed(StandardFeedLoader<PersonContent>)
         case post(StandardFeedLoader<Post2>)
         case comment(StandardFeedLoader<Comment2>)
-        case combinedPersonContent(SingleSourceMixedFeedLoader, contentType: PersonContentType)
+        case singleSourceMixed(SingleSourceMixedFeedLoader, contentType: PersonContentType)
 
         var items: [PersonContent] {
             switch self {
-            case let .personContent(feedLoader): feedLoader.items
+            case let .dualSourceMixed(feedLoader): feedLoader.items
             case let .post(feedLoader): feedLoader.items.map { .init(wrappedValue: .post($0)) }
             case let .comment(feedLoader): feedLoader.items.map { .init(wrappedValue: .comment($0)) }
-            case let .combinedPersonContent(feedLoader, contentType): feedLoader.itemsForType(contentType)
+            case let .singleSourceMixed(feedLoader, contentType): feedLoader.itemsForType(contentType)
             }
         }
         
         var loadingState: FeedLoadingState {
             switch self {
-            case let .combinedPersonContent(feedLoader, contentType): feedLoader.loadingStateForType(contentType)
+            case let .singleSourceMixed(feedLoader, contentType): feedLoader.loadingStateForType(contentType)
             default: feedLoading.loadingState
             }
         }
         
         var feedLoading: any FeedLoading {
             switch self {
-            case let .personContent(feedLoader): feedLoader
+            case let .dualSourceMixed(feedLoader): feedLoader
             case let .post(feedLoader): feedLoader
             case let .comment(feedLoader): feedLoader
-            case let .combinedPersonContent(feedLoader, _): feedLoader
+            case let .singleSourceMixed(feedLoader, _): feedLoader
             }
         }
         
         func loadIfThreshold(_ item: PersonContent) throws {
             switch self {
-            case let .personContent(feedLoader): try feedLoader.loadIfThreshold(item)
+            case let .dualSourceMixed(feedLoader): try feedLoader.loadIfThreshold(item)
             case let .post(feedLoader):
                 switch item.wrappedValue {
                 case let .post(post):
@@ -62,7 +62,7 @@ struct PersonContentGridView: View {
                 default:
                     assertionFailure()
                 }
-            case let .combinedPersonContent(feedLoader, contentType):
+            case let .singleSourceMixed(feedLoader, contentType):
                 try feedLoader.loadIfThreshold(item, asChild: contentType != .all)
             }
         }

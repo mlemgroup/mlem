@@ -277,7 +277,7 @@ struct PersonView: View {
                         .padding([.horizontal, .bottom], Constants.main.standardSpacing)
                     }
                     PersonContentGridView(
-                        feedLoader: .combinedPersonContent(feedLoader, contentType: selectedContentType),
+                        feedLoader: .singleSourceMixed(feedLoader, contentType: selectedContentType),
                         contentType: selectedContentType
                     )
                 } else {
