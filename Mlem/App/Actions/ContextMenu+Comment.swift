@@ -45,28 +45,38 @@ extension EllipsisMenu {
     init(
         icon: Icon = .general.menu,
         size: CGFloat,
-        comment: any Comment1Providing
+        comment: any Comment1Providing,
+        type: Set<CommentEllipsisMenuContent.ActionListType> = [.basic, .moderator]
     ) where Content == CommentEllipsisMenuContent {
         self.icon = icon
         self.size = size
 
-        self.content = CommentEllipsisMenuContent(comment: comment)
+        self.content = CommentEllipsisMenuContent(comment: comment, type: type)
     }
 }
 
 struct CommentEllipsisMenuContent: View {
+    enum ActionListType {
+        case basic, moderator
+    }
+
     let comment: any Comment1Providing
+    let type: Set<ActionListType>
 
     var body: some View {
-        ControlGroup {
-            ActionButtons { _ in
-                seeds.compactMap { $0.createAction(comment) }
+        if type.contains(.basic) {
+            ControlGroup {
+                ActionButtons { _ in
+                    seeds.compactMap { $0.createAction(comment) }
+                }
             }
+            .controlGroupStyle(.compactMenu)
         }
-        .controlGroupStyle(.compactMenu)
-        Section {
-            ActionButtons { _ in
-                moderationSeeds.compactMap { $0.createAction(comment) }
+        if type.contains(.moderator) {
+            Section {
+                ActionButtons { _ in
+                    moderationSeeds.compactMap { $0.createAction(comment) }
+                }
             }
         }
     }
