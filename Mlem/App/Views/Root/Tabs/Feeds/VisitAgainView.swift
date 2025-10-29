@@ -11,10 +11,12 @@ import MlemMiddleware
 import SwiftUI
 import Theming
 
-struct SavedFeedView: View {
+struct VisitAgainView: View {
     @Environment(AppState.self) var appState
     @Environment(FiltersTracker.self) var filtersTracker
     @Environment(BackendClient.self) var backendClient
+    
+    let filter: GetContentFilter
     
     @State var mixedFeedLoader: DualSourceMixedFeedLoader
     @State var postsFeedLoader: PostChildFeedLoader
@@ -23,7 +25,7 @@ struct SavedFeedView: View {
     @State var selectedContentType: PersonContentType = .all
     @State var scrollToTopTrigger: Bool = false
     
-    init() {
+    init(filter: GetContentFilter) {
         // need to grab some stuff from app storage to initialize with
         @Setting(\.behavior_internetSpeed) var internetSpeed
         @Setting(\.post_size) var postSize
@@ -32,19 +34,22 @@ struct SavedFeedView: View {
             api: AppState.main.firstApi,
             pageSize: internetSpeed.pageSize,
             sortType: .new,
-            filter: .saved
+            filter: filter
         )
         
         self._mixedFeedLoader = .init(wrappedValue: feedLoaders.savedFeedLoader)
         self._postsFeedLoader = .init(wrappedValue: feedLoaders.postFeedLoader)
         self._commentsFeedLoader = .init(wrappedValue: feedLoaders.commentFeedLoader)
+        
+        self.filter = filter
+        
     }
     
     var body: some View {
         content
             .themedGroupedBackground()
             .scrollContentBackground(.hidden)
-            .conditionalNavigationTitle("Saved")
+            .conditionalNavigationTitle(filter.label)
             .navigationBarTitleDisplayMode(.inline)
             .outdatedFeedPopup(feedLoader: mixedFeedLoader)
             .environment(\.feedContext, .saved)
