@@ -16,7 +16,7 @@ struct SavedFeedView: View {
     @Environment(FiltersTracker.self) var filtersTracker
     @Environment(BackendClient.self) var backendClient
     
-    @State var savedFeedLoader: PersonContentFeedLoader?
+    @State var savedFeedLoader: SavedFeedLoader
     
     @State var scrollToTopTrigger: Bool = false
     
@@ -24,17 +24,14 @@ struct SavedFeedView: View {
         // need to grab some stuff from app storage to initialize with
         @Setting(\.behavior_internetSpeed) var internetSpeed
         @Setting(\.post_size) var postSize
+
+        let savedFeedLoaders = SavedFeedLoader.setup(
+            api: AppState.main.firstApi,
+            pageSize: internetSpeed.pageSize,
+            sortType: .new
+        )
         
-        if let firstUser = AppState.main.firstAccount as? UserAccount {
-            _savedFeedLoader = .init(wrappedValue: .init(
-                api: AppState.main.firstApi,
-                pageSize: internetSpeed.pageSize,
-                userId: firstUser.id,
-                sortType: .new,
-                savedOnly: true,
-                prefetchingConfiguration: .forPostSize(postSize)
-            ))
-        }
+        self._savedFeedLoader = .init(wrappedValue: savedFeedLoaders.savedFeedLoader)
     }
     
     var body: some View {
@@ -50,9 +47,7 @@ struct SavedFeedView: View {
     @ViewBuilder
     var content: some View {
         FancyScrollView(scrollToTopTrigger: $scrollToTopTrigger) {
-            if let savedFeedLoader {
-                PersonContentGridView(feedLoader: savedFeedLoader, contentType: .constant(.all))
-            }
+            PersonContentGridView(feedLoader: .personContent(savedFeedLoader), contentType: .all)
         }
     }
 }
