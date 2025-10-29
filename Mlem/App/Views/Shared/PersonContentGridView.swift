@@ -18,7 +18,7 @@ struct PersonContentGridView: View {
         case personContent(StandardFeedLoader<PersonContent>)
         case post(StandardFeedLoader<Post2>)
         case comment(StandardFeedLoader<Comment2>)
-        case combinedPersonContent(PersonContentFeedLoader, contentType: PersonContentType)
+        case combinedPersonContent(SingleSourceMixedFeedLoader, contentType: PersonContentType)
 
         var items: [PersonContent] {
             switch self {

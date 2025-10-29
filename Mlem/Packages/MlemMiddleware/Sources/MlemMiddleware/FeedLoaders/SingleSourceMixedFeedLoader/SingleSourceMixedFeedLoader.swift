@@ -1,5 +1,5 @@
 //
-//  PersonContentFeedLoader.swift
+//  SingleSourceMixedFeedLoader.swift
 //
 //
 //  Created by Eric Andrews on 2024-07-09.
@@ -13,13 +13,13 @@ import Semaphore
 /// just posts or just comments, and thus the standard Parent/Child FeedLoader construction does not work without
 /// severe API waste. This solution is a simplified variant of that architecture.
 ///
-/// The PersonContentFeedLoader is the parent loader. It is responsible for all data fetching, and keeps track of two
+/// The SingleSourceMixedFeedLoader is the parent loader. It is responsible for all data fetching, and keeps track of two
 /// PersonContentStreams, one for Posts and one for Comments. To load a page of items, it consumes and merges the child streams, just as
 /// in the standard Parent/Child FeedLoader; if either stream reaches the end of its items, it triggers a new load, the response from
 /// which is then incorporated into both child streams.
 
 @Observable
-class PersonContentFetcher: Fetcher<PersonContent> {
+class SingleSourceMixedFetcher: Fetcher<PersonContent> {
     var sortType: FeedLoaderSort.SortType
     var userId: Int
     var savedOnly: Bool
@@ -102,19 +102,19 @@ class PersonContentFetcher: Fetcher<PersonContent> {
     }
 }
 
-public class PersonContentFeedLoader: StandardFeedLoader<PersonContent> {
-    // force unwrap because this should ALWAYS be a PersonContentFetcher
-    var personContentFetcher: PersonContentFetcher { fetcher as! PersonContentFetcher }
+public class SingleSourceMixedFeedLoader: StandardFeedLoader<PersonContent> {
+    // force unwrap because this should ALWAYS be a SingleSourceMixedFetcher
+    var singleSourceMixedFetcher: SingleSourceMixedFetcher { fetcher as! SingleSourceMixedFetcher }
     
-    public var api: ApiClient { personContentFetcher.api }
-    public var userId: Int { personContentFetcher.userId }
+    public var api: ApiClient { singleSourceMixedFetcher.api }
+    public var userId: Int { singleSourceMixedFetcher.userId }
     
     // MARK: Custom Behavior
 
     // This FeedLoader is slightly awkward because it functions like a multi-loader but draws its posts and comments from a single API call. The streams act essentially like child loaders, but are populated using custom behavior in the fetcher. This FeedLoader is best understood as a multi-loader with the streams as child loaders.
     
-    private var postStream: PersonContentStream<Post2> { personContentFetcher.postStream }
-    private var commentStream: PersonContentStream<Comment2> { personContentFetcher.commentStream }
+    private var postStream: PersonContentStream<Post2> { singleSourceMixedFetcher.postStream }
+    private var commentStream: PersonContentStream<Comment2> { singleSourceMixedFetcher.commentStream }
     
     // these are used to allow refresh without clear
     private var tempPostStream: PersonContentStream<Post2>?
@@ -136,7 +136,7 @@ public class PersonContentFeedLoader: StandardFeedLoader<PersonContent> {
         prefetchingConfiguration: PrefetchingConfiguration,
         withContent: (posts: [Post2], comments: [Comment2])? = nil
     ) {
-        super.init(filter: MultiFilter(), fetcher: PersonContentFetcher(
+        super.init(filter: MultiFilter(), fetcher: SingleSourceMixedFetcher(
             api: api,
             pageSize: pageSize,
             sortType: sortType,
@@ -165,8 +165,8 @@ public class PersonContentFeedLoader: StandardFeedLoader<PersonContent> {
         tempPostStream = postStream
         tempCommentStream = commentStream
         
-        await personContentFetcher.changeApi(to: api, context: context)
-        personContentFetcher.userId = userId
+        await singleSourceMixedFetcher.changeApi(to: api, context: context)
+        singleSourceMixedFetcher.userId = userId
         await loadingActor.reset()
         await setLoading(.done) // prevent loading more items until refreshed
     }

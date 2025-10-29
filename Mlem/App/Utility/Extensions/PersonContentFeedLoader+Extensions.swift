@@ -1,5 +1,5 @@
 //
-//  PersonContentFeedLoader+Extensions.swift
+//  SingleSourceMixedFeedLoader+Extensions.swift
 //  Mlem
 //
 //  Created by Sjmarf on 2025-10-29.
@@ -7,7 +7,7 @@
 
 import MlemMiddleware
 
-extension PersonContentFeedLoader {
+extension SingleSourceMixedFeedLoader {
     func itemsForType(_ type: PersonContentType) -> [PersonContent] {
         switch type {
         case .all: items
