@@ -5,7 +5,6 @@
 //  Created by Sjmarf on 30/07/2024.
 //
 
-
 import LemmyMarkdownUI
 import MlemMiddleware
 import SwiftUI
@@ -23,9 +22,8 @@ struct CommunityAboutView: View {
                 MediaView.largeImage(url: banner, shouldBlur: false)
             }
             if let description = community.description {
-
                 VStack(alignment: .trailing) {
-                    if canEditDescription(community) {
+                    if canEditDescription {
                         Button("Edit", icon: .general.edit) {
 
                         }
@@ -44,7 +42,7 @@ struct CommunityAboutView: View {
         .padding([.horizontal, .bottom], Constants.main.standardSpacing)
     }
 
-    func canEditDescription(_ community: any Community) -> Bool {
+    var canEditDescription: Bool {
         guard let firstPerson = appState.firstPerson else { return false }
         return firstPerson.isAdmin || firstPerson.moderates(community: community)
     }
