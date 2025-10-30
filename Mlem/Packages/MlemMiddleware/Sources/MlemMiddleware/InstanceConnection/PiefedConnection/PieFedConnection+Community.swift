@@ -55,6 +55,24 @@ public extension PieFedConnection {
         let response = try await perform(request)
         return try response.communities.map { try .init(from: $0) }
     }
+
+    func editCommunityDescription(id: Int, newValue: String?) async throws -> Community2Snapshot {
+        let request = PieFedEditCommunityRequest(
+            id: id,
+            title: nil,
+            description: newValue,
+            rules: nil,
+            iconUrl: nil,
+            bannerUrl: nil,
+            nsfw: nil,
+            restrictedToMods: nil,
+            localOnly: nil,
+            discussionLanguages: nil,
+            communityId: id
+        )
+        let response = try await perform(request)
+        return try .init(from: response.communityView)
+    }
     
     @discardableResult
     func getSubscriptionList(page: Int, limit: Int) async throws -> [Community2Snapshot] {

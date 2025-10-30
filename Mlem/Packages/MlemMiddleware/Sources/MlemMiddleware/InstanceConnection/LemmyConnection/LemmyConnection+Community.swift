@@ -66,6 +66,26 @@ public extension LemmyConnection {
         }
         return try response.communities?.map { try .init(from: $0) } ?? []
     }
+
+    func editCommunityDescription(id: Int, newValue: String?) async throws -> Community2Snapshot {
+         let response = try await performingForEndpoint { endpoint in
+            LemmyUpdateCommunityRequest(
+                endpoint: endpoint,
+                communityId: id,
+                title: nil,
+                // In the v4 API, the `description` field is for the short description
+                description: endpoint == .v3 ? newValue : nil,
+                icon: nil,
+                banner: nil,
+                nsfw: nil,
+                postingRestrictedToMods: nil,
+                discussionLanguages: nil,
+                visibility: nil,
+                sidebar: newValue
+            )
+        }
+        return try .init(from: response.communityView)
+    }
     
     @discardableResult
     func getSubscriptionList(page: Int, limit: Int) async throws -> [Community2Snapshot] {

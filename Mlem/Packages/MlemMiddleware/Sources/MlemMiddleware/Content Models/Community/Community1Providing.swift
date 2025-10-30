@@ -175,6 +175,11 @@ public extension Community1Providing {
     func addModerator(_ person: any Person, added: Bool) async throws {
         try await api.addModerator(communityId: id, personId: person.id, added: added)
     }
+
+    func editDescription(_ newValue: String?) async throws {
+        let response = try await api.repository.editCommunityDescription(id: id, newValue: newValue)
+        community1.description = response.community.description
+    }
 }
 
 // CanModerateProviding conformance
