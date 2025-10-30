@@ -95,6 +95,8 @@ extension NavigationPage {
             } else {
                 Text(verbatim: "Error: No active UserAccount")
             }
+        case let .editCommunity(community):
+            CommunityDescriptionEditorView(community: community)
         case let .createPost(
             community: community,
             title: title,

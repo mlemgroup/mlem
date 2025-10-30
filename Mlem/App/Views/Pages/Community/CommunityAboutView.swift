@@ -12,6 +12,7 @@ import Theming
 
 struct CommunityAboutView: View {
     @Environment(AppState.self) var appState
+    @Environment(NavigationLayer.self) var navigation
     @Environment(\.palette) var palette
 
     let community: any Community
@@ -35,7 +36,7 @@ struct CommunityAboutView: View {
         VStack(alignment: .trailing) {
             if canEditDescription {
                 Button("Edit", icon: .general.edit) {
-
+                    edit()
                 }
                 .font(.title)
                 .labelStyle(.iconOnly)
@@ -58,7 +59,7 @@ struct CommunityAboutView: View {
                 .frame(width: 50)
                 .foregroundStyle(.tertiary)
             Button("Add description") {
-
+                edit()
             }
             .buttonStyle(.borderedProminent)
         }
@@ -68,5 +69,11 @@ struct CommunityAboutView: View {
     var canEditDescription: Bool {
         guard let firstPerson = appState.firstPerson else { return false }
         return firstPerson.isAdmin || firstPerson.moderates(community: community)
+    }
+
+    func edit() {
+        if let community = community as? any Community2Providing {
+            navigation.openSheet(.editCommunity(community.community2))
+        }
     }
 }
