@@ -60,7 +60,7 @@ private extension PostSortType {
         case .active: .infinity
         case .hot: .zero
         case .new: .zero
-        case .old: .infinity
+        case .old: .v1_3_0
         case .mostComments: .infinity
         case .newComments: .zero
         case .controversial: .infinity
