@@ -20,6 +20,10 @@ struct CommunityDescriptionEditorView: View {
     @State var uploadHistory: ImageUploadHistoryManager = .init()
     @State var presentationSelection: PresentationDetent = .large
 
+    init(community: Community2) {
+        self.community = community
+        textView.text = community.description ?? ""
+    }
     var body: some View {
 
         CollapsibleSheetView(presentationSelection: $presentationSelection, canDismiss: textIsEmpty) {
