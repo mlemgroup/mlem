@@ -23,6 +23,8 @@ struct CommunityAboutView: View {
             }
             if let description = community.description {
                 descriptionView(description)
+            } else if canEditDescription {
+                noDescriptionView
             }
         }
         .padding([.horizontal, .bottom], Constants.main.standardSpacing)
@@ -45,6 +47,22 @@ struct CommunityAboutView: View {
         .padding(Constants.main.standardSpacing)
         .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
+    }
+
+    @ViewBuilder
+    var noDescriptionView: some View {
+        VStack(spacing: 20) {
+            Image(systemName: "note.text")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 50)
+                .foregroundStyle(.tertiary)
+            Button("Add description") {
+
+            }
+            .buttonStyle(.borderedProminent)
+        }
+        .padding(.vertical, 20)
     }
 
     var canEditDescription: Bool {
