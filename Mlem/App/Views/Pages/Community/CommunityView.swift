@@ -234,7 +234,13 @@ struct CommunityView: View {
     
     func tabs(community: any Community) -> [Tab] {
         var output: [Tab] = [.posts, .moderation, .details]
-        if community.description != nil || community.banner != nil {
+        let canModerate: Bool
+        if let firstPerson = appState.firstPerson {
+            canModerate = firstPerson.moderates(community: community) || firstPerson.isAdmin
+        } else {
+            canModerate = false
+        }
+        if community.description != nil || community.banner != nil || canModerate {
             output.insert(.about, at: 1)
         }
         return output
