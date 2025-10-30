@@ -126,7 +126,7 @@ struct CommunityView: View {
                         }
                     }
                 case .about:
-                    aboutTab(community: community)
+                    CommunityAboutView(community: community)
                 case .moderation:
                     moderationTab(community: community)
                 case .details:
@@ -175,34 +175,6 @@ struct CommunityView: View {
         }
     }
 
-    @ViewBuilder
-    func aboutTab(community: any Community) -> some View {
-        VStack(spacing: Constants.main.standardSpacing) {
-            if let banner = community.banner {
-                MediaView.largeImage(url: banner, shouldBlur: false)
-            }
-            if let description = community.description {
-
-                VStack(alignment: .trailing) {
-                    if canEditDescription(community) {
-                        Button("Edit", icon: .general.edit) {
-
-                        }
-                        .font(.title)
-                        .labelStyle(.iconOnly)
-                        .symbolVariant(.circle.fill)
-                        .foregroundStyle(.themedPrimary, .themedTertiaryGroupedBackground)
-                    }
-                    Markdown(description, configuration: .default(palette: palette))
-                }
-                .padding(Constants.main.standardSpacing)
-                .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
-                .paletteBorder(cornerRadius: Constants.main.standardSpacing)
-            }
-        }
-        .padding([.horizontal, .bottom], Constants.main.standardSpacing)
-    }
-    
     @ViewBuilder
     func moderationTab(community: any Community) -> some View {
         VStack(spacing: Constants.main.standardSpacing) {
