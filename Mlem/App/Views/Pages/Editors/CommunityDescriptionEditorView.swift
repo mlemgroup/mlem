@@ -15,7 +15,7 @@ struct CommunityDescriptionEditorView: View {
     let community: Community2
 
     @State var textView: UITextView = .init()
-    @State var textIsEmpty: Bool = true
+    @State var textHasChanged: Bool = false
     @State var markdownToolbarEditorModel: MarkdownEditorToolbarModel = .init()
     @State var uploadHistory: ImageUploadHistoryManager = .init()
     @State var presentationSelection: PresentationDetent = .large
@@ -24,9 +24,10 @@ struct CommunityDescriptionEditorView: View {
         self.community = community
         textView.text = community.description ?? ""
     }
+
     var body: some View {
 
-        CollapsibleSheetView(presentationSelection: $presentationSelection, canDismiss: textIsEmpty) {
+        CollapsibleSheetView(presentationSelection: $presentationSelection, canDismiss: !textHasChanged) {
             NavigationStack {
                 content
                     .navigationBarTitleDisplayMode(.inline)
@@ -70,10 +71,8 @@ struct CommunityDescriptionEditorView: View {
 
     var textEditorView: some View {
         MarkdownTextEditor(
-            onChange: {
-                if $0.isEmpty != textIsEmpty {
-                    textIsEmpty = $0.isEmpty
-                }
+            onChange: { newValue in
+                textHasChanged = newValue != (community.description ?? "") 
             },
             prompt: "Start writing...",
             textView: textView,
