@@ -235,7 +235,9 @@ struct CommunityView: View {
     func tabs(community: any Community) -> [Tab] {
         var output: [Tab] = [.posts, .moderation, .details]
         let canModerate: Bool
-        if let firstPerson = appState.firstPerson {
+        if !appState.firstApi.supports(.editCommunityDescription, defaultValue: false) {
+            canModerate = false
+        } else if let firstPerson = appState.firstPerson {
             canModerate = firstPerson.moderates(community: community) || firstPerson.isAdmin
         } else {
             canModerate = false
