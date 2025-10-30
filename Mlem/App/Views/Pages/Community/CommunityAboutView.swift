@@ -22,24 +22,29 @@ struct CommunityAboutView: View {
                 MediaView.largeImage(url: banner, shouldBlur: false)
             }
             if let description = community.description {
-                VStack(alignment: .trailing) {
-                    if canEditDescription {
-                        Button("Edit", icon: .general.edit) {
-
-                        }
-                        .font(.title)
-                        .labelStyle(.iconOnly)
-                        .symbolVariant(.circle.fill)
-                        .foregroundStyle(.themedPrimary, .themedTertiaryGroupedBackground)
-                    }
-                    Markdown(description, configuration: .default(palette: palette))
-                }
-                .padding(Constants.main.standardSpacing)
-                .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
-                .paletteBorder(cornerRadius: Constants.main.standardSpacing)
+                descriptionView(description)
             }
         }
         .padding([.horizontal, .bottom], Constants.main.standardSpacing)
+    }
+
+    @ViewBuilder
+    func descriptionView(_ description: String) -> some View {
+        VStack(alignment: .trailing) {
+            if canEditDescription {
+                Button("Edit", icon: .general.edit) {
+
+                }
+                .font(.title)
+                .labelStyle(.iconOnly)
+                .symbolVariant(.circle.fill)
+                .foregroundStyle(.themedPrimary, .themedTertiaryGroupedBackground)
+            }
+            Markdown(description, configuration: .default(palette: palette))
+        }
+        .padding(Constants.main.standardSpacing)
+        .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+        .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }
 
     var canEditDescription: Bool {
