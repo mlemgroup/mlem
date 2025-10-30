@@ -6,16 +6,20 @@
 //  
 
 import ComponentViews
+import Haptics
 import MlemMiddleware
 import SwiftUI
 
 struct CommunityDescriptionEditorView: View {
     @Environment(NavigationLayer.self) var navigation
+    @Environment(HapticManager.self) var hapticManager
+    @Environment(\.dismiss) var dismiss
 
     let community: Community2
 
     @State var textView: UITextView = .init()
     @State var textHasChanged: Bool = false
+    @State var sending: Bool = false
     @State var markdownToolbarEditorModel: MarkdownEditorToolbarModel = .init()
     @State var uploadHistory: ImageUploadHistoryManager = .init()
     @State var presentationSelection: PresentationDetent = .large
@@ -34,6 +38,13 @@ struct CommunityDescriptionEditorView: View {
                     .toolbar {
                         ToolbarItem(placement: .topBarLeading) {
                             CloseButtonView(ios18Label: .cancel)
+                        }
+                        ToolbarItem(placement: .topBarTrailing) {
+                            if sending {
+                                ProgressView()
+                            } else {
+                                sendButton
+                            }
                         }
                     }
             }
@@ -84,6 +95,34 @@ struct CommunityDescriptionEditorView: View {
                 )
             }
         )
+    }
+
+    @ViewBuilder
+    var sendButton: some View {
+        Button("Send", icon: community.description == nil ? .lemmy.send : .general.success) {
+            sending = true
+            Task(priority: .userInitiated) {
+                await send()
+            }
+        }
+        .disabled(!textHasChanged)
+        .glassProminentButtonStyle()
+    }
+
+    func send() async {
+        uploadHistory.deleteWhereNotPresent(in: textView.text)
+        do {
+            try await community.editDescription(textView.text)
+            Task { @MainActor in
+                textView.resignFirstResponder()
+                textView.isEditable = false
+                hapticManager.play(haptic: .success, tier: .low)
+                dismiss()
+            }
+        } catch {
+            sending = false
+            handleError(error)
+        }
     }
 
     var minTextEditorHeight: CGFloat {
