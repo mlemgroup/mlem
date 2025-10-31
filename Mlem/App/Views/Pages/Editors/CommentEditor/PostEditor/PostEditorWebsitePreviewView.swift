@@ -18,6 +18,8 @@ struct PostEditorWebsitePreviewView: View {
     @Binding var link: PostLink
     @Binding var imageManager: ImageUploadManager
 
+    @State var isEditing: Bool = false
+
     let primaryApi: ApiClient
     let removeCallback: () -> Void
     let shouldBlur: Bool
@@ -37,25 +39,35 @@ struct PostEditorWebsitePreviewView: View {
         VStack(alignment: .leading, spacing: 0) {
             if let thumbnailUrl = imageManager.image?.url ?? link.effectiveThumbnail {
                 imageView(thumbnailUrl)
-                titleView
+                footerView(withLinkHost: false, withRemoveButton: false)
             } else if primaryApi.supports(.customPostThumbnail, defaultValue: false) {
                 imagePlaceholderView
-                LinkHostView(link: link, withCapsule: false)
-                    .padding([.horizontal, .top], Constants.main.standardSpacing)
-                titleView
+                footerView(withLinkHost: true, withRemoveButton: false)
             } else {
-                HStack {
-                    VStack(alignment: .leading, spacing: 5) {
-                        LinkHostView(link: link, withCapsule: false)
-                            .padding([.horizontal, .top], Constants.main.standardSpacing)
-                        titleView
-                    }
-                    Spacer()
+                footerView(withLinkHost: true, withRemoveButton: true)
+            }
+        }
+    }
+
+    @ViewBuilder
+    func footerView(withLinkHost showLinkHost: Bool, withRemoveButton showRemoveButton: Bool) -> some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 5) {
+                if showLinkHost {
+                    LinkHostView(link: link, withCapsule: false)
+                        .padding([.horizontal, .top], Constants.main.standardSpacing)
+                }
+                titleView
+            }
+            Spacer()
+            HStack {
+                editButton
+                if showRemoveButton {
                     removeButton
-                        .foregroundStyle(.secondary, .themedTertiaryGroupedBackground)
-                        .padding(.trailing, 10)
                 }
             }
+            .foregroundStyle(.secondary, .themedTertiaryGroupedBackground)
+            .padding(.trailing, 10)
         }
     }
 
@@ -142,6 +154,14 @@ struct PostEditorWebsitePreviewView: View {
                     handleError(error)
                 }
             }
+        }
+        .buttonStyle(OverlayButtonStyle())
+    }
+
+    @ViewBuilder
+    var editButton: some View {
+        Button("Edit link", icon: .general.link) {
+            isEditing = true
         }
         .buttonStyle(OverlayButtonStyle())
     }
