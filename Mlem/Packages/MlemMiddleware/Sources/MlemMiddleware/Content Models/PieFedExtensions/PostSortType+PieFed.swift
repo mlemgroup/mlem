@@ -13,7 +13,7 @@ public extension PostSortType {
         case .active: nil
         case .hot: .hot
         case .new: .new
-        case .old: nil
+        case .old: .old
         case .mostComments: nil
         case .newComments: .active // This is intentional
         case .controversial: nil
