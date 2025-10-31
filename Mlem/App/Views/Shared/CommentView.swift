@@ -115,6 +115,7 @@ struct CommentView<EmbeddedContent: View>: View {
         .contentShape(.interaction, .rect)
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
         .environment(\.commentContext, comment)
+        .environment(\.communityContext, comment.community_)
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }
     
