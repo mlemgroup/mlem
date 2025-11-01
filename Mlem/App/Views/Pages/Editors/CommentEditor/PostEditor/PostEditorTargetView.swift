@@ -199,7 +199,7 @@ class PostEditorTarget: Identifiable {
             return
         }
         
-        if let personContentFeedLoader = feedLoader as? PersonContentFeedLoader,
+        if let personContentFeedLoader = feedLoader as? SingleSourceMixedFeedLoader,
            personContentFeedLoader.userId == account.id,
            personContentFeedLoader.api == account.api {
             Task { @MainActor in

@@ -106,7 +106,7 @@ public class Fetcher<Item: FeedLoadable> {
         preconditionFailure("This method must be implemented by the inheriting class")
     }
     
-    /// Resets the fetcher's page and cursor tracking. This method should only be overridden to handle abnormal pagination behavior (e.g., PersonContentFetcher); it should NOT change loading parameters such as query or sort.
+    /// Resets the fetcher's page and cursor tracking. This method should only be overridden to handle abnormal pagination behavior (e.g., SingleSourceMixedFetcher); it should NOT change loading parameters such as query or sort.
     func reset() async {
         page = 0
         cursor = nil

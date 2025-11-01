@@ -29,9 +29,9 @@ extension NavigationPage {
         case let .feeds(listingType):
             FeedsView(listingType: listingType)
         case .savedFeed:
-            SavedFeedView()
+            VisitAgainView(filter: .saved)
         case .upvotedFeed:
-            UpvotedFeedView()
+            VisitAgainView(filter: .upvoted)
         case .topCommunities:
             TopCommunitiesListView()
         case .topPeople:

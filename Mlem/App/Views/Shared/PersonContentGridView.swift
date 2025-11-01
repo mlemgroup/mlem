@@ -9,8 +9,18 @@ import Foundation
 import MlemMiddleware
 import SwiftUI
 
-enum PersonContentType {
+enum PersonContentType: CaseIterable, Identifiable {
     case all, posts, comments
+    
+    var id: Self { self }
+    
+    var label: LocalizedStringResource {
+        switch self {
+        case .all: "All"
+        case .posts: "Posts"
+        case .comments: "Comments"
+        }
+    }
 }
 
 struct PersonContentGridView: View {
@@ -21,28 +31,11 @@ struct PersonContentGridView: View {
     @State var columns: [GridItem] = [GridItem(.flexible())]
     @State var frameWidth: CGFloat = .zero
     
-    var feedLoader: PersonContentFeedLoader
-    @Binding var contentType: PersonContentType
-    
-    var items: [PersonContent] {
-        switch contentType {
-        case .all: feedLoader.items
-        case .posts: feedLoader.posts
-        case .comments: feedLoader.comments
-        }
-    }
-    
-    var loadingState: FeedLoadingState {
-        switch contentType {
-        case .all: feedLoader.loadingState
-        case .posts: feedLoader.postLoadingState
-        case .comments: feedLoader.commentLoadingState
-        }
-    }
+    var feedLoader: FeedLoaderType
     
     var body: some View {
         content
-            .loadFeed(feedLoader)
+            .loadFeed(feedLoader.feedLoading)
             .widthReader(width: $frameWidth)
             .environment(\.parentFrameWidth, frameWidth)
             .onChange(of: postSize, initial: true) { _, newValue in
@@ -61,7 +54,9 @@ struct PersonContentGridView: View {
             .toolbar { FeedToolbarOptions() }
     }
     
+    @ViewBuilder
     var content: some View {
+        let items = feedLoader.items
         VStack(spacing: 0) {
             LazyVGrid(columns: columns, spacing: spacing) {
                 ForEach(items, id: \.hashValue) { item in
@@ -71,7 +66,7 @@ struct PersonContentGridView: View {
                             .padding(.horizontal, postSize.tiled ? Constants.main.halfSpacing : 10)
                             .onAppear {
                                 do {
-                                    try feedLoader.loadIfThreshold(item, asChild: contentType != .all)
+                                    try feedLoader.loadIfThreshold(item)
                                 } catch {
                                     // TODO: is postFeedLoader.loadIfThreshold throws 400, this line is not executed
                                     handleError(error)
@@ -84,12 +79,12 @@ struct PersonContentGridView: View {
             .quickSwipeIconSize(postSize.quickSwipeIconSize)
             .quickSwipeThresholds(postSize.quickSwipeThresholds)
             .animation(.easeOut(duration: 0.1), value: items.isEmpty)
-            EndOfFeedView(loadingState: loadingState, viewType: .hobbit)
+            EndOfFeedView(loadingState: feedLoader.loadingState, viewType: .hobbit)
         }
     }
     
     var spacing: CGFloat {
-        switch contentType {
+        switch feedLoader.type {
         case .all, .comments:
             postSize.sectionSpacing
         case .posts:
