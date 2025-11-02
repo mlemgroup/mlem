@@ -764,6 +764,9 @@
         }
       }
     },
+    "Add description" : {
+
+    },
     "Add Guest" : {
       "localizations" : {
         "fr" : {
@@ -2903,6 +2906,9 @@
           }
         }
       }
+    },
+    "Description" : {
+
     },
     "Details" : {
       "localizations" : {
