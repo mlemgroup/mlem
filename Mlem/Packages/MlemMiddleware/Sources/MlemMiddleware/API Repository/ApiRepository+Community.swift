@@ -44,6 +44,12 @@ extension ApiRepository {
             )
         }
     }
+
+    func editCommunityDescription(id: Int, newValue: String?) async throws -> Community2Snapshot {
+        try await performingForConnection { connection in
+            try await connection.editCommunityDescription(id: id, newValue: newValue)
+        }
+    }
     
     func getSubscriptionList(page: Int, limit: Int) async throws -> [Community2Snapshot] {
         try await performingForConnection { connection in

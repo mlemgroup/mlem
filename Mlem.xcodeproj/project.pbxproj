@@ -150,6 +150,8 @@
 		035BE08D2BDE88EC00F77D73 /* NavigationLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE08C2BDE88EC00F77D73 /* NavigationLayerView.swift */; };
 		035BE08F2BDE911900F77D73 /* NavigationLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE08E2BDE911900F77D73 /* NavigationLayer.swift */; };
 		035BE0912BDEA01E00F77D73 /* View+NavigationSheetModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE0902BDEA01E00F77D73 /* View+NavigationSheetModifiers.swift */; };
+		035DFA232EB3F7240021DE8C /* CommunityAboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035DFA222EB3F7240021DE8C /* CommunityAboutView.swift */; };
+		035DFA252EB3FB550021DE8C /* CommunityDescriptionEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035DFA242EB3FB550021DE8C /* CommunityDescriptionEditorView.swift */; };
 		035DF9112EB2AA160021DE8C /* PersonContentGridView+FeedLoaderType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035DF9102EB2AA160021DE8C /* PersonContentGridView+FeedLoaderType.swift */; };
 		035DF9132EB2AF8E0021DE8C /* GetContentFilter+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035DF9122EB2AF8E0021DE8C /* GetContentFilter+Extensions.swift */; };
 		035EDEF12C2DE94B00F51144 /* DefaultTextInputType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035EDEED2C2DE94B00F51144 /* DefaultTextInputType.swift */; };
@@ -706,6 +708,8 @@
 		035BE08C2BDE88EC00F77D73 /* NavigationLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationLayerView.swift; sourceTree = "<group>"; };
 		035BE08E2BDE911900F77D73 /* NavigationLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationLayer.swift; sourceTree = "<group>"; };
 		035BE0902BDEA01E00F77D73 /* View+NavigationSheetModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+NavigationSheetModifiers.swift"; sourceTree = "<group>"; };
+		035DFA222EB3F7240021DE8C /* CommunityAboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityAboutView.swift; sourceTree = "<group>"; };
+		035DFA242EB3FB550021DE8C /* CommunityDescriptionEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityDescriptionEditorView.swift; sourceTree = "<group>"; };
 		035DF9102EB2AA160021DE8C /* PersonContentGridView+FeedLoaderType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PersonContentGridView+FeedLoaderType.swift"; sourceTree = "<group>"; };
 		035DF9122EB2AF8E0021DE8C /* GetContentFilter+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GetContentFilter+Extensions.swift"; sourceTree = "<group>"; };
 		035EDEEC2C2DE94B00F51144 /* _assignIfNotEqual.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _assignIfNotEqual.swift; sourceTree = "<group>"; };
@@ -1327,6 +1331,7 @@
 			isa = PBXGroup;
 			children = (
 				CD1C64142D34286E0006B3C1 /* CommunityView+Logic.swift */,
+				035DFA222EB3F7240021DE8C /* CommunityAboutView.swift */,
 				033FCAF32C59843E007B7CD1 /* CommunityView.swift */,
 				03049A212C650B2C00FF6889 /* CommunityDetailsView.swift */,
 				0397D4632C676CA8002C6CDC /* FeedSortPicker.swift */,
@@ -2179,6 +2184,7 @@
 				0331715D2CCD6D95002DA370 /* ContentPurgeEditorView.swift */,
 				03F967262CE218110081C9A3 /* PersonBanEditorView.swift */,
 				03B62C3F2CE811CB0077E9C8 /* PersonBanEditorView+Logic.swift */,
+				035DFA242EB3FB550021DE8C /* CommunityDescriptionEditorView.swift */,
 			);
 			path = Editors;
 			sourceTree = "<group>";
@@ -2565,6 +2571,7 @@
 				03F967272CE218110081C9A3 /* PersonBanEditorView.swift in Sources */,
 				03AD0A822CFDBFA0001EF9F7 /* AccountLocalSettingsView.swift in Sources */,
 				039F58992C7B697D00C61658 /* Bundle+Extensions.swift in Sources */,
+				035DFA252EB3FB550021DE8C /* CommunityDescriptionEditorView.swift in Sources */,
 				033F84D92C2B61FB002E3EDF /* ToastType.swift in Sources */,
 				03600D932D4531DF00C704CB /* PrivacyBypassImageProxySettingsView.swift in Sources */,
 				03A82FA12C0D1E8500D01A5C /* ApiClient+Extensions.swift in Sources */,
@@ -2779,6 +2786,7 @@
 				03ECD71B2C811D6700D48BF6 /* PostEditorView+ImageView.swift in Sources */,
 				038C85692D861A2100543F70 /* Comment+Mock.swift in Sources */,
 				0397D48C2C6BE9A2002C6CDC /* CollapsibleSection.swift in Sources */,
+				035DFA232EB3F7240021DE8C /* CommunityAboutView.swift in Sources */,
 				0311ADB72E4DF49800EC3120 /* SearchHomeView.swift in Sources */,
 				0377BE9B2DEA328900E38593 /* OnboardingEmailView.swift in Sources */,
 				038028D82CACAB960091A8A2 /* ModeratorSettingsView.swift in Sources */,

@@ -16,6 +16,13 @@ extension Community1Snapshot {
         guard let published = community.publishedAt ?? community.published else {
             throw .responseMissingRequiredData("LemmyCommunity published")
         }
+
+        let description: String?
+        if let sidebar = community.sidebar {
+            description = sidebar
+        } else {
+            description = community.description
+        }
         
         self.init(
             actorId: actorId,
@@ -25,7 +32,7 @@ extension Community1Snapshot {
             instanceId: community.instanceId,
             updated: community.updatedAt ?? community.updated,
             displayName: community.title,
-            description: community.description,
+            description: description,
             deleted: community.deleted,
             removed: community.removed,
             nsfw: community.nsfw,

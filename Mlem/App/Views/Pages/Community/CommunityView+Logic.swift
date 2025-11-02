@@ -17,7 +17,7 @@ extension CommunityView {
         }
         return firstPerson.isAdmin || firstPerson.moderates(community: community)
     }
-    
+
     func openAddModSheet() {
         navigation.openSheet(.personPicker { person in
             newMod = person

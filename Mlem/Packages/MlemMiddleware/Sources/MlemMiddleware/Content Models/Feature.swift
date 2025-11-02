@@ -45,6 +45,7 @@ public enum Feature: Hashable {
     
     /// Add/remove moderators from a community
     case editModeratorList
+    case editCommunityDescription
     
     case commentTreeSortedByDepth
     case uploadImages

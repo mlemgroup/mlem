@@ -55,6 +55,10 @@ public extension PieFedConnection {
         let response = try await perform(request)
         return try response.communities.map { try .init(from: $0) }
     }
+
+    func editCommunityDescription(id: Int, newValue: String?) async throws -> Community2Snapshot {
+        throw ApiClientError.featureUnsupported
+    }
     
     @discardableResult
     func getSubscriptionList(page: Int, limit: Int) async throws -> [Community2Snapshot] {

@@ -47,6 +47,7 @@ enum NavigationPage: Hashable {
     case subscriptionList
     case createComment(_ context: CommentEditorView.Context, commentTreeTracker: CommentTreeTracker? = nil)
     case editComment(_ comment: Comment2, context: CommentEditorView.Context?)
+    case editCommunity(_ community: Community2)
     case report(_ interactable: ReportableHashWrapper, community: AnyCommunity? = nil)
     case remove(_ removable: RemovableHashWrapper)
     case purge(_ purgable: PurgableHashWrapper)
