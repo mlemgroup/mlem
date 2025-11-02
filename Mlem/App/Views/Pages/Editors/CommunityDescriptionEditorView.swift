@@ -30,7 +30,6 @@ struct CommunityDescriptionEditorView: View {
     }
 
     var body: some View {
-
         CollapsibleSheetView(presentationSelection: $presentationSelection, canDismiss: !textHasChanged) {
             NavigationStack {
                 content
