@@ -31,8 +31,8 @@ class MlemStats {
     static let main: MlemStats = .init()
     
     @MainActor
-    func loadInstances() async throws {
-        guard loadingState == .idle else { return }
+    func loadInstances(forceRefresh: Bool = false) async throws {
+        guard forceRefresh || loadingState == .idle else { return }
         loadingState = .loading
         do {
             let decoder: JSONDecoder = .defaultDecoder
