@@ -19,6 +19,23 @@ public extension ApiClient {
     }
     
     func getComments(
+        sort: CommentSortType,
+        page: Int,
+        maxDepth: Int? = nil,
+        limit: Int,
+        filter: GetContentFilter? = nil
+    ) async throws -> [Comment2] {
+        let snapshots = try await repository.getComments(
+            sort: sort,
+            page: page,
+            maxDepth: maxDepth,
+            limit: limit,
+            filter: filter
+        )
+        return await caches.comment2.getModels(api: self, from: snapshots)
+    }
+    
+    func getComments(
         postId: Int,
         sort: CommentSortType,
         page: Int,

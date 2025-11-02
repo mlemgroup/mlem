@@ -41,7 +41,7 @@ struct PersonView: View {
     @State var person: AnyPerson
     @State private var selectedTab: Tab = .overview
     @State private var selectedContentType: PersonContentType = .all
-    @State var feedLoader: PersonContentFeedLoader?
+    @State var feedLoader: SingleSourceMixedFeedLoader?
     @State var isAdmin: Bool
     @State var upgraded: Bool = false
     let isProfileTab: Bool
@@ -276,7 +276,7 @@ struct PersonView: View {
                         .buttonStyle(.capsule)
                         .padding([.horizontal, .bottom], Constants.main.standardSpacing)
                     }
-                    PersonContentGridView(feedLoader: feedLoader, contentType: $selectedContentType)
+                    PersonContentGridView(feedLoader: .singleSourceMixed(feedLoader, contentType: selectedContentType))
                 } else {
                     ProgressView()
                 }
