@@ -35,17 +35,25 @@ struct CommunityAboutView: View {
     func descriptionView(_ description: String) -> some View {
         VStack(alignment: .trailing) {
             if canEditDescription {
-                Button("Edit", icon: .general.edit) {
-                    edit()
+                HStack {
+                    Text("Description")
+                    .font(.callout)
+                    Spacer()
+                    Button("Edit") {
+                        edit()
+                    }
+                    .font(.footnote)
+                    .buttonStyle(.bordered)
                 }
-                .font(.title)
-                .labelStyle(.iconOnly)
-                .symbolVariant(.circle.fill)
-                .foregroundStyle(.themedPrimary, .themedTertiaryGroupedBackground)
+                .foregroundStyle(.secondary)
+                .fontWeight(.semibold)
+                .padding(.horizontal, Constants.main.standardSpacing)
+                Divider()
             }
             Markdown(description, configuration: .default(palette: palette))
+            .padding(.horizontal, Constants.main.standardSpacing)
         }
-        .padding(Constants.main.standardSpacing)
+        .padding(.vertical, Constants.main.standardSpacing)
         .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }
