@@ -136,7 +136,6 @@ extension ImageViewer {
     @ViewBuilder
     var playbackBar: some View {
         VStack(spacing: Constants.main.halfSpacing) {
-            // if let duration = controlState.duration {
             if let readouts = controlState.playbackReadouts {
                 HStack {
                     Text(readouts.position)
@@ -182,16 +181,18 @@ extension ImageViewer {
         Button {
             controlState.animating.toggle()
         } label: {
-            Image(icon: controlState.animating ? .general.pause : .general.play)
-                .symbolVariant(.fill)
-                .scaledToFit()
-                .frame(width: 22, height: 22)
-                .contentTransition(.symbolEffect(.replace, options: .speed(2)))
-                .padding(Constants.main.standardSpacing + 4) // +4 to match .title2 implicit padding plus offset
-                .background(.ultraThinMaterial, in: .circle)
-                .padding(.leading, Constants.main.standardSpacing)
-                .padding([.top, .trailing], Constants.main.doubleSpacing)
-                .contentShape(.rect)
+            Group {
+                if #available(iOS 26, *) {
+                    playButtonContent
+                        .glassEffect(.regular.interactive())
+                } else {
+                    playButtonContent
+                        .background(.ultraThinMaterial, in: .circle)
+                }
+            }
+            .padding(.leading, Constants.main.standardSpacing)
+            .padding([.top, .trailing], Constants.main.doubleSpacing)
+            .contentShape(.rect)
         }
     }
     
@@ -236,16 +237,18 @@ extension ImageViewer {
         Button {
             controlState.muted.toggle()
         } label: {
-            Image(icon: controlState.muted ? .general.mute : .general.unmute)
-                .scaledToFit()
-                .symbolVariant(.fill)
-                .frame(width: 22, height: 22)
-                .contentTransition(.symbolEffect(.replace, options: .speed(2)))
-                .padding(Constants.main.standardSpacing + 4) // +3 to match .title2 implicit padding plus offset
-                .background(.ultraThinMaterial, in: .circle)
-                .padding(.trailing, Constants.main.standardSpacing)
-                .padding([.top, .leading], Constants.main.doubleSpacing)
-                .contentShape(.rect)
+            Group {
+                if #available(iOS 26, *) {
+                    muteButtonContent
+                        .glassEffect(.regular.interactive())
+                } else {
+                    muteButtonContent
+                        .background(.ultraThinMaterial, in: .circle)
+                }
+            }
+            .padding(.trailing, Constants.main.standardSpacing)
+            .padding([.top, .leading], Constants.main.doubleSpacing)
+            .contentShape(.rect)
         }
     }
     
@@ -253,16 +256,20 @@ extension ImageViewer {
     
     @ViewBuilder
     var scaleDisplay: some View {
-        Text(String(format: "%.1fx", scaleDisplayValue))
-            .foregroundStyle(.white)
-            .padding(Constants.main.standardSpacing)
-            .padding(.horizontal, Constants.main.halfSpacing)
-            .background {
-                Capsule().fill(.ultraThinMaterial)
-                    .environment(\.colorScheme, .dark)
+        Group {
+            if #available(iOS 26, *) {
+                scaleDisplayContent
+                    .glassEffect()
+            } else {
+                scaleDisplayContent
+                    .background {
+                        Capsule().fill(.ultraThinMaterial)
+                    }
             }
-            .padding(.leading, Constants.main.standardSpacing)
-            .opacity(scaleDisplayShown ? 1 : 0)
+        }
+        .environment(\.colorScheme, .dark)
+        .padding(.leading, Constants.main.standardSpacing)
+        .opacity(scaleDisplayShown ? 1 : 0)
     }
     
     // MARK: Platform Compatibility
@@ -318,7 +325,7 @@ extension ImageViewer {
     @ViewBuilder
     var playbackBarBaseCapsule: some View {
         if #available(iOS 26, *) {
-            Capsule()
+            Color.clear.contentShape(.rect)
                 .glassEffect()
         } else {
             Capsule()
@@ -334,5 +341,33 @@ extension ImageViewer {
             quickLookButton
         }
         .padding(.horizontal, Constants.main.halfSpacing)
+    }
+    
+    @ViewBuilder
+    var playButtonContent: some View {
+        Image(icon: controlState.animating ? .general.pause : .general.play)
+            .symbolVariant(.fill)
+            .scaledToFit()
+            .frame(width: 22, height: 22)
+            .contentTransition(.symbolEffect(.replace, options: .speed(2)))
+            .padding(Constants.main.standardSpacing + 4) // +4 to match .title2 implicit padding plus offset
+    }
+    
+    @ViewBuilder
+    var muteButtonContent: some View {
+        Image(icon: controlState.muted ? .general.mute : .general.unmute)
+            .scaledToFit()
+            .symbolVariant(.fill)
+            .frame(width: 22, height: 22)
+            .contentTransition(.symbolEffect(.replace, options: .speed(2)))
+            .padding(Constants.main.standardSpacing + 4) // +3 to match .title2 implicit padding plus offset
+    }
+    
+    @ViewBuilder
+    var scaleDisplayContent: some View {
+        Text(String(format: "%.1fx", scaleDisplayValue))
+            .foregroundStyle(.white)
+            .padding(Constants.main.standardSpacing)
+            .padding(.horizontal, Constants.main.halfSpacing)
     }
 }
