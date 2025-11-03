@@ -45,13 +45,13 @@ extension ImageViewer {
         Button {
             fadeDismiss()
         } label: {
-            Image(icon: .general.close)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 18, height: 18)
-                .accessibilityLabel("Close")
-                .padding(Constants.main.standardSpacing + 6)
-                .background(.ultraThinMaterial, in: .circle)
+            if #available(iOS 26, *) {
+                closeButtonContent
+                    .glassEffect(.regular.interactive())
+            } else {
+                closeButtonContent
+                    .background(.ultraThinMaterial, in: .circle)
+            }
         }
         .contentShape(.rect)
         .environment(\.colorScheme, .dark)
@@ -62,45 +62,34 @@ extension ImageViewer {
         Group {
             if !devToolsShown {
                 Button {
-                    devToolsShown = true
+                    withAnimation {
+                        devToolsShown = true
+                    }
                 } label: {
-                    Image(icon: .settings.developerMode)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 22, height: 22)
-                        .accessibilityLabel(String("Toggle Developer Tools"))
-                        .padding(Constants.main.standardSpacing + 4)
-                        .background(.ultraThinMaterial, in: .circle)
+                    if #available(iOS 26, *) {
+                        devToolsButtonContent
+                            .glassEffect(.regular.interactive())
+                    } else {
+                        devToolsButtonContent
+                            .background(.ultraThinMaterial, in: .circle)
+                    }
                 }
                 .contentShape(.rect)
                 .environment(\.colorScheme, .dark)
             } else {
-                VStack(alignment: .leading, spacing: Constants.main.halfSpacing) {
-                    let imageType: String = url.proxyAwarePathExtension?.lowercased() ?? "Unknown"
-                    Text(verbatim: "Media Type: \(imageType) ")
-                    if let duration = controlState.duration {
-                        Text(verbatim: "Duration: \(String(format: "%.4fs", duration))")
-                            .monospacedDigit()
+                Group {
+                    if #available(iOS 26, *) {
+                        devToolsContent
+                            .glassEffect(.regular.interactive(), in: .rect(cornerRadius: Constants.main.standardSpacing))
                     } else {
-                        Text(verbatim: "Duration: None")
+                        devToolsContent
+                            .background(.ultraThinMaterial, in: .rect(cornerRadius: Constants.main.standardSpacing))
                     }
-                    Text(verbatim: "Playback Position: \(String(format: "%.4f", controlState.playbackPosition))")
-                        .monospacedDigit()
-                    if let target = controlState.scrubTarget {
-                        Text(verbatim: "Scrub Target: \(String(format: "%.4f", target))")
-                            .monospacedDigit()
-                    } else {
-                        Text(verbatim: "Scrub Target: None")
-                    }
-                    Text(verbatim: "Scrub Rate: \(String(format: "%.4f", scrubRate))")
-                        .monospacedDigit()
                 }
-                .padding(Constants.main.standardSpacing)
-                .foregroundStyle(.white)
-                .font(.footnote)
-                .background(.ultraThinMaterial, in: .rect(cornerRadius: Constants.main.standardSpacing))
                 .onTapGesture {
-                    devToolsShown = false
+                    withAnimation {
+                        devToolsShown = false
+                    }
                 }
             }
         }
@@ -122,14 +111,16 @@ extension ImageViewer {
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 
-                HStack {
-                    saveButton
-                    shareButton
-                    quickLookButton
-                }
-                .padding(.horizontal, Constants.main.halfSpacing)
-                .background {
-                    Capsule().fill(.ultraThinMaterial)
+                Group {
+                    if #available(iOS 26, *) {
+                        bottomControlBarContent
+                            .glassEffect(.regular.interactive())
+                    } else {
+                        bottomControlBarContent
+                            .background {
+                                Capsule().fill(.ultraThinMaterial)
+                            }
+                    }
                 }
                 .frame(maxWidth: .infinity, alignment: .center)
                 
@@ -157,8 +148,7 @@ extension ImageViewer {
                 .shadow(radius: 2)
             }
             
-            Capsule()
-                .fill(.ultraThinMaterial)
+            playbackBarBaseCapsule
                 .frame(maxWidth: .infinity)
                 .frame(height: 10)
                 .overlay {
@@ -273,5 +263,76 @@ extension ImageViewer {
             }
             .padding(.leading, Constants.main.standardSpacing)
             .opacity(scaleDisplayShown ? 1 : 0)
+    }
+    
+    // MARK: Platform Compatibility
+    // TODO: iOS 18 deprecation remove
+    
+    @ViewBuilder
+    var closeButtonContent: some View {
+        Image(icon: .general.close)
+            .resizable()
+            .scaledToFit()
+            .frame(width: 18, height: 18)
+            .accessibilityLabel("Close")
+            .padding(Constants.main.standardSpacing + 6)
+    }
+    
+    @ViewBuilder
+    var devToolsButtonContent: some View {
+        Image(icon: .settings.developerMode)
+            .resizable()
+            .scaledToFit()
+            .frame(width: 22, height: 22)
+            .accessibilityLabel(String("Toggle Developer Tools"))
+            .padding(Constants.main.standardSpacing + 4)
+    }
+    
+    @ViewBuilder
+    var devToolsContent: some View {
+        VStack(alignment: .leading, spacing: Constants.main.halfSpacing) {
+            let imageType: String = url.proxyAwarePathExtension?.lowercased() ?? "Unknown"
+            Text(verbatim: "Media Type: \(imageType) ")
+            if let duration = controlState.duration {
+                Text(verbatim: "Duration: \(String(format: "%.4fs", duration))")
+                    .monospacedDigit()
+            } else {
+                Text(verbatim: "Duration: None")
+            }
+            Text(verbatim: "Playback Position: \(String(format: "%.4f", controlState.playbackPosition))")
+                .monospacedDigit()
+            if let target = controlState.scrubTarget {
+                Text(verbatim: "Scrub Target: \(String(format: "%.4f", target))")
+                    .monospacedDigit()
+            } else {
+                Text(verbatim: "Scrub Target: None")
+            }
+            Text(verbatim: "Scrub Rate: \(String(format: "%.4f", scrubRate))")
+                .monospacedDigit()
+        }
+        .padding(Constants.main.standardSpacing)
+        .foregroundStyle(.white)
+        .font(.footnote)
+    }
+    
+    @ViewBuilder
+    var playbackBarBaseCapsule: some View {
+        if #available(iOS 26, *) {
+            Capsule()
+                .glassEffect()
+        } else {
+            Capsule()
+                .fill(.ultraThinMaterial)
+        }
+    }
+    
+    @ViewBuilder
+    var bottomControlBarContent: some View {
+        HStack {
+            saveButton
+            shareButton
+            quickLookButton
+        }
+        .padding(.horizontal, Constants.main.halfSpacing)
     }
 }
