@@ -84,7 +84,7 @@ struct ContentView: View {
                 .quickSwipeIconSize(28)
                 .task(id: BackendClient.main.environment) {
                     do {
-                        try await MlemStats.main.loadInstances()
+                        try await MlemStats.main.loadInstances(forceRefresh: true)
                     } catch {
                         handleError(error)
                     }
