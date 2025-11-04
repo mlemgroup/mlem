@@ -29,7 +29,10 @@ struct LinkEditorView: View {
     var body: some View {
         VStack(spacing: 10) {
             HStack {
-                Button("Go back", icon: .general.backward, action: close) 
+                Button("Go back", icon: .general.backward) {
+                    focused = false
+                    close()
+                }
                 Spacer()
             }
             .buttonStyle(OverlayButtonStyle())
