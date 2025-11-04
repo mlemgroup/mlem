@@ -38,7 +38,8 @@ struct PostEditorWebsitePreviewView: View {
     var content: some View {
         VStack(alignment: .leading, spacing: 0) {
             if isEditing {
-                LinkEditorView {
+                LinkEditorView(url: link.content, api: primaryApi) { link in
+                    self.link = link
                     withAnimation(.easeOut(duration: 0.2)) {
                         isEditing = false
                     }

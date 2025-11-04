@@ -5,12 +5,24 @@
 //  Created by Sjmarf on 2025-11-04.
 //  
 
+import MlemMiddleware
 import SwiftUI
 
 struct LinkEditorView: View {
-    let close: () -> Void
+    let api: ApiClient
+    let close: (PostLink) -> Void
     
-    @State var urlString: String = "Hello world"
+    let originalUrl: URL
+    
+    init(url: URL, api: ApiClient, close: @escaping (PostLink) -> Void) {
+        self.api = api
+        self.close = close
+        self.originalUrl = url
+    }
+    
+    @State var urlString: String = ""
+    
+    @State var textView: UITextView?
     
     @FocusState var focused: Bool
 
@@ -30,10 +42,22 @@ struct LinkEditorView: View {
         VStack(spacing: 10) {
             HStack {
                 Button("Go back", icon: .general.backward) {
-                    focused = false
-                    close()
+                    if let url = URL(string: self.urlString) {
+                        focused = false
+                        Task {
+                            do {
+                                let link = try await api.getPostLinkOrUseOpenGraph(url: url)
+                                close(link)
+                            } catch {
+                                handleError(error)
+                            }
+                        }
+                    }
                 }
                 Spacer()
+                Button("Test", icon: .lemmy.activeSort) {
+                    textView?.text = textView?.text
+                }
             }
             .buttonStyle(OverlayButtonStyle())
             textEditor
@@ -50,16 +74,17 @@ struct LinkEditorView: View {
                 .onAppear {
                     focused = true
                 }
-                .introspect(.textEditor, on: .iOS(.v26)) { textEditor in
-                    textEditor.isScrollEnabled = false
-                }
+                .fixedSize(horizontal: false, vertical: true)
+                .layoutPriority(6)
+                .frame(maxHeight: .infinity)
                 .scrollContentBackground(.hidden)
-                .frame(
-                    maxWidth: .infinity,
-                    minHeight: bodyHeight,
-                    maxHeight: .infinity,
-                    alignment: .topLeading
-                )
+                .introspect(.textEditor, on: .iOS(.v26)) {
+                    if textView == nil {
+                        textView = $0
+                        // The text has to be set here; otherwise the textview has a height of 0 for some reason
+                        textView?.text = originalUrl.absoluteString
+                    }
+                }
         }
     }
 }
