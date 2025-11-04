@@ -33,11 +33,17 @@ struct PostEditorWebsitePreviewView: View {
             .paletteBorder(cornerRadius: Constants.main.mediumItemCornerRadius)
             .contentShape(.rect)
     }
-    
+
     @ViewBuilder
     var content: some View {
         VStack(alignment: .leading, spacing: 0) {
-            if let thumbnailUrl = imageManager.image?.url ?? link.effectiveThumbnail {
+            if isEditing {
+                LinkEditorView {
+                    withAnimation(.easeOut(duration: 0.2)) {
+                        isEditing = false
+                    }
+                }
+            } else if let thumbnailUrl = imageManager.image?.url ?? link.effectiveThumbnail {
                 imageView(thumbnailUrl)
                 footerView(withLinkHost: false, withRemoveButton: false)
             } else if primaryApi.supports(.customPostThumbnail, defaultValue: false) {
@@ -161,7 +167,9 @@ struct PostEditorWebsitePreviewView: View {
     @ViewBuilder
     var editButton: some View {
         Button("Edit link", icon: .general.link) {
-            isEditing = true
+            withAnimation(.easeOut(duration: 0.2)) {
+                isEditing = true
+            }
         }
         .buttonStyle(OverlayButtonStyle())
     }
