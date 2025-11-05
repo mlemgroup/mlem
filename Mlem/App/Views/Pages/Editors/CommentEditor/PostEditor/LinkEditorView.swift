@@ -55,9 +55,6 @@ struct LinkEditorView: View {
                     }
                 }
                 Spacer()
-                Button("Test", icon: .lemmy.activeSort) {
-                    textView?.text = textView?.text
-                }
             }
             .buttonStyle(OverlayButtonStyle())
             textEditor
