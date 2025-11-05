@@ -7,8 +7,10 @@
 
 import MlemMiddleware
 import SwiftUI
+import Theming
 
 struct LinkEditorView: View {
+    @Environment(\.palette) var palette
     let api: ApiClient
     let close: (PostLink) -> Void
     
@@ -31,7 +33,12 @@ struct LinkEditorView: View {
     var attributedStringBinding: Binding<AttributedString> {
         .init {
             var string = AttributedString(urlString)
-            string.foregroundColor = .red
+            string.foregroundColor = ThemedColor.themedSecondary.resolve(with: palette)
+            if let url = URL(string: urlString), let host = url.host() {
+                if let range = string.range(of: host) {
+                    string[range].foregroundColor = ThemedColor.themedPrimary.resolve(with: palette)
+                }
+            }
             return string
         } set: { 
             urlString = String($0.characters)
@@ -39,7 +46,7 @@ struct LinkEditorView: View {
     }
 
     var body: some View {
-        VStack(spacing: 10) {
+        VStack(spacing: 5) {
             HStack {
                 Button("Go back", icon: .general.backward) {
                     if let url = URL(string: self.urlString) {
