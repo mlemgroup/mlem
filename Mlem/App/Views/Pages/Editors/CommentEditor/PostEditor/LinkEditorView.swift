@@ -24,6 +24,7 @@ struct LinkEditorView: View {
     
     @State var urlString: String = ""
     @State var textView: UITextView?
+    @State var isSubmitting: Bool = false
     @FocusState var focused: Bool
 
     var attributedStringBinding: Binding<AttributedString> {
@@ -44,22 +45,39 @@ struct LinkEditorView: View {
     var body: some View {
         VStack(spacing: 5) {
             HStack {
-                Button("Go back", icon: .general.backward) {
+                Spacer()
+                Button {
                     if let url = URL(string: self.urlString) {
                         focused = false
                         Task {
                             do {
+                                self.isSubmitting = true
                                 let link = try await api.getPostLinkOrUseOpenGraph(url: url)
                                 close(link)
                             } catch {
+                                self.isSubmitting = false
                                 handleError(error)
                             }
                         }
                     }
+                } label: {
+                    Label("Done", icon: .general.success)
+                        .font(.title)
+                        .fontWeight(.semibold)
+                        .imageScale(.large)
+                        .labelStyle(.iconOnly)
+                        .symbolVariant(.circle.fill)
+                        .symbolRenderingMode(.palette)
+                        .foregroundStyle(.secondary, .themedTertiaryGroupedBackground)
+                        .opacity(isSubmitting ? 0 : 1)
+                        .overlay {
+                            if isSubmitting {
+                                ProgressView()
+                            }
+                        }
                 }
-                Spacer()
+                .buttonStyle(.plain)
             }
-            .buttonStyle(OverlayButtonStyle())
             textEditor
                 .padding(.horizontal, 5)
         }
@@ -90,18 +108,5 @@ struct LinkEditorView: View {
                 textView?.text = originalUrl.absoluteString
             }
         }
-    }
-}
-
-private struct OverlayButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .font(.title)
-            .fontWeight(.semibold)
-            .imageScale(.large)
-            .labelStyle(.iconOnly)
-            .symbolVariant(.circle.fill)
-            .symbolRenderingMode(.palette)
-            .foregroundStyle(.secondary, .themedTertiaryGroupedBackground)
     }
 }
