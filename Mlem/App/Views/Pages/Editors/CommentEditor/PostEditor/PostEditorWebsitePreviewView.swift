@@ -69,6 +69,7 @@ struct PostEditorWebsitePreviewView: View {
             Spacer()
             HStack {
                 editButton
+                .padding(.vertical, 10)
                 if showRemoveButton {
                     removeButton
                 }
