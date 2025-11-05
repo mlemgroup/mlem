@@ -23,12 +23,8 @@ struct LinkEditorView: View {
     }
     
     @State var urlString: String = ""
-    
     @State var textView: UITextView?
-    
     @FocusState var focused: Bool
-
-    @ScaledMetric(relativeTo: .body) var bodyHeight = 40
 
     var attributedStringBinding: Binding<AttributedString> {
         .init {
