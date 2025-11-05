@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Icons
 
 extension ImageViewer {
     @ViewBuilder
@@ -272,27 +273,46 @@ extension ImageViewer {
         .opacity(scaleDisplayShown ? 1 : 0)
     }
     
+    @ViewBuilder
+    func buttonLabel(text: LocalizedStringResource, icon: Icon, frameSize: CGFloat, padding: CGFloat) -> some View {
+        Label {
+            Text(text)
+        } icon: {
+            Image(icon: icon)
+                .resizable()
+                .scaledToFit()
+                .frame(width: frameSize, height: frameSize)
+                .padding(padding)
+        }
+        .labelStyle(.iconOnly)
+    }
+    
+    @ViewBuilder
+    func videoStateButtonLabel(isOn: Bool, icons: (on: Icon, off: Icon)) -> some View {
+        Image(icon: isOn ? icons.on : icons.off)
+            .symbolVariant(.fill)
+            .scaledToFit()
+            .frame(width: 22, height: 22)
+            .contentTransition(.symbolEffect(.replace, options: .speed(2)))
+            .padding(Constants.main.standardSpacing + 4) // +4 to match .title2 implicit padding plus offset
+    }
+    
     // MARK: Platform Compatibility
     // TODO: iOS 18 deprecation remove
     
     @ViewBuilder
     var closeButtonContent: some View {
-        Image(icon: .general.close)
-            .resizable()
-            .scaledToFit()
-            .frame(width: 18, height: 18)
-            .accessibilityLabel("Close")
-            .padding(Constants.main.standardSpacing + 6)
+        buttonLabel(text: "Close", icon: .general.close, frameSize: 18, padding: Constants.main.standardSpacing + 6)
     }
     
     @ViewBuilder
     var devToolsButtonContent: some View {
-        Image(icon: .settings.developerMode)
-            .resizable()
-            .scaledToFit()
-            .frame(width: 22, height: 22)
-            .accessibilityLabel(String("Toggle Developer Tools"))
-            .padding(Constants.main.standardSpacing + 4)
+        buttonLabel(
+            text: "Toggle Developer Tools",
+            icon: .settings.developerMode,
+            frameSize: 22,
+            padding: Constants.main.standardSpacing + 4
+        )
     }
     
     @ViewBuilder
@@ -318,6 +338,7 @@ extension ImageViewer {
                 .monospacedDigit()
         }
         .padding(Constants.main.standardSpacing)
+        .contentShape(.rect)
         .foregroundStyle(.white)
         .font(.footnote)
     }
@@ -345,22 +366,12 @@ extension ImageViewer {
     
     @ViewBuilder
     var playButtonContent: some View {
-        Image(icon: controlState.animating ? .general.pause : .general.play)
-            .symbolVariant(.fill)
-            .scaledToFit()
-            .frame(width: 22, height: 22)
-            .contentTransition(.symbolEffect(.replace, options: .speed(2)))
-            .padding(Constants.main.standardSpacing + 4) // +4 to match .title2 implicit padding plus offset
+        videoStateButtonLabel(isOn: controlState.animating, icons: (on: .general.pause, off: .general.play))
     }
     
     @ViewBuilder
     var muteButtonContent: some View {
-        Image(icon: controlState.muted ? .general.mute : .general.unmute)
-            .scaledToFit()
-            .symbolVariant(.fill)
-            .frame(width: 22, height: 22)
-            .contentTransition(.symbolEffect(.replace, options: .speed(2)))
-            .padding(Constants.main.standardSpacing + 4) // +3 to match .title2 implicit padding plus offset
+        videoStateButtonLabel(isOn: controlState.muted, icons: (on: .general.mute, off: .general.unmute))
     }
     
     @ViewBuilder

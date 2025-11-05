@@ -8737,6 +8737,9 @@
         }
       }
     },
+    "Toggle Developer Tools" : {
+
+    },
     "Too many items" : {
       "localizations" : {
         "fr" : {
