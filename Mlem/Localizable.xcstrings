@@ -5177,6 +5177,9 @@
         }
       }
     },
+    "Mute" : {
+
+    },
     "Mute Videos" : {
       "localizations" : {
         "fr" : {
@@ -5787,6 +5790,9 @@
         }
       }
     },
+    "Pause" : {
+
+    },
     "Permanent" : {
       "localizations" : {
         "fr" : {
@@ -5906,6 +5912,9 @@
           }
         }
       }
+    },
+    "Play" : {
+
     },
     "Popular" : {
       "localizations" : {
@@ -8737,6 +8746,9 @@
         }
       }
     },
+    "Toggle Developer Tools" : {
+
+    },
     "Too many items" : {
       "localizations" : {
         "fr" : {
@@ -9143,6 +9155,9 @@
           }
         }
       }
+    },
+    "Unmute" : {
+
     },
     "Unpin" : {
       "localizations" : {
