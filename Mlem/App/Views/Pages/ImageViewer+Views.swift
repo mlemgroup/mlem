@@ -288,13 +288,21 @@ extension ImageViewer {
     }
     
     @ViewBuilder
-    func videoStateButtonLabel(isOn: Bool, icons: (on: Icon, off: Icon)) -> some View {
-        Image(icon: isOn ? icons.on : icons.off)
-            .symbolVariant(.fill)
-            .scaledToFit()
-            .frame(width: 22, height: 22)
-            .contentTransition(.symbolEffect(.replace, options: .speed(2)))
-            .padding(Constants.main.standardSpacing + 4) // +4 to match .title2 implicit padding plus offset
+    func videoStateButtonLabel(
+        isOn: Bool,
+        text: (on: LocalizedStringResource, off: LocalizedStringResource),
+        icons: (on: Icon, off: Icon)) -> some View {
+        Label {
+            Text(isOn ? text.on : text.off)
+        } icon: {
+            Image(icon: isOn ? icons.on : icons.off)
+                .symbolVariant(.fill)
+                .scaledToFit()
+                .frame(width: 22, height: 22)
+                .contentTransition(.symbolEffect(.replace, options: .speed(2)))
+                .padding(Constants.main.standardSpacing + 4) // +4 to match .title2 implicit padding plus offset
+        }
+        .labelStyle(.iconOnly)
     }
     
     // MARK: Platform Compatibility
@@ -366,12 +374,18 @@ extension ImageViewer {
     
     @ViewBuilder
     var playButtonContent: some View {
-        videoStateButtonLabel(isOn: controlState.animating, icons: (on: .general.pause, off: .general.play))
+        videoStateButtonLabel(
+            isOn: controlState.animating,
+            text: (on: "Pause", off: "Play"),
+            icons: (on: .general.pause, off: .general.play))
     }
     
     @ViewBuilder
     var muteButtonContent: some View {
-        videoStateButtonLabel(isOn: controlState.muted, icons: (on: .general.mute, off: .general.unmute))
+        videoStateButtonLabel(
+            isOn: controlState.muted,
+            text: (on: "Mute", off: "Unmute"),
+            icons: (on: .general.mute, off: .general.unmute))
     }
     
     @ViewBuilder
