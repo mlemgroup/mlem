@@ -40,6 +40,7 @@ struct PlayButton: View {
                 .font(.system(size: fontSize))
                 .foregroundStyle(.themedBackground)
                 .padding(0.6 * fontSize)
+                .contentShape(.rect)
         }
         .labelStyle(.iconOnly)
     }

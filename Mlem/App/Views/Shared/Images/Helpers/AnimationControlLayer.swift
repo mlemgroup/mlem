@@ -86,18 +86,11 @@ private struct AnimationControlLayer: ViewModifier {
     
     // TODO: iOS 18 deprecation remove
     var muteButtonLabel: some View {
-        Label {
-            Text(controlState.muted ? "Unmute" : "Mute")
-        } icon: {
-            Image(icon: controlState.muted ? .general.mute : .general.unmute)
-                .resizable()
-                .symbolVariant(.fill)
-                .scaledToFit()
-                .frame(width: 15, height: 15)
-                .padding(5)
-                .foregroundStyle(.white)
-        }
-        .labelStyle(.iconOnly)
+        SmallOverlayButtonLabel(
+            isOn: controlState.muted,
+            text: (on: "Unmute", off: "Mute"),
+            icons: (on: .general.mute, off: .general.unmute))
+        .symbolVariant(.fill)
     }
 }
 

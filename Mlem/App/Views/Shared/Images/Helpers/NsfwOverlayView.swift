@@ -58,17 +58,6 @@ struct NsfwOverlay: View {
     }
     
     var blurLabelContent: some View {
-        Label {
-            Text("Blur")
-        } icon: {
-            Image(icon: .general.hide)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 15, height: 15)
-                .padding(5)
-                .foregroundStyle(.white)
-                .contentShape(.rect)
-        }
-        .labelStyle(.iconOnly)
+        SmallOverlayButtonLabel(text: "Blur", icon: .general.hide)
     }
 }
