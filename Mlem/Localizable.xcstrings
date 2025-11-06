@@ -3139,6 +3139,9 @@
         }
       }
     },
+    "Edit link" : {
+
+    },
     "Edited" : {
       "localizations" : {
         "fr" : {
@@ -3792,6 +3795,9 @@
           }
         }
       }
+    },
+    "Go back" : {
+
     },
     "Go Back" : {
       "localizations" : {
