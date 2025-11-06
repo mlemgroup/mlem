@@ -7,6 +7,7 @@
 
 import Foundation
 import MlemMiddleware
+import OpenGraph
 import PhotosUI
 import SwiftUI
 
@@ -19,5 +20,14 @@ extension ApiClient {
     
     var downvotesEnabled: Bool {
         myInstance?.downvotesEnabled ?? true
+    }
+    
+    func getPostLinkOrUseOpenGraph(url: URL) async throws -> PostLink {
+        if  try await self.supports(.fetchLinkMetadata) {
+            return try await self.getPostLink(url: url)
+        }
+        let metadata = try await OpenGraph.fetch(url: url)
+        let thumbnailUrl = metadata[.image].map { URL(string: $0) } ?? nil
+        return .init(content: url, thumbnail: thumbnailUrl, label: metadata[.title] ?? url.absoluteString)
     }
 }
