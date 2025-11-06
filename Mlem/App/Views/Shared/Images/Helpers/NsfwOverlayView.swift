@@ -50,7 +50,7 @@ struct NsfwOverlay: View {
     var blurLabel: some View {
         if #available(iOS 26, *) {
             blurLabelContent
-                .glassEffect(.regular.interactive(), in: .circle)
+                .glassEffect(.clear.interactive(), in: .circle)
         } else {
             blurLabelContent
                 .background(.thinMaterial, in: .circle)

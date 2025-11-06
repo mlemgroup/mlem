@@ -77,7 +77,7 @@ private struct AnimationControlLayer: ViewModifier {
     var muteButtonContent: some View {
         if #available(iOS 26, *) {
             muteButtonLabel
-                .glassEffect(.regular.interactive(), in: .circle)
+                .glassEffect(.clear.interactive(), in: .circle)
         } else {
             muteButtonLabel
                 .background(.ultraThinMaterial, in: .circle)

@@ -21,7 +21,7 @@ struct PlayButton: View {
     var body: some View {
         if #available(iOS 26, *) {
             label
-                .glassEffect(.regular.interactive(), in: .circle)
+                .glassEffect(.clear.interactive(), in: .circle)
         } else {
             label
                 .background {
