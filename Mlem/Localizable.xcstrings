@@ -1581,6 +1581,9 @@
         }
       }
     },
+    "Blur" : {
+
+    },
     "Blur NSFW" : {
       "localizations" : {
         "fr" : {
