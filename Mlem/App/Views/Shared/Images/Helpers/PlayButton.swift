@@ -38,7 +38,7 @@ struct PlayButton: View {
             Image(icon: .general.play)
                 .symbolVariant(.fill)
                 .font(.system(size: fontSize))
-                .foregroundStyle(.themedBackground)
+                .foregroundStyle(.white)
                 .padding(0.6 * fontSize)
                 .contentShape(.rect)
         }
