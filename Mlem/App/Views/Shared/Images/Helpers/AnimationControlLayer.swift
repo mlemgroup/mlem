@@ -61,14 +61,7 @@ private struct AnimationControlLayer: ViewModifier {
     @ViewBuilder
     var muteButton: some View {
         if controlState.audioAvailable {
-            Image(icon: controlState.muted ? .general.mute : .general.unmute)
-                .resizable()
-                .symbolVariant(.fill)
-                .scaledToFit()
-                .frame(width: 15, height: 15)
-                .padding(5)
-                .background(.ultraThinMaterial, in: .circle)
-                .foregroundStyle(.white)
+            muteButtonContent
                 .padding([.bottom, .trailing], 5)
                 .padding([.top, .leading], 15)
                 .contentShape(.rect)
@@ -77,6 +70,27 @@ private struct AnimationControlLayer: ViewModifier {
                 })
                 .contentTransition(.symbolEffect(.replace, options: .speed(2)))
         }
+    }
+    
+    // TODO: iOS 18 deprecation remove
+    @ViewBuilder
+    var muteButtonContent: some View {
+        if #available(iOS 26, *) {
+            muteButtonLabel
+                .glassEffect(.clear.interactive(), in: .circle)
+        } else {
+            muteButtonLabel
+                .background(.ultraThinMaterial, in: .circle)
+        }
+    }
+    
+    // TODO: iOS 18 deprecation remove
+    var muteButtonLabel: some View {
+        SmallOverlayButtonLabel(
+            isOn: controlState.muted,
+            text: (on: "Unmute", off: "Mute"),
+            icons: (on: .general.mute, off: .general.unmute))
+        .symbolVariant(.fill)
     }
 }
 
