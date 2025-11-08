@@ -100,6 +100,7 @@ extension NavigationPage {
         case let .createPost(
             community: community,
             title: title,
+            content: content,
             type: type,
             nsfw: nsfw,
             feedLoader: feedLoader
@@ -107,6 +108,7 @@ extension NavigationPage {
             if let view = PostEditorView(
                 community: community,
                 title: title,
+                content: content,
                 type: type,
                 nsfw: nsfw,
                 feedLoader: feedLoader.wrappedValue
