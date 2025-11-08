@@ -37,14 +37,27 @@ struct NsfwOverlay: View {
             Button {
                 setBlurred(true)
             } label: {
-                Image(icon: .general.hide)
-                    .padding(.vertical, 4)
-                    .padding(.horizontal, 3)
-                    .background(.thinMaterial, in: .rect(cornerRadius: 4))
+                blurLabel
             }
             .buttonStyle(.plain)
             .padding(4)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         }
+    }
+    
+    // TODO: iOS 18 deprecation remove
+    @ViewBuilder
+    var blurLabel: some View {
+        if #available(iOS 26, *) {
+            blurLabelContent
+                .glassEffect(.clear.interactive(), in: .circle)
+        } else {
+            blurLabelContent
+                .background(.thinMaterial, in: .circle)
+        }
+    }
+    
+    var blurLabelContent: some View {
+        SmallOverlayButtonLabel(text: "Blur", icon: .general.hide)
     }
 }
