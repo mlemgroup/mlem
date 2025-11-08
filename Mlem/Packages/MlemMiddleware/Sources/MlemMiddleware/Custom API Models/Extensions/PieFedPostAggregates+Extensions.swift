@@ -16,7 +16,7 @@ extension PieFedPostAggregates: ApiContentAggregatesProtocol {
             upvotes: 0,
             downvotes: 0,
             published: .distantPast,
-            newestCommentTime: "",
+            newestCommentTime: .distantPast,
             crossPosts: 0
         )
     }

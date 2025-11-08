@@ -33,7 +33,8 @@ public extension PieFedConnection {
             q: nil,
             page: page,
             feedId: nil,
-            topicId: nil
+            topicId: nil,
+            ignoreSticky: nil
         )
         let response = try await perform(request)
         let posts: [Post2Snapshot] = try response.posts.map { try .init(from: $0) }
@@ -65,7 +66,8 @@ public extension PieFedConnection {
             q: nil,
             page: page,
             feedId: nil,
-            topicId: nil
+            topicId: nil,
+            ignoreSticky: nil
         )
         let response = try await perform(request)
         let posts: [Post2Snapshot] = try response.posts.map { try .init(from: $0) }
@@ -158,8 +160,8 @@ public extension PieFedConnection {
         throw ApiClientError.featureUnsupported
     }
     
-    func markPostsAsRead(ids: Set<Int>) async throws {
-        let request = PieFedMarkPostAsReadRequest(postIds: Array(ids), postId: nil, read: true)
+    func markPostsAsRead(ids: Set<Int>, read: Bool) async throws {
+        let request = PieFedMarkPostAsReadRequest(postIds: Array(ids), postId: nil, read: read)
         try await perform(request)
     }
     

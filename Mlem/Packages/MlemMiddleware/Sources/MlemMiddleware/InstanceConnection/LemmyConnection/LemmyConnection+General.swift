@@ -18,7 +18,8 @@ public extension LemmyConnection {
                 endpoint: endpoint,
                 usernameOrEmail: usernameOrEmail,
                 password: password,
-                totp2faToken: totpToken
+                totp2faToken: totpToken,
+                stayLoggedIn: true
             )
         }
         
@@ -79,7 +80,8 @@ public extension LemmyConnection {
                 captchaUuid: captcha?.id.uuidString,
                 captchaAnswer: captchaAnswer,
                 honeypot: nil,
-                answer: applicationQuestionResponse
+                answer: applicationQuestionResponse,
+                stayLoggedIn: true
             )
         }
         return .init(from: response)
@@ -96,7 +98,8 @@ public extension LemmyConnection {
                 endpoint: endpoint,
                 newPassword: newPassword,
                 newPasswordVerify: confirmNewPassword,
-                oldPassword: oldPassword
+                oldPassword: oldPassword,
+                stayLoggedIn: true
             )
         }
         guard let token = response.jwt else {

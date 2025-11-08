@@ -131,20 +131,15 @@ extension ApiRepository {
         }
     }
     
-    func markPostAsRead(
-        id: Int,
-        read: Bool = true
-    ) async throws {
+    func markPostAsRead(id: Int, read: Bool = true) async throws {
         try await performingForConnection { connection in
             try await connection.markPostAsRead(id: id, read: read)
         }
     }
     
-    func markPostsAsRead(
-        ids: Set<Int>
-    ) async throws {
+    func markPostsAsRead(ids: Set<Int>, read: Bool = true) async throws {
         try await performingForConnection { connection in
-            try await connection.markPostsAsRead(ids: ids)
+            try await connection.markPostsAsRead(ids: ids, read: read)
         }
     }
     

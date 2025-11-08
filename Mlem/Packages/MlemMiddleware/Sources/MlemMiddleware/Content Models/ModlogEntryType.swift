@@ -24,7 +24,7 @@ public enum ModlogEntryType: CaseIterable {
     case banPersonFromInstance
     case purgePerson
     
-    init?(from type: LemmyModlogActionType) throws(ApiClientError) {
+    init?(from type: LemmyModlogKind) throws(ApiClientError) {
         let result: Self? = switch type {
         case .all: nil
         case .modRemovePost: .removePost
@@ -46,6 +46,8 @@ public enum ModlogEntryType: CaseIterable {
         case .adminBlockInstance: throw .featureUnsupported
         case .adminAllowInstance: throw .featureUnsupported
         case .modLockComment: throw .featureUnsupported
+        case .adminFeaturePostSite: throw .featureUnsupported
+        case .modFeaturePostCommunity: throw .featureUnsupported
         }
         if let result {
             self = result
@@ -54,7 +56,7 @@ public enum ModlogEntryType: CaseIterable {
         }
     }
     
-    var apiType: LemmyModlogActionType {
+    var apiType: LemmyModlogKind {
         switch self {
         case .removePost: .modRemovePost
         case .lockPost: .modLockPost

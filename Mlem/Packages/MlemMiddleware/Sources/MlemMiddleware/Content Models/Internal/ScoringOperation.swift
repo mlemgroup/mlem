@@ -27,6 +27,22 @@ public enum ScoringOperation: Int, Decodable, CustomStringConvertible {
             "No Vote"
         }
     }
+
+    var booleanValue: Bool? {
+        switch self {
+        case .upvote: true
+        case .downvote: false
+        case .none: nil
+        }
+    }
+    
+    init(_ bool: Bool?) {
+        self = switch bool {
+        case true: .upvote
+        case false: .downvote
+        case nil: .none
+        }
+    }
 }
 
 public extension ScoringOperation {
