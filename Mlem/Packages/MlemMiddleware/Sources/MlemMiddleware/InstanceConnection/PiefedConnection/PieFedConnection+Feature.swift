@@ -39,7 +39,7 @@ public extension PieFedConnection {
             version >= .v1_1_0
         case .editProfile, .viewVotes, .undeletePrivateMessages:
             version >= .v1_2_0
-        case .banFromCommunity:
+        case .banFromCommunity, .editCommunityDescription:
             version >= .v1_3_0
         case .searchLocalPeople, .searchLocalCommunities:
             // These features were not necessarily added in 1.3.

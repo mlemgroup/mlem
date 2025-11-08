@@ -57,7 +57,21 @@ public extension PieFedConnection {
     }
 
     func editCommunityDescription(id: Int, newValue: String?) async throws -> Community2Snapshot {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedEditCommunityRequest(
+            id: id,
+            title: nil,
+            description: newValue,
+            rules: nil,
+            iconUrl: nil,
+            bannerUrl: nil,
+            nsfw: nil,
+            restrictedToMods: nil,
+            localOnly: nil,
+            discussionLanguages: nil,
+            communityId: id
+        )
+        let response = try await perform(request)
+        return try .init(from: response.communityView)
     }
     
     @discardableResult

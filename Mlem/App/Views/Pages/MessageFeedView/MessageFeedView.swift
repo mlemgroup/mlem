@@ -328,5 +328,5 @@ struct MessageFeedView: View {
 }
 
 extension EnvironmentValues {
-    @Entry var editMessage: (Message2) -> Void = { _ in assertionFailure() }
+    @Entry var editMessage: ((Message2) -> Void)?
 }
