@@ -12,6 +12,14 @@ public enum InboxNotificationContent {
     case mention(Comment2)
     case message(Message2)
     
+    public var wrappedValue: any ContentModel {
+        switch self {
+        case let .reply(comment2): comment2
+        case let .mention(comment2): comment2
+        case let .message(message2): message2
+        }
+    }
+    
     public var type: InboxNotificationContentType {
         switch self {
         case .reply: .reply

@@ -17,18 +17,14 @@ struct VoteAction: ConfigurableAction {
 // MARK: - Configurability
 
 extension ActionSeed {
-    static let upvote = ActionSeed("upvote") { entity in
-        switch entity {
-        case let entity as any Interactable2Providing: VoteAction(entity: entity, type: .upvote)
-        default: nil
-        }
-    }
+    static let upvote = ActionSeed("upvote") { createVoteAction($0, type: .upvote) }
+    static let downvote = ActionSeed("downvote") { createVoteAction($0, type: .downvote) }
+}
 
-    static let downvote = ActionSeed("downvote") { entity in
-        switch entity {
-        case let entity as any Interactable2Providing: VoteAction(entity: entity, type: .downvote)
-        default: nil
-        }
+private func createVoteAction(_ entity: Any, type: ScoringOperation) -> VoteAction? {
+    switch entity {
+    case let entity as any Interactable2Providing: VoteAction(entity: entity, type: type)
+    default: nil
     }
 }
 

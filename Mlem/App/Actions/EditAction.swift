@@ -48,7 +48,7 @@ extension EditAction {
     
     private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {
         guard content.value.api.canInteract(appState: environment.appState) else { return .hidden }
-        
+
         guard let myPersonId = content.value.api.myPerson?.id else { return .hidden }
         return content.value.isOwnContent(myPersonId: myPersonId) ? .enabled : .hidden
     }
@@ -68,7 +68,12 @@ extension EditAction {
             }
         case let .message(message):
             if let message = message as? any Message2Providing {
-                environment.editMessage(message.message2)
+                if let editMessage = environment.editMessage {
+                    editMessage(message.message2)
+                } else {
+                    let otherPerson = message.isOwnMessage ? message.recipient : message.creator
+                    environment.navigation?.push(.messageFeed(otherPerson, focusTextField: true, editing: message))
+                }
             } else {
                 assertionFailure()
             }
