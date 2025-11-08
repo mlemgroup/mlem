@@ -61,6 +61,7 @@ struct PostEditorView: View {
         self.init(
             community: community,
             title: postToEdit.title,
+            content: postToEdit.content,
             type: postToEdit.type,
             nsfw: postToEdit.nsfw,
             feedLoader: nil
@@ -72,6 +73,7 @@ struct PostEditorView: View {
     init?(
         community: AnyCommunity?,
         title: String = "",
+        content: String? = nil,
         type: PostType? = nil,
         nsfw: Bool = false,
         feedLoader: (any FeedLoading)?
@@ -88,19 +90,18 @@ struct PostEditorView: View {
         contentTextView.tag = 1
         
         titleTextView.text = title
+        contentTextView.text = content ?? ""
         self._titleIsEmpty = .init(wrappedValue: title.isEmpty)
         self._hasNsfwTag = .init(wrappedValue: nsfw)
         
         switch type {
-        case let .text(content):
-            contentTextView.text = content
         case let .media(url):
             self._imageUrl = .init(wrappedValue: url)
         case let .embedded(_, url):
             self._link = .init(wrappedValue: .value(.init(content: url, thumbnail: nil, label: "")))
         case let .link(url):
             self._link = .init(wrappedValue: .value(url))
-        case .titleOnly, nil:
+        case .titleOnly, .text, nil:
             break
         }
     }

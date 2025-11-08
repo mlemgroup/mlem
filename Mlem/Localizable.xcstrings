@@ -1581,6 +1581,9 @@
         }
       }
     },
+    "Blur" : {
+
+    },
     "Blur NSFW" : {
       "localizations" : {
         "fr" : {
@@ -3792,9 +3795,6 @@
           }
         }
       }
-    },
-    "Go back" : {
-
     },
     "Go Back" : {
       "localizations" : {

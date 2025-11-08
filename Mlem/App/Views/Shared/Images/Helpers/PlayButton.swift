@@ -19,14 +19,29 @@ struct PlayButton: View {
     }
     
     var body: some View {
-        Image(icon: .general.play)
-            .symbolVariant(.fill)
-            .font(.system(size: fontSize))
-            .foregroundStyle(.themedBackground)
-            .padding(0.6 * fontSize)
-            .background {
-                Circle()
-                    .fill(.ultraThinMaterial)
-            }
+        if #available(iOS 26, *) {
+            label
+                .glassEffect(.clear.interactive(), in: .circle)
+        } else {
+            label
+                .background {
+                    Circle().fill(.ultraThinMaterial)
+                }
+        }
+    }
+    
+    // TODO: iOS 18 deprecation remove
+    var label: some View {
+        Label {
+            Text("Play")
+        } icon: {
+            Image(icon: .general.play)
+                .symbolVariant(.fill)
+                .font(.system(size: fontSize))
+                .foregroundStyle(.white)
+                .padding(0.6 * fontSize)
+                .contentShape(.rect)
+        }
+        .labelStyle(.iconOnly)
     }
 }
