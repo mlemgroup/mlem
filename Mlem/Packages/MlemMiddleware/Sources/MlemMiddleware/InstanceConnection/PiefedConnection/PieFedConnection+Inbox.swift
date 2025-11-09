@@ -59,7 +59,8 @@ public extension PieFedConnection {
             let request = PieFedGetPrivateMessagesConversationRequest(
                 page: page,
                 limit: limit,
-                personId: creatorId
+                personId: creatorId,
+                conversationId: nil
             )
             let response = try await perform(request)
             return try response.privateMessages.map { try .init(from: $0) }

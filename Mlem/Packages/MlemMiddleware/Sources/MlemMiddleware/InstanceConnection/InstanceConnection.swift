@@ -78,7 +78,7 @@ public protocol InstanceConnection {
         sort: SearchSortType
     ) async throws -> [Post2Snapshot]
     
-    func markPostsAsRead(ids: Set<Int>) async throws
+    func markPostsAsRead(ids: Set<Int>, read: Bool) async throws
     func markPostAsRead(id: Int, read: Bool) async throws
     @discardableResult
     func voteOnPost(id: Int, score: ScoringOperation) async throws -> Post2Snapshot

@@ -17,7 +17,11 @@ extension Post2Snapshot {
         if let counts = post.counts {
             votes = .init(from: counts, myVote: .guaranteedInit(from: post.myVote))
         } else if let upvotes = post.post.upvotes, let downvotes = post.post.downvotes {
-            votes = .init(upvotes: upvotes, downvotes: downvotes, myVote: .guaranteedInit(from: post.postActions?.likeScore))
+            votes = .init(
+                upvotes: upvotes,
+                downvotes: downvotes,
+                myVote: .init(post.postActions?.voteIsUpvote)
+            )
         } else {
             throw .responseMissingRequiredData("LemmyPostView scores")
         }
@@ -80,9 +84,13 @@ extension Post2Snapshot {
     init(from report: LemmyPostReportView) throws(ApiClientError) {
         let votes: VotesModel
         if let counts = report.counts {
-            votes = .init(from: counts, myVote: .guaranteedInit(from: report.myVote))
+            votes = .init(from: counts, myVote: .init(report.postActions?.voteIsUpvote))
         } else if let upvotes = report.post.upvotes, let downvotes = report.post.downvotes {
-            votes = .init(upvotes: upvotes, downvotes: downvotes, myVote: .guaranteedInit(from: report.postActions?.likeScore))
+            votes = .init(
+                upvotes: upvotes,
+                downvotes: downvotes,
+                myVote: .init(report.postActions?.voteIsUpvote)
+            )
         } else {
             throw .responseMissingRequiredData("LemmyPostReportView scores")
         }
