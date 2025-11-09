@@ -70,6 +70,16 @@ public extension URL {
         return components.url!
     }
     
+    private struct LoopsVideoResponse: Codable {
+        let data: Body
+        internal struct Body: Codable {
+            let media: Media
+            internal struct Media: Codable {
+                let src_url: URL
+            }
+        }
+    }
+    
     /// Attempts to extract the underlying loops.video media URL from this URL
     /// - Returns: loops.video media URL if this is a loops.video url and the underlying URL was successfully parsed, nil otherwise
     func parseEmbeddedLoops() async -> URL? {
@@ -79,15 +89,20 @@ public extension URL {
         guard host() == "loops.video" else { return nil }
         
         do {
-            let urlRegex = /video-src="(?<url>.*)"/
-            let request: URLRequest = .init(url: self)
-            let (websiteContent, _) = try await URLSession.shared.data(for: request)
+            let (websiteContent, _) = try await URLSession.shared.data(from: self)
             
-            if let str = String(data: websiteContent, encoding: .utf8),
-               let match = str.firstMatch(of: urlRegex),
-               let loopUrl: URL = .init(string: .init(match.url)) {
-                return loopUrl
+            // parse video API ID from website content
+            let apiIdRegex = /<meta property="og:image" content="https:\/\/loopsusercontent\.com\/videos\/\d+\/((?<apiId>\d*))\/.*\/>/
+            guard let str: String = String(data: websiteContent, encoding: .utf8),
+                  let match = str.firstMatch(of: apiIdRegex),
+                  let apiUrl = URL(string: "https://loops.video/api/v1/video/\(match.apiId)") else {
+                return nil
             }
+            
+            // query API for video id
+            let (apiResponse, _) = try await URLSession.shared.data(from: apiUrl)
+            let decodedResponse = try JSONDecoder.defaultDecoder.decode(LoopsVideoResponse.self, from: apiResponse)
+            return decodedResponse.data.media.src_url
         } catch {
             Logger.universal.error("Failed to parse embedded loops: \(error.localizedDescription)")
         }
