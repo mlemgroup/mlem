@@ -130,4 +130,43 @@ extension InstanceView {
             }
         }
     }
+
+    func refresh() async {
+        guard upgradeState == .idle else { return }
+        upgradeState = .loading
+        do {
+            if !(instance is any Instance3Providing) {
+                let instance3: Instance3
+                if let myInstance = appState.firstSession.instance, instance.host == myInstance.host {
+                    instance3 = myInstance
+                } else {
+                    instance3 = try await instance.upgradeLocal()
+                }
+                instance = instance3
+                logVisit(instance3)
+            }
+            upgradeState = .done
+            errorDetails = nil
+        } catch {
+            upgradeState = .idle
+            var errorDetails = handleErrorWithDetails(error)
+
+            errorDetails?.refresh = {
+                await refresh()
+                return true
+            }
+
+            if case let ApiClientError.decoding(data, _) = error {
+                let string = String(data: data, encoding: .utf8)
+                if string?.contains("<title>Just a moment...</title>") ?? false {
+                    errorDetails?.title = .init(localized: "Blocked by Cloudflare")
+                    errorDetails?.icon = .general.cloudflare
+                    errorDetails?.body = .init(localized: "This instance uses Cloudflare, which prevents us from loading the page.")
+                    errorDetails?.refresh = nil
+                }
+            }
+
+            self.errorDetails = errorDetails
+        }
+    }
 }
