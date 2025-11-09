@@ -161,7 +161,7 @@ extension InstanceView {
                 if string?.contains("<title>Just a moment...</title>") ?? false {
                     errorDetails?.title = .init(localized: "Blocked by Cloudflare")
                     errorDetails?.icon = .general.cloudflare
-                    errorDetails?.body = .init(localized: "This instance uses Cloudflare, which prevents us from loading the page.")
+                    errorDetails?.body = .init(localized: "This page cannot be loaded because of the instance's Cloudflare protection policy.")
                     errorDetails?.refresh = nil
                 }
             }
