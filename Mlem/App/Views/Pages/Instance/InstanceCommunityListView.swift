@@ -11,7 +11,7 @@ import SwiftUI
 struct InstanceCommunityListView: View {
     let communityLoader: CommunityFeedLoader
 
-    @State var errorDetails: ErrorDetails?
+    @Binding var errorDetails: ErrorDetails?
 
     var body: some View {
         LazyVStack(spacing: 0) {
@@ -37,7 +37,12 @@ struct InstanceCommunityListView: View {
             }
         }
         .animation(.easeOut(duration: 0.1), value: communityLoader.items.isEmpty)
-        .task { await refresh() }
+        .task {
+            print(errorDetails)
+            if errorDetails == nil {
+                await refresh()
+            }
+        }
     }
 
     func refresh() async {

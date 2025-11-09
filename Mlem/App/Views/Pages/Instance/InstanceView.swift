@@ -47,6 +47,7 @@ struct InstanceView: View {
     @State var newAdmin: Person2?
 
     @State var errorDetails: ErrorDetails?
+    @State var communityListErrorDetails: ErrorDetails?
     
     init(instance: any InstanceStubProviding, visitContext: VisitHistory.VisitContext?) {
         self._instance = .init(wrappedValue: instance)
@@ -96,7 +97,10 @@ struct InstanceView: View {
                 case .about:
                     aboutTab(instance: instance)
                 case .communities:
-                    InstanceCommunityListView(communityLoader: communityLoader)
+                    InstanceCommunityListView(
+                        communityLoader: communityLoader,
+                        errorDetails: $communityListErrorDetails
+                    )
                 case .details:
                     InstanceDetailsView(instance: instance)
                 case .administration:
