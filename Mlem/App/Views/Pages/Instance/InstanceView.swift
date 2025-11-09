@@ -96,7 +96,7 @@ struct InstanceView: View {
                 case .about:
                     aboutTab(instance: instance)
                 case .communities:
-                    communitiesTab()
+                    InstanceCommunityListView(communityLoader: communityLoader)
                 case .details:
                     InstanceDetailsView(instance: instance)
                 case .administration:
@@ -159,37 +159,6 @@ struct InstanceView: View {
         } else {
             ProgressView()
                 .padding(.top, 30)
-        }
-    }
-    
-    @ViewBuilder
-    func communitiesTab() -> some View {
-        LazyVStack(spacing: 0) {
-            SearchResultsView(results: communityLoader.items) { community in
-                CommunityListRow(
-                    community,
-                    readout: .subscribers,
-                    visitContext: .other
-                )
-                .onAppear {
-                    do {
-                        try communityLoader.loadIfThreshold(community)
-                    } catch {
-                        handleError(error)
-                    }
-                }
-            }
-            EndOfFeedView(feedLoader: communityLoader, viewType: .hobbit)
-        }
-        .animation(.easeOut(duration: 0.1), value: communityLoader.items.isEmpty)
-        .task {
-            do {
-                if communityLoader.loadingState == .initial {
-                    try await communityLoader.refresh(listing: .local)
-                }
-            } catch {
-                handleError(error)
-            }
         }
     }
 }
