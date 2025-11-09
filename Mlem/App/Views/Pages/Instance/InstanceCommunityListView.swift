@@ -61,8 +61,8 @@ struct InstanceCommunityListView: View {
 
             if case let ApiClientError.response(response, _) = error {
                 if response.instanceIsPrivate {
-                    errorDetails?.title = "Instance is private"
-                    errorDetails?.body = "You cannot view the communities of a private instance."
+                    errorDetails?.title = String(localized: "Instance is private")
+                    errorDetails?.body = String(localized: "You cannot view the communities of a private instance.")
                     errorDetails?.icon = .lemmy.private
                     errorDetails?.refresh = nil
                 }
