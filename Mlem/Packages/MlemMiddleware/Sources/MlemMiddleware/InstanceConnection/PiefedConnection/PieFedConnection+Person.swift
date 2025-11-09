@@ -214,7 +214,8 @@ public extension PieFedConnection {
             cover: details.banner?.absoluteString ?? "",
             defaultCommentSortType: nil,
             defaultSortType: nil,
-            showNsfl: nil
+            showNsfl: nil,
+            extraFields: nil
         )
         try await perform(request)
     }

@@ -26,7 +26,11 @@ extension Comment2Snapshot {
         if let counts = comment.counts {
             votes = .init(from: counts, myVote: .guaranteedInit(from: comment.myVote))
         } else if let upvotes = comment.comment.upvotes, let downvotes = comment.comment.downvotes {
-            votes = .init(upvotes: upvotes, downvotes: downvotes, myVote: .guaranteedInit(from: comment.commentActions?.likeScore))
+            votes = .init(
+                upvotes: upvotes,
+                downvotes: downvotes,
+                myVote: .init(comment.commentActions?.voteIsUpvote)
+            )
         } else {
             throw .responseMissingRequiredData("LemmyCommentView score")
         }
@@ -63,7 +67,11 @@ extension Comment2Snapshot {
         if let counts = report.counts {
             votes = .init(from: counts, myVote: .guaranteedInit(from: report.myVote))
         } else if let upvotes = report.comment.upvotes, let downvotes = report.comment.downvotes {
-            votes = .init(upvotes: upvotes, downvotes: downvotes, myVote: .guaranteedInit(from: report.commentActions?.likeScore))
+            votes = .init(
+                upvotes: upvotes,
+                downvotes: downvotes,
+                myVote: .init(report.commentActions?.voteIsUpvote)
+            )
         } else {
             throw .responseMissingRequiredData("LemmyCommentReportView score")
         }

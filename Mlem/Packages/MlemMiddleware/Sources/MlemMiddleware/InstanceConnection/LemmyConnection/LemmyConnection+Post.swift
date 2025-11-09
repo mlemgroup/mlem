@@ -35,6 +35,7 @@ public extension LemmyConnection {
                 showNsfw: nil,
                 timeRangeSeconds: sort.timeRangeSeconds,
                 multiCommunityId: nil,
+                multiCommunityName: nil,
                 hideMedia: nil,
                 markAsRead: nil,
                 noCommentsOnly: nil,
@@ -74,6 +75,7 @@ public extension LemmyConnection {
                 showNsfw: nil,
                 timeRangeSeconds: sort.timeRangeSeconds,
                 multiCommunityId: nil,
+                multiCommunityName: nil,
                 hideMedia: nil,
                 markAsRead: nil,
                 noCommentsOnly: nil,
@@ -216,17 +218,16 @@ public extension LemmyConnection {
         return try response.posts?.map { try .init(from: $0) } ?? []
     }
     
-    // Marking many posts as *unread* was possible in 0.19.0, but that capability was removed in 1.0.0
-    func markPostsAsRead(ids: Set<Int>) async throws {
+    func markPostsAsRead(ids: Set<Int>, read: Bool) async throws {
         guard !ids.isEmpty else { return }
         
         try await processingForEndpoint { endpoint in
             switch endpoint {
             case .v3:
-                let request = LemmyMarkPostAsReadRequest(endpoint: .v3, postId: nil, postIds: Array(ids), read: true)
+                let request = LemmyMarkPostAsReadRequest(endpoint: .v3, postId: nil, postIds: Array(ids), read: read)
                 try await self.perform(request)
             case .v4:
-                let request = LemmyMarkPostsAsReadRequest(postIds: Array(ids))
+                let request = LemmyMarkPostsAsReadRequest(postIds: Array(ids), read: read)
                 try await self.perform(request)
             }
         }
@@ -250,7 +251,8 @@ public extension LemmyConnection {
             LemmyLikePostRequest(
                 endpoint: endpoint,
                 postId: id,
-                score: score.rawValue
+                score: score.rawValue,
+                isUpvote: score.booleanValue
             )
         }
         return try .init(from: response.postView)

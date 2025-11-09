@@ -203,7 +203,12 @@ public extension LemmyConnection {
     @discardableResult
     func voteOnComment(id: Int, score: ScoringOperation) async throws -> Comment2Snapshot {
         let response = try await performingForEndpoint { endpoint in
-            LemmyLikeCommentRequest(endpoint: endpoint, commentId: id, score: score.rawValue)
+            LemmyLikeCommentRequest(
+                endpoint: endpoint,
+                commentId: id,
+                score: score.rawValue,
+                isUpvote: score.booleanValue
+            )
         }
         return try .init(from: response.commentView)
     }

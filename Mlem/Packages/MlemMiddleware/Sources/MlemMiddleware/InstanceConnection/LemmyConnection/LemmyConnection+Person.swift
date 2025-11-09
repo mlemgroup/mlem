@@ -133,8 +133,13 @@ public extension LemmyConnection {
                 expiresAt: expiryTimestamp
             )
         }
-        guard response.banned == ban else { throw ApiClientError.unsuccessful }
-        return try .init(from: response.personView.person)
+        switch response {
+        case let .lemmyBanFromCommunityResponse(response):
+            guard response.banned == ban else { throw ApiClientError.unsuccessful }
+            return try .init(from: response.personView.person)
+        case let .lemmyPersonResponse(response):
+            return try .init(from: response.personView.person)
+        }
     }
     
     @discardableResult

@@ -67,7 +67,8 @@ import Rest
                         comments: nil,
                         posts: posts.filter { $0.creator.id == params.personId }.map(\.apiPostView),
                         moderates: [],
-                        site: nil
+                        site: nil,
+                        multiCommunitiesCreated: nil
                     ) as! Request.Response
                 }
             }
