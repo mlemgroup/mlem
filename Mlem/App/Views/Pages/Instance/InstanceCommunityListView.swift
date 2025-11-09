@@ -30,14 +30,16 @@ struct InstanceCommunityListView: View {
             EndOfFeedView(feedLoader: communityLoader, viewType: .hobbit)
         }
         .animation(.easeOut(duration: 0.1), value: communityLoader.items.isEmpty)
-        .task {
-            do {
-                if communityLoader.loadingState == .initial {
-                    try await communityLoader.refresh(listing: .local)
-                }
-            } catch {
-                handleError(error)
+        .task { await refresh() }
+    }
+
+    func refresh() async {
+        do {
+            if communityLoader.loadingState == .initial {
+                try await communityLoader.refresh(listing: .local)
             }
+        } catch {
+            handleError(error)
         }
     }
 }
