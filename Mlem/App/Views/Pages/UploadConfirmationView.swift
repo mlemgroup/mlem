@@ -103,5 +103,6 @@ struct UploadConfirmationView: View {
             .animation(.easeOut(duration: 0.1), value: isUploading)
         }
         .padding()
+        .presentationBackground(.themedBackground)
     }
 }
