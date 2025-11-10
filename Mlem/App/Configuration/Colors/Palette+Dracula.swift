@@ -66,6 +66,7 @@ extension Palette {
         savedFeed: _green,
         popularFeed: _cyan,
         suggestedFeed: _orange,
-        inbox: _purple
+        inbox: _purple,
+        fediseerEndorsement: _cyan
     )
 }
