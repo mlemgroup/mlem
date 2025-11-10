@@ -12,9 +12,9 @@ import Theming
 // source: https://draculatheme.com/contribute#color-palette
 private let _darkBackground: Color = .init(red: 0.07843137255, green: 0.07450980392, blue: 0.1215686275)
 private let _background: Color = .init(red: 0.1568627450980392, green: 0.16470588235294117, blue: 0.21176470588235294)
-private let _secondaryBackground: Color = .init(red: 0.26666666666666666, green: 0.2784313725490196, blue: 0.35294117647058826)
+private let _secondaryBackground: Color = .init(red: 53 / 255, green: 55 / 255, blue: 74 / 255) 
 private let _primary: Color = .init(red: 0.9725490196078431, green: 0.9725490196078431, blue: 0.9490196078431372)
-private let _secondary: Color = .init(red: 0.3843137254901961, green: 0.4470588235294118, blue: 0.6431372549019608)
+private let _secondary: Color = .init(red: 153 / 255, green: 178 / 255, blue: 255 / 255, opacity: 0.7) 
 private let _cyan: Color = .init(red: 0.5450980392156862, green: 0.9137254901960784, blue: 0.9921568627450981)
 private let _green: Color = .init(red: 0.3137254901960784, green: 0.9803921568627451, blue: 0.4823529411764706)
 private let _orange: Color = .init(red: 1.0, green: 0.7215686274509804, blue: 0.4235294117647059)
