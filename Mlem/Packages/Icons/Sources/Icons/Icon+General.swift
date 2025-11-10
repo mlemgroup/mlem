@@ -102,6 +102,8 @@ public extension Icon {
         public let security: Icon = .init("key")
         public let link: Icon = .init("link")
         public let info: Icon = .init("info.circle")
+        
+        public let cloudflare: Icon = .init("cloud.bolt")
     }
     
     static let general: GeneralIcons = .init()

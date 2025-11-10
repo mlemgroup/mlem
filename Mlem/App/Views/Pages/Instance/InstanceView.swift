@@ -45,6 +45,9 @@ struct InstanceView: View {
     
     @State var showingConfirmation: Bool = false
     @State var newAdmin: Person2?
+
+    @State var errorDetails: ErrorDetails?
+    @State var communityListErrorDetails: ErrorDetails?
     
     init(instance: any InstanceStubProviding, visitContext: VisitHistory.VisitContext?) {
         self._instance = .init(wrappedValue: instance)
@@ -57,7 +60,9 @@ struct InstanceView: View {
     
     var body: some View {
         VStack {
-            if let instance = instance as? any Instance {
+            if let errorDetails {
+                ErrorView(errorDetails)
+            } else if let instance = instance as? any Instance {
                 content(instance)
                     .conditionalNavigationTitle(instance.displayName)
             } else {
@@ -68,26 +73,7 @@ struct InstanceView: View {
         }
         .animation(.easeOut(duration: 0.2), value: instance is any Instance)
         .animation(.easeOut(duration: 0.2), value: instance.apiIsLocal)
-        .task {
-            guard upgradeState == .idle else { return }
-            upgradeState = .loading
-            do {
-                if !(instance is any Instance3Providing) {
-                    let instance3: Instance3
-                    if let myInstance = appState.firstSession.instance, instance.host == myInstance.host {
-                        instance3 = myInstance
-                    } else {
-                        instance3 = try await instance.upgradeLocal()
-                    }
-                    instance = instance3
-                    logVisit(instance3)
-                }
-                upgradeState = .done
-            } catch {
-                upgradeState = .idle
-                handleError(error)
-            }
-        }
+        .task { await refresh() }
         .navigationBarTitleDisplayMode(.inline)
         .themedGroupedBackground()
     }
@@ -111,7 +97,10 @@ struct InstanceView: View {
                 case .about:
                     aboutTab(instance: instance)
                 case .communities:
-                    communitiesTab()
+                    InstanceCommunityListView(
+                        communityLoader: communityLoader,
+                        errorDetails: $communityListErrorDetails
+                    )
                 case .details:
                     InstanceDetailsView(instance: instance)
                 case .administration:
@@ -174,37 +163,6 @@ struct InstanceView: View {
         } else {
             ProgressView()
                 .padding(.top, 30)
-        }
-    }
-    
-    @ViewBuilder
-    func communitiesTab() -> some View {
-        LazyVStack(spacing: 0) {
-            SearchResultsView(results: communityLoader.items) { community in
-                CommunityListRow(
-                    community,
-                    readout: .subscribers,
-                    visitContext: .other
-                )
-                .onAppear {
-                    do {
-                        try communityLoader.loadIfThreshold(community)
-                    } catch {
-                        handleError(error)
-                    }
-                }
-            }
-            EndOfFeedView(feedLoader: communityLoader, viewType: .hobbit)
-        }
-        .animation(.easeOut(duration: 0.1), value: communityLoader.items.isEmpty)
-        .task {
-            do {
-                if communityLoader.loadingState == .initial {
-                    try await communityLoader.refresh(listing: .local)
-                }
-            } catch {
-                handleError(error)
-            }
         }
     }
 }

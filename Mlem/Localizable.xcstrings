@@ -1571,6 +1571,9 @@
         }
       }
     },
+    "Blocked by Cloudflare" : {
+
+    },
     "Blocking..." : {
       "localizations" : {
         "fr" : {
@@ -4268,6 +4271,9 @@
           }
         }
       }
+    },
+    "Instance is private" : {
+
     },
     "Instance Link" : {
       "localizations" : {
@@ -8621,6 +8627,9 @@
         }
       }
     },
+    "This instance uses Cloudflare, which prevents us from loading the page." : {
+
+    },
     "This is turned on by default because Differentiate Without Color is enabled in System Settings." : {
       "localizations" : {
         "fr" : {
@@ -9808,6 +9817,9 @@
           }
         }
       }
+    },
+    "You cannot view the communities of a private instance." : {
+
     },
     "You don't have an email attached to this account." : {
       "localizations" : {
