@@ -112,7 +112,7 @@ struct FediseerEndorsement: Codable {
 
 extension FediseerEndorsement: FediseerOpinion, Equatable {
     static var icon: Icon = .fediseer.endorsement
-    static var color: ThemedColor { .themedColorfulAccent(7) }
+    static var color: ThemedColor { .themedFediseerEndorsement }
     
     var reason: String? { endorsementReasons?.first }
     var evidence: String? { nil }
@@ -126,7 +126,7 @@ struct FediseerHesitation: Codable {
 
 extension FediseerHesitation: FediseerOpinion, Equatable {
     static var icon: Icon = .fediseer.hesitation
-    static var color: ThemedColor { .themedCaution }
+    static var color: ThemedColor { .themedFediseerHesitation }
     
     var reason: String? { hesitationReasons?.first }
     var evidence: String? { hesitationEvidence?.first }
@@ -140,7 +140,7 @@ struct FediseerCensure: Codable {
 
 extension FediseerCensure: FediseerOpinion, Equatable {
     static var icon: Icon = .fediseer.censure
-    static var color: ThemedColor { .themedWarning }
+    static var color: ThemedColor { .themedFediseerCensure }
     
     var reason: String? { censureReasons?.first }
     var evidence: String? { censureEvidence?.first }
