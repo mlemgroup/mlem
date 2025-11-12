@@ -10,9 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct ActionSheet: View {
-    @Environment(\.dismiss) var dismiss
     @Environment(\.self) var environment
-    @Environment(NavigationLayer.self) var navigation
 
     let actions: [any Actions.Action]
 
@@ -46,16 +44,32 @@ struct ActionSheet: View {
             if ![actions.startIndex, actions.endIndex-1].contains(index) {
                 Divider()
                     .padding(.horizontal, 15)
+                ActionSheetButton(action: action, label: label)
+                    .popupAnchor(model: popupAnchorModel)
             }
-            Button(label) {
-                action.execute(environment: environment)
-                if !navigation.rootChangePending, popupAnchorModel.data == nil {
-                    dismiss()
-                }
-            }
-            .disabled(label.visibility == .disabled)
-            .popupAnchor(model: popupAnchorModel)
         }
+    }
+}
+
+private struct ActionSheetButton: View {
+    @Environment(\.dismiss) var dismiss
+    @Environment(\.self) var environment
+    @Environment(NavigationLayer.self) var navigation
+    @Environment(PopupAnchorModel.self) var popupAnchorModel
+
+    let action: any Actions.Action
+
+    // Lable passed separately for performance reasons
+    let label: ActionLabel
+
+    var body: some View {
+        Button(label) {
+            action.execute(environment: environment)
+            if !navigation.rootChangePending, popupAnchorModel.data == nil {
+                dismiss()
+            }
+        }
+        .disabled(label.visibility == .disabled)
     }
 }
 
