@@ -33,7 +33,7 @@ struct ActionSheet: View {
         }
         .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: 25))
         .labelStyle(ActionSheetLabelStyle())
-        .buttonStyle(.plain)
+        .buttonStyle(ActionSheetButtonStyle())
     }
 
     @ViewBuilder
@@ -49,6 +49,13 @@ struct ActionSheet: View {
             }
             .disabled(label.visibility == .disabled)
         }
+    }
+}
+
+private struct ActionSheetButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .foregroundStyle(configuration.role == .destructive ? .themedWarning : .themedPrimary)
     }
 }
 
