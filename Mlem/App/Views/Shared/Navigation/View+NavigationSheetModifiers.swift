@@ -42,21 +42,21 @@ private struct NavigationSheetModifier: ViewModifier {
                 isPresenting: Binding(get: { shareInfo != nil && isTopSheet }, set: { if !$0 { shareInfo = nil }})
             ) { activityViewController }
             )
-            .sheet(isPresented: Binding(
-                get: { !(nextLayer?.isFullScreenCover ?? true) },
-                set: { if !$0 { closeSheet() } }
-            )) {
-                if let nextLayer {
-                    NavigationLayerView(layer: nextLayer, hasSheetModifiers: true)
-                }
+            .sheet(item: Binding(
+                get: {
+                    if let nextLayer, !nextLayer.isFullScreenCover { nextLayer } else { nil }
+                },
+                set: { if $0 == nil { closeSheet() } }
+            )) { layer in
+                NavigationLayerView(layer: layer, hasSheetModifiers: true)
             }
-            .fullScreenCover(isPresented: Binding(
-                get: { nextLayer?.isFullScreenCover ?? false },
-                set: { if !$0 { closeSheet() } }
-            )) {
-                if let nextLayer {
-                    NavigationLayerView(layer: nextLayer, hasSheetModifiers: true)
-                }
+            .fullScreenCover(item: Binding(
+                get: {
+                    if let nextLayer, nextLayer.isFullScreenCover { nextLayer } else { nil }
+                },
+                set: { if $0 == nil { closeSheet() } }
+            )) { layer in
+                NavigationLayerView(layer: layer, hasSheetModifiers: true)
             }
             .photosPicker(
                 isPresented: .init(
