@@ -10,6 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct ActionSheet: View {
+    @Environment(\.dismiss) var dismiss
     @Environment(\.self) var environment
 
     let actions: [any Actions.Action]
@@ -35,6 +36,9 @@ struct ActionSheet: View {
         .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: 25))
         .labelStyle(ActionSheetLabelStyle())
         .buttonStyle(ActionSheetButtonStyle())
+        .onChange(of: popupAnchorModel.outcome) { outcome in
+            if outcome == .confirmed { dismiss() }
+        }
     }
 
     @ViewBuilder
