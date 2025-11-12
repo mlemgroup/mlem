@@ -28,7 +28,7 @@ struct ActionSheet: View {
     var content: some View {
         VStack(spacing: 0) {
             ForEach(Array(actions.enumerated()), id: \.offset) { index, action in
-                if index != 0 {
+                if ![actions.startIndex, actions.endIndex-1].contains(index) {
                     Divider()
                 }
                 ActionButton(action)
