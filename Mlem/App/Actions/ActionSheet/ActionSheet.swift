@@ -14,6 +14,7 @@ struct ActionSheet: View {
 
     let actions: [any Actions.Action]
 
+    @State var model: PopupAnchorModel = .init()
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
@@ -48,6 +49,7 @@ struct ActionSheet: View {
                 action.execute(environment: environment)
             }
             .disabled(label.visibility == .disabled)
+            .popupAnchor(model: model)
         }
     }
 }
