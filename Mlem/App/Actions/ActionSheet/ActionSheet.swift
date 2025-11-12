@@ -10,6 +10,8 @@ import MlemMiddleware
 import SwiftUI
 
 struct ActionSheet: View {
+    @Environment(\.self) var environment
+
     let actions: [any Actions.Action]
 
     var body: some View {
@@ -36,11 +38,17 @@ struct ActionSheet: View {
 
     @ViewBuilder
     func actionRow(_ index: Int, _ action: any Actions.Action) -> some View {
-        if ![actions.startIndex, actions.endIndex-1].contains(index) {
-            Divider()
-                .padding(.horizontal, 15)
+        let label = action.createLabel(environment: environment)
+        if label.visibility != .hidden {
+            if ![actions.startIndex, actions.endIndex-1].contains(index) {
+                Divider()
+                    .padding(.horizontal, 15)
+            }
+            Button(label) {
+                action.execute(environment: environment)
+            }
+            .disabled(label.visibility == .disabled)
         }
-        ActionButtonWithVisibilityControl(action)
     }
 }
 
