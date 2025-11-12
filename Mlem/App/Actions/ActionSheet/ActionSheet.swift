@@ -41,6 +41,8 @@ struct ActionSheet: View {
 }
 
 private struct ActionSheetLabelStyle: LabelStyle {
+    @ScaledMetric(relativeTo: .body) var rowHeight = 40
+
     func makeBody(configuration: Configuration) -> some View {
         HStack {
             configuration.title
@@ -48,7 +50,9 @@ private struct ActionSheetLabelStyle: LabelStyle {
             configuration.icon
                 .font(.title2)
         }
-        .padding(.horizontal, 20)
-        .padding(.vertical, 10)
+        .padding(.horizontal, 25)
+        .frame(height: rowHeight)
+        .padding(.vertical, 8)
+        .contentShape(.rect)
     }
 }
