@@ -42,14 +42,15 @@ private struct InboxNotificationContextMenuViewModifier: ViewModifier {
                         $0.createAction(notification) ?? $0.createAction(notification.content.wrappedValue)
                     }
                 }
-                Divider()
-                Button("More...", icon: .general.menu) {
-                    let actions = actionSheetSeeds.compactMap {
-                        $0.createAction(notification) ?? $0.createAction(notification.content.wrappedValue)
+                Section {
+                    Button("More...", icon: .general.menu) {
+                        let actions = actionSheetSeeds.compactMap {
+                            $0.createAction(notification) ?? $0.createAction(notification.content.wrappedValue)
+                        }
+                        navigation.openSheet(.actionSheet(actions))
                     }
-                    navigation.openSheet(.actionSheet(actions))
+                    .symbolVariant(.circle)
                 }
-                .symbolVariant(.circle)
         }
     }
 }
