@@ -9,10 +9,24 @@ import SwiftUI
 
 private struct FitContentPresentationDetentViewModifier: ViewModifier {
     let otherDetents: Set<PresentationDetent>
+    var selection: Binding<PresentationDetent>?
     
     @State private var sheetContentHeight: CGFloat = SheetHeightKey.defaultValue
     
     func body(content: Content) -> some View {
+        if let selection {
+            innerBody(content: content)
+                .presentationDetents(
+                    otherDetents.union([.height(sheetContentHeight)]),
+                    selection: selection
+                )
+        } else {
+            innerBody(content: content)
+                .presentationDetents(otherDetents.union([.height(sheetContentHeight)]))
+        }
+    }
+
+    func innerBody(content: Content) -> some View {
         content
             .overlay {
                 GeometryReader { proxy in
@@ -23,15 +37,33 @@ private struct FitContentPresentationDetentViewModifier: ViewModifier {
                 }
             }
             .onPreferenceChange(SheetHeightKey.self) { sheetContentHeight = $0 }
-            .presentationDetents(otherDetents.union([.height(sheetContentHeight)]))
     }
 }
 
 public extension View {
+    @ViewBuilder
     func presentationDetentFitsContent(
+        fitDetentEnabled: Bool = true,
         _ otherDetents: Set<PresentationDetent> = []
     ) -> some View {
-        modifier(FitContentPresentationDetentViewModifier(otherDetents: otherDetents))
+        if fitDetentEnabled {
+            modifier(FitContentPresentationDetentViewModifier(otherDetents: otherDetents))
+        } else {
+            presentationDetents(otherDetents)
+        }
+    }
+
+    @ViewBuilder
+    func presentationDetentFitsContent(
+        fitDetentEnabled: Bool = true,
+        _ otherDetents: Set<PresentationDetent> = [],
+        selection: Binding<PresentationDetent>
+    ) -> some View {
+        if fitDetentEnabled {
+            modifier(FitContentPresentationDetentViewModifier(otherDetents: otherDetents, selection: selection))
+        } else {
+            presentationDetents(otherDetents, selection: selection)
+        }
     }
 }
 

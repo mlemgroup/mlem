@@ -35,6 +35,7 @@ private struct NavigationSheetModifier: ViewModifier {
         contentPickerTracker_()
     }
     
+    // swiftlint:disable:next function_body_length
     func body(content: Content) -> some View {
         content
             // https://stackoverflow.com/questions/69693871/how-to-open-share-sheet-from-presented-sheet
@@ -48,7 +49,14 @@ private struct NavigationSheetModifier: ViewModifier {
                 },
                 set: { if $0 == nil { closeSheet() } }
             )) { layer in
-                NavigationLayerView(layer: layer, hasSheetModifiers: true)
+                NavigationLayerView(
+                    layer: layer,
+                    hasSheetModifiers: true,
+                    selectedDetent: Binding(
+                        get: { layer.actionSheetPresentationDetent },
+                        set: { layer.actionSheetPresentationDetent = $0 }
+                    )
+                )
             }
             .fullScreenCover(item: Binding(
                 get: {

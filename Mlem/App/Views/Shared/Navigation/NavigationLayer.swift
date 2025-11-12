@@ -95,9 +95,11 @@ class NavigationLayer: Identifiable {
         }
         if case .actionSheet = root {
             withAnimation {
-                actionSheetPresentationDetent = .large
+                if !page.presentationDetents.contains(.medium) {
+                    actionSheetPresentationDetent = .large
+                }
             } completion: {
-                withAnimation {
+                withAnimation(.easeOut(duration: 0.3)) {
                     self.root = page
                 }
             }

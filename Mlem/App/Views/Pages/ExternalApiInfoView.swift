@@ -44,7 +44,6 @@ struct ExternalApiInfoView: View {
         .background(.themedGroupedBackground)
         .presentationBackground(.themedGroupedBackground)
         .task { await loadData() }
-        .presentationDetents([.medium])
         .presentationBackgroundInteraction(.enabled)
     }
     

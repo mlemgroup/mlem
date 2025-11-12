@@ -13,7 +13,9 @@ struct NavigationLayerView: View {
     @Setting(\.appearance_interfaceStyle) var interfaceStyle
 
     @State var layer: NavigationLayer
+
     let hasSheetModifiers: Bool
+    var selectedDetent: Binding<PresentationDetent>?
     
     private let fullWidthGestureRecognizerDelegate: FullWidthGestureRecognizerDelegate = .init()
     
@@ -73,7 +75,16 @@ struct NavigationLayerView: View {
     @ViewBuilder
     private func rootView() -> some View {
         if hasSheetModifiers {
-            layer.root.view().navigationSheetModifiers(for: layer)
+            innerRootView().navigationSheetModifiers(for: layer)
+        } else {
+            innerRootView()
+        }
+    }
+
+    @ViewBuilder
+    private func innerRootView() -> some View {
+        if let selectedDetent {
+            layer.root.sheetView(selectedDetent: selectedDetent)
         } else {
             layer.root.view()
         }

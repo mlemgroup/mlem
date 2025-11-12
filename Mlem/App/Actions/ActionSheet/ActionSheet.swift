@@ -26,10 +26,6 @@ struct ActionSheet: View {
             }
         }
         .presentationBackground(.themedGroupedBackground)
-        .presentationDetents([.medium, .large], selection: Binding(
-            get: { navigation.actionSheetPresentationDetent },
-            set: { navigation.actionSheetPresentationDetent = $0 }
-        ))
         .presentationDragIndicator(.hidden)
         .presentationBackgroundInteraction(.enabled)
     }

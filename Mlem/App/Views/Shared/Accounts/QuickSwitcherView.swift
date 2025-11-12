@@ -23,6 +23,5 @@ struct QuickSwitcherView: View {
             }
         }
         .presentationBackground(.themedGroupedBackground)
-        .presentationDetents([.medium, .large])
     }
 }
