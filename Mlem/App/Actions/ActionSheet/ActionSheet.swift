@@ -27,17 +27,20 @@ struct ActionSheet: View {
 
     var content: some View {
         VStack(spacing: 0) {
-            ForEach(Array(actions.enumerated()), id: \.offset) { index, action in
-                if ![actions.startIndex, actions.endIndex-1].contains(index) {
-                    Divider()
-                        .padding(.horizontal, 15)
-                }
-                ActionButtonWithVisibilityControl(action)
-            }
+            ForEach(Array(actions.enumerated()), id: \.offset, content: actionRow) 
         }
         .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: 25))
         .labelStyle(ActionSheetLabelStyle())
         .buttonStyle(.plain)
+    }
+
+    @ViewBuilder
+    func actionRow(_ index: Int, _ action: any Actions.Action) -> some View {
+        if ![actions.startIndex, actions.endIndex-1].contains(index) {
+            Divider()
+                .padding(.horizontal, 15)
+        }
+        ActionButtonWithVisibilityControl(action)
     }
 }
 
