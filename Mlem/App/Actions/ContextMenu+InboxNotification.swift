@@ -12,7 +12,7 @@ import SwiftUI
 private let topLevelSeeds: [ActionSeed] = [
     .reply,
     .markRead,
-    .selectText
+    .share
 ]
 
 private let actionSheetSeeds: [ActionSeed] = [
