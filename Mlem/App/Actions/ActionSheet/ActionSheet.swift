@@ -49,6 +49,9 @@ struct ActionSheet: View {
             }
             Button(label) {
                 action.execute(environment: environment)
+                if !navigation.rootChangePending, model.data == nil {
+                    dismiss()
+                }
             }
             .disabled(label.visibility == .disabled)
             .popupAnchor(model: model)

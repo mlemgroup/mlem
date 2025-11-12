@@ -23,6 +23,9 @@ class NavigationLayer: Identifiable {
     var canDisplayToasts: Bool
 
     var actionSheetPresentationDetent: PresentationDetent = .medium
+
+    // Used by ActionSheet
+    var rootChangePending: Bool = false
     
     init(
         root: NavigationPage,
@@ -93,6 +96,7 @@ class NavigationLayer: Identifiable {
             assertionFailure()
             return
         }
+        rootChangePending = true
         if case .actionSheet = root {
             withAnimation {
                 if !page.presentationDetents.contains(.medium) {
