@@ -83,6 +83,7 @@ struct MarkdownEditorToolbarView: View {
         }
         .frame(maxWidth: .infinity)
         .frame(height: toolbarHeight, alignment: .bottom)
+        .padding(.top, UIDevice.isIos26 ? 12 : 0)
         .onChange(of: imageManager.state) {
             switch imageManager.state {
             case let .done(upload):
