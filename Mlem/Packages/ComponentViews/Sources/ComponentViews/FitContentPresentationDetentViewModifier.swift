@@ -14,7 +14,7 @@ private struct FitContentPresentationDetentViewModifier: ViewModifier {
     @State private var sheetContentHeight: CGFloat = SheetHeightKey.defaultValue
     
     func body(content: Content) -> some View {
-        if let selection {
+        if let selection, !otherDetents.isEmpty {
             innerBody(content: content)
                 .presentationDetents(
                     otherDetents.union([.height(sheetContentHeight)]),

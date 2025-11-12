@@ -13,12 +13,12 @@ extension NavigationPage {
 
     @ViewBuilder
     func sheetView(selectedDetent: Binding<PresentationDetent>) -> some View {
-        view()
-            .presentationDetentFitsContent(
-                fitDetentEnabled: true,
-                presentationDetents,
-                selection: selectedDetent
-            )
+        if let presentationDetentConfiguration {
+            view()
+                .presentationDetents(configuration: presentationDetentConfiguration, selection: selectedDetent)
+        } else {
+            view()
+        }
     }
 
     // swiftlint:disable:next cyclomatic_complexity function_body_length

@@ -53,8 +53,8 @@ private struct NavigationSheetModifier: ViewModifier {
                     layer: layer,
                     hasSheetModifiers: true,
                     selectedDetent: Binding(
-                        get: { layer.actionSheetPresentationDetent },
-                        set: { layer.actionSheetPresentationDetent = $0 }
+                        get: { layer.rootViewPresentationDetent },
+                        set: { layer.rootViewPresentationDetent = $0 }
                     )
                 )
             }

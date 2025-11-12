@@ -22,7 +22,7 @@ class NavigationLayer: Identifiable {
     var isFullScreenCover: Bool
     var canDisplayToasts: Bool
 
-    var actionSheetPresentationDetent: PresentationDetent = .medium
+    var rootViewPresentationDetent: PresentationDetent 
 
     // Used by ActionSheet
     var rootChangePending: Bool = false
@@ -43,6 +43,7 @@ class NavigationLayer: Identifiable {
         self.hasNavigationStack = hasNavigationStack
         self.isFullScreenCover = isFullScreenCover
         self.canDisplayToasts = canDisplayToasts
+        self.rootViewPresentationDetent = root.presentationDetentConfiguration?.default.presentationDetent() ?? .large
     }
     
     @MainActor
@@ -99,8 +100,8 @@ class NavigationLayer: Identifiable {
         rootChangePending = true
         if case .actionSheet = root {
             withAnimation {
-                if !page.presentationDetents.contains(.medium) {
-                    actionSheetPresentationDetent = .large
+                if !(page.presentationDetentConfiguration?.detents.contains(.medium) ?? false) {
+                    rootViewPresentationDetent = .large
                 }
             } completion: {
                 withAnimation(.easeOut(duration: 0.3)) {
