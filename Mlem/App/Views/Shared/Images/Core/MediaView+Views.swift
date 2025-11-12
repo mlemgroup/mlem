@@ -107,12 +107,24 @@ extension MediaView {
                     }
                     .foregroundStyle(.themedTertiary)
                 default:
-                    Image(icon: .general.missing)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(maxWidth: 50)
-                        .padding(4)
-                        .foregroundStyle(.themedTertiary)
+                    VStack {
+                        Image(icon: .general.missing)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(maxWidth: 50)
+                            .padding(4)
+                            .foregroundStyle(.themedTertiary)
+                        
+                        if let url = loader.url {
+                            Text("Image loading failed")
+                                .foregroundStyle(.themedTertiary)
+                            Button("View in browser") {
+                                openURL(url)
+                            }
+                            .tint(.blue)
+                            .buttonStyle(.bordered)
+                        }
+                    }
                 }
             }
         }

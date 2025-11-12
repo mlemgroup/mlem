@@ -11,6 +11,7 @@ import Media
 struct MediaView: View {
     @Environment(NavigationLayer.self) var navigation: NavigationLayer?
     @Environment(\.palette) var palette
+    @Environment(\.openURL) var openURL
     
     @Setting(\.status_bypassImageProxyShown) var bypassImageProxyShown
     @Setting(\.dev_developerMode) var developerMode
