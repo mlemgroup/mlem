@@ -19,10 +19,8 @@ public struct ActionButton: View {
     public var body: some View {
         let label = action.createLabel(environment: environment)
         if label.visibility != .hidden {
-            Button(role: label.isDestructive ? .destructive : nil) {
+            Button(label) {
                 action.execute(environment: environment)
-            } label: {
-                Label(label)
             }
             .disabled(label.visibility == .disabled)
         }
