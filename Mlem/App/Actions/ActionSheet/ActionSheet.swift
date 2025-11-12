@@ -20,7 +20,8 @@ struct ActionSheet: View {
             }
         }
         .presentationBackground(.themedGroupedBackground)
-        .presentationDetents([.medium])
+        .presentationDetents([.medium, .large])
+        .presentationDragIndicator(.hidden)
         .presentationBackgroundInteraction(.enabled)
     }
 
