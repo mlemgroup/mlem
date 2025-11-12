@@ -32,7 +32,7 @@ struct ActionSheet: View {
                     Divider()
                         .padding(.horizontal, 15)
                 }
-                ActionButton(action)
+                ActionButtonWithVisibilityControl(action)
             }
         }
         .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: 25))

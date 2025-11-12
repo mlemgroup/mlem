@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-public struct ActionButton: View {
+public struct ActionButtonWithVisibilityControl: View {
     @Environment(\.self) private var environment
     
     private let action: any Action
