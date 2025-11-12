@@ -30,6 +30,7 @@ struct ActionSheet: View {
             ForEach(Array(actions.enumerated()), id: \.offset) { index, action in
                 if ![actions.startIndex, actions.endIndex-1].contains(index) {
                     Divider()
+                        .padding(.horizontal, 15)
                 }
                 ActionButton(action)
             }
