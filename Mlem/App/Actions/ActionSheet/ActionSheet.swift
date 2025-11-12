@@ -10,11 +10,14 @@ import MlemMiddleware
 import SwiftUI
 
 struct ActionSheet: View {
+    @Environment(\.dismiss) var dismiss
     @Environment(\.self) var environment
+    @Environment(NavigationLayer.self) var navigation
 
     let actions: [any Actions.Action]
 
     @State var model: PopupAnchorModel = .init()
+
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
@@ -23,7 +26,10 @@ struct ActionSheet: View {
             }
         }
         .presentationBackground(.themedGroupedBackground)
-        .presentationDetents([.medium, .large])
+        .presentationDetents([.medium, .large], selection: Binding(
+            get: { navigation.actionSheetPresentationDetent },
+            set: { navigation.actionSheetPresentationDetent = $0 }
+        ))
         .presentationDragIndicator(.hidden)
         .presentationBackgroundInteraction(.enabled)
     }

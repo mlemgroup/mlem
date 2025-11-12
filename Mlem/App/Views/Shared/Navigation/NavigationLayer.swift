@@ -21,6 +21,8 @@ class NavigationLayer: Identifiable {
     var hasNavigationStack: Bool
     var isFullScreenCover: Bool
     var canDisplayToasts: Bool
+
+    var actionSheetPresentationDetent: PresentationDetent = .medium
     
     init(
         root: NavigationPage,
@@ -87,10 +89,24 @@ class NavigationLayer: Identifiable {
     /// Open a new sheet, optionally with navigation enabled. If `nil` is specified for `hasNavigationStack`, the value of `page.hasNavigationStack` will be used.
     @MainActor
     func openSheet(_ page: NavigationPage, hasNavigationStack: Bool? = nil) {
-        model?.openSheet(
-            page,
-            hasNavigationStack: hasNavigationStack ?? page.hasNavigationStack
-        )
+        guard let model else {
+            assertionFailure()
+            return
+        }
+        if case .actionSheet = root {
+            withAnimation {
+                actionSheetPresentationDetent = .large
+            } completion: {
+                withAnimation {
+                    self.root = page
+                }
+            }
+        } else {
+            model.openSheet(
+                page,
+                hasNavigationStack: hasNavigationStack ?? page.hasNavigationStack
+            )
+        }
     }
     
     /// Convenience proxy for showFullScreenCover. Opens the image viewer with the given URL and disables animations on the fullScreenCover.
