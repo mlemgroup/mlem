@@ -16,7 +16,7 @@ struct ActionSheet: View {
 
     let actions: [any Actions.Action]
 
-    @State var model: PopupAnchorModel = .init()
+    @State var popupAnchorModel: PopupAnchorModel = .init()
 
     var body: some View {
         ScrollView {
@@ -49,12 +49,12 @@ struct ActionSheet: View {
             }
             Button(label) {
                 action.execute(environment: environment)
-                if !navigation.rootChangePending, model.data == nil {
+                if !navigation.rootChangePending, popupAnchorModel.data == nil {
                     dismiss()
                 }
             }
             .disabled(label.visibility == .disabled)
-            .popupAnchor(model: model)
+            .popupAnchor(model: popupAnchorModel)
         }
     }
 }
