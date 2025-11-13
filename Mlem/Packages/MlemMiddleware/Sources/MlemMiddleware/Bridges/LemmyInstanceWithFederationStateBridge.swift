@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct InstanceWithFederationStateBridge: Codable, Hashable, Sendable {
+public struct LemmyInstanceWithFederationStateBridge: Codable, Hashable, Sendable {
     let domain: String
     
     public init(from decoder: any Decoder) throws {
@@ -22,7 +22,7 @@ public struct InstanceWithFederationStateBridge: Codable, Hashable, Sendable {
         }
         
         throw DecodingError.dataCorrupted(
-            .init(codingPath: decoder.codingPath, debugDescription: "InstanceWithFederationStateBridge error")
+            .init(codingPath: decoder.codingPath, debugDescription: "LemmyInstanceWithFederationStateBridge error")
         )
     }
 }
