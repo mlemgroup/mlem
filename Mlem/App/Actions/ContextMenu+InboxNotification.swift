@@ -10,9 +10,10 @@ import MlemMiddleware
 import SwiftUI
 
 private let topLevelSeeds: [ActionSeed] = [
-    .reply,
     .markRead,
-    .share
+    .share,
+    .blockCreator,
+    .report
 ]
 
 private let actionSheetSeeds: [ActionSeed] = [
