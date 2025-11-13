@@ -100,8 +100,12 @@ class NavigationLayer: Identifiable {
         rootChangePending = true
         if case .actionSheet = root {
             withAnimation {
-                if !(page.presentationDetentConfiguration?.detents.contains(.medium) ?? false) {
-                    rootViewPresentationDetent = .large
+                if let detentsConfiguration = page.presentationDetentConfiguration {
+                    if detentsConfiguration.detents.contains(.large), self.rootViewPresentationDetent != .large {
+                        rootViewPresentationDetent = .large
+                    } else if detentsConfiguration.detents.contains(.medium), self.rootViewPresentationDetent != .medium {
+                        rootViewPresentationDetent = .medium
+                    }
                 }
             } completion: {
                 withAnimation(.easeOut(duration: 0.3)) {
