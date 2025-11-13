@@ -344,7 +344,7 @@ public extension LemmyConnection {
                 enableAnimatedImages: enableAnimatedImages,
                 collapseBotComments: collapseBotComments,
                 showUpvotes: showUpvotes,
-                showDownvotes: showDownvotes,
+                showDownvotes: showDownvotes.map { .init(showVotes: $0) },
                 showUpvotePercentage: showUpvotePercentage,
                 defaultPostSortType: nil,
                 defaultPostTimeRangeSeconds: nil,

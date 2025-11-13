@@ -17,7 +17,7 @@ public struct LemmyInstanceWithFederationStateBridge: Codable, Hashable, Sendabl
         }
         
         if let new = try? LemmyInstanceWithFederationState(from: decoder) {
-            self.domain = new.instance.domain
+            self.domain = new.domain
             return
         }
         

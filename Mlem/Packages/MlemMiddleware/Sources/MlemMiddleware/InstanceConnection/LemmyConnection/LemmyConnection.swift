@@ -146,6 +146,7 @@ extension CodingUserInfoKey {
 
 enum LemmyEncodingError: Error {
     case noEndpointVersionInUserInfo
+    case lemmyVoteShowBridge
 }
 
 extension Encoder {
