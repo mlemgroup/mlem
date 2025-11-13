@@ -48,9 +48,9 @@ struct ActionSheet: View {
             if ![actions.startIndex, actions.endIndex-1].contains(index) {
                 Divider()
                     .padding(.horizontal, 15)
-                ActionSheetButton(action: action, label: label)
-                    .popupAnchor(model: popupAnchorModel)
             }
+            ActionSheetButton(action: action, label: label)
+                .popupAnchor(model: popupAnchorModel)
         }
     }
 }
