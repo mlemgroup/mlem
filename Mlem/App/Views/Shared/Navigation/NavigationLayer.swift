@@ -106,6 +106,8 @@ class NavigationLayer: Identifiable {
                     } else if detentsConfiguration.detents.contains(.medium), self.rootViewPresentationDetent != .medium {
                         rootViewPresentationDetent = .medium
                     }
+                } else {
+                    rootViewPresentationDetent = .large
                 }
             } completion: {
                 withAnimation(.easeOut(duration: 0.3)) {
