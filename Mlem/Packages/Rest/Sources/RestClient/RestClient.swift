@@ -41,7 +41,8 @@ public class RestClient {
     public func perform<Request: RestRequest>(
         baseUrl: URL,
         _ request: Request,
-        token: String?
+        token: String?,
+        encoderUserInfo: [CodingUserInfoKey: any Sendable] = [:]
     ) async throws(RestError) -> Request.Response {
         let urlRequest = try urlRequest(baseUrl: baseUrl, request: request, token: token)
         // this line intentionally left commented for convenient future debugging
@@ -79,7 +80,8 @@ public class RestClient {
     func urlRequest(
         baseUrl: URL,
         request: any RestRequest,
-        token: String?
+        token: String?,
+        encoderUserInfo: [CodingUserInfoKey: any Sendable] = [:]
     ) throws(RestError) -> URLRequest {
         let url: URL
         do {
@@ -98,13 +100,13 @@ public class RestClient {
             urlRequest.httpMethod = "GET"
         } else if let postDefinition = request as? any PostRequest {
             urlRequest.httpMethod = "POST"
-            urlRequest.httpBody = try createBodyData(for: postDefinition)
+            urlRequest.httpBody = try createBodyData(for: postDefinition, encoderUserInfo: encoderUserInfo)
         } else if let putDefinition = request as? any PutRequest {
             urlRequest.httpMethod = "PUT"
-            urlRequest.httpBody = try createBodyData(for: putDefinition)
+            urlRequest.httpBody = try createBodyData(for: putDefinition, encoderUserInfo: encoderUserInfo)
         } else if let deleteDefinition = request as? any DeleteRequest {
             urlRequest.httpMethod = "DELETE"
-            urlRequest.httpBody = try createBodyData(for: deleteDefinition)
+            urlRequest.httpBody = try createBodyData(for: deleteDefinition, encoderUserInfo: encoderUserInfo)
         }
         
         if let token {
@@ -114,10 +116,14 @@ public class RestClient {
         return urlRequest
     }
     
-    func createBodyData(for defintion: any RequestWithBody) throws(RestError) -> Data {
+    func createBodyData(
+        for defintion: any RequestWithBody,
+        encoderUserInfo: [CodingUserInfoKey: any Sendable] = [:]
+    ) throws(RestError) -> Data {
         do {
             let encoder = JSONEncoder()
             encoder.dateEncodingStrategy = .iso8601WithMilliseconds
+            encoder.userInfo = encoderUserInfo
             let body = defintion.body ?? ""
             return try encoder.encode(body)
         } catch {
