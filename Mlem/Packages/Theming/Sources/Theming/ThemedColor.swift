@@ -185,6 +185,18 @@ public extension ShapeStyle where Self == ThemedColor {
         .init(hashString: "inbox", getColor: \.inbox)
     }
 
+    static var themedFediseerEndorsement: ThemedColor {
+        .init(hashString: "fediseerEndorsement", getColor: \.fediseerEndorsement)
+    }
+
+    static var themedFediseerHesitation: ThemedColor {
+        .init(hashString: "fediseerHesitation", getColor: \.fediseerHesitation)
+    }
+
+    static var themedFediseerCensure: ThemedColor {
+        .init(hashString: "fediseerCensure", getColor: \.fediseerCensure)
+    }
+
     static var themedCommentAccent: ThemedColor { themedColorfulAccent(0) }
     static var themedPostAccent: ThemedColor { themedColorfulAccent(1) }
     static var themedPersonAccent: ThemedColor { themedColorfulAccent(2) }

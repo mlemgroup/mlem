@@ -45,6 +45,10 @@ public struct Palette {
     public var popularFeed: Color
     public var suggestedFeed: Color
     public var inbox: Color
+
+    public var fediseerEndorsement: Color
+    public var fediseerHesitation: Color { caution }
+    public var fediseerCensure: Color { warning }
     
     public init(
         bordered: Bool,
@@ -76,7 +80,8 @@ public struct Palette {
         savedFeed: Color,
         popularFeed: Color,
         suggestedFeed: Color,
-        inbox: Color
+        inbox: Color,
+        fediseerEndorsement: Color
     ) {
         self.bordered = bordered
         self.label = label
@@ -108,6 +113,7 @@ public struct Palette {
         self.popularFeed = popularFeed
         self.suggestedFeed = suggestedFeed
         self.inbox = inbox
+        self.fediseerEndorsement = fediseerEndorsement
     }
 }
 

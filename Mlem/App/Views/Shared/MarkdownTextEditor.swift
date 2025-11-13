@@ -75,7 +75,7 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
         )
         let contentView = contentController.view!
         
-        let inputView = UIInputView(frame: CGRect(x: 0, y: 0, width: 0, height: 36), inputViewStyle: .keyboard)
+        let inputView = UIInputView(frame: CGRect(x: 0, y: 0, width: 0, height: UIDevice.isIos26 ? 48 : 36), inputViewStyle: .keyboard)
         inputView.addSubview(contentController.view)
         inputView.inputViewController?.addChild(contentController)
         contentView.translatesAutoresizingMaskIntoConstraints = false
