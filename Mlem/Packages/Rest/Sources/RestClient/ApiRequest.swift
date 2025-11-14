@@ -55,11 +55,30 @@ public extension GetRequest {
 
 // MARK: - RequestWithBody
 
+public enum RequestWithBodyMethod {
+    case post, put, delete
+}
+
 public protocol RequestWithBody: RestRequest {
     associatedtype Body: Encodable
     var body: Body? { get }
+    var method: RequestWithBodyMethod { get }
 }
 
-public protocol PostRequest: RequestWithBody {}
-public protocol PutRequest: RequestWithBody {}
-public protocol DeleteRequest: RequestWithBody {}
+public protocol PostRequest: RequestWithBody { }
+
+public extension PostRequest {
+    var method: RequestWithBodyMethod { .post }
+}
+
+public protocol PutRequest: RequestWithBody { }
+
+public extension PutRequest {
+    var method: RequestWithBodyMethod { .put }
+}
+
+public protocol DeleteRequest: RequestWithBody { }
+
+public extension DeleteRequest {
+    var method: RequestWithBodyMethod { .delete }
+}
