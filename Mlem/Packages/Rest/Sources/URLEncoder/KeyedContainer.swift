@@ -59,7 +59,7 @@ internal class KeyedContainer<K: CodingKey>: KeyedEncodingContainerProtocol {
 
     func nestedUnkeyedContainer(forKey key: K) -> UnkeyedEncodingContainer {
         assertionFailure("We should throw an error *before* this gets called")
-        return UnkeyedContainer(encoder: encoder)
+        return ThrowingUnkeyedContainer(encoder: encoder)
     }
 
     func superEncoder() -> Encoder { encoder }

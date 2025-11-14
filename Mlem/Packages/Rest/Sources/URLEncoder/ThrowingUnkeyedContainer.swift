@@ -8,7 +8,7 @@
 import Foundation
 
 // This simply throws an error as soon as you try to encode with it.
-internal class UnkeyedContainer: UnkeyedEncodingContainer {
+internal class ThrowingUnkeyedContainer: UnkeyedEncodingContainer {
     let encoder: any Encoder
     let codingPath: [any CodingKey] = []
     let count: Int = 0
@@ -28,7 +28,7 @@ internal class UnkeyedContainer: UnkeyedEncodingContainer {
     
     func nestedUnkeyedContainer() -> any UnkeyedEncodingContainer {
         assertionFailure("We should throw an error *before* this gets called")
-        return UnkeyedContainer(encoder: encoder)
+        return ThrowingUnkeyedContainer(encoder: encoder)
     }
     
     func superEncoder() -> any Encoder { encoder }

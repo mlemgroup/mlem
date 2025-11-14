@@ -28,7 +28,7 @@ internal class RetrievalEncoder: Encoder {
 
     func unkeyedContainer() -> UnkeyedEncodingContainer {
         // This value throws an error as soon as you try to encode with it
-        UnkeyedContainer(encoder: self)
+        ThrowingUnkeyedContainer(encoder: self)
     }
 
     func container<Key: CodingKey>(keyedBy type: Key.Type) -> KeyedEncodingContainer<Key> {
