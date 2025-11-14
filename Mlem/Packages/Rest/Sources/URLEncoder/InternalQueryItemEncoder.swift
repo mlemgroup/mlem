@@ -31,6 +31,6 @@ internal class InternalURLQueryItemEncoder: Encoder {
     }
 
     func container<Key: CodingKey>(keyedBy type: Key.Type) -> KeyedEncodingContainer<Key> {
-        KeyedEncodingContainer(KeyedContainer<Key>(encoder: self))
+        KeyedEncodingContainer(TopLevelKeyedContainer<Key>(encoder: self))
     }
 }

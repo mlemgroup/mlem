@@ -7,7 +7,7 @@
 
 import Foundation
 
-internal class KeyedContainer<K: CodingKey>: KeyedEncodingContainerProtocol {
+internal class TopLevelKeyedContainer<K: CodingKey>: KeyedEncodingContainerProtocol {
     var encoder: InternalURLQueryItemEncoder
 
     init(encoder: InternalURLQueryItemEncoder) {
@@ -54,7 +54,7 @@ internal class KeyedContainer<K: CodingKey>: KeyedEncodingContainerProtocol {
         keyedBy type: NestedKey.Type, forKey key: K
     ) -> KeyedEncodingContainer<NestedKey> where NestedKey: CodingKey {
         assertionFailure("We should throw an error *before* this gets called")
-        return KeyedEncodingContainer(KeyedContainer<NestedKey>(encoder: encoder))
+        return KeyedEncodingContainer(ThrowingKeyedContainer<NestedKey>(encoder: encoder))
     }
 
     func nestedUnkeyedContainer(forKey key: K) -> UnkeyedEncodingContainer {
