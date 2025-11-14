@@ -22,7 +22,7 @@ internal class InternalURLQueryItemEncoder: Encoder {
 
     func singleValueContainer() -> SingleValueEncodingContainer {
         // This value throws an error as soon as you try to encode with it
-        SingleValueContainer(encoder: self)
+        ThrowingSingleValueContainer(encoder: self)
     }
 
     func unkeyedContainer() -> UnkeyedEncodingContainer {

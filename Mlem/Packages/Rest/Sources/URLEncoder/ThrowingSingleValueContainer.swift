@@ -8,7 +8,7 @@
 import Foundation
 
 // This simply throws an error as soon as you try to encode with it.
-internal class SingleValueContainer: SingleValueEncodingContainer {
+internal class ThrowingSingleValueContainer: SingleValueEncodingContainer {
     let encoder: InternalURLQueryItemEncoder
     let codingPath: [CodingKey] = []
 
