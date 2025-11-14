@@ -9,11 +9,11 @@ import Foundation
 
 // This simply throws an error as soon as you try to encode with it.
 internal class UnkeyedContainer: UnkeyedEncodingContainer {
-    let encoder: InternalURLQueryItemEncoder
+    let encoder: any Encoder
     let codingPath: [any CodingKey] = []
     let count: Int = 0
     
-    init(encoder: InternalURLQueryItemEncoder) {
+    init(encoder: any Encoder) {
         self.encoder = encoder
     }
     
@@ -23,7 +23,7 @@ internal class UnkeyedContainer: UnkeyedEncodingContainer {
     
     func nestedContainer<NestedKey>(keyedBy keyType: NestedKey.Type) -> KeyedEncodingContainer<NestedKey> where NestedKey: CodingKey {
         assertionFailure("We should throw an error *before* this gets called")
-        return KeyedEncodingContainer(KeyedContainer(encoder: encoder))
+        return KeyedEncodingContainer(ThrowingKeyedContainer(encoder: encoder))
     }
     
     func nestedUnkeyedContainer() -> any UnkeyedEncodingContainer {
