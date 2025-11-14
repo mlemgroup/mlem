@@ -15,6 +15,8 @@ internal class RetrievalEncoder: Encoder {
     // Just for conformance; unused
     let userInfo: [CodingUserInfoKey: Any] = [:]
 
+    var encodedValue: (any Encodable)?
+
     func singleValueContainer() -> SingleValueEncodingContainer {
         // This value throws an error as soon as you try to encode with it
         RetrievalSingleValueContainer(encoder: self)

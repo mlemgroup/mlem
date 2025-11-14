@@ -18,6 +18,6 @@ internal class RetrievalSingleValueContainer: SingleValueEncodingContainer {
     func encodeNil() throws {}
 
     func encode(_ value: some Encodable) throws {
-        throw URLQueryItemEncoderError.singleValueContainerUnsupported
+        encoder.encodedValue = value
     }
 }

@@ -23,11 +23,18 @@ internal class KeyedContainer<K: CodingKey>: KeyedEncodingContainerProtocol {
             let key = key.stringValue.camelToSnakeCase()
             encoder.queryParams.append(.init(name: key, value: valueString))
         } else {
-            throw URLQueryItemEncoderError.nestedContainersUnsupported
+            let encoder = RetrievalEncoder()
+            try value.encode(to: encoder)
+            if let wrappedValue = encoder.encodedValue, let valueString = convertValueToString(wrappedValue) {
+                let key = key.stringValue.camelToSnakeCase()
+                self.encoder.queryParams.append(.init(name: key, value: valueString))
+            } else {
+                throw URLQueryItemEncoderError.nestedContainersUnsupported
+            }
         }
     }
     
-    func convertValueToString(_ value: some Encodable) -> String? {
+    func convertValueToString(_ value: any Encodable) -> String? {
         if let value = value as? String {
             value
         } else if let value = value as? Int {
@@ -38,10 +45,6 @@ internal class KeyedContainer<K: CodingKey>: KeyedEncodingContainerProtocol {
             value ? "true" : "false"
         } else if let value = value as? URL {
             value.absoluteString
-        } else if let value = value as? any RawRepresentable<String> {
-            value.rawValue
-        } else if let value = value as? any RawRepresentable<Int> {
-            String(value.rawValue)
         } else if let value = value as? any URLQueryItemEncodable {
             value.encodeInQueryItemFormat()
         } else {
