@@ -23,7 +23,7 @@ internal class KeyedContainer<K: CodingKey>: KeyedEncodingContainerProtocol {
             let key = key.stringValue.camelToSnakeCase()
             encoder.queryParams.append(.init(name: key, value: valueString))
         } else {
-            let encoder = RetrievalEncoder()
+            let encoder = RetrievalEncoder(userInfo: self.encoder.userInfo)
             try value.encode(to: encoder)
             if let wrappedValue = encoder.encodedValue, let valueString = convertValueToString(wrappedValue) {
                 let key = key.stringValue.camelToSnakeCase()

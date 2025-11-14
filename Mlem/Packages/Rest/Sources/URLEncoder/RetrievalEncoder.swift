@@ -13,9 +13,13 @@ internal class RetrievalEncoder: Encoder {
     let codingPath: [CodingKey] = []
     
     // Just for conformance; unused
-    let userInfo: [CodingUserInfoKey: Any] = [:]
+    var userInfo: [CodingUserInfoKey: Any]
 
     var encodedValue: (any Encodable)?
+
+    init(userInfo: [CodingUserInfoKey: Any]) {
+        self.userInfo = userInfo
+    }
 
     func singleValueContainer() -> SingleValueEncodingContainer {
         // This value throws an error as soon as you try to encode with it
