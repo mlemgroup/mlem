@@ -16,7 +16,7 @@ import URLEncoder
 
 public typealias ApiBridgeable = Codable & Hashable & RawRepresentable<String> & Sendable
 
-public enum ApiBridge<OldType: ApiBridgeable, NewType: ApiBridgeable>: Codable, Hashable, Sendable, URLQueryItemEncodable {
+public enum ApiBridge<OldType: ApiBridgeable, NewType: ApiBridgeable>: Codable, Hashable, Sendable {
     case old(OldType)
     case new(NewType)
     
@@ -62,10 +62,8 @@ public extension ApiBridge {
     
     func encode(to encoder: any Encoder) throws {
         var container = encoder.singleValueContainer()
-        try container.encode(encodeInQueryItemFormat())
+        try container.encode(value.rawValue)
     }
-    
-    func encodeInQueryItemFormat() -> String? { value.rawValue }
 }
 
 public typealias SearchSortTypeBridge = ApiBridge<LemmySortType, LemmySearchSortType>
