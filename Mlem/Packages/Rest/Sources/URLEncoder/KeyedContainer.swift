@@ -45,8 +45,6 @@ internal class KeyedContainer<K: CodingKey>: KeyedEncodingContainerProtocol {
             value ? "true" : "false"
         } else if let value = value as? URL {
             value.absoluteString
-        } else if let value = value as? any URLQueryItemEncodable {
-            value.encodeInQueryItemFormat()
         } else {
             nil
         }

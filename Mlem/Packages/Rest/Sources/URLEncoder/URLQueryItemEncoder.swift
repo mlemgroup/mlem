@@ -26,10 +26,6 @@ public enum URLQueryItemEncoder {
     }
 }
 
-public protocol URLQueryItemEncodable {
-    func encodeInQueryItemFormat() -> String?
-}
-
 public enum URLQueryItemEncoderError: Error {
     case nestedContainersUnsupported
     case singleValueContainerUnsupported
