@@ -8,7 +8,7 @@
 import Foundation
 
 public enum URLQueryItemEncoder {
-    static func encode(_ value: some Encodable) throws(URLQueryItemEncoderError) -> [URLQueryItem] {
+    public static func encode(_ value: some Encodable) throws(URLQueryItemEncoderError) -> [URLQueryItem] {
         let encoder = InternalURLQueryItemEncoder()
         do {
             try value.encode(to: encoder)

@@ -7,6 +7,7 @@
 
 import Foundation
 import Rest
+import URLEncoder
 
 // The `LemmySearch.sort` property uses `LemmySortType` pre-0.20 and
 // uses `LemmySearchSortType` post-0.20, even when interacting using the v3 api.
