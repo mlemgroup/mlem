@@ -119,7 +119,7 @@ extension MediaView {
                             Text("Image loading failed")
                                 .foregroundStyle(.themedTertiary)
                             
-                            Button(String(url.host() ?? "unknown host"), icon: .general.browser) {
+                            Button(url.host() ?? String(localized: "unknown host"), icon: .general.browser) {
                                 openURL(url)
                             }
                             .tint(.themedAccent)
