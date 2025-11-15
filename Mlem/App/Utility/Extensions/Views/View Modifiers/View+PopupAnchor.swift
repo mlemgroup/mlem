@@ -53,11 +53,15 @@ struct PopupAnchor: ViewModifier {
         ForEach(Array(actions.enumerated()), id: \.offset) { _, action in
             Button(
                 action.title,
-                role: action.isDestructive ? .destructive : nil,
-                action: action.callback
-            )
+                role: action.isDestructive ? .destructive : nil
+            ) {
+                action.callback()
+                model.outcome = .confirmed
+            }
         }
-        Button("Cancel", role: .cancel) {}
+        Button("Cancel", role: .cancel) {
+            model.outcome = .cancelled
+        }
     }
 }
 

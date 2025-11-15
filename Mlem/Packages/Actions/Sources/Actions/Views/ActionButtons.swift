@@ -21,7 +21,7 @@ public struct ActionButtons: View {
 
     public var body: some View {
         ForEach(Array(actions(environment).enumerated()), id: \.offset) { _, action in
-            ActionButton(action)
+            ActionButtonWithVisibilityControl(action)
         }
     }
 }

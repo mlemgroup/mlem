@@ -21,6 +21,11 @@ class NavigationLayer: Identifiable {
     var hasNavigationStack: Bool
     var isFullScreenCover: Bool
     var canDisplayToasts: Bool
+
+    var rootViewPresentationDetent: PresentationDetent 
+
+    // Used by ActionSheet
+    var rootChangePending: Bool = false
     
     init(
         root: NavigationPage,
@@ -38,6 +43,7 @@ class NavigationLayer: Identifiable {
         self.hasNavigationStack = hasNavigationStack
         self.isFullScreenCover = isFullScreenCover
         self.canDisplayToasts = canDisplayToasts
+        self.rootViewPresentationDetent = root.presentationDetentConfiguration?.default.presentationDetent() ?? .large
     }
     
     @MainActor
@@ -87,10 +93,33 @@ class NavigationLayer: Identifiable {
     /// Open a new sheet, optionally with navigation enabled. If `nil` is specified for `hasNavigationStack`, the value of `page.hasNavigationStack` will be used.
     @MainActor
     func openSheet(_ page: NavigationPage, hasNavigationStack: Bool? = nil) {
-        model?.openSheet(
-            page,
-            hasNavigationStack: hasNavigationStack ?? page.hasNavigationStack
-        )
+        guard let model else {
+            assertionFailure()
+            return
+        }
+        rootChangePending = true
+        if case .actionSheet = root {
+            withAnimation {
+                if let detentsConfiguration = page.presentationDetentConfiguration {
+                    if detentsConfiguration.detents.contains(.large), self.rootViewPresentationDetent != .large {
+                        rootViewPresentationDetent = .large
+                    } else if detentsConfiguration.detents.contains(.medium), self.rootViewPresentationDetent != .medium {
+                        rootViewPresentationDetent = .medium
+                    }
+                } else {
+                    rootViewPresentationDetent = .large
+                }
+            } completion: {
+                withAnimation(.easeOut(duration: 0.3)) {
+                    self.root = page
+                }
+            }
+        } else {
+            model.openSheet(
+                page,
+                hasNavigationStack: hasNavigationStack ?? page.hasNavigationStack
+            )
+        }
     }
     
     /// Convenience proxy for showFullScreenCover. Opens the image viewer with the given URL and disables animations on the fullScreenCover.

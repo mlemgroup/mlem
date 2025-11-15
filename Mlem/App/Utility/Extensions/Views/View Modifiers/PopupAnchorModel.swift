@@ -13,6 +13,10 @@ class PopupAnchorModel {
         var message: String
         var actions: [Action]?
     }
+
+    enum Outcome {
+        case cancelled, confirmed
+    }
     
     struct Action {
         let title: String
@@ -34,6 +38,7 @@ class PopupAnchorModel {
     }
     
     private(set) var data: PopupData?
+    var outcome: Outcome?
     
     func showPopup(message: LocalizedStringResource, _ actions: [Action]?) {
         showPopup(message: .init(localized: message), actions)
