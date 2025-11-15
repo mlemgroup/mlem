@@ -11,6 +11,7 @@ import Media
 struct MediaView: View {
     @Environment(NavigationLayer.self) var navigation: NavigationLayer?
     @Environment(\.palette) var palette
+    @Environment(\.openURL) var openURL
     
     @Setting(\.status_bypassImageProxyShown) var bypassImageProxyShown
     @Setting(\.dev_developerMode) var developerMode
@@ -42,6 +43,9 @@ struct MediaView: View {
         overlays.error &&
         loader.error != nil &&
         navigation != nil
+    }
+    var enableTap: Bool {
+        loader.loading == .done && ((onTapActions != nil) || enableImageViewer)
     }
 
     /// Creates a new MediaView. This view is simple by default; if no complex behaviors are specified, it will
@@ -128,7 +132,7 @@ struct MediaView: View {
             .overlay(errorOverlay)
             .clipShape(.rect(cornerRadius: cornerRadius))
             .withContextMenu(menuContent: contextMenuContent, isEnabled: enableContextMenu && loader.error == nil)
-            .gesture(TapGesture().onEnded(tapActions), isEnabled: (onTapActions != nil) || enableImageViewer)
+            .gesture(TapGesture().onEnded(tapActions), isEnabled: enableTap)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .onChange(of: url, initial: true) {
                 Task {

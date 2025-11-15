@@ -26,7 +26,6 @@ struct SelectTextView: View {
                 ios18Body
             }
         }
-        .presentationDetents([.medium])
         .presentationBackgroundInteraction(.enabled)
     }
     

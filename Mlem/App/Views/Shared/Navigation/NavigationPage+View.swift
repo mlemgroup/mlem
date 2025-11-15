@@ -5,10 +5,22 @@
 //  Created by Sjmarf on 28/04/2024.
 //
 
+import ComponentViews
 import MlemMiddleware
 import SwiftUI
 
 extension NavigationPage {
+
+    @ViewBuilder
+    func sheetView(selectedDetent: Binding<PresentationDetent>) -> some View {
+        if let presentationDetentConfiguration {
+            view()
+                .presentationDetents(configuration: presentationDetentConfiguration, selection: selectedDetent)
+        } else {
+            view()
+        }
+    }
+
     // swiftlint:disable:next cyclomatic_complexity function_body_length
     @ViewBuilder func view() -> some View {
         switch self {
@@ -186,7 +198,6 @@ extension NavigationPage {
             )
         case let .rulesList(model, callback):
             RulesPickerView(model: model.wrappedValue, callback: callback.wrappedValue)
-                .presentationDetents([.medium, .large])
         case .blockList:
             BlockListView()
         case let .advancedSorting(sort):
@@ -206,6 +217,8 @@ extension NavigationPage {
             RegistrationApplicationDenialEditorView(application: application)
         case let .exportPostImage(post):
             ExportablePostEditorView(post: post.wrappedValue)
+        case let .actionSheet(actions):
+            ActionSheet(actions: actions.wrappedValue)
         }
     }
 }

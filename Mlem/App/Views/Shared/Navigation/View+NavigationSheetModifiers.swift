@@ -35,6 +35,7 @@ private struct NavigationSheetModifier: ViewModifier {
         contentPickerTracker_()
     }
     
+    // swiftlint:disable:next function_body_length
     func body(content: Content) -> some View {
         content
             // https://stackoverflow.com/questions/69693871/how-to-open-share-sheet-from-presented-sheet
@@ -42,21 +43,28 @@ private struct NavigationSheetModifier: ViewModifier {
                 isPresenting: Binding(get: { shareInfo != nil && isTopSheet }, set: { if !$0 { shareInfo = nil }})
             ) { activityViewController }
             )
-            .sheet(isPresented: Binding(
-                get: { !(nextLayer?.isFullScreenCover ?? true) },
-                set: { if !$0 { closeSheet() } }
-            )) {
-                if let nextLayer {
-                    NavigationLayerView(layer: nextLayer, hasSheetModifiers: true)
-                }
+            .sheet(item: Binding(
+                get: {
+                    if let nextLayer, !nextLayer.isFullScreenCover { nextLayer } else { nil }
+                },
+                set: { if $0 == nil { closeSheet() } }
+            )) { layer in
+                NavigationLayerView(
+                    layer: layer,
+                    hasSheetModifiers: true,
+                    selectedDetent: Binding(
+                        get: { layer.rootViewPresentationDetent },
+                        set: { layer.rootViewPresentationDetent = $0 }
+                    )
+                )
             }
-            .fullScreenCover(isPresented: Binding(
-                get: { nextLayer?.isFullScreenCover ?? false },
-                set: { if !$0 { closeSheet() } }
-            )) {
-                if let nextLayer {
-                    NavigationLayerView(layer: nextLayer, hasSheetModifiers: true)
-                }
+            .fullScreenCover(item: Binding(
+                get: {
+                    if let nextLayer, nextLayer.isFullScreenCover { nextLayer } else { nil }
+                },
+                set: { if $0 == nil { closeSheet() } }
+            )) { layer in
+                NavigationLayerView(layer: layer, hasSheetModifiers: true)
             }
             .photosPicker(
                 isPresented: .init(

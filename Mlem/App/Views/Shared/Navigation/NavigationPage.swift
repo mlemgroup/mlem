@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 27/04/2024.
 //
 
+import Actions
 import MlemMiddleware
 import SwiftUI
 
@@ -71,6 +72,7 @@ enum NavigationPage: Hashable {
     case modlog(ModlogView.InitialTarget)
     case denyApplication(RegistrationApplication)
     case exportPostImage(_ post: HashWrapper<any Post>)
+    case actionSheet(_ actions: HashWrapper<[any Actions.Action]>)
     
     static func post(_ post: any PostStubProviding, scrollTargetedComment: (any CommentStubProviding)? = nil) -> NavigationPage {
         if let scrollTargetedComment {
@@ -339,11 +341,15 @@ enum NavigationPage: Hashable {
     static func createPostImage(_ post: any Post) -> NavigationPage {
         exportPostImage(.init(wrappedValue: post))
     }
+
+    static func actionSheet(_ actions: [any Actions.Action]) -> NavigationPage {
+        actionSheet(.init(wrappedValue: actions))
+    }
     
     var hasNavigationStack: Bool {
         switch self {
         case .quickSwitcher, .report, .externalApiInfo, .selectText, .createComment,
-             .editComment, .createPost, .editPost, .denyApplication:
+             .editComment, .createPost, .editPost, .denyApplication, .actionSheet:
             false
         default:
             true

@@ -9,7 +9,14 @@ import Actions
 import MlemMiddleware
 import SwiftUI
 
-private let seeds: [ActionSeed] = [
+private let topLevelSeeds: [ActionSeed] = [
+    .markRead,
+    .share,
+    .blockCreator,
+    .report
+]
+
+private let actionSheetSeeds: [ActionSeed] = [
     .upvote,
     .downvote,
     .save,
@@ -23,14 +30,34 @@ private let seeds: [ActionSeed] = [
     .delete
 ]
 
+private struct InboxNotificationContextMenuViewModifier: ViewModifier {
+    @Environment(NavigationLayer.self) var navigation
+
+    let notification: InboxNotification
+
+    func body(content: Content) -> some View {
+        content
+            .contextMenu {
+                ActionButtons { _ in
+                    topLevelSeeds.compactMap {
+                        $0.createAction(notification) ?? $0.createAction(notification.content.wrappedValue)
+                    }
+                }
+                Section {
+                    Button("More...", icon: .general.menu) {
+                        let actions = actionSheetSeeds.compactMap {
+                            $0.createAction(notification) ?? $0.createAction(notification.content.wrappedValue)
+                        }
+                        navigation.openSheet(.actionSheet(actions))
+                    }
+                    .symbolVariant(.circle)
+                }
+        }
+    }
+}
+
 extension View {
     func contextMenu(notification: InboxNotification) -> some View {
-        contextMenu {
-            ActionButtons { _ in
-                seeds.compactMap {
-                    $0.createAction(notification) ?? $0.createAction(notification.content.wrappedValue)
-                }
-            }
-        }
+        modifier(InboxNotificationContextMenuViewModifier(notification: notification))
     }
 }

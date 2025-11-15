@@ -73,11 +73,6 @@ class NavigationModel {
         )
     }
     
-    @MainActor
-    func addLayer(_ navigationLayer: NavigationLayer) {
-        layers.append(navigationLayer)
-    }
-    
     // Closes all sheets above and including the given index
     @MainActor
     func closeSheets(aboveIndex index: Int) {
