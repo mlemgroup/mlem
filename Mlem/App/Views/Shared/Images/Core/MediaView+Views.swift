@@ -118,10 +118,12 @@ extension MediaView {
                         if let url = loader.url {
                             Text("Image loading failed")
                                 .foregroundStyle(.themedTertiary)
-                            Button("View in browser") {
+                            
+                            Button(String(url.host() ?? "unknown host"), icon: .general.browser) {
                                 openURL(url)
                             }
-                            .tint(.blue)
+                            .tint(.themedAccent)
+                            .foregroundStyle(.themedAccent)
                             .buttonStyle(.bordered)
                         }
                     }
