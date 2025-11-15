@@ -40,7 +40,6 @@ struct ShareInstancePickerView: View {
         }
         .padding(16)
         .presentationBackground(.themedGroupedBackground)
-        .presentationDetentFitsContent()
     }
     
     @ViewBuilder
