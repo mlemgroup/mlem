@@ -7,6 +7,7 @@
 
 import Foundation
 import Rest
+import URLEncoder
 
 // The `LemmySearch.sort` property uses `LemmySortType` pre-0.20 and
 // uses `LemmySearchSortType` post-0.20, even when interacting using the v3 api.
@@ -15,7 +16,7 @@ import Rest
 
 public typealias ApiBridgeable = Codable & Hashable & RawRepresentable<String> & Sendable
 
-public enum ApiBridge<OldType: ApiBridgeable, NewType: ApiBridgeable>: Codable, Hashable, Sendable, URLQueryItemEncodable {
+public enum ApiBridge<OldType: ApiBridgeable, NewType: ApiBridgeable>: Codable, Hashable, Sendable {
     case old(OldType)
     case new(NewType)
     
@@ -61,10 +62,8 @@ public extension ApiBridge {
     
     func encode(to encoder: any Encoder) throws {
         var container = encoder.singleValueContainer()
-        try container.encode(encodeInQueryItemFormat())
+        try container.encode(value.rawValue)
     }
-    
-    func encodeInQueryItemFormat() -> String? { value.rawValue }
 }
 
 public typealias LemmySearchSortTypeBridge = ApiBridge<LemmySortType, LemmySearchSortType>

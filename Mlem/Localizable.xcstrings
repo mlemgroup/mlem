@@ -4091,6 +4091,9 @@
         }
       }
     },
+    "Image loading failed" : {
+
+    },
     "Image Saved" : {
       "localizations" : {
         "fr" : {
@@ -8627,9 +8630,6 @@
         }
       }
     },
-    "This instance uses Cloudflare, which prevents us from loading the page." : {
-
-    },
     "This is turned on by default because Differentiate Without Color is enabled in System Settings." : {
       "localizations" : {
         "fr" : {
@@ -8639,6 +8639,9 @@
           }
         }
       }
+    },
+    "This page can't be displayed because Cloudflare blocked the request." : {
+
     },
     "This probably contains foul language." : {
       "localizations" : {

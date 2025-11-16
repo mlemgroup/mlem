@@ -59,6 +59,7 @@ extension Palette {
         savedFeed: Color(uiColor: .darkGray),
         popularFeed: Color(uiColor: .darkGray),
         suggestedFeed: Color(uiColor: .darkGray),
-        inbox: Color(uiColor: .darkGray)
+        inbox: Color(uiColor: .darkGray),
+        fediseerEndorsement: .gray
     )
 }

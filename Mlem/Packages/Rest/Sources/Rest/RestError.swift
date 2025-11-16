@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import URLEncoder
 
 public enum RestError: Error {
     case serverError(statusCode: Int) // Should always be a 5xx status code

@@ -10,7 +10,7 @@ let package = Package(
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
             name: "Rest",
-            targets: ["Rest"]
+            targets: ["Rest", "URLEncoder"]
         )
     ],
     dependencies: [
@@ -21,6 +21,18 @@ let package = Package(
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
             name: "Rest",
+            dependencies: [
+                .byName(name: "MlemLogger"),
+                .byName(name: "URLEncoder")
+            ],
+            swiftSettings: [
+                .swiftLanguageMode(.v5),
+                .enableUpcomingFeature("FullTypedThrows"),
+                .enableUpcomingFeature("BareSlashRegexLiterals")
+            ]
+        ),
+        .target(
+            name: "URLEncoder",
             dependencies: [
                 .byName(name: "MlemLogger")
             ],
