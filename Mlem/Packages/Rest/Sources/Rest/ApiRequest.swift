@@ -40,7 +40,7 @@ public protocol GetRequest: RestRequest {
 public extension RestRequest {
     func endpoint(
         base: URL,
-        encoderUserInfo: [CodingUserInfoKey: any Sendable] = [:]
+        encoderUserInfo: [CodingUserInfoKey: any Sendable]
     ) throws(URLQueryItemEncoderError) -> URL {
         base
             .appending(path: path)
@@ -50,7 +50,7 @@ public extension RestRequest {
 public extension GetRequest {
     func endpoint(
         base: URL,
-        encoderUserInfo: [CodingUserInfoKey: any Sendable] = [:]
+        encoderUserInfo: [CodingUserInfoKey: any Sendable]
     ) throws(URLQueryItemEncoderError) -> URL {
         if let parameters {
             try base

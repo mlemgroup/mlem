@@ -44,7 +44,12 @@ public class RestClient {
         token: String?,
         encoderUserInfo: [CodingUserInfoKey: any Sendable] = [:]
     ) async throws(RestError) -> Request.Response {
-        let urlRequest = try urlRequest(baseUrl: baseUrl, request: request, token: token)
+        let urlRequest = try urlRequest(
+            baseUrl: baseUrl,
+            request: request,
+            token: token,
+            encoderUserInfo: encoderUserInfo
+        )
         // this line intentionally left commented for convenient future debugging
         // urlRequest.debug()
         let (data, response) = try await execute(urlRequest)
@@ -85,7 +90,7 @@ public class RestClient {
     ) throws(RestError) -> URLRequest {
         let url: URL
         do {
-            url = try request.endpoint(base: baseUrl)
+            url = try request.endpoint(base: baseUrl, encoderUserInfo: encoderUserInfo)
         } catch {
             throw .parameterEncoding(error)
         }
