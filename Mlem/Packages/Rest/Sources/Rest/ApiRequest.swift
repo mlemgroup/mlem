@@ -16,7 +16,10 @@ public protocol RestRequest {
     var path: String { get }
     var headers: [String: String] { get }
     
-    func endpoint(base: URL) throws(URLQueryItemEncoderError) -> URL
+    func endpoint(
+        base: URL,
+        encoderUserInfo: [CodingUserInfoKey: any Sendable] 
+    ) throws(URLQueryItemEncoderError) -> URL
 }
 
 public extension RestRequest {
@@ -35,18 +38,27 @@ public protocol GetRequest: RestRequest {
 }
 
 public extension RestRequest {
-    func endpoint(base: URL) throws(URLQueryItemEncoderError) -> URL {
+    func endpoint(
+        base: URL,
+        encoderUserInfo: [CodingUserInfoKey: any Sendable] = [:]
+    ) throws(URLQueryItemEncoderError) -> URL {
         base
             .appending(path: path)
     }
 }
 
 public extension GetRequest {
-    func endpoint(base: URL) throws(URLQueryItemEncoderError) -> URL {
+    func endpoint(
+        base: URL,
+        encoderUserInfo: [CodingUserInfoKey: any Sendable] = [:]
+    ) throws(URLQueryItemEncoderError) -> URL {
         if let parameters {
             try base
                 .appending(path: path)
-                .appending(queryItems: URLQueryItemEncoder.encode(parameters))
+                .appending(queryItems: URLQueryItemEncoder.encode(
+                    parameters,
+                    userInfo: encoderUserInfo
+                ))
         } else {
             base
                 .appending(path: path)
