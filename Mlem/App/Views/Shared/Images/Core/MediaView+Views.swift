@@ -106,7 +106,7 @@ extension MediaView {
                         .padding(.horizontal, Constants.main.standardSpacing)
                     }
                     .foregroundStyle(.themedTertiary)
-                default:
+                case let .error(error):
                     VStack {
                         Image(icon: .general.missing)
                             .resizable()
@@ -126,7 +126,29 @@ extension MediaView {
                             .foregroundStyle(.themedAccent)
                             .buttonStyle(.bordered)
                         }
+                        
+                        if developerMode {
+                            DisclosureGroup("Details") {
+                                Text(error.localizedDescription)
+                                    .foregroundStyle(.themedNegative)
+                                    .multilineTextAlignment(.center)
+                                    .padding(.top)
+                                
+                                Button("Copy Error", icon: .general.copy) {
+                                    UIPasteboard.general.string = error.localizedDescription
+                                    ToastModel.main.add(.success("Copied"))
+                                }
+                                .tint(.themedNegative)
+                                .foregroundStyle(.themedNegative)
+                                .buttonStyle(.bordered)
+                            }
+                            .padding(Constants.main.standardSpacing)
+                            .background(.themedBackground, in: .rect(cornerRadius: Constants.main.doubleSpacing))
+                            .padding(.horizontal, Constants.main.doubleSpacing)
+                            .padding(.top, Constants.main.standardSpacing)
+                        }
                     }
+                    .frame(maxHeight: .infinity)
                 }
             }
         }
