@@ -136,7 +136,7 @@ extension MediaView {
                                 
                                 Button("Copy Error", icon: .general.copy) {
                                     UIPasteboard.general.string = error.localizedDescription
-                                    ToastModel.main.add(.success(String("Copied")))
+                                    ToastModel.main.add(.success("Copied"))
                                 }
                                 .tint(.themedNegative)
                                 .foregroundStyle(.themedNegative)
