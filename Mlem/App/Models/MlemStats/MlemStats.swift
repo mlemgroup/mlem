@@ -11,9 +11,10 @@ import MlemMiddleware
 /// Class exposing instance search functionality. Instance data is fetched from the Mlem backend.
 class MlemStats {
     enum MlemStatsApiClientError: Error { case failed }
-    private var loadingState: LoadingState = .idle
-    
     private(set) var instances: [InstanceSummary]?
+
+    private(set) var loadingState: LoadingState = .idle
+    private(set) var errorDetails: ErrorDetails?
     
     // This set is queried for use in link-handling.
     // Some of the largest instances are hard-coded just in-case the backend is down.
@@ -31,7 +32,7 @@ class MlemStats {
     static let main: MlemStats = .init()
     
     @MainActor
-    func loadInstances(forceRefresh: Bool = false) async throws {
+    func loadInstances(forceRefresh: Bool = false) async {
         guard forceRefresh || loadingState == .idle else { return }
         loadingState = .loading
         do {
@@ -41,9 +42,13 @@ class MlemStats {
             self.instances = instances
             hosts.formUnion(Set(instances.lazy.map(\.host)))
             loadingState = .done
+            errorDetails = nil
         } catch {
             loadingState = .idle
-            throw error
+            errorDetails = .init(error: error, refresh: {
+                await self.loadInstances()
+                return true
+            })
         }
     }
     
