@@ -36,7 +36,8 @@ struct HandleThreadiverseLinksModifier: ViewModifier {
     
     private static let instanceMultiplexerDomains: Set<String> = [
         "lemmyverse.link",
-        "threadiverse.link"
+        "threadiverse.link",
+        "vger.to"
     ]
     
     func body(content: Content) -> some View {
