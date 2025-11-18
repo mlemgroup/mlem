@@ -18,6 +18,8 @@ class FiltersTracker {
             (self.keywords, self.phrases) = parseKeywordsAndPhrases(from: rawKeywords)
         }
     }
+    @ObservationIgnored @Setting(\.filters_literalFilterEnabled) var literalFilterEnabled
+    @ObservationIgnored @Setting(\.filters_literals) var literals
     
     var isAdmin: Bool
     var moderatedCommunityActorIds: Set<ActorIdentifier>
@@ -33,7 +35,8 @@ class FiltersTracker {
             isAdmin: isAdmin,
             moderatedCommunityActorIds: moderatedCommunityActorIds,
             filteredKeywords: keywordFilterEnabled ? keywords : .init(),
-            filteredPhrases: keywordFilterEnabled ? phrases : .init()
+            filteredPhrases: keywordFilterEnabled ? phrases : .init(),
+            filteredLiterals: literalFilterEnabled ? literals : .init()
         )
     }
     
