@@ -13,6 +13,7 @@ public struct FilterContext {
     public let moderatedCommunityActorIds: Set<ActorIdentifier>
     public let filteredKeywords: Set<String>
     public let filteredPhrases: Set<[String]>
+    public let filteredLiterals: Set<String>
     
     public init(
         isAdmin: Bool,
@@ -24,6 +25,7 @@ public struct FilterContext {
         self.moderatedCommunityActorIds = moderatedCommunityActorIds
         self.filteredKeywords = filteredKeywords
         self.filteredPhrases = filteredPhrases
+        self.filteredLiterals = ["% k"]
     }
     
     static func none() -> FilterContext {
