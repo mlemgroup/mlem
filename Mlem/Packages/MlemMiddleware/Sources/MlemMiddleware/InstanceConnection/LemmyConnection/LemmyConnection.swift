@@ -140,7 +140,7 @@ public class LemmyConnection: InstanceConnection {
     #endif
 }
 
-extension CodingUserInfoKey {
+public extension CodingUserInfoKey {
     static let endpointVersion = CodingUserInfoKey(rawValue: "com.hanners.Mlem.endpointVersion")!
 }
 

@@ -257,7 +257,9 @@ class PersistenceRepository {
     
     func save(_ value: some Encodable, to path: URL) async throws {
         do {
-            let data = try JSONEncoder().encode(value)
+            let encoder = JSONEncoder()
+            encoder.userInfo[.endpointVersion] = LemmyEndpointVersion.v3
+            let data = try encoder.encode(value)
             try await write(data, path)
         } catch {
             handleError(error)
