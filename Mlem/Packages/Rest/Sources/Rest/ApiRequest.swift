@@ -70,6 +70,14 @@ public extension GetRequest {
 
 public enum RequestWithBodyMethod {
     case post, put, delete
+    
+    var stringValue: String {
+        switch self {
+        case .post: "POST"
+        case .put: "PUT"
+        case .delete: "DELETE"
+        }
+    }
 }
 
 public protocol RequestWithBody: RestRequest {

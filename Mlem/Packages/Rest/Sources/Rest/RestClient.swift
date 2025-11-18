@@ -103,15 +103,9 @@ public class RestClient {
         
         if request is any GetRequest {
             urlRequest.httpMethod = "GET"
-        } else if let postDefinition = request as? any PostRequest {
-            urlRequest.httpMethod = "POST"
+        } else if let postDefinition = request as? any RequestWithBody {
+            urlRequest.httpMethod = postDefinition.method.stringValue
             urlRequest.httpBody = try createBodyData(for: postDefinition, encoderUserInfo: encoderUserInfo)
-        } else if let putDefinition = request as? any PutRequest {
-            urlRequest.httpMethod = "PUT"
-            urlRequest.httpBody = try createBodyData(for: putDefinition, encoderUserInfo: encoderUserInfo)
-        } else if let deleteDefinition = request as? any DeleteRequest {
-            urlRequest.httpMethod = "DELETE"
-            urlRequest.httpBody = try createBodyData(for: deleteDefinition, encoderUserInfo: encoderUserInfo)
         }
         
         if let token {
