@@ -106,13 +106,49 @@ extension MediaView {
                         .padding(.horizontal, Constants.main.standardSpacing)
                     }
                     .foregroundStyle(.themedTertiary)
-                default:
-                    Image(icon: .general.missing)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(maxWidth: 50)
-                        .padding(4)
-                        .foregroundStyle(.themedTertiary)
+                case let .error(error):
+                    VStack {
+                        Image(icon: .general.missing)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(maxWidth: 50)
+                            .padding(4)
+                            .foregroundStyle(.themedTertiary)
+                        
+                        if let url = loader.url {
+                            Text("Image loading failed")
+                                .foregroundStyle(.themedTertiary)
+                            
+                            Button(url.host() ?? String(localized: "unknown host"), icon: .general.browser) {
+                                openURL(url)
+                            }
+                            .tint(.themedAccent)
+                            .foregroundStyle(.themedAccent)
+                            .buttonStyle(.bordered)
+                        }
+                        
+                        if developerMode {
+                            DisclosureGroup("Details") {
+                                Text(error.localizedDescription)
+                                    .foregroundStyle(.themedNegative)
+                                    .multilineTextAlignment(.center)
+                                    .padding(.top)
+                                
+                                Button("Copy Error", icon: .general.copy) {
+                                    UIPasteboard.general.string = error.localizedDescription
+                                    ToastModel.main.add(.success("Copied"))
+                                }
+                                .tint(.themedNegative)
+                                .foregroundStyle(.themedNegative)
+                                .buttonStyle(.bordered)
+                            }
+                            .padding(Constants.main.standardSpacing)
+                            .background(.themedBackground, in: .rect(cornerRadius: Constants.main.doubleSpacing))
+                            .padding(.horizontal, Constants.main.doubleSpacing)
+                            .padding(.top, Constants.main.standardSpacing)
+                        }
+                    }
+                    .frame(maxHeight: .infinity)
                 }
             }
         }
