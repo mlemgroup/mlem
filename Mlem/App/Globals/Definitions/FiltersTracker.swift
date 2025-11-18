@@ -45,6 +45,8 @@ class FiltersTracker {
         hasher.combine(moderatedCommunityActorIds)
         hasher.combine(rawKeywords)
         hasher.combine(keywordFilterEnabled)
+        hasher.combine(literals)
+        hasher.combine(literalFilterEnabled)
         return hasher.finalize()
     }
     
@@ -66,12 +68,22 @@ class FiltersTracker {
         rawKeywords = rawKeywords.subtracting([keyword])
     }
     
+    func addFilteredLiteral(_ literal: String) async {
+        literals = literals.union([literal])
+    }
+    
+    func removeFilteredLiteral(_ literal: String) async {
+        assert(literals.contains(literal), "Filtered literals do not contain \(literal)")
+        literals.remove(literal)
+    }
+    
     func resetFilteredKeywords(to filteredKeywords: Set<String>) async {
         rawKeywords = filteredKeywords
     }
     
     func postWouldBeFiltered(_ post: any Post) -> Bool {
-        keywordFilterEnabled && post.title.failsKeywordFilter(keywords: keywords, phrases: phrases)
+        (keywordFilterEnabled && post.title.failsKeywordFilter(keywords: keywords, phrases: phrases)) ||
+        (literalFilterEnabled && post.title.failsLiteralFilter(literals: literals))
     }
     
     static var main: FiltersTracker = .init()

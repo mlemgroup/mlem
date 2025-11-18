@@ -108,7 +108,7 @@ struct FeedPostView<EmbeddedContent: View>: View {
     
     @ViewBuilder
     var obscuredContent: some View {
-        Text("Hidden by keyword filters")
+        Text("Hidden by filters")
             .italic()
             .foregroundStyle(.themedSecondary)
             .padding(Constants.main.standardSpacing)

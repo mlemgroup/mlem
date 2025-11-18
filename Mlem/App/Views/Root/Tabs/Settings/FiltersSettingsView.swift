@@ -12,11 +12,13 @@ struct FiltersSettingsView: View {
     @Dependency(\.persistenceRepository) var persistenceRepository
     
     @Setting(\.filters_keywordFilterEnabled) var keywordFilterEnabled
+    @Setting(\.filters_literalFilterEnabled) var literalFilterEnabled
     
     @Environment(FiltersTracker.self) var filtersTracker
     @Environment(NavigationLayer.self) var navigation
     
     @State var newKeyword: String = ""
+    @State var newLiteral: String = ""
     
     init() {
         @Dependency(\.persistenceRepository) var persistenceRepository
@@ -26,6 +28,7 @@ struct FiltersSettingsView: View {
         Form {
             Section {
                 Toggle("Enable Keyword Filters", icon: .settings.keywordFilter, isOn: $keywordFilterEnabled)
+                Toggle("Enable Literal Filters", icon: .settings.keywordFilter, isOn: $literalFilterEnabled)
             }
             
             Section {
@@ -33,6 +36,13 @@ struct FiltersSettingsView: View {
             } footer: {
                 // swiftlint:disable:next line_length
                 Text("Posts with these keywords in their titles will be hidden. If you are a moderator or administrator of a matching post, it will appear in your feed but require you to tap to view its content.")
+            }
+            
+            Section {
+                literalSection
+            } footer: {
+                // swiftlint:disable:next line_length
+                Text("Posts with these literal strings in their titles will be hidden. If you are a moderator or administrator of a matching post, it will appear in your feed but require you to tap to view its content.")
             }
         }
         .withConditionalLabelStyle()
@@ -75,9 +85,9 @@ struct FiltersSettingsView: View {
                 saveNewKeyword()
             }
         
-        ForEach(filtersTracker.rawKeywords.sorted(by: <), id: \.self) { filter in
+        ForEach(filtersTracker.rawKeywords.sorted(by: <), id: \.self) { keyword in
             HStack {
-                Text(filter)
+                Text(keyword)
                 
                 Spacer()
                 
@@ -85,7 +95,7 @@ struct FiltersSettingsView: View {
                 Image(icon: .general.delete)
                     .foregroundStyle(.themedWarning)
                     .onTapGesture {
-                        deleteKeyword(filter)
+                        deleteKeyword(keyword)
                     }
             }
         }
@@ -109,6 +119,51 @@ struct FiltersSettingsView: View {
         
         Task {
             await filtersTracker.removeFilteredKeyword(keyword)
+        }
+    }
+    
+    @ViewBuilder
+    var literalSection: some View {
+        TextField("New Literal...", text: $newLiteral)
+            .textCase(.lowercase)
+            .textInputAutocapitalization(.never)
+            .submitLabel(.done)
+            .onSubmit {
+                saveNewLiteral()
+            }
+        
+        ForEach(filtersTracker.literals.sorted(by: <), id: \.self) { literal in
+            HStack {
+                Text(literal)
+                
+                Spacer()
+                
+                // using a Button to do this makes the whole row register tap gestures :/
+                Image(icon: .general.delete)
+                    .foregroundStyle(.themedWarning)
+                    .onTapGesture {
+                        deleteLiteral(literal)
+                    }
+            }
+        }
+    }
+    
+    func saveNewLiteral() {
+        guard !newLiteral.isEmpty else { return }
+        
+        Task {
+            await filtersTracker.addFilteredLiteral(newLiteral)
+            newLiteral = ""
+        }
+    }
+    
+    func deleteLiteral(_ literal: String) {
+        guard filtersTracker.literals.contains(literal) else {
+            return
+        }
+        
+        Task {
+            await filtersTracker.removeFilteredLiteral(literal)
         }
     }
 }

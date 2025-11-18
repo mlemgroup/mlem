@@ -3218,6 +3218,9 @@
         }
       }
     },
+    "Enable Literal Filters" : {
+
+    },
     "end.of.feed.icon.1" : {
       "comment" : "This is the key for an icon that appears next to the \"I think I've found the bottom!\" text. It is localized so that you can change the icon to fit better with your translation of the text.",
       "extractionState" : "extracted_with_value",
@@ -3943,7 +3946,11 @@
         }
       }
     },
+    "Hidden by filters" : {
+
+    },
     "Hidden by keyword filters" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -5289,6 +5296,9 @@
         }
       }
     },
+    "New Literal..." : {
+
+    },
     "New Password" : {
       "localizations" : {
         "fr" : {
@@ -6143,6 +6153,9 @@
           }
         }
       }
+    },
+    "Posts with these literal strings in their titles will be hidden. If you are a moderator or administrator of a matching post, it will appear in your feed but require you to tap to view its content." : {
+
     },
     "Pride" : {
       "localizations" : {
