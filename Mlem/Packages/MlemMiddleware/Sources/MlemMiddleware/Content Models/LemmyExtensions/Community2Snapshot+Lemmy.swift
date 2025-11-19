@@ -10,10 +10,16 @@ import Foundation
 extension Community2Snapshot {
     init(from community: LemmyCommunityView) throws(ApiClientError) {
         guard let totalSubscribers = community.community.subscribers ?? community.counts?.subscribers,
-              let subscribed = community.communityActions?.followState?.isSubscribed ?? community.subscribed?.isSubscribed,
               let localSubscribers = community.community.subscribersLocal ?? community.counts?.subscribersLocal
         else {
-            throw .responseMissingRequiredData("LemmyCommunityView subscribed")
+            throw .responseMissingRequiredData("LemmyCommunityView subscriber count")
+        }
+
+        let subscribed: Bool
+        if let subscribed_ = community.subscribed?.isSubscribed {
+            subscribed = subscribed_
+        } else {
+            subscribed = community.communityActions?.followState?.isSubscribed ?? false
         }
 
         let subscription = SubscriptionModel(

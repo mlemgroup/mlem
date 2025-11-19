@@ -16,7 +16,9 @@ extension PersonView {
                     try await feedLoader.loadMoreItems()
                 }
             } catch {
-                handleError(error)
+                // This is OK to silence because the feed loader will fail when
+                // it appears if this fails, and will show an ErrorView.
+                handleError(error, silent: true)
             }
         }
     }
