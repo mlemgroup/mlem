@@ -30,12 +30,13 @@ struct PersonContentGridView: View {
     
     @State var columns: [GridItem] = [GridItem(.flexible())]
     @State var frameWidth: CGFloat = .zero
+    @State var errorDetails: ErrorDetails?
     
     var feedLoader: FeedLoaderType
     
     var body: some View {
         content
-            .loadFeed(feedLoader.feedLoading)
+            .loadFeed(feedLoader.feedLoading, errorDetails: $errorDetails)
             .widthReader(width: $frameWidth)
             .environment(\.parentFrameWidth, frameWidth)
             .onChange(of: postSize, initial: true) { _, newValue in
@@ -79,7 +80,11 @@ struct PersonContentGridView: View {
             .quickSwipeIconSize(postSize.quickSwipeIconSize)
             .quickSwipeThresholds(postSize.quickSwipeThresholds)
             .animation(.easeOut(duration: 0.1), value: items.isEmpty)
-            EndOfFeedView(loadingState: feedLoader.loadingState, viewType: .hobbit)
+            if let errorDetails {
+                ErrorView(errorDetails)
+            } else {
+                EndOfFeedView(loadingState: feedLoader.loadingState, viewType: .hobbit)
+            }
         }
     }
     
