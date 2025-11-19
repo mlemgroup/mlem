@@ -17,8 +17,8 @@ extension LemmyConnection {
         let response = try await processingForEndpoint { endpoint in
             switch endpoint {
             case .v3:
-                async let site = await self.perform(LemmyGetSiteRequest(endpoint: .v3))
-                async let other = await self.perform(LemmyUnreadCountRequest(endpoint: .v3))
+                async let site = await self.perform(LemmyGetSiteRequest(endpoint: .v3), endpoint: .v3)
+                async let other = await self.perform(LemmyUnreadCountRequest(endpoint: .v3), endpoint: .v3)
                 do {
                     _ = try await other
                 } catch ApiClientError.notLoggedIn {
@@ -27,11 +27,11 @@ extension LemmyConnection {
                 let response = try await site
                 return RawContext(site: response, myUser: response.myUser)
             case .v4:
-                async let site = await self.perform(LemmyGetSiteRequest(endpoint: .v4))
+                async let site = await self.perform(LemmyGetSiteRequest(endpoint: .v4), endpoint: .v4)
                 
                 var myUser: LemmyMyUserInfo?
                 if self.token != nil {
-                    myUser = try await self.perform(LemmyGetMyUserRequest())
+                    myUser = try await self.perform(LemmyGetMyUserRequest(), endpoint: .v4)
                 }
                 
                 return try await .init(site: site, myUser: myUser)

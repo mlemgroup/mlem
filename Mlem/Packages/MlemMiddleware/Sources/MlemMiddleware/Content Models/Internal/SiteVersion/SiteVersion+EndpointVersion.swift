@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum LemmyEndpointVersion: Hashable, Sendable {
+public enum LemmyEndpointVersion: Hashable, Sendable {
     case v3, v4
     
     var pathComponent: String {

@@ -124,9 +124,9 @@ public extension LemmyConnection {
         try await processingForEndpoint { endpoint in
             switch endpoint {
             case .v3:
-                try await self.perform(LemmyMarkReplyAsReadRequest(commentReplyId: id, read: read))
+                try await self.perform(LemmyMarkReplyAsReadRequest(commentReplyId: id, read: read), endpoint: .v3)
             case .v4:
-                try await self.perform(LemmyMarkNotificationAsReadRequest(notificationId: id, read: read))
+                try await self.perform(LemmyMarkNotificationAsReadRequest(notificationId: id, read: read), endpoint: .v4)
             }
         }
     }
@@ -135,9 +135,9 @@ public extension LemmyConnection {
         try await processingForEndpoint { endpoint in
             switch endpoint {
             case .v3:
-                try await self.perform(LemmyMarkPersonMentionAsReadRequest(personMentionId: id, read: read))
+                try await self.perform(LemmyMarkPersonMentionAsReadRequest(personMentionId: id, read: read), endpoint: .v3)
             case .v4:
-                try await self.perform(LemmyMarkNotificationAsReadRequest(notificationId: id, read: read))
+                try await self.perform(LemmyMarkNotificationAsReadRequest(notificationId: id, read: read), endpoint: .v4)
             }
         }
     }
@@ -146,9 +146,9 @@ public extension LemmyConnection {
         try await processingForEndpoint { endpoint in
             switch endpoint {
             case .v3:
-                try await self.perform(LemmyMarkPmAsReadRequest(privateMessageId: id, read: read))
+                try await self.perform(LemmyMarkPmAsReadRequest(privateMessageId: id, read: read), endpoint: .v3)
             case .v4:
-                try await self.perform(LemmyMarkNotificationAsReadRequest(notificationId: id, read: read))
+                try await self.perform(LemmyMarkNotificationAsReadRequest(notificationId: id, read: read), endpoint: .v4)
             }
         }
     }
