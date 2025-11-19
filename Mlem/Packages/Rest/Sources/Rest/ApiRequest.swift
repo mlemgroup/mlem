@@ -16,7 +16,10 @@ public protocol RestRequest {
     var path: String { get }
     var headers: [String: String] { get }
     
-    func endpoint(base: URL) throws(URLQueryItemEncoderError) -> URL
+    func endpoint(
+        base: URL,
+        encoderUserInfo: [CodingUserInfoKey: any Sendable] 
+    ) throws(URLQueryItemEncoderError) -> URL
 }
 
 public extension RestRequest {
@@ -35,18 +38,27 @@ public protocol GetRequest: RestRequest {
 }
 
 public extension RestRequest {
-    func endpoint(base: URL) throws(URLQueryItemEncoderError) -> URL {
+    func endpoint(
+        base: URL,
+        encoderUserInfo: [CodingUserInfoKey: any Sendable]
+    ) throws(URLQueryItemEncoderError) -> URL {
         base
             .appending(path: path)
     }
 }
 
 public extension GetRequest {
-    func endpoint(base: URL) throws(URLQueryItemEncoderError) -> URL {
+    func endpoint(
+        base: URL,
+        encoderUserInfo: [CodingUserInfoKey: any Sendable]
+    ) throws(URLQueryItemEncoderError) -> URL {
         if let parameters {
             try base
                 .appending(path: path)
-                .appending(queryItems: URLQueryItemEncoder.encode(parameters))
+                .appending(queryItems: URLQueryItemEncoder.encode(
+                    parameters,
+                    userInfo: encoderUserInfo
+                ))
         } else {
             base
                 .appending(path: path)
@@ -56,11 +68,38 @@ public extension GetRequest {
 
 // MARK: - RequestWithBody
 
+public enum RequestWithBodyMethod {
+    case post, put, delete
+    
+    var stringValue: String {
+        switch self {
+        case .post: "POST"
+        case .put: "PUT"
+        case .delete: "DELETE"
+        }
+    }
+}
+
 public protocol RequestWithBody: RestRequest {
     associatedtype Body: Encodable
     var body: Body? { get }
+    var method: RequestWithBodyMethod { get }
 }
 
-public protocol PostRequest: RequestWithBody {}
-public protocol PutRequest: RequestWithBody {}
-public protocol DeleteRequest: RequestWithBody {}
+public protocol PostRequest: RequestWithBody { }
+
+public extension PostRequest {
+    var method: RequestWithBodyMethod { .post }
+}
+
+public protocol PutRequest: RequestWithBody { }
+
+public extension PutRequest {
+    var method: RequestWithBodyMethod { .put }
+}
+
+public protocol DeleteRequest: RequestWithBody { }
+
+public extension DeleteRequest {
+    var method: RequestWithBodyMethod { .delete }
+}

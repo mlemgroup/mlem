@@ -17,10 +17,15 @@ public extension LemmyConnection {
         let response = try await performingForEndpoint { endpoint in
             LemmyGetFederatedInstancesRequest(endpoint: endpoint)
         }
-        if let federatedInstances = response.federatedInstances {
-            return .init(from: federatedInstances)
+        switch response {
+        case let .lemmyLegacyGetFederatedInstancesResponse(response):
+            if let federatedInstances = response.federatedInstances {
+                return .init(from: federatedInstances)
+            }
+            throw ApiClientError.noEntityFound
+        case let .lemmyGetFederatedInstancesResponse(response):
+            return .init(from: response.federatedInstances)
         }
-        throw ApiClientError.noEntityFound
     }
     
     func blockInstance(instanceId: Int, block: Bool) async throws {
