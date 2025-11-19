@@ -10,8 +10,8 @@ import Foundation
 extension BlockListSnapshot {
     init(from myUserInfo: LemmyMyUserInfo) throws(ApiClientError) {
         self.people = myUserInfo.personBlocks.reduce(into: [:]) {
-            if let actorId = $1.target.apId ?? $1.target.actorId {
-                $0[actorId] = $1.target.id
+            if let actorId = $1.person.apId ?? $1.person.actorId {
+                $0[actorId] = $1.person.id
             }
         }
         

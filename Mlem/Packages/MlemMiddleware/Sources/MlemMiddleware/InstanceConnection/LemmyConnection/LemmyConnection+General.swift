@@ -45,11 +45,11 @@ public extension LemmyConnection {
             switch endpoint {
             case .v3:
                 let request = LemmyGetSiteRequest(endpoint: endpoint)
-                let response = try await self.perform(request, tokenOverride: token)
+                let response = try await self.perform(request, tokenOverride: token, endpoint: .v3)
                 return response.myUser?.localUserView.person.name
             case .v4:
                 let request = LemmyGetMyUserRequest()
-                let response = try await self.perform(request, tokenOverride: token)
+                let response = try await self.perform(request, tokenOverride: token, endpoint: .v4)
                 return response.localUserView.person.name
             }
         }
@@ -168,7 +168,7 @@ public extension LemmyConnection {
         guard let myUser = response.myUser else { return ([], [], []) }
         
         return try (
-            people: myUser.personBlocks.map { try .init(from: $0.target) },
+            people: myUser.personBlocks.map { try .init(from: $0.person) },
             communities: myUser.communityBlocks.map { try .init(from: $0.community) },
             instances: myUser.instanceBlocks?.compactMap(\.site).map { try .init(from: $0) } ?? [] // TODO: Lemmy 1.0
         )

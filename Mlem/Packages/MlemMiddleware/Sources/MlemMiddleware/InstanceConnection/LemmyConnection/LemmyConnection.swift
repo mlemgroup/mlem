@@ -74,10 +74,19 @@ public class LemmyConnection: InstanceConnection {
     }
 
     @discardableResult
-    func perform<Request: RestRequest>(_ request: Request, tokenOverride: String? = nil) async throws -> Request.Response {
+    func perform<Request: RestRequest>(
+        _ request: Request,
+        tokenOverride: String? = nil,
+        endpoint: LemmyEndpointVersion
+    ) async throws -> Request.Response {
         let token = tokenOverride ?? token
         do throws(RestError) {
-            return try await restClient.perform(baseUrl: baseUrl, request, token: token)
+            return try await restClient.perform(
+                baseUrl: baseUrl,
+                request,
+                token: token,
+                encoderUserInfo: [.endpointVersion: endpoint]
+            )
         } catch {
             switch error {
             case let RestError.response(response, statusCode: _):
@@ -103,7 +112,7 @@ public class LemmyConnection: InstanceConnection {
     ) async throws -> Request.Response {
         do {
             return try await endpointMultiplexer.perform { endpoint in
-                try await self.perform(requestGenerator(endpoint))
+                try await self.perform(requestGenerator(endpoint), endpoint: endpoint)
             }
         } catch ConnectionMultiplexerError.allConnectionsFailed {
             throw ApiClientError.serverError(statusCode: 404)
@@ -129,4 +138,26 @@ public class LemmyConnection: InstanceConnection {
             contextDataManager.fetchedValue = context
         }
     #endif
+}
+
+public extension CodingUserInfoKey {
+    static let endpointVersion = CodingUserInfoKey(rawValue: "com.hanners.Mlem.endpointVersion")!
+}
+
+enum LemmyEncodingError: Error {
+    case noEndpointVersionInUserInfo
+    case lemmyVoteShowBridge
+}
+
+extension Encoder {
+    var endpointVersion: LemmyEndpointVersion {
+        get throws {
+            if let endpoint = userInfo[.endpointVersion] as? LemmyEndpointVersion {
+                return endpoint
+            } else {
+                assertionFailure()
+                throw LemmyEncodingError.noEndpointVersionInUserInfo
+            }
+        }
+    }
 }
