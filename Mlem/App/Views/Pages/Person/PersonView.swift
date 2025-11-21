@@ -44,6 +44,7 @@ struct PersonView: View {
     @State var feedLoader: SingleSourceMixedFeedLoader?
     @State var isAdmin: Bool
     @State var upgraded: Bool = false
+
     let isProfileTab: Bool
     
     init(
@@ -93,7 +94,7 @@ struct PersonView: View {
     var content: some View {
         ContentLoader(model: person) { proxy in
             if let person = proxy.entity {
-                content(person: person)
+                content(person: person, contentLoaderError: proxy.error)
                     .externalApiWarning(entity: person, isLoading: proxy.isLoading)
                     .onChange(of: (person as? any Person2Providing)?.person2 == nil, initial: true) {
                         if let person2 = (person as? any Person2Providing)?.person2 {
@@ -158,7 +159,7 @@ struct PersonView: View {
     }
     
     @ViewBuilder
-    func content(person: any Person) -> some View {
+    func content(person: any Person, contentLoaderError: (any Error)?) -> some View {
         FancyScrollView {
             VStack(spacing: 0) {
                 VStack(spacing: Constants.main.standardSpacing) {
@@ -173,6 +174,9 @@ struct PersonView: View {
                         personContent(person: person)
                     }
                     .transition(.opacity)
+                    
+                } else if let error = contentLoaderError {
+                    ErrorView(.init(error: error))
                 } else {
                     VStack(spacing: 0) {
                         ProgressView()

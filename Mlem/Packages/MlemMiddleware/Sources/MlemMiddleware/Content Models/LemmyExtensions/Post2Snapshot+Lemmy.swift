@@ -39,9 +39,9 @@ extension Post2Snapshot {
 
         let commentCount: Int
         let unreadCommentCount: Int
-        if let actions = post.postActions, let comments = post.post.comments {
+        if let comments = post.post.comments {
             commentCount = comments
-            unreadCommentCount = comments - (actions.readCommentsAmount ?? 0)
+            unreadCommentCount = comments - (post.postActions?.readCommentsAmount ?? 0)
         } else if let counts = post.counts, let unreadComments = post.unreadComments {
             commentCount = counts.comments
             unreadCommentCount = unreadComments
@@ -52,16 +52,15 @@ extension Post2Snapshot {
         let saved: Bool
         let read: Bool
         let hidden: Bool
-        if let actions = post.postActions {
-            saved = actions.savedAt != nil
-            read = overrideRead ?? (actions.readAt != nil)
-            hidden = actions.hiddenAt != nil
-        } else if let saved_ = post.saved, let read_ = post.read, let hidden_ = post.hidden {
+        if let saved_ = post.saved, let read_ = post.read, let hidden_ = post.hidden {
             saved = saved_
             read = overrideRead ?? read_
             hidden = hidden_
         } else {
-            throw .responseMissingRequiredData("LemmyPostView actions")
+            let actions = post.postActions
+            saved = actions?.savedAt != nil
+            read = overrideRead ?? (actions?.readAt != nil)
+            hidden = actions?.hiddenAt != nil
         }
 
         try self.init(
