@@ -45,10 +45,13 @@ class MlemStats {
             errorDetails = nil
         } catch {
             loadingState = .idle
-            errorDetails = .init(error: error, refresh: {
-                await self.loadInstances()
-                return true
-            })
+            if var errorDetails = handleErrorWithDetails(error) {
+                errorDetails.refresh = {
+                    await self.loadInstances()
+                    return true
+                }
+                self.errorDetails = errorDetails
+            }
         }
     }
     

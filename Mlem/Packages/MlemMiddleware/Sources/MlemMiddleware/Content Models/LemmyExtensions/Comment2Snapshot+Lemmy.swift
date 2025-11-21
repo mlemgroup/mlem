@@ -14,12 +14,10 @@ extension Comment2Snapshot {
         }
 
         let saved: Bool
-        if let actions = comment.commentActions {
-            saved = actions.savedAt != nil
-        } else if let saved_ = comment.saved {
+        if let saved_ = comment.saved {
             saved = saved_
         } else {
-            throw .responseMissingRequiredData("LemmyCommentView saved")
+            saved = comment.commentActions?.savedAt != nil
         }
         
         let votes: VotesModel
@@ -55,12 +53,10 @@ extension Comment2Snapshot {
         }
 
         let saved: Bool
-        if let actions = report.commentActions {
-            saved = actions.savedAt != nil
-        } else if let saved_ = report.saved {
+        if let saved_ = report.saved {
             saved = saved_
         } else {
-            throw .responseMissingRequiredData("LemmyCommentReportView saved")
+            saved = report.commentActions?.savedAt != nil
         }
         
         let votes: VotesModel

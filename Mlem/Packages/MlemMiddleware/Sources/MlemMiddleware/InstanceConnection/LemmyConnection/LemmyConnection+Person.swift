@@ -187,7 +187,11 @@ public extension LemmyConnection {
         communityId: Int? = nil
     ) async throws -> (person: Person3Snapshot, posts: [Post2Snapshot], comments: [Comment2Snapshot]) {
         let response = try await performingForEndpoint { endpoint in
-            LemmyReadPersonRequest(
+            if endpoint == .v4 {
+                // TODO: Use LemmyListPersonContentRequest here
+                throw ApiClientError.featureUnsupported
+            }
+            return LemmyReadPersonRequest(
                 endpoint: endpoint,
                 personId: id,
                 username: nil,
