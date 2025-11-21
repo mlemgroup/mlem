@@ -222,7 +222,9 @@ public extension PieFedConnection {
             url: linkUrl,
             body: content,
             nsfw: nsfw,
-            languageId: languageId
+            languageId: languageId,
+            event: nil,
+            poll: nil
         )
         let response = try await perform(request)
         return try .init(from: response.postView)
@@ -248,7 +250,11 @@ public extension PieFedConnection {
             url: linkUrl,
             body: content,
             nsfw: nsfw,
-            languageId: languageId
+            languageId: languageId,
+            event: nil,
+            poll: nil,
+            tags: nil,
+            flair: nil
         )
         let response = try await perform(request)
         return try .init(from: response.postView)
