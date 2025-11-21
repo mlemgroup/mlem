@@ -3208,7 +3208,11 @@
         }
       }
     },
+    "Enable" : {
+
+    },
     "Enable Keyword Filters" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -3217,9 +3221,6 @@
           }
         }
       }
-    },
-    "Enable Literal Filters" : {
-
     },
     "end.of.feed.icon.1" : {
       "comment" : "This is the key for an icon that appears next to the \"I think I've found the bottom!\" text. It is localized so that you can change the icon to fit better with your translation of the text.",
@@ -4010,6 +4011,15 @@
         }
       }
     },
+    "Hide posts containing certain words, phrases, or character sequences from your feed. If you are a moderator or administrator of a filtered post, it will appear in your feed but require you to tap to view its content." : {
+
+    },
+    "Hide posts with titles containing containing these precise character sequences" : {
+
+    },
+    "Hide posts with titles containing these whole words or phrases. Ignores case and punctuation (e.g., the keyword \"john\" will also filter \"John's\")." : {
+
+    },
     "Hide Read" : {
       "localizations" : {
         "fr" : {
@@ -4462,6 +4472,9 @@
         }
       }
     },
+    "Keywords" : {
+
+    },
     "Large" : {
       "localizations" : {
         "fr" : {
@@ -4551,6 +4564,9 @@
           }
         }
       }
+    },
+    "Literals" : {
+
     },
     "Load directly from %@" : {
       "localizations" : {
@@ -6145,6 +6161,7 @@
       }
     },
     "Posts with these keywords in their titles will be hidden. If you are a moderator or administrator of a matching post, it will appear in your feed but require you to tap to view its content." : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -6153,9 +6170,6 @@
           }
         }
       }
-    },
-    "Posts with these literal strings in their titles will be hidden. If you are a moderator or administrator of a matching post, it will appear in your feed but require you to tap to view its content." : {
-
     },
     "Pride" : {
       "localizations" : {

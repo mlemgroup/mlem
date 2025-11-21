@@ -26,23 +26,24 @@ struct FiltersSettingsView: View {
     
     var body: some View {
         Form {
-            Section {
-                Toggle("Enable Keyword Filters", icon: .settings.keywordFilter, isOn: $keywordFilterEnabled)
-                Toggle("Enable Literal Filters", icon: .settings.keywordFilter, isOn: $literalFilterEnabled)
-            }
+            SettingsHeaderView(
+                title: "Filters",
+                // swiftlint:disable:next line_length
+                description: "Hide posts containing certain words, phrases, or character sequences from your feed. If you are a moderator or administrator of a filtered post, it will appear in your feed but require you to tap to view its content.",
+                icon: .settings.keywordFilter
+            )
             
-            Section {
+            Section("Keywords") {
                 keywordSection
             } footer: {
                 // swiftlint:disable:next line_length
-                Text("Posts with these keywords in their titles will be hidden. If you are a moderator or administrator of a matching post, it will appear in your feed but require you to tap to view its content.")
+                Text("Hide posts with titles containing these whole words or phrases. Ignores case and punctuation (e.g., the keyword \"john\" will also filter \"John's\").")
             }
             
-            Section {
+            Section("Literals") {
                 literalSection
             } footer: {
-                // swiftlint:disable:next line_length
-                Text("Posts with these literal strings in their titles will be hidden. If you are a moderator or administrator of a matching post, it will appear in your feed but require you to tap to view its content.")
+                Text("Hide posts with titles containing containing these precise character sequences")
             }
         }
         .withConditionalLabelStyle()
@@ -77,6 +78,8 @@ struct FiltersSettingsView: View {
     
     @ViewBuilder
     var keywordSection: some View {
+        Toggle("Enable", icon: .settings.keywordFilter, isOn: $keywordFilterEnabled)
+        
         TextField("New Keyword...", text: $newKeyword)
             .textCase(.lowercase)
             .textInputAutocapitalization(.never)
@@ -124,6 +127,8 @@ struct FiltersSettingsView: View {
     
     @ViewBuilder
     var literalSection: some View {
+        Toggle("Enable", icon: .settings.keywordFilter, isOn: $literalFilterEnabled)
+        
         TextField("New Literal...", text: $newLiteral)
             .textCase(.lowercase)
             .textInputAutocapitalization(.never)
