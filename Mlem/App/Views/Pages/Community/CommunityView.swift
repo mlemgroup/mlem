@@ -62,7 +62,7 @@ struct CommunityView: View {
     var body: some View {
         ContentLoader(model: community) { proxy in
             if let community = proxy.entity {
-                content(community: community)
+                content(community: community, contentLoaderError: proxy.error)
                     .externalApiWarning(entity: community, isLoading: proxy.isLoading)
                     .onChange(of: (community as? any Community2Providing)?.community2 == nil, initial: true) {
                         if let community2 = (community as? any Community2Providing)?.community2 {
@@ -88,7 +88,7 @@ struct CommunityView: View {
         
     @ViewBuilder
     // swiftlint:disable:next function_body_length
-    func content(community: any Community) -> some View {
+    func content(community: any Community, contentLoaderError: (any Error)?) -> some View {
         FancyScrollView {
             HStack {
                 FeedHeaderView(
@@ -118,6 +118,8 @@ struct CommunityView: View {
                         if let postFeedLoader {
                             postsTab(community: community, postFeedLoader: postFeedLoader)
                                 .padding(.bottom, -4)
+                        } else if let error = contentLoaderError {
+                            ErrorView(.init(error: contentLoaderError))
                         }
                     }
                     .toolbar {
