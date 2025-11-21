@@ -29,7 +29,7 @@ struct ErrorDetails: Hashable {
         location: String? = nil,
         icon: Icon? = nil,
         buttonText: String? = nil,
-        refresh: (() -> Bool)? = nil,
+        refresh: (() async -> Bool)? = nil,
         autoRefresh: Bool = false
     ) {
         self.title = title

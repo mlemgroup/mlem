@@ -189,7 +189,7 @@ public extension LemmyConnection {
         communityId: Int?,
         creatorId: Int?,
         filter: ListingType,
-        createSortType: @escaping (LemmyEndpointVersion) throws -> SearchSortTypeBridge,
+        createSortType: @escaping (LemmyEndpointVersion) throws -> LemmySearchSortTypeBridge,
         timeRangeSeconds: Int?
     ) async throws -> [Post2Snapshot] {
         let response = try await performingForEndpoint { endpoint in
@@ -225,10 +225,10 @@ public extension LemmyConnection {
             switch endpoint {
             case .v3:
                 let request = LemmyMarkPostAsReadRequest(endpoint: .v3, postId: nil, postIds: Array(ids), read: read)
-                try await self.perform(request)
+                try await self.perform(request, endpoint: .v3)
             case .v4:
                 let request = LemmyMarkPostsAsReadRequest(postIds: Array(ids), read: read)
-                try await self.perform(request)
+                try await self.perform(request, endpoint: .v4)
             }
         }
     }

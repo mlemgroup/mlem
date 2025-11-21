@@ -13,19 +13,29 @@ struct TopInstancesListView: View {
     
     var body: some View {
         FancyScrollView {
-            LazyVStack(spacing: 0) {
-                SearchResultsView(results: MlemStats.main.instances ?? []) { instance in
-                    InstanceListRow(
-                        instance,
-                        readout: .users,
-                        visitContext: .other
-                    )
-                }
-                EndOfFeedView(loadingState: .done, viewType: .hobbit)
+            if let errorDetails = MlemStats.main.errorDetails {
+                ErrorView(errorDetails)
+                    .frame(maxWidth: .infinity)
+                    .padding(.top, 40)
+            } else {
+                content
             }
-            .animation(.easeOut(duration: 0.1), value: MlemStats.main.instances?.isEmpty)
         }
         .background(.themedGroupedBackground)
         .navigationTitle("Instances")
+    }
+
+    var content: some View {
+        LazyVStack(spacing: 0) {
+            SearchResultsView(results: MlemStats.main.instances ?? []) { instance in
+                InstanceListRow(
+                    instance,
+                    readout: .users,
+                    visitContext: .other
+                )
+            }
+            EndOfFeedView(loadingState: .done, viewType: .hobbit)
+        }
+        .animation(.easeOut(duration: 0.1), value: MlemStats.main.instances?.isEmpty)
     }
 }

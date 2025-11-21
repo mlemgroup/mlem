@@ -173,6 +173,9 @@ extension NavigationPage {
                         .foregroundStyle(.themedCaution)
                         .padding(.horizontal, Constants.main.standardSpacing)
                         .padding(.bottom, Constants.main.halfSpacing)
+                } else if let errorDetails = MlemStats.main.errorDetails {
+                    ErrorView(errorDetails)
+                        .padding(.top, 40)
                 }
             }
         case let .languagePicker(selectedLanguages: selectedLanguages, callback: callback):

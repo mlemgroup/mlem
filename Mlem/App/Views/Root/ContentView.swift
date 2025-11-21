@@ -83,11 +83,7 @@ struct ContentView: View {
                 .quickSwipeCornerRadius(Constants.main.standardSpacing)
                 .quickSwipeIconSize(28)
                 .task(id: BackendClient.main.environment) {
-                    do {
-                        try await MlemStats.main.loadInstances(forceRefresh: true)
-                    } catch {
-                        handleError(error)
-                    }
+                    await MlemStats.main.loadInstances(forceRefresh: true)
                 }
                 .onChange(of: appState.firstPerson) {
                     // Observe AppState.main.firstPerson to update FiltersTracker as needed
