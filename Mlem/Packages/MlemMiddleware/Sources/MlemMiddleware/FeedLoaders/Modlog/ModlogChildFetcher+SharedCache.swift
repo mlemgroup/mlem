@@ -14,6 +14,7 @@ extension ModlogChildFetcher {
         let pageSize: Int
         var communityId: Int?
         var targetPersonId: Int?
+        var moderatorPersonId: Int?
         var ongoingTask: Task<TaskResponse, Error>?
         
         init(api: ApiClient, pageSize: Int, communityId: Int?) {
@@ -27,6 +28,7 @@ extension ModlogChildFetcher {
                 page: 1,
                 limit: pageSize,
                 communityId: communityId,
+                moderatorId: moderatorPersonId,
                 subjectPersonId: targetPersonId
             )
             return .init(grouping: response, by: { $0.type.type })

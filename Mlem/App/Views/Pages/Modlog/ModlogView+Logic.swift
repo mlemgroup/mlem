@@ -46,7 +46,7 @@ extension ModlogView {
         }
     }
 
-    enum TargetPersonFilter: Hashable {
+    enum PersonFilter: Hashable {
         case any
         case person(any Person)
 
@@ -83,6 +83,7 @@ extension ModlogView {
             api: api,
             communityId: communityFilter?.communityValue?.id,
             targetPersonId: targetPersonFilter.personValue?.id,
+            moderatorPersonId: moderatorPersonFilter.personValue?.id,
             clearBeforeRefresh: true
         )
     }
@@ -99,6 +100,7 @@ extension ModlogView {
         var hasher = Hasher()
         hasher.combine(communityFilter)
         hasher.combine(targetPersonFilter)
+        hasher.combine(moderatorPersonFilter)
         return hasher.finalize()
     }
 }

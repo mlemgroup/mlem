@@ -22,7 +22,8 @@ struct ModlogView: View {
     @State var warningPresented: Bool = Settings.get(\.safety_enableModlogWarning)
     
     @State var communityFilter: CommunityFilter?
-    @State var targetPersonFilter: TargetPersonFilter = .any
+    @State var targetPersonFilter: PersonFilter = .any
+    @State var moderatorPersonFilter: PersonFilter = .any
     @State var actionTypeFilter: ModlogEntryType?
     
     init(initialTarget: InitialTarget) {
@@ -32,6 +33,7 @@ struct ModlogView: View {
                 pageSize: Settings.get(\.behavior_internetSpeed).pageSize,
                 communityId: nil,
                 targetPersonId: nil,
+                moderatorPersonId: nil,
                 sortType: .new
             )
         )

@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 2025-11-22.
 //  
 
+import Icons
 import MlemMiddleware
 import SwiftUI
 
@@ -13,10 +14,11 @@ extension ModlogView {
     func filtersView(communityFilter: CommunityFilter) -> some View {
         ScrollView(.horizontal) {
             HStack {
-                communityFilterView(communityFilter: communityFilter)
-                targetPersonFilterView()
                 typeFilterView()
                     .buttonStyle(.feedFilter(isOn: actionTypeFilter != nil))
+                communityFilterView(communityFilter: communityFilter)
+                personFilterView(filter: $targetPersonFilter, icon: .lemmy.person)
+                personFilterView(filter: $moderatorPersonFilter, icon: .lemmy.moderation)
             }
             .padding(.horizontal, Constants.main.standardSpacing)
         }
@@ -45,22 +47,22 @@ extension ModlogView {
     }
     
     @ViewBuilder
-    func targetPersonFilterView() -> some View {
+    func personFilterView(filter: Binding<PersonFilter>, icon: Icon) -> some View {
         Button {
-            if targetPersonFilter == .any {
+            if filter.wrappedValue == .any {
                 navigation.openSheet(.personPicker(api: api) { person in
-                    self.targetPersonFilter = .person(person)
+                    filter.wrappedValue = .person(person)
                 })
             } else {
-                self.targetPersonFilter = .any
+                filter.wrappedValue = .any
             }
         } label: {
-            Label(targetPersonFilter.label, icon: .lemmy.person)
+            Label(filter.wrappedValue.label, icon: icon)
         }
         .buttonStyle(
             .feedFilter(
-                isOn: targetPersonFilter != .any,
-                icon: targetPersonFilter == .any ? .general.dropDown : .general.close
+                isOn: filter.wrappedValue != .any,
+                icon: filter.wrappedValue == .any ? .general.dropDown : .general.close
             )
         )
     }
