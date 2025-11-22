@@ -20,6 +20,7 @@ public class ModlogFeedLoader: StandardFeedLoader<ModlogEntry> {
         api: ApiClient,
         pageSize: Int,
         communityId: Int?,
+        targetPersonId: Int?,
         sortType: FeedLoaderSort.SortType
     ) {
         let sharedCache: ModlogChildFetcher.SharedCache = .init(api: api, pageSize: pageSize, communityId: communityId)
@@ -34,6 +35,7 @@ public class ModlogFeedLoader: StandardFeedLoader<ModlogEntry> {
                     pageSize: pageSize,
                     sharedCache: sharedCache,
                     communityId: communityId,
+                    targetPersonId: targetPersonId,
                     type: type
                 )
             )
@@ -63,13 +65,16 @@ public class ModlogFeedLoader: StandardFeedLoader<ModlogEntry> {
     public func refresh(
         api: ApiClient? = nil,
         communityId: Int? = nil,
+        targetPersonId: Int? = nil,
         clearBeforeRefresh: Bool = false
     ) async throws {
         sharedCache.api = api ?? sharedCache.api
         sharedCache.communityId = communityId
+        sharedCache.targetPersonId = targetPersonId
         for source in modlogSources {
             await source.changeApi(to: api ?? sharedCache.api, context: .none())
             source.modlogFetcher.communityId = communityId ?? source.modlogFetcher.communityId
+            source.modlogFetcher.targetPersonId = targetPersonId ?? source.modlogFetcher.targetPersonId
         }
         try await refresh(clearBeforeRefresh: clearBeforeRefresh)
     }

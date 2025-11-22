@@ -13,6 +13,7 @@ extension ModlogChildFetcher {
         var api: ApiClient
         let pageSize: Int
         var communityId: Int?
+        var targetPersonId: Int?
         var ongoingTask: Task<TaskResponse, Error>?
         
         init(api: ApiClient, pageSize: Int, communityId: Int?) {
@@ -22,7 +23,12 @@ extension ModlogChildFetcher {
         }
         
         private func fetchItems() async throws -> TaskResponse {
-            let response = try await api.getModlog(page: 1, limit: pageSize, communityId: communityId)
+            let response = try await api.getModlog(
+                page: 1,
+                limit: pageSize,
+                communityId: communityId,
+                subjectPersonId: targetPersonId
+            )
             return .init(grouping: response, by: { $0.type.type })
         }
         

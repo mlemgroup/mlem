@@ -11,6 +11,7 @@ import Foundation
 public class ModlogChildFetcher: Fetcher<ModlogEntry> {
     let sharedCache: SharedCache
     var communityId: Int?
+    var targetPersonId: Int?
     var type: ModlogEntryType
     
     init(
@@ -18,9 +19,11 @@ public class ModlogChildFetcher: Fetcher<ModlogEntry> {
         pageSize: Int,
         sharedCache: SharedCache,
         communityId: Int?,
+        targetPersonId: Int?,
         type: ModlogEntryType
     ) {
         self.communityId = communityId
+        self.targetPersonId = targetPersonId
         self.type = type
         self.sharedCache = sharedCache
         super.init(api: api, pageSize: pageSize)
@@ -35,6 +38,7 @@ public class ModlogChildFetcher: Fetcher<ModlogEntry> {
                 page: page,
                 limit: pageSize,
                 communityId: communityId,
+                subjectPersonId: targetPersonId,
                 type: type
             )
         }

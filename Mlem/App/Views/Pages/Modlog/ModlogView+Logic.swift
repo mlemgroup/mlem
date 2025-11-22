@@ -14,7 +14,7 @@ extension ModlogView {
         case instance(InstanceHashWrapper)
     }
     
-    enum CommunityFilter: Equatable {
+    enum CommunityFilter: Hashable {
         case any
         case community(any Community)
         
@@ -39,12 +39,50 @@ extension ModlogView {
             default: false
             }
         }
+
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(communityValue?.api.cacheId)
+            hasher.combine(communityValue?.id)
+        }
+    }
+
+    enum TargetPersonFilter: Hashable {
+        case any
+        case person(any Person)
+
+        var label: String {
+            switch self {
+            case .any: .init(localized: "Any User")
+            case let .person(person): person.name
+            }
+        }
+
+        var personValue: (any Person)? {
+            switch self {
+            case let .person(person): person
+            default: nil
+            }
+        }
+
+        static func == (lhs: Self, rhs: Self) -> Bool {
+            switch (lhs, rhs) {
+            case let (.person(lhs), .person(rhs)): lhs === rhs
+            case (.any, .any): true
+            default: false
+            }
+        }
+
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(personValue?.api.cacheId)
+            hasher.combine(personValue?.id)
+        }
     }
     
     func refresh() async throws {
         try await feedLoader.refresh(
             api: api,
             communityId: communityFilter?.communityValue?.id,
+            targetPersonId: targetPersonFilter.personValue?.id,
             clearBeforeRefresh: true
         )
     }
@@ -55,5 +93,12 @@ extension ModlogView {
         } else {
             feedLoader
         }
+    }
+
+    var refreshHashValue: Int {
+        var hasher = Hasher()
+        hasher.combine(communityFilter)
+        hasher.combine(targetPersonFilter)
+        return hasher.finalize()
     }
 }
