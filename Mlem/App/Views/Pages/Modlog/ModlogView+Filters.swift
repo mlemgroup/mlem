@@ -17,7 +17,7 @@ extension ModlogView {
                 typeFilterView()
                     .buttonStyle(.feedFilter(isOn: actionTypeFilter != nil))
                 communityFilterView(communityFilter: communityFilter)
-                personFilterView(filter: $targetPersonFilter, icon: .lemmy.person)
+                personFilterView(filter: $targetPersonFilter, icon: .lemmy.targetedPerson)
                 personFilterView(filter: $moderatorPersonFilter, icon: .lemmy.moderation)
             }
             .padding(.horizontal, Constants.main.standardSpacing)
