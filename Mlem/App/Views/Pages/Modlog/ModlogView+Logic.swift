@@ -12,6 +12,7 @@ extension ModlogView {
     enum InitialTarget: Hashable {
         case community(AnyCommunity)
         case instance(InstanceHashWrapper)
+        case currentInstance
     }
     
     enum CommunityFilter: Hashable {
