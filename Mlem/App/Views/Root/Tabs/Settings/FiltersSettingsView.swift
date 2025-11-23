@@ -20,6 +20,13 @@ struct FiltersSettingsView: View {
     @State var newKeyword: String = ""
     @State var newLiteral: String = ""
     
+    var descriptionDetail: String {
+        AccountsTracker.main.highestLevelAccountType >= .moderator ?
+        // swiftlint:disable:next line_length
+        " If you are a moderator or administrator of a filtered post, it will appear in your feed but require you to tap to view its content." :
+        ""
+    }
+    
     init() {
         @Dependency(\.persistenceRepository) var persistenceRepository
     }
@@ -28,8 +35,7 @@ struct FiltersSettingsView: View {
         Form {
             SettingsHeaderView(
                 title: "Filters",
-                // swiftlint:disable:next line_length
-                description: "Hide posts containing certain words, phrases, or character sequences from your feed. If you are a moderator or administrator of a filtered post, it will appear in your feed but require you to tap to view its content.",
+                description: "Hide posts containing certain words, phrases, or character sequences from your feed.\(descriptionDetail)",
                 icon: .settings.keywordFilter
             )
             

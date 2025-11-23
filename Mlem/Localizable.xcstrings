@@ -4014,7 +4014,7 @@
         }
       }
     },
-    "Hide posts containing certain words, phrases, or character sequences from your feed. If you are a moderator or administrator of a filtered post, it will appear in your feed but require you to tap to view its content." : {
+    "Hide posts containing certain words, phrases, or character sequences from your feed.%@" : {
 
     },
     "Hide posts with titles containing containing these precise character sequences." : {
