@@ -43,7 +43,7 @@ struct FiltersSettingsView: View {
             Section("Literals") {
                 literalSection
             } footer: {
-                Text("Hide posts with titles containing containing these precise character sequences")
+                Text("Hide posts with titles containing containing these precise character sequences.")
             }
         }
         .withConditionalLabelStyle()
