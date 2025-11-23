@@ -14,6 +14,7 @@ private struct LoadFeed: ViewModifier {
     
     let feedLoader: (any FeedLoading)?
     let shouldLoad: Bool
+    let errorDetails: Binding<ErrorDetails?>?
     
     func body(content: Content) -> some View {
         content
@@ -23,8 +24,9 @@ private struct LoadFeed: ViewModifier {
                     Task {
                         do {
                             try await feedLoader.loadMoreItems()
+                            errorDetails?.wrappedValue = nil
                         } catch {
-                            handleError(error)
+                            handleLoadFailure(error)
                         }
                     }
                 }
@@ -32,6 +34,24 @@ private struct LoadFeed: ViewModifier {
             .onChange(of: postSize) {
                 (feedLoader as? CorePostFeedLoader)?.setPrefetchingConfiguration(.forPostSize(postSize))
             }
+    }
+
+    func handleLoadFailure(_ error: any Error) {
+        if let errorDetailsBinding = self.errorDetails {
+            if var details = handleErrorWithDetails(error) {
+                details.refresh = {
+                    do {
+                        try await feedLoader?.loadMoreItems()
+                        return true
+                    } catch {
+                        return false
+                    }
+                }
+                errorDetailsBinding.wrappedValue = details
+            }
+        } else {
+            handleError(error)
+        }
     }
     
     var onChangeHash: Int {
@@ -44,7 +64,15 @@ private struct LoadFeed: ViewModifier {
 
 extension View {
     /// Convenience modifier. Attach to a view to load items from the given FeedLoading on appear if the given FeedLoading has no items
-    func loadFeed(_ feedLoader: (any FeedLoading)?, shouldLoad: Bool = true) -> some View {
-        modifier(LoadFeed(feedLoader: feedLoader, shouldLoad: shouldLoad))
+    func loadFeed(
+        _ feedLoader: (any FeedLoading)?,
+        shouldLoad: Bool = true,
+        errorDetails: Binding<ErrorDetails?>? = nil
+    ) -> some View {
+        modifier(LoadFeed(
+            feedLoader: feedLoader,
+            shouldLoad: shouldLoad,
+            errorDetails: errorDetails
+        ))
     }
 }
