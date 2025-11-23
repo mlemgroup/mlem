@@ -81,6 +81,10 @@ class FiltersTracker {
         rawKeywords = filteredKeywords
     }
     
+    func resetFilteredLiterals(to filteredLiterals: Set<String>) async {
+        literals = filteredLiterals
+    }
+    
     func postWouldBeFiltered(_ post: any Post) -> Bool {
         (keywordFilterEnabled && post.title.failsKeywordFilter(keywords: keywords, phrases: phrases)) ||
         (literalFilterEnabled && post.title.failsLiteralFilter(literals: literals))

@@ -7,10 +7,9 @@
 
 import Dependencies
 import SwiftUI
+import os
 
 struct FiltersSettingsView: View {
-    @Dependency(\.persistenceRepository) var persistenceRepository
-    
     @Setting(\.filters_keywordFilterEnabled) var keywordFilterEnabled
     @Setting(\.filters_literalFilterEnabled) var literalFilterEnabled
     
@@ -20,15 +19,13 @@ struct FiltersSettingsView: View {
     @State var newKeyword: String = ""
     @State var newLiteral: String = ""
     
+    @State var legacyWarningDisplayed: Bool = false
+    
     var descriptionDetail: String {
         AccountsTracker.main.highestLevelAccountType >= .moderator ?
         // swiftlint:disable:next line_length
         " If you are a moderator or administrator of a filtered post, it will appear in your feed but require you to tap to view its content." :
         ""
-    }
-    
-    init() {
-        @Dependency(\.persistenceRepository) var persistenceRepository
     }
     
     var body: some View {
@@ -55,27 +52,33 @@ struct FiltersSettingsView: View {
         .scrollDismissesKeyboard(.interactively)
         .withConditionalLabelStyle()
         .navigationTitle("Filters")
+        .versionAwareDialog("Deprecated Format", isPresented: $legacyWarningDisplayed) {
+            Button("Re-Export") { export() }
+            Button("Close", role: .cancel) {}
+        } message: {
+            // swiftlint:disable:next line_length
+            Text("These filters were saved by an older version of Mlem, and will not be compatible with future versions. To preserve compatibility, re-export your filters.")
+        }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Menu("More...", icon: .general.toolbarMenu) {
-                    Button("Export...", icon: .general.export) {
-                        Task {
-                            if let url = await downloadTextToFileSystem(
-                                fileName: "keywords.txt",
-                                text: filtersTracker.rawKeywords.joined(separator: "\n")
-                            ) {
-                                navigation.model?.shareInfo = .init(url: url)
-                            } else {
-                                ToastModel.main.add(.failure())
-                            }
-                        }
-                    }
+                    Button("Export...", icon: .general.export) { export() }
                     Button("Import...", icon: .general.import) {
-                        navigation.showFilePicker(types: [.plainText]) { data in
-                            let text = String(data: data, encoding: .utf8) ?? ""
-                            await filtersTracker.resetFilteredKeywords(
-                                to: Set(text.split(separator: "\n").map(String.init))
-                            )
+                        navigation.showFilePicker(types: [.plainText, .json]) { data in
+                            do {
+                                let jsonData = try JSONDecoder().decode(ExportableFilters.self, from: data)
+                                Task { @MainActor in
+                                    await filtersTracker.resetFilteredKeywords(to: jsonData.rawKeywords)
+                                    await filtersTracker.resetFilteredLiterals(to: jsonData.literals)
+                                }
+                            } catch {
+                                // TODO: Mlem 2.5 remove legacy compatibility
+                                let text = String(data: data, encoding: .utf8) ?? ""
+                                await filtersTracker.resetFilteredKeywords(
+                                    to: Set(text.split(separator: "\n").map(String.init))
+                                )
+                                legacyWarningDisplayed = true
+                            }
                         }
                     }
                 }
@@ -178,4 +181,29 @@ struct FiltersSettingsView: View {
             await filtersTracker.removeFilteredLiteral(literal)
         }
     }
+    
+    func export() {
+        do {
+            let jsonData = try JSONEncoder().encode(ExportableFilters(
+                rawKeywords: filtersTracker.rawKeywords,
+                literals: filtersTracker.literals))
+            
+            Task {
+                if let jsonString = String(data: jsonData, encoding: .utf8), let url = await downloadTextToFileSystem(
+                    fileName: "filters.json",
+                    text: jsonString) {
+                    navigation.model?.shareInfo = .init(url: url)
+                } else {
+                    ToastModel.main.add(.failure())
+                }
+            }
+        } catch {
+            handleError(error)
+        }
+    }
+}
+
+private struct ExportableFilters: Codable {
+    let rawKeywords: Set<String>
+    let literals: Set<String>
 }

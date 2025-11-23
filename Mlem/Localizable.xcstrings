@@ -2919,6 +2919,9 @@
         }
       }
     },
+    "Deprecated Format" : {
+
+    },
     "Description" : {
 
     },
@@ -6368,6 +6371,9 @@
         }
       }
     },
+    "Re-Export" : {
+
+    },
     "Read %lld posts" : {
       "localizations" : {
         "fr" : {
@@ -8643,6 +8649,9 @@
           }
         }
       }
+    },
+    "This file was saved by an older version of Mlem, and will not be compatible with future versions. To preserve compatibility, re-export your filters." : {
+
     },
     "This instance is not part of the Fediseer Chain of Trust." : {
       "localizations" : {
