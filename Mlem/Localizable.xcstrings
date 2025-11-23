@@ -417,6 +417,9 @@
         }
       }
     },
+    "%lld Active" : {
+
+    },
     "%lld Crossposts..." : {
       "localizations" : {
         "en" : {
@@ -4014,7 +4017,7 @@
     "Hide posts containing certain words, phrases, or character sequences from your feed. If you are a moderator or administrator of a filtered post, it will appear in your feed but require you to tap to view its content." : {
 
     },
-    "Hide posts with titles containing containing these precise character sequences" : {
+    "Hide posts with titles containing containing these precise character sequences." : {
 
     },
     "Hide posts with titles containing these whole words or phrases. Ignores case and punctuation (e.g., the keyword \"john\" will also filter \"John's\")." : {
@@ -4463,6 +4466,7 @@
       }
     },
     "Keyword Filters" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {

@@ -60,7 +60,7 @@ class FiltersTracker {
     }
     
     func addFilteredKeyword(_ keyword: String) async {
-        rawKeywords = rawKeywords.union([keyword])
+        rawKeywords.insert(keyword)
     }
     
     func removeFilteredKeyword(_ keyword: String) async {
@@ -69,7 +69,7 @@ class FiltersTracker {
     }
     
     func addFilteredLiteral(_ literal: String) async {
-        literals = literals.union([literal])
+        literals.insert(literal)
     }
     
     func removeFilteredLiteral(_ literal: String) async {
