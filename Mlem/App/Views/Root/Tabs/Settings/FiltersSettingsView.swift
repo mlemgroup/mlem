@@ -46,6 +46,7 @@ struct FiltersSettingsView: View {
                 Text("Hide posts with titles containing containing these precise character sequences.")
             }
         }
+        .scrollDismissesKeyboard(.interactively)
         .withConditionalLabelStyle()
         .navigationTitle("Filters")
         .toolbar {
