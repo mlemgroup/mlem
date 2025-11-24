@@ -15,7 +15,7 @@ public extension View {
         isPresented: Binding<Bool>,
         @ViewBuilder actions: @escaping () -> some View
     ) -> some View {
-        versionAwareDialog(String(localized: title), isPresented: isPresented, actions: actions)
+        versionAwareDialog(String(localized: title), isPresented: isPresented, actions: actions) {}
     }
     
     @_disfavoredOverload @ViewBuilder
@@ -30,6 +30,30 @@ public extension View {
             confirmationDialog(title, isPresented: isPresented, actions: actions) {
                 Text(title)
             }
+        }
+    }
+    
+    @ViewBuilder
+    func versionAwareDialog(
+        _ title: LocalizedStringResource,
+        isPresented: Binding<Bool>,
+        @ViewBuilder actions: @escaping () -> some View,
+        @ViewBuilder message: @escaping () -> some View
+    ) -> some View {
+        versionAwareDialog(String(localized: title), isPresented: isPresented, actions: actions, message: message)
+    }
+    
+    @_disfavoredOverload @ViewBuilder
+    func versionAwareDialog(
+        _ title: String,
+        isPresented: Binding<Bool>,
+        @ViewBuilder actions: @escaping () -> some View,
+        @ViewBuilder message: @escaping () -> some View
+    ) -> some View {
+        if #available(iOS 26, *) {
+            alert(title, isPresented: isPresented, actions: actions, message: message)
+        } else {
+            confirmationDialog(title, isPresented: isPresented, actions: actions, message: message)
         }
     }
 }

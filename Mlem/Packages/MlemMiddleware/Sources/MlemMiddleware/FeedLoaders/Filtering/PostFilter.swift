@@ -8,35 +8,39 @@
 import Foundation
 
 public enum PostFilterType {
-    case read, dedupe, keyword
+    case read, dedupe, keyword, literal
 }
 
 class PostFilter: MultiFilter<Post2> {
     private var readFilter: ReadFilter<Post2>
-    private var dedupeFilter: DedupeFilter<Post2> = .init()
+    private var dedupeFilter: DedupeFilter<Post2> = .init(context: .none())
     private var keywordFilter: PostKeywordFilter
+    private var literalFilter: PostLiteralFilter
     
     init(showRead: Bool, context: FilterContext) {
         self.keywordFilter = .init(context: context)
-        self.readFilter = .init()
+        self.literalFilter = .init(context: context)
+        self.readFilter = .init(context: .none())
         if showRead {
             readFilter.active = false
         }
     }
 
-    override func allFilters() -> [any FilterProviding<Post2>] {
+    override func allFilters() -> [FilterProviding<Post2>] {
         [
             readFilter,
             dedupeFilter,
-            keywordFilter
+            keywordFilter,
+            literalFilter
         ]
     }
     
-    override func getFilter(_ toGet: PostFilterType) -> any FilterProviding<Post2> {
+    override func getFilter(_ toGet: PostFilterType) -> FilterProviding<Post2> {
         switch toGet {
         case .read: readFilter
         case .dedupe: dedupeFilter
         case .keyword: keywordFilter
+        case .literal: literalFilter
         }
     }
     
@@ -44,5 +48,6 @@ class PostFilter: MultiFilter<Post2> {
     
     func updateContext(to context: FilterContext) {
         keywordFilter.updateFilterContext(to: context)
+        literalFilter.updateFilterContext(to: context)
     }
 }

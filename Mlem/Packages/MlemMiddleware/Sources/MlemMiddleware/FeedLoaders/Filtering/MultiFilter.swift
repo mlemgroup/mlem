@@ -12,12 +12,12 @@ class MultiFilter<FilterTarget: Filterable> {
     
     /// Lists all filters in this MultiFilter. Used internally to iterate over filters and perform filtering logic. This function bridges the gap between the generic behavior, which wants a list of `[any FilterProviding<FilterTarget>]` to use in filtering, and the instantiating class, which is far more ergonomic if filters can be declared as simple member variables.
     /// - Returns: list of all filters in this MultiFilter
-    func allFilters() -> [any FilterProviding<FilterTarget>] { [] }
+    func allFilters() -> [FilterProviding<FilterTarget>] { [] }
     
     /// Gets a particular optional filter. Used internally to back the `activate`, `deactivate`, and `filteredCount` methods; as with `allFilters`, used to bridge generic and concrete behavior.
     /// - Parameter toGet: `OptionalFilters` describing the filter to get
     /// - Returns: filter corresponding to `toGet`
-    func getFilter(_ toGet: FilterTarget.FilterType) -> any FilterProviding<FilterTarget> {
+    func getFilter(_ toGet: FilterTarget.FilterType) -> FilterProviding<FilterTarget> {
         preconditionFailure("This method must be implemented by the instantiating class")
     }
     

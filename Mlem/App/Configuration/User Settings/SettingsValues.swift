@@ -100,6 +100,8 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     var navigation_swipeAnywhere: Bool
     var filters_keywordFilterEnabled: Bool
     var filters_keywords: Set<String>
+    var filters_literalFilterEnabled: Bool
+    var filters_literals: Set<String>
     
     var interactionBar_post: PostBarConfiguration
     var interactionBar_comment: CommentBarConfiguration
@@ -235,6 +237,8 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.navigation_swipeAnywhere = try container.decodeIfPresent(Bool.self, forKey: ._navigation_swipeAnywhere) ?? false
         self.filters_keywordFilterEnabled = try container.decodeIfPresent(Bool.self, forKey: ._filters_keywordFilterEnabled) ?? true
         self.filters_keywords = try container.decodeIfPresent(Set<String>.self, forKey: ._filters_keywords) ?? .init()
+        self.filters_literalFilterEnabled = try container.decodeIfPresent(Bool.self, forKey: ._filters_literalFilterEnabled) ?? true
+        self.filters_literals = try container.decodeIfPresent(Set<String>.self, forKey: ._filters_literals) ?? .init()
         self.interactionBar_post = try container.decodeIfPresent(PostBarConfiguration.self, forKey: ._interactionBar_post) ?? .default
         self.interactionBar_comment = try container.decodeIfPresent(CommentBarConfiguration.self, forKey: ._interactionBar_comment) ?? .default
         self.interactionBar_reply = try container.decodeIfPresent(ReplyBarConfiguration.self, forKey: ._interactionBar_reply) ?? .default
@@ -326,6 +330,8 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         navigation_swipeAnywhere = otherValues.navigation_swipeAnywhere
         filters_keywordFilterEnabled = otherValues.filters_keywordFilterEnabled
         filters_keywords = otherValues.filters_keywords
+        filters_literalFilterEnabled = otherValues.filters_literalFilterEnabled
+        filters_literals = otherValues.filters_literals
         interactionBar_post = otherValues.interactionBar_post
         interactionBar_comment = otherValues.interactionBar_comment
         interactionBar_reply = otherValues.interactionBar_reply
@@ -423,6 +429,8 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         case _navigation_swipeAnywhere = "navigation_swipeAnywhere"
         case _filters_keywordFilterEnabled = "filters_keywordFilterEnabled"
         case _filters_keywords = "filters_keywords"
+        case _filters_literalFilterEnabled = "filters_literalFilterEnabled"
+        case _filters_literals = "filters_literals"
         case _interactionBar_post = "interactionBar_post"
         case _interactionBar_comment = "interactionBar_comment"
         case _interactionBar_reply = "interactionBar_reply"
@@ -522,6 +530,8 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.navigation_swipeAnywhere = settings.swipeAnywhereToNavigate
         self.filters_keywordFilterEnabled = settings.keywordFilterEnabled
         self.filters_keywords = filteredKeywords
+        self.filters_literalFilterEnabled = true // Added in 2.4
+        self.filters_literals = .init() // Added in 2.4
         self.interactionBar_alternateReportLayout = settings.alternateInteractionBarLayoutForReports
         
         let interactionBarConfigurations = persistenceRepository.loadInteractionBarConfigurations()
