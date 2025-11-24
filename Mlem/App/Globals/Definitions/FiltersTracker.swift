@@ -81,7 +81,7 @@ class FiltersTracker {
         rawKeywords = filteredKeywords
     }
     
-    func resetFilteredLiterals(to filteredLiterals: Set<String>) async {
+    func resetFilteredLiterals(to filteredLiterals: Set<String>) {
         literals = filteredLiterals
     }
     
