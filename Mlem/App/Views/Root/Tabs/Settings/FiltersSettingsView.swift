@@ -21,18 +21,21 @@ struct FiltersSettingsView: View {
     
     @State var legacyWarningDisplayed: Bool = false
     
-    var descriptionDetail: String {
-        AccountsTracker.main.highestLevelAccountType >= .moderator ?
-        // swiftlint:disable:next line_length
-        " If you are a moderator or administrator of a filtered post, it will appear in your feed but require you to tap to view its content." :
-        ""
+    var headerDescription: String {
+        var output = String(localized: "Hide posts containing certain words, phrases, or character sequences from your feed.")
+        if AccountsTracker.main.highestLevelAccountType >= .moderator {
+            output += " "
+            // swiftlint:disable:next line_length
+            output += String(localized: "If you are a moderator or administrator of a filtered post, it will appear in your feed but require you to tap to view its content.")
+        }
+        return output
     }
     
     var body: some View {
         Form {
             SettingsHeaderView(
                 title: "Filters",
-                description: "Hide posts containing certain words, phrases, or character sequences from your feed.\(descriptionDetail)",
+                description: headerDescription,
                 icon: .settings.keywordFilter
             )
             

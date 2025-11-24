@@ -1931,6 +1931,7 @@
       }
     },
     "Choose the default sort mode for posts and comments." : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -1941,6 +1942,7 @@
       }
     },
     "Choose when Not Safe For Work content should be blurred." : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -1961,6 +1963,7 @@
       }
     },
     "Choose whether to show a warning when opening a page that is likely to contain sensitive content." : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -1992,6 +1995,7 @@
       }
     },
     "Choose which action to perform when you tap and hold the profile icon." : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -2012,6 +2016,7 @@
       }
     },
     "Choose which languages appear in your feed. Posts and comments in other languages will be hidden." : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -2646,6 +2651,7 @@
 
     },
     "Customize how content is displayed in your feed. Choose which types of content are blurred, and apply filters to hide posts from the feed altogether." : {
+      "extractionState" : "stale",
       "localizations" : {
         "en-GB" : {
           "stringUnit" : {
@@ -2678,6 +2684,7 @@
       }
     },
     "Customize how often Mlem plays haptic feedback." : {
+      "extractionState" : "stale",
       "localizations" : {
         "en-GB" : {
           "stringUnit" : {
@@ -2694,6 +2701,7 @@
       }
     },
     "Customize how your subscription list is sorted." : {
+      "extractionState" : "stale",
       "localizations" : {
         "en-GB" : {
           "stringUnit" : {
@@ -2710,6 +2718,7 @@
       }
     },
     "Customize Mlem to work best for you. Some features are tied to system-wide accessibility settings." : {
+      "extractionState" : "stale",
       "localizations" : {
         "en-GB" : {
           "stringUnit" : {
@@ -2726,6 +2735,7 @@
       }
     },
     "Customize the appearance of the tab bar." : {
+      "extractionState" : "stale",
       "localizations" : {
         "en-GB" : {
           "stringUnit" : {
@@ -2742,6 +2752,7 @@
       }
     },
     "Customize the interaction bar for inbox items, and choose which types of notification are included in the tab bar badge." : {
+      "extractionState" : "stale",
       "localizations" : {
         "en-GB" : {
           "stringUnit" : {
@@ -3026,6 +3037,7 @@
       }
     },
     "Display linked media from supported hosts in-app rather than as a link." : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -4017,7 +4029,7 @@
         }
       }
     },
-    "Hide posts containing certain words, phrases, or character sequences from your feed.%@" : {
+    "Hide posts containing certain words, phrases, or character sequences from your feed." : {
 
     },
     "Hide posts with titles containing containing these precise character sequences." : {
@@ -4106,6 +4118,9 @@
           }
         }
       }
+    },
+    "If you are a moderator or administrator of a filtered post, it will appear in your feed but require you to tap to view its content." : {
+
     },
     "Image" : {
       "localizations" : {
@@ -4221,6 +4236,7 @@
       }
     },
     "In the Fediverse, many different links can point to the same piece of content. Choose which site to use when sharing content." : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -4744,6 +4760,7 @@
       }
     },
     "Manage how Mlem handles links and control how images and videos are displayed." : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -4754,6 +4771,7 @@
       }
     },
     "Manage how Mlem interacts with Lemmy instances and other websites." : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -4764,6 +4782,7 @@
       }
     },
     "Manage settings related to content moderation." : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -4774,6 +4793,7 @@
       }
     },
     "Manage your overall setup for Mlem." : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -6395,6 +6415,7 @@
       }
     },
     "Read posts are shown with dimmed title text. If you like, you can choose an additional way of indicating read status." : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -7875,6 +7896,7 @@
       }
     },
     "Some users set animated media as their avatar. Control whether these avatars should play their animations." : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -8485,6 +8507,9 @@
         }
       }
     },
+    "These filters were saved by an older version of Mlem, and will not be compatible with future versions. To preserve compatibility, re-export your filters." : {
+
+    },
     "These options are stored locally in Mlem and not on your Lemmy account." : {
       "localizations" : {
         "fr" : {
@@ -8649,9 +8674,6 @@
           }
         }
       }
-    },
-    "This file was saved by an older version of Mlem, and will not be compatible with future versions. To preserve compatibility, re-export your filters." : {
-
     },
     "This instance is not part of the Fediseer Chain of Trust." : {
       "localizations" : {

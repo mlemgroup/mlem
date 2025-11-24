@@ -63,6 +63,8 @@ struct SettingsHeaderIconView: View {
     }
 }
 
+// - MARK: Alternative Initializers
+
 extension SettingsHeaderView {
     init(
         title: LocalizedStringResource,
@@ -72,5 +74,15 @@ extension SettingsHeaderView {
         self.init(title: title, description: description) {
             SettingsHeaderIconView(icon: icon)
         }
+    }
+    
+    init(
+        title: LocalizedStringResource,
+        description: String,
+        icon: Icon
+    ) where IconView == SettingsHeaderIconView {
+        self.title = .init(localized: title)
+        self.description = description
+        self.icon = SettingsHeaderIconView(icon: icon)
     }
 }
