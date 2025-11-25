@@ -1050,6 +1050,9 @@
         }
       }
     },
+    "Any User" : {
+
+    },
     "Anyone" : {
       "localizations" : {
         "fr" : {
@@ -3731,6 +3734,9 @@
           }
         }
       }
+    },
+    "Filter as..." : {
+
     },
     "Filter violation" : {
       "localizations" : {
@@ -7939,6 +7945,9 @@
           }
         }
       }
+    },
+    "Subject" : {
+
     },
     "Submit Application" : {
       "localizations" : {

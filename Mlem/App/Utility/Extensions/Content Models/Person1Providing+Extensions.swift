@@ -162,7 +162,7 @@ extension Person1Providing {
     func openModlogAction(appState: AppState, navigation: NavigationLayer, feedback: Set<FeedbackType>) -> ActionGroup {
         .init(
             appearance: .init(
-                label: "Modlog...",
+                label: "Modlog",
                 color: .themedModeration,
                 icon: Icons.modlog
             ),
