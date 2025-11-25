@@ -74,11 +74,13 @@ public extension ApiClient {
     }
 
     func getCommentHistory(
+        type: GetContentFilter,
         page: Int?,
         cursor: String?,
         limit: Int
     ) async throws -> (comments: [Comment2], cursor: String?) {
         let response = try await repository.getCommentHistory(
+            type: type,
             page: page,
             cursor: cursor,
             limit: limit

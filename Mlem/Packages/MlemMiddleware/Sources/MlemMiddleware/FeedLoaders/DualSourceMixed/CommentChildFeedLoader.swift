@@ -29,6 +29,7 @@ public class CommentChildFeedLoader: ChildFeedLoader<PersonContent> {
 
         private func internalFetchCursor(page: Int?, cursor: String?) async throws -> FetchResponse {
             let response = try await api.getCommentHistory(
+                type: self.filter,
                 page: page,
                 cursor: cursor,
                 limit: pageSize

@@ -114,6 +114,7 @@ public extension PieFedConnection {
     }
 
     func getCommentHistory(
+        type: GetContentFilter,
         page: Int?,
         cursor: String?,
         limit: Int

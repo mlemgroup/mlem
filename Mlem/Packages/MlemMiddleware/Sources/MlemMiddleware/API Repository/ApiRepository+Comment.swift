@@ -79,12 +79,14 @@ extension ApiRepository {
     }
 
     func getCommentHistory(
+        type: GetContentFilter,
         page: Int?,
         cursor: String?,
         limit: Int
     ) async throws -> (comments: [Comment2Snapshot], cursor: String?) {
         try await performingForConnection { connection in
             try await connection.getCommentHistory(
+                type: type,
                 page: page,
                 cursor: cursor,
                 limit: limit

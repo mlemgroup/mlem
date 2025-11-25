@@ -86,6 +86,7 @@ public extension PieFedConnection {
     }
 
     func getPostHistory(
+        type: GetContentFilter,
         page: Int?,
         cursor: String?,
         limit: Int 

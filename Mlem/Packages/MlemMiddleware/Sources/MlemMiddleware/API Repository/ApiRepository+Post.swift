@@ -75,12 +75,14 @@ extension ApiRepository {
     }
         
     func getPostHistory(
+        type: GetContentFilter,
         page: Int?,
         cursor: String?,
         limit: Int
     ) async throws -> (posts: [Post2Snapshot], cursor: String?) {
         try await performingForConnection { connection in
             try await connection.getPostHistory(
+                type: type,
                 page: page,
                 cursor: cursor,
                 limit: limit

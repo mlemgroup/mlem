@@ -122,6 +122,7 @@ public extension LemmyConnection {
     }
 
     func getCommentHistory(
+        type: GetContentFilter,
         page: Int?,
         cursor: String?,
         limit: Int

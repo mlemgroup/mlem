@@ -55,6 +55,7 @@ public protocol InstanceConnection {
     ) async throws -> (person: Person3Snapshot, posts: [Post2Snapshot])
         
     func getPostHistory(
+        type: GetContentFilter,
         page: Int?,
         cursor: String?,
         limit: Int
@@ -186,6 +187,7 @@ public protocol InstanceConnection {
     ) async throws -> [Comment2Snapshot]
 
     func getCommentHistory(
+        type: GetContentFilter,
         page: Int?,
         cursor: String?,
         limit: Int
