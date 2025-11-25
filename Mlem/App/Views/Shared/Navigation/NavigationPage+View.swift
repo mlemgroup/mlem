@@ -214,8 +214,8 @@ extension NavigationPage {
                 focusTextField: focusTextField,
                 editing: editing?.wrappedValue
             )
-        case let .modlog(target):
-            ModlogView(initialTarget: target)
+        case let .modlog(target, targetPerson, moderatorPerson):
+            ModlogView(initialTarget: target, targetPerson: targetPerson, moderatorPerson: moderatorPerson)
         case let .denyApplication(application):
             RegistrationApplicationDenialEditorView(application: application)
         case let .exportPostImage(post):

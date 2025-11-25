@@ -111,6 +111,13 @@ extension Person1Providing {
             }
         }
         ActionGroup {
+            if let navigation {
+                openModlogAction(
+                    appState: appState,
+                    navigation: navigation,
+                    feedback: feedback
+                )
+            }
             banActions(appState: appState, community: community)
             if api.isAdmin {
                 purgeAction(appState: appState)
@@ -150,6 +157,32 @@ extension Person1Providing {
             appearance: .init(label: "Send Message", color: .themedAccent, icon: Icons.message),
             callback: { NavigationModel.main.openSheet(.messageFeed(self, focusTextField: true)) }
         )
+    }
+
+    func openModlogAction(appState: AppState, navigation: NavigationLayer, feedback: Set<FeedbackType>) -> ActionGroup {
+        .init(
+            appearance: .init(
+                label: "Modlog",
+                color: .themedModeration,
+                icon: Icons.modlog
+            ),
+            prompt: "Filter as...",
+            disabled: !api.canInteract(appState: appState),
+            displayMode: .popup
+        ) {
+            BasicAction(
+            id: "personModlogTarget\(id)",
+            appearance: .init(label: "Subject", color: .themedAccent, icon: "scope")
+            ) {
+                navigation.push(.modlog(targetPerson: .init(self), moderatorPerson: nil))
+            }
+            BasicAction(
+            id: "personModlogModerator\(id)",
+            appearance: .init(label: "Moderator", color: .themedAccent, icon: Icons.moderation)
+            ) {
+                navigation.push(.modlog(targetPerson: nil, moderatorPerson: .init(self)))
+            }
+        }
     }
     
     func banActions(appState: AppState, community: (any Community)?, withUserLabel: Bool = false) -> [any Action] {

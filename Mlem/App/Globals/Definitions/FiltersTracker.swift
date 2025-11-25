@@ -18,6 +18,8 @@ class FiltersTracker {
             (self.keywords, self.phrases) = parseKeywordsAndPhrases(from: rawKeywords)
         }
     }
+    @ObservationIgnored @Setting(\.filters_literalFilterEnabled) var literalFilterEnabled
+    @ObservationIgnored @Setting(\.filters_literals) var literals
     
     var isAdmin: Bool
     var moderatedCommunityActorIds: Set<ActorIdentifier>
@@ -33,7 +35,8 @@ class FiltersTracker {
             isAdmin: isAdmin,
             moderatedCommunityActorIds: moderatedCommunityActorIds,
             filteredKeywords: keywordFilterEnabled ? keywords : .init(),
-            filteredPhrases: keywordFilterEnabled ? phrases : .init()
+            filteredPhrases: keywordFilterEnabled ? phrases : .init(),
+            filteredLiterals: literalFilterEnabled ? literals : .init()
         )
     }
     
@@ -42,6 +45,8 @@ class FiltersTracker {
         hasher.combine(moderatedCommunityActorIds)
         hasher.combine(rawKeywords)
         hasher.combine(keywordFilterEnabled)
+        hasher.combine(literals)
+        hasher.combine(literalFilterEnabled)
         return hasher.finalize()
     }
     
@@ -55,7 +60,7 @@ class FiltersTracker {
     }
     
     func addFilteredKeyword(_ keyword: String) async {
-        rawKeywords = rawKeywords.union([keyword])
+        rawKeywords.insert(keyword)
     }
     
     func removeFilteredKeyword(_ keyword: String) async {
@@ -63,12 +68,26 @@ class FiltersTracker {
         rawKeywords = rawKeywords.subtracting([keyword])
     }
     
+    func addFilteredLiteral(_ literal: String) async {
+        literals.insert(literal)
+    }
+    
+    func removeFilteredLiteral(_ literal: String) async {
+        assert(literals.contains(literal), "Filtered literals do not contain \(literal)")
+        literals.remove(literal)
+    }
+    
     func resetFilteredKeywords(to filteredKeywords: Set<String>) async {
         rawKeywords = filteredKeywords
     }
     
+    func resetFilteredLiterals(to filteredLiterals: Set<String>) {
+        literals = filteredLiterals
+    }
+    
     func postWouldBeFiltered(_ post: any Post) -> Bool {
-        keywordFilterEnabled && post.title.failsKeywordFilter(keywords: keywords, phrases: phrases)
+        (keywordFilterEnabled && post.title.failsKeywordFilter(keywords: keywords, phrases: phrases)) ||
+        (literalFilterEnabled && post.title.failsLiteralFilter(literals: literals))
     }
     
     static var main: FiltersTracker = .init()
