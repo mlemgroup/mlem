@@ -43,8 +43,8 @@ struct SafetySettingsView: View {
             }
             Section {
                 NavigationLink(
-                    "Keyword Filters",
-                    value: .init(localized: keywordFiltersNavigationLinkValue),
+                    "Filters",
+                    value: .init(localized: filtersNavigationLinkValue),
                     fallbackValue: "",
                     icon: .settings.keywordFilter,
                     destination: .settings(.filters)
@@ -65,8 +65,10 @@ struct SafetySettingsView: View {
         }
     }
     
-    var keywordFiltersNavigationLinkValue: LocalizedStringResource {
-        if filtersTracker.rawKeywords.isEmpty { return "None" }
-        return keywordFilterEnabled ? "On" : "Off"
+    var filtersNavigationLinkValue: LocalizedStringResource {
+        var sum = 0
+        if filtersTracker.keywordFilterEnabled && !filtersTracker.rawKeywords.isEmpty { sum += 1 }
+        if filtersTracker.literalFilterEnabled && !filtersTracker.literals.isEmpty { sum += 1 }
+        return sum > 0 ? "\(sum) Active" : "None"
     }
 }

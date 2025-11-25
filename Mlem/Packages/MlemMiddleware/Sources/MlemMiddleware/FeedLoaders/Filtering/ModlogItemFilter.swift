@@ -10,9 +10,9 @@ import Foundation
 public enum ModlogEntryFilterType {}
 
 class ModlogEntryFilter: MultiFilter<ModlogEntry> {
-    override func allFilters() -> [any FilterProviding<ModlogEntry>] {
+    override func allFilters() -> [FilterProviding<ModlogEntry>] {
         []
     }
     
-    override func getFilter(_ toGet: ModlogEntryFilterType) -> any FilterProviding<ModlogEntry> {}
+    override func getFilter(_ toGet: ModlogEntryFilterType) -> FilterProviding<ModlogEntry> {}
 }

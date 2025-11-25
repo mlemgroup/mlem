@@ -58,6 +58,11 @@ public extension String {
         
         return false
     }
+    
+    // Returns true if this string contains any literals in  the given set
+    func failsLiteralFilter(literals: Set<String>) -> Bool {
+        return literals.contains(where: { self.contains($0) })
+    }
 }
 
 private enum MatchState {
