@@ -113,7 +113,7 @@ public extension PieFedConnection {
         return try response.comments.map { try .init(from: $0) }
     }
 
-    func getSavedComments(
+    func getCommentHistory(
         page: Int?,
         cursor: String?,
         limit: Int

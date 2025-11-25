@@ -85,7 +85,7 @@ public extension PieFedConnection {
         throw ApiClientError.featureUnsupported
     }
 
-    func getSavedPosts(
+    func getPostHistory(
         page: Int?,
         cursor: String?,
         limit: Int 

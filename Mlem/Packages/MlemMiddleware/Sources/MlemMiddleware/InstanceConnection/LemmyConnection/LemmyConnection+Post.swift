@@ -114,7 +114,7 @@ public extension LemmyConnection {
         )
     }
 
-    func getSavedPosts(
+    func getPostHistory(
         page: Int?,
         cursor: String?,
         limit: Int

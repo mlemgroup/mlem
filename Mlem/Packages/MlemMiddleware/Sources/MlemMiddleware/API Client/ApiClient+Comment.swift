@@ -73,12 +73,12 @@ public extension ApiClient {
         return await caches.comment2.getModels(api: self, from: snapshots)
     }
 
-    func getSavedComments(
+    func getCommentHistory(
         page: Int?,
         cursor: String?,
         limit: Int
     ) async throws -> (comments: [Comment2], cursor: String?) {
-        let response = try await repository.getSavedComments(
+        let response = try await repository.getCommentHistory(
             page: page,
             cursor: cursor,
             limit: limit

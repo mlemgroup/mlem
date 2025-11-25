@@ -54,7 +54,7 @@ public protocol InstanceConnection {
         savedOnly: Bool
     ) async throws -> (person: Person3Snapshot, posts: [Post2Snapshot])
         
-    func getSavedPosts(
+    func getPostHistory(
         page: Int?,
         cursor: String?,
         limit: Int
@@ -185,7 +185,7 @@ public protocol InstanceConnection {
         filter: GetContentFilter?
     ) async throws -> [Comment2Snapshot]
 
-    func getSavedComments(
+    func getCommentHistory(
         page: Int?,
         cursor: String?,
         limit: Int

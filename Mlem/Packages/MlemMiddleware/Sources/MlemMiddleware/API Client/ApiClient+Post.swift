@@ -82,12 +82,12 @@ public extension ApiClient {
         )
     }
 
-    func getSavedPosts(
+    func getPostHistory(
         page: Int?,
         cursor: String?,
         limit: Int 
     ) async throws -> (posts: [Post2], cursor: String?) {
-        let snapshots = try await repository.getSavedPosts(
+        let snapshots = try await repository.getPostHistory(
             page: page,
             cursor: cursor,
             limit: limit

@@ -28,7 +28,7 @@ public class PostChildFeedLoader: ChildFeedLoader<PersonContent> {
         }
 
         private func internalFetchCursor(page: Int?, cursor: String?) async throws -> FetchResponse {
-            let response = try await api.getSavedPosts(
+            let response = try await api.getPostHistory(
                 page: page,
                 cursor: cursor,
                 limit: pageSize
