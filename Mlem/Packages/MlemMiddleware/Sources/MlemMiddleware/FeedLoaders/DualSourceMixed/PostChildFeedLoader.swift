@@ -20,18 +20,24 @@ public class PostChildFeedLoader: ChildFeedLoader<PersonContent> {
         }
         
         override func fetchPage(_ page: Int) async throws -> FetchResponse {
-            let response = try await api.getPosts(
-                feed: .all,
-                sort: .new,
+            try await internalFetchCursor(page: page, cursor: nil)
+        }
+
+        override func fetchCursor(_ cursor: String) async throws -> FetchResponse {
+            try await internalFetchCursor(page: nil, cursor: cursor)
+        }
+
+        private func internalFetchCursor(page: Int?, cursor: String?) async throws -> FetchResponse {
+            let response = try await api.getSavedPosts(
                 page: page,
-                cursor: nil,
-                limit: pageSize,
-                filter: filter
+                cursor: cursor,
+                limit: pageSize
             )
+
             return .init(
                 items: response.posts.map { PersonContent(wrappedValue: .post($0)) },
-                prevCursor: nil,
-                nextCursor: nil
+                prevCursor: cursor,
+                nextCursor: response.cursor
             )
         }
     }

@@ -65,8 +65,8 @@ public class Fetcher<Item: FeedLoadable> {
                 log.debug("[\(Item.self) Fetcher] loading cursor \(cursor)")
                 let response = try await fetchCursor(cursor)
                 
-                // if same cursor returned, loading is finished
-                if response.nextCursor == self.cursor {
+                // if same cursor returned, loading is finished. On Lemmy 1.0, if no cursor is returned, loading is finished.
+                if response.nextCursor == self.cursor || (self.cursor != nil && response.nextCursor == nil) {
                     return .done(response.items)
                 }
                 

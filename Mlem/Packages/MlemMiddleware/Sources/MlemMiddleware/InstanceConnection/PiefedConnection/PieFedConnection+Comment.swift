@@ -112,6 +112,32 @@ public extension PieFedConnection {
         let response = try await perform(request)
         return try response.comments.map { try .init(from: $0) }
     }
+
+    func getSavedComments(
+        page: Int?,
+        cursor: String?,
+        limit: Int
+    ) async throws -> (comments: [Comment2Snapshot], cursor: String?) {
+        let request = PieFedGetCommentsRequest(
+            type_: .all,
+            sort: nil,
+            maxDepth: nil,
+            page: page,
+            limit: limit,
+            communityId: nil,
+            postId: nil,
+            parentId: nil,
+            personId: nil,
+            likedOnly: nil,
+            savedOnly: true,
+            depthFirst: false
+        )
+        let response = try await perform(request)
+        return try (
+            comments: response.comments.map { try .init(from: $0) },
+            cursor: nil
+        )
+    }
     
     // This method should be removed in favor of the below method once we drop support for versions before Lemmy 1.0
     func searchComments(

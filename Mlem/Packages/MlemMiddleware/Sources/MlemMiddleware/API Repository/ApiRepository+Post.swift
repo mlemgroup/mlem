@@ -74,6 +74,20 @@ extension ApiRepository {
         }
     }
         
+    func getSavedPosts(
+        page: Int?,
+        cursor: String?,
+        limit: Int
+    ) async throws -> (posts: [Post2Snapshot], cursor: String?) {
+        try await performingForConnection { connection in
+            try await connection.getSavedPosts(
+                page: page,
+                cursor: cursor,
+                limit: limit
+            )
+        }
+    }
+    
     func getPost(id: Int) async throws -> Post3Snapshot {
         try await performingForConnection { connection in
             try await connection.getPost(id: id)
