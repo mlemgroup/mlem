@@ -140,9 +140,9 @@ public extension LemmyConnection {
                     limit: limit,
                     communityId: nil,
                     communityName: nil,
-                    savedOnly: true,
-                    likedOnly: nil,
-                    dislikedOnly: nil,
+                    savedOnly: type == .saved,
+                    likedOnly: type == .upvoted,
+                    dislikedOnly: type == .downvoted,
                     pageCursor: nil,
                     showHidden: false,
                     showRead: nil,
@@ -166,6 +166,8 @@ public extension LemmyConnection {
                     throw ApiClientError.featureUnsupported
                 }
 
+                switch type {
+                case .saved:
                 let request = LemmyListPersonSavedRequest(
                     type_: .all,
                     pageCursor: cursor,
@@ -177,6 +179,20 @@ public extension LemmyConnection {
                     posts: response.saved.compactMap(\.postValue).map { try .init(from: $0) },
                     cursor: response.nextPage
                 )
+                default: 
+                let request = LemmyListPersonLikedRequest(
+                    type_: .all,
+                    likeType: type == .upvoted ? .likedOnly : .dislikedOnly,
+                    pageCursor: cursor,
+                    pageBack: nil,
+                    limit: limit
+                )
+                let response = try await self.perform(request, endpoint: .v4)
+                return try (
+                    posts: response.liked.compactMap(\.postValue).map { try .init(from: $0) },
+                    cursor: response.nextPage
+                )
+                }
             }
         }
     }

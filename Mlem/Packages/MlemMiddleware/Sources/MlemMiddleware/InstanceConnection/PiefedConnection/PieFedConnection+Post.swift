@@ -91,6 +91,9 @@ public extension PieFedConnection {
         cursor: String?,
         limit: Int 
     ) async throws -> (posts: [Post2Snapshot], cursor: String?) {
+        guard type != .downvoted else {
+            throw ApiClientError.featureUnsupported
+        }
         // PieFed doesn't support cursors so we need to fake it here
 
         let pageNumber = (cursor.map(Int.init) ?? nil) ?? 1
@@ -103,8 +106,8 @@ public extension PieFedConnection {
             communityId: nil,
             personId: nil,
             communityName: nil,
-            likedOnly: false,
-            savedOnly: true,
+            likedOnly: type == .upvoted,
+            savedOnly: type == .saved,
             q: nil,
             page: pageNumber,
             feedId: nil,

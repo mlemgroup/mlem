@@ -145,9 +145,9 @@ public extension LemmyConnection {
                     communityName: nil,
                     postId: nil,
                     parentId: nil,
-                    savedOnly: true,
-                    likedOnly: false,
-                    dislikedOnly: false,
+                    savedOnly: type == .saved,
+                    likedOnly: type == .upvoted,
+                    dislikedOnly: type == .downvoted,
                     timeRangeSeconds: nil,
                     pageCursor: nil,
                     pageBack: nil
@@ -158,6 +158,8 @@ public extension LemmyConnection {
                     cursor: response.nextPage
                 )
             case .v4:
+                switch type {
+                case .saved:
                 let request = LemmyListPersonSavedRequest(
                     type_: .comments,
                     pageCursor: cursor,
@@ -171,6 +173,22 @@ public extension LemmyConnection {
                     },
                     cursor: response.nextPage
                 )
+                default:
+                let request = LemmyListPersonLikedRequest(
+                    type_: .comments,
+                    likeType: type == .upvoted ? .likedOnly : .dislikedOnly,
+                    pageCursor: cursor,
+                    pageBack: nil,
+                    limit: limit
+                )
+                let response = try await self.perform(request, endpoint: .v4)
+                return try (
+                    comments: response.liked.compactMap(\.commentValue).map {
+                        try .init(from: $0)
+                    },
+                    cursor: response.nextPage
+                )
+                }
             }
         }
     }

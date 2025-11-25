@@ -119,6 +119,9 @@ public extension PieFedConnection {
         cursor: String?,
         limit: Int
     ) async throws -> (comments: [Comment2Snapshot], cursor: String?) {
+        guard type != .downvoted else {
+            throw ApiClientError.featureUnsupported
+        }
         let request = PieFedGetCommentsRequest(
             type_: .all,
             sort: nil,
@@ -129,8 +132,8 @@ public extension PieFedConnection {
             postId: nil,
             parentId: nil,
             personId: nil,
-            likedOnly: nil,
-            savedOnly: true,
+            likedOnly: type == .upvoted,
+            savedOnly: type == .saved,
             depthFirst: false
         )
         let response = try await perform(request)
