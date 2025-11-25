@@ -21,7 +21,7 @@ struct ModlogButtonView: View {
     }
     
     var body: some View {
-        NavigationLink(.modlog(target)) {
+        NavigationLink(.modlog(target, targetPerson: nil, moderatorPerson: nil)) {
             FormChevron {
                 Label {
                     Text("Modlog")

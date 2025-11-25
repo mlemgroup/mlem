@@ -69,7 +69,7 @@ enum NavigationPage: Hashable {
     case blockList
     case advancedSorting(_ sort: HashWrapper<Binding<PostSortType>>)
     case votesList(_ target: VotesListView.Target)
-    case modlog(ModlogView.InitialTarget)
+    case modlog(ModlogView.InitialTarget, targetPerson: AnyPerson?, moderatorPerson: AnyPerson?)
     case denyApplication(RegistrationApplication)
     case exportPostImage(_ post: HashWrapper<any Post>)
     case actionSheet(_ actions: HashWrapper<[any Actions.Action]>)
@@ -133,12 +133,27 @@ enum NavigationPage: Hashable {
         shareInstancePicker(.init(wrappedValue: sharable))
     }
     
-    static func modlog(community: any Community) -> NavigationPage {
-        modlog(.community(.init(community)))
+    static func modlog(
+        community: any Community,
+        targetPerson: AnyPerson? = nil,
+        moderatorPerson: AnyPerson? = nil
+    ) -> NavigationPage {
+        modlog(.community(.init(community)), targetPerson: targetPerson, moderatorPerson: moderatorPerson)
     }
     
-    static func modlog(instance: any Instance) -> NavigationPage {
-        modlog(.instance(.init(wrappedValue: instance)))
+    static func modlog(
+        instance: any Instance,
+        targetPerson: AnyPerson? = nil,
+        moderatorPerson: AnyPerson? = nil
+    ) -> NavigationPage {
+        modlog(.instance(.init(wrappedValue: instance)), targetPerson: targetPerson, moderatorPerson: moderatorPerson)
+    }
+
+    static func modlog(
+        targetPerson: AnyPerson? = nil,
+        moderatorPerson: AnyPerson? = nil
+    ) -> NavigationPage {
+        modlog(.currentInstance, targetPerson: targetPerson, moderatorPerson: moderatorPerson)
     }
     
     static func instanceOpinionList(
