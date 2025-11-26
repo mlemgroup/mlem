@@ -11,6 +11,7 @@ import MlemMiddleware
 struct ExportableCommentView: View {
     
     let comment: any Comment1Providing
+    let appState: AppState
     let showCreator: Bool
     let showStats: Bool
     
@@ -31,7 +32,7 @@ struct ExportableCommentView: View {
             .padding(Constants.main.standardSpacing)
             .background(.themedGroupedBackground)
             .animation(.snappy, value: animationHashValue)
-            // .environment(appState)
+            .environment(appState)
             // .palette(colorPalette.palette)
             // .environment(\.colorScheme, colorScheme)
     }
