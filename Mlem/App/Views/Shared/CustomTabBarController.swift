@@ -90,6 +90,7 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
            let item = viewController as? CustomTabViewHostingController {
             log.debug("\(item.item.title) tab re-selected")
             TabReselectTracker.main.signal()
+            return TabReselectTracker.main.consumers == 0
         }
         selectedIndexBinding = viewControllers?.firstIndex(of: viewController) ?? 0
         return true

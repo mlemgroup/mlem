@@ -12,6 +12,7 @@ import SwiftUI
 class TabReselectTracker {
     var blockTabSwitch: Bool = false
     private(set) var flag: Bool = false
+    var consumers: Int = 0
 
     static var main: TabReselectTracker = .init()
 
