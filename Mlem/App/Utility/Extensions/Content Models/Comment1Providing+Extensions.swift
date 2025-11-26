@@ -73,6 +73,10 @@ extension Comment1Providing {
             }
             shareAction(navigation: navigation)
             
+            if let navigation {
+                createImageAction(navigation: navigation)
+            }
+            
             if isOwnComment {
                 editAction(appState: appState)
                 deleteAction(appState: appState, feedback: feedback)
@@ -170,6 +174,14 @@ extension Comment1Providing {
     }
     
     // MARK: Actions
+    
+    func createImageAction(navigation: NavigationLayer) -> BasicAction {
+        .init(
+            id: "exportAsImage\(uid)",
+            appearance: .createImage()) {
+                navigation.openSheet(.createCommentImage(self))
+            }
+    }
     
     func editAction(appState: AppState) -> BasicAction {
         .init(

@@ -476,6 +476,8 @@
 		CD6436502D483C96002668FB /* InteractionBarEditorView+Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD64364F2D483C8F002668FB /* InteractionBarEditorView+Views.swift */; };
 		CD6DC02A2D86513D00693B16 /* AnimatedAvatarBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DC0292D86513800693B16 /* AnimatedAvatarBehavior.swift */; };
 		CD6DC02C2D86540A00693B16 /* AnimatedAvatarSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DC02B2D86540500693B16 /* AnimatedAvatarSettingsView.swift */; };
+		CD756A962ED765EC0031D7D1 /* ExportableCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD756A952ED765E90031D7D1 /* ExportableCommentView.swift */; };
+		CD756A982ED7669C0031D7D1 /* ExportableCommentEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD756A972ED766930031D7D1 /* ExportableCommentEditorView.swift */; };
 		CD77437F2C1BA5CE0085BB43 /* MultiplatformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD77437E2C1BA5CE0085BB43 /* MultiplatformView.swift */; };
 		CD7743892C20EDEE0085BB43 /* VotesModel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7743882C20EDEE0085BB43 /* VotesModel+Extensions.swift */; };
 		CD7882A72BFFD1A3002E1A30 /* ThumbnailLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7882A62BFFD1A3002E1A30 /* ThumbnailLocation.swift */; };
@@ -1030,6 +1032,8 @@
 		CD64364F2D483C8F002668FB /* InteractionBarEditorView+Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InteractionBarEditorView+Views.swift"; sourceTree = "<group>"; };
 		CD6DC0292D86513800693B16 /* AnimatedAvatarBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedAvatarBehavior.swift; sourceTree = "<group>"; };
 		CD6DC02B2D86540500693B16 /* AnimatedAvatarSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedAvatarSettingsView.swift; sourceTree = "<group>"; };
+		CD756A952ED765E90031D7D1 /* ExportableCommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportableCommentView.swift; sourceTree = "<group>"; };
+		CD756A972ED766930031D7D1 /* ExportableCommentEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportableCommentEditorView.swift; sourceTree = "<group>"; };
 		CD77437E2C1BA5CE0085BB43 /* MultiplatformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiplatformView.swift; sourceTree = "<group>"; };
 		CD7743882C20EDEE0085BB43 /* VotesModel+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VotesModel+Extensions.swift"; sourceTree = "<group>"; };
 		CD7882A62BFFD1A3002E1A30 /* ThumbnailLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailLocation.swift; sourceTree = "<group>"; };
@@ -2299,6 +2303,8 @@
 		CDBEC30D2E84C9DB00F30B00 /* ExportableViews */ = {
 			isa = PBXGroup;
 			children = (
+				CD756A972ED766930031D7D1 /* ExportableCommentEditorView.swift */,
+				CD756A952ED765E90031D7D1 /* ExportableCommentView.swift */,
 				CD0C5C0F2E9962970074D5A4 /* ExportablePostEditorView.swift */,
 				CDBEC30E2E84C9F300F30B00 /* ExportablePostView.swift */,
 			);
@@ -2637,6 +2643,7 @@
 				03D2A6392C00FAE000ED4FF2 /* UserAccount.swift in Sources */,
 				CDB738292CB8A6A5005B11BB /* View+PaletteBorder.swift in Sources */,
 				CD1DF6382D38357500F7851E /* MediaView.swift in Sources */,
+				CD756A962ED765EC0031D7D1 /* ExportableCommentView.swift in Sources */,
 				03C93CF02BEFFB1A00327BFE /* LoginCredentialsView.swift in Sources */,
 				CD13CC652C5D2B9D001AF428 /* CircleCroppedImageView.swift in Sources */,
 				0325B93E2D3AAE9E00E28B97 /* SettingsHeaderView.swift in Sources */,
@@ -3070,6 +3077,7 @@
 				CDD99C3E2C73F4380010367F /* WarningView.swift in Sources */,
 				030FF6812BC859FD00F6BFAC /* CustomTabViewHostingController.swift in Sources */,
 				035EDF012C2ECFE000F51144 /* Searchable.swift in Sources */,
+				CD756A982ED7669C0031D7D1 /* ExportableCommentEditorView.swift in Sources */,
 				CD7743892C20EDEE0085BB43 /* VotesModel+Extensions.swift in Sources */,
 				CD4D58AD2B86BE7100B82964 /* QuickSwitcherView.swift in Sources */,
 				0397D4642C676CA8002C6CDC /* FeedSortPicker.swift in Sources */,

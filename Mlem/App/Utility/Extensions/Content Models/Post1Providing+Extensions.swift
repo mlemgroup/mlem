@@ -365,11 +365,9 @@ extension Post1Providing {
     func createImageAction(navigation: NavigationLayer) -> BasicAction {
         .init(
             id: "exportAsImage\(uid)",
-            appearance: .createImage(),
-            callback: {
+            appearance: .createImage()) {
                 navigation.openSheet(.createPostImage(self))
             }
-        )
     }
     
     func crossPostAction() -> BasicAction {
