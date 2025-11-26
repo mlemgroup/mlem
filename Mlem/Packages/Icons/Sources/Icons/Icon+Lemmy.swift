@@ -111,6 +111,7 @@ public extension Icon {
         // MARK: - Moderation
         
         public let moderation: Icon = .init("shield")
+        public let targetedPerson: Icon = .init("scope")
         public let administration: Icon = .init("crown")
         
         @inlinable public var addModerator: Icon { moderation }

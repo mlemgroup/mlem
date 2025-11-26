@@ -13,20 +13,23 @@ public struct FilterContext {
     public let moderatedCommunityActorIds: Set<ActorIdentifier>
     public let filteredKeywords: Set<String>
     public let filteredPhrases: Set<[String]>
+    public let filteredLiterals: Set<String>
     
     public init(
         isAdmin: Bool,
         moderatedCommunityActorIds: Set<ActorIdentifier>,
         filteredKeywords: Set<String>,
-        filteredPhrases: Set<[String]>
+        filteredPhrases: Set<[String]>,
+        filteredLiterals: Set<String>
     ) {
         self.isAdmin = isAdmin
         self.moderatedCommunityActorIds = moderatedCommunityActorIds
         self.filteredKeywords = filteredKeywords
         self.filteredPhrases = filteredPhrases
+        self.filteredLiterals = filteredLiterals
     }
     
     static func none() -> FilterContext {
-        .init(isAdmin: true, moderatedCommunityActorIds: [], filteredKeywords: [], filteredPhrases: [])
+        .init(isAdmin: true, moderatedCommunityActorIds: [], filteredKeywords: [], filteredPhrases: [], filteredLiterals: [])
     }
 }

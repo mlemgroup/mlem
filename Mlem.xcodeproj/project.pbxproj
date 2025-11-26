@@ -278,6 +278,7 @@
 		03A631602D4D1CBB009A47A6 /* HapticSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A6315F2D4D1CBB009A47A6 /* HapticSettingsView.swift */; };
 		03A6316D2D4E3D24009A47A6 /* ModeratorActionSeparationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A6316C2D4E3D24009A47A6 /* ModeratorActionSeparationSettingsView.swift */; };
 		03A631CC2D4FD18C009A47A6 /* Post+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A631CA2D4FCEF7009A47A6 /* Post+Mock.swift */; };
+		03A814292ED1BCA90023E9E8 /* ModlogView+Filters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A814282ED1BCA90023E9E8 /* ModlogView+Filters.swift */; };
 		03A82FA12C0D1E8500D01A5C /* ApiClient+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A82FA02C0D1E8500D01A5C /* ApiClient+Extensions.swift */; };
 		03A82FA32C0D1F2400D01A5C /* View+ExternalApiWarning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A82FA22C0D1F2400D01A5C /* View+ExternalApiWarning.swift */; };
 		03A9FD162D7CEC09007A734D /* Theming in Frameworks */ = {isa = PBXBuildFile; productRef = 03A9FD152D7CEC09007A734D /* Theming */; };
@@ -838,6 +839,7 @@
 		03A6315F2D4D1CBB009A47A6 /* HapticSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticSettingsView.swift; sourceTree = "<group>"; };
 		03A6316C2D4E3D24009A47A6 /* ModeratorActionSeparationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeratorActionSeparationSettingsView.swift; sourceTree = "<group>"; };
 		03A631CA2D4FCEF7009A47A6 /* Post+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post+Mock.swift"; sourceTree = "<group>"; };
+		03A814282ED1BCA90023E9E8 /* ModlogView+Filters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ModlogView+Filters.swift"; sourceTree = "<group>"; };
 		03A82FA02C0D1E8500D01A5C /* ApiClient+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ApiClient+Extensions.swift"; sourceTree = "<group>"; };
 		03A82FA22C0D1F2400D01A5C /* View+ExternalApiWarning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ExternalApiWarning.swift"; sourceTree = "<group>"; };
 		03A9FD172D7CFC20007A734D /* Palette+Oled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Palette+Oled.swift"; sourceTree = "<group>"; };
@@ -1315,6 +1317,7 @@
 			children = (
 				033F84702D1C784600D87A9E /* ModlogEntryView.swift */,
 				033F84712D1C784600D87A9E /* ModlogView.swift */,
+				03A814282ED1BCA90023E9E8 /* ModlogView+Filters.swift */,
 				0305EBA92D32B3B80066E5AD /* ModlogView+Logic.swift */,
 			);
 			path = Modlog;
@@ -2943,6 +2946,7 @@
 				CD24CAFC2D5568FE0032B5E8 /* DiscussionLanguageSettingsView.swift in Sources */,
 				0369B35D2BFB86E3001EFEDF /* Account.swift in Sources */,
 				CD0C5C102E99629A0074D5A4 /* ExportablePostEditorView.swift in Sources */,
+				03A814292ED1BCA90023E9E8 /* ModlogView+Filters.swift in Sources */,
 				036CC3AF2B8145C30098B6A1 /* AppState.swift in Sources */,
 				033F844D2D18D90900D87A9E /* MessageBubbleView.swift in Sources */,
 				03134A502BEAD245002662CC /* NavigationLink+NavigationPage.swift in Sources */,

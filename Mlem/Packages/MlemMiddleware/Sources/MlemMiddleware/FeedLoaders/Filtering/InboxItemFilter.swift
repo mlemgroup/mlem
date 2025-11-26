@@ -11,23 +11,23 @@ public enum InboxItemFilterType {
 
 class InboxItemFilter: MultiFilter<InboxItem> {
     private var readFilter: ReadFilter<InboxItem>
-    private var dedupeFilter: InboxDedupeFilter<InboxItem> = .init()
+    private var dedupeFilter: InboxDedupeFilter<InboxItem> = .init(context: .none())
     
     init(showRead: Bool) {
-        self.readFilter = .init()
+        self.readFilter = .init(context: .none())
         if showRead {
             readFilter.active = false
         }
     }
 
-    override func allFilters() -> [any FilterProviding<InboxItem>] {
+    override func allFilters() -> [FilterProviding<InboxItem>] {
         [
             readFilter,
             dedupeFilter
         ]
     }
     
-    override func getFilter(_ toGet: InboxItemFilterType) -> any FilterProviding<InboxItem> {
+    override func getFilter(_ toGet: InboxItemFilterType) -> FilterProviding<InboxItem> {
         switch toGet {
         case .read: readFilter
         case .dedupe: dedupeFilter

@@ -30,11 +30,13 @@ struct TabReselectionConsumer: ViewModifier {
             .onAppear {
                 if !displayed {
                     displayed = true
+                    tabReselectTracker.consumers += 1
                 }
             }
             .onDisappear {
                 if displayed {
                     displayed = false
+                    tabReselectTracker.consumers -= 1
                 }
             }
     }

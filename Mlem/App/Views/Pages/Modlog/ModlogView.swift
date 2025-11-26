@@ -22,14 +22,22 @@ struct ModlogView: View {
     @State var warningPresented: Bool = Settings.get(\.safety_enableModlogWarning)
     
     @State var communityFilter: CommunityFilter?
+    @State var targetPersonFilter: PersonFilter = .any
+    @State var moderatorPersonFilter: PersonFilter = .any
     @State var actionTypeFilter: ModlogEntryType?
     
-    init(initialTarget: InitialTarget) {
+    init(
+        initialTarget: InitialTarget,
+        targetPerson: AnyPerson?,
+        moderatorPerson: AnyPerson?
+    ) {
         self._feedLoader = .init(
             wrappedValue: .init(
                 api: AppState.main.firstApi,
                 pageSize: Settings.get(\.behavior_internetSpeed).pageSize,
                 communityId: nil,
+                targetPersonId: nil,
+                moderatorPersonId: nil,
                 sortType: .new
             )
         )
@@ -43,6 +51,15 @@ struct ModlogView: View {
         case let .instance(instance):
             self._communityFilter = .init(wrappedValue: .any)
             self.api = instance.wrappedValue.api
+        case let .currentInstance:
+            self._communityFilter = .init(wrappedValue: .any)
+            self.api = AppState.main.firstApi
+        }
+        if let person = targetPerson?.wrappedValue as? any Person1Providing {
+            self._targetPersonFilter = .init(wrappedValue: .person(person))
+        }
+        if let person = moderatorPerson?.wrappedValue as? any Person1Providing {
+            self._moderatorPersonFilter = .init(wrappedValue: .person(person))
         }
     }
     
@@ -64,7 +81,7 @@ struct ModlogView: View {
                         }
                     }
                 }
-            case .instance:
+            case .instance, .currentInstance:
                 if let communityFilter {
                     content(communityFilter: communityFilter)
                 } else {
@@ -81,7 +98,7 @@ struct ModlogView: View {
                 showWarningAgain: $showModlogWarning
             )
         }
-        .onChange(of: communityFilter, initial: true) { oldValue, newValue in
+        .onChange(of: refreshHashValue, initial: true) { oldValue, newValue in
             // This prevents the feed from refreshing when changing tabs
             guard oldValue != newValue || feedLoader.loadingState == .initial else {
                 return
@@ -124,84 +141,5 @@ struct ModlogView: View {
                     handleError(error)
                 }
             }
-    }
-    
-    @ViewBuilder
-    func filtersView(communityFilter: CommunityFilter) -> some View {
-        ScrollView(.horizontal) {
-            HStack {
-                Button {
-                    if communityFilter == .any {
-                        navigation.openSheet(.communityPicker(api: api) { community in
-                            self.communityFilter = .community(community)
-                        })
-                    } else {
-                        self.communityFilter = .any
-                    }
-                } label: {
-                    Label(communityFilter.label, icon: .lemmy.community)
-                }
-                .buttonStyle(
-                    .feedFilter(
-                        isOn: communityFilter != .any,
-                        icon: communityFilter == .any ? .general.dropDown : .general.close
-                    )
-                )
-                typeFilterView()
-                    .buttonStyle(.feedFilter(isOn: actionTypeFilter != nil))
-            }
-            .padding(.horizontal, Constants.main.standardSpacing)
-        }
-    }
-    
-    @ViewBuilder
-    func typeFilterView() -> some View {
-        Menu(
-            String(localized: actionTypeFilter?.label ?? "Action Type"),
-            icon: actionTypeFilter?.icon ?? .general.action
-        ) {
-            Section {
-                Toggle(
-                    "Any",
-                    icon: .general.action,
-                    isOn: .init(get: { actionTypeFilter == nil }, set: { _ in actionTypeFilter = nil })
-                )
-            }
-            Section {
-                Picker("Post", icon: .lemmy.post, selection: $actionTypeFilter) {
-                    typeFilterLabel(.removePost)
-                    typeFilterLabel(.lockPost)
-                    typeFilterLabel(.pinPost)
-                    typeFilterLabel(.purgePost)
-                }
-                Picker("Comment", icon: .lemmy.comment, selection: $actionTypeFilter) {
-                    typeFilterLabel(.removeComment)
-                    typeFilterLabel(.purgeComment)
-                }
-                Picker("Community", icon: .lemmy.community, selection: $actionTypeFilter) {
-                    typeFilterLabel(.removeCommunity)
-                    typeFilterLabel(.hideCommunity)
-                    typeFilterLabel(.updatePersonModeratorStatus)
-                    typeFilterLabel(.transferCommunityOwnership)
-                    typeFilterLabel(.purgeCommunity)
-                }
-                Picker("User", icon: .lemmy.person, selection: $actionTypeFilter) {
-                    typeFilterLabel(.banPersonFromInstance)
-                    typeFilterLabel(.banPersonFromCommunity)
-                    typeFilterLabel(.updatePersonModeratorStatus)
-                    typeFilterLabel(.updatePersonAdminStatus)
-                    typeFilterLabel(.purgePerson)
-                }
-            }
-        }
-        .pickerStyle(.menu)
-    }
-    
-    @ViewBuilder
-    func typeFilterLabel(_ type: ModlogEntryType) -> some View {
-        if type.appliesToCommunity || communityFilter == .any {
-            Label(type.contextualLabel.key, icon: type.icon)
-                .tag(type)
-        }
     }
 }
