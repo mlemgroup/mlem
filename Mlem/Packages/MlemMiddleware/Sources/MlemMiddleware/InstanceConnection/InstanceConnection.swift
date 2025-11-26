@@ -54,6 +54,13 @@ public protocol InstanceConnection {
         savedOnly: Bool
     ) async throws -> (person: Person3Snapshot, posts: [Post2Snapshot])
         
+    func getPostHistory(
+        type: GetContentFilter,
+        page: Int?,
+        cursor: String?,
+        limit: Int
+    ) async throws -> (posts: [Post2Snapshot], cursor: String?)
+
     func getPost(id: Int) async throws -> Post3Snapshot
     func getPost(url: URL) async throws -> Post2Snapshot
     
@@ -178,6 +185,13 @@ public protocol InstanceConnection {
         limit: Int,
         filter: GetContentFilter?
     ) async throws -> [Comment2Snapshot]
+
+    func getCommentHistory(
+        type: GetContentFilter,
+        page: Int?,
+        cursor: String?,
+        limit: Int
+    ) async throws -> (comments: [Comment2Snapshot], cursor: String?)
     
     // This method should be removed in favor of the below method once we drop support for versions before Lemmy 1.0
     func searchComments(

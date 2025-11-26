@@ -114,6 +114,89 @@ public extension LemmyConnection {
         )
     }
 
+    func getPostHistory(
+        type: GetContentFilter,
+        page: Int?,
+        cursor: String?,
+        limit: Int
+    ) async throws -> (posts: [Post2Snapshot], cursor: String?) {
+        try await processingForEndpoint { endpoint in
+            switch endpoint {
+            case .v3:
+                // Cursors are supported on v3, but are super slow when
+                // querying saved posts. For that reason, we're considering them
+                // unsupported and requiring a page number instead.
+                // See LemmyNet/lemmy#6171
+
+                guard let page else {
+                    throw ApiClientError.featureUnsupported
+                }
+
+                let request = LemmyListPostsRequest(
+                    endpoint: .v3,
+                    type_: .all,
+                    sort: .old(.new),
+                    page: page,
+                    limit: limit,
+                    communityId: nil,
+                    communityName: nil,
+                    savedOnly: type == .saved,
+                    likedOnly: type == .upvoted,
+                    dislikedOnly: type == .downvoted,
+                    pageCursor: nil,
+                    showHidden: false,
+                    showRead: nil,
+                    showNsfw: nil,
+                    timeRangeSeconds: nil,
+                    multiCommunityId: nil,
+                    multiCommunityName: nil,
+                    hideMedia: nil,
+                    markAsRead: nil,
+                    noCommentsOnly: nil,
+                    pageBack: nil
+                )
+                let response = try await self.perform(request, endpoint: .v3)        
+                return try (
+                    posts: response.posts.map { try .init(from: $0) },
+                    // Cursor intentionally omitted here. See Comment above
+                    cursor: nil
+                )
+            case .v4:
+                if let page, page != 1 {
+                    throw ApiClientError.featureUnsupported
+                }
+
+                switch type {
+                case .saved:
+                let request = LemmyListPersonSavedRequest(
+                    type_: .all,
+                    pageCursor: cursor,
+                    pageBack: nil,
+                    limit: limit
+                )
+                let response = try await self.perform(request, endpoint: .v4)
+                return try (
+                    posts: response.saved.compactMap(\.postValue).map { try .init(from: $0) },
+                    cursor: response.nextPage
+                )
+                default: 
+                let request = LemmyListPersonLikedRequest(
+                    type_: .all,
+                    likeType: type == .upvoted ? .likedOnly : .dislikedOnly,
+                    pageCursor: cursor,
+                    pageBack: nil,
+                    limit: limit
+                )
+                let response = try await self.perform(request, endpoint: .v4)
+                return try (
+                    posts: response.liked.compactMap(\.postValue).map { try .init(from: $0) },
+                    cursor: response.nextPage
+                )
+                }
+            }
+        }
+    }
+
     func getPost(id: Int) async throws -> Post3Snapshot {
         let response = try await performingForEndpoint { endpoint in
             LemmyGetPostRequest(

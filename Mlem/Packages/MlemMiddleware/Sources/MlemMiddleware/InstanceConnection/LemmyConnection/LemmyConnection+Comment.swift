@@ -120,6 +120,78 @@ public extension LemmyConnection {
         }
         return try response.comments.map { try .init(from: $0) }
     }
+
+    func getCommentHistory(
+        type: GetContentFilter,
+        page: Int?,
+        cursor: String?,
+        limit: Int
+    ) async throws -> (comments: [Comment2Snapshot], cursor: String?) {
+        try await processingForEndpoint { endpoint in
+            switch endpoint {
+            case .v3:
+                guard let page else {
+                    throw ApiClientError.featureUnsupported
+                }
+
+                let request = LemmyListCommentsRequest(
+                    endpoint: .v3,
+                    type_: .all,
+                    sort: .new,
+                    maxDepth: nil,
+                    page: page,
+                    limit: limit,
+                    communityId: nil,
+                    communityName: nil,
+                    postId: nil,
+                    parentId: nil,
+                    savedOnly: type == .saved,
+                    likedOnly: type == .upvoted,
+                    dislikedOnly: type == .downvoted,
+                    timeRangeSeconds: nil,
+                    pageCursor: nil,
+                    pageBack: nil
+                )
+                let response = try await self.perform(request, endpoint: .v3)
+                return try (
+                    comments: response.comments.map { try .init(from: $0) },
+                    cursor: response.nextPage
+                )
+            case .v4:
+                switch type {
+                case .saved:
+                let request = LemmyListPersonSavedRequest(
+                    type_: .comments,
+                    pageCursor: cursor,
+                    pageBack: nil,
+                    limit: limit
+                )
+                let response = try await self.perform(request, endpoint: .v4)
+                return try (
+                    comments: response.saved.compactMap(\.commentValue).map {
+                        try .init(from: $0)
+                    },
+                    cursor: response.nextPage
+                )
+                default:
+                let request = LemmyListPersonLikedRequest(
+                    type_: .comments,
+                    likeType: type == .upvoted ? .likedOnly : .dislikedOnly,
+                    pageCursor: cursor,
+                    pageBack: nil,
+                    limit: limit
+                )
+                let response = try await self.perform(request, endpoint: .v4)
+                return try (
+                    comments: response.liked.compactMap(\.commentValue).map {
+                        try .init(from: $0)
+                    },
+                    cursor: response.nextPage
+                )
+                }
+            }
+        }
+    }
     
     // This method should be removed in favor of the below method once we drop support for versions before Lemmy 1.0
     func searchComments(

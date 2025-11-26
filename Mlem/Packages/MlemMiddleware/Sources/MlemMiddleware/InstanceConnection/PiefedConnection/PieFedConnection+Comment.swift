@@ -112,6 +112,36 @@ public extension PieFedConnection {
         let response = try await perform(request)
         return try response.comments.map { try .init(from: $0) }
     }
+
+    func getCommentHistory(
+        type: GetContentFilter,
+        page: Int?,
+        cursor: String?,
+        limit: Int
+    ) async throws -> (comments: [Comment2Snapshot], cursor: String?) {
+        guard type != .downvoted else {
+            throw ApiClientError.featureUnsupported
+        }
+        let request = PieFedGetCommentsRequest(
+            type_: .all,
+            sort: nil,
+            maxDepth: nil,
+            page: page,
+            limit: limit,
+            communityId: nil,
+            postId: nil,
+            parentId: nil,
+            personId: nil,
+            likedOnly: type == .upvoted,
+            savedOnly: type == .saved,
+            depthFirst: false
+        )
+        let response = try await perform(request)
+        return try (
+            comments: response.comments.map { try .init(from: $0) },
+            cursor: nil
+        )
+    }
     
     // This method should be removed in favor of the below method once we drop support for versions before Lemmy 1.0
     func searchComments(

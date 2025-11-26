@@ -85,6 +85,41 @@ public extension PieFedConnection {
         throw ApiClientError.featureUnsupported
     }
 
+    func getPostHistory(
+        type: GetContentFilter,
+        page: Int?,
+        cursor: String?,
+        limit: Int 
+    ) async throws -> (posts: [Post2Snapshot], cursor: String?) {
+        guard type != .downvoted else {
+            throw ApiClientError.featureUnsupported
+        }
+        // PieFed doesn't support cursors so we need to fake it here
+
+        let pageNumber = (cursor.map(Int.init) ?? nil) ?? 1
+
+        let request = PieFedListPostsRequest(
+            type_: nil,
+            sort: .new,
+            pageCursor: pageNumber,
+            limit: limit,
+            communityId: nil,
+            personId: nil,
+            communityName: nil,
+            likedOnly: type == .upvoted,
+            savedOnly: type == .saved,
+            q: nil,
+            page: pageNumber,
+            feedId: nil,
+            topicId: nil,
+            ignoreSticky: nil
+        )
+        let response = try await perform(request)
+        let posts: [Post2Snapshot] = try response.posts.map { try .init(from: $0) }
+
+        return (posts: posts, cursor: String(pageNumber+1))
+    }
+
     func getPost(id: Int) async throws -> Post3Snapshot {
         let request = PieFedGetPostRequest(id: id, commentId: nil)
         let response = try await perform(request)
