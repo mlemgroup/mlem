@@ -14,7 +14,7 @@ public extension PieFedConnection {
         limit: Int,
         unreadOnly: Bool = false
     ) async throws -> [Reply2Snapshot] {
-        guard let sort = sort.piefedSortType else {
+        guard let sort = sort.piefedCommentSortType else {
             throw ApiClientError.featureUnsupported
         }
         let request = PieFedGetRepliesRequest(
