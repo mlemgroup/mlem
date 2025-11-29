@@ -505,6 +505,7 @@
 		CD9CFA302C2E22F600739BBC /* FeedDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9CFA2F2C2E22F600739BBC /* FeedDescription.swift */; };
 		CD9CFA372C306DAB00739BBC /* PostGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9CFA362C306DAB00739BBC /* PostGridView.swift */; };
 		CD9D243D2CC1DF59006E5F3F /* AccountType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9D243C2CC1DF55006E5F3F /* AccountType.swift */; };
+		CDA1D2A52ED8C46B0077A9EA /* ExportableViewComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1D2A42ED8C4670077A9EA /* ExportableViewComponents.swift */; };
 		CDA67A9F2D9B32A100E5D17B /* CGPoint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA67A9E2D9B329D00E5D17B /* CGPoint+Extensions.swift */; };
 		CDA683F82C77E577000C4486 /* NsfwBlurBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA683F72C77E577000C4486 /* NsfwBlurBehavior.swift */; };
 		CDA711FB2DB5CAC3008BC3ED /* Media in Frameworks */ = {isa = PBXBuildFile; productRef = CDA711FA2DB5CAC3008BC3ED /* Media */; };
@@ -1062,6 +1063,7 @@
 		CD9CFA2F2C2E22F600739BBC /* FeedDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDescription.swift; sourceTree = "<group>"; };
 		CD9CFA362C306DAB00739BBC /* PostGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostGridView.swift; sourceTree = "<group>"; };
 		CD9D243C2CC1DF55006E5F3F /* AccountType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountType.swift; sourceTree = "<group>"; };
+		CDA1D2A42ED8C4670077A9EA /* ExportableViewComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportableViewComponents.swift; sourceTree = "<group>"; };
 		CDA67A9E2D9B329D00E5D17B /* CGPoint+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extensions.swift"; sourceTree = "<group>"; };
 		CDA683F72C77E577000C4486 /* NsfwBlurBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NsfwBlurBehavior.swift; sourceTree = "<group>"; };
 		CDAA02DA2C810DB200D75633 /* Calendar+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+Extensions.swift"; sourceTree = "<group>"; };
@@ -2303,6 +2305,7 @@
 		CDBEC30D2E84C9DB00F30B00 /* ExportableViews */ = {
 			isa = PBXGroup;
 			children = (
+				CDA1D2A42ED8C4670077A9EA /* ExportableViewComponents.swift */,
 				CD756A972ED766930031D7D1 /* ExportableCommentEditorView.swift */,
 				CD756A952ED765E90031D7D1 /* ExportableCommentView.swift */,
 				CD0C5C0F2E9962970074D5A4 /* ExportablePostEditorView.swift */,
@@ -2772,6 +2775,7 @@
 				037F78412D3C00E600D4E180 /* SettingsInteractionBarSummaryView.swift in Sources */,
 				035394862C9CDC1100795AA5 /* SubscriptionListNavigationButton.swift in Sources */,
 				039F58842C7A7F2C00C61658 /* CommentJumpButtonLocation.swift in Sources */,
+				CDA1D2A52ED8C46B0077A9EA /* ExportableViewComponents.swift in Sources */,
 				CD1B2E212C7F84160075C7EA /* View+MarkReadOnScroll.swift in Sources */,
 				033F84AD2C298466002E3EDF /* SectionIndexTitles.swift in Sources */,
 				CDEE15542D22364B00EB9D7B /* ErrorLogView.swift in Sources */,

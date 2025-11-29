@@ -56,17 +56,7 @@ struct ExportablePostEditorView: View {
         }
         .presentationBackground(.themedGroupedBackground)
         .overlay(alignment: .bottom) {
-            Group {
-                if #available(iOS 26, *) {
-                    controls
-                        .glassEffect(.regular.interactive(), in: .capsule)
-                } else {
-                    controls
-                        .background(.regularMaterial, in: .capsule)
-                }
-            }
-            .padding(.horizontal, 50)
-            .padding(Constants.main.standardSpacing)
+            ExportableViewControlOverlay(snapshot: snapshot)
         }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -92,49 +82,6 @@ struct ExportablePostEditorView: View {
             }
         }
     }
-    
-    @ViewBuilder
-    var controls: some View {
-        HStack {
-            saveButton
-            shareButton
-        }
-        .font(.title2)
-        .labelStyle(.iconOnly)
-        .buttonStyle(.plain)
-        .padding(.horizontal, Constants.main.halfSpacing)
-    }
-    
-    @ViewBuilder var saveButton: some View {
-        if let imageData = snapshot?.pngData() {
-            Button("Save", icon: .general.import) {
-                Task {
-                    do {
-                        try await ImageSaver().writeImageToPhotoAlbum(imageData: imageData)
-                        ToastModel.main.add(.success("Image Saved"))
-                    } catch {
-                        handleError(error)
-                    }
-                }
-            }
-            .padding(Constants.main.standardSpacing)
-            .contentShape(.rect)
-        } else {
-            ProgressView()
-        }
-    }
-    
-    @ViewBuilder
-    var shareButton: some View {
-        if let imageData = snapshot?.pngData(),
-           let fileUrl = createTempFile(data: imageData, fileName: "post.png") {
-            ShareLink(item: fileUrl)
-                .padding(Constants.main.standardSpacing)
-                .contentShape(.rect)
-        } else {
-            ProgressView()
-        }
-    }
         
     var exportablePost: some View {
         ExportablePostView(
@@ -146,14 +93,5 @@ struct ExportablePostEditorView: View {
             showStats: showStats
         )
         .allowsHitTesting(false)
-    }
-    
-    private func createTempFile(data: Data, fileName: String) -> URL? {
-        do {
-            return try data.writeToTempFile(fileName: fileName)
-        } catch {
-            handleError(error)
-            return nil
-        }
     }
 }
