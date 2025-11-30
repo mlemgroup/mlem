@@ -27,7 +27,7 @@ public protocol InstanceStubProviding: ActorIdentifiable, ContentModel {
     
     // From Instance2Providing. These are defined as nil in the extension below
     var setup_: Bool? { get }
-    var downvotesEnabled_: Bool? { get }
+    var voteFederationMode_: VoteFederationMode? { get }
     var nsfwContentEnabled_: Bool? { get }
     var communityCreationRestrictedToAdmins_: Bool? { get }
     var emailVerificationRequired_: Bool? { get }
@@ -77,7 +77,7 @@ public extension InstanceStubProviding {
     var contentWarning_: String? { nil }
     
     var setup_: Bool? { nil }
-    var downvotesEnabled_: Bool? { nil }
+    var voteFederationMode_: VoteFederationMode? { nil }
     var nsfwContentEnabled_: Bool? { nil }
     var communityCreationRestrictedToAdmins_: Bool? { nil }
     var emailVerificationRequired_: Bool? { nil }
