@@ -55,6 +55,13 @@ extension ExpandedPostView {
         }
     }
     
+    var hasNoComments: Bool {
+        if tracker?.loadingState == .done {
+            return tracker?.nodesKeyedByActorId.count == 0
+        }
+        return (post?.commentCount_ ?? -1) == 0
+    }
+    
     var showLoadingSymbol: Bool {
         // Don't need to show ProgressView if there's nothing to scroll to
         if scrollTargetedComment == nil { return false }
