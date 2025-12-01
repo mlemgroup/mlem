@@ -51,10 +51,6 @@ extension ContentView {
     }
     
     func handleHapticError(_ error: HapticError) {
-        let silent = switch error {
-        case .failedToStartEngine, .failedToStartPlayer, .failedToMakePlayer: !developerMode
-        default: false
-        }
-        handleError(error, silent: silent)
+        handleError(error, silent: !developerMode)
     }
 }
