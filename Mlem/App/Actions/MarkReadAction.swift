@@ -27,8 +27,16 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension MarkReadAction {
-    static let markReadLabel: ActionLabel = .init("Mark Read", icon: .lemmy.markRead)
-    static let markUnreadLabel: ActionLabel = .init("Mark Unread", icon: .lemmy.markUnread)
+    static let markReadLabel: ActionLabel = .init(
+        "Mark Read",
+        icon: .lemmy.markRead,
+        color: .themedRead
+    )
+    static let markUnreadLabel: ActionLabel = .init(
+        "Mark Unread",
+        icon: .lemmy.markUnread,
+        color: .themedRead
+    )
     
     static var label: ActionLabel { markReadLabel }
 
