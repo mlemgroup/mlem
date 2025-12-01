@@ -27,8 +27,17 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension BlockAction {
-    static let blockLabel: ActionLabel = .init("Block User", icon: .lemmy.block, isDestructive: true)
-    static let unblockLabel: ActionLabel = .init("Unblock User", icon: .lemmy.unblock)
+    static let blockLabel: ActionLabel = .init(
+        "Block User",
+        icon: .lemmy.block,
+        color: .themedNegative,
+        isDestructive: true
+    )
+    static let unblockLabel: ActionLabel = .init(
+        "Unblock User",
+        icon: .lemmy.unblock,
+        color: .themedPositive
+    )
     
     static var label: ActionLabel { blockLabel }
 
