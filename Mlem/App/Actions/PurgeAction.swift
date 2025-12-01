@@ -35,8 +35,18 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension PurgeAction {
-    static let label: ActionLabel = .init("Purge", icon: .lemmy.purge, isDestructive: true)
-    static let verboseLabel: ActionLabel = .init("Purge User", icon: .lemmy.purge, isDestructive: true)
+    static let label: ActionLabel = .init(
+        "Purge",
+        icon: .lemmy.purge,
+        color: .themedNegative,
+        isDestructive: true
+    )
+    static let verboseLabel: ActionLabel = .init(
+        "Purge User",
+        icon: .lemmy.purge,
+        color: .themedNegative,
+        isDestructive: true
+    )
     
     func createLabel(environment: EnvironmentValues) -> ActionLabel {
         if useVerboseLabel {

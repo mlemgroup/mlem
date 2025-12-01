@@ -15,7 +15,7 @@ private extension QuickSwipeAction {
         if label.visibility == .hidden { return nil }
         self.init(
             icon: label.icon,
-            color: .themedAccent,
+            color: label.color,
             enabled: label.visibility == .enabled,
             confirmationPrompt: nil,
             callback: callback

@@ -27,10 +27,26 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension RemoveAction {
-    static let label: ActionLabel = .init("Remove", icon: .lemmy.remove, isDestructive: true)
+    static let removeLabel: ActionLabel = .init(
+        "Remove",
+        icon: .lemmy.remove,
+        color: .themedNegative,
+        isDestructive: true
+    )
+    static let restoreLabel: ActionLabel = .init(
+        "Restore",
+        icon: .lemmy.restore,
+        color: .themedPositive
+    )
+    
+    static var label: ActionLabel { removeLabel }
     
     func createLabel(environment: EnvironmentValues) -> ActionLabel {
-        Self.label.withVisibility(visibility(environment))
+        if entity.removed {
+            Self.restoreLabel.withVisibility(visibility(environment))
+        } else {
+            Self.removeLabel.withVisibility(visibility(environment))
+        }
     }
     
     private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {

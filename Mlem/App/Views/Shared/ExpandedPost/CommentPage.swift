@@ -46,7 +46,7 @@ struct CommentPage: View {
                 post: post,
                 contentLoaderError: proxy.error,
                 isLoading: proxy.isLoading,
-                tracker: $tracker,
+                tracker: tracker,
                 scrollTargetedComment: proxy.entity
             ) {
                 if let post, showViewPostButton || tracker?.nodes.first?.comment.depth != 0 {

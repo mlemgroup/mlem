@@ -30,6 +30,7 @@ extension ReportAction {
     static let label: ActionLabel = .init(
         "Report",
         icon: .lemmy.report,
+        color: .themedNegative,
         isDestructive: true
     )
     
