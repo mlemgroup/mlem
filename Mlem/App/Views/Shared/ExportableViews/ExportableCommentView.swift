@@ -9,9 +9,11 @@ import SwiftUI
 import MlemMiddleware
 
 struct ExportableCommentView: View {
+    @Setting(\.appearance_palette) var colorPalette
     
     let comment: any Comment1Providing
-    let appState: AppState
+    let appState: AppState // directly passed in because ImageRenderer doesn't work with @Environment
+    let colorScheme: ColorScheme
     let showCreator: Bool
     let showStats: Bool
     
@@ -33,8 +35,8 @@ struct ExportableCommentView: View {
             .background(.themedGroupedBackground)
             .animation(.snappy, value: animationHashValue)
             .environment(appState)
-            // .palette(colorPalette.palette)
-            // .environment(\.colorScheme, colorScheme)
+            .palette(colorPalette.palette)
+            .environment(\.colorScheme, colorScheme)
     }
     
     var content: some View {
