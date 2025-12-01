@@ -73,7 +73,12 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension BanAction {
-    static let label: ActionLabel = .init("Ban", icon: .lemmy.banFromCommunity, isDestructive: true)
+    static let label: ActionLabel = .init(
+        "Ban",
+        icon: .lemmy.banFromCommunity,
+        color: .themedNegative,
+        isDestructive: true
+    )
 
     func createLabel(environment: EnvironmentValues) -> ActionLabel {
         let label: ActionLabel
@@ -84,18 +89,36 @@ extension BanAction {
         switch (bannedFrom: appliedBanScopes, canBanFrom: actionableBanScopes) {
         case (bannedFrom: .none, canBanFrom: .both),
              (bannedFrom: .anyNotContaining(.instance), canBanFrom: .instanceOnly):
-            label = .init("Ban", icon: .lemmy.banFromInstance, isDestructive: true)
+            label = .init(
+                "Ban",
+                icon: .lemmy.banFromInstance,
+                color: .themedNegative,
+                isDestructive: true
+            )
 
         case (bannedFrom: .anyContaining(.instance), canBanFrom: .instanceOnly),
              (bannedFrom: .both, canBanFrom: .both):
-            label = .init("Unban", icon: .lemmy.unbanFromInstance)
+            label = .init(
+                "Unban",
+                icon: .lemmy.unbanFromInstance,
+                color: .themedPositive
+            )
 
         case (bannedFrom: .instanceOnly, canBanFrom: .both),
              (bannedFrom: .communityOnly, canBanFrom: .both):
-            label = .init("Ban...", icon: .lemmy.banFromInstance, isDestructive: true)
+            label = .init(
+                "Ban...",
+                icon: .lemmy.banFromInstance,
+                color: .themedNegative,
+                isDestructive: true
+            )
 
         case (bannedFrom: .anyContaining(.community), canBanFrom: .communityOnly):
-            label = .init("Unban", icon: .lemmy.unbanFromCommunity)
+            label = .init(
+                "Unban",
+                icon: .lemmy.unbanFromCommunity,
+                color: .themedPositive
+            )
 
         case (bannedFrom: .anyNotContaining(.community), canBanFrom: .communityOnly):
             label = Self.label
