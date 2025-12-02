@@ -8,7 +8,18 @@
 import Foundation
 
 public extension CommentSortType {
-    var piefedSortType: PieFedCommentSortType? {
+    var piefedSortType: PieFedSortType? {
+        switch self {
+        case .new: .new
+        case .old: .old
+        case .hot: .hot
+        case .controversial: nil
+        case .top(.allTime): .top
+        case .top: nil
+        }
+    }
+
+    var piefedCommentSortType: PieFedCommentSortType? {
         switch self {
         case .new: .new
         case .old: .old

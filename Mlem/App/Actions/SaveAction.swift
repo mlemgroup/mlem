@@ -27,8 +27,16 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension SaveAction {
-    static let saveLabel: ActionLabel = .init("Save", icon: .lemmy.saved.representingState(active: false))
-    static let unsaveLabel: ActionLabel = .init("Saved", icon: .lemmy.saved.representingState(active: true))
+    static let saveLabel: ActionLabel = .init(
+        "Save",
+        icon: .lemmy.saved.representingState(active: false),
+        color: .themedSave
+    )
+    static let unsaveLabel: ActionLabel = .init(
+        "Saved",
+        icon: .lemmy.saved.representingState(active: true),
+        color: .themedSave
+    )
     
     static var label: ActionLabel { saveLabel }
 

@@ -15,7 +15,8 @@ let package = Package(
 
     ],
     dependencies: [
-        .package(path: "../Icons")
+        .package(path: "../Icons"),
+        .package(path: "../Theming")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -23,7 +24,8 @@ let package = Package(
         .target(
             name: "Actions",
             dependencies: [
-                .byName(name: "Icons")
+                .byName(name: "Icons"),
+                .byName(name: "Theming")
             ],
             swiftSettings: [
                 .swiftLanguageMode(.v5),

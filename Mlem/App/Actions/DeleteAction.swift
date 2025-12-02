@@ -27,8 +27,17 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension DeleteAction {
-    static let deleteLabel: ActionLabel = .init("Delete", icon: .general.delete, isDestructive: true)
-    static let restoreLabel: ActionLabel = .init("Restore", icon: .lemmy.restore)
+    static let deleteLabel: ActionLabel = .init(
+        "Delete",
+        icon: .general.delete,
+        color: .themedNegative,
+        isDestructive: true
+    )
+    static let restoreLabel: ActionLabel = .init(
+        "Restore",
+        icon: .lemmy.restore,
+        color: .themedPositive
+    )
     
     static var label: ActionLabel { deleteLabel }
 

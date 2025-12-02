@@ -36,7 +36,7 @@ struct ExpandedPostView<Content: View>: View {
     let highlightedComment: (any CommentStubProviding)?
     let content: Content
     
-    @Binding var tracker: CommentTreeTracker?
+    var tracker: CommentTreeTracker?
     @State var scrollTargetedComment: (any CommentStubProviding)?
 
     @State var scrolledToScrollTargetedComment: Bool = false
@@ -50,7 +50,7 @@ struct ExpandedPostView<Content: View>: View {
         post: (any PostStubProviding)?,
         contentLoaderError: Error?,
         isLoading: Bool,
-        tracker: Binding<CommentTreeTracker?>,
+        tracker: CommentTreeTracker?,
         highlightedComment: (any CommentStubProviding)? = nil,
         scrollTargetedComment: (any CommentStubProviding)? = nil,
         @ViewBuilder content: () -> Content = { EmptyView() }
@@ -60,7 +60,7 @@ struct ExpandedPostView<Content: View>: View {
         self.isLoading = isLoading
         self.highlightedComment = highlightedComment
         self.content = content()
-        self._tracker = tracker
+        self.tracker = tracker
         self._scrollTargetedComment = .init(wrappedValue: scrollTargetedComment)
     }
     
@@ -120,7 +120,7 @@ struct ExpandedPostView<Content: View>: View {
                         } else if let contentLoaderError {
                             ErrorView(.init(error: contentLoaderError))
                                 .frame(maxWidth: .infinity)
-                        } else if (post.commentCount_ ?? -1) == 0 {
+                        } else if hasNoComments {
                             noCommentsView
                                 .padding(.top, Constants.main.doubleSpacing)
                         } else if let tracker {
