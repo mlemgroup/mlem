@@ -22,6 +22,11 @@ extension EnvironmentValues {
     @Entry var scrollProxy: ScrollViewProxy?
     @Entry var exposeRemovedContent: Bool = false
     
+    /// Set to true to disable MediaView using the Nuke pipeline to resize images ahead of time
+    /// This behavior improves performance but causes rendering issues with ImageRenderer, so this should only be used
+    /// to disable it in specific view trees where ImageRenderer interactions are relevant.
+    @Entry var disablePipelineResizing: Bool?
+    
     var appState: AppState {
         if let appState = self[AppState.self] {
             return appState

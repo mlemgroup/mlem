@@ -12,6 +12,8 @@ import Media
 
 /// Convenience struct to automatically circle-crop an image. Also applies the given `frame` parameter as a frame to the view.
 struct CircleCroppedImageView: View {
+    @Environment(\.disablePipelineResizing) var disablePipelineResizing: Bool?
+    
     let url: URL?
     let frame: CGFloat // only need one CGFloat because always 1:1 aspect ratio
     let fallback: MediaView.Fallback
@@ -47,7 +49,7 @@ struct CircleCroppedImageView: View {
     var body: some View {
         MediaView(
             url: url,
-            size: .init(width: frame, height: frame),
+            size: .init(width: frame, height: frame), // disablePipelineResizing ?? false ? nil : .init(width: frame, height: frame),
             controlState: .constant(.init(
                 blurred: blurred,
                 animating: enableAnimation,

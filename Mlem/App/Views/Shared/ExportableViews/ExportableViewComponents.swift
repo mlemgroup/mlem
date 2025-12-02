@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ExportableViewControlOverlay: View {
     let snapshot: UIImage?
+    let createSnapshot: () -> UIImage?
     
     var body: some View {
         Group {
@@ -37,34 +38,41 @@ struct ExportableViewControlOverlay: View {
     
     @ViewBuilder
     var saveButton: some View {
-        if let imageData = snapshot?.pngData() {
-            Button("Save", icon: .general.import) {
-                Task {
-                    do {
-                        try await ImageSaver().writeImageToPhotoAlbum(imageData: imageData)
-                        ToastModel.main.add(.success("Image Saved"))
-                    } catch {
-                        handleError(error)
-                    }
+        Button("Save", icon: .general.import) {
+            Task {
+                guard let imageData = createSnapshot()?.pngData() else {
+                    assertionFailure("Rendering failed")
+                    ToastModel.main.add(.failure("Failed"))
+                    return
+                }
+                do {
+                    try await ImageSaver().writeImageToPhotoAlbum(imageData: imageData)
+                    ToastModel.main.add(.success("Image Saved"))
+                } catch {
+                    handleError(error)
                 }
             }
-            .padding(Constants.main.standardSpacing)
-            .contentShape(.rect)
-        } else {
-            ProgressView()
         }
+        .padding(Constants.main.standardSpacing)
+        .contentShape(.rect)
     }
     
     @ViewBuilder
     var shareButton: some View {
-        if let imageData = snapshot?.pngData(),
+        ShareLink(
+            item: TransferableUIImage(createImage: createSnapshot),
+            preview: SharePreview(
+                "Image",
+                image: TransferableUIImage(createImage: createSnapshot)
+            ))
+    }
+    
+    private func shareLinkItem() -> URL? {
+        if let imageData = createSnapshot()?.pngData(),
            let fileUrl = createTempFile(data: imageData, fileName: "view.png") {
-            ShareLink(item: fileUrl)
-                .padding(Constants.main.standardSpacing)
-                .contentShape(.rect)
-        } else {
-            ProgressView()
+            return fileUrl
         }
+        return nil
     }
     
     private func createTempFile(data: Data, fileName: String) -> URL? {
@@ -73,6 +81,23 @@ struct ExportableViewControlOverlay: View {
         } catch {
             handleError(error)
             return nil
+        }
+    }
+}
+
+private struct TransferableUIImage: Transferable {
+    var createImage: () -> UIImage?
+    
+    enum TranferableUIImageError: Error {
+        case generationFailed
+    }
+    
+    static var transferRepresentation: some TransferRepresentation {
+        DataRepresentation(exportedContentType: .png) { item in
+            guard let imageData = item.createImage()?.pngData() else {
+                throw TranferableUIImageError.generationFailed
+            }
+            return imageData
         }
     }
 }

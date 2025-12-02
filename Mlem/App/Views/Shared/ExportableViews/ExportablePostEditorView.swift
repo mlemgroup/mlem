@@ -56,7 +56,7 @@ struct ExportablePostEditorView: View {
         }
         .presentationBackground(.themedGroupedBackground)
         .overlay(alignment: .bottom) {
-            ExportableViewControlOverlay(snapshot: snapshot)
+            ExportableViewControlOverlay(snapshot: snapshot) { createImageFromView(exportablePost) }
         }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -92,6 +92,7 @@ struct ExportablePostEditorView: View {
             showCreator: showCreator,
             showStats: showStats
         )
+        .environment(\.disablePipelineResizing, true)
         .allowsHitTesting(false)
     }
 }

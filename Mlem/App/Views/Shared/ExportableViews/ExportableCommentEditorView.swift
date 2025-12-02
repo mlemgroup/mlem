@@ -30,6 +30,7 @@ struct ExportableCommentEditorView: View {
     }
     
     @State var snapshot: UIImage?
+    @State var snapshotRerender: Bool = false
     
     var snapshotRenderHashValue: Int {
         var hasher = Hasher()
@@ -48,7 +49,7 @@ struct ExportableCommentEditorView: View {
             snapshot = createImageFromView(exportableComment)
         }
         .overlay(alignment: .bottom) {
-            ExportableViewControlOverlay(snapshot: snapshot)
+            ExportableViewControlOverlay(snapshot: snapshot) { createImageFromView(exportableComment) }
         }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -82,6 +83,7 @@ struct ExportableCommentEditorView: View {
             showCreator: showCreator,
             showStats: showStats
         )
+        .environment(\.disablePipelineResizing, true)
         .allowsHitTesting(false)
     }
 }
