@@ -74,7 +74,7 @@ class Instance2Cache: ApiTypeBackedCache<Instance2, Instance2Snapshot> {
             api: api,
             instance1: api.caches.instance1.getModel(api: api, from: snapshot.instance),
             setup: snapshot.setup,
-            downvotesEnabled: snapshot.downvotesEnabled,
+            voteFederationMode: snapshot.voteFederationMode,
             nsfwContentEnabled: snapshot.nsfwContentEnabled,
             communityCreationRestrictedToAdmins: snapshot.communityCreationRestrictedToAdmins,
             emailVerificationRequired: snapshot.emailVerificationRequired,

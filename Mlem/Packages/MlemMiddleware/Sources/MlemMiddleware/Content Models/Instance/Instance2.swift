@@ -17,7 +17,8 @@ public final class Instance2: Instance2Providing {
     public let instance1: Instance1
     
     public var setup: Bool
-    public var downvotesEnabled: Bool
+
+    public var voteFederationMode: VoteFederationMode
     public var nsfwContentEnabled: Bool
     public var communityCreationRestrictedToAdmins: Bool
     public var emailVerificationRequired: Bool
@@ -49,7 +50,7 @@ public final class Instance2: Instance2Providing {
         api: ApiClient,
         instance1: Instance1,
         setup: Bool,
-        downvotesEnabled: Bool,
+        voteFederationMode: VoteFederationMode,
         nsfwContentEnabled: Bool,
         communityCreationRestrictedToAdmins: Bool,
         emailVerificationRequired: Bool,
@@ -79,7 +80,7 @@ public final class Instance2: Instance2Providing {
         self.api = api
         self.instance1 = instance1
         self.setup = setup
-        self.downvotesEnabled = downvotesEnabled
+        self.voteFederationMode = voteFederationMode
         self.nsfwContentEnabled = nsfwContentEnabled
         self.communityCreationRestrictedToAdmins = communityCreationRestrictedToAdmins
         self.emailVerificationRequired = emailVerificationRequired

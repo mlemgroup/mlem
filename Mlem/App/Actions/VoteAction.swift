@@ -74,11 +74,21 @@ extension VoteAction {
     private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {
         guard entity.api.canInteract(appState: environment.appState) else { return .hidden }
 
-        if type == .downvote {
-            guard entity.api.downvotesEnabled else { return .hidden }
-        }
+        let voteFederationMode = entity.api.voteFederationMode
 
-        return .enabled
+        switch (self.type, entity is any Post1Providing) {
+        case (.upvote, true):
+            return voteFederationMode.postUpvote == .all ? .enabled : .hidden
+        case (.downvote, true):
+            return voteFederationMode.postDownvote == .all ? .enabled : .hidden
+        case (.upvote, false):
+            return voteFederationMode.commentUpvote == .all ? .enabled : .hidden
+        case (.downvote, false):
+            return voteFederationMode.commentDownvote == .all ? .enabled : .hidden
+        default:
+            assertionFailure()
+            return .hidden
+        }
     }
 }
 

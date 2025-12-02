@@ -99,19 +99,26 @@ extension Interactable1Providing {
         )
     }
     
-    func downvoteCounter(appState: AppState) -> Counter {
+    func downvoteCounter(appState: AppState, downvotesEnabled: Bool) -> Counter {
         .init(
             value: self2?.votes.downvotes,
-            leadingAction: downvoteAction(appState: appState, feedback: [.haptic]),
+            leadingAction: downvoteAction(appState: appState, feedback: [.haptic], downvotesEnabled: downvotesEnabled),
             trailingAction: nil
         )
     }
     
-    func scoreCounter(appState: AppState) -> Counter {
+    func scoreCounter(
+        appState: AppState,
+        downvotesEnabled: Bool
+    ) -> Counter {
         .init(
             value: self2?.votes.total,
             leadingAction: upvoteAction(appState: appState, feedback: [.haptic]),
-            trailingAction: api.downvotesEnabled ? downvoteAction(appState: appState, feedback: [.haptic]) : nil
+            trailingAction: downvotesEnabled ? downvoteAction(
+                appState: appState,
+                feedback: [.haptic],
+                downvotesEnabled: downvotesEnabled
+            ) : nil
         )
     }
     
@@ -133,8 +140,12 @@ extension Interactable1Providing {
         )
     }
     
-    func downvoteAction(appState: AppState, feedback: Set<FeedbackType> = []) -> BasicAction {
-        let enabled = api.canInteract(appState: appState) && api.downvotesEnabled
+    func downvoteAction(
+        appState: AppState,
+        feedback: Set<FeedbackType> = [],
+        downvotesEnabled: Bool
+    ) -> BasicAction {
+        let enabled = api.canInteract(appState: appState) && downvotesEnabled
         return .init(
             id: "downvote\(uid)",
             appearance: .downvote(isOn: self2?.votes.myVote ?? .none == .downvote),
