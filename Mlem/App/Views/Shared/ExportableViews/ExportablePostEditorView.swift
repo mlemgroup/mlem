@@ -92,7 +92,6 @@ struct ExportablePostEditorView: View {
             showCreator: showCreator,
             showStats: showStats
         )
-        // .environment(\.disablePipelineResizing, true)
         .allowsHitTesting(false)
     }
 }

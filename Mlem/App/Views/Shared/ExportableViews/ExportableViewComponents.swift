@@ -68,23 +68,6 @@ struct ExportableViewControlOverlay: View {
         .padding(Constants.main.standardSpacing)
         .contentShape(.rect)
     }
-    
-    private func shareLinkItem() -> URL? {
-        if let imageData = createSnapshot()?.pngData(),
-           let fileUrl = createTempFile(data: imageData, fileName: "view.png") {
-            return fileUrl
-        }
-        return nil
-    }
-    
-    private func createTempFile(data: Data, fileName: String) -> URL? {
-        do {
-            return try data.writeToTempFile(fileName: fileName)
-        } catch {
-            handleError(error)
-            return nil
-        }
-    }
 }
 
 private struct TransferableUIImage: Transferable {

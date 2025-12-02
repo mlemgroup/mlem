@@ -8,7 +8,6 @@
 import Foundation
 import MlemMiddleware
 import SwiftUI
-import os
 
 enum FullyQualifiedLabelStyle: CaseIterable {
     case small
