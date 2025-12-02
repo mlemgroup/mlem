@@ -65,6 +65,8 @@ struct ExportableViewControlOverlay: View {
                 "Image",
                 image: TransferableUIImage(createImage: createSnapshot)
             ))
+        .padding(Constants.main.standardSpacing)
+        .contentShape(.rect)
     }
     
     private func shareLinkItem() -> URL? {
