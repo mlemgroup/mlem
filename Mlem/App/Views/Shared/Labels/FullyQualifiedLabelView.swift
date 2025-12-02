@@ -49,7 +49,6 @@ struct FullyQualifiedLabelView: View {
     @Environment(\.commentContext) var commentContext: (any Comment1Providing)?
     @Environment(\.communityContext) var communityContext: (any Community1Providing)?
     @Environment(\.feedContext) var feedContext: FeedContext?
-    @Environment(\.disablePipelineResizing) var disablePipelineResizing: Bool?
 
     @Setting(\.post_showSubscribedStatus) var showSubscribedStatus
     @Setting(\.person_showAvatar) var showPersonAvatar
@@ -62,15 +61,6 @@ struct FullyQualifiedLabelView: View {
     var showInstance: Bool = true
     var showFlairs: Bool = true
     var blurred: Bool = false
-    
-    var avatarUrl: URL? {
-        if disablePipelineResizing ?? false {
-            Logger.dev.info("Returning full size avatar")
-            return entity?.avatar
-        }
-        Logger.dev.info("Returning small avatar")
-        return entity?.avatar?.withIconSize(labelStyle.avatarResolution)
-    }
     
     var shouldShowAvatar: Bool {
         if let showAvatar { return showAvatar }

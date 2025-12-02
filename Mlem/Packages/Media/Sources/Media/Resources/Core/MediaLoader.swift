@@ -11,7 +11,6 @@ import MlemMiddleware
 import Nuke
 import Rest
 import SwiftUI
-import os
 
 // MARK: Types
 
@@ -76,14 +75,11 @@ public class MediaLoader {
         
         self.proxyBypass = computeProxyBypass(for: url)
         
-        Logger.dev.debug("Trying to find \(String(describing: url))")
         if let cachedImage = retrieveCachedImage(for: url, with: processors) {
             self.mediaType = cachedImage
             self.loading = .done
-            Logger.dev.debug("Found cached")
             return
         }
-        Logger.dev.debug("Did not find cached")
         
         self.mediaType = nil
         self.loading = url == nil ? .failed : .loading

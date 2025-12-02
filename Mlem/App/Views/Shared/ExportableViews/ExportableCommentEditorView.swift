@@ -83,7 +83,6 @@ struct ExportableCommentEditorView: View {
             showCreator: showCreator,
             showStats: showStats
         )
-        .environment(\.disablePipelineResizing, true)
         .allowsHitTesting(false)
     }
 }
