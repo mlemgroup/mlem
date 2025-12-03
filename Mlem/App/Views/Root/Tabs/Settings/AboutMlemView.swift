@@ -79,6 +79,7 @@ struct AboutMlemView: View {
                 .clipShape(.circle)
             
             Text("Mlem \(versionString)")
+                .textSelection(.enabled)
                 .foregroundStyle(.themedSecondary)
         }
         .frame(maxWidth: .infinity)
