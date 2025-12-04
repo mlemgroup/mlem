@@ -78,9 +78,16 @@ struct AboutMlemView: View {
                 .frame(width: 120, height: 120)
                 .clipShape(.circle)
             
-            Text("Mlem \(versionString)")
-                .textSelection(.enabled)
-                .foregroundStyle(.themedSecondary)
+            Menu(String("Mlem \(versionString)")) {
+                Button("Copy", icon: .general.copy) {
+                    let pasteboard = UIPasteboard.general
+                    pasteboard.string = "Mlem \(versionString)"
+                }
+                .tint(.themedPrimary)
+            }
+            .foregroundStyle(.themedSecondary)
+            .buttonStyle(.empty)
+            .frame(maxWidth: .infinity)
         }
         .frame(maxWidth: .infinity)
     }
