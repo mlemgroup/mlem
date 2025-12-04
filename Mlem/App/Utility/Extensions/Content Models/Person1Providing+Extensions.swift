@@ -111,7 +111,7 @@ extension Person1Providing {
             }
         }
         ActionGroup {
-            if let navigation {
+            if let navigation, api.supports(.modlog, defaultValue: false) {
                 openModlogAction(
                     appState: appState,
                     navigation: navigation,
