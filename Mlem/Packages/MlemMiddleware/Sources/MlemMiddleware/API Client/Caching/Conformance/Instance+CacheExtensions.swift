@@ -32,7 +32,7 @@ extension Instance2: CacheIdentifiable {
         instance1.update(with: snapshot.instance)
         
         setIfChanged(\.setup, snapshot.setup)
-        setIfChanged(\.downvotesEnabled, snapshot.downvotesEnabled)
+        setIfChanged(\.voteFederationMode, snapshot.voteFederationMode)
         setIfChanged(\.nsfwContentEnabled, snapshot.nsfwContentEnabled)
         setIfChanged(\.communityCreationRestrictedToAdmins, snapshot.communityCreationRestrictedToAdmins)
         setIfChanged(\.emailVerificationRequired, snapshot.emailVerificationRequired)

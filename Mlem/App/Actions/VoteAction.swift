@@ -31,10 +31,26 @@ private func createVoteAction(_ entity: Any, type: ScoringOperation) -> VoteActi
 // MARK: - Appearance
 
 extension VoteAction {
-    static let upvoteLabel: ActionLabel = .init("Upvote", icon: .lemmy.upvoted.representingState(active: false))
-    static let downvoteLabel: ActionLabel = .init("Downvote", icon: .lemmy.downvoted.representingState(active: false))
-    static let removeUpvoteLabel: ActionLabel = .init("Upvoted", icon: .lemmy.upvoted.representingState(active: true))
-    static let removeDownvoteLabel: ActionLabel = .init("Downvoted", icon: .lemmy.downvoted.representingState(active: true))
+    static let upvoteLabel: ActionLabel = .init(
+        "Upvote",
+        icon: .lemmy.upvoted.representingState(active: false),
+        color: .themedUpvote
+    )
+    static let downvoteLabel: ActionLabel = .init(
+        "Downvote",
+        icon: .lemmy.downvoted.representingState(active: false),
+        color: .themedDownvote
+    )
+    static let removeUpvoteLabel: ActionLabel = .init(
+        "Upvoted",
+        icon: .lemmy.upvoted.representingState(active: true),
+        color: .themedUpvote
+    )
+    static let removeDownvoteLabel: ActionLabel = .init(
+        "Downvoted",
+        icon: .lemmy.downvoted.representingState(active: true),
+        color: .themedDownvote
+    )
     
     static var label: ActionLabel { upvoteLabel }
 
@@ -58,11 +74,21 @@ extension VoteAction {
     private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {
         guard entity.api.canInteract(appState: environment.appState) else { return .hidden }
 
-        if type == .downvote {
-            guard entity.api.downvotesEnabled else { return .hidden }
-        }
+        let voteFederationMode = entity.api.voteFederationMode
 
-        return .enabled
+        switch (self.type, entity is any Post1Providing) {
+        case (.upvote, true):
+            return voteFederationMode.postUpvote == .all ? .enabled : .hidden
+        case (.downvote, true):
+            return voteFederationMode.postDownvote == .all ? .enabled : .hidden
+        case (.upvote, false):
+            return voteFederationMode.commentUpvote == .all ? .enabled : .hidden
+        case (.downvote, false):
+            return voteFederationMode.commentDownvote == .all ? .enabled : .hidden
+        default:
+            assertionFailure()
+            return .hidden
+        }
     }
 }
 

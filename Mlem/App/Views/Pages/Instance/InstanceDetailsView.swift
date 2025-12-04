@@ -10,6 +10,7 @@ import MlemMiddleware
 import SwiftUI
 import Theming
 
+// swiftlint:disable:next type_body_length
 struct InstanceDetailsView: View {
     @State private var showingSlurRegex: Bool = false
     @State var uptimeData: UptimeDataStatus?
@@ -121,6 +122,34 @@ struct InstanceDetailsView: View {
                 }
             }
         }
+
+        FormSection {
+            VStack(alignment: .leading, spacing: 0) {
+                voteFederationRow(
+                    "Post Upvotes",
+                    type: .upvote,
+                    value: instance.voteFederationMode_?.postUpvote ?? .all
+                )
+                Divider()
+                voteFederationRow(
+                    "Post Downvotes",
+                    type: .downvote,
+                    value: instance.voteFederationMode_?.commentDownvote ?? .all
+                )
+                Divider()
+                voteFederationRow(
+                    "Comment Upvotes",
+                    type: .upvote,
+                    value: instance.voteFederationMode_?.commentUpvote ?? .all
+                )
+                Divider()
+                voteFederationRow(
+                    "Comment Downvotes",
+                    type: .downvote,
+                    value: instance.voteFederationMode_?.commentDownvote ?? .all
+                )
+            }
+        }
         
         FormSection {
             VStack(alignment: .leading, spacing: 0) {
@@ -128,12 +157,6 @@ struct InstanceDetailsView: View {
                     "NSFW Content",
                     icon: .settings.blurNsfw,
                     value: instance.nsfwContentEnabled_ ?? false
-                )
-                Divider()
-                settingRow(
-                    "Downvotes",
-                    icon: .lemmy.downvoted,
-                    value: instance.downvotesEnabled_ ?? false
                 )
                 Divider()
                 settingRow(
@@ -246,6 +269,20 @@ struct InstanceDetailsView: View {
             color: value ? .themedPositive : .themedNegative
         )
     }
+
+    @ViewBuilder
+    func voteFederationRow(
+        _ label: LocalizedStringResource,
+        type: ScoringOperation,
+        value: FederationMode
+    ) -> some View {
+        settingRow(
+            label,
+            icon: type.icon,
+            value: value.label,
+            color: value.color
+        )
+    }
     
     @ViewBuilder
     var uptimeSummary: some View {
@@ -256,11 +293,9 @@ struct InstanceDetailsView: View {
                 Spacer()
                 
                 if case .success = uptimeData {
-                    // NavigationLink(.instanceUptime(instance: instance, uptimeData: uptimeData)) {
                     (Text("Details") + Text(verbatim: " ") + Text(Image(icon: .general.forward)))
                         .font(.footnote)
                         .foregroundStyle(.themedAccent)
-                    // }
                 }
             }
             

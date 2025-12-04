@@ -31,3 +31,28 @@ public struct FederationPolicy {
         self.blocked = blocked
     }
 }
+
+public enum FederationMode: Hashable {
+    case all, local, disable
+}
+
+public struct VoteFederationMode: Hashable {
+    public let postUpvote: FederationMode
+    public let postDownvote: FederationMode
+    public let commentUpvote: FederationMode
+    public let commentDownvote: FederationMode
+
+    public static let all: Self = .init(
+        postUpvote: .all,
+        postDownvote: .all,
+        commentUpvote: .all,
+        commentDownvote: .all
+    )
+
+    public static let downvotesDisabled: Self = .init(
+        postUpvote: .all,
+        postDownvote: .disable,
+        commentUpvote: .all,
+        commentDownvote: .disable
+    )
+}

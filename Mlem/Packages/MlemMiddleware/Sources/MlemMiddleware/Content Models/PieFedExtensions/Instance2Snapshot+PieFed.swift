@@ -20,7 +20,7 @@ public extension Instance2Snapshot {
         }
         
         guard let registrationMode = pieFed.registrationMode else {
-            throw ApiClientError.responseMissingRequiredData("PieFedSite downvotesEnabled")
+            throw ApiClientError.responseMissingRequiredData("PieFedSite registrationMode")
         }
 
         let counts = lemmy.counts
@@ -34,7 +34,7 @@ public extension Instance2Snapshot {
         try self.init(
             instance: .init(from: pieFed),
             setup: true,
-            downvotesEnabled: enableDownvotes,
+            voteFederationMode: enableDownvotes ? .all : .downvotesDisabled,
             nsfwContentEnabled: false,
             communityCreationRestrictedToAdmins: false,
             emailVerificationRequired: true,

@@ -34,7 +34,7 @@ public extension PieFedConnection {
         limit: Int,
         filter: GetContentFilter? = nil
     ) async throws -> [Comment2Snapshot] {
-        guard let sort = sort.piefedSortType, filter != .downvoted else {
+        guard let sort = sort.piefedCommentSortType, filter != .downvoted else {
             throw ApiClientError.featureUnsupported
         }
         let request = PieFedGetCommentsRequest(
@@ -63,7 +63,7 @@ public extension PieFedConnection {
         limit: Int,
         filter: GetContentFilter? = nil
     ) async throws -> [Comment2Snapshot] {
-        guard let sort = sort.piefedSortType, filter != .downvoted else {
+        guard let sort = sort.piefedCommentSortType, filter != .downvoted else {
             throw ApiClientError.featureUnsupported
         }
         let request = PieFedGetCommentsRequest(
@@ -92,7 +92,7 @@ public extension PieFedConnection {
         limit: Int,
         filter: GetContentFilter? = nil
     ) async throws -> [Comment2Snapshot] {
-        guard let sort = sort.piefedSortType, filter != .downvoted else {
+        guard let sort = sort.piefedCommentSortType, filter != .downvoted else {
             throw ApiClientError.featureUnsupported
         }
         let request = PieFedGetCommentsRequest(
@@ -153,7 +153,24 @@ public extension PieFedConnection {
         filter: ListingType = .all,
         sort: CommentSortType = .top(.allTime)
     ) async throws -> [Comment2Snapshot] {
-        throw ApiClientError.featureUnsupported
+        guard let sort = sort.piefedSortType else {
+            throw ApiClientError.featureUnsupported
+        }
+        let request = PieFedSearchRequest(
+            q: query,
+            type_: .comments,
+            sort: sort,
+            listingType: filter.pieFedListingType,
+            page: page,
+            limit: limit,
+            communityName: nil,
+            communityId: communityId
+        )
+        let response = try await perform(request)
+        guard let comments = response.comments else {
+            throw ApiClientError.featureUnsupported
+        }
+        return try comments.map { try .init(from: $0) } 
     }
     
     func searchComments(

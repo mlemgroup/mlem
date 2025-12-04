@@ -11,7 +11,7 @@ public protocol Instance2Providing: Instance1Providing {
     var instance2: Instance2 { get }
     
     var setup: Bool { get }
-    var downvotesEnabled: Bool { get }
+    var voteFederationMode: VoteFederationMode { get }
     var nsfwContentEnabled: Bool { get }
     var communityCreationRestrictedToAdmins: Bool { get }
     var emailVerificationRequired: Bool { get }
@@ -44,7 +44,7 @@ public extension Instance2Providing {
     var instance1: Instance1 { instance2.instance1 }
     
     var setup: Bool { instance2.setup }
-    var downvotesEnabled: Bool { instance2.downvotesEnabled }
+    var voteFederationMode: VoteFederationMode { instance2.voteFederationMode }
     var nsfwContentEnabled: Bool { instance2.nsfwContentEnabled }
     var communityCreationRestrictedToAdmins: Bool { instance2.communityCreationRestrictedToAdmins }
     var emailVerificationRequired: Bool { instance2.emailVerificationRequired }
@@ -72,7 +72,7 @@ public extension Instance2Providing {
     var activeUserCount: ActiveUserCount { instance2.activeUserCount }
 
     var setup_: Bool? { instance2.setup }
-    var downvotesEnabled_: Bool? { instance2.downvotesEnabled }
+    var voteFederationMode_: VoteFederationMode? { instance2.voteFederationMode }
     var nsfwContentEnabled_: Bool? { instance2.nsfwContentEnabled }
     var communityCreationRestrictedToAdmins_: Bool? { instance2.communityCreationRestrictedToAdmins }
     var emailVerificationRequired_: Bool? { instance2.emailVerificationRequired }

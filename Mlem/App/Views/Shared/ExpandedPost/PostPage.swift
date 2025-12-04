@@ -32,7 +32,7 @@ struct PostPage: View {
                 post: proxy.entity,
                 contentLoaderError: proxy.error,
                 isLoading: proxy.isLoading,
-                tracker: $tracker,
+                tracker: tracker,
                 scrollTargetedComment: scrollTargetedComment
             ) {
                 if let post = post.wrappedValue as? any Post3Providing, !post.crossPosts.isEmpty {
