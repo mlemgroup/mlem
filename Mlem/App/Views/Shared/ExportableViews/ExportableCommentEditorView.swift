@@ -15,6 +15,7 @@ struct ExportableCommentEditorView: View {
     @Environment(\.colorScheme) var colorScheme
     
     @Setting(\.appearance_palette) var palette
+    @Setting(\.comment_createImage_showPost) var showPost: Bool
     @Setting(\.comment_createImage_showCreator) var showCreator: Bool
     @Setting(\.comment_createImage_showStats) var showStats: Bool
     @Setting(\.comment_createImage_colorScheme) var overrideColorScheme: UIUserInterfaceStyle
@@ -58,6 +59,9 @@ struct ExportableCommentEditorView: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Menu("Details", systemImage: "slider.horizontal.3") {
+                    if comment is any Comment2Providing {
+                        Toggle("Post", icon: .lemmy.post, isOn: $showPost)
+                    }
                     Toggle("Creator", icon: .lemmy.person, isOn: $showCreator)
                     Toggle("Stats", icon: .lemmy.votes, isOn: $showStats)
                     
