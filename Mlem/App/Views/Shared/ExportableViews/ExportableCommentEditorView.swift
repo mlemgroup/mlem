@@ -13,11 +13,12 @@ import Theming
 struct ExportableCommentEditorView: View {
     @Environment(AppState.self) var appState
     @Environment(\.colorScheme) var colorScheme
+    
     @Setting(\.appearance_palette) var palette
+    @Setting(\.comment_createImage_showCreator) var showCreator: Bool
+    @Setting(\.comment_createImage_showStats) var showStats: Bool
     
     let comment: any Comment1Providing
-    @State var showCreator: Bool = true
-    @State var showStats: Bool = true
     @State var overrideColorScheme: UIUserInterfaceStyle = .unspecified
     
     var overriddenColorScheme: ColorScheme {

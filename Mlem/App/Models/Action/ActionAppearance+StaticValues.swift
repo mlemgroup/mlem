@@ -223,7 +223,7 @@ extension ActionAppearance {
             swipeIcon2: isOn ? Icons.restoreFill : Icons.removeFill
         )
     }
-    
+
     static func toggleNsfw(isOn: Bool) -> Self {
         .init(
             label: isOn ? "Remove NSFW Tag" : "Add NSFW Tag",
