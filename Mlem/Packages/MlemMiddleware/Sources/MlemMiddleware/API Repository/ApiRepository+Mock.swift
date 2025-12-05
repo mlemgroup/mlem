@@ -47,17 +47,12 @@ import Rest
             if let request = request as? LemmyListPostsRequest, request.parameters != nil {
                 return LemmyGetPostsResponse(
                     posts: posts.map(\.apiPostView),
-                    nextPage: nil,
-                    prevPage: nil
+                    nextPage: nil
                 ) as! Request.Response
             }
     
             if let request = request as? LemmyListCommentsRequest, request.parameters != nil {
-                return LemmyGetCommentsResponse(
-                    comments: comments.map(\.apiCommentView),
-                    nextPage: nil,
-                    prevPage: nil
-                ) as! Request.Response
+                return LemmyGetCommentsResponse(comments: comments.map(\.apiCommentView)) as! Request.Response
             }
     
             if let request = request as? LemmyReadPersonRequest, let params = request.parameters {
@@ -100,7 +95,8 @@ import Rest
                     posts: [],
                     communities: params.type_ == .communities ? communities.map(\.apiCommunityView) : [],
                     users: params.type_ == .users ? people.map(\.apiPersonView) : [],
-                    results: nil,
+                    resolve: nil,
+                    search: nil,
                     nextPage: nil,
                     prevPage: nil
                 ) as! Request.Response

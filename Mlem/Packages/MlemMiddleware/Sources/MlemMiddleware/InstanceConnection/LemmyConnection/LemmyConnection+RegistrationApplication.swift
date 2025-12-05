@@ -26,11 +26,10 @@ public extension LemmyConnection {
                 unreadOnly: unreadOnly,
                 page: page,
                 limit: limit,
-                pageCursor: nil,
-                pageBack: nil
+                pageCursor: nil
             )
         }
-        return try response.registrationApplications.map { try .init(from: $0) }
+        return try response.items.map { try .init(from: $0) }
     }
     
     @discardableResult
