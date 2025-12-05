@@ -6,11 +6,14 @@
 //
 
 import ComponentViews
+import Haptics
 import SwiftUI
 import Theming
 
 struct AboutMlemView: View {
     @Environment(\.palette) var palette
+    @Environment(HapticManager.self) var hapticManager
+    @Environment(ToastModel.self) var toastModel
     
     var body: some View {
         Form {
@@ -78,8 +81,22 @@ struct AboutMlemView: View {
                 .frame(width: 120, height: 120)
                 .clipShape(.circle)
             
-            Text("Mlem \(versionString)")
-                .foregroundStyle(.themedSecondary)
+            Button {
+                let pasteboard = UIPasteboard.general
+                pasteboard.string = "Mlem \(versionString)"
+                hapticManager.play(haptic: .lightSuccess, tier: .low)
+                toastModel.add(.success("Copied"))
+            } label: {
+                HStack {
+                    Text(String("Mlem \(versionString)"))
+                    Image(icon: .general.copy)
+                        .symbolVariant(.fill)
+                        .imageScale(.small)
+                }
+            }
+            .foregroundStyle(.themedSecondary)
+            .buttonStyle(.empty)
+            .frame(maxWidth: .infinity)
         }
         .frame(maxWidth: .infinity)
     }
