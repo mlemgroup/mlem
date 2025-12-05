@@ -17,9 +17,9 @@ struct ExportableCommentEditorView: View {
     @Setting(\.appearance_palette) var palette
     @Setting(\.comment_createImage_showCreator) var showCreator: Bool
     @Setting(\.comment_createImage_showStats) var showStats: Bool
+    @Setting(\.comment_createImage_colorScheme) var overrideColorScheme: UIUserInterfaceStyle
     
     let comment: any Comment1Providing
-    @State var overrideColorScheme: UIUserInterfaceStyle = .unspecified
     
     var overriddenColorScheme: ColorScheme {
         switch overrideColorScheme {
@@ -80,9 +80,7 @@ struct ExportableCommentEditorView: View {
         ExportableCommentView(
             comment: comment,
             appState: appState,
-            colorScheme: overriddenColorScheme,
-            showCreator: showCreator,
-            showStats: showStats
+            colorScheme: overriddenColorScheme
         )
         .allowsHitTesting(false)
     }

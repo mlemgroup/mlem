@@ -17,14 +17,15 @@ struct ExportablePostEditorView: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(AppState.self) var appState
     @Environment(HapticManager.self) var hapticManager
+    
     @Environment(\.colorScheme) var colorScheme
     @Setting(\.appearance_palette) var palette
+    @Setting(\.post_createImage_showCommunity) var showCommunity
+    @Setting(\.post_createImage_showCreator) var showCreator
+    @Setting(\.post_createImage_showStats) var showStats
+    @Setting(\.post_createImage_colorScheme) var overrideColorScheme
     
     let post: any Post1Providing
-    @State var showCommunity: Bool = true
-    @State var showCreator: Bool = true
-    @State var showStats: Bool = true
-    @State var overrideColorScheme: UIUserInterfaceStyle = .unspecified
     
     var overriddenColorScheme: ColorScheme {
         switch overrideColorScheme {
@@ -87,10 +88,7 @@ struct ExportablePostEditorView: View {
         ExportablePostView(
             post: post,
             appState: appState,
-            colorScheme: overriddenColorScheme,
-            showCommunity: showCommunity,
-            showCreator: showCreator,
-            showStats: showStats
+            colorScheme: overriddenColorScheme
         )
         .allowsHitTesting(false)
     }

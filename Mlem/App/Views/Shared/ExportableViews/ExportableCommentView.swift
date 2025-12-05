@@ -10,12 +10,14 @@ import MlemMiddleware
 
 struct ExportableCommentView: View {
     @Setting(\.appearance_palette) var colorPalette
+    @Setting(\.comment_createImage_showCreator) var showCreator: Bool
+    @Setting(\.comment_createImage_showStats) var showStats: Bool
     
     let comment: any Comment1Providing
-    let appState: AppState // directly passed in because ImageRenderer doesn't work with @Environment
+    
+    // Anything environment-dependent must be passed in because ImageRenderer doesn't work with @Environment
+    let appState: AppState
     let colorScheme: ColorScheme
-    let showCreator: Bool
-    let showStats: Bool
     
     let infoStackReadouts: [CommentBarConfiguration.ReadoutType] = [.upvote, .downvote, .created, .comment]
     

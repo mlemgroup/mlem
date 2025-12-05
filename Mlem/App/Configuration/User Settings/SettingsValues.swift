@@ -49,6 +49,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     var comment_createImage_showPost: Bool
     var comment_createImage_showCreator: Bool
     var comment_createImage_showStats: Bool
+    var comment_createImage_colorScheme: UIUserInterfaceStyle
     var community_showAvatar: Bool
     var community_showBanner: Bool
     var community_showInstance: Bool
@@ -82,6 +83,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     var post_createImage_showCommunity: Bool
     var post_createImage_showCreator: Bool
     var post_createImage_showStats: Bool
+    var post_createImage_colorScheme: UIUserInterfaceStyle
     var profile_showBanner: Bool
     var privacy_autoBypassImageProxy: Bool
     var privacy_showFavicons: Bool
@@ -173,6 +175,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.comment_createImage_showPost = try container.decodeIfPresent(Bool.self, forKey: ._comment_createImage_showPost) ?? true
         self.comment_createImage_showCreator = try container.decodeIfPresent(Bool.self, forKey: ._comment_createImage_showCreator) ?? true
         self.comment_createImage_showStats = try container.decodeIfPresent(Bool.self, forKey: ._comment_createImage_showStats) ?? true
+        self.comment_createImage_colorScheme = try container.decodeIfPresent(UIUserInterfaceStyle.self, forKey: ._comment_createImage_colorScheme) ?? .unspecified
         self.dev_developerMode = try container.decodeIfPresent(Bool.self, forKey: ._dev_developerMode) ?? false
         self.feed_default = try container.decodeIfPresent(ListingType.self, forKey: ._feed_default) ?? .subscribed
         self.feed_markReadOnScroll = try container.decodeIfPresent(Bool.self, forKey: ._feed_markReadOnScroll) ?? false
@@ -226,6 +229,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.post_createImage_showCommunity = try container.decodeIfPresent(Bool.self, forKey: ._post_createImage_showCommunity) ?? true
         self.post_createImage_showCreator = try container.decodeIfPresent(Bool.self, forKey: ._post_createImage_showCreator) ?? true
         self.post_createImage_showStats = try container.decodeIfPresent(Bool.self, forKey: ._post_createImage_showStats) ?? true
+        self.post_createImage_colorScheme = try container.decodeIfPresent(UIUserInterfaceStyle.self, forKey: ._post_createImage_colorScheme) ?? .unspecified
         self.privacy_autoBypassImageProxy = try container.decodeIfPresent(Bool.self, forKey: ._privacy_autoBypassImageProxy) ?? false
         self.privacy_showFavicons = try container.decodeIfPresent(Bool.self, forKey: ._privacy_showFavicons) ?? true
         self.profile_showBanner = try container.decodeIfPresent(Bool.self, forKey: ._profile_showBanner) ?? true
@@ -292,6 +296,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         comment_createImage_showPost = otherValues.comment_createImage_showPost
         comment_createImage_showCreator = otherValues.comment_createImage_showCreator
         comment_createImage_showStats = otherValues.comment_createImage_showStats
+        comment_createImage_colorScheme = otherValues.comment_createImage_colorScheme
         community_showAvatar = otherValues.community_showAvatar
         community_showBanner = otherValues.community_showBanner
         community_showInstance = otherValues.community_showInstance
@@ -325,6 +330,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         post_createImage_showCommunity = otherValues.post_createImage_showCommunity
         post_createImage_showCreator = otherValues.post_createImage_showCreator
         post_createImage_showStats = otherValues.post_createImage_showStats
+        post_createImage_colorScheme = otherValues.post_createImage_colorScheme
         profile_showBanner = otherValues.profile_showBanner
         privacy_autoBypassImageProxy = otherValues.privacy_autoBypassImageProxy
         privacy_showFavicons = otherValues.privacy_showFavicons
@@ -396,6 +402,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         case _comment_createImage_showPost = "comment_createImage_showPost"
         case _comment_createImage_showCreator = "comment_createImage_showCreator"
         case _comment_createImage_showStats = "comment_createImage_showStats"
+        case _comment_createImage_colorScheme = "comment_createImage_colorScheme"
         case _community_showAvatar = "community_showAvatar"
         case _community_showBanner = "community_showBanner"
         case _community_showInstance = "community_showInstance"
@@ -429,6 +436,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         case _post_createImage_showCommunity = "post_createImage_showCommunity"
         case _post_createImage_showCreator = "post_createImage_showCreator"
         case _post_createImage_showStats = "post_createImage_showStats"
+        case _post_createImage_colorScheme = "post_createImage_colorScheme"
         case _profile_showBanner = "profile_showBanner"
         case _privacy_autoBypassImageProxy = "privacy_autoBypassImageProxy"
         case _privacy_showFavicons = "privacy_showFavicons"
@@ -503,6 +511,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.comment_createImage_showPost = true // Added in 2.4
         self.comment_createImage_showCreator = true // Added in 2.4
         self.comment_createImage_showStats = true // Added in 2.4
+        self.comment_createImage_colorScheme = .unspecified // Added in 2.4
         self.community_showAvatar = settings.showCommunityAvatar
         self.community_showBanner = true // Removed in 2.0
         self.community_showInstance = true // Removed in 2.0
@@ -536,6 +545,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.post_createImage_showCommunity = true // Added in 2.4
         self.post_createImage_showCreator = true // Added in 2.4
         self.post_createImage_showStats = true // Added in 2.4
+        self.post_createImage_colorScheme = .unspecified // Added in 2.4
         self.profile_showBanner = true // Removed in 2.0
         self.safety_blurNsfw = settings.blurNsfw
         self.safety_enableNsfwCommunityWarning = settings.showNsfwCommunityWarning
