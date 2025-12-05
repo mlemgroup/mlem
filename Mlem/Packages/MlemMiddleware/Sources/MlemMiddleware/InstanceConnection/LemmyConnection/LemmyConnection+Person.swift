@@ -90,8 +90,7 @@ public extension LemmyConnection {
                 likedOnly: nil,
                 dislikedOnly: nil,
                 showNsfw: nil,
-                pageCursor: nil,
-                pageBack: nil
+                pageCursor: nil
             )
         }
         return try response.users?.map { try .init(from: $0) } ?? []

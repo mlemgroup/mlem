@@ -196,11 +196,16 @@ public extension LemmyConnection {
                 postId: postId,
                 commentId: commentId,
                 listingType: nil,
-                pageCursor: nil,
-                pageBack: nil
+                pageCursor: nil
             )
         }
-        return try response.toSnapshots()
+        switch response {
+        case let .lemmyGetModlogResponse(response):
+            return try response.toSnapshots()
+        case .lemmyPagedResponse:
+            // TODO: Lemmy 1.0
+            throw ApiClientError.featureUnsupported
+        }
     }
     
     func getPostLink(url: URL) async throws -> PostLink {

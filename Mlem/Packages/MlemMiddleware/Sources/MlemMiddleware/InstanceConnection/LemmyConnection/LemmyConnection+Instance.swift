@@ -23,8 +23,8 @@ public extension LemmyConnection {
                 return .init(from: federatedInstances)
             }
             throw ApiClientError.noEntityFound
-        case let .lemmyGetFederatedInstancesResponse(response):
-            return .init(from: response.federatedInstances)
+        case let .lemmyPagedResponse(response):
+            return .init(from: response.items)
         }
     }
     

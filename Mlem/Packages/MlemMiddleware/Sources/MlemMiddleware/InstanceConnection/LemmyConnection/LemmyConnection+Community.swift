@@ -60,8 +60,7 @@ public extension LemmyConnection {
                 likedOnly: nil,
                 dislikedOnly: nil,
                 showNsfw: nil,
-                pageCursor: nil,
-                pageBack: nil
+                pageCursor: nil
             )
         }
         return try response.communities?.map { try .init(from: $0) } ?? []
@@ -98,11 +97,10 @@ public extension LemmyConnection {
                 page: page,
                 limit: limit,
                 timeRangeSeconds: nil,
-                pageCursor: nil,
-                pageBack: nil
+                pageCursor: nil
             )
         }
-        return try response.communities.map { try .init(from: $0) }
+        return try response.items.map { try .init(from: $0) }
     }
     
     @discardableResult

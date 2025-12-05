@@ -52,11 +52,10 @@ public extension LemmyConnection {
                 likedOnly: filter == .upvoted,
                 dislikedOnly: filter == .downvoted,
                 timeRangeSeconds: sort.timeRangeSeconds,
-                pageCursor: nil,
-                pageBack: nil
+                pageCursor: nil
             )
         }
-        return try response.comments.map { try .init(from: $0) }
+        return try response.items.map { try .init(from: $0) }
     }
 
     func getComments(
@@ -83,11 +82,10 @@ public extension LemmyConnection {
                 likedOnly: filter == .upvoted,
                 dislikedOnly: filter == .downvoted,
                 timeRangeSeconds: sort.timeRangeSeconds,
-                pageCursor: nil,
-                pageBack: nil
+                pageCursor: nil
             )
         }
-        return try response.comments.map { try .init(from: $0) }
+        return try response.items.map { try .init(from: $0) }
     }
     
     func getComments(
@@ -114,11 +112,10 @@ public extension LemmyConnection {
                 likedOnly: filter == .upvoted,
                 dislikedOnly: filter == .downvoted,
                 timeRangeSeconds: sort.timeRangeSeconds,
-                pageCursor: nil,
-                pageBack: nil
+                pageCursor: nil
             )
         }
-        return try response.comments.map { try .init(from: $0) }
+        return try response.items.map { try .init(from: $0) }
     }
 
     func getCommentHistory(
@@ -149,12 +146,11 @@ public extension LemmyConnection {
                     likedOnly: type == .upvoted,
                     dislikedOnly: type == .downvoted,
                     timeRangeSeconds: nil,
-                    pageCursor: nil,
-                    pageBack: nil
+                    pageCursor: nil
                 )
                 let response = try await self.perform(request, endpoint: .v3)
                 return try (
-                    comments: response.comments.map { try .init(from: $0) },
+                    comments: response.items.map { try .init(from: $0) },
                     cursor: response.nextPage
                 )
             case .v4:
@@ -163,12 +159,11 @@ public extension LemmyConnection {
                 let request = LemmyListPersonSavedRequest(
                     type_: .comments,
                     pageCursor: cursor,
-                    pageBack: nil,
                     limit: limit
                 )
                 let response = try await self.perform(request, endpoint: .v4)
                 return try (
-                    comments: response.saved.compactMap(\.commentValue).map {
+                    comments: response.items.compactMap(\.commentValue).map {
                         try .init(from: $0)
                     },
                     cursor: response.nextPage
@@ -178,12 +173,11 @@ public extension LemmyConnection {
                     type_: .comments,
                     likeType: type == .upvoted ? .likedOnly : .dislikedOnly,
                     pageCursor: cursor,
-                    pageBack: nil,
                     limit: limit
                 )
                 let response = try await self.perform(request, endpoint: .v4)
                 return try (
-                    comments: response.liked.compactMap(\.commentValue).map {
+                    comments: response.items.compactMap(\.commentValue).map {
                         try .init(from: $0)
                     },
                     cursor: response.nextPage
@@ -265,8 +259,7 @@ public extension LemmyConnection {
                 likedOnly: nil,
                 dislikedOnly: nil,
                 showNsfw: nil,
-                pageCursor: nil,
-                pageBack: nil
+                pageCursor: nil
             )
         }
         return try response.comments?.map { try .init(from: $0) } ?? []
@@ -380,10 +373,9 @@ public extension LemmyConnection {
                 commentId: id,
                 page: page,
                 limit: limit,
-                pageCursor: nil,
-                pageBack: nil
+                pageCursor: nil
             )
         }
-        return try response.commentLikes.map { try .init(from: $0) }
+        return try response.items.map { try .init(from: $0) }
     }
 }

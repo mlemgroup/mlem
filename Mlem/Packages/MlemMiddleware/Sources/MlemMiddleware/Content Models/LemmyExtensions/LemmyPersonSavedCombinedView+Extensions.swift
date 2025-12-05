@@ -7,23 +7,7 @@
 
 import Foundation
 
-extension LemmyPersonSavedCombinedView {
-    var postValue: LemmyPostView? {
-        switch self {
-        case let .post(post): post
-        case .comment: nil
-        }
-    }
-
-    var commentValue: LemmyCommentView? {
-        switch self {
-        case let .comment(comment): comment
-        case .post: nil
-        }
-    }
-}
-
-extension LemmyPersonLikedCombinedView {
+extension LemmyPostCommentCombinedView {
     var postValue: LemmyPostView? {
         switch self {
         case let .post(post): post

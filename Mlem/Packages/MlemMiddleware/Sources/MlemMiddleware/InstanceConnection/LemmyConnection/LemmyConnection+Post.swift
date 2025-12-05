@@ -38,12 +38,11 @@ public extension LemmyConnection {
                 multiCommunityName: nil,
                 hideMedia: nil,
                 markAsRead: nil,
-                noCommentsOnly: nil,
-                pageBack: nil
+                noCommentsOnly: nil
             )
         }
         return try (
-            posts: response.posts.map { try .init(from: $0) },
+            posts: response.items.map { try .init(from: $0) },
             cursor: response.nextPage
         )
     }
@@ -78,12 +77,11 @@ public extension LemmyConnection {
                 multiCommunityName: nil,
                 hideMedia: nil,
                 markAsRead: nil,
-                noCommentsOnly: nil,
-                pageBack: nil
+                noCommentsOnly: nil
             )
         }
         return try (
-            posts: response.posts.map { try .init(from: $0) },
+            posts: response.items.map { try .init(from: $0) },
             cursor: response.nextPage
         )
     }
@@ -152,12 +150,11 @@ public extension LemmyConnection {
                     multiCommunityName: nil,
                     hideMedia: nil,
                     markAsRead: nil,
-                    noCommentsOnly: nil,
-                    pageBack: nil
+                    noCommentsOnly: nil
                 )
                 let response = try await self.perform(request, endpoint: .v3)        
                 return try (
-                    posts: response.posts.map { try .init(from: $0) },
+                    posts: response.items.map { try .init(from: $0) },
                     // Cursor intentionally omitted here. See Comment above
                     cursor: nil
                 )
@@ -171,12 +168,11 @@ public extension LemmyConnection {
                 let request = LemmyListPersonSavedRequest(
                     type_: .all,
                     pageCursor: cursor,
-                    pageBack: nil,
                     limit: limit
                 )
                 let response = try await self.perform(request, endpoint: .v4)
                 return try (
-                    posts: response.saved.compactMap(\.postValue).map { try .init(from: $0) },
+                    posts: response.items.compactMap(\.postValue).map { try .init(from: $0) },
                     cursor: response.nextPage
                 )
                 default: 
@@ -184,12 +180,11 @@ public extension LemmyConnection {
                     type_: .all,
                     likeType: type == .upvoted ? .likedOnly : .dislikedOnly,
                     pageCursor: cursor,
-                    pageBack: nil,
                     limit: limit
                 )
                 let response = try await self.perform(request, endpoint: .v4)
                 return try (
-                    posts: response.liked.compactMap(\.postValue).map { try .init(from: $0) },
+                    posts: response.items.compactMap(\.postValue).map { try .init(from: $0) },
                     cursor: response.nextPage
                 )
                 }
@@ -294,8 +289,7 @@ public extension LemmyConnection {
                 likedOnly: nil,
                 dislikedOnly: nil,
                 showNsfw: nil,
-                pageCursor: nil,
-                pageBack: nil
+                pageCursor: nil
             )
         }
         return try response.posts?.map { try .init(from: $0) } ?? []
@@ -545,10 +539,9 @@ public extension LemmyConnection {
                 postId: id,
                 page: page,
                 limit: limit,
-                pageCursor: nil,
-                pageBack: nil
+                pageCursor: nil
             )
         }
-        return try response.postLikes.map { try .init(from: $0) }
+        return try response.items.map { try .init(from: $0) }
     }
 }
