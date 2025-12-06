@@ -22,12 +22,18 @@ private let seeds: [ActionSeed] = [
     .appointAdmin
 ]
 
+extension ActionButtons {
+    init(person: any Person1Providing) {
+        self.init { _ in
+            seeds.compactMap { $0.createAction(person) }
+        }
+    }
+}
+
 extension View {
     func contextMenu(person: any Person1Providing) -> some View {
         contextMenu {
-            ActionButtons { _ in
-                seeds.compactMap { $0.createAction(person) }
-            }
+            ActionButtons(person: person)
         }
     }
 }
