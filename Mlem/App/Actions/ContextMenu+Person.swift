@@ -12,7 +12,8 @@ import SwiftUI
 private let seeds: [ActionSeed] = [
     .goToInstance,
     .copyName,
-    .share
+    .share,
+    .sendMessage
 ]
 
 extension View {
