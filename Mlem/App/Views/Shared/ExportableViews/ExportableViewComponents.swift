@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ExportableViewControlOverlay: View {
-    let snapshot: UIImage?
+    // let snapshot: UIImage?
     let createSnapshot: () -> UIImage?
     
     var body: some View {

@@ -35,29 +35,15 @@ struct ExportablePostEditorView: View {
         default: .light
         }
     }
-    
-    @State var snapshot: UIImage?
-    
-    var snapshotRenderHashValue: Int {
-        var hasher = Hasher()
-        hasher.combine(showCommunity)
-        hasher.combine(showCreator)
-        hasher.combine(showStats)
-        hasher.combine(overriddenColorScheme)
-        return hasher.finalize()
-    }
 
     var body: some View {
         ScrollView {
             exportablePost
                 .padding(.bottom, 200)
         }
-        .task(id: snapshotRenderHashValue) {
-            snapshot = createImageFromView(exportablePost)
-        }
         .presentationBackground(.themedGroupedBackground)
         .overlay(alignment: .bottom) {
-            ExportableViewControlOverlay(snapshot: snapshot) { createImageFromView(exportablePost) }
+            ExportableViewControlOverlay { createImageFromView(exportablePost) }
         }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {

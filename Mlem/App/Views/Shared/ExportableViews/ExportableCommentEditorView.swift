@@ -35,17 +35,6 @@ struct ExportableCommentEditorView: View {
         }
     }
     
-    @State var snapshot: UIImage?
-    @State var snapshotRerender: Bool = false
-    
-    var snapshotRenderHashValue: Int {
-        var hasher = Hasher()
-        hasher.combine(showCreator)
-        hasher.combine(showStats)
-        hasher.combine(overriddenColorScheme)
-        return hasher.finalize()
-    }
-    
     var body: some View {
         if comment is any Comment2Providing, post != nil {
             content
@@ -75,11 +64,8 @@ struct ExportableCommentEditorView: View {
             exportableComment
                 .padding(.bottom, 200)
         }
-        .task(id: snapshotRenderHashValue) {
-            snapshot = createImageFromView(exportableComment)
-        }
         .overlay(alignment: .bottom) {
-            ExportableViewControlOverlay(snapshot: snapshot) { createImageFromView(exportableComment) }
+            ExportableViewControlOverlay { createImageFromView(exportableComment) }
         }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
