@@ -9,24 +9,26 @@ import Actions
 import MlemMiddleware
 import SwiftUI
 
-struct PurgeAction: SimpleLabelAction {
+struct PurgeAction: Actions.Action {
+    enum Relationship { case identity, author }
+
     let entity: any PurgableProviding
-    let useVerboseLabel: Bool
+    let relationship: Relationship
 }
 
 // MARK: - Configurability
 
 extension ActionSeed {
-    static let purge = ActionSeed("purge") { entity in
+    static let purge = ActionSeed("purge", label: PurgeAction.createLabel(relationship: .identity)) { entity in
         switch entity {
-        case let entity as any PurgableProviding: PurgeAction(entity: entity, useVerboseLabel: false)
+        case let entity as any PurgableProviding: PurgeAction(entity: entity, relationship: .identity)
         default: nil
         }
     }
 
-    static let purgeCreator = ActionSeed("purgeCreator") { entity in
+    static let purgeCreator = ActionSeed("purgeCreator", label: PurgeAction.createLabel(relationship: .author)) { entity in
         switch entity {
-        case let entity as any Interactable2Providing: PurgeAction(entity: entity.creator, useVerboseLabel: true)
+        case let entity as any Interactable2Providing: PurgeAction(entity: entity.creator, relationship: .author)
         default: nil
         }
     }
@@ -35,26 +37,17 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension PurgeAction {
-    static let label: ActionLabel = .init(
-        "Purge",
-        icon: .lemmy.purge,
-        color: .themedNegative,
-        isDestructive: true
-    )
-    static let verboseLabel: ActionLabel = .init(
-        "Purge User",
-        icon: .lemmy.purge,
-        color: .themedNegative,
-        isDestructive: true
-    )
+    static func createLabel(relationship: Relationship) -> ActionLabel {
+        .init(
+            relationship == .identity ? "Purge" : "Purge User",
+            icon: .lemmy.purge,
+            color: .themedNegative,
+            isDestructive: true
+        )
+    }
     
     func createLabel(environment: EnvironmentValues) -> ActionLabel {
-        if useVerboseLabel {
-            assert(entity is any Person1Providing)
-            return Self.verboseLabel.withVisibility(visibility(environment))
-        } else {
-            return Self.label.withVisibility(visibility(environment))
-        }
+        return Self.createLabel(relationship: self.relationship).withVisibility(visibility(environment))
     }
     
     private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {
