@@ -9,12 +9,12 @@ import Foundation
 
 public struct ActionSeed: Hashable {
     public let key: String
-    private let actionType: any ConfigurableAction.Type
+    private let actionType: any SimpleLabelAction.Type
     
     public let label: ActionLabel
-    public let createAction: (Any) -> (any ConfigurableAction)?
+    public let createAction: (Any) -> (any SimpleLabelAction)?
     
-    public init<T: ConfigurableAction>(
+    public init<T: SimpleLabelAction>(
         _ key: String,
         label: ActionLabel? = nil,
         createAction: @escaping (Any) -> T?

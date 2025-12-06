@@ -39,7 +39,7 @@ private extension BanScopePattern {
     }
 }
 
-struct BanAction: ConfigurableAction {
+struct BanAction: SimpleLabelAction {
     let entity: any Person1Providing
 
     var canBanFromInstance: Bool {

@@ -9,7 +9,7 @@ import Actions
 import MlemMiddleware
 import SwiftUI
 
-struct PurgeAction: ConfigurableAction {
+struct PurgeAction: SimpleLabelAction {
     let entity: any PurgableProviding
     let useVerboseLabel: Bool
 }

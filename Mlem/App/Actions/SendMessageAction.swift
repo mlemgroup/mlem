@@ -9,7 +9,7 @@ import Actions
 import MlemMiddleware
 import SwiftUI
 
-struct SendMessageAction: ConfigurableAction {
+struct SendMessageAction: SimpleLabelAction {
     let entity: any Person1Providing
 }
 

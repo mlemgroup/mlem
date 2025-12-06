@@ -9,7 +9,7 @@ import Actions
 import MlemMiddleware
 import SwiftUI
 
-struct GoToInstanceAction: ConfigurableAction {
+struct GoToInstanceAction: SimpleLabelAction {
     let entity: any ActorIdentifiable
 }
 

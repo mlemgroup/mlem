@@ -9,7 +9,7 @@ import Actions
 import MlemMiddleware
 import SwiftUI
 
-struct BlockAction: ConfigurableAction {
+struct BlockAction: SimpleLabelAction {
     enum Relationship { case identity, commentAuthor }
 
     let entity: any Person1Providing

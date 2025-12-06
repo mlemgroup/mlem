@@ -9,7 +9,7 @@ import Actions
 import MlemMiddleware
 import SwiftUI
 
-struct CopyNameAction: Actions.ConfigurableAction {
+struct CopyNameAction: Actions.SimpleLabelAction {
     static let label: ActionLabel = .init("Copy Name", icon: .general.copy)
     
     let text: String

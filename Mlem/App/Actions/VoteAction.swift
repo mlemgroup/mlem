@@ -9,7 +9,7 @@ import Actions
 import MlemMiddleware
 import SwiftUI
 
-struct VoteAction: ConfigurableAction {
+struct VoteAction: SimpleLabelAction {
     let entity: any Interactable2Providing
     let type: ScoringOperation
 }

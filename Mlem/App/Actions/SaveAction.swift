@@ -9,7 +9,7 @@ import Actions
 import MlemMiddleware
 import SwiftUI
 
-struct SaveAction: ConfigurableAction {
+struct SaveAction: SimpleLabelAction {
     let entity: any Interactable2Providing
 }
 

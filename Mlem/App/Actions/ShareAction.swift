@@ -9,7 +9,7 @@ import Actions
 import MlemMiddleware
 import SwiftUI
 
-struct ShareAction: ConfigurableAction {
+struct ShareAction: SimpleLabelAction {
     let entity: any Sharable
 }
 

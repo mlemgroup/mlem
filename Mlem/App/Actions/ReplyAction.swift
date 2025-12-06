@@ -9,7 +9,7 @@ import Actions
 import MlemMiddleware
 import SwiftUI
 
-struct ReplyAction: ConfigurableAction {
+struct ReplyAction: SimpleLabelAction {
     enum Content {
         case post(any Post1Providing)
         case comment(any Comment1Providing)
