@@ -15,7 +15,8 @@ private let seeds: [ActionSeed] = [
     .share,
     .sendMessage,
     .block,
-    .openModlog
+    .openModlog,
+    .ban
 ]
 
 extension View {
