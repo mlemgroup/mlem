@@ -40,17 +40,18 @@ struct ExportableCommentView: View {
     }
     
     var content: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: -10) {
             if showPost {
                 ExportablePostView(
                     post: post,
                     appState: appState,
                     colorScheme: colorScheme
                 )
-                .padding(.bottom, -10)
+                .transition(.move(edge: .top).combined(with: .opacity))
             }
             
             commentContent
+                .geometryGroup()
         }
     }
     
@@ -81,6 +82,7 @@ struct ExportableCommentView: View {
             // it in an overlay forces it to respect the correct parent scaling
             if showPost {
                 CommentBarView(depth: 0)
+                    .transition(.move(edge: .leading).combined(with: .scale))
             }
         }
         .padding(Constants.main.standardSpacing)

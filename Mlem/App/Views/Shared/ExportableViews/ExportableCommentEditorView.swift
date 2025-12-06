@@ -19,6 +19,9 @@ struct ExportableCommentEditorView: View {
     @Setting(\.comment_createImage_showCreator) var showCreator: Bool
     @Setting(\.comment_createImage_showStats) var showStats: Bool
     @Setting(\.comment_createImage_colorScheme) var overrideColorScheme: UIUserInterfaceStyle
+    @Setting(\.post_createImage_showCommunity) var postShowCommunity
+    @Setting(\.post_createImage_showCreator) var postShowCreator
+    @Setting(\.post_createImage_showStats) var postShowStats
     
     @State var comment: any Comment1Providing
     @State var post: (any Post3Providing)?
@@ -84,11 +87,17 @@ struct ExportableCommentEditorView: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Menu("Details", systemImage: "slider.horizontal.3") {
-                    if comment is any Comment2Providing {
-                        Toggle("Post", icon: .lemmy.post, isOn: $showPost)
-                    }
                     Toggle("Creator", icon: .lemmy.person, isOn: $showCreator)
                     Toggle("Stats", icon: .lemmy.votes, isOn: $showStats)
+                    
+                    if comment is any Comment2Providing {
+                        Toggle("Post", icon: .lemmy.post, isOn: $showPost)
+                        if showPost {
+                            Toggle("Post Community", icon: .lemmy.community, isOn: $postShowCommunity)
+                            Toggle("Post Creator", icon: .lemmy.person, isOn: $postShowCreator)
+                            Toggle("Post Stats", icon: .lemmy.votes, isOn: $postShowStats)
+                        }
+                    }
                     
                     if palette.supportedModes == .unspecified {
                         Menu("Color Scheme", icon: overrideColorScheme.icon) {
