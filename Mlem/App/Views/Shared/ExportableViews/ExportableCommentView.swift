@@ -13,6 +13,9 @@ struct ExportableCommentView: View {
     @Setting(\.comment_createImage_showPost) var showPost: Bool
     @Setting(\.comment_createImage_showCreator) var showCreator: Bool
     @Setting(\.comment_createImage_showStats) var showStats: Bool
+    @Setting(\.post_createImage_showCommunity) var postShowCommunity
+    @Setting(\.post_createImage_showCreator) var postShowCreator
+    @Setting(\.post_createImage_showStats) var postShowStats
     
     let comment: any Comment1Providing
     let post: any Post3Providing
@@ -22,12 +25,16 @@ struct ExportableCommentView: View {
     let colorScheme: ColorScheme
     
     let infoStackReadouts: [CommentBarConfiguration.ReadoutType] = [.upvote, .downvote, .created, .comment]
+    let postInfoStackReadouts: [PostBarConfiguration.ReadoutType] = [.upvote, .downvote, .created, .comment]
     
     var animationHashValue: Int {
         var hasher = Hasher()
         hasher.combine(showPost)
         hasher.combine(showCreator)
         hasher.combine(showStats)
+        hasher.combine(postShowCommunity)
+        hasher.combine(postShowCreator)
+        hasher.combine(postShowStats)
         return hasher.finalize()
     }
     
@@ -40,7 +47,7 @@ struct ExportableCommentView: View {
     }
     
     var content: some View {
-        VStack(spacing: -10) {
+        VStack(spacing: -Constants.main.standardSpacing) {
             if showPost {
                 ExportablePostView(
                     post: post,

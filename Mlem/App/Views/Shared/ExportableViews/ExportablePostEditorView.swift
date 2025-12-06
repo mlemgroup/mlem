@@ -64,7 +64,7 @@ struct ExportablePostEditorView: View {
                 CloseButtonView(ios18Label: .cancel)
             }
             ToolbarItem(placement: .topBarTrailing) {
-                Menu("Details", systemImage: "slider.horizontal.3") {
+                Menu("Details", icon: .general.configure) {
                     Toggle("Community", icon: .lemmy.community, isOn: $showCommunity)
                     Toggle("Creator", icon: .lemmy.person, isOn: $showCreator)
                     Toggle("Stats", icon: .lemmy.votes, isOn: $showStats)

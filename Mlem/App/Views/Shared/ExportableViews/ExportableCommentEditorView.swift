@@ -55,11 +55,11 @@ struct ExportableCommentEditorView: View {
                     do {
                         guard let comment2 = try await comment.upgrade() as? any Comment2Providing else {
                             assertionFailure("Could not cast to Comment2Providing post-upgrade")
-                            return
+                            throw ApiClientError.unsuccessful
                         }
                         guard let post3 = try await comment2.post.upgrade() as? any Post3Providing else {
                             assertionFailure("Could not cast to Post2Providing post-upgrade")
-                            return
+                            throw ApiClientError.unsuccessful
                         }
                         comment = comment2
                         post = post3
@@ -86,16 +86,19 @@ struct ExportableCommentEditorView: View {
                 CloseButtonView(ios18Label: .cancel)
             }
             ToolbarItem(placement: .topBarTrailing) {
-                Menu("Details", systemImage: "slider.horizontal.3") {
+                Menu("Details", icon: .general.configure) {
                     Toggle("Creator", icon: .lemmy.person, isOn: $showCreator)
                     Toggle("Stats", icon: .lemmy.votes, isOn: $showStats)
                     
                     if comment is any Comment2Providing {
                         Toggle("Post", icon: .lemmy.post, isOn: $showPost)
                         if showPost {
-                            Toggle("Post Community", icon: .lemmy.community, isOn: $postShowCommunity)
-                            Toggle("Post Creator", icon: .lemmy.person, isOn: $postShowCreator)
-                            Toggle("Post Stats", icon: .lemmy.votes, isOn: $postShowStats)
+                            Menu("Post Details", icon: .general.configure) {
+                                Toggle("Community", icon: .lemmy.community, isOn: $postShowCommunity)
+                                Toggle("Creator", icon: .lemmy.person, isOn: $postShowCreator)
+                                Toggle("Stats", icon: .lemmy.votes, isOn: $postShowStats)
+                            }
+                            .menuActionDismissBehavior(.disabled) // this doesn't work but I think that's a bug
                         }
                     }
                     

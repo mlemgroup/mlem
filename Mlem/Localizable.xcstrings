@@ -6016,10 +6016,7 @@
         }
       }
     },
-    "Post Community" : {
-
-    },
-    "Post Creator" : {
+    "Post Details" : {
 
     },
     "Post failed to send." : {
@@ -6071,9 +6068,6 @@
           }
         }
       }
-    },
-    "Post Stats" : {
-
     },
     "Post was locked" : {
       "localizations" : {
