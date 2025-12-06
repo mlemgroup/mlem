@@ -165,7 +165,7 @@ extension NavigationPage {
                 }
                 .disabled(requiredFeature.map { !instance.software.supports($0) } ?? false)
             } header: {
-                if requiredFeature != nil {
+                if requiredFeature != nil, requiredFeature != .signUp {
                     Text("This feature is not available on all instances.")
                         .padding()
                         .frame(maxWidth: .infinity, alignment: .leading)

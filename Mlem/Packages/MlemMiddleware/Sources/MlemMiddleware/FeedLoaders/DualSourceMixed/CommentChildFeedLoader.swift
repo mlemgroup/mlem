@@ -20,16 +20,25 @@ public class CommentChildFeedLoader: ChildFeedLoader<PersonContent> {
         }
         
         override func fetchPage(_ page: Int) async throws -> FetchResponse {
-            let response = try await api.getComments(
-                sort: .new,
+            try await internalFetchCursor(page: page, cursor: nil)
+        }
+
+        override func fetchCursor(_ cursor: String) async throws -> FetchResponse {
+            try await internalFetchCursor(page: nil, cursor: cursor)
+        }
+
+        private func internalFetchCursor(page: Int?, cursor: String?) async throws -> FetchResponse {
+            let response = try await api.getCommentHistory(
+                type: self.filter,
                 page: page,
-                limit: pageSize,
-                filter: filter
+                cursor: cursor,
+                limit: pageSize
             )
+
             return .init(
-                items: response.map { PersonContent(wrappedValue: .comment($0)) },
-                prevCursor: nil,
-                nextCursor: nil
+                items: response.comments.map { PersonContent(wrappedValue: .comment($0)) },
+                prevCursor: cursor,
+                nextCursor: response.cursor
             )
         }
     }

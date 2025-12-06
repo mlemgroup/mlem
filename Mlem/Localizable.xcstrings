@@ -2192,6 +2192,9 @@
         }
       }
     },
+    "Comment Downvotes" : {
+
+    },
     "Comment Reports" : {
       "localizations" : {
         "fr" : {
@@ -2211,6 +2214,9 @@
           }
         }
       }
+    },
+    "Comment Upvotes" : {
+
     },
     "Comment was deleted" : {
       "localizations" : {
@@ -3127,6 +3133,7 @@
 
     },
     "Downvotes" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -3242,6 +3249,9 @@
           }
         }
       }
+    },
+    "Enabled" : {
+
     },
     "end.of.feed.icon.1" : {
       "comment" : "This is the key for an icon that appears next to the \"I think I've found the bottom!\" text. It is localized so that you can change the icon to fit better with your translation of the text.",
@@ -4660,6 +4670,9 @@
         }
       }
     },
+    "Local Only" : {
+
+    },
     "Local Options" : {
       "localizations" : {
         "fr" : {
@@ -6019,6 +6032,9 @@
     "Post Details" : {
 
     },
+    "Post Downvotes" : {
+
+    },
     "Post failed to send." : {
       "localizations" : {
         "fr" : {
@@ -6068,6 +6084,9 @@
           }
         }
       }
+    },
+    "Post Upvotes" : {
+
     },
     "Post was locked" : {
       "localizations" : {

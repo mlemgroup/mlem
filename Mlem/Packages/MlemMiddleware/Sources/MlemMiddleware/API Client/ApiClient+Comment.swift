@@ -72,6 +72,24 @@ public extension ApiClient {
         )
         return await caches.comment2.getModels(api: self, from: snapshots)
     }
+
+    func getCommentHistory(
+        type: GetContentFilter,
+        page: Int?,
+        cursor: String?,
+        limit: Int
+    ) async throws -> (comments: [Comment2], cursor: String?) {
+        let response = try await repository.getCommentHistory(
+            type: type,
+            page: page,
+            cursor: cursor,
+            limit: limit
+        )
+        return try await (
+            comments: caches.comment2.getModels(api: self, from: response.comments),
+            cursor: response.cursor
+        )
+    }
     
     // TODO: Remove in favor of the below method once we drop support for versions before Lemmy 1.0
     func searchComments(

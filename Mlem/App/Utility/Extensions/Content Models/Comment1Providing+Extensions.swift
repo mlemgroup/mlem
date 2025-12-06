@@ -30,6 +30,10 @@ extension Comment1Providing {
         return api.myPerson?.moderates(communityId: id) ?? false || api.isAdmin
     }
 
+    var downvotesEnabled: Bool {
+        api.voteFederationMode.commentDownvote != .disable
+    }
+
     @ActionBuilder
     func allMenuActions(
         appState: AppState,
@@ -65,7 +69,7 @@ extension Comment1Providing {
     ) -> [any Action] {
         ActionGroup(displayMode: .compactSection) {
             upvoteAction(appState: appState, feedback: feedback)
-            downvoteAction(appState: appState, feedback: feedback)
+            downvoteAction(appState: appState, feedback: feedback, downvotesEnabled: downvotesEnabled)
             saveAction(appState: appState, feedback: feedback)
             replyAction(appState: appState, commentTreeTracker: commentTreeTracker)
             if !deleted {
@@ -133,7 +137,7 @@ extension Comment1Providing {
     ) -> (any Action)? {
         switch type {
         case .upvote: upvoteAction(appState: appState, feedback: [.haptic])
-        case .downvote: api.downvotesEnabled ? downvoteAction(appState: appState, feedback: [.haptic]) : nil
+        case .downvote: downvotesEnabled ? downvoteAction(appState: appState, feedback: [.haptic], downvotesEnabled: downvotesEnabled) : nil
         case .save: saveAction(appState: appState, feedback: [.haptic])
         case .reply: replyAction(appState: appState, commentTreeTracker: commentTreeTracker)
         case .share: shareAction(navigation: navigation)
@@ -154,9 +158,9 @@ extension Comment1Providing {
         commentTreeTracker: CommentTreeTracker? = nil
     ) -> Counter? {
         switch type {
-        case .score: scoreCounter(appState: appState)
+        case .score: scoreCounter(appState: appState, downvotesEnabled: downvotesEnabled)
         case .upvote: upvoteCounter(appState: appState)
-        case .downvote: api.downvotesEnabled ? downvoteCounter(appState: appState) : nil
+        case .downvote: downvotesEnabled ? downvoteCounter(appState: appState, downvotesEnabled: downvotesEnabled) : nil
         case .reply: replyCounter(appState: appState, commentTreeTracker: commentTreeTracker)
         }
     }
@@ -165,9 +169,9 @@ extension Comment1Providing {
         switch type {
         case .created: createdReadout
         // swiftlint:disable:next void_function_in_ternary
-        case .score: api.downvotesEnabled ? scoreReadout(showColor: showColor) : upvoteReadout(showColor: showColor)
+        case .score: downvotesEnabled ? scoreReadout(showColor: showColor) : upvoteReadout(showColor: showColor)
         case .upvote: upvoteReadout(showColor: showColor)
-        case .downvote: api.downvotesEnabled ? downvoteReadout(showColor: showColor) : nil
+        case .downvote: downvotesEnabled ? downvoteReadout(showColor: showColor) : nil
         case .comment: commentReadout
         case .saved: savedReadout(showColor: showColor)
         }

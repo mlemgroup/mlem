@@ -81,6 +81,25 @@ public extension ApiClient {
             posts: caches.post2.getModels(api: self, from: snapshots.posts)
         )
     }
+
+    func getPostHistory(
+        type: GetContentFilter,
+        page: Int?,
+        cursor: String?,
+        limit: Int 
+    ) async throws -> (posts: [Post2], cursor: String?) {
+        let snapshots = try await repository.getPostHistory(
+            type: type,
+            page: page,
+            cursor: cursor,
+            limit: limit
+        )
+        let posts = await caches.post2.getModels(
+            api: self,
+            from: snapshots.posts
+        )
+        return (posts: posts, cursor: snapshots.cursor)
+    }
     
     func getPost(id: Int) async throws -> Post3 {
         let snapshot = try await repository.getPost(id: id)

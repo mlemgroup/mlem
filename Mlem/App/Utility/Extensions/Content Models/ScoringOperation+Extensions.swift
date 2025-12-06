@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 2024-12-18.
 //
 
+import Icons
 import MlemMiddleware
 import SwiftUI
 import Theming
@@ -15,6 +16,14 @@ extension ScoringOperation {
         case .none: Icons.resetVoteSquare
         case .upvote: Icons.upvoteSquare
         case .downvote: Icons.downvoteSquare
+        }
+    }
+
+    var icon: Icon {
+        switch self {
+        case .none: .lemmy.removeUpvote
+        case .upvote: .lemmy.addUpvote
+        case .downvote: .lemmy.addDownvote
         }
     }
     

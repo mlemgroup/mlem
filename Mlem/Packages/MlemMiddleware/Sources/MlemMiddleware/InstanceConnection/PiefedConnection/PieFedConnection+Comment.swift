@@ -34,7 +34,7 @@ public extension PieFedConnection {
         limit: Int,
         filter: GetContentFilter? = nil
     ) async throws -> [Comment2Snapshot] {
-        guard let sort = sort.piefedSortType, filter != .downvoted else {
+        guard let sort = sort.piefedCommentSortType, filter != .downvoted else {
             throw ApiClientError.featureUnsupported
         }
         let request = PieFedGetCommentsRequest(
@@ -63,7 +63,7 @@ public extension PieFedConnection {
         limit: Int,
         filter: GetContentFilter? = nil
     ) async throws -> [Comment2Snapshot] {
-        guard let sort = sort.piefedSortType, filter != .downvoted else {
+        guard let sort = sort.piefedCommentSortType, filter != .downvoted else {
             throw ApiClientError.featureUnsupported
         }
         let request = PieFedGetCommentsRequest(
@@ -92,7 +92,7 @@ public extension PieFedConnection {
         limit: Int,
         filter: GetContentFilter? = nil
     ) async throws -> [Comment2Snapshot] {
-        guard let sort = sort.piefedSortType, filter != .downvoted else {
+        guard let sort = sort.piefedCommentSortType, filter != .downvoted else {
             throw ApiClientError.featureUnsupported
         }
         let request = PieFedGetCommentsRequest(
@@ -112,6 +112,36 @@ public extension PieFedConnection {
         let response = try await perform(request)
         return try response.comments.map { try .init(from: $0) }
     }
+
+    func getCommentHistory(
+        type: GetContentFilter,
+        page: Int?,
+        cursor: String?,
+        limit: Int
+    ) async throws -> (comments: [Comment2Snapshot], cursor: String?) {
+        guard type != .downvoted else {
+            throw ApiClientError.featureUnsupported
+        }
+        let request = PieFedGetCommentsRequest(
+            type_: .all,
+            sort: nil,
+            maxDepth: nil,
+            page: page,
+            limit: limit,
+            communityId: nil,
+            postId: nil,
+            parentId: nil,
+            personId: nil,
+            likedOnly: type == .upvoted,
+            savedOnly: type == .saved,
+            depthFirst: false
+        )
+        let response = try await perform(request)
+        return try (
+            comments: response.comments.map { try .init(from: $0) },
+            cursor: nil
+        )
+    }
     
     // This method should be removed in favor of the below method once we drop support for versions before Lemmy 1.0
     func searchComments(
@@ -123,7 +153,24 @@ public extension PieFedConnection {
         filter: ListingType = .all,
         sort: CommentSortType = .top(.allTime)
     ) async throws -> [Comment2Snapshot] {
-        throw ApiClientError.featureUnsupported
+        guard let sort = sort.piefedSortType else {
+            throw ApiClientError.featureUnsupported
+        }
+        let request = PieFedSearchRequest(
+            q: query,
+            type_: .comments,
+            sort: sort,
+            listingType: filter.pieFedListingType,
+            page: page,
+            limit: limit,
+            communityName: nil,
+            communityId: communityId
+        )
+        let response = try await perform(request)
+        guard let comments = response.comments else {
+            throw ApiClientError.featureUnsupported
+        }
+        return try comments.map { try .init(from: $0) } 
     }
     
     func searchComments(

@@ -46,6 +46,8 @@ public extension PieFedConnection {
             // Rather, we have only tested them on 1.3 and so are
             // restricting them to that version.
             version >= .v1_3_0
+        case .commentSearch:
+            version >= .v1_3_0
         case .moderatorSetNsfw: true
         default: false
         }

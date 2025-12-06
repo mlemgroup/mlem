@@ -15,7 +15,7 @@ public struct Instance2Snapshot: CacheIdentifiable {
     // May change. If you add/remove items from this list,
     // remember to also amend the `update` method of Post2!
     public var setup: Bool
-    public var downvotesEnabled: Bool
+    public var voteFederationMode: VoteFederationMode
     public var nsfwContentEnabled: Bool
     public var communityCreationRestrictedToAdmins: Bool
     public var emailVerificationRequired: Bool
@@ -47,7 +47,7 @@ public struct Instance2Snapshot: CacheIdentifiable {
     public init(
         instance: Instance1Snapshot,
         setup: Bool,
-        downvotesEnabled: Bool,
+        voteFederationMode: VoteFederationMode,
         nsfwContentEnabled: Bool,
         communityCreationRestrictedToAdmins: Bool,
         emailVerificationRequired: Bool,
@@ -76,7 +76,7 @@ public struct Instance2Snapshot: CacheIdentifiable {
     ) {
         self.instance = instance
         self.setup = setup
-        self.downvotesEnabled = downvotesEnabled
+        self.voteFederationMode = voteFederationMode
         self.nsfwContentEnabled = nsfwContentEnabled
         self.communityCreationRestrictedToAdmins = communityCreationRestrictedToAdmins
         self.emailVerificationRequired = emailVerificationRequired

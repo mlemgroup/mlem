@@ -154,6 +154,7 @@ class CommentTreeTracker: Hashable {
     
     func insertCreatedComment(_ comment: Comment2, parent: (any Comment1Providing)? = nil) {
         let wrapper = CommentTreeNode(comment)
+        nodesKeyedByActorId[comment.actorId] = wrapper
         if let parent {
             assert(!comment.parentCommentIds.isEmpty)
             nodesKeyedByActorId[parent.actorId]?.addChild(wrapper)

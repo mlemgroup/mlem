@@ -215,7 +215,7 @@ extension ActionAppearance {
     static func remove(isOn: Bool, isInProgress: Bool = false) -> Self {
         .init(
             label: isOn ? "Restore" : "Remove",
-            isOn: false,
+            isOn: isOn,
             isInProgress: isInProgress,
             isDestructive: !isOn,
             color: isOn ? .themedPositive : .themedNegative,

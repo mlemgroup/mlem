@@ -35,7 +35,7 @@ extension ResolvedContent {
         // This initializer is only used in 1.0.0 onwards, so we only need
         // to consider the `results` array and not the other arrays (which
         // are only used prior to 1.0.0)
-        guard let results = response.results else {
+        guard let results = response.search else {
             assertionFailure()
             throw .noEntityFound
         }

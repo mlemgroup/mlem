@@ -52,11 +52,10 @@ public extension LemmyConnection {
                 likedOnly: filter == .upvoted,
                 dislikedOnly: filter == .downvoted,
                 timeRangeSeconds: sort.timeRangeSeconds,
-                pageCursor: nil,
-                pageBack: nil
+                pageCursor: nil
             )
         }
-        return try response.comments.map { try .init(from: $0) }
+        return try response.items.map { try .init(from: $0) }
     }
 
     func getComments(
@@ -83,11 +82,10 @@ public extension LemmyConnection {
                 likedOnly: filter == .upvoted,
                 dislikedOnly: filter == .downvoted,
                 timeRangeSeconds: sort.timeRangeSeconds,
-                pageCursor: nil,
-                pageBack: nil
+                pageCursor: nil
             )
         }
-        return try response.comments.map { try .init(from: $0) }
+        return try response.items.map { try .init(from: $0) }
     }
     
     func getComments(
@@ -114,11 +112,79 @@ public extension LemmyConnection {
                 likedOnly: filter == .upvoted,
                 dislikedOnly: filter == .downvoted,
                 timeRangeSeconds: sort.timeRangeSeconds,
-                pageCursor: nil,
-                pageBack: nil
+                pageCursor: nil
             )
         }
-        return try response.comments.map { try .init(from: $0) }
+        return try response.items.map { try .init(from: $0) }
+    }
+
+    func getCommentHistory(
+        type: GetContentFilter,
+        page: Int?,
+        cursor: String?,
+        limit: Int
+    ) async throws -> (comments: [Comment2Snapshot], cursor: String?) {
+        try await processingForEndpoint { endpoint in
+            switch endpoint {
+            case .v3:
+                guard let page else {
+                    throw ApiClientError.featureUnsupported
+                }
+
+                let request = LemmyListCommentsRequest(
+                    endpoint: .v3,
+                    type_: .all,
+                    sort: .new,
+                    maxDepth: nil,
+                    page: page,
+                    limit: limit,
+                    communityId: nil,
+                    communityName: nil,
+                    postId: nil,
+                    parentId: nil,
+                    savedOnly: type == .saved,
+                    likedOnly: type == .upvoted,
+                    dislikedOnly: type == .downvoted,
+                    timeRangeSeconds: nil,
+                    pageCursor: nil
+                )
+                let response = try await self.perform(request, endpoint: .v3)
+                return try (
+                    comments: response.items.map { try .init(from: $0) },
+                    cursor: response.nextPage
+                )
+            case .v4:
+                switch type {
+                case .saved:
+                let request = LemmyListPersonSavedRequest(
+                    type_: .comments,
+                    pageCursor: cursor,
+                    limit: limit
+                )
+                let response = try await self.perform(request, endpoint: .v4)
+                return try (
+                    comments: response.items.compactMap(\.commentValue).map {
+                        try .init(from: $0)
+                    },
+                    cursor: response.nextPage
+                )
+                default:
+                let request = LemmyListPersonLikedRequest(
+                    type_: .comments,
+                    likeType: type == .upvoted ? .likedOnly : .dislikedOnly,
+                    pageCursor: cursor,
+                    limit: limit
+                )
+                let response = try await self.perform(request, endpoint: .v4)
+                return try (
+                    comments: response.items.compactMap(\.commentValue).map {
+                        try .init(from: $0)
+                    },
+                    cursor: response.nextPage
+                )
+                }
+            }
+        }
     }
     
     // This method should be removed in favor of the below method once we drop support for versions before Lemmy 1.0
@@ -193,8 +259,7 @@ public extension LemmyConnection {
                 likedOnly: nil,
                 dislikedOnly: nil,
                 showNsfw: nil,
-                pageCursor: nil,
-                pageBack: nil
+                pageCursor: nil
             )
         }
         return try response.comments?.map { try .init(from: $0) } ?? []
@@ -308,10 +373,9 @@ public extension LemmyConnection {
                 commentId: id,
                 page: page,
                 limit: limit,
-                pageCursor: nil,
-                pageBack: nil
+                pageCursor: nil
             )
         }
-        return try response.commentLikes.map { try .init(from: $0) }
+        return try response.items.map { try .init(from: $0) }
     }
 }

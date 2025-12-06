@@ -243,7 +243,7 @@ enum NavigationPage: Hashable {
             Task { @MainActor in
                 navigation.push(.signUp(instance.instanceStub))
             }
-        })
+        }, requiredFeature: .signUp)
     }
     
     static func communityPicker(
