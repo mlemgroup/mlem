@@ -46,7 +46,7 @@ extension BlockAction {
     enum Mode { case block, unblock }
 
     static func createLabel(relationship: Relationship, mode: Mode) -> ActionLabel {
-        let label: String = switch (relationship, mode) {
+        let label: LocalizedStringResource = switch (relationship, mode) {
         case (.identity, .block): "Block"
         case (.identity, .unblock): "Unblock"
         case (.commentAuthor, .block): "Block User"
