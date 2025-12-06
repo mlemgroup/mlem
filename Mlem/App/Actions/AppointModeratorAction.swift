@@ -10,7 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct AppointModeratorAction: Actions.Action {
-    let entity: Person1Providing
+    let entity: any Person1Providing
 }
 
 // MARK: - Configurability
@@ -74,6 +74,28 @@ extension AppointModeratorAction {
     }
 
     func execute(environment: EnvironmentValues) {
+        guard let message = self.popupMessage(environment: environment) else {
+            assertionFailure()
+            return
+        }
+        environment.popupModel?.showPopup(message: message, [
+            .init(title: "Yes", isDestructive: true) {
+                confirm(environment: environment)
+            }
+        ])
+    }
+
+    private func popupMessage(environment: EnvironmentValues) -> LocalizedStringResource? {
+        guard let community = environment.communityContext as? any Community3Providing else { return nil }
+
+        if self.isModerator(environment: environment) ?? false {
+            return "Really remove moderator \(entity.displayName) from \(community.displayName)?"
+        } else {
+            return "Really appoint \(entity.displayName) as a moderator of \(community.displayName)?"
+        }
+    }
+
+    private func confirm(environment: EnvironmentValues) {
         guard let isModerator = self.isModerator(environment: environment) else {
             assertionFailure()
             return
