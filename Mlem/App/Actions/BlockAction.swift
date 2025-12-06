@@ -9,7 +9,7 @@ import Actions
 import MlemMiddleware
 import SwiftUI
 
-struct BlockAction: SimpleLabelAction {
+struct BlockAction: Actions.Action {
     enum Relationship { case identity, commentAuthor }
 
     let entity: any Person1Providing
@@ -67,8 +67,6 @@ extension BlockAction {
         )
         }
     }
-
-    static var label: ActionLabel { createLabel(relationship: .identity, mode: .block) }
 
     func createLabel(environment: EnvironmentValues) -> ActionLabel {
         Self.createLabel(
