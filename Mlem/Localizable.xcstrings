@@ -3850,6 +3850,9 @@
         }
       }
     },
+    "Go to Instance" : {
+
+    },
     "Green" : {
       "localizations" : {
         "fr" : {
@@ -4973,6 +4976,7 @@
       }
     },
     "Mlem %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
