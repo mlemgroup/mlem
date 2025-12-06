@@ -13,7 +13,8 @@ private let seeds: [ActionSeed] = [
     .goToInstance,
     .copyName,
     .share,
-    .sendMessage
+    .sendMessage,
+    .block
 ]
 
 extension View {

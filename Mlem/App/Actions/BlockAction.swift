@@ -16,6 +16,13 @@ struct BlockAction: ConfigurableAction {
 // MARK: - Configurability
 
 extension ActionSeed {
+    static let block = ActionSeed("block") { entity in
+        switch entity {
+        case let entity as any Person1Providing: BlockAction(entity: entity)
+        default: nil
+        }
+    }
+
     static let blockCreator = ActionSeed("blockCreator") { entity in
         switch entity {
         case let entity as any Comment2Providing: BlockAction(entity: entity.creator)
