@@ -11,10 +11,16 @@ public struct ActionSeed: Hashable {
     public let key: String
     private let actionType: any ConfigurableAction.Type
     
+    public let label: ActionLabel
     public let createAction: (Any) -> (any ConfigurableAction)?
     
-    public init<T: ConfigurableAction>(_ key: String, createAction: @escaping (Any) -> T?) {
+    public init<T: ConfigurableAction>(
+        _ key: String,
+        label: ActionLabel? = nil,
+        createAction: @escaping (Any) -> T?
+    ) {
         self.key = key
+        self.label = label ?? T.label
         self.createAction = createAction
         self.actionType = T.self
     }
@@ -26,6 +32,4 @@ public struct ActionSeed: Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(key)
     }
-    
-    public var label: ActionLabel { actionType.label }
 }
