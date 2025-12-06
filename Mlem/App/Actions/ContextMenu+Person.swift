@@ -10,7 +10,8 @@ import MlemMiddleware
 import SwiftUI
 
 private let seeds: [ActionSeed] = [
-    .copyName
+    .copyName,
+    .share
 ]
 
 extension View {
