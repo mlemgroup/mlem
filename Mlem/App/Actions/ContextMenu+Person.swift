@@ -14,7 +14,8 @@ private let seeds: [ActionSeed] = [
     .copyName,
     .share,
     .sendMessage,
-    .block
+    .block,
+    .openModlog
 ]
 
 extension View {

@@ -23,14 +23,14 @@ class PopupAnchorModel {
         let isDestructive: Bool
         let callback: @MainActor () -> Void
         
-        init(title: LocalizedStringResource, isDestructive: Bool, callback: @escaping () -> Void) {
+        init(title: LocalizedStringResource, isDestructive: Bool = false, callback: @escaping () -> Void) {
             self.title = .init(localized: title)
             self.isDestructive = isDestructive
             self.callback = callback
         }
         
         @_disfavoredOverload
-        init(title: String, isDestructive: Bool, callback: @escaping () -> Void) {
+        init(title: String, isDestructive: Bool = false, callback: @escaping () -> Void) {
             self.title = title
             self.isDestructive = isDestructive
             self.callback = callback
