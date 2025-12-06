@@ -17,7 +17,8 @@ private let seeds: [ActionSeed] = [
     .block,
     .openModlog,
     .ban,
-    .purge
+    .purge,
+    .appointModerator
 ]
 
 extension View {
