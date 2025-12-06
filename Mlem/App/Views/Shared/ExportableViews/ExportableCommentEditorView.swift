@@ -20,7 +20,8 @@ struct ExportableCommentEditorView: View {
     @Setting(\.comment_createImage_showStats) var showStats: Bool
     @Setting(\.comment_createImage_colorScheme) var overrideColorScheme: UIUserInterfaceStyle
     
-    let comment: any Comment1Providing
+    @State var comment: any Comment1Providing
+    @State var post: (any Post3Providing)?
     
     var overriddenColorScheme: ColorScheme {
         switch overrideColorScheme {
@@ -43,6 +44,30 @@ struct ExportableCommentEditorView: View {
     }
     
     var body: some View {
+        if comment is any Comment2Providing, post != nil {
+            content
+        } else {
+            ProgressView()
+                .task {
+                    do {
+                        guard let comment2 = try await comment.upgrade() as? any Comment2Providing else {
+                            assertionFailure("Could not cast to Comment2Providing post-upgrade")
+                            return
+                        }
+                        guard let post3 = try await comment2.post.upgrade() as? any Post3Providing else {
+                            assertionFailure("Could not cast to Post2Providing post-upgrade")
+                            return
+                        }
+                        comment = comment2
+                        post = post3
+                    } catch {
+                        handleError(error)
+                    }
+                }
+        }
+    }
+    
+    var content: some View {
         ScrollView {
             exportableComment
                 .padding(.bottom, 200)
@@ -80,12 +105,16 @@ struct ExportableCommentEditorView: View {
         }
     }
     
+    @ViewBuilder
     var exportableComment: some View {
-        ExportableCommentView(
-            comment: comment,
-            appState: appState,
-            colorScheme: overriddenColorScheme
-        )
-        .allowsHitTesting(false)
+        if let post {
+            ExportableCommentView(
+                comment: comment,
+                post: post,
+                appState: appState,
+                colorScheme: overriddenColorScheme
+            )
+            .allowsHitTesting(false)
+        }
     }
 }

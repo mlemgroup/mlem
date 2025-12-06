@@ -15,19 +15,13 @@ struct ExportableCommentView: View {
     @Setting(\.comment_createImage_showStats) var showStats: Bool
     
     let comment: any Comment1Providing
+    let post: any Post3Providing
     
     // Anything environment-dependent must be passed in because ImageRenderer doesn't work with @Environment
     let appState: AppState
     let colorScheme: ColorScheme
     
     let infoStackReadouts: [CommentBarConfiguration.ReadoutType] = [.upvote, .downvote, .created, .comment]
-    
-    var shownPost: (any Post)? {
-        if let comment2 = comment as? any Comment2Providing, showPost {
-            return comment2.post
-        }
-        return nil
-    }
     
     var animationHashValue: Int {
         var hasher = Hasher()
@@ -47,9 +41,9 @@ struct ExportableCommentView: View {
     
     var content: some View {
         VStack(spacing: 0) {
-            if let shownPost {
+            if showPost {
                 ExportablePostView(
-                    post: shownPost,
+                    post: post,
                     appState: appState,
                     colorScheme: colorScheme
                 )
@@ -62,9 +56,6 @@ struct ExportableCommentView: View {
     
     var commentContent: some View {
         HStack(spacing: 0) {
-            if shownPost != nil {
-                CommentBarView(depth: 0)
-            }
             VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
                 if showCreator {
                     FullyQualifiedLabelView(comment.creator_, labelStyle: .medium, showFlairs: false)
@@ -79,11 +70,19 @@ struct ExportableCommentView: View {
                         .transition(.move(edge: .top).combined(with: .scale))
                 }
             }
+            .padding(.leading, showPost ? 11 : 0)
             .padding(Constants.main.standardSpacing)
         }
         .background(.themedSecondaryGroupedBackground)
         .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
+        .overlay(alignment: .leading) {
+            // CommentBarView's maxHeight: .infinity sometimes causes scaling problems when the post is shown, putting
+            // it in an overlay forces it to respect the correct parent scaling
+            if showPost {
+                CommentBarView(depth: 0)
+            }
+        }
         .padding(Constants.main.standardSpacing)
         .background(.themedGroupedBackground)
     }

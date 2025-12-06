@@ -67,6 +67,7 @@ struct LargePostBodyView: View {
         MediaView.largeImage(url: url, shouldBlur: shouldBlur) {
             post.markRead()
         }
+        .frame(maxWidth: .infinity)
     }
     
     // @Environment(\.openURL) combined with the conditionally displayed url in .embedded causes significant lag
