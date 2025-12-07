@@ -56,6 +56,7 @@ public extension Icon {
                 "ellipsis.circle"
             }
         })
+        public let configure: Icon = .init("slider.horizontal.3")
         public let `import`: Icon = .init("square.and.arrow.down")
         public let export: Icon = .init("square.and.arrow.up")
         public let edit: Icon = .init("pencil")
@@ -74,6 +75,7 @@ public extension Icon {
         
         public let image: Icon = .init("photo")
         public let photoLibary: Icon = .init("photo.on.rectangle.angled")
+        public let createImage: Icon = .init("scanner")
         
         public let play: Icon = .init("play")
         public let playCircle: Icon = .applyCircle("play.circle")
