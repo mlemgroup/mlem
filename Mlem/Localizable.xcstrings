@@ -4976,6 +4976,7 @@
       }
     },
     "Mlem %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {

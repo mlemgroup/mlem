@@ -64,6 +64,7 @@ struct ExportableCommentEditorView: View {
             exportableComment
                 .padding(.bottom, 200)
         }
+        .presentationBackground(.themedGroupedBackground)
         .overlay(alignment: .bottom) {
             ExportableViewControlOverlay { createImageFromView(exportableComment) }
         }

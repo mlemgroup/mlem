@@ -25,7 +25,6 @@ struct ExportableCommentView: View {
     let colorScheme: ColorScheme
     
     let infoStackReadouts: [CommentBarConfiguration.ReadoutType] = [.upvote, .downvote, .created, .comment]
-    let postInfoStackReadouts: [PostBarConfiguration.ReadoutType] = [.upvote, .downvote, .created, .comment]
     
     var animationHashValue: Int {
         var hasher = Hasher()
