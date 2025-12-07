@@ -3487,6 +3487,9 @@
         }
       }
     },
+    "Failed" : {
+
+    },
     "Failed to block!" : {
 
     },
@@ -4973,6 +4976,7 @@
       }
     },
     "Mlem %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -6025,6 +6029,9 @@
           }
         }
       }
+    },
+    "Post Details" : {
+
     },
     "Post Downvotes" : {
 
