@@ -19,6 +19,7 @@ public enum Feature: Hashable {
     case hidePosts
     case searchLocalPeople
     case searchLocalCommunities
+    case searchLocalComments
 
     case modlog
     case viewInstanceCreationDate
