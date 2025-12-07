@@ -44,7 +44,7 @@ extension SearchView {
             .buttonStyle(.feedFilter(isOn: communityFilters.sort != .top(.allTime)))
             InstancePicker(
                 filter: Binding(get: { communityFilters.instance }, set: { self.communityFilters?.instance = $0 }),
-                isForPersonSearch: false
+                requiredFeature: .searchLocalCommunities
             )
             .buttonStyle(.feedFilter(isOn: communityFilters.instance != .any))
         }
@@ -65,7 +65,7 @@ extension SearchView {
             .buttonStyle(.feedFilter(isOn: personFilters.sort != .top(.allTime)))
             InstancePicker(
                 filter: Binding(get: { personFilters.instance }, set: { self.personFilters?.instance = $0 }),
-                isForPersonSearch: true
+                requiredFeature: .searchLocalPeople
             )
             .buttonStyle(.feedFilter(isOn: personFilters.instance != .any))
         }
@@ -95,7 +95,7 @@ extension SearchView {
             }
         }
         .buttonStyle(.feedFilter(isOn: commentFilters.sort != .top(.allTime)))
-        LocationPicker(filter: $commentFilters.location)
+        LocationPicker(filter: $commentFilters.location, requiredFeature: .searchLocalComments)
             .buttonStyle(.feedFilter(isOn: commentFilters.location != .any))
         CreatorPicker(
             api: commentFilters.location.instanceStub?.api ?? appState.firstApi,
