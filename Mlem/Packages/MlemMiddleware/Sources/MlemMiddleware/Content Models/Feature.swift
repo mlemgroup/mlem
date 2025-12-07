@@ -47,7 +47,7 @@ public enum Feature: Hashable {
     case editModeratorList
     case editCommunityDescription
     
-    case commentTreeSortedByDepth
+    case commentTreeSortedByDepthAscending
     case uploadImages
     case commentSearch
 

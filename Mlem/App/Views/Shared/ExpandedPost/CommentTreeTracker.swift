@@ -175,14 +175,7 @@ class CommentTreeTracker: Hashable {
         var commentsKeyedById: [Int: CommentTreeNode] = [:]
         var commentsKeyedByActorId: [ActorIdentifier: CommentTreeNode] = clear ? [:] : nodesKeyedByActorId
         
-        let sortedComments: [Comment2]
-        if await (try? newComments.first?.api.supports(.commentTreeSortedByDepth)) ?? false {
-            sortedComments = newComments
-        } else {
-            sortedComments = newComments.sorted { $0.depth < $1.depth }
-        }
-        
-        for comment in sortedComments {
+        for comment in await self.sortComments(newComments) {
             if commentsKeyedByActorId.keys.contains(comment.actorId) {
                 commentsKeyedById[comment.id] = commentsKeyedByActorId[comment.actorId]
                 continue
@@ -200,6 +193,14 @@ class CommentTreeTracker: Hashable {
         }
         nodes = output
         nodesKeyedByActorId = commentsKeyedByActorId
+    }
+
+    private func sortComments(_ comments: [Comment2]) async -> any Sequence<Comment2> {
+        guard let first = comments.first else { return [] }
+        if (try? await first.api.supports(.commentTreeSortedByDepthAscending)) ?? false {
+            return comments
+        }
+        return comments.sorted { $0.depth < $1.depth }
     }
     
     private func resolveCommentTree(comments newComments: [Comment2]) {
