@@ -10,13 +10,15 @@ import SwiftUI
 
 struct ExportablePostView: View {
     @Setting(\.appearance_palette) var colorPalette
+    @Setting(\.post_createImage_showCommunity) var showCommunity
+    @Setting(\.post_createImage_showCreator) var showCreator
+    @Setting(\.post_createImage_showStats) var showStats
     
     let post: any Post1Providing
-    let appState: AppState // directly passed in because ImageRenderer doesn't work with @Environment
+    
+    // Anything environment-dependent must be passed in because ImageRenderer doesn't work with @Environment
+    let appState: AppState
     let colorScheme: ColorScheme
-    let showCommunity: Bool
-    let showCreator: Bool
-    let showStats: Bool
     
     let infoStackReadouts: [PostBarConfiguration.ReadoutType] = [.upvote, .downvote, .created, .comment]
     

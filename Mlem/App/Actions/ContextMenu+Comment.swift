@@ -17,6 +17,7 @@ private let seeds: [ActionSeed] = [
     .reply,
     .selectText,
     .share,
+    .createImage,
     .report,
     .blockCreator,
     .edit,

@@ -220,6 +220,8 @@ extension NavigationPage {
             RegistrationApplicationDenialEditorView(application: application)
         case let .exportPostImage(post):
             ExportablePostEditorView(post: post.wrappedValue)
+        case let .exportCommentImage(comment):
+            ExportableCommentEditorView(comment: comment.wrappedValue)
         case let .actionSheet(actions):
             ActionSheet(actions: actions.wrappedValue)
         }

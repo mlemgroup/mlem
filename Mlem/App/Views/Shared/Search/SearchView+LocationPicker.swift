@@ -10,8 +10,21 @@ import SwiftUI
 
 extension SearchView {
     struct LocationPicker: View {
+        @Environment(AppState.self) var appState
         @Environment(NavigationLayer.self) var navigation
+
         @Binding var filter: LocationFilter
+        var requiredFeature: Feature?
+        
+        @State var instanceSupportsRequiredFeature: Bool?
+        
+        var allowActiveAccountLocalInstanceSearch: Bool {
+            if requiredFeature != nil {
+                instanceSupportsRequiredFeature ?? false
+            } else {
+                true
+            }
+        }
         
         var body: some View {
             Menu(filter.label, icon: filter.icon) {
@@ -59,11 +72,13 @@ extension SearchView {
                     }
                 }
                 Section {
-                    Toggle(isOn: .init(get: { filter == .localInstance }, set: { _ in filter = .localInstance })) {
-                        Label {
-                            Text(AppState.main.firstApi.host)
-                        } icon: {
-                            SimpleAvatarView(url: AppState.main.firstSession.instance?.avatar, type: .instanceAvatar)
+                    if allowActiveAccountLocalInstanceSearch {
+                        Toggle(isOn: .init(get: { filter == .localInstance }, set: { _ in filter = .localInstance })) {
+                            Label {
+                                Text(AppState.main.firstApi.host)
+                            } icon: {
+                                SimpleAvatarView(url: AppState.main.firstSession.instance?.avatar, type: .instanceAvatar)
+                            }
                         }
                     }
                     switch filter {
@@ -82,7 +97,16 @@ extension SearchView {
                     Button("Choose Instance...", icon: .lemmy.instance) {
                         navigation.openSheet(.instancePicker(callback: { instance in
                             filter = .instance(instance)
-                        }))
+                        }, requiredFeature: requiredFeature))
+                    }
+                }
+            }
+            .task(id: appState.firstApi) {
+                if let requiredFeature {
+                    do {
+                        instanceSupportsRequiredFeature = try await appState.firstApi.supports(requiredFeature)
+                    } catch {
+                        handleError(error)
                     }
                 }
             }
