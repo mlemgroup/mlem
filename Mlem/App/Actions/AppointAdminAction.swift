@@ -54,12 +54,15 @@ extension AppointAdminAction {
     }
 
     private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {
-        guard let myPerson = entity.api.myPerson else { return .hidden }
-        guard entity.api.canInteract(appState: environment.appState) else { return .hidden }
-        guard entity.api.isAdmin else { return .hidden }
-        guard !(entity.isAdmin_ ?? false) || entity.api.isHigherAdmin(than: entity) else { return .hidden }
-        guard entity.apiIsLocal else { return .hidden }
-        return entity.id == myPerson.id ? .hidden : .enabled
+        if entity.api.canInteract(appState: environment.appState),
+            entity.api.isAdmin,
+            !(entity.isAdmin_ ?? false),
+            entity.api.isHigherAdmin(than: entity),
+            entity.apiIsLocal {
+            .enabled
+        } else {
+            .hidden
+        }
     }
 }
 

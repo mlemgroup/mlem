@@ -54,11 +54,14 @@ extension AppointModeratorAction {
     }
 
     private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {
-        guard let community3 = environment.communityContext as? any Community3Providing else { return .hidden }
-        guard let myPerson = entity.api.myPerson else { return .hidden }
-        guard entity.api.canInteract(appState: environment.appState) else { return .hidden }
-        guard myPerson.canModerate(entity, in: community3) else { return .hidden }
-        return entity.id == myPerson.id ? .hidden : .enabled
+        if let community3 = environment.communityContext as? any Community3Providing,
+            let myPerson = entity.api.myPerson,
+            entity.api.canInteract(appState: environment.appState),
+            myPerson.canModerate(entity, in: community3) {
+            .enabled
+        } else {
+            .hidden
+        }
     }
 }
 
