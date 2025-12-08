@@ -183,7 +183,7 @@ extension Comment1Providing {
         .init(
             id: "exportAsImage\(uid)",
             appearance: .createImage()) {
-                navigation.openSheet(.createCommentImage(self))
+                navigation.openSheet(.createCommentImage(self, tracker: nil)) // TODO: NOW
             }
     }
     

@@ -169,6 +169,20 @@ class CommentTreeTracker: Hashable {
         await buildCommentTree(comments: newComments, clear: false)
     }
     
+    func getThread(preceding target: any Comment2Providing, limit: Int) -> [any Comment2Providing] {
+        guard var cur = nodesKeyedByActorId[target.actorId] else {
+            assertionFailure("Could not find \(target.actorId) in CommentTreeTracker")
+            return .init()
+        }
+
+        var ret: [any Comment2Providing] = [cur.comment]
+        while ret.count < limit, let parent = cur.parent {
+            ret.append(cur.comment)
+            cur = parent
+        }
+        return ret.reversed()
+    }
+    
     @MainActor
     private func buildCommentTree(comments newComments: [Comment2], clear: Bool = true) async {
         var output: [CommentTreeNode] = clear ? [] : nodes

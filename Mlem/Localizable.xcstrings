@@ -5844,6 +5844,9 @@
         }
       }
     },
+    "Parent Comments" : {
+
+    },
     "Password" : {
       "localizations" : {
         "fr" : {
@@ -6029,9 +6032,6 @@
           }
         }
       }
-    },
-    "Post Details" : {
-
     },
     "Post Downvotes" : {
 
@@ -7706,6 +7706,9 @@
           }
         }
       }
+    },
+    "Show Post" : {
+
     },
     "Show Read" : {
       "localizations" : {

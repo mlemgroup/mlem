@@ -9,6 +9,7 @@ import ComponentViews
 import SwiftUI
 import MlemMiddleware
 import Theming
+import os
 
 struct ExportableCommentEditorView: View {
     @Environment(AppState.self) var appState
@@ -25,6 +26,20 @@ struct ExportableCommentEditorView: View {
     
     @State var comment: any Comment1Providing
     @State var post: (any Post3Providing)?
+    
+    let commentTreeTracker: CommentTreeTracker?
+    @State var commentThread: [any Comment2Providing]?
+    
+    @State var threadLength: Int = 1 {
+        didSet {
+            guard let commentThread else {
+                assertionFailure("Cannot modify thread length without thread")
+                return
+            }
+            shownThread = commentThread.suffix(threadLength)
+        }
+    }
+    @State var shownThread: [any Comment2Providing] = .init()
     
     var overriddenColorScheme: ColorScheme {
         switch overrideColorScheme {
@@ -46,11 +61,19 @@ struct ExportableCommentEditorView: View {
                             assertionFailure("Could not cast to Comment2Providing post-upgrade")
                             throw ApiClientError.unsuccessful
                         }
+                        comment = comment2
+        
+                        if let commentTreeTracker {
+                            Logger.dev.info("Tracker present")
+                            await commentTreeTracker.load(ensuringPresenceOf: comment2)
+                            self.commentThread = commentTreeTracker.getThread(preceding: comment2, limit: 8)
+                            Logger.dev.info("Found thread \(commentThread?.count ?? -1) long")
+                        }
+                        
                         guard let post3 = try await comment2.post.upgrade() as? any Post3Providing else {
                             assertionFailure("Could not cast to Post2Providing post-upgrade")
                             throw ApiClientError.unsuccessful
                         }
-                        comment = comment2
                         post = post3
                     } catch {
                         handleError(error)
@@ -61,8 +84,21 @@ struct ExportableCommentEditorView: View {
     
     var content: some View {
         ScrollView {
-            exportableComment
+            if let post {
+                VStack {
+                    ForEach(shownThread, id: \.actorId) { comment in
+                        ExportableCommentView(
+                            comment: comment,
+                            post: post,
+                            appState: appState,
+                            colorScheme: overriddenColorScheme
+                        )
+                    }
+                }
                 .padding(.bottom, 200)
+            }
+//            exportableComment
+//                .padding(.bottom, 200)
         }
         .presentationBackground(.themedGroupedBackground)
         .overlay(alignment: .bottom) {
@@ -74,18 +110,36 @@ struct ExportableCommentEditorView: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Menu("Details", icon: .general.configure) {
-                    Toggle("Creator", icon: .lemmy.person, isOn: $showCreator)
-                    Toggle("Stats", icon: .lemmy.votes, isOn: $showStats)
+                    Section("Comment") { // TODO: NOW "Comments" if multiple
+                        Toggle("Creator", icon: .lemmy.person, isOn: $showCreator)
+                        Toggle("Stats", icon: .lemmy.votes, isOn: $showStats)
+                    }
+                    
+                    if commentTreeTracker != nil {
+                        ControlGroup("Parent Comments") {
+                            Button {
+                                threadLength -= 1
+                            } label: {
+                                Image(icon: .general.remove)
+                            }
+                            Button {
+                                threadLength += 1
+                            } label: {
+                                Image(icon: .general.add)
+                            }
+                        }
+                        .controlGroupStyle(.compactMenu)
+                    }
                     
                     if comment is any Comment2Providing {
-                        Toggle("Post", icon: .lemmy.post, isOn: $showPost)
-                        if showPost {
-                            Menu("Post Details", icon: .general.configure) {
+                        Section("Post") {
+                            Toggle("Show Post", icon: .lemmy.post, isOn: $showPost)
+                            
+                            if showPost {
                                 Toggle("Community", icon: .lemmy.community, isOn: $postShowCommunity)
                                 Toggle("Creator", icon: .lemmy.person, isOn: $postShowCreator)
                                 Toggle("Stats", icon: .lemmy.votes, isOn: $postShowStats)
                             }
-                            .menuActionDismissBehavior(.disabled) // this doesn't work but I think that's a bug
                         }
                     }
                     
