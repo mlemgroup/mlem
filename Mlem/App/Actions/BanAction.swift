@@ -39,7 +39,7 @@ private extension BanScopePattern {
     }
 }
 
-struct BanAction: ConfigurableAction {
+struct BanAction: SimpleLabelAction {
     let entity: any Person1Providing
 
     var canBanFromInstance: Bool {
@@ -62,6 +62,13 @@ struct BanAction: ConfigurableAction {
 // MARK: - Configurability
 
 extension ActionSeed {
+    static let ban = ActionSeed("ban") { entity in
+        switch entity {
+        case let entity as any Person1Providing: BanAction(entity: entity)
+        default: nil
+        }
+    }
+
     static let banCreator = ActionSeed("banCreator") { entity in
         switch entity {
         case let entity as any Comment2Providing: BanAction(entity: entity.creator)

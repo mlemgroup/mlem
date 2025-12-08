@@ -159,6 +159,7 @@ struct MessageFeedView: View {
                     }
                 }
             }
+            .environment(\.isInMessageFeed, true)
             .environment(\.editMessage) { message in
                 editing = message
                 textView.text = message.content
@@ -329,4 +330,5 @@ struct MessageFeedView: View {
 
 extension EnvironmentValues {
     @Entry var editMessage: ((Message2) -> Void)?
+    @Entry var isInMessageFeed: Bool = false
 }

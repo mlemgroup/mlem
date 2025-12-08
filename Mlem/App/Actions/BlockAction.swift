@@ -9,16 +9,32 @@ import Actions
 import MlemMiddleware
 import SwiftUI
 
-struct BlockAction: ConfigurableAction {
+struct BlockAction: Actions.Action {
+    enum Relationship { case identity, commentAuthor }
+
     let entity: any Person1Providing
+    let relationship: Relationship
 }
 
 // MARK: - Configurability
 
 extension ActionSeed {
-    static let blockCreator = ActionSeed("blockCreator") { entity in
+    static let block = ActionSeed(
+        "block",
+        label: BlockAction.createLabel(relationship: .identity, mode: .block)
+    ) { entity in
         switch entity {
-        case let entity as any Comment2Providing: BlockAction(entity: entity.creator)
+        case let entity as any Person1Providing: BlockAction(entity: entity, relationship: .identity)
+        default: nil
+        }
+    }
+
+    static let blockCreator = ActionSeed(
+        "blockCreator",
+        label: BlockAction.createLabel(relationship: .commentAuthor, mode: .block)
+    ) { entity in
+        switch entity {
+        case let entity as any Comment2Providing: BlockAction(entity: entity.creator, relationship: .commentAuthor)
         default: nil
         }
     }
@@ -27,26 +43,36 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension BlockAction {
-    static let blockLabel: ActionLabel = .init(
-        "Block User",
-        icon: .lemmy.block,
-        color: .themedNegative,
-        isDestructive: true
-    )
-    static let unblockLabel: ActionLabel = .init(
-        "Unblock User",
-        icon: .lemmy.unblock,
-        color: .themedPositive
-    )
-    
-    static var label: ActionLabel { blockLabel }
+    enum Mode { case block, unblock }
+
+    static func createLabel(relationship: Relationship, mode: Mode) -> ActionLabel {
+        let label: LocalizedStringResource = switch (relationship, mode) {
+        case (.identity, .block): "Block"
+        case (.identity, .unblock): "Unblock"
+        case (.commentAuthor, .block): "Block User"
+        case (.commentAuthor, .unblock): "Unblock User"
+        }
+
+        return switch mode {
+        case .block: .init(
+            label,
+            icon: .lemmy.block,
+            color: .themedNegative,
+            isDestructive: true
+        )
+        case .unblock: .init(
+            label,
+            icon: .lemmy.unblock,
+            color: .themedPositive
+        )
+        }
+    }
 
     func createLabel(environment: EnvironmentValues) -> ActionLabel {
-        if entity.blocked {
-            Self.unblockLabel.withVisibility(visibility(environment))
-        } else {
-            Self.blockLabel.withVisibility(visibility(environment))
-        }
+        Self.createLabel(
+            relationship: self.relationship,
+            mode: entity.blocked ? .unblock : .block
+        ).withVisibility(visibility(environment))
     }
 
     private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {

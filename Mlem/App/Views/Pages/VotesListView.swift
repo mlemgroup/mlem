@@ -74,9 +74,7 @@ struct VotesListView: View {
         .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
-        .contextMenu {
-            vote.creator.menuActions(appState: appState, navigation: navigation, community: target.model.community_)
-        }
+        .contextMenu(person: vote.creator)
         .padding(.horizontal, Constants.main.standardSpacing)
     }
     

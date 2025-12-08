@@ -9,7 +9,7 @@ import Actions
 import MlemMiddleware
 import SwiftUI
 
-struct ShareAction: ConfigurableAction {
+struct ShareAction: SimpleLabelAction {
     let entity: any Sharable
 }
 
@@ -27,7 +27,7 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension ShareAction {
-    static let label: ActionLabel = .init("Share", icon: .general.share)
+    static let label: ActionLabel = .init("Share...", icon: .general.share)
 }
 
 // MARK: - Behavior

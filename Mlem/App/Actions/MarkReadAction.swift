@@ -9,7 +9,7 @@ import Actions
 import MlemMiddleware
 import SwiftUI
 
-struct MarkReadAction: ConfigurableAction {
+struct MarkReadAction: SimpleLabelAction {
     let notification: InboxNotification
 }
 

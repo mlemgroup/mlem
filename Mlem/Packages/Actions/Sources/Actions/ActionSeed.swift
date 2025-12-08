@@ -9,14 +9,27 @@ import Foundation
 
 public struct ActionSeed: Hashable {
     public let key: String
-    private let actionType: any ConfigurableAction.Type
+    private let actionType: any Action.Type
     
-    public let createAction: (Any) -> (any ConfigurableAction)?
+    public let label: ActionLabel
+    public let createAction: (Any) -> (any Action)?
     
-    public init<T: ConfigurableAction>(_ key: String, createAction: @escaping (Any) -> T?) {
+    public init<T: Action>(
+        _ key: String,
+        label: ActionLabel,
+        createAction: @escaping (Any) -> T?
+    ) {
         self.key = key
+        self.label = label
         self.createAction = createAction
         self.actionType = T.self
+    }
+
+    public init<T: SimpleLabelAction>(
+        _ key: String,
+        createAction: @escaping (Any) -> T?
+    ) {
+        self.init(key, label: T.label, createAction: createAction)
     }
     
     public static func == (lhs: Self, rhs: Self) -> Bool {
@@ -26,6 +39,4 @@ public struct ActionSeed: Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(key)
     }
-    
-    public var label: ActionLabel { actionType.label }
 }

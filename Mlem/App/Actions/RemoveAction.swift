@@ -9,7 +9,7 @@ import Actions
 import MlemMiddleware
 import SwiftUI
 
-struct RemoveAction: ConfigurableAction {
+struct RemoveAction: SimpleLabelAction {
     let entity: any RemovableProviding
 }
 

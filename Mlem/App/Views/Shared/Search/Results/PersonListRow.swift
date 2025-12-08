@@ -55,7 +55,8 @@ struct PersonListRow<Content2: View>: View {
         .padding(.vertical, 6)
         .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
-        .contextMenu { person.menuActions(appState: appState, navigation: navigation, community: communityContext) }
+        .contextMenu(person: person)
+        .popupAnchor()
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }
 }

@@ -9,7 +9,7 @@ import Actions
 import MlemMiddleware
 import SwiftUI
 
-struct ReportAction: ConfigurableAction {
+struct ReportAction: SimpleLabelAction {
     let entity: any ReportableProviding
 }
 
