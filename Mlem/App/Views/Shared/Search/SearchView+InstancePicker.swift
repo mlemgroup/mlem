@@ -12,13 +12,18 @@ extension SearchView {
     struct InstancePicker: View {
         @Environment(AppState.self) var appState
         @Environment(NavigationLayer.self) var navigation
+
         @Binding var filter: InstanceFilter
-        let isForPersonSearch: Bool
+        var requiredFeature: Feature?
         
-        @State var instanceSupportsSearchingLocalPeople: Bool?
+        @State var instanceSupportsRequiredFeature: Bool?
         
         var allowActiveAccountLocalInstanceSearch: Bool {
-            !isForPersonSearch || (instanceSupportsSearchingLocalPeople ?? false)
+            if requiredFeature != nil {
+                instanceSupportsRequiredFeature ?? false
+            } else {
+                true
+            }
         }
         
         var body: some View {
@@ -57,13 +62,13 @@ extension SearchView {
                 Button("Choose Instance...", icon: .lemmy.instance) {
                     navigation.openSheet(.instancePicker(callback: { instance in
                         filter = .other(instance)
-                    }, requiredFeature: isForPersonSearch ? .searchLocalPeople : nil))
+                    }, requiredFeature: requiredFeature))
                 }
             }
             .task(id: appState.firstApi) {
-                if isForPersonSearch {
+                if let requiredFeature {
                     do {
-                        instanceSupportsSearchingLocalPeople = try await appState.firstApi.supports(.searchLocalPeople)
+                        instanceSupportsRequiredFeature = try await appState.firstApi.supports(requiredFeature)
                     } catch {
                         handleError(error)
                     }
