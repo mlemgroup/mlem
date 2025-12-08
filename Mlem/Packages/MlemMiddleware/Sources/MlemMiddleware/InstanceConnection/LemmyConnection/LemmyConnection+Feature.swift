@@ -43,8 +43,6 @@ public extension LemmyConnection {
              .hidePosts, .editDisplayName, .editProfile, .autoMarkPostReadOnInteract, .blockInstances,
              .fetchLinkMetadata, .unbanWithReason, .customPostThumbnail, .banFromNonLocalCommunity, .editCommunityDescription:
             true
-        case .commentTreeSortedByDepthAscending:
-            version < .v1_0_0
         case .moderatorSetNsfw:
             false
         }
