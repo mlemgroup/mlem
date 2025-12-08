@@ -28,18 +28,18 @@ struct ExportableCommentEditorView: View {
     @State var post: (any Post3Providing)?
     
     let commentTreeTracker: CommentTreeTracker?
-    @State var commentThread: [any Comment2Providing]?
+    @State var allParents: [any Comment2Providing]?
     
     @State var threadLength: Int = 1 {
         didSet {
-            guard let commentThread else {
+            guard let allParents else {
                 assertionFailure("Cannot modify thread length without thread")
                 return
             }
-            shownThread = commentThread.suffix(threadLength)
+            comments = allParents.suffix(threadLength)
         }
     }
-    @State var shownThread: [any Comment2Providing] = .init()
+    @State var comments: [any Comment2Providing] = .init()
     
     var overriddenColorScheme: ColorScheme {
         switch overrideColorScheme {
@@ -66,8 +66,8 @@ struct ExportableCommentEditorView: View {
                         if let commentTreeTracker {
                             Logger.dev.info("Tracker present")
                             await commentTreeTracker.load(ensuringPresenceOf: comment2)
-                            self.commentThread = commentTreeTracker.getThread(preceding: comment2, limit: 8)
-                            Logger.dev.info("Found thread \(commentThread?.count ?? -1) long")
+                            self.allParents = commentTreeTracker.getThread(preceding: comment2, limit: 8)
+                            Logger.dev.info("Found thread \(allParents?.count ?? -1) long")
                         }
                         
                         guard let post3 = try await comment2.post.upgrade() as? any Post3Providing else {
@@ -84,21 +84,8 @@ struct ExportableCommentEditorView: View {
     
     var content: some View {
         ScrollView {
-            if let post {
-                VStack {
-                    ForEach(shownThread, id: \.actorId) { comment in
-                        ExportableCommentView(
-                            comment: comment,
-                            post: post,
-                            appState: appState,
-                            colorScheme: overriddenColorScheme
-                        )
-                    }
-                }
+            exportableComment
                 .padding(.bottom, 200)
-            }
-//            exportableComment
-//                .padding(.bottom, 200)
         }
         .presentationBackground(.themedGroupedBackground)
         .overlay(alignment: .bottom) {
@@ -162,7 +149,7 @@ struct ExportableCommentEditorView: View {
     var exportableComment: some View {
         if let post {
             ExportableCommentView(
-                comment: comment,
+                comments: comments,
                 post: post,
                 appState: appState,
                 colorScheme: overriddenColorScheme

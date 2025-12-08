@@ -17,7 +17,7 @@ struct ExportableCommentView: View {
     @Setting(\.post_createImage_showCreator) var postShowCreator
     @Setting(\.post_createImage_showStats) var postShowStats
     
-    let comment: any Comment1Providing
+    let comments: [any Comment1Providing]
     let post: any Post3Providing
     
     // Anything environment-dependent must be passed in because ImageRenderer doesn't work with @Environment
@@ -56,12 +56,15 @@ struct ExportableCommentView: View {
                 .transition(.move(edge: .top).combined(with: .opacity))
             }
             
-            commentContent
-                .geometryGroup()
+            ForEach(Array(comments.enumerated()), id: \.element.actorId) { index, comment in
+                commentContent(comment: comment, depth: index)
+                    .geometryGroup()
+                    .padding(.leading, CGFloat(index * 10))
+            }
         }
     }
     
-    var commentContent: some View {
+    func commentContent(comment: any Comment1Providing, depth: Int) -> some View {
         HStack(spacing: 0) {
             VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
                 if showCreator {
@@ -87,7 +90,7 @@ struct ExportableCommentView: View {
             // CommentBarView's maxHeight: .infinity sometimes causes scaling problems when the post is shown, putting
             // it in an overlay forces it to respect the correct parent scaling
             if showPost {
-                CommentBarView(depth: 0)
+                CommentBarView(depth: depth)
                     .transition(.move(edge: .leading).combined(with: .scale))
             }
         }

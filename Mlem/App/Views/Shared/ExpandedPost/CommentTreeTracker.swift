@@ -170,16 +170,14 @@ class CommentTreeTracker: Hashable {
     }
     
     func getThread(preceding target: any Comment2Providing, limit: Int) -> [any Comment2Providing] {
-        guard var cur = nodesKeyedByActorId[target.actorId] else {
-            assertionFailure("Could not find \(target.actorId) in CommentTreeTracker")
-            return .init()
+        var cur = nodesKeyedByActorId[target.actorId]
+        var ret: [any Comment2Providing] = .init()
+        while ret.count < limit, let curNode = cur {
+            ret.append(curNode.comment)
+            cur = curNode.parent
         }
-
-        var ret: [any Comment2Providing] = [cur.comment]
-        while ret.count < limit, let parent = cur.parent {
-            ret.append(cur.comment)
-            cur = parent
-        }
+        
+        assert(ret.count > 0, "Could not build thread from \(target.actorId)")
         return ret.reversed()
     }
     
