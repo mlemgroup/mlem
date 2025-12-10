@@ -173,12 +173,12 @@ class CommentTreeTracker: Hashable {
         var cur = nodesKeyedByActorId[target.actorId]
         var ret: [any Comment2Providing] = .init()
         while ret.count < limit, let curNode = cur {
-            ret.append(curNode.comment)
+            ret.prepend(curNode.comment)
             cur = curNode.parent
         }
         
         assert(ret.count > 0, "Could not build thread from \(target.actorId)")
-        return ret.reversed()
+        return ret
     }
     
     @MainActor
