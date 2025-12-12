@@ -18,7 +18,11 @@ public extension PieFedConnection {
     }
     
     func blockInstance(instanceId: Int, block: Bool) async throws {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedBlockInstanceRequest(
+            instanceId: instanceId,
+            block: block
+        )
+        try await perform(request)
     }
     
     @discardableResult
