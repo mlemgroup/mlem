@@ -43,22 +43,8 @@ public extension InstanceStub {
     /// Due to API limitations (see [here](https://github.com/mlemgroup/mlem/pull/1029#issuecomment-2067746011)),
     /// it takes 4 API calls to perform this upgrade.
     func upgrade() async throws -> Instance1 {
-        let externalApi: ApiClient = .getApiClient(url: actorId.url, username: nil)
-        
-        let response = try await externalApi.getPosts(
-            feed: .local,
-            sort: .new,
-            page: 1,
-            cursor: nil,
-            limit: 1
-        )
-        
-        guard let post = response.posts.first else {
-            throw InstanceUpgradeError.noPostReturned
-        }
-        
-        let comm: Community3 = try await api.getCommunity(url: post.community.actorId.url)
-        
+        let comm = try await self.api.getCommunityOfInstance(actorId: actorId)
+
         guard let instance = comm.instance else {
             throw InstanceUpgradeError.noSiteReturned
         }
