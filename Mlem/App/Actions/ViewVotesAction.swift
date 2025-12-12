@@ -9,7 +9,7 @@ import Actions
 import MlemMiddleware
 import SwiftUI
 
-struct ViewVotesAction: ConfigurableAction {
+struct ViewVotesAction: SimpleLabelAction {
     let content: VotesListView.Target
 }
 

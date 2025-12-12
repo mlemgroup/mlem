@@ -120,7 +120,6 @@ extension Person1Providing {
             }
             banActions(appState: appState, community: community)
             if api.isAdmin {
-                purgeAction(appState: appState)
                 if api.supports(.purgeContent, defaultValue: false) {
                     purgeAction(appState: appState)
                 }

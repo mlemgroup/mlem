@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 30/05/2024.
 //
 
+import Actions
 import ComponentViews
 import Flow
 import LemmyMarkdownUI
@@ -107,7 +108,7 @@ struct PersonView: View {
                                 if person is any Person3Providing, proxy.isLoading {
                                     ProgressView()
                                 } else {
-                                    MenuButtons { person.menuActions(appState: appState, navigation: navigation, community: nil) }
+                                    ActionButtons(person: person)
                                 }
                             }
                         }
