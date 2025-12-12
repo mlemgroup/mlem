@@ -79,7 +79,7 @@ struct ExportableCommentEditorView: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Menu("Details", icon: .general.configure) {
-                    Section("Comment") { // TODO: NOW "Comments" if multiple
+                    Section(threadLength > 1 ? "Comments" : "Comment") {
                         Toggle("Creator", icon: .lemmy.person, isOn: $showCreator)
                         Toggle("Stats", icon: .lemmy.votes, isOn: $showStats)
                     }
