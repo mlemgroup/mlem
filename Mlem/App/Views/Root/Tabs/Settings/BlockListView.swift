@@ -77,7 +77,7 @@ struct BlockListView: View {
     
     var availableTabs: [Tab] {
         var output: [Tab] = [.people, .communities]
-        if appState.firstApi.supports(.blockInstances, defaultValue: false) {
+        if appState.firstApi.supports(.viewInstanceBlockList, defaultValue: false) {
             output.append(.instances)
         }
         return output
