@@ -29,7 +29,7 @@ struct SettingsHeaderView<IconView: View>: View {
     
     var body: some View {
         Section {
-            VStack(spacing: 12) {
+            VStack(alignment: .leading, spacing: 12) {
                 icon
                     .symbolVariant(.fill)
                     .padding(.bottom, 5)
@@ -38,13 +38,10 @@ struct SettingsHeaderView<IconView: View>: View {
                     .fontWeight(.bold)
                 if let description {
                     Text(description)
-                        .font(.callout)
-                        .multilineTextAlignment(.center)
-                        .frame(maxWidth: .infinity)
+                        .foregroundStyle(.themedSecondary)
                 }
             }
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, Constants.main.standardSpacing)
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 }
