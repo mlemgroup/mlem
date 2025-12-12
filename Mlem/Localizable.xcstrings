@@ -3250,9 +3250,6 @@
         }
       }
     },
-    "Enabled" : {
-
-    },
     "end.of.feed.icon.1" : {
       "comment" : "This is the key for an icon that appears next to the \"I think I've found the bottom!\" text. It is localized so that you can change the icon to fit better with your translation of the text.",
       "extractionState" : "extracted_with_value",
