@@ -55,7 +55,10 @@ private struct InboxNotificationContextMenuViewModifier: ViewModifier {
             .init(actions: createActions(seeds: [
                 .blockCreator,
                 .copyAuthorName,
-                .openCreatorModlog
+                .openCreatorModlog,
+                .banCreator,
+                .purgeCreator,
+                .sendCreatorMessage
             ]))
         ]
     }
