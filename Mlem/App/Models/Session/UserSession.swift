@@ -115,7 +115,7 @@ class UserSession: Session {
                 } else {
                     let stub = InstanceStub(api: api, actorId: actorId)
                     toastId = ToastModel.main.add(.loading("Blocking..."))
-                    instanceId = try await stub.upgrade().instanceId
+                    instanceId = try await api.getInstanceId(actorId: actorId)
                     shouldBlock = true
                 }
                 try await api.blockInstance(url: actorId.url, instanceId: instanceId, block: shouldBlock)
