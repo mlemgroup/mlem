@@ -16,6 +16,7 @@ struct ActionSheetSection {
 struct ActionSheet: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.self) var environment
+    @Environment(NavigationLayer.self) var navigation
 
     let sections: [ActionSheetSection]
 
@@ -45,7 +46,7 @@ struct ActionSheet: View {
         .labelStyle(ActionSheetLabelStyle())
         .buttonStyle(ActionSheetButtonStyle())
         .onChange(of: popupAnchorModel.outcome) { outcome in
-            if outcome == .confirmed { dismiss() }
+            if outcome == .confirmed, !navigation.rootChangePending { dismiss() }
         }
     }
 
