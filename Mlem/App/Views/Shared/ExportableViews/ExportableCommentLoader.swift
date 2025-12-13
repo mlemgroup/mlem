@@ -57,8 +57,6 @@ struct ExportableCommentData {
     let comments: [any Comment2Providing]
     let post: any Post3Providing
     
-    var numComments: Int { comments.count }
-    
     func thread(length: Int) -> [any Comment2Providing] {
         comments.suffix(length)
     }

@@ -84,7 +84,7 @@ struct ExportableCommentEditorView: View {
                         Toggle("Stats", icon: .lemmy.votes, isOn: $showStats)
                     }
                     
-                    if data.numComments > 1 {
+                    if data.comments.count > 1 {
                         ControlGroup("Parent Comments") {
                             Button {
                                 assert(threadLength > 1, "Cannot decrease thread length below 1")
@@ -98,14 +98,14 @@ struct ExportableCommentEditorView: View {
                             
                             Button {
                                 assert(
-                                    threadLength < min(8, data.numComments),
-                                    "Cannot increase thread length beyond \(min(8, data.numComments))"
+                                    threadLength < min(8, data.comments.count),
+                                    "Cannot increase thread length beyond \(min(8, data.comments.count))"
                                 )
                                 threadLength += 1
                             } label: {
                                 Image(icon: .general.add)
                             }
-                            .disabled(threadLength == min(8, data.numComments))
+                            .disabled(threadLength == min(8, data.comments.count))
                         }
                         .controlGroupStyle(.compactMenu)
                     }
