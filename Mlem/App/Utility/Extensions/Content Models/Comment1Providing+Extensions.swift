@@ -78,7 +78,7 @@ extension Comment1Providing {
             shareAction(navigation: navigation)
             
             if let navigation {
-                createImageAction(navigation: navigation)
+                createImageAction(navigation: navigation, commentTreeTracker: commentTreeTracker)
             }
             
             if isOwnComment {
@@ -179,11 +179,11 @@ extension Comment1Providing {
     
     // MARK: Actions
     
-    func createImageAction(navigation: NavigationLayer) -> BasicAction {
+    func createImageAction(navigation: NavigationLayer, commentTreeTracker: CommentTreeTracker?) -> BasicAction {
         .init(
             id: "exportAsImage\(uid)",
             appearance: .createImage()) {
-                navigation.openSheet(.createCommentImage(self))
+                navigation.openSheet(.createCommentImage(self, tracker: commentTreeTracker))
             }
     }
     

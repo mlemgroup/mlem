@@ -9,6 +9,7 @@ import ComponentViews
 import SwiftUI
 import MlemMiddleware
 import Theming
+import os
 
 struct ExportableCommentEditorView: View {
     @Environment(AppState.self) var appState
@@ -23,8 +24,22 @@ struct ExportableCommentEditorView: View {
     @Setting(\.post_createImage_showCreator) var postShowCreator
     @Setting(\.post_createImage_showStats) var postShowStats
     
-    @State var comment: any Comment1Providing
-    @State var post: (any Post3Providing)?
+    @State var commentLoader: ExportableCommentLoader
+    
+    init(comment: any Comment1Providing, commentTreeTracker: CommentTreeTracker?) {
+        self.commentLoader = .init(comment: comment, tracker: commentTreeTracker)
+    }
+    
+    @State var threadLength: Int = 1 {
+        didSet {
+            guard let allParents = commentLoader.data?.comments else {
+                assertionFailure("Cannot modify thread length without thread")
+                return
+            }
+            comments = allParents.suffix(threadLength)
+        }
+    }
+    @State var comments: [any Comment2Providing] = .init()
     
     var overriddenColorScheme: ColorScheme {
         switch overrideColorScheme {
@@ -36,37 +51,27 @@ struct ExportableCommentEditorView: View {
     }
     
     var body: some View {
-        if comment is any Comment2Providing, post != nil {
-            content
+        if let error = commentLoader.error {
+            ErrorView(error)
+        } else if let data = commentLoader.data {
+            content(data: data)
         } else {
             ProgressView()
                 .task {
-                    do {
-                        guard let comment2 = try await comment.upgrade() as? any Comment2Providing else {
-                            assertionFailure("Could not cast to Comment2Providing post-upgrade")
-                            throw ApiClientError.unsuccessful
-                        }
-                        guard let post3 = try await comment2.post.upgrade() as? any Post3Providing else {
-                            assertionFailure("Could not cast to Post2Providing post-upgrade")
-                            throw ApiClientError.unsuccessful
-                        }
-                        comment = comment2
-                        post = post3
-                    } catch {
-                        handleError(error)
-                    }
+                    await commentLoader.load()
                 }
         }
     }
     
-    var content: some View {
+    // swiftlint:disable:next function_body_length
+    func content(data: ExportableCommentData) -> some View {
         ScrollView {
-            exportableComment
+            exportableComment(data: data)
                 .padding(.bottom, 200)
         }
         .presentationBackground(.themedGroupedBackground)
         .overlay(alignment: .bottom) {
-            ExportableViewControlOverlay { createImageFromView(exportableComment) }
+            ExportableViewControlOverlay { createImageFromView(exportableComment(data: data)) }
         }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -74,18 +79,41 @@ struct ExportableCommentEditorView: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Menu("Details", icon: .general.configure) {
-                    Toggle("Creator", icon: .lemmy.person, isOn: $showCreator)
-                    Toggle("Stats", icon: .lemmy.votes, isOn: $showStats)
+                    Section(threadLength > 1 ? "Comments" : "Comment") {
+                        Toggle("Creator", icon: .lemmy.person, isOn: $showCreator)
+                        Toggle("Stats", icon: .lemmy.votes, isOn: $showStats)
+                    }
                     
-                    if comment is any Comment2Providing {
-                        Toggle("Post", icon: .lemmy.post, isOn: $showPost)
-                        if showPost {
-                            Menu("Post Details", icon: .general.configure) {
-                                Toggle("Community", icon: .lemmy.community, isOn: $postShowCommunity)
-                                Toggle("Creator", icon: .lemmy.person, isOn: $postShowCreator)
-                                Toggle("Stats", icon: .lemmy.votes, isOn: $postShowStats)
+                    if data.comments.count > 1 {
+                        ControlGroup("Parent Comments") {
+                            Button("Remove Comment", icon: .general.remove) {
+                                assert(threadLength > 1, "Cannot decrease thread length below 1")
+                                threadLength -= 1
                             }
-                            .menuActionDismissBehavior(.disabled) // this doesn't work but I think that's a bug
+                            .disabled(threadLength == 1)
+                            
+                            Text(verbatim: "\(threadLength - 1)")
+                            
+                            Button("Add Comment", icon: .general.add) {
+                                assert(
+                                    threadLength < min(8, data.comments.count),
+                                    "Cannot increase thread length beyond \(min(8, data.comments.count))"
+                                )
+                                threadLength += 1
+                            }
+                            .disabled(threadLength == min(8, data.comments.count))
+                        }
+                        .labelStyle(.iconOnly)
+                        .controlGroupStyle(.compactMenu)
+                    }
+                    
+                    Section("Post") {
+                        Toggle("Show Post", icon: .lemmy.post, isOn: $showPost)
+                        
+                        if showPost {
+                            Toggle("Community", icon: .lemmy.community, isOn: $postShowCommunity)
+                            Toggle("Creator", icon: .lemmy.person, isOn: $postShowCreator)
+                            Toggle("Stats", icon: .lemmy.votes, isOn: $postShowStats)
                         }
                     }
                     
@@ -105,15 +133,13 @@ struct ExportableCommentEditorView: View {
     }
     
     @ViewBuilder
-    var exportableComment: some View {
-        if let post {
-            ExportableCommentView(
-                comment: comment,
-                post: post,
-                appState: appState,
-                colorScheme: overriddenColorScheme
-            )
-            .allowsHitTesting(false)
-        }
+    func exportableComment(data: ExportableCommentData) -> some View {
+        ExportableCommentView(
+            comments: data.thread(length: threadLength),
+            post: data.post,
+            appState: appState,
+            colorScheme: overriddenColorScheme
+        )
+        .allowsHitTesting(false)
     }
 }

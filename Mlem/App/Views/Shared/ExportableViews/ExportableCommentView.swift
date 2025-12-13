@@ -17,7 +17,7 @@ struct ExportableCommentView: View {
     @Setting(\.post_createImage_showCreator) var postShowCreator
     @Setting(\.post_createImage_showStats) var postShowStats
     
-    let comment: any Comment1Providing
+    let comments: [any Comment1Providing]
     let post: any Post3Providing
     
     // Anything environment-dependent must be passed in because ImageRenderer doesn't work with @Environment
@@ -26,9 +26,12 @@ struct ExportableCommentView: View {
     
     let infoStackReadouts: [CommentBarConfiguration.ReadoutType] = [.upvote, .downvote, .created, .comment]
     
+    var showBars: Bool { showPost || comments.count > 1 }
+    
     var animationHashValue: Int {
         var hasher = Hasher()
         hasher.combine(showPost)
+        hasher.combine(comments.count)
         hasher.combine(showCreator)
         hasher.combine(showStats)
         hasher.combine(postShowCommunity)
@@ -39,6 +42,7 @@ struct ExportableCommentView: View {
     
     var body: some View {
         content
+            .background(.themedGroupedBackground)
             .animation(.snappy, value: animationHashValue)
             .environment(appState)
             .palette(colorPalette.palette)
@@ -56,12 +60,16 @@ struct ExportableCommentView: View {
                 .transition(.move(edge: .top).combined(with: .opacity))
             }
             
-            commentContent
-                .geometryGroup()
+            ForEach(Array(comments.enumerated()), id: \.element.actorId) { index, comment in
+                commentContent(comment: comment, depth: index)
+                    .geometryGroup()
+                    .padding(.leading, CGFloat(index * 10))
+                    .transition(.scale)
+            }
         }
     }
     
-    var commentContent: some View {
+    func commentContent(comment: any Comment1Providing, depth: Int) -> some View {
         HStack(spacing: 0) {
             VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
                 if showCreator {
@@ -77,7 +85,7 @@ struct ExportableCommentView: View {
                         .transition(.move(edge: .top).combined(with: .scale))
                 }
             }
-            .padding(.leading, showPost ? 11 : 0)
+            .padding(.leading, showBars ? 11 : 0)
             .padding(Constants.main.standardSpacing)
         }
         .background(.themedSecondaryGroupedBackground)
@@ -86,12 +94,11 @@ struct ExportableCommentView: View {
         .overlay(alignment: .leading) {
             // CommentBarView's maxHeight: .infinity sometimes causes scaling problems when the post is shown, putting
             // it in an overlay forces it to respect the correct parent scaling
-            if showPost {
-                CommentBarView(depth: 0)
+            if showBars {
+                CommentBarView(depth: depth)
                     .transition(.move(edge: .leading).combined(with: .scale))
             }
         }
         .padding(Constants.main.standardSpacing)
-        .background(.themedGroupedBackground)
     }
 }
