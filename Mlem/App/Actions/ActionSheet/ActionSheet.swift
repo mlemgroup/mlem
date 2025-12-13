@@ -36,14 +36,16 @@ struct ActionSheet: View {
 
     var content: some View {
         ForEach(Array(sections.enumerated()), id: \.offset) { _, section in
-            VStack(spacing: 0) {
-                let frames = frames(for: section.actions)
-                ForEach(Array(frames.enumerated()), id: \.offset) { index, frame in
-                    actionRow(frame, showDivider: ![frames.startIndex, frames.endIndex].contains(index))
-                        .compositingGroup()
+            let frames = frames(for: section.actions)
+            if !frames.isEmpty {
+                VStack(spacing: 0) {
+                    ForEach(Array(frames.enumerated()), id: \.offset) { index, frame in
+                        actionRow(frame, showDivider: ![frames.startIndex, frames.endIndex].contains(index))
+                            .compositingGroup()
+                    }
                 }
+                .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: 25))
             }
-            .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: 25))
         }
         .labelStyle(ActionSheetLabelStyle())
         .buttonStyle(ActionSheetButtonStyle())
