@@ -53,7 +53,8 @@ private struct InboxNotificationContextMenuViewModifier: ViewModifier {
                 .delete
             ])),
             .init(actions: createActions(seeds: [
-                .blockCreator
+                .blockCreator,
+                .openCreatorModlog
             ]))
         ]
     }
