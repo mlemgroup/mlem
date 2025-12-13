@@ -73,7 +73,7 @@ enum NavigationPage: Hashable {
     case denyApplication(RegistrationApplication)
     case exportPostImage(_ post: HashWrapper<any Post>)
     case exportCommentImage(_ comment: HashWrapper<any Comment>)
-    case actionSheet(_ actions: HashWrapper<[any Actions.Action]>)
+    case actionSheet(_ actions: HashWrapper<[ActionSheetSection]>)
     
     static func post(_ post: any PostStubProviding, scrollTargetedComment: (any CommentStubProviding)? = nil) -> NavigationPage {
         if let scrollTargetedComment {
@@ -362,8 +362,12 @@ enum NavigationPage: Hashable {
         exportCommentImage(.init(wrappedValue: comment))
     }
 
-    static func actionSheet(_ actions: [any Actions.Action]) -> NavigationPage {
+    static func actionSheet(_ actions: [ActionSheetSection]) -> NavigationPage {
         actionSheet(.init(wrappedValue: actions))
+    }
+
+    static func actionSheet(_ actions: [any Actions.Action]) -> NavigationPage {
+        actionSheet(.init(wrappedValue: [.init(actions: actions)]))
     }
     
     var hasNavigationStack: Bool {
