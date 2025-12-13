@@ -40,6 +40,7 @@ import Foundation
                 matrixId: matrixId,
                 avatar: avatar,
                 banner: banner,
+                note: nil,
                 deleted: deleted,
                 isBot: isBot,
                 instanceBan: instanceBan,
