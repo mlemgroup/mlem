@@ -94,7 +94,7 @@ struct ExportableCommentEditorView: View {
                             }
                             .disabled(threadLength == 1)
                             
-                            Text("\(threadLength - 1)")
+                            Text(verbatim: "\(threadLength - 1)")
                             
                             Button {
                                 assert(
