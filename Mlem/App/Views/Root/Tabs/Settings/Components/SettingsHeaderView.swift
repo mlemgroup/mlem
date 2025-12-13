@@ -29,10 +29,10 @@ struct SettingsHeaderView<IconView: View>: View {
     
     var body: some View {
         Section {
-            VStack(alignment: .leading, spacing: 12) {
+            VStack(alignment: .leading, spacing: 4) {
                 icon
                     .symbolVariant(.fill)
-                    .padding(.bottom, 5)
+                    .padding(.bottom, 11)
                 Text(title)
                     .font(.title2)
                     .fontWeight(.bold)
