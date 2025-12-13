@@ -50,7 +50,7 @@ extension CreateImageAction {
         case let .post(post):
             navigation.openSheet(.createPostImage(post))
         case let .comment(comment):
-            navigation.openSheet(.createCommentImage(comment))
+            navigation.openSheet(.createCommentImage(comment, tracker: environment.commentTreeTracker))
         }
     }
 }
