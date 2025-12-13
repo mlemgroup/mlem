@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 2024-12-25.
 //
 
+import ComponentViews
 import MlemMiddleware
 import SwiftUI
 import Theming
@@ -97,6 +98,11 @@ struct ModlogView: View {
                 isPresented: $warningPresented,
                 showWarningAgain: $showModlogWarning
             )
+        }
+        .toolbar {
+            if navigation.isInsideSheet {
+                CloseButtonToolbarItem(ios18Label: .xmark)
+            }
         }
         .onChange(of: refreshHashValue, initial: true) { oldValue, newValue in
             // This prevents the feed from refreshing when changing tabs
