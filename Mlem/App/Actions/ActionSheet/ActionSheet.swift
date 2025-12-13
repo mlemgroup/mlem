@@ -37,8 +37,10 @@ struct ActionSheet: View {
     var content: some View {
         ForEach(Array(sections.enumerated()), id: \.offset) { _, section in
             VStack(spacing: 0) {
-                ForEach(Array(section.actions.enumerated()), id: \.offset) { index, action in
-                    actionRow(action, showDivider: ![section.actions.startIndex, section.actions.endIndex-1].contains(index))
+                let frames = frames(for: section.actions)
+                ForEach(Array(frames.enumerated()), id: \.offset) { index, frame in
+                    actionRow(frame, showDivider: ![frames.startIndex, frames.endIndex].contains(index))
+                        .compositingGroup()
                 }
             }
             .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: 25))
@@ -50,17 +52,22 @@ struct ActionSheet: View {
         }
     }
 
-    @ViewBuilder
-    func actionRow(_ action: any Actions.Action, showDivider: Bool) -> some View {
-        let label = action.createLabel(environment: environment)
-        if label.visibility != .hidden {
-            if showDivider {
-                Divider()
-                    .padding(.horizontal, 15)
-            }
-            ActionSheetButton(action: action, label: label)
-                .popupAnchor(model: popupAnchorModel)
+    private func frames(for actions: [any Actions.Action]) -> [ActionFrame] {
+        actions.compactMap {
+            let label = $0.createLabel(environment: environment)
+            if label.visibility == .hidden { return nil }
+            return .init(action: $0, label: label)
         }
+    }
+
+    @ViewBuilder
+    private func actionRow(_ frame: ActionFrame, showDivider: Bool) -> some View {
+        if showDivider {
+            Divider()
+                .padding(.horizontal, 15)
+        }
+        ActionSheetButton(action: frame.action, label: frame.label)
+            .popupAnchor(model: popupAnchorModel)
     }
 }
 
@@ -84,6 +91,11 @@ private struct ActionSheetButton: View {
         }
         .disabled(label.visibility == .disabled)
     }
+}
+
+private struct ActionFrame {
+    let action: any Actions.Action
+    let label: ActionLabel
 }
 
 private struct ActionSheetButtonStyle: ButtonStyle {
