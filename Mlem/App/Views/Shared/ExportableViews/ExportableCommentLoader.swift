@@ -12,7 +12,7 @@ import MlemMiddleware
 @Observable
 class ExportableCommentLoader {
     var data: ExportableCommentData?
-    var error: Error?
+    var error: ErrorDetails?
     
     let rootComment: any Comment1Providing
     let tracker: CommentTreeTracker?
@@ -26,7 +26,7 @@ class ExportableCommentLoader {
         do {
             guard let comment = try await rootComment.upgrade() as? any Comment2Providing else {
                 assertionFailure("Could not cast to Comment2Providing post-upgrade")
-                error = ApiClientError.unsuccessful
+                error = .init(error: ApiClientError.unsuccessful)
                 return
             }
             
@@ -47,8 +47,7 @@ class ExportableCommentLoader {
                 self.data = .init(comments: comments, post: post)
             }
         } catch {
-            handleError(error)
-            self.error = error
+            self.error = handleErrorWithDetails(error)
         }
     }
 }

@@ -52,7 +52,7 @@ struct ExportableCommentEditorView: View {
     
     var body: some View {
         if let error = commentLoader.error {
-            ErrorView(.init(error: error))
+            ErrorView(error)
         } else if let data = commentLoader.data {
             content(data: data)
         } else {
