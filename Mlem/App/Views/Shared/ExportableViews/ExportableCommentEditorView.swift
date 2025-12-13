@@ -86,27 +86,24 @@ struct ExportableCommentEditorView: View {
                     
                     if data.comments.count > 1 {
                         ControlGroup("Parent Comments") {
-                            Button {
+                            Button("Remove Comment", icon: .general.remove) {
                                 assert(threadLength > 1, "Cannot decrease thread length below 1")
                                 threadLength -= 1
-                            } label: {
-                                Image(icon: .general.remove)
                             }
                             .disabled(threadLength == 1)
                             
                             Text(verbatim: "\(threadLength - 1)")
                             
-                            Button {
+                            Button("Add Comment", icon: .general.add) {
                                 assert(
                                     threadLength < min(8, data.comments.count),
                                     "Cannot increase thread length beyond \(min(8, data.comments.count))"
                                 )
                                 threadLength += 1
-                            } label: {
-                                Image(icon: .general.add)
                             }
                             .disabled(threadLength == min(8, data.comments.count))
                         }
+                        .labelStyle(.iconOnly)
                         .controlGroupStyle(.compactMenu)
                     }
                     
