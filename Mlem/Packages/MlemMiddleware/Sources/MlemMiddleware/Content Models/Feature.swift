@@ -64,4 +64,6 @@ public enum Feature: Hashable {
     
     case fetchLinkMetadata
     case customPostThumbnail
+
+    case userNotes
 }

@@ -28,6 +28,10 @@ extension ActionSeed {
 
 extension EditNoteAction {
     static let label: ActionLabel = .init("Edit Note", icon: .lemmy.editNote)
+
+    func createLabel(environment: EnvironmentValues) -> ActionLabel {
+        Self.label.withVisibility(entity.api.supports(.userNotes, defaultValue: false) ? .enabled : .hidden)
+    }
 }
 
 // MARK: - Behavior
