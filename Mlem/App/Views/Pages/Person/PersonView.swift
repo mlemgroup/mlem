@@ -166,7 +166,6 @@ struct PersonView: View {
                 VStack(spacing: Constants.main.standardSpacing) {
                     ProfileHeaderView(person, fallback: .personAvatar)
                     flairsView(person: person)
-                    note(person: person)
                     bio(person: person)
                 }
                 .padding([.horizontal], Constants.main.standardSpacing)
@@ -217,19 +216,6 @@ struct PersonView: View {
                 .padding(.bottom, Constants.main.halfSpacing)
         }
     }
-
-    @ViewBuilder
-    func note(person: any Person) -> some View {
-        if let note = person.note {
-            Label(note, icon: .lemmy.editNote)
-                .italic()
-                .foregroundStyle(.themedAccent)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, Constants.main.standardSpacing)
-                .padding(.vertical, Constants.main.halfSpacing)
-                .background(.themedAccent.opacity(0.2), in: .rect(cornerRadius: Constants.main.standardSpacing))
-        }
-    }
     
     @ViewBuilder
     func flairsView(person: any Person) -> some View {
@@ -247,6 +233,11 @@ struct PersonView: View {
                     Label("Bot Account", icon: .lemmy.botFlair)
                         .tint(.themedColorfulAccent(5))
                 }
+                if let note = person.note {
+                    Label(note, icon: .lemmy.note)
+                    .tint(.themedNeutralAccent)
+                }
+                
             }
             .labelStyle(FlairLabelStyle())
         }
