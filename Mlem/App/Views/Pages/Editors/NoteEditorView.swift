@@ -47,5 +47,12 @@ struct NoteEditorView: View {
     }
     
     func send() async {
+        do {
+            try await person.editNote(content: note.isEmpty ? nil : note)
+            hapticManager.play(haptic: .success, tier: .low)
+            dismiss()
+        } catch {
+            handleError(error)
+        }
     }
 }

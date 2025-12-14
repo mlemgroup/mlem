@@ -197,6 +197,11 @@ public extension Person1Providing {
             expires: nil
         )
     }
+
+    func editNote(content: String?) async throws {
+        try await api.repository.editNote(id: id, content: content)
+        person1.note = content
+    }
     
     func isBannedFromCommunity(id: Int) -> Bool? {
         person1.knownCommunityBanStates[id]

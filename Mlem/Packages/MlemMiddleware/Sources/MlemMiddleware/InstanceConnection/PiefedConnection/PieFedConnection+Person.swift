@@ -204,6 +204,11 @@ public extension PieFedConnection {
     func deleteAccount(password: String, deleteContent: Bool) async throws {
         throw ApiClientError.featureUnsupported
     }
+
+    func editNote(id: Int, content: String?) async throws {
+        let request = PieFedUserSetNoteRequest(personId: id, note: content)
+        try await perform(request)
+    }
     
     func editProfile(details: ProfileDetails) async throws {
         let request = PieFedSaveUserSettingsRequest(
