@@ -16,9 +16,14 @@ struct NoteEditorView: View {
     
     let person: any Person
     
-    @State var note: String = ""
+    @State var note: String
     @FocusState var textFieldFocused: Bool
     @State var presentationSelection: PresentationDetent = .large
+
+    init(person: any Person) {
+        self.person = person
+        self.note = person.note ?? ""
+    }
 
     var body: some View {
         CollapsibleSheetView(presentationSelection: $presentationSelection, canDismiss: note.isEmpty) {
