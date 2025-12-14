@@ -49,6 +49,7 @@ enum NavigationPage: Hashable {
     case createComment(_ context: CommentEditorView.Context, commentTreeTracker: CommentTreeTracker? = nil)
     case editComment(_ comment: Comment2, context: CommentEditorView.Context?)
     case editCommunity(_ community: Community2)
+    case editNote(_ person: HashWrapper<any Person>)
     case report(_ interactable: ReportableHashWrapper, community: AnyCommunity? = nil)
     case remove(_ removable: RemovableHashWrapper)
     case purge(_ purgable: PurgableHashWrapper)
@@ -364,6 +365,10 @@ enum NavigationPage: Hashable {
 
     static func actionSheet(_ actions: [any Actions.Action]) -> NavigationPage {
         actionSheet(.init(wrappedValue: actions))
+    }
+
+    static func editNote(_ person: any Person) -> NavigationPage {
+        editNote(.init(wrappedValue: person))
     }
     
     var hasNavigationStack: Bool {

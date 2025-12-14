@@ -39,5 +39,6 @@ extension EditNoteAction {
 extension EditNoteAction {
     @MainActor
     func execute(environment: EnvironmentValues) {
+        environment.navigation?.openSheet(.editNote(entity))
     }
 }

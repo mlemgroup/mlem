@@ -235,7 +235,10 @@ struct PersonView: View {
                 }
                 if let note = person.note {
                     Label(note, icon: .lemmy.note)
-                    .tint(.themedNeutralAccent)
+                        .tint(.themedNeutralAccent)
+                        .onTapGesture {
+                            navigation.openSheet(.editNote(person))
+                        }
                 }
                 
             }

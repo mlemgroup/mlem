@@ -109,6 +109,8 @@ extension NavigationPage {
             }
         case let .editCommunity(community):
             CommunityDescriptionEditorView(community: community)
+        case let .editNote(person):
+            NoteEditorView(person: person.wrappedValue)
         case let .createPost(
             community: community,
             title: title,
