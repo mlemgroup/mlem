@@ -386,7 +386,7 @@ extension Post1Providing {
                 NavigationModel.main.openSheet(.createPost(
                     community: nil as AnyCommunity?,
                     title: self.title,
-                    content: self.content,
+                    content: crossPostContent,
                     type: self.type,
                     nsfw: self.nsfw,
                     feedLoader: .init(wrappedValue: nil)
