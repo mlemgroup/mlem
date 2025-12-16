@@ -9,11 +9,16 @@ import Actions
 import MlemMiddleware
 import SwiftUI
 
+struct ActionSheetSection {
+    let actions: [any Actions.Action]
+}
+
 struct ActionSheet: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.self) var environment
+    @Environment(NavigationLayer.self) var navigation
 
-    let actions: [any Actions.Action]
+    let sections: [ActionSheetSection]
 
     @State var popupAnchorModel: PopupAnchorModel = .init()
 
@@ -30,28 +35,41 @@ struct ActionSheet: View {
     }
 
     var content: some View {
-        VStack(spacing: 0) {
-            ForEach(Array(actions.enumerated()), id: \.offset, content: actionRow) 
+        ForEach(Array(sections.enumerated()), id: \.offset) { _, section in
+            let frames = frames(for: section.actions)
+            if !frames.isEmpty {
+                VStack(spacing: 0) {
+                    ForEach(Array(frames.enumerated()), id: \.offset) { index, frame in
+                        actionRow(frame, showDivider: ![frames.startIndex, frames.endIndex].contains(index))
+                            .compositingGroup()
+                    }
+                }
+                .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: 25))
+            }
         }
-        .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: 25))
         .labelStyle(ActionSheetLabelStyle())
         .buttonStyle(ActionSheetButtonStyle())
         .onChange(of: popupAnchorModel.outcome) { outcome in
-            if outcome == .confirmed { dismiss() }
+            if outcome == .confirmed, !navigation.rootChangePending { dismiss() }
+        }
+    }
+
+    private func frames(for actions: [any Actions.Action]) -> [ActionFrame] {
+        actions.compactMap {
+            let label = $0.createLabel(environment: environment)
+            if label.visibility == .hidden { return nil }
+            return .init(action: $0, label: label)
         }
     }
 
     @ViewBuilder
-    func actionRow(_ index: Int, _ action: any Actions.Action) -> some View {
-        let label = action.createLabel(environment: environment)
-        if label.visibility != .hidden {
-            if ![actions.startIndex, actions.endIndex-1].contains(index) {
-                Divider()
-                    .padding(.horizontal, 15)
-            }
-            ActionSheetButton(action: action, label: label)
-                .popupAnchor(model: popupAnchorModel)
+    private func actionRow(_ frame: ActionFrame, showDivider: Bool) -> some View {
+        if showDivider {
+            Divider()
+                .padding(.horizontal, 15)
         }
+        ActionSheetButton(action: frame.action, label: frame.label)
+            .popupAnchor(model: popupAnchorModel)
     }
 }
 
@@ -75,6 +93,11 @@ private struct ActionSheetButton: View {
         }
         .disabled(label.visibility == .disabled)
     }
+}
+
+private struct ActionFrame {
+    let action: any Actions.Action
+    let label: ActionLabel
 }
 
 private struct ActionSheetButtonStyle: ButtonStyle {

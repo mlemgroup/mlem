@@ -112,6 +112,7 @@ class NavigationLayer: Identifiable {
             } completion: {
                 withAnimation(.easeOut(duration: 0.3)) {
                     self.root = page
+                    self.hasNavigationStack = page.hasNavigationStack
                 }
             }
         } else {

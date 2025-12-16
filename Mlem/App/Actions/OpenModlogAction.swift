@@ -9,20 +9,36 @@ import Actions
 import MlemMiddleware
 import SwiftUI
 
-struct OpenModlogAction: SimpleLabelAction {
+struct OpenModlogAction: Actions.Action {
     enum Content {
         case person(any Person1Providing)
     }
+
+    enum Relationship { case identity, author }
     
     let content: Content
+    let relationship: Relationship
 }
 
 // MARK: - Configurability
 
 extension ActionSeed {
-    static let openModlog = ActionSeed("openModlog") { entity in
+    static let openModlog = ActionSeed(
+        "openModlog",
+        label: OpenModlogAction.createLabel(relationship: .identity)
+    ) { entity in
         switch entity {
-        case let entity as any Person1Providing: OpenModlogAction(content: .person(entity))
+        case let entity as any Person1Providing: OpenModlogAction(content: .person(entity), relationship: .author)
+        default: nil
+        }
+    }
+
+    static let openCreatorModlog = ActionSeed(
+        "openCreatorModlog",
+        label: OpenModlogAction.createLabel(relationship: .author)
+    ) { entity in
+        switch entity {
+        case let entity as any Comment2Providing: OpenModlogAction(content: .person(entity.creator), relationship: .author)
         default: nil
         }
     }
@@ -31,7 +47,17 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension OpenModlogAction {
-    static let label: ActionLabel = .init("Modlog", icon: .lemmy.modlog)
+    static func createLabel(relationship: Relationship) -> ActionLabel {
+        .init(
+            relationship == .identity ? "Modlog" : "User Modlog",
+            icon: .lemmy.modlog,
+            color: .themedModeration
+        )
+    }
+
+    func createLabel(environment: EnvironmentValues) -> ActionLabel {
+        return Self.createLabel(relationship: relationship)
+    }
 }
 
 // MARK: - Behavior
