@@ -72,7 +72,7 @@ enum NavigationPage: Hashable {
     case modlog(ModlogView.InitialTarget, targetPerson: AnyPerson?, moderatorPerson: AnyPerson?)
     case denyApplication(RegistrationApplication)
     case exportPostImage(_ post: HashWrapper<any Post>)
-    case exportCommentImage(_ comment: HashWrapper<any Comment>)
+    case exportCommentImage(_ comment: HashWrapper<any Comment>, tracker: CommentTreeTracker?)
     case actionSheet(_ actions: HashWrapper<[ActionSheetSection]>)
     
     static func post(_ post: any PostStubProviding, scrollTargetedComment: (any CommentStubProviding)? = nil) -> NavigationPage {
@@ -358,8 +358,8 @@ enum NavigationPage: Hashable {
         exportPostImage(.init(wrappedValue: post))
     }
     
-    static func createCommentImage(_ comment: any Comment) -> NavigationPage {
-        exportCommentImage(.init(wrappedValue: comment))
+    static func createCommentImage(_ comment: any Comment, tracker: CommentTreeTracker?) -> NavigationPage {
+        exportCommentImage(.init(wrappedValue: comment), tracker: tracker)
     }
 
     static func actionSheet(_ actions: [ActionSheetSection]) -> NavigationPage {

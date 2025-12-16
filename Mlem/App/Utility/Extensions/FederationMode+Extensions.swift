@@ -12,9 +12,9 @@ import MlemMiddleware
 extension FederationMode {
     var label: LocalizedStringResource {
         switch self {
-        case .all: "Enabled"
+        case .all: "Yes"
         case .local: "Local Only"
-        case .disable: "Disabled"
+        case .disable: "No"
         }
     }
     

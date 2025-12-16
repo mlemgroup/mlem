@@ -21,7 +21,6 @@ struct ExportableViewControlOverlay: View {
                     .background(.regularMaterial, in: .capsule)
             }
         }
-        .padding(.horizontal, 50)
         .padding(Constants.main.standardSpacing)
     }
     

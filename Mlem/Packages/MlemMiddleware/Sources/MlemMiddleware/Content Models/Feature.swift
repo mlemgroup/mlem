@@ -59,6 +59,7 @@ public enum Feature: Hashable {
     case autoMarkPostReadOnInteract
     
     case blockInstances
+    case viewInstanceBlockList
     case moderatorSetNsfw
     
     case fetchLinkMetadata

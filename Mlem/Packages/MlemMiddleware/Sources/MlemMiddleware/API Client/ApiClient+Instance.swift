@@ -46,6 +46,30 @@ public extension ApiClient {
             blocks?.instances.removeValue(forKey: actorId)
         }
     }
+
+    /// Get any `Community3` hosted on the given instance.
+    internal func getCommunityOfInstance(actorId: ActorIdentifier) async throws -> Community3 {
+        let externalApi: ApiClient = .getApiClient(url: actorId.url, username: nil)
+        
+        let response = try await externalApi.getPosts(
+            feed: .local,
+            sort: .new,
+            page: 1,
+            cursor: nil,
+            limit: 1
+        )
+        
+        guard let post = response.posts.first else {
+            throw InstanceUpgradeError.noPostReturned
+        }
+        
+        return try await self.getCommunity(url: post.community.actorId.url)
+    }
+
+    func getInstanceId(actorId: ActorIdentifier) async throws -> Int {
+        let comm = try await self.getCommunityOfInstance(actorId: actorId)
+        return comm.instanceId
+    }
     
     /// Adds or removes an admin from this API's instance
     @discardableResult

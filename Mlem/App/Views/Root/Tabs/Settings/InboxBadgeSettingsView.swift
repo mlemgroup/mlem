@@ -47,7 +47,7 @@ struct InboxBadgeSettingsView: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 64)
                 .foregroundStyle(.tertiary)
-                .padding([.horizontal, .top], 20)
+                .padding([.trailing, .top], 20)
                 .overlay(alignment: .topTrailing) {
                     Text(verbatim: "1")
                         .font(.title2)
@@ -56,6 +56,7 @@ struct InboxBadgeSettingsView: View {
                         .padding(10)
                         .background(.themedWarning, in: .circle)
                 }
+                .padding(.top, -10)
         }
     }
     

@@ -41,7 +41,7 @@ public extension PieFedConnection {
             version >= .v1_2_0
         case .banFromCommunity, .editCommunityDescription:
             version >= .v1_3_0
-        case .searchLocalPeople, .searchLocalCommunities:
+        case .searchLocalPeople, .searchLocalCommunities, .blockInstances:
             // These features were not necessarily added in 1.3.
             // Rather, we have only tested them on 1.3 and so are
             // restricting them to that version.
