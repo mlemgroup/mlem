@@ -379,9 +379,12 @@ extension Post1Providing {
             id: "crosspost\(uid)",
             appearance: .crossPost(),
             callback: {
-                var crossPostContent: String = .init(localized: "Crossposted from \(self.actorId.description)")
-                if let content = self.content {
-                    crossPostContent += "\n-----\n\(content)"
+                var crossPostContent: String
+                let crossPostedLabel = String(localized: "Crossposted from \(self.actorId.description)")
+                if let content = self.content, !content.isEmpty {
+                    crossPostContent = "\(crossPostedLabel)\n-----\n\(content)"
+                } else {
+                    crossPostContent = crossPostedLabel
                 }
                 NavigationModel.main.openSheet(.createPost(
                     community: nil as AnyCommunity?,
