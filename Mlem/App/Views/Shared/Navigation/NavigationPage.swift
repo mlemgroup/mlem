@@ -75,6 +75,12 @@ enum NavigationPage: Hashable {
     case exportCommentImage(_ comment: HashWrapper<any Comment>, tracker: CommentTreeTracker?)
     case actionSheet(_ actions: HashWrapper<[ActionSheetSection]>)
     
+    // DEV
+    case devPost(_ post: HashWrapper<any Post1Providing>)
+    static func devPost(_ post: any Post1Providing) -> NavigationPage {
+        Self.devPost(.init(wrappedValue: post))
+    }
+    
     static func post(_ post: any PostStubProviding, scrollTargetedComment: (any CommentStubProviding)? = nil) -> NavigationPage {
         if let scrollTargetedComment {
             return Self.post(.init(post), scrollTargetedComment: .init(wrappedValue: scrollTargetedComment))

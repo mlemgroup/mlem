@@ -224,6 +224,9 @@ extension NavigationPage {
             ExportableCommentEditorView(comment: comment.wrappedValue, commentTreeTracker: tracker)
         case let .actionSheet(sections):
             ActionSheet(sections: sections.wrappedValue)
+        // DEV
+        case let .devPost(post):
+            DevPostView(post: post.wrappedValue)
         }
     }
 }

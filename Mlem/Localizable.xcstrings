@@ -2563,6 +2563,9 @@
         }
       }
     },
+    "Copy Username" : {
+
+    },
     "Could not find settings" : {
       "localizations" : {
         "fr" : {
@@ -9517,6 +9520,9 @@
           }
         }
       }
+    },
+    "User Modlog" : {
+
     },
     "User was banned" : {
       "localizations" : {
