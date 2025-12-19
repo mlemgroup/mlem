@@ -16,20 +16,6 @@ private let topLevelSeeds: [ActionSeed] = [
     .report
 ]
 
-private let actionSheetSeeds: [ActionSeed] = [
-    .upvote,
-    .downvote,
-    .save,
-    .reply,
-    .markRead,
-    .selectText,
-    .share,
-    .blockCreator,
-    .report,
-    .edit,
-    .delete
-]
-
 private struct InboxNotificationContextMenuViewModifier: ViewModifier {
     @Environment(NavigationLayer.self) var navigation
 
@@ -45,14 +31,45 @@ private struct InboxNotificationContextMenuViewModifier: ViewModifier {
                 }
                 Section {
                     Button("More...", icon: .general.menu) {
-                        let actions = actionSheetSeeds.compactMap {
-                            $0.createAction(notification) ?? $0.createAction(notification.content.wrappedValue)
-                        }
-                        navigation.openSheet(.actionSheet(actions))
+                        navigation.openSheet(.actionSheet(sheetSections))
                     }
                     .symbolVariant(.circle)
                 }
         }
+    }
+
+    var sheetSections: [ActionSheetSection] {
+        [
+            .init(actions: createActions(seeds: [
+                .upvote,
+                .downvote,
+                .save,
+                .reply,
+                .markRead,
+                .selectText,
+                .share,
+                .report,
+                .edit,
+                .delete
+            ])),
+            .init(actions: createActions(seeds: [
+                .blockCreator,
+                .copyAuthorName,
+                .openCreatorModlog,
+                .sendCreatorMessage
+            ])),
+            .init(actions: createActions(seeds: [
+                .banCreator,
+                .purgeCreator
+            ]))
+        ]
+    }
+
+    func createActions(seeds: [ActionSeed]) -> [any Actions.Action] {
+        seeds.compactMap {
+            $0.createAction(notification) ?? $0.createAction(notification.content.wrappedValue)
+        }
+
     }
 }
 
