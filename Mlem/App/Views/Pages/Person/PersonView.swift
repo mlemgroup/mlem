@@ -219,7 +219,7 @@ struct PersonView: View {
     
     @ViewBuilder
     func flairsView(person: any Person) -> some View {
-        if person.isBot || person.isMlemDeveloper || isAdmin {
+        if person.isBot || person.isMlemDeveloper || isAdmin || person.note != nil {
             HFlow(spacing: Constants.main.halfSpacing) {
                 if person.isMlemDeveloper {
                     Label("Mlem Developer", systemImage: Icons.developerFlair)
@@ -233,6 +233,14 @@ struct PersonView: View {
                     Label("Bot Account", icon: .lemmy.botFlair)
                         .tint(.themedColorfulAccent(5))
                 }
+                if let note = person.note {
+                    Label(note, icon: .lemmy.note)
+                        .tint(.themedNeutralAccent)
+                        .onTapGesture {
+                            navigation.openSheet(.editNote(person))
+                        }
+                }
+                
             }
             .labelStyle(FlairLabelStyle())
         }

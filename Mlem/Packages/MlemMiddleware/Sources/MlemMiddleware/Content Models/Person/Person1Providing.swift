@@ -45,6 +45,7 @@ public extension Person1Providing {
     var matrixId: String? { person1.matrixId }
     var avatar: URL? { person1.avatar }
     var banner: URL? { person1.banner }
+    var note: String? { person1.note }
     var deleted: Bool { person1.deleted }
     var isBot: Bool { person1.isBot }
     var instanceBan: InstanceBanType { person1.instanceBan }
@@ -61,6 +62,7 @@ public extension Person1Providing {
     var matrixId_: String? { person1.matrixId }
     var avatar_: URL? { person1.avatar }
     var banner_: URL? { person1.banner }
+    var note_: String? { person1.note }
     var deleted_: Bool? { person1.deleted }
     var isBot_: Bool? { person1.isBot }
     var instanceBan_: InstanceBanType? { person1.instanceBan }
@@ -194,6 +196,11 @@ public extension Person1Providing {
             reason: reason,
             expires: nil
         )
+    }
+
+    func editNote(content: String?) async throws {
+        try await api.repository.editNote(id: id, content: content)
+        person1.note = content
     }
     
     func isBannedFromCommunity(id: Int) -> Bool? {

@@ -823,6 +823,9 @@
         }
       }
     },
+    "Add Note" : {
+
+    },
     "Add NSFW Tag" : {
 
     },
@@ -3179,6 +3182,9 @@
     "Edit link" : {
 
     },
+    "Edit Note" : {
+
+    },
     "Edited" : {
       "localizations" : {
         "fr" : {
@@ -5516,6 +5522,9 @@
           }
         }
       }
+    },
+    "Note" : {
+
     },
     "Notification Badge" : {
       "localizations" : {

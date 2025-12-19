@@ -44,7 +44,7 @@ public extension LemmyConnection {
              .fetchLinkMetadata, .unbanWithReason, .customPostThumbnail, .banFromNonLocalCommunity, .editCommunityDescription,
              .searchLocalComments, .viewInstanceBlockList:
             true
-        case .moderatorSetNsfw:
+        case .moderatorSetNsfw, .userNotes:
             false
         }
     }
