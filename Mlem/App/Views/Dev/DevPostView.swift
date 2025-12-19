@@ -9,18 +9,6 @@ import SwiftUI
 import MlemMiddleware
 import ComponentViews
 
-struct ExpectedText: View {
-    let text: String?
-    
-    var body: some View {
-        if let text {
-            Text(text)
-        } else {
-            MockTextView()
-        }
-    }
-}
-
 struct DevPostView: View {
     @Environment(AppState.self) var appState
     
@@ -30,7 +18,13 @@ struct DevPostView: View {
         self.postModel = .init(api: post.api, url: post.url())
     }
     
+    var animationHashValue: Int {
+        var hasher = Hasher()
+        hasher.combine(postModel.title != nil ? 1 : 0)
+        return hasher.finalize()
+    }
+    
     var body: some View {
-        ExpectedText(text: postModel.title)
+        ExpectedText(postModel.title)
     }
 }
