@@ -17,21 +17,37 @@ public struct CloseButtonView: View {
     }
     
     var ios18Label: LabelType
+    var requiresConfirmation: Bool
     var callback: (() -> Void)?
+
+    @State var showingConfirmation: Bool = false
     
     public init(
         ios18Label: LabelType = .xmark,
+        requiresConfirmation: Bool = false,
         callback: (() -> Void)? = nil
     ) {
         self.ios18Label = ios18Label
+        self.requiresConfirmation = requiresConfirmation
         self.callback = callback
     }
     
     public var body: some View {
-        if #available(iOS 26, *) {
-            Button("Dismiss", systemImage: "xmark", action: submit)
-        } else {
-            ios18Body
+        Group {
+            if #available(iOS 26, *) {
+                Button("Dismiss", systemImage: "xmark", action: submit)
+                    .confirmationDialog("Really close?", isPresented: $showingConfirmation) {
+                        Button("Yes", role: .destructive, action: submit)
+                    } message: {
+                        Text("Really close?")
+                    }
+            } else {
+                ios18Body
+                    .alert("Really close?", isPresented: $showingConfirmation) {
+                        Button("Yes", role: .destructive, action: submit)
+                        Button("Cancel", role: .cancel) {}
+                    }
+            }
         }
     }
     
@@ -55,7 +71,9 @@ public struct CloseButtonView: View {
     }
     
     func submit() {
-        if let callback {
+        if requiresConfirmation, !showingConfirmation {
+            showingConfirmation = true
+        } else if let callback {
             callback()
         } else {
             dismiss()

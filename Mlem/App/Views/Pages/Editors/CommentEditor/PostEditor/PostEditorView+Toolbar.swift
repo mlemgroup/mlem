@@ -12,7 +12,9 @@ extension PostEditorView {
     @ToolbarContentBuilder
     var toolbar: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
-            CloseButtonView(ios18Label: .cancel)
+            CloseButtonView(ios18Label: .cancel, requiresConfirmation: !canDismiss) {
+                dismiss()
+            }
         }
         ToolbarItemGroup(placement: .topBarTrailing) {
             Menu("Add", icon: .general.add) {
