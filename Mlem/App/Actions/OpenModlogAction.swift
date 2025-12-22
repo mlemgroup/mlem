@@ -28,7 +28,7 @@ extension ActionSeed {
         label: OpenModlogAction.createLabel(relationship: .identity)
     ) { entity in
         switch entity {
-        case let entity as any Person1Providing: OpenModlogAction(content: .person(entity), relationship: .author)
+        case let entity as any Person1Providing: OpenModlogAction(content: .person(entity), relationship: .identity)
         default: nil
         }
     }
