@@ -88,7 +88,7 @@ public extension PieFedConnection {
             unreadOnly: unreadOnly
         )
         let response = try await perform(request)
-        return try response.replies.map { try .init(from: $0) }
+        return try response.replies.map { try .init(from: $0, isMention: false) }
     }
 
     func getMentionNotifications(
@@ -103,7 +103,7 @@ public extension PieFedConnection {
             unreadOnly: unreadOnly
         )
         let response = try await perform(request)
-        return try response.replies.map { try .init(from: $0) }
+        return try response.replies.map { try .init(from: $0, isMention: true) }
     }
 
     func getMessageNotifications(
@@ -111,7 +111,14 @@ public extension PieFedConnection {
         limit: Int,
         unreadOnly: Bool
     ) async throws -> [InboxNotificationSnapshot] {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedListPrivateMessagesRequest(
+            unreadOnly: unreadOnly,
+            page: page,
+            limit: limit,
+            creatorId: nil
+        )
+        let response = try await perform(request)
+        return try response.privateMessages.map { try .init(from: $0) }
     }
     
     func markNotificationAsRead(

@@ -8,12 +8,21 @@
 import Foundation
 
 extension InboxNotificationSnapshot {
-    init(from replyView: PieFedCommentReplyView) throws(ApiClientError) {
+    init(from replyView: PieFedCommentReplyView, isMention: Bool) throws(ApiClientError) {
         try self.init(
-            id: LegacyNotificationIdWrapper(type: .reply, id: replyView.commentReply.id).hashValue,
+            id: LegacyNotificationIdWrapper(type: isMention ? .mention : .reply, id: replyView.commentReply.id).hashValue,
             contentId: replyView.commentReply.id,
             read: replyView.commentReply.read,
             content: .reply(.init(from: replyView))
+        )
+    }
+
+    init(from messageView: PieFedPrivateMessageView) throws(ApiClientError) {
+        try self.init(
+            id: LegacyNotificationIdWrapper(type: .message, id: messageView.privateMessage.id).hashValue,
+            contentId: messageView.privateMessage.id,
+            read: messageView.privateMessage.read,
+            content: .message(.init(from: messageView))
         )
     }
 }
