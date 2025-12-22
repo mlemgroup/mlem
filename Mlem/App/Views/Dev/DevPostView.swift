@@ -10,20 +10,32 @@ import MlemMiddleware
 import ComponentViews
 
 struct DevPostView: View {
-    @State var postModel: UnifiedPostModel
+    @State var post: UnifiedPostModel
     
     init(post: any Post1Providing) {
-        self.postModel = .init(api: post.api, url: post.url())
+        self.post = .init(api: post.api, url: post.url())
     }
     
     var animationHashValue: Int {
         var hasher = Hasher()
-        hasher.combine(postModel.title != nil ? 1 : 0)
+        hasher.combine(post.title.value != nil ? 1 : 0)
         return hasher.finalize()
     }
     
     var body: some View {
-        ExpectedText(postModel.title)
+        VStack {
+            ExpectedText(post.title)
+            
+            if let resolved = post.linkUrl.value {
+                if let url = resolved {
+                    Text("Present: \(url.description)")
+                } else {
+                    Text("Not present")
+                }
+            } else {
+                ProgressView()
+            }
+        }
     }
 }
 
@@ -88,8 +100,32 @@ struct DevLargePostView: View {
             // .environment(\.postContext, post)
     }
     
+    @ViewBuilder
     var content: some View {
-        ExpectedText(post.title)
+        VStack {
+            ExpectedText(post.title)
+            
+            if let resolved = post.linkUrl.value {
+                if let url = resolved {
+                    Text("Present: \(url.description)")
+                } else {
+                    Text("Not present")
+                }
+            } else {
+                ProgressView()
+            }
+            
+//            switch post.linkUrl.value {
+//            case .waiting:
+//                ProgressView()
+//            case .resolved(let resolved):
+//                if let url = resolved {
+//                    Text(url.description)
+//                } else {
+//                    Text("Not present")
+//                }
+//            }
+        }
     }
     
 //    var content: some View {

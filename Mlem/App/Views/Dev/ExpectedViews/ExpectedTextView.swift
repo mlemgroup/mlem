@@ -33,7 +33,6 @@ struct ExpectedText: View {
     @Environment(\.font) var _font: Font?
     var font: Font { _font ?? .body }
     
-    // let text: String?
     let text: ExpectedValue<String>
     
     init(_ text: ExpectedValue<String>) {
