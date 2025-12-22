@@ -5520,9 +5520,6 @@
         }
       }
     },
-    "Not present" : {
-
-    },
     "Notification Badge" : {
       "localizations" : {
         "fr" : {
@@ -6238,9 +6235,6 @@
           }
         }
       }
-    },
-    "Present: %@" : {
-
     },
     "Pride" : {
       "localizations" : {
