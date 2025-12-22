@@ -127,7 +127,14 @@ public extension PieFedConnection {
         contentId: Int,
         read: Bool
     ) async throws {
-        throw ApiClientError.featureUnsupported
+        switch type {
+        case .reply:
+            try await self.markReplyAsRead(id: contentId, read: read)
+        case .mention:
+            try await self.markMentionAsRead(id: contentId, read: read)
+        case .message:
+            try await self.markMessageAsRead(id: contentId, read: read)
+        }
     }
 
     func markAllAsRead() async throws {
