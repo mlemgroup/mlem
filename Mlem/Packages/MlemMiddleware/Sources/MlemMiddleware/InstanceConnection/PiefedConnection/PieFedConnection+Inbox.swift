@@ -76,15 +76,27 @@ public extension PieFedConnection {
         }
     }
     
-    func getReplyNotifications() async throws -> [InboxNotificationSnapshot] {
+    func getReplyNotifications(
+        page: Int,
+        limit: Int,
+        unreadOnly: Bool
+    ) async throws -> [InboxNotificationSnapshot] {
         throw ApiClientError.featureUnsupported
     }
 
-    func getMentionNotifications() async throws -> [InboxNotificationSnapshot] {
+    func getMentionNotifications(
+        page: Int,
+        limit: Int,
+        unreadOnly: Bool
+    ) async throws -> [InboxNotificationSnapshot] {
         throw ApiClientError.featureUnsupported
     }
 
-    func getMessageNotifications() async throws -> [InboxNotificationSnapshot] {
+    func getMessageNotifications(
+        page: Int,
+        limit: Int,
+        unreadOnly: Bool
+    ) async throws -> [InboxNotificationSnapshot] {
         throw ApiClientError.featureUnsupported
     }
     

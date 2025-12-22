@@ -54,21 +54,45 @@ extension ApiRepository {
         }
     }
 
-    func getReplyNotifications() async throws -> [InboxNotificationSnapshot] {
+    func getReplyNotifications(
+        page: Int,
+        limit: Int,
+        unreadOnly: Bool
+    ) async throws -> [InboxNotificationSnapshot] {
         try await performingForConnection { connection in
-            try await connection.getReplyNotifications()
+            try await connection.getReplyNotifications(
+                page: page,
+                limit: limit,
+                unreadOnly: unreadOnly
+            )
         }
     }
     
-    func getMentionNotifications() async throws -> [InboxNotificationSnapshot] {
+    func getMentionNotifications(
+        page: Int,
+        limit: Int,
+        unreadOnly: Bool
+    ) async throws -> [InboxNotificationSnapshot] {
         try await performingForConnection { connection in
-            try await connection.getMentionNotifications()
+            try await connection.getMentionNotifications(
+                page: page,
+                limit: limit,
+                unreadOnly: unreadOnly
+            )
         }
     }
 
-    func getMessageNotifications() async throws -> [InboxNotificationSnapshot] {
+    func getMessageNotifications(
+        page: Int,
+        limit: Int,
+        unreadOnly: Bool
+    ) async throws -> [InboxNotificationSnapshot] {
         try await performingForConnection { connection in
-            try await connection.getMessageNotifications()
+            try await connection.getMessageNotifications(
+                page: page,
+                limit: limit,
+                unreadOnly: unreadOnly
+            )
         }
     }
     
