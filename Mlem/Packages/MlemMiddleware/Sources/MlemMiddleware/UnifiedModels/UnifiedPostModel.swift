@@ -47,29 +47,15 @@ public class UnifiedPostModel {
     }
     
     private var properties: PostProperties = .init()
+    
+    private func expectedValue<T>(_ keyPath: WritableKeyPath<PostProperties, T?>) -> ExpectedValue<T> {
+        .init(
+            getValue: { self.properties[keyPath: keyPath] },
+            provideValue: upgrade)
+    }
 
     @ObservationIgnored
-    public lazy var title: ExpectedValue<String> = {
-            .init(
-                getValue: { self.properties.title },
-                provideValue: upgrade)
-        }()
-    
-//    public var title: String? {
-//        get {
-//            if let ret = properties.title {
-//                return ret
-//            }
-//            Task {
-//                do {
-//                    try await upgrade()
-//                } catch {
-//                    print(error)
-//                }
-//            }
-//            return nil
-//        }
-//    }
+    public lazy var title: ExpectedValue<String> = expectedValue(\.title)
     
     private func upgrade() async throws {
         let post2 = try await api.repository.getPost(url: url)
