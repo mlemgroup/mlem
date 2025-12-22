@@ -96,7 +96,14 @@ public extension PieFedConnection {
         limit: Int,
         unreadOnly: Bool
     ) async throws -> [InboxNotificationSnapshot] {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedGetMentionsRequest(
+            sort: .new,
+            page: page,
+            limit: limit,
+            unreadOnly: unreadOnly
+        )
+        let response = try await perform(request)
+        return try response.replies.map { try .init(from: $0) }
     }
 
     func getMessageNotifications(
