@@ -19,6 +19,7 @@ public protocol PersonStubProviding: ContentModel, Resolvable {
     var matrixId_: String? { get }
     var avatar_: URL? { get }
     var banner_: URL? { get }
+    var note_: String? { get }
     var deleted_: Bool? { get }
     var isBot_: Bool? { get }
     var instanceBan_: InstanceBanType? { get }
@@ -73,6 +74,7 @@ public extension PersonStubProviding {
     var matrixId_: String? { nil }
     var avatar_: URL? { nil }
     var banner_: URL? { nil }
+    var note_: String? { nil }
     var deleted_: Bool? { nil }
     var isBot_: Bool? { nil }
     var instanceBan_: InstanceBanType? { nil }

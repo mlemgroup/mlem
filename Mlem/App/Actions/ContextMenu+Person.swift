@@ -15,6 +15,7 @@ private let seeds: [ActionSeed] = [
     .share,
     .sendMessage,
     .block,
+    .editNote,
     .openModlog,
     .ban,
     .purge,
