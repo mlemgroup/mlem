@@ -7,6 +7,7 @@
 
 import SwiftUI
 import ComponentViews
+import MlemMiddleware
 
 extension Font {
     // source: https://sarunw.com/posts/scaling-custom-fonts-automatically-with-dynamic-type/
@@ -32,15 +33,16 @@ struct ExpectedText: View {
     @Environment(\.font) var _font: Font?
     var font: Font { _font ?? .body }
     
-    let text: String?
+    // let text: String?
+    let text: ExpectedValue<String>
     
-    init(_ text: String?) {
+    init(_ text: ExpectedValue<String>) {
         self.text = text
     }
     
     var body: some View {
         ZStack { // ZStack to make the animation work correctliy
-            if let text {
+            if let text = text.value {
                 Text(text)
                     .transition(.scale)
             } else {
@@ -49,6 +51,6 @@ struct ExpectedText: View {
                     .transition(.opacity)
             }
         }
-        .animation(.interactiveSpring, value: text != nil)
+        .animation(.interactiveSpring, value: text.value != nil)
     }
 }
