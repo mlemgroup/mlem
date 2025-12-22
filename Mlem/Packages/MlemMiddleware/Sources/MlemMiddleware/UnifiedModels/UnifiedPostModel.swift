@@ -32,23 +32,9 @@ public class ExpectedValue<T> {
     }
 }
 
-//public enum ExpectedOptional<T> {
-//    case waiting
-//    case resolved(T?)
-//    
-//    /// Useful if you want this to behave like a normal optional that is nil until provided
-//    var value: T? {
-//        switch self {
-//        case let .resolved(value): value
-//        default: nil
-//        }
-//    }
-//}
-
 struct PostProperties {
     var title: String?
     var linkUrl: URL??
-    // var linkUrl: ExpectedOptional<URL?> = .waiting
 }
 
 @Observable
@@ -74,20 +60,13 @@ public class UnifiedPostModel {
   
     @ObservationIgnored
     public lazy var linkUrl: ExpectedValue<URL?> = expectedValue(\.linkUrl)
-    
-//    @ObservationIgnored
-//    public lazy var linkUrl: ExpectedValue<ExpectedOptional<URL?>> = .init(
-//        getValue: { self.properties.linkUrl },
-//        provideValue: upgrade
-//    )
-    
+
     private func upgrade() async throws {
         let post2 = try await api.repository.getPost(url: url)
         let ret = try await api.repository.getPost(id: post2.post.id)
         Task { @MainActor in
             properties.title = ret.post.post.title
             properties.linkUrl = ret.post.post.linkUrl
-            // properties.linkUrl = .resolved(ret.post.post.linkUrl)
         }
     }
 }
