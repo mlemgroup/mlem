@@ -33,7 +33,9 @@ public class ExpectedValue<T> {
 }
 
 struct PostProperties {
+    var id: Int?
     var title: String?
+    var votes: VotesModel?
     var linkUrl: URL??
 }
 
@@ -52,7 +54,7 @@ public class UnifiedPostModel {
     private func expectedValue<T>(_ keyPath: WritableKeyPath<PostProperties, T?>) -> ExpectedValue<T> {
         .init(
             getValue: { self.properties[keyPath: keyPath] },
-            provideValue: upgrade)
+            provideValue: { try await self.upgrade() })
     }
 
     @ObservationIgnored
@@ -60,18 +62,36 @@ public class UnifiedPostModel {
   
     @ObservationIgnored
     public lazy var linkUrl: ExpectedValue<URL?> = expectedValue(\.linkUrl)
-
-    @MainActor
-    public func changeTitle() {
-        properties.title = "Changed!!!"
-    }
     
-    private func upgrade() async throws {
+    @ObservationIgnored
+    public lazy var votes: ExpectedValue<VotesModel> = expectedValue(\.votes)
+
+    public func vote() async throws {
+        var myVote: VotesModel
+        var id: Int
+        if let existingVotes = properties.votes, let existingId = properties.id {
+            myVote = existingVotes
+            id = existingId
+        } else {
+            let upgraded = try await upgrade()
+            myVote = upgraded.post.votes
+            id = upgraded.post.post.id
+        }
+        
+        let response = try await api.repository.voteOnPost(id: id, score: myVote.myVote == .upvote ? .none : .upvote)
+        properties.votes = response.votes
+    }
+   
+    @discardableResult
+    private func upgrade() async throws -> Post3Snapshot {
         let post2 = try await api.repository.getPost(url: url)
         let ret = try await api.repository.getPost(id: post2.post.id)
-        Task { @MainActor in
+        await Task { @MainActor in
+            properties.id = ret.post.post.id
             properties.title = ret.post.post.title
+            properties.votes = ret.post.votes
             properties.linkUrl = ret.post.post.linkUrl
-        }
+        }.value
+        return ret
     }
 }

@@ -1833,9 +1833,6 @@
     "Change Thumbnail" : {
 
     },
-    "Change Title" : {
-
-    },
     "Checkmark" : {
       "localizations" : {
         "fr" : {
@@ -9736,6 +9733,12 @@
           }
         }
       }
+    },
+    "Vote" : {
+
+    },
+    "Vote: %@" : {
+
     },
     "Votes" : {
       "localizations" : {

@@ -28,8 +28,18 @@ struct DevPostView: View {
                 ExpectedText(post.title)
                     .font(.headline)
                 ExpectedMedia(url: post.linkUrl)
-                Button("Change Title") {
-                    post.changeTitle()
+            
+                HStack {
+                    Text("Vote: \(post.votes.value?.myVote ?? .none)")
+                    Button("Vote") {
+                        Task {
+                            do {
+                                try await post.vote()
+                            } catch {
+                                handleError(error)
+                            }
+                        }
+                    }
                 }
             }
             .padding()
