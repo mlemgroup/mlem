@@ -65,14 +65,35 @@ extension LockAction {
 extension LockAction {
     @MainActor
     func execute(environment: EnvironmentValues) {
-        environment.hapticManager.play(haptic: .lightSuccess, tier: .low)
         environment.popupModel?.showPopup(
             message: entity.locked ? "Really unlock this post?" : "Really lock this post?",
             [
             .init(title: "Yes", isDestructive: true) {
-                environment.hapticManager.play(haptic: .lightSuccess, tier: .low)
-                entity.toggleLocked()
+                let shouldLock = !entity.locked
+                entity.toggleLocked { status in
+                    self.handleResult(
+                        status: status,
+                        shouldLock: shouldLock,
+                        environment: environment
+                    )
+                }
             }
         ])
+    }
+
+    @MainActor
+    func handleResult(
+        status: UpdateStatus,
+        shouldLock: Bool,
+        environment: EnvironmentValues
+    ) {
+        switch status {
+        case .success:
+            environment.hapticManager.play(haptic: .lightSuccess, tier: .low)
+        case .failure: 
+            environment.toastModel?.add(
+                .failure(shouldLock ? "Failed to lock post" : "Failed to unlock post")
+            )
+        }
     }
 }
