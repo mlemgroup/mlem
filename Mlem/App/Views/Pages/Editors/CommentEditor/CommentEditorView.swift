@@ -78,7 +78,7 @@ struct CommentEditorView: View {
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar {
                         ToolbarItem(placement: .topBarLeading) {
-                            CloseButtonView(ios18Label: .cancel)
+                            CloseButtonView(ios18Label: .cancel, requiresConfirmation: !textIsEmpty)
                         }
                         ToolbarItem(placement: .principal) {
                             if AccountsTracker.main.userAccounts.count > 1, commentToEdit == nil {
