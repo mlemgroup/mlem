@@ -59,6 +59,7 @@ extension LockAction {
             message: entity.locked ? "Really unlock this post?" : "Really lock this post?",
             [
             .init(title: "Yes", isDestructive: true) {
+                environment.hapticManager.play(haptic: .lightSuccess, tier: .low)
                 entity.toggleLocked()
             }
         ])

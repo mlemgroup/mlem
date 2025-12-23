@@ -82,6 +82,7 @@ extension PinAction {
             message: entity.pinnedCommunity ? "Really unpin this post?" : "Really pin this post?",
             [
             .init(title: "Yes", isDestructive: false) {
+                environment.hapticManager.play(haptic: .lightSuccess, tier: .low)
                 entity.togglePinnedCommunity()
             }
         ])
@@ -93,9 +94,11 @@ extension PinAction {
             message: "Choose target...",
             [
                 .init(title: entity.pinnedCommunity ? "Unpin from community" : "Pin to community") {
+                    environment.hapticManager.play(haptic: .lightSuccess, tier: .low)
                     entity.togglePinnedCommunity()
                 },
                 .init(title: entity.pinnedInstance ? "Unpin from instance" : "Pin to instance") {
+                    environment.hapticManager.play(haptic: .lightSuccess, tier: .low)
                     entity.togglePinnedInstance()
                 }
             ]
