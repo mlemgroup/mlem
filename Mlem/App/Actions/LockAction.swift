@@ -27,8 +27,17 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension LockAction {
-    static let lockLabel: ActionLabel = .init("Lock", icon: .lemmy.addLock)
-    static let unlockLabel: ActionLabel = .init("Unlock", icon: .lemmy.removeLock)
+    static let lockLabel: ActionLabel = .init(
+        "Lock",
+        icon: .lemmy.addLock,
+        color: .themedLockAccent
+    )
+
+    static let unlockLabel: ActionLabel = .init(
+        "Unlock",
+        icon: .lemmy.removeLock,
+        color: .themedLockAccent
+    )
     
     static var label: ActionLabel { lockLabel }
 

@@ -27,10 +27,23 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension PinAction {
-    static let pinLabel: ActionLabel = .init("Pin", icon: .lemmy.addPin)
-    static let unpinLabel: ActionLabel = .init("Unpin", icon: .lemmy.removePin)
+    static let pinLabel: ActionLabel = .init(
+        "Pin",
+        icon: .lemmy.addPin,
+        color: .themedModeration
+    )
 
-    static let pinDetailsLabel: ActionLabel = .init("Pin...", icon: .lemmy.addPin)
+    static let unpinLabel: ActionLabel = .init(
+        "Unpin",
+        icon: .lemmy.removePin,
+        color: .themedModeration
+    )
+
+    static let pinDetailsLabel: ActionLabel = .init(
+        "Pin...",
+        icon: .lemmy.addPin,
+        color: .themedModeration
+    )
     
     static var label: ActionLabel { pinLabel }
 
