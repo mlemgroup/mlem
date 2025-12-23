@@ -31,28 +31,16 @@ struct PostEllipsisMenus: View {
             }
             if moderatorActionGrouping == .separateMenu {
                 if post.canModerate {
-                    EllipsisMenu(icon: .lemmy.moderation, size: size) {
-                        post.moderatorMenuActions(appState: appState, showAllActions: false, navigation: navigation, report: reportContext)
-                    }
-                }
-                EllipsisMenu(size: size) {
-                    post.basicMenuActions(
-                        appState: appState,
-                        expanded: false,
-                        navigation: navigation,
-                        commentTreeTracker: commentTreeTracker
+                    EllipsisMenu(
+                        icon: .lemmy.moderation,
+                        size: size,
+                        post: post,
+                        type: [.moderator]
                     )
                 }
+                EllipsisMenu(size: size, post: post, type: [.basic])
             } else {
-                EllipsisMenu(size: size) {
-                    post.allMenuActions(
-                        appState: appState,
-                        showAllActions: false,
-                        navigation: navigation,
-                        report: reportContext,
-                        commentTreeTracker: commentTreeTracker
-                    )
-                }
+                EllipsisMenu(size: size, post: post, type: [.basic, .moderator])
             }
         }
     }
