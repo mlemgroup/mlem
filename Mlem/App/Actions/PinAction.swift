@@ -97,8 +97,7 @@ extension PinAction {
             message: entity.pinnedCommunity ? "Really unpin this post?" : "Really pin this post?",
             [
             .init(title: "Yes", isDestructive: false) {
-                environment.hapticManager.play(haptic: .lightSuccess, tier: .low)
-                entity.togglePinnedCommunity()
+                togglePinnedCommunity(environment: environment)
             }
         ])
     }
@@ -109,14 +108,52 @@ extension PinAction {
             message: "Choose target...",
             [
                 .init(title: entity.pinnedCommunity ? "Unpin from community" : "Pin to community") {
-                    environment.hapticManager.play(haptic: .lightSuccess, tier: .low)
-                    entity.togglePinnedCommunity()
+                    togglePinnedCommunity(environment: environment)
                 },
                 .init(title: entity.pinnedInstance ? "Unpin from instance" : "Pin to instance") {
-                    environment.hapticManager.play(haptic: .lightSuccess, tier: .low)
-                    entity.togglePinnedInstance()
+                    togglePinnedInstance(environment: environment)
                 }
             ]
         )
+    }
+
+    @MainActor
+    func togglePinnedCommunity(environment: EnvironmentValues) {
+        let shouldPin = entity.pinnedCommunity
+        entity.togglePinnedCommunity { status in
+            handleResult(
+                status: status,
+                shouldPin: shouldPin,
+                environment: environment
+            )
+        }
+    }
+
+    @MainActor
+    func togglePinnedInstance(environment: EnvironmentValues) {
+        let shouldPin = entity.pinnedInstance
+        entity.togglePinnedInstance { status in
+            handleResult(
+                status: status,
+                shouldPin: shouldPin,
+                environment: environment
+            )
+        }
+    }
+
+    @MainActor
+    func handleResult(
+        status: UpdateStatus,
+        shouldPin: Bool,
+        environment: EnvironmentValues
+    ) {
+        switch status {
+        case .success:
+            environment.hapticManager.play(haptic: .lightSuccess, tier: .low)
+        case .failure: 
+            environment.toastModel?.add(
+                .failure(shouldPin ? "Failed to pin post" : "Failed to unpin post")
+            )
+        }
     }
 }
