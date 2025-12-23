@@ -14,8 +14,8 @@ struct ExpectedMedia: View {
     
     var body: some View {
         ZStack {
-            if let resolved = url.value, let resolvedUrl = resolved {
-                MediaView.largeImage(url: resolvedUrl, shouldBlur: false)
+            if let resolved = url.value as? URL {
+                MediaView.largeImage(url: resolved, shouldBlur: false)
                     .transition(.scale)
             }
         }

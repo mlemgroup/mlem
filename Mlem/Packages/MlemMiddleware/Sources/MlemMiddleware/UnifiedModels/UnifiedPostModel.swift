@@ -61,6 +61,11 @@ public class UnifiedPostModel {
     @ObservationIgnored
     public lazy var linkUrl: ExpectedValue<URL?> = expectedValue(\.linkUrl)
 
+    @MainActor
+    public func changeTitle() {
+        properties.title = "Changed!!!"
+    }
+    
     private func upgrade() async throws {
         let post2 = try await api.repository.getPost(url: url)
         let ret = try await api.repository.getPost(id: post2.post.id)

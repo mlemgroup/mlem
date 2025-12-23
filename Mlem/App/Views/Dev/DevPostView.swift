@@ -28,6 +28,9 @@ struct DevPostView: View {
                 ExpectedText(post.title)
                     .font(.headline)
                 ExpectedMedia(url: post.linkUrl)
+                Button("Change Title") {
+                    post.changeTitle()
+                }
             }
             .padding()
         }
