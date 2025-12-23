@@ -26,6 +26,7 @@ private let seeds: [ActionSeed] = [
 ]
 
 private let moderationSeeds: [ActionSeed] = [
+    .lock,
     .viewVotes,
     .remove,
     .banCreator,
