@@ -56,7 +56,9 @@ extension PinAction {
     }
 
     private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {
-        if entity.api.canInteract(appState: environment.appState), entity.canModerate {
+        if entity.api.canInteract(appState: environment.appState),
+            entity.canModerate,
+            Settings.get(\.menus_allModActions) || environment.feedContext == .post {
             .enabled
         } else {
             .hidden

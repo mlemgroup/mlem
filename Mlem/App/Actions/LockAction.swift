@@ -41,10 +41,12 @@ extension LockAction {
     }
 
     private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {
-        if entity.api.canInteract(appState: environment.appState), entity.canModerate {
-            .enabled
+        if entity.api.canInteract(appState: environment.appState),
+           entity.canModerate,
+           Settings.get(\.menus_allModActions) || environment.feedContext == .post {
+            return .enabled
         } else {
-            .hidden
+            return .hidden
         }
     }
 }
