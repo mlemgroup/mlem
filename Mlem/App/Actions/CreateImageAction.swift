@@ -40,12 +40,7 @@ extension CreateImageAction {
     }
 
     private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {
-        switch content {
-        case .post:
-            environment.feedContext == .post ? .enabled : .hidden
-        case .comment:
-            .enabled
-        }
+        environment.feedContext == .post ? .enabled : .hidden
     }
 }
 
