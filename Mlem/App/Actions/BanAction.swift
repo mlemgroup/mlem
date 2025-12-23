@@ -72,6 +72,7 @@ extension ActionSeed {
     static let banCreator = ActionSeed("banCreator") { entity in
         switch entity {
         case let entity as any Comment2Providing: BanAction(entity: entity.creator)
+        case let entity as any Post2Providing: BanAction(entity: entity.creator)
         default: nil
         }
     }
