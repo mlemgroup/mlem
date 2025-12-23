@@ -61,10 +61,10 @@ public class UnifiedPostModel {
     public lazy var title: ExpectedValue<String> = expectedValue(\.title)
   
     @ObservationIgnored
-    public lazy var linkUrl: ExpectedValue<URL?> = expectedValue(\.linkUrl)
+    public lazy var votes: ExpectedValue<VotesModel> = expectedValue(\.votes)
     
     @ObservationIgnored
-    public lazy var votes: ExpectedValue<VotesModel> = expectedValue(\.votes)
+    public lazy var linkUrl: ExpectedValue<URL?> = expectedValue(\.linkUrl)
 
     public func vote() async throws {
         var myVote: VotesModel
@@ -84,8 +84,14 @@ public class UnifiedPostModel {
    
     @discardableResult
     private func upgrade() async throws -> Post3Snapshot {
-        let post2 = try await api.repository.getPost(url: url)
-        let ret = try await api.repository.getPost(id: post2.post.id)
+        var id: Int
+        if let existingId = properties.id {
+            id = existingId
+        } else {
+            id = try await api.repository.getPost(url: url).post.id
+        }
+        
+        let ret = try await api.repository.getPost(id: id)
         await Task { @MainActor in
             properties.id = ret.post.post.id
             properties.title = ret.post.post.title
