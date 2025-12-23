@@ -29,8 +29,9 @@ struct DevPostView: View {
                     .font(.headline)
                 ExpectedMedia(url: post.linkUrl)
             
+                Divider()
+                
                 HStack {
-                    Text("Vote: \(post.votes.value?.myVote ?? .none)")
                     Button("Vote") {
                         Task {
                             do {
@@ -40,9 +41,14 @@ struct DevPostView: View {
                             }
                         }
                     }
+                    Spacer()
+                    Text("Vote: \(post.votes.value?.myVote ?? .none)")
                 }
             }
-            .padding()
+            .padding(Constants.main.standardSpacing)
+            .background(.themedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+            .padding(Constants.main.standardSpacing)
         }
+        .background(.themedGroupedBackground)
     }
 }
