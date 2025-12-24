@@ -127,7 +127,7 @@ extension Post2Snapshot {
 
         try self.init(
             post: .init(from: report.post),
-            creator: .init(from: report.creator),
+            creator: .init(from: report.postCreator),
             community: .init(from: report.community),
             commentCount: commentCount,
             unreadCommentCount: unreadCommentCount,
