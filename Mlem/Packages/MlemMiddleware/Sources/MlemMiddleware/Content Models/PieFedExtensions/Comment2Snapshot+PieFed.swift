@@ -37,7 +37,7 @@ public extension Comment2Snapshot {
 
         try self.init(
             comment: .init(from: report.comment),
-            creator: .init(from: report.creator),
+            creator: .init(from: report.commentCreator),
             post: .init(from: report.post),
             community: .init(from: report.community),
             commentCount: report.counts.childCount,
