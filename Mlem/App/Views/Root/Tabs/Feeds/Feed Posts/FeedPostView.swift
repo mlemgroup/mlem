@@ -76,7 +76,8 @@ struct FeedPostView<EmbeddedContent: View>: View {
                         appState: appState,
                         showAllActions: false,
                         navigation: navigation,
-                        commentTreeTracker: commentTreeTracker
+                        commentTreeTracker: commentTreeTracker,
+                        report: reportContext
                     ) }
             }
         }
