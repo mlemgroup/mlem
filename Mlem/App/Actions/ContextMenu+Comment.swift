@@ -35,13 +35,8 @@ private let moderationSeeds: [ActionSeed] = [
 extension View {
     func contextMenu(comment: any Comment1Providing) -> some View {
         contextMenu {
-            ActionButtons { environment in
-                var ret = seeds.compactMap { $0.createAction(comment) }
-                if let reportContext = environment.reportContext,
-                    let resolveAction = ActionSeed.resolveReport.createAction(reportContext) {
-                    ret.append(resolveAction)
-                }
-                return ret
+            ActionButtons { _ in
+                seeds.compactMap { $0.createAction(comment) }
             }
         }
     }
