@@ -98,30 +98,41 @@ struct FullyQualifiedLabelView: View {
                     blurred: blurred
                 )
             }
-            
-            HStack(spacing: 4) {
-                if showSubscriptionIndicator {
-                    Image(icon: .general.circle)
-                        .symbolVariant(.fill)
-                        .font(.system(size: subscriptionIndicatorSize))
-                        .foregroundStyle(.themedSecondary)
-                        .padding(.bottom, 2)
+
+            VStack(alignment: .leading, spacing: 0) {
+                HStack(spacing: 4) {
+                    if showSubscriptionIndicator {
+                        Image(icon: .general.circle)
+                            .symbolVariant(.fill)
+                            .font(.system(size: subscriptionIndicatorSize))
+                            .foregroundStyle(.themedSecondary)
+                            .padding(.bottom, 2)
+                    }
+
+                    FullyQualifiedNameView(
+                        name: entity?.name,
+                        instance: entity?.host,
+                        instanceLocation: showInstance ? labelStyle.instanceLocation : .disabled,
+                        prependedText: flairs.textView
+                    )
+                    .symbolVariant(.fill)
                 }
-                
-                FullyQualifiedNameView(
-                    name: entity?.name,
-                    instance: entity?.host,
-                    instanceLocation: showInstance ? labelStyle.instanceLocation : .disabled,
-                    prependedText: flairs.textView
-                )
-                .symbolVariant(.fill)
+                .imageScale(.small)
+                .offset(y: 1)
+                if let note = (entity as? any Person)?.note, feedContext != .person {
+                    self.note(text: note)
+                }
             }
-            .imageScale(.small)
-            .offset(y: 1)
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilityLabel)
     }
+
+    func note(text: String) -> some View {
+        Text(text)
+            .font(.footnote)
+            .foregroundStyle(.secondary)
+}
     
     var flairs: [PersonFlair] {
         guard showFlairs, let person = entity as? any Person else { return [] }
@@ -145,10 +156,18 @@ struct FullyQualifiedLabelView: View {
     var accessibilityLabel: String {
         guard let entity else { return String(localized: "Loading...") }
         let flairs = flairs
+
+        var result = entity.fullName
+        
         if !flairs.isEmpty {
-            return "\(entity.fullName), " + flairs.map { String(localized: $0.label) }.joined(separator: ", ")
+            result += flairs.map { String(localized: $0.label) }.joined(separator: ", ")
         }
-        return entity.fullName
+
+        if let note = (entity as? any Person)?.note {
+            result += "\(String(localized: "Note")): \(note)"
+        }
+
+        return result
     }
 }
 
