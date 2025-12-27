@@ -18,6 +18,7 @@ public extension Person1Snapshot {
             displayName: person.title ?? person.userName,
             avatar: person.avatar,
             banner: person.banner,
+            note: person.note,
             updated: nil,
             description: person.about,
             matrixUserId: nil,

@@ -237,6 +237,10 @@ public extension LemmyConnection {
         }
     }
 
+    func editNote(id: Int, content: String?) async throws {
+        throw ApiClientError.featureUnsupported
+    }
+
     func editProfile(details: ProfileDetails) async throws {
         let response = try await performingForEndpoint { endpoint in
             LemmySaveUserSettingsRequest(

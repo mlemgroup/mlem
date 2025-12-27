@@ -329,6 +329,7 @@
 		03B62C402CE811CB0077E9C8 /* PersonBanEditorView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B62C3F2CE811CB0077E9C8 /* PersonBanEditorView+Logic.swift */; };
 		03B72B672C2888EE0023A6C4 /* View+ContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B72B662C2888EE0023A6C4 /* View+ContextMenu.swift */; };
 		03B72B6B2C28A0190023A6C4 /* SubscriptionListSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B72B6A2C28A0190023A6C4 /* SubscriptionListSettingsView.swift */; };
+		03B7F3352EEEC70F00B00F6A /* NoteEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B7F3342EEEC70F00B00F6A /* NoteEditorView.swift */; };
 		03BF11C32D3D135D00CC1F66 /* SearchView+CreatorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BF11C22D3D135D00CC1F66 /* SearchView+CreatorPicker.swift */; };
 		03BF11C52D3D3AFB00CC1F66 /* PostReadIndicatorSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BF11C42D3D3AFB00CC1F66 /* PostReadIndicatorSettingsView.swift */; };
 		03BF11C72D3D634A00CC1F66 /* AccessibilitySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BF11C62D3D634A00CC1F66 /* AccessibilitySettingsView.swift */; };
@@ -895,6 +896,7 @@
 		03B62C3F2CE811CB0077E9C8 /* PersonBanEditorView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PersonBanEditorView+Logic.swift"; sourceTree = "<group>"; };
 		03B72B662C2888EE0023A6C4 /* View+ContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ContextMenu.swift"; sourceTree = "<group>"; };
 		03B72B6A2C28A0190023A6C4 /* SubscriptionListSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionListSettingsView.swift; sourceTree = "<group>"; };
+		03B7F3342EEEC70F00B00F6A /* NoteEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteEditorView.swift; sourceTree = "<group>"; };
 		03BF11C22D3D135D00CC1F66 /* SearchView+CreatorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchView+CreatorPicker.swift"; sourceTree = "<group>"; };
 		03BF11C42D3D3AFB00CC1F66 /* PostReadIndicatorSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostReadIndicatorSettingsView.swift; sourceTree = "<group>"; };
 		03BF11C62D3D634A00CC1F66 /* AccessibilitySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilitySettingsView.swift; sourceTree = "<group>"; };
@@ -2207,6 +2209,7 @@
 		CD87BEBF2D51328B0099F190 /* Editors */ = {
 			isa = PBXGroup;
 			children = (
+				03B7F3342EEEC70F00B00F6A /* NoteEditorView.swift */,
 				CD87BEC22D5132BB0099F190 /* FilterViolationWarning.swift */,
 				0315B1BC2C74C3CD006D4F82 /* CommentEditor */,
 				0397D4792C693444002C6CDC /* ReportEditorView.swift */,
@@ -2860,6 +2863,7 @@
 				037F78452D3C25AB00D4E180 /* PostSubscriptionIndicatorSettingsView.swift in Sources */,
 				0397D49C2C6EA73C002C6CDC /* InteractionBarConfiguration.swift in Sources */,
 				03D3A1F32BB9D49B009DE55E /* ActionGroup.swift in Sources */,
+				03B7F3352EEEC70F00B00F6A /* NoteEditorView.swift in Sources */,
 				03049A222C650B2C00FF6889 /* CommunityDetailsView.swift in Sources */,
 				03F6BD9C2D501478006A425E /* ActorIdentifier+Mock.swift in Sources */,
 				CD7882A92BFFDFC7002E1A30 /* PostTag.swift in Sources */,

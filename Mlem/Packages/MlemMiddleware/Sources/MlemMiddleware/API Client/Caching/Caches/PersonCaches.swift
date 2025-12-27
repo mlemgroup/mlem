@@ -23,6 +23,7 @@ class Person1Cache: ApiTypeBackedCache<Person1, Person1Snapshot> {
             matrixId: snapshot.matrixUserId,
             avatar: snapshot.avatar,
             banner: snapshot.banner,
+            note: snapshot.note,
             deleted: snapshot.deleted,
             isBot: snapshot.isBot,
             instanceBan: snapshot.instanceBan,

@@ -18,6 +18,7 @@ extension Person1: CacheIdentifiable {
             setIfChanged(\.description, snapshot.description)
             setIfChanged(\.banner, snapshot.banner)
         }
+        setIfChanged(\.note, snapshot.note)
         setIfChanged(\.updated, snapshot.updated)
         setIfChanged(\.matrixId, snapshot.matrixUserId)
         setIfChanged(\.isBot, snapshot.isBot)

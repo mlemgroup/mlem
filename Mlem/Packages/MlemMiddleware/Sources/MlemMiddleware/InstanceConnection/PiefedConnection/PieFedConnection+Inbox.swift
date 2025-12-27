@@ -76,16 +76,49 @@ public extension PieFedConnection {
         }
     }
     
-    func getReplyNotifications() async throws -> [InboxNotificationSnapshot] {
-        throw ApiClientError.featureUnsupported
+    func getReplyNotifications(
+        page: Int,
+        limit: Int,
+        unreadOnly: Bool
+    ) async throws -> [InboxNotificationSnapshot] {
+        let request = PieFedGetRepliesRequest(
+            sort: .new,
+            page: page,
+            limit: limit,
+            unreadOnly: unreadOnly
+        )
+        let response = try await perform(request)
+        return try response.replies.map { try .init(from: $0, isMention: false) }
     }
 
-    func getMentionNotifications() async throws -> [InboxNotificationSnapshot] {
-        throw ApiClientError.featureUnsupported
+    func getMentionNotifications(
+        page: Int,
+        limit: Int,
+        unreadOnly: Bool
+    ) async throws -> [InboxNotificationSnapshot] {
+        let request = PieFedGetMentionsRequest(
+            sort: .new,
+            page: page,
+            limit: limit,
+            unreadOnly: unreadOnly
+        )
+        let response = try await perform(request)
+        return try response.replies.map { try .init(from: $0, isMention: true) }
     }
 
-    func getMessageNotifications() async throws -> [InboxNotificationSnapshot] {
-        throw ApiClientError.featureUnsupported
+    func getMessageNotifications(
+        page: Int,
+        limit: Int,
+        unreadOnly: Bool
+    ) async throws -> [InboxNotificationSnapshot] {
+        let request = PieFedListPrivateMessagesRequest(
+            unreadOnly: unreadOnly,
+            page: page,
+            limit: limit,
+            creatorId: nil
+        )
+        let response = try await perform(request)
+        return try response.privateMessages.map { try .init(from: $0) }
     }
     
     func markNotificationAsRead(
@@ -94,7 +127,14 @@ public extension PieFedConnection {
         contentId: Int,
         read: Bool
     ) async throws {
-        throw ApiClientError.featureUnsupported
+        switch type {
+        case .reply:
+            try await self.markReplyAsRead(id: contentId, read: read)
+        case .mention:
+            try await self.markMentionAsRead(id: contentId, read: read)
+        case .message:
+            try await self.markMessageAsRead(id: contentId, read: read)
+        }
     }
 
     func markAllAsRead() async throws {

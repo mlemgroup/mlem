@@ -133,6 +133,12 @@ extension ApiRepository {
         }
     }
 
+    func editNote(id: Int, content: String?) async throws {
+        try await performingForConnection { connection in
+            try await connection.editNote(id: id, content: content)
+        }
+    }
+
     func editProfile(_ details: ProfileDetails) async throws {
         try await performingForConnection { connection in
             try await connection.editProfile(details: details)

@@ -58,21 +58,45 @@ public extension ApiClient {
         )
     }
 
-    func getReplyNotifications() async throws -> [InboxNotification] {
+    func getReplyNotifications(
+        page: Int,
+        limit: Int,
+        unreadOnly: Bool
+    ) async throws -> [InboxNotification] {
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
-        let snapshots = try await repository.getReplyNotifications()
+        let snapshots = try await repository.getReplyNotifications(
+            page: page,
+            limit: limit,
+            unreadOnly: unreadOnly
+        )
         return await caches.notification.getModels(api: self, from: snapshots, myPersonId: myPersonId)
     }
     
-    func getMentionNotifications() async throws -> [InboxNotification] {
+    func getMentionNotifications(
+        page: Int,
+        limit: Int,
+        unreadOnly: Bool
+    ) async throws -> [InboxNotification] {
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
-        let snapshots = try await repository.getMentionNotifications()
+        let snapshots = try await repository.getMentionNotifications(
+            page: page,
+            limit: limit,
+            unreadOnly: unreadOnly
+        )
         return await caches.notification.getModels(api: self, from: snapshots, myPersonId: myPersonId)
     }
 
-    func getMessageNotifications() async throws -> [InboxNotification] {
+    func getMessageNotifications(
+        page: Int,
+        limit: Int,
+        unreadOnly: Bool
+    ) async throws -> [InboxNotification] {
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
-        let snapshots = try await repository.getMessageNotifications()
+        let snapshots = try await repository.getMessageNotifications(
+            page: page,
+            limit: limit,
+            unreadOnly: unreadOnly
+        )
         return await caches.notification.getModels(api: self, from: snapshots, myPersonId: myPersonId)
     }
 

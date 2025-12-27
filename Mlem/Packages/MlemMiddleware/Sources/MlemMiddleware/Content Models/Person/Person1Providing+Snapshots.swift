@@ -15,6 +15,7 @@ extension Person1Providing {
               displayName: displayName,
               avatar: avatar,
               banner: banner,
+              note: note,
               updated: updated,
               description: description,
               matrixUserId: matrixId,

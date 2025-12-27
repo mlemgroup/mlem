@@ -59,36 +59,48 @@ public extension LemmyConnection {
         return try response.privateMessages.map { try .init(from: $0) }
     }
     
-    func getReplyNotifications() async throws -> [InboxNotificationSnapshot] {
+    func getReplyNotifications(
+        page: Int,
+        limit: Int,
+        unreadOnly: Bool
+    ) async throws -> [InboxNotificationSnapshot] {
         let response = try await performingForEndpoint { _ in
             LemmyListRepliesRequest(
                 sort: .new,
-                page: 1,
-                limit: 5,
-                unreadOnly: false
+                page: page,
+                limit: limit,
+                unreadOnly: unreadOnly
             )
         }
         return try response.replies.map { try .init(from: $0) }
     }
 
-    func getMentionNotifications() async throws -> [InboxNotificationSnapshot] {
+    func getMentionNotifications(
+        page: Int,
+        limit: Int,
+        unreadOnly: Bool
+    ) async throws -> [InboxNotificationSnapshot] {
         let response = try await performingForEndpoint { _ in
             LemmyListMentionsRequest(
                 sort: .new,
-                page: 1,
-                limit: 5,
-                unreadOnly: false
+                page: page,
+                limit: limit,
+                unreadOnly: unreadOnly
             )
         }
         return try response.mentions.map { try .init(from: $0) }
     }
 
-    func getMessageNotifications() async throws -> [InboxNotificationSnapshot] {
+    func getMessageNotifications(
+        page: Int,
+        limit: Int,
+        unreadOnly: Bool
+    ) async throws -> [InboxNotificationSnapshot] {
         let response = try await performingForEndpoint { _ in
             LemmyGetPrivateMessageRequest(
-                unreadOnly: false,
-                page: 1,
-                limit: 5,
+                unreadOnly: unreadOnly,
+                page: page,
+                limit: limit,
                 creatorId: nil
             )
         }

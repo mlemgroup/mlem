@@ -27,6 +27,7 @@ public final class Person1: Person1Providing {
     public var matrixId: String?
     public var avatar: URL?
     public var banner: URL?
+    public var note: String?
     
     public var deleted: Bool = false
     public var isBot: Bool = false
@@ -60,6 +61,7 @@ public final class Person1: Person1Providing {
         matrixId: String?,
         avatar: URL?,
         banner: URL?,
+        note: String?,
         deleted: Bool,
         isBot: Bool,
         instanceBan: InstanceBanType,
@@ -77,6 +79,7 @@ public final class Person1: Person1Providing {
         self.matrixId = matrixId
         self.avatar = avatar
         self.banner = banner
+        self.note = note
         self.deleted = deleted
         self.isBot = isBot
         self.instanceBan = instanceBan

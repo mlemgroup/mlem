@@ -197,6 +197,8 @@ public extension Icon {
         // MARK: - Other
 
         public let noContent: Icon = .init("binoculars")
+        public let note: Icon = .init("note.text")
+        public let editNote: Icon = .init("square.and.pencil")
         public let openAccountSwitcher: Icon = .init("person.crop.rectangle.stack.fill")
         public let groupAccountSort: Icon = .init("square.stack.3d.up.fill")
         public let switchAccount: Icon = .init("arrow.left.arrow.right")

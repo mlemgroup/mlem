@@ -299,6 +299,8 @@ public protocol InstanceConnection {
     func getMyPerson() async throws -> (person: Person4Snapshot?, instance: Instance3Snapshot, blocks: BlockListSnapshot?)
     func deleteAccount(password: String, deleteContent: Bool) async throws
 
+    func editNote(id: Int, content: String?) async throws
+
     func editProfile(details: ProfileDetails) async throws
     
     func editAccountSettings(
@@ -436,9 +438,23 @@ public protocol InstanceConnection {
         unreadOnly: Bool
     ) async throws -> [Message2Snapshot]
     
-    func getReplyNotifications() async throws -> [InboxNotificationSnapshot]
-    func getMentionNotifications() async throws -> [InboxNotificationSnapshot]
-    func getMessageNotifications() async throws -> [InboxNotificationSnapshot]
+    func getReplyNotifications(
+        page: Int,
+        limit: Int,
+        unreadOnly: Bool
+    ) async throws -> [InboxNotificationSnapshot]
+
+    func getMentionNotifications(
+        page: Int,
+        limit: Int,
+        unreadOnly: Bool
+    ) async throws -> [InboxNotificationSnapshot]
+
+    func getMessageNotifications(
+        page: Int,
+        limit: Int,
+        unreadOnly: Bool
+    ) async throws -> [InboxNotificationSnapshot]
 
     func markNotificationAsRead(
         type: InboxNotificationContentType,
