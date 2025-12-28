@@ -43,13 +43,23 @@ public struct PostProperties: UnifiedPropertiesProviding {
     
     @MainActor
     public mutating func update(with snapshot: any PostSnapshotProviding) {
+        Logger.dev.info("Updating...")
         if let snapshot1 = snapshot as? Post1Snapshot {
+            Logger.dev.info("Got title \(snapshot1.title)")
             self.id = snapshot1.id
             self.title = snapshot1.title
             self.linkUrl = snapshot1.linkUrl
         }
         if let snapshot2 = snapshot as? Post2Snapshot {
             self.votes = snapshot2.votes
+        }
+        
+        if let snapshot3 = snapshot as? Post3Snapshot {
+            Logger.dev.info("Got snapshot3")
+            self.id = snapshot3.post.post.id
+            self.title = snapshot3.post.post.title
+            self.linkUrl = snapshot3.post.post.linkUrl
+            self.votes = snapshot3.post.votes
         }
     }
     
@@ -70,6 +80,7 @@ public protocol UnifiedModelProviding: AnyObject {
     associatedtype Properties: UnifiedPropertiesProviding
     
     var properties: Properties { get set }
+    func fetchUpgraded() async throws -> Properties.Snapshot
 }
 
 @Observable
@@ -105,57 +116,39 @@ public class UnifiedPostModel: UnifiedModelProviding {
     public lazy var linkUrl: ExpectedValue<URL?> = expectedValue(\.linkUrl)
 
     public func vote() async throws {
-//        var myVote: VotesModel
-//        var id: Int
-        if let existingVotes = properties.votes, let existingId = properties.id {
-            let myVote = existingVotes
-            let id = existingId
-            
-            let response = try await api.repository.voteOnPost(id: id, score: myVote.myVote == .upvote ? .none : .upvote)
-            properties.votes = response.votes
-        } else {
-            try await upgrade { snapshot in
-                let myVote = snapshot.post.votes
-                let id = snapshot.post.post.id
-                
-                let response = try await self.api.repository.voteOnPost(id: id, score: myVote.myVote == .upvote ? .none : .upvote)
-                self.properties.votes = response.votes
-            }
-//            let upgraded = try await upgrade()
-//            myVote = upgraded.post.votes
-//            id = upgraded.post.post.id
+        guard let existingVotes = properties.votes, let existingId = properties.id else {
+            assertionFailure("Model not upgraded (TODO: throw error)")
+            return
         }
         
-//        let response = try await api.repository.voteOnPost(id: id, score: myVote.myVote == .upvote ? .none : .upvote)
-//        properties.votes = response.votes
-    }
-   
-    private func upgrade(_ callback: ((Post3Snapshot) async throws -> Void)? = nil) async throws {
+        // state fake
+        Logger.dev.info("State faking...")
+        properties.votes = existingVotes.applyScoringOperation(operation: existingVotes.myVote == .upvote ? .none : .upvote)
+        
+        // do work
         await updateQueue.addItem {
-            Logger.dev.info("Upgrading...")
+            try await Task.sleep(for: .seconds(2))
             
-            var id: Int
-            if let existingId = self.properties.id {
-                id = existingId
-            } else {
-                id = try await self.api.repository.getPost(url: self.url).post.id
-            }
-            
-            let ret = try await self.api.repository.getPost(id: id)
-            do {
-                try await callback?(ret)
-            } catch {
-                print(error)
-            }
-            return ret
+            let response = try await self.api.repository.voteOnPost(id: existingId, score: existingVotes.myVote == .upvote ? .none : .upvote)
+            return response
         }
-//        let ret = try await api.repository.getPost(id: id)
-//        await Task { @MainActor in
-//            properties.id = ret.post.post.id
-//            properties.title = ret.post.post.title
-//            properties.votes = ret.post.votes
-//            properties.linkUrl = ret.post.post.linkUrl
-//        }.value
-//        return ret
+    }
+    
+    internal func upgrade() async throws {
+        try await updateQueue.upgrade()
+    }
+    
+    @discardableResult
+    public func fetchUpgraded() async throws -> any PostSnapshotProviding {
+        Logger.dev.info("Upgrading...")
+        
+        var id: Int
+        if let existingId = properties.id {
+            id = existingId
+        } else {
+            id = try await api.repository.getPost(url: self.url).post.id
+        }
+        
+        return try await api.repository.getPost(id: id)
     }
 }
