@@ -7,6 +7,7 @@
 
 import Observation
 import Foundation
+import os
 
 public class ExpectedValue<T> {
     let getValue: () -> T?
@@ -32,15 +33,52 @@ public class ExpectedValue<T> {
     }
 }
 
-struct PostProperties {
+public struct PostProperties: UnifiedPropertiesProviding {
+    public typealias Snapshot = PostSnapshotProviding
+    
     var id: Int?
     var title: String?
     var votes: VotesModel?
     var linkUrl: URL??
+    
+    @MainActor
+    public mutating func update(with snapshot: any PostSnapshotProviding) {
+        if let snapshot1 = snapshot as? Post1Snapshot {
+            self.id = snapshot1.id
+            self.title = snapshot1.title
+            self.linkUrl = snapshot1.linkUrl
+        }
+        if let snapshot2 = snapshot as? Post2Snapshot {
+            self.votes = snapshot2.votes
+        }
+    }
+    
+    public static func merge(_ snapshot: any PostSnapshotProviding, into target: any PostSnapshotProviding) -> PostSnapshotProviding {
+        snapshot.merge(with: target)
+    }
+}
+
+public protocol UnifiedPropertiesProviding {
+    associatedtype Snapshot
+    
+    @MainActor mutating func update(with snapshot: Snapshot)
+    
+    static func merge(_ snapshot: Snapshot, into target: Snapshot) -> Snapshot
+}
+
+public protocol UnifiedModelProviding: AnyObject {
+    associatedtype Properties: UnifiedPropertiesProviding
+    
+    var properties: Properties { get set }
 }
 
 @Observable
-public class UnifiedPostModel {
+public class UnifiedPostModel: UnifiedModelProviding {
+    public typealias Properties = PostProperties
+    
+    @ObservationIgnored
+    lazy var updateQueue: UnifiedUpdateQueue<UnifiedPostModel> = .init(parent: self)
+    
     public var api: ApiClient
     public var url: URL
     
@@ -49,7 +87,7 @@ public class UnifiedPostModel {
         self.url = url
     }
     
-    private var properties: PostProperties = .init()
+    public var properties: PostProperties = .init()
     
     private func expectedValue<T>(_ keyPath: WritableKeyPath<PostProperties, T?>) -> ExpectedValue<T> {
         .init(
@@ -84,12 +122,18 @@ public class UnifiedPostModel {
    
     @discardableResult
     private func upgrade() async throws -> Post3Snapshot {
-        var id: Int
-        if let existingId = properties.id {
-            id = existingId
-        } else {
-            id = try await api.repository.getPost(url: url).post.id
+        updateQueue.addItem {
+            Logger.dev.info("Upgrading...")
+            
+            var id: Int
+            if let existingId = self.properties.id {
+                id = existingId
+            } else {
+                id = try await api.repository.getPost(url: url).post.id
+            }
         }
+        
+
         
         let ret = try await api.repository.getPost(id: id)
         await Task { @MainActor in
