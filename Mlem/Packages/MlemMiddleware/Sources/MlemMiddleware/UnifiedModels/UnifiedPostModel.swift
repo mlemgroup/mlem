@@ -105,6 +105,9 @@ public class UnifiedPostModel: UnifiedModelProviding {
             getValue: { self.properties[keyPath: keyPath] },
             provideValue: { try await self.upgrade() })
     }
+    
+    @ObservationIgnored
+    public lazy var id: ExpectedValue<Int> = expectedValue(\.id)
 
     @ObservationIgnored
     public lazy var title: ExpectedValue<String> = expectedValue(\.title)
@@ -115,14 +118,15 @@ public class UnifiedPostModel: UnifiedModelProviding {
     @ObservationIgnored
     public lazy var linkUrl: ExpectedValue<URL?> = expectedValue(\.linkUrl)
 
-    public func vote() async throws {
-        guard let existingVotes = properties.votes, let existingId = properties.id else {
-            assertionFailure("Model not upgraded (TODO: throw error)")
-            return
+    public var vote: (() async throws -> Void)? {
+        if let votes = votes.value, let id = id.value {
+            return { try await self.vote(existingVotes: votes, existingId: id) }
         }
-        
+        return nil
+    }
+    
+    private func vote(existingVotes: VotesModel, existingId: Int) async throws {
         // state fake
-        Logger.dev.info("State faking...")
         properties.votes = existingVotes.applyScoringOperation(operation: existingVotes.myVote == .upvote ? .none : .upvote)
         
         // do work

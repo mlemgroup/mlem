@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import ComponentViews
 import MlemMiddleware
 
 struct ExpectedText: View {
@@ -26,6 +25,7 @@ struct ExpectedText: View {
             } else {
                 Text(verbatim: placeholder)
                     .redacted(reason: .placeholder)
+                    .transition(.opacity)
             }
         }
         .animation(.interactiveSpring, value: text.value != nil)

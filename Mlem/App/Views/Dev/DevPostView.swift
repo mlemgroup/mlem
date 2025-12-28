@@ -32,17 +32,22 @@ struct DevPostView: View {
                 Divider()
                 
                 HStack {
-                    Button("Vote") {
-                        Task {
-                            do {
-                                try await post.vote()
-                            } catch {
-                                handleError(error)
+                    if let vote = post.vote {
+                        Button("Vote") {
+                            Task {
+                                do {
+                                    try await vote()
+                                } catch {
+                                    handleError(error)
+                                }
                             }
                         }
                     }
                     Spacer()
-                    Text("Vote: \(post.votes.value?.myVote ?? .none)")
+                    
+                    ExpectedView(post.votes) { votes in
+                        Text(votes.myVote.description)
+                    }
                 }
             }
             .padding(Constants.main.standardSpacing)
