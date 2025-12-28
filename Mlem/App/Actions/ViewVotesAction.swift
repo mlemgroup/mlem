@@ -47,6 +47,8 @@ extension ViewVotesAction {
         guard let community = entity.community_ else { return .hidden }
         let canModerate = myPerson.moderates(communityId: community.id)
         guard canModerate else { return .hidden }
+
+        guard Settings.get(\.menus_allModActions) || environment.feedContext == .post else { return .hidden }
         guard entity.api.supports(.viewVotes, defaultValue: true) else { return .hidden }
 
         return .enabled
