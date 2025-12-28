@@ -105,43 +105,57 @@ public class UnifiedPostModel: UnifiedModelProviding {
     public lazy var linkUrl: ExpectedValue<URL?> = expectedValue(\.linkUrl)
 
     public func vote() async throws {
-        var myVote: VotesModel
-        var id: Int
+//        var myVote: VotesModel
+//        var id: Int
         if let existingVotes = properties.votes, let existingId = properties.id {
-            myVote = existingVotes
-            id = existingId
+            let myVote = existingVotes
+            let id = existingId
+            
+            let response = try await api.repository.voteOnPost(id: id, score: myVote.myVote == .upvote ? .none : .upvote)
+            properties.votes = response.votes
         } else {
-            let upgraded = try await upgrade()
-            myVote = upgraded.post.votes
-            id = upgraded.post.post.id
+            try await upgrade { snapshot in
+                let myVote = snapshot.post.votes
+                let id = snapshot.post.post.id
+                
+                let response = try await self.api.repository.voteOnPost(id: id, score: myVote.myVote == .upvote ? .none : .upvote)
+                self.properties.votes = response.votes
+            }
+//            let upgraded = try await upgrade()
+//            myVote = upgraded.post.votes
+//            id = upgraded.post.post.id
         }
         
-        let response = try await api.repository.voteOnPost(id: id, score: myVote.myVote == .upvote ? .none : .upvote)
-        properties.votes = response.votes
+//        let response = try await api.repository.voteOnPost(id: id, score: myVote.myVote == .upvote ? .none : .upvote)
+//        properties.votes = response.votes
     }
    
-    @discardableResult
-    private func upgrade() async throws -> Post3Snapshot {
-        updateQueue.addItem {
+    private func upgrade(_ callback: ((Post3Snapshot) async throws -> Void)? = nil) async throws {
+        await updateQueue.addItem {
             Logger.dev.info("Upgrading...")
             
             var id: Int
             if let existingId = self.properties.id {
                 id = existingId
             } else {
-                id = try await api.repository.getPost(url: url).post.id
+                id = try await self.api.repository.getPost(url: self.url).post.id
             }
+            
+            let ret = try await self.api.repository.getPost(id: id)
+            do {
+                try await callback?(ret)
+            } catch {
+                print(error)
+            }
+            return ret
         }
-        
-
-        
-        let ret = try await api.repository.getPost(id: id)
-        await Task { @MainActor in
-            properties.id = ret.post.post.id
-            properties.title = ret.post.post.title
-            properties.votes = ret.post.votes
-            properties.linkUrl = ret.post.post.linkUrl
-        }.value
-        return ret
+//        let ret = try await api.repository.getPost(id: id)
+//        await Task { @MainActor in
+//            properties.id = ret.post.post.id
+//            properties.title = ret.post.post.title
+//            properties.votes = ret.post.votes
+//            properties.linkUrl = ret.post.post.linkUrl
+//        }.value
+//        return ret
     }
 }

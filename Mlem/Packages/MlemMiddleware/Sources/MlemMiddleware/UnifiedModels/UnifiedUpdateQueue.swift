@@ -91,11 +91,11 @@ public actor UnifiedUpdateQueue<Model: UnifiedModelProviding> {
         log.info("Executing queue")
         
         // this shouldn't be possible, since lastVerifiedSnapshot is set when the parent is set
-        guard var lastVerifiedSnapshot else {
-            fatalError("Cannot execute queue with no lastVerifiedSnapshot!")
+        // guard var lastVerifiedSnapshot else {
+            // fatalError("Cannot execute queue with no lastVerifiedSnapshot!")
 //            assertionFailure("Cannot execute queue with no lastVerifiedSnapshot!")
 //            return
-        }
+        // }
         while let task = queue.next() {
             log.debug("Found next task")
             do {
@@ -104,13 +104,13 @@ public actor UnifiedUpdateQueue<Model: UnifiedModelProviding> {
                 case let .createsSnapshot(callback):
                     snapshot = try await callback()
                 case let .modifiesSnapshot(callback):
-                    snapshot = try await callback(lastVerifiedSnapshot)
+                    snapshot = try await callback(lastVerifiedSnapshot!)
                 }
                 
                 // in case the function returned a lower tier snapshot than currently available, merge lastVerifiedSnapshot into the returned
                 // snapshot. This operation prefers the returned snapshot, so if it is of equal or higher tier than lastVerifiedSnapshot,
                 // it overrides it entirely
-                let newSnapshot = Model.Properties.merge(snapshot, into: lastVerifiedSnapshot) // snapshot.merge(with: lastVerifiedSnapshot)
+                let newSnapshot = Model.Properties.merge(snapshot, into: lastVerifiedSnapshot!) // snapshot.merge(with: lastVerifiedSnapshot)
                 self.lastVerifiedSnapshot = newSnapshot
                 lastVerifiedSnapshot = newSnapshot // also need to update scoped lastVerifiedSnapshot so updateParent gets the correct value\
             } catch {
@@ -120,10 +120,11 @@ public actor UnifiedUpdateQueue<Model: UnifiedModelProviding> {
         }
         
         let tmpPar = parent
+        let shot = lastVerifiedSnapshot!
         await Task { @MainActor in
-            tmpPar.properties.update(with: lastVerifiedSnapshot)
+            tmpPar.properties.update(with: shot)
         }.value
-        return lastVerifiedSnapshot
+        return lastVerifiedSnapshot!
         // await updateParent(parent, with: lastVerifiedSnapshot)
     }
     
