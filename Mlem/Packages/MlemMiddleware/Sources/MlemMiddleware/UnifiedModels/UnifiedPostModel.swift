@@ -55,7 +55,6 @@ public struct PostProperties: UnifiedPropertiesProviding {
         }
         
         if let snapshot3 = snapshot as? Post3Snapshot {
-            Logger.dev.info("Got snapshot3")
             self.id = snapshot3.post.post.id
             self.title = snapshot3.post.post.title
             self.linkUrl = snapshot3.post.post.linkUrl
@@ -131,10 +130,7 @@ public class UnifiedPostModel: UnifiedModelProviding {
         
         // do work
         await updateQueue.addItem {
-            try await Task.sleep(for: .seconds(2))
-            
-            let response = try await self.api.repository.voteOnPost(id: existingId, score: existingVotes.myVote == .upvote ? .none : .upvote)
-            return response
+            try await self.api.repository.voteOnPost(id: existingId, score: existingVotes.myVote == .upvote ? .none : .upvote)
         }
     }
     
@@ -144,8 +140,6 @@ public class UnifiedPostModel: UnifiedModelProviding {
     
     @discardableResult
     public func fetchUpgraded() async throws -> any PostSnapshotProviding {
-        Logger.dev.info("Upgrading...")
-        
         var id: Int
         if let existingId = properties.id {
             id = existingId

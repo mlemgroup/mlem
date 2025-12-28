@@ -66,10 +66,10 @@ public actor UnifiedUpdateQueue<Model: UnifiedModelProviding> {
     
     /// Attempts to update the post with the given snapshot. If any tasks are queued, no action will be taken.
     /// This method should be called when new snapshots are received by actions in a foreign object's queue or by headless calls
-//    func attemptDirectUpdate(with snapshot: any PostSnapshotProviding) async {
-//        guard queue.numItems == 0, let parent else { return }
-//        await updateParent(parent, with: snapshot)
-//    }
+    func attemptDirectUpdate(with snapshot: Model.Properties.Snapshot) async {
+        guard queue.numItems == 0 else { return }
+        await updateParent(parent, with: snapshot)
+    }
     
     private func addItem(_ item: UpdateTask) {
         queue.enqueue(item)
@@ -115,7 +115,7 @@ public actor UnifiedUpdateQueue<Model: UnifiedModelProviding> {
                 // it overrides it entirely
                 let newSnapshot: Model.Properties.Snapshot
                 if let lastVerifiedSnapshot {
-                    newSnapshot = Model.Properties.merge(snapshot, into: lastVerifiedSnapshot) // snapshot.merge(with: lastVerifiedSnapshot)
+                    newSnapshot = Model.Properties.merge(snapshot, into: lastVerifiedSnapshot)
                 } else {
                     newSnapshot = snapshot
                 }
@@ -136,6 +136,7 @@ public actor UnifiedUpdateQueue<Model: UnifiedModelProviding> {
     
     @MainActor
     private func updateParent(_ parent: Model, with snapshot: Model.Properties.Snapshot) {
+         // parent must be passed in rather than accessed directly due to actor access constraints
         parent.properties.update(with: snapshot)
     }
     
