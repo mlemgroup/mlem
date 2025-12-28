@@ -10,7 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct BlockAction: Actions.Action {
-    enum Relationship { case identity, commentAuthor }
+    enum Relationship { case identity, author }
 
     let entity: any Person1Providing
     let relationship: Relationship
@@ -31,10 +31,11 @@ extension ActionSeed {
 
     static let blockCreator = ActionSeed(
         "blockCreator",
-        label: BlockAction.createLabel(relationship: .commentAuthor, mode: .block)
+        label: BlockAction.createLabel(relationship: .author, mode: .block)
     ) { entity in
         switch entity {
-        case let entity as any Comment2Providing: BlockAction(entity: entity.creator, relationship: .commentAuthor)
+        case let entity as any Comment2Providing: BlockAction(entity: entity.creator, relationship: .author)
+        case let entity as any Post2Providing: BlockAction(entity: entity.creator, relationship: .author)
         default: nil
         }
     }
@@ -49,8 +50,8 @@ extension BlockAction {
         let label: LocalizedStringResource = switch (relationship, mode) {
         case (.identity, .block): "Block"
         case (.identity, .unblock): "Unblock"
-        case (.commentAuthor, .block): "Block User"
-        case (.commentAuthor, .unblock): "Unblock User"
+        case (.author, .block): "Block User"
+        case (.author, .unblock): "Unblock User"
         }
 
         return switch mode {
