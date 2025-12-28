@@ -71,24 +71,6 @@ public actor UnifiedUpdateQueue<Model: UnifiedModelProviding> {
 //        await updateParent(parent, with: snapshot)
 //    }
     
-    /// Queues the given upgrade operation for execution
-    /// - Returns: post returned by the upgrade operation
-    /// - Warning: this method assumes that the given operation will update this queue's parent (this generally happens in the parent's initializer)
-//    func addUpgrade(task: @escaping () async throws -> (Post3Snapshot, Post3)) async throws -> any Post {
-//        // this method is a unique case because the context it is called from needs to receive its result. This method therefore waits
-//        // for any currently queued actions to finish, then blocks the queue from restarting until the upgrade is complete.
-//        await semaphore.wait()
-//        defer {
-//            semaphore.signal()
-//            log.debug("Upgrade complete")
-//        }
-//        log.info("Beginning upgrade")
-//        
-//        let (snapshot, post) = try await task()
-//        lastVerifiedSnapshot = snapshot
-//        return post
-//    }
-    
     private func addItem(_ item: UpdateTask) {
         queue.enqueue(item)
         if queue.numItems == 1 {
@@ -145,21 +127,16 @@ public actor UnifiedUpdateQueue<Model: UnifiedModelProviding> {
             queue.dequeue()
         }
         
-        let tmpPar = parent
         if let lastVerifiedSnapshot {
-            Logger.dev.info("Found lastVerifiedSnapshot")
-            await Task { @MainActor in
-                tmpPar.properties.update(with: lastVerifiedSnapshot)
-            }.value
+            await updateParent(parent, with: lastVerifiedSnapshot)
         } else {
             Logger.dev.info("No lastVerifiedSnapshot")
         }
-        // await updateParent(parent, with: lastVerifiedSnapshot)
     }
     
-    private func updateParent(_ parent: any Post1Providing, with snapshot: any PostSnapshotProviding) async {
-        log.debug("Updating parent")
-        await parent.snapshotUpdate(with: snapshot)
+    @MainActor
+    private func updateParent(_ parent: Model, with snapshot: Model.Properties.Snapshot) {
+        parent.properties.update(with: snapshot)
     }
     
     enum UpdateTask {
