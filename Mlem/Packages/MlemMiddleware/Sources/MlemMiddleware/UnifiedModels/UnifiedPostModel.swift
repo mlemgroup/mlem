@@ -69,7 +69,7 @@ public struct PostProperties: UnifiedPropertiesProviding {
     var read: Bool?
     var hidden: Bool?
     
-    // TODO: crossposts and post/community (what do???)
+    // TODO: crossposts and post/community (needs caching)
     
     @MainActor
     public mutating func update(with snapshot: any PostSnapshotProviding) {
@@ -171,16 +171,91 @@ public class UnifiedPostModel: UnifiedModelProviding {
     }
     
     @ObservationIgnored
+    public lazy var actorId: ExpectedValue<ActorIdentifier> = expectedValue(\.actorId)
+    
+    @ObservationIgnored
     public lazy var id: ExpectedValue<Int> = expectedValue(\.id)
 
     @ObservationIgnored
-    public lazy var title: ExpectedValue<String> = expectedValue(\.title)
-  
+    public lazy var creatorId: ExpectedValue<Int> = expectedValue(\.creatorId)
+
     @ObservationIgnored
-    public lazy var votes: ExpectedValue<VotesModel> = expectedValue(\.votes)
-    
+    public lazy var communityId: ExpectedValue<Int> = expectedValue(\.communityId)
+
+    @ObservationIgnored
+    public lazy var created: ExpectedValue<Date> = expectedValue(\.created)
+
+    @ObservationIgnored
+    public lazy var title: ExpectedValue<String> = expectedValue(\.title)
+
+    @ObservationIgnored
+    public lazy var content: ExpectedValue<String?> = expectedValue(\.content)
+
     @ObservationIgnored
     public lazy var linkUrl: ExpectedValue<URL?> = expectedValue(\.linkUrl)
+
+    @ObservationIgnored
+    public lazy var embed: ExpectedValue<PostEmbed?> = expectedValue(\.embed)
+
+    @ObservationIgnored
+    public lazy var nsfw: ExpectedValue<Bool> = expectedValue(\.nsfw)
+
+    @ObservationIgnored
+    public lazy var thumbnailUrl: ExpectedValue<URL?> = expectedValue(\.thumbnailUrl)
+
+    @ObservationIgnored
+    public lazy var updated: ExpectedValue<Date?> = expectedValue(\.updated)
+
+    @ObservationIgnored
+    public lazy var languageId: ExpectedValue<Int> = expectedValue(\.languageId)
+
+    @ObservationIgnored
+    public lazy var altText: ExpectedValue<String?> = expectedValue(\.altText)
+
+    @ObservationIgnored
+    public lazy var deleted: ExpectedValue<Bool> = expectedValue(\.deleted)
+
+    @ObservationIgnored
+    public lazy var removed: ExpectedValue<Bool> = expectedValue(\.removed)
+
+    @ObservationIgnored
+    public lazy var pinnedCommunity: ExpectedValue<Bool> = expectedValue(\.pinnedCommunity)
+
+    @ObservationIgnored
+    public lazy var pinnedInstance: ExpectedValue<Bool> = expectedValue(\.pinnedInstance)
+
+    @ObservationIgnored
+    public lazy var locked: ExpectedValue<Bool> = expectedValue(\.locked)
+
+    @ObservationIgnored
+    public lazy var commentCount: ExpectedValue<Int> = expectedValue(\.commentCount)
+
+    @ObservationIgnored
+    public lazy var unreadCommentCount: ExpectedValue<Int> = expectedValue(\.unreadCommentCount)
+
+    @ObservationIgnored
+    public lazy var creatorIsModerator: ExpectedValue<Bool> = expectedValue(\.creatorIsModerator)
+
+    @ObservationIgnored
+    public lazy var creatorIsAdmin: ExpectedValue<Bool> = expectedValue(\.creatorIsAdmin)
+
+    @ObservationIgnored
+    public lazy var creatorBannedFromCommunity: ExpectedValue<Bool> = expectedValue(\.creatorBannedFromCommunity)
+
+    @ObservationIgnored
+    public lazy var creatorBlocked: ExpectedValue<Bool> = expectedValue(\.creatorBlocked)
+
+    @ObservationIgnored
+    public lazy var votes: ExpectedValue<VotesModel> = expectedValue(\.votes)
+
+    @ObservationIgnored
+    public lazy var saved: ExpectedValue<Bool> = expectedValue(\.saved)
+
+    @ObservationIgnored
+    public lazy var read: ExpectedValue<Bool> = expectedValue(\.read)
+
+    @ObservationIgnored
+    public lazy var hidden: ExpectedValue<Bool> = expectedValue(\.hidden)
 
     public var vote: (() async throws -> Void)? {
         if let votes = votes.value, let id = id.value {
