@@ -36,30 +36,95 @@ public class ExpectedValue<T> {
 public struct PostProperties: UnifiedPropertiesProviding {
     public typealias Snapshot = PostSnapshotProviding
     
+    // From Post1Snapshot
+    var actorId: ActorIdentifier?
     var id: Int?
+    var creatorId: Int?
+    var communityId: Int?
+    var created: Date?
     var title: String?
-    var votes: VotesModel?
+    var content: String??
     var linkUrl: URL??
+    var embed: PostEmbed??
+    var nsfw: Bool?
+    var thumbnailUrl: URL??
+    var updated: Date??
+    var languageId: Int?
+    var altText: String??
+    var deleted: Bool?
+    var removed: Bool?
+    var pinnedCommunity: Bool?
+    var pinnedInstance: Bool?
+    var locked: Bool?
+    
+    // From Post2Snapshot
+    var commentCount: Int?
+    var unreadCommentCount: Int?
+    var creatorIsModerator: Bool?
+    var creatorIsAdmin: Bool?
+    var creatorBannedFromCommunity: Bool?
+    var creatorBlocked: Bool?
+    var votes: VotesModel?
+    var saved: Bool?
+    var read: Bool?
+    var hidden: Bool?
+    
+    // TODO: crossposts and post/community (what do???)
     
     @MainActor
     public mutating func update(with snapshot: any PostSnapshotProviding) {
-        Logger.dev.info("Updating...")
-        if let snapshot1 = snapshot as? Post1Snapshot {
-            Logger.dev.info("Got title \(snapshot1.title)")
-            self.id = snapshot1.id
-            self.title = snapshot1.title
-            self.linkUrl = snapshot1.linkUrl
-        }
-        if let snapshot2 = snapshot as? Post2Snapshot {
-            self.votes = snapshot2.votes
-        }
-        
         if let snapshot3 = snapshot as? Post3Snapshot {
-            self.id = snapshot3.post.post.id
-            self.title = snapshot3.post.post.title
-            self.linkUrl = snapshot3.post.post.linkUrl
-            self.votes = snapshot3.post.votes
+            snapshot3Update(with: snapshot3)
+        } else if let snapshot2 = snapshot as? Post2Snapshot {
+            snapshot2Update(with: snapshot2)
+        } else if let snapshot1 = snapshot as? Post1Snapshot {
+            snapshot1Update(with: snapshot1)
+        } else {
+            assertionFailure("Unrecognized post snapshot")
         }
+    }
+    
+    private mutating func snapshot1Update(with snapshot: Post1Snapshot) {
+        actorId = snapshot.actorId
+        id = snapshot.id
+        creatorId = snapshot.creatorId
+        communityId = snapshot.communityId
+        created = snapshot.created
+        title = snapshot.title
+        content = snapshot.content
+        linkUrl = snapshot.linkUrl
+        embed = snapshot.embed
+        nsfw = snapshot.nsfw
+        thumbnailUrl = snapshot.thumbnailUrl
+        updated = snapshot.updated
+        languageId = snapshot.languageId
+        altText = snapshot.altText
+        deleted = snapshot.deleted
+        removed = snapshot.removed
+        pinnedCommunity = snapshot.pinnedCommunity
+        pinnedInstance = snapshot.pinnedInstance
+        locked = snapshot.locked
+    }
+    
+    private mutating func snapshot2Update(with snapshot: Post2Snapshot) {
+        commentCount = snapshot.commentCount
+        unreadCommentCount = snapshot.unreadCommentCount
+        creatorIsModerator = snapshot.creatorIsModerator
+        creatorIsAdmin = snapshot.creatorIsAdmin
+        creatorBannedFromCommunity = snapshot.creatorBannedFromCommunity
+        creatorBlocked = snapshot.creatorBlocked
+        votes = snapshot.votes
+        saved = snapshot.saved
+        read = snapshot.read
+        hidden = snapshot.hidden
+        
+        snapshot1Update(with: snapshot.post)
+    }
+    
+    private mutating func snapshot3Update(with snapshot: Post3Snapshot) {
+        // TODO: assign properties
+        
+        snapshot2Update(with: snapshot.post)
     }
     
     public static func merge(_ snapshot: any PostSnapshotProviding, into target: any PostSnapshotProviding) -> PostSnapshotProviding {
@@ -150,3 +215,4 @@ public class UnifiedPostModel: UnifiedModelProviding {
         return try await api.repository.getPost(id: id)
     }
 }
+
