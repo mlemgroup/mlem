@@ -220,7 +220,24 @@ public extension PieFedConnection {
             defaultCommentSortType: nil,
             defaultSortType: nil,
             showNsfl: nil,
-            extraFields: nil
+            extraFields: nil,
+            acceptPrivateMessages: nil,
+            bot: nil,
+            botVisibility: nil,
+            communityKeywordFilter: nil,
+            emailUnread: nil,
+            federateVotes: nil,
+            feedAutoFollow: nil,
+            feedAutoLeave: nil,
+            hideLowQuality: nil,
+            indexable: nil,
+            newsletter: nil,
+            nsflVisibility: nil,
+            nsfwVisibility: nil,
+            genaiVisibility: nil,
+            replyCollapseThreshold: nil,
+            replyHideThreshold: nil,
+            searchable: nil
         )
         try await perform(request)
     }
