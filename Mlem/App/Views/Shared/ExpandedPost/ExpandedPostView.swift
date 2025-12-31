@@ -203,14 +203,7 @@ struct ExpandedPostView<Content: View>: View {
             ProgressView()
         } else {
             ToolbarEllipsisMenu {
-                MenuButtons {
-                    post.allMenuActions(
-                        appState: appState,
-                        expanded: true,
-                        navigation: navigation,
-                        commentTreeTracker: tracker
-                    )
-                }
+                PostEllipsisMenuContent(post: post, type: [.basic, .moderator])
                 if !tapPostsToCollapse {
                     Section {
                         Button(

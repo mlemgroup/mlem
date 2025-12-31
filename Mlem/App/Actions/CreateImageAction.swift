@@ -34,6 +34,14 @@ extension ActionSeed {
 
 extension CreateImageAction {
     static let label: ActionLabel = .init("Create Image", icon: .general.createImage)
+
+    func createLabel(environment: EnvironmentValues) -> ActionLabel {
+        Self.label.withVisibility(visibility(environment))
+    }
+
+    private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {
+        environment.feedContext == .post ? .enabled : .hidden
+    }
 }
 
 // MARK: - Behavior
