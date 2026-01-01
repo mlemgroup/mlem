@@ -12,10 +12,23 @@ import SwiftUI
 struct BlockAction: Actions.Action {
     enum Relationship { case direct, indirect }
 
-    enum ContentType { case personOnly, communityOnly, multi }
+    enum ContentType {
+        case personOnly, communityOnly, multi, other
+    }
 
     let content: [any Blockable]
     let relationship: Relationship
+
+    var availableContent: [any Blockable] {
+        content.filter { entity in
+            if let entity = entity as? any Person {
+                guard let myPersonId = entity.api.myPerson?.id else { return true }
+                return entity.id != myPersonId 
+            } else {
+                return true
+            }
+        }
+    }
 }
 
 private extension [any Blockable] {
@@ -24,14 +37,13 @@ private extension [any Blockable] {
             return .multi
         }
         guard let first = self.first else {
-            assertionFailure()
-            return .multi
+            return .other
         } 
 
         return switch first {
         case is any Person: .personOnly
         case is any Community: .communityOnly
-        default: .multi
+        default: .other
         }
     }
 }
@@ -72,6 +84,7 @@ extension ActionSeed {
 extension BlockAction {
     enum Mode { case block, unblock }
 
+    // swiftlint:disable:next cyclomatic_complexity
     static func createLabel(relationship: Relationship, mode: Mode, contentType: ContentType) -> ActionLabel {
         let label: LocalizedStringResource = switch (relationship, mode, contentType) {
         case (.direct, .block, _): "Block"
@@ -82,6 +95,7 @@ extension BlockAction {
         case (.indirect, .unblock, .communityOnly): "Unblock Community"
         case (.indirect, .block, .multi): "Block..."
         case (.indirect, .unblock, .multi): "Unblock..."
+        case (_, _, .other): "Block..."
         }
 
         return switch mode {
@@ -103,7 +117,7 @@ extension BlockAction {
         Self.createLabel(
             relationship: self.relationship,
             mode: content.first!.blocked ? .unblock : .block,
-            contentType: content.contentType
+            contentType: availableContent.contentType
         ).withVisibility(visibility(environment))
     }
 
@@ -130,12 +144,12 @@ extension BlockAction {
 extension BlockAction {
     @MainActor
     func execute(environment: EnvironmentValues) {
-        if content.count > 1 {
+        if availableContent.count > 1 {
             executeMulti(environment: environment)
             return
         }
 
-        guard let first = content.first else {
+        guard let first = availableContent.first else {
             assertionFailure()
             return
         }
