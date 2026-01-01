@@ -20,7 +20,7 @@ public extension Post2Snapshot {
             creator: .init(from: post.creator),
             community: .init(from: post.community),
             commentCount: post.counts.comments,
-            unreadCommentCount: 0,
+            unreadCommentCount: post.unreadComments,
             creatorIsModerator: post.creatorIsModerator,
             creatorIsAdmin: post.creatorIsAdmin,
             creatorBannedFromCommunity: post.creatorBannedFromCommunity,
