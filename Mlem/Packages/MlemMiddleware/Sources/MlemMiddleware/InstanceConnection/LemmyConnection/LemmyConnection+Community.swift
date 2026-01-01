@@ -116,7 +116,12 @@ public extension LemmyConnection {
         let response = try await performingForEndpoint { endpoint in
             LemmyUserBlockCommunityRequest(endpoint: endpoint, communityId: id, block: block)
         }
-        return try .init(from: response.communityView)
+        switch response {
+        case let .lemmyBlockCommunityResponse(response):
+            return try .init(from: response.communityView)
+        case let .lemmyCommunityResponse(response):
+            return try .init(from: response.communityView)
+        }
     }
     
     @discardableResult
