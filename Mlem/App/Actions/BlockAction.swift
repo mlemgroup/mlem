@@ -43,12 +43,14 @@ struct BlockAction: Actions.Action {
 
     let content: Set<Content>
     let relationship: Relationship
+}
 
-    var contentType: ContentType {
-        if content.count > 1 {
+extension Set<BlockAction.Content> {
+    var contentType: BlockAction.ContentType {
+        if self.count > 1 {
             return .multi
         }
-        guard let first = content.first else {
+        guard let first = self.first else {
             assertionFailure()
             return .multi
         } 
@@ -127,7 +129,7 @@ extension BlockAction {
         Self.createLabel(
             relationship: self.relationship,
             mode: content.first!.entity.blocked ? .unblock : .block,
-            contentType: contentType
+            contentType: content.contentType
         ).withVisibility(visibility(environment))
     }
 
