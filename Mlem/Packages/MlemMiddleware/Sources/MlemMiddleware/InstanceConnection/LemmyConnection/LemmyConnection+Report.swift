@@ -10,7 +10,12 @@ import Foundation
 public extension LemmyConnection {
     func getReportCount(communityId: Int? = nil) async throws -> ReportUnreadCountSnapshot {
         let response = try await performingForEndpoint { endpoint in
-            LemmyReportCountRequest(endpoint: endpoint, communityId: communityId)
+            switch endpoint {
+            case .v3:
+                LemmyReportCountRequest(communityId: communityId)
+            case .v4:
+                throw ApiClientError.featureUnsupported
+            }
         }
         return try .init(from: response)
     }
