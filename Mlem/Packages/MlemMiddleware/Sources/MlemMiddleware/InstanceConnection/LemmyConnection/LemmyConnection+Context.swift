@@ -18,7 +18,7 @@ extension LemmyConnection {
             switch endpoint {
             case .v3:
                 async let site = await self.perform(LemmyGetSiteRequest(endpoint: .v3), endpoint: .v3)
-                async let other = await self.perform(LemmyUnreadCountRequest(endpoint: .v3), endpoint: .v3)
+                async let other = await self.perform(LemmyUnreadCountRequest(), endpoint: .v3)
                 do {
                     _ = try await other
                 } catch ApiClientError.notLoggedIn {

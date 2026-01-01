@@ -167,7 +167,7 @@ public extension LemmyConnection {
     
     func getPersonalUnreadCount() async throws -> PersonalUnreadCountSnapshot {
         let response = try await performingForEndpoint { endpoint in
-            LemmyUnreadCountRequest(endpoint: endpoint)
+            LemmyUnreadCountRequest()
         }
         return try .init(from: response)
     }
