@@ -11,6 +11,7 @@ public protocol Community1Providing:
     CommunityStubProviding,
     Profile2Providing,
     CommunityOrPerson,
+    Blockable,
     ContentIdentifiable,
     RemovableProviding,
     PurgableProviding,
