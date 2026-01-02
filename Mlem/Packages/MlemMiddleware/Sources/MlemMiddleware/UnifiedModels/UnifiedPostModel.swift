@@ -116,7 +116,7 @@ public struct PostProperties: UnifiedPropertiesProviding {
         let snapshot1: Post1Snapshot?
         
         if let snapshot3 = snapshot as? Post3Snapshot {
-            // TODO: add snapshot3 properties (needed? might need to be explicitly passed)
+            // Post3Snapshot-specific properties all must be explicitly passed in
             snapshot2 = snapshot3.post
         } else {
             snapshot2 = snapshot as? Post2Snapshot
@@ -314,7 +314,7 @@ public class UnifiedPostModel: UnifiedModelProviding {
         let creator = await api.caches.person1.getModel(api: api, from: snapshot.post.creator)
         let community = await api.caches.community1.getModel(api: api, from: snapshot.post.community)
         
-        // TODO: repository provides properties
+        // TODO: repository provides properties?
         return .init(snapshot: snapshot, creator: creator, community: community)
     }
 }
