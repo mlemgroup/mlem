@@ -70,81 +70,104 @@ public struct PostProperties: UnifiedPropertiesProviding {
     var hidden: Bool?
     
     // TODO: crossposts and post/community (needs caching)
-    
+
     @MainActor
-    public mutating func update(with snapshot: any PostSnapshotProviding) {
+    public mutating func update(with properties: Self) {
+        actorId = properties.actorId ?? actorId
+        id = properties.id ?? id
+        creatorId = properties.creatorId ?? creatorId
+        communityId = properties.communityId ?? communityId
+        created = properties.created ?? created
+        title = properties.title ?? title
+        content = properties.content ?? content
+        linkUrl = properties.linkUrl ?? linkUrl
+        embed = properties.embed ?? embed
+        nsfw = properties.nsfw ?? nsfw
+        thumbnailUrl = properties.thumbnailUrl ?? thumbnailUrl
+        updated = properties.updated ?? updated
+        languageId = properties.languageId ?? languageId
+        altText = properties.altText ?? altText
+        deleted = properties.deleted ?? deleted
+        removed = properties.removed ?? removed
+        pinnedCommunity = properties.pinnedCommunity ?? pinnedCommunity
+        pinnedInstance = properties.pinnedInstance ?? pinnedInstance
+        locked = properties.locked ?? locked
+
+        commentCount = properties.commentCount ?? commentCount
+        unreadCommentCount = properties.unreadCommentCount ?? unreadCommentCount
+        creatorIsModerator = properties.creatorIsModerator ?? creatorIsModerator
+        creatorIsAdmin = properties.creatorIsAdmin ?? creatorIsAdmin
+        creatorBannedFromCommunity = properties.creatorBannedFromCommunity ?? creatorBannedFromCommunity
+        creatorBlocked = properties.creatorBlocked ?? creatorBlocked
+        votes = properties.votes ?? votes
+        saved = properties.saved ?? saved
+        read = properties.read ?? read
+        hidden = properties.hidden ?? hidden
+    }
+    
+    public init() {}
+    
+    public init(snapshot: any PostSnapshotProviding) {
+        let snapshot2: Post2Snapshot?
+        let snapshot1: Post1Snapshot?
+        
         if let snapshot3 = snapshot as? Post3Snapshot {
-            snapshot3Update(with: snapshot3)
-        } else if let snapshot2 = snapshot as? Post2Snapshot {
-            snapshot2Update(with: snapshot2)
-        } else if let snapshot1 = snapshot as? Post1Snapshot {
-            snapshot1Update(with: snapshot1)
+            // TODO: add snapshot3 properties (needed? might need to be explicitly passed)
+            snapshot2 = snapshot3.post
         } else {
-            assertionFailure("Unrecognized post snapshot")
+            snapshot2 = snapshot as? Post2Snapshot
         }
-    }
-    
-    private mutating func snapshot1Update(with snapshot: Post1Snapshot) {
-        actorId = snapshot.actorId
-        id = snapshot.id
-        creatorId = snapshot.creatorId
-        communityId = snapshot.communityId
-        created = snapshot.created
-        title = snapshot.title
-        content = snapshot.content
-        linkUrl = snapshot.linkUrl
-        embed = snapshot.embed
-        nsfw = snapshot.nsfw
-        thumbnailUrl = snapshot.thumbnailUrl
-        updated = snapshot.updated
-        languageId = snapshot.languageId
-        altText = snapshot.altText
-        deleted = snapshot.deleted
-        removed = snapshot.removed
-        pinnedCommunity = snapshot.pinnedCommunity
-        pinnedInstance = snapshot.pinnedInstance
-        locked = snapshot.locked
-    }
-    
-    private mutating func snapshot2Update(with snapshot: Post2Snapshot) {
-        commentCount = snapshot.commentCount
-        unreadCommentCount = snapshot.unreadCommentCount
-        creatorIsModerator = snapshot.creatorIsModerator
-        creatorIsAdmin = snapshot.creatorIsAdmin
-        creatorBannedFromCommunity = snapshot.creatorBannedFromCommunity
-        creatorBlocked = snapshot.creatorBlocked
-        votes = snapshot.votes
-        saved = snapshot.saved
-        read = snapshot.read
-        hidden = snapshot.hidden
         
-        snapshot1Update(with: snapshot.post)
-    }
-    
-    private mutating func snapshot3Update(with snapshot: Post3Snapshot) {
-        // TODO: assign properties
+        if let snapshot2 {
+            snapshot1 = snapshot2.post
+            
+            commentCount = snapshot2.commentCount
+            unreadCommentCount = snapshot2.unreadCommentCount
+            creatorIsModerator = snapshot2.creatorIsModerator
+            creatorIsAdmin = snapshot2.creatorIsAdmin
+            creatorBannedFromCommunity = snapshot2.creatorBannedFromCommunity
+            creatorBlocked = snapshot2.creatorBlocked
+            votes = snapshot2.votes
+            saved = snapshot2.saved
+            read = snapshot2.read
+            hidden = snapshot2.hidden
+        } else {
+            snapshot1 = snapshot as? Post1Snapshot
+        }
         
-        snapshot2Update(with: snapshot.post)
-    }
-    
-    public static func merge(_ snapshot: any PostSnapshotProviding, into target: any PostSnapshotProviding) -> PostSnapshotProviding {
-        snapshot.merge(with: target)
+        if let snapshot1 {
+            actorId = snapshot1.actorId
+            id = snapshot1.id
+            creatorId = snapshot1.creatorId
+            communityId = snapshot1.communityId
+            created = snapshot1.created
+            title = snapshot1.title
+            content = snapshot1.content
+            linkUrl = snapshot1.linkUrl
+            embed = snapshot1.embed
+            nsfw = snapshot1.nsfw
+            thumbnailUrl = snapshot1.thumbnailUrl
+            updated = snapshot1.updated
+            languageId = snapshot1.languageId
+            altText = snapshot1.altText
+            deleted = snapshot1.deleted
+            removed = snapshot1.removed
+            pinnedCommunity = snapshot1.pinnedCommunity
+            pinnedInstance = snapshot1.pinnedInstance
+            locked = snapshot1.locked
+        }
     }
 }
 
 public protocol UnifiedPropertiesProviding {
-    associatedtype Snapshot
-    
-    @MainActor mutating func update(with snapshot: Snapshot)
-    
-    static func merge(_ snapshot: Snapshot, into target: Snapshot) -> Snapshot
+    @MainActor mutating func update(with properties: Self)
 }
 
 public protocol UnifiedModelProviding: AnyObject {
     associatedtype Properties: UnifiedPropertiesProviding
     
     var properties: Properties { get set }
-    func fetchUpgraded() async throws -> Properties.Snapshot
+    func fetchUpgraded() async throws -> Properties
 }
 
 @Observable
@@ -256,8 +279,29 @@ public class UnifiedPostModel: UnifiedModelProviding {
 
     @ObservationIgnored
     public lazy var hidden: ExpectedValue<Bool> = expectedValue(\.hidden)
+    
+    internal func upgrade() async throws {
+        try await updateQueue.upgrade()
+    }
+    
+    @discardableResult
+    public func fetchUpgraded() async throws -> PostProperties {
+        var id: Int
+        if let existingId = properties.id {
+            id = existingId
+        } else {
+            id = try await api.repository.getPost(url: self.url).post.id
+        }
+        
+        // TODO: repository provides properties
+        return .init(snapshot: try await api.repository.getPost(id: id))
+    }
+}
 
-    public var vote: (() async throws -> Void)? {
+// MARK: - Interactions
+
+public extension UnifiedPostModel {
+    var vote: (() async throws -> Void)? {
         if let votes = votes.value, let id = id.value {
             return { try await self.vote(existingVotes: votes, existingId: id) }
         }
@@ -270,24 +314,8 @@ public class UnifiedPostModel: UnifiedModelProviding {
         
         // do work
         await updateQueue.addItem {
-            try await self.api.repository.voteOnPost(id: existingId, score: existingVotes.myVote == .upvote ? .none : .upvote)
+            .init(snapshot: try await self.api.repository.voteOnPost(id: existingId, score: existingVotes.myVote == .upvote ? .none : .upvote))
         }
-    }
-    
-    internal func upgrade() async throws {
-        try await updateQueue.upgrade()
-    }
-    
-    @discardableResult
-    public func fetchUpgraded() async throws -> any PostSnapshotProviding {
-        var id: Int
-        if let existingId = properties.id {
-            id = existingId
-        } else {
-            id = try await api.repository.getPost(url: self.url).post.id
-        }
-        
-        return try await api.repository.getPost(id: id)
     }
 }
 

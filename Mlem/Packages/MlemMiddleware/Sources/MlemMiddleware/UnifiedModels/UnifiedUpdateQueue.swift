@@ -26,7 +26,7 @@ public actor UnifiedUpdateQueue<Model: UnifiedModelProviding> {
     
     let parent: Model
     
-    private var lastVerifiedSnapshot: Model.Properties.Snapshot?
+    private var lastVerifiedProperties: Model.Properties
     private var upgradeQueued: Bool = false
     
     private var semaphore: AsyncSemaphore = .init(value: 1)
@@ -34,6 +34,7 @@ public actor UnifiedUpdateQueue<Model: UnifiedModelProviding> {
     
     init(parent: Model) {
         self.parent = parent
+        self.lastVerifiedProperties = parent.properties
     }
     
     func upgrade() async throws {
@@ -53,22 +54,22 @@ public actor UnifiedUpdateQueue<Model: UnifiedModelProviding> {
     
     /// Add a task to the queue for a repository call that returns a complete snapshot.
     /// - Note: prefer this method over the snapshot-modifying variant below
-    func addItem(item: @escaping () async throws -> Model.Properties.Snapshot) {
-        addItem(.createsSnapshot(item))
+    func addItem(item: @escaping () async throws -> Model.Properties) {
+        addItem(.createsProperties(item))
     }
     
     /// Add a task to the queue for a repository call that **does not** return a complete snapshot. The queue will provide the latest verified
     /// snapshot to the task, which should then modify and return the snapshot according to the repository call result.
     /// - Note: **only** use this method when absolutely necessary; if the repository returns a complete snapshot, use the variant above.
-    func addItem(item: @escaping (Model.Properties.Snapshot) async throws -> Model.Properties.Snapshot) {
-        addItem(.modifiesSnapshot(item))
+    func addItem(item: @escaping (Model.Properties) async throws -> Model.Properties) {
+        addItem(.modifiesProperties(item))
     }
     
     /// Attempts to update the post with the given snapshot. If any tasks are queued, no action will be taken.
     /// This method should be called when new snapshots are received by actions in a foreign object's queue or by headless calls
-    func attemptDirectUpdate(with snapshot: Model.Properties.Snapshot) async {
+    func attemptDirectUpdate(with properties: Model.Properties) async {
         guard queue.numItems == 0 else { return }
-        await updateParent(parent, with: snapshot)
+        await updateParent(parent, with: properties)
     }
     
     private func addItem(_ item: UpdateTask) {
@@ -88,60 +89,35 @@ public actor UnifiedUpdateQueue<Model: UnifiedModelProviding> {
         }
         log.info("Executing queue")
         
-        // TODO: get from cache
-        // this shouldn't be possible, since lastVerifiedSnapshot is set when the parent is set
-//         guard var lastVerifiedSnapshot else {
-//            assertionFailure("Cannot execute queue with no lastVerifiedSnapshot!")
-//            return
-//         }
-        var lastVerifiedSnapshot: Model.Properties.Snapshot? = lastVerifiedSnapshot
         while let task = queue.next() {
             log.debug("Found next task")
             do {
-                let snapshot: Model.Properties.Snapshot
+                let newProperties: Model.Properties
                 switch task {
-                case let .createsSnapshot(callback):
-                    snapshot = try await callback()
-                case let .modifiesSnapshot(callback):
-                    guard let lastVerifiedSnapshot else {
-                        assertionFailure("Cannot execute .modifiesSnapshot with no lastVerifiedSnapshot!")
-                        return
-                    }
-                    snapshot = try await callback(lastVerifiedSnapshot)
+                case let .createsProperties(callback):
+                    newProperties = try await callback()
+                case let .modifiesProperties(callback):
+                    newProperties = try await callback(lastVerifiedProperties)
                 }
                 
-                // in case the function returned a lower tier snapshot than currently available, merge lastVerifiedSnapshot into the returned
-                // snapshot. This operation prefers the returned snapshot, so if it is of equal or higher tier than lastVerifiedSnapshot,
-                // it overrides it entirely
-                let newSnapshot: Model.Properties.Snapshot
-                if let lastVerifiedSnapshot {
-                    newSnapshot = Model.Properties.merge(snapshot, into: lastVerifiedSnapshot)
-                } else {
-                    newSnapshot = snapshot
-                }
-                self.lastVerifiedSnapshot = newSnapshot
-                lastVerifiedSnapshot = newSnapshot // also need to update scoped lastVerifiedSnapshot so updateParent gets the correct value
+                self.lastVerifiedProperties = newProperties
             } catch {
                 log.error("\(error.localizedDescription)")
             }
             queue.dequeue()
         }
         
-        if let lastVerifiedSnapshot {
-            await updateParent(parent, with: lastVerifiedSnapshot)
-        } else {
-            Logger.dev.info("No lastVerifiedSnapshot")
-        }
+        await updateParent(parent, with: lastVerifiedProperties)
     }
     
     @MainActor
-    private func updateParent(_ parent: Model, with snapshot: Model.Properties.Snapshot) {
+    private func updateParent(_ parent: Model, with properties: Model.Properties) {
          // parent must be passed in rather than accessed directly due to actor access constraints
-        parent.properties.update(with: snapshot)
+        parent.properties.update(with: properties)
     }
     
     enum UpdateTask {
-        case createsSnapshot(() async throws -> Model.Properties.Snapshot)
-        case modifiesSnapshot((Model.Properties.Snapshot) async throws -> Model.Properties.Snapshot)
+        case createsProperties(() async throws -> Model.Properties)
+        case modifiesProperties((Model.Properties) async throws -> Model.Properties)
     }
 }
