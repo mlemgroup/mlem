@@ -8,12 +8,12 @@
 import SwiftUI
 import MlemMiddleware
 
-struct ExpectedView<Value, Content: View>: View {
+struct ExpectedView<Value, Content: View, Placeholder: View>: View {
     let value: ExpectedValue<Value>
     @ViewBuilder let view: (Value) -> Content
-    @ViewBuilder let placeholder: (() -> Content)?
+    @ViewBuilder let placeholder: (() -> Placeholder)
     
-    init(_ value: ExpectedValue<Value>, view: @escaping (Value) -> Content, placeholder: (() -> Content)? = nil) {
+    init(_ value: ExpectedValue<Value>, view: @escaping (Value) -> Content, placeholder: @escaping (() -> Placeholder) = { EmptyView() }) {
         self.value = value
         self.view = view
         self.placeholder = placeholder
@@ -24,9 +24,8 @@ struct ExpectedView<Value, Content: View>: View {
             if let value = value.value {
                 view(value)
                     .transition(.scale)
-            } else if let placeholder {
+            } else {
                 placeholder()
-                    .transition(.opacity)
             }
         }
         .animation(.interactiveSpring, value: value.value == nil)

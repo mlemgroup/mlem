@@ -25,6 +25,13 @@ struct DevPostView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
+                ExpectedView(post.community) { community in
+                    FullyQualifiedLinkView(community, labelStyle: .large)
+                } placeholder: {
+                    Text("placeholder@placeholder")
+                        .redacted(reason: .placeholder)
+                }
+                
                 ExpectedText(post.title)
                     .font(.headline)
                 ExpectedMedia(url: post.linkUrl)

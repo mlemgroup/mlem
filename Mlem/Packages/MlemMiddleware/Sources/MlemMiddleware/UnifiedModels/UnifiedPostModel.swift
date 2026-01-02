@@ -58,6 +58,8 @@ public struct PostProperties: UnifiedPropertiesProviding {
     var locked: Bool?
     
     // From Post2Snapshot
+    var creator: (any Person)?
+    var community: (any Community)?
     var commentCount: Int?
     var unreadCommentCount: Int?
     var creatorIsModerator: Bool?
@@ -69,8 +71,6 @@ public struct PostProperties: UnifiedPropertiesProviding {
     var read: Bool?
     var hidden: Bool?
     
-    // TODO: crossposts and post/community (needs caching)
-
     @MainActor
     public mutating func update(with properties: Self) {
         actorId = properties.actorId ?? actorId
@@ -93,6 +93,8 @@ public struct PostProperties: UnifiedPropertiesProviding {
         pinnedInstance = properties.pinnedInstance ?? pinnedInstance
         locked = properties.locked ?? locked
 
+        creator = properties.creator ?? creator
+        community = properties.community ?? community
         commentCount = properties.commentCount ?? commentCount
         unreadCommentCount = properties.unreadCommentCount ?? unreadCommentCount
         creatorIsModerator = properties.creatorIsModerator ?? creatorIsModerator
@@ -105,8 +107,10 @@ public struct PostProperties: UnifiedPropertiesProviding {
         hidden = properties.hidden ?? hidden
     }
     
+    /// Constructs an empty PostProperties
     public init() {}
     
+    /// Constructs a PostProperties from a given snapshot
     public init(snapshot: any PostSnapshotProviding) {
         let snapshot2: Post2Snapshot?
         let snapshot1: Post1Snapshot?
@@ -156,6 +160,13 @@ public struct PostProperties: UnifiedPropertiesProviding {
             pinnedInstance = snapshot1.pinnedInstance
             locked = snapshot1.locked
         }
+    }
+    
+    /// Constructs a PostProperties from a given snapshot, including external models
+    public init(snapshot: any PostSnapshotProviding, creator: any Person, community: any Community) {
+        self.init(snapshot: snapshot)
+        self.creator = creator
+        self.community = community
     }
 }
 
@@ -251,6 +262,12 @@ public class UnifiedPostModel: UnifiedModelProviding {
     public lazy var locked: ExpectedValue<Bool> = expectedValue(\.locked)
 
     @ObservationIgnored
+    public lazy var creator: ExpectedValue<any Person> = expectedValue(\.creator)
+    
+    @ObservationIgnored
+    public lazy var community: ExpectedValue<any Community> = expectedValue(\.community)
+    
+    @ObservationIgnored
     public lazy var commentCount: ExpectedValue<Int> = expectedValue(\.commentCount)
 
     @ObservationIgnored
@@ -293,8 +310,12 @@ public class UnifiedPostModel: UnifiedModelProviding {
             id = try await api.repository.getPost(url: self.url).post.id
         }
         
+        let snapshot = try await api.repository.getPost(id: id)
+        let creator = await api.caches.person1.getModel(api: api, from: snapshot.post.creator)
+        let community = await api.caches.community1.getModel(api: api, from: snapshot.post.community)
+        
         // TODO: repository provides properties
-        return .init(snapshot: try await api.repository.getPost(id: id))
+        return .init(snapshot: snapshot, creator: creator, community: community)
     }
 }
 
