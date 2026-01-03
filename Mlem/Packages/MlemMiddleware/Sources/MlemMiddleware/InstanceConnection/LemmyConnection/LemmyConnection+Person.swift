@@ -101,7 +101,12 @@ public extension LemmyConnection {
         let response = try await performingForEndpoint { endpoint in
             LemmyUserBlockPersonRequest(endpoint: endpoint, personId: id, block: block)
         }
-        return try .init(from: response.personView)
+        switch response {
+        case let .lemmyBlockPersonResponse(response):
+            return try .init(from: response.personView)
+        case let .lemmyPersonResponse(response):
+            return try .init(from: response.personView)
+        }
     }
     
     @discardableResult

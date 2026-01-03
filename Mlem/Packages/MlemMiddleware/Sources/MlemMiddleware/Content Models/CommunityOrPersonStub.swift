@@ -19,3 +19,14 @@ public extension CommunityOrPerson {
     
     var fullNameWithPrefix: String { "\(Self.identifierPrefix)\(name)@\(host)" }
 }
+
+
+public protocol Blockable: ContentModel, ActorIdentifiable {
+    var blocked: Bool { get }
+
+    @discardableResult
+    func updateBlocked(_ newValue: Bool) -> Task<StateUpdateResult, Never> 
+
+    @discardableResult
+    func toggleBlocked() -> Task<StateUpdateResult, Never> 
+}
