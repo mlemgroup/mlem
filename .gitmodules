@@ -1,3 +1,4 @@
 [submodule "Mlem/Packages/MlemMiddleware/Sources/MlemMiddleware/MlemApiTypes"]
 	path = Mlem/Packages/MlemMiddleware/Sources/MlemMiddleware/MlemApiTypes
 	url = https://github.com/mlemgroup/MlemApiTypes.git
+	branch = master
