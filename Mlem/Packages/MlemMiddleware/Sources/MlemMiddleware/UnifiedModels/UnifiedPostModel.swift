@@ -163,7 +163,7 @@ public struct PostProperties: UnifiedPropertiesProviding {
     }
     
     /// Constructs a PostProperties from a given snapshot, including external models
-    public init(snapshot: any PostSnapshotProviding, creator: any Person, community: any Community) {
+    public init(snapshot: any PostSnapshotProviding, creator: (any Person)?, community: (any Community)?) {
         self.init(snapshot: snapshot)
         self.creator = creator
         self.community = community
@@ -174,7 +174,7 @@ public protocol UnifiedPropertiesProviding {
     @MainActor mutating func update(with properties: Self)
 }
 
-public protocol UnifiedModelProviding: AnyObject {
+public protocol UnifiedModelProviding: AnyObject, CacheIdentifiable, ContentModel {
     associatedtype Properties: UnifiedPropertiesProviding
     
     var properties: Properties { get set }
@@ -189,14 +189,22 @@ public class UnifiedPostModel: UnifiedModelProviding {
     lazy var updateQueue: UnifiedUpdateQueue<UnifiedPostModel> = .init(parent: self)
     
     public var api: ApiClient
-    public var url: URL
+    public var actorId: ActorIdentifier
+    public var properties: PostProperties
+    
+    public var url: URL { actorId.url }
     
     public init(api: ApiClient, url: URL) {
         self.api = api
-        self.url = url
+        self.actorId = .init(url: url)!
+        self.properties = .init()
     }
     
-    public var properties: PostProperties = .init()
+    public init(api: ApiClient, snapshot: any PostSnapshotProviding, creator: (any Person)? = nil, community: (any Community)? = nil) {
+        self.api = api
+        self.actorId = snapshot.actorId
+        self.properties = .init(snapshot: snapshot, creator: creator, community: community)
+    }
     
     private func expectedValue<T>(_ keyPath: WritableKeyPath<PostProperties, T?>) -> ExpectedValue<T> {
         .init(
@@ -204,8 +212,12 @@ public class UnifiedPostModel: UnifiedModelProviding {
             provideValue: { try await self.upgrade() })
     }
     
-    @ObservationIgnored
-    public lazy var actorId: ExpectedValue<ActorIdentifier> = expectedValue(\.actorId)
+    // TODO: NOW do this better
+    public var cacheId: Int { actorId.hashValue }
+    public static var tierNumber: Int =  4
+    
+//    @ObservationIgnored
+//    public lazy var actorId: ExpectedValue<ActorIdentifier> = expectedValue(\.actorId)
     
     @ObservationIgnored
     public lazy var id: ExpectedValue<Int> = expectedValue(\.id)
