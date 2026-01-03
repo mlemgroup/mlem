@@ -207,7 +207,12 @@ public extension PieFedConnection {
     
     @discardableResult
     func voteOnPost(id: Int, score: ScoringOperation) async throws -> Post2Snapshot {
-        let request = PieFedLikePostRequest(postId: id, score: score.rawValue, private: nil)
+        let request = PieFedLikePostRequest(
+            postId: id,
+            score: score.rawValue,
+            private: nil,
+            emoji: nil
+        )
         async let response = perform(request)
         if !supports(.autoMarkPostReadOnInteract, defaultValue: false) {
             try await markPostAsRead(id: id, read: true)
@@ -258,8 +263,10 @@ public extension PieFedConnection {
             body: content,
             nsfw: nsfw,
             languageId: languageId,
+            altText: altText,
+            aiGenerated: nil,
             event: nil,
-            poll: nil
+            poll: nil,
         )
         let response = try await perform(request)
         return try .init(from: response.postView)
@@ -286,6 +293,7 @@ public extension PieFedConnection {
             body: content,
             nsfw: nsfw,
             languageId: languageId,
+            altText: altText,
             event: nil,
             poll: nil,
             tags: nil,
