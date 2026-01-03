@@ -326,7 +326,7 @@ public class UnifiedPostModel: UnifiedModelProviding {
         let creator = await api.caches.person1.getModel(api: api, from: snapshot.post.creator)
         let community = await api.caches.community1.getModel(api: api, from: snapshot.post.community)
         
-        // TODO: repository provides properties?
+        // TODO: NOW repository provides properties?
         return .init(snapshot: snapshot, creator: creator, community: community)
     }
 }
@@ -351,23 +351,6 @@ public extension UnifiedPostModel {
             await updateQueue.addItem {
                 .init(snapshot: try await self.api.repository.voteOnPost(id: id, score: newValue))
             }
-        }
-    }
-    
-    var vote: (() async throws -> Void)? {
-        if let votes = votes.value, let id = id.value {
-            return { try await self.vote(existingVotes: votes, existingId: id) }
-        }
-        return nil
-    }
-    
-    private func vote(existingVotes: VotesModel, existingId: Int) async throws {
-        // state fake
-        properties.votes = existingVotes.applyScoringOperation(operation: existingVotes.myVote == .upvote ? .none : .upvote)
-        
-        // do work
-        await updateQueue.addItem {
-            .init(snapshot: try await self.api.repository.voteOnPost(id: existingId, score: existingVotes.myVote == .upvote ? .none : .upvote))
         }
     }
 }
