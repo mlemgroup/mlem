@@ -1939,6 +1939,9 @@
         }
       }
     },
+    "Choose target..." : {
+
+    },
     "Choose the default sort mode for posts and comments." : {
       "extractionState" : "stale",
       "localizations" : {
@@ -5985,6 +5988,9 @@
         }
       }
     },
+    "Pin to community" : {
+
+    },
     "Pin to Community" : {
       "localizations" : {
         "fr" : {
@@ -6005,6 +6011,9 @@
         }
       }
     },
+    "Pin to instance" : {
+
+    },
     "Pin to Instance" : {
       "localizations" : {
         "fr" : {
@@ -6014,6 +6023,9 @@
           }
         }
       }
+    },
+    "Pin..." : {
+
     },
     "Pink" : {
       "localizations" : {
@@ -6472,6 +6484,9 @@
         }
       }
     },
+    "Really add NSFW tag?" : {
+
+    },
     "Really apply this configuration to all interaction bars?" : {
       "localizations" : {
         "fr" : {
@@ -6594,6 +6609,9 @@
         }
       }
     },
+    "Really lock this post?" : {
+
+    },
     "Really pin this post to %@?" : {
       "localizations" : {
         "fr" : {
@@ -6613,6 +6631,9 @@
           }
         }
       }
+    },
+    "Really pin this post?" : {
+
     },
     "Really remove %@?" : {
       "localizations" : {
@@ -6656,6 +6677,9 @@
         }
       }
     },
+    "Really remove NSFW tag?" : {
+
+    },
     "Really sign out of %@?" : {
       "localizations" : {
         "fr" : {
@@ -6695,6 +6719,9 @@
           }
         }
       }
+    },
+    "Really unpin this post?" : {
+
     },
     "Reason" : {
       "localizations" : {
@@ -6915,6 +6942,9 @@
           }
         }
       }
+    },
+    "Remove Nsfw Tag" : {
+
     },
     "Remove NSFW Tag" : {
 
@@ -9147,7 +9177,13 @@
         }
       }
     },
+    "Unblock Community" : {
+
+    },
     "Unblock User" : {
+
+    },
+    "Unblock..." : {
 
     },
     "Unblocked" : {
@@ -9308,6 +9344,9 @@
         }
       }
     },
+    "Unpin from community" : {
+
+    },
     "Unpin From Community" : {
       "localizations" : {
         "fr" : {
@@ -9317,6 +9356,9 @@
           }
         }
       }
+    },
+    "Unpin from instance" : {
+
     },
     "Unpin From Instance" : {
       "localizations" : {
