@@ -39,15 +39,12 @@ struct DevPostView: View {
                 Divider()
                 
                 HStack {
-                    if let vote = post.vote {
-                        Button("Vote") {
-                            Task {
-                                do {
-                                    try await vote()
-                                } catch {
-                                    handleError(error)
-                                }
-                            }
+                    if let votes = post.votes.value, let updateVote = post.updateVote {
+                        Button("Upvote") {
+                           updateVote(votes.myVote == .upvote ? .none : .upvote)
+                        }
+                        Button("Downvote") {
+                            updateVote(votes.myVote == .downvote ? .none : .downvote)
                         }
                     }
                     Spacer()

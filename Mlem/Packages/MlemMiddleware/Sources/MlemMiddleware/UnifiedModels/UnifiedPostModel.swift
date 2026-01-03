@@ -334,6 +334,26 @@ public class UnifiedPostModel: UnifiedModelProviding {
 // MARK: - Interactions
 
 public extension UnifiedPostModel {
+    var updateVote: ((ScoringOperation) -> Void)? {
+        if let votes = votes.value, let id = id.value {
+            return { self.updateVote($0, votes: votes, id: id) }
+        }
+        return nil
+    }
+    
+    private func updateVote(_ newValue: ScoringOperation, votes: VotesModel, id: Int) {
+        // state fake
+        properties.votes = votes.applyScoringOperation(operation: newValue)
+        properties.read = true
+        
+        // do work
+        Task {
+            await updateQueue.addItem {
+                .init(snapshot: try await self.api.repository.voteOnPost(id: id, score: newValue))
+            }
+        }
+    }
+    
     var vote: (() async throws -> Void)? {
         if let votes = votes.value, let id = id.value {
             return { try await self.vote(existingVotes: votes, existingId: id) }
