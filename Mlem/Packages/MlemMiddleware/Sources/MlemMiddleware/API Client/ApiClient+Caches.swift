@@ -21,6 +21,12 @@ public protocol CacheIdentifiable {
 
 extension ApiClient {
     struct BaseCacheGroup {
+        // MARK: - DEV
+        
+        var post: UnifiedPostCache = .init()
+        
+        // MARK: - END DEV
+        
         var instance1: Instance1Cache = .init()
         var instance2: Instance2Cache = .init()
         var instance3: Instance3Cache = .init()
@@ -58,6 +64,12 @@ extension ApiClient {
         var notification: NotificationCache = .init()
         
         func clean() {
+            // MARK: - DEV
+            
+            post.clean()
+            
+            // MARK: - END DEV
+            
             community1.clean()
             community2.clean()
             community3.clean()

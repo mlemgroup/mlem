@@ -5,6 +5,7 @@
 //  Created by Eric Andrews on 2026-01-03.
 //
 
+// TODO: NOW generic PostSnapshot
 public enum AnyPostSnapshot: CacheIdentifiable {
     case post1(Post1Snapshot)
     case post2(Post2Snapshot)
