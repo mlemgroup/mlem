@@ -204,7 +204,8 @@ public extension PieFedConnection {
         let request = PieFedLikeCommentRequest(
             commentId: id,
             score: score.rawValue,
-            private: false
+            private: false,
+            emoji: nil
         )
         let response = try await perform(request)
         return try .init(from: response.commentView)

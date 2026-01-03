@@ -68,7 +68,8 @@ public extension PieFedConnection {
             restrictedToMods: nil,
             localOnly: nil,
             discussionLanguages: nil,
-            communityId: id
+            communityId: id,
+            questionAnswer: nil
         )
         let response = try await perform(request)
         return try .init(from: response.communityView)
