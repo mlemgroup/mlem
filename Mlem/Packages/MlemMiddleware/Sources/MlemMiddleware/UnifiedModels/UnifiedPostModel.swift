@@ -7,6 +7,7 @@
 
 import Observation
 import Foundation
+import Haptics
 import os
 
 public class ExpectedValue<T> {
@@ -334,6 +335,28 @@ public class UnifiedPostModel: UnifiedModelProviding {
 // MARK: - Interactions
 
 public extension UnifiedPostModel {
+    // Save
+    
+    var updateSaved: ((Bool) -> Void)? {
+        if let id = id.value {
+            return { self.updateSaved($0, id: id) }
+        }
+        return nil
+    }
+    
+    private func updateSaved(_ newValue: Bool, id: Int) {
+        properties.saved = newValue
+        properties.read = true
+        
+        Task {
+            await updateQueue.addItem {
+                .init(snapshot: try await self.api.repository.savePost(id: id, save: newValue))
+            }
+        }
+    }
+    
+    // Vote
+    
     var updateVote: ((ScoringOperation) -> Void)? {
         if let votes = votes.value, let id = id.value {
             return { self.updateVote($0, votes: votes, id: id) }
@@ -342,11 +365,9 @@ public extension UnifiedPostModel {
     }
     
     private func updateVote(_ newValue: ScoringOperation, votes: VotesModel, id: Int) {
-        // state fake
         properties.votes = votes.applyScoringOperation(operation: newValue)
         properties.read = true
         
-        // do work
         Task {
             await updateQueue.addItem {
                 .init(snapshot: try await self.api.repository.voteOnPost(id: id, score: newValue))

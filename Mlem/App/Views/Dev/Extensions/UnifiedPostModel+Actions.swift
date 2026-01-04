@@ -15,23 +15,34 @@ extension UnifiedPostModel {
     // MARK: - Actions
     
     func upvoteAction(appState: AppState, feedback: Set<FeedbackType> = []) -> BasicAction? {
-        if let updateVote, let votes = votes.value {
+        if let toggleUpvoted, let votes = votes.value {
             return .init(id: "upvote\(actorId)",
                          appearance: .upvote(isOn: votes.myVote == .upvote),
-                         callback: { updateVote(votes.myVote == .upvote ? .none : .upvote) }
+                         callback: { toggleUpvoted(feedback) }
             )
         }
         return nil
     }
     
-    func downvoteAction(appState: AppState, feedback: Set<FeedbackType> = []
-    ) -> BasicAction? {
-        if let updateVote, let votes = votes.value {
+    func downvoteAction(appState: AppState, feedback: Set<FeedbackType> = []) -> BasicAction? {
+        if let toggleDownvoted, let votes = votes.value {
             let enabled = api.canInteract(appState: appState) && downvotesEnabled
-            let callback: (() -> Void)? = enabled ? { updateVote(votes.myVote == .downvote ? .none : .downvote) } : nil
+            let callback = enabled ? { toggleDownvoted(feedback) } : nil
             return .init(
                 id: "downvote\(actorId)",
                 appearance: .downvote(isOn: votes.myVote == .downvote),
+                callback: callback
+            )
+        }
+        return nil
+    }
+    
+    func saveAction(appState: AppState, feedback: Set<FeedbackType> = []) -> BasicAction? {
+        if let toggleSaved, let saved = saved.value {
+            let callback = api.canInteract(appState: appState) ? { toggleSaved(feedback) } : nil
+            return .init(
+                id: "save\(actorId)",
+                appearance: .save(isOn: saved),
                 callback: callback
             )
         }
@@ -48,35 +59,34 @@ extension UnifiedPostModel {
         reportContext: Report? = nil
     ) -> (any Action)? {
         switch type {
-        case .upvote: upvoteAction(appState: appState)
-        case .downvote: downvoteAction(appState: appState)
+        case .upvote: upvoteAction(appState: appState, feedback: feedback)
+        case .downvote: downvoteAction(appState: appState, feedback: feedback)
+        case .save: saveAction(appState: appState, feedback: feedback)
+            //        case .reply:
+            //            <#code#>
+            //        case .share:
+            //            <#code#>
+            //        case .selectText:
+            //            <#code#>
+            //        case .hide:
+            //            <#code#>
+            //        case .block:
+            //            <#code#>
+            //        case .report:
+            //            <#code#>
+            //        case .crossPost:
+            //            <#code#>
+            //        case .lock:
+            //            <#code#>
+            //        case .pin:
+            //            <#code#>
+            //        case .resolve:
+            //            <#code#>
+            //        case .remove:
+            //            <#code#>
+            //        case .ban:
+            //            <#code#>
         default: nil
-//        case .save:
-//            <#code#>
-//        case .reply:
-//            <#code#>
-//        case .share:
-//            <#code#>
-//        case .selectText:
-//            <#code#>
-//        case .hide:
-//            <#code#>
-//        case .block:
-//            <#code#>
-//        case .report:
-//            <#code#>
-//        case .crossPost:
-//            <#code#>
-//        case .lock:
-//            <#code#>
-//        case .pin:
-//            <#code#>
-//        case .resolve:
-//            <#code#>
-//        case .remove:
-//            <#code#>
-//        case .ban:
-//            <#code#>
         }
     }
     
