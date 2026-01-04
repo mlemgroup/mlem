@@ -31,11 +31,17 @@ struct DevPostView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
                 VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
-                    ExpectedView(post.community) { community in
-                        FullyQualifiedLinkView(community, labelStyle: .large)
-                    } placeholder: {
-                        Text("placeholder@placeholder")
-                            .redacted(reason: .placeholder)
+                    HStack {
+                        ExpectedView(post.community) { community in
+                            FullyQualifiedLinkView(community, labelStyle: .large)
+                        } placeholder: {
+                            Text("placeholder@placeholder")
+                                .redacted(reason: .placeholder)
+                        }
+                        
+                        Spacer()
+                        
+                        UnifiedPostEllipsisMenus(post: post)
                     }
                     
                     ExpectedText(post.title, expectedLength: 30)

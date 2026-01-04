@@ -12,6 +12,16 @@ extension UnifiedPostModel {
         api.voteFederationMode.postDownvote != .disable
     }
     
+    var canModerate: Bool {
+        if api.isAdmin {
+            return true
+        }
+        if let communityId = communityId.value_ {
+            return api.myPerson?.moderates(communityId: communityId) ?? false
+        }
+        return false
+    }
+    
     // MARK: - Actions
     
     func upvoteAction(appState: AppState, feedback: Set<FeedbackType> = []) -> BasicAction? {

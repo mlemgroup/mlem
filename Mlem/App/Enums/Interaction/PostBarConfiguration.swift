@@ -74,6 +74,15 @@ struct PostBarConfiguration: InteractionBarConfiguration {
             case .reply, .share, .selectText, .hide, .block, .report, .crossPost, .lock, .pin, .resolve, .remove, .ban: []
             }
         }
+        
+        func associatedReadouts(context: UnifiedPostModel) -> Set<PostBarConfiguration.ReadoutType> {
+            switch self {
+            case .upvote: context.votes.value?.myVote ?? .none == .upvote ? [.upvote, .score] : [.upvote]
+            case .downvote: context.votes.value?.myVote ?? .none == .downvote ? [.downvote, .score] : [.downvote]
+            case .save: [.saved]
+            case .reply, .share, .selectText, .hide, .block, .report, .crossPost, .lock, .pin, .resolve, .remove, .ban: []
+            }
+        }
     }
     
     enum CounterType: String, CounterTypeProviding {
@@ -100,6 +109,15 @@ struct PostBarConfiguration: InteractionBarConfiguration {
             case .score: [.upvote, .downvote, .score]
             case .upvote: context.votes_?.myVote ?? .none == .upvote ? [.upvote, .score] : [.upvote]
             case .downvote: context.votes_?.myVote ?? .none == .downvote ? [.downvote, .score] : [.downvote]
+            case .reply: []
+            }
+        }
+        
+        func associatedReadouts(context: UnifiedPostModel) -> Set<PostBarConfiguration.ReadoutType> {
+            switch self {
+            case .score: [.upvote, .downvote, .score]
+            case .upvote: context.votes.value?.myVote ?? .none == .upvote ? [.upvote, .score] : [.upvote]
+            case .downvote: context.votes.value?.myVote ?? .none == .downvote ? [.downvote, .score] : [.downvote]
             case .reply: []
             }
         }

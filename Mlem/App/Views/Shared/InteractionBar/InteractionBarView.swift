@@ -85,11 +85,9 @@ struct InteractionBarView: View {
             reportContext: reportContext
         )
         
-        let associatedReadouts: [PostBarConfiguration.ReadoutType] = []
-        // TODO: NOW
-//        let associatedReadouts = configuration.all.reduce(into: Set<PostBarConfiguration.ReadoutType>()) { result, widget in
-//            result.formUnion(widget.associatedReadouts(context: post))
-//        }
+        let associatedReadouts = configuration.all.reduce(into: Set<PostBarConfiguration.ReadoutType>()) { result, widget in
+            result.formUnion(widget.associatedReadouts(context: post))
+        }
         self.readouts = configuration.readouts.compactMap { readout in
             post.readout(type: readout, showColor: !associatedReadouts.contains(readout))
         }
