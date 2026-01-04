@@ -10,6 +10,11 @@ import MlemMiddleware
 import ComponentViews
 
 struct DevPostView: View {
+    @Environment(AppState.self) var appState
+    @Environment(NavigationLayer.self) var navigation
+    
+    @Setting(\.interactionBar_post) var interactionBarConfiguration
+    
     @State var post: UnifiedPostModel
     
     init(post: any Post1Providing) {
@@ -24,37 +29,25 @@ struct DevPostView: View {
     
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
-                ExpectedView(post.community) { community in
-                    FullyQualifiedLinkView(community, labelStyle: .large)
-                } placeholder: {
-                    Text("placeholder@placeholder")
-                        .redacted(reason: .placeholder)
-                }
-                
-                ExpectedText(post.title)
-                    .font(.headline)
-                ExpectedMedia(url: post.linkUrl)
-            
-                Divider()
-                
-                HStack {
-                    if let votes = post.votes.value, let updateVote = post.updateVote {
-                        Button("Upvote") {
-                           updateVote(votes.myVote == .upvote ? .none : .upvote)
-                        }
-                        Button("Downvote") {
-                            updateVote(votes.myVote == .downvote ? .none : .downvote)
-                        }
+            VStack(alignment: .leading, spacing: 0) {
+                VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
+                    ExpectedView(post.community) { community in
+                        FullyQualifiedLinkView(community, labelStyle: .large)
+                    } placeholder: {
+                        Text("placeholder@placeholder")
+                            .redacted(reason: .placeholder)
                     }
-                    Spacer()
                     
-                    ExpectedView(post.votes) { votes in
-                        Text(votes.myVote.description)
-                    }
+                    ExpectedText(post.title, expectedLength: 30)
+                        .font(.headline)
+                    ExpectedMedia(url: post.linkUrl)
+                    
+                    Divider()
                 }
+                .padding([.top, .leading, .trailing], Constants.main.standardSpacing)
+                
+                InteractionBarView(appState: appState, post: post, configuration: interactionBarConfiguration, navigation: navigation)
             }
-            .padding(Constants.main.standardSpacing)
             .background(.themedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
             .padding(Constants.main.standardSpacing)
         }
