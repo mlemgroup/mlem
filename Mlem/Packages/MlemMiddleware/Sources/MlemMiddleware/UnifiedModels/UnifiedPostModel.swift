@@ -9,6 +9,8 @@ import Observation
 import Foundation
 import Haptics
 import os
+import Nuke
+import Rest
 
 public class ExpectedValue<T> {
     let getValue: () -> T?
@@ -190,7 +192,7 @@ public protocol UnifiedModelProviding: AnyObject, CacheIdentifiable, ContentMode
 }
 
 @Observable
-public class UnifiedPostModel: UnifiedModelProviding {
+public class UnifiedPostModel: UnifiedModelProviding, FeedLoadable {
     public typealias Properties = PostProperties
     
     @ObservationIgnored
@@ -380,5 +382,112 @@ public extension UnifiedPostModel {
                 .init(snapshot: try await self.api.repository.voteOnPost(id: id, score: newValue))
             }
         }
+    }
+}
+
+// MARK: - FeedLoadable
+
+public extension UnifiedPostModel {
+    typealias FilterType = PostFilterType
+    
+    static func == (lhs: UnifiedPostModel, rhs: UnifiedPostModel) -> Bool {
+        lhs.actorId == rhs.actorId
+    }
+    
+    // TODO: NOW rethink sort val for async dates
+    func sortVal(sortType: FeedLoaderSort.SortType) -> FeedLoaderSort {
+        switch sortType {
+        case .new:
+            return .new(created.value_ ?? Date())
+        }
+    }
+}
+
+// MARK: - ImagePrefetchProviding
+
+extension UnifiedPostModel: ImagePrefetchProviding {
+    var type: PostType {
+        // post with URL: image, embedded, or link
+        if let linkUrl = linkUrl.value_ as? URL,
+           let title = title.value_ {
+//            if let embeddedMediaUrl {
+//                return .embedded(embeddedMediaUrl, originalLink: linkUrl)
+//            }
+            
+            // if image, return image link, otherwise return thumbnail
+            if linkUrl.isMedia {
+                return .media(linkUrl)
+            }
+            return .link(.init(content: linkUrl, thumbnail: thumbnailUrl.value_ as? URL, label: embed.value_??.title ?? title))
+        }
+
+        // otherwise text, but post.body needs to be present, even if it's an empty string
+        if let postBody = content.value_ as? String {
+            return .text(postBody)
+        }
+
+        return .titleOnly
+    }
+    
+    func parseLoopEmbeds() async {
+        // TODO: NOW not noop
+//        if let loopsUrl = await linkUrl.value_??.parseEmbeddedLoops() {
+//            _ = await Task { @MainActor in
+//                properties.embeddedMediaUrl = loopsUrl
+//            }.result
+//        }
+    }
+    
+    public func imageRequests(configuration config: PrefetchingConfiguration) async -> [ImageRequest] {
+        var ret: [ImageRequest] = .init()
+        
+        // handle loops.video embedding
+        if config.embedLoops {
+            await parseLoopEmbeds()
+        }
+        
+        switch type {
+        case let .media(url), let .embedded(url, _):
+            // media/embedded media: only load the media
+            var urlRequest: URLRequest
+            switch config.imageSize {
+            case .unlimited:
+                urlRequest = mlemUrlRequest(url: url)
+            case let .limited(size):
+                urlRequest = mlemUrlRequest(url: url.withIconSize(size))
+            }
+            ret.append(ImageRequest(urlRequest: urlRequest, priority: .high))
+        case let .link(link):
+            // websites: load image and favicon
+            if config.fetchFavicons, let url = link.favicon {
+                let urlRequest = mlemUrlRequest(url: url)
+                ret.append(ImageRequest(urlRequest: urlRequest))
+            }
+            if let url = link.thumbnail {
+                var urlRequest: URLRequest
+                switch config.imageSize {
+                case .unlimited:
+                    urlRequest = mlemUrlRequest(url: url)
+                case let .limited(size):
+                    urlRequest = mlemUrlRequest(url: url.withIconSize(size))
+                }
+                ret.append(ImageRequest(urlRequest: urlRequest, priority: .high))
+            }
+        default:
+            break
+        }
+        // preload user and community avatars--fetching both because we don't know which we'll need, but these are super tiny
+        // so it's probably not an API crime, right?
+        if let avatarSize = config.avatarSize {
+            if let communityAvatarLink = community.value_?.avatar {
+                ret.append(ImageRequest(urlRequest: mlemUrlRequest(url: communityAvatarLink.withIconSize(avatarSize))))
+            }
+            
+            if let userAvatarLink = creator.value_?.avatar {
+                ret.append(ImageRequest(urlRequest: mlemUrlRequest(url: userAvatarLink.withIconSize(avatarSize))))
+            }
+        }
+        
+        return ret
     }
 }
