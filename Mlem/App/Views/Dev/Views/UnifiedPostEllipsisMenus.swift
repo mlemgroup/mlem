@@ -98,19 +98,11 @@ struct UnifiedPostEllipsisMenuContent: View {
     let type: Set<ActionListType>
 
     var body: some View {
-//        if type.contains(.basic) {
-//            Button("Hello") {
-//                print("hi")
-//            }
-//        }
         if type.contains(.basic) {
             ControlGroup {
                 ActionButtons { _ in
                     seeds.compactMap { seed in
-                        Logger.dev.info("Creating \(String(describing: seed))")
-                        let ret = seed.createAction(post)
-                        Logger.dev.info("Created \(String(describing: ret))")
-                        return ret
+                        seed.createAction(post)
                     }
                 }
             }

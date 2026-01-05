@@ -7,6 +7,8 @@
 
 import MlemMiddleware
 
+// TODO: NOW be consistent about how feedback is passed in
+
 extension UnifiedPostModel {
     var downvotesEnabled: Bool {
         api.voteFederationMode.postDownvote != .disable

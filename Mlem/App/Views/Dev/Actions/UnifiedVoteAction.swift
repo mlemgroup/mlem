@@ -8,6 +8,7 @@
 import Actions
 import MlemMiddleware
 import SwiftUI
+import os
 
 struct UnifiedVoteAction: SimpleLabelAction {
     let entity: UnifiedPostModel
@@ -100,9 +101,8 @@ extension UnifiedVoteAction {
     @MainActor
     func execute(environment: EnvironmentValues) {
         environment.hapticManager.play(haptic: .lightSuccess, tier: .low)
-        if let updateVote = entity.updateVote {
-            updateVote(type)
+        if let toggleVote = entity.toggleVote {
+            toggleVote(type)
         }
-        // entity.toggleVote(type: type)
     }
 }

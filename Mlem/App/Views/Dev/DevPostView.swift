@@ -8,6 +8,7 @@
 import SwiftUI
 import MlemMiddleware
 import ComponentViews
+import os
 
 struct DevPostView: View {
     @Environment(AppState.self) var appState

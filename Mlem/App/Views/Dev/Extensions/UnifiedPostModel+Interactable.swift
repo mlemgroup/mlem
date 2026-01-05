@@ -7,10 +7,20 @@
 
 import MlemMiddleware
 import Haptics
+import os
 
 // TODO: NOW update Interactable1Providing to simple Interactable, conform Post etc.
 
 extension UnifiedPostModel {
+    var toggleVote: ((ScoringOperation) -> Void)? {
+        if let updateVote, let votes = votes.value {
+            return { operation in
+                updateVote(votes.myVote == operation ? .none : operation)
+            }
+        }
+        return nil
+    }
+    
     var toggleDownvoted: ((Set<FeedbackType>) -> Void)? {
         if let updateVote, let votes = votes.value {
             return { feedback in
