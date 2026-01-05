@@ -18,8 +18,8 @@ struct DevPostView: View {
     
     @State var post: UnifiedPostModel
     
-    init(post: any Post1Providing) {
-        self.post = .init(api: post.api, url: post.url())
+    init(post: UnifiedPostModel) {
+        self.post = post
     }
     
     var animationHashValue: Int {

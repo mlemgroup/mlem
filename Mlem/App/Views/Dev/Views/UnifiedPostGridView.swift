@@ -27,7 +27,9 @@ struct UnifiedPostGridView: View {
     var content: some View {
         LazyVStack {
             ForEach(Array(postFeedLoader.items.enumerated()), id: \.element.actorId) { _, post in
-                DevFeedPostView(post: post)
+                NavigationLink(.devPost(post)) {
+                    DevFeedPostView(post: post)
+                }
                 Divider()
             }
         }

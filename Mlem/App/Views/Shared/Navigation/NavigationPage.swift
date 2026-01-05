@@ -77,8 +77,8 @@ enum NavigationPage: Hashable {
     case actionSheet(_ actions: HashWrapper<[ActionSheetSection]>)
     
     // DEV
-    case devPost(_ post: HashWrapper<any Post1Providing>)
-    static func devPost(_ post: any Post1Providing) -> NavigationPage {
+    case devPost(_ post: HashWrapper<UnifiedPostModel>)
+    static func devPost(_ post: UnifiedPostModel) -> NavigationPage {
         Self.devPost(.init(wrappedValue: post))
     }
     

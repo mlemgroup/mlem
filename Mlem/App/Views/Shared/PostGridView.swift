@@ -88,8 +88,7 @@ struct PostGridView: View {
             LazyVGrid(columns: columns, spacing: postSize.sectionSpacing) {
                 ForEach(Array(postFeedLoader.items.enumerated()), id: \.element.hashValue) { index, post in
                     if !post.shouldHideInFeed {
-                        // NavigationLink(.post(post, communityContext: communityContext, navigationNamespace: navigationNamespace)) {
-                        NavigationLink(.devPost(post)) {
+                        NavigationLink(.post(post, communityContext: communityContext, navigationNamespace: navigationNamespace)) {
                             FeedPostView(post: post, requireConsistentHeight: columns.count != 1)
                                 .matchedTransitionSource_(id: "post\(post.actorId)", in: navigationNamespace)
                         }
