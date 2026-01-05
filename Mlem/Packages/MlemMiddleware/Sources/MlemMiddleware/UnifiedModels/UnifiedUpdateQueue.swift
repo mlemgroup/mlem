@@ -41,7 +41,6 @@ public actor UnifiedUpdateQueue<Model: UnifiedModelProviding> {
         // this method is a unique case because upgrade will be called at every property access on the parent model until
         // the required properties are provided. Therefore we block all upgrade calls once one is queued.
         guard !upgradeQueued else {
-            Logger.dev.info("Ignoring upgrade (already queued)")
             return
         }
         upgradeQueued = true

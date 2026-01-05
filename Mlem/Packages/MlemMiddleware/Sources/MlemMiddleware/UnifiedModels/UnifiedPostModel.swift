@@ -325,6 +325,8 @@ public class UnifiedPostModel: UnifiedModelProviding, FeedLoadable {
     
     @discardableResult
     public func fetchUpgraded() async throws -> PostProperties {
+        Logger.dev.info("Fetching upgraded...")
+        
         var id: Int
         if let existingId = properties.id {
             id = existingId
