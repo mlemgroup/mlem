@@ -61,6 +61,17 @@ extension UnifiedPostModel {
         return nil
     }
     
+    // TODO: NOW shim CommentEditorView to allow this
+//    func replyAction(appState: AppState, commentTreeTracker: CommentTreeTracker? = nil) -> BasicAction? {
+//        .init(
+//            id: "reply\(actorId)",
+//            appearance: .reply(),
+//            callback: api.canInteract(appState: appState) ? { @MainActor in
+//                self.showReplySheet(commentTreeTracker: commentTreeTracker)
+//            } : nil
+//        )
+//    }
+    
     func action(
         appState: AppState,
         navigation: NavigationLayer,

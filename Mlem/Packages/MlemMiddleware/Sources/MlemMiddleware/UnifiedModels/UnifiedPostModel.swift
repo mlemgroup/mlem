@@ -323,7 +323,6 @@ public class UnifiedPostModel: UnifiedModelProviding, FeedLoadable {
         try await updateQueue.upgrade()
     }
     
-    @discardableResult
     public func fetchUpgraded() async throws -> PostProperties {
         var id: Int
         if let existingId = properties.id {
