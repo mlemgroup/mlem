@@ -9,7 +9,15 @@ import Foundation
 
 extension InboxNotification {
     @MainActor
-    func snapshotUpdate(with snapshot: InboxNotificationSnapshot) {
+    func snapshotUpdate(with snapshot: InboxNotificationSnapshot, isResultOfTask: Bool) {
+        if isResultOfTask, self.read != snapshot.read {
+            let type: InboxItemType = switch content.type {
+            case .mention: .mention
+            case .reply: .reply
+            case .message: .message
+            }
+            api.unreadCount?.verifyItem(itemType: type, isRead: snapshot.read)
+        }
         setIfChanged(\.read, snapshot.read)
     }
     

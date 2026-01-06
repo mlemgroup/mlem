@@ -41,6 +41,12 @@ public class InboxNotification: ContentModel, ReadableProviding, Identifiable {
     
     public func updateRead(_ newValue: Bool) {
         read = newValue
+        let type: InboxItemType = switch content.type {
+        case .mention: .mention
+        case .reply: .reply
+        case .message: .message
+        }
+        api.unreadCount?.updateUnverifiedItem(itemType: type, isRead: newValue)
         Task {
             await updateQueue.addItem {
                 try await self.api.repository.markNotificationAsRead(
