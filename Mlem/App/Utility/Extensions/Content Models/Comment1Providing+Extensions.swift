@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 25/06/2024.
 //
 
+import Haptics
 import Foundation
 import MlemMiddleware
 import SwiftUI
@@ -41,6 +42,7 @@ extension Comment1Providing {
         feedback: Set<FeedbackType> = [.haptic, .toast],
         showAllActions: Bool = true,
         navigation: NavigationLayer?,
+        notification: InboxNotification? = nil,
         commentTreeTracker: CommentTreeTracker? = nil,
         report: Report? = nil
     ) -> [any Action] {
@@ -48,6 +50,7 @@ extension Comment1Providing {
             appState: appState,
             feedback: feedback,
             navigation: navigation,
+            notification: notification,
             commentTreeTracker: commentTreeTracker
         )
         if canModerate {
@@ -65,6 +68,7 @@ extension Comment1Providing {
         appState: AppState,
         feedback: Set<FeedbackType> = [.haptic, .toast],
         navigation: NavigationLayer?,
+        notification: InboxNotification? = nil,
         commentTreeTracker: CommentTreeTracker? = nil
     ) -> [any Action] {
         ActionGroup(displayMode: .compactSection) {
@@ -72,12 +76,15 @@ extension Comment1Providing {
             downvoteAction(appState: appState, feedback: feedback, downvotesEnabled: downvotesEnabled)
             saveAction(appState: appState, feedback: feedback)
             replyAction(appState: appState, commentTreeTracker: commentTreeTracker)
+            if let notification {
+                markReadAction(appState: appState, notification: notification, feedback: feedback)
+            }
             if !deleted {
                 selectTextAction()
             }
             shareAction(navigation: navigation)
             
-            if let navigation {
+            if let navigation, notification == nil {
                 createImageAction(navigation: navigation, commentTreeTracker: commentTreeTracker)
             }
             
@@ -209,6 +216,18 @@ extension Comment1Providing {
             id: "viewVotes\(uid)",
             appearance: .viewVotes(),
             callback: callback
+        )
+    }
+
+    func markReadAction(appState: AppState, notification: InboxNotification, feedback: Set<FeedbackType> = []) -> BasicAction {
+        .init(
+            id: "markRead\(uid)",
+            appearance: .markRead(isOn: notification.read),
+            callback: api.canInteract(appState: appState) ? {
+                @MainActor in
+                notification.toggleRead()
+                HapticManager.main.play(haptic: .lightSuccess, tier: .low)
+            } : nil
         )
     }
     

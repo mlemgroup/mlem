@@ -27,8 +27,12 @@ struct ReplyView: View {
                     Image(icon: (notification.content.type == .mention) ? .lemmy.mention : .lemmy.reply)
                         .symbolVariant(notification.read ? .none : .fill)
                         .foregroundStyle(.themedAccent)
-                    // EllipsisMenu(size: 24) { comment.menuActions(appState: appState, navigation: navigation) }
-                    //     .frame(height: 10)
+                    EllipsisMenu(size: 24) { comment.allMenuActions(
+                        appState: appState,
+                        navigation: navigation,
+                        notification: notification
+                    ) }
+                    .frame(height: 10)
                 }
                 
                 FooterLinkView(title: comment.post.title, subtitle: nil)
@@ -52,7 +56,11 @@ struct ReplyView: View {
         // .quickSwipes(reply: reply, configuration: replyInteractionBar)
         .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
-        // .contextMenu { reply.menuActions(appState: appState, navigation: navigation) }
+        .contextMenu { comment.allMenuActions(
+            appState: appState,
+            navigation: navigation,
+            notification: notification
+        ) }
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }
 }
