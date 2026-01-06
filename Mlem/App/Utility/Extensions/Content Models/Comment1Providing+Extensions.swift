@@ -158,6 +158,26 @@ extension Comment1Providing {
         case .collapseToTop: collapseToTopAction(commentTreeTracker: commentTreeTracker)
         }
     }
+
+    func action(
+        appState: AppState,
+        type: ReplyBarConfiguration.ActionType,
+        navigation: NavigationLayer?,
+        notification: InboxNotification,
+        commentTreeTracker: CommentTreeTracker? = nil,
+        communityContext: (any CommunityStubProviding)? = nil,
+        reportContext: Report? = nil
+    ) -> (any Action)? {
+        switch type {
+        case .upvote: upvoteAction(appState: appState, feedback: [.haptic])
+        case .downvote: downvotesEnabled ? downvoteAction(appState: appState, feedback: [.haptic], downvotesEnabled: downvotesEnabled) : nil
+        case .save: saveAction(appState: appState, feedback: [.haptic])
+        case .reply: replyAction(appState: appState, commentTreeTracker: commentTreeTracker)
+        case .selectText: selectTextAction()
+        case .report: reportAction(appState: appState, communityContext: communityContext)
+        case .markRead: markReadAction(appState: appState, notification: notification)
+        }
+    }
     
     func counter(
         appState: AppState,
