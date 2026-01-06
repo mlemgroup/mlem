@@ -66,7 +66,7 @@ struct InboxView: View {
         self._modMailFeedLoader = .init(wrappedValue: modMailFeedLoaders.modMailFeedLoader)
     }
     
-    var feedLoader: StandardFeedLoader<InboxItem> {
+    var feedLoader: StandardFeedLoader<InboxNotification> {
         if appState.firstApi.supports(.viewMentionsAndPrivateMessages, defaultValue: false) {
             switch selectedTab {
             case .all:

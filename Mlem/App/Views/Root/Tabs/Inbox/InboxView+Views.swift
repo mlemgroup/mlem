@@ -13,19 +13,19 @@ extension InboxView {
     var inboxFeedView: some View {
         LazyVStack(spacing: 0, pinnedViews: UIDevice.isIos26 ? [] : [.sectionHeaders]) {
             Section {
-                ForEach(feedLoader.items, id: \.inboxId) { item in
+                ForEach(feedLoader.items, id: \.inboxId) { notification in
                     Group {
-                        switch item {
+                        switch notification.content {
                         case let .message(message):
                             MessageView(message: message, isInInbox: true)
-                        case let .reply(reply):
-                            ReplyView(reply: reply)
+                        case let .reply(comment), let .mention(comment):
+                            ReplyView(notification: notification, comment: comment)
                         }
                     }
                     .padding([.horizontal, .bottom], Constants.main.standardSpacing)
                     .onAppear {
                         do {
-                            try inboxFeedLoader.loadIfThreshold(item)
+                            try inboxFeedLoader.loadIfThreshold(notification)
                         } catch {
                             handleError(error)
                         }

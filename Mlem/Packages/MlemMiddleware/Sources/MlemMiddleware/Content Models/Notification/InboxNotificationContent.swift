@@ -12,7 +12,7 @@ public enum InboxNotificationContent {
     case mention(Comment2)
     case message(Message2)
     
-    public var wrappedValue: any ContentModel {
+    public var wrappedValue: any ContentModel & ActorIdentifiable {
         switch self {
         case let .reply(comment2): comment2
         case let .mention(comment2): comment2

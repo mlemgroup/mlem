@@ -8,7 +8,7 @@
 import Foundation
 
 @Observable
-public final class InboxNotification: ContentModel, Identifiable {
+public class InboxNotification: ContentModel, ReadableProviding, Identifiable {
     public var updateQueue: InboxNotificationUpdateQueue = .init()
     
     public static var tierNumber: Int = 1
@@ -63,6 +63,10 @@ public final class InboxNotification: ContentModel, Identifiable {
     public static func == (lhs: InboxNotification, rhs: InboxNotification) -> Bool {
         lhs.id == rhs.id
     }
+}
+
+extension InboxNotification: InboxIdentifiable {
+    public var inboxId: Int { content.wrappedValue.actorId.hashValue }
 }
 
 extension InboxNotification: FeedLoadable {

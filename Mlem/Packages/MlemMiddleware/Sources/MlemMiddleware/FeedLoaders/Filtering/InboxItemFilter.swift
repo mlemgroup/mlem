@@ -9,9 +9,9 @@ public enum InboxItemFilterType {
     case read, dedupe
 }
 
-class InboxItemFilter: MultiFilter<InboxItem> {
-    private var readFilter: ReadFilter<InboxItem>
-    private var dedupeFilter: InboxDedupeFilter<InboxItem> = .init(context: .none())
+class InboxItemFilter: MultiFilter<InboxNotification> {
+    private var readFilter: ReadFilter<InboxNotification>
+    private var dedupeFilter: InboxDedupeFilter<InboxNotification> = .init(context: .none())
     
     init(showRead: Bool) {
         self.readFilter = .init(context: .none())
@@ -20,14 +20,14 @@ class InboxItemFilter: MultiFilter<InboxItem> {
         }
     }
 
-    override func allFilters() -> [FilterProviding<InboxItem>] {
+    override func allFilters() -> [FilterProviding<InboxNotification>] {
         [
             readFilter,
             dedupeFilter
         ]
     }
     
-    override func getFilter(_ toGet: InboxItemFilterType) -> FilterProviding<InboxItem> {
+    override func getFilter(_ toGet: InboxItemFilterType) -> FilterProviding<InboxNotification> {
         switch toGet {
         case .read: readFilter
         case .dedupe: dedupeFilter
