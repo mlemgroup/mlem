@@ -7,11 +7,11 @@
 
 import Foundation
 
-public class InboxFeedLoader: StandardFeedLoader<InboxItem> {
-    var inboxFetcher: MultiFetcher<InboxItem> { fetcher as! MultiFetcher }
+public class InboxFeedLoader: StandardFeedLoader<InboxNotification> {
+    var inboxFetcher: MultiFetcher<InboxNotification> { fetcher as! MultiFetcher }
     
-    public init(api: ApiClient, pageSize: Int, sources: [ChildFeedLoader<InboxItem>], sortType: FeedLoaderSort.SortType, showRead: Bool) {
-        super.init(filter: InboxItemFilter(showRead: showRead), fetcher: MultiFetcher(api: api, pageSize: pageSize, sources: sources, sortType: sortType))
+    public init(api: ApiClient, pageSize: Int, sources: [ChildFeedLoader<InboxNotification>], sortType: FeedLoaderSort.SortType, showRead: Bool) {
+        super.init(filter: InboxNotificationFilter(showRead: showRead), fetcher: MultiFetcher(api: api, pageSize: pageSize, sources: sources, sortType: sortType))
         
         for source in sources {
             source.setParent(parent: self)

@@ -8,7 +8,7 @@
 import Foundation
 
 @Observable
-public class InboxNotification: ContentModel, Identifiable {
+public final class InboxNotification: ContentModel, Identifiable {
     public var updateQueue: InboxNotificationUpdateQueue = .init()
     
     public static var tierNumber: Int = 1
@@ -58,5 +58,25 @@ public class InboxNotification: ContentModel, Identifiable {
     
     public func toggleRead() {
         updateRead(!read)
+    }
+
+    public static func == (lhs: InboxNotification, rhs: InboxNotification) -> Bool {
+        lhs.id == rhs.id
+    }
+}
+
+extension InboxNotification: FeedLoadable {
+    public typealias FilterType = InboxItemFilterType
+
+    public func sortVal(sortType: FeedLoaderSort.SortType) -> FeedLoaderSort {
+        switch sortType {
+        case .new:
+            switch self.content {
+            case let .mention(comment), let .reply(comment):
+                return .new(comment.created)
+            case let .message(message):
+                return .new(message.created)
+            }
+        }
     }
 }
