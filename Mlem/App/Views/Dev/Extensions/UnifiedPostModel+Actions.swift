@@ -61,16 +61,16 @@ extension UnifiedPostModel {
         return nil
     }
     
-    // TODO: NOW shim CommentEditorView to allow this
-//    func replyAction(appState: AppState, commentTreeTracker: CommentTreeTracker? = nil) -> BasicAction? {
-//        .init(
-//            id: "reply\(actorId)",
-//            appearance: .reply(),
-//            callback: api.canInteract(appState: appState) ? { @MainActor in
-//                self.showReplySheet(commentTreeTracker: commentTreeTracker)
-//            } : nil
-//        )
-//    }
+    // TODO: NOW make this generic in new Interactable
+    func replyAction(appState: AppState, commentTreeTracker: CommentTreeTracker? = nil) -> BasicAction? {
+        .init(
+            id: "reply\(actorId)",
+            appearance: .reply(),
+            callback: api.canInteract(appState: appState) ? { @MainActor in
+                NavigationModel.main.openSheet(.createComment(.unifiedPost(self), commentTreeTracker: commentTreeTracker))
+            } : nil
+        )
+    }
     
     func action(
         appState: AppState,
@@ -85,8 +85,7 @@ extension UnifiedPostModel {
         case .upvote: upvoteAction(appState: appState, feedback: feedback)
         case .downvote: downvoteAction(appState: appState, feedback: feedback)
         case .save: saveAction(appState: appState, feedback: feedback)
-            //        case .reply:
-            //            <#code#>
+        case .reply: replyAction(appState: appState, commentTreeTracker: commentTreeTracker)
             //        case .share:
             //            <#code#>
             //        case .selectText:

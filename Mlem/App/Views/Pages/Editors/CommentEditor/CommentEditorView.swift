@@ -99,7 +99,8 @@ struct CommentEditorView: View {
                             if sending {
                                 ProgressView()
                             } else {
-                                sendButton
+                                shimSendButton
+                                // sendButton
                             }
                         }
                     }
@@ -251,6 +252,36 @@ struct CommentEditorView: View {
                     }
                 }
             }
+        case let .unifiedPost(post):
+            VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
+                HStack {
+                    ExpectedView(post.community) { community in
+                        FullyQualifiedLinkView(
+                            community,
+                            labelStyle: .medium,
+                            blurred: post.nsfw.value ?? true
+                        )
+                    } placeholder: {
+                        Text("placeholder@placeholder")
+                            .redacted(reason: .placeholder)
+                    }
+
+                    Spacer()
+                    selectTextButton
+                }
+                // LargePostBodyView(post: post, isPostPage: true, shouldBlur: false)
+                DevPostView(post: post)
+                ExpectedView(post.creator) { creator in
+                    FullyQualifiedLinkView(
+                        creator,
+                        labelStyle: .medium,
+                        blurred: post.nsfw.value ?? false
+                    )
+                } placeholder: {
+                    Text("placeholder@placeholder")
+                        .redacted(reason: .placeholder)
+                }
+            }
         case nil:
             ProgressView()
         }
@@ -277,11 +308,23 @@ struct CommentEditorView: View {
     }
     
     @ViewBuilder
-    var sendButton: some View {
+    var shimSendButton: some View {
+        switch resolvedContext {
+        case let .unifiedPost(post):
+            if let id = post.id.value {
+                sendButton(id: id)
+            }
+        default:
+            sendButton()
+        }
+    }
+    
+    @ViewBuilder
+    func sendButton(id: Int = -1) -> some View {
         Button("Send", icon: commentToEdit != nil ? .general.success : .lemmy.send) {
             sending = true
             Task(priority: .userInitiated) {
-                await send()
+                await send(id: id)
             }
         }
         .disabled(resolutionState != .success || textIsEmpty || slurMatch != nil)

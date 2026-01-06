@@ -32,6 +32,12 @@ extension CommentEditorView {
                         resolutionState = .success
                         resolvedContext = .comment(comment)
                     }
+                case let .unifiedPost(post):
+                    let post = try await account.api.unifiedGetPost(url: post.actorId.url)
+                    Task { @MainActor in
+                        resolutionState = .success
+                        resolvedContext = .unifiedPost(post)
+                    }
                 }
             }
             
@@ -62,7 +68,8 @@ extension CommentEditorView {
         }
     }
     
-    func send() async {
+    // TODO: UnifiedComment remove id shim, just pass in reply function
+    func send(id: Int = -1) async {
         uploadHistory.deleteWhereNotPresent(in: textView.text)
         do {
             if let commentToEdit {
@@ -77,6 +84,10 @@ extension CommentEditorView {
                 case let .comment(comment):
                     result = try await comment.reply(content: textView.text)
                     parent = comment
+                case let .unifiedPost(post):
+                    assert(id > 0, "Must provide id for unifiedPost")
+                    result = try await post.api.replyToPost(id: id, content: textView.text)
+                    parent = nil
                 }
                 commentTreeTracker?.insertCreatedComment(result, parent: parent)
             } else {

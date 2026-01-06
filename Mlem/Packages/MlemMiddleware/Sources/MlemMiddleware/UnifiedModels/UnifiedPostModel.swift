@@ -192,7 +192,10 @@ public protocol UnifiedModelProviding: AnyObject, CacheIdentifiable, ContentMode
 }
 
 @Observable
-public class UnifiedPostModel: UnifiedModelProviding, FeedLoadable {
+public class UnifiedPostModel:
+    UnifiedModelProviding,
+    FeedLoadable,
+    SelectableContentProviding {
     public typealias Properties = PostProperties
     
     @ObservationIgnored
@@ -382,6 +385,17 @@ public extension UnifiedPostModel {
             }
         }
     }
+    
+    // Reply
+    
+    var reply: ((String, Int?) async throws -> Comment2)? {
+        if let id = id.value {
+            return { content, languageId in
+                try await self.api.replyToPost(id: id, content: content, languageId: languageId)
+            }
+        }
+        return nil
+    }
 }
 
 // MARK: - FeedLoadable
@@ -489,4 +503,10 @@ extension UnifiedPostModel: ImagePrefetchProviding {
         
         return ret
     }
+}
+
+// MARK: SelectableContentProviding
+
+public extension UnifiedPostModel {
+    var selectableContent: String? { content.value_ as? String }
 }
