@@ -22,74 +22,55 @@ extension UnifiedPostModel {
     // MARK: - Actions
     
     func upvoteAction(appState: AppState, feedback: Set<FeedbackType> = []) -> BasicAction? {
-        if let toggleUpvoted, let votes = votes.value {
-            return .init(id: "upvote\(actorId)",
-                         appearance: .upvote(isOn: votes.myVote == .upvote),
-                         callback: { toggleUpvoted(feedback) }
-            )
-        }
-        return nil
-    }
-    
-    func downvoteAction(appState: AppState, feedback: Set<FeedbackType> = []) -> BasicAction? {
-        if let toggleDownvoted, let votes = votes.value {
-            let enabled = api.canInteract(appState: appState) && downvotesEnabled
-            let callback = enabled ? { toggleDownvoted(feedback) } : nil
-            return .init(
-                id: "downvote\(actorId)",
-                appearance: .downvote(isOn: votes.myVote == .downvote),
-                callback: callback
-            )
-        }
-        return nil
-    }
-    
-    func saveAction(appState: AppState, feedback: Set<FeedbackType> = []) -> BasicAction? {
-        if let toggleSaved, let saved = saved.value {
-            let callback = api.canInteract(appState: appState) ? { toggleSaved(feedback) } : nil
-            return .init(
-                id: "save\(actorId)",
-                appearance: .save(isOn: saved),
-                callback: callback
-            )
-        }
-        return nil
-    }
-    
-    // TODO: NOW make this generic in new Interactable
-    func replyAction(appState: AppState, commentTreeTracker: CommentTreeTracker? = nil) -> BasicAction {
-        .init(
-            id: "reply\(actorId)",
-            appearance: .reply(),
-            callback: api.canInteract(appState: appState) ? { @MainActor in
-                NavigationModel.main.openSheet(.createComment(.unifiedPost(self), commentTreeTracker: commentTreeTracker))
-            } : nil
+        guard let toggleUpvoted, let votes = votes.value else { return nil }
+        return .init(id: "upvote\(actorId)",
+                     appearance: .upvote(isOn: votes.myVote == .upvote),
+                     callback: { toggleUpvoted(feedback) }
         )
     }
     
-//    // TODO: NOW make this generic in new Shareable
-//    func shareAction(navigation: NavigationLayer?) -> BasicAction? {
-//        let url: URL?
-//        switch Settings.get(\.links_shareMode) {
-//        case .myInstance:
-//            url = self.trueUrl
-//        case .originalInstance:
-//            url = self.actorId.url
-//        case .lemmyverse:
-//            url = nil // self.lemmyverseUrl // TODO: NOW
-//        case .askEveryTime:
-//            url = nil
-//        }
-//        
-//        return .init(id: "share\(actorId)", appearance: .share(), callback: {
-//            if let url, let navigation {
-//                navigation.model?.shareInfo = .init(url: url, actions: []) // self.shareSheetActions())
-//            } else {
-//                navigation?.openSheet(.shareInstancePicker(self))
-//            }
-//        })
-//    }
+    func downvoteAction(appState: AppState, feedback: Set<FeedbackType> = []) -> BasicAction? {
+        guard api.canInteract(appState: appState) && downvotesEnabled,
+              let toggleDownvoted, let votes = votes.value else { return nil }
+        return .init(
+            id: "downvote\(actorId)",
+            appearance: .downvote(isOn: votes.myVote == .downvote),
+            callback: { toggleDownvoted(feedback) }
+        )
+    }
     
+    func saveAction(appState: AppState, feedback: Set<FeedbackType> = []) -> BasicAction? {
+        guard api.canInteract(appState: appState),
+              let toggleSaved, let saved = saved.value else { return nil }
+        return .init(
+            id: "save\(actorId)",
+            appearance: .save(isOn: saved),
+            callback: { toggleSaved(feedback) }
+        )
+    }
+    
+    // TODO: NOW make this generic in new Interactable
+    func replyAction(appState: AppState, commentTreeTracker: CommentTreeTracker? = nil) -> BasicAction? {
+        guard api.canInteract(appState: appState) else { return nil }
+        return .init(
+            id: "reply\(actorId)",
+            appearance: .reply(),
+            callback: { @MainActor in
+                NavigationModel.main.openSheet(.createComment(.unifiedPost(self), commentTreeTracker: commentTreeTracker))
+            }
+        )
+    }
+    
+    func hideAction(appState: AppState, feedback: Set<FeedbackType>)  -> BasicAction? {
+        guard api.supports(.hidePosts, defaultValue: true) && api.canInteract(appState: appState),
+              let hidden = hidden.value, let toggleHidden = toggleHidden else { return nil }
+        return .init(
+            id: "hide\(uid)",
+            appearance: .hide(isOn: hidden),
+            callback: { toggleHidden(feedback) }
+        )
+    }
+
     func action(
         appState: AppState,
         navigation: NavigationLayer,
@@ -104,12 +85,9 @@ extension UnifiedPostModel {
         case .downvote: downvoteAction(appState: appState, feedback: feedback)
         case .save: saveAction(appState: appState, feedback: feedback)
         case .reply: replyAction(appState: appState, commentTreeTracker: commentTreeTracker)
-            //        case .share:
-            //            <#code#>
-            //        case .selectText:
-            //            <#code#>
-            //        case .hide:
-            //            <#code#>
+        case .share: shareAction(navigation: navigation)
+        case .selectText: selectTextAction()
+        case .hide: hideAction(appState: appState, feedback: feedback)
             //        case .block:
             //            <#code#>
             //        case .report:
