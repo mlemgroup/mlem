@@ -500,6 +500,7 @@
 		CD8DB93A2D22004000EB0C7B /* Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8DB9392D22003D00EB0C7B /* Animations.swift */; };
 		CD8DCAF92C5E92E8003E4DD7 /* Profile1Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8DCAF82C5E92E8003E4DD7 /* Profile1Providing+Extensions.swift */; };
 		CD93420B2DCD069800945333 /* InstanceUptimeView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD93420A2DCD069800945333 /* InstanceUptimeView+Logic.swift */; };
+		CD950E0F2F0ED6F7002A0595 /* FeedPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD950E042F0ED6F7002A0595 /* FeedPostView.swift */; };
 		CD9857A42C5E7F9D0084C71F /* NsfwOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9857A32C5E7F9D0084C71F /* NsfwOverlayView.swift */; };
 		CD9BD5812D8F8F7D0006AB7F /* ZoomRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9BD5802D8F8F750006AB7F /* ZoomRecognizer.swift */; };
 		CD9CFA2A2C2E1E8400739BBC /* FeedHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9CFA292C2E1E8400739BBC /* FeedHeaderView.swift */; };
@@ -544,7 +545,6 @@
 		CDD8E30D2EEA07F100FC4C8D /* ExportableCommentLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD8E30C2EEA07EE00FC4C8D /* ExportableCommentLoader.swift */; };
 		CDD99C3C2C73F3FF0010367F /* DeleteAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD99C3B2C73F3FF0010367F /* DeleteAccountView.swift */; };
 		CDD99C3E2C73F4380010367F /* WarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD99C3D2C73F4380010367F /* WarningView.swift */; };
-		CDE021AD2BFA43380052FD61 /* FeedPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE021AC2BFA43380052FD61 /* FeedPostView.swift */; };
 		CDE1F18F2C63D75A008AF042 /* LegacySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE1F18E2C63D75A008AF042 /* LegacySettings.swift */; };
 		CDE1F1942C63DF44008AF042 /* PlatformConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE1F1932C63DF44008AF042 /* PlatformConstants.swift */; };
 		CDE1F1962C63DF89008AF042 /* PhoneConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE1F1952C63DF89008AF042 /* PhoneConstants.swift */; };
@@ -1061,6 +1061,7 @@
 		CD8DB9392D22003D00EB0C7B /* Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animations.swift; sourceTree = "<group>"; };
 		CD8DCAF82C5E92E8003E4DD7 /* Profile1Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Profile1Providing+Extensions.swift"; sourceTree = "<group>"; };
 		CD93420A2DCD069800945333 /* InstanceUptimeView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InstanceUptimeView+Logic.swift"; sourceTree = "<group>"; };
+		CD950E042F0ED6F7002A0595 /* FeedPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedPostView.swift; sourceTree = "<group>"; };
 		CD9857A32C5E7F9D0084C71F /* NsfwOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NsfwOverlayView.swift; sourceTree = "<group>"; };
 		CD9BD5802D8F8F750006AB7F /* ZoomRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomRecognizer.swift; sourceTree = "<group>"; };
 		CD9CFA292C2E1E8400739BBC /* FeedHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedHeaderView.swift; sourceTree = "<group>"; };
@@ -1105,7 +1106,6 @@
 		CDD8E30C2EEA07EE00FC4C8D /* ExportableCommentLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportableCommentLoader.swift; sourceTree = "<group>"; };
 		CDD99C3B2C73F3FF0010367F /* DeleteAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountView.swift; sourceTree = "<group>"; };
 		CDD99C3D2C73F4380010367F /* WarningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningView.swift; sourceTree = "<group>"; };
-		CDE021AC2BFA43380052FD61 /* FeedPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedPostView.swift; sourceTree = "<group>"; };
 		CDE1F18E2C63D75A008AF042 /* LegacySettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacySettings.swift; sourceTree = "<group>"; };
 		CDE1F1932C63DF44008AF042 /* PlatformConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformConstants.swift; sourceTree = "<group>"; };
 		CDE1F1952C63DF89008AF042 /* PhoneConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneConstants.swift; sourceTree = "<group>"; };
@@ -2338,14 +2338,14 @@
 		CDE021AB2BFA43220052FD61 /* Feed Posts */ = {
 			isa = PBXGroup;
 			children = (
-				CDBFCB662C04EA59008CD468 /* Feed Post Components */,
-				CDE021AC2BFA43380052FD61 /* FeedPostView.swift */,
 				CDB2EC7C2BFADAB300DBC0EF /* CompactPostView.swift */,
-				CDB2EC7E2BFADACC00DBC0EF /* HeadlinePostView.swift */,
+				CD950E042F0ED6F7002A0595 /* FeedPostView.swift */,
 				03E46ACC2D121C19002589DB /* HeadlinePostBodyView.swift */,
-				CDB2EC802BFADADF00DBC0EF /* LargePostView.swift */,
+				CDB2EC7E2BFADACC00DBC0EF /* HeadlinePostView.swift */,
 				03B431BB2C455838001A1EB5 /* LargePostBodyView.swift */,
+				CDB2EC802BFADADF00DBC0EF /* LargePostView.swift */,
 				CDBFCB6B2C054AA7008CD468 /* TilePostView.swift */,
+				CDBFCB662C04EA59008CD468 /* Feed Post Components */,
 			);
 			path = "Feed Posts";
 			sourceTree = "<group>";
@@ -2933,7 +2933,6 @@
 				037DE0752CE023E3007F7B92 /* BlockListView.swift in Sources */,
 				CD3FC6802D4A75090088E63B /* CounterApperance+StaticValues.swift in Sources */,
 				038028D52CAB479D0091A8A2 /* PostEditorView+Views.swift in Sources */,
-				CDE021AD2BFA43380052FD61 /* FeedPostView.swift in Sources */,
 				0320B64F2C8A638A00D38548 /* SignUpView.swift in Sources */,
 				036FFA2D2D45110C00998D8A /* ChangePasswordView.swift in Sources */,
 				03ECD7192C81195000D48BF6 /* PostEditorView+LinkView.swift in Sources */,
@@ -3041,6 +3040,7 @@
 				036ED6792D0AF3740018E5EA /* PinnedSortTracker.swift in Sources */,
 				CDC44A362D1CBC280030F01C /* ReadPostIndicator.swift in Sources */,
 				0353948D2CA080EB00795AA5 /* FeedWelcomeView.swift in Sources */,
+				CD950E0F2F0ED6F7002A0595 /* FeedPostView.swift in Sources */,
 				0343C0482D3AD6DB001CF709 /* Set+Extensions.swift in Sources */,
 				034A85712EC0A1FA00E5F904 /* InstanceCommunityListView.swift in Sources */,
 				CDCC7FEF2D9B1E7100CE18DA /* CachedComputation.swift in Sources */,

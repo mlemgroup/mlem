@@ -58,7 +58,9 @@ struct CrossPostListView: View {
                             }
                             .contentShape(.rect)
                             .onTapGesture {
-                                navigation.push(.post(crossPost))
+                                // TODO: NOW
+                                print("TODO")
+                                // navigation.push(.post(crossPost))
                             }
                         }
                     }

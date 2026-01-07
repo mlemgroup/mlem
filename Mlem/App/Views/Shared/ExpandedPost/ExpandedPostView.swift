@@ -30,8 +30,7 @@ struct ExpandedPostView<Content: View>: View {
     @Setting(\.interactionBar_post) var postInteractionBar
     @Setting(\.interactionBar_comment) var commentInteractionBar
 
-    var post: (any PostStubProviding)?
-    var contentLoaderError: Error?
+    var post: UnifiedPostModel
     let isLoading: Bool
     let highlightedComment: (any CommentStubProviding)?
     let content: Content
@@ -47,8 +46,8 @@ struct ExpandedPostView<Content: View>: View {
     @State var previousVisitRecord: PreviousVisitRecord?
     
     init(
-        post: (any PostStubProviding)?,
-        contentLoaderError: Error?,
+        post: UnifiedPostModel,
+        contentLoaderError: Error?, // TODO: NOW remove
         isLoading: Bool,
         tracker: CommentTreeTracker?,
         highlightedComment: (any CommentStubProviding)? = nil,
@@ -56,7 +55,6 @@ struct ExpandedPostView<Content: View>: View {
         @ViewBuilder content: () -> Content = { EmptyView() }
     ) {
         self.post = post
-        self.contentLoaderError = contentLoaderError
         self.isLoading = isLoading
         self.highlightedComment = highlightedComment
         self.content = content()
@@ -68,20 +66,14 @@ struct ExpandedPostView<Content: View>: View {
         // Using a `ZStack` here rather than `if`/`else` because there needs to
         // be a delay between the `content()` appearing and calling `scrollTo`
         VStack {
-            if let post = post as? any Post {
-                content(post: post, isLoading: isLoading)
-                    .externalApiWarning(entity: post, isLoading: isLoading)
-                    .task(id: tracker == nil) {
-                        if let tracker, post.api == appState.firstApi, tracker.loadingState == .idle {
-                            post.markRead()
-                        }
+            content(post: post, isLoading: isLoading)
+                .themedGroupedBackground()
+                .externalApiWarning(entity: post, isLoading: isLoading)
+                .task(id: tracker == nil) {
+                    if let tracker, post.api == appState.firstApi, tracker.loadingState == .idle {
+                        post.updateRead(true)
                     }
-            } else if let contentLoaderError {
-                ErrorView(.init(error: contentLoaderError))
-            } else {
-                ProgressView()
-                    .tint(.themedSecondary)
-            }
+                }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .overlay {
@@ -101,7 +93,7 @@ struct ExpandedPostView<Content: View>: View {
     }
     
     // swiftlint:disable:next function_body_length
-    @ViewBuilder func content(post: any Post, isLoading: Bool) -> some View {
+    @ViewBuilder func content(post: UnifiedPostModel, isLoading: Bool) -> some View {
         GeometryReader { geo in
             ScrollViewReader { proxy in
                 FancyScrollView {
@@ -116,9 +108,6 @@ struct ExpandedPostView<Content: View>: View {
                         
                         if let errorDetails = tracker?.errorDetails {
                             ErrorView(errorDetails)
-                                .frame(maxWidth: .infinity)
-                        } else if let contentLoaderError {
-                            ErrorView(.init(error: contentLoaderError))
                                 .frame(maxWidth: .infinity)
                         } else if hasNoComments {
                             noCommentsView
@@ -195,15 +184,16 @@ struct ExpandedPostView<Content: View>: View {
     }
     
     @ViewBuilder
-    func toolbarContent(post: any Post, isLoading: Bool, scrollProxy: ScrollViewProxy) -> some View {
+    func toolbarContent(post: UnifiedPostModel, isLoading: Bool, scrollProxy: ScrollViewProxy) -> some View {
         if let tracker {
             sortPicker(tracker: tracker)
         }
-        if isLoading || post.shouldShowLoadingSymbol() {
-            ProgressView()
-        } else {
+        // TODO: NOW
+//        if isLoading || post.shouldShowLoadingSymbol() {
+//            ProgressView()
+//        } else {
             ToolbarEllipsisMenu {
-                PostEllipsisMenuContent(post: post, type: [.basic, .moderator])
+                UnifiedPostEllipsisMenuContent(post: post, type: [.basic, .moderator])
                 if !tapPostsToCollapse {
                     Section {
                         Button(
@@ -214,16 +204,16 @@ struct ExpandedPostView<Content: View>: View {
                         }
                     }
                 }
-            }
+//            }
         }
     }
     
     @ViewBuilder
-    func postView(_ post: any Post, scrollProxy: ScrollViewProxy) -> some View {
+    func postView(_ post: UnifiedPostModel, scrollProxy: ScrollViewProxy) -> some View {
         Group {
             if postCollapsed {
                 HStack {
-                    post.taggedTitle(communityContext: post.community_)
+                    post.taggedTitle(communityContext: post.community.value)
                         .font(.headline)
                         .symbolVariant(.fill)
                         .background(.themedSecondaryGroupedBackground)

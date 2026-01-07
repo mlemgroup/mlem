@@ -84,8 +84,13 @@ extension NavigationPage {
                 Text(verbatim: "Error")
             }
         case let .post(post, scrollTargetedComment, communityContext, _):
-            PostPage(post: post, scrollTargetedComment: scrollTargetedComment?.wrappedValue)
+            ExpandedPostView(post: post, contentLoaderError: nil, isLoading: false, tracker: nil)
                 .environment(\.communityContext, communityContext?.wrappedValue)
+        case let .postStub(post, scrollTargetedComment, communityContext, _):
+            // TODO: NOW
+            PostPage()
+            // PostPage(post: post, scrollTargetedComment: scrollTargetedComment?.wrappedValue)
+            //    .environment(\.communityContext, communityContext?.wrappedValue)
         case let .comment(comment, comments: comments, showViewPostButton, exposeRemovedContent):
             CommentPage(
                 comment: comment,
@@ -226,9 +231,6 @@ extension NavigationPage {
             ExportableCommentEditorView(comment: comment.wrappedValue, commentTreeTracker: tracker)
         case let .actionSheet(sections):
             ActionSheet(sections: sections.wrappedValue)
-        // DEV
-        case let .devPost(post):
-            DevPostView(post: post.wrappedValue)
         }
     }
 }

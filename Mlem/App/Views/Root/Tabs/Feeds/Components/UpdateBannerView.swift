@@ -70,7 +70,7 @@ struct UpdateBannerView: View {
         isLoading = true
         Task {
             do {
-                let announcementPost = try await appState.firstApi.getPost(url: url)
+                let announcementPost = try await appState.firstApi.unifiedGetPost(url: url)
                 navigation.push(.post(announcementPost))
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     dismiss()

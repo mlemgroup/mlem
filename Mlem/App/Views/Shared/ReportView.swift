@@ -20,16 +20,18 @@ struct ReportView: View {
             .environment(\.reportContext, report)
     }
     
+    // TODO: NOW
     @ViewBuilder
     var targetView: some View {
         switch report.target {
         case let .post(post):
-            NavigationLink(.post(post)) {
-                FeedPostView(post: post, overridePostSize: .headline, favoredLink: .creator) {
-                    reportDetailsView
-                    resolutionInfoView
-                }
-            }
+            Text("TODO")
+//            NavigationLink(.post(post)) {
+//                FeedPostView(post: post, overridePostSize: .headline, favoredLink: .creator) {
+//                    reportDetailsView
+//                    resolutionInfoView
+//                }
+//            }
         case let .comment(comment):
             NavigationLink(.comment(comment)) {
                 FeedCommentView(comment: comment, overriddenSize: .large) {
@@ -91,20 +93,21 @@ struct ReportView: View {
         }
     }
     
+    // TODO: NOW
     @ViewBuilder
     func legacyPostView(post: Post1, community: Community1, creator: Person1) -> some View {
-        NavigationLink(.post(post)) {
-            VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
-                FullyQualifiedLinkView(creator, labelStyle: .medium)
-                // TODO: NOW
-                // HeadlinePostBodyView(post: post)
-                reportDetailsView
-                resolveButton
-            }
-            .padding(Constants.main.standardSpacing)
-            .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
-            .paletteBorder(cornerRadius: Constants.main.standardSpacing)
-        }
+        Text("TODO")
+//        NavigationLink(.post(post)) {
+//            VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
+//                FullyQualifiedLinkView(creator, labelStyle: .medium)
+//                HeadlinePostBodyView(post: post)
+//                reportDetailsView
+//                resolveButton
+//            }
+//            .padding(Constants.main.standardSpacing)
+//            .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+//            .paletteBorder(cornerRadius: Constants.main.standardSpacing)
+//        }
     }
     
     @ViewBuilder

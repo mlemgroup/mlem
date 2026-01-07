@@ -24,6 +24,12 @@ enum NavigationPage: Hashable {
     case testInbox
     case quickSwitcher
     case post(
+        _ post: UnifiedPostModel,
+        scrollTargetedComment: HashWrapper<any CommentStubProviding>? = nil,
+        communityContext: HashWrapper<any Community1Providing>? = nil,
+        navigationNamespace: Namespace.ID? = nil
+    )
+    case postStub(
         _ post: AnyPost,
         scrollTargetedComment: HashWrapper<any CommentStubProviding>? = nil,
         communityContext: HashWrapper<any Community1Providing>? = nil,
@@ -76,29 +82,43 @@ enum NavigationPage: Hashable {
     case exportCommentImage(_ comment: HashWrapper<any Comment>, tracker: CommentTreeTracker?)
     case actionSheet(_ actions: HashWrapper<[ActionSheetSection]>)
     
-    // DEV
-    case devPost(_ post: HashWrapper<UnifiedPostModel>)
-    static func devPost(_ post: UnifiedPostModel) -> NavigationPage {
-        Self.devPost(.init(wrappedValue: post))
-    }
+//    static func post(_ post: UnifiedPostModel, scrollTargetedComment: (any CommentStubProviding)? = nil) -> NavigationPage {
+//        if let scrollTargetedComment {
+//            return Self.post(post, scrollTargetedComment: .init(wrappedValue: scrollTargetedComment))
+//        } else {
+//            return Self.post(post)
+//        }
+//    }
     
-    static func post(_ post: any PostStubProviding, scrollTargetedComment: (any CommentStubProviding)? = nil) -> NavigationPage {
-        if let scrollTargetedComment {
-            return Self.post(.init(post), scrollTargetedComment: .init(wrappedValue: scrollTargetedComment))
+    static func post(
+        _ post: UnifiedPostModel,
+        communityContext: (any Community1Providing)?,
+        navigationNamespace: Namespace.ID? = nil
+    ) -> NavigationPage {
+        if let communityContext {
+            Self.post(post, communityContext: .init(wrappedValue: communityContext), navigationNamespace: navigationNamespace)
         } else {
-            return Self.post(.init(post))
+            Self.post(post, navigationNamespace: navigationNamespace)
         }
     }
     
-    static func post(
+    static func postStub(_ post: any PostStubProviding, scrollTargetedComment: (any CommentStubProviding)? = nil) -> NavigationPage {
+        if let scrollTargetedComment {
+            return Self.postStub(.init(post), scrollTargetedComment: .init(wrappedValue: scrollTargetedComment))
+        } else {
+            return Self.postStub(.init(post))
+        }
+    }
+    
+    static func postStub(
         _ post: any PostStubProviding,
         communityContext: (any Community1Providing)?,
         navigationNamespace: Namespace.ID? = nil
     ) -> NavigationPage {
         if let communityContext {
-            Self.post(.init(post), communityContext: .init(wrappedValue: communityContext), navigationNamespace: navigationNamespace)
+            Self.postStub(.init(post), communityContext: .init(wrappedValue: communityContext), navigationNamespace: navigationNamespace)
         } else {
-            Self.post(.init(post), navigationNamespace: navigationNamespace)
+            Self.postStub(.init(post), navigationNamespace: navigationNamespace)
         }
     }
     

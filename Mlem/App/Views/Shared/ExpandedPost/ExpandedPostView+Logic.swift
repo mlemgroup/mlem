@@ -59,22 +59,21 @@ extension ExpandedPostView {
         if tracker?.loadingState == .done {
             return tracker?.nodesKeyedByActorId.count == 0
         }
-        return (post?.commentCount_ ?? -1) == 0
+        return (post.commentCount.value ?? -1) == 0
     }
     
     var showLoadingSymbol: Bool {
         // Don't need to show ProgressView if there's nothing to scroll to
         if scrollTargetedComment == nil { return false }
+        return !scrolledToScrollTargetedComment
         
-        // If there's an error, we don't want to cover up the error view with the ProgressView
-        if contentLoaderError != nil { return false }
-        
-        let hasFinishedLoading = !(post is any Post3Providing && scrolledToScrollTargetedComment)
-        return hasFinishedLoading
+        // TODO: NOW check post loading... needed?
+//        let hasFinishedLoading = !(post is any Post3Providing && scrolledToScrollTargetedComment)
+//        return hasFinishedLoading
     }
     
-    func showScrollToLastVisitButton(post: any Post) -> Bool {
-        guard (post.commentCount_ ?? 0) > 10 else { return false }
+    func showScrollToLastVisitButton(post: UnifiedPostModel) -> Bool {
+        guard (post.commentCount.value_ ?? 0) > 10 else { return false }
         var commentId = previousVisitRecord?.commentActorId
         if topVisibleItem.isAtPost, commentId == nil {
             commentId = topVisibleItem.furthestVisitedComment
@@ -86,7 +85,7 @@ extension ExpandedPostView {
         return index > 1
     }
     
-    func togglePostCollapsed(post: any Post, scrollProxy: ScrollViewProxy) {
+    func togglePostCollapsed(post: UnifiedPostModel, scrollProxy: ScrollViewProxy) {
         withAnimation(UIAccessibility.isReduceMotionEnabled ? nil : .default) {
             postCollapsed.toggle()
             if postCollapsed {
@@ -124,18 +123,16 @@ extension ExpandedPostView {
     }
     
     func updateAnchors(_ anchors: AnchorsKey.Value, in proxy: GeometryProxy) {
-        guard let postActorId = post?.actorId_ else { return }
         topVisibleItem.wrappedValue = topCommentRow(of: anchors, in: proxy)
-        if (topVisibleItem.wrappedValue == postActorId) != topVisibleItem.isAtPost {
+        if (topVisibleItem.wrappedValue == post.actorId) != topVisibleItem.isAtPost {
             topVisibleItem.isAtPost.toggle()
         }
         updateHistory()
     }
     
     private func updateHistory() {
-        guard let postActorId = post?.actorId_ else { return }
-        if let commentActorId = topVisibleItem.wrappedValue, topVisibleItem.wrappedValue != postActorId {
-            expandedPostHistoryTracker.insert(postActorId: postActorId, commentActorId: commentActorId)
+        if let commentActorId = topVisibleItem.wrappedValue, topVisibleItem.wrappedValue != post.actorId {
+            expandedPostHistoryTracker.insert(postActorId: post.actorId, commentActorId: commentActorId)
             if let furthestVisitedComment = topVisibleItem.furthestVisitedComment, let tracker {
                 let nodes = tracker.nodes.reduce([]) { $0 + $1.tree(hideIfCollapsed: false) }
                 let furthestVisitedCommentIndex = nodes.firstIndex { $0.actorId == furthestVisitedComment }
@@ -163,9 +160,9 @@ extension ExpandedPostView {
     }
     
     func scrollToNextComment() {
-        guard let tracker, let postActorId = post?.actorId_ else { return }
+        guard let tracker else { return }
         if let topVisibleItem = topVisibleItem.wrappedValue {
-            if topVisibleItem == postActorId, let first = tracker.nodes.first {
+            if topVisibleItem == post.actorId, let first = tracker.nodes.first {
                 jumpButtonTarget = first.actorId
                 return
             }
@@ -179,12 +176,12 @@ extension ExpandedPostView {
     }
     
     func scrollToPreviousComment() {
-        guard let tracker, let postActorId = post?.actorId_ else { return }
-        if let topVisibleItem = topVisibleItem.wrappedValue, topVisibleItem != postActorId {
+        guard let tracker else { return }
+        if let topVisibleItem = topVisibleItem.wrappedValue, topVisibleItem != post.actorId {
             if let comment = tracker.nodesKeyedByActorId[topVisibleItem] {
                 if var topLevelIndex = tracker.nodes.firstIndex(of: comment.topParent) {
                     if topLevelIndex < 0 || comment == tracker.nodes.first {
-                        jumpButtonTarget = postActorId
+                        jumpButtonTarget = post.actorId
                     } else {
                         if comment.parent == nil { topLevelIndex -= 1 }
                         jumpButtonTarget = tracker.nodes[topLevelIndex].actorId

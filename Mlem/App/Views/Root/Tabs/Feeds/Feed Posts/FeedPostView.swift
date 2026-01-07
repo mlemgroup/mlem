@@ -1,8 +1,8 @@
 //
-//  FeedPostView.swift
+//  DevFeedPostView.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-05-19.
+//  Created by Eric Andrews on 2026-01-05.
 //
 
 import Foundation
@@ -28,7 +28,7 @@ struct FeedPostView<EmbeddedContent: View>: View {
     @Setting(\.interactionBar_postReport) var postReportInteractionBar
     @Setting(\.interactionBar_alternateReportLayout) var alternateInteractionBarLayoutForReports
     
-    let post: any Post1Providing
+    let post: UnifiedPostModel
     let favoredLink: PostViewNavigationLink?
     let requireConsistentHeight: Bool
     @State var overridePostSize: PostSize?
@@ -38,7 +38,7 @@ struct FeedPostView<EmbeddedContent: View>: View {
     @ViewBuilder let embeddedContent: () -> EmbeddedContent
     
     init(
-        post: any Post1Providing,
+        post: UnifiedPostModel,
         overridePostSize: PostSize? = nil,
         favoredLink: PostViewNavigationLink? = nil,
         requireConsistentHeight: Bool = false,
@@ -48,7 +48,8 @@ struct FeedPostView<EmbeddedContent: View>: View {
         self.favoredLink = favoredLink
         self.requireConsistentHeight = requireConsistentHeight
         self.embeddedContent = embeddedContent
-        self._obscured = .init(wrappedValue: FiltersTracker.main.postWouldBeFiltered(post))
+        // self._obscured = .init(wrappedValue: FiltersTracker.main.postWouldBeFiltered(post))
+        self._obscured = .init(wrappedValue: false)
         self._overridePostSize = .init(wrappedValue: overridePostSize)
     }
     
@@ -64,7 +65,7 @@ struct FeedPostView<EmbeddedContent: View>: View {
             } else {
                 content
                     .overlay(alignment: .topLeading) {
-                        if differentiateWithoutColor, !(post.read_ ?? false), readPostIndicator == .outline {
+                        if differentiateWithoutColor, !(post.read.value ?? false), readPostIndicator == .outline {
                             RoundedRectangle(cornerRadius: postSize.cornerRadius)
                                 .stroke(lineWidth: .init(readOutlineThickness))
                                 .foregroundStyle(.themedSecondary)
@@ -83,9 +84,9 @@ struct FeedPostView<EmbeddedContent: View>: View {
         }
         .contentShape(.interaction, .rect)
         .paletteBorder(cornerRadius: postSize.cornerRadius)
-        .onChange(of: filtersTracker.changeHash) {
-            obscured = filtersTracker.postWouldBeFiltered(post)
-        }
+//        .onChange(of: filtersTracker.changeHash) {
+//            obscured = filtersTracker.postWouldBeFiltered(post)
+//        }
         .onAppear {
             if shouldRenderCompact() {
                 overridePostSize = .compact
@@ -98,7 +99,7 @@ struct FeedPostView<EmbeddedContent: View>: View {
                 overridePostSize = .compact
             }
         }
-        .onChange(of: post.read_) {
+        .onChange(of: post.read.value) {
             if shouldRenderCompact() {
                 withAnimation {
                     overridePostSize = .compact
@@ -118,27 +119,22 @@ struct FeedPostView<EmbeddedContent: View>: View {
             .clipShape(.rect(cornerRadius: postSize.cornerRadius))
     }
     
-    // TODO: NOW remove
     @ViewBuilder
     var content: some View {
         switch postSize {
         case .compact:
-            Text("TODO")
-            // CompactPostView(post: post, requireConsistentHeight: requireConsistentHeight)
+            CompactPostView(post: post, requireConsistentHeight: requireConsistentHeight)
         case .tile:
-            Text("TODO")
-            // TilePostView(post: post)
+            TilePostView(post: post)
         case .headline:
-            Text("TODO")
-//            HeadlinePostView(
-//                post: post,
-//                favoredLink: favoredLink,
-//                requireConsistentHeight: requireConsistentHeight,
-//                embeddedContent: embeddedContent
-//            )
+            HeadlinePostView(
+                post: post,
+                favoredLink: favoredLink,
+                requireConsistentHeight: requireConsistentHeight,
+                embeddedContent: embeddedContent
+            )
         case .large:
-            Text("TODO")
-            // LargePostView(post: post, favoredLink: favoredLink)
+            LargePostView(post: post, favoredLink: favoredLink)
         }
     }
     
@@ -151,7 +147,7 @@ struct FeedPostView<EmbeddedContent: View>: View {
     
     func shouldRenderCompact() -> Bool {
         guard settingsPostSize != .tile, settingsPostSize != .compact else { return false }
-        return post.read_ ?? false &&
+        return post.read.value ?? false &&
             ((communityContext == nil && post.pinnedInstance) || (communityContext != nil && post.pinnedCommunity))
     }
 }

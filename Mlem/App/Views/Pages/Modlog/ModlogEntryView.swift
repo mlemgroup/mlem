@@ -224,12 +224,14 @@ struct ModlogEntryView: View {
         }
     }
     
+    // TODO: NOW
     @ViewBuilder
     func postLink(post: any Post, community: any Community) -> some View {
-        NavigationLink(.post(post)) {
-            FooterLinkView(title: post.title, subtitle: community.fullNameWithPrefix)
-        }
-        .id("\(id)_modlog_footer")
+        Text("TODO")
+//        NavigationLink(.post(post)) {
+//            FooterLinkView(title: post.title, subtitle: community.fullNameWithPrefix)
+//        }
+//        .id("\(id)_modlog_footer")
     }
     
     @ViewBuilder
