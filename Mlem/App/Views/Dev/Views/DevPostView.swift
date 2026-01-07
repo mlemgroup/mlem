@@ -22,12 +22,6 @@ struct DevPostView: View {
         self.post = post
     }
     
-    var animationHashValue: Int {
-        var hasher = Hasher()
-        hasher.combine(post.title.value != nil ? 1 : 0)
-        return hasher.finalize()
-    }
-    
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
@@ -45,9 +39,9 @@ struct DevPostView: View {
                         UnifiedPostEllipsisMenus(post: post)
                     }
                     
-                    ExpectedText(post.title, expectedLength: 30)
+                    Text(post.title)
                         .font(.headline)
-                    ExpectedMedia(url: post.linkUrl)
+                    MediaView(url: post.linkUrl)
                     
                     Divider()
                 }

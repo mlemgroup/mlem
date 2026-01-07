@@ -99,7 +99,7 @@ struct CommentEditorView: View {
                             if sending {
                                 ProgressView()
                             } else {
-                                shimSendButton
+                                sendButton
                             }
                         }
                     }
@@ -258,7 +258,7 @@ struct CommentEditorView: View {
                         FullyQualifiedLinkView(
                             community,
                             labelStyle: .medium,
-                            blurred: post.nsfw.value ?? true
+                            blurred: post.nsfw
                         )
                     } placeholder: {
                         Text("placeholder@placeholder")
@@ -274,7 +274,7 @@ struct CommentEditorView: View {
                     FullyQualifiedLinkView(
                         creator,
                         labelStyle: .medium,
-                        blurred: post.nsfw.value ?? false
+                        blurred: post.nsfw
                     )
                 } placeholder: {
                     Text("placeholder@placeholder")
@@ -307,23 +307,11 @@ struct CommentEditorView: View {
     }
     
     @ViewBuilder
-    var shimSendButton: some View {
-        switch resolvedContext {
-        case let .unifiedPost(post):
-            if let id = post.id.value {
-                sendButton(id: id)
-            }
-        default:
-            sendButton()
-        }
-    }
-    
-    @ViewBuilder
-    func sendButton(id: Int = -1) -> some View {
+    var sendButton: some View {
         Button("Send", icon: commentToEdit != nil ? .general.success : .lemmy.send) {
             sending = true
             Task(priority: .userInitiated) {
-                await send(id: id)
+                await send()
             }
         }
         .disabled(resolutionState != .success || textIsEmpty || slurMatch != nil)

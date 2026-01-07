@@ -46,12 +46,12 @@ extension UnifiedPostModel {
     }
     
     var toggleSaved: ((Set<FeedbackType>) -> Void)? {
-        if let updateSaved, let saved = saved.value {
+        if let saved = saved.value {
             return { feedback in
                 if feedback.contains(.haptic) {
                     HapticManager.main.play(haptic: .lightSuccess, tier: .low)
                 }
-                updateSaved(!saved)
+                self.updateSaved(!saved)
             }
         }
         return nil

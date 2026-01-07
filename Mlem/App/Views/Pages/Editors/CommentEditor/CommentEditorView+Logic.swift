@@ -68,8 +68,7 @@ extension CommentEditorView {
         }
     }
     
-    // TODO: UnifiedComment remove id shim, just pass in reply function
-    func send(id: Int = -1) async {
+    func send() async {
         uploadHistory.deleteWhereNotPresent(in: textView.text)
         do {
             if let commentToEdit {
@@ -85,8 +84,7 @@ extension CommentEditorView {
                     result = try await comment.reply(content: textView.text)
                     parent = comment
                 case let .unifiedPost(post):
-                    assert(id > 0, "Must provide id for unifiedPost")
-                    result = try await post.api.replyToPost(id: id, content: textView.text)
+                    result = try await post.api.replyToPost(id: post.id, content: textView.text)
                     parent = nil
                 }
                 commentTreeTracker?.insertCreatedComment(result, parent: parent)

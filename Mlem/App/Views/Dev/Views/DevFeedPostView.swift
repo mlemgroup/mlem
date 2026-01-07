@@ -16,6 +16,6 @@ struct DevFeedPostView: View {
     }
     
     var body: some View {
-        ExpectedText(post.title, expectedLength: 30)
+        Text(post.title)
     }
 }

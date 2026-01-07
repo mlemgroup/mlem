@@ -46,26 +46,26 @@ public class ExpectedValue<T> {
 public struct PostProperties: UnifiedPropertiesProviding {
     public typealias Snapshot = PostSnapshotProviding
     
-    // From Post1Snapshot
-    var actorId: ActorIdentifier?
-    var id: Int?
-    var creatorId: Int?
-    var communityId: Int?
-    var created: Date?
-    var title: String?
-    var content: String??
-    var linkUrl: URL??
-    var embed: PostEmbed??
-    var nsfw: Bool?
-    var thumbnailUrl: URL??
-    var updated: Date??
-    var languageId: Int?
-    var altText: String??
-    var deleted: Bool?
-    var removed: Bool?
-    var pinnedCommunity: Bool?
-    var pinnedInstance: Bool?
-    var locked: Bool?
+    // From Post1Snapshot, guaranteed to always be present
+    var actorId: ActorIdentifier
+    var id: Int
+    var creatorId: Int
+    var communityId: Int
+    var created: Date
+    var title: String
+    var content: String?
+    var linkUrl: URL?
+    var embed: PostEmbed?
+    var nsfw: Bool
+    var thumbnailUrl: URL?
+    var updated: Date?
+    var languageId: Int
+    var altText: String?
+    var deleted: Bool
+    var removed: Bool
+    var pinnedCommunity: Bool
+    var pinnedInstance: Bool
+    var locked: Bool
     
     // From Post2Snapshot
     var creator: (any Person)?
@@ -83,25 +83,25 @@ public struct PostProperties: UnifiedPropertiesProviding {
     
     @MainActor
     public mutating func update(with properties: Self) {
-        actorId = properties.actorId ?? actorId
-        id = properties.id ?? id
-        creatorId = properties.creatorId ?? creatorId
-        communityId = properties.communityId ?? communityId
-        created = properties.created ?? created
-        title = properties.title ?? title
-        content = properties.content ?? content
-        linkUrl = properties.linkUrl ?? linkUrl
-        embed = properties.embed ?? embed
-        nsfw = properties.nsfw ?? nsfw
-        thumbnailUrl = properties.thumbnailUrl ?? thumbnailUrl
-        updated = properties.updated ?? updated
-        languageId = properties.languageId ?? languageId
-        altText = properties.altText ?? altText
-        deleted = properties.deleted ?? deleted
-        removed = properties.removed ?? removed
-        pinnedCommunity = properties.pinnedCommunity ?? pinnedCommunity
-        pinnedInstance = properties.pinnedInstance ?? pinnedInstance
-        locked = properties.locked ?? locked
+        actorId = properties.actorId
+        id = properties.id
+        creatorId = properties.creatorId
+        communityId = properties.communityId
+        created = properties.created
+        title = properties.title
+        content = properties.content
+        linkUrl = properties.linkUrl
+        embed = properties.embed
+        nsfw = properties.nsfw
+        thumbnailUrl = properties.thumbnailUrl
+        updated = properties.updated
+        languageId = properties.languageId
+        altText = properties.altText
+        deleted = properties.deleted
+        removed = properties.removed
+        pinnedCommunity = properties.pinnedCommunity
+        pinnedInstance = properties.pinnedInstance
+        locked = properties.locked
 
         creator = properties.creator ?? creator
         community = properties.community ?? community
@@ -116,9 +116,6 @@ public struct PostProperties: UnifiedPropertiesProviding {
         read = properties.read ?? read
         hidden = properties.hidden ?? hidden
     }
-    
-    /// Constructs an empty PostProperties
-    public init() {}
     
     /// Constructs a PostProperties from a given snapshot
     public init(snapshot: any PostSnapshotProviding) {
@@ -149,27 +146,27 @@ public struct PostProperties: UnifiedPropertiesProviding {
             snapshot1 = snapshot as? Post1Snapshot
         }
         
-        if let snapshot1 {
-            actorId = snapshot1.actorId
-            id = snapshot1.id
-            creatorId = snapshot1.creatorId
-            communityId = snapshot1.communityId
-            created = snapshot1.created
-            title = snapshot1.title
-            content = snapshot1.content
-            linkUrl = snapshot1.linkUrl
-            embed = snapshot1.embed
-            nsfw = snapshot1.nsfw
-            thumbnailUrl = snapshot1.thumbnailUrl
-            updated = snapshot1.updated
-            languageId = snapshot1.languageId
-            altText = snapshot1.altText
-            deleted = snapshot1.deleted
-            removed = snapshot1.removed
-            pinnedCommunity = snapshot1.pinnedCommunity
-            pinnedInstance = snapshot1.pinnedInstance
-            locked = snapshot1.locked
-        }
+        // TODO: NOW unified snapshot model to avoid this force unwrap
+        let shimSnapshot1 = snapshot1!
+        actorId = shimSnapshot1.actorId
+        id = shimSnapshot1.id
+        creatorId = shimSnapshot1.creatorId
+        communityId = shimSnapshot1.communityId
+        created = shimSnapshot1.created
+        title = shimSnapshot1.title
+        content = shimSnapshot1.content
+        linkUrl = shimSnapshot1.linkUrl
+        embed = shimSnapshot1.embed
+        nsfw = shimSnapshot1.nsfw
+        thumbnailUrl = shimSnapshot1.thumbnailUrl
+        updated = shimSnapshot1.updated
+        languageId = shimSnapshot1.languageId
+        altText = shimSnapshot1.altText
+        deleted = shimSnapshot1.deleted
+        removed = shimSnapshot1.removed
+        pinnedCommunity = shimSnapshot1.pinnedCommunity
+        pinnedInstance = shimSnapshot1.pinnedInstance
+        locked = shimSnapshot1.locked
     }
     
     /// Constructs a PostProperties from a given snapshot, including external models
@@ -195,7 +192,10 @@ public protocol UnifiedModelProviding: AnyObject, CacheIdentifiable, ContentMode
 public class UnifiedPostModel:
     UnifiedModelProviding,
     FeedLoadable,
-    SelectableContentProviding {
+    SelectableContentProviding,
+    ContentIdentifiable,
+    Resolvable,
+    Sharable {
     public typealias Properties = PostProperties
     
     @ObservationIgnored
@@ -205,21 +205,7 @@ public class UnifiedPostModel:
     public var actorId: ActorIdentifier
     public var properties: PostProperties
     
-    public var url: URL { actorId.url } // TODO: NOW this should be host-specific url
-    
-    public var trueUrl: URL? {
-        if let id = id.value {
-            api.baseUrl.appending(path: "post/\(id)")
-        } else {
-            nil
-        }
-    }
-    
-    public init(api: ApiClient, url: URL) {
-        self.api = api
-        self.actorId = .init(url: url)!
-        self.properties = .init()
-    }
+    // public var url: URL { api.baseUrl.appending(path: "post/\(id)") }
     
     public init(api: ApiClient, snapshot: any PostSnapshotProviding, creator: (any Person)? = nil, community: (any Community)? = nil) {
         self.api = api
@@ -237,62 +223,41 @@ public class UnifiedPostModel:
     public var cacheId: Int { actorId.hashValue }
     public static var tierNumber: Int =  4
     
-//    @ObservationIgnored
-//    public lazy var actorId: ExpectedValue<ActorIdentifier> = expectedValue(\.actorId)
+    public var id: Int { properties.id }
     
-    @ObservationIgnored
-    public lazy var id: ExpectedValue<Int> = expectedValue(\.id)
-
-    @ObservationIgnored
-    public lazy var creatorId: ExpectedValue<Int> = expectedValue(\.creatorId)
-
-    @ObservationIgnored
-    public lazy var communityId: ExpectedValue<Int> = expectedValue(\.communityId)
-
-    @ObservationIgnored
-    public lazy var created: ExpectedValue<Date> = expectedValue(\.created)
-
-    @ObservationIgnored
-    public lazy var title: ExpectedValue<String> = expectedValue(\.title)
-
-    @ObservationIgnored
-    public lazy var content: ExpectedValue<String?> = expectedValue(\.content)
-
-    @ObservationIgnored
-    public lazy var linkUrl: ExpectedValue<URL?> = expectedValue(\.linkUrl)
-
-    @ObservationIgnored
-    public lazy var embed: ExpectedValue<PostEmbed?> = expectedValue(\.embed)
-
-    @ObservationIgnored
-    public lazy var nsfw: ExpectedValue<Bool> = expectedValue(\.nsfw)
-
-    @ObservationIgnored
-    public lazy var thumbnailUrl: ExpectedValue<URL?> = expectedValue(\.thumbnailUrl)
-
-    @ObservationIgnored
-    public lazy var updated: ExpectedValue<Date?> = expectedValue(\.updated)
-
-    @ObservationIgnored
-    public lazy var languageId: ExpectedValue<Int> = expectedValue(\.languageId)
-
-    @ObservationIgnored
-    public lazy var altText: ExpectedValue<String?> = expectedValue(\.altText)
-
-    @ObservationIgnored
-    public lazy var deleted: ExpectedValue<Bool> = expectedValue(\.deleted)
-
-    @ObservationIgnored
-    public lazy var removed: ExpectedValue<Bool> = expectedValue(\.removed)
-
-    @ObservationIgnored
-    public lazy var pinnedCommunity: ExpectedValue<Bool> = expectedValue(\.pinnedCommunity)
-
-    @ObservationIgnored
-    public lazy var pinnedInstance: ExpectedValue<Bool> = expectedValue(\.pinnedInstance)
-
-    @ObservationIgnored
-    public lazy var locked: ExpectedValue<Bool> = expectedValue(\.locked)
+    public var creatorId: Int { properties.creatorId }
+    
+    public var communityId: Int { properties.communityId }
+    
+    public var created: Date { properties.created }
+    
+    public var title: String { properties.title }
+    
+    public var content: String? { properties.content }
+    
+    public var linkUrl: URL? { properties.linkUrl }
+    
+    public var embed: PostEmbed? { properties.embed }
+    
+    public var nsfw: Bool { properties.nsfw }
+    
+    public var thumbnailUrl: URL? { properties.thumbnailUrl }
+    
+    public var updated: Date? { properties.updated }
+    
+    public var languageId: Int { properties.languageId }
+    
+    public var altText: String? { properties.altText }
+    
+    public var deleted: Bool { properties.deleted }
+    
+    public var removed: Bool { properties.removed }
+    
+    public var pinnedCommunity: Bool { properties.pinnedCommunity }
+    
+    public var pinnedInstance: Bool { properties.pinnedInstance }
+    
+    public var locked: Bool { properties.locked }
 
     @ObservationIgnored
     public lazy var creator: ExpectedValue<any Person> = expectedValue(\.creator)
@@ -335,13 +300,6 @@ public class UnifiedPostModel:
     }
     
     public func fetchUpgraded() async throws -> PostProperties {
-        var id: Int
-        if let existingId = properties.id {
-            id = existingId
-        } else {
-            id = try await api.repository.getPost(url: self.url).post.id
-        }
-        
         let snapshot = try await api.repository.getPost(id: id)
         let creator = await api.caches.person1.getModel(api: api, from: snapshot.post.creator)
         let community = await api.caches.community1.getModel(api: api, from: snapshot.post.community)
@@ -354,22 +312,14 @@ public class UnifiedPostModel:
 // MARK: - Interactions
 
 public extension UnifiedPostModel {
-    // Save
-    
-    var updateSaved: ((Bool) -> Void)? {
-        if let id = id.value {
-            return { self.updateSaved($0, id: id) }
-        }
-        return nil
-    }
-    
-    private func updateSaved(_ newValue: Bool, id: Int) {
+
+    func updateSaved(_ newValue: Bool) {
         properties.saved = newValue
         properties.read = true
         
         Task {
             await updateQueue.addItem {
-                .init(snapshot: try await self.api.repository.savePost(id: id, save: newValue))
+                .init(snapshot: try await self.api.repository.savePost(id: self.id, save: newValue))
             }
         }
     }
@@ -377,35 +327,30 @@ public extension UnifiedPostModel {
     // Vote
     
     var updateVote: ((ScoringOperation) -> Void)? {
-        if let votes = votes.value, let id = id.value {
-            return { self.updateVote($0, votes: votes, id: id) }
+        if let votes = votes.value {
+            return { self.updateVote($0, votes: votes) }
         }
         return nil
     }
     
-    private func updateVote(_ newValue: ScoringOperation, votes: VotesModel, id: Int) {
+    private func updateVote(_ newValue: ScoringOperation, votes: VotesModel) {
         properties.votes = votes.applyScoringOperation(operation: newValue)
         properties.read = true
         
         Task {
             await updateQueue.addItem {
-                .init(snapshot: try await self.api.repository.voteOnPost(id: id, score: newValue))
+                .init(snapshot: try await self.api.repository.voteOnPost(id: self.id, score: newValue))
             }
         }
     }
     
     // Reply
     
-    var reply: ((String, Int?) async throws -> Comment2)? {
-        if let id = id.value {
-            return { content, languageId in
-                try await self.api.replyToPost(id: id, content: content, languageId: languageId)
-            }
-        }
-        return nil
+    func reply(content: String, languageId: Int?) async throws -> Comment2 {
+        try await self.api.replyToPost(id: id, content: content, languageId: languageId)
     }
     
-    // TODO: NOW make all Post1Providing properties mandatory. Create a page for PostStub specifically that fetches the real post and redirects.
+    // TODO: NOW Create a page for PostStub specifically that fetches the real post and redirects.
 }
 
 // MARK: - FeedLoadable
@@ -417,11 +362,10 @@ public extension UnifiedPostModel {
         lhs.actorId == rhs.actorId
     }
     
-    // TODO: NOW rethink sort val for async dates
     func sortVal(sortType: FeedLoaderSort.SortType) -> FeedLoaderSort {
         switch sortType {
         case .new:
-            return .new(created.value_ ?? Date())
+            return .new(created)
         }
     }
 }
@@ -431,8 +375,8 @@ public extension UnifiedPostModel {
 extension UnifiedPostModel: ImagePrefetchProviding {
     var type: PostType {
         // post with URL: image, embedded, or link
-        if let linkUrl = linkUrl.value_ as? URL,
-           let title = title.value_ {
+        if let linkUrl {
+            // TODO: NOW
 //            if let embeddedMediaUrl {
 //                return .embedded(embeddedMediaUrl, originalLink: linkUrl)
 //            }
@@ -441,11 +385,11 @@ extension UnifiedPostModel: ImagePrefetchProviding {
             if linkUrl.isMedia {
                 return .media(linkUrl)
             }
-            return .link(.init(content: linkUrl, thumbnail: thumbnailUrl.value_ as? URL, label: embed.value_??.title ?? title))
+            return .link(.init(content: linkUrl, thumbnail: thumbnailUrl, label: embed?.title ?? title))
         }
 
         // otherwise text, but post.body needs to be present, even if it's an empty string
-        if let postBody = content.value_ as? String {
+        if let postBody = content {
             return .text(postBody)
         }
 
@@ -518,5 +462,34 @@ extension UnifiedPostModel: ImagePrefetchProviding {
 // MARK: SelectableContentProviding
 
 public extension UnifiedPostModel {
-    var selectableContent: String? { content.value_ as? String }
+    var selectableContent: String? { content }
+}
+
+// MARK: ContentIdentifiable
+
+public extension UnifiedPostModel {
+    static var modelTypeId: ContentType { .post }
+}
+
+// MARK: Resolvable
+
+public extension UnifiedPostModel {
+    /// Returns a `URL` that can be resolved by another `ApiClient`.
+    func resolvableUrl(from instance: ContentModelUrlType) -> URL {
+        switch instance {
+        case .host: actorId.url
+        case .provider: .post(host: api.host, id: id)
+        }
+    }
+    
+    @inlinable
+    var allResolvableUrls: [URL] {
+        ContentModelUrlType.allCases.map { resolvableUrl(from: $0) }
+    }
+}
+
+// MARK: Sharable
+
+public extension UnifiedPostModel {
+    func url() -> URL { api.baseUrl.appending(path: "post/\(id)") }
 }
