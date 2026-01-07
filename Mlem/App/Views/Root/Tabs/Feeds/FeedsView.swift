@@ -43,21 +43,21 @@ struct FeedsView: View {
             .background(ThemedColor.themedGroupedBackground)
             .themedGroupedBackground()
             .scrollContentBackground(.hidden)
-//            .modifier(
-//                FeedSelectionTitleModifier(
-//                    feedOptions: feedOptions,
-//                    shouldScrollToTop: true,
-//                    feedLoader: postFeedLoader,
-//                    scrollToTopTrigger: $scrollToTopTrigger
-//                )
-//            )
-//            .toolbar {
-//                // SwiftUI complains if both this and the menu are in the same toolbar
-//                if let postFeedLoader {
-//                    FeedSortPicker(feedLoader: postFeedLoader, showTopTimescaleInIcon: true)
-//                }
-//            }
-//            .conditionalNavigationTitle((postFeedLoader?.feedType.label ?? nil).map(String.init(localized:)) ?? "")
+            .modifier(
+                FeedSelectionTitleModifier(
+                    feedOptions: feedOptions,
+                    shouldScrollToTop: true,
+                    feedLoader: postFeedLoader,
+                    scrollToTopTrigger: $scrollToTopTrigger
+                )
+            )
+            .toolbar {
+                // SwiftUI complains if both this and the menu are in the same toolbar
+                if let postFeedLoader {
+                    FeedSortPicker(feedLoader: postFeedLoader, showTopTimescaleInIcon: true)
+                }
+            }
+            .conditionalNavigationTitle((postFeedLoader?.feedType.label ?? nil).map(String.init(localized:)) ?? "")
             .navigationBarTitleDisplayMode(.inline)
             .onChange(of: showRead) {
                 scrollToTopTrigger.toggle()
@@ -103,21 +103,20 @@ struct FeedsView: View {
                                 .padding([.horizontal, .bottom], Constants.main.standardSpacing)
                         }
                         PostGridView(postFeedLoader: postFeedLoader)
+                    } header: {
+                        Menu {
+                            FeedSelectionMenuView(
+                                feedOptions: feedOptions,
+                                shouldScrollToTop: false,
+                                feedLoader: postFeedLoader,
+                                scrollToTopTrigger: $scrollToTopTrigger
+                            )
+                        } label: {
+                            FeedHeaderView(feedDescription: postFeedLoader.feedType.description, dropdownStyle: .enabled(showBadge: false))
+                                .padding(.bottom, Constants.main.standardSpacing)
+                        }
+                        .buttonStyle(.plain)
                     }
-//                    } header: {
-//                        Menu {
-//                            FeedSelectionMenuView(
-//                                feedOptions: feedOptions,
-//                                shouldScrollToTop: false,
-//                                feedLoader: postFeedLoader,
-//                                scrollToTopTrigger: $scrollToTopTrigger
-//                            )
-//                        } label: {
-//                            FeedHeaderView(feedDescription: postFeedLoader.feedType.description, dropdownStyle: .enabled(showBadge: false))
-//                                .padding(.bottom, Constants.main.standardSpacing)
-//                        }
-//                        .buttonStyle(.plain)
-//                    }
                 }
                 .animation(.snappy, value: backendClient.testflightUpdate != lastTestFlightUpdate)
             } else {
@@ -172,7 +171,7 @@ struct FeedsView: View {
 private struct FeedSelectionTitleModifier: ViewModifier {
     let feedOptions: [ListingType]
     let shouldScrollToTop: Bool
-    var feedLoader: AggregatePostFeedLoader?
+    var feedLoader: UnifiedAggregatePostFeedLoader?
     @Binding var scrollToTopTrigger: Bool
     
     @State var isAtTop: Bool = false
@@ -226,7 +225,7 @@ extension FeedSelectionMenuView {
     init(
         feedOptions: [ListingType],
         shouldScrollToTop: Bool,
-        feedLoader: AggregatePostFeedLoader,
+        feedLoader: UnifiedAggregatePostFeedLoader,
         scrollToTopTrigger: Binding<Bool>
     ) {
         self._feedSelection = .init(get: {

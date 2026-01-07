@@ -10,7 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 extension EnvironmentValues {
-    @Entry var postContext: (any Post1Providing)?
+    @Entry var postContext: UnifiedPostModel?
     @Entry var commentContext: (any Comment1Providing)?
     @Entry var communityContext: (any Community1Providing)?
     @Entry var reportContext: Report?

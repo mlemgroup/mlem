@@ -44,7 +44,7 @@ struct FullyQualifiedLabelView: View {
     typealias Entity = CommunityOrPerson & Profile1Providing
     
     @Environment(AppState.self) var appState
-    @Environment(\.postContext) var postContext: (any Post1Providing)?
+    @Environment(\.postContext) var postContext: UnifiedPostModel?
     @Environment(\.commentContext) var commentContext: (any Comment1Providing)?
     @Environment(\.communityContext) var communityContext: (any Community1Providing)?
     @Environment(\.feedContext) var feedContext: FeedContext?
@@ -147,9 +147,10 @@ struct FullyQualifiedLabelView: View {
         if let commentContext2 = commentContext as? any Comment2Providing, commentContext2.creator.actorId == person.actorId {
             return commentContext2
         }
-        if let postContext2 = postContext as? any Post2Providing, postContext2.creator.actorId == person.actorId {
-            return postContext2
-        }
+        // TODO: NOW
+//        if let postContext2 = postContext as? any Post2Providing, postContext2.creator.actorId == person.actorId {
+//            return postContext2
+//        }
         return nil
     }
     

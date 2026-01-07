@@ -16,7 +16,7 @@ struct HeadlinePostBodyView: View {
     
     @ScaledMetric(relativeTo: .headline) var titleHostHeightLimit: CGFloat = 75
 
-    let post: any Post
+    let post: UnifiedPostModel
     var requireConsistentHeight: Bool = false
     
     var blurred: Bool {
@@ -29,15 +29,14 @@ struct HeadlinePostBodyView: View {
     
     var body: some View {
         HStack(alignment: .top, spacing: Constants.main.standardSpacing) {
-            // TODO: NOW
-//            if thumbnailLocation == .left {
-//                ThumbnailImageView(
-//                    post: post,
-//                    blurred: blurred,
-//                    size: .standard,
-//                    frame: .init(width: thumbnailSize, height: thumbnailSize)
-//                )
-//            }
+            if thumbnailLocation == .left {
+                ThumbnailImageView(
+                    post: post,
+                    blurred: blurred,
+                    size: .standard,
+                    frame: .init(width: thumbnailSize, height: thumbnailSize)
+                )
+            }
 
             if requireConsistentHeight {
                 titleAndHostView
@@ -46,15 +45,15 @@ struct HeadlinePostBodyView: View {
                 titleAndHostView
             }
             
-//            if thumbnailLocation == .right {
-//                Spacer()
-//                ThumbnailImageView(
-//                    post: post,
-//                    blurred: blurred,
-//                    size: .standard,
-//                    frame: .init(width: thumbnailSize, height: thumbnailSize)
-//                )
-//            }
+            if thumbnailLocation == .right {
+                Spacer()
+                ThumbnailImageView(
+                    post: post,
+                    blurred: blurred,
+                    size: .standard,
+                    frame: .init(width: thumbnailSize, height: thumbnailSize)
+                )
+            }
         }
     }
     
@@ -82,7 +81,7 @@ struct HeadlinePostBodyView: View {
         post.taggedTitle(communityContext: communityContext)
             .symbolVariant(.fill)
             .multilineTextAlignment(.leading)
-            .foregroundStyle((post.read_ ?? false) ? .themedSecondary : .themedPrimary)
+            .foregroundStyle((post.read.value ?? false) ? .themedSecondary : .themedPrimary)
             .font(.headline)
             .imageScale(.small)
     }

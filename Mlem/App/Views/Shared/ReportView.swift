@@ -96,7 +96,8 @@ struct ReportView: View {
         NavigationLink(.post(post)) {
             VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
                 FullyQualifiedLinkView(creator, labelStyle: .medium)
-                HeadlinePostBodyView(post: post)
+                // TODO: NOW
+                // HeadlinePostBodyView(post: post)
                 reportDetailsView
                 resolveButton
             }

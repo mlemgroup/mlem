@@ -21,7 +21,7 @@ struct TilePostView: View {
     @Environment(\.parentFrameWidth) var parentFrameWidth: CGFloat
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
     
-    let post: any Post1Providing
+    let post: UnifiedPostModel
 
     // Note that these dimensions above sum to precisely the height of TileCommentView, though due to the grouping of title and community here, we get a bonus 10px for the content
     // Total height in simplest form is:
@@ -74,7 +74,7 @@ struct TilePostView: View {
         post.taggedTitle(communityContext: communityContext)
             .symbolVariant(.fill)
             .lineLimit(post.type.lineLimit)
-            .foregroundStyle(post.read_ ?? false ? .themedSecondary : .themedPrimary)
+            .foregroundStyle(post.read.value ?? false ? .themedSecondary : .themedPrimary)
             .font(.footnote)
             .fontWeight(.semibold)
             .frame(maxWidth: .infinity, minHeight: minTitleHeight, alignment: .topLeading)
@@ -84,11 +84,19 @@ struct TilePostView: View {
         HStack(spacing: 6) {
             Group {
                 if communityContext != nil {
-                    if let creatorName = post.creator_?.name {
-                        Text(creatorName)
+                    ExpectedView(post.creator) { creator in
+                        Text(creator.name)
+                    } placeholder: {
+                        Text("creator@placholder")
+                            .redacted(reason: .placeholder)
                     }
-                } else if let communityName = post.community_?.name {
-                    Text(communityName)
+                } else {
+                    ExpectedView(post.community) { community in
+                        Text(community.name)
+                    } placeholder: {
+                        Text("community@placeholder")
+                            .redacted(reason: .placeholder)
+                    }
                 }
             }
             .lineLimit(1)
@@ -98,7 +106,7 @@ struct TilePostView: View {
             
             Spacer()
             
-            if differentiateWithoutColor, readPostIndicator == .checkmark, post.read_ ?? false {
+            if differentiateWithoutColor, readPostIndicator == .checkmark, post.read.value ?? false {
                 ReadCheck(tiled: true)
             }
             
@@ -118,7 +126,7 @@ struct TilePostView: View {
                 MenuButton(action: action)
             }
         } label: {
-            TileScoreView(saved: post.saved_ ?? false, votes: post.votes_ ?? .init(upvotes: 0, downvotes: 0, myVote: .none))
+            TileScoreView(saved: post.saved.value ?? false, votes: post.votes.value ?? .init(upvotes: 0, downvotes: 0, myVote: .none))
         }
         .onTapGesture {}
         .popupAnchor()
@@ -132,7 +140,7 @@ struct TilePostView: View {
         
         @Setting(\.safety_blurNsfw) var blurNsfw
         
-        let post: any Post1Providing
+        let post: UnifiedPostModel
         
         let width: CGFloat
         let height: CGFloat
@@ -177,26 +185,23 @@ struct TilePostView: View {
                     .frame(width: Constants.main.thumbnailSize, height: Constants.main.thumbnailSize)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             case .media, .embedded:
-                Text("TODO")
-                // TODO: NOW
-//                ThumbnailImageView(
-//                    post: post,
-//                    blurred: blurred,
-//                    size: .tile,
-//                    frame: .init(width: width, height: height)
-//                )
-//                .clipped()
+                ThumbnailImageView(
+                    post: post,
+                    blurred: blurred,
+                    size: .tile,
+                    frame: .init(width: width, height: height)
+                )
+                .clipped()
             case let .link(link):
-                Text("TODO")
-//                ThumbnailImageView(
-//                    post: post,
-//                    blurred: blurred,
-//                    size: .tile,
-//                    frame: .init(width: width, height: height)
-//                )
-//                .aspectRatio(contentMode: .fill)
-//                .clipped()
-//                .overlay { linkHostOverlay(link) }
+                ThumbnailImageView(
+                    post: post,
+                    blurred: blurred,
+                    size: .tile,
+                    frame: .init(width: width, height: height)
+                )
+                .aspectRatio(contentMode: .fill)
+                .clipped()
+                .overlay { linkHostOverlay(link) }
             }
         }
         

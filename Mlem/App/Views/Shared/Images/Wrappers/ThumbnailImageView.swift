@@ -93,7 +93,7 @@ struct ThumbnailImageView: View {
             aspectRatioBounds: .absoluteSquare,
             contentMode: .fill,
             cornerRadius: size == .tile ? 0 : Constants.main.smallItemCornerRadius,
-            fallback: .image, // post.imageFallback, // TODO: NOW
+            fallback: post.imageFallback,
             enableContextMenu: post.type.isMedia,
             enableImageViewer: post.type.isMedia,
             onTapActions: onTapActions

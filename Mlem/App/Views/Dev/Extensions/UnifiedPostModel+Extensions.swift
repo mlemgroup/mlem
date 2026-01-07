@@ -28,4 +28,14 @@ extension UnifiedPostModel {
             postTag(active: locked, icon: .lemmy.locked, color: .themedLockAccent) +
             Text(verbatim: "\(hasTags ? "  " : "")\(title)")
     }
+    
+    var imageFallback: MediaView.Fallback {
+        switch type {
+        case .text: .text
+        case let .media(url), let .embedded(url, _):
+            url.proxyAwarePathExtension?.isMovieExtension ?? false ? .movie : .image
+        case .link: .link
+        case .titleOnly: .titleOnly
+        }
+    }
 }

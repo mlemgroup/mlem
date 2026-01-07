@@ -44,7 +44,7 @@ struct CompactPostView: View {
         content
             .padding(Constants.main.standardSpacing)
             .background(.themedSecondaryGroupedBackground)
-        // .environment(\.postContext, post)
+            .environment(\.postContext, post)
     }
     
     var content: some View {

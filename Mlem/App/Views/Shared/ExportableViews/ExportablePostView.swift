@@ -50,7 +50,8 @@ struct ExportablePostView: View {
                     .transition(.scale.combined(with: .opacity))
             }
             
-            LargePostBodyView(post: post, isPostPage: true, shouldBlur: false)
+            // TODO: NOW
+            // LargePostBodyView(post: post, isPostPage: true, shouldBlur: false)
             
             if showCreator {
                 FullyQualifiedLabelView(post.creator_, labelStyle: .medium, showFlairs: false)

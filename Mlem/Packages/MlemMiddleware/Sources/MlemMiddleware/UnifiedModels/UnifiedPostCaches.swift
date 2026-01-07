@@ -53,6 +53,9 @@ class UnifiedPostCache: ApiTypeBackedCache<UnifiedPostModel, AnyPostSnapshot> {
     }
     
     override func updateModel(_ item: UnifiedPostModel, with apiType: AnyPostSnapshot, semaphore: UInt? = nil) {
-        assertionFailure("This should never be called")
+        // TODO: unified models figure out what to do with this function
+        Task {
+            await item.updateQueue.attemptDirectUpdate(with: .init(snapshot: apiType.value))
+        }
     }
 }

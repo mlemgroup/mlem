@@ -142,18 +142,19 @@ struct ShareInstancePickerView: View {
     }
 }
 
-#if DEBUG
-    #Preview(traits: .sampleEnvironment) {
-        ScrollView {
-            VStack(spacing: Constants.main.standardSpacing) {
-                LargePostView(post: Post2.mock(.realistic(.yorkshireDales)))
-                LargePostView(post: Post2.mock(.realistic(.meguroRiver)))
-            }
-            .padding(.horizontal, Constants.main.standardSpacing)
-        }
-        .background(.themedGroupedBackground)
-        .sheet(isPresented: .constant(true)) {
-            ShareInstancePickerView(entity: Community2.mock(.realistic(.pics)))
-        }
-    }
-#endif
+// TODO: updated mocks
+//#if DEBUG
+//    #Preview(traits: .sampleEnvironment) {
+//        ScrollView {
+//            VStack(spacing: Constants.main.standardSpacing) {
+//                LargePostView(post: Post2.mock(.realistic(.yorkshireDales)))
+//                LargePostView(post: Post2.mock(.realistic(.meguroRiver)))
+//            }
+//            .padding(.horizontal, Constants.main.standardSpacing)
+//        }
+//        .background(.themedGroupedBackground)
+//        .sheet(isPresented: .constant(true)) {
+//            ShareInstancePickerView(entity: Community2.mock(.realistic(.pics)))
+//        }
+//    }
+//#endif

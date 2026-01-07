@@ -118,6 +118,7 @@ struct FeedPostView<EmbeddedContent: View>: View {
             .clipShape(.rect(cornerRadius: postSize.cornerRadius))
     }
     
+    // TODO: NOW remove
     @ViewBuilder
     var content: some View {
         switch postSize {
@@ -125,16 +126,19 @@ struct FeedPostView<EmbeddedContent: View>: View {
             Text("TODO")
             // CompactPostView(post: post, requireConsistentHeight: requireConsistentHeight)
         case .tile:
-            TilePostView(post: post)
+            Text("TODO")
+            // TilePostView(post: post)
         case .headline:
-            HeadlinePostView(
-                post: post,
-                favoredLink: favoredLink,
-                requireConsistentHeight: requireConsistentHeight,
-                embeddedContent: embeddedContent
-            )
+            Text("TODO")
+//            HeadlinePostView(
+//                post: post,
+//                favoredLink: favoredLink,
+//                requireConsistentHeight: requireConsistentHeight,
+//                embeddedContent: embeddedContent
+//            )
         case .large:
-            LargePostView(post: post, favoredLink: favoredLink)
+            Text("TODO")
+            // LargePostView(post: post, favoredLink: favoredLink)
         }
     }
     

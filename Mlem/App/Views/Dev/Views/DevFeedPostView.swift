@@ -121,22 +121,21 @@ struct DevFeedPostView<EmbeddedContent: View>: View {
     
     @ViewBuilder
     var content: some View {
-        CompactPostView(post: post, requireConsistentHeight: requireConsistentHeight)
-//        switch postSize {
-//        case .compact:
-//            CompactPostView(post: post, requireConsistentHeight: requireConsistentHeight)
-//        case .tile:
-//            TilePostView(post: post)
-//        case .headline:
-//            HeadlinePostView(
-//                post: post,
-//                favoredLink: favoredLink,
-//                requireConsistentHeight: requireConsistentHeight,
-//                embeddedContent: embeddedContent
-//            )
-//        case .large:
-//            LargePostView(post: post, favoredLink: favoredLink)
-//        }
+        switch postSize {
+        case .compact:
+            CompactPostView(post: post, requireConsistentHeight: requireConsistentHeight)
+        case .tile:
+            TilePostView(post: post)
+        case .headline:
+            HeadlinePostView(
+                post: post,
+                favoredLink: favoredLink,
+                requireConsistentHeight: requireConsistentHeight,
+                embeddedContent: embeddedContent
+            )
+        case .large:
+            LargePostView(post: post, favoredLink: favoredLink)
+        }
     }
     
     var interactionBarConfiguration: PostBarConfiguration {

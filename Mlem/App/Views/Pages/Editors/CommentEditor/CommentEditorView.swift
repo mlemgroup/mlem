@@ -218,7 +218,8 @@ struct CommentEditorView: View {
                     Spacer()
                     selectTextButton
                 }
-                LargePostBodyView(post: post, isPostPage: true, shouldBlur: false)
+                // TODO: NOW
+                // LargePostBodyView(post: post, isPostPage: true, shouldBlur: false)
                 FullyQualifiedLinkView(
                     post.creator_,
                     labelStyle: .medium,

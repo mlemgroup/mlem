@@ -25,13 +25,13 @@ struct HeadlinePostView<EmbeddedContent: View>: View {
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
     @Environment(\.reportContext) private var reportContext: Report?
 
-    let post: any Post1Providing
+    let post: UnifiedPostModel
     let embeddedContent: EmbeddedContent
     let favoredLink: PostViewNavigationLink?
     let requireConsistentHeight: Bool
 
     init(
-        post: any Post1Providing,
+        post: UnifiedPostModel,
         favoredLink: PostViewNavigationLink? = nil,
         requireConsistentHeight: Bool = false,
         @ViewBuilder embeddedContent: () -> EmbeddedContent = { EmptyView() }
@@ -64,7 +64,7 @@ struct HeadlinePostView<EmbeddedContent: View>: View {
                     
                     Spacer()
                     
-                    if differentiateWithoutColor, readPostIndicator == .checkmark, post.read_ ?? false {
+                    if differentiateWithoutColor, readPostIndicator == .checkmark, post.read.value ?? false {
                         ReadCheck()
                     }
                     
@@ -73,7 +73,7 @@ struct HeadlinePostView<EmbeddedContent: View>: View {
                             .foregroundStyle(.themedWarning)
                     }
                     
-                    PostEllipsisMenus(post: post)
+                    UnifiedPostEllipsisMenus(post: post)
                 }
                 
                 HeadlinePostBodyView(post: post, requireConsistentHeight: requireConsistentHeight)
@@ -100,12 +100,22 @@ struct HeadlinePostView<EmbeddedContent: View>: View {
     
     @ViewBuilder
     var personLink: some View {
-        FullyQualifiedLinkView(post.creator_, labelStyle: .medium)
+        ExpectedView(post.creator) { creator in
+            FullyQualifiedLinkView(creator, labelStyle: .medium)
+        } placeholder: {
+            Text("creator@placeholder")
+                .redacted(reason: .placeholder)
+        }
     }
     
     @ViewBuilder
     var communityLink: some View {
-        FullyQualifiedLinkView(post.community_, labelStyle: .medium)
+        ExpectedView(post.community) { community in
+            FullyQualifiedLinkView(community, labelStyle: .medium)
+        } placeholder: {
+            Text("community@placeholder")
+                .redacted(reason: .placeholder)
+        }
     }
     
     var interactionBarConfiguration: PostBarConfiguration {
@@ -116,8 +126,9 @@ struct HeadlinePostView<EmbeddedContent: View>: View {
     }
 }
 
-#if DEBUG
-    #Preview(traits: .sampleEnvironment, .sizeThatFitsLayout) {
-        HeadlinePostView(post: Post2.mock(.generic))
-    }
-#endif
+// TODO: update mocks
+//#if DEBUG
+//    #Preview(traits: .sampleEnvironment, .sizeThatFitsLayout) {
+//        HeadlinePostView(post: Post2.mock(.generic))
+//    }
+//#endif
