@@ -130,6 +130,17 @@ public class UnifiedPostModel:
     public lazy var hidden: ExpectedValue<Bool> = expectedValue(\.hidden)
 }
 
+// MARK: - Computed
+
+public extension UnifiedPostModel {
+    var linkHost: String? {
+        if case let .link(link) = type {
+            return link.host
+        }
+        return nil
+    }
+}
+
 // MARK: - Interactions
 
 public extension UnifiedPostModel {
