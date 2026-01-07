@@ -37,7 +37,7 @@ struct MessageView<EmbeddedContent: View>: View {
                 Spacer()
                 if isInInbox {
                     Image(icon: message.isOwnMessage ? .lemmy.send : .lemmy.message)
-                        .symbolVariant(message.shimRead ? .none : .fill)
+                        .symbolVariant(message.read ? .none : .fill)
                         .foregroundStyle(.themedAccent)
                 }
                 ellipsisMenus

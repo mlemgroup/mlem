@@ -24,7 +24,7 @@ public protocol Message1Providing:
     var deleted: Bool { get }
     var created: Date { get }
     var updated: Date? { get }
-    var shimRead: Bool { get }
+    var read: Bool { get }
     
     var id_: Int? { get }
     var creatorId_: Int? { get }
@@ -58,7 +58,7 @@ public extension Message1Providing {
     var deleted: Bool { message1.deleted }
     var created: Date { message1.created }
     var updated: Date? { message1.updated }
-    var shimRead: Bool { message1.shimRead }
+    var read: Bool { message1.read }
     var isOwnMessage: Bool { message1.isOwnMessage }
     
     var id_: Int? { message1.id }
@@ -68,7 +68,7 @@ public extension Message1Providing {
     var deleted_: Bool? { message1.deleted }
     var created_: Date? { message1.created }
     var updated_: Date? { message1.updated }
-    var read_: Bool? { message1.shimRead }
+    var read_: Bool? { message1.read }
     var isOwnMessage_: Bool? { message1.isOwnMessage }
     
     var creator_: Person1? { nil }

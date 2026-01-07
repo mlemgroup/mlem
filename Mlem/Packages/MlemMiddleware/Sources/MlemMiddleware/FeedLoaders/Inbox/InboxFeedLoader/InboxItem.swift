@@ -18,10 +18,10 @@ public enum InboxItem: FeedLoadable, ReadableProviding, InboxIdentifiable {
         }
     }
     
-    public var shimRead: Bool {
+    public var read: Bool {
         switch self {
-        case let .message(message2): message2.shimRead
-        case let .reply(reply2): reply2.shimRead
+        case let .message(message2): message2.read
+        case let .reply(reply2): reply2.read
         }
     }
     

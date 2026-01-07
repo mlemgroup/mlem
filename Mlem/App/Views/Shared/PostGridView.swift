@@ -88,7 +88,7 @@ struct PostGridView: View {
             LazyVGrid(columns: columns, spacing: postSize.sectionSpacing) {
                 ForEach(Array(postFeedLoader.items.enumerated()), id: \.element.hashValue) { index, post in
                     // TODO: NOW
-                    // if !post.shouldHideInFeed {
+                    if !post.shouldHideInFeed {
                         // NavigationLink(.post(post, communityContext: communityContext, navigationNamespace: navigationNamespace)) {
                         NavigationLink(.devPost(post)) {
                             DevFeedPostView(post: post, requireConsistentHeight: columns.count != 1)
@@ -96,11 +96,11 @@ struct PostGridView: View {
                         }
                         .buttonStyle(.empty)
                         .padding(.horizontal, postInnerPadding)
-//                        .markReadOnScroll(
-//                            index: index,
-//                            post: post,
-//                            postFeedLoader: postFeedLoader, bottomAppearedItemIndex: $bottomAppearedPostIndex
-//                        )
+                        .markReadOnScroll(
+                            index: index,
+                            post: post,
+                            postFeedLoader: postFeedLoader, bottomAppearedItemIndex: $bottomAppearedPostIndex
+                        )
                         .onAppear {
                             if infiniteScroll {
                                 do {
@@ -111,7 +111,7 @@ struct PostGridView: View {
                                 }
                             }
                         }
-                    // }
+                    }
                 }
             }
             .quickSwipeCornerRadius(postSize.cornerRadius)

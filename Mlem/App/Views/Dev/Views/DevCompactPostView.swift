@@ -128,14 +128,12 @@ struct DevCompactPostView: View {
     
     @ViewBuilder
     var titleView: some View {
-        Text(post.title)
+        post.taggedTitle(communityContext: communityContext)
+            .symbolVariant(.fill)
+            .multilineTextAlignment(.leading)
+            .imageScale(.small)
+            .foregroundStyle(post.read.value ?? false ? .themedSecondary : .themedPrimary)
             .font(.subheadline)
-//        post.taggedTitle(communityContext: communityContext)
-//            .symbolVariant(.fill)
-//            .multilineTextAlignment(.leading)
-//            .imageScale(.small)
-//            .foregroundStyle(post.read_ ?? false ? .themedSecondary : .themedPrimary)
-//            .font(.subheadline)
     }
 }
 

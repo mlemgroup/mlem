@@ -8,7 +8,7 @@
 // TODO: NOW implement
 
 class UnifiedPostFilter: MultiFilter<UnifiedPostModel> {
-    private var readFilter: ReadFilter<UnifiedPostModel>
+    private var readFilter: UnifiedReadFilter<UnifiedPostModel>
 //    private var dedupeFilter: DedupeFilter<UnifiedPostModel> = .init(context: .none())
 //    private var keywordFilter: PostKeywordFilter
 //    private var literalFilter: PostLiteralFilter
@@ -17,9 +17,9 @@ class UnifiedPostFilter: MultiFilter<UnifiedPostModel> {
 //        self.keywordFilter = .init(context: context)
 //        self.literalFilter = .init(context: context)
         self.readFilter = .init(context: .none())
-//        if showRead {
-//            readFilter.active = false
-//        }
+        if showRead {
+            readFilter.active = false
+        }
     }
 
     override func allFilters() -> [FilterProviding<UnifiedPostModel>] {

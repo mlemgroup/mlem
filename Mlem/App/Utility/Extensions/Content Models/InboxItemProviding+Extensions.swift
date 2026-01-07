@@ -19,7 +19,7 @@ extension InboxItemProviding {
     func markReadAction(appState: AppState, feedback: Set<FeedbackType> = []) -> BasicAction {
         .init(
             id: "markRead\(uid)",
-            appearance: .markRead(isOn: shimRead),
+            appearance: .markRead(isOn: read),
             callback: api.canInteract(appState: appState) ? { @MainActor in self.toggleRead(feedback: feedback) } : nil
         )
     }

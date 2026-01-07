@@ -20,7 +20,7 @@ public class UnifiedPostModel:
     ContentIdentifiable,
     Resolvable,
     Sharable,
-    ReadableProviding {
+    UnifiedReadableProviding {
     public typealias Properties = PostProperties
     
     public init(api: ApiClient, snapshot: any PostSnapshotProviding, creator: (any Person)? = nil, community: (any Community)? = nil) {
@@ -194,6 +194,22 @@ public extension UnifiedPostModel {
                 try await self.api.repository.hidePost(id: self.id, hide: newValue)
                 var properties = properties
                 properties.hidden = newValue
+                return properties
+            }
+        }
+    }
+    
+    // Read
+    
+    func updateRead(_ newValue: Bool) {
+        // TODO: NOW queueing
+        properties.read = newValue
+        
+        Task {
+            await updateQueue.addItem { properties in
+                try await self.api.repository.markPostAsRead(id: self.id, read: newValue)
+                var properties = properties
+                properties.read = newValue
                 return properties
             }
         }

@@ -14,8 +14,8 @@ private struct MarkReadOnScroll: ViewModifier {
     @Setting(\.post_size) var postSize
     
     var index: Int
-    var post: any Post2Providing
-    var postFeedLoader: CorePostFeedLoader
+    var post: UnifiedPostModel
+    var postFeedLoader: UnifiedCorePostFeedLoader
     @Binding var bottomAppearedItemIndex: Int
     
     func body(content: Content) -> some View {
@@ -33,7 +33,7 @@ private struct MarkReadOnScroll: ViewModifier {
                 geometry.frame(in: .global).maxY < 90
             } action: { wasAboveTop, isAboveTop in
                 if markReadOnScroll, !wasAboveTop, isAboveTop {
-                    post.updateRead(true, shouldQueue: true)
+                    post.updateRead(true) // , shouldQueue: true)
                 }
             }
     }
@@ -49,7 +49,7 @@ private struct MarkReadOnScroll: ViewModifier {
                 if markReadOnScroll, // mark read on scroll enabled
                    index <= (bottomAppearedItemIndex - postSize.markReadOffset) ||
                    index >= (postFeedLoader.items.count - postSize.markReadOffset) { // edge case: end of feed
-                    post.updateRead(true, shouldQueue: true)
+                    post.updateRead(true) // , shouldQueue: true)
                 }
             }
     }
@@ -61,8 +61,8 @@ extension View {
     /// - On disappear, if this post is staged, marks it as read
     func markReadOnScroll(
         index: Int,
-        post: any Post2Providing,
-        postFeedLoader: CorePostFeedLoader,
+        post: UnifiedPostModel,
+        postFeedLoader: UnifiedCorePostFeedLoader,
         bottomAppearedItemIndex: Binding<Int>
     ) -> some View {
         modifier(MarkReadOnScroll(

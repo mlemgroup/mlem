@@ -9,6 +9,6 @@ import Foundation
 
 class ReadFilter<FilterTarget: ReadableProviding>: FilterProviding<FilterTarget> {
     override public func shouldPassFilter(_ item: FilterTarget) -> Bool {
-        return !item.shimRead
+        return !item.read
     }
 }

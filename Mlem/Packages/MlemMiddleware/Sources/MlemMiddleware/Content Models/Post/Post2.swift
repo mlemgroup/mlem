@@ -26,7 +26,7 @@ public final class Post2: Post2Providing {
     
     public var votes: VotesModel
     
-    public var shimRead: Bool { readQueued || readStatus }
+    public var read: Bool { readQueued || readStatus }
     internal var readStatus: Bool // indicates server-side read status; can be state faked
     internal var readQueued: Bool = false // indicates post is queued to be marked read, but not submitted
     

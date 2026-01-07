@@ -165,5 +165,4 @@ public extension UnifiedPostModel {
 // MARK: ReadableProviding
 
 public extension UnifiedPostModel {
-    var shimRead: Bool { read.value ?? false }
 }
