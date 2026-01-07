@@ -14,7 +14,7 @@ public protocol Post2Providing: Post1Providing, Interactable2Providing, PersonCo
     var creator: any Person { get }
     var community: any Community { get }
     var unreadCommentCount: Int { get }
-    var read: Bool { get }
+    var shimRead: Bool { get }
     var hidden: Bool { get }
 }
 
@@ -30,7 +30,7 @@ public extension Post2Providing {
     var unreadCommentCount: Int { post2.unreadCommentCount }
     var votes: VotesModel { post2.votes }
     var saved: Bool { post2.saved }
-    var read: Bool { post2.read }
+    var shimRead: Bool { post2.shimRead }
     var hidden: Bool { post2.hidden }
     
     var creator_: (any Person)? { post2.creator }
@@ -42,7 +42,7 @@ public extension Post2Providing {
     var unreadCommentCount_: Int? { post2.unreadCommentCount }
     var votes_: VotesModel? { post2.votes }
     var saved_: Bool? { post2.saved }
-    var read_: Bool? { post2.read }
+    var read_: Bool? { post2.shimRead }
     var hidden_: Bool? { post2.hidden }
 }
 

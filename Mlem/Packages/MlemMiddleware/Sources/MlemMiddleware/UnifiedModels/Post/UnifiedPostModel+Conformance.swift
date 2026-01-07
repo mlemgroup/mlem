@@ -161,3 +161,9 @@ public extension UnifiedPostModel {
 public extension UnifiedPostModel {
     func url() -> URL { api.baseUrl.appending(path: "post/\(id)") }
 }
+
+// MARK: ReadableProviding
+
+public extension UnifiedPostModel {
+    var shimRead: Bool { read.value ?? false }
+}

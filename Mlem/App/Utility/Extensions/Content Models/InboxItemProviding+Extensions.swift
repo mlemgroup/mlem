@@ -8,7 +8,7 @@
 import Haptics
 import MlemMiddleware
 
-extension InboxItemProviding {
+extension InboxItemProviding {    
     func toggleRead(feedback: Set<FeedbackType>) {
         if feedback.contains(.haptic) {
             HapticManager.main.play(haptic: .lightSuccess, tier: .low)
@@ -19,7 +19,7 @@ extension InboxItemProviding {
     func markReadAction(appState: AppState, feedback: Set<FeedbackType> = []) -> BasicAction {
         .init(
             id: "markRead\(uid)",
-            appearance: .markRead(isOn: read),
+            appearance: .markRead(isOn: shimRead),
             callback: api.canInteract(appState: appState) ? { @MainActor in self.toggleRead(feedback: feedback) } : nil
         )
     }

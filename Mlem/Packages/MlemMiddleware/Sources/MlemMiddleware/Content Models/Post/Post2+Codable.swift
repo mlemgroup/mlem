@@ -27,7 +27,7 @@ extension Post2 {
             ),
             subscribed: .notSubscribed,
             saved: saved,
-            read: read,
+            read: shimRead,
             creatorBlocked: creator.blocked,
             myVote: votes.myVote.rawValue,
             unreadComments: unreadCommentCount,

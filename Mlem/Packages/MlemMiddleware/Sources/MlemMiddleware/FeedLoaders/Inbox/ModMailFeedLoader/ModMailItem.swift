@@ -18,7 +18,7 @@ public enum ModMailItem: FeedLoadable, ReadableProviding, InboxIdentifiable {
         }
     }
     
-    public var read: Bool {
+    public var shimRead: Bool {
         switch self {
         case let .report(report): report.resolved
         case let .application(application): application.resolution != .unresolved

@@ -6,5 +6,6 @@
 //
 
 public protocol ReadableProviding {
-    var read: Bool { get }
+    // TODO: Other Readables redefine the protocol for ExpectedValue
+    var shimRead: Bool { get }
 }

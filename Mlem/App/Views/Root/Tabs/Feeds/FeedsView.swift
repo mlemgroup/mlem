@@ -102,7 +102,7 @@ struct FeedsView: View {
                             UpdateBannerView(url: testflightUrl)
                                 .padding([.horizontal, .bottom], Constants.main.standardSpacing)
                         }
-                        UnifiedPostGridView(postFeedLoader: postFeedLoader)
+                        PostGridView(postFeedLoader: postFeedLoader)
                     }
 //                    } header: {
 //                        Menu {

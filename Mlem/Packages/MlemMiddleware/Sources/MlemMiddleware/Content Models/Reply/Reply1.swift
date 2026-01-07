@@ -23,7 +23,7 @@ public final class Reply1: Reply1Providing {
     public var purged: Bool = false
     
     let readManager: StateManager<Bool>
-    public var read: Bool { readManager.displayedValue }
+    public var shimRead: Bool { readManager.displayedValue }
     
     init(
         api: ApiClient,
