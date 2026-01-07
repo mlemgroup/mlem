@@ -41,11 +41,13 @@ struct ReplyView: View {
             }
             .padding([.top, .horizontal], Constants.main.standardSpacing)
             
-            // InteractionBarView(
-            //     appState: appState,
-            //     reply: reply,
-            //     configuration: replyInteractionBar
-            // )
+            InteractionBarView(
+                appState: appState,
+                navigation: navigation,
+                comment: comment,
+                notification: notification,
+                configuration: replyInteractionBar
+            )
         }
         .clipped()
         .background(.themedSecondaryGroupedBackground)

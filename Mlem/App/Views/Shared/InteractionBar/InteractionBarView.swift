@@ -94,16 +94,30 @@ struct InteractionBarView: View {
     
     init(
         appState: AppState,
-        reply: any Reply1Providing,
+        navigation: NavigationLayer,
+        comment: any Comment1Providing,
+        notification: InboxNotification,
         configuration: ReplyBarConfiguration
     ) {
-        self.leading = .init(appState: appState, reply: reply, items: configuration.leading)
-        self.trailing = .init(appState: appState, reply: reply, items: configuration.trailing)
+        self.leading = .init(
+            appState: appState,
+            navigation: navigation,
+            comment: comment,
+            notification: notification,
+            items: configuration.leading
+        )
+        self.trailing = .init(
+            appState: appState,
+            navigation: navigation,
+            comment: comment,
+            notification: notification,
+            items: configuration.trailing
+        )
         let associatedReadouts = configuration.all.reduce(into: Set<ReplyBarConfiguration.ReadoutType>()) { result, widget in
-            result.formUnion(widget.associatedReadouts(context: reply))
+            result.formUnion(widget.associatedReadouts(context: comment))
         }
         self.readouts = configuration.readouts.compactMap { readout in
-            reply.readout(type: readout, showColor: !associatedReadouts.contains(readout))
+            comment.readout(type: readout, showColor: !associatedReadouts.contains(readout))
         }
     }
 
@@ -311,17 +325,24 @@ extension [EnrichedWidget] {
     
     init(
         appState: AppState,
-        reply: any Reply1Providing,
+        navigation: NavigationLayer,
+        comment: any Comment1Providing,
+        notification: InboxNotification,
         items: [ReplyBarConfiguration.Item]
     ) {
         self = items.compactMap { item in
             switch item {
             case let .action(action):
-                if let action = reply.action(appState: appState, type: action) {
+                if let action = comment.action(
+                    appState: appState,
+                    type: action,
+                    navigation: navigation,
+                    notification: notification
+                ) {
                     return .action(action)
                 }
             case let .counter(counter):
-                if let counter = reply.counter(appState: appState, type: counter) {
+                if let counter = comment.counter(appState: appState, type: counter) {
                     return .counter(counter)
                 }
             }
