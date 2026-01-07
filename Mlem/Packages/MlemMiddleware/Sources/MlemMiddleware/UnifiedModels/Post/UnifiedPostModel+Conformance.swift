@@ -41,7 +41,7 @@ public extension UnifiedPostModel {
 // MARK: ImagePrefetchProviding
 
 extension UnifiedPostModel: ImagePrefetchProviding {
-    var type: PostType {
+    public var type: PostType {
         // post with URL: image, embedded, or link
         if let linkUrl {
             // TODO: NOW

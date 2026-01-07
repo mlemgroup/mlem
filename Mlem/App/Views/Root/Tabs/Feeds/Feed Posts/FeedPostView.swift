@@ -122,7 +122,8 @@ struct FeedPostView<EmbeddedContent: View>: View {
     var content: some View {
         switch postSize {
         case .compact:
-            CompactPostView(post: post, requireConsistentHeight: requireConsistentHeight)
+            Text("TODO")
+            // CompactPostView(post: post, requireConsistentHeight: requireConsistentHeight)
         case .tile:
             TilePostView(post: post)
         case .headline:

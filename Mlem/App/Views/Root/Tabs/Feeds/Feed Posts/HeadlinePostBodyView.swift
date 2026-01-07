@@ -29,14 +29,15 @@ struct HeadlinePostBodyView: View {
     
     var body: some View {
         HStack(alignment: .top, spacing: Constants.main.standardSpacing) {
-            if thumbnailLocation == .left {
-                ThumbnailImageView(
-                    post: post,
-                    blurred: blurred,
-                    size: .standard,
-                    frame: .init(width: thumbnailSize, height: thumbnailSize)
-                )
-            }
+            // TODO: NOW
+//            if thumbnailLocation == .left {
+//                ThumbnailImageView(
+//                    post: post,
+//                    blurred: blurred,
+//                    size: .standard,
+//                    frame: .init(width: thumbnailSize, height: thumbnailSize)
+//                )
+//            }
 
             if requireConsistentHeight {
                 titleAndHostView
@@ -45,15 +46,15 @@ struct HeadlinePostBodyView: View {
                 titleAndHostView
             }
             
-            if thumbnailLocation == .right {
-                Spacer()
-                ThumbnailImageView(
-                    post: post,
-                    blurred: blurred,
-                    size: .standard,
-                    frame: .init(width: thumbnailSize, height: thumbnailSize)
-                )
-            }
+//            if thumbnailLocation == .right {
+//                Spacer()
+//                ThumbnailImageView(
+//                    post: post,
+//                    blurred: blurred,
+//                    size: .standard,
+//                    frame: .init(width: thumbnailSize, height: thumbnailSize)
+//                )
+//            }
         }
     }
     

@@ -121,7 +121,7 @@ struct DevFeedPostView<EmbeddedContent: View>: View {
     
     @ViewBuilder
     var content: some View {
-        DevCompactPostView(post: post, requireConsistentHeight: requireConsistentHeight)
+        CompactPostView(post: post, requireConsistentHeight: requireConsistentHeight)
 //        switch postSize {
 //        case .compact:
 //            CompactPostView(post: post, requireConsistentHeight: requireConsistentHeight)

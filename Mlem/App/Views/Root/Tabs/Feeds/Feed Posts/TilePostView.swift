@@ -177,23 +177,26 @@ struct TilePostView: View {
                     .frame(width: Constants.main.thumbnailSize, height: Constants.main.thumbnailSize)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             case .media, .embedded:
-                ThumbnailImageView(
-                    post: post,
-                    blurred: blurred,
-                    size: .tile,
-                    frame: .init(width: width, height: height)
-                )
-                .clipped()
+                Text("TODO")
+                // TODO: NOW
+//                ThumbnailImageView(
+//                    post: post,
+//                    blurred: blurred,
+//                    size: .tile,
+//                    frame: .init(width: width, height: height)
+//                )
+//                .clipped()
             case let .link(link):
-                ThumbnailImageView(
-                    post: post,
-                    blurred: blurred,
-                    size: .tile,
-                    frame: .init(width: width, height: height)
-                )
-                .aspectRatio(contentMode: .fill)
-                .clipped()
-                .overlay { linkHostOverlay(link) }
+                Text("TODO")
+//                ThumbnailImageView(
+//                    post: post,
+//                    blurred: blurred,
+//                    size: .tile,
+//                    frame: .init(width: width, height: height)
+//                )
+//                .aspectRatio(contentMode: .fill)
+//                .clipped()
+//                .overlay { linkHostOverlay(link) }
             }
         }
         

@@ -20,11 +20,11 @@ struct CompactPostView: View {
     
     @ScaledMetric(relativeTo: .caption) var titleHostHeightLimit: CGFloat = 40
     
-    let post: any Post1Providing
+    let post: UnifiedPostModel
     var requireConsistentHeight: Bool = false
-
+    
     var readouts: [PostBarConfiguration.ReadoutType?] {
-        let saved: PostBarConfiguration.ReadoutType? = post.saved_ ?? false ? .saved : nil
+        let saved: PostBarConfiguration.ReadoutType? = post.saved.value ?? false ? .saved : nil
         if showDownvotesCompact {
             return [.created, .upvote, .downvote, .comment, saved]
         } else {
@@ -44,7 +44,7 @@ struct CompactPostView: View {
         content
             .padding(Constants.main.standardSpacing)
             .background(.themedSecondaryGroupedBackground)
-            .environment(\.postContext, post)
+        // .environment(\.postContext, post)
     }
     
     var content: some View {
@@ -61,13 +61,24 @@ struct CompactPostView: View {
             VStack(alignment: .leading, spacing: Constants.main.compactSpacing) {
                 HStack(spacing: 4) {
                     if communityContext != nil {
-                        FullyQualifiedLinkView(post.creator_, labelStyle: .small, showAvatar: false)
+                        ExpectedView(post.creator) { creator in
+                            FullyQualifiedLinkView(creator, labelStyle: .small, showAvatar: false)
+                        } placeholder: {
+                            Text("user@placeholder")
+                                .redacted(reason: .placeholder)
+                        }
                     } else {
-                        FullyQualifiedLinkView(post.community_, labelStyle: .small, showAvatar: false)
+                        ExpectedView(post.community) { community in
+                            FullyQualifiedLinkView(community, labelStyle: .small, showAvatar: false)
+                        } placeholder: {
+                            Text("community@placeholder")
+                                .redacted(reason: .placeholder)
+                        }
+                        
                     }
                     Spacer()
-
-                    if differentiateWithoutColor, readPostIndicator == .checkmark, post.read_ ?? false {
+                    
+                    if differentiateWithoutColor, readPostIndicator == .checkmark, post.read.value ?? false {
                         ReadCheck()
                     }
                     
@@ -76,9 +87,9 @@ struct CompactPostView: View {
                             .foregroundStyle(.themedWarning)
                             .imageScale(.small)
                     }
-
+                    
                     // Allow the tap area to extend outside of the parent HStack a little
-                    PostEllipsisMenus(post: post, size: 20)
+                    UnifiedPostEllipsisMenus(post: post, size: 20)
                         .padding(.vertical, -2)
                 }
                 .padding(.bottom, -2)
@@ -121,13 +132,14 @@ struct CompactPostView: View {
             .symbolVariant(.fill)
             .multilineTextAlignment(.leading)
             .imageScale(.small)
-            .foregroundStyle(post.read_ ?? false ? .themedSecondary : .themedPrimary)
+            .foregroundStyle(post.read.value ?? false ? .themedSecondary : .themedPrimary)
             .font(.subheadline)
     }
 }
 
-#if DEBUG
-    #Preview(traits: .sampleEnvironment, .sizeThatFitsLayout) {
-        CompactPostView(post: Post2.mock(.generic))
-    }
-#endif
+// TODO: updated mocks
+//#if DEBUG
+//    #Preview(traits: .sampleEnvironment, .sizeThatFitsLayout) {
+//        DevCompactPostView(post: Post2.mock(.generic))
+//    }
+//#endif
