@@ -63,6 +63,36 @@ extension View {
     }
     
     @ViewBuilder
+    func quickSwipes(post: UnifiedPostModel, configuration: PostBarConfiguration) -> some View {
+        modifier(
+            QuickSwipeEnvironmentReaderViewModifier { environment in
+                guard let navigation = environment.navigation else {
+                    assertionFailure()
+                    return .init()
+                }
+                return .init(
+                    leadingActions: configuration.leadingSwipes.compactMap {
+                        post.action(
+                            appState: environment.appState,
+                            navigation: navigation,
+                            type: $0,
+                            commentTreeTracker: environment.commentTreeTracker
+                        )
+                    }.compactMap(QuickSwipeAction.init),
+                    trailingActions: configuration.trailingSwipes.compactMap {
+                        post.action(
+                            appState: environment.appState,
+                            navigation: navigation,
+                            type: $0,
+                            commentTreeTracker: environment.commentTreeTracker
+                        )
+                    }.compactMap(QuickSwipeAction.init)
+                )
+            }
+        )
+    }
+    
+    @ViewBuilder
     func quickSwipes(comment: any Comment, configuration: CommentBarConfiguration) -> some View {
         modifier(
             QuickSwipeEnvironmentReaderViewModifier { environment in

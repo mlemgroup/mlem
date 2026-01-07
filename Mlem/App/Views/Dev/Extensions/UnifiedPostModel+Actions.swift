@@ -70,7 +70,7 @@ extension UnifiedPostModel {
             callback: { toggleHidden(feedback) }
         )
     }
-
+    
     func action(
         appState: AppState,
         navigation: NavigationLayer,
@@ -138,14 +138,14 @@ extension UnifiedPostModel {
     
     func readout(type: PostBarConfiguration.ReadoutType, showColor: Bool) -> Readout? {
         switch type {
-        // case .created: createdReadout
-        // swiftlint:disable:next void_function_in_ternary
-        // case .score: downvotesEnabled ? scoreReadout(showColor: showColor) : upvoteReadout(showColor: showColor)
+            // case .created: createdReadout
+            // swiftlint:disable:next void_function_in_ternary
+            // case .score: downvotesEnabled ? scoreReadout(showColor: showColor) : upvoteReadout(showColor: showColor)
         case .upvote: upvoteReadout(showColor: showColor)
         case .downvote: downvotesEnabled ? downvoteReadout(showColor: showColor) : nil
         default: nil
-        // case .comment: commentReadout
-        // case .saved: savedReadout(showColor: showColor)
+            // case .comment: commentReadout
+            // case .saved: savedReadout(showColor: showColor)
         }
     }
     
@@ -157,11 +157,124 @@ extension UnifiedPostModel {
         commentTreeTracker: CommentTreeTracker? = nil
     ) -> Counter? {
         return nil
-//        switch type {
-//        case .score: scoreCounter(appState: appState, downvotesEnabled: downvotesEnabled)
-//        case .upvote: upvoteCounter(appState: appState)
-//        case .downvote: downvotesEnabled ? downvoteCounter(appState: appState, downvotesEnabled: downvotesEnabled) : nil
-//        case .reply: replyCounter(appState: appState, commentTreeTracker: commentTreeTracker)
+        //        switch type {
+        //        case .score: scoreCounter(appState: appState, downvotesEnabled: downvotesEnabled)
+        //        case .upvote: upvoteCounter(appState: appState)
+        //        case .downvote: downvotesEnabled ? downvoteCounter(appState: appState, downvotesEnabled: downvotesEnabled) : nil
+        //        case .reply: replyCounter(appState: appState, commentTreeTracker: commentTreeTracker)
+        //        }
+    }
+    
+    // MARK: - Action Groups
+    
+    @ActionBuilder
+    func allMenuActions(
+        appState: AppState,
+        expanded: Bool = false,
+        feedback: Set<FeedbackType> = [.haptic, .toast],
+        showAllActions: Bool = true,
+        navigation: NavigationLayer?,
+        report: Report? = nil,
+        commentTreeTracker: CommentTreeTracker? = nil
+    ) -> [any Action] {
+        basicMenuActions(
+            appState: appState,
+            expanded: expanded,
+            feedback: feedback,
+            navigation: navigation,
+            commentTreeTracker: commentTreeTracker
+        )
+        if canModerate {
+            ActionGroup(
+                appearance: .init(label: "Moderation...", color: .themedModeration, icon: Icons.moderation),
+                displayMode: Settings.get(\.menus_modActionGrouping) == .divider || expanded ? .section : .disclosure
+            ) {
+                moderatorMenuActions(
+                    appState: appState,
+                    feedback: feedback,
+                    showAllActions: showAllActions,
+                    navigation: navigation,
+                    report: report
+                )
+            }
+        }
+    }
+    
+    @ActionBuilder
+    func basicMenuActions(
+        appState: AppState,
+        expanded: Bool,
+        feedback: Set<FeedbackType> = [.haptic, .toast],
+        navigation: NavigationLayer?,
+        commentTreeTracker: CommentTreeTracker? = nil
+    ) -> [any Action] {
+        ActionGroup(displayMode: .compactSection) {
+            if let upvoteAction = upvoteAction(appState: appState, feedback: feedback) { upvoteAction }
+            if let downvoteAction = downvoteAction(appState: appState, feedback: feedback) { downvoteAction }
+            if let saveAction = saveAction(appState: appState, feedback: feedback) { saveAction }
+            if let replyAction = replyAction(appState: appState, commentTreeTracker: commentTreeTracker) { replyAction }
+            if !deleted {
+                selectTextAction()
+            }
+            shareAction(navigation: navigation)
+            
+            //            if expanded, let navigation {
+            //                createImageAction(navigation: navigation)
+            //            }
+            //
+            //            if isOwnPost {
+            //                editAction(appState: appState)
+            //                deleteAction(appState: appState, feedback: feedback)
+            //            } else {
+            //                if api.supports(.hidePosts, defaultValue: true) {
+            //                    hideAction(appState: appState, feedback: feedback)
+            //                }
+            //                if !canModerate, !deleted {
+            //                    reportAction(appState: appState)
+            //                }
+            //                blockAction(appState: appState, feedback: feedback)
+        }
+    }
+    
+    @ActionBuilder
+    func moderatorMenuActions(
+        appState: AppState,
+        feedback: Set<FeedbackType> = [.haptic, .toast],
+        showAllActions: Bool = true,
+        navigation: NavigationLayer?,
+        report: Report? = nil
+    ) -> [any Action] {
+//        if showAllActions || Settings.get(\.menus_allModActions) {
+//            pinToCommunityAction(appState: appState, feedback: feedback, verboseTitle: api.isAdmin)
+//            if api.isAdmin {
+//                pinToInstanceAction(appState: appState, feedback: feedback)
+//            }
+//            lockAction(appState: appState, feedback: feedback)
+//            
+//            if setNsfwIsAvailable(appState: appState) {
+//                setNsfwAction(appState: appState)
+//            }
+//            
+//            let viewVotesIsPossible = api.supports(.viewVotes, defaultValue: false)
+//            
+//            if let navigation, viewVotesIsPossible {
+//                viewVotesAction(navigation: navigation)
+//            }
+//        }
+//        if let self2, !isOwnPost {
+//            self2.removeAction(appState: appState).disabled(!canModerate)
+//            self2.creator.banActions(appState: appState, community: self2.community, withUserLabel: true)
+//        }
+//        if api.isAdmin, api.supports(.purgeContent, defaultValue: false) {
+//            purgeAction(appState: appState)
+//            if !isOwnPost {
+//                purgeCreatorAction(appState: appState)
+//            }
+//        }
+//        if let report {
+//            ActionGroup {
+//                report.menuActions(appState: appState)
+//            }
 //        }
     }
 }
