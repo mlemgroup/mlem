@@ -6,6 +6,7 @@
 //
 
 import MlemMiddleware
+import Foundation
 
 // TODO: NOW be consistent about how feedback is passed in
 
@@ -62,7 +63,7 @@ extension UnifiedPostModel {
     }
     
     // TODO: NOW make this generic in new Interactable
-    func replyAction(appState: AppState, commentTreeTracker: CommentTreeTracker? = nil) -> BasicAction? {
+    func replyAction(appState: AppState, commentTreeTracker: CommentTreeTracker? = nil) -> BasicAction {
         .init(
             id: "reply\(actorId)",
             appearance: .reply(),
@@ -70,6 +71,29 @@ extension UnifiedPostModel {
                 NavigationModel.main.openSheet(.createComment(.unifiedPost(self), commentTreeTracker: commentTreeTracker))
             } : nil
         )
+    }
+    
+    // TODO: NOW make this generic in new Shareable
+    func shareAction(navigation: NavigationLayer?) -> BasicAction? {
+        let url: URL?
+        switch Settings.get(\.links_shareMode) {
+        case .myInstance:
+            url = self.trueUrl
+        case .originalInstance:
+            url = self.actorId.url
+        case .lemmyverse:
+            url = nil // self.lemmyverseUrl // TODO: NOW
+        case .askEveryTime:
+            url = nil
+        }
+        
+        return .init(id: "share\(actorId)", appearance: .share(), callback: {
+            if let url, let navigation {
+                navigation.model?.shareInfo = .init(url: url, actions: []) // self.shareSheetActions())
+            } else {
+                navigation?.openSheet(.shareInstancePicker(self))
+            }
+        })
     }
     
     func action(

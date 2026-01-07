@@ -100,7 +100,6 @@ struct CommentEditorView: View {
                                 ProgressView()
                             } else {
                                 shimSendButton
-                                // sendButton
                             }
                         }
                     }

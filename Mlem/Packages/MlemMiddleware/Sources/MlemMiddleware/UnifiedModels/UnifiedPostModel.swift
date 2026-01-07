@@ -205,7 +205,15 @@ public class UnifiedPostModel:
     public var actorId: ActorIdentifier
     public var properties: PostProperties
     
-    public var url: URL { actorId.url }
+    public var url: URL { actorId.url } // TODO: NOW this should be host-specific url
+    
+    public var trueUrl: URL? {
+        if let id = id.value {
+            api.baseUrl.appending(path: "post/\(id)")
+        } else {
+            nil
+        }
+    }
     
     public init(api: ApiClient, url: URL) {
         self.api = api
@@ -396,6 +404,8 @@ public extension UnifiedPostModel {
         }
         return nil
     }
+    
+    // TODO: NOW make all Post1Providing properties mandatory. Create a page for PostStub specifically that fetches the real post and redirects.
 }
 
 // MARK: - FeedLoadable
