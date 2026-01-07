@@ -59,6 +59,13 @@ extension InfoStackView {
         }
     }
     
+    init(post: UnifiedPostModel, readouts: [PostBarConfiguration.ReadoutType?], coloredReadouts: Set<PostBarConfiguration.ReadoutType>) {
+        self.readouts = readouts.compactMap {
+            if let readoutType = $0 { return post.readout(type: readoutType, showColor: coloredReadouts.contains(readoutType)) }
+            return nil
+        }
+    }
+    
     init(
         comment: any Comment1Providing,
         readouts: [CommentBarConfiguration.ReadoutType],

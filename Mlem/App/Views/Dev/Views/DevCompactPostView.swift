@@ -99,7 +99,7 @@ struct DevCompactPostView: View {
                 } else {
                     titleAndHostView
                 }
-                // InfoStackView(post: post, readouts: readouts, coloredReadouts: .init(PostBarConfiguration.ReadoutType.allCases))
+                InfoStackView(post: post, readouts: readouts, coloredReadouts: .init(PostBarConfiguration.ReadoutType.allCases))
             }
             .frame(maxWidth: .infinity)
             
