@@ -46,6 +46,7 @@ public class InboxNotification: ContentModel, ReadableProviding, Identifiable {
         case .reply: .reply
         case .message: .message
         }
+
         api.unreadCount?.updateUnverifiedItem(itemType: type, isRead: newValue)
         Task {
             await updateQueue.addItem {
@@ -57,6 +58,7 @@ public class InboxNotification: ContentModel, ReadableProviding, Identifiable {
                 )
                 var snapshot = self.takeSnapshot()
                 snapshot.read = newValue
+                self.api.unreadCount?.verifyItem(itemType: type, isRead: snapshot.read)
                 return snapshot
             }
         }
