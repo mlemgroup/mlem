@@ -8,7 +8,7 @@
 import Foundation
 
 @Observable
-public class InboxNotification: ContentModel, Identifiable {
+public class InboxNotification: ContentModel, ReadableProviding, Identifiable {
     public var updateQueue: InboxNotificationUpdateQueue = .init()
     
     public static var tierNumber: Int = 1
@@ -41,6 +41,13 @@ public class InboxNotification: ContentModel, Identifiable {
     
     public func updateRead(_ newValue: Bool) {
         read = newValue
+        let type: InboxItemType = switch content.type {
+        case .mention: .mention
+        case .reply: .reply
+        case .message: .message
+        }
+
+        api.unreadCount?.updateUnverifiedItem(itemType: type, isRead: newValue)
         Task {
             await updateQueue.addItem {
                 try await self.api.repository.markNotificationAsRead(
@@ -51,6 +58,7 @@ public class InboxNotification: ContentModel, Identifiable {
                 )
                 var snapshot = self.takeSnapshot()
                 snapshot.read = newValue
+                self.api.unreadCount?.verifyItem(itemType: type, isRead: snapshot.read)
                 return snapshot
             }
         }
@@ -58,5 +66,29 @@ public class InboxNotification: ContentModel, Identifiable {
     
     public func toggleRead() {
         updateRead(!read)
+    }
+
+    public static func == (lhs: InboxNotification, rhs: InboxNotification) -> Bool {
+        lhs.id == rhs.id
+    }
+}
+
+extension InboxNotification: InboxIdentifiable {
+    public var inboxId: Int { content.wrappedValue.actorId.hashValue }
+}
+
+extension InboxNotification: FeedLoadable {
+    public typealias FilterType = InboxItemFilterType
+
+    public func sortVal(sortType: FeedLoaderSort.SortType) -> FeedLoaderSort {
+        switch sortType {
+        case .new:
+            switch self.content {
+            case let .mention(comment), let .reply(comment):
+                return .new(comment.created)
+            case let .message(message):
+                return .new(message.created)
+            }
+        }
     }
 }

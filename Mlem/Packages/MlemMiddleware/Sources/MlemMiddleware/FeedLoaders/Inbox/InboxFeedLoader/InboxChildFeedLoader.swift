@@ -5,7 +5,7 @@
 //  Created by Eric Andrews on 2024-12-04.
 //
 
-public class InboxChildFeedLoader: ChildFeedLoader<InboxItem> {
+public class InboxChildFeedLoader: ChildFeedLoader<InboxNotification> {
     var inboxFetcher: InboxFetcher { fetcher as! InboxFetcher }
     
     public init(api: ApiClient, sortType: FeedLoaderSort.SortType, fetcher: InboxFetcher, showRead: Bool) {

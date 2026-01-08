@@ -8,9 +8,13 @@
 public class ReplyChildFeedLoader: InboxChildFeedLoader {
     class Fetcher: InboxFetcher {
         override func fetchPage(_ page: Int) async throws -> FetchResponse {
-            let response = try await api.getReplies(page: page, limit: pageSize, unreadOnly: unreadOnly)
+            let response = try await api.getReplyNotifications(
+                page: page,
+                limit: pageSize,
+                unreadOnly: unreadOnly
+            )
             return .init(
-                items: response.map { .reply($0) },
+                items: response,
                 prevCursor: nil,
                 nextCursor: nil
             )

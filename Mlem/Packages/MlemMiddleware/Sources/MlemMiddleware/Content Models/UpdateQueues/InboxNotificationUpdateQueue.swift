@@ -58,7 +58,7 @@ public actor InboxNotificationUpdateQueue {
     /// This method should be called when new snapshots are received by actions in a foreign object's queue or by headless calls
     func attemptDirectUpdate(with snapshot: InboxNotificationSnapshot) async {
         guard queue.numItems == 0, let parent else { return }
-        await updateParent(parent, with: snapshot)
+        await updateParent(parent, with: snapshot, isResultOfTask: false)
     }
     
     private func executeQueue() async {
@@ -97,11 +97,15 @@ public actor InboxNotificationUpdateQueue {
             queue.dequeue()
         }
         
-        await updateParent(parent, with: lastVerifiedSnapshot)
+        await updateParent(parent, with: lastVerifiedSnapshot, isResultOfTask: true)
     }
     
-    private func updateParent(_ parent: InboxNotification, with snapshot: InboxNotificationSnapshot) async {
-        await parent.snapshotUpdate(with: snapshot)
+    private func updateParent(
+        _ parent: InboxNotification,
+        with snapshot: InboxNotificationSnapshot,
+        isResultOfTask: Bool
+    ) async {
+        await parent.snapshotUpdate(with: snapshot, isResultOfTask: isResultOfTask)
     }
 }
 

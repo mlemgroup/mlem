@@ -8,7 +8,7 @@
 import Foundation
 
 @Observable
-public class InboxFetcher: Fetcher<InboxItem> {
+public class InboxFetcher: Fetcher<InboxNotification> {
     var unreadOnly: Bool
     
     init(api: ApiClient, pageSize: Int, unreadOnly: Bool) {

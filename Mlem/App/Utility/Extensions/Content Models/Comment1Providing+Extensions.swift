@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 25/06/2024.
 //
 
+import Haptics
 import Foundation
 import MlemMiddleware
 import SwiftUI
@@ -41,6 +42,7 @@ extension Comment1Providing {
         feedback: Set<FeedbackType> = [.haptic, .toast],
         showAllActions: Bool = true,
         navigation: NavigationLayer?,
+        notification: InboxNotification? = nil,
         commentTreeTracker: CommentTreeTracker? = nil,
         report: Report? = nil
     ) -> [any Action] {
@@ -48,6 +50,7 @@ extension Comment1Providing {
             appState: appState,
             feedback: feedback,
             navigation: navigation,
+            notification: notification,
             commentTreeTracker: commentTreeTracker
         )
         if canModerate {
@@ -65,6 +68,7 @@ extension Comment1Providing {
         appState: AppState,
         feedback: Set<FeedbackType> = [.haptic, .toast],
         navigation: NavigationLayer?,
+        notification: InboxNotification? = nil,
         commentTreeTracker: CommentTreeTracker? = nil
     ) -> [any Action] {
         ActionGroup(displayMode: .compactSection) {
@@ -72,12 +76,15 @@ extension Comment1Providing {
             downvoteAction(appState: appState, feedback: feedback, downvotesEnabled: downvotesEnabled)
             saveAction(appState: appState, feedback: feedback)
             replyAction(appState: appState, commentTreeTracker: commentTreeTracker)
+            if let notification {
+                markReadAction(appState: appState, notification: notification, feedback: feedback)
+            }
             if !deleted {
                 selectTextAction()
             }
             shareAction(navigation: navigation)
             
-            if let navigation {
+            if let navigation, notification == nil {
                 createImageAction(navigation: navigation, commentTreeTracker: commentTreeTracker)
             }
             
@@ -151,6 +158,26 @@ extension Comment1Providing {
         case .collapseToTop: collapseToTopAction(commentTreeTracker: commentTreeTracker)
         }
     }
+
+    func action(
+        appState: AppState,
+        type: ReplyBarConfiguration.ActionType,
+        navigation: NavigationLayer?,
+        notification: InboxNotification,
+        commentTreeTracker: CommentTreeTracker? = nil,
+        communityContext: (any CommunityStubProviding)? = nil,
+        reportContext: Report? = nil
+    ) -> (any Action)? {
+        switch type {
+        case .upvote: upvoteAction(appState: appState, feedback: [.haptic])
+        case .downvote: downvotesEnabled ? downvoteAction(appState: appState, feedback: [.haptic], downvotesEnabled: downvotesEnabled) : nil
+        case .save: saveAction(appState: appState, feedback: [.haptic])
+        case .reply: replyAction(appState: appState, commentTreeTracker: commentTreeTracker)
+        case .selectText: selectTextAction()
+        case .report: reportAction(appState: appState, communityContext: communityContext)
+        case .markRead: markReadAction(appState: appState, notification: notification)
+        }
+    }
     
     func counter(
         appState: AppState,
@@ -164,8 +191,33 @@ extension Comment1Providing {
         case .reply: replyCounter(appState: appState, commentTreeTracker: commentTreeTracker)
         }
     }
+
+    func counter(
+        appState: AppState,
+        type: ReplyBarConfiguration.CounterType,
+        commentTreeTracker: CommentTreeTracker? = nil
+    ) -> Counter? {
+        switch type {
+        case .score: scoreCounter(appState: appState, downvotesEnabled: downvotesEnabled)
+        case .upvote: upvoteCounter(appState: appState)
+        case .downvote: downvotesEnabled ? downvoteCounter(appState: appState, downvotesEnabled: downvotesEnabled) : nil
+        case .reply: replyCounter(appState: appState, commentTreeTracker: commentTreeTracker)
+        }
+    }
     
     func readout(type: CommentBarConfiguration.ReadoutType, showColor: Bool) -> Readout? {
+        switch type {
+        case .created: createdReadout
+        // swiftlint:disable:next void_function_in_ternary
+        case .score: downvotesEnabled ? scoreReadout(showColor: showColor) : upvoteReadout(showColor: showColor)
+        case .upvote: upvoteReadout(showColor: showColor)
+        case .downvote: downvotesEnabled ? downvoteReadout(showColor: showColor) : nil
+        case .comment: commentReadout
+        case .saved: savedReadout(showColor: showColor)
+        }
+    }
+
+    func readout(type: ReplyBarConfiguration.ReadoutType, showColor: Bool) -> Readout? {
         switch type {
         case .created: createdReadout
         // swiftlint:disable:next void_function_in_ternary
@@ -209,6 +261,18 @@ extension Comment1Providing {
             id: "viewVotes\(uid)",
             appearance: .viewVotes(),
             callback: callback
+        )
+    }
+
+    func markReadAction(appState: AppState, notification: InboxNotification, feedback: Set<FeedbackType> = []) -> BasicAction {
+        .init(
+            id: "markRead\(uid)",
+            appearance: .markRead(isOn: notification.read),
+            callback: api.canInteract(appState: appState) ? {
+                @MainActor in
+                notification.toggleRead()
+                HapticManager.main.play(haptic: .lightSuccess, tier: .low)
+            } : nil
         )
     }
     
