@@ -56,6 +56,19 @@ class NavigationLayer: Identifiable {
             openSheet(page)
         }
     }
+    
+    /// Replaces the current top level page with the given NavigationPage. Useful for redirecting from interim
+    /// pages that should not appear in navigation history.
+    @MainActor
+    func replace(_ page: NavigationPage) {
+        if hasNavigationStack {
+            // This prevents keyboard animation glitches when navigating whilst the keyboard is open
+            UIApplication.shared.firstKeyWindow?.endEditing(true)
+            path[path.count - 1] = page
+        } else {
+            openSheet(page)
+        }
+    }
 
     @MainActor
     func pop() {

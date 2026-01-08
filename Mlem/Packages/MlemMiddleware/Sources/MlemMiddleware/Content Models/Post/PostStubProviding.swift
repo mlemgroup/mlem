@@ -49,6 +49,7 @@ public protocol PostStubProviding: ContentModel, Resolvable {
     var crossPosts_: [Post2]? { get }
     
     func upgrade() async throws -> any Post
+    func newUpgrade() async throws -> UnifiedPostModel
 }
 
 public extension PostStubProviding {

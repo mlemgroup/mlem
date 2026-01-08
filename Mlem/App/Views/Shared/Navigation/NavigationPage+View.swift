@@ -88,7 +88,7 @@ extension NavigationPage {
                 .environment(\.communityContext, communityContext?.wrappedValue)
         case let .postStub(post, scrollTargetedComment, communityContext, _):
             // TODO: NOW
-            PostPage()
+            PostPage(stub: post.wrappedValue)
             // PostPage(post: post, scrollTargetedComment: scrollTargetedComment?.wrappedValue)
             //    .environment(\.communityContext, communityContext?.wrappedValue)
         case let .comment(comment, comments: comments, showViewPostButton, exposeRemovedContent):

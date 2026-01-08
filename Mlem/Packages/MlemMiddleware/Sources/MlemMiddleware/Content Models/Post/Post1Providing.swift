@@ -201,6 +201,10 @@ public extension Post1Providing {
         }
     }
     
+    func newUpgrade() async throws -> UnifiedPostModel {
+        try await api.unifiedGetPost(id: id)
+    }
+    
     func getComments(
         sort: CommentSortType = .hot,
         page: Int,
