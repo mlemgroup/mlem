@@ -30,9 +30,7 @@ enum NavigationPage: Hashable {
         navigationNamespace: Namespace.ID? = nil
     )
     case postStub(
-        _ post: AnyPost,
-        scrollTargetedComment: HashWrapper<any CommentStubProviding>? = nil,
-        communityContext: HashWrapper<any Community1Providing>? = nil,
+        _ post: HashWrapper<any PostStubProviding>,
         navigationNamespace: Namespace.ID? = nil
     )
     case comment(_ comment: AnyComment, comments: [Comment2]?, showViewPostButton: Bool, exposeRemovedContent: Bool)
@@ -91,7 +89,7 @@ enum NavigationPage: Hashable {
 //    }
     
     static func post(
-        _ post: UnifiedPostModel,
+        _ post: UnifiedPostModel,   
         communityContext: (any Community1Providing)?,
         navigationNamespace: Namespace.ID? = nil
     ) -> NavigationPage {
@@ -102,24 +100,8 @@ enum NavigationPage: Hashable {
         }
     }
     
-    static func postStub(_ post: any PostStubProviding, scrollTargetedComment: (any CommentStubProviding)? = nil) -> NavigationPage {
-        if let scrollTargetedComment {
-            return Self.postStub(.init(post), scrollTargetedComment: .init(wrappedValue: scrollTargetedComment))
-        } else {
-            return Self.postStub(.init(post))
-        }
-    }
-    
-    static func postStub(
-        _ post: any PostStubProviding,
-        communityContext: (any Community1Providing)?,
-        navigationNamespace: Namespace.ID? = nil
-    ) -> NavigationPage {
-        if let communityContext {
-            Self.postStub(.init(post), communityContext: .init(wrappedValue: communityContext), navigationNamespace: navigationNamespace)
-        } else {
-            Self.postStub(.init(post), navigationNamespace: navigationNamespace)
-        }
+    static func postStub(_ post: any PostStubProviding) -> NavigationPage {
+        return Self.postStub(.init(wrappedValue: post), navigationNamespace: nil)
     }
     
     static func comment(

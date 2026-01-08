@@ -86,9 +86,9 @@ extension NavigationPage {
         case let .post(post, scrollTargetedComment, communityContext, _):
             ExpandedPostView(post: post, contentLoaderError: nil, isLoading: false, tracker: nil)
                 .environment(\.communityContext, communityContext?.wrappedValue)
-        case let .postStub(post, scrollTargetedComment, communityContext, _):
+        case let .postStub(post, _):
             // TODO: NOW
-            PostPage(stub: post.wrappedValue)
+            PostStubResolutionPage(stub: post.wrappedValue)
             // PostPage(post: post, scrollTargetedComment: scrollTargetedComment?.wrappedValue)
             //    .environment(\.communityContext, communityContext?.wrappedValue)
         case let .comment(comment, comments: comments, showViewPostButton, exposeRemovedContent):
