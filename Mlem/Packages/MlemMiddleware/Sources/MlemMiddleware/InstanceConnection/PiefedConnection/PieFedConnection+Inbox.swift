@@ -8,44 +8,6 @@
 import Foundation
 
 public extension PieFedConnection {
-    func getReplies(
-        sort: CommentSortType = .new,
-        page: Int,
-        limit: Int,
-        unreadOnly: Bool = false
-    ) async throws -> [Reply2Snapshot] {
-        guard let sort = sort.piefedCommentSortType else {
-            throw ApiClientError.featureUnsupported
-        }
-        let request = PieFedGetRepliesRequest(
-            sort: sort,
-            page: page,
-            limit: limit,
-            unreadOnly: unreadOnly
-        )
-        let response = try await perform(request)
-        return try response.replies.map { try .init(from: $0, isMention: false) }
-    }
-    
-    func getMentions(
-        sort: CommentSortType = .new,
-        page: Int,
-        limit: Int,
-        unreadOnly: Bool = false
-    ) async throws -> [Reply2Snapshot] {
-        guard let sort = sort.piefedCommentSortType else {
-            throw ApiClientError.featureUnsupported
-        }
-        let request = PieFedGetMentionsRequest(
-            sort: sort,
-            page: page,
-            limit: limit,
-            unreadOnly: unreadOnly
-        )
-        let response = try await perform(request)
-        return try response.replies.map { try .init(from: $0, isMention: true) }
-    }
-    
     func getMessages(
         creatorId: Int? = nil,
         page: Int,

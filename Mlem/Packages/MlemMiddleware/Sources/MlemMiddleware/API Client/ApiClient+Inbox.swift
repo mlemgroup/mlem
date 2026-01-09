@@ -8,36 +8,6 @@
 import Foundation
 
 public extension ApiClient {
-    func getReplies(
-        sort: CommentSortType = .new,
-        page: Int,
-        limit: Int,
-        unreadOnly: Bool = false
-    ) async throws -> [Reply2] {
-        let snapshots = try await repository.getReplies(
-            sort: sort,
-            page: page,
-            limit: limit,
-            unreadOnly: unreadOnly
-        )
-        return await caches.reply2.getModels(api: self, from: snapshots)
-    }
-    
-    func getMentions(
-        sort: CommentSortType = .new,
-        page: Int,
-        limit: Int,
-        unreadOnly: Bool = false
-    ) async throws -> [Reply2] {
-        let snapshots = try await repository.getMentions(
-            sort: sort,
-            page: page,
-            limit: limit,
-            unreadOnly: unreadOnly
-        )
-        return await caches.reply2.getModels(api: self, from: snapshots)
-    }
-    
     func getMessages(
         creatorId: Int? = nil,
         page: Int,
@@ -103,9 +73,6 @@ public extension ApiClient {
     func markAllAsRead() async throws {
         try await repository.markAllAsRead()
         _ = await Task { @MainActor in
-            for reply in caches.reply1.itemCache.value.values {
-                reply.content?.readManager.updateWithReceivedValue(true, semaphore: nil)
-            }
             for message in caches.message1.itemCache.value.values {
                 message.content?.readManager.updateWithReceivedValue(true, semaphore: nil)
             }
@@ -114,28 +81,6 @@ public extension ApiClient {
             }
         }.result
         unreadCount?.clear(.personal)
-    }
-    
-    func markReplyAsRead(id: Int, read: Bool = true, semaphore: UInt? = nil) async throws {
-        try await repository.markReplyAsRead(id: id, read: read)
-        var hasher = Hasher()
-        hasher.combine(id)
-        hasher.combine(false) // isMention
-        let cacheId = hasher.finalize()
-        if let reply = caches.reply1.retrieveModel(cacheId: cacheId) {
-            reply.readManager.updateWithReceivedValue(read, semaphore: semaphore)
-        }
-    }
-    
-    func markMentionAsRead(id: Int, read: Bool = true, semaphore: UInt? = nil) async throws {
-        try await repository.markMentionAsRead(id: id, read: read)
-        var hasher = Hasher()
-        hasher.combine(id)
-        hasher.combine(true) // isMention
-        let cacheId = hasher.finalize()
-        if let reply = caches.reply1.retrieveModel(cacheId: cacheId) {
-            reply.readManager.updateWithReceivedValue(read, semaphore: semaphore)
-        }
     }
     
     func markMessageAsRead(id: Int, read: Bool = true, semaphore: UInt? = nil) async throws {

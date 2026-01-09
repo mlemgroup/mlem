@@ -8,40 +8,6 @@
 import Foundation
 
 public extension LemmyConnection {
-    func getReplies(
-        sort: CommentSortType = .new,
-        page: Int,
-        limit: Int,
-        unreadOnly: Bool = false
-    ) async throws -> [Reply2Snapshot] {
-        let response = try await performingForEndpoint { _ in
-            LemmyListRepliesRequest(
-                sort: sort.v3CommentApiType,
-                page: page,
-                limit: limit,
-                unreadOnly: unreadOnly
-            )
-        }
-        return try response.replies.map { try .init(from: $0) }
-    }
-    
-    func getMentions(
-        sort: CommentSortType = .new,
-        page: Int,
-        limit: Int,
-        unreadOnly: Bool = false
-    ) async throws -> [Reply2Snapshot] {
-        let response = try await performingForEndpoint { _ in
-            LemmyListMentionsRequest(
-                sort: sort.v3CommentApiType,
-                page: page,
-                limit: limit,
-                unreadOnly: unreadOnly
-            )
-        }
-        return try response.mentions.map { try .init(from: $0) }
-    }
-    
     func getMessages(
         creatorId: Int? = nil,
         page: Int,

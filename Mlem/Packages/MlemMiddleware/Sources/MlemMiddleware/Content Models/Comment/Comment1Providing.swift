@@ -242,14 +242,6 @@ public extension Comment1Providing {
     
     var parentCommentId: Int? { parentCommentIds.last }
     
-    /// If one is cached, return the `Reply2` matching this model.
-    func getCachedInboxReply() -> Reply2? {
-        if let parentCommentId {
-            return api.caches.reply2.retrieveModel(commentId: parentCommentId)
-        }
-        return nil
-    }
-    
     func getVotes(page: Int, limit: Int, communityId: Int) async throws -> [PersonVote] {
         try await api.getCommentVotes(id: id, communityId: communityId, page: page, limit: limit)
     }

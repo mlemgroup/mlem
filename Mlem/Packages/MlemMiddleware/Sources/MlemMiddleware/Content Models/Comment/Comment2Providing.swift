@@ -49,12 +49,7 @@ public extension Comment2Providing {
         comment2.votes = comment2.votes.applyScoringOperation(operation: newValue)
         Task {
             await updateQueue.addItem {
-                let ret = try await self.api.repository.voteOnComment(id: self.id, score: newValue)
-                // TODO: Notification remove this, have reply2 passthrough saved to comment2
-                if let reply = self.api.caches.reply2.commentIdItemCache.get(self.id) {
-                    reply.votesManager.updateWithReceivedValue(reply.votes.applyScoringOperation(operation: newValue), semaphore: nil)
-                }
-                return ret
+                try await self.api.repository.voteOnComment(id: self.id, score: newValue)
             }
         }
     }
@@ -63,12 +58,7 @@ public extension Comment2Providing {
         comment2.saved = newValue
         Task {
             await updateQueue.addItem {
-                let ret = try await self.api.repository.saveComment(id: self.id, save: newValue)
-                // TODO: Notification remove this, have reply2 passthrough saved to comment2
-                if let reply = self.api.caches.reply2.commentIdItemCache.get(self.id) {
-                    reply.savedManager.updateWithReceivedValue(newValue, semaphore: nil)
-                }
-                return ret
+                try await self.api.repository.saveComment(id: self.id, save: newValue)
             }
         }
     }
