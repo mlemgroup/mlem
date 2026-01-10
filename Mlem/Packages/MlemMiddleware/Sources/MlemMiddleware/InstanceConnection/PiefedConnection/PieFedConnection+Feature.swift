@@ -86,7 +86,7 @@ private extension CommentSortType {
         case .new: .zero
         case .old: .zero
         case .hot: .zero
-        case .controversial: .infinity
+        case .controversial: .v1_4_0
         case let .top(timeRange): timeRange == .allTime ? .zero : .infinity
         }
     }
