@@ -48,7 +48,7 @@ public extension PieFedConnection {
             version >= .v1_3_0
         case .commentSearch:
             version >= .v1_3_0
-        case .userNotes:
+        case .userNotes, .searchLocalComments:
             version >= .v1_4_0
         case .moderatorSetNsfw: true
         default: false
