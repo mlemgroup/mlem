@@ -162,7 +162,32 @@ public extension UnifiedPostModel {
     func url() -> URL { api.baseUrl.appending(path: "post/\(id)") }
 }
 
-// MARK: ReadableProviding
+// MARK: Interactable1Providing
+// TODO: new Interactable remove this
 
 public extension UnifiedPostModel {
+    // these are all shims! auto-fetching is therefore disabled to avoid unwanted side effects
+    var creator_: (any Person)? { creator.value_ }
+    
+    var community_: (any Community)? { community.value_ }
+    
+    var creatorIsModerator_: Bool? { creatorIsModerator.value_ }
+    
+    var creatorIsAdmin_: Bool? { creatorIsAdmin.value_ }
+    
+    var creatorBannedFromCommunity_: Bool? { creatorBannedFromCommunity.value_ }
+    
+    var commentCount_: Int? { commentCount.value_ }
+    
+    var votes_: VotesModel? { votes.value_ }
+    
+    var saved_: Bool? { saved.value_ }
+    
+    func report(reason: String) async throws {
+        assertionFailure("TODO")
+    }
+    
+    func isOwnContent(myPersonId: Int) -> Bool {
+        creatorId == myPersonId
+    }
 }

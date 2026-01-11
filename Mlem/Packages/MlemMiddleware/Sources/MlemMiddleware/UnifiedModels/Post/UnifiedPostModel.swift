@@ -12,6 +12,7 @@ import os
 import Nuke
 import Rest
 
+// TODO: New Interactable remove Interactable1Providing conformance
 @Observable
 public class UnifiedPostModel:
     UnifiedModelProviding,
@@ -20,7 +21,8 @@ public class UnifiedPostModel:
     ContentIdentifiable,
     Resolvable,
     Sharable,
-    UnifiedReadableProviding {
+    UnifiedReadableProviding,
+    Interactable1Providing {
     public typealias Properties = PostProperties
     
     public init(api: ApiClient, snapshot: any PostSnapshotProviding, creator: (any Person)? = nil, community: (any Community)? = nil) {
@@ -215,5 +217,22 @@ public extension UnifiedPostModel {
         }
     }
     
-    // TODO: NOW Create a page for PostStub specifically that fetches the real post and redirects.
+    // Get Comments
+    
+    func getComments(
+        sort: CommentSortType = .hot,
+        page: Int,
+        maxDepth: Int? = nil,
+        limit: Int,
+        filter: GetContentFilter? = nil
+    ) async throws -> [Comment2] {
+        try await api.getComments(
+            postId: id,
+            sort: sort,
+            page: page,
+            maxDepth: maxDepth,
+            limit: limit,
+            filter: filter
+        )
+    }
 }

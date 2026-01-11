@@ -54,7 +54,7 @@ struct ExpandedPostView<Content: View>: View {
         self.post = post
         self.highlightedComment = highlightedComment
         self.content = content()
-        self.tracker = tracker
+        self.tracker = tracker ?? .init(root: .unifiedPost(post))
         self._scrollTargetedComment = .init(wrappedValue: scrollTargetedComment)
     }
     
@@ -65,6 +65,9 @@ struct ExpandedPostView<Content: View>: View {
             viewContent
                 .themedGroupedBackground()
                 .externalApiWarning(entity: post, isLoading: false)
+                .task {
+                    await tracker?.load(ensuringPresenceOf: scrollTargetedComment)
+                }
                 .task(id: tracker == nil) {
                     if let tracker, post.api == appState.firstApi, tracker.loadingState == .idle {
                         post.updateRead(true)

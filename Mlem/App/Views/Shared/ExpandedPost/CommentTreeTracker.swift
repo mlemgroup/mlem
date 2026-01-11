@@ -15,18 +15,20 @@ class CommentTreeTracker: Hashable {
     
     enum Root {
         case post(any Post)
+        case unifiedPost(UnifiedPostModel)
         case comment(any Comment, parentCount: Int)
         
         var wrappedValue: any Interactable1Providing & ActorIdentifiable {
             switch self {
             case let .post(post): post
+            case let .unifiedPost(post): post
             case let .comment(comment, _): comment
             }
         }
         
         var depth: Int {
             switch self {
-            case .post: -1
+            case .post, .unifiedPost: -1
             case let .comment(comment, parentCount): max(0, comment.depth - parentCount)
             }
         }
@@ -118,6 +120,13 @@ class CommentTreeTracker: Hashable {
                 maxDepth: Settings.get(\.comment_maxDepth),
                 limit: 50
             )
+        case let .unifiedPost(post):
+            return try await post.getComments(
+                sort: sort,
+                page: page,
+                maxDepth: Settings.get(\.comment_maxDepth),
+                limit: 50
+            )
         case let .comment(comment, parentCount):
             return try await comment.getChildren(
                 sort: sort,
@@ -187,7 +196,7 @@ class CommentTreeTracker: Hashable {
         var commentsKeyedById: [Int: CommentTreeNode] = [:]
         var commentsKeyedByActorId: [ActorIdentifier: CommentTreeNode] = clear ? [:] : nodesKeyedByActorId
 
-        var sortedComments = newComments.sorted { $0.depth < $1.depth }
+        let sortedComments = newComments.sorted { $0.depth < $1.depth }
         
         for comment in sortedComments {
             if commentsKeyedByActorId.keys.contains(comment.actorId) {

@@ -84,7 +84,7 @@ extension NavigationPage {
                 Text(verbatim: "Error")
             }
         case let .post(post, scrollTargetedComment, communityContext, _):
-            ExpandedPostView(post: post, tracker: nil)
+            ExpandedPostView(post: post, tracker: nil, scrollTargetedComment: scrollTargetedComment?.wrappedValue)
                 .environment(\.communityContext, communityContext?.wrappedValue)
         case let .postStub(post, _):
             PostStubResolutionPage(stub: post.wrappedValue)
