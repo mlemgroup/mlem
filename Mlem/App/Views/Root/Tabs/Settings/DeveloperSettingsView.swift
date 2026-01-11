@@ -21,6 +21,7 @@ struct DeveloperSettingsView: View {
     
     @Setting(\.tip_feedWelcomePrompt) var showFeedWelcomePrompt
     @Setting(\.dev_developerMode) var developerMode
+    @Setting(\.dev_errorTimeout) var errorToastTimeout
     
     @AppStorage("lastTestFlightUpdate") var lastTestFlightUpdate: URL?
     
@@ -32,6 +33,31 @@ struct DeveloperSettingsView: View {
             Section {
                 Toggle(String("Developer Mode"), isOn: $developerMode)
                 NavigationLink(String("Error Log"), destination: .settings(.errorLog))
+            }
+
+            Section {
+                HStack {
+                    Text(String("Error Toast Timeout"))
+                    Spacer()
+
+                    Group {
+                        if errorToastTimeout == 100_000 {
+                            Image(systemName: "infinity")
+                        } else {
+                            Text(String(format: "%.1f", errorToastTimeout) + "s")
+                        }
+                    }
+                    .foregroundStyle(.themedSecondary)
+                }
+                Slider(
+                    value: .init(
+                        get: { errorToastTimeout == 100_000 ? 10 : errorToastTimeout },
+                        set: { errorToastTimeout = ($0 == 10 ? 100_000 : $0) }
+                    ),
+                   in: 0.5...10
+                  )
+            } footer: {
+                Text(String("Default: 1.5s"))
             }
             
             Section {
