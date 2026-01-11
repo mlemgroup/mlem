@@ -99,9 +99,7 @@ extension SearchView {
                 if postLoader.loadingState == .idle, postLoader.items.isEmpty {
                     searchPlaceholder
                 } else {
-                    Text("TODO")
-                    // TODO: NOW
-                    // PostGridView(postFeedLoader: postLoader)
+                    PostGridView(postFeedLoader: postLoader)
                 }
             }
             .animation(.easeOut(duration: 0.1), value: personLoader.items.isEmpty)

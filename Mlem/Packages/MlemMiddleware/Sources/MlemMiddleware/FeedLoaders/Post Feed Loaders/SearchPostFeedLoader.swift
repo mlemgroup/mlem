@@ -8,7 +8,7 @@
 import Foundation
 
 @Observable
-public class SearchPostFetcher: Fetcher<Post2> {
+public class SearchPostFetcher: Fetcher<UnifiedPostModel> {
     public enum SortType {
         case v4(SearchSortType)
         case v3(PostSortType)
@@ -47,11 +47,11 @@ public class SearchPostFetcher: Fetcher<Post2> {
         super.init(api: api, pageSize: pageSize)
     }
     
-    override func fetchPage(_ page: Int) async throws -> Fetcher<Post2>.FetchResponse {
-        let response: [Post2]
+    override func fetchPage(_ page: Int) async throws -> Fetcher<UnifiedPostModel>.FetchResponse {
+        let response: [UnifiedPostModel]
         switch sortType {
         case let .v4(searchSortType):
-            response = try await api.searchPosts(
+            response = try await api.unifiedSearchPosts(
                 query: query,
                 page: page,
                 limit: pageSize,
@@ -61,7 +61,7 @@ public class SearchPostFetcher: Fetcher<Post2> {
                 sort: searchSortType
             )
         case let .v3(postSortType):
-            response = try await api.searchPosts(
+            response = try await api.unifiedSearchPosts(
                 query: query,
                 page: page,
                 limit: pageSize,
@@ -75,7 +75,7 @@ public class SearchPostFetcher: Fetcher<Post2> {
     }
 }
 
-public class SearchPostFeedLoader: CorePostFeedLoader {
+public class SearchPostFeedLoader: UnifiedCorePostFeedLoader {
     // force unwrap because this should ALWAYS be a SearchPostFetcher
     public var searchPostFetcher: SearchPostFetcher { fetcher as! SearchPostFetcher }
     
