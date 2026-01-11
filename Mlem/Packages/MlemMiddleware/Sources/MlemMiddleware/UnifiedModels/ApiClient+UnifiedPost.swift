@@ -157,7 +157,7 @@ public extension ApiClient {
     // TODO: NOW markPosetsAsRead
     // TODO: NOW flushPostReadQueue
     
-    func unifiedCreatePost(
+    func createPost(
         communityId: Int,
         title: String,
         content: String? = nil,

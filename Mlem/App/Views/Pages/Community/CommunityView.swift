@@ -173,9 +173,7 @@ struct CommunityView: View {
             .foregroundStyle(.themedWarning)
             .padding(.top, Constants.main.doubleSpacing)
         } else {
-            // TODO: NOW
-            Text("TODO")
-            // PostGridView(postFeedLoader: postFeedLoader)
+            PostGridView(postFeedLoader: postFeedLoader)
         }
     }
 

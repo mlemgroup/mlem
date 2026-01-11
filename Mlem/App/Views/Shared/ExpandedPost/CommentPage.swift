@@ -39,6 +39,7 @@ struct CommentPage: View {
     }
     
     var body: some View {
+        // TODO: NOW find a way to not require the post up front?
         ExpandedPostView(
             post: post,
             tracker: tracker,

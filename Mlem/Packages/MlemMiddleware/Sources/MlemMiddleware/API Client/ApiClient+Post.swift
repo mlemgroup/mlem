@@ -191,29 +191,6 @@ public extension ApiClient {
             try await markPostsAsRead(ids: [])
         }
     }
-
-    func createPost(
-        communityId: Int,
-        title: String,
-        content: String? = nil,
-        linkUrl: URL? = nil,
-        altText: String? = nil,
-        thumbnail: URL? = nil,
-        nsfw: Bool,
-        languageId: Int? = nil
-    ) async throws -> Post2 {
-        let snapshot = try await repository.createPost(
-            communityId: communityId,
-            title: title,
-            content: content,
-            linkUrl: linkUrl,
-            altText: altText,
-            thumbnail: thumbnail,
-            nsfw: nsfw,
-            languageId: languageId
-        )
-        return await caches.post2.getModel(api: self, from: snapshot)
-    }
     
     func replyToPost(id: Int, content: String, languageId: Int? = nil) async throws -> Comment2 {
         let snapshot = try await repository.replyToPost(id: id, content: content, languageId: languageId)

@@ -96,7 +96,7 @@ extension NavigationPage {
                 showViewPostButton: showViewPostButton,
                 exposeRemovedContent: exposeRemovedContent
             )
-        case let .commentStub(comment, comments, showViewPostButton, exposeRemovedContent,):
+        case let .commentStub(comment, comments, showViewPostButton, exposeRemovedContent):
             CommentStubResolutionPage(
                 stub: comment.wrappedValue,
                 comments: comments,

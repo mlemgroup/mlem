@@ -34,6 +34,7 @@ struct CommentStubResolutionPage: View {
                         } else {
                             post = try await upgraded.api.unifiedGetPost(id: upgraded.postId)
                         }
+                        // TODO: NOW make this smoother
                         navigation.replace(.comment(
                             upgraded,
                             post: post,

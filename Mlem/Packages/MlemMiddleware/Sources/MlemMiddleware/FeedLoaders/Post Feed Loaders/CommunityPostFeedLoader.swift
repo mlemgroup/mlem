@@ -8,7 +8,7 @@
 import Foundation
 
 @Observable
-class CommunityPostFetcher: PostFetcher {
+class CommunityPostFetcher: UnifiedPostFetcher {
     var community: any Community
     
     init(sortType: PostSortType, pageSize: Int, community: any Community) {
@@ -17,7 +17,7 @@ class CommunityPostFetcher: PostFetcher {
         super.init(api: community.api, sortType: sortType, pageSize: pageSize)
     }
     
-    override func getPosts(page: Int, cursor: String?) async throws -> (posts: [Post2], cursor: String?) {
+    override func getPosts(page: Int, cursor: String?) async throws -> (posts: [UnifiedPostModel], cursor: String?) {
         try await community.getPosts(
             sort: sortType,
             page: page,
@@ -29,13 +29,13 @@ class CommunityPostFetcher: PostFetcher {
     }
 }
 
-public class CommunityPostFeedLoader: CorePostFeedLoader {
+public class CommunityPostFeedLoader: UnifiedCorePostFeedLoader {
     public var community: any Community
     
     var communityPostFetcher: CommunityPostFetcher { fetcher as! CommunityPostFetcher }
     
     // force unwrap because this should ALWAYS be a PostFetcher
-    private var postFetcher: PostFetcher { fetcher as! PostFetcher }
+    private var postFetcher: UnifiedPostFetcher { fetcher as! UnifiedPostFetcher }
     
     public var sortType: PostSortType { postFetcher.sortType }
 
