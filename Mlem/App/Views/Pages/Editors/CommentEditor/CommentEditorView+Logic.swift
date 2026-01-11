@@ -60,7 +60,7 @@ extension CommentEditorView {
                 if let parent = try await commentToEdit.getParent(cachedValueAcceptable: true) {
                     originalContext = .comment(parent)
                 } else {
-                    originalContext = .post(commentToEdit.post)
+                    originalContext = .unifiedPost(commentToEdit.post)
                 }
             }
         } catch {

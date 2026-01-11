@@ -41,14 +41,15 @@ class AppState {
         self.guestSession = .init(account: AccountsTracker.main.defaultGuestAccount)
         setAccount(to: AccountsTracker.main.mostRecentAccount())
     }
-    
-    #if DEBUG
-        private init(api: MockApiClient) {
-            self.guestSession = .init(account: .mock(api: api))
-        }
-    
-        static func mock(api: MockApiClient) -> AppState { .init(api: api) }
-    #endif
+  
+    // TODO: updated mocks
+//    #if DEBUG
+//        private init(api: MockApiClient) {
+//            self.guestSession = .init(account: .mock(api: api))
+//        }
+//    
+//        static func mock(api: MockApiClient) -> AppState { .init(api: api) }
+//    #endif
     
     /// If `keepPlace` is `nil`, use the value from `UserDefaults`.
     func changeAccount(to account: any Account, keepPlace: Bool? = nil, showAvatarPopup: Bool = true) {

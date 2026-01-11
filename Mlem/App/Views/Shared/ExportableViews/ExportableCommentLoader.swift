@@ -24,28 +24,29 @@ class ExportableCommentLoader {
     
     func load() async {
         do {
-            guard let comment = try await rootComment.upgrade() as? any Comment2Providing else {
-                assertionFailure("Could not cast to Comment2Providing post-upgrade")
-                error = .init(error: ApiClientError.unsuccessful)
-                return
-            }
-            
-            var comments: [any Comment2Providing]
-            if let tracker {
-                await tracker.load(ensuringPresenceOf: comment)
-                comments = tracker.getThread(preceding: comment, limit: 8)
-            } else {
-                comments = [comment]
-            }
-            
-            guard let post = try await comment.post.upgrade() as? any Post3Providing else {
-                assertionFailure("Could not cast to Post2Providing post-upgrade")
-                throw ApiClientError.unsuccessful
-            }
-            
-            Task { @MainActor in
-                self.data = .init(comments: comments, post: post)
-            }
+            // TODO: NOW
+//            guard let comment = try await rootComment.upgrade() as? any Comment2Providing else {
+//                assertionFailure("Could not cast to Comment2Providing post-upgrade")
+//                error = .init(error: ApiClientError.unsuccessful)
+//                return
+//            }
+//            
+//            var comments: [any Comment2Providing]
+//            if let tracker {
+//                await tracker.load(ensuringPresenceOf: comment)
+//                comments = tracker.getThread(preceding: comment, limit: 8)
+//            } else {
+//                comments = [comment]
+//            }
+//            
+//            guard let post = try await comment.post.upgrade() as? any Post3Providing else {
+//                assertionFailure("Could not cast to Post2Providing post-upgrade")
+//                throw ApiClientError.unsuccessful
+//            }
+//            
+//            Task { @MainActor in
+//                self.data = .init(comments: comments, post: post)
+//            }
         } catch {
             self.error = handleErrorWithDetails(error)
         }

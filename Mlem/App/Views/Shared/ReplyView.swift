@@ -46,7 +46,12 @@ struct ReplyView: View {
         .background(.themedSecondaryGroupedBackground)
         .contentShape(.rect)
         .onTapGesture {
-            navigation.push(.comment(reply.comment))
+            // TODO: UnifiedCommentModel remove this shim
+            if let post = reply.comment.post_ {
+                navigation.push(.comment(reply.comment, post: post))
+            } else {
+                navigation.push(.commentStub(reply.comment))
+            }
         }
         .quickSwipes(reply: reply, configuration: replyInteractionBar)
         .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))

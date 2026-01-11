@@ -155,13 +155,14 @@ struct CommunityListRowBody<Content: View>: View {
     }
 }
 
-#if DEBUG
-    #Preview(traits: .sampleEnvironment, .sizeThatFitsLayout) {
-        CommunityListRowBody(
-            Community2.mock(.generic),
-            complications: [.instance],
-            readout: .subscribers
-        )
-        .padding(.vertical, Constants.main.standardSpacing)
-    }
-#endif
+// TODO: updated mocks
+//#if DEBUG
+//    #Preview(traits: .sampleEnvironment, .sizeThatFitsLayout) {
+//        CommunityListRowBody(
+//            Community2.mock(.generic),
+//            complications: [.instance],
+//            readout: .subscribers
+//        )
+//        .padding(.vertical, Constants.main.standardSpacing)
+//    }
+//#endif

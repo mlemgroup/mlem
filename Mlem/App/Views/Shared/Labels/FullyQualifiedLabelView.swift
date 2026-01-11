@@ -231,13 +231,14 @@ extension FullyQualifiedLabelView {
     }
 }
 
-#if DEBUG
-    #Preview("Sizes", traits: .sampleEnvironment, .sizeThatFitsLayout) {
-        VStack(alignment: .leading) {
-            ForEach(FullyQualifiedLabelStyle.allCases, id: \.self) { style in
-                FullyQualifiedLabelView(Person1.mock(.generic), labelStyle: style)
-            }
-        }
-        .padding()
-    }
-#endif
+// TODO: updated mocks
+//#if DEBUG
+//    #Preview("Sizes", traits: .sampleEnvironment, .sizeThatFitsLayout) {
+//        VStack(alignment: .leading) {
+//            ForEach(FullyQualifiedLabelStyle.allCases, id: \.self) { style in
+//                FullyQualifiedLabelView(Person1.mock(.generic), labelStyle: style)
+//            }
+//        }
+//        .padding()
+//    }
+//#endif

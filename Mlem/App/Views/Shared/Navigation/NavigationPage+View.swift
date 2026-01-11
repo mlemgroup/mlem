@@ -88,10 +88,18 @@ extension NavigationPage {
                 .environment(\.communityContext, communityContext?.wrappedValue)
         case let .postStub(post, _):
             PostStubResolutionPage(stub: post.wrappedValue)
-        case let .comment(comment, comments: comments, showViewPostButton, exposeRemovedContent):
+        case let .comment(comment, post, comments, showViewPostButton, exposeRemovedContent):
             CommentPage(
-                comment: comment,
+                comment: comment.wrappedValue,
+                post: post,
                 initialComments: comments,
+                showViewPostButton: showViewPostButton,
+                exposeRemovedContent: exposeRemovedContent
+            )
+        case let .commentStub(comment, comments, showViewPostButton, exposeRemovedContent,):
+            CommentStubResolutionPage(
+                stub: comment.wrappedValue,
+                comments: comments,
                 showViewPostButton: showViewPostButton,
                 exposeRemovedContent: exposeRemovedContent
             )

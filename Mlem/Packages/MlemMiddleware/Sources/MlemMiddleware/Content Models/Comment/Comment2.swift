@@ -17,7 +17,7 @@ public final class Comment2: Comment2Providing {
     public let comment1: Comment1
     
     public let creator: Person1
-    public let post: Post1
+    public let post: UnifiedPostModel
     public let community: Community1
     
     public var creatorIsModerator: Bool
@@ -39,7 +39,7 @@ public final class Comment2: Comment2Providing {
         api: ApiClient,
         comment1: Comment1,
         creator: Person1,
-        post: Post1,
+        post: UnifiedPostModel,
         community: Community1,
         votes: VotesModel,
         saved: Bool,

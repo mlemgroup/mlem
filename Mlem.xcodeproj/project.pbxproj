@@ -538,6 +538,7 @@
 		CDCC7FEF2D9B1E7100CE18DA /* CachedComputation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCC7FEE2D9B1E6E00CE18DA /* CachedComputation.swift */; };
 		CDCC7FF12D9B27D800CE18DA /* ZoomRecognizerCoordinator+GestureRecognition.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCC7FF02D9B27CE00CE18DA /* ZoomRecognizerCoordinator+GestureRecognition.swift */; };
 		CDCC7FF32D9B283A00CE18DA /* ZoomRecognizerCoordinator+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCC7FF22D9B283400CE18DA /* ZoomRecognizerCoordinator+Logic.swift */; };
+		CDCF5A582F1426A5006748E8 /* CommentStubResolutionPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCF5A572F1426A0006748E8 /* CommentStubResolutionPage.swift */; };
 		CDD4A09C2C8A122F0001AD1A /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD4A09B2C8A122F0001AD1A /* Settings.swift */; };
 		CDD4A09E2C8B69FC0001AD1A /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD4A09D2C8B69FC0001AD1A /* Button.swift */; };
 		CDD4A0A02C8B985D0001AD1A /* ImportExportSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD4A09F2C8B985D0001AD1A /* ImportExportSettingsView.swift */; };
@@ -1099,6 +1100,7 @@
 		CDCC7FEE2D9B1E6E00CE18DA /* CachedComputation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedComputation.swift; sourceTree = "<group>"; };
 		CDCC7FF02D9B27CE00CE18DA /* ZoomRecognizerCoordinator+GestureRecognition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ZoomRecognizerCoordinator+GestureRecognition.swift"; sourceTree = "<group>"; };
 		CDCC7FF22D9B283400CE18DA /* ZoomRecognizerCoordinator+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ZoomRecognizerCoordinator+Logic.swift"; sourceTree = "<group>"; };
+		CDCF5A572F1426A0006748E8 /* CommentStubResolutionPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentStubResolutionPage.swift; sourceTree = "<group>"; };
 		CDD4A09B2C8A122F0001AD1A /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		CDD4A09D2C8B69FC0001AD1A /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 		CDD4A09F2C8B985D0001AD1A /* ImportExportSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportExportSettingsView.swift; sourceTree = "<group>"; };
@@ -1627,6 +1629,7 @@
 		03B0EB6D2C87673D00F79FDF /* ExpandedPost */ = {
 			isa = PBXGroup;
 			children = (
+				CDCF5A572F1426A0006748E8 /* CommentStubResolutionPage.swift */,
 				0300309C2C4163C9009A65FF /* CommentTreeTracker.swift */,
 				03E0EF442CA74036002CB66C /* CommentPage.swift */,
 				03B0EB6E2C87827A00F79FDF /* ExpandedPostView.swift */,
@@ -3073,6 +3076,7 @@
 				032C320C2C3482CA00595286 /* Person1Providing+Extensions.swift in Sources */,
 				03F6BDBC2D52B7FE006A425E /* PostMockType.swift in Sources */,
 				038028D32CAB3D2D0091A8A2 /* ShareActivity.swift in Sources */,
+				CDCF5A582F1426A5006748E8 /* CommentStubResolutionPage.swift in Sources */,
 				036ED67D2D0B006C0018E5EA /* TopSortPicker.swift in Sources */,
 				030FF67F2BC8544700F6BFAC /* CustomTabBarController.swift in Sources */,
 				CD4D58F82B87B0D100B82964 /* InternetSpeed.swift in Sources */,

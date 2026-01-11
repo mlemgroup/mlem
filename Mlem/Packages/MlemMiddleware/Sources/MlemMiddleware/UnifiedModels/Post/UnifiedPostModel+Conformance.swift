@@ -197,3 +197,30 @@ public extension UnifiedPostModel {
 public extension UnifiedPostModel {
     var userContent: PersonContent { .init(wrappedValue: .post(self)) }
 }
+
+// MARK: Snapshots
+
+public extension UnifiedPostModel {
+    func takeSnapshot1() -> Post1Snapshot {
+        .init(actorId: actorId,
+              id: id,
+              creatorId: creatorId,
+              communityId: communityId,
+              created: created,
+              title: title,
+              content: content,
+              linkUrl: linkUrl,
+              embed: embed,
+              nsfw: nsfw,
+              thumbnailUrl: thumbnailUrl,
+              updated: updated,
+              languageId: languageId,
+              altText: altText,
+              deleted: deleted,
+              removed: removed,
+              pinnedCommunity: pinnedCommunity,
+              pinnedInstance: pinnedInstance,
+              locked: locked
+        )
+    }
+}

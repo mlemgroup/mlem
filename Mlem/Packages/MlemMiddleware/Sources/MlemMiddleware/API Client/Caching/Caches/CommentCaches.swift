@@ -40,7 +40,7 @@ class Comment2Cache: ApiTypeBackedCache<Comment2, Comment2Snapshot> {
             api: api,
             comment1: api.caches.comment1.getModel(api: api, from: snapshot.comment),
             creator: api.caches.person1.getModel(api: api, from: snapshot.creator),
-            post: api.caches.post1.getModel(api: api, from: snapshot.post),
+            post: api.caches.post.getModel(api: api, from: .post1(snapshot.post)),
             community: api.caches.community1.getModel(api: api, from: snapshot.community),
             votes: snapshot.votes,
             saved: snapshot.saved,

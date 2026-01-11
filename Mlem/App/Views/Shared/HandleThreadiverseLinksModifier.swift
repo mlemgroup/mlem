@@ -169,17 +169,17 @@ struct HandleThreadiverseLinksModifier: ViewModifier {
         case "post":
             if let fragment = url.fragment()?.trimmingPrefix("comment_") {
                 let newUrl = url.removingPathComponents().appendingPathComponent("comment/\(fragment)")
-                return .comment(CommentStub(api: appState.firstApi, url: newUrl))
+                return .commentStub(CommentStub(api: appState.firstApi, url: newUrl))
             } else if components.count == 2 {
                 return .postStub(PostStub(api: appState.firstApi, url: url))
             } else if components.count == 3 {
                 let newUrl = url.removingPathComponents().appendingPathComponent("comment/\(url.lastPathComponent)")
-                return .comment(CommentStub(api: appState.firstApi, url: newUrl))
+                return .commentStub(CommentStub(api: appState.firstApi, url: newUrl))
             } else {
                 return nil
             }
         case "comment":
-            return .comment(CommentStub(api: appState.firstApi, url: url))
+            return .commentStub(CommentStub(api: appState.firstApi, url: url))
         default:
             return nil
         }

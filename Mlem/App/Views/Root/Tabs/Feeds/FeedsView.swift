@@ -246,10 +246,11 @@ extension FeedSelectionMenuView {
     }
 }
 
-#if DEBUG
-    #Preview(traits: .sampleEnvironment(api: .realistic)) {
-        FeedsView()
-            .previewNavigationStack(backButtonLabel: "Feeds")
-            .previewTabBar(selected: .feeds)
-    }
-#endif
+// TODO: updated mocks
+//#if DEBUG
+//    #Preview(traits: .sampleEnvironment(api: .realistic)) {
+//        FeedsView()
+//            .previewNavigationStack(backButtonLabel: "Feeds")
+//            .previewTabBar(selected: .feeds)
+//    }
+//#endif

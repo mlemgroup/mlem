@@ -7755,7 +7755,6 @@
       }
     },
     "Show Parent" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -9735,7 +9734,6 @@
       }
     },
     "View All" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {

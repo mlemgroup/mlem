@@ -72,7 +72,11 @@ struct MoreRepliesButton: View {
             if let parent = commentTreeNode.parent {
                 comments.prepend(parent.comment)
             }
-            navigation.push(.comment(commentTreeNode.comment, comments: comments, showViewPostButton: false))
+            navigation.push(.comment(
+                commentTreeNode.comment,
+                post: commentTreeNode.comment.post,
+                comments: comments,
+                showViewPostButton: false))
         } else {
             await tracker.insertAdditionalComments(comments: comments)
         }

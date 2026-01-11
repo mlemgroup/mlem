@@ -179,11 +179,12 @@ struct SearchView: View {
     }
 }
 
-#if DEBUG
-    #Preview(traits: .sampleEnvironment(api: .realistic)) {
-        @Previewable @Environment(AppState.self) var appState
-        NavigationStack {
-            SearchView(appState: appState)
-        }
-    }
-#endif
+// TODO: updated mocks
+//#if DEBUG
+//    #Preview(traits: .sampleEnvironment(api: .realistic)) {
+//        @Previewable @Environment(AppState.self) var appState
+//        NavigationStack {
+//            SearchView(appState: appState)
+//        }
+//    }
+//#endif

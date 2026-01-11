@@ -7,37 +7,38 @@
 
 import Foundation
 
-extension Comment2 {
-    var apiCommentView: LemmyCommentView {
-        LemmyCommentView(
-            comment: comment1.apiComment,
-            creator: creator.apiPerson,
-            post: post.apiPost,
-            community: community.apiCommunity,
-            counts: .init(
-                commentId: id,
-                score: votes.total,
-                upvotes: votes.upvotes,
-                downvotes: votes.downvotes,
-                published: created,
-                childCount: commentCount
-            ),
-            creatorBannedFromCommunity: creator.isBannedFromCommunity(id: community.id) ?? false,
-            creatorIsModerator: creatorIsModerator,
-            creatorIsAdmin: creatorIsAdmin,
-            subscribed: .notSubscribed,
-            saved: saved,
-            creatorBlocked: creator.blocked,
-            myVote: votes.myVote.rawValue,
-            bannedFromCommunity: false,
-            communityActions: nil,
-            commentActions: nil,
-            personActions: nil,
-            postTags: nil,
-            canMod: nil,
-            creatorBanned: nil,
-            creatorBanExpiresAt: nil,
-            creatorCommunityBanExpiresAt: nil
-        )
-    }
-}
+// TODO: updated mocks
+//extension Comment2 {
+//    var apiCommentView: LemmyCommentView {
+//        LemmyCommentView(
+//            comment: comment1.apiComment,
+//            creator: creator.apiPerson,
+//            post: post.apiPost,
+//            community: community.apiCommunity,
+//            counts: .init(
+//                commentId: id,
+//                score: votes.total,
+//                upvotes: votes.upvotes,
+//                downvotes: votes.downvotes,
+//                published: created,
+//                childCount: commentCount
+//            ),
+//            creatorBannedFromCommunity: creator.isBannedFromCommunity(id: community.id) ?? false,
+//            creatorIsModerator: creatorIsModerator,
+//            creatorIsAdmin: creatorIsAdmin,
+//            subscribed: .notSubscribed,
+//            saved: saved,
+//            creatorBlocked: creator.blocked,
+//            myVote: votes.myVote.rawValue,
+//            bannedFromCommunity: false,
+//            communityActions: nil,
+//            commentActions: nil,
+//            personActions: nil,
+//            postTags: nil,
+//            canMod: nil,
+//            creatorBanned: nil,
+//            creatorBanExpiresAt: nil,
+//            creatorCommunityBanExpiresAt: nil
+//        )
+//    }
+//}

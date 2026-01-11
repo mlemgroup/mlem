@@ -342,17 +342,18 @@ private struct FlairLabelStyle: LabelStyle {
     }
 }
 
-#if DEBUG
-    #Preview(traits: .sampleEnvironment(api: .realistic)) {
-        @Previewable @Environment(AppState.self) var appState
-        NavigationStack {
-            PersonView(
-                appState: appState,
-                person: .init(Person2.mock(.realistic(.anteSocial45), api: .realistic)),
-                isProfileTab: true,
-                visitContext: .other
-            )
-        }
-        .previewTabBar(selected: .profile)
-    }
-#endif
+// TODO: updated mocks
+//#if DEBUG
+//    #Preview(traits: .sampleEnvironment(api: .realistic)) {
+//        @Previewable @Environment(AppState.self) var appState
+//        NavigationStack {
+//            PersonView(
+//                appState: appState,
+//                person: .init(Person2.mock(.realistic(.anteSocial45), api: .realistic)),
+//                isProfileTab: true,
+//                visitContext: .other
+//            )
+//        }
+//        .previewTabBar(selected: .profile)
+//    }
+//#endif

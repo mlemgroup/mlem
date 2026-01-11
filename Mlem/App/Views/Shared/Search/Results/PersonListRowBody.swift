@@ -145,13 +145,14 @@ struct PersonListRowBody<Content: View>: View {
     }
 }
 
-#if DEBUG
-    #Preview(traits: .sampleEnvironment, .sizeThatFitsLayout) {
-        PersonListRowBody(
-            Person2.mock(.generic),
-            complications: [.instance, .date],
-            readout: .postsAndComments
-        )
-        .padding(.vertical, Constants.main.standardSpacing)
-    }
-#endif
+// TODO: updated mocks
+//#if DEBUG
+//    #Preview(traits: .sampleEnvironment, .sizeThatFitsLayout) {
+//        PersonListRowBody(
+//            Person2.mock(.generic),
+//            complications: [.instance, .date],
+//            readout: .postsAndComments
+//        )
+//        .padding(.vertical, Constants.main.standardSpacing)
+//    }
+//#endif
