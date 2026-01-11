@@ -89,7 +89,7 @@ enum NavigationPage: Hashable {
 //    }
     
     static func post(
-        _ post: UnifiedPostModel,   
+        _ post: UnifiedPostModel,
         communityContext: (any Community1Providing)?,
         navigationNamespace: Namespace.ID? = nil
     ) -> NavigationPage {

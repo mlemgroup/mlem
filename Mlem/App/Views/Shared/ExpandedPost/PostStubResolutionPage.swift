@@ -14,16 +14,21 @@ struct PostStubResolutionPage: View {
     
     let stub: any PostStubProviding
     
+    @State var upgradeError: Error?
+    
     var body: some View {
-        ProgressView()
-            .task {
-                do {
-                    let upgraded = try await stub.newUpgrade()
-                    navigation.replace(.post(upgraded))
-                } catch {
-                    handleError(error)
-                    // TODO: NOW show error details
+        if let upgradeError {
+            ErrorView(.init(error: upgradeError))
+        } else {
+            ProgressView()
+                .task {
+                    do {
+                        let upgraded = try await stub.newUpgrade()
+                        navigation.replace(.post(upgraded))
+                    } catch {
+                        upgradeError = error
+                    }
                 }
-            }
+        }
     }
 }

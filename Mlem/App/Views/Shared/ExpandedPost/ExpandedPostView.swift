@@ -31,7 +31,6 @@ struct ExpandedPostView<Content: View>: View {
     @Setting(\.interactionBar_comment) var commentInteractionBar
 
     var post: UnifiedPostModel
-    let isLoading: Bool
     let highlightedComment: (any CommentStubProviding)?
     let content: Content
     
@@ -47,15 +46,12 @@ struct ExpandedPostView<Content: View>: View {
     
     init(
         post: UnifiedPostModel,
-        contentLoaderError: Error?, // TODO: NOW remove
-        isLoading: Bool,
         tracker: CommentTreeTracker?,
         highlightedComment: (any CommentStubProviding)? = nil,
         scrollTargetedComment: (any CommentStubProviding)? = nil,
         @ViewBuilder content: () -> Content = { EmptyView() }
     ) {
         self.post = post
-        self.isLoading = isLoading
         self.highlightedComment = highlightedComment
         self.content = content()
         self.tracker = tracker
@@ -66,9 +62,9 @@ struct ExpandedPostView<Content: View>: View {
         // Using a `ZStack` here rather than `if`/`else` because there needs to
         // be a delay between the `content()` appearing and calling `scrollTo`
         VStack {
-            content(post: post, isLoading: isLoading)
+            viewContent
                 .themedGroupedBackground()
-                .externalApiWarning(entity: post, isLoading: isLoading)
+                .externalApiWarning(entity: post, isLoading: false)
                 .task(id: tracker == nil) {
                     if let tracker, post.api == appState.firstApi, tracker.loadingState == .idle {
                         post.updateRead(true)
@@ -93,7 +89,8 @@ struct ExpandedPostView<Content: View>: View {
     }
     
     // swiftlint:disable:next function_body_length
-    @ViewBuilder func content(post: UnifiedPostModel, isLoading: Bool) -> some View {
+    @ViewBuilder
+    var viewContent: some View {
         GeometryReader { geo in
             ScrollViewReader { proxy in
                 FancyScrollView {
@@ -176,7 +173,7 @@ struct ExpandedPostView<Content: View>: View {
                         }
                     }
                 }
-                .toolbar { toolbarContent(post: post, isLoading: isLoading, scrollProxy: proxy) }
+                .toolbar { toolbarContent(post: post, scrollProxy: proxy) }
             }
         }
         .environment(tracker)
@@ -184,12 +181,12 @@ struct ExpandedPostView<Content: View>: View {
     }
     
     @ViewBuilder
-    func toolbarContent(post: UnifiedPostModel, isLoading: Bool, scrollProxy: ScrollViewProxy) -> some View {
+    func toolbarContent(post: UnifiedPostModel, scrollProxy: ScrollViewProxy) -> some View {
         if let tracker {
             sortPicker(tracker: tracker)
         }
         // TODO: NOW
-//        if isLoading || post.shouldShowLoadingSymbol() {
+//        if post.shouldShowLoadingSymbol() {
 //            ProgressView()
 //        } else {
             ToolbarEllipsisMenu {
