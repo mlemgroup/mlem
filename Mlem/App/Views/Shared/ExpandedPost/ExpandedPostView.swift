@@ -69,6 +69,7 @@ struct ExpandedPostView<Content: View>: View {
                     await tracker?.load(ensuringPresenceOf: scrollTargetedComment)
                 }
                 .task(id: tracker == nil) {
+                    // TODO: NOW move this into previous task?
                     if let tracker, post.api == appState.firstApi, tracker.loadingState == .idle {
                         post.updateRead(true)
                     }
