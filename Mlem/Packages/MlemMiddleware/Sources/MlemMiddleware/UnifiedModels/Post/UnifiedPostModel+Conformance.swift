@@ -191,3 +191,9 @@ public extension UnifiedPostModel {
         creatorId == myPersonId
     }
 }
+
+// MARK: PersonContentProviding
+
+public extension UnifiedPostModel {
+    var userContent: PersonContent { .init(wrappedValue: .post(self)) }
+}

@@ -8,7 +8,7 @@
 import Foundation
 import Nuke
 
-public protocol Post2Providing: Post1Providing, Interactable2Providing, PersonContentProviding, ReadableProviding {
+public protocol Post2Providing: Post1Providing, Interactable2Providing, ReadableProviding {
     var post2: Post2 { get }
     
     var creator: any Person { get }
@@ -145,6 +145,6 @@ public extension Post2Providing {
 }
 
 // PersonContentProviding conformance
-public extension Post2Providing {
-    var userContent: PersonContent { .init(wrappedValue: .post(post2)) }
-}
+//public extension Post2Providing {
+//    var userContent: PersonContent { .init(wrappedValue: .post(post2)) }
+//}

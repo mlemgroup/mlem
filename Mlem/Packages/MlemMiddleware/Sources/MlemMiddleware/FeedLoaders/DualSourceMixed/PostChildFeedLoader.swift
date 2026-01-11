@@ -28,7 +28,7 @@ public class PostChildFeedLoader: ChildFeedLoader<PersonContent> {
         }
 
         private func internalFetchCursor(page: Int?, cursor: String?) async throws -> FetchResponse {
-            let response = try await api.getPostHistory(
+            let response = try await api.unifiedGetPostHistory(
                 type: self.filter,
                 page: page,
                 cursor: cursor,

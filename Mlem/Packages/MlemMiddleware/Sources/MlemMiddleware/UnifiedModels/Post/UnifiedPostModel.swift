@@ -22,7 +22,8 @@ public class UnifiedPostModel:
     Resolvable,
     Sharable,
     UnifiedReadableProviding,
-    Interactable1Providing {
+    Interactable1Providing,
+    PersonContentProviding {
     public typealias Properties = PostProperties
     
     public init(api: ApiClient, snapshot: any PostSnapshotProviding, creator: (any Person)? = nil, community: (any Community)? = nil) {
