@@ -202,12 +202,11 @@ class PostEditorTarget: Identifiable {
         if let personContentFeedLoader = feedLoader as? SingleSourceMixedFeedLoader,
            personContentFeedLoader.userId == account.id,
            personContentFeedLoader.api == account.api {
-            // TODO: NOW
-//            Task { @MainActor in
-//                withAnimation {
-//                    personContentFeedLoader.prependItem(.init(wrappedValue: .post(post)))
-//                }
-//            }
+            Task { @MainActor in
+                withAnimation {
+                    personContentFeedLoader.prependItem(.init(wrappedValue: .post(post)))
+                }
+            }
             return
         }
     }

@@ -59,8 +59,7 @@ struct LargePostBodyView: View {
                 }
             }
         }
-        // TODO: NOW
-        // .environment(\.postContext, post)
+        .environment(\.postContext, post)
     }
     
     @ViewBuilder

@@ -30,9 +30,8 @@ public class ExpectedValue<T> {
         }
     }
     
-    // TODO: NOW should this even exist? Is this useful?
     /// Provides the value currently stored in this ExpectedValue. DOES NOT automatically fetch
-    /// if the value is not present.
+    /// if the value is not present. 
     public var value_: T? { getValue() }
     
     init(getValue: @escaping () -> T?, provideValue: @escaping () async throws -> Void) {

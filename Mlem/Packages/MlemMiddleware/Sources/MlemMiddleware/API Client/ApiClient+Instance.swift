@@ -51,7 +51,7 @@ public extension ApiClient {
     internal func getCommunityOfInstance(actorId: ActorIdentifier) async throws -> Community3 {
         let externalApi: ApiClient = .getApiClient(url: actorId.url, username: nil)
         
-        let response = try await externalApi.getPosts(
+        let response = try await externalApi.unifiedGetPosts(
             feed: .local,
             sort: .new,
             page: 1,
@@ -63,7 +63,11 @@ public extension ApiClient {
             throw InstanceUpgradeError.noPostReturned
         }
         
-        return try await self.getCommunity(url: post.community.actorId.url)
+        guard let community = post.community.value_ else {
+            throw InstanceUpgradeError.noCommunityReturned
+        }
+        
+        return try await self.getCommunity(url: community.actorId.url)
     }
 
     func getInstanceId(actorId: ActorIdentifier) async throws -> Int {
