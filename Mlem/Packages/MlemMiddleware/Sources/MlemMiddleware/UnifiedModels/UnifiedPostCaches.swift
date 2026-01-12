@@ -32,24 +32,29 @@ class UnifiedPostCache: ApiTypeBackedCache<UnifiedPostModel, AnyPostSnapshot> {
     override func performModelTranslation(api: ApiClient, from apiType: AnyPostSnapshot) -> UnifiedPostModel {
         let creator: (any Person)?
         let community: (any Community)?
+        let crossPosts: [UnifiedPostModel]?
         
         switch apiType {
         case .post1:
             creator = nil
             community = nil
+            crossPosts = nil
         case let .post2(snapshot):
             creator = api.caches.person1.getModel(api: api, from: snapshot.creator)
             community = api.caches.community1.getModel(api: api, from: snapshot.community)
+            crossPosts = nil
         case let .post3(snapshot):
             creator = api.caches.person1.getModel(api: api, from: snapshot.post.creator)
             community = api.caches.community1.getModel(api: api, from: snapshot.post.community)
+            crossPosts = api.caches.post.getModels(api: api, from: snapshot.crossPosts.map { .post2($0) })
         }
         
         return .init(
             api: api,
             snapshot: apiType.value,
             creator: creator,
-            community: community)
+            community: community,
+            crossPosts: crossPosts)
     }
     
     override func updateModel(_ item: UnifiedPostModel, with apiType: AnyPostSnapshot, semaphore: UInt? = nil) {

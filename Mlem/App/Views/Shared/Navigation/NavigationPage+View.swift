@@ -84,8 +84,12 @@ extension NavigationPage {
                 Text(verbatim: "Error")
             }
         case let .post(post, scrollTargetedComment, communityContext, _):
-            ExpandedPostView(post: post, tracker: nil, scrollTargetedComment: scrollTargetedComment?.wrappedValue)
-                .environment(\.communityContext, communityContext?.wrappedValue)
+            // TODO: NOW better way of doing this embed
+            ExpandedPostView(post: post, tracker: nil, scrollTargetedComment: scrollTargetedComment?.wrappedValue) {
+                CrossPostListView(post: post)
+                    .padding(.horizontal, Constants.main.standardSpacing)
+            }
+            .environment(\.communityContext, communityContext?.wrappedValue)
         case let .postStub(post, _):
             PostStubResolutionPage(stub: post.wrappedValue)
         case let .comment(comment, post, comments, showViewPostButton, exposeRemovedContent):

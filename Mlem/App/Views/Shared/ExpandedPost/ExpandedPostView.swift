@@ -87,6 +87,17 @@ struct ExpandedPostView<Content: View>: View {
             }
             .animation(.easeOut(duration: 0.1), value: showLoadingSymbol)
         }
+        .refreshable {
+            _ = await Task { @MainActor in
+                do {
+                    // TODO: NOW blocking upgrade to make refresh spinner work nicely
+                    try await post.upgrade() // this is identical to refresh
+                    await tracker?.refresh()
+                } catch {
+                    handleError(error)
+                }
+            }.value
+        }
     }
     
     // swiftlint:disable:next function_body_length

@@ -45,6 +45,9 @@ public struct PostProperties: UnifiedPropertiesProviding {
     var read: Bool?
     var hidden: Bool?
     
+    // From Post3Snapshot
+    var crossPosts: [UnifiedPostModel]?
+    
     @MainActor
     public mutating func update(with properties: Self) {
         actorId = properties.actorId
@@ -79,9 +82,12 @@ public struct PostProperties: UnifiedPropertiesProviding {
         saved = properties.saved ?? saved
         read = properties.read ?? read
         hidden = properties.hidden ?? hidden
+        
+        crossPosts = properties.crossPosts ?? crossPosts
     }
     
     /// Constructs a PostProperties from a given snapshot
+    /// - Note: External models (e.g., Creator) will NOT be included!
     public init(snapshot: any PostSnapshotProviding) {
         let snapshot2: Post2Snapshot?
         let snapshot1: Post1Snapshot?
@@ -134,9 +140,10 @@ public struct PostProperties: UnifiedPropertiesProviding {
     }
     
     /// Constructs a PostProperties from a given snapshot, including external models
-    public init(snapshot: any PostSnapshotProviding, creator: (any Person)?, community: (any Community)?) {
+    public init(snapshot: any PostSnapshotProviding, creator: (any Person)?, community: (any Community)?, crossPosts: [UnifiedPostModel]?) {
         self.init(snapshot: snapshot)
         self.creator = creator
         self.community = community
+        self.crossPosts = crossPosts
     }
 }

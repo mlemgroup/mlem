@@ -25,9 +25,15 @@ public class UnifiedPostModel:
     PersonContentProviding {
     public typealias Properties = PostProperties
     
-    public init(api: ApiClient, snapshot: any PostSnapshotProviding, creator: (any Person)? = nil, community: (any Community)? = nil) {
+    public init(
+        api: ApiClient,
+        snapshot: any PostSnapshotProviding,
+        creator: (any Person)? = nil,
+        community: (any Community)? = nil,
+        crossPosts: [UnifiedPostModel]? = nil
+    ) {
         self.api = api
-        self.properties = .init(snapshot: snapshot, creator: creator, community: community)
+        self.properties = .init(snapshot: snapshot, creator: creator, community: community, crossPosts: crossPosts)
     }
     
     // MARK: Core
@@ -44,17 +50,21 @@ public class UnifiedPostModel:
         }
     }
     
-    internal func upgrade() async throws {
+    public func upgrade() async throws {
         try await updateQueue.upgrade()
     }
     
+    // TODO: NOW internal?
     public func fetchUpgraded() async throws -> PostProperties {
         let snapshot = try await api.repository.getPost(id: id)
         let creator = await api.caches.person1.getModel(api: api, from: snapshot.post.creator)
         let community = await api.caches.community1.getModel(api: api, from: snapshot.post.community)
+        let crossPosts = await api.caches.post.getModels(api: api, from: snapshot.crossPosts.map { .post2($0) })
+        
+        Logger.dev.info("Found \(snapshot.crossPosts.count) crossPosts")
         
         // TODO: NOW repository provides properties?
-        return .init(snapshot: snapshot, creator: creator, community: community)
+        return .init(snapshot: snapshot, creator: creator, community: community, crossPosts: crossPosts)
     }
     
     // MARK: Custom Properties
@@ -151,6 +161,9 @@ public class UnifiedPostModel:
 
     @ObservationIgnored
     public lazy var hidden: ExpectedValue<Bool> = expectedValue(\.hidden)
+    
+    @ObservationIgnored
+    public lazy var crossPosts: ExpectedValue<[UnifiedPostModel]> = expectedValue(\.crossPosts)
 }
 
 // MARK: - Computed
