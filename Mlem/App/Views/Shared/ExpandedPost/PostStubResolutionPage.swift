@@ -9,6 +9,9 @@ import MlemMiddleware
 import SwiftUI
 import Theming
 
+// TODO: NOW just make this an ExpectedView?
+// Or expanded post page itself take expectedValue...?
+
 struct PostStubResolutionPage: View {
     @Environment(NavigationLayer.self) var navigation
     

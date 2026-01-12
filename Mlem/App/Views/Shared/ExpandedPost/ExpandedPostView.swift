@@ -67,10 +67,7 @@ struct ExpandedPostView<Content: View>: View {
                 .externalApiWarning(entity: post, isLoading: false)
                 .task {
                     await tracker?.load(ensuringPresenceOf: scrollTargetedComment)
-                }
-                .task(id: tracker == nil) {
-                    // TODO: NOW move this into previous task?
-                    if let tracker, post.api == appState.firstApi, tracker.loadingState == .idle {
+                    if post.api == appState.firstApi {
                         post.updateRead(true)
                     }
                 }
