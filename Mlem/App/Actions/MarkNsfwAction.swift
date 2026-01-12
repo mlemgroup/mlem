@@ -10,7 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct MarkNsfwAction: SimpleLabelAction {
-    let entity: any Post2Providing
+    let entity: UnifiedPostModel
 }
 
 // MARK: - Configurability
@@ -18,7 +18,7 @@ struct MarkNsfwAction: SimpleLabelAction {
 extension ActionSeed {
     static let markNsfw = ActionSeed("markNsfw") { entity in
         switch entity {
-        case let entity as any Post2Providing: MarkNsfwAction(entity: entity)
+        case let entity as UnifiedPostModel: MarkNsfwAction(entity: entity)
         default: nil
         }
     }
@@ -52,7 +52,8 @@ extension MarkNsfwAction {
     private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {
         if entity.api.canInteract(appState: environment.appState),
            entity.canModerate,
-           entity.community.apiIsLocal, // Setting NSFW doesn't work on non-local communities at the time of writing
+           let community = entity.community.value,
+           community.apiIsLocal, // Setting NSFW doesn't work on non-local communities at the time of writing
            entity.api.supports(.moderatorSetNsfw, defaultValue: false) {
             return .enabled
         } else {

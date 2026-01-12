@@ -10,7 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct LockAction: SimpleLabelAction {
-    let entity: any Post2Providing
+    let entity: UnifiedPostModel
 }
 
 // MARK: - Configurability
@@ -18,7 +18,7 @@ struct LockAction: SimpleLabelAction {
 extension ActionSeed {
     static let lock = ActionSeed("lock") { entity in
         switch entity {
-        case let entity as any Post2Providing: LockAction(entity: entity)
+        case let entity as UnifiedPostModel: LockAction(entity: entity)
         default: nil
         }
     }
@@ -70,7 +70,7 @@ extension LockAction {
             [
             .init(title: "Yes", isDestructive: true) {
                 let shouldLock = !entity.locked
-                entity.toggleLocked { status in
+                entity.toggleLocked([]) { status in
                     self.handleResult(
                         status: status,
                         shouldLock: shouldLock,
