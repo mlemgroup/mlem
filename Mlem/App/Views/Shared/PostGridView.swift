@@ -33,11 +33,11 @@ struct PostGridView: View {
     
     @Namespace var navigationNamespace
     
-    let postFeedLoader: UnifiedCorePostFeedLoader
+    let postFeedLoader: CorePostFeedLoader
     
     let alwaysShowRead: Bool
 
-    init(postFeedLoader: UnifiedCorePostFeedLoader, alwaysShowRead: Bool = false) {
+    init(postFeedLoader: CorePostFeedLoader, alwaysShowRead: Bool = false) {
         self.postFeedLoader = postFeedLoader
         self.alwaysShowRead = alwaysShowRead
     }

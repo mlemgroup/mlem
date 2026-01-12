@@ -8,7 +8,7 @@
 import Foundation
 
 @Observable
-class CommunityPostFetcher: UnifiedPostFetcher {
+class CommunityPostFetcher: PostFetcher {
     var community: any Community
     
     init(sortType: PostSortType, pageSize: Int, community: any Community) {
@@ -29,13 +29,13 @@ class CommunityPostFetcher: UnifiedPostFetcher {
     }
 }
 
-public class CommunityPostFeedLoader: UnifiedCorePostFeedLoader {
+public class CommunityPostFeedLoader: CorePostFeedLoader {
     public var community: any Community
     
     var communityPostFetcher: CommunityPostFetcher { fetcher as! CommunityPostFetcher }
     
     // force unwrap because this should ALWAYS be a PostFetcher
-    private var postFetcher: UnifiedPostFetcher { fetcher as! UnifiedPostFetcher }
+    private var postFetcher: PostFetcher { fetcher as! PostFetcher }
     
     public var sortType: PostSortType { postFetcher.sortType }
 

@@ -26,7 +26,7 @@ struct FeedsView: View {
 
     @ObservationIgnored @Dependency(\.persistenceRepository) private var persistenceRepository
     
-    @State var postFeedLoader: UnifiedAggregatePostFeedLoader?
+    @State var postFeedLoader: AggregatePostFeedLoader?
     @State var scrollToTopTrigger: Bool = false
     @State var initialListingType: ListingType?
     
@@ -171,7 +171,7 @@ struct FeedsView: View {
 private struct FeedSelectionTitleModifier: ViewModifier {
     let feedOptions: [ListingType]
     let shouldScrollToTop: Bool
-    var feedLoader: UnifiedAggregatePostFeedLoader?
+    var feedLoader: AggregatePostFeedLoader?
     @Binding var scrollToTopTrigger: Bool
     
     @State var isAtTop: Bool = false
@@ -225,7 +225,7 @@ extension FeedSelectionMenuView {
     init(
         feedOptions: [ListingType],
         shouldScrollToTop: Bool,
-        feedLoader: UnifiedAggregatePostFeedLoader,
+        feedLoader: AggregatePostFeedLoader,
         scrollToTopTrigger: Binding<Bool>
     ) {
         self._feedSelection = .init(get: {

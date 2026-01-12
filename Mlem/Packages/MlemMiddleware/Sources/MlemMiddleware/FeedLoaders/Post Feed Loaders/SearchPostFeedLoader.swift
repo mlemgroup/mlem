@@ -75,7 +75,7 @@ public class SearchPostFetcher: Fetcher<UnifiedPostModel> {
     }
 }
 
-public class SearchPostFeedLoader: UnifiedCorePostFeedLoader {
+public class SearchPostFeedLoader: CorePostFeedLoader {
     // force unwrap because this should ALWAYS be a SearchPostFetcher
     public var searchPostFetcher: SearchPostFetcher { fetcher as! SearchPostFetcher }
     

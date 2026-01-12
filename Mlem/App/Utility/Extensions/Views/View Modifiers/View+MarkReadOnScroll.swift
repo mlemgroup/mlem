@@ -15,7 +15,7 @@ private struct MarkReadOnScroll: ViewModifier {
     
     var index: Int
     var post: UnifiedPostModel
-    var postFeedLoader: UnifiedCorePostFeedLoader
+    var postFeedLoader: CorePostFeedLoader
     @Binding var bottomAppearedItemIndex: Int
     
     func body(content: Content) -> some View {
@@ -62,7 +62,7 @@ extension View {
     func markReadOnScroll(
         index: Int,
         post: UnifiedPostModel,
-        postFeedLoader: UnifiedCorePostFeedLoader,
+        postFeedLoader: CorePostFeedLoader,
         bottomAppearedItemIndex: Binding<Int>
     ) -> some View {
         modifier(MarkReadOnScroll(

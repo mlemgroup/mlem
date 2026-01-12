@@ -62,28 +62,6 @@ struct FeedSortPicker: View {
         self.showTopTimescaleInIcon = showTopTimescaleInIcon
     }
 
-    init(feedLoader: UnifiedAggregatePostFeedLoader?, showTopTimescaleInIcon: Bool = false) {
-        self._value = .init(get: {
-            if let feedLoader {
-                .known(feedLoader.sortType)
-            } else {
-                .unknown
-            }
-        }, set: { value in
-            if let sort = value.sortType {
-                Task { @MainActor in
-                    do {
-                        try await feedLoader?.changeSortType(to: sort, forceRefresh: false)
-                    } catch {
-                        handleError(error)
-                    }
-                }
-            }
-        })
-        self.showTopTimescaleInIcon = showTopTimescaleInIcon
-    }
-    
-    // TODO: NOW delete
     init(feedLoader: AggregatePostFeedLoader?, showTopTimescaleInIcon: Bool = false) {
         self._value = .init(get: {
             if let feedLoader {
