@@ -15,56 +15,56 @@ extension Post1Providing {
     
     var isOwnPost: Bool { creatorId == api.myPerson?.id }
     
-    var shouldHideInFeed: Bool {
-        (creator_?.shouldHideInFeed ?? false) || (community_?.shouldHideInFeed ?? false) || (hidden_ ?? false) || purged
-    }
+//    var shouldHideInFeed: Bool {
+//        (creator_?.shouldHideInFeed ?? false) || (community_?.shouldHideInFeed ?? false) || (hidden_ ?? false) || purged
+//    }
     
-    var canModerate: Bool {
-        api.myPerson?.moderates(communityId: communityId) ?? false || api.isAdmin
-    }
+//    var canModerate: Bool {
+//        api.myPerson?.moderates(communityId: communityId) ?? false || api.isAdmin
+//    }
 
     var downvotesEnabled: Bool {
         api.voteFederationMode.postDownvote != .disable
     }
     
-    func toggleHidden(feedback: Set<FeedbackType>) throws {
-        if let self2 {
-            if feedback.contains(.haptic) {
-                HapticManager.main.play(haptic: .lightSuccess, tier: .low)
-            }
-            if feedback.contains(.toast) {
-                if self2.hidden {
-                    ToastModel.main.add(.success("Shown"))
-                } else {
-                    ToastModel.main.add(
-                        .undoable(
-                            "Hidden",
-                            icon: .general.hide,
-                            callback: {
-                                self2.updateHidden(false)
-                            }
-                        )
-                    )
-                }
-            }
-            self2.toggleHidden()
-        } else {
-            handleError(MlemError.modelError("No self2 found"), silent: true)
-        }
-    }
+//    func toggleHidden(feedback: Set<FeedbackType>) throws {
+//        if let self2 {
+//            if feedback.contains(.haptic) {
+//                HapticManager.main.play(haptic: .lightSuccess, tier: .low)
+//            }
+//            if feedback.contains(.toast) {
+//                if self2.hidden {
+//                    ToastModel.main.add(.success("Shown"))
+//                } else {
+//                    ToastModel.main.add(
+//                        .undoable(
+//                            "Hidden",
+//                            icon: .general.hide,
+//                            callback: {
+//                                self2.updateHidden(false)
+//                            }
+//                        )
+//                    )
+//                }
+//            }
+//            self2.toggleHidden()
+//        } else {
+//            handleError(MlemError.modelError("No self2 found"), silent: true)
+//        }
+//    }
     
-    func toggleLocked(feedback: Set<FeedbackType>) {
-        let shouldLock = !locked
-        toggleLocked { status in
-            Task {
-                await self.handleModerationActionCompletion(
-                    message: shouldLock ? "Failed to lock post" : "Failed to unlock post",
-                    result: status,
-                    feedback: feedback
-                )
-            }
-        }
-    }
+//    func toggleLocked(feedback: Set<FeedbackType>) {
+//        let shouldLock = !locked
+//        toggleLocked { status in
+//            Task {
+//                await self.handleModerationActionCompletion(
+//                    message: shouldLock ? "Failed to lock post" : "Failed to unlock post",
+//                    result: status,
+//                    feedback: feedback
+//                )
+//            }
+//        }
+//    }
     
 //    func togglePinnedCommunity(feedback: Set<FeedbackType>) {
 //        let shouldPin = !pinnedCommunity
@@ -175,26 +175,27 @@ extension Post1Providing {
         commentTreeTracker: CommentTreeTracker? = nil
     ) -> [any Action] {
         ActionGroup(displayMode: .compactSection) {
-            upvoteAction(appState: appState, feedback: feedback)
-            downvoteAction(appState: appState, feedback: feedback, downvotesEnabled: downvotesEnabled)
-            saveAction(appState: appState, feedback: feedback)
+            // upvoteAction(appState: appState, feedback: feedback)
+            // downvoteAction(appState: appState, feedback: feedback, downvotesEnabled: downvotesEnabled)
+            // saveAction(appState: appState, feedback: feedback)
             // replyAction(appState: appState, commentTreeTracker: commentTreeTracker)
-            if !deleted {
-                selectTextAction()
-            }
-            shareAction(navigation: navigation)
+//            if !deleted {
+//                selectTextAction()
+//            }
+            // shareAction(navigation: navigation)
             
 //            if expanded, let navigation {
 //                createImageAction(navigation: navigation)
 //            }
             
-            if isOwnPost {
+//            if isOwnPost {
                 // editAction(appState: appState)
-                deleteAction(appState: appState, feedback: feedback)
-            } else {
-                if api.supports(.hidePosts, defaultValue: true) {
-                    hideAction(appState: appState, feedback: feedback)
-                }
+                // deleteAction(appState: appState, feedback: feedback)
+//            } else {
+            if !isOwnPost {
+//                if api.supports(.hidePosts, defaultValue: true) {
+//                    hideAction(appState: appState, feedback: feedback)
+//                }
                 if !canModerate, !deleted {
                     reportAction(appState: appState)
                 }
@@ -216,7 +217,7 @@ extension Post1Providing {
 //            if api.isAdmin {
 //                pinToInstanceAction(appState: appState, feedback: feedback)
 //            }
-            lockAction(appState: appState, feedback: feedback)
+//            lockAction(appState: appState, feedback: feedback)
             
             if setNsfwIsAvailable(appState: appState) {
                 setNsfwAction(appState: appState)
@@ -256,17 +257,17 @@ extension Post1Providing {
         reportContext: Report? = nil
     ) -> (any Action)? {
         switch type {
-        case .upvote: upvoteAction(appState: appState, feedback: feedback)
-        case .downvote: downvotesEnabled ? downvoteAction(appState: appState, feedback: feedback, downvotesEnabled: downvotesEnabled) : nil
-        case .save: saveAction(appState: appState, feedback: feedback)
-        case .reply: replyAction(appState: appState, commentTreeTracker: commentTreeTracker)
-        case .share: shareAction(navigation: navigation)
-        case .selectText: selectTextAction()
-        case .hide: hideAction(appState: appState, feedback: feedback)
+        // case .upvote: upvoteAction(appState: appState, feedback: feedback)
+        // case .downvote: downvotesEnabled ? downvoteAction(appState: appState, feedback: feedback, downvotesEnabled: downvotesEnabled) : nil
+        // case .save: saveAction(appState: appState, feedback: feedback)
+        // case .reply: replyAction(appState: appState, commentTreeTracker: commentTreeTracker)
+        // case .share: shareAction(navigation: navigation)
+        // case .selectText: selectTextAction()
+        // case .hide: hideAction(appState: appState, feedback: feedback)
         case .block: blockAction(appState: appState, feedback: feedback)
         case .report: reportAction(appState: appState, communityContext: communityContext)
         // case .crossPost: crossPostAction()
-        case .lock: lockAction(appState: appState, feedback: feedback)
+        // case .lock: lockAction(appState: appState, feedback: feedback)
         // SwiftLint is erroneously warning here. This could be fixed by wrapping the expression
         // in parenthesis, but the pre-commit hook removed the paranthesis
         // swiftlint:disable:next void_function_in_ternary
@@ -384,21 +385,21 @@ extension Post1Providing {
 //        )
 //    }
     
-    func hideAction(appState: AppState, feedback: Set<FeedbackType>) -> BasicAction {
-        let hidden = hidden_ ?? false
-        let available = api.supports(.hidePosts, defaultValue: true) && api.canInteract(appState: appState)
-        return .init(
-            id: "hide\(uid)",
-            appearance: .hide(isOn: hidden),
-            callback: available ? { @MainActor in
-                do {
-                    try self.self2?.toggleHidden(feedback: feedback)
-                } catch {
-                    handleError(error)
-                }
-            } : nil
-        )
-    }
+//    func hideAction(appState: AppState, feedback: Set<FeedbackType>) -> BasicAction {
+//        let hidden = hidden_ ?? false
+//        let available = api.supports(.hidePosts, defaultValue: true) && api.canInteract(appState: appState)
+//        return .init(
+//            id: "hide\(uid)",
+//            appearance: .hide(isOn: hidden),
+//            callback: available ? { @MainActor in
+//                do {
+//                    try self.self2?.toggleHidden(feedback: feedback)
+//                } catch {
+//                    handleError(error)
+//                }
+//            } : nil
+//        )
+//    }
     
     func blockAction(appState: AppState, feedback: Set<FeedbackType>) -> ActionGroup {
         .init(
@@ -440,16 +441,16 @@ extension Post1Providing {
 //        )
 //    }
     
-    func lockAction(appState: AppState, feedback: Set<FeedbackType> = []) -> BasicAction {
-        .init(
-            id: "lock\(uid)",
-            appearance: .lock(isOn: locked, isInProgress: lockedPending),
-            confirmationPrompt: locked ? "Really unlock this post?" : "Really lock this post?",
-            callback: api.canInteract(appState: appState) && canModerate ? { @MainActor in
-                self.self2?.toggleLocked(feedback: feedback)
-            } : nil
-        )
-    }
+//    func lockAction(appState: AppState, feedback: Set<FeedbackType> = []) -> BasicAction {
+//        .init(
+//            id: "lock\(uid)",
+//            appearance: .lock(isOn: locked, isInProgress: lockedPending),
+//            confirmationPrompt: locked ? "Really unlock this post?" : "Really lock this post?",
+//            callback: api.canInteract(appState: appState) && canModerate ? { @MainActor in
+//                self.self2?.toggleLocked(feedback: feedback)
+//            } : nil
+//        )
+//    }
     
 //    func pinAction(appState: AppState, feedback: Set<FeedbackType> = []) -> ActionGroup {
 //        .init(

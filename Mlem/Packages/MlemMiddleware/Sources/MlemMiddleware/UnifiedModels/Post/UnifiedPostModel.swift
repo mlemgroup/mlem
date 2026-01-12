@@ -22,7 +22,8 @@ public class UnifiedPostModel:
     Sharable,
     UnifiedReadableProviding,
     Interactable1Providing,
-    PersonContentProviding {
+    PersonContentProviding,
+    DeletableProviding {
     public typealias Properties = PostProperties
     
     public init(
@@ -379,6 +380,7 @@ public extension UnifiedPostModel {
         properties.thumbnailUrl = thumbnail
         properties.nsfw = nsfw
         properties.languageId = languageId ?? properties.languageId
+        
         Task {
             await updateQueue.addItem {
                 .init(snapshot: try await self.api.repository.editPost(
@@ -399,5 +401,24 @@ public extension UnifiedPostModel {
     
     func getVotes(page: Int, limit: Int) async throws -> [PersonVote] {
         try await api.getPostVotes(id: id, communityId: communityId, page: page, limit: limit)
+    }
+    
+    // Update Deleted
+    
+    func updateDeleted(_ newValue: Bool, callback: ((UpdateStatus) -> Void)?) {
+        properties.deleted = newValue
+        
+        Task {
+            await updateQueue.addItem {
+                do {
+                    let snapshot = try await self.api.repository.deletePost(id: self.id, delete: newValue)
+                    callback?(.success)
+                    return .init(snapshot: snapshot)
+                } catch {
+                    callback?(.failure(error))
+                    throw error
+                }
+            }
+        }
     }
 }

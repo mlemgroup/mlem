@@ -3617,6 +3617,7 @@
 
     },
     "Failed to unlock post" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {

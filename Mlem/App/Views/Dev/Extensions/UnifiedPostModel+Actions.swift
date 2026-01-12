@@ -348,16 +348,17 @@ extension UnifiedPostModel {
             
             if isOwnPost, let navigation, let editAction = editAction(appState: appState, navigation: navigation) {
                 editAction
+                deleteAction(appState: appState, feedback: feedback)
+            } else {
+                if api.supports(.hidePosts, defaultValue: true),
+                let hideAction = hideAction(appState: appState, feedback: feedback) {
+                    hideAction
+                }
+                //                if !canModerate, !deleted {
+                //                    reportAction(appState: appState)
+                //                }
+                //                blockAction(appState: appState, feedback: feedback)
             }
-            //                deleteAction(appState: appState, feedback: feedback)
-            //            } else {
-            //                if api.supports(.hidePosts, defaultValue: true) {
-            //                    hideAction(appState: appState, feedback: feedback)
-            //                }
-            //                if !canModerate, !deleted {
-            //                    reportAction(appState: appState)
-            //                }
-            //                blockAction(appState: appState, feedback: feedback)
         }
     }
     
