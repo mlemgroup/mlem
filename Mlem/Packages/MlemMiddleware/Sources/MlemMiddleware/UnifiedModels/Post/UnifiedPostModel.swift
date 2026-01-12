@@ -61,8 +61,6 @@ public class UnifiedPostModel:
         let community = await api.caches.community1.getModel(api: api, from: snapshot.post.community)
         let crossPosts = await api.caches.post.getModels(api: api, from: snapshot.crossPosts.map { .post2($0) })
         
-        Logger.dev.info("Found \(snapshot.crossPosts.count) crossPosts")
-        
         // TODO: NOW repository provides properties?
         return .init(snapshot: snapshot, creator: creator, community: community, crossPosts: crossPosts)
     }
@@ -349,5 +347,11 @@ public extension UnifiedPostModel {
                 ))
             }
         }
+    }
+    
+    // Get Votes
+    
+    func getVotes(page: Int, limit: Int) async throws -> [PersonVote] {
+        try await api.getPostVotes(id: id, communityId: communityId, page: page, limit: limit)
     }
 }

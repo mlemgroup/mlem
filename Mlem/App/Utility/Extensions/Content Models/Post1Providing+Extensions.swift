@@ -222,11 +222,11 @@ extension Post1Providing {
                 setNsfwAction(appState: appState)
             }
             
-            let viewVotesIsPossible = api.supports(.viewVotes, defaultValue: false)
+//            let viewVotesIsPossible = api.supports(.viewVotes, defaultValue: false)
             
-            if let navigation, viewVotesIsPossible {
-                viewVotesAction(navigation: navigation)
-            }
+//            if let navigation, viewVotesIsPossible {
+//                viewVotesAction(navigation: navigation)
+//            }
         }
         if let self2, !isOwnPost {
             self2.removeAction(appState: appState).disabled(!canModerate)
@@ -550,13 +550,13 @@ extension Post1Providing {
         return true
     }
 
-    func viewVotesAction(navigation: NavigationLayer) -> BasicAction {
-        let enabled = canModerate && api.supports(.viewVotes, defaultValue: true)
-        return .init(
-            id: "viewVotes\(uid)",
-            appearance: .viewVotes(),
-            callback: enabled ? { @MainActor in navigation.push(.votesList(.post(self))) } : nil
-        )
-    }
+//    func viewVotesAction(navigation: NavigationLayer) -> BasicAction {
+//        let enabled = canModerate && api.supports(.viewVotes, defaultValue: true)
+//        return .init(
+//            id: "viewVotes\(uid)",
+//            appearance: .viewVotes(),
+//            callback: enabled ? { @MainActor in navigation.push(.votesList(.post(self))) } : nil
+//        )
+//    }
     // swiftlint:disable:next file_length
 }

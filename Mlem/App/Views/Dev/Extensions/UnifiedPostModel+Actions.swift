@@ -111,6 +111,15 @@ extension UnifiedPostModel {
         )
     }
     
+    func viewVotesAction(navigation: NavigationLayer) -> BasicAction? {
+        guard canModerate && api.supports(.viewVotes, defaultValue: true) else { return nil }
+        return .init(
+            id: "viewVotes\(uid)",
+            appearance: .viewVotes(),
+            callback: { @MainActor in navigation.push(.votesList(.post(self))) }
+        )
+    }
+    
     func action(
         appState: AppState,
         navigation: NavigationLayer,
@@ -293,12 +302,12 @@ extension UnifiedPostModel {
 //            if setNsfwIsAvailable(appState: appState) {
 //                setNsfwAction(appState: appState)
 //            }
-//            
-//            let viewVotesIsPossible = api.supports(.viewVotes, defaultValue: false)
-//            
-//            if let navigation, viewVotesIsPossible {
-//                viewVotesAction(navigation: navigation)
-//            }
+//
+            if let navigation,
+               api.supports(.viewVotes, defaultValue: false),
+               let viewVotesAction = viewVotesAction(navigation: navigation) {
+                viewVotesAction
+            }
 //        }
 //        if let self2, !isOwnPost {
 //            self2.removeAction(appState: appState).disabled(!canModerate)

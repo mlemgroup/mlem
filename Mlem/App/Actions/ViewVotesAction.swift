@@ -18,7 +18,7 @@ struct ViewVotesAction: SimpleLabelAction {
 extension ActionSeed {
     static let viewVotes = ActionSeed("viewVotes") { entity in
         switch entity {
-        case let entity as any Post1Providing: ViewVotesAction(content: .post(entity))
+        case let entity as UnifiedPostModel: ViewVotesAction(content: .post(entity))
         case let entity as any Comment2Providing: ViewVotesAction(content: .comment(entity))
         default: nil
         }
