@@ -88,20 +88,22 @@ public struct PostProperties: UnifiedPropertiesProviding {
     
     /// Constructs a PostProperties from a given snapshot
     /// - Note: External models (e.g., Creator) will NOT be included!
-    public init(snapshot: any PostSnapshotProviding) {
+    public init(snapshot: AnyPostSnapshot) {
+        let snapshot1: Post1Snapshot
         let snapshot2: Post2Snapshot?
-        let snapshot1: Post1Snapshot?
-        
-        if let snapshot3 = snapshot as? Post3Snapshot {
-            // Post3Snapshot-specific properties all must be explicitly passed in
-            snapshot2 = snapshot3.post
-        } else {
-            snapshot2 = snapshot as? Post2Snapshot
+        switch snapshot {
+        case let .post1(post1Snapshot):
+            snapshot1 = post1Snapshot
+            snapshot2 = nil
+        case let .post2(post2Snapshot):
+            snapshot1 = post2Snapshot.post
+            snapshot2 = post2Snapshot
+        case let .post3(post3Snapshot):
+            snapshot1 = post3Snapshot.post.post
+            snapshot2 = post3Snapshot.post
         }
         
         if let snapshot2 {
-            snapshot1 = snapshot2.post
-            
             commentCount = snapshot2.commentCount
             unreadCommentCount = snapshot2.unreadCommentCount
             creatorIsModerator = snapshot2.creatorIsModerator
@@ -112,35 +114,31 @@ public struct PostProperties: UnifiedPropertiesProviding {
             saved = snapshot2.saved
             read = snapshot2.read
             hidden = snapshot2.hidden
-        } else {
-            snapshot1 = snapshot as? Post1Snapshot
         }
         
-        // TODO: NOW unified snapshot model to avoid this force unwrap
-        let shimSnapshot1 = snapshot1!
-        actorId = shimSnapshot1.actorId
-        id = shimSnapshot1.id
-        creatorId = shimSnapshot1.creatorId
-        communityId = shimSnapshot1.communityId
-        created = shimSnapshot1.created
-        title = shimSnapshot1.title
-        content = shimSnapshot1.content
-        linkUrl = shimSnapshot1.linkUrl
-        embed = shimSnapshot1.embed
-        nsfw = shimSnapshot1.nsfw
-        thumbnailUrl = shimSnapshot1.thumbnailUrl
-        updated = shimSnapshot1.updated
-        languageId = shimSnapshot1.languageId
-        altText = shimSnapshot1.altText
-        deleted = shimSnapshot1.deleted
-        removed = shimSnapshot1.removed
-        pinnedCommunity = shimSnapshot1.pinnedCommunity
-        pinnedInstance = shimSnapshot1.pinnedInstance
-        locked = shimSnapshot1.locked
+        actorId = snapshot1.actorId
+        id = snapshot1.id
+        creatorId = snapshot1.creatorId
+        communityId = snapshot1.communityId
+        created = snapshot1.created
+        title = snapshot1.title
+        content = snapshot1.content
+        linkUrl = snapshot1.linkUrl
+        embed = snapshot1.embed
+        nsfw = snapshot1.nsfw
+        thumbnailUrl = snapshot1.thumbnailUrl
+        updated = snapshot1.updated
+        languageId = snapshot1.languageId
+        altText = snapshot1.altText
+        deleted = snapshot1.deleted
+        removed = snapshot1.removed
+        pinnedCommunity = snapshot1.pinnedCommunity
+        pinnedInstance = snapshot1.pinnedInstance
+        locked = snapshot1.locked
     }
     
     /// Constructs a PostProperties from a given snapshot, including external models
-    public init(snapshot: any PostSnapshotProviding, creator: (any Person)?, community: (any Community)?, crossPosts: [UnifiedPostModel]?) {
+    public init(snapshot: AnyPostSnapshot, creator: (any Person)?, community: (any Community)?, crossPosts: [UnifiedPostModel]?) {
         self.init(snapshot: snapshot)
         self.creator = creator
         self.community = community

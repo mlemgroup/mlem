@@ -5,7 +5,6 @@
 //  Created by Eric Andrews on 2026-01-03.
 //
 
-// TODO: NOW generic PostSnapshot
 public enum AnyPostSnapshot: CacheIdentifiable {
     case post1(Post1Snapshot)
     case post2(Post2Snapshot)
@@ -16,14 +15,6 @@ public enum AnyPostSnapshot: CacheIdentifiable {
         case let .post1(snapshot): snapshot.cacheId
         case let .post2(snapshot): snapshot.cacheId
         case let .post3(snapshot): snapshot.cacheId
-        }
-    }
-    
-    var value: any PostSnapshotProviding {
-        switch self {
-        case let .post1(snapshot): snapshot
-        case let .post2(snapshot): snapshot
-        case let .post3(snapshot): snapshot
         }
     }
 }
@@ -51,7 +42,7 @@ class UnifiedPostCache: ApiTypeBackedCache<UnifiedPostModel, AnyPostSnapshot> {
         
         return .init(
             api: api,
-            snapshot: apiType.value,
+            snapshot: apiType,
             creator: creator,
             community: community,
             crossPosts: crossPosts)
@@ -60,7 +51,7 @@ class UnifiedPostCache: ApiTypeBackedCache<UnifiedPostModel, AnyPostSnapshot> {
     override func updateModel(_ item: UnifiedPostModel, with apiType: AnyPostSnapshot, semaphore: UInt? = nil) {
         // TODO: unified models figure out what to do with this function
         Task {
-            await item.updateQueue.attemptDirectUpdate(with: .init(snapshot: apiType.value))
+            await item.updateQueue.attemptDirectUpdate(with: .init(snapshot: apiType))
         }
     }
 }

@@ -32,7 +32,7 @@ public class UnifiedPostModel:
     
     public init(
         api: ApiClient,
-        snapshot: any PostSnapshotProviding,
+        snapshot: AnyPostSnapshot,
         creator: (any Person)? = nil,
         community: (any Community)? = nil,
         crossPosts: [UnifiedPostModel]? = nil
@@ -67,7 +67,7 @@ public class UnifiedPostModel:
         let crossPosts = await api.caches.post.getModels(api: api, from: snapshot.crossPosts.map { .post2($0) })
         
         // TODO: NOW repository provides properties?
-        return .init(snapshot: snapshot, creator: creator, community: community, crossPosts: crossPosts)
+        return .init(snapshot: .post3(snapshot), creator: creator, community: community, crossPosts: crossPosts)
     }
     
     // MARK: Custom Properties
@@ -195,7 +195,7 @@ public extension UnifiedPostModel {
         
         Task {
             await updateQueue.addItem {
-                .init(snapshot: try await self.api.repository.savePost(id: self.id, save: newValue))
+                .init(snapshot: .post2(try await self.api.repository.savePost(id: self.id, save: newValue)))
             }
         }
     }
@@ -215,7 +215,7 @@ public extension UnifiedPostModel {
         
         Task {
             await updateQueue.addItem {
-                .init(snapshot: try await self.api.repository.voteOnPost(id: self.id, score: newValue))
+                .init(snapshot: .post2(try await self.api.repository.voteOnPost(id: self.id, score: newValue)))
             }
         }
     }
@@ -295,7 +295,7 @@ public extension UnifiedPostModel {
                 do {
                     let ret = try await self.api.repository.pinPost(id: self.id, pin: newValue, to: .community)
                     callback?(.success)
-                    return .init(snapshot: ret)
+                    return .init(snapshot: .post2(ret))
                 } catch {
                     callback?(.failure(error))
                     throw error
@@ -317,7 +317,7 @@ public extension UnifiedPostModel {
                 do {
                     let ret = try await self.api.repository.pinPost(id: self.id, pin: newValue, to: .instance)
                     callback?(.success)
-                    return .init(snapshot: ret)
+                    return .init(snapshot: .post2(ret))
                 } catch {
                     callback?(.failure(error))
                     throw error
@@ -341,7 +341,7 @@ public extension UnifiedPostModel {
                 do {
                     let ret = try await self.api.repository.lockPost(id: self.id, lock: newValue)
                     callback?(.success)
-                    return .init(snapshot: ret)
+                    return .init(snapshot: .post2(ret))
                 } catch {
                     callback?(.failure(error))
                     throw (error)
@@ -390,7 +390,7 @@ public extension UnifiedPostModel {
         
         Task {
             await updateQueue.addItem {
-                .init(snapshot: try await self.api.repository.editPost(
+                .init(snapshot: .post2(try await self.api.repository.editPost(
                     id: self.id,
                     title: title,
                     content: content,
@@ -399,7 +399,7 @@ public extension UnifiedPostModel {
                     thumbnail: thumbnail,
                     nsfw: nsfw,
                     languageId: languageId
-                ))
+                )))
             }
         }
     }
@@ -420,7 +420,7 @@ public extension UnifiedPostModel {
                 do {
                     let snapshot = try await self.api.repository.deletePost(id: self.id, delete: newValue)
                     callback?(.success)
-                    return .init(snapshot: snapshot)
+                    return .init(snapshot: .post2(snapshot))
                 } catch {
                     callback?(.failure(error))
                     throw error
@@ -440,7 +440,7 @@ public extension UnifiedPostModel {
                 do {
                     let snapshot = try await self.api.repository.setPostNsfw(id: self.id, nsfw: newValue)
                     callback?(.success)
-                    return .init(snapshot: snapshot)
+                    return .init(snapshot: .post1(snapshot))
                 } catch {
                     callback?(.failure(error))
                     throw (error)
@@ -460,7 +460,7 @@ public extension UnifiedPostModel {
                 do {
                     let snapshot = try await self.api.repository.removePost(id: self.id, remove: newValue, reason: reason)
                     callback?(.success)
-                    return .init(snapshot: snapshot)
+                    return .init(snapshot: .post2(snapshot))
                 } catch {
                     callback?(.failure(error))
                     throw (error)
