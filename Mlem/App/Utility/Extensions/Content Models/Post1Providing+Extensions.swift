@@ -229,21 +229,21 @@ extension Post1Providing {
 //                viewVotesAction(navigation: navigation)
 //            }
         }
-        if let self2, !isOwnPost {
-            self2.removeAction(appState: appState).disabled(!canModerate)
-            self2.creator.banActions(appState: appState, community: self2.community, withUserLabel: true)
-        }
-        if api.isAdmin, api.supports(.purgeContent, defaultValue: false) {
-            purgeAction(appState: appState)
-            if !isOwnPost {
-                purgeCreatorAction(appState: appState)
-            }
-        }
-        if let report {
-            ActionGroup {
-                report.menuActions(appState: appState)
-            }
-        }
+//        if let self2, !isOwnPost {
+//            self2.removeAction(appState: appState).disabled(!canModerate)
+//            self2.creator.banActions(appState: appState, community: self2.community, withUserLabel: true)
+//        }
+//        if api.isAdmin, api.supports(.purgeContent, defaultValue: false) {
+//            purgeAction(appState: appState)
+//            if !isOwnPost {
+//                purgeCreatorAction(appState: appState)
+//            }
+//        }
+//        if let report {
+//            ActionGroup {
+//                report.menuActions(appState: appState)
+//            }
+//        }
     }
     
     // swiftlint:disable:next cyclomatic_complexity
@@ -278,9 +278,9 @@ extension Post1Providing {
 //                appState: appState,
 //                feedback: feedback
 //            )
-        case .resolve: reportContext?.resolveAction(appState: appState, feedback: feedback)
-        case .remove: removeAction(appState: appState, feedback: feedback).disabled(!canModerate)
-        case .ban: reportContext?.contextualBanAction(appState: appState)
+        // case .resolve: reportContext?.resolveAction(appState: appState, feedback: feedback)
+        // case .remove: removeAction(appState: appState, feedback: feedback).disabled(!canModerate)
+        // case .ban: reportContext?.contextualBanAction(appState: appState)
         default: nil
         }
     }
@@ -343,21 +343,21 @@ extension Post1Providing {
         }
     }
     
-    func shouldShowLoadingSymbol(for barConfiguration: PostBarConfiguration? = nil) -> Bool {
-        if lockedPending, !(barConfiguration?.all.contains(.action(.lock)) ?? false) {
-            return true
-        }
-        if pinnedCommunityPending, !(barConfiguration?.all.contains(.action(.pin)) ?? false) {
-            return true
-        }
-        if pinnedInstancePending, !(barConfiguration?.all.contains(.action(.pin)) ?? false) {
-            return true
-        }
-        if nsfwPending {
-            return true
-        }
-        return false
-    }
+//    func shouldShowLoadingSymbol(for barConfiguration: PostBarConfiguration? = nil) -> Bool {
+//        if lockedPending, !(barConfiguration?.all.contains(.action(.lock)) ?? false) {
+//            return true
+//        }
+//        if pinnedCommunityPending, !(barConfiguration?.all.contains(.action(.pin)) ?? false) {
+//            return true
+//        }
+//        if pinnedInstancePending, !(barConfiguration?.all.contains(.action(.pin)) ?? false) {
+//            return true
+//        }
+//        if nsfwPending {
+//            return true
+//        }
+//        return false
+//    }
     
     // MARK: Actions
     

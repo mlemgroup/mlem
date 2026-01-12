@@ -24,7 +24,9 @@ public class UnifiedPostModel:
     Interactable1Providing,
     PersonContentProviding,
     DeletableProviding,
-    ReportableProviding {
+    ReportableProviding,
+    RemovableProviding,
+    PurgableProviding {
     public typealias Properties = PostProperties
     
     public init(
@@ -49,6 +51,7 @@ public class UnifiedPostModel:
             pinnedInstancePending = false
             lockedPending = false
             nsfwPending = false
+            removedPending = false
         }
     }
     
@@ -75,6 +78,8 @@ public class UnifiedPostModel:
     public var pinnedInstancePending: Bool = false
     public var lockedPending: Bool = false
     public var nsfwPending: Bool = false
+    public var removedPending: Bool = false
+    public var purged: Bool = false
     
     // MARK: API Properties
     // Properties that are provided directly by the API
@@ -441,5 +446,31 @@ public extension UnifiedPostModel {
                 }
             }
         }
+    }
+    
+    // Remove
+    
+    func updateRemoved(_ newValue: Bool, reason: String?, callback: ((UpdateStatus) -> Void)?) {
+        properties.removed = newValue
+        removedPending = true
+        
+        Task {
+            await updateQueue.addItem {
+                do {
+                    let snapshot = try await self.api.repository.removePost(id: self.id, remove: newValue, reason: reason)
+                    callback?(.success)
+                    return .init(snapshot: snapshot)
+                } catch {
+                    callback?(.failure(error))
+                    throw (error)
+                }
+            }
+        }
+    }
+    
+    // Purge
+    
+    func purge(reason: String?) async throws {
+        try await api.purgePost(id: id, reason: reason)
     }
 }

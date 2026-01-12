@@ -130,7 +130,13 @@ extension UnifiedPostModel: ImagePrefetchProviding {
 // MARK: SelectableContentProviding
 
 public extension UnifiedPostModel {
-    var selectableContent: String? { content }
+    var selectableContent: String? {
+        if let content {
+            "\(title)\n\n\(content)"
+        } else {
+            title
+        }
+    }
 }
 
 // MARK: ContentIdentifiable
@@ -193,6 +199,14 @@ public extension UnifiedPostModel {
 
 public extension UnifiedPostModel {
     var userContent: PersonContent { .init(wrappedValue: .post(self)) }
+}
+
+// MARK: CanModerateProviding
+
+public extension UnifiedPostModel {
+    var canModerate: Bool {
+        api.myPerson?.moderates(communityId: communityId) ?? false || api.isAdmin
+    }
 }
 
 // MARK: Snapshots

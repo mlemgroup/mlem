@@ -26,9 +26,9 @@ struct PostEllipsisMenus: View {
     
     var body: some View {
         HStack {
-            if post.shouldShowLoadingSymbol(for: postInteractionBar) {
-                ProgressView()
-            }
+//            if post.shouldShowLoadingSymbol(for: postInteractionBar) {
+//                ProgressView()
+//            }
             if moderatorActionGrouping == .separateMenu {
                 if post.canModerate {
                     EllipsisMenu(

@@ -16,10 +16,6 @@ extension UnifiedPostModel {
         api.voteFederationMode.postDownvote != .disable
     }
     
-    var canModerate: Bool {
-        api.myPerson?.moderates(communityId: communityId) ?? false || api.isAdmin
-    }
-    
     // MARK: - Actions
     
     func upvoteAction(appState: AppState, feedback: Set<FeedbackType> = []) -> BasicAction? {
@@ -256,6 +252,16 @@ extension UnifiedPostModel {
         )
     }
     
+    func purgeCreatorAction(appState: AppState) -> BasicAction? {
+        guard api.canInteract(appState: appState) && api.isAdmin,
+              let creator = creator.value else { return nil }
+        return .init(
+            id: "purgeCreator\(uid)",
+            appearance: .purgePerson(),
+            callback: creator.showPurgeSheet
+        )
+    }
+    
     func action(
         appState: AppState,
         navigation: NavigationLayer,
@@ -284,13 +290,9 @@ extension UnifiedPostModel {
                 appState: appState,
                 feedback: feedback
             )
-            //        case .resolve:
-            //            <#code#>
-            //        case .remove:
-            //            <#code#>
-            //        case .ban:
-            //            <#code#>
-        default: nil
+        case .resolve: reportContext?.resolveAction(appState: appState, feedback: feedback)
+        case .remove: removeAction(appState: appState, feedback: feedback)
+        case .ban: reportContext?.contextualBanAction(appState: appState)
         }
     }
     
@@ -438,32 +440,34 @@ extension UnifiedPostModel {
                 pinToInstanceAction(appState: appState, feedback: feedback)
             }
             if let lockAction = lockAction(appState: appState, feedback: feedback) { lockAction }
-
+            
             if setNsfwIsAvailable(appState: appState),
                let setNsfwAction = setNsfwAction(appState: appState) {
                 setNsfwAction
             }
-
+            
             if let navigation,
                api.supports(.viewVotes, defaultValue: false),
                let viewVotesAction = viewVotesAction(navigation: navigation) {
                 viewVotesAction
             }
-//        }
-//        if let self2, !isOwnPost {
-//            self2.removeAction(appState: appState).disabled(!canModerate)
-//            self2.creator.banActions(appState: appState, community: self2.community, withUserLabel: true)
-//        }
-//        if api.isAdmin, api.supports(.purgeContent, defaultValue: false) {
-//            purgeAction(appState: appState)
-//            if !isOwnPost {
-//                purgeCreatorAction(appState: appState)
-//            }
-//        }
-//        if let report {
-//            ActionGroup {
-//                report.menuActions(appState: appState)
-//            }
+            if !isOwnPost {
+                if canModerate { removeAction(appState: appState) }
+                if let creator = creator.value, let community = community.value {
+                    creator.banActions(appState: appState, community: community, withUserLabel: true)
+                }
+            }
+            if api.isAdmin, api.supports(.purgeContent, defaultValue: false) {
+                purgeAction(appState: appState)
+                if !isOwnPost, let purgeCreatorAction = purgeCreatorAction(appState: appState) {
+                    purgeCreatorAction
+                }
+            }
+        }
+        if let report {
+            ActionGroup {
+                report.menuActions(appState: appState)
+            }
         }
     }
 }
