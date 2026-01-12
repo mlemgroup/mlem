@@ -24,41 +24,6 @@ struct InteractionBarView: View {
     
     init(
         appState: AppState,
-        post: any Post1Providing,
-        configuration: PostBarConfiguration,
-        navigation: NavigationLayer,
-        commentTreeTracker: CommentTreeTracker? = nil,
-        communityContext: (any CommunityStubProviding)? = nil,
-        reportContext: Report? = nil
-    ) {
-        self.leading = .init(
-            appState: appState,
-            navigation: navigation,
-            post: post,
-            items: configuration.leading,
-            commentTreeTracker: commentTreeTracker,
-            communityContext: communityContext,
-            reportContext: reportContext
-        )
-        self.trailing = .init(
-            appState: appState,
-            navigation: navigation,
-            post: post,
-            items: configuration.trailing,
-            commentTreeTracker: commentTreeTracker,
-            communityContext: communityContext,
-            reportContext: reportContext
-        )
-        let associatedReadouts = configuration.all.reduce(into: Set<PostBarConfiguration.ReadoutType>()) { result, widget in
-            result.formUnion(widget.associatedReadouts(context: post))
-        }
-        self.readouts = configuration.readouts.compactMap { readout in
-            post.readout(type: readout, showColor: !associatedReadouts.contains(readout))
-        }
-    }
-    
-    init(
-        appState: AppState,
         post: UnifiedPostModel,
         configuration: PostBarConfiguration,
         navigation: NavigationLayer,
@@ -279,37 +244,6 @@ private enum EnrichedWidget {
 }
 
 extension [EnrichedWidget] {
-    init(
-        appState: AppState,
-        navigation: NavigationLayer,
-        post: any Post1Providing,
-        items: [PostBarConfiguration.Item],
-        commentTreeTracker: CommentTreeTracker?,
-        communityContext: (any CommunityStubProviding)?,
-        reportContext: Report?
-    ) {
-        self = items.compactMap { item in
-            switch item {
-            case let .action(action):
-                if let action = post.action(
-                    appState: appState,
-                    navigation: navigation,
-                    type: action,
-                    commentTreeTracker: commentTreeTracker,
-                    communityContext: communityContext,
-                    reportContext: reportContext
-                ) {
-                    return .action(action)
-                }
-            case let .counter(counter):
-                if let counter = post.counter(appState: appState, type: counter, commentTreeTracker: commentTreeTracker) {
-                    return .counter(counter)
-                }
-            }
-            return nil
-        }
-    }
-    
     init(
         appState: AppState,
         navigation: NavigationLayer,
