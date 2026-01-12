@@ -106,8 +106,8 @@ struct TilePostView: View {
             
             Spacer()
             
-            if differentiateWithoutColor, readPostIndicator == .checkmark, post.read.value ?? false {
-                ReadCheck(tiled: true)
+            if differentiateWithoutColor, readPostIndicator == .checkmark {
+                ReadCheck(read: post.read, tiled: true)
             }
             
             score

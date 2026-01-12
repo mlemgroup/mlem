@@ -10,8 +10,8 @@ import Haptics
 import os
 import Foundation
 
-// TODO: NOW update Interactable1Providing to simple Interactable, conform Post etc.
-// TODO: NOW make this file's scope more reasonable (not technically just interactable)
+// Convenience functions for interacting with a post when feedback is required or the data required to execute
+// the function is not guaranteed to be fetched yet
 
 extension UnifiedPostModel: ShimVotable, ShimSaveable {
     public var shimToggleSaved: (() -> Void)? {

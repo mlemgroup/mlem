@@ -9,7 +9,7 @@ import MlemMiddleware
 import Foundation
 import os
 
-// TODO: NOW be consistent about how feedback is passed in
+// Functions to support the old Action system
 
 extension UnifiedPostModel {
     var downvotesEnabled: Bool {

@@ -87,15 +87,6 @@ enum NavigationPage: Hashable {
     case exportCommentImage(_ comment: HashWrapper<any Comment>, tracker: CommentTreeTracker?)
     case actionSheet(_ actions: HashWrapper<[ActionSheetSection]>)
     
-//    static func post(_ post: UnifiedPostModel, scrollTargetedComment: (any CommentStubProviding)? = nil) -> NavigationPage {
-//        if let scrollTargetedComment {
-//            return Self.post(post, scrollTargetedComment: .init(wrappedValue: scrollTargetedComment))
-//        } else {
-//            return Self.post(post)
-//        }
-//    }
-    
-    // TODO: NOW unify these into a single one that checks if it's a stub? (ditto comment)
     static func post(
         _ post: UnifiedPostModel,
         communityContext: (any Community1Providing)?,

@@ -127,29 +127,6 @@ enum InteractionConfigurationItem<
             return ret
         }
     }
-    
-    // TODO: NOW update Interactable so this can take any InteractableProviding again
-    func associatedReadouts(context: UnifiedPostModel) -> Set<ReadoutType> {
-        switch self {
-        case let .action(actionType):
-            if let actionType = actionType as? PostBarConfiguration.ActionType {
-                guard let ret = actionType.associatedReadouts(context: context) as? Set<ReadoutType> else {
-                    assertionFailure("Could not cast to ReadoutType")
-                    return []
-                }
-                return ret
-            }
-        case let .counter(counterType):
-            if let counterType = counterType as? PostBarConfiguration.CounterType {
-                guard let ret = counterType.associatedReadouts(context: context) as? Set<ReadoutType> else {
-                    assertionFailure("Could not cast to ReadoutType")
-                    return []
-                }
-                return ret
-            }
-        }
-        return []
-    }
 }
 
 protocol ActionTypeProviding: Codable, CaseIterable, Hashable, RawRepresentable where RawValue == String {

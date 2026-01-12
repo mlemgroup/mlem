@@ -26,8 +26,7 @@ extension UnifiedPostModel {
     }
     
     var shouldHideInFeed: Bool {
-        // TODO: NOW purged
-        (creator.value_?.shouldHideInFeed ?? false) || (community.value_?.shouldHideInFeed ?? false) || (hidden.value_ ?? false) // || purged
+        (creator.value_?.shouldHideInFeed ?? false) || (community.value_?.shouldHideInFeed ?? false) || (hidden.value_ ?? false) || purged
     }
     
     func taggedTitle(communityContext: (any Community1Providing)?) -> Text {

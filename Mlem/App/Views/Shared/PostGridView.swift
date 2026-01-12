@@ -87,7 +87,6 @@ struct PostGridView: View {
             let columns = columns
             LazyVGrid(columns: columns, spacing: postSize.sectionSpacing) {
                 ForEach(Array(postFeedLoader.items.enumerated()), id: \.element.hashValue) { index, post in
-                    // TODO: NOW
                     if !post.shouldHideInFeed {
                         NavigationLink(.post(post, communityContext: communityContext, navigationNamespace: navigationNamespace)) {
                             FeedPostView(post: post, requireConsistentHeight: columns.count != 1)

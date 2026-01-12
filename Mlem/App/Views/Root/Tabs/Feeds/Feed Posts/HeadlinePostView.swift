@@ -64,8 +64,8 @@ struct HeadlinePostView<EmbeddedContent: View>: View {
                     
                     Spacer()
                     
-                    if differentiateWithoutColor, readPostIndicator == .checkmark, post.read.value ?? false {
-                        ReadCheck()
+                    if differentiateWithoutColor, readPostIndicator == .checkmark {
+                        ReadCheck(read: post.read)
                     }
                     
                     if post.nsfw {

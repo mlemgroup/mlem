@@ -70,9 +70,8 @@ struct LargePostView: View {
                     
                     Spacer()
                     
-                    if !isPostPage, differentiateWithoutColor, readPostIndicator == .checkmark, post.read.value ?? false {
-                        // TODO: NOW make this ExpectedValue?
-                        ReadCheck()
+                    if !isPostPage, differentiateWithoutColor, readPostIndicator == .checkmark {
+                        ReadCheck(read: post.read)
                     }
                     
                     if post.nsfw {

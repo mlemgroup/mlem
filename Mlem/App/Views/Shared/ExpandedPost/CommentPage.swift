@@ -21,6 +21,7 @@ struct CommentPage: View {
     let exposeRemovedContent: Bool
     
     // TODO: UnifiedCommentModel replace this with comment's post, remove manual fetch
+    // requires ExpandedPostView to be able to take an ExpectedValue
     @State var post: UnifiedPostModel
     
     init(
@@ -39,7 +40,6 @@ struct CommentPage: View {
     }
     
     var body: some View {
-        // TODO: NOW find a way to not require the post up front?
         ExpandedPostView(
             post: post,
             tracker: tracker,
