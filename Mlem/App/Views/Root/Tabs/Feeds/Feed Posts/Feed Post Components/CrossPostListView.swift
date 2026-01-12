@@ -14,7 +14,7 @@ struct CrossPostListView: View {
     @Environment(HapticManager.self) var hapticManager
     @Environment(NavigationLayer.self) private var navigation
     
-    let post: UnifiedPostModel
+    let post: Post
     
     @State private var isExpanded: Bool = false
     
@@ -25,7 +25,7 @@ struct CrossPostListView: View {
     }
     
     @ViewBuilder
-    func content(_ crossPosts: [UnifiedPostModel]) -> some View {
+    func content(_ crossPosts: [Post]) -> some View {
         if !crossPosts.isEmpty {
             VStack(spacing: Constants.main.halfSpacing) {
                 Button {
@@ -92,7 +92,7 @@ struct CrossPostListView: View {
         }
     }
 
-    func markAllAsRead(_ crossPosts: [UnifiedPostModel]) async {
+    func markAllAsRead(_ crossPosts: [Post]) async {
         do {
             try await post.api.markPostsAsRead(ids: Set(crossPosts.map(\.id)))
             ToastModel.main.add(.success("Read \(crossPosts.count) posts"))

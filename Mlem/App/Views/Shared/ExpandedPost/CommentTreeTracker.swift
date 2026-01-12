@@ -14,7 +14,7 @@ class CommentTreeTracker: Hashable {
     private let log: Logger = .mlemLogger()
     
     enum Root {
-        case post(UnifiedPostModel)
+        case post(Post)
         case comment(any Comment, parentCount: Int)
         
         var wrappedValue: any Interactable1Providing & ActorIdentifiable {

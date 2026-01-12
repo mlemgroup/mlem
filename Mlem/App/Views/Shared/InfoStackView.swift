@@ -52,7 +52,7 @@ struct ReadoutView: View {
 }
 
 extension InfoStackView {
-    init(post: UnifiedPostModel, readouts: [PostBarConfiguration.ReadoutType?], coloredReadouts: Set<PostBarConfiguration.ReadoutType>) {
+    init(post: Post, readouts: [PostBarConfiguration.ReadoutType?], coloredReadouts: Set<PostBarConfiguration.ReadoutType>) {
         self.readouts = readouts.compactMap {
             if let readoutType = $0 { return post.readout(type: readoutType, showColor: coloredReadouts.contains(readoutType)) }
             return nil

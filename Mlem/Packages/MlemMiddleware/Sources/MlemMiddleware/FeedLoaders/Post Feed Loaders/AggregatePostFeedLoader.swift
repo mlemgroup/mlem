@@ -1,5 +1,5 @@
 //
-//  UnifiedAggregatePostFeedLoader.swift
+//  AggregatePostFeedLoader.swift
 //  MlemMiddleware
 //
 //  Created by Eric Andrews on 2026-01-05.
@@ -19,7 +19,7 @@ class AggregatePostFetcher: PostFetcher {
         super.init(api: api, sortType: sortType, pageSize: pageSize)
     }
     
-    override func getPosts(page: Int, cursor: String?) async throws -> (posts: [UnifiedPostModel], cursor: String?) {
+    override func getPosts(page: Int, cursor: String?) async throws -> (posts: [Post], cursor: String?) {
         try await api.getPosts(
             feed: feedType,
             sort: sortType,

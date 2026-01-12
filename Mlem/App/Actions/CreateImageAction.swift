@@ -12,7 +12,7 @@ import SwiftUI
 struct CreateImageAction: SimpleLabelAction {
     enum Content {
         case comment(any Comment1Providing)
-        case post(UnifiedPostModel)
+        case post(Post)
     }
     
     let content: Content
@@ -23,7 +23,7 @@ struct CreateImageAction: SimpleLabelAction {
 extension ActionSeed {
     static let createImage = ActionSeed("createImage") { entity in
         switch entity {
-        case let entity as UnifiedPostModel: CreateImageAction(content: .post(entity))
+        case let entity as Post: CreateImageAction(content: .post(entity))
         case let entity as any Comment1Providing: CreateImageAction(content: .comment(entity))
         default: nil
         }

@@ -1,5 +1,5 @@
 //
-//  UnifiedPostModel+Extensions.swift
+//  Post+Extensions.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2026-01-07.
@@ -8,7 +8,7 @@
 import MlemMiddleware
 import SwiftUI
 
-extension UnifiedPostModel {
+extension Post {
     func shouldShowLoadingSymbol(for barConfiguration: PostBarConfiguration? = nil) -> Bool {
         if lockedPending, !(barConfiguration?.all.contains(.action(.lock)) ?? false) {
             return true

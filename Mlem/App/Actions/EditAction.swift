@@ -11,7 +11,7 @@ import SwiftUI
 
 struct EditAction: SimpleLabelAction {
     enum Content {
-        case post(UnifiedPostModel)
+        case post(Post)
         case comment(any Comment1Providing)
         case message(any Message1Providing)
         
@@ -34,7 +34,7 @@ extension ActionSeed {
         switch entity {
         case let entity as any Message1Providing: EditAction(content: .message(entity))
         case let entity as any Comment1Providing: EditAction(content: .comment(entity))
-        case let entity as UnifiedPostModel: EditAction(content: .post(entity))
+        case let entity as Post: EditAction(content: .post(entity))
         default: nil
         }
     }

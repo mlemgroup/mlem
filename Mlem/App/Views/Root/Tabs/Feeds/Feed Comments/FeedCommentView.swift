@@ -67,7 +67,7 @@ struct FeedCommentView<EmbeddedContent: View>: View {
         }
     }
     
-    func headerUrl(post: UnifiedPostModel) -> URL? {
+    func headerUrl(post: Post) -> URL? {
         switch post.type {
         case let .media(url), let .embedded(url, _): url
         case let .link(link): link.thumbnail

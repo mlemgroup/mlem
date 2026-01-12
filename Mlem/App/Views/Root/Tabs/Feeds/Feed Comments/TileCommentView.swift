@@ -68,7 +68,7 @@ struct TileCommentView: View {
     }
     
     @ViewBuilder
-    func titleSection(post: UnifiedPostModel) -> some View {
+    func titleSection(post: Post) -> some View {
         Text(post.title)
             .lineLimit(2)
             .foregroundStyle(.themedSecondary)

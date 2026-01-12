@@ -10,7 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct MarkNsfwAction: SimpleLabelAction {
-    let entity: UnifiedPostModel
+    let entity: Post
 }
 
 // MARK: - Configurability
@@ -18,7 +18,7 @@ struct MarkNsfwAction: SimpleLabelAction {
 extension ActionSeed {
     static let markNsfw = ActionSeed("markNsfw") { entity in
         switch entity {
-        case let entity as UnifiedPostModel: MarkNsfwAction(entity: entity)
+        case let entity as Post: MarkNsfwAction(entity: entity)
         default: nil
         }
     }

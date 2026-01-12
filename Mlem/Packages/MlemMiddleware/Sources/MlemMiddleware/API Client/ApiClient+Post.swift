@@ -17,7 +17,7 @@ public extension ApiClient {
         limit: Int,
         filter: GetContentFilter? = nil,
         showHidden: Bool = false
-    ) async throws -> (posts: [UnifiedPostModel], cursor: String?) {
+    ) async throws -> (posts: [Post], cursor: String?) {
         let snapshots = try await repository.getPosts(
             communityId: communityId,
             sort: sort,
@@ -43,7 +43,7 @@ public extension ApiClient {
         limit: Int,
         filter: GetContentFilter? = nil,
         showHidden: Bool = false
-    ) async throws -> (posts: [UnifiedPostModel], cursor: String?) {
+    ) async throws -> (posts: [Post], cursor: String?) {
         let snapshots = try await repository.getPosts(
             feed: feed,
             sort: sort,
@@ -67,7 +67,7 @@ public extension ApiClient {
         page: Int,
         limit: Int,
         savedOnly: Bool = false
-    ) async throws -> (person: Person3, posts: [UnifiedPostModel]) {
+    ) async throws -> (person: Person3, posts: [Post]) {
         let snapshots = try await repository.getPosts(
             personId: personId,
             communityId: communityId,
@@ -87,7 +87,7 @@ public extension ApiClient {
         page: Int?,
         cursor: String?,
         limit: Int
-    ) async throws -> (posts: [UnifiedPostModel], cursor: String?) {
+    ) async throws -> (posts: [Post], cursor: String?) {
         let snapshots = try await repository.getPostHistory(
             type: type,
             page: page,
@@ -101,12 +101,12 @@ public extension ApiClient {
         return (posts: posts, cursor: snapshots.cursor)
     }
     
-    func getPost(id: Int) async throws -> UnifiedPostModel {
+    func getPost(id: Int) async throws -> Post {
         let snapshot = try await repository.getPost(id: id)
         return await caches.post.getModel(api: self, from: .post3(snapshot))
     }
     
-    func getPost(url: URL) async throws -> UnifiedPostModel {
+    func getPost(url: URL) async throws -> Post {
         let snapshot = try await repository.getPost(url: url)
         return await caches.post.getModel(api: self, from: .post2(snapshot))
     }
@@ -120,7 +120,7 @@ public extension ApiClient {
         creatorId: Int? = nil,
         filter: ListingType = .all,
         sort: PostSortType
-    ) async throws -> [UnifiedPostModel] {
+    ) async throws -> [Post] {
         let snapshots = try await repository.searchPosts(
             query: query,
             page: page,
@@ -141,7 +141,7 @@ public extension ApiClient {
         creatorId: Int? = nil,
         filter: ListingType = .all,
         sort: SearchSortType
-    ) async throws -> [UnifiedPostModel] {
+    ) async throws -> [Post] {
         let snapshots = try await repository.searchPosts(
             query: query,
             page: page,
@@ -201,7 +201,7 @@ public extension ApiClient {
         thumbnail: URL? = nil,
         nsfw: Bool,
         languageId: Int? = nil
-    ) async throws -> UnifiedPostModel {
+    ) async throws -> Post {
         let snapshot = try await repository.createPost(
             communityId: communityId,
             title: title,

@@ -142,7 +142,7 @@ public extension ApiClient {
         limit: Int,
         savedOnly: Bool? = nil,
         communityId: Int? = nil
-    ) async throws -> (person: Person3, posts: [UnifiedPostModel], comments: [Comment2]) {
+    ) async throws -> (person: Person3, posts: [Post], comments: [Comment2]) {
         let snapshots = try await repository.getContent(
             authorId: id,
             sort: sort,

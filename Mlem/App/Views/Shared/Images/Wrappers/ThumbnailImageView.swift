@@ -21,7 +21,7 @@ struct ThumbnailImageView: View {
     @State var mediaControlState: MediaControlState
     @State var quickLookUrl: URL?
     
-    let post: UnifiedPostModel
+    let post: Post
     let size: Size
     let frame: CGSize
     
@@ -52,7 +52,7 @@ struct ThumbnailImageView: View {
     }
     
     init(
-        post: UnifiedPostModel,
+        post: Post,
         blurred: Bool,
         size: Size,
         frame: CGSize

@@ -28,7 +28,7 @@ struct CommentStubResolutionPage: View {
                     do {
                         // TODO: UnifiedCommentModel remove this manual fetch and rework CommentPage accordingly
                         let upgraded = try await stub.upgrade()
-                        let post: UnifiedPostModel
+                        let post: Post
                         if let upgradedPost = upgraded.post_ {
                             post = upgradedPost
                         } else {

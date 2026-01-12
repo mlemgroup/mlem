@@ -1,5 +1,5 @@
 //
-//  UnifiedPostModel.swift
+//  Post.swift
 //  MlemMiddleware
 //
 //  Created by Eric Andrews on 2025-12-18.
@@ -19,7 +19,7 @@ public struct PostEmbed: Equatable {
 }
 
 @Observable
-public class UnifiedPostModel:
+public class Post:
     UnifiedModelProviding,
     FeedLoadable,
     SelectableContentProviding,
@@ -41,7 +41,7 @@ public class UnifiedPostModel:
         snapshot: AnyPostSnapshot,
         creator: (any Person)? = nil,
         community: (any Community)? = nil,
-        crossPosts: [UnifiedPostModel]? = nil
+        crossPosts: [Post]? = nil
     ) {
         self.api = api
         self.properties = .init(snapshot: snapshot, creator: creator, community: community, crossPosts: crossPosts)
@@ -50,7 +50,7 @@ public class UnifiedPostModel:
     // MARK: Core
     
     @ObservationIgnored
-    lazy var updateQueue: UnifiedUpdateQueue<UnifiedPostModel> = .init(parent: self)
+    lazy var updateQueue: UnifiedUpdateQueue<Post> = .init(parent: self)
     public var api: ApiClient
     public var properties: PostProperties {
         didSet {
@@ -174,12 +174,12 @@ public class UnifiedPostModel:
     public lazy var hidden: ExpectedValue<Bool> = expectedValue(\.hidden)
     
     @ObservationIgnored
-    public lazy var crossPosts: ExpectedValue<[UnifiedPostModel]> = expectedValue(\.crossPosts)
+    public lazy var crossPosts: ExpectedValue<[Post]> = expectedValue(\.crossPosts)
 }
 
 // MARK: - Computed
 
-public extension UnifiedPostModel {
+public extension Post {
     var linkHost: String? {
         if case let .link(link) = type {
             return link.host
@@ -192,7 +192,7 @@ public extension UnifiedPostModel {
 
 // MARK: - Interactions
 
-public extension UnifiedPostModel {
+public extension Post {
 
     func updateSaved(_ newValue: Bool) {
         properties.saved = newValue

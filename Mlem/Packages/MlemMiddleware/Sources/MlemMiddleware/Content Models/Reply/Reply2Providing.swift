@@ -14,7 +14,7 @@ public protocol Reply2Providing: Reply1Providing, Interactable2Providing, ActorI
     var reply1: Reply1 { get }
     var comment: Comment1 { get }
     var creator: any Person { get }
-    var post: UnifiedPostModel { get }
+    var post: Post { get }
     var community: any Community { get }
     var recipient: Person1 { get }
     var subscribed: Bool { get }
@@ -30,7 +30,7 @@ public extension Reply2Providing {
     var actorId: ActorIdentifier { reply2.comment.actorId }
     var comment: Comment1 { reply2.comment }
     var creator: any Person { reply2.creator }
-    var post: UnifiedPostModel { reply2.post }
+    var post: Post { reply2.post }
     var community: any Community { reply2.community }
     var recipient: Person1 { reply2.recipient }
     var subscribed: Bool { reply2.subscribed }
@@ -44,7 +44,7 @@ public extension Reply2Providing {
     var reply1_: Reply1? { reply2.reply1 }
     var comment_: Comment1? { reply2.comment }
     var creator_: (any Person)? { reply2.creator }
-    var post_: UnifiedPostModel? { reply2.post }
+    var post_: Post? { reply2.post }
     var community_: (any Community)? { reply2.community }
     var recipient_: Person1? { reply2.recipient }
     var subscribed_: Bool? { reply2.subscribed }

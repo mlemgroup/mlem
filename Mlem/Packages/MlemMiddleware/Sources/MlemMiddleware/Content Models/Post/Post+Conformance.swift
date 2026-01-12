@@ -1,5 +1,5 @@
 //
-//  UnifiedPostModel+Conformance.swift
+//  Post+Conformance.swift
 //  MlemMiddleware
 //
 //  Created by Eric Andrews on 2026-01-07.
@@ -11,22 +11,22 @@ import Rest
 
 // MARK: CacheIdentifiable
 
-public extension UnifiedPostModel {
+public extension Post {
     var cacheId: Int { id }
 }
 
 // MARK: ContentModel
 
-public extension UnifiedPostModel {
+public extension Post {
     static var tierNumber: Int =  4
 }
 
 // MARK: FeedLoadable
 
-public extension UnifiedPostModel {
+public extension Post {
     typealias FilterType = PostFilterType
     
-    static func == (lhs: UnifiedPostModel, rhs: UnifiedPostModel) -> Bool {
+    static func == (lhs: Post, rhs: Post) -> Bool {
         lhs.actorId == rhs.actorId
     }
     
@@ -40,7 +40,7 @@ public extension UnifiedPostModel {
 
 // MARK: ImagePrefetchProviding
 
-extension UnifiedPostModel: ImagePrefetchProviding {
+extension Post: ImagePrefetchProviding {
     public var type: PostType {
         // post with URL: image, embedded, or link
         if let linkUrl {
@@ -127,7 +127,7 @@ extension UnifiedPostModel: ImagePrefetchProviding {
 
 // MARK: SelectableContentProviding
 
-public extension UnifiedPostModel {
+public extension Post {
     var selectableContent: String? {
         if let content {
             "\(title)\n\n\(content)"
@@ -139,13 +139,13 @@ public extension UnifiedPostModel {
 
 // MARK: ContentIdentifiable
 
-public extension UnifiedPostModel {
+public extension Post {
     static var modelTypeId: ContentType { .post }
 }
 
 // MARK: Resolvable
 
-public extension UnifiedPostModel {
+public extension Post {
     /// Returns a `URL` that can be resolved by another `ApiClient`.
     func resolvableUrl(from instance: ContentModelUrlType) -> URL {
         switch instance {
@@ -162,11 +162,11 @@ public extension UnifiedPostModel {
 
 // MARK: Sharable
 
-public extension UnifiedPostModel {
+public extension Post {
     func url() -> URL { api.baseUrl.appending(path: "post/\(id)") }
 }
 
-public extension UnifiedPostModel {
+public extension Post {
     // these are all shims! auto-fetching is therefore disabled to avoid unwanted side effects
     var creator_: (any Person)? { creator.value_ }
     
@@ -195,13 +195,13 @@ public extension UnifiedPostModel {
 
 // MARK: PersonContentProviding
 
-public extension UnifiedPostModel {
+public extension Post {
     var userContent: PersonContent { .init(wrappedValue: .post(self)) }
 }
 
 // MARK: CanModerateProviding
 
-public extension UnifiedPostModel {
+public extension Post {
     var canModerate: Bool {
         api.myPerson?.moderates(communityId: communityId) ?? false || api.isAdmin
     }
@@ -209,7 +209,7 @@ public extension UnifiedPostModel {
 
 // MARK: Snapshots
 
-public extension UnifiedPostModel {
+public extension Post {
     func takeSnapshot1() -> Post1Snapshot {
         .init(actorId: actorId,
               id: id,

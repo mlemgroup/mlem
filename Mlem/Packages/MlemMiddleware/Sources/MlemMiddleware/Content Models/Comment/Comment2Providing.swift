@@ -11,7 +11,7 @@ public protocol Comment2Providing: Comment1Providing, Interactable2Providing, Pe
     var comment2: Comment2 { get }
     
     var creator: any Person { get }
-    var post: UnifiedPostModel { get }
+    var post: Post { get }
     var community: any Community { get }
     var creatorIsModerator: Bool { get }
     var creatorIsAdmin: Bool { get }
@@ -22,7 +22,7 @@ public extension Comment2Providing {
     var comment1: Comment1 { comment2.comment1 }
 
     var creator: any Person { comment2.creator }
-    var post: UnifiedPostModel { comment2.post }
+    var post: Post { comment2.post }
     var community: any Community { comment2.community }
     var votes: VotesModel { comment2.votes }
     var saved: Bool { comment2.saved }
@@ -32,7 +32,7 @@ public extension Comment2Providing {
     var commentCount: Int { comment2.commentCount }
     
     var creator_: (any Person)? { comment2.creator }
-    var post_: UnifiedPostModel? { comment2.post }
+    var post_: Post? { comment2.post }
     var community_: (any Community)? { comment2.community }
     var votes_: VotesModel? { comment2.votes }
     var saved_: Bool? { comment2.saved }

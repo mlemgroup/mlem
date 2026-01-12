@@ -77,7 +77,7 @@ extension VoteAction {
 
         let voteFederationMode = entity.api.voteFederationMode
 
-        switch (self.type, entity is UnifiedPostModel) {
+        switch (self.type, entity is Post) {
         case (.upvote, true):
             return voteFederationMode.postUpvote == .all ? .enabled : .hidden
         case (.downvote, true):

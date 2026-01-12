@@ -49,7 +49,7 @@ class ExportableCommentLoader {
 
 struct ExportableCommentData {
     let comments: [any Comment2Providing]
-    let post: UnifiedPostModel
+    let post: Post
     
     func thread(length: Int) -> [any Comment2Providing] {
         comments.suffix(length)

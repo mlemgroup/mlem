@@ -14,7 +14,7 @@ private struct MarkReadOnScroll: ViewModifier {
     @Setting(\.post_size) var postSize
     
     var index: Int
-    var post: UnifiedPostModel
+    var post: Post
     var postFeedLoader: CorePostFeedLoader
     @Binding var bottomAppearedItemIndex: Int
     
@@ -61,7 +61,7 @@ extension View {
     /// - On disappear, if this post is staged, marks it as read
     func markReadOnScroll(
         index: Int,
-        post: UnifiedPostModel,
+        post: Post,
         postFeedLoader: CorePostFeedLoader,
         bottomAppearedItemIndex: Binding<Int>
     ) -> some View {

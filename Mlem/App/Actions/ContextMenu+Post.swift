@@ -37,7 +37,7 @@ private let moderationSeeds: [ActionSeed] = [
 ]
 
 extension View {
-    func contextMenu(post: UnifiedPostModel) -> some View {
+    func contextMenu(post: Post) -> some View {
         contextMenu {
             ActionButtons { _ in
                 seeds.compactMap { $0.createAction(post) }
@@ -50,7 +50,7 @@ extension EllipsisMenu {
     init(
         icon: Icon = .general.menu,
         size: CGFloat,
-        post: UnifiedPostModel,
+        post: Post,
         type: Set<PostEllipsisMenuContent.ActionListType> = [.basic, .moderator]
     ) where Content == PostEllipsisMenuContent {
         self.icon = icon
@@ -65,7 +65,7 @@ struct PostEllipsisMenuContent: View {
         case basic, moderator
     }
 
-    let post: UnifiedPostModel
+    let post: Post
     let type: Set<ActionListType>
 
     var body: some View {

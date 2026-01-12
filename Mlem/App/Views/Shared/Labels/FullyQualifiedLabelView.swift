@@ -44,7 +44,7 @@ struct FullyQualifiedLabelView: View {
     typealias Entity = CommunityOrPerson & Profile1Providing
     
     @Environment(AppState.self) var appState
-    @Environment(\.postContext) var postContext: UnifiedPostModel?
+    @Environment(\.postContext) var postContext: Post?
     @Environment(\.commentContext) var commentContext: (any Comment1Providing)?
     @Environment(\.communityContext) var communityContext: (any Community1Providing)?
     @Environment(\.feedContext) var feedContext: FeedContext?

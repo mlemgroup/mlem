@@ -21,7 +21,7 @@ struct TilePostView: View {
     @Environment(\.parentFrameWidth) var parentFrameWidth: CGFloat
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
     
-    let post: UnifiedPostModel
+    let post: Post
 
     // Note that these dimensions above sum to precisely the height of TileCommentView, though due to the grouping of title and community here, we get a bonus 10px for the content
     // Total height in simplest form is:
@@ -140,7 +140,7 @@ struct TilePostView: View {
         
         @Setting(\.safety_blurNsfw) var blurNsfw
         
-        let post: UnifiedPostModel
+        let post: Post
         
         let width: CGFloat
         let height: CGFloat

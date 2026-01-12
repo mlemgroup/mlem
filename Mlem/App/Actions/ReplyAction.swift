@@ -11,7 +11,7 @@ import SwiftUI
 
 struct ReplyAction: SimpleLabelAction {
     enum Content {
-        case post(UnifiedPostModel)
+        case post(Post)
         case comment(any Comment1Providing)
         case message(any Message2Providing)
         
@@ -32,7 +32,7 @@ struct ReplyAction: SimpleLabelAction {
 extension ActionSeed {
     static let reply = ActionSeed("reply") { entity in
         switch entity {
-        case let entity as UnifiedPostModel: ReplyAction(content: .post(entity))
+        case let entity as Post: ReplyAction(content: .post(entity))
         case let entity as any Comment1Providing: ReplyAction(content: .comment(entity))
         case let entity as any Message2Providing: ReplyAction(content: .message(entity))
         default: nil

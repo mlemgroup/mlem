@@ -9,18 +9,18 @@ import Foundation
 
 public enum ModlogEntryContent: Equatable {
     case removePost(
-        _ post: UnifiedPostModel,
+        _ post: Post,
         community: Community1,
         removed: Bool,
         reason: String?
     )
     case lockPost(
-        _ post: UnifiedPostModel,
+        _ post: Post,
         community: Community1,
         locked: Bool
     )
     case pinPost(
-        _ post: UnifiedPostModel,
+        _ post: Post,
         community: Community1,
         pinned: Bool,
         type: PostFeatureType
@@ -30,7 +30,7 @@ public enum ModlogEntryContent: Equatable {
     case removeComment(
         _ comment: Comment1,
         creator: Person1,
-        post: UnifiedPostModel,
+        post: Post,
         community: Community1,
         removed: Bool,
         reason: String?

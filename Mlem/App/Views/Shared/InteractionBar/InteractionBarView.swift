@@ -24,7 +24,7 @@ struct InteractionBarView: View {
     
     init(
         appState: AppState,
-        post: UnifiedPostModel,
+        post: Post,
         configuration: PostBarConfiguration,
         navigation: NavigationLayer,
         commentTreeTracker: CommentTreeTracker? = nil,
@@ -247,7 +247,7 @@ extension [EnrichedWidget] {
     init(
         appState: AppState,
         navigation: NavigationLayer,
-        post: UnifiedPostModel,
+        post: Post,
         items: [PostBarConfiguration.Item],
         commentTreeTracker: CommentTreeTracker?,
         communityContext: (any CommunityStubProviding)?,

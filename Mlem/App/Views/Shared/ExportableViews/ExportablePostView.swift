@@ -14,7 +14,7 @@ struct ExportablePostView: View {
     @Setting(\.post_createImage_showCreator) var showCreator
     @Setting(\.post_createImage_showStats) var showStats
     
-    let post: UnifiedPostModel
+    let post: Post
     
     // Anything environment-dependent must be passed in because ImageRenderer doesn't work with @Environment
     let appState: AppState

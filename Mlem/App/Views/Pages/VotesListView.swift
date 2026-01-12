@@ -11,7 +11,7 @@ import Theming
 
 struct VotesListView: View {
     enum Target: Hashable {
-        case post(UnifiedPostModel)
+        case post(Post)
         case comment(any Comment2Providing)
         
         static func == (lhs: Target, rhs: Target) -> Bool {

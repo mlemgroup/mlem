@@ -14,7 +14,7 @@ public class PersonContent: Hashable, Equatable, FeedLoadable, ActorIdentifiable
     
     public enum Value {
         // This always comes from GetPersonDetailsRequest, so we can know we're getting Post2 and Comment2
-        case post(UnifiedPostModel)
+        case post(Post)
         case comment(Comment2)
     }
     

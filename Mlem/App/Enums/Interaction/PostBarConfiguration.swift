@@ -75,7 +75,7 @@ struct PostBarConfiguration: InteractionBarConfiguration {
             }
         }
         
-        func associatedReadouts(context: UnifiedPostModel) -> Set<PostBarConfiguration.ReadoutType> {
+        func associatedReadouts(context: Post) -> Set<PostBarConfiguration.ReadoutType> {
             switch self {
             case .upvote: context.votes.value?.myVote ?? .none == .upvote ? [.upvote, .score] : [.upvote]
             case .downvote: context.votes.value?.myVote ?? .none == .downvote ? [.downvote, .score] : [.downvote]
@@ -113,7 +113,7 @@ struct PostBarConfiguration: InteractionBarConfiguration {
             }
         }
         
-        func associatedReadouts(context: UnifiedPostModel) -> Set<PostBarConfiguration.ReadoutType> {
+        func associatedReadouts(context: Post) -> Set<PostBarConfiguration.ReadoutType> {
             switch self {
             case .score: [.upvote, .downvote, .score]
             case .upvote: context.votes.value?.myVote ?? .none == .upvote ? [.upvote, .score] : [.upvote]

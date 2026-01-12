@@ -25,7 +25,7 @@ struct ExportablePostEditorView: View {
     @Setting(\.post_createImage_showStats) var showStats
     @Setting(\.post_createImage_colorScheme) var overrideColorScheme
     
-    let post: UnifiedPostModel
+    let post: Post
     
     var overriddenColorScheme: ColorScheme {
         switch overrideColorScheme {

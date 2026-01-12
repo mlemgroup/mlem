@@ -26,12 +26,12 @@ struct LargePostView: View {
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
     @Environment(\.reportContext) private var reportContext: Report?
 
-    let post: UnifiedPostModel
+    let post: Post
     let isPostPage: Bool
     let favoredLink: PostViewNavigationLink?
     
     init(
-        post: UnifiedPostModel,
+        post: Post,
         isPostPage: Bool = false,
         favoredLink: PostViewNavigationLink? = nil
     ) {

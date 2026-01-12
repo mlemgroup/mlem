@@ -7,6 +7,7 @@
 
 import Foundation
 
+// TODO: NOW strip this down to minimum required
 public protocol PostStubProviding: ContentModel, Resolvable {
     // From Post1Providing. These are defined as nil in the extension below
     var actorId_: ActorIdentifier? { get }
@@ -46,9 +47,9 @@ public protocol PostStubProviding: ContentModel, Resolvable {
     var hidden_: Bool? { get }
     
     // From Post3Providing. These are defined as nil in the extension below
-    var crossPosts_: [UnifiedPostModel]? { get }
+    var crossPosts_: [Post]? { get }
     
-    func newUpgrade() async throws -> UnifiedPostModel
+    func newUpgrade() async throws -> Post
 }
 
 public extension PostStubProviding {
@@ -87,5 +88,5 @@ public extension PostStubProviding {
     var read_: Bool? { nil }
     var hidden_: Bool? { nil }
     
-    var crossPosts_: [UnifiedPostModel]? { nil }
+    var crossPosts_: [Post]? { nil }
 }

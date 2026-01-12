@@ -34,7 +34,7 @@ extension Sharable {
     
     func shareSheetActions() -> [BasicAction] {
         var shareActions: [BasicAction] = [sendLinkInPrivateMessageAction()]
-        if let post = self as? UnifiedPostModel {
+        if let post = self as? Post {
             shareActions.prepend(post.crossPostAction())
         }
         return shareActions

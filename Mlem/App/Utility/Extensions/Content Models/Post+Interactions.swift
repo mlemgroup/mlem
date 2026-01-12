@@ -1,5 +1,5 @@
 //
-//  UnifiedPostModel+Interactable.swift
+//  Post+Interactions.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2026-01-04.
@@ -13,7 +13,7 @@ import Foundation
 // Convenience functions for interacting with a post when feedback is required or the data required to execute
 // the function is not guaranteed to be fetched yet
 
-extension UnifiedPostModel: ShimVotable, ShimSaveable {
+extension Post: ShimVotable, ShimSaveable {
     public var shimToggleSaved: (() -> Void)? {
         if let toggleSaved {
             return { toggleSaved([]) }

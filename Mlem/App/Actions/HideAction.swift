@@ -10,7 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct HideAction: SimpleLabelAction {
-    let entity: UnifiedPostModel
+    let entity: Post
 }
 
 // MARK: - Configurability
@@ -18,7 +18,7 @@ struct HideAction: SimpleLabelAction {
 extension ActionSeed {
     static let hide = ActionSeed("hide") { entity in
         switch entity {
-        case let entity as UnifiedPostModel: HideAction(entity: entity)
+        case let entity as Post: HideAction(entity: entity)
         default: nil
         }
     }

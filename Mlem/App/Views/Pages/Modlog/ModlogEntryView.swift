@@ -225,7 +225,7 @@ struct ModlogEntryView: View {
     }
     
     @ViewBuilder
-    func postLink(post: UnifiedPostModel, community: any Community) -> some View {
+    func postLink(post: Post, community: any Community) -> some View {
         NavigationLink(.post(post)) {
             FooterLinkView(title: post.title, subtitle: community.fullNameWithPrefix)
         }

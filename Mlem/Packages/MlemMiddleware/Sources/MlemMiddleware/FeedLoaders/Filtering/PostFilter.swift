@@ -11,9 +11,9 @@ public enum PostFilterType {
     case read, dedupe, keyword, literal
 }
 
-class UnifiedPostFilter: MultiFilter<UnifiedPostModel> {
-    private var readFilter: UnifiedReadFilter<UnifiedPostModel>
-    private var dedupeFilter: DedupeFilter<UnifiedPostModel> = .init(context: .none())
+class PostFilter: MultiFilter<Post> {
+    private var readFilter: UnifiedReadFilter<Post>
+    private var dedupeFilter: DedupeFilter<Post> = .init(context: .none())
     private var keywordFilter: PostKeywordFilter
     private var literalFilter: PostLiteralFilter
     
@@ -26,7 +26,7 @@ class UnifiedPostFilter: MultiFilter<UnifiedPostModel> {
         }
     }
 
-    override func allFilters() -> [FilterProviding<UnifiedPostModel>] {
+    override func allFilters() -> [FilterProviding<Post>] {
         [
             readFilter,
             dedupeFilter,
@@ -35,7 +35,7 @@ class UnifiedPostFilter: MultiFilter<UnifiedPostModel> {
         ]
     }
     
-    override func getFilter(_ toGet: PostFilterType) -> FilterProviding<UnifiedPostModel> {
+    override func getFilter(_ toGet: PostFilterType) -> FilterProviding<Post> {
         switch toGet {
         case .read: readFilter
         case .dedupe: dedupeFilter

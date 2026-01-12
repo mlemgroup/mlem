@@ -30,7 +30,7 @@ struct ExpandedPostView<Content: View>: View {
     @Setting(\.interactionBar_post) var postInteractionBar
     @Setting(\.interactionBar_comment) var commentInteractionBar
 
-    var post: UnifiedPostModel
+    var post: Post
     let highlightedComment: (any CommentStubProviding)?
     let content: Content
     
@@ -45,7 +45,7 @@ struct ExpandedPostView<Content: View>: View {
     @State var previousVisitRecord: PreviousVisitRecord?
     
     init(
-        post: UnifiedPostModel,
+        post: Post,
         tracker: CommentTreeTracker?,
         highlightedComment: (any CommentStubProviding)? = nil,
         scrollTargetedComment: (any CommentStubProviding)? = nil,
@@ -193,7 +193,7 @@ struct ExpandedPostView<Content: View>: View {
     }
     
     @ViewBuilder
-    func toolbarContent(post: UnifiedPostModel, scrollProxy: ScrollViewProxy) -> some View {
+    func toolbarContent(post: Post, scrollProxy: ScrollViewProxy) -> some View {
         if let tracker {
             sortPicker(tracker: tracker)
         }
@@ -217,7 +217,7 @@ struct ExpandedPostView<Content: View>: View {
     }
     
     @ViewBuilder
-    func postView(_ post: UnifiedPostModel, scrollProxy: ScrollViewProxy) -> some View {
+    func postView(_ post: Post, scrollProxy: ScrollViewProxy) -> some View {
         Group {
             if postCollapsed {
                 HStack {

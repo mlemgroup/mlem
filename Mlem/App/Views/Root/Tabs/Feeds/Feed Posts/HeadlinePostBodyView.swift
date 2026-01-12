@@ -16,7 +16,7 @@ struct HeadlinePostBodyView: View {
     
     @ScaledMetric(relativeTo: .headline) var titleHostHeightLimit: CGFloat = 75
 
-    let post: UnifiedPostModel
+    let post: Post
     var requireConsistentHeight: Bool = false
     
     var blurred: Bool {

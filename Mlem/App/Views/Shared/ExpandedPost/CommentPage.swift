@@ -22,11 +22,11 @@ struct CommentPage: View {
     
     // TODO: UnifiedCommentModel replace this with comment's post, remove manual fetch
     // requires ExpandedPostView to be able to take an ExpectedValue
-    @State var post: UnifiedPostModel
+    @State var post: Post
     
     init(
         comment: any Comment1Providing,
-        post: UnifiedPostModel,
+        post: Post,
         initialComments: [Comment2]?,
         showViewPostButton: Bool = false,
         exposeRemovedContent: Bool = false

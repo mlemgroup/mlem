@@ -10,7 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct PinAction: SimpleLabelAction {
-    let entity: UnifiedPostModel
+    let entity: Post
 }
 
 // MARK: - Configurability
@@ -18,7 +18,7 @@ struct PinAction: SimpleLabelAction {
 extension ActionSeed {
     static let pin = ActionSeed("pin") { entity in
         switch entity {
-        case let entity as UnifiedPostModel: PinAction(entity: entity)
+        case let entity as Post: PinAction(entity: entity)
         default: nil
         }
     }

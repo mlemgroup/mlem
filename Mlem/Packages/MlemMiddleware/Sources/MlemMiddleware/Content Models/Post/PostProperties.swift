@@ -46,7 +46,7 @@ public struct PostProperties: UnifiedPropertiesProviding {
     var hidden: Bool?
     
     // From Post3Snapshot
-    var crossPosts: [UnifiedPostModel]?
+    var crossPosts: [Post]?
     
     @MainActor
     public mutating func update(with properties: Self) {
@@ -138,7 +138,7 @@ public struct PostProperties: UnifiedPropertiesProviding {
     }
     
     /// Constructs a PostProperties from a given snapshot, including external models
-    public init(snapshot: AnyPostSnapshot, creator: (any Person)?, community: (any Community)?, crossPosts: [UnifiedPostModel]?) {
+    public init(snapshot: AnyPostSnapshot, creator: (any Person)?, community: (any Community)?, crossPosts: [Post]?) {
         self.init(snapshot: snapshot)
         self.creator = creator
         self.community = community

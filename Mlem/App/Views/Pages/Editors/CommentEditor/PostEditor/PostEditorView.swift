@@ -32,7 +32,7 @@ struct PostEditorView: View {
     @State var titleTextView: UITextView
     @State var contentTextView: UITextView
     
-    @State var postToEdit: UnifiedPostModel?
+    @State var postToEdit: Post?
     @State var presentationSelection: PresentationDetent = .large
     @State var titleIsEmpty: Bool = true
     @State var contentIsEmpty: Bool = true
@@ -55,7 +55,7 @@ struct PostEditorView: View {
     
     /// Initializer for editing a post
     init?(
-        postToEdit: UnifiedPostModel,
+        postToEdit: Post,
         community: AnyCommunity?
     ) {
         self.init(

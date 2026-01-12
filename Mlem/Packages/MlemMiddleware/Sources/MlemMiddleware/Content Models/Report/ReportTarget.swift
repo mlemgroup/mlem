@@ -20,7 +20,7 @@ public enum ReportTarget {
         }
     }
     
-    case post(UnifiedPostModel)
+    case post(Post)
     case comment(Comment2)
     case message(Message2)
     

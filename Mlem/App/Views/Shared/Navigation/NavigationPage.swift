@@ -24,7 +24,7 @@ enum NavigationPage: Hashable {
     case testInbox
     case quickSwitcher
     case post(
-        _ post: UnifiedPostModel,
+        _ post: Post,
         scrollTargetedComment: HashWrapper<any CommentStubProviding>? = nil,
         communityContext: HashWrapper<any Community1Providing>? = nil,
         navigationNamespace: Namespace.ID? = nil
@@ -35,7 +35,7 @@ enum NavigationPage: Hashable {
     )
     case comment(
         _ comment: HashWrapper<any Comment1Providing>,
-        post: UnifiedPostModel,
+        post: Post,
         comments: [Comment2]?,
         showViewPostButton: Bool,
         exposeRemovedContent: Bool
@@ -73,7 +73,7 @@ enum NavigationPage: Hashable {
         nsfw: Bool,
         feedLoader: HashWrapper<(any FeedLoading)?>
     )
-    case editPost(_ post: UnifiedPostModel)
+    case editPost(_ post: Post)
     case deleteAccount(_ account: UserAccount)
     case bypassImageProxy(callback: HashWrapper<() -> Void>)
     case confirmUpload(imageData: Data, fileExtension: String, imageManager: ImageUploadManager, uploadApi: ApiClient)
@@ -83,12 +83,12 @@ enum NavigationPage: Hashable {
     case votesList(_ target: VotesListView.Target)
     case modlog(ModlogView.InitialTarget, targetPerson: AnyPerson?, moderatorPerson: AnyPerson?)
     case denyApplication(RegistrationApplication)
-    case exportPostImage(_ post: UnifiedPostModel)
+    case exportPostImage(_ post: Post)
     case exportCommentImage(_ comment: HashWrapper<any Comment>, tracker: CommentTreeTracker?)
     case actionSheet(_ actions: HashWrapper<[ActionSheetSection]>)
     
     static func post(
-        _ post: UnifiedPostModel,
+        _ post: Post,
         communityContext: (any Community1Providing)?,
         navigationNamespace: Namespace.ID? = nil
     ) -> NavigationPage {
@@ -105,7 +105,7 @@ enum NavigationPage: Hashable {
     
     static func comment(
         _ comment: any Comment1Providing,
-        post: UnifiedPostModel,
+        post: Post,
         comments: [Comment2]? = nil,
         showViewPostButton: Bool = true,
         exposeRemovedContent: Bool = false

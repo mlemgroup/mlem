@@ -28,7 +28,7 @@ struct FeedPostView<EmbeddedContent: View>: View {
     @Setting(\.interactionBar_postReport) var postReportInteractionBar
     @Setting(\.interactionBar_alternateReportLayout) var alternateInteractionBarLayoutForReports
     
-    let post: UnifiedPostModel
+    let post: Post
     let favoredLink: PostViewNavigationLink?
     let requireConsistentHeight: Bool
     @State var overridePostSize: PostSize?
@@ -38,7 +38,7 @@ struct FeedPostView<EmbeddedContent: View>: View {
     @ViewBuilder let embeddedContent: () -> EmbeddedContent
     
     init(
-        post: UnifiedPostModel,
+        post: Post,
         overridePostSize: PostSize? = nil,
         favoredLink: PostViewNavigationLink? = nil,
         requireConsistentHeight: Bool = false,

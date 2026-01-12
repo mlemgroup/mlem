@@ -24,7 +24,7 @@ public protocol CommentStubProviding: ContentModel, Resolvable {
     
     // From Comment2Providing. These are defined as nil in the extension below
     var creator_: (any Person)? { get }
-    var post_: UnifiedPostModel? { get }
+    var post_: Post? { get }
     var community_: (any Community)? { get }
     var votes_: VotesModel? { get }
     var saved_: Bool? { get }
@@ -51,7 +51,7 @@ public extension CommentStubProviding {
     var languageId_: Int? { nil }
     
     var creator_: (any Person)? { nil }
-    var post_: UnifiedPostModel? { nil }
+    var post_: Post? { nil }
     var community_: (any Community)? { nil }
     var votes_: VotesModel? { nil }
     var saved_: Bool? { nil }

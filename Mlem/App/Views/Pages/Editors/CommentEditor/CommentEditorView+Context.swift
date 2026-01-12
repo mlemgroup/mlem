@@ -9,7 +9,7 @@ import MlemMiddleware
 
 extension CommentEditorView {
     enum Context: Hashable {
-        case post(UnifiedPostModel)
+        case post(Post)
         case comment(any Comment1Providing)
         
         static func == (lhs: Context, rhs: Context) -> Bool {

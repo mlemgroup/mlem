@@ -20,7 +20,7 @@ struct CompactPostView: View {
     
     @ScaledMetric(relativeTo: .caption) var titleHostHeightLimit: CGFloat = 40
     
-    let post: UnifiedPostModel
+    let post: Post
     var requireConsistentHeight: Bool = false
     
     var readouts: [PostBarConfiguration.ReadoutType?] {

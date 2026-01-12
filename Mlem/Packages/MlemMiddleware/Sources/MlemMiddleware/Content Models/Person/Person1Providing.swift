@@ -131,7 +131,7 @@ public extension Person1Providing {
         page: Int,
         limit: Int,
         savedOnly: Bool = false
-    ) async throws -> (person: Person3, posts: [UnifiedPostModel], comments: [Comment2]) {
+    ) async throws -> (person: Person3, posts: [Post], comments: [Comment2]) {
         try await api.getContent(
             authorId: id,
             sort: sort,

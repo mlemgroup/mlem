@@ -7,8 +7,8 @@
 
 import Foundation
 
-class PostLiteralFilter: FilterProviding<UnifiedPostModel> {
-    override public func shouldPassFilter(_ post: UnifiedPostModel) -> Bool {
+class PostLiteralFilter: FilterProviding<Post> {
+    override public func shouldPassFilter(_ post: Post) -> Bool {
         // community should always exist for posts going through the feed loader
         guard let community = post.community.value_ else {
             assertionFailure("No community found in filter-eligible post")

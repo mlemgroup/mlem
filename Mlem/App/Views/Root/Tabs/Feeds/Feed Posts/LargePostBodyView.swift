@@ -13,7 +13,7 @@ struct LargePostBodyView: View {
     @Environment(\.palette) var palette
     @Environment(\.communityContext) private var communityContext: (any Community1Providing)?
 
-    let post: UnifiedPostModel
+    let post: Post
     let isPostPage: Bool
     let shouldBlur: Bool
 

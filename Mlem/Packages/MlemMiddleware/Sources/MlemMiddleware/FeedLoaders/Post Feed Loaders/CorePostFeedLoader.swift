@@ -1,5 +1,5 @@
 //
-//  UnifiedCorePostFeedLoader.swift
+//  CorePostFeedLoader.swift
 //  MlemMiddleware
 //
 //  Created by Eric Andrews on 2026-01-05.
@@ -10,7 +10,7 @@ import Nuke
 import Observation
 
 @Observable
-public class PostFetcher: Fetcher<UnifiedPostModel> {
+public class PostFetcher: Fetcher<Post> {
     var sortType: PostSortType
     
     init(api: ApiClient, sortType: PostSortType, pageSize: Int) {
@@ -39,24 +39,24 @@ public class PostFetcher: Fetcher<UnifiedPostModel> {
         )
     }
     
-    func getPosts(page: Int, cursor: String?) async throws -> (posts: [UnifiedPostModel], cursor: String?) {
+    func getPosts(page: Int, cursor: String?) async throws -> (posts: [Post], cursor: String?) {
         preconditionFailure("This method must be implemented by the inheriting class")
     }
 }
 
 /// Post tracker for use with single feeds. Can easily be extended to load any pure post feed by creating an inheriting class that overrides getPosts().
 @Observable
-public class CorePostFeedLoader: PrefetchingFeedLoader<UnifiedPostModel> {
+public class CorePostFeedLoader: PrefetchingFeedLoader<Post> {
     // store reference to the filter used by the LoadingActor so we can modify its filterContext from changeApi
-    var filter: UnifiedPostFilter
+    var filter: PostFilter
     
     init(
         showReadPosts: Bool,
         filterContext: FilterContext,
         prefetchingConfiguration: PrefetchingConfiguration,
-        fetcher: Fetcher<UnifiedPostModel>
+        fetcher: Fetcher<Post>
     ) {
-        let filter: UnifiedPostFilter = .init(showRead: showReadPosts, context: filterContext)
+        let filter: PostFilter = .init(showRead: showReadPosts, context: filterContext)
         self.filter = filter
         
         super.init(

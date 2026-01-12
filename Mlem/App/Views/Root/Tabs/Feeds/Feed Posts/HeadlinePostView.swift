@@ -25,13 +25,13 @@ struct HeadlinePostView<EmbeddedContent: View>: View {
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
     @Environment(\.reportContext) private var reportContext: Report?
 
-    let post: UnifiedPostModel
+    let post: Post
     let embeddedContent: EmbeddedContent
     let favoredLink: PostViewNavigationLink?
     let requireConsistentHeight: Bool
 
     init(
-        post: UnifiedPostModel,
+        post: Post,
         favoredLink: PostViewNavigationLink? = nil,
         requireConsistentHeight: Bool = false,
         @ViewBuilder embeddedContent: () -> EmbeddedContent = { EmptyView() }

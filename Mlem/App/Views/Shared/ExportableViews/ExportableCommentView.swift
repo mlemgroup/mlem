@@ -18,7 +18,7 @@ struct ExportableCommentView: View {
     @Setting(\.post_createImage_showStats) var postShowStats
     
     let comments: [any Comment1Providing]
-    let post: UnifiedPostModel
+    let post: Post
     
     // Anything environment-dependent must be passed in because ImageRenderer doesn't work with @Environment
     let appState: AppState

@@ -24,7 +24,7 @@ extension Interactable1Providing {
     }
     
     private var responseContext: CommentEditorView.Context? {
-        if let self = self as? UnifiedPostModel { return .post(self) }
+        if let self = self as? Post { return .post(self) }
         if let self = self as? any Comment2Providing { return .comment(self) }
         if let self = self as? any Reply2Providing { return .comment(self.comment) }
         return nil
@@ -243,7 +243,7 @@ extension Interactable1Providing {
     
     var commentReadout: Readout {
         let value: String?
-        if let unreadCount = (self as? UnifiedPostModel)?.unreadCommentCount.value,
+        if let unreadCount = (self as? Post)?.unreadCommentCount.value,
            unreadCount > 0, unreadCount != commentCount_ {
             value = "+\(unreadCount)"
         } else {

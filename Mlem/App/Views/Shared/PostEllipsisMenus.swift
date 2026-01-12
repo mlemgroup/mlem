@@ -20,7 +20,7 @@ struct PostEllipsisMenus: View {
     @Setting(\.menus_modActionGrouping) var moderatorActionGrouping
 
     // This @State is necessary!
-    @State var post: UnifiedPostModel
+    @State var post: Post
     
     var size: CGFloat = 24
     

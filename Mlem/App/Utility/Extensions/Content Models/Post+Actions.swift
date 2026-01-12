@@ -1,5 +1,5 @@
 //
-//  UnifiedPostModel+Actions.swift
+//  Post+Actions.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2026-01-03.
@@ -11,7 +11,7 @@ import os
 
 // Functions to support the old Action system
 
-extension UnifiedPostModel {
+extension Post {
     var downvotesEnabled: Bool {
         api.voteFederationMode.postDownvote != .disable
     }

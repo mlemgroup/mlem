@@ -1,5 +1,5 @@
 //
-//  UnifiedPostCaches.swift
+//  PostCache.swift
 //  MlemMiddleware
 //
 //  Created by Eric Andrews on 2026-01-03.
@@ -19,11 +19,11 @@ public enum AnyPostSnapshot: CacheIdentifiable {
     }
 }
 
-class UnifiedPostCache: ApiTypeBackedCache<UnifiedPostModel, AnyPostSnapshot> {
-    override func performModelTranslation(api: ApiClient, from apiType: AnyPostSnapshot) -> UnifiedPostModel {
+class PostCache: ApiTypeBackedCache<Post, AnyPostSnapshot> {
+    override func performModelTranslation(api: ApiClient, from apiType: AnyPostSnapshot) -> Post {
         let creator: (any Person)?
         let community: (any Community)?
-        let crossPosts: [UnifiedPostModel]?
+        let crossPosts: [Post]?
         
         switch apiType {
         case .post1:
@@ -48,7 +48,7 @@ class UnifiedPostCache: ApiTypeBackedCache<UnifiedPostModel, AnyPostSnapshot> {
             crossPosts: crossPosts)
     }
     
-    override func updateModel(_ item: UnifiedPostModel, with apiType: AnyPostSnapshot, semaphore: UInt? = nil) {
+    override func updateModel(_ item: Post, with apiType: AnyPostSnapshot, semaphore: UInt? = nil) {
         // TODO: unified models figure out what to do with this function
         Task {
             await item.updateQueue.attemptDirectUpdate(with: .init(snapshot: apiType))

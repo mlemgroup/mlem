@@ -68,7 +68,7 @@ extension ExpandedPostView {
         return !scrolledToScrollTargetedComment
     }
     
-    func showScrollToLastVisitButton(post: UnifiedPostModel) -> Bool {
+    func showScrollToLastVisitButton(post: Post) -> Bool {
         guard (post.commentCount.value_ ?? 0) > 10 else { return false }
         var commentId = previousVisitRecord?.commentActorId
         if topVisibleItem.isAtPost, commentId == nil {
@@ -81,7 +81,7 @@ extension ExpandedPostView {
         return index > 1
     }
     
-    func togglePostCollapsed(post: UnifiedPostModel, scrollProxy: ScrollViewProxy) {
+    func togglePostCollapsed(post: Post, scrollProxy: ScrollViewProxy) {
         withAnimation(UIAccessibility.isReduceMotionEnabled ? nil : .default) {
             postCollapsed.toggle()
             if postCollapsed {
