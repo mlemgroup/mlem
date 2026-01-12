@@ -86,13 +86,11 @@ struct CommentPage: View {
             }.value
         }
         .themedGroupedBackground()
-//        .onAppear {
-//            if comment.isUpgraded, let tracker {
-//                Task {
-//                    await tracker.load()
-//                }
-//            }
-//        }
+        .onAppear {
+            Task {
+                await tracker.load()
+            }
+        }
         .environment(\.exposeRemovedContent, exposeRemovedContent)
     }
     

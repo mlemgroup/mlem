@@ -1,5 +1,5 @@
 //
-//  DevFeedPostView.swift
+//  FeedPostView.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2026-01-05.

@@ -1,5 +1,5 @@
 //
-//  PostPage.swift
+//  PostStubResolutionPage.swift
 //  Mlem
 //
 //  Created by Sjmarf on 27/09/2024.
