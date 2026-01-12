@@ -48,8 +48,7 @@ struct FeedPostView<EmbeddedContent: View>: View {
         self.favoredLink = favoredLink
         self.requireConsistentHeight = requireConsistentHeight
         self.embeddedContent = embeddedContent
-        // self._obscured = .init(wrappedValue: FiltersTracker.main.postWouldBeFiltered(post))
-        self._obscured = .init(wrappedValue: false)
+        self._obscured = .init(wrappedValue: FiltersTracker.main.postWouldBeFiltered(post))
         self._overridePostSize = .init(wrappedValue: overridePostSize)
     }
     
@@ -84,9 +83,9 @@ struct FeedPostView<EmbeddedContent: View>: View {
         }
         .contentShape(.interaction, .rect)
         .paletteBorder(cornerRadius: postSize.cornerRadius)
-//        .onChange(of: filtersTracker.changeHash) {
-//            obscured = filtersTracker.postWouldBeFiltered(post)
-//        }
+        .onChange(of: filtersTracker.changeHash) {
+            obscured = filtersTracker.postWouldBeFiltered(post)
+        }
         .onAppear {
             if shouldRenderCompact() {
                 overridePostSize = .compact

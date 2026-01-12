@@ -60,7 +60,6 @@ public class UnifiedPostModel:
         try await updateQueue.upgrade()
     }
     
-    // TODO: NOW internal?
     public func fetchUpgraded() async throws -> PostProperties {
         let snapshot = try await api.repository.getPost(id: id)
         let creator = await api.caches.person1.getModel(api: api, from: snapshot.post.creator)
