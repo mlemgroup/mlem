@@ -105,10 +105,10 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
 }
 
 // TODO: updated mocks
-//#if DEBUG
+// #if DEBUG
 //    #Preview(traits: .sampleEnvironment) {
 //        NavigationStack {
 //            InteractionBarEditorView(configuration: PostBarConfiguration.default, isReport: false, onSet: { _ in })
 //        }
 //    }
-//#endif
+// #endif

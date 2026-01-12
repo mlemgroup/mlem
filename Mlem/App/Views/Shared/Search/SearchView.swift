@@ -180,11 +180,11 @@ struct SearchView: View {
 }
 
 // TODO: updated mocks
-//#if DEBUG
+// #if DEBUG
 //    #Preview(traits: .sampleEnvironment(api: .realistic)) {
 //        @Previewable @Environment(AppState.self) var appState
 //        NavigationStack {
 //            SearchView(appState: appState)
 //        }
 //    }
-//#endif
+// #endif

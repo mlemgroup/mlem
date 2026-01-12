@@ -233,7 +233,7 @@ extension FullyQualifiedLabelView {
 }
 
 // TODO: updated mocks
-//#if DEBUG
+// #if DEBUG
 //    #Preview("Sizes", traits: .sampleEnvironment, .sizeThatFitsLayout) {
 //        VStack(alignment: .leading) {
 //            ForEach(FullyQualifiedLabelStyle.allCases, id: \.self) { style in
@@ -242,4 +242,4 @@ extension FullyQualifiedLabelView {
 //        }
 //        .padding()
 //    }
-//#endif
+// #endif

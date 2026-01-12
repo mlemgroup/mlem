@@ -40,7 +40,12 @@ enum NavigationPage: Hashable {
         showViewPostButton: Bool,
         exposeRemovedContent: Bool
     )
-    case commentStub(_ comment: HashWrapper<any CommentStubProviding>, comments: [Comment2]?, showViewPostButton: Bool, exposeRemovedContent: Bool)
+    case commentStub(
+        _ comment: HashWrapper<any CommentStubProviding>,
+        comments: [Comment2]?,
+        showViewPostButton: Bool,
+        exposeRemovedContent: Bool
+    )
     case community(_ community: AnyCommunity, visitContext: VisitHistory.VisitContext)
     case person(_ person: AnyPerson, visitContext: VisitHistory.VisitContext)
     case instance(_ instance: InstanceHashWrapper, visitContext: VisitHistory.VisitContext)

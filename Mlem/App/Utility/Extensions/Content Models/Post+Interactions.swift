@@ -102,7 +102,7 @@ extension Post: ShimVotable, ShimSaveable {
         }
     }
     
-    func toggleLocked(_ feedback: Set<FeedbackType>, callback: ((UpdateStatus) -> Void)? = nil) -> Void {
+    func toggleLocked(_ feedback: Set<FeedbackType>, callback: ((UpdateStatus) -> Void)? = nil) {
         if feedback.contains(.haptic) {
             HapticManager.main.play(haptic: .lightSuccess, tier: .low)
         }

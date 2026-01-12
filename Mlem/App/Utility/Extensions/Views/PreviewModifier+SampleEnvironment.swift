@@ -10,7 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 // TODO: updated mocks
-//#if DEBUG
+// #if DEBUG
 //    private struct SampleEnvironmentPreviewModifier: PreviewModifier {
 //        // Kinda unfortunate typealias naming considering we have our own AppState...
 //        typealias AppState = Void
@@ -49,4 +49,4 @@ import SwiftUI
 //            }
 //        }
 //    }
-//#endif
+// #endif

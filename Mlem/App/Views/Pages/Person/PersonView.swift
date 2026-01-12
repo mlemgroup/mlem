@@ -343,7 +343,7 @@ private struct FlairLabelStyle: LabelStyle {
 }
 
 // TODO: updated mocks
-//#if DEBUG
+// #if DEBUG
 //    #Preview(traits: .sampleEnvironment(api: .realistic)) {
 //        @Previewable @Environment(AppState.self) var appState
 //        NavigationStack {
@@ -356,4 +356,4 @@ private struct FlairLabelStyle: LabelStyle {
 //        }
 //        .previewTabBar(selected: .profile)
 //    }
-//#endif
+// #endif

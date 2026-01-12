@@ -9,7 +9,7 @@ import Foundation
 import MlemMiddleware
 
 // TODO: updated mocks
-//extension MockApiClient {
+// extension MockApiClient {
 //    static let realistic: MockApiClient = {
 //        let client = MockApiClient()
 //        client.setPosts(PostMockType.Realistic.allCases.map { Post2.mock(.realistic($0), api: client) })
@@ -17,4 +17,4 @@ import MlemMiddleware
 //        client.setPeople(PersonMockType.Realistic.allCases.map { Person2.mock(.realistic($0), api: client) })
 //        return client
 //    }()
-//}
+// }

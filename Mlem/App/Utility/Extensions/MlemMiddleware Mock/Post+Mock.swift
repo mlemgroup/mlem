@@ -9,7 +9,7 @@ import Foundation
 import MlemMiddleware
 
 // TODO: updated mocks
-//extension Post1 {
+// extension Post1 {
 //    static func mock(
 //        _ type: PostMockType,
 //        api: MockApiClient = .mock,
@@ -42,9 +42,9 @@ import MlemMiddleware
 //            altText: nil
 //        )
 //    }
-//}
+// }
 //
-//extension Post2 {
+// extension Post2 {
 //    static func mock(
 //        _ type: PostMockType,
 //        api: MockApiClient = .mock
@@ -65,4 +65,4 @@ import MlemMiddleware
 //            hidden: false
 //        )
 //    }
-//}
+// }

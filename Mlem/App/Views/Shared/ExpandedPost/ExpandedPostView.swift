@@ -100,7 +100,6 @@ struct ExpandedPostView<Content: View>: View {
         }
     }
     
-    // swiftlint:disable:next function_body_length
     @ViewBuilder
     var viewContent: some View {
         GeometryReader { geo in

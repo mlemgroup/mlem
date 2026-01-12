@@ -136,8 +136,8 @@ struct CompactPostView: View {
 }
 
 // TODO: updated mocks
-//#if DEBUG
+// #if DEBUG
 //    #Preview(traits: .sampleEnvironment, .sizeThatFitsLayout) {
 //        DevCompactPostView(post: Post2.mock(.generic))
 //    }
-//#endif
+// #endif

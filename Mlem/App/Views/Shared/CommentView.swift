@@ -212,8 +212,8 @@ struct CommentBarView: View {
 }
 
 // TODO: updated mocks
-//#if DEBUG
+// #if DEBUG
 //    #Preview(traits: .sampleEnvironment, .sizeThatFitsLayout) {
 //        CommentView(comment: Comment2.mock(.generic))
 //    }
-//#endif
+// #endif

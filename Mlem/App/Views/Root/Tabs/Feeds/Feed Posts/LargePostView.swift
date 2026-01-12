@@ -140,7 +140,7 @@ struct LargePostView: View {
 }
 
 // TODO: updated mocks
-//#if DEBUG
+// #if DEBUG
 //    #Preview(traits: .sampleEnvironment, .sizeThatFitsLayout) {
 //        LargePostView(
 //            post: Post2.mock(.generic),
@@ -148,4 +148,4 @@ struct LargePostView: View {
 //            favoredLink: nil
 //        )
 //    }
-//#endif
+// #endif

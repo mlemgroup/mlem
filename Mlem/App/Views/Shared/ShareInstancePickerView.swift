@@ -143,7 +143,7 @@ struct ShareInstancePickerView: View {
 }
 
 // TODO: updated mocks
-//#if DEBUG
+// #if DEBUG
 //    #Preview(traits: .sampleEnvironment) {
 //        ScrollView {
 //            VStack(spacing: Constants.main.standardSpacing) {
@@ -157,4 +157,4 @@ struct ShareInstancePickerView: View {
 //            ShareInstancePickerView(entity: Community2.mock(.realistic(.pics)))
 //        }
 //    }
-//#endif
+// #endif

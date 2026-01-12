@@ -125,8 +125,8 @@ struct HeadlinePostView<EmbeddedContent: View>: View {
 }
 
 // TODO: update mocks
-//#if DEBUG
+// #if DEBUG
 //    #Preview(traits: .sampleEnvironment, .sizeThatFitsLayout) {
 //        HeadlinePostView(post: Post2.mock(.generic))
 //    }
-//#endif
+// #endif

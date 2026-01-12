@@ -146,7 +146,7 @@ struct PersonListRowBody<Content: View>: View {
 }
 
 // TODO: updated mocks
-//#if DEBUG
+// #if DEBUG
 //    #Preview(traits: .sampleEnvironment, .sizeThatFitsLayout) {
 //        PersonListRowBody(
 //            Person2.mock(.generic),
@@ -155,4 +155,4 @@ struct PersonListRowBody<Content: View>: View {
 //        )
 //        .padding(.vertical, Constants.main.standardSpacing)
 //    }
-//#endif
+// #endif

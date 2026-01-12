@@ -9,6 +9,8 @@ import MlemMiddleware
 import Foundation
 import os
 
+// swiftlint:disable file_length
+
 // Functions to support the old Action system
 
 extension Post {
@@ -46,7 +48,7 @@ extension Post {
         )
     }
     
-    func hideAction(appState: AppState, feedback: Set<FeedbackType>)  -> BasicAction? {
+    func hideAction(appState: AppState, feedback: Set<FeedbackType>) -> BasicAction? {
         guard api.supports(.hidePosts, defaultValue: true) && api.canInteract(appState: appState),
               let hidden = hidden.value, let toggleHidden = toggleHidden else { return nil }
         return .init(
@@ -220,7 +222,7 @@ extension Post {
         return .init(
             id: "setNsfw\(uid)",
             appearance: .toggleNsfw(isOn: nsfw),
-            callback:{ @MainActor in
+            callback: { @MainActor in
                 self.toggleNsfw { status in
                     Task {
                         await self.handleModerationActionCompletion(
@@ -262,6 +264,7 @@ extension Post {
         )
     }
     
+    // swiftlint:disable:next cyclomatic_complexity
     func action(
         appState: AppState,
         navigation: NavigationLayer,
@@ -283,6 +286,7 @@ extension Post {
         case .report: reportAction(appState: appState, communityContext: communityContext)
         case .crossPost: crossPostAction()
         case .lock: lockAction(appState: appState, feedback: feedback)
+        // swiftlint:disable:next void_function_in_ternary
         case .pin: api.isAdmin ? pinAction(
                 appState: appState,
                 feedback: feedback
@@ -425,6 +429,7 @@ extension Post {
     }
     
     @ActionBuilder
+    // swiftlint:disable:next cyclomatic_complexity
     func moderatorMenuActions(
         appState: AppState,
         feedback: Set<FeedbackType> = [.haptic, .toast],
@@ -469,3 +474,5 @@ extension Post {
         }
     }
 }
+
+// swiftlint:enable file_length

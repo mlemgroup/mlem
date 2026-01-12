@@ -61,7 +61,7 @@ struct CommunityListRow<Content2: View>: View {
 }
 
 // TODO: updated mocks
-//#if DEBUG
+// #if DEBUG
 //    #Preview(traits: .sampleEnvironment) {
 //        ScrollView {
 //            ForEach(CommunityMockType.Realistic.allCases) { type in
@@ -75,4 +75,4 @@ struct CommunityListRow<Content2: View>: View {
 //        .contentMargins(.horizontal, Constants.main.standardSpacing)
 //        .background(.themedGroupedBackground)
 //    }
-//#endif
+// #endif

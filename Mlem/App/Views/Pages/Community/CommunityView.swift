@@ -252,7 +252,7 @@ struct CommunityView: View {
 }
 
 // TODO: updated mocks
-//#if DEBUG
+// #if DEBUG
 //    #Preview(traits: .sampleEnvironment(api: .realistic)) {
 //        CommunityView(
 //            community: .init(Community2.mock(.realistic(.pics), api: .realistic)),
@@ -261,4 +261,4 @@ struct CommunityView: View {
 //        .previewNavigationStack()
 //        .previewTabBar(selected: .feeds)
 //    }
-//#endif
+// #endif

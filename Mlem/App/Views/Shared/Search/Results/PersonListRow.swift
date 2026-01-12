@@ -62,7 +62,7 @@ struct PersonListRow<Content2: View>: View {
 }
 
 // TODO: updated mocks
-//#if DEBUG
+// #if DEBUG
 //    #Preview(traits: .sampleEnvironment) {
 //        ScrollView {
 //            ForEach(PersonMockType.Realistic.allCases) { type in
@@ -76,4 +76,4 @@ struct PersonListRow<Content2: View>: View {
 //        .contentMargins(.horizontal, Constants.main.standardSpacing)
 //        .background(.themedGroupedBackground)
 //    }
-//#endif
+// #endif

@@ -9,7 +9,7 @@ import Foundation
 import MlemMiddleware
 
 // TODO: updated mocks
-//extension Person1 {
+// extension Person1 {
 //    static func mock(
 //        _ type: PersonMockType,
 //        api: MockApiClient = .mock
@@ -33,9 +33,9 @@ import MlemMiddleware
 //            blocked: false
 //        )
 //    }
-//}
+// }
 //
-//extension Person2 {
+// extension Person2 {
 //    static func mock(
 //        _ type: PersonMockType,
 //        api: MockApiClient = .mock,
@@ -48,4 +48,4 @@ import MlemMiddleware
 //            isAdmin: isAdmin
 //        )
 //    }
-//}
+// }

@@ -9,7 +9,7 @@ import Foundation
 import MlemMiddleware
 
 // TODO: updated mocks
-//extension Community1 {
+// extension Community1 {
 //    static func mock(
 //        _ type: CommunityMockType,
 //        api: MockApiClient = .mock
@@ -34,9 +34,9 @@ import MlemMiddleware
 //            blocked: false
 //        )
 //    }
-//}
+// }
 //
-//extension Community2 {
+// extension Community2 {
 //    static func mock(
 //        _ type: CommunityMockType,
 //        api: MockApiClient = .mock
@@ -53,4 +53,4 @@ import MlemMiddleware
 //            bannedFromCommunity: nil
 //        )
 //    }
-//}
+// }

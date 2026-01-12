@@ -6,10 +6,10 @@
 //
 
 // TODO: updated mocks
-//import Foundation
-//import MlemMiddleware
+// import Foundation
+// import MlemMiddleware
 //
-//extension Comment1 {
+// extension Comment1 {
 //    static func mock(
 //        _ type: CommentMockType,
 //        api: MockApiClient = .mock
@@ -29,9 +29,9 @@
 //            languageId: 0
 //        )
 //    }
-//}
+// }
 //
-//extension Comment2 {
+// extension Comment2 {
 //    static func mock(
 //        _ type: CommentMockType,
 //        api: MockApiClient = .mock
@@ -50,4 +50,4 @@
 //            commentCount: type.commentCount
 //        )
 //    }
-//}
+// }

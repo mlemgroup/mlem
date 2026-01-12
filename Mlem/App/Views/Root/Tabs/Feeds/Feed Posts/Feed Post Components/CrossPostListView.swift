@@ -25,6 +25,7 @@ struct CrossPostListView: View {
     }
     
     @ViewBuilder
+    // swiftlint:disable:next function_body_length
     func content(_ crossPosts: [Post]) -> some View {
         if !crossPosts.isEmpty {
             VStack(spacing: Constants.main.halfSpacing) {
