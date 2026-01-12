@@ -20,18 +20,16 @@ struct ReportView: View {
             .environment(\.reportContext, report)
     }
     
-    // TODO: NOW
     @ViewBuilder
     var targetView: some View {
         switch report.target {
         case let .post(post):
-            Text("TODO")
-//            NavigationLink(.post(post)) {
-//                FeedPostView(post: post, overridePostSize: .headline, favoredLink: .creator) {
-//                    reportDetailsView
-//                    resolutionInfoView
-//                }
-//            }
+            NavigationLink(.post(post)) {
+                FeedPostView(post: post, overridePostSize: .headline, favoredLink: .creator) {
+                    reportDetailsView
+                    resolutionInfoView
+                }
+            }
         case let .comment(comment):
             NavigationLink(.comment(comment, post: comment.post)) {
                 FeedCommentView(comment: comment, overriddenSize: .large) {
