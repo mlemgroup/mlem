@@ -254,10 +254,4 @@ public extension ApiClient {
             communityId: communityId
         )
     }
-
-    // TODO: NOW delete this
-    func shimGetPost(url: URL) async throws -> Post2 {
-        let snapshot = try await repository.getPost(url: url)
-        return await caches.post2.getModel(api: self, from: snapshot)
-    }
 }

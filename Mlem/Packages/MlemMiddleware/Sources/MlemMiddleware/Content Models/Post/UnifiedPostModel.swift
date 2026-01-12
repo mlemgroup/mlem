@@ -12,6 +12,12 @@ import os
 import Nuke
 import Rest
 
+public struct PostEmbed: Equatable {
+    public let title: String?
+    public let description: String?
+    public let videoUrl: URL?
+}
+
 @Observable
 public class UnifiedPostModel:
     UnifiedModelProviding,

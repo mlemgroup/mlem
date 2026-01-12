@@ -14,21 +14,19 @@ class CommentTreeTracker: Hashable {
     private let log: Logger = .mlemLogger()
     
     enum Root {
-        case post(any Post)
-        case unifiedPost(UnifiedPostModel)
+        case post(UnifiedPostModel)
         case comment(any Comment, parentCount: Int)
         
         var wrappedValue: any Interactable1Providing & ActorIdentifiable {
             switch self {
             case let .post(post): post
-            case let .unifiedPost(post): post
             case let .comment(comment, _): comment
             }
         }
         
         var depth: Int {
             switch self {
-            case .post, .unifiedPost: -1
+            case .post: -1
             case let .comment(comment, parentCount): max(0, comment.depth - parentCount)
             }
         }
@@ -114,13 +112,6 @@ class CommentTreeTracker: Hashable {
     private func fetchComments(page: Int) async throws -> [Comment2] {
         switch root {
         case let .post(post):
-            return try await post.getComments(
-                sort: sort,
-                page: page,
-                maxDepth: Settings.get(\.comment_maxDepth),
-                limit: 50
-            )
-        case let .unifiedPost(post):
             return try await post.getComments(
                 sort: sort,
                 page: page,

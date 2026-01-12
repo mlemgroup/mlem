@@ -26,7 +26,7 @@ public final class Reply2: Reply2Providing, FeedLoadable {
     public let reply1: Reply1
     public let comment: Comment1
     public let creator: Person1
-    public let post: Post1
+    public let post: UnifiedPostModel
     public let community: Community1
     public let recipient: Person1
     public var subscribed: Bool
@@ -53,7 +53,7 @@ public final class Reply2: Reply2Providing, FeedLoadable {
         reply1: Reply1,
         comment: Comment1,
         creator: Person1,
-        post: Post1,
+        post: UnifiedPostModel,
         community: Community1,
         recipient: Person1,
         subscribed: Bool,

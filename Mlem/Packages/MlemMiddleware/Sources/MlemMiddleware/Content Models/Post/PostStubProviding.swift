@@ -46,9 +46,8 @@ public protocol PostStubProviding: ContentModel, Resolvable {
     var hidden_: Bool? { get }
     
     // From Post3Providing. These are defined as nil in the extension below
-    var crossPosts_: [Post2]? { get }
+    var crossPosts_: [UnifiedPostModel]? { get }
     
-    func upgrade() async throws -> any Post
     func newUpgrade() async throws -> UnifiedPostModel
 }
 
@@ -88,5 +87,5 @@ public extension PostStubProviding {
     var read_: Bool? { nil }
     var hidden_: Bool? { nil }
     
-    var crossPosts_: [Post2]? { nil }
+    var crossPosts_: [UnifiedPostModel]? { nil }
 }

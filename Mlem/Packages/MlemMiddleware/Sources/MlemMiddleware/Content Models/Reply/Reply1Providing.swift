@@ -32,7 +32,7 @@ public protocol Reply1Providing:
     // From Reply2Providing
     var comment_: Comment1? { get }
     var creator_: (any Person)? { get }
-    var post_: Post1? { get }
+    var post_: UnifiedPostModel? { get }
     var community_: (any Community)? { get }
     var recipient_: Person1? { get }
     var subscribed_: Bool? { get }
@@ -80,7 +80,7 @@ public extension Reply1Providing {
     // From Reply2Providing
     var comment_: Comment1? { nil }
     var creator_: (any Person)? { nil }
-    var post_: Post1? { nil }
+    var post_: UnifiedPostModel? { nil }
     var community_: (any Community)? { nil }
     var recipient_: Person1? { nil }
     var subscribed_: Bool? { nil }

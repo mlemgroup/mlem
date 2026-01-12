@@ -29,10 +29,6 @@ public struct PostStub: PostStubProviding, Hashable {
         lhs.url == rhs.url
     }
     
-    public func upgrade() async throws -> any Post {
-        try await api.shimGetPost(url: resolvableUrl)
-    }
-    
     public func newUpgrade() async throws -> UnifiedPostModel {
         try await api.getPost(url: resolvableUrl)
     }

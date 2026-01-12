@@ -82,7 +82,7 @@ public extension ApiClient {
         case let .comment(comment):
             await caches.comment2.getModel(api: self, from: comment)
         case let .post(post):
-            await caches.post2.getModel(api: self, from: post)
+            await caches.post.getModel(api: self, from: .post2(post))
         case let .community(community):
             await caches.community2.getModel(api: self, from: community)
         case let .person(person):

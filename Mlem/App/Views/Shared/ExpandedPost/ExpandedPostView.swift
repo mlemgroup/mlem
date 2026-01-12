@@ -54,7 +54,7 @@ struct ExpandedPostView<Content: View>: View {
         self.post = post
         self.highlightedComment = highlightedComment
         self.content = content()
-        self.tracker = tracker ?? .init(root: .unifiedPost(post))
+        self.tracker = tracker ?? .init(root: .post(post))
         self._scrollTargetedComment = .init(wrappedValue: scrollTargetedComment)
     }
     

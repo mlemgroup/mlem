@@ -30,7 +30,7 @@ extension Reply2: CacheIdentifiable {
         creator.update(with: snapshot.creator)
         
         // TODO: UpdateQueue remove this shim code
-        post.post1.snapshot1Update(with: snapshot.post)
+        post.properties.update(with: .init(snapshot: .post1(snapshot.post)))
         comment.comment1.snapshot1Update(with: snapshot.comment)
         
         community.update(with: snapshot.community)

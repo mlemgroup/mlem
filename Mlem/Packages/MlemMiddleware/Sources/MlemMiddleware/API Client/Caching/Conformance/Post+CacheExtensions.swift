@@ -7,14 +7,14 @@
 
 import Foundation
 
-extension Post1: CacheIdentifiable {
-    public var cacheId: Int { id }
-}
-
-extension Post2: CacheIdentifiable {
-    public var cacheId: Int { id }
-}
-
-extension Post3: CacheIdentifiable {
-    public var cacheId: Int { id }
-}
+//extension Post1: CacheIdentifiable {
+//    public var cacheId: Int { id }
+//}
+//
+//extension Post2: CacheIdentifiable {
+//    public var cacheId: Int { id }
+//}
+//
+//extension Post3: CacheIdentifiable {
+//    public var cacheId: Int { id }
+//}

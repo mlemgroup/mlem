@@ -39,7 +39,7 @@ class Reply2Cache: ApiTypeBackedCache<Reply2, Reply2Snapshot> {
             reply1: api.caches.reply1.getModel(api: api, from: snapshot.reply),
             comment: api.caches.comment1.getModel(api: api, from: snapshot.comment),
             creator: api.caches.person1.getModel(api: api, from: snapshot.creator),
-            post: api.caches.post1.getModel(api: api, from: snapshot.post),
+            post: api.caches.post.getModel(api: api, from: .post1(snapshot.post)),
             community: api.caches.community1.getModel(api: api, from: snapshot.community),
             recipient: api.caches.person1.getModel(api: api, from: snapshot.recipient),
             subscribed: snapshot.subscribed,

@@ -57,3 +57,42 @@ import Foundation
 //        }
 //    }
 //#endif
+
+//#if DEBUG
+//    public extension Post2 {
+//        static func mock(
+//            api: ApiClient = .mock,
+//            post1: Post1,
+//            creator: Person1,
+//            community: Community1,
+//            votes: VotesModel,
+//            creatorIsModerator: Bool,
+//            creatorIsAdmin: Bool,
+//            creatorBannedFromCommunity: Bool,
+//            commentCount: Int,
+//            unreadCommentCount: Int,
+//            saved: Bool,
+//            read: Bool,
+//            hidden: Bool
+//        ) -> Post2 {
+//            assert(api === post1.api)
+//            assert(api === creator.api)
+//            assert(api === community.api)
+//            return .init(
+//                api: api,
+//                post1: post1,
+//                creator: creator,
+//                community: community,
+//                votes: votes,
+//                creatorIsModerator: creatorIsModerator,
+//                creatorIsAdmin: creatorIsAdmin,
+//                creatorBannedFromCommunity: creatorBannedFromCommunity,
+//                commentCount: commentCount,
+//                unreadCommentCount: unreadCommentCount,
+//                saved: saved,
+//                read: read,
+//                hidden: hidden
+//            )
+//        }
+//    }
+//#endif
