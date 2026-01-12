@@ -66,10 +66,6 @@ extension ExpandedPostView {
         // Don't need to show ProgressView if there's nothing to scroll to
         if scrollTargetedComment == nil { return false }
         return !scrolledToScrollTargetedComment
-        
-        // TODO: NOW check post loading... needed?
-//        let hasFinishedLoading = !(post is any Post3Providing && scrolledToScrollTargetedComment)
-//        return hasFinishedLoading
     }
     
     func showScrollToLastVisitButton(post: UnifiedPostModel) -> Bool {

@@ -27,13 +27,6 @@ extension Post1Providing {
         api.voteFederationMode.postDownvote != .disable
     }
     
-//    @MainActor
-//    func showEditSheet() {
-//        if let self = self as? any Post2Providing {
-//            NavigationModel.main.openSheet(.editPost(self.post2))
-//        }
-//    }
-    
     func toggleHidden(feedback: Set<FeedbackType>) throws {
         if let self2 {
             if feedback.contains(.haptic) {
@@ -272,7 +265,7 @@ extension Post1Providing {
         case .hide: hideAction(appState: appState, feedback: feedback)
         case .block: blockAction(appState: appState, feedback: feedback)
         case .report: reportAction(appState: appState, communityContext: communityContext)
-        case .crossPost: crossPostAction()
+        // case .crossPost: crossPostAction()
         case .lock: lockAction(appState: appState, feedback: feedback)
         // SwiftLint is erroneously warning here. This could be fixed by wrapping the expression
         // in parenthesis, but the pre-commit hook removed the paranthesis
@@ -287,6 +280,7 @@ extension Post1Providing {
         case .resolve: reportContext?.resolveAction(appState: appState, feedback: feedback)
         case .remove: removeAction(appState: appState, feedback: feedback).disabled(!canModerate)
         case .ban: reportContext?.contextualBanAction(appState: appState)
+        default: nil
         }
     }
     
@@ -366,37 +360,29 @@ extension Post1Providing {
     
     // MARK: Actions
     
-//    func createImageAction(navigation: NavigationLayer) -> BasicAction {
+//    func crossPostAction() -> BasicAction {
 //        .init(
-//            id: "exportAsImage\(uid)",
-//            appearance: .createImage()) {
-//                navigation.openSheet(.createPostImage(self))
+//            id: "crosspost\(uid)",
+//            appearance: .crossPost(),
+//            callback: {
+//                var crossPostContent: String
+//                let crossPostedLabel = String(localized: "Crossposted from \(self.actorId.description)")
+//                if let content = self.content, !content.isEmpty {
+//                    crossPostContent = "\(crossPostedLabel)\n-----\n\(content)"
+//                } else {
+//                    crossPostContent = crossPostedLabel
+//                }
+//                NavigationModel.main.openSheet(.createPost(
+//                    community: nil as AnyCommunity?,
+//                    title: self.title,
+//                    content: crossPostContent,
+//                    type: self.type,
+//                    nsfw: self.nsfw,
+//                    feedLoader: .init(wrappedValue: nil)
+//                ))
 //            }
+//        )
 //    }
-    
-    func crossPostAction() -> BasicAction {
-        .init(
-            id: "crosspost\(uid)",
-            appearance: .crossPost(),
-            callback: {
-                var crossPostContent: String
-                let crossPostedLabel = String(localized: "Crossposted from \(self.actorId.description)")
-                if let content = self.content, !content.isEmpty {
-                    crossPostContent = "\(crossPostedLabel)\n-----\n\(content)"
-                } else {
-                    crossPostContent = crossPostedLabel
-                }
-                NavigationModel.main.openSheet(.createPost(
-                    community: nil as AnyCommunity?,
-                    title: self.title,
-                    content: crossPostContent,
-                    type: self.type,
-                    nsfw: self.nsfw,
-                    feedLoader: .init(wrappedValue: nil)
-                ))
-            }
-        )
-    }
     
     func hideAction(appState: AppState, feedback: Set<FeedbackType>) -> BasicAction {
         let hidden = hidden_ ?? false

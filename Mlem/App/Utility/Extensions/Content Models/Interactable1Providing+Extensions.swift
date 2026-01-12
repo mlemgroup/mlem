@@ -243,7 +243,7 @@ extension Interactable1Providing {
     
     var commentReadout: Readout {
         let value: String?
-        if let unreadCount = (self as? any Post1Providing)?.unreadCommentCount_,
+        if let unreadCount = (self as? UnifiedPostModel)?.unreadCommentCount.value,
            unreadCount > 0, unreadCount != commentCount_ {
             value = "+\(unreadCount)"
         } else {

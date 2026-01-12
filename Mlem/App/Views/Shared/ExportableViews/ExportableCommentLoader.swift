@@ -38,11 +38,6 @@ class ExportableCommentLoader {
                 comments = [comment]
             }
             
-//            guard let post = try await comment.post.upgrade() as? any Post3Providing else {
-//                assertionFailure("Could not cast to Post2Providing post-upgrade")
-//                throw ApiClientError.unsuccessful
-//            }
-            
             Task { @MainActor in
                 self.data = .init(comments: comments, post: comment.post)
             }

@@ -50,18 +50,6 @@ extension UnifiedPostModel {
         )
     }
     
-    // TODO: NOW make this generic in new Interactable
-//    func replyAction(appState: AppState, commentTreeTracker: CommentTreeTracker? = nil) -> BasicAction? {
-//        guard api.canInteract(appState: appState) else { return nil }
-//        return .init(
-//            id: "reply\(actorId)",
-//            appearance: .reply(),
-//            callback: { @MainActor in
-//                NavigationModel.main.openSheet(.createComment(.unifiedPost(self), commentTreeTracker: commentTreeTracker))
-//            }
-//        )
-//    }
-    
     func hideAction(appState: AppState, feedback: Set<FeedbackType>)  -> BasicAction? {
         guard api.supports(.hidePosts, defaultValue: true) && api.canInteract(appState: appState),
               let hidden = hidden.value, let toggleHidden = toggleHidden else { return nil }
@@ -69,6 +57,30 @@ extension UnifiedPostModel {
             id: "hide\(uid)",
             appearance: .hide(isOn: hidden),
             callback: { toggleHidden(feedback) }
+        )
+    }
+    
+    func crossPostAction() -> BasicAction {
+        .init(
+            id: "crosspost\(uid)",
+            appearance: .crossPost(),
+            callback: {
+                var crossPostContent: String
+                let crossPostedLabel = String(localized: "Crossposted from \(self.actorId.description)")
+                if let content = self.content, !content.isEmpty {
+                    crossPostContent = "\(crossPostedLabel)\n-----\n\(content)"
+                } else {
+                    crossPostContent = crossPostedLabel
+                }
+                NavigationModel.main.openSheet(.createPost(
+                    community: nil as AnyCommunity?,
+                    title: self.title,
+                    content: crossPostContent,
+                    type: self.type,
+                    nsfw: self.nsfw,
+                    feedLoader: .init(wrappedValue: nil)
+                ))
+            }
         )
     }
     
@@ -120,8 +132,7 @@ extension UnifiedPostModel {
             //            <#code#>
             //        case .report:
             //            <#code#>
-            //        case .crossPost:
-            //            <#code#>
+        case .crossPost: crossPostAction()
         case .lock: lockAction(appState: appState, feedback: feedback)
             //        case .pin:
             //            <#code#>
