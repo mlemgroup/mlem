@@ -13,7 +13,14 @@ import Foundation
 // TODO: NOW update Interactable1Providing to simple Interactable, conform Post etc.
 // TODO: NOW make this file's scope more reasonable (not technically just interactable)
 
-extension UnifiedPostModel: ShimVotable {
+extension UnifiedPostModel: ShimVotable, ShimSaveable {
+    public var shimToggleSaved: (() -> Void)? {
+        if let toggleSaved {
+            return { toggleSaved([]) }
+        }
+        return nil
+    }
+    
     public var toggleVote: ((ScoringOperation) -> Void)? {
         if let updateVote, let votes = votes.value {
             return { operation in
