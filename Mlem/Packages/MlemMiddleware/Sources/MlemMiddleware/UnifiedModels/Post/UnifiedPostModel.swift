@@ -71,7 +71,7 @@ public class UnifiedPostModel:
     }
     
     // MARK: Custom Properties
-    // Properties that we have enriched the model with
+    // Mlem-specific properties that are not reflected in the API
     
     public var readQueued: Bool = false
     public var pinnedCommunityPending: Bool = false
@@ -80,6 +80,7 @@ public class UnifiedPostModel:
     public var nsfwPending: Bool = false
     public var removedPending: Bool = false
     public var purged: Bool = false
+    public var embeddedMediaUrl: URL?
     
     // MARK: API Properties
     // Properties that are provided directly by the API

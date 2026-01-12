@@ -44,10 +44,9 @@ extension UnifiedPostModel: ImagePrefetchProviding {
     public var type: PostType {
         // post with URL: image, embedded, or link
         if let linkUrl {
-            // TODO: NOW
-//            if let embeddedMediaUrl {
-//                return .embedded(embeddedMediaUrl, originalLink: linkUrl)
-//            }
+            if let embeddedMediaUrl {
+                return .embedded(embeddedMediaUrl, originalLink: linkUrl)
+            }
             
             // if image, return image link, otherwise return thumbnail
             if linkUrl.isMedia {
@@ -65,12 +64,11 @@ extension UnifiedPostModel: ImagePrefetchProviding {
     }
     
     func parseLoopEmbeds() async {
-        // TODO: NOW not noop
-//        if let loopsUrl = await linkUrl.value_??.parseEmbeddedLoops() {
-//            _ = await Task { @MainActor in
-//                properties.embeddedMediaUrl = loopsUrl
-//            }.result
-//        }
+        if let loopsUrl = await linkUrl?.parseEmbeddedLoops() {
+            _ = await Task { @MainActor in
+                embeddedMediaUrl = loopsUrl
+            }.result
+        }
     }
     
     public func imageRequests(configuration config: PrefetchingConfiguration) async -> [ImageRequest] {
