@@ -66,7 +66,6 @@ public class UnifiedPostModel:
         let community = await api.caches.community1.getModel(api: api, from: snapshot.post.community)
         let crossPosts = await api.caches.post.getModels(api: api, from: snapshot.crossPosts.map { .post2($0) })
         
-        // TODO: NOW repository provides properties?
         return .init(snapshot: .post3(snapshot), creator: creator, community: community, crossPosts: crossPosts)
     }
     
