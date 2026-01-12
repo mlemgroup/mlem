@@ -8,7 +8,7 @@
 import Foundation
 
 // Content that can be upvoted, downvoted, saved etc
-public protocol Interactable2Providing: Interactable1Providing, RemovableProviding, PurgableProviding, CanModerateProviding {
+public protocol Interactable2Providing: Interactable1Providing, RemovableProviding, PurgableProviding, CanModerateProviding, ShimVotable {
     var creator: any Person { get }
     var community: any Community { get }
     var creatorIsModerator: Bool { get }
@@ -44,5 +44,24 @@ public extension Interactable2Providing {
     
     func toggleSaved() {
         updateSaved(!saved)
+    }
+}
+
+// TODO: UnifiedCommentModel etc. remove this shim
+public protocol ShimVotable {
+    var api: ApiClient { get }
+    var votes: ExpectedValue<VotesModel> { get }
+    var toggleVote: ((ScoringOperation) -> Void)? { get }
+}
+
+public extension Interactable2Providing {
+    var votes: ExpectedValue<VotesModel> {
+        .init(
+            getValue: { self.votes },
+            provideValue: { assertionFailure("This should not be called") })
+    }
+    
+    var toggleVote: ((ScoringOperation) -> Void)? {
+        { self.toggleVote(type: $0) }
     }
 }

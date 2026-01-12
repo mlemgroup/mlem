@@ -73,7 +73,7 @@ enum NavigationPage: Hashable {
         nsfw: Bool,
         feedLoader: HashWrapper<(any FeedLoading)?>
     )
-    case editPost(_ post: Post2)
+    case editPost(_ post: UnifiedPostModel)
     case deleteAccount(_ account: UserAccount)
     case bypassImageProxy(callback: HashWrapper<() -> Void>)
     case confirmUpload(imageData: Data, fileExtension: String, imageManager: ImageUploadManager, uploadApi: ApiClient)
@@ -83,7 +83,7 @@ enum NavigationPage: Hashable {
     case votesList(_ target: VotesListView.Target)
     case modlog(ModlogView.InitialTarget, targetPerson: AnyPerson?, moderatorPerson: AnyPerson?)
     case denyApplication(RegistrationApplication)
-    case exportPostImage(_ post: HashWrapper<any Post>)
+    case exportPostImage(_ post: UnifiedPostModel)
     case exportCommentImage(_ comment: HashWrapper<any Comment>, tracker: CommentTreeTracker?)
     case actionSheet(_ actions: HashWrapper<[ActionSheetSection]>)
     
@@ -385,10 +385,6 @@ enum NavigationPage: Hashable {
     
     static func advancedSorting(_ sort: Binding<PostSortType>) -> NavigationPage {
         advancedSorting(.init(wrappedValue: sort))
-    }
-    
-    static func createPostImage(_ post: any Post) -> NavigationPage {
-        exportPostImage(.init(wrappedValue: post))
     }
     
     static func createCommentImage(_ comment: any Comment, tracker: CommentTreeTracker?) -> NavigationPage {

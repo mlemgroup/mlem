@@ -12,8 +12,8 @@ import os
 // TODO: NOW update Interactable1Providing to simple Interactable, conform Post etc.
 // TODO: NOW make this file's scope more reasonable (not technically just interactable)
 
-extension UnifiedPostModel {
-    var toggleVote: ((ScoringOperation) -> Void)? {
+extension UnifiedPostModel: ShimVotable {
+    public var toggleVote: ((ScoringOperation) -> Void)? {
         if let updateVote, let votes = votes.value {
             return { operation in
                 updateVote(votes.myVote == operation ? .none : operation)

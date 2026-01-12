@@ -49,19 +49,18 @@ struct UnifiedPostEllipsisMenus: View {
 // MARK: - Action System etc.
 
 private let seeds: [ActionSeed] = [
-    .unifiedUpvote
-//    .upvote,
-//    .downvote,
-//    .save,
-//    .reply,
-//    .selectText,
-//    .share,
-//    .hide,
-//    .createImage,
-//    .report,
-//    .blockCreator,
-//    .edit,
-//    .delete
+    .upvote,
+    .downvote,
+    .save,
+    .reply,
+    .selectText,
+    .share,
+    .hide,
+    .createImage,
+    .report,
+    .blockCreator,
+    .edit,
+    .delete
 ]
 
 private let moderationSeeds: [ActionSeed] = [

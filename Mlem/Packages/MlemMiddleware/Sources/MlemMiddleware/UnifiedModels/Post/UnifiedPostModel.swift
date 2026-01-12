@@ -162,6 +162,8 @@ public extension UnifiedPostModel {
         }
         return nil
     }
+    
+    var isOwnPost: Bool { creatorId == api.myPerson?.id }
 }
 
 // MARK: - Interactions
@@ -300,5 +302,39 @@ public extension UnifiedPostModel {
             limit: limit,
             filter: filter
         )
+    }
+    
+    // Edit
+    
+    func edit(
+        title: String,
+        content: String?,
+        linkUrl: URL?,
+        altText: String?,
+        thumbnail: URL?,
+        nsfw: Bool,
+        languageId: Int?
+    ) throws {
+        properties.title = title
+        properties.content = content
+        properties.linkUrl = linkUrl
+        properties.altText = altText
+        properties.thumbnailUrl = thumbnail
+        properties.nsfw = nsfw
+        properties.languageId = languageId ?? properties.languageId
+        Task {
+            await updateQueue.addItem {
+                .init(snapshot: try await self.api.repository.editPost(
+                    id: self.id,
+                    title: title,
+                    content: content,
+                    linkUrl: linkUrl,
+                    altText: altText,
+                    thumbnail: thumbnail,
+                    nsfw: nsfw,
+                    languageId: languageId
+                ))
+            }
+        }
     }
 }

@@ -14,7 +14,7 @@ struct ExportablePostView: View {
     @Setting(\.post_createImage_showCreator) var showCreator
     @Setting(\.post_createImage_showStats) var showStats
     
-    let post: any Post1Providing
+    let post: UnifiedPostModel
     
     // Anything environment-dependent must be passed in because ImageRenderer doesn't work with @Environment
     let appState: AppState
@@ -50,8 +50,7 @@ struct ExportablePostView: View {
                     .transition(.scale.combined(with: .opacity))
             }
             
-            // TODO: NOW
-            // LargePostBodyView(post: post, isPostPage: true, shouldBlur: false)
+            LargePostBodyView(post: post, isPostPage: true, shouldBlur: false)
             
             if showCreator {
                 FullyQualifiedLabelView(post.creator_, labelStyle: .medium, showFlairs: false)

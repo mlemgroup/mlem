@@ -70,10 +70,12 @@ extension ActionSeed {
             content: [entity.creator],
             relationship: .indirect
         )
-        case let entity as any Post2Providing: BlockAction(
-            content: [entity.creator, entity.community],
-            relationship: .indirect
-        )
+        case let entity as UnifiedPostModel:
+            if let creator = entity.creator.value, let community = entity.community.value {
+                BlockAction(content: [creator, community], relationship: .indirect)
+            } else {
+                nil
+            }
         default: nil
         }
     }

@@ -27,12 +27,12 @@ extension Post1Providing {
         api.voteFederationMode.postDownvote != .disable
     }
     
-    @MainActor
-    func showEditSheet() {
-        if let self = self as? any Post2Providing {
-            NavigationModel.main.openSheet(.editPost(self.post2))
-        }
-    }
+//    @MainActor
+//    func showEditSheet() {
+//        if let self = self as? any Post2Providing {
+//            NavigationModel.main.openSheet(.editPost(self.post2))
+//        }
+//    }
     
     func toggleHidden(feedback: Set<FeedbackType>) throws {
         if let self2 {
@@ -135,10 +135,10 @@ extension Post1Providing {
         self2?.updateRead(true)
     }
     
-    @MainActor
-    func createImage(navigation: NavigationLayer) {
-        navigation.openSheet(.createPostImage(self))
-    }
+//    @MainActor
+//    func createImage(navigation: NavigationLayer) {
+//        navigation.openSheet(.createPostImage(self))
+//    }
     
     @ActionBuilder
     func allMenuActions(
@@ -191,12 +191,12 @@ extension Post1Providing {
             }
             shareAction(navigation: navigation)
             
-            if expanded, let navigation {
-                createImageAction(navigation: navigation)
-            }
+//            if expanded, let navigation {
+//                createImageAction(navigation: navigation)
+//            }
             
             if isOwnPost {
-                editAction(appState: appState)
+                // editAction(appState: appState)
                 deleteAction(appState: appState, feedback: feedback)
             } else {
                 if api.supports(.hidePosts, defaultValue: true) {
@@ -366,13 +366,13 @@ extension Post1Providing {
     
     // MARK: Actions
     
-    func createImageAction(navigation: NavigationLayer) -> BasicAction {
-        .init(
-            id: "exportAsImage\(uid)",
-            appearance: .createImage()) {
-                navigation.openSheet(.createPostImage(self))
-            }
-    }
+//    func createImageAction(navigation: NavigationLayer) -> BasicAction {
+//        .init(
+//            id: "exportAsImage\(uid)",
+//            appearance: .createImage()) {
+//                navigation.openSheet(.createPostImage(self))
+//            }
+//    }
     
     func crossPostAction() -> BasicAction {
         .init(
@@ -446,13 +446,13 @@ extension Post1Providing {
         )
     }
     
-    func editAction(appState: AppState) -> BasicAction {
-        .init(
-            id: "edit\(uid)",
-            appearance: .edit(),
-            callback: api.canInteract(appState: appState) ? showEditSheet : nil
-        )
-    }
+//    func editAction(appState: AppState) -> BasicAction {
+//        .init(
+//            id: "edit\(uid)",
+//            appearance: .edit(),
+//            callback: api.canInteract(appState: appState) ? showEditSheet : nil
+//        )
+//    }
     
     func lockAction(appState: AppState, feedback: Set<FeedbackType> = []) -> BasicAction {
         .init(

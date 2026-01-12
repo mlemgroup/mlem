@@ -73,14 +73,29 @@ extension UnifiedPostModel {
     }
     
     func lockAction(appState: AppState, feedback: Set<FeedbackType> = []) -> BasicAction? {
-        Logger.dev.info("Building lockAction")
         guard api.canInteract(appState: appState) && canModerate else { return nil }
-        Logger.dev.info("Can interact and moderate")
         return .init(
             id: "lock\(uid)",
             appearance: .lock(isOn: locked, isInProgress: lockedPending),
             confirmationPrompt: locked ? "Really unlock this post?" : "Really lock this post?",
             callback: { self.toggleLocked(feedback) }
+        )
+    }
+    
+    func createImageAction(navigation: NavigationLayer) -> BasicAction {
+        .init(
+            id: "exportAsImage\(uid)",
+            appearance: .createImage()) {
+                navigation.openSheet(.exportPostImage(self))
+            }
+    }
+    
+    func editAction(appState: AppState, navigation: NavigationLayer) -> BasicAction? {
+        guard api.canInteract(appState: appState) else { return nil }
+        return .init(
+            id: "edit\(uid)",
+            appearance: .edit(),
+            callback: { navigation.openSheet(.editPost(self)) }
         )
     }
     
@@ -230,12 +245,13 @@ extension UnifiedPostModel {
             }
             shareAction(navigation: navigation)
             
-            //            if expanded, let navigation {
-            //                createImageAction(navigation: navigation)
-            //            }
-            //
-            //            if isOwnPost {
-            //                editAction(appState: appState)
+            if expanded, let navigation {
+                createImageAction(navigation: navigation)
+            }
+            
+            if isOwnPost, let navigation, let editAction = editAction(appState: appState, navigation: navigation) {
+                editAction
+            }
             //                deleteAction(appState: appState, feedback: feedback)
             //            } else {
             //                if api.supports(.hidePosts, defaultValue: true) {

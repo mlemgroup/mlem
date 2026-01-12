@@ -10,7 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct VoteAction: SimpleLabelAction {
-    let entity: any Interactable2Providing
+    let entity: any ShimVotable
     let type: ScoringOperation
 }
 
@@ -23,7 +23,7 @@ extension ActionSeed {
 
 private func createVoteAction(_ entity: Any, type: ScoringOperation) -> VoteAction? {
     switch entity {
-    case let entity as any Interactable2Providing: VoteAction(entity: entity, type: type)
+    case let entity as any ShimVotable: VoteAction(entity: entity, type: type)
     default: nil
     }
 }
@@ -55,7 +55,9 @@ extension VoteAction {
     static var label: ActionLabel { upvoteLabel }
 
     func createLabel(environment: EnvironmentValues) -> ActionLabel {
-        let hasMatchingVote = entity.votes.myVote == type
+        // TODO: NOW better way to handle this
+        guard let votes = entity.votes.value else { return Self.upvoteLabel }
+        let hasMatchingVote = votes.myVote == type
 
         guard type != .none else {
             assertionFailure()
@@ -97,7 +99,8 @@ extension VoteAction {
 extension VoteAction {
     @MainActor
     func execute(environment: EnvironmentValues) {
+        guard let toggleVote = entity.toggleVote else { return }
         environment.hapticManager.play(haptic: .lightSuccess, tier: .low)
-        entity.toggleVote(type: type)
+        toggleVote(type)
     }
 }

@@ -10,6 +10,7 @@ import MlemMiddleware
 import SwiftUI
 import os
 
+// TODO: NOW merge this into VoteAction
 struct UnifiedVoteAction: SimpleLabelAction {
     let entity: UnifiedPostModel
     let type: ScoringOperation
