@@ -202,7 +202,7 @@ public extension Post1Providing {
     }
     
     func newUpgrade() async throws -> UnifiedPostModel {
-        try await api.unifiedGetPost(id: id)
+        try await api.getPost(id: id)
     }
     
     func getComments(

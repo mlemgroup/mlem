@@ -9,7 +9,7 @@ import Foundation
 
 public extension ApiClient {
     // swiftlint:disable:next function_parameter_count
-    func unifiedGetPosts(
+    func getPosts(
         communityId: Int,
         sort: PostSortType,
         page: Int,
@@ -35,7 +35,7 @@ public extension ApiClient {
     }
     
     // swiftlint:disable:next function_parameter_count
-    func unifiedGetPosts(
+    func getPosts(
         feed: ListingType,
         sort: PostSortType,
         page: Int,
@@ -60,7 +60,7 @@ public extension ApiClient {
         return (posts: posts, cursor: snapshots.cursor)
     }
     
-    func unifiedGetPosts(
+    func getPosts(
         personId: Int,
         communityId: Int? = nil,
         sort: PostSortType = .new,
@@ -82,7 +82,7 @@ public extension ApiClient {
         )
     }
     
-    func unifiedGetPostHistory(
+    func getPostHistory(
         type: GetContentFilter,
         page: Int?,
         cursor: String?,
@@ -101,18 +101,18 @@ public extension ApiClient {
         return (posts: posts, cursor: snapshots.cursor)
     }
     
-    func unifiedGetPost(id: Int) async throws -> UnifiedPostModel {
+    func getPost(id: Int) async throws -> UnifiedPostModel {
         let snapshot = try await repository.getPost(id: id)
         return await caches.post.getModel(api: self, from: .post3(snapshot))
     }
     
-    func unifiedGetPost(url: URL) async throws -> UnifiedPostModel {
+    func getPost(url: URL) async throws -> UnifiedPostModel {
         let snapshot = try await repository.getPost(url: url)
         return await caches.post.getModel(api: self, from: .post2(snapshot))
     }
     
     // This method should be removed in favor of the below method once we drop support for versions before Lemmy 1.0
-    func unifiedSearchPosts(
+    func searchPosts(
         query: String,
         page: Int = 1,
         limit: Int = 20,
@@ -133,7 +133,7 @@ public extension ApiClient {
         return await caches.post.getModels(api: self, from: snapshots.map { .post2($0) })
     }
     
-    func unifiedSearchPosts(
+    func searchPosts(
         query: String,
         page: Int = 1,
         limit: Int = 20,
@@ -256,7 +256,7 @@ public extension ApiClient {
     }
 
     // TODO: NOW delete this
-    func getPost(url: URL) async throws -> Post2 {
+    func shimGetPost(url: URL) async throws -> Post2 {
         let snapshot = try await repository.getPost(url: url)
         return await caches.post2.getModel(api: self, from: snapshot)
     }

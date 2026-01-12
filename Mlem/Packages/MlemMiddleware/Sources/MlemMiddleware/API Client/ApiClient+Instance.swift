@@ -51,7 +51,7 @@ public extension ApiClient {
     internal func getCommunityOfInstance(actorId: ActorIdentifier) async throws -> Community3 {
         let externalApi: ApiClient = .getApiClient(url: actorId.url, username: nil)
         
-        let response = try await externalApi.unifiedGetPosts(
+        let response = try await externalApi.getPosts(
             feed: .local,
             sort: .new,
             page: 1,

@@ -130,7 +130,7 @@ public extension Community1Providing {
         filter: GetContentFilter? = nil,
         showHidden: Bool = false
     ) async throws -> (posts: [UnifiedPostModel], cursor: String?) {
-        try await api.unifiedGetPosts(
+        try await api.getPosts(
             communityId: id,
             sort: sort,
             page: page,

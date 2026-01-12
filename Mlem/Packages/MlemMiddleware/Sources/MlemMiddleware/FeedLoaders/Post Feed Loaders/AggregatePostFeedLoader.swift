@@ -20,7 +20,7 @@ class AggregatePostFetcher: PostFetcher {
     }
     
     override func getPosts(page: Int, cursor: String?) async throws -> (posts: [UnifiedPostModel], cursor: String?) {
-        try await api.unifiedGetPosts(
+        try await api.getPosts(
             feed: feedType,
             sort: sortType,
             page: page,

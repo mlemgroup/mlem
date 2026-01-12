@@ -21,7 +21,7 @@ extension CommentEditorView {
                 }
                 switch originalContext {
                 case let .post(post):
-                    let post = try await account.api.unifiedGetPost(url: post.actorId.url)
+                    let post = try await account.api.getPost(url: post.actorId.url)
                     Task { @MainActor in
                         resolutionState = .success
                         resolvedContext = .post(post)

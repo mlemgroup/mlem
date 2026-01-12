@@ -51,7 +51,7 @@ public class SearchPostFetcher: Fetcher<UnifiedPostModel> {
         let response: [UnifiedPostModel]
         switch sortType {
         case let .v4(searchSortType):
-            response = try await api.unifiedSearchPosts(
+            response = try await api.searchPosts(
                 query: query,
                 page: page,
                 limit: pageSize,
@@ -61,7 +61,7 @@ public class SearchPostFetcher: Fetcher<UnifiedPostModel> {
                 sort: searchSortType
             )
         case let .v3(postSortType):
-            response = try await api.unifiedSearchPosts(
+            response = try await api.searchPosts(
                 query: query,
                 page: page,
                 limit: pageSize,

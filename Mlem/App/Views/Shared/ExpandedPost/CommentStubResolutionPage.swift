@@ -32,7 +32,7 @@ struct CommentStubResolutionPage: View {
                         if let upgradedPost = upgraded.post_ {
                             post = upgradedPost
                         } else {
-                            post = try await upgraded.api.unifiedGetPost(id: upgraded.postId)
+                            post = try await upgraded.api.getPost(id: upgraded.postId)
                         }
                         // TODO: NOW make this smoother
                         navigation.replace(.comment(
