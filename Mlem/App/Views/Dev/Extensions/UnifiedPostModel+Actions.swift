@@ -60,6 +60,42 @@ extension UnifiedPostModel {
         )
     }
     
+    func blockAction(appState: AppState, feedback: Set<FeedbackType>) -> ActionGroup {
+        .init(
+            appearance: .init(
+                label: "Block...",
+                isDestructive: true,
+                color: .themedNegative,
+                icon: Icons.block
+            ),
+            prompt: "Block community or user?",
+            disabled: !api.canInteract(appState: appState),
+            displayMode: .popup
+        ) {
+            blockCreatorAction(appState: appState, feedback: feedback, showConfirmation: false)
+            if let blockCommunityAction = blockCommunityAction(appState: appState, feedback: feedback, showConfirmation: false) {
+                blockCommunityAction
+            }
+        }
+    }
+    
+    func blockCommunityAction(appState: AppState, feedback: Set<FeedbackType> = [], showConfirmation: Bool = true) -> BasicAction? {
+        guard api.canInteract(appState: appState),
+              let community = community.value else { return nil }
+        return .init(
+            id: "blockCommunity\(actorId.description)",
+            appearance: .init(
+                label: "Block Community",
+                isOn: false,
+                isDestructive: true,
+                color: .themedNegative,
+                icon: Icons.block
+            ),
+            confirmationPrompt: showConfirmation ? "Really block this community?" : nil,
+            callback: { @MainActor in community.toggleBlocked(feedback: feedback) }
+        )
+    }
+    
     func crossPostAction() -> BasicAction {
         .init(
             id: "crosspost\(uid)",
@@ -209,8 +245,7 @@ extension UnifiedPostModel {
         case .share: shareAction(navigation: navigation)
         case .selectText: selectTextAction()
         case .hide: hideAction(appState: appState, feedback: feedback)
-            //        case .block:
-            //            <#code#>
+        case .block: blockAction(appState: appState, feedback: feedback)
         case .report: reportAction(appState: appState, communityContext: communityContext)
         case .crossPost: crossPostAction()
         case .lock: lockAction(appState: appState, feedback: feedback)
@@ -356,7 +391,7 @@ extension UnifiedPostModel {
                 if !canModerate, !deleted {
                     reportAction(appState: appState)
                 }
-                //                blockAction(appState: appState, feedback: feedback)
+                blockAction(appState: appState, feedback: feedback)
             }
         }
     }

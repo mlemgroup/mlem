@@ -192,15 +192,15 @@ extension Post1Providing {
                 // editAction(appState: appState)
                 // deleteAction(appState: appState, feedback: feedback)
 //            } else {
-            if !isOwnPost {
+//            if !isOwnPost {
 //                if api.supports(.hidePosts, defaultValue: true) {
 //                    hideAction(appState: appState, feedback: feedback)
 //                }
 //                if !canModerate, !deleted {
 //                    reportAction(appState: appState)
 //                }
-                blockAction(appState: appState, feedback: feedback)
-            }
+//                blockAction(appState: appState, feedback: feedback)
+//            }
         }
     }
     
@@ -264,7 +264,7 @@ extension Post1Providing {
         // case .share: shareAction(navigation: navigation)
         // case .selectText: selectTextAction()
         // case .hide: hideAction(appState: appState, feedback: feedback)
-        case .block: blockAction(appState: appState, feedback: feedback)
+        // case .block: blockAction(appState: appState, feedback: feedback)
         // case .report: reportAction(appState: appState, communityContext: communityContext)
         // case .crossPost: crossPostAction()
         // case .lock: lockAction(appState: appState, feedback: feedback)
@@ -401,37 +401,37 @@ extension Post1Providing {
 //        )
 //    }
     
-    func blockAction(appState: AppState, feedback: Set<FeedbackType>) -> ActionGroup {
-        .init(
-            appearance: .init(
-                label: "Block...",
-                isDestructive: true,
-                color: .themedNegative,
-                icon: Icons.block
-            ),
-            prompt: "Block community or user?",
-            disabled: !api.canInteract(appState: appState),
-            displayMode: .popup
-        ) {
-            blockCreatorAction(appState: appState, feedback: feedback, showConfirmation: false)
-            blockCommunityAction(appState: appState, feedback: feedback, showConfirmation: false)
-        }
-    }
-    
-    func blockCommunityAction(appState: AppState, feedback: Set<FeedbackType> = [], showConfirmation: Bool = true) -> BasicAction {
-        .init(
-            id: "blockCommunity\(actorId.description)",
-            appearance: .init(
-                label: "Block Community",
-                isOn: false,
-                isDestructive: true,
-                color: .themedNegative,
-                icon: Icons.block
-            ),
-            confirmationPrompt: showConfirmation ? "Really block this community?" : nil,
-            callback: api.canInteract(appState: appState) ? { @MainActor in self.self2?.community.toggleBlocked(feedback: feedback) } : nil
-        )
-    }
+//    func blockAction(appState: AppState, feedback: Set<FeedbackType>) -> ActionGroup {
+//        .init(
+//            appearance: .init(
+//                label: "Block...",
+//                isDestructive: true,
+//                color: .themedNegative,
+//                icon: Icons.block
+//            ),
+//            prompt: "Block community or user?",
+//            disabled: !api.canInteract(appState: appState),
+//            displayMode: .popup
+//        ) {
+//            blockCreatorAction(appState: appState, feedback: feedback, showConfirmation: false)
+//            blockCommunityAction(appState: appState, feedback: feedback, showConfirmation: false)
+//        }
+//    }
+//    
+//    func blockCommunityAction(appState: AppState, feedback: Set<FeedbackType> = [], showConfirmation: Bool = true) -> BasicAction {
+//        .init(
+//            id: "blockCommunity\(actorId.description)",
+//            appearance: .init(
+//                label: "Block Community",
+//                isOn: false,
+//                isDestructive: true,
+//                color: .themedNegative,
+//                icon: Icons.block
+//            ),
+//            confirmationPrompt: showConfirmation ? "Really block this community?" : nil,
+//            callback: api.canInteract(appState: appState) ? { @MainActor in self.self2?.community.toggleBlocked(feedback: feedback) } : nil
+//        )
+//    }
     
 //    func editAction(appState: AppState) -> BasicAction {
 //        .init(
