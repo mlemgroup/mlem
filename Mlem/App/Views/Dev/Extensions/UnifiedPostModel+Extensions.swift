@@ -9,6 +9,22 @@ import MlemMiddleware
 import SwiftUI
 
 extension UnifiedPostModel {
+    func shouldShowLoadingSymbol(for barConfiguration: PostBarConfiguration? = nil) -> Bool {
+        if lockedPending, !(barConfiguration?.all.contains(.action(.lock)) ?? false) {
+            return true
+        }
+        if pinnedCommunityPending, !(barConfiguration?.all.contains(.action(.pin)) ?? false) {
+            return true
+        }
+        if pinnedInstancePending, !(barConfiguration?.all.contains(.action(.pin)) ?? false) {
+            return true
+        }
+        if nsfwPending {
+            return true
+        }
+        return false
+    }
+    
     var shouldHideInFeed: Bool {
         // TODO: NOW purged
         (creator.value_?.shouldHideInFeed ?? false) || (community.value_?.shouldHideInFeed ?? false) || (hidden.value_ ?? false) // || purged

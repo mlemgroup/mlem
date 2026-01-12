@@ -10,6 +10,7 @@ import Haptics
 import os
 
 // TODO: NOW update Interactable1Providing to simple Interactable, conform Post etc.
+// TODO: NOW make this file's scope more reasonable (not technically just interactable)
 
 extension UnifiedPostModel {
     var toggleVote: ((ScoringOperation) -> Void)? {
@@ -78,5 +79,12 @@ extension UnifiedPostModel {
             }
             self.updateHidden(!hidden)
         }
+    }
+    
+    func toggleLocked(_ feedback: Set<FeedbackType>, callback: ((UpdateStatus) -> Void)? = nil) -> Void {
+        if feedback.contains(.haptic) {
+            HapticManager.main.play(haptic: .lightSuccess, tier: .low)
+        }
+        updateLocked(!locked, callback: callback)
     }
 }

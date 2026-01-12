@@ -7,6 +7,7 @@
 
 import MlemMiddleware
 import Foundation
+import os
 
 // TODO: NOW be consistent about how feedback is passed in
 
@@ -71,6 +72,18 @@ extension UnifiedPostModel {
         )
     }
     
+    func lockAction(appState: AppState, feedback: Set<FeedbackType> = []) -> BasicAction? {
+        Logger.dev.info("Building lockAction")
+        guard api.canInteract(appState: appState) && canModerate else { return nil }
+        Logger.dev.info("Can interact and moderate")
+        return .init(
+            id: "lock\(uid)",
+            appearance: .lock(isOn: locked, isInProgress: lockedPending),
+            confirmationPrompt: locked ? "Really unlock this post?" : "Really lock this post?",
+            callback: { self.toggleLocked(feedback) }
+        )
+    }
+    
     func action(
         appState: AppState,
         navigation: NavigationLayer,
@@ -94,8 +107,7 @@ extension UnifiedPostModel {
             //            <#code#>
             //        case .crossPost:
             //            <#code#>
-            //        case .lock:
-            //            <#code#>
+        case .lock: lockAction(appState: appState, feedback: feedback)
             //        case .pin:
             //            <#code#>
             //        case .resolve:
@@ -244,13 +256,13 @@ extension UnifiedPostModel {
         navigation: NavigationLayer?,
         report: Report? = nil
     ) -> [any Action] {
-//        if showAllActions || Settings.get(\.menus_allModActions) {
+        if showAllActions || Settings.get(\.menus_allModActions) {
 //            pinToCommunityAction(appState: appState, feedback: feedback, verboseTitle: api.isAdmin)
 //            if api.isAdmin {
 //                pinToInstanceAction(appState: appState, feedback: feedback)
 //            }
-//            lockAction(appState: appState, feedback: feedback)
-//            
+            if let lockAction = lockAction(appState: appState, feedback: feedback) { lockAction }
+//
 //            if setNsfwIsAvailable(appState: appState) {
 //                setNsfwAction(appState: appState)
 //            }
@@ -275,6 +287,6 @@ extension UnifiedPostModel {
 //            ActionGroup {
 //                report.menuActions(appState: appState)
 //            }
-//        }
+        }
     }
 }

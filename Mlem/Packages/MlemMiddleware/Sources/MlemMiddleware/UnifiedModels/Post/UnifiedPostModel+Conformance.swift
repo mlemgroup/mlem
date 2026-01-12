@@ -162,9 +162,6 @@ public extension UnifiedPostModel {
     func url() -> URL { api.baseUrl.appending(path: "post/\(id)") }
 }
 
-// MARK: Interactable1Providing
-// TODO: new Interactable remove this
-
 public extension UnifiedPostModel {
     // these are all shims! auto-fetching is therefore disabled to avoid unwanted side effects
     var creator_: (any Person)? { creator.value_ }

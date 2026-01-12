@@ -154,8 +154,43 @@ public extension ApiClient {
         return await caches.post.getModels(api: self, from: snapshots.map { .post2($0) })
     }
     
-    // TODO: NOW markPosetsAsRead
-    // TODO: NOW flushPostReadQueue
+    /// Mark the given posts as read.
+    /// Calling this will also mark any queued posts as read unless `includeQueuedPosts` is set to `false`.
+    func markPostsAsRead(
+        ids: Set<Int>,
+        includeQueuedPosts: Bool = true
+    ) async throws {
+        let idsToSend: Set<Int>
+        let markReadQueueCopy: Set<Int>
+        if includeQueuedPosts {
+            markReadQueueCopy = await markReadQueue.popAll()
+            idsToSend = ids.union(markReadQueueCopy)
+        } else {
+            markReadQueueCopy = []
+            idsToSend = ids
+        }
+        
+        guard !idsToSend.isEmpty else { return }
+        
+        do {
+            try await repository.markPostsAsRead(ids: idsToSend)
+            await markReadQueue.subtract(ids)
+        } catch {
+            await markReadQueue.union(markReadQueueCopy)
+            throw error
+        }
+        Task { @MainActor in
+            for post in idsToSend.compactMap({ caches.post.retrieveModel(cacheId: $0) }) {
+                post.queuedMarkReadCompleted()
+            }
+        }
+    }
+    
+    func flushPostReadQueue() async throws {
+        if await !markReadQueue.ids.isEmpty {
+            try await markPostsAsRead(ids: [])
+        }
+    }
     
     func createPost(
         communityId: Int,

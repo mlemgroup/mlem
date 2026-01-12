@@ -189,10 +189,9 @@ struct ExpandedPostView<Content: View>: View {
         if let tracker {
             sortPicker(tracker: tracker)
         }
-        // TODO: NOW
-//        if post.shouldShowLoadingSymbol() {
-//            ProgressView()
-//        } else {
+        if post.shouldShowLoadingSymbol() {
+            ProgressView()
+        } else {
             ToolbarEllipsisMenu {
                 UnifiedPostEllipsisMenuContent(post: post, type: [.basic, .moderator])
                 if !tapPostsToCollapse {
@@ -205,7 +204,7 @@ struct ExpandedPostView<Content: View>: View {
                         }
                     }
                 }
-//            }
+            }
         }
     }
     
