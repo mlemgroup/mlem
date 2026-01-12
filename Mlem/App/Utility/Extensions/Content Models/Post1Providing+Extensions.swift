@@ -185,7 +185,7 @@ extension Post1Providing {
             upvoteAction(appState: appState, feedback: feedback)
             downvoteAction(appState: appState, feedback: feedback, downvotesEnabled: downvotesEnabled)
             saveAction(appState: appState, feedback: feedback)
-            replyAction(appState: appState, commentTreeTracker: commentTreeTracker)
+            // replyAction(appState: appState, commentTreeTracker: commentTreeTracker)
             if !deleted {
                 selectTextAction()
             }

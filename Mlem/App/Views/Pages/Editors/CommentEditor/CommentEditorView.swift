@@ -218,19 +218,15 @@ struct CommentEditorView: View {
                     Spacer()
                     selectTextButton
                 }
-                // TODO: NOW
-                // LargePostBodyView(post: post, isPostPage: true, shouldBlur: false)
-                FullyQualifiedLinkView(
-                    post.creator_,
-                    labelStyle: .medium,
-                    blurred: post.nsfw
-                )
-            }
-            .onAppear {
-                if !(post is any Post2Providing) {
-                    Task {
-                        originalContext = try await .post(post.upgrade())
-                    }
+                LargePostBodyView(post: post, isPostPage: true, shouldBlur: false)
+                ExpectedView(post.creator) { creator in
+                    FullyQualifiedLinkView(
+                        creator,
+                        labelStyle: .medium,
+                        blurred: post.nsfw)
+                } placeholder: {
+                    Text("creator@placeholder")
+                        .redacted(reason: .placeholder)
                 }
             }
         case let .comment(comment):
@@ -250,36 +246,6 @@ struct CommentEditorView: View {
                     Task {
                         originalContext = try await .comment(comment.upgrade())
                     }
-                }
-            }
-        case let .unifiedPost(post):
-            VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
-                HStack {
-                    ExpectedView(post.community) { community in
-                        FullyQualifiedLinkView(
-                            community,
-                            labelStyle: .medium,
-                            blurred: post.nsfw
-                        )
-                    } placeholder: {
-                        Text("placeholder@placeholder")
-                            .redacted(reason: .placeholder)
-                    }
-
-                    Spacer()
-                    selectTextButton
-                }
-                // LargePostBodyView(post: post, isPostPage: true, shouldBlur: false)
-                DevPostView(post: post)
-                ExpectedView(post.creator) { creator in
-                    FullyQualifiedLinkView(
-                        creator,
-                        labelStyle: .medium,
-                        blurred: post.nsfw
-                    )
-                } placeholder: {
-                    Text("placeholder@placeholder")
-                        .redacted(reason: .placeholder)
                 }
             }
         case nil:

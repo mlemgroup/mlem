@@ -9,9 +9,8 @@ import MlemMiddleware
 
 extension CommentEditorView {
     enum Context: Hashable {
-        case post(any Post1Providing)
+        case post(UnifiedPostModel)
         case comment(any Comment1Providing)
-        case unifiedPost(UnifiedPostModel)
         
         static func == (lhs: Context, rhs: Context) -> Bool {
             lhs.hashValue == rhs.hashValue
@@ -25,9 +24,6 @@ extension CommentEditorView {
             case let .comment(comment):
                 hasher.combine("comment")
                 hasher.combine(comment.hashValue)
-            case let .unifiedPost(post):
-                hasher.combine("unifiedPost")
-                hasher.combine(post.actorId.hashValue) // TODO: NOW make it hashable
             }
         }
         
@@ -35,7 +31,6 @@ extension CommentEditorView {
             switch self {
             case let .post(post): post
             case let .comment(comment): comment
-            case let .unifiedPost(post): post
             }
         }
         
@@ -45,8 +40,6 @@ extension CommentEditorView {
                 post.api
             case let .comment(comment):
                 comment.api
-            case let .unifiedPost(post):
-                post.api
             }
         }
     }

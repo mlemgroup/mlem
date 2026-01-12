@@ -21,7 +21,7 @@ extension CommentEditorView {
                 }
                 switch originalContext {
                 case let .post(post):
-                    let post = try await account.api.getPost(url: post.actorId.url)
+                    let post = try await account.api.unifiedGetPost(url: post.actorId.url)
                     Task { @MainActor in
                         resolutionState = .success
                         resolvedContext = .post(post)
@@ -31,12 +31,6 @@ extension CommentEditorView {
                     Task { @MainActor in
                         resolutionState = .success
                         resolvedContext = .comment(comment)
-                    }
-                case let .unifiedPost(post):
-                    let post = try await account.api.unifiedGetPost(url: post.actorId.url)
-                    Task { @MainActor in
-                        resolutionState = .success
-                        resolvedContext = .unifiedPost(post)
                     }
                 }
             }
@@ -60,7 +54,7 @@ extension CommentEditorView {
                 if let parent = try await commentToEdit.getParent(cachedValueAcceptable: true) {
                     originalContext = .comment(parent)
                 } else {
-                    originalContext = .unifiedPost(commentToEdit.post)
+                    originalContext = .post(commentToEdit.post)
                 }
             }
         } catch {
@@ -78,14 +72,11 @@ extension CommentEditorView {
                 let parent: (any Comment1Providing)?
                 switch resolvedContext {
                 case let .post(post):
-                    result = try await post.reply(content: textView.text)
+                    result = try await post.reply(content: textView.text, languageId: nil)
                     parent = nil
                 case let .comment(comment):
                     result = try await comment.reply(content: textView.text)
                     parent = comment
-                case let .unifiedPost(post):
-                    result = try await post.api.replyToPost(id: post.id, content: textView.text)
-                    parent = nil
                 }
                 commentTreeTracker?.insertCreatedComment(result, parent: parent)
             } else {

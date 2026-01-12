@@ -71,7 +71,7 @@ extension Comment1Providing {
             upvoteAction(appState: appState, feedback: feedback)
             downvoteAction(appState: appState, feedback: feedback, downvotesEnabled: downvotesEnabled)
             saveAction(appState: appState, feedback: feedback)
-            replyAction(appState: appState, commentTreeTracker: commentTreeTracker)
+            if let replyAction = replyAction(appState: appState, commentTreeTracker: commentTreeTracker) { replyAction }
             if !deleted {
                 selectTextAction()
             }

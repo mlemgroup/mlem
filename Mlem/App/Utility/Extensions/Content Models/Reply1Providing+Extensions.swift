@@ -24,7 +24,7 @@ extension Reply1Providing {
             upvoteAction(appState: appState, feedback: feedback)
             downvoteAction(appState: appState, feedback: feedback, downvotesEnabled: downvotesEnabled)
             saveAction(appState: appState, feedback: feedback)
-            replyAction(appState: appState)
+            if let replyAction = replyAction(appState: appState) { replyAction }
             markReadAction(appState: appState, feedback: feedback)
             if let comment = self2?.comment {
                 if !comment.deleted {

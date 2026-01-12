@@ -24,7 +24,7 @@ extension Interactable1Providing {
     }
     
     private var responseContext: CommentEditorView.Context? {
-        if let self = self as? any Post2Providing { return .post(self) }
+        if let self = self as? UnifiedPostModel { return .post(self) }
         if let self = self as? any Comment2Providing { return .comment(self) }
         if let self = self as? any Reply2Providing { return .comment(self.comment) }
         return nil
@@ -161,13 +161,14 @@ extension Interactable1Providing {
         )
     }
     
-    func replyAction(appState: AppState, commentTreeTracker: CommentTreeTracker? = nil) -> BasicAction {
-        .init(
+    func replyAction(appState: AppState, commentTreeTracker: CommentTreeTracker? = nil) -> BasicAction? {
+        guard api.canInteract(appState: appState) else { return nil }
+        return .init(
             id: "reply\(uid)",
             appearance: .reply(),
-            callback: api.canInteract(appState: appState) ? { @MainActor in
+            callback: { @MainActor in
                 self.showReplySheet(commentTreeTracker: commentTreeTracker)
-            } : nil
+            }
         )
     }
     

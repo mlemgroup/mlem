@@ -51,16 +51,16 @@ extension UnifiedPostModel {
     }
     
     // TODO: NOW make this generic in new Interactable
-    func replyAction(appState: AppState, commentTreeTracker: CommentTreeTracker? = nil) -> BasicAction? {
-        guard api.canInteract(appState: appState) else { return nil }
-        return .init(
-            id: "reply\(actorId)",
-            appearance: .reply(),
-            callback: { @MainActor in
-                NavigationModel.main.openSheet(.createComment(.unifiedPost(self), commentTreeTracker: commentTreeTracker))
-            }
-        )
-    }
+//    func replyAction(appState: AppState, commentTreeTracker: CommentTreeTracker? = nil) -> BasicAction? {
+//        guard api.canInteract(appState: appState) else { return nil }
+//        return .init(
+//            id: "reply\(actorId)",
+//            appearance: .reply(),
+//            callback: { @MainActor in
+//                NavigationModel.main.openSheet(.createComment(.unifiedPost(self), commentTreeTracker: commentTreeTracker))
+//            }
+//        )
+//    }
     
     func hideAction(appState: AppState, feedback: Set<FeedbackType>)  -> BasicAction? {
         guard api.supports(.hidePosts, defaultValue: true) && api.canInteract(appState: appState),
