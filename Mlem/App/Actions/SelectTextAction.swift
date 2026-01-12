@@ -26,7 +26,7 @@ extension ActionSeed {
             SelectTextAction(text: entity.content)
         case let entity as any Comment1Providing:
             SelectTextAction(text: entity.content)
-        case let entity as any Post1Providing:
+        case let entity as UnifiedPostModel:
             SelectTextAction(text: entity.selectableContent ?? "")
         default:
             nil

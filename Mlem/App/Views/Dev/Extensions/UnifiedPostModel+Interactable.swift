@@ -8,6 +8,7 @@
 import MlemMiddleware
 import Haptics
 import os
+import Foundation
 
 // TODO: NOW update Interactable1Providing to simple Interactable, conform Post etc.
 // TODO: NOW make this file's scope more reasonable (not technically just interactable)
@@ -81,6 +82,19 @@ extension UnifiedPostModel: ShimVotable {
         }
     }
     
+    func togglePinnedCommunity(feedback: Set<FeedbackType>) {
+        let shouldPin = !pinnedCommunity
+        togglePinnedCommunity { status in
+            Task {
+                await self.handleModerationActionCompletion(
+                    message: shouldPin ? "Failed to pin post" : "Failed to unpin post",
+                    result: status,
+                    feedback: feedback
+                )
+            }
+        }
+    }
+    
     func toggleLocked(_ feedback: Set<FeedbackType>, callback: ((UpdateStatus) -> Void)? = nil) -> Void {
         if feedback.contains(.haptic) {
             HapticManager.main.play(haptic: .lightSuccess, tier: .low)
@@ -94,9 +108,56 @@ extension UnifiedPostModel: ShimVotable {
         updatePinnedCommunity(!pinnedCommunity, callback: callback)
     }
     
+    func togglePinnedInstance(feedback: Set<FeedbackType>) {
+        let shouldPin = !pinnedInstance
+        togglePinnedInstance { status in
+            Task {
+                await self.handleModerationActionCompletion(
+                    message: shouldPin ? "Failed to pin post" : "Failed to unpin post",
+                    result: status,
+                    feedback: feedback
+                )
+            }
+        }
+    }
+    
     /// Toggles the instance pinned status of this post
     /// - Parameter callback: if present, when the repository call completes, is called with `.success` if the operation succeeded and `.failure` otherwise.
     func togglePinnedInstance(callback: ((UpdateStatus) -> Void)? = nil) {
         updatePinnedInstance(!pinnedInstance, callback: callback)
+    }
+    
+    // MARK: - Helpers
+    
+    // TODO: UpdateQueue remove this shim code
+    private func handleModerationActionCompletion(
+        message: LocalizedStringResource,
+        result: UpdateStatus,
+        feedback: Set<FeedbackType>
+    ) async {
+        var stateUpdateResult: StateUpdateResult
+        switch result {
+        case .success:
+            stateUpdateResult = .succeeded
+        case .failure:
+            stateUpdateResult = .failed
+        }
+        await handleModerationActionCompletion(message: message, result: stateUpdateResult, feedback: feedback)
+    }
+    
+    private func handleModerationActionCompletion(
+        message: LocalizedStringResource,
+        result: StateUpdateResult,
+        feedback: Set<FeedbackType>
+    ) async {
+        if feedback.contains(.haptic) {
+            HapticManager.main.play(haptic: .success, tier: .low)
+        }
+        switch result {
+        case .failed:
+            ToastModel.main.add(.failure(message))
+        default:
+            break
+        }
     }
 }

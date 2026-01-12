@@ -94,6 +94,78 @@ extension UnifiedPostModel {
         )
     }
     
+    func pinAction(appState: AppState, feedback: Set<FeedbackType> = []) -> ActionGroup {
+        .init(
+            appearance: .pin(isOn: false, isInProgress: pinnedCommunityPending || pinnedInstancePending),
+            prompt: "Pin to Community or Instance?",
+            displayMode: .popup
+        ) {
+            pinToCommunityAction(appState: appState, feedback: feedback, showConfirmation: false)
+            pinToInstanceAction(appState: appState, feedback: feedback, showConfirmation: false)
+        }
+    }
+    
+    func pinToCommunityAction(
+        appState: AppState,
+        feedback: Set<FeedbackType> = [],
+        verboseTitle: Bool = true,
+        showConfirmation: Bool = true
+    ) -> BasicAction {
+        let isOn = pinnedCommunity
+        let prompt: LocalizedStringResource?
+        if showConfirmation {
+            if let communityName = community_?.name {
+                if isOn {
+                    prompt = "Really unpin this post from \(communityName)?"
+                } else {
+                    prompt = "Really pin this post to \(communityName)?"
+                }
+            } else {
+                if isOn {
+                    prompt = "Really unpin this post from the community?"
+                } else {
+                    prompt = "Really pin this post to the community?"
+                }
+            }
+        } else {
+            prompt = nil
+        }
+        return .init(
+            id: "pinToCommunity\(uid)",
+            appearance: verboseTitle ? .pinToCommunity(
+                isOn: isOn, isInProgress: pinnedCommunityPending
+            ) : .pin(
+                isOn: isOn, isInProgress: pinnedCommunityPending
+            ),
+            confirmationPrompt: prompt,
+            callback: api.canInteract(appState: appState) && canModerate ? { @MainActor in
+                self.togglePinnedCommunity(feedback: feedback)
+            } : nil
+        )
+    }
+    
+    func pinToInstanceAction(appState: AppState, feedback: Set<FeedbackType> = [], showConfirmation: Bool = true) -> BasicAction {
+        let isOn = pinnedInstance
+        let prompt: LocalizedStringResource?
+        if showConfirmation {
+            if isOn {
+                prompt = "Really unpin this post from \(host)?"
+            } else {
+                prompt = "Really pin this post to \(host)?"
+            }
+        } else {
+            prompt = nil
+        }
+        return .init(
+            id: "pinToInstance\(uid)",
+            appearance: .pinToInstance(isOn: isOn, isInProgress: pinnedInstancePending),
+            confirmationPrompt: prompt,
+            callback: api.canInteract(appState: appState) && api.isAdmin ? { @MainActor in
+                self.togglePinnedInstance(feedback: feedback)
+            } : nil
+        )
+    }
+    
     func createImageAction(navigation: NavigationLayer) -> BasicAction {
         .init(
             id: "exportAsImage\(uid)",
@@ -143,8 +215,13 @@ extension UnifiedPostModel {
             //            <#code#>
         case .crossPost: crossPostAction()
         case .lock: lockAction(appState: appState, feedback: feedback)
-            //        case .pin:
-            //            <#code#>
+        case .pin: api.isAdmin ? pinAction(
+                appState: appState,
+                feedback: feedback
+            ) : pinToCommunityAction(
+                appState: appState,
+                feedback: feedback
+            )
             //        case .resolve:
             //            <#code#>
             //        case .remove:
@@ -293,10 +370,10 @@ extension UnifiedPostModel {
         report: Report? = nil
     ) -> [any Action] {
         if showAllActions || Settings.get(\.menus_allModActions) {
-//            pinToCommunityAction(appState: appState, feedback: feedback, verboseTitle: api.isAdmin)
-//            if api.isAdmin {
-//                pinToInstanceAction(appState: appState, feedback: feedback)
-//            }
+            pinToCommunityAction(appState: appState, feedback: feedback, verboseTitle: api.isAdmin)
+            if api.isAdmin {
+                pinToInstanceAction(appState: appState, feedback: feedback)
+            }
             if let lockAction = lockAction(appState: appState, feedback: feedback) { lockAction }
 //
 //            if setNsfwIsAvailable(appState: appState) {

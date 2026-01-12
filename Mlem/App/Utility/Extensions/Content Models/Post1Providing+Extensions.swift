@@ -66,31 +66,31 @@ extension Post1Providing {
         }
     }
     
-    func togglePinnedCommunity(feedback: Set<FeedbackType>) {
-        let shouldPin = !pinnedCommunity
-        togglePinnedCommunity { status in
-            Task {
-                await self.handleModerationActionCompletion(
-                    message: shouldPin ? "Failed to pin post" : "Failed to unpin post",
-                    result: status,
-                    feedback: feedback
-                )
-            }
-        }
-    }
-    
-    func togglePinnedInstance(feedback: Set<FeedbackType>) {
-        let shouldPin = !pinnedInstance
-        togglePinnedInstance { status in
-            Task {
-                await self.handleModerationActionCompletion(
-                    message: shouldPin ? "Failed to pin post" : "Failed to unpin post",
-                    result: status,
-                    feedback: feedback
-                )
-            }
-        }
-    }
+//    func togglePinnedCommunity(feedback: Set<FeedbackType>) {
+//        let shouldPin = !pinnedCommunity
+//        togglePinnedCommunity { status in
+//            Task {
+//                await self.handleModerationActionCompletion(
+//                    message: shouldPin ? "Failed to pin post" : "Failed to unpin post",
+//                    result: status,
+//                    feedback: feedback
+//                )
+//            }
+//        }
+//    }
+//    
+//    func togglePinnedInstance(feedback: Set<FeedbackType>) {
+//        let shouldPin = !pinnedInstance
+//        togglePinnedInstance { status in
+//            Task {
+//                await self.handleModerationActionCompletion(
+//                    message: shouldPin ? "Failed to pin post" : "Failed to unpin post",
+//                    result: status,
+//                    feedback: feedback
+//                )
+//            }
+//        }
+//    }
     
     // TODO: UpdateQueue remove this shim code
     private func handleModerationActionCompletion(
@@ -212,10 +212,10 @@ extension Post1Providing {
         report: Report? = nil
     ) -> [any Action] {
         if showAllActions || Settings.get(\.menus_allModActions) {
-            pinToCommunityAction(appState: appState, feedback: feedback, verboseTitle: api.isAdmin)
-            if api.isAdmin {
-                pinToInstanceAction(appState: appState, feedback: feedback)
-            }
+            // pinToCommunityAction(appState: appState, feedback: feedback, verboseTitle: api.isAdmin)
+//            if api.isAdmin {
+//                pinToInstanceAction(appState: appState, feedback: feedback)
+//            }
             lockAction(appState: appState, feedback: feedback)
             
             if setNsfwIsAvailable(appState: appState) {
@@ -270,13 +270,13 @@ extension Post1Providing {
         // SwiftLint is erroneously warning here. This could be fixed by wrapping the expression
         // in parenthesis, but the pre-commit hook removed the paranthesis
         // swiftlint:disable:next void_function_in_ternary
-        case .pin: api.isAdmin ? pinAction(
-                appState: appState,
-                feedback: feedback
-            ) : pinToCommunityAction(
-                appState: appState,
-                feedback: feedback
-            )
+//        case .pin: api.isAdmin ? pinAction(
+//                appState: appState,
+//                feedback: feedback
+//            ) : pinToCommunityAction(
+//                appState: appState,
+//                feedback: feedback
+//            )
         case .resolve: reportContext?.resolveAction(appState: appState, feedback: feedback)
         case .remove: removeAction(appState: appState, feedback: feedback).disabled(!canModerate)
         case .ban: reportContext?.contextualBanAction(appState: appState)
@@ -451,77 +451,77 @@ extension Post1Providing {
         )
     }
     
-    func pinAction(appState: AppState, feedback: Set<FeedbackType> = []) -> ActionGroup {
-        .init(
-            appearance: .pin(isOn: false, isInProgress: pinnedCommunityPending || pinnedInstancePending),
-            prompt: "Pin to Community or Instance?",
-            displayMode: .popup
-        ) {
-            pinToCommunityAction(appState: appState, feedback: feedback, showConfirmation: false)
-            pinToInstanceAction(appState: appState, feedback: feedback, showConfirmation: false)
-        }
-    }
+//    func pinAction(appState: AppState, feedback: Set<FeedbackType> = []) -> ActionGroup {
+//        .init(
+//            appearance: .pin(isOn: false, isInProgress: pinnedCommunityPending || pinnedInstancePending),
+//            prompt: "Pin to Community or Instance?",
+//            displayMode: .popup
+//        ) {
+//            pinToCommunityAction(appState: appState, feedback: feedback, showConfirmation: false)
+//            pinToInstanceAction(appState: appState, feedback: feedback, showConfirmation: false)
+//        }
+//    }
     
-    func pinToCommunityAction(
-        appState: AppState,
-        feedback: Set<FeedbackType> = [],
-        verboseTitle: Bool = true,
-        showConfirmation: Bool = true
-    ) -> BasicAction {
-        let isOn = self2?.pinnedCommunity ?? false
-        let prompt: LocalizedStringResource?
-        if showConfirmation {
-            if let communityName = community_?.name {
-                if isOn {
-                    prompt = "Really unpin this post from \(communityName)?"
-                } else {
-                    prompt = "Really pin this post to \(communityName)?"
-                }
-            } else {
-                if isOn {
-                    prompt = "Really unpin this post from the community?"
-                } else {
-                    prompt = "Really pin this post to the community?"
-                }
-            }
-        } else {
-            prompt = nil
-        }
-        return .init(
-            id: "pinToCommunity\(uid)",
-            appearance: verboseTitle ? .pinToCommunity(
-                isOn: isOn, isInProgress: pinnedCommunityPending
-            ) : .pin(
-                isOn: isOn, isInProgress: pinnedCommunityPending
-            ),
-            confirmationPrompt: prompt,
-            callback: api.canInteract(appState: appState) && canModerate ? { @MainActor in
-                self.togglePinnedCommunity(feedback: feedback)
-            } : nil
-        )
-    }
-    
-    func pinToInstanceAction(appState: AppState, feedback: Set<FeedbackType> = [], showConfirmation: Bool = true) -> BasicAction {
-        let isOn = self2?.pinnedInstance ?? false
-        let prompt: LocalizedStringResource?
-        if showConfirmation {
-            if isOn {
-                prompt = "Really unpin this post from \(host)?"
-            } else {
-                prompt = "Really pin this post to \(host)?"
-            }
-        } else {
-            prompt = nil
-        }
-        return .init(
-            id: "pinToInstance\(uid)",
-            appearance: .pinToInstance(isOn: isOn, isInProgress: pinnedInstancePending),
-            confirmationPrompt: prompt,
-            callback: api.canInteract(appState: appState) && api.isAdmin ? { @MainActor in
-                self.togglePinnedInstance(feedback: feedback)
-            } : nil
-        )
-    }
+//    func pinToCommunityAction(
+//        appState: AppState,
+//        feedback: Set<FeedbackType> = [],
+//        verboseTitle: Bool = true,
+//        showConfirmation: Bool = true
+//    ) -> BasicAction {
+//        let isOn = self2?.pinnedCommunity ?? false
+//        let prompt: LocalizedStringResource?
+//        if showConfirmation {
+//            if let communityName = community_?.name {
+//                if isOn {
+//                    prompt = "Really unpin this post from \(communityName)?"
+//                } else {
+//                    prompt = "Really pin this post to \(communityName)?"
+//                }
+//            } else {
+//                if isOn {
+//                    prompt = "Really unpin this post from the community?"
+//                } else {
+//                    prompt = "Really pin this post to the community?"
+//                }
+//            }
+//        } else {
+//            prompt = nil
+//        }
+//        return .init(
+//            id: "pinToCommunity\(uid)",
+//            appearance: verboseTitle ? .pinToCommunity(
+//                isOn: isOn, isInProgress: pinnedCommunityPending
+//            ) : .pin(
+//                isOn: isOn, isInProgress: pinnedCommunityPending
+//            ),
+//            confirmationPrompt: prompt,
+//            callback: api.canInteract(appState: appState) && canModerate ? { @MainActor in
+//                self.togglePinnedCommunity(feedback: feedback)
+//            } : nil
+//        )
+//    }
+//    
+//    func pinToInstanceAction(appState: AppState, feedback: Set<FeedbackType> = [], showConfirmation: Bool = true) -> BasicAction {
+//        let isOn = self2?.pinnedInstance ?? false
+//        let prompt: LocalizedStringResource?
+//        if showConfirmation {
+//            if isOn {
+//                prompt = "Really unpin this post from \(host)?"
+//            } else {
+//                prompt = "Really pin this post to \(host)?"
+//            }
+//        } else {
+//            prompt = nil
+//        }
+//        return .init(
+//            id: "pinToInstance\(uid)",
+//            appearance: .pinToInstance(isOn: isOn, isInProgress: pinnedInstancePending),
+//            confirmationPrompt: prompt,
+//            callback: api.canInteract(appState: appState) && api.isAdmin ? { @MainActor in
+//                self.togglePinnedInstance(feedback: feedback)
+//            } : nil
+//        )
+//    }
     
     func setNsfwAction(appState: AppState) -> BasicAction {
         .init(
