@@ -20,15 +20,12 @@ struct PostEllipsisMenus: View {
     @Setting(\.menus_modActionGrouping) var moderatorActionGrouping
 
     // This @State is necessary!
-    @State var post: any Post
+    @State var post: UnifiedPostModel
     
     var size: CGFloat = 24
     
     var body: some View {
         HStack {
-//            if post.shouldShowLoadingSymbol(for: postInteractionBar) {
-//                ProgressView()
-//            }
             if moderatorActionGrouping == .separateMenu {
                 if post.canModerate {
                     EllipsisMenu(

@@ -81,7 +81,7 @@ struct LargePostView: View {
                     }
                     
                     if !isPostPage {
-                        UnifiedPostEllipsisMenus(post: post)
+                        PostEllipsisMenus(post: post)
                     }
                 }
                 

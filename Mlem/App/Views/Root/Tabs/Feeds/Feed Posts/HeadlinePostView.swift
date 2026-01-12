@@ -73,7 +73,7 @@ struct HeadlinePostView<EmbeddedContent: View>: View {
                             .foregroundStyle(.themedWarning)
                     }
                     
-                    UnifiedPostEllipsisMenus(post: post)
+                    PostEllipsisMenus(post: post)
                 }
                 
                 HeadlinePostBodyView(post: post, requireConsistentHeight: requireConsistentHeight)

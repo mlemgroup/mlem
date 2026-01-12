@@ -89,7 +89,7 @@ struct CompactPostView: View {
                     }
                     
                     // Allow the tap area to extend outside of the parent HStack a little
-                    UnifiedPostEllipsisMenus(post: post, size: 20)
+                    PostEllipsisMenus(post: post, size: 20)
                         .padding(.vertical, -2)
                 }
                 .padding(.bottom, -2)
