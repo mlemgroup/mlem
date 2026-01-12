@@ -211,8 +211,7 @@ extension UnifiedPostModel {
         case .hide: hideAction(appState: appState, feedback: feedback)
             //        case .block:
             //            <#code#>
-            //        case .report:
-            //            <#code#>
+        case .report: reportAction(appState: appState, communityContext: communityContext)
         case .crossPost: crossPostAction()
         case .lock: lockAction(appState: appState, feedback: feedback)
         case .pin: api.isAdmin ? pinAction(
@@ -354,9 +353,9 @@ extension UnifiedPostModel {
                 let hideAction = hideAction(appState: appState, feedback: feedback) {
                     hideAction
                 }
-                //                if !canModerate, !deleted {
-                //                    reportAction(appState: appState)
-                //                }
+                if !canModerate, !deleted {
+                    reportAction(appState: appState)
+                }
                 //                blockAction(appState: appState, feedback: feedback)
             }
         }

@@ -196,9 +196,9 @@ extension Post1Providing {
 //                if api.supports(.hidePosts, defaultValue: true) {
 //                    hideAction(appState: appState, feedback: feedback)
 //                }
-                if !canModerate, !deleted {
-                    reportAction(appState: appState)
-                }
+//                if !canModerate, !deleted {
+//                    reportAction(appState: appState)
+//                }
                 blockAction(appState: appState, feedback: feedback)
             }
         }
@@ -265,7 +265,7 @@ extension Post1Providing {
         // case .selectText: selectTextAction()
         // case .hide: hideAction(appState: appState, feedback: feedback)
         case .block: blockAction(appState: appState, feedback: feedback)
-        case .report: reportAction(appState: appState, communityContext: communityContext)
+        // case .report: reportAction(appState: appState, communityContext: communityContext)
         // case .crossPost: crossPostAction()
         // case .lock: lockAction(appState: appState, feedback: feedback)
         // SwiftLint is erroneously warning here. This could be fixed by wrapping the expression

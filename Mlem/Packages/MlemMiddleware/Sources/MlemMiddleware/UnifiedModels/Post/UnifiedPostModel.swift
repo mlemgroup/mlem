@@ -23,7 +23,8 @@ public class UnifiedPostModel:
     UnifiedReadableProviding,
     Interactable1Providing,
     PersonContentProviding,
-    DeletableProviding {
+    DeletableProviding,
+    ReportableProviding {
     public typealias Properties = PostProperties
     
     public init(
@@ -403,7 +404,7 @@ public extension UnifiedPostModel {
         try await api.getPostVotes(id: id, communityId: communityId, page: page, limit: limit)
     }
     
-    // Update Deleted
+    // Deleted
     
     func updateDeleted(_ newValue: Bool, callback: ((UpdateStatus) -> Void)?) {
         properties.deleted = newValue
