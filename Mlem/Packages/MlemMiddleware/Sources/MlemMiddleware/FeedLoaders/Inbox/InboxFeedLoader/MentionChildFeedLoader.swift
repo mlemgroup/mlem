@@ -8,9 +8,13 @@
 public class MentionChildFeedLoader: InboxChildFeedLoader {
     class Fetcher: InboxFetcher {
         override func fetchPage(_ page: Int) async throws -> FetchResponse {
-            let response = try await api.getMentions(page: page, limit: pageSize)
+            let response = try await api.getMentionNotifications(
+                page: page,
+                limit: pageSize,
+                unreadOnly: unreadOnly
+            )
             return .init(
-                items: response.map { .reply($0) },
+                items: response,
                 prevCursor: nil,
                 nextCursor: nil
             )

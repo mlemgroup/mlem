@@ -9,7 +9,7 @@ import Foundation
 
 extension InboxNotification {
     @MainActor
-    func snapshotUpdate(with snapshot: InboxNotificationSnapshot) {
+    func snapshotUpdate(with snapshot: InboxNotificationSnapshot, isResultOfTask: Bool) {
         setIfChanged(\.read, snapshot.read)
     }
     

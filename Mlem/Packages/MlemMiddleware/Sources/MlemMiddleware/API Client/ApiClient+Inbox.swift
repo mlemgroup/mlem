@@ -102,12 +102,17 @@ public extension ApiClient {
 
     func markAllAsRead() async throws {
         try await repository.markAllAsRead()
-        for reply in caches.reply1.itemCache.value.values {
-            reply.content?.readManager.updateWithReceivedValue(true, semaphore: nil)
-        }
-        for message in caches.message1.itemCache.value.values {
-            message.content?.readManager.updateWithReceivedValue(true, semaphore: nil)
-        }
+        _ = await Task { @MainActor in
+            for reply in caches.reply1.itemCache.value.values {
+                reply.content?.readManager.updateWithReceivedValue(true, semaphore: nil)
+            }
+            for message in caches.message1.itemCache.value.values {
+                message.content?.readManager.updateWithReceivedValue(true, semaphore: nil)
+            }
+            for notification in caches.notification.itemCache.value.values {
+                notification.content?.read = true
+            }
+        }.result
         unreadCount?.clear(.personal)
     }
     

@@ -8,9 +8,13 @@
 public class MessageChildFeedLoader: InboxChildFeedLoader {
     class Fetcher: InboxFetcher {
         override func fetchPage(_ page: Int) async throws -> FetchResponse {
-            let response = try await api.getMessages(page: page, limit: pageSize, unreadOnly: unreadOnly)
+            let response = try await api.getMessageNotifications(
+                page: page,
+                limit: pageSize,
+                unreadOnly: unreadOnly
+            )
             return .init(
-                items: response.map { .message($0) },
+                items: response,
                 prevCursor: nil,
                 nextCursor: nil
             )
