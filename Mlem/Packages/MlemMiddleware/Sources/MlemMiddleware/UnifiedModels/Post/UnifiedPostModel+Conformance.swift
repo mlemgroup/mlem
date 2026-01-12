@@ -187,7 +187,7 @@ public extension UnifiedPostModel {
     var saved_: Bool? { saved.value_ }
     
     func report(reason: String) async throws {
-        assertionFailure("TODO")
+        try await api.reportPost(id: id, reason: reason)
     }
     
     func isOwnContent(myPersonId: Int) -> Bool {

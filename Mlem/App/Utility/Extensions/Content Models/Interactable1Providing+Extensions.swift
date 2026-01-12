@@ -252,7 +252,7 @@ extension Interactable1Providing {
         
         return .init(
             id: "comment\(uid)",
-            label: self2?.commentCount.description,
+            label: (commentCount_ ?? 0).description,
             icon: Icons.replies,
             value: value,
             valueColor: .themedPositive
