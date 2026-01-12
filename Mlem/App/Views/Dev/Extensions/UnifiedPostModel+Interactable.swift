@@ -87,4 +87,16 @@ extension UnifiedPostModel: ShimVotable {
         }
         updateLocked(!locked, callback: callback)
     }
+    
+    /// Toggles the community pinned status of this post
+    /// - Parameter callback: if present, when the repository call completes, is called with `.success` if the operation succeeded and `.failure` otherwise.
+    func togglePinnedCommunity(callback: ((UpdateStatus) -> Void)? = nil) {
+        updatePinnedCommunity(!pinnedCommunity, callback: callback)
+    }
+    
+    /// Toggles the instance pinned status of this post
+    /// - Parameter callback: if present, when the repository call completes, is called with `.success` if the operation succeeded and `.failure` otherwise.
+    func togglePinnedInstance(callback: ((UpdateStatus) -> Void)? = nil) {
+        updatePinnedInstance(!pinnedInstance, callback: callback)
+    }
 }

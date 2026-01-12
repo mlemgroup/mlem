@@ -43,7 +43,7 @@ public class UnifiedPostModel:
     public var api: ApiClient
     public var properties: PostProperties {
         didSet {
-            pinnedInstancePending = false
+            pinnedCommunityPending = false
             pinnedInstancePending = false
             lockedPending = false
             nsfwPending = false
@@ -247,15 +247,14 @@ public extension UnifiedPostModel {
                 }
             }
         } else {
-            
-        }
-        properties.read = newValue
-        Task {
-            await updateQueue.addItem { properties in
-                try await self.api.repository.markPostAsRead(id: self.id, read: newValue)
-                var properties = properties
-                properties.read = newValue
-                return properties
+            properties.read = newValue
+            Task {
+                await updateQueue.addItem { properties in
+                    try await self.api.repository.markPostAsRead(id: self.id, read: newValue)
+                    var properties = properties
+                    properties.read = newValue
+                    return properties
+                }
             }
         }
     }
@@ -272,6 +271,53 @@ public extension UnifiedPostModel {
             readQueued = false
         }
     }
+    
+    // Pin
+    
+    /// Pins or unpins this post to the community according to newValue
+    /// - Parameters:
+    ///   - newValue: true to pin post, false to unpin
+    ///   - callback: if present, when the repository call completes, is called with `.success` if the operation succeeded and `.failure` otherwise.
+    func updatePinnedCommunity(_ newValue: Bool, callback: ((UpdateStatus) -> Void)?) {
+        properties.pinnedCommunity = newValue
+        pinnedCommunityPending = true
+        
+        Task {
+            await updateQueue.addItem {
+                do {
+                    let ret = try await self.api.repository.pinPost(id: self.id, pin: newValue, to: .community)
+                    callback?(.success)
+                    return .init(snapshot: ret)
+                } catch {
+                    callback?(.failure(error))
+                    throw error
+                }
+            }
+        }
+    }
+    
+    /// Pins or unpins this post to the instance according to newValue
+    /// - Parameters:
+    ///   - newValue: true to pin post, false to unpin
+    ///   - callback: if present, when the repository call completes, is called with `.success` if the operation succeeded and `.failure` otherwise.
+    func updatePinnedInstance(_ newValue: Bool, callback: ((UpdateStatus) -> Void)?) {
+        properties.pinnedInstance = newValue
+        pinnedInstancePending = true
+        
+        Task {
+            await updateQueue.addItem {
+                do {
+                    let ret = try await self.api.repository.pinPost(id: self.id, pin: newValue, to: .instance)
+                    callback?(.success)
+                    return .init(snapshot: ret)
+                } catch {
+                    callback?(.failure(error))
+                    throw error
+                }
+            }
+        }
+    }
+       
     
     // Lock
     
