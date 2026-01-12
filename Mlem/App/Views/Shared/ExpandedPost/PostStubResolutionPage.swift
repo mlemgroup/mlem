@@ -26,7 +26,7 @@ struct PostStubResolutionPage: View {
             ProgressView()
                 .task {
                     do {
-                        let upgraded = try await stub.newUpgrade()
+                        let upgraded = try await stub.upgrade()
                         navigation.replace(.post(upgraded))
                     } catch {
                         upgradeError = error

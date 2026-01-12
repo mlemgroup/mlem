@@ -46,11 +46,11 @@ public enum ReportTarget {
         case let .post(post): post.creator
         case let .comment(comment): .init(
             getValue: { comment.creator },
-            provideValue: { assertionFailure("This should not be called") }
+            provideValue: { fatalError("This should not be called") }
         )
         case let .message(message): .init(
             getValue: { message.creator },
-            provideValue: { assertionFailure("This should not be called") }
+            provideValue: { fatalError("This should not be called") }
         )
         }
     }

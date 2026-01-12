@@ -99,6 +99,7 @@ public actor UnifiedUpdateQueue<Model: UnifiedModelProviding> {
                     newProperties = try await callback(lastVerifiedProperties)
                 }
                 
+                // TODO: NOW merge
                 self.lastVerifiedProperties = newProperties
             } catch {
                 log.error("\(error.localizedDescription)")

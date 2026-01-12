@@ -166,6 +166,8 @@ public extension Post {
     func url() -> URL { api.baseUrl.appending(path: "post/\(id)") }
 }
 
+// MARK: Interactable1Providing (shimmed)
+
 public extension Post {
     // these are all shims! auto-fetching is therefore disabled to avoid unwanted side effects
     var creator_: (any Person)? { creator.value_ }

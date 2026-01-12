@@ -49,7 +49,7 @@ public protocol PostStubProviding: ContentModel, Resolvable {
     // From Post3Providing. These are defined as nil in the extension below
     var crossPosts_: [Post]? { get }
     
-    func newUpgrade() async throws -> Post
+    func upgrade() async throws -> Post
 }
 
 public extension PostStubProviding {
