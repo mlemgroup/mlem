@@ -219,6 +219,34 @@ extension UnifiedPostModel {
         )
     }
     
+    func setNsfwAction(appState: AppState) -> BasicAction? {
+        guard setNsfwIsAvailable(appState: appState) else { return nil }
+        return .init(
+            id: "setNsfw\(uid)",
+            appearance: .toggleNsfw(isOn: nsfw),
+            callback:{ @MainActor in
+                self.toggleNsfw { status in
+                    Task {
+                        await self.handleModerationActionCompletion(
+                            message: "Failed to set NSFW status",
+                            result: status,
+                            feedback: [.haptic]
+                        )
+                    }
+                }
+            }
+        )
+    }
+    
+    func setNsfwIsAvailable(appState: AppState) -> Bool {
+        guard let community = community.value else { return false }
+        guard community.apiIsLocal else { return false }
+        guard canModerate else { return false }
+        guard api.canInteract(appState: appState) else { return false }
+        guard api.supports(.moderatorSetNsfw, defaultValue: false) else { return false }
+        return true
+    }
+    
     func viewVotesAction(navigation: NavigationLayer) -> BasicAction? {
         guard canModerate && api.supports(.viewVotes, defaultValue: true) else { return nil }
         return .init(
@@ -410,11 +438,12 @@ extension UnifiedPostModel {
                 pinToInstanceAction(appState: appState, feedback: feedback)
             }
             if let lockAction = lockAction(appState: appState, feedback: feedback) { lockAction }
-//
-//            if setNsfwIsAvailable(appState: appState) {
-//                setNsfwAction(appState: appState)
-//            }
-//
+
+            if setNsfwIsAvailable(appState: appState),
+               let setNsfwAction = setNsfwAction(appState: appState) {
+                setNsfwAction
+            }
+
             if let navigation,
                api.supports(.viewVotes, defaultValue: false),
                let viewVotesAction = viewVotesAction(navigation: navigation) {

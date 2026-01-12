@@ -127,10 +127,14 @@ extension UnifiedPostModel: ShimVotable {
         updatePinnedInstance(!pinnedInstance, callback: callback)
     }
     
+    func toggleNsfw(callback: ((UpdateStatus) -> Void)?) {
+        updateNsfw(!nsfw, callback: callback)
+    }
+    
     // MARK: - Helpers
     
     // TODO: UpdateQueue remove this shim code
-    private func handleModerationActionCompletion(
+    internal func handleModerationActionCompletion(
         message: LocalizedStringResource,
         result: UpdateStatus,
         feedback: Set<FeedbackType>
@@ -145,7 +149,7 @@ extension UnifiedPostModel: ShimVotable {
         await handleModerationActionCompletion(message: message, result: stateUpdateResult, feedback: feedback)
     }
     
-    private func handleModerationActionCompletion(
+    internal func handleModerationActionCompletion(
         message: LocalizedStringResource,
         result: StateUpdateResult,
         feedback: Set<FeedbackType>

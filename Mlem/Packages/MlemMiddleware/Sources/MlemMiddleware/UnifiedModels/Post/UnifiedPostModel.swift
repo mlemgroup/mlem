@@ -422,4 +422,24 @@ public extension UnifiedPostModel {
             }
         }
     }
+    
+    // NSFW
+    
+    func updateNsfw(_ newValue: Bool, callback: ((UpdateStatus) -> Void)?) {
+        properties.nsfw = newValue
+        nsfwPending = true
+        
+        Task {
+            await updateQueue.addItem {
+                do {
+                    let snapshot = try await self.api.repository.setPostNsfw(id: self.id, nsfw: newValue)
+                    callback?(.success)
+                    return .init(snapshot: snapshot)
+                } catch {
+                    callback?(.failure(error))
+                    throw (error)
+                }
+            }
+        }
+    }
 }
