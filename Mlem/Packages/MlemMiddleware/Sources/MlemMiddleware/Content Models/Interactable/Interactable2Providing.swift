@@ -14,7 +14,8 @@ public protocol Interactable2Providing:
     PurgableProviding,
     CanModerateProviding,
     ShimVotable,
-    ShimSaveable {
+    ShimSaveable,
+    ShimFlairContextProviding {
     var creator: any Person { get }
     var community: any Community { get }
     var creatorIsModerator: Bool { get }
@@ -66,11 +67,18 @@ public protocol ShimSaveable {
     var shimToggleSaved: (() -> Void)? { get }
 }
 
+public protocol ShimFlairContextProviding {
+    var creator: ExpectedValue<any Person> { get }
+    var community: ExpectedValue<any Community> { get }
+    var creatorIsAdmin: ExpectedValue<Bool> { get }
+    var creatorIsModerator: ExpectedValue<Bool> { get }
+}
+
 public extension Interactable2Providing {
     var votes: ExpectedValue<VotesModel> {
         .init(
             getValue: { self.votes },
-            provideValue: { assertionFailure("This should not be called") })
+            provideValue: { fatalError("This should not be called") })
     }
     
     var toggleVote: ((ScoringOperation) -> Void)? {
@@ -80,9 +88,31 @@ public extension Interactable2Providing {
     var saved: ExpectedValue<Bool> {
         .init(
             getValue: { self.saved },
-            provideValue: { assertionFailure("This should not be called") }
+            provideValue: { fatalError("This should not be called") }
         )
     }
     
     var shimToggleSaved: (() -> Void)? { toggleSaved }
+    
+    var creator: ExpectedValue<any Person> {
+        .init(
+            getValue: { self.creator },
+            provideValue: { fatalError("This should not be called") })
+    }
+    
+    var community: ExpectedValue<any Community> {
+        .init(
+            getValue: { self.community },
+            provideValue: { fatalError("This should not be called") })
+    }
+    var creatorIsAdmin: ExpectedValue<Bool> {
+        .init(
+            getValue: { self.creatorIsAdmin },
+            provideValue: { fatalError("This should not be called") })
+    }
+    var creatorIsModerator: ExpectedValue<Bool> {
+        .init(
+            getValue: { self.creatorIsModerator },
+            provideValue: { fatalError("This should not be called") })
+    }
 }

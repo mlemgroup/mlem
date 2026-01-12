@@ -26,7 +26,8 @@ public class UnifiedPostModel:
     DeletableProviding,
     ReportableProviding,
     RemovableProviding,
-    PurgableProviding {
+    PurgableProviding,
+    ShimFlairContextProviding {
     public typealias Properties = PostProperties
     
     public init(

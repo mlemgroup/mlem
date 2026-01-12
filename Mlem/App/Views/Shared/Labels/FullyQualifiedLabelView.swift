@@ -142,15 +142,16 @@ struct FullyQualifiedLabelView: View {
         )
     }
     
-    var interactableContext: (any Interactable2Providing)? {
+    var interactableContext: (any ShimFlairContextProviding)? {
         guard let person = entity as? any Person else { return nil }
         if let commentContext2 = commentContext as? any Comment2Providing, commentContext2.creator.actorId == person.actorId {
             return commentContext2
         }
-        // TODO: NOW
-//        if let postContext2 = postContext as? any Post2Providing, postContext2.creator.actorId == person.actorId {
-//            return postContext2
-//        }
+        if let postContext,
+           let creator = postContext.creator.value,
+           creator.actorId == person.actorId {
+            return postContext
+        }
         return nil
     }
     

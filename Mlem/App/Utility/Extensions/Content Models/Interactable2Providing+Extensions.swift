@@ -7,13 +7,13 @@
 
 import MlemMiddleware
 
-extension Interactable2Providing {
+extension ShimFlairContextProviding {
     func contextualFlairs() -> Set<PersonFlair> {
         var output: Set<PersonFlair> = []
-        if creatorIsAdmin {
+        if creatorIsAdmin.value ?? false {
             output.insert(.admin)
         }
-        if creatorIsModerator {
+        if creatorIsModerator.value ?? false {
             output.insert(.moderator)
         }
         if let comment = self as? any Comment2Providing {
