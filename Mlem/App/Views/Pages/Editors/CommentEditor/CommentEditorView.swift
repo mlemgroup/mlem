@@ -225,8 +225,7 @@ struct CommentEditorView: View {
                         labelStyle: .medium,
                         blurred: post.nsfw)
                 } placeholder: {
-                    Text("creator@placeholder")
-                        .redacted(reason: .placeholder)
+                    Text(verbatim: .personPlaceholder).redacted(reason: .placeholder)
                 }
             }
         case let .comment(comment):

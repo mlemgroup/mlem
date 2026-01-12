@@ -2403,9 +2403,6 @@
         }
       }
     },
-    "community@placeholder" : {
-
-    },
     "Compact" : {
       "localizations" : {
         "fr" : {
@@ -2609,12 +2606,6 @@
 
     },
     "Creator" : {
-
-    },
-    "creator@placeholder" : {
-
-    },
-    "creator@placholder" : {
 
     },
     "Crosspost" : {
@@ -9614,9 +9605,6 @@
           }
         }
       }
-    },
-    "user@placeholder" : {
-
     },
     "Username" : {
       "localizations" : {

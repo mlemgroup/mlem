@@ -103,8 +103,7 @@ struct HeadlinePostView<EmbeddedContent: View>: View {
         ExpectedView(post.creator) { creator in
             FullyQualifiedLinkView(creator, labelStyle: .medium)
         } placeholder: {
-            Text("creator@placeholder")
-                .redacted(reason: .placeholder)
+            Text(verbatim: .personPlaceholder).redacted(reason: .placeholder)
         }
     }
     
@@ -113,8 +112,7 @@ struct HeadlinePostView<EmbeddedContent: View>: View {
         ExpectedView(post.community) { community in
             FullyQualifiedLinkView(community, labelStyle: .medium)
         } placeholder: {
-            Text("community@placeholder")
-                .redacted(reason: .placeholder)
+            Text(verbatim: .communityPlaceholder).redacted(reason: .placeholder)
         }
     }
     

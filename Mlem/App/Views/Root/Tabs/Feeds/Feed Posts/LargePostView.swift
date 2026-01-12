@@ -124,8 +124,7 @@ struct LargePostView: View {
         ExpectedView(post.creator) { creator in
             FullyQualifiedLinkView(creator, labelStyle: .medium)
         } placeholder: {
-            Text("creator@placeholder")
-                .redacted(reason: .placeholder)
+            Text(verbatim: .personPlaceholder).redacted(reason: .placeholder)
         }
     }
     
@@ -134,7 +133,7 @@ struct LargePostView: View {
         ExpectedView(post.community) { community in
             FullyQualifiedLinkView(community, labelStyle: .medium)
         } placeholder: {
-            Text("community@placeholder")
+            Text(verbatim: .communityPlaceholder)
                 .redacted(reason: .placeholder)
         }
     }

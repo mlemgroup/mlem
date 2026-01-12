@@ -8,6 +8,8 @@
 import MlemMiddleware
 import SwiftUI
 
+// TODO: NOW ExpectedFullyQualifiedLinkView (protocols make this tricky)
+
 struct FullyQualifiedLinkView: View {
     @Environment(NavigationLayer.self) private var navigation
     

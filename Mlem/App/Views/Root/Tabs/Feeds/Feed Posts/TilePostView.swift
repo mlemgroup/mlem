@@ -87,15 +87,13 @@ struct TilePostView: View {
                     ExpectedView(post.creator) { creator in
                         Text(creator.name)
                     } placeholder: {
-                        Text("creator@placholder")
-                            .redacted(reason: .placeholder)
+                        Text(verbatim: .personPlaceholder).redacted(reason: .placeholder)
                     }
                 } else {
                     ExpectedView(post.community) { community in
                         Text(community.name)
                     } placeholder: {
-                        Text("community@placeholder")
-                            .redacted(reason: .placeholder)
+                        Text(verbatim: .communityPlaceholder).redacted(reason: .placeholder)
                     }
                 }
             }

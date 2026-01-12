@@ -61,8 +61,7 @@ struct CrossPostListView: View {
                                     FullyQualifiedLabelView(community, labelStyle: .medium, blurred: crossPost.nsfw)
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                 } placeholder: {
-                                    Text("community@placeholder")
-                                        .redacted(reason: .placeholder)
+                                    Text(verbatim: .communityPlaceholder).redacted(reason: .placeholder)
                                 }
                                 ReadoutView(readout: crossPost.createdReadout)
                                 ReadoutView(readout: crossPost.scoreReadout(showColor: true))

@@ -49,8 +49,7 @@ extension PostEditorView {
                     FullyQualifiedLinkView(community, labelStyle: .medium)
                         .padding(.horizontal, Constants.main.standardSpacing)
                 } placeholder: {
-                    Text("community@placeholder")
-                        .redacted(reason: .placeholder)
+                    Text(verbatim: .communityPlaceholder).redacted(reason: .placeholder)
                 }
             } else {
                 ForEach(Array(targets.enumerated()), id: \.element.id) { index, target in

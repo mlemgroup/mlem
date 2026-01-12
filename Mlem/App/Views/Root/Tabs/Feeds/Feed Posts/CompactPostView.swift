@@ -64,15 +64,13 @@ struct CompactPostView: View {
                         ExpectedView(post.creator) { creator in
                             FullyQualifiedLinkView(creator, labelStyle: .small, showAvatar: false)
                         } placeholder: {
-                            Text("user@placeholder")
-                                .redacted(reason: .placeholder)
+                            Text(verbatim: .personPlaceholder).redacted(reason: .placeholder)
                         }
                     } else {
                         ExpectedView(post.community) { community in
                             FullyQualifiedLinkView(community, labelStyle: .small, showAvatar: false)
                         } placeholder: {
-                            Text("community@placeholder")
-                                .redacted(reason: .placeholder)
+                            Text(verbatim: .communityPlaceholder).redacted(reason: .placeholder)
                         }
                         
                     }
