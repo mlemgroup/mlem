@@ -91,23 +91,6 @@ struct ReportView: View {
         }
     }
     
-    // TODO: NOW
-    @ViewBuilder
-    func legacyPostView(post: Post1, community: Community1, creator: Person1) -> some View {
-        Text("TODO")
-//        NavigationLink(.post(post)) {
-//            VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
-//                FullyQualifiedLinkView(creator, labelStyle: .medium)
-//                HeadlinePostBodyView(post: post)
-//                reportDetailsView
-//                resolveButton
-//            }
-//            .padding(Constants.main.standardSpacing)
-//            .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
-//            .paletteBorder(cornerRadius: Constants.main.standardSpacing)
-//        }
-    }
-    
     @ViewBuilder
     var resolveButton: some View {
         HStack {
