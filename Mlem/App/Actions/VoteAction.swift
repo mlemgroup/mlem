@@ -55,8 +55,7 @@ extension VoteAction {
     static var label: ActionLabel { upvoteLabel }
 
     func createLabel(environment: EnvironmentValues) -> ActionLabel {
-        // TODO: NOW better way to handle this
-        guard let votes = entity.votes.value else { return Self.upvoteLabel }
+        guard let votes = entity.votes.value else { return Self.upvoteLabel.withVisibility(.hidden) }
         let hasMatchingVote = votes.myVote == type
 
         guard type != .none else {
