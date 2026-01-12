@@ -326,14 +326,13 @@ extension UnifiedPostModel {
     
     func readout(type: PostBarConfiguration.ReadoutType, showColor: Bool) -> Readout? {
         switch type {
-            // case .created: createdReadout
-            // swiftlint:disable:next void_function_in_ternary
-            // case .score: downvotesEnabled ? scoreReadout(showColor: showColor) : upvoteReadout(showColor: showColor)
+        case .created: createdReadout
+        // swiftlint:disable:next void_function_in_ternary
+        case .score: downvotesEnabled ? scoreReadout(showColor: showColor) : upvoteReadout(showColor: showColor)
         case .upvote: upvoteReadout(showColor: showColor)
         case .downvote: downvotesEnabled ? downvoteReadout(showColor: showColor) : nil
-        default: nil
-            // case .comment: commentReadout
-            // case .saved: savedReadout(showColor: showColor)
+        case .comment: commentReadout
+        case .saved: savedReadout(showColor: showColor)
         }
     }
     
@@ -344,13 +343,12 @@ extension UnifiedPostModel {
         type: PostBarConfiguration.CounterType,
         commentTreeTracker: CommentTreeTracker? = nil
     ) -> Counter? {
-        return nil
-        //        switch type {
-        //        case .score: scoreCounter(appState: appState, downvotesEnabled: downvotesEnabled)
-        //        case .upvote: upvoteCounter(appState: appState)
-        //        case .downvote: downvotesEnabled ? downvoteCounter(appState: appState, downvotesEnabled: downvotesEnabled) : nil
-        //        case .reply: replyCounter(appState: appState, commentTreeTracker: commentTreeTracker)
-        //        }
+        switch type {
+        case .score: scoreCounter(appState: appState, downvotesEnabled: downvotesEnabled)
+        case .upvote: upvoteCounter(appState: appState)
+        case .downvote: downvotesEnabled ? downvoteCounter(appState: appState, downvotesEnabled: downvotesEnabled) : nil
+        case .reply: replyCounter(appState: appState, commentTreeTracker: commentTreeTracker)
+        }
     }
     
     // MARK: - Action Groups

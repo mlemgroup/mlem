@@ -13,7 +13,7 @@ import SwiftUI
 extension Post1Providing {
     private var self2: (any Post2Providing)? { self as? any Post2Providing }
     
-    var isOwnPost: Bool { creatorId == api.myPerson?.id }
+//    var isOwnPost: Bool { creatorId == api.myPerson?.id }
     
 //    var shouldHideInFeed: Bool {
 //        (creator_?.shouldHideInFeed ?? false) || (community_?.shouldHideInFeed ?? false) || (hidden_ ?? false) || purged
@@ -23,9 +23,9 @@ extension Post1Providing {
 //        api.myPerson?.moderates(communityId: communityId) ?? false || api.isAdmin
 //    }
 
-    var downvotesEnabled: Bool {
-        api.voteFederationMode.postDownvote != .disable
-    }
+//    var downvotesEnabled: Bool {
+//        api.voteFederationMode.postDownvote != .disable
+//    }
     
 //    func toggleHidden(feedback: Set<FeedbackType>) throws {
 //        if let self2 {
@@ -92,41 +92,41 @@ extension Post1Providing {
 //        }
 //    }
     
-    // TODO: UpdateQueue remove this shim code
-    private func handleModerationActionCompletion(
-        message: LocalizedStringResource,
-        result: UpdateStatus,
-        feedback: Set<FeedbackType>
-    ) async {
-        var stateUpdateResult: StateUpdateResult
-        switch result {
-        case .success:
-            stateUpdateResult = .succeeded
-        case .failure:
-            stateUpdateResult = .failed
-        }
-        await handleModerationActionCompletion(message: message, result: stateUpdateResult, feedback: feedback)
-    }
-    
-    private func handleModerationActionCompletion(
-        message: LocalizedStringResource,
-        result: StateUpdateResult,
-        feedback: Set<FeedbackType>
-    ) async {
-        if feedback.contains(.haptic) {
-            HapticManager.main.play(haptic: .success, tier: .low)
-        }
-        switch result {
-        case .failed:
-            ToastModel.main.add(.failure(message))
-        default:
-            break
-        }
-    }
-    
-    func markRead() {
-        self2?.updateRead(true)
-    }
+//    // TODO: UpdateQueue remove this shim code
+//    private func handleModerationActionCompletion(
+//        message: LocalizedStringResource,
+//        result: UpdateStatus,
+//        feedback: Set<FeedbackType>
+//    ) async {
+//        var stateUpdateResult: StateUpdateResult
+//        switch result {
+//        case .success:
+//            stateUpdateResult = .succeeded
+//        case .failure:
+//            stateUpdateResult = .failed
+//        }
+//        await handleModerationActionCompletion(message: message, result: stateUpdateResult, feedback: feedback)
+//    }
+//    
+//    private func handleModerationActionCompletion(
+//        message: LocalizedStringResource,
+//        result: StateUpdateResult,
+//        feedback: Set<FeedbackType>
+//    ) async {
+//        if feedback.contains(.haptic) {
+//            HapticManager.main.play(haptic: .success, tier: .low)
+//        }
+//        switch result {
+//        case .failed:
+//            ToastModel.main.add(.failure(message))
+//        default:
+//            break
+//        }
+//    }
+//    
+//    func markRead() {
+//        self2?.updateRead(true)
+//    }
     
 //    @MainActor
 //    func createImage(navigation: NavigationLayer) {
@@ -285,63 +285,63 @@ extension Post1Providing {
         }
     }
     
-    func counter(
-        appState: AppState,
-        type: PostBarConfiguration.CounterType,
-        commentTreeTracker: CommentTreeTracker? = nil
-    ) -> Counter? {
-        switch type {
-        case .score: scoreCounter(appState: appState, downvotesEnabled: downvotesEnabled)
-        case .upvote: upvoteCounter(appState: appState)
-        case .downvote: downvotesEnabled ? downvoteCounter(appState: appState, downvotesEnabled: downvotesEnabled) : nil
-        case .reply: replyCounter(appState: appState, commentTreeTracker: commentTreeTracker)
-        }
-    }
+//    func counter(
+//        appState: AppState,
+//        type: PostBarConfiguration.CounterType,
+//        commentTreeTracker: CommentTreeTracker? = nil
+//    ) -> Counter? {
+//        switch type {
+//        case .score: scoreCounter(appState: appState, downvotesEnabled: downvotesEnabled)
+//        case .upvote: upvoteCounter(appState: appState)
+//        case .downvote: downvotesEnabled ? downvoteCounter(appState: appState, downvotesEnabled: downvotesEnabled) : nil
+//        case .reply: replyCounter(appState: appState, commentTreeTracker: commentTreeTracker)
+//        }
+//    }
     
-    func readout(type: PostBarConfiguration.ReadoutType, showColor: Bool) -> Readout? {
-        switch type {
-        case .created: createdReadout
-        // swiftlint:disable:next void_function_in_ternary
-        case .score: downvotesEnabled ? scoreReadout(showColor: showColor) : upvoteReadout(showColor: showColor)
-        case .upvote: upvoteReadout(showColor: showColor)
-        case .downvote: downvotesEnabled ? downvoteReadout(showColor: showColor) : nil
-        case .comment: commentReadout
-        case .saved: savedReadout(showColor: showColor)
-        }
-    }
+//    func readout(type: PostBarConfiguration.ReadoutType, showColor: Bool) -> Readout? {
+//        switch type {
+//        case .created: createdReadout
+//        // swiftlint:disable:next void_function_in_ternary
+//        case .score: downvotesEnabled ? scoreReadout(showColor: showColor) : upvoteReadout(showColor: showColor)
+//        case .upvote: upvoteReadout(showColor: showColor)
+//        case .downvote: downvotesEnabled ? downvoteReadout(showColor: showColor) : nil
+//        case .comment: commentReadout
+//        case .saved: savedReadout(showColor: showColor)
+//        }
+//    }
     
-    func taggedTitle(communityContext: (any Community1Providing)?) -> Text {
-        let hasTags: Bool = removed
-            || deleted
-            || pinnedInstance
-            || (communityContext != nil && pinnedCommunity)
-            || locked
-        
-        return postTag(active: removed, icon: .lemmy.removed, color: .themedNegative) +
-            postTag(active: deleted, icon: .general.delete, color: .themedNegative) +
-            postTag(active: pinnedInstance, icon: .lemmy.pinned, color: .themedAdministration) +
-            postTag(active: pinnedCommunity && communityContext != nil, icon: .lemmy.pinned, color: .themedModeration) +
-            postTag(active: locked, icon: .lemmy.locked, color: .themedLockAccent) +
-            Text(verbatim: "\(hasTags ? "  " : "")\(title)")
-    }
+//    func taggedTitle(communityContext: (any Community1Providing)?) -> Text {
+//        let hasTags: Bool = removed
+//            || deleted
+//            || pinnedInstance
+//            || (communityContext != nil && pinnedCommunity)
+//            || locked
+//        
+//        return postTag(active: removed, icon: .lemmy.removed, color: .themedNegative) +
+//            postTag(active: deleted, icon: .general.delete, color: .themedNegative) +
+//            postTag(active: pinnedInstance, icon: .lemmy.pinned, color: .themedAdministration) +
+//            postTag(active: pinnedCommunity && communityContext != nil, icon: .lemmy.pinned, color: .themedModeration) +
+//            postTag(active: locked, icon: .lemmy.locked, color: .themedLockAccent) +
+//            Text(verbatim: "\(hasTags ? "  " : "")\(title)")
+//    }
     
     /// Host if this is a link post, otherwise nil.
-    var linkHost: String? {
-        if case let .link(link) = type {
-            return link.host
-        }
-        return nil
-    }
+//    var linkHost: String? {
+//        if case let .link(link) = type {
+//            return link.host
+//        }
+//        return nil
+//    }
     
-    var imageFallback: MediaView.Fallback {
-        switch type {
-        case .text: .text
-        case let .media(url), let .embedded(url, _):
-            url.proxyAwarePathExtension?.isMovieExtension ?? false ? .movie : .image
-        case .link: .link
-        case .titleOnly: .titleOnly
-        }
-    }
+//    var imageFallback: MediaView.Fallback {
+//        switch type {
+//        case .text: .text
+//        case let .media(url), let .embedded(url, _):
+//            url.proxyAwarePathExtension?.isMovieExtension ?? false ? .movie : .image
+//        case .link: .link
+//        case .titleOnly: .titleOnly
+//        }
+//    }
     
 //    func shouldShowLoadingSymbol(for barConfiguration: PostBarConfiguration? = nil) -> Bool {
 //        if lockedPending, !(barConfiguration?.all.contains(.action(.lock)) ?? false) {
