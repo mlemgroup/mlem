@@ -30,8 +30,7 @@ public class Post:
     DeletableProviding,
     ReportableProviding,
     RemovableProviding,
-    PurgableProviding,
-    ShimFlairContextProviding {
+    PurgableProviding {
     public typealias Properties = PostProperties
     
     public init(

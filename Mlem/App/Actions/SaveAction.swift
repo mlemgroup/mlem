@@ -10,7 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct SaveAction: SimpleLabelAction {
-    let entity: any ShimSaveable
+    let entity: any ShimInteractable2Providing
 }
 
 // MARK: - Configurability
@@ -18,7 +18,7 @@ struct SaveAction: SimpleLabelAction {
 extension ActionSeed {
     static let save = ActionSeed("save") { entity in
         switch entity {
-        case let entity as any ShimSaveable: SaveAction(entity: entity)
+        case let entity as any ShimInteractable2Providing: SaveAction(entity: entity)
         default: nil
         }
     }

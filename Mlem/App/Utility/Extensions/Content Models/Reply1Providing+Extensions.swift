@@ -21,9 +21,12 @@ extension Reply1Providing {
         feedback: Set<FeedbackType> = [.haptic, .toast]
     ) -> [any Action] {
         ActionGroup(displayMode: .compactSection) {
-            upvoteAction(appState: appState, feedback: feedback)
-            downvoteAction(appState: appState, feedback: feedback, downvotesEnabled: downvotesEnabled)
-            saveAction(appState: appState, feedback: feedback)
+            if let upvoteAction = upvoteAction(appState: appState, feedback: feedback) { upvoteAction }
+            if let downvoteAction = downvoteAction(
+                appState: appState,
+                feedback: feedback,
+                downvotesEnabled: downvotesEnabled) { downvoteAction }
+            if let saveAction = saveAction(appState: appState, feedback: feedback) { saveAction }
             if let replyAction = replyAction(appState: appState) { replyAction }
             markReadAction(appState: appState, feedback: feedback)
             if let comment = self2?.comment {
@@ -35,7 +38,7 @@ extension Reply1Providing {
                     reportAction(appState: appState)
                 }
             }
-            blockCreatorAction(appState: appState, feedback: feedback)
+            if let blockCreatorAction = blockCreatorAction(appState: appState, feedback: feedback) { blockCreatorAction }
         }
     }
 

@@ -7,7 +7,7 @@
 
 import MlemMiddleware
 
-extension ShimFlairContextProviding {
+extension ShimInteractable2Providing {
     func contextualFlairs() -> Set<PersonFlair> {
         var output: Set<PersonFlair> = []
         if creatorIsAdmin.value ?? false {

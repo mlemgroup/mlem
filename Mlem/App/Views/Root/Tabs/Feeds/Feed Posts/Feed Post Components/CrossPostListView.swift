@@ -65,7 +65,9 @@ struct CrossPostListView: View {
                                     Text(verbatim: .communityPlaceholder).redacted(reason: .placeholder)
                                 }
                                 ReadoutView(readout: crossPost.createdReadout)
-                                ReadoutView(readout: crossPost.scoreReadout(showColor: true))
+                                if let scoreReadout = crossPost.scoreReadout(showColor: true) {
+                                    ReadoutView(readout: scoreReadout)
+                                }
                                 ReadoutView(readout: crossPost.commentReadout)
                             }
                             .contentShape(.rect)

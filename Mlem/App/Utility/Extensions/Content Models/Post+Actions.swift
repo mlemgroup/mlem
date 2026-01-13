@@ -70,7 +70,9 @@ extension Post {
             disabled: !api.canInteract(appState: appState),
             displayMode: .popup
         ) {
-            blockCreatorAction(appState: appState, feedback: feedback, showConfirmation: false)
+            if let blockCreatorAction = blockCreatorAction(appState: appState, feedback: feedback, showConfirmation: false) {
+                blockCreatorAction
+            }
             if let blockCommunityAction = blockCommunityAction(appState: appState, feedback: feedback, showConfirmation: false) {
                 blockCommunityAction
             }

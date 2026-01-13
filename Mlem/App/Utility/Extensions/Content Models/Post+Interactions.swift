@@ -13,7 +13,7 @@ import Foundation
 // Convenience functions for interacting with a post when feedback is required or the data required to execute
 // the function is not guaranteed to be fetched yet
 
-extension Post: ShimVotable, ShimSaveable {
+extension Post: ShimInteractable2Providing {
     public var shimToggleSaved: (() -> Void)? {
         if let toggleSaved {
             return { toggleSaved([]) }
@@ -50,6 +50,20 @@ extension Post: ShimVotable, ShimSaveable {
                 }
                 updateVote(votes.myVote == .upvote ? .none : .upvote)
             }
+        }
+        return nil
+    }
+    
+    public var shimToggleUpvoted: (() -> Void)? {
+        if let toggleUpvoted {
+            return { toggleUpvoted([]) }
+        }
+        return nil
+    }
+    
+    public var shimToggleDownvoted: (() -> Void)? {
+        if let toggleDownvoted {
+            return { toggleDownvoted([]) }
         }
         return nil
     }

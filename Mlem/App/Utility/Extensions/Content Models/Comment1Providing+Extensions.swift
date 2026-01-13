@@ -72,9 +72,12 @@ extension Comment1Providing {
         commentTreeTracker: CommentTreeTracker? = nil
     ) -> [any Action] {
         ActionGroup(displayMode: .compactSection) {
-            upvoteAction(appState: appState, feedback: feedback)
-            downvoteAction(appState: appState, feedback: feedback, downvotesEnabled: downvotesEnabled)
-            saveAction(appState: appState, feedback: feedback)
+            if let upvoteAction = upvoteAction(appState: appState, feedback: feedback) { upvoteAction }
+            if let downvoteAction = downvoteAction(
+                appState: appState,
+                feedback: feedback,
+                downvotesEnabled: downvotesEnabled) { downvoteAction}
+            if let saveAction = saveAction(appState: appState, feedback: feedback) { saveAction }
             if let replyAction = replyAction(appState: appState, commentTreeTracker: commentTreeTracker) { replyAction }
             if let notification {
                 markReadAction(appState: appState, notification: notification, feedback: feedback)
@@ -95,7 +98,7 @@ extension Comment1Providing {
                 if !canModerate, !deleted {
                     reportAction(appState: appState)
                 }
-                blockCreatorAction(appState: appState, feedback: feedback)
+                if let blockCreatorAction = blockCreatorAction(appState: appState, feedback: feedback) { blockCreatorAction }
             }
         }
     }
@@ -118,8 +121,9 @@ extension Comment1Providing {
         }
         if api.isAdmin, api.supports(.purgeContent, defaultValue: false) {
             purgeAction(appState: appState)
-            if !isOwnComment {
-                purgeCreatorAction(appState: appState)
+            if !isOwnComment,
+            let purgeCreatorAction = purgeCreatorAction(appState: appState) {
+                purgeCreatorAction
             }
         }
         if let report {

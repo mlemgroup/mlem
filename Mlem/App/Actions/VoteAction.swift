@@ -10,7 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct VoteAction: SimpleLabelAction {
-    let entity: any ShimVotable
+    let entity: any ShimInteractable2Providing
     let type: ScoringOperation
 }
 
@@ -23,7 +23,7 @@ extension ActionSeed {
 
 private func createVoteAction(_ entity: Any, type: ScoringOperation) -> VoteAction? {
     switch entity {
-    case let entity as any ShimVotable: VoteAction(entity: entity, type: type)
+    case let entity as any ShimInteractable2Providing: VoteAction(entity: entity, type: type)
     default: nil
     }
 }

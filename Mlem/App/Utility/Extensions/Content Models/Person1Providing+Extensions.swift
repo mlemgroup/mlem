@@ -12,7 +12,7 @@ extension Person1Providing {
     var shouldHideInFeed: Bool { blocked || purged }
     
     func flairs(
-        interactableContext interactable: (any ShimFlairContextProviding)? = nil,
+        interactableContext interactable: (any ShimInteractable2Providing)? = nil,
         communityContext community: (any Community)? = nil
     ) -> [PersonFlair] {
         @Setting(\.person_ageVisibility) var alwaysShowAccountAge
