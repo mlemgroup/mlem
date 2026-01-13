@@ -54,6 +54,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     var community_showBanner: Bool
     var community_showInstance: Bool
     var dev_developerMode: Bool
+    var dev_errorTimeout: Double
     var feed_default: ListingType
     var feed_markReadOnScroll: Bool
     var feed_showRead: Bool
@@ -177,6 +178,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.comment_createImage_showStats = try container.decodeIfPresent(Bool.self, forKey: ._comment_createImage_showStats) ?? true
         self.comment_createImage_colorScheme = try container.decodeIfPresent(UIUserInterfaceStyle.self, forKey: ._comment_createImage_colorScheme) ?? .unspecified
         self.dev_developerMode = try container.decodeIfPresent(Bool.self, forKey: ._dev_developerMode) ?? false
+        self.dev_errorTimeout = try container.decodeIfPresent(Double.self, forKey: ._dev_errorTimeout) ?? 1.5
         self.feed_default = try container.decodeIfPresent(ListingType.self, forKey: ._feed_default) ?? .subscribed
         self.feed_markReadOnScroll = try container.decodeIfPresent(Bool.self, forKey: ._feed_markReadOnScroll) ?? false
         self.feed_showRead = try container.decodeIfPresent(Bool.self, forKey: ._feed_showRead) ?? true
@@ -407,6 +409,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         case _community_showBanner = "community_showBanner"
         case _community_showInstance = "community_showInstance"
         case _dev_developerMode = "dev_developerMode"
+        case _dev_errorTimeout = "dev_errorTimeout"
         case _feed_default = "feed_default"
         case _feed_markReadOnScroll = "feed_markReadOnScroll"
         case _feed_showRead = "feed_showRead"
@@ -516,6 +519,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.community_showBanner = true // Removed in 2.0
         self.community_showInstance = true // Removed in 2.0
         self.dev_developerMode = settings.developerMode
+        self.dev_errorTimeout = 1.5 // Added in 2.5
         self.feed_default = settings.defaultFeed
         self.feed_markReadOnScroll = settings.markReadOnScroll
         self.feed_showRead = settings.showReadInFeed

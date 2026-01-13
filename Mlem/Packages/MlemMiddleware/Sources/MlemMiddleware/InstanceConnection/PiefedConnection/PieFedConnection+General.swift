@@ -91,6 +91,18 @@ public extension PieFedConnection {
     }
     
     func getPostLink(url: URL) async throws -> PostLink {
-        throw ApiClientError.featureUnsupported
+        guard try await self.supports(.fetchLinkMetadata) else {
+            throw ApiClientError.featureUnsupported
+        }
+        let request = PieFedGetSiteMetadataRequest(url: url.absoluteString)
+        let response = try await perform(request)
+        guard let imageUrl = response.metadata.image.map(URL.init(string:)) else {
+            throw ApiClientError.unsuccessful
+        }
+        return .init(
+            content: url,
+            thumbnail: imageUrl,
+            label: response.metadata.title ?? url.absoluteString
+        )
     }
 }
