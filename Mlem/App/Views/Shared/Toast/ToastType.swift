@@ -142,7 +142,7 @@ enum ToastType: Hashable {
         case .account:
             1.0
         case .error:
-            1.5
+            Settings.get(\.dev_errorTimeout)
         case .loading:
             10
         }
