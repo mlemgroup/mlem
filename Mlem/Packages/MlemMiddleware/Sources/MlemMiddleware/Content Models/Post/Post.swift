@@ -7,8 +7,6 @@
 
 import Observation
 import Foundation
-import Haptics
-import os
 import Nuke
 import Rest
 
