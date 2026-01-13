@@ -66,14 +66,6 @@ extension InfoStackView {
     ) {
         self.readouts = readouts.compactMap { comment.readout(type: $0, showColor: coloredReadouts.contains($0)) }
     }
-    
-    init(
-        reply: any Reply1Providing,
-        readouts: [ReplyBarConfiguration.ReadoutType],
-        coloredReadouts: Set<ReplyBarConfiguration.ReadoutType>
-    ) {
-        self.readouts = readouts.compactMap { reply.readout(type: $0, showColor: coloredReadouts.contains($0)) }
-    }
 }
 
 private extension Readout {

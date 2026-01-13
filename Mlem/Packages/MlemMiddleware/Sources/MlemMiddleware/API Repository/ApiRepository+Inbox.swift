@@ -6,38 +6,6 @@
 //
 
 extension ApiRepository {
-    func getReplies(
-        sort: CommentSortType = .new,
-        page: Int,
-        limit: Int,
-        unreadOnly: Bool = false
-    ) async throws -> [Reply2Snapshot] {
-        try await performingForConnection { connection in
-            try await connection.getReplies(
-                sort: sort,
-                page: page,
-                limit: limit,
-                unreadOnly: unreadOnly
-            )
-        }
-    }
-    
-    func getMentions(
-        sort: CommentSortType = .new,
-        page: Int,
-        limit: Int,
-        unreadOnly: Bool = false
-    ) async throws -> [Reply2Snapshot] {
-        try await performingForConnection { connection in
-            try await connection.getMentions(
-                sort: sort,
-                page: page,
-                limit: limit,
-                unreadOnly: unreadOnly
-            )
-        }
-    }
-    
     func getMessages(
         creatorId: Int? = nil,
         page: Int,

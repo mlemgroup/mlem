@@ -417,20 +417,6 @@ public protocol InstanceConnection {
 
     // MARK: - Inbox
     
-    func getReplies(
-        sort: CommentSortType,
-        page: Int,
-        limit: Int,
-        unreadOnly: Bool
-    ) async throws -> [Reply2Snapshot]
-    
-    func getMentions(
-        sort: CommentSortType,
-        page: Int,
-        limit: Int,
-        unreadOnly: Bool
-    ) async throws -> [Reply2Snapshot]
-    
     func getMessages(
         creatorId: Int?,
         page: Int,
