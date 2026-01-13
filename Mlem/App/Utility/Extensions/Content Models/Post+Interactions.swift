@@ -69,10 +69,17 @@ extension Post: ShimInteractable2Providing {
     }
     
     var toggleSaved: ((Set<FeedbackType>) -> Void)? {
-        if let saved = saved.value {
+        if let saved = saved.value,
+           let votes = votes.value,
+           let updateVote {
             return { feedback in
                 if feedback.contains(.haptic) {
                     HapticManager.main.play(haptic: .lightSuccess, tier: .low)
+                }
+                
+                @Setting(\.behavior_upvoteOnSave) var upvoteOnSave
+                if upvoteOnSave, !saved, votes.myVote != .upvote {
+                    updateVote(.upvote)
                 }
                 self.updateSaved(!saved)
             }
