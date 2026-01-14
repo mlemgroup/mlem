@@ -456,17 +456,17 @@ extension Post {
                let viewVotesAction = viewVotesAction(navigation: navigation) {
                 viewVotesAction
             }
-            if !isOwnPost {
-                if canModerate { removeAction(appState: appState) }
-                if let creator = creator.value, let community = community.value {
-                    creator.banActions(appState: appState, community: community, withUserLabel: true)
-                }
+        }
+        if !isOwnPost {
+            if canModerate { removeAction(appState: appState) }
+            if let creator = creator.value, let community = community.value {
+                creator.banActions(appState: appState, community: community, withUserLabel: true)
             }
-            if api.isAdmin, api.supports(.purgeContent, defaultValue: false) {
-                purgeAction(appState: appState)
-                if !isOwnPost, let purgeCreatorAction = purgeCreatorAction(appState: appState) {
-                    purgeCreatorAction
-                }
+        }
+        if api.isAdmin, api.supports(.purgeContent, defaultValue: false) {
+            purgeAction(appState: appState)
+            if !isOwnPost, let purgeCreatorAction = purgeCreatorAction(appState: appState) {
+                purgeCreatorAction
             }
         }
         if let report {
