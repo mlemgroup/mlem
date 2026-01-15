@@ -48,6 +48,7 @@ public struct PostProperties: UnifiedPropertiesProviding {
     // From Post3Snapshot
     var crossPosts: [Post]?
     
+    /// Updates this properties with the values from the given PostProperties, preferring the incoming values
     @MainActor
     public mutating func update(with properties: Self) {
         actorId = properties.actorId
@@ -84,6 +85,27 @@ public struct PostProperties: UnifiedPropertiesProviding {
         hidden = properties.hidden ?? hidden
         
         crossPosts = properties.crossPosts ?? crossPosts
+    }
+    
+    /// Updates this properties with the values from the given PostProperties, preferring the current values
+    @MainActor
+    public mutating func softUpdate(with properties: Self) {
+        // all tier 1 properties ignored since guaranteed to be present already
+        
+        creator = creator ?? properties.creator
+        community = community ?? properties.community
+        commentCount = commentCount ?? properties.commentCount
+        unreadCommentCount = unreadCommentCount ?? properties.unreadCommentCount
+        creatorIsModerator = creatorIsModerator ?? properties.creatorIsModerator
+        creatorIsAdmin = creatorIsAdmin ?? properties.creatorIsAdmin
+        creatorBannedFromCommunity = creatorBannedFromCommunity ?? properties.creatorBannedFromCommunity
+        creatorBlocked = creatorBlocked ?? properties.creatorBlocked
+        votes = votes ?? properties.votes
+        saved = saved ?? properties.saved
+        read = read ?? properties.read
+        hidden = hidden ?? properties.hidden
+        
+        crossPosts = crossPosts ?? properties.crossPosts
     }
     
     /// Constructs a PostProperties from a given snapshot

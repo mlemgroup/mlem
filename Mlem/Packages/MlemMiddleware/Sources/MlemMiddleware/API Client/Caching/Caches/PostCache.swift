@@ -21,11 +21,22 @@ public enum AnyPostSnapshot: CacheIdentifiable {
 
 class PostCache: ApiTypeBackedCache<Post, AnyPostSnapshot> {
     override func performModelTranslation(api: ApiClient, from apiType: AnyPostSnapshot) -> Post {
+        return .init(api: api, properties: enrichSnapshot(api: api, snapshot: apiType))
+    }
+    
+    override func updateModel(_ item: Post, with apiType: AnyPostSnapshot, semaphore: UInt? = nil) {
+        // this ensures that high-tier data is available where expected, but uses softUpdate to avoid overwriting
+        // potentially more recent data
+        item.properties.softUpdate(with: enrichSnapshot(api: item.api, snapshot: apiType))
+    }
+    
+    @MainActor
+    private func enrichSnapshot(api: ApiClient, snapshot: AnyPostSnapshot) -> PostProperties {
         let creator: (any Person)?
         let community: (any Community)?
         let crossPosts: [Post]?
         
-        switch apiType {
+        switch snapshot {
         case .post1:
             creator = nil
             community = nil
@@ -40,18 +51,6 @@ class PostCache: ApiTypeBackedCache<Post, AnyPostSnapshot> {
             crossPosts = api.caches.post.getModels(api: api, from: snapshot.crossPosts.map { .post2($0) })
         }
         
-        return .init(
-            api: api,
-            snapshot: apiType,
-            creator: creator,
-            community: community,
-            crossPosts: crossPosts)
-    }
-    
-    override func updateModel(_ item: Post, with apiType: AnyPostSnapshot, semaphore: UInt? = nil) {
-        // TODO: unified models figure out what to do with this function
-        Task {
-            await item.updateQueue.attemptDirectUpdate(with: .init(snapshot: apiType))
-        }
+        return .init(snapshot: snapshot, creator: creator, community: community, crossPosts: crossPosts)
     }
 }

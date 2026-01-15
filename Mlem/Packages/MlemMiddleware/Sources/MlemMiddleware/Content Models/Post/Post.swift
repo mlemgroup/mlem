@@ -35,19 +35,17 @@ public class Post:
     
     public init(
         api: ApiClient,
-        snapshot: AnyPostSnapshot,
-        creator: (any Person)? = nil,
-        community: (any Community)? = nil,
-        crossPosts: [Post]? = nil
+        properties: PostProperties
     ) {
         self.api = api
-        self.properties = .init(snapshot: snapshot, creator: creator, community: community, crossPosts: crossPosts)
+        self.properties = properties
     }
     
     // MARK: Core
     
     @ObservationIgnored
     lazy var updateQueue: UnifiedUpdateQueue<Post> = .init(parent: self)
+    
     public var api: ApiClient
     public var properties: PostProperties {
         didSet {
