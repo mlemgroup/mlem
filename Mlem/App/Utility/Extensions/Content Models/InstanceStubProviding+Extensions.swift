@@ -181,23 +181,7 @@ extension InstanceStubProviding {
         showConfirmation: Bool = true,
         allowExternalBlocking: Bool = false
     ) -> BasicAction {
-        let blocked: Bool
-        let callback: (() -> Void)?
-        if let self = self as? any Instance1Providing, api.token != nil {
-            blocked = self.blocked
-            callback = api.canInteract(appState: appState) ? { self.toggleBlocked(feedback: feedback) } : nil
-        } else if allowExternalBlocking, let session = (AppState.main.firstSession as? UserSession) {
-            blocked = session.blocks?.contains(self) ?? false
-            callback = { session.toggleInstanceBlock(actorId: actorId) }
-        } else {
-            blocked = false
-            callback = nil
-        }
-        return .init(
-            id: "blockInstance\(actorId)",
-            appearance: .block(isOn: blocked),
-            confirmationPrompt: (!blocked && showConfirmation) ? "Really block this instance?" : nil,
-            callback: callback
-        )
+        // TEMP CODE TO MAKE BUILD WORK; DELETE ME
+        return .init(id: "test", appearance: .collapse())
     }
 }
