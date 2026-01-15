@@ -19,7 +19,8 @@ struct CrossPostListView: View {
     @State private var isExpanded: Bool = false
     
     var body: some View {
-        ExpectedView(post.crossPosts) { crossPosts in
+        // does not use ExpectedView because of padding reasons and because the animation is not necessary
+        if let crossPosts = post.crossPosts.value {
             content(crossPosts)
         }
     }

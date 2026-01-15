@@ -84,7 +84,7 @@ extension NavigationPage {
                 Text(verbatim: "Error")
             }
         case let .post(post, scrollTargetedComment, communityContext, _):
-            // TODO: NOW better way of doing this embed
+            // TODO: NOW don't embed at all?
             ExpandedPostView(post: post, tracker: nil, scrollTargetedComment: scrollTargetedComment?.wrappedValue) {
                 CrossPostListView(post: post)
                     .padding(.horizontal, Constants.main.standardSpacing)

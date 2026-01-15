@@ -111,6 +111,7 @@ struct ExpandedPostView<Content: View>: View {
                     ) {
                         postView(post, scrollProxy: proxy)
                             .padding(.horizontal, Constants.main.standardSpacing)
+                        
                         content
                             .padding(.top, compactComments ? Constants.main.halfSpacing : Constants.main.standardSpacing)
                         
