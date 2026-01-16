@@ -24,7 +24,7 @@ extension Post {
         guard let toggleUpvoted, let votes = votes.value else { return nil }
         return .init(id: "upvote\(actorId)",
                      appearance: .upvote(isOn: votes.myVote == .upvote),
-                     callback: { toggleUpvoted(feedback) }
+                     callback: api.canInteract(appState: appState) ? { @MainActor in toggleUpvoted(feedback) } : nil
         )
     }
     

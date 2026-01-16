@@ -147,12 +147,11 @@ extension Interactable1Providing {
     // MARK: Actions
     
     func upvoteAction(appState: AppState, feedback: Set<FeedbackType> = []) -> BasicAction? {
-        guard api.canInteract(appState: appState),
-              let votes = self2?.votes.value else { return nil }
+        guard let votes = self2?.votes.value else { return nil }
         return .init(
             id: "upvote\(uid)",
             appearance: .upvote(isOn: votes.myVote == .upvote),
-            callback: { @MainActor in self.toggleUpvoted(feedback: feedback) }
+            callback: api.canInteract(appState: appState) ? { @MainActor in self.toggleUpvoted(feedback: feedback) } : nil
         )
     }
     
@@ -161,13 +160,13 @@ extension Interactable1Providing {
         feedback: Set<FeedbackType> = [],
         downvotesEnabled: Bool
     ) -> BasicAction? {
-        guard api.canInteract(appState: appState),
-                downvotesEnabled,
-              let votes = self2?.votes.value else { return nil }
+        guard let votes = self2?.votes.value else { return nil }
         return .init(
             id: "downvote\(uid)",
             appearance: .downvote(isOn: votes.myVote == .downvote),
-            callback: { @MainActor in self.toggleDownvoted(feedback: feedback) }
+            callback: (api.canInteract(appState: appState) && downvotesEnabled) ?
+            { @MainActor in self.toggleDownvoted(feedback: feedback) } :
+                nil
         )
     }
     
