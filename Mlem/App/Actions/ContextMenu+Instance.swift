@@ -12,6 +12,7 @@ import SwiftUI
 private let seeds: [ActionSeed] = [
     .visit,
     .logIn,
+    .signUp,
     .openInBrowser,
     .share,
     .block
