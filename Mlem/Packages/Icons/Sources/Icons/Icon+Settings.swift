@@ -33,8 +33,6 @@ public extension Icon {
         public let developerMode: Icon = .init("wrench.adjustable.fill")
         public let limitImageHeightSetting: Icon = .init("rectangle.compress.vertical")
         public let appLockSettings: Icon = .init("lock.app.dashed")
-        public let logIn: Icon = .init("person.text.rectangle")
-        public let signUp: Icon = .init("pencil.and.list.clipboard")
         public let sidebar: Icon = .init("sidebar.left")
         public let infiniteScroll: Icon = .init("infinity")
         public let markReadOnScroll: Icon = .init("book")
