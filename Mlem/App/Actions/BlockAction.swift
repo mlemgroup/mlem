@@ -153,6 +153,7 @@ extension BlockAction {
         ).withVisibility(visibility(environment))
     }
 
+    // swiftlint:disable:next cyclomatic_complexity
     private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {
         let canInteract = content.allSatisfy {
             switch $0 {
@@ -169,6 +170,10 @@ extension BlockAction {
             case let .blockable(person as any Person):
                 guard let myPersonId = person.api.myPerson?.id else { return .hidden }
                 guard person.id != myPersonId else { return .hidden }
+            case let .instance(instance):
+                let api = environment.appState.firstApi
+                guard api.supports(.blockInstances, defaultValue: false) else { return .hidden }
+                guard api.actorId != instance.actorId else { return .hidden }
             default:
             break
             }
