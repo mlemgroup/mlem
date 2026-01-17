@@ -29,7 +29,8 @@ struct PostStubResolutionPage: View {
         if let upgradeError {
             ErrorView(.init(
                 error: upgradeError,
-                refresh: fetchPost))
+                refresh: fetchPost
+            ))
         } else {
             ProgressView()
                 .task {
