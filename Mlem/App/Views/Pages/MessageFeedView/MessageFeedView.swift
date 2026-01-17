@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 2024-12-22.
 //
 
+import Actions
 import ComponentViews
 import Icons
 import MlemMiddleware
@@ -67,14 +68,7 @@ struct MessageFeedView: View {
                                     if person is any Person3Providing, proxy.isLoading {
                                         ProgressView()
                                     } else {
-                                        MenuButtons {
-                                            person.menuActions(
-                                                appState: appState,
-                                                isInMessageFeed: true,
-                                                navigation: navigation,
-                                                community: nil
-                                            )
-                                        }
+                                        ActionButtons(person: person)
                                     }
                                 }
                             }
