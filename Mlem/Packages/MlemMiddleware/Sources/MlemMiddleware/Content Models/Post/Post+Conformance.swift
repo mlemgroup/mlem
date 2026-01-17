@@ -18,7 +18,7 @@ public extension Post {
 // MARK: ContentModel
 
 public extension Post {
-    static var tierNumber: Int =  4
+    static var tierNumber: Int = 4
 }
 
 // MARK: FeedLoadable
