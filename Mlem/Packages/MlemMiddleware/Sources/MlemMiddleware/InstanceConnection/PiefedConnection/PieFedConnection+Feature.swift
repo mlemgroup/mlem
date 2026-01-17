@@ -48,7 +48,7 @@ public extension PieFedConnection {
             version >= .v1_3_0
         case .commentSearch:
             version >= .v1_3_0
-        case .userNotes:
+        case .userNotes, .searchLocalComments, .fetchLinkMetadata:
             version >= .v1_4_0
         case .moderatorSetNsfw: true
         default: false
@@ -86,7 +86,7 @@ private extension CommentSortType {
         case .new: .zero
         case .old: .zero
         case .hot: .zero
-        case .controversial: .infinity
+        case .controversial: .v1_4_0
         case let .top(timeRange): timeRange == .allTime ? .zero : .infinity
         }
     }

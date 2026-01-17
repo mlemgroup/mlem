@@ -16,11 +16,9 @@ extension SearchView {
         @Binding var filter: LocationFilter
         var requiredFeature: Feature?
         
-        @State var instanceSupportsRequiredFeature: Bool?
-        
         var allowActiveAccountLocalInstanceSearch: Bool {
-            if requiredFeature != nil {
-                instanceSupportsRequiredFeature ?? false
+            if let requiredFeature {
+                appState.firstApi.supports(requiredFeature, defaultValue: false)
             } else {
                 true
             }
@@ -98,15 +96,6 @@ extension SearchView {
                         navigation.openSheet(.instancePicker(callback: { instance in
                             filter = .instance(instance)
                         }, requiredFeature: requiredFeature))
-                    }
-                }
-            }
-            .task(id: appState.firstApi) {
-                if let requiredFeature {
-                    do {
-                        instanceSupportsRequiredFeature = try await appState.firstApi.supports(requiredFeature)
-                    } catch {
-                        handleError(error)
                     }
                 }
             }

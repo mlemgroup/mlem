@@ -24,7 +24,7 @@ public extension CommentSortType {
         case .new: .new
         case .old: .old
         case .hot: .hot
-        case .controversial: nil
+        case .controversial: .controversial
         case .top(.allTime): .top
         case .top: nil
         }

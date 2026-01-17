@@ -50,6 +50,9 @@ extension SendMessageAction {
         if environment.isInMessageFeed {
             return .hidden
         }
+        if !entity.api.canInteract(appState: environment.appState) {
+            return .disabled
+        }
         return .enabled
     }
 }
