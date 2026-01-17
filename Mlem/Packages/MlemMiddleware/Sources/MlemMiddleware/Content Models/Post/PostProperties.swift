@@ -85,6 +85,10 @@ public struct PostProperties: UnifiedPropertiesProviding {
         hidden = properties.hidden ?? hidden
         
         crossPosts = properties.crossPosts ?? crossPosts
+        
+        if let creator, let creatorBannedFromCommunity {
+            creator.person1.updateKnownCommunityBanState(id: communityId, banned: creatorBannedFromCommunity)
+        }
     }
     
     /// Updates this properties with the values from the given PostProperties, preferring the current values
@@ -106,6 +110,10 @@ public struct PostProperties: UnifiedPropertiesProviding {
         hidden = hidden ?? properties.hidden
         
         crossPosts = crossPosts ?? properties.crossPosts
+        
+        if let creator, let creatorBannedFromCommunity {
+            creator.person1.updateKnownCommunityBanState(id: communityId, banned: creatorBannedFromCommunity)
+        }
     }
     
     /// Constructs a PostProperties from a given snapshot
