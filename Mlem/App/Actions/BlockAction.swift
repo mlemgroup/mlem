@@ -164,9 +164,14 @@ extension BlockAction {
         }
         guard canInteract else { return .hidden }
 
-        if let person = content.compactMap({ $0.blockable as? any Person }).first {
-            guard let myPersonId = person.api.myPerson?.id else { return .hidden }
-            guard person.id != myPersonId else { return .hidden }
+        for item in content {
+            switch item {
+            case let .blockable(person as any Person):
+                guard let myPersonId = person.api.myPerson?.id else { return .hidden }
+                guard person.id != myPersonId else { return .hidden }
+            default:
+            break
+            }
         }
 
         return .enabled
