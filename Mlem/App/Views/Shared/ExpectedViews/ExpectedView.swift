@@ -13,7 +13,11 @@ struct ExpectedView<Value, Content: View, Placeholder: View>: View {
     @ViewBuilder let view: (Value) -> Content
     @ViewBuilder let placeholder: (() -> Placeholder)
     
-    init(_ value: ExpectedValue<Value>, view: @escaping (Value) -> Content, placeholder: @escaping (() -> Placeholder) = { EmptyView() }) {
+    init(
+        _ value: ExpectedValue<Value>, 
+        view: @escaping (Value) -> Content,
+        placeholder: @escaping () -> Placeholder = { EmptyView() }
+    ) {
         self.value = value
         self.view = view
         self.placeholder = placeholder
