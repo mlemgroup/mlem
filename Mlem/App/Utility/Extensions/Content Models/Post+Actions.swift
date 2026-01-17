@@ -29,32 +29,35 @@ extension Post {
     }
     
     func downvoteAction(appState: AppState, feedback: Set<FeedbackType> = []) -> BasicAction? {
-        guard api.canInteract(appState: appState) && downvotesEnabled,
-              let toggleDownvoted, let votes = votes.value else { return nil }
+        guard let toggleDownvoted, let votes = votes.value else { return nil }
         return .init(
             id: "downvote\(actorId)",
             appearance: .downvote(isOn: votes.myVote == .downvote),
-            callback: { toggleDownvoted(feedback) }
+            callback: api.canInteract(appState: appState) && downvotesEnabled
+            ? { @MainActor in toggleDownvoted(feedback) }
+            : nil
         )
     }
     
     func saveAction(appState: AppState, feedback: Set<FeedbackType> = []) -> BasicAction? {
-        guard api.canInteract(appState: appState),
-              let toggleSaved, let saved = saved.value else { return nil }
+        guard let toggleSaved, let saved = saved.value else { return nil }
         return .init(
             id: "save\(actorId)",
             appearance: .save(isOn: saved),
-            callback: { toggleSaved(feedback) }
+            callback: api.canInteract(appState: appState)
+            ? { @MainActor in toggleSaved(feedback) }
+            : nil
         )
     }
     
     func hideAction(appState: AppState, feedback: Set<FeedbackType>) -> BasicAction? {
-        guard api.supports(.hidePosts, defaultValue: true) && api.canInteract(appState: appState),
-              let hidden = hidden.value, let toggleHidden = toggleHidden else { return nil }
+        guard let hidden = hidden.value, let toggleHidden = toggleHidden else { return nil }
         return .init(
             id: "hide\(uid)",
             appearance: .hide(isOn: hidden),
-            callback: { toggleHidden(feedback) }
+            callback: api.supports(.hidePosts, defaultValue: true) && api.canInteract(appState: appState)
+            ? { @MainActor in toggleHidden(feedback) }
+            : nil
         )
     }
     
@@ -80,8 +83,7 @@ extension Post {
     }
     
     func blockCommunityAction(appState: AppState, feedback: Set<FeedbackType> = [], showConfirmation: Bool = true) -> BasicAction? {
-        guard api.canInteract(appState: appState),
-              let community = community.value else { return nil }
+        guard let community = community.value else { return nil }
         return .init(
             id: "blockCommunity\(actorId.description)",
             appearance: .init(
@@ -92,7 +94,9 @@ extension Post {
                 icon: Icons.block
             ),
             confirmationPrompt: showConfirmation ? "Really block this community?" : nil,
-            callback: { @MainActor in community.toggleBlocked(feedback: feedback) }
+            callback: api.canInteract(appState: appState)
+            ? { @MainActor in community.toggleBlocked(feedback: feedback) }
+            : nil
         )
     }
     
@@ -257,12 +261,13 @@ extension Post {
     }
     
     func purgeCreatorAction(appState: AppState) -> BasicAction? {
-        guard api.canInteract(appState: appState) && api.isAdmin,
-              let creator = creator.value else { return nil }
+        guard let creator = creator.value else { return nil }
         return .init(
             id: "purgeCreator\(uid)",
             appearance: .purgePerson(),
-            callback: creator.showPurgeSheet
+            callback: api.canInteract(appState: appState) && api.isAdmin
+            ? { @MainActor in creator.showPurgeSheet() }
+            : nil
         )
     }
     
@@ -404,7 +409,7 @@ extension Post {
             if let upvoteAction = upvoteAction(appState: appState, feedback: feedback) { upvoteAction }
             if let downvoteAction = downvoteAction(appState: appState, feedback: feedback) { downvoteAction }
             if let saveAction = saveAction(appState: appState, feedback: feedback) { saveAction }
-            if let replyAction = replyAction(appState: appState, commentTreeTracker: commentTreeTracker) { replyAction }
+            replyAction(appState: appState, commentTreeTracker: commentTreeTracker)
             if !deleted {
                 selectTextAction()
             }

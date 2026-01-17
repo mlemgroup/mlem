@@ -164,48 +164,53 @@ extension Interactable1Providing {
         return .init(
             id: "downvote\(uid)",
             appearance: .downvote(isOn: votes.myVote == .downvote),
-            callback: (api.canInteract(appState: appState) && downvotesEnabled) ?
-            { @MainActor in self.toggleDownvoted(feedback: feedback) } :
-                nil
+            callback: (api.canInteract(appState: appState) && downvotesEnabled)
+            ? { @MainActor in self.toggleDownvoted(feedback: feedback) }
+            : nil
         )
     }
     
     func saveAction(appState: AppState, feedback: Set<FeedbackType> = []) -> BasicAction? {
-        guard api.canInteract(appState: appState), let saved = self2?.saved.value else { return nil }
+        guard let saved = self2?.saved.value else { return nil }
         return .init(
             id: "save\(uid)",
             appearance: .save(isOn: saved),
-            callback: { @MainActor in self.toggleSaved(feedback: feedback) }
+            callback: api.canInteract(appState: appState)
+            ? { @MainActor in self.toggleSaved(feedback: feedback) }
+            : nil
         )
     }
     
-    func replyAction(appState: AppState, commentTreeTracker: CommentTreeTracker? = nil) -> BasicAction? {
-        guard api.canInteract(appState: appState) else { return nil }
+    func replyAction(appState: AppState, commentTreeTracker: CommentTreeTracker? = nil) -> BasicAction {
         return .init(
             id: "reply\(uid)",
             appearance: .reply(),
-            callback: { @MainActor in
-                self.showReplySheet(commentTreeTracker: commentTreeTracker)
-            }
+            callback: api.canInteract(appState: appState)
+            ? { @MainActor in self.showReplySheet(commentTreeTracker: commentTreeTracker) }
+            : nil
         )
     }
     
     func blockCreatorAction(appState: AppState, feedback: Set<FeedbackType> = [], showConfirmation: Bool = true) -> BasicAction? {
-        guard api.canInteract(appState: appState), let creator = self2?.creator.value else { return nil }
+        guard let creator = self2?.creator.value else { return nil }
         return .init(
             id: "blockCreator\(uid)",
             appearance: .blockCreator(),
             confirmationPrompt: showConfirmation ? "Really block this user?" : nil,
-            callback: { @MainActor in creator.toggleBlocked(feedback: feedback) }
+            callback: api.canInteract(appState: appState)
+            ? { @MainActor in creator.toggleBlocked(feedback: feedback) }
+            : nil
         )
     }
     
     func purgeCreatorAction(appState: AppState) -> BasicAction? {
-        guard api.canInteract(appState: appState) && api.isAdmin, let creator = self2?.creator.value else { return nil }
+        guard let creator = self2?.creator.value else { return nil }
         return .init(
             id: "purgeCreator\(uid)",
             appearance: .purgePerson(),
-            callback: creator.showPurgeSheet
+            callback: api.canInteract(appState: appState) && api.isAdmin
+            ? { @MainActor in creator.showPurgeSheet() }
+            : nil
         )
     }
     

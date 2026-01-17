@@ -7,6 +7,7 @@
 
 import Foundation
 import MlemMiddleware
+import os
 
 extension Person1Providing {
     var shouldHideInFeed: Bool { blocked || purged }
@@ -242,6 +243,9 @@ extension Person1Providing {
     func banFromCommunityAction(appState: AppState, community: any Community, withUserLabel: Bool = false) -> BasicAction {
         let isBanned = isBannedFromCommunity(community)
         let callback: (@MainActor () -> Void)?
+        Logger.dev.info("Is banned: \(String(describing: isBanned))")
+        Logger.dev.info("Can interact: \(String(describing: self.api.canInteract(appState: appState)))")
+        Logger.dev.info("Can moderate: \(community.canModerate)")
         if let isBanned, api.canInteract(appState: appState), community.canModerate {
             callback = {
                 self.showBanSheet(
@@ -253,6 +257,8 @@ extension Person1Providing {
         } else {
             callback = nil
         }
+        
+        Logger.dev.info("Callback nil: \(callback == nil)")
         
         return .init(
             id: "banFromCommunity\(uid)",

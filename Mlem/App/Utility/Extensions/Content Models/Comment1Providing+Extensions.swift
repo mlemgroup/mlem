@@ -78,7 +78,7 @@ extension Comment1Providing {
                 feedback: feedback,
                 downvotesEnabled: downvotesEnabled) { downvoteAction}
             if let saveAction = saveAction(appState: appState, feedback: feedback) { saveAction }
-            if let replyAction = replyAction(appState: appState, commentTreeTracker: commentTreeTracker) { replyAction }
+            replyAction(appState: appState, commentTreeTracker: commentTreeTracker)
             if let notification {
                 markReadAction(appState: appState, notification: notification, feedback: feedback)
             }
