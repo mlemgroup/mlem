@@ -11,7 +11,7 @@ import MlemMiddleware
 struct ExpectedView<Value, Content: View, Placeholder: View>: View {
     let value: ExpectedValue<Value>
     @ViewBuilder let view: (Value) -> Content
-    @ViewBuilder let placeholder: (() -> Placeholder)
+    @ViewBuilder let placeholder: () -> Placeholder
     
     init(
         _ value: ExpectedValue<Value>, 
