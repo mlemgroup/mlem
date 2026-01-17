@@ -64,7 +64,11 @@ class NavigationLayer: Identifiable {
         if hasNavigationStack {
             // This prevents keyboard animation glitches when navigating whilst the keyboard is open
             UIApplication.shared.firstKeyWindow?.endEditing(true)
-            path[path.count - 1] = page
+            if path.count == 0 {
+                root = page
+            } else {
+                path[path.count - 1] = page
+            }
         } else {
             openSheet(page)
         }
