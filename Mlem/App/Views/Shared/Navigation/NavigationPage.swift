@@ -29,10 +29,7 @@ enum NavigationPage: Hashable {
         communityContext: HashWrapper<any Community1Providing>? = nil,
         navigationNamespace: Namespace.ID? = nil
     )
-    case postStub(
-        _ post: HashWrapper<any PostStubProviding>,
-        navigationNamespace: Namespace.ID? = nil
-    )
+    case postStub(_ post: PostStub, navigationNamespace: Namespace.ID? = nil)
     case comment(
         _ comment: HashWrapper<any Comment1Providing>,
         post: Post,
@@ -102,10 +99,6 @@ enum NavigationPage: Hashable {
         } else {
             Self.post(post, navigationNamespace: navigationNamespace)
         }
-    }
-    
-    static func postStub(_ post: any PostStubProviding) -> NavigationPage {
-        return Self.postStub(.init(wrappedValue: post), navigationNamespace: nil)
     }
     
     static func comment(

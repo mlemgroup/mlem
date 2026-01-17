@@ -15,7 +15,7 @@ import Theming
 struct PostStubResolutionPage: View {
     @Environment(NavigationLayer.self) var navigation
     
-    let stub: any PostStubProviding
+    let stub: PostStub
     
     @State var upgradeError: Error?
     
