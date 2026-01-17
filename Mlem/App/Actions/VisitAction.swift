@@ -28,6 +28,13 @@ extension ActionSeed {
 
 extension VisitAction {
     static let label: ActionLabel = .init("Visit", icon: .lemmy.visitInstance)
+
+    func createLabel(environment: EnvironmentValues) -> ActionLabel {
+        let api = environment.appState.firstApi
+        let isVisiting = api.host == instance.host && api.token == nil
+
+        return Self.label.withVisibility(isVisiting ? .disabled : .enabled)
+    }
 }
 
 // MARK: - Behavior
