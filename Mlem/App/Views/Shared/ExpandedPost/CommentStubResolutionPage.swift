@@ -29,7 +29,8 @@ struct CommentStubResolutionPage: View {
         if let upgradeError {
             ErrorView(.init(
                 error: upgradeError,
-                        refresh: fetchComment))
+                refresh: fetchComment
+            ))
         } else {
             ProgressView()
                 .task {
