@@ -169,6 +169,20 @@ public struct PostProperties: UnifiedPropertiesProviding {
     
     /// Constructs a PostProperties from a given snapshot, including external models
     public init(snapshot: AnyPostSnapshot, creator: (any Person)?, community: (any Community)?, crossPosts: [Post]?) {
+        if let creator {
+            switch snapshot {
+            case let .post2(post2Snapshot):
+                creator.person1.updateKnownCommunityBanState(
+                    id: post2Snapshot.community.id,
+                    banned: post2Snapshot.creatorBannedFromCommunity)
+            case let .post3(post3Snapshot):
+                creator.person1.updateKnownCommunityBanState(
+                    id: post3Snapshot.community.community.id,
+                    banned: post3Snapshot.post.creatorBannedFromCommunity)
+            default: break // noop
+            }
+        }
+        
         self.init(snapshot: snapshot)
         self.creator = creator
         self.community = community
