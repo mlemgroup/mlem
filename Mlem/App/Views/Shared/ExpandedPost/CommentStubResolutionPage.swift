@@ -20,32 +20,47 @@ struct CommentStubResolutionPage: View {
     @State var upgradeError: Error?
     
     var body: some View {
+        content
+            .themedGroupedBackground()
+    }
+    
+    @ViewBuilder
+    var content: some View {
         if let upgradeError {
-            ErrorView(.init(error: upgradeError))
+            ErrorView(.init(
+                error: upgradeError,
+                        refresh: fetchComment))
         } else {
             ProgressView()
                 .task {
-                    do {
-                        // TODO: UnifiedCommentModel remove this manual fetch and rework CommentPage accordingly
-                        let upgraded = try await stub.upgrade()
-                        let post: Post
-                        if let upgradedPost = upgraded.post_ {
-                            post = upgradedPost
-                        } else {
-                            post = try await upgraded.api.getPost(id: upgraded.postId)
-                        }
-                        // TODO: NOW make this smoother
-                        navigation.replace(.comment(
-                            upgraded,
-                            post: post,
-                            comments: comments,
-                            showViewPostButton: showViewPostButton,
-                            exposeRemovedContent: exposeRemovedContent
-                        ))
-                    } catch {
-                        upgradeError = error
-                    }
+                    await fetchComment()
                 }
+        }
+    }
+    
+    @discardableResult
+    func fetchComment() async -> Bool {
+        do {
+            // TODO: UnifiedCommentModel remove this manual fetch and rework CommentPage accordingly
+            let upgraded = try await stub.upgrade()
+            let post: Post
+            if let upgradedPost = upgraded.post_ {
+                post = upgradedPost
+            } else {
+                post = try await upgraded.api.getPost(id: upgraded.postId)
+            }
+            // TODO: NOW make this smoother
+            navigation.replace(.comment(
+                upgraded,
+                post: post,
+                comments: comments,
+                showViewPostButton: showViewPostButton,
+                exposeRemovedContent: exposeRemovedContent
+            ))
+            return true
+        } catch {
+            upgradeError = error
+            return false
         }
     }
 }

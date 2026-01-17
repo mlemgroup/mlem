@@ -20,18 +20,33 @@ struct PostStubResolutionPage: View {
     @State var upgradeError: Error?
     
     var body: some View {
+        content
+            .themedGroupedBackground()
+    }
+    
+    @ViewBuilder
+    var content: some View {
         if let upgradeError {
-            ErrorView(.init(error: upgradeError))
+            ErrorView(.init(
+                error: upgradeError,
+                refresh: fetchPost))
         } else {
             ProgressView()
                 .task {
-                    do {
-                        let upgraded = try await stub.upgrade()
-                        navigation.replace(.post(upgraded))
-                    } catch {
-                        upgradeError = error
-                    }
+                    await fetchPost()
                 }
+        }
+    }
+    
+    @discardableResult
+    func fetchPost() async -> Bool {
+        do {
+            let upgraded = try await stub.upgrade()
+            navigation.replace(.post(upgraded))
+            return true
+        } catch {
+            upgradeError = error
+            return false
         }
     }
 }
