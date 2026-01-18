@@ -77,7 +77,7 @@ struct ExpandedPostView<Content: View>: View {
             VStack {
                 if showLoadingSymbol {
                     ZStack {
-                        palette.background.primary
+                        palette.groupedBackground.primary
                             .ignoresSafeArea()
                         ProgressView()
                             .tint(.secondary)
