@@ -113,7 +113,8 @@ public actor UnifiedUpdateQueue<Model: UnifiedModelProviding> {
     @MainActor
     private func updateParent(_ parent: Model, with properties: Model.Properties) {
          // parent must be passed in rather than accessed directly due to actor access constraints
-        parent.properties.update(with: properties)
+        // parent.properties.update(with: properties)
+        parent.update(with: properties)
     }
     
     enum UpdateTask {

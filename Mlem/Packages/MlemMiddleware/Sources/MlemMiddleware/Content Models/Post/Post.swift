@@ -39,6 +39,108 @@ public class Post:
     ) {
         self.api = api
         self.properties = properties
+        
+        func expectedValue<T>(_ value: T?) -> ExpectedValue<T> {
+            .init(
+                value: value,
+                provideValue: { try await self.upgrade() })
+        }
+        
+        func dummyExpectedValue<T>(_ value: T?) -> ExpectedValue<T> {
+            .init(
+                value: value,
+                provideValue: { assertionFailure("This should be overridden") })
+        }
+        
+        self.actorId = properties.actorId
+        self.id = properties.id
+        self.creatorId = properties.creatorId
+        self.communityId = properties.communityId
+        self.created = properties.created
+        self.title = properties.title
+        self.content = properties.content
+        self.linkUrl = properties.linkUrl
+        self.embed = properties.embed
+        self.nsfw = properties.nsfw
+        self.thumbnailUrl = properties.thumbnailUrl
+        self.updated = properties.updated
+        self.languageId = properties.languageId
+        self.altText = properties.altText
+        self.deleted = properties.deleted
+        self.removed = properties.removed
+        self.pinnedCommunity = properties.pinnedCommunity
+        self.pinnedInstance = properties.pinnedInstance
+        self.locked = properties.locked
+        self.creator = dummyExpectedValue(properties.creator)
+        self.community = dummyExpectedValue(properties.community)
+        self.commentCount = dummyExpectedValue(properties.commentCount)
+        self.unreadCommentCount = dummyExpectedValue(properties.unreadCommentCount)
+        self.creatorIsModerator = dummyExpectedValue(properties.creatorIsModerator)
+        self.creatorIsAdmin = dummyExpectedValue(properties.creatorIsAdmin)
+        self.creatorBannedFromCommunity = dummyExpectedValue(properties.creatorBannedFromCommunity)
+        self.creatorBlocked = dummyExpectedValue(properties.creatorBlocked)
+        self.votes = dummyExpectedValue(properties.votes)
+        self.saved = dummyExpectedValue(properties.saved)
+        self.read = dummyExpectedValue(properties.read)
+        self.hidden = dummyExpectedValue(properties.hidden)
+        self.crossPosts = dummyExpectedValue(properties.crossPosts)
+        
+        self.creator = expectedValue(properties.creator)
+        self.community = expectedValue(properties.community)
+        self.commentCount = expectedValue(properties.commentCount)
+        self.unreadCommentCount = expectedValue(properties.unreadCommentCount)
+        self.creatorIsModerator = expectedValue(properties.creatorIsModerator)
+        self.creatorIsAdmin = expectedValue(properties.creatorIsAdmin)
+        self.creatorBannedFromCommunity = expectedValue(properties.creatorBannedFromCommunity)
+        self.creatorBlocked = expectedValue(properties.creatorBlocked)
+        self.votes = expectedValue(properties.votes)
+        self.saved = expectedValue(properties.saved)
+        self.read = expectedValue(properties.read)
+        self.hidden = expectedValue(properties.hidden)
+        self.crossPosts = expectedValue(properties.crossPosts)
+    }
+    
+    /// Updates this properties with the values from the given PostProperties, preferring the incoming values
+    @MainActor
+    public func update(with properties: PostProperties) {
+//        actorId = properties.actorId
+//        id = properties.id
+//        creatorId = properties.creatorId
+//        communityId = properties.communityId
+//        created = properties.created
+//        title = properties.title
+//        content = properties.content
+//        linkUrl = properties.linkUrl
+//        embed = properties.embed
+//        nsfw = properties.nsfw
+//        thumbnailUrl = properties.thumbnailUrl
+//        updated = properties.updated
+//        languageId = properties.languageId
+//        altText = properties.altText
+//        deleted = properties.deleted
+//        removed = properties.removed
+//        pinnedCommunity = properties.pinnedCommunity
+//        pinnedInstance = properties.pinnedInstance
+//        locked = properties.locked
+
+//        creator.value_ = properties.creator ?? creator.value_
+//        community.value_ = properties.community ?? community.value_
+//        commentCount.value_ = properties.commentCount ?? commentCount.value_
+//        unreadCommentCount.value_ = properties.unreadCommentCount ?? unreadCommentCount.value_
+//        creatorIsModerator.value_ = properties.creatorIsModerator ?? creatorIsModerator.value_
+//        creatorIsAdmin.value_ = properties.creatorIsAdmin ?? creatorIsAdmin.value_
+//        creatorBannedFromCommunity.value_ = properties.creatorBannedFromCommunity ?? creatorBannedFromCommunity.value_
+//        creatorBlocked.value_ = properties.creatorBlocked ?? creatorBlocked.value_
+        votes.value_ = properties.votes ?? votes.value_
+//        saved.value_ = properties.saved ?? saved.value_
+//        read.value_ = properties.read ?? read.value_
+//        hidden.value_ = properties.hidden ?? hidden.value_
+//        
+//        crossPosts.value_ = properties.crossPosts ?? crossPosts.value_
+        
+        if let creator = creator.value_, let creatorBannedFromCommunity = creatorBannedFromCommunity.value_ {
+            creator.person1.updateKnownCommunityBanState(id: communityId, banned: creatorBannedFromCommunity)
+        }
     }
     
     // MARK: Core
@@ -47,15 +149,18 @@ public class Post:
     lazy var updateQueue: UnifiedUpdateQueue<Post> = .init(parent: self)
     
     public var api: ApiClient
-    public var properties: PostProperties {
-        didSet {
-            pinnedCommunityPending = false
-            pinnedInstancePending = false
-            lockedPending = false
-            nsfwPending = false
-            removedPending = false
-        }
-    }
+    
+    @ObservationIgnored
+    public var properties: PostProperties
+//    public var properties: PostProperties {
+//        didSet {
+//            pinnedCommunityPending = false
+//            pinnedInstancePending = false
+//            lockedPending = false
+//            nsfwPending = false
+//            removedPending = false
+//        }
+//    }
     
     public func upgrade() async throws {
         try await updateQueue.upgrade()
@@ -85,91 +190,79 @@ public class Post:
     // MARK: API Properties
     // Properties that are provided directly by the API
     
-    private func expectedValue<T>(_ keyPath: WritableKeyPath<PostProperties, T?>) -> ExpectedValue<T> {
-        .init(
-            getValue: { self.properties[keyPath: keyPath] },
-            provideValue: { try await self.upgrade() })
-    }
+//    private func expectedValue<T>(_ keyPath: WritableKeyPath<Post, T?>) -> ExpectedValue<T> {
+//        .init(
+//            value: self[keyPath: keyPath],
+//            provideValue: { try await self.upgrade() })
+//    }
     
-    public var actorId: ActorIdentifier { properties.actorId }
+    public var actorId: ActorIdentifier
     
-    public var id: Int { properties.id }
+    public var id: Int
     
-    public var creatorId: Int { properties.creatorId }
+    public var creatorId: Int
     
-    public var communityId: Int { properties.communityId }
+    public var communityId: Int
     
-    public var created: Date { properties.created }
+    public var created: Date
     
-    public var title: String { properties.title }
+    public var title: String
     
-    public var content: String? { properties.content }
+    public var content: String?
     
-    public var linkUrl: URL? { properties.linkUrl }
+    public var linkUrl: URL?
     
-    public var embed: PostEmbed? { properties.embed }
+    public var embed: PostEmbed?
     
-    public var nsfw: Bool { properties.nsfw }
+    public var nsfw: Bool
     
-    public var thumbnailUrl: URL? { properties.thumbnailUrl }
+    public var thumbnailUrl: URL?
     
-    public var updated: Date? { properties.updated }
+    public var updated: Date?
     
-    public var languageId: Int { properties.languageId }
+    public var languageId: Int
     
-    public var altText: String? { properties.altText }
+    public var altText: String?
     
-    public var deleted: Bool { properties.deleted }
+    public var deleted: Bool
     
-    public var removed: Bool { properties.removed }
+    public var removed: Bool
     
-    public var pinnedCommunity: Bool { properties.pinnedCommunity }
+    public var pinnedCommunity: Bool
     
-    public var pinnedInstance: Bool { properties.pinnedInstance }
+    public var pinnedInstance: Bool
     
-    public var locked: Bool { properties.locked }
+    public var locked: Bool
 
-    @ObservationIgnored
-    public lazy var creator: ExpectedValue<any Person> = expectedValue(\.creator)
+    public var creator: ExpectedValue<any Person>
     
-    @ObservationIgnored
-    public lazy var community: ExpectedValue<any Community> = expectedValue(\.community)
+    public var community: ExpectedValue<any Community>
     
-    @ObservationIgnored
-    public lazy var commentCount: ExpectedValue<Int> = expectedValue(\.commentCount)
+    public var commentCount: ExpectedValue<Int>
 
-    @ObservationIgnored
-    public lazy var unreadCommentCount: ExpectedValue<Int> = expectedValue(\.unreadCommentCount)
+    public var unreadCommentCount: ExpectedValue<Int>
 
-    @ObservationIgnored
-    public lazy var creatorIsModerator: ExpectedValue<Bool> = expectedValue(\.creatorIsModerator)
+    public var creatorIsModerator: ExpectedValue<Bool>
 
-    @ObservationIgnored
-    public lazy var creatorIsAdmin: ExpectedValue<Bool> = expectedValue(\.creatorIsAdmin)
+    public var creatorIsAdmin: ExpectedValue<Bool>
 
-    @ObservationIgnored
-    public lazy var creatorBannedFromCommunity: ExpectedValue<Bool> = expectedValue(\.creatorBannedFromCommunity)
+    public var creatorBannedFromCommunity: ExpectedValue<Bool>
 
-    @ObservationIgnored
-    public lazy var creatorBlocked: ExpectedValue<Bool> = expectedValue(\.creatorBlocked)
+    public var creatorBlocked: ExpectedValue<Bool>
 
-    @ObservationIgnored
-    public lazy var votes: ExpectedValue<VotesModel> = expectedValue(\.votes)
+    public var votes: ExpectedValue<VotesModel>
 
-    @ObservationIgnored
-    public lazy var saved: ExpectedValue<Bool> = expectedValue(\.saved)
+    public var saved: ExpectedValue<Bool>
 
-    @ObservationIgnored
-    public lazy var read: ExpectedValue<Bool> = .init(
-        getValue: { if let value = self.properties.read { self.readQueued || value } else { nil }},
-        provideValue: { try await self.upgrade() }
-    )
+    public var read: ExpectedValue<Bool>
+//    = .init(
+//        getValue: { if let value = self.properties.read { self.readQueued || value } else { nil }},
+//        provideValue: { try await self.upgrade() }
+//    )
 
-    @ObservationIgnored
-    public lazy var hidden: ExpectedValue<Bool> = expectedValue(\.hidden)
+    public var hidden: ExpectedValue<Bool>
     
-    @ObservationIgnored
-    public lazy var crossPosts: ExpectedValue<[Post]> = expectedValue(\.crossPosts)
+    public var crossPosts: ExpectedValue<[Post]>
 }
 
 // MARK: - Computed
@@ -190,8 +283,8 @@ public extension Post {
 public extension Post {
 
     func updateSaved(_ newValue: Bool) {
-        properties.saved = newValue
-        properties.read = true
+        saved.value_ = newValue
+        read.value_ = true
         
         Task {
             await updateQueue.addItem {
@@ -210,8 +303,8 @@ public extension Post {
     }
     
     private func updateVote(_ newValue: ScoringOperation, votes: VotesModel) {
-        properties.votes = votes.applyScoringOperation(operation: newValue)
-        properties.read = true
+        self.votes.value_ = votes.applyScoringOperation(operation: newValue)
+        read.value_ = true
         
         Task {
             await updateQueue.addItem {
@@ -229,8 +322,8 @@ public extension Post {
     // Hide
     
     func updateHidden(_ newValue: Bool) {
-        properties.hidden = newValue
-        properties.read = true
+        hidden.value_ = newValue
+        read.value_ = true
         
         Task {
             await updateQueue.addItem { properties in
@@ -255,7 +348,7 @@ public extension Post {
                 }
             }
         } else {
-            properties.read = newValue
+            read.value_ = newValue
             Task {
                 await updateQueue.addItem { properties in
                     try await self.api.repository.markPostAsRead(id: self.id, read: newValue)
@@ -287,7 +380,7 @@ public extension Post {
     ///   - newValue: true to pin post, false to unpin
     ///   - callback: if present, when the repository call completes, is called with `.success` if the operation succeeded and `.failure` otherwise.
     func updatePinnedCommunity(_ newValue: Bool, callback: ((UpdateStatus) -> Void)?) {
-        properties.pinnedCommunity = newValue
+        pinnedCommunity = newValue
         pinnedCommunityPending = true
         
         Task {
@@ -309,7 +402,7 @@ public extension Post {
     ///   - newValue: true to pin post, false to unpin
     ///   - callback: if present, when the repository call completes, is called with `.success` if the operation succeeded and `.failure` otherwise.
     func updatePinnedInstance(_ newValue: Bool, callback: ((UpdateStatus) -> Void)?) {
-        properties.pinnedInstance = newValue
+        pinnedInstance = newValue
         pinnedInstancePending = true
         
         Task {
@@ -334,7 +427,7 @@ public extension Post {
     ///   - newValue: true to lock post, false to unlock
     ///   - callback: if present, when the repository call completes, is called with `.success` if the operation succeeded and `.failure` otherwise.
     func updateLocked(_ newValue: Bool, callback: ((UpdateStatus) -> Void)?) {
-        properties.locked = newValue
+        locked = newValue
         lockedPending = true
         Task {
             await updateQueue.addItem {
@@ -380,13 +473,13 @@ public extension Post {
         nsfw: Bool,
         languageId: Int?
     ) throws {
-        properties.title = title
-        properties.content = content
-        properties.linkUrl = linkUrl
-        properties.altText = altText
-        properties.thumbnailUrl = thumbnail
-        properties.nsfw = nsfw
-        properties.languageId = languageId ?? properties.languageId
+        self.title = title
+        self.content = content
+        self.linkUrl = linkUrl
+        self.altText = altText
+        self.thumbnailUrl = thumbnail
+        self.nsfw = nsfw
+        self.languageId = languageId ?? self.languageId
         
         Task {
             await updateQueue.addItem {
@@ -413,7 +506,7 @@ public extension Post {
     // Deleted
     
     func updateDeleted(_ newValue: Bool, callback: ((UpdateStatus) -> Void)?) {
-        properties.deleted = newValue
+        deleted = newValue
         
         Task {
             await updateQueue.addItem {
@@ -432,7 +525,7 @@ public extension Post {
     // NSFW
     
     func updateNsfw(_ newValue: Bool, callback: ((UpdateStatus) -> Void)?) {
-        properties.nsfw = newValue
+        nsfw = newValue
         nsfwPending = true
         
         Task {
@@ -452,7 +545,7 @@ public extension Post {
     // Remove
     
     func updateRemoved(_ newValue: Bool, reason: String?, callback: ((UpdateStatus) -> Void)?) {
-        properties.removed = newValue
+        removed = newValue
         removedPending = true
         
         Task {

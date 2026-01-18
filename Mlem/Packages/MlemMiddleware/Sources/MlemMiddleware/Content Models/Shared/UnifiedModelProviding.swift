@@ -9,5 +9,6 @@ public protocol UnifiedModelProviding: AnyObject, CacheIdentifiable, ContentMode
     associatedtype Properties: UnifiedPropertiesProviding
     
     var properties: Properties { get set }
+    @MainActor func update(with properties: Properties)
     func fetchUpgraded() async throws -> Properties
 }
