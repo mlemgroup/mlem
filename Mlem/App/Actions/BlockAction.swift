@@ -218,10 +218,18 @@ extension BlockAction {
             return 
         }
 
-        let label: LocalizedStringResource = switch content {
-        case .blockable(_ as any Person): "Really block this user?"
-        case .blockable(_ as any Community): "Really block this community?"
-        default: "Really block this instance?"
+        let label: String
+
+        switch content {
+        case .blockable(_ as any Person):
+            label = .init(localized: "Really block this user?")
+        case .blockable(_ as any Community):
+            label = .init(localized: "Really block this community?")
+        case .instance:
+            label = .init(localized: "Really block this instance?")
+        default:
+            assertionFailure()
+            label = ""
         }
 
         environment.popupModel?.showPopup(message: label, [
