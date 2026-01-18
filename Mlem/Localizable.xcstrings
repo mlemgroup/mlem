@@ -1543,6 +1543,9 @@
         }
       }
     },
+    "Block Instance" : {
+
+    },
     "Block List" : {
       "localizations" : {
         "fr" : {
@@ -9179,6 +9182,9 @@
       }
     },
     "Unblock Community" : {
+
+    },
+    "Unblock Instance" : {
 
     },
     "Unblock User" : {
