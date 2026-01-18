@@ -9,18 +9,18 @@ import Foundation
 
 public enum ModlogEntryContent: Equatable {
     case removePost(
-        _ post: Post1,
+        _ post: Post,
         community: Community1,
         removed: Bool,
         reason: String?
     )
     case lockPost(
-        _ post: Post1,
+        _ post: Post,
         community: Community1,
         locked: Bool
     )
     case pinPost(
-        _ post: Post1,
+        _ post: Post,
         community: Community1,
         pinned: Bool,
         type: PostFeatureType
@@ -30,7 +30,7 @@ public enum ModlogEntryContent: Equatable {
     case removeComment(
         _ comment: Comment1,
         creator: Person1,
-        post: Post1,
+        post: Post,
         community: Community1,
         removed: Bool,
         reason: String?
@@ -118,20 +118,20 @@ public enum ModlogEntryContent: Equatable {
         switch snapshot {
         case let .removePost(post, community, removed, reason):
             self = .removePost(
-                api.caches.post1.getModel(api: api, from: post),
+                api.caches.post.getModel(api: api, from: .post1(post)),
                 community: api.caches.community1.getModel(api: api, from: community),
                 removed: removed,
                 reason: reason
             )
         case let .lockPost(post, community, locked):
             self = .lockPost(
-                api.caches.post1.getModel(api: api, from: post),
+                api.caches.post.getModel(api: api, from: .post1(post)),
                 community: api.caches.community1.getModel(api: api, from: community),
                 locked: locked
             )
         case let .pinPost(post, community, pinned, type):
             self = .pinPost(
-                api.caches.post1.getModel(api: api, from: post),
+                api.caches.post.getModel(api: api, from: .post1(post)),
                 community: api.caches.community1.getModel(api: api, from: community),
                 pinned: pinned,
                 type: type
@@ -142,7 +142,7 @@ public enum ModlogEntryContent: Equatable {
             self = .removeComment(
                 api.caches.comment1.getModel(api: api, from: comment),
                 creator: api.caches.person1.getModel(api: api, from: creator),
-                post: api.caches.post1.getModel(api: api, from: post),
+                post: api.caches.post.getModel(api: api, from: .post1(post)),
                 community: api.caches.community1.getModel(api: api, from: community),
                 removed: removed,
                 reason: reason

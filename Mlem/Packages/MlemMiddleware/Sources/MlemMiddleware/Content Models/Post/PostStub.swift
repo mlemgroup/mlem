@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct PostStub: PostStubProviding, Hashable {    
+public struct PostStub: Hashable {    
     public static let tierNumber: Int = 0
     public var api: ApiClient
     public var url: URL
@@ -29,7 +29,7 @@ public struct PostStub: PostStubProviding, Hashable {
         lhs.url == rhs.url
     }
     
-    public func upgrade() async throws -> any Post {
+    public func upgrade() async throws -> Post {
         try await api.getPost(url: resolvableUrl)
     }
 }

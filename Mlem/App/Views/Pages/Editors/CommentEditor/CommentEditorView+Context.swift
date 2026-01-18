@@ -9,7 +9,7 @@ import MlemMiddleware
 
 extension CommentEditorView {
     enum Context: Hashable {
-        case post(any Post1Providing)
+        case post(Post)
         case comment(any Comment1Providing)
         
         static func == (lhs: Context, rhs: Context) -> Bool {
@@ -27,7 +27,7 @@ extension CommentEditorView {
             }
         }
         
-        var item: any Interactable1Providing & SelectableContentProviding {
+        var item: any SelectableContentProviding {
             switch self {
             case let .post(post): post
             case let .comment(comment): comment

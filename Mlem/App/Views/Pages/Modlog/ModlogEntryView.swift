@@ -225,7 +225,7 @@ struct ModlogEntryView: View {
     }
     
     @ViewBuilder
-    func postLink(post: any Post, community: any Community) -> some View {
+    func postLink(post: Post, community: any Community) -> some View {
         NavigationLink(.post(post)) {
             FooterLinkView(title: post.title, subtitle: community.fullNameWithPrefix)
         }
@@ -234,7 +234,7 @@ struct ModlogEntryView: View {
     
     @ViewBuilder
     func commentLink(comment: Comment1) -> some View {
-        NavigationLink(.comment(comment, exposeRemovedContent: true)) {
+        NavigationLink(.commentStub(comment, exposeRemovedContent: true)) {
             VStack {
                 Text(comment.content)
                     .frame(maxWidth: .infinity, alignment: .leading)

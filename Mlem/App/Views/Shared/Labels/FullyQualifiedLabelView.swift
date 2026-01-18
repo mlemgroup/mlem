@@ -44,7 +44,7 @@ struct FullyQualifiedLabelView: View {
     typealias Entity = CommunityOrPerson & Profile1Providing
     
     @Environment(AppState.self) var appState
-    @Environment(\.postContext) var postContext: (any Post1Providing)?
+    @Environment(\.postContext) var postContext: Post?
     @Environment(\.commentContext) var commentContext: (any Comment1Providing)?
     @Environment(\.communityContext) var communityContext: (any Community1Providing)?
     @Environment(\.feedContext) var feedContext: FeedContext?
@@ -142,13 +142,15 @@ struct FullyQualifiedLabelView: View {
         )
     }
     
-    var interactableContext: (any Interactable2Providing)? {
+    var interactableContext: (any ShimInteractable2Providing)? {
         guard let person = entity as? any Person else { return nil }
         if let commentContext2 = commentContext as? any Comment2Providing, commentContext2.creator.actorId == person.actorId {
             return commentContext2
         }
-        if let postContext2 = postContext as? any Post2Providing, postContext2.creator.actorId == person.actorId {
-            return postContext2
+        if let postContext,
+           let creator = postContext.creator.value,
+           creator.actorId == person.actorId {
+            return postContext
         }
         return nil
     }
@@ -230,13 +232,14 @@ extension FullyQualifiedLabelView {
     }
 }
 
-#if DEBUG
-    #Preview("Sizes", traits: .sampleEnvironment, .sizeThatFitsLayout) {
-        VStack(alignment: .leading) {
-            ForEach(FullyQualifiedLabelStyle.allCases, id: \.self) { style in
-                FullyQualifiedLabelView(Person1.mock(.generic), labelStyle: style)
-            }
-        }
-        .padding()
-    }
-#endif
+// TODO: updated mocks
+// #if DEBUG
+//    #Preview("Sizes", traits: .sampleEnvironment, .sizeThatFitsLayout) {
+//        VStack(alignment: .leading) {
+//            ForEach(FullyQualifiedLabelStyle.allCases, id: \.self) { style in
+//                FullyQualifiedLabelView(Person1.mock(.generic), labelStyle: style)
+//            }
+//        }
+//        .padding()
+//    }
+// #endif

@@ -28,6 +28,7 @@ public struct Post2Snapshot: CacheIdentifiable, PostSnapshotProviding {
     public var hidden: Bool
     
     public var cacheId: Int { post.cacheId }
+    public var actorId: ActorIdentifier { post.actorId }
     
     public init(
         post: Post1Snapshot,

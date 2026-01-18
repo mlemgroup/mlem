@@ -17,7 +17,7 @@ class CommunityPostFetcher: PostFetcher {
         super.init(api: community.api, sortType: sortType, pageSize: pageSize)
     }
     
-    override func getPosts(page: Int, cursor: String?) async throws -> (posts: [Post2], cursor: String?) {
+    override func getPosts(page: Int, cursor: String?) async throws -> (posts: [Post], cursor: String?) {
         try await community.getPosts(
             sort: sortType,
             page: page,

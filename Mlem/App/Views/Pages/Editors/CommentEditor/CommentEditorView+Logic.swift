@@ -72,7 +72,7 @@ extension CommentEditorView {
                 let parent: (any Comment1Providing)?
                 switch resolvedContext {
                 case let .post(post):
-                    result = try await post.reply(content: textView.text)
+                    result = try await post.reply(content: textView.text, languageId: nil)
                     parent = nil
                 case let .comment(comment):
                     result = try await comment.reply(content: textView.text)

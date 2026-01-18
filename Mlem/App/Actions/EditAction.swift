@@ -11,7 +11,7 @@ import SwiftUI
 
 struct EditAction: SimpleLabelAction {
     enum Content {
-        case post(any Post1Providing)
+        case post(Post)
         case comment(any Comment1Providing)
         case message(any Message1Providing)
         
@@ -34,7 +34,7 @@ extension ActionSeed {
         switch entity {
         case let entity as any Message1Providing: EditAction(content: .message(entity))
         case let entity as any Comment1Providing: EditAction(content: .comment(entity))
-        case let entity as any Post1Providing: EditAction(content: .post(entity))
+        case let entity as Post: EditAction(content: .post(entity))
         default: nil
         }
     }
@@ -70,11 +70,7 @@ extension EditAction {
                 assertionFailure()
             }
         case let .post(post):
-            if let post = post as? any Post2Providing {
-                environment.navigation?.openSheet(.editPost(post.post2))
-            } else {
-                assertionFailure()
-            }
+            environment.navigation?.openSheet(.editPost(post))
         case let .message(message):
             if let message = message as? any Message2Providing {
                 if let editMessage = environment.editMessage {

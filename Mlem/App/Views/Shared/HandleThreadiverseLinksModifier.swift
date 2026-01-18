@@ -162,24 +162,24 @@ struct HandleThreadiverseLinksModifier: ViewModifier {
             // https://piefed.social/c/politics/p/1385905/will-the-supreme-court-hand-government-contractors-blanket-immunity
             if components.count > 4, components[2] == "p" {
                 let newUrl = url.removingPathComponents().appendingPathComponent("post/\(components[3])")
-                return .post(PostStub(api: appState.firstApi, url: newUrl))
+                return .postStub(PostStub(api: appState.firstApi, url: newUrl))
             } else {
                 return .community(CommunityStub(api: appState.firstApi, url: url))
             }
         case "post":
             if let fragment = url.fragment()?.trimmingPrefix("comment_") {
                 let newUrl = url.removingPathComponents().appendingPathComponent("comment/\(fragment)")
-                return .comment(CommentStub(api: appState.firstApi, url: newUrl))
+                return .commentStub(CommentStub(api: appState.firstApi, url: newUrl))
             } else if components.count == 2 {
-                return .post(PostStub(api: appState.firstApi, url: url))
+                return .postStub(PostStub(api: appState.firstApi, url: url))
             } else if components.count == 3 {
                 let newUrl = url.removingPathComponents().appendingPathComponent("comment/\(url.lastPathComponent)")
-                return .comment(CommentStub(api: appState.firstApi, url: newUrl))
+                return .commentStub(CommentStub(api: appState.firstApi, url: newUrl))
             } else {
                 return nil
             }
         case "comment":
-            return .comment(CommentStub(api: appState.firstApi, url: url))
+            return .commentStub(CommentStub(api: appState.firstApi, url: url))
         default:
             return nil
         }

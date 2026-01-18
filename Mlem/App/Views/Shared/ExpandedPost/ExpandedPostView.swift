@@ -30,9 +30,7 @@ struct ExpandedPostView<Content: View>: View {
     @Setting(\.interactionBar_post) var postInteractionBar
     @Setting(\.interactionBar_comment) var commentInteractionBar
 
-    var post: (any PostStubProviding)?
-    var contentLoaderError: Error?
-    let isLoading: Bool
+    var post: Post
     let highlightedComment: (any CommentStubProviding)?
     let content: Content
     
@@ -47,20 +45,16 @@ struct ExpandedPostView<Content: View>: View {
     @State var previousVisitRecord: PreviousVisitRecord?
     
     init(
-        post: (any PostStubProviding)?,
-        contentLoaderError: Error?,
-        isLoading: Bool,
+        post: Post,
         tracker: CommentTreeTracker?,
         highlightedComment: (any CommentStubProviding)? = nil,
         scrollTargetedComment: (any CommentStubProviding)? = nil,
         @ViewBuilder content: () -> Content = { EmptyView() }
     ) {
         self.post = post
-        self.contentLoaderError = contentLoaderError
-        self.isLoading = isLoading
         self.highlightedComment = highlightedComment
         self.content = content()
-        self.tracker = tracker
+        self.tracker = tracker ?? .init(root: .post(post))
         self._scrollTargetedComment = .init(wrappedValue: scrollTargetedComment)
     }
     
@@ -68,27 +62,22 @@ struct ExpandedPostView<Content: View>: View {
         // Using a `ZStack` here rather than `if`/`else` because there needs to
         // be a delay between the `content()` appearing and calling `scrollTo`
         VStack {
-            if let post = post as? any Post {
-                content(post: post, isLoading: isLoading)
-                    .externalApiWarning(entity: post, isLoading: isLoading)
-                    .task(id: tracker == nil) {
-                        if let tracker, post.api == appState.firstApi, tracker.loadingState == .idle {
-                            post.markRead()
-                        }
+            viewContent
+                .themedGroupedBackground()
+                .externalApiWarning(entity: post, isLoading: false)
+                .task {
+                    await tracker?.load(ensuringPresenceOf: scrollTargetedComment)
+                    if post.api == appState.firstApi {
+                        post.updateRead(true)
                     }
-            } else if let contentLoaderError {
-                ErrorView(.init(error: contentLoaderError))
-            } else {
-                ProgressView()
-                    .tint(.themedSecondary)
-            }
+                }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .overlay {
             VStack {
                 if showLoadingSymbol {
                     ZStack {
-                        palette.background.primary
+                        palette.groupedBackground.primary
                             .ignoresSafeArea()
                         ProgressView()
                             .tint(.secondary)
@@ -98,10 +87,21 @@ struct ExpandedPostView<Content: View>: View {
             }
             .animation(.easeOut(duration: 0.1), value: showLoadingSymbol)
         }
+        .refreshable {
+            _ = await Task { @MainActor in
+                do {
+                    // TODO: NOW blocking upgrade to make refresh spinner work nicely
+                    try await post.upgrade() // this is identical to refresh
+                    await tracker?.refresh()
+                } catch {
+                    handleError(error)
+                }
+            }.value
+        }
     }
     
-    // swiftlint:disable:next function_body_length
-    @ViewBuilder func content(post: any Post, isLoading: Bool) -> some View {
+    @ViewBuilder
+    var viewContent: some View {
         GeometryReader { geo in
             ScrollViewReader { proxy in
                 FancyScrollView {
@@ -111,14 +111,12 @@ struct ExpandedPostView<Content: View>: View {
                     ) {
                         postView(post, scrollProxy: proxy)
                             .padding(.horizontal, Constants.main.standardSpacing)
+                        
                         content
                             .padding(.top, compactComments ? Constants.main.halfSpacing : Constants.main.standardSpacing)
                         
                         if let errorDetails = tracker?.errorDetails {
                             ErrorView(errorDetails)
-                                .frame(maxWidth: .infinity)
-                        } else if let contentLoaderError {
-                            ErrorView(.init(error: contentLoaderError))
                                 .frame(maxWidth: .infinity)
                         } else if hasNoComments {
                             noCommentsView
@@ -187,7 +185,7 @@ struct ExpandedPostView<Content: View>: View {
                         }
                     }
                 }
-                .toolbar { toolbarContent(post: post, isLoading: isLoading, scrollProxy: proxy) }
+                .toolbar { toolbarContent(post: post, scrollProxy: proxy) }
             }
         }
         .environment(tracker)
@@ -195,11 +193,11 @@ struct ExpandedPostView<Content: View>: View {
     }
     
     @ViewBuilder
-    func toolbarContent(post: any Post, isLoading: Bool, scrollProxy: ScrollViewProxy) -> some View {
+    func toolbarContent(post: Post, scrollProxy: ScrollViewProxy) -> some View {
         if let tracker {
             sortPicker(tracker: tracker)
         }
-        if isLoading || post.shouldShowLoadingSymbol() {
+        if post.shouldShowLoadingSymbol() {
             ProgressView()
         } else {
             ToolbarEllipsisMenu {
@@ -219,11 +217,11 @@ struct ExpandedPostView<Content: View>: View {
     }
     
     @ViewBuilder
-    func postView(_ post: any Post, scrollProxy: ScrollViewProxy) -> some View {
+    func postView(_ post: Post, scrollProxy: ScrollViewProxy) -> some View {
         Group {
             if postCollapsed {
                 HStack {
-                    post.taggedTitle(communityContext: post.community_)
+                    post.taggedTitle(communityContext: post.community.value)
                         .font(.headline)
                         .symbolVariant(.fill)
                         .background(.themedSecondaryGroupedBackground)

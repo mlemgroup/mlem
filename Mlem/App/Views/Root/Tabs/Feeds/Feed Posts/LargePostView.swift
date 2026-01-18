@@ -26,12 +26,12 @@ struct LargePostView: View {
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
     @Environment(\.reportContext) private var reportContext: Report?
 
-    let post: any Post1Providing
+    let post: Post
     let isPostPage: Bool
     let favoredLink: PostViewNavigationLink?
     
     init(
-        post: any Post1Providing,
+        post: Post,
         isPostPage: Bool = false,
         favoredLink: PostViewNavigationLink? = nil
     ) {
@@ -70,8 +70,8 @@ struct LargePostView: View {
                     
                     Spacer()
                     
-                    if !isPostPage, differentiateWithoutColor, readPostIndicator == .checkmark, post.read_ ?? false {
-                        ReadCheck()
+                    if !isPostPage, differentiateWithoutColor, readPostIndicator == .checkmark {
+                        ReadCheck(read: post.read)
                     }
                     
                     if post.nsfw {
@@ -121,21 +121,31 @@ struct LargePostView: View {
     
     @ViewBuilder
     var personLink: some View {
-        FullyQualifiedLinkView(post.creator_, labelStyle: .medium, blurred: shouldBlur)
+        ExpectedView(post.creator) { creator in
+            FullyQualifiedLinkView(creator, labelStyle: .medium)
+        } placeholder: {
+            Text(verbatim: .personPlaceholder).redacted(reason: .placeholder)
+        }
     }
     
     @ViewBuilder
     var communityLink: some View {
-        FullyQualifiedLinkView(post.community_, labelStyle: .medium, blurred: shouldBlur)
+        ExpectedView(post.community) { community in
+            FullyQualifiedLinkView(community, labelStyle: .medium)
+        } placeholder: {
+            Text(verbatim: .communityPlaceholder)
+                .redacted(reason: .placeholder)
+        }
     }
 }
 
-#if DEBUG
-    #Preview(traits: .sampleEnvironment, .sizeThatFitsLayout) {
-        LargePostView(
-            post: Post2.mock(.generic),
-            isPostPage: true,
-            favoredLink: nil
-        )
-    }
-#endif
+// TODO: updated mocks
+// #if DEBUG
+//    #Preview(traits: .sampleEnvironment, .sizeThatFitsLayout) {
+//        LargePostView(
+//            post: Post2.mock(.generic),
+//            isPostPage: true,
+//            favoredLink: nil
+//        )
+//    }
+// #endif

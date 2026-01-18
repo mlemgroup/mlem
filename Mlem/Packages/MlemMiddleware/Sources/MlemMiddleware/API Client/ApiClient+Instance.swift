@@ -63,7 +63,11 @@ public extension ApiClient {
             throw InstanceUpgradeError.noPostReturned
         }
         
-        return try await self.getCommunity(url: post.community.actorId.url)
+        guard let community = post.community.value_ else {
+            throw InstanceUpgradeError.noCommunityReturned
+        }
+        
+        return try await self.getCommunity(url: community.actorId.url)
     }
 
     func getInstanceId(actorId: ActorIdentifier) async throws -> Int {

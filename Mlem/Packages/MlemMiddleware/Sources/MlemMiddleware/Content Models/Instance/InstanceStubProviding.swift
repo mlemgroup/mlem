@@ -113,6 +113,7 @@ public extension InstanceStubProviding {
 
 public enum InstanceUpgradeError: Error {
     case noPostReturned
+    case noCommunityReturned
     case noSiteReturned
 }
 

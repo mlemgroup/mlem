@@ -31,7 +31,7 @@ struct ReportView: View {
                 }
             }
         case let .comment(comment):
-            NavigationLink(.comment(comment)) {
+            NavigationLink(.comment(comment, post: comment.post)) {
                 FeedCommentView(comment: comment, overriddenSize: .large) {
                     reportDetailsView
                     resolutionInfoView
@@ -88,21 +88,6 @@ struct ReportView: View {
                 .font(.footnote)
                 .padding(.horizontal, Constants.main.halfSpacing)
                 .lineLimit(1)
-        }
-    }
-    
-    @ViewBuilder
-    func legacyPostView(post: Post1, community: Community1, creator: Person1) -> some View {
-        NavigationLink(.post(post)) {
-            VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
-                FullyQualifiedLinkView(creator, labelStyle: .medium)
-                HeadlinePostBodyView(post: post)
-                reportDetailsView
-                resolveButton
-            }
-            .padding(Constants.main.standardSpacing)
-            .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
-            .paletteBorder(cornerRadius: Constants.main.standardSpacing)
         }
     }
     

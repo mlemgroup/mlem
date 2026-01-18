@@ -20,7 +20,7 @@ public enum ReportTarget {
         }
     }
     
-    case post(Post2)
+    case post(Post)
     case comment(Comment2)
     case message(Message2)
     
@@ -34,17 +34,24 @@ public enum ReportTarget {
     
     public var community: Community1? {
         switch self {
-        case let .post(post): post.community
+        case let .post(post): post.community.value_ as? Community1
         case let .comment(comment): comment.community
         case .message: nil
         }
     }
     
-    public var creator: Person1 {
+    // TODO: UnifiedCommentModel, UnifiedMessageModel remove this shim
+    public var creator: ExpectedValue<any Person1Providing> {
         switch self {
         case let .post(post): post.creator
-        case let .comment(comment): comment.creator
-        case let .message(message): message.creator
+        case let .comment(comment): .init(
+            getValue: { comment.creator },
+            provideValue: { fatalError("This should not be called") }
+        )
+        case let .message(message): .init(
+            getValue: { message.creator },
+            provideValue: { fatalError("This should not be called") }
+        )
         }
     }
     
@@ -52,7 +59,7 @@ public enum ReportTarget {
     init(from snapshot: ReportTargetSnapshot, api: ApiClient, myPersonId: Int) {
         switch snapshot {
         case let .post(post):
-            self = .post(api.caches.post2.getModel(api: api, from: post))
+            self = .post(api.caches.post.getModel(api: api, from: .post2(post)))
         case let .comment(comment):
             self = .comment(api.caches.comment2.getModel(api: api, from: comment))
         case let .message(message):

@@ -18,6 +18,7 @@ public struct Post3Snapshot: CacheIdentifiable, PostSnapshotProviding {
     public let crossPosts: [Post2Snapshot]
     
     public var cacheId: Int { post.cacheId }
+    public var actorId: ActorIdentifier { post.actorId }
     
     public init(
         post: Post2Snapshot,

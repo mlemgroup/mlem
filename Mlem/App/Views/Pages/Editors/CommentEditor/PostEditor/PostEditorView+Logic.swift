@@ -76,13 +76,13 @@ extension PostEditorView {
     private func send() async {
         let validTargets = targets.filter { $0.sendState != .sent }
         let posts = await withTaskGroup(
-            of: (target: PostEditorTarget, post: Post2?).self,
-            returning: [Post2].self
+            of: (target: PostEditorTarget, post: Post?).self,
+            returning: [Post].self
         ) { taskGroup in
             for target in validTargets {
                 if let community = target.community as? any Community {
                     taskGroup.addTask { @MainActor in
-                        let post: Post2?
+                        let post: Post?
                         do {
                             guard community.api === target.account.api else {
                                 assertionFailure()
@@ -105,7 +105,7 @@ extension PostEditorView {
                 }
             }
             
-            var posts = [Post2]()
+            var posts = [Post]()
             
             while let result = await taskGroup.next() {
                 if let post = result.post {

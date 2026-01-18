@@ -7,10 +7,15 @@
 
 import Foundation
 
-class PostLiteralFilter: FilterProviding<Post2> {
-    override public func shouldPassFilter(_ post: Post2) -> Bool {
+class PostLiteralFilter: FilterProviding<Post> {
+    override public func shouldPassFilter(_ post: Post) -> Bool {
+        // community should always exist for posts going through the feed loader
+        guard let community = post.community.value_ else {
+            assertionFailure("No community found in filter-eligible post")
+            return true
+        }
         // bypass filter for moderated/administrated posts
-        if context.isAdmin || context.moderatedCommunityActorIds.contains(post.community.actorId) { return true }
+        if context.isAdmin || context.moderatedCommunityActorIds.contains(community.actorId) { return true }
         
         return !post.title.failsLiteralFilter(literals: context.filteredLiterals)
     }

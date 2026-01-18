@@ -2,7 +2,7 @@
 //  FeedPostView.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-05-19.
+//  Created by Eric Andrews on 2026-01-05.
 //
 
 import Foundation
@@ -28,7 +28,7 @@ struct FeedPostView<EmbeddedContent: View>: View {
     @Setting(\.interactionBar_postReport) var postReportInteractionBar
     @Setting(\.interactionBar_alternateReportLayout) var alternateInteractionBarLayoutForReports
     
-    let post: any Post1Providing
+    let post: Post
     let favoredLink: PostViewNavigationLink?
     let requireConsistentHeight: Bool
     @State var overridePostSize: PostSize?
@@ -38,7 +38,7 @@ struct FeedPostView<EmbeddedContent: View>: View {
     @ViewBuilder let embeddedContent: () -> EmbeddedContent
     
     init(
-        post: any Post1Providing,
+        post: Post,
         overridePostSize: PostSize? = nil,
         favoredLink: PostViewNavigationLink? = nil,
         requireConsistentHeight: Bool = false,
@@ -64,7 +64,7 @@ struct FeedPostView<EmbeddedContent: View>: View {
             } else {
                 content
                     .overlay(alignment: .topLeading) {
-                        if differentiateWithoutColor, !(post.read_ ?? false), readPostIndicator == .outline {
+                        if differentiateWithoutColor, !(post.read.value ?? false), readPostIndicator == .outline {
                             RoundedRectangle(cornerRadius: postSize.cornerRadius)
                                 .stroke(lineWidth: .init(readOutlineThickness))
                                 .foregroundStyle(.themedSecondary)
@@ -98,7 +98,7 @@ struct FeedPostView<EmbeddedContent: View>: View {
                 overridePostSize = .compact
             }
         }
-        .onChange(of: post.read_) {
+        .onChange(of: post.read.value) {
             if shouldRenderCompact() {
                 withAnimation {
                     overridePostSize = .compact
@@ -146,7 +146,7 @@ struct FeedPostView<EmbeddedContent: View>: View {
     
     func shouldRenderCompact() -> Bool {
         guard settingsPostSize != .tile, settingsPostSize != .compact else { return false }
-        return post.read_ ?? false &&
+        return post.read.value ?? false &&
             ((communityContext == nil && post.pinnedInstance) || (communityContext != nil && post.pinnedCommunity))
     }
 }

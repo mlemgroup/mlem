@@ -8,7 +8,7 @@
 import Foundation
 
 @Observable
-public class SearchPostFetcher: Fetcher<Post2> {
+public class SearchPostFetcher: Fetcher<Post> {
     public enum SortType {
         case v4(SearchSortType)
         case v3(PostSortType)
@@ -47,8 +47,8 @@ public class SearchPostFetcher: Fetcher<Post2> {
         super.init(api: api, pageSize: pageSize)
     }
     
-    override func fetchPage(_ page: Int) async throws -> Fetcher<Post2>.FetchResponse {
-        let response: [Post2]
+    override func fetchPage(_ page: Int) async throws -> Fetcher<Post>.FetchResponse {
+        let response: [Post]
         switch sortType {
         case let .v4(searchSortType):
             response = try await api.searchPosts(

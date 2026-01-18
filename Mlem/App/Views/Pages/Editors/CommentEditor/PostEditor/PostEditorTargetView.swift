@@ -185,7 +185,7 @@ class PostEditorTarget: Identifiable {
     }
     
     /// If this target matches the given feedLoader, prepends the given post
-    func prepend(post: Post2, to feedLoader: (any FeedLoading)?) {
+    func prepend(post: Post, to feedLoader: (any FeedLoading)?) {
         guard let feedLoader else { return }
         
         if let community,

@@ -10,7 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct HideAction: SimpleLabelAction {
-    let entity: any Post2Providing
+    let entity: Post
 }
 
 // MARK: - Configurability
@@ -18,7 +18,7 @@ struct HideAction: SimpleLabelAction {
 extension ActionSeed {
     static let hide = ActionSeed("hide") { entity in
         switch entity {
-        case let entity as any Post2Providing: HideAction(entity: entity)
+        case let entity as Post: HideAction(entity: entity)
         default: nil
         }
     }
@@ -33,10 +33,11 @@ extension HideAction {
     static var label: ActionLabel { hideLabel }
 
     func createLabel(environment: EnvironmentValues) -> ActionLabel {
-        if entity.hidden {
-            Self.showLabel.withVisibility(visibility(environment))
+        guard let hidden = entity.hidden.value else { return Self.showLabel.withVisibility(.hidden) }
+        if hidden {
+            return Self.showLabel.withVisibility(visibility(environment))
         } else {
-            Self.hideLabel.withVisibility(visibility(environment))
+            return Self.hideLabel.withVisibility(visibility(environment))
         }
     }
 
@@ -55,9 +56,10 @@ extension HideAction {
 extension HideAction {
     @MainActor
     func execute(environment: EnvironmentValues) {
-        entity.toggleHidden()
+        guard let hidden = entity.hidden.value, let toggleHidden = entity.toggleHidden else { return }
+        toggleHidden([])
         environment.hapticManager.play(haptic: .lightSuccess, tier: .low)
-        if entity.hidden {
+        if !hidden {
             environment.toastModel?.add(
                 .undoable(
                     "Hidden",

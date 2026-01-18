@@ -1,8 +1,8 @@
 //
 //  CorePostFeedLoader.swift
-//  Mlem
+//  MlemMiddleware
 //
-//  Created by Eric Andrews on 2024-01-04.
+//  Created by Eric Andrews on 2026-01-05.
 //
 
 import Foundation
@@ -10,7 +10,7 @@ import Nuke
 import Observation
 
 @Observable
-public class PostFetcher: Fetcher<Post2> {
+public class PostFetcher: Fetcher<Post> {
     var sortType: PostSortType
     
     init(api: ApiClient, sortType: PostSortType, pageSize: Int) {
@@ -39,14 +39,14 @@ public class PostFetcher: Fetcher<Post2> {
         )
     }
     
-    func getPosts(page: Int, cursor: String?) async throws -> (posts: [Post2], cursor: String?) {
+    func getPosts(page: Int, cursor: String?) async throws -> (posts: [Post], cursor: String?) {
         preconditionFailure("This method must be implemented by the inheriting class")
     }
 }
 
 /// Post tracker for use with single feeds. Can easily be extended to load any pure post feed by creating an inheriting class that overrides getPosts().
 @Observable
-public class CorePostFeedLoader: PrefetchingFeedLoader<Post2> {
+public class CorePostFeedLoader: PrefetchingFeedLoader<Post> {
     // store reference to the filter used by the LoadingActor so we can modify its filterContext from changeApi
     var filter: PostFilter
     
@@ -54,7 +54,7 @@ public class CorePostFeedLoader: PrefetchingFeedLoader<Post2> {
         showReadPosts: Bool,
         filterContext: FilterContext,
         prefetchingConfiguration: PrefetchingConfiguration,
-        fetcher: Fetcher<Post2>
+        fetcher: Fetcher<Post>
     ) {
         let filter: PostFilter = .init(showRead: showReadPosts, context: filterContext)
         self.filter = filter

@@ -24,7 +24,7 @@ struct InteractionBarView: View {
     
     init(
         appState: AppState,
-        post: any Post1Providing,
+        post: Post,
         configuration: PostBarConfiguration,
         navigation: NavigationLayer,
         commentTreeTracker: CommentTreeTracker? = nil,
@@ -49,6 +49,7 @@ struct InteractionBarView: View {
             communityContext: communityContext,
             reportContext: reportContext
         )
+        
         let associatedReadouts = configuration.all.reduce(into: Set<PostBarConfiguration.ReadoutType>()) { result, widget in
             result.formUnion(widget.associatedReadouts(context: post))
         }
@@ -260,7 +261,7 @@ extension [EnrichedWidget] {
     init(
         appState: AppState,
         navigation: NavigationLayer,
-        post: any Post1Providing,
+        post: Post,
         items: [PostBarConfiguration.Item],
         commentTreeTracker: CommentTreeTracker?,
         communityContext: (any CommunityStubProviding)?,

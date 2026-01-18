@@ -33,7 +33,7 @@ extension View {
     }
     
     @ViewBuilder
-    func quickSwipes(post: any Post, configuration: PostBarConfiguration) -> some View {
+    func quickSwipes(post: Post, configuration: PostBarConfiguration) -> some View {
         modifier(
             QuickSwipeEnvironmentReaderViewModifier { environment in
                 guard let navigation = environment.navigation else {

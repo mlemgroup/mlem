@@ -110,7 +110,7 @@ extension SearchView {
                 VStack(spacing: 0) {
                     LazyVStack(spacing: compactComments ? Constants.main.halfSpacing : Constants.main.standardSpacing) {
                         ForEach(commentLoader.items, id: \.actorId) { comment in
-                            NavigationLink(.comment(comment)) {
+                            NavigationLink(.comment(comment, post: comment.post)) {
                                 FeedCommentView(comment: comment)
                             }
                             .buttonStyle(.empty)

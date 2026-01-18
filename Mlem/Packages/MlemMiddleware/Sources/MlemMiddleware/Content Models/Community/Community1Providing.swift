@@ -129,7 +129,7 @@ public extension Community1Providing {
         limit: Int,
         filter: GetContentFilter? = nil,
         showHidden: Bool = false
-    ) async throws -> (posts: [Post2], cursor: String?) {
+    ) async throws -> (posts: [Post], cursor: String?) {
         try await api.getPosts(
             communityId: id,
             sort: sort,

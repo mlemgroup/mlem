@@ -100,10 +100,14 @@ extension ActionSeed {
             content: [.blockable(entity.creator)],
             relationship: .indirect
         )
-        case let entity as any Post2Providing: BlockAction(
-            content: [.blockable(entity.creator), .blockable(entity.community)],
-            relationship: .indirect
-        )
+        case let entity as Post:
+            if let creator = entity.creator.value, let community = entity.community.value {
+                BlockAction(
+                    content: [.blockable(creator), .blockable(community)],
+                    relationship: .indirect)
+            } else {
+                nil
+            }
         default: nil
         }
     }

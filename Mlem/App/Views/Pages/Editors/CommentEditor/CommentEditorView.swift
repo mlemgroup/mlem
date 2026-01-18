@@ -219,17 +219,13 @@ struct CommentEditorView: View {
                     selectTextButton
                 }
                 LargePostBodyView(post: post, isPostPage: true, shouldBlur: false)
-                FullyQualifiedLinkView(
-                    post.creator_,
-                    labelStyle: .medium,
-                    blurred: post.nsfw
-                )
-            }
-            .onAppear {
-                if !(post is any Post2Providing) {
-                    Task {
-                        originalContext = try await .post(post.upgrade())
-                    }
+                ExpectedView(post.creator) { creator in
+                    FullyQualifiedLinkView(
+                        creator,
+                        labelStyle: .medium,
+                        blurred: post.nsfw)
+                } placeholder: {
+                    Text(verbatim: .personPlaceholder).redacted(reason: .placeholder)
                 }
             }
         case let .comment(comment):

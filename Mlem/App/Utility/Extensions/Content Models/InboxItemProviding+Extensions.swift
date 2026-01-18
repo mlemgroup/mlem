@@ -8,7 +8,7 @@
 import Haptics
 import MlemMiddleware
 
-extension InboxItemProviding {
+extension InboxItemProviding {    
     func toggleRead(feedback: Set<FeedbackType>) {
         if feedback.contains(.haptic) {
             HapticManager.main.play(haptic: .lightSuccess, tier: .low)

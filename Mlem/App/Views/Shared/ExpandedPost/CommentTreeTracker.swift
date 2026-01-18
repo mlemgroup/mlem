@@ -14,7 +14,7 @@ class CommentTreeTracker: Hashable {
     private let log: Logger = .mlemLogger()
     
     enum Root {
-        case post(any Post)
+        case post(Post)
         case comment(any Comment, parentCount: Int)
         
         var wrappedValue: any Interactable1Providing & ActorIdentifiable {
@@ -187,7 +187,7 @@ class CommentTreeTracker: Hashable {
         var commentsKeyedById: [Int: CommentTreeNode] = [:]
         var commentsKeyedByActorId: [ActorIdentifier: CommentTreeNode] = clear ? [:] : nodesKeyedByActorId
 
-        var sortedComments = newComments.sorted { $0.depth < $1.depth }
+        let sortedComments = newComments.sorted { $0.depth < $1.depth }
         
         for comment in sortedComments {
             if commentsKeyedByActorId.keys.contains(comment.actorId) {

@@ -7,17 +7,18 @@
 
 import Foundation
 import MlemMiddleware
+import os
 
 extension Person1Providing {
     var shouldHideInFeed: Bool { blocked || purged }
     
     func flairs(
-        interactableContext interactable: (any Interactable2Providing)? = nil,
+        interactableContext interactable: (any ShimInteractable2Providing)? = nil,
         communityContext community: (any Community)? = nil
     ) -> [PersonFlair] {
         @Setting(\.person_ageVisibility) var alwaysShowAccountAge
         
-        let community = community ?? interactable?.community
+        let community = community ?? interactable?.community.value
         var output: Set<PersonFlair> = []
         
         if isMlemDeveloper {
@@ -40,7 +41,11 @@ extension Person1Providing {
         }
         
         if let interactable {
-            assert(interactable.creator.actorId == actorId)
+            if let creator = interactable.creator.value {
+                assert(creator.actorId == actorId)
+            } else {
+                assertionFailure("No creator!")
+            }
             output.formUnion(interactable.contextualFlairs())
         } else {
             if api.myInstance?.administrators.contains(where: { $0.id == id }) ?? false {

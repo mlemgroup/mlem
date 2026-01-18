@@ -16,7 +16,7 @@ struct HeadlinePostBodyView: View {
     
     @ScaledMetric(relativeTo: .headline) var titleHostHeightLimit: CGFloat = 75
 
-    let post: any Post
+    let post: Post
     var requireConsistentHeight: Bool = false
     
     var blurred: Bool {
@@ -81,7 +81,7 @@ struct HeadlinePostBodyView: View {
         post.taggedTitle(communityContext: communityContext)
             .symbolVariant(.fill)
             .multilineTextAlignment(.leading)
-            .foregroundStyle((post.read_ ?? false) ? .themedSecondary : .themedPrimary)
+            .foregroundStyle((post.read.value ?? false) ? .themedSecondary : .themedPrimary)
             .font(.headline)
             .imageScale(.small)
     }

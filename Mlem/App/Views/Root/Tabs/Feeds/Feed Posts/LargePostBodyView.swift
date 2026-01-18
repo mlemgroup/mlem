@@ -13,7 +13,7 @@ struct LargePostBodyView: View {
     @Environment(\.palette) var palette
     @Environment(\.communityContext) private var communityContext: (any Community1Providing)?
 
-    let post: any Post1Providing
+    let post: Post
     let isPostPage: Bool
     let shouldBlur: Bool
 
@@ -21,7 +21,7 @@ struct LargePostBodyView: View {
         VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
             post.taggedTitle(communityContext: communityContext)
                 .foregroundStyle(
-                    (post.read_ ?? false && !isPostPage)
+                    (post.read.value ?? false && !isPostPage)
                         ? .themedSecondary : .themedPrimary
                 )
                 .font(.headline)
@@ -41,7 +41,7 @@ struct LargePostBodyView: View {
                 }
             case let .link(link):
                 WebsitePreviewView(link: link, shouldBlur: shouldBlur) {
-                    post.markRead()
+                    post.updateRead(true)
                 }
             default:
                 EmptyView()
@@ -65,7 +65,7 @@ struct LargePostBodyView: View {
     @ViewBuilder
     func mediaView(_ url: URL) -> some View {
         MediaView.largeImage(url: url, shouldBlur: shouldBlur) {
-            post.markRead()
+            post.updateRead(true)
         }
         .frame(maxWidth: .infinity)
     }

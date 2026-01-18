@@ -84,12 +84,26 @@ extension NavigationPage {
                 Text(verbatim: "Error")
             }
         case let .post(post, scrollTargetedComment, communityContext, _):
-            PostPage(post: post, scrollTargetedComment: scrollTargetedComment?.wrappedValue)
-                .environment(\.communityContext, communityContext?.wrappedValue)
-        case let .comment(comment, comments: comments, showViewPostButton, exposeRemovedContent):
+            // TODO: NOW don't embed at all?
+            ExpandedPostView(post: post, tracker: nil, scrollTargetedComment: scrollTargetedComment?.wrappedValue) {
+                CrossPostListView(post: post)
+                    .padding(.horizontal, Constants.main.standardSpacing)
+            }
+            .environment(\.communityContext, communityContext?.wrappedValue)
+        case let .postStub(post, _):
+            PostStubResolutionPage(stub: post)
+        case let .comment(comment, post, comments, showViewPostButton, exposeRemovedContent):
             CommentPage(
-                comment: comment,
+                comment: comment.wrappedValue,
+                post: post,
                 initialComments: comments,
+                showViewPostButton: showViewPostButton,
+                exposeRemovedContent: exposeRemovedContent
+            )
+        case let .commentStub(comment, comments, showViewPostButton, exposeRemovedContent):
+            CommentStubResolutionPage(
+                stub: comment.wrappedValue,
+                comments: comments,
                 showViewPostButton: showViewPostButton,
                 exposeRemovedContent: exposeRemovedContent
             )
@@ -221,7 +235,7 @@ extension NavigationPage {
         case let .denyApplication(application):
             RegistrationApplicationDenialEditorView(application: application)
         case let .exportPostImage(post):
-            ExportablePostEditorView(post: post.wrappedValue)
+            ExportablePostEditorView(post: post)
         case let .exportCommentImage(comment, tracker):
             ExportableCommentEditorView(comment: comment.wrappedValue, commentTreeTracker: tracker)
         case let .actionSheet(sections):

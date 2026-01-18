@@ -14,7 +14,7 @@ public class PersonContent: Hashable, Equatable, FeedLoadable, ActorIdentifiable
     
     public enum Value {
         // This always comes from GetPersonDetailsRequest, so we can know we're getting Post2 and Comment2
-        case post(Post2)
+        case post(Post)
         case comment(Comment2)
     }
     
@@ -24,29 +24,29 @@ public class PersonContent: Hashable, Equatable, FeedLoadable, ActorIdentifiable
     
     public func sortVal(sortType: FeedLoaderSort.SortType) -> FeedLoaderSort {
         switch wrappedValue {
-        case let .post(post2): post2.sortVal(sortType: sortType)
+        case let .post(post): post.sortVal(sortType: sortType)
         case let .comment(comment2): comment2.sortVal(sortType: sortType)
         }
     }
     
     public var actorId: ActorIdentifier {
         switch wrappedValue {
-        case let .post(post2): post2.actorId
+        case let .post(post): post.actorId
         case let .comment(comment2): comment2.actorId
         }
     }
     
     public var api: ApiClient {
         switch wrappedValue {
-        case let .post(post2): post2.api
+        case let .post(post): post.api
         case let .comment(comment2): comment2.api
         }
     }
     
     public func hash(into hasher: inout Hasher) {
         switch wrappedValue {
-        case let .post(post2):
-            hasher.combine(post2)
+        case let .post(post):
+            hasher.combine(post)
             hasher.combine(ContentType.post)
         case let .comment(comment2):
             hasher.combine(comment2)

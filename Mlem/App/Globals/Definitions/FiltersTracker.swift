@@ -85,7 +85,7 @@ class FiltersTracker {
         literals = filteredLiterals
     }
     
-    func postWouldBeFiltered(_ post: any Post) -> Bool {
+    func postWouldBeFiltered(_ post: Post) -> Bool {
         (keywordFilterEnabled && post.title.failsKeywordFilter(keywords: keywords, phrases: phrases)) ||
         (literalFilterEnabled && post.title.failsLiteralFilter(literals: literals))
     }

@@ -14,12 +14,21 @@ struct CrossPostListView: View {
     @Environment(HapticManager.self) var hapticManager
     @Environment(NavigationLayer.self) private var navigation
     
-    let post: any Post3Providing
+    let post: Post
     
     @State private var isExpanded: Bool = false
     
     var body: some View {
-        if !post.crossPosts.isEmpty {
+        // does not use ExpectedView because of padding reasons and because the animation is not necessary
+        if let crossPosts = post.crossPosts.value {
+            content(crossPosts)
+        }
+    }
+    
+    @ViewBuilder
+    // swiftlint:disable:next function_body_length
+    func content(_ crossPosts: [Post]) -> some View {
+        if !crossPosts.isEmpty {
             VStack(spacing: Constants.main.halfSpacing) {
                 Button {
                     hapticManager.play(haptic: .gentleInfo, tier: .low)
@@ -31,11 +40,11 @@ struct CrossPostListView: View {
                         Image(icon: .lemmy.crosspost)
                             .foregroundStyle(.themedSecondary)
                             .fontWeight(.semibold)
-                        Text("\(post.crossPosts.count) Crossposts...")
+                        Text("\(crossPosts.count) Crossposts...")
                         Spacer()
                         HStack(spacing: 2) {
                             Image(icon: .lemmy.comment)
-                            Text(String(post.crossPosts.reduce(0) { $0 + $1.commentCount }))
+                            Text(String(crossPosts.reduce(0) { $0 + ($1.commentCount.value ?? 0) }))
                         }
                         .font(.footnote)
                         .foregroundStyle(.themedSecondary)
@@ -48,12 +57,18 @@ struct CrossPostListView: View {
                     Divider()
                         .padding(.vertical, 3)
                     Grid(alignment: .leading) {
-                        ForEach(post.crossPosts) { crossPost in
+                        ForEach(crossPosts) { crossPost in
                             GridRow {
-                                FullyQualifiedLabelView(crossPost.community, labelStyle: .medium, blurred: crossPost.nsfw)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                ExpectedView(crossPost.community) { community in
+                                    FullyQualifiedLabelView(community, labelStyle: .medium, blurred: crossPost.nsfw)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                } placeholder: {
+                                    Text(verbatim: .communityPlaceholder).redacted(reason: .placeholder)
+                                }
                                 ReadoutView(readout: crossPost.createdReadout)
-                                ReadoutView(readout: crossPost.scoreReadout(showColor: true))
+                                if let scoreReadout = crossPost.scoreReadout(showColor: true) {
+                                    ReadoutView(readout: scoreReadout)
+                                }
                                 ReadoutView(readout: crossPost.commentReadout)
                             }
                             .contentShape(.rect)
@@ -73,17 +88,17 @@ struct CrossPostListView: View {
             .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
             .contextMenu {
                 Button("Mark Read", icon: .lemmy.markRead) {
-                    Task { await markAllAsRead() }
+                    Task { await markAllAsRead(crossPosts) }
                 }
             }
             .paletteBorder(cornerRadius: Constants.main.standardSpacing)
         }
     }
 
-    func markAllAsRead() async {
+    func markAllAsRead(_ crossPosts: [Post]) async {
         do {
-            try await post.api.markPostsAsRead(ids: Set(post.crossPosts.lazy.map(\.id)))
-            ToastModel.main.add(.success("Read \(post.crossPosts.count) posts"))
+            try await post.api.markPostsAsRead(ids: Set(crossPosts.map(\.id)))
+            ToastModel.main.add(.success("Read \(crossPosts.count) posts"))
         } catch {
             handleError(error)
         }

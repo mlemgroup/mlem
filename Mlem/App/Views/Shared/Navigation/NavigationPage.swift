@@ -24,12 +24,25 @@ enum NavigationPage: Hashable {
     case testInbox
     case quickSwitcher
     case post(
-        _ post: AnyPost,
+        _ post: Post,
         scrollTargetedComment: HashWrapper<any CommentStubProviding>? = nil,
         communityContext: HashWrapper<any Community1Providing>? = nil,
         navigationNamespace: Namespace.ID? = nil
     )
-    case comment(_ comment: AnyComment, comments: [Comment2]?, showViewPostButton: Bool, exposeRemovedContent: Bool)
+    case postStub(_ post: PostStub, navigationNamespace: Namespace.ID? = nil)
+    case comment(
+        _ comment: HashWrapper<any Comment1Providing>,
+        post: Post,
+        comments: [Comment2]?,
+        showViewPostButton: Bool,
+        exposeRemovedContent: Bool
+    )
+    case commentStub(
+        _ comment: HashWrapper<any CommentStubProviding>,
+        comments: [Comment2]?,
+        showViewPostButton: Bool,
+        exposeRemovedContent: Bool
+    )
     case community(_ community: AnyCommunity, visitContext: VisitHistory.VisitContext)
     case person(_ person: AnyPerson, visitContext: VisitHistory.VisitContext)
     case instance(_ instance: InstanceHashWrapper, visitContext: VisitHistory.VisitContext)
@@ -62,7 +75,7 @@ enum NavigationPage: Hashable {
         nsfw: Bool,
         feedLoader: HashWrapper<(any FeedLoading)?>
     )
-    case editPost(_ post: Post2)
+    case editPost(_ post: Post)
     case deleteAccount(_ account: UserAccount)
     case bypassImageProxy(callback: HashWrapper<() -> Void>)
     case confirmUpload(imageData: Data, fileExtension: String, imageManager: ImageUploadManager, uploadApi: ApiClient)
@@ -72,38 +85,46 @@ enum NavigationPage: Hashable {
     case votesList(_ target: VotesListView.Target)
     case modlog(ModlogView.InitialTarget, targetPerson: AnyPerson?, moderatorPerson: AnyPerson?)
     case denyApplication(RegistrationApplication)
-    case exportPostImage(_ post: HashWrapper<any Post>)
+    case exportPostImage(_ post: Post)
     case exportCommentImage(_ comment: HashWrapper<any Comment>, tracker: CommentTreeTracker?)
     case actionSheet(_ actions: HashWrapper<[ActionSheetSection]>)
     
-    static func post(_ post: any PostStubProviding, scrollTargetedComment: (any CommentStubProviding)? = nil) -> NavigationPage {
-        if let scrollTargetedComment {
-            return Self.post(.init(post), scrollTargetedComment: .init(wrappedValue: scrollTargetedComment))
-        } else {
-            return Self.post(.init(post))
-        }
-    }
-    
     static func post(
-        _ post: any PostStubProviding,
+        _ post: Post,
         communityContext: (any Community1Providing)?,
         navigationNamespace: Namespace.ID? = nil
     ) -> NavigationPage {
         if let communityContext {
-            Self.post(.init(post), communityContext: .init(wrappedValue: communityContext), navigationNamespace: navigationNamespace)
+            Self.post(post, communityContext: .init(wrappedValue: communityContext), navigationNamespace: navigationNamespace)
         } else {
-            Self.post(.init(post), navigationNamespace: navigationNamespace)
+            Self.post(post, navigationNamespace: navigationNamespace)
         }
     }
     
     static func comment(
-        _ comment: any CommentStubProviding,
+        _ comment: any Comment1Providing,
+        post: Post,
         comments: [Comment2]? = nil,
         showViewPostButton: Bool = true,
         exposeRemovedContent: Bool = false
     ) -> NavigationPage {
         Self.comment(
-            .init(comment),
+            .init(wrappedValue: comment),
+            post: post,
+            comments: comments,
+            showViewPostButton: showViewPostButton,
+            exposeRemovedContent: exposeRemovedContent
+        )
+    }
+    
+    static func commentStub(
+        _ comment: any CommentStubProviding,
+        comments: [Comment2]? = nil,
+        showViewPostButton: Bool = true,
+        exposeRemovedContent: Bool = false
+    ) -> NavigationPage {
+        Self.commentStub(
+            .init(wrappedValue: comment),
             comments: comments,
             showViewPostButton: showViewPostButton,
             exposeRemovedContent: exposeRemovedContent
@@ -353,10 +374,6 @@ enum NavigationPage: Hashable {
     
     static func advancedSorting(_ sort: Binding<PostSortType>) -> NavigationPage {
         advancedSorting(.init(wrappedValue: sort))
-    }
-    
-    static func createPostImage(_ post: any Post) -> NavigationPage {
-        exportPostImage(.init(wrappedValue: post))
     }
     
     static func createCommentImage(_ comment: any Comment, tracker: CommentTreeTracker?) -> NavigationPage {

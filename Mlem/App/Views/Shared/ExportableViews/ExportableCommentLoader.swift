@@ -38,13 +38,8 @@ class ExportableCommentLoader {
                 comments = [comment]
             }
             
-            guard let post = try await comment.post.upgrade() as? any Post3Providing else {
-                assertionFailure("Could not cast to Post2Providing post-upgrade")
-                throw ApiClientError.unsuccessful
-            }
-            
             Task { @MainActor in
-                self.data = .init(comments: comments, post: post)
+                self.data = .init(comments: comments, post: comment.post)
             }
         } catch {
             self.error = handleErrorWithDetails(error)
@@ -54,7 +49,7 @@ class ExportableCommentLoader {
 
 struct ExportableCommentData {
     let comments: [any Comment2Providing]
-    let post: any Post3Providing
+    let post: Post
     
     func thread(length: Int) -> [any Comment2Providing] {
         comments.suffix(length)

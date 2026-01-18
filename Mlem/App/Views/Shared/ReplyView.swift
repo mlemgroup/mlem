@@ -53,7 +53,7 @@ struct ReplyView: View {
         .background(.themedSecondaryGroupedBackground)
         .contentShape(.rect)
         .onTapGesture {
-            navigation.push(.comment(comment))
+            navigation.push(.comment(comment, post: comment.post))
         }
         .quickSwipes(comment: comment, notification: notification, configuration: replyInteractionBar)
         .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))

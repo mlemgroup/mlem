@@ -60,18 +60,19 @@ struct CommunityListRow<Content2: View>: View {
     }
 }
 
-#if DEBUG
-    #Preview(traits: .sampleEnvironment) {
-        ScrollView {
-            ForEach(CommunityMockType.Realistic.allCases) { type in
-                CommunityListRow(
-                    Community2.mock(.realistic(type)),
-                    complications: [.instance],
-                    readout: .subscribers
-                )
-            }
-        }
-        .contentMargins(.horizontal, Constants.main.standardSpacing)
-        .background(.themedGroupedBackground)
-    }
-#endif
+// TODO: updated mocks
+// #if DEBUG
+//    #Preview(traits: .sampleEnvironment) {
+//        ScrollView {
+//            ForEach(CommunityMockType.Realistic.allCases) { type in
+//                CommunityListRow(
+//                    Community2.mock(.realistic(type)),
+//                    complications: [.instance],
+//                    readout: .subscribers
+//                )
+//            }
+//        }
+//        .contentMargins(.horizontal, Constants.main.standardSpacing)
+//        .background(.themedGroupedBackground)
+//    }
+// #endif

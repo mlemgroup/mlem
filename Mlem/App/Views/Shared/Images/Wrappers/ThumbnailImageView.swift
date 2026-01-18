@@ -21,7 +21,7 @@ struct ThumbnailImageView: View {
     @State var mediaControlState: MediaControlState
     @State var quickLookUrl: URL?
     
-    let post: any Post1Providing
+    let post: Post
     let size: Size
     let frame: CGSize
     
@@ -40,10 +40,10 @@ struct ThumbnailImageView: View {
     var onTapActions: (() -> Void)? {
         switch post.type {
         case .media, .embedded:
-            { post.markRead() }
+            { post.updateRead(true) }
         case let .link(link):
             {
-                post.markRead()
+                post.updateRead(true)
                 openURL(link.content)
             }
         default:
@@ -52,7 +52,7 @@ struct ThumbnailImageView: View {
     }
     
     init(
-        post: any Post1Providing,
+        post: Post,
         blurred: Bool,
         size: Size,
         frame: CGSize
