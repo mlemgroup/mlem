@@ -3286,7 +3286,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = "local build";
 				DEVELOPMENT_ASSET_PATHS = "\"Mlem/Preview Content\"";
-				DEVELOPMENT_TEAM = 8B9GNJW88W;
+				DEVELOPMENT_TEAM = V4747CQLU2;
 				ENABLE_PREVIEWS = YES;
 				EXCLUDED_SOURCE_FILE_NAMES = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -3308,7 +3308,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 2.4.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.hanners.Mlem;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sjmarf.mlem1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -3331,7 +3331,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = "local build";
 				DEVELOPMENT_ASSET_PATHS = "\"Mlem/Preview Content\"";
-				DEVELOPMENT_TEAM = 8B9GNJW88W;
+				DEVELOPMENT_TEAM = V4747CQLU2;
 				ENABLE_PREVIEWS = YES;
 				EXCLUDED_SOURCE_FILE_NAMES = (
 					"\"$(PROJECT_DIR)/Mlem/App/Utility/Extensions/MlemMiddleware Mock/*\"",
@@ -3340,6 +3340,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Mlem/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Mlem;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Mlem requires Face ID permissions for app locking feature.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "";
@@ -3355,7 +3356,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 2.4.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.hanners.Mlem;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sjmarf.mlem1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
