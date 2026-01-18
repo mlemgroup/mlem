@@ -116,11 +116,7 @@ struct InstanceView: View {
             }
         }
         .toolbar {
-            ToolbarEllipsisMenu(instance.menuActions(
-                appState: appState,
-                navigation: navigation,
-                allowExternalBlocking: true
-            ))
+            ToolbarEllipsisMenu(instance: instance)
         }
     }
     
