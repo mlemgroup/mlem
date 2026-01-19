@@ -16,6 +16,12 @@ public struct PostEmbed: Equatable {
     public let videoUrl: URL?
 }
 
+private extension Bool {
+    func or(_ other: Bool) -> Bool {
+        self || other
+    }
+}
+
 @Observable
 public class Post:
     UnifiedModelProviding,
@@ -81,7 +87,7 @@ public class Post:
         self.creatorBlocked = dummyExpectedValue(properties.creatorBlocked)
         self.votes = dummyExpectedValue(properties.votes)
         self.saved = dummyExpectedValue(properties.saved)
-        self.read = dummyExpectedValue(properties.read)
+        self.readStatus = dummyExpectedValue(properties.read)
         self.hidden = dummyExpectedValue(properties.hidden)
         self.crossPosts = dummyExpectedValue(properties.crossPosts)
         
@@ -95,7 +101,7 @@ public class Post:
         self.creatorBlocked = expectedValue(properties.creatorBlocked)
         self.votes = expectedValue(properties.votes)
         self.saved = expectedValue(properties.saved)
-        self.read = expectedValue(properties.read)
+        self.readStatus = expectedValue(properties.read)
         self.hidden = expectedValue(properties.hidden)
         self.crossPosts = expectedValue(properties.crossPosts)
     }
@@ -189,79 +195,45 @@ public class Post:
     
     // MARK: API Properties
     // Properties that are provided directly by the API
-    
-//    private func expectedValue<T>(_ keyPath: WritableKeyPath<Post, T?>) -> ExpectedValue<T> {
-//        .init(
-//            value: self[keyPath: keyPath],
-//            provideValue: { try await self.upgrade() })
-//    }
+
     
     public var actorId: ActorIdentifier
-    
     public var id: Int
-    
     public var creatorId: Int
-    
     public var communityId: Int
-    
     public var created: Date
-    
     public var title: String
-    
     public var content: String?
-    
     public var linkUrl: URL?
-    
     public var embed: PostEmbed?
-    
     public var nsfw: Bool
-    
     public var thumbnailUrl: URL?
-    
     public var updated: Date?
-    
     public var languageId: Int
-    
     public var altText: String?
-    
     public var deleted: Bool
-    
     public var removed: Bool
-    
     public var pinnedCommunity: Bool
-    
     public var pinnedInstance: Bool
-    
     public var locked: Bool
-
+    
     public var creator: ExpectedValue<any Person>
-    
     public var community: ExpectedValue<any Community>
-    
     public var commentCount: ExpectedValue<Int>
-
     public var unreadCommentCount: ExpectedValue<Int>
-
     public var creatorIsModerator: ExpectedValue<Bool>
-
     public var creatorIsAdmin: ExpectedValue<Bool>
-
     public var creatorBannedFromCommunity: ExpectedValue<Bool>
-
     public var creatorBlocked: ExpectedValue<Bool>
-
     public var votes: ExpectedValue<VotesModel>
-
     public var saved: ExpectedValue<Bool>
-
-    public var read: ExpectedValue<Bool>
-//    = .init(
-//        getValue: { if let value = self.properties.read { self.readQueued || value } else { nil }},
-//        provideValue: { try await self.upgrade() }
-//    )
-
+    public var readStatus: ExpectedValue<Bool>
+    public var read: ExpectedValue<Bool> {
+        .init(
+            value: readStatus.value?.or(readQueued),
+            provideValue: { try await self.upgrade() })
+    }
     public var hidden: ExpectedValue<Bool>
-    
     public var crossPosts: ExpectedValue<[Post]>
 }
 
@@ -284,7 +256,7 @@ public extension Post {
 
     func updateSaved(_ newValue: Bool) {
         saved.value_ = newValue
-        read.value_ = true
+        readStatus.value_ = true
         
         Task {
             await updateQueue.addItem {
@@ -304,7 +276,7 @@ public extension Post {
     
     private func updateVote(_ newValue: ScoringOperation, votes: VotesModel) {
         self.votes.value_ = votes.applyScoringOperation(operation: newValue)
-        read.value_ = true
+        readStatus.value_ = true
         
         Task {
             await updateQueue.addItem {
@@ -323,7 +295,7 @@ public extension Post {
     
     func updateHidden(_ newValue: Bool) {
         hidden.value_ = newValue
-        read.value_ = true
+        readStatus.value_ = true
         
         Task {
             await updateQueue.addItem { properties in
@@ -348,7 +320,7 @@ public extension Post {
                 }
             }
         } else {
-            read.value_ = newValue
+            readStatus.value_ = newValue
             Task {
                 await updateQueue.addItem { properties in
                     try await self.api.repository.markPostAsRead(id: self.id, read: newValue)
