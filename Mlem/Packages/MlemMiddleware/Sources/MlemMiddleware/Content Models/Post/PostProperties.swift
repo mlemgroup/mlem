@@ -49,7 +49,6 @@ public struct PostProperties: UnifiedPropertiesProviding {
     var crossPosts: [Post]?
     
     /// Constructs a PostProperties from a given snapshot
-    /// - Note: External models (e.g., Creator) will NOT be included!
     @MainActor
     public init(api: ApiClient, snapshot: AnyPostSnapshot) {
         let snapshot1: Post1Snapshot
