@@ -7,6 +7,18 @@
 
 import Foundation
 
+public enum AnyCommentSnapshot: CacheIdentifiable {
+    case comment1(Comment1Snapshot)
+    case comment2(Comment2Snapshot)
+    
+    public var cacheId: Int {
+        switch self {
+        case let .comment1(snapshot): snapshot.cacheId
+        case let .comment2(snapshot): snapshot.cacheId
+        }
+    }
+}
+
 class Comment1Cache: ApiTypeBackedCache<Comment1, Comment1Snapshot> {
     override func performModelTranslation(api: ApiClient, from snapshot: Comment1Snapshot) -> Comment1 {
         .init(
