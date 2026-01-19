@@ -48,92 +48,37 @@ public struct PostProperties: UnifiedPropertiesProviding {
     // From Post3Snapshot
     var crossPosts: [Post]?
     
-    /// Updates this properties with the values from the given PostProperties, preferring the incoming values
-    @MainActor
-    public mutating func update(with properties: Self) {
-        actorId = properties.actorId
-        id = properties.id
-        creatorId = properties.creatorId
-        communityId = properties.communityId
-        created = properties.created
-        title = properties.title
-        content = properties.content
-        linkUrl = properties.linkUrl
-        embed = properties.embed
-        nsfw = properties.nsfw
-        thumbnailUrl = properties.thumbnailUrl
-        updated = properties.updated
-        languageId = properties.languageId
-        altText = properties.altText
-        deleted = properties.deleted
-        removed = properties.removed
-        pinnedCommunity = properties.pinnedCommunity
-        pinnedInstance = properties.pinnedInstance
-        locked = properties.locked
-
-        creator = properties.creator ?? creator
-        community = properties.community ?? community
-        commentCount = properties.commentCount ?? commentCount
-        unreadCommentCount = properties.unreadCommentCount ?? unreadCommentCount
-        creatorIsModerator = properties.creatorIsModerator ?? creatorIsModerator
-        creatorIsAdmin = properties.creatorIsAdmin ?? creatorIsAdmin
-        creatorBannedFromCommunity = properties.creatorBannedFromCommunity ?? creatorBannedFromCommunity
-        creatorBlocked = properties.creatorBlocked ?? creatorBlocked
-        votes = properties.votes ?? votes
-        saved = properties.saved ?? saved
-        read = properties.read ?? read
-        hidden = properties.hidden ?? hidden
-        
-        crossPosts = properties.crossPosts ?? crossPosts
-        
-        if let creator, let creatorBannedFromCommunity {
-            creator.person1.updateKnownCommunityBanState(id: communityId, banned: creatorBannedFromCommunity)
-        }
-    }
-    
-    /// Updates this properties with the values from the given PostProperties, preferring the current values
-    @MainActor
-    public mutating func softUpdate(with properties: Self) {
-        // all tier 1 properties ignored since guaranteed to be present already
-        
-        creator = creator ?? properties.creator
-        community = community ?? properties.community
-        commentCount = commentCount ?? properties.commentCount
-        unreadCommentCount = unreadCommentCount ?? properties.unreadCommentCount
-        creatorIsModerator = creatorIsModerator ?? properties.creatorIsModerator
-        creatorIsAdmin = creatorIsAdmin ?? properties.creatorIsAdmin
-        creatorBannedFromCommunity = creatorBannedFromCommunity ?? properties.creatorBannedFromCommunity
-        creatorBlocked = creatorBlocked ?? properties.creatorBlocked
-        votes = votes ?? properties.votes
-        saved = saved ?? properties.saved
-        read = read ?? properties.read
-        hidden = hidden ?? properties.hidden
-        
-        crossPosts = crossPosts ?? properties.crossPosts
-        
-        if let creator, let creatorBannedFromCommunity {
-            creator.person1.updateKnownCommunityBanState(id: communityId, banned: creatorBannedFromCommunity)
-        }
-    }
-    
     /// Constructs a PostProperties from a given snapshot
-    /// - Note: External models (e.g., Creator) will NOT be included!
-    public init(snapshot: AnyPostSnapshot) {
+    @MainActor
+    public init(api: ApiClient, snapshot: AnyPostSnapshot) {
         let snapshot1: Post1Snapshot
         let snapshot2: Post2Snapshot?
+        let snapshot3: Post3Snapshot?
         switch snapshot {
         case let .post1(post1Snapshot):
             snapshot1 = post1Snapshot
             snapshot2 = nil
+            snapshot3 = nil
         case let .post2(post2Snapshot):
             snapshot1 = post2Snapshot.post
             snapshot2 = post2Snapshot
+            snapshot3 = nil
         case let .post3(post3Snapshot):
             snapshot1 = post3Snapshot.post.post
             snapshot2 = post3Snapshot.post
+            snapshot3 = post3Snapshot
+        }
+        
+        if let snapshot3 {
+            crossPosts = api.caches.post.getModels(api: api, from: snapshot3.crossPosts.map { .post2($0) })
         }
         
         if let snapshot2 {
+            let newCreator: any Person = api.caches.person1.getModel(api: api, from: snapshot2.creator)
+            newCreator.person1.updateKnownCommunityBanState(id: snapshot1.communityId, banned: snapshot2.creatorBannedFromCommunity)
+            
+            creator = newCreator
+            community =  api.caches.community1.getModel(api: api, from: snapshot2.community)
             commentCount = snapshot2.commentCount
             unreadCommentCount = snapshot2.unreadCommentCount
             creatorIsModerator = snapshot2.creatorIsModerator
@@ -167,25 +112,42 @@ public struct PostProperties: UnifiedPropertiesProviding {
         locked = snapshot1.locked
     }
     
-    /// Constructs a PostProperties from a given snapshot, including external models
-    public init(snapshot: AnyPostSnapshot, creator: (any Person)?, community: (any Community)?, crossPosts: [Post]?) {
-        if let creator {
-            switch snapshot {
-            case let .post2(post2Snapshot):
-                creator.person1.updateKnownCommunityBanState(
-                    id: post2Snapshot.community.id,
-                    banned: post2Snapshot.creatorBannedFromCommunity)
-            case let .post3(post3Snapshot):
-                creator.person1.updateKnownCommunityBanState(
-                    id: post3Snapshot.community.community.id,
-                    banned: post3Snapshot.post.creatorBannedFromCommunity)
-            default: break // noop
-            }
-        }
+    public mutating func merge(_ other: PostProperties) {
+        // tier 1 properties: simple assignment
+        self.actorId = other.actorId
+        self.id = other.id
+        self.creatorId = other.creatorId
+        self.communityId = other.communityId
+        self.created = other.created
+        self.title = other.title
+        self.content = other.content
+        self.linkUrl = other.linkUrl
+        self.embed = other.embed
+        self.nsfw = other.nsfw
+        self.thumbnailUrl = other.thumbnailUrl
+        self.updated = other.updated
+        self.languageId = other.languageId
+        self.altText = other.altText
+        self.deleted = other.deleted
+        self.removed = other.removed
+        self.pinnedCommunity = other.pinnedCommunity
+        self.pinnedInstance = other.pinnedInstance
+        self.locked = other.locked
         
-        self.init(snapshot: snapshot)
-        self.creator = creator
-        self.community = community
-        self.crossPosts = crossPosts
+        // tier 2, 3 properties: only assign if incoming non-nil
+        self.creator = other.creator ?? self.creator
+        self.community = other.community ?? self.community
+        self.commentCount = other.commentCount ?? self.commentCount
+        self.unreadCommentCount = other.unreadCommentCount ?? self.unreadCommentCount
+        self.creatorIsModerator = other.creatorIsModerator ?? self.creatorIsModerator
+        self.creatorIsAdmin = other.creatorIsAdmin ?? self.creatorIsAdmin
+        self.creatorBannedFromCommunity = other.creatorBannedFromCommunity ?? self.creatorBannedFromCommunity
+        self.creatorBlocked = other.creatorBlocked ?? self.creatorBlocked
+        self.votes = other.votes ?? self.votes
+        self.saved = other.saved ?? self.saved
+        self.read = other.read ?? self.read
+        self.hidden = other.hidden ?? self.hidden
+        
+        self.crossPosts = other.crossPosts ?? self.crossPosts
     }
 }

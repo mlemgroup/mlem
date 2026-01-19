@@ -75,44 +75,44 @@ public protocol ShimInteractable2Providing: RemovableProviding {
 public extension Interactable2Providing {
     var votes: ExpectedValue<VotesModel> {
         .init(
-            getValue: { self.votes },
+            value: self.votes,
             provideValue: { fatalError("This should not be called") })
     }
 
     var saved: ExpectedValue<Bool> {
         .init(
-            getValue: { self.saved },
+            value: self.saved,
             provideValue: { fatalError("This should not be called") }
         )
     }
     
     var commentCount: ExpectedValue<Int> {
         .init(
-            getValue: { self.commentCount },
+            value: self.commentCount,
             provideValue: { fatalError("This should not be called") })
     }
     
     var creator: ExpectedValue<any Person> {
         .init(
-            getValue: { self.creator },
+            value: self.creator,
             provideValue: { fatalError("This should not be called") })
     }
     
     var community: ExpectedValue<any Community> {
         .init(
-            getValue: { self.community },
+            value: self.community,
             provideValue: { fatalError("This should not be called") })
     }
     
     var creatorIsAdmin: ExpectedValue<Bool> {
         .init(
-            getValue: { self.creatorIsAdmin },
+            value: self.creatorIsAdmin,
             provideValue: { fatalError("This should not be called") })
     }
     
     var creatorIsModerator: ExpectedValue<Bool> {
         .init(
-            getValue: { self.creatorIsModerator },
+            value: self.creatorIsModerator,
             provideValue: { fatalError("This should not be called") })
     }
     
