@@ -50,7 +50,7 @@ public class Post:
     public var embeddedMediaUrl: URL?
     
     // MARK: API Properties
-    // Properties that are provided directly by the API
+    // Properties that are provided by the API
 
     public let actorId: ActorIdentifier
     public let id: Int
@@ -93,10 +93,7 @@ public class Post:
     
     // MARK: Initializers and Updates
     
-    public init(
-        api: ApiClient,
-        properties: PostProperties
-    ) {
+    public init(api: ApiClient, properties: PostProperties) {
         self.api = api
         self.properties = properties
         

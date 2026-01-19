@@ -16,7 +16,7 @@ struct TileCommentView: View {
     @Environment(\.palette) var palette
     @Environment(\.parentFrameWidth) var parentFrameWidth: CGFloat
     
-    let comment: any Comment
+    let comment: any DeprecatedComment
     
     @ScaledMetric(relativeTo: .footnote) var titleHeight: CGFloat = 36 // (2 * .footnote height), including built-in spacing
     @ScaledMetric(relativeTo: .caption) var communityHeight: CGFloat = 16 // .caption height, including built-in spacing

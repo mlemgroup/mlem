@@ -21,12 +21,12 @@ struct FeedCommentView<EmbeddedContent: View>: View {
     @Setting(\.interactionBar_commentReport) var commentReportInteractionBar
     @Setting(\.interactionBar_alternateReportLayout) var alternateInteractionBarLayoutForReports: Bool
 
-    let comment: any Comment
+    let comment: any DeprecatedComment
     var overriddenSize: PostSize?
     @ViewBuilder var embeddedContent: () -> EmbeddedContent
     
     init(
-        comment: any Comment,
+        comment: any DeprecatedComment,
         overriddenSize: PostSize? = nil,
         @ViewBuilder embeddedContent: @escaping () -> EmbeddedContent = { EmptyView() }
     ) {

@@ -34,7 +34,7 @@ public protocol Comment1Providing:
     var updateQueue: CommentUpdateQueue { get }
 }
 
-public typealias Comment = Comment1Providing
+public typealias DeprecatedComment = Comment1Providing
 
 public extension Comment1Providing {
     static var modelTypeId: ContentType { .comment }
@@ -115,7 +115,7 @@ public extension Comment1Providing {
     
     var depth: Int { parentCommentIds.count }
     
-    func upgrade() async throws -> any Comment {
+    func upgrade() async throws -> any DeprecatedComment {
         try await updateQueue.addUpgrade {
             let snapshot = try await self.api.repository.getComment(id: self.id)
             let comment = await self.api.caches.comment2.performModelTranslation(api: self.api, from: snapshot)

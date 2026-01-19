@@ -63,7 +63,7 @@ extension View {
     }
     
     @ViewBuilder
-    func quickSwipes(comment: any Comment, configuration: CommentBarConfiguration) -> some View {
+    func quickSwipes(comment: any DeprecatedComment, configuration: CommentBarConfiguration) -> some View {
         modifier(
             QuickSwipeEnvironmentReaderViewModifier { environment in
                 guard let navigation = environment.navigation else {
@@ -93,7 +93,7 @@ extension View {
     }
 
     @ViewBuilder
-    func quickSwipes(comment: any Comment, notification: InboxNotification, configuration: ReplyBarConfiguration) -> some View {
+    func quickSwipes(comment: any DeprecatedComment, notification: InboxNotification, configuration: ReplyBarConfiguration) -> some View {
         modifier(
             QuickSwipeEnvironmentReaderViewModifier { environment in
                 guard let navigation = environment.navigation else {

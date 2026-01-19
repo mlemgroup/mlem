@@ -58,7 +58,7 @@ public actor CommentUpdateQueue {
     /// Queues the given upgrade operation for execution
     /// - Returns: comment returned by the upgrade operation
     /// - Warning: this method assumes that the given operation will update this queue's parent (this generally happens in the parent's initializer)
-    func addUpgrade(task: @escaping () async throws -> (Comment2Snapshot, Comment2)) async throws -> any Comment {
+    func addUpgrade(task: @escaping () async throws -> (Comment2Snapshot, Comment2)) async throws -> any DeprecatedComment {
         // this method is a unique case because the context it is called from needs to receive its result. This method therefore waits
         // for any currently queued actions to finish, then blocks the queue from restarting until the upgrade is complete.
         await semaphore.wait()

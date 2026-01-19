@@ -15,7 +15,7 @@ class CommentTreeTracker: Hashable {
     
     enum Root {
         case post(Post)
-        case comment(any Comment, parentCount: Int)
+        case comment(any DeprecatedComment, parentCount: Int)
         
         var wrappedValue: any Interactable1Providing & ActorIdentifiable {
             switch self {
@@ -66,9 +66,9 @@ class CommentTreeTracker: Hashable {
         do {
             var newComments = try await fetchComments(page: 1)
             if let ensuredComment {
-                let comment: any Comment
+                let comment: any DeprecatedComment
                 let api = root.wrappedValue.api
-                if let ensuredComment = ensuredComment as? any Comment, ensuredComment.api == api {
+                if let ensuredComment = ensuredComment as? any DeprecatedComment, ensuredComment.api == api {
                     comment = ensuredComment
                 } else if let ensuredComment = ensuredComment as? CommentStub {
                     log.info("Resolving comment")

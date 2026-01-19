@@ -86,7 +86,7 @@ enum NavigationPage: Hashable {
     case modlog(ModlogView.InitialTarget, targetPerson: AnyPerson?, moderatorPerson: AnyPerson?)
     case denyApplication(RegistrationApplication)
     case exportPostImage(_ post: Post)
-    case exportCommentImage(_ comment: HashWrapper<any Comment>, tracker: CommentTreeTracker?)
+    case exportCommentImage(_ comment: HashWrapper<any DeprecatedComment>, tracker: CommentTreeTracker?)
     case actionSheet(_ actions: HashWrapper<[ActionSheetSection]>)
     
     static func post(
@@ -376,7 +376,7 @@ enum NavigationPage: Hashable {
         advancedSorting(.init(wrappedValue: sort))
     }
     
-    static func createCommentImage(_ comment: any Comment, tracker: CommentTreeTracker?) -> NavigationPage {
+    static func createCommentImage(_ comment: any DeprecatedComment, tracker: CommentTreeTracker?) -> NavigationPage {
         exportCommentImage(.init(wrappedValue: comment), tracker: tracker)
     }
 

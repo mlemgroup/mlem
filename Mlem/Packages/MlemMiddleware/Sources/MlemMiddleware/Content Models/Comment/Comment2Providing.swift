@@ -43,7 +43,7 @@ public extension Comment2Providing {
 }
 
 public extension Comment2Providing {
-    func upgrade() async throws -> any Comment { self }
+    func upgrade() async throws -> any DeprecatedComment { self }
     
     func updateVote(_ newValue: ScoringOperation) {
         comment2.votes = comment2.votes.applyScoringOperation(operation: newValue)

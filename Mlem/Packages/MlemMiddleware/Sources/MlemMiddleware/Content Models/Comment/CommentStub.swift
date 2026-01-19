@@ -29,7 +29,7 @@ public struct CommentStub: CommentStubProviding, Hashable {
         lhs.url == rhs.url
     }
     
-    public func upgrade() async throws -> any Comment {
+    public func upgrade() async throws -> any DeprecatedComment {
         try await api.getComment(url: resolvableUrl)
     }
 }

@@ -33,7 +33,7 @@ public protocol CommentStubProviding: ContentModel, Resolvable {
     var creatorBannedFromCommunity_: Bool? { get }
     var commentCount_: Int? { get }
     
-    func upgrade() async throws -> any Comment
+    func upgrade() async throws -> any DeprecatedComment
 }
 
 public extension CommentStubProviding {
