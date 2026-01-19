@@ -32,7 +32,7 @@ struct CommentEditorView: View {
 
     let commentTreeTracker: CommentTreeTracker?
     
-    @State var commentToEdit: Comment2?
+    @State var commentToEdit: Comment?
     @State var originalContext: Context?
     @State var resolvedContext: Context?
     @State var resolutionState: ResolutionState = .success
@@ -49,7 +49,7 @@ struct CommentEditorView: View {
     @State var slurRegex: Regex<AnyRegexOutput>?
     
     init?(
-        commentToEdit: Comment2? = nil,
+        commentToEdit: Comment? = nil,
         context: Context? = nil,
         commentTreeTracker: CommentTreeTracker? = nil
     ) {

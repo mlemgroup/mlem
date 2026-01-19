@@ -16,3 +16,15 @@ public extension Comment {
 public extension Comment {
     static var tierNumber: Int = 4
 }
+
+// MARK: SelectableContentProviding
+
+public extension Comment {
+    var selectableContent: String? { content }
+}
+
+// MARK: ContentIdentifiable
+
+public extension Comment {
+    static var modelTypeId: ContentType { .comment }
+}

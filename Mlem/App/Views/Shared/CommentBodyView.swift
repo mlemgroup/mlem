@@ -14,7 +14,7 @@ struct CommentBodyView: View {
     
     @Setting(\.comment_compact) var compactComments
     
-    let comment: any DeprecatedComment
+    let comment: Comment
     
     var body: some View {
         if comment.deleted {

@@ -9,7 +9,10 @@ import Observation
 import Foundation
 
 @Observable
-public class Comment: UnifiedModelProviding {
+public class Comment:
+    UnifiedModelProviding,
+    SelectableContentProviding,
+    ContentIdentifiable {
     public typealias Properties = CommentProperties
     
     public var api: ApiClient

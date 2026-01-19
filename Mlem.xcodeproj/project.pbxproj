@@ -473,6 +473,7 @@
 		CD5D8E2B2D6D5AB100AF5CE4 /* CGSize+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5D8E2A2D6D5AAE00AF5CE4 /* CGSize+Extensions.swift */; };
 		CD635E1B2C94DACD00864F75 /* BypassProxyWarningSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD635E1A2C94DACD00864F75 /* BypassProxyWarningSheet.swift */; };
 		CD6436502D483C96002668FB /* InteractionBarEditorView+Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD64364F2D483C8F002668FB /* InteractionBarEditorView+Views.swift */; };
+		CD6C2E092F1EEEAD00493FFB /* Comment+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6C2E082F1EEEAD00493FFB /* Comment+Actions.swift */; };
 		CD6DC02A2D86513D00693B16 /* AnimatedAvatarBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DC0292D86513800693B16 /* AnimatedAvatarBehavior.swift */; };
 		CD6DC02C2D86540A00693B16 /* AnimatedAvatarSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DC02B2D86540500693B16 /* AnimatedAvatarSettingsView.swift */; };
 		CD756A962ED765EC0031D7D1 /* ExportableCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD756A952ED765E90031D7D1 /* ExportableCommentView.swift */; };
@@ -1034,6 +1035,7 @@
 		CD5D8E2A2D6D5AAE00AF5CE4 /* CGSize+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGSize+Extensions.swift"; sourceTree = "<group>"; };
 		CD635E1A2C94DACD00864F75 /* BypassProxyWarningSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BypassProxyWarningSheet.swift; sourceTree = "<group>"; };
 		CD64364F2D483C8F002668FB /* InteractionBarEditorView+Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InteractionBarEditorView+Views.swift"; sourceTree = "<group>"; };
+		CD6C2E082F1EEEAD00493FFB /* Comment+Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment+Actions.swift"; sourceTree = "<group>"; };
 		CD6DC0292D86513800693B16 /* AnimatedAvatarBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedAvatarBehavior.swift; sourceTree = "<group>"; };
 		CD6DC02B2D86540500693B16 /* AnimatedAvatarSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedAvatarSettingsView.swift; sourceTree = "<group>"; };
 		CD756A952ED765E90031D7D1 /* ExportableCommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportableCommentView.swift; sourceTree = "<group>"; };
@@ -2287,6 +2289,7 @@
 				CD7743882C20EDEE0085BB43 /* VotesModel+Extensions.swift */,
 				03ACE7192DFD57CC00FD66C0 /* SiteSoftware+Extensions.swift */,
 				03B045F52E26D64900540EFB /* SiteSoftwareType+Extensions.swift */,
+				CD6C2E082F1EEEAD00493FFB /* Comment+Actions.swift */,
 				CDC71F142F15A32500D314B1 /* Post+Extensions.swift */,
 				CDC71F132F15A32500D314B1 /* Post+Actions.swift */,
 				CDC71F152F15A32500D314B1 /* Post+Interactions.swift */,
@@ -2886,6 +2889,7 @@
 				033F84782D1D68D200D87A9E /* ModlogEntryContent+Extensions.swift in Sources */,
 				CD4ED8472BF110FA00EFA0A2 /* TabReselectTracker.swift in Sources */,
 				CDCC7FF32D9B283A00CE18DA /* ZoomRecognizerCoordinator+Logic.swift in Sources */,
+				CD6C2E092F1EEEAD00493FFB /* Comment+Actions.swift in Sources */,
 				033FCAEE2C57DD14007B7CD1 /* CaptchaDifficulty+Extensions.swift in Sources */,
 				035BE0912BDEA01E00F77D73 /* View+NavigationSheetModifiers.swift in Sources */,
 				CDAA02DB2C810DB200D75633 /* Calendar+Extensions.swift in Sources */,
