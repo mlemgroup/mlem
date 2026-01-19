@@ -120,4 +120,8 @@ public struct PostProperties: UnifiedPropertiesProviding {
         self.community = community
         self.crossPosts = crossPosts
     }
+    
+    public func merge(_ other: PostProperties) {
+        // TODO: NOW
+    }
 }
