@@ -27,7 +27,7 @@ class PostCache: ApiTypeBackedCache<Post, AnyPostSnapshot> {
     override func updateModel(_ item: Post, with apiType: AnyPostSnapshot, semaphore: UInt? = nil) {
         // this ensures that high-tier data is available where expected, but uses softUpdate to avoid overwriting
         // potentially more recent data
-        item.properties.softUpdate(with: enrichSnapshot(api: item.api, snapshot: apiType))
+        item.softUpdate(with: enrichSnapshot(api: item.api, snapshot: apiType))
     }
     
     @MainActor

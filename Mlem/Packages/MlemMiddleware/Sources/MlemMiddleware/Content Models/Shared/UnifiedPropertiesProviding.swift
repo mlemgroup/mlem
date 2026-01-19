@@ -6,5 +6,5 @@
 //
 
 public protocol UnifiedPropertiesProviding {
-    @MainActor mutating func update(with properties: Self)
+    // @MainActor mutating func update(with properties: Self)
 }

@@ -132,8 +132,9 @@ public class Post:
         setIfChanged(\.pinnedInstance, properties.pinnedInstance)
         setIfChanged(\.locked, properties.locked)
 
-        // setIfChanged(\.creator.value_, properties.creator ?? creator.value_)
-        // setIfChanged(\.community.value_, properties.community ?? community.value_)
+        // creator and community are not expected to change value, but need to be assigned if absent
+        setIfNil(\.creator.value_, properties.creator ?? creator.value_)
+        setIfNil(\.community.value_, properties.community ?? community.value_)
         setIfChanged(\.commentCount.value_, properties.commentCount ?? commentCount.value_)
         setIfChanged(\.unreadCommentCount.value_, properties.unreadCommentCount ?? unreadCommentCount.value_)
         setIfChanged(\.creatorIsModerator.value_, properties.creatorIsModerator ?? creatorIsModerator.value_)
@@ -152,24 +153,34 @@ public class Post:
         }
     }
     
+    @MainActor
+    public func softUpdate(with properties: PostProperties) {
+        setIfNil(\.creator.value_, properties.creator)
+        setIfNil(\.community.value_, properties.community)
+        setIfNil(\.commentCount.value_, properties.commentCount)
+        setIfNil(\.unreadCommentCount.value_, properties.unreadCommentCount)
+        setIfNil(\.creatorIsModerator.value_, properties.creatorIsModerator)
+        setIfNil(\.creatorIsAdmin.value_, properties.creatorIsAdmin)
+        setIfNil(\.creatorBannedFromCommunity.value_ , properties.creatorBannedFromCommunity)
+        setIfNil(\.creatorBlocked.value_, properties.creatorBlocked)
+        setIfNil(\.votes.value_, properties.votes)
+        setIfNil(\.saved.value_, properties.saved)
+        setIfNil(\.readStatus.value_, properties.read)
+        setIfNil(\.hidden.value_, properties.hidden)
+
+        setIfNil(\.crossPosts.value_, properties.crossPosts ?? crossPosts.value_)
+        
+        if let creator = creator.value_, let creatorBannedFromCommunity = creatorBannedFromCommunity.value_ {
+            creator.person1.updateKnownCommunityBanState(id: communityId, banned: creatorBannedFromCommunity)
+        }
+    }
+    
     // MARK: Core
-    
-    @ObservationIgnored
-    lazy var updateQueue: UnifiedUpdateQueue<Post> = .init(parent: self)
-    
+
     public var api: ApiClient
-    
+    private let properties: PostProperties
     @ObservationIgnored
-    public var properties: PostProperties
-//    public var properties: PostProperties {
-//        didSet {
-//            pinnedCommunityPending = false
-//            pinnedInstancePending = false
-//            lockedPending = false
-//            nsfwPending = false
-//            removedPending = false
-//        }
-//    }
+    lazy var updateQueue: UnifiedUpdateQueue<Post> = .init(parent: self, properties: properties)
     
     public func upgrade() async throws {
         try await updateQueue.upgrade()

@@ -32,9 +32,9 @@ public actor UnifiedUpdateQueue<Model: UnifiedModelProviding> {
     private var semaphore: AsyncSemaphore = .init(value: 1)
     private var queue: Queue<UpdateTask> = .init()
     
-    init(parent: Model) {
+    init(parent: Model, properties: Model.Properties) {
         self.parent = parent
-        self.lastVerifiedProperties = parent.properties
+        self.lastVerifiedProperties = properties
     }
     
     func upgrade() async throws {
