@@ -50,22 +50,33 @@ public struct PostProperties: UnifiedPropertiesProviding {
     
     /// Constructs a PostProperties from a given snapshot
     /// - Note: External models (e.g., Creator) will NOT be included!
-    public init(snapshot: AnyPostSnapshot) {
+    @MainActor
+    public init(api: ApiClient, snapshot: AnyPostSnapshot) {
         let snapshot1: Post1Snapshot
         let snapshot2: Post2Snapshot?
+        let snapshot3: Post3Snapshot?
         switch snapshot {
         case let .post1(post1Snapshot):
             snapshot1 = post1Snapshot
             snapshot2 = nil
+            snapshot3 = nil
         case let .post2(post2Snapshot):
             snapshot1 = post2Snapshot.post
             snapshot2 = post2Snapshot
+            snapshot3 = nil
         case let .post3(post3Snapshot):
             snapshot1 = post3Snapshot.post.post
             snapshot2 = post3Snapshot.post
+            snapshot3 = post3Snapshot
+        }
+        
+        if let snapshot3 {
+            crossPosts = api.caches.post.getModels(api: api, from: snapshot3.crossPosts.map { .post2($0) })
         }
         
         if let snapshot2 {
+            creator = api.caches.person1.getModel(api: api, from: snapshot2.creator)
+            community = api.caches.community1.getModel(api: api, from: snapshot2.community)
             commentCount = snapshot2.commentCount
             unreadCommentCount = snapshot2.unreadCommentCount
             creatorIsModerator = snapshot2.creatorIsModerator
@@ -97,28 +108,6 @@ public struct PostProperties: UnifiedPropertiesProviding {
         pinnedCommunity = snapshot1.pinnedCommunity
         pinnedInstance = snapshot1.pinnedInstance
         locked = snapshot1.locked
-    }
-    
-    /// Constructs a PostProperties from a given snapshot, including external models
-    public init(snapshot: AnyPostSnapshot, creator: (any Person)?, community: (any Community)?, crossPosts: [Post]?) {
-        if let creator {
-            switch snapshot {
-            case let .post2(post2Snapshot):
-                creator.person1.updateKnownCommunityBanState(
-                    id: post2Snapshot.community.id,
-                    banned: post2Snapshot.creatorBannedFromCommunity)
-            case let .post3(post3Snapshot):
-                creator.person1.updateKnownCommunityBanState(
-                    id: post3Snapshot.community.community.id,
-                    banned: post3Snapshot.post.creatorBannedFromCommunity)
-            default: break // noop
-            }
-        }
-        
-        self.init(snapshot: snapshot)
-        self.creator = creator
-        self.community = community
-        self.crossPosts = crossPosts
     }
     
     public mutating func merge(_ other: PostProperties) {

@@ -236,11 +236,7 @@ public class Post:
     
     public func fetchUpgraded() async throws -> PostProperties {
         let snapshot = try await api.repository.getPost(id: id)
-        let creator = await api.caches.person1.getModel(api: api, from: snapshot.post.creator)
-        let community = await api.caches.community1.getModel(api: api, from: snapshot.post.community)
-        let crossPosts = await api.caches.post.getModels(api: api, from: snapshot.crossPosts.map { .post2($0) })
-        
-        return .init(snapshot: .post3(snapshot), creator: creator, community: community, crossPosts: crossPosts)
+        return await .init(api: api, snapshot: .post3(snapshot))
     }
 }
 
@@ -267,7 +263,7 @@ public extension Post {
         
         Task {
             await updateQueue.addItem {
-                .init(snapshot: .post2(try await self.api.repository.savePost(id: self.id, save: newValue)))
+                await .init(api: self.api, snapshot: .post2(try await self.api.repository.savePost(id: self.id, save: newValue)))
             }
         }
     }
@@ -287,7 +283,7 @@ public extension Post {
         
         Task {
             await updateQueue.addItem {
-                .init(snapshot: .post2(try await self.api.repository.voteOnPost(id: self.id, score: newValue)))
+                await .init(api: self.api, snapshot: .post2(try await self.api.repository.voteOnPost(id: self.id, score: newValue)))
             }
         }
     }
@@ -367,7 +363,7 @@ public extension Post {
                 do {
                     let ret = try await self.api.repository.pinPost(id: self.id, pin: newValue, to: .community)
                     callback?(.success)
-                    return .init(snapshot: .post2(ret))
+                    return await .init(api: self.api, snapshot: .post2(ret))
                 } catch {
                     callback?(.failure(error))
                     throw error
@@ -389,7 +385,7 @@ public extension Post {
                 do {
                     let ret = try await self.api.repository.pinPost(id: self.id, pin: newValue, to: .instance)
                     callback?(.success)
-                    return .init(snapshot: .post2(ret))
+                    return await .init(api: self.api, snapshot: .post2(ret))
                 } catch {
                     callback?(.failure(error))
                     throw error
@@ -413,7 +409,7 @@ public extension Post {
                 do {
                     let ret = try await self.api.repository.lockPost(id: self.id, lock: newValue)
                     callback?(.success)
-                    return .init(snapshot: .post2(ret))
+                    return await .init(api: self.api, snapshot: .post2(ret))
                 } catch {
                     callback?(.failure(error))
                     throw (error)
@@ -462,7 +458,7 @@ public extension Post {
         
         Task {
             await updateQueue.addItem {
-                .init(snapshot: .post2(try await self.api.repository.editPost(
+                await .init(api: self.api, snapshot: .post2(try await self.api.repository.editPost(
                     id: self.id,
                     title: title,
                     content: content,
@@ -492,7 +488,7 @@ public extension Post {
                 do {
                     let snapshot = try await self.api.repository.deletePost(id: self.id, delete: newValue)
                     callback?(.success)
-                    return .init(snapshot: .post2(snapshot))
+                    return await .init(api: self.api, snapshot: .post2(snapshot))
                 } catch {
                     callback?(.failure(error))
                     throw error
@@ -512,7 +508,7 @@ public extension Post {
                 do {
                     let snapshot = try await self.api.repository.setPostNsfw(id: self.id, nsfw: newValue)
                     callback?(.success)
-                    return .init(snapshot: .post1(snapshot))
+                    return await .init(api: self.api, snapshot: .post1(snapshot))
                 } catch {
                     callback?(.failure(error))
                     throw (error)
@@ -532,7 +528,7 @@ public extension Post {
                 do {
                     let snapshot = try await self.api.repository.removePost(id: self.id, remove: newValue, reason: reason)
                     callback?(.success)
-                    return .init(snapshot: .post2(snapshot))
+                    return await .init(api: self.api, snapshot: .post2(snapshot))
                 } catch {
                     callback?(.failure(error))
                     throw (error)
