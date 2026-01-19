@@ -5,6 +5,8 @@
 //  Created by Sjmarf on 24/06/2024.
 //
 
+// TODO: NOW remove
+
 import Foundation
 
 extension Comment1: CacheIdentifiable {

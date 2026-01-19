@@ -19,6 +19,20 @@ public enum AnyCommentSnapshot: CacheIdentifiable {
     }
 }
 
+class CommentCache: ApiTypeBackedCache<Comment, AnyCommentSnapshot> {
+    override func performModelTranslation(api: ApiClient, from apiType: AnyCommentSnapshot) -> Comment {
+        return .init(api: api, properties: .init(api: api, snapshot: apiType))
+    }
+    
+    override func updateModel(_ item: Comment, with apiType: AnyCommentSnapshot, semaphore: UInt? = nil) {
+        // this ensures that high-tier data is available where expected, but uses softUpdate to avoid overwriting
+        // potentially more recent data
+        item.softUpdate(with: .init(api: item.api, snapshot: apiType))
+    }
+}
+
+// TODO: NOW remove below this point
+
 class Comment1Cache: ApiTypeBackedCache<Comment1, Comment1Snapshot> {
     override func performModelTranslation(api: ApiClient, from snapshot: Comment1Snapshot) -> Comment1 {
         .init(
