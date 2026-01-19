@@ -46,18 +46,6 @@ public class Post:
         self.api = api
         self.properties = properties
         
-        func expectedValue<T>(_ value: T?) -> ExpectedValue<T> {
-            .init(
-                value: value,
-                provideValue: { try await self.upgrade() })
-        }
-        
-        func dummyExpectedValue<T>(_ value: T?) -> ExpectedValue<T> {
-            .init(
-                value: value,
-                provideValue: { assertionFailure("This should be overridden") })
-        }
-        
         self.actorId = properties.actorId
         self.id = properties.id
         self.creatorId = properties.creatorId
@@ -77,6 +65,16 @@ public class Post:
         self.pinnedCommunity = properties.pinnedCommunity
         self.pinnedInstance = properties.pinnedInstance
         self.locked = properties.locked
+        
+        // because upgrade() is not available until all properties are initialized, first populate all properties
+        // with ExpectedValues that don't actually do anything, then reassign them properly at the end of the init
+        // this is somewhat cumbersome but avoids lazy vars, which are very awkward in Observables
+        func dummyExpectedValue<T>(_ value: T?) -> ExpectedValue<T> {
+            .init(
+                value: value,
+                provideValue: { assertionFailure("This should be overridden") })
+        }
+        
         self.creator = dummyExpectedValue(properties.creator)
         self.community = dummyExpectedValue(properties.community)
         self.commentCount = dummyExpectedValue(properties.commentCount)
@@ -91,6 +89,11 @@ public class Post:
         self.hidden = dummyExpectedValue(properties.hidden)
         self.crossPosts = dummyExpectedValue(properties.crossPosts)
         
+        func expectedValue<T>(_ value: T?) -> ExpectedValue<T> {
+            .init(
+                value: value,
+                provideValue: { try await self.upgrade() })
+        }
         self.creator = expectedValue(properties.creator)
         self.community = expectedValue(properties.community)
         self.commentCount = expectedValue(properties.commentCount)
@@ -109,40 +112,40 @@ public class Post:
     /// Updates this properties with the values from the given PostProperties, preferring the incoming values
     @MainActor
     public func update(with properties: PostProperties) {
-//        actorId = properties.actorId
-//        id = properties.id
-//        creatorId = properties.creatorId
-//        communityId = properties.communityId
-//        created = properties.created
-//        title = properties.title
-//        content = properties.content
-//        linkUrl = properties.linkUrl
-//        embed = properties.embed
-//        nsfw = properties.nsfw
-//        thumbnailUrl = properties.thumbnailUrl
-//        updated = properties.updated
-//        languageId = properties.languageId
-//        altText = properties.altText
-//        deleted = properties.deleted
-//        removed = properties.removed
-//        pinnedCommunity = properties.pinnedCommunity
-//        pinnedInstance = properties.pinnedInstance
-//        locked = properties.locked
+        setIfChanged(\.actorId, properties.actorId)
+        setIfChanged(\.id, properties.id)
+        setIfChanged(\.creatorId, properties.creatorId)
+        setIfChanged(\.communityId, properties.communityId)
+        setIfChanged(\.created, properties.created)
+        setIfChanged(\.title, properties.title)
+        setIfChanged(\.content, properties.content)
+        setIfChanged(\.linkUrl, properties.linkUrl)
+        setIfChanged(\.embed, properties.embed)
+        setIfChanged(\.nsfw, properties.nsfw)
+        setIfChanged(\.thumbnailUrl, properties.thumbnailUrl)
+        setIfChanged(\.updated, properties.updated)
+        setIfChanged(\.languageId, properties.languageId)
+        setIfChanged(\.altText, properties.altText)
+        setIfChanged(\.deleted, properties.deleted)
+        setIfChanged(\.removed, properties.removed)
+        setIfChanged(\.pinnedCommunity, properties.pinnedCommunity)
+        setIfChanged(\.pinnedInstance, properties.pinnedInstance)
+        setIfChanged(\.locked, properties.locked)
 
-//        creator.value_ = properties.creator ?? creator.value_
-//        community.value_ = properties.community ?? community.value_
-//        commentCount.value_ = properties.commentCount ?? commentCount.value_
-//        unreadCommentCount.value_ = properties.unreadCommentCount ?? unreadCommentCount.value_
-//        creatorIsModerator.value_ = properties.creatorIsModerator ?? creatorIsModerator.value_
-//        creatorIsAdmin.value_ = properties.creatorIsAdmin ?? creatorIsAdmin.value_
-//        creatorBannedFromCommunity.value_ = properties.creatorBannedFromCommunity ?? creatorBannedFromCommunity.value_
-//        creatorBlocked.value_ = properties.creatorBlocked ?? creatorBlocked.value_
-        votes.value_ = properties.votes ?? votes.value_
-//        saved.value_ = properties.saved ?? saved.value_
-//        read.value_ = properties.read ?? read.value_
-//        hidden.value_ = properties.hidden ?? hidden.value_
-//        
-//        crossPosts.value_ = properties.crossPosts ?? crossPosts.value_
+        // setIfChanged(\.creator.value_, properties.creator ?? creator.value_)
+        // setIfChanged(\.community.value_, properties.community ?? community.value_)
+        setIfChanged(\.commentCount.value_, properties.commentCount ?? commentCount.value_)
+        setIfChanged(\.unreadCommentCount.value_, properties.unreadCommentCount ?? unreadCommentCount.value_)
+        setIfChanged(\.creatorIsModerator.value_, properties.creatorIsModerator ?? creatorIsModerator.value_)
+        setIfChanged(\.creatorIsAdmin.value_, properties.creatorIsAdmin ?? creatorIsAdmin.value_)
+        setIfChanged(\.creatorBannedFromCommunity.value_ , properties.creatorBannedFromCommunity ?? creatorBannedFromCommunity.value_)
+        setIfChanged(\.creatorBlocked.value_, properties.creatorBlocked ?? creatorBlocked.value_)
+        setIfChanged(\.votes.value_, properties.votes ?? votes.value_)
+        setIfChanged(\.saved.value_, properties.saved ?? saved.value_)
+        setIfChanged(\.readStatus.value_, properties.read ?? readStatus.value_)
+        setIfChanged(\.hidden.value_, properties.hidden ?? hidden.value_)
+
+        setIfChanged(\.crossPosts.value_, properties.crossPosts ?? crossPosts.value_)
         
         if let creator = creator.value_, let creatorBannedFromCommunity = creatorBannedFromCommunity.value_ {
             creator.person1.updateKnownCommunityBanState(id: communityId, banned: creatorBannedFromCommunity)
