@@ -200,10 +200,6 @@ public class Post:
         setIfChanged(\.hidden.value_, properties.hidden ?? hidden.value_)
 
         setIfChanged(\.crossPosts.value_, properties.crossPosts ?? crossPosts.value_)
-        
-        if let creator = creator.value_, let creatorBannedFromCommunity = creatorBannedFromCommunity.value_ {
-            creator.person1.updateKnownCommunityBanState(id: communityId, banned: creatorBannedFromCommunity)
-        }
     }
     
     @MainActor
@@ -222,10 +218,6 @@ public class Post:
         setIfNil(\.hidden.value_, properties.hidden)
 
         setIfNil(\.crossPosts.value_, properties.crossPosts ?? crossPosts.value_)
-        
-        if let creator = creator.value_, let creatorBannedFromCommunity = creatorBannedFromCommunity.value_ {
-            creator.person1.updateKnownCommunityBanState(id: communityId, banned: creatorBannedFromCommunity)
-        }
     }
     
     // MARK: Upgrades

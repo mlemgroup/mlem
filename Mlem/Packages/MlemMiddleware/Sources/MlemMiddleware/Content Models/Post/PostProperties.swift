@@ -75,8 +75,11 @@ public struct PostProperties: UnifiedPropertiesProviding {
         }
         
         if let snapshot2 {
-            creator = api.caches.person1.getModel(api: api, from: snapshot2.creator)
-            community = api.caches.community1.getModel(api: api, from: snapshot2.community)
+            let newCreator: any Person = api.caches.person1.getModel(api: api, from: snapshot2.creator)
+            newCreator.person1.updateKnownCommunityBanState(id: snapshot1.communityId, banned: snapshot2.creatorBannedFromCommunity)
+            
+            creator = newCreator
+            community =  api.caches.community1.getModel(api: api, from: snapshot2.community)
             commentCount = snapshot2.commentCount
             unreadCommentCount = snapshot2.unreadCommentCount
             creatorIsModerator = snapshot2.creatorIsModerator
