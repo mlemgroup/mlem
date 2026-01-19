@@ -121,7 +121,42 @@ public struct PostProperties: UnifiedPropertiesProviding {
         self.crossPosts = crossPosts
     }
     
-    public func merge(_ other: PostProperties) {
-        // TODO: NOW
+    public mutating func merge(_ other: PostProperties) {
+        // tier 1 properties: simple assignment
+        self.actorId = other.actorId
+        self.id = other.id
+        self.creatorId = other.creatorId
+        self.communityId = other.communityId
+        self.created = other.created
+        self.title = other.title
+        self.content = other.content
+        self.linkUrl = other.linkUrl
+        self.embed = other.embed
+        self.nsfw = other.nsfw
+        self.thumbnailUrl = other.thumbnailUrl
+        self.updated = other.updated
+        self.languageId = other.languageId
+        self.altText = other.altText
+        self.deleted = other.deleted
+        self.removed = other.removed
+        self.pinnedCommunity = other.pinnedCommunity
+        self.pinnedInstance = other.pinnedInstance
+        self.locked = other.locked
+        
+        // tier 2, 3 properties: only assign if incoming non-nil
+        self.creator = other.creator ?? self.creator
+        self.community = other.community ?? self.community
+        self.commentCount = other.commentCount ?? self.commentCount
+        self.unreadCommentCount = other.unreadCommentCount ?? self.unreadCommentCount
+        self.creatorIsModerator = other.creatorIsModerator ?? self.creatorIsModerator
+        self.creatorIsAdmin = other.creatorIsAdmin ?? self.creatorIsAdmin
+        self.creatorBannedFromCommunity = other.creatorBannedFromCommunity ?? self.creatorBannedFromCommunity
+        self.creatorBlocked = other.creatorBlocked ?? self.creatorBlocked
+        self.votes = other.votes ?? self.votes
+        self.saved = other.saved ?? self.saved
+        self.read = other.read ?? self.read
+        self.hidden = other.hidden ?? self.hidden
+        
+        self.crossPosts = other.crossPosts ?? self.crossPosts
     }
 }

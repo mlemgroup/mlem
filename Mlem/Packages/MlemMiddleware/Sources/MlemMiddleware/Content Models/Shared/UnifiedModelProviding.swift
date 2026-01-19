@@ -8,10 +8,13 @@
 public protocol UnifiedModelProviding: AnyObject, CacheIdentifiable, ContentModel {
     associatedtype Properties: UnifiedPropertiesProviding
     
-    // var properties: Properties { get set }
+    /// Updates with the values from the given Properties, preferring the incoming values
     @MainActor func update(with properties: Properties)
+    
+    /// Updates only values that are currently nil with values from the given Properties
     @MainActor func softUpdate(with properties: Properties)
     
+    /// Retrieves a fully populated Properties for this model
     func fetchUpgraded() async throws -> Properties
 }
 

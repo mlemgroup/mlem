@@ -6,5 +6,6 @@
 //
 
 public protocol UnifiedPropertiesProviding {
-    // @MainActor mutating func update(with properties: Self)
+    /// Merges the given properties into this one, preferring the incoming properties
+    mutating func merge(_ other: Self)
 }

@@ -99,8 +99,7 @@ public actor UnifiedUpdateQueue<Model: UnifiedModelProviding> {
                     newProperties = try await callback(lastVerifiedProperties)
                 }
                 
-                // TODO: NOW merge
-                self.lastVerifiedProperties = newProperties
+                self.lastVerifiedProperties.merge(newProperties)
             } catch {
                 log.error("\(error.localizedDescription)")
             }
@@ -113,7 +112,6 @@ public actor UnifiedUpdateQueue<Model: UnifiedModelProviding> {
     @MainActor
     private func updateParent(_ parent: Model, with properties: Model.Properties) {
          // parent must be passed in rather than accessed directly due to actor access constraints
-        // parent.properties.update(with: properties)
         parent.update(with: properties)
     }
     

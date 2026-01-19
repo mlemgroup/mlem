@@ -16,12 +16,6 @@ public struct PostEmbed: Equatable {
     public let videoUrl: URL?
 }
 
-private extension Bool {
-    func or(_ other: Bool) -> Bool {
-        self || other
-    }
-}
-
 @Observable
 public class Post:
     UnifiedModelProviding,
@@ -38,6 +32,66 @@ public class Post:
     RemovableProviding,
     PurgableProviding {
     public typealias Properties = PostProperties
+    
+    public var api: ApiClient
+    private let properties: PostProperties
+    @ObservationIgnored lazy var updateQueue: UnifiedUpdateQueue<Post> = .init(parent: self, properties: properties)
+    
+    // MARK: Custom Properties
+    // Mlem-specific properties that are not reflected in the API
+    
+    public var readQueued: Bool = false
+    public var pinnedCommunityPending: Bool = false
+    public var pinnedInstancePending: Bool = false
+    public var lockedPending: Bool = false
+    public var nsfwPending: Bool = false
+    public var removedPending: Bool = false
+    public var purged: Bool = false
+    public var embeddedMediaUrl: URL?
+    
+    // MARK: API Properties
+    // Properties that are provided directly by the API
+
+    public var actorId: ActorIdentifier
+    public var id: Int
+    public var creatorId: Int
+    public var communityId: Int
+    public var created: Date
+    public var title: String
+    public var content: String?
+    public var linkUrl: URL?
+    public var embed: PostEmbed?
+    public var nsfw: Bool
+    public var thumbnailUrl: URL?
+    public var updated: Date?
+    public var languageId: Int
+    public var altText: String?
+    public var deleted: Bool
+    public var removed: Bool
+    public var pinnedCommunity: Bool
+    public var pinnedInstance: Bool
+    public var locked: Bool
+    
+    public var creator: ExpectedValue<any Person>
+    public var community: ExpectedValue<any Community>
+    public var commentCount: ExpectedValue<Int>
+    public var unreadCommentCount: ExpectedValue<Int>
+    public var creatorIsModerator: ExpectedValue<Bool>
+    public var creatorIsAdmin: ExpectedValue<Bool>
+    public var creatorBannedFromCommunity: ExpectedValue<Bool>
+    public var creatorBlocked: ExpectedValue<Bool>
+    public var votes: ExpectedValue<VotesModel>
+    public var saved: ExpectedValue<Bool>
+    public var readStatus: ExpectedValue<Bool>
+    public var read: ExpectedValue<Bool> {
+        .init(
+            value: readStatus.value?.or(readQueued),
+            provideValue: { try await self.upgrade() })
+    }
+    public var hidden: ExpectedValue<Bool>
+    public var crossPosts: ExpectedValue<[Post]>
+    
+    // MARK: Initializers and Updates
     
     public init(
         api: ApiClient,
@@ -109,7 +163,6 @@ public class Post:
         self.crossPosts = expectedValue(properties.crossPosts)
     }
     
-    /// Updates this properties with the values from the given PostProperties, preferring the incoming values
     @MainActor
     public func update(with properties: PostProperties) {
         setIfChanged(\.actorId, properties.actorId)
@@ -175,12 +228,7 @@ public class Post:
         }
     }
     
-    // MARK: Core
-
-    public var api: ApiClient
-    private let properties: PostProperties
-    @ObservationIgnored
-    lazy var updateQueue: UnifiedUpdateQueue<Post> = .init(parent: self, properties: properties)
+    // MARK: Upgrades
     
     public func upgrade() async throws {
         try await updateQueue.upgrade()
@@ -194,61 +242,6 @@ public class Post:
         
         return .init(snapshot: .post3(snapshot), creator: creator, community: community, crossPosts: crossPosts)
     }
-    
-    // MARK: Custom Properties
-    // Mlem-specific properties that are not reflected in the API
-    
-    public var readQueued: Bool = false
-    public var pinnedCommunityPending: Bool = false
-    public var pinnedInstancePending: Bool = false
-    public var lockedPending: Bool = false
-    public var nsfwPending: Bool = false
-    public var removedPending: Bool = false
-    public var purged: Bool = false
-    public var embeddedMediaUrl: URL?
-    
-    // MARK: API Properties
-    // Properties that are provided directly by the API
-
-    
-    public var actorId: ActorIdentifier
-    public var id: Int
-    public var creatorId: Int
-    public var communityId: Int
-    public var created: Date
-    public var title: String
-    public var content: String?
-    public var linkUrl: URL?
-    public var embed: PostEmbed?
-    public var nsfw: Bool
-    public var thumbnailUrl: URL?
-    public var updated: Date?
-    public var languageId: Int
-    public var altText: String?
-    public var deleted: Bool
-    public var removed: Bool
-    public var pinnedCommunity: Bool
-    public var pinnedInstance: Bool
-    public var locked: Bool
-    
-    public var creator: ExpectedValue<any Person>
-    public var community: ExpectedValue<any Community>
-    public var commentCount: ExpectedValue<Int>
-    public var unreadCommentCount: ExpectedValue<Int>
-    public var creatorIsModerator: ExpectedValue<Bool>
-    public var creatorIsAdmin: ExpectedValue<Bool>
-    public var creatorBannedFromCommunity: ExpectedValue<Bool>
-    public var creatorBlocked: ExpectedValue<Bool>
-    public var votes: ExpectedValue<VotesModel>
-    public var saved: ExpectedValue<Bool>
-    public var readStatus: ExpectedValue<Bool>
-    public var read: ExpectedValue<Bool> {
-        .init(
-            value: readStatus.value?.or(readQueued),
-            provideValue: { try await self.upgrade() })
-    }
-    public var hidden: ExpectedValue<Bool>
-    public var crossPosts: ExpectedValue<[Post]>
 }
 
 // MARK: - Computed

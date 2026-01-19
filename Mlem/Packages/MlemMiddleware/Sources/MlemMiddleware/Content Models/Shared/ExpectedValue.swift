@@ -25,7 +25,7 @@ public struct ExpectedValue<T> {
         }
     }
     
-    /// When called, updates the value provider (i.e., what getValue() reads from) to include this value.
+    /// Callback expected to update value_
     let provideValue: () async throws -> Void
     
     init(value: T?, provideValue: @escaping () async throws -> Void) {
