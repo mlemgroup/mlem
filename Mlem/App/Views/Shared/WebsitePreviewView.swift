@@ -85,6 +85,7 @@ struct WebsitePreviewView: View {
                 .fontWeight(.semibold)
                 .padding(Constants.main.standardSpacing)
                 .foregroundStyle(.themedPrimary)
+                .fixedSize(horizontal: false, vertical: true)
         }
     }
 }
