@@ -31,11 +31,18 @@ class NotificationCache: CoreCache<InboxNotification> {
             .message(api.caches.message2.getModel(api: api, from: messageSnapshot, myPersonId: myPersonId))
         }
 
+        let read: Bool = switch snapshot.content {
+        case let .message(messageSnapshot):
+            messageSnapshot.creator.id == myPersonId ? true : snapshot.read
+        default:
+            snapshot.read
+        }
+
         let newItem: InboxNotification = .init(
             api: api,
             id: snapshot.id,
             contentId: snapshot.contentId,
-            read: snapshot.read,
+            read: read,
             content: content
         )
         itemCache.put(newItem)
