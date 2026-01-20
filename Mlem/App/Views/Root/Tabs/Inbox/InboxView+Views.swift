@@ -17,7 +17,7 @@ extension InboxView {
                     Group {
                         switch notification.content {
                         case let .message(message):
-                            MessageView(message: message, isInInbox: true)
+                            MessageView(message: message, notification: notification)
                         case let .reply(comment), let .mention(comment):
                             ReplyView(notification: notification, comment: comment)
                         }

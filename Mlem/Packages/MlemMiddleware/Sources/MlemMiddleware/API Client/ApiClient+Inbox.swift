@@ -73,21 +73,11 @@ public extension ApiClient {
     func markAllAsRead() async throws {
         try await repository.markAllAsRead()
         _ = await Task { @MainActor in
-            for message in caches.message1.itemCache.value.values {
-                message.content?.readManager.updateWithReceivedValue(true, semaphore: nil)
-            }
             for notification in caches.notification.itemCache.value.values {
                 notification.content?.read = true
             }
         }.result
         unreadCount?.clear(.personal)
-    }
-    
-    func markMessageAsRead(id: Int, read: Bool = true, semaphore: UInt? = nil) async throws {
-        try await repository.markMessageAsRead(id: id, read: read)
-        if let message = caches.message1.retrieveModel(cacheId: id) {
-            message.readManager.updateWithReceivedValue(read, semaphore: semaphore)
-        }
     }
     
     /// Get an ``UnreadCount`` object that continues to be updated by the ``ApiClient`` whenever an inbox item is marked read/unread.
