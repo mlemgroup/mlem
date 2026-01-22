@@ -16,9 +16,6 @@ extension Message1: CacheIdentifiable {
         setIfChanged(\.updated, snapshot.updated)
         
         deletedManager.updateWithReceivedValue(snapshot.deleted, semaphore: semaphore)
-        if !isOwnMessage {
-            readManager.updateWithReceivedValue(snapshot.read, semaphore: semaphore)
-        }
     }
 }
 

@@ -30,8 +30,7 @@ class Message1Cache: CoreCache<Message1> {
             content: snapshot.content,
             deleted: snapshot.deleted,
             created: snapshot.created,
-            updated: snapshot.updated,
-            read: snapshot.read
+            updated: snapshot.updated
         )
         itemCache.put(newItem)
         return newItem

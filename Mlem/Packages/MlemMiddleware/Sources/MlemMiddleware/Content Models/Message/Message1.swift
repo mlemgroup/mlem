@@ -23,9 +23,6 @@ public final class Message1: Message1Providing {
     public var updated: Date?
     public let isOwnMessage: Bool
     
-    let readManager: StateManager<Bool>
-    public var read: Bool { readManager.displayedValue }
-    
     var deletedManager: StateManager<Bool>
     public var deleted: Bool { deletedManager.displayedValue }
     
@@ -40,7 +37,6 @@ public final class Message1: Message1Providing {
         deleted: Bool,
         created: Date,
         updated: Date?,
-        read: Bool
     ) {
         self.api = api
         self.actorId = actorId
@@ -52,14 +48,5 @@ public final class Message1: Message1Providing {
         self.deletedManager = .init(wrappedValue: deleted)
         self.created = created
         self.updated = updated
-        self.readManager = .init(wrappedValue: isOwnMessage ? true : read)
-        readManager.onSet = { newValue, type, _ in
-            if type == .begin || type == .rollback {
-                api.unreadCount?.updateUnverifiedItem(itemType: .message, isRead: newValue)
-            }
-        }
-        readManager.onVerify = { newValue, _ in
-            api.unreadCount?.verifyItem(itemType: .message, isRead: newValue)
-        }
     }
 }

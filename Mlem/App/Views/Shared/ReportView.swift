@@ -38,7 +38,7 @@ struct ReportView: View {
                 }
             }
         case let .message(message):
-            MessageView(message: message) {
+            MessageView(message: message, notification: nil) {
                 reportDetailsView
                 resolveButton
             }

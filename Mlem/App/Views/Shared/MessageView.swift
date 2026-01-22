@@ -17,16 +17,16 @@ struct MessageView<EmbeddedContent: View>: View {
     @Setting(\.menus_modActionGrouping) var moderatorActionGrouping
     
     let message: any Message
-    let isInInbox: Bool
+    let notification: InboxNotification?
     let embeddedContent: EmbeddedContent
     
     init(
         message: any Message,
-        isInInbox: Bool = false,
+        notification: InboxNotification?,
         @ViewBuilder embeddedContent: () -> EmbeddedContent = { EmptyView() }
     ) {
         self.message = message
-        self.isInInbox = isInInbox
+        self.notification = notification
         self.embeddedContent = embeddedContent()
     }
     
@@ -35,9 +35,9 @@ struct MessageView<EmbeddedContent: View>: View {
             HStack {
                 FullyQualifiedLinkView(message.creator_, labelStyle: .small)
                 Spacer()
-                if isInInbox {
+                if let notification {
                     Image(icon: message.isOwnMessage ? .lemmy.send : .lemmy.message)
-                        .symbolVariant(message.read ? .none : .fill)
+                        .symbolVariant(notification.read ? .none : .fill)
                         .foregroundStyle(.themedAccent)
                 }
                 ellipsisMenus
@@ -66,11 +66,17 @@ struct MessageView<EmbeddedContent: View>: View {
         .clipped()
         .background(.themedSecondaryGroupedBackground)
         .contentShape(.rect)
-        .quickSwipes(message.swipeActions(appState: appState))
+        .quickSwipes(message.swipeActions(notification: notification, appState: appState))
         .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
         .contextMenu {
-            message.allMenuActions(appState: appState, editCallback: editMessage, navigation: navigation, report: reportContext)
+            message.allMenuActions(
+                appState: appState,
+                editCallback: editMessage,
+                navigation: navigation,
+                notification: notification,
+                report: reportContext
+            )
         }
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
         .onTapGesture {
@@ -89,11 +95,22 @@ struct MessageView<EmbeddedContent: View>: View {
                     }
                 }
                 EllipsisMenu(size: 24) {
-                    message.basicMenuActions(appState: appState, editCallback: editMessage, navigation: navigation)
+                    message.basicMenuActions(
+                        appState: appState,
+                        editCallback: editMessage,
+                        navigation: navigation,
+                        notification: notification
+                    )
                 }
             } else {
                 EllipsisMenu(size: 24) {
-                    message.allMenuActions(appState: appState, editCallback: editMessage, navigation: navigation, report: reportContext)
+                    message.allMenuActions(
+                        appState: appState,
+                        editCallback: editMessage,
+                        navigation: navigation,
+                        notification: notification,
+                        report: reportContext
+                    )
                 }
             }
         }
