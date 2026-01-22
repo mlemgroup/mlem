@@ -12,7 +12,9 @@ import Foundation
 public class Comment:
     UnifiedModelProviding,
     SelectableContentProviding,
-    ContentIdentifiable {
+    ContentIdentifiable,
+    OwnershipProviding,
+    Interactable1Providing {
     public typealias Properties = CommentProperties
     
     public var api: ApiClient
@@ -138,4 +140,10 @@ public class Comment:
         let snapshot = try await api.repository.getComment(id: id)
         return await .init(api: api, snapshot: .comment2(snapshot))
     }
+}
+
+// MARK: - Computed
+
+public extension Comment {
+    var depth: Int { parentCommentIds.count }
 }

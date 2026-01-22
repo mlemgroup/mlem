@@ -465,6 +465,7 @@
 		CD4E386D2C836F8C009B24F2 /* UIUserInterfaceStyle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4E386C2C836F8C009B24F2 /* UIUserInterfaceStyle+Extensions.swift */; };
 		CD4ED8472BF110FA00EFA0A2 /* TabReselectTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4ED8462BF110FA00EFA0A2 /* TabReselectTracker.swift */; };
 		CD4ED84A2BF1113800EFA0A2 /* View+TabReselectConsumer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4ED8492BF1113800EFA0A2 /* View+TabReselectConsumer.swift */; };
+		CD539CAA2F21B5BE0075CF62 /* Comment+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD539CA92F21B5BB0075CF62 /* Comment+Extensions.swift */; };
 		CD5581DE2C7B8B820043FAC3 /* ImageFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5581DD2C7B8B820043FAC3 /* ImageFunctions.swift */; };
 		CD57AFA52D0377EB00AB3956 /* AnimationControlLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57AFA42D0377E400AB3956 /* AnimationControlLayer.swift */; };
 		CD5C197D2D97096F0089614C /* ZoomCurves.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5C197C2D97096D0089614C /* ZoomCurves.swift */; };
@@ -1027,6 +1028,7 @@
 		CD4E386C2C836F8C009B24F2 /* UIUserInterfaceStyle+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIUserInterfaceStyle+Extensions.swift"; sourceTree = "<group>"; };
 		CD4ED8462BF110FA00EFA0A2 /* TabReselectTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabReselectTracker.swift; sourceTree = "<group>"; };
 		CD4ED8492BF1113800EFA0A2 /* View+TabReselectConsumer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+TabReselectConsumer.swift"; sourceTree = "<group>"; };
+		CD539CA92F21B5BB0075CF62 /* Comment+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment+Extensions.swift"; sourceTree = "<group>"; };
 		CD5581DD2C7B8B820043FAC3 /* ImageFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFunctions.swift; sourceTree = "<group>"; };
 		CD57AFA42D0377E400AB3956 /* AnimationControlLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationControlLayer.swift; sourceTree = "<group>"; };
 		CD5C197C2D97096D0089614C /* ZoomCurves.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomCurves.swift; sourceTree = "<group>"; };
@@ -2256,6 +2258,7 @@
 		CDA8A0052BE43B350022F7ED /* Content Models */ = {
 			isa = PBXGroup;
 			children = (
+				CD539CA92F21B5BB0075CF62 /* Comment+Extensions.swift */,
 				CD87BEBB2D5125750099F190 /* Instance2Providing+Extensions.swift */,
 				032C32032C3439C600595286 /* ActorIdentifiable+Extensions.swift */,
 				030056A52D7DBD4F00EB0BA3 /* Sharable+Extensions.swift */,
@@ -2976,6 +2979,7 @@
 				033F84BF2C2ACC9F002E3EDF /* Comment1Providing+Extensions.swift in Sources */,
 				CD24CAFC2D5568FE0032B5E8 /* DiscussionLanguageSettingsView.swift in Sources */,
 				0369B35D2BFB86E3001EFEDF /* Account.swift in Sources */,
+				CD539CAA2F21B5BE0075CF62 /* Comment+Extensions.swift in Sources */,
 				CD0C5C102E99629A0074D5A4 /* ExportablePostEditorView.swift in Sources */,
 				03A814292ED1BCA90023E9E8 /* ModlogView+Filters.swift in Sources */,
 				036CC3AF2B8145C30098B6A1 /* AppState.swift in Sources */,

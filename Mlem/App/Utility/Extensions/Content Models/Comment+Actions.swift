@@ -11,6 +11,36 @@ import MlemMiddleware
 import SwiftUI
 
 extension Comment {
+    // MARK: - Counters
+    
+    func counter(
+        appState: AppState,
+        type: CommentBarConfiguration.CounterType,
+        commentTreeTracker: CommentTreeTracker? = nil
+    ) -> Counter? {
+        switch type {
+        case .score: scoreCounter(appState: appState, downvotesEnabled: downvotesEnabled)
+        case .upvote: upvoteCounter(appState: appState)
+        case .downvote: downvotesEnabled ? downvoteCounter(appState: appState, downvotesEnabled: downvotesEnabled) : nil
+        case .reply: replyCounter(appState: appState, commentTreeTracker: commentTreeTracker)
+        }
+    }
+
+    func counter(
+        appState: AppState,
+        type: ReplyBarConfiguration.CounterType,
+        commentTreeTracker: CommentTreeTracker? = nil
+    ) -> Counter? {
+        switch type {
+        case .score: scoreCounter(appState: appState, downvotesEnabled: downvotesEnabled)
+        case .upvote: upvoteCounter(appState: appState)
+        case .downvote: downvotesEnabled ? downvoteCounter(appState: appState, downvotesEnabled: downvotesEnabled) : nil
+        case .reply: replyCounter(appState: appState, commentTreeTracker: commentTreeTracker)
+        }
+    }
+    
+    // MARK: - Action Groups
+    
     func action(
         appState: AppState,
         type: CommentBarConfiguration.ActionType,
@@ -117,26 +147,26 @@ extension Comment {
         showAllActions: Bool = true,
         report: Report? = nil
     ) -> [any Action] {
-        let viewVotesIsPossible = api.supports(.viewVotes, defaultValue: false)
-        
-        if viewVotesIsPossible, showAllActions || Settings.get(\.menus_allModActions) {
-            viewVotesAction()
-        }
-        if let self2, !isOwnComment {
-            self2.removeAction(appState: appState).disabled(!canModerate)
-            self2.creator.banActions(appState: appState, community: self2.community, withUserLabel: true)
-        }
-        if api.isAdmin, api.supports(.purgeContent, defaultValue: false) {
-            purgeAction(appState: appState)
-            if !isOwnComment,
-            let purgeCreatorAction = purgeCreatorAction(appState: appState) {
-                purgeCreatorAction
-            }
-        }
-        if let report {
-            ActionGroup {
-                report.menuActions(appState: appState)
-            }
-        }
+//        let viewVotesIsPossible = api.supports(.viewVotes, defaultValue: false)
+//        
+//        if viewVotesIsPossible, showAllActions || Settings.get(\.menus_allModActions) {
+//            viewVotesAction()
+//        }
+//        if let self2, !isOwnComment {
+//            self2.removeAction(appState: appState).disabled(!canModerate)
+//            self2.creator.banActions(appState: appState, community: self2.community, withUserLabel: true)
+//        }
+//        if api.isAdmin, api.supports(.purgeContent, defaultValue: false) {
+//            purgeAction(appState: appState)
+//            if !isOwnComment,
+//            let purgeCreatorAction = purgeCreatorAction(appState: appState) {
+//                purgeCreatorAction
+//            }
+//        }
+//        if let report {
+//            ActionGroup {
+//                report.menuActions(appState: appState)
+//            }
+//        }
     }
 }
