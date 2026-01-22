@@ -49,6 +49,8 @@ struct MessageFeedView: View {
     @State var textView: UITextView = .init()
     
     @State var uploadHistory: ImageUploadHistoryManager = .init()
+
+    @State var isSending: Bool = false
         
     var body: some View {
         ContentLoader(model: person) { proxy in
@@ -239,6 +241,7 @@ struct MessageFeedView: View {
             textInputButtonLabel(icon: editing == nil ? .lemmy.sendMessage : .general.success)
         }
         .tint(.themedAccent)
+        .disabled(isSending)
     }
     
     @ViewBuilder
