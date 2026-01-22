@@ -12,4 +12,8 @@ extension Bool: MergeableValue {
         case .conjunctive: self && other
         }
     }
+    
+    public func or(_ other: Bool) -> Bool {
+        self || other
+    }
 }

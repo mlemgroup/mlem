@@ -33,42 +33,9 @@ public class Post:
     PurgableProviding {
     public typealias Properties = PostProperties
     
-    public init(
-        api: ApiClient,
-        properties: PostProperties
-    ) {
-        self.api = api
-        self.properties = properties
-    }
-    
-    // MARK: Core
-    
-    @ObservationIgnored
-    lazy var updateQueue: UnifiedUpdateQueue<Post> = .init(parent: self)
-    
     public var api: ApiClient
-    public var properties: PostProperties {
-        didSet {
-            pinnedCommunityPending = false
-            pinnedInstancePending = false
-            lockedPending = false
-            nsfwPending = false
-            removedPending = false
-        }
-    }
-    
-    public func upgrade() async throws {
-        try await updateQueue.upgrade()
-    }
-    
-    public func fetchUpgraded() async throws -> PostProperties {
-        let snapshot = try await api.repository.getPost(id: id)
-        let creator = await api.caches.person1.getModel(api: api, from: snapshot.post.creator)
-        let community = await api.caches.community1.getModel(api: api, from: snapshot.post.community)
-        let crossPosts = await api.caches.post.getModels(api: api, from: snapshot.crossPosts.map { .post2($0) })
-        
-        return .init(snapshot: .post3(snapshot), creator: creator, community: community, crossPosts: crossPosts)
-    }
+    private let properties: PostProperties
+    @ObservationIgnored lazy var updateQueue: UnifiedUpdateQueue<Post> = .init(parent: self, properties: properties)
     
     // MARK: Custom Properties
     // Mlem-specific properties that are not reflected in the API
@@ -84,92 +51,185 @@ public class Post:
     
     // MARK: API Properties
     // Properties that are provided directly by the API
+
+    public var actorId: ActorIdentifier
+    public var id: Int
+    public var creatorId: Int
+    public var communityId: Int
+    public var created: Date
+    public var title: String
+    public var content: String?
+    public var linkUrl: URL?
+    public var embed: PostEmbed?
+    public var nsfw: Bool
+    public var thumbnailUrl: URL?
+    public var updated: Date?
+    public var languageId: Int
+    public var altText: String?
+    public var deleted: Bool
+    public var removed: Bool
+    public var pinnedCommunity: Bool
+    public var pinnedInstance: Bool
+    public var locked: Bool
     
-    private func expectedValue<T>(_ keyPath: WritableKeyPath<PostProperties, T?>) -> ExpectedValue<T> {
+    public var creator: ExpectedValue<any Person>
+    public var community: ExpectedValue<any Community>
+    public var commentCount: ExpectedValue<Int>
+    public var unreadCommentCount: ExpectedValue<Int>
+    public var creatorIsModerator: ExpectedValue<Bool>
+    public var creatorIsAdmin: ExpectedValue<Bool>
+    public var creatorBannedFromCommunity: ExpectedValue<Bool>
+    public var creatorBlocked: ExpectedValue<Bool>
+    public var votes: ExpectedValue<VotesModel>
+    public var saved: ExpectedValue<Bool>
+    public var readStatus: ExpectedValue<Bool>
+    public var read: ExpectedValue<Bool> {
         .init(
-            getValue: { self.properties[keyPath: keyPath] },
+            value: readStatus.value?.or(readQueued),
             provideValue: { try await self.upgrade() })
     }
+    public var hidden: ExpectedValue<Bool>
+    public var crossPosts: ExpectedValue<[Post]>
     
-    public var actorId: ActorIdentifier { properties.actorId }
+    // MARK: Initializers and Updates
     
-    public var id: Int { properties.id }
+    public init(
+        api: ApiClient,
+        properties: PostProperties
+    ) {
+        self.api = api
+        self.properties = properties
+        
+        self.actorId = properties.actorId
+        self.id = properties.id
+        self.creatorId = properties.creatorId
+        self.communityId = properties.communityId
+        self.created = properties.created
+        self.title = properties.title
+        self.content = properties.content
+        self.linkUrl = properties.linkUrl
+        self.embed = properties.embed
+        self.nsfw = properties.nsfw
+        self.thumbnailUrl = properties.thumbnailUrl
+        self.updated = properties.updated
+        self.languageId = properties.languageId
+        self.altText = properties.altText
+        self.deleted = properties.deleted
+        self.removed = properties.removed
+        self.pinnedCommunity = properties.pinnedCommunity
+        self.pinnedInstance = properties.pinnedInstance
+        self.locked = properties.locked
+        
+        // because upgrade() is not available until all properties are initialized, first populate all properties
+        // with ExpectedValues that don't actually do anything, then reassign them properly at the end of the init
+        // this is somewhat cumbersome but avoids lazy vars, which are very awkward in Observables
+        func dummyExpectedValue<T>(_ value: T?) -> ExpectedValue<T> {
+            .init(
+                value: value,
+                provideValue: { assertionFailure("This should be overridden") })
+        }
+        
+        self.creator = dummyExpectedValue(properties.creator)
+        self.community = dummyExpectedValue(properties.community)
+        self.commentCount = dummyExpectedValue(properties.commentCount)
+        self.unreadCommentCount = dummyExpectedValue(properties.unreadCommentCount)
+        self.creatorIsModerator = dummyExpectedValue(properties.creatorIsModerator)
+        self.creatorIsAdmin = dummyExpectedValue(properties.creatorIsAdmin)
+        self.creatorBannedFromCommunity = dummyExpectedValue(properties.creatorBannedFromCommunity)
+        self.creatorBlocked = dummyExpectedValue(properties.creatorBlocked)
+        self.votes = dummyExpectedValue(properties.votes)
+        self.saved = dummyExpectedValue(properties.saved)
+        self.readStatus = dummyExpectedValue(properties.read)
+        self.hidden = dummyExpectedValue(properties.hidden)
+        self.crossPosts = dummyExpectedValue(properties.crossPosts)
+        
+        func expectedValue<T>(_ value: T?) -> ExpectedValue<T> {
+            .init(
+                value: value,
+                provideValue: { try await self.upgrade() })
+        }
+        self.creator = expectedValue(properties.creator)
+        self.community = expectedValue(properties.community)
+        self.commentCount = expectedValue(properties.commentCount)
+        self.unreadCommentCount = expectedValue(properties.unreadCommentCount)
+        self.creatorIsModerator = expectedValue(properties.creatorIsModerator)
+        self.creatorIsAdmin = expectedValue(properties.creatorIsAdmin)
+        self.creatorBannedFromCommunity = expectedValue(properties.creatorBannedFromCommunity)
+        self.creatorBlocked = expectedValue(properties.creatorBlocked)
+        self.votes = expectedValue(properties.votes)
+        self.saved = expectedValue(properties.saved)
+        self.readStatus = expectedValue(properties.read)
+        self.hidden = expectedValue(properties.hidden)
+        self.crossPosts = expectedValue(properties.crossPosts)
+    }
     
-    public var creatorId: Int { properties.creatorId }
-    
-    public var communityId: Int { properties.communityId }
-    
-    public var created: Date { properties.created }
-    
-    public var title: String { properties.title }
-    
-    public var content: String? { properties.content }
-    
-    public var linkUrl: URL? { properties.linkUrl }
-    
-    public var embed: PostEmbed? { properties.embed }
-    
-    public var nsfw: Bool { properties.nsfw }
-    
-    public var thumbnailUrl: URL? { properties.thumbnailUrl }
-    
-    public var updated: Date? { properties.updated }
-    
-    public var languageId: Int { properties.languageId }
-    
-    public var altText: String? { properties.altText }
-    
-    public var deleted: Bool { properties.deleted }
-    
-    public var removed: Bool { properties.removed }
-    
-    public var pinnedCommunity: Bool { properties.pinnedCommunity }
-    
-    public var pinnedInstance: Bool { properties.pinnedInstance }
-    
-    public var locked: Bool { properties.locked }
+    @MainActor
+    public func update(with properties: PostProperties) {
+        setIfChanged(\.actorId, properties.actorId)
+        setIfChanged(\.id, properties.id)
+        setIfChanged(\.creatorId, properties.creatorId)
+        setIfChanged(\.communityId, properties.communityId)
+        setIfChanged(\.created, properties.created)
+        setIfChanged(\.title, properties.title)
+        setIfChanged(\.content, properties.content)
+        setIfChanged(\.linkUrl, properties.linkUrl)
+        setIfChanged(\.embed, properties.embed)
+        setIfChanged(\.nsfw, properties.nsfw)
+        setIfChanged(\.thumbnailUrl, properties.thumbnailUrl)
+        setIfChanged(\.updated, properties.updated)
+        setIfChanged(\.languageId, properties.languageId)
+        setIfChanged(\.altText, properties.altText)
+        setIfChanged(\.deleted, properties.deleted)
+        setIfChanged(\.removed, properties.removed)
+        setIfChanged(\.pinnedCommunity, properties.pinnedCommunity)
+        setIfChanged(\.pinnedInstance, properties.pinnedInstance)
+        setIfChanged(\.locked, properties.locked)
 
-    @ObservationIgnored
-    public lazy var creator: ExpectedValue<any Person> = expectedValue(\.creator)
+        // creator and community are not expected to change value, but need to be assigned if absent
+        setIfNil(\.creator.value_, properties.creator ?? creator.value_)
+        setIfNil(\.community.value_, properties.community ?? community.value_)
+        setIfChanged(\.commentCount.value_, properties.commentCount ?? commentCount.value_)
+        setIfChanged(\.unreadCommentCount.value_, properties.unreadCommentCount ?? unreadCommentCount.value_)
+        setIfChanged(\.creatorIsModerator.value_, properties.creatorIsModerator ?? creatorIsModerator.value_)
+        setIfChanged(\.creatorIsAdmin.value_, properties.creatorIsAdmin ?? creatorIsAdmin.value_)
+        setIfChanged(\.creatorBannedFromCommunity.value_ , properties.creatorBannedFromCommunity ?? creatorBannedFromCommunity.value_)
+        setIfChanged(\.creatorBlocked.value_, properties.creatorBlocked ?? creatorBlocked.value_)
+        setIfChanged(\.votes.value_, properties.votes ?? votes.value_)
+        setIfChanged(\.saved.value_, properties.saved ?? saved.value_)
+        setIfChanged(\.readStatus.value_, properties.read ?? readStatus.value_)
+        setIfChanged(\.hidden.value_, properties.hidden ?? hidden.value_)
+
+        setIfChanged(\.crossPosts.value_, properties.crossPosts ?? crossPosts.value_)
+    }
     
-    @ObservationIgnored
-    public lazy var community: ExpectedValue<any Community> = expectedValue(\.community)
+    @MainActor
+    public func softUpdate(with properties: PostProperties) {
+        setIfNil(\.creator.value_, properties.creator)
+        setIfNil(\.community.value_, properties.community)
+        setIfNil(\.commentCount.value_, properties.commentCount)
+        setIfNil(\.unreadCommentCount.value_, properties.unreadCommentCount)
+        setIfNil(\.creatorIsModerator.value_, properties.creatorIsModerator)
+        setIfNil(\.creatorIsAdmin.value_, properties.creatorIsAdmin)
+        setIfNil(\.creatorBannedFromCommunity.value_ , properties.creatorBannedFromCommunity)
+        setIfNil(\.creatorBlocked.value_, properties.creatorBlocked)
+        setIfNil(\.votes.value_, properties.votes)
+        setIfNil(\.saved.value_, properties.saved)
+        setIfNil(\.readStatus.value_, properties.read)
+        setIfNil(\.hidden.value_, properties.hidden)
+
+        setIfNil(\.crossPosts.value_, properties.crossPosts ?? crossPosts.value_)
+    }
     
-    @ObservationIgnored
-    public lazy var commentCount: ExpectedValue<Int> = expectedValue(\.commentCount)
-
-    @ObservationIgnored
-    public lazy var unreadCommentCount: ExpectedValue<Int> = expectedValue(\.unreadCommentCount)
-
-    @ObservationIgnored
-    public lazy var creatorIsModerator: ExpectedValue<Bool> = expectedValue(\.creatorIsModerator)
-
-    @ObservationIgnored
-    public lazy var creatorIsAdmin: ExpectedValue<Bool> = expectedValue(\.creatorIsAdmin)
-
-    @ObservationIgnored
-    public lazy var creatorBannedFromCommunity: ExpectedValue<Bool> = expectedValue(\.creatorBannedFromCommunity)
-
-    @ObservationIgnored
-    public lazy var creatorBlocked: ExpectedValue<Bool> = expectedValue(\.creatorBlocked)
-
-    @ObservationIgnored
-    public lazy var votes: ExpectedValue<VotesModel> = expectedValue(\.votes)
-
-    @ObservationIgnored
-    public lazy var saved: ExpectedValue<Bool> = expectedValue(\.saved)
-
-    @ObservationIgnored
-    public lazy var read: ExpectedValue<Bool> = .init(
-        getValue: { if let value = self.properties.read { self.readQueued || value } else { nil }},
-        provideValue: { try await self.upgrade() }
-    )
-
-    @ObservationIgnored
-    public lazy var hidden: ExpectedValue<Bool> = expectedValue(\.hidden)
+    // MARK: Upgrades
     
-    @ObservationIgnored
-    public lazy var crossPosts: ExpectedValue<[Post]> = expectedValue(\.crossPosts)
+    public func upgrade() async throws {
+        try await updateQueue.upgrade()
+    }
+    
+    public func fetchUpgraded() async throws -> PostProperties {
+        let snapshot = try await api.repository.getPost(id: id)
+        return await .init(api: api, snapshot: .post3(snapshot))
+    }
 }
 
 // MARK: - Computed
@@ -190,12 +250,12 @@ public extension Post {
 public extension Post {
 
     func updateSaved(_ newValue: Bool) {
-        properties.saved = newValue
-        properties.read = true
+        saved.value_ = newValue
+        readStatus.value_ = true
         
         Task {
             await updateQueue.addItem {
-                .init(snapshot: .post2(try await self.api.repository.savePost(id: self.id, save: newValue)))
+                await .init(api: self.api, snapshot: .post2(try await self.api.repository.savePost(id: self.id, save: newValue)))
             }
         }
     }
@@ -210,12 +270,12 @@ public extension Post {
     }
     
     private func updateVote(_ newValue: ScoringOperation, votes: VotesModel) {
-        properties.votes = votes.applyScoringOperation(operation: newValue)
-        properties.read = true
+        self.votes.value_ = votes.applyScoringOperation(operation: newValue)
+        readStatus.value_ = true
         
         Task {
             await updateQueue.addItem {
-                .init(snapshot: .post2(try await self.api.repository.voteOnPost(id: self.id, score: newValue)))
+                await .init(api: self.api, snapshot: .post2(try await self.api.repository.voteOnPost(id: self.id, score: newValue)))
             }
         }
     }
@@ -229,8 +289,8 @@ public extension Post {
     // Hide
     
     func updateHidden(_ newValue: Bool) {
-        properties.hidden = newValue
-        properties.read = true
+        hidden.value_ = newValue
+        readStatus.value_ = true
         
         Task {
             await updateQueue.addItem { properties in
@@ -255,7 +315,7 @@ public extension Post {
                 }
             }
         } else {
-            properties.read = newValue
+            readStatus.value_ = newValue
             Task {
                 await updateQueue.addItem { properties in
                     try await self.api.repository.markPostAsRead(id: self.id, read: newValue)
@@ -287,7 +347,7 @@ public extension Post {
     ///   - newValue: true to pin post, false to unpin
     ///   - callback: if present, when the repository call completes, is called with `.success` if the operation succeeded and `.failure` otherwise.
     func updatePinnedCommunity(_ newValue: Bool, callback: ((UpdateStatus) -> Void)?) {
-        properties.pinnedCommunity = newValue
+        pinnedCommunity = newValue
         pinnedCommunityPending = true
         
         Task {
@@ -295,7 +355,7 @@ public extension Post {
                 do {
                     let ret = try await self.api.repository.pinPost(id: self.id, pin: newValue, to: .community)
                     callback?(.success)
-                    return .init(snapshot: .post2(ret))
+                    return await .init(api: self.api, snapshot: .post2(ret))
                 } catch {
                     callback?(.failure(error))
                     throw error
@@ -309,7 +369,7 @@ public extension Post {
     ///   - newValue: true to pin post, false to unpin
     ///   - callback: if present, when the repository call completes, is called with `.success` if the operation succeeded and `.failure` otherwise.
     func updatePinnedInstance(_ newValue: Bool, callback: ((UpdateStatus) -> Void)?) {
-        properties.pinnedInstance = newValue
+        pinnedInstance = newValue
         pinnedInstancePending = true
         
         Task {
@@ -317,7 +377,7 @@ public extension Post {
                 do {
                     let ret = try await self.api.repository.pinPost(id: self.id, pin: newValue, to: .instance)
                     callback?(.success)
-                    return .init(snapshot: .post2(ret))
+                    return await .init(api: self.api, snapshot: .post2(ret))
                 } catch {
                     callback?(.failure(error))
                     throw error
@@ -334,14 +394,14 @@ public extension Post {
     ///   - newValue: true to lock post, false to unlock
     ///   - callback: if present, when the repository call completes, is called with `.success` if the operation succeeded and `.failure` otherwise.
     func updateLocked(_ newValue: Bool, callback: ((UpdateStatus) -> Void)?) {
-        properties.locked = newValue
+        locked = newValue
         lockedPending = true
         Task {
             await updateQueue.addItem {
                 do {
                     let ret = try await self.api.repository.lockPost(id: self.id, lock: newValue)
                     callback?(.success)
-                    return .init(snapshot: .post2(ret))
+                    return await .init(api: self.api, snapshot: .post2(ret))
                 } catch {
                     callback?(.failure(error))
                     throw (error)
@@ -380,17 +440,17 @@ public extension Post {
         nsfw: Bool,
         languageId: Int?
     ) throws {
-        properties.title = title
-        properties.content = content
-        properties.linkUrl = linkUrl
-        properties.altText = altText
-        properties.thumbnailUrl = thumbnail
-        properties.nsfw = nsfw
-        properties.languageId = languageId ?? properties.languageId
+        self.title = title
+        self.content = content
+        self.linkUrl = linkUrl
+        self.altText = altText
+        self.thumbnailUrl = thumbnail
+        self.nsfw = nsfw
+        self.languageId = languageId ?? self.languageId
         
         Task {
             await updateQueue.addItem {
-                .init(snapshot: .post2(try await self.api.repository.editPost(
+                await .init(api: self.api, snapshot: .post2(try await self.api.repository.editPost(
                     id: self.id,
                     title: title,
                     content: content,
@@ -413,14 +473,14 @@ public extension Post {
     // Deleted
     
     func updateDeleted(_ newValue: Bool, callback: ((UpdateStatus) -> Void)?) {
-        properties.deleted = newValue
+        deleted = newValue
         
         Task {
             await updateQueue.addItem {
                 do {
                     let snapshot = try await self.api.repository.deletePost(id: self.id, delete: newValue)
                     callback?(.success)
-                    return .init(snapshot: .post2(snapshot))
+                    return await .init(api: self.api, snapshot: .post2(snapshot))
                 } catch {
                     callback?(.failure(error))
                     throw error
@@ -432,7 +492,7 @@ public extension Post {
     // NSFW
     
     func updateNsfw(_ newValue: Bool, callback: ((UpdateStatus) -> Void)?) {
-        properties.nsfw = newValue
+        nsfw = newValue
         nsfwPending = true
         
         Task {
@@ -440,7 +500,7 @@ public extension Post {
                 do {
                     let snapshot = try await self.api.repository.setPostNsfw(id: self.id, nsfw: newValue)
                     callback?(.success)
-                    return .init(snapshot: .post1(snapshot))
+                    return await .init(api: self.api, snapshot: .post1(snapshot))
                 } catch {
                     callback?(.failure(error))
                     throw (error)
@@ -452,7 +512,7 @@ public extension Post {
     // Remove
     
     func updateRemoved(_ newValue: Bool, reason: String?, callback: ((UpdateStatus) -> Void)?) {
-        properties.removed = newValue
+        removed = newValue
         removedPending = true
         
         Task {
@@ -460,7 +520,7 @@ public extension Post {
                 do {
                     let snapshot = try await self.api.repository.removePost(id: self.id, remove: newValue, reason: reason)
                     callback?(.success)
-                    return .init(snapshot: .post2(snapshot))
+                    return await .init(api: self.api, snapshot: .post2(snapshot))
                 } catch {
                     callback?(.failure(error))
                     throw (error)

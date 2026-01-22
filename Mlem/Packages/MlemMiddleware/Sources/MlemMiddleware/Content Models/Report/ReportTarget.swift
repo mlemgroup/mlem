@@ -45,11 +45,11 @@ public enum ReportTarget {
         switch self {
         case let .post(post): post.creator
         case let .comment(comment): .init(
-            getValue: { comment.creator },
+            value: comment.creator,
             provideValue: { fatalError("This should not be called") }
         )
         case let .message(message): .init(
-            getValue: { message.creator },
+            value: message.creator,
             provideValue: { fatalError("This should not be called") }
         )
         }
