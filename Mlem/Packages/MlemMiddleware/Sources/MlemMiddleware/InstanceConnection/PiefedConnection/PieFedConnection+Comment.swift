@@ -164,7 +164,9 @@ public extension PieFedConnection {
             page: page,
             limit: limit,
             communityName: nil,
-            communityId: communityId
+            communityId: communityId,
+            minimumUpvotes: nil,
+            nsfw: nil
         )
         let response = try await perform(request)
         guard let comments = response.comments else {
