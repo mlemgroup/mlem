@@ -11,6 +11,7 @@ import Foundation
 @Observable
 public class Comment:
     UnifiedModelProviding,
+    FeedLoadable,
     SelectableContentProviding,
     ContentIdentifiable,
     OwnershipProviding,
@@ -23,6 +24,8 @@ public class Comment:
     
     // MARK: Custom Properties
     // Mlem-specific properties that are not reflected in the API
+    
+    public var purged: Bool = false
     
     // MARK: API Properties
     // Properties that are provided by the API

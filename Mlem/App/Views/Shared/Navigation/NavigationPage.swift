@@ -31,7 +31,7 @@ enum NavigationPage: Hashable {
     )
     case postStub(_ post: PostStub, navigationNamespace: Namespace.ID? = nil)
     case comment(
-        _ comment: HashWrapper<any Comment1Providing>,
+        _ comment: Comment,
         post: Post,
         comments: [Comment2]?,
         showViewPostButton: Bool,
@@ -39,7 +39,7 @@ enum NavigationPage: Hashable {
     )
     case commentStub(
         _ comment: HashWrapper<any CommentStubProviding>,
-        comments: [Comment2]?,
+        comments: [Comment]?,
         showViewPostButton: Bool,
         exposeRemovedContent: Bool
     )
@@ -101,25 +101,9 @@ enum NavigationPage: Hashable {
         }
     }
     
-    static func comment(
-        _ comment: any Comment1Providing,
-        post: Post,
-        comments: [Comment2]? = nil,
-        showViewPostButton: Bool = true,
-        exposeRemovedContent: Bool = false
-    ) -> NavigationPage {
-        Self.comment(
-            .init(wrappedValue: comment),
-            post: post,
-            comments: comments,
-            showViewPostButton: showViewPostButton,
-            exposeRemovedContent: exposeRemovedContent
-        )
-    }
-    
     static func commentStub(
         _ comment: any CommentStubProviding,
-        comments: [Comment2]? = nil,
+        comments: [Comment]? = nil,
         showViewPostButton: Bool = true,
         exposeRemovedContent: Bool = false
     ) -> NavigationPage {

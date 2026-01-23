@@ -17,6 +17,19 @@ public extension Comment {
     static var tierNumber: Int = 4
 }
 
+// MARK: FeedLoadable
+
+public extension Comment {
+    typealias FilterType = CommentFilterType
+    
+    func sortVal(sortType: FeedLoaderSort.SortType) -> FeedLoaderSort {
+        switch sortType {
+        case .new:
+            return .new(created)
+        }
+    }
+}
+
 // MARK: SelectableContentProviding
 
 public extension Comment {

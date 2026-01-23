@@ -46,7 +46,7 @@ extension EllipsisMenu {
     init(
         icon: Icon = .general.menu,
         size: CGFloat,
-        comment: any Comment1Providing,
+        comment: Comment,
         type: Set<CommentEllipsisMenuContent.ActionListType> = [.basic, .moderator]
     ) where Content == CommentEllipsisMenuContent {
         self.icon = icon
@@ -63,7 +63,7 @@ struct CommentEllipsisMenuContent: View {
         case basic, moderator
     }
 
-    let comment: any Comment1Providing
+    let comment: Comment
     let type: Set<ActionListType>
 
     var body: some View {

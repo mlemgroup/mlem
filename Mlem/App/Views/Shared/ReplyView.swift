@@ -16,7 +16,7 @@ struct ReplyView: View {
     @Environment(NavigationLayer.self) private var navigation
     
     let notification: InboxNotification
-    let comment: Comment2
+    let comment: Comment
     
     var body: some View {
         VStack(spacing: 0) {
@@ -35,7 +35,9 @@ struct ReplyView: View {
                     .frame(height: 10)
                 }
                 
-                FooterLinkView(title: comment.post.title, subtitle: nil)
+                ExpectedView(comment.post) { post in
+                    FooterLinkView(title: post.title, subtitle: nil)
+                }
                 
                 MarkdownWithLinkList(comment.content)
             }
@@ -53,6 +55,7 @@ struct ReplyView: View {
         .background(.themedSecondaryGroupedBackground)
         .contentShape(.rect)
         .onTapGesture {
+            // TODO: NOW remove post requirement
             navigation.push(.comment(comment, post: comment.post))
         }
         .quickSwipes(comment: comment, notification: notification, configuration: replyInteractionBar)

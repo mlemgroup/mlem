@@ -11,6 +11,34 @@ import MlemMiddleware
 import SwiftUI
 
 extension Comment {
+    // MARK: - Readouts
+    
+    func readout(type: CommentBarConfiguration.ReadoutType, showColor: Bool) -> Readout? {
+        nil
+//        switch type {
+//        case .created: createdReadout
+//        // swiftlint:disable:next void_function_in_ternary
+//        case .score: downvotesEnabled ? scoreReadout(showColor: showColor) : upvoteReadout(showColor: showColor)
+//        case .upvote: upvoteReadout(showColor: showColor)
+//        case .downvote: downvotesEnabled ? downvoteReadout(showColor: showColor) : nil
+//        case .comment: commentReadout
+//        case .saved: savedReadout(showColor: showColor)
+//        }
+    }
+
+    func readout(type: ReplyBarConfiguration.ReadoutType, showColor: Bool) -> Readout? {
+        nil
+//        switch type {
+//        case .created: createdReadout
+//        // swiftlint:disable:next void_function_in_ternary
+//        case .score: downvotesEnabled ? scoreReadout(showColor: showColor) : upvoteReadout(showColor: showColor)
+//        case .upvote: upvoteReadout(showColor: showColor)
+//        case .downvote: downvotesEnabled ? downvoteReadout(showColor: showColor) : nil
+//        case .comment: commentReadout
+//        case .saved: savedReadout(showColor: showColor)
+//        }
+    }
+    
     // MARK: - Counters
     
     func counter(
@@ -18,12 +46,13 @@ extension Comment {
         type: CommentBarConfiguration.CounterType,
         commentTreeTracker: CommentTreeTracker? = nil
     ) -> Counter? {
-        switch type {
-        case .score: scoreCounter(appState: appState, downvotesEnabled: downvotesEnabled)
-        case .upvote: upvoteCounter(appState: appState)
-        case .downvote: downvotesEnabled ? downvoteCounter(appState: appState, downvotesEnabled: downvotesEnabled) : nil
-        case .reply: replyCounter(appState: appState, commentTreeTracker: commentTreeTracker)
-        }
+        return nil
+//        switch type {
+//        case .score: scoreCounter(appState: appState, downvotesEnabled: downvotesEnabled)
+//        case .upvote: upvoteCounter(appState: appState)
+//        case .downvote: downvotesEnabled ? downvoteCounter(appState: appState, downvotesEnabled: downvotesEnabled) : nil
+//        case .reply: replyCounter(appState: appState, commentTreeTracker: commentTreeTracker)
+//        }
     }
 
     func counter(
@@ -31,12 +60,13 @@ extension Comment {
         type: ReplyBarConfiguration.CounterType,
         commentTreeTracker: CommentTreeTracker? = nil
     ) -> Counter? {
-        switch type {
-        case .score: scoreCounter(appState: appState, downvotesEnabled: downvotesEnabled)
-        case .upvote: upvoteCounter(appState: appState)
-        case .downvote: downvotesEnabled ? downvoteCounter(appState: appState, downvotesEnabled: downvotesEnabled) : nil
-        case .reply: replyCounter(appState: appState, commentTreeTracker: commentTreeTracker)
-        }
+        return nil
+//        switch type {
+//        case .score: scoreCounter(appState: appState, downvotesEnabled: downvotesEnabled)
+//        case .upvote: upvoteCounter(appState: appState)
+//        case .downvote: downvotesEnabled ? downvoteCounter(appState: appState, downvotesEnabled: downvotesEnabled) : nil
+//        case .reply: replyCounter(appState: appState, commentTreeTracker: commentTreeTracker)
+//        }
     }
     
     // MARK: - Action Groups

@@ -12,4 +12,8 @@ extension Comment {
         // TODO: NOW really?
         false
     }
+    
+    var shouldHideInFeed: Bool {
+        (creator.value_?.shouldHideInFeed ?? false) || purged
+    }
 }
