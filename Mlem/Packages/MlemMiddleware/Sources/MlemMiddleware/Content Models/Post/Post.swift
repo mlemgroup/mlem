@@ -410,7 +410,7 @@ public extension Post {
         maxDepth: Int? = nil,
         limit: Int,
         filter: GetContentFilter? = nil
-    ) async throws -> [Comment2] {
+    ) async throws -> [Comment] {
         try await api.getComments(
             postId: id,
             sort: sort,

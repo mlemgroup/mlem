@@ -96,7 +96,7 @@ struct InteractionBarView: View {
     init(
         appState: AppState,
         navigation: NavigationLayer,
-        comment: any Comment1Providing,
+        comment: Comment,
         notification: InboxNotification,
         configuration: ReplyBarConfiguration
     ) {

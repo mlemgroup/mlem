@@ -15,7 +15,8 @@ public class Comment:
     SelectableContentProviding,
     ContentIdentifiable,
     OwnershipProviding,
-    Interactable1Providing {
+    Interactable1Providing,
+    CommentResolvable {
     public typealias Properties = CommentProperties
     
     public var api: ApiClient
@@ -149,4 +150,98 @@ public class Comment:
 
 public extension Comment {
     var depth: Int { parentCommentIds.count }
+}
+
+// MARK: - Interactions
+
+public extension Comment {
+    func getChildren(
+        sort: CommentSortType = .hot,
+        includedParentCount: Int = 0,
+        page: Int,
+        maxDepth: Int? = nil,
+        limit: Int,
+        filter: GetContentFilter? = nil
+    ) async throws -> [Comment] {
+        let parentId: Int
+        if includedParentCount <= 0 {
+            parentId = id
+        } else {
+            parentId = parentCommentIds.dropLast(includedParentCount - 1).last ?? parentCommentIds.first ?? id
+        }
+        let comments = try await api.getComments(
+            parentId: parentId,
+            sort: sort,
+            page: page,
+            maxDepth: maxDepth,
+            limit: limit,
+            filter: filter
+        )
+        if includedParentCount <= 0 {
+            return comments
+        }
+        
+        return comments.filter { $0.parentCommentIds.contains(id) || self.parentCommentIds.contains($0.id) || $0.id == self.id }
+    }
+}
+
+// MARK: Shim
+
+public extension Comment {
+    func takeSnapshot2() -> Comment2Snapshot? {
+        guard let creator = creator.value_,
+              let post = post.value_,
+              let community = community.value_,
+              let commentCount = commentCount.value_,
+              let creatorIsModerator = creatorIsModerator.value_,
+              let creatorIsAdmin = creatorIsAdmin.value_,
+              let creatorBannedFromCommunity = creatorBannedFromCommunity.value_,
+              let votes = votes.value_,
+              let saved = saved.value_ else {
+            assertionFailure("takeSnapshot2() called without high-tier fields available")
+            return nil
+        }
+        
+        return .init(comment:
+                .init(actorId: actorId,
+                      id: id,
+                      creatorId: creatorId,
+                      postId: postId,
+                      parentCommentIds: parentCommentIds,
+                      created: created,
+                      content: content,
+                      updated: updated,
+                      distinguished: distinguished,
+                      languageId: languageId,
+                      deleted: deleted,
+                      removed: removed),
+                     creator: creator.takeSnapshot1(),
+                     post: .init(
+                        actorId: post.actorId,
+                        id: post.id,
+                        creatorId: post.creatorId,
+                        communityId: post.communityId,
+                        created: post.created,
+                        title: post.title,
+                        content: post.content,
+                        linkUrl: post.linkUrl,
+                        embed: post.embed,
+                        nsfw: post.nsfw,
+                        thumbnailUrl: post.thumbnailUrl,
+                        updated: post.updated,
+                        languageId: post.languageId,
+                        altText: post.altText,
+                        deleted: post.deleted,
+                        removed: post.removed,
+                        pinnedCommunity: post.pinnedCommunity,
+                        pinnedInstance: post.pinnedInstance,
+                        locked: post.locked),
+                     community: community.takeSnapshot1(),
+                     commentCount: commentCount,
+                     creatorIsModerator: creatorIsModerator,
+                     creatorIsAdmin: creatorIsAdmin,
+                     creatorBannedFromCommunity: creatorBannedFromCommunity,
+                     votes: votes,
+                     saved: saved)
+    }
 }

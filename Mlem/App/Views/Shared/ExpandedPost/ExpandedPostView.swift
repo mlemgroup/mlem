@@ -47,8 +47,8 @@ struct ExpandedPostView<Content: View>: View {
     init(
         post: Post,
         tracker: CommentTreeTracker?,
-        highlightedComment: (any CommentStubProviding)? = nil,
-        scrollTargetedComment: (any CommentStubProviding)? = nil,
+        highlightedComment: CommentStub? = nil,
+        scrollTargetedComment: CommentStub? = nil,
         @ViewBuilder content: () -> Content = { EmptyView() }
     ) {
         self.post = post

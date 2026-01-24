@@ -84,3 +84,9 @@ public extension Comment {
         return api.myPerson?.moderates(communityId: id) ?? false || api.isAdmin
     }
 }
+
+// MARK: CommentResolvable
+
+public extension Comment {
+    func asComment() async throws -> Comment { self }
+}

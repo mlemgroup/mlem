@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct CommentStub: CommentStubProviding, Hashable {
+public struct CommentStub: Hashable, CommentResolvable {
     public static let tierNumber: Int = 0
     public var api: ApiClient
     public let url: URL
@@ -29,7 +29,7 @@ public struct CommentStub: CommentStubProviding, Hashable {
         lhs.url == rhs.url
     }
     
-    public func upgrade() async throws -> any DeprecatedComment {
+    public func asComment() async throws -> Comment {
         try await api.getComment(url: resolvableUrl)
     }
 }

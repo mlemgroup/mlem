@@ -25,20 +25,19 @@ enum NavigationPage: Hashable {
     case quickSwitcher
     case post(
         _ post: Post,
-        scrollTargetedComment: HashWrapper<any CommentStubProviding>? = nil,
+        scrollTargetedComment: HashWrapper<any CommentResolvable>? = nil,
         communityContext: HashWrapper<any Community1Providing>? = nil,
         navigationNamespace: Namespace.ID? = nil
     )
     case postStub(_ post: PostStub, navigationNamespace: Namespace.ID? = nil)
     case comment(
         _ comment: Comment,
-        post: Post,
-        comments: [Comment2]?,
-        showViewPostButton: Bool,
-        exposeRemovedContent: Bool
+        comments: [Comment]? = nil,
+        showViewPostButton: Bool = true,
+        exposeRemovedContent: Bool = false
     )
     case commentStub(
-        _ comment: HashWrapper<any CommentStubProviding>,
+        _ comment: CommentStub,
         comments: [Comment]?,
         showViewPostButton: Bool,
         exposeRemovedContent: Bool
@@ -99,20 +98,6 @@ enum NavigationPage: Hashable {
         } else {
             Self.post(post, navigationNamespace: navigationNamespace)
         }
-    }
-    
-    static func commentStub(
-        _ comment: any CommentStubProviding,
-        comments: [Comment]? = nil,
-        showViewPostButton: Bool = true,
-        exposeRemovedContent: Bool = false
-    ) -> NavigationPage {
-        Self.commentStub(
-            .init(wrappedValue: comment),
-            comments: comments,
-            showViewPostButton: showViewPostButton,
-            exposeRemovedContent: exposeRemovedContent
-        )
     }
     
     static func person(

@@ -14,20 +14,16 @@ struct CommentPage: View {
     @Environment(\.palette) var palette
     @Environment(\.dismiss) var dismiss
     
-    let comment: any Comment1Providing
-    let initialComments: [Comment2]?
+    let comment: Comment
+    let initialComments: [Comment]?
     @State var tracker: CommentTreeTracker
     let showViewPostButton: Bool
     let exposeRemovedContent: Bool
-    
-    // TODO: UnifiedCommentModel replace this with comment's post, remove manual fetch
-    // requires ExpandedPostView to be able to take an ExpectedValue
-    @State var post: Post
+
     
     init(
-        comment: any Comment1Providing,
-        post: Post,
-        initialComments: [Comment2]?,
+        comment: Comment,
+        initialComments: [Comment]?,
         showViewPostButton: Bool = false,
         exposeRemovedContent: Bool = false
     ) {
