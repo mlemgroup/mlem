@@ -16,7 +16,8 @@ public class Comment:
     ContentIdentifiable,
     OwnershipProviding,
     Interactable1Providing,
-    CommentResolvable {
+    CommentResolvable,
+    Sharable {
     public typealias Properties = CommentProperties
     
     public var api: ApiClient
@@ -26,6 +27,7 @@ public class Comment:
     // MARK: Custom Properties
     // Mlem-specific properties that are not reflected in the API
     
+    public var removedPending: Bool = false
     public var purged: Bool = false
     
     // MARK: API Properties
@@ -150,11 +152,97 @@ public class Comment:
 
 public extension Comment {
     var depth: Int { parentCommentIds.count }
+    
+    var parentCommentId: Int? { parentCommentIds.last }
 }
 
 // MARK: - Interactions
 
 public extension Comment {
+    
+    func updateRemoved(_ newValue: Bool, reason: String?, callback: ((UpdateStatus) -> Void)?) {
+        removed = newValue
+        removedPending = true
+        Task {
+            await updateQueue.addItem {
+                do {
+                    let snapshot = try await self.api.repository.removeComment(id: self.id, remove: newValue, reason: reason)
+                    callback?(.success)
+                    return await .init(api: self.api, snapshot: .comment2(snapshot))
+                } catch {
+                    callback?(.failure(error))
+                    throw (error)
+                }
+            }
+        }
+    }
+    
+    func reply(content: String, languageId: Int? = nil) async throws -> Comment {
+        try await api.replyToComment(postId: postId, parentId: id, content: content, languageId: languageId)
+    }
+    
+    func purge(reason: String?) async throws {
+        try await api.purgeComment(id: id, reason: reason)
+    }
+    
+    func updateDeleted(_ newValue: Bool, callback: ((UpdateStatus) -> Void)?) {
+        deleted = newValue
+        Task {
+            await updateQueue.addItem {
+                do {
+                    let snapshot = try await self.api.repository.deleteComment(id: self.id, delete: newValue)
+                    callback?(.success)
+                    return await .init(api: self.api, snapshot: .comment2(snapshot))
+                } catch {
+                    callback?(.failure(error))
+                    throw (error)
+                }
+            }
+        }
+    }
+    
+    func edit(content: String, languageId: Int?) async throws {
+        self.content = content
+        if let languageId {
+            self.languageId = languageId
+        }
+        Task {
+            await updateQueue.addItem {
+                try await .init(
+                    api: self.api,
+                    snapshot: .comment2(self.api.repository.editComment(id: self.id, content: content, languageId: languageId)))
+            }
+        }
+    }
+    
+    /// Get the parent comment, or return `nil` if there is no parent
+    func getParent(cachedValueAcceptable: Bool = false) async throws -> Comment? {
+        if let parentId = parentCommentIds.last {
+            if cachedValueAcceptable, let comment = api.caches.comment.retrieveModel(cacheId: parentId) { return comment }
+            return try await api.getComment(id: parentId)
+        }
+        return nil
+    }
+    
+    func getParents() async throws -> [Comment] {
+        guard let first = parentCommentIds.first else { return [] }
+        let comments = try await api.getComments(
+            parentId: first,
+            sort: .new,
+            page: 1,
+            maxDepth: parentCommentIds.count,
+            limit: 1000
+        )
+        var i = 0
+        return comments.filter { comment in
+            if comment.id == parentCommentIds[i] {
+                i += 1
+                return true
+            }
+            return false
+        }
+    }
+    
     func getChildren(
         sort: CommentSortType = .hot,
         includedParentCount: Int = 0,
@@ -182,6 +270,10 @@ public extension Comment {
         }
         
         return comments.filter { $0.parentCommentIds.contains(id) || self.parentCommentIds.contains($0.id) || $0.id == self.id }
+    }
+    
+    func getVotes(page: Int, limit: Int, communityId: Int) async throws -> [PersonVote] {
+        try await api.getCommentVotes(id: id, communityId: communityId, page: page, limit: limit)
     }
 }
 

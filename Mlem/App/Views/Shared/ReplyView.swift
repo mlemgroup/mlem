@@ -55,8 +55,7 @@ struct ReplyView: View {
         .background(.themedSecondaryGroupedBackground)
         .contentShape(.rect)
         .onTapGesture {
-            // TODO: NOW remove post requirement
-            navigation.push(.comment(comment, post: comment.post))
+            navigation.push(.comment(comment))
         }
         .quickSwipes(comment: comment, notification: notification, configuration: replyInteractionBar)
         .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))

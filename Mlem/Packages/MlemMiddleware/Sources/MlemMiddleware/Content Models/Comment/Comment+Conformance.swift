@@ -5,6 +5,8 @@
 //  Created by Eric Andrews on 2026-01-19.
 //
 
+import Foundation
+
 // MARK: CacheIdentifiable
 
 public extension Comment {
@@ -48,6 +50,30 @@ public extension Comment {
     func isOwnContent(myPersonId: Int) -> Bool {
         creatorId == myPersonId
     }
+}
+
+// MARK: Resolvable
+
+public extension Comment1Providing {
+    
+    /// Returns a `URL` that can be resolved by another `ApiClient`.
+    func resolvableUrl(from instance: ContentModelUrlType) -> URL {
+        switch instance {
+        case .host: actorId.url
+        case .provider: .comment(host: api.host, id: id)
+        }
+    }
+    
+    @inlinable
+    var allResolvableUrls: [URL] {
+        ContentModelUrlType.allCases.map { resolvableUrl(from: $0) }
+    }
+}
+
+// MARK: Sharable
+
+public extension Comment {
+    func url() -> URL { api.baseUrl.appending(path: "comment/\(id)") }
 }
 
 // MARK: Interactable1Providing (shimmed)

@@ -68,9 +68,7 @@ public enum ReportTarget {
     func update(with snapshot: ReportTargetSnapshot) {
         // TODO: UpdateQueue rework reports to integrate UpdateQueue
         switch (self, snapshot) {
-        case (.post, .post):
-            break
-        case let (.comment(comment), .comment(updatedComment)):
+        case (.post, .post), (.comment, .comment):
             break
         case let (.message(message), .message(updatedMessage)):
             message.update(with: updatedMessage)
