@@ -13,12 +13,13 @@ extension InboxNotification {
         setIfChanged(\.read, snapshot.read)
     }
     
-    func takeSnapshot() -> InboxNotificationSnapshot {
-        .init(
+    func takeSnapshot() -> InboxNotificationSnapshot? {
+        guard let snapshot = content.takeSnapshot() else { return nil }
+        return .init(
             id: id,
             contentId: contentId,
             read: read,
-            content: content.takeSnapshot()
+            content: snapshot
         )
     }
 }

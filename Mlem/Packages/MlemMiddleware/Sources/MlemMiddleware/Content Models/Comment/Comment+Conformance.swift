@@ -54,8 +54,7 @@ public extension Comment {
 
 // MARK: Resolvable
 
-public extension Comment1Providing {
-    
+public extension Comment {
     /// Returns a `URL` that can be resolved by another `ApiClient`.
     func resolvableUrl(from instance: ContentModelUrlType) -> URL {
         switch instance {
@@ -115,4 +114,23 @@ public extension Comment {
 
 public extension Comment {
     func asComment() async throws -> Comment { self }
+}
+
+// MARK: PersonContentProviding
+
+public extension Comment {
+    var userContent: PersonContent { .init(wrappedValue: .comment(self)) }
+}
+
+// MARK: ShimInteractable2Providing
+
+public extension Comment {
+    // TODO: NOW
+    var toggleVote: ((ScoringOperation) -> Void)? { nil }
+    
+    var shimToggleUpvoted: (() -> Void)? { nil }
+    
+    var shimToggleDownvoted: (() -> Void)? { nil }
+    
+    var shimToggleSaved: (() -> Void)? { nil }
 }

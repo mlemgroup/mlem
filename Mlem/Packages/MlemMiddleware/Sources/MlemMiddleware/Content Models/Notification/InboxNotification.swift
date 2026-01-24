@@ -56,7 +56,11 @@ public class InboxNotification: ContentModel, ReadableProviding, Identifiable {
                     contentId: self.contentId,
                     read: newValue
                 )
-                var snapshot = self.takeSnapshot()
+                // TODO: unified InboxItem update this whole thing to be properties-based
+                guard var snapshot = self.takeSnapshot() else {
+                    assertionFailure("updateRead called on a notification that cannot take a snapshot")
+                    throw ApiClientError.invalidInput
+                }
                 snapshot.read = newValue
                 self.api.unreadCount?.verifyItem(itemType: type, isRead: snapshot.read)
                 return snapshot

@@ -16,8 +16,10 @@ public class Comment:
     ContentIdentifiable,
     OwnershipProviding,
     Interactable1Providing,
+    ShimInteractable2Providing,
     CommentResolvable,
-    Sharable {
+    Sharable,
+    PersonContentProviding {
     public typealias Properties = CommentProperties
     
     public var api: ApiClient
@@ -138,8 +140,13 @@ public class Comment:
         setIfNil(\.saved.value_, properties.saved)
     }
     
+    // TODO: unified models move these into ContentModel
     public func upgrade() async throws {
         try await updateQueue.upgrade()
+    }
+    
+    public func refresh() async throws {
+        try await updateQueue.refresh()
     }
     
     public func fetchUpgraded() async throws -> CommentProperties {
@@ -160,6 +167,41 @@ public extension Comment {
 
 public extension Comment {
     
+    // TODO: NOW see what can be moved into Interactable
+    
+    // Vote
+    
+    var updateVote: ((ScoringOperation) -> Void)? {
+        if let votes = votes.value {
+            return { self.updateVote($0, votes: votes) }
+        }
+        return nil
+    }
+    
+    private func updateVote(_ newValue: ScoringOperation, votes: VotesModel) {
+        self.votes.value_ = votes.applyScoringOperation(operation: newValue)
+        
+        Task {
+            await updateQueue.addItem {
+                try await .init(api: self.api, snapshot: .comment2(self.api.repository.voteOnComment(id: self.id, score: newValue)))
+            }
+        }
+    }
+    
+    // Save
+    
+    func updateSaved(_ newValue: Bool) {
+        saved.value_ = newValue
+        
+        Task {
+            await updateQueue.addItem {
+                try await .init(api: self.api, snapshot: .comment2(self.api.repository.saveComment(id: self.id, save: newValue)))
+            }
+        }
+    }
+    
+    // Remove
+    
     func updateRemoved(_ newValue: Bool, reason: String?, callback: ((UpdateStatus) -> Void)?) {
         removed = newValue
         removedPending = true
@@ -177,13 +219,19 @@ public extension Comment {
         }
     }
     
+    // Reply
+    
     func reply(content: String, languageId: Int? = nil) async throws -> Comment {
         try await api.replyToComment(postId: postId, parentId: id, content: content, languageId: languageId)
     }
     
+    // Purge
+    
     func purge(reason: String?) async throws {
         try await api.purgeComment(id: id, reason: reason)
     }
+    
+    // Delete
     
     func updateDeleted(_ newValue: Bool, callback: ((UpdateStatus) -> Void)?) {
         deleted = newValue
@@ -201,6 +249,8 @@ public extension Comment {
         }
     }
     
+    // Edit
+    
     func edit(content: String, languageId: Int?) async throws {
         self.content = content
         if let languageId {
@@ -214,6 +264,8 @@ public extension Comment {
             }
         }
     }
+    
+    // Get associated models
     
     /// Get the parent comment, or return `nil` if there is no parent
     func getParent(cachedValueAcceptable: Bool = false) async throws -> Comment? {

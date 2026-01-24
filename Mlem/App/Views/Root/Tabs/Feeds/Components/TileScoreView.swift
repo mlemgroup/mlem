@@ -9,6 +9,8 @@ import Foundation
 import MlemMiddleware
 import SwiftUI
 
+// TODO: NOW make this take new interactable
+
 struct TileScoreView: View {
     let saved: Bool
     let votes: VotesModel

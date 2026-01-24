@@ -240,13 +240,6 @@ struct CommentEditorView: View {
                 }
                 CommentBodyView(comment: comment)
             }
-            .onAppear {
-                if !(comment is any Comment2Providing) {
-                    Task {
-                        originalContext = try await .comment(comment.upgrade())
-                    }
-                }
-            }
         case nil:
             ProgressView()
         }

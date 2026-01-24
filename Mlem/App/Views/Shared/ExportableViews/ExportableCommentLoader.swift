@@ -14,32 +14,27 @@ class ExportableCommentLoader {
     var data: ExportableCommentData?
     var error: ErrorDetails?
     
-    let rootComment: any Comment1Providing
+    let rootComment: Comment
     let tracker: CommentTreeTracker?
     
-    init(comment: any Comment1Providing, tracker: CommentTreeTracker?) {
+    init(comment: Comment, tracker: CommentTreeTracker?) {
         self.rootComment = comment
         self.tracker = tracker
     }
     
     func load() async {
         do {
-            guard let comment = try await rootComment.upgrade() as? any Comment2Providing else {
-                assertionFailure("Could not cast to Comment2Providing post-upgrade")
-                error = .init(error: ApiClientError.unsuccessful)
-                return
-            }
-            
-            var comments: [any Comment2Providing]
+            try await rootComment.refresh()
+            var comments: [Comment]
             if let tracker {
-                await tracker.load(ensuringPresenceOf: comment)
-                comments = tracker.getThread(preceding: comment, limit: 8)
+                await tracker.load(ensuringPresenceOf: rootComment)
+                comments = tracker.getThread(preceding: rootComment, limit: 8)
             } else {
-                comments = [comment]
+                comments = [rootComment]
             }
             
             Task { @MainActor in
-                self.data = .init(comments: comments, post: comment.post)
+                self.data = .init(comments: comments)
             }
         } catch {
             self.error = handleErrorWithDetails(error)
@@ -48,10 +43,9 @@ class ExportableCommentLoader {
 }
 
 struct ExportableCommentData {
-    let comments: [any Comment2Providing]
-    let post: Post
+    let comments: [Comment]
     
-    func thread(length: Int) -> [any Comment2Providing] {
+    func thread(length: Int) -> [Comment] {
         comments.suffix(length)
     }
 }

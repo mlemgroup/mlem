@@ -27,7 +27,7 @@ public actor UnifiedUpdateQueue<Model: UnifiedModelProviding> {
     let parent: Model
     
     private var lastVerifiedProperties: Model.Properties
-    private var upgradeQueued: Bool = false
+    private var upgraded: Bool = false
     
     private var semaphore: AsyncSemaphore = .init(value: 1)
     private var queue: Queue<UpdateTask> = .init()
@@ -39,14 +39,20 @@ public actor UnifiedUpdateQueue<Model: UnifiedModelProviding> {
     
     func upgrade() async throws {
         // this method is a unique case because upgrade will be called at every property access on the parent model until
-        // the required properties are provided. Therefore we block all upgrade calls once one is queued.
-        guard !upgradeQueued else {
+        // the required properties are provided. Therefore we only allow a single call
+        guard !upgraded else {
             return
         }
-        upgradeQueued = true
+        upgraded = true
         
         addItem {
-            defer { self.upgradeQueued = false }
+            return try await self.parent.fetchUpgraded()
+        }
+    }
+    
+    // TODO: NOW make this blocking for spinner reasons
+    func refresh() async throws {
+        addItem {
             return try await self.parent.fetchUpgraded()
         }
     }

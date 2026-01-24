@@ -17,7 +17,7 @@ extension Comment {
         nil
 //        switch type {
 //        case .created: createdReadout
-//        // swiftlint:disable:next void_function_in_ternary
+//        // TODO: NOW wiftlint:disable:next void_function_in_ternary
 //        case .score: downvotesEnabled ? scoreReadout(showColor: showColor) : upvoteReadout(showColor: showColor)
 //        case .upvote: upvoteReadout(showColor: showColor)
 //        case .downvote: downvotesEnabled ? downvoteReadout(showColor: showColor) : nil
@@ -30,7 +30,7 @@ extension Comment {
         nil
 //        switch type {
 //        case .created: createdReadout
-//        // swiftlint:disable:next void_function_in_ternary
+//        // TODO: NOW wiftlint:disable:next void_function_in_ternary
 //        case .score: downvotesEnabled ? scoreReadout(showColor: showColor) : upvoteReadout(showColor: showColor)
 //        case .upvote: upvoteReadout(showColor: showColor)
 //        case .downvote: downvotesEnabled ? downvoteReadout(showColor: showColor) : nil

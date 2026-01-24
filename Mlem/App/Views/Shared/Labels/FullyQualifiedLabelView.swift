@@ -45,7 +45,7 @@ struct FullyQualifiedLabelView: View {
     
     @Environment(AppState.self) var appState
     @Environment(\.postContext) var postContext: Post?
-    @Environment(\.commentContext) var commentContext: (any Comment1Providing)?
+    @Environment(\.commentContext) var commentContext: Comment?
     @Environment(\.communityContext) var communityContext: (any Community1Providing)?
     @Environment(\.feedContext) var feedContext: FeedContext?
 
@@ -144,8 +144,10 @@ struct FullyQualifiedLabelView: View {
     
     var interactableContext: (any ShimInteractable2Providing)? {
         guard let person = entity as? any Person else { return nil }
-        if let commentContext2 = commentContext as? any Comment2Providing, commentContext2.creator.actorId == person.actorId {
-            return commentContext2
+        if let commentContext,
+           let creator = commentContext.creator.value,
+           creator.actorId == person.actorId {
+            return commentContext
         }
         if let postContext,
            let creator = postContext.creator.value,

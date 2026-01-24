@@ -80,7 +80,7 @@ public extension ApiClient {
         let response = try await repository.resolve(url: url)
         return switch response {
         case let .comment(comment):
-            await caches.comment2.getModel(api: self, from: comment)
+            await caches.comment.getModel(api: self, from: .comment2(comment))
         case let .post(post):
             await caches.post.getModel(api: self, from: .post2(post))
         case let .community(community):

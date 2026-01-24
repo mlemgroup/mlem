@@ -27,7 +27,7 @@ public protocol Interactable2Providing:
     
     func updateSaved(_ newValue: Bool)
     
-    func reply(content: String, languageId: Int?) async throws -> Comment2
+    func reply(content: String, languageId: Int?) async throws -> Comment
 }
 
 public extension Interactable2Providing {

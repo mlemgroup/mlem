@@ -19,7 +19,7 @@ extension ActionSeed {
     static let viewVotes = ActionSeed("viewVotes") { entity in
         switch entity {
         case let entity as Post: ViewVotesAction(content: .post(entity))
-        case let entity as any Comment2Providing: ViewVotesAction(content: .comment(entity))
+        case let entity as Comment: ViewVotesAction(content: .comment(entity))
         default: nil
         }
     }

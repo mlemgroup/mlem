@@ -25,7 +25,7 @@ enum NavigationPage: Hashable {
     case quickSwitcher
     case post(
         _ post: Post,
-        scrollTargetedComment: HashWrapper<any CommentResolvable>? = nil,
+        scrollTargetedComment: Comment? = nil,
         communityContext: HashWrapper<any Community1Providing>? = nil,
         navigationNamespace: Namespace.ID? = nil
     )
@@ -38,9 +38,9 @@ enum NavigationPage: Hashable {
     )
     case commentStub(
         _ comment: CommentStub,
-        comments: [Comment]?,
-        showViewPostButton: Bool,
-        exposeRemovedContent: Bool
+        comments: [Comment]? = nil,
+        showViewPostButton: Bool = true,
+        exposeRemovedContent: Bool = false
     )
     case community(_ community: AnyCommunity, visitContext: VisitHistory.VisitContext)
     case person(_ person: AnyPerson, visitContext: VisitHistory.VisitContext)
@@ -59,7 +59,7 @@ enum NavigationPage: Hashable {
     case shareInstancePicker(_ sharable: SharableHashWrapper)
     case subscriptionList
     case createComment(_ context: CommentEditorView.Context, commentTreeTracker: CommentTreeTracker? = nil)
-    case editComment(_ comment: Comment2, context: CommentEditorView.Context?)
+    case editComment(_ comment: Comment, context: CommentEditorView.Context?)
     case editCommunity(_ community: Community2)
     case editNote(_ person: HashWrapper<any Person>)
     case report(_ interactable: ReportableHashWrapper, community: AnyCommunity? = nil)
@@ -85,7 +85,7 @@ enum NavigationPage: Hashable {
     case modlog(ModlogView.InitialTarget, targetPerson: AnyPerson?, moderatorPerson: AnyPerson?)
     case denyApplication(RegistrationApplication)
     case exportPostImage(_ post: Post)
-    case exportCommentImage(_ comment: HashWrapper<any DeprecatedComment>, tracker: CommentTreeTracker?)
+    case exportCommentImage(_ comment: Comment, tracker: CommentTreeTracker?)
     case actionSheet(_ actions: HashWrapper<[ActionSheetSection]>)
     
     static func post(
@@ -343,10 +343,6 @@ enum NavigationPage: Hashable {
     
     static func advancedSorting(_ sort: Binding<PostSortType>) -> NavigationPage {
         advancedSorting(.init(wrappedValue: sort))
-    }
-    
-    static func createCommentImage(_ comment: any DeprecatedComment, tracker: CommentTreeTracker?) -> NavigationPage {
-        exportCommentImage(.init(wrappedValue: comment), tracker: tracker)
     }
 
     static func actionSheet(_ actions: [ActionSheetSection]) -> NavigationPage {

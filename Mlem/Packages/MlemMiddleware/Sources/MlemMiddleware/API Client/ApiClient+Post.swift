@@ -215,9 +215,9 @@ public extension ApiClient {
         return await caches.post.getModel(api: self, from: .post2(snapshot))
     }
     
-    func replyToPost(id: Int, content: String, languageId: Int? = nil) async throws -> Comment2 {
+    func replyToPost(id: Int, content: String, languageId: Int? = nil) async throws -> Comment {
         let snapshot = try await repository.replyToPost(id: id, content: content, languageId: languageId)
-        return await caches.comment2.getModel(api: self, from: snapshot)
+        return await caches.comment.getModel(api: self, from: .comment2(snapshot))
     }
     
     @discardableResult

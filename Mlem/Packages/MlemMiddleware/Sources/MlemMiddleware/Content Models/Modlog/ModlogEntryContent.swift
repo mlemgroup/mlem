@@ -28,7 +28,7 @@ public enum ModlogEntryContent: Equatable {
     case purgePost(reason: String?)
     
     case removeComment(
-        _ comment: Comment1,
+        _ comment: Comment,
         creator: Person1,
         post: Post,
         community: Community1,
@@ -140,7 +140,7 @@ public enum ModlogEntryContent: Equatable {
             self = .purgePost(reason: reason)
         case let .removeComment(comment, creator, post, community, removed, reason):
             self = .removeComment(
-                api.caches.comment1.getModel(api: api, from: comment),
+                api.caches.comment.getModel(api: api, from: .comment1(comment)),
                 creator: api.caches.person1.getModel(api: api, from: creator),
                 post: api.caches.post.getModel(api: api, from: .post1(post)),
                 community: api.caches.community1.getModel(api: api, from: community),

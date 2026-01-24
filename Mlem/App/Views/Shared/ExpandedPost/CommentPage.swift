@@ -20,7 +20,6 @@ struct CommentPage: View {
     let showViewPostButton: Bool
     let exposeRemovedContent: Bool
 
-    
     init(
         comment: Comment,
         initialComments: [Comment]?,
@@ -28,7 +27,6 @@ struct CommentPage: View {
         exposeRemovedContent: Bool = false
     ) {
         self.comment = comment
-        self._post = .init(wrappedValue: post)
         self.showViewPostButton = showViewPostButton
         self.initialComments = initialComments
         self.exposeRemovedContent = exposeRemovedContent
@@ -36,6 +34,13 @@ struct CommentPage: View {
     }
     
     var body: some View {
+        ExpectedView(comment.post) { post in
+            content(post: post)
+        }
+    }
+    
+    // swiftlint:disable:next function_body_length
+    func content(post: Post) -> some View {
         ExpandedPostView(
             post: post,
             tracker: tracker,

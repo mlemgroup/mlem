@@ -7,6 +7,8 @@
 
 import MlemMiddleware
 
+// TODO: NOW collapse into Interactable
+
 extension ShimInteractable2Providing {
     func contextualFlairs() -> Set<PersonFlair> {
         var output: Set<PersonFlair> = []
@@ -16,8 +18,8 @@ extension ShimInteractable2Providing {
         if creatorIsModerator.value ?? false {
             output.insert(.moderator)
         }
-        if let comment = self as? any Comment2Providing {
-            if let post = comment.post_, comment.creatorId == post.creatorId {
+        if let comment = self as? Comment {
+            if let post = comment.post.value_, comment.creatorId == post.creatorId {
                 output.insert(.op)
             }
         }

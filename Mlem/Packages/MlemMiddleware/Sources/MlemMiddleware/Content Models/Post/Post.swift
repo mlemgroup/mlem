@@ -218,6 +218,10 @@ public class Post:
         try await updateQueue.upgrade()
     }
     
+    public func refresh() async throws {
+        try await updateQueue.refresh()
+    }
+    
     public func fetchUpgraded() async throws -> PostProperties {
         let snapshot = try await api.repository.getPost(id: id)
         return await .init(api: api, snapshot: .post3(snapshot))
@@ -240,17 +244,6 @@ public extension Post {
 // MARK: - Interactions
 
 public extension Post {
-
-    func updateSaved(_ newValue: Bool) {
-        saved.value_ = newValue
-        readStatus.value_ = true
-        
-        Task {
-            await updateQueue.addItem {
-                await .init(api: self.api, snapshot: .post2(try await self.api.repository.savePost(id: self.id, save: newValue)))
-            }
-        }
-    }
     
     // Vote
     
@@ -272,9 +265,22 @@ public extension Post {
         }
     }
     
+    // Save
+    
+    func updateSaved(_ newValue: Bool) {
+        saved.value_ = newValue
+        readStatus.value_ = true
+        
+        Task {
+            await updateQueue.addItem {
+                await .init(api: self.api, snapshot: .post2(try await self.api.repository.savePost(id: self.id, save: newValue)))
+            }
+        }
+    }
+    
     // Reply
     
-    func reply(content: String, languageId: Int?) async throws -> Comment2 {
+    func reply(content: String, languageId: Int?) async throws -> Comment {
         try await self.api.replyToPost(id: id, content: content, languageId: languageId)
     }
     

@@ -11,7 +11,7 @@ import SwiftUI
 
 struct CreateImageAction: SimpleLabelAction {
     enum Content {
-        case comment(any Comment1Providing)
+        case comment(Comment)
         case post(Post)
     }
     
@@ -24,7 +24,7 @@ extension ActionSeed {
     static let createImage = ActionSeed("createImage") { entity in
         switch entity {
         case let entity as Post: CreateImageAction(content: .post(entity))
-        case let entity as any Comment1Providing: CreateImageAction(content: .comment(entity))
+        case let entity as Comment: CreateImageAction(content: .comment(entity))
         default: nil
         }
     }
@@ -58,7 +58,7 @@ extension CreateImageAction {
         case let .post(post):
             navigation.openSheet(.exportPostImage(post))
         case let .comment(comment):
-            navigation.openSheet(.createCommentImage(comment, tracker: environment.commentTreeTracker))
+            navigation.openSheet(.exportCommentImage(comment, tracker: environment.commentTreeTracker))
         }
     }
 }

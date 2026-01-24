@@ -33,7 +33,7 @@ private let moderationSeeds: [ActionSeed] = [
 ]
 
 extension View {
-    func contextMenu(comment: any Comment1Providing) -> some View {
+    func contextMenu(comment: Comment) -> some View {
         contextMenu {
             ActionButtons { _ in
                 seeds.compactMap { $0.createAction(comment) }

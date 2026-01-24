@@ -25,7 +25,7 @@ class SingleSourceMixedFetcher: Fetcher<PersonContent> {
     var savedOnly: Bool
     
     var postStream: PersonContentStream<Post>
-    var commentStream: PersonContentStream<Comment2>
+    var commentStream: PersonContentStream<Comment>
     
     init(
         api: ApiClient,
@@ -33,7 +33,7 @@ class SingleSourceMixedFetcher: Fetcher<PersonContent> {
         sortType: FeedLoaderSort.SortType,
         userId: Int,
         savedOnly: Bool,
-        withContent: (posts: [Post], comments: [Comment2])?,
+        withContent: (posts: [Post], comments: [Comment])?,
         prefetchingConfiguration: PrefetchingConfiguration
     ) {
         self.sortType = sortType
@@ -114,11 +114,11 @@ public class SingleSourceMixedFeedLoader: StandardFeedLoader<PersonContent> {
     // This FeedLoader is slightly awkward because it functions like a multi-loader but draws its posts and comments from a single API call. The streams act essentially like child loaders, but are populated using custom behavior in the fetcher. This FeedLoader is best understood as a multi-loader with the streams as child loaders.
     
     private var postStream: PersonContentStream<Post> { singleSourceMixedFetcher.postStream }
-    private var commentStream: PersonContentStream<Comment2> { singleSourceMixedFetcher.commentStream }
+    private var commentStream: PersonContentStream<Comment> { singleSourceMixedFetcher.commentStream }
     
     // these are used to allow refresh without clear
     private var tempPostStream: PersonContentStream<Post>?
-    private var tempCommentStream: PersonContentStream<Comment2>?
+    private var tempCommentStream: PersonContentStream<Comment>?
     
     // convenience accessors for child types
     public var posts: [PersonContent] { tempPostStream?.items ?? postStream.items }
@@ -134,7 +134,7 @@ public class SingleSourceMixedFeedLoader: StandardFeedLoader<PersonContent> {
         sortType: FeedLoaderSort.SortType,
         savedOnly: Bool,
         prefetchingConfiguration: PrefetchingConfiguration,
-        withContent: (posts: [Post], comments: [Comment2])? = nil
+        withContent: (posts: [Post], comments: [Comment])? = nil
     ) {
         super.init(filter: MultiFilter(), fetcher: SingleSourceMixedFetcher(
             api: api,

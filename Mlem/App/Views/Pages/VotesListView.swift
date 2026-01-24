@@ -12,7 +12,7 @@ import Theming
 struct VotesListView: View {
     enum Target: Hashable {
         case post(Post)
-        case comment(any Comment2Providing)
+        case comment(Comment)
         
         static func == (lhs: Target, rhs: Target) -> Bool {
             switch (lhs, rhs) {
@@ -101,7 +101,13 @@ struct VotesListView: View {
                 case let .post(post):
                     newVotes = try await post.getVotes(page: page, limit: 40)
                 case let .comment(comment):
-                    newVotes = try await comment.getVotes(page: page, limit: 40)
+                    // TODO: NOW handle this better--maybe getVotes calls upgrade?
+                    guard let communityId = comment.community.value_?.id else {
+                        assertionFailure("loadNextPage called without resolved community")
+                        newVotes = .init()
+                        break
+                    }
+                    newVotes = try await comment.getVotes(page: page, limit: 40, communityId: communityId)
                 }
                 votes.append(contentsOf: newVotes)
                 if newVotes.count < 40 {

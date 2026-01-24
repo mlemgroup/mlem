@@ -105,11 +105,7 @@ struct TileCommentView: View {
                 MenuButton(action: action)
             }
         } label: {
-            if let comment = comment as? any Comment2Providing {
-                TileScoreView(comment)
-            } else {
-                Image(icon: .general.menu)
-            }
+            TileScoreView(saved: comment.saved.value ?? false, votes: comment.votes.value ?? .init(upvotes: 0, downvotes: 0, myVote: .none))
         }
         .onTapGesture {}
         .popupAnchor()

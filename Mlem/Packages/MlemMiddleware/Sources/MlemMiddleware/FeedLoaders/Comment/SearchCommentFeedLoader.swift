@@ -8,7 +8,7 @@
 import Foundation
 
 @Observable
-public class SearchCommentFetcher: Fetcher<Comment2> {
+public class SearchCommentFetcher: Fetcher<Comment> {
     public enum SortType {
         case v4(SearchSortType)
         case v3(CommentSortType)
@@ -39,7 +39,7 @@ public class SearchCommentFetcher: Fetcher<Comment2> {
     }
     
     override func fetchPage(_ page: Int) async throws -> FetchResponse {
-        let comments: [Comment2]
+        let comments: [Comment]
         switch sort {
         case let .v4(searchSortType):
             comments = try await api.searchComments(
@@ -76,7 +76,7 @@ public class SearchCommentFetcher: Fetcher<Comment2> {
 }
 
 @Observable
-public class SearchCommentFeedLoader: StandardFeedLoader<Comment2> {
+public class SearchCommentFeedLoader: StandardFeedLoader<Comment> {
     public var api: ApiClient
     
     // force unwrap because this should ALWAYS be a SearchCommentFetcher
