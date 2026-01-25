@@ -60,10 +60,10 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
             }
         }
         
-        func associatedReadouts(context: any Interactable1Providing) -> Set<Configuration.ReadoutType> {
+        func associatedReadouts(context: any InteractableProviding) -> Set<Configuration.ReadoutType> {
             switch self {
-            case .upvote: context.votes_?.myVote ?? .none == .upvote ? [.upvote, .score] : [.upvote]
-            case .downvote: context.votes_?.myVote ?? .none == .downvote ? [.downvote, .score] : [.downvote]
+            case .upvote: context.votes.value?.myVote ?? .none == .upvote ? [.upvote, .score] : [.upvote]
+            case .downvote: context.votes.value?.myVote ?? .none == .downvote ? [.downvote, .score] : [.downvote]
             case .save: [.saved]
             case .reply, .share, .selectText, .report, .resolve, .remove, .ban: []
             case .collapse, .collapseParent, .collapseToTop: []
@@ -90,11 +90,11 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
             }
         }
         
-        func associatedReadouts(context: any Interactable1Providing) -> Set<Configuration.ReadoutType> {
+        func associatedReadouts(context: any InteractableProviding) -> Set<Configuration.ReadoutType> {
             switch self {
             case .score: [.upvote, .downvote, .score]
-            case .upvote: context.votes_?.myVote ?? .none == .upvote ? [.upvote, .score] : [.upvote]
-            case .downvote: context.votes_?.myVote ?? .none == .downvote ? [.downvote, .score] : [.downvote]
+            case .upvote: context.votes.value?.myVote ?? .none == .upvote ? [.upvote, .score] : [.upvote]
+            case .downvote: context.votes.value?.myVote ?? .none == .downvote ? [.downvote, .score] : [.downvote]
             case .reply: []
             }
         }

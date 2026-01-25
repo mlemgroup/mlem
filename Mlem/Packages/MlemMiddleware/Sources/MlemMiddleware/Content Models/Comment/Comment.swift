@@ -15,7 +15,7 @@ public class Comment:
     SelectableContentProviding,
     ContentIdentifiable,
     OwnershipProviding,
-    Interactable1Providing,
+    InteractableProviding,
     ShimInteractable2Providing,
     CommentResolvable,
     Sharable,

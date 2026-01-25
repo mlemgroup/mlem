@@ -9,7 +9,7 @@ import Foundation
 
 // Content that can be upvoted, downvoted, saved etc
 public protocol Interactable2Providing:
-    Interactable1Providing,
+    InteractableProviding,
     RemovableProviding,
     PurgableProviding,
     CanModerateProviding,
@@ -70,63 +70,4 @@ public protocol ShimInteractable2Providing: RemovableProviding {
     var shimToggleUpvoted: (() -> Void)? { get }
     var shimToggleDownvoted: (() -> Void)? { get }
     var shimToggleSaved: (() -> Void)? { get }
-}
-
-public extension Interactable2Providing {
-    var votes: ExpectedValue<VotesModel> {
-        .init(
-            value: self.votes,
-            provideValue: { fatalError("This should not be called") })
-    }
-
-    var saved: ExpectedValue<Bool> {
-        .init(
-            value: self.saved,
-            provideValue: { fatalError("This should not be called") }
-        )
-    }
-    
-    var commentCount: ExpectedValue<Int> {
-        .init(
-            value: self.commentCount,
-            provideValue: { fatalError("This should not be called") })
-    }
-    
-    var creator: ExpectedValue<any Person> {
-        .init(
-            value: self.creator,
-            provideValue: { fatalError("This should not be called") })
-    }
-    
-    var community: ExpectedValue<any Community> {
-        .init(
-            value: self.community,
-            provideValue: { fatalError("This should not be called") })
-    }
-    
-    var creatorIsAdmin: ExpectedValue<Bool> {
-        .init(
-            value: self.creatorIsAdmin,
-            provideValue: { fatalError("This should not be called") })
-    }
-    
-    var creatorIsModerator: ExpectedValue<Bool> {
-        .init(
-            value: self.creatorIsModerator,
-            provideValue: { fatalError("This should not be called") })
-    }
-    
-    var toggleVote: ((ScoringOperation) -> Void)? {
-        { self.toggleVote(type: $0) }
-    }
-    
-    var updateVote: ((ScoringOperation) -> Void)? {
-        { self.updateVote($0) }
-    }
-    
-    var shimToggleUpvoted: (() -> Void)? { toggleUpvoted }
-    
-    var shimToggleDownvoted: (() -> Void)? { toggleDownvoted }
-    
-    var shimToggleSaved: (() -> Void)? { toggleSaved }
 }

@@ -17,7 +17,7 @@ class CommentTreeTracker: Hashable {
         case post(Post)
         case comment(Comment, parentCount: Int)
         
-        var wrappedValue: any Interactable1Providing & ActorIdentifiable {
+        var wrappedValue: any InteractableProviding & ActorIdentifiable {
             switch self {
             case let .post(post): post
             case let .comment(comment, _): comment

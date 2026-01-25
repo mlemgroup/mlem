@@ -32,7 +32,7 @@ struct VotesListView: View {
             }
         }
         
-        var model: any Interactable1Providing {
+        var model: any InteractableProviding {
             switch self {
             case let .post(post): post
             case let .comment(comment): comment
@@ -59,7 +59,7 @@ struct VotesListView: View {
                     }
             }
         }
-        .environment(\.communityContext, target.model.community_)
+        .environment(\.communityContext, target.model.community.value)
         .themedGroupedBackground()
         .navigationTitle("Votes")
     }

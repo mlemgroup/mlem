@@ -79,11 +79,10 @@ extension Comment {
         communityContext: (any CommunityStubProviding)? = nil,
         reportContext: Report? = nil
     ) -> (any Action)? {
-        // TODO: NOW
         nil
 //        switch type {
-//        case .upvote: upvoteAction(appState: appState, feedback: [.haptic])
-//        case .downvote: downvotesEnabled ? downvoteAction(appState: appState, feedback: [.haptic], downvotesEnabled: downvotesEnabled) : nil
+//        case .upvote: if let upvoteAction = upvoteAction(appState: appState, feedback: [.haptic]) { upvoteAction }
+//        case .downvote: if let downvoteAction = downvoteAction(appState: appState, feedback: [.haptic]) { downvoteAction }
 //        case .save: saveAction(appState: appState, feedback: [.haptic])
 //        case .reply: replyAction(appState: appState, commentTreeTracker: commentTreeTracker)
 //        case .share: shareAction(navigation: navigation)

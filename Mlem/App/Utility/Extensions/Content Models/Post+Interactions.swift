@@ -13,79 +13,49 @@ import Foundation
 // Convenience functions for interacting with a post when feedback is required or the data required to execute
 // the function is not guaranteed to be fetched yet
 
-extension Post: ShimInteractable2Providing {
-    public var shimToggleSaved: (() -> Void)? {
-        if let toggleSaved {
-            return { toggleSaved([]) }
-        }
-        return nil
-    }
+extension Post {
+//    var toggleDownvoted: ((Set<FeedbackType>) -> Void)? {
+//        if let updateVote, let votes = votes.value {
+//            return { feedback in
+//                if feedback.contains(.haptic) {
+//                    HapticManager.main.play(haptic: .lightSuccess, tier: .low)
+//                }
+//                updateVote(votes.myVote == .downvote ? .none : .downvote)
+//            }
+//        }
+//        return nil
+//    }
     
-    public var toggleVote: ((ScoringOperation) -> Void)? {
-        if let updateVote, let votes = votes.value {
-            return { operation in
-                updateVote(votes.myVote == operation ? .none : operation)
-            }
-        }
-        return nil
-    }
+//    var toggleUpvoted: ((Set<FeedbackType>) -> Void)? {
+//        if let updateVote, let votes = votes.value {
+//            return { feedback in
+//                if feedback.contains(.haptic) {
+//                    HapticManager.main.play(haptic: .lightSuccess, tier: .low)
+//                }
+//                updateVote(votes.myVote == .upvote ? .none : .upvote)
+//            }
+//        }
+//        return nil
+//    }
     
-    var toggleDownvoted: ((Set<FeedbackType>) -> Void)? {
-        if let updateVote, let votes = votes.value {
-            return { feedback in
-                if feedback.contains(.haptic) {
-                    HapticManager.main.play(haptic: .lightSuccess, tier: .low)
-                }
-                updateVote(votes.myVote == .downvote ? .none : .downvote)
-            }
-        }
-        return nil
-    }
-    
-    var toggleUpvoted: ((Set<FeedbackType>) -> Void)? {
-        if let updateVote, let votes = votes.value {
-            return { feedback in
-                if feedback.contains(.haptic) {
-                    HapticManager.main.play(haptic: .lightSuccess, tier: .low)
-                }
-                updateVote(votes.myVote == .upvote ? .none : .upvote)
-            }
-        }
-        return nil
-    }
-    
-    public var shimToggleUpvoted: (() -> Void)? {
-        if let toggleUpvoted {
-            return { toggleUpvoted([]) }
-        }
-        return nil
-    }
-    
-    public var shimToggleDownvoted: (() -> Void)? {
-        if let toggleDownvoted {
-            return { toggleDownvoted([]) }
-        }
-        return nil
-    }
-    
-    var toggleSaved: ((Set<FeedbackType>) -> Void)? {
-        if let saved = saved.value,
-           let votes = votes.value,
-           let updateVote {
-            return { feedback in
-                if feedback.contains(.haptic) {
-                    HapticManager.main.play(haptic: .lightSuccess, tier: .low)
-                }
-                
-                @Setting(\.behavior_upvoteOnSave) var upvoteOnSave
-                if upvoteOnSave, !saved, votes.myVote != .upvote {
-                    updateVote(.upvote)
-                }
-                self.updateSaved(!saved)
-            }
-        }
-        return nil
-    }
+//    var toggleSaved: ((Set<FeedbackType>) -> Void)? {
+//        if let saved = saved.value,
+//           let votes = votes.value,
+//           let updateVote {
+//            return { feedback in
+//                if feedback.contains(.haptic) {
+//                    HapticManager.main.play(haptic: .lightSuccess, tier: .low)
+//                }
+//                
+//                @Setting(\.behavior_upvoteOnSave) var upvoteOnSave
+//                if upvoteOnSave, !saved, votes.myVote != .upvote {
+//                    updateVote(.upvote)
+//                }
+//                self.updateSaved(!saved)
+//            }
+//        }
+//        return nil
+//    }
     
     var toggleHidden: ((Set<FeedbackType>) -> Void)? {
         guard let hidden = hidden.value else { return nil }

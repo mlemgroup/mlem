@@ -25,7 +25,7 @@ public class Post:
     Resolvable,
     Sharable,
     UnifiedReadableProviding,
-    Interactable1Providing,
+    InteractableProviding,
     PersonContentProviding,
     DeletableProviding,
     ReportableProviding,
