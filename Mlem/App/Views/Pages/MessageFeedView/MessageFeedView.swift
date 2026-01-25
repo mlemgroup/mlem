@@ -241,6 +241,8 @@ struct MessageFeedView: View {
             textInputButtonLabel(icon: editing == nil ? .lemmy.sendMessage : .general.success)
         }
         .tint(.themedAccent)
+        .compositingGroup()
+        .opacity(isSending ? 0.4 : 1)
         .disabled(isSending)
     }
     
