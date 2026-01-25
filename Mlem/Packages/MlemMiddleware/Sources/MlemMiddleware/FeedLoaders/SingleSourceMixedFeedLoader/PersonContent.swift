@@ -15,7 +15,7 @@ public class PersonContent: Hashable, Equatable, FeedLoadable, ActorIdentifiable
     public enum Value {
         // This always comes from GetPersonDetailsRequest, so we can know we're getting Post2 and Comment2
         case post(Post)
-        case comment(Comment2)
+        case comment(Comment)
     }
     
     public init(wrappedValue: PersonContent.Value) {
@@ -25,7 +25,7 @@ public class PersonContent: Hashable, Equatable, FeedLoadable, ActorIdentifiable
     public func sortVal(sortType: FeedLoaderSort.SortType) -> FeedLoaderSort {
         switch wrappedValue {
         case let .post(post): post.sortVal(sortType: sortType)
-        case let .comment(comment2): comment2.sortVal(sortType: sortType)
+        case let .comment(comment): comment.sortVal(sortType: sortType)
         }
     }
     

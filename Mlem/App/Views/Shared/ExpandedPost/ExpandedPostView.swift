@@ -31,11 +31,11 @@ struct ExpandedPostView<Content: View>: View {
     @Setting(\.interactionBar_comment) var commentInteractionBar
 
     var post: Post
-    let highlightedComment: (any CommentStubProviding)?
+    let highlightedComment: Comment?
     let content: Content
     
     var tracker: CommentTreeTracker?
-    @State var scrollTargetedComment: (any CommentStubProviding)?
+    @State var scrollTargetedComment: Comment?
 
     @State var scrolledToScrollTargetedComment: Bool = false
     @State var jumpButtonTarget: ActorIdentifier?
@@ -47,8 +47,8 @@ struct ExpandedPostView<Content: View>: View {
     init(
         post: Post,
         tracker: CommentTreeTracker?,
-        highlightedComment: (any CommentStubProviding)? = nil,
-        scrollTargetedComment: (any CommentStubProviding)? = nil,
+        highlightedComment: Comment? = nil,
+        scrollTargetedComment: Comment? = nil,
         @ViewBuilder content: () -> Content = { EmptyView() }
     ) {
         self.post = post
@@ -140,7 +140,7 @@ struct ExpandedPostView<Content: View>: View {
                     }
                     .animation(.easeInOut(duration: 0.1), value: (tracker?.loadingState ?? .loading) == .loading)
                     .animation(.easeInOut(duration: 0.1), value: tracker?.errorDetails == nil)
-                    .animation(.easeInOut(duration: 0.4), value: scrollTargetedComment?.actorId_)
+                    .animation(.easeInOut(duration: 0.4), value: scrollTargetedComment?.actorId)
                     .padding(.bottom, 80)
                     .id(tracker?.proposedDepthOffset ?? 0)
                     .transition(.opacity)
@@ -150,7 +150,7 @@ struct ExpandedPostView<Content: View>: View {
                     if tracker?.loadingState == .done, let scrollTargetedComment {
                         // Without a slight delay here, `scrollTo` can sometimes fail. I'm not sure why this is.
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                            proxy.scrollTo(scrollTargetedComment.actorId_, anchor: .center)
+                            proxy.scrollTo(scrollTargetedComment.actorId, anchor: .center)
                             scrolledToScrollTargetedComment = true
                         }
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {

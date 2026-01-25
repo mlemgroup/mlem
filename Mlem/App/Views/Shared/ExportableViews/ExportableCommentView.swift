@@ -17,8 +17,7 @@ struct ExportableCommentView: View {
     @Setting(\.post_createImage_showCreator) var postShowCreator
     @Setting(\.post_createImage_showStats) var postShowStats
     
-    let comments: [any Comment1Providing]
-    let post: Post
+    let comments: [Comment]
     
     // Anything environment-dependent must be passed in because ImageRenderer doesn't work with @Environment
     let appState: AppState
@@ -51,13 +50,15 @@ struct ExportableCommentView: View {
     
     var content: some View {
         VStack(spacing: -Constants.main.standardSpacing) {
-            if showPost {
-                ExportablePostView(
-                    post: post,
-                    appState: appState,
-                    colorScheme: colorScheme
-                )
-                .transition(.move(edge: .top).combined(with: .opacity))
+            if showPost, let rootComment = comments.last {
+                ExpectedView(rootComment.post) { post in
+                    ExportablePostView(
+                        post: post,
+                        appState: appState,
+                        colorScheme: colorScheme
+                    )
+                    .transition(.move(edge: .top).combined(with: .opacity))
+                }
             }
             
             ForEach(Array(comments.enumerated()), id: \.element.actorId) { index, comment in
@@ -69,12 +70,16 @@ struct ExportableCommentView: View {
         }
     }
     
-    func commentContent(comment: any Comment1Providing, depth: Int) -> some View {
+    func commentContent(comment: Comment, depth: Int) -> some View {
         HStack(spacing: 0) {
             VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
                 if showCreator {
-                    FullyQualifiedLabelView(comment.creator_, labelStyle: .medium, showFlairs: false)
-                        .transition(.scale.combined(with: .opacity))
+                    ExpectedView(comment.creator) { creator in
+                        FullyQualifiedLabelView(creator, labelStyle: .medium, showFlairs: false)
+                            .transition(.scale.combined(with: .opacity))
+                    } placeholder: {
+                        Text(verbatim: .personPlaceholder).redacted(reason: .placeholder)
+                    }
                 }
                 
                 CommentBodyView(comment: comment)

@@ -19,7 +19,7 @@ extension ActionSeed {
     static let viewVotes = ActionSeed("viewVotes") { entity in
         switch entity {
         case let entity as Post: ViewVotesAction(content: .post(entity))
-        case let entity as any Comment2Providing: ViewVotesAction(content: .comment(entity))
+        case let entity as Comment: ViewVotesAction(content: .comment(entity))
         default: nil
         }
     }
@@ -44,7 +44,7 @@ extension ViewVotesAction {
         guard entity.api.canInteract(appState: environment.appState) else { return .hidden }
         
         guard let myPerson = entity.api.myPerson else { return .hidden }
-        guard let community = entity.community_ else { return .hidden }
+        guard let community = entity.community.value else { return .hidden }
         let canModerate = myPerson.moderates(communityId: community.id)
         guard canModerate else { return .hidden }
 

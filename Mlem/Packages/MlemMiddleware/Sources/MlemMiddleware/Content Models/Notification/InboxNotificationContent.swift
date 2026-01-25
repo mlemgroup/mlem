@@ -8,14 +8,14 @@
 import Foundation
 
 public enum InboxNotificationContent {
-    case reply(Comment2)
-    case mention(Comment2)
+    case reply(Comment)
+    case mention(Comment)
     case message(Message2)
     
     public var wrappedValue: any ContentModel & ActorIdentifiable {
         switch self {
-        case let .reply(comment2): comment2
-        case let .mention(comment2): comment2
+        case let .reply(comment): comment
+        case let .mention(comment): comment
         case let .message(message2): message2
         }
     }
@@ -28,10 +28,20 @@ public enum InboxNotificationContent {
         }
     }
     
-    func takeSnapshot() -> InboxNotificationContentSnapshot {
+    func takeSnapshot() -> InboxNotificationContentSnapshot? {
         switch self {
-        case let .reply(comment): .reply(comment.takeSnapshot2())
-        case let .mention(comment): .mention(comment.takeSnapshot2())
+        case let .reply(comment):
+            if let snapshot = comment.takeSnapshot2() {
+                .reply(snapshot)
+            } else {
+                nil
+            }
+        case let .mention(comment):
+            if let snapshot = comment.takeSnapshot2() {
+                .mention(snapshot)
+            } else {
+                nil
+            }
         case let .message(message): .message(message.takeSnapshot2())
         }
     }

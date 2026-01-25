@@ -69,7 +69,9 @@ struct CrossPostListView: View {
                                 if let scoreReadout = crossPost.scoreReadout(showColor: true) {
                                     ReadoutView(readout: scoreReadout)
                                 }
-                                ReadoutView(readout: crossPost.commentReadout)
+                                if let commentReadout = crossPost.commentReadout {
+                                    ReadoutView(readout: commentReadout)
+                                }
                             }
                             .contentShape(.rect)
                             .onTapGesture {

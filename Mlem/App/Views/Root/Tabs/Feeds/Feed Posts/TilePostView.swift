@@ -124,7 +124,7 @@ struct TilePostView: View {
                 MenuButton(action: action)
             }
         } label: {
-            TileScoreView(saved: post.saved.value ?? false, votes: post.votes.value ?? .init(upvotes: 0, downvotes: 0, myVote: .none))
+            TileScoreView(post)
         }
         .onTapGesture {}
         .popupAnchor()

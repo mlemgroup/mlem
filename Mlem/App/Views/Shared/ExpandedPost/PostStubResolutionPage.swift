@@ -42,8 +42,8 @@ struct PostStubResolutionPage: View {
     @discardableResult
     func fetchPost() async -> Bool {
         do {
-            let upgraded = try await stub.upgrade()
-            navigation.replace(.post(upgraded))
+            let post = try await stub.getPost()
+            navigation.replace(.post(post))
             return true
         } catch {
             upgradeError = error

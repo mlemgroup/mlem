@@ -10,25 +10,27 @@ import MlemMiddleware
 import SwiftUI
 
 struct TileScoreView: View {
-    let saved: Bool
-    let votes: VotesModel
+    let saved: ExpectedValue<Bool>
+    let votes: ExpectedValue<VotesModel>
     
     var body: some View {
-        Group {
-            postTag(active: saved, icon: .lemmy.saved, color: .themedSave) + // saved status
+        if let saved = saved.value, let votes = votes.value {
+            Group {
+                postTag(active: saved, icon: .lemmy.saved, color: .themedSave) + // saved status
                 Text(verbatim: saved ? " " : "") + // spacing after save
                 Text(Image(systemName: votes.iconName)) + // vote status
                 Text(verbatim: " \(votes.total.abbreviated)")
+            }
+            .lineLimit(1)
+            .font(.caption)
+            .foregroundStyle(votes.iconColor)
+            .contentShape(.rect)
         }
-        .lineLimit(1)
-        .font(.caption)
-        .foregroundStyle(votes.iconColor)
-        .contentShape(.rect)
     }
 }
 
 extension TileScoreView {
-    init(_ interactable: any Interactable2Providing) {
+    init(_ interactable: any InteractableProviding) {
         self.saved = interactable.saved
         self.votes = interactable.votes
     }

@@ -28,7 +28,12 @@ extension ActionSeed {
 
     static let sendCreatorMessage = ActionSeed("sendCreatorMessage") { entity in
         switch entity {
-        case let entity as any Comment2Providing: SendMessageAction(entity: entity.creator, relationship: .author)
+        case let entity as Comment:
+            if let creator = entity.creator.value {
+                SendMessageAction(entity: creator, relationship: .author)
+            } else {
+                nil
+            }
         default: nil
         }
     }

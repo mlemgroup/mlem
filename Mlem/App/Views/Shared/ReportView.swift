@@ -31,7 +31,7 @@ struct ReportView: View {
                 }
             }
         case let .comment(comment):
-            NavigationLink(.comment(comment, post: comment.post)) {
+            NavigationLink(.comment(comment)) {
                 FeedCommentView(comment: comment, overriddenSize: .large) {
                     reportDetailsView
                     resolutionInfoView

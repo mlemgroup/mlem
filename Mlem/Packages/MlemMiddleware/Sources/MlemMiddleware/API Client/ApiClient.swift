@@ -63,6 +63,10 @@ public class ApiClient {
         }
     }
     
+    public var voteFederationMode: VoteFederationMode {
+        myInstance?.voteFederationMode ?? .all
+    }
+    
     // MARK: caching
     
     /// Caches of objects stored per ApiClient instance

@@ -38,7 +38,12 @@ extension ActionSeed {
         label: OpenModlogAction.createLabel(relationship: .author)
     ) { entity in
         switch entity {
-        case let entity as any Comment2Providing: OpenModlogAction(content: .person(entity.creator), relationship: .author)
+        case let entity as Comment:
+            if let creator = entity.creator.value {
+                OpenModlogAction(content: .person(creator), relationship: .author)
+            } else {
+                nil
+            }
         default: nil
         }
     }

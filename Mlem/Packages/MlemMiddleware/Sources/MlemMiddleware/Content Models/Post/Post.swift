@@ -25,12 +25,12 @@ public class Post:
     Resolvable,
     Sharable,
     UnifiedReadableProviding,
-    Interactable1Providing,
+    InteractableProviding,
     PersonContentProviding,
     DeletableProviding,
     ReportableProviding,
     RemovableProviding,
-    PurgableProviding {
+    PurgableProviding {    
     public typealias Properties = PostProperties
     
     public var api: ApiClient
@@ -50,13 +50,13 @@ public class Post:
     public var embeddedMediaUrl: URL?
     
     // MARK: API Properties
-    // Properties that are provided directly by the API
+    // Properties that are provided by the API
 
-    public var actorId: ActorIdentifier
-    public var id: Int
-    public var creatorId: Int
-    public var communityId: Int
-    public var created: Date
+    public let actorId: ActorIdentifier
+    public let id: Int
+    public let creatorId: Int
+    public let communityId: Int
+    public let created: Date
     public var title: String
     public var content: String?
     public var linkUrl: URL?
@@ -93,10 +93,7 @@ public class Post:
     
     // MARK: Initializers and Updates
     
-    public init(
-        api: ApiClient,
-        properties: PostProperties
-    ) {
+    public init(api: ApiClient, properties: PostProperties) {
         self.api = api
         self.properties = properties
         
@@ -165,11 +162,6 @@ public class Post:
     
     @MainActor
     public func update(with properties: PostProperties) {
-        setIfChanged(\.actorId, properties.actorId)
-        setIfChanged(\.id, properties.id)
-        setIfChanged(\.creatorId, properties.creatorId)
-        setIfChanged(\.communityId, properties.communityId)
-        setIfChanged(\.created, properties.created)
         setIfChanged(\.title, properties.title)
         setIfChanged(\.content, properties.content)
         setIfChanged(\.linkUrl, properties.linkUrl)
@@ -226,6 +218,10 @@ public class Post:
         try await updateQueue.upgrade()
     }
     
+    public func refresh() async throws {
+        try await updateQueue.refresh()
+    }
+    
     public func fetchUpgraded() async throws -> PostProperties {
         let snapshot = try await api.repository.getPost(id: id)
         return await .init(api: api, snapshot: .post3(snapshot))
@@ -248,17 +244,6 @@ public extension Post {
 // MARK: - Interactions
 
 public extension Post {
-
-    func updateSaved(_ newValue: Bool) {
-        saved.value_ = newValue
-        readStatus.value_ = true
-        
-        Task {
-            await updateQueue.addItem {
-                await .init(api: self.api, snapshot: .post2(try await self.api.repository.savePost(id: self.id, save: newValue)))
-            }
-        }
-    }
     
     // Vote
     
@@ -280,9 +265,22 @@ public extension Post {
         }
     }
     
+    // Save
+    
+    func updateSaved(_ newValue: Bool) {
+        saved.value_ = newValue
+        readStatus.value_ = true
+        
+        Task {
+            await updateQueue.addItem {
+                await .init(api: self.api, snapshot: .post2(try await self.api.repository.savePost(id: self.id, save: newValue)))
+            }
+        }
+    }
+    
     // Reply
     
-    func reply(content: String, languageId: Int?) async throws -> Comment2 {
+    func reply(content: String, languageId: Int?) async throws -> Comment {
         try await self.api.replyToPost(id: id, content: content, languageId: languageId)
     }
     
@@ -418,7 +416,7 @@ public extension Post {
         maxDepth: Int? = nil,
         limit: Int,
         filter: GetContentFilter? = nil
-    ) async throws -> [Comment2] {
+    ) async throws -> [Comment] {
         try await api.getComments(
             postId: id,
             sort: sort,
