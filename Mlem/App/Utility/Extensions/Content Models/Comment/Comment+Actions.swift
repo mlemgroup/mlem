@@ -65,6 +65,86 @@ extension Comment {
         }
     }
     
+    // MARK: - Actions
+    
+    func createImageAction(navigation: NavigationLayer, commentTreeTracker: CommentTreeTracker?) -> BasicAction {
+        .init(
+            id: "exportAsImage\(uid)",
+            appearance: .createImage()) {
+                navigation.openSheet(.exportCommentImage(self, tracker: commentTreeTracker))
+            }
+    }
+    
+    func editAction(appState: AppState) -> BasicAction {
+        .init(
+            id: "edit\(uid)",
+            appearance: .edit(),
+            callback: api.canInteract(appState: appState)
+            ? { @MainActor in NavigationModel.main.openSheet(.editComment(self, context: nil)) }
+            : nil
+        )
+    }
+    
+    func viewVotesAction() -> BasicAction {
+        let callback: (@MainActor () -> Void)? = canModerate && api.supports(.viewVotes, defaultValue: true)
+        ? { @MainActor in NavigationModel.main.openSheet(.votesList(.comment(self))) }
+        : nil
+        return .init(
+            id: "viewVotes\(uid)",
+            appearance: .viewVotes(),
+            callback: callback
+        )
+    }
+    
+    func markReadAction(appState: AppState, notification: InboxNotification, feedback: Set<FeedbackType> = []) -> BasicAction {
+        .init(
+            id: "markRead\(uid)",
+            appearance: .markRead(isOn: notification.read),
+            callback: api.canInteract(appState: appState) ? {
+                @MainActor in
+                notification.toggleRead()
+                HapticManager.main.play(haptic: .lightSuccess, tier: .low)
+            } : nil
+        )
+    }
+    
+    func collapseAction(commentTreeTracker: CommentTreeTracker? = nil) -> BasicAction {
+        .init(
+            id: "collapse\(uid)",
+            appearance: .collapse(),
+            callback: { @MainActor in
+                withAnimation(UIAccessibility.isReduceMotionEnabled ? nil : .default) {
+                    commentTreeTracker?.nodesKeyedByActorId[self.actorId]?.collapsed.toggle()
+                }
+            }
+        )
+    }
+    
+    func collapseParentAction(commentTreeTracker: CommentTreeTracker? = nil) -> BasicAction {
+        .init(
+            id: "collapseParent\(uid)",
+            appearance: .collapseParent(),
+            callback: { @MainActor in
+                withAnimation(UIAccessibility.isReduceMotionEnabled ? nil : .default) {
+                    guard let comment = commentTreeTracker?.nodesKeyedByActorId[self.actorId] else { return }
+                    (comment.parent ?? comment).collapsed.toggle()
+                }
+            }
+        )
+    }
+    
+    func collapseToTopAction(commentTreeTracker: CommentTreeTracker? = nil) -> BasicAction {
+        .init(
+            id: "collapseToTop\(uid)",
+            appearance: .collapseToTop(),
+            callback: { @MainActor in
+                withAnimation(UIAccessibility.isReduceMotionEnabled ? nil : .default) {
+                    commentTreeTracker?.nodesKeyedByActorId[self.actorId]?.topParent.collapsed.toggle()
+                }
+            }
+        )
+    }
+    
     // MARK: - Action Groups
     
     // swiftlint:disable:next cyclomatic_complexity
@@ -87,10 +167,9 @@ extension Comment {
         case .resolve: return reportContext?.resolveAction(appState: appState, feedback: [.haptic])
         case .remove: return removeAction(appState: appState)
         case .ban: return reportContext?.contextualBanAction(appState: appState)
-        default: return nil
-//        case .collapse: collapseAction(commentTreeTracker: commentTreeTracker)
-//        case .collapseParent: collapseParentAction(commentTreeTracker: commentTreeTracker)
-//        case .collapseToTop: collapseToTopAction(commentTreeTracker: commentTreeTracker)
+        case .collapse: return collapseAction(commentTreeTracker: commentTreeTracker)
+        case .collapseParent: return collapseParentAction(commentTreeTracker: commentTreeTracker)
+        case .collapseToTop: return collapseToTopAction(commentTreeTracker: commentTreeTracker)
         }
         return nil
     }
@@ -111,8 +190,7 @@ extension Comment {
         case .reply: return replyAction(appState: appState, commentTreeTracker: commentTreeTracker)
         case .selectText: return selectTextAction()
         case .report: return reportAction(appState: appState, communityContext: communityContext)
-        default: return nil
-        // case .markRead: markReadAction(appState: appState, notification: notification)
+        case .markRead: return markReadAction(appState: appState, notification: notification)
         }
         return nil
     }
@@ -162,27 +240,27 @@ extension Comment {
                 feedback: feedback) { downvoteAction }
             if let saveAction = saveAction(appState: appState, feedback: feedback) { saveAction }
             replyAction(appState: appState, commentTreeTracker: commentTreeTracker)
-//            if let notification {
-//                markReadAction(appState: appState, notification: notification, feedback: feedback)
-//            }
+            if let notification {
+                markReadAction(appState: appState, notification: notification, feedback: feedback)
+            }
             if !deleted {
                 selectTextAction()
             }
             shareAction(navigation: navigation)
             
-//            if let navigation, notification == nil {
-//                createImageAction(navigation: navigation, commentTreeTracker: commentTreeTracker)
-//            }
+            if let navigation, notification == nil {
+                createImageAction(navigation: navigation, commentTreeTracker: commentTreeTracker)
+            }
             
-//            if isOwnComment {
-//                editAction(appState: appState)
-//                deleteAction(appState: appState, feedback: feedback)
-//            } else {
-//                if !canModerate, !deleted {
-//                    reportAction(appState: appState)
-//                }
-//                if let blockCreatorAction = blockCreatorAction(appState: appState, feedback: feedback) { blockCreatorAction }
-//            }
+            if isOwnComment {
+                editAction(appState: appState)
+                deleteAction(appState: appState, feedback: feedback)
+            } else {
+                if !canModerate, !deleted {
+                    reportAction(appState: appState)
+                }
+                if let blockCreatorAction = blockCreatorAction(appState: appState, feedback: feedback) { blockCreatorAction }
+            }
         }
     }
     
@@ -195,20 +273,22 @@ extension Comment {
     ) -> [any Action] {
         let viewVotesIsPossible = api.supports(.viewVotes, defaultValue: false)
         
-//        if viewVotesIsPossible, showAllActions || Settings.get(\.menus_allModActions) {
-//            viewVotesAction()
-//        }
-//        if let self2, !isOwnComment {
-//            self2.removeAction(appState: appState).disabled(!canModerate)
-//            self2.creator.banActions(appState: appState, community: self2.community, withUserLabel: true)
-//        }
-//        if api.isAdmin, api.supports(.purgeContent, defaultValue: false) {
-//            purgeAction(appState: appState)
-//            if !isOwnComment,
-//            let purgeCreatorAction = purgeCreatorAction(appState: appState) {
-//                purgeCreatorAction
-//            }
-//        }
+        if viewVotesIsPossible, showAllActions || Settings.get(\.menus_allModActions) {
+            viewVotesAction()
+        }
+        if !isOwnComment {
+            removeAction(appState: appState).disabled(!canModerate)
+            if let creator = creator.value, let community = community.value {
+                creator.banActions(appState: appState, community: community, withUserLabel: true)
+            }
+        }
+        if api.isAdmin, api.supports(.purgeContent, defaultValue: false) {
+            purgeAction(appState: appState)
+            if !isOwnComment,
+            let purgeCreatorAction = purgeCreatorAction(appState: appState) {
+                purgeCreatorAction
+            }
+        }
         if let report {
             ActionGroup {
                 report.menuActions(appState: appState)

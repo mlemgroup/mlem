@@ -16,4 +16,6 @@ extension Comment {
     var shouldHideInFeed: Bool {
         (creator.value_?.shouldHideInFeed ?? false) || purged
     }
+    
+    var isOwnComment: Bool { creatorId == api.myPerson?.id }
 }

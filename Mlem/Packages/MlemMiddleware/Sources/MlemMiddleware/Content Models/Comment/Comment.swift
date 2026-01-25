@@ -16,6 +16,8 @@ public class Comment:
     ContentIdentifiable,
     OwnershipProviding,
     InteractableProviding,
+    DeletableProviding,
+    PurgableProviding,
     CommentResolvable,
     Sharable,
     PersonContentProviding {

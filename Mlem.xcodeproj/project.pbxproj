@@ -97,7 +97,6 @@
 		033F84B12C29907F002E3EDF /* FeedbackType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84B02C29907F002E3EDF /* FeedbackType.swift */; };
 		033F84BB2C2ACB96002E3EDF /* CommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84BA2C2ACB96002E3EDF /* CommentView.swift */; };
 		033F84BD2C2ACC5F002E3EDF /* CommentBarConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84BC2C2ACC5F002E3EDF /* CommentBarConfiguration.swift */; };
-		033F84BF2C2ACC9F002E3EDF /* Comment1Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84BE2C2ACC9F002E3EDF /* Comment1Providing+Extensions.swift */; };
 		033F84C12C2AD072002E3EDF /* CommentTreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84C02C2AD072002E3EDF /* CommentTreeNode.swift */; };
 		033F84C32C2B12AA002E3EDF /* InstanceSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84C22C2B12AA002E3EDF /* InstanceSummary.swift */; };
 		033F84C82C2B193D002E3EDF /* MlemStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84C72C2B193D002E3EDF /* MlemStats.swift */; };
@@ -664,7 +663,6 @@
 		033F84B02C29907F002E3EDF /* FeedbackType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackType.swift; sourceTree = "<group>"; };
 		033F84BA2C2ACB96002E3EDF /* CommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentView.swift; sourceTree = "<group>"; };
 		033F84BC2C2ACC5F002E3EDF /* CommentBarConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentBarConfiguration.swift; sourceTree = "<group>"; };
-		033F84BE2C2ACC9F002E3EDF /* Comment1Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment1Providing+Extensions.swift"; sourceTree = "<group>"; };
 		033F84C02C2AD072002E3EDF /* CommentTreeNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTreeNode.swift; sourceTree = "<group>"; };
 		033F84C22C2B12AA002E3EDF /* InstanceSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceSummary.swift; sourceTree = "<group>"; };
 		033F84C72C2B193D002E3EDF /* MlemStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MlemStats.swift; sourceTree = "<group>"; };
@@ -2255,7 +2253,6 @@
 				030056A52D7DBD4F00EB0BA3 /* Sharable+Extensions.swift */,
 				0305EBAB2D32C9300066E5AD /* ModlogEntryType+Extensions.swift */,
 				0320B6532C8B65EB00D38548 /* Captcha+Extensions.swift */,
-				033F84BE2C2ACC9F002E3EDF /* Comment1Providing+Extensions.swift */,
 				037658DE2BE7D9EF00F4DD4D /* Community1Providing+Extensions.swift */,
 				034B94802C09306D00039AF4 /* CommunityOrPersonStub+Extensions.swift */,
 				039D75632C4EEE69004F24C2 /* DeletableProviding+Extensions.swift */,
@@ -2963,7 +2960,6 @@
 				035394972CA1AFAF00795AA5 /* InstanceStubProviding+Uptime.swift in Sources */,
 				CDB2EC882BFAE14800DBC0EF /* FullyQualifiedNameView.swift in Sources */,
 				03500C272BF69D1D00CAA076 /* ToastModel.swift in Sources */,
-				033F84BF2C2ACC9F002E3EDF /* Comment1Providing+Extensions.swift in Sources */,
 				CD24CAFC2D5568FE0032B5E8 /* DiscussionLanguageSettingsView.swift in Sources */,
 				0369B35D2BFB86E3001EFEDF /* Account.swift in Sources */,
 				CD0C5C102E99629A0074D5A4 /* ExportablePostEditorView.swift in Sources */,
