@@ -41,18 +41,6 @@ extension InteractableProviding {
         return nil
     }
     
-//    func toggleUpvoted(feedback: Set<FeedbackType>) {
-//        guard let toggleUpvoted else {
-//            handleError(MlemError.modelError("No self2 found"), silent: true)
-//            return
-//        }
-//        if feedback.contains(.haptic) {
-//            HapticManager.main.play(haptic: .lightSuccess, tier: .low)
-//        }
-//        toggleUpvoted()
-//        inboxItem?.updateRead(true)
-//    }
-    
     var toggleDownvoted: ((Set<FeedbackType>) -> Void)? {
         if let updateVote, let votes = votes.value {
             return { feedback in
@@ -65,18 +53,6 @@ extension InteractableProviding {
         }
         return nil
     }
-    
-//    func toggleDownvoted(feedback: Set<FeedbackType>) {
-//        guard let toggleDownvoted else {
-//            handleError(MlemError.modelError("No self2 found"), silent: true)
-//            return
-//        }
-//        if feedback.contains(.haptic) {
-//            HapticManager.main.play(haptic: .lightSuccess, tier: .low)
-//        }
-//        toggleDownvoted()
-//        inboxItem?.updateRead(true)
-//    }
     
     var toggleSaved: ((Set<FeedbackType>) -> Void)? {
         if let saved = saved.value,
@@ -96,26 +72,6 @@ extension InteractableProviding {
         }
         return nil
     }
-    
-//    func toggleSaved(feedback: Set<FeedbackType>) {
-//        guard let saved = saved.value,
-//              let votes = votes.value,
-//              let updateVote,
-//              let toggleSaved else {
-//            handleError(MlemError.modelError("No self2 found"), silent: true)
-//            return
-//        }
-//        if feedback.contains(.haptic) {
-//            HapticManager.main.play(haptic: .success, tier: .low)
-//        }
-//        @Setting(\.behavior_upvoteOnSave) var upvoteOnSave
-//        if upvoteOnSave, !saved, votes.myVote != .upvote {
-//            updateVote(.upvote)
-//        }
-//        
-//        toggleSaved()
-//        inboxItem?.updateRead(true)
-//    }
     
     func toggleRemoved(reason: String?, feedback: Set<FeedbackType>) {
         let initialValue = removed
