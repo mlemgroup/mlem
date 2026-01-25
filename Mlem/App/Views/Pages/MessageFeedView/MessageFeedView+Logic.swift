@@ -16,6 +16,8 @@ extension MessageFeedView {
     }
     
     func sendMessage(_ scrollProxy: ScrollViewProxy) async {
+        self.isSending = true
+        defer { self.isSending = false }
         do {
             guard let person = person.wrappedValue as? any Person, !textView.text.isEmpty else { return }
             let message = try await appState.firstApi.createMessage(personId: person.id, content: textView.text)
