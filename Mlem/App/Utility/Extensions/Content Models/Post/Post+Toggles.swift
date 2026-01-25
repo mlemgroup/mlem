@@ -1,5 +1,5 @@
 //
-//  Post+Interactions.swift
+//  Post+Toggles.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2026-01-04.
@@ -10,53 +10,9 @@ import Haptics
 import os
 import Foundation
 
-// Convenience functions for interacting with a post when feedback is required or the data required to execute
-// the function is not guaranteed to be fetched yet
+// Convenience methods for toggling statuses with feedback
 
 extension Post {
-//    var toggleDownvoted: ((Set<FeedbackType>) -> Void)? {
-//        if let updateVote, let votes = votes.value {
-//            return { feedback in
-//                if feedback.contains(.haptic) {
-//                    HapticManager.main.play(haptic: .lightSuccess, tier: .low)
-//                }
-//                updateVote(votes.myVote == .downvote ? .none : .downvote)
-//            }
-//        }
-//        return nil
-//    }
-    
-//    var toggleUpvoted: ((Set<FeedbackType>) -> Void)? {
-//        if let updateVote, let votes = votes.value {
-//            return { feedback in
-//                if feedback.contains(.haptic) {
-//                    HapticManager.main.play(haptic: .lightSuccess, tier: .low)
-//                }
-//                updateVote(votes.myVote == .upvote ? .none : .upvote)
-//            }
-//        }
-//        return nil
-//    }
-    
-//    var toggleSaved: ((Set<FeedbackType>) -> Void)? {
-//        if let saved = saved.value,
-//           let votes = votes.value,
-//           let updateVote {
-//            return { feedback in
-//                if feedback.contains(.haptic) {
-//                    HapticManager.main.play(haptic: .lightSuccess, tier: .low)
-//                }
-//                
-//                @Setting(\.behavior_upvoteOnSave) var upvoteOnSave
-//                if upvoteOnSave, !saved, votes.myVote != .upvote {
-//                    updateVote(.upvote)
-//                }
-//                self.updateSaved(!saved)
-//            }
-//        }
-//        return nil
-//    }
-    
     var toggleHidden: ((Set<FeedbackType>) -> Void)? {
         guard let hidden = hidden.value else { return nil }
         return { feedback in
