@@ -96,11 +96,6 @@ struct MessageFeedView: View {
                     }
                     .scrollTargetLayout()
                     .padding(.top, 50)
-                    .onChange(of: feedLoader.items.isEmpty) {
-                        for message in feedLoader.items {
-                            message.updateRead(true)
-                        }
-                    }
                     .onReceive(timer) { _ in
                         Task { @MainActor in
                             do {

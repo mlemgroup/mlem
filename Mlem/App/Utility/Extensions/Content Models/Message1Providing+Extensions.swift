@@ -5,17 +5,18 @@
 //  Created by Sjmarf on 05/07/2024.
 //
 
+import Haptics
 import MlemMiddleware
 import QuickSwipes
 
 extension Message1Providing {
     var self2: (any Message2Providing)? { self as? any Message2Providing }
         
-    func swipeActions(appState: AppState) -> SwipeConfiguration {
+    func swipeActions(notification: InboxNotification?, appState: AppState) -> SwipeConfiguration {
         .init(
             trailingActions: {
-                if api.canInteract(appState: appState), !isOwnMessage {
-                    markReadAction(appState: appState, feedback: [.haptic])
+                if api.canInteract(appState: appState), !isOwnMessage, let notification {
+                    markReadAction(appState: appState, notification: notification, feedback: [.haptic])
                 }
             }
         )
@@ -28,6 +29,7 @@ extension Message1Providing {
         isInMessageFeed: Bool = false,
         editCallback: (@MainActor () -> Void)?,
         navigation: NavigationLayer? = nil,
+        notification: InboxNotification? = nil,
         report: Report? = nil
     ) -> [any Action] {
         basicMenuActions(
@@ -35,7 +37,8 @@ extension Message1Providing {
             feedback: feedback,
             isInMessageFeed: isInMessageFeed,
             editCallback: editCallback,
-            navigation: navigation
+            navigation: navigation,
+            notification: notification
         )
         if api.isAdmin {
             ActionGroup(
@@ -47,20 +50,23 @@ extension Message1Providing {
         }
     }
         
-    @ActionBuilder
-    func basicMenuActions(
+    // swiftlint:disable:next cyclomatic_complexity
+    @ActionBuilder func basicMenuActions(
         appState: AppState,
         feedback: Set<FeedbackType> = [.haptic, .toast],
         isInMessageFeed: Bool = false,
         editCallback: (@MainActor () -> Void)?,
         navigation: NavigationLayer? = nil,
+        notification: InboxNotification? = nil,
         report: Report? = nil
     ) -> [any Action] {
         if !isOwnMessage {
             if let navigation, !isInMessageFeed {
                 replyAction(appState: appState, navigation: navigation)
             }
-            markReadAction(appState: appState, feedback: feedback)
+            if let notification {
+                markReadAction(appState: appState, notification: notification, feedback: feedback)
+            }
         }
         if !deleted {
             selectTextAction()
@@ -126,6 +132,18 @@ extension Message1Providing {
             id: "blockCreator\(uid)",
             appearance: .blockCreator(),
             callback: api.canInteract(appState: appState) ? { @MainActor in self.self2?.creator.toggleBlocked(feedback: feedback) } : nil
+        )
+    }
+
+    func markReadAction(appState: AppState, notification: InboxNotification, feedback: Set<FeedbackType> = []) -> BasicAction {
+        .init(
+            id: "markRead\(uid)",
+            appearance: .markRead(isOn: notification.read),
+            callback: api.canInteract(appState: appState) ? {
+                @MainActor in
+                notification.toggleRead()
+                HapticManager.main.play(haptic: .lightSuccess, tier: .low)
+            } : nil
         )
     }
 }
