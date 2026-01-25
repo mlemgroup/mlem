@@ -115,7 +115,7 @@ struct CommentView<EmbeddedContent: View>: View {
         .contentShape(.interaction, .rect)
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
         .environment(\.commentContext, comment)
-        .environment(\.communityContext, comment.community_)
+        .environment(\.communityContext, comment.community.value)
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }
     
@@ -133,7 +133,11 @@ struct CommentView<EmbeddedContent: View>: View {
     
     var authorAndMenu: some View {
         HStack(spacing: 0) {
-            FullyQualifiedLinkView(comment.creator_, labelStyle: .small)
+            ExpectedView(comment.creator) { creator in
+                FullyQualifiedLinkView(creator, labelStyle: .small)
+            } placeholder: {
+                Text(verbatim: .personPlaceholder).redacted(reason: .placeholder)
+            }
             Spacer()
             Group {
                 if collapsed {

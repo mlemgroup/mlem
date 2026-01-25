@@ -10,10 +10,6 @@ import MlemMiddleware
 // Utility extensions for InteractableProviding
 
 extension InteractableProviding {
-    var downvotesEnabled: Bool {
-        api.voteFederationMode.postDownvote != .disable
-    }
-    
     @MainActor
     func showReplySheet(commentTreeTracker: CommentTreeTracker? = nil) {
         if let responseContext {

@@ -210,11 +210,15 @@ struct CommentEditorView: View {
         case let .post(post):
             VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
                 HStack {
-                    FullyQualifiedLinkView(
-                        post.community_,
-                        labelStyle: .medium,
-                        blurred: post.nsfw
-                    )
+                    ExpectedView(post.community) { community in
+                        FullyQualifiedLinkView(
+                            community,
+                            labelStyle: .medium,
+                            blurred: post.nsfw
+                        )
+                    } placeholder: {
+                        Text(verbatim: .communityPlaceholder).redacted(reason: .placeholder)
+                    }
                     Spacer()
                     selectTextButton
                 }
@@ -231,10 +235,14 @@ struct CommentEditorView: View {
         case let .comment(comment):
             VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
                 HStack {
-                    FullyQualifiedLinkView(
-                        comment.creator_,
-                        labelStyle: .small
-                    )
+                    ExpectedView(comment.creator) { creator in
+                        FullyQualifiedLinkView(
+                            creator,
+                            labelStyle: .small
+                        )
+                    } placeholder: {
+                        Text(verbatim: .personPlaceholder).redacted(reason: .placeholder)
+                    }
                     Spacer()
                     selectTextButton
                 }

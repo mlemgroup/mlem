@@ -18,10 +18,6 @@ extension ApiClient {
     
     func canInteract(appState: AppState) -> Bool { isActive(appState: appState) && token != nil }
     
-    var voteFederationMode: VoteFederationMode {
-        myInstance?.voteFederationMode ?? .all
-    }
-    
     func getPostLinkOrUseOpenGraph(url: URL) async throws -> PostLink {
         if  try await self.supports(.fetchLinkMetadata) {
             return try await self.getPostLink(url: url)

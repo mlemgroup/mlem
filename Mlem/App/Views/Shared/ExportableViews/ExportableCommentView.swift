@@ -74,8 +74,12 @@ struct ExportableCommentView: View {
         HStack(spacing: 0) {
             VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
                 if showCreator {
-                    FullyQualifiedLabelView(comment.creator_, labelStyle: .medium, showFlairs: false)
-                        .transition(.scale.combined(with: .opacity))
+                    ExpectedView(comment.creator) { creator in
+                        FullyQualifiedLabelView(creator, labelStyle: .medium, showFlairs: false)
+                            .transition(.scale.combined(with: .opacity))
+                    } placeholder: {
+                        Text(verbatim: .personPlaceholder).redacted(reason: .placeholder)
+                    }
                 }
                 
                 CommentBodyView(comment: comment)

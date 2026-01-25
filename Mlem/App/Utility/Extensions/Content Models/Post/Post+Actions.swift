@@ -118,7 +118,7 @@ extension Post {
         let isOn = pinnedCommunity
         let prompt: LocalizedStringResource?
         if showConfirmation {
-            if let communityName = community_?.name {
+            if let communityName = community.value?.name {
                 if isOn {
                     prompt = "Really unpin this post from \(communityName)?"
                 } else {

@@ -22,7 +22,11 @@ struct ReplyView: View {
         VStack(spacing: 0) {
             VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
                 HStack {
-                    FullyQualifiedLinkView(comment.creator_, labelStyle: .small)
+                    ExpectedView(comment.creator) { creator in
+                        FullyQualifiedLinkView(creator, labelStyle: .small)
+                    } placeholder: {
+                        Text(verbatim: .personPlaceholder).redacted(reason: .placeholder)
+                    }
                     Spacer()
                     Image(icon: (notification.content.type == .mention) ? .lemmy.mention : .lemmy.reply)
                         .symbolVariant(notification.read ? .none : .fill)

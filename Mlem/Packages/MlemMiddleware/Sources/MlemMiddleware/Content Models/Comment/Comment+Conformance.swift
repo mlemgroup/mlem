@@ -75,28 +75,11 @@ public extension Comment {
     func url() -> URL { api.baseUrl.appending(path: "comment/\(id)") }
 }
 
-// MARK: Interactable1Providing (shimmed)
+// MARK: InteractableProviding
 
 public extension Comment {
-    // these are all shims! auto-fetching is therefore disabled to avoid unwanted side effects
-    var creator_: (any Person)? { creator.value_ }
-    
-    var community_: (any Community)? { community.value_ }
-    
-    var creatorIsModerator_: Bool? { creatorIsModerator.value_ }
-    
-    var creatorIsAdmin_: Bool? { creatorIsAdmin.value_ }
-    
-    var creatorBannedFromCommunity_: Bool? { creatorBannedFromCommunity.value_ }
-    
-    var commentCount_: Int? { commentCount.value_ }
-    
-    var votes_: VotesModel? { votes.value_ }
-    
-    var saved_: Bool? { saved.value_ }
-    
-    func report(reason: String) async throws {
-        try await api.reportPost(id: id, reason: reason)
+    var downvotesEnabled: Bool {
+        api.voteFederationMode.commentDownvote != .disable
     }
 }
 
@@ -120,4 +103,12 @@ public extension Comment {
 
 public extension Comment {
     var userContent: PersonContent { .init(wrappedValue: .comment(self)) }
+}
+
+// MARK: ReportableProviding
+
+public extension Comment {
+    func report(reason: String) async throws {
+        try await api.reportComment(id: id, reason: reason)
+    }
 }
