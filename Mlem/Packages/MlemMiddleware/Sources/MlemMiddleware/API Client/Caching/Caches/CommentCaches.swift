@@ -1,5 +1,5 @@
 //
-//  CommentCaches.swift
+//  CommentCache.swift
 //
 //
 //  Created by Sjmarf on 24/06/2024.
@@ -25,8 +25,12 @@ class CommentCache: ApiTypeBackedCache<Comment, AnyCommentSnapshot> {
     }
     
     override func updateModel(_ item: Comment, with apiType: AnyCommentSnapshot, semaphore: UInt? = nil) {
-        // this ensures that high-tier data is available where expected, but uses softUpdate to avoid overwriting
-        // potentially more recent data
-        item.softUpdate(with: .init(api: item.api, snapshot: apiType))
+        // attempt a direct update through the queue to avoid overwriting more recent data, and also
+        // synchronously perform softUpdate to ensure high-tier data is available where expected
+        let properties: CommentProperties = .init(api: item.api, snapshot: apiType)
+        Task {
+            await item.updateQueue.attemptDirectUpdate(with: properties)
+        }
+        item.softUpdate(with: properties)
     }
 }
