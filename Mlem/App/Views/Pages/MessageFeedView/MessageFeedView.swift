@@ -49,6 +49,8 @@ struct MessageFeedView: View {
     @State var textView: UITextView = .init()
     
     @State var uploadHistory: ImageUploadHistoryManager = .init()
+
+    @State var isSending: Bool = false
         
     var body: some View {
         ContentLoader(model: person) { proxy in
@@ -94,11 +96,6 @@ struct MessageFeedView: View {
                     }
                     .scrollTargetLayout()
                     .padding(.top, 50)
-                    .onChange(of: feedLoader.items.isEmpty) {
-                        for message in feedLoader.items {
-                            message.updateRead(true)
-                        }
-                    }
                     .onReceive(timer) { _ in
                         Task { @MainActor in
                             do {
@@ -239,6 +236,9 @@ struct MessageFeedView: View {
             textInputButtonLabel(icon: editing == nil ? .lemmy.sendMessage : .general.success)
         }
         .tint(.themedAccent)
+        .compositingGroup()
+        .opacity(isSending ? 0.4 : 1)
+        .disabled(isSending)
     }
     
     @ViewBuilder

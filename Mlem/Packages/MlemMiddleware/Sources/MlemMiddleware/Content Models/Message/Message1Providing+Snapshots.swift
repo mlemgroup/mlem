@@ -17,7 +17,7 @@ extension Message1Providing {
             created: created,
             content: content,
             updated: updated,
-            read: read,
+            read: false,
             deleted: deleted
         )
     }

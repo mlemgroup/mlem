@@ -50,7 +50,9 @@ public extension PieFedConnection {
             page: page,
             limit: limit,
             communityName: nil,
-            communityId: nil
+            communityId: nil,
+            minimumUpvotes: nil,
+            nsfw: nil
         )
         let response = try await perform(request)
         return try response.communities.map { try .init(from: $0) }
