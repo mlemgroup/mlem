@@ -16,7 +16,6 @@ public class Comment:
     ContentIdentifiable,
     OwnershipProviding,
     InteractableProviding,
-    ShimInteractable2Providing,
     CommentResolvable,
     Sharable,
     PersonContentProviding {
@@ -166,8 +165,6 @@ public extension Comment {
 // MARK: - Interactions
 
 public extension Comment {
-    
-    // TODO: NOW see what can be moved into Interactable
     
     // Vote
     

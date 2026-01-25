@@ -399,18 +399,6 @@ struct InstanceHashWrapper: Hashable {
     }
 }
 
-struct Interactable2HashWrapper: Hashable {
-    var wrappedValue: any Interactable2Providing
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(wrappedValue.hashValue)
-    }
-    
-    static func == (lhs: Interactable2HashWrapper, rhs: Interactable2HashWrapper) -> Bool {
-        lhs.hashValue == rhs.hashValue
-    }
-}
-
 struct ReportableHashWrapper: Hashable {
     var wrappedValue: any ReportableProviding
     

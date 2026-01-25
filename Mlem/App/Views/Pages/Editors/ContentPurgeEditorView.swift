@@ -17,14 +17,14 @@ struct ContentPurgeEditorView: View {
     
     let target: any PurgableProviding
     
-    @State var community: (any Community)?
+    @State var community: ExpectedValue<(any Community)>?
     @State var reason: String = ""
     @FocusState var reasonFocused: Bool
     @State var presentationSelection: PresentationDetent = .large
     
     init(target: any PurgableProviding) {
         self.target = target
-        self._community = .init(wrappedValue: (target as? any Interactable2Providing)?.community)
+        self._community = .init(wrappedValue: (target as? any InteractableProviding)?.community)
     }
 
     var body: some View {
@@ -46,7 +46,9 @@ struct ContentPurgeEditorView: View {
                         ReasonShortcutView(reason: $reason)
                     }
                     if let community {
-                        RulesListView(model: community, reason: $reason)
+                        ExpectedView(community) { community in
+                            RulesListView(model: community, reason: $reason)
+                        }
                     }
                     if let instance = appState.firstSession.instance {
                         RulesListView(model: instance, reason: $reason)

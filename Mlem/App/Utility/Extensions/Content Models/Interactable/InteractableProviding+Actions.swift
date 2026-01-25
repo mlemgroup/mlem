@@ -7,6 +7,7 @@
 
 import MlemMiddleware
 import Theming
+import os
 
 // Methods to support actions
 
@@ -133,17 +134,22 @@ extension InteractableProviding {
     }
     
     var commentReadout: Readout? {
-        guard let unreadCount = (self as? Post)?.unreadCommentCount.value,
-              let commentCount = commentCount.value,
-              unreadCount > 0, unreadCount != commentCount else {
-            return nil
+        guard let commentCount = commentCount.value else { return nil }
+        
+        let value: String?
+        if let unreadCount = (self as? Post)?.unreadCommentCount.value,
+           unreadCount > 0,
+           unreadCount != commentCount {
+            value = "+\(unreadCount)"
+        } else {
+            value = nil
         }
         
         return .init(
             id: "comment\(uid)",
             label: commentCount.description,
             icon: Icons.replies,
-            value: "+\(unreadCount)",
+            value: value,
             valueColor: .themedPositive
         )
     }

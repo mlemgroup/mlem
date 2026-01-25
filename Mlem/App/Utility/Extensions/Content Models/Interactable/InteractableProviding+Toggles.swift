@@ -15,6 +15,19 @@ import Theming
 extension InteractableProviding {
     private var inboxItem: (any InboxItemProviding)? { self as? any InboxItemProviding }
     
+    var toggleVote: ((ScoringOperation, Set<FeedbackType>) -> Void)? {
+        if let updateVote, let votes = votes.value {
+            return { operation, feedback in
+                if feedback.contains(.haptic) {
+                    HapticManager.main.play(haptic: .lightSuccess, tier: .low)
+                }
+                updateVote(operation == votes.myVote ? .none : operation)
+                self.inboxItem?.updateRead(true)
+            }
+        }
+        return nil
+    }
+    
     var toggleUpvoted: ((Set<FeedbackType>) -> Void)? {
         if let updateVote, let votes = votes.value {
             return { feedback in

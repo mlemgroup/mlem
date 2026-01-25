@@ -22,7 +22,7 @@ struct ContentRemovalEditorView: View {
     let target: any RemovableProviding
     @State var mode: Mode
     
-    @State var community: (any Community)?
+    @State var community: ExpectedValue<(any Community)>?
     @State var reason: String = ""
     @FocusState var reasonFocused: Bool
     @State var presentationSelection: PresentationDetent = .large
@@ -30,7 +30,7 @@ struct ContentRemovalEditorView: View {
     init(target: any RemovableProviding) {
         self.target = target
         self._mode = .init(wrappedValue: target.removed ? .restore : .remove)
-        self._community = .init(wrappedValue: (target as? any Interactable2Providing)?.community)
+        self._community = .init(wrappedValue: (target as? any InteractableProviding)?.community)
     }
     
     var body: some View {
@@ -43,7 +43,9 @@ struct ContentRemovalEditorView: View {
                         Section {
                             ReasonShortcutView(reason: $reason)
                         }
-                        if let community {
+                        
+                        // ExpectedView causes rendering issues here
+                        if let community = community?.value {
                             RulesListView(model: community, reason: $reason)
                         }
                         if let instance = appState.firstSession.instance {

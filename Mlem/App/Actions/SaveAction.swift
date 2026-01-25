@@ -10,7 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct SaveAction: SimpleLabelAction {
-    let entity: any ShimInteractable2Providing
+    let entity: InteractableProviding
 }
 
 // MARK: - Configurability
@@ -18,7 +18,7 @@ struct SaveAction: SimpleLabelAction {
 extension ActionSeed {
     static let save = ActionSeed("save") { entity in
         switch entity {
-        case let entity as any ShimInteractable2Providing: SaveAction(entity: entity)
+        case let entity as any InteractableProviding: SaveAction(entity: entity)
         default: nil
         }
     }
@@ -60,8 +60,7 @@ extension SaveAction {
 extension SaveAction {
     @MainActor
     func execute(environment: EnvironmentValues) {
-        guard let toggleSaved = entity.shimToggleSaved else { return }
-        toggleSaved()
-        environment.hapticManager.play(haptic: .success, tier: .low)
+        guard let toggleSaved = entity.toggleSaved else { return }
+        toggleSaved([.haptic])
     }
 }
