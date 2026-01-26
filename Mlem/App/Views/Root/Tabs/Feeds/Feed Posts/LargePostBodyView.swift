@@ -30,6 +30,9 @@ struct LargePostBodyView: View {
 
             if let poll = post.poll {
                 PostPollView(poll: poll)
+                if post.content != nil {
+                    Divider().padding(.horizontal, -Constants.main.standardSpacing)
+                }
             }
             switch post.type {
             case let .media(url):
