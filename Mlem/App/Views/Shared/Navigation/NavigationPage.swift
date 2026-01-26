@@ -25,23 +25,22 @@ enum NavigationPage: Hashable {
     case quickSwitcher
     case post(
         _ post: Post,
-        scrollTargetedComment: HashWrapper<any CommentStubProviding>? = nil,
+        scrollTargetedComment: Comment? = nil,
         communityContext: HashWrapper<any Community1Providing>? = nil,
         navigationNamespace: Namespace.ID? = nil
     )
     case postStub(_ post: PostStub, navigationNamespace: Namespace.ID? = nil)
     case comment(
-        _ comment: HashWrapper<any Comment1Providing>,
-        post: Post,
-        comments: [Comment2]?,
-        showViewPostButton: Bool,
-        exposeRemovedContent: Bool
+        _ comment: Comment,
+        comments: [Comment]? = nil,
+        showViewPostButton: Bool = true,
+        exposeRemovedContent: Bool = false
     )
     case commentStub(
-        _ comment: HashWrapper<any CommentStubProviding>,
-        comments: [Comment2]?,
-        showViewPostButton: Bool,
-        exposeRemovedContent: Bool
+        _ comment: CommentStub,
+        comments: [Comment]? = nil,
+        showViewPostButton: Bool = true,
+        exposeRemovedContent: Bool = false
     )
     case community(_ community: AnyCommunity, visitContext: VisitHistory.VisitContext)
     case person(_ person: AnyPerson, visitContext: VisitHistory.VisitContext)
@@ -60,7 +59,7 @@ enum NavigationPage: Hashable {
     case shareInstancePicker(_ sharable: SharableHashWrapper)
     case subscriptionList
     case createComment(_ context: CommentEditorView.Context, commentTreeTracker: CommentTreeTracker? = nil)
-    case editComment(_ comment: Comment2, context: CommentEditorView.Context?)
+    case editComment(_ comment: Comment, context: CommentEditorView.Context?)
     case editCommunity(_ community: Community2)
     case editNote(_ person: HashWrapper<any Person>)
     case report(_ interactable: ReportableHashWrapper, community: AnyCommunity? = nil)
@@ -86,7 +85,7 @@ enum NavigationPage: Hashable {
     case modlog(ModlogView.InitialTarget, targetPerson: AnyPerson?, moderatorPerson: AnyPerson?)
     case denyApplication(RegistrationApplication)
     case exportPostImage(_ post: Post)
-    case exportCommentImage(_ comment: HashWrapper<any Comment>, tracker: CommentTreeTracker?)
+    case exportCommentImage(_ comment: Comment, tracker: CommentTreeTracker?)
     case actionSheet(_ actions: HashWrapper<[ActionSheetSection]>)
     
     static func post(
@@ -99,36 +98,6 @@ enum NavigationPage: Hashable {
         } else {
             Self.post(post, navigationNamespace: navigationNamespace)
         }
-    }
-    
-    static func comment(
-        _ comment: any Comment1Providing,
-        post: Post,
-        comments: [Comment2]? = nil,
-        showViewPostButton: Bool = true,
-        exposeRemovedContent: Bool = false
-    ) -> NavigationPage {
-        Self.comment(
-            .init(wrappedValue: comment),
-            post: post,
-            comments: comments,
-            showViewPostButton: showViewPostButton,
-            exposeRemovedContent: exposeRemovedContent
-        )
-    }
-    
-    static func commentStub(
-        _ comment: any CommentStubProviding,
-        comments: [Comment2]? = nil,
-        showViewPostButton: Bool = true,
-        exposeRemovedContent: Bool = false
-    ) -> NavigationPage {
-        Self.commentStub(
-            .init(wrappedValue: comment),
-            comments: comments,
-            showViewPostButton: showViewPostButton,
-            exposeRemovedContent: exposeRemovedContent
-        )
     }
     
     static func person(
@@ -375,10 +344,6 @@ enum NavigationPage: Hashable {
     static func advancedSorting(_ sort: Binding<PostSortType>) -> NavigationPage {
         advancedSorting(.init(wrappedValue: sort))
     }
-    
-    static func createCommentImage(_ comment: any Comment, tracker: CommentTreeTracker?) -> NavigationPage {
-        exportCommentImage(.init(wrappedValue: comment), tracker: tracker)
-    }
 
     static func actionSheet(_ actions: [ActionSheetSection]) -> NavigationPage {
         actionSheet(.init(wrappedValue: actions))
@@ -431,18 +396,6 @@ struct InstanceHashWrapper: Hashable {
     
     static func == (lhs: InstanceHashWrapper, rhs: InstanceHashWrapper) -> Bool {
         lhs.id == rhs.id
-    }
-}
-
-struct Interactable2HashWrapper: Hashable {
-    var wrappedValue: any Interactable2Providing
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(wrappedValue.hashValue)
-    }
-    
-    static func == (lhs: Interactable2HashWrapper, rhs: Interactable2HashWrapper) -> Bool {
-        lhs.hashValue == rhs.hashValue
     }
 }
 

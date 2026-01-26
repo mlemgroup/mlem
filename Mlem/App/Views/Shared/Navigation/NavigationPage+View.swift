@@ -85,24 +85,23 @@ extension NavigationPage {
             }
         case let .post(post, scrollTargetedComment, communityContext, _):
             // TODO: NOW don't embed at all?
-            ExpandedPostView(post: post, tracker: nil, scrollTargetedComment: scrollTargetedComment?.wrappedValue) {
+            ExpandedPostView(post: post, tracker: nil, scrollTargetedComment: scrollTargetedComment) {
                 CrossPostListView(post: post)
                     .padding(.horizontal, Constants.main.standardSpacing)
             }
             .environment(\.communityContext, communityContext?.wrappedValue)
         case let .postStub(post, _):
             PostStubResolutionPage(stub: post)
-        case let .comment(comment, post, comments, showViewPostButton, exposeRemovedContent):
+        case let .comment(comment, comments, showViewPostButton, exposeRemovedContent):
             CommentPage(
-                comment: comment.wrappedValue,
-                post: post,
+                comment: comment,
                 initialComments: comments,
                 showViewPostButton: showViewPostButton,
                 exposeRemovedContent: exposeRemovedContent
             )
         case let .commentStub(comment, comments, showViewPostButton, exposeRemovedContent):
             CommentStubResolutionPage(
-                stub: comment.wrappedValue,
+                stub: comment,
                 comments: comments,
                 showViewPostButton: showViewPostButton,
                 exposeRemovedContent: exposeRemovedContent
@@ -237,7 +236,7 @@ extension NavigationPage {
         case let .exportPostImage(post):
             ExportablePostEditorView(post: post)
         case let .exportCommentImage(comment, tracker):
-            ExportableCommentEditorView(comment: comment.wrappedValue, commentTreeTracker: tracker)
+            ExportableCommentEditorView(comment: comment, commentTreeTracker: tracker)
         case let .actionSheet(sections):
             ActionSheet(sections: sections.wrappedValue)
         }

@@ -16,7 +16,7 @@ struct TileCommentView: View {
     @Environment(\.palette) var palette
     @Environment(\.parentFrameWidth) var parentFrameWidth: CGFloat
     
-    let comment: any Comment
+    let comment: Comment
     
     @ScaledMetric(relativeTo: .footnote) var titleHeight: CGFloat = 36 // (2 * .footnote height), including built-in spacing
     @ScaledMetric(relativeTo: .caption) var communityHeight: CGFloat = 16 // .caption height, including built-in spacing
@@ -47,7 +47,7 @@ struct TileCommentView: View {
     
     var content: some View {
         VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
-            if let post = comment.post_ {
+            ExpectedView(comment.post) { post in
                 titleSection(post: post)
                     .typesettingLanguage(.init(languageCode: .english))
                     .frame(height: titleHeight, alignment: .topLeading)
@@ -84,7 +84,7 @@ struct TileCommentView: View {
     
     var communityAndInfo: some View {
         HStack(spacing: 6) {
-            if let communityName = comment.community_?.name {
+            if let communityName = comment.community.value?.name {
                 Text(communityName)
                     .lineLimit(1)
                     .font(.caption)
@@ -105,11 +105,7 @@ struct TileCommentView: View {
                 MenuButton(action: action)
             }
         } label: {
-            if let comment = comment as? any Comment2Providing {
-                TileScoreView(comment)
-            } else {
-                Image(icon: .general.menu)
-            }
+            TileScoreView(comment)
         }
         .onTapGesture {}
         .popupAnchor()

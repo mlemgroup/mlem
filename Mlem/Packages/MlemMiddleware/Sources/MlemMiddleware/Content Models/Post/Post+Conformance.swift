@@ -169,32 +169,11 @@ public extension Post {
     func url() -> URL { api.baseUrl.appending(path: "post/\(id)") }
 }
 
-// MARK: Interactable1Providing (shimmed)
+// MARK: InteractableProviding
 
 public extension Post {
-    // these are all shims! auto-fetching is therefore disabled to avoid unwanted side effects
-    var creator_: (any Person)? { creator.value_ }
-    
-    var community_: (any Community)? { community.value_ }
-    
-    var creatorIsModerator_: Bool? { creatorIsModerator.value_ }
-    
-    var creatorIsAdmin_: Bool? { creatorIsAdmin.value_ }
-    
-    var creatorBannedFromCommunity_: Bool? { creatorBannedFromCommunity.value_ }
-    
-    var commentCount_: Int? { commentCount.value_ }
-    
-    var votes_: VotesModel? { votes.value_ }
-    
-    var saved_: Bool? { saved.value_ }
-    
-    func report(reason: String) async throws {
-        try await api.reportPost(id: id, reason: reason)
-    }
-    
-    func isOwnContent(myPersonId: Int) -> Bool {
-        creatorId == myPersonId
+    var downvotesEnabled: Bool {
+        api.voteFederationMode.postDownvote != .disable
     }
 }
 
@@ -209,6 +188,22 @@ public extension Post {
 public extension Post {
     var canModerate: Bool {
         api.myPerson?.moderates(communityId: communityId) ?? false || api.isAdmin
+    }
+}
+
+// MARK: ReportableProviding
+
+public extension Post {
+    func report(reason: String) async throws {
+        try await api.reportPost(id: id, reason: reason)
+    }
+}
+
+// MARK: OwnershipProviding
+
+public extension Post {
+    func isOwnContent(myPersonId: Int) -> Bool {
+        creatorId == myPersonId
     }
 }
 

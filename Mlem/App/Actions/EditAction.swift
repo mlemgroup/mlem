@@ -12,7 +12,7 @@ import SwiftUI
 struct EditAction: SimpleLabelAction {
     enum Content {
         case post(Post)
-        case comment(any Comment1Providing)
+        case comment(Comment)
         case message(any Message1Providing)
         
         var value: any OwnershipProviding {
@@ -33,7 +33,7 @@ extension ActionSeed {
     static let edit = ActionSeed("edit") { entity in
         switch entity {
         case let entity as any Message1Providing: EditAction(content: .message(entity))
-        case let entity as any Comment1Providing: EditAction(content: .comment(entity))
+        case let entity as Comment: EditAction(content: .comment(entity))
         case let entity as Post: EditAction(content: .post(entity))
         default: nil
         }
@@ -64,11 +64,7 @@ extension EditAction {
     func execute(environment: EnvironmentValues) {
         switch content {
         case let .comment(comment):
-            if let comment = comment as? any Comment2Providing {
-                environment.navigation?.openSheet(.editComment(comment.comment2, context: nil))
-            } else {
-                assertionFailure()
-            }
+            environment.navigation?.openSheet(.editComment(comment, context: nil))
         case let .post(post):
             environment.navigation?.openSheet(.editPost(post))
         case let .message(message):

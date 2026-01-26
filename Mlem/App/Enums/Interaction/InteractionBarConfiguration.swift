@@ -57,7 +57,7 @@ extension InteractionBarConfiguration {
     
     var all: [Item] { leading + trailing }
     
-    func associatedReadouts(context: any Interactable1Providing) -> Set<ReadoutType> {
+    func associatedReadouts(context: any InteractableProviding) -> Set<ReadoutType> {
         all.reduce(into: Set<ReadoutType>()) { result, element in
             result.formUnion(element.associatedReadouts(context: context))
         }
@@ -111,7 +111,7 @@ enum InteractionConfigurationItem<
         }
     }
     
-    func associatedReadouts(context: any Interactable1Providing) -> Set<ReadoutType> {
+    func associatedReadouts(context: any InteractableProviding) -> Set<ReadoutType> {
         switch self {
         case let .action(actionType):
             guard let ret = actionType.associatedReadouts(context: context) as? Set<ReadoutType> else {
@@ -136,7 +136,7 @@ protocol ActionTypeProviding: Codable, CaseIterable, Hashable, RawRepresentable 
     
     static var defaultWidgets: [Self] { get }
     
-    func associatedReadouts(context: any Interactable1Providing) -> Set<Configuration.ReadoutType>
+    func associatedReadouts(context: any InteractableProviding) -> Set<Configuration.ReadoutType>
 }
 
 protocol CounterTypeProviding: Codable, CaseIterable, Hashable, RawRepresentable where RawValue == String {
@@ -146,7 +146,7 @@ protocol CounterTypeProviding: Codable, CaseIterable, Hashable, RawRepresentable
     
     static var defaultWidgets: [Self] { get }
     
-    func associatedReadouts(context: any Interactable1Providing) -> Set<Configuration.ReadoutType>
+    func associatedReadouts(context: any InteractableProviding) -> Set<Configuration.ReadoutType>
 }
 
 protocol ReadoutTypeProviding: Codable, CaseIterable, Hashable, RawRepresentable where RawValue == String {

@@ -60,7 +60,7 @@ extension InfoStackView {
     }
     
     init(
-        comment: any Comment1Providing,
+        comment: Comment,
         readouts: [CommentBarConfiguration.ReadoutType],
         coloredReadouts: Set<CommentBarConfiguration.ReadoutType>
     ) {

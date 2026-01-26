@@ -74,7 +74,6 @@ struct MoreRepliesButton: View {
             }
             navigation.push(.comment(
                 commentTreeNode.comment,
-                post: commentTreeNode.comment.post,
                 comments: comments,
                 showViewPostButton: false))
         } else {

@@ -29,43 +29,7 @@ extension ExpandedPostView {
             Group {
                 switch item {
                 case let .comment(node):
-                    let comment = node.comment
-                    CommentView(
-                        comment: comment,
-                        treeNode: node,
-                        // TODO: This could theoretically fail to highlight the comment if `highlightedComment` is a `CommentStub`
-                        // with a non-actorId URL. We should implement additional logic of some sort to handle this.
-                        highlight: [scrollTargetedComment?.actorId_, highlightedComment?.actorId_].contains(comment.actorId),
-                        depthOffset: tracker.proposedDepthOffset
-                    )
-                    .onTapGesture {
-                        if tapCommentsToCollapse {
-                            withAnimation(UIAccessibility.isReduceMotionEnabled ? nil : .default) {
-                                node.collapsed.toggle()
-                            }
-                        }
-                    }
-                    .onChange(of: node.collapsed) { _, isCollapsed in
-                        guard isCollapsed else { return }
-                        
-                        withAnimation(UIAccessibility.isReduceMotionEnabled ? nil : .default) {
-                            scrollProxy.scrollTo(comment.actorId)
-                        }
-                    }
-                    .quickSwipes(comment: comment, configuration: commentInteractionBar)
-                    .contextMenu {
-                        comment.allMenuActions(appState: appState, navigation: navigation, commentTreeTracker: tracker)
-                    }
-                    .popupAnchor()
-                    .paletteBorder(cornerRadius: Constants.main.standardSpacing)
-                    .transition(.move(edge: .top).combined(with: .opacity))
-                    .zIndex(1000 - Double(comment.depth))
-                    .anchorPreference(
-                        key: AnchorsKey.self,
-                        value: .center
-                    ) { [comment.actorId: $0] }
-                    .padding(.leading, CGFloat(comment.depth - tracker.proposedDepthOffset) * 10)
-                    .id(comment.actorId)
+                    nodeView(node: node, depthOffset: tracker.proposedDepthOffset, scrollProxy: scrollProxy)
                 case let .unloadedComments(comment, _):
                     MoreRepliesButton(tracker: tracker, commentTreeNode: comment)
                 }
@@ -73,6 +37,45 @@ extension ExpandedPostView {
             .padding(.horizontal, Constants.main.standardSpacing)
             .padding(.top, compactComments ? Constants.main.halfSpacing : Constants.main.standardSpacing)
         }
+    }
+    
+    @ViewBuilder
+    func nodeView(node: CommentTreeNode, depthOffset: Int, scrollProxy: ScrollViewProxy) -> some View {
+        let comment = node.comment
+        CommentView(
+            comment: comment,
+            treeNode: node,
+            highlight: [scrollTargetedComment?.actorId, highlightedComment?.actorId].contains(comment.actorId),
+            depthOffset: depthOffset
+        )
+        .onTapGesture {
+            if tapCommentsToCollapse {
+                withAnimation(UIAccessibility.isReduceMotionEnabled ? nil : .default) {
+                    node.collapsed.toggle()
+                }
+            }
+        }
+        .onChange(of: node.collapsed) { _, isCollapsed in
+            guard isCollapsed else { return }
+            
+            withAnimation(UIAccessibility.isReduceMotionEnabled ? nil : .default) {
+                scrollProxy.scrollTo(comment.actorId)
+            }
+        }
+        .quickSwipes(comment: comment, configuration: commentInteractionBar)
+        .contextMenu {
+            comment.allMenuActions(appState: appState, navigation: navigation, commentTreeTracker: tracker)
+        }
+        .popupAnchor()
+        .paletteBorder(cornerRadius: Constants.main.standardSpacing)
+        .transition(.move(edge: .top).combined(with: .opacity))
+        .zIndex(1000 - Double(comment.depth))
+        .anchorPreference(
+            key: AnchorsKey.self,
+            value: .center
+        ) { [comment.actorId: $0] }
+        .padding(.leading, CGFloat(comment.depth - depthOffset) * 10)
+        .id(comment.actorId)
     }
     
     @ViewBuilder

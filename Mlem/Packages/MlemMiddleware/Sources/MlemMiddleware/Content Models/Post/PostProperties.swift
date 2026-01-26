@@ -8,14 +8,12 @@
 import Foundation
 
 public struct PostProperties: UnifiedPropertiesProviding {
-    public typealias Snapshot = PostSnapshotProviding
-    
     // From Post1Snapshot, guaranteed to always be present
-    var actorId: ActorIdentifier
-    var id: Int
-    var creatorId: Int
-    var communityId: Int
-    var created: Date
+    let actorId: ActorIdentifier
+    let id: Int
+    let creatorId: Int
+    let communityId: Int
+    let created: Date
     var title: String
     var content: String?
     var linkUrl: URL?
@@ -116,11 +114,6 @@ public struct PostProperties: UnifiedPropertiesProviding {
     
     public mutating func merge(_ other: PostProperties) {
         // tier 1 properties: simple assignment
-        self.actorId = other.actorId
-        self.id = other.id
-        self.creatorId = other.creatorId
-        self.communityId = other.communityId
-        self.created = other.created
         self.title = other.title
         self.content = other.content
         self.linkUrl = other.linkUrl

@@ -53,8 +53,8 @@ extension CommentEditorView {
             if let commentToEdit {
                 if let parent = try await commentToEdit.getParent(cachedValueAcceptable: true) {
                     originalContext = .comment(parent)
-                } else {
-                    originalContext = .post(commentToEdit.post)
+                } else if let post = commentToEdit.post.value_ {
+                    originalContext = .post(post)
                 }
             }
         } catch {
@@ -68,8 +68,8 @@ extension CommentEditorView {
             if let commentToEdit {
                 try await commentToEdit.edit(content: textView.text, languageId: nil)
             } else if let resolvedContext {
-                let result: Comment2
-                let parent: (any Comment1Providing)?
+                let result: Comment
+                let parent: Comment?
                 switch resolvedContext {
                 case let .post(post):
                     result = try await post.reply(content: textView.text, languageId: nil)

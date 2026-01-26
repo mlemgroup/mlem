@@ -96,10 +96,14 @@ extension ActionSeed {
         label: BlockAction.createLabel(relationship: .indirect, mode: .block, contentType: .personOnly)
     ) { entity in
         switch entity {
-        case let entity as any Comment2Providing: BlockAction(
-            content: [.blockable(entity.creator)],
-            relationship: .indirect
-        )
+        case let entity as Comment:
+            if let creator = entity.creator.value {
+                BlockAction(
+                    content: [.blockable(creator)],
+                    relationship: .indirect)
+            } else {
+                nil
+            }
         case let entity as Post:
             if let creator = entity.creator.value, let community = entity.community.value {
                 BlockAction(

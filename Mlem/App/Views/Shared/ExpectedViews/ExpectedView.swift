@@ -9,12 +9,12 @@ import SwiftUI
 import MlemMiddleware
 
 struct ExpectedView<Value, Content: View, Placeholder: View>: View {
-    let value: ExpectedValue<Value>
+    let value: any ValueProviding<Value>
     @ViewBuilder let view: (Value) -> Content
     @ViewBuilder let placeholder: () -> Placeholder
     
     init(
-        _ value: ExpectedValue<Value>, 
+        _ value: any ValueProviding<Value>,
         view: @escaping (Value) -> Content,
         placeholder: @escaping () -> Placeholder = { EmptyView() }
     ) {

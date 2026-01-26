@@ -15,9 +15,9 @@ class CommentTreeTracker: Hashable {
     
     enum Root {
         case post(Post)
-        case comment(any Comment, parentCount: Int)
+        case comment(Comment, parentCount: Int)
         
-        var wrappedValue: any Interactable1Providing & ActorIdentifiable {
+        var wrappedValue: any InteractableProviding & ActorIdentifiable {
             switch self {
             case let .post(post): post
             case let .comment(comment, _): comment
@@ -60,23 +60,14 @@ class CommentTreeTracker: Hashable {
     private var appState: AppState { .main }
     
     @MainActor
-    func load(ensuringPresenceOf ensuredComment: (any CommentStubProviding)? = nil) async {
+    func load(ensuringPresenceOf ensuredComment: (any CommentResolvable)? = nil) async {
         guard loadingState == .idle else { return }
         loadingState = .loading
         do {
             var newComments = try await fetchComments(page: 1)
             if let ensuredComment {
-                let comment: any Comment
+                let comment = try await ensuredComment.asComment()
                 let api = root.wrappedValue.api
-                if let ensuredComment = ensuredComment as? any Comment, ensuredComment.api == api {
-                    comment = ensuredComment
-                } else if let ensuredComment = ensuredComment as? CommentStub {
-                    log.info("Resolving comment")
-                    comment = try await api.getComment(url: ensuredComment.resolvableUrl)
-                } else {
-                    assertionFailure()
-                    return
-                }
                 if !nodesKeyedByActorId.keys.contains(comment.actorId) {
                     // Find the first parent of the ensured comment that isn't in `newComments`.
                     // This will be the starting point for the second page of comments to load.
@@ -109,7 +100,7 @@ class CommentTreeTracker: Hashable {
     }
     
     @MainActor
-    private func fetchComments(page: Int) async throws -> [Comment2] {
+    private func fetchComments(page: Int) async throws -> [Comment] {
         switch root {
         case let .post(post):
             return try await post.getComments(
@@ -152,7 +143,7 @@ class CommentTreeTracker: Hashable {
         loadingState = .idle
     }
     
-    func insertCreatedComment(_ comment: Comment2, parent: (any Comment1Providing)? = nil) {
+    func insertCreatedComment(_ comment: Comment, parent: Comment? = nil) {
         let wrapper = CommentTreeNode(comment)
         nodesKeyedByActorId[comment.actorId] = wrapper
         if let parent {
@@ -165,13 +156,13 @@ class CommentTreeTracker: Hashable {
     }
     
     @MainActor
-    func insertAdditionalComments(comments newComments: [Comment2]) async {
+    func insertAdditionalComments(comments newComments: [Comment]) async {
         await buildCommentTree(comments: newComments, clear: false)
     }
     
-    func getThread(preceding target: any Comment2Providing, limit: Int) -> [any Comment2Providing] {
+    func getThread(preceding target: Comment, limit: Int) -> [Comment] {
         var cur = nodesKeyedByActorId[target.actorId]
-        var ret: [any Comment2Providing] = .init()
+        var ret: [Comment] = .init()
         while ret.count < limit, let curNode = cur {
             ret.prepend(curNode.comment)
             cur = curNode.parent
@@ -182,7 +173,7 @@ class CommentTreeTracker: Hashable {
     }
     
     @MainActor
-    private func buildCommentTree(comments newComments: [Comment2], clear: Bool = true) async {
+    private func buildCommentTree(comments newComments: [Comment], clear: Bool = true) async {
         var output: [CommentTreeNode] = clear ? [] : nodes
         var commentsKeyedById: [Int: CommentTreeNode] = [:]
         var commentsKeyedByActorId: [ActorIdentifier: CommentTreeNode] = clear ? [:] : nodesKeyedByActorId
@@ -209,7 +200,7 @@ class CommentTreeTracker: Hashable {
         nodesKeyedByActorId = commentsKeyedByActorId
     }
 
-    private func resolveCommentTree(comments newComments: [Comment2]) {
+    private func resolveCommentTree(comments newComments: [Comment]) {
         var commentsKeyedById: [Int: CommentTreeNode] = [:]
         
         for comment in newComments {

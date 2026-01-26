@@ -61,7 +61,7 @@ struct InteractionBarView: View {
     init(
         appState: AppState,
         navigation: NavigationLayer,
-        comment: any Comment1Providing,
+        comment: Comment,
         configuration: CommentBarConfiguration,
         commentTreeTracker: CommentTreeTracker? = nil,
         communityContext: (any CommunityStubProviding)? = nil,
@@ -96,7 +96,7 @@ struct InteractionBarView: View {
     init(
         appState: AppState,
         navigation: NavigationLayer,
-        comment: any Comment1Providing,
+        comment: Comment,
         notification: InboxNotification,
         configuration: ReplyBarConfiguration
     ) {
@@ -292,7 +292,7 @@ extension [EnrichedWidget] {
     init(
         appState: AppState,
         navigation: NavigationLayer,
-        comment: any Comment1Providing,
+        comment: Comment,
         items: [CommentBarConfiguration.Item],
         commentTreeTracker: CommentTreeTracker?,
         communityContext: (any CommunityStubProviding)?,
@@ -327,7 +327,7 @@ extension [EnrichedWidget] {
     init(
         appState: AppState,
         navigation: NavigationLayer,
-        comment: any Comment1Providing,
+        comment: Comment,
         notification: InboxNotification,
         items: [ReplyBarConfiguration.Item]
     ) {

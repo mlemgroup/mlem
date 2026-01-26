@@ -14,42 +14,6 @@ import os
 // Functions to support the old Action system
 
 extension Post {
-    var downvotesEnabled: Bool {
-        api.voteFederationMode.postDownvote != .disable
-    }
-    
-    // MARK: - Actions
-    
-    func upvoteAction(appState: AppState, feedback: Set<FeedbackType> = []) -> BasicAction? {
-        guard let toggleUpvoted, let votes = votes.value else { return nil }
-        return .init(id: "upvote\(actorId)",
-                     appearance: .upvote(isOn: votes.myVote == .upvote),
-                     callback: api.canInteract(appState: appState) ? { @MainActor in toggleUpvoted(feedback) } : nil
-        )
-    }
-    
-    func downvoteAction(appState: AppState, feedback: Set<FeedbackType> = []) -> BasicAction? {
-        guard let toggleDownvoted, let votes = votes.value else { return nil }
-        return .init(
-            id: "downvote\(actorId)",
-            appearance: .downvote(isOn: votes.myVote == .downvote),
-            callback: api.canInteract(appState: appState) && downvotesEnabled
-            ? { @MainActor in toggleDownvoted(feedback) }
-            : nil
-        )
-    }
-    
-    func saveAction(appState: AppState, feedback: Set<FeedbackType> = []) -> BasicAction? {
-        guard let toggleSaved, let saved = saved.value else { return nil }
-        return .init(
-            id: "save\(actorId)",
-            appearance: .save(isOn: saved),
-            callback: api.canInteract(appState: appState)
-            ? { @MainActor in toggleSaved(feedback) }
-            : nil
-        )
-    }
-    
     func hideAction(appState: AppState, feedback: Set<FeedbackType>) -> BasicAction? {
         guard let hidden = hidden.value, let toggleHidden = toggleHidden else { return nil }
         return .init(
@@ -154,7 +118,7 @@ extension Post {
         let isOn = pinnedCommunity
         let prompt: LocalizedStringResource?
         if showConfirmation {
-            if let communityName = community_?.name {
+            if let communityName = community.value?.name {
                 if isOn {
                     prompt = "Really unpin this post from \(communityName)?"
                 } else {
@@ -257,17 +221,6 @@ extension Post {
             id: "viewVotes\(uid)",
             appearance: .viewVotes(),
             callback: { @MainActor in navigation.push(.votesList(.post(self))) }
-        )
-    }
-    
-    func purgeCreatorAction(appState: AppState) -> BasicAction? {
-        guard let creator = creator.value else { return nil }
-        return .init(
-            id: "purgeCreator\(uid)",
-            appearance: .purgePerson(),
-            callback: api.canInteract(appState: appState) && api.isAdmin
-            ? { @MainActor in creator.showPurgeSheet() }
-            : nil
         )
     }
     

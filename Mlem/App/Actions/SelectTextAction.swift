@@ -24,7 +24,7 @@ extension ActionSeed {
         switch entity {
         case let entity as any Message1Providing:
             SelectTextAction(text: entity.content)
-        case let entity as any Comment1Providing:
+        case let entity as Comment:
             SelectTextAction(text: entity.content)
         case let entity as Post:
             SelectTextAction(text: entity.selectableContent ?? "")

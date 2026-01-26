@@ -32,7 +32,7 @@ struct CommentEditorView: View {
 
     let commentTreeTracker: CommentTreeTracker?
     
-    @State var commentToEdit: Comment2?
+    @State var commentToEdit: Comment?
     @State var originalContext: Context?
     @State var resolvedContext: Context?
     @State var resolutionState: ResolutionState = .success
@@ -49,7 +49,7 @@ struct CommentEditorView: View {
     @State var slurRegex: Regex<AnyRegexOutput>?
     
     init?(
-        commentToEdit: Comment2? = nil,
+        commentToEdit: Comment? = nil,
         context: Context? = nil,
         commentTreeTracker: CommentTreeTracker? = nil
     ) {
@@ -210,11 +210,15 @@ struct CommentEditorView: View {
         case let .post(post):
             VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
                 HStack {
-                    FullyQualifiedLinkView(
-                        post.community_,
-                        labelStyle: .medium,
-                        blurred: post.nsfw
-                    )
+                    ExpectedView(post.community) { community in
+                        FullyQualifiedLinkView(
+                            community,
+                            labelStyle: .medium,
+                            blurred: post.nsfw
+                        )
+                    } placeholder: {
+                        Text(verbatim: .communityPlaceholder).redacted(reason: .placeholder)
+                    }
                     Spacer()
                     selectTextButton
                 }
@@ -231,21 +235,18 @@ struct CommentEditorView: View {
         case let .comment(comment):
             VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
                 HStack {
-                    FullyQualifiedLinkView(
-                        comment.creator_,
-                        labelStyle: .small
-                    )
+                    ExpectedView(comment.creator) { creator in
+                        FullyQualifiedLinkView(
+                            creator,
+                            labelStyle: .small
+                        )
+                    } placeholder: {
+                        Text(verbatim: .personPlaceholder).redacted(reason: .placeholder)
+                    }
                     Spacer()
                     selectTextButton
                 }
                 CommentBodyView(comment: comment)
-            }
-            .onAppear {
-                if !(comment is any Comment2Providing) {
-                    Task {
-                        originalContext = try await .comment(comment.upgrade())
-                    }
-                }
             }
         case nil:
             ProgressView()

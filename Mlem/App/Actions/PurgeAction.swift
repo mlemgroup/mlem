@@ -28,7 +28,12 @@ extension ActionSeed {
 
     static let purgeCreator = ActionSeed("purgeCreator", label: PurgeAction.createLabel(relationship: .author)) { entity in
         switch entity {
-        case let entity as any Interactable2Providing: PurgeAction(entity: entity.creator, relationship: .author)
+        case let entity as any InteractableProviding:
+            if let creator = entity.creator.value {
+                PurgeAction(entity: creator, relationship: .author)
+            } else {
+                nil
+            }
         default: nil
         }
     }

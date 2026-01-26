@@ -46,15 +46,23 @@ struct ExportablePostView: View {
     var content: some View {
         VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
             if showCommunity {
-                FullyQualifiedLabelView(post.community_, labelStyle: .medium, showFlairs: false)
-                    .transition(.scale.combined(with: .opacity))
+                ExpectedView(post.community) { community in
+                    FullyQualifiedLabelView(community, labelStyle: .medium, showFlairs: false)
+                        .transition(.scale.combined(with: .opacity))
+                } placeholder: {
+                    Text(verbatim: .communityPlaceholder).redacted(reason: .placeholder)
+                }
             }
             
             LargePostBodyView(post: post, isPostPage: true, shouldBlur: false)
             
             if showCreator {
-                FullyQualifiedLabelView(post.creator_, labelStyle: .medium, showFlairs: false)
-                    .transition(.scale.combined(with: .opacity))
+                ExpectedView(post.creator) { creator in
+                    FullyQualifiedLabelView(creator, labelStyle: .medium, showFlairs: false)
+                        .transition(.scale.combined(with: .opacity))
+                } placeholder: {
+                    Text(verbatim: .communityPlaceholder).redacted(reason: .placeholder)
+                }
             }
             
             if showStats {

@@ -21,7 +21,7 @@ public enum ReportTarget {
     }
     
     case post(Post)
-    case comment(Comment2)
+    case comment(Comment)
     case message(Message2)
     
     var type: ReportType {
@@ -35,7 +35,7 @@ public enum ReportTarget {
     public var community: Community1? {
         switch self {
         case let .post(post): post.community.value_ as? Community1
-        case let .comment(comment): comment.community
+        case let .comment(comment): comment.community.value_ as? Community1
         case .message: nil
         }
     }
@@ -44,10 +44,7 @@ public enum ReportTarget {
     public var creator: ExpectedValue<any Person1Providing> {
         switch self {
         case let .post(post): post.creator
-        case let .comment(comment): .init(
-            value: comment.creator,
-            provideValue: { fatalError("This should not be called") }
-        )
+        case let .comment(comment): comment.creator
         case let .message(message): .init(
             value: message.creator,
             provideValue: { fatalError("This should not be called") }
@@ -61,7 +58,7 @@ public enum ReportTarget {
         case let .post(post):
             self = .post(api.caches.post.getModel(api: api, from: .post2(post)))
         case let .comment(comment):
-            self = .comment(api.caches.comment2.getModel(api: api, from: comment))
+            self = .comment(api.caches.comment.getModel(api: api, from: .comment2(comment)))
         case let .message(message):
             self = .message(api.caches.message2.getModel(api: api, from: message, myPersonId: myPersonId))
         }
@@ -71,9 +68,7 @@ public enum ReportTarget {
     func update(with snapshot: ReportTargetSnapshot) {
         // TODO: UpdateQueue rework reports to integrate UpdateQueue
         switch (self, snapshot) {
-        case (.post, .post):
-            break
-        case let (.comment(comment), .comment(updatedComment)):
+        case (.post, .post), (.comment, .comment):
             break
         case let (.message(message), .message(updatedMessage)):
             message.update(with: updatedMessage)

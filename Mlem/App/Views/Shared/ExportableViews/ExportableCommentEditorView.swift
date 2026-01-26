@@ -26,7 +26,7 @@ struct ExportableCommentEditorView: View {
     
     @State var commentLoader: ExportableCommentLoader
     
-    init(comment: any Comment1Providing, commentTreeTracker: CommentTreeTracker?) {
+    init(comment: Comment, commentTreeTracker: CommentTreeTracker?) {
         self.commentLoader = .init(comment: comment, tracker: commentTreeTracker)
     }
     
@@ -39,7 +39,7 @@ struct ExportableCommentEditorView: View {
             comments = allParents.suffix(threadLength)
         }
     }
-    @State var comments: [any Comment2Providing] = .init()
+    @State var comments: [Comment] = .init()
     
     var overriddenColorScheme: ColorScheme {
         switch overrideColorScheme {
@@ -136,7 +136,6 @@ struct ExportableCommentEditorView: View {
     func exportableComment(data: ExportableCommentData) -> some View {
         ExportableCommentView(
             comments: data.thread(length: threadLength),
-            post: data.post,
             appState: appState,
             colorScheme: overriddenColorScheme
         )

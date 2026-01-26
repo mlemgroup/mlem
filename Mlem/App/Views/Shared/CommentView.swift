@@ -25,7 +25,7 @@ struct CommentView<EmbeddedContent: View>: View {
     
     private let indent: CGFloat = 10
     
-    let comment: any Comment1Providing
+    let comment: Comment
     
     /// If the `CommentView` is rendered in an `ExpandedPostView`, this object can be used to access collapsed state etc.
     let treeNode: CommentTreeNode?
@@ -36,7 +36,7 @@ struct CommentView<EmbeddedContent: View>: View {
     let depthOffset: Int
     
     init(
-        comment: any Comment1Providing,
+        comment: Comment,
         treeNode: CommentTreeNode? = nil,
         inFeed: Bool = false, // flag to suppress threading/collapsing behavior
         highlight: Bool = false,
@@ -115,7 +115,7 @@ struct CommentView<EmbeddedContent: View>: View {
         .contentShape(.interaction, .rect)
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
         .environment(\.commentContext, comment)
-        .environment(\.communityContext, comment.community_)
+        .environment(\.communityContext, comment.community.value)
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }
     
@@ -123,8 +123,8 @@ struct CommentView<EmbeddedContent: View>: View {
         VStack(spacing: Constants.main.standardSpacing) {
             authorAndMenu
             
-            if let title = comment.post_?.title {
-                FooterLinkView(title: title, subtitle: nil)
+            ExpectedView(comment.post) { post in
+                FooterLinkView(title: post.title, subtitle: nil)
                     .frame(maxWidth: .infinity)
             }
         }
@@ -133,7 +133,11 @@ struct CommentView<EmbeddedContent: View>: View {
     
     var authorAndMenu: some View {
         HStack(spacing: 0) {
-            FullyQualifiedLinkView(comment.creator_, labelStyle: .small)
+            ExpectedView(comment.creator) { creator in
+                FullyQualifiedLinkView(creator, labelStyle: .small)
+            } placeholder: {
+                Text(verbatim: .personPlaceholder).redacted(reason: .placeholder)
+            }
             Spacer()
             Group {
                 if collapsed {

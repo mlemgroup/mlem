@@ -24,9 +24,9 @@ class NotificationCache: CoreCache<InboxNotification> {
 
         let content: InboxNotificationContent = switch snapshot.content {
         case let .reply(commentSnapshot):
-            .reply(api.caches.comment2.getModel(api: api, from: commentSnapshot))
+                .reply(api.caches.comment.getModel(api: api, from: .comment2(commentSnapshot)))
         case let .mention(commentSnapshot):
-            .mention(api.caches.comment2.getModel(api: api, from: commentSnapshot))
+                .mention(api.caches.comment.getModel(api: api, from: .comment2(commentSnapshot)))
         case let .message(messageSnapshot):
             .message(api.caches.message2.getModel(api: api, from: messageSnapshot, myPersonId: myPersonId))
         }

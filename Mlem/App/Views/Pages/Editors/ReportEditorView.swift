@@ -17,7 +17,7 @@ struct ReportEditorView: View {
     
     let target: any ReportableProviding
     
-    @State var community: (any Community)?
+    @State var community: (any ValueProviding<(any Community)>)?
     @State var reason: String = ""
     @FocusState var reasonFocused: Bool
     @State var presentationSelection: PresentationDetent = .large
@@ -25,9 +25,9 @@ struct ReportEditorView: View {
     init(target: any ReportableProviding, community: AnyCommunity?) {
         self.target = target
         
-        if let community {
-            self._community = .init(wrappedValue: community.wrappedValue as? any Community)
-        } else if let community = (target as? any Interactable2Providing)?.community {
+        if let community = community?.wrappedValue as? any Community {
+            self._community = .init(wrappedValue: RealizedValue(community))
+        } else if let community = (target as? any InteractableProviding)?.community {
             self._community = .init(wrappedValue: community)
         } else {
             self._community = .init(wrappedValue: nil)
@@ -43,7 +43,8 @@ struct ReportEditorView: View {
                     Section {
                         ReasonShortcutView(reason: $reason)
                     }
-                    if let community {
+                    // ExpectedView causes rendering issues here
+                    if let community = community?.value {
                         RulesListView(model: community, reason: $reason)
                     }
                     if let instance = appState.firstSession.instance {

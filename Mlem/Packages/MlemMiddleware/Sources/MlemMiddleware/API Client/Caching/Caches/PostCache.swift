@@ -25,8 +25,12 @@ class PostCache: ApiTypeBackedCache<Post, AnyPostSnapshot> {
     }
     
     override func updateModel(_ item: Post, with apiType: AnyPostSnapshot, semaphore: UInt? = nil) {
-        // this ensures that high-tier data is available where expected, but uses softUpdate to avoid overwriting
-        // potentially more recent data
-        item.softUpdate(with: .init(api: item.api, snapshot: apiType))
+        // attempt a direct update through the queue to avoid overwriting more recent data, and also
+        // synchronously perform softUpdate to ensure high-tier data is available where expected
+        let properties: PostProperties = .init(api: item.api, snapshot: apiType)
+        Task {
+            await item.updateQueue.attemptDirectUpdate(with: properties)
+        }
+        item.softUpdate(with: properties)
     }
 }

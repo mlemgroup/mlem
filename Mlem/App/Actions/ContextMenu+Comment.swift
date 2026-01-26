@@ -33,7 +33,7 @@ private let moderationSeeds: [ActionSeed] = [
 ]
 
 extension View {
-    func contextMenu(comment: any Comment1Providing) -> some View {
+    func contextMenu(comment: Comment) -> some View {
         contextMenu {
             ActionButtons { _ in
                 seeds.compactMap { $0.createAction(comment) }
@@ -46,7 +46,7 @@ extension EllipsisMenu {
     init(
         icon: Icon = .general.menu,
         size: CGFloat,
-        comment: any Comment1Providing,
+        comment: Comment,
         type: Set<CommentEllipsisMenuContent.ActionListType> = [.basic, .moderator]
     ) where Content == CommentEllipsisMenuContent {
         self.icon = icon
@@ -63,7 +63,7 @@ struct CommentEllipsisMenuContent: View {
         case basic, moderator
     }
 
-    let comment: any Comment1Providing
+    let comment: Comment
     let type: Set<ActionListType>
 
     var body: some View {

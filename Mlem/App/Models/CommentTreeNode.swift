@@ -10,14 +10,14 @@ import SwiftUI
 
 @Observable
 class CommentTreeNode: Identifiable, Hashable {
-    var comment: Comment2
+    var comment: Comment
     private(set) var children: [CommentTreeNode] = []
     weak var parent: CommentTreeNode?
     var collapsed: Bool = false
     
     var id: Int { comment.id }
     
-    init(_ comment: Comment2) {
+    init(_ comment: Comment) {
         self.comment = comment
     }
     
@@ -27,7 +27,7 @@ class CommentTreeNode: Identifiable, Hashable {
     }
     
     func tree(hideIfCollapsed: Bool = true) -> [CommentTreeNode] {
-        if comment.creator.blocked { return [] }
+        if comment.creator.value_?.blocked ?? false { return [] }
         if collapsed, hideIfCollapsed { return [self] }
         return children.reduce([self]) { $0 + $1.tree() }
     }
