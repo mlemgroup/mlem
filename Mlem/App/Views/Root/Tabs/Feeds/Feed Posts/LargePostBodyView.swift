@@ -29,6 +29,11 @@ struct LargePostBodyView: View {
                 .imageScale(.small)
 
             switch post.type {
+            case let .poll(poll):
+                PostPollView(poll: poll)
+                if post.content != nil {
+                    Divider().padding(.horizontal, -Constants.main.standardSpacing)
+                }
             case let .media(url):
                 mediaView(url)
             case let .embedded(url, originalLink):

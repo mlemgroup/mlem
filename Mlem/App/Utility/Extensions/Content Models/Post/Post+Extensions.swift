@@ -50,6 +50,7 @@ extension Post {
         case let .media(url), let .embedded(url, _):
             url.proxyAwarePathExtension?.isMovieExtension ?? false ? .movie : .image
         case .link: .link
+        case .poll: .poll
         case .titleOnly: .titleOnly
         }
     }

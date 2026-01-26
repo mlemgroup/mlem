@@ -116,7 +116,7 @@ struct LargePostView: View {
     }
     
     var showDivider: Bool {
-        !(post.content?.isEmpty ?? true)
+        !(post.content?.isEmpty ?? true) || post.poll != nil
     }
     
     @ViewBuilder

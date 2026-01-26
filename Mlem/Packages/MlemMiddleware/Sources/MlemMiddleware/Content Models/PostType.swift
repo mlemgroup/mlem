@@ -16,6 +16,8 @@ public enum PostType: Hashable {
     case embedded(URL, originalLink: URL)
     /// Link post
     case link(PostLink)
+    /// Poll post
+    case poll(PostPoll)
     /// Post containing only a title
     case titleOnly
     

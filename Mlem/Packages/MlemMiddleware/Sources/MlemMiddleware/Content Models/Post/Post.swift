@@ -61,6 +61,7 @@ public class Post:
     public var content: String?
     public var linkUrl: URL?
     public var embed: PostEmbed?
+    public var poll: PostPoll?
     public var nsfw: Bool
     public var thumbnailUrl: URL?
     public var updated: Date?
@@ -106,6 +107,7 @@ public class Post:
         self.content = properties.content
         self.linkUrl = properties.linkUrl
         self.embed = properties.embed
+        self.poll = properties.poll
         self.nsfw = properties.nsfw
         self.thumbnailUrl = properties.thumbnailUrl
         self.updated = properties.updated
@@ -166,6 +168,7 @@ public class Post:
         setIfChanged(\.content, properties.content)
         setIfChanged(\.linkUrl, properties.linkUrl)
         setIfChanged(\.embed, properties.embed)
+        setIfChanged(\.poll, properties.poll)
         setIfChanged(\.nsfw, properties.nsfw)
         setIfChanged(\.thumbnailUrl, properties.thumbnailUrl)
         setIfChanged(\.updated, properties.updated)

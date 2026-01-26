@@ -141,6 +141,7 @@ public extension Icon {
         
         public let textPost: Icon = .init("text.book.closed")
         public let titleOnlyPost: Icon = .init("character.bubble")
+        public let pollPost: Icon = .init("chart.bar.xaxis")
         
         // MARK: - Feeds
 
