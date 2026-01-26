@@ -45,10 +45,9 @@ struct PostPollView: View {
         .font(.footnote)
     }
 
-
     @ViewBuilder
     func choiceView(_ choice: PostPollChoice) -> some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 2) {
             HStack(alignment: .top) {
                 if showCheckboxes {
                     Checkbox(isOn: false)
