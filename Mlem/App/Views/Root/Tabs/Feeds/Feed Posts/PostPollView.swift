@@ -105,7 +105,7 @@ struct PostPollView: View {
                         topTrailingRadius: .greatestFiniteMagnitude
                     )
                     .fill(.themedAccent)
-                    .frame(width: proxy.size.width * CGFloat(choice.voteCount ?? 0) / CGFloat(poll.totalVotes))
+                    .frame(width: proxy.size.width * CGFloat(choice.voteCount ?? 0) / CGFloat(max(1, poll.totalVotes)))
                 }
             }
             .clipShape(.capsule)
