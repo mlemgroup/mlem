@@ -52,8 +52,10 @@ struct PostPollView: View {
         .padding(.vertical, 8)
         .background(.themedTertiaryGroupedBackground, in: .rect(cornerRadius: 16))
         .onTapGesture {
-            hapticManager.play(haptic: .gentleInfo, tier: .low)
-            toastModel?.add(.basic(String("🚧 WIP 🚧")))
+            if !poll.hasEnded {
+                hapticManager.play(haptic: .gentleInfo, tier: .low)
+                toastModel?.add(.basic(String("🚧 WIP 🚧")))
+            }
         }
     }
 
