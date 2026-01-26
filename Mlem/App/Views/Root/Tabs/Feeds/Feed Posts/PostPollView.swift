@@ -78,6 +78,7 @@ struct PostPollView: View {
             Text(verbatim: "\(Int(100 * Double(choice.voteCount ?? 0) / Double(poll.totalVotes)))%")
                 .foregroundStyle(.secondary)
                 .font(.footnote)
+                .frame(width: 30, alignment: .center)
         }
     }
 
