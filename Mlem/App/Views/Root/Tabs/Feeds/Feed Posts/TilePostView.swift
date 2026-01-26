@@ -175,7 +175,7 @@ struct TilePostView: View {
                     .padding(Constants.main.standardSpacing)
                     .frame(maxWidth: .infinity, maxHeight: height, alignment: .topLeading)
                     .clipped()
-            case .titleOnly:
+            case .titleOnly, .poll:
                 Image(icon: post.imageFallback.icon)
                     .resizable()
                     .scaledToFit()
