@@ -10,6 +10,9 @@ import MlemMiddleware
 import SwiftUI
 
 struct PostPollView: View {
+    @Environment(\.hapticManager) var hapticManager
+    @Environment(\.toastModel) var toastModel
+
     let poll: PostPoll
 
     var body: some View {
@@ -34,5 +37,9 @@ struct PostPollView: View {
         .padding(.leading, 8)
         .padding(.vertical, 8)
         .background(.themedTertiaryGroupedBackground, in: .rect(cornerRadius: 16))
+        .onTapGesture {
+            hapticManager.play(haptic: .gentleInfo, tier: .low)
+            toastModel?.add(.basic(String("🚧 WIP 🚧")))
+        }
     }
 }
