@@ -27,18 +27,22 @@ struct PostPollView: View {
 
     @ViewBuilder
     var footerView: some View {
-        if let endDate = poll.endDate {
-            Group {
-                if poll.hasEnded {
-                    Text("Poll ended \(endDate, format: .relative(presentation: .named, unitsStyle: .abbreviated))")
-                } else {
-                    Text("Poll ends \(endDate, format: .relative(presentation: .named, unitsStyle: .abbreviated))")
+        HStack {
+            if let endDate = poll.endDate {
+                Group {
+                    if poll.hasEnded {
+                        Text("Poll ended \(endDate, format: .relative(presentation: .named, unitsStyle: .abbreviated))")
+                    } else {
+                        Text("Poll ends \(endDate, format: .relative(presentation: .named, unitsStyle: .abbreviated))")
+                    }
                 }
             }
-            .foregroundStyle(.themedSecondary)
-            .font(.footnote)
-            .padding(.leading, 8)
+            Spacer()
+            Text("\(poll.totalVotes) votes")
         }
+        .padding(.horizontal, 8)
+        .foregroundStyle(.themedSecondary)
+        .font(.footnote)
     }
 
 
