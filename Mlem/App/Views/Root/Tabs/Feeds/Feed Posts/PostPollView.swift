@@ -75,7 +75,7 @@ struct PostPollView: View {
     func resultsDetailsView(_ choice: PostPollChoice) -> some View {
         HStack {
             resultsBarView(choice)
-            Text(verbatim: "\(Int(100 * Double(choice.voteCount ?? 0) / Double(poll.totalVotes)))%")
+            Text(verbatim: "\(choice.percentage(poll: poll))%")
                 .foregroundStyle(.secondary)
                 .font(.footnote)
                 .frame(width: 30, alignment: .center)

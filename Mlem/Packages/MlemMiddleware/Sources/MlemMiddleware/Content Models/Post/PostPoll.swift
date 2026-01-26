@@ -31,5 +31,13 @@ public struct PostPollChoice: Hashable {
     public let id: Int
     public let label: String
     public let voteCount: Int?
+
+    public func percentage(poll: PostPoll) -> Int {
+        if poll.totalVotes == 0 {
+            0
+        } else {
+            Int(100 * Double(voteCount ?? 0) / Double(poll.totalVotes))
+        }
+    }
 }
 
