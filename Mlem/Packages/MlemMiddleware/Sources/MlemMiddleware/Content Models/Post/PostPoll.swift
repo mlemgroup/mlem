@@ -13,6 +13,14 @@ public struct PostPoll: Hashable {
     public let latestVote: Date?
 
     public let choices: [PostPollChoice]
+
+    public var hasEnded: Bool {
+        if let endDate {
+            endDate < .now
+        } else {
+            false
+        }
+    }
 }
 
 public struct PostPollChoice: Hashable {

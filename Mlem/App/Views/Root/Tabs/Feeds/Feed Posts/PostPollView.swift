@@ -22,7 +22,7 @@ struct PostPollView: View {
             }
             if let endDate = poll.endDate {
                 Group {
-                    if endDate < .now {
+                    if poll.hasEnded {
                         Text("Poll ended \(endDate, format: .relative(presentation: .named, unitsStyle: .abbreviated))")
                     } else {
                         Text("Poll ends \(endDate, format: .relative(presentation: .named, unitsStyle: .abbreviated))")
@@ -39,19 +39,25 @@ struct PostPollView: View {
     @ViewBuilder
     func choiceView(_ choice: PostPollChoice) -> some View {
         HStack(alignment: .top) {
-            Checkbox(isOn: false)
+            if showCheckboxes {
+                Checkbox(isOn: false)
+            }
             Text(choice.label)
                 .padding(.vertical, 2)
         }
         .multilineTextAlignment(.leading)
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.trailing, 16)
-        .padding(.leading, 8)
+        .padding(.leading, showCheckboxes ? 8 : 16)
         .padding(.vertical, 8)
         .background(.themedTertiaryGroupedBackground, in: .rect(cornerRadius: 16))
         .onTapGesture {
             hapticManager.play(haptic: .gentleInfo, tier: .low)
             toastModel?.add(.basic(String("🚧 WIP 🚧")))
         }
+    }
+
+    var showCheckboxes: Bool {
+        !poll.hasEnded
     }
 }
