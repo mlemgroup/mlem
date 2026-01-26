@@ -20,21 +20,27 @@ struct PostPollView: View {
             ForEach(Array(poll.choices.enumerated()), id: \.offset) { _, choice in
                 choiceView(choice)
             }
-            if let endDate = poll.endDate {
-                Group {
-                    if poll.hasEnded {
-                        Text("Poll ended \(endDate, format: .relative(presentation: .named, unitsStyle: .abbreviated))")
-                    } else {
-                        Text("Poll ends \(endDate, format: .relative(presentation: .named, unitsStyle: .abbreviated))")
-                    }
-                }
-                .foregroundStyle(.themedSecondary)
-                .font(.footnote)
-                .padding(.leading, 8)
-            }
+            footerView
         }
         .fixedSize(horizontal: false, vertical: true)
     }
+
+    @ViewBuilder
+    var footerView: some View {
+        if let endDate = poll.endDate {
+            Group {
+                if poll.hasEnded {
+                    Text("Poll ended \(endDate, format: .relative(presentation: .named, unitsStyle: .abbreviated))")
+                } else {
+                    Text("Poll ends \(endDate, format: .relative(presentation: .named, unitsStyle: .abbreviated))")
+                }
+            }
+            .foregroundStyle(.themedSecondary)
+            .font(.footnote)
+            .padding(.leading, 8)
+        }
+    }
+
 
     @ViewBuilder
     func choiceView(_ choice: PostPollChoice) -> some View {
