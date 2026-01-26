@@ -31,9 +31,9 @@ struct PostPollView: View {
             if let endDate = poll.endDate {
                 Group {
                     if poll.hasEnded {
-                        Text("Ended \(endDate, format: .relative(presentation: .named, unitsStyle: .abbreviated))")
+                        Text("Ended \(endDate, format: .relative(presentation: .named, unitsStyle: .wide))")
                     } else {
-                        Text("Ends \(endDate, format: .relative(presentation: .named, unitsStyle: .abbreviated))")
+                        Text("Ends \(endDate, format: .relative(presentation: .named, unitsStyle: .wide))")
                     }
                 }
             }
