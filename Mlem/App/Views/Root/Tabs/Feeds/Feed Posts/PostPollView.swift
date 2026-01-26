@@ -12,6 +12,7 @@ import SwiftUI
 struct PostPollView: View {
     @Environment(\.hapticManager) var hapticManager
     @Environment(\.toastModel) var toastModel
+    @Environment(\.colorScheme) var colorScheme
 
     let poll: PostPoll
 
@@ -95,7 +96,7 @@ struct PostPollView: View {
         GeometryReader { proxy in
             ZStack(alignment: .leading) {
                 Rectangle()
-                    .fill(.themedSecondaryGroupedBackground)
+                    .fill(colorScheme == .dark ? .themedSecondaryGroupedBackground : .themedTertiary.opacity(0.5))
                 if showResults {
                     // This creates a half-capsule
                     UnevenRoundedRectangle(
