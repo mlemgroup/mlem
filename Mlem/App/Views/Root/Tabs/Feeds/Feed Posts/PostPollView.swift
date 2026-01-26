@@ -75,10 +75,18 @@ struct PostPollView: View {
     func resultsDetailsView(_ choice: PostPollChoice) -> some View {
         HStack {
             resultsBarView(choice)
-            Text(verbatim: "\(choice.percentage(poll: poll))%")
-                .foregroundStyle(.secondary)
-                .font(.footnote)
-                .frame(width: 30, alignment: .center)
+            HStack {
+                if showResults {
+                    Text(verbatim: "\(choice.percentage(poll: poll))%")
+                        .foregroundStyle(.secondary)
+                } else {
+                    Image(icon: .general.hide)
+                        .symbolVariant(.fill)
+                        .foregroundStyle(.tertiary)
+                }
+            }
+            .frame(width: showResults ? 30 : 20, alignment: .center)
+            .font(.footnote)
         }
     }
 
