@@ -21,6 +21,10 @@ public struct PostPoll: Hashable {
             false
         }
     }
+
+    public var totalVotes: Int {
+        choices.compactMap(\.voteCount).reduce(0, +)
+    }
 }
 
 public struct PostPollChoice: Hashable {

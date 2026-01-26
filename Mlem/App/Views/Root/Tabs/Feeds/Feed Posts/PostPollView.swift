@@ -50,7 +50,20 @@ struct PostPollView: View {
         .padding(.trailing, 16)
         .padding(.leading, showCheckboxes ? 8 : 16)
         .padding(.vertical, 8)
-        .background(.themedTertiaryGroupedBackground, in: .rect(cornerRadius: 16))
+        .background {
+            GeometryReader { proxy in
+                ZStack(alignment: .leading) {
+                    Rectangle()
+                        .fill(.themedTertiaryGroupedBackground)
+                    if showResults {
+                        Rectangle()
+                            .fill(.themedAccent)
+                            .frame(width: proxy.size.width * CGFloat(choice.voteCount ?? 0) / CGFloat(poll.totalVotes))
+                    }
+                }
+                .clipShape(.rect(cornerRadius: 16))
+            }
+        }
         .onTapGesture {
             if !poll.hasEnded {
                 hapticManager.play(haptic: .gentleInfo, tier: .low)
@@ -61,5 +74,9 @@ struct PostPollView: View {
 
     var showCheckboxes: Bool {
         !poll.hasEnded
+    }
+
+    var showResults: Bool {
+        poll.hasEnded
     }
 }
