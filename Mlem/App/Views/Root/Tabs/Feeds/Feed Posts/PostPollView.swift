@@ -26,10 +26,12 @@ struct PostPollView: View {
         HStack(alignment: .top) {
             Checkbox(isOn: false)
             Text(choice.label)
+                .padding(.vertical, 2)
         }
         .multilineTextAlignment(.leading)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.horizontal, 16)
+        .padding(.trailing, 16)
+        .padding(.leading, 8)
         .padding(.vertical, 8)
         .background(.themedTertiaryGroupedBackground, in: .rect(cornerRadius: 16))
     }
