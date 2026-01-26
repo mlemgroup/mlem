@@ -47,15 +47,15 @@ struct PostPollView: View {
 
     @ViewBuilder
     func choiceView(_ choice: PostPollChoice) -> some View {
-        VStack(alignment: .leading, spacing: 2) {
-            HStack(alignment: .top) {
-                if showCheckboxes {
-                    Checkbox(isOn: false)
-                }
+        HStack(alignment: .top) {
+            if showCheckboxes {
+                Checkbox(isOn: false)
+            }
+            VStack(alignment: .leading, spacing: 2) {
                 Text(choice.label)
                     .padding(.vertical, 2)
+                resultsDetailsView(choice)
             }
-            resultsDetailsView(choice)
         }
         .multilineTextAlignment(.leading)
         .frame(maxWidth: .infinity, alignment: .leading)
