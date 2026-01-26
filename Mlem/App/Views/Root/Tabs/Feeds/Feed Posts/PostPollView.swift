@@ -81,12 +81,11 @@ struct PostPollView: View {
                     Text(verbatim: "\(choice.percentage(poll: poll))%")
                         .foregroundStyle(.secondary)
                 } else {
-                    Image(icon: .general.hide)
-                        .symbolVariant(.fill)
+                    Text(verbatim: "?")
                         .foregroundStyle(.tertiary)
                 }
             }
-            .frame(width: showResults ? 30 : 20, alignment: .center)
+            .frame(width: showResults ? 30 : 15, alignment: .center)
             .font(.footnote)
         }
     }
