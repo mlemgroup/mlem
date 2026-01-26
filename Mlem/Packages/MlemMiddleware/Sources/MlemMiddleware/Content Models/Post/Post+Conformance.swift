@@ -222,6 +222,7 @@ public extension Post {
               content: content,
               linkUrl: linkUrl,
               embed: embed,
+              poll: poll,
               nsfw: nsfw,
               thumbnailUrl: thumbnailUrl,
               updated: updated,

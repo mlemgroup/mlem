@@ -21,6 +21,7 @@ public struct Post1Snapshot: CacheIdentifiable, PostSnapshotProviding {
     public let content: String?
     public let linkUrl: URL?
     public let embed: PostEmbed?
+    public let poll: PostPoll?
     public let nsfw: Bool
     public let thumbnailUrl: URL?
     public let updated: Date?
@@ -44,6 +45,7 @@ public struct Post1Snapshot: CacheIdentifiable, PostSnapshotProviding {
         content: String?,
         linkUrl: URL?,
         embed: PostEmbed?,
+        poll: PostPoll?,
         nsfw: Bool,
         thumbnailUrl: URL?,
         updated: Date?,
@@ -64,6 +66,7 @@ public struct Post1Snapshot: CacheIdentifiable, PostSnapshotProviding {
         self.content = content
         self.linkUrl = linkUrl
         self.embed = embed
+        self.poll = poll
         self.nsfw = nsfw
         self.thumbnailUrl = thumbnailUrl
         self.updated = updated

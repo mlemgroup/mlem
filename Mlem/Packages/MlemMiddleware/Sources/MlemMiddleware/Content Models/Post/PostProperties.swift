@@ -20,6 +20,7 @@ public struct PostProperties: UnifiedPropertiesProviding {
     var content: String?
     var linkUrl: URL?
     var embed: PostEmbed?
+    var poll: PostPoll?
     var nsfw: Bool
     var thumbnailUrl: URL?
     var updated: Date?
@@ -100,6 +101,7 @@ public struct PostProperties: UnifiedPropertiesProviding {
         content = snapshot1.content
         linkUrl = snapshot1.linkUrl
         embed = snapshot1.embed
+        poll = snapshot1.poll
         nsfw = snapshot1.nsfw
         thumbnailUrl = snapshot1.thumbnailUrl
         updated = snapshot1.updated
@@ -123,6 +125,7 @@ public struct PostProperties: UnifiedPropertiesProviding {
         self.content = other.content
         self.linkUrl = other.linkUrl
         self.embed = other.embed
+        self.poll = other.poll
         self.nsfw = other.nsfw
         self.thumbnailUrl = other.thumbnailUrl
         self.updated = other.updated

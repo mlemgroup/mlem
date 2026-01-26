@@ -23,6 +23,7 @@ extension Post1Snapshot {
             content: post.body,
             linkUrl: post.linkUrl,
             embed: post.embed,
+            poll: nil,
             nsfw: post.nsfw,
             thumbnailUrl: post.thumbnailImageUrl,
             updated: post.updatedAt ?? post.updated,
