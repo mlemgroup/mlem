@@ -8,16 +8,16 @@
 import Foundation
 
 public struct PostPoll: Hashable {
-    let endDate: Date?
-    let localOnly: Bool?
-    let latestVote: Date?
+    public let endDate: Date?
+    public let localOnly: Bool?
+    public let latestVote: Date?
 
-    let choices: [PostPollChoice]
+    public let choices: [PostPollChoice]
 }
 
 public struct PostPollChoice: Hashable {
-    let id: Int
-    let label: String
-    let voteCount: Int?
+    public let id: Int
+    public let label: String
+    public let voteCount: Int?
 }
 

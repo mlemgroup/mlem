@@ -28,6 +28,9 @@ struct LargePostBodyView: View {
                 .symbolVariant(.fill)
                 .imageScale(.small)
 
+            if let poll = post.poll {
+                PostPollView(poll: poll)
+            }
             switch post.type {
             case let .media(url):
                 mediaView(url)
