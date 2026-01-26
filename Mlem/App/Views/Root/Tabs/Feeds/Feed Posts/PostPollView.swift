@@ -38,38 +38,61 @@ struct PostPollView: View {
 
     @ViewBuilder
     func choiceView(_ choice: PostPollChoice) -> some View {
-        HStack(alignment: .top) {
-            if showCheckboxes {
-                Checkbox(isOn: false)
+        VStack(alignment: .leading) {
+            HStack(alignment: .top) {
+                if showCheckboxes {
+                    Checkbox(isOn: false)
+                }
+                Text(choice.label)
+                    .padding(.vertical, 2)
             }
-            Text(choice.label)
-                .padding(.vertical, 2)
+            resultsDetailsView(choice)
         }
         .multilineTextAlignment(.leading)
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.trailing, 16)
         .padding(.leading, showCheckboxes ? 8 : 16)
         .padding(.vertical, 8)
-        .background {
-            GeometryReader { proxy in
-                ZStack(alignment: .leading) {
-                    Rectangle()
-                        .fill(.themedTertiaryGroupedBackground)
-                    if showResults {
-                        Rectangle()
-                            .fill(.themedAccent)
-                            .frame(width: proxy.size.width * CGFloat(choice.voteCount ?? 0) / CGFloat(poll.totalVotes))
-                    }
-                }
-                .clipShape(.rect(cornerRadius: 16))
-            }
-        }
+        .background(.themedTertiaryGroupedBackground, in: .rect(cornerRadius: 16))
         .onTapGesture {
             if !poll.hasEnded {
                 hapticManager.play(haptic: .gentleInfo, tier: .low)
                 toastModel?.add(.basic(String("🚧 WIP 🚧")))
             }
         }
+    }
+
+    @ViewBuilder
+    func resultsDetailsView(_ choice: PostPollChoice) -> some View {
+        HStack {
+            resultsBarView(choice)
+            Text(verbatim: "\(Int(100 * Double(choice.voteCount ?? 0) / Double(poll.totalVotes)))%")
+                .foregroundStyle(.secondary)
+                .font(.footnote)
+        }
+    }
+
+    @ViewBuilder
+    func resultsBarView(_ choice: PostPollChoice) -> some View {
+        GeometryReader { proxy in
+            ZStack(alignment: .leading) {
+                Rectangle()
+                    .fill(.themedSecondaryGroupedBackground)
+                if showResults {
+                    // This creates a half-capsule
+                    UnevenRoundedRectangle(
+                        topLeadingRadius: 0,
+                        bottomLeadingRadius: 0,
+                        bottomTrailingRadius: .greatestFiniteMagnitude,
+                        topTrailingRadius: .greatestFiniteMagnitude
+                    )
+                    .fill(.themedAccent)
+                    .frame(width: proxy.size.width * CGFloat(choice.voteCount ?? 0) / CGFloat(poll.totalVotes))
+                }
+            }
+            .clipShape(.capsule)
+        }
+        .frame(height: 4)
     }
 
     var showCheckboxes: Bool {
