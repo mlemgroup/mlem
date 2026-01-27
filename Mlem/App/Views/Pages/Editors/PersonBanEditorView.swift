@@ -21,7 +21,7 @@ struct PersonBanEditorView: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.dismiss) var dismiss
     
-    let person: any Person
+    let person: any DeprecatedPerson
     let community: (any Community)?
     var isBannedFromCommunity: Bool
     var shouldBan: Bool = true
@@ -44,7 +44,7 @@ struct PersonBanEditorView: View {
     }
     
     init(
-        person: any Person,
+        person: any DeprecatedPerson,
         community: (any Community)?,
         isBannedFromCommunity: Bool,
         shouldBan: Bool

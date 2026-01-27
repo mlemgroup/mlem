@@ -66,7 +66,7 @@ extension InstanceView {
         }
     }
     
-    func administratorQuickSwipes(person: any Person) -> SwipeConfiguration {
+    func administratorQuickSwipes(person: any DeprecatedPerson) -> SwipeConfiguration {
         guard let myPerson = appState.firstPerson,
               myPerson.api.isHigherAdmin(than: person),
               let myInstance = appState.firstApi.myInstance,

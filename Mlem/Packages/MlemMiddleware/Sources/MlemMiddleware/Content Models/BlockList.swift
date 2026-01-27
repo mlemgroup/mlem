@@ -97,7 +97,7 @@ public class BlockList {
         people.keys.contains(personActorId)
     }
     
-    public func contains(_ person: any Person) -> Bool {
+    public func contains(_ person: any DeprecatedPerson) -> Bool {
         people.keys.contains(person.actorId)
     }
     

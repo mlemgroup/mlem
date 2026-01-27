@@ -173,7 +173,7 @@ public extension Community1Providing {
         try await api.addModerator(communityId: id, personId: personId, added: added)
     }
     
-    func addModerator(_ person: any Person, added: Bool) async throws {
+    func addModerator(_ person: any DeprecatedPerson, added: Bool) async throws {
         try await api.addModerator(communityId: id, personId: person.id, added: added)
     }
 

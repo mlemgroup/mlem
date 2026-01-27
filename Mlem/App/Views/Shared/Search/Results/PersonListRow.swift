@@ -16,12 +16,12 @@ struct PersonListRow<Content2: View>: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.communityContext) var communityContext
     
-    let person: any Person
+    let person: any DeprecatedPerson
     let content: Content
     let visitContext: VisitHistory.VisitContext
 
     init(
-        _ person: any Person,
+        _ person: any DeprecatedPerson,
         complications: [Content.Complication] = [.instance],
         showBlockStatus: Bool = true,
         visitContext: VisitHistory.VisitContext = .other,
@@ -33,7 +33,7 @@ struct PersonListRow<Content2: View>: View {
     }
     
     init(
-        _ person: any Person,
+        _ person: any DeprecatedPerson,
         complications: [Content.Complication] = [.instance],
         showBlockStatus: Bool = true,
         readout: Content.Readout? = nil,

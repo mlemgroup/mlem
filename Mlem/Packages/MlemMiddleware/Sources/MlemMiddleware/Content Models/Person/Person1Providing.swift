@@ -29,7 +29,7 @@ public protocol Person1Providing:
     var blocked: Bool { get }
 }
 
-public typealias Person = Person1Providing
+public typealias DeprecatedPerson = Person1Providing
 
 public extension Person1Providing {
     static var modelTypeId: ContentType { .person }
@@ -121,7 +121,7 @@ public extension Person1Providing {
     
     var bannedFromInstance: Bool { instanceBan != .notBanned }
 
-    func upgrade() async throws -> any Person {
+    func upgrade() async throws -> any DeprecatedPerson {
         try await api.getPerson(id: id)
     }
     

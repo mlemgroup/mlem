@@ -23,7 +23,7 @@ public struct CommentProperties: UnifiedPropertiesProviding {
     var removed: Bool
     
     // from Comment2Snapshot
-    var creator: (any Person)?
+    var creator: (any DeprecatedPerson)?
     var post: Post?
     var community: (any Community)?
     var commentCount: Int?
@@ -48,7 +48,7 @@ public struct CommentProperties: UnifiedPropertiesProviding {
         }
         
         if let snapshot2 {
-            let newCreator: any Person = api.caches.person1.getModel(api: api, from: snapshot2.creator)
+            let newCreator: any DeprecatedPerson = api.caches.person1.getModel(api: api, from: snapshot2.creator)
             newCreator.person1.updateKnownCommunityBanState(id: snapshot2.community.id, banned: snapshot2.creatorBannedFromCommunity)
             
             creator = newCreator

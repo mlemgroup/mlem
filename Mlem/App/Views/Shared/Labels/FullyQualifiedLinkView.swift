@@ -46,7 +46,7 @@ struct FullyQualifiedLinkView: View {
 
 extension FullyQualifiedLinkView {
     init(
-        _ entity: (any Person)?,
+        _ entity: (any DeprecatedPerson)?,
         labelStyle: FullyQualifiedLabelStyle,
         showAvatar: Bool? = nil,
         showInstance: Bool = true,

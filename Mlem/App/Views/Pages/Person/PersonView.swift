@@ -160,7 +160,7 @@ struct PersonView: View {
     }
     
     @ViewBuilder
-    func content(person: any Person, contentLoaderError: (any Error)?) -> some View {
+    func content(person: any DeprecatedPerson, contentLoaderError: (any Error)?) -> some View {
         FancyScrollView {
             VStack(spacing: 0) {
                 VStack(spacing: Constants.main.standardSpacing) {
@@ -192,7 +192,7 @@ struct PersonView: View {
     }
     
     @ViewBuilder
-    func bio(person: any Person) -> some View {
+    func bio(person: any DeprecatedPerson) -> some View {
         if let bio = person.description_ {
             VStack(spacing: Constants.main.standardSpacing) {
                 let blocks: [BlockNode] = .init(bio)
@@ -218,7 +218,7 @@ struct PersonView: View {
     }
     
     @ViewBuilder
-    func flairsView(person: any Person) -> some View {
+    func flairsView(person: any DeprecatedPerson) -> some View {
         if person.isBot || person.isMlemDeveloper || isAdmin || person.note != nil {
             HFlow(spacing: Constants.main.halfSpacing) {
                 if person.isMlemDeveloper {
@@ -250,7 +250,7 @@ struct PersonView: View {
     }
     
     @ViewBuilder
-    func banFlairView(person: any Person) -> some View {
+    func banFlairView(person: any DeprecatedPerson) -> some View {
         HStack {
             Image(icon: .lemmy.bannedFromInstance)
                 .imageScale(.large)
@@ -269,7 +269,7 @@ struct PersonView: View {
     }
     
     @ViewBuilder
-    func dateLabel(person: any Person) -> some View {
+    func dateLabel(person: any DeprecatedPerson) -> some View {
         ProfileDateView(profilable: person)
             .padding(.horizontal, Constants.main.standardSpacing)
     }
@@ -317,7 +317,7 @@ struct PersonView: View {
     }
     
     @ViewBuilder
-    func communitiesTab(person: any Person) -> some View {
+    func communitiesTab(person: any DeprecatedPerson) -> some View {
         VStack(spacing: Constants.main.halfSpacing) {
             ForEach(person.moderatedCommunities_ ?? []) { community in
                 CommunityListRow(community)

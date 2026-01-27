@@ -73,7 +73,7 @@ extension NavigationPage {
         case let .purge(target):
             ContentPurgeEditorView(target: target.wrappedValue)
         case let .ban(person, isBannedFromCommunity: isBannedFromCommunity, shouldBan: shouldBan, community: community):
-            if let person = person.wrappedValue as? any Person {
+            if let person = person.wrappedValue as? any DeprecatedPerson {
                 PersonBanEditorView(
                     person: person,
                     community: community?.wrappedValue as? any Community,

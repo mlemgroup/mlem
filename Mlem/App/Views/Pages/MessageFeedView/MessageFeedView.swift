@@ -82,7 +82,7 @@ struct MessageFeedView: View {
     }
     
     // swiftlint:disable:next function_body_length
-    @ViewBuilder func content(person: any Person) -> some View {
+    @ViewBuilder func content(person: any DeprecatedPerson) -> some View {
         ScrollViewReader { scrollProxy in
             ScrollView {
                 if let feedLoader {
@@ -306,7 +306,7 @@ struct MessageFeedView: View {
     }
     
     @ViewBuilder
-    func navigationTitleView(person: any Person) -> some View {
+    func navigationTitleView(person: any DeprecatedPerson) -> some View {
         NavigationLink(.person(person)) {
             HStack(spacing: Constants.main.halfSpacing) {
                 CircleCroppedImageView(person, frame: 24)

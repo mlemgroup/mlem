@@ -49,7 +49,7 @@ struct BlockAction: Actions.Action {
     var availableContent: [Content] {
         content.filter { item in
             switch item {
-            case let .blockable(entity as any Person):
+            case let .blockable(entity as any DeprecatedPerson):
                 guard let myPersonId = entity.api.myPerson?.id else { return true }
                 return entity.id != myPersonId 
             default:
@@ -69,7 +69,7 @@ private extension [BlockAction.Content] {
         } 
 
         return switch first {
-        case .blockable(_ as any Person): .personOnly
+        case .blockable(_ as any DeprecatedPerson): .personOnly
         case .blockable(_ as any Community): .communityOnly
         case .instance: .instanceOnly
         default: .other
@@ -175,7 +175,7 @@ extension BlockAction {
 
         for item in content {
             switch item {
-            case let .blockable(person as any Person):
+            case let .blockable(person as any DeprecatedPerson):
                 guard let myPersonId = person.api.myPerson?.id else { return .hidden }
                 guard person.id != myPersonId else { return .hidden }
             case let .instance(instance):
@@ -212,7 +212,7 @@ extension BlockAction {
     @MainActor
     func executeMulti(environment: EnvironmentValues) {
         let actions: [PopupAnchorModel.Action] = content.map { item in
-            .init(title: item.blockable is any Person ? "User" : "Community", isDestructive: true) {
+            .init(title: item.blockable is any DeprecatedPerson ? "User" : "Community", isDestructive: true) {
                 submit(content: item, environment: environment)
             }
         }
@@ -229,7 +229,7 @@ extension BlockAction {
         let label: String
 
         switch content {
-        case .blockable(_ as any Person):
+        case .blockable(_ as any DeprecatedPerson):
             label = .init(localized: "Really block this user?")
         case .blockable(_ as any Community):
             label = .init(localized: "Really block this community?")

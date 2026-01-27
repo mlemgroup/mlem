@@ -91,7 +91,7 @@ public final class Person4: Person4Providing {
         self.collapseBotComments = collapseBotComments
     }
     
-    public func upgrade() async throws -> any Person { self }
+    public func upgrade() async throws -> any DeprecatedPerson { self }
     
     public func updateSettings(
         email: String? = nil,

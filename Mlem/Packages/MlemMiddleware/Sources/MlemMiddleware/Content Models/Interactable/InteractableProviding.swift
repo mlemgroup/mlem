@@ -20,7 +20,7 @@ public protocol InteractableProviding:
     var votes: ExpectedValue<VotesModel> { get }
     var saved: ExpectedValue<Bool> { get }
     var commentCount: ExpectedValue<Int> { get }
-    var creator: ExpectedValue<any Person> { get }
+    var creator: ExpectedValue<any DeprecatedPerson> { get }
     var community: ExpectedValue<any Community> { get }
     var creatorIsAdmin: ExpectedValue<Bool> { get }
     var creatorIsModerator: ExpectedValue<Bool> { get }

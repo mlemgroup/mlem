@@ -58,7 +58,7 @@ public protocol PersonStubProviding: ContentModel, Resolvable {
     var enableAnimatedImages_: Bool? { get }
     var collapseBotComments_: Bool? { get }
     
-    func upgrade() async throws -> any Person
+    func upgrade() async throws -> any DeprecatedPerson
 }
 
 public extension PersonStubProviding {

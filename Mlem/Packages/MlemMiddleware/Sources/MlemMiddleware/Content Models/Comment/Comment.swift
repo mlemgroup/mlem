@@ -49,7 +49,7 @@ public class Comment:
     public var removed: Bool
     
     // from Comment2Snapshot
-    public var creator: ExpectedValue<(any Person)>
+    public var creator: ExpectedValue<(any DeprecatedPerson)>
     public var post: ExpectedValue<Post>
     public var community: ExpectedValue<(any Community)>
     public var commentCount: ExpectedValue<Int>

@@ -30,7 +30,7 @@ public struct PersonStub: PersonStubProviding, Hashable {
         lhs.url == rhs.url
     }
     
-    public func upgrade() async throws -> any Person {
+    public func upgrade() async throws -> any DeprecatedPerson {
         try await api.getPerson(url: url) as Person2
     }
 }

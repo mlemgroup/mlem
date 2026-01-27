@@ -49,7 +49,7 @@ extension ModlogView {
 
     enum PersonFilter: Hashable {
         case any
-        case person(any Person)
+        case person(any DeprecatedPerson)
 
         var label: String {
             switch self {
@@ -58,7 +58,7 @@ extension ModlogView {
             }
         }
 
-        var personValue: (any Person)? {
+        var personValue: (any DeprecatedPerson)? {
             switch self {
             case let .person(person): person
             default: nil

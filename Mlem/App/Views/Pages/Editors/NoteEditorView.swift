@@ -14,13 +14,13 @@ struct NoteEditorView: View {
     @Environment(HapticManager.self) var hapticManager
     @Environment(\.dismiss) var dismiss
     
-    let person: any Person
+    let person: any DeprecatedPerson
     
     @State var note: String
     @FocusState var textFieldFocused: Bool
     @State var presentationSelection: PresentationDetent = .large
 
-    init(person: any Person) {
+    init(person: any DeprecatedPerson) {
         self.person = person
         self.note = person.note ?? ""
     }

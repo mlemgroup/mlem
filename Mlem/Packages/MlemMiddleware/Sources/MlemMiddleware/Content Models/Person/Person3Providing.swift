@@ -26,7 +26,7 @@ public extension Person3Providing {
 }
 
 public extension Person3Providing {
-    func upgrade() async throws -> any Person { self }
+    func upgrade() async throws -> any DeprecatedPerson { self }
     
     func moderates(communityId: Int) -> Bool {
         moderatedCommunities.contains { $0.id == communityId }
@@ -41,7 +41,7 @@ public extension Person3Providing {
     }
     
     /// Returns true if this person can perform moderator actions on the target person
-    func canModerate(_ person: any Person, in community: any Community3Providing) -> Bool {
+    func canModerate(_ person: any DeprecatedPerson, in community: any Community3Providing) -> Bool {
         // admins can moderate anybody but a higher-ranking admin
         if isAdmin {
             if person.isAdmin_ ?? false {

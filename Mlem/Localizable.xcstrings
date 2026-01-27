@@ -518,6 +518,9 @@
         }
       }
     },
+    "%lld votes" : {
+
+    },
     "%lld years ago today!" : {
       "localizations" : {
         "en" : {
@@ -3322,6 +3325,9 @@
         }
       }
     },
+    "Ended %@" : {
+
+    },
     "Endorsements" : {
       "localizations" : {
         "fr" : {
@@ -3331,6 +3337,9 @@
           }
         }
       }
+    },
+    "Ends %@" : {
+
     },
     "Enter your instance's domain name below." : {
       "localizations" : {

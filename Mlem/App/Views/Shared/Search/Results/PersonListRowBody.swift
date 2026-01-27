@@ -15,7 +15,7 @@ struct PersonListRowBody<Content: View>: View {
     @Environment(\.communityContext) var communityContext
     @Environment(\.isEnabled) var isEnabled
     
-    let person: any Person
+    let person: any DeprecatedPerson
     var showBlockStatus: Bool = true
     let complications: [Complication]
     let readout: Readout?
@@ -23,7 +23,7 @@ struct PersonListRowBody<Content: View>: View {
     @ViewBuilder let content: () -> Content
 
     init(
-        _ person: any Person,
+        _ person: any DeprecatedPerson,
         complications: [Complication] = [.instance],
         showBlockStatus: Bool = true,
         @ViewBuilder content: @escaping () -> Content
@@ -36,7 +36,7 @@ struct PersonListRowBody<Content: View>: View {
     }
     
     init(
-        _ person: any Person,
+        _ person: any DeprecatedPerson,
         complications: [Complication] = [.instance],
         showBlockStatus: Bool = true,
         readout: Readout? = nil
