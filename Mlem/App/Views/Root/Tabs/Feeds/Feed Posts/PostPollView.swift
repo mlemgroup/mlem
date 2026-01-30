@@ -16,14 +16,34 @@ struct PostPollView: View {
 
     let poll: PostPoll
 
+    @State var resultsShownManually: Bool = false
+
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             ForEach(Array(poll.choices.enumerated()), id: \.offset) { _, choice in
                 choiceView(choice)
             }
+            if !poll.hasEnded {
+                showResultsButtonView
+            }
             footerView
         }
         .fixedSize(horizontal: false, vertical: true)
+    }
+
+    @ViewBuilder
+    var showResultsButtonView: some View {
+        Button {
+            resultsShownManually.toggle()
+        } label: {
+            Label(resultsShownManually ? "Hide Results" : "Show Results", icon: .lemmy.pollPost)
+                .foregroundStyle(.themedAccent)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 8)
+                .background(.themedAccent.opacity(0.2), in: .rect(cornerRadius: 16))
+        }
+        .buttonStyle(.plain)
     }
 
     @ViewBuilder
@@ -118,6 +138,6 @@ struct PostPollView: View {
     }
 
     var showResults: Bool {
-        poll.hasEnded
+        poll.hasEnded || resultsShownManually
     }
 }
