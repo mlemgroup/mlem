@@ -102,23 +102,23 @@ public extension PieFedConnection {
         }
     }
 
+    private func markReplyAsRead(id: Int, read: Bool = true) async throws {
+        let request = PieFedMarkReplyAsReadRequest(commentReplyId: id, read: read)
+        try await perform(request)
+    }
+    
+    private func markMentionAsRead(id: Int, read: Bool = true) async throws {
+        let request = PieFedMarkReplyAsReadRequest(commentReplyId: id, read: read)
+        try await perform(request)
+    }
+    
+    private func markMessageAsRead(id: Int, read: Bool = true) async throws {
+        let request = PieFedMarkPrivateMessageAsReadRequest(privateMessageId: id, read: read)
+        try await perform(request)
+    }
+    
     func markAllAsRead() async throws {
         let request = PieFedMarkAllRepliesReadRequest()
-        try await perform(request)
-    }
-    
-    func markReplyAsRead(id: Int, read: Bool = true) async throws {
-        let request = PieFedMarkReplyAsReadRequest(commentReplyId: id, read: read)
-        try await perform(request)
-    }
-    
-    func markMentionAsRead(id: Int, read: Bool = true) async throws {
-        let request = PieFedMarkReplyAsReadRequest(commentReplyId: id, read: read)
-        try await perform(request)
-    }
-    
-    func markMessageAsRead(id: Int, read: Bool = true) async throws {
-        let request = PieFedMarkPrivateMessageAsReadRequest(privateMessageId: id, read: read)
         try await perform(request)
     }
     

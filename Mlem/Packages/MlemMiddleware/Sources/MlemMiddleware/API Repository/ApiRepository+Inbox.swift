@@ -92,24 +92,6 @@ extension ApiRepository {
         }
     }
     
-    func markReplyAsRead(id: Int, read: Bool = true, semaphore: UInt? = nil) async throws {
-        try await performingForConnection { connection in
-            try await connection.markReplyAsRead(id: id, read: read)
-        }
-    }
-    
-    func markMentionAsRead(id: Int, read: Bool = true, semaphore: UInt? = nil) async throws {
-        try await performingForConnection { connection in
-            try await connection.markMentionAsRead(id: id, read: read)
-        }
-    }
-    
-    func markMessageAsRead(id: Int, read: Bool = true, semaphore: UInt? = nil) async throws {
-        try await performingForConnection { connection in
-            try await connection.markMessageAsRead(id: id, read: read)
-        }
-    }
-    
     func getPersonalUnreadCount() async throws -> PersonalUnreadCountSnapshot {
         try await performingForConnection { connection in
             try await connection.getPersonalUnreadCount()

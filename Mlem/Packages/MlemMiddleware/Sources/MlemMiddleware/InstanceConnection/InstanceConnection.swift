@@ -453,9 +453,6 @@ public protocol InstanceConnection {
     ) async throws
         
     func markAllAsRead() async throws
-    func markReplyAsRead(id: Int, read: Bool) async throws
-    func markMentionAsRead(id: Int, read: Bool) async throws
-    func markMessageAsRead(id: Int, read: Bool) async throws
     func getPersonalUnreadCount() async throws -> PersonalUnreadCountSnapshot
     func createMessage(personId: Int, content: String) async throws -> Message2Snapshot
     @discardableResult
