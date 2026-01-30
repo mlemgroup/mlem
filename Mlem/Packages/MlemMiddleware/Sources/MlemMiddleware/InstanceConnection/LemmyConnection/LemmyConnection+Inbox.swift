@@ -67,16 +67,32 @@ public extension LemmyConnection {
         limit: Int,
         unreadOnly: Bool
     ) async throws -> (notifications: [InboxNotificationSnapshot], cursor: String?) {
-        let response = try await performingForEndpoint { endpoint in
-            guard let page else { throw ApiClientError.featureUnsupported }
-            return LemmyGetPrivateMessageRequest(
-                unreadOnly: unreadOnly,
-                page: page,
-                limit: limit,
-                creatorId: nil
-            )
+        try await processingForEndpoint { endpoint in
+            switch endpoint {
+            case .v3:
+                guard let page else { throw ApiClientError.featureUnsupported }
+                let request = LemmyGetPrivateMessageRequest(
+                    unreadOnly: unreadOnly,
+                    page: page,
+                    limit: limit,
+                    creatorId: nil
+                )
+                let response = try await self.perform(request, endpoint: .v3)
+                return try (notifications: response.privateMessages.map { try .init(from: $0) }, cursor: nil)
+            case .v4:
+                let request = LemmyListNotificationsRequest(
+                    type_: .privateMessage,
+                    unreadOnly: unreadOnly,
+                    pageCursor: cursor,
+                    limit: limit
+                )
+                let response = try await self.perform(request, endpoint: .v4)
+                return try (
+                    notifications: response.items.map { try .init(from: $0) },
+                    cursor: response.nextPage
+                )
+            }
         }
-        return try (notifications: response.privateMessages.map { try .init(from: $0) }, cursor: nil)
     }
     
     func markNotificationAsRead(
