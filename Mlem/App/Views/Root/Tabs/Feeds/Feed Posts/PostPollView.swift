@@ -44,6 +44,7 @@ struct PostPollView: View {
                 .background(.themedAccent.opacity(0.2), in: .rect(cornerRadius: 16))
         }
         .buttonStyle(.plain)
+        .sensoryFeedback(.impact, trigger: resultsShownManually)
     }
 
     @ViewBuilder
