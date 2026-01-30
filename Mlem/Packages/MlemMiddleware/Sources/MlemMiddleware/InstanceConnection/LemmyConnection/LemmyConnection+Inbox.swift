@@ -134,8 +134,13 @@ public extension LemmyConnection {
         read: Bool = true
     ) async throws {
         try await processingForEndpoint { endpoint in
-            guard endpoint == .v3 else { throw ApiClientError.featureUnsupported }
-            try await self.markNotificationAsReadV3(type: type, contentId: contentId, read: read)
+            switch endpoint {
+            case .v3:
+                try await self.markNotificationAsReadV3(type: type, contentId: contentId, read: read)
+            case .v4:
+                let request = LemmyMarkNotificationAsReadRequest(notificationId: id, read: read)
+                try await self.perform(request, endpoint: .v4)
+            }
         }
     }
 
