@@ -29,6 +29,7 @@ struct PostPollView: View {
             footerView
         }
         .fixedSize(horizontal: false, vertical: true)
+        .animation(.snappy(duration: 0.2, extraBounce: 0.2), value: showResults)
     }
 
     @ViewBuilder
@@ -39,7 +40,7 @@ struct PostPollView: View {
             Label(resultsShownManually ? "Hide Results" : "Show Results", icon: .lemmy.pollPost)
                 .foregroundStyle(.themedAccent)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, 16)
+                .padding(.leading, 8)
                 .padding(.vertical, 8)
                 .background(.themedAccent.opacity(0.2), in: .rect(cornerRadius: 16))
         }
@@ -117,17 +118,16 @@ struct PostPollView: View {
             ZStack(alignment: .leading) {
                 Rectangle()
                     .fill(colorScheme == .dark ? .themedSecondaryGroupedBackground : .themedTertiary.opacity(0.5))
-                if showResults {
-                    // This creates a half-capsule
-                    UnevenRoundedRectangle(
-                        topLeadingRadius: 0,
-                        bottomLeadingRadius: 0,
-                        bottomTrailingRadius: .greatestFiniteMagnitude,
-                        topTrailingRadius: .greatestFiniteMagnitude
-                    )
-                    .fill(.themedAccent)
-                    .frame(width: proxy.size.width * CGFloat(choice.voteCount ?? 0) / CGFloat(max(1, poll.totalVotes)))
-                }
+                let barWidth = proxy.size.width * CGFloat(choice.voteCount ?? 0) / CGFloat(max(1, poll.totalVotes))
+                // This creates a half-capsule
+                UnevenRoundedRectangle(
+                    topLeadingRadius: 0,
+                    bottomLeadingRadius: 0,
+                    bottomTrailingRadius: .greatestFiniteMagnitude,
+                    topTrailingRadius: .greatestFiniteMagnitude
+                )
+                .fill(.themedAccent)
+                .frame(width: showResults ? barWidth : 0)
             }
             .clipShape(.capsule)
         }
