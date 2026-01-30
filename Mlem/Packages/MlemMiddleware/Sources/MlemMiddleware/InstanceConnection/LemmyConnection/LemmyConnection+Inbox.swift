@@ -135,14 +135,22 @@ public extension LemmyConnection {
     ) async throws {
         try await processingForEndpoint { endpoint in
             guard endpoint == .v3 else { throw ApiClientError.featureUnsupported }
-            switch type {
-            case .reply:
-                try await self.markReplyAsRead(id: contentId, read: read)
-            case .mention:
-                try await self.markMentionAsRead(id: contentId, read: read)
-            case .message:
-                try await self.markMessageAsRead(id: contentId, read: read)
-            }
+            try await self.markNotificationAsReadV3(type: type, contentId: contentId, read: read)
+        }
+    }
+
+    private func markNotificationAsReadV3(
+        type: InboxNotificationContentType,
+        contentId: Int,
+        read: Bool
+    ) async throws {
+        switch type {
+        case .reply:
+            try await self.markReplyAsRead(id: contentId, read: read)
+        case .mention:
+            try await self.markMentionAsRead(id: contentId, read: read)
+        case .message:
+            try await self.markMessageAsRead(id: contentId, read: read)
         }
     }
     
