@@ -26,51 +26,57 @@ public extension LemmyConnection {
     }
     
     func getReplyNotifications(
-        page: Int,
+        page: Int?,
+        cursor: String?,
         limit: Int,
         unreadOnly: Bool
-    ) async throws -> [InboxNotificationSnapshot] {
+    ) async throws -> (notifications: [InboxNotificationSnapshot], cursor: String?) {
         let response = try await performingForEndpoint { _ in
-            LemmyListRepliesRequest(
+            guard let page else { throw ApiClientError.featureUnsupported }
+            return LemmyListRepliesRequest(
                 sort: .new,
                 page: page,
                 limit: limit,
                 unreadOnly: unreadOnly
             )
         }
-        return try response.replies.map { try .init(from: $0) }
+        return try (notifications: response.replies.map { try .init(from: $0) }, cursor: nil)
     }
 
     func getMentionNotifications(
-        page: Int,
+        page: Int?,
+        cursor: String?,
         limit: Int,
         unreadOnly: Bool
-    ) async throws -> [InboxNotificationSnapshot] {
+    ) async throws -> (notifications: [InboxNotificationSnapshot], cursor: String?) {
         let response = try await performingForEndpoint { _ in
-            LemmyListMentionsRequest(
+            guard let page else { throw ApiClientError.featureUnsupported }
+            return LemmyListMentionsRequest(
                 sort: .new,
                 page: page,
                 limit: limit,
                 unreadOnly: unreadOnly
             )
         }
-        return try response.mentions.map { try .init(from: $0) }
+        return try (notifications: response.mentions.map { try .init(from: $0) }, cursor: nil)
     }
 
     func getMessageNotifications(
-        page: Int,
+        page: Int?,
+        cursor: String?,
         limit: Int,
         unreadOnly: Bool
-    ) async throws -> [InboxNotificationSnapshot] {
-        let response = try await performingForEndpoint { _ in
-            LemmyGetPrivateMessageRequest(
+    ) async throws -> (notifications: [InboxNotificationSnapshot], cursor: String?) {
+        let response = try await performingForEndpoint { endpoint in
+            guard let page else { throw ApiClientError.featureUnsupported }
+            return LemmyGetPrivateMessageRequest(
                 unreadOnly: unreadOnly,
                 page: page,
                 limit: limit,
                 creatorId: nil
             )
         }
-        return try response.privateMessages.map { try .init(from: $0) }
+        return try (notifications: response.privateMessages.map { try .init(from: $0) }, cursor: nil)
     }
     
     func markNotificationAsRead(

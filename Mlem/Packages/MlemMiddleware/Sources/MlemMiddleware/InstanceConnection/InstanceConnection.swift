@@ -425,22 +425,25 @@ public protocol InstanceConnection {
     ) async throws -> [Message2Snapshot]
     
     func getReplyNotifications(
-        page: Int,
+        page: Int?,
+        cursor: String?,
         limit: Int,
         unreadOnly: Bool
-    ) async throws -> [InboxNotificationSnapshot]
+    ) async throws -> (notifications: [InboxNotificationSnapshot], cursor: String?)
 
     func getMentionNotifications(
-        page: Int,
+        page: Int?,
+        cursor: String?,
         limit: Int,
         unreadOnly: Bool
-    ) async throws -> [InboxNotificationSnapshot]
+    ) async throws -> (notifications: [InboxNotificationSnapshot], cursor: String?)
 
     func getMessageNotifications(
-        page: Int,
+        page: Int?,
+        cursor: String?,
         limit: Int,
         unreadOnly: Bool
-    ) async throws -> [InboxNotificationSnapshot]
+    ) async throws -> (notifications: [InboxNotificationSnapshot], cursor: String?)
 
     func markNotificationAsRead(
         type: InboxNotificationContentType,

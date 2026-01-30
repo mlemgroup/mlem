@@ -86,11 +86,26 @@ private struct TestInboxSectionView: View {
         do {
             switch type {
             case .reply:
-                notifications = try await appState.firstApi.getReplyNotifications(page: 1, limit: 5, unreadOnly: false)
+                notifications = try await appState.firstApi.getReplyNotifications(
+                    page: 1,
+                    cursor: nil,
+                    limit: 5,
+                    unreadOnly: false
+                ).notifications
             case .mention:
-                notifications = try await appState.firstApi.getMentionNotifications(page: 1, limit: 5, unreadOnly: false)
+                notifications = try await appState.firstApi.getMentionNotifications(
+                    page: 1,
+                    cursor: nil,
+                    limit: 5,
+                    unreadOnly: false
+                ).notifications
             case .message:
-                notifications = try await appState.firstApi.getMessageNotifications(page: 1, limit: 5, unreadOnly: false)
+                notifications = try await appState.firstApi.getMessageNotifications(
+                    page: 1,
+                    cursor: nil,
+                    limit: 5,
+                    unreadOnly: false
+                ).notifications
             }
         } catch {
             handleError(error)
