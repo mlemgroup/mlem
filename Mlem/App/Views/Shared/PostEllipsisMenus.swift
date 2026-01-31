@@ -40,5 +40,6 @@ struct PostEllipsisMenus: View {
                 EllipsisMenu(size: size, post: post, type: [.basic, .moderator])
             }
         }
+        .environment(\.communityContext, post.community.value)
     }
 }
