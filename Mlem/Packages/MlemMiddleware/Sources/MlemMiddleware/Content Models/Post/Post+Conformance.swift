@@ -42,6 +42,9 @@ public extension Post {
 
 extension Post: ImagePrefetchProviding {
     public var type: PostType {
+        if let poll {
+            return .poll(poll)
+        }
         // post with URL: image, embedded, or link
         if let linkUrl {
             if let embeddedMediaUrl {
@@ -217,6 +220,7 @@ public extension Post {
               content: content,
               linkUrl: linkUrl,
               embed: embed,
+              poll: poll,
               nsfw: nsfw,
               thumbnailUrl: thumbnailUrl,
               updated: updated,

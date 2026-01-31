@@ -101,7 +101,7 @@ struct PostEditorView: View {
             self._link = .init(wrappedValue: .value(.init(content: url, thumbnail: nil, label: "")))
         case let .link(url):
             self._link = .init(wrappedValue: .value(url))
-        case .titleOnly, .text, nil:
+        case .titleOnly, .text, .poll, nil:
             break
         }
     }

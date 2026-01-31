@@ -19,6 +19,7 @@ public extension Post1Snapshot {
             content: post.body,
             linkUrl: post.url,
             embed: nil,
+            poll: post.poll.map { .init(from: $0) },
             nsfw: post.nsfw,
             thumbnailUrl: post.thumbnailUrl,
             updated: post.updated,

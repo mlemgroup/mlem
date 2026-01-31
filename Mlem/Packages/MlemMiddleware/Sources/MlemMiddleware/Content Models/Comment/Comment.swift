@@ -369,6 +369,7 @@ public extension Comment {
                         content: post.content,
                         linkUrl: post.linkUrl,
                         embed: post.embed,
+                        poll: post.poll,
                         nsfw: post.nsfw,
                         thumbnailUrl: post.thumbnailUrl,
                         updated: post.updated,
