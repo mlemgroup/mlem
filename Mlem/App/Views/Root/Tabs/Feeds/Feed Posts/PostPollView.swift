@@ -132,10 +132,18 @@ struct PostPollView: View {
                 return
             }
             hapticManager.play(haptic: .gentleInfo, tier: .low)
-            if selected.contains(choice.id) {
-                selected.remove(choice.id)
+            if poll.type == .single {
+                if selected == [choice.id] {
+                    selected = []
+                } else {
+                    selected = [choice.id]
+                }
             } else {
-                selected.insert(choice.id)
+                if selected.contains(choice.id) {
+                    selected.remove(choice.id)
+                } else {
+                    selected.insert(choice.id)
+                }
             }
         }
     }

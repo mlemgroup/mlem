@@ -11,6 +11,7 @@ public struct PostPoll: Hashable {
     public let endDate: Date?
     public let localOnly: Bool?
     public let latestVote: Date?
+    public let type: PostPollType
 
     public var choices: [PostPollChoice]
 
@@ -47,6 +48,10 @@ public struct PostPoll: Hashable {
         }
         return new
     }
+}
+
+public enum PostPollType {
+    case single, multiple
 }
 
 public struct PostPollChoice: Hashable {
