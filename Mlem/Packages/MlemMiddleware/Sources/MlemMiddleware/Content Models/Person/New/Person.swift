@@ -46,7 +46,7 @@ public class Person: UnifiedModelProviding {
     public var site: ExpectedValue<(any Instance)>
     public var moderatedCommunities: ExpectedValue<[any Community]>
     
-    public init(api: ApiClient, properties: PostProperties) {
+    public init(api: ApiClient, properties: PersonProperties) {
         
     }
     
