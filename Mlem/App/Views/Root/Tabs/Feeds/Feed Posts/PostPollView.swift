@@ -19,10 +19,13 @@ struct PostPollView: View {
 
     @State var resultsShownManually: Bool 
 
+    @State var selected: Set<Int>
+
     init(post: Post, poll: PostPoll) {
         self.post = post
         self.poll = poll
         self._resultsShownManually = .init(initialValue: poll.hasVoted)
+        self._selected = .init(initialValue: .init(poll.choices.filter(\.selected).map(\.id)))
     }
 
     var body: some View {
@@ -31,7 +34,11 @@ struct PostPollView: View {
                 choiceView(choice)
             }
             if !poll.hasEnded {
-                showResultsButtonView
+                if selected.isEmpty, !poll.hasVoted {
+                    showResultsButtonView
+                } else {
+                    submitButtonView
+                }
             }
             footerView
         }
@@ -51,6 +58,30 @@ struct PostPollView: View {
                 .padding(.leading, 8)
                 .padding(.vertical, 8)
                 .background(.themedAccent.opacity(0.2), in: .rect(cornerRadius: 16))
+        }
+        .buttonStyle(.plain)
+    }
+
+    @ViewBuilder
+    var submitButtonView: some View {
+        Button {
+            self.resultsShownManually = true
+            self.post.voteInPoll(self.selected)
+            hapticManager.play(haptic: .gentleInfo, tier: .low)
+        } label: {
+            Label(
+                self.poll.hasVoted ? "Submitted" : "Submit",
+                icon: self.poll.hasVoted ? .general.success : .lemmy.send
+            )
+            .symbolVariant(.fill)
+            .foregroundStyle(self.poll.hasVoted ? .themedSecondary : .themedContrastingLabel)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.leading, 8)
+            .padding(.vertical, 8)
+            .background(
+                self.poll.hasVoted ? .themedTertiaryGroupedBackground : .themedAccent,
+                in: .rect(cornerRadius: 16)
+            )
         }
         .buttonStyle(.plain)
     }
@@ -79,8 +110,9 @@ struct PostPollView: View {
     func choiceView(_ choice: PostPollChoice) -> some View {
         HStack(alignment: .top) {
             if showCheckboxes {
-                Checkbox(isOn: choice.selected)
-                    .opacity(!poll.hasVoted || choice.selected ? 1 : 0)
+                let selected = self.selected.contains(choice.id)
+                Checkbox(isOn: selected)
+                    .opacity(!poll.hasVoted || selected ? 1 : 0)
             }
             VStack(alignment: .leading, spacing: 2) {
                 Text(choice.label)
@@ -99,10 +131,11 @@ struct PostPollView: View {
                 toastModel?.add(.basic("Already voted", subtitle: "You cannot change your vote.", duration: 3))
                 return
             }
-            if !poll.hasEnded {
-                hapticManager.play(haptic: .gentleInfo, tier: .low)
-                post.voteInPoll([choice.id])
-                self.resultsShownManually = true
+            hapticManager.play(haptic: .gentleInfo, tier: .low)
+            if selected.contains(choice.id) {
+                selected.remove(choice.id)
+            } else {
+                selected.insert(choice.id)
             }
         }
     }
