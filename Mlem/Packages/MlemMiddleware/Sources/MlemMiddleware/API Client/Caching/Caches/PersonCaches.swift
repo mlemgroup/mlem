@@ -7,6 +7,20 @@
 
 import Foundation
 
+public enum AnyPersonSnapshot: CacheIdentifiable {
+    case person1(Person1Snapshot)
+    case person2(Person2Snapshot)
+    case person3(Person3Snapshot)
+    
+    public var cacheId: Int {
+        switch self {
+        case let .person1(snapshot): snapshot.cacheId
+        case let .person2(snapshot): snapshot.cacheId
+        case let .person3(snapshot): snapshot.cacheId
+        }
+    }
+}
+
 class Person1Cache: ApiTypeBackedCache<Person1, Person1Snapshot> {
     @MainActor
     override func performModelTranslation(api: ApiClient, from snapshot: Person1Snapshot) -> Person1 {
