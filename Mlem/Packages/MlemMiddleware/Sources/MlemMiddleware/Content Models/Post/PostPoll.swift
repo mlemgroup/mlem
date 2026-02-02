@@ -23,6 +23,8 @@ public struct PostPoll: Hashable {
         }
     }
 
+    // For multi-choice polls, this will be greater than the
+    // number of users who have voted in the poll
     public var totalVotes: Int {
         choices.compactMap(\.voteCount).reduce(0, +)
     }
