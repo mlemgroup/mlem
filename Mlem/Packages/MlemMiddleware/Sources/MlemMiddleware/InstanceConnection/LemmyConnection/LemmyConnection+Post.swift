@@ -544,4 +544,9 @@ public extension LemmyConnection {
         }
         return try response.items.map { try .init(from: $0) }
     }
+
+    @discardableResult
+    func voteInPoll(postId: Int, choiceIds: Set<Int>) async throws -> Post2Snapshot {
+        throw ApiClientError.featureUnsupported
+    }
 }

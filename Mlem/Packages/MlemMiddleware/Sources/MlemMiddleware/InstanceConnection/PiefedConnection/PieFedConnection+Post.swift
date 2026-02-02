@@ -386,4 +386,11 @@ public extension PieFedConnection {
         let response = try await perform(request)
         return try response.postLikes.map { try .init(from: $0) }
     }
+
+    @discardableResult
+    func voteInPoll(postId: Int, choiceIds: Set<Int>) async throws -> Post2Snapshot {
+        let request = PieFedPollVoteRequest(postId: postId, choiceId: Array(choiceIds))
+        let response = try await perform(request)
+        return try .init(from: response.postView)
+    }
 }

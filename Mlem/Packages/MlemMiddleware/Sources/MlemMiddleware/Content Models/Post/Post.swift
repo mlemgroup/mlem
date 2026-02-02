@@ -340,6 +340,19 @@ public extension Post {
             readQueued = false
         }
     }
+
+    // Vote on Poll
+
+    func voteInPoll(_ choiceIds: Set<Int>) {
+        guard let poll = self.poll else { return }
+        self.poll = poll.applyVoteChoices(choiceIds: choiceIds)
+        
+        Task {
+            await updateQueue.addItem {
+                await .init(api: self.api, snapshot: .post2(try await self.api.repository.voteInPoll(postId: self.id, choiceIds: choiceIds)))
+            }
+        }
+    }
     
     // Pin
     

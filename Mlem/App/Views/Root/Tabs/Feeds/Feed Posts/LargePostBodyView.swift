@@ -30,7 +30,7 @@ struct LargePostBodyView: View {
 
             switch post.type {
             case let .poll(poll):
-                PostPollView(poll: poll)
+                PostPollView(post: post, poll: poll)
                 if post.content != nil {
                     Divider().padding(.horizontal, -Constants.main.standardSpacing)
                 }

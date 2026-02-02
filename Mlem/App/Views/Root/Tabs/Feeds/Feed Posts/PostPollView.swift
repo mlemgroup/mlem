@@ -14,11 +14,13 @@ struct PostPollView: View {
     @Environment(\.toastModel) var toastModel
     @Environment(\.colorScheme) var colorScheme
 
+    let post: Post
     let poll: PostPoll
 
     @State var resultsShownManually: Bool 
 
-    init(poll: PostPoll) {
+    init(post: Post, poll: PostPoll) {
+        self.post = post
         self.poll = poll
         self._resultsShownManually = .init(initialValue: poll.hasVoted)
     }
@@ -78,6 +80,7 @@ struct PostPollView: View {
         HStack(alignment: .top) {
             if showCheckboxes {
                 Checkbox(isOn: choice.selected)
+                    .opacity(!poll.hasVoted || choice.selected ? 1 : 0)
             }
             VStack(alignment: .leading, spacing: 2) {
                 Text(choice.label)
@@ -92,9 +95,14 @@ struct PostPollView: View {
         .padding(.vertical, 8)
         .background(.themedTertiaryGroupedBackground, in: .rect(cornerRadius: 16))
         .onTapGesture {
+            if poll.hasVoted {
+                toastModel?.add(.basic("Already voted", subtitle: "You cannot change your vote.", duration: 3))
+                return
+            }
             if !poll.hasEnded {
                 hapticManager.play(haptic: .gentleInfo, tier: .low)
-                toastModel?.add(.basic(String("🚧 WIP 🚧")))
+                post.voteInPoll([choice.id])
+                self.resultsShownManually = true
             }
         }
     }
@@ -112,7 +120,7 @@ struct PostPollView: View {
                         .foregroundStyle(.tertiary)
                 }
             }
-            .frame(width: showResults ? 30 : 15, alignment: .center)
+            .frame(width: showResults ? 35 : 15, alignment: .center)
             .font(.footnote)
         }
     }
