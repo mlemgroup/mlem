@@ -65,9 +65,11 @@ struct PostPollView: View {
     @ViewBuilder
     var submitButtonView: some View {
         Button {
-            self.resultsShownManually = true
-            self.post.voteInPoll(self.selected)
-            hapticManager.play(haptic: .gentleInfo, tier: .low)
+            if !self.poll.hasVoted {
+                self.resultsShownManually = true
+                self.post.voteInPoll(self.selected)
+                hapticManager.play(haptic: .gentleInfo, tier: .low)
+            }
         } label: {
             Label(
                 self.poll.hasVoted ? "Submitted" : "Submit",
