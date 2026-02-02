@@ -148,7 +148,7 @@ struct PostPollView: View {
     }
 
     var showCheckboxes: Bool {
-        !poll.hasEnded
+        !poll.hasEnded || poll.hasVoted
     }
 
     var showResults: Bool {
