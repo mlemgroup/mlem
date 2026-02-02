@@ -16,7 +16,12 @@ struct PostPollView: View {
 
     let poll: PostPoll
 
-    @State var resultsShownManually: Bool = false
+    @State var resultsShownManually: Bool 
+
+    init(poll: PostPoll) {
+        self.poll = poll
+        self._resultsShownManually = .init(initialValue: poll.hasVoted)
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -72,7 +77,7 @@ struct PostPollView: View {
     func choiceView(_ choice: PostPollChoice) -> some View {
         HStack(alignment: .top) {
             if showCheckboxes {
-                Checkbox(isOn: false)
+                Checkbox(isOn: choice.selected)
             }
             VStack(alignment: .leading, spacing: 2) {
                 Text(choice.label)

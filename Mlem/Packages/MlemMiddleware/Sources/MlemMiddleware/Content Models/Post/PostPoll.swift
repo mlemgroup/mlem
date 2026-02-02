@@ -25,12 +25,17 @@ public struct PostPoll: Hashable {
     public var totalVotes: Int {
         choices.compactMap(\.voteCount).reduce(0, +)
     }
+
+    public var hasVoted: Bool {
+        choices.contains { $0.selected }
+    }
 }
 
 public struct PostPollChoice: Hashable {
     public let id: Int
     public let label: String
     public let voteCount: Int?
+    public var selected: Bool
 
     public func percentage(poll: PostPoll) -> Int {
         if poll.totalVotes == 0 {
