@@ -9,7 +9,14 @@ import Observation
 import Foundation
 
 @Observable
-public class Person: UnifiedModelProviding {
+public class Person:
+    UnifiedModelProviding,
+    Blockable,
+    ContentIdentifiable,
+    SelectableContentProviding,
+    PurgableProviding,
+    Sharable,
+    FeedLoadable where FilterType == PersonFilterType {
     public typealias Properties = PersonProperties
     
     public var api: ApiClient
@@ -18,6 +25,16 @@ public class Person: UnifiedModelProviding {
     
     // MARK: Custom Properties
     // Mlem-specific properties that are not reflected in the API
+    
+    public var blocked: Bool
+    
+    // Communities from which this person is *known* to be banned.
+    // If an ID is not in this set, its status is unknown.
+    //
+    // Don't make this public. Instead, use the `bannedFromCommunity` property of
+    // Post2/Comment2/Reply2. Accessing it from there guarantees that the ban
+    // status is known. Those properties access this set as a shared source-of-truth.
+    var knownCommunityBanStates: [Int: Bool] = .init()
     
     // MARK: API Properties
     // Properties that are provided by the API
@@ -47,6 +64,7 @@ public class Person: UnifiedModelProviding {
     public init(api: ApiClient, properties: PersonProperties) {
         self.api = api
         self.properties = properties
+        self.blocked = api.blocks?.people.keys.contains(properties.actorId) ?? false
         
         self.actorId = properties.actorId
         self.id = properties.id
@@ -125,5 +143,27 @@ public class Person: UnifiedModelProviding {
         let snapshot = try await api.repository.getPerson(id: id)
         return await .init(api: api, snapshot: .person3(snapshot))
     }
+    
+    // MARK: Logic
+    
+    func updateKnownCommunityBanState(id: Int, banned: Bool) {
+        if banned {
+            // This `if` statement avoids unneccessary state update
+            if !(knownCommunityBanStates[id] ?? false) {
+                knownCommunityBanStates[id] = true
+            }
+        } else {
+            if knownCommunityBanStates[id] ?? true {
+                knownCommunityBanStates[id] = false
+            }
+        }
+    }
 }
 
+// MARK: - Computed
+
+// MARK: - Interactions
+
+public extension Person {
+    
+}

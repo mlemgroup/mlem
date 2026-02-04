@@ -8,11 +8,17 @@
 // MARK: ContentModel
 
 public extension Person {
-    public static var tierNumber: Int { 4 }
+    static var tierNumber: Int { 4 }
 }
 
 // MARK: CacheIdentifiable
 
 public extension Person {
     var cacheId: Int { id }
+}
+
+// MARK: Blockable
+
+public extension Person {
+    
 }
