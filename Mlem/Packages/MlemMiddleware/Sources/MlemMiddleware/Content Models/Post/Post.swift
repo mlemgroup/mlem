@@ -121,13 +121,7 @@ public class Post:
         
         // because upgrade() is not available until all properties are initialized, first populate all properties
         // with ExpectedValues that don't actually do anything, then reassign them properly at the end of the init
-        // this is somewhat cumbersome but avoids lazy vars, which are very awkward in Observables
-        func dummyExpectedValue<T>(_ value: T?) -> ExpectedValue<T> {
-            .init(
-                value: value,
-                provideValue: { assertionFailure("This should be overridden") })
-        }
-        
+        // this is somewhat cumbersome but avoids lazy vars, which are very awkward in Observables        
         self.creator = dummyExpectedValue(properties.creator)
         self.community = dummyExpectedValue(properties.community)
         self.commentCount = dummyExpectedValue(properties.commentCount)

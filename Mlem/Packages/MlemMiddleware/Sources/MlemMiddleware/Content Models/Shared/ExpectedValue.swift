@@ -34,6 +34,12 @@ public struct ExpectedValue<T>: ValueProviding {
     }
 }
 
+func dummyExpectedValue<T>(_ value: T?) -> ExpectedValue<T> {
+    .init(
+        value: value,
+        provideValue: { assertionFailure("This should be overridden") })
+}
+
 /// ValueProviding wrapper for values that are guaranteed to be present
 public struct RealizedValue<T>: ValueProviding {
     private let value_: T
