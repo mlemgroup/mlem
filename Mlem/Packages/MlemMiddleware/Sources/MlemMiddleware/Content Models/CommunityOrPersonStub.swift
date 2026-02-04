@@ -24,9 +24,5 @@ public extension CommunityOrPerson {
 public protocol Blockable: ContentModel, ActorIdentifiable {
     var blocked: Bool { get }
 
-    @discardableResult
-    func updateBlocked(_ newValue: Bool) -> Task<StateUpdateResult, Never> 
-
-    @discardableResult
-    func toggleBlocked() -> Task<StateUpdateResult, Never> 
+    func updateBlocked(_ newValue: Bool)
 }

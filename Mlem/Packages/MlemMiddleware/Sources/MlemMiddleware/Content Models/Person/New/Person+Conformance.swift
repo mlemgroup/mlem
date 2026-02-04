@@ -20,5 +20,13 @@ public extension Person {
 // MARK: Blockable
 
 public extension Person {
-    
+    func updateBlocked(_ newValue: Bool) {
+        blocked = newValue
+        
+        Task {
+            await updateQueue.addItem {
+                await .init(api: self.api, snapshot: .person2(try await self.api.repository.blockPerson(id: self.id, block: newValue)))
+            }
+        }
+    }
 }

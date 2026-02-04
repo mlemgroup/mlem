@@ -11,12 +11,12 @@ import Foundation
 @Observable
 public class Person:
     UnifiedModelProviding,
-    Blockable,
-    ContentIdentifiable,
-    SelectableContentProviding,
-    PurgableProviding,
-    Sharable,
-    FeedLoadable where FilterType == PersonFilterType {
+    Blockable {
+//    ContentIdentifiable,
+//    SelectableContentProviding,
+//    PurgableProviding,
+//    Sharable,
+//    FeedLoadable where FilterType == PersonFilterType {
     public typealias Properties = PersonProperties
     
     public var api: ApiClient

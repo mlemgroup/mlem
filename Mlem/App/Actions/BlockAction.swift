@@ -284,6 +284,8 @@ extension BlockAction {
         }
     }
 
+    // TODO: NOW figure out how to propagate this state up from the block action
+    // UpdateQueue probably needs a generic callback?
     private func updateBlocked(
         _ content: Content,
         environment: EnvironmentValues,

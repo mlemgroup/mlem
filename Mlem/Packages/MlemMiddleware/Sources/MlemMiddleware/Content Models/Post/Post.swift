@@ -121,7 +121,7 @@ public class Post:
         
         // because upgrade() is not available until all properties are initialized, first populate all properties
         // with ExpectedValues that don't actually do anything, then reassign them properly at the end of the init
-        // this is somewhat cumbersome but avoids lazy vars, which are very awkward in Observables        
+        // this is somewhat cumbersome but avoids lazy vars, which are very awkward in Observables
         self.creator = dummyExpectedValue(properties.creator)
         self.community = dummyExpectedValue(properties.community)
         self.commentCount = dummyExpectedValue(properties.commentCount)

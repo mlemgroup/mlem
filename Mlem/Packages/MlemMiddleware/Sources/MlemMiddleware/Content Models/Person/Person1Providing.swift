@@ -142,16 +142,10 @@ public extension Person1Providing {
         )
     }
     
-    @discardableResult
-    func updateBlocked(_ newValue: Bool) -> Task<StateUpdateResult, Never> {
-        blockedManager.performRequest(expectedResult: newValue) { semaphore in
+    func updateBlocked(_ newValue: Bool) {
+        _ = blockedManager.performRequest(expectedResult: newValue) { semaphore in
             try await self.api.blockPerson(id: self.id, block: newValue, semaphore: semaphore)
         }
-    }
-    
-    @discardableResult
-    func toggleBlocked() -> Task<StateUpdateResult, Never> {
-        updateBlocked(!blocked)
     }
     
     func ban(from community: any Community, removeContent: Bool, reason: String?, expires: Date?) async throws {
