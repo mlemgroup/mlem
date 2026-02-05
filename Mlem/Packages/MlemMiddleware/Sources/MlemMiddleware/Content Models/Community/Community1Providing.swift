@@ -141,7 +141,7 @@ public extension Community1Providing {
         )
     }
     
-    func updateBlocked(_ newValue: Bool) {
+    func updateBlocked(_ newValue: Bool, callback: ((Bool) -> Void)? = nil) {
         _ = blockedManager.performRequest(expectedResult: newValue) { semaphore in
             try await self.api.blockCommunity(id: self.id, block: newValue, semaphore: semaphore)
         }

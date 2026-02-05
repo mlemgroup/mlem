@@ -248,16 +248,36 @@ extension BlockAction {
     }
 
     private func submit(content: Content, environment: EnvironmentValues) {
+        let shouldBlock = !content.blocked(environment: environment)
+        
+        switch content {
+        case let .instance(instance):
+            submitForInstance(instance: instance, shouldBlock: shouldBlock, environment: environment)
+        case let .blockable(blockable):
+            submitForBlockable(blockable: blockable, environment: environment)
+        }
+    }
+    
+    private func submitForBlockable(blockable: any Blockable, environment: EnvironmentValues) {
+        let shouldBlock = !blockable.blocked
+        blockable.updateBlocked(shouldBlock) { didSucceed in
+            let toast = createToast(didBlock: shouldBlock, didSucceed: didSucceed) {
+                blockable.updateBlocked(!shouldBlock, callback: nil)
+            }
+            environment.toastModel?.add(toast)
+        }
+    }
+    
+    private func submitForInstance(instance: any InstanceStubProviding, shouldBlock: Bool, environment: EnvironmentValues) {
         Task {
-            let shouldBlock = !content.blocked(environment: environment)
-            let didSucceed = await updateBlocked(
-                content,
+            let didSucceed = await updateInstanceBlocked(
+                instance: instance,
                 environment: environment,
                 newValue: shouldBlock
             )
             let toast = createToast(didBlock: shouldBlock, didSucceed: didSucceed) {
-                Task { await updateBlocked(
-                    content,
+                Task { await updateInstanceBlocked(
+                    instance: instance,
                     environment: environment,
                     newValue: false
                 ) }
@@ -284,26 +304,7 @@ extension BlockAction {
         }
     }
 
-    // TODO: NOW figure out how to propagate this state up from the block action
-    // UpdateQueue probably needs a generic callback?
-    private func updateBlocked(
-        _ content: Content,
-        environment: EnvironmentValues,
-        newValue: Bool
-    ) async -> Bool {
-        switch content {
-        case let .blockable(entity):
-            return await entity.updateBlocked(newValue).value == .succeeded
-        case let .instance(instance):
-            return await updateBlocked(
-                instance: instance,
-                environment: environment,
-                newValue: newValue
-            )
-        }
-    }
-
-    private func updateBlocked(
+    private func updateInstanceBlocked(
         instance: any InstanceStubProviding,
         environment: EnvironmentValues,
         newValue: Bool
