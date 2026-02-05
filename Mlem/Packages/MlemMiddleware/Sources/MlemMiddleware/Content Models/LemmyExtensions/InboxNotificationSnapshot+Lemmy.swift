@@ -38,6 +38,32 @@ extension InboxNotificationSnapshot {
             content: .message(.init(from: messageView))
         )
     }
+
+    init(from notification: LemmyNotificationView) throws(ApiClientError) {
+        let contentId: Int
+        let content: InboxNotificationContentSnapshot
+
+        switch notification.data {
+        case let .privateMessage(message):
+            contentId = message.privateMessage.id
+            content = try .message(.init(from: message))
+        case let .comment(comment) where notification.notification.kind == .mention:
+            contentId = comment.comment.id
+            content = try .mention(.init(from: comment))
+        case let .comment(comment) where  notification.notification.kind == .reply:
+            contentId = comment.comment.id
+            content = try .reply(.init(from: comment))
+        default:
+            throw ApiClientError.featureUnsupported
+        }
+
+        self.init(
+            id: notification.notification.id,
+            contentId: contentId,
+            read: notification.notification.read,
+            content: content
+        )
+    }
 }
 
 // This can be removed once we drop support for < Lemmy 1.0
