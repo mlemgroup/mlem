@@ -5,6 +5,8 @@
 //  Created by Eric Andrews on 2026-01-26.
 //
 
+import Foundation
+
 // MARK: ContentModel
 
 public extension Person {
@@ -15,6 +17,60 @@ public extension Person {
 
 public extension Person {
     var cacheId: Int { id }
+}
+
+// MARK: SelectableContentProviding
+
+public extension Person {
+    var selectableContent: String? { description }
+}
+
+// MARK: ContentIdentifiable
+
+public extension Person {
+    static var modelTypeId: ContentType { .person }
+}
+
+// MARK: Resolvable
+
+public extension Person {
+    /// Returns a `URL` that can be resolved by another `ApiClient`.
+    func resolvableUrl(from instance: ContentModelUrlType) -> URL {
+        switch instance {
+        case .host: actorId.url
+        case .provider: .person(host: api.host, name: name)
+        }
+    }
+    
+    @inlinable
+    var allResolvableUrls: [URL] {
+        ContentModelUrlType.allCases.map { resolvableUrl(from: $0) }
+    }
+}
+
+// MARK: Sharable
+
+public extension Person {
+    func url() -> URL {
+        if apiIsLocal {
+            api.baseUrl.appending(path: "u/\(name)")
+        } else {
+            api.baseUrl.appending(path: "u/\(name)@\(host)")
+        }
+    }
+}
+
+// MARK: FeedLoadable
+
+public extension Person {
+    typealias FilterType = PersonFilterType
+    
+    func sortVal(sortType: FeedLoaderSort.SortType) -> FeedLoaderSort {
+        switch sortType {
+        case .new:
+            return .new(created)
+        }
+    }
 }
 
 // MARK: Blockable

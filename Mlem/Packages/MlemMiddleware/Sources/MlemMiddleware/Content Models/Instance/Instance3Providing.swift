@@ -36,7 +36,7 @@ public extension Instance3Providing {
         try await api.addAdmin(personId: personId, added: added)
     }
     
-    func addAdmin(_ person: any DeprecatedPerson, added: Bool) async throws {
+    func addAdmin(_ person: Person, added: Bool) async throws {
         try await addAdmin(personId: person.id, added: added)
     }
     

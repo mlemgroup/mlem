@@ -11,12 +11,14 @@ import Foundation
 @Observable
 public class Person:
     UnifiedModelProviding,
-    Blockable {
-//    ContentIdentifiable,
-//    SelectableContentProviding,
-//    PurgableProviding,
-//    Sharable,
-//    FeedLoadable where FilterType == PersonFilterType {
+    Blockable,
+    ContentIdentifiable,
+    SelectableContentProviding,
+    Resolvable,
+    PurgableProviding,
+    Sharable,
+    FeedLoadable,
+    Profile2Providing { // TODO: UnifiedCommunity unify ProfileProviding
     public typealias Properties = PersonProperties
     
     public var api: ApiClient
@@ -27,6 +29,7 @@ public class Person:
     // Mlem-specific properties that are not reflected in the API
     
     public var blocked: Bool
+    public var purged: Bool
     
     // Communities from which this person is *known* to be banned.
     // If an ID is not in this set, its status is unknown.
@@ -162,8 +165,159 @@ public class Person:
 
 // MARK: - Computed
 
+public extension Person {
+    var isMlemDeveloper: Bool {
+        BackendClient.main.flairs.developers.contains(actorId.description)
+    }
+    
+    var bannedFromInstance: Bool { instanceBan != .notBanned }
+    
+    func isBannedFromCommunity(id: Int) -> Bool? {
+        knownCommunityBanStates[id]
+    }
+    
+    func isBannedFromCommunity(_ community: any Community) -> Bool? {
+        isBannedFromCommunity(id: community.id)
+    }
+    
+    func profileDetails() -> ProfileDetails {
+        .init(
+            avatar: avatar,
+            banner: banner,
+            displayName: displayName,
+            description: description,
+            matrixId: matrixUserId // TODO: NOW figure out naming
+        )
+    }
+    
+    var moderates: ((CommunityIdentifier) -> Bool)? {
+        if let moderatedCommunities = moderatedCommunities.value {
+            return { communityIdentifier in
+                switch communityIdentifier {
+                case let .id(id): moderatedCommunities.contains { $0.id == id }
+                case let .actorId(actorId): moderatedCommunities.contains { $0.actorId == actorId }
+                case let .community(community): moderatedCommunities.contains { $0.actorId == community.actorId }
+                }
+            }
+        }
+        return nil
+    }
+    
+    /// Returns true if this person can perform moderator actions on the target person
+    func canModerate(_ person: any DeprecatedPerson, in community: any Community3Providing) -> Bool {
+        // admins can moderate anybody but a higher-ranking admin
+        if isAdmin.value ?? false {
+            if person.isAdmin_ ?? false {
+                return api.isHigherAdmin(than: person)
+            }
+            return true
+        }
+        
+        // if this person is not a mod, can't moderate
+        guard let myModIndex = community.moderators.firstIndex(where: { $0.id == id }) else {
+            return false
+        }
+        
+        // if target is a mod, check that this person outranks them
+        if let targetModIndex = community.moderators.firstIndex(where: { $0.id == person.id }) {
+            return myModIndex < targetModIndex
+        }
+        
+        // if target not a mod, can moderate
+        return true
+    }
+}
+
 // MARK: - Interactions
 
 public extension Person {
     
+    // Get Content
+    
+    func getContent(
+        community: (any Community)? = nil,
+        sort: PostSortType = .new,
+        page: Int,
+        limit: Int,
+        savedOnly: Bool = false
+    ) async throws -> (person: Person, posts: [Post], comments: [Comment]) {
+        try await api.getContent(
+            authorId: id,
+            sort: sort,
+            page: page,
+            limit: limit,
+            savedOnly: savedOnly,
+            communityId: community?.id
+        )
+    }
+    
+    // MARK: Ban
+    
+    func ban(from community: any Community, removeContent: Bool, reason: String?, expires: Date?) async throws {
+        try await api.banPersonFromCommunity(
+            personId: id,
+            communityId: community.id,
+            ban: true,
+            removeContent: removeContent,
+            reason: reason,
+            expires: expires
+        )
+    }
+    
+    func unban(from community: any Community, reason: String?) async throws {
+        try await api.banPersonFromCommunity(
+            personId: id,
+            communityId: community.id,
+            ban: false,
+            removeContent: false,
+            reason: reason
+        )
+    }
+    
+    // MARK: Purge
+    
+    func purge(reason: String?) async throws {
+        try await api.purgePerson(id: id, reason: reason)
+    }
+    
+    func banFromInstance(removeContent: Bool, reason: String?, expires: Date?) async throws {
+        try await api.banPersonFromInstance(
+            personId: id,
+            ban: true,
+            removeContent: removeContent,
+            reason: reason,
+            expires: expires
+        )
+    }
+    
+    func unbanFromInstance(reason: String?) async throws {
+        try await api.banPersonFromInstance(
+            personId: id,
+            ban: false,
+            removeContent: false,
+            reason: reason,
+            expires: nil
+        )
+    }
+    
+    // Note
+    
+    func updateNote(content: String?) {
+        note = content
+        
+        Task {
+            await updateQueue.addItem { properties in
+                var properties = properties
+                try await self.api.repository.editNote(id: self.id, content: content)
+                properties.note = content
+                return properties
+            }
+        }
+    }
+}
+
+public enum CommunityIdentifier {
+    case id(Int)
+    case actorId(ActorIdentifier)
+    case community(any Community)
 }

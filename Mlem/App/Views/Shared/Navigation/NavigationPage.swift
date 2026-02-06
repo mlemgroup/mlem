@@ -65,7 +65,7 @@ enum NavigationPage: Hashable {
     case report(_ interactable: ReportableHashWrapper, community: AnyCommunity? = nil)
     case remove(_ removable: RemovableHashWrapper)
     case purge(_ purgable: PurgableHashWrapper)
-    case ban(_ person: AnyPerson, isBannedFromCommunity: Bool, shouldBan: Bool, community: AnyCommunity?)
+    case ban(_ person: Person, isBannedFromCommunity: Bool, shouldBan: Bool, community: AnyCommunity?)
     case createPost(
         community: AnyCommunity?,
         title: String,
@@ -317,16 +317,18 @@ enum NavigationPage: Hashable {
     }
     
     static func ban(
-        _ person: any DeprecatedPerson,
+        _ person: Person,
         isBannedFromCommunity: Bool,
         shouldBan: Bool,
         community: (any Community)? = nil
     ) -> NavigationPage {
+        let anyCommunity: AnyCommunity?
         if let community {
-            ban(.init(person), isBannedFromCommunity: isBannedFromCommunity, shouldBan: shouldBan, community: .init(community))
-        } else {
-            ban(.init(person), isBannedFromCommunity: isBannedFromCommunity, shouldBan: shouldBan, community: nil)
+            anyCommunity = .init(community)
+        } else  {
+            anyCommunity = nil
         }
+        return .ban(person, isBannedFromCommunity: isBannedFromCommunity, shouldBan: shouldBan, community: anyCommunity)
     }
     
     static func signUp(_ instance: any InstanceStubProviding) -> NavigationPage {

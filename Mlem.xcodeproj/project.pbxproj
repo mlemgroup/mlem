@@ -1120,6 +1120,7 @@
 		03DA26AC2D79F29700E66267 /* Packages */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Packages; sourceTree = "<group>"; };
 		03EC85ED2E9D925B004698BB /* Actions */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Actions; sourceTree = "<group>"; };
 		03F6BDA12D502382006A425E /* Preview Content */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "Preview Content"; sourceTree = "<group>"; };
+		CD2276D42F369C5F0024AEB1 /* Person */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Person; sourceTree = "<group>"; };
 		CD6CD11A2F25BF1300566122 /* Interactable */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Interactable; sourceTree = "<group>"; };
 		CD6CD1212F25C36800566122 /* Post */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Post; sourceTree = "<group>"; };
 		CD6CD1222F25EC6A00566122 /* Comment */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Comment; sourceTree = "<group>"; };
@@ -2250,6 +2251,7 @@
 		CDA8A0052BE43B350022F7ED /* Content Models */ = {
 			isa = PBXGroup;
 			children = (
+				CD2276D42F369C5F0024AEB1 /* Person */,
 				CD6CD1222F25EC6A00566122 /* Comment */,
 				CD6CD1212F25C36800566122 /* Post */,
 				CD6CD11A2F25BF1300566122 /* Interactable */,
@@ -2419,6 +2421,7 @@
 				03DA26AC2D79F29700E66267 /* Packages */,
 				03EC85ED2E9D925B004698BB /* Actions */,
 				03F6BDA12D502382006A425E /* Preview Content */,
+				CD2276D42F369C5F0024AEB1 /* Person */,
 				CD6CD11A2F25BF1300566122 /* Interactable */,
 				CD6CD1212F25C36800566122 /* Post */,
 				CD6CD1222F25EC6A00566122 /* Comment */,
