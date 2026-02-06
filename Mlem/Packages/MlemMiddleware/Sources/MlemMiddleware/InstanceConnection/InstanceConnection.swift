@@ -154,6 +154,9 @@ public protocol InstanceConnection {
         page: Int,
         limit: Int
     ) async throws -> [PersonVoteSnapshot]
+
+    @discardableResult
+    func voteInPoll(postId: Int, choiceIds: Set<Int>) async throws -> Post2Snapshot 
     
     // MARK: - Comment
     

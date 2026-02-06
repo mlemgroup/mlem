@@ -14,9 +14,19 @@ struct PostPollView: View {
     @Environment(\.toastModel) var toastModel
     @Environment(\.colorScheme) var colorScheme
 
+    let post: Post
     let poll: PostPoll
 
-    @State var resultsShownManually: Bool = false
+    @State var resultsShownManually: Bool 
+
+    @State var selected: Set<Int>
+
+    init(post: Post, poll: PostPoll) {
+        self.post = post
+        self.poll = poll
+        self._resultsShownManually = .init(initialValue: poll.hasVoted)
+        self._selected = .init(initialValue: .init(poll.choices.filter(\.selected).map(\.id)))
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -24,7 +34,11 @@ struct PostPollView: View {
                 choiceView(choice)
             }
             if !poll.hasEnded {
-                showResultsButtonView
+                if selected.isEmpty, !poll.hasVoted {
+                    showResultsButtonView
+                } else {
+                    submitButtonView
+                }
             }
             footerView
         }
@@ -44,6 +58,32 @@ struct PostPollView: View {
                 .padding(.leading, 8)
                 .padding(.vertical, 8)
                 .background(.themedAccent.opacity(0.2), in: .rect(cornerRadius: 16))
+        }
+        .buttonStyle(.plain)
+    }
+
+    @ViewBuilder
+    var submitButtonView: some View {
+        Button {
+            if !self.poll.hasVoted {
+                self.resultsShownManually = true
+                self.post.voteInPoll(self.selected)
+                hapticManager.play(haptic: .gentleInfo, tier: .low)
+            }
+        } label: {
+            Label(
+                self.poll.hasVoted ? "Submitted" : "Submit",
+                icon: self.poll.hasVoted ? .general.success : .lemmy.send
+            )
+            .symbolVariant(.fill)
+            .foregroundStyle(self.poll.hasVoted ? .themedSecondary : .themedContrastingLabel)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.leading, 8)
+            .padding(.vertical, 8)
+            .background(
+                self.poll.hasVoted ? .themedTertiaryGroupedBackground : .themedAccent,
+                in: .rect(cornerRadius: 16)
+            )
         }
         .buttonStyle(.plain)
     }
@@ -72,7 +112,9 @@ struct PostPollView: View {
     func choiceView(_ choice: PostPollChoice) -> some View {
         HStack(alignment: .top) {
             if showCheckboxes {
-                Checkbox(isOn: false)
+                let selected = self.selected.contains(choice.id)
+                Checkbox(isOn: selected)
+                    .opacity(!poll.hasVoted || selected ? 1 : 0)
             }
             VStack(alignment: .leading, spacing: 2) {
                 Text(choice.label)
@@ -87,9 +129,23 @@ struct PostPollView: View {
         .padding(.vertical, 8)
         .background(.themedTertiaryGroupedBackground, in: .rect(cornerRadius: 16))
         .onTapGesture {
-            if !poll.hasEnded {
-                hapticManager.play(haptic: .gentleInfo, tier: .low)
-                toastModel?.add(.basic(String("🚧 WIP 🚧")))
+            if poll.hasVoted {
+                toastModel?.add(.basic("Already voted", subtitle: "You cannot change your vote.", duration: 3))
+                return
+            }
+            hapticManager.play(haptic: .gentleInfo, tier: .low)
+            if poll.type == .single {
+                if selected == [choice.id] {
+                    selected = []
+                } else {
+                    selected = [choice.id]
+                }
+            } else {
+                if selected.contains(choice.id) {
+                    selected.remove(choice.id)
+                } else {
+                    selected.insert(choice.id)
+                }
             }
         }
     }
@@ -107,7 +163,7 @@ struct PostPollView: View {
                         .foregroundStyle(.tertiary)
                 }
             }
-            .frame(width: showResults ? 30 : 15, alignment: .center)
+            .frame(width: showResults ? 35 : 15, alignment: .center)
             .font(.footnote)
         }
     }
@@ -135,7 +191,7 @@ struct PostPollView: View {
     }
 
     var showCheckboxes: Bool {
-        !poll.hasEnded
+        !poll.hasEnded || poll.hasVoted
     }
 
     var showResults: Bool {
