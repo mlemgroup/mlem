@@ -23,13 +23,15 @@ extension ApiRepository {
     }
 
     func getReplyNotifications(
-        page: Int,
+        page: Int?,
+        cursor: String?,
         limit: Int,
         unreadOnly: Bool
-    ) async throws -> [InboxNotificationSnapshot] {
+    ) async throws -> (notifications: [InboxNotificationSnapshot], cursor: String?) {
         try await performingForConnection { connection in
             try await connection.getReplyNotifications(
                 page: page,
+                cursor: cursor,
                 limit: limit,
                 unreadOnly: unreadOnly
             )
@@ -37,13 +39,15 @@ extension ApiRepository {
     }
     
     func getMentionNotifications(
-        page: Int,
+        page: Int?,
+        cursor: String?,
         limit: Int,
         unreadOnly: Bool
-    ) async throws -> [InboxNotificationSnapshot] {
+    ) async throws -> (notifications: [InboxNotificationSnapshot], cursor: String?) {
         try await performingForConnection { connection in
             try await connection.getMentionNotifications(
                 page: page,
+                cursor: cursor,
                 limit: limit,
                 unreadOnly: unreadOnly
             )
@@ -51,13 +55,15 @@ extension ApiRepository {
     }
 
     func getMessageNotifications(
-        page: Int,
+        page: Int?,
+        cursor: String?,
         limit: Int,
         unreadOnly: Bool
-    ) async throws -> [InboxNotificationSnapshot] {
+    ) async throws -> (notifications: [InboxNotificationSnapshot], cursor: String?) {
         try await performingForConnection { connection in
             try await connection.getMessageNotifications(
                 page: page,
+                cursor: cursor,
                 limit: limit,
                 unreadOnly: unreadOnly
             )
@@ -83,24 +89,6 @@ extension ApiRepository {
     func markAllAsRead() async throws {
         try await performingForConnection { connection in
             try await connection.markAllAsRead()
-        }
-    }
-    
-    func markReplyAsRead(id: Int, read: Bool = true, semaphore: UInt? = nil) async throws {
-        try await performingForConnection { connection in
-            try await connection.markReplyAsRead(id: id, read: read)
-        }
-    }
-    
-    func markMentionAsRead(id: Int, read: Bool = true, semaphore: UInt? = nil) async throws {
-        try await performingForConnection { connection in
-            try await connection.markMentionAsRead(id: id, read: read)
-        }
-    }
-    
-    func markMessageAsRead(id: Int, read: Bool = true, semaphore: UInt? = nil) async throws {
-        try await performingForConnection { connection in
-            try await connection.markMessageAsRead(id: id, read: read)
         }
     }
     
