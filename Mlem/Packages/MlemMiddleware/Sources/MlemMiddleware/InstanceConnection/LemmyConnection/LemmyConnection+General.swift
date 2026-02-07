@@ -203,7 +203,7 @@ public extension LemmyConnection {
         case let .lemmyGetModlogResponse(response):
             return try response.toSnapshots()
         case let .lemmyPagedResponse(response):
-            return try response.items.map { try .init(from: $0) }
+            return try response.items.compactMap { try .init(from: $0) }
         }
     }
     

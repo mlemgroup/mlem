@@ -8,12 +8,16 @@
 import Foundation
 
 extension ModlogEntrySnapshot {
-    init(from view: LemmyModlogView) throws(ApiClientError) {
-        try self.init(
-            created: view.modlog.publishedAt,
-            moderator: view.moderator.map(Person1Snapshot.init),
-            type: .init(from: view)
-        )
+    init?(from view: LemmyModlogView) throws(ApiClientError) {
+        if let type = try ModlogEntryContentSnapshot(from: view) {
+            try self.init(
+                created: view.modlog.publishedAt,
+                moderator: view.moderator.map(Person1Snapshot.init),
+                type: type
+            )
+        } else {
+            return nil
+        }
     }
 
     init(from view: LemmyModRemovePostView) throws(ApiClientError) {
