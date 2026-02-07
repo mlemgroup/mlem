@@ -45,14 +45,15 @@ public class BlockList {
         let oldPeopleKeys = Set(people.keys)
         let newPeopleKeys = Set(blocks.people.keys)
 
+        // bypasses queuing for blocked status
         for key in newPeopleKeys.subtracting(oldPeopleKeys) {
-            if let id = blocks.people[key], let person = api.caches.person1.retrieveModel(cacheId: id) {
-                person.blockedManager.updateWithReceivedValue(true, semaphore: nil)
+            if let id = blocks.people[key], let person = api.caches.person.retrieveModel(cacheId: id) {
+                person.blocked = true
             }
         }
         for key in oldPeopleKeys.subtracting(newPeopleKeys) {
-            if let id = people[key], let person = api.caches.person1.retrieveModel(cacheId: id) {
-                person.blockedManager.updateWithReceivedValue(false, semaphore: nil)
+            if let id = people[key], let person = api.caches.person.retrieveModel(cacheId: id) {
+                person.blocked = false
             }
         }
         
@@ -97,7 +98,7 @@ public class BlockList {
         people.keys.contains(personActorId)
     }
     
-    public func contains(_ person: any DeprecatedPerson) -> Bool {
+    public func contains(_ person: Person) -> Bool {
         people.keys.contains(person.actorId)
     }
     

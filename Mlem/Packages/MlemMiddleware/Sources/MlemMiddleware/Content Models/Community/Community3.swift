@@ -16,14 +16,14 @@ public final class Community3: Community3Providing {
     public let community2: Community2
     
     public var instance: Instance1?
-    public var moderators: [Person1]
+    public var moderators: [Person]
     public var discussionLanguageIds: Set<Int>
   
     init(
         api: ApiClient,
         community2: Community2,
         instance: Instance1?,
-        moderators: [Person1],
+        moderators: [Person],
         discussionLanguageIds: Set<Int>
     ) {
         self.api = api

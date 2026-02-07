@@ -34,24 +34,82 @@ public struct PersonProperties: UnifiedPropertiesProviding {
     var instance: (any Instance)?
     var moderatedCommunities: [any Community]?
     
+    // From Person4Snapshot
+    var email: String??
+    var showNsfw: Bool?
+    var theme: String?
+    var defaultListingType: ListingType?
+    var interfaceLanguage: String?
+    var showAvatars: Bool?
+    var sendNotificationsToEmail: Bool?
+    var showScores: Bool?
+    var showBotAccounts: Bool?
+    var showReadPosts: Bool?
+    var discussionLanguageIds: Set<Int>?
+    var emailVerified: Bool?
+    var acceptedApplication: Bool?
+    var openLinksInNewTab: Bool??
+    var blurNsfw: Bool??
+    var autoExpandImages: Bool??
+    var infiniteScrollEnabled: Bool??
+    var postListingMode: PostFeedViewMode??
+    var totp2faEnabled: Bool??
+    var enableKeyboardNavigation: Bool??
+    var enableAnimatedImages: Bool??
+    var collapseBotComments: Bool??
+    
     @MainActor
     public init(api: ApiClient, snapshot: AnyPersonSnapshot) {
         let snapshot1: Person1Snapshot
         let snapshot2: Person2Snapshot?
         let snapshot3: Person3Snapshot?
+        let snapshot4: Person4Snapshot?
         switch snapshot {
         case let .person1(person1Snapshot):
             snapshot1 = person1Snapshot
             snapshot2 = nil
             snapshot3 = nil
+            snapshot4 = nil
         case let .person2(person2Snapshot):
             snapshot1 = person2Snapshot.person
             snapshot2 = person2Snapshot
             snapshot3 = nil
+            snapshot4 = nil
         case let .person3(person3Snapshot):
             snapshot1 = person3Snapshot.person.person
             snapshot2 = person3Snapshot.person
             snapshot3 = person3Snapshot
+            snapshot4 = nil
+        case let .person4(person4Snapshot):
+            snapshot1 = person4Snapshot.person.person.person
+            snapshot2 = person4Snapshot.person.person
+            snapshot3 = person4Snapshot.person
+            snapshot4 = person4Snapshot
+        }
+        
+        if let snapshot4 {
+            email = snapshot4.email
+            showNsfw = snapshot4.showNsfw
+            theme = snapshot4.theme
+            defaultListingType = snapshot4.defaultListingType
+            interfaceLanguage = snapshot4.interfaceLanguage
+            showAvatars = snapshot4.showAvatars
+            sendNotificationsToEmail = snapshot4.sendNotificationsToEmail
+            showScores = snapshot4.showScores
+            showBotAccounts = snapshot4.showBotAccounts
+            showReadPosts = snapshot4.showReadPosts
+            discussionLanguageIds = snapshot4.discussionLanguageIds
+            emailVerified = snapshot4.emailVerified
+            acceptedApplication = snapshot4.acceptedApplication
+            openLinksInNewTab = snapshot4.openLinksInNewTab
+            blurNsfw = snapshot4.blurNsfw
+            autoExpandImages = snapshot4.autoExpandImages
+            infiniteScrollEnabled = snapshot4.infiniteScrollEnabled
+            postListingMode = snapshot4.postListingMode
+            totp2faEnabled = snapshot4.totp2faEnabled
+            enableKeyboardNavigation = snapshot4.enableKeyboardNavigation
+            enableAnimatedImages = snapshot4.enableAnimatedImages
+            collapseBotComments = snapshot4.collapseBotComments
         }
         
         if let snapshot3, let site = snapshot3.site {

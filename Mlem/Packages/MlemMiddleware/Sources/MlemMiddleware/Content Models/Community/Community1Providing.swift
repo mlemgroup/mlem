@@ -180,6 +180,7 @@ public extension Community1Providing {
 // CanModerateProviding conformance
 public extension Community1Providing {
     var canModerate: Bool {
-        api.myPerson?.moderates(communityId: id) ?? false || api.isAdmin
+        guard let myPersonModerates = api.myPerson?.moderates else { return false }
+        return myPersonModerates(.id(id)) || api.isAdmin
     }
 }

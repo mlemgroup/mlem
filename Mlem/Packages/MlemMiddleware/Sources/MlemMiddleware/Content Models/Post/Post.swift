@@ -73,7 +73,7 @@ public class Post:
     public var pinnedInstance: Bool
     public var locked: Bool
     
-    public var creator: ExpectedValue<any DeprecatedPerson>
+    public var creator: ExpectedValue<Person>
     public var community: ExpectedValue<any Community>
     public var commentCount: ExpectedValue<Int>
     public var unreadCommentCount: ExpectedValue<Int>

@@ -13,10 +13,10 @@ public extension ApiClient {
     }
     
     /// Returns true if both myPerson and the given person are admins on this instance and myPerson outranks the given person, false otherwise
-    func isHigherAdmin(than person: any Person1Providing) -> Bool {
+    func isHigherAdmin(than person: Person) -> Bool {
         guard person.api.actorId == actorId,
               let myPerson,
-              let myAdminIndex = myInstance?.administrators.firstIndex(of: myPerson.person2),
+              let myAdminIndex = myInstance?.administrators.firstIndex(of: myPerson),
               let targetAdminIndex = myInstance?.administrators.firstIndex(where: { $0.actorId == person.actorId }) else {
             return false
         }
@@ -86,7 +86,7 @@ public extension ApiClient {
         case let .community(community):
             await caches.community2.getModel(api: self, from: community)
         case let .person(person):
-            await caches.person2.getModel(api: self, from: person)
+            await caches.person.getModel(api: self, from: .person2(person))
         }
     }
     
@@ -113,10 +113,10 @@ public extension ApiClient {
         }
     }
     
-    func getBlocked() async throws -> (people: [Person1], communities: [Community1], instances: [Instance1]) {
+    func getBlocked() async throws -> (people: [Person], communities: [Community1], instances: [Instance1]) {
         let snapshots = try await repository.getBlocked()
         return await (
-            people: caches.person1.getModels(api: self, from: snapshots.people),
+            people: caches.person.getModels(api: self, from: snapshots.people.map { .person1($0) }),
             communities: caches.community1.getModels(api: self, from: snapshots.communities),
             instances: caches.instance1.getModels(api: self, from: snapshots.instances)
         )
@@ -148,12 +148,12 @@ public extension ApiClient {
     @MainActor
     private func createModlogEntries(_ entries: [ModlogEntrySnapshot]) -> [ModlogEntry] {
         entries.map { entry in
-            ModlogEntry(
+            return ModlogEntry(
                 api: self,
                 created: entry.created,
-                moderator: caches.person1.getOptionalModel(
+                moderator: caches.person.getOptionalModel(
                     api: self,
-                    from: entry.moderator
+                    from: .person1(entry.moderator)
                 ),
                 moderatorId: entry.moderatorId,
                 type: .init(from: entry.type, api: self)

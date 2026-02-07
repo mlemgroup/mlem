@@ -53,7 +53,7 @@ extension Community3: CacheIdentifiable {
     
     @MainActor
     func update(with snapshot: Community3Snapshot, semaphore: UInt? = nil) {
-        setIfChanged(\.moderators, api.caches.person1.getModels(api: api, from: snapshot.moderators))
+        setIfChanged(\.moderators, api.caches.person.getModels(api: api, from: snapshot.moderators.map { .person1($0) }))
         setIfChanged(\.discussionLanguageIds, snapshot.discussionLanguageIds)
 
         community2.update(with: snapshot.community, semaphore: semaphore)

@@ -23,14 +23,14 @@ public final class Message2: Message2Providing, FeedLoadable {
     public var message2: Message2 { self }
     
     public let message1: Message1
-    public let creator: Person1
-    public let recipient: Person1
+    public let creator: Person
+    public let recipient: Person
     
     init(
         api: ApiClient,
         message1: Message1,
-        creator: Person1,
-        recipient: Person1
+        creator: Person,
+        recipient: Person
     ) {
         self.api = api
         self.message1 = message1

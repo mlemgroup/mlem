@@ -8,7 +8,7 @@
 import Foundation
 import Observation
 
-public struct PersonStub: PersonStubProviding, Hashable {
+public struct PersonStub: Hashable {
     public static let tierNumber: Int = 0
     public var api: ApiClient
     public let url: URL
@@ -30,8 +30,8 @@ public struct PersonStub: PersonStubProviding, Hashable {
         lhs.url == rhs.url
     }
     
-    public func upgrade() async throws -> any DeprecatedPerson {
-        try await api.getPerson(url: url) as Person2
+    public func getPerson() async throws -> Person {
+        try await api.getPerson(url: url)
     }
 }
 

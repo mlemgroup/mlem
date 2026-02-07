@@ -69,11 +69,11 @@ extension Person {
         
         let canBanFromInstance = api.isAdmin && api.supports(.banFromInstance, defaultValue: false)
         
-        if let myPerson = api.myPerson, let community {
+        if let myPerson = api.myPerson, let community, let myPersonModerates = myPerson.moderates {
             let supportedByApi = api.supports(.banFromCommunity, defaultValue: false) && (
                 apiIsLocal || api.supports(.banFromNonLocalCommunity, defaultValue: false)
             )
-            canBanFromCommunity = myPerson.moderates(communityId: community.id) && supportedByApi
+            canBanFromCommunity = myPersonModerates(.id(community.id)) && supportedByApi
             showBoth = canBanFromInstance && isBannedFromCommunity(community) != bannedFromInstance
         } else {
             canBanFromCommunity = false

@@ -10,7 +10,7 @@ import Foundation
 public struct ModlogEntry {
     public let api: ApiClient
     public let created: Date
-    public let moderator: Person1?
+    public let moderator: Person?
     public let moderatorId: Int
     public let type: ModlogEntryContent
 }

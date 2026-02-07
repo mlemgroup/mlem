@@ -93,3 +93,79 @@ public extension Person {
         }
     }
 }
+
+// MARK: Codable
+
+public extension Person {
+    struct CodedData: Codable {
+        let apiUrl: URL
+        let apiMyPersonId: Int?
+        let apiPerson: LemmyPerson
+    }
+    
+    internal var apiPerson: LemmyPerson {
+        .init(
+            id: id,
+            name: name,
+            displayName: displayName == name ? nil : displayName,
+            avatar: avatar,
+            banned: bannedFromInstance,
+            published: created,
+            updated: updated,
+            actorId: actorId,
+            bio: description,
+            local: apiIsLocal,
+            banner: banner,
+            deleted: deleted,
+            matrixUserId: matrixUserId,
+            botAccount: isBot,
+            banExpires: instanceBan.expiryDate,
+            instanceId: instanceId,
+            publishedAt: created,
+            updatedAt: updated,
+            apId: actorId,
+            postCount: nil,
+            commentCount: nil
+        )
+    }
+    
+    func codedData() async throws -> CodedData {
+        try await .init(
+            apiUrl: api.baseUrl,
+            apiMyPersonId: api.myPersonId,
+            apiPerson: apiPerson
+        )
+    }
+}
+
+// TDOO: NOW
+//public extension Person2 {
+//    struct CodedData: Codable {
+//        let apiUrl: URL
+//        let apiMyPersonId: Int?
+//        let apiPersonView: LemmyPersonView
+//    }
+//
+//    internal var apiPersonView: LemmyPersonView {
+//        .init(
+//            person: person1.apiPerson,
+//            counts: .init(
+//                personId: id,
+//                postCount: postCount,
+//                commentCount: commentCount
+//            ),
+//            isAdmin: isAdmin,
+//            personActions: nil,
+//            banned: nil,
+//            banExpiresAt: nil
+//        )
+//    }
+//
+//    func codedData() async throws -> CodedData {
+//        try await .init(
+//            apiUrl: api.baseUrl,
+//            apiMyPersonId: api.myPersonId,
+//            apiPersonView: apiPersonView
+//        )
+//    }
+//}

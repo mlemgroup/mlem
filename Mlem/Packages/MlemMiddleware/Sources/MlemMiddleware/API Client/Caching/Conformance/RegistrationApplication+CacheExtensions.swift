@@ -14,10 +14,13 @@ extension RegistrationApplication: CacheIdentifiable {
     func update(with snapshot: RegistrationApplicationSnapshot, semaphore: UInt? = nil) {
         setIfChanged(\.questionResponse, snapshot.questionResponse)
         resolutionManager.updateWithReceivedValue(resolution, semaphore: semaphore)
-        setIfChanged(\.resolver, api.caches.person1.getOptionalModel(api: api, from: snapshot.resolver))
+        setIfChanged(\.resolver, api.caches.person.getOptionalModel(api: api, from: .person1(snapshot.resolver)))
         setIfChanged(\.email, snapshot.email)
         setIfChanged(\.emailVerified, snapshot.emailVerified)
         setIfChanged(\.showNsfw, snapshot.showNsfw)
-        creator.update(with: snapshot.creator)
+        
+        Task {
+            await creator.updateQueue.attemptDirectUpdate(with: .init(api: api, snapshot: .person1(snapshot.creator)))
+        }
     }
 }

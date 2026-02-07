@@ -224,7 +224,7 @@ struct HandleThreadiverseLinksModifier: ViewModifier {
             ).resolve(url: url)
         }
 
-        if let person = output as? any DeprecatedPerson {
+        if let person = output as? Person {
             navigation.push(.person(person))
         } else if let community = output as? any Community {
             navigation.push(.community(community))

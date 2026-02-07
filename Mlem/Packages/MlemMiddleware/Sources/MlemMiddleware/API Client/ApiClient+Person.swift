@@ -8,52 +8,49 @@
 import Foundation
 
 public extension ApiClient {
-    func decodePerson(_ data: Person1.CodedData) async throws -> Person1 {
+    func decodePerson(_ data: Person.CodedData) async throws -> Person {
         guard data.apiUrl == baseUrl else {
             throw ApiClientError.mismatchingUrl
         }
         guard try await data.apiMyPersonId == myPersonId else {
             throw ApiClientError.mismatchingPersonId
         }
-        return try await caches.person1.getModel(
+        return try await caches.person.getModel(
             api: self,
-            from: .init(from: data.apiPerson),
+            from: .person1(.init(from: data.apiPerson)),
             isStale: true
         )
     }
+  
+    // TODO: NOW handle multiple tiers of coded data--all one tier with optionals? PersonProperties?
+//    func decodePerson(_ data: Person2.CodedData) async throws -> Person {
+//        guard data.apiUrl == baseUrl else {
+//            throw ApiClientError.mismatchingUrl
+//        }
+//        guard try await data.apiMyPersonId == myPersonId else {
+//            throw ApiClientError.mismatchingPersonId
+//        }
+//        return try await caches.person.getModel(
+//            api: self,
+//            from: .person2(.init(from: data.apiPersonView)),
+//            isStale: true
+//        )
+//    }
     
-    func decodePerson(_ data: Person2.CodedData) async throws -> Person2 {
-        guard data.apiUrl == baseUrl else {
-            throw ApiClientError.mismatchingUrl
-        }
-        guard try await data.apiMyPersonId == myPersonId else {
-            throw ApiClientError.mismatchingPersonId
-        }
-        return try await caches.person2.getModel(
-            api: self,
-            from: .init(from: data.apiPersonView),
-            isStale: true
-        )
-    }
-    
-    func getPerson(id: Int) async throws -> Person3 {
+    func getPerson(id: Int) async throws -> Person {
         let snapshot = try await repository.getPerson(id: id)
-        return await caches.person3.getModel(api: self, from: snapshot)
+        return await caches.person.getModel(api: self, from: .person3(snapshot))
     }
     
-    func getPerson(url: URL) async throws -> Person2 {
+    // TODO: NOW figure out how the upgrade for this should work
+    func getPerson(url: URL) async throws -> Person {
         let snapshot: Person2Snapshot = try await repository.getPerson(url: url)
-        return await caches.person2.getModel(api: self, from: snapshot)
+        return await caches.person.getModel(api: self, from: .person2(snapshot))
     }
     
-    func getPerson(username: String) async throws -> Person3 {
+    func getPerson(username: String) async throws -> Person {
         let snapshot: Person3Snapshot = try await repository.getPerson(username: username)
-        return await caches.person3.getModel(api: self, from: snapshot)
-    }
-    
-    func getPerson(url: URL) async throws -> Person3 {
-        let snapshot: Person3Snapshot = try await repository.getPerson(url: url)
-        return await caches.person3.getModel(api: self, from: snapshot)
+        return await caches.person.getModel(api: self, from: .person3(snapshot))
     }
     
     /// `filter` can be set to `.local` from 0.19.4 onwards.
@@ -63,7 +60,7 @@ public extension ApiClient {
         limit: Int = 20,
         filter: ListingType = .all,
         sort: SearchSortType = .top(.allTime)
-    ) async throws -> [Person2] {
+    ) async throws -> [Person] {
         let snapshots = try await repository.searchPeople(
             query: query,
             page: page,
@@ -71,15 +68,15 @@ public extension ApiClient {
             filter: filter,
             sort: sort
         )
-        return await caches.person2.getModels(api: self, from: snapshots)
+        return await caches.person.getModels(api: self, from: snapshots.map { .person2($0) })
     }
     
     @discardableResult
-    func blockPerson(id: Int, block: Bool, semaphore: UInt? = nil) async throws -> Person2 {
+    func blockPerson(id: Int, block: Bool, semaphore: UInt? = nil) async throws -> Person {
         let snapshot = try await repository.blockPerson(id: id, block: block)
-        return await caches.person2.getModel(
+        return await caches.person.getModel(
             api: self,
-            from: snapshot,
+            from: .person2(snapshot),
             semaphore: semaphore
         )
     }
@@ -92,7 +89,7 @@ public extension ApiClient {
         removeContent: Bool,
         reason: String?,
         expires: Date? = nil
-    ) async throws -> Person1 {
+    ) async throws -> Person {
         let snapshot = try await repository.banPersonFromCommunity(
             personId: personId,
             communityId: communityId,
@@ -101,11 +98,11 @@ public extension ApiClient {
             reason: reason,
             expires: expires
         )
-        let person = await caches.person1.getModel(
+        let person = await caches.person.getModel(
             api: self,
-            from: snapshot
+            from: .person1(snapshot)
         )
-        person.person1.updateKnownCommunityBanState(id: communityId, banned: ban)
+        person.updateKnownCommunityBanState(id: communityId, banned: ban)
         return person
     }
     
@@ -116,7 +113,7 @@ public extension ApiClient {
         removeContent: Bool,
         reason: String?,
         expires: Date? = nil
-    ) async throws -> Person2 {
+    ) async throws -> Person {
         let snapshot = try await repository.banPersonFromInstance(
             personId: personId,
             ban: ban,
@@ -124,15 +121,15 @@ public extension ApiClient {
             reason: reason,
             expires: expires
         )
-        return await caches.person2.getModel(
+        return await caches.person.getModel(
             api: self,
-            from: snapshot
+            from: .person2(snapshot)
         )
     }
     
     func purgePerson(id: Int, reason: String?) async throws {
         try await repository.purgePerson(id: id, reason: reason)
-        caches.person1.retrieveModel(cacheId: id)?.purged = true
+        caches.person.retrieveModel(cacheId: id)?.purged = true
     }
     
     func getContent(
@@ -142,7 +139,7 @@ public extension ApiClient {
         limit: Int,
         savedOnly: Bool? = nil,
         communityId: Int? = nil
-    ) async throws -> (person: Person3, posts: [Post], comments: [Comment]) {
+    ) async throws -> (person: Person, posts: [Post], comments: [Comment]) {
         let snapshots = try await repository.getContent(
             authorId: id,
             sort: sort,
@@ -152,13 +149,13 @@ public extension ApiClient {
             communityId: communityId
         )
         return await (
-            person: caches.person3.getModel(api: self, from: snapshots.person),
+            person: caches.person.getModel(api: self, from: .person3(snapshots.person)),
             posts: caches.post.getModels(api: self, from: snapshots.posts.map { .post2($0) }),
             comments: caches.comment.getModels(api: self, from: snapshots.comments.map { .comment2($0) })
         )
     }
     
-    func getMyPerson() async throws -> (person: Person4?, instance: Instance3, blocks: BlockList?) {
+    func getMyPerson() async throws -> (person: Person?, instance: Instance3, blocks: BlockList?) {
         let snapshot = try await repository.getMyPerson()
         let snapshotPersonName = snapshot.person?.person.person.person.name
         guard snapshotPersonName == username else {
@@ -169,7 +166,7 @@ public extension ApiClient {
         }
         
         let instance = await caches.instance3.getModel(api: self, from: snapshot.instance)
-        let person = await caches.person4.getOptionalModel(api: self, from: snapshot.person)
+        let person = await caches.person.getOptionalModel(api: self, from: .person4(snapshot.person))
         var blocks: BlockList? = blocks
         
         if person != nil, let newBlocks = snapshot.blocks {
@@ -194,12 +191,12 @@ public extension ApiClient {
     func editProfile(_ details: ProfileDetails) async throws {
         try await repository.editProfile(details)
         let personId = try await myPersonId
-        if let personId, let person = caches.person1.retrieveModel(cacheId: personId) {
+        if let personId, let person = caches.person.retrieveModel(cacheId: personId) {
             person.avatar = details.avatar
             person.banner = details.banner
             person.displayName = details.displayName ?? person.name
             person.description = details.description
-            person.matrixId = details.matrixId
+            person.matrixUserId = details.matrixId
         }
     }
     

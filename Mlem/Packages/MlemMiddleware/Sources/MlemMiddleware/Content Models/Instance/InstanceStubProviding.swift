@@ -58,7 +58,7 @@ public protocol InstanceStubProviding: ActorIdentifiable, ContentModel {
     var allLanguages_: [Locale.Language]? { get }
     var allowedLanguageIds_: Set<Int>? { get }
     var blockedUrls_: [InstanceUrlBlockRecord]? { get }
-    var administrators_: [Person2]? { get }
+    var administrators_: [Person]? { get }
 }
 
 public extension InstanceStubProviding {
@@ -108,7 +108,7 @@ public extension InstanceStubProviding {
     var allLanguages_: [Locale.Language]? { nil }
     var allowedLanguageIds_: Set<Int>? { nil }
     var blockedUrls_: [InstanceUrlBlockRecord]? { nil }
-    var administrators_: [Person2]? { nil }
+    var administrators_: [Person]? { nil }
 }
 
 public enum InstanceUpgradeError: Error {

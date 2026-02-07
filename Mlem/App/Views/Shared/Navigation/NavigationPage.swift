@@ -43,7 +43,8 @@ enum NavigationPage: Hashable {
         exposeRemovedContent: Bool = false
     )
     case community(_ community: AnyCommunity, visitContext: VisitHistory.VisitContext)
-    case person(_ person: AnyPerson, visitContext: VisitHistory.VisitContext)
+    case person(_ person: Person, visitContext: VisitHistory.VisitContext = .other)
+    case personStub(_ personStub: PersonStub, visitContext: VisitHistory.VisitContext = .other)
     case instance(_ instance: InstanceHashWrapper, visitContext: VisitHistory.VisitContext)
     case instanceOpinionList(instance: InstanceHashWrapper, opinionType: FediseerOpinionType, data: FediseerData)
     case messageFeed(_ person: AnyPerson, messageContent: String, focusTextField: Bool, editing: MessageHashWrapper?)
@@ -98,13 +99,6 @@ enum NavigationPage: Hashable {
         } else {
             Self.post(post, navigationNamespace: navigationNamespace)
         }
-    }
-    
-    static func person(
-        _ person: any PersonStubProviding,
-        visitContext: VisitHistory.VisitContext = .other
-    ) -> NavigationPage {
-        Self.person(.init(person), visitContext: visitContext)
     }
     
     static func community(
