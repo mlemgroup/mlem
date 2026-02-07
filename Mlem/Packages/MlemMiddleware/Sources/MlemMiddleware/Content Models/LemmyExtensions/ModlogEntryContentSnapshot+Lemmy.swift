@@ -8,6 +8,12 @@
 import Foundation
 
 extension ModlogEntryContentSnapshot {
+    init(from view: LemmyModlogView) throws(ApiClientError) {
+        self = switch view.modlog.kind {
+        default: .purgeComment(reason: "TEST")
+        }
+    }
+
     init(from view: LemmyModRemovePostView) throws(ApiClientError) {
         self = try .removePost(
             .init(from: view.post),

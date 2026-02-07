@@ -191,11 +191,11 @@ public extension LemmyConnection {
                 communityId: communityId,
                 page: page,
                 limit: limit,
-                type_: type?.apiType ?? .all,
+                type_: type?.apiType,
                 otherPersonId: subjectPersonId,
                 postId: postId,
                 commentId: commentId,
-                listingType: nil,
+                listingType: .all,
                 pageCursor: nil
             )
         }
