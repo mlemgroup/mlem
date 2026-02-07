@@ -50,14 +50,16 @@ struct LinkEditorView: View {
                     if let url = URL(string: self.urlString) {
                         focused = false
                         Task {
+                            self.isSubmitting = true
+                            let link: PostLink
                             do {
-                                self.isSubmitting = true
-                                let link = try await api.getPostLinkOrUseOpenGraph(url: url)
-                                close(link)
+                                link = try await api.getPostLinkOrUseOpenGraph(url: url)
                             } catch {
-                                self.isSubmitting = false
-                                handleError(error)
+                                link = .init(content: url, thumbnail: nil, label: url.absoluteString)
+                                handleError(error, silent: true)
                             }
+                            self.isSubmitting = false
+                            close(link)
                         }
                     }
                 } label: {
