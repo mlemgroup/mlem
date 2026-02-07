@@ -518,6 +518,28 @@
         }
       }
     },
+    "%lld votes" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld vote"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "%lld votes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "%lld years ago today!" : {
       "localizations" : {
         "en" : {
@@ -948,6 +970,9 @@
           }
         }
       }
+    },
+    "Already voted" : {
+
     },
     "Always" : {
       "localizations" : {
@@ -3322,6 +3347,9 @@
         }
       }
     },
+    "Ended %@" : {
+
+    },
     "Endorsements" : {
       "localizations" : {
         "fr" : {
@@ -3331,6 +3359,9 @@
           }
         }
       }
+    },
+    "Ends %@" : {
+
     },
     "Enter your instance's domain name below." : {
       "localizations" : {
@@ -4085,6 +4116,9 @@
           }
         }
       }
+    },
+    "Hide Results" : {
+
     },
     "Hide Website Icons" : {
       "localizations" : {
@@ -7779,6 +7813,9 @@
         }
       }
     },
+    "Show Results" : {
+
+    },
     "Show Sidebar on App Launch" : {
       "localizations" : {
         "fr" : {
@@ -8086,6 +8123,9 @@
     "Subject" : {
 
     },
+    "Submit" : {
+
+    },
     "Submit Application" : {
       "localizations" : {
         "fr" : {
@@ -8095,6 +8135,9 @@
           }
         }
       }
+    },
+    "Submitted" : {
+
     },
     "Submitting..." : {
       "localizations" : {
@@ -9983,6 +10026,9 @@
           }
         }
       }
+    },
+    "You cannot change your vote." : {
+
     },
     "You cannot use a temporary email address." : {
       "localizations" : {

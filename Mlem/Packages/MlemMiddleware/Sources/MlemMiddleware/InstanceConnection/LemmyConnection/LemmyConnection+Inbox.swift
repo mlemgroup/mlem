@@ -26,51 +26,105 @@ public extension LemmyConnection {
     }
     
     func getReplyNotifications(
-        page: Int,
+        page: Int?,
+        cursor: String?,
         limit: Int,
         unreadOnly: Bool
-    ) async throws -> [InboxNotificationSnapshot] {
-        let response = try await performingForEndpoint { _ in
-            LemmyListRepliesRequest(
-                sort: .new,
-                page: page,
-                limit: limit,
-                unreadOnly: unreadOnly
-            )
+    ) async throws -> (notifications: [InboxNotificationSnapshot], cursor: String?) {
+        try await processingForEndpoint { endpoint in
+            switch endpoint {
+            case .v3:
+                guard let page else { throw ApiClientError.featureUnsupported }
+                let request = LemmyListRepliesRequest(
+                    sort: .new,
+                    page: page,
+                    limit: limit,
+                    unreadOnly: unreadOnly
+                )
+                let response = try await self.perform(request, endpoint: .v3)
+                return try (notifications: response.replies.map { try .init(from: $0) }, cursor: nil)
+            case .v4:
+                let request = LemmyListNotificationsRequest(
+                    type_: .reply,
+                    unreadOnly: unreadOnly,
+                    pageCursor: cursor,
+                    limit: limit
+                )
+                let response = try await self.perform(request, endpoint: .v4)
+                return try (
+                    notifications: response.items.map { try .init(from: $0) },
+                    cursor: response.nextPage
+                )
+            }
         }
-        return try response.replies.map { try .init(from: $0) }
     }
 
     func getMentionNotifications(
-        page: Int,
+        page: Int?,
+        cursor: String?,
         limit: Int,
         unreadOnly: Bool
-    ) async throws -> [InboxNotificationSnapshot] {
-        let response = try await performingForEndpoint { _ in
-            LemmyListMentionsRequest(
-                sort: .new,
-                page: page,
-                limit: limit,
-                unreadOnly: unreadOnly
-            )
+    ) async throws -> (notifications: [InboxNotificationSnapshot], cursor: String?) {
+        try await processingForEndpoint { endpoint in
+            switch endpoint {
+            case .v3:
+                guard let page else { throw ApiClientError.featureUnsupported }
+                let request = LemmyListMentionsRequest(
+                    sort: .new,
+                    page: page,
+                    limit: limit,
+                    unreadOnly: unreadOnly
+                )
+                let response = try await self.perform(request, endpoint: .v3)
+                return try (notifications: response.mentions.map { try .init(from: $0) }, cursor: nil)
+            case .v4:
+                let request = LemmyListNotificationsRequest(
+                    type_: .mention,
+                    unreadOnly: unreadOnly,
+                    pageCursor: cursor,
+                    limit: limit
+                )
+                let response = try await self.perform(request, endpoint: .v4)
+                return try (
+                    notifications: response.items.map { try .init(from: $0) },
+                    cursor: response.nextPage
+                )
+            }
         }
-        return try response.mentions.map { try .init(from: $0) }
     }
 
     func getMessageNotifications(
-        page: Int,
+        page: Int?,
+        cursor: String?,
         limit: Int,
         unreadOnly: Bool
-    ) async throws -> [InboxNotificationSnapshot] {
-        let response = try await performingForEndpoint { _ in
-            LemmyGetPrivateMessageRequest(
-                unreadOnly: unreadOnly,
-                page: page,
-                limit: limit,
-                creatorId: nil
-            )
+    ) async throws -> (notifications: [InboxNotificationSnapshot], cursor: String?) {
+        try await processingForEndpoint { endpoint in
+            switch endpoint {
+            case .v3:
+                guard let page else { throw ApiClientError.featureUnsupported }
+                let request = LemmyGetPrivateMessageRequest(
+                    unreadOnly: unreadOnly,
+                    page: page,
+                    limit: limit,
+                    creatorId: nil
+                )
+                let response = try await self.perform(request, endpoint: .v3)
+                return try (notifications: response.privateMessages.map { try .init(from: $0) }, cursor: nil)
+            case .v4:
+                let request = LemmyListNotificationsRequest(
+                    type_: .privateMessage,
+                    unreadOnly: unreadOnly,
+                    pageCursor: cursor,
+                    limit: limit
+                )
+                let response = try await self.perform(request, endpoint: .v4)
+                return try (
+                    notifications: response.items.map { try .init(from: $0) },
+                    cursor: response.nextPage
+                )
+            }
         }
-        return try response.privateMessages.map { try .init(from: $0) }
     }
     
     func markNotificationAsRead(
@@ -80,54 +134,34 @@ public extension LemmyConnection {
         read: Bool = true
     ) async throws {
         try await processingForEndpoint { endpoint in
-            guard endpoint == .v3 else { throw ApiClientError.featureUnsupported }
-            switch type {
-            case .reply:
-                try await self.markReplyAsRead(id: contentId, read: read)
-            case .mention:
-                try await self.markMentionAsRead(id: contentId, read: read)
-            case .message:
-                try await self.markMessageAsRead(id: contentId, read: read)
+            switch endpoint {
+            case .v3:
+                try await self.markNotificationAsReadV3(type: type, contentId: contentId, read: read)
+            case .v4:
+                let request = LemmyMarkNotificationAsReadRequest(notificationId: id, read: read)
+                try await self.perform(request, endpoint: .v4)
             }
+        }
+    }
+
+    private func markNotificationAsReadV3(
+        type: InboxNotificationContentType,
+        contentId: Int,
+        read: Bool
+    ) async throws {
+        switch type {
+        case .reply:
+            try await self.perform(LemmyMarkReplyAsReadRequest(commentReplyId: contentId, read: read), endpoint: .v3)
+        case .mention:
+            try await self.perform(LemmyMarkPersonMentionAsReadRequest(personMentionId: contentId, read: read), endpoint: .v3)
+        case .message:
+            try await self.perform(LemmyMarkPmAsReadRequest(privateMessageId: contentId, read: read), endpoint: .v3)
         }
     }
     
     func markAllAsRead() async throws {
         _ = try await performingForEndpoint { endpoint in
             LemmyMarkAllNotificationsReadRequest(endpoint: endpoint)
-        }
-    }
-    
-    func markReplyAsRead(id: Int, read: Bool = true) async throws {
-        try await processingForEndpoint { endpoint in
-            switch endpoint {
-            case .v3:
-                try await self.perform(LemmyMarkReplyAsReadRequest(commentReplyId: id, read: read), endpoint: .v3)
-            case .v4:
-                try await self.perform(LemmyMarkNotificationAsReadRequest(notificationId: id, read: read), endpoint: .v4)
-            }
-        }
-    }
-    
-    func markMentionAsRead(id: Int, read: Bool = true) async throws {
-        try await processingForEndpoint { endpoint in
-            switch endpoint {
-            case .v3:
-                try await self.perform(LemmyMarkPersonMentionAsReadRequest(personMentionId: id, read: read), endpoint: .v3)
-            case .v4:
-                try await self.perform(LemmyMarkNotificationAsReadRequest(notificationId: id, read: read), endpoint: .v4)
-            }
-        }
-    }
-    
-    func markMessageAsRead(id: Int, read: Bool = true) async throws {
-        try await processingForEndpoint { endpoint in
-            switch endpoint {
-            case .v3:
-                try await self.perform(LemmyMarkPmAsReadRequest(privateMessageId: id, read: read), endpoint: .v3)
-            case .v4:
-                try await self.perform(LemmyMarkNotificationAsReadRequest(notificationId: id, read: read), endpoint: .v4)
-            }
         }
     }
     

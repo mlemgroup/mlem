@@ -39,10 +39,11 @@ public extension PieFedConnection {
     }
     
     func getReplyNotifications(
-        page: Int,
+        page: Int?,
+        cursor: String?,
         limit: Int,
         unreadOnly: Bool
-    ) async throws -> [InboxNotificationSnapshot] {
+    ) async throws -> (notifications: [InboxNotificationSnapshot], cursor: String?) {
         let request = PieFedGetRepliesRequest(
             sort: .new,
             page: page,
@@ -50,14 +51,15 @@ public extension PieFedConnection {
             unreadOnly: unreadOnly
         )
         let response = try await perform(request)
-        return try response.replies.map { try .init(from: $0, isMention: false) }
+        return try (notifications: response.replies.map { try .init(from: $0, isMention: false) }, cursor: nil)
     }
 
     func getMentionNotifications(
-        page: Int,
+        page: Int?,
+        cursor: String?,
         limit: Int,
         unreadOnly: Bool
-    ) async throws -> [InboxNotificationSnapshot] {
+    ) async throws -> (notifications: [InboxNotificationSnapshot], cursor: String?) {
         let request = PieFedGetMentionsRequest(
             sort: .new,
             page: page,
@@ -65,14 +67,15 @@ public extension PieFedConnection {
             unreadOnly: unreadOnly
         )
         let response = try await perform(request)
-        return try response.replies.map { try .init(from: $0, isMention: true) }
+        return try (notifications: response.replies.map { try .init(from: $0, isMention: true) }, cursor: nil)
     }
 
     func getMessageNotifications(
-        page: Int,
+        page: Int?,
+        cursor: String?,
         limit: Int,
         unreadOnly: Bool
-    ) async throws -> [InboxNotificationSnapshot] {
+    ) async throws -> (notifications: [InboxNotificationSnapshot], cursor: String?) {
         let request = PieFedListPrivateMessagesRequest(
             unreadOnly: unreadOnly,
             page: page,
@@ -80,7 +83,7 @@ public extension PieFedConnection {
             creatorId: nil
         )
         let response = try await perform(request)
-        return try response.privateMessages.map { try .init(from: $0) }
+        return try (notifications: response.privateMessages.map { try .init(from: $0) }, cursor: nil)
     }
     
     func markNotificationAsRead(
@@ -99,23 +102,23 @@ public extension PieFedConnection {
         }
     }
 
+    private func markReplyAsRead(id: Int, read: Bool = true) async throws {
+        let request = PieFedMarkReplyAsReadRequest(commentReplyId: id, read: read)
+        try await perform(request)
+    }
+    
+    private func markMentionAsRead(id: Int, read: Bool = true) async throws {
+        let request = PieFedMarkReplyAsReadRequest(commentReplyId: id, read: read)
+        try await perform(request)
+    }
+    
+    private func markMessageAsRead(id: Int, read: Bool = true) async throws {
+        let request = PieFedMarkPrivateMessageAsReadRequest(privateMessageId: id, read: read)
+        try await perform(request)
+    }
+    
     func markAllAsRead() async throws {
         let request = PieFedMarkAllRepliesReadRequest()
-        try await perform(request)
-    }
-    
-    func markReplyAsRead(id: Int, read: Bool = true) async throws {
-        let request = PieFedMarkReplyAsReadRequest(commentReplyId: id, read: read)
-        try await perform(request)
-    }
-    
-    func markMentionAsRead(id: Int, read: Bool = true) async throws {
-        let request = PieFedMarkReplyAsReadRequest(commentReplyId: id, read: read)
-        try await perform(request)
-    }
-    
-    func markMessageAsRead(id: Int, read: Bool = true) async throws {
-        let request = PieFedMarkPrivateMessageAsReadRequest(privateMessageId: id, read: read)
         try await perform(request)
     }
     
