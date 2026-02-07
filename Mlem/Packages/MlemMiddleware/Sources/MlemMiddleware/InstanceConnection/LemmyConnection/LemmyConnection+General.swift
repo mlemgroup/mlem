@@ -202,9 +202,8 @@ public extension LemmyConnection {
         switch response {
         case let .lemmyGetModlogResponse(response):
             return try response.toSnapshots()
-        case .lemmyPagedResponse:
-            // TODO: Lemmy 1.0
-            throw ApiClientError.featureUnsupported
+        case let .lemmyPagedResponse(response):
+            return try response.items.map { try .init(from: $0) }
         }
     }
     
