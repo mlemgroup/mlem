@@ -23,6 +23,11 @@ public struct ActionButtonWithVisibilityControl: View {
                 action.execute(environment: environment)
             }
             .disabled(label.visibility == .disabled)
+
+            // Without this, destructive items appear black in the
+            // subscription list due to a shim we've got in there #2374.
+            // Intentionally unthemed.
+            .tint(label.isDestructive ? .red : .primary)
         }
     }
 }

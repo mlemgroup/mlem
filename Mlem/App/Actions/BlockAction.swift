@@ -85,8 +85,8 @@ extension ActionSeed {
         label: BlockAction.createLabel(relationship: .direct, mode: .block, contentType: .multi)
     ) { entity in
         switch entity {
-        case let entity as any Person1Providing: BlockAction(content: [.blockable(entity)], relationship: .direct)
         case let entity as any InstanceStubProviding: BlockAction(content: [.instance(entity)], relationship: .direct)
+        case let entity as any Blockable: BlockAction(content: [.blockable(entity)], relationship: .direct)
         default: nil
         }
     }
