@@ -153,12 +153,35 @@ public struct PersonProperties: UnifiedPropertiesProviding {
         self.instanceBan = other.instanceBan
         self.deleted = other.deleted
         
-        // tier 2, 3 properties: only assign if incoming non-nil
+        // tier 2, 3, 4 properties: only assign if incoming non-nil
         isAdmin = other.isAdmin ?? self.isAdmin
         postCount = other.postCount ?? self.postCount
         commentCount = other.commentCount ?? self.commentCount
         
         instance = other.instance ?? self.instance
         moderatedCommunities = other.moderatedCommunities ?? self.moderatedCommunities
+        
+        email = other.email ?? self.email
+        showNsfw = other.showNsfw ?? self.showNsfw
+        theme = other.theme ?? self.theme
+        defaultListingType = other.defaultListingType ?? self.defaultListingType
+        interfaceLanguage = other.interfaceLanguage ?? self.interfaceLanguage
+        showAvatars = other.showAvatars ?? self.showAvatars
+        sendNotificationsToEmail = other.sendNotificationsToEmail ?? self.sendNotificationsToEmail
+        showScores = other.showScores ?? self.showScores
+        showBotAccounts = other.showBotAccounts ?? self.showBotAccounts
+        showReadPosts = other.showReadPosts ?? self.showReadPosts
+        discussionLanguageIds = other.discussionLanguageIds ?? self.discussionLanguageIds
+        emailVerified = other.emailVerified ?? self.emailVerified
+        acceptedApplication = other.acceptedApplication ?? self.acceptedApplication
+        openLinksInNewTab = other.openLinksInNewTab ?? self.openLinksInNewTab
+        blurNsfw = other.blurNsfw ?? self.blurNsfw
+        autoExpandImages = other.autoExpandImages ?? self.autoExpandImages
+        infiniteScrollEnabled = other.infiniteScrollEnabled ?? self.infiniteScrollEnabled
+        postListingMode = other.postListingMode ?? self.postListingMode
+        totp2faEnabled = other.totp2faEnabled ?? self.totp2faEnabled
+        enableKeyboardNavigation = other.enableKeyboardNavigation ?? self.enableKeyboardNavigation
+        enableAnimatedImages = other.enableAnimatedImages ?? self.enableAnimatedImages
+        collapseBotComments = other.collapseBotComments ?? self.collapseBotComments
     }
 }
