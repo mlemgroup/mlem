@@ -155,7 +155,6 @@ public extension ApiClient {
                     api: self,
                     from: entry.moderator
                 ),
-                moderatorId: entry.moderatorId,
                 type: .init(from: entry.type, api: self)
             )
         }
