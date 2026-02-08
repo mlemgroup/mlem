@@ -21,9 +21,9 @@ struct SubscriptionListItemView: View {
     
     var body: some View {
         SubscriptionListNavigationButton(.community(community), label: label)
-            .contextMenu { community.menuActions(appState: appState, feedback: [.toast], navigation: navigation, feedLoader: nil) }
+            .contextMenu(community: community)
             .swipeActions(edge: .trailing) {
-                Button("Unsubscribe", icon: .general.failure) {
+                Button("Unsubscribe", icon: .lemmy.unsubscribe) {
                     community.toggleSubscribe(feedback: [.toast])
                 }
                 .buttonStyle(.automatic)
