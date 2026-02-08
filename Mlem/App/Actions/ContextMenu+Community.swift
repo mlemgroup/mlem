@@ -16,7 +16,9 @@ private let seeds: [ActionSeed] = [
     .goToInstance,
     .copyName,
     .share,
-    .block
+    .block,
+    .remove,
+    .purge
 ]
 
 extension ActionButtons {
