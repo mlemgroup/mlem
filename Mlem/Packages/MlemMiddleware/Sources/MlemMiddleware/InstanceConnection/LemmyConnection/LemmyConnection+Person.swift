@@ -58,11 +58,6 @@ public extension LemmyConnection {
         }
     }
     
-    func getPerson(url: URL) async throws -> Person3Snapshot {
-        let person: Person2Snapshot = try await getPerson(url: url)
-        return try await getPerson(id: person.person.id)
-    }
-    
     /// `filter` can be set to `.local` from 0.19.4 onwards.
     func searchPeople(
         query: String,

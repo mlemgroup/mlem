@@ -253,7 +253,6 @@ public protocol InstanceConnection {
     func getPerson(id: Int) async throws -> Person3Snapshot
     func getPerson(url: URL) async throws -> Person2Snapshot
     func getPerson(username: String) async throws -> Person3Snapshot
-    func getPerson(url: URL) async throws -> Person3Snapshot
     
     func searchPeople(
         query: String,
