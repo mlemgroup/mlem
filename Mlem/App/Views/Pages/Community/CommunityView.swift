@@ -5,7 +5,9 @@
 //  Created by Sjmarf on 30/07/2024.
 //
 
+import Actions
 import Dependencies
+import Haptics
 import LemmyMarkdownUI
 import MlemMiddleware
 import SwiftUI
@@ -30,6 +32,7 @@ struct CommunityView: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
     @Environment(FiltersTracker.self) var filtersTracker
+    @Environment(HapticManager.self) var hapticManager
     @Environment(\.palette) var palette
     @Environment(\.dismiss) var dismiss
     
@@ -142,7 +145,8 @@ struct CommunityView: View {
         .conditionalNavigationTitle(community.name)
         .toolbar {
             ToolbarItemGroup(placement: .secondaryAction) {
-                MenuButtons { community.menuActions(appState: appState, navigation: navigation, feedLoader: postFeedLoader) }
+                ActionButtons(community: community)
+                    .environment(postFeedLoader)
             }
         }
         // don't show the refresh popup if community api isn't the active api, since that indicates an unresolvable community
@@ -212,8 +216,9 @@ struct CommunityView: View {
     func subscribeButton(community: any Community) -> some View {
         let subscribed = community.subscribed_ ?? false
         Button {
-            if community.api.willSendToken {
-                community.toggleSubscribe(feedback: [.haptic])
+            if let community = community as? any Community2Providing, community.api.willSendToken {
+                hapticManager.play(haptic: .gentleInfo, tier: .low)
+                community.toggleSubscribe()
             }
         } label: {
             HStack {

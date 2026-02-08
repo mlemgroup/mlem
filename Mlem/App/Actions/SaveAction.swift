@@ -10,7 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct SaveAction: SimpleLabelAction {
-    let entity: InteractableProviding
+    let entity: any InteractableProviding
 }
 
 // MARK: - Configurability
