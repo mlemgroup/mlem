@@ -12,6 +12,7 @@ import SwiftUI
 private let seeds: [ActionSeed] = [
     .newPost,
     .subscribe,
+    .favorite,
     .goToInstance,
     .copyName,
     .share,
