@@ -64,9 +64,9 @@ struct WarningView: View {
     }
     
     var backgroundRect: some View {
-        RoundedRectangle(cornerRadius: Constants.main.standardSpacing)
+        RoundedRectangle(cornerRadius: 26)
             .stroke(color, lineWidth: 3)
             .background(color.opacity(0.1))
-            .clipShape(RoundedRectangle(cornerRadius: Constants.main.standardSpacing))
+            .clipShape(RoundedRectangle(cornerRadius: 26))
     }
 }

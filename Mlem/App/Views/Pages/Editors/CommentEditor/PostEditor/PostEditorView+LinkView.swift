@@ -46,7 +46,8 @@ extension PostEditorView {
                         link = try await .value(api.getPostLinkOrUseOpenGraph(url: url))
                     }
                 } catch {
-                    handleError(error)
+                    link = .value(.init(content: url, thumbnail: nil, label: url.absoluteString))
+                    handleError(error, silent: true)
                 }
             }
         }

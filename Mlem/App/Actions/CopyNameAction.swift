@@ -25,6 +25,8 @@ extension ActionSeed {
         switch entity {
         case let entity as any Person1Providing:
             CopyNameAction(text: entity.fullNameWithPrefix, relationship: .identity)
+        case let entity as any Community1Providing:
+            CopyNameAction(text: entity.fullNameWithPrefix, relationship: .identity)
         default:
             nil
         }
