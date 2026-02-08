@@ -73,16 +73,12 @@ extension NavigationPage {
         case let .purge(target):
             ContentPurgeEditorView(target: target.wrappedValue)
         case let .ban(person, isBannedFromCommunity: isBannedFromCommunity, shouldBan: shouldBan, community: community):
-            if let person = person.wrappedValue as? any DeprecatedPerson {
-                PersonBanEditorView(
-                    person: person,
-                    community: community?.wrappedValue as? any Community,
-                    isBannedFromCommunity: isBannedFromCommunity,
-                    shouldBan: shouldBan
-                )
-            } else {
-                Text(verbatim: "Error")
-            }
+            PersonBanEditorView(
+                person: person,
+                community: community?.wrappedValue as? any Community,
+                isBannedFromCommunity: isBannedFromCommunity,
+                shouldBan: shouldBan
+            )
         case let .post(post, scrollTargetedComment, communityContext, _):
             // TODO: NOW don't embed at all?
             ExpandedPostView(post: post, tracker: nil, scrollTargetedComment: scrollTargetedComment) {
@@ -108,6 +104,8 @@ extension NavigationPage {
             )
         case let .person(person, visitContext):
             PersonView(person: person, visitContext: visitContext)
+        case let .personStub(person, visitContext):
+            PersonStubResolutionPage(stub: person, visitContext: visitContext)
         case let .createComment(context, commentTreeTracker):
             if let view = CommentEditorView(context: context, commentTreeTracker: commentTreeTracker) {
                 view
@@ -123,7 +121,7 @@ extension NavigationPage {
         case let .editCommunity(community):
             CommunityDescriptionEditorView(community: community)
         case let .editNote(person):
-            NoteEditorView(person: person.wrappedValue)
+            NoteEditorView(person: person)
         case let .createPost(
             community: community,
             title: title,
@@ -158,7 +156,7 @@ extension NavigationPage {
                 }
             }
         case let .personPicker(api: api, filter: filter, callback: callback):
-            SearchSheetView(api: api, filter: filter) { (person: Person2, navigation: NavigationLayer) in
+            SearchSheetView(api: api, filter: filter) { (person: Person, navigation: NavigationLayer) in
                 Button {
                     callback.wrappedValue(person, navigation)
                 } label: {

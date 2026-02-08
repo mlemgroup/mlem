@@ -23,7 +23,7 @@ extension ActionSeed {
         label: CopyNameAction.createLabel(relationship: .identity)
     ) { entity in
         switch entity {
-        case let entity as any Person1Providing:
+        case let entity as Person:
             CopyNameAction(text: entity.fullNameWithPrefix, relationship: .identity)
         default:
             nil

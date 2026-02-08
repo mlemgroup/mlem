@@ -15,7 +15,7 @@ struct PersonListRowBody<Content: View>: View {
     @Environment(\.communityContext) var communityContext
     @Environment(\.isEnabled) var isEnabled
     
-    let person: any DeprecatedPerson
+    let person: Person
     var showBlockStatus: Bool = true
     let complications: [Complication]
     let readout: Readout?
@@ -23,7 +23,7 @@ struct PersonListRowBody<Content: View>: View {
     @ViewBuilder let content: () -> Content
 
     init(
-        _ person: any DeprecatedPerson,
+        _ person: Person,
         complications: [Complication] = [.instance],
         showBlockStatus: Bool = true,
         @ViewBuilder content: @escaping () -> Content
@@ -36,7 +36,7 @@ struct PersonListRowBody<Content: View>: View {
     }
     
     init(
-        _ person: any DeprecatedPerson,
+        _ person: Person,
         complications: [Complication] = [.instance],
         showBlockStatus: Bool = true,
         readout: Readout? = nil
@@ -125,8 +125,8 @@ struct PersonListRowBody<Content: View>: View {
     var postsAndCommentsReadout: some View {
         HStack(spacing: 5) {
             VStack(alignment: .trailing, spacing: 6) {
-                Text((person.postCount_ ?? 0).abbreviated)
-                Text((person.commentCount_ ?? 0).abbreviated)
+                Text((person.postCount.value ?? 0).abbreviated)
+                Text((person.commentCount.value ?? 0).abbreviated)
             }
             .foregroundStyle(.secondary)
             .font(.subheadline)

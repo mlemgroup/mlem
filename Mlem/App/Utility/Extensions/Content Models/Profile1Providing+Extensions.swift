@@ -13,7 +13,7 @@ extension Profile1Providing {
             return .communityAvatar
         } else if self is any Instance.Type {
             return .instanceAvatar
-        } else if self is any DeprecatedPerson.Type || self is any Account.Type {
+        } else if self is Person.Type || self is any Account.Type {
             return .personAvatar
         } else {
             assertionFailure()

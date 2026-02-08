@@ -43,13 +43,12 @@ extension ViewVotesAction {
 
         guard entity.api.canInteract(appState: environment.appState) else { return .hidden }
         
-        guard let myPerson = entity.api.myPerson else { return .hidden }
-        guard let community = entity.community.value else { return .hidden }
-        let canModerate = myPerson.moderates(communityId: community.id)
-        guard canModerate else { return .hidden }
-
-        guard Settings.get(\.menus_allModActions) || environment.feedContext == .post else { return .hidden }
-        guard entity.api.supports(.viewVotes, defaultValue: true) else { return .hidden }
+        guard let myPerson = entity.api.myPerson,
+              let community = entity.community.value,
+              let myPersonModerates = myPerson.moderates,
+              myPersonModerates(.id(community.id)),
+              Settings.get(\.menus_allModActions) || environment.feedContext == .post,
+              entity.api.supports(.viewVotes, defaultValue: true) else { return .hidden }
 
         return .enabled
     }

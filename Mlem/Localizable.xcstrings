@@ -4095,6 +4095,9 @@
         }
       }
     },
+    "Hide Results" : {
+
+    },
     "Hide Website Icons" : {
       "localizations" : {
         "fr" : {
@@ -7787,6 +7790,9 @@
           }
         }
       }
+    },
+    "Show Results" : {
+
     },
     "Show Sidebar on App Launch" : {
       "localizations" : {

@@ -25,6 +25,12 @@ public extension Person {
     var selectableContent: String? { description }
 }
 
+// MARK: CommunityOrPerson
+
+public extension Person {
+    static var identifierPrefix: String { "@" }
+}
+
 // MARK: ContentIdentifiable
 
 public extension Person {

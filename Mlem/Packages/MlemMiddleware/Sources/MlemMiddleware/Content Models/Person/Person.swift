@@ -9,16 +9,18 @@ import Observation
 import Foundation
 
 @Observable
-public class Person:
+public final class Person:
     UnifiedModelProviding,
     Blockable,
     ContentIdentifiable,
     SelectableContentProviding,
+    CommunityOrPerson,
     Resolvable,
     PurgableProviding,
     Sharable,
     FeedLoadable,
-    Profile2Providing { // TODO: UnifiedCommunity unify ProfileProviding
+    Profile2Providing {
+    // TODO: UnifiedCommunity unify ProfileProviding
     public typealias Properties = PersonProperties
     
     public var api: ApiClient
@@ -64,28 +66,28 @@ public class Person:
     public var instance: ExpectedValue<(any Instance)>
     public var moderatedCommunities: ExpectedValue<[any Community]>
     
-    var email: ExpectedValue<String?>
-    var showNsfw: ExpectedValue<Bool>
-    var theme: ExpectedValue<String>
-    var defaultListingType: ExpectedValue<ListingType>
-    var interfaceLanguage: ExpectedValue<String>
-    var showAvatars: ExpectedValue<Bool>
-    var sendNotificationsToEmail: ExpectedValue<Bool>
-    var showScores: ExpectedValue<Bool>
-    var showBotAccounts: ExpectedValue<Bool>
-    var showReadPosts: ExpectedValue<Bool>
-    var discussionLanguageIds: ExpectedValue<Set<Int>>
-    var emailVerified: ExpectedValue<Bool>
-    var acceptedApplication: ExpectedValue<Bool>
-    var openLinksInNewTab: ExpectedValue<Bool?>
-    var blurNsfw: ExpectedValue<Bool?>
-    var autoExpandImages: ExpectedValue<Bool?>
-    var infiniteScrollEnabled: ExpectedValue<Bool?>
-    var postListingMode: ExpectedValue<PostFeedViewMode?>
-    var totp2faEnabled: ExpectedValue<Bool?>
-    var enableKeyboardNavigation: ExpectedValue<Bool?>
-    var enableAnimatedImages: ExpectedValue<Bool?>
-    var collapseBotComments: ExpectedValue<Bool?>
+    public var email: ExpectedValue<String?>
+    public var showNsfw: ExpectedValue<Bool>
+    public var theme: ExpectedValue<String>
+    public var defaultListingType: ExpectedValue<ListingType>
+    public var interfaceLanguage: ExpectedValue<String>
+    public var showAvatars: ExpectedValue<Bool>
+    public var sendNotificationsToEmail: ExpectedValue<Bool>
+    public var showScores: ExpectedValue<Bool>
+    public var showBotAccounts: ExpectedValue<Bool>
+    public var showReadPosts: ExpectedValue<Bool>
+    public var discussionLanguageIds: ExpectedValue<Set<Int>>
+    public var emailVerified: ExpectedValue<Bool>
+    public var acceptedApplication: ExpectedValue<Bool>
+    public var openLinksInNewTab: ExpectedValue<Bool?>
+    public var blurNsfw: ExpectedValue<Bool?>
+    public var autoExpandImages: ExpectedValue<Bool?>
+    public var infiniteScrollEnabled: ExpectedValue<Bool?>
+    public var postListingMode: ExpectedValue<PostFeedViewMode?>
+    public var totp2faEnabled: ExpectedValue<Bool?>
+    public var enableKeyboardNavigation: ExpectedValue<Bool?>
+    public var enableAnimatedImages: ExpectedValue<Bool?>
+    public var collapseBotComments: ExpectedValue<Bool?>
     
     public init(api: ApiClient, properties: PersonProperties) {
         self.api = api
@@ -418,71 +420,117 @@ public extension Person {
     
     // Profile
     
-    // TODO: NOW
+    // TODO: NOW make a User concept?
     
-//    public func updateProfile(_ details: ProfileDetails) async throws {
-//        let diff = ProfileDetailsMutation(
-//            originalDetails: profileDetails(),
-//            newDetails: details
-//        )
-//        if try await !(diff.isValid(forSoftware: api.software)) {
-//            throw ApiClientError.invalidInput
-//        }
-//        try await api.editProfile(details)
-//    }
+    func updateProfile(_ details: ProfileDetails) async throws {
+        let diff = ProfileDetailsMutation(
+            originalDetails: profileDetails(),
+            newDetails: details
+        )
+        if try await !(diff.isValid(forSoftware: api.software)) {
+            throw ApiClientError.invalidInput
+        }
+        try await api.editProfile(details)
+    }
     
-    //    public func updateSettings(
-    //        email: String? = nil,
-    //        matrixId: String? = nil,
-    //        showNsfw: Bool? = nil,
-    //        blurNsfw: Bool? = nil,
-    //        showBotAccounts: Bool? = nil,
-    //        discussionLanguageIds: Set<Int>? = nil,
-    //        sendNotificationsToEmail: Bool? = nil,
-    //        isBot: Bool? = nil
-    //    ) async throws {
-    //        // iirc previous lemmy versions had issues with supplying `nil` for certain setting values.
-    //        // I don't remember which versions this happened on or which parameters couldn't be `nil`.
-    //        // Supplying them all to be safe.
-    //        try await api.editAccountSettings(
-    //            showNsfw: showNsfw ?? self.showNsfw,
-    //            showScores: showScores,
-    //            theme: theme,
-    //            defaultListingType: defaultListingType,
-    //            interfaceLanguage: interfaceLanguage,
-    //            avatar: avatar?.absoluteString ?? "",
-    //            banner: banner?.absoluteString ?? "",
-    //            displayName: displayName,
-    //            email: email ?? self.email,
-    //            bio: description,
-    //            matrixUserId: matrixId ?? self.matrixId,
-    //            showAvatars: showAvatars,
-    //            sendNotificationsToEmail: sendNotificationsToEmail ?? self.sendNotificationsToEmail,
-    //            botAccount: isBot ?? self.isBot,
-    //            showBotAccounts: showBotAccounts ?? self.showBotAccounts,
-    //            showReadPosts: showReadPosts,
-    //            discussionLanguages: discussionLanguageIds?.sorted(),
-    //            openLinksInNewTab: openLinksInNewTab,
-    //            blurNsfw: blurNsfw ?? self.blurNsfw,
-    //            autoExpand: autoExpandImages,
-    //            infiniteScrollEnabled: infiniteScrollEnabled,
-    //            postListingMode: postListingMode,
-    //            enableKeyboardNavigation: enableKeyboardNavigation,
-    //            enableAnimatedImages: enableAnimatedImages,
-    //            collapseBotComments: collapseBotComments,
-    //            showUpvotes: nil,
-    //            showDownvotes: nil,
-    //            showUpvotePercentage: nil
-    //        )
-    //        self.email = email ?? self.email
-    //        person1.matrixId = matrixId ?? self.matrixId
-    //        self.showNsfw = showNsfw ?? self.showNsfw
-    //        self.blurNsfw = blurNsfw ?? self.blurNsfw
-    //        self.showBotAccounts = showBotAccounts ?? self.showBotAccounts
-    //        self.discussionLanguageIds = discussionLanguageIds ?? self.discussionLanguageIds
-    //        self.sendNotificationsToEmail = sendNotificationsToEmail ?? self.sendNotificationsToEmail
-    //        person1.isBot = isBot ?? self.isBot
-    //    }
+    struct ProfileSettings {
+        let email: String?
+        let matrixId: String?
+        let showNsfw: Bool?
+        let blurNsfw: Bool?
+        let showBotAccounts: Bool?
+        let discussionLanguageIds: Set<Int>?
+        let sendNotificationsToEmail: Bool?
+        let isBot: Bool?
+        
+        public init(
+            email: String? = nil,
+            matrixId: String? = nil,
+            showNsfw: Bool? = nil,
+            blurNsfw: Bool? = nil,
+            showBotAccounts: Bool? = nil,
+            discussionLanguageIds: Set<Int>? = nil,
+            sendNotificationsToEmail: Bool? = nil,
+            isBot: Bool? = nil,
+        ) {
+            self.email = email
+            self.matrixId = matrixId
+            self.showNsfw = showNsfw
+            self.blurNsfw = blurNsfw
+            self.showBotAccounts = showBotAccounts
+            self.discussionLanguageIds = discussionLanguageIds
+            self.sendNotificationsToEmail = sendNotificationsToEmail
+            self.isBot = isBot
+        }
+    }
+    
+    var updateSettings: ((ProfileSettings) async throws -> Void)? {
+        if let showNsfw = self.showNsfw.value,
+           let showScores = self.showScores.value,
+           let theme = self.theme.value,
+           let defaultListingType = self.defaultListingType.value,
+           let interfaceLanguage = self.interfaceLanguage.value,
+           let email = self.email.value,
+           let showAvatars = self.showAvatars.value,
+           let sendNotificationsToEmail = self.sendNotificationsToEmail.value,
+           let showBotAccounts = self.showBotAccounts.value,
+           let showReadPosts = self.showReadPosts.value,
+           let discussionLanguages = self.discussionLanguageIds.value,
+           let openLinksInNewTab = self.openLinksInNewTab.value,
+           let blurNsfw = self.blurNsfw.value,
+           let autoExpandImages = self.autoExpandImages.value,
+           let infiniteScrollEnabled = self.infiniteScrollEnabled.value,
+           let postListingMode = self.postListingMode.value,
+           let enableKeyboardNavigation = self.enableKeyboardNavigation.value,
+           let enableAnimatedImages = self.enableAnimatedImages.value,
+           let collapseBotComments = self.collapseBotComments.value {
+            return { profileSettings in
+                // TODO: NOW should this be UpdateQueue'd? +unify names
+                try await self.api.editAccountSettings(
+                    showNsfw: profileSettings.showNsfw ?? showNsfw,
+                    showScores: showScores,
+                    theme: theme,
+                    defaultListingType: defaultListingType,
+                    interfaceLanguage: interfaceLanguage,
+                    avatar: self.avatar?.absoluteString ?? "",
+                    banner: self.banner?.absoluteString ?? "",
+                    displayName: self.displayName,
+                    email: profileSettings.email ?? email,
+                    bio: self.description,
+                    matrixUserId: profileSettings.matrixId ?? self.matrixUserId,
+                    showAvatars: showAvatars,
+                    sendNotificationsToEmail: profileSettings.sendNotificationsToEmail ?? sendNotificationsToEmail,
+                    botAccount: profileSettings.isBot ?? self.isBot,
+                    showBotAccounts: profileSettings.showBotAccounts ?? showBotAccounts,
+                    showReadPosts: showReadPosts,
+                    discussionLanguages: profileSettings.discussionLanguageIds?.sorted() ?? discussionLanguages.sorted(),
+                    openLinksInNewTab: openLinksInNewTab,
+                    blurNsfw: profileSettings.blurNsfw ?? blurNsfw,
+                    autoExpand: autoExpandImages,
+                    infiniteScrollEnabled: infiniteScrollEnabled,
+                    postListingMode: postListingMode,
+                    enableKeyboardNavigation: enableKeyboardNavigation,
+                    enableAnimatedImages: enableAnimatedImages,
+                    collapseBotComments: collapseBotComments,
+                    showUpvotes: nil,
+                    showDownvotes: nil,
+                    showUpvotePercentage: nil
+                )
+                // double optionals confuse the Swift compiler, this two-step assignment avoids warnings
+                let newEmail: String? = profileSettings.email ?? email
+                self.email.value_ = newEmail
+                self.matrixUserId = profileSettings.matrixId ?? self.matrixUserId
+                self.showNsfw.value_ = profileSettings.showNsfw ?? showNsfw
+                let newBlurNsfw: Bool? = profileSettings.blurNsfw ?? blurNsfw
+                self.blurNsfw.value_ = newBlurNsfw
+                self.showBotAccounts.value_ = profileSettings.showBotAccounts ?? showBotAccounts
+                self.discussionLanguageIds.value_ = profileSettings.discussionLanguageIds ?? discussionLanguages
+                self.sendNotificationsToEmail.value_ = profileSettings.sendNotificationsToEmail ?? sendNotificationsToEmail
+                self.isBot = profileSettings.isBot ?? self.isBot
+            }
+        }
+        return nil
+    }
 }
 
 public enum CommunityIdentifier {

@@ -32,7 +32,7 @@ extension Community2: Searchable {
     }
 }
 
-extension Person2: Searchable {
+extension Person: Searchable {
     static func search(
         api: ApiClient,
         query: String,
@@ -40,7 +40,7 @@ extension Person2: Searchable {
         limit: Int,
         filter: ListingType,
         hostApi: ApiClient? = nil
-    ) async throws -> [Person2] {
+    ) async throws -> [Person] {
         try await api.searchPeople(query: query, page: page, limit: limit, filter: filter)
     }
 }

@@ -47,13 +47,13 @@ enum NavigationPage: Hashable {
     case personStub(_ personStub: PersonStub, visitContext: VisitHistory.VisitContext = .other)
     case instance(_ instance: InstanceHashWrapper, visitContext: VisitHistory.VisitContext)
     case instanceOpinionList(instance: InstanceHashWrapper, opinionType: FediseerOpinionType, data: FediseerData)
-    case messageFeed(_ person: AnyPerson, messageContent: String, focusTextField: Bool, editing: MessageHashWrapper?)
+    case messageFeed(_ person: Person, messageContent: String, focusTextField: Bool, editing: MessageHashWrapper?)
     case fediseerInfo
     case instanceUptime(_ instance: HashWrapper<any Instance>, _ uptimeData: UptimeData)
     case externalApiInfo(api: ApiClient, actorId: ActorIdentifier)
     case imageViewer(_ url: URL)
     case communityPicker(api: ApiClient?, callback: HashWrapper<(Community2, NavigationLayer) -> Void>)
-    case personPicker(api: ApiClient?, filter: ListingType, callback: HashWrapper<(Person2, NavigationLayer) -> Void>)
+    case personPicker(api: ApiClient?, filter: ListingType, callback: HashWrapper<(Person, NavigationLayer) -> Void>)
     case instancePicker(callback: HashWrapper<(InstanceSummary, NavigationLayer) -> Void>, requiredFeature: Feature? = nil)
     case languagePicker(selectedLanguages: Set<Locale.Language>, callback: HashWrapper<(Locale.Language) -> Void>)
     case selectText(_ string: String)
@@ -62,7 +62,7 @@ enum NavigationPage: Hashable {
     case createComment(_ context: CommentEditorView.Context, commentTreeTracker: CommentTreeTracker? = nil)
     case editComment(_ comment: Comment, context: CommentEditorView.Context?)
     case editCommunity(_ community: Community2)
-    case editNote(_ person: HashWrapper<any DeprecatedPerson>)
+    case editNote(_ person: Person)
     case report(_ interactable: ReportableHashWrapper, community: AnyCommunity? = nil)
     case remove(_ removable: RemovableHashWrapper)
     case purge(_ purgable: PurgableHashWrapper)
@@ -83,7 +83,7 @@ enum NavigationPage: Hashable {
     case blockList
     case advancedSorting(_ sort: HashWrapper<Binding<PostSortType>>)
     case votesList(_ target: VotesListView.Target)
-    case modlog(ModlogView.InitialTarget, targetPerson: AnyPerson?, moderatorPerson: AnyPerson?)
+    case modlog(ModlogView.InitialTarget, targetPerson: Person?, moderatorPerson: Person?)
     case denyApplication(RegistrationApplication)
     case exportPostImage(_ post: Post)
     case exportCommentImage(_ comment: Comment, tracker: CommentTreeTracker?)
@@ -121,23 +121,23 @@ enum NavigationPage: Hashable {
     
     static func modlog(
         community: any Community,
-        targetPerson: AnyPerson? = nil,
-        moderatorPerson: AnyPerson? = nil
+        targetPerson: Person? = nil,
+        moderatorPerson: Person? = nil
     ) -> NavigationPage {
         modlog(.community(.init(community)), targetPerson: targetPerson, moderatorPerson: moderatorPerson)
     }
     
     static func modlog(
         instance: any Instance,
-        targetPerson: AnyPerson? = nil,
-        moderatorPerson: AnyPerson? = nil
+        targetPerson: Person? = nil,
+        moderatorPerson: Person? = nil
     ) -> NavigationPage {
         modlog(.instance(.init(wrappedValue: instance)), targetPerson: targetPerson, moderatorPerson: moderatorPerson)
     }
 
     static func modlog(
-        targetPerson: AnyPerson? = nil,
-        moderatorPerson: AnyPerson? = nil
+        targetPerson: Person? = nil,
+        moderatorPerson: Person? = nil
     ) -> NavigationPage {
         modlog(.currentInstance, targetPerson: targetPerson, moderatorPerson: moderatorPerson)
     }
@@ -162,7 +162,7 @@ enum NavigationPage: Hashable {
     }
     
     static func messageFeed(
-        _ person: any PersonStubProviding,
+        _ person: Person,
         messageContent: String = "",
         focusTextField: Bool = false,
         editing: (any Message1Providing)? = nil
@@ -172,7 +172,7 @@ enum NavigationPage: Hashable {
             editingWrapper = .init(wrappedValue: editing)
         }
         return messageFeed(
-            .init(person),
+            person,
             messageContent: messageContent,
             focusTextField: focusTextField,
             editing: editingWrapper
@@ -186,8 +186,8 @@ enum NavigationPage: Hashable {
         var instance: any InstanceStubProviding = InstanceStub(
             api: AppState.main.firstApi, actorId: .instance(host: entity.actorId.host)
         )
-        if let entity = entity as? any Person3Providing {
-            instance = entity.instance ?? instance
+        if let entity = entity as? Person {
+            instance = entity.instance.value_ ?? instance
         } else if let entity = entity as? any Community3Providing {
             instance = entity.instance ?? instance
         }
@@ -204,7 +204,7 @@ enum NavigationPage: Hashable {
     static func personPicker(
         api: ApiClient? = nil,
         filter: ListingType = .all,
-        callback: @escaping (Person2, NavigationLayer) -> Void
+        callback: @escaping (Person, NavigationLayer) -> Void
     ) -> NavigationPage {
         personPicker(api: api, filter: filter, callback: .init(wrappedValue: callback))
     }
@@ -246,7 +246,7 @@ enum NavigationPage: Hashable {
     static func personPicker(
         api: ApiClient? = nil,
         filter: ListingType = .all,
-        callback: @escaping (Person2) -> Void
+        callback: @escaping (Person) -> Void
     ) -> NavigationPage {
         personPicker(api: api, filter: filter, callback: .init(wrappedValue: { value, navigation in
             Task { @MainActor in
@@ -319,7 +319,7 @@ enum NavigationPage: Hashable {
         let anyCommunity: AnyCommunity?
         if let community {
             anyCommunity = .init(community)
-        } else  {
+        } else {
             anyCommunity = nil
         }
         return .ban(person, isBannedFromCommunity: isBannedFromCommunity, shouldBan: shouldBan, community: anyCommunity)
@@ -343,10 +343,6 @@ enum NavigationPage: Hashable {
 
     static func actionSheet(_ actions: [ActionSheetSection]) -> NavigationPage {
         actionSheet(.init(wrappedValue: actions))
-    }
-
-    static func editNote(_ person: any DeprecatedPerson) -> NavigationPage {
-        editNote(.init(wrappedValue: person))
     }
     
     var hasNavigationStack: Bool {

@@ -47,7 +47,7 @@ struct CommunityView: View {
     @State var warningPresented: Bool
     
     @State var showingConfirmation: Bool = false
-    @State var newMod: Person2?
+    @State var newMod: Person?
     
     init(
         community: AnyCommunity,
@@ -119,7 +119,7 @@ struct CommunityView: View {
                             postsTab(community: community, postFeedLoader: postFeedLoader)
                                 .padding(.bottom, -4)
                         } else if let error = contentLoaderError {
-                            ErrorView(.init(error: contentLoaderError))
+                            ErrorView(.init(error: error))
                         }
                     }
                     .toolbar {
@@ -240,7 +240,7 @@ struct CommunityView: View {
         if !appState.firstApi.supports(.editCommunityDescription, defaultValue: false) {
             canModerate = false
         } else if let firstPerson = appState.firstPerson {
-            canModerate = firstPerson.moderates(community: community) || firstPerson.isAdmin
+            canModerate = (firstPerson.moderates?(.community(community)) ?? false) || (firstPerson.isAdmin.value ?? false)
         } else {
             canModerate = false
         }

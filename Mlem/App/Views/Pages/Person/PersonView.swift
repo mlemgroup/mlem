@@ -13,7 +13,6 @@ import MlemMiddleware
 import SwiftUI
 import Theming
 
-// swiftlint:disable:next type_body_length
 struct PersonView: View {
     enum Tab: String, CaseIterable, Identifiable {
         case overview, comments, posts, communities
@@ -39,31 +38,29 @@ struct PersonView: View {
 
     let visitContext: VisitHistory.VisitContext?
     
-    @State var person: AnyPerson
+    @State var person: Person
     @State private var selectedTab: Tab = .overview
     @State private var selectedContentType: PersonContentType = .all
     @State var feedLoader: SingleSourceMixedFeedLoader?
-    @State var isAdmin: Bool
     @State var upgraded: Bool = false
 
     let isProfileTab: Bool
     
     init(
         appState: AppState = .main,
-        person: AnyPerson,
+        person: Person,
         isProfileTab: Bool = false,
         visitContext: VisitHistory.VisitContext?
     ) {
         self.visitContext = visitContext
         self._person = .init(wrappedValue: person)
-        self._isAdmin = .init(wrappedValue: person.wrappedValue.isAdmin_ ?? false)
         self.isProfileTab = isProfileTab
         
-        if let person1 = person.wrappedValue as? any Person1Providing, person1.api === appState.firstApi {
+        if person.api === appState.firstApi {
             self._feedLoader = .init(wrappedValue: .init(
                 api: appState.firstApi,
                 pageSize: internetSpeed.pageSize,
-                userId: person1.id,
+                userId: person.id,
                 sortType: .new,
                 savedOnly: false,
                 prefetchingConfiguration: .forPostSize(postSize)
@@ -83,84 +80,31 @@ struct PersonView: View {
                 default: selectedContentType = .all
                 }
             }
-            .onChange(of: person.wrappedValue.isAdmin_, initial: false) {
-                // track changes to the upgraded model while ignoring upgrade-related state changes
-                if upgraded {
-                    isAdmin = person.wrappedValue.isAdmin_ ?? isAdmin
-                }
-            }
             .environment(\.feedContext, .person)
     }
     
     var content: some View {
-        ContentLoader(model: person) { proxy in
-            if let person = proxy.entity {
-                content(person: person, contentLoaderError: proxy.error)
-                    .externalApiWarning(entity: person, isLoading: proxy.isLoading)
-                    .onChange(of: (person as? any Person2Providing)?.person2 == nil, initial: true) {
-                        if let person2 = (person as? any Person2Providing)?.person2 {
-                            logVisit(person2)
-                        }
-                    }
-                    .toolbar {
-                        ToolbarItemGroup(placement: .secondaryAction) {
-                            SwiftUI.Section {
-                                if person is any Person3Providing, proxy.isLoading {
-                                    ProgressView()
-                                } else {
-                                    ActionButtons(person: person)
-                                }
-                            }
-                        }
-                    }
-                    .popupAnchor()
-            } else if let error = proxy.error {
-                ErrorView(.init(error: error))
-            } else {
-                ProgressView()
-                    .tint(.themedSecondary)
+        content(person: person)
+            .externalApiWarning(entity: person, isLoading: false)
+            .onAppear {
+                logVisit(person)
             }
-        } upgradeOperation: { model, api in
-            try await model.upgrade(api: api) { entity in
-                if let entity = entity as? any Person1Providing {
-                    if feedLoader == nil {
-                        feedLoader = .init(
-                            api: AppState.main.firstApi,
-                            pageSize: internetSpeed.pageSize,
-                            userId: entity.id,
-                            sortType: .new,
-                            savedOnly: false,
-                            prefetchingConfiguration: .forPostSize(postSize)
-                        )
-                        preheatFeedLoader()
-                    } else if let feedLoader, feedLoader.api !== entity.api {
-                        Task {
-                            await feedLoader.changeUser(api: entity.api, context: filtersTracker.filterContext, userId: entity.id)
-                        }
+            .toolbar {
+                ToolbarItemGroup(placement: .secondaryAction) {
+                    SwiftUI.Section {
+                        ActionButtons(person: person)
                     }
-                    
-                    let response = try await entity.getContent(page: 1, limit: 1)
-                    return response.person
                 }
-                return try await entity.upgrade()
             }
-            // This prevents the admin flair from disappearing if the `ContentLoader`
-            // switches from an external ApiClient to the active ApiClient, e.g. when
-            // navigating to `PersonView` from the administrator list in `InstanceView`.
-            if model.wrappedValue.isAdmin_ ?? false {
-                isAdmin = true
-            }
-            
-            upgraded = true
-        }
-        .conditionalNavigationTitle(person.wrappedValue.displayName_ ?? "")
-        .navigationBarTitleDisplayMode(.inline)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .themedGroupedBackground()
+            .popupAnchor()
+            .conditionalNavigationTitle(person.displayName)
+            .navigationBarTitleDisplayMode(.inline)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .themedGroupedBackground()
     }
     
     @ViewBuilder
-    func content(person: any DeprecatedPerson, contentLoaderError: (any Error)?) -> some View {
+    func content(person: Person) -> some View {
         FancyScrollView {
             VStack(spacing: 0) {
                 VStack(spacing: Constants.main.standardSpacing) {
@@ -170,30 +114,18 @@ struct PersonView: View {
                 }
                 .padding([.horizontal], Constants.main.standardSpacing)
                 
-                if let person = person as? any Person3Providing {
-                    VStack(spacing: 0) {
-                        personContent(person: person)
-                    }
-                    .transition(.opacity)
-                    
-                } else if let error = contentLoaderError {
-                    ErrorView(.init(error: error))
-                } else {
-                    VStack(spacing: 0) {
-                        ProgressView()
-                            .padding(.top)
-                    }
-                    .transition(.opacity)
+                VStack(spacing: 0) {
+                    personContent(person: person)
                 }
             }
-            .animation(.easeOut(duration: 0.2), value: person is any Person3Providing)
+            // .animation(.easeOut(duration: 0.2), value: person is any Person3Providing)
         }
         .outdatedFeedPopup(feedLoader: feedLoader, showPopup: selectedTab != .communities)
     }
     
     @ViewBuilder
-    func bio(person: any DeprecatedPerson) -> some View {
-        if let bio = person.description_ {
+    func bio(person: Person) -> some View {
+        if let bio = person.description {
             VStack(spacing: Constants.main.standardSpacing) {
                 let blocks: [BlockNode] = .init(bio)
                 if blocks.isSimpleParagraphs, bio.count < 300 {
@@ -218,14 +150,14 @@ struct PersonView: View {
     }
     
     @ViewBuilder
-    func flairsView(person: any DeprecatedPerson) -> some View {
-        if person.isBot || person.isMlemDeveloper || isAdmin || person.note != nil {
+    func flairsView(person: Person) -> some View {
+        if person.isBot || person.isMlemDeveloper || (person.isAdmin.value ?? false) || person.note != nil {
             HFlow(spacing: Constants.main.halfSpacing) {
                 if person.isMlemDeveloper {
                     Label("Mlem Developer", systemImage: Icons.developerFlair)
                         .tint(.themedColorfulAccent(4))
                 }
-                if isAdmin {
+                if person.isAdmin.value ?? false {
                     Label("\(person.host) Administrator", systemImage: Icons.administrationFill)
                         .tint(.themedAdministration)
                 }
@@ -250,7 +182,7 @@ struct PersonView: View {
     }
     
     @ViewBuilder
-    func banFlairView(person: any DeprecatedPerson) -> some View {
+    func banFlairView(person: Person) -> some View {
         HStack {
             Image(icon: .lemmy.bannedFromInstance)
                 .imageScale(.large)
@@ -269,13 +201,13 @@ struct PersonView: View {
     }
     
     @ViewBuilder
-    func dateLabel(person: any DeprecatedPerson) -> some View {
+    func dateLabel(person: Person) -> some View {
         ProfileDateView(profilable: person)
             .padding(.horizontal, Constants.main.standardSpacing)
     }
     
     @ViewBuilder
-    func personContent(person: any Person3Providing) -> some View {
+    func personContent(person: Person) -> some View {
         Section {
             switch selectedTab {
             case .communities:
@@ -303,11 +235,11 @@ struct PersonView: View {
                 value: { tab in
                     switch tab {
                     case .posts:
-                        person.postCount
+                        person.postCount.value ?? 0
                     case .comments:
-                        person.commentCount
+                        person.commentCount.value ?? 0
                     case .communities:
-                        person.moderatedCommunities.count
+                        person.moderatedCommunities.value?.count ?? 0
                     default:
                         nil
                     }
@@ -317,9 +249,9 @@ struct PersonView: View {
     }
     
     @ViewBuilder
-    func communitiesTab(person: any DeprecatedPerson) -> some View {
+    func communitiesTab(person: Person) -> some View {
         VStack(spacing: Constants.main.halfSpacing) {
-            ForEach(person.moderatedCommunities_ ?? []) { community in
+            ForEach(person.moderatedCommunities.value ?? [], id: \.actorId) { community in
                 CommunityListRow(community)
             }
         }

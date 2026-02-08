@@ -19,7 +19,7 @@ extension MessageFeedView {
         self.isSending = true
         defer { self.isSending = false }
         do {
-            guard let person = person.wrappedValue as? any DeprecatedPerson, !textView.text.isEmpty else { return }
+            guard !textView.text.isEmpty else { return }
             let message = try await appState.firstApi.createMessage(personId: person.id, content: textView.text)
             withAnimation {
                 feedLoader?.prependItem(message)

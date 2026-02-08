@@ -21,7 +21,7 @@ struct PersonBanEditorView: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.dismiss) var dismiss
     
-    let person: any DeprecatedPerson
+    let person: Person
     let community: (any Community)?
     var isBannedFromCommunity: Bool
     var shouldBan: Bool = true
@@ -44,7 +44,7 @@ struct PersonBanEditorView: View {
     }
     
     init(
-        person: any DeprecatedPerson,
+        person: Person,
         community: (any Community)?,
         isBannedFromCommunity: Bool,
         shouldBan: Bool
@@ -56,7 +56,7 @@ struct PersonBanEditorView: View {
         
         let isCommunityModerator: Bool
         if let community {
-            isCommunityModerator = (AppState.main.firstSession as? UserSession)?.person?.moderates(community: community) ?? false
+            isCommunityModerator = (AppState.main.firstSession as? UserSession)?.person?.moderates?(.community(community)) ?? false
         } else {
             isCommunityModerator = false
         }

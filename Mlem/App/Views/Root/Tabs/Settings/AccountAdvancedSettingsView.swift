@@ -20,21 +20,23 @@ struct AccountAdvancedSettingsView: View {
     
     var body: some View {
         Form {
-            Section {
-                Toggle("Bot Account", icon: .lemmy.botFlair, isOn: $isBot)
-                    .tint(.themedColorfulAccent(5))
-                    .onChange(of: isBot) {
-                        Task {
-                            do {
-                                try await appState.firstPerson?.updateSettings(isBot: isBot)
-                            } catch {
-                                handleError(error)
-                                isBot = appState.firstPerson?.isBot ?? false
+            if let updateSettings = appState.firstPerson?.updateSettings {
+                Section {
+                    Toggle("Bot Account", icon: .lemmy.botFlair, isOn: $isBot)
+                        .tint(.themedColorfulAccent(5))
+                        .onChange(of: isBot) {
+                            Task {
+                                do {
+                                    try await updateSettings(.init(isBot: isBot))
+                                } catch {
+                                    handleError(error)
+                                    isBot = appState.firstPerson?.isBot ?? false
+                                }
                             }
                         }
-                    }
-            } footer: {
-                Text("Bot accounts are unable to vote.")
+                } footer: {
+                    Text("Bot accounts are unable to vote.")
+                }
             }
             if let userAccount = appState.firstAccount as? UserAccount {
                 Section {

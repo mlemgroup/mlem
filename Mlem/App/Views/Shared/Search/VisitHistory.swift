@@ -27,7 +27,7 @@ class VisitHistory {
     }
     
     private(set) var communityRecords: [VisitContext: [VisitRecord<Community2>]]
-    private(set) var personRecords: [VisitContext: [VisitRecord<Person2>]]
+    private(set) var personRecords: [VisitContext: [VisitRecord<Person>]]
     
     // Using `InstanceSummary` here rather than an `Instance` model because otherwise we'd need
     // to store full `Instance3` models in order to have access to the site `version`, which means
@@ -36,7 +36,7 @@ class VisitHistory {
     
     init(
         communityRecords: [VisitContext: [VisitRecord<Community2>]] = [:],
-        personRecords: [VisitContext: [VisitRecord<Person2>]] = [:],
+        personRecords: [VisitContext: [VisitRecord<Person>]] = [:],
         instanceRecords: [VisitContext: [VisitRecord<InstanceSummary>]] = [:]
     ) {
         self.communityRecords = communityRecords
@@ -62,7 +62,7 @@ class VisitHistory {
             .uniqued()
     }
     
-    func people(withContext context: VisitContext) -> [Person2] {
+    func people(withContext context: VisitContext) -> [Person] {
         personRecords[context]?.map(\.value) ?? []
     }
     
@@ -81,12 +81,12 @@ class VisitHistory {
     }
     
     @MainActor
-    func addPerson(_ person: Person2, context: VisitContext) {
+    func addPerson(_ person: Person, context: VisitContext) {
         addValue(person, to: &personRecords, context: context)
     }
     
     @MainActor
-    func removePerson(_ person: Person2, context: VisitContext) {
+    func removePerson(_ person: Person, context: VisitContext) {
         removeValue(person, from: &personRecords, context: context)
     }
     

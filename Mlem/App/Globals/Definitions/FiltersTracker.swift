@@ -54,7 +54,7 @@ class FiltersTracker {
         @Setting(\.filters_keywordFilterEnabled) var keywordFilterEnabled
         @Setting(\.filters_keywords) var rawKeywords
         
-        self.isAdmin = AppState.main.firstPerson?.isAdmin ?? false
+        self.isAdmin = AppState.main.firstPerson?.isAdmin.value_ ?? false
         self.moderatedCommunityActorIds = AppState.main.firstPerson?.moderatedCommunityActorIds ?? .init()
         (self.keywords, self.phrases) = parseKeywordsAndPhrases(from: rawKeywords)
     }

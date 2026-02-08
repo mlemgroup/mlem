@@ -24,7 +24,7 @@ struct FullyQualifiedLinkView: View {
     
     var body: some View {
         Button {
-            if let person = entity as? any PersonStubProviding {
+            if let person = entity as? Person {
                 navigation.push(.person(person))
             } else if let community = entity as? any CommunityStubProviding {
                 navigation.push(.community(community))
@@ -46,7 +46,7 @@ struct FullyQualifiedLinkView: View {
 
 extension FullyQualifiedLinkView {
     init(
-        _ entity: (any DeprecatedPerson)?,
+        _ entity: Person?,
         labelStyle: FullyQualifiedLabelStyle,
         showAvatar: Bool? = nil,
         showInstance: Bool = true,

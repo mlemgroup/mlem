@@ -18,7 +18,7 @@ struct AccountSignInSettingsView: View {
                     HStack {
                         Text("Email")
                         Spacer()
-                        Text(appState.firstPerson?.email ?? "")
+                        Text(appState.firstPerson?.email.value as? String ?? "")
                             .foregroundStyle(.themedSecondary)
                     }
                 }
