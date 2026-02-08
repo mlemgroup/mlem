@@ -162,7 +162,14 @@ public class Post:
         setIfChanged(\.content, properties.content)
         setIfChanged(\.linkUrl, properties.linkUrl)
         setIfChanged(\.embed, properties.embed)
-        setIfChanged(\.poll, properties.poll)
+
+        // PieFed has a bug where sometimes doesn't it return the poll object.
+        // This check prevents the poll from disappearing if we get a response
+        // that doesn't include it.
+        if properties.poll != nil {
+            setIfChanged(\.poll, properties.poll)
+        }
+
         setIfChanged(\.nsfw, properties.nsfw)
         setIfChanged(\.thumbnailUrl, properties.thumbnailUrl)
         setIfChanged(\.updated, properties.updated)
@@ -332,6 +339,19 @@ public extension Post {
                 return properties
             }
             readQueued = false
+        }
+    }
+
+    // Vote on Poll
+
+    func voteInPoll(_ choiceIds: Set<Int>) {
+        guard let poll = self.poll else { return }
+        self.poll = poll.applyVoteChoices(choiceIds: choiceIds)
+        
+        Task {
+            await updateQueue.addItem {
+                await .init(api: self.api, snapshot: .post2(try await self.api.repository.voteInPoll(postId: self.id, choiceIds: choiceIds)))
+            }
         }
     }
     

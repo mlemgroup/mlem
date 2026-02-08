@@ -519,7 +519,26 @@
       }
     },
     "%lld votes" : {
-
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld vote"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "%lld votes"
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "%lld years ago today!" : {
       "localizations" : {
@@ -951,6 +970,9 @@
           }
         }
       }
+    },
+    "Already voted" : {
+
     },
     "Always" : {
       "localizations" : {
@@ -8101,6 +8123,9 @@
     "Subject" : {
 
     },
+    "Submit" : {
+
+    },
     "Submit Application" : {
       "localizations" : {
         "fr" : {
@@ -8110,6 +8135,9 @@
           }
         }
       }
+    },
+    "Submitted" : {
+
     },
     "Submitting..." : {
       "localizations" : {
@@ -9998,6 +10026,9 @@
           }
         }
       }
+    },
+    "You cannot change your vote." : {
+
     },
     "You cannot use a temporary email address." : {
       "localizations" : {

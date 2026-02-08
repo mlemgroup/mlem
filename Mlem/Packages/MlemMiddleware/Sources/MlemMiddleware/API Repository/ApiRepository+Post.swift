@@ -301,4 +301,11 @@ extension ApiRepository {
             )
         }
     }
+
+    @discardableResult
+    func voteInPoll(postId: Int, choiceIds: Set<Int>) async throws -> Post2Snapshot {
+        try await performingForConnection { connection in
+            try await connection.voteInPoll(postId: postId, choiceIds: choiceIds)
+        }
+    }
 }

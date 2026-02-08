@@ -10,7 +10,12 @@ import Foundation
 extension InboxNotification {
     @MainActor
     func snapshotUpdate(with snapshot: InboxNotificationSnapshot, isResultOfTask: Bool) {
-        setIfChanged(\.read, snapshot.read)
+        switch self.content {
+        case let .message(message) where message.isOwnMessage:
+            break
+        default:
+            setIfChanged(\.read, snapshot.read)
+        }
     }
     
     func takeSnapshot() -> InboxNotificationSnapshot? {
