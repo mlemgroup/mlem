@@ -9,6 +9,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct SubscriptionListItemView: View {
+    @Environment(\.self) var environment
     @Environment(AppState.self) private var appState
     @Environment(NavigationLayer.self) private var navigation
 
@@ -24,7 +25,7 @@ struct SubscriptionListItemView: View {
             .contextMenu(community: community)
             .swipeActions(edge: .trailing) {
                 Button("Unsubscribe", icon: .lemmy.unsubscribe) {
-                    community.toggleSubscribe(feedback: [.toast])
+                    SubscribeAction(entity: community).execute(environment: environment)
                 }
                 .buttonStyle(.automatic)
                 .labelStyle(.iconOnly)
