@@ -189,37 +189,36 @@ public final class Person:
         setIfChanged(\.instanceBan, properties.instanceBan)
         setIfChanged(\.deleted, properties.deleted)
         
-        setIfChanged(\.isAdmin.value_, properties.isAdmin)
-        setIfChanged(\.postCount.value_, properties.postCount)
-        setIfChanged(\.commentCount.value_, properties.commentCount)
+        updateIfChanged(\.isAdmin.value_, properties.isAdmin)
+        updateIfChanged(\.postCount.value_, properties.postCount)
+        updateIfChanged(\.commentCount.value_, properties.commentCount)
         
         setIfNil(\.instance.value_, properties.instance)
-        // TODO: NOW
-        // setIfChanged(\.moderatedCommunities.value_, properties.moderatedCommunities)
+        // TODO: Unified Community updateIfChanged (doesn't currently play nice with protocols)
+        setIfNil(\.moderatedCommunities.value_, properties.moderatedCommunities)
         
-        // TODO: NOW setIfChanged don't update if existing non-nil and incoming nil
-        setIfChanged(\.email.value_, properties.email)
-        setIfChanged(\.showNsfw.value_, properties.showNsfw)
-        setIfChanged(\.theme.value_, properties.theme)
-        setIfChanged(\.defaultListingType.value_, properties.defaultListingType)
-        setIfChanged(\.interfaceLanguage.value_, properties.interfaceLanguage)
-        setIfChanged(\.showAvatars.value_, properties.showAvatars)
-        setIfChanged(\.sendNotificationsToEmail.value_, properties.sendNotificationsToEmail)
-        setIfChanged(\.showScores.value_, properties.showScores)
-        setIfChanged(\.showBotAccounts.value_, properties.showBotAccounts)
-        setIfChanged(\.showReadPosts.value_, properties.showReadPosts)
-        setIfChanged(\.discussionLanguageIds.value_, properties.discussionLanguageIds)
-        setIfChanged(\.emailVerified.value_, properties.emailVerified)
-        setIfChanged(\.acceptedApplication.value_, properties.acceptedApplication)
-        setIfChanged(\.openLinksInNewTab.value_, properties.openLinksInNewTab)
-        setIfChanged(\.blurNsfw.value_, properties.blurNsfw)
-        setIfChanged(\.autoExpandImages.value_, properties.autoExpandImages)
-        setIfChanged(\.infiniteScrollEnabled.value_, properties.infiniteScrollEnabled)
-        setIfChanged(\.postListingMode.value_, properties.postListingMode)
-        setIfChanged(\.totp2faEnabled.value_, properties.totp2faEnabled)
-        setIfChanged(\.enableKeyboardNavigation.value_, properties.enableKeyboardNavigation)
-        setIfChanged(\.enableAnimatedImages.value_, properties.enableAnimatedImages)
-        setIfChanged(\.collapseBotComments.value_, properties.collapseBotComments)
+        updateIfChanged(\.email.value_, properties.email)
+        updateIfChanged(\.showNsfw.value_, properties.showNsfw)
+        updateIfChanged(\.theme.value_, properties.theme)
+        updateIfChanged(\.defaultListingType.value_, properties.defaultListingType)
+        updateIfChanged(\.interfaceLanguage.value_, properties.interfaceLanguage)
+        updateIfChanged(\.showAvatars.value_, properties.showAvatars)
+        updateIfChanged(\.sendNotificationsToEmail.value_, properties.sendNotificationsToEmail)
+        updateIfChanged(\.showScores.value_, properties.showScores)
+        updateIfChanged(\.showBotAccounts.value_, properties.showBotAccounts)
+        updateIfChanged(\.showReadPosts.value_, properties.showReadPosts)
+        updateIfChanged(\.discussionLanguageIds.value_, properties.discussionLanguageIds)
+        updateIfChanged(\.emailVerified.value_, properties.emailVerified)
+        updateIfChanged(\.acceptedApplication.value_, properties.acceptedApplication)
+        updateIfChanged(\.openLinksInNewTab.value_, properties.openLinksInNewTab)
+        updateIfChanged(\.blurNsfw.value_, properties.blurNsfw)
+        updateIfChanged(\.autoExpandImages.value_, properties.autoExpandImages)
+        updateIfChanged(\.infiniteScrollEnabled.value_, properties.infiniteScrollEnabled)
+        updateIfChanged(\.postListingMode.value_, properties.postListingMode)
+        updateIfChanged(\.totp2faEnabled.value_, properties.totp2faEnabled)
+        updateIfChanged(\.enableKeyboardNavigation.value_, properties.enableKeyboardNavigation)
+        updateIfChanged(\.enableAnimatedImages.value_, properties.enableAnimatedImages)
+        updateIfChanged(\.collapseBotComments.value_, properties.collapseBotComments)
     }
     
     public func softUpdate(with properties: PersonProperties) {
@@ -281,7 +280,7 @@ public extension Person {
             banner: banner,
             displayName: displayName,
             description: description,
-            matrixId: matrixUserId // TODO: NOW figure out naming
+            matrixUserId: matrixUserId // TODO: NOW figure out naming
         )
     }
     
@@ -435,7 +434,7 @@ public extension Person {
     
     struct ProfileSettings {
         let email: String?
-        let matrixId: String?
+        let matrixUserId: String?
         let showNsfw: Bool?
         let blurNsfw: Bool?
         let showBotAccounts: Bool?
@@ -445,7 +444,7 @@ public extension Person {
         
         public init(
             email: String? = nil,
-            matrixId: String? = nil,
+            matrixUserId: String? = nil,
             showNsfw: Bool? = nil,
             blurNsfw: Bool? = nil,
             showBotAccounts: Bool? = nil,
@@ -454,7 +453,7 @@ public extension Person {
             isBot: Bool? = nil,
         ) {
             self.email = email
-            self.matrixId = matrixId
+            self.matrixUserId = matrixUserId
             self.showNsfw = showNsfw
             self.blurNsfw = blurNsfw
             self.showBotAccounts = showBotAccounts
@@ -485,7 +484,6 @@ public extension Person {
            let enableAnimatedImages = self.enableAnimatedImages.value,
            let collapseBotComments = self.collapseBotComments.value {
             return { profileSettings in
-                // TODO: NOW should this be UpdateQueue'd? +unify names
                 try await self.api.editAccountSettings(
                     showNsfw: profileSettings.showNsfw ?? showNsfw,
                     showScores: showScores,
@@ -497,7 +495,7 @@ public extension Person {
                     displayName: self.displayName,
                     email: profileSettings.email ?? email,
                     bio: self.description,
-                    matrixUserId: profileSettings.matrixId ?? self.matrixUserId,
+                    matrixUserId: profileSettings.matrixUserId ?? self.matrixUserId,
                     showAvatars: showAvatars,
                     sendNotificationsToEmail: profileSettings.sendNotificationsToEmail ?? sendNotificationsToEmail,
                     botAccount: profileSettings.isBot ?? self.isBot,
@@ -519,7 +517,7 @@ public extension Person {
                 // double optionals confuse the Swift compiler, this two-step assignment avoids warnings
                 let newEmail: String? = profileSettings.email ?? email
                 self.email.value_ = newEmail
-                self.matrixUserId = profileSettings.matrixId ?? self.matrixUserId
+                self.matrixUserId = profileSettings.matrixUserId ?? self.matrixUserId
                 self.showNsfw.value_ = profileSettings.showNsfw ?? showNsfw
                 let newBlurNsfw: Bool? = profileSettings.blurNsfw ?? blurNsfw
                 self.blurNsfw.value_ = newBlurNsfw

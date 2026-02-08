@@ -27,6 +27,15 @@ extension UnifiedModelProviding {
         }
     }
     
+    /// If the provided value is non-nil and different from the current value at the target key path, updates
+    /// the target key path with the provided value
+    @MainActor
+    func updateIfChanged<T: Equatable>(_ keyPath: ReferenceWritableKeyPath<Self, T?>, _ value: T?) {
+        if let value, self[keyPath: keyPath] != value {
+            self[keyPath: keyPath] = value
+        }
+    }
+    
     /// If the current value at the target key path is nil, udpates it with the provided value
     @MainActor
     func setIfNil<T>(_ keyPath: ReferenceWritableKeyPath<Self, T?>, _ value: T?) {

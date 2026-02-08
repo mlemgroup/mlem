@@ -177,18 +177,18 @@ public class Post:
         // creator and community are not expected to change value, but need to be assigned if absent
         setIfNil(\.creator.value_, properties.creator ?? creator.value_)
         setIfNil(\.community.value_, properties.community ?? community.value_)
-        setIfChanged(\.commentCount.value_, properties.commentCount ?? commentCount.value_)
-        setIfChanged(\.unreadCommentCount.value_, properties.unreadCommentCount ?? unreadCommentCount.value_)
-        setIfChanged(\.creatorIsModerator.value_, properties.creatorIsModerator ?? creatorIsModerator.value_)
-        setIfChanged(\.creatorIsAdmin.value_, properties.creatorIsAdmin ?? creatorIsAdmin.value_)
-        setIfChanged(\.creatorBannedFromCommunity.value_ , properties.creatorBannedFromCommunity ?? creatorBannedFromCommunity.value_)
-        setIfChanged(\.creatorBlocked.value_, properties.creatorBlocked ?? creatorBlocked.value_)
-        setIfChanged(\.votes.value_, properties.votes ?? votes.value_)
-        setIfChanged(\.saved.value_, properties.saved ?? saved.value_)
-        setIfChanged(\.readStatus.value_, properties.read ?? readStatus.value_)
-        setIfChanged(\.hidden.value_, properties.hidden ?? hidden.value_)
+        updateIfChanged(\.commentCount.value_, properties.commentCount ?? commentCount.value_)
+        updateIfChanged(\.unreadCommentCount.value_, properties.unreadCommentCount ?? unreadCommentCount.value_)
+        updateIfChanged(\.creatorIsModerator.value_, properties.creatorIsModerator ?? creatorIsModerator.value_)
+        updateIfChanged(\.creatorIsAdmin.value_, properties.creatorIsAdmin ?? creatorIsAdmin.value_)
+        updateIfChanged(\.creatorBannedFromCommunity.value_ , properties.creatorBannedFromCommunity ?? creatorBannedFromCommunity.value_)
+        updateIfChanged(\.creatorBlocked.value_, properties.creatorBlocked ?? creatorBlocked.value_)
+        updateIfChanged(\.votes.value_, properties.votes ?? votes.value_)
+        updateIfChanged(\.saved.value_, properties.saved ?? saved.value_)
+        updateIfChanged(\.readStatus.value_, properties.read ?? readStatus.value_)
+        updateIfChanged(\.hidden.value_, properties.hidden ?? hidden.value_)
 
-        setIfChanged(\.crossPosts.value_, properties.crossPosts ?? crossPosts.value_)
+        updateIfChanged(\.crossPosts.value_, properties.crossPosts ?? crossPosts.value_)
     }
     
     @MainActor

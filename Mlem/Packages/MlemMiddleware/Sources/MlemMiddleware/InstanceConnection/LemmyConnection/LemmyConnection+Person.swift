@@ -263,7 +263,7 @@ public extension LemmyConnection {
                 displayName: details.displayName,
                 email: nil,
                 bio: details.description,
-                matrixUserId: details.matrixId,
+                matrixUserId: details.matrixUserId,
                 showAvatars: nil,
                 sendNotificationsToEmail: nil,
                 botAccount: nil,

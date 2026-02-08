@@ -116,12 +116,12 @@ public class Comment:
         setIfNil(\.creator.value_, properties.creator)
         setIfNil(\.post.value_, properties.post)
         setIfNil(\.community.value_, properties.community)
-        setIfChanged(\.commentCount.value_, properties.commentCount)
-        setIfChanged(\.creatorIsModerator.value_, properties.creatorIsModerator)
-        setIfChanged(\.creatorIsAdmin.value_, properties.creatorIsAdmin)
-        setIfChanged(\.creatorBannedFromCommunity.value_, properties.creatorBannedFromCommunity)
-        setIfChanged(\.votes.value_, properties.votes)
-        setIfChanged(\.saved.value_, properties.saved)
+        updateIfChanged(\.commentCount.value_, properties.commentCount)
+        updateIfChanged(\.creatorIsModerator.value_, properties.creatorIsModerator)
+        updateIfChanged(\.creatorIsAdmin.value_, properties.creatorIsAdmin)
+        updateIfChanged(\.creatorBannedFromCommunity.value_, properties.creatorBannedFromCommunity)
+        updateIfChanged(\.votes.value_, properties.votes)
+        updateIfChanged(\.saved.value_, properties.saved)
     }
     
     public func softUpdate(with properties: CommentProperties) {

@@ -12,7 +12,7 @@ public struct ProfileDetails: Hashable, Sendable {
     public var banner: URL?
     public var displayName: String?
     public var description: String?
-    public var matrixId: String?
+    public var matrixUserId: String?
 }
 
 public struct ProfileDetailsMutation {

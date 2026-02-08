@@ -120,7 +120,7 @@ extension PersonMockType {
             }
         }
         
-        var matrixId: String? {
+        var matrixUserId: String? {
             switch self {
             case .flowerTail: nil
             case .commanderGoose: nil

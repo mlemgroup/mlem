@@ -11,7 +11,7 @@ import MlemMiddleware
 extension VisitHistory {
     struct CodedData: Codable {
         var communities: [VisitContext: [CodedVisitRecord<Community2.CodedData>]] = [:]
-        var people: [VisitContext: [CodedVisitRecord<Person.CodedData>]] = [:] // TODO: NOW ensure it's Person2 data?
+        var people: [VisitContext: [CodedVisitRecord<Person.CodedData>]] = [:]
         var instances: [VisitContext: [CodedVisitRecord<InstanceSummary>]] = [:]
     }
     

@@ -21,28 +21,12 @@ public extension ApiClient {
             isStale: true
         )
     }
-  
-    // TODO: NOW handle multiple tiers of coded data--all one tier with optionals? PersonProperties?
-//    func decodePerson(_ data: Person2.CodedData) async throws -> Person {
-//        guard data.apiUrl == baseUrl else {
-//            throw ApiClientError.mismatchingUrl
-//        }
-//        guard try await data.apiMyPersonId == myPersonId else {
-//            throw ApiClientError.mismatchingPersonId
-//        }
-//        return try await caches.person.getModel(
-//            api: self,
-//            from: .person2(.init(from: data.apiPersonView)),
-//            isStale: true
-//        )
-//    }
     
     func getPerson(id: Int) async throws -> Person {
         let snapshot = try await repository.getPerson(id: id)
         return await caches.person.getModel(api: self, from: .person3(snapshot))
     }
     
-    // TODO: NOW figure out how the upgrade for this should work
     func getPerson(url: URL) async throws -> Person {
         let snapshot: Person2Snapshot = try await repository.getPerson(url: url)
         return await caches.person.getModel(api: self, from: .person2(snapshot))
@@ -196,7 +180,7 @@ public extension ApiClient {
             person.banner = details.banner
             person.displayName = details.displayName ?? person.name
             person.description = details.description
-            person.matrixUserId = details.matrixId
+            person.matrixUserId = details.matrixUserId
         }
     }
     
