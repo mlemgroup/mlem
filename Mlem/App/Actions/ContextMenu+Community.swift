@@ -10,6 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 private let seeds: [ActionSeed] = [
+    .newPost,
     .goToInstance,
     .copyName,
     .share,
