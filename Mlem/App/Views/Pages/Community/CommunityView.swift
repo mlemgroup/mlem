@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 30/07/2024.
 //
 
+import Actions
 import Dependencies
 import LemmyMarkdownUI
 import MlemMiddleware
@@ -142,7 +143,8 @@ struct CommunityView: View {
         .conditionalNavigationTitle(community.name)
         .toolbar {
             ToolbarItemGroup(placement: .secondaryAction) {
-                MenuButtons { community.menuActions(appState: appState, navigation: navigation, feedLoader: postFeedLoader) }
+                ActionButtons(community: community)
+                    .environment(postFeedLoader)
             }
         }
         // don't show the refresh popup if community api isn't the active api, since that indicates an unresolvable community
