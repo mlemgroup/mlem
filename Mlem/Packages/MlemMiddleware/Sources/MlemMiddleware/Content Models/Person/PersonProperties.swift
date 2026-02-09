@@ -112,8 +112,10 @@ public struct PersonProperties: UnifiedPropertiesProviding {
             collapseBotComments = snapshot4.collapseBotComments
         }
         
-        if let snapshot3, let site = snapshot3.site {
-            instance = api.caches.instance1.getModel(api: api, from: site)
+        if let snapshot3 {
+            if let site = snapshot3.site {
+                instance = api.caches.instance1.getModel(api: api, from: site)
+            }
             moderatedCommunities = api.caches.community1.getModels(api: api, from: snapshot3.moderatedCommunities)
         }
         

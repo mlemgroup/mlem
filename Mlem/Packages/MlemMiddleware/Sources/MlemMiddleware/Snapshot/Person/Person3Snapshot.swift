@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import os
 
 public struct Person3Snapshot: CacheIdentifiable {
     // Won't change, but the corresponding models need to

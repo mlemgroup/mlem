@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import os
 
 public extension ApiClient {
     func decodePerson(_ data: Person.CodedData) async throws -> Person {
@@ -24,6 +25,7 @@ public extension ApiClient {
     
     func getPerson(id: Int) async throws -> Person {
         let snapshot = try await repository.getPerson(id: id)
+        
         return await caches.person.getModel(api: self, from: .person3(snapshot))
     }
     

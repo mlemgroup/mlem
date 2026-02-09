@@ -118,7 +118,6 @@ struct PersonView: View {
                     personContent(person: person)
                 }
             }
-            // .animation(.easeOut(duration: 0.2), value: person is any Person3Providing)
         }
         .outdatedFeedPopup(feedLoader: feedLoader, showPopup: selectedTab != .communities)
     }

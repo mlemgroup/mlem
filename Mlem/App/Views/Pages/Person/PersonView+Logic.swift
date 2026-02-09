@@ -25,7 +25,7 @@ extension PersonView {
     
     func tabs(person: Person) -> [Tab] {
         var output: [Tab] = [.overview, .posts, .comments]
-        if !(person.moderatedCommunities.value_?.isEmpty ?? true) {
+        if !(person.moderatedCommunities.value?.isEmpty ?? true) {
             output.append(.communities)
         }
         return output
