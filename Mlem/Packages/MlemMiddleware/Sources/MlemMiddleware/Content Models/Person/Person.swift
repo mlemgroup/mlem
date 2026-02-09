@@ -280,7 +280,7 @@ public extension Person {
             banner: banner,
             displayName: displayName,
             description: description,
-            matrixUserId: matrixUserId // TODO: NOW figure out naming
+            matrixUserId: matrixUserId
         )
     }
     
@@ -429,7 +429,24 @@ public extension Person {
         if try await !(diff.isValid(forSoftware: api.software)) {
             throw ApiClientError.invalidInput
         }
-        try await api.editProfile(details)
+        
+        avatar = details.avatar
+        banner = details.banner
+        displayName = details.displayName ?? displayName
+        description = details.description
+        matrixUserId = details.matrixUserId
+        
+        await updateQueue.addItem { properties in
+            try await self.api.editProfile(details)
+            
+            var properties = properties
+            properties.avatar = details.avatar
+            properties.banner = details.banner
+            properties.displayName = details.displayName ?? properties.displayName
+            properties.description = details.description
+            properties.matrixUserId = details.matrixUserId
+            return properties
+        }
     }
     
     struct ProfileSettings {
@@ -484,47 +501,59 @@ public extension Person {
            let enableAnimatedImages = self.enableAnimatedImages.value,
            let collapseBotComments = self.collapseBotComments.value {
             return { profileSettings in
-                try await self.api.editAccountSettings(
-                    showNsfw: profileSettings.showNsfw ?? showNsfw,
-                    showScores: showScores,
-                    theme: theme,
-                    defaultListingType: defaultListingType,
-                    interfaceLanguage: interfaceLanguage,
-                    avatar: self.avatar?.absoluteString ?? "",
-                    banner: self.banner?.absoluteString ?? "",
-                    displayName: self.displayName,
-                    email: profileSettings.email ?? email,
-                    bio: self.description,
-                    matrixUserId: profileSettings.matrixUserId ?? self.matrixUserId,
-                    showAvatars: showAvatars,
-                    sendNotificationsToEmail: profileSettings.sendNotificationsToEmail ?? sendNotificationsToEmail,
-                    botAccount: profileSettings.isBot ?? self.isBot,
-                    showBotAccounts: profileSettings.showBotAccounts ?? showBotAccounts,
-                    showReadPosts: showReadPosts,
-                    discussionLanguages: profileSettings.discussionLanguageIds?.sorted() ?? discussionLanguages.sorted(),
-                    openLinksInNewTab: openLinksInNewTab,
-                    blurNsfw: profileSettings.blurNsfw ?? blurNsfw,
-                    autoExpand: autoExpandImages,
-                    infiniteScrollEnabled: infiniteScrollEnabled,
-                    postListingMode: postListingMode,
-                    enableKeyboardNavigation: enableKeyboardNavigation,
-                    enableAnimatedImages: enableAnimatedImages,
-                    collapseBotComments: collapseBotComments,
-                    showUpvotes: nil,
-                    showDownvotes: nil,
-                    showUpvotePercentage: nil
-                )
-                // double optionals confuse the Swift compiler, this two-step assignment avoids warnings
-                let newEmail: String? = profileSettings.email ?? email
-                self.email.value_ = newEmail
-                self.matrixUserId = profileSettings.matrixUserId ?? self.matrixUserId
-                self.showNsfw.value_ = profileSettings.showNsfw ?? showNsfw
-                let newBlurNsfw: Bool? = profileSettings.blurNsfw ?? blurNsfw
-                self.blurNsfw.value_ = newBlurNsfw
-                self.showBotAccounts.value_ = profileSettings.showBotAccounts ?? showBotAccounts
-                self.discussionLanguageIds.value_ = profileSettings.discussionLanguageIds ?? discussionLanguages
-                self.sendNotificationsToEmail.value_ = profileSettings.sendNotificationsToEmail ?? sendNotificationsToEmail
-                self.isBot = profileSettings.isBot ?? self.isBot
+                await self.updateQueue.addItem { properties in
+                    // this function has some untidy source-of-truth behavior--canonically we want to use the provided properties from the UpdateQueue,
+                    // but those are not guaranteed to have user-tier fields so we fall back on the guaranteed values from the `if let` wall above.
+                    // note also that a `nil` in `ProfileSettings` indicates no change
+                    let newEmail: String? = profileSettings.email ?? properties.email ?? email
+                    let newMatrixUserId: String? = profileSettings.matrixUserId ?? properties.matrixUserId
+                    let newShowNsfw: Bool = profileSettings.showNsfw ?? properties.showNsfw ?? showNsfw
+                    let newShowBotAccounts: Bool = profileSettings.showBotAccounts ?? properties.showBotAccounts ?? showBotAccounts
+                    let newDiscussionLanguageIds: Set<Int> = (profileSettings.discussionLanguageIds ?? properties.discussionLanguageIds ?? discussionLanguages)
+                    let newSendNotificationsToEmail: Bool = profileSettings.sendNotificationsToEmail ?? properties.sendNotificationsToEmail ?? sendNotificationsToEmail
+                    let newIsBot: Bool = profileSettings.isBot ?? properties.isBot
+                    
+                    try await self.api.editAccountSettings(
+                        showNsfw: newShowNsfw,
+                        showScores: properties.showScores ?? showScores,
+                        theme: properties.theme ?? theme,
+                        defaultListingType: properties.defaultListingType ?? defaultListingType,
+                        interfaceLanguage: properties.interfaceLanguage ?? interfaceLanguage,
+                        avatar: properties.avatar?.absoluteString ?? "",
+                        banner: properties.banner?.absoluteString ?? "",
+                        displayName: properties.displayName,
+                        email: newEmail,
+                        bio: properties.description,
+                        matrixUserId: newMatrixUserId,
+                        showAvatars: properties.showAvatars ?? showAvatars,
+                        sendNotificationsToEmail: newSendNotificationsToEmail,
+                        botAccount: newIsBot,
+                        showBotAccounts: newShowBotAccounts,
+                        showReadPosts: properties.showReadPosts ?? showReadPosts,
+                        discussionLanguages: newDiscussionLanguageIds.sorted(),
+                        openLinksInNewTab: properties.openLinksInNewTab ?? openLinksInNewTab,
+                        blurNsfw: profileSettings.blurNsfw ?? (properties.blurNsfw as? Bool) ?? blurNsfw,
+                        autoExpand: properties.autoExpandImages ?? autoExpandImages,
+                        infiniteScrollEnabled: properties.infiniteScrollEnabled ?? infiniteScrollEnabled,
+                        postListingMode: properties.postListingMode ?? postListingMode,
+                        enableKeyboardNavigation: properties.enableKeyboardNavigation ?? enableKeyboardNavigation,
+                        enableAnimatedImages: properties.enableAnimatedImages ?? enableAnimatedImages,
+                        collapseBotComments: properties.collapseBotComments ?? collapseBotComments,
+                        showUpvotes: nil,
+                        showDownvotes: nil,
+                        showUpvotePercentage: nil
+                    )
+                    
+                    var properties = properties
+                    properties.email = newEmail
+                    properties.matrixUserId = newMatrixUserId
+                    properties.showNsfw = newShowNsfw
+                    properties.showBotAccounts = newShowBotAccounts
+                    properties.discussionLanguageIds = newDiscussionLanguageIds
+                    properties.sendNotificationsToEmail = newSendNotificationsToEmail
+                    properties.isBot = newIsBot
+                    return properties
+                }
             }
         }
         return nil

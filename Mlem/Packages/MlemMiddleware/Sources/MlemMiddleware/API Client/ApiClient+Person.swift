@@ -174,14 +174,6 @@ public extension ApiClient {
 
     func editProfile(_ details: ProfileDetails) async throws {
         try await repository.editProfile(details)
-        let personId = try await myPersonId
-        if let personId, let person = caches.person.retrieveModel(cacheId: personId) {
-            person.avatar = details.avatar
-            person.banner = details.banner
-            person.displayName = details.displayName ?? person.name
-            person.description = details.description
-            person.matrixUserId = details.matrixUserId
-        }
     }
     
     func editAccountSettings(
