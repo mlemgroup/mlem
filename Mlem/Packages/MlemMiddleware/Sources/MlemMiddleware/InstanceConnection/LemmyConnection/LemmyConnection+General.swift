@@ -191,20 +191,19 @@ public extension LemmyConnection {
                 communityId: communityId,
                 page: page,
                 limit: limit,
-                type_: type?.apiType ?? .all,
+                type_: type?.apiType,
                 otherPersonId: subjectPersonId,
                 postId: postId,
                 commentId: commentId,
-                listingType: nil,
+                listingType: .all,
                 pageCursor: nil
             )
         }
         switch response {
         case let .lemmyGetModlogResponse(response):
             return try response.toSnapshots()
-        case .lemmyPagedResponse:
-            // TODO: Lemmy 1.0
-            throw ApiClientError.featureUnsupported
+        case let .lemmyPagedResponse(response):
+            return try response.items.compactMap { try .init(from: $0) }
         }
     }
     
