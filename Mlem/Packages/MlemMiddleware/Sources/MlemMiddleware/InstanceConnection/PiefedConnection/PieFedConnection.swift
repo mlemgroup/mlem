@@ -25,7 +25,7 @@ public class PieFedConnection: InstanceConnection {
     public let baseUrl: URL
     public var token: String?
     
-    private(set) var contextDataManager: SharedTaskManager<Context, (PieFedGetSiteResponse, PieFedLemmyCompatibleSiteResponse)> = .init()
+    private(set) var contextDataManager: SharedTaskManager<Context, (PieFedGetSiteResponse, PieFedLemmyCompatibleSiteResponse?)> = .init()
 
     public var fetchedVersion: SiteVersion? {
         contextDataManager.fetchedValue?.siteVersion

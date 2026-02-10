@@ -8,7 +8,7 @@
 import Foundation
 
 public extension Instance2Snapshot {
-    init(pieFed: PieFedSite, lemmy: PieFedLemmyCompatibleSiteView) throws(ApiClientError) {
+    init(pieFed: PieFedSite, lemmy: PieFedLemmyCompatibleSiteView?) throws(ApiClientError) {
         // I suspect these can only be `nil` when the `PieFedSite` is used in a request body
         
         guard let enableDownvotes = pieFed.enableDownvotes else {
@@ -23,13 +23,29 @@ public extension Instance2Snapshot {
             throw ApiClientError.responseMissingRequiredData("PieFedSite registrationMode")
         }
 
-        let counts = lemmy.counts
-        let activeUserCount: ActiveUserCount = .init(
-            sixMonths: counts.usersActiveHalfYear,
-            month: counts.usersActiveMonth,
-            week: counts.usersActiveWeek,
-            day: counts.usersActiveDay
-        )
+
+        let postCount: Int
+        let commentCount: Int
+        let communityCount: Int
+        let activeUserCount: ActiveUserCount
+
+        if let lemmy {
+            let counts = lemmy.counts
+            postCount = counts.posts
+            commentCount = counts.comments
+            communityCount = counts.communities
+            activeUserCount = .init(
+                sixMonths: counts.usersActiveHalfYear,
+                month: counts.usersActiveMonth,
+                week: counts.usersActiveWeek,
+                day: counts.usersActiveDay
+            )
+        } else {
+            postCount = 0
+            commentCount = 0
+            communityCount = 0
+            activeUserCount = .zero
+        }
 
         try self.init(
             instance: .init(from: pieFed),
@@ -56,9 +72,9 @@ public extension Instance2Snapshot {
             defaultPostListingMode: .list,
             defaultPostSortType: .hot,
             userCount: userCount,
-            postCount: counts.posts,
-            commentCount: counts.comments,
-            communityCount: counts.communities,
+            postCount: postCount,
+            commentCount: commentCount,
+            communityCount: communityCount,
             activeUserCount: activeUserCount
         )
     }

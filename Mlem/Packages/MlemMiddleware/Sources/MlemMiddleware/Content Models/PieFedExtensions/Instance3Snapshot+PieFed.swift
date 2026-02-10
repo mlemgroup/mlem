@@ -8,7 +8,7 @@
 import Foundation
 
 public extension Instance3Snapshot {
-    init(pieFed: PieFedGetSiteResponse, lemmy: PieFedLemmyCompatibleSiteResponse) throws(ApiClientError) {
+    init(pieFed: PieFedGetSiteResponse, lemmy: PieFedLemmyCompatibleSiteResponse?) throws(ApiClientError) {
         // In addition to having their own site request, PieFed also impersonates
         // Lemmy's site request at "api/v3/site". We also use that response here,
         // because the response contains some data that is missing from PieFed's
@@ -28,7 +28,7 @@ public extension Instance3Snapshot {
         }
 
         try self.init(
-            instance: .init(pieFed: pieFed.site, lemmy: lemmy.siteView),
+            instance: .init(pieFed: pieFed.site, lemmy: lemmy?.siteView),
             allLanguages: allLanguages.compactMap { .init($0) },
             software: .init(type: .pieFed, version: .init(pieFed.version)),
             allowedLanguageIds: .init(0 ... allLanguages.count - 1),
