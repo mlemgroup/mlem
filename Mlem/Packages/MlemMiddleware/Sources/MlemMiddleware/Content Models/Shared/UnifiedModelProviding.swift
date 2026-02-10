@@ -17,6 +17,8 @@ public protocol UnifiedModelProviding: AnyObject, CacheIdentifiable, ContentMode
     
     /// Retrieves a fully populated Properties for this model
     func fetchUpgraded() async throws -> Properties
+    
+    func resolve(with api: ApiClient) async throws -> Self
 }
 
 extension UnifiedModelProviding {

@@ -149,6 +149,11 @@ public class Comment:
         let snapshot = try await api.repository.getComment(id: id)
         return await .init(api: api, snapshot: .comment2(snapshot))
     }
+    
+    public func resolve(with api: ApiClient) async throws -> Self {
+        let stub = CommentStub(api: api, url: allResolvableUrls[0])
+        return try await stub.asComment() as! Self
+    }
 }
 
 // MARK: - Computed

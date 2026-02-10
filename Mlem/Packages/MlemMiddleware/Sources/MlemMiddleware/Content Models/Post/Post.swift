@@ -230,6 +230,11 @@ public class Post:
         let snapshot = try await api.repository.getPost(id: id)
         return await .init(api: api, snapshot: .post3(snapshot))
     }
+    
+    public func resolve(with api: ApiClient) async throws -> Self {
+        let stub = PostStub(api: api, url: allResolvableUrls[0])
+        return try await stub.getPost() as! Self
+    }
 }
 
 // MARK: - Computed

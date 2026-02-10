@@ -30,9 +30,10 @@ struct ExpandedPostView<Content: View>: View {
     @Setting(\.interactionBar_post) var postInteractionBar
     @Setting(\.interactionBar_comment) var commentInteractionBar
 
-    var post: Post
+    @State var post: Post
     let highlightedComment: Comment?
     let content: Content
+    @State var isLoading: Bool = false
     
     var tracker: CommentTreeTracker?
     @State var scrollTargetedComment: Comment?
@@ -64,7 +65,8 @@ struct ExpandedPostView<Content: View>: View {
         VStack {
             viewContent
                 .themedGroupedBackground()
-                .externalApiWarning(entity: post, isLoading: false)
+                .reloadOnAccountSwitch(entity: $post, isLoading: $isLoading)
+                .externalApiWarning(entity: post, isLoading: isLoading)
                 .task {
                     await tracker?.load(ensuringPresenceOf: scrollTargetedComment)
                     if post.api == appState.firstApi {

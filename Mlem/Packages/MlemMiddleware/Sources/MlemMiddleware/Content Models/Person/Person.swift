@@ -241,6 +241,11 @@ public final class Person:
         return await .init(api: api, snapshot: .person3(snapshot))
     }
     
+    public func resolve(with api: ApiClient) async throws -> Self {
+        let stub = PersonStub(api: api, url: allResolvableUrls[0])
+        return try await stub.getPerson() as! Self
+    }
+    
     // MARK: Logic
     
     func updateKnownCommunityBanState(id: Int, banned: Bool) {

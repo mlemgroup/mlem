@@ -486,6 +486,7 @@
 		CD7928262C73E73400FA712D /* PersonView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7928252C73E73400FA712D /* PersonView+Logic.swift */; };
 		CD7AC2CC2D7FDFFB00A671B7 /* MediaView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7AC2CB2D7FDFF700A671B7 /* MediaView+Logic.swift */; };
 		CD7BF9322D18F4ED0020F2C5 /* FiltersTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7BF9312D18F4EB0020F2C5 /* FiltersTracker.swift */; };
+		CD7C4E572F3B92BA00ADCBDD /* View+ReloadOnAccountSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7C4E562F3B92A600ADCBDD /* View+ReloadOnAccountSwitch.swift */; };
 		CD7DB9712C49C17200DCC542 /* PersonContentGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7DB9702C49C17200DCC542 /* PersonContentGridView.swift */; };
 		CD7DB9732C4AEDDE00DCC542 /* TileCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7DB9722C4AEDDE00DCC542 /* TileCommentView.swift */; };
 		CD7DB9762C4D6C0A00DCC542 /* FeedCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7DB9752C4D6C0A00DCC542 /* FeedCommentView.swift */; };
@@ -1042,6 +1043,7 @@
 		CD7928252C73E73400FA712D /* PersonView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PersonView+Logic.swift"; sourceTree = "<group>"; };
 		CD7AC2CB2D7FDFF700A671B7 /* MediaView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MediaView+Logic.swift"; sourceTree = "<group>"; };
 		CD7BF9312D18F4EB0020F2C5 /* FiltersTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersTracker.swift; sourceTree = "<group>"; };
+		CD7C4E562F3B92A600ADCBDD /* View+ReloadOnAccountSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ReloadOnAccountSwitch.swift"; sourceTree = "<group>"; };
 		CD7DB9702C49C17200DCC542 /* PersonContentGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonContentGridView.swift; sourceTree = "<group>"; };
 		CD7DB9722C4AEDDE00DCC542 /* TileCommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileCommentView.swift; sourceTree = "<group>"; };
 		CD7DB9752C4D6C0A00DCC542 /* FeedCommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCommentView.swift; sourceTree = "<group>"; };
@@ -2136,6 +2138,7 @@
 		CD4ED8482BF1112A00EFA0A2 /* View Modifiers */ = {
 			isa = PBXGroup;
 			children = (
+				CD7C4E562F3B92A600ADCBDD /* View+ReloadOnAccountSwitch.swift */,
 				CDE88C342E68938800183AE5 /* View+AccountSwitcherGesture.swift */,
 				CDB738282CB8A69D005B11BB /* View+PaletteBorder.swift */,
 				030EE3032D651A4100D58C2C /* View+Refreshable.swift */,
@@ -3102,6 +3105,7 @@
 				0355F9462C150B2300605248 /* ExternalApiInfoView.swift in Sources */,
 				03D0273C2CD3BA5100984519 /* PersonContent+Extensions.swift in Sources */,
 				03A631602D4D1CBB009A47A6 /* HapticSettingsView.swift in Sources */,
+				CD7C4E572F3B92BA00ADCBDD /* View+ReloadOnAccountSwitch.swift in Sources */,
 				CD7AC2CC2D7FDFFB00A671B7 /* MediaView+Logic.swift in Sources */,
 				03F9672B2CE221220081C9A3 /* Label+Profile1.swift in Sources */,
 				03B25B3B2CC44FFF00EB6DF5 /* UploadConfirmationView.swift in Sources */,
