@@ -7,6 +7,7 @@
 
 import Foundation
 
+// TODO: UnifiedCommunity move resolve(with: ApiClient) into this protocol
 public protocol Resolvable {
     /// An array of available URLs for this entity that can be resolved by another `ApiClient`.
     var allResolvableUrls: [URL] { get }

@@ -42,7 +42,7 @@ struct PersonView: View {
     @State private var selectedTab: Tab = .overview
     @State private var selectedContentType: PersonContentType = .all
     @State var feedLoader: SingleSourceMixedFeedLoader?
-    @State var upgraded: Bool = false
+    @State var isLoading: Bool = false
 
     let isProfileTab: Bool
     
@@ -70,6 +70,16 @@ struct PersonView: View {
     
     var body: some View {
         content
+            .reloadOnAccountSwitch(entity: $person, isLoading: $isLoading) { newPerson in
+                feedLoader = .init(
+                    api: appState.firstApi,
+                    pageSize: internetSpeed.pageSize,
+                    userId: newPerson.id,
+                    sortType: .new,
+                    savedOnly: false,
+                    prefetchingConfiguration: .forPostSize(postSize)
+                )
+            }
             .onAppear {
                 preheatFeedLoader()
             }
@@ -85,7 +95,7 @@ struct PersonView: View {
     
     var content: some View {
         content(person: person)
-            .externalApiWarning(entity: person, isLoading: false)
+            .externalApiWarning(entity: person, isLoading: isLoading)
             .onAppear {
                 logVisit(person)
             }

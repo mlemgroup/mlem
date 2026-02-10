@@ -14,6 +14,7 @@ private struct ReloadOnAccountSwitchModifier<T: UnifiedModelProviding & ContentI
     
     @Binding var entity: T
     @Binding var isLoading: Bool
+    var callback: ((T) -> Void)?
 
     func body(content: Content) -> some View {
         content
@@ -23,6 +24,7 @@ private struct ReloadOnAccountSwitchModifier<T: UnifiedModelProviding & ContentI
                 Task {
                     do {
                         let newEntity = try await entity.resolve(with: appState.firstApi)
+                        callback?(newEntity)
                         Task { @MainActor in
                             entity = newEntity
                             isLoading = false
@@ -37,7 +39,10 @@ private struct ReloadOnAccountSwitchModifier<T: UnifiedModelProviding & ContentI
 }
 
 extension View {
-    func reloadOnAccountSwitch<T: UnifiedModelProviding & ContentIdentifiable>(entity: Binding<T>, isLoading: Binding<Bool>) -> some View {
-        modifier(ReloadOnAccountSwitchModifier(entity: entity, isLoading: isLoading))
+    func reloadOnAccountSwitch<T: UnifiedModelProviding & ContentIdentifiable>(
+        entity: Binding<T>,
+        isLoading: Binding<Bool>,
+        callback: ((T) -> Void)? = nil) -> some View {
+        modifier(ReloadOnAccountSwitchModifier(entity: entity, isLoading: isLoading, callback: callback))
     }
 }
