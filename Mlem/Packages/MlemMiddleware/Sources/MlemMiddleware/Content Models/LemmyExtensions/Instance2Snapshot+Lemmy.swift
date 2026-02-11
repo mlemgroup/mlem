@@ -53,7 +53,7 @@ extension Instance2Snapshot {
             guard let week = site.localSite.usersActiveWeek else {
                 throw .responseMissingRequiredData("LemmySiteView active users")
             }
-            guard let day = site.localSite.usersActiveHalfYear else {
+            guard let day = site.localSite.usersActiveDay else {
                 throw .responseMissingRequiredData("LemmySiteView active users")
             }
             activeUserCount = .init(

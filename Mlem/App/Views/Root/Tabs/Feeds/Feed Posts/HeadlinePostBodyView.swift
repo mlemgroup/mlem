@@ -84,5 +84,6 @@ struct HeadlinePostBodyView: View {
             .foregroundStyle((post.read.value ?? false) ? .themedSecondary : .themedPrimary)
             .font(.headline)
             .imageScale(.small)
+            .fixedSize(horizontal: false, vertical: true)
     }
 }
