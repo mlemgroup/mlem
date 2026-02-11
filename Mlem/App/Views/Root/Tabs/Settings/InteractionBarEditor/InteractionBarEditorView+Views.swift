@@ -241,6 +241,7 @@ extension InteractionBarEditorView {
             title: "Interaction Bar",
             description: "Tap and hold items to add, remove, or rearrange them."
         ) {}
+            .padding(Constants.main.standardSpacing)
             .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.largeItemCornerRadius))
     }
     
