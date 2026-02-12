@@ -595,3 +595,11 @@ public extension Person {
         )
     }
 }
+
+public extension Person {
+    var displayName_: String? { displayName }
+    var description_: String? { description }
+    var banner_: URL? { banner }
+    var created_: Date? { created }
+    var updated_: Date? { updated }
+}
