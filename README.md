@@ -5,7 +5,7 @@ Mlem is a beautiful, intuitive, open source iOS client for [Lemmy](https://join-
 <a href="https://apps.apple.com/app/id6450543782"><img src="https://github.com/user-attachments/assets/a21869b5-521f-4e24-8c53-a35cd74dfb94" alt="Download on the App Store" width="175vw"></a>
 
 > [!NOTE]
-> Mlem requires iOS 17 or later.
+> Mlem requires iOS 18.0 or later.
 
 If you'd like to participate in the beta version of Mlem, you can [join our Testflight program](https://testflight.apple.com/join/W6ajfKQt).
 

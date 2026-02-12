@@ -17,17 +17,20 @@ struct CommentBodyView: View {
     let comment: Comment
     
     var body: some View {
-        if comment.deleted {
-            missingContentMessage("Comment was deleted")
-        } else if comment.removed {
-            if exposeRemovedContent {
-                MarkdownWithLinkList(comment.content, configuration: .removedContent, showLinkCaptions: !compactComments)
+        Group {
+            if comment.deleted {
+                missingContentMessage("Comment was deleted")
+            } else if comment.removed {
+                if exposeRemovedContent {
+                    MarkdownWithLinkList(comment.content, configuration: .removedContent, showLinkCaptions: !compactComments)
+                } else {
+                    missingContentMessage("Comment was removed")
+                }
             } else {
-                missingContentMessage("Comment was removed")
+                MarkdownWithLinkList(comment.content, showLinkCaptions: !compactComments)
             }
-        } else {
-            MarkdownWithLinkList(comment.content, showLinkCaptions: !compactComments)
         }
+        .fixedSize(horizontal: false, vertical: true)
     }
     
     @ViewBuilder
