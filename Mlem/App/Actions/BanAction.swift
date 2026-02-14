@@ -40,7 +40,7 @@ private extension BanScopePattern {
 }
 
 struct BanAction: SimpleLabelAction {
-    let entity: any Person1Providing
+    let entity: Person
 
     var canBanFromInstance: Bool {
         entity.api.isAdmin && entity.api.supports(.banFromInstance, defaultValue: false)
@@ -53,9 +53,10 @@ struct BanAction: SimpleLabelAction {
 
         guard supportedByApi else { return false }
         guard let community else { return entity.api.isAdmin }
-        guard let myPerson = entity.api.myPerson else { return false }
+        guard let myPerson = entity.api.myPerson,
+              let myPersonModerates = myPerson.moderates else { return false }
 
-        return myPerson.moderates(community: community) || entity.api.isAdmin
+        return myPersonModerates(.community(community)) || entity.api.isAdmin
     }
 }
 
@@ -64,7 +65,7 @@ struct BanAction: SimpleLabelAction {
 extension ActionSeed {
     static let ban = ActionSeed("ban") { entity in
         switch entity {
-        case let entity as any Person1Providing: BanAction(entity: entity)
+        case let entity as Person: BanAction(entity: entity)
         default: nil
         }
     }

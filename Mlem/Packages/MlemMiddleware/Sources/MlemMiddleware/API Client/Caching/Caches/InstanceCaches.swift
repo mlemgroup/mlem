@@ -119,7 +119,7 @@ class Instance3Cache: ApiTypeBackedCache<Instance3, Instance3Snapshot> {
             allLanguages: snapshot.allLanguages,
             allowedLanguageIds: snapshot.allowedLanguageIds,
             blockedUrls: snapshot.blockedUrls,
-            administrators: api.caches.person2.getModels(api: api, from: snapshot.administrators)
+            administrators: api.caches.person.getModels(api: api, from: snapshot.administrators.map { .person2($0) })
         )
     }
     

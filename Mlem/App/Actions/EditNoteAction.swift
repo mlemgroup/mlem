@@ -10,7 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct EditNoteAction: Actions.Action {
-    let entity: any Person1Providing
+    let entity: Person
 }
 
 // MARK: - Configurability
@@ -21,7 +21,7 @@ extension ActionSeed {
         label: EditNoteAction.createLabel(noteExists: true)
     ) { entity in
         switch entity {
-        case let entity as any Person1Providing: EditNoteAction(entity: entity)
+        case let entity as Person: EditNoteAction(entity: entity)
         default: nil
         }
     }

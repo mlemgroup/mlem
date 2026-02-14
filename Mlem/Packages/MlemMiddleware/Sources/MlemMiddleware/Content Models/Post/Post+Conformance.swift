@@ -187,7 +187,8 @@ public extension Post {
 
 public extension Post {
     var canModerate: Bool {
-        api.myPerson?.moderates(communityId: communityId) ?? false || api.isAdmin
+        guard let myPersonModerates = api.myPerson?.moderates else { return false }
+        return myPersonModerates(.id(communityId)) || api.isAdmin
     }
 }
 

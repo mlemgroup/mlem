@@ -184,30 +184,36 @@ public extension ApiClient {
     }
     
     @discardableResult
-    func addModerator(communityId: Int, personId: Int, added: Bool) async throws -> [Person1] {
+    func addModerator(communityId: Int, personId: Int, added: Bool) async throws -> [Person] {
         let snapshots = try await repository.addModerator(
             communityId: communityId,
             personId: personId,
             added: added
         )
 
-        let updatedModerators = await caches.person1.getModels(api: self, from: snapshots.moderators)
+        let updatedModerators = await caches.person.getModels(api: self, from: snapshots.moderators.map { .person1($0) })
         
         if let community = caches.community3.retrieveModel(cacheId: communityId) {
             community.moderators = updatedModerators
         }
         
-        if let person = caches.person3.retrieveModel(cacheId: personId) {
+        if let person = caches.person.retrieveModel(cacheId: personId) {
             let newModerator = snapshots.moderators.first(where: { $0.id == personId })
             if added {
                 guard newModerator != nil else { throw ApiClientError.unsuccessful }
-                await person.moderatedCommunities.append(caches.community1.getModel(
+                let newModeratedCommunity = await caches.community1.getModel(
                     api: self,
                     from: snapshots.community
-                ))
+                )
+                
+                if person.moderatedCommunities.value_ == nil {
+                    person.moderatedCommunities.value_ = [newModeratedCommunity]
+                } else {
+                    person.moderatedCommunities.value_?.append(newModeratedCommunity)
+                }
             } else {
                 guard newModerator == nil else { throw ApiClientError.unsuccessful }
-                person.moderatedCommunities.removeAll(where: { $0.id == communityId })
+                person.moderatedCommunities.value_?.removeAll(where: { $0.id == communityId })
             }
         }
         

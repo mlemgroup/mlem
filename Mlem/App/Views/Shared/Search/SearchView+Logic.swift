@@ -226,9 +226,7 @@ extension SearchView {
             Task {
                 let stub = PersonStub(api: api, url: creator.actorId.url)
                 do {
-                    if let person = try await (stub.upgrade()) as? Person2 {
-                        postFilters.creator = person
-                    }
+                    postFilters.creator = try await (stub.getPerson())
                 } catch {
                     handleError(error)
                 }

@@ -77,7 +77,7 @@ struct CommunityAboutView: View {
     var canEditDescription: Bool {
         guard appState.firstApi.supports(.editCommunityDescription, defaultValue: false) else { return false }
         guard let firstPerson = appState.firstPerson else { return false }
-        return firstPerson.isAdmin || firstPerson.moderates(community: community)
+        return (firstPerson.isAdmin.value ?? false) || (firstPerson.moderates?(.community(community)) ?? false)
     }
 
     func edit() {

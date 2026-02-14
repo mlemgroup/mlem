@@ -26,12 +26,6 @@ extension ApiRepository {
         }
     }
     
-    func getPerson(url: URL) async throws -> Person3Snapshot {
-        try await performingForConnection { connection in
-            try await connection.getPerson(url: url)
-        }
-    }
-    
     /// `filter` can be set to `.local` from 0.19.4 onwards.
     func searchPeople(
         query: String,

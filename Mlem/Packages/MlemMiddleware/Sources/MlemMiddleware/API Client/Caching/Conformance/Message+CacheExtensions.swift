@@ -25,7 +25,10 @@ extension Message2: CacheIdentifiable {
     @MainActor
     func update(with snapshot: Message2Snapshot, semaphore: UInt? = nil) {
         message1.update(with: snapshot.message, semaphore: semaphore)
-        creator.update(with: snapshot.creator, semaphore: semaphore)
-        recipient.update(with: snapshot.recipient, semaphore: semaphore)
+        
+        Task {
+            await creator.updateQueue.attemptDirectUpdate(with: .init(api: api, snapshot: .person1(snapshot.creator)))
+            await recipient.updateQueue.attemptDirectUpdate(with: .init(api: api, snapshot: .person1(snapshot.recipient)))
+        }
     }
 }

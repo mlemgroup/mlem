@@ -26,7 +26,7 @@ public final class Instance3: Instance3Providing {
     public var allowedLanguageIds: Set<Int>
     
     public var blockedUrls: [InstanceUrlBlockRecord]?
-    public var administrators: [Person2]
+    public var administrators: [Person]
   
     init(
         api: ApiClient,
@@ -35,7 +35,7 @@ public final class Instance3: Instance3Providing {
         allLanguages: [Locale.Language],
         allowedLanguageIds: Set<Int>,
         blockedUrls: [InstanceUrlBlockRecord]?,
-        administrators: [Person2]
+        administrators: [Person]
     ) {
         self.api = api
         self.instance2 = instance2

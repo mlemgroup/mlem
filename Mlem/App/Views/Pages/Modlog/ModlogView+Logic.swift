@@ -49,7 +49,7 @@ extension ModlogView {
 
     enum PersonFilter: Hashable {
         case any
-        case person(any Person)
+        case person(Person)
 
         var label: String {
             switch self {
@@ -58,7 +58,7 @@ extension ModlogView {
             }
         }
 
-        var personValue: (any Person)? {
+        var personValue: (Person)? {
             switch self {
             case let .person(person): person
             default: nil

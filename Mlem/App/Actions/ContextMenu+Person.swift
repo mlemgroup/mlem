@@ -24,7 +24,7 @@ private let seeds: [ActionSeed] = [
 ]
 
 extension ActionButtons {
-    init(person: any Person1Providing) {
+    init(person: Person) {
         self.init { _ in
             seeds.compactMap { $0.createAction(person) }
         }
@@ -32,7 +32,7 @@ extension ActionButtons {
 }
 
 extension View {
-    func contextMenu(person: any Person1Providing) -> some View {
+    func contextMenu(person: Person) -> some View {
         contextMenu {
             ActionButtons(person: person)
         }

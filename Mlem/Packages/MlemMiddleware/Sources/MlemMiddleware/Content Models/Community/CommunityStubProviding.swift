@@ -40,7 +40,7 @@ public protocol CommunityStubProviding: ContentModel, Resolvable {
     
     // From Community3Providing.
     var instance_: Instance1? { get }
-    var moderators_: [Person1]? { get }
+    var moderators_: [Person]? { get }
     var discussionLanguageIds_: Set<Int>? { get }
     
     func upgrade() async throws -> any Community
@@ -81,6 +81,6 @@ public extension CommunityStubProviding {
     
     // From Community3Providing.
     var instance_: Instance1? { nil }
-    var moderators_: [Person1]? { nil }
+    var moderators_: [Person]? { nil }
     var discussionLanguageIds_: Set<Int>? { nil }
 }

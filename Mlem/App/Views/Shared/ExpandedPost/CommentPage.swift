@@ -43,7 +43,7 @@ struct CommentPage: View {
     func content(post: Post) -> some View {
         ExpandedPostView(
             post: post,
-            tracker: tracker,
+            tracker: $tracker,
             scrollTargetedComment: comment
         ) {
             if showViewPostButton || tracker.nodes.first?.comment.depth != 0 {

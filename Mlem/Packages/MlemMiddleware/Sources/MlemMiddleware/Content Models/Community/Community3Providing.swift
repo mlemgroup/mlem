@@ -11,7 +11,7 @@ public protocol Community3Providing: Community2Providing {
     var community3: Community3 { get }
     
     var instance: Instance1? { get }
-    var moderators: [Person1] { get }
+    var moderators: [Person] { get }
     var discussionLanguageIds: Set<Int> { get }
 }
 
@@ -20,11 +20,11 @@ public extension Community3Providing {
     
     /// This is optional because it's defined as such on ``LemmyGetCommunityResponse``. I'm not sure when it actually returns `nil`.
     var instance: Instance1? { community3.instance }
-    var moderators: [Person1] { community3.moderators }
+    var moderators: [Person] { community3.moderators }
     var discussionLanguageIds: Set<Int> { community3.discussionLanguageIds }
     
     var instance_: Instance1? { community3.instance }
-    var moderators_: [Person1]? { community3.moderators }
+    var moderators_: [Person]? { community3.moderators }
     var discussionLanguageIds_: Set<Int>? { community3.discussionLanguageIds }
 }
 

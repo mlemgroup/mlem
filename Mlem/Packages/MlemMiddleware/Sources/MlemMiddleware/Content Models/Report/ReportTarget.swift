@@ -41,7 +41,7 @@ public enum ReportTarget {
     }
     
     // TODO: UnifiedCommentModel, UnifiedMessageModel remove this shim
-    public var creator: ExpectedValue<any Person1Providing> {
+    public var creator: ExpectedValue<Person> {
         switch self {
         case let .post(post): post.creator
         case let .comment(comment): comment.creator

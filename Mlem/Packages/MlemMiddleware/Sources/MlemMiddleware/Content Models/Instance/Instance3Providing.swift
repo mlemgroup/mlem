@@ -14,7 +14,7 @@ public protocol Instance3Providing: Instance2Providing {
     var allLanguages: [Locale.Language] { get }
     var allowedLanguageIds: Set<Int> { get }
     var blockedUrls: [InstanceUrlBlockRecord]? { get }
-    var administrators: [Person2] { get }
+    var administrators: [Person] { get }
 }
 
 public extension Instance3Providing {
@@ -24,19 +24,19 @@ public extension Instance3Providing {
     var allLanguages: [Locale.Language] { instance3.allLanguages }
     var allowedLanguageIds: Set<Int> { instance3.allowedLanguageIds }
     var blockedUrls: [InstanceUrlBlockRecord]? { instance3.blockedUrls }
-    var administrators: [Person2] { instance3.administrators }
+    var administrators: [Person] { instance3.administrators }
     
     var software_: SiteSoftware? { instance3.software }
     var allLanguages_: [Locale.Language]? { instance3.allLanguages }
     var allowedLanguageIds_: Set<Int>? { instance3.allowedLanguageIds }
     var blockedUrls_: [InstanceUrlBlockRecord]? { instance3.blockedUrls }
-    var administrators_: [Person2]? { instance3.administrators }
+    var administrators_: [Person]? { instance3.administrators }
     
     func addAdmin(personId: Int, added: Bool) async throws {
         try await api.addAdmin(personId: personId, added: added)
     }
     
-    func addAdmin(_ person: any Person, added: Bool) async throws {
+    func addAdmin(_ person: Person, added: Bool) async throws {
         try await addAdmin(personId: person.id, added: added)
     }
     

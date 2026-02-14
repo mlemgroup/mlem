@@ -71,6 +71,6 @@ extension Instance3: CacheIdentifiable {
         setIfChanged(\.software, snapshot.software)
         setIfChanged(\.allowedLanguageIds, snapshot.allowedLanguageIds)
         setIfChanged(\.blockedUrls, snapshot.blockedUrls)
-        setIfChanged(\.administrators, api.caches.person2.getModels(api: api, from: snapshot.administrators))
+        setIfChanged(\.administrators, api.caches.person.getModels(api: api, from: snapshot.administrators.map { .person2($0) }))
     }
 }

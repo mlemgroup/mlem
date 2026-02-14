@@ -29,11 +29,7 @@ extension ApiClient {
         var community2: Community2Cache = .init()
         var community3: Community3Cache = .init()
         
-        var person1: Person1Cache = .init()
-        var person2: Person2Cache = .init()
-        var person3: Person3Cache = .init()
-        var person4: Person4Cache = .init()
-    
+        var person: PersonCache = .init()
         var post: PostCache = .init()
         var comment: CommentCache = .init()
         
@@ -54,10 +50,7 @@ extension ApiClient {
             community1.clean()
             community2.clean()
             community3.clean()
-            person1.clean()
-            person2.clean()
-            person3.clean()
-            person4.clean()
+            person.clean()
             post.clean()
             comment.clean()
             message1.clean()
