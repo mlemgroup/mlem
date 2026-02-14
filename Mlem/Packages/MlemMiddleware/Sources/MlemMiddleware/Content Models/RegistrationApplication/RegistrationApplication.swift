@@ -21,8 +21,8 @@ public final class RegistrationApplication: ContentIdentifiable, FeedLoadable {
     
     public let id: Int
     public internal(set) var questionResponse: String
-    public let creator: Person1
-    public internal(set) var resolver: Person1?
+    public let creator: Person
+    public internal(set) var resolver: Person?
     public internal(set) var email: String?
     public internal(set) var emailVerified: Bool
     public internal(set) var showNsfw: Bool
@@ -35,8 +35,8 @@ public final class RegistrationApplication: ContentIdentifiable, FeedLoadable {
         api: ApiClient,
         id: Int,
         questionResponse: String,
-        creator: Person1,
-        resolver: Person1?,
+        creator: Person,
+        resolver: Person?,
         email: String?,
         emailVerified: Bool,
         showNsfw: Bool,

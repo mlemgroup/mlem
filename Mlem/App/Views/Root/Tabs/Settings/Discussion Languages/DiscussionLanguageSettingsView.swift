@@ -12,7 +12,7 @@ struct DiscussionLanguageSettingsView: View {
     @Environment(NavigationLayer.self) var navigation
     
     @State var instance: (any Instance3Providing)?
-    @State var person: (any Person4Providing)?
+    @State var person: Person?
     
     @State var submitting: Int?
     
@@ -34,27 +34,29 @@ struct DiscussionLanguageSettingsView: View {
             )
             
             if let person, let instance {
-                Section {
-                    let selectedLanguages = instance.languages(withIds: person.discussionLanguageIds)
-                    ForEach(selectedLanguages, id: \.languageCode) { language in
-                        LanguageListRowBody(language: language)
-                            .contextMenu {
-                                Button("Remove", icon: .general.signOut, role: .destructive) {
-                                    Task { await updateDiscussionLanguages(with: language) }
+                ExpectedView(person.discussionLanguageIds) { languageIds in
+                    Section {
+                        let selectedLanguages = instance.languages(withIds: languageIds)
+                        ForEach(selectedLanguages, id: \.languageCode) { language in
+                            LanguageListRowBody(language: language)
+                                .contextMenu {
+                                    Button("Remove", icon: .general.signOut, role: .destructive) {
+                                        Task { await updateDiscussionLanguages(with: language, languages: languageIds) }
+                                    }
                                 }
-                            }
-                            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                                Button("Remove", role: .destructive) {
-                                    Task { await updateDiscussionLanguages(with: language) }
+                                .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                                    Button("Remove", role: .destructive) {
+                                        Task { await updateDiscussionLanguages(with: language, languages: languageIds) }
+                                    }
+                                    .buttonStyle(.automatic)
+                                    .tint(.red)
                                 }
-                                .buttonStyle(.automatic)
-                                .tint(.red)
-                            }
-                    }
-                    Button("Add Language...") {
-                        navigation.openSheet(.languagePicker(selectedLanguages: Set(selectedLanguages)) { newLanguage in
-                            Task { await updateDiscussionLanguages(with: newLanguage) }
-                        })
+                        }
+                        Button("Add Language...") {
+                            navigation.openSheet(.languagePicker(selectedLanguages: Set(selectedLanguages)) { newLanguage in
+                                Task { await updateDiscussionLanguages(with: newLanguage, languages: languageIds) }
+                            })
+                        }
                     }
                 }
             }
@@ -63,7 +65,7 @@ struct DiscussionLanguageSettingsView: View {
         .hiddenNavigationTitle("Discussion Languages")
     }
 
-    func updateDiscussionLanguages(with language: Locale.Language) async {
+    func updateDiscussionLanguages(with language: Locale.Language, languages: Set<Int>) async {
         defer { submitting = nil }
 
         guard let person, let instance else {
@@ -76,14 +78,19 @@ struct DiscussionLanguageSettingsView: View {
             return
         }
         
-        var newLangs = person.discussionLanguageIds
+        guard let updateSettings = person.updateSettings else {
+            assertionFailure()
+            return
+        }
+        
+        var newLangs = languages
         if newLangs.contains(id) {
             newLangs.remove(id)
         } else {
             newLangs.insert(id)
         }
         do {
-            try await person.person4.updateSettings(discussionLanguageIds: newLangs)
+            try await updateSettings(.init(discussionLanguageIds: newLangs))
         } catch {
             handleError(error)
         }

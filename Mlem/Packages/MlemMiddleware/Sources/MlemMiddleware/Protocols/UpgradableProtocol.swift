@@ -7,6 +7,7 @@
 
 import Foundation
 
+// TODO: Unified Community, Modlog remove this
 public protocol Upgradable: Observable {
     associatedtype Base
     associatedtype MinimumRenderable

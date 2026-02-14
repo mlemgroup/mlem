@@ -12,7 +12,7 @@ import SwiftUI
 struct SendMessageAction: SimpleLabelAction {
     enum Relationship { case identity, author }
 
-    let entity: any Person1Providing
+    let entity: Person
     let relationship: Relationship
 }
 
@@ -21,7 +21,7 @@ struct SendMessageAction: SimpleLabelAction {
 extension ActionSeed {
     static let sendMessage = ActionSeed("sendMessage") { entity in
         switch entity {
-        case let entity as any Person1Providing: SendMessageAction(entity: entity, relationship: .identity)
+        case let entity as Person: SendMessageAction(entity: entity, relationship: .identity)
         default: nil
         }
     }

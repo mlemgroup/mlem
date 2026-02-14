@@ -62,7 +62,7 @@ extension InteractableProviding {
             appearance: .blockCreator(),
             confirmationPrompt: showConfirmation ? "Really block this user?" : nil,
             callback: api.canInteract(appState: appState)
-            ? { @MainActor in creator.toggleBlocked(feedback: feedback) }
+            ? { @MainActor in creator.shimToggleBlocked(feedback: feedback) }
             : nil
         )
     }

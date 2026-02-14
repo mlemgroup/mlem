@@ -29,8 +29,8 @@ struct ModlogView: View {
     
     init(
         initialTarget: InitialTarget,
-        targetPerson: AnyPerson?,
-        moderatorPerson: AnyPerson?
+        targetPerson: Person?,
+        moderatorPerson: Person?
     ) {
         self._feedLoader = .init(
             wrappedValue: .init(
@@ -52,14 +52,14 @@ struct ModlogView: View {
         case let .instance(instance):
             self._communityFilter = .init(wrappedValue: .any)
             self.api = instance.wrappedValue.api
-        case let .currentInstance:
+        case .currentInstance:
             self._communityFilter = .init(wrappedValue: .any)
             self.api = AppState.main.firstApi
         }
-        if let person = targetPerson?.wrappedValue as? any Person1Providing {
+        if let person = targetPerson {
             self._targetPersonFilter = .init(wrappedValue: .person(person))
         }
-        if let person = moderatorPerson?.wrappedValue as? any Person1Providing {
+        if let person = moderatorPerson {
             self._moderatorPersonFilter = .init(wrappedValue: .person(person))
         }
     }

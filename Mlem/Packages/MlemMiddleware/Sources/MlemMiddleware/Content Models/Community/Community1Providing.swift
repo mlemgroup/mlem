@@ -141,16 +141,11 @@ public extension Community1Providing {
         )
     }
     
-    @discardableResult
-    func updateBlocked(_ newValue: Bool) -> Task<StateUpdateResult, Never> {
-        blockedManager.performRequest(expectedResult: newValue) { semaphore in
+    func updateBlocked(_ newValue: Bool, callback: ((Bool) -> Void)? = nil) {
+        _ = blockedManager.performRequest(expectedResult: newValue) { semaphore in
             try await self.api.blockCommunity(id: self.id, block: newValue, semaphore: semaphore)
+            callback?(true)
         }
-    }
-    
-    @discardableResult
-    func toggleBlocked() -> Task<StateUpdateResult, Never> {
-        updateBlocked(!blocked)
     }
     
     func updateRemoved(_ newValue: Bool, reason: String?, callback: ((UpdateStatus) -> Void)?) {
@@ -173,7 +168,7 @@ public extension Community1Providing {
         try await api.addModerator(communityId: id, personId: personId, added: added)
     }
     
-    func addModerator(_ person: any Person, added: Bool) async throws {
+    func addModerator(_ person: Person, added: Bool) async throws {
         try await api.addModerator(communityId: id, personId: person.id, added: added)
     }
 
@@ -186,6 +181,7 @@ public extension Community1Providing {
 // CanModerateProviding conformance
 public extension Community1Providing {
     var canModerate: Bool {
-        api.myPerson?.moderates(communityId: id) ?? false || api.isAdmin
+        guard let myPersonModerates = api.myPerson?.moderates else { return false }
+        return myPersonModerates(.id(id)) || api.isAdmin
     }
 }

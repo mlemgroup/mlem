@@ -10,7 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct AppointAdminAction: Actions.Action {
-    let entity: any Person1Providing
+    let entity: Person
 }
 
 // MARK: - Configurability
@@ -18,7 +18,7 @@ struct AppointAdminAction: Actions.Action {
 extension ActionSeed {
     static let appointAdmin = ActionSeed("appointAdmin", label: AppointAdminAction.appointLabel) { entity in
         switch entity {
-        case let entity as any Person1Providing:
+        case let entity as Person:
             AppointAdminAction(entity: entity)
         default:
             nil
@@ -42,9 +42,10 @@ extension AppointAdminAction {
     )
 
     func createLabel(environment: EnvironmentValues) -> ActionLabel {
+        guard let isAdmin = entity.isAdmin.value else { return Self.demoteLabel.withVisibility(.hidden) }
         let label: ActionLabel
 
-        if self.entity.isAdmin_ ?? false {
+        if isAdmin {
             label = Self.demoteLabel
         } else {
             label = Self.appointLabel
@@ -54,14 +55,15 @@ extension AppointAdminAction {
     }
 
     private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {
+        guard let entityIsAdmin = entity.isAdmin.value else { return .hidden }
         if entity.api.canInteract(appState: environment.appState),
             entity.api.isAdmin,
-            !(entity.isAdmin_ ?? false),
+            !entityIsAdmin,
             entity.api.isHigherAdmin(than: entity),
             entity.apiIsLocal {
-            .enabled
+            return .enabled
         } else {
-            .hidden
+            return .hidden
         }
     }
 }
@@ -82,7 +84,8 @@ extension AppointAdminAction {
     }
 
     private func popupMessage(environment: EnvironmentValues) -> LocalizedStringResource? {
-        if self.entity.isAdmin_ ?? false {
+        guard let isAdmin = self.entity.isAdmin.value else { return nil }
+        if isAdmin {
             return "Really remove administrator \(entity.displayName) from \(self.entity.api.host)?"
         } else {
             return "Really appoint \(entity.displayName) as an administrator of \(self.entity.api.host)?"
@@ -90,14 +93,15 @@ extension AppointAdminAction {
     }
 
     private func confirm(environment: EnvironmentValues) {
-        guard let instance = entity.api.myInstance else {
+        guard let instance = entity.api.myInstance,
+        let isAdmin = entity.isAdmin.value else {
             assertionFailure()
             return
         }
 
         Task {
             do {
-                try await instance.addAdmin(self.entity, added: !(self.entity.isAdmin_ ?? false))
+                try await instance.addAdmin(self.entity, added: !isAdmin)
             } catch {
                 handleError(error)
             }

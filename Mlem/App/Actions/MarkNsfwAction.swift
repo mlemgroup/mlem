@@ -34,7 +34,7 @@ extension MarkNsfwAction {
     )
 
     static let removeLabel: ActionLabel = .init(
-        "Remove Nsfw Tag",
+        "Remove NSFW Tag",
         icon: .settings.blurNsfw,
         color: .themedNegative
     )

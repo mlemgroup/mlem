@@ -24,8 +24,8 @@ class ReportCache: CoreCache<Report> {
         let newItem: Report = .init(
             api: api,
             id: snapshot.id,
-            creator: api.caches.person1.getModel(api: api, from: snapshot.creator, semaphore: semaphore),
-            resolver: api.caches.person1.getOptionalModel(api: api, from: snapshot.resolver, semaphore: semaphore),
+            creator: api.caches.person.getModel(api: api, from: .person1(snapshot.creator), semaphore: semaphore),
+            resolver: api.caches.person.getOptionalModel(api: api, from: .person1(snapshot.resolver), semaphore: semaphore),
             target: .init(from: snapshot.target, api: api, myPersonId: myPersonId),
             resolved: snapshot.resolved,
             reason: snapshot.reason,

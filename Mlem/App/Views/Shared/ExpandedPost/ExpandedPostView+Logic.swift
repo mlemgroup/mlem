@@ -56,8 +56,8 @@ extension ExpandedPostView {
     }
     
     var hasNoComments: Bool {
-        if tracker?.loadingState == .done {
-            return tracker?.nodesKeyedByActorId.count == 0
+        if tracker.loadingState == .done {
+            return tracker.nodesKeyedByActorId.count == 0
         }
         return (post.commentCount.value ?? -1) == 0
     }
@@ -74,7 +74,7 @@ extension ExpandedPostView {
         if topVisibleItem.isAtPost, commentId == nil {
             commentId = topVisibleItem.furthestVisitedComment
         }
-        guard let commentId, let tracker else { return false }
+        guard let commentId else { return false }
         let nodes = tracker.nodes.reduce([]) { $0 + $1.tree(hideIfCollapsed: false) }
         let index = nodes.firstIndex { $0.actorId == commentId }
         guard let index else { return false }
@@ -129,7 +129,7 @@ extension ExpandedPostView {
     private func updateHistory() {
         if let commentActorId = topVisibleItem.wrappedValue, topVisibleItem.wrappedValue != post.actorId {
             expandedPostHistoryTracker.insert(postActorId: post.actorId, commentActorId: commentActorId)
-            if let furthestVisitedComment = topVisibleItem.furthestVisitedComment, let tracker {
+            if let furthestVisitedComment = topVisibleItem.furthestVisitedComment {
                 let nodes = tracker.nodes.reduce([]) { $0 + $1.tree(hideIfCollapsed: false) }
                 let furthestVisitedCommentIndex = nodes.firstIndex { $0.actorId == furthestVisitedComment }
                 let newVisitedCommentIndex = nodes.firstIndex { $0.actorId == commentActorId }
@@ -156,7 +156,6 @@ extension ExpandedPostView {
     }
     
     func scrollToNextComment() {
-        guard let tracker else { return }
         if let topVisibleItem = topVisibleItem.wrappedValue {
             if topVisibleItem == post.actorId, let first = tracker.nodes.first {
                 jumpButtonTarget = first.actorId
@@ -172,7 +171,6 @@ extension ExpandedPostView {
     }
     
     func scrollToPreviousComment() {
-        guard let tracker else { return }
         if let topVisibleItem = topVisibleItem.wrappedValue, topVisibleItem != post.actorId {
             if let comment = tracker.nodesKeyedByActorId[topVisibleItem] {
                 if var topLevelIndex = tracker.nodes.firstIndex(of: comment.topParent) {

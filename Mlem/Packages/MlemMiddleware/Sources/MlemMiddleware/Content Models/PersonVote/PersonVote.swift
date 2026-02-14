@@ -22,7 +22,7 @@ public class PersonVote: ContentModel {
     public let target: Target
     public let communityId: Int
     
-    public let creator: Person1
+    public let creator: Person
     public var vote: ScoringOperation
     
     public var bannedFromCommunity: Bool {
@@ -37,7 +37,7 @@ public class PersonVote: ContentModel {
         api: ApiClient,
         target: Target,
         communityId: Int,
-        creator: Person1,
+        creator: Person,
         vote: ScoringOperation,
         creatorBannedFromCommunity: Bool?
     ) {

@@ -117,7 +117,7 @@ extension SearchView {
     @Observable
     class PostFilters {
         var sort: PostSortType
-        var creator: Person2?
+        var creator: Person?
         var location: LocationFilter = .any
         
         init(software: SiteSoftware) {
@@ -132,7 +132,7 @@ extension SearchView {
     @Observable
     class CommentFilters {
         var sort: CommentSortType = .top(.allTime)
-        var creator: Person2?
+        var creator: Person?
         var location: LocationFilter = .any
     }
 }

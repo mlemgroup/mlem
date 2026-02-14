@@ -61,7 +61,7 @@ extension SearchView {
                             isOn: .init(get: { filter == .subscribed }, set: { _ in filter = .subscribed })
                         )
                     }
-                    if !((AppState.main.firstSession as? UserSession)?.person?.moderatedCommunities.isEmpty ?? true) {
+                    if !((AppState.main.firstSession as? UserSession)?.person?.moderatedCommunities.value?.isEmpty ?? true) {
                         Toggle(
                             "Moderated",
                             icon: .lemmy.moderation,

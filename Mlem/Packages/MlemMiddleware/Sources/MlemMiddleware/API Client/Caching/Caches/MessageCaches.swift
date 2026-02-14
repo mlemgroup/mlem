@@ -63,8 +63,8 @@ class Message2Cache: CoreCache<Message2> {
         let newItem: Message2 = .init(
             api: api,
             message1: api.caches.message1.getModel(api: api, from: snapshot.message, myPersonId: myPersonId),
-            creator: api.caches.person1.getModel(api: api, from: snapshot.creator),
-            recipient: api.caches.person1.getModel(api: api, from: snapshot.recipient)
+            creator: api.caches.person.getModel(api: api, from: .person1(snapshot.creator)),
+            recipient: api.caches.person.getModel(api: api, from: .person1(snapshot.recipient))
         )
         itemCache.put(newItem)
         return newItem

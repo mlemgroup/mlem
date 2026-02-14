@@ -108,7 +108,7 @@ struct ModlogEntryView: View {
     }
     
     @ViewBuilder
-    func banPersonView(person: Person1, community: Community1?, banned: Bool, expires: Date?) -> some View {
+    func banPersonView(person: Person, community: Community1?, banned: Bool, expires: Date?) -> some View {
         VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
             let userText = person.nameTextView(
                 showFlairs: true,
@@ -147,7 +147,7 @@ struct ModlogEntryView: View {
     
     @ViewBuilder
     func transferCommunityView(
-        person: Person1,
+        person: Person,
         community: Community1
     ) -> some View {
         VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
@@ -177,7 +177,7 @@ struct ModlogEntryView: View {
     
     @ViewBuilder
     func updatePersonModeratorStatusView(
-        person: Person1,
+        person: Person,
         community: Community1?,
         appointed: Bool
     ) -> some View {

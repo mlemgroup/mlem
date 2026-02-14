@@ -418,7 +418,14 @@
       }
     },
     "%lld Active" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld actifs"
+          }
+        }
+      }
     },
     "%lld Crossposts..." : {
       "localizations" : {
@@ -503,7 +510,7 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "needs_review",
+                  "state" : "translated",
                   "value" : "%lld liens en plus…"
                 }
               },
@@ -532,6 +539,24 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "new",
+                  "value" : "%lld votes"
+                }
+              }
+            }
+          }
+        },
+        "fr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld vote"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
                   "value" : "%lld votes"
                 }
               }
@@ -748,17 +773,6 @@
         }
       }
     },
-    "Add a Link..." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ajouter un lien…"
-          }
-        }
-      }
-    },
     "Add Account" : {
       "localizations" : {
         "fr" : {
@@ -790,10 +804,24 @@
       }
     },
     "Add Comment" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter un commentaire"
+          }
+        }
+      }
     },
     "Add description" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter une description"
+          }
+        }
+      }
     },
     "Add Guest" : {
       "localizations" : {
@@ -846,10 +874,24 @@
       }
     },
     "Add Note" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter une note"
+          }
+        }
+      }
     },
     "Add NSFW Tag" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter le tag NSFW"
+          }
+        }
+      }
     },
     "Additional Read Indicator" : {
       "localizations" : {
@@ -972,7 +1014,14 @@
       }
     },
     "Already voted" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Déjà voté"
+          }
+        }
+      }
     },
     "Always" : {
       "localizations" : {
@@ -1085,7 +1134,14 @@
       }
     },
     "Any User" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tout utilisateur"
+          }
+        }
+      }
     },
     "Anyone" : {
       "localizations" : {
@@ -1470,7 +1526,14 @@
       }
     },
     "Ban..." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bannir…"
+          }
+        }
+      }
     },
     "Banned from Community" : {
       "localizations" : {
@@ -1569,7 +1632,14 @@
       }
     },
     "Block Instance" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bloquer l'instance"
+          }
+        }
+      }
     },
     "Block List" : {
       "localizations" : {
@@ -1612,7 +1682,14 @@
       }
     },
     "Blocked by Cloudflare" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bloqué par Cloudflare"
+          }
+        }
+      }
     },
     "Blocking..." : {
       "localizations" : {
@@ -1625,7 +1702,14 @@
       }
     },
     "Blur" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flou"
+          }
+        }
+      }
     },
     "Blur NSFW" : {
       "localizations" : {
@@ -1862,7 +1946,14 @@
       }
     },
     "Change Thumbnail" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Changer la vignette"
+          }
+        }
+      }
     },
     "Checkmark" : {
       "localizations" : {
@@ -1905,7 +1996,14 @@
       }
     },
     "Choose an action..." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisir une action…"
+          }
+        }
+      }
     },
     "Choose another instance..." : {
       "localizations" : {
@@ -1968,26 +2066,11 @@
       }
     },
     "Choose target..." : {
-
-    },
-    "Choose the default sort mode for posts and comments." : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Choisir le mode de tri par défaut pour les publications et les commentaires."
-          }
-        }
-      }
-    },
-    "Choose when Not Safe For Work content should be blurred." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Choisir quand le contenu NSFW doit être flouté."
+            "value" : "Choisir la cible…"
           }
         }
       }
@@ -2002,17 +2085,6 @@
         }
       }
     },
-    "Choose whether to show a warning when opening a page that is likely to contain sensitive content." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Choisir d'afficher ou non un avertissement lors de l'ouverture d'une page susceptible de contenir du contenu sensible."
-          }
-        }
-      }
-    },
     "Choose whether to use alternate interaction bar and swipe action layouts for post and comment reports in Mod Mail." : {
       "localizations" : {
         "fr" : {
@@ -2023,45 +2095,12 @@
         }
       }
     },
-    "Choose whether to use an alternate interaction bar layout for post and comment reports in Mod Mail." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Choisir d'utiliser ou non une disposition de barre d'interaction alternative pour les rapports de publication et de commentaire dans Mod Mail."
-          }
-        }
-      }
-    },
-    "Choose which action to perform when you tap and hold the profile icon." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Choisie quelle action faire quand on fait un appui long que l’icône du profil."
-          }
-        }
-      }
-    },
     "Choose which feed is shown when the app opens." : {
       "localizations" : {
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Choisir le flux à afficher à l'ouverture de l'application."
-          }
-        }
-      }
-    },
-    "Choose which languages appear in your feed. Posts and comments in other languages will be hidden." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Choisir les langues qui s'affichent dans votre flux. Les publications et commentaires dans d'autres langues seront masqués."
           }
         }
       }
@@ -2217,7 +2256,14 @@
       }
     },
     "Color Scheme" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thème de couleurs"
+          }
+        }
+      }
     },
     "Comment" : {
       "localizations" : {
@@ -2230,7 +2276,14 @@
       }
     },
     "Comment Downvotes" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Votes négatifs sur les commentaires"
+          }
+        }
+      }
     },
     "Comment Reports" : {
       "localizations" : {
@@ -2253,7 +2306,14 @@
       }
     },
     "Comment Upvotes" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Votes positifs sur les commentaires"
+          }
+        }
+      }
     },
     "Comment was deleted" : {
       "localizations" : {
@@ -2532,7 +2592,14 @@
       }
     },
     "Contrast" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contraste"
+          }
+        }
+      }
     },
     "Controversial" : {
       "localizations" : {
@@ -2585,7 +2652,14 @@
       }
     },
     "Copy Error" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copier l'erreur"
+          }
+        }
+      }
     },
     "Copy Name" : {
       "localizations" : {
@@ -2598,7 +2672,14 @@
       }
     },
     "Copy Username" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copier le nom d'utilisateur"
+          }
+        }
+      }
     },
     "Could not find settings" : {
       "localizations" : {
@@ -2631,10 +2712,24 @@
       }
     },
     "Create Image" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Créer une image"
+          }
+        }
+      }
     },
     "Creator" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Créateur"
+          }
+        }
+      }
     },
     "Crosspost" : {
       "localizations" : {
@@ -2697,21 +2792,11 @@
       }
     },
     "Custom Thumbnail" : {
-
-    },
-    "Customize how content is displayed in your feed. Choose which types of content are blurred, and apply filters to hide posts from the feed altogether." : {
-      "extractionState" : "stale",
       "localizations" : {
-        "en-GB" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Customise how content is displayed in your feed. Choose which types of content are blurred, and apply filters to hide posts from the feed altogether."
-          }
-        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Personnalisez la manière dont le contenu est affiché dans votre flux. Choisissez les types de contenu floutés et appliquez des filtres pour masquer complètement les publications du flux."
+            "value" : "Vignette personnalisée"
           }
         }
       }
@@ -2728,91 +2813,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Personnalisez la manière dont les actions du modérateur sont séparées des actions normales dans les menus contextuels."
-          }
-        }
-      }
-    },
-    "Customize how often Mlem plays haptic feedback." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en-GB" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Customise how often Mlem plays haptic feedback."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Personnalisez la fréquence à laquelle Mlem diffuse un retour haptique."
-          }
-        }
-      }
-    },
-    "Customize how your subscription list is sorted." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en-GB" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Customise how your subscription list is sorted."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Personnalisez la manière dont votre liste d’abonnement est triée."
-          }
-        }
-      }
-    },
-    "Customize Mlem to work best for you. Some features are tied to system-wide accessibility settings." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en-GB" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Customise Mlem to work best for you. Some features are tied to system-wide accessibility settings."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Personnalisez Mlem pour qu'il fonctionne au mieux pour vous. Certaines fonctionnalités sont liées aux paramètres d'accessibilité du système."
-          }
-        }
-      }
-    },
-    "Customize the appearance of the tab bar." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en-GB" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Customise the appearance of the tab bar."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Personnaliser l'apparence de la barre d'onglets."
-          }
-        }
-      }
-    },
-    "Customize the interaction bar for inbox items, and choose which types of notification are included in the tab bar badge." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en-GB" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Customise the interaction bar for inbox items, and choose which types of notification are included in the tab bar badge."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Personnalisez la barre d’interaction pour les éléments de la boîte de réception et choisissez les types de notifications inclus dans le badge de la barre d’onglets."
           }
         }
       }
@@ -2980,10 +2980,24 @@
       }
     },
     "Deprecated Format" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Format obsolète"
+          }
+        }
+      }
     },
     "Description" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Description"
+          }
+        }
+      }
     },
     "Details" : {
       "localizations" : {
@@ -3085,17 +3099,6 @@
         }
       }
     },
-    "Display linked media from supported hosts in-app rather than as a link." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Affichez les médias liés provenant d'hôtes pris en charge dans l'application plutôt que sous forme de lien."
-          }
-        }
-      }
-    },
     "Display Name" : {
       "localizations" : {
         "fr" : {
@@ -3107,7 +3110,14 @@
       }
     },
     "Distinguish Interaction Bar" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Distinguer la barre d'interaction"
+          }
+        }
+      }
     },
     "Divider" : {
       "localizations" : {
@@ -3170,15 +3180,11 @@
       }
     },
     "Downvoted" : {
-
-    },
-    "Downvotes" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Votes négatifs"
+            "value" : "Voté négativement"
           }
         }
       }
@@ -3214,10 +3220,24 @@
       }
     },
     "Edit link" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modifier le lien"
+          }
+        }
+      }
     },
     "Edit Note" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modifier la note"
+          }
+        }
+      }
     },
     "Edited" : {
       "localizations" : {
@@ -3280,15 +3300,11 @@
       }
     },
     "Enable" : {
-
-    },
-    "Enable Keyword Filters" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Activer les filtres de mots-clés"
+            "value" : "Activer"
           }
         }
       }
@@ -3348,7 +3364,14 @@
       }
     },
     "Ended %@" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terminé %@"
+          }
+        }
+      }
     },
     "Endorsements" : {
       "localizations" : {
@@ -3361,7 +3384,14 @@
       }
     },
     "Ends %@" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se termine %@"
+          }
+        }
+      }
     },
     "Enter your instance's domain name below." : {
       "localizations" : {
@@ -3534,10 +3564,24 @@
       }
     },
     "Failed" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Échec"
+          }
+        }
+      }
     },
     "Failed to block!" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Échec du blocage !"
+          }
+        }
+      }
     },
     "Failed to connect to %@" : {
       "localizations" : {
@@ -3560,7 +3604,14 @@
       }
     },
     "Failed to delete!" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Échec de la suppression !"
+          }
+        }
+      }
     },
     "Failed to import settings" : {
       "localizations" : {
@@ -3623,7 +3674,14 @@
       }
     },
     "Failed to restore!" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Échec de la restauration !"
+          }
+        }
+      }
     },
     "Failed to save media" : {
       "localizations" : {
@@ -3636,18 +3694,21 @@
       }
     },
     "Failed to set NSFW status" : {
-
-    },
-    "Failed to unblock!" : {
-
-    },
-    "Failed to unlock post" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Impossible de déverrouiller la publication"
+            "value" : "Échec de la modification du statut NSFW"
+          }
+        }
+      }
+    },
+    "Failed to unblock!" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Échec du déblocage !"
           }
         }
       }
@@ -3818,7 +3879,14 @@
       }
     },
     "Filter as..." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filtrer en tant que…"
+          }
+        }
+      }
     },
     "Filter violation" : {
       "localizations" : {
@@ -3901,7 +3969,14 @@
       }
     },
     "Go to Instance" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aller à l'instance"
+          }
+        }
+      }
     },
     "Green" : {
       "localizations" : {
@@ -4035,15 +4110,11 @@
       }
     },
     "Hidden by filters" : {
-
-    },
-    "Hidden by keyword filters" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Masqué par des filtres de mots-clés"
+            "value" : "Masqué par les filtres"
           }
         }
       }
@@ -4099,13 +4170,34 @@
       }
     },
     "Hide posts containing certain words, phrases, or character sequences from your feed." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Masquer de votre fil les publications contenant certains mots, expressions ou séquences de caractères."
+          }
+        }
+      }
     },
     "Hide posts with titles containing containing these precise character sequences." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Masquer les publications dont les titres contiennent ces séquences exactes de caractères."
+          }
+        }
+      }
     },
     "Hide posts with titles containing these whole words or phrases. Ignores case and punctuation (e.g., the keyword \"john\" will also filter \"John's\")." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Masquer les publications dont les titres contiennent ces mots ou expressions entiers. Ignore la casse et la ponctuation (par ex., le mot-clé « john » filtrera aussi « John's »)."
+          }
+        }
+      }
     },
     "Hide Read" : {
       "localizations" : {
@@ -4118,7 +4210,14 @@
       }
     },
     "Hide Results" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Masquer les résultats"
+          }
+        }
+      }
     },
     "Hide Website Icons" : {
       "localizations" : {
@@ -4136,17 +4235,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Élevé"
-          }
-        }
-      }
-    },
-    "History" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Historique"
           }
         }
       }
@@ -4192,7 +4280,14 @@
       }
     },
     "If you are a moderator or administrator of a filtered post, it will appear in your feed but require you to tap to view its content." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Si vous êtes modérateur ou administrateur d'une publication filtrée, elle apparaîtra dans votre fil mais vous devrez appuyer pour en afficher le contenu."
+          }
+        }
+      }
     },
     "Image" : {
       "localizations" : {
@@ -4205,7 +4300,14 @@
       }
     },
     "Image loading failed" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Échec du chargement de l'image"
+          }
+        }
+      }
     },
     "Image Saved" : {
       "localizations" : {
@@ -4307,28 +4409,6 @@
         }
       }
     },
-    "In the Fediverse, many different links can point to the same piece of content. Choose which site to use when sharing content." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dans le Fediverse, de nombreux liens différents peuvent pointer vers le même contenu. Choisissez le site à utiliser pour partager du contenu."
-          }
-        }
-      }
-    },
-    "In-App" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dans l'app"
-          }
-        }
-      }
-    },
     "Inbox" : {
       "localizations" : {
         "fr" : {
@@ -4390,7 +4470,14 @@
       }
     },
     "Instance is private" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'instance est privée"
+          }
+        }
+      }
     },
     "Instance Link" : {
       "localizations" : {
@@ -4556,19 +4643,15 @@
         }
       }
     },
-    "Keyword Filters" : {
-      "extractionState" : "stale",
+    "Keywords" : {
       "localizations" : {
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Filtres de mots-clés"
+            "value" : "Mots-clés"
           }
         }
       }
-    },
-    "Keywords" : {
-
     },
     "Large" : {
       "localizations" : {
@@ -4661,7 +4744,14 @@
       }
     },
     "Literals" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Littéraux"
+          }
+        }
+      }
     },
     "Load directly from %@" : {
       "localizations" : {
@@ -4724,7 +4814,14 @@
       }
     },
     "Local Only" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Local uniquement"
+          }
+        }
+      }
     },
     "Local Options" : {
       "localizations" : {
@@ -4830,50 +4927,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bas"
-          }
-        }
-      }
-    },
-    "Manage how Mlem handles links and control how images and videos are displayed." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gérez la manière dont Mlem gère les liens et contrôle la manière dont les images et les vidéos sont affichées."
-          }
-        }
-      }
-    },
-    "Manage how Mlem interacts with Lemmy instances and other websites." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gérez la manière dont Mlem interagit avec les instances Lemmy et d'autres sites Web."
-          }
-        }
-      }
-    },
-    "Manage settings related to content moderation." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gérer les paramètres liés à la modération du contenu."
-          }
-        }
-      }
-    },
-    "Manage your overall setup for Mlem." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gérez votre configuration globale pour Mlem."
           }
         }
       }
@@ -5028,17 +5081,6 @@
         }
       }
     },
-    "Mlem %@" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mlem %@"
-          }
-        }
-      }
-    },
     "Mlem Developer" : {
       "localizations" : {
         "fr" : {
@@ -5055,17 +5097,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Politique de confidentialité de Mlem"
-          }
-        }
-      }
-    },
-    "Mlem uses a Google API to fetch website icon URLs. If you'd prefer not to use this, you can choose to hide favicons." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mlem utilise une API Google pour récupérer les URL des icônes de sites Web. Si vous préférez ne pas l'utiliser, vous pouvez choisir de masquer les icônes de favoris."
           }
         }
       }
@@ -5106,17 +5137,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Disposition des actions Mod Mail"
-          }
-        }
-      }
-    },
-    "Mod Mail Interaction Bar" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Barre d’intéraction des messages de modération"
           }
         }
       }
@@ -5322,7 +5342,14 @@
       }
     },
     "Mute" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mettre en sourdine"
+          }
+        }
+      }
     },
     "Mute Videos" : {
       "localizations" : {
@@ -5384,17 +5411,6 @@
         }
       }
     },
-    "New Account" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nouveau compte"
-          }
-        }
-      }
-    },
     "New Comments" : {
       "localizations" : {
         "fr" : {
@@ -5416,7 +5432,14 @@
       }
     },
     "New Literal..." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nouveau littéral…"
+          }
+        }
+      }
     },
     "New Password" : {
       "localizations" : {
@@ -5515,7 +5538,14 @@
       }
     },
     "No image" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucune image"
+          }
+        }
+      }
     },
     "No reason given" : {
       "localizations" : {
@@ -5568,7 +5598,14 @@
       }
     },
     "Note" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Note"
+          }
+        }
+      }
     },
     "Notification Badge" : {
       "localizations" : {
@@ -5901,7 +5938,14 @@
       }
     },
     "Parent Comments" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Commentaires parents"
+          }
+        }
+      }
     },
     "Password" : {
       "localizations" : {
@@ -5944,7 +5988,14 @@
       }
     },
     "Pause" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pause"
+          }
+        }
+      }
     },
     "Permanent" : {
       "localizations" : {
@@ -6027,7 +6078,14 @@
       }
     },
     "Pin to community" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Épingler dans la communauté"
+          }
+        }
+      }
     },
     "Pin to Community" : {
       "localizations" : {
@@ -6050,7 +6108,14 @@
       }
     },
     "Pin to instance" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Épingler sur l'instance"
+          }
+        }
+      }
     },
     "Pin to Instance" : {
       "localizations" : {
@@ -6063,7 +6128,14 @@
       }
     },
     "Pin..." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Épingler…"
+          }
+        }
+      }
     },
     "Pink" : {
       "localizations" : {
@@ -6076,7 +6148,14 @@
       }
     },
     "Play" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lecture"
+          }
+        }
+      }
     },
     "Popular" : {
       "localizations" : {
@@ -6099,7 +6178,14 @@
       }
     },
     "Post Downvotes" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Votes négatifs sur les publications"
+          }
+        }
+      }
     },
     "Post failed to send." : {
       "localizations" : {
@@ -6152,7 +6238,14 @@
       }
     },
     "Post Upvotes" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Votes positifs sur les publications"
+          }
+        }
+      }
     },
     "Post was locked" : {
       "localizations" : {
@@ -6280,17 +6373,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Publications des communautés populaires"
-          }
-        }
-      }
-    },
-    "Posts with these keywords in their titles will be hidden. If you are a moderator or administrator of a matching post, it will appear in your feed but require you to tap to view its content." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Les publications contenant ces mots-clés dans leur titre seront masquées. Si vous êtes modérateur ou administrateur d'une publication correspondante, elle apparaîtra dans votre flux, mais vous devrez appuyer dessus pour afficher son contenu."
           }
         }
       }
@@ -6489,7 +6571,14 @@
       }
     },
     "Re-Export" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réexporter"
+          }
+        }
+      }
     },
     "Read %lld posts" : {
       "localizations" : {
@@ -6511,19 +6600,15 @@
         }
       }
     },
-    "Read posts are shown with dimmed title text. If you like, you can choose an additional way of indicating read status." : {
-      "extractionState" : "stale",
+    "Really add NSFW tag?" : {
       "localizations" : {
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les articles lus sont affichés avec un titre grisé. Si vous le souhaitez, vous pouvez choisir une autre façon d'indiquer le statut de lecture."
+            "value" : "Vraiment ajouter le tag NSFW ?"
           }
         }
       }
-    },
-    "Really add NSFW tag?" : {
-
     },
     "Really apply this configuration to all interaction bars?" : {
       "localizations" : {
@@ -6648,7 +6733,14 @@
       }
     },
     "Really lock this post?" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vraiment verrouiller cette publication ?"
+          }
+        }
+      }
     },
     "Really pin this post to %@?" : {
       "localizations" : {
@@ -6671,7 +6763,14 @@
       }
     },
     "Really pin this post?" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vraiment épingler cette publication ?"
+          }
+        }
+      }
     },
     "Really remove %@?" : {
       "localizations" : {
@@ -6716,7 +6815,14 @@
       }
     },
     "Really remove NSFW tag?" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vraiment retirer le tag NSFW ?"
+          }
+        }
+      }
     },
     "Really sign out of %@?" : {
       "localizations" : {
@@ -6759,7 +6865,14 @@
       }
     },
     "Really unpin this post?" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vraiment désépingler cette publication ?"
+          }
+        }
+      }
     },
     "Reason" : {
       "localizations" : {
@@ -6981,11 +7094,15 @@
         }
       }
     },
-    "Remove Nsfw Tag" : {
-
-    },
     "Remove NSFW Tag" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retirer le tag NSFW"
+          }
+        }
+      }
     },
     "Remove Post" : {
       "localizations" : {
@@ -7169,17 +7286,6 @@
         }
       }
     },
-    "Requires Lemmy %@ or later" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nécessite Lemmy %@ ou plus récent"
-          }
-        }
-      }
-    },
     "Reset" : {
       "localizations" : {
         "fr" : {
@@ -7261,7 +7367,14 @@
       }
     },
     "Restored" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restauré"
+          }
+        }
+      }
     },
     "Restored Settings" : {
       "localizations" : {
@@ -7791,7 +7904,14 @@
       }
     },
     "Show Post" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afficher la publication"
+          }
+        }
+      }
     },
     "Show Read" : {
       "localizations" : {
@@ -7814,7 +7934,14 @@
       }
     },
     "Show Results" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afficher les résultats"
+          }
+        }
+      }
     },
     "Show Sidebar on App Launch" : {
       "localizations" : {
@@ -8016,17 +8143,6 @@
         }
       }
     },
-    "Some users set animated media as their avatar. Control whether these avatars should play their animations." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Certains utilisateurs utilisent des médias animés comme avatars. Contrôlez si ces avatars doivent afficher leurs animations."
-          }
-        }
-      }
-    },
     "Sort" : {
       "localizations" : {
         "fr" : {
@@ -8098,7 +8214,14 @@
       }
     },
     "Stats" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Statistiques"
+          }
+        }
+      }
     },
     "Strikethrough" : {
       "localizations" : {
@@ -8121,10 +8244,24 @@
       }
     },
     "Subject" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sujet"
+          }
+        }
+      }
     },
     "Submit" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Soumettre"
+          }
+        }
+      }
     },
     "Submit Application" : {
       "localizations" : {
@@ -8137,7 +8274,14 @@
       }
     },
     "Submitted" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Soumis"
+          }
+        }
+      }
     },
     "Submitting..." : {
       "localizations" : {
@@ -8205,17 +8349,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Liste d’abonnement"
-          }
-        }
-      }
-    },
-    "Subscription statuses can't be displayed when using these filters." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Les statuts d'abonnement ne peuvent pas être affichés lors de l'utilisation de ces filtres."
           }
         }
       }
@@ -8430,23 +8563,6 @@
         }
       }
     },
-    "The \"%@\" sort mode is only available on instances running version %@ or later. On instances running earlier versions, the \"Fallback\" sort mode will be used instead." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "The \"%1$@\" sort mode is only available on instances running version %2$@ or later. On instances running earlier versions, the \"Fallback\" sort mode will be used instead."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Le mode de tri « %1$@ » n'est disponible que sur les instances exécutant la version %2$@ ou ultérieure. Sur les instances exécutant des versions antérieures, le mode de tri « Fallback » sera utilisé à la place."
-          }
-        }
-      }
-    },
     "The \"%@\" sort mode is only available on some instances. On unsupported instances, the \"Fallback\" sort mode will be used instead." : {
       "localizations" : {
         "fr" : {
@@ -8638,7 +8754,14 @@
       }
     },
     "These filters were saved by an older version of Mlem, and will not be compatible with future versions. To preserve compatibility, re-export your filters." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ces filtres ont été enregistrés par une ancienne version de Mlem et ne seront pas compatibles avec les versions futures. Pour préserver la compatibilité, réexportez vos filtres."
+          }
+        }
+      }
     },
     "These options are stored locally in Mlem and not on your Lemmy account." : {
       "localizations" : {
@@ -8784,17 +8907,6 @@
         }
       }
     },
-    "This feature is only supported for instances running version %@ or later." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cette fonctionnalité n'est prise en charge que pour les instances exécutant la version %@ ou ultérieure."
-          }
-        }
-      }
-    },
     "This field is optional." : {
       "localizations" : {
         "fr" : {
@@ -8836,7 +8948,14 @@
       }
     },
     "This page can't be displayed because Cloudflare blocked the request." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cette page ne peut pas être affichée car Cloudflare a bloqué la requête."
+          }
+        }
+      }
     },
     "This probably contains foul language." : {
       "localizations" : {
@@ -8960,7 +9079,14 @@
       }
     },
     "Toggle Developer Tools" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Basculer les outils développeur"
+          }
+        }
+      }
     },
     "Too many items" : {
       "localizations" : {
@@ -9163,10 +9289,24 @@
       }
     },
     "Unban from Community" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Débannir de la communauté"
+          }
+        }
+      }
     },
     "Unban from Instance" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Débannir de l'instance"
+          }
+        }
+      }
     },
     "Unban from..." : {
       "localizations" : {
@@ -9225,16 +9365,44 @@
       }
     },
     "Unblock Community" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Débloquer la communauté"
+          }
+        }
+      }
     },
     "Unblock Instance" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Débloquer l'instance"
+          }
+        }
+      }
     },
     "Unblock User" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Débloquer l'utilisateur"
+          }
+        }
+      }
     },
     "Unblock..." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Débloquer…"
+          }
+        }
+      }
     },
     "Unblocked" : {
       "localizations" : {
@@ -9369,7 +9537,14 @@
       }
     },
     "unknown host" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "hôte inconnu"
+          }
+        }
+      }
     },
     "Unlock" : {
       "localizations" : {
@@ -9382,7 +9557,14 @@
       }
     },
     "Unmute" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rétablir le son"
+          }
+        }
+      }
     },
     "Unpin" : {
       "localizations" : {
@@ -9395,7 +9577,14 @@
       }
     },
     "Unpin from community" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Désépingler de la communauté"
+          }
+        }
+      }
     },
     "Unpin From Community" : {
       "localizations" : {
@@ -9408,7 +9597,14 @@
       }
     },
     "Unpin from instance" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Désépingler de l'instance"
+          }
+        }
+      }
     },
     "Unpin From Instance" : {
       "localizations" : {
@@ -9476,17 +9672,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Téléverser"
-          }
-        }
-      }
-    },
-    "Upload an image..." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Téléverser une image"
           }
         }
       }
@@ -9571,17 +9756,6 @@
         }
       }
     },
-    "Use Alternate Layout" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Utiliser un layout alternatif"
-          }
-        }
-      }
-    },
     "Use Alternate Layouts" : {
       "localizations" : {
         "fr" : {
@@ -9623,7 +9797,14 @@
       }
     },
     "User Modlog" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Journal de modération de l'utilisateur"
+          }
+        }
+      }
     },
     "User was banned" : {
       "localizations" : {
@@ -10028,7 +10209,14 @@
       }
     },
     "You cannot change your vote." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous ne pouvez pas modifier votre vote."
+          }
+        }
+      }
     },
     "You cannot use a temporary email address." : {
       "localizations" : {
@@ -10041,7 +10229,14 @@
       }
     },
     "You cannot view the communities of a private instance." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous ne pouvez pas voir les communautés d'une instance privée."
+          }
+        }
+      }
     },
     "You don't have an email attached to this account." : {
       "localizations" : {
@@ -10069,17 +10264,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vous devrez peut-être autoriser Mlem à accéder à votre galerie de photos dans les paramètres système."
-          }
-        }
-      }
-    },
-    "You will not see most content if Undetermined is not selected." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vous ne verrez pas la plupart du contenu si « Undetermined » n'est pas sélectionné."
           }
         }
       }

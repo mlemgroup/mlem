@@ -8,7 +8,7 @@
 import Foundation
 
 @Observable
-class PersonFetcher: Fetcher<Person2> {
+class PersonFetcher: Fetcher<Person> {
     var query: String
     /// `listing` can be set to `.local` from 0.19.4 onwards.
     var listing: ListingType
@@ -40,7 +40,7 @@ class PersonFetcher: Fetcher<Person2> {
 }
 
 @Observable
-public class PersonFeedLoader: StandardFeedLoader<Person2> {
+public class PersonFeedLoader: StandardFeedLoader<Person> {
     public var api: ApiClient
     
     // force unwrap because this should ALWAYS be a PersonFetcher

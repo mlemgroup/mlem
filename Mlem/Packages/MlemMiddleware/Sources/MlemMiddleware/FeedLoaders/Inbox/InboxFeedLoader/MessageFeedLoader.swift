@@ -17,7 +17,7 @@ class MessageFetcher: Fetcher<Message2> {
         super.init(api: api, pageSize: pageSize)
     }
     
-    convenience init(person: any Person, pageSize: Int) {
+    convenience init(person: Person, pageSize: Int) {
         self.init(api: person.api, personId: person.id, pageSize: pageSize)
     }
     
@@ -61,7 +61,7 @@ public class MessageFeedLoader: StandardFeedLoader<Message2> {
     }
     
     public init(
-        person: any Person,
+        person: Person,
         pageSize: Int = 20
     ) {
         self.api = person.api

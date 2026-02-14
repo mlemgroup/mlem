@@ -67,7 +67,7 @@ public extension ApiClient {
         page: Int,
         limit: Int,
         savedOnly: Bool = false
-    ) async throws -> (person: Person3, posts: [Post]) {
+    ) async throws -> (person: Person, posts: [Post]) {
         let snapshots = try await repository.getPosts(
             personId: personId,
             communityId: communityId,
@@ -77,7 +77,7 @@ public extension ApiClient {
             savedOnly: savedOnly
         )
         return await (
-            person: caches.person3.getModel(api: self, from: snapshots.person),
+            person: caches.person.getModel(api: self, from: .person3(snapshots.person)),
             posts: caches.post.getModels(api: self, from: snapshots.posts.map { .post2($0) })
         )
     }

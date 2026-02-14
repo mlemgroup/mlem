@@ -15,7 +15,7 @@ extension CommunityView {
         if !firstPerson.api.supports(.editModeratorList, defaultValue: true) {
             return false
         }
-        return firstPerson.isAdmin || firstPerson.moderates(community: community)
+        return (firstPerson.isAdmin.value ?? false) || (firstPerson.moderates?(.community(community)) ?? false)
     }
 
     func openAddModSheet() {
@@ -47,7 +47,7 @@ extension CommunityView {
         }
     }
     
-    func moderatorQuickSwipes(community: any Community, person: any Person) -> SwipeConfiguration {
+    func moderatorQuickSwipes(community: any Community, person: Person) -> SwipeConfiguration {
         guard let community = community as? any Community3Providing,
               canEditModeratorList(community),
               let myPerson = appState.firstPerson,

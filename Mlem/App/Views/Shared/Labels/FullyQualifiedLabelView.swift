@@ -119,7 +119,7 @@ struct FullyQualifiedLabelView: View {
                 }
                 .imageScale(.small)
                 .offset(y: 1)
-                if let note = (entity as? any Person)?.note, feedContext != .person {
+                if let note = (entity as? Person)?.note, feedContext != .person {
                     self.note(text: note)
                 }
             }
@@ -135,7 +135,7 @@ struct FullyQualifiedLabelView: View {
 }
     
     var flairs: [PersonFlair] {
-        guard showFlairs, let person = entity as? any Person else { return [] }
+        guard showFlairs, let person = entity as? Person else { return [] }
         return person.flairs(
             interactableContext: interactableContext,
             communityContext: communityContext
@@ -143,7 +143,7 @@ struct FullyQualifiedLabelView: View {
     }
     
     var interactableContext: (any InteractableProviding)? {
-        guard let person = entity as? any Person else { return nil }
+        guard let person = entity as? Person else { return nil }
         if let commentContext,
            let creator = commentContext.creator.value,
            creator.actorId == person.actorId {
@@ -167,7 +167,7 @@ struct FullyQualifiedLabelView: View {
             result += flairs.map { String(localized: $0.label) }.joined(separator: ", ")
         }
 
-        if let note = (entity as? any Person)?.note {
+        if let note = (entity as? Person)?.note {
             result += "\(String(localized: "Note")): \(note)"
         }
 
@@ -177,7 +177,7 @@ struct FullyQualifiedLabelView: View {
 
 extension FullyQualifiedLabelView {
     init(
-        _ entity: (any Person)?,
+        _ entity: Person?,
         labelStyle: FullyQualifiedLabelStyle,
         showAvatar: Bool? = nil,
         showInstance: Bool = true,

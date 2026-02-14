@@ -64,7 +64,7 @@ class Community3Cache: ApiTypeBackedCache<Community3, Community3Snapshot> {
             api: api,
             community2: api.caches.community2.getModel(api: api, from: snapshot.community),
             instance: api.caches.instance1.getOptionalModel(api: api, from: snapshot.instance),
-            moderators: api.caches.person1.getModels(api: api, from: snapshot.moderators),
+            moderators: api.caches.person.getModels(api: api, from: snapshot.moderators.map { .person1($0) }),
             discussionLanguageIds: snapshot.discussionLanguageIds
         )
     }
