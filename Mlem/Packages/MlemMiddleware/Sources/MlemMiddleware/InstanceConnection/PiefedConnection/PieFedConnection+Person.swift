@@ -203,7 +203,7 @@ public extension PieFedConnection {
     }
 
     func editNote(id: Int, content: String?) async throws {
-        let request = PieFedUserSetNoteRequest(personId: id, note: content)
+        let request = PieFedUserSetNoteRequest(personId: id, note: content ?? "")
         try await perform(request)
     }
     
