@@ -54,7 +54,7 @@ public final class Community2: Community2Providing {
         self.shouldBeFavorited = favorited
         subscriptionManager.onSet(subscription, .receive, nil)
         if let bannedFromCommunity {
-            api.myPerson?.person1.updateKnownCommunityBanState(id: id, banned: bannedFromCommunity)
+            api.myPerson?.updateKnownCommunityBanState(id: id, banned: bannedFromCommunity)
         }
     }
 }

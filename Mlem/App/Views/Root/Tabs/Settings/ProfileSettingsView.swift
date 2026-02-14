@@ -17,7 +17,7 @@ struct ProfileSettingsView: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.dismiss) var dismiss
     
-    let person: Person4
+    let person: Person
 
     @State var profileDetails: ProfileDetails
     
@@ -30,7 +30,7 @@ struct ProfileSettingsView: View {
     
     @State var isSubmitting: Bool = false
     
-    init(person: Person4) {
+    init(person: Person) {
         self.person = person
         self._profileDetails = .init(wrappedValue: person.profileDetails())
         bioTextView.text = person.description ?? ""

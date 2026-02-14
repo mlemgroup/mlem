@@ -14,13 +14,13 @@ struct NoteEditorView: View {
     @Environment(HapticManager.self) var hapticManager
     @Environment(\.dismiss) var dismiss
     
-    let person: any Person
+    let person: Person
     
     @State var note: String
     @FocusState var textFieldFocused: Bool
     @State var presentationSelection: PresentationDetent = .large
 
-    init(person: any Person) {
+    init(person: Person) {
         self.person = person
         self.note = person.note ?? ""
     }
@@ -52,12 +52,8 @@ struct NoteEditorView: View {
     }
     
     func send() async {
-        do {
-            try await person.editNote(content: note.isEmpty ? nil : note)
-            hapticManager.play(haptic: .success, tier: .low)
-            dismiss()
-        } catch {
-            handleError(error)
-        }
+        person.updateNote(content: note.isEmpty ? nil : note)
+        hapticManager.play(haptic: .success, tier: .low)
+        dismiss()
     }
 }

@@ -8,7 +8,7 @@
 import MlemMiddleware
 import SwiftUI
 
-// TODO: NOW ExpectedFullyQualifiedLinkView (protocols make this tricky)
+// TODO: Unified Community ExpectedFullyQualifiedLinkView (protocols make this tricky)
 
 struct FullyQualifiedLinkView: View {
     @Environment(NavigationLayer.self) private var navigation
@@ -24,7 +24,7 @@ struct FullyQualifiedLinkView: View {
     
     var body: some View {
         Button {
-            if let person = entity as? any PersonStubProviding {
+            if let person = entity as? Person {
                 navigation.push(.person(person))
             } else if let community = entity as? any CommunityStubProviding {
                 navigation.push(.community(community))
@@ -46,7 +46,7 @@ struct FullyQualifiedLinkView: View {
 
 extension FullyQualifiedLinkView {
     init(
-        _ entity: (any Person)?,
+        _ entity: Person?,
         labelStyle: FullyQualifiedLabelStyle,
         showAvatar: Bool? = nil,
         showInstance: Bool = true,

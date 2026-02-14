@@ -33,9 +33,10 @@ extension Report {
     }
     
     func contextualBanAction(appState: AppState) -> BasicAction? {
-        guard let myPerson = api.myPerson else { return nil }
+        guard let myPerson = api.myPerson,
+              let myPersonModerates = myPerson.moderates else { return nil }
         
-        if let community = target.community, let creator = target.creator.value, myPerson.moderates(communityId: community.id) {
+        if let community = target.community, let creator = target.creator.value, myPersonModerates(.id(community.id)) {
             return creator.banFromCommunityAction(appState: appState, community: community)
         }
         

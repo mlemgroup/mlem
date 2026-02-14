@@ -116,7 +116,7 @@ struct MessageView<EmbeddedContent: View>: View {
         }
     }
     
-    var otherPerson: Person1? {
+    var otherPerson: Person? {
         message.isOwnMessage ? message.recipient_ : message.creator_
     }
     

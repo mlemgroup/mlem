@@ -13,7 +13,7 @@ extension SearchView {
         @Environment(NavigationLayer.self) var navigation
         
         let api: ApiClient
-        @Binding var creator: Person2?
+        @Binding var creator: Person?
         
         var body: some View {
             Button(creator?.name ?? .init(localized: "Anyone"), icon: .lemmy.person) {

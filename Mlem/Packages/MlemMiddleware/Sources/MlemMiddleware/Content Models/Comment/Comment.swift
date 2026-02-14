@@ -49,7 +49,7 @@ public class Comment:
     public var removed: Bool
     
     // from Comment2Snapshot
-    public var creator: ExpectedValue<(any Person)>
+    public var creator: ExpectedValue<Person>
     public var post: ExpectedValue<Post>
     public var community: ExpectedValue<(any Community)>
     public var commentCount: ExpectedValue<Int>
@@ -79,11 +79,6 @@ public class Comment:
         // because upgrade() is not available until all properties are initialized, first populate all properties
         // with ExpectedValues that don't actually do anything, then reassign them properly at the end of the init
         // this is somewhat cumbersome but avoids lazy vars, which are very awkward in Observables
-        func dummyExpectedValue<T>(_ value: T?) -> ExpectedValue<T> {
-            .init(
-                value: value,
-                provideValue: { assertionFailure("This should be overridden") })
-        }
         self.creator = dummyExpectedValue(properties.creator)
         self.post = dummyExpectedValue(properties.post)
         self.community = dummyExpectedValue(properties.community)
@@ -121,12 +116,12 @@ public class Comment:
         setIfNil(\.creator.value_, properties.creator)
         setIfNil(\.post.value_, properties.post)
         setIfNil(\.community.value_, properties.community)
-        setIfChanged(\.commentCount.value_, properties.commentCount)
-        setIfChanged(\.creatorIsModerator.value_, properties.creatorIsModerator)
-        setIfChanged(\.creatorIsAdmin.value_, properties.creatorIsAdmin)
-        setIfChanged(\.creatorBannedFromCommunity.value_, properties.creatorBannedFromCommunity)
-        setIfChanged(\.votes.value_, properties.votes)
-        setIfChanged(\.saved.value_, properties.saved)
+        updateIfChanged(\.commentCount.value_, properties.commentCount)
+        updateIfChanged(\.creatorIsModerator.value_, properties.creatorIsModerator)
+        updateIfChanged(\.creatorIsAdmin.value_, properties.creatorIsAdmin)
+        updateIfChanged(\.creatorBannedFromCommunity.value_, properties.creatorBannedFromCommunity)
+        updateIfChanged(\.votes.value_, properties.votes)
+        updateIfChanged(\.saved.value_, properties.saved)
     }
     
     public func softUpdate(with properties: CommentProperties) {
@@ -153,6 +148,11 @@ public class Comment:
     public func fetchUpgraded() async throws -> CommentProperties {
         let snapshot = try await api.repository.getComment(id: id)
         return await .init(api: api, snapshot: .comment2(snapshot))
+    }
+    
+    public func resolve(with api: ApiClient) async throws -> Self {
+        let stub = CommentStub(api: api, url: allResolvableUrls[0])
+        return try await stub.asComment() as! Self
     }
 }
 

@@ -33,8 +33,8 @@ public protocol Message1Providing:
     var updated_: Date? { get }
     
     // From Message2Providing
-    var creator_: Person1? { get }
-    var recipient_: Person1? { get }
+    var creator_: Person? { get }
+    var recipient_: Person? { get }
 }
 
 public typealias Message = Message1Providing
@@ -66,8 +66,8 @@ public extension Message1Providing {
     var updated_: Date? { message1.updated }
     var isOwnMessage_: Bool? { message1.isOwnMessage }
     
-    var creator_: Person1? { nil }
-    var recipient_: Person1? { nil }
+    var creator_: Person? { nil }
+    var recipient_: Person? { nil }
 }
 
 // ReportableProviding conformance

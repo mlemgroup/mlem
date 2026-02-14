@@ -10,7 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct AppointModeratorAction: Actions.Action {
-    let entity: any Person1Providing
+    let entity: Person
 }
 
 // MARK: - Configurability
@@ -18,7 +18,7 @@ struct AppointModeratorAction: Actions.Action {
 extension ActionSeed {
     static let appointModerator = ActionSeed("appointModerator", label: AppointModeratorAction.appointLabel) { entity in
         switch entity {
-        case let entity as any Person1Providing:
+        case let entity as Person:
             AppointModeratorAction(entity: entity)
         default:
             nil

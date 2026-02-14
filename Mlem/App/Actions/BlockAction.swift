@@ -49,7 +49,7 @@ struct BlockAction: Actions.Action {
     var availableContent: [Content] {
         content.filter { item in
             switch item {
-            case let .blockable(entity as any Person):
+            case let .blockable(entity as Person):
                 guard let myPersonId = entity.api.myPerson?.id else { return true }
                 return entity.id != myPersonId 
             default:
@@ -69,7 +69,7 @@ private extension [BlockAction.Content] {
         } 
 
         return switch first {
-        case .blockable(_ as any Person): .personOnly
+        case .blockable(_ as Person): .personOnly
         case .blockable(_ as any Community): .communityOnly
         case .instance: .instanceOnly
         default: .other
@@ -175,7 +175,7 @@ extension BlockAction {
 
         for item in content {
             switch item {
-            case let .blockable(person as any Person):
+            case let .blockable(person as Person):
                 guard let myPersonId = person.api.myPerson?.id else { return .hidden }
                 guard person.id != myPersonId else { return .hidden }
             case let .instance(instance):
@@ -212,7 +212,7 @@ extension BlockAction {
     @MainActor
     func executeMulti(environment: EnvironmentValues) {
         let actions: [PopupAnchorModel.Action] = content.map { item in
-            .init(title: item.blockable is any Person ? "User" : "Community", isDestructive: true) {
+            .init(title: item.blockable is Person ? "User" : "Community", isDestructive: true) {
                 submit(content: item, environment: environment)
             }
         }
@@ -229,7 +229,7 @@ extension BlockAction {
         let label: String
 
         switch content {
-        case .blockable(_ as any Person):
+        case .blockable(_ as Person):
             label = .init(localized: "Really block this user?")
         case .blockable(_ as any Community):
             label = .init(localized: "Really block this community?")
@@ -248,16 +248,36 @@ extension BlockAction {
     }
 
     private func submit(content: Content, environment: EnvironmentValues) {
+        let shouldBlock = !content.blocked(environment: environment)
+        
+        switch content {
+        case let .instance(instance):
+            submitForInstance(instance: instance, shouldBlock: shouldBlock, environment: environment)
+        case let .blockable(blockable):
+            submitForBlockable(blockable: blockable, environment: environment)
+        }
+    }
+    
+    private func submitForBlockable(blockable: any Blockable, environment: EnvironmentValues) {
+        let shouldBlock = !blockable.blocked
+        blockable.updateBlocked(shouldBlock) { didSucceed in
+            let toast = createToast(didBlock: shouldBlock, didSucceed: didSucceed) {
+                blockable.updateBlocked(!shouldBlock, callback: nil)
+            }
+            environment.toastModel?.add(toast)
+        }
+    }
+    
+    private func submitForInstance(instance: any InstanceStubProviding, shouldBlock: Bool, environment: EnvironmentValues) {
         Task {
-            let shouldBlock = !content.blocked(environment: environment)
-            let didSucceed = await updateBlocked(
-                content,
+            let didSucceed = await updateInstanceBlocked(
+                instance: instance,
                 environment: environment,
                 newValue: shouldBlock
             )
             let toast = createToast(didBlock: shouldBlock, didSucceed: didSucceed) {
-                Task { await updateBlocked(
-                    content,
+                Task { await updateInstanceBlocked(
+                    instance: instance,
                     environment: environment,
                     newValue: false
                 ) }
@@ -284,24 +304,7 @@ extension BlockAction {
         }
     }
 
-    private func updateBlocked(
-        _ content: Content,
-        environment: EnvironmentValues,
-        newValue: Bool
-    ) async -> Bool {
-        switch content {
-        case let .blockable(entity):
-            return await entity.updateBlocked(newValue).value == .succeeded
-        case let .instance(instance):
-            return await updateBlocked(
-                instance: instance,
-                environment: environment,
-                newValue: newValue
-            )
-        }
-    }
-
-    private func updateBlocked(
+    private func updateInstanceBlocked(
         instance: any InstanceStubProviding,
         environment: EnvironmentValues,
         newValue: Bool

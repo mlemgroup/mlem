@@ -18,7 +18,7 @@ struct MessageFeedView: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.dismiss) var dismiss
     
-    let person: AnyPerson
+    let person: Person
     let focusTextField: Bool
     @State var editing: (any Message)?
     
@@ -32,7 +32,7 @@ struct MessageFeedView: View {
     @ScaledMetric(relativeTo: .body) var sendButtonHeight = 28
 
     init(
-        person: AnyPerson,
+        person: Person,
         messageContent: String = "",
         focusTextField: Bool,
         editing: (any Message)?
@@ -53,36 +53,28 @@ struct MessageFeedView: View {
     @State var isSending: Bool = false
         
     var body: some View {
-        ContentLoader(model: person) { proxy in
-            if let person = proxy.entity {
-                content(person: person)
-                    .navigationTitle(person.displayName)
-                    .navigationBarTitleDisplayMode(.inline)
-                    .toolbar {
-                        if navigation.isInsideSheet {
-                            ToolbarItem(placement: .topBarTrailing) {
-                                CloseButtonView()
-                            }
-                        } else {
-                            ToolbarItem(placement: .principal) { navigationTitleView(person: person) }
-                            ToolbarItemGroup(placement: .secondaryAction) {
-                                SwiftUI.Section {
-                                    if person is any Person3Providing, proxy.isLoading {
-                                        ProgressView()
-                                    } else {
-                                        ActionButtons(person: person)
-                                    }
-                                }
-                            }
+        content(person: person)
+            .navigationTitle(person.displayName)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                if navigation.isInsideSheet {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        CloseButtonView()
+                    }
+                } else {
+                    ToolbarItem(placement: .principal) { navigationTitleView(person: person) }
+                    ToolbarItemGroup(placement: .secondaryAction) {
+                        SwiftUI.Section {
+                            ActionButtons(person: person)
                         }
                     }
-                    .popupAnchor()
+                }
             }
-        }
+            .popupAnchor()
     }
     
     // swiftlint:disable:next function_body_length
-    @ViewBuilder func content(person: any Person) -> some View {
+    @ViewBuilder func content(person: Person) -> some View {
         ScrollViewReader { scrollProxy in
             ScrollView {
                 if let feedLoader {
@@ -306,7 +298,7 @@ struct MessageFeedView: View {
     }
     
     @ViewBuilder
-    func navigationTitleView(person: any Person) -> some View {
+    func navigationTitleView(person: Person) -> some View {
         NavigationLink(.person(person)) {
             HStack(spacing: Constants.main.halfSpacing) {
                 CircleCroppedImageView(person, frame: 24)

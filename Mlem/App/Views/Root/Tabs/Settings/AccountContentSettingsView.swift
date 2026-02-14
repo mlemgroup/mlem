@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import MlemMiddleware
 
 struct AccountContentSettingsView: View {
     @Environment(AppState.self) var appState
@@ -16,12 +17,21 @@ struct AccountContentSettingsView: View {
     
     init() {
         guard let person = AppState.main.firstPerson else { return }
-        _showNsfw = .init(wrappedValue: person.showNsfw)
-        _showBotAccounts = .init(wrappedValue: person.showBotAccounts)
-        _sendNotificationsToEmail = .init(wrappedValue: person.sendNotificationsToEmail)
+        _showNsfw = .init(wrappedValue: person.showNsfw.value_ ?? false)
+        _showBotAccounts = .init(wrappedValue: person.showBotAccounts.value_ ?? false)
+        _sendNotificationsToEmail = .init(wrappedValue: person.sendNotificationsToEmail.value_ ?? false)
     }
     
     var body: some View {
+        if let updateSettings = appState.firstPerson?.updateSettings {
+            content(updateSettings: updateSettings)
+        } else {
+            ProgressView()
+        }
+    }
+    
+    // swiftlint:disable:next function_body_length
+    func content(updateSettings: @escaping (Person.ProfileSettings) async throws -> Void) -> some View {
         Form {
             Section {
                 Toggle("Show NSFW Content", icon: .settings.blurNsfw, isOn: $showNsfw)
@@ -29,10 +39,10 @@ struct AccountContentSettingsView: View {
                     .onChange(of: showNsfw) {
                         Task {
                             do {
-                                try await appState.firstPerson?.updateSettings(showNsfw: showNsfw)
+                                try await updateSettings(.init(showNsfw: showNsfw))
                             } catch {
                                 handleError(error)
-                                showNsfw = appState.firstPerson?.showNsfw ?? false
+                                showNsfw = appState.firstPerson?.showNsfw.value_ ?? false
                             }
                         }
                     }
@@ -44,10 +54,10 @@ struct AccountContentSettingsView: View {
                     .onChange(of: showBotAccounts) {
                         Task {
                             do {
-                                try await appState.firstPerson?.updateSettings(showBotAccounts: showBotAccounts)
+                                try await updateSettings(.init(showBotAccounts: showBotAccounts))
                             } catch {
                                 handleError(error)
-                                showBotAccounts = appState.firstPerson?.showBotAccounts ?? false
+                                showBotAccounts = appState.firstPerson?.showBotAccounts.value_ ?? false
                             }
                         }
                     }
@@ -57,16 +67,16 @@ struct AccountContentSettingsView: View {
                     .onChange(of: sendNotificationsToEmail) {
                         Task {
                             do {
-                                try await appState.firstPerson?.updateSettings(sendNotificationsToEmail: sendNotificationsToEmail)
+                                try await updateSettings(.init(sendNotificationsToEmail: sendNotificationsToEmail))
                             } catch {
                                 handleError(error)
-                                sendNotificationsToEmail = appState.firstPerson?.sendNotificationsToEmail ?? false
+                                sendNotificationsToEmail = appState.firstPerson?.sendNotificationsToEmail.value_ ?? false
                             }
                         }
                     }
                     .disabled(appState.firstPerson?.email == nil)
             } footer: {
-                if let email = appState.firstPerson?.email {
+                if let email = appState.firstPerson?.email.value as? String {
                     Text("Notifications will be sent to \(email).")
                 } else {
                     Text("You don't have an email attached to this account.")

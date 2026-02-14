@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+import MlemMiddleware
+
 struct AccountEmailSettingsView: View {
     @Environment(AppState.self) var appState
     @Environment(\.dismiss) var dismiss
@@ -17,11 +19,11 @@ struct AccountEmailSettingsView: View {
     
     init() {
         guard let person = AppState.main.firstPerson else { return }
-        _email = .init(wrappedValue: person.email ?? "")
+        _email = .init(wrappedValue: person.email.value as? String ?? "")
     }
     
     var showToolbarOptions: Bool {
-        email != appState.firstPerson?.email
+        email != appState.firstPerson?.email.value
     }
     
     var body: some View {
@@ -38,17 +40,17 @@ struct AccountEmailSettingsView: View {
             if showToolbarOptions {
                 ToolbarItem(placement: .topBarLeading) {
                     Button("Cancel") {
-                        email = appState.firstPerson?.email ?? ""
+                        email = appState.firstPerson?.email as? String ?? ""
                     }
                     .disabled(isSubmitting)
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     if isSubmitting {
                         ProgressView()
-                    } else {
+                    } else if let updateSettings = appState.firstPerson?.updateSettings {
                         Button("Save") {
                             Task { @MainActor in
-                                await submit()
+                                await submit(updateSettings: updateSettings)
                             }
                         }
                     }
@@ -58,13 +60,13 @@ struct AccountEmailSettingsView: View {
     }
     
     @MainActor
-    func submit() async {
+    func submit(updateSettings: (Person.ProfileSettings) async throws -> Void) async {
         isSubmitting = true
         do {
-            try await appState.firstPerson?.updateSettings(email: email)
+            try await updateSettings(.init(email: email))
         } catch {
             handleError(error)
-            email = appState.firstPerson?.email ?? ""
+            email = appState.firstPerson?.email as? String ?? ""
         }
         isSubmitting = false
     }

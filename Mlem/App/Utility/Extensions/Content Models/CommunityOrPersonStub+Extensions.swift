@@ -68,7 +68,7 @@ extension CommunityOrPerson {
             nameColor: nameColor,
             instanceColor: instanceColor
         )
-        if showFlairs, let flairs = (self as? any Person)?.flairs(communityContext: communityContext) {
+        if showFlairs, let flairs = (self as? Person)?.flairs(communityContext: communityContext) {
             return flairs.textView.font(font) + Text(attributedName ?? "")
         } else {
             return Text(attributedName ?? "")

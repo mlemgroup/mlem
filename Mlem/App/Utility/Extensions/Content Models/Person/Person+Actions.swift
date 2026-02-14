@@ -1,99 +1,18 @@
 //
-//  Person1Providing+Extensions.swift
+//  Person+Actions.swift
 //  Mlem
 //
-//  Created by Sjmarf on 02/07/2024.
+//  Created by Eric Andrews on 2026-02-06.
 //
 
-import Foundation
 import MlemMiddleware
-import os
 
-extension Person1Providing {
-    var shouldHideInFeed: Bool { blocked || purged }
-    
-    func flairs(
-        interactableContext interactable: (any InteractableProviding)? = nil,
-        communityContext community: (any Community)? = nil
-    ) -> [PersonFlair] {
-        @Setting(\.person_ageVisibility) var alwaysShowAccountAge
-        
-        let community = community ?? interactable?.community.value
-        var output: Set<PersonFlair> = []
-        
-        if isMlemDeveloper {
-            output.insert(.developer)
-        }
-        if isBot {
-            output.insert(.bot)
-        }
-        if bannedFromInstance {
-            output.insert(.bannedFromInstance)
-        }
-        if let community, isBannedFromCommunity(community) ?? false {
-            output.insert(.bannedFromCommunity)
-        }
-        
-        if (alwaysShowAccountAge == .newAccountsOnly && createdRecently) || alwaysShowAccountAge == .always {
-            output.insert(.accountAge(created))
-        } else if isCakeDay {
-            output.insert(.cakeDay)
-        }
-        
-        if let interactable {
-            if let creator = interactable.creator.value {
-                assert(creator.actorId == actorId)
-            } else {
-                assertionFailure("No creator!")
-            }
-            output.formUnion(interactable.contextualFlairs())
-        } else {
-            if api.myInstance?.administrators.contains(where: { $0.id == id }) ?? false {
-                output.insert(.admin)
-            }
-        }
-        
-        if let community, community.moderators_?.contains(where: { $0.id == id }) ?? false {
-            output.insert(.moderator)
-        }
-        
-        return output.sorted { $0.sortVal < $1.sortVal }
-    }
-    
+extension Person {    
     @MainActor
     func showBanSheet(community: (any Community)?, isBannedFromCommunity: Bool, shouldBan: Bool) {
         NavigationModel.main.openSheet(
             .ban(self, isBannedFromCommunity: isBannedFromCommunity, shouldBan: shouldBan, community: community)
         )
-    }
-    
-    func toggleBlocked(feedback: Set<FeedbackType> = []) {
-        if feedback.contains(.toast) {
-            if !blocked {
-                ToastModel.main.add(
-                    .undoable(
-                        "Blocked",
-                        icon: .lemmy.block,
-                        callback: {
-                            self.updateBlocked(false)
-                        },
-                        color: .themedNegative
-                    )
-                )
-            } else {
-                ToastModel.main.add(
-                    .undoable(
-                        "Unblocked",
-                        icon: .lemmy.unblock,
-                        callback: {
-                            self.updateBlocked(true)
-                        },
-                        color: .themedPrimary
-                    )
-                )
-            }
-        }
-        toggleBlocked()
     }
     
     func banActions(appState: AppState, community: (any Community)?, withUserLabel: Bool = false) -> [any Action] {
@@ -102,11 +21,11 @@ extension Person1Providing {
         
         let canBanFromInstance = api.isAdmin && api.supports(.banFromInstance, defaultValue: false)
         
-        if let myPerson = api.myPerson, let community {
+        if let myPerson = api.myPerson, let community, let myPersonModerates = myPerson.moderates {
             let supportedByApi = api.supports(.banFromCommunity, defaultValue: false) && (
                 apiIsLocal || api.supports(.banFromNonLocalCommunity, defaultValue: false)
             )
-            canBanFromCommunity = myPerson.moderates(communityId: community.id) && supportedByApi
+            canBanFromCommunity = myPersonModerates(.id(community.id)) && supportedByApi
             showBoth = canBanFromInstance && isBannedFromCommunity(community) != bannedFromInstance
         } else {
             canBanFromCommunity = false

@@ -108,7 +108,7 @@ public final class UnreadCount {
             }
             
             if try await self.api.supports(.viewReports) {
-                if alwaysMakeCalls || !(self.api.myPerson?.moderatedCommunities.isEmpty ?? false) || self.api.isAdmin {
+                if alwaysMakeCalls || !(self.api.myPerson?.moderatedCommunities.value_?.isEmpty ?? false) || self.api.isAdmin {
                     taskGroup.addTask {
                         do {
                             return try await self.api.repository.getReportCount(communityId: nil).unreadCountDictionary
