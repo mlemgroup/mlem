@@ -12,7 +12,7 @@ public extension Array {
         insert(newElement, at: 0)
     }
     
-    mutating func sortedInsert(_ newElement: Element, for predicate: (Element, Element) -> Bool) {
+    mutating func sortedInsert(_ newElement: Element, by predicate: (Element, Element) -> Bool) {
         insert(newElement, at: insertionIndex(for: { predicate($0, newElement) }))
     }
     
