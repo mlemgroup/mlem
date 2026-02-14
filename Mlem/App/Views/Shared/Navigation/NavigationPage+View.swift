@@ -75,7 +75,7 @@ extension NavigationPage {
         case let .ban(person, isBannedFromCommunity: isBannedFromCommunity, shouldBan: shouldBan, community: community):
             PersonBanEditorView(
                 person: person,
-                community: community?.wrappedValue as? any Community,
+                community: community?.wrappedValue as? any DeprecatedCommunity,
                 isBannedFromCommunity: isBannedFromCommunity,
                 shouldBan: shouldBan
             )

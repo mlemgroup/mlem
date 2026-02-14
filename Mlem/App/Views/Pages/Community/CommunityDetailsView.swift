@@ -10,7 +10,7 @@ import SwiftUI
 import Theming
 
 struct CommunityDetailsView: View {
-    let community: any Community
+    let community: any DeprecatedCommunity
     
     var body: some View {
         VStack(spacing: 16) {

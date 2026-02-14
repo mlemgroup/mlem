@@ -32,7 +32,7 @@ public struct PostProperties: UnifiedPropertiesProviding {
     
     // From Post2Snapshot
     var creator: Person?
-    var community: (any Community)?
+    var community: (any DeprecatedCommunity)?
     var commentCount: Int?
     var unreadCommentCount: Int?
     var creatorIsModerator: Bool?

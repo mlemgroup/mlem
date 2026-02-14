@@ -74,7 +74,7 @@ public class Post:
     public var locked: Bool
     
     public var creator: ExpectedValue<Person>
-    public var community: ExpectedValue<any Community>
+    public var community: ExpectedValue<any DeprecatedCommunity>
     public var commentCount: ExpectedValue<Int>
     public var unreadCommentCount: ExpectedValue<Int>
     public var creatorIsModerator: ExpectedValue<Bool>

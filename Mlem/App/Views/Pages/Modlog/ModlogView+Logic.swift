@@ -17,7 +17,7 @@ extension ModlogView {
     
     enum CommunityFilter: Hashable {
         case any
-        case community(any Community)
+        case community(any DeprecatedCommunity)
         
         var label: String {
             switch self {
@@ -26,7 +26,7 @@ extension ModlogView {
             }
         }
         
-        var communityValue: (any Community)? {
+        var communityValue: (any DeprecatedCommunity)? {
             switch self {
             case let .community(community): community
             default: nil

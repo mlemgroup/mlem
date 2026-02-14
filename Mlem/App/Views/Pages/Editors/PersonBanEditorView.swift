@@ -22,7 +22,7 @@ struct PersonBanEditorView: View {
     @Environment(\.dismiss) var dismiss
     
     let person: Person
-    let community: (any Community)?
+    let community: (any DeprecatedCommunity)?
     var isBannedFromCommunity: Bool
     var shouldBan: Bool = true
     
@@ -45,7 +45,7 @@ struct PersonBanEditorView: View {
     
     init(
         person: Person,
-        community: (any Community)?,
+        community: (any DeprecatedCommunity)?,
         isBannedFromCommunity: Bool,
         shouldBan: Bool
     ) {

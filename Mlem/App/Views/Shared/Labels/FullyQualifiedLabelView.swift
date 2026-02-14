@@ -196,7 +196,7 @@ extension FullyQualifiedLabelView {
     }
     
     init(
-        _ entity: (any Community)?,
+        _ entity: (any DeprecatedCommunity)?,
         labelStyle: FullyQualifiedLabelStyle,
         showAvatar: Bool? = nil,
         showInstance: Bool = true,

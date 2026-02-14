@@ -70,7 +70,7 @@ private extension [BlockAction.Content] {
 
         return switch first {
         case .blockable(_ as Person): .personOnly
-        case .blockable(_ as any Community): .communityOnly
+        case .blockable(_ as any DeprecatedCommunity): .communityOnly
         case .instance: .instanceOnly
         default: .other
         }
@@ -231,7 +231,7 @@ extension BlockAction {
         switch content {
         case .blockable(_ as Person):
             label = .init(localized: "Really block this user?")
-        case .blockable(_ as any Community):
+        case .blockable(_ as any DeprecatedCommunity):
             label = .init(localized: "Really block this community?")
         case .instance:
             label = .init(localized: "Really block this instance?")

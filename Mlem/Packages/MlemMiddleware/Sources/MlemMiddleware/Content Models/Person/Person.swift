@@ -64,7 +64,7 @@ public final class Person:
     public var postCount: ExpectedValue<Int>
     public var commentCount: ExpectedValue<Int>
     public var instance: ExpectedValue<(any Instance)>
-    public var moderatedCommunities: ExpectedValue<[any Community]>
+    public var moderatedCommunities: ExpectedValue<[any DeprecatedCommunity]>
     
     public var email: ExpectedValue<String?>
     public var showNsfw: ExpectedValue<Bool>
@@ -275,7 +275,7 @@ public extension Person {
         knownCommunityBanStates[id]
     }
     
-    func isBannedFromCommunity(_ community: any Community) -> Bool? {
+    func isBannedFromCommunity(_ community: any DeprecatedCommunity) -> Bool? {
         isBannedFromCommunity(id: community.id)
     }
     
@@ -342,7 +342,7 @@ public extension Person {
     // Get Content
     
     func getContent(
-        community: (any Community)? = nil,
+        community: (any DeprecatedCommunity)? = nil,
         sort: PostSortType = .new,
         page: Int,
         limit: Int,
@@ -360,7 +360,7 @@ public extension Person {
     
     // MARK: Ban
     
-    func ban(from community: any Community, removeContent: Bool, reason: String?, expires: Date?) async throws {
+    func ban(from community: any DeprecatedCommunity, removeContent: Bool, reason: String?, expires: Date?) async throws {
         try await api.banPersonFromCommunity(
             personId: id,
             communityId: community.id,
@@ -371,7 +371,7 @@ public extension Person {
         )
     }
     
-    func unban(from community: any Community, reason: String?) async throws {
+    func unban(from community: any DeprecatedCommunity, reason: String?) async throws {
         try await api.banPersonFromCommunity(
             personId: id,
             communityId: community.id,
@@ -568,7 +568,7 @@ public extension Person {
 public enum CommunityIdentifier {
     case id(Int)
     case actorId(ActorIdentifier)
-    case community(any Community)
+    case community(any DeprecatedCommunity)
 }
 
 // MARK: Shim

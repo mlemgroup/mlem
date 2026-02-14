@@ -106,7 +106,7 @@ public class BlockList {
         communities.keys.contains(communityActorId)
     }
     
-    public func contains(_ community: any Community) -> Bool {
+    public func contains(_ community: any DeprecatedCommunity) -> Bool {
         communities.keys.contains(community.actorId)
     }
     

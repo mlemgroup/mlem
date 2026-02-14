@@ -28,7 +28,7 @@ public protocol Community1Providing:
     var blocked: Bool { get }
 }
 
-public typealias Community = Community1Providing
+public typealias DeprecatedCommunity = Community1Providing
 
 public extension Community1Providing {
     static var modelTypeId: ContentType { .community }
@@ -118,7 +118,7 @@ public extension Community1Providing {
         }
     }
     
-    func upgrade() async throws -> any Community {
+    func upgrade() async throws -> any DeprecatedCommunity {
         try await api.getCommunity(id: id)
     }
     

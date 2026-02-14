@@ -17,7 +17,7 @@ struct ContentPurgeEditorView: View {
     
     let target: any PurgableProviding
     
-    @State var community: ExpectedValue<(any Community)>?
+    @State var community: ExpectedValue<(any DeprecatedCommunity)>?
     @State var reason: String = ""
     @FocusState var reasonFocused: Bool
     @State var presentationSelection: PresentationDetent = .large

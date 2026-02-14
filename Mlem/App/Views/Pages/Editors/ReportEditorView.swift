@@ -17,7 +17,7 @@ struct ReportEditorView: View {
     
     let target: any ReportableProviding
     
-    @State var community: (any ValueProviding<(any Community)>)?
+    @State var community: (any ValueProviding<(any DeprecatedCommunity)>)?
     @State var reason: String = ""
     @FocusState var reasonFocused: Bool
     @State var presentationSelection: PresentationDetent = .large
@@ -25,7 +25,7 @@ struct ReportEditorView: View {
     init(target: any ReportableProviding, community: AnyCommunity?) {
         self.target = target
         
-        if let community = community?.wrappedValue as? any Community {
+        if let community = community?.wrappedValue as? any DeprecatedCommunity {
             self._community = .init(wrappedValue: RealizedValue(community))
         } else if let community = (target as? any InteractableProviding)?.community {
             self._community = .init(wrappedValue: community)

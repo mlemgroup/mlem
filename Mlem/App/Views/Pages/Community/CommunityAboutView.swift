@@ -15,7 +15,7 @@ struct CommunityAboutView: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.palette) var palette
 
-    let community: any Community
+    let community: any DeprecatedCommunity
 
     var body: some View {
         VStack(spacing: Constants.main.standardSpacing) {

@@ -29,5 +29,5 @@ public extension Community3Providing {
 }
 
 public extension Community3Providing {
-    func upgrade() async throws -> any Community { self }
+    func upgrade() async throws -> any DeprecatedCommunity { self }
 }

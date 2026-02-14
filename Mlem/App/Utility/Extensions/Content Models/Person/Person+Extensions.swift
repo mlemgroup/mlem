@@ -12,7 +12,7 @@ extension Person {
     
     func flairs(
         interactableContext interactable: (any InteractableProviding)? = nil,
-        communityContext community: (any Community)? = nil
+        communityContext community: (any DeprecatedCommunity)? = nil
     ) -> [PersonFlair] {
         @Setting(\.person_ageVisibility) var alwaysShowAccountAge
         

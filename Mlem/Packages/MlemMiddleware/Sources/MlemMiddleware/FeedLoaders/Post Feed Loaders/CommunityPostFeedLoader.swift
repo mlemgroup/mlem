@@ -9,9 +9,9 @@ import Foundation
 
 @Observable
 class CommunityPostFetcher: PostFetcher {
-    var community: any Community
+    var community: any DeprecatedCommunity
     
-    init(sortType: PostSortType, pageSize: Int, community: any Community) {
+    init(sortType: PostSortType, pageSize: Int, community: any DeprecatedCommunity) {
         self.community = community
         
         super.init(api: community.api, sortType: sortType, pageSize: pageSize)
@@ -30,7 +30,7 @@ class CommunityPostFetcher: PostFetcher {
 }
 
 public class CommunityPostFeedLoader: CorePostFeedLoader {
-    public var community: any Community
+    public var community: any DeprecatedCommunity
     
     var communityPostFetcher: CommunityPostFetcher { fetcher as! CommunityPostFetcher }
     
@@ -46,7 +46,7 @@ public class CommunityPostFeedLoader: CorePostFeedLoader {
         filterContext: FilterContext,
         prefetchingConfiguration: PrefetchingConfiguration,
         urlCache: URLCache,
-        community: any Community
+        community: any DeprecatedCommunity
     ) {
         self.community = community
         super.init(
@@ -61,7 +61,7 @@ public class CommunityPostFeedLoader: CorePostFeedLoader {
         do {
             let resolvedCommunity = try await newApi.resolve(url: community.actorId.url)
             
-            guard let newCommunity = resolvedCommunity as? any Community else {
+            guard let newCommunity = resolvedCommunity as? any DeprecatedCommunity else {
                 assertionFailure("Did not get community back")
                 return
             }

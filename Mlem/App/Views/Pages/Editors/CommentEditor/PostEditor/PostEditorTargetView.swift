@@ -55,7 +55,7 @@ struct PostEditorTargetView: View {
         } label: {
             let singleAccount = AccountsTracker.main.userAccounts.count == 1
             HStack(spacing: 0) {
-                if let community = target.community as? any Community {
+                if let community = target.community as? any DeprecatedCommunity {
                     FullyQualifiedLabelView(community, labelStyle: singleAccount ? .medium : .large)
                 } else if let community = target.community {
                     FullyQualifiedNameView(name: nil, instance: nil, instanceLocation: .trailing)

@@ -32,7 +32,7 @@ public struct PersonProperties: UnifiedPropertiesProviding {
     
     // From Person3Snapshot
     var instance: (any Instance)?
-    var moderatedCommunities: [any Community]?
+    var moderatedCommunities: [any DeprecatedCommunity]?
     
     // From Person4Snapshot
     var email: String??

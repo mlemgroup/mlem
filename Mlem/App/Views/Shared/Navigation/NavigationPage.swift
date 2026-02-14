@@ -120,7 +120,7 @@ enum NavigationPage: Hashable {
     }
     
     static func modlog(
-        community: any Community,
+        community: any DeprecatedCommunity,
         targetPerson: Person? = nil,
         moderatorPerson: Person? = nil
     ) -> NavigationPage {
@@ -314,7 +314,7 @@ enum NavigationPage: Hashable {
         _ person: Person,
         isBannedFromCommunity: Bool,
         shouldBan: Bool,
-        community: (any Community)? = nil
+        community: (any DeprecatedCommunity)? = nil
     ) -> NavigationPage {
         let anyCommunity: AnyCommunity?
         if let community {

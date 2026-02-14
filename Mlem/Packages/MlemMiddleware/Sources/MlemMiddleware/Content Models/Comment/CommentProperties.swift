@@ -25,7 +25,7 @@ public struct CommentProperties: UnifiedPropertiesProviding {
     // from Comment2Snapshot
     var creator: Person?
     var post: Post?
-    var community: (any Community)?
+    var community: (any DeprecatedCommunity)?
     var commentCount: Int?
     var creatorIsModerator: Bool?
     var creatorIsAdmin: Bool?

@@ -51,7 +51,7 @@ public class Comment:
     // from Comment2Snapshot
     public var creator: ExpectedValue<Person>
     public var post: ExpectedValue<Post>
-    public var community: ExpectedValue<(any Community)>
+    public var community: ExpectedValue<(any DeprecatedCommunity)>
     public var commentCount: ExpectedValue<Int>
     public var creatorIsModerator: ExpectedValue<Bool>
     public var creatorIsAdmin: ExpectedValue<Bool>

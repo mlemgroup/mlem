@@ -12,7 +12,7 @@ import SwiftUI
 struct ModlogButtonView: View {
     let target: ModlogView.InitialTarget
     
-    init(community: any Community) {
+    init(community: any DeprecatedCommunity) {
         self.target = .community(.init(community))
     }
     

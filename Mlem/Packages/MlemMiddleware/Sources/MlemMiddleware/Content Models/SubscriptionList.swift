@@ -47,7 +47,7 @@ public class SubscriptionList {
         _ = try await api.getSubscriptionList()
     }
     
-    public func isFavorited(_ community: any Community) -> Bool {
+    public func isFavorited(_ community: any DeprecatedCommunity) -> Bool {
         favoriteIDs.contains(community.id)
     }
     

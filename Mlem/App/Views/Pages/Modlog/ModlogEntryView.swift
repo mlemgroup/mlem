@@ -12,7 +12,7 @@ struct ModlogEntryView: View {
     @Environment(\.palette) var palette
     
     let entry: ModlogEntry
-    var targetCommunity: (any Community)?
+    var targetCommunity: (any DeprecatedCommunity)?
     @State private var id = UUID()
     
     var body: some View {
@@ -225,7 +225,7 @@ struct ModlogEntryView: View {
     }
     
     @ViewBuilder
-    func postLink(post: Post, community: any Community) -> some View {
+    func postLink(post: Post, community: any DeprecatedCommunity) -> some View {
         NavigationLink(.post(post)) {
             FooterLinkView(title: post.title, subtitle: community.fullNameWithPrefix)
         }

@@ -10,7 +10,7 @@ import MlemMiddleware
 import QuickSwipes
 
 extension CommunityView {
-    func canEditModeratorList(_ community: any Community) -> Bool {
+    func canEditModeratorList(_ community: any DeprecatedCommunity) -> Bool {
         guard let firstPerson = appState.firstPerson else { return false }
         if !firstPerson.api.supports(.editModeratorList, defaultValue: true) {
             return false
@@ -33,7 +33,7 @@ extension CommunityView {
             return
         }
         
-        guard let community = community.wrappedValue as? any Community else {
+        guard let community = community.wrappedValue as? any DeprecatedCommunity else {
             assertionFailure("Community not loaded yet")
             return
         }
@@ -47,7 +47,7 @@ extension CommunityView {
         }
     }
     
-    func moderatorQuickSwipes(community: any Community, person: Person) -> SwipeConfiguration {
+    func moderatorQuickSwipes(community: any DeprecatedCommunity, person: Person) -> SwipeConfiguration {
         guard let community = community as? any Community3Providing,
               canEditModeratorList(community),
               let myPerson = appState.firstPerson,
@@ -58,7 +58,7 @@ extension CommunityView {
         return .init(trailingActions: [person.addModAction(community: community, isOn: true)])
     }
     
-    func setupFeedLoader(community: any Community) {
+    func setupFeedLoader(community: any DeprecatedCommunity) {
         if postFeedLoader == nil {
             Task { @MainActor in
                 @Setting(\.behavior_internetSpeed) var internetSpeed

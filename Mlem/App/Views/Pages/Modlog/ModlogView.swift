@@ -45,7 +45,7 @@ struct ModlogView: View {
         self.initialTarget = initialTarget
         switch initialTarget {
         case let .community(community):
-            if let community = community.wrappedValue as? any Community {
+            if let community = community.wrappedValue as? any DeprecatedCommunity {
                 self._communityFilter = .init(wrappedValue: .community(community))
             }
             self.api = community.wrappedValue.api

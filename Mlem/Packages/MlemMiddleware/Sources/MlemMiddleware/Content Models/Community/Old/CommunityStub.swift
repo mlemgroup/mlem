@@ -29,7 +29,7 @@ public struct CommunityStub: CommunityStubProviding, Hashable {
         lhs.url == rhs.url
     }
     
-    public func upgrade() async throws -> any Community {
+    public func upgrade() async throws -> any DeprecatedCommunity {
         try await api.getCommunity(url: url) as Community2
     }
 }

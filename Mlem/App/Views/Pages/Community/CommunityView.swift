@@ -80,7 +80,7 @@ struct CommunityView: View {
             }
         } upgradeOperation: { model, api in
             try await model.upgrade(api: api, upgradeOperation: nil)
-            if let community = model.wrappedValue as? any Community {
+            if let community = model.wrappedValue as? any DeprecatedCommunity {
                 setupFeedLoader(community: community)
             }
         }
@@ -91,7 +91,7 @@ struct CommunityView: View {
         
     @ViewBuilder
     // swiftlint:disable:next function_body_length
-    func content(community: any Community, contentLoaderError: (any Error)?) -> some View {
+    func content(community: any DeprecatedCommunity, contentLoaderError: (any Error)?) -> some View {
         FancyScrollView {
             HStack {
                 FeedHeaderView(
@@ -166,7 +166,7 @@ struct CommunityView: View {
     }
     
     @ViewBuilder
-    func postsTab(community: any Community, postFeedLoader: CommunityPostFeedLoader) -> some View {
+    func postsTab(community: any DeprecatedCommunity, postFeedLoader: CommunityPostFeedLoader) -> some View {
         if community.removed {
             VStack(spacing: Constants.main.standardSpacing) {
                 Image(icon: .lemmy.remove)
@@ -182,7 +182,7 @@ struct CommunityView: View {
     }
 
     @ViewBuilder
-    func moderationTab(community: any Community) -> some View {
+    func moderationTab(community: any DeprecatedCommunity) -> some View {
         VStack(spacing: Constants.main.standardSpacing) {
             if community.api.supports(.modlog, defaultValue: true) {
                 ModlogButtonView(community: community)
@@ -213,7 +213,7 @@ struct CommunityView: View {
     }
     
     @ViewBuilder
-    func subscribeButton(community: any Community) -> some View {
+    func subscribeButton(community: any DeprecatedCommunity) -> some View {
         let subscribed = community.subscribed_ ?? false
         Button {
             if let community = community as? any Community2Providing, community.api.willSendToken {
@@ -239,7 +239,7 @@ struct CommunityView: View {
         .padding(.bottom, Constants.main.halfSpacing)
     }
     
-    func tabs(community: any Community) -> [Tab] {
+    func tabs(community: any DeprecatedCommunity) -> [Tab] {
         var output: [Tab] = [.posts, .moderation, .details]
         let canModerate: Bool
         if !appState.firstApi.supports(.editCommunityDescription, defaultValue: false) {

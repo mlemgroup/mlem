@@ -18,7 +18,7 @@ struct CommunityListRowBody<Content: View>: View {
     
     @Setting(\.safety_blurNsfw) var blurNsfw
     
-    let community: any Community
+    let community: any DeprecatedCommunity
     let showBlockStatus: Bool
     let complications: [Complication]
     let readout: Readout?
@@ -26,7 +26,7 @@ struct CommunityListRowBody<Content: View>: View {
     @ViewBuilder let content: () -> Content
 
     init(
-        _ community: any Community,
+        _ community: any DeprecatedCommunity,
         complications: [Complication] = [.instance],
         showBlockStatus: Bool = true,
         @ViewBuilder content: @escaping () -> Content
@@ -39,7 +39,7 @@ struct CommunityListRowBody<Content: View>: View {
     }
     
     init(
-        _ community: any Community,
+        _ community: any DeprecatedCommunity,
         complications: [Complication] = [.instance],
         showBlockStatus: Bool = true,
         readout: Readout? = nil

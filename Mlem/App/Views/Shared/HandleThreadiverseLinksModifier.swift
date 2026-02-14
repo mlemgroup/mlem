@@ -226,7 +226,7 @@ struct HandleThreadiverseLinksModifier: ViewModifier {
 
         if let person = output as? Person {
             navigation.push(.person(person))
-        } else if let community = output as? any Community {
+        } else if let community = output as? any DeprecatedCommunity {
             navigation.push(.community(community))
         } else {
             fallback(url)

@@ -43,7 +43,7 @@ public protocol CommunityStubProviding: ContentModel, Resolvable {
     var moderators_: [Person]? { get }
     var discussionLanguageIds_: Set<Int>? { get }
     
-    func upgrade() async throws -> any Community
+    func upgrade() async throws -> any DeprecatedCommunity
 }
 
 public extension CommunityStubProviding {
