@@ -32,6 +32,10 @@ public struct CommunityStub: CommunityStubProviding, Hashable {
     public func upgrade() async throws -> any DeprecatedCommunity {
         try await api.getCommunity(url: url) as Community2
     }
+    
+//    public func getCommunity() async throws -> Community {
+//        try await api.getCommunity(url: url)
+//    }
 }
 
 // Resolvable conformance

@@ -105,6 +105,7 @@ public class Comment:
         self.saved = expectedValue(properties.saved)
     }
     
+    @MainActor
     public func update(with properties: CommentProperties) {
         setIfChanged(\.content, properties.content)
         setIfChanged(\.updated, properties.updated)
@@ -124,6 +125,7 @@ public class Comment:
         updateIfChanged(\.saved.value_, properties.saved)
     }
     
+    @MainActor
     public func softUpdate(with properties: CommentProperties) {
         setIfNil(\.creator.value_, properties.creator)
         setIfNil(\.post.value_, properties.post)

@@ -194,7 +194,6 @@ public class Post:
         updateIfChanged(\.saved.value_, properties.saved ?? saved.value_)
         updateIfChanged(\.readStatus.value_, properties.read ?? readStatus.value_)
         updateIfChanged(\.hidden.value_, properties.hidden ?? hidden.value_)
-
         updateIfChanged(\.crossPosts.value_, properties.crossPosts ?? crossPosts.value_)
     }
     
@@ -212,7 +211,6 @@ public class Post:
         setIfNil(\.saved.value_, properties.saved)
         setIfNil(\.readStatus.value_, properties.read)
         setIfNil(\.hidden.value_, properties.hidden)
-
         setIfNil(\.crossPosts.value_, properties.crossPosts ?? crossPosts.value_)
     }
     

@@ -1,0 +1,152 @@
+//
+//  Community.swift
+//  MlemMiddleware
+//
+//  Created by Eric Andrews on 2026-02-14.
+//
+
+import Observation
+import Foundation
+
+@Observable
+public class Community: UnifiedModelProviding {
+    public typealias Properties = CommunityProperties
+    
+    public var api: ApiClient
+    private let properties: CommunityProperties
+    @ObservationIgnored lazy var updateQueue: UnifiedUpdateQueue<Community> = .init(parent: self, properties: properties)
+    
+    // MARK: API Properties
+    // Properties that are provided by the API
+    
+    public let actorId: ActorIdentifier
+    public let id: Int
+    public let name: String
+    public let created: Date
+    public let instanceId: Int
+    public var updated: Date?
+    public var displayName: String
+    public var description: String?
+    public var deleted: Bool
+    public var removed: Bool
+    public var nsfw: Bool
+    public var avatar: URL?
+    public var banner: URL?
+    public var hidden: Bool
+    public var onlyModeratorsCanPost: Bool
+
+    public var subscription: ExpectedValue<SubscriptionModel>
+    public var postCount: ExpectedValue<Int>
+    public var commentCount: ExpectedValue<Int>
+    public var activeUserCount: ExpectedValue<ActiveUserCount>
+    public var bannedFromCommunity: ExpectedValue<Bool?>
+    public var instance: ExpectedValue<(any Instance1Providing)?>
+    public var moderators: ExpectedValue<[Person]>
+    public var discussionLanguageIds: ExpectedValue<Set<Int>>
+    
+    // MARK: Initializers and Updates
+    
+    public init(api: ApiClient, properties: CommunityProperties) {
+        self.api = api
+        self.properties = properties
+        
+        self.actorId = properties.actorId
+        self.id = properties.id
+        self.name = properties.name
+        self.created = properties.created
+        self.instanceId = properties.instanceId
+        self.updated = properties.updated
+        self.displayName = properties.displayName
+        self.description = properties.description
+        self.deleted = properties.deleted
+        self.removed = properties.removed
+        self.nsfw = properties.nsfw
+        self.avatar = properties.avatar
+        self.banner = properties.banner
+        self.hidden = properties.hidden
+        self.onlyModeratorsCanPost = properties.onlyModeratorsCanPost
+        
+        // because upgrade() is not available until all properties are initialized, first populate all properties
+        // with ExpectedValues that don't actually do anything, then reassign them properly at the end of the init
+        // this is somewhat cumbersome but avoids lazy vars, which are very awkward in Observables
+        self.subscription = dummyExpectedValue(properties.subscription)
+        self.postCount = dummyExpectedValue(properties.postCount)
+        self.commentCount = dummyExpectedValue(properties.commentCount)
+        self.activeUserCount = dummyExpectedValue(properties.activeUserCount)
+        self.bannedFromCommunity = dummyExpectedValue(properties.bannedFromCommunity)
+        self.instance = dummyExpectedValue(properties.instance)
+        self.moderators = dummyExpectedValue(properties.moderators)
+        self.discussionLanguageIds = dummyExpectedValue(properties.discussionLanguageIds)
+        
+        func expectedValue<T>(_ value: T?) -> ExpectedValue<T> {
+            .init(
+                value: value,
+                provideValue: { try await self.upgrade() })
+        }
+        self.subscription = expectedValue(properties.subscription)
+        self.postCount = expectedValue(properties.postCount)
+        self.commentCount = expectedValue(properties.commentCount)
+        self.activeUserCount = expectedValue(properties.activeUserCount)
+        self.bannedFromCommunity = expectedValue(properties.bannedFromCommunity)
+        self.instance = expectedValue(properties.instance)
+        self.moderators = expectedValue(properties.moderators)
+        self.discussionLanguageIds = expectedValue(properties.discussionLanguageIds)
+    }
+    
+    @MainActor
+    public func update(with properties: CommunityProperties) {
+        setIfChanged(\.updated, properties.updated)
+        setIfChanged(\.displayName, properties.displayName)
+        setIfChanged(\.description, properties.description)
+        setIfChanged(\.deleted, properties.deleted)
+        setIfChanged(\.removed, properties.removed)
+        setIfChanged(\.nsfw, properties.nsfw)
+        setIfChanged(\.avatar, properties.avatar)
+        setIfChanged(\.banner, properties.banner)
+        setIfChanged(\.hidden, properties.hidden)
+        setIfChanged(\.onlyModeratorsCanPost, properties.onlyModeratorsCanPost)
+        
+        updateIfChanged(\.subscription.value_, properties.subscription)
+        updateIfChanged(\.postCount.value_, properties.postCount)
+        updateIfChanged(\.commentCount.value_, properties.commentCount)
+        updateIfChanged(\.activeUserCount.value_, properties.activeUserCount)
+        updateIfChanged(\.bannedFromCommunity.value_, properties.bannedFromCommunity)
+        setIfNil(\.instance.value_, properties.instance)
+        updateIfChanged(\.moderators.value_, properties.moderators)
+        updateIfChanged(\.discussionLanguageIds.value_, properties.discussionLanguageIds)
+    }
+    
+    @MainActor
+    public func softUpdate(with properties: CommunityProperties) {
+        setIfNil(\.subscription.value_, properties.subscription)
+        setIfNil(\.postCount.value_, properties.postCount)
+        setIfNil(\.commentCount.value_, properties.commentCount)
+        setIfNil(\.activeUserCount.value_, properties.activeUserCount)
+        setIfNil(\.bannedFromCommunity.value_, properties.bannedFromCommunity)
+        setIfNil(\.instance.value_, properties.instance)
+        setIfNil(\.moderators.value_, properties.moderators)
+        setIfNil(\.discussionLanguageIds.value_, properties.discussionLanguageIds)
+    }
+    
+    // MARK: Upgrades
+    
+    public func upgrade() async throws {
+        try await updateQueue.upgrade()
+    }
+    
+    public func refresh() async throws {
+        try await updateQueue.refresh()
+    }
+    
+    public func fetchUpgraded() async throws -> CommunityProperties {
+        let snapshot = try await api.repository.getCommunity(id: id)
+        return await .init(api: api, snapshot: .community3(snapshot))
+    }
+    
+    public func resolve(with api: ApiClient) async throws -> Self {
+        // TODO: NOW
+        return self
+//        let stub = CommunityStub(api: api, url: allResolvableUrls[0])
+//        return try await stub.getCommunity() as! Self
+    }
+}

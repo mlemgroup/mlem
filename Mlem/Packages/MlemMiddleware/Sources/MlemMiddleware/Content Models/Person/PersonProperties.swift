@@ -159,7 +159,7 @@ public struct PersonProperties: UnifiedPropertiesProviding {
         isAdmin = other.isAdmin ?? self.isAdmin
         postCount = other.postCount ?? self.postCount
         commentCount = other.commentCount ?? self.commentCount
-        
+
         instance = other.instance ?? self.instance
         moderatedCommunities = other.moderatedCommunities ?? self.moderatedCommunities
         
