@@ -105,7 +105,7 @@ public class SubscriptionList {
             if isFavorited(community) != community.shouldBeFavorited {
                 if community.shouldBeFavorited {
                     favoriteIDs.insert(community.id)
-                    favorites.sortedInsert(community) { $0.name < community.name }
+                    favorites.sortedInsert(community) { $0.name < $1.name }
                 } else {
                     favoriteIDs.remove(community.id)
                     favorites.removeFirst { $0 === community }
@@ -121,7 +121,7 @@ public class SubscriptionList {
         
         let alphabeticCategory = alphabeticCategoryForCommunity(community)
         if alphabeticSections.keys.contains(alphabeticCategory) {
-            alphabeticSections[alphabeticCategory]?.sortedInsert(community) { $0.name < community.name }
+            alphabeticSections[alphabeticCategory]?.sortedInsert(community) { $0.name < $1.name }
         } else {
             alphabeticSections[alphabeticCategory] = [community]
         }
@@ -133,7 +133,7 @@ public class SubscriptionList {
         
         if hostExists {
             if hostCategoryExists {
-                instanceSections[community.host]?.sortedInsert(community) { $0.name < community.name }
+                instanceSections[community.host]?.sortedInsert(community) { $0.name < $1.name }
             } else {
                 if let otherCommunity = instanceSections[nil]?.removeFirst(where: { $0.host == community.host }) {
                     instanceSections[community.host] = [community, otherCommunity].sorted { $0.name < $1.name }
@@ -158,9 +158,12 @@ public class SubscriptionList {
             switch items.count {
             case 1:
                 instanceSections.removeValue(forKey: community.host)
+                // Instance sections need at least 2 communities. If there is only one, it goes in the
+                // "other" section instead. If we're removing a community from an instance section of size 2,
+                // we therefore need to move the remaining community to the "other" section.
             case 2:
                 items.removeFirst { $0 === community }
-                instanceSections[nil, default: []].sortedInsert(items[0], for: { $0.name < community.name })
+                instanceSections[nil, default: []].sortedInsert(items[0], for: { $0.name < $1.name })
                 instanceSections.removeValue(forKey: community.host)
             default:
                 instanceSections[community.host]?.removeFirst { $0 === community }
