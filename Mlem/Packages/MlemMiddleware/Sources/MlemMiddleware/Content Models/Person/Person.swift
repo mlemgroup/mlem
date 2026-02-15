@@ -20,7 +20,7 @@ public final class Person:
     Sharable,
     FeedLoadable,
     Profile2Providing {
-    // TODO: UnifiedCommunity unify ProfileProviding
+    // TODO: UnifiedCommunity, UnifiedInstance unify ProfileProviding
     public typealias Properties = PersonProperties
     
     public var api: ApiClient

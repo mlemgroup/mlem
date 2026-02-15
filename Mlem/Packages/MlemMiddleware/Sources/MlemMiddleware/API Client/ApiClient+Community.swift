@@ -8,47 +8,28 @@
 import Foundation
 
 public extension ApiClient {
-    func decodeCommunity(_ data: Community1.CodedData) async throws -> Community1 {
+    func decodeCommunity(_ data: Community.CodedData) async throws -> Community {
         guard data.apiUrl == baseUrl else {
             throw ApiClientError.mismatchingUrl
         }
         guard try await data.apiMyPersonId == myPersonId else {
             throw ApiClientError.mismatchingPersonId
         }
-        return try await caches.community1.getModel(
+        return try await caches.community.getModel(
             api: self,
-            from: .init(from: data.apiCommunity),
+            from: .community1(.init(from: data.apiCommunity)),
             isStale: true
         )
     }
     
-    func decodeCommunity(_ data: Community2.CodedData) async throws -> Community2 {
-        guard data.apiUrl == baseUrl else {
-            throw ApiClientError.mismatchingUrl
-        }
-        guard try await data.apiMyPersonId == myPersonId else {
-            throw ApiClientError.mismatchingPersonId
-        }
-        return try await caches.community2.getModel(
-            api: self,
-            from: .init(from: data.apiCommunityView),
-            isStale: true
-        )
-    }
-    
-    func getCommunity(id: Int) async throws -> Community3 {
+    func getCommunity(id: Int) async throws -> Community {
         let snapshot = try await repository.getCommunity(id: id)
-        return await caches.community3.getModel(api: self, from: snapshot)
+        return await caches.community.getModel(api: self, from: .community3(snapshot))
     }
     
-    func getCommunity(url: URL) async throws -> Community2 {
+    func getCommunity(url: URL) async throws -> Community {
         let snapshot: Community2Snapshot = try await repository.getCommunity(url: url)
-        return await caches.community2.getModel(api: self, from: snapshot)
-    }
-    
-    func getCommunity(url: URL) async throws -> Community3 {
-        let snapshot: Community3Snapshot = try await repository.getCommunity(url: url)
-        return await caches.community3.getModel(api: self, from: snapshot)
+        return await caches.community.getModel(api: self, from: .community2(snapshot))
     }
     
     func searchCommunities(
@@ -68,7 +49,7 @@ public extension ApiClient {
             sort = .top(.limited(.month))
         }
         
-        let snapshot = try await repository.searchCommunities(
+        let snapshots = try await repository.searchCommunities(
             query: query,
             page: page,
             limit: limit,
@@ -76,7 +57,7 @@ public extension ApiClient {
             sort: sort
         )
         
-        let ret = await caches.community2.getModels(api: self, from: snapshot)
+        let ret = await caches.community.getModels(api: self, from: snapshots.map { .community2($0) })
         if let subscriptionInfo = hostApi?.subscriptions {
             for community in ret {
                 if let subscribedCommunity = subscriptionInfo.communities.first(where: { $0.actorId == community.actorId }) {

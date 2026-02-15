@@ -25,10 +25,7 @@ extension ApiClient {
         var instance2: Instance2Cache = .init()
         var instance3: Instance3Cache = .init()
         
-        var community1: Community1Cache = .init()
-        var community2: Community2Cache = .init()
-        var community3: Community3Cache = .init()
-        
+        var community: CommunityCache = .init()
         var person: PersonCache = .init()
         var post: PostCache = .init()
         var comment: CommentCache = .init()
