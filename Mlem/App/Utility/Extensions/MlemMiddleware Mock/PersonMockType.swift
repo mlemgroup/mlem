@@ -71,9 +71,9 @@ enum PersonMockType: Identifiable {
         return .now.addingTimeInterval(-timeInterval)
     }
     
-    var matrixId: String? {
+    var matrixUserId: String? {
         switch self {
-        case let .realistic(value): value.matrixId
+        case let .realistic(value): value.matrixUserId
         case .generic: nil
         }
     }

@@ -11,7 +11,7 @@ import SwiftUI
 
 struct OpenModlogAction: Actions.Action {
     enum Content {
-        case person(any Person1Providing)
+        case person(Person)
     }
 
     enum Relationship { case identity, author }
@@ -28,7 +28,7 @@ extension ActionSeed {
         label: OpenModlogAction.createLabel(relationship: .identity)
     ) { entity in
         switch entity {
-        case let entity as any Person1Providing: OpenModlogAction(content: .person(entity), relationship: .identity)
+        case let entity as Person: OpenModlogAction(content: .person(entity), relationship: .identity)
         default: nil
         }
     }
@@ -77,7 +77,7 @@ extension OpenModlogAction {
     }
 
     @MainActor
-    private func execute(person: any Person1Providing, environment: EnvironmentValues) {
+    private func execute(person: Person, environment: EnvironmentValues) {
         environment.popupModel?.showPopup(message: "Filter as...", [
             .init(title: "Subject") {
                 environment.navigation?.push(.modlog(targetPerson: .init(person), moderatorPerson: nil))

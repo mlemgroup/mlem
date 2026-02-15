@@ -44,7 +44,7 @@ struct InstanceView: View {
     @State var selectedTab: Tab = .about
     
     @State var showingConfirmation: Bool = false
-    @State var newAdmin: Person2?
+    @State var newAdmin: Person?
 
     @State var errorDetails: ErrorDetails?
     @State var communityListErrorDetails: ErrorDetails?

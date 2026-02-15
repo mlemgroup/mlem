@@ -19,10 +19,13 @@ extension Report {
     func update(with snapshot: ReportSnapshot, semaphore: UInt? = nil) {
         setIfChanged(\.updated, snapshot.updated)
         setIfChanged(\.reason, snapshot.reason)
-        setIfChanged(\.resolver, api.caches.person1.getOptionalModel(api: api, from: snapshot.resolver))
-        creator.update(with: snapshot.creator)
+        setIfChanged(\.resolver, api.caches.person.getOptionalModel(api: api, from: .person1(snapshot.resolver)))
         resolvedManager.updateWithReceivedValue(snapshot.resolved, semaphore: semaphore)
         
         target.update(with: snapshot.target)
+        
+        Task {
+            await creator.updateQueue.attemptDirectUpdate(with: .init(api: api, snapshot: .person1(snapshot.creator)))
+        }
     }
 }

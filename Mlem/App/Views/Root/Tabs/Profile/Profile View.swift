@@ -16,7 +16,7 @@ struct ProfileView: View {
     
     var body: some View {
         if let person = appState.firstPerson {
-            PersonView(person: .init(person), isProfileTab: true, visitContext: nil)
+            PersonView(person: person, isProfileTab: true, visitContext: nil)
                 .toolbar {
                     if person.api.supports(.editProfile, defaultValue: false) {
                         ToolbarItem(placement: .secondaryAction) {

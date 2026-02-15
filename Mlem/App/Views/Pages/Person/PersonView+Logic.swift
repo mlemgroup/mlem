@@ -23,15 +23,15 @@ extension PersonView {
         }
     }
     
-    func tabs(person: any Person3Providing) -> [Tab] {
+    func tabs(person: Person) -> [Tab] {
         var output: [Tab] = [.overview, .posts, .comments]
-        if !person.moderatedCommunities.isEmpty {
+        if !(person.moderatedCommunities.value?.isEmpty ?? true) {
             output.append(.communities)
         }
         return output
     }
     
-    func logVisit(_ person: Person2) {
+    func logVisit(_ person: Person) {
         guard let visitContext else { return }
         if let session = (appState.firstSession as? UserSession), let visitHistory = session.visitHistory {
             guard session.api === person.api else { return }

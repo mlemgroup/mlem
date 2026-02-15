@@ -17,12 +17,23 @@ public protocol UnifiedModelProviding: AnyObject, CacheIdentifiable, ContentMode
     
     /// Retrieves a fully populated Properties for this model
     func fetchUpgraded() async throws -> Properties
+    
+    func resolve(with api: ApiClient) async throws -> Self
 }
 
 extension UnifiedModelProviding {
     @MainActor
     func setIfChanged<T: Equatable>(_ keyPath: ReferenceWritableKeyPath<Self, T>, _ value: T) {
         if self[keyPath: keyPath] != value {
+            self[keyPath: keyPath] = value
+        }
+    }
+    
+    /// If the provided value is non-nil and different from the current value at the target key path, updates
+    /// the target key path with the provided value
+    @MainActor
+    func updateIfChanged<T: Equatable>(_ keyPath: ReferenceWritableKeyPath<Self, T?>, _ value: T?) {
+        if let value, self[keyPath: keyPath] != value {
             self[keyPath: keyPath] = value
         }
     }

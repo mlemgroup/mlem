@@ -30,11 +30,12 @@ struct ExpandedPostView<Content: View>: View {
     @Setting(\.interactionBar_post) var postInteractionBar
     @Setting(\.interactionBar_comment) var commentInteractionBar
 
-    var post: Post
+    @State var post: Post
     let highlightedComment: Comment?
     let content: Content
+    @State var isLoading: Bool = false
     
-    var tracker: CommentTreeTracker?
+    @Binding var tracker: CommentTreeTracker
     @State var scrollTargetedComment: Comment?
 
     @State var scrolledToScrollTargetedComment: Bool = false
@@ -46,7 +47,7 @@ struct ExpandedPostView<Content: View>: View {
     
     init(
         post: Post,
-        tracker: CommentTreeTracker?,
+        tracker: Binding<CommentTreeTracker>?,
         highlightedComment: Comment? = nil,
         scrollTargetedComment: Comment? = nil,
         @ViewBuilder content: () -> Content = { EmptyView() }
@@ -54,7 +55,7 @@ struct ExpandedPostView<Content: View>: View {
         self.post = post
         self.highlightedComment = highlightedComment
         self.content = content()
-        self.tracker = tracker ?? .init(root: .post(post))
+        self._tracker = tracker ?? .constant(.init(root: .post(post)))
         self._scrollTargetedComment = .init(wrappedValue: scrollTargetedComment)
     }
     
@@ -64,9 +65,16 @@ struct ExpandedPostView<Content: View>: View {
         VStack {
             viewContent
                 .themedGroupedBackground()
-                .externalApiWarning(entity: post, isLoading: false)
+                .reloadOnAccountSwitch(entity: $post, isLoading: $isLoading) { newPost in
+                    tracker.root = .post(newPost)
+                    tracker.loadingState = .idle
+                    Task {
+                        await tracker.load(ensuringPresenceOf: scrollTargetedComment)
+                    }
+                }
+                .externalApiWarning(entity: post, isLoading: isLoading)
                 .task {
-                    await tracker?.load(ensuringPresenceOf: scrollTargetedComment)
+                    await tracker.load(ensuringPresenceOf: scrollTargetedComment)
                     if post.api == appState.firstApi {
                         post.updateRead(true)
                     }
@@ -92,7 +100,7 @@ struct ExpandedPostView<Content: View>: View {
                 do {
                     // TODO: NOW blocking upgrade to make refresh spinner work nicely
                     try await post.upgrade() // this is identical to refresh
-                    await tracker?.refresh()
+                    await tracker.refresh()
                 } catch {
                     handleError(error)
                 }
@@ -115,13 +123,13 @@ struct ExpandedPostView<Content: View>: View {
                         content
                             .padding(.top, compactComments ? Constants.main.halfSpacing : Constants.main.standardSpacing)
                         
-                        if let errorDetails = tracker?.errorDetails {
+                        if let errorDetails = tracker.errorDetails {
                             ErrorView(errorDetails)
                                 .frame(maxWidth: .infinity)
                         } else if hasNoComments {
                             noCommentsView
                                 .padding(.top, Constants.main.doubleSpacing)
-                        } else if let tracker {
+                        } else {
                             switch tracker.loadingState {
                             case .done:
                                 LazyVStack(spacing: 0) {
@@ -138,16 +146,16 @@ struct ExpandedPostView<Content: View>: View {
                             }
                         }
                     }
-                    .animation(.easeInOut(duration: 0.1), value: (tracker?.loadingState ?? .loading) == .loading)
-                    .animation(.easeInOut(duration: 0.1), value: tracker?.errorDetails == nil)
+                    .animation(.easeInOut(duration: 0.1), value: tracker.loadingState == .loading)
+                    .animation(.easeInOut(duration: 0.1), value: tracker.errorDetails == nil)
                     .animation(.easeInOut(duration: 0.4), value: scrollTargetedComment?.actorId)
                     .padding(.bottom, 80)
-                    .id(tracker?.proposedDepthOffset ?? 0)
+                    .id(tracker.proposedDepthOffset)
                     .transition(.opacity)
-                    .animation(.easeInOut(duration: 0.4), value: tracker?.proposedDepthOffset)
+                    .animation(.easeInOut(duration: 0.4), value: tracker.proposedDepthOffset)
                 }
-                .onChange(of: tracker?.loadingState, initial: true) {
-                    if tracker?.loadingState == .done, let scrollTargetedComment {
+                .onChange(of: tracker.loadingState, initial: true) {
+                    if tracker.loadingState == .done, let scrollTargetedComment {
                         // Without a slight delay here, `scrollTo` can sometimes fail. I'm not sure why this is.
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                             proxy.scrollTo(scrollTargetedComment.actorId, anchor: .center)
@@ -168,7 +176,7 @@ struct ExpandedPostView<Content: View>: View {
                 }
                 .overlay(alignment: jumpButton.alignment) {
                     JumpButtonsView(
-                        showJumpButton: (tracker?.nodes.count ?? 0) > 1,
+                        showJumpButton: (tracker.nodes.count) > 1,
                         topVisibleItem: topVisibleItem,
                         scrollToLastVisitedPosition: showScrollToLastVisitButton(post: post) ? scrollToLastVisitedPosition : nil,
                         scrollToNextComment: scrollToNextComment,
@@ -194,9 +202,7 @@ struct ExpandedPostView<Content: View>: View {
     
     @ViewBuilder
     func toolbarContent(post: Post, scrollProxy: ScrollViewProxy) -> some View {
-        if let tracker {
-            sortPicker(tracker: tracker)
-        }
+        sortPicker(tracker: tracker)
         if post.shouldShowLoadingSymbol() {
             ProgressView()
         } else {

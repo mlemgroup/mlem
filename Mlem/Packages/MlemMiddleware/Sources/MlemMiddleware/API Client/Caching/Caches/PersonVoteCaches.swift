@@ -25,7 +25,7 @@ class PersonVoteCache: CoreCache<PersonVote> {
             api: api,
             target: target,
             communityId: communityId,
-            creator: api.caches.person1.getModel(api: api, from: snapshot.creator),
+            creator: api.caches.person.getModel(api: api, from: .person1(snapshot.creator)),
             vote: .init(rawValue: snapshot.score) ?? .none,
             creatorBannedFromCommunity: snapshot.creatorBannedFromCommunity
         )

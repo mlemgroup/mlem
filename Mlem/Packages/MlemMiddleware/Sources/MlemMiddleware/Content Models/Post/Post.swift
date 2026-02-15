@@ -73,7 +73,7 @@ public class Post:
     public var pinnedInstance: Bool
     public var locked: Bool
     
-    public var creator: ExpectedValue<any Person>
+    public var creator: ExpectedValue<Person>
     public var community: ExpectedValue<any Community>
     public var commentCount: ExpectedValue<Int>
     public var unreadCommentCount: ExpectedValue<Int>
@@ -122,12 +122,6 @@ public class Post:
         // because upgrade() is not available until all properties are initialized, first populate all properties
         // with ExpectedValues that don't actually do anything, then reassign them properly at the end of the init
         // this is somewhat cumbersome but avoids lazy vars, which are very awkward in Observables
-        func dummyExpectedValue<T>(_ value: T?) -> ExpectedValue<T> {
-            .init(
-                value: value,
-                provideValue: { assertionFailure("This should be overridden") })
-        }
-        
         self.creator = dummyExpectedValue(properties.creator)
         self.community = dummyExpectedValue(properties.community)
         self.commentCount = dummyExpectedValue(properties.commentCount)
@@ -190,18 +184,18 @@ public class Post:
         // creator and community are not expected to change value, but need to be assigned if absent
         setIfNil(\.creator.value_, properties.creator ?? creator.value_)
         setIfNil(\.community.value_, properties.community ?? community.value_)
-        setIfChanged(\.commentCount.value_, properties.commentCount ?? commentCount.value_)
-        setIfChanged(\.unreadCommentCount.value_, properties.unreadCommentCount ?? unreadCommentCount.value_)
-        setIfChanged(\.creatorIsModerator.value_, properties.creatorIsModerator ?? creatorIsModerator.value_)
-        setIfChanged(\.creatorIsAdmin.value_, properties.creatorIsAdmin ?? creatorIsAdmin.value_)
-        setIfChanged(\.creatorBannedFromCommunity.value_ , properties.creatorBannedFromCommunity ?? creatorBannedFromCommunity.value_)
-        setIfChanged(\.creatorBlocked.value_, properties.creatorBlocked ?? creatorBlocked.value_)
-        setIfChanged(\.votes.value_, properties.votes ?? votes.value_)
-        setIfChanged(\.saved.value_, properties.saved ?? saved.value_)
-        setIfChanged(\.readStatus.value_, properties.read ?? readStatus.value_)
-        setIfChanged(\.hidden.value_, properties.hidden ?? hidden.value_)
+        updateIfChanged(\.commentCount.value_, properties.commentCount ?? commentCount.value_)
+        updateIfChanged(\.unreadCommentCount.value_, properties.unreadCommentCount ?? unreadCommentCount.value_)
+        updateIfChanged(\.creatorIsModerator.value_, properties.creatorIsModerator ?? creatorIsModerator.value_)
+        updateIfChanged(\.creatorIsAdmin.value_, properties.creatorIsAdmin ?? creatorIsAdmin.value_)
+        updateIfChanged(\.creatorBannedFromCommunity.value_ , properties.creatorBannedFromCommunity ?? creatorBannedFromCommunity.value_)
+        updateIfChanged(\.creatorBlocked.value_, properties.creatorBlocked ?? creatorBlocked.value_)
+        updateIfChanged(\.votes.value_, properties.votes ?? votes.value_)
+        updateIfChanged(\.saved.value_, properties.saved ?? saved.value_)
+        updateIfChanged(\.readStatus.value_, properties.read ?? readStatus.value_)
+        updateIfChanged(\.hidden.value_, properties.hidden ?? hidden.value_)
 
-        setIfChanged(\.crossPosts.value_, properties.crossPosts ?? crossPosts.value_)
+        updateIfChanged(\.crossPosts.value_, properties.crossPosts ?? crossPosts.value_)
     }
     
     @MainActor
@@ -235,6 +229,11 @@ public class Post:
     public func fetchUpgraded() async throws -> PostProperties {
         let snapshot = try await api.repository.getPost(id: id)
         return await .init(api: api, snapshot: .post3(snapshot))
+    }
+    
+    public func resolve(with api: ApiClient) async throws -> Self {
+        let stub = PostStub(api: api, url: allResolvableUrls[0])
+        return try await stub.getPost() as! Self
     }
 }
 

@@ -26,7 +26,7 @@ class UserAccount: Account, CommunityOrPerson {
     var visitHistoryEnabled: Bool
     var accountType: AccountType
     
-    init(person: Person4, instance: Instance3, siteSoftware: SiteSoftware) {
+    init(person: Person, instance: Instance3, siteSoftware: SiteSoftware) {
         self.api = person.api
         self.id = person.id
         self.name = person.name
@@ -37,7 +37,7 @@ class UserAccount: Account, CommunityOrPerson {
         self.activityState = .inactive(lastUsed: nil)
         self.favorites = []
         self.visitHistoryEnabled = true
-        self.accountType = person.moderatedCommunities.isEmpty ? .user : .moderator
+        self.accountType = (person.moderatedCommunities.value_?.isEmpty ?? true) ? .user : .moderator
     }
     
     enum CodingKeys: String, CodingKey {
@@ -127,7 +127,7 @@ class UserAccount: Account, CommunityOrPerson {
     }
     
     @MainActor
-    func update(person: Person4, instance: Instance3, software: SiteSoftware) {
+    func update(person: Person, instance: Instance3, software: SiteSoftware) {
         var shouldSave = false
         if avatar != person.avatar {
             avatar = person.avatar
@@ -139,9 +139,9 @@ class UserAccount: Account, CommunityOrPerson {
         }
         
         let newAccountType: AccountType
-        if person.isAdmin {
+        if person.isAdmin.value_ ?? false {
             newAccountType = .admin
-        } else if !person.moderatedCommunities.isEmpty {
+        } else if !(person.moderatedCommunities.value_?.isEmpty ?? true) {
             newAccountType = .moderator
         } else {
             newAccountType = .user

@@ -20,9 +20,9 @@ public class Report: CacheIdentifiable, ContentModel, FeedLoadable {
     
     public let created: Date
     public internal(set) var updated: Date?
-    public let creator: Person1
+    public let creator: Person
     public let target: ReportTarget
-    public internal(set) var resolver: Person1?
+    public internal(set) var resolver: Person?
     public internal(set) var reason: String
     
     var resolvedManager: StateManager<Bool>
@@ -31,8 +31,8 @@ public class Report: CacheIdentifiable, ContentModel, FeedLoadable {
     init(
         api: ApiClient,
         id: Int,
-        creator: Person1,
-        resolver: Person1?,
+        creator: Person,
+        resolver: Person?,
         target: ReportTarget,
         resolved: Bool,
         reason: String,

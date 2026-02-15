@@ -31,7 +31,7 @@ struct FeedToolbarOptions: ToolbarContent {
                     Label("Post Size", icon: .settings.postSize)
                 }
                 
-                if appState.firstPerson?.showNsfw ?? false {
+                if appState.firstPerson?.showNsfw.value ?? false {
                     Toggle(
                         "Blur NSFW",
                         icon: .settings.blurNsfw,

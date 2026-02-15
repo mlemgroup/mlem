@@ -11,6 +11,7 @@ import os
 import Semaphore
 import SwiftUI
 
+// TODO: Unified Community, Modlog remove this
 struct ContentLoader<Content: View, Model: Upgradable>: View {
     @Environment(AppState.self) var appState: AppState
     

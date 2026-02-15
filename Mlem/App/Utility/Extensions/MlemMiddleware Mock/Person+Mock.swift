@@ -24,7 +24,7 @@ import MlemMiddleware
 //            updated: nil,
 //            displayName: type.displayName,
 //            description: type.description,
-//            matrixId: type.matrixId,
+//            matrixUserId: type.matrixUserId,
 //            avatar: type.avatar,
 //            banner: type.banner,
 //            deleted: false,

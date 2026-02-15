@@ -15,7 +15,7 @@ class UserSession: Session {
     
     private(set) var account: UserAccount
     
-    private(set) var person: Person4?
+    private(set) var person: Person?
     private(set) var instance: Instance3?
     private(set) var subscriptions: SubscriptionList!
     private(set) var blocks: BlockList?

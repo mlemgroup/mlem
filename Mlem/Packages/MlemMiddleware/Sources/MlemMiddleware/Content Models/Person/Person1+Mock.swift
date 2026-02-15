@@ -20,7 +20,7 @@ import Foundation
 //            updated: Date?,
 //            displayName: String,
 //            description: String?,
-//            matrixId: String?,
+//            matrixUserId: String?,
 //            avatar: URL?,
 //            banner: URL?,
 //            deleted: Bool,
@@ -38,7 +38,7 @@ import Foundation
 //                updated: updated,
 //                displayName: displayName,
 //                description: description,
-//                matrixId: matrixId,
+//                matrixUserId: matrixUserId,
 //                avatar: avatar,
 //                banner: banner,
 //                note: nil,
@@ -46,6 +46,25 @@ import Foundation
 //                isBot: isBot,
 //                instanceBan: instanceBan,
 //                blocked: blocked
+//            )
+//        }
+//    }
+//#endif
+
+//#if DEBUG
+//    public extension Person2 {
+//        static func mock(
+//            person1: Person1,
+//            postCount: Int,
+//            commentCount: Int,
+//            isAdmin: Bool
+//        ) -> Person2 {
+//            Person2(
+//                api: person1.api,
+//                person1: person1,
+//                postCount: postCount,
+//                commentCount: commentCount,
+//                isAdmin: isAdmin
 //            )
 //        }
 //    }

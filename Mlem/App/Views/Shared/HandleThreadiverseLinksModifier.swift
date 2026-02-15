@@ -156,7 +156,7 @@ struct HandleThreadiverseLinksModifier: ViewModifier {
         }
         switch components.first {
         case "u":
-            return .person(PersonStub(api: appState.firstApi, url: url))
+            return .personStub(PersonStub(api: appState.firstApi, url: url))
         case "c":
             // Handle links that look like this:
             // https://piefed.social/c/politics/p/1385905/will-the-supreme-court-hand-government-contractors-blanket-immunity
@@ -224,7 +224,7 @@ struct HandleThreadiverseLinksModifier: ViewModifier {
             ).resolve(url: url)
         }
 
-        if let person = output as? any Person {
+        if let person = output as? Person {
             navigation.push(.person(person))
         } else if let community = output as? any Community {
             navigation.push(.community(community))

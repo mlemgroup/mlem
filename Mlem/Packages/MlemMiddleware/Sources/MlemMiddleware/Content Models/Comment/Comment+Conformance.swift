@@ -88,8 +88,9 @@ public extension Comment {
 public extension Comment {
     // TODO: NOW should this be expected?
     var canModerate: Bool {
-        guard let id = community.value_?.id as? Int else { return false }
-        return api.myPerson?.moderates(communityId: id) ?? false || api.isAdmin
+        guard let id = community.value_?.id as? Int,
+              let myPersonModerates = api.myPerson?.moderates else { return false }
+        return myPersonModerates(.id(id)) || api.isAdmin
     }
 }
 
