@@ -54,6 +54,46 @@ public extension Community {
     }
 }
 
+// MARK: ContentIdentifiable
+
+public extension Community {
+    static var modelTypeId: ContentType { .community }
+}
+
+// MARK: CanModerateProviding
+
+public extension Community {
+    var canModerate: Bool {
+        guard let myPersonModerates = api.myPerson?.moderates else { return false }
+        return myPersonModerates(.id(id)) || api.isAdmin
+    }
+}
+
+// MARK: FeedLoadable
+
+public extension Community {
+    typealias FilterType = CommunityFilterType
+    
+    func sortVal(sortType: FeedLoaderSort.SortType) -> FeedLoaderSort {
+        switch sortType {
+        case .new:
+            return .new(created)
+        }
+    }
+}
+
+// MARK: Sharable
+
+public extension Community {
+    func url() -> URL {
+        if apiIsLocal {
+            api.baseUrl.appending(path: "c/\(name)")
+        } else {
+            api.baseUrl.appending(path: "c/\(name)@\(host)")
+        }
+    }
+}
+
 // MARK: Resolvable
 
 public extension Community {

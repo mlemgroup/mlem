@@ -13,7 +13,12 @@ public class Community:
     UnifiedModelProviding,
     Profile2Providing,
     CommunityOrPerson,
-    Blockable {
+    Blockable,
+    ContentIdentifiable,
+    RemovableProviding,
+    PurgableProviding,
+    Sharable,
+    FeedLoadable {
     public typealias Properties = CommunityProperties
     
     public var api: ApiClient
@@ -24,6 +29,8 @@ public class Community:
     // Mlem-specific properties that are not reflected in the API
     
     public var blocked: Bool
+    public var removedPending: Bool = false
+    public var purged: Bool = false
     
     // MARK: API Properties
     // Properties that are provided by the API
@@ -158,6 +165,38 @@ public class Community:
         return self
 //        let stub = CommunityStub(api: api, url: allResolvableUrls[0])
 //        return try await stub.getCommunity() as! Self
+    }
+}
+
+// MARK: Interactions
+
+public extension Community {
+    
+    // Remove
+    
+    func updateRemoved(_ newValue: Bool, reason: String?, callback: ((UpdateStatus) -> Void)?) {
+        removed = newValue
+        removedPending = true
+        
+        Task {
+            await updateQueue.addItem {
+                do {
+                    let snapshot = try await self.api.repository.removeCommunity(id: self.id, remove: newValue, reason: reason)
+                    callback?(.success)
+                    return await .init(api: self.api, snapshot: .community2(snapshot))
+                } catch {
+                    callback?(.failure(error))
+                    throw (error)
+                }
+            }
+        }
+    }
+    
+    // Purge
+    
+    func purge(reason: String?) async throws {
+        try await api.purgeCommunity(id: id, reason: reason)
+        purged = true
     }
 }
 

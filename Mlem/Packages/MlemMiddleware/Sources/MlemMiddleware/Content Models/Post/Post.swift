@@ -551,5 +551,6 @@ public extension Post {
     
     func purge(reason: String?) async throws {
         try await api.purgePost(id: id, reason: reason)
+        purged = true
     }
 }
