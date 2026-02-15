@@ -9,12 +9,21 @@ import Observation
 import Foundation
 
 @Observable
-public class Community: UnifiedModelProviding {
+public class Community:
+    UnifiedModelProviding,
+    Profile2Providing,
+    CommunityOrPerson,
+    Blockable {
     public typealias Properties = CommunityProperties
     
     public var api: ApiClient
     private let properties: CommunityProperties
     @ObservationIgnored lazy var updateQueue: UnifiedUpdateQueue<Community> = .init(parent: self, properties: properties)
+    
+    // MARK: Custom Properties
+    // Mlem-specific properties that are not reflected in the API
+    
+    public var blocked: Bool
     
     // MARK: API Properties
     // Properties that are provided by the API
@@ -49,6 +58,7 @@ public class Community: UnifiedModelProviding {
     public init(api: ApiClient, properties: CommunityProperties) {
         self.api = api
         self.properties = properties
+        self.blocked = api.blocks?.communities.keys.contains(properties.actorId) ?? false
         
         self.actorId = properties.actorId
         self.id = properties.id
@@ -150,3 +160,14 @@ public class Community: UnifiedModelProviding {
 //        return try await stub.getCommunity() as! Self
     }
 }
+
+// MARK: Shim
+
+public extension Community {
+    var displayName_: String { displayName }
+    var description_: String? { description }
+    var banner_: URL? { banner }
+    var created_: Date { created }
+    var updated_: Date? { updated }
+}
+

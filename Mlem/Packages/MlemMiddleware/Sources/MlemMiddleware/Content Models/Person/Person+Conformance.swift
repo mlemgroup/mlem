@@ -83,6 +83,7 @@ public extension Person {
 
 public extension Person {
     func updateBlocked(_ newValue: Bool, callback: ((Bool) -> Void)? = nil) {
+        let oldValue = blocked
         blocked = newValue
         
         Task {
@@ -90,8 +91,14 @@ public extension Person {
                 do {
                     let snapshot = try await self.api.repository.blockPerson(id: self.id, block: newValue)
                     callback?(true)
+                    if newValue {
+                        self.api.blocks?.people[self.actorId] = self.id
+                    } else {
+                        self.api.blocks?.people.removeValue(forKey: self.actorId)
+                    }
                     return await .init(api: self.api, snapshot: .person2(snapshot))
                 } catch {
+                    self.blocked = oldValue
                     callback?(false)
                     throw error
                 }

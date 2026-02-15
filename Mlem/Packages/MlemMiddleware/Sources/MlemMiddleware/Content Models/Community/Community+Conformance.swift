@@ -19,6 +19,41 @@ public extension Community {
     static var tierNumber: Int = 4
 }
 
+// MARK: CommunityOrPerson
+
+public extension Community {
+    static var identifierPrefix: String { "!" }
+}
+
+// MARK: Blockable
+
+public extension Community {
+    func updateBlocked(_ newValue: Bool, callback: ((Bool) -> Void)? = nil) {
+        let oldValue = blocked
+        blocked = newValue
+        
+        Task {
+            await updateQueue.addItem {
+                do {
+                    let snapshot = try await self.api.repository.blockCommunity(id: self.id, block: newValue)
+                    callback?(true)
+                    if newValue {
+                        self.api.blocks?.communities[self.actorId] = self.id
+                    } else {
+                        self.api.blocks?.communities.removeValue(forKey: self.actorId)
+                    }
+                    return await .init(api: self.api, snapshot: .community2(snapshot))
+                } catch {
+                    // need to manually roll back because blocked is not included in snapshot informatoin
+                    self.blocked = oldValue
+                    callback?(false)
+                    throw error
+                }
+            }
+        }
+    }
+}
+
 // MARK: Resolvable
 
 public extension Community {
@@ -35,4 +70,3 @@ public extension Community {
         ContentModelUrlType.allCases.map { resolvableUrl(from: $0) }
     }
 }
-    
