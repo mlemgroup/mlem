@@ -174,6 +174,6 @@ public class SubscriptionList {
     }
 
     private func sortPredicate(_ first: Community2, _ second: Community2) -> Bool {
-        first.name.localizedCompare(second.name) == .orderedAscending
+        first.fullName.localizedCompare(second.fullName) == .orderedAscending
     }
 }
