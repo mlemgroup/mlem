@@ -2,7 +2,7 @@
 //  HiddenReadBannerView.swift
 //  Mlem
 //
-//  Created on 2026-02-17.
+//  Created by Bedir Ekim on 2026-02-17.
 //
 
 import SwiftUI
