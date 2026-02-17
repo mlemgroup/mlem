@@ -29,8 +29,8 @@ private struct OutdatedFeedPopupModifier: ViewModifier {
         content
             .refreshable(isEnabled: feedLoader != nil) {
                 if let feedLoader {
-                    onManualRefresh?()
                     await refresh(feedLoader, clearBeforeRefresh: false)
+                    onManualRefresh?()
                 }
             }
             .onChange(of: apiChangeHash) {
