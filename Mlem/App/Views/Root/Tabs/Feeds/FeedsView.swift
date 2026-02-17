@@ -29,6 +29,8 @@ struct FeedsView: View {
     @State var postFeedLoader: AggregatePostFeedLoader?
     @State var scrollToTopTrigger: Bool = false
     @State var initialListingType: ListingType?
+    @State var showHiddenReadBanner: Bool = false
+    @State var lastRefreshDate: Date?
     
     var feedOptions: [ListingType] {
         ListingType.cases(for: appState.firstAccount.accountType, api: appState.firstApi)
@@ -61,6 +63,10 @@ struct FeedsView: View {
             .navigationBarTitleDisplayMode(.inline)
             .onChange(of: showRead) {
                 scrollToTopTrigger.toggle()
+                if showRead {
+                    showHiddenReadBanner = false
+                }
+                lastRefreshDate = nil
             }
             .onChange(of: appState.firstApi, initial: false) {
                 // ensure we always are showing an appropriate feed
@@ -82,7 +88,15 @@ struct FeedsView: View {
                 }
             }
             .task { await setupFeedLoader() }
-            .outdatedFeedPopup(feedLoader: postFeedLoader)
+            .outdatedFeedPopup(feedLoader: postFeedLoader, onManualRefresh: {
+                guard !showRead else { return }
+                let now = Date()
+                if let lastRefresh = lastRefreshDate,
+                   now.timeIntervalSince(lastRefresh) < 5 {
+                    showHiddenReadBanner = true
+                }
+                lastRefreshDate = now
+            })
             .environment(\.feedContext, postFeedLoader?.feedType.feedContext)
     }
     
@@ -101,6 +115,12 @@ struct FeedsView: View {
                            lastTestFlightUpdate != testflightUrl {
                             UpdateBannerView(url: testflightUrl)
                                 .padding([.horizontal, .bottom], Constants.main.standardSpacing)
+                        }
+                        if showHiddenReadBanner, !showRead {
+                            HiddenReadBannerView {
+                                showHiddenReadBanner = false
+                            }
+                            .padding([.horizontal, .bottom], Constants.main.standardSpacing)
                         }
                         PostGridView(postFeedLoader: postFeedLoader)
                     } header: {
