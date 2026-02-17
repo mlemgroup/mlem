@@ -129,6 +129,10 @@ struct PostPollView: View {
         .padding(.vertical, 8)
         .background(.themedTertiaryGroupedBackground, in: .rect(cornerRadius: 16))
         .onTapGesture {
+            if poll.hasEnded {
+                toastModel?.add(.basic("Poll has ended", subtitle: "This poll is no longer accepting votes.", duration: 3))
+                return
+            }
             if poll.hasVoted {
                 toastModel?.add(.basic("Already voted", subtitle: "You cannot change your vote.", duration: 3))
                 return
