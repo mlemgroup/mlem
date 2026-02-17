@@ -4921,6 +4921,16 @@
         }
       }
     },
+    "Looking for something? Read posts are hidden." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous cherchez quelque chose ? Les publications lues sont masquées."
+          }
+        }
+      }
+    },
     "Low" : {
       "localizations" : {
         "fr" : {

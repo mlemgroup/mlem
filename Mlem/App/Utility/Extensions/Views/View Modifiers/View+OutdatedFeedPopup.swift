@@ -15,10 +15,12 @@ private struct OutdatedFeedPopupModifier: ViewModifier {
     let feedLoader: (any FeedLoading)?
     
     let canShowPopup: Bool
-    
-    init(feedLoader: (any FeedLoading)?, showPopup canShowPopup: Bool) {
+    let onManualRefresh: (() -> Void)?
+
+    init(feedLoader: (any FeedLoading)?, showPopup canShowPopup: Bool, onManualRefresh: (() -> Void)? = nil) {
         self.feedLoader = feedLoader
         self.canShowPopup = canShowPopup
+        self.onManualRefresh = onManualRefresh
     }
     
     @State var showRefreshPopup: Bool = false
@@ -28,6 +30,7 @@ private struct OutdatedFeedPopupModifier: ViewModifier {
             .refreshable(isEnabled: feedLoader != nil) {
                 if let feedLoader {
                     await refresh(feedLoader, clearBeforeRefresh: false)
+                    onManualRefresh?()
                 }
             }
             .onChange(of: apiChangeHash) {
@@ -95,7 +98,7 @@ private struct OutdatedFeedPopupModifier: ViewModifier {
 }
 
 extension View {
-    func outdatedFeedPopup(feedLoader: (any FeedLoading)?, showPopup: Bool = true) -> some View {
-        modifier(OutdatedFeedPopupModifier(feedLoader: feedLoader, showPopup: showPopup))
+    func outdatedFeedPopup(feedLoader: (any FeedLoading)?, showPopup: Bool = true, onManualRefresh: (() -> Void)? = nil) -> some View {
+        modifier(OutdatedFeedPopupModifier(feedLoader: feedLoader, showPopup: showPopup, onManualRefresh: onManualRefresh))
     }
 }
