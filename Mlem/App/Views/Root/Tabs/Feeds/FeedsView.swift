@@ -139,6 +139,7 @@ struct FeedsView: View {
                     }
                 }
                 .animation(.snappy, value: backendClient.testflightUpdate != lastTestFlightUpdate)
+                .animation(.snappy, value: showHiddenReadBanner && !showRead)
             } else {
                 ProgressView()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
