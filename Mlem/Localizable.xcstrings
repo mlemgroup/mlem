@@ -6167,6 +6167,16 @@
         }
       }
     },
+    "Poll has ended" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le sondage est terminé"
+          }
+        }
+      }
+    },
     "Popular" : {
       "localizations" : {
         "fr" : {
@@ -8963,6 +8973,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cette page ne peut pas être affichée car Cloudflare a bloqué la requête."
+          }
+        }
+      }
+    },
+    "This poll is no longer accepting votes." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ce sondage n'accepte plus de votes."
           }
         }
       }
