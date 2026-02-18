@@ -49,6 +49,7 @@ extension SearchView {
     }
     
     func setupFilters() async {
+        guard communityFilters == nil else { return }
         do {
             let software = try await appState.firstApi.software
             communityFilters = .init(software: software)
@@ -141,26 +142,37 @@ extension SearchView {
     private func refreshPosts(clearBeforeRefresh: Bool) async throws {
         guard let postFilters else { return }
         guard !query.isEmpty else { return }
+        let refreshApi = getRefreshApi(for: postFilters.location)
         await postLoader.searchPostFetcher.changeApi(
-            to: getRefreshApi(for: postFilters.location),
+            to: refreshApi,
             context: filtersTracker.filterContext
         )
-        postLoader.searchPostFetcher.setSortType(.v3(postFilters.sort))
+
+        let defaultSort: PostSortType
+        if try await refreshApi.supports(.searchSortType(.top(.allTime))) {
+            defaultSort = .top(.allTime)
+        } else {
+            defaultSort = .top(.limited(.month))
+        }
+
+        postLoader.searchPostFetcher.setSortType(.v3(filtersActive ? postFilters.sort : defaultSort))
         postLoader.searchPostFetcher.query = query
-        postLoader.searchPostFetcher.creatorId = postFilters.creator?.id
+        postLoader.searchPostFetcher.creatorId = filtersActive ? postFilters.creator?.id : nil
         postLoader.searchPostFetcher.communityId = nil
         postLoader.searchPostFetcher.listing = .all
-        switch postFilters.location {
-        case .subscribed:
-            postLoader.searchPostFetcher.listing = .subscribed
-        case .moderated:
-            postLoader.searchPostFetcher.listing = .moderated
-        case .localInstance, .instance:
-            postLoader.searchPostFetcher.listing = .local
-        case let .community(community):
-            postLoader.searchPostFetcher.communityId = community.id
-        default:
-            break
+        if filtersActive {
+            switch postFilters.location {
+            case .subscribed:
+                postLoader.searchPostFetcher.listing = .subscribed
+            case .moderated:
+                postLoader.searchPostFetcher.listing = .moderated
+            case .localInstance, .instance:
+                postLoader.searchPostFetcher.listing = .local
+            case let .community(community):
+                postLoader.searchPostFetcher.communityId = community.id
+            default:
+                break
+            }
         }
         try await postLoader.refresh(clearBeforeRefresh: clearBeforeRefresh)
     }
@@ -172,23 +184,25 @@ extension SearchView {
         )
         var listing: ListingType = .all
         commentLoader.searchCommentFetcher.communityId = nil
-        commentLoader.searchCommentFetcher.creatorId = commentFilters.creator?.id
-        switch commentFilters.location {
-        case .subscribed:
-            listing = .subscribed
-        case .moderated:
-            listing = .moderated
-        case .localInstance, .instance:
-            listing = .local
-        case let .community(community):
-            commentLoader.searchCommentFetcher.communityId = community.id
-        default:
-            break
+        commentLoader.searchCommentFetcher.creatorId = filtersActive ? commentFilters.creator?.id : nil
+        if filtersActive {
+            switch commentFilters.location {
+            case .subscribed:
+                listing = .subscribed
+            case .moderated:
+                listing = .moderated
+            case .localInstance, .instance:
+                listing = .local
+            case let .community(community):
+                commentLoader.searchCommentFetcher.communityId = community.id
+            default:
+                break
+            }
         }
         try await commentLoader.refresh(
             query: query,
             listing: listing,
-            sort: .v3(commentFilters.sort),
+            sort: .v3(filtersActive ? commentFilters.sort : .top(.allTime)),
             clearBeforeRefresh: clearBeforeRefresh
         )
     }
