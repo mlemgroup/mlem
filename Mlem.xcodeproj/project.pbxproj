@@ -404,6 +404,7 @@
 		6363D5C727EE196700E34822 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D5C627EE196700E34822 /* ContentView.swift */; };
 		6363D5C927EE196A00E34822 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6363D5C827EE196A00E34822 /* Assets.xcassets */; };
 		6DE1183C2A4A217400810C7E /* Profile View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DE1183B2A4A217400810C7E /* Profile View.swift */; };
+		814CEF632F44577A0090F812 /* HiddenReadBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814CEF622F44577A0090F812 /* HiddenReadBannerView.swift */; };
 		81A179BC2DDE591700B17017 /* LongPressActionSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A179BB2DDE591700B17017 /* LongPressActionSettingsView.swift */; };
 		81A179BF2DDE5BF300B17017 /* TabBarLongPressAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A179BE2DDE5BF300B17017 /* TabBarLongPressAction.swift */; };
 		AD1B0D372A5F7A260006F554 /* Licenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1B0D362A5F7A260006F554 /* Licenses.swift */; };
@@ -964,6 +965,7 @@
 		6363D5D627EE196A00E34822 /* MlemTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MlemTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6363D5E027EE196A00E34822 /* MlemUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MlemUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DE1183B2A4A217400810C7E /* Profile View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Profile View.swift"; sourceTree = "<group>"; };
+		814CEF622F44577A0090F812 /* HiddenReadBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiddenReadBannerView.swift; sourceTree = "<group>"; };
 		81A179BB2DDE591700B17017 /* LongPressActionSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongPressActionSettingsView.swift; sourceTree = "<group>"; };
 		81A179BE2DDE5BF300B17017 /* TabBarLongPressAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarLongPressAction.swift; sourceTree = "<group>"; };
 		AD1B0D362A5F7A260006F554 /* Licenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Licenses.swift; sourceTree = "<group>"; };
@@ -2184,6 +2186,7 @@
 		CD7928212C73CB9B00FA712D /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				814CEF622F44577A0090F812 /* HiddenReadBannerView.swift */,
 				CD7928222C73CBA400FA712D /* TileScoreView.swift */,
 				0353948C2CA080EB00795AA5 /* FeedWelcomeView.swift */,
 				036A84542D98253400E95D50 /* UpdateBannerView.swift */,
@@ -2722,6 +2725,7 @@
 				039F588C2C7B574E00C61658 /* AdvancedSettingsView.swift in Sources */,
 				0320B6672C93504600D38548 /* SignUpView+Logic.swift in Sources */,
 				03E46ACD2D121C19002589DB /* HeadlinePostBodyView.swift in Sources */,
+				814CEF632F44577A0090F812 /* HiddenReadBannerView.swift in Sources */,
 				039F58882C7B531800C61658 /* SquircleLabelStyle.swift in Sources */,
 				035EDEF22C2DE94B00F51144 /* _assignIfNotEqual.swift in Sources */,
 				035EDEF32C2DE94B00F51144 /* SearchBar.swift in Sources */,
@@ -3305,9 +3309,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Mlem/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Mlem;
-				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
-				INFOPLIST_KEY_NSFaceIDUsageDescription = "Mlem requires Face ID permissions for app locking feature.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -3354,7 +3356,6 @@
 				INFOPLIST_FILE = Mlem/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Mlem;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
-				INFOPLIST_KEY_NSFaceIDUsageDescription = "Mlem requires Face ID permissions for app locking feature.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

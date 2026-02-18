@@ -37,6 +37,7 @@ struct CommunityView: View {
     @Environment(\.dismiss) var dismiss
     
     @Setting(\.post_size) var postSize
+    @Setting(\.feed_showRead) var showRead
     @Setting(\.safety_enableNsfwCommunityWarning) var showNsfwCommunityWarning
     @Setting(\.safety_blurNsfw) var blurNsfw
     
@@ -51,6 +52,8 @@ struct CommunityView: View {
     
     @State var showingConfirmation: Bool = false
     @State var newMod: Person?
+    @State var showHiddenReadBanner: Bool = false
+    @State var lastRefreshDate: Date?
     
     init(
         community: AnyCommunity,
@@ -142,6 +145,7 @@ struct CommunityView: View {
             }
             .environment(\.communityContext, community)
         }
+        .animation(.snappy, value: showHiddenReadBanner && !showRead)
         .conditionalNavigationTitle(community.name)
         .toolbar {
             ToolbarItemGroup(placement: .secondaryAction) {
@@ -153,8 +157,23 @@ struct CommunityView: View {
         .popupAnchor()
         .outdatedFeedPopup(
             feedLoader: postFeedLoader,
-            showPopup: selectedTab == .posts && community.api === appState.firstApi
+            showPopup: selectedTab == .posts && community.api === appState.firstApi,
+            onManualRefresh: {
+                guard !showRead else { return }
+                let now = Date()
+                if let lastRefresh = lastRefreshDate,
+                   now.timeIntervalSince(lastRefresh) < 5 {
+                    showHiddenReadBanner = true
+                }
+                lastRefreshDate = now
+            }
         )
+        .onChange(of: showRead) {
+            if showRead {
+                showHiddenReadBanner = false
+            }
+            lastRefreshDate = nil
+        }
         .fullScreenCover(isPresented: $warningPresented) {
             WarningOverlayView(
                 text: "This community likely contains graphic or explicit content.",
@@ -177,6 +196,12 @@ struct CommunityView: View {
             .foregroundStyle(.themedWarning)
             .padding(.top, Constants.main.doubleSpacing)
         } else {
+            if showHiddenReadBanner, !showRead {
+                HiddenReadBannerView {
+                    showHiddenReadBanner = false
+                }
+                .padding([.horizontal, .bottom], Constants.main.standardSpacing)
+            }
             PostGridView(postFeedLoader: postFeedLoader)
         }
     }
