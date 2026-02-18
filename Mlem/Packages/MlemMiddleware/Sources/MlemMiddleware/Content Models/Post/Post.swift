@@ -267,7 +267,9 @@ public extension Post {
         
         Task {
             await updateQueue.addItem {
-                await .init(api: self.api, snapshot: .post2(try await self.api.repository.voteOnPost(id: self.id, score: newValue)))
+                try await .init(
+                    api: self.api,
+                    snapshot: .post2(self.api.repository.voteOnPost(id: self.id, score: newValue)))
             }
         }
     }
@@ -280,7 +282,9 @@ public extension Post {
         
         Task {
             await updateQueue.addItem {
-                await .init(api: self.api, snapshot: .post2(try await self.api.repository.savePost(id: self.id, save: newValue)))
+                try await .init(
+                    api: self.api,
+                    snapshot: .post2(self.api.repository.savePost(id: self.id, save: newValue)))
             }
         }
     }
@@ -353,7 +357,9 @@ public extension Post {
         
         Task {
             await updateQueue.addItem {
-                await .init(api: self.api, snapshot: .post2(try await self.api.repository.voteInPoll(postId: self.id, choiceIds: choiceIds)))
+                try await .init(
+                    api: self.api,
+                    snapshot: .post2(self.api.repository.voteInPoll(postId: self.id, choiceIds: choiceIds)))
             }
         }
     }

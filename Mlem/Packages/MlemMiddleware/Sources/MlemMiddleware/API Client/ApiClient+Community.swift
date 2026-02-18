@@ -39,7 +39,7 @@ public extension ApiClient {
         filter: ListingType = .all,
         sort sort_: SearchSortType? = nil,
         hostApi: ApiClient? = nil
-    ) async throws -> [Community2] {
+    ) async throws -> [Community] {
         let sort: SearchSortType
         if let sort_ {
             sort = sort_
@@ -58,30 +58,32 @@ public extension ApiClient {
         )
         
         let ret = await caches.community.getModels(api: self, from: snapshots.map { .community2($0) })
-        if let subscriptionInfo = hostApi?.subscriptions {
-            for community in ret {
-                if let subscribedCommunity = subscriptionInfo.communities.first(where: { $0.actorId == community.actorId }) {
-                    community.subscriptionManager.addSibling(subscribedCommunity.subscriptionManager)
-                }
-                // TODO: favorites
-            }
-        }
+        // TODO: NOW
+//        if let subscriptionInfo = hostApi?.subscriptions {
+//            for community in ret {
+//                if let subscribedCommunity = subscriptionInfo.communities.first(where: { $0.actorId == community.actorId }) {
+//                    community.subscriptionManager.addSibling(subscribedCommunity.subscriptionManager)
+//                }
+//                // TODO: favorites
+//            }
+//        }
         
         // if on a foreign host, resolve communities to populate subscription status.
-        if let hostApi, hostApi !== self {
-            do {
-                let resolvedCommunities: [URL: Community2] = try await hostApi.resolve(urls: ret.map { $0.resolvableUrl(from: .host) })
-                for community in ret {
-                    if let resolvedCommunity = resolvedCommunities[community.resolvableUrl(from: .host)] {
-                        community.blockedManager.addSibling(resolvedCommunity.blockedManager)
-                    }
-                }
-            } catch {
-                // if this fails, don't fail the whole call
-                // TODO: error toast (depends on packaged error handling)
-                log.error("Failed to resolve community URLs: \(error)")
-            }
-        }
+        // TODO: NOW
+//        if let hostApi, hostApi !== self {
+//            do {
+//                let resolvedCommunities: [URL: Community2] = try await hostApi.resolve(urls: ret.map { $0.resolvableUrl(from: .host) })
+//                for community in ret {
+//                    if let resolvedCommunity = resolvedCommunities[community.resolvableUrl(from: .host)] {
+//                        community.blockedManager.addSibling(resolvedCommunity.blockedManager)
+//                    }
+//                }
+//            } catch {
+//                // if this fails, don't fail the whole call
+//                // TODO: error toast (depends on packaged error handling)
+//                log.error("Failed to resolve community URLs: \(error)")
+//            }
+//        }
         return ret
     }
     
@@ -114,28 +116,28 @@ public extension ApiClient {
             page += 1
         } while hasMorePages
             
-        let models: Set<Community2> = await Set(caches.community2.getModels(api: self, from: communities))
+        let models: Set<Community> = await Set(caches.community.getModels(api: self, from: communities.map { .community2($0) }))
         await subscriptionList.updateCommunities(with: models)
         subscriptionList.hasLoaded = true
         return subscriptionList
     }
     
     @discardableResult
-    func subscribeToCommunity(id: Int, subscribe: Bool, semaphore: UInt?) async throws -> Community2 {
+    func subscribeToCommunity(id: Int, subscribe: Bool, semaphore: UInt?) async throws -> Community {
         let snapshot = try await repository.subscribeToCommunity(id: id, subscribe: subscribe)
-        return await caches.community2.getModel(
+        return await caches.community.getModel(
             api: self,
-            from: snapshot,
+            from: .community2(snapshot),
             semaphore: semaphore
         )
     }
     
     @discardableResult
-    func blockCommunity(id: Int, block: Bool, semaphore: UInt? = nil) async throws -> Community2 {
+    func blockCommunity(id: Int, block: Bool, semaphore: UInt? = nil) async throws -> Community {
         let snapshot = try await repository.blockCommunity(id: id, block: block)
-        return await caches.community2.getModel(
+        return await caches.community.getModel(
             api: self,
-            from: snapshot,
+            from: .community2(snapshot),
             semaphore: semaphore
         )
     }
@@ -146,22 +148,22 @@ public extension ApiClient {
         remove: Bool,
         reason: String?,
         semaphore: UInt? = nil
-    ) async throws -> Community2 {
+    ) async throws -> Community {
         let snapshot = try await repository.removeCommunity(
             id: id,
             remove: remove,
             reason: reason
         )
-        return await caches.community2.getModel(
+        return await caches.community.getModel(
             api: self,
-            from: snapshot,
+            from: .community2(snapshot),
             semaphore: semaphore
         )
     }
     
     func purgeCommunity(id: Int, reason: String?) async throws {
         try await repository.purgeCommunity(id: id, reason: reason)
-        caches.community1.retrieveModel(cacheId: id)?.purged = true
+        caches.community.retrieveModel(cacheId: id)?.purged = true
     }
     
     @discardableResult
@@ -174,19 +176,21 @@ public extension ApiClient {
 
         let updatedModerators = await caches.person.getModels(api: self, from: snapshots.moderators.map { .person1($0) })
         
-        if let community = caches.community3.retrieveModel(cacheId: communityId) {
-            community.moderators = updatedModerators
+        // TODO: NOW nice way to queue this
+        if let community = caches.community.retrieveModel(cacheId: communityId) {
+            community.moderators.value_ = updatedModerators
         }
         
         if let person = caches.person.retrieveModel(cacheId: personId) {
             let newModerator = snapshots.moderators.first(where: { $0.id == personId })
             if added {
                 guard newModerator != nil else { throw ApiClientError.unsuccessful }
-                let newModeratedCommunity = await caches.community1.getModel(
+                let newModeratedCommunity = await caches.community.getModel(
                     api: self,
-                    from: snapshots.community
+                    from: .community1(snapshots.community)
                 )
                 
+                // TODO: NOW nice way to queue this
                 if person.moderatedCommunities.value_ == nil {
                     person.moderatedCommunities.value_ = [newModeratedCommunity]
                 } else {

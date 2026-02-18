@@ -10,16 +10,16 @@ import Observation
 @Observable
 public class SubscriptionList {
     /// All subscribed-to communities, including favorited communities.
-    public private(set) var communities: Set<Community2> = .init() {
+    public private(set) var communities: Set<Community> = .init() {
         didSet {
             communityIds = .init(communities.map(\.id))
         }
     }
 
     public private(set) var communityIds: Set<Int> = .init()
-    public private(set) var favorites: [Community2] = .init()
-    public private(set) var alphabeticSections: [String?: [Community2]] = .init()
-    public private(set) var instanceSections: [String?: [Community2]] = .init()
+    public private(set) var favorites: [Community] = .init()
+    public private(set) var alphabeticSections: [String?: [Community]] = .init()
+    public private(set) var instanceSections: [String?: [Community]] = .init()
     
     public internal(set) var hasLoaded: Bool = false
     
@@ -47,25 +47,25 @@ public class SubscriptionList {
         _ = try await api.getSubscriptionList()
     }
     
-    public func isFavorited(_ community: any DeprecatedCommunity) -> Bool {
+    public func isFavorited(_ community: Community) -> Bool {
         favoriteIDs.contains(community.id)
     }
     
-    private func alphabeticCategoryForCommunity(_ community: Community2) -> String? {
+    private func alphabeticCategoryForCommunity(_ community: Community) -> String? {
         let first = String(community.name.first ?? "#").folding(options: .diacriticInsensitive, locale: .current)
         guard first.first?.isLetter ?? false else { return nil }
         return first.uppercased()
     }
     
     @MainActor
-    func updateCommunities(with communities: Set<Community2>) {
+    func updateCommunities(with communities: Set<Community>) {
         self.communities = communities
         
         // Alphabetical
         
-        var alphabeticSections: [String?: [Community2]] = .init()
+        var alphabeticSections: [String?: [Community]] = .init()
         
-        let alphabeticSectionsGrouping: [String?: [Community2]] = .init(
+        let alphabeticSectionsGrouping: [String?: [Community]] = .init(
             grouping: communities,
             by: { alphabeticCategoryForCommunity($0) }
         )
@@ -77,9 +77,9 @@ public class SubscriptionList {
         
         // Instance
         
-        var otherSection = [Community2]()
-        let instanceSectionsGrouping: [String?: [Community2]] = .init(grouping: communities, by: \.host)
-        var instanceSections: [String?: [Community2]] = .init()
+        var otherSection = [Community]()
+        let instanceSectionsGrouping: [String?: [Community]] = .init(grouping: communities, by: \.host)
+        var instanceSections: [String?: [Community]] = .init()
         
         for section in instanceSectionsGrouping {
             if section.value.count == 1, let community = section.value.first {
@@ -96,9 +96,11 @@ public class SubscriptionList {
         favorites = communities.filter { favoriteIDs.contains($0.id) }
     }
     
-    func updateCommunitySubscription(community: Community2) {
+    func updateCommunitySubscription(community: Community) {
         guard hasLoaded else { return }
-        if community.subscribed {
+        // TODO: NOW
+        // if community.subscribed {
+        if community.subscription.value_?.subscribed ?? false {
             if !communities.contains(community) {
                 addCommunity(community: community)
             }
@@ -116,7 +118,7 @@ public class SubscriptionList {
         }
     }
         
-    private func addCommunity(community: Community2) {
+    private func addCommunity(community: Community) {
         communities.insert(community)
         
         let alphabeticCategory = alphabeticCategoryForCommunity(community)
@@ -144,7 +146,7 @@ public class SubscriptionList {
         }
     }
     
-    private func removeCommunity(community: Community2) {
+    private func removeCommunity(community: Community) {
         communities.remove(community)
         favoriteIDs.remove(community.id)
         favorites.removeFirst { $0 === community }

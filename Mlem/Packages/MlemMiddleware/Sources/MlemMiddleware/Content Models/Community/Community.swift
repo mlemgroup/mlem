@@ -8,6 +8,10 @@
 import Observation
 import Foundation
 
+public enum SubscriptionTier {
+    case unsubscribed, subscribed, favorited
+}
+
 @Observable
 public class Community:
     UnifiedModelProviding,
@@ -31,6 +35,8 @@ public class Community:
     public var blocked: Bool
     public var removedPending: Bool = false
     public var purged: Bool = false
+    /// Used to state-fake internally.
+    public var shouldBeFavorited: Bool = false
     
     // MARK: API Properties
     // Properties that are provided by the API
@@ -108,6 +114,9 @@ public class Community:
         self.instance = expectedValue(properties.instance)
         self.moderators = expectedValue(properties.moderators)
         self.discussionLanguageIds = expectedValue(properties.discussionLanguageIds)
+        
+        updateAuxiliaryModels(with: properties)
+        self.shouldBeFavorited = favorited
     }
     
     @MainActor
@@ -131,6 +140,9 @@ public class Community:
         setIfNil(\.instance.value_, properties.instance)
         updateIfChanged(\.moderators.value_, properties.moderators)
         updateIfChanged(\.discussionLanguageIds.value_, properties.discussionLanguageIds)
+        
+        updateAuxiliaryModels(with: properties)
+        self.shouldBeFavorited = favorited
     }
     
     @MainActor
@@ -143,6 +155,24 @@ public class Community:
         setIfNil(\.instance.value_, properties.instance)
         setIfNil(\.moderators.value_, properties.moderators)
         setIfNil(\.discussionLanguageIds.value_, properties.discussionLanguageIds)
+    }
+    
+    /// Updates external models with relevant information from this Community's properties. Should be called in init and update.
+    private func updateAuxiliaryModels(with properties: CommunityProperties) {
+        // if subscription status changed, update API
+        if properties.subscription != self.subscription.value_ {
+            self.api.subscriptions?.updateCommunitySubscription(community: self)
+        }
+        
+        // if favorited but not subscribed, remove from favorites
+        if favorited, let subscribed = properties.subscription?.subscribed, !subscribed {
+            self.api.subscriptions?.favoriteIDs.remove(id)
+        }
+        
+        // if banned, update ban status
+        if let bannedFromCommunity = properties.bannedFromCommunity as? Bool {
+            api.myPerson?.updateKnownCommunityBanState(id: id, banned: bannedFromCommunity)
+        }
     }
     
     // MARK: Upgrades
@@ -168,9 +198,89 @@ public class Community:
     }
 }
 
+// MARK: Computed
+
+public extension Community {
+    var favorited: Bool {
+        api.subscriptions?.isFavorited(self) ?? false
+    }
+    
+    /// - Note: will trigger fetch if subscription value not present
+    var subscriptionTier: SubscriptionTier {
+        if favorited { return .favorited }
+        if subscription.value?.subscribed ?? false { return .subscribed }
+        return .unsubscribed
+    }
+}
+
 // MARK: Interactions
 
 public extension Community {
+    
+    // Get Posts
+    
+    func getPosts(
+        sort: PostSortType,
+        page: Int = 1,
+        cursor: String? = nil,
+        limit: Int,
+        filter: GetContentFilter? = nil,
+        showHidden: Bool = false
+    ) async throws -> (posts: [Post], cursor: String?) {
+        try await api.getPosts(
+            communityId: id,
+            sort: sort,
+            page: page,
+            cursor: cursor,
+            limit: limit,
+            filter: filter,
+            showHidden: showHidden
+        )
+    }
+    
+    // Subscribe
+    
+    var updateSubscribed: ((Bool) -> Void)? {
+        if let subscription = subscription.value {
+            return { self.updateSubscribed($0, subscription: subscription) }
+        }
+        return nil
+    }
+    
+    private func updateSubscribed(_ newValue: Bool, subscription: SubscriptionModel) {
+        self.subscription.value_ = subscription.withSubscriptionStatus(subscribed: newValue, isLocal: apiIsLocal)
+        let oldFavorited = shouldBeFavorited
+        if !newValue {
+            self.shouldBeFavorited = false
+        }
+        
+        Task {
+            await updateQueue.addItem {
+                do {
+                    return try await self.api.subscribeToCommunity(id: self.id, subscribe: newValue, semaphore: nil).properties
+                } catch {
+                    self.shouldBeFavorited = oldFavorited
+                    throw error
+                }
+            }
+        }
+    }
+    
+    // Favorite
+    
+    var updateFavorite: ((Bool) -> Void)? {
+        if let subscription = subscription.value {
+            return { self.updateFavorite($0, subscription: subscription) }
+        }
+        return nil
+    }
+    
+    private func updateFavorite(_ newValue: Bool, subscription: SubscriptionModel) {
+        self.shouldBeFavorited = newValue
+        if !subscription.subscribed, newValue {
+            updateSubscribed(true, subscription: subscription)
+        }
+    }
     
     // Remove
     
@@ -197,6 +307,30 @@ public extension Community {
     func purge(reason: String?) async throws {
         try await api.purgeCommunity(id: id, reason: reason)
         purged = true
+    }
+    
+    // Edit Moderators
+    
+    func addModerator(personId: Int, added: Bool) async throws {
+        try await api.addModerator(communityId: id, personId: personId, added: added)
+    }
+    
+    func addModerator(_ person: Person, added: Bool) async throws {
+        try await api.addModerator(communityId: id, personId: person.id, added: added)
+    }
+    
+    // Description
+
+    func updateDescription(_ newValue: String?) {
+        description = newValue
+        
+        Task {
+            await updateQueue.addItem {
+                try await .init(
+                    api: self.api,
+                    snapshot: .community2(self.api.repository.editCommunityDescription(id: self.id, newValue: newValue)))
+            }
+        }
     }
 }
 
