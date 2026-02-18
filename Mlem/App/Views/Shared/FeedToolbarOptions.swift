@@ -19,6 +19,8 @@ struct FeedToolbarOptions: ToolbarContent {
             SwiftUI.Section {
                 Button(showRead ? "Hide Read" : "Show Read", icon: .settings.hideRead) {
                     showRead.toggle()
+                    let message: LocalizedStringResource = showRead ? "Showing Read" : "Hiding Read"
+                    ToastModel.main.add(.success(message))
                 }
                 
                 Menu {
