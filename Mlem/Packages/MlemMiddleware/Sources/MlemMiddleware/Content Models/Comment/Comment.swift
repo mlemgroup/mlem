@@ -106,7 +106,9 @@ public class Comment:
     }
     
     public func update(with properties: CommentProperties) {
-        setIfChanged(\.content, properties.content)
+        if !properties.removed {
+            setIfChanged(\.content, properties.content)
+        }
         setIfChanged(\.updated, properties.updated)
         setIfChanged(\.distinguished, properties.distinguished)
         setIfChanged(\.languageId, properties.languageId)
