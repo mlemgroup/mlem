@@ -45,7 +45,7 @@ public extension InstanceStub {
     func upgrade() async throws -> Instance1 {
         let comm = try await self.api.getCommunityOfInstance(actorId: actorId)
 
-        guard let instance = comm.instance else {
+        guard let instance = comm.instance.value_ as? Instance1 else {
             throw InstanceUpgradeError.noSiteReturned
         }
         

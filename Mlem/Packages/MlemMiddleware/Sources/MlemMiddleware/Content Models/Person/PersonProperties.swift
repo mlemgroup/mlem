@@ -32,7 +32,7 @@ public struct PersonProperties: UnifiedPropertiesProviding {
     
     // From Person3Snapshot
     var instance: (any Instance)?
-    var moderatedCommunities: [any DeprecatedCommunity]?
+    var moderatedCommunities: [Community]?
     
     // From Person4Snapshot
     var email: String??
@@ -116,7 +116,7 @@ public struct PersonProperties: UnifiedPropertiesProviding {
             if let site = snapshot3.site {
                 instance = api.caches.instance1.getModel(api: api, from: site)
             }
-            moderatedCommunities = api.caches.community1.getModels(api: api, from: snapshot3.moderatedCommunities)
+            moderatedCommunities = api.caches.community.getModels(api: api, from: snapshot3.moderatedCommunities.map { .community1($0) })
         }
         
         if let snapshot2 {

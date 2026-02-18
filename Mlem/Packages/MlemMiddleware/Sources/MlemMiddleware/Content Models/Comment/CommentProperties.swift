@@ -25,7 +25,7 @@ public struct CommentProperties: UnifiedPropertiesProviding {
     // from Comment2Snapshot
     var creator: Person?
     var post: Post?
-    var community: (any DeprecatedCommunity)?
+    var community: Community?
     var commentCount: Int?
     var creatorIsModerator: Bool?
     var creatorIsAdmin: Bool?
@@ -53,7 +53,7 @@ public struct CommentProperties: UnifiedPropertiesProviding {
             
             creator = newCreator
             post = api.caches.post.getModel(api: api, from: .post1(snapshot2.post))
-            community = api.caches.community1.getModel(api: api, from: snapshot2.community)
+            community = api.caches.community.getModel(api: api, from: .community1(snapshot2.community))
             commentCount = snapshot2.commentCount
             creatorIsModerator = snapshot2.creatorIsModerator
             creatorIsAdmin = snapshot2.creatorIsAdmin

@@ -128,7 +128,7 @@ struct PostEditorTargetView: View {
         
         target.resolutionState = .resolving
         do {
-            let newCommunity: Community2 = try await target.account.api.getCommunity(url: community.allResolvableUrls[0])
+            let newCommunity: Community = try await target.account.api.getCommunity(url: community.allResolvableUrls[0])
             target.community = newCommunity
             target.resolutionState = .success
         } catch ApiClientError.noEntityFound {

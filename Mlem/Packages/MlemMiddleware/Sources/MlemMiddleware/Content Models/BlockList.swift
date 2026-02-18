@@ -62,14 +62,15 @@ public class BlockList {
         let oldCommunitiesKeys = Set(communities.keys)
         let newCommunitiesKeys = Set(blocks.communities.keys)
 
+        // bypasses queuing for blocked status
         for key in newCommunitiesKeys.subtracting(oldCommunitiesKeys) {
-            if let id = blocks.communities[key], let community = api.caches.community1.retrieveModel(cacheId: id) {
-                community.blockedManager.updateWithReceivedValue(true, semaphore: nil)
+            if let id = blocks.communities[key], let community = api.caches.community.retrieveModel(cacheId: id) {
+                community.blocked = true
             }
         }
         for key in oldCommunitiesKeys.subtracting(newCommunitiesKeys) {
-            if let id = communities[key], let community = api.caches.community1.retrieveModel(cacheId: id) {
-                community.blockedManager.updateWithReceivedValue(false, semaphore: nil)
+            if let id = communities[key], let community = api.caches.community.retrieveModel(cacheId: id) {
+                community.blocked = false
             }
         }
         
@@ -106,7 +107,7 @@ public class BlockList {
         communities.keys.contains(communityActorId)
     }
     
-    public func contains(_ community: any DeprecatedCommunity) -> Bool {
+    public func contains(_ community: Community) -> Bool {
         communities.keys.contains(community.actorId)
     }
     

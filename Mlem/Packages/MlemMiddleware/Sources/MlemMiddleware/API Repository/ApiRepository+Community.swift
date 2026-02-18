@@ -20,12 +20,6 @@ extension ApiRepository {
         }
     }
     
-    func getCommunity(url: URL) async throws -> Community3Snapshot {
-        try await performingForConnection { connection in
-            try await connection.getCommunity(url: url)
-        }
-    }
-    
     func searchCommunities(
         query: String,
         page: Int = 1,

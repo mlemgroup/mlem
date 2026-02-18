@@ -21,7 +21,7 @@ public protocol InteractableProviding:
     var saved: ExpectedValue<Bool> { get }
     var commentCount: ExpectedValue<Int> { get }
     var creator: ExpectedValue<Person> { get }
-    var community: ExpectedValue<any DeprecatedCommunity> { get }
+    var community: ExpectedValue<Community> { get }
     var creatorIsAdmin: ExpectedValue<Bool> { get }
     var creatorIsModerator: ExpectedValue<Bool> { get }
     

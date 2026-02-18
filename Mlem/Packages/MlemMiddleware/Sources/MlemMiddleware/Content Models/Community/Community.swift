@@ -191,10 +191,8 @@ public class Community:
     }
     
     public func resolve(with api: ApiClient) async throws -> Self {
-        // TODO: NOW
-        return self
-//        let stub = CommunityStub(api: api, url: allResolvableUrls[0])
-//        return try await stub.getCommunity() as! Self
+        let stub = CommunityStub(api: api, url: allResolvableUrls[0])
+        return try await stub.getCommunity() as! Self
     }
 }
 
@@ -342,5 +340,25 @@ public extension Community {
     var banner_: URL? { banner }
     var created_: Date { created }
     var updated_: Date? { updated }
+    
+    internal func takeSnapshot1() -> Community1Snapshot {
+        .init(actorId: actorId,
+              id: id,
+              name: name,
+              created: created,
+              instanceId: instanceId,
+              updated: updated,
+              displayName: displayName,
+              description: description,
+              deleted: deleted,
+              removed: removed,
+              nsfw: nsfw,
+              avatar: avatar,
+              banner: banner,
+              hidden: hidden,
+              onlyModeratorsCanPost: onlyModeratorsCanPost,
+              allPropertiesPresent: false
+        )
+    }
 }
 

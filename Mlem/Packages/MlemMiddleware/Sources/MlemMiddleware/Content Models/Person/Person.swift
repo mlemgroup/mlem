@@ -311,7 +311,7 @@ public extension Person {
     }
     
     /// Returns true if this person can perform moderator actions on the target person
-    func canModerate(_ person: Person, in community: any Community3Providing) -> Bool {
+    func canModerate(_ person: Person, communityModerators: [Person]) -> Bool {
         // admins can moderate anybody but a higher-ranking admin
         if isAdmin.value ?? false {
             if person.isAdmin.value ?? false {
@@ -321,12 +321,12 @@ public extension Person {
         }
         
         // if this person is not a mod, can't moderate
-        guard let myModIndex = community.moderators.firstIndex(where: { $0.id == id }) else {
+        guard let myModIndex = communityModerators.firstIndex(where: { $0.id == id }) else {
             return false
         }
         
         // if target is a mod, check that this person outranks them
-        if let targetModIndex = community.moderators.firstIndex(where: { $0.id == person.id }) {
+        if let targetModIndex = communityModerators.firstIndex(where: { $0.id == person.id }) {
             return myModIndex < targetModIndex
         }
         
