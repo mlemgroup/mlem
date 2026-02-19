@@ -9,6 +9,7 @@ import SwiftUI
 
 struct FeedToolbarOptions: ToolbarContent {
     @Environment(AppState.self) var appState
+    @Environment(ToastModel.self) var toastModel
     
     @Setting(\.post_size) var postSize
     @Setting(\.feed_showRead) var showRead
@@ -20,7 +21,7 @@ struct FeedToolbarOptions: ToolbarContent {
                 Button(showRead ? "Hide Read" : "Show Read", icon: .settings.hideRead) {
                     showRead.toggle()
                     let message: LocalizedStringResource = showRead ? "Showing Read" : "Hiding Read"
-                    ToastModel.main.add(.success(message))
+                    toastModel.add(.success(message))
                 }
                 
                 Menu {

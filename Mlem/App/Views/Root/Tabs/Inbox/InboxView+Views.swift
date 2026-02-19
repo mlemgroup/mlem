@@ -141,7 +141,7 @@ extension InboxView {
         Button {
             showRead.toggle()
             let message: LocalizedStringResource = showRead ? "Showing Read" : "Hiding Read"
-            ToastModel.main.add(.success(message))
+            toastModel.add(.success(message))
         } label: {
             Label("Hide Read", icon: .general.filterMenu)
                 .symbolVariant(showRead ? .none : .fill)
