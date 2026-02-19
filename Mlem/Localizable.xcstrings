@@ -4204,7 +4204,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Masquer la lecture"
+            "value" : "Masquer les lus"
           }
         }
       }
@@ -4225,6 +4225,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Masquer les icônes du site web"
+          }
+        }
+      }
+    },
+    "Hiding Read" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lus masqués"
           }
         }
       }
@@ -7938,7 +7948,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Afficher lu"
+            "value" : "Afficher les lus"
           }
         }
       }
@@ -7979,6 +7989,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Afficher les avertissements lors de l'ouverture..."
+          }
+        }
+      }
+    },
+    "Showing Read" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lus affichés"
           }
         }
       }
