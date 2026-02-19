@@ -54,10 +54,10 @@ extension AppointModeratorAction {
     }
 
     private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {
-        if let community3 = environment.communityContext as? any Community3Providing,
+        if let communityModerators = environment.communityContext.moderators.value,
             let myPerson = entity.api.myPerson,
             entity.api.canInteract(appState: environment.appState),
-            myPerson.canModerate(entity, in: community3) {
+            myPerson.canModerate(entity, communityModerators: communityModerators) {
             .enabled
         } else {
             .hidden
@@ -69,8 +69,8 @@ extension AppointModeratorAction {
 
 extension AppointModeratorAction {
     func isModerator(environment: EnvironmentValues) -> Bool? {
-        if let community3 = environment.communityContext as? any Community3Providing {
-            community3.moderators.contains(where: { $0.id == entity.id })
+        if let communityModerators = environment.communityContext.moderators.value {
+            communityModerators.contains(where: { $0.id == entity.id })
         } else {
             nil
         }
@@ -89,7 +89,7 @@ extension AppointModeratorAction {
     }
 
     private func popupMessage(environment: EnvironmentValues) -> LocalizedStringResource? {
-        guard let community = environment.communityContext as? any Community3Providing else { return nil }
+        guard let community = environment.communityContext else { return nil }
 
         if self.isModerator(environment: environment) ?? false {
             return "Really remove moderator \(entity.displayName) from \(community.displayName)?"

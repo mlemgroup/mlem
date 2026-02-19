@@ -22,7 +22,7 @@ private let seeds: [ActionSeed] = [
 ]
 
 extension ActionButtons {
-    init(community: any Community1Providing) {
+    init(community: Community) {
         self.init { _ in
             seeds.compactMap { $0.createAction(community) }
         }
@@ -30,7 +30,7 @@ extension ActionButtons {
 }
 
 extension View {
-    func contextMenu(community: any Community1Providing) -> some View {
+    func contextMenu(community: Community) -> some View {
         contextMenu {
             ActionButtons(community: community)
         }
