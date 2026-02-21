@@ -407,6 +407,12 @@
 		814CEF632F44577A0090F812 /* HiddenReadBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814CEF622F44577A0090F812 /* HiddenReadBannerView.swift */; };
 		81A179BC2DDE591700B17017 /* LongPressActionSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A179BB2DDE591700B17017 /* LongPressActionSettingsView.swift */; };
 		81A179BF2DDE5BF300B17017 /* TabBarLongPressAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A179BE2DDE5BF300B17017 /* TabBarLongPressAction.swift */; };
+		81C4B4332F493C5E001406A1 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 81C4B4322F493C5E001406A1 /* InfoPlist.xcstrings */; };
+		81DE61C52F48AF44006E4C36 /* UniformTypeIdentifiers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81DE61C42F48AF44006E4C36 /* UniformTypeIdentifiers.framework */; };
+		81DE61D02F48AF44006E4C36 /* OpenInMlem.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 81DE61C32F48AF44006E4C36 /* OpenInMlem.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		81DE61DB2F48AF4C006E4C36 /* Action.js in Resources */ = {isa = PBXBuildFile; fileRef = 81DE61D62F48AF4C006E4C36 /* Action.js */; };
+		81DE61DD2F48AF4C006E4C36 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 81DE61D92F48AF4C006E4C36 /* Media.xcassets */; };
+		81DE61DE2F48AF4C006E4C36 /* ActionRequestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81DE61D72F48AF4C006E4C36 /* ActionRequestHandler.swift */; };
 		AD1B0D372A5F7A260006F554 /* Licenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1B0D362A5F7A260006F554 /* Licenses.swift */; };
 		B104A6D82A59BF3C00B3E725 /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = B104A6D72A59BF3C00B3E725 /* Nuke */; };
 		B104A6DA2A59BF3C00B3E725 /* NukeExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = B104A6D92A59BF3C00B3E725 /* NukeExtensions */; };
@@ -576,7 +582,28 @@
 			remoteGlobalIDString = 6363D5C027EE196700E34822;
 			remoteInfo = Mlem;
 		};
+		81DE61CE2F48AF44006E4C36 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6363D5B927EE196700E34822 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 81DE61C22F48AF44006E4C36;
+			remoteInfo = OpenInMlem;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		81DE61D12F48AF44006E4C36 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				81DE61D02F48AF44006E4C36 /* OpenInMlem.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0300309C2C4163C9009A65FF /* CommentTreeTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTreeTracker.swift; sourceTree = "<group>"; };
@@ -968,6 +995,13 @@
 		814CEF622F44577A0090F812 /* HiddenReadBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiddenReadBannerView.swift; sourceTree = "<group>"; };
 		81A179BB2DDE591700B17017 /* LongPressActionSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongPressActionSettingsView.swift; sourceTree = "<group>"; };
 		81A179BE2DDE5BF300B17017 /* TabBarLongPressAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarLongPressAction.swift; sourceTree = "<group>"; };
+		81C4B4322F493C5E001406A1 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
+		81DE61C32F48AF44006E4C36 /* OpenInMlem.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OpenInMlem.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		81DE61C42F48AF44006E4C36 /* UniformTypeIdentifiers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UniformTypeIdentifiers.framework; path = System/Library/Frameworks/UniformTypeIdentifiers.framework; sourceTree = SDKROOT; };
+		81DE61D62F48AF4C006E4C36 /* Action.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Action.js; sourceTree = "<group>"; };
+		81DE61D72F48AF4C006E4C36 /* ActionRequestHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionRequestHandler.swift; sourceTree = "<group>"; };
+		81DE61D82F48AF4C006E4C36 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		81DE61D92F48AF4C006E4C36 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		AD1B0D362A5F7A260006F554 /* Licenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Licenses.swift; sourceTree = "<group>"; };
 		B104A6E12A5AFC9F00B3E725 /* Mlem.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Mlem.entitlements; sourceTree = "<group>"; };
 		B1B78D632A51D53900F72485 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -1170,6 +1204,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		81DE61C02F48AF44006E4C36 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				81DE61C52F48AF44006E4C36 /* UniformTypeIdentifiers.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1511,6 +1553,7 @@
 		037386422BDAF574007492B5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				81DE61C42F48AF44006E4C36 /* UniformTypeIdentifiers.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1715,6 +1758,7 @@
 				6363D5C327EE196700E34822 /* Mlem */,
 				6363D5D927EE196A00E34822 /* MlemTests */,
 				6363D5E327EE196A00E34822 /* MlemUITests */,
+				81DE61DA2F48AF4C006E4C36 /* OpenInMlem */,
 				6363D5C227EE196700E34822 /* Products */,
 				037386422BDAF574007492B5 /* Frameworks */,
 			);
@@ -1726,6 +1770,7 @@
 				6363D5C127EE196700E34822 /* Mlem.app */,
 				6363D5D627EE196A00E34822 /* MlemTests.xctest */,
 				6363D5E027EE196A00E34822 /* MlemUITests.xctest */,
+				81DE61C32F48AF44006E4C36 /* OpenInMlem.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1787,6 +1832,18 @@
 				6DE1183B2A4A217400810C7E /* Profile View.swift */,
 			);
 			path = Profile;
+			sourceTree = "<group>";
+		};
+		81DE61DA2F48AF4C006E4C36 /* OpenInMlem */ = {
+			isa = PBXGroup;
+			children = (
+				81DE61D62F48AF4C006E4C36 /* Action.js */,
+				81DE61D72F48AF4C006E4C36 /* ActionRequestHandler.swift */,
+				81DE61D82F48AF4C006E4C36 /* Info.plist */,
+				81DE61D92F48AF4C006E4C36 /* Media.xcassets */,
+				81C4B4322F493C5E001406A1 /* InfoPlist.xcstrings */,
+			);
+			path = OpenInMlem;
 			sourceTree = "<group>";
 		};
 		CD13CC662C5D3CA7001AF428 /* Helpers */ = {
@@ -2416,10 +2473,12 @@
 				50F830EB2A47CC4F00D67099 /* Swiftlint */,
 				6363D5BE27EE196700E34822 /* Frameworks */,
 				6363D5BF27EE196700E34822 /* Resources */,
+				81DE61D12F48AF44006E4C36 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				81DE61CF2F48AF44006E4C36 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				03DA26AC2D79F29700E66267 /* Packages */,
@@ -2495,6 +2554,25 @@
 			productReference = 6363D5E027EE196A00E34822 /* MlemUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		81DE61C22F48AF44006E4C36 /* OpenInMlem */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 81DE61D52F48AF44006E4C36 /* Build configuration list for PBXNativeTarget "OpenInMlem" */;
+			buildPhases = (
+				81DE61BF2F48AF44006E4C36 /* Sources */,
+				81DE61C02F48AF44006E4C36 /* Frameworks */,
+				81DE61C12F48AF44006E4C36 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OpenInMlem;
+			packageProductDependencies = (
+			);
+			productName = OpenInMlem;
+			productReference = 81DE61C32F48AF44006E4C36 /* OpenInMlem.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -2502,7 +2580,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1330;
+				LastSwiftUpdateCheck = 2620;
 				LastUpgradeCheck = 1610;
 				TargetAttributes = {
 					6363D5C027EE196700E34822 = {
@@ -2517,6 +2595,9 @@
 						CreatedOnToolsVersion = 13.3;
 						LastSwiftMigration = 1500;
 						TestTargetID = 6363D5C027EE196700E34822;
+					};
+					81DE61C22F48AF44006E4C36 = {
+						CreatedOnToolsVersion = 26.2;
 					};
 				};
 			};
@@ -2549,6 +2630,7 @@
 				6363D5C027EE196700E34822 /* Mlem */,
 				6363D5D527EE196A00E34822 /* MlemTests */,
 				6363D5DF27EE196A00E34822 /* MlemUITests */,
+				81DE61C22F48AF44006E4C36 /* OpenInMlem */,
 			);
 		};
 /* End PBXProject section */
@@ -2575,6 +2657,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		81DE61C12F48AF44006E4C36 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				81C4B4332F493C5E001406A1 /* InfoPlist.xcstrings in Resources */,
+				81DE61DB2F48AF4C006E4C36 /* Action.js in Resources */,
+				81DE61DD2F48AF4C006E4C36 /* Media.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3152,6 +3244,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		81DE61BF2F48AF44006E4C36 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				81DE61DE2F48AF4C006E4C36 /* ActionRequestHandler.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -3164,6 +3264,11 @@
 			isa = PBXTargetDependency;
 			target = 6363D5C027EE196700E34822 /* Mlem */;
 			targetProxy = 6363D5E127EE196A00E34822 /* PBXContainerItemProxy */;
+		};
+		81DE61CF2F48AF44006E4C36 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 81DE61C22F48AF44006E4C36 /* OpenInMlem */;
+			targetProxy = 81DE61CE2F48AF44006E4C36 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -3467,6 +3572,85 @@
 			};
 			name = Release;
 		};
+		81DE61D22F48AF44006E4C36 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = ActionIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8B9GNJW88W;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = OpenInMlem/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Open in Mlem";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hanners.Mlem.OpenInMlem;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		81DE61D32F48AF44006E4C36 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = ActionIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8B9GNJW88W;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = OpenInMlem/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Open in Mlem";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hanners.Mlem.OpenInMlem;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -3502,6 +3686,15 @@
 			buildConfigurations = (
 				6363D5F127EE196A00E34822 /* Debug */,
 				6363D5F227EE196A00E34822 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		81DE61D52F48AF44006E4C36 /* Build configuration list for PBXNativeTarget "OpenInMlem" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				81DE61D22F48AF44006E4C36 /* Debug */,
+				81DE61D32F48AF44006E4C36 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

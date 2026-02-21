@@ -52,6 +52,7 @@ class NavigationModel {
     
     var mediaUrl: URL?
     var shareInfo: ShareInfo?
+    var pendingOpenURL: URL?
 
     @MainActor
     private func openSheet(_ page: NavigationPage, hasNavigationStack: Bool? = nil, isFullScreenCover: Bool) {
