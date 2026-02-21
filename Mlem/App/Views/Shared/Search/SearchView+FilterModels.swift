@@ -30,7 +30,7 @@ extension SearchView {
     }
     
     enum LocationFilter: Hashable {
-        case any, subscribed, moderated, localInstance, instance(InstanceSummary), community(Community2)
+        case any, subscribed, moderated, localInstance, instance(InstanceSummary), community(Community)
         
         var label: String {
             switch self {

@@ -13,7 +13,7 @@ public enum SubscriptionTier {
 }
 
 @Observable
-public class Community:
+public final class Community:
     UnifiedModelProviding,
     Profile2Providing,
     CommunityOrPerson,
@@ -319,14 +319,21 @@ public extension Community {
     
     // Description
 
-    func updateDescription(_ newValue: String?) {
+    func updateDescription(_ newValue: String?, callback: ((UpdateStatus) -> Void)?) {
         description = newValue
         
         Task {
             await updateQueue.addItem {
-                try await .init(
-                    api: self.api,
-                    snapshot: .community2(self.api.repository.editCommunityDescription(id: self.id, newValue: newValue)))
+                do {
+                    let ret: CommunityProperties = try await .init(
+                        api: self.api,
+                        snapshot: .community2(self.api.repository.editCommunityDescription(id: self.id, newValue: newValue)))
+                    callback?(.success)
+                    return ret
+                } catch {
+                    callback?(.failure(error))
+                    throw(error)
+                }
             }
         }
     }

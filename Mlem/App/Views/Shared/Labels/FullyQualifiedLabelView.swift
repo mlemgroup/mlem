@@ -46,7 +46,7 @@ struct FullyQualifiedLabelView: View {
     @Environment(AppState.self) var appState
     @Environment(\.postContext) var postContext: Post?
     @Environment(\.commentContext) var commentContext: Comment?
-    @Environment(\.communityContext) var communityContext: (any Community1Providing)?
+    @Environment(\.communityContext) var communityContext: Community?
     @Environment(\.feedContext) var feedContext: FeedContext?
 
     @Setting(\.post_showSubscribedStatus) var showSubscribedStatus
@@ -64,7 +64,7 @@ struct FullyQualifiedLabelView: View {
     var shouldShowAvatar: Bool {
         if let showAvatar { return showAvatar }
         
-        if entity is any CommunityStubProviding {
+        if entity is Community {
             return showCommunityAvatar
         } else {
             return showPersonAvatar
@@ -73,7 +73,7 @@ struct FullyQualifiedLabelView: View {
     
     var showSubscriptionIndicator: Bool {
         guard showSubscribedStatus,
-              entity is any CommunityStubProviding,
+              entity is Community,
               let userSession = appState.firstSession as? UserSession,
               let communityId = postContext?.communityId,
               let feedContextShowsIndicator = feedContext?.showSubscriptionIndicator else {
@@ -196,7 +196,7 @@ extension FullyQualifiedLabelView {
     }
     
     init(
-        _ entity: (any DeprecatedCommunity)?,
+        _ entity: Community?,
         labelStyle: FullyQualifiedLabelStyle,
         showAvatar: Bool? = nil,
         showInstance: Bool = true,

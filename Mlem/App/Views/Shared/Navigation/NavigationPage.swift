@@ -26,7 +26,7 @@ enum NavigationPage: Hashable {
     case post(
         _ post: Post,
         scrollTargetedComment: Comment? = nil,
-        communityContext: HashWrapper<any Community1Providing>? = nil,
+        communityContext: Community? = nil,
         navigationNamespace: Namespace.ID? = nil
     )
     case postStub(_ post: PostStub, navigationNamespace: Namespace.ID? = nil)
@@ -42,7 +42,10 @@ enum NavigationPage: Hashable {
         showViewPostButton: Bool = true,
         exposeRemovedContent: Bool = false
     )
-    case community(_ community: AnyCommunity, visitContext: VisitHistory.VisitContext)
+    case communityStub(
+        _ community: CommunityStub
+    )
+    case community(_ community: Community, visitContext: VisitHistory.VisitContext = .other)
     case person(_ person: Person, visitContext: VisitHistory.VisitContext = .other)
     case personStub(_ personStub: PersonStub, visitContext: VisitHistory.VisitContext = .other)
     case instance(_ instance: InstanceHashWrapper, visitContext: VisitHistory.VisitContext)
@@ -52,7 +55,7 @@ enum NavigationPage: Hashable {
     case instanceUptime(_ instance: HashWrapper<any Instance>, _ uptimeData: UptimeData)
     case externalApiInfo(api: ApiClient, actorId: ActorIdentifier)
     case imageViewer(_ url: URL)
-    case communityPicker(api: ApiClient?, callback: HashWrapper<(Community2, NavigationLayer) -> Void>)
+    case communityPicker(api: ApiClient?, callback: HashWrapper<(Community, NavigationLayer) -> Void>)
     case personPicker(api: ApiClient?, filter: ListingType, callback: HashWrapper<(Person, NavigationLayer) -> Void>)
     case instancePicker(callback: HashWrapper<(InstanceSummary, NavigationLayer) -> Void>, requiredFeature: Feature? = nil)
     case languagePicker(selectedLanguages: Set<Locale.Language>, callback: HashWrapper<(Locale.Language) -> Void>)
@@ -61,14 +64,14 @@ enum NavigationPage: Hashable {
     case subscriptionList
     case createComment(_ context: CommentEditorView.Context, commentTreeTracker: CommentTreeTracker? = nil)
     case editComment(_ comment: Comment, context: CommentEditorView.Context?)
-    case editCommunity(_ community: Community2)
+    case editCommunity(_ community: Community)
     case editNote(_ person: Person)
-    case report(_ interactable: ReportableHashWrapper, community: AnyCommunity? = nil)
+    case report(_ interactable: ReportableHashWrapper, community: Community? = nil)
     case remove(_ removable: RemovableHashWrapper)
     case purge(_ purgable: PurgableHashWrapper)
-    case ban(_ person: Person, isBannedFromCommunity: Bool, shouldBan: Bool, community: AnyCommunity?)
+    case ban(_ person: Person, isBannedFromCommunity: Bool, shouldBan: Bool, community: Community?)
     case createPost(
-        community: AnyCommunity?,
+        community: Community?,
         title: String,
         content: String?,
         type: PostType?,
@@ -88,25 +91,6 @@ enum NavigationPage: Hashable {
     case exportPostImage(_ post: Post)
     case exportCommentImage(_ comment: Comment, tracker: CommentTreeTracker?)
     case actionSheet(_ actions: HashWrapper<[ActionSheetSection]>)
-    
-    static func post(
-        _ post: Post,
-        communityContext: (any Community1Providing)?,
-        navigationNamespace: Namespace.ID? = nil
-    ) -> NavigationPage {
-        if let communityContext {
-            Self.post(post, communityContext: .init(wrappedValue: communityContext), navigationNamespace: navigationNamespace)
-        } else {
-            Self.post(post, navigationNamespace: navigationNamespace)
-        }
-    }
-    
-    static func community(
-        _ community: any CommunityStubProviding,
-        visitContext: VisitHistory.VisitContext = .other
-    ) -> NavigationPage {
-        Self.community(.init(community), visitContext: visitContext)
-    }
 
     static func instance(
         _ instance: any InstanceStubProviding,
@@ -120,11 +104,11 @@ enum NavigationPage: Hashable {
     }
     
     static func modlog(
-        community: any DeprecatedCommunity,
+        community: Community,
         targetPerson: Person? = nil,
         moderatorPerson: Person? = nil
     ) -> NavigationPage {
-        modlog(.community(.init(community)), targetPerson: targetPerson, moderatorPerson: moderatorPerson)
+        modlog(.community(community), targetPerson: targetPerson, moderatorPerson: moderatorPerson)
     }
     
     static func modlog(
@@ -188,15 +172,15 @@ enum NavigationPage: Hashable {
         )
         if let entity = entity as? Person {
             instance = entity.instance.value_ ?? instance
-        } else if let entity = entity as? any Community3Providing {
-            instance = entity.instance ?? instance
+        } else if let entity = entity as? Community {
+            instance = (entity.instance.value_ as? any InstanceStubProviding) ?? instance
         }
         return Self.instance(.init(wrappedValue: instance), visitContext: visitContext)
     }
     
     static func communityPicker(
         api: ApiClient? = nil,
-        callback: @escaping (Community2, NavigationLayer) -> Void
+        callback: @escaping (Community, NavigationLayer) -> Void
     ) -> NavigationPage {
         communityPicker(api: api, callback: .init(wrappedValue: callback))
     }
@@ -233,7 +217,7 @@ enum NavigationPage: Hashable {
     
     static func communityPicker(
         api: ApiClient? = nil,
-        callback: @escaping (Community2) -> Void
+        callback: @escaping (Community) -> Void
     ) -> NavigationPage {
         communityPicker(api: api, callback: .init(wrappedValue: { value, navigation in
             Task { @MainActor in
@@ -269,21 +253,15 @@ enum NavigationPage: Hashable {
     }
     
     static func createPost(
-        community: (any CommunityStubProviding)?,
+        community: Community?,
         title: String = "",
         content: String? = nil,
         type: PostType?,
         nsfw: Bool = false,
         feedLoader: (any FeedLoading)?
     ) -> NavigationPage {
-        let anyCommunity: AnyCommunity?
-        if let community {
-            anyCommunity = .init(community)
-        } else {
-            anyCommunity = nil
-        }
         return createPost(
-            community: anyCommunity,
+            community: community,
             title: title,
             content: content,
             type: type,
@@ -292,14 +270,8 @@ enum NavigationPage: Hashable {
         )
     }
 
-    static func report(_ interactable: any ReportableProviding, community: (any CommunityStubProviding)?) -> NavigationPage {
-        let anyCommunity: AnyCommunity?
-        if let community {
-            anyCommunity = .init(community)
-        } else {
-            anyCommunity = nil
-        }
-        return report(.init(wrappedValue: interactable), community: anyCommunity)
+    static func report(_ interactable: any ReportableProviding, community: Community?) -> NavigationPage {
+        return report(.init(wrappedValue: interactable), community: community)
     }
     
     static func remove(_ interactable: any RemovableProviding) -> NavigationPage {
@@ -308,21 +280,6 @@ enum NavigationPage: Hashable {
     
     static func purge(_ purgable: any PurgableProviding) -> NavigationPage {
         purge(.init(wrappedValue: purgable))
-    }
-    
-    static func ban(
-        _ person: Person,
-        isBannedFromCommunity: Bool,
-        shouldBan: Bool,
-        community: (any DeprecatedCommunity)? = nil
-    ) -> NavigationPage {
-        let anyCommunity: AnyCommunity?
-        if let community {
-            anyCommunity = .init(community)
-        } else {
-            anyCommunity = nil
-        }
-        return .ban(person, isBannedFromCommunity: isBannedFromCommunity, shouldBan: shouldBan, community: anyCommunity)
     }
     
     static func signUp(_ instance: any InstanceStubProviding) -> NavigationPage {

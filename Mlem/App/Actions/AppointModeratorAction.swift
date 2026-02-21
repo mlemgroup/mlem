@@ -54,7 +54,7 @@ extension AppointModeratorAction {
     }
 
     private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {
-        if let communityModerators = environment.communityContext.moderators.value,
+        if let communityModerators = environment.communityContext?.moderators.value,
             let myPerson = entity.api.myPerson,
             entity.api.canInteract(appState: environment.appState),
             myPerson.canModerate(entity, communityModerators: communityModerators) {
@@ -69,7 +69,7 @@ extension AppointModeratorAction {
 
 extension AppointModeratorAction {
     func isModerator(environment: EnvironmentValues) -> Bool? {
-        if let communityModerators = environment.communityContext.moderators.value {
+        if let communityModerators = environment.communityContext?.moderators.value {
             communityModerators.contains(where: { $0.id == entity.id })
         } else {
             nil

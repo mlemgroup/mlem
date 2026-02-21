@@ -7,8 +7,11 @@
 
 import MlemMiddleware
 import SwiftUI
+import os
 
 struct InstanceCommunityListView: View {
+    let logger: Logger = .mlemLogger()
+    
     let communityLoader: CommunityFeedLoader
 
     @Binding var errorDetails: ErrorDetails?
@@ -38,7 +41,7 @@ struct InstanceCommunityListView: View {
         }
         .animation(.easeOut(duration: 0.1), value: communityLoader.items.isEmpty)
         .task {
-            print(errorDetails)
+            logger.error("\(String(describing: errorDetails))")
             if errorDetails == nil {
                 await refresh()
             }

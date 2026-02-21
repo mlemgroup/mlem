@@ -12,7 +12,7 @@ public struct SubscriptionModel: Hashable, MergeableValue {
     var actualTotal: Int
     var actualLocal: Int?
     
-    var subscribed: Bool
+    public var subscribed: Bool
     
     // When you subscribe, your instance asks the community host to confirm the subscription.
     // Until a confirmation is received from the host, the subscription state is
@@ -27,11 +27,11 @@ public struct SubscriptionModel: Hashable, MergeableValue {
     var pending: Bool
     
     // This accounts for the `actualTotal` not taking your own pending subscription into account.
-    var total: Int { actualTotal + pendingSubscriptionValue }
+    public var total: Int { actualTotal + pendingSubscriptionValue }
     
     // This accounts for the `actualLocal` not taking your own pending subscription into account.
     /// Added in 0.19.4.
-    var local: Int? {
+    public var local: Int? {
         guard let actualLocal else { return nil }
         return actualLocal + pendingSubscriptionValue
     }

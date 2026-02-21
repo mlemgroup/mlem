@@ -15,12 +15,12 @@ struct CommunityListRow<Content2: View>: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
     
-    let community: any DeprecatedCommunity
+    let community: Community
     let content: Content
     let visitContext: VisitHistory.VisitContext
 
     init(
-        _ community: any DeprecatedCommunity,
+        _ community: Community,
         complications: [Content.Complication] = [.instance],
         showBlockStatus: Bool = true,
         visitContext: VisitHistory.VisitContext = .other,
@@ -32,7 +32,7 @@ struct CommunityListRow<Content2: View>: View {
     }
     
     init(
-        _ community: any DeprecatedCommunity,
+        _ community: Community,
         complications: [Content.Complication] = [.instance],
         showBlockStatus: Bool = true,
         readout: Content.Readout? = nil,

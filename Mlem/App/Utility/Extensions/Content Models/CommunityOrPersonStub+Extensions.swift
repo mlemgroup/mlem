@@ -55,7 +55,7 @@ extension CommunityOrPerson {
     func nameTextView(
         showFlairs: Bool,
         showInstance: Bool = true,
-        communityContext: (any DeprecatedCommunity)? = nil,
+        communityContext: Community? = nil,
         font: Font = .body,
         palette: Theming.Palette,
         nameColor: ThemedColor = .themedSecondary,

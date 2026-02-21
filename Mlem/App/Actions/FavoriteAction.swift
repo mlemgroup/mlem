@@ -78,6 +78,6 @@ extension FavoriteAction {
                 .basic("Favorited", icon: .lemmy.favorite, color: .themedFavorite)
             )
         }
-        entity.toggleFavorite()
+        updateFavorite(!entity.favorited)
     }
 }

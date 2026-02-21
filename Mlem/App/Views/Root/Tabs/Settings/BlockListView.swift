@@ -28,7 +28,7 @@ struct BlockListView: View {
     
     @State var selectedTab: Tab = .people
     @State var people: [Person] = []
-    @State var communities: [Community1] = []
+    @State var communities: [Community] = []
     @State var instances: [Instance1] = []
     
     var body: some View {

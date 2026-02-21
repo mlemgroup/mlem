@@ -15,7 +15,7 @@ struct CommunityAboutView: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.palette) var palette
 
-    let community: any DeprecatedCommunity
+    let community: Community
 
     var body: some View {
         VStack(spacing: Constants.main.standardSpacing) {
@@ -81,8 +81,6 @@ struct CommunityAboutView: View {
     }
 
     func edit() {
-        if let community = community as? any Community2Providing {
-            navigation.openSheet(.editCommunity(community.community2))
-        }
+        navigation.openSheet(.editCommunity(community))
     }
 }

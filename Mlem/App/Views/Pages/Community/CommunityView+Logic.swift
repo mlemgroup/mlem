@@ -10,7 +10,7 @@ import MlemMiddleware
 import QuickSwipes
 
 extension CommunityView {
-    func canEditModeratorList(_ community: any DeprecatedCommunity) -> Bool {
+    func canEditModeratorList(_ community: Community) -> Bool {
         guard let firstPerson = appState.firstPerson else { return false }
         if !firstPerson.api.supports(.editModeratorList, defaultValue: true) {
             return false
@@ -32,11 +32,6 @@ extension CommunityView {
             assertionFailure("newMod cannot be nil")
             return
         }
-        
-        guard let community = community.wrappedValue as? any DeprecatedCommunity else {
-            assertionFailure("Community not loaded yet")
-            return
-        }
 
         Task {
             do {
@@ -47,18 +42,18 @@ extension CommunityView {
         }
     }
     
-    func moderatorQuickSwipes(community: any DeprecatedCommunity, person: Person) -> SwipeConfiguration {
-        guard let community = community as? any Community3Providing,
+    func moderatorQuickSwipes(community: Community, person: Person) -> SwipeConfiguration {
+        guard let communityModerators = community.moderators.value,
               canEditModeratorList(community),
               let myPerson = appState.firstPerson,
-              myPerson.canModerate(person, in: community) else {
+              myPerson.canModerate(person, communityModerators: communityModerators) else {
             return .init()
         }
         
         return .init(trailingActions: [person.addModAction(community: community, isOn: true)])
     }
     
-    func setupFeedLoader(community: any DeprecatedCommunity) {
+    func setupFeedLoader(community: Community) {
         if postFeedLoader == nil {
             Task { @MainActor in
                 @Setting(\.behavior_internetSpeed) var internetSpeed
@@ -78,7 +73,7 @@ extension CommunityView {
         }
     }
     
-    func logVisit(_ community: Community2) {
+    func logVisit(_ community: Community) {
         if let session = (appState.firstSession as? UserSession), let visitHistory = session.visitHistory {
             guard session.api === community.api else { return }
             visitHistory.addCommunity(community, context: visitContext)

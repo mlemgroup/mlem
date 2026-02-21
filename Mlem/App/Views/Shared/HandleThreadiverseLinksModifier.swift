@@ -164,7 +164,7 @@ struct HandleThreadiverseLinksModifier: ViewModifier {
                 let newUrl = url.removingPathComponents().appendingPathComponent("post/\(components[3])")
                 return .postStub(PostStub(api: appState.firstApi, url: newUrl))
             } else {
-                return .community(CommunityStub(api: appState.firstApi, url: url))
+                return .communityStub(CommunityStub(api: appState.firstApi, url: url))
             }
         case "post":
             if let fragment = url.fragment()?.trimmingPrefix("comment_") {
@@ -226,7 +226,7 @@ struct HandleThreadiverseLinksModifier: ViewModifier {
 
         if let person = output as? Person {
             navigation.push(.person(person))
-        } else if let community = output as? any DeprecatedCommunity {
+        } else if let community = output as? Community {
             navigation.push(.community(community))
         } else {
             fallback(url)

@@ -10,14 +10,14 @@ import SwiftUI
 
 extension ModlogView {
     enum InitialTarget: Hashable {
-        case community(AnyCommunity)
+        case community(Community)
         case instance(InstanceHashWrapper)
         case currentInstance
     }
     
     enum CommunityFilter: Hashable {
         case any
-        case community(any DeprecatedCommunity)
+        case community(Community)
         
         var label: String {
             switch self {
@@ -26,7 +26,7 @@ extension ModlogView {
             }
         }
         
-        var communityValue: (any DeprecatedCommunity)? {
+        var communityValue: Community? {
             switch self {
             case let .community(community): community
             default: nil

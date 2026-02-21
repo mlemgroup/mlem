@@ -13,7 +13,7 @@ struct CommentView<EmbeddedContent: View>: View {
     @Environment(AppState.self) var appState
     @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?
     @Environment(NavigationLayer.self) var navigation
-    @Environment(\.communityContext) var communityContext: (any Community1Providing)?
+    @Environment(\.communityContext) var communityContext: Community?
     @Environment(\.reportContext) private var reportContext: Report?
     @Environment(\.palette) private var palette
     

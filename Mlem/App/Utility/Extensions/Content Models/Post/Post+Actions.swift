@@ -77,7 +77,7 @@ extension Post {
                     crossPostContent = crossPostedLabel
                 }
                 NavigationModel.main.openSheet(.createPost(
-                    community: nil as AnyCommunity?,
+                    community: nil,
                     title: self.title,
                     content: crossPostContent,
                     type: self.type,
@@ -231,32 +231,31 @@ extension Post {
         type: PostBarConfiguration.ActionType,
         feedback: Set<FeedbackType> = [.haptic, .toast],
         commentTreeTracker: CommentTreeTracker? = nil,
-        communityContext: (any CommunityStubProviding)? = nil,
+        communityContext: Community? = nil,
         reportContext: Report? = nil
     ) -> (any Action)? {
         switch type {
-        case .upvote: upvoteAction(appState: appState, feedback: feedback)
-        case .downvote: downvoteAction(appState: appState, feedback: feedback)
-        case .save: saveAction(appState: appState, feedback: feedback)
-        case .reply: replyAction(appState: appState, commentTreeTracker: commentTreeTracker)
-        case .share: shareAction(navigation: navigation)
-        case .selectText: selectTextAction()
-        case .hide: hideAction(appState: appState, feedback: feedback)
-        case .block: blockAction(appState: appState, feedback: feedback)
-        case .report: reportAction(appState: appState, communityContext: communityContext)
-        case .crossPost: crossPostAction()
-        case .lock: lockAction(appState: appState, feedback: feedback)
-        // swiftlint:disable:next void_function_in_ternary
-        case .pin: api.isAdmin ? pinAction(
+        case .upvote: return upvoteAction(appState: appState, feedback: feedback)
+        case .downvote: return downvoteAction(appState: appState, feedback: feedback)
+        case .save: return saveAction(appState: appState, feedback: feedback)
+        case .reply: return replyAction(appState: appState, commentTreeTracker: commentTreeTracker)
+        case .share: return shareAction(navigation: navigation)
+        case .selectText: return selectTextAction()
+        case .hide: return hideAction(appState: appState, feedback: feedback)
+        case .block: return blockAction(appState: appState, feedback: feedback)
+        case .report: return reportAction(appState: appState, communityContext: communityContext)
+        case .crossPost: return crossPostAction()
+        case .lock: return lockAction(appState: appState, feedback: feedback)
+        case .pin: return api.isAdmin ? pinAction(
                 appState: appState,
                 feedback: feedback
             ) : pinToCommunityAction(
                 appState: appState,
                 feedback: feedback
             )
-        case .resolve: reportContext?.resolveAction(appState: appState, feedback: feedback)
-        case .remove: removeAction(appState: appState, feedback: feedback)
-        case .ban: reportContext?.contextualBanAction(appState: appState)
+        case .resolve: return reportContext?.resolveAction(appState: appState, feedback: feedback)
+        case .remove: return removeAction(appState: appState, feedback: feedback)
+        case .ban: return reportContext?.contextualBanAction(appState: appState)
         }
     }
     

@@ -10,7 +10,7 @@ import MlemMiddleware
 
 extension VisitHistory {
     struct CodedData: Codable {
-        var communities: [VisitContext: [CodedVisitRecord<Community2.CodedData>]] = [:]
+        var communities: [VisitContext: [CodedVisitRecord<Community.CodedData>]] = [:]
         var people: [VisitContext: [CodedVisitRecord<Person.CodedData>]] = [:]
         var instances: [VisitContext: [CodedVisitRecord<InstanceSummary>]] = [:]
     }
@@ -22,7 +22,7 @@ extension VisitHistory {
     
     convenience init(data: CodedData, api: ApiClient) async throws {
         let communityRecords = try await data.communities.mapValueArraysAsync { item in
-            try await VisitRecord<Community2>(value: api.decodeCommunity(item.value), date: item.date)
+            try await VisitRecord<Community>(value: api.decodeCommunity(item.value), date: item.date)
         }
         let personRecords = try await data.people.mapValueArraysAsync { item in
             try await VisitRecord<Person>(value: api.decodePerson(item.value), date: item.date)
@@ -38,7 +38,7 @@ extension VisitHistory {
     
     func codedData() async throws -> CodedData {
         let communities = try await communityRecords.mapValueArraysAsync { item in
-            try await CodedVisitRecord<Community2.CodedData>(value: item.value.codedData(), date: item.date)
+            try await CodedVisitRecord<Community.CodedData>(value: item.value.codedData(), date: item.date)
         }
         
         let people = try await personRecords.mapValueArraysAsync { item in
