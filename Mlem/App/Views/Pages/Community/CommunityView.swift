@@ -48,7 +48,7 @@ struct CommunityView: View {
     @State private var selectedTab: Tab = .posts
     @State var postFeedLoader: CommunityPostFeedLoader?
     @State var warningPresented: Bool
-    // @State var isLoading: Bool = false
+    @State var isLoading: Bool = false
     
     @State var showingConfirmation: Bool = false
     @State var newMod: Person?
@@ -65,7 +65,8 @@ struct CommunityView: View {
     
     var body: some View {
         content(community: community)
-            .externalApiWarning(entity: community, isLoading: false)
+            .reloadOnAccountSwitch(entity: $community, isLoading: $isLoading)
+            .externalApiWarning(entity: community, isLoading: isLoading)
             .task {
                 setupFeedLoader(community: community)
             }
