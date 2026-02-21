@@ -255,7 +255,8 @@ public extension Community {
         Task {
             await updateQueue.addItem {
                 do {
-                    return try await self.api.subscribeToCommunity(id: self.id, subscribe: newValue, semaphore: nil).properties
+                    let snapshot = try await self.api.repository.subscribeToCommunity(id: self.id, subscribe: newValue)
+                    return await .init(api: self.api, snapshot: .community2(snapshot))
                 } catch {
                     self.shouldBeFavorited = oldFavorited
                     throw error

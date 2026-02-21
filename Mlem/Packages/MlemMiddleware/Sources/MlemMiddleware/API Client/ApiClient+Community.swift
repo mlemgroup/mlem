@@ -122,45 +122,6 @@ public extension ApiClient {
         return subscriptionList
     }
     
-    @discardableResult
-    func subscribeToCommunity(id: Int, subscribe: Bool, semaphore: UInt?) async throws -> Community {
-        let snapshot = try await repository.subscribeToCommunity(id: id, subscribe: subscribe)
-        return await caches.community.getModel(
-            api: self,
-            from: .community2(snapshot),
-            semaphore: semaphore
-        )
-    }
-    
-    @discardableResult
-    func blockCommunity(id: Int, block: Bool, semaphore: UInt? = nil) async throws -> Community {
-        let snapshot = try await repository.blockCommunity(id: id, block: block)
-        return await caches.community.getModel(
-            api: self,
-            from: .community2(snapshot),
-            semaphore: semaphore
-        )
-    }
-    
-    @discardableResult
-    func removeCommunity(
-        id: Int,
-        remove: Bool,
-        reason: String?,
-        semaphore: UInt? = nil
-    ) async throws -> Community {
-        let snapshot = try await repository.removeCommunity(
-            id: id,
-            remove: remove,
-            reason: reason
-        )
-        return await caches.community.getModel(
-            api: self,
-            from: .community2(snapshot),
-            semaphore: semaphore
-        )
-    }
-    
     func purgeCommunity(id: Int, reason: String?) async throws {
         try await repository.purgeCommunity(id: id, reason: reason)
         caches.community.retrieveModel(cacheId: id)?.purged = true
@@ -176,7 +137,7 @@ public extension ApiClient {
 
         let updatedModerators = await caches.person.getModels(api: self, from: snapshots.moderators.map { .person1($0) })
         
-        // TODO: NOW nice way to queue this
+        // TODO: NOW nice way to queue this--move this whole thing into Community?
         if let community = caches.community.retrieveModel(cacheId: communityId) {
             community.moderators.value_ = updatedModerators
         }
