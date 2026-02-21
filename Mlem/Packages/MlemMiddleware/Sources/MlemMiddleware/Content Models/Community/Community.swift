@@ -159,8 +159,9 @@ public final class Community:
     
     /// Updates external models with relevant information from this Community's properties. Should be called in init and update.
     private func updateAuxiliaryModels(with properties: CommunityProperties) {
-        // if subscription status changed, update API
-        if properties.subscription != self.subscription.value_ {
+        // if subscription or favorited status changed, update API
+        if properties.subscription != self.subscription.value_ ||
+            favorited != shouldBeFavorited {
             self.api.subscriptions?.updateCommunitySubscription(community: self)
         }
         
@@ -277,7 +278,11 @@ public extension Community {
     private func updateFavorite(_ newValue: Bool, subscription: SubscriptionModel) {
         self.shouldBeFavorited = newValue
         if !subscription.subscribed, newValue {
+            // if not subscribed already, subscribe. This automatically updates favorites tracked in ApiClient
             updateSubscribed(true, subscription: subscription)
+        } else {
+            // if already subscribed, just update favorites tracked in ApiClient
+            api.subscriptions?.updateCommunitySubscription(community: self)
         }
     }
     
