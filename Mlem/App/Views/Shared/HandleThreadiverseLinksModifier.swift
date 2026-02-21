@@ -43,9 +43,9 @@ struct HandleThreadiverseLinksModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .environment(\.openURL, OpenURLAction(handler: didReceiveURL))
-            .onChange(of: NavigationModel.main.pendingOpenURL) { _, url in
+            .onChange(of: navigation.model?.pendingOpenURL) { _, url in
                 if let url {
-                    NavigationModel.main.pendingOpenURL = nil
+                    navigation.model?.pendingOpenURL = nil
                     _ = didReceiveURL(url)
                 }
             }

@@ -103,6 +103,13 @@ struct ContentView: View {
                 }
                 .hapticConfiguration(maximumHapticTier: hapticLevel, errorHandler: handleHapticError)
                 .environment(AppState.main)
+                .onOpenURL { url in
+                    guard url.scheme == "mlem" else { return }
+                    var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+                    components?.scheme = "https"
+                    guard let targetURL = components?.url else { return }
+                    navigationModel.pendingOpenURL = targetURL
+                }
         }
     }
     
