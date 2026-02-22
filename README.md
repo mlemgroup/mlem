@@ -2,7 +2,7 @@
 
 Mlem is a beautiful, intuitive, open source iOS client for [Lemmy](https://join-lemmy.org) that lets you effortlessly participate in conversations across all Lemmy servers.
 
-<a href="https://apps.apple.com/app/id6450543782"><img src="https://github.com/user-attachments/assets/a21869b5-521f-4e24-8c53-a35cd74dfb94" alt="Download on the App Store" width="175vw"></a>
+<a href="https://apps.apple.com/app/id6450543782"><img src="https://mlem.group/Download_on_the_App_Store_Badge_US-UK_RGB_blk_092917.svg" alt="Download on the App Store" width="175vw"></a>
 
 > [!NOTE]
 > Mlem requires iOS 18.0 or later.
@@ -17,15 +17,15 @@ Mlem is built from the ground up to be intuitive and efficient. Its sleek interf
 
 | Feeds | Search |
 |:--------:|:--------:|
-| <img src="https://github.com/user-attachments/assets/0ad349ef-3673-46d4-b923-7d035aa1adb2" width="100%"> | <img src="https://github.com/user-attachments/assets/adad7b94-a12c-4821-922c-2ffcc79728cb" width="100%"> |
+| <img src="https://mlem.group/screenshots/showcase/feeds.jpeg" width="100%"> | <img src="https://mlem.group/screenshots/showcase/search.jpeg" width="100%"> |
 
 | Threads | Customize |
 |:--------:|:--------:|
-| <img src="https://github.com/user-attachments/assets/2dd4221d-c474-4bc1-8d9d-3cb717b5475e" width="100%"> | <img src="https://github.com/user-attachments/assets/1c59fd5d-e828-4eda-88a9-379a9aa3ec64" width="100%"> |
+| <img src="https://mlem.group/screenshots/showcase/colored_comment_indents.jpeg" width="100%"> | <img src="https://mlem.group/screenshots/showcase/configurable.jpeg" width="100%"> |
 
 | Themes | Icons |
 |:--------:|:--------:|
-| <img src="https://github.com/user-attachments/assets/f59e87cf-86ac-4114-8624-c392940fc5f2" width="100%"> | <img src="https://github.com/user-attachments/assets/c817ab96-c46f-4932-b3ac-fddaeb12de06" width="100%"> |
+| <img src="https://mlem.group/screenshots/showcase/themes.jpeg" width="100%"> | <img src="https://mlem.group/screenshots/showcase/app_icons.jpeg" width="100%"> |
 
 ## 💬 Want to chat about Mlem?
 
