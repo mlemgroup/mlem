@@ -43,8 +43,8 @@ struct AccountListView: View {
         }
         
         @_disfavoredOverload
-        init(header: String, accounts: [any Account]) {
-            self.header = header
+        init(header: some StringProtocol, accounts: [any Account]) {
+            self.header = String(header)
             self.accounts = accounts
         }
     }

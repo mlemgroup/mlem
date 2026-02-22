@@ -44,14 +44,14 @@ enum ToastType: Hashable {
     
     @_disfavoredOverload
     static func basic(
-        _ title: String,
+        _ title: some StringProtocol,
         subtitle: String? = nil,
         icon: Icon? = nil,
         color: ThemedColor? = nil,
         duration: Double = 1.5
     ) -> ToastType {
         .basic(
-            title: title,
+            title: String(title),
             subtitle: subtitle,
             icon: icon,
             color: color ?? .themedAccent,
