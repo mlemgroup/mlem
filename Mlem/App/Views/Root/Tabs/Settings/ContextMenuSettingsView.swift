@@ -47,6 +47,9 @@ struct ContextMenuSettingsView: View {
             .onMove { fromOffsets, toOffset in
                 selected.move(fromOffsets: fromOffsets, toOffset: toOffset)
             }
+            .onDelete { offsets in
+                selected.remove(atOffsets: offsets)
+            }
             ForEach(Array(sheetSections.enumerated()), id: \.offset) { _, seeds in
                 drawerActionSectionView(seeds)
             }
