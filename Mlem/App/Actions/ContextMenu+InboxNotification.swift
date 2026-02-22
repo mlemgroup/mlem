@@ -39,30 +39,9 @@ private struct InboxNotificationContextMenuViewModifier: ViewModifier {
     }
 
     var sheetSections: [ActionSheetSection] {
-        [
-            .init(actions: createActions(seeds: [
-                .upvote,
-                .downvote,
-                .save,
-                .reply,
-                .markRead,
-                .selectText,
-                .share,
-                .report,
-                .edit,
-                .delete
-            ])),
-            .init(actions: createActions(seeds: [
-                .blockCreator,
-                .copyAuthorName,
-                .openCreatorModlog,
-                .sendCreatorMessage
-            ])),
-            .init(actions: createActions(seeds: [
-                .banCreator,
-                .purgeCreator
-            ]))
-        ]
+        ReplyBarConfiguration.availableActions.map { seeds in
+            .init(actions: self.createActions(seeds: seeds))
+        }
     }
 
     func createActions(seeds: [ActionSeed]) -> [any Actions.Action] {
