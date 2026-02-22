@@ -44,10 +44,14 @@ struct ContextMenuSettingsView: View {
                 Label(seed.label)
                     .foregroundStyle(seed.label.isDestructive ? .themedWarning : .themedPrimary)
             }
+            .onMove { fromOffsets, toOffset in
+                selected.move(fromOffsets: fromOffsets, toOffset: toOffset)
+            }
             ForEach(Array(sheetSections.enumerated()), id: \.offset) { _, seeds in
                 drawerActionSectionView(seeds)
             }
         }
+        .environment(\.editMode, .constant(.active))
     }
 
     @ViewBuilder
