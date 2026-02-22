@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 2026-02-22.
 //
 
+import ComponentViews
 import Actions
 import SwiftUI
 
@@ -54,6 +55,11 @@ struct ContextMenuSettingsView: View {
                 drawerActionSectionView(seeds)
             }
         }
+        .toolbar {
+            CloseButtonToolbarItem(ios18Label: .xmark)
+        }
+        .navigationTitle("Customize Context Menu")
+        .navigationBarTitleDisplayMode(.inline)
         .environment(\.editMode, .constant(.active))
     }
 
