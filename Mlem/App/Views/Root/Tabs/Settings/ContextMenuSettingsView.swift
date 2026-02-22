@@ -5,12 +5,68 @@
 //  Created by Sjmarf on 2026-02-22.
 //
 
+import Actions
 import SwiftUI
+
+private var sheetSections: [[ActionSeed]] {
+    [
+        [
+            .upvote,
+            .downvote,
+            .save,
+            .reply,
+            .markRead,
+            .selectText,
+            .share,
+            .report,
+            .edit,
+            .delete
+        ],
+        [
+            .blockCreator,
+            .copyAuthorName,
+            .openCreatorModlog,
+            .sendCreatorMessage
+        ],
+        [
+            .banCreator,
+            .purgeCreator
+        ]
+    ]
+}
 
 struct ContextMenuSettingsView: View {
     var body: some View {
         Form {
-            Text("Hello world")
+            ForEach(Array(sheetSections.enumerated()), id: \.offset) { _, seeds in
+                drawerActionSectionView(seeds)
+            }
         }
+    }
+
+    @ViewBuilder
+    func drawerActionSectionView(_ seeds: [ActionSeed]) -> some View {
+        Section {
+            ForEach(seeds, id: \.key, content: drawerActionRowView)
+        }
+    }
+
+    @ViewBuilder
+    func drawerActionRowView(_ seed: ActionSeed) -> some View {
+        Button {
+            
+        } label: {
+            HStack {
+                Label(seed.label)
+                    .imageScale(.small)
+                    .foregroundStyle(seed.label.isDestructive ? .themedWarning : .themedPrimary)
+                Spacer()
+                Image(icon: .general.add)
+                    .symbolVariant(.circle.fill)
+                    .foregroundStyle(.themedAccent)
+                    .imageScale(.large)
+            }
+        }
+        .buttonStyle(.plain)
     }
 }
