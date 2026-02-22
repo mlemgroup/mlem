@@ -114,6 +114,7 @@ struct ReplyBarConfiguration: InteractionBarConfiguration {
     var readouts: [ReadoutType]
     var leadingSwipes: [ActionType]
     var trailingSwipes: [ActionType]
+    var contextMenu: [ActionSeed]
 
     var availableWidgets: Set<Item>
     func widgetPickerPage(_ configuration: Binding<Self>) -> SettingsPage { .replyBarWidgetPicker(configuration) }
@@ -131,9 +132,10 @@ struct ReplyBarConfiguration: InteractionBarConfiguration {
         self.leadingSwipes = leadingSwipes
         self.trailingSwipes = trailingSwipes
         self.readouts = readouts
+        self.contextMenu = Self.defaultContextMenu
         self.availableWidgets = availableWidgets
     }
-    
+
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.leading = try container.decodeIfPresent([Item].self, forKey: .leading) ?? [.counter(.score)]
@@ -143,6 +145,13 @@ struct ReplyBarConfiguration: InteractionBarConfiguration {
         self.readouts = try container.decodeIfPresent([ReadoutType].self, forKey: .readouts) ?? [.created, .comment]
         self.availableWidgets = try container.decodeIfPresent(Set<Item>.self, forKey: .availableWidgets) ??
             .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) })
+
+        if let contextMenuKeys = try container.decodeIfPresent([String].self, forKey: .contextMenu) {
+            let allActions = Self.availableActions.reduce([], +) 
+            self.contextMenu = contextMenuKeys.compactMap { key in allActions.first(where: {$0.key == key}) }
+        } else {
+            self.contextMenu = Self.defaultContextMenu
+        }
     }
     
     static var `default`: Self {
@@ -181,6 +190,10 @@ struct ReplyBarConfiguration: InteractionBarConfiguration {
                 .purgeCreator
             ]
         ]
+    }
+
+    static var defaultContextMenu: [ActionSeed] {
+        [.markRead, .share, .blockCreator, .report]
     }
     
     static var reportDefault: Self? { nil }

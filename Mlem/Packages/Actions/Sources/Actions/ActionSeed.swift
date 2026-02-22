@@ -7,7 +7,7 @@
 
 import Foundation
 
-public final class ActionSeed: Hashable {
+public final class ActionSeed: Hashable, Encodable {
     public let key: String
     private let actionType: any Action.Type
     
@@ -38,5 +38,9 @@ public final class ActionSeed: Hashable {
     
     public func hash(into hasher: inout Hasher) {
         hasher.combine(key)
+    }
+
+    public func encode(to encoder: any Encoder) throws {
+        try self.key.encode(to: encoder)
     }
 }
