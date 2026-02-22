@@ -9,15 +9,9 @@ import Actions
 import MlemMiddleware
 import SwiftUI
 
-private let topLevelSeeds: [ActionSeed] = [
-    .markRead,
-    .share,
-    .blockCreator,
-    .report
-]
-
 private struct InboxNotificationContextMenuViewModifier: ViewModifier {
     @Environment(NavigationLayer.self) var navigation
+    @Setting(\.interactionBar_reply) var replyBarConfiguration
 
     let notification: InboxNotification
 
@@ -25,7 +19,7 @@ private struct InboxNotificationContextMenuViewModifier: ViewModifier {
         content
             .contextMenu {
                 ActionButtons { _ in
-                    topLevelSeeds.compactMap {
+                    replyBarConfiguration.contextMenu.compactMap {
                         $0.createAction(notification) ?? $0.createAction(notification.content.wrappedValue)
                     }
                 }

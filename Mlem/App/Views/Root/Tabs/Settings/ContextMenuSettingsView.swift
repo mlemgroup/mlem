@@ -10,19 +10,19 @@ import Actions
 import SwiftUI
 
 struct ContextMenuSettingsView: View {
-    @State var selected: [ActionSeed] = []
+    @Setting(\.interactionBar_reply) var replyBarConfiguration
 
     var body: some View {
         Form {
-            ForEach(selected, id: \.key) { seed in
+            ForEach(replyBarConfiguration.contextMenu, id: \.key) { seed in
                 Label(seed.label)
                     .foregroundStyle(seed.label.isDestructive ? .themedWarning : .themedPrimary)
             }
             .onMove { fromOffsets, toOffset in
-                selected.move(fromOffsets: fromOffsets, toOffset: toOffset)
+                replyBarConfiguration.contextMenu.move(fromOffsets: fromOffsets, toOffset: toOffset)
             }
             .onDelete { offsets in
-                selected.remove(atOffsets: offsets)
+                replyBarConfiguration.contextMenu.remove(atOffsets: offsets)
             }
             ForEach(Array(ReplyBarConfiguration.availableActions.enumerated()), id: \.offset) { _, seeds in
                 drawerActionSectionView(seeds)
@@ -47,14 +47,14 @@ struct ContextMenuSettingsView: View {
     func drawerActionRowView(_ seed: ActionSeed) -> some View {
         Button {
             withAnimation {
-                selected.append(seed)
+                replyBarConfiguration.contextMenu.append(seed)
             }
         } label: {
             HStack {
                 Label(seed.label)
                     .foregroundStyle(seed.label.isDestructive ? .themedWarning : .themedPrimary)
                 Spacer()
-                if !selected.contains(seed) {
+                if !replyBarConfiguration.contextMenu.contains(seed) {
                     Image(icon: .general.add)
                         .symbolVariant(.circle.fill)
                         .foregroundStyle(.themedAccent)
@@ -63,6 +63,6 @@ struct ContextMenuSettingsView: View {
             }
         }
         .buttonStyle(.plain)
-        .disabled(selected.contains(seed))
+        .disabled(replyBarConfiguration.contextMenu.contains(seed))
     }
 }
