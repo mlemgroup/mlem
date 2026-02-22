@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 14/06/2024.
 //
 
+import Actions
 import Foundation
 import MlemMiddleware
 import SwiftUI
@@ -153,6 +154,33 @@ struct ReplyBarConfiguration: InteractionBarConfiguration {
             readouts: [.created, .comment],
             availableWidgets: .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) })
         )
+    }
+
+    static var availableActions: [[ActionSeed]] {
+        [
+            [
+                .upvote,
+                .downvote,
+                .save,
+                .reply,
+                .markRead,
+                .selectText,
+                .share,
+                .report,
+                .edit,
+                .delete
+            ],
+            [
+                .blockCreator,
+                .copyAuthorName,
+                .openCreatorModlog,
+                .sendCreatorMessage
+            ],
+            [
+                .banCreator,
+                .purgeCreator
+            ]
+        ]
     }
     
     static var reportDefault: Self? { nil }

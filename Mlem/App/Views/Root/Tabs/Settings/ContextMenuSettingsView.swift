@@ -9,33 +9,6 @@ import ComponentViews
 import Actions
 import SwiftUI
 
-private var sheetSections: [[ActionSeed]] {
-    [
-        [
-            .upvote,
-            .downvote,
-            .save,
-            .reply,
-            .markRead,
-            .selectText,
-            .share,
-            .report,
-            .edit,
-            .delete
-        ],
-        [
-            .blockCreator,
-            .copyAuthorName,
-            .openCreatorModlog,
-            .sendCreatorMessage
-        ],
-        [
-            .banCreator,
-            .purgeCreator
-        ]
-    ]
-}
-
 struct ContextMenuSettingsView: View {
     @State var selected: [ActionSeed] = []
 
@@ -51,7 +24,7 @@ struct ContextMenuSettingsView: View {
             .onDelete { offsets in
                 selected.remove(atOffsets: offsets)
             }
-            ForEach(Array(sheetSections.enumerated()), id: \.offset) { _, seeds in
+            ForEach(Array(ReplyBarConfiguration.availableActions.enumerated()), id: \.offset) { _, seeds in
                 drawerActionSectionView(seeds)
             }
         }
