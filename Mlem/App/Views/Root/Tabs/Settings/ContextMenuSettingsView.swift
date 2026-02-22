@@ -36,8 +36,14 @@ private var sheetSections: [[ActionSeed]] {
 }
 
 struct ContextMenuSettingsView: View {
+    @State var selected: [ActionSeed] = []
+
     var body: some View {
         Form {
+            ForEach(selected, id: \.key) { seed in
+                Label(seed.label)
+                    .foregroundStyle(seed.label.isDestructive ? .themedWarning : .themedPrimary)
+            }
             ForEach(Array(sheetSections.enumerated()), id: \.offset) { _, seeds in
                 drawerActionSectionView(seeds)
             }
@@ -54,11 +60,12 @@ struct ContextMenuSettingsView: View {
     @ViewBuilder
     func drawerActionRowView(_ seed: ActionSeed) -> some View {
         Button {
-            
+            withAnimation {
+                selected.append(seed)
+            }
         } label: {
             HStack {
                 Label(seed.label)
-                    .imageScale(.small)
                     .foregroundStyle(seed.label.isDestructive ? .themedWarning : .themedPrimary)
                 Spacer()
                 Image(icon: .general.add)
