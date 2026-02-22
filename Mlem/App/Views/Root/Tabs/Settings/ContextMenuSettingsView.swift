@@ -68,12 +68,15 @@ struct ContextMenuSettingsView: View {
                 Label(seed.label)
                     .foregroundStyle(seed.label.isDestructive ? .themedWarning : .themedPrimary)
                 Spacer()
-                Image(icon: .general.add)
-                    .symbolVariant(.circle.fill)
-                    .foregroundStyle(.themedAccent)
-                    .imageScale(.large)
+                if !selected.contains(seed) {
+                    Image(icon: .general.add)
+                        .symbolVariant(.circle.fill)
+                        .foregroundStyle(.themedAccent)
+                        .imageScale(.large)
+                }
             }
         }
         .buttonStyle(.plain)
+        .disabled(selected.contains(seed))
     }
 }
