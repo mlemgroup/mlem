@@ -43,6 +43,12 @@ struct HandleThreadiverseLinksModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .environment(\.openURL, OpenURLAction(handler: didReceiveURL))
+            .onChange(of: navigation.model?.pendingOpenURL) { _, url in
+                if let url {
+                    navigation.model?.pendingOpenURL = nil
+                    _ = didReceiveURL(url)
+                }
+            }
             .alert("Open Mail App", isPresented: $showingEmailAlert) {
                 Button("Cancel", role: .cancel) {}
                 Button("Open") {
