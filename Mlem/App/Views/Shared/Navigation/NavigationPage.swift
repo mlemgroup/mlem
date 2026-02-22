@@ -88,6 +88,7 @@ enum NavigationPage: Hashable {
     case exportPostImage(_ post: Post)
     case exportCommentImage(_ comment: Comment, tracker: CommentTreeTracker?)
     case actionSheet(_ actions: HashWrapper<[ActionSheetSection]>)
+    case contextMenuSettings
     
     static func post(
         _ post: Post,

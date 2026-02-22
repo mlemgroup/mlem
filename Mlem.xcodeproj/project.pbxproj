@@ -356,6 +356,7 @@
 		03D3A1EF2BB9CA1D009DE55E /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1EE2BB9CA1D009DE55E /* MenuButton.swift */; };
 		03D3A1F12BB9D48E009DE55E /* BasicAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1F02BB9D48E009DE55E /* BasicAction.swift */; };
 		03D3A1F32BB9D49B009DE55E /* ActionGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1F22BB9D49B009DE55E /* ActionGroup.swift */; };
+		03D65D702F4B046F0041ADAF /* ContextMenuSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D65D6F2F4B046F0041ADAF /* ContextMenuSettingsView.swift */; };
 		03D8BF432DA55B6900506687 /* Icons in Frameworks */ = {isa = PBXBuildFile; productRef = 03D8BF422DA55B6900506687 /* Icons */; };
 		03DA4FB72CF115FB001C3C77 /* CommentEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B431B12C44409D001A1EB5 /* CommentEditorView.swift */; };
 		03DAEA772C64074E0064DE64 /* SubscriptionListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03DAEA762C64074E0064DE64 /* SubscriptionListItemView.swift */; };
@@ -948,6 +949,7 @@
 		03D3A1EE2BB9CA1D009DE55E /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
 		03D3A1F02BB9D48E009DE55E /* BasicAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicAction.swift; sourceTree = "<group>"; };
 		03D3A1F22BB9D49B009DE55E /* ActionGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionGroup.swift; sourceTree = "<group>"; };
+		03D65D6F2F4B046F0041ADAF /* ContextMenuSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextMenuSettingsView.swift; sourceTree = "<group>"; };
 		03DAEA762C64074E0064DE64 /* SubscriptionListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionListItemView.swift; sourceTree = "<group>"; };
 		03DD69412D4FDE8900F8950D /* Person+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Person+Mock.swift"; sourceTree = "<group>"; };
 		03DD69432D4FEA0000F8950D /* PreviewModifier+SampleEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PreviewModifier+SampleEnvironment.swift"; sourceTree = "<group>"; };
@@ -1273,6 +1275,7 @@
 				03AB48542CBC0B8000567FF9 /* AccountAdvancedSettingsView.swift */,
 				03AB48582CBC14CE00567FF9 /* AccountEmailSettingsView.swift */,
 				03AB48512CBC042E00567FF9 /* AccountContentSettingsView.swift */,
+				03D65D6F2F4B046F0041ADAF /* ContextMenuSettingsView.swift */,
 				03134A572BEC1C46002662CC /* AccountListSettingsView.swift */,
 				03AD0A812CFDBFA0001EF9F7 /* AccountLocalSettingsView.swift */,
 				03AD0A832CFDC557001EF9F7 /* AccountNicknameFieldView.swift */,
@@ -3048,6 +3051,7 @@
 				CD10FA772C7A8622008985AD /* ImageSaver.swift in Sources */,
 				03267D822BED489C009D6268 /* AvatarBannerView.swift in Sources */,
 				031CA5752E5900C800CF0C0F /* SwipeConfiguration+Extensions.swift in Sources */,
+				03D65D702F4B046F0041ADAF /* ContextMenuSettingsView.swift in Sources */,
 				03500C2D2BF7FC2500CAA076 /* ToastView.swift in Sources */,
 				0311ADB92E4E0E0800EC3120 /* VisitAgainView.swift in Sources */,
 				CDB95FCD2EBD3230008669D9 /* SmallOverlayButtonLabel.swift in Sources */,
