@@ -32,13 +32,13 @@ public struct ActionLabel {
     
     @_disfavoredOverload
     public init(
-        _ title: String,
+        _ title: some StringProtocol,
         icon: Icon,
         color: ThemedColor = .themedAccent,
         isDestructive: Bool = false,
         visibility: ActionVisiblity = .enabled
     ) {
-        self.title = title
+        self.title = String(title)
         self.icon = icon
         self.color = color
         self.isDestructive = isDestructive
