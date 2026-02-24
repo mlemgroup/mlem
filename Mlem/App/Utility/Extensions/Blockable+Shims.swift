@@ -11,7 +11,7 @@ import MlemMiddleware
 extension Blockable {
     func shimToggleBlocked(feedback: Set<FeedbackType>, callback: ((Bool) -> Void)? = nil) {
         if feedback.contains(.toast) {
-            if !blocked {
+            if !blockedValue {
                 ToastModel.main.add(
                     .undoable(
                         "Blocked",
@@ -35,6 +35,6 @@ extension Blockable {
                 )
             }
         }
-        updateBlocked(!blocked, callback: callback)
+        updateBlocked(!blockedValue, callback: callback)
     }
 }

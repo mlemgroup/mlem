@@ -10,6 +10,9 @@ import Observation
 
 @Observable
 public final class Instance3: Instance3Providing {
+    // TODO: NOW make this shitty shim code better
+    public var blockedValue: Bool { instance2.blockedValue }
+    
     public static let tierNumber: Int = 3
     public var api: ApiClient
     public var instance3: Instance3 { self }

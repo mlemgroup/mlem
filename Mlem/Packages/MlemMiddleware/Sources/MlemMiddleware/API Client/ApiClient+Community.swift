@@ -70,21 +70,20 @@ public extension ApiClient {
         }
         
         // if on a foreign host, resolve communities to populate subscription status.
-        // TODO: NOW
-//        if let hostApi, hostApi !== self {
-//            do {
-//                let resolvedCommunities: [URL: Community2] = try await hostApi.resolve(urls: ret.map { $0.resolvableUrl(from: .host) })
-//                for community in ret {
-//                    if let resolvedCommunity = resolvedCommunities[community.resolvableUrl(from: .host)] {
-//                        community.blockedManager.addSibling(resolvedCommunity.blockedManager)
-//                    }
-//                }
-//            } catch {
-//                // if this fails, don't fail the whole call
-//                // TODO: error toast (depends on packaged error handling)
-//                log.error("Failed to resolve community URLs: \(error)")
-//            }
-//        }
+        if let hostApi, hostApi !== self {
+            do {
+                let resolvedCommunities: [URL: Community] = try await hostApi.resolve(urls: ret.map { $0.resolvableUrl(from: .host) })
+                for community in ret {
+                    if let resolvedCommunity = resolvedCommunities[community.resolvableUrl(from: .host)] {
+                        community.blocked.addSibling(resolvedCommunity.blocked)
+                    }
+                }
+            } catch {
+                // if this fails, don't fail the whole call
+                // TODO: error toast (depends on packaged error handling)
+                log.error("Failed to resolve community URLs: \(error)")
+            }
+        }
         return ret
     }
     

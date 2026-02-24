@@ -17,3 +17,12 @@ extension Bool: MergeableValue {
         self || other
     }
 }
+
+extension Bool: NewMergeableValue {
+    public func merge(with other: Bool, using mergeType: ValueMergeType) -> Bool {
+        switch mergeType {
+        case .disjunctive: self || other
+        case .conjunctive: self && other
+        }
+    }
+}

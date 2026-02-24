@@ -60,6 +60,7 @@ public protocol NewMergeableValue: Equatable {
     func merge(with other: Self, using mergeType: ValueMergeType) -> Self
 }
 
+// TODO: NOW remove optional requirement
 @Observable
 public class SyntheticValue<T: NewMergeableValue>: ValueProviding {
     internal let uid: NSUUID = .init()

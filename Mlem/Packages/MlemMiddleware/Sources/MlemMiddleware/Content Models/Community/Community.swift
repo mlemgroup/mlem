@@ -32,7 +32,7 @@ public final class Community:
     // MARK: Custom Properties
     // Mlem-specific properties that are not reflected in the API
     
-    public var blocked: Bool
+    public var blocked: SyntheticValue<Bool>
     public var removedPending: Bool = false
     public var purged: Bool = false
     /// Used to state-fake internally.
@@ -71,7 +71,7 @@ public final class Community:
     public init(api: ApiClient, properties: CommunityProperties) {
         self.api = api
         self.properties = properties
-        self.blocked = api.blocks?.communities.keys.contains(properties.actorId) ?? false
+        self.blocked = .init(value: api.blocks?.communities.keys.contains(properties.actorId) ?? false, mergeType: .disjunctive)
         
         self.actorId = properties.actorId
         self.id = properties.id

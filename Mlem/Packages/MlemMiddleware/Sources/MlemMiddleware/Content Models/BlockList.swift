@@ -65,12 +65,12 @@ public class BlockList {
         // bypasses queuing for blocked status
         for key in newCommunitiesKeys.subtracting(oldCommunitiesKeys) {
             if let id = blocks.communities[key], let community = api.caches.community.retrieveModel(cacheId: id) {
-                community.blocked = true
+                community.blocked.value_ = true
             }
         }
         for key in oldCommunitiesKeys.subtracting(newCommunitiesKeys) {
             if let id = communities[key], let community = api.caches.community.retrieveModel(cacheId: id) {
-                community.blocked = false
+                community.blocked.value_ = false
             }
         }
         

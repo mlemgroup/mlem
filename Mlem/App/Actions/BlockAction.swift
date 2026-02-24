@@ -23,7 +23,7 @@ struct BlockAction: Actions.Action {
         func blocked(environment: EnvironmentValues) -> Bool {
             switch self {
             case let .blockable(entity):
-                return entity.blocked
+                return entity.blockedValue
             case let .instance(instance):
                 if let instance = instance as? any Instance {
                     return instance.blocked
@@ -259,7 +259,7 @@ extension BlockAction {
     }
     
     private func submitForBlockable(blockable: any Blockable, environment: EnvironmentValues) {
-        let shouldBlock = !blockable.blocked
+        let shouldBlock = !blockable.blockedValue
         blockable.updateBlocked(shouldBlock) { didSucceed in
             let toast = createToast(didBlock: shouldBlock, didSucceed: didSucceed) {
                 blockable.updateBlocked(!shouldBlock, callback: nil)

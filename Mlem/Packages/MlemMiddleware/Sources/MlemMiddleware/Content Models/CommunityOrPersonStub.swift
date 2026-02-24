@@ -22,7 +22,7 @@ public extension CommunityOrPerson {
 
 
 public protocol Blockable: ContentModel, ActorIdentifiable {
-    var blocked: Bool { get }
+    var blockedValue: Bool { get }
 
     /// Updates the blocked status to the given value
     /// - Parameters:

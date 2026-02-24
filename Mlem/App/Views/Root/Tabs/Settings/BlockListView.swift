@@ -50,7 +50,7 @@ struct BlockListView: View {
                     PersonListRow(person, showBlockStatus: false)
                 }
             case .communities:
-                SearchResultsView(results: communities.filter(\.blocked)) { community in
+                SearchResultsView(results: communities.filter(\.blockedValue)) { community in
                     CommunityListRow(community, showBlockStatus: false)
                 }
             case .instances:

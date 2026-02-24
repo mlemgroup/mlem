@@ -53,7 +53,7 @@ struct CommunityListRowBody<Content: View>: View {
     
     var title: String {
         var title = community.name
-        if community.blocked, showBlockStatus {
+        if community.blockedValue, showBlockStatus {
             title = title + " ∙ " + String(localized: "Blocked")
         }
         if community.nsfw {
@@ -64,7 +64,7 @@ struct CommunityListRowBody<Content: View>: View {
 
     var body: some View {
         HStack(spacing: Constants.main.standardSpacing) {
-            if community.blocked, showBlockStatus {
+            if community.blockedValue, showBlockStatus {
                 Image(icon: .general.hide)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
