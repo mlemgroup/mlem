@@ -59,14 +59,15 @@ public extension ApiClient {
         
         let ret = await caches.community.getModels(api: self, from: snapshots.map { .community2($0) })
         // TODO: NOW
-//        if let subscriptionInfo = hostApi?.subscriptions {
-//            for community in ret {
-//                if let subscribedCommunity = subscriptionInfo.communities.first(where: { $0.actorId == community.actorId }) {
-//                    community.subscriptionManager.addSibling(subscribedCommunity.subscriptionManager)
-//                }
-//                // TODO: favorites
-//            }
-//        }
+        if let subscriptionInfo = hostApi?.subscriptions {
+            for community in ret {
+                if let subscribedCommunity = subscriptionInfo.communities.first(where: { $0.actorId == community.actorId }) {
+                    community.subscription.addSibling(subscribedCommunity.subscription)
+                    // community.subscriptionManager.addSibling(subscribedCommunity.subscriptionManager)
+                }
+                // TODO: favorites
+            }
+        }
         
         // if on a foreign host, resolve communities to populate subscription status.
         // TODO: NOW

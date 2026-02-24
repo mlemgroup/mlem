@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct SubscriptionModel: Hashable, MergeableValue {
+public struct SubscriptionModel: Hashable, NewMergeableValue {
     // These are the values actually provided by the API.
     var actualTotal: Int
     var actualLocal: Int?
@@ -36,7 +36,7 @@ public struct SubscriptionModel: Hashable, MergeableValue {
         return actualLocal + pendingSubscriptionValue
     }
     
-    public func merge(with other: SubscriptionModel, using mergeType: StateManagerMergeType) -> SubscriptionModel {
+    public func merge(with other: SubscriptionModel, using mergeType: ValueMergeType) -> SubscriptionModel {
         switch mergeType {
         case .disjunctive:
             .init(

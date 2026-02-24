@@ -57,7 +57,7 @@ public final class Community:
     public var hidden: Bool
     public var onlyModeratorsCanPost: Bool
 
-    public var subscription: ExpectedValue<SubscriptionModel>
+    public var subscription: SyntheticExpectedValue<SubscriptionModel>
     public var postCount: ExpectedValue<Int>
     public var commentCount: ExpectedValue<Int>
     public var activeUserCount: ExpectedValue<ActiveUserCount>
@@ -92,7 +92,7 @@ public final class Community:
         // because upgrade() is not available until all properties are initialized, first populate all properties
         // with ExpectedValues that don't actually do anything, then reassign them properly at the end of the init
         // this is somewhat cumbersome but avoids lazy vars, which are very awkward in Observables
-        self.subscription = dummyExpectedValue(properties.subscription)
+        self.subscription = dummySyntheticExpectedValue(properties.subscription)
         self.postCount = dummyExpectedValue(properties.postCount)
         self.commentCount = dummyExpectedValue(properties.commentCount)
         self.activeUserCount = dummyExpectedValue(properties.activeUserCount)
@@ -106,7 +106,10 @@ public final class Community:
                 value: value,
                 provideValue: { try await self.upgrade() })
         }
-        self.subscription = expectedValue(properties.subscription)
+        self.subscription = .init(
+            value: properties.subscription,
+            provideValue: { try await self.upgrade() },
+            mergeType: .disjunctive)
         self.postCount = expectedValue(properties.postCount)
         self.commentCount = expectedValue(properties.commentCount)
         self.activeUserCount = expectedValue(properties.activeUserCount)

@@ -97,10 +97,8 @@ public class SubscriptionList {
     }
     
     func updateCommunitySubscription(community: Community) {
-        guard hasLoaded else { return }
-        // TODO: NOW
-        // if community.subscribed {
-        if community.subscription.value_?.subscribed ?? false {
+        guard hasLoaded, let subscription = community.subscription.value else { return }
+        if subscription.subscribed {
             if !communities.contains(community) {
                 addCommunity(community: community)
             }
