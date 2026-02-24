@@ -60,17 +60,48 @@ public protocol NewMergeableValue: Equatable {
     func merge(with other: Self, using mergeType: ValueMergeType) -> Self
 }
 
-/// Value that synthesizes multiple values from multiple sources
 @Observable
-public class SyntheticExpectedValue<T: NewMergeableValue>: ValueProviding {
-    private let uid: NSUUID = .init()
-    private let mergeType: ValueMergeType
+public class SyntheticValue<T: NewMergeableValue>: ValueProviding {
+    internal let uid: NSUUID = .init()
+    internal let mergeType: ValueMergeType
     
     // using NSMapTable to store weak references
-    private var siblings: NSMapTable<NSUUID, SyntheticExpectedValue> = .weakToWeakObjects()
+    internal var siblings: NSMapTable<NSUUID, SyntheticValue> = .weakToWeakObjects()
     
     public var value_: T?
     public var value: T? {
+        return siblings.dictionaryRepresentation().values.reduce(value_) { result, sibling in
+            if let result {
+                if let siblingValue = sibling.value {
+                    return result.merge(with: siblingValue, using: mergeType)
+                }
+                return result
+            }
+            return sibling.value
+        }
+    }
+    
+    init(value: T?, mergeType: ValueMergeType) {
+        self.value_ = value
+        self.mergeType = mergeType
+    }
+    
+    public func addSibling(_ sibling: SyntheticValue) {
+        siblings.setObject(sibling, forKey: sibling.uid)
+    }
+    
+    public func removeSibling(_ sibling: SyntheticValue) {
+        siblings.removeObject(forKey: sibling.uid)
+    }
+}
+
+/// Value that synthesizes multiple values from multiple sources
+@Observable
+public class SyntheticExpectedValue<T: NewMergeableValue>: SyntheticValue<T> {
+    /// Callback expected to update value_
+    let provideValue: () async throws -> Void
+    
+    override public var value: T? {
         if value_ == nil {
             Task {
                 do {
@@ -91,21 +122,9 @@ public class SyntheticExpectedValue<T: NewMergeableValue>: ValueProviding {
         }
     }
     
-    /// Callback expected to update value_
-    let provideValue: () async throws -> Void
-    
     init(value: T?, provideValue: @escaping () async throws -> Void, mergeType: ValueMergeType) {
-        self.value_ = value
         self.provideValue = provideValue
-        self.mergeType = mergeType
-    }
-    
-    public func addSibling(_ sibling: SyntheticExpectedValue) {
-        siblings.setObject(sibling, forKey: sibling.uid)
-    }
-    
-    public func removeSibling(_ sibling: SyntheticExpectedValue) {
-        siblings.removeObject(forKey: sibling.uid)
+        super.init(value: value, mergeType: mergeType)
     }
 }
 
