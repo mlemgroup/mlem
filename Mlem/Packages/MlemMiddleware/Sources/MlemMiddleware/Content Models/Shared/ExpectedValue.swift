@@ -69,20 +69,21 @@ public class SyntheticValue<T: NewMergeableValue>: ValueProviding {
     // using NSMapTable to store weak references
     internal var siblings: NSMapTable<NSUUID, SyntheticValue> = .weakToWeakObjects()
     
-    public var value_: T?
+    public var value_: T
     public var value: T? {
         return siblings.dictionaryRepresentation().values.reduce(value_) { result, sibling in
-            if let result {
-                if let siblingValue = sibling.value {
-                    return result.merge(with: siblingValue, using: mergeType)
-                }
-                return result
-            }
-            return sibling.value
+            result.merge(with: sibling.value_, using: mergeType)
+//            if let result {
+//                if let siblingValue = sibling.value {
+//                    return result.merge(with: siblingValue, using: mergeType)
+//                }
+//                return result
+//            }
+//            return sibling.value
         }
     }
     
-    init(value: T?, mergeType: ValueMergeType) {
+    init(value: T, mergeType: ValueMergeType) {
         self.value_ = value
         self.mergeType = mergeType
     }
@@ -96,12 +97,23 @@ public class SyntheticValue<T: NewMergeableValue>: ValueProviding {
     }
 }
 
+extension Optional: NewMergeableValue where Wrapped: NewMergeableValue & Equatable {
+    public func merge(with other: Optional<Wrapped>, using mergeType: ValueMergeType) -> Optional<Wrapped> {
+        return self.map { value in
+            return other.map { otherValue in
+                return value.merge(with: otherValue, using: mergeType)
+            } ?? value
+        } ?? other
+    }
+}
+
 /// Value that synthesizes multiple values from multiple sources
 @Observable
 public class SyntheticExpectedValue<T: NewMergeableValue>: SyntheticValue<T> {
     /// Callback expected to update value_
     let provideValue: () async throws -> Void
     
+    override public var value_: T?
     override public var value: T? {
         if value_ == nil {
             Task {
@@ -113,18 +125,13 @@ public class SyntheticExpectedValue<T: NewMergeableValue>: SyntheticValue<T> {
             }
         }
         return siblings.dictionaryRepresentation().values.reduce(value_) { result, sibling in
-            if let result {
-                if let siblingValue = sibling.value {
-                    return result.merge(with: siblingValue, using: mergeType)
-                }
-                return result
-            }
-            return sibling.value
+            result.merge(with: sibling.value, using: mergeType)
         }
     }
     
     init(value: T?, provideValue: @escaping () async throws -> Void, mergeType: ValueMergeType) {
         self.provideValue = provideValue
+        self.value_ = value
         super.init(value: value, mergeType: mergeType)
     }
 }
