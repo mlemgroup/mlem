@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct ActionSeed: Hashable {
+public final class ActionSeed: Hashable, Encodable {
     public let key: String
     private let actionType: any Action.Type
     
@@ -25,18 +25,22 @@ public struct ActionSeed: Hashable {
         self.actionType = T.self
     }
 
-    public init<T: SimpleLabelAction>(
+    public convenience init<T: SimpleLabelAction>(
         _ key: String,
         createAction: @escaping (Any) -> T?
     ) {
         self.init(key, label: T.label, createAction: createAction)
     }
     
-    public static func == (lhs: Self, rhs: Self) -> Bool {
+    public static func == (lhs: ActionSeed, rhs: ActionSeed) -> Bool {
         lhs.key == rhs.key
     }
     
     public func hash(into hasher: inout Hasher) {
         hasher.combine(key)
+    }
+
+    public func encode(to encoder: any Encoder) throws {
+        try self.key.encode(to: encoder)
     }
 }

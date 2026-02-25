@@ -24,9 +24,9 @@ struct WarningView: View {
     }
     
     @_disfavoredOverload
-    init(icon: Icon, text: String, inList: Bool, overrideColor: ThemedColor? = nil) {
+    init(icon: Icon, text: some StringProtocol, inList: Bool, overrideColor: ThemedColor? = nil) {
         self.icon = icon
-        self.text = text
+        self.text = String(text)
         self.inList = inList
         self.overrideColor = overrideColor
     }

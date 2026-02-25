@@ -9,7 +9,7 @@ import Actions
 import MlemMiddleware
 import SwiftUI
 
-struct VoteAction: SimpleLabelAction {
+struct VoteAction: Actions.Action {
     let entity: any InteractableProviding
     let type: ScoringOperation
 }
@@ -17,8 +17,12 @@ struct VoteAction: SimpleLabelAction {
 // MARK: - Configurability
 
 extension ActionSeed {
-    static let upvote = ActionSeed("upvote") { createVoteAction($0, type: .upvote) }
-    static let downvote = ActionSeed("downvote") { createVoteAction($0, type: .downvote) }
+    static let upvote = ActionSeed("upvote", label: VoteAction.upvoteLabel) {
+        createVoteAction($0, type: .upvote)
+    }
+    static let downvote = ActionSeed("downvote", label: VoteAction.downvoteLabel) {
+        createVoteAction($0, type: .downvote)
+    }
 }
 
 private func createVoteAction(_ entity: Any, type: ScoringOperation) -> VoteAction? {
@@ -51,8 +55,6 @@ extension VoteAction {
         icon: .lemmy.downvoted.representingState(active: true),
         color: .themedDownvote
     )
-    
-    static var label: ActionLabel { upvoteLabel }
 
     func createLabel(environment: EnvironmentValues) -> ActionLabel {
         guard let votes = entity.votes.value else { return Self.upvoteLabel.withVisibility(.hidden) }

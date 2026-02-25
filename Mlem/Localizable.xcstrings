@@ -2801,6 +2801,26 @@
         }
       }
     },
+    "Customize" : {
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customise"
+          }
+        }
+      }
+    },
+    "Customize Context Menu" : {
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customise Context Menu"
+          }
+        }
+      }
+    },
     "Customize how moderator actions are separated from regular actions in context menus." : {
       "localizations" : {
         "en-GB" : {
