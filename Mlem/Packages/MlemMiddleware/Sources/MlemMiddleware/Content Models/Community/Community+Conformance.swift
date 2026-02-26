@@ -28,10 +28,10 @@ public extension Community {
 // MARK: Blockable
 
 public extension Community {
-    var blockedValue: Bool { blocked.value ?? false }
+    var blockedValue: Bool { blocked.realizedValue }
     
     func updateBlocked(_ newValue: Bool, callback: ((Bool) -> Void)? = nil) {
-        let oldValue = blocked.value
+        let oldValue = blocked.realizedValue
         blocked.value_ = newValue
         
         Task {
