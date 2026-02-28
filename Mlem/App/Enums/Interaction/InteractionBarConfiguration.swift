@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 15/08/2024.
 //
 
+import Actions
 import Foundation
 import Icons
 import MlemMiddleware
@@ -22,6 +23,7 @@ protocol InteractionBarConfiguration: Codable, Equatable {
     var leadingSwipes: [ActionType] { get set }
     var trailingSwipes: [ActionType] { get set }
     var readouts: [ReadoutType] { get set }
+    var contextMenu: [ActionSeed] { get set }
 
     var availableWidgets: Set<Item> { get set }
     func widgetPickerPage(_ configuration: Binding<Self>) -> SettingsPage
@@ -30,6 +32,8 @@ protocol InteractionBarConfiguration: Codable, Equatable {
     static var `default`: Self { get }
     /// Default report configuration for this type. `nil` if inapplicable.
     static var reportDefault: Self? { get }
+
+    static var availableActions: ActionSeedSections { get }
     
     init(
         leading: [Item],
@@ -37,7 +41,8 @@ protocol InteractionBarConfiguration: Codable, Equatable {
         leadingSwipes: [ActionType],
         trailingSwipes: [ActionType],
         readouts: [ReadoutType],
-        availableWidgets: Set<Item>
+        availableWidgets: Set<Item>,
+        contextMenu: [ActionSeed]
     )
 }
 
@@ -51,7 +56,8 @@ extension InteractionBarConfiguration {
             leadingSwipes: types.contains(.swipe) ? other.leadingSwipes.compactMap { .init(rawValue: $0.rawValue) } : leadingSwipes,
             trailingSwipes: types.contains(.swipe) ? other.trailingSwipes.compactMap { .init(rawValue: $0.rawValue) } : trailingSwipes,
             readouts: types.contains(.bar) ? other.readouts.compactMap { .init(rawValue: $0.rawValue) } : readouts,
-            availableWidgets: types.contains(.bar) ? .init(other.availableWidgets.compactMap { $0.convert() }) : availableWidgets
+            availableWidgets: types.contains(.bar) ? .init(other.availableWidgets.compactMap { $0.convert() }) : availableWidgets,
+            contextMenu: types.contains(.contextMenu) ? other.contextMenu.filter { Self.availableActions.all.contains($0) } : contextMenu
         )
     }
     
@@ -66,7 +72,7 @@ extension InteractionBarConfiguration {
 
 // swiftlint:disable:next type_name
 enum InteractionBarConfigurationConversionType {
-    case swipe, bar
+    case swipe, bar, contextMenu
 }
 
 enum InteractionConfigurationItem<

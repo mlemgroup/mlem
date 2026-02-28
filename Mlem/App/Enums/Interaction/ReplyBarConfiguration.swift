@@ -125,15 +125,16 @@ struct ReplyBarConfiguration: InteractionBarConfiguration {
         leadingSwipes: [ActionType],
         trailingSwipes: [ActionType],
         readouts: [ReadoutType],
-        availableWidgets: Set<Item>
+        availableWidgets: Set<Item>,
+        contextMenu: [ActionSeed]
     ) {
         self.leading = leading
         self.trailing = trailing
         self.leadingSwipes = leadingSwipes
         self.trailingSwipes = trailingSwipes
         self.readouts = readouts
-        self.contextMenu = Self.defaultContextMenu
         self.availableWidgets = availableWidgets
+        self.contextMenu = contextMenu
     }
 
     init(from decoder: any Decoder) throws {
@@ -150,7 +151,7 @@ struct ReplyBarConfiguration: InteractionBarConfiguration {
             let allActions = Self.availableActions.all
             self.contextMenu = contextMenuKeys.compactMap { key in allActions.first(where: {$0.key == key}) }
         } else {
-            self.contextMenu = Self.defaultContextMenu
+            self.contextMenu = Self.default.contextMenu
         }
     }
     
@@ -161,7 +162,8 @@ struct ReplyBarConfiguration: InteractionBarConfiguration {
             leadingSwipes: [.upvote, .downvote],
             trailingSwipes: [.markRead, .reply],
             readouts: [.created, .comment],
-            availableWidgets: .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) })
+            availableWidgets: .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) }),
+            contextMenu: [.markRead, .share, .blockCreator, .report]
         )
     }
 
@@ -191,9 +193,5 @@ struct ReplyBarConfiguration: InteractionBarConfiguration {
         ])
     }
 
-    static var defaultContextMenu: [ActionSeed] {
-        [.markRead, .share, .blockCreator, .report]
-    }
-    
     static var reportDefault: Self? { nil }
 }

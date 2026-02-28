@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 14/06/2024.
 //
 
+import Actions
 import Foundation
 import MlemMiddleware
 import SwiftUI
@@ -133,6 +134,7 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
     var readouts: [ReadoutType]
     var leadingSwipes: [ActionType]
     var trailingSwipes: [ActionType]
+    var contextMenu: [ActionSeed]
 
     var availableWidgets: Set<Item>
     func widgetPickerPage(_ configuration: Binding<Self>) -> SettingsPage { .commentBarWidgetPicker(configuration) }
@@ -143,7 +145,8 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
         leadingSwipes: [ActionType],
         trailingSwipes: [ActionType],
         readouts: [ReadoutType],
-        availableWidgets: Set<Item>
+        availableWidgets: Set<Item>,
+        contextMenu: [ActionSeed]
     ) {
         self.leading = leading
         self.trailing = trailing
@@ -151,6 +154,7 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
         self.trailingSwipes = trailingSwipes
         self.readouts = readouts
         self.availableWidgets = availableWidgets
+        self.contextMenu = contextMenu
     }
     
     init(from decoder: any Decoder) throws {
@@ -162,6 +166,12 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
         self.readouts = try container.decodeIfPresent([ReadoutType].self, forKey: .readouts) ?? [.created, .comment]
         self.availableWidgets = try container.decodeIfPresent(Set<Item>.self, forKey: .availableWidgets) ??
             .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) })
+        if let contextMenuKeys = try container.decodeIfPresent([String].self, forKey: .contextMenu) {
+            let allActions = Self.availableActions.all
+            self.contextMenu = contextMenuKeys.compactMap { key in allActions.first(where: {$0.key == key}) }
+        } else {
+            self.contextMenu = Self.default.contextMenu
+        }
     }
     
     static var `default`: Self {
@@ -171,7 +181,8 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
             leadingSwipes: [.upvote, .downvote],
             trailingSwipes: [.save, .reply],
             readouts: [.created, .comment],
-            availableWidgets: .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) })
+            availableWidgets: .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) }),
+            contextMenu: [.selectText, .share, .blockCreator, .report],
         )
     }
     
@@ -182,8 +193,39 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
             leadingSwipes: [.upvote, .downvote],
             trailingSwipes: [.save, .reply],
             readouts: [.upvote, .downvote, .created, .comment],
-            availableWidgets: .init(ActionType.defaultReportWidgets.map { .action($0) })
+            availableWidgets: .init(ActionType.defaultReportWidgets.map { .action($0) }),
+            contextMenu: [.selectText, .share, .remove, .banCreator, .resolveReport]
         )
+    }
+
+    static var availableActions: ActionSeedSections { .init(sections: [
+            [
+                .upvote,
+                .downvote,
+                .save,
+                .reply,
+                .selectText,
+                .share,
+                .createImage,
+                .report,
+                .edit,
+                .delete
+            ],
+            [
+                .blockCreator,
+                .copyAuthorName,
+                .openCreatorModlog,
+                .sendCreatorMessage
+            ],
+            [
+                .viewVotes,
+                .remove,
+                .banCreator,
+                .purge,
+                .purgeCreator,
+                .resolveReport
+            ]
+        ])
     }
     
     static var reportDefault: Self? { reportDefault_ }
