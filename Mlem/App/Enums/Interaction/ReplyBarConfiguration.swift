@@ -147,7 +147,7 @@ struct ReplyBarConfiguration: InteractionBarConfiguration {
             .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) })
 
         if let contextMenuKeys = try container.decodeIfPresent([String].self, forKey: .contextMenu) {
-            let allActions = Self.availableActions.reduce([], +) 
+            let allActions = Self.availableActions.all
             self.contextMenu = contextMenuKeys.compactMap { key in allActions.first(where: {$0.key == key}) }
         } else {
             self.contextMenu = Self.defaultContextMenu
@@ -165,8 +165,7 @@ struct ReplyBarConfiguration: InteractionBarConfiguration {
         )
     }
 
-    static var availableActions: [[ActionSeed]] {
-        [
+    static var availableActions: ActionSeedSections { .init(sections: [
             [
                 .upvote,
                 .downvote,
@@ -189,7 +188,7 @@ struct ReplyBarConfiguration: InteractionBarConfiguration {
                 .banCreator,
                 .purgeCreator
             ]
-        ]
+        ])
     }
 
     static var defaultContextMenu: [ActionSeed] {
