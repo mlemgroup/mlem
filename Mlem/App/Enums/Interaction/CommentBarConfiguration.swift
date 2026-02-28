@@ -182,7 +182,7 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
             trailingSwipes: [.save, .reply],
             readouts: [.created, .comment],
             availableWidgets: .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) }),
-            contextMenu: [.selectText, .share, .blockCreator, .report],
+            contextMenu: [.selectText, .share, .blockCreator, .report, .edit, .delete, .remove, .banCreator],
         )
     }
     
@@ -194,7 +194,7 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
             trailingSwipes: [.save, .reply],
             readouts: [.upvote, .downvote, .created, .comment],
             availableWidgets: .init(ActionType.defaultReportWidgets.map { .action($0) }),
-            contextMenu: [.selectText, .share, .remove, .banCreator, .resolveReport]
+            contextMenu: [.selectText, .share, .edit, .delete, .remove, .banCreator, .resolveReport]
         )
     }
 
