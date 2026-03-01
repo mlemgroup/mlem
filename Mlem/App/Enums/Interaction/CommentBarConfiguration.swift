@@ -176,7 +176,7 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
 
     var contextMenu: [ActionSeed] {
         get {
-            savedContextMenu ?? [.selectText, .share, .blockCreator, .report, .edit, .delete, .remove, .banCreator]
+            savedContextMenu ?? [.selectText, .share, .blockCreator, .report, .edit, .delete, .remove, .banCreator, .resolveReport]
         }
         set {
             savedContextMenu = newValue
