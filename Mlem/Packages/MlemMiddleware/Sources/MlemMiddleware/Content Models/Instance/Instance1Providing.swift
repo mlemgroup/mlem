@@ -23,7 +23,7 @@ public protocol Instance1Providing:
     var local: Bool { get }
     var shortDescription: String? { get }
     var contentWarning: String? { get }
-    var blocked: Bool { get }
+    var blockedValue: Bool { get }
 }
 
 public typealias Instance = Instance1Providing
@@ -47,7 +47,7 @@ public extension Instance1Providing {
         instance1.local = newValue
     }}
     var contentWarning: String? { instance1.contentWarning }
-    var blocked: Bool { instance1.blocked }
+    var blockedValue: Bool { instance1.blockedManager.displayedValue }
     
     var id_: Int? { instance1.id }
     var instanceId_: Int { instance1.instanceId }
@@ -61,7 +61,6 @@ public extension Instance1Providing {
     var publicKey_: String? { instance1.publicKey }
     var lastRefresh_: Date? { instance1.lastRefresh }
     var contentWarning_: String? { instance1.contentWarning }
-    var blocked_: Bool? { instance1.blocked }
 }
 
 public extension Instance1Providing {
@@ -87,6 +86,6 @@ public extension Instance1Providing {
     
     @discardableResult
     func toggleBlocked() -> Task<StateUpdateResult, Never> {
-        updateBlocked(!blocked)
+        updateBlocked(!blockedValue)
     }
 }

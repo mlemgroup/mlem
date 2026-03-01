@@ -33,8 +33,6 @@ public final class Person:
     public var blocked: Bool
     public var purged: Bool = false
     
-    public var blockedValue: Bool { blocked } // TODO: NOW remove
-    
     // Communities from which this person is *known* to be banned.
     // If an ID is not in this set, its status is unknown.
     //

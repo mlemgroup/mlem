@@ -45,8 +45,6 @@ public final class Instance2: Instance2Providing {
     public var commentCount: Int
     public var communityCount: Int
     public var activeUserCount: ActiveUserCount
-
-    public var blockedValue: Bool { instance1.blockedValue }
     
     init(
         api: ApiClient,

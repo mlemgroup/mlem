@@ -37,7 +37,6 @@ public final class Instance1: Instance1Providing {
     
     // This is set externally when the instance is loaded
     var blockedManager: StateManager<Bool>
-    public var blockedValue: Bool { blockedManager.displayedValue }
     
     init(
         api: ApiClient,

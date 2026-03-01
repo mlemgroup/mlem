@@ -10,7 +10,7 @@ import Foundation
 public protocol Profile1Providing: ActorIdentifiable {
     var name: String { get }
     var avatar: URL? { get }
-    var blockedValue: Bool { get }
+    var blockedValue: Bool { get } // TODO: Unified Instance replace with blocked: RealizedValueProviding
     
     var displayName_: String? { get }
     var description_: String? { get }

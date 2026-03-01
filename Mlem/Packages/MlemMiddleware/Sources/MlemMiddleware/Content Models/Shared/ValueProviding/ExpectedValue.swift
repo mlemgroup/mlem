@@ -34,8 +34,6 @@ public struct ExpectedValue<T>: ValueProviding {
     }
 }
 
-// Dummy inits
-
 func dummyExpectedValue<T>(_ value: T?) -> ExpectedValue<T> {
     .init(
         value: value,
