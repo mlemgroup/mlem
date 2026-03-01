@@ -114,7 +114,7 @@ struct ReplyBarConfiguration: InteractionBarConfiguration {
     var readouts: [ReadoutType]
     var leadingSwipes: [ActionType]
     var trailingSwipes: [ActionType]
-    var contextMenu: [ActionSeed]
+    var savedContextMenu: [ActionSeed]?
 
     var availableWidgets: Set<Item>
     func widgetPickerPage(_ configuration: Binding<Self>) -> SettingsPage { .replyBarWidgetPicker(configuration) }
@@ -126,7 +126,7 @@ struct ReplyBarConfiguration: InteractionBarConfiguration {
         trailingSwipes: [ActionType],
         readouts: [ReadoutType],
         availableWidgets: Set<Item>,
-        contextMenu: [ActionSeed]
+        savedContextMenu: [ActionSeed]?
     ) {
         self.leading = leading
         self.trailing = trailing
@@ -134,7 +134,7 @@ struct ReplyBarConfiguration: InteractionBarConfiguration {
         self.trailingSwipes = trailingSwipes
         self.readouts = readouts
         self.availableWidgets = availableWidgets
-        self.contextMenu = contextMenu
+        self.savedContextMenu = savedContextMenu
     }
 
     init(from decoder: any Decoder) throws {
@@ -147,11 +147,20 @@ struct ReplyBarConfiguration: InteractionBarConfiguration {
         self.availableWidgets = try container.decodeIfPresent(Set<Item>.self, forKey: .availableWidgets) ??
             .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) })
 
-        if let contextMenuKeys = try container.decodeIfPresent([String].self, forKey: .contextMenu) {
+        if let contextMenuKeys = try container.decodeIfPresent([String].self, forKey: .savedContextMenu) {
             let allActions = Self.availableActions.all
-            self.contextMenu = contextMenuKeys.compactMap { key in allActions.first(where: {$0.key == key}) }
+            self.savedContextMenu = contextMenuKeys.compactMap { key in allActions.first(where: {$0.key == key}) }
         } else {
-            self.contextMenu = Self.default.contextMenu
+            self.savedContextMenu = nil
+        }
+    }
+
+    var contextMenu: [ActionSeed] {
+        get {
+            self.savedContextMenu ?? [.markRead, .share, .blockCreator, .report]
+        }
+        set {
+            savedContextMenu = newValue
         }
     }
     
@@ -163,7 +172,7 @@ struct ReplyBarConfiguration: InteractionBarConfiguration {
             trailingSwipes: [.markRead, .reply],
             readouts: [.created, .comment],
             availableWidgets: .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) }),
-            contextMenu: [.markRead, .share, .blockCreator, .report]
+            savedContextMenu: nil
         )
     }
 

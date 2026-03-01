@@ -5,6 +5,8 @@
 //  Created by Sjmarf on 15/08/2024.
 //
 
+// swiftlint:disable line_length
+
 import Actions
 import Foundation
 import Icons
@@ -23,6 +25,7 @@ protocol InteractionBarConfiguration: Codable, Equatable {
     var leadingSwipes: [ActionType] { get set }
     var trailingSwipes: [ActionType] { get set }
     var readouts: [ReadoutType] { get set }
+    var savedContextMenu: [ActionSeed]? { get set }
     var contextMenu: [ActionSeed] { get set }
 
     var availableWidgets: Set<Item> { get set }
@@ -42,7 +45,7 @@ protocol InteractionBarConfiguration: Codable, Equatable {
         trailingSwipes: [ActionType],
         readouts: [ReadoutType],
         availableWidgets: Set<Item>,
-        contextMenu: [ActionSeed]
+        savedContextMenu: [ActionSeed]?
     )
 }
 
@@ -57,7 +60,7 @@ extension InteractionBarConfiguration {
             trailingSwipes: types.contains(.swipe) ? other.trailingSwipes.compactMap { .init(rawValue: $0.rawValue) } : trailingSwipes,
             readouts: types.contains(.bar) ? other.readouts.compactMap { .init(rawValue: $0.rawValue) } : readouts,
             availableWidgets: types.contains(.bar) ? .init(other.availableWidgets.compactMap { $0.convert() }) : availableWidgets,
-            contextMenu: types.contains(.contextMenu) ? other.contextMenu.filter { Self.availableActions.all.contains($0) } : contextMenu
+            savedContextMenu: types.contains(.contextMenu) ? other.savedContextMenu.map { $0.filter { Self.availableActions.all.contains($0) } } : savedContextMenu
         )
     }
     
@@ -206,3 +209,5 @@ struct MockReadoutAppearance {
     let icon: Icon
     let label: String
 }
+
+// swiftlint:enable line_length

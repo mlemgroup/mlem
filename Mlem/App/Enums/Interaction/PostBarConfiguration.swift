@@ -157,8 +157,8 @@ struct PostBarConfiguration: InteractionBarConfiguration {
     var readouts: [ReadoutType]
     var leadingSwipes: [ActionType]
     var trailingSwipes: [ActionType]
-    var contextMenu: [ActionSeed]
-    
+    var savedContextMenu: [ActionSeed]?
+
     var availableWidgets: Set<Item>
     func widgetPickerPage(_ configuration: Binding<Self>) -> SettingsPage { .postBarWidgetPicker(configuration) }
     
@@ -169,7 +169,7 @@ struct PostBarConfiguration: InteractionBarConfiguration {
         trailingSwipes: [ActionType],
         readouts: [ReadoutType],
         availableWidgets: Set<Item>,
-        contextMenu: [ActionSeed]
+        savedContextMenu: [ActionSeed]?
     ) {
         self.leading = leading
         self.trailing = trailing
@@ -177,7 +177,7 @@ struct PostBarConfiguration: InteractionBarConfiguration {
         self.trailingSwipes = trailingSwipes
         self.readouts = readouts
         self.availableWidgets = availableWidgets
-        self.contextMenu = contextMenu
+        self.savedContextMenu = savedContextMenu
     }
     
     init(from decoder: any Decoder) throws {
@@ -190,11 +190,11 @@ struct PostBarConfiguration: InteractionBarConfiguration {
         self.availableWidgets = try container.decodeIfPresent(Set<Item>.self, forKey: .availableWidgets) ??
             .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) })
 
-        if let contextMenuKeys = try container.decodeIfPresent([String].self, forKey: .contextMenu) {
+        if let contextMenuKeys = try container.decodeIfPresent([String].self, forKey: .savedContextMenu) {
             let allActions = Self.availableActions.all
-            self.contextMenu = contextMenuKeys.compactMap { key in allActions.first(where: {$0.key == key}) }
+            self.savedContextMenu = contextMenuKeys.compactMap { key in allActions.first(where: {$0.key == key}) }
         } else {
-            self.contextMenu = Self.default.contextMenu
+            self.savedContextMenu = nil
         }
     }
     
@@ -206,7 +206,7 @@ struct PostBarConfiguration: InteractionBarConfiguration {
             trailingSwipes: [.save, .reply],
             readouts: [.created, .comment],
             availableWidgets: .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) }),
-            contextMenu: [.selectText, .share, .blockCreator, .report, .edit, .delete, .remove, .banCreator]
+            savedContextMenu: nil
         )
     }
     
@@ -218,8 +218,17 @@ struct PostBarConfiguration: InteractionBarConfiguration {
             trailingSwipes: [.save, .reply],
             readouts: [.upvote, .downvote, .created, .comment],
             availableWidgets: .init(ActionType.defaultReportWidgets.map { .action($0) }),
-            contextMenu: [.selectText, .share, .edit, .delete, .remove, .banCreator, .resolveReport]
+            savedContextMenu: nil
         )
+    }
+
+    var contextMenu: [ActionSeed] {
+        get {
+            savedContextMenu ?? [.selectText, .share, .blockCreator, .report, .edit, .delete, .remove, .banCreator, .resolveReport]
+        }
+        set {
+            savedContextMenu = newValue
+        }
     }
 
     static var availableActions: ActionSeedSections { .init(sections: [
