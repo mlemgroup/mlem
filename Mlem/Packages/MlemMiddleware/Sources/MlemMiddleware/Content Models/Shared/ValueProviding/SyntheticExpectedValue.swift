@@ -7,7 +7,6 @@
 
 import Observation
 
-/// Value that synthesizes multiple values from multiple sources
 @Observable
 public class SyntheticExpectedValue<T: MergeableValue>: ValueSynthesizer<T?>, ValueProviding {
     /// Callback expected to update value_

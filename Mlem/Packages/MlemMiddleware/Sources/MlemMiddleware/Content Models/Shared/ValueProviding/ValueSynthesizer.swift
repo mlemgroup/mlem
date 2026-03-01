@@ -21,7 +21,7 @@ public protocol MergeableValue: Equatable {
     func merge(with other: Self, using mergeType: ValueMergeType) -> Self
 }
 
-// extends Optional to be NewMergeableValue if wrapped value is NewMergeableValue
+// Allows optionals to be used as MergeableValue
 extension Optional: MergeableValue where Wrapped: MergeableValue & Equatable {
     public func merge(with other: Optional<Wrapped>, using mergeType: ValueMergeType) -> Optional<Wrapped> {
         return self.map { value in
@@ -32,6 +32,8 @@ extension Optional: MergeableValue where Wrapped: MergeableValue & Equatable {
     }
 }
 
+/// Provides methods for tracking sibling `ValueSynthesizer`s. When `synthesize()` is called, all sibling values
+/// are accumulated into a single result according to the specified `mergeType`
 @Observable
 public class ValueSynthesizer<T: MergeableValue> {
     internal let uid: NSUUID = .init()

@@ -5,14 +5,15 @@
 //  Created by Eric Andrews on 2026-02-25.
 //
 
-/// Protocol for when you may have a realized value and may have an ExpectedValue (e.g., ReportEditorView)
+/// Represents any member of the value providing family
 public protocol ValueProviding<T> {
     associatedtype T
     
     var value: T? { get }
 }
 
-/// Protocol for when you have a realized value that you may need to treat interchangeably with a ValueProviding.
+/// Represents a value that is guaranteed to be realized, but may need to be treated interchangeably with
+/// other `ValueProviding`s
 public protocol RealizedValueProviding<T>: ValueProviding {
     var realizedValue: T { get }
 }
