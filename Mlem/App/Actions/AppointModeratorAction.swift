@@ -70,9 +70,9 @@ extension AppointModeratorAction {
 extension AppointModeratorAction {
     func isModerator(environment: EnvironmentValues) -> Bool? {
         if let communityModerators = environment.communityContext?.moderators.value {
-            communityModerators.contains(where: { $0.id == entity.id })
+            return communityModerators.contains(where: { $0.id == entity.id })
         } else {
-            nil
+            return nil
         }
     }
 

@@ -318,12 +318,47 @@ public extension Community {
     
     // Edit Moderators
     
-    func addModerator(personId: Int, added: Bool) async throws {
-        try await api.addModerator(communityId: id, personId: personId, added: added)
+    func addModerator(personId: Int, added: Bool) {
+        Task {
+            await updateQueue.addItem { properties in
+                var properties = properties
+                let snapshots = try await self.api.repository.addModerator(communityId: self.id, personId: personId, added: added)
+                
+                if added {
+                    guard snapshots.moderators.contains(where: { $0.id == personId }) else {
+                        throw ApiClientError.unsuccessful
+                    }
+                } else {
+                    guard !snapshots.moderators.contains(where: { $0.id == personId }) else {
+                        throw ApiClientError.unsuccessful
+                    }
+                }
+                
+                let newModerators = await self.api.caches.person.getModels(api: self.api, from: snapshots.moderators.map { .person1($0) })
+                
+                // update new moderator
+                if let person = self.api.caches.person.retrieveModel(cacheId: personId) {
+                    await person.updateQueue.addItem { personProperties in
+                        var personProperties = personProperties
+                        var moderatedCommunities: [Community] = personProperties.moderatedCommunities ?? .init()
+                        if added {
+                            moderatedCommunities.append(self)
+                        } else {
+                            moderatedCommunities.removeAll(where: { $0.id == self.id })
+                        }
+                        personProperties.moderatedCommunities = moderatedCommunities
+                        return personProperties
+                    }
+                }
+                
+                properties.moderators = newModerators
+                return properties
+            }
+        }
     }
     
     func addModerator(_ person: Person, added: Bool) async throws {
-        try await api.addModerator(communityId: id, personId: person.id, added: added)
+        addModerator(personId: person.id, added: added)
     }
     
     // Description

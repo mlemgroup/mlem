@@ -194,8 +194,7 @@ public final class Person:
         updateIfChanged(\.commentCount.value_, properties.commentCount)
         
         setIfNil(\.instance.value_, properties.instance)
-        // TODO: Unified Community updateIfChanged (doesn't currently play nice with protocols)
-        setIfNil(\.moderatedCommunities.value_, properties.moderatedCommunities)
+        updateIfChanged(\.moderatedCommunities.value_, properties.moderatedCommunities)
         
         updateIfChanged(\.email.value_, properties.email)
         updateIfChanged(\.showNsfw.value_, properties.showNsfw)

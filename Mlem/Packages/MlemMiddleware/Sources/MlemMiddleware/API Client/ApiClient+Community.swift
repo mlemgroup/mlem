@@ -58,12 +58,10 @@ public extension ApiClient {
         )
         
         let ret = await caches.community.getModels(api: self, from: snapshots.map { .community2($0) })
-        // TODO: NOW
         if let subscriptionInfo = hostApi?.subscriptions {
             for community in ret {
                 if let subscribedCommunity = subscriptionInfo.communities.first(where: { $0.actorId == community.actorId }) {
                     community.subscription.addSibling(subscribedCommunity.subscription)
-                    // community.subscriptionManager.addSibling(subscribedCommunity.subscriptionManager)
                 }
                 // TODO: favorites
             }
@@ -125,44 +123,5 @@ public extension ApiClient {
     func purgeCommunity(id: Int, reason: String?) async throws {
         try await repository.purgeCommunity(id: id, reason: reason)
         caches.community.retrieveModel(cacheId: id)?.purged = true
-    }
-    
-    @discardableResult
-    func addModerator(communityId: Int, personId: Int, added: Bool) async throws -> [Person] {
-        let snapshots = try await repository.addModerator(
-            communityId: communityId,
-            personId: personId,
-            added: added
-        )
-
-        let updatedModerators = await caches.person.getModels(api: self, from: snapshots.moderators.map { .person1($0) })
-        
-        // TODO: NOW nice way to queue this--move this whole thing into Community?
-        if let community = caches.community.retrieveModel(cacheId: communityId) {
-            community.moderators.value_ = updatedModerators
-        }
-        
-        if let person = caches.person.retrieveModel(cacheId: personId) {
-            let newModerator = snapshots.moderators.first(where: { $0.id == personId })
-            if added {
-                guard newModerator != nil else { throw ApiClientError.unsuccessful }
-                let newModeratedCommunity = await caches.community.getModel(
-                    api: self,
-                    from: .community1(snapshots.community)
-                )
-                
-                // TODO: NOW nice way to queue this
-                if person.moderatedCommunities.value_ == nil {
-                    person.moderatedCommunities.value_ = [newModeratedCommunity]
-                } else {
-                    person.moderatedCommunities.value_?.append(newModeratedCommunity)
-                }
-            } else {
-                guard newModerator == nil else { throw ApiClientError.unsuccessful }
-                person.moderatedCommunities.value_?.removeAll(where: { $0.id == communityId })
-            }
-        }
-        
-        return updatedModerators
     }
 }

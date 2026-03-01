@@ -83,6 +83,11 @@ struct PersonView: View {
             .onAppear {
                 preheatFeedLoader()
             }
+//            .onChange(of: person.moderatedCommunities.value_?.isEmpty) {
+//                if selectedTab == .communities && person.moderatedCommunities.value_?.isEmpty ?? false {
+//                    selectedTab = .overview
+//                }
+//            }
             .onChange(of: selectedTab) {
                 switch selectedTab {
                 case .comments: selectedContentType = .comments

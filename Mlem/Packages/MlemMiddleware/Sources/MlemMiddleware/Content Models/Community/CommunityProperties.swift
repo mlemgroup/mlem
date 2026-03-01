@@ -111,5 +111,7 @@ public struct CommunityProperties: UnifiedPropertiesProviding {
         self.instance = other.instance ?? self.instance
         self.moderators = other.moderators ?? self.moderators
         self.discussionLanguageIds = other.discussionLanguageIds ?? self.discussionLanguageIds
+        
+        let newModCount = self.moderators?.count ?? -1
     }
 }

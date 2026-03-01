@@ -79,6 +79,8 @@ struct CommunityView: View {
             .navigationBarTitleDisplayMode(.inline)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .themedGroupedBackground()
+            .environment(\.communityContext, community)
+            .environment(\.feedContext, .community)
     }
         
     @ViewBuilder
@@ -111,7 +113,7 @@ struct CommunityView: View {
                 case .posts:
                     VStack {
                         if let postFeedLoader {
-                            postsTab(community: community, postFeedLoader: postFeedLoader)
+                            postsTab(postFeedLoader: postFeedLoader)
                                 .padding(.bottom, -4)
                         }
                     }
@@ -123,14 +125,13 @@ struct CommunityView: View {
                 case .about:
                     CommunityAboutView(community: community)
                 case .moderation:
-                    moderationTab(community: community)
+                    moderationTab
                 case .details:
                     CommunityDetailsView(community: community)
                 default:
                     EmptyView()
                 }
             }
-            .environment(\.communityContext, community)
         }
         .animation(.snappy, value: showHiddenReadBanner && !showRead)
         .conditionalNavigationTitle(community.name)
@@ -168,11 +169,10 @@ struct CommunityView: View {
                 showWarningAgain: $showNsfwCommunityWarning
             )
         }
-        .environment(\.feedContext, .community)
     }
     
     @ViewBuilder
-    func postsTab(community: Community, postFeedLoader: CommunityPostFeedLoader) -> some View {
+    func postsTab(postFeedLoader: CommunityPostFeedLoader) -> some View {
         if community.removed {
             VStack(spacing: Constants.main.standardSpacing) {
                 Image(icon: .lemmy.remove)
@@ -194,14 +194,15 @@ struct CommunityView: View {
     }
 
     @ViewBuilder
-    func moderationTab(community: Community) -> some View {
+    var moderationTab: some View {
         VStack(spacing: Constants.main.standardSpacing) {
             if community.api.supports(.modlog, defaultValue: true) {
                 ModlogButtonView(community: community)
             }
 
-            ExpectedView(community.moderators) { moderators in
-                ForEach(moderators) { person in
+            VStack(spacing: Constants.main.halfSpacing) {
+                // ExpectedView causes rendering issues here
+                ForEach(community.moderators.value ?? []) { person in
                     PersonListRow(person)
                         .quickSwipes(moderatorQuickSwipes(community: community, person: person))
                 }
