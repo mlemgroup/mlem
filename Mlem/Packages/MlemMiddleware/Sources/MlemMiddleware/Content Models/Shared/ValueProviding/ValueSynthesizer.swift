@@ -15,14 +15,14 @@ public enum ValueMergeType {
     case conjunctive
 }
 
-public protocol NewMergeableValue: Equatable {
+public protocol MergeableValue: Equatable {
     /// Merges self with other using the given merge type.
     /// - Returns: result of the merged value
     func merge(with other: Self, using mergeType: ValueMergeType) -> Self
 }
 
 // extends Optional to be NewMergeableValue if wrapped value is NewMergeableValue
-extension Optional: NewMergeableValue where Wrapped: NewMergeableValue & Equatable {
+extension Optional: MergeableValue where Wrapped: MergeableValue & Equatable {
     public func merge(with other: Optional<Wrapped>, using mergeType: ValueMergeType) -> Optional<Wrapped> {
         return self.map { value in
             return other.map { otherValue in
@@ -33,7 +33,7 @@ extension Optional: NewMergeableValue where Wrapped: NewMergeableValue & Equatab
 }
 
 @Observable
-public class ValueSynthesizer<T: NewMergeableValue> {
+public class ValueSynthesizer<T: MergeableValue> {
     internal let uid: NSUUID = .init()
     internal let mergeType: ValueMergeType
     

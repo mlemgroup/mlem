@@ -59,7 +59,7 @@ extension Post {
             ),
             confirmationPrompt: showConfirmation ? "Really block this community?" : nil,
             callback: api.canInteract(appState: appState)
-            ? { @MainActor in community.shimToggleBlocked(feedback: feedback) }
+            ? { @MainActor in community.toggleBlocked(feedback: feedback) }
             : nil
         )
     }

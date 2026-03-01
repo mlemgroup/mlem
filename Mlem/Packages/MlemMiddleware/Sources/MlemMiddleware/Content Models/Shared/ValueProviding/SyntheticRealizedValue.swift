@@ -8,7 +8,7 @@
 import Observation
 
 @Observable
-public class SyntheticRealizedValue<T: NewMergeableValue>: ValueSynthesizer<T>, RealizedValueProviding {
+public class SyntheticRealizedValue<T: MergeableValue>: ValueSynthesizer<T>, RealizedValueProviding {
     public var value: T? { synthesize() }
     public var realizedValue: T { synthesize() }
 }

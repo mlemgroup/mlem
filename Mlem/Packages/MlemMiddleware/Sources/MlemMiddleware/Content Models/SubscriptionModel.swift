@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct SubscriptionModel: Hashable, NewMergeableValue {
+public struct SubscriptionModel: Hashable, MergeableValue {
     // These are the values actually provided by the API.
     var actualTotal: Int
     var actualLocal: Int?
