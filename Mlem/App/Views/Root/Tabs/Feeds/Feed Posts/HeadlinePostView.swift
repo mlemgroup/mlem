@@ -78,7 +78,7 @@ struct HeadlinePostView<EmbeddedContent: View>: View {
                 
                 HeadlinePostBodyView(post: post, requireConsistentHeight: requireConsistentHeight)
                 
-                if alwaysShowCreator, communityContext == nil {
+                if alwaysShowCreator, communityContext == nil, topNavigationLink != .creator {
                     personLink
                 }
                 

@@ -239,6 +239,8 @@ extension NavigationPage {
             ExportableCommentEditorView(comment: comment, commentTreeTracker: tracker)
         case let .actionSheet(sections):
             ActionSheet(sections: sections.wrappedValue)
+        case .contextMenuSettings:
+            ContextMenuSettingsView()
         }
     }
 }

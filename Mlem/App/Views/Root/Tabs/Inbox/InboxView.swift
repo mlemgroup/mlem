@@ -16,6 +16,7 @@ struct InboxView: View {
     @Environment(HapticManager.self) var hapticManager
     @Environment(NavigationLayer.self) var navigation
     @Environment(FiltersTracker.self) var filtersTracker
+    @Environment(ToastModel.self) var toastModel
     
     @Setting(\.inbox_showRead) var showRead
     

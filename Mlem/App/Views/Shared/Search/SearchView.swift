@@ -130,6 +130,11 @@ struct SearchView: View {
                 editingRecentSearches = false
             }
             .environment(\.feedContext, .search)
+            .onChange(of: appState.firstApi) {
+                communityFilters = nil
+                personFilters = nil
+                postFilters = nil
+            }
             .task(id: appState.firstApi) { await setupFilters() }
     }
     

@@ -30,8 +30,8 @@ class PopupAnchorModel {
         }
         
         @_disfavoredOverload
-        init(title: String, isDestructive: Bool = false, callback: @escaping () -> Void) {
-            self.title = title
+        init(title: some StringProtocol, isDestructive: Bool = false, callback: @escaping () -> Void) {
+            self.title = String(title)
             self.isDestructive = isDestructive
             self.callback = callback
         }

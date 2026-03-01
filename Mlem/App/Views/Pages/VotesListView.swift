@@ -62,6 +62,7 @@ struct VotesListView: View {
         .environment(\.communityContext, target.model.community.value)
         .themedGroupedBackground()
         .navigationTitle("Votes")
+        .navigationBarTitleDisplayMode(.inline)
     }
     
     @ViewBuilder

@@ -86,7 +86,7 @@ struct LargePostView: View {
                 
                 LargePostBodyView(post: post, isPostPage: isPostPage, shouldBlur: shouldBlur)
                 
-                if (alwaysShowCreator && communityContext == nil) || isPostPage {
+                if (alwaysShowCreator && communityContext == nil && topNavigationLink != .creator) || isPostPage {
                     personLink
                 }
                 

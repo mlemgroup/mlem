@@ -2801,6 +2801,26 @@
         }
       }
     },
+    "Customize" : {
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customise"
+          }
+        }
+      }
+    },
+    "Customize Context Menu" : {
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customise Context Menu"
+          }
+        }
+      }
+    },
     "Customize how moderator actions are separated from regular actions in context menus." : {
       "localizations" : {
         "en-GB" : {
@@ -4204,7 +4224,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Masquer la lecture"
+            "value" : "Masquer les lus"
           }
         }
       }
@@ -4225,6 +4245,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Masquer les icônes du site web"
+          }
+        }
+      }
+    },
+    "Hiding Read" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lus masqués"
           }
         }
       }
@@ -4917,6 +4947,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Action d’appui long"
+          }
+        }
+      }
+    },
+    "Looking for something? Read posts are hidden." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous cherchez quelque chose ? Les publications lues sont masquées."
           }
         }
       }
@@ -6153,6 +6193,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lecture"
+          }
+        }
+      }
+    },
+    "Poll has ended" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le sondage est terminé"
           }
         }
       }
@@ -7918,7 +7968,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Afficher lu"
+            "value" : "Afficher les lus"
           }
         }
       }
@@ -7959,6 +8009,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Afficher les avertissements lors de l'ouverture..."
+          }
+        }
+      }
+    },
+    "Showing Read" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lus affichés"
           }
         }
       }
@@ -8953,6 +9013,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cette page ne peut pas être affichée car Cloudflare a bloqué la requête."
+          }
+        }
+      }
+    },
+    "This poll is no longer accepting votes." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ce sondage n'accepte plus de votes."
           }
         }
       }

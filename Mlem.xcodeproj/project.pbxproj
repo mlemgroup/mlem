@@ -355,6 +355,7 @@
 		03D3A1EF2BB9CA1D009DE55E /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1EE2BB9CA1D009DE55E /* MenuButton.swift */; };
 		03D3A1F12BB9D48E009DE55E /* BasicAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1F02BB9D48E009DE55E /* BasicAction.swift */; };
 		03D3A1F32BB9D49B009DE55E /* ActionGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1F22BB9D49B009DE55E /* ActionGroup.swift */; };
+		03D65D702F4B046F0041ADAF /* ContextMenuSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D65D6F2F4B046F0041ADAF /* ContextMenuSettingsView.swift */; };
 		03D8BF432DA55B6900506687 /* Icons in Frameworks */ = {isa = PBXBuildFile; productRef = 03D8BF422DA55B6900506687 /* Icons */; };
 		03DA4FB72CF115FB001C3C77 /* CommentEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B431B12C44409D001A1EB5 /* CommentEditorView.swift */; };
 		03DAEA772C64074E0064DE64 /* SubscriptionListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03DAEA762C64074E0064DE64 /* SubscriptionListItemView.swift */; };
@@ -403,8 +404,15 @@
 		6363D5C727EE196700E34822 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D5C627EE196700E34822 /* ContentView.swift */; };
 		6363D5C927EE196A00E34822 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6363D5C827EE196A00E34822 /* Assets.xcassets */; };
 		6DE1183C2A4A217400810C7E /* Profile View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DE1183B2A4A217400810C7E /* Profile View.swift */; };
+		814CEF632F44577A0090F812 /* HiddenReadBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814CEF622F44577A0090F812 /* HiddenReadBannerView.swift */; };
 		81A179BC2DDE591700B17017 /* LongPressActionSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A179BB2DDE591700B17017 /* LongPressActionSettingsView.swift */; };
 		81A179BF2DDE5BF300B17017 /* TabBarLongPressAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A179BE2DDE5BF300B17017 /* TabBarLongPressAction.swift */; };
+		81C4B4332F493C5E001406A1 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 81C4B4322F493C5E001406A1 /* InfoPlist.xcstrings */; };
+		81DE61C52F48AF44006E4C36 /* UniformTypeIdentifiers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81DE61C42F48AF44006E4C36 /* UniformTypeIdentifiers.framework */; };
+		81DE61D02F48AF44006E4C36 /* OpenInMlem.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 81DE61C32F48AF44006E4C36 /* OpenInMlem.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		81DE61DB2F48AF4C006E4C36 /* Action.js in Resources */ = {isa = PBXBuildFile; fileRef = 81DE61D62F48AF4C006E4C36 /* Action.js */; };
+		81DE61DD2F48AF4C006E4C36 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 81DE61D92F48AF4C006E4C36 /* Media.xcassets */; };
+		81DE61DE2F48AF4C006E4C36 /* ActionRequestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81DE61D72F48AF4C006E4C36 /* ActionRequestHandler.swift */; };
 		AD1B0D372A5F7A260006F554 /* Licenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1B0D362A5F7A260006F554 /* Licenses.swift */; };
 		B104A6D82A59BF3C00B3E725 /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = B104A6D72A59BF3C00B3E725 /* Nuke */; };
 		B104A6DA2A59BF3C00B3E725 /* NukeExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = B104A6D92A59BF3C00B3E725 /* NukeExtensions */; };
@@ -575,7 +583,28 @@
 			remoteGlobalIDString = 6363D5C027EE196700E34822;
 			remoteInfo = Mlem;
 		};
+		81DE61CE2F48AF44006E4C36 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6363D5B927EE196700E34822 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 81DE61C22F48AF44006E4C36;
+			remoteInfo = OpenInMlem;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		81DE61D12F48AF44006E4C36 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				81DE61D02F48AF44006E4C36 /* OpenInMlem.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0300309C2C4163C9009A65FF /* CommentTreeTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTreeTracker.swift; sourceTree = "<group>"; };
@@ -919,6 +948,7 @@
 		03D3A1EE2BB9CA1D009DE55E /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
 		03D3A1F02BB9D48E009DE55E /* BasicAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicAction.swift; sourceTree = "<group>"; };
 		03D3A1F22BB9D49B009DE55E /* ActionGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionGroup.swift; sourceTree = "<group>"; };
+		03D65D6F2F4B046F0041ADAF /* ContextMenuSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextMenuSettingsView.swift; sourceTree = "<group>"; };
 		03DAEA762C64074E0064DE64 /* SubscriptionListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionListItemView.swift; sourceTree = "<group>"; };
 		03DD69412D4FDE8900F8950D /* Person+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Person+Mock.swift"; sourceTree = "<group>"; };
 		03DD69432D4FEA0000F8950D /* PreviewModifier+SampleEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PreviewModifier+SampleEnvironment.swift"; sourceTree = "<group>"; };
@@ -963,8 +993,16 @@
 		6363D5D627EE196A00E34822 /* MlemTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MlemTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6363D5E027EE196A00E34822 /* MlemUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MlemUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DE1183B2A4A217400810C7E /* Profile View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Profile View.swift"; sourceTree = "<group>"; };
+		814CEF622F44577A0090F812 /* HiddenReadBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiddenReadBannerView.swift; sourceTree = "<group>"; };
 		81A179BB2DDE591700B17017 /* LongPressActionSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongPressActionSettingsView.swift; sourceTree = "<group>"; };
 		81A179BE2DDE5BF300B17017 /* TabBarLongPressAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarLongPressAction.swift; sourceTree = "<group>"; };
+		81C4B4322F493C5E001406A1 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
+		81DE61C32F48AF44006E4C36 /* OpenInMlem.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OpenInMlem.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		81DE61C42F48AF44006E4C36 /* UniformTypeIdentifiers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UniformTypeIdentifiers.framework; path = System/Library/Frameworks/UniformTypeIdentifiers.framework; sourceTree = SDKROOT; };
+		81DE61D62F48AF4C006E4C36 /* Action.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Action.js; sourceTree = "<group>"; };
+		81DE61D72F48AF4C006E4C36 /* ActionRequestHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionRequestHandler.swift; sourceTree = "<group>"; };
+		81DE61D82F48AF4C006E4C36 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		81DE61D92F48AF4C006E4C36 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		AD1B0D362A5F7A260006F554 /* Licenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Licenses.swift; sourceTree = "<group>"; };
 		B104A6E12A5AFC9F00B3E725 /* Mlem.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Mlem.entitlements; sourceTree = "<group>"; };
 		B1B78D632A51D53900F72485 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -1172,6 +1210,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		81DE61C02F48AF44006E4C36 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				81DE61C52F48AF44006E4C36 /* UniformTypeIdentifiers.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -1230,6 +1276,7 @@
 				03AB48542CBC0B8000567FF9 /* AccountAdvancedSettingsView.swift */,
 				03AB48582CBC14CE00567FF9 /* AccountEmailSettingsView.swift */,
 				03AB48512CBC042E00567FF9 /* AccountContentSettingsView.swift */,
+				03D65D6F2F4B046F0041ADAF /* ContextMenuSettingsView.swift */,
 				03134A572BEC1C46002662CC /* AccountListSettingsView.swift */,
 				03AD0A812CFDBFA0001EF9F7 /* AccountLocalSettingsView.swift */,
 				03AD0A832CFDC557001EF9F7 /* AccountNicknameFieldView.swift */,
@@ -1511,6 +1558,7 @@
 		037386422BDAF574007492B5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				81DE61C42F48AF44006E4C36 /* UniformTypeIdentifiers.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1715,6 +1763,7 @@
 				6363D5C327EE196700E34822 /* Mlem */,
 				6363D5D927EE196A00E34822 /* MlemTests */,
 				6363D5E327EE196A00E34822 /* MlemUITests */,
+				81DE61DA2F48AF4C006E4C36 /* OpenInMlem */,
 				6363D5C227EE196700E34822 /* Products */,
 				037386422BDAF574007492B5 /* Frameworks */,
 			);
@@ -1726,6 +1775,7 @@
 				6363D5C127EE196700E34822 /* Mlem.app */,
 				6363D5D627EE196A00E34822 /* MlemTests.xctest */,
 				6363D5E027EE196A00E34822 /* MlemUITests.xctest */,
+				81DE61C32F48AF44006E4C36 /* OpenInMlem.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1787,6 +1837,18 @@
 				6DE1183B2A4A217400810C7E /* Profile View.swift */,
 			);
 			path = Profile;
+			sourceTree = "<group>";
+		};
+		81DE61DA2F48AF4C006E4C36 /* OpenInMlem */ = {
+			isa = PBXGroup;
+			children = (
+				81DE61D62F48AF4C006E4C36 /* Action.js */,
+				81DE61D72F48AF4C006E4C36 /* ActionRequestHandler.swift */,
+				81DE61D82F48AF4C006E4C36 /* Info.plist */,
+				81DE61D92F48AF4C006E4C36 /* Media.xcassets */,
+				81C4B4322F493C5E001406A1 /* InfoPlist.xcstrings */,
+			);
+			path = OpenInMlem;
 			sourceTree = "<group>";
 		};
 		CD13CC662C5D3CA7001AF428 /* Helpers */ = {
@@ -2186,6 +2248,7 @@
 		CD7928212C73CB9B00FA712D /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				814CEF622F44577A0090F812 /* HiddenReadBannerView.swift */,
 				CD7928222C73CBA400FA712D /* TileScoreView.swift */,
 				0353948C2CA080EB00795AA5 /* FeedWelcomeView.swift */,
 				036A84542D98253400E95D50 /* UpdateBannerView.swift */,
@@ -2415,10 +2478,12 @@
 				50F830EB2A47CC4F00D67099 /* Swiftlint */,
 				6363D5BE27EE196700E34822 /* Frameworks */,
 				6363D5BF27EE196700E34822 /* Resources */,
+				81DE61D12F48AF44006E4C36 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				81DE61CF2F48AF44006E4C36 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				03DA26AC2D79F29700E66267 /* Packages */,
@@ -2495,6 +2560,25 @@
 			productReference = 6363D5E027EE196A00E34822 /* MlemUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		81DE61C22F48AF44006E4C36 /* OpenInMlem */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 81DE61D52F48AF44006E4C36 /* Build configuration list for PBXNativeTarget "OpenInMlem" */;
+			buildPhases = (
+				81DE61BF2F48AF44006E4C36 /* Sources */,
+				81DE61C02F48AF44006E4C36 /* Frameworks */,
+				81DE61C12F48AF44006E4C36 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OpenInMlem;
+			packageProductDependencies = (
+			);
+			productName = OpenInMlem;
+			productReference = 81DE61C32F48AF44006E4C36 /* OpenInMlem.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -2502,7 +2586,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1330;
+				LastSwiftUpdateCheck = 2620;
 				LastUpgradeCheck = 1610;
 				TargetAttributes = {
 					6363D5C027EE196700E34822 = {
@@ -2517,6 +2601,9 @@
 						CreatedOnToolsVersion = 13.3;
 						LastSwiftMigration = 1500;
 						TestTargetID = 6363D5C027EE196700E34822;
+					};
+					81DE61C22F48AF44006E4C36 = {
+						CreatedOnToolsVersion = 26.2;
 					};
 				};
 			};
@@ -2549,6 +2636,7 @@
 				6363D5C027EE196700E34822 /* Mlem */,
 				6363D5D527EE196A00E34822 /* MlemTests */,
 				6363D5DF27EE196A00E34822 /* MlemUITests */,
+				81DE61C22F48AF44006E4C36 /* OpenInMlem */,
 			);
 		};
 /* End PBXProject section */
@@ -2575,6 +2663,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		81DE61C12F48AF44006E4C36 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				81C4B4332F493C5E001406A1 /* InfoPlist.xcstrings in Resources */,
+				81DE61DB2F48AF4C006E4C36 /* Action.js in Resources */,
+				81DE61DD2F48AF4C006E4C36 /* Media.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2726,6 +2824,7 @@
 				039F588C2C7B574E00C61658 /* AdvancedSettingsView.swift in Sources */,
 				0320B6672C93504600D38548 /* SignUpView+Logic.swift in Sources */,
 				03E46ACD2D121C19002589DB /* HeadlinePostBodyView.swift in Sources */,
+				814CEF632F44577A0090F812 /* HiddenReadBannerView.swift in Sources */,
 				039F58882C7B531800C61658 /* SquircleLabelStyle.swift in Sources */,
 				035EDEF22C2DE94B00F51144 /* _assignIfNotEqual.swift in Sources */,
 				035EDEF32C2DE94B00F51144 /* SearchBar.swift in Sources */,
@@ -2955,6 +3054,7 @@
 				CD10FA772C7A8622008985AD /* ImageSaver.swift in Sources */,
 				03267D822BED489C009D6268 /* AvatarBannerView.swift in Sources */,
 				031CA5752E5900C800CF0C0F /* SwipeConfiguration+Extensions.swift in Sources */,
+				03D65D702F4B046F0041ADAF /* ContextMenuSettingsView.swift in Sources */,
 				03500C2D2BF7FC2500CAA076 /* ToastView.swift in Sources */,
 				0311ADB92E4E0E0800EC3120 /* VisitAgainView.swift in Sources */,
 				CDB95FCD2EBD3230008669D9 /* SmallOverlayButtonLabel.swift in Sources */,
@@ -3151,6 +3251,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		81DE61BF2F48AF44006E4C36 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				81DE61DE2F48AF4C006E4C36 /* ActionRequestHandler.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -3163,6 +3271,11 @@
 			isa = PBXTargetDependency;
 			target = 6363D5C027EE196700E34822 /* Mlem */;
 			targetProxy = 6363D5E127EE196A00E34822 /* PBXContainerItemProxy */;
+		};
+		81DE61CF2F48AF44006E4C36 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 81DE61C22F48AF44006E4C36 /* OpenInMlem */;
+			targetProxy = 81DE61CE2F48AF44006E4C36 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -3310,7 +3423,6 @@
 				INFOPLIST_KEY_CFBundleDisplayName = Mlem;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
-				INFOPLIST_KEY_NSFaceIDUsageDescription = "Mlem requires Face ID permissions for app locking feature.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -3356,8 +3468,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Mlem/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Mlem;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
-				INFOPLIST_KEY_NSFaceIDUsageDescription = "Mlem requires Face ID permissions for app locking feature.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -3467,6 +3579,85 @@
 			};
 			name = Release;
 		};
+		81DE61D22F48AF44006E4C36 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = ActionIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = "local build";
+				DEVELOPMENT_TEAM = 8B9GNJW88W;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = OpenInMlem/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Open in Mlem";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 2.4.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hanners.Mlem.OpenUrlInMlem;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		81DE61D32F48AF44006E4C36 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = ActionIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = "local build";
+				DEVELOPMENT_TEAM = 8B9GNJW88W;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = OpenInMlem/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Open in Mlem";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 2.4.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hanners.Mlem.OpenUrlInMlem;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -3502,6 +3693,15 @@
 			buildConfigurations = (
 				6363D5F127EE196A00E34822 /* Debug */,
 				6363D5F227EE196A00E34822 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		81DE61D52F48AF44006E4C36 /* Build configuration list for PBXNativeTarget "OpenInMlem" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				81DE61D22F48AF44006E4C36 /* Debug */,
+				81DE61D32F48AF44006E4C36 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

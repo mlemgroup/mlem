@@ -60,6 +60,12 @@ struct UpdateBannerView: View {
                 }
             }
         }
+        .onChange(of: navigation.path) {
+            if case .post(let post, _, _, _) = navigation.path.last,
+               post.allResolvableUrls.contains(url) {
+                dismiss()
+            }
+        }
     }
     
     func dismiss() {

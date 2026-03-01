@@ -70,7 +70,7 @@ public class SubscriptionList {
             by: { alphabeticCategoryForCommunity($0) }
         )
         for section in alphabeticSectionsGrouping {
-            alphabeticSections[section.key] = section.value.sorted(by: { $0.name < $1.name })
+            alphabeticSections[section.key] = section.value.sorted(by: self.sortPredicate)
         }
         
         self.alphabeticSections = alphabeticSections
@@ -85,11 +85,11 @@ public class SubscriptionList {
             if section.value.count == 1, let community = section.value.first {
                 otherSection.append(community)
             } else {
-                instanceSections[section.key] = section.value.sorted(by: { $0.name < $1.name })
+                instanceSections[section.key] = section.value.sorted(by: self.sortPredicate)
             }
         }
         if !otherSection.isEmpty {
-            instanceSections[nil] = otherSection.sorted(by: { $0.name < $1.name })
+            instanceSections[nil] = otherSection.sorted(by: self.sortPredicate)
         }
         self.instanceSections = instanceSections
         
@@ -105,7 +105,7 @@ public class SubscriptionList {
             if isFavorited(community) != community.shouldBeFavorited {
                 if community.shouldBeFavorited {
                     favoriteIDs.insert(community.id)
-                    favorites.sortedInsert(community) { $0.name < community.name }
+                    favorites.sortedInsert(community, by: self.sortPredicate)
                 } else {
                     favoriteIDs.remove(community.id)
                     favorites.removeFirst { $0 === community }
@@ -121,7 +121,7 @@ public class SubscriptionList {
         
         let alphabeticCategory = alphabeticCategoryForCommunity(community)
         if alphabeticSections.keys.contains(alphabeticCategory) {
-            alphabeticSections[alphabeticCategory]?.sortedInsert(community) { $0.name < community.name }
+            alphabeticSections[alphabeticCategory]?.sortedInsert(community, by: self.sortPredicate)
         } else {
             alphabeticSections[alphabeticCategory] = [community]
         }
@@ -133,10 +133,10 @@ public class SubscriptionList {
         
         if hostExists {
             if hostCategoryExists {
-                instanceSections[community.host]?.sortedInsert(community) { $0.name < community.name }
+                instanceSections[community.host]?.sortedInsert(community, by: self.sortPredicate)
             } else {
                 if let otherCommunity = instanceSections[nil]?.removeFirst(where: { $0.host == community.host }) {
-                    instanceSections[community.host] = [community, otherCommunity].sorted { $0.name < $1.name }
+                    instanceSections[community.host] = [community, otherCommunity].sorted(by: self.sortPredicate)
                 } else {
                     instanceSections[nil, default: []].append(community)
                 }
@@ -158,15 +158,27 @@ public class SubscriptionList {
             switch items.count {
             case 1:
                 instanceSections.removeValue(forKey: community.host)
+                // Instance sections must contain at least two communities. If there is only one, it goes in
+                // the // "other" section instead. If we're removing a community from an instance section of
+                // size 2, we therefore need to move the remaining community to the "other" section.
             case 2:
                 items.removeFirst { $0 === community }
-                instanceSections[nil, default: []].sortedInsert(items[0], for: { $0.name < community.name })
+                instanceSections[nil, default: []].sortedInsert(items[0], by: self.sortPredicate)
                 instanceSections.removeValue(forKey: community.host)
             default:
                 instanceSections[community.host]?.removeFirst { $0 === community }
             }
         } else {
             alphabeticSections[nil]?.removeFirst { $0 === community }
+        }
+    }
+
+    private func sortPredicate(_ first: Community, _ second: Community) -> Bool {
+        let result = first.name.localizedCompare(second.name)
+        return switch result {
+        case .orderedAscending: true
+        case .orderedDescending: false
+        case .orderedSame: first.host.localizedCompare(second.host) == .orderedAscending
         }
     }
 }

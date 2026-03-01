@@ -24,9 +24,15 @@ struct ActionSheet: View {
 
     var body: some View {
         ScrollView {
-            VStack(spacing: 0) {
+            VStack(alignment: .leading, spacing: 0) {
                 content
                     .padding(16)
+                Button("Customize", icon: .general.edit) {
+                    navigation.replace(.contextMenuSettings)
+                }
+                .font(.footnote)
+                .padding(.horizontal, 32)
+                .padding(.top, -5)
             }
         }
         .presentationBackground(.themedGroupedBackground)
