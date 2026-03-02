@@ -27,7 +27,7 @@ extension Optional: MergeableValue where Wrapped: MergeableValue & Equatable {
     /// and nil if both are nil.
     public func merge(with other: Optional<Wrapped>, using mergeType: ValueMergeType) -> Optional<Wrapped> {
         if let other {
-            return self?.merge(with: other, using: mergeType)
+            return self?.merge(with: other, using: mergeType) ?? other
         }
         return self
     }
