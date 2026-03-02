@@ -5,6 +5,9 @@
 //  Created by Sjmarf on 15/08/2024.
 //
 
+// swiftlint:disable line_length
+
+import Actions
 import Foundation
 import Icons
 import MlemMiddleware
@@ -22,6 +25,8 @@ protocol InteractionBarConfiguration: Codable, Equatable {
     var leadingSwipes: [ActionType] { get set }
     var trailingSwipes: [ActionType] { get set }
     var readouts: [ReadoutType] { get set }
+    var savedContextMenu: [ActionSeed]? { get set }
+    var contextMenu: [ActionSeed] { get set }
 
     var availableWidgets: Set<Item> { get set }
     func widgetPickerPage(_ configuration: Binding<Self>) -> SettingsPage
@@ -30,6 +35,8 @@ protocol InteractionBarConfiguration: Codable, Equatable {
     static var `default`: Self { get }
     /// Default report configuration for this type. `nil` if inapplicable.
     static var reportDefault: Self? { get }
+
+    static var availableActions: ActionSeedSections { get }
     
     init(
         leading: [Item],
@@ -37,7 +44,8 @@ protocol InteractionBarConfiguration: Codable, Equatable {
         leadingSwipes: [ActionType],
         trailingSwipes: [ActionType],
         readouts: [ReadoutType],
-        availableWidgets: Set<Item>
+        availableWidgets: Set<Item>,
+        savedContextMenu: [ActionSeed]?
     )
 }
 
@@ -51,7 +59,8 @@ extension InteractionBarConfiguration {
             leadingSwipes: types.contains(.swipe) ? other.leadingSwipes.compactMap { .init(rawValue: $0.rawValue) } : leadingSwipes,
             trailingSwipes: types.contains(.swipe) ? other.trailingSwipes.compactMap { .init(rawValue: $0.rawValue) } : trailingSwipes,
             readouts: types.contains(.bar) ? other.readouts.compactMap { .init(rawValue: $0.rawValue) } : readouts,
-            availableWidgets: types.contains(.bar) ? .init(other.availableWidgets.compactMap { $0.convert() }) : availableWidgets
+            availableWidgets: types.contains(.bar) ? .init(other.availableWidgets.compactMap { $0.convert() }) : availableWidgets,
+            savedContextMenu: types.contains(.contextMenu) ? other.savedContextMenu.map { $0.filter { Self.availableActions.all.contains($0) } } : savedContextMenu
         )
     }
     
@@ -66,7 +75,7 @@ extension InteractionBarConfiguration {
 
 // swiftlint:disable:next type_name
 enum InteractionBarConfigurationConversionType {
-    case swipe, bar
+    case swipe, bar, contextMenu
 }
 
 enum InteractionConfigurationItem<
@@ -200,3 +209,5 @@ struct MockReadoutAppearance {
     let icon: Icon
     let label: String
 }
+
+// swiftlint:enable line_length

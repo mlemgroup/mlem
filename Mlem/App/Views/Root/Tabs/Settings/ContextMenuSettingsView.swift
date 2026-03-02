@@ -24,7 +24,7 @@ struct ContextMenuSettingsView: View {
             .onDelete { offsets in
                 replyBarConfiguration.contextMenu.remove(atOffsets: offsets)
             }
-            ForEach(Array(ReplyBarConfiguration.availableActions.enumerated()), id: \.offset) { _, seeds in
+            ForEach(Array(ReplyBarConfiguration.availableActions.sections.enumerated()), id: \.offset) { _, seeds in
                 drawerActionSectionView(seeds)
             }
         }
