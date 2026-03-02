@@ -41,7 +41,7 @@ struct InstanceCommunityListView: View {
         }
         .animation(.easeOut(duration: 0.1), value: communityLoader.items.isEmpty)
         .task {
-            logger.error("\(String(describing: errorDetails))")
+            logger.error("\(String(describing: errorDetails?.errorText()))")
             if errorDetails == nil {
                 await refresh()
             }

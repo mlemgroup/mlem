@@ -24,11 +24,10 @@ public protocol MergeableValue: Equatable {
 // Allows optionals to be used as MergeableValue
 extension Optional: MergeableValue where Wrapped: MergeableValue & Equatable {
     public func merge(with other: Optional<Wrapped>, using mergeType: ValueMergeType) -> Optional<Wrapped> {
-        return self.map { value in
-            return other.map { otherValue in
-                return value.merge(with: otherValue, using: mergeType)
-            } ?? value
-        } ?? other
+        if let other {
+            return self?.merge(with: other, using: mergeType)
+        }
+        return self
     }
 }
 
