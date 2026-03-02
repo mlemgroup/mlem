@@ -33,7 +33,7 @@ private struct InboxNotificationContextMenuViewModifier: ViewModifier {
     }
 
     var sheetSections: [ActionSheetSection] {
-        ReplyBarConfiguration.availableActions.map { seeds in
+        ReplyBarConfiguration.availableActions.sections.map { seeds in
             .init(actions: self.createActions(seeds: seeds))
         }
     }

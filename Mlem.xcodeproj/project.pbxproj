@@ -356,6 +356,7 @@
 		03D3A1F12BB9D48E009DE55E /* BasicAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1F02BB9D48E009DE55E /* BasicAction.swift */; };
 		03D3A1F32BB9D49B009DE55E /* ActionGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1F22BB9D49B009DE55E /* ActionGroup.swift */; };
 		03D65D702F4B046F0041ADAF /* ContextMenuSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D65D6F2F4B046F0041ADAF /* ContextMenuSettingsView.swift */; };
+		03D662A52F5377630041ADAF /* ActionSeedSections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D662A42F5377630041ADAF /* ActionSeedSections.swift */; };
 		03D8BF432DA55B6900506687 /* Icons in Frameworks */ = {isa = PBXBuildFile; productRef = 03D8BF422DA55B6900506687 /* Icons */; };
 		03DA4FB72CF115FB001C3C77 /* CommentEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B431B12C44409D001A1EB5 /* CommentEditorView.swift */; };
 		03DAEA772C64074E0064DE64 /* SubscriptionListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03DAEA762C64074E0064DE64 /* SubscriptionListItemView.swift */; };
@@ -949,6 +950,7 @@
 		03D3A1F02BB9D48E009DE55E /* BasicAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicAction.swift; sourceTree = "<group>"; };
 		03D3A1F22BB9D49B009DE55E /* ActionGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionGroup.swift; sourceTree = "<group>"; };
 		03D65D6F2F4B046F0041ADAF /* ContextMenuSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextMenuSettingsView.swift; sourceTree = "<group>"; };
+		03D662A42F5377630041ADAF /* ActionSeedSections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSeedSections.swift; sourceTree = "<group>"; };
 		03DAEA762C64074E0064DE64 /* SubscriptionListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionListItemView.swift; sourceTree = "<group>"; };
 		03DD69412D4FDE8900F8950D /* Person+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Person+Mock.swift"; sourceTree = "<group>"; };
 		03DD69432D4FEA0000F8950D /* PreviewModifier+SampleEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PreviewModifier+SampleEnvironment.swift"; sourceTree = "<group>"; };
@@ -1670,6 +1672,7 @@
 				03AF91E42C1C61FA00E56644 /* PostBarConfiguration.swift */,
 				033F84BC2C2ACC5F002E3EDF /* CommentBarConfiguration.swift */,
 				032C32172C36F70300595286 /* ReplyBarConfiguration.swift */,
+				03D662A42F5377630041ADAF /* ActionSeedSections.swift */,
 			);
 			path = Interaction;
 			sourceTree = "<group>";
@@ -2751,6 +2754,7 @@
 				CD1DF63E2D387E8500F7851E /* MediaView+Views.swift in Sources */,
 				03FE14042BF93FDD00A8377F /* ErrorDetails.swift in Sources */,
 				0353948B2CA076D000795AA5 /* InboxView+Views.swift in Sources */,
+				03D662A52F5377630041ADAF /* ActionSeedSections.swift in Sources */,
 				03BF11CC2D404F2C00CC1F66 /* CommentMaximumDepthSettingsView.swift in Sources */,
 				0389DDD12C39E1030005B808 /* InstanceListRowBody.swift in Sources */,
 				0305EBAA2D32B3B80066E5AD /* ModlogView+Logic.swift in Sources */,

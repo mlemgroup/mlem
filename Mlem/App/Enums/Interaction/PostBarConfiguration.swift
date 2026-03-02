@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 14/06/2024.
 //
 
+import Actions
 import Foundation
 import MlemMiddleware
 import SwiftUI
@@ -156,7 +157,8 @@ struct PostBarConfiguration: InteractionBarConfiguration {
     var readouts: [ReadoutType]
     var leadingSwipes: [ActionType]
     var trailingSwipes: [ActionType]
-    
+    var savedContextMenu: [ActionSeed]?
+
     var availableWidgets: Set<Item>
     func widgetPickerPage(_ configuration: Binding<Self>) -> SettingsPage { .postBarWidgetPicker(configuration) }
     
@@ -166,7 +168,8 @@ struct PostBarConfiguration: InteractionBarConfiguration {
         leadingSwipes: [ActionType],
         trailingSwipes: [ActionType],
         readouts: [ReadoutType],
-        availableWidgets: Set<Item>
+        availableWidgets: Set<Item>,
+        savedContextMenu: [ActionSeed]?
     ) {
         self.leading = leading
         self.trailing = trailing
@@ -174,6 +177,7 @@ struct PostBarConfiguration: InteractionBarConfiguration {
         self.trailingSwipes = trailingSwipes
         self.readouts = readouts
         self.availableWidgets = availableWidgets
+        self.savedContextMenu = savedContextMenu
     }
     
     init(from decoder: any Decoder) throws {
@@ -185,6 +189,13 @@ struct PostBarConfiguration: InteractionBarConfiguration {
         self.readouts = try container.decodeIfPresent([ReadoutType].self, forKey: .readouts) ?? [.created, .comment]
         self.availableWidgets = try container.decodeIfPresent(Set<Item>.self, forKey: .availableWidgets) ??
             .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) })
+
+        if let contextMenuKeys = try container.decodeIfPresent([String].self, forKey: .savedContextMenu) {
+            let allActions = Self.availableActions.all
+            self.savedContextMenu = contextMenuKeys.compactMap { key in allActions.first(where: {$0.key == key}) }
+        } else {
+            self.savedContextMenu = nil
+        }
     }
     
     static var `default`: Self {
@@ -194,7 +205,8 @@ struct PostBarConfiguration: InteractionBarConfiguration {
             leadingSwipes: [.upvote, .downvote],
             trailingSwipes: [.save, .reply],
             readouts: [.created, .comment],
-            availableWidgets: .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) })
+            availableWidgets: .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) }),
+            savedContextMenu: nil
         )
     }
     
@@ -205,8 +217,52 @@ struct PostBarConfiguration: InteractionBarConfiguration {
             leadingSwipes: [.upvote, .downvote],
             trailingSwipes: [.save, .reply],
             readouts: [.upvote, .downvote, .created, .comment],
-            availableWidgets: .init(ActionType.defaultReportWidgets.map { .action($0) })
+            availableWidgets: .init(ActionType.defaultReportWidgets.map { .action($0) }),
+            savedContextMenu: nil
         )
+    }
+
+    var contextMenu: [ActionSeed] {
+        get {
+            savedContextMenu ?? [.selectText, .share, .blockCreator, .report, .edit, .delete, .remove, .banCreator, .resolveReport]
+        }
+        set {
+            savedContextMenu = newValue
+        }
+    }
+
+    static var availableActions: ActionSeedSections { .init(sections: [
+            [
+                .upvote,
+                .downvote,
+                .save,
+                .reply,
+                .selectText,
+                .share,
+                .hide,
+                .createImage,
+                .report,
+                .edit,
+                .delete
+            ],
+            [
+                .blockCreator,
+                .copyAuthorName,
+                .openCreatorModlog,
+                .sendCreatorMessage
+            ],
+            [
+                .pin,
+                .lock,
+                .markNsfw,
+                .viewVotes,
+                .remove,
+                .banCreator,
+                .purge,
+                .purgeCreator,
+                .resolveReport
+            ]
+        ])
     }
     
     static var reportDefault: Self? { .reportDefault_ }

@@ -310,7 +310,8 @@ extension InteractionBarEditorView {
             leadingSwipes: configuration.leadingSwipes,
             trailingSwipes: configuration.trailingSwipes,
             readouts: configuration.readouts,
-            availableWidgets: configuration.availableWidgets
+            availableWidgets: configuration.availableWidgets,
+            savedContextMenu: configuration.savedContextMenu
         )
     }
     
