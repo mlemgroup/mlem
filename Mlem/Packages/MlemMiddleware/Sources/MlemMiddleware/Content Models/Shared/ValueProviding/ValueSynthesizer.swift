@@ -23,6 +23,8 @@ public protocol MergeableValue: Equatable {
 
 // Allows optionals to be used as MergeableValue
 extension Optional: MergeableValue where Wrapped: MergeableValue & Equatable {
+    /// If both self and other are present, returns the result of merging them; otherwise returns whichever value is present,
+    /// and nil if both are nil.
     public func merge(with other: Optional<Wrapped>, using mergeType: ValueMergeType) -> Optional<Wrapped> {
         if let other {
             return self?.merge(with: other, using: mergeType)
