@@ -12,6 +12,10 @@ enum SettingsPage: Hashable {
     enum ContentActionType: Hashable {
         case post, comment, reply, postReport, commentReport
     }
+
+    enum SwipeActionSettingType: Hashable {
+        case post, comment, reply, postReport, commentReport, community
+    }
     
     case root
     case accounts, account
@@ -33,8 +37,7 @@ enum SettingsPage: Hashable {
     case inboxBadge
     case about, advanced, developer, errorLog
     case interactionBar(ContentActionType)
-    case swipeActions(ContentActionType)
-    case newSwipeActions
+    case swipeActions(SwipeActionSettingType)
     case postBarWidgetPicker(HashWrapper<Binding<PostBarConfiguration>>)
     case commentBarWidgetPicker(HashWrapper<Binding<CommentBarConfiguration>>)
     case replyBarWidgetPicker(HashWrapper<Binding<ReplyBarConfiguration>>)
@@ -157,20 +160,6 @@ enum SettingsPage: Hashable {
             LongPressActionSettingsView()
         case .inboxBadge:
             InboxBadgeSettingsView()
-        case .newSwipeActions:
-            NewSwipeActionEditorView(
-                configuration: .init(
-                    get: {
-                        Settings.get(\.interactionBar_community).swipes
-                    }, set: {
-                        var configuration = Settings.get(\.interactionBar_community)
-                        configuration.swipes = $0
-                        Settings.set(\.interactionBar_community, to: configuration)
-                    }
-                ),
-                onReset: {
-                        Settings.set(\.interactionBar_community, to: .init())
-                })
         case let .swipeActions(type):
             switch type {
             case .post:
@@ -183,6 +172,20 @@ enum SettingsPage: Hashable {
                 SwipeActionEditorView(setting: \.interactionBar_postReport, isReport: true)
             case .commentReport:
                 SwipeActionEditorView(setting: \.interactionBar_commentReport, isReport: true)
+            case .community:
+                NewSwipeActionEditorView(
+                    configuration: .init(
+                        get: {
+                            Settings.get(\.interactionBar_community).swipes
+                        }, set: {
+                            var configuration = Settings.get(\.interactionBar_community)
+                            configuration.swipes = $0
+                            Settings.set(\.interactionBar_community, to: configuration)
+                        }
+                    ),
+                    onReset: {
+                            Settings.set(\.interactionBar_community, to: .init())
+                    })
             }
         case let .interactionBar(type):
             switch type {
