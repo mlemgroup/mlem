@@ -158,7 +158,19 @@ enum SettingsPage: Hashable {
         case .inboxBadge:
             InboxBadgeSettingsView()
         case .newSwipeActions:
-            NewSwipeActionEditorView()
+            NewSwipeActionEditorView(
+                configuration: .init(
+                    get: {
+                        Settings.get(\.interactionBar_community).swipes
+                    }, set: {
+                        var configuration = Settings.get(\.interactionBar_community)
+                        configuration.swipes = $0
+                        Settings.set(\.interactionBar_community, to: configuration)
+                    }
+                ),
+                onReset: {
+                        Settings.set(\.interactionBar_community, to: .init())
+                })
         case let .swipeActions(type):
             switch type {
             case .post:

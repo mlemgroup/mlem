@@ -9,23 +9,22 @@ import Actions
 import SwiftUI
 
 struct NewSwipeActionEditorView: View {
-    @Setting(\.interactionBar_community) var configuration
-    
+    @Binding var configuration: ActionSeedSwipeConfiguration
+    let onReset: () -> Void
+
     var body: some View {
         Form {
             ActionListView(
                 title: "Left",
-                actions: Binding(get: { configuration.swipes.leading }, set: { configuration.swipes.leading = $0 }),
+                actions: Binding(get: { configuration.leading }, set: { configuration.leading = $0 }),
                 allActions: CommunityActionConfiguration.availableActions.all
             )
             ActionListView(
                 title: "Right",
-                actions: Binding(get: { configuration.swipes.trailing }, set: { configuration.swipes.trailing = $0 }),
+                actions: Binding(get: { configuration.trailing }, set: { configuration.trailing = $0 }),
                 allActions: CommunityActionConfiguration.availableActions.all
             )
-            Button("Reset") {
-                configuration = .init()
-            }
+            Button("Reset", action: onReset)
         }
         .environment(\.editMode, .constant(.active))
         .navigationTitle("Swipe Actions")
