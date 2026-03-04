@@ -9,22 +9,10 @@ import Actions
 import MlemMiddleware
 import SwiftUI
 
-private let seeds: [ActionSeed] = [
-    .newPost,
-    .subscribe,
-    .favorite,
-    .goToInstance,
-    .copyName,
-    .share,
-    .block,
-    .remove,
-    .purge
-]
-
 extension ActionButtons {
     init(community: any Community1Providing) {
         self.init { _ in
-            seeds.compactMap { $0.createAction(community) }
+            CommunityActionConfiguration.availableActions.all.compactMap { $0.createAction(community) }
         }
     }
 }

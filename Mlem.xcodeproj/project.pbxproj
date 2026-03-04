@@ -235,6 +235,7 @@
 		038C85D82D87696F00543F70 /* FeedToolbarOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038C85D72D87696F00543F70 /* FeedToolbarOptions.swift */; };
 		038C85E62D88337100543F70 /* CommentMockType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038C85E52D88337100543F70 /* CommentMockType.swift */; };
 		038C86572D888EC100543F70 /* CommentSortType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038C86562D888EC100543F70 /* CommentSortType+Extensions.swift */; };
+		038E1ABC2F58B9EF00D30F01 /* CommunityActionConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038E1ABB2F58B9EF00D30F01 /* CommunityActionConfiguration.swift */; };
 		0391E0F92CFF17AE0040CCA8 /* ProfileSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0391E0F82CFF17AE0040CCA8 /* ProfileSettingsView.swift */; };
 		0391E0FB2D0066240040CCA8 /* ImageUploadMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0391E0FA2D0066240040CCA8 /* ImageUploadMenu.swift */; };
 		0391E0FE2D05B2DF0040CCA8 /* AdvancedSortView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0391E0FD2D05B2DF0040CCA8 /* AdvancedSortView.swift */; };
@@ -829,6 +830,7 @@
 		038C85D72D87696F00543F70 /* FeedToolbarOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedToolbarOptions.swift; sourceTree = "<group>"; };
 		038C85E52D88337100543F70 /* CommentMockType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentMockType.swift; sourceTree = "<group>"; };
 		038C86562D888EC100543F70 /* CommentSortType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentSortType+Extensions.swift"; sourceTree = "<group>"; };
+		038E1ABB2F58B9EF00D30F01 /* CommunityActionConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityActionConfiguration.swift; sourceTree = "<group>"; };
 		0391E0F82CFF17AE0040CCA8 /* ProfileSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsView.swift; sourceTree = "<group>"; };
 		0391E0FA2D0066240040CCA8 /* ImageUploadMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUploadMenu.swift; sourceTree = "<group>"; };
 		0391E0FD2D05B2DF0040CCA8 /* AdvancedSortView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSortView.swift; sourceTree = "<group>"; };
@@ -1666,6 +1668,7 @@
 		03AF91E62C1C65AE00E56644 /* Interaction */ = {
 			isa = PBXGroup;
 			children = (
+				038E1ABB2F58B9EF00D30F01 /* CommunityActionConfiguration.swift */,
 				0397D49B2C6EA73C002C6CDC /* InteractionBarConfiguration.swift */,
 				03AF91E42C1C61FA00E56644 /* PostBarConfiguration.swift */,
 				033F84BC2C2ACC5F002E3EDF /* CommentBarConfiguration.swift */,
@@ -3146,6 +3149,7 @@
 				03F6BD9A2D501041006A425E /* SeededRandomNumberGenerator.swift in Sources */,
 				036ED6792D0AF3740018E5EA /* PinnedSortTracker.swift in Sources */,
 				CDC44A362D1CBC280030F01C /* ReadPostIndicator.swift in Sources */,
+				038E1ABC2F58B9EF00D30F01 /* CommunityActionConfiguration.swift in Sources */,
 				0353948D2CA080EB00795AA5 /* FeedWelcomeView.swift in Sources */,
 				CD950E0F2F0ED6F7002A0595 /* FeedPostView.swift in Sources */,
 				0343C0482D3AD6DB001CF709 /* Set+Extensions.swift in Sources */,
