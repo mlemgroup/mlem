@@ -34,11 +34,7 @@ extension GoToInstanceAction {
     )
 
     func createLabel(environment: EnvironmentValues) -> ActionLabel {
-        .init(
-            entity.host,
-            icon: .lemmy.instance,
-            color: .themedColorfulAccent(1)
-        )
+        Self.label.withTitle(entity.host)
     }
 }
 
