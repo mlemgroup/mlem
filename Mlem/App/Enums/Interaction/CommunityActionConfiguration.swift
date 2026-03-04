@@ -9,10 +9,15 @@ import Actions
 import Foundation
 
 struct CommunityActionConfiguration: Codable {
-    private let swipes_: ActionSeedSwipeConfiguration?
+    private var swipes_: ActionSeedSwipeConfiguration?
 
     var swipes: ActionSeedSwipeConfiguration {
-        swipes_ ?? Self.defaultSwipes
+        get {
+            swipes_ ?? Self.defaultSwipes
+        }
+        set {
+            swipes_ = newValue
+        }
     }
 
     static var availableActions: ActionSeedSections { .init(sections: [
@@ -64,8 +69,8 @@ struct CommunityActionConfiguration: Codable {
 }
 
 struct ActionSeedSwipeConfiguration: Encodable {
-    let leading: [ActionSeed]   
-    let trailing: [ActionSeed]
+    var leading: [ActionSeed]   
+    var trailing: [ActionSeed]
 
     enum CodingKeys: CodingKey {
         case leading, trailing

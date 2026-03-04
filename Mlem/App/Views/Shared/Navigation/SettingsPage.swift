@@ -34,6 +34,7 @@ enum SettingsPage: Hashable {
     case about, advanced, developer, errorLog
     case interactionBar(ContentActionType)
     case swipeActions(ContentActionType)
+    case newSwipeActions
     case postBarWidgetPicker(HashWrapper<Binding<PostBarConfiguration>>)
     case commentBarWidgetPicker(HashWrapper<Binding<CommentBarConfiguration>>)
     case replyBarWidgetPicker(HashWrapper<Binding<ReplyBarConfiguration>>)
@@ -156,6 +157,8 @@ enum SettingsPage: Hashable {
             LongPressActionSettingsView()
         case .inboxBadge:
             InboxBadgeSettingsView()
+        case .newSwipeActions:
+            NewSwipeActionEditorView()
         case let .swipeActions(type):
             switch type {
             case .post:
