@@ -33,7 +33,11 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension ShareAction {
-    static let label: ActionLabel = .init("Share...", icon: .general.share)
+    static let label: ActionLabel = .init(
+        "Share...",
+        icon: .general.share,
+        color: .themedColorfulAccent(3)
+    )
 }
 
 // MARK: - Behavior
