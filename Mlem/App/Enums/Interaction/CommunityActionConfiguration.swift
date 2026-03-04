@@ -40,6 +40,10 @@ struct CommunityActionConfiguration: Codable {
         case swipes
     }
 
+    init() {
+        self.swipes_ = nil
+    }
+
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let swipeConfigurationContainer = try? container.nestedContainer(
