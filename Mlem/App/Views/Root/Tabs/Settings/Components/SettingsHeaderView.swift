@@ -73,13 +73,14 @@ extension SettingsHeaderView {
         }
     }
     
+    @_disfavoredOverload
     init(
         title: LocalizedStringResource,
-        description: String,
+        description: some StringProtocol,
         icon: Icon
     ) where IconView == SettingsHeaderIconView {
         self.title = .init(localized: title)
-        self.description = description
+        self.description = String(description)
         self.icon = SettingsHeaderIconView(icon: icon)
     }
 }

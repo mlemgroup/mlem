@@ -12,6 +12,10 @@ enum SettingsPage: Hashable {
     enum ContentActionType: Hashable {
         case post, comment, reply, postReport, commentReport
     }
+
+    enum SwipeActionSettingType: Hashable {
+        case post, comment, reply, postReport, commentReport, community
+    }
     
     case root
     case accounts, account
@@ -26,14 +30,14 @@ enum SettingsPage: Hashable {
     case externalLinks, sharingLinks, tappableLinks
     case importExportSettings
     case theme, icon
-    case post, comment, inbox, subscriptionList
+    case post, comment, inbox, community, subscriptionList
     case tabBar, longPressAction
     case postThumbnail, postSubscriptionIndicator, postReadIndicator
     case commentMaximumDepth, commentJumpButton
     case inboxBadge
     case about, advanced, developer, errorLog
     case interactionBar(ContentActionType)
-    case swipeActions(ContentActionType)
+    case swipeActions(SwipeActionSettingType)
     case postBarWidgetPicker(HashWrapper<Binding<PostBarConfiguration>>)
     case commentBarWidgetPicker(HashWrapper<Binding<CommentBarConfiguration>>)
     case replyBarWidgetPicker(HashWrapper<Binding<ReplyBarConfiguration>>)
@@ -112,6 +116,8 @@ enum SettingsPage: Hashable {
             IconSettingsView()
         case .post:
             PostSettingsView()
+        case .community:
+            CommunitySettingsView()
         case .postThumbnail:
             PostThumbnailSettingsView()
         case .postSubscriptionIndicator:
@@ -168,6 +174,20 @@ enum SettingsPage: Hashable {
                 SwipeActionEditorView(setting: \.interactionBar_postReport, isReport: true)
             case .commentReport:
                 SwipeActionEditorView(setting: \.interactionBar_commentReport, isReport: true)
+            case .community:
+                NewSwipeActionEditorView(
+                    configuration: .init(
+                        get: {
+                            Settings.get(\.interactionBar_community).swipes
+                        }, set: {
+                            var configuration = Settings.get(\.interactionBar_community)
+                            configuration.swipes = $0
+                            Settings.set(\.interactionBar_community, to: configuration)
+                        }
+                    ),
+                    onReset: {
+                            Settings.set(\.interactionBar_community, to: .init())
+                    })
             }
         case let .interactionBar(type):
             switch type {

@@ -10,7 +10,7 @@ import Icons
 import Theming
 
 public struct ActionLabel {
-    public let title: String
+    public var title: String
     public var icon: Icon
     public var color: ThemedColor
     public var isDestructive: Bool
@@ -48,6 +48,19 @@ public struct ActionLabel {
     public func withVisibility(_ visibility: ActionVisiblity) -> ActionLabel {
         var new = self
         new.visibility = visibility
+        return new
+    }
+
+    public func withTitle(_ title: LocalizedStringResource) -> ActionLabel {
+        var new = self
+        new.title = .init(localized: title)
+        return new
+    }
+
+    @_disfavoredOverload
+    public func withTitle(_ title: some StringProtocol) -> ActionLabel {
+        var new = self
+        new.title = String(title)
         return new
     }
 }
