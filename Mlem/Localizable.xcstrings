@@ -2075,6 +2075,12 @@
         }
       }
     },
+    "Choose the default sort mode for posts and comments." : {
+
+    },
+    "Choose when Not Safe For Work content should be blurred." : {
+
+    },
     "Choose whether to show a user's account age next to their username." : {
       "localizations" : {
         "fr" : {
@@ -2084,6 +2090,12 @@
           }
         }
       }
+    },
+    "Choose whether to show a warning when opening a page that is likely to contain sensitive content." : {
+
+    },
+    "Choose whether to show community avatars on posts." : {
+
     },
     "Choose whether to use alternate interaction bar and swipe action layouts for post and comment reports in Mod Mail." : {
       "localizations" : {
@@ -2095,6 +2107,9 @@
         }
       }
     },
+    "Choose which action to perform when you tap and hold the profile icon." : {
+
+    },
     "Choose which feed is shown when the app opens." : {
       "localizations" : {
         "fr" : {
@@ -2104,6 +2119,9 @@
           }
         }
       }
+    },
+    "Choose which languages appear in your feed. Posts and comments in other languages will be hidden." : {
+
     },
     "Choose which widgets to display in your palette." : {
       "localizations" : {
@@ -2821,6 +2839,9 @@
         }
       }
     },
+    "Customize how content is displayed in your feed. Choose which types of content are blurred, and apply filters to hide posts from the feed altogether." : {
+
+    },
     "Customize how moderator actions are separated from regular actions in context menus." : {
       "localizations" : {
         "en-GB" : {
@@ -2836,6 +2857,31 @@
           }
         }
       }
+    },
+    "Customize how often Mlem plays haptic feedback." : {
+
+    },
+    "Customize how your subscription list is sorted." : {
+
+    },
+    "Customize Mlem to work best for you. Some features are tied to system-wide accessibility settings." : {
+
+    },
+    "Customize the appearance of communities." : {
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customise the appearance of communities."
+          }
+        }
+      }
+    },
+    "Customize the appearance of the tab bar." : {
+
+    },
+    "Customize the interaction bar for inbox items, and choose which types of notification are included in the tab bar badge." : {
+
     },
     "Data not available" : {
       "localizations" : {
@@ -3118,6 +3164,9 @@
           }
         }
       }
+    },
+    "Display linked media from supported hosts in-app rather than as a link." : {
+
     },
     "Display Name" : {
       "localizations" : {
@@ -4439,6 +4488,9 @@
         }
       }
     },
+    "In the Fediverse, many different links can point to the same piece of content. Choose which site to use when sharing content." : {
+
+    },
     "Inbox" : {
       "localizations" : {
         "fr" : {
@@ -4970,6 +5022,18 @@
           }
         }
       }
+    },
+    "Manage how Mlem handles links and control how images and videos are displayed." : {
+
+    },
+    "Manage how Mlem interacts with Lemmy instances and other websites." : {
+
+    },
+    "Manage settings related to content moderation." : {
+
+    },
+    "Manage your overall setup for Mlem." : {
+
     },
     "Mark Read" : {
       "localizations" : {
@@ -6650,6 +6714,9 @@
         }
       }
     },
+    "Read posts are shown with dimmed title text. If you like, you can choose an additional way of indicating read status." : {
+
+    },
     "Really add NSFW tag?" : {
       "localizations" : {
         "fr" : {
@@ -8202,6 +8269,9 @@
           }
         }
       }
+    },
+    "Some users set animated media as their avatar. Control whether these avatars should play their animations." : {
+
     },
     "Sort" : {
       "localizations" : {

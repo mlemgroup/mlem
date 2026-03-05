@@ -30,7 +30,7 @@ enum SettingsPage: Hashable {
     case externalLinks, sharingLinks, tappableLinks
     case importExportSettings
     case theme, icon
-    case post, comment, inbox, subscriptionList
+    case post, comment, inbox, community, subscriptionList
     case tabBar, longPressAction
     case postThumbnail, postSubscriptionIndicator, postReadIndicator
     case commentMaximumDepth, commentJumpButton
@@ -116,6 +116,8 @@ enum SettingsPage: Hashable {
             IconSettingsView()
         case .post:
             PostSettingsView()
+        case .community:
+            CommunitySettingsView()
         case .postThumbnail:
             PostThumbnailSettingsView()
         case .postSubscriptionIndicator:
