@@ -67,7 +67,7 @@ struct CommunityView: View {
     }
     
     var body: some View {
-        content(community: community)
+        content
             .reloadOnAccountSwitch(entity: $community, isLoading: $isLoading)
             .externalApiWarning(entity: community, isLoading: isLoading)
             .task {
@@ -84,8 +84,7 @@ struct CommunityView: View {
     }
         
     @ViewBuilder
-    // swiftlint:disable:next function_body_length
-    func content(community: Community) -> some View {
+    var content: some View {
         FancyScrollView {
             HStack {
                 FeedHeaderView(
@@ -100,11 +99,11 @@ struct CommunityView: View {
                         )
                     }
                 )
-                subscribeButton(community: community)
+                subscribeButton
                     .padding(.top, Constants.main.halfSpacing)
             }
             BubblePicker(
-                tabs(community: community),
+                tabs,
                 selected: $selectedTab,
                 label: \.label
             )
@@ -226,7 +225,7 @@ struct CommunityView: View {
     }
     
     @ViewBuilder
-    func subscribeButton(community: Community) -> some View {
+    var subscribeButton: some View {
         if let subscription = community.subscription.value,
            let updateSubscribed = community.updateSubscribed {
             Button {
@@ -254,7 +253,7 @@ struct CommunityView: View {
         }
     }
     
-    func tabs(community: Community) -> [Tab] {
+    var tabs: [Tab] {
         var output: [Tab] = [.posts, .moderation, .details]
         let canModerate: Bool
         if !appState.firstApi.supports(.editCommunityDescription, defaultValue: false) {
