@@ -42,36 +42,43 @@ class ConnectionMultiplexer<Candidate> {
         }
 
         let ongoingTask: Task<T, Error> = Task {
-            try await withThrowingTaskGroup(of: (Candidate, Result<T, Error>).self) { group in
-                for candidate in self.getCandidates() {
+            try await withThrowingTaskGroup(of: (Int, Result<T, Error>).self) { group in
+
+                let candidates = self.getCandidates()
+
+                for (index, candidate) in candidates.enumerated() {
                     group.addTask {
                         do {
                             let response = try await callback(candidate)
-                            return (candidate, .success(response))
+                            return (index, .success(response))
                         } catch {
-                            return (candidate, .failure(error))
+                            return (index, .failure(error))
                         }
                     }
                 }
                 
+                var results: [(Int, Result<T, Error>)] = []
                 while !group.isEmpty {
                     guard let result = try? await group.next() else {
                         assertionFailure()
                         continue
                     }
+                    results.append(result)
+                }
+
+                results.sort(by: { $0.0 < $1.0 })
+                
+                // Find first successful result in candidate order
+                for (candidate, result) in zip(candidates, results.map(\.1)) {
                     do {
-                        let value = try result.1.get()
-                        // Cancel all other tasks once any one task succeeds
-                        group.cancelAll()
-                        log.info("Selected \(String(describing: result.0))")
-                        self.selectedCandidate = result.0
+                        let value = try result.get()
+                        print("Selected \(String(describing: candidate))")
+                        self.selectedCandidate = candidate
                         self.ongoingTask = nil
                         return value
                     } catch ApiClientError.serverError(404), ApiClientError.featureUnsupported {
                         // no-op
                     } catch {
-                        // We *could* set the `connection` here, but I'd rather not just incase some other
-                        // 404-equivalent error is thrown that we haven't accounted for
                         throw error
                     }
                 }
