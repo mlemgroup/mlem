@@ -14,6 +14,7 @@ struct CommunityListRow<Content2: View>: View {
     
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
+    @Setting(\.interactionBar_community) var communityActionConfiguration
     
     let community: Community
     let content: Content
@@ -55,7 +56,7 @@ struct CommunityListRow<Content2: View>: View {
         .background(.themedSecondaryGroupedBackground)
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
         .contextMenu(community: community)
-        .quickSwipes(leading: [], trailing: [SubscribeAction(entity: community), FavoriteAction(entity: community)])
+        .quickSwipes(community: community, configuration: communityActionConfiguration)
         .popupAnchor()
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }

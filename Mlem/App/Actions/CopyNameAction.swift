@@ -55,7 +55,8 @@ extension CopyNameAction {
     static func createLabel(relationship: Relationship) -> ActionLabel {
         .init(
             relationship == .identity ? "Copy Name" : "Copy Username",
-            icon: .general.copy
+            icon: .general.copy,
+            color: .themedColorfulAccent(4)
         )
     }
 
