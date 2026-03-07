@@ -9,30 +9,26 @@ import Actions
 import MlemMiddleware
 import SwiftUI
 
-private let seeds: [ActionSeed] = [
-    .newPost,
-    .subscribe,
-    .favorite,
-    .goToInstance,
-    .copyName,
-    .share,
-    .block,
-    .remove,
-    .purge
-]
-
 extension ActionButtons {
-    init(community: any Community1Providing) {
+    init(community: Community) {
         self.init { _ in
-            seeds.compactMap { $0.createAction(community) }
+            CommunityActionConfiguration.availableActions.all.compactMap { $0.createAction(community) }
         }
     }
 }
 
 extension View {
-    func contextMenu(community: any Community1Providing) -> some View {
+    func contextMenu(community: Community) -> some View {
         contextMenu {
             ActionButtons(community: community)
         }
+    }
+
+    @ViewBuilder
+    func quickSwipes(community: Community, configuration: CommunityActionConfiguration) -> some View {
+        quickSwipes(
+            leading: configuration.swipes.leading.compactMap { $0.createAction(community) },
+            trailing: configuration.swipes.trailing.compactMap { $0.createAction(community) }
+        )
     }
 }

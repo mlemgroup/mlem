@@ -88,7 +88,7 @@ struct SettingsView: View {
                     .gradientTint(.themedCommentAccent)
                 NavigationLink("Inbox", icon: .lemmy.inbox, destination: .settings(.inbox))
                     .gradientTint(.themedInbox)
-                NavigationLink("Subscription List", icon: .lemmy.subscriptionList, destination: .settings(.subscriptionList))
+                NavigationLink("Communities", icon: .lemmy.community, destination: .settings(.community))
                     .gradientTint(.themedCommunityAccent)
                 NavigationLink("Tab Bar", icon: .settings.tabBar, destination: .settings(.tabBar))
                     .gradientTint(.themedColorfulAccent(5))

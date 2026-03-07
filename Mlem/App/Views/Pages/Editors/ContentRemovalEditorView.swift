@@ -22,7 +22,7 @@ struct ContentRemovalEditorView: View {
     let target: any RemovableProviding
     @State var mode: Mode
     
-    @State var community: ExpectedValue<(any Community)>?
+    @State var community: ExpectedValue<(Community)>?
     @State var reason: String = ""
     @FocusState var reasonFocused: Bool
     @State var presentationSelection: PresentationDetent = .large

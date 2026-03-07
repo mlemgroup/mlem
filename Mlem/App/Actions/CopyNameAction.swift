@@ -25,7 +25,7 @@ extension ActionSeed {
         switch entity {
         case let entity as Person:
             CopyNameAction(text: entity.fullNameWithPrefix, relationship: .identity)
-        case let entity as any Community1Providing:
+        case let entity as Community:
             CopyNameAction(text: entity.fullNameWithPrefix, relationship: .identity)
         default:
             nil
@@ -55,7 +55,8 @@ extension CopyNameAction {
     static func createLabel(relationship: Relationship) -> ActionLabel {
         .init(
             relationship == .identity ? "Copy Name" : "Copy Username",
-            icon: .general.copy
+            icon: .general.copy,
+            color: .themedColorfulAccent(4)
         )
     }
 

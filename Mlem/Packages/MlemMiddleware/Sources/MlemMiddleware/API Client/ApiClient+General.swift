@@ -84,7 +84,7 @@ public extension ApiClient {
         case let .post(post):
             await caches.post.getModel(api: self, from: .post2(post))
         case let .community(community):
-            await caches.community2.getModel(api: self, from: community)
+            await caches.community.getModel(api: self, from: .community2(community))
         case let .person(person):
             await caches.person.getModel(api: self, from: .person2(person))
         }
@@ -113,11 +113,11 @@ public extension ApiClient {
         }
     }
     
-    func getBlocked() async throws -> (people: [Person], communities: [Community1], instances: [Instance1]) {
+    func getBlocked() async throws -> (people: [Person], communities: [Community], instances: [Instance1]) {
         let snapshots = try await repository.getBlocked()
         return await (
             people: caches.person.getModels(api: self, from: snapshots.people.map { .person1($0) }),
-            communities: caches.community1.getModels(api: self, from: snapshots.communities),
+            communities: caches.community.getModels(api: self, from: snapshots.communities.map { .community1($0) }),
             instances: caches.instance1.getModels(api: self, from: snapshots.instances)
         )
     }

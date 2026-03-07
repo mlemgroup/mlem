@@ -20,7 +20,7 @@ public final class Person:
     Sharable,
     FeedLoadable,
     Profile2Providing {
-    // TODO: UnifiedCommunity unify ProfileProviding
+    // TODO: UnifiedCommunity, UnifiedInstance unify ProfileProviding
     public typealias Properties = PersonProperties
     
     public var api: ApiClient
@@ -64,7 +64,7 @@ public final class Person:
     public var postCount: ExpectedValue<Int>
     public var commentCount: ExpectedValue<Int>
     public var instance: ExpectedValue<(any Instance)>
-    public var moderatedCommunities: ExpectedValue<[any Community]>
+    public var moderatedCommunities: ExpectedValue<[Community]>
     
     public var email: ExpectedValue<String?>
     public var showNsfw: ExpectedValue<Bool>
@@ -194,8 +194,7 @@ public final class Person:
         updateIfChanged(\.commentCount.value_, properties.commentCount)
         
         setIfNil(\.instance.value_, properties.instance)
-        // TODO: Unified Community updateIfChanged (doesn't currently play nice with protocols)
-        setIfNil(\.moderatedCommunities.value_, properties.moderatedCommunities)
+        updateIfChanged(\.moderatedCommunities.value_, properties.moderatedCommunities)
         
         updateIfChanged(\.email.value_, properties.email)
         updateIfChanged(\.showNsfw.value_, properties.showNsfw)
@@ -275,7 +274,7 @@ public extension Person {
         knownCommunityBanStates[id]
     }
     
-    func isBannedFromCommunity(_ community: any Community) -> Bool? {
+    func isBannedFromCommunity(_ community: Community) -> Bool? {
         isBannedFromCommunity(id: community.id)
     }
     
@@ -311,7 +310,7 @@ public extension Person {
     }
     
     /// Returns true if this person can perform moderator actions on the target person
-    func canModerate(_ person: Person, in community: any Community3Providing) -> Bool {
+    func canModerate(_ person: Person, communityModerators: [Person]) -> Bool {
         // admins can moderate anybody but a higher-ranking admin
         if isAdmin.value ?? false {
             if person.isAdmin.value ?? false {
@@ -321,12 +320,12 @@ public extension Person {
         }
         
         // if this person is not a mod, can't moderate
-        guard let myModIndex = community.moderators.firstIndex(where: { $0.id == id }) else {
+        guard let myModIndex = communityModerators.firstIndex(where: { $0.id == id }) else {
             return false
         }
         
         // if target is a mod, check that this person outranks them
-        if let targetModIndex = community.moderators.firstIndex(where: { $0.id == person.id }) {
+        if let targetModIndex = communityModerators.firstIndex(where: { $0.id == person.id }) {
             return myModIndex < targetModIndex
         }
         
@@ -342,7 +341,7 @@ public extension Person {
     // Get Content
     
     func getContent(
-        community: (any Community)? = nil,
+        community: Community? = nil,
         sort: PostSortType = .new,
         page: Int,
         limit: Int,
@@ -360,7 +359,7 @@ public extension Person {
     
     // MARK: Ban
     
-    func ban(from community: any Community, removeContent: Bool, reason: String?, expires: Date?) async throws {
+    func ban(from community: Community, removeContent: Bool, reason: String?, expires: Date?) async throws {
         try await api.banPersonFromCommunity(
             personId: id,
             communityId: community.id,
@@ -371,7 +370,7 @@ public extension Person {
         )
     }
     
-    func unban(from community: any Community, reason: String?) async throws {
+    func unban(from community: Community, reason: String?) async throws {
         try await api.banPersonFromCommunity(
             personId: id,
             communityId: community.id,
@@ -568,7 +567,7 @@ public extension Person {
 public enum CommunityIdentifier {
     case id(Int)
     case actorId(ActorIdentifier)
-    case community(any Community)
+    case community(Community)
 }
 
 // MARK: Shim

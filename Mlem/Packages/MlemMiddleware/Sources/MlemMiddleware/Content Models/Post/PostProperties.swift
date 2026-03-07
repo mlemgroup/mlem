@@ -32,7 +32,7 @@ public struct PostProperties: UnifiedPropertiesProviding {
     
     // From Post2Snapshot
     var creator: Person?
-    var community: (any Community)?
+    var community: Community?
     var commentCount: Int?
     var unreadCommentCount: Int?
     var creatorIsModerator: Bool?
@@ -77,7 +77,7 @@ public struct PostProperties: UnifiedPropertiesProviding {
             newCreator.updateKnownCommunityBanState(id: snapshot1.communityId, banned: snapshot2.creatorBannedFromCommunity)
             
             creator = newCreator
-            community =  api.caches.community1.getModel(api: api, from: snapshot2.community)
+            community =  api.caches.community.getModel(api: api, from: .community1(snapshot2.community))
             commentCount = snapshot2.commentCount
             unreadCommentCount = snapshot2.unreadCommentCount
             creatorIsModerator = snapshot2.creatorIsModerator

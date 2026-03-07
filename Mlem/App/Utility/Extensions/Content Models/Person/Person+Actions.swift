@@ -9,13 +9,13 @@ import MlemMiddleware
 
 extension Person {    
     @MainActor
-    func showBanSheet(community: (any Community)?, isBannedFromCommunity: Bool, shouldBan: Bool) {
+    func showBanSheet(community: Community?, isBannedFromCommunity: Bool, shouldBan: Bool) {
         NavigationModel.main.openSheet(
             .ban(self, isBannedFromCommunity: isBannedFromCommunity, shouldBan: shouldBan, community: community)
         )
     }
     
-    func banActions(appState: AppState, community: (any Community)?, withUserLabel: Bool = false) -> [any Action] {
+    func banActions(appState: AppState, community: Community?, withUserLabel: Bool = false) -> [any Action] {
         let canBanFromCommunity: Bool
         let showBoth: Bool
         
@@ -66,7 +66,7 @@ extension Person {
         )
     }
     
-    func banFromCommunityAction(appState: AppState, community: any Community, withUserLabel: Bool = false) -> BasicAction {
+    func banFromCommunityAction(appState: AppState, community: Community, withUserLabel: Bool = false) -> BasicAction {
         let isBanned = isBannedFromCommunity(community)
         let callback: (@MainActor () -> Void)?
         if let isBanned, api.canInteract(appState: appState), community.canModerate {
@@ -113,7 +113,7 @@ extension Person {
         )
     }
     
-    func addModAction(community: any Community3Providing, isOn: Bool) -> BasicAction {
+    func addModAction(community: Community, isOn: Bool) -> BasicAction {
         let callback: (@MainActor () -> Void) = {
             Task {
                 do {

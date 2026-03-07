@@ -8,6 +8,8 @@
 import Foundation
 import os
 
+// TODO: Unified models remove
+
 // These can't go inside of StateManager because generic classes cannot store static properties
 class SemaphoreServer {
     static var value: UInt = 0

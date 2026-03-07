@@ -10,7 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct FavoriteAction: SimpleLabelAction {
-    let entity: any Community1Providing
+    let entity: Community
 }
 
 // MARK: - Configurability
@@ -18,7 +18,7 @@ struct FavoriteAction: SimpleLabelAction {
 extension ActionSeed {
     static let favorite = ActionSeed("favorite") { entity in
         switch entity {
-        case let entity as any Community1Providing: FavoriteAction(entity: entity)
+        case let entity as Community: FavoriteAction(entity: entity)
         default: nil
         }
     }
@@ -41,10 +41,7 @@ extension FavoriteAction {
     static var label: ActionLabel { favoriteLabel }
 
     func createLabel(environment: EnvironmentValues) -> ActionLabel {
-        guard let subscribed = entity.favorited_  else {
-            return Self.favoriteLabel.withVisibility(.hidden)
-        }
-        if subscribed {
+        if entity.favorited {
             return Self.unfavoriteLabel.withVisibility(visibility(environment))
         } else {
             return Self.favoriteLabel.withVisibility(visibility(environment))
@@ -52,7 +49,8 @@ extension FavoriteAction {
     }
 
     private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {
-        guard entity.api.canInteract(appState: environment.appState) else { return .hidden }
+        guard entity.api.canInteract(appState: environment.appState),
+              entity.updateFavorite != nil else { return .hidden }
         return .enabled
     }
 }
@@ -62,7 +60,7 @@ extension FavoriteAction {
 extension FavoriteAction {
     @MainActor
     func execute(environment: EnvironmentValues) {
-        guard let entity = entity as? any Community2Providing else { return }
+        guard let updateFavorite = entity.updateFavorite else { return }
         environment.hapticManager.play(haptic: .lightSuccess, tier: .low)
         if entity.favorited {
             environment.toastModel?.add(
@@ -70,7 +68,7 @@ extension FavoriteAction {
                     "Unfavorited",
                     icon: .lemmy.unfavorite,
                     callback: {
-                        entity.updateFavorite(true)
+                        updateFavorite(true)
                     },
                     color: .themedFavorite
                 )
@@ -80,6 +78,6 @@ extension FavoriteAction {
                 .basic("Favorited", icon: .lemmy.favorite, color: .themedFavorite)
             )
         }
-        entity.toggleFavorite()
+        updateFavorite(!entity.favorited)
     }
 }

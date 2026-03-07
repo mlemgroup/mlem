@@ -46,7 +46,7 @@ struct BanAction: SimpleLabelAction {
         entity.api.isAdmin && entity.api.supports(.banFromInstance, defaultValue: false)
     }
 
-    func canBanFromCommunity(community: (any Community1Providing)?) -> Bool {
+    func canBanFromCommunity(community: Community?) -> Bool {
         let supportedByApi = entity.api.supports(.banFromCommunity, defaultValue: false) && (
             entity.apiIsLocal || entity.api.supports(.banFromNonLocalCommunity, defaultValue: false)
         )

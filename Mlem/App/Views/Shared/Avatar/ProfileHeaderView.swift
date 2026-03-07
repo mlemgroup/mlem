@@ -44,7 +44,7 @@ struct ProfileHeaderView: View {
                     HStack {
                         Text(profilable?.displayName_ ?? profilable?.name ?? "")
                             .foregroundStyle(.themedPrimary)
-                        if blockedOverride ?? profilable?.blocked ?? false {
+                        if blockedOverride ?? profilable?.blockedValue ?? false {
                             Image(icon: .general.hide)
                                 .foregroundStyle(.themedSecondary)
                         }

@@ -8,7 +8,7 @@
 import Foundation
 
 @Observable
-class CommunityFetcher: Fetcher<Community2> {
+class CommunityFetcher: Fetcher<Community> {
     var query: String
     var listing: ListingType
     var sort: SearchSortType
@@ -49,7 +49,7 @@ class CommunityFetcher: Fetcher<Community2> {
 }
 
 @Observable
-public class CommunityFeedLoader: StandardFeedLoader<Community2> {
+public class CommunityFeedLoader: StandardFeedLoader<Community> {
     public var api: ApiClient
     
     // force unwrap because this should ALWAYS be a CommunityFetcher

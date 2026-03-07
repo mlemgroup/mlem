@@ -45,10 +45,11 @@ struct CommunityView: View {
     
     let visitContext: VisitHistory.VisitContext
 
-    @State var community: AnyCommunity
+    @State var community: Community
     @State private var selectedTab: Tab = .posts
     @State var postFeedLoader: CommunityPostFeedLoader?
     @State var warningPresented: Bool
+    @State var isLoading: Bool = false
     
     @State var showingConfirmation: Bool = false
     @State var newMod: Person?
@@ -56,45 +57,34 @@ struct CommunityView: View {
     @State var lastRefreshDate: Date?
     
     init(
-        community: AnyCommunity,
+        community: Community,
         visitContext: VisitHistory.VisitContext
     ) {
         @Setting(\.safety_enableNsfwCommunityWarning) var showNsfwCommunityWarning
         self.community = community
         self.visitContext = visitContext
-        self._warningPresented = .init(wrappedValue: showNsfwCommunityWarning && (community.wrappedValue.nsfw_ ?? false))
+        self._warningPresented = .init(wrappedValue: showNsfwCommunityWarning && community.nsfw)
     }
     
     var body: some View {
-        ContentLoader(model: community) { proxy in
-            if let community = proxy.entity {
-                content(community: community, contentLoaderError: proxy.error)
-                    .externalApiWarning(entity: community, isLoading: proxy.isLoading)
-                    .onChange(of: (community as? any Community2Providing)?.community2 == nil, initial: true) {
-                        if let community2 = (community as? any Community2Providing)?.community2 {
-                            logVisit(community2)
-                        }
-                    }
-            } else if let error = proxy.error {
-                ErrorView(.init(error: error))
-            } else {
-                ProgressView()
-                    .tint(.themedSecondary)
-            }
-        } upgradeOperation: { model, api in
-            try await model.upgrade(api: api, upgradeOperation: nil)
-            if let community = model.wrappedValue as? any Community {
+        content
+            .reloadOnAccountSwitch(entity: $community, isLoading: $isLoading)
+            .externalApiWarning(entity: community, isLoading: isLoading)
+            .task {
                 setupFeedLoader(community: community)
             }
-        }
-        .navigationBarTitleDisplayMode(.inline)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .themedGroupedBackground()
+            .onAppear {
+                logVisit(community)
+            }
+            .navigationBarTitleDisplayMode(.inline)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .themedGroupedBackground()
+            .environment(\.communityContext, community)
+            .environment(\.feedContext, .community)
     }
         
     @ViewBuilder
-    // swiftlint:disable:next function_body_length
-    func content(community: any Community, contentLoaderError: (any Error)?) -> some View {
+    var content: some View {
         FancyScrollView {
             HStack {
                 FeedHeaderView(
@@ -109,11 +99,11 @@ struct CommunityView: View {
                         )
                     }
                 )
-                subscribeButton(community: community)
+                subscribeButton
                     .padding(.top, Constants.main.halfSpacing)
             }
             BubblePicker(
-                tabs(community: community),
+                tabs,
                 selected: $selectedTab,
                 label: \.label
             )
@@ -122,10 +112,8 @@ struct CommunityView: View {
                 case .posts:
                     VStack {
                         if let postFeedLoader {
-                            postsTab(community: community, postFeedLoader: postFeedLoader)
+                            postsTab(postFeedLoader: postFeedLoader)
                                 .padding(.bottom, -4)
-                        } else if let error = contentLoaderError {
-                            ErrorView(.init(error: error))
                         }
                     }
                     .toolbar {
@@ -136,14 +124,13 @@ struct CommunityView: View {
                 case .about:
                     CommunityAboutView(community: community)
                 case .moderation:
-                    moderationTab(community: community)
+                    moderationTab
                 case .details:
                     CommunityDetailsView(community: community)
                 default:
                     EmptyView()
                 }
             }
-            .environment(\.communityContext, community)
         }
         .animation(.snappy, value: showHiddenReadBanner && !showRead)
         .conditionalNavigationTitle(community.name)
@@ -181,11 +168,10 @@ struct CommunityView: View {
                 showWarningAgain: $showNsfwCommunityWarning
             )
         }
-        .environment(\.feedContext, .community)
     }
     
     @ViewBuilder
-    func postsTab(community: any Community, postFeedLoader: CommunityPostFeedLoader) -> some View {
+    func postsTab(postFeedLoader: CommunityPostFeedLoader) -> some View {
         if community.removed {
             VStack(spacing: Constants.main.standardSpacing) {
                 Image(icon: .lemmy.remove)
@@ -207,14 +193,15 @@ struct CommunityView: View {
     }
 
     @ViewBuilder
-    func moderationTab(community: any Community) -> some View {
+    var moderationTab: some View {
         VStack(spacing: Constants.main.standardSpacing) {
             if community.api.supports(.modlog, defaultValue: true) {
                 ModlogButtonView(community: community)
             }
 
             VStack(spacing: Constants.main.halfSpacing) {
-                ForEach(community.moderators_ ?? []) { person in
+                // ExpectedView causes rendering issues here
+                ForEach(community.moderators.value ?? []) { person in
                     PersonListRow(person)
                         .quickSwipes(moderatorQuickSwipes(community: community, person: person))
                 }
@@ -238,33 +225,35 @@ struct CommunityView: View {
     }
     
     @ViewBuilder
-    func subscribeButton(community: any Community) -> some View {
-        let subscribed = community.subscribed_ ?? false
-        Button {
-            if let community = community as? any Community2Providing, community.api.willSendToken {
-                hapticManager.play(haptic: .gentleInfo, tier: .low)
-                community.toggleSubscribe()
+    var subscribeButton: some View {
+        if let subscription = community.subscription.value,
+           let updateSubscribed = community.updateSubscribed {
+            Button {
+                if community.api.willSendToken {
+                    hapticManager.play(haptic: .gentleInfo, tier: .low)
+                    updateSubscribed(!subscription.subscribed)
+                }
+            } label: {
+                HStack {
+                    Text(subscription.total.abbreviated)
+                    Image(icon: subscription.subscribed ? .general.success : .lemmy.personAvatar)
+                        .symbolVariant(.circle)
+                        .symbolVariant(subscription.subscribed ? .fill : .none)
+                        .symbolRenderingMode(.hierarchical)
+                }
+                .fontWeight(.semibold)
+                .padding(.vertical, 3)
+                .padding(.trailing, 6)
+                .padding(.leading, 8)
+                .background(subscription.subscribed ? .themedAccent : .themedSecondary.opacity(0.2), in: .capsule)
+                .foregroundStyle(subscription.subscribed ? .themedContrastingLabel : .themedSecondary)
             }
-        } label: {
-            HStack {
-                Text((community.subscriberCount_ ?? 0).abbreviated)
-                Image(icon: subscribed ? .general.success : .lemmy.personAvatar)
-                    .symbolVariant(.circle)
-                    .symbolVariant(subscribed ? .fill : .none)
-                    .symbolRenderingMode(.hierarchical)
-            }
-            .fontWeight(.semibold)
-            .padding(.vertical, 3)
-            .padding(.trailing, 6)
-            .padding(.leading, 8)
-            .background(subscribed ? .themedAccent : .themedSecondary.opacity(0.2), in: .capsule)
-            .foregroundStyle(subscribed ? .themedContrastingLabel : .themedSecondary)
+            .padding(.trailing, Constants.main.standardSpacing)
+            .padding(.bottom, Constants.main.halfSpacing)
         }
-        .padding(.trailing, Constants.main.standardSpacing)
-        .padding(.bottom, Constants.main.halfSpacing)
     }
     
-    func tabs(community: any Community) -> [Tab] {
+    var tabs: [Tab] {
         var output: [Tab] = [.posts, .moderation, .details]
         let canModerate: Bool
         if !appState.firstApi.supports(.editCommunityDescription, defaultValue: false) {

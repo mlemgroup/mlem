@@ -15,7 +15,7 @@ struct CompactPostView: View {
     @Setting(\.a11y_readPostIndicator) var readPostIndicator
     @Setting(\.post_showDownvotesCompact) var showDownvotesCompact
     
-    @Environment(\.communityContext) var communityContext: (any Community1Providing)?
+    @Environment(\.communityContext) var communityContext: Community?
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
     
     @ScaledMetric(relativeTo: .caption) var titleHostHeightLimit: CGFloat = 40

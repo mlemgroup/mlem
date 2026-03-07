@@ -10,7 +10,7 @@ import SwiftUI
 import Theming
 
 struct CommunityDetailsView: View {
-    let community: any Community
+    let community: Community
     
     var body: some View {
         VStack(spacing: 16) {
@@ -23,13 +23,13 @@ struct CommunityDetailsView: View {
                 VStack(spacing: Constants.main.halfSpacing) {
                     Text("Subscribers")
                         .foregroundStyle(.themedSecondary)
-                    Text(community.subscriberCount_ ?? 0, format: .number)
+                    Text(community.subscription.value?.total ?? 0, format: .number)
                         .font(.title)
                         .fontWeight(.semibold)
-                        .contentTransition(.numericText(value: Double(community.subscriberCount_ ?? 0)))
-                        .animation(.default, value: Double(community.subscriberCount_ ?? 0))
+                        .contentTransition(.numericText(value: Double(community.subscription.value?.total ?? 0)))
+                        .animation(.default, value: Double(community.subscription.value?.total ?? 0))
                     
-                    if let localSubscriberCount = community.localSubscriberCount_ {
+                    if let localSubscriberCount = community.subscription.value?.local {
                         Text(localSubscriberCountText)
                             .contentTransition(.numericText(value: Double(localSubscriberCount)))
                             .animation(.default, value: Double(localSubscriberCount))
@@ -42,14 +42,14 @@ struct CommunityDetailsView: View {
             }
 
             HStack(spacing: 16) {
-                FormReadout("Posts", value: community.postCount_ ?? 0)
+                FormReadout("Posts", value: community.postCount.value ?? 0)
                     .tint(.themedPostAccent)
-                FormReadout("Comments", value: community.commentCount_ ?? 0)
+                FormReadout("Comments", value: community.commentCount.value ?? 0)
                     .tint(.themedCommentAccent)
             }
             .frame(maxWidth: .infinity)
             
-            if let activeUserCount = community.activeUserCount_,
+            if let activeUserCount = community.activeUserCount.value,
                community.api.supports(.viewCommunityActiveUsers, defaultValue: true) {
                 ActiveUserCountView(activeUserCount: activeUserCount)
             }
@@ -58,7 +58,7 @@ struct CommunityDetailsView: View {
     }
     
     var localSubscriberCountText: String {
-        guard let count = community.localSubscriberCount_ else { return "" }
+        guard let count = community.subscription.value?.local else { return "" }
         return .init(
             localized: .init(
                 "local.subscriber.count.text",

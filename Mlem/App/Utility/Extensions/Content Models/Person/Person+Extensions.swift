@@ -12,7 +12,7 @@ extension Person {
     
     func flairs(
         interactableContext interactable: (any InteractableProviding)? = nil,
-        communityContext community: (any Community)? = nil
+        communityContext community: Community? = nil
     ) -> [PersonFlair] {
         @Setting(\.person_ageVisibility) var alwaysShowAccountAge
         
@@ -51,7 +51,7 @@ extension Person {
             }
         }
         
-        if let community, community.moderators_?.contains(where: { $0.id == id }) ?? false {
+        if let community, community.moderators.value?.contains(where: { $0.id == id }) ?? false {
             output.insert(.moderator)
         }
         

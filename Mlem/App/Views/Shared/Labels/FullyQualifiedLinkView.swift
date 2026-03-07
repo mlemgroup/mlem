@@ -26,7 +26,7 @@ struct FullyQualifiedLinkView: View {
         Button {
             if let person = entity as? Person {
                 navigation.push(.person(person))
-            } else if let community = entity as? any CommunityStubProviding {
+            } else if let community = entity as? Community {
                 navigation.push(.community(community))
             }
         } label: {
@@ -63,7 +63,7 @@ extension FullyQualifiedLinkView {
     }
     
     init(
-        _ entity: (any Community)?,
+        _ entity: Community?,
         labelStyle: FullyQualifiedLabelStyle,
         showAvatar: Bool? = nil,
         showInstance: Bool = true,

@@ -56,7 +56,7 @@ struct PostEditorView: View {
     /// Initializer for editing a post
     init?(
         postToEdit: Post,
-        community: AnyCommunity?
+        community: Community?
     ) {
         self.init(
             community: community,
@@ -71,7 +71,7 @@ struct PostEditorView: View {
     
     /// Initializer for creating a post
     init?(
-        community: AnyCommunity?,
+        community: Community?,
         title: String = "",
         content: String? = nil,
         type: PostType? = nil,
@@ -79,7 +79,7 @@ struct PostEditorView: View {
         feedLoader: (any FeedLoading)?
     ) {
         if let account = (AppState.main.firstAccount as? UserAccount) {
-            self._targets = .init(wrappedValue: [.init(community: community?.wrappedValue, account: account)])
+            self._targets = .init(wrappedValue: [.init(community: community, account: account)])
         } else {
             return nil
         }

@@ -7,6 +7,9 @@
 
 import Foundation
 
+// TODO: it should be possible to move some of the queueing logic into RemovableProviding and just have the model
+// provide the repository call
+
 public protocol RemovableProviding: ContentIdentifiable, CanModerateProviding {
     var removed: Bool { get }
     var removedPending: Bool { get }

@@ -18,7 +18,6 @@ private struct ReloadOnAccountSwitchModifier<T: UnifiedModelProviding & ContentI
 
     func body(content: Content) -> some View {
         content
-            .id(entity.uid)
             .onChange(of: appState.firstApi) {
                 isLoading = true
                 Task {

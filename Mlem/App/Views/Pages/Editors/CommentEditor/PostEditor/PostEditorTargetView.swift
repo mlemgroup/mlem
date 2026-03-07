@@ -55,17 +55,8 @@ struct PostEditorTargetView: View {
         } label: {
             let singleAccount = AccountsTracker.main.userAccounts.count == 1
             HStack(spacing: 0) {
-                if let community = target.community as? any Community {
+                if let community = target.community {
                     FullyQualifiedLabelView(community, labelStyle: singleAccount ? .medium : .large)
-                } else if let community = target.community {
-                    FullyQualifiedNameView(name: nil, instance: nil, instanceLocation: .trailing)
-                        .task {
-                            do {
-                                target.community = try await community.upgrade()
-                            } catch {
-                                handleError(error)
-                            }
-                        }
                 } else {
                     HStack(spacing: 7) {
                         Image(icon: .lemmy.community)
@@ -128,7 +119,7 @@ struct PostEditorTargetView: View {
         
         target.resolutionState = .resolving
         do {
-            let newCommunity: Community2 = try await target.account.api.getCommunity(url: community.allResolvableUrls[0])
+            let newCommunity: Community = try await target.account.api.getCommunity(url: community.allResolvableUrls[0])
             target.community = newCommunity
             target.resolutionState = .success
         } catch ApiClientError.noEntityFound {
@@ -149,7 +140,7 @@ class PostEditorTarget: Identifiable {
         case unsent, sent, failed
     }
     
-    var community: (any CommunityStubProviding)?
+    var community: Community?
     var account: UserAccount {
         didSet {
             slurRegex_ = nil
@@ -174,7 +165,7 @@ class PostEditorTarget: Identifiable {
     }
     
     init(
-        community: (any CommunityStubProviding)? = nil,
+        community: Community? = nil,
         account: UserAccount,
         onAccountChange: @escaping () -> Void = {}
     ) {
@@ -190,7 +181,7 @@ class PostEditorTarget: Identifiable {
         
         if let community,
            let communityFeedLoader = feedLoader as? CommunityPostFeedLoader,
-           communityFeedLoader.community.actorId == community.actorId_ {
+           communityFeedLoader.community.actorId == community.actorId {
             Task { @MainActor in
                 withAnimation {
                     communityFeedLoader.prependItem(post)

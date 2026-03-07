@@ -44,7 +44,7 @@ enum AccountActivityState: Codable, Hashable {
 
 // Profile1Providing conformance
 extension Account {
-    var blocked: Bool { false }
+    var blockedValue: Bool { false }
 }
 
 extension Account {
