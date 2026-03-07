@@ -28,7 +28,7 @@ struct BlockListView: View {
     
     @State var selectedTab: Tab = .people
     @State var people: [Person] = []
-    @State var communities: [Community1] = []
+    @State var communities: [Community] = []
     @State var instances: [Instance1] = []
     
     var body: some View {
@@ -50,11 +50,11 @@ struct BlockListView: View {
                     PersonListRow(person, showBlockStatus: false)
                 }
             case .communities:
-                SearchResultsView(results: communities.filter(\.blocked)) { community in
+                SearchResultsView(results: communities.filter(\.blockedValue)) { community in
                     CommunityListRow(community, showBlockStatus: false)
                 }
             case .instances:
-                SearchResultsView(results: instances.filter(\.blocked)) { instance in
+                SearchResultsView(results: instances.filter(\.blockedValue)) { instance in
                     InstanceListRow(instance, showBlockStatus: false)
                 }
             }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct CommunityStub: CommunityStubProviding, Hashable {
+public struct CommunityStub:  Hashable {
     public static let tierNumber: Int = 0
     public var api: ApiClient
     public let url: URL
@@ -29,8 +29,8 @@ public struct CommunityStub: CommunityStubProviding, Hashable {
         lhs.url == rhs.url
     }
     
-    public func upgrade() async throws -> any Community {
-        try await api.getCommunity(url: url) as Community2
+    public func getCommunity() async throws -> Community {
+        try await api.getCommunity(url: url)
     }
 }
 

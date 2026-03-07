@@ -47,14 +47,19 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
     ) {
         let initialIndex = tabs.firstIndex(of: selected.wrappedValue)
         
-        assert(initialIndex != nil, "Selected tab \(selected.wrappedValue) not in tabs \(tabs)!")
-        
         self._selected = selected
         self._currentTabIndex = .init(wrappedValue: initialIndex ?? 0)
         self.tabs = tabs
         self.dividers = withDividers
         self.label = label
         self.value = value
+        
+        // gracefully handle cases where selected tab is not found
+        if initialIndex == nil {
+            Task { @MainActor in
+                selected.wrappedValue = tabs[0]
+            }
+        }
     }
     
     var body: some View {

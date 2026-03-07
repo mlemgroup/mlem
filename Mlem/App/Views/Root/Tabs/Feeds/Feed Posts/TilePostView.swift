@@ -17,7 +17,7 @@ struct TilePostView: View {
     @Environment(AppState.self) private var appState
     @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?
     @Environment(NavigationLayer.self) var navigation
-    @Environment(\.communityContext) var communityContext: (any Community1Providing)?
+    @Environment(\.communityContext) var communityContext: Community?
     @Environment(\.parentFrameWidth) var parentFrameWidth: CGFloat
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
     

@@ -12,7 +12,7 @@ struct ModlogEntryView: View {
     @Environment(\.palette) var palette
     
     let entry: ModlogEntry
-    var targetCommunity: (any Community)?
+    var targetCommunity: Community?
     @State private var id = UUID()
     
     var body: some View {
@@ -108,7 +108,7 @@ struct ModlogEntryView: View {
     }
     
     @ViewBuilder
-    func banPersonView(person: Person, community: Community1?, banned: Bool, expires: Date?) -> some View {
+    func banPersonView(person: Person, community: Community?, banned: Bool, expires: Date?) -> some View {
         VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
             let userText = person.nameTextView(
                 showFlairs: true,
@@ -148,7 +148,7 @@ struct ModlogEntryView: View {
     @ViewBuilder
     func transferCommunityView(
         person: Person,
-        community: Community1
+        community: Community
     ) -> some View {
         VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
             let userText = person.nameTextView(
@@ -178,7 +178,7 @@ struct ModlogEntryView: View {
     @ViewBuilder
     func updatePersonModeratorStatusView(
         person: Person,
-        community: Community1?,
+        community: Community?,
         appointed: Bool
     ) -> some View {
         VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
@@ -225,7 +225,7 @@ struct ModlogEntryView: View {
     }
     
     @ViewBuilder
-    func postLink(post: Post, community: any Community) -> some View {
+    func postLink(post: Post, community: Community) -> some View {
         NavigationLink(.post(post)) {
             FooterLinkView(title: post.title, subtitle: community.fullNameWithPrefix)
         }

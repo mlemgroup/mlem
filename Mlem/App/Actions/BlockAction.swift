@@ -23,10 +23,10 @@ struct BlockAction: Actions.Action {
         func blocked(environment: EnvironmentValues) -> Bool {
             switch self {
             case let .blockable(entity):
-                return entity.blocked
+                return entity.blockedValue
             case let .instance(instance):
                 if let instance = instance as? any Instance {
-                    return instance.blocked
+                    return instance.blockedValue
                 } else if let session = (environment.appState.firstSession as? UserSession) {
                     return session.blocks?.contains(instance) ?? false
                 } else {
@@ -70,7 +70,7 @@ private extension [BlockAction.Content] {
 
         return switch first {
         case .blockable(_ as Person): .personOnly
-        case .blockable(_ as any Community): .communityOnly
+        case .blockable(_ as Community): .communityOnly
         case .instance: .instanceOnly
         default: .other
         }
@@ -231,7 +231,7 @@ extension BlockAction {
         switch content {
         case .blockable(_ as Person):
             label = .init(localized: "Really block this user?")
-        case .blockable(_ as any Community):
+        case .blockable(_ as Community):
             label = .init(localized: "Really block this community?")
         case .instance:
             label = .init(localized: "Really block this instance?")
@@ -259,7 +259,7 @@ extension BlockAction {
     }
     
     private func submitForBlockable(blockable: any Blockable, environment: EnvironmentValues) {
-        let shouldBlock = !blockable.blocked
+        let shouldBlock = !blockable.blockedValue
         blockable.updateBlocked(shouldBlock) { didSucceed in
             let toast = createToast(didBlock: shouldBlock, didSucceed: didSucceed) {
                 blockable.updateBlocked(!shouldBlock, callback: nil)

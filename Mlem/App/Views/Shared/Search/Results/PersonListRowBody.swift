@@ -141,7 +141,7 @@ struct PersonListRowBody<Content: View>: View {
     }
     
     var flairs: [PersonFlair] {
-        person.flairs(communityContext: communityContext as? any Community3Providing)
+        person.flairs(communityContext: communityContext)
     }
 }
 

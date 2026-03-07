@@ -48,7 +48,7 @@ public extension ApiClient {
     }
 
     /// Get any `Community3` hosted on the given instance.
-    internal func getCommunityOfInstance(actorId: ActorIdentifier) async throws -> Community3 {
+    internal func getCommunityOfInstance(actorId: ActorIdentifier) async throws -> Community {
         let externalApi: ApiClient = .getApiClient(url: actorId.url, username: nil)
         
         let response = try await externalApi.getPosts(

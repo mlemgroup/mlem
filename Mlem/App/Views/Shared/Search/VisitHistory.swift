@@ -26,7 +26,7 @@ class VisitHistory {
         let date: Date
     }
     
-    private(set) var communityRecords: [VisitContext: [VisitRecord<Community2>]]
+    private(set) var communityRecords: [VisitContext: [VisitRecord<Community>]]
     private(set) var personRecords: [VisitContext: [VisitRecord<Person>]]
     
     // Using `InstanceSummary` here rather than an `Instance` model because otherwise we'd need
@@ -35,7 +35,7 @@ class VisitHistory {
     private(set) var instanceRecords: [VisitContext: [VisitRecord<InstanceSummary>]]
     
     init(
-        communityRecords: [VisitContext: [VisitRecord<Community2>]] = [:],
+        communityRecords: [VisitContext: [VisitRecord<Community>]] = [:],
         personRecords: [VisitContext: [VisitRecord<Person>]] = [:],
         instanceRecords: [VisitContext: [VisitRecord<InstanceSummary>]] = [:]
     ) {
@@ -48,11 +48,11 @@ class VisitHistory {
         communityRecords.isEmpty && personRecords.isEmpty && instanceRecords.isEmpty
     }
     
-    func communities(withContext context: VisitContext) -> [Community2] {
+    func communities(withContext context: VisitContext) -> [Community] {
         communityRecords[context]?.map(\.value) ?? []
     }
     
-    func communities(withContexts contexts: Set<VisitContext>) -> [Community2] {
+    func communities(withContexts contexts: Set<VisitContext>) -> [Community] {
         contexts
             .reduce(into: []) { result, context in
                 result += communityRecords[context] ?? []
@@ -71,12 +71,12 @@ class VisitHistory {
     }
     
     @MainActor
-    func addCommunity(_ community: Community2, context: VisitContext) {
+    func addCommunity(_ community: Community, context: VisitContext) {
         addValue(community, to: &communityRecords, context: context)
     }
     
     @MainActor
-    func removeCommunity(_ community: Community2, context: VisitContext) {
+    func removeCommunity(_ community: Community, context: VisitContext) {
         removeValue(community, from: &communityRecords, context: context)
     }
     

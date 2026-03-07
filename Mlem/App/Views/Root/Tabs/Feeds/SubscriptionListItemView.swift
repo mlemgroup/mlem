@@ -16,7 +16,7 @@ struct SubscriptionListItemView: View {
     @Setting(\.subscriptions_sort) private var sort
     @Setting(\.subscriptions_instanceLocation) private var savedInstanceLocation
 
-    let community: Community2
+    let community: Community
     let section: SubscriptionListSection
     let sectionIndicesShown: Bool
     

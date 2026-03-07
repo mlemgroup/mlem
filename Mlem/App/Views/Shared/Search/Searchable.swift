@@ -19,7 +19,7 @@ protocol Searchable: Identifiable {
     ) async throws -> [Self]
 }
 
-extension Community2: Searchable {
+extension Community: Searchable {
     static func search(
         api: ApiClient,
         query: String,
@@ -27,7 +27,7 @@ extension Community2: Searchable {
         limit: Int,
         filter: ListingType,
         hostApi: ApiClient?
-    ) async throws -> [Community2] {
+    ) async throws -> [Community] {
         try await api.searchCommunities(query: query, page: page, limit: limit, filter: filter, hostApi: hostApi)
     }
 }

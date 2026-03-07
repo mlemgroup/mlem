@@ -224,7 +224,7 @@ private struct SubscriptionListSectionView: View {
     
     var content: some View {
         Section(section.label) {
-            ForEach(section.communities) { (community: Community2) in
+            ForEach(section.communities) { (community: Community) in
                 SubscriptionListItemView(
                     community: community,
                     section: section,
@@ -257,10 +257,10 @@ enum SubscriptionListSort: String, CaseIterable, Codable {
 struct SubscriptionListSection: Identifiable {
     let label: String
     var icon: Icon?
-    let communities: [Community2]
+    let communities: [Community]
     let showInScroller: Bool
     
-    init(label: String, icon: Icon? = nil, communities: [Community2], showInScroller: Bool = true) {
+    init(label: String, icon: Icon? = nil, communities: [Community], showInScroller: Bool = true) {
         self.label = label
         self.icon = icon
         self.communities = communities

@@ -340,7 +340,6 @@ public protocol InstanceConnection {
 
     func getCommunity(id: Int) async throws -> Community3Snapshot
     func getCommunity(url: URL) async throws -> Community2Snapshot
-    func getCommunity(url: URL) async throws -> Community3Snapshot
 
     func editCommunityDescription(id: Int, newValue: String?) async throws -> Community2Snapshot 
     

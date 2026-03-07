@@ -10,7 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct SubscribeAction: SimpleLabelAction {
-    let entity: any Community1Providing
+    let entity: Community
 }
 
 // MARK: - Configurability
@@ -18,7 +18,7 @@ struct SubscribeAction: SimpleLabelAction {
 extension ActionSeed {
     static let subscribe = ActionSeed("subscribe") { entity in
         switch entity {
-        case let entity as any Community1Providing: SubscribeAction(entity: entity)
+        case let entity as Community: SubscribeAction(entity: entity)
         default: nil
         }
     }
@@ -41,10 +41,10 @@ extension SubscribeAction {
     static var label: ActionLabel { subscribeLabel }
 
     func createLabel(environment: EnvironmentValues) -> ActionLabel {
-        guard let subscribed = entity.subscribed_  else {
+        guard let subscription = entity.subscription.value  else {
             return Self.subscribeLabel.withVisibility(.hidden)
         }
-        if subscribed {
+        if subscription.subscribed {
             return Self.unsubscribeLabel.withVisibility(visibility(environment))
         } else {
             return Self.subscribeLabel.withVisibility(visibility(environment))
@@ -52,7 +52,9 @@ extension SubscribeAction {
     }
 
     private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {
-        guard entity.api.canInteract(appState: environment.appState) else { return .hidden }
+        guard entity.api.canInteract(appState: environment.appState),
+              entity.subscription.value != nil,
+              entity.updateSubscribed != nil else { return .hidden }
         return .enabled
     }
 }
@@ -62,25 +64,27 @@ extension SubscribeAction {
 extension SubscribeAction {
     @MainActor
     func execute(environment: EnvironmentValues) {
-        guard let entity = entity as? any Community2Providing else { return }
+        guard let updateSubscribed = entity.updateSubscribed,
+              let subscription = entity.subscription.value,
+              let updateFavorite = entity.updateFavorite else { return }
         environment.hapticManager.play(haptic: .lightSuccess, tier: .low)
         let wasFavorited = entity.favorited
-        if entity.subscribed {
+        if subscription.subscribed {
             environment.toastModel?.add(
                 .undoable(
                     "Unsubscribed",
                     icon: .lemmy.didUnsubscribe,
                     callback: {
                         if wasFavorited {
-                            entity.updateFavorite(true)
+                            updateFavorite(true)
                         } else {
-                            entity.updateSubscribe(true)
+                            updateSubscribed(true)
                         }
                     },
                     color: .themedAccent
                 )
             )
         }
-        entity.toggleSubscribe()
+        updateSubscribed(!subscription.subscribed)
     }
 }

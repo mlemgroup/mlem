@@ -9,11 +9,11 @@ import MlemMiddleware
 
 extension ReportableProviding {
     @MainActor
-    func showReportSheet(communityContext: (any CommunityStubProviding)? = nil) {
+    func showReportSheet(communityContext: Community? = nil) {
         NavigationModel.main.openSheet(.report(self, community: communityContext))
     }
     
-    func reportAction(appState: AppState, communityContext: (any CommunityStubProviding)? = nil) -> BasicAction {
+    func reportAction(appState: AppState, communityContext: Community? = nil) -> BasicAction {
         .init(
             id: "report\(uid)",
             appearance: .report(),

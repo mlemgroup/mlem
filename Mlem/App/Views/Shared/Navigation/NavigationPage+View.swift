@@ -50,6 +50,8 @@ extension NavigationPage {
             TopPeopleListView()
         case .topInstances:
             TopInstancesListView()
+        case let .communityStub(community):
+            CommunityStubResolutionPage(stub: community)
         case let .community(community, visitContext):
             CommunityView(community: community, visitContext: visitContext)
         case .profile:
@@ -75,7 +77,7 @@ extension NavigationPage {
         case let .ban(person, isBannedFromCommunity: isBannedFromCommunity, shouldBan: shouldBan, community: community):
             PersonBanEditorView(
                 person: person,
-                community: community?.wrappedValue as? any Community,
+                community: community,
                 isBannedFromCommunity: isBannedFromCommunity,
                 shouldBan: shouldBan
             )
@@ -85,7 +87,7 @@ extension NavigationPage {
                 CrossPostListView(post: post)
                     .padding(.horizontal, Constants.main.standardSpacing)
             }
-            .environment(\.communityContext, communityContext?.wrappedValue)
+            .environment(\.communityContext, communityContext)
         case let .postStub(post, _):
             PostStubResolutionPage(stub: post)
         case let .comment(comment, comments, showViewPostButton, exposeRemovedContent):
@@ -145,7 +147,7 @@ extension NavigationPage {
         case let .editPost(post):
             PostEditorView(postToEdit: post, community: nil)
         case let .communityPicker(api: api, callback: callback):
-            SearchSheetView(api: api) { (community: Community2, navigation: NavigationLayer) in
+            SearchSheetView(api: api) { (community: Community, navigation: NavigationLayer) in
                 Button {
                     callback.wrappedValue(community, navigation)
                 } label: {

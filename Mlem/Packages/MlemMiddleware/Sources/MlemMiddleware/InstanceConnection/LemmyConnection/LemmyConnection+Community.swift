@@ -29,11 +29,6 @@ public extension LemmyConnection {
         }
     }
     
-    func getCommunity(url: URL) async throws -> Community3Snapshot {
-        let comm: Community2Snapshot = try await getCommunity(url: url)
-        return try await getCommunity(id: comm.community.id)
-    }
-    
     func searchCommunities(
         query: String,
         page: Int = 1,

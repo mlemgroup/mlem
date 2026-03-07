@@ -45,10 +45,8 @@ struct ModlogView: View {
         self.initialTarget = initialTarget
         switch initialTarget {
         case let .community(community):
-            if let community = community.wrappedValue as? any Community {
-                self._communityFilter = .init(wrappedValue: .community(community))
-            }
-            self.api = community.wrappedValue.api
+            self._communityFilter = .init(wrappedValue: .community(community))
+            self.api = community.api
         case let .instance(instance):
             self._communityFilter = .init(wrappedValue: .any)
             self.api = instance.wrappedValue.api
@@ -68,18 +66,16 @@ struct ModlogView: View {
         Group {
             switch initialTarget {
             case let .community(initialCommunity):
-                ContentLoader(model: initialCommunity) { proxy in
-                    Group {
-                        if let communityFilter {
-                            content(communityFilter: communityFilter)
-                        } else {
-                            ProgressView()
-                                .onAppear {
-                                    if communityFilter == nil, let community = proxy.entity {
-                                        communityFilter = .community(community)
-                                    }
+                Group {
+                    if let communityFilter {
+                        content(communityFilter: communityFilter)
+                    } else {
+                        ProgressView()
+                            .onAppear {
+                                if communityFilter == nil {
+                                    communityFilter = .community(initialCommunity)
                                 }
-                        }
+                            }
                     }
                 }
             case .instance, .currentInstance:

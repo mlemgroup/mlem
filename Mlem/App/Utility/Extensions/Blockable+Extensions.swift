@@ -1,5 +1,5 @@
 //
-//  Blockable+Shims.swift
+//  Blockable+Extensions.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2026-02-10.
@@ -7,11 +7,10 @@
 
 import MlemMiddleware
 
-// TODO: Unified Community remove
 extension Blockable {
-    func shimToggleBlocked(feedback: Set<FeedbackType>, callback: ((Bool) -> Void)? = nil) {
+    func toggleBlocked(feedback: Set<FeedbackType>, callback: ((Bool) -> Void)? = nil) {
         if feedback.contains(.toast) {
-            if !blocked {
+            if !blockedValue {
                 ToastModel.main.add(
                     .undoable(
                         "Blocked",
@@ -35,6 +34,6 @@ extension Blockable {
                 )
             }
         }
-        updateBlocked(!blocked, callback: callback)
+        updateBlocked(!blockedValue, callback: callback)
     }
 }

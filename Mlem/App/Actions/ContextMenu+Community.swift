@@ -10,7 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 extension ActionButtons {
-    init(community: any Community1Providing) {
+    init(community: Community) {
         self.init { _ in
             CommunityActionConfiguration.availableActions.all.compactMap { $0.createAction(community) }
         }
@@ -18,14 +18,14 @@ extension ActionButtons {
 }
 
 extension View {
-    func contextMenu(community: any Community1Providing) -> some View {
+    func contextMenu(community: Community) -> some View {
         contextMenu {
             ActionButtons(community: community)
         }
     }
 
     @ViewBuilder
-    func quickSwipes(community: any Community1Providing, configuration: CommunityActionConfiguration) -> some View {
+    func quickSwipes(community: Community, configuration: CommunityActionConfiguration) -> some View {
         quickSwipes(
             leading: configuration.swipes.leading.compactMap { $0.createAction(community) },
             trailing: configuration.swipes.trailing.compactMap { $0.createAction(community) }

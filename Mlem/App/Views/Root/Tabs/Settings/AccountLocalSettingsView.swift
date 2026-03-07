@@ -44,7 +44,11 @@ struct AccountLocalSettingsView: View {
             ) {
                 Button("Delete", role: .destructive) {
                     for community in session.subscriptions.favorites {
-                        community.updateFavorite(false)
+                        guard let updateFavorite = community.updateFavorite else {
+                            assertionFailure("updateFavorite not present yet")
+                            return
+                        }
+                        updateFavorite(false)
                     }
                 }
             } message: {

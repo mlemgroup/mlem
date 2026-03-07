@@ -29,7 +29,7 @@ extension Post {
         (creator.value_?.shouldHideInFeed ?? false) || (community.value_?.shouldHideInFeed ?? false) || (hidden.value_ ?? false) || purged
     }
     
-    func taggedTitle(communityContext: (any Community1Providing)?) -> Text {
+    func taggedTitle(communityContext: Community?) -> Text {
         let hasTags: Bool = removed
             || deleted
             || pinnedInstance
