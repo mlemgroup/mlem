@@ -72,7 +72,7 @@ class ConnectionMultiplexer<Candidate> {
                 for (candidate, result) in zip(candidates, results.map(\.1)) {
                     do {
                         let value = try result.get()
-                        print("Selected \(String(describing: candidate))")
+                        log.info("Selected \(String(describing: candidate))")
                         self.selectedCandidate = candidate
                         self.ongoingTask = nil
                         return value
