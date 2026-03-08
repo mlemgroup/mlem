@@ -153,7 +153,7 @@ extension Comment {
         type: CommentBarConfiguration.ActionType,
         navigation: NavigationLayer?,
         commentTreeTracker: CommentTreeTracker? = nil,
-        communityContext: (any CommunityStubProviding)? = nil,
+        communityContext: Community? = nil,
         reportContext: Report? = nil
     ) -> (any Action)? {
         switch type {
@@ -180,7 +180,7 @@ extension Comment {
         navigation: NavigationLayer?,
         notification: InboxNotification,
         commentTreeTracker: CommentTreeTracker? = nil,
-        communityContext: (any CommunityStubProviding)? = nil,
+        communityContext: Community? = nil,
         reportContext: Report? = nil
     ) -> (any Action)? {
         switch type {

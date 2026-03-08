@@ -10,7 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct NewPostAction: SimpleLabelAction {
-    let entity: any Community1Providing
+    let entity: Community
 }
 
 // MARK: - Configurability
@@ -18,7 +18,7 @@ struct NewPostAction: SimpleLabelAction {
 extension ActionSeed {
     static let newPost = ActionSeed("newPost") { entity in
         switch entity {
-        case let entity as any Community1Providing: NewPostAction(entity: entity)
+        case let entity as Community: NewPostAction(entity: entity)
         default: nil
         }
     }

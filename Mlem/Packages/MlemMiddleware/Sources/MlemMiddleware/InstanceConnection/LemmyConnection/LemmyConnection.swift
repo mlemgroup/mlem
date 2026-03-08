@@ -30,7 +30,11 @@ public class LemmyConnection: InstanceConnection {
     public let baseUrl: URL
     public var token: String?
     
-    private var endpointMultiplexer: ConnectionMultiplexer<LemmyEndpointVersion> = .init { [.v3, .v4] }
+    private var endpointMultiplexer: ConnectionMultiplexer<LemmyEndpointVersion> = .init {
+        // The order here matters! Lemmy 1.0 supports both v3 and v4.
+        // Putting v4 first in the array gives it priority.
+        [.v4, .v3]
+    }
     private(set) var contextDataManager: SharedTaskManager<Context, RawContext> = .init()
 
     public var fetchedVersion: SiteVersion? {

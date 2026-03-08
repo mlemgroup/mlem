@@ -18,7 +18,7 @@ struct CommunityListRowBody<Content: View>: View {
     
     @Setting(\.safety_blurNsfw) var blurNsfw
     
-    let community: any Community
+    let community: Community
     let showBlockStatus: Bool
     let complications: [Complication]
     let readout: Readout?
@@ -26,7 +26,7 @@ struct CommunityListRowBody<Content: View>: View {
     @ViewBuilder let content: () -> Content
 
     init(
-        _ community: any Community,
+        _ community: Community,
         complications: [Complication] = [.instance],
         showBlockStatus: Bool = true,
         @ViewBuilder content: @escaping () -> Content
@@ -39,7 +39,7 @@ struct CommunityListRowBody<Content: View>: View {
     }
     
     init(
-        _ community: any Community,
+        _ community: Community,
         complications: [Complication] = [.instance],
         showBlockStatus: Bool = true,
         readout: Readout? = nil
@@ -53,7 +53,7 @@ struct CommunityListRowBody<Content: View>: View {
     
     var title: String {
         var title = community.name
-        if community.blocked, showBlockStatus {
+        if community.blockedValue, showBlockStatus {
             title = title + " ∙ " + String(localized: "Blocked")
         }
         if community.nsfw {
@@ -64,7 +64,7 @@ struct CommunityListRowBody<Content: View>: View {
 
     var body: some View {
         HStack(spacing: Constants.main.standardSpacing) {
-            if community.blocked, showBlockStatus {
+            if community.blockedValue, showBlockStatus {
                 Image(icon: .general.hide)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
@@ -111,9 +111,11 @@ struct CommunityListRowBody<Content: View>: View {
                     case .instance:
                         Text(verbatim: "@\(community.host)")
                     case .subscriberCount:
-                        if let subscriberCount = community.subscriberCount_ {
-                            Image(icon: .lemmy.person)
-                            Text(subscriberCount.abbreviated)
+                        ExpectedView(community.subscription) { subscription in
+                            HStack(spacing: 2) {
+                                Image(icon: .lemmy.person)
+                                Text(subscription.total.abbreviated)
+                            }
                         }
                     }
                 }
@@ -132,19 +134,19 @@ struct CommunityListRowBody<Content: View>: View {
     var subscriberCountReadout: some View {
         let icon: Icon
         let color: ThemedColor
-        switch community.subscriptionTier_ {
+        switch community.subscriptionTier {
         case .favorited:
             color = .themedFavorite
             icon = .lemmy.favorite
         case .subscribed:
             color = .themedPositive
             icon = .lemmy.subscribed
-        case .unsubscribed, nil:
+        case .unsubscribed:
             color = .themedSecondary
             icon = .lemmy.person
         }
         return HStack {
-            Text((community.subscriberCount_ ?? 0).abbreviated)
+            Text((community.subscription.value?.total ?? 0).abbreviated)
             Image(icon: icon)
                 .fontWeight(.semibold)
         }

@@ -51,7 +51,7 @@ public class Comment:
     // from Comment2Snapshot
     public var creator: ExpectedValue<Person>
     public var post: ExpectedValue<Post>
-    public var community: ExpectedValue<(any Community)>
+    public var community: ExpectedValue<Community>
     public var commentCount: ExpectedValue<Int>
     public var creatorIsModerator: ExpectedValue<Bool>
     public var creatorIsAdmin: ExpectedValue<Bool>
@@ -105,6 +105,7 @@ public class Comment:
         self.saved = expectedValue(properties.saved)
     }
     
+    @MainActor
     public func update(with properties: CommentProperties) {
         if !properties.removed {
             setIfChanged(\.content, properties.content)
@@ -126,6 +127,7 @@ public class Comment:
         updateIfChanged(\.saved.value_, properties.saved)
     }
     
+    @MainActor
     public func softUpdate(with properties: CommentProperties) {
         setIfNil(\.creator.value_, properties.creator)
         setIfNil(\.post.value_, properties.post)

@@ -8,6 +8,8 @@
 import SwiftUI
 import MlemMiddleware
 
+/// View for animating content appearance when a given ValueProviding resolves.
+/// Intended for tightly scoped, small views; may cause rendering issues on more complex views.
 struct ExpectedView<Value, Content: View, Placeholder: View>: View {
     let value: any ValueProviding<Value>
     @ViewBuilder let view: (Value) -> Content

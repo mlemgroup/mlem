@@ -28,7 +28,7 @@ struct InteractionBarView: View {
         configuration: PostBarConfiguration,
         navigation: NavigationLayer,
         commentTreeTracker: CommentTreeTracker? = nil,
-        communityContext: (any CommunityStubProviding)? = nil,
+        communityContext: Community? = nil,
         reportContext: Report? = nil
     ) {
         self.leading = .init(
@@ -64,7 +64,7 @@ struct InteractionBarView: View {
         comment: Comment,
         configuration: CommentBarConfiguration,
         commentTreeTracker: CommentTreeTracker? = nil,
-        communityContext: (any CommunityStubProviding)? = nil,
+        communityContext: Community? = nil,
         reportContext: Report?
     ) {
         self.leading = .init(
@@ -264,7 +264,7 @@ extension [EnrichedWidget] {
         post: Post,
         items: [PostBarConfiguration.Item],
         commentTreeTracker: CommentTreeTracker?,
-        communityContext: (any CommunityStubProviding)?,
+        communityContext: Community?,
         reportContext: Report?
     ) {
         self = items.compactMap { item in
@@ -295,7 +295,7 @@ extension [EnrichedWidget] {
         comment: Comment,
         items: [CommentBarConfiguration.Item],
         commentTreeTracker: CommentTreeTracker?,
-        communityContext: (any CommunityStubProviding)?,
+        communityContext: Community?,
         reportContext: Report?
     ) {
         self = items.compactMap { item in

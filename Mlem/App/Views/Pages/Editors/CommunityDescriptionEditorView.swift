@@ -15,7 +15,7 @@ struct CommunityDescriptionEditorView: View {
     @Environment(HapticManager.self) var hapticManager
     @Environment(\.dismiss) var dismiss
 
-    let community: Community2
+    let community: Community
 
     @State var textView: UITextView = .init()
     @State var textHasChanged: Bool = false
@@ -24,7 +24,7 @@ struct CommunityDescriptionEditorView: View {
     @State var uploadHistory: ImageUploadHistoryManager = .init()
     @State var presentationSelection: PresentationDetent = .large
 
-    init(community: Community2) {
+    init(community: Community) {
         self.community = community
         textView.text = community.description ?? ""
     }
@@ -110,17 +110,17 @@ struct CommunityDescriptionEditorView: View {
 
     func send() async {
         uploadHistory.deleteWhereNotPresent(in: textView.text)
-        do {
-            try await community.editDescription(textView.text)
-            Task { @MainActor in
+        community.updateDescription(textView.text) { status in
+            switch status {
+            case .success:
                 textView.resignFirstResponder()
                 textView.isEditable = false
                 hapticManager.play(haptic: .success, tier: .low)
                 dismiss()
+            case let .failure(error):
+                sending = false
+                handleError(error)
             }
-        } catch {
-            sending = false
-            handleError(error)
         }
     }
 

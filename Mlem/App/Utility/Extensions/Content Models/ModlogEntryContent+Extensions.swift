@@ -152,7 +152,7 @@ extension ModlogEntryContent {
 
 private func pinLabel(
     userText: Text?,
-    community: Community1,
+    community: Community,
     pinned: Bool,
     type: PostFeatureType
 ) -> LocalizedStringKey {

@@ -10,18 +10,18 @@ import Foundation
 public enum ModlogEntryContent: Equatable {
     case removePost(
         _ post: Post,
-        community: Community1,
+        community: Community,
         removed: Bool,
         reason: String?
     )
     case lockPost(
         _ post: Post,
-        community: Community1,
+        community: Community,
         locked: Bool
     )
     case pinPost(
         _ post: Post,
-        community: Community1,
+        community: Community,
         pinned: Bool,
         type: PostFeatureType
     )
@@ -31,32 +31,32 @@ public enum ModlogEntryContent: Equatable {
         _ comment: Comment,
         creator: Person,
         post: Post,
-        community: Community1,
+        community: Community,
         removed: Bool,
         reason: String?
     )
     case purgeComment(reason: String?)
     
     case removeCommunity(
-        _ community: Community1,
+        _ community: Community,
         removed: Bool,
         reason: String?
     )
     case purgeCommunity(reason: String?)
     
     case hideCommunity(
-        _ community: Community1,
+        _ community: Community,
         hidden: Bool,
         reason: String?
     )
     case transferCommunityOwnership(
         person: Person,
-        community: Community1
+        community: Community
     )
     
     case updatePersonModeratorStatus(
         person: Person,
-        community: Community1,
+        community: Community,
         appointed: Bool
     )
     case updatePersonAdminStatus(
@@ -65,7 +65,7 @@ public enum ModlogEntryContent: Equatable {
     )
     case banPersonFromCommunity(
         person: Person,
-        community: Community1,
+        community: Community,
         banned: Bool,
         reason: String?,
         expires: Date?
@@ -78,7 +78,7 @@ public enum ModlogEntryContent: Equatable {
     )
     case purgePerson(reason: String?)
     
-    public var community: Community1? {
+    public var community: Community? {
         switch self {
         case let .removePost(_, community, _, _): community
         case let .lockPost(_, community, _): community
@@ -119,20 +119,20 @@ public enum ModlogEntryContent: Equatable {
         case let .removePost(post, community, removed, reason):
             self = .removePost(
                 api.caches.post.getModel(api: api, from: .post1(post)),
-                community: api.caches.community1.getModel(api: api, from: community),
+                community: api.caches.community.getModel(api: api, from: .community1(community)),
                 removed: removed,
                 reason: reason
             )
         case let .lockPost(post, community, locked):
             self = .lockPost(
                 api.caches.post.getModel(api: api, from: .post1(post)),
-                community: api.caches.community1.getModel(api: api, from: community),
+                community: api.caches.community.getModel(api: api, from: .community1(community)),
                 locked: locked
             )
         case let .pinPost(post, community, pinned, type):
             self = .pinPost(
                 api.caches.post.getModel(api: api, from: .post1(post)),
-                community: api.caches.community1.getModel(api: api, from: community),
+                community: api.caches.community.getModel(api: api, from: .community1(community)),
                 pinned: pinned,
                 type: type
             )
@@ -143,7 +143,7 @@ public enum ModlogEntryContent: Equatable {
                 api.caches.comment.getModel(api: api, from: .comment1(comment)),
                 creator: api.caches.person.getModel(api: api, from: .person1(creator)),
                 post: api.caches.post.getModel(api: api, from: .post1(post)),
-                community: api.caches.community1.getModel(api: api, from: community),
+                community: api.caches.community.getModel(api: api, from: .community1(community)),
                 removed: removed,
                 reason: reason
             )
@@ -151,7 +151,7 @@ public enum ModlogEntryContent: Equatable {
             self = .purgeComment(reason: reason)
         case let .removeCommunity(community, removed, reason):
             self = .removeCommunity(
-                api.caches.community1.getModel(api: api, from: community),
+                api.caches.community.getModel(api: api, from: .community1(community)),
                 removed: removed,
                 reason: reason
             )
@@ -159,19 +159,19 @@ public enum ModlogEntryContent: Equatable {
             self = .purgeCommunity(reason: reason)
         case let .hideCommunity(community, hidden, reason):
             self = .hideCommunity(
-                api.caches.community1.getModel(api: api, from: community),
+                api.caches.community.getModel(api: api, from: .community1(community)),
                 hidden: hidden,
                 reason: reason
             )
         case let .transferCommunityOwnership(person, community):
             self = .transferCommunityOwnership(
                 person: api.caches.person.getModel(api: api, from: .person1(person)),
-                community: api.caches.community1.getModel(api: api, from: community)
+                community: api.caches.community.getModel(api: api, from: .community1(community))
             )
         case let .updatePersonModeratorStatus(person, community, appointed):
             self = .updatePersonModeratorStatus(
                 person: api.caches.person.getModel(api: api, from: .person1(person)),
-                community: api.caches.community1.getModel(api: api, from: community),
+                community: api.caches.community.getModel(api: api, from: .community1(community)),
                 appointed: appointed
             )
         case let .updatePersonAdminStatus(person, appointed):
@@ -182,7 +182,7 @@ public enum ModlogEntryContent: Equatable {
         case let .banPersonFromCommunity(person, community, banned, reason, expires):
             self = .banPersonFromCommunity(
                 person: api.caches.person.getModel(api: api, from: .person1(person)),
-                community: api.caches.community1.getModel(api: api, from: community),
+                community: api.caches.community.getModel(api: api, from: .community1(community)),
                 banned: banned,
                 reason: reason,
                 expires: expires

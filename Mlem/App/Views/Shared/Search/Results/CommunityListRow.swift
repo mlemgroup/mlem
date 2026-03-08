@@ -16,12 +16,12 @@ struct CommunityListRow<Content2: View>: View {
     @Environment(NavigationLayer.self) var navigation
     @Setting(\.interactionBar_community) var communityActionConfiguration
     
-    let community: any Community
+    let community: Community
     let content: Content
     let visitContext: VisitHistory.VisitContext
 
     init(
-        _ community: any Community,
+        _ community: Community,
         complications: [Content.Complication] = [.instance],
         showBlockStatus: Bool = true,
         visitContext: VisitHistory.VisitContext = .other,
@@ -33,7 +33,7 @@ struct CommunityListRow<Content2: View>: View {
     }
     
     init(
-        _ community: any Community,
+        _ community: Community,
         complications: [Content.Complication] = [.instance],
         showBlockStatus: Bool = true,
         readout: Content.Readout? = nil,

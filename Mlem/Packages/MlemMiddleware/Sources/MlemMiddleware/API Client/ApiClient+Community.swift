@@ -8,47 +8,28 @@
 import Foundation
 
 public extension ApiClient {
-    func decodeCommunity(_ data: Community1.CodedData) async throws -> Community1 {
+    func decodeCommunity(_ data: Community.CodedData) async throws -> Community {
         guard data.apiUrl == baseUrl else {
             throw ApiClientError.mismatchingUrl
         }
         guard try await data.apiMyPersonId == myPersonId else {
             throw ApiClientError.mismatchingPersonId
         }
-        return try await caches.community1.getModel(
+        return try await caches.community.getModel(
             api: self,
-            from: .init(from: data.apiCommunity),
+            from: .community1(.init(from: data.apiCommunity)),
             isStale: true
         )
     }
     
-    func decodeCommunity(_ data: Community2.CodedData) async throws -> Community2 {
-        guard data.apiUrl == baseUrl else {
-            throw ApiClientError.mismatchingUrl
-        }
-        guard try await data.apiMyPersonId == myPersonId else {
-            throw ApiClientError.mismatchingPersonId
-        }
-        return try await caches.community2.getModel(
-            api: self,
-            from: .init(from: data.apiCommunityView),
-            isStale: true
-        )
-    }
-    
-    func getCommunity(id: Int) async throws -> Community3 {
+    func getCommunity(id: Int) async throws -> Community {
         let snapshot = try await repository.getCommunity(id: id)
-        return await caches.community3.getModel(api: self, from: snapshot)
+        return await caches.community.getModel(api: self, from: .community3(snapshot))
     }
     
-    func getCommunity(url: URL) async throws -> Community2 {
+    func getCommunity(url: URL) async throws -> Community {
         let snapshot: Community2Snapshot = try await repository.getCommunity(url: url)
-        return await caches.community2.getModel(api: self, from: snapshot)
-    }
-    
-    func getCommunity(url: URL) async throws -> Community3 {
-        let snapshot: Community3Snapshot = try await repository.getCommunity(url: url)
-        return await caches.community3.getModel(api: self, from: snapshot)
+        return await caches.community.getModel(api: self, from: .community2(snapshot))
     }
     
     func searchCommunities(
@@ -58,7 +39,7 @@ public extension ApiClient {
         filter: ListingType = .all,
         sort sort_: SearchSortType? = nil,
         hostApi: ApiClient? = nil
-    ) async throws -> [Community2] {
+    ) async throws -> [Community] {
         let sort: SearchSortType
         if let sort_ {
             sort = sort_
@@ -68,7 +49,7 @@ public extension ApiClient {
             sort = .top(.limited(.month))
         }
         
-        let snapshot = try await repository.searchCommunities(
+        let snapshots = try await repository.searchCommunities(
             query: query,
             page: page,
             limit: limit,
@@ -76,11 +57,11 @@ public extension ApiClient {
             sort: sort
         )
         
-        let ret = await caches.community2.getModels(api: self, from: snapshot)
+        let ret = await caches.community.getModels(api: self, from: snapshots.map { .community2($0) })
         if let subscriptionInfo = hostApi?.subscriptions {
             for community in ret {
                 if let subscribedCommunity = subscriptionInfo.communities.first(where: { $0.actorId == community.actorId }) {
-                    community.subscriptionManager.addSibling(subscribedCommunity.subscriptionManager)
+                    community.subscription.addSibling(subscribedCommunity.subscription)
                 }
                 // TODO: favorites
             }
@@ -89,10 +70,10 @@ public extension ApiClient {
         // if on a foreign host, resolve communities to populate subscription status.
         if let hostApi, hostApi !== self {
             do {
-                let resolvedCommunities: [URL: Community2] = try await hostApi.resolve(urls: ret.map { $0.resolvableUrl(from: .host) })
+                let resolvedCommunities: [URL: Community] = try await hostApi.resolve(urls: ret.map { $0.resolvableUrl(from: .host) })
                 for community in ret {
                     if let resolvedCommunity = resolvedCommunities[community.resolvableUrl(from: .host)] {
-                        community.blockedManager.addSibling(resolvedCommunity.blockedManager)
+                        community.blocked.addSibling(resolvedCommunity.blocked)
                     }
                 }
             } catch {
@@ -133,90 +114,14 @@ public extension ApiClient {
             page += 1
         } while hasMorePages
             
-        let models: Set<Community2> = await Set(caches.community2.getModels(api: self, from: communities))
+        let models: Set<Community> = await Set(caches.community.getModels(api: self, from: communities.map { .community2($0) }))
         await subscriptionList.updateCommunities(with: models)
         subscriptionList.hasLoaded = true
         return subscriptionList
     }
     
-    @discardableResult
-    func subscribeToCommunity(id: Int, subscribe: Bool, semaphore: UInt?) async throws -> Community2 {
-        let snapshot = try await repository.subscribeToCommunity(id: id, subscribe: subscribe)
-        return await caches.community2.getModel(
-            api: self,
-            from: snapshot,
-            semaphore: semaphore
-        )
-    }
-    
-    @discardableResult
-    func blockCommunity(id: Int, block: Bool, semaphore: UInt? = nil) async throws -> Community2 {
-        let snapshot = try await repository.blockCommunity(id: id, block: block)
-        return await caches.community2.getModel(
-            api: self,
-            from: snapshot,
-            semaphore: semaphore
-        )
-    }
-    
-    @discardableResult
-    func removeCommunity(
-        id: Int,
-        remove: Bool,
-        reason: String?,
-        semaphore: UInt? = nil
-    ) async throws -> Community2 {
-        let snapshot = try await repository.removeCommunity(
-            id: id,
-            remove: remove,
-            reason: reason
-        )
-        return await caches.community2.getModel(
-            api: self,
-            from: snapshot,
-            semaphore: semaphore
-        )
-    }
-    
     func purgeCommunity(id: Int, reason: String?) async throws {
         try await repository.purgeCommunity(id: id, reason: reason)
-        caches.community1.retrieveModel(cacheId: id)?.purged = true
-    }
-    
-    @discardableResult
-    func addModerator(communityId: Int, personId: Int, added: Bool) async throws -> [Person] {
-        let snapshots = try await repository.addModerator(
-            communityId: communityId,
-            personId: personId,
-            added: added
-        )
-
-        let updatedModerators = await caches.person.getModels(api: self, from: snapshots.moderators.map { .person1($0) })
-        
-        if let community = caches.community3.retrieveModel(cacheId: communityId) {
-            community.moderators = updatedModerators
-        }
-        
-        if let person = caches.person.retrieveModel(cacheId: personId) {
-            let newModerator = snapshots.moderators.first(where: { $0.id == personId })
-            if added {
-                guard newModerator != nil else { throw ApiClientError.unsuccessful }
-                let newModeratedCommunity = await caches.community1.getModel(
-                    api: self,
-                    from: snapshots.community
-                )
-                
-                if person.moderatedCommunities.value_ == nil {
-                    person.moderatedCommunities.value_ = [newModeratedCommunity]
-                } else {
-                    person.moderatedCommunities.value_?.append(newModeratedCommunity)
-                }
-            } else {
-                guard newModerator == nil else { throw ApiClientError.unsuccessful }
-                person.moderatedCommunities.value_?.removeAll(where: { $0.id == communityId })
-            }
-        }
-        
-        return updatedModerators
+        caches.community.retrieveModel(cacheId: id)?.purged = true
     }
 }

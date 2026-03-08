@@ -9,7 +9,7 @@ import MlemMiddleware
 
 extension Profile1Providing {
     static var avatarFallback: MediaView.Fallback {
-        if self is any Community.Type {
+        if self is Community.Type {
             return .communityAvatar
         } else if self is any Instance.Type {
             return .instanceAvatar

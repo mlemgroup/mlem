@@ -32,10 +32,10 @@ public enum ReportTarget {
         }
     }
     
-    public var community: Community1? {
+    public var community: Community? {
         switch self {
-        case let .post(post): post.community.value_ as? Community1
-        case let .comment(comment): comment.community.value_ as? Community1
+        case let .post(post): post.community.value_
+        case let .comment(comment): comment.community.value_
         case .message: nil
         }
     }

@@ -70,6 +70,7 @@ struct PersonView: View {
     
     var body: some View {
         content
+            .id(person.uid)
             .reloadOnAccountSwitch(entity: $person, isLoading: $isLoading) { newPerson in
                 feedLoader = .init(
                     api: appState.firstApi,

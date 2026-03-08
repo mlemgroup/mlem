@@ -81,6 +81,7 @@ struct ExpandedPostView<Content: View>: View {
                 }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .conditionalNavigationTitle(post.community.value?.name ?? "")
         .overlay {
             VStack {
                 if showLoadingSymbol {
@@ -98,7 +99,6 @@ struct ExpandedPostView<Content: View>: View {
         .refreshable {
             _ = await Task { @MainActor in
                 do {
-                    // TODO: NOW blocking upgrade to make refresh spinner work nicely
                     try await post.upgrade() // this is identical to refresh
                     await tracker.refresh()
                 } catch {

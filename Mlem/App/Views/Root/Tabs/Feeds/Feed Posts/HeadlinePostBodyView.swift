@@ -9,7 +9,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct HeadlinePostBodyView: View {
-    @Environment(\.communityContext) var communityContext: (any Community1Providing)?
+    @Environment(\.communityContext) var communityContext: Community?
     
     @Setting(\.post_thumbnailLocation) var thumbnailLocation
     @Setting(\.safety_blurNsfw) var blurNsfw

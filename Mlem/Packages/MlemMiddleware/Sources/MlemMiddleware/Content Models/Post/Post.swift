@@ -74,7 +74,7 @@ public class Post:
     public var locked: Bool
     
     public var creator: ExpectedValue<Person>
-    public var community: ExpectedValue<any Community>
+    public var community: ExpectedValue<Community>
     public var commentCount: ExpectedValue<Int>
     public var unreadCommentCount: ExpectedValue<Int>
     public var creatorIsModerator: ExpectedValue<Bool>
@@ -194,7 +194,6 @@ public class Post:
         updateIfChanged(\.saved.value_, properties.saved ?? saved.value_)
         updateIfChanged(\.readStatus.value_, properties.read ?? readStatus.value_)
         updateIfChanged(\.hidden.value_, properties.hidden ?? hidden.value_)
-
         updateIfChanged(\.crossPosts.value_, properties.crossPosts ?? crossPosts.value_)
     }
     
@@ -212,7 +211,6 @@ public class Post:
         setIfNil(\.saved.value_, properties.saved)
         setIfNil(\.readStatus.value_, properties.read)
         setIfNil(\.hidden.value_, properties.hidden)
-
         setIfNil(\.crossPosts.value_, properties.crossPosts ?? crossPosts.value_)
     }
     
@@ -269,7 +267,9 @@ public extension Post {
         
         Task {
             await updateQueue.addItem {
-                await .init(api: self.api, snapshot: .post2(try await self.api.repository.voteOnPost(id: self.id, score: newValue)))
+                try await .init(
+                    api: self.api,
+                    snapshot: .post2(self.api.repository.voteOnPost(id: self.id, score: newValue)))
             }
         }
     }
@@ -282,7 +282,9 @@ public extension Post {
         
         Task {
             await updateQueue.addItem {
-                await .init(api: self.api, snapshot: .post2(try await self.api.repository.savePost(id: self.id, save: newValue)))
+                try await .init(
+                    api: self.api,
+                    snapshot: .post2(self.api.repository.savePost(id: self.id, save: newValue)))
             }
         }
     }
@@ -355,7 +357,9 @@ public extension Post {
         
         Task {
             await updateQueue.addItem {
-                await .init(api: self.api, snapshot: .post2(try await self.api.repository.voteInPoll(postId: self.id, choiceIds: choiceIds)))
+                try await .init(
+                    api: self.api,
+                    snapshot: .post2(self.api.repository.voteInPoll(postId: self.id, choiceIds: choiceIds)))
             }
         }
     }
@@ -553,5 +557,6 @@ public extension Post {
     
     func purge(reason: String?) async throws {
         try await api.purgePost(id: id, reason: reason)
+        purged = true
     }
 }

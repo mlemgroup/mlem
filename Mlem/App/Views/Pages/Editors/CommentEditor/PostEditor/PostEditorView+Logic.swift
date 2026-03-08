@@ -80,7 +80,7 @@ extension PostEditorView {
             returning: [Post].self
         ) { taskGroup in
             for target in validTargets {
-                if let community = target.community as? any Community {
+                if let community = target.community as? Community {
                     taskGroup.addTask { @MainActor in
                         let post: Post?
                         do {
