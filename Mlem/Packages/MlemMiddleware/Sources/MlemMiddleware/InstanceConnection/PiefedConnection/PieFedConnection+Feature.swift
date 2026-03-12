@@ -51,6 +51,8 @@ public extension PieFedConnection {
         case .userNotes, .searchLocalComments, .fetchLinkMetadata:
             version >= .v1_4_0
         case .moderatorSetNsfw: true
+        case .modlog:
+            version >= .v1_6_10
         default: false
         }
     }
@@ -62,6 +64,7 @@ private extension SiteVersion {
     static let v1_2_0: Self = .init("1.2.0")
     static let v1_3_0: Self = .init("1.3.0")
     static let v1_4_0: Self = .init("1.4.0")
+    static let v1_6_10: Self = .init("1.6.10")
 }
 
 private extension PostSortType {
