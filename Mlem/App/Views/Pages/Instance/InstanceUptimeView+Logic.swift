@@ -14,7 +14,7 @@ enum UptimeDataStatus {
     case failure(Error)
 }
 
-func loadUptimeData(instance: any Instance) async -> UptimeDataStatus {
+func loadUptimeData(instance: any DeprecatedInstance) async -> UptimeDataStatus {
     if let url = instance.uptimeDataUrl {
         do {
             let data = try await URLSession.shared.data(from: url).0

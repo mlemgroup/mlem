@@ -62,7 +62,7 @@ struct InstanceView: View {
         VStack {
             if let errorDetails {
                 ErrorView(errorDetails)
-            } else if let instance = instance as? any Instance {
+            } else if let instance = instance as? any DeprecatedInstance {
                 content(instance)
                     .conditionalNavigationTitle(instance.displayName)
             } else {
@@ -71,7 +71,7 @@ struct InstanceView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
-        .animation(.easeOut(duration: 0.2), value: instance is any Instance)
+        .animation(.easeOut(duration: 0.2), value: instance is any DeprecatedInstance)
         .animation(.easeOut(duration: 0.2), value: instance.apiIsLocal)
         .task { await refresh() }
         .navigationBarTitleDisplayMode(.inline)
@@ -79,7 +79,7 @@ struct InstanceView: View {
     }
     
     @ViewBuilder
-    func content(_ instance: any Instance) -> some View {
+    func content(_ instance: any DeprecatedInstance) -> some View {
         FancyScrollView {
             ProfileHeaderView(
                 instance,
@@ -121,7 +121,7 @@ struct InstanceView: View {
     }
     
     @ViewBuilder
-    func administrationTab(instance: any Instance) -> some View {
+    func administrationTab(instance: any DeprecatedInstance) -> some View {
         VStack(spacing: Constants.main.standardSpacing) {
             if instance.api.supports(.modlog, defaultValue: true) {
                 ModlogButtonView(instance: instance)
@@ -153,7 +153,7 @@ struct InstanceView: View {
     }
     
     @ViewBuilder
-    func safetyTab(instance: any Instance) -> some View {
+    func safetyTab(instance: any DeprecatedInstance) -> some View {
         if let fediseerData {
             InstanceSafetyView(instance: instance, fediseerData: fediseerData)
         } else {

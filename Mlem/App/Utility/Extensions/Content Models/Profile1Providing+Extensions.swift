@@ -11,7 +11,7 @@ extension Profile1Providing {
     static var avatarFallback: MediaView.Fallback {
         if self is Community.Type {
             return .communityAvatar
-        } else if self is any Instance.Type {
+        } else if self is any DeprecatedInstance.Type {
             return .instanceAvatar
         } else if self is Person.Type || self is any Account.Type {
             return .personAvatar

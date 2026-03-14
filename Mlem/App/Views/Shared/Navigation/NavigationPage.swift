@@ -52,7 +52,7 @@ enum NavigationPage: Hashable {
     case instanceOpinionList(instance: InstanceHashWrapper, opinionType: FediseerOpinionType, data: FediseerData)
     case messageFeed(_ person: Person, messageContent: String, focusTextField: Bool, editing: MessageHashWrapper?)
     case fediseerInfo
-    case instanceUptime(_ instance: HashWrapper<any Instance>, _ uptimeData: UptimeData)
+    case instanceUptime(_ instance: HashWrapper<any DeprecatedInstance>, _ uptimeData: UptimeData)
     case externalApiInfo(api: ApiClient, actorId: ActorIdentifier)
     case imageViewer(_ url: URL)
     case communityPicker(api: ApiClient?, callback: HashWrapper<(Community, NavigationLayer) -> Void>)
@@ -113,7 +113,7 @@ enum NavigationPage: Hashable {
     }
     
     static func modlog(
-        instance: any Instance,
+        instance: any DeprecatedInstance,
         targetPerson: Person? = nil,
         moderatorPerson: Person? = nil
     ) -> NavigationPage {
@@ -140,7 +140,7 @@ enum NavigationPage: Hashable {
     }
     
     static func instanceUptime(
-        instance: any Instance,
+        instance: any DeprecatedInstance,
         uptimeData: UptimeData
     ) -> NavigationPage {
         .instanceUptime(.init(wrappedValue: instance), uptimeData)

@@ -15,7 +15,7 @@ struct InstanceDetailsView: View {
     @State private var showingSlurRegex: Bool = false
     @State var uptimeData: UptimeDataStatus?
     
-    let instance: any Instance
+    let instance: any DeprecatedInstance
     
     var body: some View {
         content

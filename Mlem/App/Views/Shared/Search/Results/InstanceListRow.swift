@@ -15,13 +15,13 @@ struct InstanceListRow<Content2: View>: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
     
-    let instance: (any Instance)?
+    let instance: (any DeprecatedInstance)?
     let summary: InstanceSummary?
     let content: Content
     let visitContext: VisitHistory.VisitContext
 
     init(
-        _ instance: any Instance,
+        _ instance: any DeprecatedInstance,
         @ViewBuilder content: @escaping () -> Content2 = { EmptyView() },
         showBlockStatus: Bool = true,
         readout: Content.Readout? = nil,

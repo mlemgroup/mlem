@@ -19,7 +19,7 @@ extension SignUpView {
             && password.count >= 10
     }
     
-    func checkUsernameValidity(_ instance: any Instance) async {
+    func checkUsernameValidity(_ instance: any DeprecatedInstance) async {
         if username.count < 3 {
             usernameValidity = .tooShort
             return

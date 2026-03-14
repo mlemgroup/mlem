@@ -17,7 +17,7 @@ struct InstanceListRowBody<Content: View>: View {
     
     @Environment(\.isEnabled) var isEnabled
     
-    let instance: (any Instance)?
+    let instance: (any DeprecatedInstance)?
     let summary: InstanceSummary?
     let readout: Readout?
     let showBlockStatus: Bool
@@ -25,7 +25,7 @@ struct InstanceListRowBody<Content: View>: View {
     @ViewBuilder let content: () -> Content
 
     init(
-        _ instance: any Instance,
+        _ instance: any DeprecatedInstance,
         @ViewBuilder content: @escaping () -> Content = { EmptyView() },
         showBlockStatus: Bool = true,
         readout: Readout? = nil

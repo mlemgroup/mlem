@@ -26,7 +26,7 @@ public protocol Instance1Providing:
     var blockedValue: Bool { get }
 }
 
-public typealias Instance = Instance1Providing
+public typealias DeprecatedInstance = Instance1Providing
 
 public extension Instance1Providing {
     static var modelTypeId: ContentType { .instance }

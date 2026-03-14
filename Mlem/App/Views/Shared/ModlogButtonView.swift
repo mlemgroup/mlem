@@ -16,7 +16,7 @@ struct ModlogButtonView: View {
         self.target = .community(community)
     }
     
-    init(instance: any Instance) {
+    init(instance: any DeprecatedInstance) {
         self.target = .instance(.init(wrappedValue: instance))
     }
     

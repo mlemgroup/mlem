@@ -31,7 +31,7 @@ public struct PersonProperties: UnifiedPropertiesProviding {
     var commentCount: Int?
     
     // From Person3Snapshot
-    var instance: (any Instance)?
+    var instance: (any DeprecatedInstance)?
     var moderatedCommunities: [Community]?
     
     // From Person4Snapshot

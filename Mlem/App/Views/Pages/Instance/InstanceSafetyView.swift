@@ -12,7 +12,7 @@ struct InstanceSafetyView: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.palette) var palette
     
-    let instance: any Instance
+    let instance: any DeprecatedInstance
     let fediseerData: FediseerData
         
     var body: some View {

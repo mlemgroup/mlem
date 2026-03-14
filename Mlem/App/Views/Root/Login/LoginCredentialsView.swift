@@ -173,7 +173,7 @@ struct LoginCredentialsView: View {
     
     func attemptToLogin() {
         guard !usernameOrEmail.isEmpty, !password.isEmpty else { return }
-        if let client = (instance as? any Instance)?.guestApi ?? account?.api.asGuest() {
+        if let client = (instance as? any DeprecatedInstance)?.guestApi ?? account?.api.asGuest() {
             authenticating = true
             Task {
                 do {
