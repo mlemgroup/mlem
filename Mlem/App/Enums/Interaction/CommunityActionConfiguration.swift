@@ -8,7 +8,7 @@
 import Actions
 import Foundation
 
-struct CommunityActionConfiguration: Codable {
+struct CommunityActionConfiguration: Codable, SwipeActionConfiguration {
     private var swipes_: ActionSeedSwipeConfiguration?
 
     var swipes: ActionSeedSwipeConfiguration {
