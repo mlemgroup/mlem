@@ -8,7 +8,7 @@
 import Actions
 import SwiftUI
 
-struct NewSwipeActionEditorView: View {
+struct SwipeActionEditorView: View {
     @Binding var configuration: ActionSeedSwipeConfiguration
     let onReset: () -> Void
     let onApplyToAll: (() -> Void)?
@@ -45,7 +45,7 @@ struct NewSwipeActionEditorView: View {
     }
 }
 
-extension NewSwipeActionEditorView {
+extension SwipeActionEditorView {
     init<Configuration: SwipeActionConfiguration>(
         _ keyPath: ReferenceWritableKeyPath<SettingsValues, Configuration>,
         onApplyToAll onApplyToAllConfiguration: ((Configuration) -> Void)? = nil

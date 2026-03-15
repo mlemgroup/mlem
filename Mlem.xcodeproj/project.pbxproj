@@ -238,7 +238,7 @@
 		038C85E62D88337100543F70 /* CommentMockType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038C85E52D88337100543F70 /* CommentMockType.swift */; };
 		038C86572D888EC100543F70 /* CommentSortType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038C86562D888EC100543F70 /* CommentSortType+Extensions.swift */; };
 		038E1ABC2F58B9EF00D30F01 /* CommunityActionConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038E1ABB2F58B9EF00D30F01 /* CommunityActionConfiguration.swift */; };
-		038E1AC02F58C76A00D30F01 /* NewSwipeActionEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038E1ABF2F58C76A00D30F01 /* NewSwipeActionEditorView.swift */; };
+		038E1AC02F58C76A00D30F01 /* SwipeActionEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038E1ABF2F58C76A00D30F01 /* SwipeActionEditorView.swift */; };
 		038E1ACA2F59C18100D30F01 /* CommunitySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038E1AC92F59C18100D30F01 /* CommunitySettingsView.swift */; };
 		0391E0F92CFF17AE0040CCA8 /* ProfileSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0391E0F82CFF17AE0040CCA8 /* ProfileSettingsView.swift */; };
 		0391E0FB2D0066240040CCA8 /* ImageUploadMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0391E0FA2D0066240040CCA8 /* ImageUploadMenu.swift */; };
@@ -838,7 +838,7 @@
 		038C85E52D88337100543F70 /* CommentMockType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentMockType.swift; sourceTree = "<group>"; };
 		038C86562D888EC100543F70 /* CommentSortType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentSortType+Extensions.swift"; sourceTree = "<group>"; };
 		038E1ABB2F58B9EF00D30F01 /* CommunityActionConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityActionConfiguration.swift; sourceTree = "<group>"; };
-		038E1ABF2F58C76A00D30F01 /* NewSwipeActionEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSwipeActionEditorView.swift; sourceTree = "<group>"; };
+		038E1ABF2F58C76A00D30F01 /* SwipeActionEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeActionEditorView.swift; sourceTree = "<group>"; };
 		038E1AC92F59C18100D30F01 /* CommunitySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunitySettingsView.swift; sourceTree = "<group>"; };
 		0391E0F82CFF17AE0040CCA8 /* ProfileSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsView.swift; sourceTree = "<group>"; };
 		0391E0FA2D0066240040CCA8 /* ImageUploadMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUploadMenu.swift; sourceTree = "<group>"; };
@@ -1337,7 +1337,7 @@
 				03B72B6A2C28A0190023A6C4 /* SubscriptionListSettingsView.swift */,
 				03D284052D2AEE3A00A6659B /* TabBarSettingsView.swift */,
 				031E2D5A2BEFC9460003BC45 /* ThemeSettingsView.swift */,
-				038E1ABF2F58C76A00D30F01 /* NewSwipeActionEditorView.swift */,
+				038E1ABF2F58C76A00D30F01 /* SwipeActionEditorView.swift */,
 				039F588D2C7B598000C61658 /* Components */,
 				033FCB262C5E3933007B7CD1 /* Icon */,
 				0397D4982C6EA68A002C6CDC /* InteractionBarEditor */,
@@ -3173,7 +3173,7 @@
 				CDC44A362D1CBC280030F01C /* ReadPostIndicator.swift in Sources */,
 				038E1ABC2F58B9EF00D30F01 /* CommunityActionConfiguration.swift in Sources */,
 				0353948D2CA080EB00795AA5 /* FeedWelcomeView.swift in Sources */,
-				038E1AC02F58C76A00D30F01 /* NewSwipeActionEditorView.swift in Sources */,
+				038E1AC02F58C76A00D30F01 /* SwipeActionEditorView.swift in Sources */,
 				CD950E0F2F0ED6F7002A0595 /* FeedPostView.swift in Sources */,
 				0343C0482D3AD6DB001CF709 /* Set+Extensions.swift in Sources */,
 				034A85712EC0A1FA00E5F904 /* InstanceCommunityListView.swift in Sources */,
