@@ -58,8 +58,6 @@ struct PostBarConfiguration: InteractionBarConfiguration, SwipeActionConfigurati
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.leading = try container.decodeIfPresent([Item].self, forKey: .leading) ?? [.counter(.score)]
         self.trailing = try container.decodeIfPresent([Item].self, forKey: .trailing) ?? [.action(.save), .action(.reply)]
-        self.leadingSwipes = try container.decodeIfPresent([ActionType].self, forKey: .leadingSwipes) ?? [.upvote, .downvote]
-        self.trailingSwipes = try container.decodeIfPresent([ActionType].self, forKey: .trailingSwipes) ?? [.save, .reply]
         self.readouts = try container.decodeIfPresent([ReadoutType].self, forKey: .readouts) ?? [.created, .comment]
         self.availableWidgets = try container.decodeIfPresent(Set<Item>.self, forKey: .availableWidgets) ??
             .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) })
@@ -69,6 +67,23 @@ struct PostBarConfiguration: InteractionBarConfiguration, SwipeActionConfigurati
             self.savedContextMenu = contextMenuKeys.compactMap { key in allActions.first(where: {$0.key == key}) }
         } else {
             self.savedContextMenu = nil
+        }
+
+        let leadingSwipes = try container.decodeIfPresent([ActionType].self, forKey: .leadingSwipes) ?? [.upvote, .downvote]
+        let trailingSwipes = try container.decodeIfPresent([ActionType].self, forKey: .trailingSwipes) ?? [.save, .reply]
+ 
+        self.leadingSwipes = leadingSwipes
+        self.trailingSwipes = trailingSwipes
+
+        let swipes = ActionSeedSwipeConfiguration(
+            leading: leadingSwipes.map(\.actionSeed),
+            trailing: trailingSwipes.map(\.actionSeed)
+        )
+
+        if swipes == Self.defaultSwipes {
+            self.swipes_ = nil
+        } else {
+            self.swipes_ = swipes
         }
     }
     
