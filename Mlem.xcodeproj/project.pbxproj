@@ -221,6 +221,7 @@
 		0381F7142F670F95008A7731 /* SwipeActionConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381F7132F670F95008A7731 /* SwipeActionConfiguration.swift */; };
 		0381F7162F671427008A7731 /* PostBarConfiguration+Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381F7152F671427008A7731 /* PostBarConfiguration+Types.swift */; };
 		0381F7242F672258008A7731 /* CommentBarConfiguration+Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381F7232F672258008A7731 /* CommentBarConfiguration+Types.swift */; };
+		0381F7282F6724D3008A7731 /* ReplyBarConfiguration+Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381F7272F6724D3008A7731 /* ReplyBarConfiguration+Types.swift */; };
 		0382A7F02C09F0F800C79DDA /* PersonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0382A7EF2C09F0F800C79DDA /* PersonView.swift */; };
 		0382A7F22C0A758E00C79DDA /* ProfileDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0382A7F12C0A758E00C79DDA /* ProfileDateView.swift */; };
 		0382A7F42C0A76A900C79DDA /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0382A7F32C0A76A900C79DDA /* Date+Extensions.swift */; };
@@ -821,6 +822,7 @@
 		0381F7132F670F95008A7731 /* SwipeActionConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeActionConfiguration.swift; sourceTree = "<group>"; };
 		0381F7152F671427008A7731 /* PostBarConfiguration+Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostBarConfiguration+Types.swift"; sourceTree = "<group>"; };
 		0381F7232F672258008A7731 /* CommentBarConfiguration+Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentBarConfiguration+Types.swift"; sourceTree = "<group>"; };
+		0381F7272F6724D3008A7731 /* ReplyBarConfiguration+Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReplyBarConfiguration+Types.swift"; sourceTree = "<group>"; };
 		0382A7EF2C09F0F800C79DDA /* PersonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonView.swift; sourceTree = "<group>"; };
 		0382A7F12C0A758E00C79DDA /* ProfileDateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDateView.swift; sourceTree = "<group>"; };
 		0382A7F32C0A76A900C79DDA /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
@@ -1690,6 +1692,7 @@
 				033F84BC2C2ACC5F002E3EDF /* CommentBarConfiguration.swift */,
 				0381F7232F672258008A7731 /* CommentBarConfiguration+Types.swift */,
 				032C32172C36F70300595286 /* ReplyBarConfiguration.swift */,
+				0381F7272F6724D3008A7731 /* ReplyBarConfiguration+Types.swift */,
 				03D662A42F5377630041ADAF /* ActionSeedSections.swift */,
 			);
 			path = Interaction;
@@ -2853,6 +2856,7 @@
 				035EDEF32C2DE94B00F51144 /* SearchBar.swift in Sources */,
 				03049A1A2C6502F300FF6889 /* FormSection.swift in Sources */,
 				035EDEF42C2DE94B00F51144 /* SearchBar+NavigationView.swift in Sources */,
+				0381F7282F6724D3008A7731 /* ReplyBarConfiguration+Types.swift in Sources */,
 				CD5581DE2C7B8B820043FAC3 /* ImageFunctions.swift in Sources */,
 				034065C32D83742900637308 /* View+NavigtionStackPreview.swift in Sources */,
 				035EDEF52C2DE94B00F51144 /* SearchBarExtensions.swift in Sources */,
