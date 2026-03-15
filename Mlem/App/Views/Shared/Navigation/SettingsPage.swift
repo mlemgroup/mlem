@@ -165,7 +165,7 @@ enum SettingsPage: Hashable {
         case let .swipeActions(type):
             switch type {
             case .post:
-                SwipeActionEditorView(setting: \.interactionBar_post, isReport: false)
+                NewSwipeActionEditorView(\.interactionBar_post)
             case .comment:
                 SwipeActionEditorView(setting: \.interactionBar_comment, isReport: false)
             case .reply:

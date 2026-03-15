@@ -44,6 +44,14 @@ extension View {
             }
         }
     }
+
+    @ViewBuilder
+    func quickSwipes(post: Post, configuration: PostBarConfiguration) -> some View {
+        quickSwipes(
+            leading: configuration.swipes.leading.compactMap { $0.createAction(post) },
+            trailing: configuration.swipes.trailing.compactMap { $0.createAction(post) }
+        )
+    }
 }
 
 extension EllipsisMenu {
