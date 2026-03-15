@@ -85,7 +85,7 @@ extension CommentBarConfiguration {
             case .ban: .ban
             case .collapse: .collapse
             case .collapseParent: .collapseParent
-            case .collapseToTop: .save // TEMP; FIXME
+            case .collapseToTop: .collapseToTop
             }
         }
     }

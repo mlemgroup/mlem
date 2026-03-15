@@ -111,6 +111,7 @@ public extension Icon {
         // MARK: - Collapse
 
         public let collapseParent: Icon = .applySquare("chevron.up")
+        public let collapseToTop: Icon = .applySquare("arrow.up.to.line")
 
         // MARK: - Moderation
         
