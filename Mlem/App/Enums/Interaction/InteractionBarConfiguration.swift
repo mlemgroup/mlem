@@ -13,7 +13,7 @@ import Icons
 import MlemMiddleware
 import SwiftUI
 
-protocol InteractionBarConfiguration: Codable, Equatable {
+protocol InteractionBarConfiguration: Codable, Equatable, SwipeActionConfiguration {
     associatedtype ActionType: ActionTypeProviding
     associatedtype CounterType: CounterTypeProviding
     associatedtype ReadoutType: ReadoutTypeProviding
@@ -22,8 +22,6 @@ protocol InteractionBarConfiguration: Codable, Equatable {
     
     var leading: [Item] { get set }
     var trailing: [Item] { get set }
-    var leadingSwipes: [ActionType] { get set }
-    var trailingSwipes: [ActionType] { get set }
     var readouts: [ReadoutType] { get set }
     var savedContextMenu: [ActionSeed]? { get set }
     var contextMenu: [ActionSeed] { get set }
@@ -41,8 +39,7 @@ protocol InteractionBarConfiguration: Codable, Equatable {
     init(
         leading: [Item],
         trailing: [Item],
-        leadingSwipes: [ActionType],
-        trailingSwipes: [ActionType],
+        savedSwipes: ActionSeedSwipeConfiguration?,
         readouts: [ReadoutType],
         availableWidgets: Set<Item>,
         savedContextMenu: [ActionSeed]?
@@ -56,8 +53,7 @@ extension InteractionBarConfiguration {
         .init(
             leading: types.contains(.bar) ? other.leading.compactMap { $0.convert() } : leading,
             trailing: types.contains(.bar) ? other.trailing.compactMap { $0.convert() } : trailing,
-            leadingSwipes: types.contains(.swipe) ? other.leadingSwipes.compactMap { .init(rawValue: $0.rawValue) } : leadingSwipes,
-            trailingSwipes: types.contains(.swipe) ? other.trailingSwipes.compactMap { .init(rawValue: $0.rawValue) } : trailingSwipes,
+            savedSwipes: types.contains(.swipe) ? other.savedSwipes?.filter(allowed: Self.availableActions.all) : savedSwipes,
             readouts: types.contains(.bar) ? other.readouts.compactMap { .init(rawValue: $0.rawValue) } : readouts,
             availableWidgets: types.contains(.bar) ? .init(other.availableWidgets.compactMap { $0.convert() }) : availableWidgets,
             savedContextMenu: types.contains(.contextMenu) ? other.savedContextMenu.map { $0.filter { Self.availableActions.all.contains($0) } } : savedContextMenu

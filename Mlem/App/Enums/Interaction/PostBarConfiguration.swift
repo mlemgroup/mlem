@@ -14,8 +14,6 @@ struct PostBarConfiguration: InteractionBarConfiguration, SwipeActionConfigurati
     var leading: [Item]
     var trailing: [Item]
     var readouts: [ReadoutType]
-    var leadingSwipes: [ActionType]
-    var trailingSwipes: [ActionType]
     var savedContextMenu: [ActionSeed]?
 
     var savedSwipes: ActionSeedSwipeConfiguration?
@@ -30,16 +28,14 @@ struct PostBarConfiguration: InteractionBarConfiguration, SwipeActionConfigurati
     init(
         leading: [Item],
         trailing: [Item],
-        leadingSwipes: [ActionType],
-        trailingSwipes: [ActionType],
+        savedSwipes: ActionSeedSwipeConfiguration?,
         readouts: [ReadoutType],
         availableWidgets: Set<Item>,
         savedContextMenu: [ActionSeed]?
     ) {
         self.leading = leading
         self.trailing = trailing
-        self.leadingSwipes = leadingSwipes
-        self.trailingSwipes = trailingSwipes
+        self.savedSwipes = savedSwipes
         self.readouts = readouts
         self.availableWidgets = availableWidgets
         self.savedContextMenu = savedContextMenu
@@ -61,9 +57,6 @@ struct PostBarConfiguration: InteractionBarConfiguration, SwipeActionConfigurati
             self.savedContextMenu = nil
         }
 
-        self.leadingSwipes = []
-        self.trailingSwipes = []
-
         let swipeConfigurationContainer = try? container.nestedContainer(
             keyedBy: ActionSeedSwipeConfiguration.CodingKeys.self,
             forKey: .swipes
@@ -74,9 +67,6 @@ struct PostBarConfiguration: InteractionBarConfiguration, SwipeActionConfigurati
             // Convert from Mlem 2.4 -> 2.5 format
             let leadingSwipes = try container.decodeIfPresent([ActionType].self, forKey: .leadingSwipes) ?? [.upvote, .downvote]
             let trailingSwipes = try container.decodeIfPresent([ActionType].self, forKey: .trailingSwipes) ?? [.save, .reply]
-
-            self.leadingSwipes = leadingSwipes
-            self.trailingSwipes = trailingSwipes
 
             let swipes = ActionSeedSwipeConfiguration(
                 leading: leadingSwipes.map(\.actionSeed),
@@ -118,8 +108,7 @@ struct PostBarConfiguration: InteractionBarConfiguration, SwipeActionConfigurati
         .init(
             leading: [.counter(.score)],
             trailing: [.action(.save), .action(.reply)],
-            leadingSwipes: [.upvote, .downvote],
-            trailingSwipes: [.save, .reply],
+            savedSwipes: nil,
             readouts: [.created, .comment],
             availableWidgets: .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) }),
             savedContextMenu: nil
@@ -130,8 +119,7 @@ struct PostBarConfiguration: InteractionBarConfiguration, SwipeActionConfigurati
         .init(
             leading: [.action(.resolve), .action(.lock)],
             trailing: [.action(.ban), .action(.remove)],
-            leadingSwipes: [.upvote, .downvote],
-            trailingSwipes: [.save, .reply],
+            savedSwipes: nil,
             readouts: [.upvote, .downvote, .created, .comment],
             availableWidgets: .init(ActionType.defaultReportWidgets.map { .action($0) }),
             savedContextMenu: nil

@@ -30,13 +30,10 @@ struct SwipeActionEditorView<Configuration: InteractionBarConfiguration>: View {
     
     var body: some View {
         Form {
-            ActionListView(title: "Left", actions: $configuration.leadingSwipes)
-            ActionListView(title: "Right", actions: $configuration.trailingSwipes)
             Button("Reset") {
                 let defaultConfiguration: Configuration = isReport ? .reportDefault ?? .default : .default
                 var newConfiguration = configuration
-                newConfiguration.leadingSwipes = defaultConfiguration.leadingSwipes
-                newConfiguration.trailingSwipes = defaultConfiguration.trailingSwipes
+                newConfiguration.savedSwipes = defaultConfiguration.savedSwipes
                 configuration = newConfiguration
             }
             Button("Apply to All") { showingApplyToAllConfirmation = true }

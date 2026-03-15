@@ -14,8 +14,6 @@ struct CommentBarConfiguration: InteractionBarConfiguration, SwipeActionConfigur
     var leading: [Item]
     var trailing: [Item]
     var readouts: [ReadoutType]
-    var leadingSwipes: [ActionType]
-    var trailingSwipes: [ActionType]
     var savedContextMenu: [ActionSeed]?
 
     public var savedSwipes: ActionSeedSwipeConfiguration?
@@ -30,16 +28,14 @@ struct CommentBarConfiguration: InteractionBarConfiguration, SwipeActionConfigur
     init(
         leading: [Item],
         trailing: [Item],
-        leadingSwipes: [ActionType],
-        trailingSwipes: [ActionType],
+        savedSwipes: ActionSeedSwipeConfiguration?,
         readouts: [ReadoutType],
         availableWidgets: Set<Item>,
         savedContextMenu: [ActionSeed]?
     ) {
         self.leading = leading
         self.trailing = trailing
-        self.leadingSwipes = leadingSwipes
-        self.trailingSwipes = trailingSwipes
+        self.savedSwipes = savedSwipes
         self.readouts = readouts
         self.availableWidgets = availableWidgets
         self.savedContextMenu = savedContextMenu
@@ -59,9 +55,6 @@ struct CommentBarConfiguration: InteractionBarConfiguration, SwipeActionConfigur
             self.savedContextMenu = nil
         }
 
-        self.leadingSwipes = []
-        self.trailingSwipes = []
-
         let swipeConfigurationContainer = try? container.nestedContainer(
             keyedBy: ActionSeedSwipeConfiguration.CodingKeys.self,
             forKey: .swipes
@@ -72,9 +65,6 @@ struct CommentBarConfiguration: InteractionBarConfiguration, SwipeActionConfigur
             // Convert from Mlem 2.4 -> 2.5 format
             let leadingSwipes = try container.decodeIfPresent([ActionType].self, forKey: .leadingSwipes) ?? [.upvote, .downvote]
             let trailingSwipes = try container.decodeIfPresent([ActionType].self, forKey: .trailingSwipes) ?? [.save, .reply]
-
-            self.leadingSwipes = leadingSwipes
-            self.trailingSwipes = trailingSwipes
 
             let swipes = ActionSeedSwipeConfiguration(
                 leading: leadingSwipes.map(\.actionSeed),
@@ -125,8 +115,7 @@ struct CommentBarConfiguration: InteractionBarConfiguration, SwipeActionConfigur
         .init(
             leading: [.counter(.score)],
             trailing: [.action(.save), .action(.reply)],
-            leadingSwipes: [.upvote, .downvote],
-            trailingSwipes: [.save, .reply],
+            savedSwipes: nil,
             readouts: [.created, .comment],
             availableWidgets: .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) }),
             savedContextMenu: nil
@@ -137,8 +126,7 @@ struct CommentBarConfiguration: InteractionBarConfiguration, SwipeActionConfigur
         .init(
             leading: [.action(.resolve), .action(.share)],
             trailing: [.action(.ban), .action(.remove)],
-            leadingSwipes: [.upvote, .downvote],
-            trailingSwipes: [.save, .reply],
+            savedSwipes: nil,
             readouts: [.upvote, .downvote, .created, .comment],
             availableWidgets: .init(ActionType.defaultReportWidgets.map { .action($0) }),
             savedContextMenu: nil
