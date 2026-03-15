@@ -219,6 +219,7 @@
 		038188992D43E0F30073E88D /* SafetySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038188982D43E0F30073E88D /* SafetySettingsView.swift */; };
 		0381889B2D4412A40073E88D /* SafetyBlurNsfwSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381889A2D4412A40073E88D /* SafetyBlurNsfwSettingsView.swift */; };
 		0381F7142F670F95008A7731 /* SwipeActionConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381F7132F670F95008A7731 /* SwipeActionConfiguration.swift */; };
+		0381F7162F671427008A7731 /* PostBarConfiguration+Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381F7152F671427008A7731 /* PostBarConfiguration+Types.swift */; };
 		0382A7F02C09F0F800C79DDA /* PersonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0382A7EF2C09F0F800C79DDA /* PersonView.swift */; };
 		0382A7F22C0A758E00C79DDA /* ProfileDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0382A7F12C0A758E00C79DDA /* ProfileDateView.swift */; };
 		0382A7F42C0A76A900C79DDA /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0382A7F32C0A76A900C79DDA /* Date+Extensions.swift */; };
@@ -817,6 +818,7 @@
 		038188982D43E0F30073E88D /* SafetySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafetySettingsView.swift; sourceTree = "<group>"; };
 		0381889A2D4412A40073E88D /* SafetyBlurNsfwSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafetyBlurNsfwSettingsView.swift; sourceTree = "<group>"; };
 		0381F7132F670F95008A7731 /* SwipeActionConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeActionConfiguration.swift; sourceTree = "<group>"; };
+		0381F7152F671427008A7731 /* PostBarConfiguration+Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostBarConfiguration+Types.swift"; sourceTree = "<group>"; };
 		0382A7EF2C09F0F800C79DDA /* PersonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonView.swift; sourceTree = "<group>"; };
 		0382A7F12C0A758E00C79DDA /* ProfileDateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDateView.swift; sourceTree = "<group>"; };
 		0382A7F32C0A76A900C79DDA /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
@@ -1682,6 +1684,7 @@
 				038E1ABB2F58B9EF00D30F01 /* CommunityActionConfiguration.swift */,
 				0397D49B2C6EA73C002C6CDC /* InteractionBarConfiguration.swift */,
 				03AF91E42C1C61FA00E56644 /* PostBarConfiguration.swift */,
+				0381F7152F671427008A7731 /* PostBarConfiguration+Types.swift */,
 				033F84BC2C2ACC5F002E3EDF /* CommentBarConfiguration.swift */,
 				032C32172C36F70300595286 /* ReplyBarConfiguration.swift */,
 				03D662A42F5377630041ADAF /* ActionSeedSections.swift */,
@@ -2877,6 +2880,7 @@
 				CDE88C352E68938D00183AE5 /* View+AccountSwitcherGesture.swift in Sources */,
 				CDD4A09C2C8A122F0001AD1A /* Settings.swift in Sources */,
 				03AB906F2D418C200054D9E1 /* CommentJumpButtonSettingsView.swift in Sources */,
+				0381F7162F671427008A7731 /* PostBarConfiguration+Types.swift in Sources */,
 				033819282D4424D9000AFC55 /* SafetyWarningsSettingsView.swift in Sources */,
 				030EE3042D651A4100D58C2C /* View+Refreshable.swift in Sources */,
 				03ECD7212C8654BA00D48BF6 /* PostEditorView+Toolbar.swift in Sources */,
