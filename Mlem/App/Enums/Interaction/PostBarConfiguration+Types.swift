@@ -96,7 +96,7 @@ extension PostBarConfiguration {
             case .hide: .hide
             case .block: .blockCreator
             case .report: .report
-            case .crossPost: .selectText // TEMP; FIXME
+            case .crossPost: .crosspost
             case .lock: .lock
             case .pin: .pin
             case .resolve: .resolveReport

@@ -143,6 +143,7 @@ struct PostBarConfiguration: InteractionBarConfiguration, SwipeActionConfigurati
                 .reply,
                 .selectText,
                 .share,
+                .crosspost,
                 .hide,
                 .createImage,
                 .report,
