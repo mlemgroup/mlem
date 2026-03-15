@@ -70,6 +70,24 @@ extension CommentBarConfiguration {
             case .collapse, .collapseParent, .collapseToTop: []
             }
         }
+               
+        var actionSeed: ActionSeed {
+            switch self {
+            case .upvote: .upvote
+            case .downvote: .downvote
+            case .save: .save
+            case .reply: .reply
+            case .share: .share
+            case .selectText: .selectText
+            case .report: .report
+            case .resolve: .resolveReport
+            case .remove: .remove
+            case .ban: .ban
+            case .collapse: .save // TEMP; FIXME
+            case .collapseParent: .save // TEMP; FIXME
+            case .collapseToTop: .save // TEMP; FIXME
+            }
+        }
     }
     
     enum CounterType: String, CounterTypeProviding {
