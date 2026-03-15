@@ -11,7 +11,10 @@ import SwiftUI
 struct NewSwipeActionEditorView: View {
     @Binding var configuration: ActionSeedSwipeConfiguration
     let onReset: () -> Void
+    let onApplyToAll: (() -> Void)?
     let allActions: [ActionSeed]
+
+    @State var showingApplyToAllConfirmation: Bool = false
 
     var body: some View {
         Form {
@@ -26,6 +29,16 @@ struct NewSwipeActionEditorView: View {
                 allActions: allActions
             )
             Button("Reset", action: onReset)
+            if let onApplyToAll {
+                Button("Apply to All") { showingApplyToAllConfirmation = true }
+                    .confirmationDialog(
+                        "Really apply this configuration to all other content types?",
+                        isPresented: $showingApplyToAllConfirmation,
+                        titleVisibility: .visible
+                    ) {
+                        Button("Yes", action: onApplyToAll)
+                    }
+            }
         }
         .environment(\.editMode, .constant(.active))
         .navigationTitle("Swipe Actions")
@@ -33,7 +46,19 @@ struct NewSwipeActionEditorView: View {
 }
 
 extension NewSwipeActionEditorView {
-    init<Configuration: SwipeActionConfiguration>(_ keyPath: ReferenceWritableKeyPath<SettingsValues, Configuration>) {
+    init<Configuration: SwipeActionConfiguration>(
+        _ keyPath: ReferenceWritableKeyPath<SettingsValues, Configuration>,
+        onApplyToAll onApplyToAllConfiguration: ((Configuration) -> Void)? = nil
+    ) {
+        let onApplyToAll: (() -> Void)?
+        if let onApplyToAllConfiguration {
+            onApplyToAll = {
+                onApplyToAllConfiguration(Settings.get(keyPath))
+            }
+        } else {
+            onApplyToAll = nil
+        }
+
         self.init(
             configuration: .init(
                 get: {
@@ -49,6 +74,7 @@ extension NewSwipeActionEditorView {
                 configuration.swipes = Configuration.defaultSwipes
                 Settings.set(keyPath, to: configuration)
             },
+            onApplyToAll: onApplyToAll,
             allActions: Configuration.availableActions.all
         )
     }

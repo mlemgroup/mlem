@@ -165,15 +165,44 @@ enum SettingsPage: Hashable {
         case let .swipeActions(type):
             switch type {
             case .post:
-                NewSwipeActionEditorView(\.interactionBar_post)
+                NewSwipeActionEditorView(\.interactionBar_post, onApplyToAll: { configuration in
+                    Settings.mutate(\.interactionBar_comment) {
+                        $0.applying(other: configuration, types: [.swipe])
+                    }
+                    Settings.mutate(\.interactionBar_reply) {
+                        $0.applying(other: configuration, types: [.swipe])
+                    }
+                })
             case .comment:
-                NewSwipeActionEditorView(\.interactionBar_comment)
+                NewSwipeActionEditorView(\.interactionBar_comment, onApplyToAll: { configuration in
+                    Settings.mutate(\.interactionBar_post) {
+                        $0.applying(other: configuration, types: [.swipe])
+                    }
+                    Settings.mutate(\.interactionBar_reply) {
+                        $0.applying(other: configuration, types: [.swipe])
+                    }
+                })
             case .reply:
-                NewSwipeActionEditorView(\.interactionBar_reply)
+                NewSwipeActionEditorView(\.interactionBar_reply, onApplyToAll: { configuration in
+                    Settings.mutate(\.interactionBar_post) {
+                        $0.applying(other: configuration, types: [.swipe])
+                    }
+                    Settings.mutate(\.interactionBar_comment) {
+                        $0.applying(other: configuration, types: [.swipe])
+                    }
+                })
             case .postReport:
-                NewSwipeActionEditorView(\.interactionBar_postReport)
+                NewSwipeActionEditorView(\.interactionBar_postReport, onApplyToAll: { configuration in
+                    Settings.mutate(\.interactionBar_commentReport) {
+                        $0.applying(other: configuration, types: [.swipe])
+                    }
+                })
             case .commentReport:
-                NewSwipeActionEditorView(\.interactionBar_commentReport)
+                NewSwipeActionEditorView(\.interactionBar_commentReport, onApplyToAll: { configuration in
+                    Settings.mutate(\.interactionBar_postReport) {
+                        $0.applying(other: configuration, types: [.swipe])
+                    }
+                })
             case .community:
                 NewSwipeActionEditorView(\.interactionBar_community)
             }
