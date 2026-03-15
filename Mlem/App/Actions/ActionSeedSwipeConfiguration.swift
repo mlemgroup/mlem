@@ -8,7 +8,7 @@
 import Actions
 import Foundation
 
-struct ActionSeedSwipeConfiguration: Encodable {
+struct ActionSeedSwipeConfiguration: Encodable, Equatable {
     var leading: [ActionSeed]   
     var trailing: [ActionSeed]
 
