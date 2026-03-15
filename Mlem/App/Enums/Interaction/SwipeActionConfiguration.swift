@@ -12,4 +12,5 @@ protocol SwipeActionConfiguration {
     var swipes: ActionSeedSwipeConfiguration { get set }
 
     static var availableActions: ActionSeedSections { get }
+    static var defaultSwipes: ActionSeedSwipeConfiguration { get }
 }

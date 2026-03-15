@@ -32,6 +32,28 @@ struct NewSwipeActionEditorView: View {
     }
 }
 
+extension NewSwipeActionEditorView {
+    init<Configuration: SwipeActionConfiguration>(_ keyPath: ReferenceWritableKeyPath<SettingsValues, Configuration>) {
+        self.init(
+            configuration: .init(
+                get: {
+                    Settings.get(keyPath).swipes
+                }, set: {
+                    var configuration = Settings.get(keyPath)
+                    configuration.swipes = $0
+                    Settings.set(keyPath, to: configuration)
+                }
+            ),
+            onReset: {
+                var configuration = Settings.get(keyPath)
+                configuration.swipes = Configuration.defaultSwipes
+                Settings.set(keyPath, to: configuration)
+            },
+            allActions: Configuration.availableActions.all
+        )
+    }
+}
+
 private struct ActionListView: View {
     let title: LocalizedStringResource
     @Binding var actions: [ActionSeed]

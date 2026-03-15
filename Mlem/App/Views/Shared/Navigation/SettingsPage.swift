@@ -175,21 +175,7 @@ enum SettingsPage: Hashable {
             case .commentReport:
                 SwipeActionEditorView(setting: \.interactionBar_commentReport, isReport: true)
             case .community:
-                NewSwipeActionEditorView(
-                    configuration: .init(
-                        get: {
-                            Settings.get(\.interactionBar_community).swipes
-                        }, set: {
-                            var configuration = Settings.get(\.interactionBar_community)
-                            configuration.swipes = $0
-                            Settings.set(\.interactionBar_community, to: configuration)
-                        }
-                    ),
-                    onReset: {
-                            Settings.set(\.interactionBar_community, to: .init())
-                    },
-                    allActions: CommunityActionConfiguration.availableActions.all
-                )
+                NewSwipeActionEditorView(\.interactionBar_community)
             }
         case let .interactionBar(type):
             switch type {
