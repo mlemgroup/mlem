@@ -37,7 +37,7 @@ extension ActionSeed {
         label: CopyNameAction.createLabel(relationship: .author)
     ) { entity in
         switch entity {
-        case let entity as Comment:
+        case let entity as any InteractableProviding:
             if let creator = entity.creator.value {
                 CopyNameAction(text: creator.fullNameWithPrefix, relationship: .author)
             } else {
