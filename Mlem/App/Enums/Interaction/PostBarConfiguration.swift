@@ -10,13 +10,28 @@ import Foundation
 import MlemMiddleware
 import SwiftUI
 
-struct PostBarConfiguration: InteractionBarConfiguration {
+struct PostBarConfiguration: InteractionBarConfiguration, SwipeActionConfiguration {
     var leading: [Item]
     var trailing: [Item]
     var readouts: [ReadoutType]
     var leadingSwipes: [ActionType]
     var trailingSwipes: [ActionType]
     var savedContextMenu: [ActionSeed]?
+
+    private var swipes_: ActionSeedSwipeConfiguration?
+
+    var swipes: ActionSeedSwipeConfiguration {
+        get {
+            swipes_ ?? Self.defaultSwipes
+        }
+        set {
+            swipes_ = newValue
+        }
+    }
+
+    static var defaultSwipes: ActionSeedSwipeConfiguration {
+        .init(leading: [.downvote, .upvote], trailing: [.save, .reply])
+    }
 
     var availableWidgets: Set<Item>
     func widgetPickerPage(_ configuration: Binding<Self>) -> SettingsPage { .postBarWidgetPicker(configuration) }
