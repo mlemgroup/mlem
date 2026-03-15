@@ -59,6 +59,7 @@ struct PostBarConfiguration: InteractionBarConfiguration, SwipeActionConfigurati
         self.leading = try container.decodeIfPresent([Item].self, forKey: .leading) ?? [.counter(.score)]
         self.trailing = try container.decodeIfPresent([Item].self, forKey: .trailing) ?? [.action(.save), .action(.reply)]
         self.readouts = try container.decodeIfPresent([ReadoutType].self, forKey: .readouts) ?? [.created, .comment]
+
         self.availableWidgets = try container.decodeIfPresent(Set<Item>.self, forKey: .availableWidgets) ??
             .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) })
 
@@ -69,22 +70,57 @@ struct PostBarConfiguration: InteractionBarConfiguration, SwipeActionConfigurati
             self.savedContextMenu = nil
         }
 
-        let leadingSwipes = try container.decodeIfPresent([ActionType].self, forKey: .leadingSwipes) ?? [.upvote, .downvote]
-        let trailingSwipes = try container.decodeIfPresent([ActionType].self, forKey: .trailingSwipes) ?? [.save, .reply]
- 
-        self.leadingSwipes = leadingSwipes
-        self.trailingSwipes = trailingSwipes
+        self.leadingSwipes = []
+        self.trailingSwipes = []
 
-        let swipes = ActionSeedSwipeConfiguration(
-            leading: leadingSwipes.map(\.actionSeed),
-            trailing: trailingSwipes.map(\.actionSeed)
+        let swipeConfigurationContainer = try? container.nestedContainer(
+            keyedBy: ActionSeedSwipeConfiguration.CodingKeys.self,
+            forKey: .swipes
         )
-
-        if swipes == Self.defaultSwipes {
-            self.swipes_ = nil
+        if let swipeConfigurationContainer {
+            self.swipes_ = try .init(from: swipeConfigurationContainer, availableActions: Self.availableActions.all)
         } else {
-            self.swipes_ = swipes
+            // Convert from Mlem 2.4 -> 2.5 format
+            let leadingSwipes = try container.decodeIfPresent([ActionType].self, forKey: .leadingSwipes) ?? [.upvote, .downvote]
+            let trailingSwipes = try container.decodeIfPresent([ActionType].self, forKey: .trailingSwipes) ?? [.save, .reply]
+
+            self.leadingSwipes = leadingSwipes
+            self.trailingSwipes = trailingSwipes
+
+            let swipes = ActionSeedSwipeConfiguration(
+                leading: leadingSwipes.map(\.actionSeed),
+                trailing: trailingSwipes.map(\.actionSeed)
+            )
+
+            if swipes == Self.defaultSwipes {
+                self.swipes_ = nil
+            } else {
+                self.swipes_ = swipes
+            }
         }
+    }
+
+    enum CodingKeys: CodingKey {
+        case leading
+        case trailing
+        case readouts 
+        case availableWidgets
+        case savedContextMenu
+        case swipes
+
+        // Used for conversion from Mlem 2.4 -> 2.5 format
+        case leadingSwipes
+        case trailingSwipes
+    }
+
+    func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(self.leading, forKey: .leading)
+        try container.encode(self.trailing, forKey: .trailing)
+        try container.encode(self.readouts, forKey: .readouts)
+        try container.encode(self.availableWidgets, forKey: .availableWidgets)
+        try container.encode(self.savedContextMenu, forKey: .savedContextMenu)
+        try container.encode(self.swipes_, forKey: .swipes)
     }
     
     static var `default`: Self {
