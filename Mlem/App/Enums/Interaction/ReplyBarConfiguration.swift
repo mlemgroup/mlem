@@ -152,6 +152,7 @@ struct ReplyBarConfiguration: InteractionBarConfiguration, SwipeActionConfigurat
                 .markRead,
                 .selectText,
                 .share,
+                .createImage,
                 .report,
                 .edit,
                 .delete
@@ -163,8 +164,12 @@ struct ReplyBarConfiguration: InteractionBarConfiguration, SwipeActionConfigurat
                 .sendCreatorMessage
             ],
             [
+                .viewVotes,
+                .remove,
                 .banCreator,
-                .purgeCreator
+                .purge,
+                .purgeCreator,
+                .resolveReport
             ]
         ])
     }
