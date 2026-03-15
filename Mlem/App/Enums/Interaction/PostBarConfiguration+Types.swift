@@ -84,6 +84,26 @@ extension PostBarConfiguration {
             case .reply, .share, .selectText, .hide, .block, .report, .crossPost, .lock, .pin, .resolve, .remove, .ban: []
             }
         }
+        
+        var actionSeed: ActionSeed {
+            switch self {
+            case .upvote: .upvote
+            case .downvote: .downvote
+            case .save: .save
+            case .reply: .reply
+            case .share: .share
+            case .selectText: .selectText
+            case .hide: .hide
+            case .block: .blockCreator
+            case .report: .report
+            case .crossPost: .selectText // TEMP; FIXME
+            case .lock: .lock
+            case .pin: .pin
+            case .resolve: .resolveReport
+            case .remove: .remove
+            case .ban: .banCreator
+            }
+        }
     }
     
     enum CounterType: String, CounterTypeProviding {
