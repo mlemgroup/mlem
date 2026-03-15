@@ -58,6 +58,10 @@ class CommentTreeTracker: Hashable {
     }
     
     private var appState: AppState { .main }
+
+    func getNode(actorId: ActorIdentifier) -> CommentTreeNode? {
+        nodesKeyedByActorId[actorId]
+    }
     
     @MainActor
     func load(ensuringPresenceOf ensuredComment: (any CommentResolvable)? = nil) async {

@@ -85,8 +85,21 @@ public extension Icon {
         public let mute: Icon = .init("speaker.slash")
         public let unmute: Icon = .init("speaker.wave.2")
         
-        public let collapse: Icon = .init("arrow.down.and.line.horizontal.and.arrow.up")
-        public let expand: Icon = .init("arrow.up.and.line.horizontal.and.arrow.down")
+        public let collapse: Icon = .custom { variant in
+            switch variant {
+            case .none: "arrow.down.and.line.horizontal.and.arrow.up"
+            case .active: "minus.square.fill"
+            case .inactive: "minus.square"
+            }
+        }
+
+        public let expand: Icon = .custom { variant in
+            switch variant {
+            case .none: "arrow.up.and.line.horizontal.and.arrow.down"
+            case .active: "plus.square.fill"
+            case .inactive: "plus.square"
+            }
+        }
 
         public let embedding: Icon = .init("app.connected.to.app.below.fill")
         public let movie: Icon = .init("film")

@@ -147,6 +147,9 @@ struct CommentBarConfiguration: InteractionBarConfiguration, SwipeActionConfigur
                 .delete
             ],
             [
+                .collapse
+            ],
+            [
                 .blockCreator,
                 .copyAuthorName,
                 .openCreatorModlog,

@@ -83,7 +83,7 @@ extension CommentBarConfiguration {
             case .resolve: .resolveReport
             case .remove: .remove
             case .ban: .ban
-            case .collapse: .save // TEMP; FIXME
+            case .collapse: .collapse
             case .collapseParent: .save // TEMP; FIXME
             case .collapseToTop: .save // TEMP; FIXME
             }
