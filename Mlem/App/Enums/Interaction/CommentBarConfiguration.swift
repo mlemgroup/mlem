@@ -20,15 +20,6 @@ struct CommentBarConfiguration: InteractionBarConfiguration, SwipeActionConfigur
 
     public var savedSwipes: ActionSeedSwipeConfiguration?
 
-    var swipes: ActionSeedSwipeConfiguration {
-        get {
-            savedSwipes ?? Self.defaultSwipes
-        }
-        set {
-            savedSwipes = newValue
-        }
-    }
-
     static var defaultSwipes: ActionSeedSwipeConfiguration {
         .init(leading: [.downvote, .upvote], trailing: [.save, .reply])
     }

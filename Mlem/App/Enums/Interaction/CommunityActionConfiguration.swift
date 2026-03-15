@@ -11,15 +11,6 @@ import Foundation
 struct CommunityActionConfiguration: Codable, SwipeActionConfiguration {
     var savedSwipes: ActionSeedSwipeConfiguration?
 
-    var swipes: ActionSeedSwipeConfiguration {
-        get {
-            savedSwipes ?? Self.defaultSwipes
-        }
-        set {
-            savedSwipes = newValue
-        }
-    }
-
     static var availableActions: ActionSeedSections { .init(sections: [
             [
                 .newPost,
