@@ -108,6 +108,10 @@ public extension Icon {
         public let favorite: Icon = .init("star")
         public let unfavorite: Icon = .init("star.slash")
 
+        // MARK: - Collapse
+
+        public let collapseParent: Icon = .applySquare("chevron.up")
+
         // MARK: - Moderation
         
         public let moderation: Icon = .init("shield")
