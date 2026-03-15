@@ -50,6 +50,18 @@ extension ReplyBarConfiguration {
             case .reply, .markRead, .selectText, .report: []
             }
         }
+
+        var actionSeed: ActionSeed {
+            switch self {
+            case .upvote: .upvote
+            case .downvote: .downvote
+            case .save: .save
+            case .reply: .reply
+            case .markRead: .markRead
+            case .selectText: .selectText
+            case .report: .report
+            }
+        }
     }
     
     enum CounterType: String, CounterTypeProviding {
