@@ -59,7 +59,7 @@ public extension Icon {
         public let configure: Icon = .init("slider.horizontal.3")
         public let `import`: Icon = .init("square.and.arrow.down")
         public let export: Icon = .init("square.and.arrow.up")
-        public let edit: Icon = .init("pencil")
+        public let edit: Icon = .applyCircle("pencil")
         public let delete: Icon = .init("trash")
         public let undelete: Icon = .init("trash.slash")
         
