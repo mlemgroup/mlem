@@ -27,8 +27,17 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension HideAction {
-    static let hideLabel: ActionLabel = .init("Hide", icon: .general.hide)
-    static let showLabel: ActionLabel = .init("Show", icon: .general.show)
+    static let hideLabel: ActionLabel = .init(
+        "Hide",
+        icon: .general.hide,
+        color: .themedColorfulAccent(4)
+    )
+
+    static let showLabel: ActionLabel = .init(
+        "Show",
+        icon: .general.show,
+        color: .themedColorfulAccent(4)
+    )
     
     static var label: ActionLabel { hideLabel }
 

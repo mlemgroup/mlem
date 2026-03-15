@@ -33,7 +33,11 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension CreateImageAction {
-    static let label: ActionLabel = .init("Create Image", icon: .general.createImage)
+    static let label: ActionLabel = .init(
+        "Create Image",
+        icon: .general.createImage,
+        color: .themedColorfulAccent(5)
+    )
 
     func createLabel(environment: EnvironmentValues) -> ActionLabel {
         Self.label.withVisibility(visibility(environment))
