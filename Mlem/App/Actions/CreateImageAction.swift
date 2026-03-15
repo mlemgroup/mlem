@@ -36,7 +36,15 @@ extension CreateImageAction {
     static let label: ActionLabel = .init("Create Image", icon: .general.createImage)
 
     func createLabel(environment: EnvironmentValues) -> ActionLabel {
-        Self.label
+        Self.label.withVisibility(visibility(environment))
+    }
+
+    private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {
+        if environment.isContextMenu && environment.feedContext != .post {
+            .hidden
+        } else {
+            .enabled
+        }
     }
 }
 

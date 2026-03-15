@@ -38,11 +38,13 @@ private let moderationSeeds: [ActionSeed] = [
 
 extension View {
     func contextMenu(post: Post) -> some View {
-        contextMenu {
-            ActionButtons { _ in
-                seeds.compactMap { $0.createAction(post) }
+        self
+            .contextMenu {
+                ActionButtons { _ in
+                    seeds.compactMap { $0.createAction(post) }
+                }
+                .environment(\.isContextMenu, true)
             }
-        }
     }
 
     @ViewBuilder
@@ -79,25 +81,28 @@ struct PostEllipsisMenuContent: View {
     let type: Set<ActionListType>
 
     var body: some View {
-        if type.contains(.basic) {
-            ControlGroup {
-                ActionButtons { _ in
-                    seeds.compactMap { $0.createAction(post) }
-                }
-            }
-            .controlGroupStyle(.compactMenu)
-        }
-        if type.contains(.moderator) {
-            Section {
-                ActionButtons { _ in
-                    var ret = moderationSeeds.compactMap { $0.createAction(post) }
-                    if let reportContext,
-                       let resolveAction = ActionSeed.resolveReport.createAction(reportContext) {
-                        ret.append(resolveAction)
+        Group {
+            if type.contains(.basic) {
+                ControlGroup {
+                    ActionButtons { _ in
+                        seeds.compactMap { $0.createAction(post) }
                     }
-                    return ret
+                }
+                .controlGroupStyle(.compactMenu)
+            }
+            if type.contains(.moderator) {
+                Section {
+                    ActionButtons { _ in
+                        var ret = moderationSeeds.compactMap { $0.createAction(post) }
+                        if let reportContext,
+                            let resolveAction = ActionSeed.resolveReport.createAction(reportContext) {
+                            ret.append(resolveAction)
+                        }
+                        return ret
+                    }
                 }
             }
         }
+        .environment(\.isContextMenu, true)
     }
 }

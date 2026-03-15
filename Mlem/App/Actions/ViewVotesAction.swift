@@ -47,7 +47,7 @@ extension ViewVotesAction {
               let community = entity.community.value,
               let myPersonModerates = myPerson.moderates,
               myPersonModerates(.id(community.id)),
-              Settings.get(\.menus_allModActions) || environment.feedContext == .post,
+              Settings.get(\.menus_allModActions) || environment.feedContext == .post || !environment.isContextMenu,
               entity.api.supports(.viewVotes, defaultValue: true) else { return .hidden }
 
         return .enabled
