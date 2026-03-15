@@ -11,18 +11,19 @@ import SwiftUI
 struct NewSwipeActionEditorView: View {
     @Binding var configuration: ActionSeedSwipeConfiguration
     let onReset: () -> Void
+    let allActions: [ActionSeed]
 
     var body: some View {
         Form {
             ActionListView(
                 title: "Left",
                 actions: Binding(get: { configuration.leading }, set: { configuration.leading = $0 }),
-                allActions: CommunityActionConfiguration.availableActions.all
+                allActions: allActions
             )
             ActionListView(
                 title: "Right",
                 actions: Binding(get: { configuration.trailing }, set: { configuration.trailing = $0 }),
-                allActions: CommunityActionConfiguration.availableActions.all
+                allActions: allActions
             )
             Button("Reset", action: onReset)
         }

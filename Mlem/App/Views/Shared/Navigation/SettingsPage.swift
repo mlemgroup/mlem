@@ -187,7 +187,9 @@ enum SettingsPage: Hashable {
                     ),
                     onReset: {
                             Settings.set(\.interactionBar_community, to: .init())
-                    })
+                    },
+                    allActions: CommunityActionConfiguration.availableActions.all
+                )
             }
         case let .interactionBar(type):
             switch type {
