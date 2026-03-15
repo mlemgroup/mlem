@@ -18,14 +18,14 @@ struct PostBarConfiguration: InteractionBarConfiguration, SwipeActionConfigurati
     var trailingSwipes: [ActionType]
     var savedContextMenu: [ActionSeed]?
 
-    private var swipes_: ActionSeedSwipeConfiguration?
+    var savedSwipes: ActionSeedSwipeConfiguration?
 
     var swipes: ActionSeedSwipeConfiguration {
         get {
-            swipes_ ?? Self.defaultSwipes
+            savedSwipes ?? Self.defaultSwipes
         }
         set {
-            swipes_ = newValue
+            savedSwipes = newValue
         }
     }
 
@@ -78,7 +78,7 @@ struct PostBarConfiguration: InteractionBarConfiguration, SwipeActionConfigurati
             forKey: .swipes
         )
         if let swipeConfigurationContainer {
-            self.swipes_ = try .init(from: swipeConfigurationContainer, availableActions: Self.availableActions.all)
+            self.savedSwipes = try .init(from: swipeConfigurationContainer, availableActions: Self.availableActions.all)
         } else {
             // Convert from Mlem 2.4 -> 2.5 format
             let leadingSwipes = try container.decodeIfPresent([ActionType].self, forKey: .leadingSwipes) ?? [.upvote, .downvote]
@@ -93,9 +93,9 @@ struct PostBarConfiguration: InteractionBarConfiguration, SwipeActionConfigurati
             )
 
             if swipes == Self.defaultSwipes {
-                self.swipes_ = nil
+                self.savedSwipes = nil
             } else {
-                self.swipes_ = swipes
+                self.savedSwipes = swipes
             }
         }
     }
@@ -120,7 +120,7 @@ struct PostBarConfiguration: InteractionBarConfiguration, SwipeActionConfigurati
         try container.encode(self.readouts, forKey: .readouts)
         try container.encode(self.availableWidgets, forKey: .availableWidgets)
         try container.encode(self.savedContextMenu, forKey: .savedContextMenu)
-        try container.encode(self.swipes_, forKey: .swipes)
+        try container.encode(self.savedSwipes, forKey: .swipes)
     }
     
     static var `default`: Self {

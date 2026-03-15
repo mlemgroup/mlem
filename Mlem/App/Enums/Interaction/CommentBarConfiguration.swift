@@ -18,14 +18,14 @@ struct CommentBarConfiguration: InteractionBarConfiguration, SwipeActionConfigur
     var trailingSwipes: [ActionType]
     var savedContextMenu: [ActionSeed]?
 
-    private var swipes_: ActionSeedSwipeConfiguration?
+    public var savedSwipes: ActionSeedSwipeConfiguration?
 
     var swipes: ActionSeedSwipeConfiguration {
         get {
-            swipes_ ?? Self.defaultSwipes
+            savedSwipes ?? Self.defaultSwipes
         }
         set {
-            swipes_ = newValue
+            savedSwipes = newValue
         }
     }
 
@@ -76,7 +76,7 @@ struct CommentBarConfiguration: InteractionBarConfiguration, SwipeActionConfigur
             forKey: .swipes
         )
         if let swipeConfigurationContainer {
-            self.swipes_ = try .init(from: swipeConfigurationContainer, availableActions: Self.availableActions.all)
+            self.savedSwipes = try .init(from: swipeConfigurationContainer, availableActions: Self.availableActions.all)
         } else {
             // Convert from Mlem 2.4 -> 2.5 format
             let leadingSwipes = try container.decodeIfPresent([ActionType].self, forKey: .leadingSwipes) ?? [.upvote, .downvote]
@@ -91,9 +91,9 @@ struct CommentBarConfiguration: InteractionBarConfiguration, SwipeActionConfigur
             )
 
             if swipes == Self.defaultSwipes {
-                self.swipes_ = nil
+                self.savedSwipes = nil
             } else {
-                self.swipes_ = swipes
+                self.savedSwipes = swipes
             }
         }
     }
@@ -118,7 +118,7 @@ struct CommentBarConfiguration: InteractionBarConfiguration, SwipeActionConfigur
         try container.encode(self.readouts, forKey: .readouts)
         try container.encode(self.availableWidgets, forKey: .availableWidgets)
         try container.encode(self.savedContextMenu, forKey: .savedContextMenu)
-        try container.encode(self.swipes_, forKey: .swipes)
+        try container.encode(self.savedSwipes, forKey: .swipes)
     }
 
     var contextMenu: [ActionSeed] {

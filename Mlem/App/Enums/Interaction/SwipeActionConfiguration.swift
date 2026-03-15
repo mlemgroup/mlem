@@ -9,6 +9,7 @@ import Actions
 import Foundation
 
 protocol SwipeActionConfiguration {
+    var savedSwipes: ActionSeedSwipeConfiguration? { get set }
     var swipes: ActionSeedSwipeConfiguration { get set }
 
     static var availableActions: ActionSeedSections { get }
