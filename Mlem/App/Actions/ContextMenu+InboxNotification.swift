@@ -50,4 +50,12 @@ extension View {
     func contextMenu(notification: InboxNotification) -> some View {
         modifier(InboxNotificationContextMenuViewModifier(notification: notification))
     }
+
+    @ViewBuilder
+    func quickSwipes(notification: InboxNotification, configuration: ReplyBarConfiguration) -> some View {
+        quickSwipes(
+            leading: configuration.swipes.leading.compactMap { $0.createAction(notification) },
+            trailing: configuration.swipes.trailing.compactMap { $0.createAction(notification) }
+        )
+    }
 }
