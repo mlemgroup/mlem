@@ -167,7 +167,7 @@ enum SettingsPage: Hashable {
             case .post:
                 NewSwipeActionEditorView(\.interactionBar_post)
             case .comment:
-                SwipeActionEditorView(setting: \.interactionBar_comment, isReport: false)
+                NewSwipeActionEditorView(\.interactionBar_comment)
             case .reply:
                 SwipeActionEditorView(setting: \.interactionBar_reply, isReport: false)
             case .postReport:

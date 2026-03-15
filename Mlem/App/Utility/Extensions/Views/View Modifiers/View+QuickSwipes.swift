@@ -33,36 +33,6 @@ extension View {
     }
     
     @ViewBuilder
-    func quickSwipes(comment: Comment, configuration: CommentBarConfiguration) -> some View {
-        modifier(
-            QuickSwipeEnvironmentReaderViewModifier { environment in
-                guard let navigation = environment.navigation else {
-                    assertionFailure()
-                    return .init()
-                }
-                return .init(
-                    leadingActions: configuration.leadingSwipes.compactMap {
-                        comment.action(
-                            appState: environment.appState,
-                            type: $0,
-                            navigation: navigation,
-                            commentTreeTracker: environment.commentTreeTracker
-                        )
-                    }.compactMap(QuickSwipeAction.init),
-                    trailingActions: configuration.trailingSwipes.compactMap {
-                        comment.action(
-                            appState: environment.appState,
-                            type: $0,
-                            navigation: navigation,
-                            commentTreeTracker: environment.commentTreeTracker
-                        )
-                    }.compactMap(QuickSwipeAction.init)
-                )
-            }
-        )
-    }
-
-    @ViewBuilder
     func quickSwipes(comment: Comment, notification: InboxNotification, configuration: ReplyBarConfiguration) -> some View {
         modifier(
             QuickSwipeEnvironmentReaderViewModifier { environment in

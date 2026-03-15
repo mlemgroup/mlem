@@ -10,7 +10,7 @@ import Foundation
 import MlemMiddleware
 import SwiftUI
 
-struct CommentBarConfiguration: InteractionBarConfiguration {
+struct CommentBarConfiguration: InteractionBarConfiguration, SwipeActionConfiguration {
     var leading: [Item]
     var trailing: [Item]
     var readouts: [ReadoutType]
