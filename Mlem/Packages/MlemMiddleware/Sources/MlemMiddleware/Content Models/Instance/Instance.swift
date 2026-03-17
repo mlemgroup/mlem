@@ -157,6 +157,7 @@ public class Instance:
         self.commentCount = expectedValue(properties.commentCount)
         self.communityCount = expectedValue(properties.communityCount)
         self.activeUserCount = expectedValue(properties.activeUserCount)
+        
         self.allLanguages = expectedValue(properties.allLanguages)
         self.software = expectedValue(properties.software)
         self.allowedLanguageIds = expectedValue(properties.allowedLanguageIds)
@@ -166,12 +167,82 @@ public class Instance:
     
     @MainActor
     public func update(with properties: InstanceProperties) {
-        // TODO: NOW
+        setIfChanged(\.displayName, properties.displayName)
+        setIfChanged(\.description, properties.description)
+        setIfChanged(\.shortDescription, properties.shortDescription)
+        setIfChanged(\.avatar, properties.avatar)
+        setIfChanged(\.banner, properties.banner)
+        setIfChanged(\.lastRefresh, properties.lastRefresh)
+        setIfChanged(\.contentWarning, properties.contentWarning)
+        
+        updateIfChanged(\.setup.value_, properties.setup)
+        updateIfChanged(\.voteFederationMode.value_, properties.voteFederationMode)
+        updateIfChanged(\.nsfwContentEnabled.value_, properties.nsfwContentEnabled)
+        updateIfChanged(\.communityCreationRestrictedToAdmins.value_, properties.communityCreationRestrictedToAdmins)
+        updateIfChanged(\.emailVerificationRequired.value_, properties.emailVerificationRequired)
+        updateIfChanged(\.applicationQuestion.value_, properties.applicationQuestion)
+        updateIfChanged(\.isPrivate.value_, properties.isPrivate)
+        updateIfChanged(\.defaultTheme.value_, properties.defaultTheme)
+        updateIfChanged(\.defaultFeed.value_, properties.defaultFeed)
+        updateIfChanged(\.legalInformation.value_, properties.legalInformation)
+        updateIfChanged(\.hideModlogNames.value_, properties.hideModlogNames)
+        updateIfChanged(\.emailApplicationsToAdmins.value_, properties.emailApplicationsToAdmins)
+        updateIfChanged(\.emailReportsToAdmins.value_, properties.emailReportsToAdmins)
+        updateIfChanged(\.slurFilterRegex.value_, properties.slurFilterRegex)
+        updateIfChanged(\.actorNameMaxLength.value_, properties.actorNameMaxLength)
+        updateIfChanged(\.federationEnabled.value_, properties.federationEnabled)
+        updateIfChanged(\.captchaEnabled.value_, properties.captchaEnabled)
+        updateIfChanged(\.captchaDifficulty.value_, properties.captchaDifficulty)
+        updateIfChanged(\.registrationMode.value_, properties.registrationMode)
+        updateIfChanged(\.federationSignedFetch.value_, properties.federationSignedFetch)
+        updateIfChanged(\.defaultPostListingMode.value_, properties.defaultPostListingMode)
+        updateIfChanged(\.defaultPostSortType.value_, properties.defaultPostSortType)
+        updateIfChanged(\.userCount.value_, properties.userCount)
+        updateIfChanged(\.postCount.value_, properties.postCount)
+        updateIfChanged(\.commentCount.value_, properties.commentCount)
+        updateIfChanged(\.communityCount.value_, properties.communityCount)
+        updateIfChanged(\.activeUserCount.value_, properties.activeUserCount)
+        
+        setIfNil(\.allLanguages.value_, properties.allLanguages) // not expected to change
+        updateIfChanged(\.software.value_, properties.software)
+        updateIfChanged(\.allowedLanguageIds.value_, properties.allowedLanguageIds)
+        updateIfChanged(\.blockedUrls.value_, properties.blockedUrls)
+        updateIfChanged(\.administrators.value_, properties.administrators)
     }
     
     @MainActor
     public func softUpdate(with properties: InstanceProperties) {
-        // TODO: NOW
+        setIfNil(\.setup.value_, properties.setup)
+        setIfNil(\.voteFederationMode.value_, properties.voteFederationMode)
+        setIfNil(\.nsfwContentEnabled.value_, properties.nsfwContentEnabled)
+        setIfNil(\.communityCreationRestrictedToAdmins.value_, properties.communityCreationRestrictedToAdmins)
+        setIfNil(\.emailVerificationRequired.value_, properties.emailVerificationRequired)
+        setIfNil(\.applicationQuestion.value_, properties.applicationQuestion)
+        setIfNil(\.isPrivate.value_, properties.isPrivate)
+        setIfNil(\.defaultTheme.value_, properties.defaultTheme)
+        setIfNil(\.defaultFeed.value_, properties.defaultFeed)
+        setIfNil(\.legalInformation.value_, properties.legalInformation)
+        setIfNil(\.hideModlogNames.value_, properties.hideModlogNames)
+        setIfNil(\.emailApplicationsToAdmins.value_, properties.emailApplicationsToAdmins)
+        setIfNil(\.emailReportsToAdmins.value_, properties.emailReportsToAdmins)
+        setIfNil(\.slurFilterRegex.value_, properties.slurFilterRegex)
+        setIfNil(\.actorNameMaxLength.value_, properties.actorNameMaxLength)
+        setIfNil(\.federationEnabled.value_, properties.federationEnabled)
+        setIfNil(\.captchaEnabled.value_, properties.captchaEnabled)
+        setIfNil(\.captchaDifficulty.value_, properties.captchaDifficulty)
+        setIfNil(\.registrationMode.value_, properties.registrationMode)
+        setIfNil(\.federationSignedFetch.value_, properties.federationSignedFetch)
+        setIfNil(\.defaultPostListingMode.value_, properties.defaultPostListingMode)
+        setIfNil(\.defaultPostSortType.value_, properties.defaultPostSortType)
+        setIfNil(\.userCount.value_, properties.userCount)
+        setIfNil(\.postCount.value_, properties.postCount)
+        setIfNil(\.commentCount.value_, properties.commentCount)
+        setIfNil(\.communityCount.value_, properties.communityCount)
+        setIfNil(\.activeUserCount.value_, properties.activeUserCount)
+        setIfNil(\.software.value_, properties.software)
+        setIfNil(\.allowedLanguageIds.value_, properties.allowedLanguageIds)
+        setIfNil(\.blockedUrls.value_, properties.blockedUrls)
+        setIfNil(\.administrators.value_, properties.administrators)
     }
     
     // MARK: Upgrades
