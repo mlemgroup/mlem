@@ -108,6 +108,11 @@ public extension Icon {
         public let favorite: Icon = .init("star")
         public let unfavorite: Icon = .init("star.slash")
 
+        // MARK: - Collapse
+
+        public let collapseParent: Icon = .applySquare("chevron.up")
+        public let collapseToTop: Icon = .applySquare("arrow.up.to.line")
+
         // MARK: - Moderation
         
         public let moderation: Icon = .init("shield")
@@ -134,7 +139,7 @@ public extension Icon {
         
         public let post: Icon = .init("doc.plaintext")
         public let comment: Icon = .init("bubble.left")
-        public let crosspost: Icon = .init("shuffle")
+        public let crosspost: Icon = .applyCircle("shuffle")
         
         @inlinable public var replies: Icon { comment }
         public let unreadReplies: Icon = .init("text.bubble")

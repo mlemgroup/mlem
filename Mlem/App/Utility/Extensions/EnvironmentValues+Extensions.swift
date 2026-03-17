@@ -22,6 +22,8 @@ extension EnvironmentValues {
     
     @Entry var scrollProxy: ScrollViewProxy?
     @Entry var exposeRemovedContent: Bool = false
+
+    @Entry var isContextMenu: Bool = false
     
     var appState: AppState {
         if let appState = self[AppState.self] {

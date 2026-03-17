@@ -61,7 +61,7 @@ struct ReplyView: View {
         .onTapGesture {
             navigation.push(.comment(comment))
         }
-        .quickSwipes(comment: comment, notification: notification, configuration: replyInteractionBar)
+        .quickSwipes(notification: notification, configuration: replyInteractionBar)
         .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
         .contextMenu { comment.allMenuActions(
