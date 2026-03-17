@@ -69,6 +69,8 @@ struct ErrorLogView: View {
             }
             
             Text(details.errorText(includingLocation: false))
+                .font(.caption)
+                .monospaced()
             
             if let location = details.location {
                 HStack(alignment: .top, spacing: 2) {
@@ -76,13 +78,18 @@ struct ErrorLogView: View {
                         .offset(y: 2)
                     
                     Text(location)
+                        .monospaced()
                 }
-                .font(.subheadline)
+                .font(.caption)
             }
             
             Text(details.when.formatted(date: .abbreviated, time: .standard))
                 .font(.caption)
                 .foregroundStyle(.themedSecondary)
+
+            if details.error is ContextualisedDecodingError {
+                Text("CONTEXT")
+            }
         }
         .padding(Constants.main.standardSpacing)
         .background(.themedSecondaryGroupedBackground)
