@@ -8,12 +8,20 @@
 import Actions
 import Foundation
 
-struct ActionSeedSwipeConfiguration: Encodable {
+struct ActionSeedSwipeConfiguration: Encodable, Equatable {
     var leading: [ActionSeed]   
     var trailing: [ActionSeed]
 
     enum CodingKeys: CodingKey {
         case leading, trailing
+    }
+
+    func filter(allowed seeds: [ActionSeed]) -> ActionSeedSwipeConfiguration {
+        let keys = Set(seeds.lazy.map(\.key))
+        return .init(
+            leading: leading.filter { keys.contains($0.key) },
+            trailing: trailing.filter { keys.contains($0.key) }
+        )
     }
 }
 

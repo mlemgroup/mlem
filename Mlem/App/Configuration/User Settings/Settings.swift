@@ -34,6 +34,11 @@ class Settings {
         main.values[keyPath: keyPath] = newValue
         main._save()
     }
+
+    static func mutate<T>(_ keyPath: ReferenceWritableKeyPath<SettingsValues, T>, mutation: (T) -> T) {
+        main.values[keyPath: keyPath] = mutation(main.values[keyPath: keyPath])
+        main._save()
+    }
     
     static func save(to systemSetting: SystemSetting) async {
         await main._save(to: systemSetting)
