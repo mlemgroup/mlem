@@ -5,6 +5,7 @@
 //  Created by Eric Andrews on 2024-12-29.
 //
 
+import Rest
 import SwiftUI
 import Theming
 
@@ -86,10 +87,6 @@ struct ErrorLogView: View {
             Text(details.when.formatted(date: .abbreviated, time: .standard))
                 .font(.caption)
                 .foregroundStyle(.themedSecondary)
-
-            if details.error is ContextualisedDecodingError {
-                Text("CONTEXT")
-            }
         }
         .padding(Constants.main.standardSpacing)
         .background(.themedSecondaryGroupedBackground)

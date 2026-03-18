@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import MlemBackend
 
 public struct SiteSoftware: Codable, Hashable {
     public let type: SiteSoftwareType
@@ -21,5 +22,19 @@ public struct SiteSoftware: Codable, Hashable {
         case .lemmy: LemmyConnection.supports(feature, version: version)
         case .pieFed: PieFedConnection.supports(feature, version: version)
         }
+    }
+}
+
+public extension InstanceSummarySoftware {
+    init(from software: SiteSoftware) {
+        let type: InstanceSummarySoftwareType = switch software.type {
+        case .lemmy: .lemmy
+        case .pieFed: .piefed
+        }
+        
+        self.init(
+            type: type,
+            version: software.version.description
+        )
     }
 }

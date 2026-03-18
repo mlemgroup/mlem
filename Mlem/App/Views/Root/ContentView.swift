@@ -7,6 +7,7 @@
 
 import Dependencies
 import Haptics
+import MlemBackend
 import MlemMiddleware
 import Nuke
 import QuickSwipes

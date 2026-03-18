@@ -7,6 +7,7 @@
 
 import Observation
 import Foundation
+import MlemBackend
 
 @Observable
 public final class Person:

@@ -8,14 +8,15 @@
 import Foundation
 import os
 import SwiftUI
+import MlemLogger
 
 public enum BackendEnvironment {
-    case qc, prod
+    case qualityControl, production
     
     var address: URL {
         switch self {
-        case .prod: .init(string: "https://backend.mlemapp.org:8443/")!
-        case .qc: .init(string: "https://backend.mlemapp.org:2096/")!
+        case .production: .init(string: "https://backend.mlemapp.org:8443/")!
+        case .qualityControl: .init(string: "https://backend.mlemapp.org:2096/")!
         }
     }
 }
@@ -24,7 +25,7 @@ public enum BackendEnvironment {
 public class BackendClient {
     let log: Logger = .mlemLogger()
     
-    public private(set) var environment: BackendEnvironment = .prod
+    public private(set) var environment: BackendEnvironment = .production
     private let jsonDecoder: JSONDecoder = {
         let decoder: JSONDecoder = .init()
         decoder.dateDecodingStrategy = .custom { decoder in

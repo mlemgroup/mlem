@@ -7,6 +7,7 @@
 
 import Haptics
 import MlemMiddleware
+import MlemBackend
 import SwiftUI
 import Theming
 
