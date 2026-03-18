@@ -221,7 +221,13 @@ struct HandleThreadiverseLinksModifier: ViewModifier {
     
     func showToastAndResolve(url: URL, fallback: @escaping (URL) -> Void) async {
         let toastId = ToastModel.main.add(.loading())
-        var output = try? await appState.firstApi.resolve(url: url)
+        var output: (any Sharable)?
+        do {
+            output = try await appState.firstApi.resolve(url: url)
+        } catch {
+            output = nil
+            handleError(error, silent: true)
+        }
         if output == nil {
             // Retry on local instance, which is needed if there is a federation boundary
             output = try? await ApiClient.getApiClient(
@@ -234,6 +240,10 @@ struct HandleThreadiverseLinksModifier: ViewModifier {
             navigation.push(.person(person))
         } else if let community = output as? Community {
             navigation.push(.community(community))
+        } else if let post = output as? Post {
+            navigation.push(.post(post))
+        } else if let comment = output as? Comment {
+            navigation.push(.comment(comment))
         } else {
             fallback(url)
         }
