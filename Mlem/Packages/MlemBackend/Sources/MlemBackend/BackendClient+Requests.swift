@@ -29,19 +29,12 @@ extension BackendClient {
     }
     
     internal func fetchFlairs(enabledOnly: Bool = true) async throws {
-    //     let request: URLRequest = .init(url: baseUrl
-    //         .appendingPathComponent("/v0/mlem/flairs")
-    //         .appending(queryItems: [
-    //             .init(name: "enabledOnly", value: enabledOnly.description)
-    //         ])
-    //     )
-    //     let (data, _) = try await URLSession.shared.data(for: request)
-    //     let response = try jsonDecoder.decode([MlemFlair].self, from: data)
+        let response = try await perform(BackendListFlairsRequest(enabledOnly: enabledOnly))
         
-    //     flairs = .init(developers: .init(
-    //         response
-    //             .filter { [.activeDev, .inactiveDev].contains($0.flairType) }
-    //             .map(\.apId)
-    //     ))
+        self.flairs = .init(developers: .init(
+            response
+                .filter { [.activeDev, .inactiveDev].contains($0.flairType) }
+                .map(\.apId)
+        ))
     }
 }
