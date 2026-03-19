@@ -57,6 +57,7 @@ public extension GetRequest {
                 .appending(path: path)
                 .appending(queryItems: URLQueryItemEncoder.encode(
                     parameters,
+                    convertToSnakeCase: true,
                     userInfo: encoderUserInfo
                 ))
         } else {
