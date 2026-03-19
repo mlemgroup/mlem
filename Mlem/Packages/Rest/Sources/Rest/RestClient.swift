@@ -14,7 +14,7 @@ public class RestClient {
         let response: HTTPURLResponse
     }
 
-    public var decoder: JSONDecoder = .defaultDecoder
+    public var decoder: JSONDecoder
     public var convertParamsToSnakeCase: Bool = true
     
     // This should really be internal, but for now the image upload system needs to access this
@@ -24,15 +24,18 @@ public class RestClient {
     
     public init(
         errorProcessor: @escaping (ErrorProcessorContext) throws(RestError) -> Void = { _ in },
-        convertParamsToSnakeCase: Bool = true
+        convertParamsToSnakeCase: Bool = true,
+        decoder: JSONDecoder = .defaultDecoder
     ) {
         self.errorProcessor = errorProcessor
         self.convertParamsToSnakeCase = convertParamsToSnakeCase
+        self.decoder = decoder
     }
 
     public init<ErrorType: Decodable & CustomStringConvertible>(
         errorType: ErrorType.Type,
-        convertParamsToSnakeCase: Bool = true
+        convertParamsToSnakeCase: Bool = true,
+        decoder: JSONDecoder = .defaultDecoder
     ) {
         self.errorProcessor = { context throws(RestError) in
             if let apiError = try? context.decoder.decode(ErrorType.self, from: context.data) {
@@ -45,6 +48,7 @@ public class RestClient {
             }
         }
         self.convertParamsToSnakeCase = convertParamsToSnakeCase
+        self.decoder = decoder
     }
     
     public func perform<Request: RestRequest>(

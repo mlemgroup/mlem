@@ -13,7 +13,7 @@ extension SiteSoftware {
     init(from software: InstanceSummarySoftware) {
         let type: SiteSoftwareType = switch software.type {
         case .lemmy: .lemmy
-        case .piefed: .pieFed
+        case .pieFed: .pieFed
         }
         
         let version: SiteVersion = .init(software.version)

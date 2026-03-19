@@ -25,7 +25,7 @@ extension InstanceSummarySoftware {
     init(from software: SiteSoftware) {
         let type: InstanceSummarySoftwareType = switch software.type {
         case .lemmy: .lemmy
-        case .pieFed: .piefed
+        case .pieFed: .pieFed
         }
         
         self.init(

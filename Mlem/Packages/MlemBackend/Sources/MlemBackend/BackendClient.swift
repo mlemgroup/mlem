@@ -26,23 +26,9 @@ public enum BackendEnvironment {
 public class BackendClient {
     let log: Logger = .mlemLogger()
 
-    internal let restClient = RestClient(convertParamsToSnakeCase: false)
+    internal let restClient = RestClient(convertParamsToSnakeCase: false, decoder: .backendDecoder)
     
     public internal(set) var environment: BackendEnvironment = .production
-
-    internal let jsonDecoder: JSONDecoder = {
-        let decoder: JSONDecoder = .init()
-        decoder.dateDecodingStrategy = .custom { decoder in
-            let formatter: ISO8601DateFormatter = .init()
-            formatter.formatOptions = [.withFractionalSeconds, .withInternetDateTime]
-            let dateStr = try decoder.singleValueContainer().decode(String.self)
-            if let date = formatter.date(from: dateStr) {
-                return date
-            }
-            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Invalid date"))
-        }
-        return decoder
-    }()
     
     public internal(set) var flairs: MlemFlairs = .init(developers: .init())
     public internal(set) var testflightUpdate: URL?

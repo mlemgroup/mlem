@@ -17,6 +17,6 @@ public struct InstanceSummarySoftware: Codable, Hashable {
     }
 }
 
-public enum InstanceSummarySoftwareType: Codable, Hashable {
-    case lemmy, piefed
+public enum InstanceSummarySoftwareType: String, Codable, Hashable {
+    case lemmy, pieFed
 }

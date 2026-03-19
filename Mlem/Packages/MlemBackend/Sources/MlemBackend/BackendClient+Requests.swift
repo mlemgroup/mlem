@@ -25,23 +25,23 @@ extension BackendClient {
 
     internal func fetchTestflightUpdate() async throws {
         let (data, _) = try await URLSession.shared.data(for: URLRequest(url: baseUrl.appendingPathComponent("/v0/mlem/testflight")))
-        testflightUpdate = try jsonDecoder.decode(TestflightUpdate.self, from: data).url
+        // testflightUpdate = try jsonDecoder.decode(TestflightUpdate.self, from: data).url
     }
     
     internal func fetchFlairs(enabledOnly: Bool = true) async throws {
-        let request: URLRequest = .init(url: baseUrl
-            .appendingPathComponent("/v0/mlem/flairs")
-            .appending(queryItems: [
-                .init(name: "enabledOnly", value: enabledOnly.description)
-            ])
-        )
-        let (data, _) = try await URLSession.shared.data(for: request)
-        let response = try jsonDecoder.decode([MlemFlair].self, from: data)
+    //     let request: URLRequest = .init(url: baseUrl
+    //         .appendingPathComponent("/v0/mlem/flairs")
+    //         .appending(queryItems: [
+    //             .init(name: "enabledOnly", value: enabledOnly.description)
+    //         ])
+    //     )
+    //     let (data, _) = try await URLSession.shared.data(for: request)
+    //     let response = try jsonDecoder.decode([MlemFlair].self, from: data)
         
-        flairs = .init(developers: .init(
-            response
-                .filter { [.activeDev, .inactiveDev].contains($0.flairType) }
-                .map(\.apId)
-        ))
+    //     flairs = .init(developers: .init(
+    //         response
+    //             .filter { [.activeDev, .inactiveDev].contains($0.flairType) }
+    //             .map(\.apId)
+    //     ))
     }
 }
