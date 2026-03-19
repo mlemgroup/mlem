@@ -24,8 +24,8 @@ extension BackendClient {
     }
 
     internal func fetchTestflightUpdate() async throws {
-        let (data, _) = try await URLSession.shared.data(for: URLRequest(url: baseUrl.appendingPathComponent("/v0/mlem/testflight")))
-        // testflightUpdate = try jsonDecoder.decode(TestflightUpdate.self, from: data).url
+        let response = try await perform(BackendGetTestflightUpdateRequest())
+        self.testflightUpdate = response.url
     }
     
     internal func fetchFlairs(enabledOnly: Bool = true) async throws {
