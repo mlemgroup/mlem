@@ -13,8 +13,7 @@ import MlemLogger
 
 extension BackendClient {
     public func healthCheck() async throws -> BackendHealthCheck {
-        let (data, _) = try await URLSession.shared.data(for: URLRequest(url: baseUrl.appendingPathComponent("/v0/health")))
-        return try jsonDecoder.decode(BackendHealthCheck.self, from: data)
+        try await perform(BackendHealthCheckRequest())
     }
     
     public func getInstances() async throws -> [InstanceSummary] {

@@ -58,6 +58,11 @@ public class BackendClient {
         self.environment = environment
         refresh()
     }
+
+    @discardableResult
+    internal func perform<Request: RestRequest>(_ request: Request) async throws -> Request.Response {
+        return try await restClient.perform(baseUrl: baseUrl, request, token: nil)
+    }
     
     internal func refresh() {
         Task {
