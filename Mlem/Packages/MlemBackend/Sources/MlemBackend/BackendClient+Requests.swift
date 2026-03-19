@@ -17,15 +17,10 @@ extension BackendClient {
     }
     
     public func getInstances() async throws -> [InstanceSummary] {
-        let request: URLRequest = .init(url: baseUrl
-            .appendingPathComponent("/v1/stats/instances")
-            .appending(queryItems: [
-                .init(name: "minTotalUsers", value: "20"),
-                .init(name: "minMonthyUsers", value: "1")
-            ])
-        )
-        let (data, _) = try await URLSession.shared.data(for: request)
-        return try jsonDecoder.decode([InstanceSummary].self, from: data)
+        try await perform(BackendListInstancesRequest(
+            minTotalUsers: 20,
+            minMonthlyUsers: 1
+        ))
     }
 
     internal func fetchTestflightUpdate() async throws {

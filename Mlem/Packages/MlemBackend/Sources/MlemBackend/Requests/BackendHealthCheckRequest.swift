@@ -8,9 +8,9 @@
 import Rest
 
 internal struct BackendHealthCheckRequest: GetRequest {
-    public typealias Parameters = Never
-    public typealias Response = BackendHealthCheck
+    typealias Parameters = Never
+    typealias Response = BackendHealthCheck
     
-    public let path: String = "v0/health"
-    public let parameters: Parameters? = nil
+    let path: String = "v0/health"
+    let parameters: Parameters? = nil
 }
