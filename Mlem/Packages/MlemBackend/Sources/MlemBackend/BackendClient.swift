@@ -26,7 +26,7 @@ public enum BackendEnvironment {
 public class BackendClient {
     let log: Logger = .mlemLogger()
 
-    internal let restClient = RestClient()
+    internal let restClient = RestClient(convertParamsToSnakeCase: false)
     
     public internal(set) var environment: BackendEnvironment = .production
 
