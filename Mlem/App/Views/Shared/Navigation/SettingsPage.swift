@@ -26,7 +26,7 @@ enum SettingsPage: Hashable {
     case privacyBypassImageProxy
     case safetyBlurNsfw, safetyWarnings
     case links, embedding
-    case imageViewer, imageViewerControls
+    case imageViewer, imageViewerControls, imageViewerDismissSensitivity
     case animatedAvatars
     case externalLinks, sharingLinks, tappableLinks
     case importExportSettings
@@ -167,6 +167,8 @@ enum SettingsPage: Hashable {
             ImageViewerSettingsView()
         case .imageViewerControls:
             ImageViewerShowControlsSettingsView()
+        case .imageViewerDismissSensitivity:
+            ImageViewerDismissSettingsView()
         case let .swipeActions(type):
             switch type {
             case .post:

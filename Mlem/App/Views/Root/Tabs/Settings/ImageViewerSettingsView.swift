@@ -12,6 +12,7 @@ struct ImageViewerSettingsView: View {
     @Setting(\.imageViewer_showOverlayByDefault) var showImageViewerOverlay
     @Setting(\.imageViewer_showCloseButton) var showCloseButton
     @Setting(\.imageViewer_showZoomIndicator) var showZoomIndicator
+    @Setting(\.imageViewer_dismissThreshold) var dismissThreshold
 
     var body: some View {
         Form {
@@ -52,6 +53,13 @@ struct ImageViewerSettingsView: View {
     @ViewBuilder
     var gesturesSectionView: some View {
         Section("Gestures") {
+            NavigationLink(
+                "Dismiss Sensitivity",
+                value: "",
+                fallbackValue: "",
+                icon: .settings.imageViewerDismissSensitivity,
+                destination: .settings(.imageViewerDismissSensitivity)
+            )
             NavigationLink(
                 "Slide to Zoom",
                 value: .init(localized: zoomSliderLocation.label),

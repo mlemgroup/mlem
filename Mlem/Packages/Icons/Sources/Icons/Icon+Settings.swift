@@ -76,6 +76,7 @@ public extension Icon {
         public let longPress: Icon = .init("hand.point.up.left.fill")
         public let imageViewer: Icon = .init("rectangle.portrait.center.inset.filled")
         public let imageViewerControls: Icon = .init("ellipsis")
+        public let imageViewerDismissSensitivity: Icon = .applySquare("arrow.up.to.line")
     }
     
     static let settings: SettingsIcons = .init()
