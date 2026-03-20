@@ -55,9 +55,10 @@ struct ImageViewerDismissSettingsView: View {
                     value: $sliderValue,
                     in: 1...20,
                     step: 1
-                )
-                .onChange(of: sliderValue) {
-                    self.dismissThreshold = Int(sliderValue.rounded())
+                ) { pressed in
+                    if !pressed {
+                        self.dismissThreshold = Int(sliderValue.rounded())
+                    }
                 }
             }
         }
