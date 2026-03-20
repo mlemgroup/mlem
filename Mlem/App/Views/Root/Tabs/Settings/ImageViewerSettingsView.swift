@@ -29,7 +29,7 @@ struct ImageViewerSettingsView: View {
     var headerView: some View {
         SettingsHeaderView(
             title: "Image Viewer",
-            description: "Customise the image viewer's buttons and gestures.",
+            description: "Customize the image viewer's buttons and gestures.",
             icon: .settings.imageViewer
         )
         .gradientTint(.themedColorfulAccent(5))
