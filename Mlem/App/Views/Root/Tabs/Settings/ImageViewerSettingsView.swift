@@ -15,35 +15,50 @@ struct ImageViewerSettingsView: View {
 
     var body: some View {
         Form {
-            SettingsHeaderView(
-                title: "Image Viewer",
-                description: "Customise the image viewer's buttons and gestures.",
-                icon: .settings.imageViewer
-            )
-            .gradientTint(.themedColorfulAccent(5))
-            Section("Controls") {
-                NavigationLink(
-                    "Show Controls",
-                    value: showImageViewerOverlay ? "Immediately" : "When I Tap",
-                    fallbackValue: "",
-                    icon: .general.circle,
-                    destination: .settings(.imageViewerControls)
-                )
-                Toggle("Close Button", icon: .general.close, isOn: $showCloseButton)
-                Toggle("Zoom Indicator", icon: .general.search, isOn: $showZoomIndicator)
-            }
-            Section("Gestures") {
-                NavigationLink(
-                    "Slide to Zoom",
-                    value: .init(localized: zoomSliderLocation.label),
-                    fallbackValue: "",
-                    icon: .settings.zoomSlider,
-                    destination: .settings(.zoomSlider)
-                )
-            }
+            headerView
+            controlsSectionView
+            gesturesSectionView
         }
         .withConditionalLabelStyle()
         .contentMargins(.top, 16)
         .hiddenNavigationTitle("Image Viewer")
+    }
+
+    @ViewBuilder
+    var headerView: some View {
+        SettingsHeaderView(
+            title: "Image Viewer",
+            description: "Customise the image viewer's buttons and gestures.",
+            icon: .settings.imageViewer
+        )
+        .gradientTint(.themedColorfulAccent(5))
+    }
+
+    @ViewBuilder
+    var controlsSectionView: some View {
+        Section("Controls") {
+            NavigationLink(
+                "Show Controls",
+                value: showImageViewerOverlay ? "Immediately" : "When I Tap",
+                fallbackValue: "",
+                icon: .general.circle,
+                destination: .settings(.imageViewerControls)
+            )
+            Toggle("Close Button", icon: .general.close, isOn: $showCloseButton)
+            Toggle("Zoom Indicator", icon: .general.search, isOn: $showZoomIndicator)
+        }
+    }
+
+    @ViewBuilder
+    var gesturesSectionView: some View {
+        Section("Gestures") {
+            NavigationLink(
+                "Slide to Zoom",
+                value: .init(localized: zoomSliderLocation.label),
+                fallbackValue: "",
+                icon: .settings.zoomSlider,
+                destination: .settings(.zoomSlider)
+            )
+        }
     }
 }
