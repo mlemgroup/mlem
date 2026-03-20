@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ImageViewerSettingsView: View {
     @Setting(\.a11y_zoomSliderLocation) var zoomSliderLocation
+    @Setting(\.imageViewer_showOverlayByDefault) var showImageViewerOverlay
 
     var body: some View {
         Form {
@@ -18,6 +19,9 @@ struct ImageViewerSettingsView: View {
                 icon: .general.image
             )
             .gradientTint(.themedColorfulAccent(4))
+            Section {
+                Toggle("Show Overlay", isOn: $showImageViewerOverlay)
+            }
             Section {
                 NavigationLink(
                     "Slide to Zoom Images",
