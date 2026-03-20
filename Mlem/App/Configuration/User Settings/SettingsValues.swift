@@ -64,6 +64,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     var links_readerMode: Bool
     var links_shareMode: LinkSharingMode
     var links_embedLoops: Bool
+    var imageViewer_showOverlayByDefault: Bool
     var media_animatedAvatars: AnimatedAvatarBehavior
     var menus_allModActions: Bool
     var menus_modActionGrouping: ModeratorActionGrouping
@@ -212,6 +213,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.links_readerMode = try container.decodeIfPresent(Bool.self, forKey: ._links_readerMode) ?? false
         self.links_shareMode = try container.decodeIfPresent(LinkSharingMode.self, forKey: ._links_shareMode) ?? .myInstance
         self.links_embedLoops = try container.decodeIfPresent(Bool.self, forKey: ._links_embedLoops) ?? true
+        self.imageViewer_showOverlayByDefault = try container.decodeIfPresent(Bool.self, forKey: ._imageViewer_showOverlayByDefault) ?? true
         self.media_animatedAvatars = try container.decodeIfPresent(AnimatedAvatarBehavior.self, forKey: ._media_animatedAvatars) ?? (UIAccessibility.isReduceMotionEnabled ? .never : .always)
         self.menus_allModActions = try container.decodeIfPresent(Bool.self, forKey: ._menus_allModActions) ?? false
         self.menus_modActionGrouping = try container.decodeIfPresent(ModeratorActionGrouping.self, forKey: ._menus_modActionGrouping) ?? .divider
@@ -314,6 +316,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         links_readerMode = otherValues.links_readerMode
         links_shareMode = otherValues.links_shareMode
         links_embedLoops = otherValues.links_embedLoops
+        imageViewer_showOverlayByDefault = otherValues.imageViewer_showOverlayByDefault
         media_animatedAvatars = otherValues.media_animatedAvatars
         menus_allModActions = otherValues.menus_allModActions
         menus_modActionGrouping = otherValues.menus_modActionGrouping
@@ -422,6 +425,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         case _links_readerMode = "links_readerMode"
         case _links_shareMode = "links_shareMode"
         case _links_embedLoops = "links_embedLoops"
+        case _imageViewer_showOverlayByDefault = "imageViewer_showOverlayByDefault"
         case _media_animatedAvatars = "media_animatedAvatars"
         case _menus_allModActions = "menus_allModActions"
         case _menus_modActionGrouping = "menus_modActionGrouping"
@@ -533,6 +537,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.links_readerMode = settings.openLinksInReaderMode
         self.links_shareMode = settings.linkSharingMode
         self.links_embedLoops = settings.embedLoops
+        self.imageViewer_showOverlayByDefault = true // Added in 2.5
         self.media_animatedAvatars = settings.animatedAvatars
         self.menus_allModActions = settings.showAllModActions
         self.menus_modActionGrouping = settings.moderatorActionGrouping
