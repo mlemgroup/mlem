@@ -48,7 +48,7 @@ struct ImageViewerDismissSettingsView: View {
                 // spammed if you move the handle to either end of the slider.
                 Slider(
                     value: $sliderValue,
-                    in: 2...20,
+                    in: 1...20,
                     step: 1
                 )
                 .onChange(of: sliderValue) {
