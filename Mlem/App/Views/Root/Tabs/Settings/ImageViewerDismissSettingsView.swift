@@ -61,10 +61,16 @@ struct ImageViewerDismissSettingsView: View {
                 }
             }
         } footer: {
-            Button("Reset", icon: .general.refresh) {
+            Button {
                 self.dismissThreshold = 10
                 withAnimation(.easeOut(duration: 0.2)) {
                     sliderValue = 21 - 10
+                }
+            } label: {
+                // `Label` has too wide spacing
+                HStack(spacing: 5) {
+                    Image(icon: .general.refresh)
+                    Text("Reset")
                 }
             }
             .font(.footnote)
