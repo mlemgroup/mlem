@@ -19,14 +19,25 @@ struct ImageViewerDismissSettingsView: View {
             )
             .gradientTint(.themedColorfulAccent(5))
 
-            Slider(
-                value: .init(
-                    get: { Double(dismissThreshold) },
-                    set: { dismissThreshold = Int($0) }
-                ),
-                in: 2...20,
-                step: 1
-            )
+            Section {
+                VStack {
+                    HStack {
+                        Text("Drag Less")
+                        Spacer()
+                        Text("Drag More")
+                    }
+                    .font(.footnote)
+                    .foregroundStyle(.themedSecondary)
+                    Slider(
+                        value: .init(
+                            get: { Double(dismissThreshold) },
+                            set: { dismissThreshold = Int($0) }
+                        ),
+                        in: 2...20,
+                        step: 1
+                )
+                }
+            }
         }
         .withConditionalLabelStyle()
         .contentMargins(.top, 16)
