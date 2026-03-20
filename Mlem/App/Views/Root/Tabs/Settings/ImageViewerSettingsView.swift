@@ -10,6 +10,7 @@ import SwiftUI
 struct ImageViewerSettingsView: View {
     @Setting(\.a11y_zoomSliderLocation) var zoomSliderLocation
     @Setting(\.imageViewer_showOverlayByDefault) var showImageViewerOverlay
+    @Setting(\.imageViewer_showCloseButton) var showCloseButton
 
     var body: some View {
         Form {
@@ -21,10 +22,12 @@ struct ImageViewerSettingsView: View {
             .gradientTint(.themedColorfulAccent(5))
             Section {
                 Toggle("Show Overlay", isOn: $showImageViewerOverlay)
+
+                Toggle("Close Button", icon: .general.close, isOn: $showCloseButton)
             }
             Section {
                 NavigationLink(
-                    "Slide to Zoom Images",
+                    "Slide to Zoom",
                     value: .init(localized: zoomSliderLocation.label),
                     fallbackValue: "",
                     icon: .settings.zoomSlider,
