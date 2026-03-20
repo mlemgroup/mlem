@@ -49,6 +49,14 @@ struct LinkSettingsView: View {
                     destination: .settings(.tappableLinks)
                 )
             }
+
+            Section {
+                NavigationLink(
+                    "Image Viewer",
+                    icon: .general.image,
+                    destination: .settings(.imageViewer)
+                )
+            }
             
             Section {
                 Toggle("Autoplay", icon: .general.playCircle, isOn: $autoplayMedia)

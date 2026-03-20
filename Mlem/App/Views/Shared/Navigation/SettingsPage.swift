@@ -26,6 +26,7 @@ enum SettingsPage: Hashable {
     case privacyBypassImageProxy
     case safetyBlurNsfw, safetyWarnings
     case links, embedding
+    case imageViewer
     case animatedAvatars
     case externalLinks, sharingLinks, tappableLinks
     case importExportSettings
@@ -162,6 +163,8 @@ enum SettingsPage: Hashable {
             LongPressActionSettingsView()
         case .inboxBadge:
             InboxBadgeSettingsView()
+        case .imageViewer:
+            ImageViewerSettingsView()
         case let .swipeActions(type):
             switch type {
             case .post:

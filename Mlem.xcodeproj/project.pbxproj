@@ -240,6 +240,7 @@
 		038E1ABC2F58B9EF00D30F01 /* CommunityActionConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038E1ABB2F58B9EF00D30F01 /* CommunityActionConfiguration.swift */; };
 		038E1AC02F58C76A00D30F01 /* SwipeActionEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038E1ABF2F58C76A00D30F01 /* SwipeActionEditorView.swift */; };
 		038E1ACA2F59C18100D30F01 /* CommunitySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038E1AC92F59C18100D30F01 /* CommunitySettingsView.swift */; };
+		038E5C132F6D617C00C54DEB /* ImageViewerSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038E5C122F6D617C00C54DEB /* ImageViewerSettingsView.swift */; };
 		0391E0F92CFF17AE0040CCA8 /* ProfileSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0391E0F82CFF17AE0040CCA8 /* ProfileSettingsView.swift */; };
 		0391E0FB2D0066240040CCA8 /* ImageUploadMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0391E0FA2D0066240040CCA8 /* ImageUploadMenu.swift */; };
 		0391E0FE2D05B2DF0040CCA8 /* AdvancedSortView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0391E0FD2D05B2DF0040CCA8 /* AdvancedSortView.swift */; };
@@ -840,6 +841,7 @@
 		038E1ABB2F58B9EF00D30F01 /* CommunityActionConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityActionConfiguration.swift; sourceTree = "<group>"; };
 		038E1ABF2F58C76A00D30F01 /* SwipeActionEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeActionEditorView.swift; sourceTree = "<group>"; };
 		038E1AC92F59C18100D30F01 /* CommunitySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunitySettingsView.swift; sourceTree = "<group>"; };
+		038E5C122F6D617C00C54DEB /* ImageViewerSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewerSettingsView.swift; sourceTree = "<group>"; };
 		0391E0F82CFF17AE0040CCA8 /* ProfileSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsView.swift; sourceTree = "<group>"; };
 		0391E0FA2D0066240040CCA8 /* ImageUploadMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUploadMenu.swift; sourceTree = "<group>"; };
 		0391E0FD2D05B2DF0040CCA8 /* AdvancedSortView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSortView.swift; sourceTree = "<group>"; };
@@ -1318,6 +1320,7 @@
 				0325B9392D3A9E8100E28B97 /* InboxBadgeSettingsView.swift */,
 				039F58942C7B618F00C61658 /* InboxSettingsView.swift */,
 				03531EEB2C2D81DC004A3464 /* LinkSettingsView.swift */,
+				038E5C122F6D617C00C54DEB /* ImageViewerSettingsView.swift */,
 				03A630EE2D497143009A47A6 /* TappableLinksSettingsView.swift */,
 				03A630EC2D497005009A47A6 /* ExternalLinkSettingsView.swift */,
 				030056A32D7DB05A00EB0BA3 /* SharingLinksSettingsView.swift */,
@@ -2731,6 +2734,7 @@
 				CD332D792CA7175500A53988 /* PlayButton.swift in Sources */,
 				03A9FD1E2D7CFF0D007A734D /* Palette+Dracula.swift in Sources */,
 				03531EEC2C2D81DC004A3464 /* LinkSettingsView.swift in Sources */,
+				038E5C132F6D617C00C54DEB /* ImageViewerSettingsView.swift in Sources */,
 				03AB48552CBC0B8000567FF9 /* AccountAdvancedSettingsView.swift in Sources */,
 				039F588A2C7B54FE00C61658 /* GeneralSettingsView.swift in Sources */,
 				03F967272CE218110081C9A3 /* PersonBanEditorView.swift in Sources */,
