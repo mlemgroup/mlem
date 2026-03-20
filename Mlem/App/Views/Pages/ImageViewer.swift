@@ -27,6 +27,8 @@ struct ImageViewer: View {
         muted: Settings.get(\.behavior_muteVideos),
         scrubbingAvailable: true
     )
+
+    @Setting(\.imageViewer_showCloseButton) var showCloseButton
     
     /// Current scale of the zoomable image
     @State var zoomScale: CGFloat = 1.0

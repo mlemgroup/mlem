@@ -36,8 +36,10 @@ extension ImageViewer {
             if developerMode {
                 devTools
             }
-            closeButton
-                .padding(.trailing, Constants.main.standardSpacing)
+            if showCloseButton {
+                closeButton
+                    .padding(.trailing, Constants.main.standardSpacing)
+            }
         }
     }
     
