@@ -55,7 +55,7 @@ struct ImageViewerSettingsView: View {
         Section("Gestures") {
             NavigationLink(
                 "Dismiss Sensitivity",
-                value: "",
+                value: .init(localized: dismissSensitivityLabel),
                 fallbackValue: "",
                 icon: .settings.imageViewerDismissSensitivity,
                 destination: .settings(.imageViewerDismissSensitivity)
@@ -67,6 +67,17 @@ struct ImageViewerSettingsView: View {
                 icon: .settings.zoomSlider,
                 destination: .settings(.zoomSlider)
             )
+        }
+    }
+
+    var dismissSensitivityLabel: LocalizedStringResource {
+        switch dismissThreshold {
+        case 1: "Highest"
+        case 2...6: "High"
+        case 10: "Default"
+        case 15...19: "Low"
+        case 20: "Lowest"
+        default: "Medium"
         }
     }
 }
