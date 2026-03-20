@@ -21,13 +21,12 @@ struct ImageViewerSettingsView: View {
                 icon: .settings.imageViewer
             )
             .gradientTint(.themedColorfulAccent(5))
-            Section {
-                Toggle("Show Overlay", isOn: $showImageViewerOverlay)
-
+            Section("Controls") {
+                Toggle("Show Controls", isOn: $showImageViewerOverlay)
                 Toggle("Close Button", icon: .general.close, isOn: $showCloseButton)
                 Toggle("Zoom Indicator", icon: .general.search, isOn: $showZoomIndicator)
             }
-            Section {
+            Section("Gestures") {
                 NavigationLink(
                     "Slide to Zoom",
                     value: .init(localized: zoomSliderLocation.label),
