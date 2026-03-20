@@ -11,6 +11,7 @@ struct ImageViewerSettingsView: View {
     @Setting(\.a11y_zoomSliderLocation) var zoomSliderLocation
     @Setting(\.imageViewer_showOverlayByDefault) var showImageViewerOverlay
     @Setting(\.imageViewer_showCloseButton) var showCloseButton
+    @Setting(\.imageViewer_showZoomIndicator) var showZoomIndicator
 
     var body: some View {
         Form {
@@ -24,6 +25,7 @@ struct ImageViewerSettingsView: View {
                 Toggle("Show Overlay", isOn: $showImageViewerOverlay)
 
                 Toggle("Close Button", icon: .general.close, isOn: $showCloseButton)
+                Toggle("Zoom Indicator", icon: .general.search, isOn: $showZoomIndicator)
             }
             Section {
                 NavigationLink(
