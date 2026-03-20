@@ -42,9 +42,9 @@ struct ImageViewerDismissSettingsView: View {
         Section {
             VStack(spacing: 5) {
                 HStack {
-                    Text("Drag More")
+                    Text("Low")
                     Spacer()
-                    Text("Drag Less")
+                    Text("High")
                 }
                 .font(.footnote)
                 .foregroundStyle(.themedSecondary)
@@ -66,6 +66,7 @@ struct ImageViewerDismissSettingsView: View {
                 sliderValue = 21 - 10
             }
             .font(.footnote)
+            .labelStyle(.titleAndIcon)
         }
     }
 }
