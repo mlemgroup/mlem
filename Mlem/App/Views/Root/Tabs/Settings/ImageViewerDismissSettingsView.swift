@@ -14,7 +14,7 @@ struct ImageViewerDismissSettingsView: View {
 
     init() {
         let threshold = Settings.get(\.imageViewer_dismissThreshold)
-        self._sliderValue = .init(initialValue: Double(threshold))
+        self._sliderValue = .init(initialValue: 21 - Double(threshold))
     }
 
     var body: some View {
@@ -42,9 +42,9 @@ struct ImageViewerDismissSettingsView: View {
         Section {
             VStack(spacing: 5) {
                 HStack {
-                    Text("Drag Less")
-                    Spacer()
                     Text("Drag More")
+                    Spacer()
+                    Text("Drag Less")
                 }
                 .font(.footnote)
                 .foregroundStyle(.themedSecondary)
@@ -53,11 +53,10 @@ struct ImageViewerDismissSettingsView: View {
                 // spammed if you move the handle to either end of the slider.
                 Slider(
                     value: $sliderValue,
-                    in: 1...20,
-                    step: 1
+                    in: 1...20
                 ) { pressed in
                     if !pressed {
-                        self.dismissThreshold = Int(sliderValue.rounded())
+                        self.dismissThreshold = 21 - Int(sliderValue.rounded())
                     }
                 }
             }
