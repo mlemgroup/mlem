@@ -31,6 +31,7 @@ struct ImageViewer: View {
     @Setting(\.imageViewer_showOverlayByDefault) var showOverlayByDefault
     @Setting(\.imageViewer_showCloseButton) var showCloseButton
     @Setting(\.imageViewer_showZoomIndicator) var showZoomIndicator
+    @Setting(\.imageViewer_dismissThreshold) var dismissThreshold
     
     /// Current scale of the zoomable image
     @State var zoomScale: CGFloat = 1.0
@@ -194,7 +195,7 @@ struct ImageViewer: View {
             }
         } else {
             // dismiss swipe ended: choose whether to dismiss or reset
-            if abs(offset) > 100 {
+            if abs(offset) > CGFloat(dismissThreshold) * 10 {
                 swipeDismiss(finalOffset: offset > 0 ? screenHeight : -screenHeight)
             } else {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
