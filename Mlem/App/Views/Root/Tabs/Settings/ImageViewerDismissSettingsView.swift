@@ -10,7 +10,12 @@ import SwiftUI
 struct ImageViewerDismissSettingsView: View {
     @Setting(\.imageViewer_dismissThreshold) var dismissThreshold
 
-    @State var sliderValue: Double = 0
+    @State var sliderValue: Double
+
+    init() {
+        let threshold = Settings.get(\.imageViewer_dismissThreshold)
+        self._sliderValue = .init(initialValue: Double(threshold))
+    }
 
     var body: some View {
         Form {
