@@ -63,7 +63,9 @@ struct ImageViewerDismissSettingsView: View {
         } footer: {
             Button("Reset", icon: .general.refresh) {
                 self.dismissThreshold = 10
-                sliderValue = 21 - 10
+                withAnimation(.easeOut(duration: 0.2)) {
+                    sliderValue = 21 - 10
+                }
             }
             .font(.footnote)
             .labelStyle(.titleAndIcon)
