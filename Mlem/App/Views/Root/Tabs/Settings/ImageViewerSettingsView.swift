@@ -38,6 +38,6 @@ struct ImageViewerSettingsView: View {
         }
         .withConditionalLabelStyle()
         .contentMargins(.top, 16)
-        .hiddenNavigationTitle("Media & Links")
+        .hiddenNavigationTitle("Image Viewer")
     }
 }
