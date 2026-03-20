@@ -15,10 +15,10 @@ struct ImageViewerSettingsView: View {
         Form {
             SettingsHeaderView(
                 title: "Image Viewer",
-                description: "Customise the image viewer.",
-                icon: .general.image
+                description: "Customise the image viewer's buttons and gestures.",
+                icon: .settings.imageViewer
             )
-            .gradientTint(.themedColorfulAccent(4))
+            .gradientTint(.themedColorfulAccent(5))
             Section {
                 Toggle("Show Overlay", isOn: $showImageViewerOverlay)
             }
