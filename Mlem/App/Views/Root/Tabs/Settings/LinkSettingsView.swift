@@ -53,7 +53,7 @@ struct LinkSettingsView: View {
             Section {
                 NavigationLink(
                     "Image Viewer",
-                    icon: .general.image,
+                    icon: .settings.imageViewer,
                     destination: .settings(.imageViewer)
                 )
             }
