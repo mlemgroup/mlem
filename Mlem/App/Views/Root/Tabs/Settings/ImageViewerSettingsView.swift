@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ImageViewerSettingsView: View {
+    @Setting(\.a11y_zoomSliderLocation) var zoomSliderLocation
+
     var body: some View {
         Form {
             SettingsHeaderView(
@@ -16,6 +18,15 @@ struct ImageViewerSettingsView: View {
                 icon: .general.image
             )
             .gradientTint(.themedColorfulAccent(4))
+            Section {
+                NavigationLink(
+                    "Slide to Zoom Images",
+                    value: .init(localized: zoomSliderLocation.label),
+                    fallbackValue: "",
+                    icon: .settings.zoomSlider,
+                    destination: .settings(.zoomSlider)
+                )
+            }
         }
         .withConditionalLabelStyle()
         .contentMargins(.top, 16)
