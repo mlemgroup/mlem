@@ -86,6 +86,7 @@ struct ImageViewer: View {
     init(url: URL) {
         var components = URLComponents(url: url, resolvingAgainstBaseURL: false)!
         components.queryItems = components.queryItems?.filter { $0.name != "thumbnail" }
+        self.controlOpacity = Settings.get(\.imageViewer_showOverlayByDefault) ? 1 : 0
         self.url = components.url!
     }
     
