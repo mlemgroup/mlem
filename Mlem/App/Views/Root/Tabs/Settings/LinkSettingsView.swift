@@ -51,9 +51,7 @@ struct LinkSettingsView: View {
             }
             
             Section {
-                if #available(iOS 18, *) {
-                    Toggle("Autoplay", icon: .general.playCircle, isOn: $autoplayMedia)
-                }
+                Toggle("Autoplay", icon: .general.playCircle, isOn: $autoplayMedia)
                 Toggle("Mute Videos", icon: .general.muted, isOn: $muteVideos)
             }
             
