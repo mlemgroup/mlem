@@ -22,7 +22,13 @@ struct ImageViewerSettingsView: View {
             )
             .gradientTint(.themedColorfulAccent(5))
             Section("Controls") {
-                Toggle("Show Controls", isOn: $showImageViewerOverlay)
+                NavigationLink(
+                    "Show Controls",
+                    value: showImageViewerOverlay ? "Immediately" : "When I Tap",
+                    fallbackValue: "",
+                    icon: .general.circle,
+                    destination: .settings(.imageViewerControls)
+                )
                 Toggle("Close Button", icon: .general.close, isOn: $showCloseButton)
                 Toggle("Zoom Indicator", icon: .general.search, isOn: $showZoomIndicator)
             }

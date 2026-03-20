@@ -241,6 +241,7 @@
 		038E1AC02F58C76A00D30F01 /* SwipeActionEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038E1ABF2F58C76A00D30F01 /* SwipeActionEditorView.swift */; };
 		038E1ACA2F59C18100D30F01 /* CommunitySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038E1AC92F59C18100D30F01 /* CommunitySettingsView.swift */; };
 		038E5C132F6D617C00C54DEB /* ImageViewerSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038E5C122F6D617C00C54DEB /* ImageViewerSettingsView.swift */; };
+		038E5E892F6D694500C54DEB /* ImageViewerShowControlsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038E5E882F6D694500C54DEB /* ImageViewerShowControlsSettingsView.swift */; };
 		0391E0F92CFF17AE0040CCA8 /* ProfileSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0391E0F82CFF17AE0040CCA8 /* ProfileSettingsView.swift */; };
 		0391E0FB2D0066240040CCA8 /* ImageUploadMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0391E0FA2D0066240040CCA8 /* ImageUploadMenu.swift */; };
 		0391E0FE2D05B2DF0040CCA8 /* AdvancedSortView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0391E0FD2D05B2DF0040CCA8 /* AdvancedSortView.swift */; };
@@ -842,6 +843,7 @@
 		038E1ABF2F58C76A00D30F01 /* SwipeActionEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeActionEditorView.swift; sourceTree = "<group>"; };
 		038E1AC92F59C18100D30F01 /* CommunitySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunitySettingsView.swift; sourceTree = "<group>"; };
 		038E5C122F6D617C00C54DEB /* ImageViewerSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewerSettingsView.swift; sourceTree = "<group>"; };
+		038E5E882F6D694500C54DEB /* ImageViewerShowControlsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewerShowControlsSettingsView.swift; sourceTree = "<group>"; };
 		0391E0F82CFF17AE0040CCA8 /* ProfileSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsView.swift; sourceTree = "<group>"; };
 		0391E0FA2D0066240040CCA8 /* ImageUploadMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUploadMenu.swift; sourceTree = "<group>"; };
 		0391E0FD2D05B2DF0040CCA8 /* AdvancedSortView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSortView.swift; sourceTree = "<group>"; };
@@ -1321,6 +1323,7 @@
 				039F58942C7B618F00C61658 /* InboxSettingsView.swift */,
 				03531EEB2C2D81DC004A3464 /* LinkSettingsView.swift */,
 				038E5C122F6D617C00C54DEB /* ImageViewerSettingsView.swift */,
+				038E5E882F6D694500C54DEB /* ImageViewerShowControlsSettingsView.swift */,
 				03A630EE2D497143009A47A6 /* TappableLinksSettingsView.swift */,
 				03A630EC2D497005009A47A6 /* ExternalLinkSettingsView.swift */,
 				030056A32D7DB05A00EB0BA3 /* SharingLinksSettingsView.swift */,
@@ -2951,6 +2954,7 @@
 				03036C742C71408700C6DA1D /* CounterAppearance.swift in Sources */,
 				0397D4722C68078F002C6CDC /* PrefetchingConfiguration+Extensions.swift in Sources */,
 				0389DDC32C38907C0005B808 /* Message1Providing+Extensions.swift in Sources */,
+				038E5E892F6D694500C54DEB /* ImageViewerShowControlsSettingsView.swift in Sources */,
 				03B431B42C4481C3001A1EB5 /* MarkdownTextEditor.swift in Sources */,
 				0372EBCE2D36FBCF00257095 /* RegistrationApplication+Extensions.swift in Sources */,
 				038028FD2CB72A2A0091A8A2 /* ContentRemovalEditorView.swift in Sources */,
