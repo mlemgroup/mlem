@@ -15,7 +15,7 @@ struct ImageViewerShowControlsSettingsView: View {
             SettingsHeaderView(
                 title: "Show Controls",
                 description: "Choose when the image viewer controls should appear.",
-                icon: .settings.imageViewer
+                icon: .settings.imageViewerControls
             )
             .gradientTint(.themedColorfulAccent(5))
             Picker("Show Controls", selection: $showImageViewerOverlay) {
