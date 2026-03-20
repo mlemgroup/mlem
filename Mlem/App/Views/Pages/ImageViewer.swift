@@ -28,6 +28,7 @@ struct ImageViewer: View {
         scrubbingAvailable: true
     )
 
+    @Setting(\.imageViewer_showOverlayByDefault) var showOverlayByDefault
     @Setting(\.imageViewer_showCloseButton) var showCloseButton
     @Setting(\.imageViewer_showZoomIndicator) var showZoomIndicator
     
@@ -122,7 +123,7 @@ struct ImageViewer: View {
         .onChange(of: isZoomed) {
             if isZoomed {
                 hideControls(withSlide: true)
-            } else {
+            } else if showOverlayByDefault {
                 showControls(withSlide: true)
             }
         }
