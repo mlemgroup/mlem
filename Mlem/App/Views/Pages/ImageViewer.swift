@@ -29,6 +29,7 @@ struct ImageViewer: View {
     )
 
     @Setting(\.imageViewer_showCloseButton) var showCloseButton
+    @Setting(\.imageViewer_showZoomIndicator) var showZoomIndicator
     
     /// Current scale of the zoomable image
     @State var zoomScale: CGFloat = 1.0
@@ -113,7 +114,9 @@ struct ImageViewer: View {
         .background(.black)
         .overlay(controlOverlay)
         .overlay(alignment: .topLeading) {
-            scaleDisplay
+            if showZoomIndicator {
+                scaleDisplay
+            }
         }
         .opacity(opacity)
         .onChange(of: isZoomed) {
