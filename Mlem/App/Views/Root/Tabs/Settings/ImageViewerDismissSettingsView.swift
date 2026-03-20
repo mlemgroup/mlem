@@ -10,6 +10,8 @@ import SwiftUI
 struct ImageViewerDismissSettingsView: View {
     @Setting(\.imageViewer_dismissThreshold) var dismissThreshold
 
+    @State var sliderValue: Double = 0
+
     var body: some View {
         Form {
             SettingsHeaderView(
@@ -28,14 +30,17 @@ struct ImageViewerDismissSettingsView: View {
                     }
                     .font(.footnote)
                     .foregroundStyle(.themedSecondary)
+
+                    // I tried using Binding(get: set:) here, but it caused haptics to be
+                    // spammed if you move the handle to either end of the slider.
                     Slider(
-                        value: .init(
-                            get: { Double(dismissThreshold) },
-                            set: { dismissThreshold = Int($0) }
-                        ),
+                        value: $sliderValue,
                         in: 2...20,
                         step: 1
-                )
+                    )
+                    .onChange(of: sliderValue) {
+                        self.dismissThreshold = Int(sliderValue.rounded())
+                    }
                 }
             }
         }
