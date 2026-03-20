@@ -60,6 +60,12 @@ struct ImageViewerDismissSettingsView: View {
                     }
                 }
             }
+        } footer: {
+            Button("Reset", icon: .general.refresh) {
+                self.dismissThreshold = 10
+                sliderValue = 21 - 10
+            }
+            .font(.footnote)
         }
     }
 }
