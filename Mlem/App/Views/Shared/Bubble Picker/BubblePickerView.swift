@@ -96,6 +96,7 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
                         scrollProxy.scrollTo(newIndex)
                     }
                 }
+                .id(tabs.hashValue)
             }
             
             if dividers.contains(.bottom) {
