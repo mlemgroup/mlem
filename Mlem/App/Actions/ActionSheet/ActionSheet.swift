@@ -19,6 +19,7 @@ struct ActionSheet: View {
     @Environment(NavigationLayer.self) var navigation
 
     let sections: [ActionSheetSection]
+    let configuration: SettingsPage.ContextMenuSettingType?
 
     @State var popupAnchorModel: PopupAnchorModel = .init()
 
@@ -27,12 +28,14 @@ struct ActionSheet: View {
             VStack(alignment: .leading, spacing: 0) {
                 content
                     .padding(16)
-                Button("Customize", icon: .general.edit) {
-                    navigation.replace(.settings(.contextMenu(.inboxNotification)))
+                if let configuration {
+                    Button("Customize", icon: .general.edit) {
+                        navigation.replace(.settings(.contextMenu(configuration)))
+                    }
+                    .font(.footnote)
+                    .padding(.horizontal, 32)
+                    .padding(.top, -5)
                 }
-                .font(.footnote)
-                .padding(.horizontal, 32)
-                .padding(.top, -5)
             }
         }
         .presentationBackground(.themedGroupedBackground)
