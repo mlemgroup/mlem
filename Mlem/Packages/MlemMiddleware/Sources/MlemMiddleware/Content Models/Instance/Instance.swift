@@ -275,8 +275,111 @@ public class Instance:
     
 }
 
+// MARK: Computed
+
+public extension Instance {
+    func language(withId id: Int) -> Locale.Language? {
+        guard let allLanguages = allLanguages.value else { return nil }
+        return allLanguages[safeIndex: id - 1]
+    }
+    
+    func getLanguageId(for language: Locale.Language) -> Int? {
+        guard let allLanguages = allLanguages.value else { return nil }
+        return allLanguages.firstIndex(of: language)?.advanced(by: 1)
+    }
+    
+    func languages(withIds ids: Set<Int>) -> [Locale.Language] {
+        ids.lazy.sorted(by: <).compactMap { self.language(withId: $0) }
+    }
+    
+    var allowedLanguages: Set<Locale.Language>? {
+        guard let allowedLanguageIds = allowedLanguageIds.value else { return nil }
+        return Set(allowedLanguageIds.lazy.compactMap { self.language(withId: $0) })
+    }
+}
+
 // MARK: Interactions
 
 public extension Instance {
     
+    // Add Admin
+    
+    var addAdmin: ((Int, Bool) -> Void)? {
+        if let administrators = administrators.value {
+            return { self.addAdmin(personId: $0, added: $1, administrators: administrators) }
+        }
+        return nil
+    }
+    
+    // TODO: NOW can we guarantee a Person so this can be state faked? Else don't need it to be optional
+    private func addAdmin(personId: Int, added: Bool, administrators: [Person]) {
+        Task {
+            await updateQueue.addItem { properties in
+                let snapshots = try await self.api.repository.addAdmin(personId: personId, added: added)
+                let updatedAdministrators = await self.api.caches.person.getModels(api: self.api, from: snapshots.map { .person2($0) })
+                
+                // update person's admin status
+                // only need to do this manually if removing admin, otherwise handled by above caching logic
+                if !added, let person = self.api.caches.person.retrieveModel(cacheId: personId) {
+                    person.isAdmin.value_ = false
+                }
+                
+                var properties = properties
+                properties.administrators = updatedAdministrators
+                return properties
+            }
+        }
+    }
+    
+    // Username Validity
+    
+    var usernameIsValidFornewAccount: ((String) async throws -> UsernameValidity)? {
+        if let actorNameMaxLength = actorNameMaxLength.value {
+            return { try await self.usernameIsValidForNewAccount($0, actorNameMaxLength: actorNameMaxLength) }
+        }
+        return nil
+    }
+    
+    private func usernameIsValidForNewAccount(_ username: String, actorNameMaxLength: Int) async throws -> UsernameValidity {
+        guard username.count >= 3 else {
+            return .invalid(.tooShort(minLength: 3))
+        }
+        guard username.count <= actorNameMaxLength else {
+            return .invalid(.tooLong(maxLength: actorNameMaxLength))
+        }
+        
+        // Relevant backend code https://github.com/LemmyNet/lemmy/blob/5095092d3a6b0c194295e2cf3034d2b9abf8db54/crates/utils/src/utils/validation.rs#L94
+        
+        let regex = /^(?:[a-zA-Z0-9_]+|[0-9_\p{Arabic}]+|[0-9_\p{Cyrillic}]+)$/
+        
+        if try regex.wholeMatch(in: username) == nil {
+            // If username isn't english, give a generic error
+            let englishRegex = /[^\p{Arabic}\p{Cyrillic}]+/
+            if try englishRegex.wholeMatch(in: username) == nil { return .invalid(.other) }
+            
+            // If the username *is* in english, we can be more descriptive
+            let invalidCharacters = username.filter { char in
+                if char == "_" { return false }
+                guard let scalar = char.unicodeScalars.first, char.unicodeScalars.count == 1 else { return true }
+                if scalar.value >= 65, scalar.value <= 90 { return false } // Uppercase
+                if scalar.value >= 97, scalar.value <= 122 { return false } // Lowercase
+                if scalar.value >= 48, scalar.value <= 57 { return false } // Numbers
+                return true
+            }
+            
+            if !invalidCharacters.isEmpty {
+                return .invalid(.containsInvalidCharacters(Set(invalidCharacters)))
+            }
+            
+            assertionFailure()
+            return .invalid(.other)
+        }
+        
+        do {
+            _ = try await api.getPerson(username: username)
+            return .taken
+        } catch ApiClientError.noEntityFound {
+            return .available
+        }
+    }
 }
