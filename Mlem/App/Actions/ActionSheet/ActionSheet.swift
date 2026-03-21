@@ -28,7 +28,7 @@ struct ActionSheet: View {
                 content
                     .padding(16)
                 Button("Customize", icon: .general.edit) {
-                    navigation.replace(.contextMenuSettings)
+                    navigation.replace(.settings(.contextMenu(.inboxNotification)))
                 }
                 .font(.footnote)
                 .padding(.horizontal, 32)

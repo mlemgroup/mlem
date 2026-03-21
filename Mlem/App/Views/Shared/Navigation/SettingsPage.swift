@@ -16,6 +16,10 @@ enum SettingsPage: Hashable {
     enum SwipeActionSettingType: Hashable {
         case post, comment, inboxNotification, postReport, commentReport, community
     }
+
+    enum ContextMenuSettingType: Hashable {
+        case inboxNotification
+    }
     
     case root
     case accounts, account
@@ -38,6 +42,7 @@ enum SettingsPage: Hashable {
     case about, advanced, developer, errorLog
     case interactionBar(ContentActionType)
     case swipeActions(SwipeActionSettingType)
+    case contextMenu(ContextMenuSettingType)
     case postBarWidgetPicker(HashWrapper<Binding<PostBarConfiguration>>)
     case commentBarWidgetPicker(HashWrapper<Binding<CommentBarConfiguration>>)
     case replyBarWidgetPicker(HashWrapper<Binding<ReplyBarConfiguration>>)
@@ -205,6 +210,11 @@ enum SettingsPage: Hashable {
                 })
             case .community:
                 SwipeActionEditorView(\.interactionBar_community)
+            }
+        case let .contextMenu(type):
+            switch type {
+            case .inboxNotification:
+                ContextMenuSettingsView(\.interactionBar_reply)
             }
         case let .interactionBar(type):
             switch type {
