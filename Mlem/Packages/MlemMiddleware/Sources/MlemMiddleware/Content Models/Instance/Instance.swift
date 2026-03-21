@@ -11,13 +11,19 @@ import Foundation
 @Observable
 public class Instance:
     UnifiedModelProviding,
-    ActorIdentifiable
+    ActorIdentifiable,
+    Blockable
 {
     public typealias Properties = InstanceProperties
     
     public var api: ApiClient
     private let properties: InstanceProperties
     @ObservationIgnored lazy var updateQueue: UnifiedUpdateQueue<Instance> = .init(parent: self, properties: properties)
+    
+    // MARK: Custom Properties
+    // Mlem-specific properties that are not reflected in the API
+    
+    public var blocked: Bool
     
     // MARK: API Properties
     // Properties that are provided by the API
@@ -73,6 +79,7 @@ public class Instance:
     public init(api: ApiClient, properties: InstanceProperties) {
         self.api = api
         self.properties = properties
+        self.blocked = api.blocks?.instances.keys.contains(properties.actorId) ?? false
         
         self.actorId = properties.actorId
         self.id = properties.id
@@ -265,5 +272,11 @@ public class Instance:
         // TODO: NOW
         return self
     }
+    
+}
+
+// MARK: Interactions
+
+public extension Instance {
     
 }
