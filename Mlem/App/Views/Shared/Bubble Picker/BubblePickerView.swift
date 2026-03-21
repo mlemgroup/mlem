@@ -129,6 +129,7 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
                             isSelectionIndicator: isSelectionIndicator
                         )
                     }
+                    .id("\(isSelectionIndicator)\(value(tab) ?? -1)")
                 } else {
                     bubbleButtonLabel(tab: tab, isSelectionIndicator: isSelectionIndicator)
                 }
