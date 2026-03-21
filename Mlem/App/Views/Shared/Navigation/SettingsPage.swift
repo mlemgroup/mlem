@@ -10,11 +10,11 @@ import SwiftUI
 
 enum SettingsPage: Hashable {
     enum ContentActionType: Hashable {
-        case post, comment, reply, postReport, commentReport
+        case post, comment, inboxNotification, postReport, commentReport
     }
 
     enum SwipeActionSettingType: Hashable {
-        case post, comment, reply, postReport, commentReport, community
+        case post, comment, inboxNotification, postReport, commentReport, community
     }
     
     case root
@@ -182,7 +182,7 @@ enum SettingsPage: Hashable {
                         $0.applying(other: configuration, types: [.swipe])
                     }
                 })
-            case .reply:
+            case .inboxNotification:
                 SwipeActionEditorView(\.interactionBar_reply, onApplyToAll: { configuration in
                     Settings.mutate(\.interactionBar_post) {
                         $0.applying(other: configuration, types: [.swipe])
@@ -212,7 +212,7 @@ enum SettingsPage: Hashable {
                 InteractionBarEditorView(setting: \.interactionBar_post, isReport: false)
             case .comment:
                 InteractionBarEditorView(setting: \.interactionBar_comment, isReport: false)
-            case .reply:
+            case .inboxNotification:
                 InteractionBarEditorView(setting: \.interactionBar_reply, isReport: false)
             case .postReport:
                 InteractionBarEditorView(setting: \.interactionBar_postReport, isReport: true)
