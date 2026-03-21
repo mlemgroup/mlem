@@ -82,6 +82,7 @@ struct ExpandedPostView<Content: View>: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .conditionalNavigationTitle(post.community.value?.name ?? "")
+        .navigationBarTitleDisplayMode(.inline)
         .overlay {
             VStack {
                 if showLoadingSymbol {

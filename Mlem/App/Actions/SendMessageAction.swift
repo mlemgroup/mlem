@@ -28,7 +28,7 @@ extension ActionSeed {
 
     static let sendCreatorMessage = ActionSeed("sendCreatorMessage") { entity in
         switch entity {
-        case let entity as Comment:
+        case let entity as any InteractableProviding:
             if let creator = entity.creator.value {
                 SendMessageAction(entity: creator, relationship: .author)
             } else {

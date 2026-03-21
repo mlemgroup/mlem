@@ -10,131 +10,17 @@ import Foundation
 import MlemMiddleware
 import SwiftUI
 
-struct CommentBarConfiguration: InteractionBarConfiguration {
-    enum ActionType: String, ActionTypeProviding {
-        typealias Configuration = CommentBarConfiguration // swiftlint:disable:this nesting
-        
-        case upvote
-        case downvote
-        case save
-        case reply
-        case share
-        case selectText
-        case report
-        case resolve
-        case remove
-        case ban
-        case collapse
-        case collapseParent
-        case collapseToTop
-        
-        static var defaultWidgets: [ActionType] { [
-            .upvote,
-            .downvote,
-            .save,
-            .reply,
-            .share
-        ] }
-        
-        static var defaultReportWidgets: [ActionType] { [
-            .share,
-            .resolve,
-            .remove,
-            .ban
-        ] }
-        
-        var appearance: ActionAppearance {
-            switch self {
-            case .upvote: .upvote(isOn: false)
-            case .downvote: .downvote(isOn: false)
-            case .save: .save(isOn: false)
-            case .reply: .reply()
-            case .share: .share()
-            case .selectText: .selectText()
-            case .report: .report()
-            case .resolve: .resolve(isOn: false)
-            case .remove: .remove(isOn: false)
-            case .ban: .banFromCommunity(isOn: false)
-            case .collapse: .collapse()
-            case .collapseParent: .collapseParent()
-            case .collapseToTop: .collapseToTop()
-            }
-        }
-        
-        func associatedReadouts(context: any InteractableProviding) -> Set<Configuration.ReadoutType> {
-            switch self {
-            case .upvote: context.votes.value?.myVote ?? .none == .upvote ? [.upvote, .score] : [.upvote]
-            case .downvote: context.votes.value?.myVote ?? .none == .downvote ? [.downvote, .score] : [.downvote]
-            case .save: [.saved]
-            case .reply, .share, .selectText, .report, .resolve, .remove, .ban: []
-            case .collapse, .collapseParent, .collapseToTop: []
-            }
-        }
-    }
-    
-    enum CounterType: String, CounterTypeProviding {
-        typealias Configuration = CommentBarConfiguration // swiftlint:disable:this nesting
-        
-        case score
-        case upvote
-        case downvote
-        case reply
-        
-        static var defaultWidgets: [CounterType] { allCases }
-        
-        var appearance: CounterAppearance {
-            switch self {
-            case .score: .score()
-            case .upvote: .upvote()
-            case .downvote: .downvote()
-            case .reply: .reply()
-            }
-        }
-        
-        func associatedReadouts(context: any InteractableProviding) -> Set<Configuration.ReadoutType> {
-            switch self {
-            case .score: [.upvote, .downvote, .score]
-            case .upvote: context.votes.value?.myVote ?? .none == .upvote ? [.upvote, .score] : [.upvote]
-            case .downvote: context.votes.value?.myVote ?? .none == .downvote ? [.downvote, .score] : [.downvote]
-            case .reply: []
-            }
-        }
-    }
-    
-    enum ReadoutType: String, ReadoutTypeProviding {
-        case created
-        case score
-        case upvote
-        case downvote
-        case comment
-        case saved
-        
-        var appearance: MockReadoutAppearance {
-            switch self {
-            case .created: .init(icon: .general.time, label: "18h")
-            case .score: .init(icon: .lemmy.votes, label: "7")
-            case .upvote: .init(icon: .lemmy.upvoted, label: "9")
-            case .downvote: .init(icon: .lemmy.downvoted, label: "2")
-            case .comment: .init(icon: .lemmy.replies, label: "1")
-            case .saved: .init(icon: .lemmy.saved, label: "")
-            }
-        }
-        
-        func compatibleWith(otherReadouts: Set<Self>) -> Bool {
-            switch self {
-            case .score: otherReadouts.isDisjoint(with: [.upvote, .downvote])
-            case .upvote, .downvote: !otherReadouts.contains(.score)
-            default: true
-            }
-        }
-    }
-
+struct CommentBarConfiguration: InteractionBarConfiguration, SwipeActionConfiguration {
     var leading: [Item]
     var trailing: [Item]
     var readouts: [ReadoutType]
-    var leadingSwipes: [ActionType]
-    var trailingSwipes: [ActionType]
     var savedContextMenu: [ActionSeed]?
+
+    public var savedSwipes: ActionSeedSwipeConfiguration?
+
+    static var defaultSwipes: ActionSeedSwipeConfiguration {
+        .init(leading: [.downvote, .upvote], trailing: [.save, .reply])
+    }
 
     var availableWidgets: Set<Item>
     func widgetPickerPage(_ configuration: Binding<Self>) -> SettingsPage { .commentBarWidgetPicker(configuration) }
@@ -142,16 +28,14 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
     init(
         leading: [Item],
         trailing: [Item],
-        leadingSwipes: [ActionType],
-        trailingSwipes: [ActionType],
+        savedSwipes: ActionSeedSwipeConfiguration?,
         readouts: [ReadoutType],
         availableWidgets: Set<Item>,
         savedContextMenu: [ActionSeed]?
     ) {
         self.leading = leading
         self.trailing = trailing
-        self.leadingSwipes = leadingSwipes
-        self.trailingSwipes = trailingSwipes
+        self.savedSwipes = savedSwipes
         self.readouts = readouts
         self.availableWidgets = availableWidgets
         self.savedContextMenu = savedContextMenu
@@ -161,8 +45,6 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.leading = try container.decodeIfPresent([Item].self, forKey: .leading) ?? [.counter(.score)]
         self.trailing = try container.decodeIfPresent([Item].self, forKey: .trailing) ?? [.action(.save), .action(.reply)]
-        self.leadingSwipes = try container.decodeIfPresent([ActionType].self, forKey: .leadingSwipes) ?? [.upvote, .downvote]
-        self.trailingSwipes = try container.decodeIfPresent([ActionType].self, forKey: .trailingSwipes) ?? [.save, .reply]
         self.readouts = try container.decodeIfPresent([ReadoutType].self, forKey: .readouts) ?? [.created, .comment]
         self.availableWidgets = try container.decodeIfPresent(Set<Item>.self, forKey: .availableWidgets) ??
             .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) })
@@ -170,8 +52,54 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
             let allActions = Self.availableActions.all
             self.savedContextMenu = contextMenuKeys.compactMap { key in allActions.first(where: {$0.key == key}) }
         } else {
-            self.savedContextMenu = Self.default.contextMenu
+            self.savedContextMenu = nil
         }
+
+        let swipeConfigurationContainer = try? container.nestedContainer(
+            keyedBy: ActionSeedSwipeConfiguration.CodingKeys.self,
+            forKey: .swipes
+        )
+        if let swipeConfigurationContainer {
+            self.savedSwipes = try .init(from: swipeConfigurationContainer, availableActions: Self.availableActions.all)
+        } else {
+            // Convert from Mlem 2.4 -> 2.5 format
+            let leadingSwipes = try container.decodeIfPresent([ActionType].self, forKey: .leadingSwipes) ?? [.upvote, .downvote]
+            let trailingSwipes = try container.decodeIfPresent([ActionType].self, forKey: .trailingSwipes) ?? [.save, .reply]
+
+            let swipes = ActionSeedSwipeConfiguration(
+                leading: leadingSwipes.map(\.actionSeed),
+                trailing: trailingSwipes.map(\.actionSeed)
+            )
+
+            if swipes == Self.defaultSwipes {
+                self.savedSwipes = nil
+            } else {
+                self.savedSwipes = swipes
+            }
+        }
+    }
+    
+    enum CodingKeys: CodingKey {
+        case leading
+        case trailing
+        case readouts 
+        case availableWidgets
+        case savedContextMenu
+        case swipes
+
+        // Used for conversion from Mlem 2.4 -> 2.5 format
+        case leadingSwipes
+        case trailingSwipes
+    }
+
+    func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(self.leading, forKey: .leading)
+        try container.encode(self.trailing, forKey: .trailing)
+        try container.encode(self.readouts, forKey: .readouts)
+        try container.encode(self.availableWidgets, forKey: .availableWidgets)
+        try container.encode(self.savedContextMenu, forKey: .savedContextMenu)
+        try container.encode(self.savedSwipes, forKey: .swipes)
     }
 
     var contextMenu: [ActionSeed] {
@@ -187,8 +115,7 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
         .init(
             leading: [.counter(.score)],
             trailing: [.action(.save), .action(.reply)],
-            leadingSwipes: [.upvote, .downvote],
-            trailingSwipes: [.save, .reply],
+            savedSwipes: nil,
             readouts: [.created, .comment],
             availableWidgets: .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) }),
             savedContextMenu: nil
@@ -199,8 +126,7 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
         .init(
             leading: [.action(.resolve), .action(.share)],
             trailing: [.action(.ban), .action(.remove)],
-            leadingSwipes: [.upvote, .downvote],
-            trailingSwipes: [.save, .reply],
+            savedSwipes: nil,
             readouts: [.upvote, .downvote, .created, .comment],
             availableWidgets: .init(ActionType.defaultReportWidgets.map { .action($0) }),
             savedContextMenu: nil
@@ -219,6 +145,11 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
                 .report,
                 .edit,
                 .delete
+            ],
+            [
+                .collapse,
+                .collapseParent,
+                .collapseToTop
             ],
             [
                 .blockCreator,

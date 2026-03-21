@@ -38,7 +38,16 @@ extension View {
             ActionButtons { _ in
                 seeds.compactMap { $0.createAction(comment) }
             }
+            .environment(\.isContextMenu, true)
         }
+    }
+
+    @ViewBuilder
+    func quickSwipes(comment: Comment, configuration: CommentBarConfiguration) -> some View {
+        quickSwipes(
+            leading: configuration.swipes.leading.compactMap { $0.createAction(comment) },
+            trailing: configuration.swipes.trailing.compactMap { $0.createAction(comment) }
+        )
     }
 }
 
@@ -67,25 +76,28 @@ struct CommentEllipsisMenuContent: View {
     let type: Set<ActionListType>
 
     var body: some View {
-        if type.contains(.basic) {
-            ControlGroup {
-                ActionButtons { _ in
-                    seeds.compactMap { $0.createAction(comment) }
-                }
-            }
-            .controlGroupStyle(.compactMenu)
-        }
-        if type.contains(.moderator) {
-            Section {
-                ActionButtons { _ in
-                    var ret = moderationSeeds.compactMap { $0.createAction(comment) }
-                    if let reportContext,
-                       let resolveAction = ActionSeed.resolveReport.createAction(reportContext) {
-                        ret.append(resolveAction)
+        Group {
+            if type.contains(.basic) {
+                ControlGroup {
+                    ActionButtons { _ in
+                        seeds.compactMap { $0.createAction(comment) }
                     }
-                    return ret
+                }
+                .controlGroupStyle(.compactMenu)
+            }
+            if type.contains(.moderator) {
+                Section {
+                    ActionButtons { _ in
+                        var ret = moderationSeeds.compactMap { $0.createAction(comment) }
+                        if let reportContext,
+                            let resolveAction = ActionSeed.resolveReport.createAction(reportContext) {
+                            ret.append(resolveAction)
+                        }
+                        return ret
+                    }
                 }
             }
         }
+        .environment(\.isContextMenu, true)
     }
 }

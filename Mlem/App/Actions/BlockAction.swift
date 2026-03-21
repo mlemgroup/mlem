@@ -93,7 +93,7 @@ extension ActionSeed {
 
     static let blockCreator = ActionSeed(
         "blockCreator",
-        label: BlockAction.createLabel(relationship: .indirect, mode: .block, contentType: .personOnly)
+        label: BlockAction.createLabel(relationship: .indirect, mode: .block, contentType: .multi)
     ) { entity in
         switch entity {
         case let entity as Comment:
