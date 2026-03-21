@@ -240,7 +240,7 @@ extension NavigationPage {
         case let .actionSheet(sections):
             ActionSheet(sections: sections.wrappedValue)
         case .contextMenuSettings:
-            ContextMenuSettingsView()
+            ContextMenuSettingsView(\.interactionBar_reply)
         }
     }
 }
