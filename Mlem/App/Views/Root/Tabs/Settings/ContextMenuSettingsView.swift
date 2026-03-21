@@ -68,7 +68,7 @@ struct ContextMenuSettingsView: View {
 }
 
 extension ContextMenuSettingsView {
-    init<Configuration: InteractionBarConfiguration>(_ keyPath: ReferenceWritableKeyPath<SettingsValues, Configuration>) {
+    init<Configuration: ContextMenuConfiguration>(_ keyPath: ReferenceWritableKeyPath<SettingsValues, Configuration>) {
         self.init(configuration: .init(get: {
             Settings.get(keyPath).contextMenu
         }, set: { newValue in
