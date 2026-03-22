@@ -158,7 +158,7 @@ struct HandleThreadiverseLinksModifier: ViewModifier {
     func createNavigationPage(url: URL) -> NavigationPage? {
         let components = Array(url.pathComponents.dropFirst())
         if components.isEmpty, let host = url.host() {
-            return .instance(InstanceStub(api: appState.firstApi, actorId: .instance(host: host)))
+            return .instanceStub(InstanceStub(api: appState.firstApi, actorId: .instance(host: host)))
         }
         switch components.first {
         case "u":

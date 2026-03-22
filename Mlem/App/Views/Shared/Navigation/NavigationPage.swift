@@ -48,7 +48,8 @@ enum NavigationPage: Hashable {
     case community(_ community: Community, visitContext: VisitHistory.VisitContext = .other)
     case person(_ person: Person, visitContext: VisitHistory.VisitContext = .other)
     case personStub(_ personStub: PersonStub, visitContext: VisitHistory.VisitContext = .other)
-    case instance(_ instance: InstanceHashWrapper, visitContext: VisitHistory.VisitContext)
+    case instance(_ instance: Instance, visitContext: VisitHistory.VisitContext = .other)
+    case instanceStub(_ instanceStub: InstanceStub, visitContext: VisitHistory.VisitContext = .other)
     case instanceOpinionList(instance: InstanceHashWrapper, opinionType: FediseerOpinionType, data: FediseerData)
     case messageFeed(_ person: Person, messageContent: String, focusTextField: Bool, editing: MessageHashWrapper?)
     case fediseerInfo
@@ -92,13 +93,6 @@ enum NavigationPage: Hashable {
     case exportCommentImage(_ comment: Comment, tracker: CommentTreeTracker?)
     case actionSheet(_ actions: HashWrapper<[ActionSheetSection]>)
     case contextMenuSettings
-
-    static func instance(
-        _ instance: any InstanceStubProviding,
-        visitContext: VisitHistory.VisitContext = .other
-    ) -> NavigationPage {
-        Self.instance(.init(wrappedValue: instance), visitContext: visitContext)
-    }
     
     static func shareInstancePicker(_ sharable: any Sharable) -> NavigationPage {
         shareInstancePicker(.init(wrappedValue: sharable))
@@ -164,19 +158,19 @@ enum NavigationPage: Hashable {
         )
     }
     
-    static func instance(
-        hostOf entity: any ActorIdentifiable,
+    static func hostInstance(
+        of entity: any ActorIdentifiable,
         visitContext: VisitHistory.VisitContext = .other
     ) -> NavigationPage {
-        var instance: any InstanceStubProviding = InstanceStub(
-            api: AppState.main.firstApi, actorId: .instance(host: entity.actorId.host)
-        )
-        if let entity = entity as? Person {
-            instance = entity.instance.value_ ?? instance
-        } else if let entity = entity as? Community {
-            instance = (entity.instance.value_ as? any InstanceStubProviding) ?? instance
+        if let entity = entity as? Person,
+           let instance = entity.instance.value_ {
+            return .instance(instance, visitContext: visitContext)
         }
-        return Self.instance(.init(wrappedValue: instance), visitContext: visitContext)
+        if let entity = entity as? Community,
+           let instance = entity.instance.value_ as? Instance {
+            return .instance(instance, visitContext: visitContext)
+        }
+        return .instanceStub(.init(api: AppState.main.firstApi, actorId: .instance(host: entity.actorId.host)), visitContext: visitContext)
     }
     
     static func communityPicker(

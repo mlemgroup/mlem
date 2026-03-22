@@ -196,7 +196,9 @@ extension NavigationPage {
         case let .languagePicker(selectedLanguages: selectedLanguages, callback: callback):
             LanguagePickerSheetView(selectedLanguages: selectedLanguages, callback: callback.wrappedValue)
         case let .instance(instance, visitContext):
-            InstanceView(instance: instance.wrappedValue, visitContext: visitContext)
+            InstanceView(instance: instance, visitContext: visitContext)
+        case let .instanceStub(instance, visitContext):
+            InstanceStubResolutionPage(stub: instance, visitContext: visitContext)
         case let .instanceOpinionList(instance: instance, opinionType: opinionType, data: data):
             FediseerOpinionListView(instance: instance.wrappedValue, opinionType: opinionType, fediseerData: data)
         case .fediseerInfo:

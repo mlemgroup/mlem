@@ -29,7 +29,7 @@ struct BlockListView: View {
     @State var selectedTab: Tab = .people
     @State var people: [Person] = []
     @State var communities: [Community] = []
-    @State var instances: [Instance1] = []
+    @State var instances: [Instance] = []
     
     var body: some View {
         FancyScrollView {

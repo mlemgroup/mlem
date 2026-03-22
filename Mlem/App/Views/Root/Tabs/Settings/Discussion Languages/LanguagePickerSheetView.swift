@@ -18,7 +18,7 @@ struct LanguagePickerSheetView: View {
     @State var query: String = ""
 
     var allLanguages: [Locale.Language] {
-        appState.firstSession.instance?.allLanguages ?? []
+        appState.firstSession.instance?.allLanguages.value ?? []
     }
     
     var suggestedLanguages: [Locale.Language] {

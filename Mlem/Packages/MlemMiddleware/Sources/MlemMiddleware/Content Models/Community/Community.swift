@@ -62,7 +62,7 @@ public final class Community:
     public var commentCount: ExpectedValue<Int>
     public var activeUserCount: ExpectedValue<ActiveUserCount>
     public var bannedFromCommunity: ExpectedValue<Bool?>
-    public var instance: ExpectedValue<(any Instance1Providing)?>
+    public var instance: ExpectedValue<Instance?>
     public var moderators: ExpectedValue<[Person]>
     public var discussionLanguageIds: ExpectedValue<Set<Int>>
     

@@ -20,7 +20,7 @@ private let seeds: [ActionSeed] = [
 
 extension View {
     @ViewBuilder
-    func contextMenu(instance: (any InstanceStubProviding)?) -> some View {
+    func contextMenu(instance: Instance?) -> some View {
         if let instance {
             contextMenu {
                 ActionButtons { _ in

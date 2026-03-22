@@ -63,7 +63,7 @@ public final class Person:
     public var isAdmin: ExpectedValue<Bool>
     public var postCount: ExpectedValue<Int>
     public var commentCount: ExpectedValue<Int>
-    public var instance: ExpectedValue<(any DeprecatedInstance)>
+    public var instance: ExpectedValue<Instance>
     public var moderatedCommunities: ExpectedValue<[Community]>
     
     public var email: ExpectedValue<String?>

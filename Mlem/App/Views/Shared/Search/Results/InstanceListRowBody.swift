@@ -17,7 +17,7 @@ struct InstanceListRowBody<Content: View>: View {
     
     @Environment(\.isEnabled) var isEnabled
     
-    let instance: (any DeprecatedInstance)?
+    let instance: Instance?
     let summary: InstanceSummary?
     let readout: Readout?
     let showBlockStatus: Bool
@@ -25,7 +25,7 @@ struct InstanceListRowBody<Content: View>: View {
     @ViewBuilder let content: () -> Content
 
     init(
-        _ instance: any DeprecatedInstance,
+        _ instance: Instance,
         @ViewBuilder content: @escaping () -> Content = { EmptyView() },
         showBlockStatus: Bool = true,
         readout: Readout? = nil
@@ -75,7 +75,7 @@ struct InstanceListRowBody<Content: View>: View {
     }
     
     var software: SiteSoftware? {
-        instance?.software_ ?? summary?.software
+        instance?.software.value ?? summary?.software
     }
 
     var body: some View {
@@ -119,7 +119,7 @@ struct InstanceListRowBody<Content: View>: View {
     
     var userCountReadout: some View {
         HStack {
-            Text((instance?.userCount_ ?? summary?.totalUsers ?? 0).abbreviated)
+            Text((instance?.userCount.value ?? summary?.totalUsers ?? 0).abbreviated)
             Image(icon: .lemmy.person)
                 .symbolVariant(.fill)
                 .fontWeight(.semibold)

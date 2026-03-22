@@ -15,13 +15,13 @@ struct InstanceListRow<Content2: View>: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
     
-    let instance: (any DeprecatedInstance)?
+    let instance: Instance?
     let summary: InstanceSummary?
     let content: Content
     let visitContext: VisitHistory.VisitContext
 
     init(
-        _ instance: any DeprecatedInstance,
+        _ instance: Instance,
         @ViewBuilder content: @escaping () -> Content2 = { EmptyView() },
         showBlockStatus: Bool = true,
         readout: Content.Readout? = nil,
@@ -46,14 +46,12 @@ struct InstanceListRow<Content2: View>: View {
         self.visitContext = visitContext
     }
     
-    private var instanceStub: (any InstanceStubProviding)? {
-        instance ?? summary?.instanceStub
-    }
-    
     var body: some View {
         Button {
-            if let instanceStub {
-                navigation.push(.instance(instanceStub, visitContext: visitContext))
+            if let instance {
+                navigation.push(.instance(instance, visitContext: visitContext))
+            } else if let instanceStub = summary?.instanceStub {
+                navigation.push(.instanceStub(instanceStub, visitContext: visitContext))
             }
         } label: {
             FormChevron { content }
@@ -63,7 +61,7 @@ struct InstanceListRow<Content2: View>: View {
         .padding(.vertical, 6)
         .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
-        .contextMenu(instance: instanceStub)
+        .contextMenu(instance: instance)
         .popupAnchor()
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }

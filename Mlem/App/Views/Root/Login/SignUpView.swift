@@ -27,7 +27,7 @@ struct SignUpView: View {
     @Environment(\.isRootView) var isRootView
     @Environment(\.scenePhase) var scenePhase
     
-    @State var instance: any InstanceStubProviding
+    @State var instance: Instance
     @State var upgradeState: LoadingState = .idle
     @State var captcha: Captcha?
     
@@ -75,23 +75,6 @@ struct SignUpView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(.themedGroupedBackground)
         .presentationBackground(.themedGroupedBackground)
-        .task {
-            guard upgradeState == .idle else { return }
-            upgradeState = .loading
-            do {
-                if !(instance is any Instance3Providing) {
-                    let instance = try await instance.upgradeLocal()
-                    self.instance = instance
-                    if instance.captchaEnabled_ ?? false {
-                        captcha = try await instance.guestApi.getCaptcha()
-                    }
-                }
-                upgradeState = .done
-            } catch {
-                upgradeState = .idle
-                handleError(error)
-            }
-        }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             if navigation.isInsideSheet, isRootView {

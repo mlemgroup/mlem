@@ -18,6 +18,12 @@ public extension Instance {
     static var tierNumber: Int = 4
 }
 
+// MARK: ContentIdentifiable
+
+public extension Instance {
+    static var modelTypeId: ContentType { .instance }
+}
+
 // MARK: Blockable
 
 public extension Instance {

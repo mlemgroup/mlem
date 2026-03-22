@@ -9,11 +9,12 @@ import Observation
 import Foundation
 
 @Observable
-public class Instance:
+public final class Instance:
     UnifiedModelProviding,
     ActorIdentifiable,
     Blockable,
-    Profile2Providing
+    Profile2Providing,
+    ContentIdentifiable
 {
     public typealias Properties = InstanceProperties
     
@@ -272,9 +273,11 @@ public class Instance:
         return await .init(api: api, snapshot: .instance3(snapshot))
     }
     
-    public func resolve(with api: ApiClient) async throws -> Self {
-        // TODO: NOW
-        return self
+    public func resolve(with api: ApiClient) async throws -> Instance {
+        guard let instance = try await api.getCommunityOfInstance(actorId: actorId).instance.value as? Instance else {
+            throw InstanceUpgradeError.noSiteReturned
+        }
+        return instance
     }
     
 }

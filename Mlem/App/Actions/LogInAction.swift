@@ -10,7 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct LogInAction: SimpleLabelAction {
-    let instance: any InstanceStubProviding
+    let instance: Instance
 }
 
 // MARK: - Configurability
@@ -18,7 +18,7 @@ struct LogInAction: SimpleLabelAction {
 extension ActionSeed {
     static let logIn = ActionSeed("logIn") { entity in
         switch entity {
-        case let entity as any InstanceStubProviding: LogInAction(instance: entity)
+        case let entity as Instance: LogInAction(instance: entity)
         default: nil
         }
     }
