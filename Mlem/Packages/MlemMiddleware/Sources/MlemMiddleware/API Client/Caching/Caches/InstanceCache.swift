@@ -25,15 +25,15 @@ class InstanceCache: CoreCache<Instance> {
     public var instanceIdCache: ItemCache = .init()
     
     @MainActor
-    func getModel(api: ApiClient, from snapshot: Instance1Snapshot) -> Instance {
+    func getModel(api: ApiClient, from snapshot: AnyInstanceSnapshot) -> Instance {
         if let item = retrieveModel(cacheId: snapshot.cacheId) {
-            item.update(with: .init(api: api, snapshot: .instance1(snapshot)))
+            item.update(with: .init(api: api, snapshot: snapshot))
             return item
         }
     
         let newItem: Instance = .init(
             api: api,
-            properties: .init(api: api, snapshot: .instance1(snapshot))
+            properties: .init(api: api, snapshot: snapshot)
         )
         
         itemCache.put(newItem)
@@ -42,7 +42,7 @@ class InstanceCache: CoreCache<Instance> {
     }
     
     @MainActor
-    func getModels(api: ApiClient, from snapshots: [Instance1Snapshot]) -> [Instance] {
+    func getModels(api: ApiClient, from snapshots: [AnyInstanceSnapshot]) -> [Instance] {
         snapshots.map { getModel(api: api, from: $0) }
     }
     
@@ -60,7 +60,7 @@ class InstanceCache: CoreCache<Instance> {
     
     /// Convenience method for getting an optional site
     @MainActor
-    func getOptionalModel(api: ApiClient, from snapshot: Instance1Snapshot?) -> Instance? {
+    func getOptionalModel(api: ApiClient, from snapshot: AnyInstanceSnapshot?) -> Instance? {
         if let snapshot {
             return getModel(api: api, from: snapshot)
         }
@@ -172,22 +172,22 @@ class Instance2Cache: ApiTypeBackedCache<Instance2, Instance2Snapshot> {
     }
 }
 
-class Instance3Cache: ApiTypeBackedCache<Instance3, Instance3Snapshot> {
-    @MainActor
-    override func performModelTranslation(api: ApiClient, from snapshot: Instance3Snapshot) -> Instance3 {
-        .init(
-            api: api,
-            instance2: api.caches.instance2.getModel(api: api, from: snapshot.instance),
-            software: snapshot.software,
-            allLanguages: snapshot.allLanguages,
-            allowedLanguageIds: snapshot.allowedLanguageIds,
-            blockedUrls: snapshot.blockedUrls,
-            administrators: api.caches.person.getModels(api: api, from: snapshot.administrators.map { .person2($0) })
-        )
-    }
-    
-    @MainActor
-    override func updateModel(_ item: Instance3, with snapshot: Instance3Snapshot, semaphore: UInt? = nil) {
-        item.update(with: snapshot)
-    }
-}
+//class Instance3Cache: ApiTypeBackedCache<Instance3, Instance3Snapshot> {
+//    @MainActor
+//    override func performModelTranslation(api: ApiClient, from snapshot: Instance3Snapshot) -> Instance3 {
+//        .init(
+//            api: api,
+//            instance2: api.caches.instance2.getModel(api: api, from: snapshot.instance),
+//            software: snapshot.software,
+//            allLanguages: snapshot.allLanguages,
+//            allowedLanguageIds: snapshot.allowedLanguageIds,
+//            blockedUrls: snapshot.blockedUrls,
+//            administrators: api.caches.person.getModels(api: api, from: snapshot.administrators.map { .person2($0) })
+//        )
+//    }
+//    
+//    @MainActor
+//    override func updateModel(_ item: Instance3, with snapshot: Instance3Snapshot, semaphore: UInt? = nil) {
+//        item.update(with: snapshot)
+//    }
+//}

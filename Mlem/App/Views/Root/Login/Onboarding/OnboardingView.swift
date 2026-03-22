@@ -32,7 +32,7 @@ struct OnboardingView: View {
             }
         }
         .animation(.easeOut(duration: 0.2), value: model.page)
-        .animation(.bouncy, value: model.instance)
+        .animation(.bouncy, value: model.instance?.id)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background {
             VStack {

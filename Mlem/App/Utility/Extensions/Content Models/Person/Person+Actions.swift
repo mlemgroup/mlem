@@ -92,15 +92,9 @@ extension Person {
     /// - Parameters:
     ///   - instance: instance to add the admin to
     ///   - isOn: true if the user is already an admin, false otherwise
-    func addAdminAction(instance: any Instance3Providing, isOn: Bool) -> BasicAction {
+    func addAdminAction(instance: Instance, isOn: Bool) -> BasicAction {
         let callback: (@MainActor () -> Void) = {
-            Task {
-                do {
-                    try await instance.addAdmin(self, added: !isOn)
-                } catch {
-                    handleError(error)
-                }
-            }
+            instance.addAdmin(personId: self.id, added: !isOn)
         }
         
         return .init(

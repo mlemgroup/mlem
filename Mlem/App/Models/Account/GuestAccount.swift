@@ -89,7 +89,7 @@ class GuestAccount: Account {
     }
     
     @MainActor
-    func update(instance: Instance3, software: SiteSoftware) {
+    func update(instance: Instance, software: SiteSoftware) {
         var shouldSave = false
         if avatar != instance.avatar {
             avatar = instance.avatar

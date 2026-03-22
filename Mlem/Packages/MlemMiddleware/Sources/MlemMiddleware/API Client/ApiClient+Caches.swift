@@ -21,9 +21,10 @@ public protocol CacheIdentifiable {
 
 extension ApiClient {
     struct BaseCacheGroup {
+        var instance: InstanceCache = .init()
         var instance1: Instance1Cache = .init()
         var instance2: Instance2Cache = .init()
-        var instance3: Instance3Cache = .init()
+//        var instance3: Instance3Cache = .init()
         
         var community: CommunityCache = .init()
         var person: PersonCache = .init()

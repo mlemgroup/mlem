@@ -46,7 +46,7 @@ extension Person {
             }
             output.formUnion(interactable.contextualFlairs())
         } else {
-            if api.myInstance?.administrators.contains(where: { $0.id == id }) ?? false {
+            if api.myInstance?.administrators.value?.contains(where: { $0.id == id }) ?? false {
                 output.insert(.admin)
             }
         }

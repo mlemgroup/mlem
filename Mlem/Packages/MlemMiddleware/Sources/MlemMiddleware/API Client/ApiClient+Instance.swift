@@ -8,9 +8,9 @@
 import Foundation
 
 public extension ApiClient {
-    func getMyInstance() async throws -> Instance3 {
+    func getMyInstance() async throws -> Instance {
         let snapshot = try await repository.getMyInstance()
-        let model = await caches.instance3.getModel(api: self, from: snapshot)
+        let model = await caches.instance.getModel(api: self, from: .instance3(snapshot))
         model.local = true
         _ = await Task { @MainActor in
             myInstance = model
@@ -76,23 +76,23 @@ public extension ApiClient {
     }
     
     /// Adds or removes an admin from this API's instance
-    @discardableResult
-    func addAdmin(personId: Int, added: Bool) async throws -> [Person] {
-        let snapshots = try await repository.addAdmin(personId: personId, added: added)
-
-        let updatedAdministrators = await caches.person.getModels(api: self, from: snapshots.map { .person2($0) })
-        
-        // update person's admin status
-        // only need to do this manually if removing admin, otherwise handled by above caching logic
-        if !added, let person = caches.person.retrieveModel(cacheId: personId) {
-            person.isAdmin.value_ = false
-        }
-        
-        // update instance admins
-        if let myInstance {
-            myInstance.administrators = updatedAdministrators
-        }
-        
-        return updatedAdministrators
-    }
+//    @discardableResult
+//    func addAdmin(personId: Int, added: Bool) async throws -> [Person] {
+//        let snapshots = try await repository.addAdmin(personId: personId, added: added)
+//
+//        let updatedAdministrators = await caches.person.getModels(api: self, from: snapshots.map { .person2($0) })
+//        
+//        // update person's admin status
+//        // only need to do this manually if removing admin, otherwise handled by above caching logic
+//        if !added, let person = caches.person.retrieveModel(cacheId: personId) {
+//            person.isAdmin.value_ = false
+//        }
+//        
+//        // update instance admins
+//        if let myInstance {
+//            myInstance.administrators = updatedAdministrators
+//        }
+//        
+//        return updatedAdministrators
+//    }
 }

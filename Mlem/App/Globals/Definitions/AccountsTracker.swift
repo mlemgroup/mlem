@@ -149,7 +149,7 @@ class AccountsTracker {
                 throw ApiClientError.unsuccessful
             }
             let software = try await authenticatedApiClient.software
-            let account = UserAccount(person: person, instance: response.instance, siteSoftware: software)
+            let account = UserAccount(person: person, siteSoftware: software)
             addAccount(account: account)
             return account
         }

@@ -11,7 +11,7 @@ import SwiftUI
 
 struct OnboardingRecommendInstanceView: View {
     @Environment(\.colorScheme) var colorScheme
-    let instance: Instance3?
+    let instance: Instance?
     let submit: () -> Void
     
     @State var showButtons: Bool = false
@@ -50,14 +50,16 @@ struct OnboardingRecommendInstanceView: View {
         }
     }
     
-    func text(_ instance: Instance3) -> some View {
-        Text("Join \(numberText(instance.activeUserCount.month)) active users on Lemmy.world")
-            .foregroundStyle(colorScheme == .dark ? .white : .black)
-            .compositingGroup()
-            .font(.largeTitle)
-            .fontWeight(.bold)
-            .multilineTextAlignment(.center)
-            .padding(.horizontal, 20)
+    func text(_ instance: Instance) -> some View {
+        ExpectedView(instance.activeUserCount) { activeUserCount in
+            Text("Join \(numberText(activeUserCount.month)) active users on Lemmy.world")
+                .foregroundStyle(colorScheme == .dark ? .white : .black)
+                .compositingGroup()
+                .font(.largeTitle)
+                .fontWeight(.bold)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 20)
+        }
     }
     
     var buttons: some View {

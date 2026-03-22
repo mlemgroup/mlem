@@ -61,16 +61,16 @@ extension Instance2: CacheIdentifiable {
     }
 }
 
-extension Instance3: CacheIdentifiable {
-    public var cacheId: Int { id }
-    
-    @MainActor
-    func update(with snapshot: Instance3Snapshot) {
-        instance2.update(with: snapshot.instance)
-        
-        setIfChanged(\.software, snapshot.software)
-        setIfChanged(\.allowedLanguageIds, snapshot.allowedLanguageIds)
-        setIfChanged(\.blockedUrls, snapshot.blockedUrls)
-        setIfChanged(\.administrators, api.caches.person.getModels(api: api, from: snapshot.administrators.map { .person2($0) }))
-    }
-}
+//extension Instance3: CacheIdentifiable {
+//    public var cacheId: Int { id }
+//    
+//    @MainActor
+//    func update(with snapshot: Instance3Snapshot) {
+//        instance2.update(with: snapshot.instance)
+//        
+//        setIfChanged(\.software, snapshot.software)
+//        setIfChanged(\.allowedLanguageIds, snapshot.allowedLanguageIds)
+//        setIfChanged(\.blockedUrls, snapshot.blockedUrls)
+//        setIfChanged(\.administrators, api.caches.person.getModels(api: api, from: snapshot.administrators.map { .person2($0) }))
+//    }
+//}

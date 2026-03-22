@@ -26,7 +26,7 @@ class UserAccount: Account, CommunityOrPerson {
     var visitHistoryEnabled: Bool
     var accountType: AccountType
     
-    init(person: Person, instance: Instance3, siteSoftware: SiteSoftware) {
+    init(person: Person, siteSoftware: SiteSoftware) {
         self.api = person.api
         self.id = person.id
         self.name = person.name
@@ -127,7 +127,7 @@ class UserAccount: Account, CommunityOrPerson {
     }
     
     @MainActor
-    func update(person: Person, instance: Instance3, software: SiteSoftware) {
+    func update(person: Person, software: SiteSoftware) {
         var shouldSave = false
         if avatar != person.avatar {
             avatar = person.avatar

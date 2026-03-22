@@ -16,7 +16,7 @@ struct LoginCredentialsView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.isRootView) var isRootView
 
-    @State var instance: (any InstanceStubProviding)?
+    @State var instance: Instance?
     let account: UserAccount?
     
     @State var upgradeState: LoadingState = .idle
@@ -32,7 +32,7 @@ struct LoginCredentialsView: View {
     
     var showUsernameField: Bool { account == nil }
     
-    init(instance: any InstanceStubProviding) {
+    init(instance: Instance) {
         self.instance = instance
         self.account = nil
         self._usernameOrEmail = .init(wrappedValue: "")
@@ -55,19 +55,6 @@ struct LoginCredentialsView: View {
                         CloseButtonView(ios18Label: .cancel)
                             .disabled(authenticating)
                     }
-                }
-            }
-            .task {
-                guard upgradeState == .idle else { return }
-                upgradeState = .loading
-                do {
-                    if let instance, !(instance is any Instance3Providing) {
-                        self.instance = try await instance.upgradeLocal()
-                    }
-                    upgradeState = .done
-                } catch {
-                    upgradeState = .idle
-                    handleError(error)
                 }
             }
     }
@@ -97,9 +84,9 @@ struct LoginCredentialsView: View {
     }
     
     @ViewBuilder
-    func instanceHeader(_ instance: any InstanceStubProviding) -> some View {
-        CircleCroppedImageView(url: instance.avatar_, frame: 50, fallback: .instanceAvatar)
-        Text(instance.displayName_ ?? instance.host)
+    func instanceHeader(_ instance: Instance) -> some View {
+        CircleCroppedImageView(url: instance.avatar, frame: 50, fallback: .instanceAvatar)
+        Text(instance.displayName)
             .font(.title)
             .bold()
     }

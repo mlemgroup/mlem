@@ -14,7 +14,7 @@ class OnboardingModel {
     
     var page: Page = .recommendInstance
     
-    var instance: Instance3?
+    var instance: Instance?
     var username: String?
     var email: String?
 }

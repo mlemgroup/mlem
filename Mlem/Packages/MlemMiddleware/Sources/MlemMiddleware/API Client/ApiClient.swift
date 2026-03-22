@@ -18,7 +18,7 @@ public class ApiClient {
     
     public var willSendToken: Bool { repository.token != nil }
     
-    public internal(set) weak var myInstance: Instance3?
+    public internal(set) weak var myInstance: Instance?
     public internal(set) weak var myPerson: Person?
     public internal(set) weak var subscriptions: SubscriptionList?
     public internal(set) weak var blocks: BlockList?
@@ -64,7 +64,7 @@ public class ApiClient {
     }
     
     public var voteFederationMode: VoteFederationMode {
-        myInstance?.voteFederationMode ?? .all
+        myInstance?.voteFederationMode.value ?? .all
     }
     
     // MARK: caching

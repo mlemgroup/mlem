@@ -14,7 +14,7 @@ class GuestSession: Session {
     typealias AccountType = GuestAccount
     
     private(set) var account: GuestAccount
-    private(set) var instance: Instance3?
+    private(set) var instance: Instance?
 
     init(account: GuestAccount) {
         self.account = account

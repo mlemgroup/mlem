@@ -118,7 +118,7 @@ public final class UnreadCount {
                     }
                 }
                 // Don't use `api.isAdmin` here; it falls back to `false` and we need to fallback to `true`
-                if alwaysMakeCalls || api.myInstance?.administrators.contains(where: { $0.id == api.myPerson?.id }) ?? true {
+                if alwaysMakeCalls || api.myInstance?.administrators.value?.contains(where: { $0.id == api.myPerson?.id }) ?? true {
                     taskGroup.addTask {
                         do {
                             return try await [.registrationApplication: self.api.getRegistrationApplicationCount()]

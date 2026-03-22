@@ -64,8 +64,8 @@ struct ProfileHeaderView: View {
     }
     
     var subtitle: String {
-        if let instance = profilable as? any Instance3Providing {
-            return "\(instance.host) • \(instance.software.label)"
+        if let instance = profilable as? Instance {
+            return "\(instance.host) • \(instance.software.value?.label ?? "")"
         }
         return (profilable as? any CommunityOrPerson)?.fullNameWithPrefix ?? profilable?.host ?? ""
     }

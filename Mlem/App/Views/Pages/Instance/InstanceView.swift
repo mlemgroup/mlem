@@ -36,7 +36,7 @@ struct InstanceView: View {
     let visitContext: VisitHistory.VisitContext?
 
     // This is fetched from the instance itself, not from the logged-in account.
-    @State var instance: any InstanceStubProviding
+    @State var instance: Instance
     @State var fediseerData: FediseerData?
     @State var upgradeState: LoadingState = .idle
     @State var communityLoader: CommunityFeedLoader
@@ -49,7 +49,7 @@ struct InstanceView: View {
     @State var errorDetails: ErrorDetails?
     @State var communityListErrorDetails: ErrorDetails?
     
-    init(instance: any InstanceStubProviding, visitContext: VisitHistory.VisitContext?) {
+    init(instance: Instance, visitContext: VisitHistory.VisitContext?) {
         self._instance = .init(wrappedValue: instance)
         self._communityLoader = .init(wrappedValue: .init(
             api: .getApiClient(url: instance.actorId.hostUrl, username: nil),

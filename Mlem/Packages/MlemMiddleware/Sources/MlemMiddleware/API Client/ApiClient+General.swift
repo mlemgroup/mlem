@@ -9,15 +9,15 @@ import Foundation
 
 public extension ApiClient {
     var isAdmin: Bool {
-        myInstance?.administrators.contains(where: { $0.id == myPerson?.id }) ?? false
+        myInstance?.administrators.value?.contains(where: { $0.id == myPerson?.id }) ?? false
     }
     
     /// Returns true if both myPerson and the given person are admins on this instance and myPerson outranks the given person, false otherwise
     func isHigherAdmin(than person: Person) -> Bool {
         guard person.api.actorId == actorId,
               let myPerson,
-              let myAdminIndex = myInstance?.administrators.firstIndex(of: myPerson),
-              let targetAdminIndex = myInstance?.administrators.firstIndex(where: { $0.actorId == person.actorId }) else {
+              let myAdminIndex = myInstance?.administrators.value?.firstIndex(of: myPerson),
+              let targetAdminIndex = myInstance?.administrators.value?.firstIndex(where: { $0.actorId == person.actorId }) else {
             return false
         }
         return myAdminIndex < targetAdminIndex

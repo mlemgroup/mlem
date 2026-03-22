@@ -20,10 +20,12 @@ extension InstanceView {
         return result
     }
     
-    func logVisit(_ instance: any Instance3Providing) {
+    func logVisit(_ instance: Instance) {
         guard let visitContext else { return }
-        if let session = (appState.firstSession as? UserSession), let visitHistory = session.visitHistory {
-            visitHistory.addInstance(instance.instance3.instanceSummary, context: visitContext)
+        if let session = (appState.firstSession as? UserSession),
+           let visitHistory = session.visitHistory,
+           let summary = instance.instanceSummary {
+            visitHistory.addInstance(summary, context: visitContext)
             Task(priority: .background) {
                 try await session.saveVisitHistory()
             }
@@ -48,22 +50,12 @@ extension InstanceView {
             ToastModel.main.add(.error(.init(title: "Cannot appoint non-local user as administrator")))
             return
         }
-        guard let instance3 = instance as? any Instance3Providing else {
-            assertionFailure("Instance is not upgraded")
-            return
-        }
         guard instance.local || instance.host == "localhost" else {
             assertionFailure("Instance is not local")
             return
         }
         
-        Task {
-            do {
-                try await instance3.addAdmin(personId: newAdmin.id, added: true)
-            } catch {
-                handleError(error)
-            }
-        }
+        instance.addAdmin(personId: newAdmin.id, added: true)
     }
     
     func administratorQuickSwipes(person: Person) -> SwipeConfiguration {
@@ -135,15 +127,10 @@ extension InstanceView {
         guard upgradeState == .idle else { return }
         upgradeState = .loading
         do {
-            if !(instance is any Instance3Providing) {
-                let instance3: Instance3
-                if let myInstance = appState.firstSession.instance, instance.host == myInstance.host {
-                    instance3 = myInstance
-                } else {
-                    instance3 = try await instance.upgradeLocal()
-                }
-                instance = instance3
-                logVisit(instance3)
+            // janky upgrade check
+            if instance.administrators.value_ == nil {
+                try await instance.upgrade() // TODO: NOW blocking upgrade
+                logVisit(instance)
             }
             upgradeState = .done
             errorDetails = nil

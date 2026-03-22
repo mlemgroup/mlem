@@ -12,7 +12,8 @@ import Foundation
 public class Instance:
     UnifiedModelProviding,
     ActorIdentifiable,
-    Blockable
+    Blockable,
+    Profile2Providing
 {
     public typealias Properties = InstanceProperties
     
@@ -24,6 +25,9 @@ public class Instance:
     // Mlem-specific properties that are not reflected in the API
     
     public var blocked: Bool
+    
+    /// If this is `false`, The instance is *not* guaranteed to be non-local, particularly for locally running instances.
+    public var local: Bool = false
     
     // MARK: API Properties
     // Properties that are provided by the API
@@ -278,6 +282,9 @@ public class Instance:
 // MARK: Computed
 
 public extension Instance {
+    @inlinable
+    var name: String { host }
+    
     func language(withId id: Int) -> Locale.Language? {
         guard let allLanguages = allLanguages.value else { return nil }
         return allLanguages[safeIndex: id - 1]
@@ -304,15 +311,7 @@ public extension Instance {
     
     // Add Admin
     
-    var addAdmin: ((Int, Bool) -> Void)? {
-        if let administrators = administrators.value {
-            return { self.addAdmin(personId: $0, added: $1, administrators: administrators) }
-        }
-        return nil
-    }
-    
-    // TODO: NOW can we guarantee a Person so this can be state faked? Else don't need it to be optional
-    private func addAdmin(personId: Int, added: Bool, administrators: [Person]) {
+    func addAdmin(personId: Int, added: Bool) {
         Task {
             await updateQueue.addItem { properties in
                 let snapshots = try await self.api.repository.addAdmin(personId: personId, added: added)
@@ -333,7 +332,7 @@ public extension Instance {
     
     // Username Validity
     
-    var usernameIsValidFornewAccount: ((String) async throws -> UsernameValidity)? {
+    var usernameIsValidForNewAccount: ((String) async throws -> UsernameValidity)? {
         if let actorNameMaxLength = actorNameMaxLength.value {
             return { try await self.usernameIsValidForNewAccount($0, actorNameMaxLength: actorNameMaxLength) }
         }
