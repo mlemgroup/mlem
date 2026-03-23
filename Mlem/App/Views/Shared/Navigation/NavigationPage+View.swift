@@ -6,6 +6,7 @@
 //
 
 import ComponentViews
+import MlemBackend
 import MlemMiddleware
 import SwiftUI
 
@@ -178,7 +179,7 @@ extension NavigationPage {
                         .padding(.vertical, 6)
                         .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
                 }
-                .disabled(requiredFeature.map { !instance.software.supports($0) } ?? false)
+                .disabled(requiredFeature.map { !SiteSoftware(from: instance.software).supports($0) } ?? false)
             } header: {
                 if requiredFeature != nil, requiredFeature != .signUp {
                     Text("This feature is not available on all instances.")

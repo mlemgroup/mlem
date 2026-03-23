@@ -215,6 +215,7 @@
 		038028FF2CB72AC90091A8A2 /* ReasonShortcutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038028FE2CB72AC90091A8A2 /* ReasonShortcutView.swift */; };
 		0380965F2C10AA80003ED1D8 /* AppState+Transition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0380965E2C10AA80003ED1D8 /* AppState+Transition.swift */; };
 		038096612C10AAD8003ED1D8 /* TransitionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038096602C10AAD8003ED1D8 /* TransitionView.swift */; };
+		038100512F6AE867008A7731 /* MlemBackend in Frameworks */ = {isa = PBXBuildFile; productRef = 038100502F6AE867008A7731 /* MlemBackend */; };
 		038188992D43E0F30073E88D /* SafetySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038188982D43E0F30073E88D /* SafetySettingsView.swift */; };
 		0381889B2D4412A40073E88D /* SafetyBlurNsfwSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381889A2D4412A40073E88D /* SafetyBlurNsfwSettingsView.swift */; };
 		0381F7142F670F95008A7731 /* SwipeActionConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381F7132F670F95008A7731 /* SwipeActionConfiguration.swift */; };
@@ -1188,6 +1189,7 @@
 			files = (
 				0377BF9B2DF0E0E000E38593 /* Rest in Frameworks */,
 				03A9FD162D7CEC09007A734D /* Theming in Frameworks */,
+				038100512F6AE867008A7731 /* MlemBackend in Frameworks */,
 				03FA318C2C6FECAE00D47FA3 /* Flow in Frameworks */,
 				030FF6792BC84F7E00F6BFAC /* SwiftUIIntrospect in Frameworks */,
 				0341480D2D8F63A6005503AF /* MlemMiddleware in Frameworks */,
@@ -2540,6 +2542,7 @@
 				031CA5762E5900E900CF0C0F /* QuickSwipes */,
 				03EC83ED2E958A44004698BB /* OpenGraph */,
 				03EC85EB2E9D8F37004698BB /* Actions */,
+				038100502F6AE867008A7731 /* MlemBackend */,
 			);
 			productName = Mlem;
 			productReference = 6363D5C127EE196700E34822 /* Mlem.app */;
@@ -3841,6 +3844,10 @@
 		0377BF9A2DF0E0E000E38593 /* Rest */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Rest;
+		};
+		038100502F6AE867008A7731 /* MlemBackend */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MlemBackend;
 		};
 		03A9FD152D7CEC09007A734D /* Theming */ = {
 			isa = XCSwiftPackageProductDependency;

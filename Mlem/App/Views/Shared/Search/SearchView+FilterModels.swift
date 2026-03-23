@@ -6,6 +6,7 @@
 //
 
 import Icons
+import MlemBackend
 import MlemMiddleware
 import SwiftUI
 

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import MlemBackend
 import MlemMiddleware
 
 extension Instance3 {
@@ -15,7 +16,21 @@ extension Instance3 {
             name: name,
             totalUsers: userCount,
             avatar: avatar,
-            software: software
+            software: .init(from: software)
+        )
+    }
+}
+
+extension InstanceSummarySoftware {
+    init(from software: SiteSoftware) {
+        let type: InstanceSummarySoftwareType = switch software.type {
+        case .lemmy: .lemmy
+        case .pieFed: .pieFed
+        }
+        
+        self.init(
+            type: type,
+            version: software.version.description
         )
     }
 }
