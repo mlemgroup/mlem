@@ -15,9 +15,11 @@ internal class InternalURLQueryItemEncoder: Encoder {
     let codingPath: [CodingKey] = []
     
     let userInfo: [CodingUserInfoKey: Any] 
+    let settings: URLQueryItemEncoderSettings
 
-    init(userInfo: [CodingUserInfoKey: Any]) {
+    init(userInfo: [CodingUserInfoKey: Any], settings: URLQueryItemEncoderSettings) {
         self.userInfo = userInfo
+        self.settings = settings
     }
 
     func singleValueContainer() -> SingleValueEncodingContainer {
@@ -31,6 +33,6 @@ internal class InternalURLQueryItemEncoder: Encoder {
     }
 
     func container<Key: CodingKey>(keyedBy type: Key.Type) -> KeyedEncodingContainer<Key> {
-        KeyedEncodingContainer(TopLevelKeyedContainer<Key>(encoder: self))
+        KeyedEncodingContainer(TopLevelKeyedContainer<Key>(encoder: self, settings: settings))
     }
 }

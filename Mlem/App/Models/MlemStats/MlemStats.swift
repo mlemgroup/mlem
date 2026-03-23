@@ -7,6 +7,7 @@
 
 import Foundation
 import MlemMiddleware
+import MlemBackend
 
 /// Class exposing instance search functionality. Instance data is fetched from the Mlem backend.
 class MlemStats {

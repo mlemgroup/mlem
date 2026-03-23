@@ -5,6 +5,7 @@
 //  Created by Eric Andrews on 2024-12-29.
 //
 
+import Rest
 import SwiftUI
 import Theming
 
@@ -69,6 +70,8 @@ struct ErrorLogView: View {
             }
             
             Text(details.errorText(includingLocation: false))
+                .font(.caption)
+                .monospaced()
             
             if let location = details.location {
                 HStack(alignment: .top, spacing: 2) {
@@ -76,8 +79,9 @@ struct ErrorLogView: View {
                         .offset(y: 2)
                     
                     Text(location)
+                        .monospaced()
                 }
-                .font(.subheadline)
+                .font(.caption)
             }
             
             Text(details.when.formatted(date: .abbreviated, time: .standard))

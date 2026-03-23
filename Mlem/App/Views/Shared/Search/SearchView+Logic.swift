@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 08/09/2024.
 //
 
+import MlemBackend
 import MlemMiddleware
 import SwiftUI
 

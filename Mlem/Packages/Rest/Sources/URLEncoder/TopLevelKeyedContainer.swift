@@ -9,9 +9,11 @@ import Foundation
 
 internal class TopLevelKeyedContainer<K: CodingKey>: KeyedEncodingContainerProtocol {
     var encoder: InternalURLQueryItemEncoder
+    var settings: URLQueryItemEncoderSettings
 
-    init(encoder: InternalURLQueryItemEncoder) {
+    init(encoder: InternalURLQueryItemEncoder, settings: URLQueryItemEncoderSettings) {
         self.encoder = encoder
+        self.settings = settings
     }
 
     var codingPath: [CodingKey] = []
@@ -19,14 +21,14 @@ internal class TopLevelKeyedContainer<K: CodingKey>: KeyedEncodingContainerProto
     func encodeNil(forKey key: K) throws {}
 
     func encode(_ value: some Encodable, forKey key: K) throws {
+        let key = settings.convertToSnakeCase ? key.stringValue.camelToSnakeCase() : key.stringValue
+
         if let valueString = convertValueToString(value) {
-            let key = key.stringValue.camelToSnakeCase()
             encoder.queryParams.append(.init(name: key, value: valueString))
         } else {
             let encoder = RetrievalEncoder(userInfo: self.encoder.userInfo)
             try value.encode(to: encoder)
             if let wrappedValue = encoder.encodedValue, let valueString = convertValueToString(wrappedValue) {
-                let key = key.stringValue.camelToSnakeCase()
                 self.encoder.queryParams.append(.init(name: key, value: valueString))
             } else {
                 throw URLQueryItemEncoderError.nestedContainersUnsupported

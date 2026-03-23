@@ -13,14 +13,14 @@ public struct InstanceSummary: Codable, Hashable, Identifiable {
     public let name: String
     public let totalUsers: Int
     public let avatar: URL?
-    public let software: SiteSoftware
+    public let software: InstanceSummarySoftware
     
     public init(
         displayName: String,
         name: String,
         totalUsers: Int,
         avatar: URL? = nil,
-        software: SiteSoftware
+        software: InstanceSummarySoftware
     ) {
         self.displayName = displayName
         self.name = name
@@ -57,7 +57,7 @@ public struct InstanceSummary: Codable, Hashable, Identifiable {
         }
         
         self.avatar = try container.decode(URL?.self, forKey: .avatar)
-        self.software = try container.decode(SiteSoftware.self, forKey: .software)
+        self.software = try container.decode(InstanceSummarySoftware.self, forKey: .software)
     }
     
     public func encode(to encoder: any Encoder) throws {

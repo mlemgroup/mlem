@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 28/06/2024.
 //
 
+import MlemBackend
 import MlemMiddleware
 
 // swiftlint:disable function_parameter_count
