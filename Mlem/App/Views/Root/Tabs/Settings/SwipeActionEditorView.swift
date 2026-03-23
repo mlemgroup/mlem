@@ -1,74 +1,97 @@
 //
-//  SwipeActionEditorView.swift
+//  NewSwipeActionEditorView.swift
 //  Mlem
 //
-//  Created by Sjmarf on 2025-03-26.
+//  Created by Sjmarf on 2026-03-04.
 //
 
+import Actions
 import SwiftUI
 
-struct SwipeActionEditorView<Configuration: InteractionBarConfiguration>: View {
-    @Setting(\.interactionBar_post) var postInteractionBar
-    @Setting(\.interactionBar_comment) var commentInteractionBar
-    @Setting(\.interactionBar_reply) var replyInteractionBar
-    
-    @State var configuration: Configuration
+struct SwipeActionEditorView: View {
+    @Binding var configuration: ActionSeedSwipeConfiguration
+    let onReset: () -> Void
+    let onApplyToAll: (() -> Void)?
+    let allActions: [ActionSeed]
+
     @State var showingApplyToAllConfirmation: Bool = false
-    let isReport: Bool
-    
-    let onSet: (Configuration) -> Void
-    
-    init(configuration: Configuration, isReport: Bool, onSet: @escaping (Configuration) -> Void) {
-        self.configuration = configuration
-        self.isReport = isReport
-        self.onSet = onSet
-    }
-    
-    init(setting: ReferenceWritableKeyPath<SettingsValues, Configuration>, isReport: Bool) {
-        self.init(configuration: Settings.get(setting), isReport: isReport) { Settings.set(setting, to: $0) }
-    }
-    
+
     var body: some View {
         Form {
-            ActionListView(title: "Left", actions: $configuration.leadingSwipes)
-            ActionListView(title: "Right", actions: $configuration.trailingSwipes)
-            Button("Reset") {
-                let defaultConfiguration: Configuration = isReport ? .reportDefault ?? .default : .default
-                var newConfiguration = configuration
-                newConfiguration.leadingSwipes = defaultConfiguration.leadingSwipes
-                newConfiguration.trailingSwipes = defaultConfiguration.trailingSwipes
-                configuration = newConfiguration
-            }
-            Button("Apply to All") { showingApplyToAllConfirmation = true }
-                .confirmationDialog(
-                    "Really apply this configuration to all other content types?",
-                    isPresented: $showingApplyToAllConfirmation,
-                    titleVisibility: .visible
-                ) {
-                    Button("Yes") {
-                        postInteractionBar = postInteractionBar.applying(other: configuration, types: [.swipe])
-                        commentInteractionBar = commentInteractionBar.applying(other: configuration, types: [.swipe])
-                        replyInteractionBar = replyInteractionBar.applying(other: configuration, types: [.swipe])
-                        // reports intentionally omitted
+            ActionListView(
+                title: "Left",
+                actions: Binding(get: { configuration.leading }, set: { configuration.leading = $0 }),
+                allActions: allActions
+            )
+            ActionListView(
+                title: "Right",
+                actions: Binding(get: { configuration.trailing }, set: { configuration.trailing = $0 }),
+                allActions: allActions
+            )
+            Button("Reset", action: onReset)
+            if let onApplyToAll {
+                Button("Apply to All") { showingApplyToAllConfirmation = true }
+                    .confirmationDialog(
+                        "Really apply this configuration to all other content types?",
+                        isPresented: $showingApplyToAllConfirmation,
+                        titleVisibility: .visible
+                    ) {
+                        Button("Yes", action: onApplyToAll)
                     }
-                }
+            }
         }
         .environment(\.editMode, .constant(.active))
         .navigationTitle("Swipe Actions")
-        .onChange(of: configuration) { onSet(configuration) }
     }
 }
 
-private struct ActionListView<ActionType: ActionTypeProviding>: View {
+extension SwipeActionEditorView {
+    init<Configuration: SwipeActionConfiguration>(
+        _ keyPath: ReferenceWritableKeyPath<SettingsValues, Configuration>,
+        onApplyToAll onApplyToAllConfiguration: ((Configuration) -> Void)? = nil
+    ) {
+        let onApplyToAll: (() -> Void)?
+        if let onApplyToAllConfiguration {
+            onApplyToAll = {
+                onApplyToAllConfiguration(Settings.get(keyPath))
+            }
+        } else {
+            onApplyToAll = nil
+        }
+
+        self.init(
+            configuration: .init(
+                get: {
+                    Settings.get(keyPath).swipes
+                }, set: {
+                    var configuration = Settings.get(keyPath)
+                    configuration.swipes = $0
+                    Settings.set(keyPath, to: configuration)
+                }
+            ),
+            onReset: {
+                var configuration = Settings.get(keyPath)
+                configuration.swipes = Configuration.defaultSwipes
+                Settings.set(keyPath, to: configuration)
+            },
+            onApplyToAll: onApplyToAll,
+            allActions: Configuration.availableActions.all
+        )
+    }
+}
+
+private struct ActionListView: View {
     let title: LocalizedStringResource
-    @Binding var actions: [ActionType]
+    @Binding var actions: [ActionSeed]
+    var allActions: [ActionSeed]
     
     var body: some View {
         Section(title) {
             ForEach(actions, id: \.hashValue) { action in
                 HStack {
-                    Label(action.appearance.label, systemImage: action.appearance.swipeIcon2)
-                        .gradientTint(action.appearance.color)
+                    Label(action.label.title, icon: action.label.icon)
+                        .symbolVariant(.fill)
+                        .gradientTint(action.label.color)
                     Spacer()
                 }
                 .tag(action)
@@ -88,8 +111,8 @@ private struct ActionListView<ActionType: ActionTypeProviding>: View {
     @ViewBuilder
     var addButtonView: some View {
         Menu("Add", icon: .general.add) {
-            ForEach(Array(ActionType.allCases), id: \.self) { action in
-                Button(action.appearance.label, systemImage: action.appearance.barIcon) {
+            ForEach(allActions, id: \.self) { action in
+                Button(action.label.title, icon: action.label.icon) {
                     actions.append(action)
                 }
                 .disabled(actions.contains(action))

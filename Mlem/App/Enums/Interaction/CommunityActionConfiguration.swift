@@ -8,17 +8,8 @@
 import Actions
 import Foundation
 
-struct CommunityActionConfiguration: Codable {
-    private var swipes_: ActionSeedSwipeConfiguration?
-
-    var swipes: ActionSeedSwipeConfiguration {
-        get {
-            swipes_ ?? Self.defaultSwipes
-        }
-        set {
-            swipes_ = newValue
-        }
-    }
+struct CommunityActionConfiguration: Codable, SwipeActionConfiguration {
+    var savedSwipes: ActionSeedSwipeConfiguration?
 
     static var availableActions: ActionSeedSections { .init(sections: [
             [
@@ -46,7 +37,7 @@ struct CommunityActionConfiguration: Codable {
     }
 
     init() {
-        self.swipes_ = nil
+        self.savedSwipes = nil
     }
 
     init(from decoder: any Decoder) throws {
@@ -56,14 +47,14 @@ struct CommunityActionConfiguration: Codable {
             forKey: .swipes
         )
         if let swipeConfigurationContainer {
-            self.swipes_ = try .init(from: swipeConfigurationContainer, availableActions: Self.availableActions.all)
+            self.savedSwipes = try .init(from: swipeConfigurationContainer, availableActions: Self.availableActions.all)
         } else {
-            self.swipes_ = nil
+            self.savedSwipes = nil
         }
     }
 
     public func encode(to encoder: any Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(self.swipes_, forKey: .swipes)
+        try container.encode(self.savedSwipes, forKey: .swipes)
     }
 }

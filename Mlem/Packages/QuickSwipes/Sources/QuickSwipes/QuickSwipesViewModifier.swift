@@ -79,7 +79,7 @@ struct QuickSwipeViewModifier: ViewModifier {
         content
             .gesture(
                 PanGesture { recognizer in
-                    if recognizer.state == .ended {
+                    if [.ended, .cancelled].contains(recognizer.state) {
                         draggingUpdated(dragState: 0)
                     } else {
                         draggingUpdated(dragState: recognizer.translation(in: recognizer.view).x)
