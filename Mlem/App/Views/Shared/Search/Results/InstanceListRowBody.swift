@@ -6,6 +6,7 @@
 //
 
 import Icons
+import MlemBackend
 import MlemMiddleware
 import SwiftUI
 import Theming
@@ -75,7 +76,7 @@ struct InstanceListRowBody<Content: View>: View {
     }
     
     var software: SiteSoftware? {
-        instance?.software_ ?? summary?.software
+        instance?.software_ ?? summary.map { .init(from: $0.software) }
     }
 
     var body: some View {

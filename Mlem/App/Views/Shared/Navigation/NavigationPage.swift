@@ -6,6 +6,7 @@
 //
 
 import Actions
+import MlemBackend
 import MlemMiddleware
 import SwiftUI
 
