@@ -33,6 +33,9 @@ struct PanGesture: UIGestureRecognizerRepresentable {
         
         func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
             guard let panRecognizer = gestureRecognizer as? UIPanGestureRecognizer else { return false }
+            
+            // prevent swipe from interfering with interactive swipe back
+            guard panRecognizer.location(in: gestureRecognizer.view).x > 70 else { return false }
 
             let velocity = panRecognizer.velocity(in: gestureRecognizer.view)
             return abs(velocity.y) < abs(velocity.x)
