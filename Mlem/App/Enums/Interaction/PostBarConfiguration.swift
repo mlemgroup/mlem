@@ -22,6 +22,10 @@ struct PostBarConfiguration: InteractionBarConfiguration, SwipeActionConfigurati
         .init(leading: [.downvote, .upvote], trailing: [.save, .reply])
     }
 
+    static var defaultContextMenu: [ActionSeed] {
+        [.selectText, .share, .blockCreator, .report, .edit, .delete, .remove, .banCreator, .resolveReport]
+    }
+
     var availableWidgets: Set<Item>
     func widgetPickerPage(_ configuration: Binding<Self>) -> SettingsPage { .postBarWidgetPicker(configuration) }
     
@@ -124,15 +128,6 @@ struct PostBarConfiguration: InteractionBarConfiguration, SwipeActionConfigurati
             availableWidgets: .init(ActionType.defaultReportWidgets.map { .action($0) }),
             savedContextMenu: nil
         )
-    }
-
-    var contextMenu: [ActionSeed] {
-        get {
-            savedContextMenu ?? [.selectText, .share, .blockCreator, .report, .edit, .delete, .remove, .banCreator, .resolveReport]
-        }
-        set {
-            savedContextMenu = newValue
-        }
     }
 
     static var availableActions: ActionSeedSections { .init(sections: [
