@@ -13,12 +13,12 @@ extension ImageViewer {
     var controlOverlay: some View {
         VStack {
             topControlBar
-                .offset(y: -controlOffset)
+                .transformEffect(.init(translationX: 0, y: -controlOffset))
             
             Spacer()
             
             bottomControlBar
-                .offset(y: controlOffset)
+                .transformEffect(.init(translationX: 0, y: controlOffset))
         }
         .font(.title2)
         .fontWeight(.light)
