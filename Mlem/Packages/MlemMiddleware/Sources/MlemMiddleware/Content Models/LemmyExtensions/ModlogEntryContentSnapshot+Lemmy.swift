@@ -61,7 +61,8 @@ extension ModlogEntryContentSnapshot {
         // These cases are new in Lemmy 1.0, and do not yet have matching ModlogEntryContentSnapshot cases.
         // Return `nil` rather than throwing so that the Modlog can still load. These cases will just be hidden.
 
-        case .adminAllowInstance, .adminBlockInstance, .modChangeCommunityVisibility, .modLockComment:
+        case .adminAllowInstance, .adminBlockInstance, .modChangeCommunityVisibility,
+             .modLockComment, .modWarnPost, .modWarnComment:
            nil
         }
 
