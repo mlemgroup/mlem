@@ -253,13 +253,8 @@ public extension LemmyConnection {
                 page: page,
                 limit: limit,
                 postTitleOnly: false,
-                timeRangeSeconds: timeRangeSeconds,
-                titleOnly: nil,
-                postUrlOnly: nil,
-                likedOnly: nil,
-                dislikedOnly: nil,
-                showNsfw: nil,
-                pageCursor: nil
+                searchTerm: query,
+                searchTitleOnly: false
             )
         }
         return try response.comments?.map { try .init(from: $0) } ?? []
