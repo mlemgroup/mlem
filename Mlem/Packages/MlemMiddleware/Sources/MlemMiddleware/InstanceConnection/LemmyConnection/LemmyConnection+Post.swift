@@ -296,7 +296,7 @@ public extension LemmyConnection {
                 searchTitleOnly: false
             )
         }
-        return try response.posts?.map { try .init(from: $0) } ?? []
+        return try response.posts.map { try .init(from: $0) } ?? []
     }
     
     func markPostsAsRead(ids: Set<Int>, read: Bool) async throws {
@@ -417,7 +417,7 @@ public extension LemmyConnection {
         languageId: Int? = nil
     ) async throws -> Post2Snapshot {
         let response = try await performingForEndpoint { endpoint in
-            LemmyUpdatePostRequest(
+            LemmyEditPostRequest(
                 endpoint: endpoint,
                 postId: id,
                 name: title,
@@ -482,7 +482,8 @@ public extension LemmyConnection {
                 endpoint: endpoint,
                 postId: id,
                 removed: remove,
-                reason: reason
+                reason: reason,
+                removeChildren: nil
             )
         }
         return try .init(from: response.postView)
@@ -525,7 +526,7 @@ public extension LemmyConnection {
             case .v3:
                 throw ApiClientError.featureUnsupported
             case .v4:
-                return LemmyModUpdatePostRequest(postId: id, nsfw: nsfw, tags: nil)
+                return LemmyModEditPostRequest(postId: id, nsfw: nsfw, tags: nil)
             }
         }
         return try .init(from: response.postView.post)
