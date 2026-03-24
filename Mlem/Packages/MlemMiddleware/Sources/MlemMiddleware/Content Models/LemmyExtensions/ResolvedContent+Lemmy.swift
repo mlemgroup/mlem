@@ -12,7 +12,7 @@ extension ResolvedContent {
         switch response {
         case let .lemmyResolveObjectResponse(value):
             try self.init(from: value)
-        case let .lemmySearchResponse(value):
+        case let .lemmyResolveObjectView(value):
             try self.init(from: value)
         }
     }
@@ -31,20 +31,11 @@ extension ResolvedContent {
         }
     }
     
-    init(from response: LemmySearchResponse) throws(ApiClientError) {
+    init(from response: LemmyResolveObjectView) throws(ApiClientError) {
         // This initializer is only used in 1.0.0 onwards, so we only need
         // to consider the `results` array and not the other arrays (which
         // are only used prior to 1.0.0)
-        guard let results = response.search else {
-            assertionFailure()
-            throw .noEntityFound
-        }
-        
-        guard let result = results.first else {
-            throw .noEntityFound
-        }
-        
-        switch result {
+        switch response {
         case let .comment(comment):
             self = try .comment(.init(from: comment))
         case let .community(community):
