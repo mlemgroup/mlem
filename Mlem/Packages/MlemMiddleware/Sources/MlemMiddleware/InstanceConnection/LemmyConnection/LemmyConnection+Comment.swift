@@ -52,7 +52,8 @@ public extension LemmyConnection {
                 likedOnly: filter == .upvoted,
                 dislikedOnly: filter == .downvoted,
                 timeRangeSeconds: sort.timeRangeSeconds,
-                pageCursor: nil
+                pageCursor: nil,
+                searchTerm: nil
             )
         }
         return try response.items.map { try .init(from: $0) }
@@ -82,7 +83,8 @@ public extension LemmyConnection {
                 likedOnly: filter == .upvoted,
                 dislikedOnly: filter == .downvoted,
                 timeRangeSeconds: sort.timeRangeSeconds,
-                pageCursor: nil
+                pageCursor: nil,
+                searchTerm: nil
             )
         }
         return try response.items.map { try .init(from: $0) }
@@ -112,7 +114,8 @@ public extension LemmyConnection {
                 likedOnly: filter == .upvoted,
                 dislikedOnly: filter == .downvoted,
                 timeRangeSeconds: sort.timeRangeSeconds,
-                pageCursor: nil
+                pageCursor: nil,
+                searchTerm: nil
             )
         }
         return try response.items.map { try .init(from: $0) }
@@ -146,7 +149,8 @@ public extension LemmyConnection {
                     likedOnly: type == .upvoted,
                     dislikedOnly: type == .downvoted,
                     timeRangeSeconds: nil,
-                    pageCursor: nil
+                    pageCursor: nil,
+                    searchTerm: nil
                 )
                 let response = try await self.perform(request, endpoint: .v3)
                 return try (
@@ -257,7 +261,7 @@ public extension LemmyConnection {
                 searchTitleOnly: false
             )
         }
-        return try response.comments?.map { try .init(from: $0) } ?? []
+        return try response.comments.map { try .init(from: $0) } ?? []
     }
     
     @discardableResult
@@ -350,7 +354,8 @@ public extension LemmyConnection {
                 endpoint: endpoint,
                 commentId: id,
                 removed: remove,
-                reason: reason
+                reason: reason,
+                removeChildren: nil
             )
         }
         return try .init(from: response.commentView)

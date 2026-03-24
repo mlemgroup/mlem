@@ -53,12 +53,12 @@ public extension LemmyConnection {
                 searchTitleOnly: false
             )
         }
-        return try response.communities?.map { try .init(from: $0) } ?? []
+        return try response.communities.map { try .init(from: $0) } 
     }
 
     func editCommunityDescription(id: Int, newValue: String?) async throws -> Community2Snapshot {
          let response = try await performingForEndpoint { endpoint in
-            LemmyUpdateCommunityRequest(
+            LemmyEditCommunityRequest(
                 endpoint: endpoint,
                 communityId: id,
                 title: nil,
@@ -70,7 +70,8 @@ public extension LemmyConnection {
                 postingRestrictedToMods: nil,
                 discussionLanguages: nil,
                 visibility: nil,
-                sidebar: newValue
+                sidebar: newValue,
+                summary: nil
             )
         }
         return try .init(from: response.communityView)
@@ -87,6 +88,9 @@ public extension LemmyConnection {
                 page: page,
                 limit: limit,
                 timeRangeSeconds: nil,
+                multiCommunityId: nil,
+                searchTerm: nil,
+                searchTitleOnly: nil,
                 pageCursor: nil
             )
         }
