@@ -22,6 +22,10 @@ struct CommentBarConfiguration: InteractionBarConfiguration, SwipeActionConfigur
         .init(leading: [.downvote, .upvote], trailing: [.save, .reply])
     }
 
+    static var defaultContextMenu: [ActionSeed] {
+        [.selectText, .share, .blockCreator, .report, .edit, .delete, .remove, .banCreator, .resolveReport]
+    }
+
     var availableWidgets: Set<Item>
     func widgetPickerPage(_ configuration: Binding<Self>) -> SettingsPage { .commentBarWidgetPicker(configuration) }
     
@@ -102,15 +106,6 @@ struct CommentBarConfiguration: InteractionBarConfiguration, SwipeActionConfigur
         try container.encode(self.savedSwipes, forKey: .swipes)
     }
 
-    var contextMenu: [ActionSeed] {
-        get {
-            savedContextMenu ?? [.selectText, .share, .blockCreator, .report, .edit, .delete, .remove, .banCreator, .resolveReport]
-        }
-        set {
-            savedContextMenu = newValue
-        }
-    }
-    
     static var `default`: Self {
         .init(
             leading: [.counter(.score)],

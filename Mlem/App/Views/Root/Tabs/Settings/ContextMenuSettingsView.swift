@@ -10,19 +10,19 @@ import Actions
 import SwiftUI
 
 struct ContextMenuSettingsView: View {
-    @Setting(\.interactionBar_reply) var replyBarConfiguration
+    @Binding var configuration: [ActionSeed]
 
     var body: some View {
         Form {
-            ForEach(replyBarConfiguration.contextMenu, id: \.key) { seed in
+            ForEach(configuration, id: \.key) { seed in
                 Label(seed.label)
                     .foregroundStyle(seed.label.isDestructive ? .themedWarning : .themedPrimary)
             }
             .onMove { fromOffsets, toOffset in
-                replyBarConfiguration.contextMenu.move(fromOffsets: fromOffsets, toOffset: toOffset)
+                configuration.move(fromOffsets: fromOffsets, toOffset: toOffset)
             }
             .onDelete { offsets in
-                replyBarConfiguration.contextMenu.remove(atOffsets: offsets)
+                configuration.remove(atOffsets: offsets)
             }
             ForEach(Array(ReplyBarConfiguration.availableActions.sections.enumerated()), id: \.offset) { _, seeds in
                 drawerActionSectionView(seeds)
@@ -47,14 +47,14 @@ struct ContextMenuSettingsView: View {
     func drawerActionRowView(_ seed: ActionSeed) -> some View {
         Button {
             withAnimation {
-                replyBarConfiguration.contextMenu.append(seed)
+                configuration.append(seed)
             }
         } label: {
             HStack {
                 Label(seed.label)
                     .foregroundStyle(seed.label.isDestructive ? .themedWarning : .themedPrimary)
                 Spacer()
-                if !replyBarConfiguration.contextMenu.contains(seed) {
+                if !configuration.contains(seed) {
                     Image(icon: .general.add)
                         .symbolVariant(.circle.fill)
                         .foregroundStyle(.themedAccent)
@@ -63,6 +63,16 @@ struct ContextMenuSettingsView: View {
             }
         }
         .buttonStyle(.plain)
-        .disabled(replyBarConfiguration.contextMenu.contains(seed))
+        .disabled(configuration.contains(seed))
+    }
+}
+
+extension ContextMenuSettingsView {
+    init<Configuration: ContextMenuConfiguration>(_ keyPath: ReferenceWritableKeyPath<SettingsValues, Configuration>) {
+        self.init(configuration: .init(get: {
+            Settings.get(keyPath).contextMenu
+        }, set: { newValue in
+            Settings.mutate(keyPath) { $0.contextMenu = newValue }
+        }))
     }
 }

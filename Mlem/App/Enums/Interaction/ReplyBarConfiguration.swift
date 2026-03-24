@@ -22,6 +22,10 @@ struct ReplyBarConfiguration: InteractionBarConfiguration, SwipeActionConfigurat
         .init(leading: [.downvote, .upvote], trailing: [.save, .reply])
     }
 
+    static var defaultContextMenu: [ActionSeed] {
+        [.markRead, .share, .blockCreator, .report]
+    }
+
     var availableWidgets: Set<Item>
     func widgetPickerPage(_ configuration: Binding<Self>) -> SettingsPage { .replyBarWidgetPicker(configuration) }
     
@@ -103,15 +107,6 @@ struct ReplyBarConfiguration: InteractionBarConfiguration, SwipeActionConfigurat
         try container.encode(self.savedSwipes, forKey: .swipes)
     }
 
-    var contextMenu: [ActionSeed] {
-        get {
-            self.savedContextMenu ?? [.markRead, .share, .blockCreator, .report]
-        }
-        set {
-            savedContextMenu = newValue
-        }
-    }
-    
     static var `default`: Self {
         .init(
             leading: [.counter(.score)],
