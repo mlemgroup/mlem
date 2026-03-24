@@ -38,7 +38,10 @@ public extension LemmyConnection {
                 multiCommunityName: nil,
                 hideMedia: nil,
                 markAsRead: nil,
-                noCommentsOnly: nil
+                noCommentsOnly: nil,
+                searchTerm: nil,
+                searchTitleOnly: nil,
+                searchUrlOnly: nil
             )
         }
         return try (
@@ -77,7 +80,10 @@ public extension LemmyConnection {
                 multiCommunityName: nil,
                 hideMedia: nil,
                 markAsRead: nil,
-                noCommentsOnly: nil
+                noCommentsOnly: nil,
+                searchTerm: nil,
+                searchTitleOnly: nil,
+                searchUrlOnly: nil
             )
         }
         return try (
@@ -150,7 +156,10 @@ public extension LemmyConnection {
                     multiCommunityName: nil,
                     hideMedia: nil,
                     markAsRead: nil,
-                    noCommentsOnly: nil
+                    noCommentsOnly: nil,
+                    searchTerm: nil,
+                    searchTitleOnly: nil,
+                    searchUrlOnly: nil
                 )
                 let response = try await self.perform(request, endpoint: .v3)        
                 return try (
