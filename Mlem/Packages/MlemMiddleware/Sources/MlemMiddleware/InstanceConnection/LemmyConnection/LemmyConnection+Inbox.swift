@@ -45,7 +45,7 @@ public extension LemmyConnection {
                 return try (notifications: response.replies.map { try .init(from: $0) }, cursor: nil)
             case .v4:
                 let request = LemmyListNotificationsRequest(
-                    type_: .other(.reply),
+                    type_: .reply,
                     unreadOnly: unreadOnly,
                     creatorId: nil,
                     pageCursor: cursor,
@@ -80,7 +80,7 @@ public extension LemmyConnection {
                 return try (notifications: response.mentions.map { try .init(from: $0) }, cursor: nil)
             case .v4:
                 let request = LemmyListNotificationsRequest(
-                    type_: .other(.mention),
+                    type_: .mention,
                     unreadOnly: unreadOnly,
                     creatorId: nil,
                     pageCursor: cursor,
@@ -115,7 +115,7 @@ public extension LemmyConnection {
                 return try (notifications: response.privateMessages.map { try .init(from: $0) }, cursor: nil)
             case .v4:
                 let request = LemmyListNotificationsRequest(
-                    type_: .other(.privateMessage),
+                    type_: .privateMessage,
                     unreadOnly: unreadOnly,
                     creatorId: nil,
                     pageCursor: cursor,

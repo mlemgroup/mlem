@@ -58,7 +58,7 @@ public enum ModlogEntryType: CaseIterable {
         }
     }
     
-    var v3ApiType: LemmyModlogKind {
+    var apiType: LemmyModlogKind {
         switch self {
         case .removePost: .modRemovePost
         case .lockPost: .modLockPost
