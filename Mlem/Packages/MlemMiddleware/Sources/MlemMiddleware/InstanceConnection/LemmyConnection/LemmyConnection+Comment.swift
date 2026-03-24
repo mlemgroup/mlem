@@ -300,7 +300,7 @@ public extension LemmyConnection {
         languageId: Int?
     ) async throws -> Comment2Snapshot {
         let response = try await performingForEndpoint { endpoint in
-            LemmyUpdateCommentRequest(
+            LemmyEditCommentRequest(
                 endpoint: endpoint,
                 commentId: id,
                 content: content,

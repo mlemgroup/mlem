@@ -48,6 +48,8 @@ public enum ModlogEntryType: CaseIterable {
         case .modLockComment: throw .featureUnsupported
         case .adminFeaturePostSite: throw .featureUnsupported
         case .modFeaturePostCommunity: throw .featureUnsupported
+        case .modWarnPost: throw .featureUnsupported
+        case .modWarnComment: throw .featureUnsupported
         }
         if let result {
             self = result
@@ -56,7 +58,7 @@ public enum ModlogEntryType: CaseIterable {
         }
     }
     
-    var apiType: LemmyModlogKind {
+    var v3ApiType: LemmyModlogKind {
         switch self {
         case .removePost: .modRemovePost
         case .lockPost: .modLockPost
