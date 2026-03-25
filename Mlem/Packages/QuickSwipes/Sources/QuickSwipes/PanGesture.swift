@@ -8,9 +8,11 @@
 import SwiftUI
 
 struct PanGesture: UIGestureRecognizerRepresentable {
+    /// If provided, the gesture will not register within `leadingBuffer` px of the leading edge
+    let leadingBuffer: CGFloat?
     var handle: (UIPanGestureRecognizer) -> Void
     
-    func makeCoordinator(converter: CoordinateSpaceConverter) -> Coordinator { .init() }
+    func makeCoordinator(converter: CoordinateSpaceConverter) -> Coordinator { .init(leadingBuffer: leadingBuffer) }
     
     func makeUIGestureRecognizer(context: Context) -> UIPanGestureRecognizer {
         let gesture = UIPanGestureRecognizer()
@@ -24,6 +26,12 @@ struct PanGesture: UIGestureRecognizerRepresentable {
     }
     
     class Coordinator: NSObject, UIGestureRecognizerDelegate {
+        let leadingBuffer: CGFloat
+        
+        init(leadingBuffer: CGFloat?) {
+            self.leadingBuffer = leadingBuffer ?? 0
+        }
+        
         func gestureRecognizer(
             _ gestureRecognizer: UIGestureRecognizer,
             shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer
@@ -33,6 +41,9 @@ struct PanGesture: UIGestureRecognizerRepresentable {
         
         func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
             guard let panRecognizer = gestureRecognizer as? UIPanGestureRecognizer else { return false }
+            
+            // prevent swipe from interfering with interactive swipe back
+            guard panRecognizer.location(in: gestureRecognizer.view).x >= leadingBuffer else { return false }
 
             let velocity = panRecognizer.velocity(in: gestureRecognizer.view)
             return abs(velocity.y) < abs(velocity.x)
