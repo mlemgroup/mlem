@@ -22,10 +22,10 @@ struct InboxSettingsView: View {
             )
             .gradientTint(.themedInbox)
             Section {
-                NavigationLink(.settings(.interactionBar(.reply))) {
+                NavigationLink(.settings(.interactionBar(.inboxNotification))) {
                     SettingsInteractionBarSummaryView(configuration: replyInteractionBar)
                 }
-                NavigationLink("Swipe Actions", destination: .settings(.swipeActions(.reply)))
+                NavigationLink("Swipe Actions", destination: .settings(.swipeActions(.inboxNotification)))
             }
             if AccountsTracker.main.highestLevelAccountType >= .moderator {
                 Section {

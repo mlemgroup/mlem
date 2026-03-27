@@ -264,10 +264,6 @@ public final class Person:
 // MARK: - Computed
 
 public extension Person {
-    var isMlemDeveloper: Bool {
-        BackendClient.main.flairs.developers.contains(actorId.description)
-    }
-    
     var bannedFromInstance: Bool { instanceBan != .notBanned }
     
     func isBannedFromCommunity(id: Int) -> Bool? {

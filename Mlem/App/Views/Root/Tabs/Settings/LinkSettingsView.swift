@@ -49,11 +49,17 @@ struct LinkSettingsView: View {
                     destination: .settings(.tappableLinks)
                 )
             }
+
+            Section {
+                NavigationLink(
+                    "Image Viewer",
+                    icon: .settings.imageViewer,
+                    destination: .settings(.imageViewer)
+                )
+            }
             
             Section {
-                if #available(iOS 18, *) {
-                    Toggle("Autoplay", icon: .general.playCircle, isOn: $autoplayMedia)
-                }
+                Toggle("Autoplay", icon: .general.playCircle, isOn: $autoplayMedia)
                 Toggle("Mute Videos", icon: .general.muted, isOn: $muteVideos)
             }
             

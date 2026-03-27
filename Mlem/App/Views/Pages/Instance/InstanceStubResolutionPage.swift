@@ -13,7 +13,7 @@ struct InstanceStubResolutionPage: View {
     @Environment(NavigationLayer.self) var navigation
     
     let stub: InstanceStub
-    let visitContext: VisitHistory.VisitContext
+    let targetPage: (Instance) -> NavigationPage
     
     @State var upgradeError: Error?
     
@@ -41,7 +41,7 @@ struct InstanceStubResolutionPage: View {
     func fetchInstance() async -> Bool {
         do {
             let instance = try await stub.getInstance()
-            navigation.replace(.instance(instance, visitContext: visitContext))
+            navigation.replace(targetPage(instance))
             return true
         } catch {
             upgradeError = error

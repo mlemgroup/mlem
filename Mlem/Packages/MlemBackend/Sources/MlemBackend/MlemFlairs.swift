@@ -17,5 +17,5 @@ struct MlemFlair: Codable {
 
 public struct MlemFlairs {
     /// apIds of users who should have the Developer flair
-    let developers: Set<String>
+    public let developers: Set<String>
 }

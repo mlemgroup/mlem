@@ -74,6 +74,9 @@ public extension Icon {
         public let ask: Icon = .init("questionmark.circle")
         public let jumpButton: Icon = .init("chevron.down.circle")
         public let longPress: Icon = .init("hand.point.up.left.fill")
+        public let imageViewer: Icon = .init("rectangle.portrait.center.inset.filled")
+        public let imageViewerControls: Icon = .init("ellipsis")
+        public let imageViewerDismissSensitivity: Icon = .applySquare("arrow.down.to.line")
     }
     
     static let settings: SettingsIcons = .init()

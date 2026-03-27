@@ -6,6 +6,7 @@
 //
 
 import ComponentViews
+import MlemBackend
 import MlemMiddleware
 import SwiftUI
 
@@ -35,7 +36,7 @@ extension NavigationPage {
         case let .logIn(page):
             page.view()
         case let .signUp(instance):
-            SignUpView(instance: instance.wrappedValue)
+            SignUpView(instance: instance)
         case .onboarding:
             OnboardingView()
         case let .feeds(listingType):
@@ -178,7 +179,7 @@ extension NavigationPage {
                         .padding(.vertical, 6)
                         .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
                 }
-                .disabled(requiredFeature.map { !instance.software.supports($0) } ?? false)
+                .disabled(requiredFeature.map { !SiteSoftware(from: instance.software).supports($0) } ?? false)
             } header: {
                 if requiredFeature != nil, requiredFeature != .signUp {
                     Text("This feature is not available on all instances.")
@@ -197,8 +198,8 @@ extension NavigationPage {
             LanguagePickerSheetView(selectedLanguages: selectedLanguages, callback: callback.wrappedValue)
         case let .instance(instance, visitContext):
             InstanceView(instance: instance, visitContext: visitContext)
-        case let .instanceStub(instance, visitContext):
-            InstanceStubResolutionPage(stub: instance, visitContext: visitContext)
+        case let .instanceStub(instance, targetPage):
+            InstanceStubResolutionPage(stub: instance, targetPage: targetPage.wrappedValue)
         case let .instanceOpinionList(instance: instance, opinionType: opinionType, data: data):
             FediseerOpinionListView(instance: instance.wrappedValue, opinionType: opinionType, fediseerData: data)
         case .fediseerInfo:
@@ -239,10 +240,8 @@ extension NavigationPage {
             ExportablePostEditorView(post: post)
         case let .exportCommentImage(comment, tracker):
             ExportableCommentEditorView(comment: comment, commentTreeTracker: tracker)
-        case let .actionSheet(sections):
-            ActionSheet(sections: sections.wrappedValue)
-        case .contextMenuSettings:
-            ContextMenuSettingsView()
+        case let .actionSheet(sections, configuration):
+            ActionSheet(sections: sections.wrappedValue, configuration: configuration)
         }
     }
 }

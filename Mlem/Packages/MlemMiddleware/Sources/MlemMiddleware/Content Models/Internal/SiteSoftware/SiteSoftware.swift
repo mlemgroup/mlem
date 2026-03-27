@@ -23,3 +23,4 @@ public struct SiteSoftware: Codable, Hashable {
         }
     }
 }
+

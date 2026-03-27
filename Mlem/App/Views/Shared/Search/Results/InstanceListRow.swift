@@ -6,6 +6,7 @@
 //
 
 import ComponentViews
+import MlemBackend
 import MlemMiddleware
 import SwiftUI
 

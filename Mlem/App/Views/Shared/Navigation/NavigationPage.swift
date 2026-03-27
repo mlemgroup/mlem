@@ -6,6 +6,7 @@
 //
 
 import Actions
+import MlemBackend
 import MlemMiddleware
 import SwiftUI
 
@@ -14,7 +15,7 @@ import SwiftUI
 enum NavigationPage: Hashable {
     case settings(_ page: SettingsPage = .root)
     case logIn(_ page: LoginPage = .pickInstance)
-    case signUp(_ instance: HashWrapper<any InstanceStubProviding>)
+    case signUp(_ instance: Instance)
     case onboarding
     case feeds(_ selection: ListingType? = nil)
     case savedFeed
@@ -49,7 +50,7 @@ enum NavigationPage: Hashable {
     case person(_ person: Person, visitContext: VisitHistory.VisitContext = .other)
     case personStub(_ personStub: PersonStub, visitContext: VisitHistory.VisitContext = .other)
     case instance(_ instance: Instance, visitContext: VisitHistory.VisitContext = .other)
-    case instanceStub(_ instanceStub: InstanceStub, visitContext: VisitHistory.VisitContext = .other)
+    case instanceStub(_ instanceStub: InstanceStub, targetPage: HashWrapper<(Instance) -> NavigationPage>)
     case instanceOpinionList(instance: InstanceHashWrapper, opinionType: FediseerOpinionType, data: FediseerData)
     case messageFeed(_ person: Person, messageContent: String, focusTextField: Bool, editing: MessageHashWrapper?)
     case fediseerInfo
@@ -91,8 +92,10 @@ enum NavigationPage: Hashable {
     case denyApplication(RegistrationApplication)
     case exportPostImage(_ post: Post)
     case exportCommentImage(_ comment: Comment, tracker: CommentTreeTracker?)
-    case actionSheet(_ actions: HashWrapper<[ActionSheetSection]>)
-    case contextMenuSettings
+
+    // If `configuration` is specified, show a "customise" button in the sheet for editing that configuration.
+    // Otherwise, no "customise" button is shown.
+    case actionSheet(_ actions: HashWrapper<[ActionSheetSection]>, configuration: SettingsPage.ContextMenuSettingType?)
     
     static func shareInstancePicker(_ sharable: any Sharable) -> NavigationPage {
         shareInstancePicker(.init(wrappedValue: sharable))
@@ -158,6 +161,10 @@ enum NavigationPage: Hashable {
         )
     }
     
+    static func instanceStub(_ stub: InstanceStub, visitContext: VisitHistory.VisitContext = .other) -> NavigationPage {
+        .instanceStub(stub, targetPage: .init(wrappedValue: { .instance($0, visitContext: visitContext) }))
+    }
+    
     static func hostInstance(
         of entity: any ActorIdentifiable,
         visitContext: VisitHistory.VisitContext = .other
@@ -170,7 +177,7 @@ enum NavigationPage: Hashable {
            let instance = entity.instance.value_ as? Instance {
             return .instance(instance, visitContext: visitContext)
         }
-        return .instanceStub(.init(api: AppState.main.firstApi, actorId: .instance(host: entity.actorId.host)), visitContext: visitContext)
+        return .instanceStub(.init(api: AppState.main.firstApi, actorId: .instance(host: entity.actorId.host)))
     }
     
     static func communityPicker(
@@ -208,6 +215,10 @@ enum NavigationPage: Hashable {
                 navigation.push(.signUp(instance.instanceStub))
             }
         }, requiredFeature: .signUp)
+    }
+    
+    static func signUp(_ stub: InstanceStub) -> NavigationPage {
+        .instanceStub(stub, targetPage: .init(wrappedValue: { .signUp($0) }))
     }
     
     static func communityPicker(
@@ -277,10 +288,6 @@ enum NavigationPage: Hashable {
         purge(.init(wrappedValue: purgable))
     }
     
-    static func signUp(_ instance: any InstanceStubProviding) -> NavigationPage {
-        signUp(.init(wrappedValue: instance))
-    }
-    
     static func bypassImageProxyWarning(callback: @escaping () -> Void) -> NavigationPage {
         bypassImageProxy(callback: .init(wrappedValue: callback))
     }
@@ -293,8 +300,8 @@ enum NavigationPage: Hashable {
         advancedSorting(.init(wrappedValue: sort))
     }
 
-    static func actionSheet(_ actions: [ActionSheetSection]) -> NavigationPage {
-        actionSheet(.init(wrappedValue: actions))
+    static func actionSheet(_ actions: [ActionSheetSection], configuration: SettingsPage.ContextMenuSettingType? = nil) -> NavigationPage {
+        actionSheet(.init(wrappedValue: actions), configuration: configuration)
     }
     
     var hasNavigationStack: Bool {

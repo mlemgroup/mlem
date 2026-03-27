@@ -78,7 +78,7 @@ struct QuickSwipeViewModifier: ViewModifier {
     func innerBody(content: Content) -> some View {
         content
             .gesture(
-                PanGesture { recognizer in
+                PanGesture(leadingBuffer: 70) { recognizer in
                     if [.ended, .cancelled].contains(recognizer.state) {
                         draggingUpdated(dragState: 0)
                     } else {

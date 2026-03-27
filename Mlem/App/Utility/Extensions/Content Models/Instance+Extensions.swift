@@ -7,6 +7,7 @@
 
 import Foundation
 import MlemMiddleware
+import MlemBackend
 
 extension Instance {
     func slurRegex() -> Regex<AnyRegexOutput>? {
@@ -28,7 +29,7 @@ extension Instance {
                 name: name,
                 totalUsers: userCount,
                 avatar: avatar,
-                software: software
+                software: .init(from: software)
             )
         }
         return nil

@@ -16,7 +16,7 @@ struct ExternalApiInfoView: View {
     
     @State private var internalFederationStatus: FederationStatus?
     @State private var externalFederationStatus: FederationStatus?
-    @State private var externalInstance: Instance3?
+    @State private var externalInstance: Instance?
     
     /// The ``ApiClient`` of the model being inspected.
     let fallbackApi: ApiClient
