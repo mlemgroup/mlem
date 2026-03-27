@@ -63,10 +63,8 @@ extension SwipeActionEditorView {
             configuration: .init(
                 get: {
                     Settings.get(keyPath).swipes
-                }, set: {
-                    var configuration = Settings.get(keyPath)
-                    configuration.swipes = $0
-                    Settings.set(keyPath, to: configuration)
+                }, set: { newValue in
+                    Settings.mutate(keyPath) { $0.swipes = newValue }
                 }
             ),
             onReset: {

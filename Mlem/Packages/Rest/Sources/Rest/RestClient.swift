@@ -14,18 +14,29 @@ public class RestClient {
         let response: HTTPURLResponse
     }
 
-    private let decoder: JSONDecoder = .defaultDecoder
+    public var decoder: JSONDecoder
+    public var convertParamsToSnakeCase: Bool = true
     
     // This should really be internal, but for now the image upload system needs to access this
     public let urlSession: URLSession = .init(configuration: .default)
 
     public var errorProcessor: (ErrorProcessorContext) throws(RestError) -> Void
     
-    public init(errorProcessor: @escaping (ErrorProcessorContext) throws(RestError) -> Void = { _ in }) {
+    public init(
+        errorProcessor: @escaping (ErrorProcessorContext) throws(RestError) -> Void = { _ in },
+        convertParamsToSnakeCase: Bool = true,
+        decoder: JSONDecoder = .defaultDecoder
+    ) {
         self.errorProcessor = errorProcessor
+        self.convertParamsToSnakeCase = convertParamsToSnakeCase
+        self.decoder = decoder
     }
 
-    public init<ErrorType: Decodable & CustomStringConvertible>(errorType: ErrorType.Type) {
+    public init<ErrorType: Decodable & CustomStringConvertible>(
+        errorType: ErrorType.Type,
+        convertParamsToSnakeCase: Bool = true,
+        decoder: JSONDecoder = .defaultDecoder
+    ) {
         self.errorProcessor = { context throws(RestError) in
             if let apiError = try? context.decoder.decode(ErrorType.self, from: context.data) {
                 // at present we have a single error model which appears to be used throughout
@@ -36,6 +47,8 @@ public class RestClient {
                 throw .response(String(describing: apiError), statusCode: context.response.statusCode)
             }
         }
+        self.convertParamsToSnakeCase = convertParamsToSnakeCase
+        self.decoder = decoder
     }
     
     public func perform<Request: RestRequest>(
@@ -90,7 +103,11 @@ public class RestClient {
     ) throws(RestError) -> URLRequest {
         let url: URL
         do {
-            url = try request.endpoint(base: baseUrl, encoderUserInfo: encoderUserInfo)
+            url = try request.endpoint(
+                base: baseUrl,
+                encoderUserInfo: encoderUserInfo,
+                convertParamsToSnakeCase: convertParamsToSnakeCase
+            )
         } catch {
             throw .parameterEncoding(error)
         }

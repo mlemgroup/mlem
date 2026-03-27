@@ -6,6 +6,7 @@
 //
 
 import Actions
+import MlemBackend
 import MlemMiddleware
 import SwiftUI
 
@@ -90,8 +91,10 @@ enum NavigationPage: Hashable {
     case denyApplication(RegistrationApplication)
     case exportPostImage(_ post: Post)
     case exportCommentImage(_ comment: Comment, tracker: CommentTreeTracker?)
-    case actionSheet(_ actions: HashWrapper<[ActionSheetSection]>)
-    case contextMenuSettings
+
+    // If `configuration` is specified, show a "customise" button in the sheet for editing that configuration.
+    // Otherwise, no "customise" button is shown.
+    case actionSheet(_ actions: HashWrapper<[ActionSheetSection]>, configuration: SettingsPage.ContextMenuSettingType?)
 
     static func instance(
         _ instance: any InstanceStubProviding,
@@ -299,8 +302,8 @@ enum NavigationPage: Hashable {
         advancedSorting(.init(wrappedValue: sort))
     }
 
-    static func actionSheet(_ actions: [ActionSheetSection]) -> NavigationPage {
-        actionSheet(.init(wrappedValue: actions))
+    static func actionSheet(_ actions: [ActionSheetSection], configuration: SettingsPage.ContextMenuSettingType? = nil) -> NavigationPage {
+        actionSheet(.init(wrappedValue: actions), configuration: configuration)
     }
     
     var hasNavigationStack: Bool {

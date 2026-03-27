@@ -10,9 +10,13 @@ import Foundation
 public enum URLQueryItemEncoder {
     public static func encode(
         _ value: some Encodable,
+        convertToSnakeCase: Bool,
         userInfo: [CodingUserInfoKey: Any] = [:]
     ) throws(URLQueryItemEncoderError) -> [URLQueryItem] {
-        let encoder = InternalURLQueryItemEncoder(userInfo: userInfo)
+        let encoder = InternalURLQueryItemEncoder(
+            userInfo: userInfo,
+            settings: .init(convertToSnakeCase: convertToSnakeCase)
+        )
         do {
             try value.encode(to: encoder)
         } catch {

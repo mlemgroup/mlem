@@ -13,7 +13,7 @@ import Icons
 import MlemMiddleware
 import SwiftUI
 
-protocol InteractionBarConfiguration: Codable, Equatable, SwipeActionConfiguration {
+protocol InteractionBarConfiguration: Codable, Equatable, SwipeActionConfiguration, ContextMenuConfiguration {
     associatedtype ActionType: ActionTypeProviding
     associatedtype CounterType: CounterTypeProviding
     associatedtype ReadoutType: ReadoutTypeProviding
@@ -23,8 +23,6 @@ protocol InteractionBarConfiguration: Codable, Equatable, SwipeActionConfigurati
     var leading: [Item] { get set }
     var trailing: [Item] { get set }
     var readouts: [ReadoutType] { get set }
-    var savedContextMenu: [ActionSeed]? { get set }
-    var contextMenu: [ActionSeed] { get set }
 
     var availableWidgets: Set<Item> { get set }
     func widgetPickerPage(_ configuration: Binding<Self>) -> SettingsPage
