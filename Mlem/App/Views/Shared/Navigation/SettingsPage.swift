@@ -8,6 +8,7 @@
 import LemmyMarkdownUI
 import SwiftUI
 
+// swiftlint:disable:next type_body_length
 enum SettingsPage: Hashable {
     enum ContentActionType: Hashable {
         case post, comment, inboxNotification, postReport, commentReport
