@@ -8,6 +8,7 @@
 import LemmyMarkdownUI
 import SwiftUI
 
+// swiftlint:disable:next type_body_length
 enum SettingsPage: Hashable {
     enum ContentActionType: Hashable {
         case post, comment, inboxNotification, postReport, commentReport
@@ -30,6 +31,7 @@ enum SettingsPage: Hashable {
     case privacyBypassImageProxy
     case safetyBlurNsfw, safetyWarnings
     case links, embedding
+    case imageViewer, imageViewerControls, imageViewerDismissSensitivity
     case animatedAvatars
     case externalLinks, sharingLinks, tappableLinks
     case importExportSettings
@@ -167,6 +169,12 @@ enum SettingsPage: Hashable {
             LongPressActionSettingsView()
         case .inboxBadge:
             InboxBadgeSettingsView()
+        case .imageViewer:
+            ImageViewerSettingsView()
+        case .imageViewerControls:
+            ImageViewerShowControlsSettingsView()
+        case .imageViewerDismissSensitivity:
+            ImageViewerDismissSettingsView()
         case let .swipeActions(type):
             switch type {
             case .post:

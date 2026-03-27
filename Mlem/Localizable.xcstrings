@@ -2045,6 +2045,9 @@
         }
       }
     },
+    "Choose how far you have to drag to dismiss the image viewer." : {
+
+    },
     "Choose Instance..." : {
       "localizations" : {
         "fr" : {
@@ -2079,6 +2082,9 @@
 
     },
     "Choose when Not Safe For Work content should be blurred." : {
+
+    },
+    "Choose when the image viewer controls should appear." : {
 
     },
     "Choose whether to show a user's account age next to their username." : {
@@ -2202,6 +2208,9 @@
           }
         }
       }
+    },
+    "Close Button" : {
+
     },
     "Closed" : {
       "localizations" : {
@@ -2619,6 +2628,9 @@
         }
       }
     },
+    "Controls" : {
+
+    },
     "Controversial" : {
       "localizations" : {
         "fr" : {
@@ -2840,7 +2852,14 @@
       }
     },
     "Customize how content is displayed in your feed. Choose which types of content are blurred, and apply filters to hide posts from the feed altogether." : {
-
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customise how content is displayed in your feed. Choose which types of content are blurred, and apply filters to hide posts from the feed altogether."
+          }
+        }
+      }
     },
     "Customize how moderator actions are separated from regular actions in context menus." : {
       "localizations" : {
@@ -2859,13 +2878,34 @@
       }
     },
     "Customize how often Mlem plays haptic feedback." : {
-
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customise how often Mlem plays haptic feedback."
+          }
+        }
+      }
     },
     "Customize how your subscription list is sorted." : {
-
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customise how your subscription list is sorted."
+          }
+        }
+      }
     },
     "Customize Mlem to work best for you. Some features are tied to system-wide accessibility settings." : {
-
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customise Mlem to work best for you. Some features are tied to system-wide accessibility settings."
+          }
+        }
+      }
     },
     "Customize the appearance of communities." : {
       "localizations" : {
@@ -2878,10 +2918,34 @@
       }
     },
     "Customize the appearance of the tab bar." : {
-
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customise the appearance of the tab bar."
+          }
+        }
+      }
+    },
+    "Customize the image viewer's buttons and gestures." : {
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customise the image viewer's buttons and gestures."
+          }
+        }
+      }
     },
     "Customize the interaction bar for inbox items, and choose which types of notification are included in the tab bar badge." : {
-
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customise the interaction bar for inbox items, and choose which types of notification are included in the tab bar badge."
+          }
+        }
+      }
     },
     "Data not available" : {
       "localizations" : {
@@ -3164,6 +3228,9 @@
           }
         }
       }
+    },
+    "Dismiss Sensitivity" : {
+
     },
     "Display linked media from supported hosts in-app rather than as a link." : {
 
@@ -4321,6 +4388,9 @@
         }
       }
     },
+    "Highest" : {
+
+    },
     "Hot" : {
       "localizations" : {
         "fr" : {
@@ -4401,6 +4471,9 @@
         }
       }
     },
+    "Image Viewer" : {
+
+    },
     "Images are cached on your device for fast reuse. The maximum cache size is around %@." : {
       "localizations" : {
         "fr" : {
@@ -4410,6 +4483,9 @@
           }
         }
       }
+    },
+    "Immediately" : {
+
     },
     "Import Settings" : {
       "localizations" : {
@@ -5025,6 +5101,9 @@
           }
         }
       }
+    },
+    "Lowest" : {
+
     },
     "Manage how Mlem handles links and control how images and videos are displayed." : {
 
@@ -7953,6 +8032,9 @@
         }
       }
     },
+    "Show Controls" : {
+
+    },
     "Show Details" : {
       "localizations" : {
         "fr" : {
@@ -10281,6 +10363,9 @@
         }
       }
     },
+    "When I Tap" : {
+
+    },
     "Would you like to open this email address in your mail app?" : {
       "localizations" : {
         "fr" : {
@@ -10502,6 +10587,9 @@
           }
         }
       }
+    },
+    "Zoom Indicator" : {
+
     },
     "Zoom the image viewer with a slide gesture on the selected side." : {
       "localizations" : {

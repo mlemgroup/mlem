@@ -8,17 +8,31 @@
 import SwiftUI
 import Icons
 
+// swiftlint:disable file_length
+
 extension ImageViewer {
+    struct ControlTranslationEffect: GeometryEffect {
+        var offset: CGFloat
+        var isDismissing: Bool
+
+        var animatableData: CGFloat {
+            get { isDismissing ? 0 : offset }
+            set { offset = newValue }
+        }
+
+        func effectValue(size: CGSize) -> ProjectionTransform {
+            return ProjectionTransform(.init(translationX: 0, y: offset))
+        }
+    }
+
     @ViewBuilder
     var controlOverlay: some View {
         VStack {
             topControlBar
-                .offset(y: -controlOffset)
-            
+                .modifier(ControlTranslationEffect(offset: -controlOffset, isDismissing: isDismissing))
             Spacer()
-            
             bottomControlBar
-                .offset(y: controlOffset)
+                .modifier(ControlTranslationEffect(offset: controlOffset, isDismissing: isDismissing))
         }
         .font(.title2)
         .fontWeight(.light)
@@ -36,8 +50,10 @@ extension ImageViewer {
             if developerMode {
                 devTools
             }
-            closeButton
-                .padding(.trailing, Constants.main.standardSpacing)
+            if showCloseButton {
+                closeButton
+                    .padding(.trailing, Constants.main.standardSpacing)
+            }
         }
     }
     
@@ -396,3 +412,4 @@ extension ImageViewer {
             .padding(.horizontal, Constants.main.halfSpacing)
     }
 }
+// swiftlint:enable file_length
