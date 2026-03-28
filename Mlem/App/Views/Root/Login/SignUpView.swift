@@ -47,7 +47,9 @@ struct SignUpView: View {
     
     var body: some View {
         VStack {
-            if let instance = instance as? any Instance2Providing, captcha != nil || !instance.captchaEnabled {
+            if let captchaEnabled = instance.captchaEnabled.value,
+               let registrationMode = instance.registrationMode.value,
+               captcha != nil || !captchaEnabled {
                 switch signInResult {
                 case .awaitingEmail:
                     EmailConfirmationView(
@@ -59,10 +61,10 @@ struct SignUpView: View {
                 case .awaitingApproval:
                     approvalInfo
                 case nil:
-                    if instance.registrationMode == .closed {
+                    if registrationMode == .closed {
                         Text("Registrations are closed on this instance.")
                     } else {
-                        content(instance)
+                        content
                     }
                 }
             } else {
@@ -70,8 +72,16 @@ struct SignUpView: View {
                     .tint(.themedSecondary)
             }
         }
+        .task(id: instance.captchaEnabled.value) {
+            if captcha == nil, instance.captchaEnabled.value ?? false {
+                do {
+                    captcha = try await instance.guestApi.getCaptcha()
+                } catch {
+                    handleError(error)
+                }
+            }
+        }
         .animation(.easeOut(duration: 0.1), value: signInResult)
-        .animation(.easeOut(duration: 0.1), value: instance is any Instance2Providing)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(.themedGroupedBackground)
         .presentationBackground(.themedGroupedBackground)
@@ -88,23 +98,23 @@ struct SignUpView: View {
     }
     
     @ViewBuilder
-    func content(_ instance: any Instance2Providing) -> some View {
+        var content: some View {
         Form {
-            header(instance)
-            if instance.applicationQuestion != nil {
+            header
+            if instance.applicationQuestion.value is String {
                 applicationQuestionWarning
             }
-            usernameSection(instance)
-            emailSection(instance)
-            passwordSection(instance)
-            applicationQuestionSection(instance)
+            usernameSection
+            emailSection
+            passwordSection
+            applicationQuestionSection
             Section {
                 Toggle("Show NSFW Content", isOn: $showNsfw)
                     .tint(.themedWarning)
             }
-            captchaSection(instance)
+            captchaSection
             Section {
-                submitButton(instance)
+                submitButton
                     .listRowBackground(Color.clear)
                     .listRowInsets(.init())
             }

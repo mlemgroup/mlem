@@ -40,7 +40,7 @@ extension SignUpView {
     }
     
     @ViewBuilder
-    func header(_ instance: any Instance2Providing) -> some View {
+    var header: some View {
         Section {
             VStack {
                 CircleCroppedImageView(instance, frame: 50)
@@ -58,7 +58,7 @@ extension SignUpView {
     }
     
     @ViewBuilder
-    func usernameSection(_ instance: any Instance2Providing) -> some View {
+    var usernameSection: some View {
         Section("Username") {
             HStack {
                 TextField("Username", text: $username, prompt: Text(
@@ -111,7 +111,7 @@ extension SignUpView {
     }
     
     @ViewBuilder
-    func emailSection(_ instance: any Instance2Providing) -> some View {
+    var emailSection: some View {
         Section("Email") {
             TextField(
                 "Email",
@@ -129,40 +129,44 @@ extension SignUpView {
             .textInputAutocapitalization(.never)
             .keyboardType(.emailAddress)
         } footer: {
-            if instance.emailVerificationRequired {
-                Text("You are required to provide an email on this instance.")
-            } else {
-                Text("This field is optional.")
-            }
-        }
-    }
-    
-    @ViewBuilder
-    func passwordSection(_ instance: any Instance2Providing) -> some View {
-        Section("Password") {
-            SecureField("Password", text: $password)
-                .focused($focused, equals: .password)
-                .onSubmit { focused = .confirmPassword }
-            SecureField("Confirm Password", text: $confirmPassword)
-                .focused($focused, equals: .confirmPassword)
-                .onSubmit {
-                    focused = instance.applicationQuestion == nil ? .captchaAnswer : .applicationQuestionResponse
+            ExpectedView(instance.emailVerificationRequired) { emailVerificationRequired in
+                if emailVerificationRequired {
+                    Text("You are required to provide an email on this instance.")
+                } else {
+                    Text("This field is optional.")
                 }
-        } footer: {
-            if !confirmPassword.isEmpty, password != confirmPassword {
-                Text("Passwords don't match.")
-                    .foregroundStyle(.themedWarning)
-            } else if password.count < 10 {
-                // Using interpolation so we don't have to change the localization if this changes
-                Text("Password must be \(10) characters or more.")
-                    .foregroundStyle(confirmPassword.isEmpty ? .themedSecondary : .themedWarning)
             }
         }
     }
     
     @ViewBuilder
-    func applicationQuestionSection(_ instance: any Instance2Providing) -> some View {
-        if let applicationQuestion = instance.applicationQuestion {
+    var passwordSection: some View {
+        if let applicationQuestion = instance.applicationQuestion.value {
+            Section("Password") {
+                SecureField("Password", text: $password)
+                    .focused($focused, equals: .password)
+                    .onSubmit { focused = .confirmPassword }
+                SecureField("Confirm Password", text: $confirmPassword)
+                    .focused($focused, equals: .confirmPassword)
+                    .onSubmit {
+                        focused = applicationQuestion == nil ? .captchaAnswer : .applicationQuestionResponse
+                    }
+            } footer: {
+                if !confirmPassword.isEmpty, password != confirmPassword {
+                    Text("Passwords don't match.")
+                        .foregroundStyle(.themedWarning)
+                } else if password.count < 10 {
+                    // Using interpolation so we don't have to change the localization if this changes
+                    Text("Password must be \(10) characters or more.")
+                        .foregroundStyle(confirmPassword.isEmpty ? .themedSecondary : .themedWarning)
+                }
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var applicationQuestionSection: some View {
+        if let applicationQuestion = instance.applicationQuestion.value as? String {
             Section {
                 Markdown(applicationQuestion, configuration: .default(palette: palette))
                     .padding(.vertical, 8)
@@ -174,7 +178,7 @@ extension SignUpView {
     }
     
     @ViewBuilder
-    func captchaSection(_ instance: any Instance2Providing) -> some View {
+    var captchaSection: some View {
         if let captchaImage = captcha?.image {
             Section {
                 captchaImage
@@ -224,17 +228,19 @@ extension SignUpView {
     }
     
     @ViewBuilder
-    func submitButton(_ instance: any Instance2Providing) -> some View {
-        Button(String(localized: submitLabel(instance))) {
-            Task { await submit() }
+    var submitButton: some View {
+        ExpectedView(instance.applicationQuestion) { applicationQuestion in
+            Button(String(localized: submitLabel(applicationQuestion))) {
+                Task { await submit() }
+            }
+            .buttonStyle(SubmitButtonStyle())
+            .disabled(!canSubmit)
         }
-        .buttonStyle(SubmitButtonStyle())
-        .disabled(!canSubmit)
     }
     
-    private func submitLabel(_ instance: any Instance2Providing) -> LocalizedStringResource {
+    private func submitLabel(_ applicationQuestion: String?) -> LocalizedStringResource {
         if submitting { return "Submitting..." }
-        return instance.applicationQuestion == nil ? "Sign Up" : "Submit Application"
+        return applicationQuestion == nil ? "Sign Up" : "Submit Application"
     }
 }
 

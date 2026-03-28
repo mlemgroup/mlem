@@ -7,6 +7,7 @@
 
 import Observation
 import Foundation
+import os
 
 @Observable
 public final class Instance:
@@ -305,6 +306,10 @@ public extension Instance {
     var allowedLanguages: Set<Locale.Language>? {
         guard let allowedLanguageIds = allowedLanguageIds.value else { return nil }
         return Set(allowedLanguageIds.lazy.compactMap { self.language(withId: $0) })
+    }
+    
+    var guestApi: ApiClient {
+        .getApiClient(url: local ? api.baseUrl : actorId.hostUrl, username: nil)
     }
 }
 

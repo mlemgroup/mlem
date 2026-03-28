@@ -136,6 +136,47 @@ public struct InstanceProperties: UnifiedPropertiesProviding {
     }
     
     public mutating func merge(_ other: InstanceProperties) {
-        // TODO: NOW
+        // tier 1 properties: simple assignment
+        self.displayName = other.displayName
+        self.description = other.description
+        self.shortDescription = other.shortDescription
+        self.avatar = other.avatar
+        self.banner = other.banner
+        self.lastRefresh = other.lastRefresh
+        self.contentWarning = other.contentWarning
+        
+        // tier 2, 3 properties: only assign if incoming non-nil
+        self.setup = other.setup ?? self.setup
+        self.voteFederationMode = other.voteFederationMode ?? self.voteFederationMode
+        self.nsfwContentEnabled = other.nsfwContentEnabled ?? self.nsfwContentEnabled
+        self.communityCreationRestrictedToAdmins = other.communityCreationRestrictedToAdmins ?? self.communityCreationRestrictedToAdmins
+        self.emailVerificationRequired = other.emailVerificationRequired ?? self.emailVerificationRequired
+        self.applicationQuestion = other.applicationQuestion ?? self.applicationQuestion
+        self.isPrivate = other.isPrivate ?? self.isPrivate
+        self.defaultTheme = other.defaultTheme ?? self.defaultTheme
+        self.defaultFeed = other.defaultFeed ?? self.defaultFeed
+        self.legalInformation = other.legalInformation ?? self.legalInformation
+        self.hideModlogNames = other.hideModlogNames ?? self.hideModlogNames
+        self.emailApplicationsToAdmins = other.emailApplicationsToAdmins ?? self.emailApplicationsToAdmins
+        self.emailReportsToAdmins = other.emailReportsToAdmins ?? self.emailReportsToAdmins
+        self.slurFilterRegex = other.slurFilterRegex ?? self.slurFilterRegex
+        self.actorNameMaxLength = other.actorNameMaxLength ?? self.actorNameMaxLength
+        self.federationEnabled = other.federationEnabled ?? self.federationEnabled
+        self.captchaEnabled = other.captchaEnabled ?? self.captchaEnabled
+        self.captchaDifficulty = other.captchaDifficulty ?? self.captchaDifficulty
+        self.registrationMode = other.registrationMode ?? self.registrationMode
+        self.federationSignedFetch = other.federationSignedFetch ?? self.federationSignedFetch
+        self.defaultPostListingMode = other.defaultPostListingMode ?? self.defaultPostListingMode
+        self.defaultPostSortType = other.defaultPostSortType ?? self.defaultPostSortType
+        self.userCount = other.userCount ?? self.userCount
+        self.postCount = other.postCount ?? self.postCount
+        self.commentCount = other.commentCount ?? self.commentCount
+        self.communityCount = other.communityCount ?? self.communityCount
+        self.activeUserCount = other.activeUserCount ?? self.activeUserCount
+        
+        self.software = other.software ?? self.software
+        self.allowedLanguageIds = other.allowedLanguageIds ?? self.allowedLanguageIds
+        self.blockedUrls = other.blockedUrls ?? self.blockedUrls
+        self.administrators = other.administrators ?? self.administrators
     }
 }
