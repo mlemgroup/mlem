@@ -12,7 +12,7 @@ struct InstanceSafetyView: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.palette) var palette
     
-    let instance: any DeprecatedInstance
+    let instance: Instance
     let fediseerData: FediseerData
         
     var body: some View {
@@ -95,7 +95,7 @@ struct InstanceSafetyView: View {
                 if !items.isEmpty {
                     VStack(alignment: .leading, spacing: 7) {
                         let destination: NavigationPage = .instanceOpinionList(
-                            instance,
+                            instance: instance,
                             opinionType: opinionType,
                             data: fediseerData
                         )

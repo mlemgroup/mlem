@@ -115,7 +115,7 @@ public class BlockList {
         instances.keys.contains(instanceActorId)
     }
     
-    public func contains(_ instance: any InstanceStubProviding) -> Bool {
+    public func contains(_ instance: Instance) -> Bool {
         instances.keys.contains(instance.actorId)
     }
     

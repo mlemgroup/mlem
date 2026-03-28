@@ -16,7 +16,7 @@ struct InstanceUptimeView: View {
     @State var showingExactTime: Bool = false
     @State var showingAllDowntimes: Bool = false
     
-    let instance: any DeprecatedInstance
+    let instance: Instance
     @State var uptimeData: UptimeData
     
     var uptimeRefreshTimer = Timer.publish(every: 30, tolerance: 0.5, on: .main, in: .common)

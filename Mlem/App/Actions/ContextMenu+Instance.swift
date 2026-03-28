@@ -34,7 +34,7 @@ extension View {
 }
 
 extension ToolbarEllipsisMenu {
-    init(instance: any InstanceStubProviding) where Content == ActionButtons {
+    init(instance: Instance) where Content == ActionButtons {
         self.init {
             ActionButtons { _ in
                 seeds.compactMap { $0.createAction(instance) }

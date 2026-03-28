@@ -18,7 +18,7 @@ struct BlockAction: Actions.Action {
 
     enum Content {
         case blockable(any Blockable)
-        case instance(any InstanceStubProviding)
+        case instance(Instance)
 
         func blocked(environment: EnvironmentValues) -> Bool {
             switch self {
@@ -85,7 +85,7 @@ extension ActionSeed {
         label: BlockAction.createLabel(relationship: .direct, mode: .block, contentType: .multi)
     ) { entity in
         switch entity {
-        case let entity as any InstanceStubProviding: BlockAction(content: [.instance(entity)], relationship: .direct)
+        case let entity as Instance: BlockAction(content: [.instance(entity)], relationship: .direct)
         case let entity as any Blockable: BlockAction(content: [.blockable(entity)], relationship: .direct)
         default: nil
         }
@@ -268,7 +268,7 @@ extension BlockAction {
         }
     }
     
-    private func submitForInstance(instance: any InstanceStubProviding, shouldBlock: Bool, environment: EnvironmentValues) {
+    private func submitForInstance(instance: Instance, shouldBlock: Bool, environment: EnvironmentValues) {
         Task {
             let didSucceed = await updateInstanceBlocked(
                 instance: instance,
@@ -305,18 +305,20 @@ extension BlockAction {
     }
 
     private func updateInstanceBlocked(
-        instance: any InstanceStubProviding,
+        instance: Instance,
         environment: EnvironmentValues,
         newValue: Bool
     ) async -> Bool {
-        if let instance = instance as? any Instance1Providing, instance.api.token != nil {
-            let task = instance.toggleBlocked()
-            return await task.value == .succeeded
-        } else if let session = (environment.appState.firstSession as? UserSession) {
-            let result = await session.toggleInstanceBlock(actorId: instance.actorId)
-            return result == .succeeded
-        } else {
-            return false
-        }
+        // TODO: NOW make instance just normal blockable lol?
+        return true
+//        if instance.api.token != nil {
+//            let task = instance.toggleBlocked()
+//            return await task.value == .succeeded
+//        } else if let session = (environment.appState.firstSession as? UserSession) {
+//            let result = await session.toggleInstanceBlock(actorId: instance.actorId)
+//            return result == .succeeded
+//        } else {
+//            return false
+//        }
     }
 }

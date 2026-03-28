@@ -59,27 +59,16 @@ struct InstanceView: View {
     }
     
     var body: some View {
-        VStack {
-            if let errorDetails {
-                ErrorView(errorDetails)
-            } else if let instance = instance as? any DeprecatedInstance {
-                content(instance)
-                    .conditionalNavigationTitle(instance.displayName)
-            } else {
-                ProgressView()
-                    .tint(.themedSecondary)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-            }
-        }
-        .animation(.easeOut(duration: 0.2), value: instance is any DeprecatedInstance)
-        .animation(.easeOut(duration: 0.2), value: instance.apiIsLocal)
-        .task { await refresh() }
-        .navigationBarTitleDisplayMode(.inline)
-        .themedGroupedBackground()
+        content
+            .animation(.easeOut(duration: 0.2), value: instance is any DeprecatedInstance)
+            .animation(.easeOut(duration: 0.2), value: instance.apiIsLocal)
+            .task { await refresh() }
+            .navigationBarTitleDisplayMode(.inline)
+            .themedGroupedBackground()
     }
     
     @ViewBuilder
-    func content(_ instance: any DeprecatedInstance) -> some View {
+    var content: some View {
         FancyScrollView {
             ProfileHeaderView(
                 instance,
@@ -95,7 +84,7 @@ struct InstanceView: View {
                 )
                 switch selectedTab {
                 case .about:
-                    aboutTab(instance: instance)
+                    aboutTab
                 case .communities:
                     InstanceCommunityListView(
                         communityLoader: communityLoader,
@@ -104,9 +93,9 @@ struct InstanceView: View {
                 case .details:
                     InstanceDetailsView(instance: instance)
                 case .administration:
-                    administrationTab(instance: instance)
+                    administrationTab
                 case .safety:
-                    safetyTab(instance: instance)
+                    safetyTab
                         .onAppear(perform: attemptToLoadFediseerData)
                 }
             } else {
@@ -121,16 +110,18 @@ struct InstanceView: View {
     }
     
     @ViewBuilder
-    func administrationTab(instance: any DeprecatedInstance) -> some View {
+    var administrationTab: some View {
         VStack(spacing: Constants.main.standardSpacing) {
             if instance.api.supports(.modlog, defaultValue: true) {
                 ModlogButtonView(instance: instance)
             }
             
-            VStack(spacing: Constants.main.halfSpacing) {
-                ForEach(instance.administrators_ ?? []) { person in
-                    PersonListRow(person)
-                        .quickSwipes(administratorQuickSwipes(person: person))
+            ExpectedView(instance.administrators) { administrators in
+                VStack(spacing: Constants.main.halfSpacing) {
+                    ForEach(administrators) { person in
+                        PersonListRow(person)
+                            .quickSwipes(administratorQuickSwipes(person: person))
+                    }
                 }
             }
             
@@ -153,7 +144,7 @@ struct InstanceView: View {
     }
     
     @ViewBuilder
-    func safetyTab(instance: any DeprecatedInstance) -> some View {
+    var safetyTab: some View {
         if let fediseerData {
             InstanceSafetyView(instance: instance, fediseerData: fediseerData)
         } else {

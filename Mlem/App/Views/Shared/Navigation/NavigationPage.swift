@@ -51,10 +51,10 @@ enum NavigationPage: Hashable {
     case personStub(_ personStub: PersonStub, visitContext: VisitHistory.VisitContext = .other)
     case instance(_ instance: Instance, visitContext: VisitHistory.VisitContext = .other)
     case instanceStub(_ instanceStub: InstanceStub, targetPage: HashWrapper<(Instance) -> NavigationPage>)
-    case instanceOpinionList(instance: InstanceHashWrapper, opinionType: FediseerOpinionType, data: FediseerData)
+    case instanceOpinionList(instance: Instance, opinionType: FediseerOpinionType, data: FediseerData)
     case messageFeed(_ person: Person, messageContent: String, focusTextField: Bool, editing: MessageHashWrapper?)
     case fediseerInfo
-    case instanceUptime(_ instance: HashWrapper<any DeprecatedInstance>, _ uptimeData: UptimeData)
+    case instanceUptime(_ instance: Instance, uptimeData: UptimeData)
     case externalApiInfo(api: ApiClient, actorId: ActorIdentifier)
     case imageViewer(_ url: URL)
     case communityPicker(api: ApiClient?, callback: HashWrapper<(Community, NavigationLayer) -> Void>)
@@ -110,11 +110,11 @@ enum NavigationPage: Hashable {
     }
     
     static func modlog(
-        instance: any DeprecatedInstance,
+        instance: Instance,
         targetPerson: Person? = nil,
         moderatorPerson: Person? = nil
     ) -> NavigationPage {
-        modlog(.instance(.init(wrappedValue: instance)), targetPerson: targetPerson, moderatorPerson: moderatorPerson)
+        modlog(.instance(instance), targetPerson: targetPerson, moderatorPerson: moderatorPerson)
     }
 
     static func modlog(
@@ -122,25 +122,6 @@ enum NavigationPage: Hashable {
         moderatorPerson: Person? = nil
     ) -> NavigationPage {
         modlog(.currentInstance, targetPerson: targetPerson, moderatorPerson: moderatorPerson)
-    }
-    
-    static func instanceOpinionList(
-        _ instance: any InstanceStubProviding,
-        opinionType: FediseerOpinionType,
-        data: FediseerData
-    ) -> NavigationPage {
-        instanceOpinionList(
-            instance: .init(wrappedValue: instance),
-            opinionType: opinionType,
-            data: data
-        )
-    }
-    
-    static func instanceUptime(
-        instance: any DeprecatedInstance,
-        uptimeData: UptimeData
-    ) -> NavigationPage {
-        .instanceUptime(.init(wrappedValue: instance), uptimeData)
     }
     
     static func messageFeed(

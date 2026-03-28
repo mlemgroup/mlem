@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import os
 
 public struct InstanceStub: InstanceStubProviding, Hashable {
     public static var tierNumber: Int = 0
@@ -32,9 +33,23 @@ public struct InstanceStub: InstanceStubProviding, Hashable {
     }
     
     public func getInstance() async throws -> Instance {
-        guard let instance = try await api.getCommunityOfInstance(actorId: actorId).instance.value as? Instance else {
+        let community = try await api.getCommunityOfInstance(actorId: actorId)
+        Logger.dev.info("Got community")
+        let instance = try await community.fetchUpgraded().instance
+        Logger.dev.info("Got instance")
+  
+        guard let instance = instance as? Instance else {
             throw InstanceUpgradeError.noSiteReturned
         }
+        
+        Logger.dev.info("Returning instance")
+        
+//        Logger.dev.info("Found community \(community.name) in instance \(actorId)")
+//        Logger.dev.info("Associated instance: \(community.instance.value != nil)")
+//        
+//        guard let instance = try await api.getCommunityOfInstance(actorId: actorId).instance.value as? Instance else {
+//            throw InstanceUpgradeError.noSiteReturned
+//        }
         return instance
     }
 }

@@ -201,11 +201,11 @@ extension NavigationPage {
         case let .instanceStub(instance, targetPage):
             InstanceStubResolutionPage(stub: instance, targetPage: targetPage.wrappedValue)
         case let .instanceOpinionList(instance: instance, opinionType: opinionType, data: data):
-            FediseerOpinionListView(instance: instance.wrappedValue, opinionType: opinionType, fediseerData: data)
+            FediseerOpinionListView(instance: instance, opinionType: opinionType, fediseerData: data)
         case .fediseerInfo:
             FediseerInfoView()
         case let .instanceUptime(instance, uptimeData):
-            InstanceUptimeView(instance: instance.wrappedValue, uptimeData: uptimeData)
+            InstanceUptimeView(instance: instance, uptimeData: uptimeData)
         case let .deleteAccount(account):
             DeleteAccountView(account: account)
         case let .bypassImageProxy(callback):

@@ -11,7 +11,7 @@ import SwiftUI
 
 extension InstanceView {
     @ViewBuilder
-    func aboutTab(instance: any DeprecatedInstance) -> some View {
+    var aboutTab: some View {
         VStack(spacing: Constants.main.standardSpacing) {
             if let shortDescription = instance.shortDescription {
                 markdownBox(shortDescription)
