@@ -189,7 +189,8 @@ struct InstanceDetailsView: View {
                     )
                 }
                 Divider()
-                ExpectedView(instance.slurFilterRegex) { slurFilterRegex in
+                // ExpectedView causes rendering issues here
+                if let slurFilterRegex = instance.slurFilterRegex.value {
                     Group {
                         settingRow(
                             "Slur Filter",
