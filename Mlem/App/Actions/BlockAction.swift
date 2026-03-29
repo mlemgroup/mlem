@@ -25,13 +25,7 @@ struct BlockAction: Actions.Action {
             case let .blockable(entity):
                 return entity.blockedValue
             case let .instance(instance):
-                if let instance = instance as? any DeprecatedInstance {
-                    return instance.blockedValue
-                } else if let session = (environment.appState.firstSession as? UserSession) {
-                    return session.blocks?.contains(instance) ?? false
-                } else {
-                    return false
-                }
+                return instance.blockedValue
             }
         }
 

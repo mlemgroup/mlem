@@ -60,7 +60,6 @@ struct InstanceView: View {
     
     var body: some View {
         content
-            .animation(.easeOut(duration: 0.2), value: instance is any DeprecatedInstance)
             .animation(.easeOut(duration: 0.2), value: instance.apiIsLocal)
             .task { await refresh() }
             .navigationBarTitleDisplayMode(.inline)

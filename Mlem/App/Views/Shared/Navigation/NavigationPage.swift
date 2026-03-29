@@ -318,19 +318,6 @@ struct HashWrapper<Value>: Hashable, Identifiable {
     }
 }
 
-struct InstanceHashWrapper: Hashable {
-    var wrappedValue: any InstanceStubProviding
-    let id = UUID()
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
-    
-    static func == (lhs: InstanceHashWrapper, rhs: InstanceHashWrapper) -> Bool {
-        lhs.id == rhs.id
-    }
-}
-
 struct ReportableHashWrapper: Hashable {
     var wrappedValue: any ReportableProviding
     

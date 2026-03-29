@@ -10,7 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct VisitAction: SimpleLabelAction {
-    let instance: any InstanceStubProviding
+    let instance: Instance // TODO: NOW stub?
 }
 
 // MARK: - Configurability
@@ -18,7 +18,7 @@ struct VisitAction: SimpleLabelAction {
 extension ActionSeed {
     static let visit = ActionSeed("visit") { entity in
         switch entity {
-        case let entity as any InstanceStubProviding: VisitAction(instance: entity)
+        case let entity as Instance: VisitAction(instance: entity)
         default: nil
         }
     }

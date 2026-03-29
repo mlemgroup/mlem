@@ -10,10 +10,11 @@ import SwiftUI
 
 extension SignUpView {
     var canSubmit: Bool {
-        guard let instance = instance as? any Instance2Providing else { return false }
-        return !(instance.captchaEnabled && captchaAnswer.isEmpty)
+        guard let captchaEnabled = instance.captchaEnabled.value,
+              let applicationQuestion = instance.applicationQuestion.value else { return false }
+        return !(captchaEnabled && captchaAnswer.isEmpty)
             && usernameValidity == .valid
-            && (instance.applicationQuestion == nil || !applicationQuestionResponse.isEmpty)
+            && (applicationQuestion == nil || !applicationQuestionResponse.isEmpty)
             && (captcha == nil || !captchaAnswer.isEmpty)
             && password == confirmPassword
             && password.count >= 10
@@ -44,7 +45,6 @@ extension SignUpView {
     }
     
     func submit() async {
-        guard let instance = instance as? any Instance2Providing else { return }
         submitting = true
         do {
             let response = try await instance.guestApi.signUp(

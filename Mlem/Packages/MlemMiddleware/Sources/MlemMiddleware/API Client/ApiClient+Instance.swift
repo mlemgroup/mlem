@@ -29,23 +29,6 @@ public extension ApiClient {
         }
         return nil
     }
-    
-    /// `instanceId` is distinct from `id`. Make sure to pass `instance.instanceId` and not `id`.
-    ///  Technically only `instanceId` is needed to perform this request, but `actorId` is also needed to properly update the `BlockList`.
-    func blockInstance(url: URL, instanceId: Int, block: Bool, semaphore: UInt? = nil) async throws {
-        guard let host = url.host() else { throw ApiClientError.invalidInput }
-        let actorId: ActorIdentifier = .instance(host: host)
-        try await repository.blockInstance(instanceId: instanceId, block: block)
-        let newBlockState: Bool = block
-        if let instance = caches.instance1.retrieveModel(instanceId: instanceId) {
-            instance.blockedManager.updateWithReceivedValue(newBlockState, semaphore: semaphore)
-        }
-        if newBlockState {
-            blocks?.instances[actorId] = instanceId
-        } else {
-            blocks?.instances.removeValue(forKey: actorId)
-        }
-    }
 
     /// Get any `Community3` hosted on the given instance.
     internal func getCommunityOfInstance(actorId: ActorIdentifier) async throws -> Community {

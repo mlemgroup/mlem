@@ -80,13 +80,13 @@ public class BlockList {
         let newInstancesKeys = Set(blocks.instances.keys)
 
         for key in newInstancesKeys.subtracting(oldInstancesKeys) {
-            if let id = blocks.instances[key], let instance = api.caches.instance1.retrieveModel(instanceId: id) {
-                instance.blockedManager.updateWithReceivedValue(true, semaphore: nil)
+            if let id = blocks.instances[key], let instance = api.caches.instance.retrieveModel(instanceId: id) {
+                instance.blocked = true
             }
         }
         for key in oldInstancesKeys.subtracting(newInstancesKeys) {
-            if let id = instances[key], let instance = api.caches.instance1.retrieveModel(instanceId: id) {
-                instance.blockedManager.updateWithReceivedValue(false, semaphore: nil)
+            if let id = instances[key], let instance = api.caches.instance.retrieveModel(instanceId: id) {
+                instance.blocked = false
             }
         }
 
