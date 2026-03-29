@@ -10,7 +10,6 @@ import MlemBackend
 import MlemMiddleware
 import SwiftUI
 
-// swiftlint:disable file_length
 // swiftlint:disable:next type_body_length
 enum NavigationPage: Hashable {
     case settings(_ page: SettingsPage = .root)
@@ -389,5 +388,3 @@ struct MessageHashWrapper: Hashable {
         lhs.hashValue == rhs.hashValue
     }
 }
-
-// swiftlint:enable file_length

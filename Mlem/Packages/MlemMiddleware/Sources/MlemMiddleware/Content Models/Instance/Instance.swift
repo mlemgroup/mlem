@@ -9,6 +9,8 @@ import Observation
 import Foundation
 import os
 
+// TODO: NOW sharable, blockable
+
 @Observable
 public final class Instance:
     UnifiedModelProviding,

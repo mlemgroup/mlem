@@ -19,7 +19,7 @@ extension ActionSeed {
     static let openInBrowser = ActionSeed("openInBrowser") { entity in
         switch entity {
         case let entity as any Sharable: OpenInBrowserAction(url: entity.url())
-        case let entity as Instance: OpenInBrowserAction(url: entity.actorId.url) // TODO: NOW do we need this for stub?
+        case let entity as Instance: OpenInBrowserAction(url: entity.actorId.url)
         default: nil
         }
     }

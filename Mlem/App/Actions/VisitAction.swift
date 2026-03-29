@@ -10,7 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct VisitAction: SimpleLabelAction {
-    let instance: Instance // TODO: NOW stub?
+    let instance: Instance
 }
 
 // MARK: - Configurability

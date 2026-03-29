@@ -24,7 +24,7 @@ extension ActionSeed {
     static let share = ActionSeed("share") { entity in
         switch entity {
         case let entity as any Sharable: ShareAction(content: .entity(entity))
-        case let entity as Instance: ShareAction(content: .url(entity.actorId.url)) // TODO: NOW stub?
+        case let entity as Instance: ShareAction(content: .url(entity.actorId.url))
         default: nil
         }
     }

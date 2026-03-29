@@ -83,7 +83,7 @@ extension NavigationPage {
                 shouldBan: shouldBan
             )
         case let .post(post, scrollTargetedComment, communityContext, _):
-            // TODO: NOW don't embed at all?
+            // TODO: don't embed at all?
             ExpandedPostView(post: post, tracker: nil, scrollTargetedComment: scrollTargetedComment) {
                 CrossPostListView(post: post)
                     .padding(.horizontal, Constants.main.standardSpacing)
