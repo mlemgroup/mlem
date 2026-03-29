@@ -127,10 +127,8 @@ extension InstanceView {
         guard upgradeState == .idle else { return }
         upgradeState = .loading
         do {
-            // janky upgrade check
-            if instance.administrators.value_ == nil {
-                try await instance.upgrade() // TODO: NOW blocking upgrade
-                logVisit(instance)
+            if !instance.apiIsLocal {
+                instance = try await instance.getLocal()
             }
             upgradeState = .done
             errorDetails = nil

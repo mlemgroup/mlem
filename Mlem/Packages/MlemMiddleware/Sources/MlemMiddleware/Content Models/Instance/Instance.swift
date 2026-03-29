@@ -7,7 +7,6 @@
 
 import Observation
 import Foundation
-import os
 
 // TODO: NOW sharable, blockable
 
@@ -264,6 +263,14 @@ public final class Instance:
     
     public func upgrade() async throws {
         try await updateQueue.upgrade()
+    }
+    
+    /// Gets this instance using the ApiClient local to this instance
+    public func getLocal() async throws -> Instance {
+        if apiIsLocal { return self }
+        
+        let localApi = ApiClient.getApiClient(url: actorId.hostUrl, username: nil)
+        return try await localApi.getMyInstance()
     }
     
     public func refresh() async throws {
