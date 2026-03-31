@@ -38,6 +38,12 @@ public struct InstanceStub: Hashable {
         lhs.actorId == rhs.actorId
     }
     
+    /// Gets the instance this stub refers to using that instance's local API
+    public func getLocalInstance() async throws -> Instance {
+        return try await self.asLocal().api.getMyInstance()
+    }
+    
+    /// Gets the instance this stub refers to using the stub's current API
     public func getInstance() async throws -> Instance {
         let community = try await api.getCommunityOfInstance(actorId: actorId)
         let instance = try await community.fetchUpgraded().instance

@@ -7,8 +7,7 @@
 
 import Observation
 import Foundation
-
-// TODO: NOW sharable, blockable
+import os
 
 @Observable
 public final class Instance:

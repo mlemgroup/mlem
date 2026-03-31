@@ -40,7 +40,7 @@ struct InstanceStubResolutionPage: View {
     @discardableResult
     func fetchInstance() async -> Bool {
         do {
-            let instance = try await stub.getInstance()
+            let instance = try await stub.getLocalInstance()
             navigation.replace(targetPage(instance))
             return true
         } catch {

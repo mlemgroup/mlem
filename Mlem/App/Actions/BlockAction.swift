@@ -135,8 +135,7 @@ extension BlockAction {
 
     private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {
         let canInteract = content.allSatisfy {
-            $0.api.canInteract(appState: environment.appState)
-            // TODO: NOW always true for Instance?
+            $0 is Instance || $0.api.canInteract(appState: environment.appState)
         }
         guard canInteract else { return .hidden }
 
