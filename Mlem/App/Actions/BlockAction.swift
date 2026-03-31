@@ -303,7 +303,6 @@ extension BlockAction {
         environment: EnvironmentValues,
         newValue: Bool
     ) async -> Bool {
-        // TODO: NOW make instance just normal blockable lol?
         return true
 //        if instance.api.token != nil {
 //            let task = instance.toggleBlocked()

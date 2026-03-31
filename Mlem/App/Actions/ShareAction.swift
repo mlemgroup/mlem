@@ -10,12 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct ShareAction: SimpleLabelAction {
-    enum Content {
-        case entity(any Sharable)
-        case url(URL)
-    }
-
-    let content: Content
+    let entity: any Sharable
 }
 
 // MARK: - Configurability
@@ -23,8 +18,7 @@ struct ShareAction: SimpleLabelAction {
 extension ActionSeed {
     static let share = ActionSeed("share") { entity in
         switch entity {
-        case let entity as any Sharable: ShareAction(content: .entity(entity))
-        case let entity as Instance: ShareAction(content: .url(entity.actorId.url))
+        case let entity as any Sharable: ShareAction(entity: entity)
         default: nil
         }
     }
@@ -45,16 +39,6 @@ extension ShareAction {
 extension ShareAction {
     @MainActor
     func execute(environment: EnvironmentValues) {
-        switch content {
-        case let .entity(entity):
-            self.execute(entity: entity, environment: environment)
-        case let .url(url):
-            environment.navigation?.model?.shareInfo = .init(url: url, actions: [])
-        }
-    }
-
-    @MainActor
-    private func execute(entity: any Sharable, environment: EnvironmentValues) {
         let url: URL? = switch Settings.get(\.links_shareMode) {
         case .myInstance: entity.url()
         case .originalInstance: entity.actorId.url

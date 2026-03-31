@@ -16,8 +16,8 @@ public final class Instance:
     ActorIdentifiable,
     Blockable,
     Profile2Providing,
-    ContentIdentifiable
-{
+    ContentIdentifiable,
+    Sharable {
     public typealias Properties = InstanceProperties
     
     public var api: ApiClient

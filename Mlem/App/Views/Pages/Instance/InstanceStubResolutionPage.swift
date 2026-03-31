@@ -8,7 +8,6 @@
 import MlemMiddleware
 import SwiftUI
 import Theming
-import os
 
 struct InstanceStubResolutionPage: View {
     @Environment(NavigationLayer.self) var navigation
@@ -42,7 +41,6 @@ struct InstanceStubResolutionPage: View {
     func fetchInstance() async -> Bool {
         do {
             let instance = try await stub.getInstance()
-            Logger.dev.info("Got instance \(instance.host), api host: \(instance.api.host)")
             navigation.replace(targetPage(instance))
             return true
         } catch {

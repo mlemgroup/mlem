@@ -5,6 +5,8 @@
 //  Created by Eric Andrews on 2026-03-13.
 //
 
+import Foundation
+
 // MARK: CacheIdentifiable
 
 public extension Instance {
@@ -51,5 +53,15 @@ public extension Instance {
                 }
             }
         }
+    }
+}
+
+// MARK: Sharable
+
+public extension Instance {
+    var allResolvableUrls: [URL] { [url()] }
+    
+    func url() -> URL {
+        actorId.url
     }
 }

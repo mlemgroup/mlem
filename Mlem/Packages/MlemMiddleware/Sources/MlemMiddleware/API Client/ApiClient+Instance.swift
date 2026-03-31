@@ -16,7 +16,7 @@ public extension ApiClient {
             myInstance = model
         }.result
         return model
-    }
+    }	
     
     /// Returns `true` if federated, `false` if not federated, or `nil` if the status could not be determined.
     func federatedWith(with url: URL) async throws -> FederationStatus? {
@@ -57,25 +57,4 @@ public extension ApiClient {
         let comm = try await self.getCommunityOfInstance(actorId: actorId)
         return comm.instanceId
     }
-    
-    /// Adds or removes an admin from this API's instance
-//    @discardableResult
-//    func addAdmin(personId: Int, added: Bool) async throws -> [Person] {
-//        let snapshots = try await repository.addAdmin(personId: personId, added: added)
-//
-//        let updatedAdministrators = await caches.person.getModels(api: self, from: snapshots.map { .person2($0) })
-//        
-//        // update person's admin status
-//        // only need to do this manually if removing admin, otherwise handled by above caching logic
-//        if !added, let person = caches.person.retrieveModel(cacheId: personId) {
-//            person.isAdmin.value_ = false
-//        }
-//        
-//        // update instance admins
-//        if let myInstance {
-//            myInstance.administrators = updatedAdministrators
-//        }
-//        
-//        return updatedAdministrators
-//    }
 }
