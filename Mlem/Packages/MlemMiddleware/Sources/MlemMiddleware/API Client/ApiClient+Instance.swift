@@ -16,7 +16,7 @@ public extension ApiClient {
             myInstance = model
         }.result
         return model
-    }	
+    }
     
     /// Returns `true` if federated, `false` if not federated, or `nil` if the status could not be determined.
     func federatedWith(with url: URL) async throws -> FederationStatus? {
@@ -56,5 +56,23 @@ public extension ApiClient {
     func getInstanceId(actorId: ActorIdentifier) async throws -> Int {
         let comm = try await self.getCommunityOfInstance(actorId: actorId)
         return comm.instanceId
+    }
+    
+    
+    /// `instanceId` is distinct from `id`. Make sure to pass `instance.instanceId` and not `id`.
+    ///  Technically only `instanceId` is needed to perform this request, but `actorId` is also needed to properly update the `BlockList`.
+    func blockInstance(url: URL, instanceId: Int, block: Bool, semaphore: UInt? = nil) async throws {
+        guard let host = url.host() else { throw ApiClientError.invalidInput }
+        let actorId: ActorIdentifier = .instance(host: host)
+        try await repository.blockInstance(instanceId: instanceId, block: block)
+        let newBlockState: Bool = block
+        if let instance = caches.instance.retrieveModel(instanceId: instanceId) {
+            instance.blocked = newBlockState
+        }
+        if newBlockState {
+            blocks?.instances[actorId] = instanceId
+        } else {
+            blocks?.instances.removeValue(forKey: actorId)
+        }
     }
 }

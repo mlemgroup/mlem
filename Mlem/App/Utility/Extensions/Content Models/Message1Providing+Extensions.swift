@@ -132,7 +132,7 @@ extension Message1Providing {
             id: "blockCreator\(uid)",
             appearance: .blockCreator(),
             callback: api.canInteract(appState: appState)
-            ? { @MainActor in self.self2?.creator.toggleBlocked(feedback: feedback) }
+            ? { @MainActor in self.self2?.creator.toggleBlocked?(feedback, nil) }
             : nil
         )
     }

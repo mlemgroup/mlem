@@ -99,6 +99,37 @@ class UserSession: Session {
             try await PersistenceRepository.liveValue.saveVisitHistory(visitHistory, for: account)
         }
     }
+
+    func toggleInstanceBlock(actorId: ActorIdentifier) async -> StateUpdateResult {
+        guard !ongoingInstanceBlockRequests.contains(actorId) else { return .failed }
+        ongoingInstanceBlockRequests.insert(actorId)
+        var toastId: UUID?
+        do {
+            let instanceId: Int
+            let shouldBlock: Bool
+            if let id = self.blocks?.instanceIdOfBlockedInstance(actorId: actorId) {
+                instanceId = id
+                toastId = ToastModel.main.add(.loading("Unblocking..."))
+                shouldBlock = false
+            } else {
+                toastId = ToastModel.main.add(.loading("Blocking..."))
+                instanceId = try await api.getInstanceId(actorId: actorId)
+                shouldBlock = true
+            }
+            try await api.blockInstance(url: actorId.url, instanceId: instanceId, block: shouldBlock)
+            if let toastId {
+                ToastModel.main.removeToast(id: toastId)
+            }
+            ToastModel.main.add(.success(shouldBlock ? "Blocked" : "Unblocked"))
+            ongoingInstanceBlockRequests.remove(actorId)
+            return .succeeded
+        } catch {
+            ToastModel.main.add(.failure())
+            handleError(error)
+            ongoingInstanceBlockRequests.remove(actorId)
+            return .failed
+        }
+    }
     
     @MainActor
     func setVisitHistoryEnabled(_ newValue: Bool) async throws {

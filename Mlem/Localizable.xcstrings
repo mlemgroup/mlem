@@ -1692,7 +1692,6 @@
       }
     },
     "Blocking..." : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -9641,7 +9640,6 @@
       }
     },
     "Unblocking..." : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {

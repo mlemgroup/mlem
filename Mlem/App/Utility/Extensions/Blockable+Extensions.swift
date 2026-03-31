@@ -8,7 +8,17 @@
 import MlemMiddleware
 
 extension Blockable {
-    func toggleBlocked(feedback: Set<FeedbackType>, callback: ((Bool) -> Void)? = nil) {
+    var toggleBlocked: ((Set<FeedbackType>, ((Bool) -> Void)?) -> Void)? {
+        if let updateBlocked = self.updateBlocked {
+            return { toggleBlocked(updateBlocked: updateBlocked, feedback: $0, callback: $1) }
+        }
+        return nil
+    }
+
+    private func toggleBlocked(
+        updateBlocked: @escaping (Bool, ((Bool) -> Void)?) -> Void,
+        feedback: Set<FeedbackType>,
+        callback: ((Bool) -> Void)? = nil) {
         if feedback.contains(.toast) {
             if !blockedValue {
                 ToastModel.main.add(
@@ -16,7 +26,7 @@ extension Blockable {
                         "Blocked",
                         icon: .lemmy.block,
                         callback: {
-                            self.updateBlocked(false, callback: callback)
+                            updateBlocked(false, callback)
                         },
                         color: .themedNegative
                     )
@@ -27,13 +37,13 @@ extension Blockable {
                         "Unblocked",
                         icon: .lemmy.unblock,
                         callback: {
-                            self.updateBlocked(true, callback: callback)
+                            updateBlocked(true, callback)
                         },
                         color: .themedPrimary
                     )
                 )
             }
         }
-        updateBlocked(!blockedValue, callback: callback)
+        updateBlocked(!blockedValue, callback)
     }
 }

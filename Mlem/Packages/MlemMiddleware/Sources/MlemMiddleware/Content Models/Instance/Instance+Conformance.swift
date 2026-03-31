@@ -29,9 +29,13 @@ public extension Instance {
 // MARK: Blockable
 
 public extension Instance {
-    var blockedValue: Bool { blocked } // TODO: NOW replace with RealizedValueProviding, maybe tighten this logic
+    var blockedValue: Bool { blocked } // TODO: NOW replace with RealizedValueProviding, tighten this logic
     
-    func updateBlocked(_ newValue: Bool, callback: ((Bool) -> Void)? = nil) {
+    var updateBlocked: ((Bool, ((Bool) -> Void)?) -> Void)? {
+        self.api.token == nil ? nil : self._updateBlocked
+    }
+    
+    private func _updateBlocked(_ newValue: Bool, callback: ((Bool) -> Void)? = nil) {
         let oldValue = blocked
         blocked = newValue
         

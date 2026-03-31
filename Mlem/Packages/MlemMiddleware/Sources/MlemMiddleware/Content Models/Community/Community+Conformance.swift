@@ -30,7 +30,9 @@ public extension Community {
 public extension Community {
     var blockedValue: Bool { blocked.realizedValue }
     
-    func updateBlocked(_ newValue: Bool, callback: ((Bool) -> Void)? = nil) {
+    var updateBlocked: ((Bool, ((Bool) -> Void)?) -> Void)? { self._updateBlocked }
+    
+    private func _updateBlocked(_ newValue: Bool, callback: ((Bool) -> Void)? = nil) {
         let oldValue = blocked.realizedValue
         blocked.value_ = newValue
         

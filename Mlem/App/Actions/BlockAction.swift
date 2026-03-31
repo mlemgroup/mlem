@@ -135,7 +135,7 @@ extension BlockAction {
 
     private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {
         let canInteract = content.allSatisfy {
-            $0 is Instance || $0.api.canInteract(appState: environment.appState)
+            $0 is Instance || ($0.api.canInteract(appState: environment.appState) && $0.updateBlocked != nil)
         }
         guard canInteract else { return .hidden }
 
@@ -214,12 +214,21 @@ extension BlockAction {
     }
 
     private func submit(entity: any Blockable, environment: EnvironmentValues) {
-        let shouldBlock = !entity.blockedValue
-        entity.updateBlocked(shouldBlock) { didSucceed in
-            let toast = createToast(didBlock: shouldBlock, didSucceed: didSucceed) {
-                entity.updateBlocked(!shouldBlock, callback: nil)
+        if let updateBlocked = entity.updateBlocked {
+            let shouldBlock = !entity.blockedValue
+            updateBlocked(shouldBlock) { didSucceed in
+                let toast = createToast(didBlock: shouldBlock, didSucceed: didSucceed) {
+                    updateBlocked(!shouldBlock, nil)
+                }
+                environment.toastModel?.add(toast)
             }
-            environment.toastModel?.add(toast)
+        } else if entity is Instance,
+                  let session = (environment.appState.firstSession as? UserSession) {
+            Task {
+                await session.toggleInstanceBlock(actorId: entity.actorId)
+            }
+        } else {
+            assertionFailure("Failed to block entity")
         }
     }
 
