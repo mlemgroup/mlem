@@ -16,34 +16,13 @@ struct BlockAction: Actions.Action {
         case personOnly, communityOnly, instanceOnly, multi, other
     }
 
-    enum Content {
-        case blockable(any Blockable)
-        case instance(Instance)
-
-        func blocked(environment: EnvironmentValues) -> Bool {
-            switch self {
-            case let .blockable(entity):
-                return entity.blockedValue
-            case let .instance(instance):
-                return instance.blockedValue
-            }
-        }
-
-        var blockable: (any Blockable)? {
-            switch self {
-            case let .blockable(entity): entity
-            default: nil
-            }
-        }
-    }
-
-    let content: [Content]
+    let content: [any Blockable]
     let relationship: Relationship
 
-    var availableContent: [Content] {
+    var availableContent: [any Blockable] {
         content.filter { item in
             switch item {
-            case let .blockable(entity as Person):
+            case let entity as Person:
                 guard let myPersonId = entity.api.myPerson?.id else { return true }
                 return entity.id != myPersonId 
             default:
@@ -53,7 +32,7 @@ struct BlockAction: Actions.Action {
     }
 }
 
-private extension [BlockAction.Content] {
+private extension [Blockable] {
     var contentType: BlockAction.ContentType {
         if self.count > 1 {
             return .multi
@@ -63,9 +42,9 @@ private extension [BlockAction.Content] {
         } 
 
         return switch first {
-        case .blockable(_ as Person): .personOnly
-        case .blockable(_ as Community): .communityOnly
-        case .instance: .instanceOnly
+        case _ as Person: .personOnly
+        case _ as Community: .communityOnly
+        case _ as Instance: .instanceOnly
         default: .other
         }
     }
@@ -79,8 +58,7 @@ extension ActionSeed {
         label: BlockAction.createLabel(relationship: .direct, mode: .block, contentType: .multi)
     ) { entity in
         switch entity {
-        case let entity as Instance: BlockAction(content: [.instance(entity)], relationship: .direct)
-        case let entity as any Blockable: BlockAction(content: [.blockable(entity)], relationship: .direct)
+        case let entity as any Blockable: BlockAction(content: [entity], relationship: .direct)
         default: nil
         }
     }
@@ -93,7 +71,7 @@ extension ActionSeed {
         case let entity as Comment:
             if let creator = entity.creator.value {
                 BlockAction(
-                    content: [.blockable(creator)],
+                    content: [creator],
                     relationship: .indirect)
             } else {
                 nil
@@ -101,7 +79,7 @@ extension ActionSeed {
         case let entity as Post:
             if let creator = entity.creator.value, let community = entity.community.value {
                 BlockAction(
-                    content: [.blockable(creator), .blockable(community)],
+                    content: [creator, community],
                     relationship: .indirect)
             } else {
                 nil
@@ -150,29 +128,24 @@ extension BlockAction {
     func createLabel(environment: EnvironmentValues) -> ActionLabel {
         Self.createLabel(
             relationship: self.relationship,
-            mode: content.first!.blocked(environment: environment) ? .unblock : .block,
+            mode: content.first!.blockedValue ? .unblock : .block,
             contentType: availableContent.contentType
         ).withVisibility(visibility(environment))
     }
 
-    // swiftlint:disable:next cyclomatic_complexity
     private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {
         let canInteract = content.allSatisfy {
-            switch $0 {
-            case let .blockable(entity):
-                entity.api.canInteract(appState: environment.appState)
-            case .instance:
-                true
-            }
+            $0.api.canInteract(appState: environment.appState)
+            // TODO: NOW always true for Instance?
         }
         guard canInteract else { return .hidden }
 
         for item in content {
             switch item {
-            case let .blockable(person as Person):
+            case let person as Person:
                 guard let myPersonId = person.api.myPerson?.id else { return .hidden }
                 guard person.id != myPersonId else { return .hidden }
-            case let .instance(instance):
+            case let instance as Instance:
                 let api = environment.appState.firstApi
                 guard api.supports(.blockInstances, defaultValue: false) else { return .hidden }
                 guard api.actorId != instance.actorId else { return .hidden }
@@ -206,28 +179,28 @@ extension BlockAction {
     @MainActor
     func executeMulti(environment: EnvironmentValues) {
         let actions: [PopupAnchorModel.Action] = content.map { item in
-            .init(title: item.blockable is Person ? "User" : "Community", isDestructive: true) {
-                submit(content: item, environment: environment)
+            .init(title: item is Person ? "User" : "Community", isDestructive: true) {
+                submit(entity: item, environment: environment)
             }
         }
         environment.popupModel?.showPopup(message: "Block...", actions)
     }
 
     @MainActor
-    func execute(entity content: Content, environment: EnvironmentValues) {
-        if content.blocked(environment: environment) {
-            submit(content: content, environment: environment)
-            return 
+    func execute(entity: any Blockable, environment: EnvironmentValues) {
+        if entity.blockedValue {
+            submit(entity: entity, environment: environment)
+            return
         }
 
         let label: String
 
-        switch content {
-        case .blockable(_ as Person):
+        switch entity {
+        case _ as Person:
             label = .init(localized: "Really block this user?")
-        case .blockable(_ as Community):
+        case _ as Community:
             label = .init(localized: "Really block this community?")
-        case .instance:
+        case _ as Instance:
             label = .init(localized: "Really block this instance?")
         default:
             assertionFailure()
@@ -236,45 +209,16 @@ extension BlockAction {
 
         environment.popupModel?.showPopup(message: label, [
             .init(title: "Yes", isDestructive: true) {
-                submit(content: content, environment: environment)
+                submit(entity: entity, environment: environment)
             }
         ])
     }
 
-    private func submit(content: Content, environment: EnvironmentValues) {
-        let shouldBlock = !content.blocked(environment: environment)
-        
-        switch content {
-        case let .instance(instance):
-            submitForInstance(instance: instance, shouldBlock: shouldBlock, environment: environment)
-        case let .blockable(blockable):
-            submitForBlockable(blockable: blockable, environment: environment)
-        }
-    }
-    
-    private func submitForBlockable(blockable: any Blockable, environment: EnvironmentValues) {
-        let shouldBlock = !blockable.blockedValue
-        blockable.updateBlocked(shouldBlock) { didSucceed in
+    private func submit(entity: any Blockable, environment: EnvironmentValues) {
+        let shouldBlock = !entity.blockedValue
+        entity.updateBlocked(shouldBlock) { didSucceed in
             let toast = createToast(didBlock: shouldBlock, didSucceed: didSucceed) {
-                blockable.updateBlocked(!shouldBlock, callback: nil)
-            }
-            environment.toastModel?.add(toast)
-        }
-    }
-    
-    private func submitForInstance(instance: Instance, shouldBlock: Bool, environment: EnvironmentValues) {
-        Task {
-            let didSucceed = await updateInstanceBlocked(
-                instance: instance,
-                environment: environment,
-                newValue: shouldBlock
-            )
-            let toast = createToast(didBlock: shouldBlock, didSucceed: didSucceed) {
-                Task { await updateInstanceBlocked(
-                    instance: instance,
-                    environment: environment,
-                    newValue: false
-                ) }
+                entity.updateBlocked(!shouldBlock, callback: nil)
             }
             environment.toastModel?.add(toast)
         }
@@ -296,22 +240,5 @@ extension BlockAction {
         case (false, true): .basic("Unblocked", icon: .lemmy.unblock)
         case (false, false): .failure("Failed to unblock!")
         }
-    }
-
-    private func updateInstanceBlocked(
-        instance: Instance,
-        environment: EnvironmentValues,
-        newValue: Bool
-    ) async -> Bool {
-        return true
-//        if instance.api.token != nil {
-//            let task = instance.toggleBlocked()
-//            return await task.value == .succeeded
-//        } else if let session = (environment.appState.firstSession as? UserSession) {
-//            let result = await session.toggleInstanceBlock(actorId: instance.actorId)
-//            return result == .succeeded
-//        } else {
-//            return false
-//        }
     }
 }
