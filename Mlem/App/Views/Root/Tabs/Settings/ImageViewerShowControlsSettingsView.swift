@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ImageViewerShowControlsSettingsView: View {
-    @Setting(\.imageViewer_showOverlayByDefault) var showImageViewerOverlay
+    @Setting(\.imageViewer_showControls) var showControls
 
     var body: some View {
         Form {
@@ -18,11 +18,10 @@ struct ImageViewerShowControlsSettingsView: View {
                 icon: .settings.imageViewerControls
             )
             .gradientTint(.themedColorfulAccent(5))
-            Picker("Show Controls", selection: $showImageViewerOverlay) {
-                Text("Immediately")
-                    .tag(true)
-                Text("When I Tap")
-                    .tag(false)
+            Picker("Show Controls", selection: $showControls) {
+                ForEach(ShowImageViewerControls.allCases, id: \.self) { value in
+                    Text(value.label)
+                }
             }
             .pickerStyle(.inline)
             .labelsHidden()
