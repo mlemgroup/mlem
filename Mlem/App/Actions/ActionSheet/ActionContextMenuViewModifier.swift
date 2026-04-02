@@ -10,23 +10,34 @@ import SwiftUI
 
 struct ActionContextMenuViewModifier<Configuration: ContextMenuConfiguration>: ViewModifier {
     @Environment(NavigationLayer.self) var navigation
+    @Environment(\.self) var environment
 
-    let configurationKeyPath: ReferenceWritableKeyPath<SettingsValues, Configuration>
+    let configurationKeyPathGenerator: (EnvironmentValues) -> ReferenceWritableKeyPath<SettingsValues, Configuration>
     let createAction: (ActionSeed) -> (any Actions.Action)?
     let customizable: Bool
+
+    init(
+        customizable: Bool = true,
+        configuration keyPathGenerator: @escaping (EnvironmentValues) -> ReferenceWritableKeyPath<SettingsValues, Configuration>,
+        createAction: @escaping (ActionSeed) -> (any Actions.Action)?,
+    ) {
+        self.configurationKeyPathGenerator = keyPathGenerator
+        self.customizable = customizable
+        self.createAction = createAction
+    }
 
     init(
         configuration keyPath: ReferenceWritableKeyPath<SettingsValues, Configuration>,
         customizable: Bool = true,
         createAction: @escaping (ActionSeed) -> (any Actions.Action)?,
     ) {
-        self.configurationKeyPath = keyPath
+        self.configurationKeyPathGenerator = { _ in keyPath }
         self.customizable = customizable
         self.createAction = createAction
     }
 
     var configuration: Configuration {
-        Settings.get(configurationKeyPath)
+        Settings.get(configurationKeyPathGenerator(environment))
     }
 
     func body(content: Content) -> some View {
@@ -39,7 +50,7 @@ struct ActionContextMenuViewModifier<Configuration: ContextMenuConfiguration>: V
                 if customizable {
                     Section {
                         Button("More...", icon: .general.menu) {
-                            navigation.openSheet(.actionSheet(sheetSections, configuration: configurationKeyPath))
+                            navigation.openSheet(.actionSheet(sheetSections, configuration: configurationKeyPathGenerator(environment)))
                         }
                         .symbolVariant(.circle)
                     }
@@ -61,8 +72,17 @@ struct ActionContextMenuViewModifier<Configuration: ContextMenuConfiguration>: V
 extension ActionContextMenuViewModifier {
     init(
         entity: Any,
-        configuration keyPath: ReferenceWritableKeyPath<SettingsValues, Configuration>,
         customizable: Bool = true,
+        configuration keyPathGenerator: @escaping (EnvironmentValues) -> ReferenceWritableKeyPath<SettingsValues, Configuration>
+    ) {
+        self.init(customizable: customizable, configuration: keyPathGenerator) { 
+            $0.createAction(entity)
+        }
+    }
+    init(
+        entity: Any,
+        configuration keyPath: ReferenceWritableKeyPath<SettingsValues, Configuration>,
+        customizable: Bool = true
     ) {
         self.init(configuration: keyPath, customizable: customizable) { 
             $0.createAction(entity)
