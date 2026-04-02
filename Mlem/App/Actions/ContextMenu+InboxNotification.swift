@@ -19,9 +19,7 @@ private struct InboxNotificationContextMenuViewModifier: ViewModifier {
         content
             .contextMenu {
                 ActionButtons { _ in
-                    replyBarConfiguration.contextMenu.compactMap {
-                        $0.createAction(notification) ?? $0.createAction(notification.content.wrappedValue)
-                    }
+                    self.createActions(seeds: replyBarConfiguration.contextMenu)
                 }
                 Section {
                     Button("More...", icon: .general.menu) {
@@ -42,7 +40,6 @@ private struct InboxNotificationContextMenuViewModifier: ViewModifier {
         seeds.compactMap {
             $0.createAction(notification) ?? $0.createAction(notification.content.wrappedValue)
         }
-
     }
 }
 
