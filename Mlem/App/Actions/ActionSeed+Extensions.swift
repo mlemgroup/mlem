@@ -15,4 +15,8 @@ extension ActionSeed {
     var isModeratorAction: Bool {
         Self.moderatorActions.contains(self)
     }
+
+    var isBasicAction: Bool {
+        !Self.moderatorActions.contains(self)
+    }
 }

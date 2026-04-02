@@ -86,9 +86,7 @@ struct PostEllipsisMenuContent: View {
             if type.contains(.basic) {
                 ControlGroup {
                     ActionButtons { _ in
-                        configuration.contextMenu
-                            .filter(\.isBasicAction)
-                            .compactMap { $0.createAction(post) }
+                        self.actions(type: .basic)
                     }
                 }
                 .controlGroupStyle(.compactMenu)
@@ -109,5 +107,18 @@ struct PostEllipsisMenuContent: View {
             }
         }
         .environment(\.isContextMenu, true)
+    }
+
+    func actions(type: ActionListType) -> [any Actions.Action] {
+        return configuration.contextMenu
+            .filter { self.actionSeedHasType($0, type: type) }
+            .compactMap { $0.createAction(post) }
+    }
+
+    func actionSeedHasType(_ seed: ActionSeed, type: ActionListType) -> Bool {
+        switch type {
+        case .basic: seed.isBasicAction
+        case .moderator: seed.isModeratorAction
+        }
     }
 }
