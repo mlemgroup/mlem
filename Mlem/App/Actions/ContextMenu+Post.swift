@@ -72,6 +72,8 @@ extension EllipsisMenu {
 struct PostEllipsisMenuContent: View {
     @Environment(\.reportContext) var reportContext: Report?
 
+    @Setting(\.interactionBar_post) var configuration: PostBarConfiguration
+
     enum ActionListType {
         case basic, moderator
     }
@@ -84,7 +86,9 @@ struct PostEllipsisMenuContent: View {
             if type.contains(.basic) {
                 ControlGroup {
                     ActionButtons { _ in
-                        seeds.compactMap { $0.createAction(post) }
+                        configuration.contextMenu
+                            .filter(\.isBasicAction)
+                            .compactMap { $0.createAction(post) }
                     }
                 }
                 .controlGroupStyle(.compactMenu)
@@ -92,7 +96,9 @@ struct PostEllipsisMenuContent: View {
             if type.contains(.moderator) {
                 Section {
                     ActionButtons { _ in
-                        var ret = moderationSeeds.compactMap { $0.createAction(post) }
+                        var ret = configuration.contextMenu
+                            .filter(\.isModeratorAction)
+                            .compactMap { $0.createAction(post) }
                         if let reportContext,
                             let resolveAction = ActionSeed.resolveReport.createAction(reportContext) {
                             ret.append(resolveAction)
