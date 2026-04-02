@@ -24,6 +24,7 @@ public struct CommunityProperties: UnifiedPropertiesProviding {
     var onlyModeratorsCanPost: Bool
 
     // From Community1Snapshot, but PieFed does not always provide these
+    // https://codeberg.org/rimu/pyfedi/issues/882
     var banner: URL??
     var description: String??
     

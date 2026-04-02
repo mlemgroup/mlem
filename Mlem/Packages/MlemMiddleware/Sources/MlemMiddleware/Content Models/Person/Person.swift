@@ -51,14 +51,15 @@ public final class Person:
     public let instanceId: Int
     public var displayName: String
     public var avatar: URL?
-    public var banner: URL?
     public var note: String?
     public var updated: Date?
-    public var description: String?
     public var matrixUserId: String?
     public var isBot: Bool
     public var instanceBan: InstanceBanType
     public var deleted: Bool
+
+    public var description: String?
+    public var banner: URL?
     
     public var isAdmin: ExpectedValue<Bool>
     public var postCount: ExpectedValue<Int>
@@ -101,14 +102,16 @@ public final class Person:
         self.instanceId = properties.instanceId
         self.displayName = properties.displayName
         self.avatar = properties.avatar
-        self.banner = properties.banner
         self.note = properties.note
         self.updated = properties.updated
-        self.description = properties.description
         self.matrixUserId = properties.matrixUserId
         self.isBot = properties.isBot
         self.instanceBan = properties.instanceBan
         self.deleted = properties.deleted
+
+        // nil-coalesced because PieFed doesn't return these values for some requests.
+        self.description = properties.description ?? nil
+        self.banner = properties.banner ?? nil
         
         // because upgrade() is not available until all properties are initialized, first populate all properties
         // with ExpectedValues that don't actually do anything, then reassign them properly at the end of the init
@@ -180,14 +183,19 @@ public final class Person:
     public func update(with properties: PersonProperties) {
         setIfChanged(\.displayName, properties.displayName)
         setIfChanged(\.avatar, properties.avatar)
-        setIfChanged(\.banner, properties.banner)
         setIfChanged(\.note, properties.note)
         setIfChanged(\.updated, properties.updated)
-        setIfChanged(\.description, properties.description)
         setIfChanged(\.matrixUserId, properties.matrixUserId)
         setIfChanged(\.isBot, properties.isBot)
         setIfChanged(\.instanceBan, properties.instanceBan)
         setIfChanged(\.deleted, properties.deleted)
+
+        if let description = properties.description {
+            setIfChanged(\.description, description)
+        }
+        if let banner = properties.banner {
+            setIfChanged(\.banner, banner)
+        }
         
         updateIfChanged(\.isAdmin.value_, properties.isAdmin)
         updateIfChanged(\.postCount.value_, properties.postCount)
@@ -520,10 +528,10 @@ public extension Person {
                         defaultListingType: properties.defaultListingType ?? defaultListingType,
                         interfaceLanguage: properties.interfaceLanguage ?? interfaceLanguage,
                         avatar: properties.avatar?.absoluteString ?? "",
-                        banner: properties.banner?.absoluteString ?? "",
+                        banner: properties.banner??.absoluteString ?? "",
                         displayName: properties.displayName,
                         email: newEmail,
-                        bio: properties.description,
+                        bio: properties.description ?? "",
                         matrixUserId: newMatrixUserId,
                         showAvatars: properties.showAvatars ?? showAvatars,
                         sendNotificationsToEmail: newSendNotificationsToEmail,
