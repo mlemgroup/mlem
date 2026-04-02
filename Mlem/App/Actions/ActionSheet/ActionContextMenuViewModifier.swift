@@ -13,12 +13,15 @@ struct ActionContextMenuViewModifier<Configuration: ContextMenuConfiguration>: V
 
     let configurationKeyPath: ReferenceWritableKeyPath<SettingsValues, Configuration>
     let createAction: (ActionSeed) -> (any Actions.Action)?
+    let customizable: Bool
 
     init(
         configuration keyPath: ReferenceWritableKeyPath<SettingsValues, Configuration>,
-        createAction: @escaping (ActionSeed) -> (any Actions.Action)?
+        customizable: Bool = true,
+        createAction: @escaping (ActionSeed) -> (any Actions.Action)?,
     ) {
         self.configurationKeyPath = keyPath
+        self.customizable = customizable
         self.createAction = createAction
     }
 
@@ -32,11 +35,13 @@ struct ActionContextMenuViewModifier<Configuration: ContextMenuConfiguration>: V
                 ActionButtons { _ in
                     self.createActions(seeds: configuration.contextMenu)
                 }
-                Section {
-                    Button("More...", icon: .general.menu) {
-                        navigation.openSheet(.actionSheet(sheetSections, configuration: configurationKeyPath))
+                if customizable {
+                    Section {
+                        Button("More...", icon: .general.menu) {
+                            navigation.openSheet(.actionSheet(sheetSections, configuration: configurationKeyPath))
+                        }
+                        .symbolVariant(.circle)
                     }
-                    .symbolVariant(.circle)
                 }
         }
     }
