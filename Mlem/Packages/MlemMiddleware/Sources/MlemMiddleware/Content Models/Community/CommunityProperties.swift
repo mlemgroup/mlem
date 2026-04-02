@@ -16,14 +16,16 @@ public struct CommunityProperties: UnifiedPropertiesProviding {
     let instanceId: Int
     var updated: Date?
     var displayName: String
-    var description: String?
     var deleted: Bool
     var removed: Bool
     var nsfw: Bool
     var avatar: URL?
-    var banner: URL?
     var hidden: Bool
     var onlyModeratorsCanPost: Bool
+
+    // From Community1Snapshot, but PieFed does not always provide these
+    var banner: URL??
+    var description: String??
     
     // From Community2Snapshot
     var subscription: SubscriptionModel?
@@ -78,30 +80,34 @@ public struct CommunityProperties: UnifiedPropertiesProviding {
         instanceId = snapshot1.instanceId
         updated = snapshot1.updated
         displayName = snapshot1.displayName
-        description = snapshot1.description
         deleted = snapshot1.deleted
         removed = snapshot1.removed
         nsfw = snapshot1.nsfw
         avatar = snapshot1.avatar
-        banner = snapshot1.banner
         hidden = snapshot1.hidden
         onlyModeratorsCanPost = snapshot1.onlyModeratorsCanPost
+
+        if snapshot1.allPropertiesPresent {
+            banner = snapshot1.banner
+            description = snapshot1.description
+        }
     }
     
     public mutating func merge(_ other: CommunityProperties) {
         // tier 1 properties: simple assignment
         self.updated = other.updated
         self.displayName = other.displayName
-        self.description = other.description
         self.deleted = other.deleted
         self.removed = other.removed
         self.nsfw = other.nsfw
         self.avatar = other.avatar
-        self.banner = other.banner
         self.hidden = other.hidden
         self.onlyModeratorsCanPost = other.onlyModeratorsCanPost
         
         // tier 2, 3 properties: only assign if incoming non-nil
+        self.description = other.description ?? self.description
+        self.banner = other.banner ?? self.banner
+
         self.subscription = other.subscription ?? self.subscription
         self.postCount = other.postCount ?? self.postCount
         self.commentCount = other.commentCount ?? self.commentCount
@@ -111,7 +117,5 @@ public struct CommunityProperties: UnifiedPropertiesProviding {
         self.instance = other.instance ?? self.instance
         self.moderators = other.moderators ?? self.moderators
         self.discussionLanguageIds = other.discussionLanguageIds ?? self.discussionLanguageIds
-        
-        let newModCount = self.moderators?.count ?? -1
     }
 }
