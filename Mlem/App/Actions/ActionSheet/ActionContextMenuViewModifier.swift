@@ -35,6 +35,7 @@ struct ActionContextMenuViewModifier<Configuration: ContextMenuConfiguration>: V
                 ActionButtons { _ in
                     self.createActions(seeds: configuration.contextMenu)
                 }
+                .environment(\.isContextMenu, true)
                 if customizable {
                     Section {
                         Button("More...", icon: .general.menu) {
