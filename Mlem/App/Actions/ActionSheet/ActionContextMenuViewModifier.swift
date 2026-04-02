@@ -26,16 +26,6 @@ struct ActionContextMenuViewModifier<Configuration: ContextMenuConfiguration>: V
         self.createAction = createAction
     }
 
-    init(
-        configuration keyPath: ReferenceWritableKeyPath<SettingsValues, Configuration>,
-        customizable: Bool = true,
-        createAction: @escaping (ActionSeed, EnvironmentValues) -> (any Actions.Action)?,
-    ) {
-        self.configurationKeyPathGenerator = { _ in keyPath }
-        self.customizable = customizable
-        self.createAction = createAction
-    }
-
     var configuration: Configuration {
         Settings.get(configurationKeyPathGenerator(environment))
     }
@@ -78,6 +68,16 @@ extension ActionContextMenuViewModifier {
         self.init(configuration: keyPath, customizable: customizable) { seed, _ in
             seed.createAction(entity)
         }
+    }
+
+    init(
+        configuration keyPath: ReferenceWritableKeyPath<SettingsValues, Configuration>,
+        customizable: Bool = true,
+        createAction: @escaping (ActionSeed, EnvironmentValues) -> (any Actions.Action)?,
+    ) {
+        self.configurationKeyPathGenerator = { _ in keyPath }
+        self.customizable = customizable
+        self.createAction = createAction
     }
 
     init(
