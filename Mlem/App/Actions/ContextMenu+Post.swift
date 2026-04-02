@@ -38,13 +38,12 @@ private let moderationSeeds: [ActionSeed] = [
 
 extension View {
     func contextMenu(post: Post) -> some View {
-        modifier(ActionContextMenuViewModifier(entity: post, customizable: false) { environment in
-            if environment.reportContext != nil && Settings.get(\.interactionBar_alternateReportLayout) {
-                \.interactionBar_postReport
-            } else {
-                \.interactionBar_post
-            }
-        })
+        modifier(ActionContextMenuViewModifier(
+            entity: post,
+            configuration: \.interactionBar_post,
+            modMailConfiguration: \.interactionBar_postReport,
+            customizable: false
+        ))
     }
 
     @ViewBuilder
