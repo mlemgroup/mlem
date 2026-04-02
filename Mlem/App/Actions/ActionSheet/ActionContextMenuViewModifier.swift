@@ -57,3 +57,15 @@ struct ActionContextMenuViewModifier<Configuration: ContextMenuConfiguration>: V
         seeds.compactMap(self.createAction)
     }
 }
+
+extension ActionContextMenuViewModifier {
+    init(
+        entity: Any,
+        configuration keyPath: ReferenceWritableKeyPath<SettingsValues, Configuration>,
+        customizable: Bool = true,
+    ) {
+        self.init(configuration: keyPath, customizable: customizable) { 
+            $0.createAction(entity)
+        }
+    }
+}

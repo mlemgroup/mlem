@@ -38,13 +38,11 @@ private let moderationSeeds: [ActionSeed] = [
 
 extension View {
     func contextMenu(post: Post) -> some View {
-        self
-            .contextMenu {
-                ActionButtons { _ in
-                    seeds.compactMap { $0.createAction(post) }
-                }
-                .environment(\.isContextMenu, true)
-            }
+        modifier(ActionContextMenuViewModifier(
+            entity: post,
+            configuration: \.interactionBar_post,
+            customizable: false
+        ))
     }
 
     @ViewBuilder
