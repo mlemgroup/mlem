@@ -11,7 +11,7 @@ import SwiftUI
 
 extension View {
     func contextMenu(notification: InboxNotification) -> some View {
-        modifier(ActionContextMenuViewModifier(configurationKeyPath: \.interactionBar_reply) { seed in
+        modifier(ActionContextMenuViewModifier(configuration: \.interactionBar_reply) { seed in
             seed.createAction(notification) ?? seed.createAction(notification.content.wrappedValue)
         })
     }

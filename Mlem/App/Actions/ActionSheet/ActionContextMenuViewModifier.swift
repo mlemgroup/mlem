@@ -14,6 +14,14 @@ struct ActionContextMenuViewModifier<Configuration: ContextMenuConfiguration>: V
     let configurationKeyPath: ReferenceWritableKeyPath<SettingsValues, Configuration>
     let createAction: (ActionSeed) -> (any Actions.Action)?
 
+    init(
+        configuration keyPath: ReferenceWritableKeyPath<SettingsValues, Configuration>,
+        createAction: @escaping (ActionSeed) -> (any Actions.Action)?
+    ) {
+        self.configurationKeyPath = keyPath
+        self.createAction = createAction
+    }
+
     var configuration: Configuration {
         Settings.get(configurationKeyPath)
     }
