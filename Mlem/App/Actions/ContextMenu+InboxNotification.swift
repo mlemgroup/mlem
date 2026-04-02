@@ -23,7 +23,7 @@ private struct InboxNotificationContextMenuViewModifier: ViewModifier {
                 }
                 Section {
                     Button("More...", icon: .general.menu) {
-                        navigation.openSheet(.actionSheet(sheetSections, configuration: .inboxNotification))
+                        navigation.openSheet(.actionSheet(sheetSections, configuration: \.interactionBar_reply))
                     }
                     .symbolVariant(.circle)
                 }

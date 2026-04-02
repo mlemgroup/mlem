@@ -18,10 +18,6 @@ enum SettingsPage: Hashable {
         case post, comment, inboxNotification, postReport, commentReport, community
     }
 
-    enum ContextMenuSettingType: Hashable {
-        case inboxNotification
-    }
-    
     case root
     case accounts, account
     case profile, accountContent, accountAdvanced, accountSignIn, accountChangeEmail, accountLocal, accountChangePassword, accountLanguages
@@ -44,7 +40,7 @@ enum SettingsPage: Hashable {
     case about, advanced, developer, errorLog
     case interactionBar(ContentActionType)
     case swipeActions(SwipeActionSettingType)
-    case contextMenu(ContextMenuSettingType)
+    case contextMenu(ContextMenuSettingsPage)
     case postBarWidgetPicker(HashWrapper<Binding<PostBarConfiguration>>)
     case commentBarWidgetPicker(HashWrapper<Binding<CommentBarConfiguration>>)
     case replyBarWidgetPicker(HashWrapper<Binding<ReplyBarConfiguration>>)
@@ -54,6 +50,10 @@ enum SettingsPage: Hashable {
     case modMailInteractionBar
     case separateModeratorActions
     case licences, document(Document)
+
+    static func contextMenu(_ keyPath: ReferenceWritableKeyPath<SettingsValues, some ContextMenuConfiguration>) -> Self {
+        .contextMenu(.init(keyPath))
+    }
     
     @ViewBuilder
     // swiftlint:disable:next cyclomatic_complexity function_body_length
@@ -219,11 +219,8 @@ enum SettingsPage: Hashable {
             case .community:
                 SwipeActionEditorView(\.interactionBar_community)
             }
-        case let .contextMenu(type):
-            switch type {
-            case .inboxNotification:
-                ContextMenuSettingsView(\.interactionBar_reply)
-            }
+        case let .contextMenu(page):
+            page.view
         case let .interactionBar(type):
             switch type {
             case .post:
@@ -290,5 +287,23 @@ private struct SimpleMarkdownPage: View {
                 .padding(Constants.main.standardSpacing)
         }
         .background(.themedBackground)
+    }
+}
+
+struct ContextMenuSettingsPage: Hashable {
+    let view: AnyView
+    let hash: Int
+
+    init(_ keyPath: ReferenceWritableKeyPath<SettingsValues, some ContextMenuConfiguration>) {
+        self.hash = keyPath.hashValue
+        self.view = AnyView(ContextMenuSettingsView(keyPath))
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(hash)
+    }
+
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.hashValue == rhs.hashValue
     }
 }

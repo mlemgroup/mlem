@@ -19,7 +19,7 @@ struct ActionSheet: View {
     @Environment(NavigationLayer.self) var navigation
 
     let sections: [ActionSheetSection]
-    let configuration: SettingsPage.ContextMenuSettingType?
+    let configuration: ContextMenuSettingsPage?
 
     @State var popupAnchorModel: PopupAnchorModel = .init()
 
