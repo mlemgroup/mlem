@@ -23,12 +23,11 @@ struct InteractableEllipsisMenuContent<Configuration: ContextMenuConfiguration>:
     var body: some View {
         Group {
             if type.contains(.basic) {
-                ControlGroup {
+                Section {
                     ActionButtons { _ in
                         self.actions(type: .basic)
                     }
                 }
-                .controlGroupStyle(.compactMenu)
             }
             if type.contains(.moderator) {
                 Section {
