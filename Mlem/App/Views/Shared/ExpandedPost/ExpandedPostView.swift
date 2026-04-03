@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 03/09/2024.
 //
 
+import Actions
 import MlemMiddleware
 import SwiftUI
 
@@ -208,11 +209,12 @@ struct ExpandedPostView<Content: View>: View {
             ProgressView()
         } else {
             ToolbarEllipsisMenu {
-                InteractableEllipsisMenuContent(
-                    entity: post,
-                    configuration: \.interactionBar_post,
-                    type: [.basic, .moderator]
-                )
+                ControlGroup {
+                    ActionButtons { _ in
+                        PostBarConfiguration.availableActions.all.compactMap { $0.createAction(post) }
+                    }
+                }
+                .controlGroupStyle(.compactMenu)
                 if !tapPostsToCollapse {
                     Section {
                         Button(
