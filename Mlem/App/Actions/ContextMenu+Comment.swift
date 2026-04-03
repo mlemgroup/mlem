@@ -39,7 +39,7 @@ extension View {
                 entity: comment,
                 configuration: \.interactionBar_comment,
                 modMailConfiguration: \.interactionBar_commentReport,
-                customizable: false
+                customizable: true
             )
         }
     }
@@ -58,48 +58,22 @@ extension EllipsisMenu {
         icon: Icon = .general.menu,
         size: CGFloat,
         comment: Comment,
-        type: Set<CommentEllipsisMenuContent.ActionListType> = [.basic, .moderator]
-    ) where Content == CommentEllipsisMenuContent {
+        type: Set<EllipsisMenuType> = [.basic, .moderator]
+    ) where Content == CustomizableActionMenu<CommentBarConfiguration> {
         self.icon = icon
         self.size = size
 
-        self.content = CommentEllipsisMenuContent(comment: comment, type: type)
-    }
-}
-
-struct CommentEllipsisMenuContent: View {
-    @Environment(\.reportContext) var reportContext: Report?
-    
-    enum ActionListType {
-        case basic, moderator
-    }
-
-    let comment: Comment
-    let type: Set<ActionListType>
-
-    var body: some View {
-        Group {
-            if type.contains(.basic) {
-                ControlGroup {
-                    ActionButtons { _ in
-                        seeds.compactMap { $0.createAction(comment) }
-                    }
-                }
-                .controlGroupStyle(.compactMenu)
-            }
-            if type.contains(.moderator) {
-                Section {
-                    ActionButtons { _ in
-                        var ret = moderationSeeds.compactMap { $0.createAction(comment) }
-                        if let reportContext,
-                            let resolveAction = ActionSeed.resolveReport.createAction(reportContext) {
-                            ret.append(resolveAction)
-                        }
-                        return ret
-                    }
-                }
+        self.content = CustomizableActionMenu(
+            entity: comment,
+            configuration: \.interactionBar_comment,
+            modMailConfiguration: \.interactionBar_commentReport,
+            customizable: true
+        ) { seed in
+            if seed.isModeratorAction {
+                return type.contains(.moderator)
+            } else {
+                return type.contains(.basic)
             }
         }
-        .environment(\.isContextMenu, true)
     }
 }
