@@ -65,7 +65,7 @@ extension EllipsisMenu {
         self.icon = icon
         self.size = size
 
-        self.content = PostEllipsisMenuContent(post: post, type: type)
+        self.content = PostEllipsisMenuContent(entity: post, type: type)
     }
 }
 
@@ -78,7 +78,7 @@ struct PostEllipsisMenuContent: View {
         case basic, moderator
     }
 
-    let post: Post
+    let entity: Any
     let type: Set<ActionListType>
 
     var body: some View {
@@ -96,7 +96,7 @@ struct PostEllipsisMenuContent: View {
                     ActionButtons { _ in
                         var ret = configuration.contextMenu
                             .filter(\.isModeratorAction)
-                            .compactMap { $0.createAction(post) }
+                            .compactMap { $0.createAction(entity) }
                         if let reportContext,
                             let resolveAction = ActionSeed.resolveReport.createAction(reportContext) {
                             ret.append(resolveAction)
@@ -118,7 +118,7 @@ struct PostEllipsisMenuContent: View {
                         return action
                     }
                 }
-                return seed.createAction(post)
+                return seed.createAction(entity)
             }
     }
 
