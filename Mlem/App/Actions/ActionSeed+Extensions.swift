@@ -9,7 +9,15 @@ import Actions
 
 extension ActionSeed {
     private static let moderatorActions: Set<ActionSeed> = [
-        .viewVotes
+        .pin,
+        .lock,
+        .markNsfw,
+        .viewVotes,
+        .remove,
+        .banCreator,
+        .purge,
+        .purgeCreator,
+        .resolveReport
     ]
 
     var isModeratorAction: Bool {
