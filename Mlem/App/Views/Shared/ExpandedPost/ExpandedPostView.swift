@@ -208,7 +208,11 @@ struct ExpandedPostView<Content: View>: View {
             ProgressView()
         } else {
             ToolbarEllipsisMenu {
-                PostEllipsisMenuContent(post: post, type: [.basic, .moderator])
+                InteractableEllipsisMenuContent(
+                    entity: post,
+                    configuration: \.interactionBar_post,
+                    type: [.basic, .moderator]
+                )
                 if !tapPostsToCollapse {
                     Section {
                         Button(
