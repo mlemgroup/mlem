@@ -60,25 +60,24 @@ extension EllipsisMenu {
         icon: Icon = .general.menu,
         size: CGFloat,
         post: Post,
-        type: Set<PostEllipsisMenuContent.ActionListType> = [.basic, .moderator]
-    ) where Content == PostEllipsisMenuContent {
+        type: Set<Content.ActionListType> = [.basic, .moderator]
+    ) where Content == PostEllipsisMenuContent<PostBarConfiguration> {
         self.icon = icon
         self.size = size
 
-        self.content = PostEllipsisMenuContent(entity: post, type: type)
+        self.content = PostEllipsisMenuContent(entity: post, configuration: \.interactionBar_post, type: type)
     }
 }
 
-struct PostEllipsisMenuContent: View {
+struct PostEllipsisMenuContent<Configuration: ContextMenuConfiguration>: View {
     @Environment(\.reportContext) var reportContext: Report?
-
-    @Setting(\.interactionBar_post) var configuration: PostBarConfiguration
 
     enum ActionListType {
         case basic, moderator
     }
 
     let entity: Any
+    let configuration: Configuration
     let type: Set<ActionListType>
 
     var body: some View {
@@ -127,5 +126,19 @@ struct PostEllipsisMenuContent: View {
         case .basic: seed.isBasicAction
         case .moderator: seed.isModeratorAction
         }
+    }
+}
+
+extension PostEllipsisMenuContent {
+    init(
+        entity: Any,
+        configuration keyPath: ReferenceWritableKeyPath<SettingsValues, Configuration>,
+        type: Set<ActionListType>
+    ) {
+        self.init(
+            entity: entity,
+            configuration: Settings.get(keyPath),
+            type: type
+        )
     }
 }
