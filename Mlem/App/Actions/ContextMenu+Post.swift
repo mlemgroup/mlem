@@ -31,16 +31,31 @@ extension View {
     }
 }
 
+enum EllipsisMenuType {
+    case basic, moderator
+}
+
 extension EllipsisMenu {
     init(
         icon: Icon = .general.menu,
         size: CGFloat,
         post: Post,
-        type: Set<Content.ActionListType> = [.basic, .moderator]
-    ) where Content == InteractableEllipsisMenuContent<PostBarConfiguration> {
+        type: Set<EllipsisMenuType> = [.basic, .moderator]
+    ) where Content == CustomizableActionMenu<PostBarConfiguration> {
         self.icon = icon
         self.size = size
 
-        self.content = InteractableEllipsisMenuContent(entity: post, configuration: \.interactionBar_post, type: type)
+        self.content = CustomizableActionMenu(
+            entity: post,
+            configuration: \.interactionBar_post,
+            modMailConfiguration: \.interactionBar_postReport,
+            customizable: true
+        ) { seed in
+            if seed.isModeratorAction {
+                return type.contains(.moderator)
+            } else {
+                return type.contains(.basic)
+            }
+        }
     }
 }

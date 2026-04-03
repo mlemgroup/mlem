@@ -81,7 +81,8 @@ extension CustomizableActionMenu {
         entity: Any,
         configuration: ReferenceWritableKeyPath<SettingsValues, Configuration>,
         modMailConfiguration: ReferenceWritableKeyPath<SettingsValues, Configuration>,
-        customizable: Bool = true
+        customizable: Bool = true,
+        _ filter: @escaping (ActionSeed) -> Bool = { _ in true }
     ) {
         self.init(
         customizable: customizable,
@@ -93,6 +94,7 @@ extension CustomizableActionMenu {
             }
         },
         createAction: { seed, environment in
+            if !filter(seed) { return nil }
             if let report = environment.reportContext {
                 if let action = seed.createAction(report) {
                     return action
