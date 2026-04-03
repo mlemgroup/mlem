@@ -42,6 +42,7 @@ extension View {
                 customizable: true
             )
         }
+        .popupAnchor()
     }
 
     @ViewBuilder
