@@ -12,12 +12,14 @@ import SwiftUI
 
 extension View {
     func contextMenu(post: Post) -> some View {
-        modifier(ActionContextMenuViewModifier(
-            entity: post,
-            configuration: \.interactionBar_post,
-            modMailConfiguration: \.interactionBar_postReport,
-            customizable: false
-        ))
+        contextMenu {
+            CustomizableActionMenu(
+                entity: post,
+                configuration: \.interactionBar_post,
+                modMailConfiguration: \.interactionBar_postReport,
+                customizable: true
+            )
+        }
     }
 
     @ViewBuilder

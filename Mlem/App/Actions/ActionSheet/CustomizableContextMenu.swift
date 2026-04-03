@@ -1,5 +1,5 @@
 //
-//  ActionContextMenuViewModifier.swift
+//  CustomizableActionMenu.swift
 //  Mlem
 //
 //  Created by Sjmarf on 2026-04-02.
@@ -8,7 +8,7 @@
 import Actions
 import SwiftUI
 
-struct ActionContextMenuViewModifier<Configuration: ContextMenuConfiguration>: ViewModifier {
+struct CustomizableActionMenu<Configuration: ContextMenuConfiguration>: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.self) var environment
 
@@ -30,26 +30,23 @@ struct ActionContextMenuViewModifier<Configuration: ContextMenuConfiguration>: V
         Settings.get(configurationKeyPathGenerator(environment))
     }
 
-    func body(content: Content) -> some View {
-        content
-            .contextMenu {
-                ActionButtons { _ in
-                    self.createActions(seeds: configuration.contextMenu)
+    var body: some View {
+        ActionButtons { _ in
+            self.createActions(seeds: configuration.contextMenu)
+        }
+        .environment(\.isContextMenu, true)
+        if customizable {
+            Section {
+                Button("More...", icon: .general.menu) {
+                    navigation.openSheet(.actionSheet(sheetSections, configuration: configurationKeyPathGenerator(environment)))
                 }
-                .environment(\.isContextMenu, true)
-                if customizable {
-                    Section {
-                        Button("More...", icon: .general.menu) {
-                            navigation.openSheet(.actionSheet(sheetSections, configuration: configurationKeyPathGenerator(environment)))
-                        }
-                        .symbolVariant(.circle)
-                    }
-                }
+                .symbolVariant(.circle)
+            }
         }
     }
 
     var sheetSections: [ActionSheetSection] {
-        ReplyBarConfiguration.availableActions.sections.map { seeds in
+        Configuration.availableActions.sections.map { seeds in
             .init(actions: self.createActions(seeds: seeds))
         }
     }
@@ -59,7 +56,7 @@ struct ActionContextMenuViewModifier<Configuration: ContextMenuConfiguration>: V
     }
 }
 
-extension ActionContextMenuViewModifier {
+extension CustomizableActionMenu {
     init(
         entity: Any,
         configuration keyPath: ReferenceWritableKeyPath<SettingsValues, Configuration>,

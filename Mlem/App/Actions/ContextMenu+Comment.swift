@@ -34,12 +34,14 @@ private let moderationSeeds: [ActionSeed] = [
 
 extension View {
     func contextMenu(comment: Comment) -> some View {
-        modifier(ActionContextMenuViewModifier(
-            entity: comment,
-            configuration: \.interactionBar_comment,
-            modMailConfiguration: \.interactionBar_commentReport,
-            customizable: false
-        ))
+        contextMenu {
+            CustomizableActionMenu(
+                entity: comment,
+                configuration: \.interactionBar_comment,
+                modMailConfiguration: \.interactionBar_commentReport,
+                customizable: false
+            )
+        }
     }
 
     @ViewBuilder
