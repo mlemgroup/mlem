@@ -5,10 +5,22 @@ on:
     push:
         branches:
         - master
+        
+    pull_request
 
     # Run when we tweak Swift or supporting files
-    pull_request:
-        paths:
+#    pull_request:
+#        paths:
+#        - '.github/workflows/swiftlint.yml'
+#        - '.swiftlint.yml'
+#        - '**/*.swift'
+#        - 'Mlem.xcodeproj/project.pbxproj'
+
+- uses: dorny/paths-filter@v4
+  id: changes
+  with:
+    filters: |
+      src:
         - '.github/workflows/swiftlint.yml'
         - '.swiftlint.yml'
         - '**/*.swift'
@@ -16,6 +28,7 @@ on:
 
 jobs:
   SwiftLint:
+    if: steps.changes.outputs.src == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
