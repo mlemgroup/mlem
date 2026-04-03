@@ -5,10 +5,15 @@
 //  Created by Eric Andrews on 2026-02-06.
 //
 
+import MlemBackend
 import MlemMiddleware
 
 extension Person {
     var shouldHideInFeed: Bool { blocked || purged }
+
+    var isMlemDeveloper: Bool {
+        BackendClient.main.flairs.developers.contains(actorId.description)
+    }
     
     func flairs(
         interactableContext interactable: (any InteractableProviding)? = nil,

@@ -96,6 +96,7 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
                         scrollProxy.scrollTo(newIndex)
                     }
                 }
+                .id(tabs.hashValue)
             }
             
             if dividers.contains(.bottom) {
@@ -129,6 +130,7 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
                             isSelectionIndicator: isSelectionIndicator
                         )
                     }
+                    .id("\(isSelectionIndicator)\(value(tab) ?? -1)")
                 } else {
                     bubbleButtonLabel(tab: tab, isSelectionIndicator: isSelectionIndicator)
                 }

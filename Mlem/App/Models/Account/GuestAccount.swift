@@ -48,7 +48,7 @@ class GuestAccount: Account {
     }
     
     enum DecodingError: Error {
-        case invalidHost, noTokenInKeychain
+        case invalidHost
     }
     
     required init(from decoder: Decoder) throws {

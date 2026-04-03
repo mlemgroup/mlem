@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import MlemBackend
 import MlemMiddleware
 
 extension InstanceSummary {

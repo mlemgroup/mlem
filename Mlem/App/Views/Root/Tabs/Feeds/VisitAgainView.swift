@@ -7,6 +7,7 @@
 
 import Dependencies
 import Foundation
+import MlemBackend
 import MlemMiddleware
 import SwiftUI
 import Theming

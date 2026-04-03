@@ -27,6 +27,11 @@ struct ImageViewer: View {
         muted: Settings.get(\.behavior_muteVideos),
         scrubbingAvailable: true
     )
+
+    @Setting(\.imageViewer_showControls) var showControls
+    @Setting(\.imageViewer_showCloseButton) var showCloseButton
+    @Setting(\.imageViewer_showZoomIndicator) var showZoomIndicator
+    @Setting(\.imageViewer_dismissThreshold) var dismissThreshold
     
     /// Current scale of the zoomable image
     @State var zoomScale: CGFloat = 1.0
@@ -86,6 +91,7 @@ struct ImageViewer: View {
     init(url: URL) {
         var components = URLComponents(url: url, resolvingAgainstBaseURL: false)!
         components.queryItems = components.queryItems?.filter { $0.name != "thumbnail" }
+        self.controlOpacity = Settings.get(\.imageViewer_showControls) == .immediately ? 1 : 0
         self.url = components.url!
     }
     
@@ -98,7 +104,7 @@ struct ImageViewer: View {
             customDragMoved: dragMoved,
             customDragEnded: dragEnded
         ) {
-            if enableControlTap {
+            if enableControlTap, showControls != .never {
                 if controlsShown {
                     hideControls()
                 } else {
@@ -110,13 +116,15 @@ struct ImageViewer: View {
         .background(.black)
         .overlay(controlOverlay)
         .overlay(alignment: .topLeading) {
-            scaleDisplay
+            if showZoomIndicator {
+                scaleDisplay
+            }
         }
         .opacity(opacity)
         .onChange(of: isZoomed) {
             if isZoomed {
                 hideControls(withSlide: true)
-            } else {
+            } else if showControls == .immediately {
                 showControls(withSlide: true)
             }
         }
@@ -187,7 +195,7 @@ struct ImageViewer: View {
             }
         } else {
             // dismiss swipe ended: choose whether to dismiss or reset
-            if abs(offset) > 100 {
+            if abs(offset) > CGFloat(dismissThreshold) * 10 {
                 swipeDismiss(finalOffset: offset > 0 ? screenHeight : -screenHeight)
             } else {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {

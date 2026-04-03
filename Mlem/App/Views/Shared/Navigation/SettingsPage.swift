@@ -8,13 +8,18 @@
 import LemmyMarkdownUI
 import SwiftUI
 
+// swiftlint:disable:next type_body_length
 enum SettingsPage: Hashable {
     enum ContentActionType: Hashable {
-        case post, comment, reply, postReport, commentReport
+        case post, comment, inboxNotification, postReport, commentReport
     }
 
     enum SwipeActionSettingType: Hashable {
-        case post, comment, reply, postReport, commentReport, community
+        case post, comment, inboxNotification, postReport, commentReport, community
+    }
+
+    enum ContextMenuSettingType: Hashable {
+        case inboxNotification
     }
     
     case root
@@ -26,6 +31,7 @@ enum SettingsPage: Hashable {
     case privacyBypassImageProxy
     case safetyBlurNsfw, safetyWarnings
     case links, embedding
+    case imageViewer, imageViewerControls, imageViewerDismissSensitivity
     case animatedAvatars
     case externalLinks, sharingLinks, tappableLinks
     case importExportSettings
@@ -38,6 +44,7 @@ enum SettingsPage: Hashable {
     case about, advanced, developer, errorLog
     case interactionBar(ContentActionType)
     case swipeActions(SwipeActionSettingType)
+    case contextMenu(ContextMenuSettingType)
     case postBarWidgetPicker(HashWrapper<Binding<PostBarConfiguration>>)
     case commentBarWidgetPicker(HashWrapper<Binding<CommentBarConfiguration>>)
     case replyBarWidgetPicker(HashWrapper<Binding<ReplyBarConfiguration>>)
@@ -162,6 +169,12 @@ enum SettingsPage: Hashable {
             LongPressActionSettingsView()
         case .inboxBadge:
             InboxBadgeSettingsView()
+        case .imageViewer:
+            ImageViewerSettingsView()
+        case .imageViewerControls:
+            ImageViewerShowControlsSettingsView()
+        case .imageViewerDismissSensitivity:
+            ImageViewerDismissSettingsView()
         case let .swipeActions(type):
             switch type {
             case .post:
@@ -182,7 +195,7 @@ enum SettingsPage: Hashable {
                         $0.applying(other: configuration, types: [.swipe])
                     }
                 })
-            case .reply:
+            case .inboxNotification:
                 SwipeActionEditorView(\.interactionBar_reply, onApplyToAll: { configuration in
                     Settings.mutate(\.interactionBar_post) {
                         $0.applying(other: configuration, types: [.swipe])
@@ -206,13 +219,18 @@ enum SettingsPage: Hashable {
             case .community:
                 SwipeActionEditorView(\.interactionBar_community)
             }
+        case let .contextMenu(type):
+            switch type {
+            case .inboxNotification:
+                ContextMenuSettingsView(\.interactionBar_reply)
+            }
         case let .interactionBar(type):
             switch type {
             case .post:
                 InteractionBarEditorView(setting: \.interactionBar_post, isReport: false)
             case .comment:
                 InteractionBarEditorView(setting: \.interactionBar_comment, isReport: false)
-            case .reply:
+            case .inboxNotification:
                 InteractionBarEditorView(setting: \.interactionBar_reply, isReport: false)
             case .postReport:
                 InteractionBarEditorView(setting: \.interactionBar_postReport, isReport: true)

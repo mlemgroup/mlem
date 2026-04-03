@@ -6,6 +6,7 @@
 //
 
 import Dependencies
+import MlemBackend
 import MlemMiddleware
 import SwiftUI
 import Theming
@@ -69,8 +70,8 @@ struct DeveloperSettingsView: View {
             #if DEBUG
                 Section {
                     Toggle(String("Use QC Backend"),
-                           isOn: .init(get: { BackendClient.main.environment == .qc },
-                                       set: { BackendClient.main.changeEnvironment(to: $0 ? .qc : .prod) }))
+                           isOn: .init(get: { BackendClient.main.environment == .qualityControl },
+                                       set: { BackendClient.main.changeEnvironment(to: $0 ? .qualityControl : .production) }))
                     
                     Button(String("Trigger Onboarding")) {
                         navigation.showFullScreenCover(.onboarding)

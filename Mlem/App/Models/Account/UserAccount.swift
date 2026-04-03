@@ -47,7 +47,7 @@ class UserAccount: Account, CommunityOrPerson {
         case siteSoftware
     }
     
-    enum DecodingError: Error { case cannotModifyPathComponents, invalidHost }
+    enum DecodingError: Error { case cannotModifyPathComponents, invalidHost, noTokenInKeychain }
     
     required init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
@@ -100,7 +100,7 @@ class UserAccount: Account, CommunityOrPerson {
             if let token {
                 api.updateToken(token)
             } else {
-                handleError(MlemError.modelError("No token in keychain"))
+                handleError(DecodingError.noTokenInKeychain)
             }
         } catch {
             handleError(error)
