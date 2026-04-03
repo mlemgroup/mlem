@@ -10,32 +10,6 @@ import Icons
 import MlemMiddleware
 import SwiftUI
 
-private let seeds: [ActionSeed] = [
-    .upvote,
-    .downvote,
-    .save,
-    .reply,
-    .selectText,
-    .share,
-    .hide,
-    .createImage,
-    .report,
-    .blockCreator,
-    .edit,
-    .delete
-]
-
-private let moderationSeeds: [ActionSeed] = [
-    .pin,
-    .lock,
-    .markNsfw,
-    .viewVotes,
-    .remove,
-    .banCreator,
-    .purge,
-    .purgeCreator
-]
-
 extension View {
     func contextMenu(post: Post) -> some View {
         modifier(ActionContextMenuViewModifier(
