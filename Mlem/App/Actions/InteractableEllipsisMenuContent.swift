@@ -32,14 +32,7 @@ struct InteractableEllipsisMenuContent<Configuration: ContextMenuConfiguration>:
             if type.contains(.moderator) {
                 Section {
                     ActionButtons { _ in
-                        var ret = configuration.contextMenu
-                            .filter(\.isModeratorAction)
-                            .compactMap { $0.createAction(entity) }
-                        if let reportContext,
-                            let resolveAction = ActionSeed.resolveReport.createAction(reportContext) {
-                            ret.append(resolveAction)
-                        }
-                        return ret
+                        self.actions(type: .moderator)
                     }
                 }
             }
