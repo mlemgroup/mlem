@@ -112,7 +112,14 @@ struct PostEllipsisMenuContent: View {
     func actions(type: ActionListType) -> [any Actions.Action] {
         return configuration.contextMenu
             .filter { self.actionSeedHasType($0, type: type) }
-            .compactMap { $0.createAction(post) }
+            .compactMap { seed in
+                if let report = reportContext {
+                    if let action = seed.createAction(report) {
+                        return action
+                    }
+                }
+                return seed.createAction(post)
+            }
     }
 
     func actionSeedHasType(_ seed: ActionSeed, type: ActionListType) -> Bool {
