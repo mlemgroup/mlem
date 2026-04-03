@@ -1,34 +1,32 @@
 name: CI - Lint
 
 on:
-    # Run in master as CI
-    push:
-        branches:
-        - master
-        
-    pull_request:
-        branches:
-        - master
-        - dev
+  # Run in master as CI
+  push:
+    branches:
+    - master
+      
+  pull_request:
+    branches:
+    - master
+    - dev
 
 jobs:
-    changes:
-        steps:
-            - uses: dorny/paths-filter@v4
-              id: changes
-              with:
-                filters: |
-                  src:
-                    - '.github/workflows/swiftlint.yml'
-                    - '.swiftlint.yml'
-                    - '**/*.swift'
-                    - 'Mlem.xcodeproj/project.pbxproj'
-    SwiftLint:
-        if: steps.changes.outputs.src == 'true'
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v1
-            - name: GitHub Action for SwiftLint
-            uses: norio-nomura/action-swiftlint@3.2.1
-            with:
-                args: --strict
+  SwiftLint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: dorny/paths-filter@v4
+      id: changes
+      with:
+        filters: |
+          src:
+            - '.github/workflows/swiftlint.yml'
+            - '.swiftlint.yml'
+            - '**/*.swift'
+            - 'Mlem.xcodeproj/project.pbxproj'
+    
+    - name: GitHub Action for SwiftLint
+      uses: norio-nomura/action-swiftlint@3.2.1
+      with:
+        args: --strict
