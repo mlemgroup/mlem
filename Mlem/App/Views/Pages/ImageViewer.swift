@@ -28,7 +28,7 @@ struct ImageViewer: View {
         scrubbingAvailable: true
     )
 
-    @Setting(\.imageViewer_showOverlayByDefault) var showOverlayByDefault
+    @Setting(\.imageViewer_showControls) var showControls
     @Setting(\.imageViewer_showCloseButton) var showCloseButton
     @Setting(\.imageViewer_showZoomIndicator) var showZoomIndicator
     @Setting(\.imageViewer_dismissThreshold) var dismissThreshold
@@ -91,7 +91,7 @@ struct ImageViewer: View {
     init(url: URL) {
         var components = URLComponents(url: url, resolvingAgainstBaseURL: false)!
         components.queryItems = components.queryItems?.filter { $0.name != "thumbnail" }
-        self.controlOpacity = Settings.get(\.imageViewer_showOverlayByDefault) ? 1 : 0
+        self.controlOpacity = Settings.get(\.imageViewer_showControls) == .immediately ? 1 : 0
         self.url = components.url!
     }
     
@@ -104,7 +104,7 @@ struct ImageViewer: View {
             customDragMoved: dragMoved,
             customDragEnded: dragEnded
         ) {
-            if enableControlTap {
+            if enableControlTap, showControls != .never {
                 if controlsShown {
                     hideControls()
                 } else {
@@ -124,7 +124,7 @@ struct ImageViewer: View {
         .onChange(of: isZoomed) {
             if isZoomed {
                 hideControls(withSlide: true)
-            } else if showOverlayByDefault {
+            } else if showControls == .immediately {
                 showControls(withSlide: true)
             }
         }
