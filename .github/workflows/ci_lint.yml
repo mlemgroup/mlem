@@ -6,7 +6,11 @@ on:
         branches:
         - master
         
-    pull_request
+    pull_request:
+        types:
+        - opened
+        - synchronized
+        - reopened
 
     # Run when we tweak Swift or supporting files
 #    pull_request:
