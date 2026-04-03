@@ -61,84 +61,10 @@ extension EllipsisMenu {
         size: CGFloat,
         post: Post,
         type: Set<Content.ActionListType> = [.basic, .moderator]
-    ) where Content == PostEllipsisMenuContent<PostBarConfiguration> {
+    ) where Content == InteractableEllipsisMenuContent<PostBarConfiguration> {
         self.icon = icon
         self.size = size
 
-        self.content = PostEllipsisMenuContent(entity: post, configuration: \.interactionBar_post, type: type)
-    }
-}
-
-struct PostEllipsisMenuContent<Configuration: ContextMenuConfiguration>: View {
-    @Environment(\.reportContext) var reportContext: Report?
-
-    enum ActionListType {
-        case basic, moderator
-    }
-
-    let entity: Any
-    let configuration: Configuration
-    let type: Set<ActionListType>
-
-    var body: some View {
-        Group {
-            if type.contains(.basic) {
-                ControlGroup {
-                    ActionButtons { _ in
-                        self.actions(type: .basic)
-                    }
-                }
-                .controlGroupStyle(.compactMenu)
-            }
-            if type.contains(.moderator) {
-                Section {
-                    ActionButtons { _ in
-                        var ret = configuration.contextMenu
-                            .filter(\.isModeratorAction)
-                            .compactMap { $0.createAction(entity) }
-                        if let reportContext,
-                            let resolveAction = ActionSeed.resolveReport.createAction(reportContext) {
-                            ret.append(resolveAction)
-                        }
-                        return ret
-                    }
-                }
-            }
-        }
-        .environment(\.isContextMenu, true)
-    }
-
-    func actions(type: ActionListType) -> [any Actions.Action] {
-        return configuration.contextMenu
-            .filter { self.actionSeedHasType($0, type: type) }
-            .compactMap { seed in
-                if let report = reportContext {
-                    if let action = seed.createAction(report) {
-                        return action
-                    }
-                }
-                return seed.createAction(entity)
-            }
-    }
-
-    func actionSeedHasType(_ seed: ActionSeed, type: ActionListType) -> Bool {
-        switch type {
-        case .basic: seed.isBasicAction
-        case .moderator: seed.isModeratorAction
-        }
-    }
-}
-
-extension PostEllipsisMenuContent {
-    init(
-        entity: Any,
-        configuration keyPath: ReferenceWritableKeyPath<SettingsValues, Configuration>,
-        type: Set<ActionListType>
-    ) {
-        self.init(
-            entity: entity,
-            configuration: Settings.get(keyPath),
-            type: type
-        )
+        self.content = InteractableEllipsisMenuContent(entity: post, configuration: \.interactionBar_post, type: type)
     }
 }
