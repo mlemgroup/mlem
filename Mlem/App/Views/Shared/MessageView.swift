@@ -40,8 +40,13 @@ struct MessageView<EmbeddedContent: View>: View {
                         .symbolVariant(notification.read ? .none : .fill)
                         .foregroundStyle(.themedAccent)
                 }
-                ellipsisMenus
-                    .frame(height: 10)
+                if let notification {
+                    EllipsisMenu(size: 24, notification: notification)
+                        .frame(height: 10)
+                } else if let reportContext {
+                    EllipsisMenu(size: 24, message: message, report: reportContext)
+                        .frame(height: 10)
+                }
             }
             if message.deleted {
                 Text("Message was deleted")
@@ -69,49 +74,11 @@ struct MessageView<EmbeddedContent: View>: View {
         .quickSwipes(message.swipeActions(notification: notification, appState: appState))
         .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
-        .contextMenu {
-            message.allMenuActions(
-                appState: appState,
-                editCallback: editMessage,
-                navigation: navigation,
-                notification: notification,
-                report: reportContext
-            )
-        }
+        .contextMenu(notification: notification, message: message, report: reportContext)
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
         .onTapGesture {
             if let otherPerson, message.api.canInteract(appState: appState) {
                 navigation.push(.messageFeed(otherPerson))
-            }
-        }
-    }
-    
-    var ellipsisMenus: some View {
-        HStack {
-            if moderatorActionGrouping == .separateMenu {
-                if message.api.isAdmin {
-                    EllipsisMenu(icon: .lemmy.moderation, size: 24) {
-                        message.moderatorMenuActions(appState: appState, report: reportContext)
-                    }
-                }
-                EllipsisMenu(size: 24) {
-                    message.basicMenuActions(
-                        appState: appState,
-                        editCallback: editMessage,
-                        navigation: navigation,
-                        notification: notification
-                    )
-                }
-            } else {
-                EllipsisMenu(size: 24) {
-                    message.allMenuActions(
-                        appState: appState,
-                        editCallback: editMessage,
-                        navigation: navigation,
-                        notification: notification,
-                        report: reportContext
-                    )
-                }
             }
         }
     }
