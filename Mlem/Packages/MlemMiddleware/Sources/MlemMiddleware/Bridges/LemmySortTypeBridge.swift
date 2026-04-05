@@ -14,7 +14,7 @@ import URLEncoder
 // The type of that property is manually overriden with this type, which
 // can then be converted into either of those two types.
 
-public typealias ApiBridgeable = Codable & Hashable & RawRepresentable<String> & Sendable
+public typealias ApiBridgeable = Codable & Hashable & Sendable
 
 public enum ApiBridge<OldType: ApiBridgeable, NewType: ApiBridgeable>: Codable, Hashable, Sendable {
     case old(OldType)
@@ -61,8 +61,7 @@ public extension ApiBridge {
     }
     
     func encode(to encoder: any Encoder) throws {
-        var container = encoder.singleValueContainer()
-        try container.encode(value.rawValue)
+        try value.encode(to: encoder)
     }
 }
 
