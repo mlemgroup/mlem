@@ -79,13 +79,8 @@ public extension LemmyConnection {
                 page: page,
                 limit: limit,
                 postTitleOnly: false,
-                timeRangeSeconds: sort.timeRangeSeconds,
-                titleOnly: nil,
-                postUrlOnly: nil,
-                likedOnly: nil,
-                dislikedOnly: nil,
-                showNsfw: nil,
-                pageCursor: nil
+                searchTerm: query,
+                searchTitleOnly: false
             )
         }
         return try response.users?.map { try .init(from: $0) } ?? []
@@ -279,7 +274,8 @@ public extension LemmyConnection {
                 defaultItemsPerPage: nil,
                 defaultCommentSortType: nil,
                 blockingKeywords: nil,
-                enablePrivateMessages: nil,
+                animatedImagesEnabled: nil,
+                privateMessagesEnabled: nil,
                 showScore: nil,
                 autoMarkFetchedPostsAsRead: nil,
                 hideMedia: nil,
@@ -358,7 +354,8 @@ public extension LemmyConnection {
                 defaultItemsPerPage: nil,
                 defaultCommentSortType: nil,
                 blockingKeywords: nil,
-                enablePrivateMessages: nil,
+                animatedImagesEnabled: nil,
+                privateMessagesEnabled: nil,
                 showScore: nil,
                 autoMarkFetchedPostsAsRead: nil,
                 hideMedia: nil,

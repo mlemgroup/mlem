@@ -141,6 +141,7 @@ public extension Person {
             publishedAt: created,
             updatedAt: updated,
             apId: actorId,
+            lastRefreshedAt: nil,
             postCount: nil,
             commentCount: nil
         )

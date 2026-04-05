@@ -48,6 +48,8 @@ public enum ModlogEntryType: CaseIterable {
         case .modLockComment: throw .featureUnsupported
         case .adminFeaturePostSite: throw .featureUnsupported
         case .modFeaturePostCommunity: throw .featureUnsupported
+        case .modWarnPost: throw .featureUnsupported
+        case .modWarnComment: throw .featureUnsupported
         }
         if let result {
             self = result

@@ -38,7 +38,10 @@ public extension LemmyConnection {
                 multiCommunityName: nil,
                 hideMedia: nil,
                 markAsRead: nil,
-                noCommentsOnly: nil
+                noCommentsOnly: nil,
+                searchTerm: nil,
+                searchTitleOnly: nil,
+                searchUrlOnly: nil
             )
         }
         return try (
@@ -77,7 +80,10 @@ public extension LemmyConnection {
                 multiCommunityName: nil,
                 hideMedia: nil,
                 markAsRead: nil,
-                noCommentsOnly: nil
+                noCommentsOnly: nil,
+                searchTerm: nil,
+                searchTitleOnly: nil,
+                searchUrlOnly: nil
             )
         }
         return try (
@@ -150,7 +156,10 @@ public extension LemmyConnection {
                     multiCommunityName: nil,
                     hideMedia: nil,
                     markAsRead: nil,
-                    noCommentsOnly: nil
+                    noCommentsOnly: nil,
+                    searchTerm: nil,
+                    searchTitleOnly: nil,
+                    searchUrlOnly: nil
                 )
                 let response = try await self.perform(request, endpoint: .v3)        
                 return try (
@@ -283,16 +292,11 @@ public extension LemmyConnection {
                 page: page,
                 limit: limit,
                 postTitleOnly: false,
-                timeRangeSeconds: timeRangeSeconds,
-                titleOnly: nil,
-                postUrlOnly: nil,
-                likedOnly: nil,
-                dislikedOnly: nil,
-                showNsfw: nil,
-                pageCursor: nil
+                searchTerm: query,
+                searchTitleOnly: false
             )
         }
-        return try response.posts?.map { try .init(from: $0) } ?? []
+        return try response.posts.map { try .init(from: $0) } ?? []
     }
     
     func markPostsAsRead(ids: Set<Int>, read: Bool) async throws {
@@ -413,7 +417,7 @@ public extension LemmyConnection {
         languageId: Int? = nil
     ) async throws -> Post2Snapshot {
         let response = try await performingForEndpoint { endpoint in
-            LemmyUpdatePostRequest(
+            LemmyEditPostRequest(
                 endpoint: endpoint,
                 postId: id,
                 name: title,
@@ -478,7 +482,8 @@ public extension LemmyConnection {
                 endpoint: endpoint,
                 postId: id,
                 removed: remove,
-                reason: reason
+                reason: reason,
+                removeChildren: nil
             )
         }
         return try .init(from: response.postView)
@@ -521,7 +526,7 @@ public extension LemmyConnection {
             case .v3:
                 throw ApiClientError.featureUnsupported
             case .v4:
-                return LemmyModUpdatePostRequest(postId: id, nsfw: nsfw, tags: nil)
+                return LemmyModEditPostRequest(postId: id, nsfw: nsfw, tags: nil)
             }
         }
         return try .init(from: response.postView.post)
