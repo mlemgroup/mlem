@@ -11,7 +11,6 @@ import Observation
 
 @Observable
 class GuestAccount: Account {
-    static let tierNumber: Int = 1
     let actorId: ActorIdentifier
     let api: ApiClient
     var storedNickname: String?

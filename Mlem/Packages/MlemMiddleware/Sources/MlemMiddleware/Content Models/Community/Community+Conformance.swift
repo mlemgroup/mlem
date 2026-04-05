@@ -13,12 +13,6 @@ public extension Community {
     var cacheId: Int { id }
 }
 
-// MARK: ContentModel
-
-public extension Community {
-    static var tierNumber: Int = 4
-}
-
 // MARK: CommunityOrPerson
 
 public extension Community {

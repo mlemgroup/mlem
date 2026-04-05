@@ -15,7 +15,6 @@ public enum InstanceUpgradeError: Error {
 }
 
 public struct InstanceStub: Hashable {
-    public static var tierNumber: Int = 0
     public var api: ApiClient
     public let actorId: ActorIdentifier
     

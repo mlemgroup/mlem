@@ -261,7 +261,6 @@ struct ExpandedPostView<Content: View>: View {
         }
         .id(post.actorId)
         .transition(.opacity)
-        .animation(.easeOut(duration: 0.1), value: type(of: post).tierNumber)
         .anchorPreference(
             key: AnchorsKey.self,
             value: .center

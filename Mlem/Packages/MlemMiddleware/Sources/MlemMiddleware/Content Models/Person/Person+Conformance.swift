@@ -7,12 +7,6 @@
 
 import Foundation
 
-// MARK: ContentModel
-
-public extension Person {
-    static var tierNumber: Int { 4 }
-}
-
 // MARK: CacheIdentifiable
 
 public extension Person {

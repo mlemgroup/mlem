@@ -8,7 +8,6 @@
 import Foundation
 
 public protocol ContentModel {
-    static var tierNumber: Int { get }
     var api: ApiClient { get }
 }
 
@@ -45,7 +44,6 @@ public extension ContentIdentifiable {
         hasher.combine(api)
         hasher.combine(id)
         hasher.combine(Self.modelTypeId)
-        hasher.combine(Self.tierNumber)
     }
     
     static func == (lhs: Self, rhs: Self) -> Bool {

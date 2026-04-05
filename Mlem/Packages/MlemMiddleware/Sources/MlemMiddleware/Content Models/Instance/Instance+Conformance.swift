@@ -13,13 +13,6 @@ public extension Instance {
     var cacheId: Int { id }
 }
 
-// MARK: ContentModel
-
-// TODO: NOW remove this requirement from ContentModel
-public extension Instance {
-    static var tierNumber: Int = 4
-}
-
 // MARK: ContentIdentifiable
 
 public extension Instance {

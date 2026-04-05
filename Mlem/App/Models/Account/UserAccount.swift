@@ -12,7 +12,6 @@ import Observation
 @Observable
 class UserAccount: Account, CommunityOrPerson {
     static var identifierPrefix: String = "@"
-    static var tierNumber: Int = 5
     
     let actorId: ActorIdentifier
     let id: Int

@@ -18,7 +18,6 @@ public final class Message2: Message2Providing, FeedLoadable {
         }
     }
     
-    public static let tierNumber: Int = 2
     public var api: ApiClient
     public var message2: Message2 { self }
     

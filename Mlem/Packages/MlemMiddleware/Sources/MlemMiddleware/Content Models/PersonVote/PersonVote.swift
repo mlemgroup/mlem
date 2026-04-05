@@ -10,7 +10,6 @@ import Observation
 
 @Observable
 public class PersonVote: ContentModel {
-    public static var tierNumber: Int = 1
     
     public enum Target: Hashable {
         case post(id: Int)

@@ -13,12 +13,6 @@ public extension Comment {
     var cacheId: Int { id }
 }
 
-// MARK: ContentModel
-
-public extension Comment {
-    static var tierNumber: Int = 4
-}
-
 // MARK: FeedLoadable
 
 public extension Comment {
@@ -86,7 +80,6 @@ public extension Comment {
 // MARK: CanModerateProviding
 
 public extension Comment {
-    // TODO: NOW should this be expected?
     var canModerate: Bool {
         guard let id = community.value_?.id as? Int,
               let myPersonModerates = api.myPerson?.moderates else { return false }

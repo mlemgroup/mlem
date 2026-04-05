@@ -8,7 +8,6 @@
 import Foundation
 
 public struct CommentStub: Hashable, CommentResolvable {
-    public static let tierNumber: Int = 0
     public var api: ApiClient
     public let url: URL
     
