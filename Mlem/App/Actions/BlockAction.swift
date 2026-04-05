@@ -8,6 +8,7 @@
 import Actions
 import MlemMiddleware
 import SwiftUI
+import os
 
 struct BlockAction: Actions.Action {
     enum Relationship { case direct, indirect }
@@ -126,9 +127,20 @@ extension BlockAction {
     }
 
     func createLabel(environment: EnvironmentValues) -> ActionLabel {
-        Self.createLabel(
+        let firstContent = content.first!
+        var blocked: Bool
+        if let instance = firstContent as? Instance {
+            // TODO: NOW instance should have a "blockedFrom(api)" that's used for this stuff
+            // non-local instances won't have blocked correctly populated, so always try to get it from environment
+            blocked = (environment.appState.firstSession as? UserSession)?.blocks?.contains(instance) ?? instance.blockedValue
+        } else {
+            blocked = firstContent.blockedValue
+        }
+        
+        Logger.dev.info("Creating label, blocked: \(content.first!.blockedValue)")
+        return Self.createLabel(
             relationship: self.relationship,
-            mode: content.first!.blockedValue ? .unblock : .block,
+            mode: blocked ? .unblock : .block,
             contentType: availableContent.contentType
         ).withVisibility(visibility(environment))
     }

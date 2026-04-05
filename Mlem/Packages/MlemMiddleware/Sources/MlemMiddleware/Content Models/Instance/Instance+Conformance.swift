@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import os
 
 // MARK: CacheIdentifiable
 
@@ -22,7 +23,10 @@ public extension Instance {
 // MARK: Blockable
 
 public extension Instance {
-    var blockedValue: Bool { blocked } // TODO: NOW replace with RealizedValueProviding, tighten this logic
+    var blockedValue: Bool {
+        Logger.dev.info("Instance \(self.host) from \(self.api.host) blocked: \(self.blocked)")
+        return blocked
+    } // TODO: NOW replace with RealizedValueProviding, tighten this logic
     
     var updateBlocked: ((Bool, ((Bool) -> Void)?) -> Void)? {
         self.api.token == nil ? nil : self._updateBlocked
