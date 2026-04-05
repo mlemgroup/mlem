@@ -10,7 +10,7 @@ import Foundation
 extension Instance2Snapshot {
     init(from site: LemmySiteView) throws(ApiClientError) {
         let nsfwContentEnabled: Bool
-        if let blockNsfw = site.localSite.disallowNsfwContent {
+        if let blockNsfw = site.localSite.nsfwContentDisallowed {
             nsfwContentEnabled = !blockNsfw
         } else if let enableNsfw = site.localSite.enableNsfw {
             nsfwContentEnabled = enableNsfw
@@ -88,7 +88,7 @@ extension Instance2Snapshot {
             voteFederationMode: voteFederationMode,
             nsfwContentEnabled: nsfwContentEnabled,
             communityCreationRestrictedToAdmins: site.localSite.communityCreationAdminOnly,
-            emailVerificationRequired: site.localSite.requireEmailVerification,
+            emailVerificationRequired: site.localSite.requireEmailVerification ?? true,
             applicationQuestion: site.localSite.applicationQuestion,
             isPrivate: site.localSite.privateInstance,
             defaultTheme: site.localSite.defaultTheme,
@@ -100,8 +100,8 @@ extension Instance2Snapshot {
             slurFilterRegex: site.localSite.slurFilterRegex,
             actorNameMaxLength: site.localSite.actorNameMaxLength ?? 20,
             federationEnabled: site.localSite.federationEnabled,
-            captchaEnabled: site.localSite.captchaEnabled,
-            captchaDifficulty: .init(rawValue: site.localSite.captchaDifficulty),
+            captchaEnabled: site.localSite.captchaEnabled ?? false,
+            captchaDifficulty: site.localSite.captchaDifficulty.map(CaptchaDifficulty.init) ?? .none,
             registrationMode: .init(from: site.localSite.registrationMode),
             federationSignedFetch: site.localSite.federationSignedFetch,
             defaultPostListingMode: site.localSite.defaultPostListingMode.map { .init(from: $0) },

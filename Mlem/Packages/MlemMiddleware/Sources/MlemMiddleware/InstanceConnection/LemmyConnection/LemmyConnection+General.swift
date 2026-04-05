@@ -196,6 +196,8 @@ public extension LemmyConnection {
                 postId: postId,
                 commentId: commentId,
                 listingType: .all,
+                showBulk: nil,
+                bulkActionParentId: nil,
                 pageCursor: nil
             )
         }

@@ -145,6 +145,8 @@ public extension Community {
             publishedAt: created,
             updatedAt: updated,
             apId: actorId,
+            lastRefreshedAt: nil,
+            summary: nil,
             subscribers: nil,
             posts: nil,
             comments: nil,

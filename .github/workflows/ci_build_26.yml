@@ -24,6 +24,6 @@ jobs:
     - name: Build
       uses: "./.github/actions/ci_xcodebuild"
       with:
-        xcode_version: "26.0.1"
-        xcodebuild_destination: "platform=iOS Simulator,name=iPhone 17,OS=26.1"
+        xcode_version: "26.4"
+        xcodebuild_destination: "platform=iOS Simulator,name=iPhone 17,OS=26.4"
         xcodebuild_action: "build"
