@@ -47,6 +47,7 @@ public extension LemmyConnection {
                 let request = LemmyListNotificationsRequest(
                     type_: .reply,
                     unreadOnly: unreadOnly,
+                    creatorId: nil,
                     pageCursor: cursor,
                     limit: limit
                 )
@@ -81,6 +82,7 @@ public extension LemmyConnection {
                 let request = LemmyListNotificationsRequest(
                     type_: .mention,
                     unreadOnly: unreadOnly,
+                    creatorId: nil,
                     pageCursor: cursor,
                     limit: limit
                 )
@@ -115,6 +117,7 @@ public extension LemmyConnection {
                 let request = LemmyListNotificationsRequest(
                     type_: .privateMessage,
                     unreadOnly: unreadOnly,
+                    creatorId: nil,
                     pageCursor: cursor,
                     limit: limit
                 )
@@ -186,7 +189,7 @@ public extension LemmyConnection {
     @discardableResult
     func editMessage(id: Int, content: String) async throws -> Message2Snapshot {
         let response = try await performingForEndpoint { endpoint in
-            LemmyUpdatePrivateMessageRequest(
+            LemmyEditPrivateMessageRequest(
                 endpoint: endpoint,
                 privateMessageId: id,
                 content: content

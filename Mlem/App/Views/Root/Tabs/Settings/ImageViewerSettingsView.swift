@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ImageViewerSettingsView: View {
     @Setting(\.a11y_zoomSliderLocation) var zoomSliderLocation
-    @Setting(\.imageViewer_showOverlayByDefault) var showImageViewerOverlay
+    @Setting(\.imageViewer_showControls) var showControls
     @Setting(\.imageViewer_showCloseButton) var showCloseButton
     @Setting(\.imageViewer_showZoomIndicator) var showZoomIndicator
     @Setting(\.imageViewer_dismissThreshold) var dismissThreshold
@@ -40,7 +40,7 @@ struct ImageViewerSettingsView: View {
         Section("Controls") {
             NavigationLink(
                 "Show Controls",
-                value: showImageViewerOverlay ? "Immediately" : "When I Tap",
+                value: .init(localized: showControls.label),
                 fallbackValue: "",
                 icon: .general.circle,
                 destination: .settings(.imageViewerControls)
@@ -78,6 +78,18 @@ struct ImageViewerSettingsView: View {
         case 15...19: "Low"
         case 20: "Lowest"
         default: "Medium"
+        }
+    }
+}
+
+enum ShowImageViewerControls: String, Codable, CaseIterable {
+    case immediately, onTap, never
+
+    var label: LocalizedStringResource {
+        switch self {
+        case .immediately: "Immediately"
+        case .onTap: "When I Tap"
+        case .never: "Never"
         }
     }
 }

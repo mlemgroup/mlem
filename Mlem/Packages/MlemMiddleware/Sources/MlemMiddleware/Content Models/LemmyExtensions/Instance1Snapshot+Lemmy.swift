@@ -23,7 +23,7 @@ extension Instance1Snapshot {
             instanceId: site.instanceId,
             created: published,
             updated: site.updatedAt ?? site.updated,
-            publicKey: site.publicKey,
+            publicKey: site.publicKey ?? "",
             displayName: site.name,
             description: site.sidebar,
             shortDescription: site.description,

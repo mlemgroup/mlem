@@ -64,7 +64,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     var links_readerMode: Bool
     var links_shareMode: LinkSharingMode
     var links_embedLoops: Bool
-    var imageViewer_showOverlayByDefault: Bool
+    var imageViewer_showControls: ShowImageViewerControls
     var imageViewer_showCloseButton: Bool
     var imageViewer_showZoomIndicator: Bool
     var imageViewer_dismissThreshold: Int
@@ -130,6 +130,9 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     @ObservationIgnored var inbox_badge_includeMod: Bool = false
     @ObservationIgnored var inbox_badge_includePersonal: Bool = false
     
+    // This was only used in a 2.5 beta; remove me
+    var imageViewer_showOverlayByDefault: Bool = true
+
     required init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.a11y_readPostIndicator = try container.decodeIfPresent(ReadPostIndicator.self, forKey: ._a11y_readPostIndicator) ?? .checkmark
@@ -216,7 +219,13 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.links_readerMode = try container.decodeIfPresent(Bool.self, forKey: ._links_readerMode) ?? false
         self.links_shareMode = try container.decodeIfPresent(LinkSharingMode.self, forKey: ._links_shareMode) ?? .myInstance
         self.links_embedLoops = try container.decodeIfPresent(Bool.self, forKey: ._links_embedLoops) ?? true
-        self.imageViewer_showOverlayByDefault = try container.decodeIfPresent(Bool.self, forKey: ._imageViewer_showOverlayByDefault) ?? true
+
+        // This was only used in a 2.5 beta; remove me
+        let showOverlayByDefault = try container.decodeIfPresent(Bool.self, forKey: ._imageViewer_showOverlayByDefault) ?? true
+        let showControlsOldValue: ShowImageViewerControls = showOverlayByDefault ? .immediately : .onTap
+
+        self.imageViewer_showControls = try container.decodeIfPresent(ShowImageViewerControls.self, forKey: ._imageViewer_showControls) ?? showControlsOldValue
+
         self.imageViewer_showCloseButton = try container.decodeIfPresent(Bool.self, forKey: ._imageViewer_showCloseButton) ?? true
         self.imageViewer_showZoomIndicator = try container.decodeIfPresent(Bool.self, forKey: ._imageViewer_showZoomIndicator) ?? true
         self.imageViewer_dismissThreshold = try container.decodeIfPresent(Int.self, forKey: ._imageViewer_dismissThreshold) ?? 10
@@ -322,7 +331,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         links_readerMode = otherValues.links_readerMode
         links_shareMode = otherValues.links_shareMode
         links_embedLoops = otherValues.links_embedLoops
-        imageViewer_showOverlayByDefault = otherValues.imageViewer_showOverlayByDefault
+        imageViewer_showControls = otherValues.imageViewer_showControls
         imageViewer_showCloseButton = otherValues.imageViewer_showCloseButton
         imageViewer_showZoomIndicator = otherValues.imageViewer_showZoomIndicator
         imageViewer_dismissThreshold = otherValues.imageViewer_dismissThreshold
@@ -434,7 +443,11 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         case _links_readerMode = "links_readerMode"
         case _links_shareMode = "links_shareMode"
         case _links_embedLoops = "links_embedLoops"
+        case _imageViewer_showControls = "imageViewer_showControls"
+
+        // This was only used in a 2.5 beta, remove me
         case _imageViewer_showOverlayByDefault = "imageViewer_showOverlayByDefault"
+
         case _imageViewer_showCloseButton = "imageViewer_showCloseButton"
         case _imageViewer_showZoomIndicator = "imageViewer_showZoomIndicator"
         case _imageViewer_dismissThreshold = "imageViewer_dismissThreshold"
@@ -549,7 +562,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.links_readerMode = settings.openLinksInReaderMode
         self.links_shareMode = settings.linkSharingMode
         self.links_embedLoops = settings.embedLoops
-        self.imageViewer_showOverlayByDefault = true // Added in 2.5
+        self.imageViewer_showControls = .immediately // Added in 2.5
         self.imageViewer_showCloseButton = true // Added in 2.5
         self.imageViewer_showZoomIndicator = true // Added in 2.5
         self.imageViewer_dismissThreshold = 10 // Added in 2.5
