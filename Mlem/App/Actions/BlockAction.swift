@@ -130,14 +130,11 @@ extension BlockAction {
         let firstContent = content.first!
         var blocked: Bool
         if let instance = firstContent as? Instance {
-            // TODO: NOW instance should have a "blockedFrom(api)" that's used for this stuff
-            // non-local instances won't have blocked correctly populated, so always try to get it from environment
-            blocked = (environment.appState.firstSession as? UserSession)?.blocks?.contains(instance) ?? instance.blockedValue
+            blocked = instance.blocked(from: environment.appState.firstSession.api) ?? instance.blockedValue
         } else {
             blocked = firstContent.blockedValue
         }
         
-        Logger.dev.info("Creating label, blocked: \(content.first!.blockedValue)")
         return Self.createLabel(
             relationship: self.relationship,
             mode: blocked ? .unblock : .block,

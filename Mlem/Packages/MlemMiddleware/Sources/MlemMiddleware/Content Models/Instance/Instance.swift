@@ -319,6 +319,11 @@ public extension Instance {
     var guestApi: ApiClient {
         .getApiClient(url: local ? api.baseUrl : actorId.hostUrl, username: nil)
     }
+    
+    /// Returns whether this instance is blocked by the provided ApiClient
+    func blocked(from otherApi: ApiClient) -> Bool? {
+        otherApi.blocks?.instances.keys.contains(actorId)
+    }
 }
 
 // MARK: Interactions
