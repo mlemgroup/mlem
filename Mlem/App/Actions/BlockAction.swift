@@ -8,7 +8,6 @@
 import Actions
 import MlemMiddleware
 import SwiftUI
-import os
 
 struct BlockAction: Actions.Action {
     enum Relationship { case direct, indirect }

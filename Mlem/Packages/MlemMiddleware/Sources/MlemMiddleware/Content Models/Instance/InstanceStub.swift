@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import os
 
 public enum InstanceUpgradeError: Error {
     case noPostReturned

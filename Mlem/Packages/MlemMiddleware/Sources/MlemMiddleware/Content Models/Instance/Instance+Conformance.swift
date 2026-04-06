@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import os
 
 // MARK: CacheIdentifiable
 
@@ -24,7 +23,6 @@ public extension Instance {
 
 public extension Instance {
     var blockedValue: Bool {
-        Logger.dev.info("Instance \(self.host) from \(self.api.host) blocked: \(self.blocked)")
         return blocked
     } // TODO: NOW replace with RealizedValueProviding, tighten this logic
     
