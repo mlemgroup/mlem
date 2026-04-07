@@ -67,7 +67,7 @@ public extension ApiClient {
         try await repository.blockInstance(instanceId: instanceId, block: block)
         let newBlockState: Bool = block
         if let instance = caches.instance.retrieveModel(instanceId: instanceId) {
-            instance.blocked = newBlockState
+            instance.blocked_.set(newBlockState)
         }
         if newBlockState {
             blocks?.instances[actorId] = instanceId

@@ -26,7 +26,8 @@ public final class Instance:
     // MARK: Custom Properties
     // Mlem-specific properties that are not reflected in the API
     
-    public var blocked: Bool
+    public var blocked: Bool { blocked_.realizedValue }
+    public var blocked_: RealizedValue<Bool>
     
     /// If this is `false`, The instance is *not* guaranteed to be non-local, particularly for locally running instances.
     public var local: Bool = false
@@ -85,7 +86,7 @@ public final class Instance:
     public init(api: ApiClient, properties: InstanceProperties) {
         self.api = api
         self.properties = properties
-        self.blocked = api.blocks?.instances.keys.contains(properties.actorId) ?? false
+        self.blocked_ = .init(api.blocks?.instances.keys.contains(properties.actorId) ?? false)
         
         self.actorId = properties.actorId
         self.id = properties.id

@@ -32,7 +32,7 @@ public extension Instance {
     
     private func _updateBlocked(_ newValue: Bool, callback: ((Bool) -> Void)? = nil) {
         let oldValue = blocked
-        blocked = newValue
+        blocked_.set(newValue)
         
         Task {
             await updateQueue.addItem { properties in
@@ -46,7 +46,7 @@ public extension Instance {
                     }
                     return properties
                 } catch {
-                    self.blocked = oldValue
+                    self.blocked_.set(oldValue)
                     callback?(false)
                     throw error
                 }

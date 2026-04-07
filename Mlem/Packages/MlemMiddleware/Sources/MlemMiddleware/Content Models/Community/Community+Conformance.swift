@@ -22,13 +22,13 @@ public extension Community {
 // MARK: Blockable
 
 public extension Community {
-    var blockedValue: Bool { blocked.realizedValue }
+    var blockedValue: Bool { blocked_.realizedValue }
     
     var updateBlocked: ((Bool, ((Bool) -> Void)?) -> Void)? { self._updateBlocked }
     
     private func _updateBlocked(_ newValue: Bool, callback: ((Bool) -> Void)? = nil) {
-        let oldValue = blocked.realizedValue
-        blocked.value_ = newValue
+        let oldValue = blocked_.realizedValue
+        blocked_.value_ = newValue
         
         Task {
             await updateQueue.addItem {
@@ -43,7 +43,7 @@ public extension Community {
                     return await .init(api: self.api, snapshot: .community2(snapshot))
                 } catch {
                     // need to manually roll back because blocked is not included in snapshot informatoin
-                    self.blocked.value_ = oldValue
+                    self.blocked_.value_ = oldValue
                     callback?(false)
                     throw error
                 }
