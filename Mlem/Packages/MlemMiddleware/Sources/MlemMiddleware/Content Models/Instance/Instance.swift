@@ -26,6 +26,7 @@ public final class Instance:
     // MARK: Custom Properties
     // Mlem-specific properties that are not reflected in the API
     
+    public var blockedProviding: any RealizedValueProviding<Bool> { blocked_ }
     public var blocked: Bool { blocked_.realizedValue }
     public var blocked_: RealizedValue<Bool>
     

@@ -22,6 +22,7 @@ public extension CommunityOrPerson {
 
 
 public protocol Blockable: ContentModel, ActorIdentifiable {
+    var blockedProviding: any RealizedValueProviding<Bool> { get }
     var blockedValue: Bool { get } // TODO: Unified Instance replace with blocked: RealizedValueProviding
 
     /// Updates the blocked status to the given value

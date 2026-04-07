@@ -32,6 +32,7 @@ public final class Community:
     // MARK: Custom Properties
     // Mlem-specific properties that are not reflected in the API
     
+    public var blockedProviding: any RealizedValueProviding<Bool> { blocked_ }
     public var blocked_: SyntheticRealizedValue<Bool>
     public var removedPending: Bool = false
     public var purged: Bool = false
