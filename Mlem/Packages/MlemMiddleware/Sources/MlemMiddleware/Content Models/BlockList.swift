@@ -48,12 +48,12 @@ public class BlockList {
         // bypasses queuing for blocked status
         for key in newPeopleKeys.subtracting(oldPeopleKeys) {
             if let id = blocks.people[key], let person = api.caches.person.retrieveModel(cacheId: id) {
-                person.blocked = true
+                person.blocked_.set(true)
             }
         }
         for key in oldPeopleKeys.subtracting(newPeopleKeys) {
             if let id = people[key], let person = api.caches.person.retrieveModel(cacheId: id) {
-                person.blocked = false
+                person.blocked_.set(false)
             }
         }
         

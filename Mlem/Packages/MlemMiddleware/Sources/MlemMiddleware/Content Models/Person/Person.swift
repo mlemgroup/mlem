@@ -30,7 +30,8 @@ public final class Person:
     // MARK: Custom Properties
     // Mlem-specific properties that are not reflected in the API
     
-    public var blocked: Bool
+    public var blocked: Bool { blocked_.realizedValue }
+    public var blocked_: RealizedValue<Bool>
     public var purged: Bool = false
     
     // Communities from which this person is *known* to be banned.
@@ -92,7 +93,7 @@ public final class Person:
     public init(api: ApiClient, properties: PersonProperties) {
         self.api = api
         self.properties = properties
-        self.blocked = api.blocks?.people.keys.contains(properties.actorId) ?? false
+        self.blocked_ = .init(api.blocks?.people.keys.contains(properties.actorId) ?? false)
         
         self.actorId = properties.actorId
         self.id = properties.id

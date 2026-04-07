@@ -82,7 +82,7 @@ public extension Person {
     
     private func _updateBlocked(_ newValue: Bool, callback: ((Bool) -> Void)? = nil) {
         let oldValue = blocked
-        blocked = newValue
+        blocked_.set(newValue)
         
         Task {
             await updateQueue.addItem {
@@ -96,7 +96,7 @@ public extension Person {
                     }
                     return await .init(api: self.api, snapshot: .person2(snapshot))
                 } catch {
-                    self.blocked = oldValue
+                    self.blocked_.set(oldValue)
                     callback?(false)
                     throw error
                 }
