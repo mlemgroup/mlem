@@ -27,7 +27,7 @@ public final class Instance:
     // Mlem-specific properties that are not reflected in the API
     
     public var blockedProviding: any RealizedValueProviding<Bool> { blocked_ }
-    public var blocked: Bool { blocked_.realizedValue }
+    // public var blocked: Bool { blocked_.realizedValue }
     public var blocked_: RealizedValue<Bool>
     
     /// If this is `false`, The instance is *not* guaranteed to be non-local, particularly for locally running instances.

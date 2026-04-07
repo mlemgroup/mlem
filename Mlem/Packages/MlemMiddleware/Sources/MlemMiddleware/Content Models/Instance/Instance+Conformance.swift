@@ -23,7 +23,7 @@ public extension Instance {
 
 public extension Instance {
     var blockedValue: Bool {
-        return blocked
+        return blockedProviding.realizedValue
     } // TODO: NOW replace with RealizedValueProviding, tighten this logic
     
     var updateBlocked: ((Bool, ((Bool) -> Void)?) -> Void)? {
@@ -31,7 +31,7 @@ public extension Instance {
     }
     
     private func _updateBlocked(_ newValue: Bool, callback: ((Bool) -> Void)? = nil) {
-        let oldValue = blocked
+        let oldValue = blockedProviding.realizedValue
         blocked_.set(newValue)
         
         Task {
