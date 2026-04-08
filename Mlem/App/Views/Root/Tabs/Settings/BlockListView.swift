@@ -46,7 +46,7 @@ struct BlockListView: View {
             })
             switch selectedTab {
             case .people:
-                SearchResultsView(results: people.filter(\.blocked)) { person in
+                SearchResultsView(results: people.filter(\.blocked_.realizedValue)) { person in
                     PersonListRow(person, showBlockStatus: false)
                 }
             case .communities:

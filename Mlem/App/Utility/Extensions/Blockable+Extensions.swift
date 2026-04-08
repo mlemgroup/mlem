@@ -14,36 +14,36 @@ extension Blockable {
         }
         return nil
     }
-
+    
     private func toggleBlocked(
         updateBlocked: @escaping (Bool, ((Bool) -> Void)?) -> Void,
         feedback: Set<FeedbackType>,
         callback: ((Bool) -> Void)? = nil) {
-        if feedback.contains(.toast) {
-            if !blockedValue {
-                ToastModel.main.add(
-                    .undoable(
-                        "Blocked",
-                        icon: .lemmy.block,
-                        callback: {
-                            updateBlocked(false, callback)
-                        },
-                        color: .themedNegative
+            if feedback.contains(.toast) {
+                if !blockedProviding.realizedValue {
+                    ToastModel.main.add(
+                        .undoable(
+                            "Blocked",
+                            icon: .lemmy.block,
+                            callback: {
+                                updateBlocked(false, callback)
+                            },
+                            color: .themedNegative
+                        )
                     )
-                )
-            } else {
-                ToastModel.main.add(
-                    .undoable(
-                        "Unblocked",
-                        icon: .lemmy.unblock,
-                        callback: {
-                            updateBlocked(true, callback)
-                        },
-                        color: .themedPrimary
+                } else {
+                    ToastModel.main.add(
+                        .undoable(
+                            "Unblocked",
+                            icon: .lemmy.unblock,
+                            callback: {
+                                updateBlocked(true, callback)
+                            },
+                            color: .themedPrimary
+                        )
                     )
-                )
+                }
             }
+            updateBlocked(!blockedProviding.realizedValue, callback)
         }
-        updateBlocked(!blockedValue, callback)
-    }
 }

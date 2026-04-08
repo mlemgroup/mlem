@@ -131,7 +131,7 @@ extension BlockAction {
         if let instance = firstContent as? Instance {
             blocked = instance.blocked(from: environment.appState.firstSession.api) ?? instance.blockedValue
         } else {
-            blocked = firstContent.blockedValue
+            blocked = firstContent.blockedProviding.realizedValue
         }
         
         return Self.createLabel(
@@ -195,7 +195,7 @@ extension BlockAction {
 
     @MainActor
     func execute(entity: any Blockable, environment: EnvironmentValues) {
-        if entity.blockedValue {
+        if entity.blockedProviding.realizedValue {
             submit(entity: entity, environment: environment)
             return
         }
@@ -223,7 +223,7 @@ extension BlockAction {
 
     private func submit(entity: any Blockable, environment: EnvironmentValues) {
         if let updateBlocked = entity.updateBlocked {
-            let shouldBlock = !entity.blockedValue
+            let shouldBlock = !entity.blockedProviding.realizedValue
             updateBlocked(shouldBlock) { didSucceed in
                 let toast = createToast(didBlock: shouldBlock, didSucceed: didSucceed) {
                     updateBlocked(!shouldBlock, nil)

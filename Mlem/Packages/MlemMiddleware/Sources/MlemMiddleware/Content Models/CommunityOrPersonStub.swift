@@ -30,7 +30,3 @@ public protocol Blockable: ContentModel, ActorIdentifiable {
     ///   - callback: if present, will be called when the block completes with true if the update succeeds and false otherwise.
     var updateBlocked: ((Bool, ((Bool) -> Void)?) -> Void)? { get }
 }
-
-public extension Blockable {
-    var blockedValue: Bool { blockedProviding.realizedValue }
-}
