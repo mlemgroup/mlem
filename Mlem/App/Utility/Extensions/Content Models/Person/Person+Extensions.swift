@@ -9,7 +9,7 @@ import MlemBackend
 import MlemMiddleware
 
 extension Person {
-    var shouldHideInFeed: Bool { blocked || purged }
+    var shouldHideInFeed: Bool { blocked_.realizedValue || purged }
 
     var isMlemDeveloper: Bool {
         BackendClient.main.flairs.developers.contains(actorId.description)

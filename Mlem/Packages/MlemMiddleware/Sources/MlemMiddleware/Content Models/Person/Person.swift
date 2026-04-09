@@ -30,8 +30,7 @@ public final class Person:
     // MARK: Custom Properties
     // Mlem-specific properties that are not reflected in the API
     
-    public var blockedProviding: any RealizedValueProviding<Bool> { blocked_ }
-    public var blocked: Bool { blockedProviding.realizedValue }
+    public var blocked: any RealizedValueProviding<Bool> { blocked_ }
     public var blocked_: RealizedValue<Bool>
     public var purged: Bool = false
     

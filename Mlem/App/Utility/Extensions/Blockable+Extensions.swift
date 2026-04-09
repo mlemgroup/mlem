@@ -20,7 +20,7 @@ extension Blockable {
         feedback: Set<FeedbackType>,
         callback: ((Bool) -> Void)? = nil) {
             if feedback.contains(.toast) {
-                if !blockedProviding.realizedValue {
+                if !blocked.realizedValue {
                     ToastModel.main.add(
                         .undoable(
                             "Blocked",
@@ -44,6 +44,6 @@ extension Blockable {
                     )
                 }
             }
-            updateBlocked(!blockedProviding.realizedValue, callback)
+            updateBlocked(!blocked.realizedValue, callback)
         }
 }

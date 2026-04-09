@@ -49,7 +49,7 @@ struct PersonListRowBody<Content: View>: View {
     }
     
     var title: String {
-        if person.blocked, showBlockStatus {
+        if person.blocked_.realizedValue, showBlockStatus {
             return person.displayName + " ∙ " + String(localized: "Blocked")
         } else {
             return person.displayName
@@ -58,7 +58,7 @@ struct PersonListRowBody<Content: View>: View {
     
     var body: some View {
         HStack(spacing: Constants.main.standardSpacing) {
-            if person.blocked, showBlockStatus {
+            if person.blocked_.realizedValue, showBlockStatus {
                 Image(icon: .general.hide)
                     .resizable()
                     .aspectRatio(contentMode: .fit)

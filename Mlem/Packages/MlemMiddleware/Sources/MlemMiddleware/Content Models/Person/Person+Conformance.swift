@@ -76,12 +76,10 @@ public extension Person {
 // MARK: Blockable
 
 public extension Person {
-    var blockedValue: Bool { blocked } // TODO: Unified Instance replace with RealizedValueProviding
-    
     var updateBlocked: ((Bool, ((Bool) -> Void)?) -> Void)? { self._updateBlocked }
     
     private func _updateBlocked(_ newValue: Bool, callback: ((Bool) -> Void)? = nil) {
-        let oldValue = blocked
+        let oldValue = blocked_.realizedValue
         blocked_.set(newValue)
         
         Task {
