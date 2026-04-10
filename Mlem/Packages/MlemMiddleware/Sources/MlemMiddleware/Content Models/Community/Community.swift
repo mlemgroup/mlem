@@ -15,7 +15,7 @@ public enum SubscriptionTier {
 @Observable
 public final class Community:
     UnifiedModelProviding,
-    Profile2Providing,
+    ProfileProviding,
     CommunityOrPerson,
     Blockable,
     ContentIdentifiable,

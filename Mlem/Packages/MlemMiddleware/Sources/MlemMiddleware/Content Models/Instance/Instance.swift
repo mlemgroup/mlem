@@ -14,7 +14,7 @@ public final class Instance:
     UnifiedModelProviding,
     ActorIdentifiable,
     Blockable,
-    Profile2Providing,
+    ProfileProviding,
     ContentIdentifiable,
     Sharable {
     public typealias Properties = InstanceProperties

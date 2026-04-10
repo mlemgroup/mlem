@@ -13,25 +13,25 @@ import SwiftUI
 struct AvatarBannerView: View {
     @Setting(\.media_animatedAvatars) var animatedAvatars
     
-    var model: (any Profile1Providing)?
+    var model: (any ProfileProviding)?
     var fallback: MediaView.Fallback
     var showEmptyBanner: Bool = false
     var showBanner: Bool = true
     var showAvatar: Bool = true
 
-    init<T: Profile1Providing>(_ model: T?, showEmptyBanner: Bool = false) {
+    init<T: ProfileProviding>(_ model: T?, showEmptyBanner: Bool = false) {
         self.model = model
         self.fallback = T.avatarFallback
         self.showEmptyBanner = showEmptyBanner
     }
     
-    init(_ model: any Profile1Providing, showEmptyBanner: Bool = false) {
+    init(_ model: any ProfileProviding, showEmptyBanner: Bool = false) {
         self.model = model
         self.fallback = Swift.type(of: model).avatarFallback
         self.showEmptyBanner = showEmptyBanner
     }
     
-    init(_ model: (any Profile1Providing)?, fallback: MediaView.Fallback, showEmptyBanner: Bool = false) {
+    init(_ model: (any ProfileProviding)?, fallback: MediaView.Fallback, showEmptyBanner: Bool = false) {
         self.model = model
         self.fallback = fallback
         self.showEmptyBanner = showEmptyBanner
@@ -44,7 +44,7 @@ struct AvatarBannerView: View {
     
     var body: some View {
         Group {
-            if model?.banner_ != nil || showEmptyBanner, showBanner {
+            if model?.banner != nil || showEmptyBanner, showBanner {
                 ZStack(alignment: .bottom) {
                     VStack {
                         LazyImage(request: imageRequest) { state in
@@ -98,7 +98,7 @@ struct AvatarBannerView: View {
     }
     
     var imageRequest: ImageRequest? {
-        if let url = model?.banner_ {
+        if let url = model?.banner {
             .init(urlRequest: mlemUrlRequest(url: url))
         } else {
             nil

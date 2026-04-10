@@ -8,10 +8,10 @@
 import Foundation
 
 // TODO: Unified Instance consolidate with Profile1Providing into ProfileProviding
-public protocol Profile2Providing: Profile1Providing {
-    var displayName: String { get }
-    var description: String? { get }
-    var banner: URL? { get }
-    var created: Date { get }
-    var updated: Date? { get }
-}
+//public protocol Profile2Providing: Profile1Providing {
+//    var displayName: String { get }
+//    var description: String? { get }
+//    var banner: URL? { get }
+//    var created: Date { get }
+//    var updated: Date? { get }
+//}

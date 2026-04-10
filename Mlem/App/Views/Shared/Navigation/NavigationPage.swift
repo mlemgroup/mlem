@@ -272,7 +272,7 @@ enum NavigationPage: Hashable {
         bypassImageProxy(callback: .init(wrappedValue: callback))
     }
     
-    static func rulesList(_ model: any Profile2Providing, callback: @escaping (String) -> Void) -> NavigationPage {
+    static func rulesList(_ model: any ProfileProviding, callback: @escaping (String) -> Void) -> NavigationPage {
         rulesList(.init(wrappedValue: model), callback: .init(wrappedValue: callback))
     }
     
@@ -366,7 +366,7 @@ struct PurgableHashWrapper: Hashable {
 }
 
 struct Profile2HashWrapper: Hashable {
-    var wrappedValue: any Profile2Providing
+    var wrappedValue: any ProfileProviding
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(wrappedValue.actorId)

@@ -19,6 +19,12 @@ public extension Instance {
     static var modelTypeId: ContentType { .instance }
 }
 
+// MARK: ProfileProviding
+
+public extension Instance {
+    var profileCreated: Date? { created }
+}
+
 // MARK: Blockable
 
 public extension Instance {

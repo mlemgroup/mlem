@@ -65,7 +65,7 @@ struct CircleCroppedImageView: View {
 
 // convenience initializers for avatars
 extension CircleCroppedImageView {
-    init<T: Profile1Providing>(
+    init<T: ProfileProviding>(
         _ model: T?,
         frame: CGFloat,
         blurred: Bool = false,
@@ -80,7 +80,7 @@ extension CircleCroppedImageView {
     }
 
     init(
-        _ model: any Profile1Providing,
+        _ model: any ProfileProviding,
         frame: CGFloat,
         blurred: Bool = false,
         showProgress: Bool = true

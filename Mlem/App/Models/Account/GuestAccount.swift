@@ -127,6 +127,11 @@ class GuestAccount: Account {
         storedNickname = newValue.isEmpty ? nil : newValue
         AccountsTracker.main.saveAccounts(ofType: .guest)
     }
+    
+    var profileCreated: Date? { nil }
+    var description: String? { nil }
+    var banner: URL? { nil }
+    var updated: Date? { nil }
 }
 
 extension GuestAccount: CacheIdentifiable {

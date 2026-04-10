@@ -19,6 +19,12 @@ public extension Person {
     var selectableContent: String? { description }
 }
 
+// MARK: ProfileProviding
+
+public extension Person {
+    var profileCreated: Date? { created }
+}
+
 // MARK: CommunityOrPerson
 
 public extension Person {

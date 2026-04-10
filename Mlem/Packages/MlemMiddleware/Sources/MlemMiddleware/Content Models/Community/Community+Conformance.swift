@@ -19,6 +19,12 @@ public extension Community {
     static var identifierPrefix: String { "!" }
 }
 
+// MARK: ProfileProviding
+
+public extension Community {
+    var profileCreated: Date? { created }
+}
+
 // MARK: Blockable
 
 public extension Community {

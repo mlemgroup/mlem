@@ -12,7 +12,7 @@ import SwiftUI
 struct RulesListView: View {
     @Environment(\.palette) var palette
     
-    let model: any Profile2Providing
+    let model: any ProfileProviding
     @Binding var reason: String
 
     var body: some View {
