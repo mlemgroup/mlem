@@ -175,7 +175,7 @@
 		036ED67B2D0B004D0018E5EA /* AdvancedSortView+SortButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036ED67A2D0B004D0018E5EA /* AdvancedSortView+SortButton.swift */; };
 		036ED67D2D0B006C0018E5EA /* TopSortPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036ED67C2D0B006C0018E5EA /* TopSortPicker.swift */; };
 		036ED67F2D0B9A520018E5EA /* CommunitySearchSortPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036ED67E2D0B9A520018E5EA /* CommunitySearchSortPicker.swift */; };
-		036ED6832D0C483B0018E5EA /* Profile2Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036ED6822D0C483B0018E5EA /* Profile2Providing+Extensions.swift */; };
+		036ED6832D0C483B0018E5EA /* ProfileProviding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036ED6822D0C483B0018E5EA /* ProfileProviding+Extensions.swift */; };
 		036FFA2D2D45110C00998D8A /* ChangePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036FFA2C2D45110C00998D8A /* ChangePasswordView.swift */; };
 		036FFA2F2D45197300998D8A /* PrivacySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036FFA2E2D45197300998D8A /* PrivacySettingsView.swift */; };
 		0370299D2D6B70F400B749DF /* MockApiClient+Realistic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0370299C2D6B70F400B749DF /* MockApiClient+Realistic.swift */; };
@@ -782,7 +782,7 @@
 		036ED67A2D0B004D0018E5EA /* AdvancedSortView+SortButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AdvancedSortView+SortButton.swift"; sourceTree = "<group>"; };
 		036ED67C2D0B006C0018E5EA /* TopSortPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopSortPicker.swift; sourceTree = "<group>"; };
 		036ED67E2D0B9A520018E5EA /* CommunitySearchSortPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunitySearchSortPicker.swift; sourceTree = "<group>"; };
-		036ED6822D0C483B0018E5EA /* Profile2Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Profile2Providing+Extensions.swift"; sourceTree = "<group>"; };
+		036ED6822D0C483B0018E5EA /* ProfileProviding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfileProviding+Extensions.swift"; sourceTree = "<group>"; };
 		036FFA2C2D45110C00998D8A /* ChangePasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordView.swift; sourceTree = "<group>"; };
 		036FFA2E2D45197300998D8A /* PrivacySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacySettingsView.swift; sourceTree = "<group>"; };
 		0370299C2D6B70F400B749DF /* MockApiClient+Realistic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockApiClient+Realistic.swift"; sourceTree = "<group>"; };
@@ -2371,7 +2371,7 @@
 				0389DDC22C38907C0005B808 /* Message1Providing+Extensions.swift */,
 				033F84772D1D68D200D87A9E /* ModlogEntryContent+Extensions.swift */,
 				03D0273B2CD3BA5100984519 /* PersonContent+Extensions.swift */,
-				036ED6822D0C483B0018E5EA /* Profile2Providing+Extensions.swift */,
+				036ED6822D0C483B0018E5EA /* ProfileProviding+Extensions.swift */,
 				033171772CCE89E3002DA370 /* PurgableProviding+Extensions.swift */,
 				0372EBCD2D36FBCF00257095 /* RegistrationApplication+Extensions.swift */,
 				034690922D0F4D720073E664 /* RemovableProviding+Extensions.swift */,
@@ -3212,7 +3212,7 @@
 				033FCB292C5E3933007B7CD1 /* IconSettingsView.swift in Sources */,
 				CD03742A2D1DBFD2001E85FA /* ReadCheck.swift in Sources */,
 				035394932CA1AE2C00795AA5 /* UptimeData.swift in Sources */,
-				036ED6832D0C483B0018E5EA /* Profile2Providing+Extensions.swift in Sources */,
+				036ED6832D0C483B0018E5EA /* ProfileProviding+Extensions.swift in Sources */,
 				03EC83F02E9590D3004698BB /* LinkHostView.swift in Sources */,
 				033FCB2A2C5E3933007B7CD1 /* AlternateIconCell.swift in Sources */,
 				0389DDC72C389F840005B808 /* UnreadCount+Extensions.swift in Sources */,

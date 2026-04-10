@@ -5,6 +5,9 @@
 //  Created by Eric Andrews on 2026-02-25.
 //
 
+import Observation
+
+@Observable
 public class RealizedValue<T>: RealizedValueProviding {
     private var value_: T
     public var value: T? { value_ }

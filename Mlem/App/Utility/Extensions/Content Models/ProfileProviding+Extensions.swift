@@ -1,5 +1,5 @@
 //
-//  Profile2Providing+Extensions.swift
+//  ProfileProviding+Extensions.swift
 //  Mlem
 //
 //  Created by Sjmarf on 2024-12-13.
