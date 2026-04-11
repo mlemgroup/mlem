@@ -9,7 +9,7 @@ import Foundation
 
 /// Class providing caching behavior for models associated with API types
 class ApiTypeBackedCache<Content: CacheIdentifiable & AnyObject & ContentModel, ApiType: CacheIdentifiable>: CoreCache<Content> {
-    // TODO: Unified Models remove semaphore
+    // TODO: Unified RegistrationApplication remove semaphore
     @MainActor func getModel(
         api: ApiClient,
         from apiType: ApiType,
