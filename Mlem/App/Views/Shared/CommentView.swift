@@ -164,30 +164,8 @@ struct CommentView<EmbeddedContent: View>: View {
                     EllipsisMenu(icon: .lemmy.moderation, size: 24, comment: comment, type: [.moderator])
                 }
                 EllipsisMenu(size: 24, comment: comment, type: [.basic])
-            case .disclosureGroup:
-                EllipsisMenu(size: 24) {
-                    comment.allMenuActions(
-                        appState: appState,
-                        showAllActions: !inFeed,
-                        navigation: navigation,
-                        commentTreeTracker: commentTreeTracker,
-                        report: reportContext
-                    )
-                }
             case .divider:
-                if reportContext != nil {
-                    EllipsisMenu(size: 24) {
-                        comment.allMenuActions(
-                            appState: appState,
-                            showAllActions: !inFeed,
-                            navigation: navigation,
-                            commentTreeTracker: commentTreeTracker,
-                            report: reportContext
-                        )
-                    }
-                } else {
-                    EllipsisMenu(size: 24, comment: comment)
-                }
+                EllipsisMenu(size: 24, comment: comment)
             }
         }
     }

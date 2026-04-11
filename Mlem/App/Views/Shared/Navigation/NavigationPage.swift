@@ -94,8 +94,8 @@ enum NavigationPage: Hashable {
 
     // If `configuration` is specified, show a "customise" button in the sheet for editing that configuration.
     // Otherwise, no "customise" button is shown.
-    case actionSheet(_ actions: HashWrapper<[ActionSheetSection]>, configuration: SettingsPage.ContextMenuSettingType?)
-    
+    case actionSheet(_ actions: HashWrapper<[ActionSheetSection]>, configuration: ContextMenuSettingsPage?)
+
     static func shareInstancePicker(_ sharable: any Sharable) -> NavigationPage {
         shareInstancePicker(.init(wrappedValue: sharable))
     }
@@ -280,8 +280,11 @@ enum NavigationPage: Hashable {
         advancedSorting(.init(wrappedValue: sort))
     }
 
-    static func actionSheet(_ actions: [ActionSheetSection], configuration: SettingsPage.ContextMenuSettingType? = nil) -> NavigationPage {
-        actionSheet(.init(wrappedValue: actions), configuration: configuration)
+    static func actionSheet(
+        _ actions: [ActionSheetSection],
+        configuration: ReferenceWritableKeyPath<SettingsValues, some ContextMenuConfiguration>? = nil
+    ) -> NavigationPage {
+        actionSheet(.init(wrappedValue: actions), configuration: configuration.map(ContextMenuSettingsPage.init))
     }
     
     var hasNavigationStack: Bool {

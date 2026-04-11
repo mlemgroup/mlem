@@ -10,41 +10,17 @@ import Icons
 import MlemMiddleware
 import SwiftUI
 
-private let seeds: [ActionSeed] = [
-    .upvote,
-    .downvote,
-    .save,
-    .reply,
-    .selectText,
-    .share,
-    .hide,
-    .createImage,
-    .report,
-    .blockCreator,
-    .edit,
-    .delete
-]
-
-private let moderationSeeds: [ActionSeed] = [
-    .pin,
-    .lock,
-    .markNsfw,
-    .viewVotes,
-    .remove,
-    .banCreator,
-    .purge,
-    .purgeCreator
-]
-
 extension View {
     func contextMenu(post: Post) -> some View {
-        self
-            .contextMenu {
-                ActionButtons { _ in
-                    seeds.compactMap { $0.createAction(post) }
-                }
-                .environment(\.isContextMenu, true)
-            }
+        contextMenu {
+            CustomizableActionMenu(
+                entity: post,
+                configuration: \.interactionBar_post,
+                modMailConfiguration: \.interactionBar_postReport,
+                customizable: true
+            )
+        }
+        .popupAnchor()
     }
 
     @ViewBuilder
@@ -56,53 +32,31 @@ extension View {
     }
 }
 
+enum EllipsisMenuType {
+    case basic, moderator
+}
+
 extension EllipsisMenu {
     init(
         icon: Icon = .general.menu,
         size: CGFloat,
         post: Post,
-        type: Set<PostEllipsisMenuContent.ActionListType> = [.basic, .moderator]
-    ) where Content == PostEllipsisMenuContent {
+        type: Set<EllipsisMenuType> = [.basic, .moderator]
+    ) where Content == CustomizableActionMenu<PostBarConfiguration> {
         self.icon = icon
         self.size = size
 
-        self.content = PostEllipsisMenuContent(post: post, type: type)
-    }
-}
-
-struct PostEllipsisMenuContent: View {
-    @Environment(\.reportContext) var reportContext: Report?
-
-    enum ActionListType {
-        case basic, moderator
-    }
-
-    let post: Post
-    let type: Set<ActionListType>
-
-    var body: some View {
-        Group {
-            if type.contains(.basic) {
-                ControlGroup {
-                    ActionButtons { _ in
-                        seeds.compactMap { $0.createAction(post) }
-                    }
-                }
-                .controlGroupStyle(.compactMenu)
-            }
-            if type.contains(.moderator) {
-                Section {
-                    ActionButtons { _ in
-                        var ret = moderationSeeds.compactMap { $0.createAction(post) }
-                        if let reportContext,
-                            let resolveAction = ActionSeed.resolveReport.createAction(reportContext) {
-                            ret.append(resolveAction)
-                        }
-                        return ret
-                    }
-                }
+        self.content = CustomizableActionMenu(
+            entity: post,
+            configuration: \.interactionBar_post,
+            modMailConfiguration: \.interactionBar_postReport,
+            customizable: true
+        ) { seed in
+            if seed.isModeratorAction {
+                return type.contains(.moderator)
+            } else {
+                return type.contains(.basic)
             }
         }
-        .environment(\.isContextMenu, true)
     }
 }
