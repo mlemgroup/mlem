@@ -54,7 +54,7 @@ struct InstanceListRowBody<Content: View>: View {
     var isBlocked: Bool {
         guard showBlockStatus else { return false }
         if let instance {
-            return instance.blockedValue
+            return instance.blocked_.realizedValue
         }
         if let summary, let session = AppState.main.firstSession as? UserSession, let blocks = session.blocks {
             let actorId = ActorIdentifier.instance(host: summary.host)

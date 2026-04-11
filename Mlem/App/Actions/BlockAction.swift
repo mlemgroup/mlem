@@ -129,7 +129,7 @@ extension BlockAction {
         let firstContent = content.first!
         var blocked: Bool
         if let instance = firstContent as? Instance {
-            blocked = instance.blocked(from: environment.appState.firstSession.api) ?? instance.blockedValue
+            blocked = instance.blocked(from: environment.appState.firstSession.api) ?? instance.blocked_.realizedValue
         } else {
             blocked = firstContent.blocked.realizedValue
         }

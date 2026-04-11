@@ -28,10 +28,6 @@ public extension Instance {
 // MARK: Blockable
 
 public extension Instance {
-    var blockedValue: Bool {
-        return blocked.realizedValue
-    } // TODO: NOW replace with RealizedValueProviding, tighten this logic
-    
     var updateBlocked: ((Bool, ((Bool) -> Void)?) -> Void)? {
         self.api.token == nil ? nil : self._updateBlocked
     }

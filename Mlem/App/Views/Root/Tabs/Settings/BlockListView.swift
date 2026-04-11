@@ -54,7 +54,7 @@ struct BlockListView: View {
                     CommunityListRow(community, showBlockStatus: false)
                 }
             case .instances:
-                SearchResultsView(results: instances.filter(\.blockedValue)) { instance in
+                SearchResultsView(results: instances.filter(\.blocked_.realizedValue)) { instance in
                     InstanceListRow(instance, showBlockStatus: false)
                 }
             }
