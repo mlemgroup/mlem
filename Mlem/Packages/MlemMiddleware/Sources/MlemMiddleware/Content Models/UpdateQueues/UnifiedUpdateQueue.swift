@@ -59,12 +59,6 @@ public actor UnifiedUpdateQueue<Model: UnifiedModelProviding> {
             semaphore.signal()
             log.debug("Finished refresh")
         }
-
-        do {
-            try await Task.sleep(for: .seconds(2))
-        } catch {
-            print(error)
-        }
         
         let newProperties = try await self.parent.fetchUpgraded()
         self.lastVerifiedProperties.merge(newProperties)
