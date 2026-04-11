@@ -48,14 +48,15 @@ public final class Community:
     public let instanceId: Int
     public var updated: Date?
     public var displayName: String
-    public var description: String?
     public var deleted: Bool
     public var removed: Bool
     public var nsfw: Bool
     public var avatar: URL?
-    public var banner: URL?
     public var hidden: Bool
     public var onlyModeratorsCanPost: Bool
+
+    public var description: String?
+    public var banner: URL?
 
     public var subscription: SyntheticExpectedValue<SubscriptionModel>
     public var postCount: ExpectedValue<Int>
@@ -80,14 +81,16 @@ public final class Community:
         self.instanceId = properties.instanceId
         self.updated = properties.updated
         self.displayName = properties.displayName
-        self.description = properties.description
         self.deleted = properties.deleted
         self.removed = properties.removed
         self.nsfw = properties.nsfw
         self.avatar = properties.avatar
-        self.banner = properties.banner
         self.hidden = properties.hidden
         self.onlyModeratorsCanPost = properties.onlyModeratorsCanPost
+
+        // nil-coalesced because PieFed doesn't return these values for some requests.
+        self.description = properties.description ?? nil
+        self.banner = properties.banner ?? nil
         
         // because upgrade() is not available until all properties are initialized, first populate all properties
         // with ExpectedValues that don't actually do anything, then reassign them properly at the end of the init
@@ -126,14 +129,20 @@ public final class Community:
     public func update(with properties: CommunityProperties) {
         setIfChanged(\.updated, properties.updated)
         setIfChanged(\.displayName, properties.displayName)
-        setIfChanged(\.description, properties.description)
         setIfChanged(\.deleted, properties.deleted)
         setIfChanged(\.removed, properties.removed)
         setIfChanged(\.nsfw, properties.nsfw)
         setIfChanged(\.avatar, properties.avatar)
-        setIfChanged(\.banner, properties.banner)
         setIfChanged(\.hidden, properties.hidden)
         setIfChanged(\.onlyModeratorsCanPost, properties.onlyModeratorsCanPost)
+
+
+        if let description = properties.description {
+            setIfChanged(\.description, description)
+        }
+        if let banner = properties.banner {
+            setIfChanged(\.banner, banner)
+        }
         
         updateIfChanged(\.subscription.value_, properties.subscription)
         updateIfChanged(\.postCount.value_, properties.postCount)

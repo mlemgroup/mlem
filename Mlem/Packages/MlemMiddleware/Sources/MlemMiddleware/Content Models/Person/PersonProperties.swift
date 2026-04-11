@@ -16,14 +16,17 @@ public struct PersonProperties: UnifiedPropertiesProviding {
     let instanceId: Int
     var displayName: String
     var avatar: URL?
-    var banner: URL?
     var note: String?
     var updated: Date?
-    var description: String?
     var matrixUserId: String?
     var isBot: Bool
     var instanceBan: InstanceBanType
     var deleted: Bool
+
+    // From Person1Snapshot, but PieFed does not always provide these
+    // https://codeberg.org/rimu/pyfedi/issues/882
+    var description: String??
+    var banner: URL??
     
     // From Person2Snapshot
     var isAdmin: Bool?
@@ -132,30 +135,34 @@ public struct PersonProperties: UnifiedPropertiesProviding {
         instanceId = snapshot1.instanceId
         displayName = snapshot1.displayName
         avatar = snapshot1.avatar
-        banner = snapshot1.banner
         note = snapshot1.note
         updated = snapshot1.updated
-        description = snapshot1.description
         matrixUserId = snapshot1.matrixUserId
         isBot = snapshot1.isBot
         instanceBan = snapshot1.instanceBan
         deleted = snapshot1.deleted
+
+        if snapshot1.allPropertiesPresent {
+            description = snapshot1.description
+            banner = snapshot1.banner
+        }
     }
     
     public mutating func merge(_ other: PersonProperties) {
         // tier 1 properties: simple assignment
         self.displayName = other.displayName
         self.avatar = other.avatar
-        self.banner = other.banner
         self.note = other.note
         self.updated = other.updated
-        self.description = other.description
         self.matrixUserId = other.matrixUserId
         self.isBot = other.isBot
         self.instanceBan = other.instanceBan
         self.deleted = other.deleted
         
         // tier 2, 3, 4 properties: only assign if incoming non-nil
+        self.description = other.description ?? self.description
+        self.banner = other.banner ?? self.banner
+
         isAdmin = other.isAdmin ?? self.isAdmin
         postCount = other.postCount ?? self.postCount
         commentCount = other.commentCount ?? self.commentCount
