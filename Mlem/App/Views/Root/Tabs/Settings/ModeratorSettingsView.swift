@@ -61,15 +61,13 @@ struct ModeratorSettingsView: View {
 }
 
 enum ModeratorActionGrouping: String, Codable, CaseIterable {
-    case divider, disclosureGroup, separateMenu
+    case divider, separateMenu
     
     init?(rawValue: String) {
         switch rawValue {
         // Decode v1 case
-        case "none", "divider":
+        case "none", "divider", "disclosureGroup":
             self = .divider
-        case "disclosureGroup":
-            self = .disclosureGroup
         case "separateMenu":
             self = .separateMenu
         default:
@@ -80,7 +78,6 @@ enum ModeratorActionGrouping: String, Codable, CaseIterable {
     var label: LocalizedStringResource {
         switch self {
         case .divider: "Divider"
-        case .disclosureGroup: "Disclosure Group"
         case .separateMenu: "Separate Menu"
         }
     }
@@ -88,7 +85,6 @@ enum ModeratorActionGrouping: String, Codable, CaseIterable {
     var icon: Icon {
         switch self {
         case .divider: .general.remove
-        case .disclosureGroup: .general.dropDown
         case .separateMenu: .lemmy.moderation
         }
     }

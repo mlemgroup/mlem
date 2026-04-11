@@ -50,9 +50,7 @@ extension LockAction {
     }
 
     private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {
-        if entity.api.canInteract(appState: environment.appState),
-           entity.canModerate,
-           Settings.get(\.menus_allModActions) || environment.feedContext == .post || !environment.isContextMenu {
+        if entity.api.canInteract(appState: environment.appState), entity.canModerate {
             return .enabled
         } else {
             return .hidden

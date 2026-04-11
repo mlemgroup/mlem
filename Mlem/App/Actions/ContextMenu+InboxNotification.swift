@@ -6,49 +6,31 @@
 //  
 
 import Actions
+import Icons
 import MlemMiddleware
 import SwiftUI
 
-private struct InboxNotificationContextMenuViewModifier: ViewModifier {
-    @Environment(NavigationLayer.self) var navigation
-    @Setting(\.interactionBar_reply) var replyBarConfiguration
-
-    let notification: InboxNotification
-
-    func body(content: Content) -> some View {
-        content
-            .contextMenu {
-                ActionButtons { _ in
-                    replyBarConfiguration.contextMenu.compactMap {
-                        $0.createAction(notification) ?? $0.createAction(notification.content.wrappedValue)
-                    }
-                }
-                Section {
-                    Button("More...", icon: .general.menu) {
-                        navigation.openSheet(.actionSheet(sheetSections, configuration: .inboxNotification))
-                    }
-                    .symbolVariant(.circle)
-                }
-        }
-    }
-
-    var sheetSections: [ActionSheetSection] {
-        ReplyBarConfiguration.availableActions.sections.map { seeds in
-            .init(actions: self.createActions(seeds: seeds))
-        }
-    }
-
-    func createActions(seeds: [ActionSeed]) -> [any Actions.Action] {
-        seeds.compactMap {
-            $0.createAction(notification) ?? $0.createAction(notification.content.wrappedValue)
-        }
-
-    }
-}
-
 extension View {
     func contextMenu(notification: InboxNotification) -> some View {
-        modifier(InboxNotificationContextMenuViewModifier(notification: notification))
+        contextMenu {
+            CustomizableActionMenu(configuration: \.interactionBar_reply) { seed, _ in
+                seed.createAction(notification) ?? seed.createAction(notification.content.wrappedValue)
+            }
+        }
+    }
+
+    func contextMenu(notification: InboxNotification?, message: any Message, report: Report?) -> some View {
+        contextMenu {
+            CustomizableActionMenu(configuration: \.interactionBar_reply) { seed, _ in
+                if let notification {
+                    if let action = seed.createAction(notification) { return action }
+                }
+                if let report {
+                    if let action = seed.createAction(report) { return action }
+                }
+                return seed.createAction(message)
+            }
+        }
     }
 
     @ViewBuilder
@@ -69,6 +51,51 @@ private extension InboxNotificationContent {
         switch self {
         case let .reply(comment), let .mention(comment): comment
         default: nil
+        }
+    }
+}
+
+extension EllipsisMenu {
+    init(
+        icon: Icon = .general.menu,
+        size: CGFloat,
+        notification: InboxNotification,
+        type: Set<EllipsisMenuType> = [.basic, .moderator]
+    ) where Content == CustomizableActionMenu<ReplyBarConfiguration> {
+        self.icon = icon
+        self.size = size
+
+        self.content = CustomizableActionMenu(configuration: \.interactionBar_reply) { seed, _ in
+            if seed.isModeratorAction {
+                if !type.contains(.moderator) { return nil }
+            } else {
+                if !type.contains(.basic) { return nil }
+            }
+
+            return seed.createAction(notification) ?? seed.createAction(notification.content.wrappedValue)
+        }
+    }
+}
+
+extension EllipsisMenu {
+    init(
+        icon: Icon = .general.menu,
+        size: CGFloat,
+        message: any Message,
+        report: Report,
+        type: Set<EllipsisMenuType> = [.basic, .moderator]
+    ) where Content == CustomizableActionMenu<ReplyBarConfiguration> {
+        self.icon = icon
+        self.size = size
+
+        self.content = CustomizableActionMenu(configuration: \.interactionBar_reply) { seed, _ in
+            if seed.isModeratorAction {
+                if !type.contains(.moderator) { return nil }
+            } else {
+                if !type.contains(.basic) { return nil }
+            }
+
+            return seed.createAction(report) ?? seed.createAction(message)
         }
     }
 }

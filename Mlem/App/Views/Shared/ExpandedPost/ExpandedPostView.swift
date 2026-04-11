@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 03/09/2024.
 //
 
+import Actions
 import MlemMiddleware
 import SwiftUI
 
@@ -208,7 +209,12 @@ struct ExpandedPostView<Content: View>: View {
             ProgressView()
         } else {
             ToolbarEllipsisMenu {
-                PostEllipsisMenuContent(post: post, type: [.basic, .moderator])
+                ControlGroup {
+                    ActionButtons { _ in
+                        PostBarConfiguration.availableActions.all.compactMap { $0.createAction(post) }
+                    }
+                }
+                .controlGroupStyle(.compactMenu)
                 if !tapPostsToCollapse {
                     Section {
                         Button(
@@ -245,14 +251,7 @@ struct ExpandedPostView<Content: View>: View {
         }
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
         .quickSwipes(post: post, configuration: postInteractionBar)
-        .contextMenu {
-            post.allMenuActions(
-                appState: appState,
-                showAllActions: false,
-                navigation: navigation,
-                commentTreeTracker: tracker
-            )
-        }
+        .contextMenu(post: post)
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
         .onTapGesture {
             if tapPostsToCollapse || postCollapsed {

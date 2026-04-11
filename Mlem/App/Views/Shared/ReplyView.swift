@@ -31,12 +31,8 @@ struct ReplyView: View {
                     Image(icon: (notification.content.type == .mention) ? .lemmy.mention : .lemmy.reply)
                         .symbolVariant(notification.read ? .none : .fill)
                         .foregroundStyle(.themedAccent)
-                    EllipsisMenu(size: 24) { comment.allMenuActions(
-                        appState: appState,
-                        navigation: navigation,
-                        notification: notification
-                    ) }
-                    .frame(height: 10)
+                    EllipsisMenu(size: 24, notification: notification)
+                        .frame(height: 10)
                 }
                 
                 ExpectedView(comment.post) { post in
@@ -64,11 +60,7 @@ struct ReplyView: View {
         .quickSwipes(notification: notification, configuration: replyInteractionBar)
         .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
-        .contextMenu { comment.allMenuActions(
-            appState: appState,
-            navigation: navigation,
-            notification: notification
-        ) }
+        .contextMenu(notification: notification)
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }
 }

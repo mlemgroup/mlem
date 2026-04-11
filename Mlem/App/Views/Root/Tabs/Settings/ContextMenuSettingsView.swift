@@ -9,7 +9,7 @@ import ComponentViews
 import Actions
 import SwiftUI
 
-struct ContextMenuSettingsView: View {
+struct ContextMenuSettingsView<Configuration: ContextMenuConfiguration>: View {
     @Binding var configuration: [ActionSeed]
 
     var body: some View {
@@ -24,7 +24,7 @@ struct ContextMenuSettingsView: View {
             .onDelete { offsets in
                 configuration.remove(atOffsets: offsets)
             }
-            ForEach(Array(ReplyBarConfiguration.availableActions.sections.enumerated()), id: \.offset) { _, seeds in
+            ForEach(Array(Configuration.availableActions.sections.enumerated()), id: \.offset) { _, seeds in
                 drawerActionSectionView(seeds)
             }
         }
@@ -68,7 +68,7 @@ struct ContextMenuSettingsView: View {
 }
 
 extension ContextMenuSettingsView {
-    init<Configuration: ContextMenuConfiguration>(_ keyPath: ReferenceWritableKeyPath<SettingsValues, Configuration>) {
+    init(_ keyPath: ReferenceWritableKeyPath<SettingsValues, Configuration>) {
         self.init(configuration: .init(get: {
             Settings.get(keyPath).contextMenu
         }, set: { newValue in
