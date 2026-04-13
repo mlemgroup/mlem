@@ -226,7 +226,7 @@ extension BlockAction {
                 callback: callback
             )
         }
-        environment.popupModel?.showPopup(message: "Community or User?", actions)
+        environment.popupModel?.showPopup(message: "Community or user?", actions)
     }
 
     @MainActor
