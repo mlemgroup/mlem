@@ -212,9 +212,14 @@ extension BlockAction {
     @MainActor
     func executeMulti(environment: EnvironmentValues) {
         let actions: [PopupAnchorModel.Action] = content.map { item in
-            .init(title: item.blockable is Person ? "User" : "Community", isDestructive: true) {
+            let callback = {
                 submit(content: item, environment: environment)
             }
+            return .init(
+                title: item.blockable is Person ? "User" : "Community",
+                isDestructive: true,
+                callback: callback
+            )
         }
         environment.popupModel?.showPopup(message: "Block...", actions)
     }
