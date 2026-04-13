@@ -215,13 +215,18 @@ extension BlockAction {
             let callback = {
                 submit(content: item, environment: environment)
             }
+            let label = Self.createLabel(
+                relationship: .indirect,
+                mode: item.blocked(environment: environment) ? .unblock : .block,
+                contentType: item.blockable is Person ? .personOnly: .communityOnly
+            )
             return .init(
-                title: item.blockable is Person ? "User" : "Community",
-                isDestructive: true,
+                title: label.title,
+                isDestructive: label.isDestructive,
                 callback: callback
             )
         }
-        environment.popupModel?.showPopup(message: "Block...", actions)
+        environment.popupModel?.showPopup(message: "Community or User?", actions)
     }
 
     @MainActor
