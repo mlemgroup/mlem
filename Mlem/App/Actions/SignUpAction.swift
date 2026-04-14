@@ -18,7 +18,7 @@ struct SignUpAction: SimpleLabelAction {
 extension ActionSeed {
     static let signUp = ActionSeed("signUp") { entity in
         switch entity {
-        case let entity as InstanceStub: SignUpAction(instance: entity)
+        case let entity as any InstanceActionProviding: SignUpAction(instance: entity.instanceStub)
         default: nil
         }
     }
