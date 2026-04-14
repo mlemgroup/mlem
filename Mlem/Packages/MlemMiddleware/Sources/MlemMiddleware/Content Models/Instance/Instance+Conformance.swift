@@ -60,8 +60,6 @@ public extension Instance {
 // MARK: Sharable
 
 public extension Instance {
-    var allResolvableUrls: [URL] { [url()] }
-    
     func url() -> URL {
         actorId.url
     }
