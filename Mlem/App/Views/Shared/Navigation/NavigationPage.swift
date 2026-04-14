@@ -145,6 +145,10 @@ enum NavigationPage: Hashable {
         .instanceStub(stub, targetPage: .init(wrappedValue: { .instance($0, visitContext: visitContext) }))
     }
     
+    static func instanceStub(_ stub: InstanceStub, targetPage: @escaping (Instance) -> NavigationPage) -> NavigationPage {
+        .instanceStub(stub, targetPage: .init(wrappedValue: targetPage))
+    }
+    
     static func hostInstance(
         of entity: any ActorIdentifiable,
         visitContext: VisitHistory.VisitContext = .other

@@ -16,8 +16,7 @@ struct InstanceListRow<Content2: View>: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
     
-    let instance: Instance?
-    let summary: InstanceSummary?
+    let instance: any InstanceActionProviding
     let content: Content
     let visitContext: VisitHistory.VisitContext
 
@@ -29,7 +28,6 @@ struct InstanceListRow<Content2: View>: View {
         visitContext: VisitHistory.VisitContext = .other
     ) {
         self.instance = instance
-        self.summary = nil
         self.content = .init(instance, content: content, showBlockStatus: showBlockStatus, readout: readout)
         self.visitContext = visitContext
     }
@@ -41,18 +39,17 @@ struct InstanceListRow<Content2: View>: View {
         readout: Content.Readout? = nil,
         visitContext: VisitHistory.VisitContext = .other
     ) where Content2 == EmptyView {
-        self.summary = summary
-        self.instance = nil
+        self.instance = summary
         self.content = .init(summary, content: content, showBlockStatus: showBlockStatus, readout: readout)
         self.visitContext = visitContext
     }
     
     var body: some View {
         Button {
-            if let instance {
+            if let instance = instance as? Instance {
                 navigation.push(.instance(instance, visitContext: visitContext))
-            } else if let instanceStub = summary?.instanceStub {
-                navigation.push(.instanceStub(instanceStub, visitContext: visitContext))
+            } else {
+                navigation.push(.instanceStub(instance.instanceStub, visitContext: visitContext))
             }
         } label: {
             FormChevron { content }

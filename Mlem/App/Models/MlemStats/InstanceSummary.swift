@@ -9,7 +9,7 @@ import Foundation
 import MlemBackend
 import MlemMiddleware
 
-extension InstanceSummary {
+public extension InstanceSummary {
     var instanceStub: InstanceStub {
         .init(api: AppState.main.firstApi, actorId: .instance(host: host))
     }
