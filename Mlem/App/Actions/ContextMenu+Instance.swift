@@ -57,9 +57,7 @@ extension View {
 
 // MARK: - InstanceActionProviding
 
-public protocol InstanceActionProviding {
-    var actorId: ActorIdentifier { get }
-    var host: String { get }
+public protocol InstanceActionProviding: Sharable {
     var instanceStub: InstanceStub { get }
 }
 
@@ -67,6 +65,9 @@ extension Instance: InstanceActionProviding {
     public var instanceStub: InstanceStub { .init(api: api, actorId: actorId) }
 }
 
+extension InstanceSummary: @retroactive Sharable {}
+extension InstanceSummary: @retroactive ActorIdentifiable {}
 extension InstanceSummary: InstanceActionProviding {
     public var actorId: ActorIdentifier { instanceStub.actorId }
+    public func url() -> URL { actorId.url }
 }

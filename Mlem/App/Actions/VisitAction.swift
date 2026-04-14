@@ -31,7 +31,7 @@ extension VisitAction {
 
     func createLabel(environment: EnvironmentValues) -> ActionLabel {
         let api = environment.appState.firstApi
-        let isVisiting = api.host == instance.host && api.token == nil
+        let isVisiting = api.host == instance.actorId.host && api.token == nil
 
         return Self.label.withVisibility(isVisiting ? .disabled : .enabled)
     }
