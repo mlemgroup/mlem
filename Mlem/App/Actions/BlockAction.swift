@@ -8,6 +8,7 @@
 import Actions
 import MlemMiddleware
 import SwiftUI
+import MlemBackend
 
 struct BlockAction: Actions.Action {
     enum Relationship { case direct, indirect }
@@ -141,9 +142,15 @@ extension BlockAction {
         ).withVisibility(visibility(environment))
     }
 
+    // swiftlint:disable:next cyclomatic_complexity
     private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {
         let canInteract = content.allSatisfy {
-            $0 is Instance || ($0.api.canInteract(appState: environment.appState) && $0.updateBlocked != nil)
+            if $0 is any InstanceActionProviding {
+                return true
+            } else if let contentModel = $0 as? ContentModel {
+                return contentModel.api.canInteract(appState: environment.appState) && $0.updateBlocked != nil
+            }
+            return false
         }
         guard canInteract else { return .hidden }
 
@@ -152,7 +159,7 @@ extension BlockAction {
             case let person as Person:
                 guard let myPersonId = person.api.myPerson?.id else { return .hidden }
                 guard person.id != myPersonId else { return .hidden }
-            case let instance as Instance:
+            case let instance as any InstanceActionProviding:
                 let api = environment.appState.firstApi
                 guard api.supports(.blockInstances, defaultValue: false) else { return .hidden }
                 guard api.actorId != instance.actorId else { return .hidden }
@@ -207,11 +214,11 @@ extension BlockAction {
             label = .init(localized: "Really block this user?")
         case _ as Community:
             label = .init(localized: "Really block this community?")
-        case _ as Instance:
+        case _ as any InstanceActionProviding:
             label = .init(localized: "Really block this instance?")
         default:
             assertionFailure()
-            label = ""
+            label = "Really block?"
         }
 
         environment.popupModel?.showPopup(message: label, [
@@ -230,7 +237,7 @@ extension BlockAction {
                 }
                 environment.toastModel?.add(toast)
             }
-        } else if entity is Instance,
+        } else if entity is any InstanceActionProviding,
                   let session = (environment.appState.firstSession as? UserSession) {
             Task {
                 await session.toggleInstanceBlock(actorId: entity.actorId)

@@ -57,7 +57,7 @@ extension View {
 
 // MARK: - InstanceActionProviding
 
-public protocol InstanceActionProviding: Sharable {
+public protocol InstanceActionProviding: Sharable, Blockable {
     var instanceStub: InstanceStub { get }
 }
 
@@ -67,7 +67,10 @@ extension Instance: InstanceActionProviding {
 
 extension InstanceSummary: @retroactive Sharable {}
 extension InstanceSummary: @retroactive ActorIdentifiable {}
+extension InstanceSummary: @retroactive Blockable {}
 extension InstanceSummary: InstanceActionProviding {
     public var actorId: ActorIdentifier { instanceStub.actorId }
     public func url() -> URL { actorId.url }
+    public var blocked: any RealizedValueProviding<Bool> { RealizedValue(false) }
+    public var updateBlocked: ((Bool, ((Bool) -> Void)?) -> Void)? { nil }
 }

@@ -21,7 +21,7 @@ public extension CommunityOrPerson {
 }
 
 
-public protocol Blockable: ContentModel, ActorIdentifiable {
+public protocol Blockable: ActorIdentifiable {
     /// - Warning: there is a Swift compiler bug that causes compilation to fail if you reference `blocked.realizedValue` in
     /// certain contexts. It is recommended to use `blocked_.realizedValue` any time you are working with a concrete type.
     var blocked: any RealizedValueProviding<Bool> { get }
