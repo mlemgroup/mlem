@@ -27,16 +27,13 @@ public extension Instance {
 
 // MARK: Blockable
 
-import os
-
 public extension Instance {
     var updateBlocked: ((Bool, ((Bool) -> Void)?) -> Void)? {
         self.api.token == nil ? nil : self._updateBlocked
     }
     
     private func _updateBlocked(_ newValue: Bool, callback: ((Bool) -> Void)? = nil) {
-        Logger.dev.info("Updating blocked to \(newValue)")
-        let oldValue = blocked_.realizedValue
+        let oldValue = blocked.realizedValue
         blocked_.set(newValue)
         
         Task {
