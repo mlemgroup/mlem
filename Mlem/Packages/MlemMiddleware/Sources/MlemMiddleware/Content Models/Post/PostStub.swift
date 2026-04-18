@@ -7,8 +7,7 @@
 
 import Foundation
 
-public struct PostStub: Hashable {    
-    public static let tierNumber: Int = 0
+public struct PostStub: Hashable {
     public var api: ApiClient
     public var url: URL
     

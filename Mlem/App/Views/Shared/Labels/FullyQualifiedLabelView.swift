@@ -41,7 +41,7 @@ enum FullyQualifiedLabelStyle: CaseIterable {
 
 /// View for rendering fully qualified labels (i.e., user or community names)
 struct FullyQualifiedLabelView: View {
-    typealias Entity = CommunityOrPerson & Profile1Providing
+    typealias Entity = CommunityOrPerson & ProfileProviding
     
     @Environment(AppState.self) var appState
     @Environment(\.postContext) var postContext: Post?

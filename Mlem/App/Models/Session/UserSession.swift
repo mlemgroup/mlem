@@ -16,7 +16,7 @@ class UserSession: Session {
     private(set) var account: UserAccount
     
     private(set) var person: Person?
-    private(set) var instance: Instance3?
+    private(set) var instance: Instance?
     private(set) var subscriptions: SubscriptionList!
     private(set) var blocks: BlockList?
     private(set) var unreadCount: UnreadCount?
@@ -42,7 +42,7 @@ class UserSession: Session {
                 let (person, instance, blocks) = try await self.api.getMyPerson()
                 let software = try await self.api.software
                 if let person {
-                    self.account.update(person: person, instance: instance, software: software)
+                    self.account.update(person: person, software: software)
                     self.person = person
                 }
                 self.blocks = blocks
@@ -90,7 +90,7 @@ class UserSession: Session {
     
     func updateAccount() async throws {
         if let person, let instance {
-            try await account.update(person: person, instance: instance, software: api.software)
+            try await account.update(person: person, software: api.software)
         }
     }
     
@@ -100,34 +100,29 @@ class UserSession: Session {
         }
     }
 
-    func toggleInstanceBlock(actorId: ActorIdentifier) async -> StateUpdateResult {
-        guard !ongoingInstanceBlockRequests.contains(actorId) else { return .failed }
-        ongoingInstanceBlockRequests.insert(actorId)
-        var toastId: UUID?
-        do {
-            let instanceId: Int
-            let shouldBlock: Bool
-            if let id = self.blocks?.instanceIdOfBlockedInstance(actorId: actorId) {
-                instanceId = id
-                toastId = ToastModel.main.add(.loading("Unblocking..."))
-                shouldBlock = false
-            } else {
-                toastId = ToastModel.main.add(.loading("Blocking..."))
-                instanceId = try await api.getInstanceId(actorId: actorId)
-                shouldBlock = true
+    func updateInstanceBlock(actorId: ActorIdentifier, shouldBlock: Bool, callback: ((Bool) -> Void)? = nil) {
+        Task {
+            guard !ongoingInstanceBlockRequests.contains(actorId) else {
+                callback?(false)
+                return
             }
-            try await api.blockInstance(url: actorId.url, instanceId: instanceId, block: shouldBlock)
-            if let toastId {
-                ToastModel.main.removeToast(id: toastId)
+            
+            ongoingInstanceBlockRequests.insert(actorId)
+            do {
+                let instanceId: Int
+                if let id = self.blocks?.instanceIdOfBlockedInstance(actorId: actorId) {
+                    instanceId = id
+                } else {
+                    instanceId = try await api.getInstanceId(actorId: actorId)
+                }
+                try await api.blockInstance(url: actorId.url, instanceId: instanceId, block: shouldBlock)
+                ongoingInstanceBlockRequests.remove(actorId)
+                callback?(true)
+            } catch {
+                handleError(error)
+                ongoingInstanceBlockRequests.remove(actorId)
+                callback?(false)
             }
-            ToastModel.main.add(.success(shouldBlock ? "Blocked" : "Unblocked"))
-            ongoingInstanceBlockRequests.remove(actorId)
-            return .succeeded
-        } catch {
-            ToastModel.main.add(.failure())
-            handleError(error)
-            ongoingInstanceBlockRequests.remove(actorId)
-            return .failed
         }
     }
     

@@ -15,7 +15,7 @@ public enum SubscriptionTier {
 @Observable
 public final class Community:
     UnifiedModelProviding,
-    Profile2Providing,
+    ProfileProviding,
     CommunityOrPerson,
     Blockable,
     ContentIdentifiable,
@@ -32,7 +32,8 @@ public final class Community:
     // MARK: Custom Properties
     // Mlem-specific properties that are not reflected in the API
     
-    public var blocked: SyntheticRealizedValue<Bool>
+    public var blocked: any RealizedValueProviding<Bool> { blocked_ }
+    public var blocked_: SyntheticRealizedValue<Bool>
     public var removedPending: Bool = false
     public var purged: Bool = false
     /// Used to state-fake internally.
@@ -63,7 +64,7 @@ public final class Community:
     public var commentCount: ExpectedValue<Int>
     public var activeUserCount: ExpectedValue<ActiveUserCount>
     public var bannedFromCommunity: ExpectedValue<Bool?>
-    public var instance: ExpectedValue<(any Instance1Providing)?>
+    public var instance: ExpectedValue<Instance?>
     public var moderators: ExpectedValue<[Person]>
     public var discussionLanguageIds: ExpectedValue<Set<Int>>
     
@@ -72,7 +73,7 @@ public final class Community:
     public init(api: ApiClient, properties: CommunityProperties) {
         self.api = api
         self.properties = properties
-        self.blocked = .init(value: api.blocks?.communities.keys.contains(properties.actorId) ?? false, mergeType: .disjunctive)
+        self.blocked_ = .init(value: api.blocks?.communities.keys.contains(properties.actorId) ?? false, mergeType: .disjunctive)
         
         self.actorId = properties.actorId
         self.id = properties.id

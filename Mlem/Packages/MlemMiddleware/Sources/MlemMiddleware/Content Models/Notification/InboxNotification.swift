@@ -11,7 +11,6 @@ import Foundation
 public class InboxNotification: ContentModel, ReadableProviding, Identifiable {
     public var updateQueue: InboxNotificationUpdateQueue = .init()
     
-    public static var tierNumber: Int = 1
     public var api: ApiClient
 
     public let id: Int

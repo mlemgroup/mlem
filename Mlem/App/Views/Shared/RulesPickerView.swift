@@ -11,7 +11,7 @@ import SwiftUI
 struct RulesPickerView: View {
     @Environment(\.dismiss) var dismiss
     
-    let model: any Profile2Providing
+    let model: any ProfileProviding
     let callback: (String) -> Void
     
     var body: some View {

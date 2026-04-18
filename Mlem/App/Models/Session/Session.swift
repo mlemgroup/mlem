@@ -14,7 +14,7 @@ protocol Session: ActorIdentifiable, Hashable {
     
     var api: ApiClient { get }
     var account: AccountType { get }
-    var instance: Instance3? { get }
+    var instance: Instance? { get }
     
     func deactivate()
 }

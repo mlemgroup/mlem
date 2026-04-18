@@ -1,5 +1,5 @@
 //
-//  Interactable1Providing.swift
+//  InteractableProviding.swift
 //  Mlem
 //
 //  Created by Sjmarf on 30/03/2024.

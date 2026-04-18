@@ -1692,6 +1692,7 @@
       }
     },
     "Blocking..." : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -3190,6 +3191,7 @@
       }
     },
     "Disclosure Group" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -9640,6 +9642,7 @@
       }
     },
     "Unblocking..." : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -10030,6 +10033,9 @@
           }
         }
       }
+    },
+    "User or community?" : {
+
     },
     "User was banned" : {
       "localizations" : {

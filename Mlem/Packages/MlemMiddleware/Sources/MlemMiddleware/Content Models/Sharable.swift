@@ -7,6 +7,6 @@
 
 import Foundation
 
-public protocol Sharable: ContentIdentifiable, ActorIdentifiable, Resolvable {
+public protocol Sharable: ActorIdentifiable, Hashable {
     func url() -> URL
 }

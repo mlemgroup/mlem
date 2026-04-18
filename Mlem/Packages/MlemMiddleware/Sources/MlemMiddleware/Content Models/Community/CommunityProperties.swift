@@ -36,7 +36,7 @@ public struct CommunityProperties: UnifiedPropertiesProviding {
     var bannedFromCommunity: Bool??
     
     // From Community3Snapshot
-    var instance: (any Instance1Providing)??
+    var instance: Instance??
     var moderators: [Person]?
     var discussionLanguageIds: Set<Int>?
     
@@ -61,7 +61,11 @@ public struct CommunityProperties: UnifiedPropertiesProviding {
         }
         
         if let snapshot3 {
-            instance = api.caches.instance1.getOptionalModel(api: api, from: snapshot3.instance)
+            if let instance1Snapshot = snapshot3.instance {
+                instance = api.caches.instance.getOptionalModel(api: api, from: .instance1(instance1Snapshot))
+            } else {
+                instance = nil
+            }
             moderators = api.caches.person.getModels(api: api, from: snapshot3.moderators.map { .person1($0) })
             discussionLanguageIds = snapshot3.discussionLanguageIds
         }

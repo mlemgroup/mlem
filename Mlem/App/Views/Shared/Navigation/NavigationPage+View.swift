@@ -36,7 +36,7 @@ extension NavigationPage {
         case let .logIn(page):
             page.view()
         case let .signUp(instance):
-            SignUpView(instance: instance.wrappedValue)
+            SignUpView(instance: instance)
         case .onboarding:
             OnboardingView()
         case let .feeds(listingType):
@@ -83,7 +83,7 @@ extension NavigationPage {
                 shouldBan: shouldBan
             )
         case let .post(post, scrollTargetedComment, communityContext, _):
-            // TODO: NOW don't embed at all?
+            // TODO: don't embed at all?
             ExpandedPostView(post: post, tracker: nil, scrollTargetedComment: scrollTargetedComment) {
                 CrossPostListView(post: post)
                     .padding(.horizontal, Constants.main.standardSpacing)
@@ -197,13 +197,15 @@ extension NavigationPage {
         case let .languagePicker(selectedLanguages: selectedLanguages, callback: callback):
             LanguagePickerSheetView(selectedLanguages: selectedLanguages, callback: callback.wrappedValue)
         case let .instance(instance, visitContext):
-            InstanceView(instance: instance.wrappedValue, visitContext: visitContext)
+            InstanceView(instance: instance, visitContext: visitContext)
+        case let .instanceStub(instance, targetPage):
+            InstanceStubResolutionPage(stub: instance, targetPage: targetPage.wrappedValue)
         case let .instanceOpinionList(instance: instance, opinionType: opinionType, data: data):
-            FediseerOpinionListView(instance: instance.wrappedValue, opinionType: opinionType, fediseerData: data)
+            FediseerOpinionListView(instance: instance, opinionType: opinionType, fediseerData: data)
         case .fediseerInfo:
             FediseerInfoView()
         case let .instanceUptime(instance, uptimeData):
-            InstanceUptimeView(instance: instance.wrappedValue, uptimeData: uptimeData)
+            InstanceUptimeView(instance: instance, uptimeData: uptimeData)
         case let .deleteAccount(account):
             DeleteAccountView(account: account)
         case let .bypassImageProxy(callback):

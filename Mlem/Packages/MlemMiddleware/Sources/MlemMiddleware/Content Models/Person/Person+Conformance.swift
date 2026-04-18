@@ -7,12 +7,6 @@
 
 import Foundation
 
-// MARK: ContentModel
-
-public extension Person {
-    static var tierNumber: Int { 4 }
-}
-
 // MARK: CacheIdentifiable
 
 public extension Person {
@@ -23,6 +17,12 @@ public extension Person {
 
 public extension Person {
     var selectableContent: String? { description }
+}
+
+// MARK: ProfileProviding
+
+public extension Person {
+    var profileCreated: Date? { created }
 }
 
 // MARK: CommunityOrPerson
@@ -82,11 +82,11 @@ public extension Person {
 // MARK: Blockable
 
 public extension Person {
-    var blockedValue: Bool { blocked } // TODO: Unified Instance replace with RealizedValueProviding
+    var updateBlocked: ((Bool, ((Bool) -> Void)?) -> Void)? { self._updateBlocked }
     
-    func updateBlocked(_ newValue: Bool, callback: ((Bool) -> Void)? = nil) {
-        let oldValue = blocked
-        blocked = newValue
+    private func _updateBlocked(_ newValue: Bool, callback: ((Bool) -> Void)? = nil) {
+        let oldValue = blocked_.realizedValue
+        blocked_.set(newValue)
         
         Task {
             await updateQueue.addItem {
@@ -100,7 +100,7 @@ public extension Person {
                     }
                     return await .init(api: self.api, snapshot: .person2(snapshot))
                 } catch {
-                    self.blocked = oldValue
+                    self.blocked_.set(oldValue)
                     callback?(false)
                     throw error
                 }

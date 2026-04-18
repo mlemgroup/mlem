@@ -13,7 +13,6 @@ import Observation
 
 @Observable
 public class ImageUpload1: ImageUpload1Providing {
-    public static let tierNumber: Int = 1
     public var api: ApiClient
     public var mediaUpload1: ImageUpload1 { self }
     

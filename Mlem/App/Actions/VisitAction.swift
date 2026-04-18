@@ -10,7 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct VisitAction: SimpleLabelAction {
-    let instance: any InstanceStubProviding
+    let instance: any InstanceActionProviding
 }
 
 // MARK: - Configurability
@@ -18,7 +18,7 @@ struct VisitAction: SimpleLabelAction {
 extension ActionSeed {
     static let visit = ActionSeed("visit") { entity in
         switch entity {
-        case let entity as any InstanceStubProviding: VisitAction(instance: entity)
+        case let entity as any InstanceActionProviding: VisitAction(instance: entity)
         default: nil
         }
     }
@@ -31,7 +31,7 @@ extension VisitAction {
 
     func createLabel(environment: EnvironmentValues) -> ActionLabel {
         let api = environment.appState.firstApi
-        let isVisiting = api.host == instance.host && api.token == nil
+        let isVisiting = api.host == instance.actorId.host && api.token == nil
 
         return Self.label.withVisibility(isVisiting ? .disabled : .enabled)
     }

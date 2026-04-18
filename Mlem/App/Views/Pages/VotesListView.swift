@@ -102,7 +102,7 @@ struct VotesListView: View {
                 case let .post(post):
                     newVotes = try await post.getVotes(page: page, limit: 40)
                 case let .comment(comment):
-                    // TODO: NOW handle this better--call refresh first?
+                    // TODO: handle this better--call refresh first?
                     guard let communityId = comment.community.value_?.id else {
                         assertionFailure("loadNextPage called without resolved community")
                         newVotes = .init()

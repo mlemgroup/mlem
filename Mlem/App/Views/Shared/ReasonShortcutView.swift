@@ -14,9 +14,9 @@ struct ReasonShortcutView: View {
     @Environment(\.dismiss) var dismiss
     
     @Binding var reason: String
-    let rulesTarget: (any Profile2Providing)?
+    let rulesTarget: (any ProfileProviding)?
     
-    init(reason: Binding<String>, rulesTarget: (any Profile2Providing)? = nil) {
+    init(reason: Binding<String>, rulesTarget: (any ProfileProviding)? = nil) {
         self._reason = reason
         self.rulesTarget = rulesTarget
     }

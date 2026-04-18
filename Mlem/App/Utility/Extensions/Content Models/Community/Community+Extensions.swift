@@ -8,5 +8,5 @@
 import MlemMiddleware
 
 extension Community {
-    var shouldHideInFeed: Bool { blockedValue }
+    var shouldHideInFeed: Bool { blocked_.realizedValue }
 }

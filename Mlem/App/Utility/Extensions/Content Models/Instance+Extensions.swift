@@ -1,12 +1,13 @@
 //
-//  InstanceStubProviding+Uptime.swift
+//  Instance3+Extensions.swift
 //  Mlem
 //
-//  Created by Sjmarf on 23/09/2024.
+//  Created by Sjmarf on 2025-01-02.
 //
 
 import Foundation
 import MlemMiddleware
+import MlemBackend
 
 private let uptimeSupportedInstances: Set<String> = [
     "aussie.zone",
@@ -43,9 +44,34 @@ private let uptimeSupportedInstances: Set<String> = [
     "toast.ooo"
 ]
 
-extension InstanceStubProviding {
+extension Instance {
+    func slurRegex() -> Regex<AnyRegexOutput>? {
+        do {
+            if let regex = slurFilterRegex.value as? String {
+                return try .init(regex)
+            }
+        } catch {
+            handleError(error, silent: true)
+        }
+        return nil
+    }
+    
+    var instanceSummary: InstanceSummary? {
+        if let userCount = userCount.value,
+           let software = software.value {
+            return .init(
+                displayName: displayName,
+                name: name,
+                totalUsers: userCount,
+                avatar: avatar,
+                software: .init(from: software)
+            )
+        }
+        return nil
+    }
+    
     var canFetchUptime: Bool { uptimeSupportedInstances.contains(host) }
-
+    
     var uptimeDataUrl: URL? {
         guard canFetchUptime else { return nil }
         let name = "_\(host.replacingOccurrences(of: ".", with: "-"))"

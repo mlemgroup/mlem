@@ -7,8 +7,13 @@
 
 import Foundation
 
-public struct InstanceStub: InstanceStubProviding, Hashable {
-    public static var tierNumber: Int = 0
+public enum InstanceUpgradeError: Error {
+    case noPostReturned
+    case noCommunityReturned
+    case noSiteReturned
+}
+
+public struct InstanceStub: Hashable {
     public var api: ApiClient
     public let actorId: ActorIdentifier
     
@@ -30,25 +35,20 @@ public struct InstanceStub: InstanceStubProviding, Hashable {
     public static func == (lhs: InstanceStub, rhs: InstanceStub) -> Bool {
         lhs.actorId == rhs.actorId
     }
-}
-
-// These are defined here rather than in `InstanceStubProviding`
-// because `upgrade()` only goes up to `Instance1`, not `Instance3`.
-// The names of `upgrade` methods on higher-tier models would be
-// misleading because they would instead downgrade the model.
-public extension InstanceStub {
-    /// Upgrades to an ``Instance1`` -  the highest tier that can be upgraded to without using the local ``ApiClient`` instead.
-    /// Use ``upgradeLocal()`` if you need an ``Instance3``. This method does not work for locally running instances.
-    ///
-    /// Due to API limitations (see [here](https://github.com/mlemgroup/mlem/pull/1029#issuecomment-2067746011)),
-    /// it takes 4 API calls to perform this upgrade.
-    func upgrade() async throws -> Instance1 {
-        let comm = try await self.api.getCommunityOfInstance(actorId: actorId)
-
-        guard let instance = comm.instance.value_ as? Instance1 else {
+    
+    /// Gets the instance this stub refers to using that instance's local API
+    public func getLocalInstance() async throws -> Instance {
+        return try await self.asLocal().api.getMyInstance()
+    }
+    
+    /// Gets the instance this stub refers to using the stub's current API
+    public func getInstance() async throws -> Instance {
+        let community = try await api.getCommunityOfInstance(actorId: actorId)
+        let instance = try await community.fetchUpgraded().instance
+  
+        guard let instance = instance as? Instance else {
             throw InstanceUpgradeError.noSiteReturned
         }
-        
         return instance
     }
 }

@@ -49,7 +49,7 @@ struct ModlogView: View {
             self.api = community.api
         case let .instance(instance):
             self._communityFilter = .init(wrappedValue: .any)
-            self.api = instance.wrappedValue.api
+            self.api = instance.api
         case .currentInstance:
             self._communityFilter = .init(wrappedValue: .any)
             self.api = AppState.main.firstApi

@@ -18,7 +18,7 @@ struct InstanceListRowBody<Content: View>: View {
     
     @Environment(\.isEnabled) var isEnabled
     
-    let instance: (any Instance)?
+    let instance: Instance?
     let summary: InstanceSummary?
     let readout: Readout?
     let showBlockStatus: Bool
@@ -26,7 +26,7 @@ struct InstanceListRowBody<Content: View>: View {
     @ViewBuilder let content: () -> Content
 
     init(
-        _ instance: any Instance,
+        _ instance: Instance,
         @ViewBuilder content: @escaping () -> Content = { EmptyView() },
         showBlockStatus: Bool = true,
         readout: Readout? = nil
@@ -54,7 +54,7 @@ struct InstanceListRowBody<Content: View>: View {
     var isBlocked: Bool {
         guard showBlockStatus else { return false }
         if let instance {
-            return instance.blockedValue
+            return instance.blocked_.realizedValue
         }
         if let summary, let session = AppState.main.firstSession as? UserSession, let blocks = session.blocks {
             let actorId = ActorIdentifier.instance(host: summary.host)
@@ -76,7 +76,7 @@ struct InstanceListRowBody<Content: View>: View {
     }
     
     var software: SiteSoftware? {
-        instance?.software_ ?? summary.map { .init(from: $0.software) }
+        instance?.software.value ?? summary.map { .init(from: $0.software) }
     }
 
     var body: some View {
@@ -120,7 +120,7 @@ struct InstanceListRowBody<Content: View>: View {
     
     var userCountReadout: some View {
         HStack {
-            Text((instance?.userCount_ ?? summary?.totalUsers ?? 0).abbreviated)
+            Text((instance?.userCount.value ?? summary?.totalUsers ?? 0).abbreviated)
             Image(icon: .lemmy.person)
                 .symbolVariant(.fill)
                 .fontWeight(.semibold)

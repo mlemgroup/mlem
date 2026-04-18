@@ -19,8 +19,7 @@ public final class Person:
     PurgableProviding,
     Sharable,
     FeedLoadable,
-    Profile2Providing {
-    // TODO: UnifiedCommunity, UnifiedInstance unify ProfileProviding
+    ProfileProviding {
     public typealias Properties = PersonProperties
     
     public var api: ApiClient
@@ -30,7 +29,8 @@ public final class Person:
     // MARK: Custom Properties
     // Mlem-specific properties that are not reflected in the API
     
-    public var blocked: Bool
+    public var blocked: any RealizedValueProviding<Bool> { blocked_ }
+    public var blocked_: RealizedValue<Bool>
     public var purged: Bool = false
     
     // Communities from which this person is *known* to be banned.
@@ -64,7 +64,7 @@ public final class Person:
     public var isAdmin: ExpectedValue<Bool>
     public var postCount: ExpectedValue<Int>
     public var commentCount: ExpectedValue<Int>
-    public var instance: ExpectedValue<(any Instance)>
+    public var instance: ExpectedValue<Instance>
     public var moderatedCommunities: ExpectedValue<[Community]>
     
     public var email: ExpectedValue<String?>
@@ -93,7 +93,7 @@ public final class Person:
     public init(api: ApiClient, properties: PersonProperties) {
         self.api = api
         self.properties = properties
-        self.blocked = api.blocks?.people.keys.contains(properties.actorId) ?? false
+        self.blocked_ = .init(api.blocks?.people.keys.contains(properties.actorId) ?? false)
         
         self.actorId = properties.actorId
         self.id = properties.id

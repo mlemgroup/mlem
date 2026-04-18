@@ -16,20 +16,18 @@ struct InstanceListRow<Content2: View>: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
     
-    let instance: (any Instance)?
-    let summary: InstanceSummary?
+    let instance: any InstanceActionProviding
     let content: Content
     let visitContext: VisitHistory.VisitContext
 
     init(
-        _ instance: any Instance,
+        _ instance: Instance,
         @ViewBuilder content: @escaping () -> Content2 = { EmptyView() },
         showBlockStatus: Bool = true,
         readout: Content.Readout? = nil,
         visitContext: VisitHistory.VisitContext = .other
     ) {
         self.instance = instance
-        self.summary = nil
         self.content = .init(instance, content: content, showBlockStatus: showBlockStatus, readout: readout)
         self.visitContext = visitContext
     }
@@ -41,20 +39,17 @@ struct InstanceListRow<Content2: View>: View {
         readout: Content.Readout? = nil,
         visitContext: VisitHistory.VisitContext = .other
     ) where Content2 == EmptyView {
-        self.summary = summary
-        self.instance = nil
+        self.instance = summary
         self.content = .init(summary, content: content, showBlockStatus: showBlockStatus, readout: readout)
         self.visitContext = visitContext
     }
     
-    private var instanceStub: (any InstanceStubProviding)? {
-        instance ?? summary?.instanceStub
-    }
-    
     var body: some View {
         Button {
-            if let instanceStub {
-                navigation.push(.instance(instanceStub, visitContext: visitContext))
+            if let instance = instance as? Instance {
+                navigation.push(.instance(instance, visitContext: visitContext))
+            } else {
+                navigation.push(.instanceStub(instance.instanceStub, visitContext: visitContext))
             }
         } label: {
             FormChevron { content }
@@ -64,7 +59,7 @@ struct InstanceListRow<Content2: View>: View {
         .padding(.vertical, 6)
         .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
-        .contextMenu(instance: instanceStub)
+        .contextMenu(instance: instance)
         .popupAnchor()
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }

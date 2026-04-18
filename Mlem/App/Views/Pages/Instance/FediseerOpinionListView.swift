@@ -10,7 +10,7 @@ import SwiftUI
 import Theming
 
 struct FediseerOpinionListView: View {
-    let instance: any InstanceStubProviding
+    let instance: Instance
     let opinionType: FediseerOpinionType
     let fediseerData: FediseerData
     

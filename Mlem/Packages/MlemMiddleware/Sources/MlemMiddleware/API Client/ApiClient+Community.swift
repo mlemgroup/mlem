@@ -73,7 +73,7 @@ public extension ApiClient {
                 let resolvedCommunities: [URL: Community] = try await hostApi.resolve(urls: ret.map { $0.resolvableUrl(from: .host) })
                 for community in ret {
                     if let resolvedCommunity = resolvedCommunities[community.resolvableUrl(from: .host)] {
-                        community.blocked.addSibling(resolvedCommunity.blocked)
+                        community.blocked_.addSibling(resolvedCommunity.blocked_)
                     }
                 }
             } catch {
