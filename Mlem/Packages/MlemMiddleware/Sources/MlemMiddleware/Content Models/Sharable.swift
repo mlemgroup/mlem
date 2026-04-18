@@ -8,7 +8,5 @@
 import Foundation
 
 public protocol Sharable: ActorIdentifiable, Hashable {
-    var host: String { get }
-    
     func url() -> URL
 }
