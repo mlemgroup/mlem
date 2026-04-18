@@ -58,8 +58,8 @@ struct ActionSheet: View {
         }
         .labelStyle(ActionSheetLabelStyle())
         .buttonStyle(ActionSheetButtonStyle())
-        .onChange(of: popupAnchorModel.outcome) { outcome in
-            if outcome == .confirmed, !navigation.rootChangePending { dismiss() }
+        .onChange(of: popupAnchorModel.outcome) {
+            if popupAnchorModel.outcome == .confirmed, !navigation.rootChangePending { dismiss() }
         }
     }
 

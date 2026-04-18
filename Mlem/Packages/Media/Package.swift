@@ -17,7 +17,8 @@ let package = Package(
         .package(url: "https://github.com/kean/Nuke.git", .upToNextMajor(from: "12.6.0")),
         .package(url: "https://github.com/SDWebImage/SDWebImageWebPCoder", .upToNextMajor(from: "0.14.6")),
         .package(path: "../MlemMiddleware"),
-        .package(path: "../Rest")
+        .package(path: "../Rest"),
+        .package(path: "../Theming")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -28,7 +29,8 @@ let package = Package(
                 .product(name: "Nuke", package: "Nuke"),
                 .product(name: "SDWebImageWebPCoder", package: "SDWebImageWebPCoder"),
                 .byName(name: "MlemMiddleware"),
-                .byName(name: "Rest")
+                .byName(name: "Rest"),
+                .byName(name: "Theming")
             ],
             swiftSettings: [.swiftLanguageMode(.v5)]
         )

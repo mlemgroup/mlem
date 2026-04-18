@@ -296,7 +296,7 @@ public extension LemmyConnection {
                 searchTitleOnly: false
             )
         }
-        return try response.posts.map { try .init(from: $0) } ?? []
+        return try response.posts.map { try .init(from: $0) }
     }
     
     func markPostsAsRead(ids: Set<Int>, read: Bool) async throws {

@@ -10,7 +10,8 @@ import Icons
 import SwiftUI
 import UIKit
 
-extension UIUserInterfaceStyle: Codable {
+extension UIUserInterfaceStyle: @retroactive Codable {}
+extension UIUserInterfaceStyle {
     var label: String {
         switch self {
         case .unspecified:

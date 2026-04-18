@@ -58,7 +58,7 @@ class MlemStats {
     
     @MainActor
     func searchInstances(query: String, sort: InstanceSort = .score) async throws -> [InstanceSummary] {
-        try await loadInstances()
+        await loadInstances()
         let instances: [InstanceSummary]
         if query.isEmpty {
             instances = self.instances ?? []

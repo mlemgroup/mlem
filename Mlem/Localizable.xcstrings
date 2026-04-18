@@ -3190,6 +3190,7 @@
       }
     },
     "Disclosure Group" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -10030,6 +10031,9 @@
           }
         }
       }
+    },
+    "User or community?" : {
+
     },
     "User was banned" : {
       "localizations" : {
