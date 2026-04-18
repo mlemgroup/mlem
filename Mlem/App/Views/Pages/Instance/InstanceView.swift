@@ -62,6 +62,7 @@ struct InstanceView: View {
         content
             .animation(.easeOut(duration: 0.2), value: instance.apiIsLocal)
             .task { await refresh() }
+            .onAppear { logVisit(instance) }
             .navigationBarTitleDisplayMode(.inline)
             .themedGroupedBackground()
     }
