@@ -193,11 +193,21 @@ extension BlockAction {
     @MainActor
     func executeMulti(environment: EnvironmentValues) {
         let actions: [PopupAnchorModel.Action] = content.map { item in
-            .init(title: item is Person ? "User" : "Community", isDestructive: true) {
-                submit(entity: item, environment: environment)
+            let callback = {
+                submit(content: item, environment: environment)
             }
+            let label = Self.createLabel(
+                relationship: .indirect,
+                mode: item.blocked(environment: environment) ? .unblock : .block,
+                contentType: item.blockable is Person ? .personOnly: .communityOnly
+            )
+            return .init(
+                title: label.title,
+                isDestructive: label.isDestructive,
+                callback: callback
+            )
         }
-        environment.popupModel?.showPopup(message: "Block...", actions)
+        environment.popupModel?.showPopup(message: "Community or user?", actions)
     }
 
     @MainActor
