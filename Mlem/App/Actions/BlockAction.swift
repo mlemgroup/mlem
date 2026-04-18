@@ -231,18 +231,20 @@ extension BlockAction {
     }
 
     private func submit(entity: any Blockable, environment: EnvironmentValues) {
+        let shouldBlock = !entity.blocked(environment: environment)
         if let updateBlocked = entity.updateBlocked {
-            let shouldBlock = !entity.blocked(environment: environment)
             updateBlocked(shouldBlock) { didSucceed in
                 let toast = createToast(didBlock: shouldBlock, didSucceed: didSucceed) {
                     updateBlocked(!shouldBlock, nil)
                 }
                 environment.toastModel?.add(toast)
             }
-        } else if entity is any InstanceActionProviding,
-                  let session = (environment.appState.firstSession as? UserSession) {
-            Task {
-                await session.toggleInstanceBlock(actorId: entity.actorId)
+        } else if entity is any InstanceActionProviding, let session = (environment.appState.firstSession as? UserSession) {
+            session.updateInstanceBlock(actorId: entity.actorId, shouldBlock: shouldBlock) { didSucceed in
+                let toast = createToast(didBlock: shouldBlock, didSucceed: didSucceed) {
+                    session.updateInstanceBlock(actorId: entity.actorId, shouldBlock: !shouldBlock)
+                }
+                environment.toastModel?.add(toast)
             }
         } else {
             assertionFailure("Failed to block entity")
