@@ -42,6 +42,7 @@ extension ApiClient {
         var notification: NotificationCache = .init()
         
         func clean() {
+            instance.clean()
             community.clean()
             person.clean()
             post.clean()
