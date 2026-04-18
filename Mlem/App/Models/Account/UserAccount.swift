@@ -167,6 +167,23 @@ class UserAccount: Account, CommunityOrPerson {
             accountType = newAccountType
             shouldSave = true
         }
+        if person.description != description {
+            description = person.description
+            shouldSave = true
+        }
+        if person.banner != banner {
+            banner = person.banner
+            shouldSave = true
+        }
+        if person.created != created {
+            created = person.created
+            shouldSave = true
+        }
+        if person.updated != updated {
+            updated = person.updated
+            shouldSave = true
+        }
+        
         if shouldSave {
             AccountsTracker.main.saveAccounts(ofType: .user)
         }
