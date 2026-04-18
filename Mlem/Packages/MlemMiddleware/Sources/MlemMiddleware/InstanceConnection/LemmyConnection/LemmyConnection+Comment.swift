@@ -261,7 +261,7 @@ public extension LemmyConnection {
                 searchTitleOnly: false
             )
         }
-        return try response.comments.map { try .init(from: $0) } ?? []
+        return try response.comments.map { try .init(from: $0) }
     }
     
     @discardableResult

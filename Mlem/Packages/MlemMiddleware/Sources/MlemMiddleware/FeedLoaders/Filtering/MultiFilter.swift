@@ -49,7 +49,7 @@ class MultiFilter<FilterTarget: Filterable> {
     /// - Parameter filter: filter to activate
     /// - Returns: true if the filter was successfully activated, false if it was already active
     func activate(_ toActivate: FilterTarget.FilterType) -> Bool {
-        var filter = getFilter(toActivate)
+        let filter = getFilter(toActivate)
         let ret = !filter.active
         filter.active = true
         return ret
@@ -59,7 +59,7 @@ class MultiFilter<FilterTarget: Filterable> {
     /// - Parameter filter: filter to deactivate
     /// - Returns: true if the filter was successfully deactivated, false if it was already inactive
     func deactivate(_ toDeactivate: FilterTarget.FilterType) -> Bool {
-        var filter = getFilter(toDeactivate)
+        let filter = getFilter(toDeactivate)
         let ret = filter.active
         filter.active = false
         return ret

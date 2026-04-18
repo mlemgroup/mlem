@@ -13,8 +13,8 @@ public struct ReportUnreadCountSnapshot {
     let messages: Int
     
     init(from response: LemmyGetReportCountResponse) throws(ApiClientError) {
-        self.comments = response.commentReports ?? 0
-        self.posts = response.postReports ?? 0
+        self.comments = response.commentReports
+        self.posts = response.postReports
         self.messages = response.privateMessageReports ?? 0
     }
     

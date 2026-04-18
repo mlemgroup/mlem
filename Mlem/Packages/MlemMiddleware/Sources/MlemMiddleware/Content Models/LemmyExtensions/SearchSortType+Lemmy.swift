@@ -24,7 +24,7 @@ extension SearchSortType {
     }
     
     func apiType(for endpoint: LemmyEndpointVersion) throws(ApiClientError) -> LemmySearchSortTypeBridge {
-        try switch endpoint {
+        switch endpoint {
         case .v3: try .oldOrUnsupported(v3ApiType)
         case .v4: try .newOrUnsupported(v4ApiType)
         }

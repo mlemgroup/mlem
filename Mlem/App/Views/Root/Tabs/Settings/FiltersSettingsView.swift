@@ -72,7 +72,7 @@ struct FiltersSettingsView: View {
                                 let jsonData = try JSONDecoder().decode(ExportableFilters.self, from: data)
                                 Task { @MainActor in
                                     await filtersTracker.resetFilteredKeywords(to: jsonData.rawKeywords)
-                                    await filtersTracker.resetFilteredLiterals(to: jsonData.literals)
+                                    filtersTracker.resetFilteredLiterals(to: jsonData.literals)
                                 }
                             } catch {
                                 // TODO: Mlem 2.5 remove legacy compatibility
