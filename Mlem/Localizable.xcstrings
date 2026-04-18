@@ -2443,9 +2443,6 @@
         }
       }
     },
-    "Community or user?" : {
-
-    },
     "Community ownership was transferred" : {
       "localizations" : {
         "fr" : {
@@ -10036,6 +10033,9 @@
           }
         }
       }
+    },
+    "User or community?" : {
+
     },
     "User was banned" : {
       "localizations" : {
