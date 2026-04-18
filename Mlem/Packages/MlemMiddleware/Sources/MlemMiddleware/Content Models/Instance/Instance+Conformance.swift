@@ -27,22 +27,25 @@ public extension Instance {
 
 // MARK: Blockable
 
+import os
+
 public extension Instance {
     var updateBlocked: ((Bool, ((Bool) -> Void)?) -> Void)? {
         self.api.token == nil ? nil : self._updateBlocked
     }
     
     private func _updateBlocked(_ newValue: Bool, callback: ((Bool) -> Void)? = nil) {
-        let oldValue = blocked.realizedValue
+        Logger.dev.info("Updating blocked to \(newValue)")
+        let oldValue = blocked_.realizedValue
         blocked_.set(newValue)
         
         Task {
             await updateQueue.addItem { properties in
                 do {
-                    try await self.api.repository.blockInstance(instanceId: self.id, block: newValue)
+                    try await self.api.repository.blockInstance(instanceId: self.instanceId, block: newValue)
                     callback?(true)
                     if newValue {
-                        self.api.blocks?.instances[self.actorId] = self.id
+                        self.api.blocks?.instances[self.actorId] = self.instanceId
                     } else {
                         self.api.blocks?.instances.removeValue(forKey: self.actorId)
                     }
