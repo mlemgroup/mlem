@@ -127,17 +127,9 @@ extension BlockAction {
     }
 
     func createLabel(environment: EnvironmentValues) -> ActionLabel {
-        let firstContent = content.first!
-        var blocked: Bool
-        if let instance = firstContent as? Instance {
-            blocked = instance.blocked(from: environment.appState.firstSession.api) ?? instance.blocked_.realizedValue
-        } else {
-            blocked = firstContent.blocked.realizedValue
-        }
-        
         return Self.createLabel(
             relationship: self.relationship,
-            mode: blocked ? .unblock : .block,
+            mode: content.first!.blocked(environment: environment) ? .unblock : .block,
             contentType: availableContent.contentType
         ).withVisibility(visibility(environment))
     }
@@ -194,12 +186,12 @@ extension BlockAction {
     func executeMulti(environment: EnvironmentValues) {
         let actions: [PopupAnchorModel.Action] = content.map { item in
             let callback = {
-                submit(content: item, environment: environment)
+                submit(entity: item, environment: environment)
             }
             let label = Self.createLabel(
                 relationship: .indirect,
                 mode: item.blocked(environment: environment) ? .unblock : .block,
-                contentType: item.blockable is Person ? .personOnly: .communityOnly
+                contentType: item is Person ? .personOnly: .communityOnly
             )
             return .init(
                 title: label.title,
@@ -212,7 +204,7 @@ extension BlockAction {
 
     @MainActor
     func execute(entity: any Blockable, environment: EnvironmentValues) {
-        if entity.blocked.realizedValue {
+        if entity.blocked(environment: environment) {
             submit(entity: entity, environment: environment)
             return
         }
@@ -240,7 +232,7 @@ extension BlockAction {
 
     private func submit(entity: any Blockable, environment: EnvironmentValues) {
         if let updateBlocked = entity.updateBlocked {
-            let shouldBlock = !entity.blocked.realizedValue
+            let shouldBlock = !entity.blocked(environment: environment)
             updateBlocked(shouldBlock) { didSucceed in
                 let toast = createToast(didBlock: shouldBlock, didSucceed: didSucceed) {
                     updateBlocked(!shouldBlock, nil)

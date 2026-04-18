@@ -6,8 +6,17 @@
 //
 
 import MlemMiddleware
+import SwiftUI
 
 extension Blockable {
+    func blocked(environment: EnvironmentValues) -> Bool {
+        if self is any InstanceActionProviding,
+           let session = (environment.appState.firstSession as? UserSession) {
+            return session.blocks?.contains(instanceActorId: actorId) ?? self.blocked.realizedValue
+        }
+        return self.blocked.realizedValue
+    }
+    
     var toggleBlocked: ((Set<FeedbackType>, ((Bool) -> Void)?) -> Void)? {
         if let updateBlocked = self.updateBlocked {
             return { toggleBlocked(updateBlocked: updateBlocked, feedback: $0, callback: $1) }
