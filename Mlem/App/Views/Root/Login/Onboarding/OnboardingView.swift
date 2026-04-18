@@ -32,7 +32,7 @@ struct OnboardingView: View {
             }
         }
         .animation(.easeOut(duration: 0.2), value: model.page)
-        .animation(.bouncy, value: model.instance)
+        .animation(.bouncy, value: model.instance?.id)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background {
             VStack {
@@ -50,7 +50,7 @@ struct OnboardingView: View {
             Task {
                 let startTime = Date.now
                 let stub = InstanceStub(api: appState.firstApi, actorId: .init(url: URL(string: "https://lemmy.world")!)!)
-                let instance = try await stub.upgradeLocal()
+                let instance = try await stub.getInstance()
                 try await Task.sleep(for: .seconds(Date.now.advanced(by: 0.1).timeIntervalSince(startTime)))
                 model.instance = instance
             }

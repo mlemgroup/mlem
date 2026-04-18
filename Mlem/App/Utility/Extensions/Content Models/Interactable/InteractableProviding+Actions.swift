@@ -56,13 +56,14 @@ extension InteractableProviding {
     }
     
     func blockCreatorAction(appState: AppState, feedback: Set<FeedbackType> = [], showConfirmation: Bool = true) -> BasicAction? {
-        guard let creator = creator.value else { return nil }
+        guard let creator = creator.value,
+              let toggleBlocked = creator.toggleBlocked else { return nil }
         return .init(
             id: "blockCreator\(uid)",
             appearance: .blockCreator(),
             confirmationPrompt: showConfirmation ? "Really block this user?" : nil,
             callback: api.canInteract(appState: appState)
-            ? { @MainActor in creator.toggleBlocked(feedback: feedback) }
+            ? { @MainActor in toggleBlocked(feedback, nil) }
             : nil
         )
     }

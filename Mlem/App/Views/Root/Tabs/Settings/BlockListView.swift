@@ -29,7 +29,7 @@ struct BlockListView: View {
     @State var selectedTab: Tab = .people
     @State var people: [Person] = []
     @State var communities: [Community] = []
-    @State var instances: [Instance1] = []
+    @State var instances: [Instance] = []
     
     var body: some View {
         FancyScrollView {
@@ -46,15 +46,15 @@ struct BlockListView: View {
             })
             switch selectedTab {
             case .people:
-                SearchResultsView(results: people.filter(\.blocked)) { person in
+                SearchResultsView(results: people.filter(\.blocked_.realizedValue)) { person in
                     PersonListRow(person, showBlockStatus: false)
                 }
             case .communities:
-                SearchResultsView(results: communities.filter(\.blockedValue)) { community in
+                SearchResultsView(results: communities.filter(\.blocked_.realizedValue)) { community in
                     CommunityListRow(community, showBlockStatus: false)
                 }
             case .instances:
-                SearchResultsView(results: instances.filter(\.blockedValue)) { instance in
+                SearchResultsView(results: instances.filter(\.blocked_.realizedValue)) { instance in
                     InstanceListRow(instance, showBlockStatus: false)
                 }
             }

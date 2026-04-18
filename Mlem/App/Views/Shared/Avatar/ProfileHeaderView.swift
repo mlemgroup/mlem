@@ -12,23 +12,23 @@ import SwiftUI
 struct ProfileHeaderView: View {
     @Environment(AppState.self) var appState
     
-    var profilable: (any Profile1Providing)?
+    var profilable: (any ProfileProviding)?
     var fallback: MediaView.Fallback
     var blockedOverride: Bool?
     
-    init<T: Profile1Providing>(_ profilable: T?, blockedOverride: Bool? = nil) {
+    init<T: ProfileProviding>(_ profilable: T?, blockedOverride: Bool? = nil) {
         self.profilable = profilable
         self.fallback = T.avatarFallback
         self.blockedOverride = blockedOverride
     }
     
-    init(_ profilable: any Profile1Providing, blockedOverride: Bool? = nil) {
+    init(_ profilable: any ProfileProviding, blockedOverride: Bool? = nil) {
         self.profilable = profilable
         self.fallback = Swift.type(of: profilable).avatarFallback
         self.blockedOverride = blockedOverride
     }
     
-    init(_ profilable: (any Profile1Providing)?, fallback: MediaView.Fallback, blockedOverride: Bool? = nil) {
+    init(_ profilable: (any ProfileProviding)?, fallback: MediaView.Fallback, blockedOverride: Bool? = nil) {
         self.profilable = profilable
         self.fallback = fallback
         self.blockedOverride = blockedOverride
@@ -42,9 +42,9 @@ struct ProfileHeaderView: View {
             } label: {
                 VStack(spacing: Constants.main.halfSpacing) {
                     HStack {
-                        Text(profilable?.displayName_ ?? profilable?.name ?? "")
+                        Text(profilable?.displayName ?? "")
                             .foregroundStyle(.themedPrimary)
-                        if blockedOverride ?? profilable?.blockedValue ?? false {
+                        if blockedOverride ?? profilable?.blocked.realizedValue ?? false {
                             Image(icon: .general.hide)
                                 .foregroundStyle(.themedSecondary)
                         }
@@ -64,8 +64,8 @@ struct ProfileHeaderView: View {
     }
     
     var subtitle: String {
-        if let instance = profilable as? any Instance3Providing {
-            return "\(instance.host) • \(instance.software.label)"
+        if let instance = profilable as? Instance {
+            return "\(instance.host) • \(instance.software.value?.label ?? "")"
         }
         return (profilable as? any CommunityOrPerson)?.fullNameWithPrefix ?? profilable?.host ?? ""
     }

@@ -11,7 +11,6 @@ import Observation
 
 @Observable
 class GuestAccount: Account {
-    static let tierNumber: Int = 1
     let actorId: ActorIdentifier
     let api: ApiClient
     var storedNickname: String?
@@ -89,7 +88,7 @@ class GuestAccount: Account {
     }
     
     @MainActor
-    func update(instance: Instance3, software: SiteSoftware) {
+    func update(instance: Instance, software: SiteSoftware) {
         var shouldSave = false
         if avatar != instance.avatar {
             avatar = instance.avatar
@@ -128,6 +127,11 @@ class GuestAccount: Account {
         storedNickname = newValue.isEmpty ? nil : newValue
         AccountsTracker.main.saveAccounts(ofType: .guest)
     }
+    
+    var profileCreated: Date? { nil }
+    var description: String? { nil }
+    var banner: URL? { nil }
+    var updated: Date? { nil }
 }
 
 extension GuestAccount: CacheIdentifiable {

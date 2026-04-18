@@ -9,7 +9,7 @@ import MlemMiddleware
 import SwiftUI
 
 extension Label {
-    init(_ model: Profile1Providing) where Title == Text, Icon == SimpleAvatarView {
+    init(_ model: ProfileProviding) where Title == Text, Icon == SimpleAvatarView {
         self.init {
             Text(model.name)
         } icon: {

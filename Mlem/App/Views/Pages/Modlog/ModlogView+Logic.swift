@@ -11,7 +11,7 @@ import SwiftUI
 extension ModlogView {
     enum InitialTarget: Hashable {
         case community(Community)
-        case instance(InstanceHashWrapper)
+        case instance(Instance)
         case currentInstance
     }
     

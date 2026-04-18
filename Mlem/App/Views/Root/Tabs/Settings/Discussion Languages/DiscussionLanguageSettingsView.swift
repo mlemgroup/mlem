@@ -11,7 +11,7 @@ import SwiftUI
 struct DiscussionLanguageSettingsView: View {
     @Environment(NavigationLayer.self) var navigation
     
-    @State var instance: (any Instance3Providing)?
+    @State var instance: Instance?
     @State var person: Person?
     
     @State var submitting: Int?

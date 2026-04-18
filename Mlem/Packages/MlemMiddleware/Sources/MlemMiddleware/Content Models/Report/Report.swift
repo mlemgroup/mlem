@@ -12,7 +12,6 @@ import Observation
 public class Report: CacheIdentifiable, ContentModel, FeedLoadable {
     public typealias FilterType = ModMailItemFilterType
     
-    public static let tierNumber: Int = 1
     public var api: ApiClient
     
     // Keep this internal - a post report and a comment report can have the same ID, so it's not a true identifier.

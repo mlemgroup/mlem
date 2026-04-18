@@ -10,7 +10,7 @@ import KeychainAccess
 import MlemMiddleware
 import SwiftUI
 
-protocol Account: AnyObject, Codable, ActorIdentifiable, Profile1Providing, Hashable {
+protocol Account: AnyObject, Codable, ActorIdentifiable, ProfileProviding, Hashable {
     // Stored
     var api: ApiClient { get }
     var name: String { get }
@@ -42,9 +42,10 @@ enum AccountActivityState: Codable, Hashable {
     }
 }
 
-// Profile1Providing conformance
+// ProfileProviding conformance
 extension Account {
-    var blockedValue: Bool { false }
+    var blocked: any RealizedValueProviding<Bool> { RealizedValue(false) }
+    var displayName: String { name }
 }
 
 extension Account {

@@ -18,7 +18,7 @@ struct FediseerOpinionView: View {
         VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
             HStack {
                 if let stub = opinion.instanceStub {
-                    NavigationLink(.instance(stub)) { title }
+                    NavigationLink(.instanceStub(stub)) { title }
                         .buttonStyle(.plain)
                 } else {
                     title

@@ -15,7 +15,7 @@ struct InstanceDetailsView: View {
     @State private var showingSlurRegex: Bool = false
     @State var uptimeData: UptimeDataStatus?
     
-    let instance: any Instance
+    let instance: Instance
     
     var body: some View {
         content
@@ -40,7 +40,7 @@ struct InstanceDetailsView: View {
             
             FormSection {
                 if case let .success(uptimeData) = uptimeData {
-                    NavigationLink(.instanceUptime(instance: instance, uptimeData: uptimeData)) {
+                    NavigationLink(.instanceUptime(instance, uptimeData: uptimeData)) {
                         uptimeSummary
                     }
                     .buttonStyle(.plain)
@@ -59,22 +59,30 @@ struct InstanceDetailsView: View {
     @ViewBuilder
     var statsView: some View {
         HStack(spacing: 16) {
-            FormReadout("Users", value: instance.userCount_ ?? 0)
-                .tint(.themedPersonAccent)
-            FormReadout("Communities", value: instance.communityCount_ ?? 0)
-                .tint(.themedCommunityAccent)
+            ExpectedView(instance.userCount) { userCount in
+                FormReadout("Users", value: userCount)
+                    .tint(.themedPersonAccent)
+            }
+            ExpectedView(instance.communityCount) { communityCount in
+                FormReadout("Communities", value: communityCount)
+                    .tint(.themedCommunityAccent)
+            }
         }
         .frame(maxWidth: .infinity)
         
         HStack(spacing: 16) {
-            FormReadout("Posts", value: instance.postCount_ ?? 0)
-                .tint(.themedPostAccent)
-            FormReadout("Comments", value: instance.commentCount_ ?? 0)
-                .tint(.themedCommentAccent)
+            ExpectedView(instance.postCount) { postCount in
+                FormReadout("Posts", value: postCount)
+                    .tint(.themedPostAccent)
+            }
+            ExpectedView(instance.commentCount) { commentCount in
+                FormReadout("Comments", value: commentCount)
+                    .tint(.themedCommentAccent)
+            }
         }
         .frame(maxWidth: .infinity)
         
-        if let activeUserCount = instance.activeUserCount_ {
+        ExpectedView(instance.activeUserCount) { activeUserCount in
             ActiveUserCountView(activeUserCount: activeUserCount)
         }
     }
@@ -83,125 +91,81 @@ struct InstanceDetailsView: View {
     var settingsListView: some View {
         FormSection {
             VStack(alignment: .leading, spacing: 0) {
-                settingRow(
-                    "Private",
-                    icon: .lemmy.private,
-                    value: instance.isPrivate_ ?? false
-                )
+                ExpectedView(instance.isPrivate) { isPrivate in
+                    settingRow(
+                        "Private",
+                        icon: .lemmy.private,
+                        value: isPrivate
+                    )
+                }
                 Divider()
-                settingRow(
-                    "Federates",
-                    icon: .lemmy.federation,
-                    value: instance.federationEnabled_ ?? false
-                )
+                ExpectedView(instance.federationEnabled) { federationEnabled in
+                    settingRow(
+                        "Federates",
+                        icon: .lemmy.federation,
+                        value: federationEnabled
+                    )
+                }
             }
         }
         
         FormSection {
-            VStack(alignment: .leading, spacing: 0) {
-                settingRow(
-                    "Registration",
-                    icon: .lemmy.person,
-                    value: instance.registrationMode_?.label ?? "Closed",
-                    color: instance.registrationMode_?.color ?? .themedNegative
-                )
-                if instance.registrationMode_ != .closed {
-                    Divider()
+            ExpectedView(instance.registrationMode) { registrationMode in
+                VStack(alignment: .leading, spacing: 0) {
                     settingRow(
-                        "Email Verification",
-                        icon: .general.email,
-                        value: instance.emailVerificationRequired_ ?? false
+                        "Registration",
+                        icon: .lemmy.person,
+                        value: registrationMode.label,
+                        color: registrationMode.color
                     )
-                    Divider()
-                    settingRow(
-                        "Captcha",
-                        icon: .lemmy.captcha,
-                        value: captchaLabel,
-                        color: instance.captchaDifficulty_ == nil ? .themedNegative : .themedPositive
-                    )
+                    if registrationMode != .closed {
+                        Divider()
+                        ExpectedView(instance.emailVerificationRequired) { emailVerificationRequired in
+                            settingRow(
+                                "Email Verification",
+                                icon: .general.email,
+                                value: emailVerificationRequired
+                            )
+                        }
+                        Divider()
+                        ExpectedView(instance.captchaDifficulty) { captchaDifficulty in
+                            settingRow(
+                                "Captcha",
+                                icon: .lemmy.captcha,
+                                value: captchaLabel(for: captchaDifficulty),
+                                color: captchaDifficulty == nil ? .themedNegative : .themedPositive
+                            )
+                        }
+                    }
                 }
             }
         }
 
         FormSection {
-            VStack(alignment: .leading, spacing: 0) {
-                voteFederationRow(
-                    "Post Upvotes",
-                    type: .upvote,
-                    value: instance.voteFederationMode_?.postUpvote ?? .all
-                )
-                Divider()
-                voteFederationRow(
-                    "Post Downvotes",
-                    type: .downvote,
-                    value: instance.voteFederationMode_?.commentDownvote ?? .all
-                )
-                Divider()
-                voteFederationRow(
-                    "Comment Upvotes",
-                    type: .upvote,
-                    value: instance.voteFederationMode_?.commentUpvote ?? .all
-                )
-                Divider()
-                voteFederationRow(
-                    "Comment Downvotes",
-                    type: .downvote,
-                    value: instance.voteFederationMode_?.commentDownvote ?? .all
-                )
-            }
-        }
-        
-        FormSection {
-            VStack(alignment: .leading, spacing: 0) {
-                settingRow(
-                    "NSFW Content",
-                    icon: .settings.blurNsfw,
-                    value: instance.nsfwContentEnabled_ ?? false
-                )
-                Divider()
-                settingRow(
-                    "Community Creation",
-                    icon: .lemmy.community,
-                    value: !(instance.communityCreationRestrictedToAdmins_ ?? false)
-                )
-                Divider()
-                settingRow(
-                    "Slur Filter",
-                    icon: .general.filter,
-                    value: instance.slurFilterRegex_ != nil
-                )
-                if let regex = instance.slurFilterRegex_ {
+            ExpectedView(instance.voteFederationMode) { voteMode in
+                VStack(alignment: .leading, spacing: 0) {
+                    voteFederationRow(
+                        "Post Upvotes",
+                        type: .upvote,
+                        value: voteMode.postUpvote
+                    )
                     Divider()
-                    VStack(alignment: .leading, spacing: 2) {
-                        if showingSlurRegex {
-                            Text(regex)
-                                .foregroundStyle(.themedSecondary)
-                                .textSelection(.enabled)
-                        } else {
-                            Text("Tap to show slur filter regex.")
-                            Label(
-                                "This probably contains foul language.",
-                                icon: .general.warning
-                            )
-                            .foregroundStyle(.themedCaution)
-                        }
-                    }
-                    .font(.footnote)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(12)
-                    .contentShape(.rect)
-                    .onTapGesture {
-                        withAnimation(.easeInOut(duration: 0.2)) {
-                            showingSlurRegex.toggle()
-                        }
-                    }
-                }
-                if let feedType = instance.defaultFeed_ {
+                    voteFederationRow(
+                        "Post Downvotes",
+                        type: .downvote,
+                        value: voteMode.postDownvote
+                    )
                     Divider()
-                    settingRow(
-                        "Default Feed Type (Desktop)",
-                        icon: .lemmy.feed,
-                        value: feedType.label
+                    voteFederationRow(
+                        "Comment Upvotes",
+                        type: .upvote,
+                        value: voteMode.commentUpvote
+                    )
+                    Divider()
+                    voteFederationRow(
+                        "Comment Downvotes",
+                        type: .downvote,
+                        value: voteMode.commentDownvote
                     )
                 }
             }
@@ -209,23 +173,94 @@ struct InstanceDetailsView: View {
         
         FormSection {
             VStack(alignment: .leading, spacing: 0) {
-                settingRow(
-                    "Show Mod Names in Modlog",
-                    icon: .lemmy.moderation,
-                    value: !(instance.hideModlogNames_ ?? true)
-                )
+                ExpectedView(instance.nsfwContentEnabled) { nsfwContentEnabled in
+                    settingRow(
+                        "NSFW Content",
+                        icon: .settings.blurNsfw,
+                        value: nsfwContentEnabled
+                    )
+                }
                 Divider()
-                settingRow(
-                    "Applications Email Admins",
-                    icon: .lemmy.registrationApplication,
-                    value: instance.emailApplicationsToAdmins_ ?? false
-                )
+                ExpectedView(instance.communityCreationRestrictedToAdmins) { communityCreationRestrictedToAdmins in
+                    settingRow(
+                        "Community Creation",
+                        icon: .lemmy.community,
+                        value: !communityCreationRestrictedToAdmins
+                    )
+                }
                 Divider()
-                settingRow(
-                    "Reports Email Admins",
-                    icon: .lemmy.report,
-                    value: instance.emailReportsToAdmins_ ?? false
-                )
+                // ExpectedView causes rendering issues here
+                if let slurFilterRegex = instance.slurFilterRegex.value {
+                    Group {
+                        settingRow(
+                            "Slur Filter",
+                            icon: .general.filter,
+                            value: slurFilterRegex != nil
+                        )
+                        if let slurFilterRegex {
+                            Divider()
+                            VStack(alignment: .leading, spacing: 2) {
+                                if showingSlurRegex {
+                                    Text(slurFilterRegex)
+                                        .foregroundStyle(.themedSecondary)
+                                        .textSelection(.enabled)
+                                } else {
+                                    Text("Tap to show slur filter regex.")
+                                    Label(
+                                        "This probably contains foul language.",
+                                        icon: .general.warning
+                                    )
+                                    .foregroundStyle(.themedCaution)
+                                }
+                            }
+                            .font(.footnote)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(12)
+                            .contentShape(.rect)
+                            .onTapGesture {
+                                withAnimation(.easeInOut(duration: 0.2)) {
+                                    showingSlurRegex.toggle()
+                                }
+                            }
+                        }
+                    }
+                }
+                Divider()
+                ExpectedView(instance.defaultFeed) { defaultFeed in
+                    settingRow(
+                        "Default Feed Type (Desktop)",
+                        icon: .lemmy.feed,
+                        value: defaultFeed.label
+                    )
+                }
+            }
+        }
+        
+        FormSection {
+            VStack(alignment: .leading, spacing: 0) {
+                ExpectedView(instance.hideModlogNames) { hideModlogNames in
+                    settingRow(
+                        "Show Mod Names in Modlog",
+                        icon: .lemmy.moderation,
+                        value: !hideModlogNames
+                    )
+                }
+                Divider()
+                ExpectedView(instance.emailApplicationsToAdmins) { emailApplicationsToAdmins in
+                    settingRow(
+                        "Applications Email Admins",
+                        icon: .lemmy.registrationApplication,
+                        value: emailApplicationsToAdmins
+                    )
+                }
+                Divider()
+                ExpectedView(instance.emailReportsToAdmins) { emailReportsToAdmins in
+                    settingRow(
+                        "Reports Email Admins",
+                        icon: .lemmy.report,
+                        value: emailReportsToAdmins
+                    )
+                }
             }
         }
     }
@@ -249,8 +284,8 @@ struct InstanceDetailsView: View {
         .padding(12)
     }
     
-    var captchaLabel: LocalizedStringResource {
-        if let diff = instance.captchaDifficulty_ {
+    func captchaLabel(for diff: CaptchaDifficulty?) -> LocalizedStringResource {
+        if let diff {
             return .init(
                 "Captcha Difficulty Yes",
                 defaultValue: "Yes (\(diff.label))",

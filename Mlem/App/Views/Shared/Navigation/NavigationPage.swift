@@ -10,12 +10,11 @@ import MlemBackend
 import MlemMiddleware
 import SwiftUI
 
-// swiftlint:disable file_length
 // swiftlint:disable:next type_body_length
 enum NavigationPage: Hashable {
     case settings(_ page: SettingsPage = .root)
     case logIn(_ page: LoginPage = .pickInstance)
-    case signUp(_ instance: HashWrapper<any InstanceStubProviding>)
+    case signUp(_ instance: Instance)
     case onboarding
     case feeds(_ selection: ListingType? = nil)
     case savedFeed
@@ -49,11 +48,12 @@ enum NavigationPage: Hashable {
     case community(_ community: Community, visitContext: VisitHistory.VisitContext = .other)
     case person(_ person: Person, visitContext: VisitHistory.VisitContext = .other)
     case personStub(_ personStub: PersonStub, visitContext: VisitHistory.VisitContext = .other)
-    case instance(_ instance: InstanceHashWrapper, visitContext: VisitHistory.VisitContext)
-    case instanceOpinionList(instance: InstanceHashWrapper, opinionType: FediseerOpinionType, data: FediseerData)
+    case instance(_ instance: Instance, visitContext: VisitHistory.VisitContext = .other)
+    case instanceStub(_ instanceStub: InstanceStub, targetPage: HashWrapper<(Instance) -> NavigationPage>)
+    case instanceOpinionList(instance: Instance, opinionType: FediseerOpinionType, data: FediseerData)
     case messageFeed(_ person: Person, messageContent: String, focusTextField: Bool, editing: MessageHashWrapper?)
     case fediseerInfo
-    case instanceUptime(_ instance: HashWrapper<any Instance>, _ uptimeData: UptimeData)
+    case instanceUptime(_ instance: Instance, uptimeData: UptimeData)
     case externalApiInfo(api: ApiClient, actorId: ActorIdentifier)
     case imageViewer(_ url: URL)
     case communityPicker(api: ApiClient?, callback: HashWrapper<(Community, NavigationLayer) -> Void>)
@@ -96,13 +96,6 @@ enum NavigationPage: Hashable {
     // Otherwise, no "customise" button is shown.
     case actionSheet(_ actions: HashWrapper<[ActionSheetSection]>, configuration: ContextMenuSettingsPage?)
 
-    static func instance(
-        _ instance: any InstanceStubProviding,
-        visitContext: VisitHistory.VisitContext = .other
-    ) -> NavigationPage {
-        Self.instance(.init(wrappedValue: instance), visitContext: visitContext)
-    }
-    
     static func shareInstancePicker(_ sharable: any Sharable) -> NavigationPage {
         shareInstancePicker(.init(wrappedValue: sharable))
     }
@@ -116,11 +109,11 @@ enum NavigationPage: Hashable {
     }
     
     static func modlog(
-        instance: any Instance,
+        instance: Instance,
         targetPerson: Person? = nil,
         moderatorPerson: Person? = nil
     ) -> NavigationPage {
-        modlog(.instance(.init(wrappedValue: instance)), targetPerson: targetPerson, moderatorPerson: moderatorPerson)
+        modlog(.instance(instance), targetPerson: targetPerson, moderatorPerson: moderatorPerson)
     }
 
     static func modlog(
@@ -128,25 +121,6 @@ enum NavigationPage: Hashable {
         moderatorPerson: Person? = nil
     ) -> NavigationPage {
         modlog(.currentInstance, targetPerson: targetPerson, moderatorPerson: moderatorPerson)
-    }
-    
-    static func instanceOpinionList(
-        _ instance: any InstanceStubProviding,
-        opinionType: FediseerOpinionType,
-        data: FediseerData
-    ) -> NavigationPage {
-        instanceOpinionList(
-            instance: .init(wrappedValue: instance),
-            opinionType: opinionType,
-            data: data
-        )
-    }
-    
-    static func instanceUptime(
-        instance: any Instance,
-        uptimeData: UptimeData
-    ) -> NavigationPage {
-        .instanceUptime(.init(wrappedValue: instance), uptimeData)
     }
     
     static func messageFeed(
@@ -167,19 +141,27 @@ enum NavigationPage: Hashable {
         )
     }
     
-    static func instance(
-        hostOf entity: any ActorIdentifiable,
+    static func instanceStub(_ stub: InstanceStub, visitContext: VisitHistory.VisitContext = .other) -> NavigationPage {
+        .instanceStub(stub, targetPage: .init(wrappedValue: { .instance($0, visitContext: visitContext) }))
+    }
+    
+    static func instanceStub(_ stub: InstanceStub, targetPage: @escaping (Instance) -> NavigationPage) -> NavigationPage {
+        .instanceStub(stub, targetPage: .init(wrappedValue: targetPage))
+    }
+    
+    static func hostInstance(
+        of entity: any ActorIdentifiable,
         visitContext: VisitHistory.VisitContext = .other
     ) -> NavigationPage {
-        var instance: any InstanceStubProviding = InstanceStub(
-            api: AppState.main.firstApi, actorId: .instance(host: entity.actorId.host)
-        )
-        if let entity = entity as? Person {
-            instance = entity.instance.value_ ?? instance
-        } else if let entity = entity as? Community {
-            instance = (entity.instance.value_ as? any InstanceStubProviding) ?? instance
+        if let entity = entity as? Person,
+           let instance = entity.instance.value_ {
+            return .instance(instance, visitContext: visitContext)
         }
-        return Self.instance(.init(wrappedValue: instance), visitContext: visitContext)
+        if let entity = entity as? Community,
+           let instance = entity.instance.value_ as? Instance {
+            return .instance(instance, visitContext: visitContext)
+        }
+        return .instanceStub(.init(api: AppState.main.firstApi, actorId: .instance(host: entity.actorId.host)))
     }
     
     static func communityPicker(
@@ -217,6 +199,10 @@ enum NavigationPage: Hashable {
                 navigation.push(.signUp(instance.instanceStub))
             }
         }, requiredFeature: .signUp)
+    }
+    
+    static func signUp(_ stub: InstanceStub) -> NavigationPage {
+        .instanceStub(stub, targetPage: .init(wrappedValue: { .signUp($0) }))
     }
     
     static func communityPicker(
@@ -286,15 +272,11 @@ enum NavigationPage: Hashable {
         purge(.init(wrappedValue: purgable))
     }
     
-    static func signUp(_ instance: any InstanceStubProviding) -> NavigationPage {
-        signUp(.init(wrappedValue: instance))
-    }
-    
     static func bypassImageProxyWarning(callback: @escaping () -> Void) -> NavigationPage {
         bypassImageProxy(callback: .init(wrappedValue: callback))
     }
     
-    static func rulesList(_ model: any Profile2Providing, callback: @escaping (String) -> Void) -> NavigationPage {
+    static func rulesList(_ model: any ProfileProviding, callback: @escaping (String) -> Void) -> NavigationPage {
         rulesList(.init(wrappedValue: model), callback: .init(wrappedValue: callback))
     }
     
@@ -338,19 +320,6 @@ struct HashWrapper<Value>: Hashable, Identifiable {
     }
     
     static func == (lhs: HashWrapper, rhs: HashWrapper) -> Bool {
-        lhs.id == rhs.id
-    }
-}
-
-struct InstanceHashWrapper: Hashable {
-    var wrappedValue: any InstanceStubProviding
-    let id = UUID()
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
-    
-    static func == (lhs: InstanceHashWrapper, rhs: InstanceHashWrapper) -> Bool {
         lhs.id == rhs.id
     }
 }
@@ -404,7 +373,7 @@ struct PurgableHashWrapper: Hashable {
 }
 
 struct Profile2HashWrapper: Hashable {
-    var wrappedValue: any Profile2Providing
+    var wrappedValue: any ProfileProviding
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(wrappedValue.actorId)
@@ -426,5 +395,3 @@ struct MessageHashWrapper: Hashable {
         lhs.hashValue == rhs.hashValue
     }
 }
-
-// swiftlint:enable file_length

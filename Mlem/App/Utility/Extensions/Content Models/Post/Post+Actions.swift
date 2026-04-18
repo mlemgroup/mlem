@@ -47,7 +47,8 @@ extension Post {
     }
     
     func blockCommunityAction(appState: AppState, feedback: Set<FeedbackType> = [], showConfirmation: Bool = true) -> BasicAction? {
-        guard let community = community.value else { return nil }
+        guard let community = community.value,
+              let toggleBlocked = community.toggleBlocked else { return nil }
         return .init(
             id: "blockCommunity\(actorId.description)",
             appearance: .init(
@@ -59,7 +60,7 @@ extension Post {
             ),
             confirmationPrompt: showConfirmation ? "Really block this community?" : nil,
             callback: api.canInteract(appState: appState)
-            ? { @MainActor in community.toggleBlocked(feedback: feedback) }
+            ? { @MainActor in toggleBlocked(feedback, nil) }
             : nil
         )
     }

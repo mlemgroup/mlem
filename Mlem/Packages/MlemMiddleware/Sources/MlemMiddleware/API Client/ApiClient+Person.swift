@@ -139,7 +139,7 @@ public extension ApiClient {
         )
     }
     
-    func getMyPerson() async throws -> (person: Person?, instance: Instance3, blocks: BlockList?) {
+    func getMyPerson() async throws -> (person: Person?, instance: Instance, blocks: BlockList?) {
         let snapshot = try await repository.getMyPerson()
         let snapshotPersonName = snapshot.person?.person.person.person.name
         guard snapshotPersonName == username else {
@@ -149,7 +149,7 @@ public extension ApiClient {
             throw ApiClientError.mismatchingToken
         }
         
-        let instance = await caches.instance3.getModel(api: self, from: snapshot.instance)
+        let instance = await caches.instance.getModel(api: self, from: .instance3(snapshot.instance))
         let person = await caches.person.getOptionalModel(api: self, from: .person4(snapshot.person))
         var blocks: BlockList? = blocks
         

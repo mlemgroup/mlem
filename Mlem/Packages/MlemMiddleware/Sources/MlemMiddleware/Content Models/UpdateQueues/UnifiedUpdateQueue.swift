@@ -37,6 +37,8 @@ public actor UnifiedUpdateQueue<Model: UnifiedModelProviding> {
         self.lastVerifiedProperties = properties
     }
     
+    /// Updates parent with its highest tier information.
+    /// - Note: this function simply queues the upgrade and returns very quickly. For use with interactive spinners, use `refresh()`
     func upgrade() async throws {
         // this method is a unique case because upgrade will be called at every property access on the parent model until
         // the required properties are provided. Therefore we only allow a single call
@@ -50,11 +52,17 @@ public actor UnifiedUpdateQueue<Model: UnifiedModelProviding> {
         }
     }
     
-    // TODO: NOW make this blocking for spinner reasons
+    /// Updates parent with its highest tier information. Only returns when the upgrade is complete.
     func refresh() async throws {
-        addItem {
-            return try await self.parent.fetchUpgraded()
+        await semaphore.wait()
+        defer {
+            semaphore.signal()
+            log.debug("Finished refresh")
         }
+        
+        let newProperties = try await self.parent.fetchUpgraded()
+        self.lastVerifiedProperties.merge(newProperties)
+        await updateParent(parent, with: lastVerifiedProperties)
     }
     
     /// Add a task to the queue for a repository call that returns a complete snapshot.

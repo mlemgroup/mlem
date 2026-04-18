@@ -35,7 +35,7 @@ struct PersonBanEditorView: View {
     @FocusState var focusedField: FocusedField?
     @State var presentationSelection: PresentationDetent = .large
     
-    var selectedTarget: (any Profile2Providing)? {
+    var selectedTarget: (any ProfileProviding)? {
         if targetInstance {
             appState.firstSession.instance
         } else {

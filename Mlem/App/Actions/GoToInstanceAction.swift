@@ -43,6 +43,6 @@ extension GoToInstanceAction {
 extension GoToInstanceAction {
     @MainActor
     func execute(environment: EnvironmentValues) {
-        environment.navigation?.push(.instance(hostOf: self.entity)) 
+        environment.navigation?.push(.hostInstance(of: self.entity))
     }
 }

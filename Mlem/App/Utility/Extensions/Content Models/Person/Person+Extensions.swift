@@ -9,7 +9,7 @@ import MlemBackend
 import MlemMiddleware
 
 extension Person {
-    var shouldHideInFeed: Bool { blocked || purged }
+    var shouldHideInFeed: Bool { blocked_.realizedValue || purged }
 
     var isMlemDeveloper: Bool {
         BackendClient.main.flairs.developers.contains(actorId.description)
@@ -51,7 +51,7 @@ extension Person {
             }
             output.formUnion(interactable.contextualFlairs())
         } else {
-            if api.myInstance?.administrators.contains(where: { $0.id == id }) ?? false {
+            if api.myInstance?.administrators.value?.contains(where: { $0.id == id }) ?? false {
                 output.insert(.admin)
             }
         }

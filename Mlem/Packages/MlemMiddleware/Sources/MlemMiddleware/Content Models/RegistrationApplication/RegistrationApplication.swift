@@ -16,7 +16,6 @@ public final class RegistrationApplication: ContentIdentifiable, FeedLoadable {
     public typealias FilterType = ModMailItemFilterType
     
     public static let modelTypeId: ContentType = .registrationApplication
-    public static let tierNumber: Int = 1
     public let api: ApiClient
     
     public let id: Int

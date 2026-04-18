@@ -99,12 +99,6 @@ extension AppointAdminAction {
             return
         }
 
-        Task {
-            do {
-                try await instance.addAdmin(self.entity, added: !isAdmin)
-            } catch {
-                handleError(error)
-            }
-        }
+        instance.addAdmin(personId: self.entity.id, added: !isAdmin)
     }
 }

@@ -15,12 +15,6 @@ public extension Post {
     var cacheId: Int { id }
 }
 
-// MARK: ContentModel
-
-public extension Post {
-    static var tierNumber: Int = 4
-}
-
 // MARK: FeedLoadable
 
 public extension Post {

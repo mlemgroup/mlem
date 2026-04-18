@@ -48,12 +48,12 @@ public class BlockList {
         // bypasses queuing for blocked status
         for key in newPeopleKeys.subtracting(oldPeopleKeys) {
             if let id = blocks.people[key], let person = api.caches.person.retrieveModel(cacheId: id) {
-                person.blocked = true
+                person.blocked_.set(true)
             }
         }
         for key in oldPeopleKeys.subtracting(newPeopleKeys) {
             if let id = people[key], let person = api.caches.person.retrieveModel(cacheId: id) {
-                person.blocked = false
+                person.blocked_.set(false)
             }
         }
         
@@ -65,12 +65,12 @@ public class BlockList {
         // bypasses queuing for blocked status
         for key in newCommunitiesKeys.subtracting(oldCommunitiesKeys) {
             if let id = blocks.communities[key], let community = api.caches.community.retrieveModel(cacheId: id) {
-                community.blocked.value_ = true
+                community.blocked_.set(true)
             }
         }
         for key in oldCommunitiesKeys.subtracting(newCommunitiesKeys) {
             if let id = communities[key], let community = api.caches.community.retrieveModel(cacheId: id) {
-                community.blocked.value_ = false
+                community.blocked_.set(false)
             }
         }
         
@@ -80,13 +80,13 @@ public class BlockList {
         let newInstancesKeys = Set(blocks.instances.keys)
 
         for key in newInstancesKeys.subtracting(oldInstancesKeys) {
-            if let id = blocks.instances[key], let instance = api.caches.instance1.retrieveModel(instanceId: id) {
-                instance.blockedManager.updateWithReceivedValue(true, semaphore: nil)
+            if let id = blocks.instances[key], let instance = api.caches.instance.retrieveModel(instanceId: id) {
+                instance.blocked_.set(true)
             }
         }
         for key in oldInstancesKeys.subtracting(newInstancesKeys) {
-            if let id = instances[key], let instance = api.caches.instance1.retrieveModel(instanceId: id) {
-                instance.blockedManager.updateWithReceivedValue(false, semaphore: nil)
+            if let id = instances[key], let instance = api.caches.instance.retrieveModel(instanceId: id) {
+                instance.blocked_.set(false)
             }
         }
 
@@ -115,7 +115,7 @@ public class BlockList {
         instances.keys.contains(instanceActorId)
     }
     
-    public func contains(_ instance: any InstanceStubProviding) -> Bool {
+    public func contains(_ instance: Instance) -> Bool {
         instances.keys.contains(instance.actorId)
     }
     

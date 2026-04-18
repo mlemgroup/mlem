@@ -12,7 +12,6 @@ import Observation
 @Observable
 class UserAccount: Account, CommunityOrPerson {
     static var identifierPrefix: String = "@"
-    static var tierNumber: Int = 5
     
     let actorId: ActorIdentifier
     let id: Int
@@ -25,8 +24,12 @@ class UserAccount: Account, CommunityOrPerson {
     var favorites: Set<Int>
     var visitHistoryEnabled: Bool
     var accountType: AccountType
+    var description: String?
+    var banner: URL?
+    var created: Date?
+    var updated: Date?
     
-    init(person: Person, instance: Instance3, siteSoftware: SiteSoftware) {
+    init(person: Person, siteSoftware: SiteSoftware) {
         self.api = person.api
         self.id = person.id
         self.name = person.name
@@ -38,6 +41,10 @@ class UserAccount: Account, CommunityOrPerson {
         self.favorites = []
         self.visitHistoryEnabled = true
         self.accountType = (person.moderatedCommunities.value_?.isEmpty ?? true) ? .user : .moderator
+        self.description = person.description
+        self.banner = person.banner
+        self.created = person.created
+        self.updated = person.updated
     }
     
     enum CodingKeys: String, CodingKey {
@@ -45,6 +52,7 @@ class UserAccount: Account, CommunityOrPerson {
         case id, username, storedNickname, instanceLink, siteVersion, avatarUrl
         case lastUsed, favorites, accountType, visitHistoryEnabled, activityState
         case siteSoftware
+        case description, banner, created, updated
     }
     
     enum DecodingError: Error { case cannotModifyPathComponents, invalidHost, noTokenInKeychain }
@@ -105,6 +113,11 @@ class UserAccount: Account, CommunityOrPerson {
         } catch {
             handleError(error)
         }
+        
+        self.description = try values.decodeIfPresent(String.self, forKey: .description)
+        self.banner = try values.decodeIfPresent(URL.self, forKey: .banner)
+        self.created = try values.decodeIfPresent(Date.self, forKey: .created)
+        self.updated = try values.decodeIfPresent(Date.self, forKey: .updated)
     }
     
     func encode(to encoder: Encoder) throws {
@@ -120,6 +133,10 @@ class UserAccount: Account, CommunityOrPerson {
         try container.encode(visitHistoryEnabled, forKey: .visitHistoryEnabled)
         try container.encode(accountType, forKey: .accountType)
         try container.encode(favorites, forKey: .favorites)
+        try container.encode(description, forKey: .description)
+        try container.encode(banner, forKey: .banner)
+        try container.encode(created, forKey: .created)
+        try container.encode(updated, forKey: .updated)
     }
     
     var keychainId: String {
@@ -127,7 +144,7 @@ class UserAccount: Account, CommunityOrPerson {
     }
     
     @MainActor
-    func update(person: Person, instance: Instance3, software: SiteSoftware) {
+    func update(person: Person, software: SiteSoftware) {
         var shouldSave = false
         if avatar != person.avatar {
             avatar = person.avatar
@@ -150,6 +167,23 @@ class UserAccount: Account, CommunityOrPerson {
             accountType = newAccountType
             shouldSave = true
         }
+        if person.description != description {
+            description = person.description
+            shouldSave = true
+        }
+        if person.banner != banner {
+            banner = person.banner
+            shouldSave = true
+        }
+        if person.created != created {
+            created = person.created
+            shouldSave = true
+        }
+        if person.updated != updated {
+            updated = person.updated
+            shouldSave = true
+        }
+        
         if shouldSave {
             AccountsTracker.main.saveAccounts(ofType: .user)
         }
@@ -192,6 +226,8 @@ class UserAccount: Account, CommunityOrPerson {
         storedNickname = newValue.isEmpty ? nil : newValue
         AccountsTracker.main.saveAccounts(ofType: .user)
     }
+    
+    var profileCreated: Date? { created }
 }
 
 private func getKeychainId(actorId: ActorIdentifier) -> String {

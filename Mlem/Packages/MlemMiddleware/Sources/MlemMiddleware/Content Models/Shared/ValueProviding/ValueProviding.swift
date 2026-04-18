@@ -16,4 +16,8 @@ public protocol ValueProviding<T> {
 /// other `ValueProviding`s
 public protocol RealizedValueProviding<T>: ValueProviding {
     var realizedValue: T { get }
+    
+    // NOTE: while value_ is currently always T (not T?), so could theoretically be directly exposed as `T { get set }`,
+    // it is intentionally obscured behind this setter for extensibility
+    func set(_ newValue: T)
 }

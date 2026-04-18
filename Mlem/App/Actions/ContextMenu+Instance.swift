@@ -8,6 +8,7 @@
 import Actions
 import MlemMiddleware
 import SwiftUI
+import MlemBackend
 
 private let seeds: [ActionSeed] = [
     .visit,
@@ -20,7 +21,7 @@ private let seeds: [ActionSeed] = [
 
 extension View {
     @ViewBuilder
-    func contextMenu(instance: (any InstanceStubProviding)?) -> some View {
+    func contextMenu(instance: (any InstanceActionProviding)?) -> some View {
         if let instance {
             contextMenu {
                 ActionButtons { _ in
@@ -34,11 +35,42 @@ extension View {
 }
 
 extension ToolbarEllipsisMenu {
-    init(instance: any InstanceStubProviding) where Content == ActionButtons {
+    init(instance: any InstanceActionProviding) where Content == ActionButtons {
         self.init {
             ActionButtons { _ in
                 seeds.compactMap { $0.createAction(instance) }
             }
         }
     }
+}
+
+extension View {
+    @ViewBuilder
+    func contextMenu(instance: any InstanceActionProviding) -> some View {
+        contextMenu {
+            ActionButtons { _ in
+                seeds.compactMap { $0.createAction(instance) }
+            }
+        }
+    }
+}
+
+// MARK: - InstanceActionProviding
+
+public protocol InstanceActionProviding: Sharable, Blockable {
+    var instanceStub: InstanceStub { get }
+}
+
+extension Instance: InstanceActionProviding {
+    public var instanceStub: InstanceStub { .init(api: api, actorId: actorId) }
+}
+
+extension InstanceSummary: @retroactive Sharable {}
+extension InstanceSummary: @retroactive ActorIdentifiable {}
+extension InstanceSummary: @retroactive Blockable {}
+extension InstanceSummary: InstanceActionProviding {
+    public var actorId: ActorIdentifier { instanceStub.actorId }
+    public func url() -> URL { actorId.url }
+    public var blocked: any RealizedValueProviding<Bool> { RealizedValue(false) }
+    public var updateBlocked: ((Bool, ((Bool) -> Void)?) -> Void)? { nil }
 }

@@ -11,4 +11,8 @@ import Observation
 public class SyntheticRealizedValue<T: MergeableValue>: ValueSynthesizer<T>, RealizedValueProviding {
     public var value: T? { synthesize() }
     public var realizedValue: T { synthesize() }
+    
+    public func set(_ newValue: T) {
+        value_ = newValue
+    }
 }

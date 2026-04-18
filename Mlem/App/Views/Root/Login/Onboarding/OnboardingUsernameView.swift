@@ -70,7 +70,7 @@ struct OnboardingUsernameView: View {
                 if !username.isEmpty {
                     try await Task.sleep(for: .seconds(0.5))
                 }
-                usernameValidity = try await model.instance?.usernameIsValidForNewAccount(username)
+                usernameValidity = try await model.instance?.usernameIsValidForNewAccount?(username)
             } catch ApiClientError.cancelled {
                 // no-op
             } catch {
