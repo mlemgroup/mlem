@@ -6,6 +6,7 @@
 //
 
 import ComponentViews
+import FediverseEvents
 import Icons
 import SwiftUI
 import Theming
@@ -14,6 +15,8 @@ struct SearchHomeView: View {
     @Environment(\.navigation) var navigation
     @Environment(\.palette) var palette
     @Environment(AppState.self) var appState
+    
+    @State var eventsClient: EventsClient = .init()
     
     var body: some View {
         VStack(spacing: 20) {

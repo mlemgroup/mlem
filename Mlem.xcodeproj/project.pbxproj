@@ -115,6 +115,7 @@
 		0343C0482D3AD6DB001CF709 /* Set+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0343C0472D3AD6DB001CF709 /* Set+Extensions.swift */; };
 		034690932D0F4D720073E664 /* RemovableProviding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034690922D0F4D720073E664 /* RemovableProviding+Extensions.swift */; };
 		034690992D105DFD0073E664 /* InboxView+Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034690982D105DFD0073E664 /* InboxView+Types.swift */; };
+		0347A6FB2F97F4CF00EFD670 /* FediverseEvents in Frameworks */ = {isa = PBXBuildFile; productRef = 0347A6FA2F97F4CF00EFD670 /* FediverseEvents */; };
 		0348F98D2DDBB526006639CD /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0348F98C2DDBB526006639CD /* OnboardingView.swift */; };
 		034A82032EBA688F00E5F904 /* LinkEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034A82022EBA688F00E5F904 /* LinkEditorView.swift */; };
 		034A85712EC0A1FA00E5F904 /* InstanceCommunityListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034A85702EC0A1FA00E5F904 /* InstanceCommunityListView.swift */; };
@@ -1204,6 +1205,7 @@
 				037386472BDAFE81007492B5 /* LemmyMarkdownUI in Frameworks */,
 				CDA711FB2DB5CAC3008BC3ED /* Media in Frameworks */,
 				B104A6D82A59BF3C00B3E725 /* Nuke in Frameworks */,
+				0347A6FB2F97F4CF00EFD670 /* FediverseEvents in Frameworks */,
 				03EC83EE2E958A44004698BB /* OpenGraph in Frameworks */,
 				50C99B562A61D792005D57DD /* Dependencies in Frameworks */,
 				636250DC2A18111400FC59B4 /* KeychainAccess in Frameworks */,
@@ -2552,6 +2554,7 @@
 				03EC83ED2E958A44004698BB /* OpenGraph */,
 				03EC85EB2E9D8F37004698BB /* Actions */,
 				038100502F6AE867008A7731 /* MlemBackend */,
+				0347A6FA2F97F4CF00EFD670 /* FediverseEvents */,
 			);
 			productName = Mlem;
 			productReference = 6363D5C127EE196700E34822 /* Mlem.app */;
@@ -3839,6 +3842,10 @@
 		0341480C2D8F63A6005503AF /* MlemMiddleware */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = MlemMiddleware;
+		};
+		0347A6FA2F97F4CF00EFD670 /* FediverseEvents */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FediverseEvents;
 		};
 		036879992DA1320000E796EF /* ComponentViews */ = {
 			isa = XCSwiftPackageProductDependency;
