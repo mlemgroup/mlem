@@ -18,7 +18,7 @@ extension SearchView {
         return ret
     }
     
-    func contentChangeTriggerRefresh(onlyRefreshIfEmpty: Bool) {
+    func contentChangeTriggerRefresh() {
         editingRecentSearches = false
         if selectedTab == .posts || selectedTab == .comments {
             if page != .results {
@@ -26,7 +26,7 @@ extension SearchView {
             }
         } else {
             Task {
-                await refresh(clearBeforeRefresh: false, onlyRefreshIfEmpty: onlyRefreshIfEmpty)
+                await refresh(clearBeforeRefresh: false)
             }
         }
     }
@@ -61,8 +61,7 @@ extension SearchView {
         }
     }
     
-    // swiftlint:disable:next cyclomatic_complexity
-    func refresh(clearBeforeRefresh: Bool, onlyRefreshIfEmpty: Bool = false) async {
+    func refresh(clearBeforeRefresh: Bool) async {
         do {
             if !query.isEmpty {
                 try await Task.sleep(for: .seconds(0.2))
@@ -70,15 +69,17 @@ extension SearchView {
             if clearBeforeRefresh {
                 setInstances(.init())
             }
+            guard lastExecutedQuery[selectedTab] != query else { return }
             switch selectedTab {
             case .communities:
-                if onlyRefreshIfEmpty, !communityLoader.items.isEmpty { return }
+                // guard lastExecutedQuery[.communities] != query else { return }
                 try await refreshCommunities(clearBeforeRefresh: clearBeforeRefresh)
             case .people:
-                if onlyRefreshIfEmpty, !personLoader.items.isEmpty { return }
+                // guard lastExecutedQuery[.people] != query else { return }
                 try await refreshPeople(clearBeforeRefresh: clearBeforeRefresh)
             case .instances:
-                if onlyRefreshIfEmpty, !instances.isEmpty { return }
+                // if onlyRefreshIfEmpty, !instances.isEmpty { return }
+                // if onlyRefreshIfEmpty, lastExecutedQuery[.instances] == query { return }
                 try await setInstances(MlemStats.main.searchInstances(
                     query: query,
                     sort: filtersActive ? instanceFilters.sort : .score
