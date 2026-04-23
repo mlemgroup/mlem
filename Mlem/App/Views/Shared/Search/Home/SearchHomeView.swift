@@ -16,8 +16,6 @@ struct SearchHomeView: View {
     @Environment(\.palette) var palette
     @Environment(AppState.self) var appState
     
-    @State var eventsClient: EventsClient = .init()
-    
     var body: some View {
         VStack(spacing: 20) {
             if appState.firstAccount.accountType != .guest {
