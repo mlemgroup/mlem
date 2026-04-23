@@ -47,7 +47,7 @@ struct SearchHomeView: View {
                     .tint(.themedSavedFeed)
             }
             NavigationLink(.upvotedFeed) {
-                VisitAgainLink(icon: .lemmy.upvoted, iconWeight: .bold, title: "Upvoted")
+                VisitAgainLink(icon: .lemmy.upvoted, title: "Upvoted")
                     .tint(.themedUpvote)
             }
         }
@@ -164,12 +164,10 @@ private struct VisitAgainLink: View {
     @Environment(\.palette) var palette
     
     let icon: Icon
-    let iconWeight: Font.Weight
     let title: LocalizedStringResource
     
-    init(icon: Icon, iconWeight: Font.Weight = .regular, title: LocalizedStringResource) {
+    init(icon: Icon, title: LocalizedStringResource) {
         self.icon = icon
-        self.iconWeight = iconWeight
         self.title = title
     }
 
@@ -177,7 +175,7 @@ private struct VisitAgainLink: View {
         FormChevron {
             HStack {
                 Label(title.key, icon: icon)
-                    .labelStyle(SearchHomeLabelStyle(iconWeight: iconWeight))
+                    .labelStyle(SearchHomeLabelStyle())
                 Spacer()
             }
         }
