@@ -20,14 +20,8 @@ extension SearchView {
     
     func contentChangeTriggerRefresh() {
         editingRecentSearches = false
-        if selectedTab == .posts || selectedTab == .comments {
-            if page != .results {
-                searchBarFocused = true
-            }
-        } else {
-            Task {
-                await refresh(clearBeforeRefresh: false)
-            }
+        Task {
+            await refresh(clearBeforeRefresh: false)
         }
     }
     
@@ -70,16 +64,13 @@ extension SearchView {
                 setInstances(.init())
             }
             guard lastExecutedQuery[selectedTab] != query else { return }
+            lastExecutedQuery[selectedTab] = query
             switch selectedTab {
             case .communities:
-                // guard lastExecutedQuery[.communities] != query else { return }
                 try await refreshCommunities(clearBeforeRefresh: clearBeforeRefresh)
             case .people:
-                // guard lastExecutedQuery[.people] != query else { return }
                 try await refreshPeople(clearBeforeRefresh: clearBeforeRefresh)
             case .instances:
-                // if onlyRefreshIfEmpty, !instances.isEmpty { return }
-                // if onlyRefreshIfEmpty, lastExecutedQuery[.instances] == query { return }
                 try await setInstances(MlemStats.main.searchInstances(
                     query: query,
                     sort: filtersActive ? instanceFilters.sort : .score

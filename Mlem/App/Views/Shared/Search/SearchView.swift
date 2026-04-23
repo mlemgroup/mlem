@@ -71,7 +71,7 @@ struct SearchView: View {
     
     @State var editingRecentSearches: Bool = false
     
-    var lastExecutedQuery: [Tab: String] = .init()
+    @State var lastExecutedQuery: [Tab: String] = .init()
     
     init(appState: AppState = .main) {
         self._communityLoader = .init(wrappedValue: .init(api: appState.firstApi))
