@@ -9,6 +9,7 @@ import SwiftUI
 
 public extension EnvironmentValues {
     @Entry var palette: Palette = .default
+    @Entry var tint: ThemedColor = .themedAccent
 }
 
 public extension View {
