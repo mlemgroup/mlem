@@ -70,7 +70,6 @@ struct SearchView: View {
     @State var commentLoader: SearchCommentFeedLoader
     
     @State var editingRecentSearches: Bool = false
-    
     @State var lastExecutedQuery: [Tab: String] = .init()
     
     init(appState: AppState = .main) {
