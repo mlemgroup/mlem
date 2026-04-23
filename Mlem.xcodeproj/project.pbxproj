@@ -53,6 +53,7 @@
 		031CA5772E5900E900CF0C0F /* QuickSwipes in Frameworks */ = {isa = PBXBuildFile; productRef = 031CA5762E5900E900CF0C0F /* QuickSwipes */; };
 		031CA5B52E590B0D00CF0C0F /* QuickSwipeAction+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031CA5B42E590B0D00CF0C0F /* QuickSwipeAction+Extensions.swift */; };
 		031CA5B72E599F7E00CF0C0F /* View+QuickSwipes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031CA5B62E599F7E00CF0C0F /* View+QuickSwipes.swift */; };
+		031DBA682F9A65DC00B4BAE4 /* BackendClient+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031DBA672F9A65DC00B4BAE4 /* BackendClient+Extensions.swift */; };
 		031E2D512BEF961D0003BC45 /* SubscriptionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031E2D502BEF961D0003BC45 /* SubscriptionListView.swift */; };
 		031E2D5B2BEFC9460003BC45 /* ThemeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031E2D5A2BEFC9460003BC45 /* ThemeSettingsView.swift */; };
 		031E2D5D2BEFCC630003BC45 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031E2D5C2BEFCC630003BC45 /* SettingsView.swift */; };
@@ -662,6 +663,7 @@
 		031CA5742E5900C800CF0C0F /* SwipeConfiguration+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwipeConfiguration+Extensions.swift"; sourceTree = "<group>"; };
 		031CA5B42E590B0D00CF0C0F /* QuickSwipeAction+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "QuickSwipeAction+Extensions.swift"; sourceTree = "<group>"; };
 		031CA5B62E599F7E00CF0C0F /* View+QuickSwipes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+QuickSwipes.swift"; sourceTree = "<group>"; };
+		031DBA672F9A65DC00B4BAE4 /* BackendClient+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BackendClient+Extensions.swift"; sourceTree = "<group>"; };
 		031E2D502BEF961D0003BC45 /* SubscriptionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionListView.swift; sourceTree = "<group>"; };
 		031E2D5A2BEFC9460003BC45 /* ThemeSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeSettingsView.swift; sourceTree = "<group>"; };
 		031E2D5C2BEFCC630003BC45 /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -2101,6 +2103,7 @@
 		CD4D58C22B86DC5800B82964 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				031DBA672F9A65DC00B4BAE4 /* BackendClient+Extensions.swift */,
 				CD737FB92F771BF100E46411 /* InstanceSummarySoftware+Extensions.swift */,
 				CD03B5BD2F3BA16100AEF786 /* Blockable+Extensions.swift */,
 				CDF60A002E998BB2005FA3F1 /* Data+Extensions.swift */,
@@ -3191,6 +3194,7 @@
 				038E1AC02F58C76A00D30F01 /* SwipeActionEditorView.swift in Sources */,
 				CD950E0F2F0ED6F7002A0595 /* FeedPostView.swift in Sources */,
 				0343C0482D3AD6DB001CF709 /* Set+Extensions.swift in Sources */,
+				031DBA682F9A65DC00B4BAE4 /* BackendClient+Extensions.swift in Sources */,
 				034A85712EC0A1FA00E5F904 /* InstanceCommunityListView.swift in Sources */,
 				CDCC7FEF2D9B1E7100CE18DA /* CachedComputation.swift in Sources */,
 				03049A202C650A8100FF6889 /* FormReadout.swift in Sources */,
