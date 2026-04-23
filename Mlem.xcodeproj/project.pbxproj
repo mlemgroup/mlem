@@ -54,6 +54,7 @@
 		031CA5B52E590B0D00CF0C0F /* QuickSwipeAction+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031CA5B42E590B0D00CF0C0F /* QuickSwipeAction+Extensions.swift */; };
 		031CA5B72E599F7E00CF0C0F /* View+QuickSwipes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031CA5B62E599F7E00CF0C0F /* View+QuickSwipes.swift */; };
 		031DBA682F9A65DC00B4BAE4 /* BackendClient+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031DBA672F9A65DC00B4BAE4 /* BackendClient+Extensions.swift */; };
+		031DBA792F9A95B200B4BAE4 /* SearchHomeLabelStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031DBA782F9A95B200B4BAE4 /* SearchHomeLabelStyle.swift */; };
 		031E2D512BEF961D0003BC45 /* SubscriptionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031E2D502BEF961D0003BC45 /* SubscriptionListView.swift */; };
 		031E2D5B2BEFC9460003BC45 /* ThemeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031E2D5A2BEFC9460003BC45 /* ThemeSettingsView.swift */; };
 		031E2D5D2BEFCC630003BC45 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031E2D5C2BEFCC630003BC45 /* SettingsView.swift */; };
@@ -664,6 +665,7 @@
 		031CA5B42E590B0D00CF0C0F /* QuickSwipeAction+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "QuickSwipeAction+Extensions.swift"; sourceTree = "<group>"; };
 		031CA5B62E599F7E00CF0C0F /* View+QuickSwipes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+QuickSwipes.swift"; sourceTree = "<group>"; };
 		031DBA672F9A65DC00B4BAE4 /* BackendClient+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BackendClient+Extensions.swift"; sourceTree = "<group>"; };
+		031DBA782F9A95B200B4BAE4 /* SearchHomeLabelStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHomeLabelStyle.swift; sourceTree = "<group>"; };
 		031E2D502BEF961D0003BC45 /* SubscriptionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionListView.swift; sourceTree = "<group>"; };
 		031E2D5A2BEFC9460003BC45 /* ThemeSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeSettingsView.swift; sourceTree = "<group>"; };
 		031E2D5C2BEFCC630003BC45 /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -1281,6 +1283,7 @@
 		0311ADB52E4DF49100EC3120 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				031DBA782F9A95B200B4BAE4 /* SearchHomeLabelStyle.swift */,
 				0311ADB62E4DF49800EC3120 /* SearchHomeView.swift */,
 				0311ADBC2E4F668900EC3120 /* TopCommunitiesListView.swift */,
 				0311ADBE2E4F68D000EC3120 /* TopPeopleListView.swift */,
@@ -3058,6 +3061,7 @@
 				CDB2EC8A2BFAEFDF00DBC0EF /* ThumbnailImageView.swift in Sources */,
 				0397D4932C6CE87E002C6CDC /* PostEditorTargetView.swift in Sources */,
 				034690992D105DFD0073E664 /* InboxView+Types.swift in Sources */,
+				031DBA792F9A95B200B4BAE4 /* SearchHomeLabelStyle.swift in Sources */,
 				03F6BDB12D52AA00006A425E /* CommunityMockType+Realistic.swift in Sources */,
 				0311ADC12E4F693B00EC3120 /* TopInstancesListView.swift in Sources */,
 				033F84492D18D1F400D87A9E /* MessageFeedView.swift in Sources */,

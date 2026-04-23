@@ -183,17 +183,8 @@ private struct VisitAgainLink: View {
 
     var body: some View {
         FormChevron {
-            HStack(spacing: 15) {
-                Image(icon: icon)
-                    .fontWeight(iconWeight)
-                    .symbolVariant(.fill)
-                    .foregroundStyle(.white)
-                    .scaledToFit()
-                    .frame(width: 15, height: 15)
-                    .padding(10)
-                    .background(color.gradient(palette: palette), in: .circle)
-                Text(title)
-                
+            HStack {
+                Label(title.key, icon: icon)
                 Spacer()
             }
         }
