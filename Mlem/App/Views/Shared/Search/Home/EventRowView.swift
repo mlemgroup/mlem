@@ -12,6 +12,15 @@ struct EventRowView: View {
     let event: Event
 
     var body: some View {
-        Text(event.name)
+        Button {
+            
+        } label: {
+            
+        }
+        .buttonStyle(.empty)
+        .padding(10)
+        .padding(.horizontal, 5)
+        .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: 25))
+        .paletteBorder(cornerRadius: 25)
     }
 }
