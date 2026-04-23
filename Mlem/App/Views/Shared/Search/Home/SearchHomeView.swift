@@ -15,6 +15,7 @@ struct SearchHomeView: View {
     @Environment(\.palette) var palette
 
     @Environment(AppState.self) var appState
+    @Environment(EventsTracker.self) var eventsTracker
     
     var body: some View {
         VStack(spacing: 20) {
@@ -25,7 +26,15 @@ struct SearchHomeView: View {
             
             subheadingView("Browse")
             browseList
-                .padding(.top, 20)
+                .padding(.top, 15)
+
+            if let events = eventsTracker.events, !events.isEmpty {
+                subheadingView("Events")
+                    .padding(.top, 15)
+                ForEach(events) { event in 
+                    Text(event.name)
+                }
+            }
         }
         .padding(.horizontal, 16)
         .padding(.top, 20)
