@@ -31,8 +31,8 @@ struct SearchHomeView: View {
             if let events = eventsTracker.events, !events.isEmpty {
                 subheadingView("Events")
                     .padding(.top, 15)
-                ForEach(events) { event in 
-                    Text(event.name)
+                ForEach(events) { 
+                    EventRowView(event: $0)
                 }
             }
         }
