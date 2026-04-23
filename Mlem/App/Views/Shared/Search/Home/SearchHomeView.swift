@@ -42,16 +42,12 @@ struct SearchHomeView: View {
     @ViewBuilder
     var topRow: some View {
         SearchHomeListView {
-            NavigationLink(.savedFeed) {
-                VisitAgainLink(icon: .lemmy.savedFeed, title: "Saved")
-                    .tint(.themedSavedFeed)
-            }
-            NavigationLink(.upvotedFeed) {
-                VisitAgainLink(icon: .lemmy.upvoted, title: "Upvoted")
-                    .tint(.themedUpvote)
-            }
+            NavigationLink("Saved", icon: .lemmy.savedFeed, destination: .savedFeed)
+                .tint(.themedSavedFeed)
+            NavigationLink("Upvoted", icon: .lemmy.upvoted, destination: .upvotedFeed)
+                .tint(.themedUpvote)
         }
-        .buttonStyle(.empty)
+        .buttonStyle(.chevron)
     }
     
     @ViewBuilder
@@ -157,27 +153,5 @@ private struct GridButton: View {
         .clipShape(.rect(cornerRadius: 16))
         .padding(.horizontal, 4)
         .onTapGesture {}
-    }
-}
-
-private struct VisitAgainLink: View {
-    @Environment(\.palette) var palette
-    
-    let icon: Icon
-    let title: LocalizedStringResource
-    
-    init(icon: Icon, title: LocalizedStringResource) {
-        self.icon = icon
-        self.title = title
-    }
-
-    var body: some View {
-        FormChevron {
-            HStack {
-                Label(title.key, icon: icon)
-                    .labelStyle(SearchHomeLabelStyle())
-                Spacer()
-            }
-        }
     }
 }

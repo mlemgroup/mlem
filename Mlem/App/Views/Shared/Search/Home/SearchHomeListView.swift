@@ -28,6 +28,7 @@ struct SearchHomeListView<Content: View>: View {
         }
         .padding(10)
         .padding(.trailing, 5)
+        .labelStyle(SearchHomeLabelStyle())
         .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: 25))
         .paletteBorder(cornerRadius: 25)
     }
