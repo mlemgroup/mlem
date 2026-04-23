@@ -41,23 +41,15 @@ struct SearchHomeView: View {
     
     @ViewBuilder
     var topRow: some View {
-        VStack {
+        SearchHomeListView {
             NavigationLink(.savedFeed) {
                 VisitAgainLink(icon: .lemmy.savedFeed, color: .themedSavedFeed, title: "Saved")
             }
-            
-            Divider()
-                .padding(.leading, 50)
-            
             NavigationLink(.upvotedFeed) {
                 VisitAgainLink(icon: .lemmy.upvoted, iconWeight: .bold, color: .themedUpvote, title: "Upvoted")
             }
         }
         .buttonStyle(.empty)
-        .padding(10)
-        .padding(.trailing, 5)
-        .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: 25))
-        .paletteBorder(cornerRadius: 25)
     }
     
     @ViewBuilder
@@ -185,6 +177,7 @@ private struct VisitAgainLink: View {
         FormChevron {
             HStack {
                 Label(title.key, icon: icon)
+                    .labelStyle(SearchHomeLabelStyle(color: color, iconWeight: iconWeight))
                 Spacer()
             }
         }
