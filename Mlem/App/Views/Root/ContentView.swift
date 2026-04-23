@@ -6,7 +6,6 @@
 //
 
 import Dependencies
-import FediverseEvents
 import Haptics
 import MlemBackend
 import MlemMiddleware
@@ -45,7 +44,7 @@ struct ContentView: View {
     @State var selectedAvatarImage: UIImage?
     
     @State var expandedPostHistoryTracker: ExpandedPostHistoryTracker = .init()
-    @State var eventsClient: EventsClient = .init()
+    @State var eventsTracker: EventsTracker = .init()
     
     var body: some View {
         if appState.appRefreshToggle {
@@ -79,7 +78,7 @@ struct ContentView: View {
                 .environment(errorsTracker)
                 .environment(expandedPostHistoryTracker)
                 .environment(backendClient)
-                .environment(eventsClient)
+                .environment(eventsTracker)
                 .environment(ToastModel.main)
                 .quickSwipesDisabled(!quickSwipesEnabled)
                 .quickSwipeThresholds(primary: 60, secondary: 150, tertiary: 240)

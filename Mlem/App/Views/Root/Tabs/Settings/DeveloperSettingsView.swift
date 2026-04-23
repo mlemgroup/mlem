@@ -17,7 +17,7 @@ import Theming
 
 struct DeveloperSettingsView: View {
     @Environment(BackendClient.self) var backendClient
-    @Environment(EventsClient.self) var eventsClient
+    @Environment(EventsTracker.self) var eventsTracker
     
     @Environment(NavigationLayer.self) var navigation
     @Dependency(\.persistenceRepository) var persistenceRepository
@@ -76,8 +76,8 @@ struct DeveloperSettingsView: View {
                                        set: { backendClient.changeEnvironment(to: $0 ? .qualityControl : .production) }))
                     
                     Toggle(String("Use QC Events API"),
-                           isOn: .init(get: { eventsClient.environment == .qualityControl },
-                                       set: { eventsClient.changeEnvironment(to: $0 ? .qualityControl : .production) }))
+                           isOn: .init(get: { eventsTracker.environment == .qualityControl },
+                                       set: { eventsTracker.changeEnvironment(to: $0 ? .qualityControl : .production) }))
                 } footer: {
                     Text(verbatim: "These settings will be cleared when the app restarts.")
                 }

@@ -6,7 +6,6 @@
 //
 
 import ComponentViews
-import FediverseEvents
 import Icons
 import SwiftUI
 import Theming
@@ -16,7 +15,6 @@ struct SearchHomeView: View {
     @Environment(\.palette) var palette
 
     @Environment(AppState.self) var appState
-    @Environment(EventsClient.self) var eventsClient
     
     var body: some View {
         VStack(spacing: 20) {
@@ -38,14 +36,6 @@ struct SearchHomeView: View {
         }
         .padding(.horizontal, 16)
         .padding(.top, 20)
-        .task {
-            do {
-                let events = try await eventsClient.listEvents()
-                print(events)
-            } catch {
-                handleError(error)
-            }
-        }
     }
     
     @ViewBuilder
