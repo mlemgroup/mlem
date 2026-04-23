@@ -21,6 +21,7 @@ class EventsTracker {
         self.client.changeEnvironment(to: environment)
         self.lastRefreshedAt = nil
         self.events = nil
+        self.refreshIfStale()
     }
 
     private func refresh() async throws {
