@@ -104,6 +104,11 @@ struct ContentView: View {
                         }
                     }
                 }
+                .onChange(of: scenePhase) {
+                    if scenePhase == .active {
+                        eventsTracker.refreshIfStale()
+                    }
+                }
                 .hapticConfiguration(maximumHapticTier: hapticLevel, errorHandler: handleHapticError)
                 .environment(AppState.main)
                 .onOpenURL { url in
