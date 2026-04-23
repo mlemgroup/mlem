@@ -14,8 +14,8 @@ public enum EventsEnvironment {
     
     var address: URL {
         switch self {
-        case .production: .init(string: "https://api.fediverse.events/v1")!
-        case .qualityControl: .init(string: "https://test-api.fediverse.events/v1")!
+        case .production: .init(string: "https://api.fediverse.events")!
+        case .qualityControl: .init(string: "https://test-api.fediverse.events")!
         }
     }
 }
@@ -32,5 +32,10 @@ public final class EventsClient {
 
     public func changeEnvironment(to environment: EventsEnvironment) {
         self.environment = environment
+    }
+
+    @discardableResult
+    internal func perform<Request: RestRequest>(_ request: Request) async throws -> Request.Response {
+        return try await restClient.perform(baseUrl: baseUrl, request, token: nil)
     }
 }
