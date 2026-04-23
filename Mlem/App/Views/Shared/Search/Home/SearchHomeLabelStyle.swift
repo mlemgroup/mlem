@@ -10,8 +10,8 @@ import Theming
 
 struct SearchHomeLabelStyle: LabelStyle {
     @Environment(\.palette) var palette
+    @Environment(\.tint) var tint
 
-    let color: ThemedColor
     let iconWeight: Font.Weight
 
     func makeBody(configuration: Configuration) -> some View {
@@ -23,7 +23,7 @@ struct SearchHomeLabelStyle: LabelStyle {
                 .scaledToFit()
                 .frame(width: 15, height: 15)
                 .padding(10)
-                .background(color.gradient(palette: palette), in: .circle)
+                .background(tint.gradient(palette: palette), in: .circle)
             configuration.title
         }
     }

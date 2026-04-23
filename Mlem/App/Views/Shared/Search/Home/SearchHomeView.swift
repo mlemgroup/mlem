@@ -53,10 +53,12 @@ struct SearchHomeView: View {
     var topRow: some View {
         SearchHomeListView {
             NavigationLink(.savedFeed) {
-                VisitAgainLink(icon: .lemmy.savedFeed, color: .themedSavedFeed, title: "Saved")
+                VisitAgainLink(icon: .lemmy.savedFeed, title: "Saved")
+                    .tint(.themedSavedFeed)
             }
             NavigationLink(.upvotedFeed) {
-                VisitAgainLink(icon: .lemmy.upvoted, iconWeight: .bold, color: .themedUpvote, title: "Upvoted")
+                VisitAgainLink(icon: .lemmy.upvoted, iconWeight: .bold, title: "Upvoted")
+                    .tint(.themedUpvote)
             }
         }
         .buttonStyle(.empty)
@@ -173,13 +175,11 @@ private struct VisitAgainLink: View {
     
     let icon: Icon
     let iconWeight: Font.Weight
-    let color: ThemedColor
     let title: LocalizedStringResource
     
-    init(icon: Icon, iconWeight: Font.Weight = .regular, color: ThemedColor, title: LocalizedStringResource) {
+    init(icon: Icon, iconWeight: Font.Weight = .regular, title: LocalizedStringResource) {
         self.icon = icon
         self.iconWeight = iconWeight
-        self.color = color
         self.title = title
     }
 
@@ -187,7 +187,7 @@ private struct VisitAgainLink: View {
         FormChevron {
             HStack {
                 Label(title.key, icon: icon)
-                    .labelStyle(SearchHomeLabelStyle(color: color, iconWeight: iconWeight))
+                    .labelStyle(SearchHomeLabelStyle(iconWeight: iconWeight))
                 Spacer()
             }
         }
