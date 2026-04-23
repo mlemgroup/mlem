@@ -6,6 +6,7 @@
 //
 
 import Dependencies
+import FediverseEvents
 import MlemBackend
 import MlemMiddleware
 import SwiftUI
@@ -16,6 +17,7 @@ import Theming
 
 struct DeveloperSettingsView: View {
     @Environment(BackendClient.self) var backendClient
+    @Environment(EventsClient.self) var eventsClient
     
     @Environment(NavigationLayer.self) var navigation
     @Dependency(\.persistenceRepository) var persistenceRepository
@@ -69,10 +71,18 @@ struct DeveloperSettingsView: View {
             
             #if DEBUG
                 Section {
-                    Toggle(String("Use QC Backend"),
-                           isOn: .init(get: { BackendClient.main.environment == .qualityControl },
-                                       set: { BackendClient.main.changeEnvironment(to: $0 ? .qualityControl : .production) }))
+                    Toggle(String("Use QC Mlem Backend"),
+                           isOn: .init(get: { backendClient.environment == .qualityControl },
+                                       set: { backendClient.changeEnvironment(to: $0 ? .qualityControl : .production) }))
                     
+                    Toggle(String("Use QC Events API"),
+                           isOn: .init(get: { eventsClient.environment == .qualityControl },
+                                       set: { eventsClient.changeEnvironment(to: $0 ? .qualityControl : .production) }))
+                } footer: {
+                    Text(verbatim: "These settings will be cleared when the app restarts.")
+                }
+
+                Section {
                     Button(String("Trigger Onboarding")) {
                         navigation.showFullScreenCover(.onboarding)
                     }
