@@ -12,18 +12,14 @@ struct SearchHomeLabelStyle: LabelStyle {
     @Environment(\.palette) var palette
     @Environment(\.tint) var tint
 
-    let iconWeight: Font.Weight
-
     func makeBody(configuration: Configuration) -> some View {
         HStack(spacing: 15) {
             configuration.icon
-                .fontWeight(iconWeight)
-                .symbolVariant(.fill)
-                .foregroundStyle(.white)
+                .symbolVariant(.fill.circle)
+                .foregroundStyle(.white, tint.gradient(palette: palette))
                 .scaledToFit()
-                .frame(width: 15, height: 15)
-                .padding(10)
-                .background(tint.gradient(palette: palette), in: .circle)
+                .font(.system(size: 35))
+                .frame(width: 35, height: 35)
             configuration.title
         }
     }
