@@ -19,23 +19,25 @@ struct SearchHomeView: View {
     var body: some View {
         VStack(spacing: 20) {
             if appState.firstAccount.accountType != .guest {
-                Text("Visit Again")
-                    .font(.title)
-                    .fontWeight(.semibold)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                subheadingView("Visit Again")
                 topRow
             }
             
-            Text("Browse")
-                .font(.title)
-                .fontWeight(.semibold)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.bottom, -4)
+            subheadingView("Browse")
             browseList
                 .padding(.top, 20)
         }
         .padding(.horizontal, 16)
         .padding(.top, 20)
+    }
+
+    @ViewBuilder
+    func subheadingView(_ text: LocalizedStringResource) -> some View {
+        Text(text)
+            .font(.title)
+            .fontWeight(.semibold)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.bottom, -4)
     }
     
     @ViewBuilder
