@@ -23,8 +23,23 @@ struct EventRowView: View {
                 )
                 Text(event.name)
                 Spacer()
+                dateView
+                .padding(.trailing, 15)
             }
         }
         .buttonStyle(.chevron)
+    }
+
+    @ViewBuilder
+    var dateView: some View {
+        Group {
+            if event.start < .now {
+                Text("Ends \(event.end, format: .relative(presentation: .numeric, unitsStyle: .wide))")
+            } else {
+                Text("Starts \(event.start, format: .relative(presentation: .numeric, unitsStyle: .wide))")
+            }
+        }
+        .font(.footnote)
+        .foregroundStyle(.secondary)
     }
 }
