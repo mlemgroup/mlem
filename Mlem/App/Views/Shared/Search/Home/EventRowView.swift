@@ -19,7 +19,7 @@ struct EventRowView: View {
                 CircleCroppedImageView(
                     url: event.logos.first?.url,
                     frame: SearchHomeLabelStyle.iconSize,
-                    fallback: .image
+                    fallback: .event
                 )
                 Text(event.name)
                 Spacer()
