@@ -14,6 +14,7 @@
 		030056A42D7DB05A00EB0BA3 /* SharingLinksSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030056A32D7DB05A00EB0BA3 /* SharingLinksSettingsView.swift */; };
 		030056A62D7DBD4F00EB0BA3 /* Sharable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030056A52D7DBD4F00EB0BA3 /* Sharable+Extensions.swift */; };
 		030056BB2D7E137800EB0BA3 /* ShareInstancePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030056BA2D7E137800EB0BA3 /* ShareInstancePickerView.swift */; };
+		0302A8802F9BC379000A127A /* SearchHomeCategoryLabelStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0302A87F2F9BC379000A127A /* SearchHomeCategoryLabelStyle.swift */; };
 		03036C742C71408700C6DA1D /* CounterAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03036C732C71408700C6DA1D /* CounterAppearance.swift */; };
 		03036C832C727D0500C6DA1D /* InteractionBarEditorView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03036C822C727D0500C6DA1D /* InteractionBarEditorView+Logic.swift */; };
 		03049A1A2C6502F300FF6889 /* FormSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03049A192C6502F300FF6889 /* FormSection.swift */; };
@@ -628,6 +629,7 @@
 		030056A32D7DB05A00EB0BA3 /* SharingLinksSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharingLinksSettingsView.swift; sourceTree = "<group>"; };
 		030056A52D7DBD4F00EB0BA3 /* Sharable+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sharable+Extensions.swift"; sourceTree = "<group>"; };
 		030056BA2D7E137800EB0BA3 /* ShareInstancePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareInstancePickerView.swift; sourceTree = "<group>"; };
+		0302A87F2F9BC379000A127A /* SearchHomeCategoryLabelStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHomeCategoryLabelStyle.swift; sourceTree = "<group>"; };
 		03036C732C71408700C6DA1D /* CounterAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterAppearance.swift; sourceTree = "<group>"; };
 		03036C822C727D0500C6DA1D /* InteractionBarEditorView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InteractionBarEditorView+Logic.swift"; sourceTree = "<group>"; };
 		03049A192C6502F300FF6889 /* FormSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSection.swift; sourceTree = "<group>"; };
@@ -1286,6 +1288,7 @@
 			isa = PBXGroup;
 			children = (
 				031DBA7A2F9A993000B4BAE4 /* SearchHomeListView.swift */,
+				0302A87F2F9BC379000A127A /* SearchHomeCategoryLabelStyle.swift */,
 				031DBA782F9A95B200B4BAE4 /* SearchHomeLabelStyle.swift */,
 				0311ADB62E4DF49800EC3120 /* SearchHomeView.swift */,
 				0311ADBC2E4F668900EC3120 /* TopCommunitiesListView.swift */,
@@ -3008,6 +3011,7 @@
 				CD4B66DA2DCE809D00D28EB4 /* InstanceUptimeView+Views.swift in Sources */,
 				0311ADBF2E4F68D000EC3120 /* TopPeopleListView.swift in Sources */,
 				CD3153072C38421B00BC5FBE /* View+LoadFeed.swift in Sources */,
+				0302A8802F9BC379000A127A /* SearchHomeCategoryLabelStyle.swift in Sources */,
 				039F588F2C7B599800C61658 /* ThemeLabel.swift in Sources */,
 				037029A32D6B9B8400B749DF /* ContentView+Tab.swift in Sources */,
 				CD2C86542D5556C00034CD8A /* MlemError.swift in Sources */,
