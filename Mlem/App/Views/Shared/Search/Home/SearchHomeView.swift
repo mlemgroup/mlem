@@ -18,6 +18,8 @@ struct SearchHomeView: View {
     @Environment(AppState.self) var appState
     @Environment(EventsTracker.self) var eventsTracker
     
+    @Setting(\.events_showEvents) var showEvents
+
     var body: some View {
         VStack(spacing: 20) {
             if appState.firstAccount.accountType != .guest {
@@ -29,7 +31,7 @@ struct SearchHomeView: View {
             browseList
                 .padding(.top, 15)
 
-            if let events = eventsTracker.events, !events.isEmpty {
+            if let events = eventsTracker.events, !events.isEmpty, showEvents {
                 eventsView(events)
             }
         }
@@ -76,7 +78,7 @@ struct SearchHomeView: View {
     var eventsMenuView: some View {
         Menu("More", icon: .general.menu) {
             Button("Turn Off Events", icon: .general.hide, role: .destructive) {
-                    
+                showEvents = false
             }
         }
         .foregroundStyle(.secondary)
