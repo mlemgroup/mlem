@@ -15,12 +15,16 @@ struct EventRowView: View {
         Button {
             
         } label: {
-            
+            HStack(spacing: 15) {
+                CircleCroppedImageView(
+                    url: event.logos.first?.url,
+                    frame: SearchHomeLabelStyle.iconSize,
+                    fallback: .image
+                )
+                Text(event.name)
+                Spacer()
+            }
         }
-        .buttonStyle(.empty)
-        .padding(10)
-        .padding(.horizontal, 5)
-        .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: 25))
-        .paletteBorder(cornerRadius: 25)
+        .buttonStyle(.chevron)
     }
 }
