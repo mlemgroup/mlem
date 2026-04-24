@@ -63,39 +63,21 @@ struct SearchHomeView: View {
     @ViewBuilder
     var browseList: some View {
         HStack(alignment: .center, spacing: UIDevice.isPad ? 30 : 0) {
-            ListRowButton(
-                title: "Communities",
-                icon: .lemmy.community,
-                destination: .topCommunities,
-                color: .themedCommunityAccent
-            )
-            
-            if !UIDevice.isPad {
-                Spacer()
-            }
-            
-            ListRowButton(
-                title: "Users",
-                icon: .lemmy.person,
-                destination: .topPeople,
-                color: .themedPersonAccent
-            )
-            
-            if !UIDevice.isPad {
-                Spacer()
-            }
-            
-            ListRowButton(
-                title: "Instances",
-                icon: .lemmy.instance,
-                destination: .topInstances,
-                color: .themedColorfulAccent(1)
-            )
-            
-            if UIDevice.isPad {
-                Spacer()
-            }
+            NavigationLink("Communities", icon: .lemmy.community, destination: .topCommunities)
+                .tint(.themedCommunityAccent)
+
+            if !UIDevice.isPad { Spacer() }
+
+            NavigationLink("Users", icon: .lemmy.person, destination: .topPeople)
+                .tint(.themedPersonAccent)
+
+            if !UIDevice.isPad { Spacer() }
+
+            NavigationLink("Instances", icon: .lemmy.instance, destination: .topInstances)
+                .tint(.themedColorfulAccent(1))
         }
+        .labelStyle(SearchHomeCategoryLabelStyle())
+        .buttonStyle(.empty)
         .padding(.horizontal, 20)
     }
     
@@ -109,36 +91,6 @@ struct SearchHomeView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.horizontal, -4)
-    }
-}
-
-private struct ListRowButton: View {
-    @Environment(\.navigation) var navigation
-    @Environment(\.palette) var palette
-    
-    let title: LocalizedStringResource
-    let icon: Icon
-    let destination: NavigationPage
-    let color: ThemedColor
-    
-    var body: some View {
-        Button {
-            navigation?.push(destination)
-        } label: {
-            VStack {
-                Image(icon: icon)
-                    .resizable()
-                    .foregroundStyle(.white)
-                    .symbolVariant(.fill)
-                    .padding(20)
-                    .background(color.gradient(palette: palette), in: .circle)
-                    .frame(width: 80, height: 80)
-                Text(title)
-                    .fontWeight(.semibold)
-                    .font(.subheadline)
-            }
-        }
-        .buttonStyle(.plain)
     }
 }
 
