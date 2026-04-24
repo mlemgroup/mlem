@@ -9,11 +9,15 @@ import FediverseEvents
 import SwiftUI
 
 struct EventRowView: View {
+    @Environment(\.openURL) var openURL
+
     let event: Event
 
     var body: some View {
         Button {
-            
+            if let url = event.navigationUrl {
+                openURL(url)
+            } 
         } label: {
             HStack(spacing: 15) {
                 CircleCroppedImageView(
