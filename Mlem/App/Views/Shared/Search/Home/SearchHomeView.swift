@@ -59,13 +59,31 @@ struct SearchHomeView: View {
 
     @ViewBuilder
     func eventsView(_ events: [Event]) -> some View {
-        subheadingView("Events")
-            .padding(.top, 15)
+        HStack {
+            subheadingView("Events")
+            Spacer()
+            eventsMenuView
+        }
+        .padding(.top, 15)
         SearchHomeListView {
             ForEach(events) { 
                 EventRowView(event: $0)
             }
         }
+    }
+
+    @ViewBuilder
+    var eventsMenuView: some View {
+        Menu("More", icon: .general.menu) {
+            Button("Turn Off Events", icon: .general.hide, role: .destructive) {
+                    
+            }
+        }
+        .foregroundStyle(.secondary)
+        .font(.title)
+        .labelStyle(.iconOnly)
+        .padding(.trailing, 10)
+        .padding(.bottom, -6)
     }
     
     @ViewBuilder
