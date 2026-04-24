@@ -6,6 +6,7 @@
 //
 
 import ComponentViews
+import FediverseEvents
 import Icons
 import SwiftUI
 import Theming
@@ -29,13 +30,7 @@ struct SearchHomeView: View {
                 .padding(.top, 15)
 
             if let events = eventsTracker.events, !events.isEmpty {
-                subheadingView("Events")
-                    .padding(.top, 15)
-                SearchHomeListView {
-                    ForEach(events) { 
-                        EventRowView(event: $0)
-                    }
-                }
+                eventsView(events)
             }
         }
         .padding(.horizontal, 16)
@@ -60,6 +55,17 @@ struct SearchHomeView: View {
                 .tint(.themedUpvote)
         }
         .buttonStyle(.chevron)
+    }
+
+    @ViewBuilder
+    func eventsView(_ events: [Event]) -> some View {
+        subheadingView("Events")
+            .padding(.top, 15)
+        SearchHomeListView {
+            ForEach(events) { 
+                EventRowView(event: $0)
+            }
+        }
     }
     
     @ViewBuilder
