@@ -111,6 +111,7 @@ struct SearchView: View {
                         page = query.isEmpty ? .recents : .results
                     }
                 }
+                lastExecutedQuery[selectedTab] = query
             }
             .onChange(of: isSearching) {
                 if isSearching, query.isEmpty {
@@ -123,7 +124,9 @@ struct SearchView: View {
                     contentChangeTriggerRefresh()
                 }
             }
-            .onChange(of: selectedTab) { contentChangeTriggerRefresh() }
+            .onChange(of: selectedTab) {
+                contentChangeTriggerRefresh(clearBeforeRefresh: true)
+            }
             .onChange(of: filterRefreshHashValue, onFilterRefreshHashValueChange)
             .onChange(of: postFilters?.location.instanceStub) {
                 resolvePostFilterCreator()

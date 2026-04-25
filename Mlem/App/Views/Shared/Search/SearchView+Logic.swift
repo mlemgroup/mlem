@@ -18,10 +18,10 @@ extension SearchView {
         return ret
     }
     
-    func contentChangeTriggerRefresh() {
+    func contentChangeTriggerRefresh(clearBeforeRefresh: Bool = false) {
         editingRecentSearches = false
         Task {
-            await refresh(clearBeforeRefresh: false)
+            await refresh(clearBeforeRefresh: clearBeforeRefresh)
         }
     }
     
@@ -63,8 +63,6 @@ extension SearchView {
             if clearBeforeRefresh {
                 setInstances(.init())
             }
-            guard lastExecutedQuery[selectedTab] != query else { return }
-            lastExecutedQuery[selectedTab] = query
             switch selectedTab {
             case .communities:
                 try await refreshCommunities(clearBeforeRefresh: clearBeforeRefresh)
@@ -79,6 +77,9 @@ extension SearchView {
                 try await refreshPosts(clearBeforeRefresh: clearBeforeRefresh)
             case .comments:
                 try await refreshComments(clearBeforeRefresh: clearBeforeRefresh)
+            }
+            if lastExecutedQuery[selectedTab] != query {
+                lastExecutedQuery[selectedTab] = query
             }
         } catch {
             handleError(error)
