@@ -104,7 +104,7 @@ struct SearchView: View {
                     query = ""
                     page = .recents
                     searchBarFocused = true
-                    contentChangeTriggerRefresh()
+                    contentChangeTriggerDebouncedRefresh()
                     
                 default:
                     if page != .home {
@@ -121,11 +121,11 @@ struct SearchView: View {
             // Don't use `.task` here, because it triggers when navigating back
             .onChange(of: query, initial: true) { oldValue, newValue in
                 if oldValue != newValue || selectedTab == .communities && communityLoader.items.isEmpty && !isSearching {
-                    contentChangeTriggerRefresh()
+                    contentChangeTriggerDebouncedRefresh()
                 }
             }
             .onChange(of: selectedTab) {
-                contentChangeTriggerRefresh(clearBeforeRefresh: true)
+                contentChangeTriggerRefresh()
             }
             .onChange(of: filterRefreshHashValue, onFilterRefreshHashValueChange)
             .onChange(of: postFilters?.location.instanceStub) {

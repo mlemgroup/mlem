@@ -18,10 +18,19 @@ extension SearchView {
         return ret
     }
     
-    func contentChangeTriggerRefresh(clearBeforeRefresh: Bool = false) {
+    func contentChangeTriggerDebouncedRefresh() {
+        let stashedQuery = query
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            if query == stashedQuery {
+                contentChangeTriggerRefresh()
+            }
+        }
+    }
+    
+    func contentChangeTriggerRefresh() {
         editingRecentSearches = false
         Task {
-            await refresh(clearBeforeRefresh: clearBeforeRefresh)
+            await refresh(clearBeforeRefresh: false)
         }
     }
     
@@ -57,9 +66,6 @@ extension SearchView {
     
     func refresh(clearBeforeRefresh: Bool) async {
         do {
-            if !query.isEmpty {
-                try await Task.sleep(for: .seconds(0.2))
-            }
             if clearBeforeRefresh {
                 setInstances(.init())
             }
