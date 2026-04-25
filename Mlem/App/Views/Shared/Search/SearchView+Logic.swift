@@ -9,8 +9,6 @@ import MlemBackend
 import MlemMiddleware
 import SwiftUI
 
-import os
-
 extension SearchView {
     var availableTabs: [Tab] {
         var ret: [Tab] = [.communities, .people, .instances, .posts]
@@ -177,7 +175,6 @@ extension SearchView {
             }
         }
         
-        Logger.dev.info("Refreshing posts")
         try await postLoader.refresh(clearBeforeRefresh: clearBeforeRefresh)
     }
     
