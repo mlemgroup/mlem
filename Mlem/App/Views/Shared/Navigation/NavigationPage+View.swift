@@ -59,8 +59,6 @@ extension NavigationPage {
             ProfileView()
         case .inbox:
             InboxView()
-        case .testInbox:
-            TestInboxView()
         case .search:
             SearchView()
         case let .externalApiInfo(api: api, actorId: actorId):
