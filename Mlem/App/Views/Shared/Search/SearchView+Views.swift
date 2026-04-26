@@ -47,7 +47,7 @@ extension SearchView {
         case .communities:
             Group {
                 if query != lastExecutedQuery[.communities] {
-                    ProgressView()
+                    ProgressView().padding(.top, 25)
                 } else {
                     LazyVStack(spacing: 0) {
                         SearchResultsView(results: communityLoader.items) { community in
@@ -72,7 +72,7 @@ extension SearchView {
         case .people:
             Group {
                 if query != lastExecutedQuery[.people] {
-                    ProgressView()
+                    ProgressView().padding(.top, 25)
                 } else {
                     LazyVStack(spacing: 0) {
                         SearchResultsView(results: personLoader.items) { person in
@@ -98,7 +98,7 @@ extension SearchView {
         case .instances:
             Group {
                 if query != lastExecutedQuery[.instances] {
-                    ProgressView()
+                    ProgressView().padding(.top, 25)
                 } else {
                     LazyVStack(spacing: 0) {
                         SearchResultsView(results: instances) { instance in
@@ -117,7 +117,7 @@ extension SearchView {
                 if postLoader.loadingState == .idle, postLoader.items.isEmpty {
                     searchPlaceholder
                 } else if query != lastExecutedQuery[.posts] {
-                    ProgressView()
+                    ProgressView().padding(.top, 25)
                 } else {
                     PostGridView(postFeedLoader: postLoader, alwaysShowRead: true)
                 }
@@ -127,7 +127,7 @@ extension SearchView {
             if commentLoader.loadingState == .idle, commentLoader.items.isEmpty {
                 searchPlaceholder
             } else if query != lastExecutedQuery[.comments] {
-                ProgressView()
+                ProgressView().padding(.top, 25)
             } else {
                 VStack(spacing: 0) {
                     LazyVStack(spacing: compactComments ? Constants.main.halfSpacing : Constants.main.standardSpacing) {
