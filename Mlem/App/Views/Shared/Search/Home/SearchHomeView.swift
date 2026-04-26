@@ -18,82 +18,56 @@ struct SearchHomeView: View {
     var body: some View {
         VStack(spacing: 20) {
             if appState.firstAccount.accountType != .guest {
-                Text("Visit Again")
-                    .font(.title)
-                    .fontWeight(.semibold)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                subheadingView("Visit Again")
                 topRow
             }
             
-            Text("Browse")
-                .font(.title)
-                .fontWeight(.semibold)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.bottom, -4)
+            subheadingView("Browse")
             browseList
                 .padding(.top, 20)
         }
         .padding(.horizontal, 16)
         .padding(.top, 20)
     }
+
+    @ViewBuilder
+    func subheadingView(_ text: LocalizedStringResource) -> some View {
+        Text(text)
+            .font(.title)
+            .fontWeight(.semibold)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.bottom, -4)
+    }
     
     @ViewBuilder
     var topRow: some View {
-        VStack {
-            NavigationLink(.savedFeed) {
-                VisitAgainLink(icon: .lemmy.savedFeed, color: .themedSavedFeed, title: "Saved")
-            }
-            
-            Divider()
-                .padding(.leading, 50)
-            
-            NavigationLink(.upvotedFeed) {
-                VisitAgainLink(icon: .lemmy.upvoted, iconWeight: .bold, color: .themedUpvote, title: "Upvoted")
-            }
+        SearchHomeListView {
+            NavigationLink("Saved", icon: .lemmy.savedFeed, destination: .savedFeed)
+                .tint(.themedSavedFeed)
+            NavigationLink("Upvoted", icon: .lemmy.upvoted, destination: .upvotedFeed)
+                .tint(.themedUpvote)
         }
-        .buttonStyle(.empty)
-        .padding(10)
-        .padding(.trailing, 5)
-        .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: 25))
-        .paletteBorder(cornerRadius: 25)
+        .buttonStyle(.chevron)
     }
     
     @ViewBuilder
     var browseList: some View {
         HStack(alignment: .center, spacing: UIDevice.isPad ? 30 : 0) {
-            ListRowButton(
-                title: "Communities",
-                icon: .lemmy.community,
-                destination: .topCommunities,
-                color: .themedCommunityAccent
-            )
-            
-            if !UIDevice.isPad {
-                Spacer()
-            }
-            
-            ListRowButton(
-                title: "Users",
-                icon: .lemmy.person,
-                destination: .topPeople,
-                color: .themedPersonAccent
-            )
-            
-            if !UIDevice.isPad {
-                Spacer()
-            }
-            
-            ListRowButton(
-                title: "Instances",
-                icon: .lemmy.instance,
-                destination: .topInstances,
-                color: .themedColorfulAccent(1)
-            )
-            
-            if UIDevice.isPad {
-                Spacer()
-            }
+            NavigationLink("Communities", icon: .lemmy.community, destination: .topCommunities)
+                .tint(.themedCommunityAccent)
+
+            if !UIDevice.isPad { Spacer() }
+
+            NavigationLink("Users", icon: .lemmy.person, destination: .topPeople)
+                .tint(.themedPersonAccent)
+
+            if !UIDevice.isPad { Spacer() }
+
+            NavigationLink("Instances", icon: .lemmy.instance, destination: .topInstances)
+                .tint(.themedColorfulAccent(1))
         }
+        .labelStyle(SearchHomeCategoryLabelStyle())
+        .buttonStyle(.empty)
         .padding(.horizontal, 20)
     }
     
@@ -107,36 +81,6 @@ struct SearchHomeView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.horizontal, -4)
-    }
-}
-
-private struct ListRowButton: View {
-    @Environment(\.navigation) var navigation
-    @Environment(\.palette) var palette
-    
-    let title: LocalizedStringResource
-    let icon: Icon
-    let destination: NavigationPage
-    let color: ThemedColor
-    
-    var body: some View {
-        Button {
-            navigation?.push(destination)
-        } label: {
-            VStack {
-                Image(icon: icon)
-                    .resizable()
-                    .foregroundStyle(.white)
-                    .symbolVariant(.fill)
-                    .padding(20)
-                    .background(color.gradient(palette: palette), in: .circle)
-                    .frame(width: 80, height: 80)
-                Text(title)
-                    .fontWeight(.semibold)
-                    .font(.subheadline)
-            }
-        }
-        .buttonStyle(.plain)
     }
 }
 
@@ -161,39 +105,5 @@ private struct GridButton: View {
         .clipShape(.rect(cornerRadius: 16))
         .padding(.horizontal, 4)
         .onTapGesture {}
-    }
-}
-
-private struct VisitAgainLink: View {
-    @Environment(\.palette) var palette
-    
-    let icon: Icon
-    let iconWeight: Font.Weight
-    let color: ThemedColor
-    let title: LocalizedStringResource
-    
-    init(icon: Icon, iconWeight: Font.Weight = .regular, color: ThemedColor, title: LocalizedStringResource) {
-        self.icon = icon
-        self.iconWeight = iconWeight
-        self.color = color
-        self.title = title
-    }
-
-    var body: some View {
-        FormChevron {
-            HStack(spacing: 15) {
-                Image(icon: icon)
-                    .fontWeight(iconWeight)
-                    .symbolVariant(.fill)
-                    .foregroundStyle(.white)
-                    .scaledToFit()
-                    .frame(width: 15, height: 15)
-                    .padding(10)
-                    .background(color.gradient(palette: palette), in: .circle)
-                Text(title)
-                
-                Spacer()
-            }
-        }
     }
 }

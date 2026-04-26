@@ -33,10 +33,9 @@ public class BackendClient {
     public internal(set) var flairs: MlemFlairs = .init(developers: .init())
     public internal(set) var testflightUpdate: URL?
     
-    public static var main: BackendClient = .init()
     internal var baseUrl: URL { environment.address }
     
-    internal init() {
+    public init() {
         refresh()
     }
     
