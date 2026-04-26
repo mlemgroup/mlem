@@ -19,6 +19,7 @@ struct GeneralSettingsView: View {
     @Setting(\.markdown_wrapCodeBlockLines) var wrapCodeBlockLines
     @Setting(\.person_ageVisibility) var accountAgeVisibility
     @Setting(\.media_animatedAvatars) var animatedAvatars
+    @Setting(\.events_showEvents) var showEvents
 
     // gestures
     @Setting(\.behavior_enableQuickSwipes) var swipeActionsEnabled
@@ -113,6 +114,10 @@ struct GeneralSettingsView: View {
                         destination: .settings(.animatedAvatars)
                     )
                 }
+            }
+
+            Section {
+                Toggle("Show Events", icon: .lemmy.event, isOn: $showEvents)
             }
             
             NavigationLink(

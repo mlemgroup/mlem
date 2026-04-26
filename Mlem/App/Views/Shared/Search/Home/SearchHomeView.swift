@@ -6,6 +6,7 @@
 //
 
 import ComponentViews
+import FediverseEvents
 import Icons
 import SwiftUI
 import Theming
@@ -13,8 +14,12 @@ import Theming
 struct SearchHomeView: View {
     @Environment(\.navigation) var navigation
     @Environment(\.palette) var palette
+
     @Environment(AppState.self) var appState
+    @Environment(EventsTracker.self) var eventsTracker
     
+    @Setting(\.events_showEvents) var showEvents
+
     var body: some View {
         VStack(spacing: 20) {
             if appState.firstAccount.accountType != .guest {
@@ -24,7 +29,11 @@ struct SearchHomeView: View {
             
             subheadingView("Browse")
             browseList
-                .padding(.top, 20)
+                .padding(.top, 15)
+
+            if let events = eventsTracker.events, !events.isEmpty, showEvents {
+                eventsView(events)
+            }
         }
         .padding(.horizontal, 16)
         .padding(.top, 20)
@@ -48,6 +57,35 @@ struct SearchHomeView: View {
                 .tint(.themedUpvote)
         }
         .buttonStyle(.chevron)
+    }
+
+    @ViewBuilder
+    func eventsView(_ events: [Event]) -> some View {
+        HStack {
+            subheadingView("Events")
+            Spacer()
+            eventsMenuView
+        }
+        .padding(.top, 15)
+        SearchHomeListView {
+            ForEach(events) { 
+                EventRowView(event: $0)
+            }
+        }
+    }
+
+    @ViewBuilder
+    var eventsMenuView: some View {
+        Menu("More", icon: .general.menu) {
+            Button("Turn Off Events", icon: .general.hide, role: .destructive) {
+                showEvents = false
+            }
+        }
+        .foregroundStyle(.secondary)
+        .font(.title)
+        .labelStyle(.iconOnly)
+        .padding(.trailing, 10)
+        .padding(.bottom, -6)
     }
     
     @ViewBuilder
