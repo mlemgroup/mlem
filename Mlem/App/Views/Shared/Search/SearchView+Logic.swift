@@ -18,16 +18,19 @@ extension SearchView {
         return ret
     }
     
-    func contentChangeTriggerRefresh(onlyRefreshIfEmpty: Bool) {
+    func contentChangeTriggerDebouncedRefresh() {
+        let stashedQuery = query
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            if query == stashedQuery {
+                contentChangeTriggerRefresh()
+            }
+        }
+    }
+    
+    func contentChangeTriggerRefresh() {
         editingRecentSearches = false
-        if selectedTab == .posts || selectedTab == .comments {
-            if page != .results {
-                searchBarFocused = true
-            }
-        } else {
-            Task {
-                await refresh(clearBeforeRefresh: false, onlyRefreshIfEmpty: onlyRefreshIfEmpty)
-            }
+        Task {
+            await refresh(clearBeforeRefresh: false)
         }
     }
     
@@ -61,24 +64,17 @@ extension SearchView {
         }
     }
     
-    // swiftlint:disable:next cyclomatic_complexity
-    func refresh(clearBeforeRefresh: Bool, onlyRefreshIfEmpty: Bool = false) async {
+    func refresh(clearBeforeRefresh: Bool) async {
         do {
-            if !query.isEmpty {
-                try await Task.sleep(for: .seconds(0.2))
-            }
             if clearBeforeRefresh {
                 setInstances(.init())
             }
             switch selectedTab {
             case .communities:
-                if onlyRefreshIfEmpty, !communityLoader.items.isEmpty { return }
                 try await refreshCommunities(clearBeforeRefresh: clearBeforeRefresh)
             case .people:
-                if onlyRefreshIfEmpty, !personLoader.items.isEmpty { return }
                 try await refreshPeople(clearBeforeRefresh: clearBeforeRefresh)
             case .instances:
-                if onlyRefreshIfEmpty, !instances.isEmpty { return }
                 try await setInstances(MlemStats.main.searchInstances(
                     query: query,
                     sort: filtersActive ? instanceFilters.sort : .score
@@ -87,6 +83,9 @@ extension SearchView {
                 try await refreshPosts(clearBeforeRefresh: clearBeforeRefresh)
             case .comments:
                 try await refreshComments(clearBeforeRefresh: clearBeforeRefresh)
+            }
+            if lastExecutedQuery[selectedTab] != query {
+                lastExecutedQuery[selectedTab] = query
             }
         } catch {
             handleError(error)
@@ -175,6 +174,7 @@ extension SearchView {
                 break
             }
         }
+        
         try await postLoader.refresh(clearBeforeRefresh: clearBeforeRefresh)
     }
     
