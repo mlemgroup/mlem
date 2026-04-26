@@ -15,6 +15,7 @@ private struct ThemedTintViewModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .tint(themedColor.resolve(with: palette))
+            .environment(\.tint, themedColor)
     }
 }
 
@@ -43,5 +44,6 @@ private struct ThemedGradientTintModifier: ViewModifier {
 public extension View {
     func gradientTint(_ themedColor: ThemedColor) -> some View {
         modifier(ThemedGradientTintModifier(themedColor: themedColor))
+            .environment(\.tint, themedColor)
     }
 }
