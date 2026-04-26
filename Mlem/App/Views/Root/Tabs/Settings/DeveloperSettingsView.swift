@@ -102,8 +102,6 @@ struct DeveloperSettingsView: View {
                     Button(String("Create Silent Error")) {
                         handleError(ApiClientError.noEntityFound, silent: true)
                     }
-                    
-                    NavigationLink(String("New Inbox"), destination: .testInbox)
                 } header: {
                     Text(verbatim: "Debug Tools")
                 }
