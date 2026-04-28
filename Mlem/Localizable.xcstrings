@@ -3561,6 +3561,9 @@
         }
       }
     },
+    "Events" : {
+
+    },
     "Every time I share a link, show a popup asking which instance to use." : {
       "localizations" : {
         "fr" : {
@@ -8057,6 +8060,9 @@
         }
       }
     },
+    "Show Events" : {
+
+    },
     "Show Full URL" : {
       "localizations" : {
         "fr" : {
@@ -8429,6 +8435,9 @@
           }
         }
       }
+    },
+    "Starts %@" : {
+
     },
     "Stats" : {
       "localizations" : {
@@ -9454,6 +9463,9 @@
           }
         }
       }
+    },
+    "Turn Off Events" : {
+
     },
     "Turn Off Search History" : {
       "localizations" : {
