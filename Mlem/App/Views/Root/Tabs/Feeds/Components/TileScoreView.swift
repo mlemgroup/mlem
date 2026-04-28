@@ -8,7 +8,6 @@
 import Foundation
 import MlemMiddleware
 import SwiftUI
-import Icons
 
 struct TileScoreView: View {
     let saved: ExpectedValue<Bool>
