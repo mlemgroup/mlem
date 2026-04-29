@@ -77,8 +77,10 @@ struct ActionSheet: View {
             Divider()
                 .padding(.horizontal, 15)
         }
-        ActionSheetButton(action: frame.action, label: frame.label, environment: environment)
+        ActionSheetButton(action: frame.action, label: frame.label)
             .popupAnchor(model: popupAnchorModel)
+            .environment(navigation)
+            .environment(\.self, environment)
     }
 }
 
@@ -86,12 +88,12 @@ private struct ActionSheetButton: View {
     @Environment(\.dismiss) var dismiss
     @Environment(NavigationLayer.self) var navigation
     @Environment(PopupAnchorModel.self) var popupAnchorModel
+    @Environment(\.self) var environment
 
     let action: any Actions.Action
 
     // Lable passed separately for performance reasons
     let label: ActionLabel
-    let environment: EnvironmentValues
 
     var body: some View {
         Button(label) {
