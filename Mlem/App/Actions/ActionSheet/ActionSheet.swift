@@ -15,10 +15,10 @@ struct ActionSheetSection {
 
 struct ActionSheet: View {
     @Environment(\.dismiss) var dismiss
-    @Environment(\.self) var environment
     @Environment(NavigationLayer.self) var navigation
 
     let sections: [ActionSheetSection]
+    let environment: EnvironmentValues
     let configuration: ContextMenuSettingsPage?
 
     @State var popupAnchorModel: PopupAnchorModel = .init()
@@ -77,14 +77,13 @@ struct ActionSheet: View {
             Divider()
                 .padding(.horizontal, 15)
         }
-        ActionSheetButton(action: frame.action, label: frame.label)
+        ActionSheetButton(action: frame.action, label: frame.label, environment: environment)
             .popupAnchor(model: popupAnchorModel)
     }
 }
 
 private struct ActionSheetButton: View {
     @Environment(\.dismiss) var dismiss
-    @Environment(\.self) var environment
     @Environment(NavigationLayer.self) var navigation
     @Environment(PopupAnchorModel.self) var popupAnchorModel
 
@@ -92,6 +91,7 @@ private struct ActionSheetButton: View {
 
     // Lable passed separately for performance reasons
     let label: ActionLabel
+    let environment: EnvironmentValues
 
     var body: some View {
         Button(label) {
