@@ -12,6 +12,7 @@ struct CommentSettingsView: View {
     @Setting(\.comment_gestures_tapToCollapse) var tapCommentsToCollapse
     @Setting(\.comment_maxDepth) var maxCommentDepth
     @Setting(\.comment_jumpButton) var jumpButton
+    @Setting(\.comment_showDownvotesCompact) var showDownvotesCompact
     @Setting(\.interactionBar_comment) var commentInteractionBar
 
     var body: some View {
@@ -43,6 +44,8 @@ struct CommentSettingsView: View {
                     icon: .settings.commentDepth,
                     destination: .settings(.commentMaximumDepth)
                 )
+                
+                Toggle("Show Downvotes Separately", icon: .lemmy.votes, isOn: $showDownvotesCompact)
             }
             Section {
                 Toggle("Tap to Collapse", icon: .general.collapse, isOn: $tapCommentsToCollapse)

@@ -61,10 +61,13 @@ extension InfoStackView {
     
     init(
         comment: Comment,
-        readouts: [CommentBarConfiguration.ReadoutType],
+        readouts: [CommentBarConfiguration.ReadoutType?],
         coloredReadouts: Set<CommentBarConfiguration.ReadoutType>
     ) {
-        self.readouts = readouts.compactMap { comment.readout(type: $0, showColor: coloredReadouts.contains($0)) }
+        self.readouts = readouts.compactMap {
+            if let readoutType = $0 { return comment.readout(type: readoutType, showColor: coloredReadouts.contains(readoutType)) }
+            return nil
+        }
     }
 }
 
