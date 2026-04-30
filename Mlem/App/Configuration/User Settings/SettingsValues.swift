@@ -123,6 +123,8 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     var interactionBar_postReport: PostBarConfiguration
     var interactionBar_commentReport: CommentBarConfiguration
     var interactionBar_alternateReportLayout: Bool
+
+    var events_showEvents: Bool
     
     // These are included in the encoding, but are synthesized into tab_inbox_badgeIncludedTypes at decoding
     @ObservationIgnored var inbox_badge_includeApplications: Bool = false
@@ -282,6 +284,8 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.interactionBar_postReport = try container.decodeIfPresent(PostBarConfiguration.self, forKey: ._interactionBar_postReport) ?? .reportDefault_
         self.interactionBar_commentReport = try container.decodeIfPresent(CommentBarConfiguration.self, forKey: ._interactionBar_commentReport) ?? .reportDefault_
         self.interactionBar_alternateReportLayout = try container.decodeIfPresent(Bool.self, forKey: ._interactionBar_alternateReportLayout) ?? false
+
+        self.events_showEvents = try container.decodeIfPresent(Bool.self, forKey: ._events_showEvents) ?? true
     }
     
     func reinit(from otherValues: SettingsValues) {
@@ -505,6 +509,8 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         case _interactionBar_postReport = "interactionBar_postReport"
         case _interactionBar_commentReport = "interactionBar_commentReport"
         case _interactionBar_alternateReportLayout = "interactionBar_alternateReportLayout"
+        case _events_showEvents = "events_showEvents"
+
         case inbox_badge_includeApplications
         case inbox_badge_includeMessageReports
         case inbox_badge_includeMod
@@ -622,6 +628,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.interactionBar_community = .init() // Added in 2.5
         self.interactionBar_postReport = interactionBarConfigurations.postReport
         self.interactionBar_commentReport = interactionBarConfigurations.commentReport
+        self.events_showEvents = true // Added in 2.5
     }
 }
 

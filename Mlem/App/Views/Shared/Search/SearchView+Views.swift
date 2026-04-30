@@ -45,59 +45,79 @@ extension SearchView {
     var resultsListView: some View {
         switch selectedTab {
         case .communities:
-            LazyVStack(spacing: 0) {
-                SearchResultsView(results: communityLoader.items) { community in
-                    CommunityListRow(
-                        community,
-                        readout: .subscribers,
-                        visitContext: page == .home ? .other : .search
-                    )
-                    .onAppear {
-                        do {
-                            try communityLoader.loadIfThreshold(community)
-                        } catch {
-                            handleError(error)
+            Group {
+                if query != lastExecutedQuery[.communities] {
+                    ProgressView().padding(.top, 25)
+                } else {
+                    LazyVStack(spacing: 0) {
+                        SearchResultsView(results: communityLoader.items) { community in
+                            CommunityListRow(
+                                community,
+                                readout: .subscribers,
+                                visitContext: page == .home ? .other : .search
+                            )
+                            .onAppear {
+                                do {
+                                    try communityLoader.loadIfThreshold(community)
+                                } catch {
+                                    handleError(error)
+                                }
+                            }
                         }
+                        EndOfFeedView(feedLoader: communityLoader, viewType: .hobbit)
                     }
                 }
-                EndOfFeedView(feedLoader: communityLoader, viewType: .hobbit)
             }
             .animation(.easeOut(duration: 0.1), value: communityLoader.items.isEmpty)
         case .people:
-            LazyVStack(spacing: 0) {
-                SearchResultsView(results: personLoader.items) { person in
-                    PersonListRow(
-                        person,
-                        complications: [.instance, .date],
-                        readout: .postsAndComments,
-                        visitContext: page == .home ? .other : .search
-                    )
-                    .onAppear {
-                        do {
-                            try personLoader.loadIfThreshold(person)
-                        } catch {
-                            handleError(error)
+            Group {
+                if query != lastExecutedQuery[.people] {
+                    ProgressView().padding(.top, 25)
+                } else {
+                    LazyVStack(spacing: 0) {
+                        SearchResultsView(results: personLoader.items) { person in
+                            PersonListRow(
+                                person,
+                                complications: [.instance, .date],
+                                readout: .postsAndComments,
+                                visitContext: page == .home ? .other : .search
+                            )
+                            .onAppear {
+                                do {
+                                    try personLoader.loadIfThreshold(person)
+                                } catch {
+                                    handleError(error)
+                                }
+                            }
                         }
+                        EndOfFeedView(feedLoader: personLoader, viewType: .hobbit)
                     }
                 }
-                EndOfFeedView(feedLoader: personLoader, viewType: .hobbit)
             }
             .animation(.easeOut(duration: 0.1), value: personLoader.items.isEmpty)
         case .instances:
-            LazyVStack(spacing: 0) {
-                SearchResultsView(results: instances) { instance in
-                    InstanceListRow(
-                        instance,
-                        readout: .users,
-                        visitContext: page == .home ? .other : .search
-                    )
+            Group {
+                if query != lastExecutedQuery[.instances] {
+                    ProgressView().padding(.top, 25)
+                } else {
+                    LazyVStack(spacing: 0) {
+                        SearchResultsView(results: instances) { instance in
+                            InstanceListRow(
+                                instance,
+                                readout: .users,
+                                visitContext: page == .home ? .other : .search
+                            )
+                        }
+                        EndOfFeedView(loadingState: .done, viewType: .hobbit)
+                    }
                 }
-                EndOfFeedView(loadingState: .done, viewType: .hobbit)
             }
         case .posts:
             Group {
                 if postLoader.loadingState == .idle, postLoader.items.isEmpty {
                     searchPlaceholder
+                } else if query != lastExecutedQuery[.posts] {
+                    ProgressView().padding(.top, 25)
                 } else {
                     PostGridView(postFeedLoader: postLoader, alwaysShowRead: true)
                 }
@@ -106,6 +126,8 @@ extension SearchView {
         case .comments:
             if commentLoader.loadingState == .idle, commentLoader.items.isEmpty {
                 searchPlaceholder
+            } else if query != lastExecutedQuery[.comments] {
+                ProgressView().padding(.top, 25)
             } else {
                 VStack(spacing: 0) {
                     LazyVStack(spacing: compactComments ? Constants.main.halfSpacing : Constants.main.standardSpacing) {
