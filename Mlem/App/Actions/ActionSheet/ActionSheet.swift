@@ -15,10 +15,10 @@ struct ActionSheetSection {
 
 struct ActionSheet: View {
     @Environment(\.dismiss) var dismiss
-    @Environment(\.self) var environment
     @Environment(NavigationLayer.self) var navigation
 
     let sections: [ActionSheetSection]
+    let environment: EnvironmentValues
     let configuration: ContextMenuSettingsPage?
 
     @State var popupAnchorModel: PopupAnchorModel = .init()
@@ -79,14 +79,16 @@ struct ActionSheet: View {
         }
         ActionSheetButton(action: frame.action, label: frame.label)
             .popupAnchor(model: popupAnchorModel)
+            .environment(navigation)
+            .environment(\.self, environment)
     }
 }
 
 private struct ActionSheetButton: View {
     @Environment(\.dismiss) var dismiss
-    @Environment(\.self) var environment
     @Environment(NavigationLayer.self) var navigation
     @Environment(PopupAnchorModel.self) var popupAnchorModel
+    @Environment(\.self) var environment
 
     let action: any Actions.Action
 
