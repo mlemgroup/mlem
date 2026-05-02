@@ -36,13 +36,11 @@ struct CommentView<EmbeddedContent: View>: View {
     let highlight: Bool
     let depthOffset: Int
     
-    var compactReadouts: [CommentBarConfiguration.ReadoutType?] {
-        let saved: CommentBarConfiguration.ReadoutType? = comment.saved.value ?? false ? .saved : nil
-        if showDownvotesCompact {
-            return [.created, .upvote, .downvote, .comment, saved]
-        } else {
-            return [.created, .score, .comment, saved]
-        }
+    var compactReadouts: [CommentBarConfiguration.ReadoutType] {
+        var readouts: [CommentBarConfiguration.ReadoutType] = [.created]
+        readouts.append(contentsOf: showDownvotesCompact ? [.upvote, .downvote, .comment] : [.score, .comment])
+        readouts.appendIfPresent(comment.saved.value ?? false ? .saved : nil)
+        return readouts
     }
     
     init(
