@@ -15,6 +15,12 @@ extension Array {
         
         return self[index]
     }
+    
+    mutating func appendIfPresent(_ newElement: Element?) {
+        if let newElement {
+            self.append(newElement)
+        }
+    }
 }
 
 extension Sequence where Element: Hashable {
