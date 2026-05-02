@@ -38,7 +38,11 @@ struct CustomizableActionMenu<Configuration: ContextMenuConfiguration>: View {
         if customizable {
             Section {
                 Button("More...", icon: .general.menu) {
-                    navigation.openSheet(.actionSheet(sheetSections, configuration: configurationKeyPathGenerator(environment)))
+                    navigation.openSheet(.actionSheet(
+                        sheetSections,
+                        environment: environment,
+                        configuration: configurationKeyPathGenerator(environment)
+                    ))
                 }
                 .symbolVariant(.circle)
             }
