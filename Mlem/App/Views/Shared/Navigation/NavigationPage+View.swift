@@ -238,8 +238,12 @@ extension NavigationPage {
             ExportablePostEditorView(post: post)
         case let .exportCommentImage(comment, tracker):
             ExportableCommentEditorView(comment: comment, commentTreeTracker: tracker)
-        case let .actionSheet(sections, configuration):
-            ActionSheet(sections: sections.wrappedValue, configuration: configuration)
+        case let .actionSheet(sections, environment, configuration):
+            ActionSheet(
+                sections: sections.wrappedValue,
+                environment: environment.wrappedValue,
+                configuration: configuration
+            )
         }
     }
 }

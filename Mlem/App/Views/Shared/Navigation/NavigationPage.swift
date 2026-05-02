@@ -10,6 +10,7 @@ import MlemBackend
 import MlemMiddleware
 import SwiftUI
 
+// swiftlint:disable file_length
 // swiftlint:disable:next type_body_length
 enum NavigationPage: Hashable {
     case settings(_ page: SettingsPage = .root)
@@ -93,7 +94,11 @@ enum NavigationPage: Hashable {
 
     // If `configuration` is specified, show a "customise" button in the sheet for editing that configuration.
     // Otherwise, no "customise" button is shown.
-    case actionSheet(_ actions: HashWrapper<[ActionSheetSection]>, configuration: ContextMenuSettingsPage?)
+    case actionSheet(
+        _ actions: HashWrapper<[ActionSheetSection]>,
+        environment: HashWrapper<EnvironmentValues>,
+        configuration: ContextMenuSettingsPage?
+    )
 
     static func shareInstancePicker(_ sharable: any Sharable) -> NavigationPage {
         shareInstancePicker(.init(wrappedValue: sharable))
@@ -285,9 +290,14 @@ enum NavigationPage: Hashable {
 
     static func actionSheet(
         _ actions: [ActionSheetSection],
+        environment: EnvironmentValues,
         configuration: ReferenceWritableKeyPath<SettingsValues, some ContextMenuConfiguration>? = nil
     ) -> NavigationPage {
-        actionSheet(.init(wrappedValue: actions), configuration: configuration.map(ContextMenuSettingsPage.init))
+        actionSheet(
+            .init(wrappedValue: actions),
+            environment: .init(wrappedValue: environment),
+            configuration: configuration.map(ContextMenuSettingsPage.init)
+        )
     }
     
     var hasNavigationStack: Bool {
@@ -394,3 +404,5 @@ struct MessageHashWrapper: Hashable {
         lhs.hashValue == rhs.hashValue
     }
 }
+
+// swiftlint:enable file_length
