@@ -45,7 +45,9 @@ struct CommentSettingsView: View {
                     destination: .settings(.commentMaximumDepth)
                 )
                 
+        if compactComments {
                 Toggle("Show Downvotes Separately", icon: .lemmy.votes, isOn: $showDownvotesCompact)
+        }
             }
             Section {
                 Toggle("Tap to Collapse", icon: .general.collapse, isOn: $tapCommentsToCollapse)
