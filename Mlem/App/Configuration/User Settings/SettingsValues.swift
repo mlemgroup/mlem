@@ -50,6 +50,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     var comment_createImage_showCreator: Bool
     var comment_createImage_showStats: Bool
     var comment_createImage_colorScheme: UIUserInterfaceStyle
+    var comment_showDownvotesCompact: Bool
     var community_showAvatar: Bool
     var community_showBanner: Bool
     var community_showInstance: Bool
@@ -123,6 +124,8 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     var interactionBar_postReport: PostBarConfiguration
     var interactionBar_commentReport: CommentBarConfiguration
     var interactionBar_alternateReportLayout: Bool
+
+    var events_showEvents: Bool
     
     // These are included in the encoding, but are synthesized into tab_inbox_badgeIncludedTypes at decoding
     @ObservationIgnored var inbox_badge_includeApplications: Bool = false
@@ -170,6 +173,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.comment_gestures_tapToCollapse = try container.decodeIfPresent(Bool.self, forKey: ._comment_gestures_tapToCollapse) ?? true
         self.comment_jumpButton = try container.decodeIfPresent(CommentJumpButtonLocation.self, forKey: ._comment_jumpButton) ?? .bottomTrailing
         self.comment_showCreatorInstance = try container.decodeIfPresent(Bool.self, forKey: ._comment_showCreatorInstance) ?? true
+        self.comment_showDownvotesCompact = try container.decodeIfPresent(Bool.self, forKey: ._comment_showDownvotesCompact) ?? false
         
         if let value = try container.decodeIfPresent(Int.self, forKey: ._comment_maxDepth) {
             self.comment_maxDepth = value
@@ -282,6 +286,8 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.interactionBar_postReport = try container.decodeIfPresent(PostBarConfiguration.self, forKey: ._interactionBar_postReport) ?? .reportDefault_
         self.interactionBar_commentReport = try container.decodeIfPresent(CommentBarConfiguration.self, forKey: ._interactionBar_commentReport) ?? .reportDefault_
         self.interactionBar_alternateReportLayout = try container.decodeIfPresent(Bool.self, forKey: ._interactionBar_alternateReportLayout) ?? false
+
+        self.events_showEvents = try container.decodeIfPresent(Bool.self, forKey: ._events_showEvents) ?? true
     }
     
     func reinit(from otherValues: SettingsValues) {
@@ -318,6 +324,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         comment_createImage_showCreator = otherValues.comment_createImage_showCreator
         comment_createImage_showStats = otherValues.comment_createImage_showStats
         comment_createImage_colorScheme = otherValues.comment_createImage_colorScheme
+        comment_showDownvotesCompact = otherValues.comment_showDownvotesCompact
         community_showAvatar = otherValues.community_showAvatar
         community_showBanner = otherValues.community_showBanner
         community_showInstance = otherValues.community_showInstance
@@ -429,6 +436,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         case _comment_createImage_showCreator = "comment_createImage_showCreator"
         case _comment_createImage_showStats = "comment_createImage_showStats"
         case _comment_createImage_colorScheme = "comment_createImage_colorScheme"
+        case _comment_showDownvotesCompact = "comment_showDownvotesCompact"
         case _community_showAvatar = "community_showAvatar"
         case _community_showBanner = "community_showBanner"
         case _community_showInstance = "community_showInstance"
@@ -505,6 +513,8 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         case _interactionBar_postReport = "interactionBar_postReport"
         case _interactionBar_commentReport = "interactionBar_commentReport"
         case _interactionBar_alternateReportLayout = "interactionBar_alternateReportLayout"
+        case _events_showEvents = "events_showEvents"
+
         case inbox_badge_includeApplications
         case inbox_badge_includeMessageReports
         case inbox_badge_includeMod
@@ -548,6 +558,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.comment_createImage_showCreator = true // Added in 2.4
         self.comment_createImage_showStats = true // Added in 2.4
         self.comment_createImage_colorScheme = .unspecified // Added in 2.4
+        self.comment_showDownvotesCompact = false // Added in 2.5
         self.community_showAvatar = settings.showCommunityAvatar
         self.community_showBanner = true // Removed in 2.0
         self.community_showInstance = true // Removed in 2.0
@@ -622,6 +633,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.interactionBar_community = .init() // Added in 2.5
         self.interactionBar_postReport = interactionBarConfigurations.postReport
         self.interactionBar_commentReport = interactionBarConfigurations.commentReport
+        self.events_showEvents = true // Added in 2.5
     }
 }
 

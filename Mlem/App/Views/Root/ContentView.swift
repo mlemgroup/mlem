@@ -44,6 +44,7 @@ struct ContentView: View {
     @State var selectedAvatarImage: UIImage?
     
     @State var expandedPostHistoryTracker: ExpandedPostHistoryTracker = .init()
+    @State var eventsTracker: EventsTracker = .init()
     
     var body: some View {
         if appState.appRefreshToggle {
@@ -77,6 +78,7 @@ struct ContentView: View {
                 .environment(errorsTracker)
                 .environment(expandedPostHistoryTracker)
                 .environment(backendClient)
+                .environment(eventsTracker)
                 .environment(ToastModel.main)
                 .quickSwipesDisabled(!quickSwipesEnabled)
                 .quickSwipeThresholds(primary: 60, secondary: 150, tertiary: 240)
@@ -100,6 +102,11 @@ struct ContentView: View {
                                 handleError(error)
                             }
                         }
+                    }
+                }
+                .onChange(of: scenePhase) {
+                    if scenePhase == .active {
+                        eventsTracker.refreshIfStale()
                     }
                 }
                 .hapticConfiguration(maximumHapticTier: hapticLevel, errorHandler: handleHapticError)

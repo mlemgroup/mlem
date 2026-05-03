@@ -18,6 +18,7 @@ struct CommentView<EmbeddedContent: View>: View {
     @Environment(\.palette) private var palette
     
     @Setting(\.comment_compact) var compactComments
+    @Setting(\.comment_showDownvotesCompact) var showDownvotesCompact
     @Setting(\.menus_modActionGrouping) var moderatorActionGrouping
     @Setting(\.interactionBar_comment) var commentInteractionBar
     @Setting(\.interactionBar_commentReport) var commentReportInteractionBar
@@ -34,6 +35,13 @@ struct CommentView<EmbeddedContent: View>: View {
     let inFeed: Bool
     let highlight: Bool
     let depthOffset: Int
+    
+    var compactReadouts: [CommentBarConfiguration.ReadoutType] {
+        var readouts: [CommentBarConfiguration.ReadoutType] = [.created]
+        readouts.append(contentsOf: showDownvotesCompact ? [.upvote, .downvote, .comment] : [.score, .comment])
+        readouts.appendIfPresent(comment.saved.value ?? false ? .saved : nil)
+        return readouts
+    }
     
     init(
         comment: Comment,
@@ -85,7 +93,7 @@ struct CommentView<EmbeddedContent: View>: View {
                         if compact, !collapsed {
                             InfoStackView(
                                 comment: comment,
-                                readouts: commentInteractionBar.readouts,
+                                readouts: compactReadouts,
                                 coloredReadouts: .init(CommentBarConfiguration.ReadoutType.allCases)
                             )
                             .layoutPriority(1)
@@ -141,6 +149,16 @@ struct CommentView<EmbeddedContent: View>: View {
             Spacer()
             Group {
                 if collapsed {
+                    if let saved = comment.saved.value, let votes = comment.votes.value {
+                        Group {
+                            postTag(active: saved, icon: .lemmy.saved.representingState(active: true), color: .themedSave) +
+                            Text(verbatim: " ") +
+                            postTag(active: votes.myVote != .none, icon: .init(votes.iconName), color: votes.iconColor)
+                        }
+                        .lineLimit(1)
+                        .font(.caption)
+                    }
+                    
                     Image(icon: .general.expand)
                         .frame(height: 10)
                         .imageScale(.small)

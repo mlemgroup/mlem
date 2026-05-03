@@ -36,7 +36,7 @@ extension MediaView {
     
     /// Enumeration of placeholder images to use if image loading fails
     enum Fallback {
-        case personAvatar, communityAvatar, instanceAvatar, favicon, image, movie, text, link, poll, titleOnly, proxyFailure
+        case personAvatar, communityAvatar, instanceAvatar, favicon, image, movie, text, link, poll, titleOnly, proxyFailure, event
         
         var icon: Icon {
             switch self {
@@ -51,6 +51,7 @@ extension MediaView {
             case .poll: .lemmy.pollPost
             case .titleOnly: .lemmy.titleOnlyPost
             case .proxyFailure: .lemmy.imageProxy
+            case .event: .lemmy.event
             }
         }
         
@@ -61,7 +62,7 @@ extension MediaView {
             case .image, .proxyFailure: 0.375
             case .link, .text, .poll: 0.45
             case .titleOnly: 0.45
-            case .movie: 0.6
+            case .movie, .event: 0.6
             }
         }
         

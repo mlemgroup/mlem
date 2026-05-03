@@ -69,6 +69,9 @@ struct SearchView: View {
     @State var postLoader: SearchPostFeedLoader
     @State var commentLoader: SearchCommentFeedLoader
     
+    @State var editingRecentSearches: Bool = false
+    @State var lastExecutedQuery: [Tab: String] = .init()
+    
     init(appState: AppState = .main) {
         self._communityLoader = .init(wrappedValue: .init(api: appState.firstApi))
         self._personLoader = .init(wrappedValue: .init(api: appState.firstApi))
@@ -82,8 +85,6 @@ struct SearchView: View {
         )
         self._commentLoader = .init(wrappedValue: .init(api: appState.firstApi))
     }
-    
-    @State var editingRecentSearches: Bool = false
     
     var body: some View {
         content
@@ -103,26 +104,29 @@ struct SearchView: View {
                     query = ""
                     page = .recents
                     searchBarFocused = true
-                    contentChangeTriggerRefresh(onlyRefreshIfEmpty: false)
+                    contentChangeTriggerDebouncedRefresh()
                     
                 default:
                     if page != .home {
                         page = query.isEmpty ? .recents : .results
                     }
                 }
+                lastExecutedQuery[selectedTab] = query
             }
             .onChange(of: isSearching) {
                 if isSearching, query.isEmpty {
                     page = .recents
                 }
             }
-//            // Don't use `.task` here, because it triggers when navigating back
+            // Don't use `.task` here, because it triggers when navigating back
             .onChange(of: query, initial: true) { oldValue, newValue in
                 if oldValue != newValue || selectedTab == .communities && communityLoader.items.isEmpty && !isSearching {
-                    contentChangeTriggerRefresh(onlyRefreshIfEmpty: false)
+                    contentChangeTriggerDebouncedRefresh()
                 }
             }
-            .onChange(of: selectedTab) { contentChangeTriggerRefresh(onlyRefreshIfEmpty: true) }
+            .onChange(of: selectedTab) {
+                contentChangeTriggerRefresh()
+            }
             .onChange(of: filterRefreshHashValue, onFilterRefreshHashValueChange)
             .onChange(of: postFilters?.location.instanceStub) {
                 resolvePostFilterCreator()

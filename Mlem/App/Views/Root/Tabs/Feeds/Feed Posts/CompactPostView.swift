@@ -23,13 +23,11 @@ struct CompactPostView: View {
     let post: Post
     var requireConsistentHeight: Bool = false
     
-    var readouts: [PostBarConfiguration.ReadoutType?] {
-        let saved: PostBarConfiguration.ReadoutType? = post.saved.value ?? false ? .saved : nil
-        if showDownvotesCompact {
-            return [.created, .upvote, .downvote, .comment, saved]
-        } else {
-            return [.created, .score, .comment, saved]
-        }
+    var readouts: [PostBarConfiguration.ReadoutType] {
+        var readouts: [PostBarConfiguration.ReadoutType] = [.created]
+        readouts.append(contentsOf: showDownvotesCompact ? [.upvote, .downvote, .comment] : [.score, .comment])
+        readouts.appendIfPresent(post.saved.value ?? false ? .saved : nil)
+        return readouts
     }
     
     var blurred: Bool {
