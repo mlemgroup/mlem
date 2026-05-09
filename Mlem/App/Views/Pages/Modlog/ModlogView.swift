@@ -135,7 +135,7 @@ struct ModlogView: View {
     
     @ViewBuilder
     func entryView(_ entry: ModlogEntry) -> some View {
-        ModlogEntryView(entry: entry, targetCommunity: communityFilter?.communityValue)
+        ModlogEntryView(entry: entry, api: api, targetCommunity: communityFilter?.communityValue)
             .onAppear {
                 do {
                     try activeFeedLoader.loadIfThreshold(entry)

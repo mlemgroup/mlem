@@ -14,6 +14,7 @@ struct ModlogEntryView: View {
     @Environment(\.navigation) var navigation
     
     let entry: ModlogEntry
+    let api: ApiClient
     var targetCommunity: Community?
     @State private var id = UUID()
     
@@ -62,9 +63,9 @@ struct ModlogEntryView: View {
                 font: .footnote,
                 palette: palette
             )
-            return entry.type.label(userText: userText)
+            return entry.type.label(userText: userText, api: api)
         }
-        return entry.type.label(userText: nil)
+        return entry.type.label(userText: nil, api: api)
     }
     
     @ViewBuilder
@@ -235,15 +236,17 @@ struct ModlogEntryView: View {
     }
     
     @ViewBuilder
-    func postLink(post: Post?, community: Community) -> some View {
+    func postLink(post: Post?, community: Community?) -> some View {
         Group {
-            if let post {
+            if let post, let community {
                 NavigationLink(.post(post)) {
                     FooterLinkView(title: post.title, subtitle: community.fullNameWithPrefix)
                 }
             } else {
                 unavailableView("Post unavailable")
-                communityLink(community: community)
+                if let community {
+                    communityLink(community: community)
+                }
             }
         }
         .id("\(id)_modlog_footer")

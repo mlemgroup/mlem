@@ -10,18 +10,18 @@ import Foundation
 public enum ModlogEntryContentSnapshot {
     case removePost(
         _ post: Post1Snapshot?,
-        community: Community1Snapshot,
+        community: Community1Snapshot?,
         removed: Bool,
         reason: String?
     )
     case lockPost(
         _ post: Post1Snapshot?,
-        community: Community1Snapshot,
+        community: Community1Snapshot?,
         locked: Bool
     )
     case pinPost(
         _ post: Post1Snapshot?,
-        community: Community1Snapshot,
+        community: Community1Snapshot?,
         pinned: Bool,
         type: PostFeatureType
     )
@@ -45,7 +45,7 @@ public enum ModlogEntryContentSnapshot {
     case purgeCommunity(reason: String?)
     
     case hideCommunity(
-        _ community: Community1Snapshot,
+        _ community: Community1Snapshot?,
         hidden: Bool,
         reason: String?
     )
@@ -56,7 +56,7 @@ public enum ModlogEntryContentSnapshot {
     
     case updatePersonModeratorStatus(
         person: Person1Snapshot,
-        community: Community1Snapshot,
+        community: Community1Snapshot?,
         appointed: Bool
     )
     case updatePersonAdminStatus(
@@ -65,7 +65,7 @@ public enum ModlogEntryContentSnapshot {
     )
     case banPersonFromCommunity(
         person: Person1Snapshot,
-        community: Community1Snapshot,
+        community: Community1Snapshot?,
         banned: Bool,
         reason: String?,
         expires: Date?

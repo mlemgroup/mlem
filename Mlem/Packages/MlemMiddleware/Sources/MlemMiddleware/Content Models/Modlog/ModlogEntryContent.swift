@@ -10,18 +10,18 @@ import Foundation
 public enum ModlogEntryContent: Equatable {
     case removePost(
         _ post: Post?,
-        community: Community,
+        community: Community?,
         removed: Bool,
         reason: String?
     )
     case lockPost(
         _ post: Post?,
-        community: Community,
+        community: Community?,
         locked: Bool
     )
     case pinPost(
         _ post: Post?,
-        community: Community,
+        community: Community?,
         pinned: Bool,
         type: PostFeatureType
     )
@@ -45,7 +45,7 @@ public enum ModlogEntryContent: Equatable {
     case purgeCommunity(reason: String?)
     
     case hideCommunity(
-        _ community: Community,
+        _ community: Community?,
         hidden: Bool,
         reason: String?
     )
@@ -56,7 +56,7 @@ public enum ModlogEntryContent: Equatable {
     
     case updatePersonModeratorStatus(
         person: Person,
-        community: Community,
+        community: Community?,
         appointed: Bool
     )
     case updatePersonAdminStatus(
@@ -65,7 +65,7 @@ public enum ModlogEntryContent: Equatable {
     )
     case banPersonFromCommunity(
         person: Person,
-        community: Community,
+        community: Community?,
         banned: Bool,
         reason: String?,
         expires: Date?
@@ -119,20 +119,20 @@ public enum ModlogEntryContent: Equatable {
         case let .removePost(post, community, removed, reason):
             self = .removePost(
                 api.caches.post.getOptionalModel(api: api, from: post.map { .post1($0) }),
-                community: api.caches.community.getModel(api: api, from: .community1(community)),
+                community: api.caches.community.getOptionalModel(api: api, from: community.map { .community1($0) }),
                 removed: removed,
                 reason: reason
             )
         case let .lockPost(post, community, locked):
             self = .lockPost(
                 api.caches.post.getOptionalModel(api: api, from: post.map { .post1($0) }),
-                community: api.caches.community.getModel(api: api, from: .community1(community)),
+                community: api.caches.community.getOptionalModel(api: api, from: community.map { .community1($0) }),
                 locked: locked
             )
         case let .pinPost(post, community, pinned, type):
             self = .pinPost(
                 api.caches.post.getOptionalModel(api: api, from: post.map { .post1($0) }),
-                community: api.caches.community.getModel(api: api, from: .community1(community)),
+                community: api.caches.community.getOptionalModel(api: api, from: community.map { .community1($0) }),
                 pinned: pinned,
                 type: type
             )
@@ -159,19 +159,19 @@ public enum ModlogEntryContent: Equatable {
             self = .purgeCommunity(reason: reason)
         case let .hideCommunity(community, hidden, reason):
             self = .hideCommunity(
-                api.caches.community.getModel(api: api, from: .community1(community)),
+                api.caches.community.getOptionalModel(api: api, from: community.map { .community1($0) }),
                 hidden: hidden,
                 reason: reason
             )
         case let .transferCommunityOwnership(person, community):
             self = .transferCommunityOwnership(
                 person: api.caches.person.getModel(api: api, from: .person1(person)),
-                community: api.caches.community.getModel(api: api, from: .community1(community))
+                community: api.caches.community.getModel(api: api, from: .community1(community)),
             )
         case let .updatePersonModeratorStatus(person, community, appointed):
             self = .updatePersonModeratorStatus(
                 person: api.caches.person.getModel(api: api, from: .person1(person)),
-                community: api.caches.community.getModel(api: api, from: .community1(community)),
+                community: api.caches.community.getOptionalModel(api: api, from: community.map { .community1($0) }),
                 appointed: appointed
             )
         case let .updatePersonAdminStatus(person, appointed):
@@ -182,7 +182,7 @@ public enum ModlogEntryContent: Equatable {
         case let .banPersonFromCommunity(person, community, banned, reason, expires):
             self = .banPersonFromCommunity(
                 person: api.caches.person.getModel(api: api, from: .person1(person)),
-                community: api.caches.community.getModel(api: api, from: .community1(community)),
+                community: api.caches.community.getOptionalModel(api: api, from: community.map { .community1($0) }),
                 banned: banned,
                 reason: reason,
                 expires: expires

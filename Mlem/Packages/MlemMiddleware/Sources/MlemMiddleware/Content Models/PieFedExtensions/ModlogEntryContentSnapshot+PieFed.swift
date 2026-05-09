@@ -9,35 +9,32 @@ import Foundation
 
 extension ModlogEntryContentSnapshot {
     init(from view: PieFedModRemovePostView) throws(ApiClientError) {
-        guard let community = view.community else {
-            throw ApiClientError.responseMissingRequiredData("PieFedModRemovePostView community")
-        }
         self = try .removePost(
             view.post.map(Post1Snapshot.init),
-            community: .init(from: community),
+            community: view.community.map { community throws(ApiClientError) in
+                try .init(from: community)
+            },
             removed: view.modRemovePost.removed,
             reason: view.modRemovePost.reason
         )
     }
     
     init(from view: PieFedModLockPostView) throws(ApiClientError) {
-        guard let community = view.community else {
-            throw ApiClientError.responseMissingRequiredData("PieFedModLockPostView community")
-        }
         self = try .lockPost(
             view.post.map(Post1Snapshot.init),
-            community: .init(from: community),
+            community: view.community.map { community throws(ApiClientError) in
+                try .init(from: community)
+            },
             locked: view.modLockPost.locked
         )
     }
     
     init(from view: PieFedModFeaturePostView) throws(ApiClientError) {
-        guard let community = view.community else {
-            throw ApiClientError.responseMissingRequiredData("PieFedModFeaturePostView community")
-        }
         self = try .pinPost(
             view.post.map(Post1Snapshot.init),
-            community: .init(from: community),
+            community: view.community.map { community throws(ApiClientError) in
+                try .init(from: community)
+            },
             pinned: view.modFeaturePost.featured,
             type: view.modFeaturePost.isFeaturedCommunity ? .community : .instance
         )
@@ -102,12 +99,11 @@ extension ModlogEntryContentSnapshot {
         guard let moddedPerson = view.moddedPerson else {
             throw ApiClientError.responseMissingRequiredData("PieFedModAddCommunityView bassedPerson")
         }
-        guard let community = view.community else {
-            throw ApiClientError.responseMissingRequiredData("PieFedModAddCommunityView community")
-        }
         self = try .updatePersonModeratorStatus(
             person: .init(from: moddedPerson),
-            community: .init(from: community),
+            community: view.community.map { community throws(ApiClientError) in
+                try .init(from: community)
+            },
             appointed: !view.modAddCommunity.removed
         )
     }
@@ -125,12 +121,11 @@ extension ModlogEntryContentSnapshot {
         guard let bannedPerson = view.bannedPerson else {
             throw ApiClientError.responseMissingRequiredData("PieFedModBanFromCommunityView bannedPerson")
         }
-        guard let community = view.community else {
-            throw ApiClientError.responseMissingRequiredData("PieFedModBanFromCommunityView community")
-        }
         self = try .banPersonFromCommunity(
             person: .init(from: bannedPerson),
-            community: .init(from: community),
+            community: view.community.map { community throws(ApiClientError) in
+                try .init(from: community)
+            },
             banned: view.modBanFromCommunity.banned,
             reason: view.modBanFromCommunity.reason,
             expires: view.modBanFromCommunity.expires
