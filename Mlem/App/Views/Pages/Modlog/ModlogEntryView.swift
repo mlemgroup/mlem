@@ -79,9 +79,9 @@ struct ModlogEntryView: View {
             postLink(post: post, community: community)
         case let .purgePost(reason: reason):
             reasonView(reason)
-        case let .removeComment(comment, creator: _, post: _, community: _, removed: _, reason: reason):
+        case let .removeComment(comment, creator: _, post: _, community: community, removed: _, reason: reason):
             reasonView(reason)
-            commentLink(comment: comment)
+            commentLink(comment: comment, community: community)
         case let .purgeComment(reason: reason):
             reasonView(reason)
         case let .removeCommunity(community, removed: _, reason: reason):
@@ -240,22 +240,27 @@ struct ModlogEntryView: View {
     }
     
     @ViewBuilder
-    func commentLink(comment: Comment) -> some View {
-        NavigationLink(.comment(comment, exposeRemovedContent: true)) {
-            VStack {
-                Text(comment.content)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .font(.subheadline)
-                    .fontWeight(.semibold)
-                    .multilineTextAlignment(.leading)
-                    .lineLimit(5)
+    func commentLink(comment: Comment?, community: Community) -> some View {
+        if let comment {
+            NavigationLink(.comment(comment, exposeRemovedContent: true)) {
+                VStack {
+                    Text(comment.content)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                        .multilineTextAlignment(.leading)
+                        .lineLimit(5)
+                }
+                .foregroundStyle(.themedSecondary)
+                .padding(Constants.main.standardSpacing)
+                .background(.themedTertiaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+                .paletteBorder(cornerRadius: Constants.main.standardSpacing)
             }
-            .foregroundStyle(.themedSecondary)
-            .padding(Constants.main.standardSpacing)
-            .background(.themedTertiaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
-            .paletteBorder(cornerRadius: Constants.main.standardSpacing)
+            .id("\(id)_modlog_footer")
+        } else {
+            unavailableView()
+            communityLink(community: community)
         }
-        .id("\(id)_modlog_footer")
     }
 
     @ViewBuilder
