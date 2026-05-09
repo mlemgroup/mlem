@@ -50,12 +50,12 @@ public enum ModlogEntryContentSnapshot {
         reason: String?
     )
     case transferCommunityOwnership(
-        person: Person1Snapshot,
+        person: Person1Snapshot?,
         community: Community1Snapshot
     )
     
     case updatePersonModeratorStatus(
-        person: Person1Snapshot,
+        person: Person1Snapshot?,
         community: Community1Snapshot?,
         appointed: Bool
     )
@@ -64,14 +64,14 @@ public enum ModlogEntryContentSnapshot {
         appointed: Bool
     )
     case banPersonFromCommunity(
-        person: Person1Snapshot,
+        person: Person1Snapshot?,
         community: Community1Snapshot?,
         banned: Bool,
         reason: String?,
         expires: Date?
     )
     case banPersonFromInstance(
-        person: Person1Snapshot,
+        person: Person1Snapshot?,
         banned: Bool,
         reason: String?,
         expires: Date?

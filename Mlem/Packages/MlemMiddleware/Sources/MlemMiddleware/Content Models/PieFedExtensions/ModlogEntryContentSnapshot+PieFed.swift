@@ -86,21 +86,19 @@ extension ModlogEntryContentSnapshot {
     }
     
     init(from view: PieFedModTransferCommunityView) throws(ApiClientError) {
-        guard let moddedPerson = view.moddedPerson else {
-            throw ApiClientError.responseMissingRequiredData("PieFedModTransferCommunityView bassedPerson")
-        }
         self = try .transferCommunityOwnership(
-            person: .init(from: moddedPerson),
+            person: view.moddedPerson.map { person throws(ApiClientError) in
+                try .init(from: person)
+            },
             community: .init(from: view.community)
         )
     }
     
     init(from view: PieFedModAddCommunityView) throws(ApiClientError) {
-        guard let moddedPerson = view.moddedPerson else {
-            throw ApiClientError.responseMissingRequiredData("PieFedModAddCommunityView bassedPerson")
-        }
         self = try .updatePersonModeratorStatus(
-            person: .init(from: moddedPerson),
+            person: view.moddedPerson.map { person throws(ApiClientError) in
+                try .init(from: person)
+            },
             community: view.community.map { community throws(ApiClientError) in
                 try .init(from: community)
             },
@@ -118,11 +116,10 @@ extension ModlogEntryContentSnapshot {
     }
     
     init(from view: PieFedModBanFromCommunityView) throws(ApiClientError) {
-        guard let bannedPerson = view.bannedPerson else {
-            throw ApiClientError.responseMissingRequiredData("PieFedModBanFromCommunityView bannedPerson")
-        }
         self = try .banPersonFromCommunity(
-            person: .init(from: bannedPerson),
+            person: view.bannedPerson.map { person throws(ApiClientError) in
+                try .init(from: person)
+            },
             community: view.community.map { community throws(ApiClientError) in
                 try .init(from: community)
             },
@@ -133,11 +130,10 @@ extension ModlogEntryContentSnapshot {
     }
     
     init(from view: PieFedModBanView) throws(ApiClientError) {
-        guard let bannedPerson = view.bannedPerson else {
-            throw ApiClientError.responseMissingRequiredData("PieFedModBanView bannedPerson")
-        }
         self = try .banPersonFromInstance(
-            person: .init(from: bannedPerson),
+            person: view.bannedPerson.map { person throws(ApiClientError) in
+                try .init(from: person)
+            },
             banned: view.modBan.banned,
             reason: view.modBan.reason,
             expires: view.modBan.expires

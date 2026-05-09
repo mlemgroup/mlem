@@ -119,109 +119,128 @@ struct ModlogEntryView: View {
     }
     
     @ViewBuilder
-    func banPersonView(person: Person, community: Community?, banned: Bool, expires: Date?) -> some View {
-        VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
-            let userText = person.nameTextView(
-                showFlairs: true,
-                showInstance: true,
-                communityContext: targetCommunity ?? community,
-                font: .subheadline,
-                palette: palette
-            )
-            let targetText: Text
-            if let community {
-                targetText = community.nameTextView(
+    func banPersonView(person: Person?, community: Community?, banned: Bool, expires: Date?) -> some View {
+        if let person {
+            VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
+                let userText = person.nameTextView(
                     showFlairs: true,
                     showInstance: true,
+                    communityContext: targetCommunity ?? community,
                     font: .subheadline,
                     palette: palette
                 )
-            } else {
-                targetText = Text("Instance")
+                let targetText: Text
+                if let community {
+                    targetText = community.nameTextView(
+                        showFlairs: true,
+                        showInstance: true,
+                        font: .subheadline,
+                        palette: palette
+                    )
+                } else {
+                    targetText = Text("Instance")
+                }
+                if banned {
+                    let expiresText = expires?.formatted(date: .abbreviated, time: .omitted) ?? "Never"
+                    return Text("Banned: \(userText)\nFrom: \(targetText)\nExpires: \(expiresText)")
+                } else {
+                    return Text("Unbanned: \(userText)\nFrom: \(targetText)")
+                }
             }
-            if banned {
-                let expiresText = expires?.formatted(date: .abbreviated, time: .omitted) ?? "Never"
-                return Text("Banned: \(userText)\nFrom: \(targetText)\nExpires: \(expiresText)")
-            } else {
-                return Text("Unbanned: \(userText)\nFrom: \(targetText)")
+            .imageScale(.small)
+            .symbolVariant(.fill)
+            .foregroundStyle(.themedSecondary)
+            .font(.subheadline)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(Constants.main.standardSpacing)
+            .background(.themedTertiaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+            .paletteBorder(cornerRadius: Constants.main.standardSpacing)
+        } else {
+            unavailableView("User unavailable")
+            if let community {
+                communityLink(community: community)
             }
         }
-        .imageScale(.small)
-        .symbolVariant(.fill)
-        .foregroundStyle(.themedSecondary)
-        .font(.subheadline)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(Constants.main.standardSpacing)
-        .background(.themedTertiaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
-        .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }
     
     @ViewBuilder
     func transferCommunityView(
-        person: Person,
+        person: Person?,
         community: Community
     ) -> some View {
-        VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
-            let userText = person.nameTextView(
-                showFlairs: true,
-                showInstance: true,
-                communityContext: targetCommunity ?? community,
-                font: .subheadline,
-                palette: palette
-            )
-            let communityText = community.nameTextView(
-                showFlairs: true,
-                showInstance: true,
-                font: .subheadline,
-                palette: palette
-            )
-            Text("Community: \(communityText)\nNew Owner: \(userText)")
-                .imageScale(.small)
-        }
-        .foregroundStyle(.themedSecondary)
-        .font(.subheadline)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(Constants.main.standardSpacing)
-        .background(.themedTertiaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
-        .paletteBorder(cornerRadius: Constants.main.standardSpacing)
-    }
-    
-    @ViewBuilder
-    func updatePersonModeratorStatusView(
-        person: Person,
-        community: Community?,
-        appointed: Bool
-    ) -> some View {
-        VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
-            let userText = person.nameTextView(
-                showFlairs: true,
-                showInstance: true,
-                communityContext: targetCommunity ?? community,
-                font: .subheadline,
-                palette: palette
-            )
-            if let community {
+        if let person {
+            VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
+                let userText = person.nameTextView(
+                    showFlairs: true,
+                    showInstance: true,
+                    communityContext: targetCommunity ?? community,
+                    font: .subheadline,
+                    palette: palette
+                )
                 let communityText = community.nameTextView(
                     showFlairs: true,
                     showInstance: true,
                     font: .subheadline,
                     palette: palette
                 )
-                Text(
-                    appointed ? "Appointed: \(userText)\nTo: \(communityText)" : "Removed: \(userText)\nFrom: \(communityText)"
+                Text("Community: \(communityText)\nNew Owner: \(userText)")
+                    .imageScale(.small)
+            }
+            .foregroundStyle(.themedSecondary)
+            .font(.subheadline)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(Constants.main.standardSpacing)
+            .background(.themedTertiaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+            .paletteBorder(cornerRadius: Constants.main.standardSpacing)
+        } else {
+            unavailableView("User unavailable")
+            communityLink(community: community)
+        }
+    }
+    
+    @ViewBuilder
+    func updatePersonModeratorStatusView(
+        person: Person?,
+        community: Community?,
+        appointed: Bool
+    ) -> some View {
+        if let person {
+            VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
+                let userText = person.nameTextView(
+                    showFlairs: true,
+                    showInstance: true,
+                    communityContext: targetCommunity ?? community,
+                    font: .subheadline,
+                    palette: palette
                 )
-            } else {
-                Text(appointed ? "Appointed: \(userText)" : "Removed: \(userText)")
+                if let community {
+                    let communityText = community.nameTextView(
+                        showFlairs: true,
+                        showInstance: true,
+                        font: .subheadline,
+                        palette: palette
+                    )
+                    Text(
+                        appointed ? "Appointed: \(userText)\nTo: \(communityText)" : "Removed: \(userText)\nFrom: \(communityText)"
+                    )
+                } else {
+                    Text(appointed ? "Appointed: \(userText)" : "Removed: \(userText)")
+                }
+            }
+            .foregroundStyle(.themedSecondary)
+            .imageScale(.small)
+            .symbolVariant(.fill)
+            .font(.subheadline)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(Constants.main.standardSpacing)
+            .background(.themedTertiaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+            .paletteBorder(cornerRadius: Constants.main.standardSpacing)
+        } else {
+            unavailableView("User unavailable")
+            if let community {
+                communityLink(community: community)
             }
         }
-        .foregroundStyle(.themedSecondary)
-        .imageScale(.small)
-        .symbolVariant(.fill)
-        .font(.subheadline)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(Constants.main.standardSpacing)
-        .background(.themedTertiaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
-        .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }
     
     @ViewBuilder
