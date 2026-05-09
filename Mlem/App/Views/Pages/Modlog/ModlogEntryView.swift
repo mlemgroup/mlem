@@ -86,7 +86,11 @@ struct ModlogEntryView: View {
             reasonView(reason)
         case let .removeCommunity(community, removed: _, reason: reason):
             reasonView(reason)
-            FullyQualifiedLinkView(community, labelStyle: .medium)
+            if let community {
+                FullyQualifiedLinkView(community, labelStyle: .medium)
+            } else {
+                unavailableView()
+            }
         case let .purgeCommunity(reason: reason):
             reasonView(reason)
         case let .hideCommunity(community, hidden: _, reason: reason):

@@ -38,7 +38,7 @@ public enum ModlogEntryContentSnapshot {
     case purgeComment(reason: String?)
     
     case removeCommunity(
-        _ community: Community1Snapshot,
+        _ community: Community1Snapshot?,
         removed: Bool,
         reason: String?
     )

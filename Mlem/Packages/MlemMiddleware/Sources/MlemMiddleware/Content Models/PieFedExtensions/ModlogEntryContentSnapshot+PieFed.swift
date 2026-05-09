@@ -67,11 +67,10 @@ extension ModlogEntryContentSnapshot {
     }
     
     init(from view: PieFedModRemoveCommunityView) throws(ApiClientError) {
-        guard let community = view.community else {
-            throw ApiClientError.responseMissingRequiredData("PieFedModRemoveCommunityView community")
-        }
         self = try .removeCommunity(
-            .init(from: community),
+            view.community.map { community throws(ApiClientError) in
+                try .init(from: community)
+            },
             removed: view.modRemoveCommunity.removed,
             reason: view.modRemoveCommunity.reason
         )
