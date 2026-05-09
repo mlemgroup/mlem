@@ -101,7 +101,11 @@ struct ModlogEntryView: View {
         case let .updatePersonModeratorStatus(person: person, community: community, appointed: appointed):
             updatePersonModeratorStatusView(person: person, community: community, appointed: appointed)
         case let .updatePersonAdminStatus(person: person, appointed: appointed):
-            updatePersonModeratorStatusView(person: person, community: nil, appointed: appointed)
+            if let person {
+                updatePersonModeratorStatusView(person: person, community: nil, appointed: appointed)
+            } else {
+                unavailableView()
+            }
         case let .banPersonFromCommunity(person: person, community: community, banned: banned, reason: reason, expires: expires):
             reasonView(reason)
             banPersonView(person: person, community: community, banned: banned, expires: expires)
@@ -232,47 +236,52 @@ struct ModlogEntryView: View {
     
     @ViewBuilder
     func postLink(post: Post?, community: Community) -> some View {
-        if let post {
-            NavigationLink(.post(post)) {
-                FooterLinkView(title: post.title, subtitle: community.fullNameWithPrefix)
+        Group {
+            if let post {
+                NavigationLink(.post(post)) {
+                    FooterLinkView(title: post.title, subtitle: community.fullNameWithPrefix)
+                }
+            } else {
+                unavailableView()
+                communityLink(community: community)
             }
-            .id("\(id)_modlog_footer")
-        } else {
-            unavailableView()
-            communityLink(community: community)
         }
+        .id("\(id)_modlog_footer")
     }
     
     @ViewBuilder
     func commentLink(comment: Comment?, community: Community?) -> some View {
-        if let comment {
-            NavigationLink(.comment(comment, exposeRemovedContent: true)) {
-                VStack {
-                    Text(comment.content)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .font(.subheadline)
-                        .fontWeight(.semibold)
-                        .multilineTextAlignment(.leading)
-                        .lineLimit(5)
+        Group {
+            if let comment {
+                NavigationLink(.comment(comment, exposeRemovedContent: true)) {
+                    VStack {
+                        Text(comment.content)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
+                            .multilineTextAlignment(.leading)
+                            .lineLimit(5)
+                    }
+                    .foregroundStyle(.themedSecondary)
+                    .padding(Constants.main.standardSpacing)
+                    .background(.themedTertiaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+                    .paletteBorder(cornerRadius: Constants.main.standardSpacing)
                 }
-                .foregroundStyle(.themedSecondary)
-                .padding(Constants.main.standardSpacing)
-                .background(.themedTertiaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
-                .paletteBorder(cornerRadius: Constants.main.standardSpacing)
-            }
-            .id("\(id)_modlog_footer")
-        } else {
-            unavailableView()
-            if let community {
-                communityLink(community: community)
+            } else {
+                unavailableView()
+                if let community {
+                    communityLink(community: community)
+
+                }
             }
         }
+        .id("\(id)_modlog_footer")
     }
 
     @ViewBuilder
     func unavailableView() -> some View {
             HStack {
-                Text("Post unavailable")
+                Text("Content unavailable")
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .font(.subheadline)
                     .italic()

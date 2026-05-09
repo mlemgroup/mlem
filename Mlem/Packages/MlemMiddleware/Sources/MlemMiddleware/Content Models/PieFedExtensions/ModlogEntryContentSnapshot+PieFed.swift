@@ -113,11 +113,10 @@ extension ModlogEntryContentSnapshot {
     }
     
     init(from view: PieFedModAddView) throws(ApiClientError) {
-        guard let moddedPerson = view.moddedPerson else {
-            throw ApiClientError.responseMissingRequiredData("PieFedModAddView moddedPerson")
-        }
         self = try .updatePersonAdminStatus(
-            person: .init(from: moddedPerson),
+            person: view.moddedPerson.map { person throws(ApiClientError) in
+                try .init(from: person)
+            },
             appointed: !view.modAdd.removed
         )
     }

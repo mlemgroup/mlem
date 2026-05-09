@@ -60,7 +60,7 @@ public enum ModlogEntryContentSnapshot {
         appointed: Bool
     )
     case updatePersonAdminStatus(
-        person: Person1Snapshot,
+        person: Person1Snapshot?,
         appointed: Bool
     )
     case banPersonFromCommunity(

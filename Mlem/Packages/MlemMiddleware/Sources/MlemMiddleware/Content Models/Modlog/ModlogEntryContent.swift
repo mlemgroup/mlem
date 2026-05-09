@@ -60,7 +60,7 @@ public enum ModlogEntryContent: Equatable {
         appointed: Bool
     )
     case updatePersonAdminStatus(
-        person: Person,
+        person: Person?,
         appointed: Bool
     )
     case banPersonFromCommunity(
@@ -176,7 +176,7 @@ public enum ModlogEntryContent: Equatable {
             )
         case let .updatePersonAdminStatus(person, appointed):
             self = .updatePersonAdminStatus(
-                person: api.caches.person.getModel(api: api, from: .person1(person)),
+                person: api.caches.person.getOptionalModel(api: api, from: person.map { .person1($0) }),
                 appointed: appointed
             )
         case let .banPersonFromCommunity(person, community, banned, reason, expires):
