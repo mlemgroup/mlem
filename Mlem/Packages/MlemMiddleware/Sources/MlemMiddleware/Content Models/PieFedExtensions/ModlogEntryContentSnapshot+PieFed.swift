@@ -21,28 +21,22 @@ extension ModlogEntryContentSnapshot {
     }
     
     init(from view: PieFedModLockPostView) throws(ApiClientError) {
-        guard let post = view.post else {
-            throw ApiClientError.responseMissingRequiredData("PieFedModLockPostView post")
-        }
         guard let community = view.community else {
             throw ApiClientError.responseMissingRequiredData("PieFedModLockPostView community")
         }
         self = try .lockPost(
-            .init(from: post),
+            view.post.map(Post1Snapshot.init),
             community: .init(from: community),
             locked: view.modLockPost.locked
         )
     }
     
     init(from view: PieFedModFeaturePostView) throws(ApiClientError) {
-        guard let post = view.post else {
-            throw ApiClientError.responseMissingRequiredData("PieFedModFeaturePostView post")
-        }
         guard let community = view.community else {
             throw ApiClientError.responseMissingRequiredData("PieFedModFeaturePostView community")
         }
         self = try .pinPost(
-            .init(from: post),
+            view.post.map(Post1Snapshot.init),
             community: .init(from: community),
             pinned: view.modFeaturePost.featured,
             type: view.modFeaturePost.isFeaturedCommunity ? .community : .instance

@@ -15,12 +15,12 @@ public enum ModlogEntryContentSnapshot {
         reason: String?
     )
     case lockPost(
-        _ post: Post1Snapshot,
+        _ post: Post1Snapshot?,
         community: Community1Snapshot,
         locked: Bool
     )
     case pinPost(
-        _ post: Post1Snapshot,
+        _ post: Post1Snapshot?,
         community: Community1Snapshot,
         pinned: Bool,
         type: PostFeatureType

@@ -15,12 +15,12 @@ public enum ModlogEntryContent: Equatable {
         reason: String?
     )
     case lockPost(
-        _ post: Post,
+        _ post: Post?,
         community: Community,
         locked: Bool
     )
     case pinPost(
-        _ post: Post,
+        _ post: Post?,
         community: Community,
         pinned: Bool,
         type: PostFeatureType
@@ -125,13 +125,13 @@ public enum ModlogEntryContent: Equatable {
             )
         case let .lockPost(post, community, locked):
             self = .lockPost(
-                api.caches.post.getModel(api: api, from: .post1(post)),
+                api.caches.post.getOptionalModel(api: api, from: post.map { .post1($0) }),
                 community: api.caches.community.getModel(api: api, from: .community1(community)),
                 locked: locked
             )
         case let .pinPost(post, community, pinned, type):
             self = .pinPost(
-                api.caches.post.getModel(api: api, from: .post1(post)),
+                api.caches.post.getOptionalModel(api: api, from: post.map { .post1($0) }),
                 community: api.caches.community.getModel(api: api, from: .community1(community)),
                 pinned: pinned,
                 type: type

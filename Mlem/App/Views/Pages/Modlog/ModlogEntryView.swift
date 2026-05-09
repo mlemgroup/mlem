@@ -72,12 +72,7 @@ struct ModlogEntryView: View {
         switch entry.type {
         case let .removePost(post, community: community, removed: _, reason: reason):
             reasonView(reason)
-            if let post {
-                postLink(post: post, community: community)
-            } else {
-                unavailableView()
-                communityLink(community: community)
-            }
+            postLink(post: post, community: community)
         case let .lockPost(post, community: community, locked: _):
             postLink(post: post, community: community)
         case let .pinPost(post, community: community, pinned: _, type: _):
@@ -232,11 +227,16 @@ struct ModlogEntryView: View {
     }
     
     @ViewBuilder
-    func postLink(post: Post, community: Community) -> some View {
-        NavigationLink(.post(post)) {
-            FooterLinkView(title: post.title, subtitle: community.fullNameWithPrefix)
+    func postLink(post: Post?, community: Community) -> some View {
+        if let post {
+            NavigationLink(.post(post)) {
+                FooterLinkView(title: post.title, subtitle: community.fullNameWithPrefix)
+            }
+            .id("\(id)_modlog_footer")
+        } else {
+            unavailableView()
+            communityLink(community: community)
         }
-        .id("\(id)_modlog_footer")
     }
     
     @ViewBuilder
