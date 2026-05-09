@@ -48,20 +48,15 @@ extension ModlogEntryContentSnapshot {
     }
     
     init(from view: PieFedModRemoveCommentView) throws(ApiClientError) {
-        guard let commenter = view.commenter else {
-            throw ApiClientError.responseMissingRequiredData("PieFedModRemoveCommentView commenter")
-        }
-        guard let post = view.post else {
-            throw ApiClientError.responseMissingRequiredData("PieFedModRemoveCommentView post")
-        }
-        guard let community = view.community else {
-            throw ApiClientError.responseMissingRequiredData("PieFedModRemoveCommentView community")
-        }
         self = try .removeComment(
             view.comment.map(Comment1Snapshot.init),
-            creator: .init(from: commenter),
-            post: .init(from: post),
-            community: .init(from: community),
+            creator: view.commenter.map { person throws(ApiClientError) in
+                try .init(from: person)
+            },
+            post: view.post.map(Post1Snapshot.init),
+            community: view.community.map { community throws(ApiClientError) in
+                try .init(from: community)
+            },
             removed: view.modRemoveComment.removed,
             reason: view.modRemoveComment.reason
         )

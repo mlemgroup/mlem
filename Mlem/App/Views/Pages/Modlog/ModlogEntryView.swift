@@ -240,7 +240,7 @@ struct ModlogEntryView: View {
     }
     
     @ViewBuilder
-    func commentLink(comment: Comment?, community: Community) -> some View {
+    func commentLink(comment: Comment?, community: Community?) -> some View {
         if let comment {
             NavigationLink(.comment(comment, exposeRemovedContent: true)) {
                 VStack {
@@ -259,7 +259,9 @@ struct ModlogEntryView: View {
             .id("\(id)_modlog_footer")
         } else {
             unavailableView()
-            communityLink(community: community)
+            if let community {
+                communityLink(community: community)
+            }
         }
     }
 

@@ -29,9 +29,9 @@ public enum ModlogEntryContentSnapshot {
     
     case removeComment(
         _ comment: Comment1Snapshot?,
-        creator: Person1Snapshot,
-        post: Post1Snapshot,
-        community: Community1Snapshot,
+        creator: Person1Snapshot?,
+        post: Post1Snapshot?,
+        community: Community1Snapshot?,
         removed: Bool,
         reason: String?
     )
