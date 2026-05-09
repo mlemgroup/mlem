@@ -8,6 +8,7 @@
 import MlemMiddleware
 import SwiftUI
 
+// swiftlint:disable:next type_body_length
 struct ModlogEntryView: View {
     @Environment(\.palette) var palette
     
@@ -70,7 +71,12 @@ struct ModlogEntryView: View {
         switch entry.type {
         case let .removePost(post, community: community, removed: _, reason: reason):
             reasonView(reason)
-            postLink(post: post, community: community)
+            if let post {
+                postLink(post: post, community: community)
+            } else {
+                unavailableView()
+                communityLink(community: community)
+            }
         case let .lockPost(post, community: community, locked: _):
             postLink(post: post, community: community)
         case let .pinPost(post, community: community, pinned: _, type: _):
@@ -237,6 +243,44 @@ struct ModlogEntryView: View {
         NavigationLink(.comment(comment, exposeRemovedContent: true)) {
             VStack {
                 Text(comment.content)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                    .multilineTextAlignment(.leading)
+                    .lineLimit(5)
+            }
+            .foregroundStyle(.themedSecondary)
+            .padding(Constants.main.standardSpacing)
+            .background(.themedTertiaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+            .paletteBorder(cornerRadius: Constants.main.standardSpacing)
+        }
+        .id("\(id)_modlog_footer")
+    }
+
+    @ViewBuilder
+    func unavailableView() -> some View {
+            HStack {
+                Text("Post unavailable")
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .font(.subheadline)
+                    .italic()
+                Spacer()
+                Button("More info", icon: .settings.ask) {
+                    
+                }
+                .labelStyle(.iconOnly)
+            }
+            .foregroundStyle(.themedSecondary)
+            .padding(Constants.main.standardSpacing)
+            .background(.themedTertiaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+            .paletteBorder(cornerRadius: Constants.main.standardSpacing)
+    }
+
+    @ViewBuilder
+    func communityLink(community: Community) -> some View {
+        NavigationLink(.community(community, visitContext: .other)) {
+            VStack {
+                Text(community.fullNameWithPrefix)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .font(.subheadline)
                     .fontWeight(.semibold)

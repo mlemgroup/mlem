@@ -9,7 +9,7 @@ import Foundation
 
 public enum ModlogEntryContentSnapshot {
     case removePost(
-        _ post: Post1Snapshot,
+        _ post: Post1Snapshot?,
         community: Community1Snapshot,
         removed: Bool,
         reason: String?

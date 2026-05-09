@@ -9,14 +9,11 @@ import Foundation
 
 extension ModlogEntryContentSnapshot {
     init(from view: PieFedModRemovePostView) throws(ApiClientError) {
-        guard let post = view.post else {
-            throw ApiClientError.responseMissingRequiredData("PieFedModRemovePostView post")
-        }
         guard let community = view.community else {
             throw ApiClientError.responseMissingRequiredData("PieFedModRemovePostView community")
         }
         self = try .removePost(
-            .init(from: post),
+            view.post.map(Post1Snapshot.init),
             community: .init(from: community),
             removed: view.modRemovePost.removed,
             reason: view.modRemovePost.reason

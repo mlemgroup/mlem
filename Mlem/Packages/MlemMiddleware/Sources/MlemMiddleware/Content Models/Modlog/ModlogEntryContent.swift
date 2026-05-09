@@ -9,7 +9,7 @@ import Foundation
 
 public enum ModlogEntryContent: Equatable {
     case removePost(
-        _ post: Post,
+        _ post: Post?,
         community: Community,
         removed: Bool,
         reason: String?
@@ -118,7 +118,7 @@ public enum ModlogEntryContent: Equatable {
         switch snapshot {
         case let .removePost(post, community, removed, reason):
             self = .removePost(
-                api.caches.post.getModel(api: api, from: .post1(post)),
+                api.caches.post.getOptionalModel(api: api, from: post.map { .post1($0) }),
                 community: api.caches.community.getModel(api: api, from: .community1(community)),
                 removed: removed,
                 reason: reason
