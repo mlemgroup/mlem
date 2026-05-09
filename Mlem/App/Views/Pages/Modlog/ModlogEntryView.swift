@@ -89,7 +89,7 @@ struct ModlogEntryView: View {
             if let community {
                 FullyQualifiedLinkView(community, labelStyle: .medium)
             } else {
-                unavailableView()
+                unavailableView("Community unavailable")
             }
         case let .purgeCommunity(reason: reason):
             reasonView(reason)
@@ -104,7 +104,7 @@ struct ModlogEntryView: View {
             if let person {
                 updatePersonModeratorStatusView(person: person, community: nil, appointed: appointed)
             } else {
-                unavailableView()
+                unavailableView("User unavailable")
             }
         case let .banPersonFromCommunity(person: person, community: community, banned: banned, reason: reason, expires: expires):
             reasonView(reason)
@@ -242,7 +242,7 @@ struct ModlogEntryView: View {
                     FooterLinkView(title: post.title, subtitle: community.fullNameWithPrefix)
                 }
             } else {
-                unavailableView()
+                unavailableView("Post unavailable")
                 communityLink(community: community)
             }
         }
@@ -268,7 +268,7 @@ struct ModlogEntryView: View {
                     .paletteBorder(cornerRadius: Constants.main.standardSpacing)
                 }
             } else {
-                unavailableView()
+                unavailableView("Comment unavailable")
                 if let community {
                     communityLink(community: community)
 
@@ -279,9 +279,9 @@ struct ModlogEntryView: View {
     }
 
     @ViewBuilder
-    func unavailableView() -> some View {
+    func unavailableView(_ label: LocalizedStringKey) -> some View {
             HStack {
-                Text("Content unavailable")
+                Text(label)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .font(.subheadline)
                     .italic()
