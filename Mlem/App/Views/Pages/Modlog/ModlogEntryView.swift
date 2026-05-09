@@ -11,6 +11,7 @@ import SwiftUI
 // swiftlint:disable:next type_body_length
 struct ModlogEntryView: View {
     @Environment(\.palette) var palette
+    @Environment(\.navigation) var navigation
     
     let entry: ModlogEntry
     var targetCommunity: Community?
@@ -266,7 +267,7 @@ struct ModlogEntryView: View {
                     .italic()
                 Spacer()
                 Button("More info", icon: .settings.ask) {
-                    
+                    navigation?.openSheet(.unavailableContentInfo)
                 }
                 .labelStyle(.iconOnly)
             }
