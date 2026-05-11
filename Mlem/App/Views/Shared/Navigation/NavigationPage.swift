@@ -91,6 +91,7 @@ enum NavigationPage: Hashable {
     case denyApplication(RegistrationApplication)
     case exportPostImage(_ post: Post)
     case exportCommentImage(_ comment: Comment, tracker: CommentTreeTracker?)
+    case unavailableContentInfo
 
     // If `configuration` is specified, show a "customise" button in the sheet for editing that configuration.
     // Otherwise, no "customise" button is shown.

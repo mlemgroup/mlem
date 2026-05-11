@@ -244,6 +244,8 @@ extension NavigationPage {
                 environment: environment.wrappedValue,
                 configuration: configuration
             )
+        case .unavailableContentInfo:
+            UnavailableContentInfoView()
         }
     }
 }

@@ -8,10 +8,13 @@
 import MlemMiddleware
 import SwiftUI
 
+// swiftlint:disable:next type_body_length
 struct ModlogEntryView: View {
     @Environment(\.palette) var palette
+    @Environment(\.navigation) var navigation
     
     let entry: ModlogEntry
+    let api: ApiClient
     var targetCommunity: Community?
     @State private var id = UUID()
     
@@ -60,9 +63,9 @@ struct ModlogEntryView: View {
                 font: .footnote,
                 palette: palette
             )
-            return entry.type.label(userText: userText)
+            return entry.type.label(userText: userText, api: api)
         }
-        return entry.type.label(userText: nil)
+        return entry.type.label(userText: nil, api: api)
     }
     
     @ViewBuilder
@@ -77,14 +80,18 @@ struct ModlogEntryView: View {
             postLink(post: post, community: community)
         case let .purgePost(reason: reason):
             reasonView(reason)
-        case let .removeComment(comment, creator: _, post: _, community: _, removed: _, reason: reason):
+        case let .removeComment(comment, creator: _, post: _, community: community, removed: _, reason: reason):
             reasonView(reason)
-            commentLink(comment: comment)
+            commentLink(comment: comment, community: community)
         case let .purgeComment(reason: reason):
             reasonView(reason)
         case let .removeCommunity(community, removed: _, reason: reason):
             reasonView(reason)
-            FullyQualifiedLinkView(community, labelStyle: .medium)
+            if let community {
+                FullyQualifiedLinkView(community, labelStyle: .medium)
+            } else {
+                unavailableView("Community unavailable")
+            }
         case let .purgeCommunity(reason: reason):
             reasonView(reason)
         case let .hideCommunity(community, hidden: _, reason: reason):
@@ -95,7 +102,11 @@ struct ModlogEntryView: View {
         case let .updatePersonModeratorStatus(person: person, community: community, appointed: appointed):
             updatePersonModeratorStatusView(person: person, community: community, appointed: appointed)
         case let .updatePersonAdminStatus(person: person, appointed: appointed):
-            updatePersonModeratorStatusView(person: person, community: nil, appointed: appointed)
+            if let person {
+                updatePersonModeratorStatusView(person: person, community: nil, appointed: appointed)
+            } else {
+                unavailableView("User unavailable")
+            }
         case let .banPersonFromCommunity(person: person, community: community, banned: banned, reason: reason, expires: expires):
             reasonView(reason)
             banPersonView(person: person, community: community, banned: banned, expires: expires)
@@ -108,109 +119,128 @@ struct ModlogEntryView: View {
     }
     
     @ViewBuilder
-    func banPersonView(person: Person, community: Community?, banned: Bool, expires: Date?) -> some View {
-        VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
-            let userText = person.nameTextView(
-                showFlairs: true,
-                showInstance: true,
-                communityContext: targetCommunity ?? community,
-                font: .subheadline,
-                palette: palette
-            )
-            let targetText: Text
-            if let community {
-                targetText = community.nameTextView(
+    func banPersonView(person: Person?, community: Community?, banned: Bool, expires: Date?) -> some View {
+        if let person {
+            VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
+                let userText = person.nameTextView(
                     showFlairs: true,
                     showInstance: true,
+                    communityContext: targetCommunity ?? community,
                     font: .subheadline,
                     palette: palette
                 )
-            } else {
-                targetText = Text("Instance")
+                let targetText: Text
+                if let community {
+                    targetText = community.nameTextView(
+                        showFlairs: true,
+                        showInstance: true,
+                        font: .subheadline,
+                        palette: palette
+                    )
+                } else {
+                    targetText = Text("Instance")
+                }
+                if banned {
+                    let expiresText = expires?.formatted(date: .abbreviated, time: .omitted) ?? "Never"
+                    return Text("Banned: \(userText)\nFrom: \(targetText)\nExpires: \(expiresText)")
+                } else {
+                    return Text("Unbanned: \(userText)\nFrom: \(targetText)")
+                }
             }
-            if banned {
-                let expiresText = expires?.formatted(date: .abbreviated, time: .omitted) ?? "Never"
-                return Text("Banned: \(userText)\nFrom: \(targetText)\nExpires: \(expiresText)")
-            } else {
-                return Text("Unbanned: \(userText)\nFrom: \(targetText)")
+            .imageScale(.small)
+            .symbolVariant(.fill)
+            .foregroundStyle(.themedSecondary)
+            .font(.subheadline)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(Constants.main.standardSpacing)
+            .background(.themedTertiaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+            .paletteBorder(cornerRadius: Constants.main.standardSpacing)
+        } else {
+            unavailableView("User unavailable")
+            if let community {
+                communityLink(community: community)
             }
         }
-        .imageScale(.small)
-        .symbolVariant(.fill)
-        .foregroundStyle(.themedSecondary)
-        .font(.subheadline)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(Constants.main.standardSpacing)
-        .background(.themedTertiaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
-        .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }
     
     @ViewBuilder
     func transferCommunityView(
-        person: Person,
+        person: Person?,
         community: Community
     ) -> some View {
-        VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
-            let userText = person.nameTextView(
-                showFlairs: true,
-                showInstance: true,
-                communityContext: targetCommunity ?? community,
-                font: .subheadline,
-                palette: palette
-            )
-            let communityText = community.nameTextView(
-                showFlairs: true,
-                showInstance: true,
-                font: .subheadline,
-                palette: palette
-            )
-            Text("Community: \(communityText)\nNew Owner: \(userText)")
-                .imageScale(.small)
-        }
-        .foregroundStyle(.themedSecondary)
-        .font(.subheadline)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(Constants.main.standardSpacing)
-        .background(.themedTertiaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
-        .paletteBorder(cornerRadius: Constants.main.standardSpacing)
-    }
-    
-    @ViewBuilder
-    func updatePersonModeratorStatusView(
-        person: Person,
-        community: Community?,
-        appointed: Bool
-    ) -> some View {
-        VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
-            let userText = person.nameTextView(
-                showFlairs: true,
-                showInstance: true,
-                communityContext: targetCommunity ?? community,
-                font: .subheadline,
-                palette: palette
-            )
-            if let community {
+        if let person {
+            VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
+                let userText = person.nameTextView(
+                    showFlairs: true,
+                    showInstance: true,
+                    communityContext: targetCommunity ?? community,
+                    font: .subheadline,
+                    palette: palette
+                )
                 let communityText = community.nameTextView(
                     showFlairs: true,
                     showInstance: true,
                     font: .subheadline,
                     palette: palette
                 )
-                Text(
-                    appointed ? "Appointed: \(userText)\nTo: \(communityText)" : "Removed: \(userText)\nFrom: \(communityText)"
+                Text("Community: \(communityText)\nNew Owner: \(userText)")
+                    .imageScale(.small)
+            }
+            .foregroundStyle(.themedSecondary)
+            .font(.subheadline)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(Constants.main.standardSpacing)
+            .background(.themedTertiaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+            .paletteBorder(cornerRadius: Constants.main.standardSpacing)
+        } else {
+            unavailableView("User unavailable")
+            communityLink(community: community)
+        }
+    }
+    
+    @ViewBuilder
+    func updatePersonModeratorStatusView(
+        person: Person?,
+        community: Community?,
+        appointed: Bool
+    ) -> some View {
+        if let person {
+            VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
+                let userText = person.nameTextView(
+                    showFlairs: true,
+                    showInstance: true,
+                    communityContext: targetCommunity ?? community,
+                    font: .subheadline,
+                    palette: palette
                 )
-            } else {
-                Text(appointed ? "Appointed: \(userText)" : "Removed: \(userText)")
+                if let community {
+                    let communityText = community.nameTextView(
+                        showFlairs: true,
+                        showInstance: true,
+                        font: .subheadline,
+                        palette: palette
+                    )
+                    Text(
+                        appointed ? "Appointed: \(userText)\nTo: \(communityText)" : "Removed: \(userText)\nFrom: \(communityText)"
+                    )
+                } else {
+                    Text(appointed ? "Appointed: \(userText)" : "Removed: \(userText)")
+                }
+            }
+            .foregroundStyle(.themedSecondary)
+            .imageScale(.small)
+            .symbolVariant(.fill)
+            .font(.subheadline)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(Constants.main.standardSpacing)
+            .background(.themedTertiaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+            .paletteBorder(cornerRadius: Constants.main.standardSpacing)
+        } else {
+            unavailableView("User unavailable")
+            if let community {
+                communityLink(community: community)
             }
         }
-        .foregroundStyle(.themedSecondary)
-        .imageScale(.small)
-        .symbolVariant(.fill)
-        .font(.subheadline)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(Constants.main.standardSpacing)
-        .background(.themedTertiaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
-        .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }
     
     @ViewBuilder
@@ -225,18 +255,75 @@ struct ModlogEntryView: View {
     }
     
     @ViewBuilder
-    func postLink(post: Post, community: Community) -> some View {
-        NavigationLink(.post(post)) {
-            FooterLinkView(title: post.title, subtitle: community.fullNameWithPrefix)
+    func postLink(post: Post?, community: Community?) -> some View {
+        Group {
+            if let post, let community {
+                NavigationLink(.post(post)) {
+                    FooterLinkView(title: post.title, subtitle: community.fullNameWithPrefix)
+                }
+            } else {
+                unavailableView("Post unavailable")
+                if let community {
+                    communityLink(community: community)
+                }
+            }
         }
         .id("\(id)_modlog_footer")
     }
     
     @ViewBuilder
-    func commentLink(comment: Comment) -> some View {
-        NavigationLink(.comment(comment, exposeRemovedContent: true)) {
+    func commentLink(comment: Comment?, community: Community?) -> some View {
+        Group {
+            if let comment {
+                NavigationLink(.comment(comment, exposeRemovedContent: true)) {
+                    VStack {
+                        Text(comment.content)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
+                            .multilineTextAlignment(.leading)
+                            .lineLimit(5)
+                    }
+                    .foregroundStyle(.themedSecondary)
+                    .padding(Constants.main.standardSpacing)
+                    .background(.themedTertiaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+                    .paletteBorder(cornerRadius: Constants.main.standardSpacing)
+                }
+            } else {
+                unavailableView("Comment unavailable")
+                if let community {
+                    communityLink(community: community)
+
+                }
+            }
+        }
+        .id("\(id)_modlog_footer")
+    }
+
+    @ViewBuilder
+    func unavailableView(_ label: LocalizedStringKey) -> some View {
+            HStack {
+                Text(label)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .font(.subheadline)
+                    .italic()
+                Spacer()
+                Button("More info", icon: .settings.ask) {
+                    navigation?.openSheet(.unavailableContentInfo)
+                }
+                .labelStyle(.iconOnly)
+            }
+            .foregroundStyle(.themedSecondary)
+            .padding(Constants.main.standardSpacing)
+            .background(.themedTertiaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+            .paletteBorder(cornerRadius: Constants.main.standardSpacing)
+    }
+
+    @ViewBuilder
+    func communityLink(community: Community) -> some View {
+        NavigationLink(.community(community, visitContext: .other)) {
             VStack {
-                Text(comment.content)
+                Text(community.fullNameWithPrefix)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .font(.subheadline)
                     .fontWeight(.semibold)

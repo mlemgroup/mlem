@@ -191,7 +191,7 @@ public extension LemmyConnection {
                 communityId: communityId,
                 page: page,
                 limit: limit,
-                type_: type?.apiType,
+                type_: type?.lemmyApiType,
                 otherPersonId: subjectPersonId,
                 postId: postId,
                 commentId: commentId,

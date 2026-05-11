@@ -13,7 +13,7 @@ extension NavigationPage {
     // that it being handled by the navigation system. 
     var presentationDetentConfiguration: NavigationDetentConfiguration? {
         switch self {
-        case .selectText: .only(.medium)
+        case .selectText, .unavailableContentInfo: .only(.medium)
         case .actionSheet: .init([.medium, .large], default: .medium)
         case .externalApiInfo: .only(.medium)
         case .rulesList: .init([.medium, .large], default: .medium)

@@ -64,7 +64,7 @@ extension ModlogEntryContent {
     }
     
     // swiftlint:disable:next cyclomatic_complexity function_body_length
-    func label(userText: Text?) -> LocalizedStringKey {
+    func label(userText: Text?, api: ApiClient) -> LocalizedStringKey {
         switch self {
         case let .removePost(_, _, removed, _):
             if let userText {
@@ -91,7 +91,7 @@ extension ModlogEntryContent {
                 locked ? "Post was locked" : "Post was unlocked"
             }
         case let .pinPost(_, community, pinned, type):
-            pinLabel(userText: userText, community: community, pinned: pinned, type: type)
+            pinLabel(userText: userText, type: .init(community: community, api: api, type: type), pinned: pinned)
         case .purgePost:
             if let userText {
                 "\(userText) purged a post"
@@ -150,16 +150,48 @@ extension ModlogEntryContent {
     }
 }
 
+private enum PinLabelType {
+    case community(Community?)
+    case instance(ApiClient)
+
+    init(community: Community?, api: ApiClient, type: PostFeatureType) {
+        switch type {
+        case .community:
+            self = .community(community)
+        case .instance:
+            self = .instance(api)
+        }
+    }
+
+    var label: String? {
+        switch self {
+        case let .community(community): community?.fullName
+        case let .instance(api): api.host
+        }
+    }
+}
+
 private func pinLabel(
     userText: Text?,
-    community: Community,
+    type: PinLabelType,
     pinned: Bool,
-    type: PostFeatureType
 ) -> LocalizedStringKey {
-    let target: String = (type == .community ? community.fullName : community.api.host)
-    if let userText {
-        return pinned ? "\(userText) pinned a post to \(target)" : "\(userText) unpinned a post from \(target)"
-    } else {
-        return pinned ? "Post was pinned to \(target)" : "Post was unpinned from \(target)"
+    switch (userText, type.label, pinned) {
+    case let (.some(userText), .some(target), true):
+        "\(userText) pinned a post to \(target)" 
+    case let (.some(userText), .some(target), false):
+        "\(userText) unpinned a post from \(target)" 
+    case let (.some(userText), nil, true):
+        "\(userText) pinned a post to a community" 
+    case let (.some(userText), nil, false):
+        "\(userText) unpinned a post from a community" 
+    case let (nil, .some(target), true):
+        "Post was pinned to \(target)" 
+    case let (nil, .some(target), false):
+        "Post was unpinned from \(target)" 
+    case (nil, nil, true):
+        "Post was pinned to a community"
+    case (nil, nil, false):
+        "Post was unpinned from a community"
     }
 }

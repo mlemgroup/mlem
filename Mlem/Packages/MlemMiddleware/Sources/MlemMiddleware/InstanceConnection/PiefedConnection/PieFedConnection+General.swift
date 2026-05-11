@@ -87,7 +87,18 @@ public extension PieFedConnection {
         commentId: Int? = nil,
         type: ModlogEntryType? = nil
     ) async throws -> [ModlogEntrySnapshot] {
-        throw ApiClientError.featureUnsupported
+        let request = PieFedGetModlogRequest(
+                modPersonId: moderatorId,
+                communityId: communityId,
+                page: page,
+                limit: limit,
+                type_: type?.piefedApiType,
+                otherPersonId: subjectPersonId,
+                postId: postId,
+                commentId: commentId,
+            )
+        let response = try await perform(request)
+        return try response.toSnapshots()
     }
     
     func getPostLink(url: URL) async throws -> PostLink {
