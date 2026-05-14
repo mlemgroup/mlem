@@ -66,7 +66,7 @@ extension InstanceView {
             return .init()
         }
         
-        return .init(trailingActions: [person.addAdminAction(instance: myInstance, isOn: isAdmin)])
+        return .init(trailingActions: [person.addAdminAction(instance: myInstance, isOn: isAdmin)], leadingBuffer: 70)
     }
     
     func attemptToLoadFediseerData() {

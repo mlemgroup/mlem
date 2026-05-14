@@ -50,7 +50,7 @@ extension CommunityView {
             return .init()
         }
         
-        return .init(trailingActions: [person.addModAction(community: community, isOn: true)])
+        return .init(trailingActions: [person.addModAction(community: community, isOn: true)], leadingBuffer: 70)
     }
     
     func setupFeedLoader(community: Community) {

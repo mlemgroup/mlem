@@ -15,16 +15,19 @@ public extension View {
     /// - Parameters:
     ///   - leading: leading edge quick swipes, ordered by ascending swipe distance from leading edge
     ///   - trailing: trailing edge quick swipes, ordered by ascending swipe distance from leading edge
+    ///   - leadingBuffer: dead zone on the leading edge
     @ViewBuilder
     func quickSwipes(
         leading: [QuickSwipeAction] = [],
-        trailing: [QuickSwipeAction] = []
+        trailing: [QuickSwipeAction] = [],
+        leadingBuffer: CGFloat
     ) -> some View {
         modifier(
             QuickSwipeViewModifier(
                 config: .init(
                     leadingActions: leading,
-                    trailingActions: trailing
+                    trailingActions: trailing,
+                    leadingBuffer: leadingBuffer
                 )
             )
         )

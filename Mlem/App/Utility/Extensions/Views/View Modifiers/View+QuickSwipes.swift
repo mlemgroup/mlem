@@ -27,8 +27,9 @@ extension View {
     @ViewBuilder
     func quickSwipes(
         leading: [any Action] = [],
-        trailing: [any Action] = []
+        trailing: [any Action] = [],
+        leadingBuffer: CGFloat
     ) -> some View {
-        quickSwipes(.init(leadingActions: leading, trailingActions: trailing))
+        quickSwipes(.init(leadingActions: leading, trailingActions: trailing, leadingBuffer: leadingBuffer))
     }
 }

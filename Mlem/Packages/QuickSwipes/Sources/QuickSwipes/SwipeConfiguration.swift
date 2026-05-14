@@ -13,9 +13,12 @@ public struct SwipeConfiguration {
     /// In ascending order of appearance.
     public let trailingActions: [QuickSwipeAction]
     
+    public let leadingBuffer: CGFloat
+    
     public init(
         leadingActions: [QuickSwipeAction] = [],
-        trailingActions: [QuickSwipeAction] = []
+        trailingActions: [QuickSwipeAction] = [],
+        leadingBuffer: CGFloat
     ) {
         assert(
             leadingActions.count <= 3 && trailingActions.count <= 3,
@@ -24,5 +27,6 @@ public struct SwipeConfiguration {
         
         self.leadingActions = leadingActions.filter(\.enabled)
         self.trailingActions = trailingActions.filter(\.enabled)
+        self.leadingBuffer = leadingBuffer
     }
 }

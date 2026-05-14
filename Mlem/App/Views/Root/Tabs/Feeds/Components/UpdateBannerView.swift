@@ -52,7 +52,7 @@ struct UpdateBannerView: View {
                 appearance: .init(label: "Dismiss", color: .themedNegative, icon: Icons.close),
                 callback: dismiss
             )
-        ])
+        ], leadingBuffer: 70)
         .contextMenu {
             Button("Dismiss", icon: .general.close) {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.45) {

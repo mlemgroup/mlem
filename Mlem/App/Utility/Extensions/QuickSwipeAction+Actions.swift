@@ -25,6 +25,7 @@ private extension QuickSwipeAction {
 
 private struct QuickSwipesActionsViewModifier: ViewModifier {
     @Environment(\.self) var environment
+    @Setting(\.post_size) var postSize
 
     let leadingActions: [any Actions.Action]
     let trailingActions: [any Actions.Action]
@@ -37,7 +38,8 @@ private struct QuickSwipesActionsViewModifier: ViewModifier {
     var config: SwipeConfiguration {
         .init(
             leadingActions: leadingActions.compactMap(self.createAction),
-            trailingActions: trailingActions.compactMap(self.createAction)
+            trailingActions: trailingActions.compactMap(self.createAction),
+            leadingBuffer: postSize == .tile ? 50 : 70
         )
     }
 

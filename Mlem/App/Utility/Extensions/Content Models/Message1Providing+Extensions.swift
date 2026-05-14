@@ -18,7 +18,8 @@ extension Message1Providing {
                 if api.canInteract(appState: appState), !isOwnMessage, let notification {
                     markReadAction(appState: appState, notification: notification, feedback: [.haptic])
                 }
-            }
+            },
+            leadingBuffer: 70
         )
     }
     
