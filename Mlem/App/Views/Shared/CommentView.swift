@@ -18,6 +18,7 @@ struct CommentView<EmbeddedContent: View>: View {
     @Environment(\.palette) private var palette
     
     @Setting(\.comment_compact) var compactComments
+    @Setting(\.comment_tallerCollapsed) var tallerCollapsed
     @Setting(\.comment_showDownvotesCompact) var showDownvotesCompact
     @Setting(\.menus_modActionGrouping) var moderatorActionGrouping
     @Setting(\.interactionBar_comment) var commentInteractionBar
@@ -83,14 +84,18 @@ struct CommentView<EmbeddedContent: View>: View {
                         if !inFeed {
                             authorAndMenu.padding(.top, Constants.main.standardSpacing)
                         }
-                        
+
                         if !collapsed {
                             CommentBodyView(comment: comment)
                                 .padding(.trailing, 2)
                             embeddedContent
+                        } else if tallerCollapsed {
+                            Text("Tap to expand")
+                                .foregroundStyle(.themedSecondary)
+                                .italic()
                         }
                         
-                        if compact, !collapsed {
+                        if (compact && !collapsed) || (collapsed && tallerCollapsed) {
                             InfoStackView(
                                 comment: comment,
                                 readouts: compactReadouts,
@@ -148,7 +153,7 @@ struct CommentView<EmbeddedContent: View>: View {
             }
             Spacer()
             Group {
-                if collapsed {
+                if collapsed, !tallerCollapsed {
                     if let saved = comment.saved.value, let votes = comment.votes.value {
                         Group {
                             postTag(active: saved, icon: .lemmy.saved.representingState(active: true), color: .themedSave) +
@@ -158,7 +163,7 @@ struct CommentView<EmbeddedContent: View>: View {
                         .lineLimit(1)
                         .font(.caption)
                     }
-                    
+
                     Image(icon: .general.expand)
                         .frame(height: 10)
                         .imageScale(.small)
