@@ -25,10 +25,10 @@ private extension QuickSwipeAction {
 
 private struct QuickSwipesActionsViewModifier: ViewModifier {
     @Environment(\.self) var environment
-    @Setting(\.post_size) var postSize
-
+    
     let leadingActions: [any Actions.Action]
     let trailingActions: [any Actions.Action]
+    let leadingBuffer: CGFloat
 
     func body(content: Content) -> some View {
         content
@@ -39,7 +39,7 @@ private struct QuickSwipesActionsViewModifier: ViewModifier {
         .init(
             leadingActions: leadingActions.compactMap(self.createAction),
             trailingActions: trailingActions.compactMap(self.createAction),
-            leadingBuffer: postSize == .tile ? 50 : 70
+            leadingBuffer: leadingBuffer
         )
     }
 
@@ -51,12 +51,25 @@ private struct QuickSwipesActionsViewModifier: ViewModifier {
     }
 }
 
+public enum SwipeBuffer {
+    case none, tile, standard
+    
+    var value: CGFloat {
+        switch self {
+        case .none: 0
+        case .tile: 50
+        case .standard: 70
+        }
+    }
+}
+
 extension View {
     @ViewBuilder
-    func quickSwipes(leading: [any Actions.Action], trailing: [any Actions.Action]) -> some View {
+    func quickSwipes(leading: [any Actions.Action], trailing: [any Actions.Action], leadingBuffer: SwipeBuffer) -> some View {
         modifier(QuickSwipesActionsViewModifier(
             leadingActions: leading,
-            trailingActions: trailing
+            trailingActions: trailing,
+            leadingBuffer: leadingBuffer.value
         ))
     }
 }

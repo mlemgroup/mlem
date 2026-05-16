@@ -41,7 +41,8 @@ extension View {
             },
             trailing: configuration.swipes.trailing.compactMap { seed in
                 seed.createAction(notification) ?? notification.content.comment.map { seed.createAction($0) } ?? nil
-            }
+            },
+            leadingBuffer: .standard
         )
     }
 }
