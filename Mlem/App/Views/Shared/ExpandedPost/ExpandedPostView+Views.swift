@@ -62,7 +62,7 @@ extension ExpandedPostView {
                 scrollProxy.scrollTo(comment.actorId)
             }
         }
-        .quickSwipes(comment: comment, configuration: commentInteractionBar)
+        .quickSwipes(comment: comment, configuration: commentInteractionBar, leadingBuffer: .standard)
         .contextMenu(comment: comment)
         .popupAnchor()
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)

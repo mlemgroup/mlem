@@ -11,26 +11,30 @@ import QuickSwipes
 extension SwipeConfiguration {
     // Prevents ambiguous init declaration
     init() {
-        self.init(leadingActions: [QuickSwipeAction](), trailingActions: [QuickSwipeAction]())
+        self.init(leadingActions: [QuickSwipeAction](), trailingActions: [QuickSwipeAction](), leadingBuffer: .none)
     }
     
     init(
         leadingActions: [any Action] = [],
-        trailingActions: [any Action] = []
+        trailingActions: [any Action] = [],
+        leadingBuffer: SwipeBuffer
     ) {
         self.init(
             leadingActions: leadingActions.compactMap(QuickSwipeAction.init),
-            trailingActions: trailingActions.compactMap(QuickSwipeAction.init)
+            trailingActions: trailingActions.compactMap(QuickSwipeAction.init),
+            leadingBuffer: leadingBuffer
         )
     }
     
     init(
         @ActionBuilder leadingActions: () -> [any Action] = { [] },
-        @ActionBuilder trailingActions: () -> [any Action] = { [] }
+        @ActionBuilder trailingActions: () -> [any Action] = { [] },
+        leadingBuffer: SwipeBuffer
     ) {
         self.init(
             leadingActions: leadingActions().compactMap(QuickSwipeAction.init),
-            trailingActions: trailingActions().compactMap(QuickSwipeAction.init)
+            trailingActions: trailingActions().compactMap(QuickSwipeAction.init),
+            leadingBuffer: leadingBuffer
         )
     }
 }

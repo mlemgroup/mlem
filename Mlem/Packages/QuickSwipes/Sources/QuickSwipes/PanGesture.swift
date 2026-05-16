@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PanGesture: UIGestureRecognizerRepresentable {
     /// If provided, the gesture will not register within `leadingBuffer` px of the leading edge
-    let leadingBuffer: CGFloat?
+    let leadingBuffer: CGFloat
     var handle: (UIPanGestureRecognizer) -> Void
     
     func makeCoordinator(converter: CoordinateSpaceConverter) -> Coordinator { .init(leadingBuffer: leadingBuffer) }
@@ -28,8 +28,8 @@ struct PanGesture: UIGestureRecognizerRepresentable {
     class Coordinator: NSObject, UIGestureRecognizerDelegate {
         let leadingBuffer: CGFloat
         
-        init(leadingBuffer: CGFloat?) {
-            self.leadingBuffer = leadingBuffer ?? 0
+        init(leadingBuffer: CGFloat) {
+            self.leadingBuffer = leadingBuffer
         }
         
         func gestureRecognizer(

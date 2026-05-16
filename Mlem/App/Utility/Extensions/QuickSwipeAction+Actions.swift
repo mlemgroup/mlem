@@ -25,9 +25,10 @@ private extension QuickSwipeAction {
 
 private struct QuickSwipesActionsViewModifier: ViewModifier {
     @Environment(\.self) var environment
-
+    
     let leadingActions: [any Actions.Action]
     let trailingActions: [any Actions.Action]
+    let leadingBuffer: SwipeBuffer
 
     func body(content: Content) -> some View {
         content
@@ -37,7 +38,8 @@ private struct QuickSwipesActionsViewModifier: ViewModifier {
     var config: SwipeConfiguration {
         .init(
             leadingActions: leadingActions.compactMap(self.createAction),
-            trailingActions: trailingActions.compactMap(self.createAction)
+            trailingActions: trailingActions.compactMap(self.createAction),
+            leadingBuffer: leadingBuffer
         )
     }
 
@@ -51,10 +53,11 @@ private struct QuickSwipesActionsViewModifier: ViewModifier {
 
 extension View {
     @ViewBuilder
-    func quickSwipes(leading: [any Actions.Action], trailing: [any Actions.Action]) -> some View {
+    func quickSwipes(leading: [any Actions.Action], trailing: [any Actions.Action], leadingBuffer: SwipeBuffer) -> some View {
         modifier(QuickSwipesActionsViewModifier(
             leadingActions: leading,
-            trailingActions: trailing
+            trailingActions: trailing,
+            leadingBuffer: leadingBuffer
         ))
     }
 }
