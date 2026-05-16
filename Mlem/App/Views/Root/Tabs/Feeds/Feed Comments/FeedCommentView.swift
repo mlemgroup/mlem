@@ -47,7 +47,7 @@ struct FeedCommentView<EmbeddedContent: View>: View {
             .quickSwipes(
                 comment: comment,
                 configuration: interactionBarConfiguration,
-                leadingBuffer: postSize == .tile ? .tile : .standard
+                leadingBuffer: postSize == .tile ? .small : .standard
             )
             .contextMenu(comment: comment)
             .paletteBorder(cornerRadius: postSize.cornerRadius)

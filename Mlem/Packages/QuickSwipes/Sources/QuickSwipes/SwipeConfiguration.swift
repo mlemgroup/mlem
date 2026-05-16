@@ -8,12 +8,12 @@
 import Foundation
 
 public enum SwipeBuffer {
-    case none, tile, standard
+    case none, small, standard
     
     var value: CGFloat {
         switch self {
         case .none: 0
-        case .tile: 50
+        case .small: 50
         case .standard: 70
         }
     }

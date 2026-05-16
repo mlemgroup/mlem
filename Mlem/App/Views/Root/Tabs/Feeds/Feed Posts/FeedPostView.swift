@@ -74,7 +74,7 @@ struct FeedPostView<EmbeddedContent: View>: View {
                     .quickSwipes(
                         post: post,
                         configuration: interactionBarConfiguration,
-                        leadingBuffer: postSize == .tile ? .tile : .standard
+                        leadingBuffer: postSize == .tile ? .small : .standard
                     )
                     .contextMenu(post: post)
             }
