@@ -13,13 +13,14 @@ extension Message1Providing {
     var self2: (any Message2Providing)? { self as? any Message2Providing }
         
     func swipeActions(notification: InboxNotification?, appState: AppState) -> SwipeConfiguration {
+        // If this is extended to add leading actions, make leadingBuffer a parameter
         .init(
             trailingActions: {
                 if api.canInteract(appState: appState), !isOwnMessage, let notification {
                     markReadAction(appState: appState, notification: notification, feedback: [.haptic])
                 }
             },
-            leadingBuffer: 70
+            leadingBuffer: .standard
         )
     }
     

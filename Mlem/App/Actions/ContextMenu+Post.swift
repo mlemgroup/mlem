@@ -9,6 +9,7 @@ import Actions
 import Icons
 import MlemMiddleware
 import SwiftUI
+import QuickSwipes
 
 extension View {
     func contextMenu(post: Post) -> some View {

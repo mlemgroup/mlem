@@ -9,6 +9,7 @@ import Actions
 import Icons
 import MlemMiddleware
 import SwiftUI
+import QuickSwipes
 
 private let seeds: [ActionSeed] = [
     .upvote,

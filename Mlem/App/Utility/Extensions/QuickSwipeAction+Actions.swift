@@ -28,7 +28,7 @@ private struct QuickSwipesActionsViewModifier: ViewModifier {
     
     let leadingActions: [any Actions.Action]
     let trailingActions: [any Actions.Action]
-    let leadingBuffer: CGFloat
+    let leadingBuffer: SwipeBuffer
 
     func body(content: Content) -> some View {
         content
@@ -51,25 +51,13 @@ private struct QuickSwipesActionsViewModifier: ViewModifier {
     }
 }
 
-public enum SwipeBuffer {
-    case none, tile, standard
-    
-    var value: CGFloat {
-        switch self {
-        case .none: 0
-        case .tile: 50
-        case .standard: 70
-        }
-    }
-}
-
 extension View {
     @ViewBuilder
     func quickSwipes(leading: [any Actions.Action], trailing: [any Actions.Action], leadingBuffer: SwipeBuffer) -> some View {
         modifier(QuickSwipesActionsViewModifier(
             leadingActions: leading,
             trailingActions: trailing,
-            leadingBuffer: leadingBuffer.value
+            leadingBuffer: leadingBuffer
         ))
     }
 }

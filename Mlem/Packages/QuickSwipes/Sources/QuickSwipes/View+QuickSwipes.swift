@@ -20,7 +20,7 @@ public extension View {
     func quickSwipes(
         leading: [QuickSwipeAction] = [],
         trailing: [QuickSwipeAction] = [],
-        leadingBuffer: CGFloat
+        leadingBuffer: SwipeBuffer
     ) -> some View {
         modifier(
             QuickSwipeViewModifier(

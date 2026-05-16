@@ -8,6 +8,7 @@
 import Actions
 import MlemMiddleware
 import SwiftUI
+import QuickSwipes
 
 extension ActionButtons {
     init(community: Community) {
