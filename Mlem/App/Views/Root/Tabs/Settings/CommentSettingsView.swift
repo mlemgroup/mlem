@@ -13,6 +13,7 @@ struct CommentSettingsView: View {
     @Setting(\.comment_maxDepth) var maxCommentDepth
     @Setting(\.comment_jumpButton) var jumpButton
     @Setting(\.comment_showDownvotesCompact) var showDownvotesCompact
+    @Setting(\.comment_tallerCollapsed) var tallerCollapsed
     @Setting(\.interactionBar_comment) var commentInteractionBar
 
     var body: some View {
@@ -51,6 +52,7 @@ struct CommentSettingsView: View {
             }
             Section {
                 Toggle("Tap to Collapse", icon: .general.collapse, isOn: $tapCommentsToCollapse)
+                Toggle("Taller Collapsed Comments", icon: .general.expand, isOn: $tallerCollapsed)
             }
         }
         .withConditionalLabelStyle()
