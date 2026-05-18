@@ -332,6 +332,12 @@ public extension Comment {
     }
 }
 
+extension Comment: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        "Comment(\(self.id), \"\(self.content.prefix(25))\")"
+    }
+}
+
 // MARK: Shim
 
 public extension Comment {
