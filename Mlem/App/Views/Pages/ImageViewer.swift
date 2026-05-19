@@ -104,7 +104,7 @@ struct ImageViewer: View {
             customDragMoved: dragMoved,
             customDragEnded: dragEnded
         ) {
-            if enableControlTap, showControls != .never {
+            if enableControlTap, (showControls != .never) || controlState.animationAvailable {
                 if controlsShown {
                     hideControls()
                 } else {

@@ -250,7 +250,7 @@ struct ExpandedPostView<Content: View>: View {
             }
         }
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
-        .quickSwipes(post: post, configuration: postInteractionBar)
+        .quickSwipes(post: post, configuration: postInteractionBar, leadingBuffer: .standard)
         .contextMenu(post: post)
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
         .onTapGesture {

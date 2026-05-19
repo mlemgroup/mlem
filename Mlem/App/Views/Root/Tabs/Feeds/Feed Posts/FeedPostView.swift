@@ -71,7 +71,11 @@ struct FeedPostView<EmbeddedContent: View>: View {
                         }
                     }
                     .contentShape(.contextMenuPreview, .rect(cornerRadius: postSize.cornerRadius))
-                    .quickSwipes(post: post, configuration: interactionBarConfiguration)
+                    .quickSwipes(
+                        post: post,
+                        configuration: interactionBarConfiguration,
+                        leadingBuffer: postSize == .tile ? .small : .standard
+                    )
                     .contextMenu(post: post)
             }
         }

@@ -8,6 +8,7 @@
 import Actions
 import MlemMiddleware
 import SwiftUI
+import QuickSwipes
 
 extension ActionButtons {
     init(community: Community) {
@@ -25,10 +26,11 @@ extension View {
     }
 
     @ViewBuilder
-    func quickSwipes(community: Community, configuration: CommunityActionConfiguration) -> some View {
+    func quickSwipes(community: Community, configuration: CommunityActionConfiguration, leadingBuffer: SwipeBuffer) -> some View {
         quickSwipes(
             leading: configuration.swipes.leading.compactMap { $0.createAction(community) },
-            trailing: configuration.swipes.trailing.compactMap { $0.createAction(community) }
+            trailing: configuration.swipes.trailing.compactMap { $0.createAction(community) },
+            leadingBuffer: leadingBuffer
         )
     }
 }

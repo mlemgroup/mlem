@@ -7,15 +7,30 @@
 
 import Foundation
 
+public enum SwipeBuffer {
+    case none, small, standard
+    
+    var value: CGFloat {
+        switch self {
+        case .none: 0
+        case .small: 50
+        case .standard: 70
+        }
+    }
+}
+
 public struct SwipeConfiguration {
     /// In ascending order of appearance.
     public let leadingActions: [QuickSwipeAction]
     /// In ascending order of appearance.
     public let trailingActions: [QuickSwipeAction]
     
+    public let leadingBuffer: SwipeBuffer
+    
     public init(
         leadingActions: [QuickSwipeAction] = [],
-        trailingActions: [QuickSwipeAction] = []
+        trailingActions: [QuickSwipeAction] = [],
+        leadingBuffer: SwipeBuffer
     ) {
         assert(
             leadingActions.count <= 3 && trailingActions.count <= 3,
@@ -24,5 +39,6 @@ public struct SwipeConfiguration {
         
         self.leadingActions = leadingActions.filter(\.enabled)
         self.trailingActions = trailingActions.filter(\.enabled)
+        self.leadingBuffer = leadingBuffer
     }
 }

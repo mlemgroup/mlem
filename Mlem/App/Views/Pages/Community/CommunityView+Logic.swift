@@ -50,7 +50,8 @@ extension CommunityView {
             return .init()
         }
         
-        return .init(trailingActions: [person.addModAction(community: community, isOn: true)])
+        // If this is extended to add leading actions, make leadingBuffer a parameter
+        return .init(trailingActions: [person.addModAction(community: community, isOn: true)], leadingBuffer: .standard)
     }
     
     func setupFeedLoader(community: Community) {

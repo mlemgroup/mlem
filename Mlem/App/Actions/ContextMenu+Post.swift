@@ -9,6 +9,7 @@ import Actions
 import Icons
 import MlemMiddleware
 import SwiftUI
+import QuickSwipes
 
 extension View {
     func contextMenu(post: Post) -> some View {
@@ -24,10 +25,11 @@ extension View {
     }
 
     @ViewBuilder
-    func quickSwipes(post: Post, configuration: PostBarConfiguration) -> some View {
+    func quickSwipes(post: Post, configuration: PostBarConfiguration, leadingBuffer: SwipeBuffer) -> some View {
         quickSwipes(
             leading: configuration.swipes.leading.compactMap { $0.createAction(post) },
-            trailing: configuration.swipes.trailing.compactMap { $0.createAction(post) }
+            trailing: configuration.swipes.trailing.compactMap { $0.createAction(post) },
+            leadingBuffer: leadingBuffer
         )
     }
 }

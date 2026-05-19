@@ -221,6 +221,9 @@
         }
       }
     },
+    "%@ pinned a post to a community" : {
+
+    },
     "%@ purged a comment" : {
       "localizations" : {
         "fr" : {
@@ -416,6 +419,9 @@
           }
         }
       }
+    },
+    "%@ unpinned a post from a community" : {
+
     },
     "%lld Active" : {
       "localizations" : {
@@ -2333,6 +2339,9 @@
         }
       }
     },
+    "Comment unavailable" : {
+
+    },
     "Comment Upvotes" : {
       "localizations" : {
         "fr" : {
@@ -2452,6 +2461,9 @@
           }
         }
       }
+    },
+    "Community unavailable" : {
+
     },
     "Community was hidden" : {
       "localizations" : {
@@ -5452,6 +5464,9 @@
         }
       }
     },
+    "More info" : {
+
+    },
     "More Info" : {
       "localizations" : {
         "fr" : {
@@ -6438,6 +6453,9 @@
         }
       }
     },
+    "Post unavailable" : {
+
+    },
     "Post Upvotes" : {
       "localizations" : {
         "fr" : {
@@ -6467,6 +6485,9 @@
           }
         }
       }
+    },
+    "Post was pinned to a community" : {
+
     },
     "Post was purged" : {
       "localizations" : {
@@ -6517,6 +6538,9 @@
           }
         }
       }
+    },
+    "Post was unpinned from a community" : {
+
     },
     "Posts" : {
       "localizations" : {
@@ -9113,6 +9137,9 @@
         }
       }
     },
+    "This content is no longer available.\n\nIt may have been removed automatically. PieFed purges content 7 days after it is removed.\n\nOr, it may have been purged by an administrator." : {
+
+    },
     "This content will be loaded from **%@** instead." : {
       "localizations" : {
         "fr" : {
@@ -10047,6 +10074,9 @@
       }
     },
     "User or community?" : {
+
+    },
+    "User unavailable" : {
 
     },
     "User was banned" : {

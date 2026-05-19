@@ -9,6 +9,7 @@ import Actions
 import Icons
 import MlemMiddleware
 import SwiftUI
+import QuickSwipes
 
 private let seeds: [ActionSeed] = [
     .upvote,
@@ -46,10 +47,11 @@ extension View {
     }
 
     @ViewBuilder
-    func quickSwipes(comment: Comment, configuration: CommentBarConfiguration) -> some View {
+    func quickSwipes(comment: Comment, configuration: CommentBarConfiguration, leadingBuffer: SwipeBuffer) -> some View {
         quickSwipes(
             leading: configuration.swipes.leading.compactMap { $0.createAction(comment) },
-            trailing: configuration.swipes.trailing.compactMap { $0.createAction(comment) }
+            trailing: configuration.swipes.trailing.compactMap { $0.createAction(comment) },
+            leadingBuffer: leadingBuffer
         )
     }
 }
