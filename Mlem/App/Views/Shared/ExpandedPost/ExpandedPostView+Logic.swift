@@ -98,8 +98,15 @@ extension ExpandedPostView {
         let comment = node.comment
         if comment.shouldHideInFeed { return [] }
         if node.collapsed { return [.comment(node)] }
-        var output: [CommentTreeViewType] = node.children.reduce([.comment(node)]) { $0 + generateViewTree(for: $1) }
-        let directChildCount = node.children.reduce(comment.commentCount.value_ ?? 0) { $0 - ($1.comment.commentCount.value_ ?? 0) }
+
+        var output: [CommentTreeViewType] = node.children.reduce([.comment(node)]) {
+            $0 + generateViewTree(for: $1)
+        }
+
+        let directChildCount = node.children.reduce(comment.commentCount.value_ ?? 0) {
+            $0 - ($1.comment.commentCount.value_ ?? 0)
+        }
+
         if node.children.count < directChildCount {
             output.append(.unloadedComments(comment: node, count: (comment.commentCount.value_ ?? 0) - output.count))
         }
