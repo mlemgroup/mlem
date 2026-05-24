@@ -14,11 +14,11 @@ import Media
 struct ThumbnailImageView: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.openURL) var openURL
+    @Environment(MediaTracker.self) var mediaTracker
     
     @Setting(\.a11y_websiteThumbnailIcon) var websiteThumbnailIcon
     @Setting(\.post_size) var postSize
     
-    @State var mediaControlState: MediaControlState
     @State var quickLookUrl: URL?
     
     let post: Post
@@ -60,13 +60,6 @@ struct ThumbnailImageView: View {
         self.post = post
         self.size = size
         self.frame = frame
-        
-        self._mediaControlState = .init(wrappedValue: .init(
-            blurred: blurred,
-            animating: false,
-            enableAnimation: false,
-            muted: Settings.get(\.behavior_muteVideos)
-        ))
     }
     
     var body: some View {
@@ -87,7 +80,6 @@ struct ThumbnailImageView: View {
     @ViewBuilder
     var content: some View {
         MediaView(
-            url: url,
             size: frame,
             controlState: $mediaControlState,
             aspectRatioBounds: .absoluteSquare,

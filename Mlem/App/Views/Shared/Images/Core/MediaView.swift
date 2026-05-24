@@ -20,8 +20,6 @@ struct MediaView: View {
     @Binding var controlState: MediaControlState
     @State var quickLookUrl: URL?
     
-    let url: URL?
-    
     // appearance
     let aspectRatio_: CoreMediaView.AspectRatioBounds?
     var aspectRatio: CoreMediaView.AspectRatioBounds {
@@ -65,9 +63,8 @@ struct MediaView: View {
     ///     the specified actions and open the image viewer
     ///  - Warning: Changing the following parameters may cause unexpected view identity changes: `enableContextMenu`, `contentMode`
     init(
-        url: URL?,
         size: CGSize? = nil,
-        controlState: Binding<MediaControlState>? = nil,
+        controlState: Binding<MediaControlState>,
         aspectRatioBounds: CoreMediaView.AspectRatioBounds? = nil,
         contentMode: ContentMode = .fit,
         cornerRadius: CGFloat = 0,
@@ -77,8 +74,6 @@ struct MediaView: View {
         enableImageViewer: Bool = false,
         onTapActions: (() -> Void)? = nil
     ) {
-        self.url = url
-        
         self.overlays = .init(overlays)
         self.aspectRatio_ = aspectRatioBounds
         self.contentMode = contentMode
@@ -90,30 +85,26 @@ struct MediaView: View {
         self.onTapActions = onTapActions
 
         self._loader = .init(wrappedValue: .init(
-            url: url,
+            url: controlState.wrappedValue.url,
             size: size,
             autoBypassImageProxy: Settings.get(\.privacy_autoBypassImageProxy)
         ))
-        if let controlState {
-            self._controlState = controlState
-        } else {
-            self._controlState = .constant(.init(
-                blurred: false,
-                animating: false,
-                muted: Settings.get(\.behavior_muteVideos)
-            ))
-        }
-        _controlState.wrappedValue.url = url
+        
+        self._controlState = controlState
     }
     
     static func largeImage(url: URL, shouldBlur: Bool, onTapActions: (() -> Void)? = nil) -> MediaView {
-        .init(
-            url: url,
-            controlState: .constant(.init(
-                blurred: shouldBlur,
-                animating: Settings.get(\.behavior_autoplayMedia),
-                muted: Settings.get(\.behavior_muteVideos)
-            )),
+        @Environment(MediaTracker.self) var mediaTracker
+        
+        return .init(
+            controlState: .constant(mediaTracker.controlState(for: url) {
+                .init(
+                    url: url,
+                    blurred: shouldBlur,
+                    animating: Settings.get(\.behavior_autoplayMedia),
+                    muted: Settings.get(\.behavior_muteVideos)
+                )
+            }),
             aspectRatioBounds: .imageDefault,
             cornerRadius: Constants.main.mediumItemCornerRadius,
             overlays: .init(shouldBlur ? [.controls, .nsfw, .error] : [.controls, .error]),
@@ -134,9 +125,9 @@ struct MediaView: View {
             .withContextMenu(menuContent: contextMenuContent, isEnabled: enableContextMenu && loader.error == nil)
             .gesture(TapGesture().onEnded(tapActions), isEnabled: enableTap)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .onChange(of: url, initial: true) {
+            .onChange(of: controlState.url, initial: true) {
                 Task {
-                    await loader.load(url)
+                    await loader.load(controlState.url)
                 }
             }
             .onChange(of: loader.mediaType?.isAnimated, initial: true) {

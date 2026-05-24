@@ -10,6 +10,9 @@ import Observation
 
 @Observable
 public class MediaControlState {
+    
+    public var url: URL
+    
     /// True if the media should be blurred, false otherwise
     public var blurred: Bool
     
@@ -60,10 +63,9 @@ public class MediaControlState {
     
     public var canAnimate: Bool { animationAvailable && enableAnimation }
     
-    public var url: URL?
-    
     /// Creates a new MediaControlState
     /// - Parameters:
+    ///   - url: URL of the media
     ///   - blurred: true if the media should be blurred
     ///   - animating: true if animated media should currently be animating. If initialized with `true`, animated media will autoplay.
     ///   - overlays: set of overlays to use
@@ -71,12 +73,14 @@ public class MediaControlState {
     ///   - muted: true if the media should be muted, false otherwise. Defaults to Settings.main.muteVideos.
     ///   - audioAvailable: true if the media has an audio track, false otherwise. Defaults to false.
     public init(
+        url: URL,
         blurred: Bool,
         animating: Bool,
         enableAnimation: Bool = true,
         muted: Bool,
         scrubbingAvailable: Bool = false
     ) {
+        self.url = url
         self.blurred = blurred
         self.animating = animating
         self.autoplay = animating
