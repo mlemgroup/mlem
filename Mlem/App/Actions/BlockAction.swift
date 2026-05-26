@@ -153,6 +153,7 @@ extension BlockAction {
                 guard person.id != myPersonId else { return .hidden }
             case let instance as any InstanceActionProviding:
                 let api = environment.appState.firstApi
+                guard api.canInteract(appState: environment.appState) else { return .hidden }
                 guard api.supports(.blockInstances, defaultValue: false) else { return .hidden }
                 guard api.actorId != instance.actorId else { return .hidden }
             default:
