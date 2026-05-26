@@ -157,7 +157,7 @@ extension BlockAction {
                 guard api.supports(.blockInstances, defaultValue: false) else { return .hidden }
                 guard api.actorId != instance.actorId else { return .hidden }
             default:
-            break
+                break
             }
         }
 
