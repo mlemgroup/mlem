@@ -133,9 +133,6 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     @ObservationIgnored var inbox_badge_includeMessageReports: Bool = false
     @ObservationIgnored var inbox_badge_includeMod: Bool = false
     @ObservationIgnored var inbox_badge_includePersonal: Bool = false
-    
-    // This was only used in a 2.5 beta; remove me
-    var imageViewer_showOverlayByDefault: Bool = true
 
     required init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -225,12 +222,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.links_readerMode = try container.decodeIfPresent(Bool.self, forKey: ._links_readerMode) ?? false
         self.links_shareMode = try container.decodeIfPresent(LinkSharingMode.self, forKey: ._links_shareMode) ?? .myInstance
         self.links_embedLoops = try container.decodeIfPresent(Bool.self, forKey: ._links_embedLoops) ?? true
-
-        // This was only used in a 2.5 beta; remove me
-        let showOverlayByDefault = try container.decodeIfPresent(Bool.self, forKey: ._imageViewer_showOverlayByDefault) ?? true
-        let showControlsOldValue: ShowImageViewerControls = showOverlayByDefault ? .immediately : .onTap
-
-        self.imageViewer_showControls = try container.decodeIfPresent(ShowImageViewerControls.self, forKey: ._imageViewer_showControls) ?? showControlsOldValue
+        self.imageViewer_showControls = try container.decodeIfPresent(ShowImageViewerControls.self, forKey: ._imageViewer_showControls) ?? .immediately
 
         self.imageViewer_showCloseButton = try container.decodeIfPresent(Bool.self, forKey: ._imageViewer_showCloseButton) ?? true
         self.imageViewer_showZoomIndicator = try container.decodeIfPresent(Bool.self, forKey: ._imageViewer_showZoomIndicator) ?? true
@@ -455,10 +447,6 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         case _links_shareMode = "links_shareMode"
         case _links_embedLoops = "links_embedLoops"
         case _imageViewer_showControls = "imageViewer_showControls"
-
-        // This was only used in a 2.5 beta, remove me
-        case _imageViewer_showOverlayByDefault = "imageViewer_showOverlayByDefault"
-
         case _imageViewer_showCloseButton = "imageViewer_showCloseButton"
         case _imageViewer_showZoomIndicator = "imageViewer_showZoomIndicator"
         case _imageViewer_dismissThreshold = "imageViewer_dismissThreshold"
