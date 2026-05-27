@@ -568,7 +568,6 @@
 		CDD99C3C2C73F3FF0010367F /* DeleteAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD99C3B2C73F3FF0010367F /* DeleteAccountView.swift */; };
 		CDD99C3E2C73F4380010367F /* WarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD99C3D2C73F4380010367F /* WarningView.swift */; };
 		CDDA49A82F7044D2004A5AFF /* InstanceStubResolutionPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDA49A72F7044CD004A5AFF /* InstanceStubResolutionPage.swift */; };
-		CDE1F18F2C63D75A008AF042 /* LegacySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE1F18E2C63D75A008AF042 /* LegacySettings.swift */; };
 		CDE1F1942C63DF44008AF042 /* PlatformConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE1F1932C63DF44008AF042 /* PlatformConstants.swift */; };
 		CDE1F1962C63DF89008AF042 /* PhoneConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE1F1952C63DF89008AF042 /* PhoneConstants.swift */; };
 		CDE1F1982C63DFC9008AF042 /* PadConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE1F1972C63DFC9008AF042 /* PadConstants.swift */; };
@@ -1171,7 +1170,6 @@
 		CDD99C3B2C73F3FF0010367F /* DeleteAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountView.swift; sourceTree = "<group>"; };
 		CDD99C3D2C73F4380010367F /* WarningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningView.swift; sourceTree = "<group>"; };
 		CDDA49A72F7044CD004A5AFF /* InstanceStubResolutionPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceStubResolutionPage.swift; sourceTree = "<group>"; };
-		CDE1F18E2C63D75A008AF042 /* LegacySettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacySettings.swift; sourceTree = "<group>"; };
 		CDE1F1932C63DF44008AF042 /* PlatformConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformConstants.swift; sourceTree = "<group>"; };
 		CDE1F1952C63DF89008AF042 /* PhoneConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneConstants.swift; sourceTree = "<group>"; };
 		CDE1F1972C63DFC9008AF042 /* PadConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PadConstants.swift; sourceTree = "<group>"; };
@@ -1948,14 +1946,6 @@
 			path = Data;
 			sourceTree = "<group>";
 		};
-		CD1464522D63FE6F00202619 /* Legacy */ = {
-			isa = PBXGroup;
-			children = (
-				CDE1F18E2C63D75A008AF042 /* LegacySettings.swift */,
-			);
-			path = Legacy;
-			sourceTree = "<group>";
-		};
 		CD317D4D2BE97FFB008F63E2 /* Colors */ = {
 			isa = PBXGroup;
 			children = (
@@ -1988,7 +1978,6 @@
 			isa = PBXGroup;
 			children = (
 				03EC85ED2E9D925B004698BB /* Actions */,
-				CD1464522D63FE6F00202619 /* Legacy */,
 				CDE1F18D2C63D646008AF042 /* Configuration */,
 				CD14461F2A5B328600610EF1 /* Data */,
 				CD4D58C62B86DCE500B82964 /* Enums */,
@@ -2869,7 +2858,6 @@
 				037F78432D3C129B00D4E180 /* PostThumbnailSettingsView.swift in Sources */,
 				039F58952C7B618F00C61658 /* InboxSettingsView.swift in Sources */,
 				CD4D58CF2B86DDEC00B82964 /* AccountSortMode.swift in Sources */,
-				CDE1F18F2C63D75A008AF042 /* LegacySettings.swift in Sources */,
 				03D2A6372C00F92400ED4FF2 /* Session.swift in Sources */,
 				03AF91DD2C1B23E500E56644 /* ImageViewer.swift in Sources */,
 				CD13CC592C583C7A001AF428 /* WebsitePreviewView.swift in Sources */,
