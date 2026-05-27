@@ -102,8 +102,7 @@ class Settings {
         if let savedSettings = persistenceRepository.loadSystemSettings(.v2_system) {
             values = savedSettings
         } else {
-            // swiftlint:disable:next force_try
-            values = try! JSONDecoder().decode(SettingsValues.self, from: Data("{}".utf8))
+            values = .init()
         }
     }
 }
