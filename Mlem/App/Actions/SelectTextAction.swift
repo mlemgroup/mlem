@@ -28,6 +28,10 @@ extension ActionSeed {
             SelectTextAction(text: entity.content)
         case let entity as Post:
             SelectTextAction(text: entity.selectableContent ?? "")
+        case let entity as Person:
+            SelectTextAction(text: entity.displayName + "\n\n" + (entity.description ?? ""))
+        case let entity as Community:
+            SelectTextAction(text: entity.displayName + "\n\n" + (entity.description ?? ""))
         default:
             nil
         }
