@@ -12,6 +12,7 @@ import SwiftUI
 private let seeds: [ActionSeed] = [
     .goToInstance,
     .copyName,
+    .selectText,
     .share,
     .sendMessage,
     .block,

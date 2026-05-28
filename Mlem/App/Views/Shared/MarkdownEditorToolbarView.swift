@@ -56,29 +56,14 @@ struct MarkdownEditorToolbarView: View {
     @ViewBuilder
     var body: some View {
         Group {
-            switch imageManager.state {
-            case let .uploading(progress):
-                if progress == 1 {
-                    HStack {
-                        Text("Uploading...")
-                        ProgressView()
-                            .tint(.themedSecondary)
-                    }
-                } else {
-                    ProgressView(value: progress)
-                        .progressViewStyle(.linear)
-                        .padding(.horizontal)
-                }
-            default:
-                if #available(iOS 26, *) {
-                    content
-                        .compositingGroup()
-                        .glassEffect(.regular.interactive(), in: .capsule)
-                        .padding(.horizontal, 10)
-                        .padding(.bottom, 7)
-                } else {
-                    content
-                }
+            if #available(iOS 26, *) {
+                content
+                    .compositingGroup()
+                    .glassEffect(.regular.interactive(), in: .capsule)
+                    .padding(.horizontal, 10)
+                    .padding(.bottom, 7)
+            } else {
+                content
             }
         }
         .frame(maxWidth: .infinity)
@@ -97,8 +82,32 @@ struct MarkdownEditorToolbarView: View {
             }
         }
     }
-    
+
+    @ViewBuilder
     var content: some View {
+        switch imageManager.state {
+        case let .uploading(progress):
+            Group {
+                if progress == 1 {
+                    HStack {
+                        Text("Uploading...")
+                        ProgressView()
+                            .tint(.themedSecondary)
+                    }
+                } else {
+                    ProgressView(value: progress)
+                        .progressViewStyle(.linear)
+                        .padding(.horizontal)
+                }
+            }
+            .padding(.vertical, 8)
+            .frame(maxWidth: .infinity)
+        default:
+            maskedToolbarContent
+        }
+    }
+    
+    var maskedToolbarContent: some View {
         ScrollView(.horizontal) {
             if !UIDevice.isIos26 {
                 Spacer()

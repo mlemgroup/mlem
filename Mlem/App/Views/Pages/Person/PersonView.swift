@@ -138,13 +138,13 @@ struct PersonView: View {
         if let bio = person.description {
             VStack(spacing: Constants.main.standardSpacing) {
                 let blocks: [BlockNode] = .init(bio)
-                if blocks.isSimpleParagraphs, bio.count < 300 {
+                if blocks.isSimpleParagraphs, bio.count < 300, blocks.links.isEmpty {
                     MarkdownText(blocks, configuration: .default(palette: palette))
                         .multilineTextAlignment(.center)
                     dateLabel(person: person)
                         .frame(maxWidth: .infinity, alignment: .center)
                 } else {
-                    Markdown(blocks, configuration: .default(palette: palette))
+                    MarkdownWithLinkList(blocks)
                     dateLabel(person: person)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
