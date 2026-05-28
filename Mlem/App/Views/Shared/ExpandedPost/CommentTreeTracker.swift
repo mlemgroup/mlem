@@ -73,6 +73,7 @@ class CommentTreeTracker: Hashable {
         loadingState = .loading
         do {
             var newComments = try await fetchComments(page: 1)
+
             if let ensuredComment {
                 let comment = try await ensuredComment.asComment()
                 let api = root.wrappedValue.api
@@ -80,7 +81,7 @@ class CommentTreeTracker: Hashable {
                     // Find the first parent of the ensured comment that isn't in `newComments`.
                     // This will be the starting point for the second page of comments to load.
                     let idsToSearch = comment.parentCommentIds + [comment.id]
-                    let firstAbsentParentId = idsToSearch.first(
+                    let firstAbsentParentId = idsToSearch.last(
                         where: { id in !newComments.contains(where: { $0.id == id }) }
                     )
                     if let firstAbsentParentId {
@@ -187,6 +188,7 @@ class CommentTreeTracker: Hashable {
         var commentsKeyedByActorId: [ActorIdentifier: CommentTreeNode] = clear ? [:] : nodesKeyedByActorId
 
         let sortedComments = newComments.sorted { $0.depth < $1.depth }
+        let firstDepth = sortedComments.first?.depth ?? 0
         
         for comment in sortedComments {
             if commentsKeyedByActorId.keys.contains(comment.actorId) {
@@ -196,7 +198,7 @@ class CommentTreeTracker: Hashable {
             let wrapper: CommentTreeNode = .init(comment)
             commentsKeyedById[comment.id] = wrapper
             commentsKeyedByActorId[comment.actorId] = wrapper
-            if let parentId = comment.parentCommentIds.last, comment.depth > root.depth {
+            if let parentId = comment.parentCommentIds.last, comment.depth > firstDepth {
                 if let parent = commentsKeyedById[parentId] {
                     parent.addChild(wrapper)
                 }
