@@ -17,6 +17,7 @@ extension PostEditorView {
 
 struct PostEditorImageUploadWidgetView: View {
     @Environment(NavigationLayer.self) var navigation
+    @Environment(MediaTracker.self) var mediaTracker
     
     @ScaledMetric(relativeTo: .subheadline) var buttonHeight: CGFloat = 40
     
@@ -62,7 +63,9 @@ struct PostEditorImageUploadWidgetView: View {
     @ViewBuilder
     private func uploadedImageView(url: URL, onRemove: @escaping () -> Void = {}) -> some View {
         MediaView(
-            url: url,
+            controlState: .constant(mediaTracker.controlState(for: url) {
+                .init(url: url, blurred: false, animating: false, muted: false)
+            }),
             aspectRatioBounds: .imageDefault,
             cornerRadius: Constants.main.mediumItemCornerRadius
         )

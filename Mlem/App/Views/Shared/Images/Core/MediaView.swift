@@ -94,10 +94,8 @@ struct MediaView: View {
     }
     
     static func largeImage(url: URL, shouldBlur: Bool, onTapActions: (() -> Void)? = nil) -> MediaView {
-        @Environment(MediaTracker.self) var mediaTracker
-        
         return .init(
-            controlState: .constant(mediaTracker.controlState(for: url) {
+            controlState: .constant(MediaTracker.main.controlState(for: url) {
                 .init(
                     url: url,
                     blurred: shouldBlur,

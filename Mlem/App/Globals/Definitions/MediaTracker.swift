@@ -26,7 +26,7 @@ public class MediaTracker {
     
     public static var main: MediaTracker = .init()
     
-    public func controlState(for url: URL, create: () -> MediaControlState) -> MediaControlState {
+    public func controlState(for url: URL?, create: () -> MediaControlState) -> MediaControlState {
         defer {
             if Date().timeIntervalSince(lastCleaned) > cleanInterval {
                 for key in controlStates.keys where controlStates[key]?.value == nil {
@@ -34,6 +34,8 @@ public class MediaTracker {
                 }
             }
         }
+        
+        guard let url else { return create() }
         
         if let existing = controlStates[url]?.value {
             return existing

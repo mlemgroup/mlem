@@ -8,10 +8,12 @@
 import Foundation
 import Observation
 
+// TODO: NOW some kind of audio lock to avoid EVERYBODY speaking
+
 @Observable
 public class MediaControlState {
     
-    public var url: URL
+    public var url: URL?
     
     /// True if the media should be blurred, false otherwise
     public var blurred: Bool
@@ -73,7 +75,7 @@ public class MediaControlState {
     ///   - muted: true if the media should be muted, false otherwise. Defaults to Settings.main.muteVideos.
     ///   - audioAvailable: true if the media has an audio track, false otherwise. Defaults to false.
     public init(
-        url: URL,
+        url: URL?,
         blurred: Bool,
         animating: Bool,
         enableAnimation: Bool = true,

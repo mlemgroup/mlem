@@ -14,27 +14,20 @@ import Media
 struct ThumbnailImageView: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.openURL) var openURL
-    @Environment(MediaTracker.self) var mediaTracker
     
     @Setting(\.a11y_websiteThumbnailIcon) var websiteThumbnailIcon
     @Setting(\.post_size) var postSize
     
+    @State var mediaControlState: MediaControlState
     @State var quickLookUrl: URL?
     
     let post: Post
+    let url: URL?
     let size: Size
     let frame: CGSize
     
     enum Size {
         case standard, tile
-    }
-    
-    var url: URL? {
-        switch post.type {
-        case let .media(url), let .embedded(url, _): url
-        case let .link(link): link.thumbnail
-        default: nil
-        }
     }
     
     var onTapActions: (() -> Void)? {
@@ -60,6 +53,21 @@ struct ThumbnailImageView: View {
         self.post = post
         self.size = size
         self.frame = frame
+        
+        let mediaUrl: URL?
+        switch post.type {
+        case let .media(url), let .embedded(url, _): mediaUrl = url
+        case let .link(link): mediaUrl = link.thumbnail
+        default: mediaUrl = nil
+        }
+        self.url = mediaUrl
+        self._mediaControlState = .init(wrappedValue: MediaTracker.main.controlState(for: url) { .init(
+            url: mediaUrl,
+            blurred: blurred,
+            animating: false,
+            enableAnimation: false,
+            muted: Settings.get(\.behavior_muteVideos)
+        )})
     }
     
     var body: some View {

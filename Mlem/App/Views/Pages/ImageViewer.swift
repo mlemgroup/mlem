@@ -21,12 +21,7 @@ struct ImageViewer: View {
     let maxControlOffset: CGFloat = 50
     let screenHeight: CGFloat = UIScreen.main.bounds.height
     
-    @State var controlState: MediaControlState = .init(
-        blurred: false,
-        animating: true,
-        muted: Settings.get(\.behavior_muteVideos),
-        scrubbingAvailable: true
-    )
+    @State var controlState: MediaControlState
 
     @Setting(\.imageViewer_showControls) var showControls
     @Setting(\.imageViewer_showCloseButton) var showCloseButton
@@ -92,7 +87,18 @@ struct ImageViewer: View {
         var components = URLComponents(url: url, resolvingAgainstBaseURL: false)!
         components.queryItems = components.queryItems?.filter { $0.name != "thumbnail" }
         self.controlOpacity = Settings.get(\.imageViewer_showControls) == .immediately ? 1 : 0
-        self.url = components.url!
+        let url = components.url!
+        
+        self.url = url
+        self.controlState = MediaTracker.main.controlState(for: url) {
+            .init(
+                url: url,
+                blurred: false,
+                animating: true,
+                muted: Settings.get(\.behavior_muteVideos),
+                scrubbingAvailable: true
+            )
+        }
     }
     
     var body: some View {
