@@ -65,13 +65,15 @@ extension VoteAction {
             return Self.upvoteLabel
         }
 
-        return switch (type, hasMatchingVote) {
+        let label = switch (type, hasMatchingVote) {
         case (.upvote, false): Self.upvoteLabel
         case (.upvote, true): Self.removeUpvoteLabel
         case (.downvote, false): Self.downvoteLabel
         case (.downvote, true): Self.removeDownvoteLabel
         default: Self.upvoteLabel
         }
+
+        return label.withVisibility(visibility(environment))
     }
 
     private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {
