@@ -49,6 +49,10 @@ extension SendMessageAction {
     }
 
     private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {
+        guard entity.api.canInteract(appState: environment.appState) else {
+            return .hidden
+        }
+
         if environment.appState.firstPerson?.actorId == entity.actorId {
             return .hidden
         }

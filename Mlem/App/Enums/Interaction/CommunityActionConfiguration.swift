@@ -18,6 +18,7 @@ struct CommunityActionConfiguration: Codable, SwipeActionConfiguration {
                 .favorite,
                 .goToInstance,
                 .copyName,
+                .selectText,
                 .share
             ],
             [
