@@ -15,7 +15,7 @@ struct InstanceSettingsView: View {
                 description: "Customize the appearance of instances.",
                 icon: .lemmy.instance
             )
-            .gradientTint(.themedColorfulAccent(1))
+            .gradientTint(.themedInstanceAccent)
             Section {
                 NavigationLink("Swipe Actions", destination: .settings(.swipeActions(.instance)))
             }
