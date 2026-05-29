@@ -15,7 +15,7 @@ enum SettingsPage: Hashable {
     }
 
     enum SwipeActionSettingType: Hashable {
-        case post, comment, inboxNotification, postReport, commentReport, community, person
+        case post, comment, inboxNotification, postReport, commentReport, community, person, instance
     }
 
     case root
@@ -32,7 +32,7 @@ enum SettingsPage: Hashable {
     case externalLinks, sharingLinks, tappableLinks
     case importExportSettings
     case theme, icon
-    case post, comment, inbox, community, person, subscriptionList
+    case post, comment, inbox, community, person, instance, subscriptionList
     case tabBar, longPressAction
     case postThumbnail, postSubscriptionIndicator, postReadIndicator
     case commentMaximumDepth, commentJumpButton
@@ -127,6 +127,8 @@ enum SettingsPage: Hashable {
             CommunitySettingsView()
         case .person:
             PersonSettingsView()
+        case .instance:
+            InstanceSettingsView()
         case .postThumbnail:
             PostThumbnailSettingsView()
         case .postSubscriptionIndicator:
@@ -222,6 +224,8 @@ enum SettingsPage: Hashable {
                 SwipeActionEditorView(\.interactionBar_community)
             case .person:
                 SwipeActionEditorView(\.interactionBar_person)
+            case .instance:
+                SwipeActionEditorView(\.interactionBar_instance)
             }
         case let .contextMenu(page):
             page.view

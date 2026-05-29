@@ -92,6 +92,8 @@ struct SettingsView: View {
                     .gradientTint(.themedCommunityAccent)
                 NavigationLink("Users", icon: .lemmy.person, destination: .settings(.person))
                     .gradientTint(.themedPersonAccent)
+                NavigationLink("Instances", icon: .lemmy.instance, destination: .settings(.instance))
+                    .gradientTint(.themedColorfulAccent(1))
                 NavigationLink("Tab Bar", icon: .settings.tabBar, destination: .settings(.tabBar))
                     .gradientTint(.themedColorfulAccent(5))
             }
