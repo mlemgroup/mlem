@@ -31,11 +31,15 @@ extension View {
         configuration: InstanceActionConfiguration,
         leadingBuffer: SwipeBuffer
     ) -> some View {
-        quickSwipes(
-            leading: configuration.swipes.leading.compactMap { $0.createAction(instance) },
-            trailing: configuration.swipes.trailing.compactMap { $0.createAction(instance) },
-            leadingBuffer: leadingBuffer
-        )
+        if let instance {
+            quickSwipes(
+                leading: configuration.swipes.leading.compactMap { $0.createAction(instance) },
+                trailing: configuration.swipes.trailing.compactMap { $0.createAction(instance) },
+                leadingBuffer: leadingBuffer
+            )
+        } else {
+            quickSwipes(.init())
+        }
     }
 }
 
