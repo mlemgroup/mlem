@@ -71,10 +71,14 @@ struct ImportExportSettingsView: View {
             Section {
                 Button("Export Settings", icon: .general.export) {
                     Task {
-                        let data = try Settings.encoded()
-                        let fileUrl = FileManager.default.temporaryDirectory.appending(path: "settings.json")
-                        try data.write(to: fileUrl, options: .atomic)
-                        navigation.model?.shareInfo = .init(url: fileUrl)
+                        do {
+                            let data = try Settings.encoded()
+                            let fileUrl = FileManager.default.temporaryDirectory.appending(path: "settings.json")
+                            try data.write(to: fileUrl, options: .atomic)
+                            navigation.model?.shareInfo = .init(url: fileUrl)
+                        } catch {
+                            handleError(error)
+                        }
                     }
                 }
                 

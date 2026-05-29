@@ -60,7 +60,9 @@ class Settings {
     }
     
     static func encoded() throws -> Data {
-        try JSONEncoder().encode(main.values)
+        let encoder = JSONEncoder()
+        encoder.userInfo[.endpointVersion] = LemmyEndpointVersion.v3
+        return try encoder.encode(main.values)
     }
     
     // MARK: - Logic
