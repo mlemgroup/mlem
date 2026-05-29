@@ -9,6 +9,7 @@ import Actions
 import MlemMiddleware
 import SwiftUI
 import MlemBackend
+import QuickSwipes
 
 extension View {
     @ViewBuilder
@@ -22,6 +23,19 @@ extension View {
         } else {
             self
         }
+    }
+
+    @ViewBuilder
+    func quickSwipes(
+        instance: (any InstanceActionProviding)?,
+        configuration: InstanceActionConfiguration,
+        leadingBuffer: SwipeBuffer
+    ) -> some View {
+        quickSwipes(
+            leading: configuration.swipes.leading.compactMap { $0.createAction(instance) },
+            trailing: configuration.swipes.trailing.compactMap { $0.createAction(instance) },
+            leadingBuffer: leadingBuffer
+        )
     }
 }
 

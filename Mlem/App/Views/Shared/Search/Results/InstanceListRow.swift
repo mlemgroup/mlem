@@ -15,6 +15,7 @@ struct InstanceListRow<Content2: View>: View {
     
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
+    @Setting(\.interactionBar_instance) var instanceActionConfiguration
     
     let instance: any InstanceActionProviding
     let content: Content
@@ -60,6 +61,7 @@ struct InstanceListRow<Content2: View>: View {
         .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
         .contextMenu(instance: instance)
+        .quickSwipes(instance: instance, configuration: instanceActionConfiguration, leadingBuffer: .standard)
         .popupAnchor()
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }
