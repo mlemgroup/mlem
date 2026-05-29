@@ -211,9 +211,14 @@ public extension Icon {
         public let switchAccount: Icon = .init("arrow.left.arrow.right")
         public let switchAccountAndReload: Icon = .init("arrow.2.circlepath")
         public let switchAccountAndKeepPlace: Icon = .init("checkmark.diamond")
-        public let visitInstance: Icon = .init("arrow.right")
+        public let visitInstance: Icon = .applyCircle("arrow.right")
         public let logIn: Icon = .init("person.text.rectangle")
-        public let signUp: Icon = .init("pencil.and.list.clipboard")
+        public let signUp: Icon = .custom { variant in
+            switch variant {
+            case .active: "list.clipboard.fill"
+            default: "pencil.and.list.clipboard"
+            }
+        }
         
         public let jumpButton: Icon = .init("chevron.down")
         public let jumpToLastPositionButton: Icon = .init("chevron.down.2")
