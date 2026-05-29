@@ -187,20 +187,6 @@ public extension PieFedConnection {
         throw ApiClientError.featureUnsupported
     }
 
-    private func searchComments(
-        query: String,
-        page: Int = 1,
-        limit: Int = 20,
-        communityId: Int?,
-        creatorId: Int?,
-        filter: ListingType,
-        legacySort: LemmySortType?,
-        sort: LemmySearchSortType?,
-        timeRangeSeconds: Int?
-    ) async throws -> [Comment2Snapshot] {
-        throw ApiClientError.featureUnsupported
-    }
-    
     @discardableResult
     func voteOnComment(id: Int, score: ScoringOperation) async throws -> Comment2Snapshot {
         let request = PieFedLikeCommentRequest(

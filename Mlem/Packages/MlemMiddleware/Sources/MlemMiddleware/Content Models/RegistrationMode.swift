@@ -8,5 +8,5 @@
 import Foundation
 
 public enum RegistrationMode {
-    case closed, open, requiresApplication
+    case closed, open, requiresApplication, requiresInvitation
 }
