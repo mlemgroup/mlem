@@ -10,22 +10,13 @@ import MlemMiddleware
 import SwiftUI
 import MlemBackend
 
-private let seeds: [ActionSeed] = [
-    .visit,
-    .logIn,
-    .signUp,
-    .openInBrowser,
-    .share,
-    .block
-]
-
 extension View {
     @ViewBuilder
     func contextMenu(instance: (any InstanceActionProviding)?) -> some View {
         if let instance {
             contextMenu {
                 ActionButtons { _ in
-                    seeds.compactMap { $0.createAction(instance) }
+                    InstanceActionConfiguration.availableActions.all.compactMap { $0.createAction(instance) }
                 }
             }
         } else {
@@ -38,7 +29,7 @@ extension ToolbarEllipsisMenu {
     init(instance: any InstanceActionProviding) where Content == ActionButtons {
         self.init {
             ActionButtons { _ in
-                seeds.compactMap { $0.createAction(instance) }
+                InstanceActionConfiguration.availableActions.all.compactMap { $0.createAction(instance) }
             }
         }
     }
@@ -49,7 +40,7 @@ extension View {
     func contextMenu(instance: any InstanceActionProviding) -> some View {
         contextMenu {
             ActionButtons { _ in
-                seeds.compactMap { $0.createAction(instance) }
+                InstanceActionConfiguration.availableActions.all.compactMap { $0.createAction(instance) }
             }
         }
     }
