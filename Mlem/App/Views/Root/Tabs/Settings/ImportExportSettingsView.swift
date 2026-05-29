@@ -17,15 +17,13 @@ struct ImportExportSettingsView: View {
     
     @State var importingSettingsFile: Bool = false
     
-    // these are tracked as state vars so they can be updated as appropriate
-    @State var v1SettingsExist: Bool = false
+    // this is tracked as a state var so they can be updated as appropriate
     @State var v2SettingsExist: Bool = false
     
     var body: some View {
         content
             .withConditionalLabelStyle()
             .onAppear {
-                v1SettingsExist = persistenceRepository.systemSettingsExists(.v1_user)
                 v2SettingsExist = persistenceRepository.systemSettingsExists(.v2_user)
             }
             .fileImporter(
