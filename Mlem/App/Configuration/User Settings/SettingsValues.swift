@@ -122,6 +122,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     var interactionBar_comment: CommentBarConfiguration
     var interactionBar_reply: ReplyBarConfiguration
     var interactionBar_community: CommunityActionConfiguration
+    var interactionBar_person: PersonActionConfiguration
     var interactionBar_postReport: PostBarConfiguration
     var interactionBar_commentReport: CommentBarConfiguration
     var interactionBar_alternateReportLayout: Bool
@@ -277,6 +278,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.interactionBar_comment = try container.decodeIfPresent(CommentBarConfiguration.self, forKey: ._interactionBar_comment) ?? .default
         self.interactionBar_reply = try container.decodeIfPresent(ReplyBarConfiguration.self, forKey: ._interactionBar_reply) ?? .default
         self.interactionBar_community = try container.decodeIfPresent(CommunityActionConfiguration.self, forKey: ._interactionBar_community) ?? .init()
+        self.interactionBar_person = try container.decodeIfPresent(PersonActionConfiguration.self, forKey: ._interactionBar_person) ?? .init()
         self.interactionBar_postReport = try container.decodeIfPresent(PostBarConfiguration.self, forKey: ._interactionBar_postReport) ?? .reportDefault_
         self.interactionBar_commentReport = try container.decodeIfPresent(CommentBarConfiguration.self, forKey: ._interactionBar_commentReport) ?? .reportDefault_
         self.interactionBar_alternateReportLayout = try container.decodeIfPresent(Bool.self, forKey: ._interactionBar_alternateReportLayout) ?? false
@@ -390,6 +392,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.interactionBar_comment = .default
         self.interactionBar_reply = .default
         self.interactionBar_community = .init()
+        self.interactionBar_person = .init()
         self.interactionBar_postReport = .reportDefault_
         self.interactionBar_commentReport = .reportDefault_
         self.interactionBar_alternateReportLayout = false
@@ -498,6 +501,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         interactionBar_comment = otherValues.interactionBar_comment
         interactionBar_reply = otherValues.interactionBar_reply
         interactionBar_community = otherValues.interactionBar_community
+        interactionBar_person = otherValues.interactionBar_person
         interactionBar_postReport = otherValues.interactionBar_postReport
         interactionBar_commentReport = otherValues.interactionBar_commentReport
         interactionBar_alternateReportLayout = otherValues.interactionBar_alternateReportLayout
@@ -613,6 +617,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         case _interactionBar_comment = "interactionBar_comment"
         case _interactionBar_reply = "interactionBar_reply"
         case _interactionBar_community = "interactionBar_community"
+        case _interactionBar_person = "interactionBar_person"
         case _interactionBar_postReport = "interactionBar_postReport"
         case _interactionBar_commentReport = "interactionBar_commentReport"
         case _interactionBar_alternateReportLayout = "interactionBar_alternateReportLayout"

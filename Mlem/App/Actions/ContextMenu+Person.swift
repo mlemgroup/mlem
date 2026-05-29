@@ -9,25 +9,10 @@ import Actions
 import MlemMiddleware
 import SwiftUI
 
-private let seeds: [ActionSeed] = [
-    .goToInstance,
-    .copyName,
-    .selectText,
-    .share,
-    .sendMessage,
-    .block,
-    .editNote,
-    .openModlog,
-    .ban,
-    .purge,
-    .appointModerator,
-    .appointAdmin
-]
-
 extension ActionButtons {
     init(person: Person) {
         self.init { _ in
-            seeds.compactMap { $0.createAction(person) }
+            PersonActionConfiguration.availableActions.all.compactMap { $0.createAction(person) }
         }
     }
 }
