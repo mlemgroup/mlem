@@ -34,17 +34,19 @@ public extension ApiClient {
         limit: Int,
         unreadOnly: Bool
     ) async throws -> (notifications: [InboxNotification], cursor: String?) {
-        guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
-        let response = try await repository.getReplyNotifications(
-            page: page,
-            cursor: cursor,
-            limit: limit,
-            unreadOnly: unreadOnly
-        )
-        return await (
-            notifications: caches.notification.getModels(api: self, from: response.notifications, myPersonId: myPersonId),
-            cursor: response.cursor
-        )
+        try await inboxLock.withLock {
+            guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
+            let response = try await repository.getReplyNotifications(
+                page: page,
+                cursor: cursor,
+                limit: limit,
+                unreadOnly: unreadOnly
+            )
+            return await (
+                notifications: caches.notification.getModels(api: self, from: response.notifications, myPersonId: myPersonId),
+                cursor: response.cursor
+            )
+        }
     }
     
     func getMentionNotifications(
@@ -53,17 +55,19 @@ public extension ApiClient {
         limit: Int,
         unreadOnly: Bool
     ) async throws -> (notifications: [InboxNotification], cursor: String?) {
-        guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
-        let response = try await repository.getMentionNotifications(
-            page: page,
-            cursor: cursor,
-            limit: limit,
-            unreadOnly: unreadOnly
-        )
-        return await (
-            notifications: caches.notification.getModels(api: self, from: response.notifications, myPersonId: myPersonId),
-            cursor: response.cursor
-        )
+        try await inboxLock.withLock {
+            guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
+            let response = try await repository.getMentionNotifications(
+                page: page,
+                cursor: cursor,
+                limit: limit,
+                unreadOnly: unreadOnly
+            )
+            return await (
+                notifications: caches.notification.getModels(api: self, from: response.notifications, myPersonId: myPersonId),
+                cursor: response.cursor
+            )
+        }
     }
 
     func getMessageNotifications(
@@ -72,37 +76,43 @@ public extension ApiClient {
         limit: Int,
         unreadOnly: Bool
     ) async throws -> (notifications: [InboxNotification], cursor: String?) {
-        guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
-        let response = try await repository.getMessageNotifications(
-            page: page,
-            cursor: cursor,
-            limit: limit,
-            unreadOnly: unreadOnly
-        )
-        return await (
-            notifications: caches.notification.getModels(api: self, from: response.notifications, myPersonId: myPersonId),
-            cursor: response.cursor
-        )
+        try await inboxLock.withLock {
+            guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
+            let response = try await repository.getMessageNotifications(
+                page: page,
+                cursor: cursor,
+                limit: limit,
+                unreadOnly: unreadOnly
+            )
+            return await (
+                notifications: caches.notification.getModels(api: self, from: response.notifications, myPersonId: myPersonId),
+                cursor: response.cursor
+            )
+        }
     }
 
     func markAllAsRead() async throws {
-        try await repository.markAllAsRead()
-        _ = await Task { @MainActor in
-            for notification in caches.notification.itemCache.value.values {
-                notification.content?.read = true
-            }
-        }.result
-        unreadCount?.clear(.personal)
+        try await inboxLock.withLock {
+            try await repository.markAllAsRead()
+            _ = await Task { @MainActor in
+                for notification in caches.notification.itemCache.value.values {
+                    notification.content?.read = true
+                }
+            }.result
+            unreadCount?.clear(.personal)
+        }
     }
     
     /// Get an ``UnreadCount`` object that continues to be updated by the ``ApiClient`` whenever an inbox item is marked read/unread.
     func getUnreadCount(alwaysMakeCalls: Bool = false) async throws -> UnreadCount {
-        let unreadCount = unreadCount ?? .init(api: self)
-        try await unreadCount.refresh(alwaysMakeCalls: alwaysMakeCalls)
-        self.unreadCount = unreadCount
-        return unreadCount
+        try await inboxLock.withLock {
+            let unreadCount = unreadCount ?? .init(api: self)
+            try await unreadCount.refresh(alwaysMakeCalls: alwaysMakeCalls)
+            self.unreadCount = unreadCount
+            return unreadCount
+        }
     }
-    
+
     func createMessage(personId: Int, content: String) async throws -> Message2 {
         let snapshot = try await repository.createMessage(personId: personId, content: content)
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
