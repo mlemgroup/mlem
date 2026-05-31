@@ -61,13 +61,15 @@ struct ThumbnailImageView: View {
         default: mediaUrl = nil
         }
         self.url = mediaUrl
-        self._mediaControlState = .init(wrappedValue: MediaTracker.main.controlState(for: url) { .init(
+        
+        // NOT using tracker state, as thumbnails should not share blur or animation with full image
+        self._mediaControlState = .init(wrappedValue: .init(
             url: mediaUrl,
             blurred: blurred,
             animating: false,
             enableAnimation: false,
             muted: Settings.get(\.behavior_muteVideos)
-        )})
+        ))
     }
     
     var body: some View {
