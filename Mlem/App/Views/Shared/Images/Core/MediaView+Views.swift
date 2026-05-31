@@ -16,7 +16,7 @@ extension MediaView {
             media: loader.mediaType ?? .image(.blank),
             aspectRatio: uiImage.boundedAspectRatio(bounds: aspectRatio),
             contentMode: contentMode,
-            viewId: viewId
+            mediaLockId: mediaLockId
         )
         .overlay {
             if loader.mediaType == nil {

@@ -16,13 +16,13 @@ public struct CoreMediaView: View {
     let aspectRatio: CGSize
     let contentMode: ContentMode
     
-    let viewId: UUID
+    let mediaLockId: UUID
     
-    public init(media: MediaType, aspectRatio: CGSize, contentMode: ContentMode, viewId: UUID) {
+    public init(media: MediaType, aspectRatio: CGSize, contentMode: ContentMode, mediaLockId: UUID) {
         self.media = media
         self.aspectRatio = aspectRatio
         self.contentMode = contentMode
-        self.viewId = viewId
+        self.mediaLockId = mediaLockId
     }
     
     var uiImage: UIImage { media.image }
@@ -50,16 +50,12 @@ public struct CoreMediaView: View {
     
     @ViewBuilder
     var content: some View {
-        if controlState.canAnimate, media.isAnimated, controlState.mediaLockId == viewId {
+        if controlState.canAnimate, media.isAnimated, controlState.mediaLockId == mediaLockId {
             animatedContent
         } else {
             Image(uiImage: uiImage)
                 .resizable()
                 .aspectRatio(contentMode: contentMode)
-                .overlay {
-                    Text("\(controlState.mediaLockId)")
-                    Text("\(viewId)")
-                }
         }
     }
     

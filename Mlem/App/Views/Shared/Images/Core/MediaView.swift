@@ -35,7 +35,7 @@ struct MediaView: View {
     let enableImageViewer: Bool
     let onTapActions: (() -> Void)?
     
-    @State var viewId: UUID = .init()
+    @State var mediaLockId: UUID = .init()
     
     var fullSizeUrl: URL? { Mlem.fullSizeUrl(url: loader.url) }
     var uiImage: UIImage { loader.mediaType?.image ?? .blank }
@@ -117,7 +117,7 @@ struct MediaView: View {
     var body: some View {
         content
             .dynamicBlur(blurred: loader.mediaType != nil && controlState.blurred)
-            .withAnimationControls()
+            .withAnimationControls(mediaLockId: mediaLockId)
             .overlay(nsfwOverlay)
             .overlay(developerOverlay)
             .overlay(errorOverlay)
@@ -134,7 +134,7 @@ struct MediaView: View {
                 controlState.animationAvailable = loader.mediaType?.isAnimated ?? false
             }
             .onAppear {
-                controlState.mediaLockId = viewId
+                controlState.mediaLockId = mediaLockId
             }
             .environment(controlState)
             .environment(overlays)
@@ -156,8 +156,7 @@ struct MediaView: View {
             } else {
                 image
                     .onDisappear {
-                        if controlState.mediaLockId == viewId {
-                            // controlState.animating = false
+                        if controlState.mediaLockId == mediaLockId {
                             controlState.mediaLockId = nil
                         }
                     }
