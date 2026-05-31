@@ -35,6 +35,8 @@ struct MediaView: View {
     let enableImageViewer: Bool
     let onTapActions: (() -> Void)?
     
+    @State var viewId: UUID = .init()
+    
     var fullSizeUrl: URL? { Mlem.fullSizeUrl(url: loader.url) }
     var uiImage: UIImage { loader.mediaType?.image ?? .blank }
     var showErrorOverlay: Bool {
@@ -131,6 +133,9 @@ struct MediaView: View {
             .onChange(of: loader.mediaType?.isAnimated, initial: true) {
                 controlState.animationAvailable = loader.mediaType?.isAnimated ?? false
             }
+            .onAppear {
+                controlState.mediaLockId = viewId
+            }
             .environment(controlState)
             .environment(overlays)
     }
@@ -151,7 +156,10 @@ struct MediaView: View {
             } else {
                 image
                     .onDisappear {
-                        controlState.animating = false
+                        if controlState.mediaLockId == viewId {
+                            // controlState.animating = false
+                            controlState.mediaLockId = nil
+                        }
                     }
             }
         }

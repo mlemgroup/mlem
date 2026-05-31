@@ -58,6 +58,8 @@ public class MediaControlState {
     /// Current loading state of the media
     public var loading: MediaLoadingState?
     
+    public var mediaLockId: UUID?
+    
     public var playbackReadouts: (position: String, duration: String)? {
         guard let duration else { return nil }
         return (position: minuteSecondString(from: playbackPosition * duration), duration: minuteSecondString(from: duration))
