@@ -16,15 +16,11 @@ public extension LemmyConnection {
     }
     
     func getComment(url: URL) async throws -> Comment2Snapshot {
-        do {
-            let result = try await resolve(url: url)
-            switch result {
-            case let .comment(comment):
-                return comment
-            default:
-                throw ApiClientError.noEntityFound
-            }
-        } catch let ApiClientError.response(response, _) where response.couldntFindObject {
+        let result = try await resolve(url: url)
+        switch result {
+        case let .comment(comment):
+            return comment
+        default:
             throw ApiClientError.noEntityFound
         }
     }

@@ -57,7 +57,7 @@ public extension LemmyConnection {
         let response = try await restClient.execute(request)
         if let response = response.1 as? HTTPURLResponse {
             if response.statusCode != 204 {
-                throw ApiClientError.response(.init(error: "Unexpected status code"), response.statusCode)
+                throw ApiClientError.response("Unexpected status code", response.statusCode)
             }
         }
     }

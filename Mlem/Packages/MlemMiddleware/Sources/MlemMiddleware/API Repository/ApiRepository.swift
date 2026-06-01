@@ -55,32 +55,6 @@ class ApiRepository {
         token = newToken
     }
     
-    func perform<Request: RestRequest>(
-        _ request: Request,
-        tokenOverride: String? = nil,
-        requiresToken: Bool = true // This should be `true` for the vast majority of requests, even GET requests
-    ) async throws -> Request.Response {
-        guard !requiresToken || username == nil || token != nil else {
-            throw ApiClientError.noToken
-        }
-        
-        let token = tokenOverride ?? token
-        do throws(RestError) {
-            return try await restClient.perform(baseUrl: baseUrl, request, token: token)
-        } catch {
-            switch error {
-            case let RestError.response(response, statusCode: _):
-                if LemmyErrorResponse(error: response).isNotLoggedIn {
-                    throw token == nil ? ApiClientError.notLoggedIn : ApiClientError.invalidSession // (self)
-                } else {
-                    throw ApiClientError(from: error)
-                }
-            default:
-                throw ApiClientError(from: error)
-            }
-        }
-    }
-    
     func getConnection() async throws -> any InstanceConnection {
         try await connectionMultiplexer.getConnection {
             _ = try await getMyInstance()

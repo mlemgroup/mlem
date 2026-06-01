@@ -112,7 +112,7 @@ public final class UnreadCount {
                     taskGroup.addTask {
                         do {
                             return try await self.api.repository.getReportCount(communityId: nil).unreadCountDictionary
-                        } catch let ApiClientError.response(response, _) where response.notModOrAdmin {
+                        } catch ApiClientError.notModOrAdmin {
                             return [:]
                         }
                     }
@@ -122,7 +122,7 @@ public final class UnreadCount {
                     taskGroup.addTask {
                         do {
                             return try await [.registrationApplication: self.api.getRegistrationApplicationCount()]
-                        } catch let ApiClientError.response(response, _) where response.notAdmin {
+                        } catch ApiClientError.notAdmin {
                             return [:]
                         }
                     }

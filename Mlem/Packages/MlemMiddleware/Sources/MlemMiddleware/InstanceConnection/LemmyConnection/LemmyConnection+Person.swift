@@ -25,37 +25,29 @@ public extension LemmyConnection {
     }
     
     func getPerson(url: URL) async throws -> Person2Snapshot {
-        do {
-            let result = try await resolve(url: url)
-            switch result {
-            case let .person(person):
-                return person
-            default:
-                throw ApiClientError.noEntityFound
-            }
-        } catch let ApiClientError.response(response, _) where response.couldntFindObject {
+        let result = try await resolve(url: url)
+        switch result {
+        case let .person(person):
+            return person
+        default:
             throw ApiClientError.noEntityFound
         }
     }
     
     func getPerson(username: String) async throws -> Person3Snapshot {
-        do {
-            let response = try await performingForEndpoint { endpoint in
-                LemmyReadPersonRequest(
-                    endpoint: endpoint,
-                    personId: nil,
-                    username: username,
-                    sort: nil,
-                    page: nil,
-                    limit: nil,
-                    communityId: nil,
-                    savedOnly: nil
-                )
-            }
-            return try .init(from: response)
-        } catch let ApiClientError.response(response, _) where response.couldntFindObject {
-            throw ApiClientError.noEntityFound
+        let response = try await performingForEndpoint { endpoint in
+            LemmyReadPersonRequest(
+                endpoint: endpoint,
+                personId: nil,
+                username: username,
+                sort: nil,
+                page: nil,
+                limit: nil,
+                communityId: nil,
+                savedOnly: nil
+            )
         }
+        return try .init(from: response)
     }
     
     /// `filter` can be set to `.local` from 0.19.4 onwards.

@@ -13,10 +13,6 @@ public class LemmyConnection: InstanceConnection {
     
     let restClient = RestClient(errorType: LemmyErrorResponse.self)
     
-    enum LemmyConnectionError: Error {
-        case invalidSession
-    }
-    
     struct Context {
         let siteVersion: SiteVersion
         let myPersonId: Int?
@@ -93,16 +89,8 @@ public class LemmyConnection: InstanceConnection {
             )
         } catch {
             switch error {
-            case let RestError.response(response, statusCode: _):
-                if LemmyErrorResponse(error: response).isNotLoggedIn {
-                    if token == nil {
-                        throw ApiClientError.notLoggedIn
-                    } else {
-                        throw LemmyConnectionError.invalidSession
-                    }
-                } else {
-                    throw ApiClientError(from: error)
-                }
+            case let RestError.response(response, statusCode: code):
+                throw ApiClientError(lemmyMessage: response, statusCode: code)
             default:
                 throw ApiClientError(from: error)
             }

@@ -74,16 +74,8 @@ public class PieFedConnection: InstanceConnection {
             return try await restClient.perform(baseUrl: baseUrl, request, token: token)
         } catch {
             switch error {
-            case let RestError.response(response, statusCode: _):
-                if LemmyErrorResponse(error: response).isNotLoggedIn {
-                    if token == nil {
-                        throw ApiClientError.notLoggedIn
-                    } else {
-                        throw PieFedConnectionError.invalidSession
-                    }
-                } else {
-                    throw ApiClientError(from: error)
-                }
+            case let RestError.response(response, statusCode: code):
+                throw ApiClientError(piefedMessage: response, statusCode: code)
             default:
                 throw ApiClientError(from: error)
             }
