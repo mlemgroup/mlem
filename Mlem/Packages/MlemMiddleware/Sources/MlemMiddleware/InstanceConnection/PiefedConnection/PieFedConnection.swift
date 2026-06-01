@@ -11,7 +11,7 @@ import Rest
 public class PieFedConnection: InstanceConnection {
     public static let softwareType: SiteSoftwareType = .pieFed
     
-    let restClient = RestClient(errorType: LemmyErrorResponse.self)
+    let restClient = RestClient(errorType: PieFedErrorResponse.self)
     
     enum PieFedConnectionError: Error {
         case invalidSession

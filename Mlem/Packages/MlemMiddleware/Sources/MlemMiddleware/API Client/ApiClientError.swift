@@ -82,7 +82,7 @@ extension ApiClientError: CustomStringConvertible {
         case .invalidSession:
             return "Invalid session. There is a token applied to the ApiClient, but it has expired."
         case .notLoggedIn:
-            return "Tried to perform an action that requires authentication on a guest ApiClient."
+            return "Not logged in."
         case .imageTooLarge:
             return "Image too large"
         case let .decoding(data, error):

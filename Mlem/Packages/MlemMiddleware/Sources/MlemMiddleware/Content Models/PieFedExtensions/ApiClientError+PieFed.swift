@@ -10,6 +10,8 @@ import Foundation
 extension ApiClientError {
     init(piefedMessage: String, statusCode: Int) {
         self = switch piefedMessage {
+        case "incorrect_login":
+            .notLoggedIn
         default:
             .response(piefedMessage, statusCode)
         }

@@ -180,7 +180,7 @@ struct LoginCredentialsView: View {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                             authenticating = false
                         }
-                    case ApiClientError.invalidSession:
+                    case ApiClientError.notLoggedIn:
                         failureReason = .incorrectPassword
                     default:
                         handleError(error, silent: true)
