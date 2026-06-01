@@ -11,7 +11,7 @@ import Rest
 public class PieFedConnection: InstanceConnection {
     public static let softwareType: SiteSoftwareType = .pieFed
     
-    let restClient = RestClient(errorType: ApiErrorResponse.self)
+    let restClient = RestClient(errorType: LemmyErrorResponse.self)
     
     enum PieFedConnectionError: Error {
         case invalidSession
@@ -75,7 +75,7 @@ public class PieFedConnection: InstanceConnection {
         } catch {
             switch error {
             case let RestError.response(response, statusCode: _):
-                if ApiErrorResponse(error: response).isNotLoggedIn {
+                if LemmyErrorResponse(error: response).isNotLoggedIn {
                     if token == nil {
                         throw ApiClientError.notLoggedIn
                     } else {

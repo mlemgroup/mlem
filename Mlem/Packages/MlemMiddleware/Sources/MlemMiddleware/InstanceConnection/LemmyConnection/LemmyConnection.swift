@@ -11,7 +11,7 @@ import Rest
 public class LemmyConnection: InstanceConnection {
     public static let softwareType: SiteSoftwareType = .lemmy
     
-    let restClient = RestClient(errorType: ApiErrorResponse.self)
+    let restClient = RestClient(errorType: LemmyErrorResponse.self)
     
     enum LemmyConnectionError: Error {
         case invalidSession
@@ -94,7 +94,7 @@ public class LemmyConnection: InstanceConnection {
         } catch {
             switch error {
             case let RestError.response(response, statusCode: _):
-                if ApiErrorResponse(error: response).isNotLoggedIn {
+                if LemmyErrorResponse(error: response).isNotLoggedIn {
                     if token == nil {
                         throw ApiClientError.notLoggedIn
                     } else {

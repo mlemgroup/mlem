@@ -17,7 +17,7 @@ public enum ApiClientError: Error {
     case encoding(Error)
     case networking(Error)
     case serverError(statusCode: Int)
-    case response(ApiErrorResponse, Int)
+    case response(LemmyErrorResponse, Int)
     case cancelled
     case notLoggedIn
     case invalidSession

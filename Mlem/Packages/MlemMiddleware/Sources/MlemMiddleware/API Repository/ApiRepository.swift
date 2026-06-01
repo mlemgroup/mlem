@@ -24,7 +24,7 @@ class ApiRepository {
     let username: String?
     private var connectionMultiplexer: ConnectionMultiplexer<ConnectionWrapper>!
     
-    let restClient = RestClient(errorType: ApiErrorResponse.self)
+    let restClient = RestClient(errorType: LemmyErrorResponse.self)
     var token: String?
     
     var connection: (any InstanceConnection)? {
@@ -70,7 +70,7 @@ class ApiRepository {
         } catch {
             switch error {
             case let RestError.response(response, statusCode: _):
-                if ApiErrorResponse(error: response).isNotLoggedIn {
+                if LemmyErrorResponse(error: response).isNotLoggedIn {
                     throw token == nil ? ApiClientError.notLoggedIn : ApiClientError.invalidSession // (self)
                 } else {
                     throw ApiClientError(from: error)
