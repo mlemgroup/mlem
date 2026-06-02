@@ -91,7 +91,7 @@ struct ThumbnailImageView: View {
     var content: some View {
         MediaView(
             size: frame,
-            controlState: $mediaControlState,
+            controlState: mediaControlState,
             aspectRatioBounds: .absoluteSquare,
             contentMode: .fill,
             cornerRadius: size == .tile ? 0 : Constants.main.smallItemCornerRadius,

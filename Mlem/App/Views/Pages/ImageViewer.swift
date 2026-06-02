@@ -104,7 +104,7 @@ struct ImageViewer: View {
     var body: some View {
         ZoomableImageView(
             url: url,
-            controlState: $controlState,
+            controlState: controlState,
             scale: $zoomScale,
             offset: $zoomOffset,
             customDragMoved: dragMoved,
@@ -135,6 +135,7 @@ struct ImageViewer: View {
             }
         }
         .onAppear {
+            controlState.animating = true
             animateOpacityUpdate(1.0)
         }
         .onChange(of: scrubRate) {

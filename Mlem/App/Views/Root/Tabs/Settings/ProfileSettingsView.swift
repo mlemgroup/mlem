@@ -158,9 +158,9 @@ struct ProfileSettingsView: View {
             VStack(spacing: 0) {
                 if let bannerUrl = profileDetails.banner {
                     MediaView(
-                        controlState: .constant(mediaTracker.controlState(for: bannerUrl) {
+                        controlState: mediaTracker.controlState(for: bannerUrl) {
                             .init(url: bannerUrl, blurred: false, animating: false, muted: true)
-                        }),
+                        },
                         contentMode: .fill,
                         enableContextMenu: true,
                         enableImageViewer: true

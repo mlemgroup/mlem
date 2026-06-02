@@ -49,12 +49,12 @@ struct CircleCroppedImageView: View {
     var body: some View {
         MediaView(
             size: .init(width: frame, height: frame),
-            controlState: .constant(mediaTracker.controlState(for: url) { .init(
+            controlState: mediaTracker.controlState(for: url) { .init(
                 url: url,
                 blurred: blurred,
                 animating: enableAnimation,
                 muted: Settings.get(\.behavior_muteVideos)
-            )}),
+            )},
             aspectRatioBounds: .absoluteSquare,
             contentMode: .fill,
             fallback: fallback

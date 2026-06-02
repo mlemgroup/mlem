@@ -63,9 +63,9 @@ struct PostEditorImageUploadWidgetView: View {
     @ViewBuilder
     private func uploadedImageView(url: URL, onRemove: @escaping () -> Void = {}) -> some View {
         MediaView(
-            controlState: .constant(mediaTracker.controlState(for: url) {
+            controlState: mediaTracker.controlState(for: url) {
                 .init(url: url, blurred: false, animating: false, muted: false)
-            }),
+            },
             aspectRatioBounds: .imageDefault,
             cornerRadius: Constants.main.mediumItemCornerRadius
         )

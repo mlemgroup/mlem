@@ -18,7 +18,7 @@ struct MediaView: View {
     @Setting(\.dev_developerMode) var developerMode
     
     @State var loader: MediaLoader
-    @Binding var controlState: MediaControlState
+    @State var controlState: MediaControlState
     @State var quickLookUrl: URL?
     
     // appearance
@@ -67,7 +67,7 @@ struct MediaView: View {
     ///  - Warning: Changing the following parameters may cause unexpected view identity changes: `enableContextMenu`, `contentMode`
     init(
         size: CGSize? = nil,
-        controlState: Binding<MediaControlState>,
+        controlState: MediaControlState,
         aspectRatioBounds: CoreMediaView.AspectRatioBounds? = nil,
         contentMode: ContentMode = .fit,
         cornerRadius: CGFloat = 0,
@@ -88,24 +88,24 @@ struct MediaView: View {
         self.onTapActions = onTapActions
 
         self._loader = .init(wrappedValue: .init(
-            url: controlState.wrappedValue.url,
+            url: controlState.url,
             size: size,
             autoBypassImageProxy: Settings.get(\.privacy_autoBypassImageProxy)
         ))
         
-        self._controlState = controlState
+        self.controlState = controlState
     }
     
     static func largeImage(url: URL, shouldBlur: Bool, onTapActions: (() -> Void)? = nil) -> MediaView {
         return .init(
-            controlState: .constant(MediaTracker.main.controlState(for: url) {
+            controlState: MediaTracker.main.controlState(for: url) {
                 .init(
                     url: url,
                     blurred: shouldBlur,
                     animating: Settings.get(\.behavior_autoplayMedia),
                     muted: Settings.get(\.behavior_muteVideos)
                 )
-            }),
+            },
             aspectRatioBounds: .imageDefault,
             cornerRadius: Constants.main.mediumItemCornerRadius,
             overlays: .init(shouldBlur ? [.controls, .nsfw, .error] : [.controls, .error]),

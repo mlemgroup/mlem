@@ -10,7 +10,7 @@ import Media
 
 struct ZoomableImageView: View {
     let url: URL
-    @Binding var controlState: MediaControlState
+    @State var controlState: MediaControlState
     @Binding var scale: CGFloat
     @Binding var offset: CGSize
     let customDragMoved: ((BridgeDragValue) -> Void)?
@@ -18,7 +18,7 @@ struct ZoomableImageView: View {
     let customTap: (() -> Void)?
     
     var body: some View {
-        MediaView(controlState: $controlState, overlays: .init([.error]))
+        MediaView(controlState: controlState, overlays: .init([.error]))
             .overlay {
                 ZoomRecognizer(
                     scale: $scale,

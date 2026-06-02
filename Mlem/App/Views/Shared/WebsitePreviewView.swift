@@ -62,14 +62,14 @@ struct WebsitePreviewView: View {
         VStack(alignment: .leading, spacing: 0) {
             if let thumbnailUrl = link.effectiveThumbnail {
                 MediaView(
-                    controlState: .constant(mediaTracker.controlState(for: thumbnailUrl) {
+                    controlState: mediaTracker.controlState(for: thumbnailUrl) {
                         .init(
                             url: thumbnailUrl,
                             blurred: shouldBlur,
                             animating: false,
                             muted: muteVideos
                         )
-                    }),
+                    },
                     aspectRatioBounds: .bounded(vertical: .init(width: 1, height: 1), horizontal: nil),
                     contentMode: .fill,
                     overlays: shouldBlur ? [.controls, .nsfw, .error] : [.controls, .error]
