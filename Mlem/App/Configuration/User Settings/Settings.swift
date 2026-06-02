@@ -102,26 +102,7 @@ class Settings {
         if let savedSettings = persistenceRepository.loadSystemSettings(.v2_system) {
             values = savedSettings
         } else {
-            values = .init(from: .main, filteredKeywords: persistenceRepository.loadFilteredKeywords())
-            Task {
-                do {
-                    try await persistenceRepository.saveSystemSettings(values, setting: .v2_system)
-                } catch {
-                    handleError(error)
-                }
-            }
+            values = .init()
         }
-    }
-}
-
-// MARK: Legacy Keyword Loading
-
-private extension PersistencePath {
-    static var filteredKeywords = root.appendingPathComponent("Blocked Keywords", conformingTo: .json)
-}
-
-private extension PersistenceRepository {
-    func loadFilteredKeywords() -> Set<String> {
-        load(Set<String>.self, from: PersistencePath.filteredKeywords) ?? .init()
     }
 }

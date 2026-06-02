@@ -33,7 +33,7 @@ extension NewPostAction {
         if entity.api.canInteract(appState: environment.appState) {
             Self.label.withVisibility(.enabled)
         } else {
-            Self.label.withVisibility(.disabled)
+            Self.label.withVisibility(.hidden)
         }
     }
 }

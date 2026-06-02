@@ -13,15 +13,11 @@ extension ModlogEntryContentSnapshot {
     init?(from view: LemmyModlogView) throws(ApiClientError) {
         let value: Self? = switch view.modlog.kind {
         case .modRemovePost:
-            // Temporarily disabled, see #2558
-            // try Self.modRemovePost(view: view)
-            nil
+            try Self.modRemovePost(view: view)
         case .modLockPost:
             try Self.modLockPost(view: view)
         case .modRemoveComment:
-            // Temporarily disabled, see #2558
-            // try Self.modRemoveComment(view: view)
-            nil
+            try Self.modRemoveComment(view: view)
         case .modBanFromCommunity:
             try Self.modBanFromCommunity(view: view)
         case .modTransferCommunity:
