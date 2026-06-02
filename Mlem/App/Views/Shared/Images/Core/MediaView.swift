@@ -132,6 +132,10 @@ struct MediaView: View {
                 }
             }
             .onChange(of: loader.url, initial: false) {
+                // Proxy bypass is handled inside MediaLoader, but the control state and media tracker both need
+                // to be updated so that the control state has a loadable URL and the media tracker knows that both
+                // the original and the bypassed URL point to the same piece of media.
+                // Updating controlState.url does trigger the onChange above, but MediaLoader.load will ignore the duplicate request
                 if let url = loader.url {
                     controlState.url = url
                     mediaTracker.addAlias(for: url, controlState: controlState)
