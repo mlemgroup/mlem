@@ -10,6 +10,7 @@ import Media
 
 struct MediaView: View {
     @Environment(NavigationLayer.self) var navigation: NavigationLayer?
+    @Environment(MediaTracker.self) var mediaTracker: MediaTracker
     @Environment(\.palette) var palette
     @Environment(\.openURL) var openURL
     
@@ -128,6 +129,12 @@ struct MediaView: View {
             .onChange(of: controlState.url, initial: true) {
                 Task {
                     await loader.load(controlState.url)
+                }
+            }
+            .onChange(of: loader.url, initial: false) {
+                if let url = loader.url {
+                    controlState.url = url
+                    mediaTracker.addAlias(for: url, controlState: controlState)
                 }
             }
             .onChange(of: loader.mediaType?.isAnimated, initial: true) {

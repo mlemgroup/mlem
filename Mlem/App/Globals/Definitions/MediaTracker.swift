@@ -44,4 +44,8 @@ public class MediaTracker {
         controlStates[url] = .init(new)
         return new
     }
+    
+    public func addAlias(for url: URL, controlState: MediaControlState) {
+        controlStates[url] = .init(controlState)
+    }
 }
