@@ -65,6 +65,5 @@ public extension ApiBridge {
     }
 }
 
-public typealias LemmySearchSortTypeBridge = ApiBridge<LemmySortType, LemmySearchSortType>
 public typealias LemmyPostSortTypeBridge = ApiBridge<LemmySortType, LemmyPostSortType>
 public typealias LemmyCommunitySortTypeBridge = ApiBridge<LemmySortType, LemmyCommunitySortType>
