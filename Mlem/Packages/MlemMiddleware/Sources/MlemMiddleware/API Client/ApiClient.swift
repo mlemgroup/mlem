@@ -23,6 +23,9 @@ public class ApiClient {
     public internal(set) weak var subscriptions: SubscriptionList?
     public internal(set) weak var blocks: BlockList?
     public internal(set) weak var unreadCount: UnreadCount?
+
+    /// This prevents the unread count getting desynced if requests are performed at the same time.
+    internal let inboxLock = LockActor()
     
     /// Stores the IDs of posts that are queued to be marked read.
     var markReadQueue: MarkReadQueue = .init()
