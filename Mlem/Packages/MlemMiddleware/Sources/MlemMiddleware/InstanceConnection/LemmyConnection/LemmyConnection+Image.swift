@@ -31,14 +31,16 @@ public extension LemmyConnection {
             auth: token
         )
         
-        let (data, _) = try await restClient.urlSession.upload(
+        let (data, response) = try await restClient.urlSession.upload(
             for: request,
             from: encodedData,
             delegate: ImageUploadDelegate(callback: progressCallback)
         )
-        
+
+        let decoder = JSONDecoder.defaultDecoder
+
         do {
-            let response = try JSONDecoder.defaultDecoder.decode(LemmyPictrsUploadResponse.self, from: data)
+            let response = try decoder.decode(LemmyPictrsUploadResponse.self, from: data)
             guard let file = response.files?.first else { throw ApiClientError.noEntityFound }
             return .init(from: file, baseUrl: baseUrl)
         } catch DecodingError.dataCorrupted {
@@ -47,6 +49,13 @@ public extension LemmyConnection {
                 throw ApiClientError.imageTooLarge
             }
             throw ApiClientError.decoding(data, nil)
+        } catch {
+            if let error = try? decoder.decode(ApiErrorResponse.self, from: data) {
+                let statusCode = (response as? HTTPURLResponse)?.statusCode
+                throw ApiClientError.response(error, statusCode ?? -1)
+            } else {
+                throw error
+            }
         }
     }
     
