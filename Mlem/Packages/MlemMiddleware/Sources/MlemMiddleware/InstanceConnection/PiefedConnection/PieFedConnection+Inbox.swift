@@ -30,8 +30,7 @@ public extension PieFedConnection {
             let request = PieFedListPrivateMessagesRequest(
                 unreadOnly: unreadOnly,
                 page: page,
-                limit: limit,
-                creatorId: nil
+                limit: limit
             )
             let response = try await perform(request)
             return try response.privateMessages.map { try .init(from: $0) }
@@ -79,8 +78,7 @@ public extension PieFedConnection {
         let request = PieFedListPrivateMessagesRequest(
             unreadOnly: unreadOnly,
             page: page,
-            limit: limit,
-            creatorId: nil
+            limit: limit
         )
         let response = try await perform(request)
         return try (notifications: response.privateMessages.map { try .init(from: $0) }, cursor: nil)

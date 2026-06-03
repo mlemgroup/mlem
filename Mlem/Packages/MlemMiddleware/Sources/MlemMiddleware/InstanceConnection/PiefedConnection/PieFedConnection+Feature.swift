@@ -59,7 +59,6 @@ public extension PieFedConnection {
 }
 
 private extension SiteVersion {
-    static let v1_0_0: Self = .init("1.0.0")
     static let v1_1_0: Self = .init("1.1.0")
     static let v1_2_0: Self = .init("1.2.0")
     static let v1_3_0: Self = .init("1.3.0")
