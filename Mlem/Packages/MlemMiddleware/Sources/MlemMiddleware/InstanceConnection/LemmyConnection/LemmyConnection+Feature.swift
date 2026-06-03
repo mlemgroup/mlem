@@ -36,12 +36,11 @@ public extension LemmyConnection {
         case let .listingType(listingType):
             version >= listingType.minimumVersion
         case .searchLocalCommunities, .viewInstanceSettings, .viewInstanceCreationDate, .modlog,
-             .logIn, .signUp, .viewCommunityActiveUsers, .uploadImages,
-             .editAccountSettings, .viewMentionsAndPrivateMessages, .viewReports, .editAndDeletePrivateMessages,
+             .logIn, .signUp, .uploadImages, .editAccountSettings, .viewReports,
              .reportPrivateMessages, .viewVotes, .purgeContent, .removeCommunity, .banFromInstance,
              .banFromCommunity, .editModeratorList, .commentSearch, .undeletePrivateMessages, .searchLocalPeople,
-             .hidePosts, .editDisplayName, .editProfile, .autoMarkPostReadOnInteract, .blockInstances,
-             .fetchLinkMetadata, .unbanWithReason, .customPostThumbnail, .banFromNonLocalCommunity, .editCommunityDescription,
+             .hidePosts, .editDisplayName, .editProfile, .blockInstances, .fetchLinkMetadata, .unbanWithReason,
+             .customPostThumbnail, .banFromNonLocalCommunity, .editCommunityDescription,
              .searchLocalComments, .viewInstanceBlockList:
             true
         case .moderatorSetNsfw, .userNotes:

@@ -24,15 +24,12 @@ public enum Feature: Hashable {
     case modlog
     case viewInstanceCreationDate
     case viewInstanceSettings
-    case viewCommunityActiveUsers
     
     case logIn
     case signUp
     
     case viewReports
-    case viewMentionsAndPrivateMessages
     
-    case editAndDeletePrivateMessages
     case undeletePrivateMessages
     case reportPrivateMessages
     case purgeContent
@@ -54,9 +51,6 @@ public enum Feature: Hashable {
     case editProfile
     case editAccountSettings
     case editDisplayName
-    
-    /// Server automatically marks posts as read when voted on or saved
-    case autoMarkPostReadOnInteract
     
     case blockInstances
     case viewInstanceBlockList

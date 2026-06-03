@@ -52,7 +52,6 @@ extension Message1Providing {
         }
     }
         
-    // swiftlint:disable:next cyclomatic_complexity
     @ActionBuilder func basicMenuActions(
         appState: AppState,
         feedback: Set<FeedbackType> = [.haptic, .toast],
@@ -74,13 +73,11 @@ extension Message1Providing {
             selectTextAction()
         }
         if isOwnMessage {
-            if api.supports(.editAndDeletePrivateMessages, defaultValue: true) {
-                if let editCallback {
-                    editAction(appState: appState, callback: editCallback)
-                }
-                if api.supports(.undeletePrivateMessages, defaultValue: true) || !deleted {
-                    deleteAction(appState: appState, feedback: feedback)
-                }
+            if let editCallback {
+                editAction(appState: appState, callback: editCallback)
+            }
+            if api.supports(.undeletePrivateMessages, defaultValue: true) || !deleted {
+                deleteAction(appState: appState, feedback: feedback)
             }
         } else {
             if api.supports(.reportPrivateMessages, defaultValue: true) {

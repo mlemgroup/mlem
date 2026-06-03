@@ -205,10 +205,6 @@ public extension PieFedConnection {
             emoji: nil
         )
         async let response = perform(request)
-        if !supports(.autoMarkPostReadOnInteract, defaultValue: false) {
-            try await markPostAsRead(id: id, read: true)
-            return try await .init(from: response.postView, overrideRead: true)
-        }
         return try await .init(from: response.postView)
     }
     
@@ -216,10 +212,6 @@ public extension PieFedConnection {
     func savePost(id: Int, save: Bool) async throws -> Post2Snapshot {
         let request = PieFedSavePostRequest(postId: id, save: save)
         async let response = try await perform(request)
-        if !supports(.autoMarkPostReadOnInteract, defaultValue: false) {
-            try await markPostAsRead(id: id, read: true)
-            return try await .init(from: response.postView, overrideRead: true)
-        }
         return try await .init(from: response.postView)
     }
     

@@ -35,8 +35,6 @@ public extension PieFedConnection {
             version >= timeRange.minimumVersion
         case let .listingType(listingType):
             listingType.pieFedListingType != nil
-        case .viewCommunityActiveUsers, .viewMentionsAndPrivateMessages, .editAndDeletePrivateMessages, .autoMarkPostReadOnInteract:
-            version >= .v1_1_0
         case .editProfile, .viewVotes, .undeletePrivateMessages:
             version >= .v1_2_0
         case .banFromCommunity, .editCommunityDescription:
@@ -107,7 +105,7 @@ private extension SearchSortType {
 private extension SortTimeRange {
     var minimumVersion: SiteVersion {
         switch self {
-        case .allTime: .v1_1_0
+        case .allTime: .zero
         case let .limited(timeInterval): LegacySortTimeRangeLimit(timeInterval)?.minimumVersion ?? .infinity
         }
     }
@@ -116,7 +114,7 @@ private extension SortTimeRange {
 private extension LegacySortTimeRangeLimit {
     var minimumVersion: SiteVersion {
         switch self {
-        case .threeMonth, .sixMonth, .nineMonth, .year: .v1_1_0
+        case .threeMonth, .sixMonth, .nineMonth, .year: .zero
         default: .zero
         }
     }
