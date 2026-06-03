@@ -234,7 +234,8 @@ public extension PieFedConnection {
             genaiVisibility: nil,
             replyCollapseThreshold: nil,
             replyHideThreshold: nil,
-            searchable: nil
+            searchable: nil,
+            displayName: nil
         )
         try await perform(request)
     }
