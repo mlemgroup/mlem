@@ -87,12 +87,10 @@ struct MediaView: View {
         self.enableImageViewer = enableImageViewer
         self.onTapActions = onTapActions
 
-        self._loader = .init(wrappedValue: .init(
+        self.loader = .init(
             url: controlState.url,
             size: size,
-            autoBypassImageProxy: Settings.get(\.privacy_autoBypassImageProxy)
-        ))
-        
+            autoBypassImageProxy: Settings.get(\.privacy_autoBypassImageProxy))
         self.controlState = controlState
     }
     
