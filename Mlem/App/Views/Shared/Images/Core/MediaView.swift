@@ -94,19 +94,29 @@ struct MediaView: View {
         self.controlState = controlState
     }
     
-    static func largeImage(url: URL, shouldBlur: Bool, onTapActions: (() -> Void)? = nil) -> MediaView {
+    /// Creates a large image with sensible defaults
+    /// - Parameters:
+    ///   - url: URL to use for the URL
+    ///   - shouldBlur: Whether the image should appear blurred
+    ///   - withOverlays: Overlays to display in additino to the defaults (controls and error, plus nsfw if shouldBlur is true)
+    ///   - onTapActions: Callback triggered when the image is tapped
+    static func largeImage(url: URL, shouldBlur: Bool, withOverlays: Set<Overlay> = [], onTapActions: (() -> Void)? = nil) -> MediaView {
+        let controlState: MediaControlState = MediaTracker.main.controlState(for: url) {
+            .init(
+                url: url,
+                blurred: shouldBlur,
+                animating: Settings.get(\.behavior_autoplayMedia),
+                muted: Settings.get(\.behavior_muteVideos)
+            )
+        }
+        controlState.blurred = shouldBlur
+        
+        let defaultOverlays: Set<Overlay> = shouldBlur ? [.controls, .error, .nsfw] : [.controls, .error]
         return .init(
-            controlState: MediaTracker.main.controlState(for: url) {
-                .init(
-                    url: url,
-                    blurred: shouldBlur,
-                    animating: Settings.get(\.behavior_autoplayMedia),
-                    muted: Settings.get(\.behavior_muteVideos)
-                )
-            },
+            controlState: controlState,
             aspectRatioBounds: .imageDefault,
             cornerRadius: Constants.main.mediumItemCornerRadius,
-            overlays: .init(shouldBlur ? [.controls, .nsfw, .error] : [.controls, .error]),
+            overlays: defaultOverlays.union(withOverlays),
             enableContextMenu: true,
             enableImageViewer: true,
             onTapActions: onTapActions

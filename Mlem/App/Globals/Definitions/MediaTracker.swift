@@ -24,6 +24,7 @@ public class MediaTracker {
     private var lastCleaned: Date = .init()
     private let cleanInterval: TimeInterval = 60
     
+    @available(*, deprecated, message: "Access the MediaTracker from the environment where possible.")
     public static var main: MediaTracker = .init()
     
     public func controlState(for url: URL?, create: () -> MediaControlState) -> MediaControlState {

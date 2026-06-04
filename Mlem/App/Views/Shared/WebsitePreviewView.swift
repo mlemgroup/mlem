@@ -17,14 +17,16 @@ struct WebsitePreviewView: View {
     @Setting(\.behavior_muteVideos) var muteVideos
 
     let shouldBlur: Bool
+    let nsfw: Bool
     
     let link: PostLink
     var onTapActions: (() -> Void)?
     
-    init(link: PostLink, shouldBlur: Bool, onTapActions: (() -> Void)? = nil) {
+    init(link: PostLink, shouldBlur: Bool, nsfw: Bool, onTapActions: (() -> Void)? = nil) {
         self.link = link
         self.onTapActions = onTapActions
         self.shouldBlur = shouldBlur
+        self.nsfw = nsfw
     }
     
     var body: some View {
@@ -72,7 +74,7 @@ struct WebsitePreviewView: View {
                     },
                     aspectRatioBounds: .bounded(vertical: .init(width: 1, height: 1), horizontal: nil),
                     contentMode: .fill,
-                    overlays: shouldBlur ? [.controls, .nsfw, .error] : [.controls, .error]
+                    overlays: shouldBlur || nsfw ? [.controls, .nsfw, .error] : [.controls, .error]
                 )
                 .overlay(alignment: .bottomLeading) {
                     LinkHostView(link: link, withCapsule: true)
