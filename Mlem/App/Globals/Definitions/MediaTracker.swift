@@ -35,6 +35,8 @@ public class MediaTracker {
             }
         }
         
+        // control states can exist with nil URLs, but it doesn't make sense to store them here.
+        // it is incumbent on the caller to ensure that if the URL becomes non-nil it is added with addAlias
         guard let url else { return create() }
         
         if let existing = controlStates[url]?.value {

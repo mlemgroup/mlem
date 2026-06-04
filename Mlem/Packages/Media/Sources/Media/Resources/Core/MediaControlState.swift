@@ -8,8 +8,6 @@
 import Foundation
 import Observation
 
-// TODO: NOW some kind of audio lock to avoid EVERYBODY speaking
-
 @Observable
 public class MediaControlState {
     
