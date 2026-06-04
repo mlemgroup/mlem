@@ -22,7 +22,7 @@ public class MediaTracker {
     private var controlStates: [URL: WeakMediaControlState] = .init()
     
     private var lastCleaned: Date = .init()
-    private let cleanInterval: TimeInterval = .init(60)
+    private let cleanInterval: TimeInterval = 60
     
     public static var main: MediaTracker = .init()
     
