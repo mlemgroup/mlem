@@ -8723,6 +8723,9 @@
         }
       }
     },
+    "Taller Collapsed Comments" : {
+
+    },
     "Tap and hold items to add, remove, or rearrange them." : {
       "localizations" : {
         "fr" : {
@@ -8752,6 +8755,9 @@
           }
         }
       }
+    },
+    "Tap to expand" : {
+
     },
     "Tap to show slur filter regex." : {
       "localizations" : {

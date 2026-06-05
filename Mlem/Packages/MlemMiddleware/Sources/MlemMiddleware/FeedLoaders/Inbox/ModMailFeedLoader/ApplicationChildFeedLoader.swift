@@ -17,7 +17,7 @@ public class ApplicationChildFeedLoader: ModMailChildFeedLoader {
                     prevCursor: nil,
                     nextCursor: nil
                 )
-            } catch let ApiClientError.response(response, _) where response.notAdmin {
+            } catch ApiClientError.notAdmin {
                 return .init(items: .init(), prevCursor: nil, nextCursor: nil)
             }
         }

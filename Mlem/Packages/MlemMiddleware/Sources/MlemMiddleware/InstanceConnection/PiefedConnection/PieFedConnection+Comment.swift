@@ -15,14 +15,10 @@ public extension PieFedConnection {
     }
     
     func getComment(url: URL) async throws -> Comment2Snapshot {
-        do {
-            let request = PieFedResolveObjectRequest(q: url.absoluteString)
-            let response = try await perform(request)
-            if let comment = response.comment {
-                return try .init(from: comment)
-            }
-        } catch let ApiClientError.response(response, _) where response.couldntFindObject {
-            throw ApiClientError.noEntityFound
+        let request = PieFedResolveObjectRequest(q: url.absoluteString)
+        let response = try await perform(request)
+        if let comment = response.comment {
+            return try .init(from: comment)
         }
         throw ApiClientError.noEntityFound
     }

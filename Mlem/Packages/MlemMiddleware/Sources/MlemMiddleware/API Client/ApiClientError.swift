@@ -17,9 +17,8 @@ public enum ApiClientError: Error {
     case encoding(Error)
     case networking(Error)
     case serverError(statusCode: Int)
-    case response(ApiErrorResponse, Int)
+    case response(String, Int)
     case cancelled
-    case notLoggedIn
     case invalidSession
     case decoding(Data, Error?)
     case insufficientPermissions
@@ -35,13 +34,22 @@ public enum ApiClientError: Error {
     case noToken
     case responseMissingRequiredData(_ message: String)
     case unableToDetermineSoftware
+
+    case notLoggedIn
+    case missingTotp
+    case instanceIsPrivate
+    case applicationPending
+    case emailNotVerified
+    case notModOrAdmin
+    case notAdmin
+    case newPasswordInvalid
     
     init(from error: RestError) {
         self = switch error {
         case let .serverError(statusCode):
             .serverError(statusCode: statusCode)
         case let .response(string, statusCode):
-            .response(.init(error: string), statusCode)
+            .response(string, statusCode)
         case let .encoding(error):
             .encoding(error)
         case let .parameterEncoding(error):
@@ -74,7 +82,7 @@ extension ApiClientError: CustomStringConvertible {
         case .invalidSession:
             return "Invalid session. There is a token applied to the ApiClient, but it has expired."
         case .notLoggedIn:
-            return "Tried to perform an action that requires authentication on a guest ApiClient."
+            return "Not logged in."
         case .imageTooLarge:
             return "Image too large"
         case let .decoding(data, error):
@@ -107,6 +115,20 @@ extension ApiClientError: CustomStringConvertible {
             return "An API response was missing required data: \(message)"
         case .unableToDetermineSoftware:
             return "Unable to determine software"
+        case .missingTotp:
+            return "Missing 2FA token"
+        case .instanceIsPrivate:
+            return "Instance is private"
+        case .applicationPending:
+            return "Application pending"
+        case .emailNotVerified:
+            return "Email not verified"
+        case .notModOrAdmin:
+            return "Not mod or admin"
+        case .notAdmin:
+            return "Not admin"
+        case .newPasswordInvalid:
+            return "New password invalid"
         }
     }
 }

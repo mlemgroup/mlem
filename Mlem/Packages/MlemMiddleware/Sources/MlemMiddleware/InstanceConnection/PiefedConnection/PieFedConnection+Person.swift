@@ -24,14 +24,10 @@ public extension PieFedConnection {
     }
     
     func getPerson(url: URL) async throws -> Person2Snapshot {
-        do {
-            let request = PieFedResolveObjectRequest(q: url.absoluteString)
-            let response = try await perform(request)
-            if let person = response.person {
-                return try .init(from: person)
-            }
-        } catch let ApiClientError.response(response, _) where response.couldntFindObject {
-            throw ApiClientError.noEntityFound
+        let request = PieFedResolveObjectRequest(q: url.absoluteString)
+        let response = try await perform(request)
+        if let person = response.person {
+            return try .init(from: person)
         }
         throw ApiClientError.noEntityFound
     }
