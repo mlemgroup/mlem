@@ -14,6 +14,7 @@ extension RegistrationMode {
         switch self {
         case .closed: "Closed"
         case .requiresApplication: "Requires Application"
+        case .requiresInvitation: "Requires Invitation"
         case .open: "Open"
         }
     }
@@ -22,6 +23,7 @@ extension RegistrationMode {
         switch self {
         case .closed: .themedNegative
         case .requiresApplication: .themedCaution
+        case .requiresInvitation: .themedAccent
         case .open: .themedPositive
         }
     }
