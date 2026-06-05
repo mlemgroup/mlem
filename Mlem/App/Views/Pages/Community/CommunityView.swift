@@ -39,6 +39,7 @@ struct CommunityView: View {
     @Setting(\.post_size) var postSize
     @Setting(\.feed_showRead) var showRead
     @Setting(\.safety_enableNsfwCommunityWarning) var showNsfwCommunityWarning
+    @Setting(\.interactionBar_person) var personActionConfiguration
     @Setting(\.safety_blurNsfw) var blurNsfw
     
     @ObservationIgnored @Dependency(\.persistenceRepository) private var persistenceRepository
@@ -149,7 +150,7 @@ struct CommunityView: View {
                 guard !showRead else { return }
                 let now = Date()
                 if let lastRefresh = lastRefreshDate,
-                   now.timeIntervalSince(lastRefresh) < 5 {
+                    now.timeIntervalSince(lastRefresh) < 5 {
                     showHiddenReadBanner = true
                 }
                 lastRefreshDate = now
@@ -202,8 +203,12 @@ struct CommunityView: View {
             VStack(spacing: Constants.main.halfSpacing) {
                 // ExpectedView causes rendering issues here
                 ForEach(community.moderators.value ?? []) { person in
-                    PersonListRow(person)
-                        .quickSwipes(moderatorQuickSwipes(community: community, person: person))
+                    if personActionConfiguration.swipes.trailing.isEmpty {
+                        PersonListRow(person)
+                            .quickSwipes(moderatorQuickSwipes(community: community, person: person))
+                    } else {
+                        PersonListRow(person)
+                    }
                 }
             }
             
