@@ -9,15 +9,7 @@ import Actions
 import MlemMiddleware
 import SwiftUI
 import MlemBackend
-
-private let seeds: [ActionSeed] = [
-    .visit,
-    .logIn,
-    .signUp,
-    .openInBrowser,
-    .share,
-    .block
-]
+import QuickSwipes
 
 extension View {
     @ViewBuilder
@@ -25,11 +17,28 @@ extension View {
         if let instance {
             contextMenu {
                 ActionButtons { _ in
-                    seeds.compactMap { $0.createAction(instance) }
+                    InstanceActionConfiguration.availableActions.all.compactMap { $0.createAction(instance) }
                 }
             }
         } else {
             self
+        }
+    }
+
+    @ViewBuilder
+    func quickSwipes(
+        instance: (any InstanceActionProviding)?,
+        configuration: InstanceActionConfiguration,
+        leadingBuffer: SwipeBuffer
+    ) -> some View {
+        if let instance {
+            quickSwipes(
+                leading: configuration.swipes.leading.compactMap { $0.createAction(instance) },
+                trailing: configuration.swipes.trailing.compactMap { $0.createAction(instance) },
+                leadingBuffer: leadingBuffer
+            )
+        } else {
+            quickSwipes(.init())
         }
     }
 }
@@ -38,7 +47,7 @@ extension ToolbarEllipsisMenu {
     init(instance: any InstanceActionProviding) where Content == ActionButtons {
         self.init {
             ActionButtons { _ in
-                seeds.compactMap { $0.createAction(instance) }
+                InstanceActionConfiguration.availableActions.all.compactMap { $0.createAction(instance) }
             }
         }
     }
@@ -49,7 +58,7 @@ extension View {
     func contextMenu(instance: any InstanceActionProviding) -> some View {
         contextMenu {
             ActionButtons { _ in
-                seeds.compactMap { $0.createAction(instance) }
+                InstanceActionConfiguration.availableActions.all.compactMap { $0.createAction(instance) }
             }
         }
     }

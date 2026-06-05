@@ -30,7 +30,7 @@ extension GoToInstanceAction {
     static let label: ActionLabel = .init(
         "Go to Instance",
         icon: .lemmy.instance,
-        color: .themedColorfulAccent(1)
+        color: .themedInstanceAccent
     )
 
     func createLabel(environment: EnvironmentValues) -> ActionLabel {

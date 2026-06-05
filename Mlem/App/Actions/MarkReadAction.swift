@@ -50,6 +50,11 @@ extension MarkReadAction {
 
     private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {
         guard notification.api.canInteract(appState: environment.appState) else { return .hidden }
+
+        if case let .message(message) = notification.content, message.isOwnMessage {
+            return .hidden
+        }
+
         return .enabled
     }
 }
