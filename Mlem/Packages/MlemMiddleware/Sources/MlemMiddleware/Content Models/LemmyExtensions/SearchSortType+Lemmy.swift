@@ -23,26 +23,11 @@ extension SearchSortType {
         }
     }
     
-    func apiType(for endpoint: LemmyEndpointVersion) throws(ApiClientError) -> LemmySearchSortTypeBridge {
-        switch endpoint {
-        case .v3: try .oldOrUnsupported(v3ApiType)
-        case .v4: try .newOrUnsupported(v4ApiType)
-        }
-    }
-    
-    private var v3ApiType: LemmySortType? {
+    internal var v3ApiType: LemmySortType? {
         switch self {
         case .new: .new
         case .old: .old
         case let .top(timeRange): timeRange.legacyApiSortType
-        }
-    }
-    
-    private var v4ApiType: LemmySearchSortType? {
-        switch self {
-        case .new: .new
-        case .old: .old
-        case .top: .top
         }
     }
 }

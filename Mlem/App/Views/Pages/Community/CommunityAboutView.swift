@@ -50,8 +50,8 @@ struct CommunityAboutView: View {
                 .padding(.horizontal, Constants.main.standardSpacing)
                 Divider()
             }
-            Markdown(description, configuration: .default(palette: palette))
-            .padding(.horizontal, Constants.main.standardSpacing)
+            MarkdownWithLinkList(description)
+                .padding(.horizontal, Constants.main.standardSpacing)
         }
         .padding(.vertical, Constants.main.standardSpacing)
         .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))

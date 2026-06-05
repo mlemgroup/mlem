@@ -81,7 +81,8 @@ public extension LemmyConnection {
                 captchaAnswer: captchaAnswer,
                 honeypot: nil,
                 answer: applicationQuestionResponse,
-                stayLoggedIn: true
+                stayLoggedIn: true,
+                token: nil
             )
         }
         return .init(from: response)

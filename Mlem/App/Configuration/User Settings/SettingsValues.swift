@@ -133,9 +133,6 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     @ObservationIgnored var inbox_badge_includeMessageReports: Bool = false
     @ObservationIgnored var inbox_badge_includeMod: Bool = false
     @ObservationIgnored var inbox_badge_includePersonal: Bool = false
-    
-    // This was only used in a 2.5 beta; remove me
-    var imageViewer_showOverlayByDefault: Bool = true
 
     required init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -225,12 +222,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.links_readerMode = try container.decodeIfPresent(Bool.self, forKey: ._links_readerMode) ?? false
         self.links_shareMode = try container.decodeIfPresent(LinkSharingMode.self, forKey: ._links_shareMode) ?? .myInstance
         self.links_embedLoops = try container.decodeIfPresent(Bool.self, forKey: ._links_embedLoops) ?? true
-
-        // This was only used in a 2.5 beta; remove me
-        let showOverlayByDefault = try container.decodeIfPresent(Bool.self, forKey: ._imageViewer_showOverlayByDefault) ?? true
-        let showControlsOldValue: ShowImageViewerControls = showOverlayByDefault ? .immediately : .onTap
-
-        self.imageViewer_showControls = try container.decodeIfPresent(ShowImageViewerControls.self, forKey: ._imageViewer_showControls) ?? showControlsOldValue
+        self.imageViewer_showControls = try container.decodeIfPresent(ShowImageViewerControls.self, forKey: ._imageViewer_showControls) ?? .immediately
 
         self.imageViewer_showCloseButton = try container.decodeIfPresent(Bool.self, forKey: ._imageViewer_showCloseButton) ?? true
         self.imageViewer_showZoomIndicator = try container.decodeIfPresent(Bool.self, forKey: ._imageViewer_showZoomIndicator) ?? true
@@ -290,6 +282,118 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.interactionBar_alternateReportLayout = try container.decodeIfPresent(Bool.self, forKey: ._interactionBar_alternateReportLayout) ?? false
 
         self.events_showEvents = try container.decodeIfPresent(Bool.self, forKey: ._events_showEvents) ?? true
+    }
+
+    init() {
+        self.a11y_readPostIndicator = .checkmark
+        self.a11y_readOutlineThickness = 3
+        self.a11y_showSettingsIcons = true
+        self.a11y_websiteThumbnailIcon = false
+        self.a11y_zoomSliderLocation = .none
+        self.a11y_showInteractionBarButtonBackground = false
+        self.accounts_defaultId = nil
+        self.accounts_grouped = false
+        self.accounts_sort = .name
+        self.accounts_keepPlace = false
+        self.accounts_preferredListRowComplication = .lastUsed
+        self.appearance_interfaceStyle = .unspecified
+        self.appearance_palette = .standard
+        self.markdown_wrapCodeBlockLines = true
+        self.behavior_biometricUnlock = false
+        self.behavior_confirmImageUploads = true
+        self.behavior_enableQuickSwipes = true
+        self.behavior_hapticLevel = nil
+        self.behavior_internetSpeed = .fast
+        self.behavior_autoplayMedia = false
+        self.behavior_muteVideos = true
+        self.behavior_upvoteOnSave = false
+        self.behavior_infiniteScroll = true
+        self.comment_behaviors_collapseChildren = false
+        self.comment_compact = false
+        self.comment_tallerCollapsed = false
+        self.comment_defaultSort = .hot
+        self.comment_gestures_tapToCollapse = true
+        self.comment_jumpButton = .bottomTrailing
+        self.comment_showCreatorInstance = true
+        self.comment_showDownvotesCompact = false
+        self.comment_maxDepth = 8
+        self.community_showAvatar = true
+        self.community_showBanner = true
+        self.community_showInstance = true
+        self.comment_createImage_showPost = true
+        self.comment_createImage_showCreator = true
+        self.comment_createImage_showStats = true
+        self.comment_createImage_colorScheme = .unspecified
+        self.dev_developerMode = false
+        self.dev_errorTimeout = 1.5
+        self.feed_default = .subscribed
+        self.feed_markReadOnScroll = false
+        self.feed_showRead = true
+        self.tab_inbox_badgeIncludedTypes = [.reply, .mention, .message, .postReport, .commentReport, .messageReport, .registrationApplication]
+        self.inbox_showRead = true
+        self.links_displayMode = .contextual
+        self.links_openInBrowser = false
+        self.links_readerMode = false
+        self.links_shareMode = .myInstance
+        self.links_embedLoops = true
+        self.imageViewer_showControls = .immediately
+        self.imageViewer_showCloseButton = true
+        self.imageViewer_showZoomIndicator = true
+        self.imageViewer_dismissThreshold = 10
+        self.media_animatedAvatars = UIAccessibility.isReduceMotionEnabled ? .never : .always
+        self.menus_allModActions = false
+        self.menus_modActionGrouping = .divider
+        self.post_defaultSort = .hot
+        self.post_fallbackSort = .hot
+        self.post_limitImageHeight = true
+        self.post_showCreator = true
+        self.post_showCreatorInstance = true
+        self.post_showSubscribedStatus = false
+        self.post_showWebsitePreview = true
+        self.post_showDownvotesCompact = false
+        self.post_size = .large
+        self.post_allowMultipleColumns = true
+        self.post_thumbnailLocation = .left
+        self.post_webPreview_showHost = true
+        self.post_webPreview_showIcon = true
+        self.post_gestures_tapToCollapse = true
+        self.post_createImage_showCommunity = true
+        self.post_createImage_showCreator = true
+        self.post_createImage_showStats = true
+        self.post_createImage_colorScheme = .unspecified
+        self.privacy_autoBypassImageProxy = false
+        self.privacy_showFavicons = true
+        self.profile_showBanner = true
+        self.safety_blurNsfw = .always
+        self.safety_enableModlogWarning = true
+        self.safety_enableNsfwCommunityWarning = true
+        self.tab_gestures_enableLongPress = true
+        self.tab_gestures_enableSwipeUp = true
+        self.tab_gestures_longPressAction = .openAccountSwitcher
+        self.tab_profile_labelType = .nickname
+        self.tab_profile_showAvatar = true
+        self.tab_showNames = true
+        self.tip_feedWelcomePrompt = true
+        self.person_showAvatar = true
+        self.person_showInstance = true
+        self.person_ageVisibility = .newAccountsOnly
+        self.status_bypassImageProxyShown = false
+        self.subscriptions_instanceLocation = UIDevice.isPad ? .bottom : .trailing
+        self.subscriptions_sort = .alphabetical
+        self.navigation_sidebarVisibleByDefault = true
+        self.navigation_swipeAnywhere = false
+        self.filters_keywordFilterEnabled = true
+        self.filters_keywords = .init()
+        self.filters_literalFilterEnabled = true
+        self.filters_literals = .init()
+        self.interactionBar_post = .default
+        self.interactionBar_comment = .default
+        self.interactionBar_reply = .default
+        self.interactionBar_community = .init()
+        self.interactionBar_postReport = .reportDefault_
+        self.interactionBar_commentReport = .reportDefault_
+        self.interactionBar_alternateReportLayout = false
+        self.events_showEvents = true
     }
     
     func reinit(from otherValues: SettingsValues) {
@@ -455,10 +559,6 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         case _links_shareMode = "links_shareMode"
         case _links_embedLoops = "links_embedLoops"
         case _imageViewer_showControls = "imageViewer_showControls"
-
-        // This was only used in a 2.5 beta, remove me
-        case _imageViewer_showOverlayByDefault = "imageViewer_showOverlayByDefault"
-
         case _imageViewer_showCloseButton = "imageViewer_showCloseButton"
         case _imageViewer_showZoomIndicator = "imageViewer_showZoomIndicator"
         case _imageViewer_dismissThreshold = "imageViewer_dismissThreshold"
@@ -522,122 +622,6 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         case inbox_badge_includeMessageReports
         case inbox_badge_includeMod
         case inbox_badge_includePersonal
-    }
-    
-    init(from settings: LegacySettings, filteredKeywords: Set<String>) {
-        @Dependency(\.persistenceRepository) var persistenceRepository
-        
-        self.a11y_readPostIndicator = settings.readPostIndicator
-        self.a11y_readOutlineThickness = settings.readOutlineThickness
-        self.a11y_showSettingsIcons = settings.showSettingsIcons
-        self.a11y_websiteThumbnailIcon = settings.websiteThumbnailIcon
-        self.a11y_zoomSliderLocation = settings.zoomSliderLocation
-        self.a11y_showInteractionBarButtonBackground = false
-        self.accounts_defaultId = nil // In 2.0, the last used account is now activated when the app is opened
-        self.accounts_grouped = settings.groupAccountSort
-        self.accounts_sort = settings.accountSort
-        self.accounts_keepPlace = settings.keepPlaceOnAccountSwitch
-        self.accounts_preferredListRowComplication = .lastUsed
-        self.appearance_interfaceStyle = settings.interfaceStyle
-        self.appearance_palette = settings.colorPalette
-        self.markdown_wrapCodeBlockLines = settings.wrapCodeBlockLines
-        self.behavior_biometricUnlock = false // Removed in 2.0
-        self.behavior_confirmImageUploads = settings.confirmImageUploads
-        self.behavior_enableQuickSwipes = settings.quickSwipesEnabled
-        self.behavior_hapticLevel = settings.hapticLevel
-        self.behavior_internetSpeed = settings.internetSpeed
-        self.behavior_upvoteOnSave = settings.upvoteOnSave
-        self.behavior_autoplayMedia = settings.autoplayMedia
-        self.behavior_muteVideos = settings.muteVideos
-        self.behavior_infiniteScroll = settings.infiniteScroll
-        self.comment_behaviors_collapseChildren = false // Replaced by comment_maxDepth in 2.0
-        self.comment_compact = settings.compactComments
-        self.comment_tallerCollapsed = false // Added in 2.5
-        self.comment_defaultSort = settings.commentSort
-        self.comment_gestures_tapToCollapse = settings.tapCommentsToCollapse
-        self.comment_jumpButton = settings.jumpButton
-        self.comment_showCreatorInstance = true // Removed in 2.0
-        self.comment_maxDepth = settings.maxCommentDepth
-        self.comment_createImage_showPost = true // Added in 2.4
-        self.comment_createImage_showCreator = true // Added in 2.4
-        self.comment_createImage_showStats = true // Added in 2.4
-        self.comment_createImage_colorScheme = .unspecified // Added in 2.4
-        self.comment_showDownvotesCompact = false // Added in 2.5
-        self.community_showAvatar = settings.showCommunityAvatar
-        self.community_showBanner = true // Removed in 2.0
-        self.community_showInstance = true // Removed in 2.0
-        self.dev_developerMode = settings.developerMode
-        self.dev_errorTimeout = 1.5 // Added in 2.5
-        self.feed_default = settings.defaultFeed
-        self.feed_markReadOnScroll = settings.markReadOnScroll
-        self.feed_showRead = settings.showReadInFeed
-        self.inbox_showRead = settings.showReadInInbox
-        self.links_displayMode = settings.tappableLinksDisplayMode
-        self.links_openInBrowser = settings.openLinksInBrowser
-        self.links_readerMode = settings.openLinksInReaderMode
-        self.links_shareMode = settings.linkSharingMode
-        self.links_embedLoops = settings.embedLoops
-        self.imageViewer_showControls = .immediately // Added in 2.5
-        self.imageViewer_showCloseButton = true // Added in 2.5
-        self.imageViewer_showZoomIndicator = true // Added in 2.5
-        self.imageViewer_dismissThreshold = 10 // Added in 2.5
-        self.media_animatedAvatars = settings.animatedAvatars
-        self.menus_allModActions = settings.showAllModActions
-        self.menus_modActionGrouping = settings.moderatorActionGrouping
-        self.post_defaultSort = settings.defaultPostSort
-        self.post_fallbackSort = settings.fallbackPostSort
-        self.post_limitImageHeight = true // Removed in 2.0
-        self.post_showCreator = settings.showPostCreator
-        self.post_showCreatorInstance = true // Removed in 2.0
-        self.post_showSubscribedStatus = settings.showSubscribedStatus
-        self.post_showWebsitePreview = true // Removed in 2.0
-        self.post_size = settings.postSize
-        self.post_allowMultipleColumns = settings.allowMultiplePostColumns
-        self.post_thumbnailLocation = settings.thumbnailLocation
-        self.post_webPreview_showHost = true // Removed in 2.0
-        self.post_webPreview_showIcon = settings.showFavicons
-        self.post_showDownvotesCompact = settings.showDownvotesCompact
-        self.post_gestures_tapToCollapse = true
-        self.post_createImage_showCommunity = true // Added in 2.4
-        self.post_createImage_showCreator = true // Added in 2.4
-        self.post_createImage_showStats = true // Added in 2.4
-        self.post_createImage_colorScheme = .unspecified // Added in 2.4
-        self.profile_showBanner = true // Removed in 2.0
-        self.safety_blurNsfw = settings.blurNsfw
-        self.safety_enableNsfwCommunityWarning = settings.showNsfwCommunityWarning
-        self.safety_enableModlogWarning = settings.showModlogWarning
-        self.tab_gestures_enableLongPress = true // Removed in 2.0
-        self.tab_gestures_enableSwipeUp = true // Removed in 2.0
-        self.tab_gestures_longPressAction = .openAccountSwitcher // Added in 2.2
-        self.tab_profile_labelType = settings.tabProfileLabelType
-        self.tab_profile_showAvatar = settings.tabProfileShowAvatar
-        self.tab_inbox_badgeIncludedTypes = settings.tabInboxBadgeIncludedTypes
-        self.tab_showNames = true // Removed in 2.0
-        self.tip_feedWelcomePrompt = settings.showFeedWelcomePrompt
-        self.person_showAvatar = settings.showPersonAvatar
-        self.person_showInstance = true // Removed in 2.0
-        self.person_ageVisibility = .newAccountsOnly // Added in 2.2
-        self.privacy_autoBypassImageProxy = settings.autoBypassImageProxy
-        self.privacy_showFavicons = settings.showFavicons // TODO: unused?
-        self.status_bypassImageProxyShown = settings.bypassImageProxyShown
-        self.subscriptions_instanceLocation = settings.subscriptionInstanceLocation
-        self.subscriptions_sort = settings.subscriptionSort
-        self.navigation_sidebarVisibleByDefault = settings.sidebarVisibleByDefault
-        self.navigation_swipeAnywhere = settings.swipeAnywhereToNavigate
-        self.filters_keywordFilterEnabled = settings.keywordFilterEnabled
-        self.filters_keywords = filteredKeywords
-        self.filters_literalFilterEnabled = true // Added in 2.4
-        self.filters_literals = .init() // Added in 2.4
-        self.interactionBar_alternateReportLayout = settings.alternateInteractionBarLayoutForReports
-        
-        let interactionBarConfigurations = persistenceRepository.loadInteractionBarConfigurations()
-        self.interactionBar_post = interactionBarConfigurations.post
-        self.interactionBar_comment = interactionBarConfigurations.comment
-        self.interactionBar_reply = interactionBarConfigurations.reply
-        self.interactionBar_community = .init() // Added in 2.5
-        self.interactionBar_postReport = interactionBarConfigurations.postReport
-        self.interactionBar_commentReport = interactionBarConfigurations.commentReport
-        self.events_showEvents = true // Added in 2.5
     }
 }
 
