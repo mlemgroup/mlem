@@ -15,6 +15,7 @@ struct PersonListRow<Content2: View>: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.communityContext) var communityContext
+    @Setting(\.interactionBar_person) var personActionConfiguration
     
     let person: Person
     let content: Content
@@ -56,6 +57,7 @@ struct PersonListRow<Content2: View>: View {
         .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
         .contextMenu(person: person)
+        .quickSwipes(person: person, configuration: personActionConfiguration, leadingBuffer: .standard)
         .popupAnchor()
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }

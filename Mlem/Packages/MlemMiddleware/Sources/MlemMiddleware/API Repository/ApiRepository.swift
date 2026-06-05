@@ -24,7 +24,7 @@ class ApiRepository {
     let username: String?
     private var connectionMultiplexer: ConnectionMultiplexer<ConnectionWrapper>!
     
-    let restClient = RestClient(errorType: ApiErrorResponse.self)
+    let restClient = RestClient(errorType: LemmyErrorResponse.self)
     var token: String?
     
     var connection: (any InstanceConnection)? {
@@ -53,32 +53,6 @@ class ApiRepository {
         
         connection?.updateToken(newToken)
         token = newToken
-    }
-    
-    func perform<Request: RestRequest>(
-        _ request: Request,
-        tokenOverride: String? = nil,
-        requiresToken: Bool = true // This should be `true` for the vast majority of requests, even GET requests
-    ) async throws -> Request.Response {
-        guard !requiresToken || username == nil || token != nil else {
-            throw ApiClientError.noToken
-        }
-        
-        let token = tokenOverride ?? token
-        do throws(RestError) {
-            return try await restClient.perform(baseUrl: baseUrl, request, token: token)
-        } catch {
-            switch error {
-            case let RestError.response(response, statusCode: _):
-                if ApiErrorResponse(error: response).isNotLoggedIn {
-                    throw token == nil ? ApiClientError.notLoggedIn : ApiClientError.invalidSession // (self)
-                } else {
-                    throw ApiClientError(from: error)
-                }
-            default:
-                throw ApiClientError(from: error)
-            }
-        }
     }
     
     func getConnection() async throws -> any InstanceConnection {

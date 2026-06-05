@@ -8,26 +8,12 @@
 import Actions
 import MlemMiddleware
 import SwiftUI
-
-private let seeds: [ActionSeed] = [
-    .goToInstance,
-    .copyName,
-    .selectText,
-    .share,
-    .sendMessage,
-    .block,
-    .editNote,
-    .openModlog,
-    .ban,
-    .purge,
-    .appointModerator,
-    .appointAdmin
-]
+import QuickSwipes
 
 extension ActionButtons {
     init(person: Person) {
         self.init { _ in
-            seeds.compactMap { $0.createAction(person) }
+            PersonActionConfiguration.availableActions.all.compactMap { $0.createAction(person) }
         }
     }
 }
@@ -37,5 +23,14 @@ extension View {
         contextMenu {
             ActionButtons(person: person)
         }
+    }
+
+    @ViewBuilder
+    func quickSwipes(person: Person, configuration: PersonActionConfiguration, leadingBuffer: SwipeBuffer) -> some View {
+        quickSwipes(
+            leading: configuration.swipes.leading.compactMap { $0.createAction(person) },
+            trailing: configuration.swipes.trailing.compactMap { $0.createAction(person) },
+            leadingBuffer: leadingBuffer
+        )
     }
 }

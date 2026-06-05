@@ -34,7 +34,8 @@ public extension PieFedConnection {
             page: page,
             feedId: nil,
             topicId: nil,
-            ignoreSticky: nil
+            ignoreSticky: nil,
+            nsfw: nil
         )
         let response = try await perform(request)
         let posts: [Post2Snapshot] = try response.posts.map { try .init(from: $0) }
@@ -67,7 +68,8 @@ public extension PieFedConnection {
             page: page,
             feedId: nil,
             topicId: nil,
-            ignoreSticky: nil
+            ignoreSticky: nil,
+            nsfw: nil
         )
         let response = try await perform(request)
         let posts: [Post2Snapshot] = try response.posts.map { try .init(from: $0) }
@@ -112,7 +114,8 @@ public extension PieFedConnection {
             page: pageNumber,
             feedId: nil,
             topicId: nil,
-            ignoreSticky: nil
+            ignoreSticky: nil,
+            nsfw: nil
         )
         let response = try await perform(request)
         let posts: [Post2Snapshot] = try response.posts.map { try .init(from: $0) }
@@ -127,14 +130,10 @@ public extension PieFedConnection {
     }
     
     func getPost(url: URL) async throws -> Post2Snapshot {
-        do {
-            let request = PieFedResolveObjectRequest(q: url.absoluteString)
-            let response = try await perform(request)
-            if let post = response.post {
-                return try .init(from: post)
-            }
-        } catch let ApiClientError.response(response, _) where response.couldntFindObject {
-            throw ApiClientError.noEntityFound
+        let request = PieFedResolveObjectRequest(q: url.absoluteString)
+        let response = try await perform(request)
+        if let post = response.post {
+            return try .init(from: post)
         }
         throw ApiClientError.noEntityFound
     }
