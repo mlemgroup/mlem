@@ -159,6 +159,7 @@ struct LoginInstancePickerView: View {
         return Color.clear
     }
     
+    @MainActor
     func attemptToConnect() {
         guard !connecting else { return }
         var domain = domain
@@ -169,27 +170,27 @@ struct LoginInstancePickerView: View {
             focused = false
             connecting = true
             let fetchTask = Task {
-                let apiClient = ApiClient.getApiClient(url: url, username: nil)
-                do {
-                    let instance = try await apiClient.getMyInstance()
-                    Task { @MainActor in
-                        navigation.push(.logIn(.instance(instance)))
-                    }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        connecting = false
-                    }
-                } catch {
-                    handleError(error, silent: true)
-                    Task { @MainActor in
-                        connecting = false
-                        invalidInstance = true
-                    }
-                }
+                await connectionTask(url: url)
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
                 fetchTask.cancel()
                 invalidInstance = true
             }
+        }
+    }
+
+    func connectionTask(url: URL) async {
+        let apiClient = ApiClient.getApiClient(url: url, username: nil)
+        do {
+            let instance = try await apiClient.getMyInstance()
+            navigation.push(.logIn(.instance(instance)))
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                connecting = false
+            }
+        } catch {
+            handleError(error, silent: true)
+            connecting = false
+            invalidInstance = true
         }
     }
     
