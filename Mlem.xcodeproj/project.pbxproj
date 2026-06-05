@@ -448,6 +448,7 @@
 		CD1446212A5B328E00610EF1 /* Privacy Policy.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1446202A5B328E00610EF1 /* Privacy Policy.swift */; };
 		CD1446252A5B357900610EF1 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1446242A5B357900610EF1 /* Document.swift */; };
 		CD1446272A5B36DA00610EF1 /* EULA.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1446262A5B36DA00610EF1 /* EULA.swift */; };
+		CD15646F2FD24B2600886F5C /* View+DeviceRotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD15646E2FD24B2200886F5C /* View+DeviceRotation.swift */; };
 		CD1B2E212C7F84160075C7EA /* View+MarkReadOnScroll.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1B2E202C7F84160075C7EA /* View+MarkReadOnScroll.swift */; };
 		CD1C64152D3428710006B3C1 /* CommunityView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1C64142D34286E0006B3C1 /* CommunityView+Logic.swift */; };
 		CD1D31832C56D742001B434B /* View+WidthReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1D31822C56D742001B434B /* View+WidthReader.swift */; };
@@ -1050,6 +1051,7 @@
 		CD1446202A5B328E00610EF1 /* Privacy Policy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Privacy Policy.swift"; sourceTree = "<group>"; };
 		CD1446242A5B357900610EF1 /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
 		CD1446262A5B36DA00610EF1 /* EULA.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EULA.swift; sourceTree = "<group>"; };
+		CD15646E2FD24B2200886F5C /* View+DeviceRotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+DeviceRotation.swift"; sourceTree = "<group>"; };
 		CD1B2E202C7F84160075C7EA /* View+MarkReadOnScroll.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+MarkReadOnScroll.swift"; sourceTree = "<group>"; };
 		CD1C64142D34286E0006B3C1 /* CommunityView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommunityView+Logic.swift"; sourceTree = "<group>"; };
 		CD1D31822C56D742001B434B /* View+WidthReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+WidthReader.swift"; sourceTree = "<group>"; };
@@ -2245,6 +2247,7 @@
 		CD4ED8482BF1112A00EFA0A2 /* View Modifiers */ = {
 			isa = PBXGroup;
 			children = (
+				CD15646E2FD24B2200886F5C /* View+DeviceRotation.swift */,
 				CD7C4E562F3B92A600ADCBDD /* View+ReloadOnAccountSwitch.swift */,
 				CDE88C342E68938800183AE5 /* View+AccountSwitcherGesture.swift */,
 				CDB738282CB8A69D005B11BB /* View+PaletteBorder.swift */,
@@ -2901,6 +2904,7 @@
 				03B431B62C454D49001A1EB5 /* UIImage+Extensions.swift in Sources */,
 				03EC86462E9E9D4D004698BB /* PopupAnchorModel.swift in Sources */,
 				CD93420B2DCD069800945333 /* InstanceUptimeView+Logic.swift in Sources */,
+				CD15646F2FD24B2600886F5C /* View+DeviceRotation.swift in Sources */,
 				CD1446212A5B328E00610EF1 /* Privacy Policy.swift in Sources */,
 				03AFD0E32C3C0C540054B8AD /* InstanceView.swift in Sources */,
 				CDE88C352E68938D00183AE5 /* View+AccountSwitcherGesture.swift in Sources */,

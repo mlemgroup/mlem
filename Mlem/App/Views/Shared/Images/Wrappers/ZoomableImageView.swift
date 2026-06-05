@@ -13,6 +13,7 @@ struct ZoomableImageView: View {
     @Binding var controlState: MediaControlState
     @Binding var scale: CGFloat
     @Binding var offset: CGSize
+    @Binding var deviceOrientation: UIDeviceOrientation
     let customDragMoved: ((BridgeDragValue) -> Void)?
     let customDragEnded: (() -> Void)?
     let customTap: (() -> Void)?
@@ -23,6 +24,7 @@ struct ZoomableImageView: View {
                 ZoomRecognizer(
                     scale: $scale,
                     offset: $offset,
+                    deviceOrientation: $deviceOrientation,
                     customDragMoved: customDragMoved,
                     customDragEnded: customDragEnded,
                     customTap: customTap

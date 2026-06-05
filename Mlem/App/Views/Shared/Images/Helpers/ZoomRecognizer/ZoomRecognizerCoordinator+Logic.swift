@@ -268,7 +268,8 @@ extension ZoomRecognizerCoordinator {
             return
         }
         
-        if bounds == nil, view.bounds != .zero {
+        if view.bounds != .zero && (bounds == nil || deviceOrientation != lastBoundsDeviceOrientation) {
+            lastBoundsDeviceOrientation = deviceOrientation
             bounds = .init(width: view.bounds.width, height: view.bounds.height)
         }
     }

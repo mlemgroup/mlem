@@ -16,6 +16,7 @@ struct ZoomRecognizer: UIViewRepresentable {
 
     @Binding var scale: CGFloat
     @Binding var offset: CGSize
+    @Binding var deviceOrientation: UIDeviceOrientation
     
     let customDragMoved: ((BridgeDragValue) -> Void)?
     let customDragEnded: (() -> Void)?
@@ -24,12 +25,14 @@ struct ZoomRecognizer: UIViewRepresentable {
     init(
         scale: Binding<CGFloat>,
         offset: Binding<CGSize>,
+        deviceOrientation: Binding<UIDeviceOrientation>,
         customDragMoved: ((BridgeDragValue) -> Void)? = nil,
         customDragEnded: (() -> Void)? = nil,
         customTap: (() -> Void)? = nil
     ) {
-        _scale = scale
-        _offset = offset
+        self._scale = scale
+        self._offset = offset
+        self._deviceOrientation = deviceOrientation
         self.customDragMoved = customDragMoved
         self.customDragEnded = customDragEnded
         self.customTap = customTap
@@ -80,6 +83,7 @@ struct ZoomRecognizer: UIViewRepresentable {
         .init(
             scale: $scale,
             offset: $offset,
+            deviceOrientation: $deviceOrientation,
             customDragMoved: customDragMoved,
             customDragEnded: customDragEnded,
             customTap: customTap

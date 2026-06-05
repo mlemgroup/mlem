@@ -20,6 +20,8 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
     
     @Binding var scale: CGFloat
     @Binding var offset: CGSize
+    @Binding var deviceOrientation: UIDeviceOrientation
+    var lastBoundsDeviceOrientation: UIDeviceOrientation
     
     let customDragMoved: ((BridgeDragValue) -> Void)?
     let customDragEnded: (() -> Void)?
@@ -66,12 +68,15 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
     init(
         scale: Binding<CGFloat>,
         offset: Binding<CGSize>,
+        deviceOrientation: Binding<UIDeviceOrientation>,
         customDragMoved: ((BridgeDragValue) -> Void)? = nil,
         customDragEnded: (() -> Void)? = nil,
         customTap: (() -> Void)? = nil
     ) {
-        _scale = scale
-        _offset = offset
+        self._scale = scale
+        self._offset = offset
+        self._deviceOrientation = deviceOrientation
+        self.lastBoundsDeviceOrientation = deviceOrientation.wrappedValue
         self.customDragMoved = customDragMoved
         self.customDragEnded = customDragEnded
         self.customTap = customTap
