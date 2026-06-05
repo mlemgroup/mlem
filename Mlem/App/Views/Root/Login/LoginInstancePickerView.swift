@@ -183,7 +183,16 @@ struct LoginInstancePickerView: View {
         let apiClient = ApiClient.getApiClient(url: url, username: nil)
         do {
             let instance = try await apiClient.getMyInstance()
-            navigation.push(.logIn(.instance(instance)))
+
+            let software = try instance.software.tryValue
+            let page: LoginPage
+
+            if software.isSupported {
+                page = .instance(instance)
+            } else {
+                page = .unsupportedVersion(host: instance.host, software: software)
+            }
+            navigation.push(.logIn(page))
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 connecting = false
             }
