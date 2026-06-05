@@ -50,9 +50,9 @@ public extension LemmyConnection {
             }
             throw ApiClientError.decoding(data, nil)
         } catch {
-            if let error = try? decoder.decode(ApiErrorResponse.self, from: data) {
+            if let error = try? decoder.decode(LemmyErrorResponse.self, from: data) {
                 let statusCode = (response as? HTTPURLResponse)?.statusCode
-                throw ApiClientError.response(error, statusCode ?? -1)
+                throw ApiClientError.response(error.error, statusCode ?? -1)
             } else {
                 throw error
             }
