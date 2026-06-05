@@ -24,6 +24,7 @@ class UserAccount: Account, CommunityOrPerson {
     var favorites: Set<Int>
     var visitHistoryEnabled: Bool
     var accountType: AccountType
+    var versionWarningIgnored: SiteVersion?
     var description: String?
     var banner: URL?
     var created: Date?
@@ -41,6 +42,7 @@ class UserAccount: Account, CommunityOrPerson {
         self.favorites = []
         self.visitHistoryEnabled = true
         self.accountType = (person.moderatedCommunities.value_?.isEmpty ?? true) ? .user : .moderator
+        self.versionWarningIgnored = nil
         self.description = person.description
         self.banner = person.banner
         self.created = person.created
@@ -49,7 +51,7 @@ class UserAccount: Account, CommunityOrPerson {
     
     enum CodingKeys: String, CodingKey {
         // These key names don't match the identifiers of their corresponding properties - this is because these key names must match the property names used in SavedAccount pre-1.3 in order to maintain compatibility
-        case id, username, storedNickname, instanceLink, siteVersion, avatarUrl
+        case id, username, storedNickname, instanceLink, siteVersion, avatarUrl, versionWarningIgnored
         case lastUsed, favorites, accountType, visitHistoryEnabled, activityState
         case siteSoftware
         case description, banner, created, updated
@@ -86,6 +88,8 @@ class UserAccount: Account, CommunityOrPerson {
         self.favorites = try values.decodeIfPresent(Set<Int>.self, forKey: .favorites) ?? []
         self.visitHistoryEnabled = try values.decodeIfPresent(Bool.self, forKey: .visitHistoryEnabled) ?? true
         self.accountType = try values.decodeIfPresent(AccountType.self, forKey: .accountType) ?? .user
+
+        self.versionWarningIgnored = try values.decodeIfPresent(SiteVersion?.self, forKey: .versionWarningIgnored) ?? nil
 
         // parse instance link
         let instanceLink = try values.decode(URL.self, forKey: .instanceLink)

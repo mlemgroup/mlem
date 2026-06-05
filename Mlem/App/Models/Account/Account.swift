@@ -19,6 +19,7 @@ protocol Account: AnyObject, Codable, ActorIdentifiable, ProfileProviding, Hasha
     var avatar: URL? { get }
     var activityState: AccountActivityState { get set }
     var accountType: AccountType { get }
+    var versionWarningIgnored: SiteVersion? { get }
     
     // Computed
     var nickname: String { get }

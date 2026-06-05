@@ -18,12 +18,14 @@ class GuestAccount: Account {
     var avatar: URL?
     var activityState: AccountActivityState
     let accountType: AccountType = .guest
+    let versionWarningIgnored: SiteVersion?
     
     fileprivate init(url: URL) throws {
         guard let host = url.host() else { throw DecodingError.invalidHost }
         self.actorId = .instance(host: host)
         self.activityState = .inactive(lastUsed: nil)
         self.api = .getApiClient(url: url, username: nil)
+        self.versionWarningIgnored = nil
     }
   
     // TODO: updated mocks
@@ -43,7 +45,7 @@ class GuestAccount: Account {
     
     enum CodingKeys: String, CodingKey {
         // Keys are named this way to be consistent with the `UserAccount.CodingKey` cases
-        case storedNickname, instanceLink, siteVersion, avatarUrl, lastUsed, activityState, siteSoftware
+        case storedNickname, instanceLink, siteVersion, avatarUrl, lastUsed, activityState, siteSoftware, versionWarningIgnored
     }
     
     enum DecodingError: Error {
@@ -71,6 +73,8 @@ class GuestAccount: Account {
             let lastUsed = try values.decodeIfPresent(Date?.self, forKey: .lastUsed) ?? nil
             self.activityState = .inactive(lastUsed: lastUsed)
         }
+
+        self.versionWarningIgnored = try values.decodeIfPresent(SiteVersion?.self, forKey: .versionWarningIgnored) ?? nil
 
         let actorId = try values.decode(ActorIdentifier.self, forKey: .instanceLink)
         self.actorId = actorId
