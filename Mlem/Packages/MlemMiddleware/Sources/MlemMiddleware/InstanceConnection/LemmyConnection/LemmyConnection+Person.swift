@@ -59,20 +59,25 @@ public extension LemmyConnection {
         sort: SearchSortType = .top(.allTime)
     ) async throws -> [Person2Snapshot] {
         let response = try await performingForEndpoint { endpoint in
-            try LemmySearchRequest(
+            LemmySearchRequest(
                 endpoint: endpoint,
                 q: query,
                 communityId: nil,
                 communityName: nil,
                 creatorId: nil,
                 type_: .users,
-                sort: sort.apiType(for: endpoint),
+                sort: sort.v3ApiType,
                 listingType: filter.apiType,
                 page: page,
                 limit: limit,
                 postTitleOnly: false,
                 searchTerm: query,
-                searchTitleOnly: false
+                creatorUsername: nil,
+                timeRangeSeconds: nil,
+                titleOnly: false,
+                postUrlOnly: nil,
+                showNsfw: nil,
+                pageCursor: nil
             )
         }
         return try response.users?.map { try .init(from: $0) } ?? []

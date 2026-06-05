@@ -29,13 +29,6 @@ public extension PostSortType {
         }
     }
     
-    internal func apiType(for endpoint: LemmyEndpointVersion) throws(ApiClientError) -> LemmySearchSortTypeBridge {
-        switch endpoint {
-        case .v3: try .oldOrUnsupported(v3ApiType)
-        case .v4: try .newOrUnsupported(v4SearchApiType)
-        }
-    }
-    
     internal func apiType(for endpoint: LemmyEndpointVersion) throws(ApiClientError) -> LemmyPostSortTypeBridge {
         switch endpoint {
         case .v3: try .oldOrUnsupported(v3ApiType)
@@ -68,15 +61,6 @@ public extension PostSortType {
         case .controversial: .controversial
         case .scaled: .scaled
         case .top: .top
-        }
-    }
-    
-    var v4SearchApiType: LemmySearchSortType? {
-        switch self {
-        case .new: .new
-        case .old: .old
-        case .top: .top
-        default: nil
         }
     }
 }

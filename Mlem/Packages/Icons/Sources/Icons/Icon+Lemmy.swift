@@ -84,7 +84,7 @@ public extension Icon {
         // MARK: - Purge
         
         @inlinable public var purged: Icon { purge }
-        public let purge: Icon = .init("burn")
+        public let purge: Icon = .baseOnly("burn")
         
         // MARK: - Ban
 
@@ -205,15 +205,20 @@ public extension Icon {
 
         public let noContent: Icon = .init("binoculars")
         public let note: Icon = .init("note.text")
-        public let editNote: Icon = .init("square.and.pencil")
+        public let editNote: Icon = .applyCircle("square.and.pencil")
         public let openAccountSwitcher: Icon = .init("person.crop.rectangle.stack.fill")
         public let groupAccountSort: Icon = .init("square.stack.3d.up.fill")
         public let switchAccount: Icon = .init("arrow.left.arrow.right")
         public let switchAccountAndReload: Icon = .init("arrow.2.circlepath")
         public let switchAccountAndKeepPlace: Icon = .init("checkmark.diamond")
-        public let visitInstance: Icon = .init("arrow.right")
+        public let visitInstance: Icon = .applyCircle("arrow.right")
         public let logIn: Icon = .init("person.text.rectangle")
-        public let signUp: Icon = .init("pencil.and.list.clipboard")
+        public let signUp: Icon = .custom { variant in
+            switch variant {
+            case .active: "list.clipboard.fill"
+            default: "pencil.and.list.clipboard"
+            }
+        }
         
         public let jumpButton: Icon = .init("chevron.down")
         public let jumpToLastPositionButton: Icon = .init("chevron.down.2")

@@ -200,6 +200,7 @@ public extension ShapeStyle where Self == ThemedColor {
     static var themedCommentAccent: ThemedColor { themedColorfulAccent(0) }
     static var themedPostAccent: ThemedColor { themedColorfulAccent(1) }
     static var themedPersonAccent: ThemedColor { themedColorfulAccent(2) }
+    static var themedInstanceAccent: ThemedColor { themedColorfulAccent(1) }
     static var themedCommunityAccent: ThemedColor { themedColorfulAccent(3) }
     static var themedLockAccent: ThemedColor { themedColorfulAccent(0) }
     

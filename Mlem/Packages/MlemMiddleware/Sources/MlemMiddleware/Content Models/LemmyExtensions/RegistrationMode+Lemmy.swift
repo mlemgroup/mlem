@@ -12,6 +12,7 @@ extension RegistrationMode {
         self = switch mode {
         case .closed: .closed
         case .requireApplication: .requiresApplication
+        case .requireInvitation: .requiresInvitation
         case .open: .open
         }
     }
@@ -21,6 +22,7 @@ extension RegistrationMode {
         case .closed: .closed
         case .open: .open
         case .requiresApplication: .requireApplication
+        case .requiresInvitation: .requireInvitation
         }
     }
 }

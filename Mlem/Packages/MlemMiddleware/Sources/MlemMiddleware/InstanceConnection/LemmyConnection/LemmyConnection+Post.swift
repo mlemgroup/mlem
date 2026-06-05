@@ -34,6 +34,8 @@ public extension LemmyConnection {
                 showRead: nil,
                 showNsfw: nil,
                 timeRangeSeconds: sort.timeRangeSeconds,
+                creatorId: nil,
+                creatorUsername: nil,
                 multiCommunityId: nil,
                 multiCommunityName: nil,
                 hideMedia: nil,
@@ -76,6 +78,8 @@ public extension LemmyConnection {
                 showRead: nil,
                 showNsfw: nil,
                 timeRangeSeconds: sort.timeRangeSeconds,
+                creatorId: nil,
+                creatorUsername: nil,
                 multiCommunityId: nil,
                 multiCommunityName: nil,
                 hideMedia: nil,
@@ -152,6 +156,8 @@ public extension LemmyConnection {
                     showRead: nil,
                     showNsfw: nil,
                     timeRangeSeconds: nil,
+                    creatorId: nil,
+                    creatorUsername: nil,
                     multiCommunityId: nil,
                     multiCommunityName: nil,
                     hideMedia: nil,
@@ -164,7 +170,7 @@ public extension LemmyConnection {
                 let response = try await self.perform(request, endpoint: .v3)        
                 return try (
                     posts: response.items.map { try .init(from: $0) },
-                    // Cursor intentionally omitted here. See Comment above
+                    // Cursor intentionally omitted here. See comment above
                     cursor: nil
                 )
             case .v4:
@@ -176,6 +182,7 @@ public extension LemmyConnection {
                 case .saved:
                 let request = LemmyListPersonSavedRequest(
                     type_: .all,
+                    searchTerm: nil,
                     pageCursor: cursor,
                     limit: limit
                 )
@@ -239,7 +246,7 @@ public extension LemmyConnection {
             communityId: communityId,
             creatorId: creatorId,
             filter: filter,
-            createSortType: { try sort.apiType(for: $0) },
+            createSortType: { _ in sort.v3ApiType },
             timeRangeSeconds: sort.timeRangeSeconds
         )
     }
@@ -260,7 +267,7 @@ public extension LemmyConnection {
             communityId: communityId,
             creatorId: creatorId,
             filter: filter,
-            createSortType: { try sort.apiType(for: $0) },
+            createSortType: { _ in sort.v3ApiType },
             timeRangeSeconds: sort.timeRangeSeconds
         )
     }
@@ -272,7 +279,7 @@ public extension LemmyConnection {
         communityId: Int?,
         creatorId: Int?,
         filter: ListingType,
-        createSortType: @escaping (LemmyEndpointVersion) throws -> LemmySearchSortTypeBridge,
+        createSortType: @escaping (LemmyEndpointVersion) throws -> LemmySortType?,
         timeRangeSeconds: Int?
     ) async throws -> [Post2Snapshot] {
         let response = try await performingForEndpoint { endpoint in
@@ -289,7 +296,12 @@ public extension LemmyConnection {
                 limit: limit,
                 postTitleOnly: false,
                 searchTerm: query,
-                searchTitleOnly: false
+                creatorUsername: nil,
+                timeRangeSeconds: nil,
+                titleOnly: nil,
+                postUrlOnly: nil,
+                showNsfw: nil,
+                pageCursor: nil
             )
         }
         return try response.posts.map { try .init(from: $0) }

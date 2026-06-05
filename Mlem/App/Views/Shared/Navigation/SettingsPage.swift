@@ -15,7 +15,7 @@ enum SettingsPage: Hashable {
     }
 
     enum SwipeActionSettingType: Hashable {
-        case post, comment, inboxNotification, postReport, commentReport, community
+        case post, comment, inboxNotification, postReport, commentReport, community, person, instance
     }
 
     case root
@@ -32,7 +32,7 @@ enum SettingsPage: Hashable {
     case externalLinks, sharingLinks, tappableLinks
     case importExportSettings
     case theme, icon
-    case post, comment, inbox, community, subscriptionList
+    case post, comment, inbox, community, person, instance, subscriptionList
     case tabBar, longPressAction
     case postThumbnail, postSubscriptionIndicator, postReadIndicator
     case commentMaximumDepth, commentJumpButton
@@ -125,6 +125,10 @@ enum SettingsPage: Hashable {
             PostSettingsView()
         case .community:
             CommunitySettingsView()
+        case .person:
+            PersonSettingsView()
+        case .instance:
+            InstanceSettingsView()
         case .postThumbnail:
             PostThumbnailSettingsView()
         case .postSubscriptionIndicator:
@@ -217,7 +221,32 @@ enum SettingsPage: Hashable {
                     }
                 })
             case .community:
-                SwipeActionEditorView(\.interactionBar_community)
+                SwipeActionEditorView(\.interactionBar_community, onApplyToAll: { configuration in
+                    Settings.mutate(\.interactionBar_instance) {
+                        $0.applySwipes(other: configuration)
+                    }
+                    Settings.mutate(\.interactionBar_community) {
+                        $0.applySwipes(other: configuration)
+                    }
+                })
+            case .person:
+                SwipeActionEditorView(\.interactionBar_person, onApplyToAll: { configuration in
+                    Settings.mutate(\.interactionBar_instance) {
+                        $0.applySwipes(other: configuration)
+                    }
+                    Settings.mutate(\.interactionBar_community) {
+                        $0.applySwipes(other: configuration)
+                    }
+                })
+            case .instance:
+                SwipeActionEditorView(\.interactionBar_instance, onApplyToAll: { configuration in
+                    Settings.mutate(\.interactionBar_person) {
+                        $0.applySwipes(other: configuration)
+                    }
+                    Settings.mutate(\.interactionBar_community) {
+                        $0.applySwipes(other: configuration)
+                    }
+                })
             }
         case let .contextMenu(page):
             page.view

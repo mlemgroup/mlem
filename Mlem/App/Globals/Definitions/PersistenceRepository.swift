@@ -68,8 +68,6 @@ private enum DiskAccess {
 
 // Enumeration of system-managed settings
 enum SystemSetting {
-    /// v1 settings manually saved by the user
-    case v1_user
     /// v2 settings manually saved by the user
     case v2_user
     /// v2 settings automatically saved by the app
@@ -77,7 +75,6 @@ enum SystemSetting {
     
     var path: String {
         switch self {
-        case .v1_user: "v1"
         case .v2_user: "v2"
         case .v2_system: "v2_system"
         }
