@@ -30,6 +30,7 @@ protocol Account: AnyObject, Codable, ActorIdentifiable, ProfileProviding, Hasha
     
     func setNickname(_ newValue: String)
     func updateSoftware(_ software: SiteSoftware)
+    func ignoreVersionWarning()
 }
 
 enum AccountActivityState: Codable, Hashable {

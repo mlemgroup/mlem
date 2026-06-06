@@ -141,6 +141,7 @@ class UserAccount: Account, CommunityOrPerson {
         try container.encode(banner, forKey: .banner)
         try container.encode(created, forKey: .created)
         try container.encode(updated, forKey: .updated)
+        try container.encode(versionWarningIgnored, forKey: .versionWarningIgnored)
     }
     
     var keychainId: String {
@@ -198,6 +199,11 @@ class UserAccount: Account, CommunityOrPerson {
             self.siteSoftware = software
             AccountsTracker.main.saveAccounts(ofType: .user)
         }
+    }
+
+    func ignoreVersionWarning() {
+        self.versionWarningIgnored = self.siteSoftware?.version
+        AccountsTracker.main.saveAccounts(ofType: .user)
     }
     
     func updateToken(_ newToken: String) {

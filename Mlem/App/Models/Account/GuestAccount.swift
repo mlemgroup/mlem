@@ -18,7 +18,7 @@ class GuestAccount: Account {
     var avatar: URL?
     var activityState: AccountActivityState
     let accountType: AccountType = .guest
-    let versionWarningIgnored: SiteVersion?
+    var versionWarningIgnored: SiteVersion?
     
     fileprivate init(url: URL) throws {
         guard let host = url.host() else { throw DecodingError.invalidHost }
@@ -89,6 +89,7 @@ class GuestAccount: Account {
         try container.encode(avatar, forKey: .avatarUrl)
         try container.encode(activityState, forKey: .activityState)
         try container.encode(api.baseUrl, forKey: .instanceLink)
+        try container.encode(versionWarningIgnored, forKey: .versionWarningIgnored)
     }
     
     @MainActor
@@ -112,6 +113,11 @@ class GuestAccount: Account {
             self.siteSoftware = software
             AccountsTracker.main.saveAccounts(ofType: .guest)
         }
+    }
+
+    func ignoreVersionWarning() {
+        self.versionWarningIgnored = self.siteSoftware?.version
+        AccountsTracker.main.saveAccounts(ofType: .guest)
     }
 
     var name: String { actorId.host }

@@ -11,6 +11,11 @@ struct UnsupportedVersionWarningView: View {
     let account: any Account
 
     var body: some View {
-        Text("Unsupported")
+        VStack {
+            Text("Unsupported")
+        }
+        .onDisappear {
+            account.ignoreVersionWarning()
+        }
     }
 }
