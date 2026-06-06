@@ -18,6 +18,7 @@ struct InstanceSettingsView: View {
             .gradientTint(.themedInstanceAccent)
             Section {
                 NavigationLink("Swipe Actions", destination: .settings(.swipeActions(.instance)))
+                NavigationLink("Context Menu", destination: .settings(.contextMenu(\.interactionBar_instance)))
             }
         }
         .withConditionalLabelStyle()

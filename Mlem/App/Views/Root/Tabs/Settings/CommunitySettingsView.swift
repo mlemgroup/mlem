@@ -19,8 +19,11 @@ struct CommunitySettingsView: View {
             )
             .gradientTint(.themedCommunityAccent)
             Section {
-                NavigationLink("Subscription List", destination: .settings(.subscriptionList))
                 NavigationLink("Swipe Actions", destination: .settings(.swipeActions(.community)))
+                NavigationLink("Context Menu", destination: .settings(.contextMenu(\.interactionBar_community)))
+            }
+            Section {
+                NavigationLink("Subscription List", destination: .settings(.subscriptionList))
             }
             Section {
                 Toggle("Community Avatar", icon: .lemmy.community, isOn: $showCommunityAvatar)
