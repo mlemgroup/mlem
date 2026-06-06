@@ -278,8 +278,6 @@ extension ZoomRecognizerCoordinator {
             return
         }
         
-        // if view.bounds != .zero && (bounds == nil || deviceOrientation != lastBoundsDeviceOrientation) {
-            // Logger.dev.info("Updated bounds: \(CGSize(width: view.bounds.width, height: view.bounds.height).debugDescription)")
         if (view.bounds != .zero && bounds == nil) || force {
             bounds = .init(width: view.bounds.width, height: view.bounds.height)
         }
