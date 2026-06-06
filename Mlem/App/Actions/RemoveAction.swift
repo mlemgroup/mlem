@@ -55,6 +55,10 @@ extension RemoveAction {
         guard let myPerson = entity.api.myPerson else { return .hidden }
         guard entity.canModerate else { return .hidden }
 
+        if entity is Community {
+            guard entity.api.isAdmin else { return .hidden }
+        }
+
         if let entity = entity as? any OwnershipProviding {
             guard !entity.isOwnContent(myPersonId: myPerson.id) else { return .hidden }
         }
