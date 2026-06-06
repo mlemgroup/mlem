@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import os
 
 // TODO: LIST
 // - Optimize
@@ -17,6 +18,8 @@ struct ZoomRecognizer: UIViewRepresentable {
     @Binding var scale: CGFloat
     @Binding var offset: CGSize
     @Binding var deviceOrientation: UIDeviceOrientation
+    
+    @State var lastBounds: CGRect?
     
     let customDragMoved: ((BridgeDragValue) -> Void)?
     let customDragEnded: (() -> Void)?
@@ -39,7 +42,13 @@ struct ZoomRecognizer: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: UIView, context: Context) {
-        // noop
+        if uiView.bounds != lastBounds {
+            Task { @MainActor in
+                lastBounds = uiView.bounds
+                context.coordinator.initializeBounds(view: uiView, force: true)
+                context.coordinator.resetToBounds(activeOffset: context.coordinator.offset)
+            }
+        }
     }
 
     func makeUIView(context: Context) -> UIView {
