@@ -21,7 +21,11 @@ extension ActionButtons {
 extension View {
     func contextMenu(person: Person) -> some View {
         contextMenu {
-            ActionButtons(person: person)
+            CustomizableActionMenu(
+                entity: person,
+                configuration: \.interactionBar_person,
+                customizable: true
+            )
         }
     }
 

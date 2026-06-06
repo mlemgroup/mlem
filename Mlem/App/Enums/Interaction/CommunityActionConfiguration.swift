@@ -39,7 +39,7 @@ struct CommunityActionConfiguration: Codable, ContextMenuConfiguration, SwipeAct
             .newPost,
             .subscribe,
             .favorite,
-            .goToInstance,
+            .copyName,
             .share,
             .block,
             .remove,
