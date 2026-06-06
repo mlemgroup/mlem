@@ -74,4 +74,13 @@ extension Account {
     }
     
     var nickname: String { storedNickname ?? name }
+
+    var shouldShowVersionWarning: Bool {
+        guard let siteSoftware, !siteSoftware.isSupported else { return false }
+        if let versionWarningIgnored {
+            return versionWarningIgnored != siteSoftware.version
+        } else {
+            return true
+        }
+    }
 }

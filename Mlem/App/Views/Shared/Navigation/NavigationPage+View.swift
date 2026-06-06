@@ -246,6 +246,8 @@ extension NavigationPage {
             )
         case .unavailableContentInfo:
             UnavailableContentInfoView()
+        case let .unsupportedVersion(account):
+            UnsupportedVersionWarningView(account: account.wrappedValue)
         }
     }
 }
