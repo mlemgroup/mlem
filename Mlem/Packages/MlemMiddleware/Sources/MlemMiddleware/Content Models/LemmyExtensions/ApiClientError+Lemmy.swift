@@ -31,7 +31,8 @@ extension ApiClientError {
             .emailNotVerified
         case "not_mod_or_admin":
             .notModOrAdmin
-        case "not_admin":
+        case "not_admin",
+             "not_an_admin":
             .notAdmin
         case "invalid_password":
             .newPasswordInvalid
