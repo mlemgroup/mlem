@@ -80,6 +80,7 @@
 		0325FF302FD40CB4006F8394 /* LoginVersionWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0325FF2F2FD40CB4006F8394 /* LoginVersionWarningView.swift */; };
 		0325FF322FD41D58006F8394 /* LoginVersionWarningView+Content.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0325FF312FD41D58006F8394 /* LoginVersionWarningView+Content.swift */; };
 		0325FF342FD43068006F8394 /* UnsupportedVersionWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0325FF332FD43068006F8394 /* UnsupportedVersionWarningView.swift */; };
+		0325FF362FD433EB006F8394 /* UnsupportedVersionDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0325FF352FD433EB006F8394 /* UnsupportedVersionDescriptionView.swift */; };
 		03267D822BED489C009D6268 /* AvatarBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03267D812BED489C009D6268 /* AvatarBannerView.swift */; };
 		03267D842BED49CE009D6268 /* AccountSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03267D832BED49CE009D6268 /* AccountSettingsView.swift */; };
 		032A22012EB2A4D100E8B346 /* PersonContentFeedLoader+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032A22002EB2A4D100E8B346 /* PersonContentFeedLoader+Extensions.swift */; };
@@ -701,6 +702,7 @@
 		0325FF2F2FD40CB4006F8394 /* LoginVersionWarningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVersionWarningView.swift; sourceTree = "<group>"; };
 		0325FF312FD41D58006F8394 /* LoginVersionWarningView+Content.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginVersionWarningView+Content.swift"; sourceTree = "<group>"; };
 		0325FF332FD43068006F8394 /* UnsupportedVersionWarningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsupportedVersionWarningView.swift; sourceTree = "<group>"; };
+		0325FF352FD433EB006F8394 /* UnsupportedVersionDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsupportedVersionDescriptionView.swift; sourceTree = "<group>"; };
 		03267D812BED489C009D6268 /* AvatarBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarBannerView.swift; sourceTree = "<group>"; };
 		03267D832BED49CE009D6268 /* AccountSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsView.swift; sourceTree = "<group>"; };
 		032A22002EB2A4D100E8B346 /* PersonContentFeedLoader+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PersonContentFeedLoader+Extensions.swift"; sourceTree = "<group>"; };
@@ -2045,6 +2047,7 @@
 			isa = PBXGroup;
 			children = (
 				0325FF332FD43068006F8394 /* UnsupportedVersionWarningView.swift */,
+				0325FF352FD433EB006F8394 /* UnsupportedVersionDescriptionView.swift */,
 				03B431C32C45BA45001A1EB5 /* AccountPickerMenu.swift */,
 				CD635E1A2C94DACD00864F75 /* BypassProxyWarningSheet.swift */,
 				0397D45F2C66113F002C6CDC /* CommentBodyView.swift */,
@@ -2924,6 +2927,7 @@
 				CDD4A0A02C8B985D0001AD1A /* ImportExportSettingsView.swift in Sources */,
 				03B431B62C454D49001A1EB5 /* UIImage+Extensions.swift in Sources */,
 				03EC86462E9E9D4D004698BB /* PopupAnchorModel.swift in Sources */,
+				0325FF362FD433EB006F8394 /* UnsupportedVersionDescriptionView.swift in Sources */,
 				CD93420B2DCD069800945333 /* InstanceUptimeView+Logic.swift in Sources */,
 				CD1446212A5B328E00610EF1 /* Privacy Policy.swift in Sources */,
 				03AFD0E32C3C0C540054B8AD /* InstanceView.swift in Sources */,
