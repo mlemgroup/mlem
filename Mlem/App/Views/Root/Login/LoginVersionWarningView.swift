@@ -9,6 +9,8 @@ import MlemMiddleware
 import SwiftUI
 
 struct LoginVersionWarningView: View {
+    @Environment(\.navigation) var navigation
+
     let content: Content
 
     var body: some View {
@@ -35,18 +37,27 @@ struct LoginVersionWarningView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(.themedGroupedBackground)
         .toolbar {
-            ToolbarItem(placement: .bottomBar) {
-                Button("Continue Anyway") {}
+            if let instance = content.instance {
+                ToolbarItem(placement: .bottomBar) {
+                    Button("Continue Anyway") {
+                        navigation?.push(.logIn(.instance(instance)))
+                    }
+                }
             }
         }
     }
 
     func bodyText(software: SiteSoftware) -> String {
-        var result = String(localized: "\(content.host) is running \(software.label), and Mlem requires \(minimumSoftware(type: software.type).label) or later.")
+        var result = String(localized: """
+                                       \(content.host) is running \(software.label), \
+                                       and Mlem requires \(minimumSoftware(type: software.type).label) or later.
+                                       """)
         result += "\n\n"
         result += .init(localized: "Consider choosing another instance, or asking your server administrators to upgrade.")
-        result += "\n\n"
-        result += .init(localized: "You can choose to continue anyway, but some features may not work on this version.")
+        if content.instance != nil {
+            result += "\n\n"
+            result += .init(localized: "You can choose to continue anyway, but some features may not work on this version.")
+        }
         return result
     }
 

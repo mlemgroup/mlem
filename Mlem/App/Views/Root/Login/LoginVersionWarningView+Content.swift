@@ -26,5 +26,12 @@ extension LoginVersionWarningView {
             case let .unresolvedInstance(host: _, software: software): software
             }
         }
+
+        var instance: Instance? {
+            switch self {
+            case let .resolvedInstance(instance): instance
+            case .unresolvedInstance: nil
+            }
+        }
     }
 }
