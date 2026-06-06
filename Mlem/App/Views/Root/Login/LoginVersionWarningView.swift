@@ -20,6 +20,7 @@ struct LoginVersionWarningView: View {
                 software: content.software,
                 offerContinuation: content.instance != nil
             )
+            .padding(16)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(.themedGroupedBackground)

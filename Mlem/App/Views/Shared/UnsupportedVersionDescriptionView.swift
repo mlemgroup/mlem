@@ -21,7 +21,6 @@ struct UnsupportedVersionDescriptionView: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(height: 70)
                 .foregroundStyle(.themedColorfulAccent(5))
-                .padding(.top, 16)
 
             Text("\(host) is unsupported")
                 .font(.title)
@@ -31,7 +30,6 @@ struct UnsupportedVersionDescriptionView: View {
                 Text(bodyText(software: software))
             }
         }
-        .padding(.horizontal, 16)
     }
 
     func bodyText(software: SiteSoftware) -> String {
