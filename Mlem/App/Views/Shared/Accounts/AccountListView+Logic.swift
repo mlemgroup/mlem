@@ -153,7 +153,7 @@ extension AccountListView {
             Task {
                 do {
                     async let response = fetchVersionNumber(account: account)
-                    let unreadCount = try await account.api.getUnreadCount(alwaysMakeCalls: true)
+                    let unreadCount = try? await account.api.getUnreadCount()
                     let (software, responseTime) = try await response
                     account.updateSoftware(software)
 
@@ -162,7 +162,7 @@ extension AccountListView {
                         responseTime: responseTime
                     )
                 } catch {
-                    handleError(error, silent: true)
+                    handleError(error)
                 }
             }
         }
