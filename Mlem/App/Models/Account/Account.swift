@@ -29,6 +29,7 @@ protocol Account: AnyObject, Codable, ActorIdentifiable, ProfileProviding, Hasha
     var uniqueStringId: String { get }
     
     func setNickname(_ newValue: String)
+    func updateSoftware(_ software: SiteSoftware)
 }
 
 enum AccountActivityState: Codable, Hashable {

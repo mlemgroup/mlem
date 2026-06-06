@@ -106,7 +106,14 @@ class GuestAccount: Account {
             AccountsTracker.main.saveAccounts(ofType: .guest)
         }
     }
-    
+
+    func updateSoftware(_ software: SiteSoftware) {
+        if self.siteSoftware != software {
+            self.siteSoftware = software
+            AccountsTracker.main.saveAccounts(ofType: .guest)
+        }
+    }
+
     var name: String { actorId.host }
     
     var isActive: Bool { AppState.main.guestSession === self }

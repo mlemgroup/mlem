@@ -151,13 +151,27 @@ extension AccountListView {
     func fetchUnreadCounts() {
         for account in accountsTracker.allAccounts {
             Task {
-                let startTime = Date.now
-                let unreadCount = try? await account.api.getUnreadCount(alwaysMakeCalls: true)
-                self.unreadCountResponses[account.actorId] = .init(
-                    unreadCount: unreadCount,
-                    responseTime: Date.now.timeIntervalSince(startTime)
-                )
+                do {
+                    async let response = fetchVersionNumber(account: account)
+                    let unreadCount = try await account.api.getUnreadCount(alwaysMakeCalls: true)
+                    let (software, responseTime) = try await response
+                    account.updateSoftware(software)
+
+                    self.unreadCountResponses[account.actorId] = .init(
+                        unreadCount: unreadCount,
+                        responseTime: responseTime
+                    )
+                } catch {
+                    handleError(error, silent: true)
+                }
             }
         }
+    }
+
+    func fetchVersionNumber(account: any Account) async throws -> (SiteSoftware, TimeInterval) {
+        let startTime = Date.now
+        let software = try await account.api.getSoftwareFallback()
+        let interval = Date.now.timeIntervalSince(startTime)
+        return (software, interval)
     }
 }

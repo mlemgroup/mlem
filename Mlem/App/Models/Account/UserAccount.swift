@@ -192,6 +192,13 @@ class UserAccount: Account, CommunityOrPerson {
             AccountsTracker.main.saveAccounts(ofType: .user)
         }
     }
+
+    func updateSoftware(_ software: SiteSoftware) {
+        if self.siteSoftware != software {
+            self.siteSoftware = software
+            AccountsTracker.main.saveAccounts(ofType: .user)
+        }
+    }
     
     func updateToken(_ newToken: String) {
         api.updateToken(newToken)
