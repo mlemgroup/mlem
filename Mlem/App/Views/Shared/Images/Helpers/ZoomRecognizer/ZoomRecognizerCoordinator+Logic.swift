@@ -7,7 +7,6 @@
 
 import SwiftUI
 import UIKit
-import os
 
 extension ZoomRecognizerCoordinator {
     // MARK: - Pan handlers
