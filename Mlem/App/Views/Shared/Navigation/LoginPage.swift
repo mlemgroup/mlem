@@ -21,7 +21,7 @@ enum LoginPage: Hashable {
         case .pickInstance:
             LoginInstancePickerView()
         case let .unsupportedVersion(host: host, software: software):
-            Text(host)
+            LoginVersionWarningView(host: host, software: software)
         case let .instance(instance):
             LoginCredentialsView(instance: instance)
         case let .reauth(account):

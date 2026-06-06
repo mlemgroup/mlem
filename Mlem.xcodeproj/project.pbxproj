@@ -77,6 +77,7 @@
 		0325B93A2D3A9E8100E28B97 /* InboxBadgeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0325B9392D3A9E8100E28B97 /* InboxBadgeSettingsView.swift */; };
 		0325B93C2D3AA62500E28B97 /* InboxItemType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0325B93B2D3AA62500E28B97 /* InboxItemType+Extensions.swift */; };
 		0325B93E2D3AAE9E00E28B97 /* SettingsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0325B93D2D3AAE9E00E28B97 /* SettingsHeaderView.swift */; };
+		0325FF302FD40CB4006F8394 /* LoginVersionWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0325FF2F2FD40CB4006F8394 /* LoginVersionWarningView.swift */; };
 		03267D822BED489C009D6268 /* AvatarBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03267D812BED489C009D6268 /* AvatarBannerView.swift */; };
 		03267D842BED49CE009D6268 /* AccountSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03267D832BED49CE009D6268 /* AccountSettingsView.swift */; };
 		032A22012EB2A4D100E8B346 /* PersonContentFeedLoader+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032A22002EB2A4D100E8B346 /* PersonContentFeedLoader+Extensions.swift */; };
@@ -695,6 +696,7 @@
 		0325B9392D3A9E8100E28B97 /* InboxBadgeSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxBadgeSettingsView.swift; sourceTree = "<group>"; };
 		0325B93B2D3AA62500E28B97 /* InboxItemType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InboxItemType+Extensions.swift"; sourceTree = "<group>"; };
 		0325B93D2D3AAE9E00E28B97 /* SettingsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHeaderView.swift; sourceTree = "<group>"; };
+		0325FF2F2FD40CB4006F8394 /* LoginVersionWarningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVersionWarningView.swift; sourceTree = "<group>"; };
 		03267D812BED489C009D6268 /* AvatarBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarBannerView.swift; sourceTree = "<group>"; };
 		03267D832BED49CE009D6268 /* AccountSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsView.swift; sourceTree = "<group>"; };
 		032A22002EB2A4D100E8B346 /* PersonContentFeedLoader+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PersonContentFeedLoader+Extensions.swift"; sourceTree = "<group>"; };
@@ -2367,6 +2369,7 @@
 				0320B6572C8BB3C400D38548 /* SignUpView+Views.swift */,
 				0320B6662C93504600D38548 /* SignUpView+Logic.swift */,
 				0320B6592C8CBB0D00D38548 /* SignUpView+EmailConfirmationView.swift */,
+				0325FF2F2FD40CB4006F8394 /* LoginVersionWarningView.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -3227,6 +3230,7 @@
 				030050D32D109B7E002B1E99 /* ReportView.swift in Sources */,
 				0397D49A2C6EA6EE002C6CDC /* InteractionBarEditorView.swift in Sources */,
 				03F6BDAF2D516636006A425E /* CommunityMockType.swift in Sources */,
+				0325FF302FD40CB4006F8394 /* LoginVersionWarningView.swift in Sources */,
 				0300309D2C4163C9009A65FF /* CommentTreeTracker.swift in Sources */,
 				03A631CC2D4FD18C009A47A6 /* Post+Mock.swift in Sources */,
 				03FE14082BF94FFB00A8377F /* ErrorView.swift in Sources */,
