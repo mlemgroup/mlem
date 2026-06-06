@@ -162,7 +162,7 @@ extension AccountListView {
                         responseTime: responseTime
                     )
                 } catch {
-                    handleError(error)
+                    handleError(error, silent: true)
                 }
             }
         }

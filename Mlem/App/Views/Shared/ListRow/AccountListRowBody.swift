@@ -80,7 +80,7 @@ struct AccountListRowBody: View {
 
         // The unreadCount check ensures that we are not showing stale data.
         // Once the unread count has been fetched, the version will have been updated.
-        if let software = account.siteSoftware, !software.isSupported, unreadCount != nil {
+        if let software = account.siteSoftware, !software.isSupported, responseTime != nil {
             var str = AttributedString(localized: "Unsupported")
             str.foregroundColor = ThemedColor.themedWarning.resolve(with: palette)
             output.append(str)
