@@ -15,7 +15,7 @@ struct UnsupportedVersionWarningView: View {
             Text("Unsupported")
         }
         .onDisappear {
-            account.ignoreVersionWarning()
+            account.ignoreVersionWarning(true)
         }
     }
 }

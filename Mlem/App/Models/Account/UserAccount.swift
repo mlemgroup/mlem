@@ -201,8 +201,8 @@ class UserAccount: Account, CommunityOrPerson {
         }
     }
 
-    func ignoreVersionWarning() {
-        self.versionWarningIgnored = self.siteSoftware?.version
+    func ignoreVersionWarning(_ ignore: Bool) {
+        self.versionWarningIgnored = ignore ? self.siteSoftware?.version : nil
         AccountsTracker.main.saveAccounts(ofType: .user)
     }
     
