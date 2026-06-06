@@ -28,15 +28,7 @@ struct LoginVersionWarningView: View {
                     .fontWeight(.semibold)
                     .padding(.bottom, 5)
 
-                Text(
-                    """
-                    \(host) is running \(software.label), and Mlem requires \(minimumSoftware.label) or later.
-
-                    Consider choosing another instance, or asking your server administrators to upgrade.
-
-                    You can choose to continue anyway, but some features may not work on this version.
-                    """
-                )
+                Text(bodyText)
             }
             .padding(.horizontal, 16)
         }
@@ -47,6 +39,16 @@ struct LoginVersionWarningView: View {
                 Button("Continue Anyway") {}
             }
         }
+    }
+
+    var bodyText: String {
+        """
+        \(host) is running \(software.label), and Mlem requires \(minimumSoftware.label) or later.
+
+        Consider choosing another instance, or asking your server administrators to upgrade.
+
+        You can choose to continue anyway, but some features may not work on this version.
+        """
     }
 
     var minimumSoftware: SiteSoftware {
