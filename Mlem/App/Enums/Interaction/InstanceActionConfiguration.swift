@@ -8,8 +8,9 @@
 import Actions
 import Foundation
 
-struct InstanceActionConfiguration: Codable, SwipeActionConfiguration {
+struct InstanceActionConfiguration: Codable, ContextMenuConfiguration, SwipeActionConfiguration {
     var savedSwipes: ActionSeedSwipeConfiguration?
+    var savedContextMenu: [ActionSeed]?
 
     static var availableActions: ActionSeedSections { .init(sections: [
             [
@@ -25,6 +26,16 @@ struct InstanceActionConfiguration: Codable, SwipeActionConfiguration {
 
     static var defaultSwipes: ActionSeedSwipeConfiguration {
         .init(leading: [], trailing: [])
+    }
+
+    static var defaultContextMenu: [ActionSeed] {
+        [
+            .visit,
+            .logIn,
+            .signUp,
+            .share,
+            .block
+        ]
     }
 
     enum CodingKeys: CodingKey {
