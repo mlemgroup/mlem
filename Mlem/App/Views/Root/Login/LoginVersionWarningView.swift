@@ -9,8 +9,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct LoginVersionWarningView: View {
-    let host: String
-    let software: SiteSoftware
+    let content: Content
 
     var body: some View {
         ScrollView {
@@ -23,12 +22,13 @@ struct LoginVersionWarningView: View {
                     .foregroundStyle(.themedColorfulAccent(5))
                     .padding(.top, 16)
 
-                Text("\(host) is unsupported")
+                Text("\(content.host) is unsupported")
                     .font(.title)
                     .fontWeight(.semibold)
                     .padding(.bottom, 5)
-
-                Text(bodyText)
+                if let software = content.software {
+                    Text(bodyText(software: software))
+                }
             }
             .padding(.horizontal, 16)
         }
@@ -41,20 +41,19 @@ struct LoginVersionWarningView: View {
         }
     }
 
-    var bodyText: String {
-        """
-        \(host) is running \(software.label), and Mlem requires \(minimumSoftware.label) or later.
-
-        Consider choosing another instance, or asking your server administrators to upgrade.
-
-        You can choose to continue anyway, but some features may not work on this version.
-        """
+    func bodyText(software: SiteSoftware) -> String {
+        var result = String(localized: "\(content.host) is running \(software.label), and Mlem requires \(minimumSoftware(type: software.type).label) or later.")
+        result += "\n\n"
+        result += .init(localized: "Consider choosing another instance, or asking your server administrators to upgrade.")
+        result += "\n\n"
+        result += .init(localized: "You can choose to continue anyway, but some features may not work on this version.")
+        return result
     }
 
-    var minimumSoftware: SiteSoftware {
+    func minimumSoftware(type: SiteSoftwareType) -> SiteSoftware {
         .init(
-            type: software.type,
-            version: software.type.minimumSupportedVersion
+            type: type,
+            version: type.minimumSupportedVersion
         )
     }
 }

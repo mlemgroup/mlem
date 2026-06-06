@@ -191,11 +191,11 @@ struct LoginInstancePickerView: View {
                 if software.isSupported {
                     page = .instance(instance)
                 } else {
-                    page = .unsupportedVersion(host: instance.host, software: software)
+                    page = .unsupportedVersion(.resolvedInstance(instance))
                 }
             } catch {
                 if let software = try? await apiClient.getSoftwareFallback(), !software.isSupported, let host = url.host() {
-                    page = .unsupportedVersion(host: host, software: software)
+                    page = .unsupportedVersion(.unresolvedInstance(host: host, software: software))
                 } else {
                     throw error
                 }
