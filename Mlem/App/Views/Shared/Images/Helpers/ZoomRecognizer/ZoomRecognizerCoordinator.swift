@@ -25,8 +25,6 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
     
     @Binding var scale: CGFloat
     @Binding var offset: CGSize
-    @Binding var deviceOrientation: UIDeviceOrientation
-    var lastBoundsDeviceOrientation: UIDeviceOrientation
     
     let customDragMoved: ((BridgeDragValue) -> Void)?
     let customDragEnded: (() -> Void)?
@@ -54,10 +52,6 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
     /// Computes the maximum allowed offsets for a given scale.
     /// - Note: to get the minimum offset, multiply the return value by -1.
     lazy var maxOffsets: CachedComputation<ScaledBounds, CGSize> = .init { input in
-        guard let bounds = self.bounds else {
-            assertionFailure("No bounds")
-            return .zero
-        }
         return input.bounds.scaled(by: (input.scale - 1) / 2)
     }
     
@@ -73,15 +67,12 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
     init(
         scale: Binding<CGFloat>,
         offset: Binding<CGSize>,
-        deviceOrientation: Binding<UIDeviceOrientation>,
         customDragMoved: ((BridgeDragValue) -> Void)? = nil,
         customDragEnded: (() -> Void)? = nil,
         customTap: (() -> Void)? = nil
     ) {
         self._scale = scale
         self._offset = offset
-        self._deviceOrientation = deviceOrientation
-        self.lastBoundsDeviceOrientation = deviceOrientation.wrappedValue
         self.customDragMoved = customDragMoved
         self.customDragEnded = customDragEnded
         self.customTap = customTap

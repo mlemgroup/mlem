@@ -85,8 +85,6 @@ struct ImageViewer: View {
     
     @State var devToolsShown: Bool = false
     
-    @State var deviceOrientation: UIDeviceOrientation = .unknown
-    
     /// Whether the controls are currently visible
     var controlsShown: Bool { controlOpacity > 0 }
     
@@ -103,7 +101,6 @@ struct ImageViewer: View {
             controlState: $controlState,
             scale: $zoomScale,
             offset: $zoomOffset,
-            deviceOrientation: $deviceOrientation,
             customDragMoved: dragMoved,
             customDragEnded: dragEnded
         ) {
@@ -124,9 +121,6 @@ struct ImageViewer: View {
             }
         }
         .opacity(opacity)
-        .onRotate { orientation in
-            deviceOrientation = orientation
-        }
         .onChange(of: isZoomed) {
             if isZoomed {
                 hideControls(withSlide: true)

@@ -271,8 +271,8 @@ extension ZoomRecognizerCoordinator {
     
     // MARK: - Bounds
     
-    /// If bounds are not set, initializes them using the given UIView. The view is declared as optional to make this function
-    /// easy to call, but is expected to be defined.
+    /// If bounds are not set or `force` is true, initializes them using the given UIView.
+    /// `view` is optional to make this function easy to call, but is expected to be defined.
     func initializeBounds(view: UIView?, force: Bool = false) {
         guard let view else {
             assertionFailure("No view")
@@ -282,7 +282,6 @@ extension ZoomRecognizerCoordinator {
         // if view.bounds != .zero && (bounds == nil || deviceOrientation != lastBoundsDeviceOrientation) {
             // Logger.dev.info("Updated bounds: \(CGSize(width: view.bounds.width, height: view.bounds.height).debugDescription)")
         if (view.bounds != .zero && bounds == nil) || force {
-            lastBoundsDeviceOrientation = deviceOrientation
             bounds = .init(width: view.bounds.width, height: view.bounds.height)
         }
     }
