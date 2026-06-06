@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct SiteSoftware: Codable, Hashable {
+public struct SiteSoftware: Codable, Hashable, Sendable {
     public let type: SiteSoftwareType
     public let version: SiteVersion
     

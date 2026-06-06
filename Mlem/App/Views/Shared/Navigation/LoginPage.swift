@@ -15,7 +15,7 @@ enum LoginPage: Hashable {
     case reauth(_ account: UserAccount)
     case totp(client: ApiClient, usernameOrEmail: String, password: String)
     
-    @ViewBuilder
+    @MainActor @ViewBuilder
     func view() -> some View {
         switch self {
         case .pickInstance:
