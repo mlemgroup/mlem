@@ -66,18 +66,18 @@ struct AccountListRowBody: View {
         }
     }
     
-    var captionText: String? {
-        var output: [String] = []
+    var captionText: AttributedString? {
+        var output: [AttributedString] = []
         if complications.contains(.instance) {
             if account is GuestAccount {
                 output.append(.init(localized: "Guest"))
             } else {
-                output.append("@\(account.api.host)")
+                output.append(.init("@\(account.api.host)"))
             }
         }
         if complications.contains(.lastUsed), let timeText {
             if (account as? GuestAccount)?.isSaved ?? true {
-                output.append(timeText)
+                output.append(.init(timeText))
             } else {
                 output.append(.init(localized: "Temporary"))
             }
@@ -87,9 +87,17 @@ struct AccountListRowBody: View {
             let formatter = MeasurementFormatter()
             formatter.unitOptions = .providedUnit
             formatter.unitStyle = .short
-            output.append(formatter.string(from: measurement))
+            output.append(.init(formatter.string(from: measurement)))
         }
-        return output.joined(separator: " • ")
+
+        var result = AttributedString()
+        for (index, item) in output.enumerated() {
+            result += item
+            if index < output.count - 1 {
+                result += AttributedString(" • ")
+            }
+        }
+        return result
     }
 }
 
