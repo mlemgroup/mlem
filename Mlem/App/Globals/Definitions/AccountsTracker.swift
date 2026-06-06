@@ -150,6 +150,7 @@ class AccountsTracker {
             }
             let software = try await authenticatedApiClient.software
             let account = UserAccount(person: person, siteSoftware: software)
+            account.versionWarningIgnored = software.version
             addAccount(account: account)
             return account
         }
