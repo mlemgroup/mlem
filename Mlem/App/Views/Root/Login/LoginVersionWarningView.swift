@@ -14,18 +14,23 @@ struct LoginVersionWarningView: View {
 
     var body: some View {
         ScrollView {
-            VStack {
-                Image(icon: .lemmy.versionSort)
+            VStack(alignment: .leading) {
+                Image(systemName: "xmark")
                     .resizable()
+                    .symbolVariant(.square.fill)
                     .aspectRatio(contentMode: .fit)
-                    .frame(height: 100)
+                    .frame(height: 70)
+                    .foregroundStyle(.themedColorfulAccent(5))
+                    .padding(.top, 16)
 
                 Text("\(host) is unsupported")
                     .font(.title)
+                    .fontWeight(.semibold)
+                    .padding(.bottom, 5)
 
                 Text(
                     """
-                     \(host) is running \(software.label), and Mlem requires \(minimumSoftware.label) or later.
+                    \(host) is running \(software.label), and Mlem requires \(minimumSoftware.label) or later.
 
                     Consider choosing another instance, or asking your server administrators to upgrade.
 
@@ -33,8 +38,10 @@ struct LoginVersionWarningView: View {
                     """
                 )
             }
+            .padding(.horizontal, 16)
         }
-        .background(.themedSecondaryGroupedBackground)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(.themedGroupedBackground)
         .toolbar {
             ToolbarItem(placement: .bottomBar) {
                 Button("Continue Anyway") {}
