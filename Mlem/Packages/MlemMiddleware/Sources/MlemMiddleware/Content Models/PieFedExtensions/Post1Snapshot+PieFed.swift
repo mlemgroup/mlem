@@ -29,7 +29,7 @@ public extension Post1Snapshot {
             deleted: post.removed ? false : post.deleted,
             removed: post.removed,
             pinnedCommunity: post.sticky,
-            pinnedInstance: false,
+            pinnedInstance: post.instanceSticky ?? false,
             locked: post.locked
         )
     }

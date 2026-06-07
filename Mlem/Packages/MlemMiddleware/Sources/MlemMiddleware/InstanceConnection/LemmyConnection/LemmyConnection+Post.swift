@@ -220,15 +220,11 @@ public extension LemmyConnection {
     }
     
     func getPost(url: URL) async throws -> Post2Snapshot {
-        do {
-            let result = try await resolve(url: url)
-            switch result {
-            case let .post(post):
-                return post
-            default:
-                throw ApiClientError.noEntityFound
-            }
-        } catch let ApiClientError.response(response, _) where response.couldntFindObject {
+        let result = try await resolve(url: url)
+        switch result {
+        case let .post(post):
+            return post
+        default:
             throw ApiClientError.noEntityFound
         }
     }

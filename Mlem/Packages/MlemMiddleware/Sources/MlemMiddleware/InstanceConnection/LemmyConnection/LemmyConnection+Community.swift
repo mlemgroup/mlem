@@ -16,15 +16,11 @@ public extension LemmyConnection {
     }
     
     func getCommunity(url: URL) async throws -> Community2Snapshot {
-        do {
-            let result = try await resolve(url: url)
-            switch result {
-            case let .community(community):
-                return community
-            default:
-                throw ApiClientError.noEntityFound
-            }
-        } catch let ApiClientError.response(response, _) where response.couldntFindObject {
+        let result = try await resolve(url: url)
+        switch result {
+        case let .community(community):
+            return community
+        default:
             throw ApiClientError.noEntityFound
         }
     }

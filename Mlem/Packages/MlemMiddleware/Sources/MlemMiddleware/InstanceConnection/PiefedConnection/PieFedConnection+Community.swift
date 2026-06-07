@@ -15,14 +15,10 @@ public extension PieFedConnection {
     }
     
     func getCommunity(url: URL) async throws -> Community2Snapshot {
-        do {
-            let request = PieFedResolveObjectRequest(q: url.absoluteString)
-            let response = try await perform(request)
-            if let community = response.community {
-                return try .init(from: community)
-            }
-        } catch let ApiClientError.response(response, _) where response.couldntFindObject {
-            throw ApiClientError.noEntityFound
+        let request = PieFedResolveObjectRequest(q: url.absoluteString)
+        let response = try await perform(request)
+        if let community = response.community {
+            return try .init(from: community)
         }
         throw ApiClientError.noEntityFound
     }

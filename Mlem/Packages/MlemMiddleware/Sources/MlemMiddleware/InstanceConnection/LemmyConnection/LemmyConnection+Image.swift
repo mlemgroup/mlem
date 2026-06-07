@@ -50,9 +50,9 @@ public extension LemmyConnection {
             }
             throw ApiClientError.decoding(data, nil)
         } catch {
-            if let error = try? decoder.decode(ApiErrorResponse.self, from: data) {
+            if let error = try? decoder.decode(LemmyErrorResponse.self, from: data) {
                 let statusCode = (response as? HTTPURLResponse)?.statusCode
-                throw ApiClientError.response(error, statusCode ?? -1)
+                throw ApiClientError.response(error.error, statusCode ?? -1)
             } else {
                 throw error
             }
@@ -66,7 +66,7 @@ public extension LemmyConnection {
         let response = try await restClient.execute(request)
         if let response = response.1 as? HTTPURLResponse {
             if response.statusCode != 204 {
-                throw ApiClientError.response(.init(error: "Unexpected status code"), response.statusCode)
+                throw ApiClientError.response("Unexpected status code", response.statusCode)
             }
         }
     }

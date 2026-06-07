@@ -25,4 +25,8 @@ extension SwipeActionConfiguration {
         }
     }
 
+    mutating func applySwipes<Configuration: SwipeActionConfiguration>(other: Configuration) {
+        let swipes = other.savedSwipes ?? Configuration.defaultSwipes
+        self.savedSwipes = swipes.filter(allowed: Self.availableActions.all)
+    }
 }

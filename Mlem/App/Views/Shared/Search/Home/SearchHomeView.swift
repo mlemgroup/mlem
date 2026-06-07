@@ -102,7 +102,7 @@ struct SearchHomeView: View {
             if !UIDevice.isPad { Spacer() }
 
             NavigationLink("Instances", icon: .lemmy.instance, destination: .topInstances)
-                .tint(.themedColorfulAccent(1))
+                .tint(.themedInstanceAccent)
         }
         .labelStyle(SearchHomeCategoryLabelStyle())
         .buttonStyle(.empty)
@@ -115,7 +115,7 @@ struct SearchHomeView: View {
             GridButton(title: "Top Communities", color: .themedCommunityAccent)
             GridButton(title: "Trending Communities", color: .themedColorfulAccent(0))
             GridButton(title: "Users", color: .themedPersonAccent)
-            GridButton(title: "Instances", color: .themedColorfulAccent(1))
+            GridButton(title: "Instances", color: .themedInstanceAccent)
         }
         .frame(maxWidth: .infinity)
         .padding(.horizontal, -4)
