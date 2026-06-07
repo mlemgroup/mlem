@@ -8,6 +8,17 @@
 import Foundation
 
 public extension CommentSortType {
+    var piefedSearchSortType: PieFedSearchSortType? {
+        switch self {
+        case .new: .new
+        case .old: .old
+        case .hot: .hot
+        case .controversial: nil
+        case .top(.allTime): .top
+        case .top: nil
+        }
+    }
+
     var piefedSortType: PieFedSortType? {
         switch self {
         case .new: .new

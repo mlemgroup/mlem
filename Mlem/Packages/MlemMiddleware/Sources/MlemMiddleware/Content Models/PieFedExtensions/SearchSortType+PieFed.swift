@@ -8,12 +8,12 @@
 import Foundation
 
 public extension SearchSortType {
-    var pieFedSortType: PieFedSortType? {
+    var pieFedSortType: PieFedSearchSortType? {
         switch self {
         case .new: .new
         case .old: nil
         case let .top(range):
-            range.pieFedSortType
+            range.pieFedSearchSortType
         }
     }
 }

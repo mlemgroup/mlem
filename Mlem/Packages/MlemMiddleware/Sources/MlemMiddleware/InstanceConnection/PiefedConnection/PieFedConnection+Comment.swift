@@ -149,7 +149,7 @@ public extension PieFedConnection {
         filter: ListingType = .all,
         sort: CommentSortType = .top(.allTime)
     ) async throws -> [Comment2Snapshot] {
-        guard let sort = sort.piefedSortType else {
+        guard let sort = sort.piefedSearchSortType else {
             throw ApiClientError.featureUnsupported
         }
         let request = PieFedSearchRequest(

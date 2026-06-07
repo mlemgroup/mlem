@@ -148,7 +148,7 @@ public extension PieFedConnection {
         filter: ListingType = .all,
         sort: PostSortType
     ) async throws -> [Post2Snapshot] {
-        guard let sort = sort.pieFedSortType else {
+        guard let sort = sort.pieFedSearchSortType else {
             throw ApiClientError.featureUnsupported
         }
         if communityId != nil || creatorId != nil {
