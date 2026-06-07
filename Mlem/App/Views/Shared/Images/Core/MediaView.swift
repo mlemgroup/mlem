@@ -97,7 +97,8 @@ struct MediaView: View {
     /// Creates a large image with sensible defaults
     /// - Parameters:
     ///   - url: URL to use for the URL
-    ///   - shouldBlur: Whether the image should appear blurred
+    ///   - shouldBlur: Whether this image should appear blurred. This will be ignored if a control state is already present
+    ///   for this image.
     ///   - withOverlays: Overlays to display in additino to the defaults (controls and error, plus nsfw if shouldBlur is true)
     ///   - onTapActions: Callback triggered when the image is tapped
     static func largeImage(url: URL, shouldBlur: Bool, withOverlays: Set<Overlay> = [], onTapActions: (() -> Void)? = nil) -> MediaView {
@@ -109,7 +110,6 @@ struct MediaView: View {
                 muted: Settings.get(\.behavior_muteVideos)
             )
         }
-        controlState.blurred = shouldBlur
         
         let defaultOverlays: Set<Overlay> = shouldBlur ? [.controls, .error, .nsfw] : [.controls, .error]
         return .init(

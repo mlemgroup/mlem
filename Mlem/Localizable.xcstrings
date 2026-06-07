@@ -2110,6 +2110,9 @@
     "Choose whether to show community avatars on posts." : {
 
     },
+    "Choose whether to show user avatars on posts." : {
+
+    },
     "Choose whether to use alternate interaction bar and swipe action layouts for post and comment reports in Mod Mail." : {
       "localizations" : {
         "fr" : {
@@ -2930,6 +2933,9 @@
         }
       }
     },
+    "Customize the appearance of instances." : {
+
+    },
     "Customize the appearance of the tab bar." : {
       "localizations" : {
         "en-GB" : {
@@ -2939,6 +2945,9 @@
           }
         }
       }
+    },
+    "Customize the appearance of users." : {
+
     },
     "Customize the image viewer's buttons and gestures." : {
       "localizations" : {
@@ -7513,6 +7522,9 @@
           }
         }
       }
+    },
+    "Requires Invitation" : {
+
     },
     "Reset" : {
       "localizations" : {
