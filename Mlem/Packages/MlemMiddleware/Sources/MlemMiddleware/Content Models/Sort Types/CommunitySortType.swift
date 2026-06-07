@@ -32,12 +32,12 @@ public enum CommunitySortType: Hashable, Sendable, CaseIterable {
         .postCount,
         .subscriberCount,
         .localSubscriberCount,
+        .newPostsOrComments,
         .activeUserCount(.sixMonth),
         .activeUserCount(.month),
         .activeUserCount(.week),
         .activeUserCount(.day),
         .federationDate(.ascending),
-        .federationDate(.descending),
-        .newPostsOrComments
+        .federationDate(.descending)
     ]
 }
