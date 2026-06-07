@@ -38,10 +38,10 @@ struct CommunitySearchSortPicker: View {
                 }
             }
             if appState.firstApi.supports(.communitySortType(.activeUserCount(.day)), defaultValue: true) {
-                Menu("Active Users", icon: .lemmy.usersSort) {
+                Menu("Active Users", icon: .lemmy.activeUserSort) {
                     ForEach(ActiveUserTimeRange.allCases, id: \.self) { type in
                         toggle(sort: .activeUserCount(type)) {
-                            Label(type.label, icon: .lemmy.usersSort)
+                            Label(type.label, icon: .lemmy.activeUserSort)
                         }
                     }
                 }

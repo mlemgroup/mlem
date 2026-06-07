@@ -37,7 +37,7 @@ extension CommunitySortType {
         case .postCount: .lemmy.post
         case .subscriberCount: .lemmy.usersSort
         case .localSubscriberCount: .lemmy.usersSort
-        case .activeUserCount: .lemmy.activeSort
+        case .activeUserCount: .lemmy.activeUserSort
         case .federationDate: .lemmy.federation
         case .newPostsOrComments: .lemmy.newCommentsSort
         }
