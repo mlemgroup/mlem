@@ -15,6 +15,8 @@ private struct AnimationControlLayer: ViewModifier {
     // decouple controls state from blurred because the blur animation and material don't get along
     @State var showControls: Bool = true
     
+    let mediaLockId: UUID
+    
     func body(content: Content) -> some View {
         if controlState.canAnimate, overlays.controls {
             contentWithControls(content: content)
@@ -38,6 +40,7 @@ private struct AnimationControlLayer: ViewModifier {
                     PlayButton(postSize: .large)
                         .highPriorityGesture(TapGesture()
                             .onEnded {
+                                controlState.mediaLockId = mediaLockId
                                 controlState.animating = true
                             }
                         )
@@ -95,7 +98,7 @@ private struct AnimationControlLayer: ViewModifier {
 }
 
 extension View {
-    func withAnimationControls() -> some View {
-        modifier(AnimationControlLayer())
+    func withAnimationControls(mediaLockId: UUID) -> some View {
+        modifier(AnimationControlLayer(mediaLockId: mediaLockId))
     }
 }

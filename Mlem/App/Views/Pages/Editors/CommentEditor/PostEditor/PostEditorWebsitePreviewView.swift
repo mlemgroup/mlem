@@ -11,6 +11,7 @@ import Theming
 
 struct PostEditorWebsitePreviewView: View {
     @Environment(\.palette) var palette
+    @Environment(MediaTracker.self) var mediaTracker
 
     @Setting(\.post_webPreview_showIcon) var showFavicons
     @Setting(\.behavior_muteVideos) var muteVideos
@@ -91,12 +92,12 @@ struct PostEditorWebsitePreviewView: View {
     @ViewBuilder
     func imageView(_ thumbnailUrl: URL) -> some View {
         MediaView(
-            url: thumbnailUrl,
-            controlState: .constant(.init(
+            controlState: mediaTracker.controlState(for: thumbnailUrl) { .init(
+                url: thumbnailUrl,
                 blurred: shouldBlur,
                 animating: false,
                 muted: muteVideos
-            )),
+            )},
             aspectRatioBounds: .bounded(vertical: .init(width: 1, height: 1), horizontal: nil),
             contentMode: .fill,
             overlays: shouldBlur ? [.controls, .nsfw, .error] : [.controls, .error]

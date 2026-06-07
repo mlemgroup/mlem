@@ -45,7 +45,7 @@ struct LargePostBodyView: View {
                     }
                 }
             case let .link(link):
-                WebsitePreviewView(link: link, shouldBlur: shouldBlur) {
+                WebsitePreviewView(link: link, shouldBlur: shouldBlur, nsfw: post.nsfw) {
                     post.updateRead(true)
                 }
             default:
@@ -69,7 +69,7 @@ struct LargePostBodyView: View {
     
     @ViewBuilder
     func mediaView(_ url: URL) -> some View {
-        MediaView.largeImage(url: url, shouldBlur: shouldBlur) {
+        MediaView.largeImage(url: url, shouldBlur: shouldBlur, withOverlays: post.nsfw ? [.nsfw] : []) {
             post.updateRead(true)
         }
         .frame(maxWidth: .infinity)
