@@ -41,7 +41,7 @@ extension SearchView {
             CommunitySearchSortPicker(sort: Binding(
                 get: { communityFilters.sort }, set: { self.communityFilters?.sort = $0 }
             ))
-            .buttonStyle(.feedFilter(isOn: communityFilters.sort != .top(.allTime)))
+            .buttonStyle(.feedFilter(isOn: !communityFilters.isDefault))
             InstancePicker(
                 filter: Binding(get: { communityFilters.instance }, set: { self.communityFilters?.instance = $0 }),
                 requiredFeature: .searchLocalCommunities
@@ -62,7 +62,7 @@ extension SearchView {
                     }
                 }
             }
-            .buttonStyle(.feedFilter(isOn: personFilters.sort != .top(.allTime)))
+            .buttonStyle(.feedFilter(isOn: !personFilters.isDefault))
             InstancePicker(
                 filter: Binding(get: { personFilters.instance }, set: { self.personFilters?.instance = $0 }),
                 requiredFeature: .searchLocalPeople

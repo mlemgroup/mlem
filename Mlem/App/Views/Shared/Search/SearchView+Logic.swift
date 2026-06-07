@@ -101,13 +101,9 @@ extension SearchView {
             hostApi: refreshApi == appState.firstApi ? nil : appState.firstApi
         )
         
-        let defaultSort: SearchSortType
-        if try await refreshApi.supports(.searchSortType(.top(.allTime))) {
-            defaultSort = .top(.allTime)
-        } else {
-            defaultSort = .top(.limited(.month))
-        }
-        
+        let software = try await refreshApi.software
+        let defaultSort: CommunitySortType = .default(software: software)
+
         try await communityLoader.refresh(
             query: query,
             listing: (!filtersActive || communityFilters.instance == .any) ? .all : .local,

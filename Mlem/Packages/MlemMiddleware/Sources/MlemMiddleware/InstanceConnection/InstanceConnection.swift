@@ -348,7 +348,7 @@ public protocol InstanceConnection {
         page: Int,
         limit: Int,
         filter: ListingType,
-        sort: SearchSortType
+        sort: CommunitySortType
     ) async throws -> [Community2Snapshot]
     
     @discardableResult

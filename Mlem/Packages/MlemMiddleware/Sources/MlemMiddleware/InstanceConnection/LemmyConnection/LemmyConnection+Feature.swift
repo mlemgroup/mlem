@@ -29,6 +29,8 @@ public extension LemmyConnection {
             version >= sort.minimumVersion
         case let .commentSortType(sort):
             version >= sort.minimumVersion
+        case let .communitySortType(sort):
+            version >= sort.minimumVersion
         case let .searchSortType(sort):
             version >= sort.minimumVersion
         case let .sortTimeRange(timeRange):
@@ -82,6 +84,12 @@ private extension CommentSortType {
         case let .top(timeRange): timeRange == .allTime ? .zero : .v1_0_0
         default: .zero
         }
+    }
+}
+
+private extension CommunitySortType {
+    var minimumVersion: SiteVersion {
+        self.v3ApiType == nil ? .v1_0_0 : .zero
     }
 }
 

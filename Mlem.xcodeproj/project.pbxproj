@@ -74,6 +74,7 @@
 		0320B6692C93506300D38548 /* SearchView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0320B6682C93506300D38548 /* SearchView+Logic.swift */; };
 		0324FA772C1F0AE100F6247D /* Readout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0324FA762C1F0AE100F6247D /* Readout.swift */; };
 		0324FA7B2C1F2CD200F6247D /* InfoStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0324FA7A2C1F2CD200F6247D /* InfoStackView.swift */; };
+		032509282FD566B6006F8394 /* CommunitySortType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032509272FD566B6006F8394 /* CommunitySortType+Extensions.swift */; };
 		0325B93A2D3A9E8100E28B97 /* InboxBadgeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0325B9392D3A9E8100E28B97 /* InboxBadgeSettingsView.swift */; };
 		0325B93C2D3AA62500E28B97 /* InboxItemType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0325B93B2D3AA62500E28B97 /* InboxItemType+Extensions.swift */; };
 		0325B93E2D3AAE9E00E28B97 /* SettingsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0325B93D2D3AAE9E00E28B97 /* SettingsHeaderView.swift */; };
@@ -692,6 +693,7 @@
 		0320B6682C93506300D38548 /* SearchView+Logic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SearchView+Logic.swift"; sourceTree = "<group>"; };
 		0324FA762C1F0AE100F6247D /* Readout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Readout.swift; sourceTree = "<group>"; };
 		0324FA7A2C1F2CD200F6247D /* InfoStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoStackView.swift; sourceTree = "<group>"; };
+		032509272FD566B6006F8394 /* CommunitySortType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommunitySortType+Extensions.swift"; sourceTree = "<group>"; };
 		0325B9392D3A9E8100E28B97 /* InboxBadgeSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxBadgeSettingsView.swift; sourceTree = "<group>"; };
 		0325B93B2D3AA62500E28B97 /* InboxItemType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InboxItemType+Extensions.swift"; sourceTree = "<group>"; };
 		0325B93D2D3AAE9E00E28B97 /* SettingsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHeaderView.swift; sourceTree = "<group>"; };
@@ -2137,6 +2139,7 @@
 				0318BA9E2D72405F006CA71F /* PostSortType+Extensions.swift */,
 				038C86562D888EC100543F70 /* CommentSortType+Extensions.swift */,
 				0368F34E2D734066007DEB70 /* SearchSortType+Extensions.swift */,
+				032509272FD566B6006F8394 /* CommunitySortType+Extensions.swift */,
 				03A818AC2EDCDBA20023E9E8 /* FederationMode+Extensions.swift */,
 				0368F34C2D733215007DEB70 /* SortTimeRange+Extensions.swift */,
 				CDCA44B32C176A4700C092B3 /* Array+Extensions.swift */,
@@ -2909,6 +2912,7 @@
 				032C32082C34469900595286 /* SelectableContentProviding+Extensions.swift in Sources */,
 				03E46ACB2D1216CE002589DB /* PostViewLinkType.swift in Sources */,
 				0305EBB22D35C1B70066E5AD /* RegistrationApplicationView.swift in Sources */,
+				032509282FD566B6006F8394 /* CommunitySortType+Extensions.swift in Sources */,
 				032C32182C36F70300595286 /* ReplyBarConfiguration.swift in Sources */,
 				CDD4A0A02C8B985D0001AD1A /* ImportExportSettingsView.swift in Sources */,
 				03B431B62C454D49001A1EB5 /* UIImage+Extensions.swift in Sources */,

@@ -10,6 +10,7 @@ import Foundation
 public enum Feature: Hashable {
     case postSortType(PostSortType)
     case commentSortType(CommentSortType)
+    case communitySortType(CommunitySortType)
     case searchSortType(SearchSortType)
     case sortTimeRange(SortTimeRange)
     case listingType(ListingType)

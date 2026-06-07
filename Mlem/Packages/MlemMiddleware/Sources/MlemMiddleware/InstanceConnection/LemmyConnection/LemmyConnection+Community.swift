@@ -30,7 +30,7 @@ public extension LemmyConnection {
         page: Int = 1,
         limit: Int = 20,
         filter: ListingType = .all,
-        sort: SearchSortType = .top(.allTime)
+        sort: CommunitySortType
     ) async throws -> [Community2Snapshot] {
         let response = try await performingForEndpoint { endpoint in
             LemmySearchRequest(

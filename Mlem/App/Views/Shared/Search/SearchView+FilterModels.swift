@@ -84,15 +84,17 @@ extension SearchView {
     
     @Observable
     class CommunityFilters {
-        var sort: SearchSortType
+        var sort: CommunitySortType
         var instance: InstanceFilter = .any
-        
+
+        private let defaultSort: CommunitySortType
+
+        var isDefault: Bool { sort == defaultSort }
+
         init(software: SiteSoftware) {
-            if software.supports(.searchSortType(.top(.allTime))) {
-                self.sort = .top(.allTime)
-            } else {
-                self.sort = .top(.limited(.month))
-            }
+            let sort = CommunitySortType.default(software: software)
+            self.sort = sort
+            self.defaultSort = sort
         }
     }
     
@@ -100,13 +102,22 @@ extension SearchView {
     class PersonFilters {
         var sort: SearchSortType
         var instance: InstanceFilter = .any
+
+        private let defaultSort: SearchSortType
+
+        var isDefault: Bool { sort == defaultSort }
         
         init(software: SiteSoftware) {
+            let sort: SearchSortType
+
             if software.supports(.searchSortType(.top(.allTime))) {
-                self.sort = .top(.allTime)
+                sort = .top(.allTime)
             } else {
-                self.sort = .top(.limited(.month))
+                sort = .top(.limited(.month))
             }
+
+            self.sort = sort
+            self.defaultSort = sort
         }
     }
     
